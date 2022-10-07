@@ -1,0 +1,423 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		EA65182B28E4199E00E535BF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA65182A28E4199E00E535BF /* AppDelegate.swift */; };
+		EA65182D28E4199E00E535BF /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA65182C28E4199E00E535BF /* SceneDelegate.swift */; };
+		EA65182F28E4199E00E535BF /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA65182E28E4199E00E535BF /* GameViewController.swift */; };
+		EA65183228E4199E00E535BF /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EA65183028E4199E00E535BF /* Main.storyboard */; };
+		EA65183428E419A000E535BF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EA65183328E419A000E535BF /* Assets.xcassets */; };
+		EA65183728E419A000E535BF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EA65183528E419A000E535BF /* LaunchScreen.storyboard */; };
+		EA65184328E420E400E535BF /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA65184228E420E400E535BF /* GameScene.swift */; };
+		EA65184528E5750C00E535BF /* GameboardSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA65184428E5750C00E535BF /* GameboardSprite.swift */; };
+		EA65189228E973D700E535BF /* Level.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA65189028E973D700E535BF /* Level.swift */; };
+		EA65189328E973D700E535BF /* LevelBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA65189128E973D700E535BF /* LevelBuilder.swift */; };
+		EA65189528EA207800E535BF /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA65189428EA207800E535BF /* Constants.swift */; };
+		EA65189828EAB5E000E535BF /* ControlsSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA65189728EAB5E000E535BF /* ControlsSprite.swift */; };
+		EAB69E0028EFCF5B00C31DB3 /* PlayerSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAB69DFF28EFCF5B00C31DB3 /* PlayerSprite.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		EA65182728E4199E00E535BF /* PUZL Man.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "PUZL Man.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		EA65182A28E4199E00E535BF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		EA65182C28E4199E00E535BF /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		EA65182E28E4199E00E535BF /* GameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
+		EA65183128E4199E00E535BF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		EA65183328E419A000E535BF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		EA65183628E419A000E535BF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		EA65183828E419A000E535BF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		EA65184228E420E400E535BF /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
+		EA65184428E5750C00E535BF /* GameboardSprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameboardSprite.swift; sourceTree = "<group>"; };
+		EA65189028E973D700E535BF /* Level.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Level.swift; sourceTree = "<group>"; };
+		EA65189128E973D700E535BF /* LevelBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LevelBuilder.swift; sourceTree = "<group>"; };
+		EA65189428EA207800E535BF /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		EA65189728EAB5E000E535BF /* ControlsSprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlsSprite.swift; sourceTree = "<group>"; };
+		EAB69DFF28EFCF5B00C31DB3 /* PlayerSprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerSprite.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		EA65182428E4199E00E535BF /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		EA65181E28E4199E00E535BF = {
+			isa = PBXGroup;
+			children = (
+				EA65182928E4199E00E535BF /* PUZL Man */,
+				EA65182828E4199E00E535BF /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		EA65182828E4199E00E535BF /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				EA65182728E4199E00E535BF /* PUZL Man.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		EA65182928E4199E00E535BF /* PUZL Man */ = {
+			isa = PBXGroup;
+			children = (
+				EA65183E28E419B000E535BF /* Models */,
+				EA65183F28E419BB00E535BF /* Views */,
+				EA65184028E419D600E535BF /* Controllers */,
+				EA65182A28E4199E00E535BF /* AppDelegate.swift */,
+				EA65182C28E4199E00E535BF /* SceneDelegate.swift */,
+				EA65183028E4199E00E535BF /* Main.storyboard */,
+				EA65183328E419A000E535BF /* Assets.xcassets */,
+				EA65183528E419A000E535BF /* LaunchScreen.storyboard */,
+				EA65183828E419A000E535BF /* Info.plist */,
+			);
+			path = "PUZL Man";
+			sourceTree = "<group>";
+		};
+		EA65183E28E419B000E535BF /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				EA65189428EA207800E535BF /* Constants.swift */,
+				EA65189028E973D700E535BF /* Level.swift */,
+				EA65189128E973D700E535BF /* LevelBuilder.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		EA65183F28E419BB00E535BF /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				EA65189628EAB1A600E535BF /* Sprites */,
+				EA65184228E420E400E535BF /* GameScene.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		EA65184028E419D600E535BF /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				EA65182E28E4199E00E535BF /* GameViewController.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		EA65189628EAB1A600E535BF /* Sprites */ = {
+			isa = PBXGroup;
+			children = (
+				EAB69DFF28EFCF5B00C31DB3 /* PlayerSprite.swift */,
+				EA65184428E5750C00E535BF /* GameboardSprite.swift */,
+				EA65189728EAB5E000E535BF /* ControlsSprite.swift */,
+			);
+			path = Sprites;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		EA65182628E4199E00E535BF /* PUZL Man */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = EA65183B28E419A000E535BF /* Build configuration list for PBXNativeTarget "PUZL Man" */;
+			buildPhases = (
+				EA65182328E4199E00E535BF /* Sources */,
+				EA65182428E4199E00E535BF /* Frameworks */,
+				EA65182528E4199E00E535BF /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "PUZL Man";
+			productName = "PUZL Man";
+			productReference = EA65182728E4199E00E535BF /* PUZL Man.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		EA65181F28E4199E00E535BF /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1400;
+				LastUpgradeCheck = 1400;
+				TargetAttributes = {
+					EA65182628E4199E00E535BF = {
+						CreatedOnToolsVersion = 14.0;
+					};
+				};
+			};
+			buildConfigurationList = EA65182228E4199E00E535BF /* Build configuration list for PBXProject "PUZL Man" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = EA65181E28E4199E00E535BF;
+			productRefGroup = EA65182828E4199E00E535BF /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				EA65182628E4199E00E535BF /* PUZL Man */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		EA65182528E4199E00E535BF /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EA65183728E419A000E535BF /* LaunchScreen.storyboard in Resources */,
+				EA65183428E419A000E535BF /* Assets.xcassets in Resources */,
+				EA65183228E4199E00E535BF /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		EA65182328E4199E00E535BF /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EA65189828EAB5E000E535BF /* ControlsSprite.swift in Sources */,
+				EA65189228E973D700E535BF /* Level.swift in Sources */,
+				EA65184528E5750C00E535BF /* GameboardSprite.swift in Sources */,
+				EA65182F28E4199E00E535BF /* GameViewController.swift in Sources */,
+				EA65182B28E4199E00E535BF /* AppDelegate.swift in Sources */,
+				EA65184328E420E400E535BF /* GameScene.swift in Sources */,
+				EA65182D28E4199E00E535BF /* SceneDelegate.swift in Sources */,
+				EA65189328E973D700E535BF /* LevelBuilder.swift in Sources */,
+				EA65189528EA207800E535BF /* Constants.swift in Sources */,
+				EAB69E0028EFCF5B00C31DB3 /* PlayerSprite.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		EA65183028E4199E00E535BF /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				EA65183128E4199E00E535BF /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		EA65183528E419A000E535BF /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				EA65183628E419A000E535BF /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		EA65183928E419A000E535BF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		EA65183A28E419A000E535BF /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		EA65183C28E419A000E535BF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = LZ8V996BTJ;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "PUZL Man/Info.plist";
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.5play-apps.PUZL-Man";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		EA65183D28E419A000E535BF /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = LZ8V996BTJ;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "PUZL Man/Info.plist";
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.5play-apps.PUZL-Man";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		EA65182228E4199E00E535BF /* Build configuration list for PBXProject "PUZL Man" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EA65183928E419A000E535BF /* Debug */,
+				EA65183A28E419A000E535BF /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		EA65183B28E419A000E535BF /* Build configuration list for PBXNativeTarget "PUZL Man" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EA65183C28E419A000E535BF /* Debug */,
+				EA65183D28E419A000E535BF /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = EA65181F28E4199E00E535BF /* Project object */;
+}
