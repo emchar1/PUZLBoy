@@ -42,7 +42,7 @@ class GameboardSprite {
         sprite.anchorPoint = .zero
         sprite.position = CGPoint(x: K.iPhoneWidth * (1 - spriteScale) / 2, y: K.height / 2 - panelSize * CGFloat(size) * 1 / 3)
         sprite.setScale(spriteScale)
-        
+//
         for row in 0..<size {
             for col in 0..<size {
                 panels[row][col] = SKSpriteNode(color: colors[level.gameboard[row][col].rawValue + 2], size: CGSize(width: panelSize, height: panelSize))
