@@ -15,7 +15,8 @@ class GameboardSprite {
     let colors: [UIColor] = [
         UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1), //start
         UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1),       //end
-        UIColor(red: 200/255, green: 20/255, blue: 160/255, alpha: 1),  //gem
+        UIColor(red: 200/255, green: 20/255, blue: 160/255, alpha: 1),  //gemOn
+        UIColor(red: 20/255, green: 200/255, blue: 40/255, alpha: 1),   //gemOff
         UIColor(red: 20/255, green: 200/255, blue: 40/255, alpha: 1),   //grass
         UIColor(red: 40/255, green: 100/255, blue: 80/255, alpha: 1),   //marsh
         UIColor(red: 180/255, green: 240/255, blue: 250/255, alpha: 1), //ice
@@ -38,11 +39,11 @@ class GameboardSprite {
         var panels: [[SKSpriteNode]] = Array(repeating: Array(repeating: SKSpriteNode(), count: size), count: size)
         
         panelSize = K.iPhoneWidth / CGFloat(size)
-        sprite = SKSpriteNode()
+        sprite = SKSpriteNode(color: .clear, size: CGSize(width: panelSize * CGFloat(size), height: panelSize * CGFloat(size)))
         sprite.anchorPoint = .zero
         sprite.position = CGPoint(x: K.iPhoneWidth * (1 - spriteScale) / 2, y: K.height / 2 - panelSize * CGFloat(size) * 1 / 3)
         sprite.setScale(spriteScale)
-//
+
         for row in 0..<size {
             for col in 0..<size {
                 panels[row][col] = SKSpriteNode(color: colors[level.gameboard[row][col].rawValue + 2], size: CGSize(width: panelSize, height: panelSize))

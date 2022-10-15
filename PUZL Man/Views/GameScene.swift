@@ -14,17 +14,17 @@ class GameScene: SKScene {
     var gameboardSprite: GameboardSprite
     var controlsSprite: ControlsSprite
     var playerSprite: PlayerSprite
+    var gameEngine: GameEngine
     
     // MARK: - Initialization
     
     override init(size: CGSize) {
-        let level = LevelBuilder.levels[1]
-        gameboardSprite = GameboardSprite(level: level)
-        print(level)
+        let levelBuilder = LevelBuilder.levels[1]
         
+        gameboardSprite = GameboardSprite(level: levelBuilder)
         controlsSprite = ControlsSprite()
-        
         playerSprite = PlayerSprite()
+        gameEngine = GameEngine(movesTotal: levelBuilder.moves, level: levelBuilder.level)
 
         super.init(size: size)
 
@@ -36,28 +36,49 @@ class GameScene: SKScene {
     }
     
     
-    // MARK: - Touches
+    // MARK: - UI Touches
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard let location = touches.first?.location(in: self) else { return }
         
-        if contains(location: location, in: controlsSprite.up, offset: controlsSprite.offsetPosition) {
-            print(gameboardSprite.gameboardSize)
+        let playerPosition = playerSprite.sprite.position
+        let gameboardPosition = gameboardSprite.sprite.position
+        let gameboardSize = gameboardSprite.sprite.size
+        let gameboardPanel = gameboardSprite.panelSize
+        
+        guard !gameEngine.isGameOver else { return print("again, game over")}
+        
+        if inBounds(location: location, in: controlsSprite.up, offset: controlsSprite.offsetPosition) {
+            guard playerPosition.y + gameboardPanel <= gameboardSize.height else { return }
+            
+            playerSprite.sprite.position = CGPoint(x: playerPosition.x, y: playerPosition.y + gameboardPanel)
+            gameEngine.incrementMovesUsed()
         }
-        else if contains(location: location, in: controlsSprite.down, offset: controlsSprite.offsetPosition) {
-            print("Down pressed")
+        else if inBounds(location: location, in: controlsSprite.down, offset: controlsSprite.offsetPosition) {
+            guard playerPosition.y - gameboardPanel >= 0 else { return }
+            
+            playerSprite.sprite.position = CGPoint(x: playerPosition.x, y: playerPosition.y - gameboardPanel)
+            gameEngine.incrementMovesUsed()
         }
-        else if contains(location: location, in: controlsSprite.left, offset: controlsSprite.offsetPosition) {
-            print("Left pressed")
+        else if inBounds(location: location, in: controlsSprite.left, offset: controlsSprite.offsetPosition) {
+            guard playerPosition.x - gameboardPanel >= 0 else { return }
+            
+            playerSprite.sprite.position = CGPoint(x: playerPosition.x - gameboardPanel, y: playerPosition.y)
+            gameEngine.incrementMovesUsed()
         }
-        else if contains(location: location, in: controlsSprite.right, offset: controlsSprite.offsetPosition) {
-            print("Right pressed")
+        else if inBounds(location: location, in: controlsSprite.right, offset: controlsSprite.offsetPosition) {
+            guard playerPosition.x + gameboardPanel <= gameboardSize.width else { return }
+            
+            playerSprite.sprite.position = CGPoint(x: playerPosition.x + gameboardPanel, y: playerPosition.y)
+            gameEngine.incrementMovesUsed()
         }
+        
+        print("\(playerPosition)")
+        print("   \(gameboardPosition)")
+        print("   \(gameboardSize)")
     }
     
-    private func contains(location: CGPoint, in sprite: SKSpriteNode, offset: CGPoint = .zero) -> Bool {
-        
-        
+    private func inBounds(location: CGPoint, in sprite: SKSpriteNode, offset: CGPoint = .zero) -> Bool {
         return location.x > offset.x + sprite.position.x &&
         location.x < offset.x + sprite.position.x + sprite.size.width &&
         location.y > offset.y + sprite.position.y &&

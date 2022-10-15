@@ -7,14 +7,19 @@
 
 import Foundation
 
+/**
+ Represents the gameboard textures.
+ */
 enum LevelType: Int {
-    case start = -2, end, gem //required panels
+    case start = -2, end, gemOn, gemOff //required panels
     case grass, marsh, ice //terrain panels
     case hammer, sword //tool panels
     case boulder, enemy, warp //special panels
 }
 
-
+/**
+ Represents a Level object, with level #, total number of moves, total number of gems needed to finish the level, and the gameboard.
+ */
 class Level: CustomStringConvertible {
     
     // MARK: - Properties
