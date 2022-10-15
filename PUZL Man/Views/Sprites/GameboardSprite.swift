@@ -11,7 +11,7 @@ class GameboardSprite {
     
     // MARK: - Properties
     
-    //temporary
+    //FIXME: - Temporary
     let colors: [UIColor] = [
         UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1), //start
         UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1),       //end
@@ -46,6 +46,7 @@ class GameboardSprite {
 
         for row in 0..<size {
             for col in 0..<size {
+                //FIXME: - Eventually will replace this with SKSpriteNode of the texture image, not the color
                 panels[row][col] = SKSpriteNode(color: colors[level.gameboard[row][col].rawValue + 2], size: CGSize(width: panelSize, height: panelSize))
                 panels[row][col].position = CGPoint(x: CGFloat(col) * panelSize, y: CGFloat((size - 1) - row) * panelSize)
                 panels[row][col].anchorPoint = .zero
