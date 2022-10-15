@@ -36,16 +36,11 @@ class GameEngine {
     }
     
     
-    // MARK: - Helper Functions
-    
-    func incrementMovesUsed(by amount: Int = 1) {
-        guard !isGameOver else { return print("Game Over buddy") }
-        
-        movesUsed += amount
-    }
+    // MARK: - Control Functions
     
     /**
      Handles player movement based on control input.
+     - parameter location: Location for which comparison is to occur.
      */
     func handleControls(in location: CGPoint) {
         let playerPosition = playerSprite.sprite.position
@@ -86,6 +81,16 @@ class GameEngine {
     }
     
     /**
+     Increments the moveUsed by the amount listed.
+     - parameter amount: The amount to increment by
+     */
+    private func incrementMovesUsed(by amount: Int = 1) {
+        guard !isGameOver else { return print("Game Over buddy") }
+        
+        movesUsed += amount
+    }
+    
+    /**
      Helper function that takes the tap location within a SpriteNode and returns true if the tap is within the sprite bounds.
      - parameters:
         - location: Location of the tap
@@ -97,5 +102,19 @@ class GameEngine {
         location.x < offset.x + sprite.position.x + sprite.size.width &&
         location.y > offset.y + sprite.position.y &&
         location.y < offset.y + sprite.position.y + sprite.size.height
+    }
+    
+    
+    // MARK: - moveTo Functions
+    
+    /**
+     Adds all the sprites to the superScene, i.e. should be called in a GameScene's moveTo() function.
+     - parameter superScene: The GameScene to add all the children to.
+     */
+    func moveSprites(to superScene: SKScene) {
+        superScene.addChild(gameboardSprite.sprite)
+        superScene.addChild(controlsSprite.sprite)
+        
+        gameboardSprite.sprite.addChild(playerSprite.sprite)
     }
 }

@@ -42,9 +42,7 @@ class GameScene: SKScene {
     // MARK: - Required Functions
     
     override func didMove(to view: SKView) {
-        addChild(gameEngine.gameboardSprite.sprite)
-        addChild(gameEngine.controlsSprite.sprite)
-        gameEngine.gameboardSprite.sprite.addChild(gameEngine.playerSprite.sprite)
+        gameEngine.moveSprites(to: self)
     }
     
     override func update(_ currentTime: TimeInterval) {
