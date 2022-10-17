@@ -43,12 +43,13 @@ class GameEngine {
      - parameter location: Location for which comparison is to occur.
      */
     func handleControls(in location: CGPoint) {
+        guard !isGameOver else { return print("Game Over: \(movesUsed)/\(movesTotal)") }
+
+
         let playerPosition = playerSprite.sprite.position
         let gameboardPosition = gameboardSprite.sprite.position
         let gameboardSize = gameboardSprite.sprite.size
         let gameboardPanel = gameboardSprite.panelSize
-        
-        guard !isGameOver else { return print("G-A-M-E O-V-E-R: \(movesUsed)/\(movesTotal)") }
         
         if inBounds(location: location, in: controlsSprite.up, offset: controlsSprite.offsetPosition) {
             guard playerPosition.y + gameboardPanel <= gameboardSize.height else { return }
@@ -85,7 +86,7 @@ class GameEngine {
      - parameter amount: The amount to increment by
      */
     private func incrementMovesUsed(by amount: Int = 1) {
-        guard !isGameOver else { return print("Game Over buddy") }
+        guard !isGameOver else { return print("Game Over - shouldn't be called") }
         
         movesUsed += amount
     }
