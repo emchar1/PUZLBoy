@@ -17,8 +17,7 @@ class GameScene: SKScene {
     // MARK: - Initialization
     
     override init(size: CGSize) {
-        let levelBuilder = LevelBuilder.levels[1]
-        gameEngine = GameEngine(movesTotal: levelBuilder.moves, level: levelBuilder.level)
+        gameEngine = GameEngine(level: 1)
 
         super.init(size: size)
 

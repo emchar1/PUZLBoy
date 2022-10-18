@@ -11,10 +11,9 @@ class GameEngine {
     
     // MARK: - Properties
     
+    var level: Level
     var movesUsed: Int = 0
-    var movesTotal: Int
-    var level: Int
-    var isGameOver: Bool { movesUsed >= movesTotal }
+    var isGameOver: Bool { movesUsed >= level.moves }
     
     var gameboardSprite: GameboardSprite
     var controlsSprite: ControlsSprite
@@ -23,16 +22,12 @@ class GameEngine {
     
     // MARK: - Initialization
     
-    init(movesTotal: Int, level: Int) {
-        self.movesTotal = movesTotal
-        self.level = level
+    init(level: Int = 1) {
+        self.level = LevelBuilder.levels[level]
         
-        let levelBuilder = LevelBuilder.levels[1]
-        
-        gameboardSprite = GameboardSprite(level: levelBuilder)
+        gameboardSprite = GameboardSprite(level: self.level)
         controlsSprite = ControlsSprite()
         playerSprite = PlayerSprite()
-
     }
     
     
@@ -43,7 +38,7 @@ class GameEngine {
      - parameter location: Location for which comparison is to occur.
      */
     func handleControls(in location: CGPoint) {
-        guard !isGameOver else { return print("Game Over: \(movesUsed)/\(movesTotal)") }
+        guard !isGameOver else { return print("Game Over: \(movesUsed)/\(level.moves)") }
 
 
         let playerPosition = playerSprite.sprite.position

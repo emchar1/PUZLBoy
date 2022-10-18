@@ -36,7 +36,7 @@ class Level: CustomStringConvertible {
     var end: Position!
 
     var isSolved: Bool {
-        return gems <= 0
+        return gems <= 0 && player == end
     }
     
     var description: String {
