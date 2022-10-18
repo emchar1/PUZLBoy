@@ -41,7 +41,7 @@ class GameboardSprite {
         panelSize = K.iPhoneWidth / CGFloat(size)
         sprite = SKSpriteNode(color: .clear, size: CGSize(width: panelSize * CGFloat(size), height: panelSize * CGFloat(size)))
         sprite.anchorPoint = .zero
-        sprite.position = CGPoint(x: K.iPhoneWidth * (1 - spriteScale) / 2, y: K.height / 2 - panelSize * CGFloat(size) * 1 / 3)
+        sprite.position = CGPoint(x: K.iPhoneWidth * (1 - spriteScale) / 2, y: K.height - (panelSize * CGFloat(size) + K.topMargin + 100))
         sprite.setScale(spriteScale)
 
         for row in 0..<size {
@@ -50,7 +50,7 @@ class GameboardSprite {
                 panels[row][col] = SKSpriteNode(color: colors[level.gameboard[row][col].rawValue + 2], size: CGSize(width: panelSize, height: panelSize))
                 panels[row][col].position = CGPoint(x: CGFloat(col) * panelSize, y: CGFloat((size - 1) - row) * panelSize)
                 panels[row][col].anchorPoint = .zero
-                panels[row][col].zPosition = 100
+                panels[row][col].zPosition = K.ZPosition.gameboard
                 
                 sprite.addChild(panels[row][col])
             }

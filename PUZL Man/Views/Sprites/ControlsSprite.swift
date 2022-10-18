@@ -23,22 +23,22 @@ class ControlsSprite {
         up = SKSpriteNode(color: UIColor(red: 1, green: 0.1, blue: 0.1, alpha: 1), size: CGSize(width: size, height: size))
         up.position = CGPoint(x: size, y: 2 * size)
         up.anchorPoint = .zero
-        up.zPosition = 200
+        up.zPosition = K.ZPosition.controls
         
         down = SKSpriteNode(color: UIColor(red: 0.1, green: 0.1, blue: 1, alpha: 1), size: CGSize(width: size, height: size))
         down.position = CGPoint(x: size, y: 0)
         down.anchorPoint = .zero
-        down.zPosition = 200
+        down.zPosition = K.ZPosition.controls
         
         left = SKSpriteNode(color: UIColor(red: 1, green: 1, blue: 0.1, alpha: 1), size: CGSize(width: size, height: size))
         left.position = CGPoint(x: 0, y: size)
         left.anchorPoint = .zero
-        left.zPosition = 200
+        left.zPosition = K.ZPosition.controls
         
         right = SKSpriteNode(color: UIColor(red: 0.1, green: 1, blue: 0.1, alpha: 1), size: CGSize(width: size, height: size))
         right.position = CGPoint(x: 2 * size, y: size)
         right.anchorPoint = .zero
-        right.zPosition = 200
+        right.zPosition = K.ZPosition.controls
         
         sprite = SKSpriteNode(color: .clear, size: CGSize(width: 3 * size, height: 4 * size))
         sprite.position = CGPoint(x: offsetPosition.x, y: offsetPosition.y)

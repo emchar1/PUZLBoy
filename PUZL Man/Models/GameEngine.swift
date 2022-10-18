@@ -27,7 +27,9 @@ class GameEngine {
         
         gameboardSprite = GameboardSprite(level: self.level)
         controlsSprite = ControlsSprite()
-        playerSprite = PlayerSprite()
+        playerSprite = PlayerSprite(position: CGPoint(x: self.level.player!.row * Int(gameboardSprite.panelSize),
+                                                      y: self.level.player!.col * Int(gameboardSprite.panelSize)))
+        print("Player Position: \(self.level.player!)")
     }
     
     
@@ -71,9 +73,9 @@ class GameEngine {
             incrementMovesUsed()
         }
         
-        print("\(playerPosition)")
-        print("   \(gameboardPosition)")
-        print("   \(gameboardSize)")
+//        print("\(playerPosition)")
+//        print("   \(gameboardPosition)")
+//        print("   \(gameboardSize)")
     }
     
     /**

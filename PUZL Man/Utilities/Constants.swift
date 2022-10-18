@@ -8,17 +8,52 @@
 import Foundation
 
 struct K {
-    // 2048/1536 = 4/3 = 1.33333
-    // 19.5/9 = 6.5/3 = 2.1666667
-    // 2048/2.1666667 = 945
-    //    (1536 - 945)/2 = 296
-
+    /**
+     Default width of the iPhone device in Portrait mode, per RayWenderlich tutorial.
+     */
     static let width: CGFloat = 1536
+
+    /**
+     Default height of the iPhone device in Portrait mode, per RayWenderlich tutorial.
+     */
     static let height: CGFloat = 2048
-    static let ratio: CGFloat = width / height //1.333333
-    static let iPhoneRatio: CGFloat = 19.5 / 9 //2.1666667
-    static let iPhoneWidth: CGFloat = height / iPhoneRatio //945
+
+    /**
+     Default aspect ratio of the iPhone device in Portrait mode, per  RayWenderlich tutorial, i.e. 1.3333
+     */
+    static let ratio: CGFloat = width / height
+
+    /**
+     Aspect ratio of the most recent iPhone, i.e. iPhone 14. Ratio is 2.16667
+     */
+    static let iPhoneRatio: CGFloat = 19.5 / 9
+    
+    /**
+     Width of the most recent iPhone, i.e. iPhone 14. Width is 945
+     */
+    static let iPhoneWidth: CGFloat = height / iPhoneRatio
+    
+    /**
+     Margin of the most recent iPhone, i.e. iPhone 14. Set to half of the difference between the default width and the width of the most recent iPhone, i.e. 296
+     */
     static let iPhoneMargin: CGFloat = (width - iPhoneWidth) / 2 //296
+
+    /**
+     Top margin of the device.
+     */
     static let topMargin: CGFloat = 180
+    
+    /**
+     Bottom margin of the device.
+     */
     static let bottomMargin: CGFloat = 80
+    
+    /**
+     Various zPosition values used throughout the app.
+     */
+    struct ZPosition {
+        static let gameboard: CGFloat = 100
+        static let controls: CGFloat = 200
+        static let player: CGFloat = 300
+    }
 }
