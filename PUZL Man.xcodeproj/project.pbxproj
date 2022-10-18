@@ -72,14 +72,13 @@
 		EA65182928E4199E00E535BF /* PUZL Man */ = {
 			isa = PBXGroup;
 			children = (
+				EA98545728FE6F1900CDB0EF /* Utilities */,
 				EA65183E28E419B000E535BF /* Models */,
 				EA65183F28E419BB00E535BF /* Views */,
 				EA65184028E419D600E535BF /* Controllers */,
 				EA65182A28E4199E00E535BF /* AppDelegate.swift */,
 				EA65182C28E4199E00E535BF /* SceneDelegate.swift */,
-				EA65183028E4199E00E535BF /* Main.storyboard */,
 				EA65183328E419A000E535BF /* Assets.xcassets */,
-				EA65183528E419A000E535BF /* LaunchScreen.storyboard */,
 				EA65183828E419A000E535BF /* Info.plist */,
 			);
 			path = "PUZL Man";
@@ -88,7 +87,6 @@
 		EA65183E28E419B000E535BF /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				EA65189428EA207800E535BF /* Constants.swift */,
 				EA65189028E973D700E535BF /* Level.swift */,
 				EA65189128E973D700E535BF /* LevelBuilder.swift */,
 				EAB69E0328F3333000C31DB3 /* GameEngine.swift */,
@@ -101,6 +99,8 @@
 			children = (
 				EA65189628EAB1A600E535BF /* Sprites */,
 				EA65184228E420E400E535BF /* GameScene.swift */,
+				EA65183028E4199E00E535BF /* Main.storyboard */,
+				EA65183528E419A000E535BF /* LaunchScreen.storyboard */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -121,6 +121,14 @@
 				EA65189728EAB5E000E535BF /* ControlsSprite.swift */,
 			);
 			path = Sprites;
+			sourceTree = "<group>";
+		};
+		EA98545728FE6F1900CDB0EF /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				EA65189428EA207800E535BF /* Constants.swift */,
+			);
+			path = Utilities;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
