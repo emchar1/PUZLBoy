@@ -27,35 +27,60 @@ class GameboardSprite {
         UIColor(red: 240/255, green: 250/255, blue: 80/255, alpha: 1),  //warp
     ]
     
+    let spriteScale: CGFloat = 0.94
+    var gemOff: UIColor { colors[3] }
+    var panels: [[SKSpriteNode]]
+    var panelCount: Int
     var panelSize: CGFloat
+    var gameboardSize: CGFloat { CGFloat(panelCount) * panelSize }
     var sprite: SKSpriteNode
-    
+//    var gemCount: Int = 0
+
     
     // MARK: - Initialization
     
     init(level: Level) {
-        let size = level.gameboard.count
-        let spriteScale: CGFloat = 0.94
-        var panels: [[SKSpriteNode]] = Array(repeating: Array(repeating: SKSpriteNode(), count: size), count: size)
+        panelCount = level.gameboard.count
+        panelSize = K.iPhoneWidth / CGFloat(panelCount)
+        panels = Array(repeating: Array(repeating: SKSpriteNode(), count: panelCount), count: panelCount)
         
-        panelSize = K.iPhoneWidth / CGFloat(size)
-        sprite = SKSpriteNode(color: .clear, size: CGSize(width: panelSize * CGFloat(size), height: panelSize * CGFloat(size)))
+        sprite = SKSpriteNode(color: .clear, size: CGSize(width: CGFloat(panelCount) * panelSize, height: CGFloat(panelCount) * panelSize))
         sprite.anchorPoint = .zero
-        sprite.position = CGPoint(x: K.iPhoneWidth * (1 - spriteScale) / 2, y: K.height - (panelSize * CGFloat(size) + K.topMargin + 100))
+        sprite.position = CGPoint(x: K.iPhoneWidth * (1 - spriteScale) / 2, y: K.height - (gameboardSize + K.topMargin + 100))
         sprite.setScale(spriteScale)
 
-        for row in 0..<size {
-            for col in 0..<size {
-                //FIXME: - Eventually will replace this with SKSpriteNode of the texture image, not the color
-                panels[row][col] = SKSpriteNode(color: colors[level.gameboard[row][col].rawValue + 2], size: CGSize(width: panelSize, height: panelSize))
-                panels[row][col].position = CGPoint(x: CGFloat(col) * panelSize, y: CGFloat((size - 1) - row) * panelSize)
-                panels[row][col].anchorPoint = .zero
-                panels[row][col].zPosition = K.ZPosition.gameboard
+        for row in 0..<panelCount {
+            for col in 0..<panelCount {
+                updatePanels(at: (row: row, col: col), with: colors[level.gameboard[row][col].rawValue + 2])
                 
-                sprite.addChild(panels[row][col])
+                //FIXME: - Eventually will replace this with SKSpriteNode of the texture image, not the color
+//                panels[row][col] = SKSpriteNode(color: colors[level.gameboard[row][col].rawValue + 2], size: CGSize(width: panelSize, height: panelSize))
+//                panels[row][col].position = CGPoint(x: CGFloat(col) * panelSize, y: CGFloat(panelCount - 1 - row) * panelSize)
+//                panels[row][col].anchorPoint = .zero
+//                panels[row][col].zPosition = K.ZPosition.gameboard
+//
+//                //Assign a name if the panel is a gem. This will make it easier to remove when landed on.
+//                panels[row][col].name = "\(row),\(col)"
+//                if level.gameboard[row][col] == .gemOn {
+//                    gemCount += 1
+//                }
+                
+//                sprite.addChild(panels[row][col])
             }
         }
-        
+    }
+    
+    
+    // MARK: - Functions
+    
+    func updatePanels(at position: K.GameboardPosition, with color: UIColor) {
+        panels[position.row][position.col] = SKSpriteNode(color: color, size: CGSize(width: panelSize, height: panelSize))
+        panels[position.row][position.col].position = CGPoint(x: CGFloat(position.col) * panelSize, y: CGFloat(panelCount - 1 - position.row) * panelSize)
+        panels[position.row][position.col].anchorPoint = .zero
+        panels[position.row][position.col].zPosition = K.ZPosition.gameboard
+        panels[position.row][position.col].name = "\(position.row),\(position.col)"
+
+        sprite.addChild(panels[position.row][position.col])
     }
 }
 

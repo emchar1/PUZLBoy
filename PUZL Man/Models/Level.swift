@@ -24,16 +24,14 @@ class Level: CustomStringConvertible {
     
     // MARK: - Properties
     
-    typealias Position = (row: Int, col: Int)
-    
     var level: Int
     var moves: Int
     var gems: Int
     var gameboard: [[LevelType]]
 
-    var player: Position!
-    var start: Position!
-    var end: Position!
+    var player: K.GameboardPosition!
+    var start: K.GameboardPosition!
+    var end: K.GameboardPosition!
 
     var isSolved: Bool {
         return gems <= 0 && player == end
@@ -87,6 +85,22 @@ class Level: CustomStringConvertible {
     
     
     // MARK: - Functions
+    
+    func updatePlayer(position: K.GameboardPosition) {
+        player = position
+    }
+    
+    func getLevelType(at position: K.GameboardPosition) -> LevelType {
+        return gameboard[position.row][position.col]
+    }
+    
+    func setLevelType(at position: K.GameboardPosition, levelType: LevelType) {
+        gameboard[position.row][position.col] = levelType
+    }
+    
+    func reduceGems() {
+        gems -= 1
+    }
     
 //    func setPanel(with type: LevelType, at cell: Position) {
 //        guard cell.row < gameboard.count && cell.col < gameboard[0].count else { return print("Array out of bounds") }

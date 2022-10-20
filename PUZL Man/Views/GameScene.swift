@@ -17,7 +17,7 @@ class GameScene: SKScene {
     // MARK: - Initialization
     
     override init(size: CGSize) {
-        gameEngine = GameEngine(level: 1)
+        gameEngine = GameEngine(level: 2)
 
         super.init(size: size)
 

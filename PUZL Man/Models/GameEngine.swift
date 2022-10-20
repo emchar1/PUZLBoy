@@ -27,9 +27,8 @@ class GameEngine {
         
         gameboardSprite = GameboardSprite(level: self.level)
         controlsSprite = ControlsSprite()
-        playerSprite = PlayerSprite(position: CGPoint(x: self.level.player!.row * Int(gameboardSprite.panelSize),
-                                                      y: self.level.player!.col * Int(gameboardSprite.panelSize)))
-        print("Player Position: \(self.level.player!)")
+        playerSprite = PlayerSprite(position: .zero)
+        setPlayerSpritePosition()
     }
     
     
@@ -40,42 +39,73 @@ class GameEngine {
      - parameter location: Location for which comparison is to occur.
      */
     func handleControls(in location: CGPoint) {
+        guard !level.isSolved else { return print("You win!") }
         guard !isGameOver else { return print("Game Over: \(movesUsed)/\(level.moves)") }
 
-
-        let playerPosition = playerSprite.sprite.position
-        let gameboardPosition = gameboardSprite.sprite.position
-        let gameboardSize = gameboardSprite.sprite.size
-        let gameboardPanel = gameboardSprite.panelSize
         
         if inBounds(location: location, in: controlsSprite.up, offset: controlsSprite.offsetPosition) {
-            guard playerPosition.y + gameboardPanel <= gameboardSize.height else { return }
+            guard level.player!.row > 0 else { return }
             
-            playerSprite.sprite.position = CGPoint(x: playerPosition.x, y: playerPosition.y + gameboardPanel)
-            incrementMovesUsed()
+            level.updatePlayer(position: (row: level.player!.row - 1, col: level.player!.col))
         }
         else if inBounds(location: location, in: controlsSprite.down, offset: controlsSprite.offsetPosition) {
-            guard playerPosition.y - gameboardPanel >= 0 else { return }
+            guard level.player!.row < gameboardSprite.panelCount - 1 else { return }
             
-            playerSprite.sprite.position = CGPoint(x: playerPosition.x, y: playerPosition.y - gameboardPanel)
-            incrementMovesUsed()
+            level.updatePlayer(position: (row: level.player!.row + 1, col: level.player!.col))
         }
         else if inBounds(location: location, in: controlsSprite.left, offset: controlsSprite.offsetPosition) {
-            guard playerPosition.x - gameboardPanel >= 0 else { return }
+            guard level.player!.col > 0 else { return }
             
-            playerSprite.sprite.position = CGPoint(x: playerPosition.x - gameboardPanel, y: playerPosition.y)
-            incrementMovesUsed()
+            level.updatePlayer(position: (row: level.player!.row, col: level.player!.col - 1))
         }
         else if inBounds(location: location, in: controlsSprite.right, offset: controlsSprite.offsetPosition) {
-            guard playerPosition.x + gameboardPanel <= gameboardSize.width else { return }
+            guard level.player!.col < gameboardSprite.panelCount - 1 else { return }
             
-            playerSprite.sprite.position = CGPoint(x: playerPosition.x + gameboardPanel, y: playerPosition.y)
-            incrementMovesUsed()
+            level.updatePlayer(position: (row: level.player!.row, col: level.player!.col + 1))
         }
+
+        setPlayerSpritePosition()
+        incrementMovesUsed()
+    }
+    
+    /**
+     Sets the player sprite position easily.
+     */
+    private func setPlayerSpritePosition() {
+        playerSprite.sprite.position = CGPoint(x: CGFloat(level.player!.col) * gameboardSprite.panelSize,
+                                               y: CGFloat(gameboardSprite.panelCount - 1 - level.player!.row) * gameboardSprite.panelSize)
+
+        print("Player Position: \(self.level.player!), \(level.getLevelType(at: level.player))")
         
-//        print("\(playerPosition)")
-//        print("   \(gameboardPosition)")
-//        print("   \(gameboardSize)")
+        
+        
+        
+        
+        
+        
+        
+        //FIXME: - Remove a Gem once you step on it
+        if level.getLevelType(at: level.player) == .gemOn/*, let child = gameboardSprite.sprite.childNode(withName: "gem0")*/ {
+            level.setLevelType(at: level.player, levelType: .gemOff)
+            level.reduceGems()
+
+            for child in gameboardSprite.sprite.children {
+                //Exclude Player, which will have no name
+                guard child.name != nil else { continue }
+                
+                let row = String(child.name!.prefix(upTo: child.name!.firstIndex(of: ",")!))
+                let col = String(child.name!.suffix(from: child.name!.firstIndex(of: ",")!).dropFirst())
+                let position: K.GameboardPosition = (row: Int(row) ?? -1, col: Int(col) ?? -1)
+
+                if position == level.player, let child = gameboardSprite.sprite.childNode(withName: row + "," + col) {
+                    child.removeFromParent()
+                    gameboardSprite.updatePanels(at: position, with: gameboardSprite.gemOff)
+                    print(position)
+                }
+                
+            }
+//            child.removeFromParent()
+        }
     }
     
     /**
@@ -83,8 +113,6 @@ class GameEngine {
      - parameter amount: The amount to increment by
      */
     private func incrementMovesUsed(by amount: Int = 1) {
-        guard !isGameOver else { return print("Game Over - shouldn't be called") }
-        
         movesUsed += amount
     }
     

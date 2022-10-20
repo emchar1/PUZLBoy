@@ -49,6 +49,11 @@ struct K {
     static let bottomMargin: CGFloat = 80
     
     /**
+     Position, row, col, on the gameboard.
+     */
+    typealias GameboardPosition = (row: Int, col: Int)
+    
+    /**
      Various zPosition values used throughout the app.
      */
     struct ZPosition {
