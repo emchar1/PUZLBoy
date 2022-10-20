@@ -28,7 +28,7 @@ class LevelBuilder {
                                                        [.gemOn, .grass, .grass],
                                                        [.grass, .grass, .end]]),
 
-        Level(level: 4, moves: 12, gems: 5, gameboard: [[.start, .end, .gemOn, .grass],
+        Level(level: 4, moves: 12, gems: 5, gameboard: [[.start, .end, .grass, .grass],
                                                        [.marsh, .ice, .hammer, .sword],
                                                        [.boulder, .enemy, .warp, .gemOn],
                                                        [.gemOn, .gemOn, .gemOn, .gemOn]])

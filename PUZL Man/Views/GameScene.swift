@@ -34,7 +34,16 @@ class GameScene: SKScene {
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard let location = touches.first?.location(in: self) else { return }
         
-        gameEngine.handleControls(in: location)
+        if gameEngine.isSolved {
+            
+            gameEngine = GameEngine(level: 3)
+            removeAllChildren()
+            gameEngine.moveSprites(to: self)
+            
+        }
+        else {
+            gameEngine.handleControls(in: location)
+        }
     }
     
 
@@ -42,6 +51,7 @@ class GameScene: SKScene {
     
     override func didMove(to view: SKView) {
         gameEngine.moveSprites(to: self)
+        print("Called only once, at view load.")
     }
     
     override func update(_ currentTime: TimeInterval) {

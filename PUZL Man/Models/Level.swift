@@ -33,10 +33,6 @@ class Level: CustomStringConvertible {
     var start: K.GameboardPosition!
     var end: K.GameboardPosition!
 
-    var isSolved: Bool {
-        return gems <= 0 && player == end
-    }
-    
     var description: String {
         var returnValue = ""
         
@@ -97,14 +93,4 @@ class Level: CustomStringConvertible {
     func setLevelType(at position: K.GameboardPosition, levelType: LevelType) {
         gameboard[position.row][position.col] = levelType
     }
-    
-    func reduceGems() {
-        gems -= 1
-    }
-    
-//    func setPanel(with type: LevelType, at cell: Position) {
-//        guard cell.row < gameboard.count && cell.col < gameboard[0].count else { return print("Array out of bounds") }
-//
-//        gameboard[cell.row][cell.col] = type
-//    }
 }

@@ -12,9 +12,11 @@ class GameEngine {
     // MARK: - Properties
     
     var level: Level
-    var movesUsed: Int = 0
+    var movesUsed: Int
+    var gemsRemaining: Int
+    var isSolved: Bool { gemsRemaining == 0 && level.player == level.end }
     var isGameOver: Bool { movesUsed >= level.moves }
-    
+
     var gameboardSprite: GameboardSprite
     var controlsSprite: ControlsSprite
     var playerSprite: PlayerSprite
@@ -24,6 +26,8 @@ class GameEngine {
     
     init(level: Int = 1) {
         self.level = LevelBuilder.levels[level]
+        self.movesUsed = 0
+        self.gemsRemaining = self.level.gems
         
         gameboardSprite = GameboardSprite(level: self.level)
         controlsSprite = ControlsSprite()
@@ -39,7 +43,7 @@ class GameEngine {
      - parameter location: Location for which comparison is to occur.
      */
     func handleControls(in location: CGPoint) {
-        guard !level.isSolved else { return print("You win!") }
+        guard !isSolved else { return print("You win!") }
         guard !isGameOver else { return print("Game Over: \(movesUsed)/\(level.moves)") }
 
         
@@ -66,6 +70,10 @@ class GameEngine {
 
         setPlayerSpritePosition()
         incrementMovesUsed()
+        
+        if isSolved {
+            print("WINNNNN!")
+        }
     }
     
     /**
@@ -87,7 +95,7 @@ class GameEngine {
         //FIXME: - Remove a Gem once you step on it
         if level.getLevelType(at: level.player) == .gemOn/*, let child = gameboardSprite.sprite.childNode(withName: "gem0")*/ {
             level.setLevelType(at: level.player, levelType: .gemOff)
-            level.reduceGems()
+            gemsRemaining -= 1
 
             for child in gameboardSprite.sprite.children {
                 //Exclude Player, which will have no name
