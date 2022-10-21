@@ -20,7 +20,7 @@ enum LevelType: Int {
 /**
  Represents a Level object, with level #, total number of moves, total number of gems needed to finish the level, and the gameboard.
  */
-class Level: CustomStringConvertible {
+struct Level: CustomStringConvertible {
     
     // MARK: - Properties
     
@@ -82,7 +82,7 @@ class Level: CustomStringConvertible {
     
     // MARK: - Functions
     
-    func updatePlayer(position: K.GameboardPosition) {
+    mutating func updatePlayer(position: K.GameboardPosition) {
         player = position
     }
     
@@ -90,7 +90,7 @@ class Level: CustomStringConvertible {
         return gameboard[position.row][position.col]
     }
     
-    func setLevelType(at position: K.GameboardPosition, levelType: LevelType) {
+    mutating func setLevelType(at position: K.GameboardPosition, levelType: LevelType) {
         gameboard[position.row][position.col] = levelType
     }
 }

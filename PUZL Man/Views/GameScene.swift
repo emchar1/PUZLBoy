@@ -11,16 +11,24 @@ class GameScene: SKScene {
     
     // MARK: - Properties
     
+    var currentLevel: Int = 0 {
+        didSet {
+            if currentLevel > 4 {
+                currentLevel = 0
+            }
+        }
+    }
     var gameEngine: GameEngine
     
     
     // MARK: - Initialization
     
     override init(size: CGSize) {
-        gameEngine = GameEngine(level: 2)
+        gameEngine = GameEngine(level: currentLevel)
 
         super.init(size: size)
 
+        gameEngine.delegate = self
         scaleMode = .aspectFill
     }
     
@@ -34,12 +42,8 @@ class GameScene: SKScene {
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard let location = touches.first?.location(in: self) else { return }
         
-        if gameEngine.isSolved {
-            
-            gameEngine = GameEngine(level: 3)
-            removeAllChildren()
-            gameEngine.moveSprites(to: self)
-            
+        if gameEngine.isGameOver {
+            resetGameEngine(level: currentLevel)
         }
         else {
             gameEngine.handleControls(in: location)
@@ -58,4 +62,24 @@ class GameScene: SKScene {
 
     }
     
+    
+    // MARK: - Helper Functions
+    
+    private func resetGameEngine(level: Int) {
+        removeAllChildren()
+        gameEngine = GameEngine(level: level)
+        gameEngine.delegate = self
+        gameEngine.moveSprites(to: self)
+    }
+    
+}
+
+
+// MARK: - GameEngineDelegate
+
+extension GameScene: GameEngineDelegate {
+    func gameIsSolved() {
+        currentLevel += 1
+        resetGameEngine(level: currentLevel)
+    }
 }

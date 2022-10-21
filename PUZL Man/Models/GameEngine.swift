@@ -7,6 +7,13 @@
 
 import SpriteKit
 
+protocol GameEngineDelegate: AnyObject {
+    func gameIsSolved()
+}
+
+/**
+ GameEngine cannot be a struct, otherwise you run into "Simultaneous accesses to xxx, but modification requires exclusive access" error due to mutliple instantiations of GameEngine(level:)
+ */
 class GameEngine {
     
     // MARK: - Properties
@@ -20,6 +27,8 @@ class GameEngine {
     var gameboardSprite: GameboardSprite
     var controlsSprite: ControlsSprite
     var playerSprite: PlayerSprite
+    
+    weak var delegate: GameEngineDelegate?
     
     
     // MARK: - Initialization
@@ -51,27 +60,33 @@ class GameEngine {
             guard level.player!.row > 0 else { return }
             
             level.updatePlayer(position: (row: level.player!.row - 1, col: level.player!.col))
+            setPlayerSpritePosition()
+            incrementMovesUsed()
         }
         else if inBounds(location: location, in: controlsSprite.down, offset: controlsSprite.offsetPosition) {
             guard level.player!.row < gameboardSprite.panelCount - 1 else { return }
             
             level.updatePlayer(position: (row: level.player!.row + 1, col: level.player!.col))
+            setPlayerSpritePosition()
+            incrementMovesUsed()
         }
         else if inBounds(location: location, in: controlsSprite.left, offset: controlsSprite.offsetPosition) {
             guard level.player!.col > 0 else { return }
             
             level.updatePlayer(position: (row: level.player!.row, col: level.player!.col - 1))
+            setPlayerSpritePosition()
+            incrementMovesUsed()
         }
         else if inBounds(location: location, in: controlsSprite.right, offset: controlsSprite.offsetPosition) {
             guard level.player!.col < gameboardSprite.panelCount - 1 else { return }
             
             level.updatePlayer(position: (row: level.player!.row, col: level.player!.col + 1))
+            setPlayerSpritePosition()
+            incrementMovesUsed()
         }
-
-        setPlayerSpritePosition()
-        incrementMovesUsed()
         
         if isSolved {
+            delegate?.gameIsSolved()
             print("WINNNNN!")
         }
     }
