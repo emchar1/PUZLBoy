@@ -11,7 +11,7 @@ import Foundation
  Represents the gameboard textures.
  */
 enum LevelType: Int {
-    case start = -2, end, gemOn, gemOff //required panels
+    case start = 0, endClosed, endOpen, gemOn, gemOff //required panels
     case grass, marsh, ice //terrain panels
     case hammer, sword //tool panels
     case boulder, enemy, warp //special panels
@@ -64,7 +64,7 @@ struct Level: CustomStringConvertible {
                     startFound = true
                 }
                 
-                if col == .end {
+                if col == .endClosed || col == .endOpen {
                     end = (rowIndex, colIndex)
                     endFound = true
                 }

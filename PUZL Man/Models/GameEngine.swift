@@ -19,14 +19,21 @@ class GameEngine {
     // MARK: - Properties
     
     var level: Level
-    var movesUsed: Int
+    var movesRemaining: Int
     var gemsRemaining: Int
-    var isSolved: Bool { gemsRemaining == 0 && level.player == level.end }
-    var isGameOver: Bool { movesUsed >= level.moves }
-
+    var isExitAvailable: Bool { gemsRemaining == 0 }
+    var isSolved: Bool { isExitAvailable && level.player == level.end }
+    var isGameOver: Bool { movesRemaining <= 0 }
+    
     var gameboardSprite: GameboardSprite
     var controlsSprite: ControlsSprite
     var playerSprite: PlayerSprite
+    
+    var levelLabel: SKLabelNode
+    var movesRemainingLabel: SKLabelNode
+    var gemsRemainingLabel: SKLabelNode
+    var exitAvailableLabel: SKLabelNode
+    var gameOverLabel: SKLabelNode
     
     weak var delegate: GameEngineDelegate?
     
@@ -35,12 +42,55 @@ class GameEngine {
     
     init(level: Int = 1) {
         self.level = LevelBuilder.levels[level]
-        self.movesUsed = 0
+        self.movesRemaining = self.level.moves
         self.gemsRemaining = self.level.gems
         
         gameboardSprite = GameboardSprite(level: self.level)
         controlsSprite = ControlsSprite()
         playerSprite = PlayerSprite(position: .zero)
+
+        levelLabel = SKLabelNode(text: "LV: \(self.level.level)")
+        levelLabel.horizontalAlignmentMode = .left
+        levelLabel.position = CGPoint(x: K.width / 3, y: 600)
+        levelLabel.fontName = "AvenirNext-Bold"
+        levelLabel.fontSize = 48
+        levelLabel.fontColor = .red
+
+        movesRemainingLabel = SKLabelNode(text: "Moves: \(self.movesRemaining)")
+        movesRemainingLabel.horizontalAlignmentMode = .left
+        movesRemainingLabel.position = CGPoint(x: K.width / 3, y: 540)
+        movesRemainingLabel.fontName = "AvenirNext-Bold"
+        movesRemainingLabel.fontSize = 48
+        movesRemainingLabel.fontColor = .red
+
+        gemsRemainingLabel = SKLabelNode(text: "Gems: \(self.gemsRemaining)")
+        gemsRemainingLabel.horizontalAlignmentMode = .left
+        gemsRemainingLabel.position = CGPoint(x: K.width / 3, y: 480)
+        gemsRemainingLabel.fontName = "AvenirNext-Bold"
+        gemsRemainingLabel.fontSize = 48
+        gemsRemainingLabel.fontColor = .red
+
+        gemsRemainingLabel = SKLabelNode(text: "Gems: \(self.gemsRemaining)")
+        gemsRemainingLabel.horizontalAlignmentMode = .left
+        gemsRemainingLabel.position = CGPoint(x: K.width / 3, y: 480)
+        gemsRemainingLabel.fontName = "AvenirNext-Bold"
+        gemsRemainingLabel.fontSize = 48
+        gemsRemainingLabel.fontColor = .red
+
+        exitAvailableLabel = SKLabelNode(text: "Exit Available: \(level == 0 ? "YES" : "NO")")
+        exitAvailableLabel.horizontalAlignmentMode = .left
+        exitAvailableLabel.position = CGPoint(x: K.width / 3, y: 420)
+        exitAvailableLabel.fontName = "AvenirNext-Bold"
+        exitAvailableLabel.fontSize = 48
+        exitAvailableLabel.fontColor = .red
+
+        gameOverLabel = SKLabelNode(text: "")
+        gameOverLabel.horizontalAlignmentMode = .left
+        gameOverLabel.position = CGPoint(x: K.width / 3, y: 360)
+        gameOverLabel.fontName = "AvenirNext-Bold"
+        gameOverLabel.fontSize = 48
+        gameOverLabel.fontColor = .red
+
         setPlayerSpritePosition()
     }
     
@@ -53,7 +103,7 @@ class GameEngine {
      */
     func handleControls(in location: CGPoint) {
         guard !isSolved else { return print("You win!") }
-        guard !isGameOver else { return print("Game Over: \(movesUsed)/\(level.moves)") }
+        guard !isGameOver else { return print("Game Over!") }
 
         
         if inBounds(location: location, in: controlsSprite.up, offset: controlsSprite.offsetPosition) {
@@ -91,6 +141,14 @@ class GameEngine {
         }
     }
     
+    private func setLabels() {
+        levelLabel.text = "LV: \(self.level.level)"
+        movesRemainingLabel.text = "Moves: \(self.movesRemaining)"
+        gemsRemainingLabel.text = "Gems: \(self.gemsRemaining)"
+        exitAvailableLabel.text = "Exit Available: \(isExitAvailable ? "YES" : "NO")"
+        gameOverLabel.text = isGameOver ? "OUT OF MOVES" : ""
+    }
+    
     /**
      Sets the player sprite position easily.
      */
@@ -120,14 +178,20 @@ class GameEngine {
                 let col = String(child.name!.suffix(from: child.name!.firstIndex(of: ",")!).dropFirst())
                 let position: K.GameboardPosition = (row: Int(row) ?? -1, col: Int(col) ?? -1)
 
+                //Update gemOn to gemOff
                 if position == level.player, let child = gameboardSprite.sprite.childNode(withName: row + "," + col) {
                     child.removeFromParent()
                     gameboardSprite.updatePanels(at: position, with: gameboardSprite.gemOff)
                     print(position)
                 }
                 
+                //Update exitClosed to exitOpen
+                if gemsRemaining == 0 && position == level.end, let child = gameboardSprite.sprite.childNode(withName: row + "," + col) {
+                    child.removeFromParent()
+                    gameboardSprite.updatePanels(at: position, with: gameboardSprite.endOpen)
+                }
+                
             }
-//            child.removeFromParent()
         }
     }
     
@@ -136,7 +200,9 @@ class GameEngine {
      - parameter amount: The amount to increment by
      */
     private func incrementMovesUsed(by amount: Int = 1) {
-        movesUsed += amount
+        movesRemaining -= amount
+        print(movesRemaining)
+        setLabels()
     }
     
     /**
@@ -163,6 +229,12 @@ class GameEngine {
     func moveSprites(to superScene: SKScene) {
         superScene.addChild(gameboardSprite.sprite)
         superScene.addChild(controlsSprite.sprite)
+        
+        superScene.addChild(levelLabel)
+        superScene.addChild(movesRemainingLabel)
+        superScene.addChild(gemsRemainingLabel)
+        superScene.addChild(exitAvailableLabel)
+        superScene.addChild(gameOverLabel)
         
         gameboardSprite.sprite.addChild(playerSprite.sprite)
     }

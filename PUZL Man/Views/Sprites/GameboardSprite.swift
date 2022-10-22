@@ -14,7 +14,8 @@ class GameboardSprite {
     //FIXME: - Temporary
     let colors: [UIColor] = [
         UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1), //start
-        UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1),       //end
+        UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1),       //endClosed
+        UIColor(red: 10/255, green: 10/255, blue: 150/255, alpha: 1),    //endOpen
         UIColor(red: 200/255, green: 20/255, blue: 160/255, alpha: 1),  //gemOn
         UIColor(red: 20/255, green: 200/255, blue: 40/255, alpha: 1),   //gemOff
         UIColor(red: 20/255, green: 200/255, blue: 40/255, alpha: 1),   //grass
@@ -28,7 +29,8 @@ class GameboardSprite {
     ]
     
     let spriteScale: CGFloat = 0.94
-    var gemOff: UIColor { colors[3] }
+    var gemOff: UIColor { colors[4] }
+    var endOpen: UIColor { colors[2] }
     var panels: [[SKSpriteNode]]
     var panelCount: Int
     var panelSize: CGFloat
@@ -51,7 +53,7 @@ class GameboardSprite {
 
         for row in 0..<panelCount {
             for col in 0..<panelCount {
-                updatePanels(at: (row: row, col: col), with: colors[level.gameboard[row][col].rawValue + 2])
+                updatePanels(at: (row: row, col: col), with: colors[level.gameboard[row][col].rawValue])
                 
                 //FIXME: - Eventually will replace this with SKSpriteNode of the texture image, not the color
 //                panels[row][col] = SKSpriteNode(color: colors[level.gameboard[row][col].rawValue + 2], size: CGSize(width: panelSize, height: panelSize))
