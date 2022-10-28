@@ -11,7 +11,7 @@ import Foundation
  Represents the gameboard textures.
  */
 enum LevelType: Int {
-    case start = 0, endClosed, endOpen, gemOn, gemOff //required panels
+    case boundary = -1, start, endClosed, endOpen, gemOn, gemOff //required panels
     case grass, marsh, ice //terrain panels
     case hammer, sword //tool panels
     case boulder, enemy, warp //special panels
@@ -87,6 +87,11 @@ struct Level: CustomStringConvertible {
     }
     
     func getLevelType(at position: K.GameboardPosition) -> LevelType {
+        guard (position.row >= 0 && position.row < gameboard.count) && (position.col >= 0 && position.col < gameboard[0].count) else {
+            print("Hit a wall...")
+            return .boundary
+        }
+        
         return gameboard[position.row][position.col]
     }
     

@@ -21,6 +21,7 @@ class GameEngine {
     var level: Level
     var movesRemaining: Int
     var gemsRemaining: Int
+    
     var isExitAvailable: Bool { gemsRemaining == 0 }
     var isSolved: Bool { isExitAvailable && level.player == level.end }
     var isGameOver: Bool { movesRemaining <= 0 }
@@ -44,7 +45,12 @@ class GameEngine {
         controlsSprite = ControlsSprite()
         playerSprite = PlayerSprite(position: .zero)
         displaySprite = DisplaySprite()
-
+        displaySprite.setLabels(level: "\(self.level.level)",
+                                moves: "\(movesRemaining)",
+                                gems: "\(gemsRemaining)",
+                                exit: isExitAvailable ? "YES" : "NO",
+                                gameOver: isGameOver ? "OUT OF MOVES" : "")
+        
         setPlayerSpritePosition()
     }
     
@@ -58,35 +64,19 @@ class GameEngine {
     func handleControls(in location: CGPoint) {
         guard !isSolved else { return print("You win!") }
         guard !isGameOver else { return print("Game Over!") }
-
         
+        // FIXME: - Can these be expressed in more succinct terms, like if .upPressed, else if .downPressed, etc.?
         if inBounds(location: location, in: controlsSprite.up, offset: controlsSprite.offsetPosition) {
-            guard level.player!.row > 0 else { return }
-            
-            level.updatePlayer(position: (row: level.player!.row - 1, col: level.player!.col))
-            setPlayerSpritePosition()
-            incrementMovesUsed()
+            movePlayerHelper(useRow: true, useGreaterThan: true, comparisonValue: 0, increment: -1)
         }
         else if inBounds(location: location, in: controlsSprite.down, offset: controlsSprite.offsetPosition) {
-            guard level.player!.row < gameboardSprite.panelCount - 1 else { return }
-            
-            level.updatePlayer(position: (row: level.player!.row + 1, col: level.player!.col))
-            setPlayerSpritePosition()
-            incrementMovesUsed()
+            movePlayerHelper(useRow: true, useGreaterThan: false, comparisonValue: gameboardSprite.panelCount - 1, increment: 1)
         }
         else if inBounds(location: location, in: controlsSprite.left, offset: controlsSprite.offsetPosition) {
-            guard level.player!.col > 0 else { return }
-            
-            level.updatePlayer(position: (row: level.player!.row, col: level.player!.col - 1))
-            setPlayerSpritePosition()
-            incrementMovesUsed()
+            movePlayerHelper(useRow: false, useGreaterThan: true, comparisonValue: 0, increment: -1)
         }
         else if inBounds(location: location, in: controlsSprite.right, offset: controlsSprite.offsetPosition) {
-            guard level.player!.col < gameboardSprite.panelCount - 1 else { return }
-            
-            level.updatePlayer(position: (row: level.player!.row, col: level.player!.col + 1))
-            setPlayerSpritePosition()
-            incrementMovesUsed()
+            movePlayerHelper(useRow: false, useGreaterThan: false, comparisonValue: gameboardSprite.panelCount - 1, increment: 1)
         }
         
         if isSolved {
@@ -96,22 +86,51 @@ class GameEngine {
     }
     
     /**
+     Helper function that moves the player.
+     - parameters:
+        - useRow: determines if player's row or col is used in the guard check
+        - useGreaterThan: determines if comparison used should be greater than or less than
+        - comparisonValue: value to compare against player row (or col)
+        - increment: amount to move the player up or down (if rowCheck) or left or right (if !rowCheck)
+     */
+    private func movePlayerHelper(useRow: Bool, useGreaterThan: Bool, comparisonValue: Int, increment: Int) {
+        let comparator: (Int, Int) -> Bool = useGreaterThan ? (>) : (<)
+        var nextPanel: K.GameboardPosition = (row: level.player!.row + (useRow ? increment : 0), col: level.player!.col + (useRow ? 0 : increment))
+        
+        guard level.getLevelType(at: nextPanel) != .boulder else { return print("A boulder blocks your path...") }
+        guard comparator(useRow ? level.player!.row : level.player!.col, comparisonValue) else { return }
+        
+        repeat {
+            //I hate how this needs to be called twice, but here we are...
+            nextPanel = (row: level.player!.row + (useRow ? increment : 0), col: level.player!.col + (useRow ? 0 : increment))
+            guard level.getLevelType(at: nextPanel) != .boulder else { print("A boulder blocks your path......"); break }
+            guard comparator(useRow ? level.player!.row : level.player!.col, comparisonValue) else { break }
+            
+            level.updatePlayer(position: nextPanel)
+            setPlayerSpritePosition()
+        } while level.getLevelType(at: level.player) == .ice
+        
+
+        //Increment moves used
+        movesRemaining -= level.getLevelType(at: level.player) == .marsh ? 2 : 1
+        displaySprite.setLabels(level: "\(level.level)",
+                                moves: "\(movesRemaining)",
+                                gems: "\(gemsRemaining)",
+                                exit: isExitAvailable ? "YES" : "NO",
+                                gameOver: isGameOver ? "OUT OF MOVES" : "")
+    }
+    
+    /**
      Sets the player sprite position easily.
      */
     private func setPlayerSpritePosition() {
-        playerSprite.sprite.position = CGPoint(x: CGFloat(level.player!.col) * gameboardSprite.panelSize,
-                                               y: CGFloat(gameboardSprite.panelCount - 1 - level.player!.row) * gameboardSprite.panelSize)
+        playerSprite.sprite.position = CGPoint(x: gameboardSprite.panelSize * (CGFloat(level.player!.col) + 0.5),
+                                               y: gameboardSprite.panelSize * (CGFloat(gameboardSprite.panelCount - 1 - level.player!.row) + 0.5))
 
-        print("Player Position: \(self.level.player!), \(level.getLevelType(at: level.player))")
+//        print("Player Position: \(self.level.player!), \(level.getLevelType(at: level.player))")
+
         
-        
-        
-        
-        
-        
-        
-        
-        //FIXME: - Remove a Gem once you step on it
+        //Check Gem or Exit
         if level.getLevelType(at: level.player) == .gemOn/*, let child = gameboardSprite.sprite.childNode(withName: "gem0")*/ {
             level.setLevelType(at: level.player, levelType: .gemOff)
             gemsRemaining -= 1
@@ -124,30 +143,19 @@ class GameEngine {
                 let col = String(child.name!.suffix(from: child.name!.firstIndex(of: ",")!).dropFirst())
                 let position: K.GameboardPosition = (row: Int(row) ?? -1, col: Int(col) ?? -1)
 
-                //Update gemOn to gemOff
+                //Update gemOn panel to gemOff
                 if position == level.player, let child = gameboardSprite.sprite.childNode(withName: row + "," + col) {
                     child.removeFromParent()
                     gameboardSprite.updatePanels(at: position, with: gameboardSprite.gemOff)
                 }
                 
-                //Update exitClosed to exitOpen
+                //Update exitClosed panel to exitOpen
                 if isExitAvailable && position == level.end, let child = gameboardSprite.sprite.childNode(withName: row + "," + col) {
                     child.removeFromParent()
                     gameboardSprite.updatePanels(at: position, with: gameboardSprite.endOpen)
                 }
             }
-        }//end if
-        
-        
-    }
-    
-    /**
-     Increments the moveUsed by the amount listed.
-     - parameter amount: The amount to increment by
-     */
-    private func incrementMovesUsed(by amount: Int = 1) {
-        movesRemaining -= amount
-        displaySprite.setLabels(level: "\(level.level)", moves: "\(movesRemaining)", gems: "\(gemsRemaining)", exit: isExitAvailable ? "YES" : "NO", gameOver: isGameOver ? "OUT OF MOVES" : "")
+        }//end if        
     }
     
     /**

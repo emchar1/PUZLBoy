@@ -15,7 +15,7 @@ class GameboardSprite {
     let colors: [UIColor] = [
         UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1), //start
         UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1),       //endClosed
-        UIColor(red: 10/255, green: 10/255, blue: 150/255, alpha: 1),    //endOpen
+        UIColor(red: 10/255, green: 10/255, blue: 150/255, alpha: 1),   //endOpen
         UIColor(red: 200/255, green: 20/255, blue: 160/255, alpha: 1),  //gemOn
         UIColor(red: 20/255, green: 200/255, blue: 40/255, alpha: 1),   //gemOff
         UIColor(red: 20/255, green: 200/255, blue: 40/255, alpha: 1),   //grass
@@ -36,7 +36,6 @@ class GameboardSprite {
     var panelSize: CGFloat
     var gameboardSize: CGFloat { CGFloat(panelCount) * panelSize }
     var sprite: SKSpriteNode
-//    var gemCount: Int = 0
 
     
     // MARK: - Initialization
@@ -54,20 +53,6 @@ class GameboardSprite {
         for row in 0..<panelCount {
             for col in 0..<panelCount {
                 updatePanels(at: (row: row, col: col), with: colors[level.gameboard[row][col].rawValue])
-                
-                //FIXME: - Eventually will replace this with SKSpriteNode of the texture image, not the color
-//                panels[row][col] = SKSpriteNode(color: colors[level.gameboard[row][col].rawValue + 2], size: CGSize(width: panelSize, height: panelSize))
-//                panels[row][col].position = CGPoint(x: CGFloat(col) * panelSize, y: CGFloat(panelCount - 1 - row) * panelSize)
-//                panels[row][col].anchorPoint = .zero
-//                panels[row][col].zPosition = K.ZPosition.gameboard
-//
-//                //Assign a name if the panel is a gem. This will make it easier to remove when landed on.
-//                panels[row][col].name = "\(row),\(col)"
-//                if level.gameboard[row][col] == .gemOn {
-//                    gemCount += 1
-//                }
-                
-//                sprite.addChild(panels[row][col])
             }
         }
     }

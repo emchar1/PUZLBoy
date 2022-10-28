@@ -55,7 +55,6 @@ class GameScene: SKScene {
     
     override func didMove(to view: SKView) {
         gameEngine.moveSprites(to: self)
-        print("Called only once, at view load.")
     }
     
     override func update(_ currentTime: TimeInterval) {
