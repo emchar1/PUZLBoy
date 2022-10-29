@@ -112,45 +112,14 @@ class GameEngine {
         let comparator: (Int, Int) -> Bool = useGreaterThan ? (>) : (<)
         var nextPanel: K.GameboardPosition = (row: level.player!.row + (useRow ? increment : 0), col: level.player!.col + (useRow ? 0 : increment))
         
-        switch level.getLevelType(at: nextPanel) {
-        case .boulder:
-            if playerSprite.inventory.hammers <= 0 {
-                print("A boulder blocks your path...")
-                return
-            }
-        case .enemy:
-            if playerSprite.inventory.swords <= 0 {
-                updateMovesRemaining()
-                print("Enemy attacks you!")
-                return
-            }
-        default:
-            break
-        }
-        
+        guard checkPanel(position: nextPanel) else { return }
         guard comparator(useRow ? level.player!.row : level.player!.col, comparisonValue) else { return }
         
         repeat {
             //I hate how this needs to be called twice, but here we are...
             nextPanel = (row: level.player!.row + (useRow ? increment : 0), col: level.player!.col + (useRow ? 0 : increment))
             
-            switch level.getLevelType(at: nextPanel) {
-            case .boulder:
-                if playerSprite.inventory.hammers <= 0 {
-                    updateMovesRemaining()
-                    print("A boulder blocks your path...")
-                    return
-                }
-            case .enemy:
-                if playerSprite.inventory.swords <= 0 {
-                    updateMovesRemaining()
-                    print("Enemy attacks you!")
-                    return
-                }
-            default:
-                break
-            }
-            
+            guard checkPanel(position: nextPanel) else { break }
             guard comparator(useRow ? level.player!.row : level.player!.col, comparisonValue) else { break }
             
             level.updatePlayer(position: nextPanel)
@@ -165,24 +134,24 @@ class GameEngine {
      - parameter position: the row, column that the player is on.
      - returns: true if the panel is an enemy, i.e. handle differently
      */
-    private func checkPanel(position: K.GameboardPosition) -> LevelType? {
+    private func checkPanel(position: K.GameboardPosition) -> Bool {
         switch level.getLevelType(at: position) {
         case .boulder:
             if playerSprite.inventory.hammers <= 0 {
                 print("A boulder blocks your path...")
-                return .boulder
+                return false
             }
         case .enemy:
             if playerSprite.inventory.swords <= 0 {
                 updateMovesRemaining()
                 print("Enemy attacks you!")
-                return .enemy
+                return false
             }
         default:
             break
         }
         
-        return nil
+        return true
     }
     
     /**
@@ -192,8 +161,8 @@ class GameEngine {
         //Check Gem or Exit
         switch level.getLevelType(at: level.player) {
         case .gem:
-            consumeItem()
             gemsRemaining -= 1
+            consumeItem()
         case .hammer:
             consumeItem()
             playerSprite.inventory.hammers += 1
