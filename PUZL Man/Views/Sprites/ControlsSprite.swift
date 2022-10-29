@@ -18,7 +18,7 @@ class ControlsSprite {
     var right: SKSpriteNode
     
     init() {
-        let size: CGFloat = 100
+        let size: CGFloat = 125
         
         up = SKSpriteNode(color: UIColor(red: 1, green: 0.1, blue: 0.1, alpha: 1), size: CGSize(width: size, height: size))
         up.position = CGPoint(x: size, y: 2 * size)

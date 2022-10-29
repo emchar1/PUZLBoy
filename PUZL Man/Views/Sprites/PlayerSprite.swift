@@ -8,9 +8,18 @@
 import SpriteKit
 
 class PlayerSprite {
+    
+    // MARK: - Properties
+    
+    var inventory: Inventory
     var sprite: SKShapeNode
     
+    
+    // MARK: - Initialization
+    
     init(position: CGPoint) {
+        inventory = Inventory(hammers: 0, swords: 0)
+        
         sprite = SKShapeNode(circleOfRadius: 75)
         sprite.fillColor = .orange
         sprite.strokeColor = .cyan
