@@ -11,7 +11,7 @@ class DisplaySprite {
     
     // MARK: - Properties
     
-    let fontSpacing: CGFloat = 80
+    let fontSpacing: CGFloat = 70
     let fontSize: CGFloat = 60
     let fontName = "AvenirNext-Bold"
     let fontColor: UIColor = .white
@@ -20,6 +20,8 @@ class DisplaySprite {
     var levelLabel: SKLabelNode
     var movesRemainingLabel: SKLabelNode
     var gemsRemainingLabel: SKLabelNode
+    var hammersRemainingLabel: SKLabelNode
+    var swordsRemainingLabel: SKLabelNode
     var exitAvailableLabel: SKLabelNode
     var gameOverLabel: SKLabelNode
     
@@ -49,17 +51,31 @@ class DisplaySprite {
         gemsRemainingLabel.fontName = fontName
         gemsRemainingLabel.fontSize = fontSize
         gemsRemainingLabel.fontColor = fontColor
+        
+        hammersRemainingLabel = SKLabelNode(text: "Hamrs: ")
+        hammersRemainingLabel.horizontalAlignmentMode = .left
+        hammersRemainingLabel.position = CGPoint(x: K.width / 2.5, y: K.height / 3.5 - 3 * fontSpacing)
+        hammersRemainingLabel.fontName = fontName
+        hammersRemainingLabel.fontSize = fontSize
+        hammersRemainingLabel.fontColor = fontColor
+
+        swordsRemainingLabel = SKLabelNode(text: "Swords: ")
+        swordsRemainingLabel.horizontalAlignmentMode = .left
+        swordsRemainingLabel.position = CGPoint(x: K.width / 2.5, y: K.height / 3.5 - 4 * fontSpacing)
+        swordsRemainingLabel.fontName = fontName
+        swordsRemainingLabel.fontSize = fontSize
+        swordsRemainingLabel.fontColor = fontColor
 
         exitAvailableLabel = SKLabelNode(text: "Exit: ")
         exitAvailableLabel.horizontalAlignmentMode = .left
-        exitAvailableLabel.position = CGPoint(x: K.width / 2.5, y: K.height / 3.5 - 3 * fontSpacing)
+        exitAvailableLabel.position = CGPoint(x: K.width / 2.5, y: K.height / 3.5 - 5 * fontSpacing)
         exitAvailableLabel.fontName = fontName
         exitAvailableLabel.fontSize = fontSize
         exitAvailableLabel.fontColor = fontColor
 
         gameOverLabel = SKLabelNode(text: "")
         gameOverLabel.horizontalAlignmentMode = .left
-        gameOverLabel.position = CGPoint(x: K.width / 2.5, y: K.height / 3.5 - 4 * fontSpacing)
+        gameOverLabel.position = CGPoint(x: K.width / 2.5, y: K.height / 3.5 - 6 * fontSpacing)
         gameOverLabel.fontName = fontName
         gameOverLabel.fontSize = fontSize
         gameOverLabel.fontColor = fontColor
@@ -70,10 +86,12 @@ class DisplaySprite {
     
     // MARK: - Helper Functions
     
-    func setLabels(level: String, moves: String, gems: String, exit: String, gameOver: String) {
+    func setLabels(level: String, moves: String, gems: String, inventory: Inventory, exit: String, gameOver: String) {
         levelLabel.text = "LV: \(level)"
         movesRemainingLabel.text = "Moves: \(moves)"
         gemsRemainingLabel.text = "Gems: \(gems)"
+        hammersRemainingLabel.text = "Hamrs: \(inventory.hammers)"
+        swordsRemainingLabel.text = "Swords: \(inventory.swords)"
         exitAvailableLabel.text = "Exit: \(exit)"
         gameOverLabel.text = gameOver
     }
@@ -82,6 +100,8 @@ class DisplaySprite {
         sprite.addChild(levelLabel)
         sprite.addChild(movesRemainingLabel)
         sprite.addChild(gemsRemainingLabel)
+        sprite.addChild(hammersRemainingLabel)
+        sprite.addChild(swordsRemainingLabel)
         sprite.addChild(exitAvailableLabel)
         sprite.addChild(gameOverLabel)
     }

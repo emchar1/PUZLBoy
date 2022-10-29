@@ -16,8 +16,7 @@ class GameboardSprite {
         UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1), //start
         UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1),       //endClosed
         UIColor(red: 10/255, green: 10/255, blue: 150/255, alpha: 1),   //endOpen
-        UIColor(red: 200/255, green: 20/255, blue: 160/255, alpha: 1),  //gemOn
-        UIColor(red: 20/255, green: 200/255, blue: 40/255, alpha: 1),   //gemOff
+        UIColor(red: 200/255, green: 20/255, blue: 160/255, alpha: 1),  //gem
         UIColor(red: 20/255, green: 200/255, blue: 40/255, alpha: 1),   //grass
         UIColor(red: 40/255, green: 100/255, blue: 80/255, alpha: 1),   //marsh
         UIColor(red: 180/255, green: 240/255, blue: 250/255, alpha: 1), //ice
@@ -29,7 +28,7 @@ class GameboardSprite {
     ]
     
     let spriteScale: CGFloat = 0.94
-    var gemOff: UIColor { colors[4] }
+    var grass: UIColor { colors[4] }
     var endOpen: UIColor { colors[2] }
     var panels: [[SKSpriteNode]]
     var panelCount: Int
