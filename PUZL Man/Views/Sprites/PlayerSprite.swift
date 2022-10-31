@@ -11,7 +11,22 @@ class PlayerSprite {
     
     // MARK: - Properties
     
-    var inventory: Inventory
+    var inventory: Inventory {
+        didSet {
+            if hasHammers() && !hasSwords() {
+                sprite.strokeColor = .systemPink
+            }
+            else if hasSwords() && !hasHammers() {
+                sprite.strokeColor = .cyan
+            }
+            else if hasHammers() && hasSwords() {
+                sprite.strokeColor = .purple
+            }
+            else {
+                sprite.strokeColor = .clear
+            }
+        }
+    }
     var sprite: SKShapeNode
     
     
@@ -22,12 +37,20 @@ class PlayerSprite {
         
         sprite = SKShapeNode(circleOfRadius: 75)
         sprite.fillColor = .orange
-        sprite.strokeColor = .cyan
-        sprite.lineWidth = 10
-        
-        //FIXME: - Need CGPoint within the gameboard!!
-        sprite.position = position//CGPoint(x:  K.iPhoneWidth / 3 - 85 * 2, y: K.iPhoneWidth / 3 - 85 * 2)
-        
+        sprite.strokeColor = .clear
+        sprite.lineWidth = 18
+        sprite.position = position
         sprite.zPosition = K.ZPosition.player
+    }
+    
+    
+    // MARK: - Helper Functions
+    
+    func hasHammers() -> Bool {
+        return inventory.hammers > 0
+    }
+
+    func hasSwords() -> Bool {
+        return inventory.swords > 0
     }
 }
