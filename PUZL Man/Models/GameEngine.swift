@@ -27,7 +27,6 @@ class GameEngine {
     var isGameOver: Bool { movesRemaining <= 0 }
     
     var gameboardSprite: GameboardSprite
-    var controlsSprite: ControlsSprite
     var playerSprite: PlayerSprite
     var displaySprite: DisplaySprite
     
@@ -42,7 +41,6 @@ class GameEngine {
         self.gemsRemaining = self.level.gems
         
         gameboardSprite = GameboardSprite(level: self.level)
-        controlsSprite = ControlsSprite()
         playerSprite = PlayerSprite(position: .zero)
         displaySprite = DisplaySprite()
         displaySprite.setLabels(level: "\(self.level.level)",
@@ -56,7 +54,7 @@ class GameEngine {
     }
     
     
-    // MARK: - Control Functions
+    // MARK: - Controls Functions
     
     /**
      Handles player movement based on control input.
@@ -66,18 +64,25 @@ class GameEngine {
         guard !isSolved else { return print("You win!") }
         guard !isGameOver else { return print("Game Over!") }
         
-        // FIXME: - Can these be expressed in more succinct terms, like if .upPressed, else if .downPressed, etc.?
-        if inBounds(location: location, in: controlsSprite.up, offset: controlsSprite.offsetPosition) {
+        if inBounds(location: location, direction: .up) {
             movePlayerHelper(useRow: true, useGreaterThan: true, comparisonValue: 0, increment: -1)
+
+            print("Up pressed")
         }
-        else if inBounds(location: location, in: controlsSprite.down, offset: controlsSprite.offsetPosition) {
+        else if inBounds(location: location, direction: .down) {
             movePlayerHelper(useRow: true, useGreaterThan: false, comparisonValue: gameboardSprite.panelCount - 1, increment: 1)
+
+            print("Down pressed")
         }
-        else if inBounds(location: location, in: controlsSprite.left, offset: controlsSprite.offsetPosition) {
+        else if inBounds(location: location, direction: .left) {
             movePlayerHelper(useRow: false, useGreaterThan: true, comparisonValue: 0, increment: -1)
+
+            print("Left pressed")
         }
-        else if inBounds(location: location, in: controlsSprite.right, offset: controlsSprite.offsetPosition) {
+        else if inBounds(location: location, direction: .right) {
             movePlayerHelper(useRow: false, useGreaterThan: false, comparisonValue: gameboardSprite.panelCount - 1, increment: 1)
+
+            print("Right pressed")
         }
         
         if isSolved {
@@ -87,17 +92,39 @@ class GameEngine {
     }
     
     /**
-     Helper function that takes the tap location within a SpriteNode and returns true if the tap is within the sprite bounds.
+     Helper function that takes a tap location and compares it to the player's next position.
      - parameters:
         - location: Location of the tap
-        - sprite: SpriteNode in question for where bounds checking will occur
-        - offset: Offset position of the SpriteNode, if any
+        - controls: The player's next position, either up, down, left, or right
      */
-    private func inBounds(location: CGPoint, in sprite: SKSpriteNode, offset: CGPoint = .zero) -> Bool {
-        return location.x > offset.x + sprite.position.x &&
-        location.x < offset.x + sprite.position.x + sprite.size.width &&
-        location.y > offset.y + sprite.position.y &&
-        location.y < offset.y + sprite.position.y + sprite.size.height
+    private func inBounds(location: CGPoint, direction: Controls) -> Bool {
+        let maxDistance = gameboardSprite.panelCount
+        let panelSize = gameboardSprite.panelSize * gameboardSprite.spriteScale
+        
+        var upBound = level.player!.row { didSet { if upBound < 0 { upBound = 0 }}}
+        var downBound = level.player!.row + 1
+        var leftBound = level.player!.col { didSet { if leftBound < 0 { leftBound = 0 }}}
+        var rightBound = level.player!.col + 1
+        
+        switch direction {
+        case .up:
+            upBound = -maxDistance
+            downBound -= 1
+        case .down:
+            upBound += 1
+            downBound = maxDistance
+        case .left:
+            leftBound = -maxDistance
+            rightBound -= 1
+        case .right:
+            leftBound += 1
+            rightBound = maxDistance
+        }
+        
+        return location.x > gameboardSprite.xPosition + (CGFloat(leftBound) * panelSize) &&
+        location.x < gameboardSprite.xPosition + (CGFloat(rightBound) * panelSize) &&
+        location.y > gameboardSprite.yPosition - (CGFloat(downBound) * panelSize) &&
+        location.y < gameboardSprite.yPosition - (CGFloat(upBound) * panelSize)
     }
     
     /**
@@ -239,7 +266,6 @@ class GameEngine {
      */
     func moveSprites(to superScene: SKScene) {
         superScene.addChild(gameboardSprite.sprite)
-        superScene.addChild(controlsSprite.sprite)
         superScene.addChild(displaySprite.sprite)
         
         gameboardSprite.sprite.addChild(playerSprite.sprite)

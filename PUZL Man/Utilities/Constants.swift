@@ -41,7 +41,7 @@ struct K {
     /**
      Top margin of the device.
      */
-    static let topMargin: CGFloat = 180
+    static let topMargin: CGFloat = 280
     
     /**
      Bottom margin of the device.
@@ -58,7 +58,7 @@ struct K {
      */
     struct ZPosition {
         static let gameboard: CGFloat = 100
-        static let controls: CGFloat = 200
+//        static let controls: CGFloat = 200
         static let player: CGFloat = 300
     }
 }

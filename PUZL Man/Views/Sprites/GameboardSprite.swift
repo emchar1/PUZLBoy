@@ -28,12 +28,16 @@ class GameboardSprite {
     ]
     
     let spriteScale: CGFloat = 0.94
+
+    var xPosition: CGFloat { (K.iPhoneWidth * (1 - spriteScale)) / 2 }
+    var yPosition: CGFloat { K.height - K.topMargin }
+    var gameboardSize: CGFloat { CGFloat(panelCount) * panelSize }
     var grass: UIColor { colors[4] }
     var endOpen: UIColor { colors[2] }
+
     var panels: [[SKSpriteNode]]
     var panelCount: Int
     var panelSize: CGFloat
-    var gameboardSize: CGFloat { CGFloat(panelCount) * panelSize }
     var sprite: SKSpriteNode
 
     
@@ -46,7 +50,7 @@ class GameboardSprite {
         
         sprite = SKSpriteNode(color: .clear, size: CGSize(width: CGFloat(panelCount) * panelSize, height: CGFloat(panelCount) * panelSize))
         sprite.anchorPoint = .zero
-        sprite.position = CGPoint(x: K.iPhoneWidth * (1 - spriteScale) / 2, y: K.height - (gameboardSize + K.topMargin + 100))
+        sprite.position = CGPoint(x: xPosition, y: yPosition - gameboardSize * spriteScale)
         sprite.setScale(spriteScale)
 
         for row in 0..<panelCount {
