@@ -11,46 +11,91 @@ class PlayerSprite {
     
     // MARK: - Properties
     
+    let playerSize = CGSize(width: 614, height: 564)
+    let animationSpeed: TimeInterval = 0.06
+    
+    var sprite: SKSpriteNode
+    var playerAtlas: SKTextureAtlas
+    var playerTextures: [[SKTexture]]
+    
+    enum Texture: Int {
+        case idle = 0, run, dead
+    }
+
     var inventory: Inventory {
         didSet {
             if hasHammers() && !hasSwords() {
-                sprite.strokeColor = .systemPink
+//                sprite.strokeColor = .systemPink
             }
             else if hasSwords() && !hasHammers() {
-                sprite.strokeColor = .cyan
+//                sprite.strokeColor = .cyan
             }
             else if hasHammers() && hasSwords() {
-                sprite.strokeColor = .purple
+//                sprite.strokeColor = .purple
             }
             else {
-                sprite.strokeColor = .clear
+//                sprite.strokeColor = .clear
             }
         }
     }
-    var sprite: SKShapeNode
     
     
     // MARK: - Initialization
     
     init(position: CGPoint) {
         inventory = Inventory(hammers: 0, swords: 0)
-        
-        sprite = SKShapeNode(circleOfRadius: 75)
-        sprite.fillColor = .orange
-        sprite.strokeColor = .clear
-        sprite.lineWidth = 18
-        sprite.position = position
+        playerAtlas = SKTextureAtlas(named: "player")
+        playerTextures = []
+        playerTextures.append([]) //idle
+        playerTextures.append([]) //run
+        playerTextures.append([]) //dead
+
+        for i in 1...15 {
+            playerTextures[Texture.idle.rawValue].append(playerAtlas.textureNamed("Idle (\(i))"))
+            playerTextures[Texture.run.rawValue].append(playerAtlas.textureNamed("Run (\(i))"))
+            playerTextures[Texture.dead.rawValue].append(playerAtlas.textureNamed("Dead (\(i))"))
+        }
+                    
+        sprite = SKSpriteNode(texture: playerTextures[Texture.idle.rawValue][0])
+        sprite.size = playerSize
+        sprite.setScale(0.5)
+        sprite.position = CGPoint(x: position.x, y: position.y)
         sprite.zPosition = K.ZPosition.player
+        
+        startIdleAnimation()
     }
     
     
     // MARK: - Helper Functions
     
+    private func startIdleAnimation() {
+        let idleAnimation = SKAction.animate(with: playerTextures[Texture.idle.rawValue], timePerFrame: animationSpeed)
+        
+        sprite.run(SKAction.repeatForever(idleAnimation), withKey: "playerIdleAnimation")
+    }
+    
+    func startRunAnimation() {
+        let runAnimation = SKAction.animate(with: playerTextures[Texture.run.rawValue], timePerFrame: animationSpeed)
+
+        sprite.removeAllActions()
+        sprite.run(SKAction.repeatForever(runAnimation), withKey: "playerRunAnimation")
+    }
+    
+    
+    // MARK: - Getters & Setters
+
     func hasHammers() -> Bool {
         return inventory.hammers > 0
     }
 
     func hasSwords() -> Bool {
         return inventory.swords > 0
+    }
+        
+    func setScale(panelSize: CGFloat) {
+        
+        
+        //FIXME: - Changed 0.5 to 1 due to new hero width size from 313 to original 614
+        sprite.setScale(1 * (panelSize / playerSize.width))
     }
 }

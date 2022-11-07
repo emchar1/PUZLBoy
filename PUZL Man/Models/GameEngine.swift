@@ -43,6 +43,7 @@ class GameEngine {
         gameboardSprite = GameboardSprite(level: self.level)
         playerSprite = PlayerSprite(position: .zero)
         displaySprite = DisplaySprite()
+        
         displaySprite.setLabels(level: "\(self.level.level)",
                                 moves: "\(movesRemaining)",
                                 gems: "\(gemsRemaining)",
@@ -50,7 +51,87 @@ class GameEngine {
                                 exit: isExitAvailable ? "YES" : "NO",
                                 gameOver: isGameOver ? "LOSE!" : "")
         
-        setPlayerSpritePosition()
+        setPlayerSpritePosition(animate: false)
+    }
+    
+    
+    // MARK: - Setup Functions
+    
+    /**
+     Sets the player sprite position easily.
+     */
+    private func setPlayerSpritePosition(animate: Bool) {
+        //Check Gem or Exit
+        switch level.getLevelType(at: level.player) {
+        case .gem:
+            gemsRemaining -= 1
+            consumeItem()
+        case .hammer:
+            consumeItem()
+            playerSprite.inventory.hammers += 1
+        case .sword:
+            consumeItem()
+            playerSprite.inventory.swords += 1
+        case .boulder:
+            guard playerSprite.inventory.hammers > 0 else { return }
+            
+            consumeItem()
+            playerSprite.inventory.hammers -= 1
+        case .enemy:
+            guard playerSprite.inventory.swords > 0 else { return }
+            
+            consumeItem()
+            playerSprite.inventory.swords -= 1
+        default: break
+        }
+        
+        
+        //FIXME: - NEW HERO SIZE... WHY ADD 75 TO X???
+        let playerLastPosition = CGPoint(x: gameboardSprite.panelSize * (CGFloat(level.player!.col) + 0.5) + 75,
+                                         y: gameboardSprite.panelSize * (CGFloat(gameboardSprite.panelCount - 1 - level.player!.row) + 0.5))
+
+        if animate {
+            let playerMove = SKAction.move(to: playerLastPosition, duration: 0.5)
+            
+            
+            //FIXME: - RUN ANIMATION
+            playerSprite.startRunAnimation()
+            
+            
+            playerSprite.sprite.run(playerMove)
+        }
+        else {
+            playerSprite.sprite.position = playerLastPosition
+        }
+        
+    }
+    
+    /**
+     Converts a panel to grass, after consuming the item.
+     */
+    private func consumeItem() {
+        level.setLevelType(at: level.player, levelType: .grass)
+
+        for child in gameboardSprite.sprite.children {
+            //Exclude Player, which will have no name
+            guard child.name != nil else { continue }
+            
+            let row = String(child.name!.prefix(upTo: child.name!.firstIndex(of: ",")!))
+            let col = String(child.name!.suffix(from: child.name!.firstIndex(of: ",")!).dropFirst())
+            let position: K.GameboardPosition = (row: Int(row) ?? -1, col: Int(col) ?? -1)
+
+            //Update panel to grass
+            if position == level.player, let child = gameboardSprite.sprite.childNode(withName: row + "," + col) {
+                child.removeFromParent()
+                gameboardSprite.updatePanels(at: position, with: gameboardSprite.grass)
+            }
+            
+            //Update exitClosed panel to exitOpen
+            if isExitAvailable && position == level.end, let child = gameboardSprite.sprite.childNode(withName: row + "," + col) {
+                child.removeFromParent()
+                gameboardSprite.updatePanels(at: position, with: gameboardSprite.endOpen)
+            }
+        }
     }
     
     
@@ -150,7 +231,7 @@ class GameEngine {
             guard comparator(useRow ? level.player!.row : level.player!.col, comparisonValue) else { break }
             
             level.updatePlayer(position: nextPanel)
-            setPlayerSpritePosition()
+            setPlayerSpritePosition(animate: true)
         } while level.getLevelType(at: level.player) == .ice
         
         updateMovesRemaining()
@@ -182,67 +263,6 @@ class GameEngine {
     }
     
     /**
-     Sets the player sprite position easily.
-     */
-    private func setPlayerSpritePosition() {
-        //Check Gem or Exit
-        switch level.getLevelType(at: level.player) {
-        case .gem:
-            gemsRemaining -= 1
-            consumeItem()
-        case .hammer:
-            consumeItem()
-            playerSprite.inventory.hammers += 1
-        case .sword:
-            consumeItem()
-            playerSprite.inventory.swords += 1
-        case .boulder:
-            guard playerSprite.inventory.hammers > 0 else { return }
-            
-            consumeItem()
-            playerSprite.inventory.hammers -= 1
-        case .enemy:
-            guard playerSprite.inventory.swords > 0 else { return }
-            
-            consumeItem()
-            playerSprite.inventory.swords -= 1
-        default: break
-        }
-        
-        playerSprite.sprite.position = CGPoint(x: gameboardSprite.panelSize * (CGFloat(level.player!.col) + 0.5),
-                                               y: gameboardSprite.panelSize * (CGFloat(gameboardSprite.panelCount - 1 - level.player!.row) + 0.5))
-//        print("Player Position: \(self.level.player!), \(level.getLevelType(at: level.player))")
-    }
-    
-    /**
-     Converts a panel to grass, after consuming the item.
-     */
-    private func consumeItem() {
-        level.setLevelType(at: level.player, levelType: .grass)
-
-        for child in gameboardSprite.sprite.children {
-            //Exclude Player, which will have no name
-            guard child.name != nil else { continue }
-            
-            let row = String(child.name!.prefix(upTo: child.name!.firstIndex(of: ",")!))
-            let col = String(child.name!.suffix(from: child.name!.firstIndex(of: ",")!).dropFirst())
-            let position: K.GameboardPosition = (row: Int(row) ?? -1, col: Int(col) ?? -1)
-
-            //Update panel to grass
-            if position == level.player, let child = gameboardSprite.sprite.childNode(withName: row + "," + col) {
-                child.removeFromParent()
-                gameboardSprite.updatePanels(at: position, with: gameboardSprite.grass)
-            }
-            
-            //Update exitClosed panel to exitOpen
-            if isExitAvailable && position == level.end, let child = gameboardSprite.sprite.childNode(withName: row + "," + col) {
-                child.removeFromParent()
-                gameboardSprite.updatePanels(at: position, with: gameboardSprite.endOpen)
-            }
-        }
-    }
-    
-    /**
      Updates the moveRemaining property.
      */
     private func updateMovesRemaining() {
@@ -256,8 +276,6 @@ class GameEngine {
     }
     
     
-    
-    
     // MARK: - moveTo Functions
     
     /**
@@ -268,6 +286,7 @@ class GameEngine {
         superScene.addChild(gameboardSprite.sprite)
         superScene.addChild(displaySprite.sprite)
         
+        playerSprite.setScale(panelSize: gameboardSprite.panelSize)
         gameboardSprite.sprite.addChild(playerSprite.sprite)
     }
 }
