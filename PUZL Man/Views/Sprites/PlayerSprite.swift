@@ -68,9 +68,10 @@ class PlayerSprite {
     
     // MARK: - Helper Functions
     
-    private func startIdleAnimation() {
+    func startIdleAnimation() {
         let idleAnimation = SKAction.animate(with: playerTextures[Texture.idle.rawValue], timePerFrame: animationSpeed)
         
+        sprite.removeAllActions()
         sprite.run(SKAction.repeatForever(idleAnimation), withKey: "playerIdleAnimation")
     }
     
