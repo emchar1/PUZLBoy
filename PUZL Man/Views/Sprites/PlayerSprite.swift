@@ -19,7 +19,7 @@ class PlayerSprite {
     var playerTextures: [[SKTexture]]
     
     enum Texture: Int {
-        case idle = 0, run, dead
+        case idle = 0, run, walk, dead
     }
 
     var inventory: Inventory {
@@ -48,11 +48,13 @@ class PlayerSprite {
         playerTextures = []
         playerTextures.append([]) //idle
         playerTextures.append([]) //run
+        playerTextures.append([]) //walk
         playerTextures.append([]) //dead
 
         for i in 1...15 {
             playerTextures[Texture.idle.rawValue].append(playerAtlas.textureNamed("Idle (\(i))"))
             playerTextures[Texture.run.rawValue].append(playerAtlas.textureNamed("Run (\(i))"))
+            playerTextures[Texture.walk.rawValue].append(playerAtlas.textureNamed("Walk (\(i))"))
             playerTextures[Texture.dead.rawValue].append(playerAtlas.textureNamed("Dead (\(i))"))
         }
                     
@@ -69,17 +71,17 @@ class PlayerSprite {
     // MARK: - Helper Functions
     
     func startIdleAnimation() {
-        let idleAnimation = SKAction.animate(with: playerTextures[Texture.idle.rawValue], timePerFrame: animationSpeed)
+        let animation = SKAction.animate(with: playerTextures[Texture.idle.rawValue], timePerFrame: animationSpeed)
         
         sprite.removeAllActions()
-        sprite.run(SKAction.repeatForever(idleAnimation), withKey: "playerIdleAnimation")
+        sprite.run(SKAction.repeatForever(animation), withKey: "playerIdleAnimation")
     }
     
-    func startRunAnimation() {
-        let runAnimation = SKAction.animate(with: playerTextures[Texture.run.rawValue], timePerFrame: animationSpeed)
+    func startMoveAnimation(didWin: Bool) {
+        let animation = SKAction.animate(with: playerTextures[didWin ? Texture.walk.rawValue : Texture.run.rawValue], timePerFrame: animationSpeed)
 
         sprite.removeAllActions()
-        sprite.run(SKAction.repeatForever(runAnimation), withKey: "playerRunAnimation")
+        sprite.run(SKAction.repeatForever(animation), withKey: "playerMoveAnimation")
     }
     
     

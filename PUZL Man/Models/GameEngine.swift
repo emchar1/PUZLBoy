@@ -22,6 +22,10 @@ class GameEngine {
     var movesRemaining: Int
     var gemsRemaining: Int
     
+    var playerIsMoving = false
+    var playerIsFacingLeft = false
+    var playerSwitchOffset: CGFloat = 75
+    
     var isExitAvailable: Bool { gemsRemaining == 0 }
     var isSolved: Bool { isExitAvailable && level.player == level.end }
     var isGameOver: Bool { movesRemaining <= 0 }
@@ -51,7 +55,7 @@ class GameEngine {
                                 exit: isExitAvailable ? "YES" : "NO",
                                 gameOver: isGameOver ? "LOSE!" : "")
         
-        setPlayerSpritePosition(animate: false)
+        setPlayerSpritePosition(animate: false, completion: nil)
     }
     
     
@@ -60,7 +64,7 @@ class GameEngine {
     /**
      Sets the player sprite position easily.
      */
-    private func setPlayerSpritePosition(animate: Bool) {
+    func setPlayerSpritePosition(animate: Bool, completion: (() -> ())?) {
         //Check Gem or Exit
         switch level.getLevelType(at: level.player) {
         case .gem:
@@ -85,25 +89,24 @@ class GameEngine {
         default: break
         }
         
-        
-        //FIXME: - NEW HERO SIZE... WHY ADD 75 TO X???
-        let playerLastPosition = CGPoint(x: gameboardSprite.panelSize * (CGFloat(level.player!.col) + 0.5) + 75,
+        let playerLastPosition = CGPoint(x: gameboardSprite.panelSize * (CGFloat(level.player!.col) + 0.5) + playerSwitchOffset * (playerIsFacingLeft ? -1 : 1),
                                          y: gameboardSprite.panelSize * (CGFloat(gameboardSprite.panelCount - 1 - level.player!.row) + 0.5))
 
         if animate {
-            let playerMove = SKAction.move(to: playerLastPosition, duration: 0.5)
-            
-            
-            //FIXME: - RUN ANIMATION
-            playerSprite.startRunAnimation()
-            
-            
-            playerSprite.sprite.run(playerMove)
+            let playerMove = SKAction.move(to: playerLastPosition, duration: isSolved ? 0.75 : 0.5)
+                        
+            playerIsMoving = true
+            playerSprite.startMoveAnimation(didWin: isSolved)
+            playerSprite.sprite.run(playerMove) {
+                self.playerIsMoving = false
+                self.playerSprite.startIdleAnimation()
+                completion?()
+            }
         }
         else {
             playerSprite.sprite.position = playerLastPosition
+            completion?()
         }
-        
     }
     
     /**
@@ -156,11 +159,19 @@ class GameEngine {
             print("Down pressed")
         }
         else if inBounds(location: location, direction: .left) {
+            playerIsFacingLeft = true
+            playerSprite.sprite.position = CGPoint(x: playerSprite.sprite.position.x - playerSwitchOffset, y: playerSprite.sprite.position.y)
+            playerSprite.sprite.xScale = -abs(playerSprite.sprite.xScale)
+            
             movePlayerHelper(useRow: false, useGreaterThan: true, comparisonValue: 0, increment: -1)
 
             print("Left pressed")
         }
         else if inBounds(location: location, direction: .right) {
+            playerIsFacingLeft = false
+            playerSprite.sprite.position = CGPoint(x: playerSprite.sprite.position.x + playerSwitchOffset, y: playerSprite.sprite.position.y)
+            playerSprite.sprite.xScale = abs(playerSprite.sprite.xScale)
+            
             movePlayerHelper(useRow: false, useGreaterThan: false, comparisonValue: gameboardSprite.panelCount - 1, increment: 1)
 
             print("Right pressed")
@@ -231,7 +242,7 @@ class GameEngine {
             guard comparator(useRow ? level.player!.row : level.player!.col, comparisonValue) else { break }
             
             level.updatePlayer(position: nextPanel)
-            setPlayerSpritePosition(animate: true)
+            setPlayerSpritePosition(animate: true, completion: nil)
         } while level.getLevelType(at: level.player) == .ice
         
         updateMovesRemaining()

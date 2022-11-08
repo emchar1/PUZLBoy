@@ -41,6 +41,7 @@ class GameScene: SKScene {
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard let location = touches.first?.location(in: self) else { return }
+        guard !gameEngine.playerIsMoving else { return }
         
         if gameEngine.isGameOver {
             resetGameEngine(level: currentLevel)
@@ -78,7 +79,9 @@ class GameScene: SKScene {
 
 extension GameScene: GameEngineDelegate {
     func gameIsSolved() {
-        currentLevel += 1
-        resetGameEngine(level: currentLevel)
+        gameEngine.setPlayerSpritePosition(animate: true) {
+            self.currentLevel += 1
+            self.resetGameEngine(level: self.currentLevel)
+        }
     }
 }
