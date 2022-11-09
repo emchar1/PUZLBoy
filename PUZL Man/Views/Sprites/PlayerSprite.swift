@@ -12,7 +12,7 @@ class PlayerSprite {
     // MARK: - Properties
     
     let playerSize = CGSize(width: 614, height: 564)
-    let animationSpeed: TimeInterval = 0.06
+    let animationSpeed: TimeInterval = 0.04
     
     var sprite: SKSpriteNode
     var playerAtlas: SKTextureAtlas
@@ -85,10 +85,10 @@ class PlayerSprite {
     }
 
     func startDeadAnimation(completion: @escaping (() -> ())) {
-        let animation = SKAction.animate(with: playerTextures[Texture.dead.rawValue], timePerFrame: animationSpeed)
+        let animation = SKAction.animate(with: playerTextures[Texture.dead.rawValue], timePerFrame: animationSpeed / 2)
 
         sprite.removeAllActions()
-        sprite.run(SKAction.repeat(animation, count: 1), completion: completion)
+        sprite.run(SKAction.sequence([SKAction.repeat(animation, count: 1), SKAction.wait(forDuration: 0.5)]), completion: completion)
     }
 
     
