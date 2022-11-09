@@ -11,7 +11,7 @@ class GameScene: SKScene {
     
     // MARK: - Properties
     
-    var currentLevel: Int = 6 {
+    var currentLevel: Int = 7 {
         didSet {
             if currentLevel > LevelBuilder.maxLevel {
                 currentLevel = 0
@@ -79,7 +79,7 @@ class GameScene: SKScene {
 
 extension GameScene: GameEngineDelegate {
     func gameIsSolved() {
-        gameEngine.setPlayerSpritePosition(animate: true) {
+        gameEngine.setPlayerSpritePosition(animate: false) {
             self.currentLevel += 1
             self.resetGameEngine(level: self.currentLevel)
         }

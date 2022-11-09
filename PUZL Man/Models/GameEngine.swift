@@ -191,10 +191,13 @@ class GameEngine {
             print("Right pressed")
         }
         
-        if isSolved {
-            delegate?.gameIsSolved()
-            print("WINNNNN!")
-        }
+//        if isSolved {
+//            delegate?.gameIsSolved()
+//            print("WINNNNN!")
+//        }
+//        else {
+//            print("Not solved.")
+//        }
     }
     
     
@@ -246,7 +249,7 @@ class GameEngine {
      */
     private func movePlayerHelper(useRow: Bool, useGreaterThan: Bool, comparisonValue: Int, increment: Int) {
         let comparator: (Int, Int) -> Bool = useGreaterThan ? (>) : (<)
-        var nextPanel: K.GameboardPosition = (row: level.player!.row + (useRow ? increment : 0), col: level.player!.col + (useRow ? 0 : increment))
+        let nextPanel: K.GameboardPosition = (row: level.player!.row + (useRow ? increment : 0), col: level.player!.col + (useRow ? 0 : increment))
         
         guard checkPanel(position: nextPanel) else { return }
         guard comparator(useRow ? level.player!.row : level.player!.col, comparisonValue) else { return }
@@ -257,7 +260,12 @@ class GameEngine {
             if self.level.getLevelType(at: self.level.player) != .ice {
                 self.updateMovesRemaining()
                 self.shouldUpdateRemainingForBoulderIfIcy = false
-                
+
+                if self.isSolved {
+                    self.delegate?.gameIsSolved()
+                    print("WINNNNN!")
+                }
+
                 //EXIT RECURSION
                 return
             }
