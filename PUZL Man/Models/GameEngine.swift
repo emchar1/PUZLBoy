@@ -9,6 +9,7 @@ import SpriteKit
 
 protocol GameEngineDelegate: AnyObject {
     func gameIsSolved()
+    func gameIsOver()
 }
 
 /**
@@ -148,13 +149,6 @@ class GameEngine {
      - parameter location: Location for which comparison is to occur.
      */
     func handleControls(in location: CGPoint) {
-        guard !isSolved else { return print("You win!") }
-        guard !isGameOver else {
-            //FIXME: - Animate Game Over..
-            
-            return print("Game Over!")
-        }
-        
         if inBounds(location: location, direction: .up) {
             movePlayerHelper(useRow: true, useGreaterThan: true, comparisonValue: 0, increment: -1)
 
@@ -190,14 +184,6 @@ class GameEngine {
 
             print("Right pressed")
         }
-        
-//        if isSolved {
-//            delegate?.gameIsSolved()
-//            print("WINNNNN!")
-//        }
-//        else {
-//            print("Not solved.")
-//        }
     }
     
     
@@ -260,11 +246,6 @@ class GameEngine {
             if self.level.getLevelType(at: self.level.player) != .ice {
                 self.updateMovesRemaining()
                 self.shouldUpdateRemainingForBoulderIfIcy = false
-
-                if self.isSolved {
-                    self.delegate?.gameIsSolved()
-                    print("WINNNNN!")
-                }
 
                 //EXIT RECURSION
                 return
@@ -329,10 +310,22 @@ class GameEngine {
                                 inventory: playerSprite.inventory,
                                 exit: isExitAvailable ? "YES" : "NO",
                                 gameOver: isGameOver ? "LOSE!" : "")
+        
+        if isSolved {
+            delegate?.gameIsSolved()
+            print("WINNNNN!")
+        }
+        else if isGameOver {
+            animateGameOver {
+                self.delegate?.gameIsOver()
+            }
+            
+            print("GAME OVERRR")
+        }
     }
     
-    private func animateGameOver() {
-        
+    private func animateGameOver(completion: @escaping (() -> ())) {
+        playerSprite.startDeadAnimation(completion: completion)
     }
     
     

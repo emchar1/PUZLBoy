@@ -43,12 +43,7 @@ class GameScene: SKScene {
         guard let location = touches.first?.location(in: self) else { return }
         guard !gameEngine.playerIsMoving else { return }
         
-        if gameEngine.isGameOver {
-            resetGameEngine(level: currentLevel)
-        }
-        else {
-            gameEngine.handleControls(in: location)
-        }
+        gameEngine.handleControls(in: location)
     }
     
 
@@ -79,9 +74,11 @@ class GameScene: SKScene {
 
 extension GameScene: GameEngineDelegate {
     func gameIsSolved() {
-        gameEngine.setPlayerSpritePosition(animate: false) {
-            self.currentLevel += 1
-            self.resetGameEngine(level: self.currentLevel)
-        }
+        currentLevel += 1
+            resetGameEngine(level: currentLevel)
+    }
+    
+    func gameIsOver() {
+        resetGameEngine(level: currentLevel)
     }
 }

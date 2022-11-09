@@ -83,7 +83,14 @@ class PlayerSprite {
         sprite.removeAllActions()
         sprite.run(SKAction.repeatForever(animation), withKey: "playerMoveAnimation")
     }
-    
+
+    func startDeadAnimation(completion: @escaping (() -> ())) {
+        let animation = SKAction.animate(with: playerTextures[Texture.dead.rawValue], timePerFrame: animationSpeed)
+
+        sprite.removeAllActions()
+        sprite.run(SKAction.repeat(animation, count: 1), completion: completion)
+    }
+
     
     // MARK: - Getters & Setters
 
