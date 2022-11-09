@@ -33,19 +33,21 @@ class LevelBuilder {
         Level(level: 4, moves: 8, gems: 3, gameboard: [[.start, .grass, .gem],
                                                        [.grass, .grass, .gem],
                                                        [.gem, .grass, .endClosed]]),
-        
-        Level(level: 5, moves: 6, gems: 2, gameboard: [[.start, .marsh, .grass],
+                
+        Level(level: 5, moves: 8, gems: 1, gameboard: [[.start, .boulder, .gem],
+                                                       [.grass, .boulder, .grass],
+                                                       [.grass, .grass, .endClosed]]),
+
+        Level(level: 6, moves: 6, gems: 2, gameboard: [[.start, .marsh, .grass],
                                                        [.grass, .grass, .gem],
                                                        [.gem, .marsh, .endClosed]]),
-        
-        Level(level: 6, moves: 9, gems: 3, gameboard: [[.start, .grass, .grass, .gem, .ice, .ice],
-                                                       [.ice, .ice, .gem, .grass, .ice, .ice],
-                                                       [.ice, .ice, .boulder, .grass, .ice, .ice],
-                                                       [.ice, .ice, .boulder, .grass, .ice, .ice],
-                                                       [.ice, .ice, .boulder, .grass, .ice, .ice],
-                                                       [.boulder, .gem, .endClosed, .boulder, .ice, .ice]]),
 
-        Level(level: 7, moves: 12, gems: 5, gameboard: [[.start, .endClosed, .grass, .grass],
+        Level(level: 7, moves: 9, gems: 3, gameboard: [[.start, .grass, .grass, .gem],
+                                                       [.ice, .ice, .gem, .grass],
+                                                       [.ice, .ice, .boulder, .grass],
+                                                       [.boulder, .gem, .endClosed, .boulder]]),
+
+        Level(level: 8, moves: 12, gems: 5, gameboard: [[.start, .endClosed, .grass, .grass],
                                                        [.marsh, .ice, .hammer, .sword],
                                                        [.boulder, .enemy, .warp, .gem],
                                                        [.gem, .gem, .gem, .gem]])

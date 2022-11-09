@@ -69,7 +69,32 @@ class GameEngine {
      Sets the player sprite position easily.
      */
     func setPlayerSpritePosition(animate: Bool, completion: (() -> ())?) {
-        //Check Gem or Exit
+        let playerLastPosition = CGPoint(x: gameboardSprite.panelSize * (CGFloat(level.player!.col) + 0.5) + playerSwitchOffset * (playerIsFacingLeft ? -1 : 1),
+                                         y: gameboardSprite.panelSize * (CGFloat(gameboardSprite.panelCount - 1 - level.player!.row) + 0.5))
+
+        if animate {
+            let playerMove = SKAction.move(to: playerLastPosition, duration: isSolved ? 0.75 : 0.5)
+                        
+            playerIsMoving = true
+            playerSprite.startMoveAnimation(didWin: isSolved)
+            playerSprite.sprite.run(playerMove) {
+                self.playerIsMoving = false
+                self.playerSprite.startIdleAnimation()
+                self.checkSpecialPanel()
+                completion?()
+            }
+        }
+        else {
+            playerSprite.sprite.position = playerLastPosition
+            checkSpecialPanel()
+            completion?()
+        }
+    }
+    
+    /**
+     Helper function that checks for a special panel.
+     */
+    private func checkSpecialPanel() {
         switch level.getLevelType(at: level.player) {
         case .gem:
             gemsRemaining -= 1
@@ -91,25 +116,6 @@ class GameEngine {
             consumeItem()
             playerSprite.inventory.swords -= 1
         default: break
-        }
-        
-        let playerLastPosition = CGPoint(x: gameboardSprite.panelSize * (CGFloat(level.player!.col) + 0.5) + playerSwitchOffset * (playerIsFacingLeft ? -1 : 1),
-                                         y: gameboardSprite.panelSize * (CGFloat(gameboardSprite.panelCount - 1 - level.player!.row) + 0.5))
-
-        if animate {
-            let playerMove = SKAction.move(to: playerLastPosition, duration: isSolved ? 0.75 : 0.5)
-                        
-            playerIsMoving = true
-            playerSprite.startMoveAnimation(didWin: isSolved)
-            playerSprite.sprite.run(playerMove) {
-                self.playerIsMoving = false
-                self.playerSprite.startIdleAnimation()
-                completion?()
-            }
-        }
-        else {
-            playerSprite.sprite.position = playerLastPosition
-            completion?()
         }
     }
     
