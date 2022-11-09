@@ -246,7 +246,6 @@ class GameEngine {
      */
     private func movePlayerHelper(useRow: Bool, useGreaterThan: Bool, comparisonValue: Int, increment: Int) {
         let comparator: (Int, Int) -> Bool = useGreaterThan ? (>) : (<)
-        var currentLevelType = level.getLevelType(at: level.player)
         var nextPanel: K.GameboardPosition = (row: level.player!.row + (useRow ? increment : 0), col: level.player!.col + (useRow ? 0 : increment))
         
         guard checkPanel(position: nextPanel) else { return }
@@ -255,37 +254,20 @@ class GameEngine {
         
         level.updatePlayer(position: nextPanel)
         setPlayerSpritePosition(animate: true) {
-            let previousLevelType = currentLevelType
-            currentLevelType = self.level.getLevelType(at: self.level.player)
-            
-            if currentLevelType != .ice {
+            if self.level.getLevelType(at: self.level.player) != .ice {
                 self.updateMovesRemaining()
                 self.shouldUpdateRemainingForBoulderIfIcy = false
                 
-                //This breaks out of the recursion
+                //EXIT RECURSION
                 return
             }
             else {
                 self.shouldUpdateRemainingForBoulderIfIcy = true
             }
             
-            //Recursion!!!
+            //ENTER RECURSION
             self.movePlayerHelper(useRow: useRow, useGreaterThan: useGreaterThan, comparisonValue: comparisonValue, increment: increment)
         }
-        
-        
-//        repeat {
-//            //I hate how this needs to be called twice, but here we are...
-//            nextPanel = (row: level.player!.row + (useRow ? increment : 0), col: level.player!.col + (useRow ? 0 : increment))
-//
-//            guard checkPanel(position: nextPanel) else { break }
-//            guard comparator(useRow ? level.player!.row : level.player!.col, comparisonValue) else { break }
-//
-//            level.updatePlayer(position: nextPanel)
-//            setPlayerSpritePosition(animate: true, completion: nil)
-//        } while level.getLevelType(at: level.player) == .ice
-//
-//        updateMovesRemaining()
     }
     
     /**
