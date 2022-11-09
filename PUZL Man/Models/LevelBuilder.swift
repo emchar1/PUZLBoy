@@ -38,10 +38,12 @@ class LevelBuilder {
                                                        [.grass, .grass, .gem],
                                                        [.gem, .marsh, .endClosed]]),
         
-        Level(level: 6, moves: 9, gems: 3, gameboard: [[.start, .grass, .grass, .gem],
-                                                       [.ice, .ice, .gem, .grass],
-                                                       [.ice, .ice, .boulder, .grass],
-                                                       [.boulder, .gem, .endClosed, .boulder]]),
+        Level(level: 6, moves: 9, gems: 3, gameboard: [[.start, .grass, .grass, .gem, .ice, .ice],
+                                                       [.ice, .ice, .gem, .grass, .ice, .ice],
+                                                       [.ice, .ice, .boulder, .grass, .ice, .ice],
+                                                       [.ice, .ice, .boulder, .grass, .ice, .ice],
+                                                       [.ice, .ice, .boulder, .grass, .ice, .ice],
+                                                       [.boulder, .gem, .endClosed, .boulder, .ice, .ice]]),
 
         Level(level: 7, moves: 12, gems: 5, gameboard: [[.start, .endClosed, .grass, .grass],
                                                        [.marsh, .ice, .hammer, .sword],
