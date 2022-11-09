@@ -146,7 +146,11 @@ class GameEngine {
      */
     func handleControls(in location: CGPoint) {
         guard !isSolved else { return print("You win!") }
-        guard !isGameOver else { return print("Game Over!") }
+        guard !isGameOver else {
+            //FIXME: - Animate Game Over..
+            
+            return print("Game Over!")
+        }
         
         if inBounds(location: location, direction: .up) {
             movePlayerHelper(useRow: true, useGreaterThan: true, comparisonValue: 0, increment: -1)
@@ -159,8 +163,12 @@ class GameEngine {
             print("Down pressed")
         }
         else if inBounds(location: location, direction: .left) {
+            //Need to adjust offset because the OG sprite has a gap on the right
+            if !playerIsFacingLeft {
+                playerSprite.sprite.position = CGPoint(x: playerSprite.sprite.position.x - playerSwitchOffset, y: playerSprite.sprite.position.y)
+            }
+            
             playerIsFacingLeft = true
-            playerSprite.sprite.position = CGPoint(x: playerSprite.sprite.position.x - playerSwitchOffset, y: playerSprite.sprite.position.y)
             playerSprite.sprite.xScale = -abs(playerSprite.sprite.xScale)
             
             movePlayerHelper(useRow: false, useGreaterThan: true, comparisonValue: 0, increment: -1)
@@ -168,8 +176,11 @@ class GameEngine {
             print("Left pressed")
         }
         else if inBounds(location: location, direction: .right) {
+            if playerIsFacingLeft {
+                playerSprite.sprite.position = CGPoint(x: playerSprite.sprite.position.x + playerSwitchOffset, y: playerSprite.sprite.position.y)
+            }
+            
             playerIsFacingLeft = false
-            playerSprite.sprite.position = CGPoint(x: playerSprite.sprite.position.x + playerSwitchOffset, y: playerSprite.sprite.position.y)
             playerSprite.sprite.xScale = abs(playerSprite.sprite.xScale)
             
             movePlayerHelper(useRow: false, useGreaterThan: false, comparisonValue: gameboardSprite.panelCount - 1, increment: 1)
@@ -182,6 +193,9 @@ class GameEngine {
             print("WINNNNN!")
         }
     }
+    
+    
+    // MARK: - Helper Functions
     
     /**
      Helper function that takes a tap location and compares it to the player's next position.
@@ -284,6 +298,10 @@ class GameEngine {
                                 inventory: playerSprite.inventory,
                                 exit: isExitAvailable ? "YES" : "NO",
                                 gameOver: isGameOver ? "LOSE!" : "")
+    }
+    
+    private func animateGameOver() {
+        
     }
     
     
