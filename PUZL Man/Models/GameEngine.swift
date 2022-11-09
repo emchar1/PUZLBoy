@@ -26,6 +26,9 @@ class GameEngine {
     var playerIsFacingLeft = false
     var playerSwitchOffset: CGFloat = 75
     
+    //FIXME: - Is this the best way to do this??? Used to
+    var shouldUpdateRemainingForBoulderIfIcy: Bool = false
+    
     var isExitAvailable: Bool { gemsRemaining == 0 }
     var isSolved: Bool { isExitAvailable && level.player == level.end }
     var isGameOver: Bool { movesRemaining <= 0 }
@@ -243,23 +246,46 @@ class GameEngine {
      */
     private func movePlayerHelper(useRow: Bool, useGreaterThan: Bool, comparisonValue: Int, increment: Int) {
         let comparator: (Int, Int) -> Bool = useGreaterThan ? (>) : (<)
+        var currentLevelType = level.getLevelType(at: level.player)
         var nextPanel: K.GameboardPosition = (row: level.player!.row + (useRow ? increment : 0), col: level.player!.col + (useRow ? 0 : increment))
         
         guard checkPanel(position: nextPanel) else { return }
         guard comparator(useRow ? level.player!.row : level.player!.col, comparisonValue) else { return }
         
-        repeat {
-            //I hate how this needs to be called twice, but here we are...
-            nextPanel = (row: level.player!.row + (useRow ? increment : 0), col: level.player!.col + (useRow ? 0 : increment))
-            
-            guard checkPanel(position: nextPanel) else { break }
-            guard comparator(useRow ? level.player!.row : level.player!.col, comparisonValue) else { break }
-            
-            level.updatePlayer(position: nextPanel)
-            setPlayerSpritePosition(animate: true, completion: nil)
-        } while level.getLevelType(at: level.player) == .ice
         
-        updateMovesRemaining()
+        level.updatePlayer(position: nextPanel)
+        setPlayerSpritePosition(animate: true) {
+            let previousLevelType = currentLevelType
+            currentLevelType = self.level.getLevelType(at: self.level.player)
+            
+            if currentLevelType != .ice {
+                self.updateMovesRemaining()
+                self.shouldUpdateRemainingForBoulderIfIcy = false
+                
+                //This breaks out of the recursion
+                return
+            }
+            else {
+                self.shouldUpdateRemainingForBoulderIfIcy = true
+            }
+            
+            //Recursion!!!
+            self.movePlayerHelper(useRow: useRow, useGreaterThan: useGreaterThan, comparisonValue: comparisonValue, increment: increment)
+        }
+        
+        
+//        repeat {
+//            //I hate how this needs to be called twice, but here we are...
+//            nextPanel = (row: level.player!.row + (useRow ? increment : 0), col: level.player!.col + (useRow ? 0 : increment))
+//
+//            guard checkPanel(position: nextPanel) else { break }
+//            guard comparator(useRow ? level.player!.row : level.player!.col, comparisonValue) else { break }
+//
+//            level.updatePlayer(position: nextPanel)
+//            setPlayerSpritePosition(animate: true, completion: nil)
+//        } while level.getLevelType(at: level.player) == .ice
+//
+//        updateMovesRemaining()
     }
     
     /**
@@ -271,15 +297,30 @@ class GameEngine {
         switch level.getLevelType(at: position) {
         case .boulder:
             if playerSprite.inventory.hammers <= 0 {
-                print("A boulder blocks your path...")
+                if shouldUpdateRemainingForBoulderIfIcy {
+                    updateMovesRemaining()
+                    shouldUpdateRemainingForBoulderIfIcy = false
+                }
+                
+                print("A boulder blocks your path... \(shouldUpdateRemainingForBoulderIfIcy)")
+                
                 return false
             }
         case .enemy:
             if playerSprite.inventory.swords <= 0 {
                 updateMovesRemaining()
+                
                 print("Enemy attacks you!")
+                
                 return false
             }
+        case .boundary:
+            if shouldUpdateRemainingForBoulderIfIcy {
+                updateMovesRemaining()
+                shouldUpdateRemainingForBoulderIfIcy = false
+            }
+            
+            break
         default:
             break
         }
