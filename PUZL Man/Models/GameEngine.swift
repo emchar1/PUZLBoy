@@ -149,6 +149,8 @@ class GameEngine {
      - parameter location: Location for which comparison is to occur.
      */
     func handleControls(in location: CGPoint) {
+        guard !isGameOver else { return print("Control attempted during game over animation...") }
+        
         if inBounds(location: location, direction: .up) {
             movePlayerHelper(useRow: true, useGreaterThan: true, comparisonValue: 0, increment: -1)
 
