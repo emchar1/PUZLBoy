@@ -11,13 +11,14 @@ class GameboardSprite {
     
     // MARK: - Properties
     
-    let tiles: [String] = ["start", "endClosed", "endOpen", "gem", "grass", "marsh", "ice", "hammer", "sword", "boulder", "enemy", "warp"]
+    let tiles: [String] = ["start", "endClosed", "endOpen", "gem", "gemOnIce", "grass", "marsh", "ice", "hammer", "sword", "boulder", "enemy", "warp"]
     let spriteScale: CGFloat = 0.94
 
     var xPosition: CGFloat { (K.iPhoneWidth * (1 - spriteScale)) / 2 }
     var yPosition: CGFloat { K.height - K.topMargin }
     var gameboardSize: CGFloat { CGFloat(panelCount) * panelSize }
-    var grass: String { tiles[4] }
+    var grass: String { tiles[5] }
+    var ice: String { tiles[7] }
     var endOpen: String { tiles[2] }
     
     var panels: [[SKSpriteNode]]

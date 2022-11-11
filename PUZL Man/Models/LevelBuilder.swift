@@ -47,6 +47,11 @@ class LevelBuilder {
                                                        [.ice, .ice, .boulder, .grass],
                                                        [.boulder, .gem, .endClosed, .boulder]]),
 
+        Level(level: 8, moves: 99, gems: 3, gameboard: [[.start, .ice, .ice, .gemOnIce],
+                                                       [.ice, .ice, .gemOnIce, .grass],
+                                                       [.ice, .ice, .boulder, .grass],
+                                                       [.boulder, .gem, .endClosed, .boulder]]),
+
         Level(level: 8, moves: 12, gems: 5, gameboard: [[.start, .endClosed, .grass, .grass],
                                                        [.marsh, .ice, .hammer, .sword],
                                                        [.boulder, .enemy, .warp, .gem],

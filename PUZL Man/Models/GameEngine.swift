@@ -29,6 +29,7 @@ class GameEngine {
     
     //FIXME: - Is this the best way to do this??? Used to
     var shouldUpdateRemainingForBoulderIfIcy: Bool = false
+    var isGliding: Bool = false
     
     var isExitAvailable: Bool { gemsRemaining == 0 }
     var isSolved: Bool { isExitAvailable && level.player == level.end }
@@ -76,7 +77,7 @@ class GameEngine {
             let playerMove = SKAction.move(to: playerLastPosition, duration: isSolved ? 0.75 : 0.5)
                         
             playerIsMoving = true
-            playerSprite.startMoveAnimation(didWin: isSolved)
+            playerSprite.startMoveAnimation(animationType: isGliding ? .glide : (isSolved ? .walk : .run))
             playerSprite.sprite.run(playerMove) {
                 self.playerIsMoving = false
                 self.playerSprite.startIdleAnimation()
@@ -98,22 +99,25 @@ class GameEngine {
         switch level.getLevelType(at: level.player) {
         case .gem:
             gemsRemaining -= 1
-            consumeItem()
+            consumeItem(toIce: false)
+        case .gemOnIce:
+            gemsRemaining -= 1
+            consumeItem(toIce: true)
         case .hammer:
-            consumeItem()
+            consumeItem(toIce: false)
             playerSprite.inventory.hammers += 1
         case .sword:
-            consumeItem()
+            consumeItem(toIce: false)
             playerSprite.inventory.swords += 1
         case .boulder:
             guard playerSprite.inventory.hammers > 0 else { return }
             
-            consumeItem()
+            consumeItem(toIce: false)
             playerSprite.inventory.hammers -= 1
         case .enemy:
             guard playerSprite.inventory.swords > 0 else { return }
             
-            consumeItem()
+            consumeItem(toIce: false)
             playerSprite.inventory.swords -= 1
         default: break
         }
@@ -122,8 +126,8 @@ class GameEngine {
     /**
      Converts a panel to grass, after consuming the item.
      */
-    private func consumeItem() {
-        level.setLevelType(at: level.player, levelType: .grass)
+    private func consumeItem(toIce: Bool) {
+        level.setLevelType(at: level.player, levelType: toIce ? .ice : .grass)
 
         for child in gameboardSprite.sprite.children {
             //Exclude Player, which will have no name
@@ -136,7 +140,7 @@ class GameEngine {
             //Update panel to grass
             if position == level.player, let child = gameboardSprite.sprite.childNode(withName: row + "," + col) {
                 child.removeFromParent()
-                gameboardSprite.updatePanels(at: position, with: gameboardSprite.grass)
+                gameboardSprite.updatePanels(at: position, with: toIce ? gameboardSprite.ice : gameboardSprite.grass)
             }
             
             //Update exitClosed panel to exitOpen
@@ -254,12 +258,14 @@ class GameEngine {
             if self.level.getLevelType(at: self.level.player) != .ice {
                 self.updateMovesRemaining()
                 self.shouldUpdateRemainingForBoulderIfIcy = false
+                self.isGliding = false
 
                 //EXIT RECURSION
                 return
             }
             else {
                 self.shouldUpdateRemainingForBoulderIfIcy = true
+                self.isGliding = true
             }
             
             //ENTER RECURSION

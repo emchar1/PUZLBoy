@@ -19,7 +19,7 @@ class PlayerSprite {
     var playerTextures: [[SKTexture]]
     
     enum Texture: Int {
-        case idle = 0, run, walk, dead
+        case idle = 0, run, walk, dead, glide
     }
 
     var inventory: Inventory {
@@ -50,12 +50,17 @@ class PlayerSprite {
         playerTextures.append([]) //run
         playerTextures.append([]) //walk
         playerTextures.append([]) //dead
+        playerTextures.append([]) //glide
 
         for i in 1...15 {
             playerTextures[Texture.idle.rawValue].append(playerAtlas.textureNamed("Idle (\(i))"))
             playerTextures[Texture.run.rawValue].append(playerAtlas.textureNamed("Run (\(i))"))
             playerTextures[Texture.walk.rawValue].append(playerAtlas.textureNamed("Walk (\(i))"))
             playerTextures[Texture.dead.rawValue].append(playerAtlas.textureNamed("Dead (\(i))"))
+            
+            if i == 5 {
+                playerTextures[Texture.glide.rawValue].append(playerAtlas.textureNamed("Run (\(i))"))
+            }
         }
                     
         sprite = SKSpriteNode(texture: playerTextures[Texture.idle.rawValue][0])
@@ -77,11 +82,17 @@ class PlayerSprite {
         sprite.run(SKAction.repeatForever(animation), withKey: "playerIdleAnimation")
     }
     
-    func startMoveAnimation(didWin: Bool) {
-        let animation = SKAction.animate(with: playerTextures[didWin ? Texture.walk.rawValue : Texture.run.rawValue], timePerFrame: animationSpeed)
+    func startMoveAnimation(animationType: Texture) {
+        let animation = SKAction.animate(with: playerTextures[animationType.rawValue], timePerFrame: animationSpeed)
 
         sprite.removeAllActions()
-        sprite.run(SKAction.repeatForever(animation), withKey: "playerMoveAnimation")
+        
+        if animationType == .glide {
+            sprite.run(SKAction.sequence([SKAction.repeat(animation, count: 1), SKAction.wait(forDuration: 2.0)]), withKey: "playerMoveAnimation")
+        }
+        else {
+            sprite.run(SKAction.repeatForever(animation), withKey: "playerMoveAnimation")
+        }
     }
 
     func startDeadAnimation(completion: @escaping (() -> ())) {
