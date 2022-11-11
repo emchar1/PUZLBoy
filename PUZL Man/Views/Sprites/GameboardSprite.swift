@@ -34,9 +34,10 @@ class GameboardSprite {
         panelSize = K.iPhoneWidth / CGFloat(panelCount)
         panels = Array(repeating: Array(repeating: SKSpriteNode(), count: panelCount), count: panelCount)
         
-        sprite = SKSpriteNode(color: .clear, size: CGSize(width: CGFloat(panelCount) * panelSize, height: CGFloat(panelCount) * panelSize))
+        sprite = SKSpriteNode(color: .magenta, size: CGSize(width: CGFloat(panelCount) * panelSize, height: CGFloat(panelCount) * panelSize))
         sprite.anchorPoint = .zero
         sprite.position = CGPoint(x: xPosition, y: yPosition - gameboardSize * spriteScale)
+        sprite.zPosition = K.ZPosition.gameboard
         sprite.setScale(spriteScale)
 
         for row in 0..<panelCount {
@@ -54,7 +55,7 @@ class GameboardSprite {
         panels[position.row][position.col].scale(to: CGSize(width: panelSize, height: panelSize))
         panels[position.row][position.col].position = CGPoint(x: CGFloat(position.col) * panelSize, y: CGFloat(panelCount - 1 - position.row) * panelSize)
         panels[position.row][position.col].anchorPoint = .zero
-        panels[position.row][position.col].zPosition = K.ZPosition.gameboard
+        panels[position.row][position.col].zPosition = K.ZPosition.panel
         panels[position.row][position.col].name = "\(position.row),\(position.col)"
 
         sprite.addChild(panels[position.row][position.col])

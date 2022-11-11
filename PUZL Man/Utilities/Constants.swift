@@ -58,7 +58,7 @@ struct K {
      */
     struct ZPosition {
         static let gameboard: CGFloat = 100
-//        static let controls: CGFloat = 200
+        static let panel: CGFloat = 200
         static let player: CGFloat = 300
     }
 }
