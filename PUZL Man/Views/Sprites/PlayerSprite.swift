@@ -14,29 +14,13 @@ class PlayerSprite {
     let playerSize = CGSize(width: 614, height: 564)
     let animationSpeed: TimeInterval = 0.04
     
+    var inventory: Inventory
     var sprite: SKSpriteNode
     var playerAtlas: SKTextureAtlas
     var playerTextures: [[SKTexture]]
     
     enum Texture: Int {
         case idle = 0, run, walk, dead, glide
-    }
-
-    var inventory: Inventory {
-        didSet {
-            if hasHammers() && !hasSwords() {
-//                sprite.strokeColor = .systemPink
-            }
-            else if hasSwords() && !hasHammers() {
-//                sprite.strokeColor = .cyan
-            }
-            else if hasHammers() && hasSwords() {
-//                sprite.strokeColor = .purple
-            }
-            else {
-//                sprite.strokeColor = .clear
-            }
-        }
     }
     
     
