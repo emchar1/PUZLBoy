@@ -210,6 +210,7 @@ class GameEngine {
     private func inBounds(location: CGPoint, direction: Controls) -> Bool {
         let maxDistance = gameboardSprite.panelCount
         let panelSize = gameboardSprite.panelSize * gameboardSprite.spriteScale
+        let gameboardSize = panelSize * CGFloat(maxDistance)
         
         var upBound = level.player!.row { didSet { if upBound < 0 { upBound = 0 }}}
         var downBound = level.player!.row + 1
@@ -233,8 +234,8 @@ class GameEngine {
         
         return location.x > gameboardSprite.xPosition + (CGFloat(leftBound) * panelSize) &&
         location.x < gameboardSprite.xPosition + (CGFloat(rightBound) * panelSize) &&
-        location.y > gameboardSprite.yPosition - (CGFloat(downBound) * panelSize) &&
-        location.y < gameboardSprite.yPosition - (CGFloat(upBound) * panelSize)
+        location.y > gameboardSprite.yPosition + gameboardSize - (CGFloat(downBound) * panelSize) &&
+        location.y < gameboardSprite.yPosition + gameboardSize - (CGFloat(upBound) * panelSize)
     }
     
     /**

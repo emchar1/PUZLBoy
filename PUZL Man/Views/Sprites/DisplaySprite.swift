@@ -33,49 +33,49 @@ class DisplaySprite {
         
         levelLabel = SKLabelNode(text: "LV: ")
         levelLabel.horizontalAlignmentMode = .left
-        levelLabel.position = CGPoint(x: K.width / 2.5, y: K.height / 3.5)
+        levelLabel.position = CGPoint(x: K.width / 2.5, y: K.height / 4.5)
         levelLabel.fontName = fontName
         levelLabel.fontSize = fontSize
         levelLabel.fontColor = fontColor
 
         movesRemainingLabel = SKLabelNode(text: "Moves: ")
         movesRemainingLabel.horizontalAlignmentMode = .left
-        movesRemainingLabel.position = CGPoint(x: K.width / 2.5, y: K.height / 3.5 - fontSpacing)
+        movesRemainingLabel.position = CGPoint(x: K.width / 2.5, y: K.height / 4.5 - fontSpacing)
         movesRemainingLabel.fontName = fontName
         movesRemainingLabel.fontSize = fontSize
         movesRemainingLabel.fontColor = fontColor
 
         gemsRemainingLabel = SKLabelNode(text: "Gems: ")
         gemsRemainingLabel.horizontalAlignmentMode = .left
-        gemsRemainingLabel.position = CGPoint(x: K.width / 2.5, y: K.height / 3.5 - 2 * fontSpacing)
+        gemsRemainingLabel.position = CGPoint(x: K.width / 2.5, y: K.height / 4.5 - 2 * fontSpacing)
         gemsRemainingLabel.fontName = fontName
         gemsRemainingLabel.fontSize = fontSize
         gemsRemainingLabel.fontColor = fontColor
         
         hammersRemainingLabel = SKLabelNode(text: "Hamrs: ")
         hammersRemainingLabel.horizontalAlignmentMode = .left
-        hammersRemainingLabel.position = CGPoint(x: K.width / 2.5, y: K.height / 3.5 - 3 * fontSpacing)
+        hammersRemainingLabel.position = CGPoint(x: K.width / 2.5, y: K.height / 4.5 - 3 * fontSpacing)
         hammersRemainingLabel.fontName = fontName
         hammersRemainingLabel.fontSize = fontSize
         hammersRemainingLabel.fontColor = fontColor
 
         swordsRemainingLabel = SKLabelNode(text: "Swords: ")
         swordsRemainingLabel.horizontalAlignmentMode = .left
-        swordsRemainingLabel.position = CGPoint(x: K.width / 2.5, y: K.height / 3.5 - 4 * fontSpacing)
+        swordsRemainingLabel.position = CGPoint(x: K.width / 2.5, y: K.height / 4.5 - 4 * fontSpacing)
         swordsRemainingLabel.fontName = fontName
         swordsRemainingLabel.fontSize = fontSize
         swordsRemainingLabel.fontColor = fontColor
 
         exitAvailableLabel = SKLabelNode(text: "Exit: ")
         exitAvailableLabel.horizontalAlignmentMode = .left
-        exitAvailableLabel.position = CGPoint(x: K.width / 2.5, y: K.height / 3.5 - 5 * fontSpacing)
+        exitAvailableLabel.position = CGPoint(x: K.width / 2.5, y: K.height / 4.5 - 5 * fontSpacing)
         exitAvailableLabel.fontName = fontName
         exitAvailableLabel.fontSize = fontSize
         exitAvailableLabel.fontColor = fontColor
 
         gameOverLabel = SKLabelNode(text: "")
         gameOverLabel.horizontalAlignmentMode = .left
-        gameOverLabel.position = CGPoint(x: K.width / 2.5, y: K.height / 3.5 - 6 * fontSpacing)
+        gameOverLabel.position = CGPoint(x: K.width / 2.5, y: K.height / 4.5 - 6 * fontSpacing)
         gameOverLabel.fontName = fontName
         gameOverLabel.fontSize = fontSize
         gameOverLabel.fontColor = fontColor

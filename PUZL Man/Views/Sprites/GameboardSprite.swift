@@ -15,7 +15,7 @@ class GameboardSprite {
     let spriteScale: CGFloat = 0.94
 
     var xPosition: CGFloat { (K.iPhoneWidth * (1 - spriteScale)) / 2 }
-    var yPosition: CGFloat { K.height - K.topMargin }
+    var yPosition: CGFloat { (K.height - gameboardSize * spriteScale) / 2 }
     var gameboardSize: CGFloat { CGFloat(panelCount) * panelSize }
     var grass: String { tiles[5] }
     var ice: String { tiles[7] }
@@ -36,7 +36,7 @@ class GameboardSprite {
         
         sprite = SKSpriteNode(color: .magenta, size: CGSize(width: CGFloat(panelCount) * panelSize, height: CGFloat(panelCount) * panelSize))
         sprite.anchorPoint = .zero
-        sprite.position = CGPoint(x: xPosition, y: yPosition - gameboardSize * spriteScale)
+        sprite.position = CGPoint(x: xPosition, y: yPosition)
         sprite.zPosition = K.ZPosition.gameboard
         sprite.setScale(spriteScale)
 
