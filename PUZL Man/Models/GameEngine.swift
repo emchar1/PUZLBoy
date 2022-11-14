@@ -21,6 +21,7 @@ class GameEngine {
     
     var level: Level
     var gemsRemaining: Int
+    var livesRemaining: Int
     var movesRemaining: Int {
         didSet {
             if movesRemaining < 0 {
@@ -54,6 +55,7 @@ class GameEngine {
         self.level = LevelBuilder.levels[level]
         self.movesRemaining = self.level.moves
         self.gemsRemaining = self.level.gems
+        self.livesRemaining = 3
         
         gameboardSprite = GameboardSprite(level: self.level)
         playerSprite = PlayerSprite(position: .zero)
@@ -61,13 +63,7 @@ class GameEngine {
                                       bottomYPosition: gameboardSprite.yPosition,
                                       margin: 40)
         
-        displaySprite.setLabels(level: "\(self.level.level)",
-                                moves: "\(movesRemaining)",
-                                gems: "\(gemsRemaining)",
-                                inventory: playerSprite.inventory,
-                                exit: isExitAvailable ? "YES" : "NO",
-                                gameOver: isGameOver ? "LOSE!" : "")
-        
+        displaySprite.setLabels(level: "\(self.level.level)", lives: "\(livesRemaining)", moves: "\(movesRemaining)", inventory: playerSprite.inventory)
         setPlayerSpritePosition(animate: false, completion: nil)
     }
     
@@ -327,12 +323,7 @@ class GameEngine {
      */
     private func updateMovesRemaining() {
         movesRemaining -= level.getLevelType(at: level.player) == .marsh ? 2 : 1
-        displaySprite.setLabels(level: "\(level.level)",
-                                moves: "\(movesRemaining)",
-                                gems: "\(gemsRemaining)",
-                                inventory: playerSprite.inventory,
-                                exit: isExitAvailable ? "YES" : "NO",
-                                gameOver: isGameOver ? "LOSE!" : "")
+        displaySprite.setLabels(level: "\(level.level)", lives: "\(livesRemaining)", moves: "\(movesRemaining)", inventory: playerSprite.inventory)
         
         if isSolved {
             delegate?.gameIsSolved()
@@ -342,6 +333,9 @@ class GameEngine {
             animateGameOver {
                 self.delegate?.gameIsOver()
             }
+            
+            //FIXME: - Lives Remaining doesn't decrement
+            livesRemaining -= 1
             
             print("GAME OVERRR")
         }

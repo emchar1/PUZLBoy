@@ -11,17 +11,12 @@ class DisplaySprite {
     
     // MARK: - Properties
     
-    let fontName = "AvenirNext-BoldItalic"
-    let fontSize: CGFloat = 75
-    let fontColor: UIColor = .white
-    
     var sprite: SKSpriteNode
+    var levelLabel: SKLabelNode
     var statusLives: DisplayStatusBarSprite
     var statusMoves: DisplayStatusBarSprite
     var statusHammers: DisplayStatusBarSprite
     var statusSwords: DisplayStatusBarSprite
-
-    var levelLabel: SKLabelNode
     
     
     // MARK: - Initialization
@@ -45,9 +40,9 @@ class DisplaySprite {
         levelLabel = SKLabelNode(text: nil)
         levelLabel.horizontalAlignmentMode = .left
         levelLabel.position = CGPoint(x: margin, y: topYPosition + margin)
-        levelLabel.fontName = fontName
-        levelLabel.fontSize = fontSize
-        levelLabel.fontColor = fontColor
+        levelLabel.fontName = "AvenirNext-BoldItalic"
+        levelLabel.fontSize = 75
+        levelLabel.fontColor = .white
         
         addToScene()
     }
@@ -55,7 +50,7 @@ class DisplaySprite {
     
     // MARK: - Helper Functions
     
-    func setLabels(level: String, moves: String, gems: String, inventory: Inventory, exit: String, gameOver: String) {
+    func setLabels(level: String, lives: String, moves: String, inventory: Inventory) {
         levelLabel.text = "LEVEL \(level)"
         
         statusMoves.updateAmount(Int(moves) ?? 99)

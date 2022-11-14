@@ -10,12 +10,6 @@ import SpriteKit
 import GameplayKit
 
 class GameViewController: UIViewController {
-    
-    // MARK: - Properties
-    
-    
-    // MARK: - Initialization
-
     override func viewDidLoad() {
         super.viewDidLoad()
 
