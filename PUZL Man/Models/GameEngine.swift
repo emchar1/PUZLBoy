@@ -20,8 +20,14 @@ class GameEngine {
     // MARK: - Properties
     
     var level: Level
-    var movesRemaining: Int
     var gemsRemaining: Int
+    var movesRemaining: Int {
+        didSet {
+            if movesRemaining < 0 {
+                movesRemaining = 0
+            }
+        }
+    }
     
     var playerIsMoving = false
     var playerIsFacingLeft = false
@@ -51,7 +57,9 @@ class GameEngine {
         
         gameboardSprite = GameboardSprite(level: self.level)
         playerSprite = PlayerSprite(position: .zero)
-        displaySprite = DisplaySprite()
+        displaySprite = DisplaySprite(topYPosition: gameboardSprite.yPosition + gameboardSprite.gameboardSize * gameboardSprite.spriteScale,
+                                      bottomYPosition: gameboardSprite.yPosition,
+                                      margin: 40)
         
         displaySprite.setLabels(level: "\(self.level.level)",
                                 moves: "\(movesRemaining)",

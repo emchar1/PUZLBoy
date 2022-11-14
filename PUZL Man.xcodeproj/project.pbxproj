@@ -10,6 +10,7 @@
 		EA1191532904BC4C009D0E3E /* DisplaySprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA1191522904BC4C009D0E3E /* DisplaySprite.swift */; };
 		EA119155290CCA39009D0E3E /* Inventory.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA119154290CCA39009D0E3E /* Inventory.swift */; };
 		EA11915729121798009D0E3E /* Controls.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA11915629121798009D0E3E /* Controls.swift */; };
+		EA3534892920612300C11FC0 /* DisplayStatusBarSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA3534882920612300C11FC0 /* DisplayStatusBarSprite.swift */; };
 		EA65182B28E4199E00E535BF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA65182A28E4199E00E535BF /* AppDelegate.swift */; };
 		EA65182D28E4199E00E535BF /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA65182C28E4199E00E535BF /* SceneDelegate.swift */; };
 		EA65182F28E4199E00E535BF /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA65182E28E4199E00E535BF /* GameViewController.swift */; };
@@ -30,6 +31,7 @@
 		EA1191522904BC4C009D0E3E /* DisplaySprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplaySprite.swift; sourceTree = "<group>"; };
 		EA119154290CCA39009D0E3E /* Inventory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Inventory.swift; sourceTree = "<group>"; };
 		EA11915629121798009D0E3E /* Controls.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Controls.swift; sourceTree = "<group>"; };
+		EA3534882920612300C11FC0 /* DisplayStatusBarSprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayStatusBarSprite.swift; sourceTree = "<group>"; };
 		EA65182728E4199E00E535BF /* PUZL Man.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "PUZL Man.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		EA65182A28E4199E00E535BF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		EA65182C28E4199E00E535BF /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -128,6 +130,7 @@
 				EA65184428E5750C00E535BF /* GameboardSprite.swift */,
 				EA65189728EAB5E000E535BF /* ControlsSprite.swift */,
 				EA1191522904BC4C009D0E3E /* DisplaySprite.swift */,
+				EA3534882920612300C11FC0 /* DisplayStatusBarSprite.swift */,
 			);
 			path = Sprites;
 			sourceTree = "<group>";
@@ -216,6 +219,7 @@
 				EA65184528E5750C00E535BF /* GameboardSprite.swift in Sources */,
 				EA11915729121798009D0E3E /* Controls.swift in Sources */,
 				EA119155290CCA39009D0E3E /* Inventory.swift in Sources */,
+				EA3534892920612300C11FC0 /* DisplayStatusBarSprite.swift in Sources */,
 				EA1191532904BC4C009D0E3E /* DisplaySprite.swift in Sources */,
 				EA65182F28E4199E00E535BF /* GameViewController.swift in Sources */,
 				EA65182B28E4199E00E535BF /* AppDelegate.swift in Sources */,

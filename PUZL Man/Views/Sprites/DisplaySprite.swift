@@ -11,74 +11,43 @@ class DisplaySprite {
     
     // MARK: - Properties
     
-    let fontSpacing: CGFloat = 70
-    let fontSize: CGFloat = 60
-    let fontName = "AvenirNext-Bold"
+    let fontName = "AvenirNext-BoldItalic"
+    let fontSize: CGFloat = 75
     let fontColor: UIColor = .white
     
     var sprite: SKSpriteNode
+    var statusLives: DisplayStatusBarSprite
+    var statusMoves: DisplayStatusBarSprite
+    var statusHammers: DisplayStatusBarSprite
+    var statusSwords: DisplayStatusBarSprite
+
     var levelLabel: SKLabelNode
-    var movesRemainingLabel: SKLabelNode
-    var gemsRemainingLabel: SKLabelNode
-    var hammersRemainingLabel: SKLabelNode
-    var swordsRemainingLabel: SKLabelNode
-    var exitAvailableLabel: SKLabelNode
-    var gameOverLabel: SKLabelNode
     
     
     // MARK: - Initialization
     
-    init() {
+    init(topYPosition: CGFloat, bottomYPosition: CGFloat, margin: CGFloat) {
         sprite = SKSpriteNode()
+        sprite.zPosition = K.ZPosition.display
         
-        levelLabel = SKLabelNode(text: "LV: ")
+        statusLives = DisplayStatusBarSprite(icon: "iconHeart", amount: 3, fillColor: .cyan)
+        statusLives.position = CGPoint(x: K.iPhoneWidth - statusLives.width, y: topYPosition + margin + statusLives.width / 2)
+
+        statusMoves = DisplayStatusBarSprite(icon: "iconBoot", amount: 99, fillColor: .cyan)
+        statusMoves.position = CGPoint(x: K.iPhoneWidth - statusMoves.width, y: topYPosition + margin)
+        
+        statusHammers = DisplayStatusBarSprite(icon: "iconHammer", amount: 99, fillColor: .yellow)
+        statusHammers.position = CGPoint(x: margin + statusHammers.width, y: bottomYPosition - margin)
+        
+        statusSwords = DisplayStatusBarSprite(icon: "iconSword", amount: 99, fillColor: .yellow)
+        statusSwords.position = CGPoint(x: K.iPhoneWidth - statusMoves.width, y: bottomYPosition - margin)
+        
+        levelLabel = SKLabelNode(text: nil)
         levelLabel.horizontalAlignmentMode = .left
-        levelLabel.position = CGPoint(x: K.width / 2.5, y: K.height / 4.5)
+        levelLabel.position = CGPoint(x: margin, y: topYPosition + margin)
         levelLabel.fontName = fontName
         levelLabel.fontSize = fontSize
         levelLabel.fontColor = fontColor
-
-        movesRemainingLabel = SKLabelNode(text: "Moves: ")
-        movesRemainingLabel.horizontalAlignmentMode = .left
-        movesRemainingLabel.position = CGPoint(x: K.width / 2.5, y: K.height / 4.5 - fontSpacing)
-        movesRemainingLabel.fontName = fontName
-        movesRemainingLabel.fontSize = fontSize
-        movesRemainingLabel.fontColor = fontColor
-
-        gemsRemainingLabel = SKLabelNode(text: "Gems: ")
-        gemsRemainingLabel.horizontalAlignmentMode = .left
-        gemsRemainingLabel.position = CGPoint(x: K.width / 2.5, y: K.height / 4.5 - 2 * fontSpacing)
-        gemsRemainingLabel.fontName = fontName
-        gemsRemainingLabel.fontSize = fontSize
-        gemsRemainingLabel.fontColor = fontColor
-        
-        hammersRemainingLabel = SKLabelNode(text: "Hamrs: ")
-        hammersRemainingLabel.horizontalAlignmentMode = .left
-        hammersRemainingLabel.position = CGPoint(x: K.width / 2.5, y: K.height / 4.5 - 3 * fontSpacing)
-        hammersRemainingLabel.fontName = fontName
-        hammersRemainingLabel.fontSize = fontSize
-        hammersRemainingLabel.fontColor = fontColor
-
-        swordsRemainingLabel = SKLabelNode(text: "Swords: ")
-        swordsRemainingLabel.horizontalAlignmentMode = .left
-        swordsRemainingLabel.position = CGPoint(x: K.width / 2.5, y: K.height / 4.5 - 4 * fontSpacing)
-        swordsRemainingLabel.fontName = fontName
-        swordsRemainingLabel.fontSize = fontSize
-        swordsRemainingLabel.fontColor = fontColor
-
-        exitAvailableLabel = SKLabelNode(text: "Exit: ")
-        exitAvailableLabel.horizontalAlignmentMode = .left
-        exitAvailableLabel.position = CGPoint(x: K.width / 2.5, y: K.height / 4.5 - 5 * fontSpacing)
-        exitAvailableLabel.fontName = fontName
-        exitAvailableLabel.fontSize = fontSize
-        exitAvailableLabel.fontColor = fontColor
-
-        gameOverLabel = SKLabelNode(text: "")
-        gameOverLabel.horizontalAlignmentMode = .left
-        gameOverLabel.position = CGPoint(x: K.width / 2.5, y: K.height / 4.5 - 6 * fontSpacing)
-        gameOverLabel.fontName = fontName
-        gameOverLabel.fontSize = fontSize
-        gameOverLabel.fontColor = fontColor
         
         addToScene()
     }
@@ -87,22 +56,19 @@ class DisplaySprite {
     // MARK: - Helper Functions
     
     func setLabels(level: String, moves: String, gems: String, inventory: Inventory, exit: String, gameOver: String) {
-        levelLabel.text = "LV: \(level)"
-        movesRemainingLabel.text = "Moves: \(moves)"
-        gemsRemainingLabel.text = "Gems: \(gems)"
-        hammersRemainingLabel.text = "Hamrs: \(inventory.hammers)"
-        swordsRemainingLabel.text = "Swords: \(inventory.swords)"
-        exitAvailableLabel.text = "Exit: \(exit)"
-        gameOverLabel.text = gameOver
+        levelLabel.text = "LEVEL \(level)"
+        
+        statusMoves.updateAmount(Int(moves) ?? 99)
+        statusHammers.updateAmount(inventory.hammers)
+        statusSwords.updateAmount(inventory.swords)
     }
 
     private func addToScene() {
         sprite.addChild(levelLabel)
-        sprite.addChild(movesRemainingLabel)
-        sprite.addChild(gemsRemainingLabel)
-        sprite.addChild(hammersRemainingLabel)
-        sprite.addChild(swordsRemainingLabel)
-        sprite.addChild(exitAvailableLabel)
-        sprite.addChild(gameOverLabel)
+        
+        sprite.addChild(statusLives)
+        sprite.addChild(statusMoves)
+        sprite.addChild(statusHammers)
+        sprite.addChild(statusSwords)
     }
 }
