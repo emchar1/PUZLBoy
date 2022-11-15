@@ -33,8 +33,8 @@ class DisplayStatusBarSprite: SKNode {
         
         backgroundBar.fillTexture = SKTexture(imageNamed: "displayTexture")
         backgroundBar.fillColor = fillColor
-        backgroundBar.lineWidth = 6
-        backgroundBar.strokeColor = .lightGray
+        backgroundBar.lineWidth = 3
+        backgroundBar.strokeColor = .white
         backgroundBar.position = .zero
 
         imageNode.position = CGPoint(x: -80, y: 0)

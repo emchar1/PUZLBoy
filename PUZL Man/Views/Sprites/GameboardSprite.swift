@@ -34,7 +34,7 @@ class GameboardSprite {
         panelSize = K.iPhoneWidth / CGFloat(panelCount)
         panels = Array(repeating: Array(repeating: SKSpriteNode(), count: panelCount), count: panelCount)
         
-        sprite = SKSpriteNode(color: .magenta, size: CGSize(width: CGFloat(panelCount) * panelSize, height: CGFloat(panelCount) * panelSize))
+        sprite = SKSpriteNode(color: .white, size: CGSize(width: CGFloat(panelCount) * panelSize, height: CGFloat(panelCount) * panelSize))
         sprite.anchorPoint = .zero
         sprite.position = CGPoint(x: xPosition, y: yPosition)
         sprite.zPosition = K.ZPosition.gameboard
@@ -51,9 +51,12 @@ class GameboardSprite {
     // MARK: - Helper Functions
     
     func updatePanels(at position: K.GameboardPosition, with tile: String) {
+        let spacing: CGFloat = 4
+        
         panels[position.row][position.col] = SKSpriteNode(imageNamed: tile)
-        panels[position.row][position.col].scale(to: CGSize(width: panelSize, height: panelSize))
-        panels[position.row][position.col].position = CGPoint(x: CGFloat(position.col) * panelSize, y: CGFloat(panelCount - 1 - position.row) * panelSize)
+        panels[position.row][position.col].scale(to: CGSize(width: panelSize - spacing, height: panelSize - spacing))
+        panels[position.row][position.col].position = CGPoint(x: CGFloat(position.col) * panelSize + spacing / 2,
+                                                              y: CGFloat(panelCount - 1 - position.row) * panelSize + spacing / 2)
         panels[position.row][position.col].anchorPoint = .zero
         panels[position.row][position.col].zPosition = K.ZPosition.panel
         panels[position.row][position.col].name = "\(position.row),\(position.col)"
