@@ -36,7 +36,7 @@ struct K {
     /**
      Margin of the most recent iPhone, i.e. iPhone 14. Set to half of the difference between the default width and the width of the most recent iPhone, i.e. 296
      */
-    static let iPhoneMargin: CGFloat = (width - iPhoneWidth) / 2 //296
+    static let iPhoneMargin: CGFloat = (width - iPhoneWidth) / 2
 
     /**
      Top margin of the device.

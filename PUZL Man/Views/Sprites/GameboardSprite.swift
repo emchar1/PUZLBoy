@@ -11,15 +11,16 @@ class GameboardSprite {
     
     // MARK: - Properties
     
-    let tiles: [String] = ["start", "endClosed", "endOpen", "gem", "gemOnIce", "grass", "marsh", "ice", "hammer", "sword", "boulder", "enemy", "warp"]
+    let tiles: [LevelType] = LevelType.allCases
     let spriteScale: CGFloat = 0.94
 
     var xPosition: CGFloat { (K.iPhoneWidth * (1 - spriteScale)) / 2 }
     var yPosition: CGFloat { (K.height - gameboardSize * spriteScale) / 2 }
     var gameboardSize: CGFloat { CGFloat(panelCount) * panelSize }
-    var grass: String { tiles[5] }
-    var ice: String { tiles[7] }
-    var endOpen: String { tiles[2] }
+    
+    var grass: LevelType { tiles[LevelType.grass.rawValue] }
+    var ice: LevelType { tiles[LevelType.ice.rawValue] }
+    var endOpen: LevelType { tiles[LevelType.endOpen.rawValue] }
     
     var panels: [[SKSpriteNode]]
     var panelCount: Int
@@ -50,10 +51,10 @@ class GameboardSprite {
     
     // MARK: - Helper Functions
     
-    func updatePanels(at position: K.GameboardPosition, with tile: String) {
+    func updatePanels(at position: K.GameboardPosition, with tile: LevelType) {
         let spacing: CGFloat = 4
         
-        panels[position.row][position.col] = SKSpriteNode(imageNamed: tile)
+        panels[position.row][position.col] = SKSpriteNode(imageNamed: tile.description)
         panels[position.row][position.col].scale(to: CGSize(width: panelSize - spacing, height: panelSize - spacing))
         panels[position.row][position.col].position = CGPoint(x: CGFloat(position.col) * panelSize + spacing / 2,
                                                               y: CGFloat(panelCount - 1 - position.row) * panelSize + spacing / 2)
