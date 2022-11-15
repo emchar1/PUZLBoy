@@ -50,11 +50,12 @@ struct Level: CustomStringConvertible {
     
     // MARK: - Initialization
     
-    init(level: Int, moves: Int, gems: Int, gameboard: [[LevelType]]) {
+    init(level: Int, moves: Int, gameboard: [[LevelType]]) {
         guard gameboard.count == gameboard[0].count else { fatalError("Gameboard must be of equal rows and columns.") }
         
         var startFound = false
         var endFound = false
+        var gemsCount = 0
         
         for (rowIndex, row) in gameboard.enumerated() {
             for (colIndex, col) in row.enumerated() {
@@ -68,6 +69,10 @@ struct Level: CustomStringConvertible {
                     end = (rowIndex, colIndex)
                     endFound = true
                 }
+                
+                if col == .gem || col == .gemOnIce {
+                    gemsCount += 1
+                }
             }
         }
         
@@ -75,7 +80,7 @@ struct Level: CustomStringConvertible {
         
         self.level = level
         self.moves = moves
-        self.gems = gems
+        self.gems = gemsCount
         self.gameboard = gameboard
     }
     
