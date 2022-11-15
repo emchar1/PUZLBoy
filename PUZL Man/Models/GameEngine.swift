@@ -32,7 +32,6 @@ class GameEngine {
     
     var playerIsMoving = false
     var playerIsFacingLeft = false
-    var playerSwitchOffset: CGFloat = 75
     
     //FIXME: - Is this the best way to do this??? Used to
     var shouldUpdateRemainingForBoulderIfIcy: Bool = false
@@ -74,7 +73,7 @@ class GameEngine {
      Sets the player sprite position easily.
      */
     func setPlayerSpritePosition(animate: Bool, completion: (() -> ())?) {
-        let playerLastPosition = CGPoint(x: gameboardSprite.panelSize * (CGFloat(level.player!.col) + 0.5) + playerSwitchOffset * (playerIsFacingLeft ? -1 : 1),
+        let playerLastPosition = CGPoint(x: gameboardSprite.panelSize * (CGFloat(level.player!.col) + 0.5) + (playerIsFacingLeft ? -1 : 1),
                                          y: gameboardSprite.panelSize * (CGFloat(gameboardSprite.panelCount - 1 - level.player!.row) + 0.5))
 
         if animate {
@@ -178,7 +177,7 @@ class GameEngine {
         else if inBounds(location: location, direction: .left) {
             //Need to adjust offset because the OG sprite has a gap on the right
             if !playerIsFacingLeft {
-                playerSprite.sprite.position = CGPoint(x: playerSprite.sprite.position.x - playerSwitchOffset, y: playerSprite.sprite.position.y)
+                playerSprite.sprite.position = CGPoint(x: playerSprite.sprite.position.x, y: playerSprite.sprite.position.y)
             }
             
             playerIsFacingLeft = true
@@ -190,7 +189,7 @@ class GameEngine {
         }
         else if inBounds(location: location, direction: .right) {
             if playerIsFacingLeft {
-                playerSprite.sprite.position = CGPoint(x: playerSprite.sprite.position.x + playerSwitchOffset, y: playerSprite.sprite.position.y)
+                playerSprite.sprite.position = CGPoint(x: playerSprite.sprite.position.x, y: playerSprite.sprite.position.y)
             }
             
             playerIsFacingLeft = false

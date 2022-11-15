@@ -11,7 +11,7 @@ class PlayerSprite {
     
     // MARK: - Properties
     
-    let playerSize = CGSize(width: 614, height: 564)
+    let playerSize = CGSize(width: 946, height: 564)
     let animationSpeed: TimeInterval = 0.04
     
     var inventory: Inventory
@@ -100,7 +100,7 @@ class PlayerSprite {
     func setScale(panelSize: CGFloat) {
         
         
-        //FIXME: - Changed 0.5 to 1 due to new hero width size from 313 to original 614
-        sprite.setScale(1 * (panelSize / playerSize.width))
+        //FIXME: - Changed 0.5 to 1 to 1.5 due to new hero width size from 313 to original 614 to new 946
+        sprite.setScale(1.5 * (panelSize / playerSize.width))
     }
 }
