@@ -10,7 +10,7 @@ import Foundation
 /**
  Class with all the possible levels. These will need to be done thoughtfully.
  */
-class LevelBuilder {
+struct LevelBuilder {
     static var maxLevel: Int { return levels.count - 1 }
     
     static var levels: [Level] = [

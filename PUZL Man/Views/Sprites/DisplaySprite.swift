@@ -11,12 +11,12 @@ class DisplaySprite {
     
     // MARK: - Properties
     
-    var sprite: SKSpriteNode
-    var levelLabel: SKLabelNode
-    var statusLives: DisplayStatusBarSprite
-    var statusMoves: DisplayStatusBarSprite
-    var statusHammers: DisplayStatusBarSprite
-    var statusSwords: DisplayStatusBarSprite
+    private(set) var sprite: SKSpriteNode
+    private var levelLabel: SKLabelNode
+    private var statusLives: DisplayStatusBarSprite
+    private var statusMoves: DisplayStatusBarSprite
+    private var statusHammers: DisplayStatusBarSprite
+    private var statusSwords: DisplayStatusBarSprite
     
     
     // MARK: - Initialization

@@ -11,13 +11,13 @@ class PlayerSprite {
     
     // MARK: - Properties
     
-    let playerSize = CGSize(width: 946, height: 564)
-    let animationSpeed: TimeInterval = 0.04
+    private let playerSize = CGSize(width: 946, height: 564)
+    private let animationSpeed: TimeInterval = 0.04
     
     var inventory: Inventory
-    var sprite: SKSpriteNode
-    var playerAtlas: SKTextureAtlas
-    var playerTextures: [[SKTexture]]
+    private(set) var sprite: SKSpriteNode
+    private var playerAtlas: SKTextureAtlas
+    private var playerTextures: [[SKTexture]]
     
     enum Texture: Int {
         case idle = 0, run, walk, dead, glide

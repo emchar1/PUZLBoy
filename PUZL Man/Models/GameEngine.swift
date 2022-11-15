@@ -19,10 +19,10 @@ class GameEngine {
     
     // MARK: - Properties
     
-    var level: Level
-    var gemsRemaining: Int
-    var livesRemaining: Int
-    var movesRemaining: Int {
+    private var level: Level
+    private var gemsRemaining: Int
+    private var livesRemaining: Int
+    private var movesRemaining: Int {
         didSet {
             if movesRemaining < 0 {
                 movesRemaining = 0
@@ -30,20 +30,20 @@ class GameEngine {
         }
     }
     
-    var playerIsMoving = false
-    var playerIsFacingLeft = false
+    private var playerIsMoving = false
+    private var playerIsFacingLeft = false
     
     //FIXME: - Is this the best way to do this??? Used to
-    var shouldUpdateRemainingForBoulderIfIcy: Bool = false
-    var isGliding: Bool = false
+    private var shouldUpdateRemainingForBoulderIfIcy: Bool = false
+    private var isGliding: Bool = false
     
-    var isExitAvailable: Bool { gemsRemaining == 0 }
-    var isSolved: Bool { isExitAvailable && level.player == level.end }
-    var isGameOver: Bool { movesRemaining <= 0 }
+    private var isExitAvailable: Bool { gemsRemaining == 0 }
+    private var isSolved: Bool { isExitAvailable && level.player == level.end }
+    private var isGameOver: Bool { movesRemaining <= 0 }
     
-    var gameboardSprite: GameboardSprite
-    var playerSprite: PlayerSprite
-    var displaySprite: DisplaySprite
+    private var gameboardSprite: GameboardSprite
+    private var playerSprite: PlayerSprite
+    private var displaySprite: DisplaySprite
     
     weak var delegate: GameEngineDelegate?
     
@@ -72,7 +72,7 @@ class GameEngine {
     /**
      Sets the player sprite position easily.
      */
-    func setPlayerSpritePosition(animate: Bool, completion: (() -> ())?) {
+    private func setPlayerSpritePosition(animate: Bool, completion: (() -> ())?) {
         let playerLastPosition = CGPoint(x: gameboardSprite.panelSize * (CGFloat(level.player!.col) + 0.5) + (playerIsFacingLeft ? -1 : 1),
                                          y: gameboardSprite.panelSize * (CGFloat(gameboardSprite.panelCount - 1 - level.player!.row) + 0.5))
 
@@ -163,7 +163,8 @@ class GameEngine {
      */
     func handleControls(in location: CGPoint) {
         guard !isGameOver else { return print("Control attempted during game over animation...") }
-        
+        guard !playerIsMoving else { return print("Controls disables while player is still moving") }
+
         if inBounds(location: location, direction: .up) {
             movePlayerHelper(useRow: true, useGreaterThan: true, comparisonValue: 0, increment: -1)
 

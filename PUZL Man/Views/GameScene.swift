@@ -11,14 +11,14 @@ class GameScene: SKScene {
     
     // MARK: - Properties
     
-    var currentLevel: Int = 7 {
+    private var currentLevel: Int = 7 {
         didSet {
             if currentLevel > LevelBuilder.maxLevel {
                 currentLevel = 0
             }
         }
     }
-    var gameEngine: GameEngine
+    private var gameEngine: GameEngine
     
     
     // MARK: - Initialization
@@ -41,7 +41,6 @@ class GameScene: SKScene {
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard let location = touches.first?.location(in: self) else { return }
-        guard !gameEngine.playerIsMoving else { return }
         
         gameEngine.handleControls(in: location)
     }

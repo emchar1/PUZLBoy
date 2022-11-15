@@ -21,6 +21,5 @@ class GameViewController: UIViewController {
         skView.ignoresSiblingOrder = true
         skView.presentScene(scene)
     }
-
 }
 

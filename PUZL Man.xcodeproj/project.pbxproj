@@ -11,6 +11,7 @@
 		EA119155290CCA39009D0E3E /* Inventory.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA119154290CCA39009D0E3E /* Inventory.swift */; };
 		EA11915729121798009D0E3E /* Controls.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA11915629121798009D0E3E /* Controls.swift */; };
 		EA3534892920612300C11FC0 /* DisplayStatusBarSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA3534882920612300C11FC0 /* DisplayStatusBarSprite.swift */; };
+		EA35348B29241FCD00C11FC0 /* LevelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA35348A29241FCD00C11FC0 /* LevelType.swift */; };
 		EA65182B28E4199E00E535BF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA65182A28E4199E00E535BF /* AppDelegate.swift */; };
 		EA65182D28E4199E00E535BF /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA65182C28E4199E00E535BF /* SceneDelegate.swift */; };
 		EA65182F28E4199E00E535BF /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA65182E28E4199E00E535BF /* GameViewController.swift */; };
@@ -22,7 +23,6 @@
 		EA65189228E973D700E535BF /* Level.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA65189028E973D700E535BF /* Level.swift */; };
 		EA65189328E973D700E535BF /* LevelBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA65189128E973D700E535BF /* LevelBuilder.swift */; };
 		EA65189528EA207800E535BF /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA65189428EA207800E535BF /* Constants.swift */; };
-		EA65189828EAB5E000E535BF /* ControlsSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA65189728EAB5E000E535BF /* ControlsSprite.swift */; };
 		EAB69E0028EFCF5B00C31DB3 /* PlayerSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAB69DFF28EFCF5B00C31DB3 /* PlayerSprite.swift */; };
 		EAB69E0428F3333000C31DB3 /* GameEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAB69E0328F3333000C31DB3 /* GameEngine.swift */; };
 /* End PBXBuildFile section */
@@ -32,6 +32,7 @@
 		EA119154290CCA39009D0E3E /* Inventory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Inventory.swift; sourceTree = "<group>"; };
 		EA11915629121798009D0E3E /* Controls.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Controls.swift; sourceTree = "<group>"; };
 		EA3534882920612300C11FC0 /* DisplayStatusBarSprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayStatusBarSprite.swift; sourceTree = "<group>"; };
+		EA35348A29241FCD00C11FC0 /* LevelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelType.swift; sourceTree = "<group>"; };
 		EA65182728E4199E00E535BF /* PUZL Man.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "PUZL Man.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		EA65182A28E4199E00E535BF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		EA65182C28E4199E00E535BF /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -45,7 +46,6 @@
 		EA65189028E973D700E535BF /* Level.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Level.swift; sourceTree = "<group>"; };
 		EA65189128E973D700E535BF /* LevelBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LevelBuilder.swift; sourceTree = "<group>"; };
 		EA65189428EA207800E535BF /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
-		EA65189728EAB5E000E535BF /* ControlsSprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlsSprite.swift; sourceTree = "<group>"; };
 		EAB69DFF28EFCF5B00C31DB3 /* PlayerSprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerSprite.swift; sourceTree = "<group>"; };
 		EAB69E0328F3333000C31DB3 /* GameEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameEngine.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -95,11 +95,12 @@
 		EA65183E28E419B000E535BF /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				EA119154290CCA39009D0E3E /* Inventory.swift */,
+				EA11915629121798009D0E3E /* Controls.swift */,
+				EA35348A29241FCD00C11FC0 /* LevelType.swift */,
 				EA65189028E973D700E535BF /* Level.swift */,
 				EA65189128E973D700E535BF /* LevelBuilder.swift */,
 				EAB69E0328F3333000C31DB3 /* GameEngine.swift */,
-				EA119154290CCA39009D0E3E /* Inventory.swift */,
-				EA11915629121798009D0E3E /* Controls.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -128,7 +129,6 @@
 			children = (
 				EAB69DFF28EFCF5B00C31DB3 /* PlayerSprite.swift */,
 				EA65184428E5750C00E535BF /* GameboardSprite.swift */,
-				EA65189728EAB5E000E535BF /* ControlsSprite.swift */,
 				EA1191522904BC4C009D0E3E /* DisplaySprite.swift */,
 				EA3534882920612300C11FC0 /* DisplayStatusBarSprite.swift */,
 			);
@@ -214,10 +214,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EA65189828EAB5E000E535BF /* ControlsSprite.swift in Sources */,
 				EA65189228E973D700E535BF /* Level.swift in Sources */,
 				EA65184528E5750C00E535BF /* GameboardSprite.swift in Sources */,
 				EA11915729121798009D0E3E /* Controls.swift in Sources */,
+				EA35348B29241FCD00C11FC0 /* LevelType.swift in Sources */,
 				EA119155290CCA39009D0E3E /* Inventory.swift in Sources */,
 				EA3534892920612300C11FC0 /* DisplayStatusBarSprite.swift in Sources */,
 				EA1191532904BC4C009D0E3E /* DisplaySprite.swift in Sources */,

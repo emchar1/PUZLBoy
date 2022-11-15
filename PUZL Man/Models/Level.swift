@@ -7,17 +7,6 @@
 
 import Foundation
 
-/**
- Represents the gameboard textures.
- */
-enum LevelType: Int, CaseIterable {
-    case boundary = 0, start, endClosed, endOpen, gem, gemOnIce //important panels
-    case grass, marsh, ice //terrain panels
-    case hammer, sword //inventory panels
-    case boulder, enemy, warp //special panels
-    
-    var description: String { return String(describing: self) }
-}
 
 /**
  Represents a Level object, with level #, total number of moves, total number of gems needed to finish the level, and the gameboard.
@@ -26,14 +15,14 @@ struct Level: CustomStringConvertible {
     
     // MARK: - Properties
     
-    var level: Int
-    var moves: Int
-    var gems: Int
-    var gameboard: [[LevelType]]
+    private(set) var level: Int
+    private(set) var moves: Int
+    private(set) var gems: Int
+    private(set) var gameboard: [[LevelType]]
 
-    var player: K.GameboardPosition!
-    var start: K.GameboardPosition!
-    var end: K.GameboardPosition!
+    private(set) var player: K.GameboardPosition!
+    private(set) var start: K.GameboardPosition!
+    private(set) var end: K.GameboardPosition!
 
     var description: String {
         var returnValue = ""
@@ -93,6 +82,10 @@ struct Level: CustomStringConvertible {
         player = position
     }
     
+    mutating func setLevelType(at position: K.GameboardPosition, levelType: LevelType) {
+        gameboard[position.row][position.col] = levelType
+    }
+    
     func getLevelType(at position: K.GameboardPosition) -> LevelType {
         guard (position.row >= 0 && position.row < gameboard.count) && (position.col >= 0 && position.col < gameboard[0].count) else {
             print("Hit a wall...")
@@ -100,9 +93,5 @@ struct Level: CustomStringConvertible {
         }
         
         return gameboard[position.row][position.col]
-    }
-    
-    mutating func setLevelType(at position: K.GameboardPosition, levelType: LevelType) {
-        gameboard[position.row][position.col] = levelType
     }
 }

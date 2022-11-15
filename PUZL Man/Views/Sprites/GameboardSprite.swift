@@ -11,7 +11,7 @@ class GameboardSprite {
     
     // MARK: - Properties
     
-    let tiles: [LevelType] = LevelType.allCases
+    private let tiles: [LevelType] = LevelType.allCases
     let spriteScale: CGFloat = 0.94
 
     var xPosition: CGFloat { (K.iPhoneWidth * (1 - spriteScale)) / 2 }
@@ -22,10 +22,10 @@ class GameboardSprite {
     var ice: LevelType { tiles[LevelType.ice.rawValue] }
     var endOpen: LevelType { tiles[LevelType.endOpen.rawValue] }
     
-    var panels: [[SKSpriteNode]]
-    var panelCount: Int
-    var panelSize: CGFloat
-    var sprite: SKSpriteNode
+    private var panels: [[SKSpriteNode]]
+    private(set) var panelCount: Int
+    private(set) var panelSize: CGFloat
+    private(set) var sprite: SKSpriteNode
 
     
     // MARK: - Initialization

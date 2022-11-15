@@ -12,11 +12,11 @@ class DisplayStatusBarSprite: SKNode {
     // MARK: - Properties
     
     let width: CGFloat = 140
-    let backgroundBar: SKShapeNode
-    let imageNode: SKSpriteNode
-    let textNode: SKLabelNode
-    let icon: String
-    var amount: Int
+    private let backgroundBar: SKShapeNode
+    private let imageNode: SKSpriteNode
+    private let textNode: SKLabelNode
+    private let icon: String
+    private var amount: Int
 
     
     // MARK: - Initialization
