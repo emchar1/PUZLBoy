@@ -7,7 +7,6 @@
 
 import Foundation
 
-
 /**
  Represents a Level object, with level #, total number of moves, total number of gems needed to finish the level, and the gameboard.
  */
