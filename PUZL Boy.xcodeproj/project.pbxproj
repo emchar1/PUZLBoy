@@ -33,7 +33,7 @@
 		EA11915629121798009D0E3E /* Controls.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Controls.swift; sourceTree = "<group>"; };
 		EA3534882920612300C11FC0 /* DisplayStatusBarSprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayStatusBarSprite.swift; sourceTree = "<group>"; };
 		EA35348A29241FCD00C11FC0 /* LevelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelType.swift; sourceTree = "<group>"; };
-		EA65182728E4199E00E535BF /* PUZL Man.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "PUZL Man.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		EA65182728E4199E00E535BF /* PUZL Boy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "PUZL Boy.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		EA65182A28E4199E00E535BF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		EA65182C28E4199E00E535BF /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		EA65182E28E4199E00E535BF /* GameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
@@ -64,7 +64,7 @@
 		EA65181E28E4199E00E535BF = {
 			isa = PBXGroup;
 			children = (
-				EA65182928E4199E00E535BF /* PUZL Man */,
+				EA65182928E4199E00E535BF /* PUZL Boy */,
 				EA65182828E4199E00E535BF /* Products */,
 			);
 			sourceTree = "<group>";
@@ -72,12 +72,12 @@
 		EA65182828E4199E00E535BF /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				EA65182728E4199E00E535BF /* PUZL Man.app */,
+				EA65182728E4199E00E535BF /* PUZL Boy.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		EA65182928E4199E00E535BF /* PUZL Man */ = {
+		EA65182928E4199E00E535BF /* PUZL Boy */ = {
 			isa = PBXGroup;
 			children = (
 				EA98545728FE6F1900CDB0EF /* Utilities */,
@@ -89,7 +89,7 @@
 				EA65183328E419A000E535BF /* Assets.xcassets */,
 				EA65183828E419A000E535BF /* Info.plist */,
 			);
-			path = "PUZL Man";
+			path = "PUZL Boy";
 			sourceTree = "<group>";
 		};
 		EA65183E28E419B000E535BF /* Models */ = {
@@ -146,9 +146,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		EA65182628E4199E00E535BF /* PUZL Man */ = {
+		EA65182628E4199E00E535BF /* PUZL Boy */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = EA65183B28E419A000E535BF /* Build configuration list for PBXNativeTarget "PUZL Man" */;
+			buildConfigurationList = EA65183B28E419A000E535BF /* Build configuration list for PBXNativeTarget "PUZL Boy" */;
 			buildPhases = (
 				EA65182328E4199E00E535BF /* Sources */,
 				EA65182428E4199E00E535BF /* Frameworks */,
@@ -158,9 +158,9 @@
 			);
 			dependencies = (
 			);
-			name = "PUZL Man";
+			name = "PUZL Boy";
 			productName = "PUZL Man";
-			productReference = EA65182728E4199E00E535BF /* PUZL Man.app */;
+			productReference = EA65182728E4199E00E535BF /* PUZL Boy.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -178,7 +178,7 @@
 					};
 				};
 			};
-			buildConfigurationList = EA65182228E4199E00E535BF /* Build configuration list for PBXProject "PUZL Man" */;
+			buildConfigurationList = EA65182228E4199E00E535BF /* Build configuration list for PBXProject "PUZL Boy" */;
 			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -191,7 +191,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				EA65182628E4199E00E535BF /* PUZL Man */,
+				EA65182628E4199E00E535BF /* PUZL Boy */,
 			);
 		};
 /* End PBXProject section */
@@ -377,7 +377,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = LZ8V996BTJ;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "PUZL Man/Info.plist";
+				INFOPLIST_FILE = "PUZL Boy/Info.plist";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -388,7 +388,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.5play-apps.PUZL-Man";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.5play-apps.PUZL-Boy";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -405,7 +405,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = LZ8V996BTJ;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "PUZL Man/Info.plist";
+				INFOPLIST_FILE = "PUZL Boy/Info.plist";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -416,7 +416,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.5play-apps.PUZL-Man";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.5play-apps.PUZL-Boy";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -427,7 +427,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		EA65182228E4199E00E535BF /* Build configuration list for PBXProject "PUZL Man" */ = {
+		EA65182228E4199E00E535BF /* Build configuration list for PBXProject "PUZL Boy" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				EA65183928E419A000E535BF /* Debug */,
@@ -436,7 +436,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		EA65183B28E419A000E535BF /* Build configuration list for PBXNativeTarget "PUZL Man" */ = {
+		EA65183B28E419A000E535BF /* Build configuration list for PBXNativeTarget "PUZL Boy" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				EA65183C28E419A000E535BF /* Debug */,
