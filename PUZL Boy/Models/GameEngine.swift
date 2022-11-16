@@ -21,7 +21,7 @@ class GameEngine {
     
     private var level: Level
     private var gemsRemaining: Int
-    private var livesRemaining: Int
+    private static var livesRemaining: Int = 3
     private var movesRemaining: Int {
         didSet {
             if movesRemaining < 0 {
@@ -52,9 +52,8 @@ class GameEngine {
     
     init(level: Int = 1) {
         self.level = LevelBuilder.levels[level]
-        self.movesRemaining = self.level.moves
-        self.gemsRemaining = self.level.gems
-        self.livesRemaining = 3
+        movesRemaining = self.level.moves
+        gemsRemaining = self.level.gems
         
         gameboardSprite = GameboardSprite(level: self.level)
         playerSprite = PlayerSprite(position: .zero)
@@ -62,7 +61,7 @@ class GameEngine {
                                       bottomYPosition: gameboardSprite.yPosition,
                                       margin: 40)
         
-        displaySprite.setLabels(level: "\(self.level.level)", lives: "\(livesRemaining)", moves: "\(movesRemaining)", inventory: playerSprite.inventory)
+        displaySprite.setLabels(level: "\(level)", lives: "\(GameEngine.livesRemaining)", moves: "\(movesRemaining)", inventory: playerSprite.inventory)
         setPlayerSpritePosition(animate: false, completion: nil)
     }
     
@@ -323,21 +322,20 @@ class GameEngine {
      */
     private func updateMovesRemaining() {
         movesRemaining -= level.getLevelType(at: level.player) == .marsh ? 2 : 1
-        displaySprite.setLabels(level: "\(level.level)", lives: "\(livesRemaining)", moves: "\(movesRemaining)", inventory: playerSprite.inventory)
+        displaySprite.setLabels(level: "\(level.level)", lives: "\(GameEngine.livesRemaining)", moves: "\(movesRemaining)", inventory: playerSprite.inventory)
         
         if isSolved {
             delegate?.gameIsSolved()
-            print("WINNNNN!")
+            print("WIN!")
         }
         else if isGameOver {
             animateGameOver {
                 self.delegate?.gameIsOver()
             }
             
-            //FIXME: - Lives Remaining doesn't decrement
-            livesRemaining -= 1
+            GameEngine.livesRemaining -= 1
             
-            print("GAME OVERRR")
+            print("GAME OVER")
         }
     }
     

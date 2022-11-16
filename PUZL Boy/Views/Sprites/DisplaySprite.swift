@@ -25,7 +25,7 @@ class DisplaySprite {
         sprite = SKSpriteNode()
         sprite.zPosition = K.ZPosition.display
         
-        statusLives = DisplayStatusBarSprite(icon: "iconHeart", amount: 3, fillColor: .cyan)
+        statusLives = DisplayStatusBarSprite(icon: "iconHeart", amount: 99, fillColor: .cyan)
         statusLives.position = CGPoint(x: K.iPhoneWidth - statusLives.width, y: topYPosition + margin + statusLives.width / 2)
 
         statusMoves = DisplayStatusBarSprite(icon: "iconBoot", amount: 99, fillColor: .cyan)
@@ -53,6 +53,7 @@ class DisplaySprite {
     func setLabels(level: String, lives: String, moves: String, inventory: Inventory) {
         levelLabel.text = "LEVEL \(level)"
         
+        statusLives.updateAmount(Int(lives) ?? 99)
         statusMoves.updateAmount(Int(moves) ?? 99)
         statusHammers.updateAmount(inventory.hammers)
         statusSwords.updateAmount(inventory.swords)
