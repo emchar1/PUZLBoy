@@ -62,4 +62,9 @@ struct K {
         static let player: CGFloat = 300
         static let display: CGFloat = 400
     }
+    
+    //UserDefault Keys
+    static let userDefaultsKey_SoundIsMuted = "SoundIsMuted"
+    static let userDefaultsKey_HintsAreOff = "HintsAreOff"
+    static let userDefaultsKey_LaunchedBefore = "LaunchedBefore"
 }
