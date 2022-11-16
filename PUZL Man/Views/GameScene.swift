@@ -11,7 +11,7 @@ class GameScene: SKScene {
     
     // MARK: - Properties
     
-    private var currentLevel: Int = 7 {
+    private var currentLevel: Int = 9 {
         didSet {
             if currentLevel > LevelBuilder.maxLevel {
                 currentLevel = 0
