@@ -1,6 +1,6 @@
 //
 //  SceneDelegate.swift
-//  PUZL Man
+//  PUZL Boy
 //
 //  Created by Eddie Char on 9/27/22.
 //

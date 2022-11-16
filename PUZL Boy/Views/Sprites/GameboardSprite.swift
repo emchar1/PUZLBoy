@@ -1,6 +1,6 @@
 //
 //  GameboardSprite.swift
-//  PUZL Man
+//  PUZL Boy
 //
 //  Created by Eddie Char on 9/28/22.
 //

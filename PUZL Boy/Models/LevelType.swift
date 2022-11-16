@@ -1,6 +1,6 @@
 //
 //  LevelType.swift
-//  PUZL Man
+//  PUZL Boy
 //
 //  Created by Eddie Char on 11/15/22.
 //

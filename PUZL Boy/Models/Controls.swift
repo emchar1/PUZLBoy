@@ -1,6 +1,6 @@
 //
 //  Controls.swift
-//  PUZL Man
+//  PUZL Boy
 //
 //  Created by Eddie Char on 11/1/22.
 //
