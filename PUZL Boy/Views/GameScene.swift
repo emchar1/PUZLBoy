@@ -11,6 +11,9 @@ class GameScene: SKScene {
     
     // MARK: - Properties
     
+    private var gameEngine: GameEngine
+    private var audioManager: AudioManager
+
     private var currentLevel: Int = 9 {
         didSet {
             if currentLevel > LevelBuilder.maxLevel {
@@ -18,13 +21,14 @@ class GameScene: SKScene {
             }
         }
     }
-    private var gameEngine: GameEngine
     
     
     // MARK: - Initialization
     
     override init(size: CGSize) {
         gameEngine = GameEngine(level: currentLevel)
+        audioManager = AudioManager()
+        audioManager.playSound(for: "overworld")
 
         super.init(size: size)
 
@@ -74,10 +78,12 @@ class GameScene: SKScene {
 extension GameScene: GameEngineDelegate {
     func gameIsSolved() {
         currentLevel += 1
-            resetGameEngine(level: currentLevel)
+        resetGameEngine(level: currentLevel)
     }
     
     func gameIsOver() {
         resetGameEngine(level: currentLevel)
+        audioManager.stopSound(for: "overworld")
+        audioManager.playSound(for: "gameover")
     }
 }

@@ -19,10 +19,6 @@ enum AudioCategory {
     case music, soundFX
 }
 
-enum AudioTheme: String {
-    case main = "main", mario, starWars
-}
-
 
 // MARK: - AudioItem
 
@@ -44,49 +40,36 @@ struct AudioItem {
 
 // MARK: - AudioManager
 
-struct AudioManager {
-    var theme: AudioTheme = .main
+class AudioManager {
+    
+    // MARK: - Properties
+    
     var audioItems: [String : AudioItem] = [:]
-    var launchMessage: String {
-        switch theme {
-        case .main:
-            return "Remember to always be aware\nof your surroundings."
-        case .mario:
-            return "Happy Mar10 Day!"
-        case .starWars:
-            return "May the Force be with you."
-        }
-    }
     
 
     // MARK: - Setup
     
-    init(with theme: AudioTheme = .main) {
+    init() {
         do {
-            try AVAudioSession.sharedInstance().setCategory(.ambient, mode: .default)
+            //ambient: Your app’s audio plays even while Music app music or other background audio is playing, and is silenced by the phone’s Silent switch and screen locking.
+            //soloAmbient: (the default) Your app stops Music app music or other background audio from playing, and is silenced by the phone’s Silent switch and screen locking.
+            try AVAudioSession.sharedInstance().setCategory(.soloAmbient, mode: .default)
             try AVAudioSession.sharedInstance().setActive(true)
         }
         catch {
             print(error)
         }
         
-        audioItems["MenuScreen"] = AudioItem(fileName: "main_MenuScreen", category: .music)
-        
-        if let item = audioItems["MenuScreen"], let player = configureAudioPlayer(for: item) {
-            audioItems["MenuScreen"]?.player = player
-        }
-        
-        setTheme(theme)
+        //Setup all the sounds
+        setupAudioItem("overworld", category: .music)
+        setupAudioItem("gameover", category: .soundFX)
     }
 
-    /**
-     Sets up the individual audio players for the various sounds. It won't setup MenuScreen sound because that's set up in initialization.
-     */
-    mutating private func setupSounds() {
-        for (key, item) in audioItems {
-            if let player = configureAudioPlayer(for: item), key != "MenuScreen" {
-                audioItems[key]?.player = player
-            }
+    private func setupAudioItem(_ audioKey: String, category: AudioCategory) {
+        audioItems[audioKey] = AudioItem(fileName: audioKey, category: category)
+        
+        if let item = audioItems[audioKey], let player = configureAudioPlayer(for: item) {
+            audioItems[audioKey]?.player = player
         }
     }
     
@@ -191,83 +174,5 @@ struct AudioManager {
                 item.player.volume = volumeToSet
             }
         }
-    }
-    
-    
-    // MARK: - Set Sound Themes
-    
-    mutating func setTheme(_ theme: AudioTheme) {
-        self.theme = theme
-
-        switch theme {
-        case .main:
-            setThemeMain()
-        case .mario:
-            setThemeMario()
-        case .starWars:
-            setThemeStarWars()
-        }
-        
-        setupSounds()
-    }
-
-    mutating private func setThemeMain() {
-        audioItems["MenuTitle"] = AudioItem(fileName: "main_MenuTitle", category: .soundFX)
-        audioItems["MenuButton"] = AudioItem(fileName: "main_MenuButton", category: .soundFX, maxVolume: 0.5)
-        audioItems["LaunchButton"] = AudioItem(fileName: "main_LaunchButton", category: .soundFX)
-        audioItems["PlanetARiumOpen"] = AudioItem(fileName: "main_PlanetARiumOpen", category: .soundFX, maxVolume: 0.5)
-        audioItems["PlanetARiumMusic"] = AudioItem(fileName: "main_PlanetARiumMusic0", category: .music)
-        audioItems["ButtonPress"] = AudioItem(fileName: "main_ButtonPress", category: .soundFX, maxVolume: 0.5)
-        audioItems["ButtonPressInfo"] = AudioItem(fileName: "main_ButtonPress", category: .soundFX, maxVolume: 0.5)
-        audioItems["ButtonPressPause"] = AudioItem(fileName: "main_ButtonPress", category: .soundFX, maxVolume: 0.5)
-        audioItems["ButtonPressReset"] = AudioItem(fileName: "main_ButtonPress", category: .soundFX, maxVolume: 0.5)
-        audioItems["SettingsExpand"] = AudioItem(fileName: "main_SettingsExpand", category: .soundFX)
-        audioItems["SettingsCollapse"] = AudioItem(fileName: "main_SettingsCollapse", category: .soundFX, maxVolume: 0.5)
-        audioItems["PinchShrink"] = AudioItem(fileName: "main_MenuTitle", category: .soundFX)
-        audioItems["PinchGrow"] = AudioItem(fileName: "main_Pinch", category: .soundFX)
-        audioItems["DetailsOpen"] = AudioItem(fileName: "main_DetailsOpen", category: .soundFX)
-        audioItems["VenusSurface"] = AudioItem(fileName: "main_VenusSurface", category: .soundFX)
-    }
-        
-    
-    
-    
-    
-    
-    //EXPERIMENTAL SOUNDS
-    mutating private func setThemeMario() {
-        audioItems["MenuTitle"] = AudioItem(fileName: "main_MenuTitle", category: .soundFX)
-        audioItems["MenuButton"] = AudioItem(fileName: "main_MenuButton", category: .soundFX, maxVolume: 0.5)
-        audioItems["LaunchButton"] = AudioItem(fileName: "mario_LaunchButton", fileType: .wav, category: .soundFX)
-        audioItems["PlanetARiumOpen"] = AudioItem(fileName: "main_PlanetARiumOpen", category: .soundFX, maxVolume: 0.5)
-        audioItems["PlanetARiumMusic"] = AudioItem(fileName: "mario_PlanetARiumMusic\(Int.random(in: 0...1))", category: .music)
-        audioItems["ButtonPress"] = AudioItem(fileName: "mario_ButtonPress", fileType: .wav, category: .soundFX)
-        audioItems["ButtonPressInfo"] = AudioItem(fileName: "mario_ButtonPress", fileType: .wav, category: .soundFX)
-        audioItems["ButtonPressPause"] = AudioItem(fileName: "mario_ButtonPressPause", fileType: .wav, category: .soundFX)
-        audioItems["ButtonPressReset"] = AudioItem(fileName: "mario_ButtonPress", fileType: .wav, category: .soundFX)
-        audioItems["SettingsExpand"] = AudioItem(fileName: "mario_SettingsExpand", fileType: .wav, category: .soundFX)
-        audioItems["SettingsCollapse"] = AudioItem(fileName: "mario_SettingsCollapse", fileType: .wav, category: .soundFX)
-        audioItems["PinchShrink"] = AudioItem(fileName: "mario_PinchShrink", fileType: .wav, category: .soundFX)
-        audioItems["PinchGrow"] = AudioItem(fileName: "mario_PinchGrow", fileType: .wav, category: .soundFX)
-        audioItems["DetailsOpen"] = AudioItem(fileName: "mario_DetailsOpen", fileType: .wav, category: .soundFX)
-        audioItems["VenusSurface"] = AudioItem(fileName: "mario_VenusSurface", fileType: .wav, category: .soundFX)
-    }
-    
-    mutating private func setThemeStarWars() {
-        audioItems["MenuTitle"] = AudioItem(fileName: "main_MenuTitle", category: .soundFX)
-        audioItems["MenuButton"] = AudioItem(fileName: "main_MenuButton", category: .soundFX, maxVolume: 0.5)
-        audioItems["LaunchButton"] = AudioItem(fileName: "starWars_LaunchButton", category: .soundFX)
-        audioItems["PlanetARiumOpen"] = AudioItem(fileName: "main_PlanetARiumOpen", category: .soundFX, maxVolume: 0.5)
-        audioItems["PlanetARiumMusic"] = AudioItem(fileName: "starWars_PlanetARiumMusic0", category: .music)
-        audioItems["ButtonPress"] = AudioItem(fileName: "main_ButtonPress", category: .soundFX)
-        audioItems["ButtonPressInfo"] = AudioItem(fileName: "main_ButtonPress", category: .soundFX, maxVolume: 0.5)
-        audioItems["ButtonPressPause"] = AudioItem(fileName: "main_ButtonPress", category: .soundFX, maxVolume: 0.5)
-        audioItems["ButtonPressReset"] = AudioItem(fileName: "main_ButtonPress", category: .soundFX, maxVolume: 0.5)
-        audioItems["SettingsExpand"] = AudioItem(fileName: "starWars_SettingsExpand", category: .soundFX)
-        audioItems["SettingsCollapse"] = AudioItem(fileName: "starWars_SettingsCollapse", category: .soundFX)
-        audioItems["PinchShrink"] = AudioItem(fileName: "starWars_pinchShrink", category: .soundFX)
-        audioItems["PinchGrow"] = AudioItem(fileName: "starWars_pinchGrow", category: .soundFX)
-        audioItems["DetailsOpen"] = AudioItem(fileName: "starWars_DetailsOpen", category: .soundFX)
-        audioItems["VenusSurface"] = AudioItem(fileName: "starWars_VenusSurface", category: .soundFX)
     }
 }
