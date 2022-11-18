@@ -79,8 +79,6 @@ extension GameScene: GameEngineDelegate {
     func gameIsSolved() {
         currentLevel += 1
         resetGameEngine(level: currentLevel)
-        
-        //replay overworld here...
     }
     
     func gameIsOver() {
@@ -88,5 +86,8 @@ extension GameScene: GameEngineDelegate {
         
         audioManager.stopSound(for: "overworld")
         audioManager.playSound(for: "gameover")
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            self.audioManager.playSound(for: "overworld")
+        }
     }
 }

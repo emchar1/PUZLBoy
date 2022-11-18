@@ -80,7 +80,7 @@ class AudioManager {
     }
     
     /**
-     Helper method for setupSounds(). Takes in an AudioItem, sets up and returns the new player.
+     Helper method for setupSounds() and playSound(); for some reason need to re-create the player if re-playing the sound. Takes in an AudioItem, sets up and returns the new player.
      - parameter audioItem: AudioItem to configure the player
      - returns: an AudioPlayer optional object
      */
@@ -115,20 +115,22 @@ class AudioManager {
         - audioKey: the key for the audio item to play
         - currentTime: currentTime to start the playback at; if nil, don't set
         - pan: pan value to initialize, defaults to center of player
+     - returns: True if the player can play. False, otherwise.
      */
-    func playSound(for audioKey: String, currentTime: TimeInterval? = nil, pan: Float = 0) {
-        guard let item = audioItems[audioKey] else {
+    @discardableResult func playSound(for audioKey: String, currentTime: TimeInterval? = nil, pan: Float = 0) -> Bool? {
+        guard let item = audioItems[audioKey], let player = configureAudioPlayer(for: item) else {
             print("Unable to find \(audioKey) in AudioManager.audioItems[]")
-            return
+            return false
         }
-        
-        if currentTime != nil {
-            item.player.currentTime = currentTime!
-        }
+                
+        audioItems[item.fileName]?.player = player
+        audioItems[item.fileName]?.player.pan = pan
 
-        item.player.pan = pan
-        item.player.prepareToPlay()
-        item.player.play()
+        if currentTime != nil {
+            audioItems[item.fileName]?.player.currentTime = currentTime!
+        }
+                
+        return audioItems[item.fileName]?.player.play()
     }
     
     /**
