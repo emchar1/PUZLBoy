@@ -14,7 +14,7 @@ class GameScene: SKScene {
     private var gameEngine: GameEngine
     private var audioManager: AudioManager
 
-    private var currentLevel: Int = 9 {
+    private var currentLevel: Int = 0 {
         didSet {
             if currentLevel > LevelBuilder.maxLevel {
                 currentLevel = 0
@@ -79,10 +79,13 @@ extension GameScene: GameEngineDelegate {
     func gameIsSolved() {
         currentLevel += 1
         resetGameEngine(level: currentLevel)
+        
+        //replay overworld here...
     }
     
     func gameIsOver() {
         resetGameEngine(level: currentLevel)
+        
         audioManager.stopSound(for: "overworld")
         audioManager.playSound(for: "gameover")
     }

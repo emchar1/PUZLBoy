@@ -53,7 +53,7 @@ class AudioManager {
         do {
             //ambient: Your app’s audio plays even while Music app music or other background audio is playing, and is silenced by the phone’s Silent switch and screen locking.
             //soloAmbient: (the default) Your app stops Music app music or other background audio from playing, and is silenced by the phone’s Silent switch and screen locking.
-            try AVAudioSession.sharedInstance().setCategory(.soloAmbient, mode: .default)
+            try AVAudioSession.sharedInstance().setCategory(.ambient, mode: .default)
             try AVAudioSession.sharedInstance().setActive(true)
         }
         catch {
@@ -65,6 +65,12 @@ class AudioManager {
         setupAudioItem("gameover", category: .soundFX)
     }
 
+    /**
+     Adds a sound file to the AudioItems dictionary.
+     - parameters:
+        - audioKey: The key and filename to add to the dictionary
+        - category: The AudioCategory of the sound being added
+     */
     private func setupAudioItem(_ audioKey: String, category: AudioCategory) {
         audioItems[audioKey] = AudioItem(fileName: audioKey, category: category)
         
@@ -76,6 +82,7 @@ class AudioManager {
     /**
      Helper method for setupSounds(). Takes in an AudioItem, sets up and returns the new player.
      - parameter audioItem: AudioItem to configure the player
+     - returns: an AudioPlayer optional object
      */
     private func configureAudioPlayer(for audioItem: AudioItem) -> AVAudioPlayer? {
         guard let audioURL = Bundle.main.path(forResource: audioItem.fileName, ofType: audioItem.fileType.rawValue) else {
