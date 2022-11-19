@@ -78,12 +78,10 @@ class GameEngine {
             let playerMove = SKAction.move(to: playerLastPosition, duration: isSolved ? 0.75 : 0.5)
                         
             playerIsMoving = true
-            playMovementSounds(shouldStop: false)
             playerSprite.startMoveAnimation(animationType: isGliding ? .glide : (isSolved ? .walk : .run))
 
             playerSprite.sprite.run(playerMove) {
                 self.playerIsMoving = false
-                self.playMovementSounds(shouldStop: true)
                 self.playerSprite.startIdleAnimation()
                 self.checkSpecialPanel()
                 completion?()
@@ -93,22 +91,6 @@ class GameEngine {
             playerSprite.sprite.position = playerLastPosition
             checkSpecialPanel()
             completion?()
-        }
-    }
-    
-    private func playMovementSounds(shouldStop: Bool) {
-        if isGliding {
-            if !shouldStop {
-                K.audioManager.playSound(for: "boyglide", interruptPlayback: false)
-            }
-        }
-        else {
-            if !shouldStop {
-                K.audioManager.playSound(for: isSolved ? "boywalk" : "boyrun")
-            }
-            else {
-                K.audioManager.stopSound(for: isSolved ? "boywalk" : "boyrun", fadeDuration: 0.25)
-            }
         }
     }
     
@@ -307,13 +289,9 @@ class GameEngine {
      - returns: true if the panel is an enemy, i.e. handle differently
      */
     private func checkPanel(position: K.GameboardPosition, direction: Controls) -> Bool {
-        let rand = Int.random(in: 1...2)
-
         switch level.getLevelType(at: position) {
         case .boulder:
             if playerSprite.inventory.hammers <= 0 {
-                K.audioManager.playSound(for: "boygrunt\(rand)")
-
                 if shouldUpdateRemainingForBoulderIfIcy {
                     updateMovesRemaining()
                     shouldUpdateRemainingForBoulderIfIcy = false
@@ -329,8 +307,6 @@ class GameEngine {
             }
         case .enemy:
             if playerSprite.inventory.swords <= 0 {
-                K.audioManager.playSound(for: "boygrunt\(rand)")
-                
                 updateMovesRemaining()
 
                 playerIsMoving = true
@@ -371,7 +347,6 @@ class GameEngine {
         else if isGameOver {
             K.audioManager.stopSound(for: "overworld")
             K.audioManager.playSound(for: "gameover")
-            K.audioManager.playSound(for: "boydead")
 
             animateGameOver {
                 self.delegate?.gameIsOver()

@@ -64,6 +64,10 @@ class PlayerSprite {
         
         sprite.removeAllActions()
         sprite.run(SKAction.repeatForever(animation), withKey: "playerIdleAnimation")
+        
+        K.audioManager.stopSound(for: "boyrun", fadeDuration: 0.25)
+        K.audioManager.stopSound(for: "boywalk", fadeDuration: 0.25)
+        print("iiiiidle")
     }
     
     func startMoveAnimation(animationType: Texture) {
@@ -73,9 +77,13 @@ class PlayerSprite {
         
         if animationType == .glide {
             sprite.run(SKAction.sequence([SKAction.repeat(animation, count: 1), SKAction.wait(forDuration: 2.0)]), withKey: "playerMoveAnimation")
+            
+            K.audioManager.playSound(for: "boyglide", interruptPlayback: false)
         }
         else {
             sprite.run(SKAction.repeatForever(animation), withKey: "playerMoveAnimation")
+            
+            K.audioManager.playSound(for: animationType == .run ? "boyrun" : "boywalk")
         }
     }
 
@@ -84,6 +92,8 @@ class PlayerSprite {
 
         sprite.removeAllActions()
         sprite.run(SKAction.sequence([SKAction.repeat(animation, count: 1), SKAction.wait(forDuration: 1.5)]), completion: completion)
+        
+        K.audioManager.playSound(for: "boydead")
     }
     
     func hitObject(isAttacked: Bool, direction: Controls, completion: @escaping (() -> ())) {
@@ -116,6 +126,8 @@ class PlayerSprite {
         ])
         
         sprite.run(hitAction, completion: completion)
+
+        K.audioManager.playSound(for: "boygrunt\(Int.random(in: 1...2))")
     }
 
     
