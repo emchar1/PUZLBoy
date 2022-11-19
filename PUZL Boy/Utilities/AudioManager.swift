@@ -63,6 +63,19 @@ class AudioManager {
         //Setup all the sounds
         setupAudioItem("overworld", category: .music)
         setupAudioItem("gameover", category: .soundFX)
+        setupAudioItem("wingame", category: .soundFX)
+        setupAudioItem("wingame2", category: .soundFX)
+        setupAudioItem("gemcollect", category: .soundFX)
+        setupAudioItem("boyattack1", category: .soundFX)
+        setupAudioItem("boyattack2", category: .soundFX)
+        setupAudioItem("boyattack3", category: .soundFX)
+        setupAudioItem("boygrunt1", category: .soundFX)
+        setupAudioItem("boygrunt2", category: .soundFX)
+        setupAudioItem("boydead", category: .soundFX)
+        setupAudioItem("boyrun", category: .soundFX)
+        setupAudioItem("boywalk", category: .soundFX)
+        setupAudioItem("boyglide", category: .soundFX)
+        setupAudioItem("dooropen", category: .soundFX)
     }
 
     /**
@@ -117,9 +130,14 @@ class AudioManager {
         - pan: pan value to initialize, defaults to center of player
      - returns: True if the player can play. False, otherwise.
      */
-    @discardableResult func playSound(for audioKey: String, currentTime: TimeInterval? = nil, pan: Float = 0) -> Bool? {
+    @discardableResult func playSound(for audioKey: String, currentTime: TimeInterval? = nil, pan: Float = 0, interruptPlayback: Bool = true) -> Bool? {
         guard let item = audioItems[audioKey], let player = configureAudioPlayer(for: item) else {
             print("Unable to find \(audioKey) in AudioManager.audioItems[]")
+            return false
+        }
+        
+        guard interruptPlayback || audioItems[item.fileName] != nil && !audioItems[item.fileName]!.player.isPlaying else {
+            print("Player is playing. Gonna quit...")
             return false
         }
                 
@@ -141,7 +159,7 @@ class AudioManager {
      */
     func stopSound(for audioKey: String, fadeDuration: TimeInterval = 0.0) {
         guard let item = audioItems[audioKey] else {
-            print("Unable to find \(audioKey) in AudioManager.audioItems[]")
+            print("Unable to find \(audioKey) in AudioManager.audioItems[]. Make sure the sound has been added to the dictionary.")
             return
         }
         

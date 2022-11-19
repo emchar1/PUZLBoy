@@ -67,4 +67,9 @@ struct K {
     static let userDefaultsKey_SoundIsMuted = "SoundIsMuted"
     static let userDefaultsKey_HintsAreOff = "HintsAreOff"
     static let userDefaultsKey_LaunchedBefore = "LaunchedBefore"
+    
+    /**
+     Shared AudioManager property throughout the project.
+     */
+    static let audioManager = AudioManager()
 }

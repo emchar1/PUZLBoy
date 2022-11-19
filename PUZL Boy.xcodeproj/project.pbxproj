@@ -27,6 +27,19 @@
 		EA956C7329258B1700879AD0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EA956C7129258B1700879AD0 /* Main.storyboard */; };
 		EA956C75292595F400879AD0 /* overworld.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA956C74292595F400879AD0 /* overworld.mp3 */; };
 		EA956C772926169C00879AD0 /* gameover.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA956C762926169C00879AD0 /* gameover.mp3 */; };
+		EA956C7929276BEF00879AD0 /* wingame.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA956C7829276BEF00879AD0 /* wingame.mp3 */; };
+		EA956C7B29276CD100879AD0 /* wingame2.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA956C7A29276CD100879AD0 /* wingame2.mp3 */; };
+		EA956C7D29276F5300879AD0 /* gemcollect.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA956C7C29276F5300879AD0 /* gemcollect.mp3 */; };
+		EA956C8429277C5E00879AD0 /* boyattack3.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA956C7E29277C5E00879AD0 /* boyattack3.mp3 */; };
+		EA956C8529277C5E00879AD0 /* boyattack1.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA956C7F29277C5E00879AD0 /* boyattack1.mp3 */; };
+		EA956C8629277C5E00879AD0 /* boydead.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA956C8029277C5E00879AD0 /* boydead.mp3 */; };
+		EA956C8729277C5E00879AD0 /* boygrunt1.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA956C8129277C5E00879AD0 /* boygrunt1.mp3 */; };
+		EA956C8829277C5E00879AD0 /* boyattack2.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA956C8229277C5E00879AD0 /* boyattack2.mp3 */; };
+		EA956C8929277C5E00879AD0 /* boygrunt2.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA956C8329277C5E00879AD0 /* boygrunt2.mp3 */; };
+		EA956C8B29277F5100879AD0 /* dooropen.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA956C8A29277F5100879AD0 /* dooropen.mp3 */; };
+		EA956C8E2927813300879AD0 /* boywalk.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA956C8C2927813200879AD0 /* boywalk.mp3 */; };
+		EA956C8F2927813300879AD0 /* boyrun.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA956C8D2927813300879AD0 /* boyrun.mp3 */; };
+		EA956C912927E2C800879AD0 /* boyglide.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA956C902927E2C800879AD0 /* boyglide.mp3 */; };
 		EAB69E0028EFCF5B00C31DB3 /* PlayerSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAB69DFF28EFCF5B00C31DB3 /* PlayerSprite.swift */; };
 		EAB69E0428F3333000C31DB3 /* GameEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAB69E0328F3333000C31DB3 /* GameEngine.swift */; };
 /* End PBXBuildFile section */
@@ -54,6 +67,19 @@
 		EA956C7229258B1700879AD0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		EA956C74292595F400879AD0 /* overworld.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = overworld.mp3; sourceTree = "<group>"; };
 		EA956C762926169C00879AD0 /* gameover.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = gameover.mp3; sourceTree = "<group>"; };
+		EA956C7829276BEF00879AD0 /* wingame.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = wingame.mp3; sourceTree = "<group>"; };
+		EA956C7A29276CD100879AD0 /* wingame2.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = wingame2.mp3; sourceTree = "<group>"; };
+		EA956C7C29276F5300879AD0 /* gemcollect.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = gemcollect.mp3; sourceTree = "<group>"; };
+		EA956C7E29277C5E00879AD0 /* boyattack3.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = boyattack3.mp3; sourceTree = "<group>"; };
+		EA956C7F29277C5E00879AD0 /* boyattack1.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = boyattack1.mp3; sourceTree = "<group>"; };
+		EA956C8029277C5E00879AD0 /* boydead.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = boydead.mp3; sourceTree = "<group>"; };
+		EA956C8129277C5E00879AD0 /* boygrunt1.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = boygrunt1.mp3; sourceTree = "<group>"; };
+		EA956C8229277C5E00879AD0 /* boyattack2.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = boyattack2.mp3; sourceTree = "<group>"; };
+		EA956C8329277C5E00879AD0 /* boygrunt2.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = boygrunt2.mp3; sourceTree = "<group>"; };
+		EA956C8A29277F5100879AD0 /* dooropen.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = dooropen.mp3; sourceTree = "<group>"; };
+		EA956C8C2927813200879AD0 /* boywalk.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = boywalk.mp3; sourceTree = "<group>"; };
+		EA956C8D2927813300879AD0 /* boyrun.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = boyrun.mp3; sourceTree = "<group>"; };
+		EA956C902927E2C800879AD0 /* boyglide.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = boyglide.mp3; sourceTree = "<group>"; };
 		EAB69DFF28EFCF5B00C31DB3 /* PlayerSprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerSprite.swift; sourceTree = "<group>"; };
 		EAB69E0328F3333000C31DB3 /* GameEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameEngine.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -147,8 +173,21 @@
 		EA956C6D292586F800879AD0 /* Sounds */ = {
 			isa = PBXGroup;
 			children = (
+				EA956C7F29277C5E00879AD0 /* boyattack1.mp3 */,
+				EA956C8229277C5E00879AD0 /* boyattack2.mp3 */,
+				EA956C7E29277C5E00879AD0 /* boyattack3.mp3 */,
+				EA956C8029277C5E00879AD0 /* boydead.mp3 */,
+				EA956C902927E2C800879AD0 /* boyglide.mp3 */,
+				EA956C8129277C5E00879AD0 /* boygrunt1.mp3 */,
+				EA956C8329277C5E00879AD0 /* boygrunt2.mp3 */,
+				EA956C8D2927813300879AD0 /* boyrun.mp3 */,
+				EA956C8C2927813200879AD0 /* boywalk.mp3 */,
+				EA956C8A29277F5100879AD0 /* dooropen.mp3 */,
 				EA956C762926169C00879AD0 /* gameover.mp3 */,
+				EA956C7C29276F5300879AD0 /* gemcollect.mp3 */,
 				EA956C74292595F400879AD0 /* overworld.mp3 */,
+				EA956C7829276BEF00879AD0 /* wingame.mp3 */,
+				EA956C7A29276CD100879AD0 /* wingame2.mp3 */,
 			);
 			path = Sounds;
 			sourceTree = "<group>";
@@ -222,10 +261,23 @@
 			buildActionMask = 2147483647;
 			files = (
 				EA956C7329258B1700879AD0 /* Main.storyboard in Resources */,
+				EA956C8829277C5E00879AD0 /* boyattack2.mp3 in Resources */,
+				EA956C8E2927813300879AD0 /* boywalk.mp3 in Resources */,
+				EA956C7929276BEF00879AD0 /* wingame.mp3 in Resources */,
+				EA956C8729277C5E00879AD0 /* boygrunt1.mp3 in Resources */,
 				EA65183728E419A000E535BF /* LaunchScreen.storyboard in Resources */,
+				EA956C7D29276F5300879AD0 /* gemcollect.mp3 in Resources */,
+				EA956C8B29277F5100879AD0 /* dooropen.mp3 in Resources */,
+				EA956C8629277C5E00879AD0 /* boydead.mp3 in Resources */,
+				EA956C8929277C5E00879AD0 /* boygrunt2.mp3 in Resources */,
 				EA956C772926169C00879AD0 /* gameover.mp3 in Resources */,
+				EA956C8F2927813300879AD0 /* boyrun.mp3 in Resources */,
+				EA956C8529277C5E00879AD0 /* boyattack1.mp3 in Resources */,
+				EA956C8429277C5E00879AD0 /* boyattack3.mp3 in Resources */,
+				EA956C7B29276CD100879AD0 /* wingame2.mp3 in Resources */,
 				EA65183428E419A000E535BF /* Assets.xcassets in Resources */,
 				EA956C75292595F400879AD0 /* overworld.mp3 in Resources */,
+				EA956C912927E2C800879AD0 /* boyglide.mp3 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
