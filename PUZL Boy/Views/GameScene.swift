@@ -13,7 +13,7 @@ class GameScene: SKScene {
     
     private var gameEngine: GameEngine
 
-    private var currentLevel: Int = 9 {
+    private var currentLevel: Int = 7 {
         didSet {
             if currentLevel > LevelBuilder.maxLevel {
                 currentLevel = 0
@@ -32,7 +32,7 @@ class GameScene: SKScene {
         gameEngine.delegate = self
         scaleMode = .aspectFill
 
-        K.audioManager.playSound(for: "overworld")
+//        K.audioManager.playSound(for: "overworld")
     }
     
     required init?(coder aDecoder: NSCoder) {

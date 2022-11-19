@@ -278,7 +278,7 @@ class GameEngine {
         let nextPanel: K.GameboardPosition = (row: level.player!.row + (useRow ? increment : 0), col: level.player!.col + (useRow ? 0 : increment))
         
         guard checkPanel(position: nextPanel) else {
-            K.audioManager.stopSound(for: "boyglide")
+            K.audioManager.stopSound(for: "boyglide", fadeDuration: 0.5)
             return
         }
         
@@ -291,7 +291,7 @@ class GameEngine {
                 self.shouldUpdateRemainingForBoulderIfIcy = false
                 self.isGliding = false
 
-                K.audioManager.stopSound(for: "boyglide")
+                K.audioManager.stopSound(for: "boyglide", fadeDuration: 0.5)
 
                 //EXIT RECURSION
                 return
@@ -372,7 +372,7 @@ class GameEngine {
 
             animateGameOver {
                 self.delegate?.gameIsOver()
-                K.audioManager.playSound(for: "overworld")
+//                K.audioManager.playSound(for: "overworld")
             }
             
             GameEngine.livesRemaining -= 1
