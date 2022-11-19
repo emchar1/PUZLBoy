@@ -348,9 +348,8 @@ class GameEngine {
             K.audioManager.stopSound(for: "overworld")
             K.audioManager.playSound(for: "gameover")
 
-            animateGameOver {
+            playerSprite.startDeadAnimation {
                 self.delegate?.gameIsOver()
-//                K.audioManager.playSound(for: "overworld")
             }
             
             GameEngine.livesRemaining -= 1
@@ -358,11 +357,7 @@ class GameEngine {
             print("GAME OVER")
         }
     }
-    
-    private func animateGameOver(completion: @escaping (() -> ())) {
-        playerSprite.startDeadAnimation(completion: completion)
-    }
-    
+        
     
     // MARK: - moveTo Functions
     
