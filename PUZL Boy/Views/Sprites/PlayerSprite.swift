@@ -57,7 +57,7 @@ class PlayerSprite {
     }
     
     
-    // MARK: - Helper Functions
+    // MARK: - Animation Functions
     
     func startIdleAnimation() {
         let animation = SKAction.animate(with: playerTextures[Texture.idle.rawValue], timePerFrame: animationSpeed)
@@ -84,6 +84,38 @@ class PlayerSprite {
 
         sprite.removeAllActions()
         sprite.run(SKAction.sequence([SKAction.repeat(animation, count: 1), SKAction.wait(forDuration: 1.5)]), completion: completion)
+    }
+    
+    func hitObject(isAttacked: Bool, direction: Controls, completion: @escaping (() -> ())) {
+        let newDirection = isAttacked ? direction.getOpposite : direction
+        let hitDistance: CGFloat = 10
+        var moveAction: SKAction
+        var unmoveAction: SKAction
+        
+        switch newDirection {
+        case .up:
+            moveAction = SKAction.moveBy(x: 0, y: hitDistance, duration: 0)
+            unmoveAction = SKAction.moveBy(x: 0, y: -hitDistance, duration: 0)
+        case .down:
+            moveAction = SKAction.moveBy(x: 0, y: -hitDistance, duration: 0)
+            unmoveAction = SKAction.moveBy(x: 0, y: hitDistance, duration: 0)
+        case .left:
+            moveAction = SKAction.moveBy(x: -hitDistance, y: 0, duration: 0)
+            unmoveAction = SKAction.moveBy(x: hitDistance, y: 0, duration: 0)
+        case .right:
+            moveAction = SKAction.moveBy(x: hitDistance, y: 0, duration: 0)
+            unmoveAction = SKAction.moveBy(x: -hitDistance, y: 0, duration: 0)
+        }
+        
+        let hitAction = SKAction.sequence([
+            moveAction,
+            SKAction.colorize(with: .systemPink, colorBlendFactor: isAttacked ? 1.0 : 0.0, duration: 0),
+            SKAction.wait(forDuration: 0.2),
+            unmoveAction,
+            SKAction.colorize(withColorBlendFactor: 0.0, duration: 0.5)
+        ])
+        
+        sprite.run(hitAction, completion: completion)
     }
 
     

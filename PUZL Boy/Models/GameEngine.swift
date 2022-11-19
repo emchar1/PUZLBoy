@@ -31,7 +31,6 @@ class GameEngine {
     }
     
     private var playerIsMoving = false
-    private var playerIsFacingLeft = false
     
     //FIXME: - Is this the best way to do this??? Used to
     private var shouldUpdateRemainingForBoulderIfIcy: Bool = false
@@ -72,7 +71,7 @@ class GameEngine {
      Sets the player sprite position easily.
      */
     private func setPlayerSpritePosition(animate: Bool, completion: (() -> ())?) {
-        let playerLastPosition = CGPoint(x: gameboardSprite.panelSize * (CGFloat(level.player!.col) + 0.5) + (playerIsFacingLeft ? -1 : 1),
+        let playerLastPosition = CGPoint(x: gameboardSprite.panelSize * (CGFloat(level.player!.col) + 0.5),
                                          y: gameboardSprite.panelSize * (CGFloat(gameboardSprite.panelCount - 1 - level.player!.row) + 0.5))
 
         if animate {
@@ -108,7 +107,7 @@ class GameEngine {
                 K.audioManager.playSound(for: isSolved ? "boywalk" : "boyrun")
             }
             else {
-                K.audioManager.stopSound(for: isSolved ? "boywalk" : "boyrun")
+                K.audioManager.stopSound(for: isSolved ? "boywalk" : "boyrun", fadeDuration: 0.25)
             }
         }
     }
@@ -190,37 +189,26 @@ class GameEngine {
         guard !playerIsMoving else { return print("Controls disables while player is still moving") }
 
         if inBounds(location: location, direction: .up) {
-            movePlayerHelper(useRow: true, increment: -1)
+            movePlayerHelper(direction: .up)
 
             print("Up pressed")
         }
         else if inBounds(location: location, direction: .down) {
-            movePlayerHelper(useRow: true, increment: 1)
+            movePlayerHelper(direction: .down)
 
             print("Down pressed")
         }
         else if inBounds(location: location, direction: .left) {
-            //Need to adjust offset because the OG sprite has a gap on the right
-            if !playerIsFacingLeft {
-                playerSprite.sprite.position = CGPoint(x: playerSprite.sprite.position.x, y: playerSprite.sprite.position.y)
-            }
-            
-            playerIsFacingLeft = true
             playerSprite.sprite.xScale = -abs(playerSprite.sprite.xScale)
             
-            movePlayerHelper(useRow: false, increment: -1)
+            movePlayerHelper(direction: .left)
 
             print("Left pressed")
         }
         else if inBounds(location: location, direction: .right) {
-            if playerIsFacingLeft {
-                playerSprite.sprite.position = CGPoint(x: playerSprite.sprite.position.x, y: playerSprite.sprite.position.y)
-            }
-            
-            playerIsFacingLeft = false
             playerSprite.sprite.xScale = abs(playerSprite.sprite.xScale)
             
-            movePlayerHelper(useRow: false, increment: 1)
+            movePlayerHelper(direction: .right)
 
             print("Right pressed")
         }
@@ -268,16 +256,23 @@ class GameEngine {
     
     /**
      Helper function that moves the player.
-     - parameters:
-        - useRow: determines if player's row or col is used in the guard check
-        - useGreaterThan: determines if comparison used should be greater than or less than
-        - comparisonValue: value to compare against player row (or col)
-        - increment: amount to move the player up or down (if rowCheck) or left or right (if !rowCheck)
+     - parameter direction: The direction the player is moving
      */
-    private func movePlayerHelper(useRow: Bool, increment: Int) {
-        let nextPanel: K.GameboardPosition = (row: level.player!.row + (useRow ? increment : 0), col: level.player!.col + (useRow ? 0 : increment))
+    private func movePlayerHelper(direction: Controls) {
+        var nextPanel: K.GameboardPosition
         
-        guard checkPanel(position: nextPanel) else {
+        switch direction {
+        case .up:
+            nextPanel = (row: level.player.row - 1, col: level.player.col)
+        case .down:
+            nextPanel = (row: level.player.row + 1, col: level.player.col)
+        case .left:
+            nextPanel = (row: level.player.row, col: level.player.col - 1)
+        case .right:
+            nextPanel = (row: level.player.row, col: level.player.col + 1)
+        }
+        
+        guard checkPanel(position: nextPanel, direction: direction) else {
             K.audioManager.stopSound(for: "boyglide", fadeDuration: 0.5)
             return
         }
@@ -302,7 +297,7 @@ class GameEngine {
             }
             
             //ENTER RECURSION
-            self.movePlayerHelper(useRow: useRow, increment: increment)
+            self.movePlayerHelper(direction: direction)
         }
     }
     
@@ -311,7 +306,7 @@ class GameEngine {
      - parameter position: the row, column that the player is on.
      - returns: true if the panel is an enemy, i.e. handle differently
      */
-    private func checkPanel(position: K.GameboardPosition) -> Bool {
+    private func checkPanel(position: K.GameboardPosition, direction: Controls) -> Bool {
         let rand = Int.random(in: 1...2)
 
         switch level.getLevelType(at: position) {
@@ -324,8 +319,12 @@ class GameEngine {
                     shouldUpdateRemainingForBoulderIfIcy = false
                 }
                 
-                print("A boulder blocks your path... \(shouldUpdateRemainingForBoulderIfIcy)")
-                
+                playerIsMoving = true
+                playerSprite.hitObject(isAttacked: false, direction: direction) {
+                    self.playerIsMoving = false
+                    print("A boulder blocks your path... \(self.shouldUpdateRemainingForBoulderIfIcy)")
+                }
+
                 return false
             }
         case .enemy:
@@ -333,9 +332,13 @@ class GameEngine {
                 K.audioManager.playSound(for: "boygrunt\(rand)")
                 
                 updateMovesRemaining()
-                
-                print("Enemy attacks you!")
-                
+
+                playerIsMoving = true
+                playerSprite.hitObject(isAttacked: true, direction: direction) {
+                    self.playerIsMoving = false
+                    print("Enemy attacked!!")
+                }
+                                
                 return false
             }
         case .boundary:
