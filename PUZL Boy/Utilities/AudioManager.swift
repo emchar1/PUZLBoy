@@ -76,6 +76,7 @@ class AudioManager {
         setupAudioItem("boyrun4", category: .soundFX)
         setupAudioItem("boywalk", category: .soundFX)
         setupAudioItem("boyglide", category: .soundFX)
+        setupAudioItem("boymarsh", category: .soundFX)
         setupAudioItem("boydead", category: .soundFX)
         setupAudioItem("dooropen", category: .soundFX)
     }

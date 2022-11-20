@@ -19,9 +19,9 @@ class GameEngine {
     
     // MARK: - Properties
     
+    private static var livesRemaining: Int = 3
     private var level: Level
     private var gemsRemaining: Int
-    private static var livesRemaining: Int = 3
     private var movesRemaining: Int {
         didSet {
             if movesRemaining < 0 {
@@ -70,14 +70,34 @@ class GameEngine {
      Sets the player sprite position easily.
      */
     private func setPlayerSpritePosition(animate: Bool, completion: (() -> ())?) {
-        let playerLastPosition = CGPoint(x: gameboardSprite.panelSize * (CGFloat(level.player!.col) + 0.5),
-                                         y: gameboardSprite.panelSize * (CGFloat(gameboardSprite.panelCount - 1 - level.player!.row) + 0.5))
+        let playerLastPosition = CGPoint(x: gameboardSprite.panelSize * (CGFloat(level.player.col) + 0.5),
+                                         y: gameboardSprite.panelSize * (CGFloat(gameboardSprite.panelCount - 1 - level.player.row) + 0.5))
+        let panelIsMarsh = level.getLevelType(at: level.player) == .marsh
+        var animationType: PlayerSprite.Texture
+        var animationDuration: TimeInterval
+        
+        if isGliding {
+            animationType = .glide
+            animationDuration = 0.5
+        }
+        else if isSolved {
+            animationType = .walk
+            animationDuration = 0.75
+        }
+        else if panelIsMarsh {
+            animationType = .marsh
+            animationDuration = 1.0
+        }
+        else {
+            animationType = .run
+            animationDuration = 0.5
+        }
 
         if animate {
-            let playerMove = SKAction.move(to: playerLastPosition, duration: isSolved ? 0.75 : 0.5)
+            let playerMove = SKAction.move(to: playerLastPosition, duration: animationDuration)
                         
             shouldDisableControlInput = true
-            playerSprite.startMoveAnimation(animationType: isGliding ? .glide : (isSolved ? .walk : .run))
+            playerSprite.startMoveAnimation(animationType: animationType)
 
             playerSprite.sprite.run(playerMove) {
                 self.shouldDisableControlInput = false
@@ -209,16 +229,16 @@ class GameEngine {
         let panelSize = gameboardSprite.panelSize * gameboardSprite.spriteScale
         let gameboardSize = panelSize * CGFloat(maxDistance)
         
-        var bottomBound = level.player!.row + 1
-        var rightBound = level.player!.col + 1
-        var topBound = level.player!.row {
+        var bottomBound = level.player.row + 1
+        var rightBound = level.player.col + 1
+        var topBound = level.player.row {
             didSet {
                 if topBound < 0 {
                     topBound = 0
                 }
             }
         }
-        var leftBound = level.player!.col {
+        var leftBound = level.player.col {
             didSet {
                 if leftBound < 0 {
                     leftBound = 0

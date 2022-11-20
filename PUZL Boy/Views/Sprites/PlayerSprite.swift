@@ -41,7 +41,7 @@ class PlayerSprite {
             playerTextures[Texture.idle.rawValue].append(playerAtlas.textureNamed("Idle (\(i))"))
             playerTextures[Texture.run.rawValue].append(playerAtlas.textureNamed("Run (\(i))"))
             playerTextures[Texture.walk.rawValue].append(playerAtlas.textureNamed("Walk (\(i))"))
-            playerTextures[Texture.marsh.rawValue].append(playerAtlas.textureNamed("Walk (\(i))"))
+            playerTextures[Texture.marsh.rawValue].append(playerAtlas.textureNamed("Run (\(i))"))
             playerTextures[Texture.dead.rawValue].append(playerAtlas.textureNamed("Dead (\(i))"))
             
             if i == 5 {
@@ -70,13 +70,15 @@ class PlayerSprite {
         K.audioManager.stopSound(for: "boyrun3", fadeDuration: fadeDuration)
         K.audioManager.stopSound(for: "boyrun4", fadeDuration: fadeDuration)
         K.audioManager.stopSound(for: "boywalk", fadeDuration: fadeDuration)
+        K.audioManager.stopSound(for: "boymarsh", fadeDuration: fadeDuration)
 
         sprite.removeAllActions()
         sprite.run(SKAction.repeatForever(animation), withKey: "playerIdleAnimation")
     }
     
     func startMoveAnimation(animationType: Texture) {
-        let animation = SKAction.animate(with: playerTextures[animationType.rawValue], timePerFrame: animationSpeed)
+        let animationRate: TimeInterval = animationType == .marsh ? 1.25 : 1
+        let animation = SKAction.animate(with: playerTextures[animationType.rawValue], timePerFrame: animationSpeed * animationRate)
 
         sprite.removeAllActions()
         
@@ -92,7 +94,7 @@ class PlayerSprite {
             case .walk:
                 K.audioManager.playSound(for: "boywalk")
             case .marsh:
-                K.audioManager.playSound(for: "boywalk")
+                K.audioManager.playSound(for: "boymarsh")
             default:
                 print("Unknown animationType")
             }

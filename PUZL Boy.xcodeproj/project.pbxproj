@@ -14,6 +14,7 @@
 		EA0F14702929D9C00013038E /* boyrun3.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA0F146D2929D9C00013038E /* boyrun3.mp3 */; };
 		EA0F14712929D9C00013038E /* boyrun2.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA0F146E2929D9C00013038E /* boyrun2.mp3 */; };
 		EA0F14752929E3E10013038E /* dooropen.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA0F14742929E3E10013038E /* dooropen.mp3 */; };
+		EA0F1479292A25E90013038E /* boymarsh.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA0F1478292A25E90013038E /* boymarsh.mp3 */; };
 		EA1191532904BC4C009D0E3E /* DisplaySprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA1191522904BC4C009D0E3E /* DisplaySprite.swift */; };
 		EA119155290CCA39009D0E3E /* Inventory.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA119154290CCA39009D0E3E /* Inventory.swift */; };
 		EA11915729121798009D0E3E /* Controls.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA11915629121798009D0E3E /* Controls.swift */; };
@@ -54,6 +55,7 @@
 		EA0F146D2929D9C00013038E /* boyrun3.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = boyrun3.mp3; sourceTree = "<group>"; };
 		EA0F146E2929D9C00013038E /* boyrun2.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = boyrun2.mp3; sourceTree = "<group>"; };
 		EA0F14742929E3E10013038E /* dooropen.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = dooropen.mp3; sourceTree = "<group>"; };
+		EA0F1478292A25E90013038E /* boymarsh.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = boymarsh.mp3; sourceTree = "<group>"; };
 		EA1191522904BC4C009D0E3E /* DisplaySprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplaySprite.swift; sourceTree = "<group>"; };
 		EA119154290CCA39009D0E3E /* Inventory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Inventory.swift; sourceTree = "<group>"; };
 		EA11915629121798009D0E3E /* Controls.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Controls.swift; sourceTree = "<group>"; };
@@ -182,6 +184,7 @@
 				EA956C7E29277C5E00879AD0 /* boyattack3.mp3 */,
 				EA956C8029277C5E00879AD0 /* boydead.mp3 */,
 				EA0F14682929D6FE0013038E /* boyglide.mp3 */,
+				EA0F1478292A25E90013038E /* boymarsh.mp3 */,
 				EA956C8129277C5E00879AD0 /* boygrunt1.mp3 */,
 				EA956C8329277C5E00879AD0 /* boygrunt2.mp3 */,
 				EA0F145C292994330013038E /* boyrun1.mp3 */,
@@ -270,6 +273,7 @@
 				EA0F14692929D6FE0013038E /* boyglide.mp3 in Resources */,
 				EA956C8829277C5E00879AD0 /* boyattack2.mp3 in Resources */,
 				EA0F145F292994B00013038E /* boywalk.mp3 in Resources */,
+				EA0F1479292A25E90013038E /* boymarsh.mp3 in Resources */,
 				EA0F145D292994330013038E /* boyrun1.mp3 in Resources */,
 				EA956C8729277C5E00879AD0 /* boygrunt1.mp3 in Resources */,
 				EA0F14752929E3E10013038E /* dooropen.mp3 in Resources */,
