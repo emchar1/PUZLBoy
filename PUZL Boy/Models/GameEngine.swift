@@ -380,6 +380,8 @@ class GameEngine {
             K.audioManager.playSound(for: "gameover")
 
             playerSprite.startDeadAnimation {
+                K.audioManager.playSound(for: "overworld", currentTime: 2.18)
+
                 self.delegate?.gameIsOver()
             }
             
