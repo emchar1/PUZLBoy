@@ -30,11 +30,10 @@ class GameEngine {
         }
     }
     
-    private var playerIsMoving = false
-    
-    //FIXME: - Is this the best way to do this??? Used to
-    private var shouldUpdateRemainingForBoulderIfIcy: Bool = false
-    private var isGliding: Bool = false
+    // FIXME: - These properties seem to make the code messy...
+    private var shouldDisableControlInput = false
+    private var shouldUpdateRemainingForBoulderIfIcy = false
+    private var isGliding = false
     
     private var isExitAvailable: Bool { gemsRemaining == 0 }
     private var isSolved: Bool { isExitAvailable && level.player == level.end }
@@ -77,11 +76,11 @@ class GameEngine {
         if animate {
             let playerMove = SKAction.move(to: playerLastPosition, duration: isSolved ? 0.75 : 0.5)
                         
-            playerIsMoving = true
+            shouldDisableControlInput = true
             playerSprite.startMoveAnimation(animationType: isGliding ? .glide : (isSolved ? .walk : .run))
 
             playerSprite.sprite.run(playerMove) {
-                self.playerIsMoving = false
+                self.shouldDisableControlInput = false
                 self.playerSprite.startIdleAnimation()
                 self.checkSpecialPanel()
                 completion?()
@@ -95,35 +94,35 @@ class GameEngine {
     }
     
     /**
-     Helper function that checks for a special panel.
+     Checks for a special panel.
      */
     private func checkSpecialPanel() {
         switch level.getLevelType(at: level.player) {
         case .gem:
             gemsRemaining -= 1
-            consumeItem(isGem: true, shouldChangeToIce: false)
+            consumeItem(isGem: true, shouldChangePanelToIce: false)
             
             K.audioManager.playSound(for: "gemcollect")
         case .gemOnIce:
             gemsRemaining -= 1
-            consumeItem(isGem: true, shouldChangeToIce: true)
+            consumeItem(isGem: true, shouldChangePanelToIce: true)
 
             K.audioManager.playSound(for: "gemcollect")
         case .hammer:
-            consumeItem(isGem: false, shouldChangeToIce: false)
+            consumeItem(isGem: false, shouldChangePanelToIce: false)
             playerSprite.inventory.hammers += 1
         case .sword:
-            consumeItem(isGem: false, shouldChangeToIce: false)
+            consumeItem(isGem: false, shouldChangePanelToIce: false)
             playerSprite.inventory.swords += 1
         case .boulder:
             guard playerSprite.inventory.hammers > 0 else { return }
             
-            consumeItem(isGem: false, shouldChangeToIce: false)
+            consumeItem(isGem: false, shouldChangePanelToIce: false)
             playerSprite.inventory.hammers -= 1
         case .enemy:
             guard playerSprite.inventory.swords > 0 else { return }
             
-            consumeItem(isGem: false, shouldChangeToIce: false)
+            consumeItem(isGem: false, shouldChangePanelToIce: false)
             playerSprite.inventory.swords -= 1
         default: break
         }
@@ -132,8 +131,8 @@ class GameEngine {
     /**
      Converts a panel to grass, after consuming the item.
      */
-    private func consumeItem(isGem: Bool, shouldChangeToIce: Bool) {
-        level.setLevelType(at: level.player, levelType: shouldChangeToIce ? .ice : .grass)
+    private func consumeItem(isGem: Bool, shouldChangePanelToIce: Bool) {
+        level.setLevelType(at: level.player, levelType: shouldChangePanelToIce ? .ice : .grass)
 
         for child in gameboardSprite.sprite.children {
             //Exclude Player, which will have no name
@@ -146,7 +145,7 @@ class GameEngine {
             //Update panel to grass
             if position == level.player, let child = gameboardSprite.sprite.childNode(withName: row + "," + col) {
                 child.removeFromParent()
-                gameboardSprite.updatePanels(at: position, with: shouldChangeToIce ? gameboardSprite.ice : gameboardSprite.grass)
+                gameboardSprite.updatePanels(at: position, with: shouldChangePanelToIce ? gameboardSprite.ice : gameboardSprite.grass)
             }
             
             //Update exitClosed panel to exitOpen
@@ -168,7 +167,7 @@ class GameEngine {
      */
     func handleControls(in location: CGPoint) {
         guard !isGameOver else { return print("Control attempted during game over animation...") }
-        guard !playerIsMoving else { return print("Controls disables while player is still moving") }
+        guard !shouldDisableControlInput else { return print("Controls disables while player is still moving") }
 
         if inBounds(location: location, direction: .up) {
             movePlayerHelper(direction: .up)
@@ -200,7 +199,7 @@ class GameEngine {
     // MARK: - Helper Functions
     
     /**
-     Helper function that takes a tap location and compares it to the player's next position.
+     Takes a tap location and compares it to the player's next position.
      - parameters:
         - location: Location of the tap
         - controls: The player's next position, either up, down, left, or right
@@ -210,18 +209,30 @@ class GameEngine {
         let panelSize = gameboardSprite.panelSize * gameboardSprite.spriteScale
         let gameboardSize = panelSize * CGFloat(maxDistance)
         
-        var upBound = level.player!.row { didSet { if upBound < 0 { upBound = 0 }}}
-        var downBound = level.player!.row + 1
-        var leftBound = level.player!.col { didSet { if leftBound < 0 { leftBound = 0 }}}
+        var bottomBound = level.player!.row + 1
         var rightBound = level.player!.col + 1
+        var topBound = level.player!.row {
+            didSet {
+                if topBound < 0 {
+                    topBound = 0
+                }
+            }
+        }
+        var leftBound = level.player!.col {
+            didSet {
+                if leftBound < 0 {
+                    leftBound = 0
+                }
+            }
+        }
         
         switch direction {
         case .up:
-            upBound = -maxDistance
-            downBound -= 1
+            topBound = -maxDistance
+            bottomBound -= 1
         case .down:
-            upBound += 1
-            downBound = maxDistance
+            topBound += 1
+            bottomBound = maxDistance
         case .left:
             leftBound = -maxDistance
             rightBound -= 1
@@ -232,8 +243,8 @@ class GameEngine {
         
         return location.x > gameboardSprite.xPosition + (CGFloat(leftBound) * panelSize) &&
         location.x < gameboardSprite.xPosition + (CGFloat(rightBound) * panelSize) &&
-        location.y > gameboardSprite.yPosition + gameboardSize - (CGFloat(downBound) * panelSize) &&
-        location.y < gameboardSprite.yPosition + gameboardSize - (CGFloat(upBound) * panelSize)
+        location.y > gameboardSprite.yPosition + gameboardSize - (CGFloat(bottomBound) * panelSize) &&
+        location.y < gameboardSprite.yPosition + gameboardSize - (CGFloat(topBound) * panelSize)
     }
     
     /**
@@ -254,7 +265,7 @@ class GameEngine {
             nextPanel = (row: level.player.row, col: level.player.col + 1)
         }
         
-        guard checkPanel(position: nextPanel, direction: direction) else {
+        guard checkPanelForPathway(position: nextPanel, direction: direction) else {
             K.audioManager.stopSound(for: "boyglide", fadeDuration: 0.5)
             return
         }
@@ -284,11 +295,11 @@ class GameEngine {
     }
     
     /**
-     Runs a switch on the panel the player is on.
+     Checks to make sure panel doesn't have an "obstructed" (i.e. a boulder, enemy or boundary).
      - parameter position: the row, column that the player is on.
      - returns: true if the panel is an enemy, i.e. handle differently
      */
-    private func checkPanel(position: K.GameboardPosition, direction: Controls) -> Bool {
+    private func checkPanelForPathway(position: K.GameboardPosition, direction: Controls) -> Bool {
         switch level.getLevelType(at: position) {
         case .boulder:
             if playerSprite.inventory.hammers <= 0 {
@@ -297,9 +308,9 @@ class GameEngine {
                     shouldUpdateRemainingForBoulderIfIcy = false
                 }
                 
-                playerIsMoving = true
+                shouldDisableControlInput = true
                 playerSprite.hitObject(isAttacked: false, direction: direction) {
-                    self.playerIsMoving = false
+                    self.shouldDisableControlInput = false
                     print("A boulder blocks your path... \(self.shouldUpdateRemainingForBoulderIfIcy)")
                 }
 
@@ -309,9 +320,9 @@ class GameEngine {
             if playerSprite.inventory.swords <= 0 {
                 updateMovesRemaining()
 
-                playerIsMoving = true
+                shouldDisableControlInput = true
                 playerSprite.hitObject(isAttacked: true, direction: direction) {
-                    self.playerIsMoving = false
+                    self.shouldDisableControlInput = false
                     print("Enemy attacked!!")
                 }
                                 
@@ -339,7 +350,7 @@ class GameEngine {
         displaySprite.setLabels(level: "\(level.level)", lives: "\(GameEngine.livesRemaining)", moves: "\(movesRemaining)", inventory: playerSprite.inventory)
         
         if isSolved {
-            K.audioManager.playSound(for: "wingame2")
+            K.audioManager.playSound(for: "wingame")
             delegate?.gameIsSolved()
             
             print("WIN!")

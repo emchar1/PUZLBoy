@@ -20,7 +20,7 @@ class PlayerSprite {
     private var playerTextures: [[SKTexture]]
     
     enum Texture: Int {
-        case idle = 0, run, walk, dead, glide
+        case idle = 0, run, walk, dead, glide, marsh
     }
     
     
@@ -33,6 +33,7 @@ class PlayerSprite {
         playerTextures.append([]) //idle
         playerTextures.append([]) //run
         playerTextures.append([]) //walk
+        playerTextures.append([]) //marsh
         playerTextures.append([]) //dead
         playerTextures.append([]) //glide
 
@@ -40,6 +41,7 @@ class PlayerSprite {
             playerTextures[Texture.idle.rawValue].append(playerAtlas.textureNamed("Idle (\(i))"))
             playerTextures[Texture.run.rawValue].append(playerAtlas.textureNamed("Run (\(i))"))
             playerTextures[Texture.walk.rawValue].append(playerAtlas.textureNamed("Walk (\(i))"))
+            playerTextures[Texture.marsh.rawValue].append(playerAtlas.textureNamed("Walk (\(i))"))
             playerTextures[Texture.dead.rawValue].append(playerAtlas.textureNamed("Dead (\(i))"))
             
             if i == 5 {
@@ -60,14 +62,17 @@ class PlayerSprite {
     // MARK: - Animation Functions
     
     func startIdleAnimation() {
+        let fadeDuration: TimeInterval = 0.25
         let animation = SKAction.animate(with: playerTextures[Texture.idle.rawValue], timePerFrame: animationSpeed)
         
+        K.audioManager.stopSound(for: "boyrun1", fadeDuration: fadeDuration)
+        K.audioManager.stopSound(for: "boyrun2", fadeDuration: fadeDuration)
+        K.audioManager.stopSound(for: "boyrun3", fadeDuration: fadeDuration)
+        K.audioManager.stopSound(for: "boyrun4", fadeDuration: fadeDuration)
+        K.audioManager.stopSound(for: "boywalk", fadeDuration: fadeDuration)
+
         sprite.removeAllActions()
         sprite.run(SKAction.repeatForever(animation), withKey: "playerIdleAnimation")
-        
-        K.audioManager.stopSound(for: "boyrun", fadeDuration: 0.25)
-        K.audioManager.stopSound(for: "boywalk", fadeDuration: 0.25)
-        print("iiiiidle")
     }
     
     func startMoveAnimation(animationType: Texture) {
@@ -76,24 +81,33 @@ class PlayerSprite {
         sprite.removeAllActions()
         
         if animationType == .glide {
-            sprite.run(SKAction.sequence([SKAction.repeat(animation, count: 1), SKAction.wait(forDuration: 2.0)]), withKey: "playerMoveAnimation")
-            
             K.audioManager.playSound(for: "boyglide", interruptPlayback: false)
+
+            sprite.run(SKAction.sequence([SKAction.repeat(animation, count: 1), SKAction.wait(forDuration: 2.0)]), withKey: "playerMoveAnimation")
         }
         else {
-            sprite.run(SKAction.repeatForever(animation), withKey: "playerMoveAnimation")
+            switch animationType {
+            case .run:
+                K.audioManager.playSound(for: "boyrun\(Int.random(in: 1...4))")
+            case .walk:
+                K.audioManager.playSound(for: "boywalk")
+            case .marsh:
+                K.audioManager.playSound(for: "boywalk")
+            default:
+                print("Unknown animationType")
+            }
             
-            K.audioManager.playSound(for: animationType == .run ? "boyrun" : "boywalk")
+            sprite.run(SKAction.repeatForever(animation), withKey: "playerMoveAnimation")
         }
     }
 
     func startDeadAnimation(completion: @escaping (() -> ())) {
         let animation = SKAction.animate(with: playerTextures[Texture.dead.rawValue], timePerFrame: animationSpeed / 2)
 
+        K.audioManager.playSound(for: "boydead")
+
         sprite.removeAllActions()
         sprite.run(SKAction.sequence([SKAction.repeat(animation, count: 1), SKAction.wait(forDuration: 1.5)]), completion: completion)
-        
-        K.audioManager.playSound(for: "boydead")
     }
     
     func hitObject(isAttacked: Bool, direction: Controls, completion: @escaping (() -> ())) {
@@ -125,9 +139,9 @@ class PlayerSprite {
             SKAction.colorize(withColorBlendFactor: 0.0, duration: 0.5)
         ])
         
-        sprite.run(hitAction, completion: completion)
-
         K.audioManager.playSound(for: "boygrunt\(Int.random(in: 1...2))")
+
+        sprite.run(hitAction, completion: completion)
     }
 
     
@@ -142,9 +156,9 @@ class PlayerSprite {
     }
         
     func setScale(panelSize: CGFloat) {
+        //Changed scale from 0.5 to 1 to 1.5 due to new hero width size from 313 to original 614 to new 946
+        let scale: CGFloat = 1.5
         
-        
-        //FIXME: - Changed 0.5 to 1 to 1.5 due to new hero width size from 313 to original 614 to new 946
-        sprite.setScale(1.5 * (panelSize / playerSize.width))
+        sprite.setScale(scale * (panelSize / playerSize.width))
     }
 }
