@@ -187,7 +187,7 @@ class GameEngine {
      */
     func handleControls(in location: CGPoint) {
         guard !isGameOver else { return print("Control attempted during game over animation...") }
-        guard !shouldDisableControlInput else { return print("Controls disables while player is still moving") }
+        guard !shouldDisableControlInput else { return print("Controls disabled while player is still moving") }
 
         if inBounds(location: location, direction: .up) {
             movePlayerHelper(direction: .up)
@@ -300,6 +300,11 @@ class GameEngine {
                 self.isGliding = false
 
                 K.audioManager.stopSound(for: "boyglide", fadeDuration: 0.5)
+                
+                // FIXME: - I don't like this being here...
+                if self.level.getLevelType(at: self.level.player) == .marsh {
+                    self.playerSprite.startMarshEffectAnimation()
+                }
 
                 //EXIT RECURSION
                 return
@@ -380,7 +385,7 @@ class GameEngine {
             K.audioManager.playSound(for: "gameover")
 
             playerSprite.startDeadAnimation {
-                K.audioManager.playSound(for: "overworld", currentTime: 2.18)
+                K.audioManager.playSound(for: "overworld")//, currentTime: 2.18)
 
                 self.delegate?.gameIsOver()
             }

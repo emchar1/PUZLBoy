@@ -23,6 +23,10 @@ class PlayerSprite {
         case idle = 0, run, walk, dead, glide, marsh
     }
     
+    enum AnimationKey: String {
+        case playerIdle, playerMove, playerGlide, playerMarsh
+    }
+    
     
     // MARK: - Initialization
     
@@ -72,20 +76,20 @@ class PlayerSprite {
         K.audioManager.stopSound(for: "boywalk", fadeDuration: fadeDuration)
         K.audioManager.stopSound(for: "boymarsh", fadeDuration: fadeDuration)
 
-        sprite.removeAllActions()
-        sprite.run(SKAction.repeatForever(animation), withKey: "playerIdleAnimation")
+        sprite.run(SKAction.repeatForever(animation), withKey: AnimationKey.playerIdle.rawValue)
     }
     
     func startMoveAnimation(animationType: Texture) {
         let animationRate: TimeInterval = animationType == .marsh ? 1.25 : 1
         let animation = SKAction.animate(with: playerTextures[animationType.rawValue], timePerFrame: animationSpeed * animationRate)
 
-        sprite.removeAllActions()
-        
+        sprite.removeAction(forKey: AnimationKey.playerIdle.rawValue)
+        sprite.removeAction(forKey: AnimationKey.playerMove.rawValue)
+
         if animationType == .glide {
             K.audioManager.playSound(for: "boyglide", interruptPlayback: false)
 
-            sprite.run(SKAction.sequence([SKAction.repeat(animation, count: 1), SKAction.wait(forDuration: 2.0)]), withKey: "playerMoveAnimation")
+            sprite.run(SKAction.sequence([SKAction.repeat(animation, count: 1), SKAction.wait(forDuration: 2.0)]), withKey: AnimationKey.playerGlide.rawValue)
         }
         else {
             switch animationType {
@@ -99,8 +103,18 @@ class PlayerSprite {
                 print("Unknown animationType")
             }
             
-            sprite.run(SKAction.repeatForever(animation), withKey: "playerMoveAnimation")
+            sprite.run(SKAction.repeatForever(animation), withKey: AnimationKey.playerMove.rawValue)
         }
+    }
+    
+    func startMarshEffectAnimation() {
+        let marshEffect = SKAction.sequence([
+            SKAction.colorize(with: .purple, colorBlendFactor: 1.0, duration: 0.0),
+            SKAction.wait(forDuration: 0.5),
+            SKAction.colorize(withColorBlendFactor: 0.0, duration: 1.0)
+        ])
+        
+        sprite.run(marshEffect, withKey: AnimationKey.playerMarsh.rawValue)
     }
 
     func startDeadAnimation(completion: @escaping (() -> ())) {
@@ -108,7 +122,8 @@ class PlayerSprite {
 
         K.audioManager.playSound(for: "boydead")
 
-        sprite.removeAllActions()
+        sprite.removeAction(forKey: AnimationKey.playerIdle.rawValue)
+        sprite.removeAction(forKey: AnimationKey.playerMove.rawValue)
         sprite.run(SKAction.sequence([SKAction.repeat(animation, count: 1), SKAction.wait(forDuration: 1.5)]), completion: completion)
     }
     
