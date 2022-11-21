@@ -24,7 +24,7 @@ class PlayerSprite {
     }
     
     enum AnimationKey: String {
-        case playerIdle, playerMove, playerGlide, playerMarsh
+        case playerIdle, playerMove, playerGlide, playerMarsh, playerPowerUp
     }
     
     
@@ -109,12 +109,25 @@ class PlayerSprite {
     
     func startMarshEffectAnimation() {
         let marshEffect = SKAction.sequence([
-            SKAction.colorize(with: .purple, colorBlendFactor: 1.0, duration: 0.0),
-            SKAction.wait(forDuration: 0.5),
-            SKAction.colorize(withColorBlendFactor: 0.0, duration: 1.0)
+            SKAction.colorize(with: .systemGreen, colorBlendFactor: 1.0, duration: 0.0),
+            SKAction.colorize(withColorBlendFactor: 0.0, duration: 1.5)
         ])
         
+        K.audioManager.playSound(for: "boypoisoned")
+
         sprite.run(marshEffect, withKey: AnimationKey.playerMarsh.rawValue)
+    }
+    
+    func startPowerUpAnimation() {
+        let powerUp = SKAction.sequence([
+            SKAction.colorize(with: .systemCyan, colorBlendFactor: 0.5, duration: 0.5),
+            SKAction.wait(forDuration: 0.25),
+            SKAction.colorize(withColorBlendFactor: 0.0, duration: 0.5)
+        ])
+    
+        K.audioManager.playSound(for: "pickupitem")
+        
+        sprite.run(powerUp, withKey: AnimationKey.playerPowerUp.rawValue)
     }
 
     func startDeadAnimation(completion: @escaping (() -> ())) {
@@ -153,7 +166,15 @@ class PlayerSprite {
             SKAction.colorize(with: .systemPink, colorBlendFactor: isAttacked ? 1.0 : 0.0, duration: 0),
             SKAction.wait(forDuration: 0.2),
             unmoveAction,
-            SKAction.colorize(withColorBlendFactor: 0.0, duration: 0.5)
+            SKAction.colorize(withColorBlendFactor: 0.0, duration: 0.1),
+            SKAction.colorize(with: .systemPink, colorBlendFactor: isAttacked ? 1.0 : 0.0, duration: 0),
+            SKAction.colorize(withColorBlendFactor: 0.0, duration: 0.13),
+            SKAction.colorize(with: .systemPink, colorBlendFactor: isAttacked ? 0.75 : 0.0, duration: 0),
+            SKAction.colorize(withColorBlendFactor: 0.0, duration: 0.16),
+            SKAction.colorize(with: .systemPink, colorBlendFactor: isAttacked ? 0.5 : 0.0, duration: 0),
+            SKAction.colorize(withColorBlendFactor: 0.0, duration: 0.19),
+            SKAction.colorize(with: .systemPink, colorBlendFactor: isAttacked ? 0.25 : 0.0, duration: 0),
+            SKAction.colorize(withColorBlendFactor: 0.0, duration: 0.21),
         ])
         
         K.audioManager.playSound(for: "boygrunt\(Int.random(in: 1...2))")

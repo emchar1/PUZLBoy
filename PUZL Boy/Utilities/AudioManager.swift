@@ -61,24 +61,28 @@ class AudioManager {
         }
         
         //Setup all the sounds
-        setupAudioItem("overworld", category: .music)
-        setupAudioItem("gameover", category: .soundFX)
-        setupAudioItem("wingame", category: .soundFX)
-        setupAudioItem("gemcollect", category: .soundFX)
-        setupAudioItem("boyattack1", category: .soundFX)
-        setupAudioItem("boyattack2", category: .soundFX)
-        setupAudioItem("boyattack3", category: .soundFX)
-        setupAudioItem("boygrunt1", category: .soundFX)
-        setupAudioItem("boygrunt2", category: .soundFX)
-        setupAudioItem("boyrun1", category: .soundFX)
-        setupAudioItem("boyrun2", category: .soundFX)
-        setupAudioItem("boyrun3", category: .soundFX)
-        setupAudioItem("boyrun4", category: .soundFX)
-        setupAudioItem("boywalk", category: .soundFX)
-        setupAudioItem("boyglide", category: .soundFX)
-        setupAudioItem("boymarsh", category: .soundFX)
-        setupAudioItem("boydead", category: .soundFX)
-        setupAudioItem("dooropen", category: .soundFX)
+        addAudioItem("bouldersmash", category: .soundFX)
+        addAudioItem("boyattack1", category: .soundFX)
+        addAudioItem("boyattack2", category: .soundFX)
+        addAudioItem("boyattack3", category: .soundFX)
+        addAudioItem("boydead", category: .soundFX)
+        addAudioItem("boyglide", category: .soundFX)
+        addAudioItem("boygrunt1", category: .soundFX)
+        addAudioItem("boygrunt2", category: .soundFX)
+        addAudioItem("boymarsh", category: .soundFX)
+        addAudioItem("boypoisoned", category: .soundFX)        
+        addAudioItem("boyrun1", category: .soundFX)
+        addAudioItem("boyrun2", category: .soundFX)
+        addAudioItem("boyrun3", category: .soundFX)
+        addAudioItem("boyrun4", category: .soundFX)
+        addAudioItem("boywalk", category: .soundFX)
+        addAudioItem("dooropen", category: .soundFX)
+        addAudioItem("gameover", category: .soundFX)
+        addAudioItem("gemcollect", category: .soundFX)
+        addAudioItem("overworld", category: .music)
+        addAudioItem("pickupitem", category: .soundFX)
+        addAudioItem("swordslash", category: .soundFX)
+        addAudioItem("wingame", category: .soundFX)
     }
 
     /**
@@ -87,7 +91,7 @@ class AudioManager {
         - audioKey: The key and filename to add to the dictionary
         - category: The AudioCategory of the sound being added
      */
-    private func setupAudioItem(_ audioKey: String, category: AudioCategory) {
+    private func addAudioItem(_ audioKey: String, category: AudioCategory) {
         audioItems[audioKey] = AudioItem(fileName: audioKey, category: category)
         
         if let item = audioItems[audioKey], let player = configureAudioPlayer(for: item) {

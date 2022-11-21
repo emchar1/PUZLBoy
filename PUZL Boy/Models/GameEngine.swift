@@ -60,7 +60,7 @@ class GameEngine {
                                       margin: 40)
         
         displaySprite.setLabels(level: "\(level)", lives: "\(GameEngine.livesRemaining)", moves: "\(movesRemaining)", inventory: playerSprite.inventory)
-        setPlayerSpritePosition(animate: false, completion: nil)
+        setPlayerSpritePosition(shouldAnimate: false, completion: nil)
     }
     
     
@@ -69,10 +69,11 @@ class GameEngine {
     /**
      Sets the player sprite position easily.
      */
-    private func setPlayerSpritePosition(animate: Bool, completion: (() -> ())?) {
+    private func setPlayerSpritePosition(toLastPanel lastPanel: LevelType? = nil, shouldAnimate animate: Bool, completion: (() -> ())?) {
         let playerLastPosition = CGPoint(x: gameboardSprite.panelSize * (CGFloat(level.player.col) + 0.5),
                                          y: gameboardSprite.panelSize * (CGFloat(gameboardSprite.panelCount - 1 - level.player.row) + 0.5))
-        let panelIsMarsh = level.getLevelType(at: level.player) == .marsh
+        let panel = lastPanel == nil ? level.getLevelType(at: level.player) : lastPanel!
+        let panelIsMarsh = panel == .marsh
         var animationType: PlayerSprite.Texture
         var animationDuration: TimeInterval
         
@@ -131,19 +132,27 @@ class GameEngine {
         case .hammer:
             consumeItem(isGem: false, shouldChangePanelToIce: false)
             playerSprite.inventory.hammers += 1
+            
+            playerSprite.startPowerUpAnimation()
         case .sword:
             consumeItem(isGem: false, shouldChangePanelToIce: false)
             playerSprite.inventory.swords += 1
+
+            playerSprite.startPowerUpAnimation()
         case .boulder:
             guard playerSprite.inventory.hammers > 0 else { return }
             
             consumeItem(isGem: false, shouldChangePanelToIce: false)
             playerSprite.inventory.hammers -= 1
+
+            K.audioManager.playSound(for: "bouldersmash")
         case .enemy:
             guard playerSprite.inventory.swords > 0 else { return }
             
             consumeItem(isGem: false, shouldChangePanelToIce: false)
             playerSprite.inventory.swords -= 1
+            
+            K.audioManager.playSound(for: "swordslash")
         default: break
         }
     }
@@ -272,6 +281,7 @@ class GameEngine {
      - parameter direction: The direction the player is moving
      */
     private func movePlayerHelper(direction: Controls) {
+        let lastPanel: K.GameboardPosition = level.player
         var nextPanel: K.GameboardPosition
         
         switch direction {
@@ -292,8 +302,8 @@ class GameEngine {
         
         level.updatePlayer(position: nextPanel)
         
-        setPlayerSpritePosition(animate: true) {
-            if self.level.getLevelType(at: self.level.player) != .ice {
+        setPlayerSpritePosition(toLastPanel: level.getLevelType(at: lastPanel), shouldAnimate: true) {
+            if self.level.getLevelType(at: nextPanel) != .ice {
                 self.updateMovesRemaining()
                 
                 self.shouldUpdateRemainingForBoulderIfIcy = false
@@ -302,7 +312,7 @@ class GameEngine {
                 K.audioManager.stopSound(for: "boyglide", fadeDuration: 0.5)
                 
                 // FIXME: - I don't like this being here...
-                if self.level.getLevelType(at: self.level.player) == .marsh {
+                if self.level.getLevelType(at: nextPanel) == .marsh {
                     self.playerSprite.startMarshEffectAnimation()
                 }
 
@@ -385,7 +395,7 @@ class GameEngine {
             K.audioManager.playSound(for: "gameover")
 
             playerSprite.startDeadAnimation {
-                K.audioManager.playSound(for: "overworld")//, currentTime: 2.18)
+//                K.audioManager.playSound(for: "overworld")//, currentTime: 2.18)
 
                 self.delegate?.gameIsOver()
             }
