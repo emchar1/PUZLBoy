@@ -65,4 +65,8 @@ class GameboardSprite {
 
         sprite.addChild(panels[position.row][position.col])
     }
+    
+    func getLocation(at position: K.GameboardPosition) -> CGPoint {
+        return CGPoint(x: panelSize * (CGFloat(position.col) + 0.5), y: panelSize * (CGFloat(panelCount - 1 - position.row) + 0.5))
+    }
 }

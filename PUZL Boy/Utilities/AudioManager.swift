@@ -79,6 +79,7 @@ class AudioManager {
         addAudioItem("dooropen", category: .soundFX)
         addAudioItem("gameover", category: .soundFX)
         addAudioItem("gemcollect", category: .soundFX)
+        addAudioItem("hammerswing", category: .soundFX)
         addAudioItem("overworld", category: .music)
         addAudioItem("pickupitem", category: .soundFX)
         addAudioItem("swordslash", category: .soundFX)
@@ -137,7 +138,7 @@ class AudioManager {
         - pan: pan value to initialize, defaults to center of player
      - returns: True if the player can play. False, otherwise.
      */
-    @discardableResult func playSound(for audioKey: String, currentTime: TimeInterval? = nil, pan: Float = 0, interruptPlayback: Bool = true) -> Bool? {
+    @discardableResult func playSound(for audioKey: String, currentTime: TimeInterval? = nil, delay: TimeInterval? = nil, pan: Float = 0, interruptPlayback: Bool = true) -> Bool? {
         guard let item = audioItems[audioKey], let player = configureAudioPlayer(for: item) else {
             print("Unable to find \(audioKey) in AudioManager.audioItems[]")
             return false
@@ -154,8 +155,12 @@ class AudioManager {
         if currentTime != nil {
             audioItems[item.fileName]?.player.currentTime = currentTime!
         }
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + (delay == nil ? 0 : delay!)) {
+            self.audioItems[item.fileName]?.player.play()
+        }
                 
-        return audioItems[item.fileName]?.player.play()
+        return true
     }
     
     /**

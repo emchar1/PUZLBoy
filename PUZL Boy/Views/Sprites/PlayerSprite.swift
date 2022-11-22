@@ -120,7 +120,7 @@ class PlayerSprite {
     
     func startPowerUpAnimation() {
         let powerUp = SKAction.sequence([
-            SKAction.colorize(with: .systemCyan, colorBlendFactor: 0.5, duration: 0.5),
+            SKAction.colorize(with: .systemYellow, colorBlendFactor: 1.0, duration: 0.5),
             SKAction.wait(forDuration: 0.25),
             SKAction.colorize(withColorBlendFactor: 0.0, duration: 0.5)
         ])
@@ -129,18 +129,50 @@ class PlayerSprite {
         
         sprite.run(powerUp, withKey: AnimationKey.playerPowerUp.rawValue)
     }
+    
+    func startSwordAnimation(on gameboard: GameboardSprite, at panel: K.GameboardPosition, completion: @escaping (() -> ())) {
+        let attackSprite = SKSpriteNode(texture: SKTexture(imageNamed: "iconSword"))
+        attackSprite.position = gameboard.getLocation(at: panel)
+        attackSprite.zPosition = K.ZPosition.items
 
-    func startDeadAnimation(completion: @escaping (() -> ())) {
-        let animation = SKAction.animate(with: playerTextures[Texture.dead.rawValue], timePerFrame: animationSpeed / 2)
+        let animation = SKAction.sequence([
+            SKAction.wait(forDuration: 0.25),
+            SKAction.rotate(byAngle: -3 * .pi / 2, duration: 0.25),
+            SKAction.fadeAlpha(to: 0, duration: 0.5),
+        ])
+        
+        K.audioManager.playSound(for: "swordslash")
+        
+        gameboard.sprite.addChild(attackSprite)
 
-        K.audioManager.playSound(for: "boydead")
-
-        sprite.removeAction(forKey: AnimationKey.playerIdle.rawValue)
-        sprite.removeAction(forKey: AnimationKey.playerMove.rawValue)
-        sprite.run(SKAction.sequence([SKAction.repeat(animation, count: 1), SKAction.wait(forDuration: 1.5)]), completion: completion)
+        attackSprite.run(animation) {
+            attackSprite.removeFromParent()
+            completion()
+        }
     }
     
-    func hitObject(isAttacked: Bool, direction: Controls, completion: @escaping (() -> ())) {
+    func startHammerAnimation(on gameboard: GameboardSprite, at panel: K.GameboardPosition, completion: @escaping (() -> ())) {
+        let attackSprite = SKSpriteNode(texture: SKTexture(imageNamed: "iconHammer"))
+        attackSprite.position = gameboard.getLocation(at: panel)
+        attackSprite.zPosition = K.ZPosition.items
+
+        let animation = SKAction.sequence([
+            SKAction.rotate(byAngle: -3 * .pi / 4, duration: 0.2),
+            SKAction.wait(forDuration: 0.3),
+            SKAction.fadeAlpha(to: 0, duration: 0.5),
+        ])
+        
+        K.audioManager.playSound(for: "hammerswing")
+
+        gameboard.sprite.addChild(attackSprite)
+
+        attackSprite.run(animation) {
+            attackSprite.removeFromParent()
+            completion()
+        }
+    }
+        
+    func startKnockbackAnimation(isAttacked: Bool, direction: Controls, completion: @escaping (() -> ())) {
         let newDirection = isAttacked ? direction.getOpposite : direction
         let hitDistance: CGFloat = 10
         var moveAction: SKAction
@@ -180,6 +212,16 @@ class PlayerSprite {
         K.audioManager.playSound(for: "boygrunt\(Int.random(in: 1...2))")
 
         sprite.run(hitAction, completion: completion)
+    }
+    
+    func startDeadAnimation(completion: @escaping (() -> ())) {
+        let animation = SKAction.animate(with: playerTextures[Texture.dead.rawValue], timePerFrame: animationSpeed / 2)
+
+        K.audioManager.playSound(for: "boydead")
+
+        sprite.removeAction(forKey: AnimationKey.playerIdle.rawValue)
+        sprite.removeAction(forKey: AnimationKey.playerMove.rawValue)
+        sprite.run(SKAction.sequence([SKAction.repeat(animation, count: 1), SKAction.wait(forDuration: 1.5)]), completion: completion)
     }
 
     

@@ -70,8 +70,7 @@ class GameEngine {
      Sets the player sprite position easily.
      */
     private func setPlayerSpritePosition(toLastPanel lastPanel: LevelType? = nil, shouldAnimate animate: Bool, completion: (() -> ())?) {
-        let playerLastPosition = CGPoint(x: gameboardSprite.panelSize * (CGFloat(level.player.col) + 0.5),
-                                         y: gameboardSprite.panelSize * (CGFloat(gameboardSprite.panelCount - 1 - level.player.row) + 0.5))
+        let playerLastPosition = gameboardSprite.getLocation(at: level.player)
         let panel = lastPanel == nil ? level.getLevelType(at: level.player) : lastPanel!
         let panelIsMarsh = panel == .marsh
         var animationType: PlayerSprite.Texture
@@ -98,18 +97,21 @@ class GameEngine {
             let playerMove = SKAction.move(to: playerLastPosition, duration: animationDuration)
                         
             shouldDisableControlInput = true
-            playerSprite.startMoveAnimation(animationType: animationType)
 
-            playerSprite.sprite.run(playerMove) {
-                self.shouldDisableControlInput = false
-                self.playerSprite.startIdleAnimation()
-                self.checkSpecialPanel()
-                completion?()
+            // FIXME: - I really don't like these nested completions!!!
+            self.checkSpecialPanel {
+                self.playerSprite.startMoveAnimation(animationType: animationType)
+                
+                self.playerSprite.sprite.run(playerMove) {
+                    self.shouldDisableControlInput = false
+                    self.playerSprite.startIdleAnimation()
+                    completion?()
+                }
             }
         }
         else {
             playerSprite.sprite.position = playerLastPosition
-            checkSpecialPanel()
+            checkSpecialPanel(completion: nil)
             completion?()
         }
     }
@@ -117,43 +119,52 @@ class GameEngine {
     /**
      Checks for a special panel.
      */
-    private func checkSpecialPanel() {
+    // FIXME: - Not sure if adding a completion here was the best idea??
+    private func checkSpecialPanel(completion: (() -> ())?) {
         switch level.getLevelType(at: level.player) {
         case .gem:
             gemsRemaining -= 1
             consumeItem(isGem: true, shouldChangePanelToIce: false)
             
             K.audioManager.playSound(for: "gemcollect")
+            completion?()
         case .gemOnIce:
             gemsRemaining -= 1
             consumeItem(isGem: true, shouldChangePanelToIce: true)
 
             K.audioManager.playSound(for: "gemcollect")
+            completion?()
         case .hammer:
-            consumeItem(isGem: false, shouldChangePanelToIce: false)
             playerSprite.inventory.hammers += 1
+            consumeItem(isGem: false, shouldChangePanelToIce: false)
             
             playerSprite.startPowerUpAnimation()
+            completion?()
         case .sword:
-            consumeItem(isGem: false, shouldChangePanelToIce: false)
             playerSprite.inventory.swords += 1
+            consumeItem(isGem: false, shouldChangePanelToIce: false)
 
             playerSprite.startPowerUpAnimation()
+            completion?()
         case .boulder:
             guard playerSprite.inventory.hammers > 0 else { return }
             
-            consumeItem(isGem: false, shouldChangePanelToIce: false)
             playerSprite.inventory.hammers -= 1
-
-            K.audioManager.playSound(for: "bouldersmash")
+            playerSprite.startHammerAnimation(on: gameboardSprite, at: level.player) {
+                self.consumeItem(isGem: false, shouldChangePanelToIce: false)                
+                completion?()
+            }
         case .enemy:
             guard playerSprite.inventory.swords > 0 else { return }
             
-            consumeItem(isGem: false, shouldChangePanelToIce: false)
             playerSprite.inventory.swords -= 1
-            
-            K.audioManager.playSound(for: "swordslash")
-        default: break
+            playerSprite.startSwordAnimation(on: gameboardSprite, at: level.player) {
+                self.consumeItem(isGem: false, shouldChangePanelToIce: false)
+                completion?()
+            }
+        default:
+            completion?()
+            break
         }
     }
     
@@ -344,7 +355,7 @@ class GameEngine {
                 }
                 
                 shouldDisableControlInput = true
-                playerSprite.hitObject(isAttacked: false, direction: direction) {
+                playerSprite.startKnockbackAnimation(isAttacked: false, direction: direction) {
                     self.shouldDisableControlInput = false
                     print("A boulder blocks your path... \(self.shouldUpdateRemainingForBoulderIfIcy)")
                 }
@@ -356,7 +367,7 @@ class GameEngine {
                 updateMovesRemaining()
 
                 shouldDisableControlInput = true
-                playerSprite.hitObject(isAttacked: true, direction: direction) {
+                playerSprite.startKnockbackAnimation(isAttacked: true, direction: direction) {
                     self.shouldDisableControlInput = false
                     print("Enemy attacked!!")
                 }
