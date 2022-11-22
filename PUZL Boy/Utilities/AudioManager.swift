@@ -77,6 +77,7 @@ class AudioManager {
         addAudioItem("boyrun4", category: .soundFX)
         addAudioItem("boywalk", category: .soundFX)
         addAudioItem("dooropen", category: .soundFX)
+        addAudioItem("enemydeath", category: .soundFX)
         addAudioItem("gameover", category: .soundFX)
         addAudioItem("gemcollect", category: .soundFX)
         addAudioItem("hammerswing", category: .soundFX)

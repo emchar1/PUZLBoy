@@ -141,8 +141,10 @@ class PlayerSprite {
             SKAction.fadeAlpha(to: 0, duration: 0.5),
         ])
         
+        K.audioManager.playSound(for: "boyattack\(Int.random(in: 1...3))")
         K.audioManager.playSound(for: "swordslash")
-        
+        K.audioManager.playSound(for: "enemydeath", delay: 0.8)
+
         gameboard.sprite.addChild(attackSprite)
 
         attackSprite.run(animation) {
@@ -162,7 +164,9 @@ class PlayerSprite {
             SKAction.fadeAlpha(to: 0, duration: 0.5),
         ])
         
+        K.audioManager.playSound(for: "boyattack\(Int.random(in: 1...3))")
         K.audioManager.playSound(for: "hammerswing")
+        K.audioManager.playSound(for: "bouldersmash", delay: 0.8)
 
         gameboard.sprite.addChild(attackSprite)
 
@@ -198,15 +202,15 @@ class PlayerSprite {
             SKAction.colorize(with: .systemPink, colorBlendFactor: isAttacked ? 1.0 : 0.0, duration: 0),
             SKAction.wait(forDuration: 0.2),
             unmoveAction,
-            SKAction.colorize(withColorBlendFactor: 0.0, duration: 0.1),
+            SKAction.colorize(withColorBlendFactor: 0.0, duration: isAttacked ? 0.1 : 0.0),
             SKAction.colorize(with: .systemPink, colorBlendFactor: isAttacked ? 1.0 : 0.0, duration: 0),
-            SKAction.colorize(withColorBlendFactor: 0.0, duration: 0.13),
+            SKAction.colorize(withColorBlendFactor: 0.0, duration: isAttacked ? 0.13 : 0.0),
             SKAction.colorize(with: .systemPink, colorBlendFactor: isAttacked ? 0.75 : 0.0, duration: 0),
-            SKAction.colorize(withColorBlendFactor: 0.0, duration: 0.16),
+            SKAction.colorize(withColorBlendFactor: 0.0, duration: isAttacked ? 0.16 : 0.0),
             SKAction.colorize(with: .systemPink, colorBlendFactor: isAttacked ? 0.5 : 0.0, duration: 0),
-            SKAction.colorize(withColorBlendFactor: 0.0, duration: 0.19),
+            SKAction.colorize(withColorBlendFactor: 0.0, duration: isAttacked ? 0.19 : 0.0),
             SKAction.colorize(with: .systemPink, colorBlendFactor: isAttacked ? 0.25 : 0.0, duration: 0),
-            SKAction.colorize(withColorBlendFactor: 0.0, duration: 0.21),
+            SKAction.colorize(withColorBlendFactor: 0.0, duration: isAttacked ? 0.21 : 0.0),
         ])
         
         K.audioManager.playSound(for: "boygrunt\(Int.random(in: 1...2))")
