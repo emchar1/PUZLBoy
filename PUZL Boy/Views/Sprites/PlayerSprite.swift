@@ -109,7 +109,7 @@ class PlayerSprite {
     
     func startMarshEffectAnimation() {
         let marshEffect = SKAction.sequence([
-            SKAction.colorize(with: .systemGreen, colorBlendFactor: 1.0, duration: 0.0),
+            SKAction.colorize(with: .systemPurple, colorBlendFactor: 1.0, duration: 0.0),
             SKAction.colorize(withColorBlendFactor: 0.0, duration: 1.5)
         ])
         
@@ -119,15 +119,15 @@ class PlayerSprite {
     }
     
     func startPowerUpAnimation() {
-        let powerUp = SKAction.sequence([
-            SKAction.colorize(with: .systemYellow, colorBlendFactor: 1.0, duration: 0.5),
-            SKAction.wait(forDuration: 0.25),
-            SKAction.colorize(withColorBlendFactor: 0.0, duration: 0.5)
-        ])
+//        let powerUp = SKAction.sequence([
+//            SKAction.colorize(with: .systemYellow, colorBlendFactor: 1.0, duration: 0.5),
+//            SKAction.wait(forDuration: 0.25),
+//            SKAction.colorize(withColorBlendFactor: 0.0, duration: 0.5)
+//        ])
     
         K.audioManager.playSound(for: "pickupitem")
         
-        sprite.run(powerUp, withKey: AnimationKey.playerPowerUp.rawValue)
+//        sprite.run(powerUp, withKey: AnimationKey.playerPowerUp.rawValue)
     }
     
     func startSwordAnimation(on gameboard: GameboardSprite, at panel: K.GameboardPosition, completion: @escaping (() -> ())) {
@@ -178,44 +178,48 @@ class PlayerSprite {
         
     func startKnockbackAnimation(isAttacked: Bool, direction: Controls, completion: @escaping (() -> ())) {
         let newDirection = isAttacked ? direction.getOpposite : direction
-        let hitDistance: CGFloat = 10
+        let knockback: CGFloat = 10
+        let blinkColor: UIColor = .systemRed
         var moveAction: SKAction
         var unmoveAction: SKAction
         
         switch newDirection {
         case .up:
-            moveAction = SKAction.moveBy(x: 0, y: hitDistance, duration: 0)
-            unmoveAction = SKAction.moveBy(x: 0, y: -hitDistance, duration: 0)
+            moveAction = SKAction.moveBy(x: 0, y: knockback, duration: 0)
+            unmoveAction = SKAction.moveBy(x: 0, y: -knockback, duration: 0)
         case .down:
-            moveAction = SKAction.moveBy(x: 0, y: -hitDistance, duration: 0)
-            unmoveAction = SKAction.moveBy(x: 0, y: hitDistance, duration: 0)
+            moveAction = SKAction.moveBy(x: 0, y: -knockback, duration: 0)
+            unmoveAction = SKAction.moveBy(x: 0, y: knockback, duration: 0)
         case .left:
-            moveAction = SKAction.moveBy(x: -hitDistance, y: 0, duration: 0)
-            unmoveAction = SKAction.moveBy(x: hitDistance, y: 0, duration: 0)
+            moveAction = SKAction.moveBy(x: -knockback, y: 0, duration: 0)
+            unmoveAction = SKAction.moveBy(x: knockback, y: 0, duration: 0)
         case .right:
-            moveAction = SKAction.moveBy(x: hitDistance, y: 0, duration: 0)
-            unmoveAction = SKAction.moveBy(x: -hitDistance, y: 0, duration: 0)
+            moveAction = SKAction.moveBy(x: knockback, y: 0, duration: 0)
+            unmoveAction = SKAction.moveBy(x: -knockback, y: 0, duration: 0)
         }
         
-        let hitAction = SKAction.sequence([
+        let knockbackAnimation = SKAction.sequence([
             moveAction,
-            SKAction.colorize(with: .systemPink, colorBlendFactor: isAttacked ? 1.0 : 0.0, duration: 0),
+            SKAction.colorize(with: blinkColor, colorBlendFactor: isAttacked ? 1.0 : 0.0, duration: 0),
             SKAction.wait(forDuration: 0.2),
-            unmoveAction,
-            SKAction.colorize(withColorBlendFactor: 0.0, duration: isAttacked ? 0.1 : 0.0),
-            SKAction.colorize(with: .systemPink, colorBlendFactor: isAttacked ? 1.0 : 0.0, duration: 0),
-            SKAction.colorize(withColorBlendFactor: 0.0, duration: isAttacked ? 0.13 : 0.0),
-            SKAction.colorize(with: .systemPink, colorBlendFactor: isAttacked ? 0.75 : 0.0, duration: 0),
-            SKAction.colorize(withColorBlendFactor: 0.0, duration: isAttacked ? 0.16 : 0.0),
-            SKAction.colorize(with: .systemPink, colorBlendFactor: isAttacked ? 0.5 : 0.0, duration: 0),
-            SKAction.colorize(withColorBlendFactor: 0.0, duration: isAttacked ? 0.19 : 0.0),
-            SKAction.colorize(with: .systemPink, colorBlendFactor: isAttacked ? 0.25 : 0.0, duration: 0),
-            SKAction.colorize(withColorBlendFactor: 0.0, duration: isAttacked ? 0.21 : 0.0),
+            unmoveAction
+        ])
+        
+        let blinkAnimation = SKAction.sequence([
+            SKAction.colorize(withColorBlendFactor: 0.0, duration: 0.12),
+            SKAction.colorize(with: blinkColor, colorBlendFactor: 1.0, duration: 0),
+            SKAction.colorize(withColorBlendFactor: 0.0, duration: 0.12),
+            SKAction.colorize(with: blinkColor, colorBlendFactor: 0.75, duration: 0),
+            SKAction.colorize(withColorBlendFactor: 0.0, duration: 0.12),
+            SKAction.colorize(with: blinkColor, colorBlendFactor: 0.5, duration: 0),
+            SKAction.colorize(withColorBlendFactor: 0.0, duration: 0.12),
+            SKAction.colorize(with: blinkColor, colorBlendFactor: 0.25, duration: 0),
+            SKAction.colorize(withColorBlendFactor: 0.0, duration: 0.12),
         ])
         
         K.audioManager.playSound(for: "boygrunt\(Int.random(in: 1...2))")
 
-        sprite.run(hitAction, completion: completion)
+        sprite.run(isAttacked ? SKAction.sequence([knockbackAnimation, blinkAnimation]) : knockbackAnimation, completion: completion)
     }
     
     func startDeadAnimation(completion: @escaping (() -> ())) {
