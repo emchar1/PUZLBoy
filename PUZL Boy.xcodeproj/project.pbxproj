@@ -38,6 +38,14 @@
 		EA65189528EA207800E535BF /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA65189428EA207800E535BF /* Constants.swift */; };
 		EA75F0DA292D411700F09BD7 /* gameover.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA75F0D9292D411700F09BD7 /* gameover.mp3 */; };
 		EA75F0DC292D474B00F09BD7 /* dooropen.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA75F0DB292D474B00F09BD7 /* dooropen.mp3 */; };
+		EA75F0DE292DD61E00F09BD7 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = EA75F0DD292DD61E00F09BD7 /* GoogleService-Info.plist */; };
+		EA75F0E1292DDAAF00F09BD7 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = EA75F0E0292DDAAF00F09BD7 /* FirebaseAnalytics */; };
+		EA75F0E3292DDAAF00F09BD7 /* FirebaseAnalyticsSwift in Frameworks */ = {isa = PBXBuildFile; productRef = EA75F0E2292DDAAF00F09BD7 /* FirebaseAnalyticsSwift */; };
+		EA75F0E5292DDAAF00F09BD7 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = EA75F0E4292DDAAF00F09BD7 /* FirebaseAuth */; };
+		EA75F0E7292DDAAF00F09BD7 /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = EA75F0E6292DDAAF00F09BD7 /* FirebaseDatabase */; };
+		EA75F0E9292DDAAF00F09BD7 /* FirebaseDatabaseSwift in Frameworks */ = {isa = PBXBuildFile; productRef = EA75F0E8292DDAAF00F09BD7 /* FirebaseDatabaseSwift */; };
+		EA75F0EB292DF46200F09BD7 /* FIRLevel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA75F0EA292DF46200F09BD7 /* FIRLevel.swift */; };
+		EA75F0ED292DF57400F09BD7 /* LevelModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA75F0EC292DF57400F09BD7 /* LevelModel.swift */; };
 		EA956C6A29257B9C00879AD0 /* AudioManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA956C6929257B9C00879AD0 /* AudioManager.swift */; };
 		EA956C6C29257D9600879AD0 /* Extension+Comparable.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA956C6B29257D9600879AD0 /* Extension+Comparable.swift */; };
 		EA956C7329258B1700879AD0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EA956C7129258B1700879AD0 /* Main.storyboard */; };
@@ -89,6 +97,9 @@
 		EA65189428EA207800E535BF /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		EA75F0D9292D411700F09BD7 /* gameover.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = gameover.mp3; sourceTree = "<group>"; };
 		EA75F0DB292D474B00F09BD7 /* dooropen.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = dooropen.mp3; sourceTree = "<group>"; };
+		EA75F0DD292DD61E00F09BD7 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		EA75F0EA292DF46200F09BD7 /* FIRLevel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FIRLevel.swift; sourceTree = "<group>"; };
+		EA75F0EC292DF57400F09BD7 /* LevelModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelModel.swift; sourceTree = "<group>"; };
 		EA956C6929257B9C00879AD0 /* AudioManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioManager.swift; sourceTree = "<group>"; };
 		EA956C6B29257D9600879AD0 /* Extension+Comparable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+Comparable.swift"; sourceTree = "<group>"; };
 		EA956C7229258B1700879AD0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -111,6 +122,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EA75F0E9292DDAAF00F09BD7 /* FirebaseDatabaseSwift in Frameworks */,
+				EA75F0E3292DDAAF00F09BD7 /* FirebaseAnalyticsSwift in Frameworks */,
+				EA75F0E5292DDAAF00F09BD7 /* FirebaseAuth in Frameworks */,
+				EA75F0E7292DDAAF00F09BD7 /* FirebaseDatabase in Frameworks */,
+				EA75F0E1292DDAAF00F09BD7 /* FirebaseAnalytics in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -144,6 +160,7 @@
 				EA65182C28E4199E00E535BF /* SceneDelegate.swift */,
 				EA956C6D292586F800879AD0 /* Sounds */,
 				EA65183328E419A000E535BF /* Assets.xcassets */,
+				EA75F0DD292DD61E00F09BD7 /* GoogleService-Info.plist */,
 				EA65183828E419A000E535BF /* Info.plist */,
 			);
 			path = "PUZL Boy";
@@ -152,6 +169,8 @@
 		EA65183E28E419B000E535BF /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				EA75F0EA292DF46200F09BD7 /* FIRLevel.swift */,
+				EA75F0EC292DF57400F09BD7 /* LevelModel.swift */,
 				EA119154290CCA39009D0E3E /* Inventory.swift */,
 				EA11915629121798009D0E3E /* Controls.swift */,
 				EA35348A29241FCD00C11FC0 /* LevelType.swift */,
@@ -251,6 +270,13 @@
 			dependencies = (
 			);
 			name = "PUZL Boy";
+			packageProductDependencies = (
+				EA75F0E0292DDAAF00F09BD7 /* FirebaseAnalytics */,
+				EA75F0E2292DDAAF00F09BD7 /* FirebaseAnalyticsSwift */,
+				EA75F0E4292DDAAF00F09BD7 /* FirebaseAuth */,
+				EA75F0E6292DDAAF00F09BD7 /* FirebaseDatabase */,
+				EA75F0E8292DDAAF00F09BD7 /* FirebaseDatabaseSwift */,
+			);
 			productName = "PUZL Man";
 			productReference = EA65182728E4199E00E535BF /* PUZL Boy.app */;
 			productType = "com.apple.product-type.application";
@@ -279,6 +305,9 @@
 				Base,
 			);
 			mainGroup = EA65181E28E4199E00E535BF;
+			packageReferences = (
+				EA75F0DF292DDAAF00F09BD7 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+			);
 			productRefGroup = EA65182828E4199E00E535BF /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -310,6 +339,7 @@
 				EA956C8629277C5E00879AD0 /* boydead.mp3 in Resources */,
 				EA956C8929277C5E00879AD0 /* boygrunt2.mp3 in Resources */,
 				EA0F148D292CB1250013038E /* hammerswing.mp3 in Resources */,
+				EA75F0DE292DD61E00F09BD7 /* GoogleService-Info.plist in Resources */,
 				EA956C772926169C00879AD0 /* gameoverOLD.mp3 in Resources */,
 				EA0F146F2929D9C00013038E /* boyrun4.mp3 in Resources */,
 				EA956C8529277C5E00879AD0 /* boyattack1.mp3 in Resources */,
@@ -334,10 +364,12 @@
 			files = (
 				EA65189228E973D700E535BF /* Level.swift in Sources */,
 				EA65184528E5750C00E535BF /* GameboardSprite.swift in Sources */,
+				EA75F0ED292DF57400F09BD7 /* LevelModel.swift in Sources */,
 				EA11915729121798009D0E3E /* Controls.swift in Sources */,
 				EA35348B29241FCD00C11FC0 /* LevelType.swift in Sources */,
 				EA119155290CCA39009D0E3E /* Inventory.swift in Sources */,
 				EA3534892920612300C11FC0 /* DisplayStatusBarSprite.swift in Sources */,
+				EA75F0EB292DF46200F09BD7 /* FIRLevel.swift in Sources */,
 				EA1191532904BC4C009D0E3E /* DisplaySprite.swift in Sources */,
 				EA65182F28E4199E00E535BF /* GameViewController.swift in Sources */,
 				EA65182B28E4199E00E535BF /* AppDelegate.swift in Sources */,
@@ -566,6 +598,45 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		EA75F0DF292DDAAF00F09BD7 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		EA75F0E0292DDAAF00F09BD7 /* FirebaseAnalytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = EA75F0DF292DDAAF00F09BD7 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAnalytics;
+		};
+		EA75F0E2292DDAAF00F09BD7 /* FirebaseAnalyticsSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = EA75F0DF292DDAAF00F09BD7 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAnalyticsSwift;
+		};
+		EA75F0E4292DDAAF00F09BD7 /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = EA75F0DF292DDAAF00F09BD7 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
+		};
+		EA75F0E6292DDAAF00F09BD7 /* FirebaseDatabase */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = EA75F0DF292DDAAF00F09BD7 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseDatabase;
+		};
+		EA75F0E8292DDAAF00F09BD7 /* FirebaseDatabaseSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = EA75F0DF292DDAAF00F09BD7 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseDatabaseSwift;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = EA65181F28E4199E00E535BF /* Project object */;
 }

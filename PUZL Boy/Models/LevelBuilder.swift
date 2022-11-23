@@ -63,6 +63,14 @@ struct LevelBuilder {
         
         Level(level: 10, moves: 9, gameboard: [[.start, .endClosed, .gem],
                                                 [.marsh, .marsh, .ice],
-                                                [.marsh, .marsh, .ice]])
+                                                [.marsh, .marsh, .ice]]),
+        
+        Level(level: 11, moves: 3, gameboard: [[.start, .gemOnIce, .gemOnIce, .gemOnIce, .gemOnIce, .gemOnIce],
+                                               [.grass, .grass, .grass, .grass, .grass, .gemOnIce],
+                                               [.grass, .grass, .grass, .grass, .grass, .gemOnIce],
+                                               [.grass, .grass, .grass, .grass, .grass, .gemOnIce],
+                                               [.grass, .grass, .grass, .grass, .grass, .gem],
+                                               [.grass, .grass, .grass, .grass, .grass, .endClosed]])
+
     ]
 }

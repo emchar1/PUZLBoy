@@ -1,0 +1,9 @@
+﻿hash,level,moves,r0c0,r0c1,r0c2,r0c3,r0c4,r0c5,r1c0,r1c1,r1c2,r1c3,r1c4,r1c5,r2c0,r2c1,r2c2,r2c3,r2c4,r2c5,r3c0,r3c1,r3c2,r3c3,r3c4,r3c5,r4c0,r4c1,r4c2,r4c3,r4c4,r4c5,r5c0,r5c1,r5c2,r5c3,r5c4,r5c5
+0,0,4,start,grass,grass,,,,grass,grass,grass,,,,grass,grass,endOpen,,,,,,,,,,,,,,,,,,,,,
+1,1,4,start,grass,gem,,,,grass,grass,grass,,,,grass,grass,endClosed,,,,,,,,,,,,,,,,,,,,,
+2,2,6,start,grass,gem,,,,grass,grass,grass,,,,grass,gem,endClosed,,,,,,,,,,,,,,,,,,,,,
+3,3,6,start,grass,gem,,,,gem,grass,grass,,,,grass,grass,endClosed,,,,,,,,,,,,,,,,,,,,,
+4,4,8,start,grass,gem,,,,grass,grass,gem,,,,gem,grass,endClosed,,,,,,,,,,,,,,,,,,,,,
+5,5,8,start,boulder,gem,,,,grass,boulder,grass,,,,grass,grass,endClosed,,,,,,,,,,,,,,,,,,,,,
+6,6,6,start,marsh,grass,,,,grass,grass,gem,,,,gem,marsh,endClosed,,,,,,,,,,,,,,,,,,,,,
+7,7,9,start,grass,grass,gem,,,ice,ice,gem,grass,,,ice,ice,boulder,grass,,,boulder,gem,endClosed,boulder,,,,,,,,,,,,,,

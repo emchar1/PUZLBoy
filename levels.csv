@@ -1,9 +1,0 @@
-﻿Level,Moves,Gameboard,,,,,,,,,,,,,,,,,,
-0,4,start,grass,grass,;,grass,grass,grass,;,grass,grass,endOpen,,,,,,,,
-1,4,start,grass,gem,;,grass,grass,grass,;,grass,grass,endClosed,,,,,,,,
-2,6,start,grass,gem,;,grass,grass,grass,;,grass,gem,endClosed,,,,,,,,
-3,6,start,grass,gem,;,gem,grass,grass,;,grass,grass,endClosed,,,,,,,,
-4,8,start,grass,gem,;,grass,grass,gem,;,gem,grass,endClosed,,,,,,,,
-5,8,start,boulder,gem,;,grass,boulder,grass,;,grass,grass,endClosed,,,,,,,,
-6,6,start,marsh,grass,;,grass,grass,gem,;,gem,marsh,endClosed,,,,,,,,
-7,9,start,grass,grass,gem,;,ice,ice,gem,grass,;,ice,ice,boulder,grass,;,boulder,gem,endClosed,boulder
