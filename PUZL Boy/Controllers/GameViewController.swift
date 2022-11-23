@@ -12,14 +12,16 @@ import GameplayKit
 class GameViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        LevelBuilder.getLevels {
+            let scene = GameScene(size: CGSize(width: K.iPhoneWidth, height: K.height))
 
-        let scene = GameScene(size: CGSize(width: K.iPhoneWidth, height: K.height))
-
-        let skView = self.view as! SKView
-        skView.showsFPS = true
-        skView.showsNodeCount = true
-        skView.ignoresSiblingOrder = true
-        skView.presentScene(scene)
+            let skView = self.view as! SKView
+            skView.showsFPS = true
+            skView.showsNodeCount = true
+            skView.ignoresSiblingOrder = true
+            skView.presentScene(scene)
+        }
     }
 }
 

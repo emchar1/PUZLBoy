@@ -24,14 +24,16 @@ struct Level: CustomStringConvertible {
     private(set) var end: K.GameboardPosition!
 
     var description: String {
-        var returnValue = ""
+        var returnValue = "\nlevel: \(level), moves: \(moves), gems: \(gems), gameboard:\n"
         
         for row in gameboard {
+            returnValue += "\t["
+            
             for col in row {
                 returnValue += "\(col.rawValue), "
             }
             
-            returnValue += "\n"
+            returnValue += "]\n"
         }
         
         return returnValue

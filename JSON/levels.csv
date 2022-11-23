@@ -7,3 +7,7 @@
 5,5,8,start,boulder,gem,,,,grass,boulder,grass,,,,grass,grass,endClosed,,,,,,,,,,,,,,,,,,,,,
 6,6,6,start,marsh,grass,,,,grass,grass,gem,,,,gem,marsh,endClosed,,,,,,,,,,,,,,,,,,,,,
 7,7,9,start,grass,grass,gem,,,ice,ice,gem,grass,,,ice,ice,boulder,grass,,,boulder,gem,endClosed,boulder,,,,,,,,,,,,,,
+8,8,99,start,ice,marsh,gemOnIce,ice,ice,ice,ice,gemOnIce,grass,ice,ice,ice,ice,gemOnIce,grass,ice,ice,ice,ice,gemOnIce,grass,ice,ice,ice,ice,boulder,grass,ice,ice,boulder,gem,endClosed,boulder,ice,ice
+9,9,12,start,endClosed,grass,grass,,,marsh,ice,hammer,sword,,,boulder,enemy,warp,gem,,,gem,gem,gem,gem,,,,,,,,,,,,,,
+10,10,9,start,endClosed,gem,,,,marsh,marsh,ice,,,,marsh,marsh,ice,,,,,,,,,,,,,,,,,,,,,
+11,11,3,start,gemOnIce,gemOnIce,gemOnIce,gemOnIce,gemOnIce,grass,grass,grass,grass,grass,gemOnIce,grass,grass,grass,grass,grass,gemOnIce,grass,grass,grass,grass,grass,gemOnIce,grass,grass,grass,grass,grass,gem,grass,grass,grass,grass,grass,endClosed

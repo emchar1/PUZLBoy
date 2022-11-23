@@ -13,7 +13,7 @@ class GameScene: SKScene {
     
     private var gameEngine: GameEngine
 
-    private var currentLevel: Int = 11 {
+    private var currentLevel: Int = 8 {
         didSet {
             if currentLevel > LevelBuilder.maxLevel {
                 currentLevel = 0
@@ -26,9 +26,6 @@ class GameScene: SKScene {
     
     override init(size: CGSize) {
         gameEngine = GameEngine(level: currentLevel)
-        FIRManager.initializeRecords { allLevels in
-            print(allLevels)
-        }
 
         super.init(size: size)
 
