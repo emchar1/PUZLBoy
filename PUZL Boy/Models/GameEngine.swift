@@ -60,6 +60,7 @@ class GameEngine {
                                       margin: 40)
         
         displaySprite.setLabels(level: "\(level)", lives: "\(GameEngine.livesRemaining)", moves: "\(movesRemaining)", inventory: playerSprite.inventory)
+        
         setPlayerSpritePosition(shouldAnimate: false, completion: nil)
     }
     
@@ -98,13 +99,12 @@ class GameEngine {
                         
             shouldDisableControlInput = true
 
-            // FIXME: - I really don't like these nested completions!!!
-            self.checkSpecialPanel {
-                self.playerSprite.startMoveAnimation(animationType: animationType)
-                
-                self.playerSprite.sprite.run(playerMove) {
+            playerSprite.startMoveAnimation(animationType: animationType)
+            
+            playerSprite.sprite.run(playerMove) {
+                self.playerSprite.startIdleAnimation()
+                self.checkSpecialPanel {
                     self.shouldDisableControlInput = false
-                    self.playerSprite.startIdleAnimation()
                     completion?()
                 }
             }
@@ -151,7 +151,7 @@ class GameEngine {
             
             playerSprite.inventory.hammers -= 1
             playerSprite.startHammerAnimation(on: gameboardSprite, at: level.player) {
-                self.consumeItem(isGem: false, shouldChangePanelToIce: false)                
+                self.consumeItem(isGem: false, shouldChangePanelToIce: false)
                 completion?()
             }
         case .enemy:
