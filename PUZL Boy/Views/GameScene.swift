@@ -26,6 +26,9 @@ class GameScene: SKScene {
     
     override init(size: CGSize) {
         gameEngine = GameEngine(level: currentLevel)
+        FIRManager.initializeRecords { allLevels in
+            print(allLevels)
+        }
 
         super.init(size: size)
 

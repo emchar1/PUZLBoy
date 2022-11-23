@@ -19,4 +19,24 @@ enum LevelType: Int, CaseIterable {
     var description: String {
         return String(describing: self)
     }
+    
+    static func getLevelType(from string: String) -> LevelType {
+        switch string {
+        case "boundary": return .boundary
+        case "start": return .start
+        case "endClosed": return .endClosed
+        case "endOpen": return .endOpen
+        case "gem": return .gem
+        case "gemOnIce": return .gemOnIce
+        case "grass": return .grass
+        case "marsh": return .marsh
+        case "ice": return .ice
+        case "hammer": return .hammer
+        case "sword": return .sword
+        case "boulder": return .boulder
+        case "enemy": return .enemy
+        case "warp": return .warp
+        default: return .grass
+        }
+    }
 }
