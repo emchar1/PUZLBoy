@@ -30,7 +30,7 @@ class PlayerSprite {
     
     // MARK: - Initialization
     
-    init(position: CGPoint) {
+    init(shouldSpawn: Bool) {
         inventory = Inventory(hammers: 0, swords: 0)
         playerAtlas = SKTextureAtlas(named: "player")
         playerTextures = []
@@ -56,12 +56,15 @@ class PlayerSprite {
         sprite = SKSpriteNode(texture: playerTextures[Texture.idle.rawValue][0])
         sprite.size = playerSize
         sprite.setScale(0.5)
-        sprite.alpha = 0 //important for respawn to work!
-        sprite.position = CGPoint(x: position.x, y: position.y)
+        sprite.alpha = shouldSpawn ? 0 : 1 //important for respawn to work!
+        sprite.position = .zero
         sprite.zPosition = K.ZPosition.player
         
-        startRespawnAnimation()
         startIdleAnimation()
+
+        if shouldSpawn {
+            startRespawnAnimation()
+        }
     }
     
     

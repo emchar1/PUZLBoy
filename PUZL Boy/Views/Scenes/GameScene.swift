@@ -25,7 +25,7 @@ class GameScene: SKScene {
     // MARK: - Initialization
     
     override init(size: CGSize) {
-        gameEngine = GameEngine(level: currentLevel)
+        gameEngine = GameEngine(level: currentLevel, shouldSpawn: true)
 
         super.init(size: size)
 
@@ -62,9 +62,9 @@ class GameScene: SKScene {
     
     // MARK: - Helper Functions
     
-    private func resetGameEngine(level: Int) {
+    private func resetGameEngine(level: Int, fromGameOver: Bool) {
         removeAllChildren()
-        gameEngine = GameEngine(level: level)
+        gameEngine = GameEngine(level: level, shouldSpawn: fromGameOver)
         gameEngine.delegate = self
         gameEngine.moveSprites(to: self)
     }
@@ -77,10 +77,10 @@ class GameScene: SKScene {
 extension GameScene: GameEngineDelegate {
     func gameIsSolved() {
         currentLevel += 1
-        resetGameEngine(level: currentLevel)
+        resetGameEngine(level: currentLevel, fromGameOver: false)
     }
     
     func gameIsOver() {
-        resetGameEngine(level: currentLevel)
+        resetGameEngine(level: currentLevel, fromGameOver: true)
     }
 }

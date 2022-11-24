@@ -48,7 +48,7 @@ class GameEngine {
     
     // MARK: - Initialization
     
-    init(level: Int = 1) {
+    init(level: Int = 1, shouldSpawn: Bool) {
         guard LevelBuilder.maxLevel > 0 else {
             fatalError("Firebase records were not loaded!🙀")
         }
@@ -58,7 +58,7 @@ class GameEngine {
         gemsRemaining = self.level.gems
         
         gameboardSprite = GameboardSprite(level: self.level)
-        playerSprite = PlayerSprite(position: .zero)
+        playerSprite = PlayerSprite(shouldSpawn: shouldSpawn)
         displaySprite = DisplaySprite(topYPosition: gameboardSprite.yPosition + gameboardSprite.gameboardSize * gameboardSprite.spriteScale,
                                       bottomYPosition: gameboardSprite.yPosition,
                                       margin: 40)
