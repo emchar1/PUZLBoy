@@ -46,6 +46,7 @@
 		EA75F0E9292DDAAF00F09BD7 /* FirebaseDatabaseSwift in Frameworks */ = {isa = PBXBuildFile; productRef = EA75F0E8292DDAAF00F09BD7 /* FirebaseDatabaseSwift */; };
 		EA75F0EB292DF46200F09BD7 /* FIRManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA75F0EA292DF46200F09BD7 /* FIRManager.swift */; };
 		EA75F0ED292DF57400F09BD7 /* LevelModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA75F0EC292DF57400F09BD7 /* LevelModel.swift */; };
+		EA75F0EF292F55F900F09BD7 /* LaunchScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA75F0EE292F55F900F09BD7 /* LaunchScene.swift */; };
 		EA956C6A29257B9C00879AD0 /* AudioManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA956C6929257B9C00879AD0 /* AudioManager.swift */; };
 		EA956C6C29257D9600879AD0 /* Extension+Comparable.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA956C6B29257D9600879AD0 /* Extension+Comparable.swift */; };
 		EA956C7329258B1700879AD0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EA956C7129258B1700879AD0 /* Main.storyboard */; };
@@ -100,6 +101,7 @@
 		EA75F0DD292DD61E00F09BD7 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		EA75F0EA292DF46200F09BD7 /* FIRManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FIRManager.swift; sourceTree = "<group>"; };
 		EA75F0EC292DF57400F09BD7 /* LevelModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelModel.swift; sourceTree = "<group>"; };
+		EA75F0EE292F55F900F09BD7 /* LaunchScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchScene.swift; sourceTree = "<group>"; };
 		EA956C6929257B9C00879AD0 /* AudioManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioManager.swift; sourceTree = "<group>"; };
 		EA956C6B29257D9600879AD0 /* Extension+Comparable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+Comparable.swift"; sourceTree = "<group>"; };
 		EA956C7229258B1700879AD0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -171,11 +173,11 @@
 			children = (
 				EA75F0EA292DF46200F09BD7 /* FIRManager.swift */,
 				EA75F0EC292DF57400F09BD7 /* LevelModel.swift */,
+				EA65189128E973D700E535BF /* LevelBuilder.swift */,
+				EA65189028E973D700E535BF /* Level.swift */,
+				EA35348A29241FCD00C11FC0 /* LevelType.swift */,
 				EA119154290CCA39009D0E3E /* Inventory.swift */,
 				EA11915629121798009D0E3E /* Controls.swift */,
-				EA35348A29241FCD00C11FC0 /* LevelType.swift */,
-				EA65189028E973D700E535BF /* Level.swift */,
-				EA65189128E973D700E535BF /* LevelBuilder.swift */,
 				EAB69E0328F3333000C31DB3 /* GameEngine.swift */,
 			);
 			path = Models;
@@ -185,7 +187,7 @@
 			isa = PBXGroup;
 			children = (
 				EA65189628EAB1A600E535BF /* Sprites */,
-				EA65184228E420E400E535BF /* GameScene.swift */,
+				EA75F0F0292F560300F09BD7 /* Scenes */,
 				EA956C7129258B1700879AD0 /* Main.storyboard */,
 				EA65183528E419A000E535BF /* LaunchScreen.storyboard */,
 			);
@@ -209,6 +211,15 @@
 				EA3534882920612300C11FC0 /* DisplayStatusBarSprite.swift */,
 			);
 			path = Sprites;
+			sourceTree = "<group>";
+		};
+		EA75F0F0292F560300F09BD7 /* Scenes */ = {
+			isa = PBXGroup;
+			children = (
+				EA75F0EE292F55F900F09BD7 /* LaunchScene.swift */,
+				EA65184228E420E400E535BF /* GameScene.swift */,
+			);
+			path = Scenes;
 			sourceTree = "<group>";
 		};
 		EA956C6D292586F800879AD0 /* Sounds */ = {
@@ -371,6 +382,7 @@
 				EA3534892920612300C11FC0 /* DisplayStatusBarSprite.swift in Sources */,
 				EA75F0EB292DF46200F09BD7 /* FIRManager.swift in Sources */,
 				EA1191532904BC4C009D0E3E /* DisplaySprite.swift in Sources */,
+				EA75F0EF292F55F900F09BD7 /* LaunchScene.swift in Sources */,
 				EA65182F28E4199E00E535BF /* GameViewController.swift in Sources */,
 				EA65182B28E4199E00E535BF /* AppDelegate.swift in Sources */,
 				EA956C6C29257D9600879AD0 /* Extension+Comparable.swift in Sources */,

@@ -17,7 +17,7 @@ struct Level: CustomStringConvertible {
     private(set) var level: Int
     private(set) var moves: Int
     private(set) var gems: Int
-    private(set) var gameboard: [[LevelType]]
+    private(set) var gameboard: K.Gameboard
 
     private(set) var player: K.GameboardPosition!
     private(set) var start: K.GameboardPosition!
@@ -42,7 +42,7 @@ struct Level: CustomStringConvertible {
     
     // MARK: - Initialization
     
-    init(level: Int, moves: Int, gameboard: [[LevelType]]) {
+    init(level: Int, moves: Int, gameboard: K.Gameboard) {
         guard gameboard.count == gameboard[0].count else { fatalError("Gameboard must be of equal rows and columns.") }
         
         var startFound = false

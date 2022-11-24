@@ -49,6 +49,10 @@ class GameEngine {
     // MARK: - Initialization
     
     init(level: Int = 1) {
+        guard LevelBuilder.maxLevel > 0 else {
+            fatalError("Firebase records were not loaded!🙀")
+        }
+        
         self.level = LevelBuilder.levels[level]
         movesRemaining = self.level.moves
         gemsRemaining = self.level.gems
@@ -82,7 +86,7 @@ class GameEngine {
             animationDuration = 0.5
         }
         else if isSolved {
-            animationType = .walk
+            animationType = .win
             animationDuration = 0.75
         }
         else if panelIsMarsh {
@@ -406,7 +410,7 @@ class GameEngine {
             K.audioManager.playSound(for: "gameover")
 
             playerSprite.startDeadAnimation {
-//                K.audioManager.playSound(for: "overworld")//, currentTime: 2.18)
+                K.audioManager.playSound(for: "overworld")//, currentTime: 2.18)
 
                 self.delegate?.gameIsOver()
             }

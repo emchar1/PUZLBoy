@@ -49,9 +49,21 @@ struct K {
     static let bottomMargin: CGFloat = 80
     
     /**
+     The device's screen size.
+     */
+    static var screenSize: CGSize {
+        CGSize(width: iPhoneWidth, height: height)
+    }
+    
+    /**
      Position, row, col, on the gameboard.
      */
     typealias GameboardPosition = (row: Int, col: Int)
+    
+    /**
+     Gameboard i.e. 2D array of LevelType
+     */
+    typealias Gameboard = [[LevelType]]
     
     /**
      Various zPosition values used throughout the app.

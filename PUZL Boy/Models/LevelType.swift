@@ -36,7 +36,7 @@ enum LevelType: Int, CaseIterable {
         case "boulder": return .boulder
         case "enemy": return .enemy
         case "warp": return .warp
-        default: return .grass
+        default: return .boundary //.boundary is a good way to ensure all types are accounted for here.
         }
     }
 }

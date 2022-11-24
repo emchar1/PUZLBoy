@@ -20,7 +20,7 @@ struct LevelBuilder {
 
         FIRManager.initializeRecords { levelModels in
             for model in levelModels {
-                var gameboard: [[LevelType]] = []
+                var gameboard: K.Gameboard = []
 
                 //Guaranteed 3x3
                 gameboard.append([

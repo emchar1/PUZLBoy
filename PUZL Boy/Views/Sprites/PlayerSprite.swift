@@ -20,11 +20,11 @@ class PlayerSprite {
     private var playerTextures: [[SKTexture]]
     
     enum Texture: Int {
-        case idle = 0, run, walk, dead, glide, marsh
+        case idle = 0, run, win, dead, glide, marsh
     }
     
     enum AnimationKey: String {
-        case playerIdle, playerMove, playerGlide, playerMarsh, playerPowerUp
+        case playerRespawn, playerIdle, playerMove, playerGlide, playerMarsh, playerPowerUp
     }
     
     
@@ -36,7 +36,7 @@ class PlayerSprite {
         playerTextures = []
         playerTextures.append([]) //idle
         playerTextures.append([]) //run
-        playerTextures.append([]) //walk
+        playerTextures.append([]) //win
         playerTextures.append([]) //marsh
         playerTextures.append([]) //dead
         playerTextures.append([]) //glide
@@ -44,7 +44,7 @@ class PlayerSprite {
         for i in 1...15 {
             playerTextures[Texture.idle.rawValue].append(playerAtlas.textureNamed("Idle (\(i))"))
             playerTextures[Texture.run.rawValue].append(playerAtlas.textureNamed("Run (\(i))"))
-            playerTextures[Texture.walk.rawValue].append(playerAtlas.textureNamed("Walk (\(i))"))
+            playerTextures[Texture.win.rawValue].append(playerAtlas.textureNamed("Walk (\(i))"))
             playerTextures[Texture.marsh.rawValue].append(playerAtlas.textureNamed("Run (\(i))"))
             playerTextures[Texture.dead.rawValue].append(playerAtlas.textureNamed("Dead (\(i))"))
             
@@ -56,14 +56,20 @@ class PlayerSprite {
         sprite = SKSpriteNode(texture: playerTextures[Texture.idle.rawValue][0])
         sprite.size = playerSize
         sprite.setScale(0.5)
+        sprite.alpha = 0 //important for respawn to work!
         sprite.position = CGPoint(x: position.x, y: position.y)
         sprite.zPosition = K.ZPosition.player
         
+        startRespawnAnimation()
         startIdleAnimation()
     }
     
     
     // MARK: - Animation Functions
+    
+    private func startRespawnAnimation() {
+        sprite.run(SKAction.fadeAlpha(to: 1.0, duration: 0.5), withKey: AnimationKey.playerRespawn.rawValue)
+    }
     
     func startIdleAnimation() {
         let fadeDuration: TimeInterval = 0.25
@@ -95,8 +101,13 @@ class PlayerSprite {
             switch animationType {
             case .run:
                 K.audioManager.playSound(for: "boyrun\(Int.random(in: 1...4))")
-            case .walk:
+            case .win:
                 K.audioManager.playSound(for: "boywalk")
+                
+                let sequence = SKAction.sequence([SKAction.wait(forDuration: 0.55), SKAction.fadeAlpha(to: 0, duration: 0.2)])
+                sprite.run(SKAction.group([SKAction.repeatForever(animation), sequence]), withKey: AnimationKey.playerMove.rawValue)
+
+                return
             case .marsh:
                 K.audioManager.playSound(for: "boymarsh")
             default:
