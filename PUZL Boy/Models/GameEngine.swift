@@ -58,7 +58,7 @@ class GameEngine {
         gemsRemaining = self.level.gems
         
         gameboardSprite = GameboardSprite(level: self.level)
-        playerSprite = PlayerSprite(shouldSpawn: shouldSpawn)
+        playerSprite = PlayerSprite(shouldSpawn: true)
         displaySprite = DisplaySprite(topYPosition: gameboardSprite.yPosition + gameboardSprite.gameboardSize * gameboardSprite.spriteScale,
                                       bottomYPosition: gameboardSprite.yPosition,
                                       margin: 40)
@@ -66,6 +66,10 @@ class GameEngine {
         displaySprite.setLabels(level: "\(level)", lives: "\(GameEngine.livesRemaining)", moves: "\(movesRemaining)", inventory: playerSprite.inventory)
         
         setPlayerSpritePosition(shouldAnimate: false, completion: nil)
+        
+        if !shouldSpawn {
+            fadeGameboard(fadeOut: false, completion: nil)
+        }
     }
     
     
@@ -240,7 +244,7 @@ class GameEngine {
     }
     
     
-    // MARK: - Helper Functions
+    // MARK: - Controls Helper Functions
     
     /**
      Takes a tap location and compares it to the player's next position.
@@ -422,7 +426,7 @@ class GameEngine {
     }
         
     
-    // MARK: - moveTo Functions
+    // MARK: - Other Functions
     
     /**
      Adds all the sprites to the superScene, i.e. should be called in a GameScene's moveTo() function.
@@ -434,5 +438,20 @@ class GameEngine {
         
         playerSprite.setScale(panelSize: gameboardSprite.panelSize)
         gameboardSprite.sprite.addChild(playerSprite.sprite)
+    }
+    
+    /**
+     Fades the gameboard by calling colorizeGameboard in GameboardSprite, by applying a clear color and using 0 to 1 blendFactor.
+     - parameters:
+        - fadeOut: true if you want to fade to empty, false if fade from empty
+        - completion: completion handler called at the end of the animation
+     */
+    func fadeGameboard(fadeOut: Bool, completion: (() -> ())?) {
+        gameboardSprite.sprite.alpha = fadeOut ? 1.0 : 0.0
+        gameboardSprite.colorizeGameboard(color: .clear, blendFactor: fadeOut ? 0.0 : 1.0, animationDuration: 0.0) {
+            self.gameboardSprite.sprite.alpha = 1.0
+        }
+        
+        gameboardSprite.colorizeGameboard(color: .clear, blendFactor: fadeOut ? 1.0 : 0.0, animationDuration: 0.5, completion: completion)
     }
 }

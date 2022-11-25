@@ -71,7 +71,7 @@ class PlayerSprite {
     // MARK: - Animation Functions
     
     private func startRespawnAnimation() {
-        sprite.run(SKAction.fadeAlpha(to: 1.0, duration: 0.5), withKey: AnimationKey.playerRespawn.rawValue)
+        sprite.run(SKAction.fadeAlpha(to: 1.0, duration: 0.75), withKey: AnimationKey.playerRespawn.rawValue)
     }
     
     func startIdleAnimation() {

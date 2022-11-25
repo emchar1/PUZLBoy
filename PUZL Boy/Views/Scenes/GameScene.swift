@@ -13,7 +13,7 @@ class GameScene: SKScene {
     
     private var gameEngine: GameEngine
 
-    private var currentLevel: Int = 0 {
+    private var currentLevel: Int = 6 {
         didSet {
             if currentLevel > LevelBuilder.maxLevel {
                 currentLevel = 0
@@ -77,7 +77,10 @@ class GameScene: SKScene {
 extension GameScene: GameEngineDelegate {
     func gameIsSolved() {
         currentLevel += 1
-        resetGameEngine(level: currentLevel, fromGameOver: false)
+
+        gameEngine.fadeGameboard(fadeOut: true) {
+            self.resetGameEngine(level: self.currentLevel, fromGameOver: false)
+        }
     }
     
     func gameIsOver() {

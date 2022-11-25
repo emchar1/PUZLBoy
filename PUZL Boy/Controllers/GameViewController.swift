@@ -24,7 +24,7 @@ class GameViewController: UIViewController {
         LevelBuilder.getLevels {
             let gameScene = GameScene(size: K.screenSize)
 
-            skView.presentScene(gameScene, transition: SKTransition.doorway(withDuration: 2.0))
+            skView.presentScene(gameScene, transition: SKTransition.doorsOpenVertical(withDuration: 2.0))
         }
     }
 }

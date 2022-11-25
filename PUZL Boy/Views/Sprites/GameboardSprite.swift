@@ -69,4 +69,19 @@ class GameboardSprite {
     func getLocation(at position: K.GameboardPosition) -> CGPoint {
         return CGPoint(x: panelSize * (CGFloat(position.col) + 0.5), y: panelSize * (CGFloat(panelCount - 1 - position.row) + 0.5))
     }
+    
+    func colorizeGameboard(color: UIColor, blendFactor: CGFloat, animationDuration: TimeInterval, completion: (() -> ())?) {
+        for (row, panelRows) in panels.enumerated() {
+            for (col, _) in panelRows.enumerated() {
+                panels[row][col].run(SKAction.colorize(with: color, colorBlendFactor: blendFactor, duration: animationDuration))
+            }
+        }
+        
+        if completion == nil {
+            sprite.run(SKAction.colorize(with: color, colorBlendFactor: blendFactor, duration: animationDuration))
+        }
+        else {
+            sprite.run(SKAction.colorize(with: color, colorBlendFactor: blendFactor, duration: animationDuration), completion: completion!)
+        }
+    }
 }

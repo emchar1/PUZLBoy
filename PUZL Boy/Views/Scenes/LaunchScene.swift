@@ -19,7 +19,7 @@ class LaunchScene: SKScene {
     }
     
     override func didMove(to view: SKView) {
-        let background = SKSpriteNode(color: .blue, size: self.size)
+        let background = SKSpriteNode(color: .black, size: self.size)
         background.anchorPoint = .zero
         
         addChild(background)
