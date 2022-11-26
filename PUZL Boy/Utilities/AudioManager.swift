@@ -82,6 +82,12 @@ class AudioManager {
         addAudioItem("gemcollect", category: .soundFX)
         addAudioItem("hammerswing", category: .soundFX)
         addAudioItem("overworld", category: .music)
+        addAudioItem("overworld2", category: .music)
+        addAudioItem("overworld3", category: .music)
+        addAudioItem("overworld4", category: .music)
+        addAudioItem("overworld_egg", category: .music)
+        addAudioItem("overworld_galaxy", category: .music)
+        addAudioItem("overworld_throwback", category: .music)
         addAudioItem("pickupitem", category: .soundFX)
         addAudioItem("swordslash", category: .soundFX)
         addAudioItem("wingame", category: .soundFX)
@@ -172,7 +178,7 @@ class AudioManager {
      */
     func stopSound(for audioKey: String, fadeDuration: TimeInterval = 0.0) {
         guard let item = audioItems[audioKey] else {
-            print("Unable to find \(audioKey) in AudioManager.audioItems[]. Make sure the sound has been added to the dictionary.")
+            print("Unable to find \(audioKey) in AudioManager.audioItems[]")
             return
         }
         
@@ -201,18 +207,34 @@ class AudioManager {
     }
     
     /**
-     Updates the volume across all audio players. Sets it to 0 (off) or 1 (on) based on if the app is muted or not.
+     Sets the volume of the audioItem to the selected volume.
+     - parameters:
+        - audioKey: the key for the audio item to set the volume for
+        - volume: the new volume to set
+        - fadeDuration: the rate of volume change before reaching the desired volume
      */
-    func updateVolumes() {
-        for (_, item) in audioItems {
-            let volumeToSet: Float = UserDefaults.standard.bool(forKey: K.userDefaultsKey_SoundIsMuted) ? 0.0 : item.maxVolume
-            
-            if item.category == .music {
-                item.player.setVolume(volumeToSet, fadeDuration: 0.25)
-            }
-            else {
-                item.player.volume = volumeToSet
-            }
+    func adjustVolume(to volume: Float, for audioKey: String, fadeDuration: TimeInterval = 0) {
+        guard let item = audioItems[audioKey] else {
+            print("Unable to find \(audioKey) in AudioManager.audioItems[]")
+            return
         }
+        
+        item.player.setVolume(volume, fadeDuration: fadeDuration)
     }
+    
+//    /**
+//     Updates the volume across all audio players. Sets it to 0 (off) or 1 (on) based on if the app is muted or not.
+//     */
+//    func updateVolumes() {
+//        for (_, item) in audioItems {
+//            let volumeToSet: Float = UserDefaults.standard.bool(forKey: K.userDefaultsKey_SoundIsMuted) ? 0.0 : item.maxVolume
+//
+//            if item.category == .music {
+//                item.player.setVolume(volumeToSet, fadeDuration: 0.25)
+//            }
+//            else {
+//                item.player.volume = volumeToSet
+//            }
+//        }
+//    }
 }

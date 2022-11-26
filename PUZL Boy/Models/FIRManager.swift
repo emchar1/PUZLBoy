@@ -67,6 +67,9 @@ struct FIRManager {
             }//end for itemSnapshot...
             
             completion?(allLevels)
+
+            //MUST remove observer after downloading once. Is this the best way to do it, right after downloading?
+            ref.removeAllObservers()
         }//end ref.observe()
     }//end initializeRecords()
     
