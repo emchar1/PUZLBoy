@@ -404,17 +404,17 @@ class GameEngine {
         displaySprite.setLabels(level: "\(level.level)", lives: "\(GameEngine.livesRemaining)", moves: "\(movesRemaining)", inventory: playerSprite.inventory)
         
         if isSolved {
-            K.audioManager.playSound(for: "wingame")
+            K.audioManager.playSound(for: "winlevel")
             delegate?.gameIsSolved()
             
             print("WIN!")
         }
         else if isGameOver {
-            K.audioManager.stopSound(for: "overworld")
+            K.audioManager.stopSound(for: K.overworldTheme)
             K.audioManager.playSound(for: "gameover")
 
             playerSprite.startDeadAnimation {
-                K.audioManager.playSound(for: "overworld")//, currentTime: 2.18)
+                K.audioManager.playSound(for: K.overworldTheme)
 
                 self.delegate?.gameIsOver()
             }

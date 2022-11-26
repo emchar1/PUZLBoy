@@ -32,7 +32,7 @@ class GameScene: SKScene {
         gameEngine.delegate = self
         scaleMode = .aspectFill
 
-        K.audioManager.playSound(for: "overworld")
+        K.audioManager.playSound(for: K.overworldTheme)
     }
     
     required init?(coder aDecoder: NSCoder) {

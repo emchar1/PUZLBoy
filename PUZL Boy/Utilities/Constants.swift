@@ -49,6 +49,16 @@ struct K {
     static let bottomMargin: CGFloat = 80
     
     /**
+     Current theme song for the overworld.
+     */
+    static let overworldTheme = "overworld_galaxy"
+    
+    /**
+     Shared AudioManager property throughout the project.
+     */
+    static let audioManager = AudioManager()
+    
+    /**
      The device's screen size.
      */
     static var screenSize: CGSize {
@@ -80,9 +90,4 @@ struct K {
     static let userDefaultsKey_SoundIsMuted = "SoundIsMuted"
     static let userDefaultsKey_HintsAreOff = "HintsAreOff"
     static let userDefaultsKey_LaunchedBefore = "LaunchedBefore"
-    
-    /**
-     Shared AudioManager property throughout the project.
-     */
-    static let audioManager = AudioManager()
 }

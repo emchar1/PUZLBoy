@@ -107,10 +107,10 @@ class PlayerSprite {
             case .win:
                 K.audioManager.playSound(for: "boywalk")
                 
-                let sequence = SKAction.sequence([SKAction.wait(forDuration: 0.55), SKAction.fadeAlpha(to: 0, duration: 0.2)])
-                sprite.run(SKAction.group([SKAction.repeatForever(animation), sequence]), withKey: AnimationKey.playerMove.rawValue)
-
-                return
+//                let sequence = SKAction.sequence([SKAction.wait(forDuration: 0.55), SKAction.fadeAlpha(to: 0, duration: 0.2)])
+//                sprite.run(SKAction.group([SKAction.repeatForever(animation), sequence]), withKey: AnimationKey.playerMove.rawValue)
+//
+//                return
             case .marsh:
                 K.audioManager.playSound(for: "boymarsh")
             default:
