@@ -56,7 +56,7 @@ struct BackgroundObject {
             sprite.position = CGPoint(x: K.iPhoneWidth / 2, y: K.height / backgroundBorder)
             sprite.setScale(0.4)
             sprite.alpha = 0.75
-            sprite.zPosition = K.ZPosition.backgroundObjectTier0
+            sprite.zPosition = K.ZPosition.backgroundObjectTier2
             return
         }
         
