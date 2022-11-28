@@ -21,7 +21,7 @@ class GameViewController: UIViewController {
         skView.ignoresSiblingOrder = true
         skView.presentScene(launchScene)
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 6) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
             LevelBuilder.getLevels {
                 let gameScene = GameScene(size: K.screenSize)
                 

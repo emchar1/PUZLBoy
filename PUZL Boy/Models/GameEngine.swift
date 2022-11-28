@@ -38,6 +38,7 @@ class GameEngine {
     private var isExitAvailable: Bool { gemsRemaining == 0 }
     private var isSolved: Bool { isExitAvailable && level.player == level.end }
     private var isGameOver: Bool { movesRemaining <= 0 }
+    var canContinue: Bool { return GameEngine.livesRemaining >= 0 }
     
     private var gameboardSprite: GameboardSprite
     private var playerSprite: PlayerSprite

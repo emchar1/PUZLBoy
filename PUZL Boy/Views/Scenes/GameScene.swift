@@ -84,6 +84,13 @@ extension GameScene: GameEngineDelegate {
     }
     
     func gameIsOver() {
+        guard gameEngine.canContinue else {
+//            let continueScene = ContinueScene(size: K.screenSize)
+//            removeAllChildren()
+            
+            return
+        }
+        
         resetGameEngine(level: currentLevel, fromGameOver: true)
     }
 }
