@@ -133,13 +133,13 @@ class GameEngine {
         switch level.getLevelType(at: level.player) {
         case .gem:
             gemsRemaining -= 1
-            consumeItem(isGem: true, shouldChangePanelToIce: false)
+            consumeItem(shouldChangePanelToIce: false)
             
             K.audioManager.playSound(for: "gemcollect")
             completion?()
         case .gemOnIce:
             gemsRemaining -= 1
-            consumeItem(isGem: true, shouldChangePanelToIce: true)
+            consumeItem(shouldChangePanelToIce: true)
 
             K.audioManager.playSound(for: "gemcollect")
             completion?()
@@ -162,13 +162,13 @@ class GameEngine {
             
         case .hammer:
             playerSprite.inventory.hammers += 1
-            consumeItem(isGem: false, shouldChangePanelToIce: false)
+            consumeItem(shouldChangePanelToIce: false)
             
             playerSprite.startPowerUpAnimation()
             completion?()
         case .sword:
             playerSprite.inventory.swords += 1
-            consumeItem(isGem: false, shouldChangePanelToIce: false)
+            consumeItem(shouldChangePanelToIce: false)
 
             playerSprite.startPowerUpAnimation()
             completion?()
@@ -177,7 +177,7 @@ class GameEngine {
             
             playerSprite.inventory.hammers -= 1
             playerSprite.startHammerAnimation(on: gameboardSprite, at: level.player) {
-                self.consumeItem(isGem: false, shouldChangePanelToIce: false)
+                self.consumeItem(shouldChangePanelToIce: false)
                 completion?()
             }
         case .enemy:
@@ -185,7 +185,7 @@ class GameEngine {
             
             playerSprite.inventory.swords -= 1
             playerSprite.startSwordAnimation(on: gameboardSprite, at: level.player) {
-                self.consumeItem(isGem: false, shouldChangePanelToIce: false)
+                self.consumeItem(shouldChangePanelToIce: false)
                 completion?()
             }
         default:
@@ -197,7 +197,7 @@ class GameEngine {
     /**
      Converts a panel to grass, after consuming the item.
      */
-    private func consumeItem(isGem: Bool, shouldChangePanelToIce: Bool) {
+    private func consumeItem(shouldChangePanelToIce: Bool) {
         level.setLevelType(at: level.player, levelType: shouldChangePanelToIce ? .ice : .grass)
 
         for child in gameboardSprite.sprite.children {
@@ -215,7 +215,7 @@ class GameEngine {
             }
             
             //Update exitClosed panel to exitOpen
-            if isGem && isExitAvailable && position == level.end, let child = gameboardSprite.sprite.childNode(withName: row + "," + col) {
+            if isExitAvailable && position == level.end, let child = gameboardSprite.sprite.childNode(withName: row + "," + col) {
                 child.removeFromParent()
                 gameboardSprite.updatePanels(at: position, with: gameboardSprite.endOpen)
                 
