@@ -7,10 +7,6 @@
 
 import SpriteKit
 
-enum BackgroundType: String {
-    case tree, boulder, mountain, cloud
-}
-
 struct BackgroundObject {
     
     // MARK: - Properties
@@ -40,6 +36,10 @@ struct BackgroundObject {
         return TimeInterval.random(in: 1...3)
     }
     
+    enum BackgroundType: String {
+        case tree, boulder, mountain, cloud
+    }
+    
     
     // MARK: - Initialization
     
@@ -51,6 +51,10 @@ struct BackgroundObject {
         
         sprite = SKSpriteNode(texture: SKTexture(imageNamed: textureName))
         sprite.anchorPoint = .zero
+        
+        // FIXME: - For if I want to shade the sprites for evening daytime
+        sprite.color = .black
+        sprite.colorBlendFactor = 0
 
         guard backgroundType != .mountain else {
             sprite.position = CGPoint(x: K.iPhoneWidth / 2, y: K.height / backgroundBorder)

@@ -24,6 +24,10 @@ class LaunchScene: SKScene {
     private var playerSprite: SKSpriteNode
     private var loadingLabel: SKLabelNode
     
+    enum DayTheme {
+        case morning, afternoon, night
+    }
+    
     
     // MARK: - Initialization
     
@@ -40,12 +44,16 @@ class LaunchScene: SKScene {
         playerSprite.setScale(2)
         playerSprite.zPosition = K.ZPosition.player
         
+        // FIXME: - For if I want to shade the sprites for evening daytime
+        playerSprite.color = .black
+        playerSprite.colorBlendFactor = 0
+        
         loadingLabel = SKLabelNode(text: "LOADING...")
         loadingLabel.fontName = "AvenirNext-BoldItalic"
         loadingLabel.fontSize = 75
         loadingLabel.fontColor = .white
         loadingLabel.horizontalAlignmentMode = .center
-        loadingLabel.alpha = 0.85
+        loadingLabel.alpha = 0.95
         loadingLabel.position = CGPoint(x: K.iPhoneWidth / 2, y: K.height / 6)
         loadingLabel.zPosition = K.ZPosition.display
         
@@ -109,13 +117,17 @@ class LaunchScene: SKScene {
     // MARK: - Functions
     
     override func didMove(to view: SKView) {
-        let skyColor = UIColor(red: 192 / 255, green: 229 / 255, blue: 255 / 255, alpha: 1.0)
+        let skyDay = UIColor(red: 162 / 255, green: 229 / 255, blue: 255 / 255, alpha: 1.0)
+//        let skySunset = UIColor(red: 205 / 255, green: 174 / 255, blue: 102 / 255, alpha: 1.0)
+        let skyColor = skyDay
         let skyNode = SKShapeNode(rect: CGRect(x: 0, y: K.height / mountainSprite.backgroundBorder, width: K.iPhoneWidth, height: K.height))
         skyNode.fillColor = skyColor
         skyNode.strokeColor = skyColor
         skyNode.zPosition = K.ZPosition.gameboard
         
-        let grassColor = UIColor(red: 44 / 255, green: 177 / 255, blue: 72 / 255, alpha: 1.0)
+        let grassDay = UIColor(red: 94 / 255, green: 177 / 255, blue: 72 / 255, alpha: 1.0)
+//        let grassSunset = UIColor(red: 104 / 255, green: 147 / 255, blue: 42 / 255, alpha: 1.0)
+        let grassColor = grassDay
         let grassNode = SKShapeNode(rect: CGRect(x: 0, y: 0, width: K.iPhoneWidth, height: K.height / mountainSprite.backgroundBorder))
         grassNode.fillColor = grassColor
         grassNode.strokeColor = grassColor
