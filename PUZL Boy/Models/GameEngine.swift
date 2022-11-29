@@ -143,6 +143,20 @@ class GameEngine {
 
             K.audioManager.playSound(for: "gemcollect")
             completion?()
+        case .warp:
+            guard let newWarpLocation = gameboardSprite.warpTo(from: level.player) else { return }
+            
+            K.audioManager.playSound(for: "warp")
+            
+            playerSprite.startWarpAnimation(shouldReverse: false) {
+                self.level.updatePlayer(position: newWarpLocation)
+                self.playerSprite.sprite.position = self.gameboardSprite.getLocation(at: newWarpLocation)
+                self.playerSprite.startWarpAnimation(shouldReverse: true) {
+                    completion?()
+                }
+                
+            }
+            
         case .hammer:
             playerSprite.inventory.hammers += 1
             consumeItem(isGem: false, shouldChangePanelToIce: false)

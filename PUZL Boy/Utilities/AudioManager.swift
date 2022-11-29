@@ -90,6 +90,7 @@ class AudioManager {
         addAudioItem("overworld_throwback", category: .music)
         addAudioItem("pickupitem", category: .soundFX)
         addAudioItem("swordslash", category: .soundFX)
+        addAudioItem("warp", category: .soundFX)
         addAudioItem("winlevel", category: .soundFX)
     }
 

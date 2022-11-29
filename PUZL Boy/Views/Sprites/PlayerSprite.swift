@@ -13,6 +13,7 @@ class PlayerSprite {
     
     private let playerSize = CGSize(width: 946, height: 564)
     private let animationSpeed: TimeInterval = 0.04
+    private let spriteScale = 0.5
     
     var inventory: Inventory
     private(set) var sprite: SKSpriteNode
@@ -55,7 +56,7 @@ class PlayerSprite {
                     
         sprite = SKSpriteNode(texture: playerTextures[Texture.idle.rawValue][0])
         sprite.size = playerSize
-        sprite.setScale(0.5)
+        sprite.setScale(spriteScale)
         sprite.alpha = shouldSpawn ? 0 : 1 //important for respawn to work!
         sprite.position = .zero
         sprite.zPosition = K.ZPosition.player
@@ -130,6 +131,13 @@ class PlayerSprite {
         K.audioManager.playSound(for: "boypoisoned")
 
         sprite.run(marshEffect, withKey: AnimationKey.playerMarsh.rawValue)
+    }
+    
+    func startWarpAnimation(shouldReverse: Bool, completion: @escaping (() -> ())) {
+        let warpEffect = SKAction.group([SKAction.rotate(byAngle: -2 * .pi, duration: 1.0),
+                                         SKAction.scale(to: shouldReverse ? spriteScale : 0, duration: 1.0)])
+        
+        sprite.run(warpEffect, completion: completion)
     }
     
     func startPowerUpAnimation() {

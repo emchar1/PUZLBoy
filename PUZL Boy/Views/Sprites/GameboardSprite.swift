@@ -25,6 +25,7 @@ class GameboardSprite {
     private var panels: [[SKSpriteNode]]
     private(set) var panelCount: Int
     private(set) var panelSize: CGFloat
+    private(set) var warps: (first: K.GameboardPosition?, second: K.GameboardPosition?)
     private(set) var sprite: SKSpriteNode
 
     
@@ -64,6 +65,15 @@ class GameboardSprite {
         panels[position.row][position.col].name = "\(position.row),\(position.col)"
 
         sprite.addChild(panels[position.row][position.col])
+        
+        if tile == .warp {
+            if warps.first == nil {
+                warps.first = position
+            }
+            else {
+                warps.second = position
+            }
+        }
     }
     
     func getLocation(at position: K.GameboardPosition) -> CGPoint {
@@ -83,5 +93,14 @@ class GameboardSprite {
         else {
             sprite.run(SKAction.colorize(with: color, colorBlendFactor: blendFactor, duration: animationDuration), completion: completion!)
         }
+    }
+    
+    func warpTo(from initialPosition: K.GameboardPosition) -> K.GameboardPosition? {
+        guard let first = warps.first, let second = warps.second else {
+            print("Level has no warps!")
+            return nil
+        }
+        
+        return first == initialPosition ? second : first
     }
 }
