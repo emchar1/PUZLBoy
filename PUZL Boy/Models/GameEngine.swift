@@ -144,7 +144,10 @@ class GameEngine {
             K.audioManager.playSound(for: "gemcollect")
             completion?()
         case .warp:
-            guard let newWarpLocation = gameboardSprite.warpTo(from: level.player) else { return }
+            guard let newWarpLocation = gameboardSprite.warpTo(from: level.player) else {
+                completion?()
+                return
+            }
             
             K.audioManager.playSound(for: "warp")
             
