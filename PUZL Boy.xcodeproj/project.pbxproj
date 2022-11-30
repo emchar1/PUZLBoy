@@ -22,6 +22,7 @@
 		EA11915729121798009D0E3E /* Controls.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA11915629121798009D0E3E /* Controls.swift */; };
 		EA3534892920612300C11FC0 /* DisplayStatusBarSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA3534882920612300C11FC0 /* DisplayStatusBarSprite.swift */; };
 		EA35348B29241FCD00C11FC0 /* LevelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA35348A29241FCD00C11FC0 /* LevelType.swift */; };
+		EA3951ED2938165A00D0B14A /* Extension+UIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA3951EC2938165A00D0B14A /* Extension+UIImage.swift */; };
 		EA65182B28E4199E00E535BF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA65182A28E4199E00E535BF /* AppDelegate.swift */; };
 		EA65182D28E4199E00E535BF /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA65182C28E4199E00E535BF /* SceneDelegate.swift */; };
 		EA65182F28E4199E00E535BF /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA65182E28E4199E00E535BF /* GameViewController.swift */; };
@@ -89,6 +90,7 @@
 		EA11915629121798009D0E3E /* Controls.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Controls.swift; sourceTree = "<group>"; };
 		EA3534882920612300C11FC0 /* DisplayStatusBarSprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayStatusBarSprite.swift; sourceTree = "<group>"; };
 		EA35348A29241FCD00C11FC0 /* LevelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelType.swift; sourceTree = "<group>"; };
+		EA3951EC2938165A00D0B14A /* Extension+UIImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+UIImage.swift"; sourceTree = "<group>"; };
 		EA65182728E4199E00E535BF /* PUZL Boy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "PUZL Boy.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		EA65182A28E4199E00E535BF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		EA65182C28E4199E00E535BF /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -288,6 +290,7 @@
 				EA65189428EA207800E535BF /* Constants.swift */,
 				EA956C6929257B9C00879AD0 /* AudioManager.swift */,
 				EA956C6B29257D9600879AD0 /* Extension+Comparable.swift */,
+				EA3951EC2938165A00D0B14A /* Extension+UIImage.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -409,6 +412,7 @@
 				EA65189228E973D700E535BF /* Level.swift in Sources */,
 				EA65184528E5750C00E535BF /* GameboardSprite.swift in Sources */,
 				EA75F0ED292DF57400F09BD7 /* LevelModel.swift in Sources */,
+				EA3951ED2938165A00D0B14A /* Extension+UIImage.swift in Sources */,
 				EA11915729121798009D0E3E /* Controls.swift in Sources */,
 				EA35348B29241FCD00C11FC0 /* LevelType.swift in Sources */,
 				EA119155290CCA39009D0E3E /* Inventory.swift in Sources */,

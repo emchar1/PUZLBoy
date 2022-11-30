@@ -115,10 +115,12 @@ class LaunchScene: SKScene {
     // MARK: - Functions
     
     override func didMove(to view: SKView) {
-        let skyNode = SKShapeNode(rect: CGRect(x: 0, y: K.height / mountainSprite.backgroundBorder, width: K.iPhoneWidth, height: K.height))
-        skyNode.fillColor = DayTheme.skyColor
-        skyNode.strokeColor = DayTheme.skyColor
-        skyNode.zPosition = K.ZPosition.gameboard
+        let skyImage: UIImage = UIImage.gradientImage(withBounds: CGRect(x: 0, y: 0, width: K.iPhoneWidth, height: K.height),
+                                                      startPoint: CGPoint(x: 0.5, y: 0), endPoint: CGPoint(x: 0.5, y: 0.5),
+                                                      colors: [DayTheme.skyColor.top.cgColor, DayTheme.skyColor.bottom.cgColor])
+        let skyNode = SKSpriteNode(texture: SKTexture(image: skyImage))
+        skyNode.anchorPoint = .zero
+        skyNode.zPosition = K.ZPosition.skyNode
         
         let grassNode = SKShapeNode(rect: CGRect(x: 0, y: 0, width: K.iPhoneWidth, height: K.height / mountainSprite.backgroundBorder))
         grassNode.fillColor = DayTheme.grassColor

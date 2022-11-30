@@ -79,6 +79,7 @@ struct K {
      Various zPosition values used throughout the app.
      */
     struct ZPosition {
+        static let skyNode: CGFloat = 80
         static let gameboard: CGFloat = 100
         static let panel: CGFloat = 200
         static let backgroundObjectTier2: CGFloat = 250

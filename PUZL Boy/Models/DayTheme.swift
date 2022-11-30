@@ -21,14 +21,17 @@ struct DayTheme {
         }
     }
     
-    static var skyColor: UIColor {
+    static var skyColor: (top: UIColor, bottom: UIColor) {
         switch currentTheme {
         case .morning:
-            return UIColor(red: 192 / 255, green: 229 / 255, blue: 255 / 255, alpha: 1.0)
+            return (UIColor(red: 92 / 255, green: 149 / 255, blue: 207 / 255, alpha: 1.0),
+                    UIColor(red: 254 / 255, green: 252 / 255, blue: 246 / 255, alpha: 1.0))
         case .afternoon:
-            return UIColor(red: 215 / 255, green: 134 / 255, blue: 122 / 255, alpha: 1.0)
+            return (UIColor(red: 238 / 255, green: 175 / 255, blue: 97 / 255, alpha: 1.0),
+                    UIColor(red: 206 / 255, green: 73 / 255, blue: 147 / 255, alpha: 1.0))
         case .night:
-            return UIColor(red: 25 / 255, green: 25 / 255, blue: 50 / 255, alpha: 1.0)
+            return (UIColor(red: 12 / 255, green: 20 / 255, blue: 69 / 255, alpha: 1.0),
+                    UIColor(red: 76 / 255, green: 64 / 255, blue: 142 / 255, alpha: 1.0))
         }
     }
     
