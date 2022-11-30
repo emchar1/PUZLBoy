@@ -19,6 +19,7 @@ class LaunchScene: SKScene {
     private var boulderSprites: [BackgroundObject] = []
     private var cloudSprites: [BackgroundObject] = []
     private var mountainSprite: BackgroundObject
+    private var moonSprite: BackgroundObject
     
     private var playerTextures: [SKTexture] = []
     private var playerSprite: SKSpriteNode
@@ -71,6 +72,7 @@ class LaunchScene: SKScene {
         }
 
         mountainSprite = BackgroundObject(tierLevel: 0, backgroundType: .mountain)
+        moonSprite = BackgroundObject(tierLevel: 0, backgroundType: .moon)
 
         super.init(size: size)
         
@@ -140,6 +142,7 @@ class LaunchScene: SKScene {
         }
 
         addChild(mountainSprite.sprite)
+        addChild(moonSprite.sprite)
         addChild(loadingLabel)
     }
     

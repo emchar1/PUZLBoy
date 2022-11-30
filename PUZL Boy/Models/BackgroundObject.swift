@@ -37,7 +37,7 @@ struct BackgroundObject {
     }
     
     enum BackgroundType: String {
-        case tree, boulder, mountain, cloud
+        case tree, boulder, mountain, cloud, moon
     }
     
     
@@ -54,12 +54,20 @@ struct BackgroundObject {
         
         // FIXME: - For if I want to shade the sprites for evening daytime
         sprite.color = .black
-        sprite.colorBlendFactor = DayTheme.spriteShade
+        sprite.colorBlendFactor = backgroundType == .moon ? 0 : DayTheme.spriteShade
 
         guard backgroundType != .mountain else {
             sprite.position = CGPoint(x: K.iPhoneWidth / 2, y: K.height / backgroundBorder)
             sprite.setScale(0.4)
             sprite.alpha = 0.75
+            sprite.zPosition = K.ZPosition.backgroundObjectTier2
+            return
+        }
+        
+        guard backgroundType != .moon else {
+            sprite.position = CGPoint(x: K.iPhoneWidth - spriteWidth, y: K.height - spriteWidth)
+            sprite.setScale(0.7)
+            sprite.alpha = DayTheme.currentTheme == .night ? 1.0 : 0.0
             sprite.zPosition = K.ZPosition.backgroundObjectTier2
             return
         }

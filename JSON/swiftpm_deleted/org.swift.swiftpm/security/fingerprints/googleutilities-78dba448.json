@@ -1,0 +1,10 @@
+{
+  "versionFingerprints" : {
+    "7.10.0" : {
+      "sourceControl" : {
+        "fingerprint" : "6db6edb48bdd9943426562c7f042a5492de5ba3d",
+        "origin" : "https://github.com/google/GoogleUtilities.git"
+      }
+    }
+  }
+}

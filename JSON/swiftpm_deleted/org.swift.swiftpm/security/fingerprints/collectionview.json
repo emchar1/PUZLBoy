@@ -1,0 +1,10 @@
+{
+  "versionFingerprints" : {
+    "2.0.5" : {
+      "sourceControl" : {
+        "fingerprint" : "a8acb6b5a643a1bb9746b23100ad22c7e69e5108",
+        "origin" : "https://github.com/corekit/collectionview"
+      }
+    }
+  }
+}

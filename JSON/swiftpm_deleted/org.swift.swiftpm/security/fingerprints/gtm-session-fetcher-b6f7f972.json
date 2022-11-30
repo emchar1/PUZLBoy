@@ -1,0 +1,10 @@
+{
+  "versionFingerprints" : {
+    "3.0.0" : {
+      "sourceControl" : {
+        "fingerprint" : "efda500b6d9858d38a76dbfbfa396bd644692e4a",
+        "origin" : "https://github.com/google/gtm-session-fetcher.git"
+      }
+    }
+  }
+}
