@@ -390,10 +390,21 @@ class GameEngine {
             }
         case .enemy:
             if playerSprite.inventory.swords <= 0 {
-                updateMovesRemaining()
+                // FIXME: - This is ugly!!! All to make sliding from ice to enemy hit twice!
+                if shouldUpdateRemainingForBoulderIfIcy {
+                    updateMovesRemaining()
+                    shouldUpdateRemainingForBoulderIfIcy = false
+                    
+                    // ...but exit early if already gameover so you don't get 2 dying animations... ugly!!
+                    if isGameOver {
+                        return false
+                    }
+                }
+//                updateMovesRemaining() //removed here...
 
                 shouldDisableControlInput = true
                 playerSprite.startKnockbackAnimation(isAttacked: true, direction: direction) {
+                    self.updateMovesRemaining() //...added here
                     self.shouldDisableControlInput = false
                     print("Enemy attacked!!")
                 }

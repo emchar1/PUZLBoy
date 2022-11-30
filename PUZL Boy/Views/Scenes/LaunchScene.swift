@@ -117,7 +117,7 @@ class LaunchScene: SKScene {
     // MARK: - Functions
     
     override func didMove(to view: SKView) {
-        let skyDay = UIColor(red: 162 / 255, green: 229 / 255, blue: 255 / 255, alpha: 1.0)
+        let skyDay = UIColor(red: 192 / 255, green: 229 / 255, blue: 255 / 255, alpha: 1.0)
 //        let skySunset = UIColor(red: 205 / 255, green: 174 / 255, blue: 102 / 255, alpha: 1.0)
         let skyColor = skyDay
         let skyNode = SKShapeNode(rect: CGRect(x: 0, y: K.height / mountainSprite.backgroundBorder, width: K.iPhoneWidth, height: K.height))
