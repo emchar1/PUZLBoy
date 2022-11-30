@@ -54,7 +54,7 @@ struct BackgroundObject {
         
         // FIXME: - For if I want to shade the sprites for evening daytime
         sprite.color = .black
-        sprite.colorBlendFactor = 0
+        sprite.colorBlendFactor = DayTheme.spriteShade
 
         guard backgroundType != .mountain else {
             sprite.position = CGPoint(x: K.iPhoneWidth / 2, y: K.height / backgroundBorder)

@@ -16,6 +16,7 @@
 		EA0F147D292B0A050013038E /* overworld3.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA0F147C292B0A050013038E /* overworld3.mp3 */; };
 		EA0F1481292B2F870013038E /* bouldersmash.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA0F1480292B2F870013038E /* bouldersmash.mp3 */; };
 		EA0F1491292CC8D90013038E /* enemydeath.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA0F1490292CC8D90013038E /* enemydeath.mp3 */; };
+		EA0F84072937D4860031DA76 /* DayTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA0F84062937D4860031DA76 /* DayTheme.swift */; };
 		EA1191532904BC4C009D0E3E /* DisplaySprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA1191522904BC4C009D0E3E /* DisplaySprite.swift */; };
 		EA119155290CCA39009D0E3E /* Inventory.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA119154290CCA39009D0E3E /* Inventory.swift */; };
 		EA11915729121798009D0E3E /* Controls.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA11915629121798009D0E3E /* Controls.swift */; };
@@ -82,6 +83,7 @@
 		EA0F147C292B0A050013038E /* overworld3.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = overworld3.mp3; sourceTree = "<group>"; };
 		EA0F1480292B2F870013038E /* bouldersmash.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = bouldersmash.mp3; sourceTree = "<group>"; };
 		EA0F1490292CC8D90013038E /* enemydeath.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = enemydeath.mp3; sourceTree = "<group>"; };
+		EA0F84062937D4860031DA76 /* DayTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayTheme.swift; sourceTree = "<group>"; };
 		EA1191522904BC4C009D0E3E /* DisplaySprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplaySprite.swift; sourceTree = "<group>"; };
 		EA119154290CCA39009D0E3E /* Inventory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Inventory.swift; sourceTree = "<group>"; };
 		EA11915629121798009D0E3E /* Controls.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Controls.swift; sourceTree = "<group>"; };
@@ -189,6 +191,7 @@
 			children = (
 				EA75F0EA292DF46200F09BD7 /* FIRManager.swift */,
 				EAAEA3CD2932C47500221963 /* BackgroundObject.swift */,
+				EA0F84062937D4860031DA76 /* DayTheme.swift */,
 				EA75F0EC292DF57400F09BD7 /* LevelModel.swift */,
 				EA65189128E973D700E535BF /* LevelBuilder.swift */,
 				EA65189028E973D700E535BF /* Level.swift */,
@@ -413,6 +416,7 @@
 				EA75F0EB292DF46200F09BD7 /* FIRManager.swift in Sources */,
 				EA1191532904BC4C009D0E3E /* DisplaySprite.swift in Sources */,
 				EA75F0EF292F55F900F09BD7 /* LaunchScene.swift in Sources */,
+				EA0F84072937D4860031DA76 /* DayTheme.swift in Sources */,
 				EA65182F28E4199E00E535BF /* GameViewController.swift in Sources */,
 				EA65182B28E4199E00E535BF /* AppDelegate.swift in Sources */,
 				EA956C6C29257D9600879AD0 /* Extension+Comparable.swift in Sources */,
