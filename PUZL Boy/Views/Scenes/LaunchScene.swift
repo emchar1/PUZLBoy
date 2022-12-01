@@ -11,15 +11,16 @@ class LaunchScene: SKScene {
     
     // MARK: - Properties
     
-    private let treeCount = 5
-    private let boulderCount = 7
-    private let cloudCount = 2
+    private let treeCount = 6
+    private let boulderCount = 8
+    private let cloudCount = 3
     
     private var treeSprites: [BackgroundObject] = []
     private var boulderSprites: [BackgroundObject] = []
     private var cloudSprites: [BackgroundObject] = []
     private var mountainSprite: BackgroundObject
     private var moonSprite: BackgroundObject
+//    private var grassSprite: BackgroundObject
     
     private var playerTextures: [SKTexture] = []
     private var playerSprite: SKSpriteNode
@@ -40,8 +41,6 @@ class LaunchScene: SKScene {
         playerSprite.position = CGPoint(x: K.iPhoneWidth / 2 - 50, y: K.height / 2)
         playerSprite.setScale(2)
         playerSprite.zPosition = K.ZPosition.player
-        
-        // FIXME: - For if I want to shade the sprites for evening daytime
         playerSprite.color = .black
         playerSprite.colorBlendFactor = DayTheme.spriteShade
         
@@ -54,25 +53,25 @@ class LaunchScene: SKScene {
         loadingLabel.position = CGPoint(x: K.iPhoneWidth / 2, y: K.height / 6)
         loadingLabel.zPosition = K.ZPosition.display
         
-        
-        //Setup background objects
-        for _ in 0...treeCount {
+        //Setup BackgroundObjects
+        for _ in 0..<treeCount {
             let treeObject = BackgroundObject(tierLevel: Int.random(in: 0...BackgroundObject.maxTier), backgroundType: .tree)
             treeSprites.append(treeObject)
         }
 
-        for _ in 0...boulderCount {
+        for _ in 0..<boulderCount {
             let boulderObject = BackgroundObject(tierLevel: Int.random(in: 0...BackgroundObject.maxTier), backgroundType: .boulder)
             boulderSprites.append(boulderObject)
         }
 
-        for i in 0...cloudCount {
+        for i in 0..<cloudCount {
             let cloudObject = BackgroundObject(tierLevel: i.clamp(min: 0, max: BackgroundObject.maxTier), backgroundType: .cloud)
             cloudSprites.append(cloudObject)
         }
 
         mountainSprite = BackgroundObject(tierLevel: 0, backgroundType: .mountain)
         moonSprite = BackgroundObject(tierLevel: 0, backgroundType: .moon)
+//        grassSprite = BackgroundObject(tierLevel: 0, backgroundType: .grass)
 
         super.init(size: size)
         
@@ -86,29 +85,21 @@ class LaunchScene: SKScene {
     private func animateSprites() {
         let playerAnimation = SKAction.animate(with: playerTextures, timePerFrame: 0.05)
         playerSprite.run(SKAction.repeatForever(playerAnimation))
-        
-        for i in 0...treeCount {
-            let treeAnimation = SKAction.move(to: treeSprites[i].endPosition, duration: treeSprites[i].speed)
-            let sequence = SKAction.sequence([SKAction.wait(forDuration: treeSprites[i].delay * 2 * TimeInterval(i)),
-                                              SKAction.repeat(treeAnimation, count: 1)])
-            treeSprites[i].sprite.run(sequence)
+
+        for i in 0..<treeCount {
+            treeSprites[i].animateSprite(withDelay: TimeInterval(i))
         }
         
-        for i in 0...boulderCount {
-            let boulderAnimation = SKAction.move(to: boulderSprites[i].endPosition, duration: boulderSprites[i].speed)
-            let sequence = SKAction.sequence([SKAction.wait(forDuration: boulderSprites[i].delay * 2 * TimeInterval(i)),
-                                              SKAction.repeat(boulderAnimation, count: 1)])
-            boulderSprites[i].sprite.run(sequence)
+        for i in 0..<boulderCount {
+            boulderSprites[i].animateSprite(withDelay: TimeInterval(i))
         }
         
-        for i in 0...cloudCount {
-            let cloudAnimation = SKAction.move(to: cloudSprites[i].endPosition, duration: cloudSprites[i].speed)
-            cloudSprites[i].sprite.run(cloudAnimation)
+        for i in 0..<cloudCount {
+            cloudSprites[i].animateSprite(withDelay: TimeInterval(i))
         }
 
-        
-        let mountainAnimation = SKAction.move(to: mountainSprite.endPosition, duration: mountainSprite.speed)
-        mountainSprite.sprite.run(mountainAnimation)
+        mountainSprite.animateSprite(withDelay: nil)
+//        grassSprite.animateSprite(withDelay: nil)
     }
     
     
@@ -131,20 +122,22 @@ class LaunchScene: SKScene {
         addChild(grassNode)
         addChild(playerSprite)
         
-        for i in 0...treeCount {
+        for i in 0..<treeCount {
             addChild(treeSprites[i].sprite)
         }
 
-        for i in 0...boulderCount {
+        for i in 0..<boulderCount {
             addChild(boulderSprites[i].sprite)
         }
 
-        for i in 0...cloudCount {
+        for i in 0..<cloudCount {
             addChild(cloudSprites[i].sprite)
         }
 
         addChild(mountainSprite.sprite)
         addChild(moonSprite.sprite)
+//        addChild(grassSprite.sprite)
+        
         addChild(loadingLabel)
     }
     
