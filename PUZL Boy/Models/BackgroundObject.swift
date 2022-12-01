@@ -16,10 +16,11 @@ struct BackgroundObject {
     private let tierLevel: Int
     private let backgroundType: BackgroundType
     private let spriteWidth: CGFloat = 500
+    private var spriteScale: CGFloat = 1.0
     private(set) var sprite = SKSpriteNode()
 
     var endPosition: CGPoint {
-        return CGPoint(x: -spriteWidth, y: sprite.position.y)
+        return CGPoint(x: -sprite.size.width, y: sprite.position.y)
     }
     
     var speed: TimeInterval {
@@ -71,14 +72,13 @@ struct BackgroundObject {
                         colorBlendFactor: 0,
                         zPosition: K.ZPosition.backgroundObjectTier2)
         case .grass:
-            let grassScale: CGFloat = 0.2
+            spriteScale = 0.2
             
             for i in 0..<200 {
                 let spriteNode = SKSpriteNode(texture: SKTexture(imageNamed: "grass"))
-                spriteNode.setScale(grassScale)
-                spriteNode.position = CGPoint(x: CGFloat(i) * spriteWidth * grassScale * 2.5, y: 0)
+                spriteNode.position = CGPoint(x: CGFloat(i) * spriteWidth * spriteScale, y: 0)
                 spriteNode.anchorPoint = .zero
-//                spriteNode.setScale(grassScale)
+                spriteNode.setScale(spriteScale)
                 spriteNode.zPosition = K.ZPosition.panel
                                 
                 sprite.addChild(spriteNode)
@@ -122,6 +122,8 @@ struct BackgroundObject {
     private mutating func setupSprite(imageNameShouldIncludeTier: Bool, position: CGPoint, anchorPoint: CGPoint, scale: CGFloat, alpha: CGFloat, color: UIColor, colorBlendFactor: CGFloat, zPosition: CGFloat) {
         
         let imageName = "\(backgroundType.rawValue)\(imageNameShouldIncludeTier ? "\(Int.random(in: 0...BackgroundObject.maxTier))" : "")"
+        
+        spriteScale = scale
         
         sprite = SKSpriteNode(texture: SKTexture(imageNamed: imageName))
         sprite.position = position
