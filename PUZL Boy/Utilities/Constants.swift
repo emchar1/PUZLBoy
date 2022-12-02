@@ -9,63 +9,6 @@ import Foundation
 
 struct K {
     /**
-     Default width of the iPhone device in Portrait mode, per RayWenderlich tutorial.
-     */
-    static let width: CGFloat = 1536
-
-    /**
-     Default height of the iPhone device in Portrait mode, per RayWenderlich tutorial.
-     */
-    static let height: CGFloat = 2048
-
-    /**
-     Default aspect ratio of the iPhone device in Portrait mode, per  RayWenderlich tutorial, i.e. 1.3333
-     */
-    static let ratio: CGFloat = width / height
-
-    /**
-     Aspect ratio of the most recent iPhone, i.e. iPhone 14. Ratio is 2.16667
-     */
-    static let iPhoneRatio: CGFloat = 19.5 / 9
-    
-    /**
-     Width of the most recent iPhone, i.e. iPhone 14. Width is 945
-     */
-    static let iPhoneWidth: CGFloat = height / iPhoneRatio
-    
-    /**
-     Margin of the most recent iPhone, i.e. iPhone 14. Set to half of the difference between the default width and the width of the most recent iPhone, i.e. 296
-     */
-    static let iPhoneMargin: CGFloat = (width - iPhoneWidth) / 2
-
-    /**
-     Top margin of the device.
-     */
-    static let topMargin: CGFloat = 280
-    
-    /**
-     Bottom margin of the device.
-     */
-    static let bottomMargin: CGFloat = 80
-    
-    /**
-     Current theme song for the overworld.
-     */
-    static let overworldTheme = "overworldoff"
-    
-    /**
-     Shared AudioManager property throughout the project.
-     */
-    static let audioManager = AudioManager()
-    
-    /**
-     The device's screen size.
-     */
-    static var screenSize: CGSize {
-        CGSize(width: iPhoneWidth, height: height)
-    }
-    
-    /**
      Position, row, col, on the gameboard.
      */
     typealias GameboardPosition = (row: Int, col: Int)
@@ -74,6 +17,70 @@ struct K {
      Gameboard i.e. 2D array of LevelType
      */
     typealias Gameboard = [[LevelType]]
+    
+    
+    struct ScreenDimensions {
+        /**
+         Default width of the iPhone device in Portrait mode, per RayWenderlich tutorial.
+         */
+        static let width: CGFloat = 1536
+        
+        /**
+         Default height of the iPhone device in Portrait mode, per RayWenderlich tutorial.
+         */
+        static let height: CGFloat = 2048
+        
+        /**
+         Default aspect ratio of the iPhone device in Portrait mode, per  RayWenderlich tutorial, i.e. 1.3333
+         */
+        static let ratio: CGFloat = width / height
+        
+        /**
+         Aspect ratio of the most recent iPhone, i.e. iPhone 14. Ratio is 2.16667
+         */
+        static let iPhoneRatio: CGFloat = 19.5 / 9
+        
+        /**
+         Width of the most recent iPhone, i.e. iPhone 14. Width is 945
+         */
+        static let iPhoneWidth: CGFloat = height / iPhoneRatio
+        
+        /**
+         Margin of the most recent iPhone, i.e. iPhone 14. Set to half of the difference between the default width and the width of the most recent iPhone, i.e. 296
+         */
+        static let iPhoneMargin: CGFloat = (width - iPhoneWidth) / 2
+        
+        /**
+         Top margin of the device.
+         */
+        static let topMargin: CGFloat = 280
+        
+        /**
+         Bottom margin of the device.
+         */
+        static let bottomMargin: CGFloat = 80
+        
+        /**
+         The device's screen size.
+         */
+        static var screenSize: CGSize {
+            CGSize(width: iPhoneWidth, height: height)
+        }
+    }
+    
+    
+    struct Audio {
+        /**
+         Current theme song for the overworld.
+         */
+        static let overworldTheme = "overworldoff"
+        
+        /**
+         Shared AudioManager property throughout the project.
+         */
+        static let audioManager = AudioManager()
+    }
+    
     
     /**
      Various zPosition values used throughout the app.
@@ -90,8 +97,11 @@ struct K {
         static let display: CGFloat = 400
     }
     
-    //UserDefault Keys
-    static let userDefaultsKey_SoundIsMuted = "SoundIsMuted"
-    static let userDefaultsKey_HintsAreOff = "HintsAreOff"
-    static let userDefaultsKey_LaunchedBefore = "LaunchedBefore"
+    
+    struct UserDefaults {
+        //UserDefault Keys
+        static let soundIsMuted = "SoundIsMuted"
+        static let hintsAreOff = "HintsAreOff"
+        static let launchedBefore = "LaunchedBefore"
+    }
 }

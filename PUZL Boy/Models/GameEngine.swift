@@ -135,13 +135,13 @@ class GameEngine {
             gemsRemaining -= 1
             consumeItem(shouldChangePanelToIce: false)
             
-            K.audioManager.playSound(for: "gemcollect")
+            K.Audio.audioManager.playSound(for: "gemcollect")
             completion?()
         case .gemOnIce:
             gemsRemaining -= 1
             consumeItem(shouldChangePanelToIce: true)
 
-            K.audioManager.playSound(for: "gemcollect")
+            K.Audio.audioManager.playSound(for: "gemcollect")
             completion?()
         case .warp:
             guard let newWarpLocation = gameboardSprite.warpTo(from: level.player) else {
@@ -149,7 +149,7 @@ class GameEngine {
                 return
             }
             
-            K.audioManager.playSound(for: "warp")
+            K.Audio.audioManager.playSound(for: "warp")
             
             playerSprite.startWarpAnimation(shouldReverse: false) {
                 self.level.updatePlayer(position: newWarpLocation)
@@ -219,7 +219,7 @@ class GameEngine {
                 child.removeFromParent()
                 gameboardSprite.updatePanels(at: position, with: gameboardSprite.endOpen)
                 
-                K.audioManager.playSound(for: "dooropen")
+                K.Audio.audioManager.playSound(for: "dooropen")
             }
         }
     }
@@ -333,7 +333,7 @@ class GameEngine {
         }
         
         guard checkPanelForPathway(position: nextPanel, direction: direction) else {
-            K.audioManager.stopSound(for: "boyglide", fadeDuration: 0.5)
+            K.Audio.audioManager.stopSound(for: "boyglide", fadeDuration: 0.5)
             return
         }
         
@@ -346,7 +346,7 @@ class GameEngine {
                 self.shouldUpdateRemainingForBoulderIfIcy = false
                 self.isGliding = false
 
-                K.audioManager.stopSound(for: "boyglide", fadeDuration: 0.5)
+                K.Audio.audioManager.stopSound(for: "boyglide", fadeDuration: 0.5)
                 
                 // FIXME: - I don't like this being here...
                 if self.level.getLevelType(at: nextPanel) == .marsh {
@@ -433,17 +433,17 @@ class GameEngine {
         displaySprite.setLabels(level: "\(level.level)", lives: "\(GameEngine.livesRemaining)", moves: "\(movesRemaining)", inventory: playerSprite.inventory)
         
         if isSolved {
-            K.audioManager.playSound(for: "winlevel")
+            K.Audio.audioManager.playSound(for: "winlevel")
             delegate?.gameIsSolved()
             
             print("WIN!")
         }
         else if isGameOver {
-            K.audioManager.stopSound(for: K.overworldTheme)
-            K.audioManager.playSound(for: "gameover")
+            K.Audio.audioManager.stopSound(for: K.Audio.overworldTheme)
+            K.Audio.audioManager.playSound(for: "gameover")
 
             playerSprite.startDeadAnimation {
-                K.audioManager.playSound(for: K.overworldTheme)
+                K.Audio.audioManager.playSound(for: K.Audio.overworldTheme)
 
                 self.delegate?.gameIsOver()
             }

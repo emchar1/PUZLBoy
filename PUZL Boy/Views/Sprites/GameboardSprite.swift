@@ -14,8 +14,8 @@ class GameboardSprite {
     private let tiles: [LevelType] = LevelType.allCases
     let spriteScale: CGFloat = 0.94
 
-    var xPosition: CGFloat { (K.iPhoneWidth * (1 - spriteScale)) / 2 }
-    var yPosition: CGFloat { (K.height - gameboardSize * spriteScale) / 2 }
+    var xPosition: CGFloat { (K.ScreenDimensions.iPhoneWidth * (1 - spriteScale)) / 2 }
+    var yPosition: CGFloat { (K.ScreenDimensions.height - gameboardSize * spriteScale) / 2 }
     var gameboardSize: CGFloat { CGFloat(panelCount) * panelSize }
     
     var grass: LevelType { tiles[LevelType.grass.rawValue] }
@@ -33,7 +33,7 @@ class GameboardSprite {
     
     init(level: Level) {
         panelCount = level.gameboard.count
-        panelSize = K.iPhoneWidth / CGFloat(panelCount)
+        panelSize = K.ScreenDimensions.iPhoneWidth / CGFloat(panelCount)
         panels = Array(repeating: Array(repeating: SKSpriteNode(), count: panelCount), count: panelCount)
         
         sprite = SKSpriteNode(texture: SKTexture(imageNamed: "gameboardTexture"),

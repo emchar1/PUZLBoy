@@ -79,12 +79,12 @@ class PlayerSprite {
         let fadeDuration: TimeInterval = 0.25
         let animation = SKAction.animate(with: playerTextures[Texture.idle.rawValue], timePerFrame: animationSpeed)
         
-        K.audioManager.stopSound(for: "boyrun1", fadeDuration: fadeDuration)
-        K.audioManager.stopSound(for: "boyrun2", fadeDuration: fadeDuration)
-        K.audioManager.stopSound(for: "boyrun3", fadeDuration: fadeDuration)
-        K.audioManager.stopSound(for: "boyrun4", fadeDuration: fadeDuration)
-        K.audioManager.stopSound(for: "boywalk", fadeDuration: fadeDuration)
-        K.audioManager.stopSound(for: "boymarsh", fadeDuration: fadeDuration)
+        K.Audio.audioManager.stopSound(for: "boyrun1", fadeDuration: fadeDuration)
+        K.Audio.audioManager.stopSound(for: "boyrun2", fadeDuration: fadeDuration)
+        K.Audio.audioManager.stopSound(for: "boyrun3", fadeDuration: fadeDuration)
+        K.Audio.audioManager.stopSound(for: "boyrun4", fadeDuration: fadeDuration)
+        K.Audio.audioManager.stopSound(for: "boywalk", fadeDuration: fadeDuration)
+        K.Audio.audioManager.stopSound(for: "boymarsh", fadeDuration: fadeDuration)
 
         sprite.run(SKAction.repeatForever(animation), withKey: AnimationKey.playerIdle.rawValue)
     }
@@ -97,23 +97,23 @@ class PlayerSprite {
         sprite.removeAction(forKey: AnimationKey.playerMove.rawValue)
 
         if animationType == .glide {
-            K.audioManager.playSound(for: "boyglide", interruptPlayback: false)
+            K.Audio.audioManager.playSound(for: "boyglide", interruptPlayback: false)
 
             sprite.run(SKAction.sequence([SKAction.repeat(animation, count: 1), SKAction.wait(forDuration: 2.0)]), withKey: AnimationKey.playerGlide.rawValue)
         }
         else {
             switch animationType {
             case .run:
-                K.audioManager.playSound(for: "boyrun\(Int.random(in: 1...4))")
+                K.Audio.audioManager.playSound(for: "boyrun\(Int.random(in: 1...4))")
             case .win:
-                K.audioManager.playSound(for: "boywalk")
+                K.Audio.audioManager.playSound(for: "boywalk")
                 
 //                let sequence = SKAction.sequence([SKAction.wait(forDuration: 0.55), SKAction.fadeAlpha(to: 0, duration: 0.2)])
 //                sprite.run(SKAction.group([SKAction.repeatForever(animation), sequence]), withKey: AnimationKey.playerMove.rawValue)
 //
 //                return
             case .marsh:
-                K.audioManager.playSound(for: "boymarsh")
+                K.Audio.audioManager.playSound(for: "boymarsh")
             default:
                 print("Unknown animationType")
             }
@@ -128,7 +128,7 @@ class PlayerSprite {
             SKAction.colorize(withColorBlendFactor: 0.0, duration: 1.5)
         ])
         
-        K.audioManager.playSound(for: "boypoisoned")
+        K.Audio.audioManager.playSound(for: "boypoisoned")
 
         sprite.run(marshEffect, withKey: AnimationKey.playerMarsh.rawValue)
     }
@@ -147,7 +147,7 @@ class PlayerSprite {
 //            SKAction.colorize(withColorBlendFactor: 0.0, duration: 0.5)
 //        ])
     
-        K.audioManager.playSound(for: "pickupitem")
+        K.Audio.audioManager.playSound(for: "pickupitem")
         
 //        sprite.run(powerUp, withKey: AnimationKey.playerPowerUp.rawValue)
     }
@@ -163,9 +163,9 @@ class PlayerSprite {
             SKAction.fadeAlpha(to: 0, duration: 0.5),
         ])
         
-        K.audioManager.playSound(for: "boyattack\(Int.random(in: 1...3))")
-        K.audioManager.playSound(for: "swordslash")
-        K.audioManager.playSound(for: "enemydeath", delay: 0.8)
+        K.Audio.audioManager.playSound(for: "boyattack\(Int.random(in: 1...3))")
+        K.Audio.audioManager.playSound(for: "swordslash")
+        K.Audio.audioManager.playSound(for: "enemydeath", delay: 0.8)
 
         gameboard.sprite.addChild(attackSprite)
 
@@ -186,9 +186,9 @@ class PlayerSprite {
             SKAction.fadeAlpha(to: 0, duration: 0.5),
         ])
         
-        K.audioManager.playSound(for: "boyattack\(Int.random(in: 1...3))")
-        K.audioManager.playSound(for: "hammerswing")
-        K.audioManager.playSound(for: "bouldersmash", delay: 0.8)
+        K.Audio.audioManager.playSound(for: "boyattack\(Int.random(in: 1...3))")
+        K.Audio.audioManager.playSound(for: "hammerswing")
+        K.Audio.audioManager.playSound(for: "bouldersmash", delay: 0.8)
 
         gameboard.sprite.addChild(attackSprite)
 
@@ -239,7 +239,7 @@ class PlayerSprite {
             SKAction.colorize(withColorBlendFactor: 0.0, duration: 0.12),
         ])
         
-        K.audioManager.playSound(for: "boygrunt\(Int.random(in: 1...2))")
+        K.Audio.audioManager.playSound(for: "boygrunt\(Int.random(in: 1...2))")
 
         sprite.run(isAttacked ? SKAction.sequence([knockbackAnimation, blinkAnimation]) : knockbackAnimation, completion: completion)
     }
@@ -247,7 +247,7 @@ class PlayerSprite {
     func startDeadAnimation(completion: @escaping (() -> ())) {
         let animation = SKAction.animate(with: playerTextures[Texture.dead.rawValue], timePerFrame: animationSpeed / 2)
 
-        K.audioManager.playSound(for: "boydead")
+        K.Audio.audioManager.playSound(for: "boydead")
 
         sprite.removeAction(forKey: AnimationKey.playerIdle.rawValue)
         sprite.removeAction(forKey: AnimationKey.playerMove.rawValue)

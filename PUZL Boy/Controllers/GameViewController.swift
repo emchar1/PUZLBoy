@@ -13,7 +13,7 @@ class GameViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let launchScene = LaunchScene(size: K.screenSize)
+        let launchScene = LaunchScene(size: K.ScreenDimensions.screenSize)
 
         let skView = self.view as! SKView
         skView.showsFPS = true
@@ -23,7 +23,7 @@ class GameViewController: UIViewController {
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
             LevelBuilder.getLevels {
-                let gameScene = GameScene(size: K.screenSize)
+                let gameScene = GameScene(size: K.ScreenDimensions.screenSize)
                 
                 skView.presentScene(gameScene, transition: SKTransition.doorsOpenVertical(withDuration: 2.0))
             }

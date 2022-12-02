@@ -26,16 +26,16 @@ class DisplaySprite {
         sprite.zPosition = K.ZPosition.display
         
         statusLives = DisplayStatusBarSprite(icon: "iconHeart", amount: 99, fillColor: .cyan)
-        statusLives.position = CGPoint(x: K.iPhoneWidth - statusLives.width, y: topYPosition + margin + statusLives.width / 2)
+        statusLives.position = CGPoint(x: K.ScreenDimensions.iPhoneWidth - statusLives.width, y: topYPosition + margin + statusLives.width / 2)
 
         statusMoves = DisplayStatusBarSprite(icon: "iconBoot", amount: 99, fillColor: .cyan)
-        statusMoves.position = CGPoint(x: K.iPhoneWidth - statusMoves.width, y: topYPosition + margin)
+        statusMoves.position = CGPoint(x: K.ScreenDimensions.iPhoneWidth - statusMoves.width, y: topYPosition + margin)
         
         statusHammers = DisplayStatusBarSprite(icon: "iconHammer", amount: 99, fillColor: .yellow)
         statusHammers.position = CGPoint(x: margin + statusHammers.width, y: bottomYPosition - margin)
         
         statusSwords = DisplayStatusBarSprite(icon: "iconSword", amount: 99, fillColor: .yellow)
-        statusSwords.position = CGPoint(x: K.iPhoneWidth - statusMoves.width, y: bottomYPosition - margin)
+        statusSwords.position = CGPoint(x: K.ScreenDimensions.iPhoneWidth - statusMoves.width, y: bottomYPosition - margin)
         
         levelLabel = SKLabelNode(text: nil)
         levelLabel.horizontalAlignmentMode = .left

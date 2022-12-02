@@ -38,7 +38,7 @@ class LaunchScene: SKScene {
         }
         
         playerSprite = SKSpriteNode(texture: playerTextures[0])
-        playerSprite.position = CGPoint(x: K.iPhoneWidth / 2 - 50, y: K.height / 2)
+        playerSprite.position = CGPoint(x: K.ScreenDimensions.iPhoneWidth / 2 - 50, y: K.ScreenDimensions.height / 2)
         playerSprite.setScale(2)
         playerSprite.zPosition = K.ZPosition.player
         playerSprite.color = .black
@@ -50,7 +50,7 @@ class LaunchScene: SKScene {
         loadingLabel.fontColor = .white
         loadingLabel.horizontalAlignmentMode = .center
         loadingLabel.alpha = 0.95
-        loadingLabel.position = CGPoint(x: K.iPhoneWidth / 2, y: K.height / 6)
+        loadingLabel.position = CGPoint(x: K.ScreenDimensions.iPhoneWidth / 2, y: K.ScreenDimensions.height / 6)
         loadingLabel.zPosition = K.ZPosition.display
         
         //Setup BackgroundObjects
@@ -106,14 +106,12 @@ class LaunchScene: SKScene {
     // MARK: - Functions
     
     override func didMove(to view: SKView) {
-        let skyImage: UIImage = UIImage.gradientImage(withBounds: CGRect(x: 0, y: 0, width: K.iPhoneWidth, height: K.height),
-                                                      startPoint: CGPoint(x: 0.5, y: 0), endPoint: CGPoint(x: 0.5, y: 0.5),
-                                                      colors: [DayTheme.skyColor.top.cgColor, DayTheme.skyColor.bottom.cgColor])
+        let skyImage: UIImage = UIImage.gradientImage(withBounds: CGRect(x: 0, y: 0, width: K.ScreenDimensions.iPhoneWidth, height: K.ScreenDimensions.height), startPoint: CGPoint(x: 0.5, y: 0), endPoint: CGPoint(x: 0.5, y: 0.5), colors: [DayTheme.skyColor.top.cgColor, DayTheme.skyColor.bottom.cgColor])
         let skyNode = SKSpriteNode(texture: SKTexture(image: skyImage))
         skyNode.anchorPoint = .zero
         skyNode.zPosition = K.ZPosition.skyNode
         
-        let grassNode = SKShapeNode(rect: CGRect(x: 0, y: 0, width: K.iPhoneWidth, height: K.height / mountainSprite.backgroundBorder))
+        let grassNode = SKShapeNode(rect: CGRect(x: 0, y: 0, width: K.ScreenDimensions.iPhoneWidth, height: K.ScreenDimensions.height / mountainSprite.backgroundBorder))
         grassNode.fillColor = DayTheme.grassColor
         grassNode.strokeColor = DayTheme.grassColor
         grassNode.zPosition = K.ZPosition.gameboard

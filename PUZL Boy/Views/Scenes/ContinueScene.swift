@@ -17,7 +17,7 @@ class ContinueScene: SKScene {
     }
     
     override func didMove(to view: SKView) {
-        let background = SKSpriteNode(color: .yellow, size: CGSize(width: K.iPhoneWidth, height: K.height))
+        let background = SKSpriteNode(color: .yellow, size: CGSize(width: K.ScreenDimensions.iPhoneWidth, height: K.ScreenDimensions.height))
         
         addChild(background)
     }

@@ -32,7 +32,7 @@ class GameScene: SKScene {
         gameEngine.delegate = self
         scaleMode = .aspectFill
 
-        K.audioManager.playSound(for: K.overworldTheme)
+        K.Audio.audioManager.playSound(for: K.Audio.overworldTheme)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -85,7 +85,7 @@ extension GameScene: GameEngineDelegate {
     
     func gameIsOver() {
 //        guard gameEngine.canContinue else {
-//            let continueScene = ContinueScene(size: K.screenSize)
+//            let continueScene = ContinueScene(size: K.ScreenDimensions.screenSize)
 //            removeAllChildren()
             
 //            return
