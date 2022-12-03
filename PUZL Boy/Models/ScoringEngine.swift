@@ -101,11 +101,11 @@ class ScoringEngine {
         //DON'T CHANGE THIS ORDER!!!
         pollTime()
         
-        score = (max(0, maxTimeScore + Int(elapsedTime.rounded()) * reductionPerSecondScore) + movesRemaining * moveScore + itemsFound * itemScore + enemiesKilled * killEnemyScore) * (usedContinue ? 1 : 2)
+        score = (max(0, maxTimeScore + Int(elapsedTime) * reductionPerSecondScore) + movesRemaining * moveScore + itemsFound * itemScore + enemiesKilled * killEnemyScore) * (usedContinue ? 1 : 2)
         
         totalScore += score
 
-        statsLabel.text = "elapsed time: \(Int(elapsedTime.rounded())), moves remaining: \(movesRemaining), items found: \(itemsFound), enemiesKilled: \(enemiesKilled), continue used: \(usedContinue)"
+        statsLabel.text = "elapsed time: \(Int(elapsedTime)), moves remaining: \(movesRemaining), items found: \(itemsFound), enemiesKilled: \(enemiesKilled), continue used: \(usedContinue)"
     }
     
     func updateLabels() {

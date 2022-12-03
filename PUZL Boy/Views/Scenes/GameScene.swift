@@ -57,15 +57,7 @@ class GameScene: SKScene {
         gameEngine.moveSprites(to: self)
         scoringEngine.moveSprites(to: self)
         
-        // FIXME: - Is this the best way to represent a timer?
-        let wait = SKAction.wait(forDuration: 1.0)
-        let block = SKAction.run { [unowned self] in
-            scoringEngine.pollTime()
-            scoringEngine.updateLabels()
-        }
-        let sequence = SKAction.sequence([wait, block])
-        
-        run(SKAction.repeatForever(sequence))
+        startTimer()
     }
     
     override func update(_ currentTime: TimeInterval) {
@@ -75,17 +67,26 @@ class GameScene: SKScene {
     
     // MARK: - Helper Functions
     
+    // FIXME: - Is this the best way to represent a timer?
+    private func startTimer() {
+        let wait = SKAction.wait(forDuration: 1.0)
+        let block = SKAction.run { [unowned self] in
+            scoringEngine.pollTime()
+            scoringEngine.updateLabels()
+        }
+        let sequence = SKAction.sequence([wait, block])
+        
+        run(SKAction.repeatForever(sequence), withKey: "runTimerAction")
+    }
+    
     private func newGame(level: Int, didWin: Bool) {
         removeAllChildren()
+        
         gameEngine = GameEngine(level: level, shouldSpawn: !didWin)
         gameEngine.delegate = self
         gameEngine.moveSprites(to: self)
         scoringEngine.moveSprites(to: self)
-        
-        // FIXME: - Score should animate before resetting...
-        //scoringEngine.resetScore()
     }
-    
 }
 
 
@@ -95,12 +96,15 @@ extension GameScene: GameEngineDelegate {
     func gameIsSolved(movesRemaining: Int, itemsFound: Int, enemiesKilled: Int, usedContinue: Bool) {
         currentLevel += 1
 
-        gameEngine.fadeGameboard(fadeOut: true) {
-            self.scoringEngine.updateScore(movesRemaining: movesRemaining, itemsFound: itemsFound, enemiesKilled: enemiesKilled, usedContinue: usedContinue)
-            self.scoringEngine.updateLabels()
-            self.scoringEngine.resetTime()
+        scoringEngine.updateScore(movesRemaining: movesRemaining, itemsFound: itemsFound, enemiesKilled: enemiesKilled, usedContinue: usedContinue)
+        scoringEngine.updateLabels()
+        removeAction(forKey: "runTimerAction")
+        
+        gameEngine.fadeGameboard(fadeOut: true) { [unowned self] in
+            scoringEngine.resetTime()
+            startTimer()
 
-            self.newGame(level: self.currentLevel, didWin: true)
+            newGame(level: currentLevel, didWin: true)
         }
     }
     
