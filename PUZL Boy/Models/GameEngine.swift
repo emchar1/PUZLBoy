@@ -8,7 +8,7 @@
 import SpriteKit
 
 protocol GameEngineDelegate: AnyObject {
-    func gameIsSolved()
+    func gameIsSolved(movesRemaining: Int, itemsFound: Int, enemiesKilled: Int, usedContinue: Bool)
     func gameIsOver()
 }
 
@@ -20,6 +20,7 @@ class GameEngine {
     // MARK: - Properties
     
     private static var livesRemaining: Int = 3
+    private static var usedContinue: Bool = false
     private var level: Level
     private var gemsRemaining: Int
     private var movesRemaining: Int {
@@ -34,6 +35,7 @@ class GameEngine {
     private var shouldDisableControlInput = false
     private var shouldUpdateRemainingForBoulderIfIcy = false
     private var isGliding = false
+    private var enemiesKilled: Int = 0
     
     private var isExitAvailable: Bool { gemsRemaining == 0 }
     private var isSolved: Bool { isExitAvailable && level.player == level.end }
@@ -183,6 +185,7 @@ class GameEngine {
         case .enemy:
             guard playerSprite.inventory.swords > 0 else { return }
             
+            enemiesKilled += 1
             playerSprite.inventory.swords -= 1
             playerSprite.startSwordAnimation(on: gameboardSprite, at: level.player) {
                 self.consumeItem(shouldChangePanelToIce: false)
@@ -434,7 +437,9 @@ class GameEngine {
         
         if isSolved {
             K.Audio.audioManager.playSound(for: "winlevel")
-            delegate?.gameIsSolved()
+            delegate?.gameIsSolved(movesRemaining: movesRemaining, itemsFound: playerSprite.inventory.getItemCount(), enemiesKilled: enemiesKilled, usedContinue: GameEngine.usedContinue)
+            
+            GameEngine.usedContinue = false
             
             print("WIN!")
         }
@@ -449,6 +454,7 @@ class GameEngine {
             }
             
             GameEngine.livesRemaining -= 1
+            GameEngine.usedContinue = true
             
             print("GAME OVER")
         }

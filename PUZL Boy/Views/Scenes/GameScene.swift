@@ -12,8 +12,9 @@ class GameScene: SKScene {
     // MARK: - Properties
     
     private var gameEngine: GameEngine
+    private var scoringEngine: ScoringEngine
 
-    private var currentLevel: Int = 50 {
+    private var currentLevel: Int = 1 {
         didSet {
             if currentLevel > LevelBuilder.maxLevel {
                 currentLevel = 0
@@ -26,6 +27,7 @@ class GameScene: SKScene {
     
     override init(size: CGSize) {
         gameEngine = GameEngine(level: currentLevel, shouldSpawn: true)
+        scoringEngine = ScoringEngine()
 
         super.init(size: size)
 
@@ -53,6 +55,7 @@ class GameScene: SKScene {
     
     override func didMove(to view: SKView) {
         gameEngine.moveSprites(to: self)
+        scoringEngine.moveSprites(to: self)
     }
     
     override func update(_ currentTime: TimeInterval) {
@@ -62,11 +65,15 @@ class GameScene: SKScene {
     
     // MARK: - Helper Functions
     
-    private func resetGameEngine(level: Int, fromGameOver: Bool) {
+    private func newGame(level: Int, didWin: Bool) {
         removeAllChildren()
-        gameEngine = GameEngine(level: level, shouldSpawn: fromGameOver)
+        gameEngine = GameEngine(level: level, shouldSpawn: !didWin)
         gameEngine.delegate = self
         gameEngine.moveSprites(to: self)
+        scoringEngine.moveSprites(to: self)
+        
+        // FIXME: - Score should animate before resetting...
+        //scoringEngine.resetScore()
     }
     
 }
@@ -75,11 +82,14 @@ class GameScene: SKScene {
 // MARK: - GameEngineDelegate
 
 extension GameScene: GameEngineDelegate {
-    func gameIsSolved() {
+    func gameIsSolved(movesRemaining: Int, itemsFound: Int, enemiesKilled: Int, usedContinue: Bool) {
         currentLevel += 1
 
         gameEngine.fadeGameboard(fadeOut: true) {
-            self.resetGameEngine(level: self.currentLevel, fromGameOver: false)
+            self.scoringEngine.updateScore(movesRemaining: movesRemaining, itemsFound: itemsFound, enemiesKilled: enemiesKilled, usedContinue: usedContinue)
+            self.scoringEngine.resetTime()
+
+            self.newGame(level: self.currentLevel, didWin: true)
         }
     }
     
@@ -90,7 +100,8 @@ extension GameScene: GameEngineDelegate {
             
 //            return
 //        }
+        scoringEngine.resetScore()
         
-        resetGameEngine(level: currentLevel, fromGameOver: true)
+        newGame(level: currentLevel, didWin: false)
     }
 }

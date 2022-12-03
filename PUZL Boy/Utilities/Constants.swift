@@ -19,6 +19,19 @@ struct K {
     typealias Gameboard = [[LevelType]]
     
     
+    struct Audio {
+        /**
+         Current theme song for the overworld.
+         */
+        static let overworldTheme = "overworldoff"
+        
+        /**
+         Shared AudioManager property throughout the project.
+         */
+        static let audioManager = AudioManager()
+    }
+    
+    
     struct ScreenDimensions {
         /**
          Default width of the iPhone device in Portrait mode, per RayWenderlich tutorial.
@@ -66,19 +79,6 @@ struct K {
         static var screenSize: CGSize {
             CGSize(width: iPhoneWidth, height: height)
         }
-    }
-    
-    
-    struct Audio {
-        /**
-         Current theme song for the overworld.
-         */
-        static let overworldTheme = "overworldoff"
-        
-        /**
-         Shared AudioManager property throughout the project.
-         */
-        static let audioManager = AudioManager()
     }
     
     

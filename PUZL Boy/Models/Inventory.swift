@@ -15,4 +15,8 @@ struct Inventory {
         self.hammers = hammers
         self.swords = swords
     }
+    
+    func getItemCount() -> Int {
+        return hammers + swords
+    }
 }
