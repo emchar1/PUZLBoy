@@ -17,20 +17,21 @@ class ScoringEngine {
     private let moveScore = 2000
     private let itemScore = 500
     private let killEnemyScore = 1000
-    private var timeInitial = Date()
-    private var timeFinal = Date()
+
     private var score = 0
     private var totalScore = 0
+
     private var numberFormatter = NumberFormatter()
-    
-    var scoreLabel: SKLabelNode
-    var totalScoreLabel: SKLabelNode
-    var elapsedTimeLabel: SKLabelNode
-    var statsLabel: SKLabelNode
-    
+    private var timeInitial = Date()
+    private var timeFinal = Date()
     private var elapsedTime: TimeInterval {
         TimeInterval(timeFinal.timeIntervalSince1970 - timeInitial.timeIntervalSince1970)
     }
+
+    var scoreLabel: SKLabelNode
+    var totalScoreLabel: SKLabelNode
+    var elapsedTimeLabel: SKLabelNode
+    var statsLabel: SKLabelNode //temporary
     
     
     // MARK: - Initialization
@@ -62,13 +63,14 @@ class ScoringEngine {
         elapsedTimeLabel.position = CGPoint(x: K.ScreenDimensions.iPhoneWidth / 2, y: K.ScreenDimensions.height - 320)
 
         statsLabel = SKLabelNode()
-        statsLabel.fontName = fontName
+        statsLabel.fontName = "AvenirNext-Regular"
         statsLabel.fontSize = 18
         statsLabel.fontColor = fontColor
-        statsLabel.position = CGPoint(x: 80, y: K.ScreenDimensions.height - 380)
+        statsLabel.position = CGPoint(x: 20, y: K.ScreenDimensions.height - 380)
         statsLabel.horizontalAlignmentMode = .left
 
         resetAllScores()
+        updateLabels()
     }
     
     private func resetAllScores() {
@@ -79,14 +81,11 @@ class ScoringEngine {
     }
 
     
-    // MARK: - Functions
+    // MARK: - Helper Functions
     
     func resetScore() {
-        //DON'T CHANGE THIS ORDER!!!
         score = 0
         statsLabel.text = "blank"
-
-        updateLabels()
     }
     
     func resetTime() {
@@ -94,20 +93,33 @@ class ScoringEngine {
         timeFinal = Date()
     }
 
-        
+    func pollTime() {
+        timeFinal = Date()
+    }
+    
     func updateScore(movesRemaining: Int, itemsFound: Int, enemiesKilled: Int, usedContinue: Bool) {
         //DON'T CHANGE THIS ORDER!!!
-        startStopTime()
+        pollTime()
         
         score = (max(0, maxTimeScore + Int(elapsedTime.rounded()) * reductionPerSecondScore) + movesRemaining * moveScore + itemsFound * itemScore + enemiesKilled * killEnemyScore) * (usedContinue ? 1 : 2)
         
         totalScore += score
 
         statsLabel.text = "elapsed time: \(Int(elapsedTime.rounded())), moves remaining: \(movesRemaining), items found: \(itemsFound), enemiesKilled: \(enemiesKilled), continue used: \(usedContinue)"
-        
-        updateLabels()
     }
+    
+    func updateLabels() {
+        let minutes = Int(elapsedTime) / 60 % 60
+        let seconds = Int(elapsedTime) % 60
         
+        scoreLabel.text = numberFormatter.string(from: NSNumber(value: score))
+        totalScoreLabel.text = numberFormatter.string(from: NSNumber(value: totalScore))
+        elapsedTimeLabel.text = String(format: "%02i:%02i", minutes, seconds)
+    }
+    
+
+    // MARK: - Move Functions
+
     /**
      Adds all the sprites to the superScene, i.e. should be called in a GameScene's moveTo() function.
      - parameter superScene: The GameScene to add all the children to.
@@ -118,18 +130,5 @@ class ScoringEngine {
         superScene.addChild(elapsedTimeLabel)
         superScene.addChild(statsLabel)
     }
-    
-    
-    // MARK: - Helper Functions
 
-
-    private func startStopTime() {
-        timeFinal = Date()
-    }
-    
-    private func updateLabels() {
-        scoreLabel.text = numberFormatter.string(from: NSNumber(value: score))
-        totalScoreLabel.text = numberFormatter.string(from: NSNumber(value: totalScore))
-        elapsedTimeLabel.text = numberFormatter.string(from: NSNumber(value: elapsedTime))
-    }
 }

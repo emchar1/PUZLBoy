@@ -56,6 +56,16 @@ class GameScene: SKScene {
     override func didMove(to view: SKView) {
         gameEngine.moveSprites(to: self)
         scoringEngine.moveSprites(to: self)
+        
+        // FIXME: - Is this the best way to represent a timer?
+        let wait = SKAction.wait(forDuration: 1.0)
+        let block = SKAction.run { [unowned self] in
+            scoringEngine.pollTime()
+            scoringEngine.updateLabels()
+        }
+        let sequence = SKAction.sequence([wait, block])
+        
+        run(SKAction.repeatForever(sequence))
     }
     
     override func update(_ currentTime: TimeInterval) {
@@ -87,6 +97,7 @@ extension GameScene: GameEngineDelegate {
 
         gameEngine.fadeGameboard(fadeOut: true) {
             self.scoringEngine.updateScore(movesRemaining: movesRemaining, itemsFound: itemsFound, enemiesKilled: enemiesKilled, usedContinue: usedContinue)
+            self.scoringEngine.updateLabels()
             self.scoringEngine.resetTime()
 
             self.newGame(level: self.currentLevel, didWin: true)
@@ -101,6 +112,7 @@ extension GameScene: GameEngineDelegate {
 //            return
 //        }
         scoringEngine.resetScore()
+        scoringEngine.updateLabels()
         
         newGame(level: currentLevel, didWin: false)
     }
