@@ -66,7 +66,7 @@ struct K {
         /**
          Top margin of the device.
          */
-        static let topMargin: CGFloat = 280
+        static let topMargin: CGFloat = 200
         
         /**
          Bottom margin of the device.

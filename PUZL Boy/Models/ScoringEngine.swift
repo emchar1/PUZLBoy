@@ -38,8 +38,9 @@ class ScoringEngine {
     
     init() {
         let fontName = "AvenirNext-BoldItalic"
-        let fontSize: CGFloat = 48
+        let fontSize: CGFloat = 38
         let fontColor: UIColor = .white
+        let padding: CGFloat = 40
         
         numberFormatter.numberStyle = .decimal
         numberFormatter.maximumFractionDigits = 0
@@ -48,26 +49,38 @@ class ScoringEngine {
         scoreLabel.fontName = fontName
         scoreLabel.fontSize = fontSize
         scoreLabel.fontColor = fontColor
-        scoreLabel.position = CGPoint(x: K.ScreenDimensions.iPhoneWidth / 2, y: K.ScreenDimensions.height - 200)
+        scoreLabel.position = CGPoint(x: padding, y: K.ScreenDimensions.height - K.ScreenDimensions.topMargin)
+        scoreLabel.horizontalAlignmentMode = .left
+        scoreLabel.verticalAlignmentMode = .top
+        scoreLabel.zPosition = K.ZPosition.display
 
         totalScoreLabel = SKLabelNode()
         totalScoreLabel.fontName = fontName
         totalScoreLabel.fontSize = fontSize
         totalScoreLabel.fontColor = fontColor
-        totalScoreLabel.position = CGPoint(x: K.ScreenDimensions.iPhoneWidth / 2, y: K.ScreenDimensions.height - 260)
+        totalScoreLabel.position = CGPoint(x: padding, y: K.ScreenDimensions.height - 260)
+        totalScoreLabel.horizontalAlignmentMode = .left
+        totalScoreLabel.verticalAlignmentMode = .top
+        totalScoreLabel.zPosition = K.ZPosition.display
 
         elapsedTimeLabel = SKLabelNode()
         elapsedTimeLabel.fontName = fontName
         elapsedTimeLabel.fontSize = fontSize
         elapsedTimeLabel.fontColor = fontColor
-        elapsedTimeLabel.position = CGPoint(x: K.ScreenDimensions.iPhoneWidth / 2, y: K.ScreenDimensions.height - 320)
+        elapsedTimeLabel.position = CGPoint(x: K.ScreenDimensions.iPhoneWidth / 2,
+                                            y: K.ScreenDimensions.height - 360)
+        elapsedTimeLabel.horizontalAlignmentMode = .center
+        elapsedTimeLabel.verticalAlignmentMode = .top
+        elapsedTimeLabel.zPosition = K.ZPosition.display
 
         statsLabel = SKLabelNode()
         statsLabel.fontName = "AvenirNext-Regular"
         statsLabel.fontSize = 18
         statsLabel.fontColor = fontColor
-        statsLabel.position = CGPoint(x: 20, y: K.ScreenDimensions.height - 380)
+        statsLabel.position = CGPoint(x: padding, y: K.ScreenDimensions.height - 380)
         statsLabel.horizontalAlignmentMode = .left
+        statsLabel.verticalAlignmentMode = .top
+        statsLabel.zPosition = K.ZPosition.display
 
         resetAllScores()
         updateLabels()
@@ -112,8 +125,8 @@ class ScoringEngine {
         let minutes = Int(elapsedTime) / 60 % 60
         let seconds = Int(elapsedTime) % 60
         
-        scoreLabel.text = numberFormatter.string(from: NSNumber(value: score))
-        totalScoreLabel.text = numberFormatter.string(from: NSNumber(value: totalScore))
+        scoreLabel.text = "SCORE: " + (numberFormatter.string(from: NSNumber(value: score)) ?? "-9999")
+        totalScoreLabel.text = "TOTAL: " + (numberFormatter.string(from: NSNumber(value: totalScore)) ?? "-9999")
         elapsedTimeLabel.text = String(format: "%02i:%02i", minutes, seconds)
     }
     

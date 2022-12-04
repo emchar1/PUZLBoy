@@ -38,8 +38,9 @@ class DisplaySprite {
         statusSwords.position = CGPoint(x: K.ScreenDimensions.iPhoneWidth - statusMoves.width, y: bottomYPosition - margin)
         
         levelLabel = SKLabelNode(text: nil)
-        levelLabel.horizontalAlignmentMode = .left
-        levelLabel.position = CGPoint(x: margin, y: topYPosition + margin)
+        levelLabel.horizontalAlignmentMode = .right
+        levelLabel.verticalAlignmentMode = .top
+        levelLabel.position = CGPoint(x: K.ScreenDimensions.iPhoneWidth - margin, y: K.ScreenDimensions.height - K.ScreenDimensions.topMargin)
         levelLabel.fontName = "AvenirNext-BoldItalic"
         levelLabel.fontSize = 75
         levelLabel.fontColor = .white
