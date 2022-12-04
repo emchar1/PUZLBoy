@@ -13,7 +13,7 @@ class PlayerSprite {
     
     private let playerSize = CGSize(width: 946, height: 564)
     private let animationSpeed: TimeInterval = 0.04
-    private let spriteScale = 0.5
+    private var spriteScale = 0.5
     
     var inventory: Inventory
     private(set) var sprite: SKSpriteNode
@@ -134,7 +134,7 @@ class PlayerSprite {
     }
     
     func startWarpAnimation(shouldReverse: Bool, completion: @escaping (() -> ())) {
-        let warpEffect = SKAction.group([SKAction.rotate(byAngle: -2 * .pi, duration: 1.0),
+        let warpEffect = SKAction.group([SKAction.rotate(byAngle: -3 * .pi, duration: 1.0),
                                          SKAction.scale(to: shouldReverse ? spriteScale : 0, duration: 1.0)])
         
         sprite.run(warpEffect, completion: completion)
@@ -153,14 +153,16 @@ class PlayerSprite {
     }
     
     func startSwordAnimation(on gameboard: GameboardSprite, at panel: K.GameboardPosition, completion: @escaping (() -> ())) {
+        let scale: CGFloat = 0.9
         let attackSprite = SKSpriteNode(texture: SKTexture(imageNamed: "iconSword"))
         attackSprite.position = gameboard.getLocation(at: panel)
         attackSprite.zPosition = K.ZPosition.items
+        attackSprite.setScale(scale * (gameboard.panelSize / attackSprite.size.width))
 
         let animation = SKAction.sequence([
             SKAction.wait(forDuration: 0.25),
             SKAction.rotate(byAngle: -3 * .pi / 2, duration: 0.25),
-            SKAction.fadeAlpha(to: 0, duration: 0.5),
+            SKAction.fadeAlpha(to: 0, duration: 0.5)
         ])
         
         K.Audio.audioManager.playSound(for: "boyattack\(Int.random(in: 1...3))")
@@ -176,14 +178,16 @@ class PlayerSprite {
     }
     
     func startHammerAnimation(on gameboard: GameboardSprite, at panel: K.GameboardPosition, completion: @escaping (() -> ())) {
+        let scale: CGFloat = 0.75
         let attackSprite = SKSpriteNode(texture: SKTexture(imageNamed: "iconHammer"))
         attackSprite.position = gameboard.getLocation(at: panel)
         attackSprite.zPosition = K.ZPosition.items
+        attackSprite.setScale(scale * (gameboard.panelSize / attackSprite.size.width))
 
         let animation = SKAction.sequence([
             SKAction.rotate(byAngle: -3 * .pi / 4, duration: 0.2),
             SKAction.wait(forDuration: 0.3),
-            SKAction.fadeAlpha(to: 0, duration: 0.5),
+            SKAction.fadeAlpha(to: 0, duration: 0.5)
         ])
         
         K.Audio.audioManager.playSound(for: "boyattack\(Int.random(in: 1...3))")
@@ -270,5 +274,6 @@ class PlayerSprite {
         let scale: CGFloat = 1.5
         
         sprite.setScale(scale * (panelSize / playerSize.width))
+        spriteScale = abs(sprite.xScale)
     }
 }

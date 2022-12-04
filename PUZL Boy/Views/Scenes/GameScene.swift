@@ -14,7 +14,7 @@ class GameScene: SKScene {
     private var gameEngine: GameEngine
     private var scoringEngine: ScoringEngine
 
-    private var currentLevel: Int = 53 {
+    private var currentLevel: Int = 32 {
         didSet {
             if currentLevel > LevelBuilder.maxLevel {
                 currentLevel = 0
