@@ -11,7 +11,7 @@ import Foundation
  Represents the gameboard textures.
  */
 enum LevelType: Int, CaseIterable {
-    case boundary = 0, start, endClosed, endOpen, gem, gemOnIce //important panels
+    case boundary = 0, start, endClosed, endOpen, gem //important panels
     case grass, marsh, ice //terrain panels
     case hammer, sword //inventory panels
     case boulder, enemy, warp //special panels
@@ -27,7 +27,6 @@ enum LevelType: Int, CaseIterable {
         case "endClosed": return .endClosed
         case "endOpen": return .endOpen
         case "gem": return .gem
-        case "gemOnIce": return .gemOnIce
         case "grass": return .grass
         case "marsh": return .marsh
         case "ice": return .ice

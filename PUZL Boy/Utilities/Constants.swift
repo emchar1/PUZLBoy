@@ -14,9 +14,14 @@ struct K {
     typealias GameboardPosition = (row: Int, col: Int)
     
     /**
+     Gameboard piece, i.e. one panel
+     */
+    typealias GameboardPanel = (terrain: LevelType, overlay: LevelType)
+    
+    /**
      Gameboard i.e. 2D array of LevelType
      */
-    typealias Gameboard = [[LevelType]]
+    typealias Gameboard = [[GameboardPanel]]
     
     
     struct Audio {
@@ -89,6 +94,7 @@ struct K {
         static let skyNode: CGFloat = 80
         static let gameboard: CGFloat = 100
         static let panel: CGFloat = 200
+        static let overlay: CGFloat = 210
         static let backgroundObjectTier2: CGFloat = 250
         static let backgroundObjectTier1: CGFloat = 255
         static let backgroundObjectTier0: CGFloat = 260

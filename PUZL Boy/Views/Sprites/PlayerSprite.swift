@@ -22,6 +22,21 @@ class PlayerSprite {
     
     enum Texture: Int {
         case idle = 0, run, win, dead, glide, marsh
+        
+        var animationSpeed: TimeInterval {
+            switch self {
+            case .run:
+                return 0.5
+            case .win:
+                return 0.75
+            case .glide:
+                return 0.5
+            case .marsh:
+                return 1.0
+            default:
+                return 0.25
+            }
+        }
     }
     
     enum AnimationKey: String {
@@ -108,6 +123,7 @@ class PlayerSprite {
             case .win:
                 K.Audio.audioManager.playSound(for: "boywalk")
                 
+                //Fades the player as he's entering the gate
 //                let sequence = SKAction.sequence([SKAction.wait(forDuration: 0.55), SKAction.fadeAlpha(to: 0, duration: 0.2)])
 //                sprite.run(SKAction.group([SKAction.repeatForever(animation), sequence]), withKey: AnimationKey.playerMove.rawValue)
 //

@@ -20,6 +20,7 @@ struct FIRManager {
                     level: obj["level"] as! Int,
                     moves: obj["moves"] as! Int,
                     
+                    //TERRAIN
                     r0c0: obj["r0c0"] as! String,
                     r0c1: obj["r0c1"] as! String,
                     r0c2: obj["r0c2"] as! String,
@@ -60,7 +61,50 @@ struct FIRManager {
                     r5c2: obj["r5c2"] as! String,
                     r5c3: obj["r5c3"] as! String,
                     r5c4: obj["r5c4"] as! String,
-                    r5c5: obj["r5c5"] as! String
+                    r5c5: obj["r5c5"] as! String,
+                    
+                    //OVERLAYS
+                    s0d0: obj["s0d0"] as! String,
+                    s0d1: obj["s0d1"] as! String,
+                    s0d2: obj["s0d2"] as! String,
+                    s0d3: obj["s0d3"] as! String,
+                    s0d4: obj["s0d4"] as! String,
+                    s0d5: obj["s0d5"] as! String,
+                    
+                    s1d0: obj["s1d0"] as! String,
+                    s1d1: obj["s1d1"] as! String,
+                    s1d2: obj["s1d2"] as! String,
+                    s1d3: obj["s1d3"] as! String,
+                    s1d4: obj["s1d4"] as! String,
+                    s1d5: obj["s1d5"] as! String,
+                    
+                    s2d0: obj["s2d0"] as! String,
+                    s2d1: obj["s2d1"] as! String,
+                    s2d2: obj["s2d2"] as! String,
+                    s2d3: obj["s2d3"] as! String,
+                    s2d4: obj["s2d4"] as! String,
+                    s2d5: obj["s2d5"] as! String,
+                    
+                    s3d0: obj["s3d0"] as! String,
+                    s3d1: obj["s3d1"] as! String,
+                    s3d2: obj["s3d2"] as! String,
+                    s3d3: obj["s3d3"] as! String,
+                    s3d4: obj["s3d4"] as! String,
+                    s3d5: obj["s3d5"] as! String,
+                    
+                    s4d0: obj["s4d0"] as! String,
+                    s4d1: obj["s4d1"] as! String,
+                    s4d2: obj["s4d2"] as! String,
+                    s4d3: obj["s4d3"] as! String,
+                    s4d4: obj["s4d4"] as! String,
+                    s4d5: obj["s4d5"] as! String,
+                    
+                    s5d0: obj["s5d0"] as! String,
+                    s5d1: obj["s5d1"] as! String,
+                    s5d2: obj["s5d2"] as! String,
+                    s5d3: obj["s5d3"] as! String,
+                    s5d4: obj["s5d4"] as! String,
+                    s5d5: obj["s5d5"] as! String
                 )//end item = LevelModel()
                 
                 allLevels.append(levelModel)

@@ -30,7 +30,7 @@ struct Level: CustomStringConvertible {
             returnValue += "\t["
             
             for col in row {
-                returnValue += "\(col.rawValue), "
+                returnValue += "\(col.terrain.rawValue), "
             }
             
             returnValue += "]\n"
@@ -51,18 +51,18 @@ struct Level: CustomStringConvertible {
         
         for (rowIndex, row) in gameboard.enumerated() {
             for (colIndex, col) in row.enumerated() {
-                if col == .start {
+                if col.terrain == .start {
                     start = (rowIndex, colIndex)
                     player = start
                     startFound = true
                 }
                 
-                if col == .endClosed || col == .endOpen {
+                if col.terrain == .endClosed || col.terrain == .endOpen {
                     end = (rowIndex, colIndex)
                     endFound = true
                 }
                 
-                if col == .gem || col == .gemOnIce {
+                if col.overlay == .gem {
                     gemsCount += 1
                 }
             }
@@ -74,6 +74,11 @@ struct Level: CustomStringConvertible {
         self.moves = moves
         self.gems = gemsCount
         self.gameboard = gameboard
+
+        //Opens the door initially, if 0 gems are found on the gameboard
+        if self.gems == 0 {
+            self.gameboard[self.end.row][self.end.col].terrain = .endOpen
+        }
     }
     
     
@@ -83,8 +88,9 @@ struct Level: CustomStringConvertible {
         player = position
     }
     
-    mutating func setLevelType(at position: K.GameboardPosition, levelType: LevelType) {
-        gameboard[position.row][position.col] = levelType
+    mutating func removeOverlayObject(at position: K.GameboardPosition) {
+        // FIXME: - Is .boundary the right way to represent non-existent overlay object?
+        gameboard[position.row][position.col].overlay = .boundary
     }
     
     func getLevelType(at position: K.GameboardPosition) -> LevelType {
@@ -93,6 +99,9 @@ struct Level: CustomStringConvertible {
             return .boundary
         }
         
-        return gameboard[position.row][position.col]
+        let check = gameboard[position.row][position.col]
+        
+        //Only return overlay if there's an item
+        return check.overlay == .boundary ? check.terrain : check.overlay
     }
 }

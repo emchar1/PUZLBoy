@@ -12,9 +12,9 @@ struct DayTheme {
         let currentHour = Calendar.current.component(.hour, from: Date())
         
         switch currentHour {
-        case 5...12:
+        case 6...12:
             return .morning
-        case 13...19:
+        case 13...18:
             return .afternoon
         default:
             return .night

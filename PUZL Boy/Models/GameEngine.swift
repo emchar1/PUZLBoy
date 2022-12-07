@@ -51,6 +51,12 @@ class GameEngine {
     
     // MARK: - Initialization
     
+    /**
+     Initializes a Game Engine with the given level and animation sequence.
+     - parameters:
+        - level: The initial level to load
+        - shouldSpawn: determines whether should fade gameboard, i.e. if shouldSpawn is false
+     */
     init(level: Int = 1, shouldSpawn: Bool) {
         guard LevelBuilder.maxLevel > 0 else {
             fatalError("Firebase records were not loaded!🙀")
@@ -80,33 +86,32 @@ class GameEngine {
     
     /**
      Sets the player sprite position easily.
+     - parameters:
+        - toLastPanel: text
+        - shouldAnimate: animate the player's movement if `true`
+        - completion: completion handler after block executes
      */
     private func setPlayerSpritePosition(toLastPanel lastPanel: LevelType? = nil, shouldAnimate animate: Bool, completion: (() -> ())?) {
         let playerLastPosition = gameboardSprite.getLocation(at: level.player)
         let panel = lastPanel == nil ? level.getLevelType(at: level.player) : lastPanel!
         let panelIsMarsh = panel == .marsh
         var animationType: PlayerSprite.Texture
-        var animationDuration: TimeInterval
         
         if isGliding {
             animationType = .glide
-            animationDuration = 0.5
         }
         else if isSolved {
             animationType = .win
-            animationDuration = 0.75
         }
         else if panelIsMarsh {
             animationType = .marsh
-            animationDuration = 1.0
         }
         else {
             animationType = .run
-            animationDuration = 0.5
         }
 
         if animate {
-            let playerMove = SKAction.move(to: playerLastPosition, duration: animationDuration)
+            let playerMove = SKAction.move(to: playerLastPosition, duration: animationType.animationSpeed)
                         
             shouldDisableControlInput = true
 
@@ -135,16 +140,39 @@ class GameEngine {
         switch level.getLevelType(at: level.player) {
         case .gem:
             gemsRemaining -= 1
-            consumeItem(shouldChangePanelToIce: false)
+            consumeItem()
             
             K.Audio.audioManager.playSound(for: "gemcollect")
             completion?()
-        case .gemOnIce:
-            gemsRemaining -= 1
-            consumeItem(shouldChangePanelToIce: true)
-
-            K.Audio.audioManager.playSound(for: "gemcollect")
+        case .hammer:
+            playerSprite.inventory.hammers += 1
+            consumeItem()
+            
+            playerSprite.startPowerUpAnimation()
             completion?()
+        case .sword:
+            playerSprite.inventory.swords += 1
+            consumeItem()
+
+            playerSprite.startPowerUpAnimation()
+            completion?()
+        case .boulder:
+            guard playerSprite.inventory.hammers > 0 else { return }
+            
+            playerSprite.inventory.hammers -= 1
+            playerSprite.startHammerAnimation(on: gameboardSprite, at: level.player) {
+                self.consumeItem()
+                completion?()
+            }
+        case .enemy:
+            guard playerSprite.inventory.swords > 0 else { return }
+            
+            enemiesKilled += 1
+            playerSprite.inventory.swords -= 1
+            playerSprite.startSwordAnimation(on: gameboardSprite, at: level.player) {
+                self.consumeItem()
+                completion?()
+            }
         case .warp:
             guard let newWarpLocation = gameboardSprite.warpTo(from: level.player) else {
                 completion?()
@@ -161,36 +189,6 @@ class GameEngine {
                 }
                 
             }
-            
-        case .hammer:
-            playerSprite.inventory.hammers += 1
-            consumeItem(shouldChangePanelToIce: false)
-            
-            playerSprite.startPowerUpAnimation()
-            completion?()
-        case .sword:
-            playerSprite.inventory.swords += 1
-            consumeItem(shouldChangePanelToIce: false)
-
-            playerSprite.startPowerUpAnimation()
-            completion?()
-        case .boulder:
-            guard playerSprite.inventory.hammers > 0 else { return }
-            
-            playerSprite.inventory.hammers -= 1
-            playerSprite.startHammerAnimation(on: gameboardSprite, at: level.player) {
-                self.consumeItem(shouldChangePanelToIce: false)
-                completion?()
-            }
-        case .enemy:
-            guard playerSprite.inventory.swords > 0 else { return }
-            
-            enemiesKilled += 1
-            playerSprite.inventory.swords -= 1
-            playerSprite.startSwordAnimation(on: gameboardSprite, at: level.player) {
-                self.consumeItem(shouldChangePanelToIce: false)
-                completion?()
-            }
         default:
             completion?()
             break
@@ -200,27 +198,27 @@ class GameEngine {
     /**
      Converts a panel to grass, after consuming the item.
      */
-    private func consumeItem(shouldChangePanelToIce: Bool) {
-        level.setLevelType(at: level.player, levelType: shouldChangePanelToIce ? .ice : .grass)
+    private func consumeItem() {
+        level.removeOverlayObject(at: level.player)
 
         for child in gameboardSprite.sprite.children {
             //Exclude Player, which will have no name
-            guard child.name != nil else { continue }
+            guard let name = child.name else { continue }
             
-            let row = String(child.name!.prefix(upTo: child.name!.firstIndex(of: ",")!))
-            let col = String(child.name!.suffix(from: child.name!.firstIndex(of: ",")!).dropFirst())
+            let row = String(name.prefix(upTo: name.firstIndex(of: ",")!))
+            let col = String(name.suffix(from: name.firstIndex(of: ",")!).dropFirst()).replacingOccurrences(of: gameboardSprite.overlayTag, with: "")
+            let isOverlay = name.contains(gameboardSprite.overlayTag)
             let position: K.GameboardPosition = (row: Int(row) ?? -1, col: Int(col) ?? -1)
 
-            //Update panel to grass
-            if position == level.player, let child = gameboardSprite.sprite.childNode(withName: row + "," + col) {
+            //Remove overlay object, if found
+            if position == level.player && isOverlay, let child = gameboardSprite.sprite.childNode(withName: row + "," + col + gameboardSprite.overlayTag) {
                 child.removeFromParent()
-                gameboardSprite.updatePanels(at: position, with: shouldChangePanelToIce ? gameboardSprite.ice : gameboardSprite.grass)
             }
             
             //Update exitClosed panel to exitOpen
             if isExitAvailable && position == level.end, let child = gameboardSprite.sprite.childNode(withName: row + "," + col) {
                 child.removeFromParent()
-                gameboardSprite.updatePanels(at: position, with: gameboardSprite.endOpen)
+                gameboardSprite.updatePanels(at: position, with: (terrain: LevelType.endOpen, overlay: LevelType.boundary))
                 
                 K.Audio.audioManager.playSound(for: "dooropen")
             }

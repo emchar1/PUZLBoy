@@ -75,7 +75,7 @@ struct BackgroundObject {
             spriteScale = 0.2
             
             for i in 0..<200 {
-                let spriteNode = SKSpriteNode(texture: SKTexture(imageNamed: "grass"))
+                let spriteNode = SKSpriteNode(texture: SKTexture(imageNamed: "grass0"))
                 spriteNode.position = CGPoint(x: CGFloat(i) * spriteWidth * spriteScale, y: 0)
                 spriteNode.anchorPoint = .zero
                 spriteNode.setScale(spriteScale)
