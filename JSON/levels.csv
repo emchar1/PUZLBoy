@@ -59,3 +59,4 @@
 57,57,17,start,endClosed,grass,grass,,,grass,grass,grass,grass,,,grass,grass,grass,grass,,,grass,grass,grass,grass,,,,,,,,,,,,,,,,,enemy,gem,,,gem,sword,,enemy,,,enemy,boulder,sword,gem,,,gem,enemy,gem,enemy,,,,,,,,,,,,,,
 58,58,5,start,ice,ice,grass,,,ice,grass,grass,ice,,,ice,grass,grass,ice,,,endClosed,ice,ice,grass,,,,,,,,,,,,,,,,gem,gem,warp,,,gem,enemy,enemy,gem,,,gem,enemy,enemy,gem,,,,gem,gem,warp,,,,,,,,,,,,,,
 59,59,9,start,grass,grass,grass,,,ice,ice,grass,grass,,,ice,ice,grass,grass,,,grass,grass,endClosed,grass,,,,,,,,,,,,,,,,,,gem,,,,,gem,,,,,,boulder,,,,boulder,gem,,boulder,,,,,,,,,,,,,,
+60,60,20,start,marsh,marsh,marsh,,,ice,ice,ice,ice,,,grass,grass,grass,grass,,,marsh,ice,grass,endClosed,,,,,,,,,,,,,,,gem,sword,boulder,enemy,,,gem,warp,hammer,gem,,,hammer,gem,warp,boulder,,,boulder,sword,sword,gem,,,,,,,,,,,,,,

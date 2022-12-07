@@ -111,9 +111,9 @@ class LaunchScene: SKScene {
         skyNode.anchorPoint = .zero
         skyNode.zPosition = K.ZPosition.skyNode
         
-        let grassNode = SKShapeNode(rect: CGRect(x: 0, y: 0, width: K.ScreenDimensions.iPhoneWidth, height: K.ScreenDimensions.height / mountainSprite.backgroundBorder))
-        grassNode.fillColor = DayTheme.grassColor
-        grassNode.strokeColor = DayTheme.grassColor
+        let grassImage: UIImage = UIImage.gradientImage(withBounds: CGRect(x: 0, y: 0, width: K.ScreenDimensions.iPhoneWidth, height: K.ScreenDimensions.height / mountainSprite.backgroundBorder), startPoint: CGPoint(x: 0.5, y: 0), endPoint: CGPoint(x: 0.5, y: 1), colors: [DayTheme.grassColor.top.cgColor, DayTheme.grassColor.bottom.cgColor])
+        let grassNode = SKSpriteNode(texture: SKTexture(image: grassImage))
+        grassNode.anchorPoint = .zero
         grassNode.zPosition = K.ZPosition.gameboard
         
         addChild(skyNode)
