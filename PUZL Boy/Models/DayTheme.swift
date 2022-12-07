@@ -38,30 +38,44 @@ struct DayTheme {
     }
     
     static var grassColor: (top: UIColor, bottom: UIColor) {
-        switch currentTheme {
-        case .morning:
-            return (UIColor(red: 94 / 255, green: 177 / 255, blue: 72 / 255, alpha: 1.0),
-                    UIColor(red: 44 / 255, green: 147 / 255, blue: 42 / 255, alpha: 1.0))
-        case .afternoon:
-            return (UIColor(red: 124 / 255, green: 127 / 255, blue: 42 / 255, alpha: 1.0),
-                    UIColor(red: 74 / 255, green: 127 / 255, blue: 32 / 255, alpha: 1.0))
-        case .night:
-            return (UIColor(red: 35 / 255, green: 54 / 255, blue: 62 / 255, alpha: 1.0),
-                    UIColor(red: 25 / 255, green: 44 / 255, blue: 52 / 255, alpha: 1.0))
-        }
+        return (UIColor(red: 94 / 255, green: 177 / 255, blue: 72 / 255, alpha: 1.0),
+                UIColor(red: 44 / 255, green: 147 / 255, blue: 42 / 255, alpha: 1.0))
+
+        
+//        switch currentTheme {
+//        case .morning:
+//            return (UIColor(red: 94 / 255, green: 177 / 255, blue: 72 / 255, alpha: 1.0),
+//                    UIColor(red: 44 / 255, green: 147 / 255, blue: 42 / 255, alpha: 1.0))
+//        case .afternoon:
+//            return (UIColor(red: 124 / 255, green: 127 / 255, blue: 42 / 255, alpha: 1.0),
+//                    UIColor(red: 74 / 255, green: 127 / 255, blue: 32 / 255, alpha: 1.0))
+//        case .night:
+//            return (UIColor(red: 45 / 255, green: 46 / 255, blue: 71 / 255, alpha: 1.0),
+//                    UIColor(red: 35 / 255, green: 34 / 255, blue: 61 / 255, alpha: 1.0))
     }
     
+    static var spriteColor: UIColor {
+        switch currentTheme {
+        case .morning:
+            return .clear
+        case .afternoon:
+            return .red
+        case .night:
+            return .blue
+        }
+    }
+
     static var spriteShade: CGFloat {
         switch currentTheme {
         case .morning:
             return 0
         case .afternoon:
-            return 0.15
-        case .night:
             return 0.25
+        case .night:
+            return 0.5
         }
     }
-    
+        
     enum Theme {
         case morning, afternoon, night
     }

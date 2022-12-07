@@ -59,7 +59,7 @@ struct BackgroundObject {
                         anchorPoint: .zero,
                         scale: 0.4,
                         alpha: 0.75,
-                        color: .black,
+                        color: DayTheme.spriteColor,
                         colorBlendFactor: DayTheme.spriteShade,
                         zPosition: K.ZPosition.backgroundObjectTier2)
         case .moon:
@@ -70,7 +70,7 @@ struct BackgroundObject {
                         alpha: DayTheme.currentTheme == .night ? 1.0 : 0.0,
                         color: .clear,
                         colorBlendFactor: 0,
-                        zPosition: K.ZPosition.backgroundObjectTier2)
+                        zPosition: K.ZPosition.backgroundObjectTier4)
         case .grass:
             spriteScale = 0.2
             
@@ -94,27 +94,27 @@ struct BackgroundObject {
                             anchorPoint: .zero,
                             scale: 0.75,
                             alpha: backgroundType == .cloud ? 0.6 : 1.0,
-                            color: .black,
+                            color: backgroundType == .cloud ? .clear : DayTheme.spriteColor,
                             colorBlendFactor: DayTheme.spriteShade,
-                            zPosition: K.ZPosition.backgroundObjectTier0)
+                            zPosition: backgroundType == .cloud ? K.ZPosition.backgroundObjectTier3 : K.ZPosition.backgroundObjectTier0)
             case 1:
                 setupSprite(imageNameShouldIncludeTier: true,
                             position: backgroundType == .cloud ? CGPoint(x: K.ScreenDimensions.iPhoneWidth / 4, y: K.ScreenDimensions.height / (backgroundBorder - 0.2)) : CGPoint(x: K.ScreenDimensions.iPhoneWidth, y: K.ScreenDimensions.height / (backgroundBorder + 0.25)),
                             anchorPoint: .zero,
                             scale: 0.5,
                             alpha: backgroundType == .cloud ? 0.6 : 0.9,
-                            color: .black,
+                            color: backgroundType == .cloud ? .clear : DayTheme.spriteColor,
                             colorBlendFactor: DayTheme.spriteShade,
-                            zPosition: K.ZPosition.backgroundObjectTier1)
+                            zPosition: backgroundType == .cloud ? K.ZPosition.backgroundObjectTier3 : K.ZPosition.backgroundObjectTier1)
             default:
                 setupSprite(imageNameShouldIncludeTier: true,
                             position: backgroundType == .cloud ? CGPoint(x: K.ScreenDimensions.iPhoneWidth / 3, y: K.ScreenDimensions.height / (backgroundBorder - 0.1)) : CGPoint(x: K.ScreenDimensions.iPhoneWidth, y: K.ScreenDimensions.height / (backgroundBorder + 0.2)),
                             anchorPoint: .zero,
                             scale: 0.25,
                             alpha: backgroundType == .cloud ? 0.6 : 0.85,
-                            color: .black,
+                            color: backgroundType == .cloud ? .clear : DayTheme.spriteColor,
                             colorBlendFactor: DayTheme.spriteShade,
-                            zPosition: K.ZPosition.backgroundObjectTier2)
+                            zPosition: backgroundType == .cloud ? K.ZPosition.backgroundObjectTier3 : K.ZPosition.backgroundObjectTier2)
             } //end switch tierLevel
         }//end switch backgroundTypes
     }//end setupBackgroundTypes

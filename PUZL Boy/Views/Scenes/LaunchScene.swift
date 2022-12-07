@@ -41,7 +41,7 @@ class LaunchScene: SKScene {
         playerSprite.position = CGPoint(x: K.ScreenDimensions.iPhoneWidth / 2 - 50, y: K.ScreenDimensions.height / 2)
         playerSprite.setScale(2)
         playerSprite.zPosition = K.ZPosition.player
-        playerSprite.color = .black
+        playerSprite.color = DayTheme.spriteColor
         playerSprite.colorBlendFactor = DayTheme.spriteShade
         
         loadingLabel = SKLabelNode(text: "LOADING...")
@@ -113,6 +113,8 @@ class LaunchScene: SKScene {
         
         let grassImage: UIImage = UIImage.gradientImage(withBounds: CGRect(x: 0, y: 0, width: K.ScreenDimensions.iPhoneWidth, height: K.ScreenDimensions.height / mountainSprite.backgroundBorder), startPoint: CGPoint(x: 0.5, y: 0), endPoint: CGPoint(x: 0.5, y: 1), colors: [DayTheme.grassColor.top.cgColor, DayTheme.grassColor.bottom.cgColor])
         let grassNode = SKSpriteNode(texture: SKTexture(image: grassImage))
+        grassNode.color = DayTheme.spriteColor
+        grassNode.colorBlendFactor = DayTheme.spriteShade
         grassNode.anchorPoint = .zero
         grassNode.zPosition = K.ZPosition.gameboard
         

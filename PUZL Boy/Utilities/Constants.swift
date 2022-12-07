@@ -95,6 +95,8 @@ struct K {
         static let gameboard: CGFloat = 100
         static let panel: CGFloat = 200
         static let overlay: CGFloat = 210
+        static let backgroundObjectTier4: CGFloat = 240
+        static let backgroundObjectTier3: CGFloat = 245
         static let backgroundObjectTier2: CGFloat = 250
         static let backgroundObjectTier1: CGFloat = 255
         static let backgroundObjectTier0: CGFloat = 260
