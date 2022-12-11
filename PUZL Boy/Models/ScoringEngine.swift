@@ -46,18 +46,18 @@ class ScoringEngine {
         scoreLabel.fontName = UIFont.gameFont
         scoreLabel.fontSize = UIFont.gameFontSizeSmall
         scoreLabel.fontColor = UIFont.gameFontColor
-        scoreLabel.position = CGPoint(x: padding, y: K.ScreenDimensions.height - K.ScreenDimensions.topMargin)
+        scoreLabel.position = CGPoint(x: padding, y: K.ScreenDimensions.height - K.ScreenDimensions.topMargin - 30)
         scoreLabel.horizontalAlignmentMode = .left
-        scoreLabel.verticalAlignmentMode = .top
+        scoreLabel.verticalAlignmentMode = .baseline
         scoreLabel.zPosition = K.ZPosition.display
 
         totalScoreLabel = SKLabelNode()
         totalScoreLabel.fontName = UIFont.gameFont
         totalScoreLabel.fontSize = UIFont.gameFontSizeSmall
         totalScoreLabel.fontColor = UIFont.gameFontColor
-        totalScoreLabel.position = CGPoint(x: padding, y: K.ScreenDimensions.height - K.ScreenDimensions.topMargin - 60)
+        totalScoreLabel.position = CGPoint(x: padding, y: K.ScreenDimensions.height - K.ScreenDimensions.topMargin - 90)
         totalScoreLabel.horizontalAlignmentMode = .left
-        totalScoreLabel.verticalAlignmentMode = .top
+        totalScoreLabel.verticalAlignmentMode = .baseline
         totalScoreLabel.zPosition = K.ZPosition.display
 
         elapsedTimeLabel = SKLabelNode()
@@ -112,8 +112,19 @@ class ScoringEngine {
         
         score = (max(0, maxTimeScore + Int(elapsedTime) * reductionPerSecondScore) + movesRemaining * moveScore + itemsFound * itemScore + enemiesKilled * killEnemyScore) * (usedContinue ? 1 : 2)
         
-        totalScore += score
-
+        let savedScore: CGFloat = CGFloat(score)
+        let incrementWait = SKAction.wait(forDuration: 1 / savedScore)
+        let incrementAction = SKAction.run { [unowned self] in
+            score -= 1
+            totalScore += 1
+            
+            updateScoreLabels()
+        }
+        let incrementSequence = SKAction.sequence([incrementWait, incrementAction])
+        let repeatAction = SKAction.repeat(incrementSequence, count: Int(savedScore))
+        
+        scoreLabel.run(SKAction.sequence([SKAction.wait(forDuration: 2.0), repeatAction]))
+        
         statsLabel.text = "Elapsed Time: \(Int(elapsedTime))\nMoves Remaining: \(movesRemaining)\nItems Found: \(itemsFound)\nEnemies Killed: \(enemiesKilled)\nContinue Used? \(usedContinue)"
     }
     
@@ -121,9 +132,14 @@ class ScoringEngine {
         let minutes = Int(elapsedTime) / 60 % 60
         let seconds = Int(elapsedTime) % 60
         
+        elapsedTimeLabel.text = String(format: "%02i:%02i", minutes, seconds)
+
+        updateScoreLabels()
+    }
+    
+    private func updateScoreLabels() {
         scoreLabel.text = "SCORE: " + (numberFormatter.string(from: NSNumber(value: score)) ?? "-9999")
         totalScoreLabel.text = "TOTAL: " + (numberFormatter.string(from: NSNumber(value: totalScore)) ?? "-9999")
-        elapsedTimeLabel.text = String(format: "%02i:%02i", minutes, seconds)
     }
     
 
