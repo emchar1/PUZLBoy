@@ -332,7 +332,7 @@ class GameEngine {
         }
         
         guard checkPanelForPathway(position: nextPanel, direction: direction) else {
-            K.Audio.audioManager.stopSound(for: "boyglide", fadeDuration: 0.5)
+            K.Audio.audioManager.stopSound(for: "moveglide", fadeDuration: 0.5)
             return
         }
         
@@ -345,7 +345,7 @@ class GameEngine {
                 self.shouldUpdateRemainingForBoulderIfIcy = false
                 self.isGliding = false
 
-                K.Audio.audioManager.stopSound(for: "boyglide", fadeDuration: 0.5)
+                K.Audio.audioManager.stopSound(for: "moveglide", fadeDuration: 0.5)
                 
                 // FIXME: - I don't like this being here...
                 if self.level.getLevelType(at: nextPanel) == .marsh {

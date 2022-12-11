@@ -94,12 +94,12 @@ class PlayerSprite {
         let fadeDuration: TimeInterval = 0.25
         let animation = SKAction.animate(with: playerTextures[Texture.idle.rawValue], timePerFrame: animationSpeed)
         
-        K.Audio.audioManager.stopSound(for: "boyrun1", fadeDuration: fadeDuration)
-        K.Audio.audioManager.stopSound(for: "boyrun2", fadeDuration: fadeDuration)
-        K.Audio.audioManager.stopSound(for: "boyrun3", fadeDuration: fadeDuration)
-        K.Audio.audioManager.stopSound(for: "boyrun4", fadeDuration: fadeDuration)
-        K.Audio.audioManager.stopSound(for: "boywalk", fadeDuration: fadeDuration)
-        K.Audio.audioManager.stopSound(for: "boymarsh", fadeDuration: fadeDuration)
+        K.Audio.audioManager.stopSound(for: "moverun1", fadeDuration: fadeDuration)
+        K.Audio.audioManager.stopSound(for: "moverun2", fadeDuration: fadeDuration)
+        K.Audio.audioManager.stopSound(for: "moverun3", fadeDuration: fadeDuration)
+        K.Audio.audioManager.stopSound(for: "moverun4", fadeDuration: fadeDuration)
+        K.Audio.audioManager.stopSound(for: "movewalk", fadeDuration: fadeDuration)
+        K.Audio.audioManager.stopSound(for: "movemarsh", fadeDuration: fadeDuration)
 
         sprite.run(SKAction.repeatForever(animation), withKey: AnimationKey.playerIdle.rawValue)
     }
@@ -112,24 +112,24 @@ class PlayerSprite {
         sprite.removeAction(forKey: AnimationKey.playerMove.rawValue)
 
         if animationType == .glide {
-            K.Audio.audioManager.playSound(for: "boyglide", interruptPlayback: false)
+            K.Audio.audioManager.playSound(for: "moveglide", interruptPlayback: false)
 
             sprite.run(SKAction.sequence([SKAction.repeat(animation, count: 1), SKAction.wait(forDuration: 2.0)]), withKey: AnimationKey.playerGlide.rawValue)
         }
         else {
             switch animationType {
             case .run:
-                K.Audio.audioManager.playSound(for: "boyrun\(Int.random(in: 1...4))")
+                K.Audio.audioManager.playSound(for: "moverun\(Int.random(in: 1...4))")
             case .win:
-                K.Audio.audioManager.playSound(for: "boywalk")
-                
+                K.Audio.audioManager.playSound(for: "movewalk")
+
                 //Fades the player as he's entering the gate
 //                let sequence = SKAction.sequence([SKAction.wait(forDuration: 0.55), SKAction.fadeAlpha(to: 0, duration: 0.2)])
 //                sprite.run(SKAction.group([SKAction.repeatForever(animation), sequence]), withKey: AnimationKey.playerMove.rawValue)
 //
 //                return
             case .marsh:
-                K.Audio.audioManager.playSound(for: "boymarsh")
+                K.Audio.audioManager.playSound(for: "movemarsh")
             default:
                 print("Unknown animationType")
             }
@@ -144,7 +144,7 @@ class PlayerSprite {
             SKAction.colorize(withColorBlendFactor: 0.0, duration: 1.5)
         ])
         
-        K.Audio.audioManager.playSound(for: "boypoisoned")
+        K.Audio.audioManager.playSound(for: "movepoisoned")
 
         sprite.run(marshEffect, withKey: AnimationKey.playerMarsh.rawValue)
     }
