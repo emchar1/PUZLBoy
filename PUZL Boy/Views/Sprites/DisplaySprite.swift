@@ -26,24 +26,24 @@ class DisplaySprite {
         sprite.zPosition = K.ZPosition.display
         
         statusLives = DisplayStatusBarSprite(icon: "iconHeart", amount: 99, fillColor: .cyan)
-        statusLives.position = CGPoint(x: K.ScreenDimensions.iPhoneWidth - statusLives.width, y: topYPosition + margin + statusLives.width / 2)
+        statusLives.position = CGPoint(x: margin + statusLives.width, y: topYPosition + margin + statusLives.width / 2)
 
         statusMoves = DisplayStatusBarSprite(icon: "iconBoot", amount: 99, fillColor: .cyan)
-        statusMoves.position = CGPoint(x: K.ScreenDimensions.iPhoneWidth - statusMoves.width, y: topYPosition + margin)
-        
+        statusMoves.position = CGPoint(x: margin + statusMoves.width, y: topYPosition + margin)
+
         statusHammers = DisplayStatusBarSprite(icon: "iconHammer", amount: 99, fillColor: .yellow)
-        statusHammers.position = CGPoint(x: margin + statusHammers.width, y: bottomYPosition - margin)
-        
+        statusHammers.position = CGPoint(x: K.ScreenDimensions.iPhoneWidth - statusHammers.width, y: topYPosition + margin + statusHammers.width / 2)
+
         statusSwords = DisplayStatusBarSprite(icon: "iconSword", amount: 99, fillColor: .yellow)
-        statusSwords.position = CGPoint(x: K.ScreenDimensions.iPhoneWidth - statusMoves.width, y: bottomYPosition - margin)
-        
+        statusSwords.position = CGPoint(x: K.ScreenDimensions.iPhoneWidth - statusSwords.width, y: topYPosition + margin)
+
         levelLabel = SKLabelNode(text: nil)
         levelLabel.horizontalAlignmentMode = .right
         levelLabel.verticalAlignmentMode = .top
         levelLabel.position = CGPoint(x: K.ScreenDimensions.iPhoneWidth - margin, y: K.ScreenDimensions.height - K.ScreenDimensions.topMargin)
-        levelLabel.fontName = "AvenirNext-BoldItalic"
-        levelLabel.fontSize = 75
-        levelLabel.fontColor = .white
+        levelLabel.fontName = UIFont.gameFont
+        levelLabel.fontSize = UIFont.gameFontSizeLarge
+        levelLabel.fontColor = UIFont.gameFontColor
         
         addToScene()
     }

@@ -20,7 +20,6 @@ class LaunchScene: SKScene {
     private var cloudSprites: [BackgroundObject] = []
     private var mountainSprite: BackgroundObject
     private var moonSprite: BackgroundObject
-//    private var grassSprite: BackgroundObject
     
     private var playerTextures: [SKTexture] = []
     private var playerSprite: SKSpriteNode
@@ -34,20 +33,20 @@ class LaunchScene: SKScene {
         let playerAtlas = SKTextureAtlas(named: "player")
         
         for i in 1...15 {
-            playerTextures.append(playerAtlas.textureNamed("Run (\(i))"))
+            DayTheme.currentTheme == .night ? playerTextures.append(playerAtlas.textureNamed("Walk (\(i))")) : playerTextures.append(playerAtlas.textureNamed("Run (\(i))"))
         }
         
         playerSprite = SKSpriteNode(texture: playerTextures[0])
-        playerSprite.position = CGPoint(x: K.ScreenDimensions.iPhoneWidth / 2 - 50, y: K.ScreenDimensions.height / 2)
+        playerSprite.position = CGPoint(x: K.ScreenDimensions.iPhoneWidth / 2, y: K.ScreenDimensions.height / 2)
         playerSprite.setScale(2)
         playerSprite.zPosition = K.ZPosition.player
         playerSprite.color = DayTheme.spriteColor
         playerSprite.colorBlendFactor = DayTheme.spriteShade
         
         loadingLabel = SKLabelNode(text: "LOADING...")
-        loadingLabel.fontName = "AvenirNext-BoldItalic"
-        loadingLabel.fontSize = 75
-        loadingLabel.fontColor = .white
+        loadingLabel.fontName = UIFont.gameFont
+        loadingLabel.fontSize = UIFont.gameFontSizeExtraLarge
+        loadingLabel.fontColor = UIFont.gameFontColor
         loadingLabel.horizontalAlignmentMode = .center
         loadingLabel.alpha = 0.95
         loadingLabel.position = CGPoint(x: K.ScreenDimensions.iPhoneWidth / 2, y: K.ScreenDimensions.height / 6)
@@ -71,7 +70,6 @@ class LaunchScene: SKScene {
 
         mountainSprite = BackgroundObject(tierLevel: 0, backgroundType: .mountain)
         moonSprite = BackgroundObject(tierLevel: 0, backgroundType: .moon)
-//        grassSprite = BackgroundObject(tierLevel: 0, backgroundType: .grass)
 
         super.init(size: size)
         
@@ -83,7 +81,14 @@ class LaunchScene: SKScene {
     }
     
     private func animateSprites() {
-        let playerAnimation = SKAction.animate(with: playerTextures, timePerFrame: 0.05)
+        var playerSpeed: TimeInterval
+        switch DayTheme.currentTheme {
+        case .morning: playerSpeed = 0.05
+        case .afternoon: playerSpeed = 0.06
+        case .night: playerSpeed = 0.06
+        }
+        
+        let playerAnimation = SKAction.animate(with: playerTextures, timePerFrame: playerSpeed)
         playerSprite.run(SKAction.repeatForever(playerAnimation))
 
         for i in 0..<treeCount {
@@ -99,7 +104,6 @@ class LaunchScene: SKScene {
         }
 
         mountainSprite.animateSprite(withDelay: nil)
-//        grassSprite.animateSprite(withDelay: nil)
     }
     
     
@@ -136,7 +140,6 @@ class LaunchScene: SKScene {
 
         addChild(mountainSprite.sprite)
         addChild(moonSprite.sprite)
-//        addChild(grassSprite.sprite)
         
         addChild(loadingLabel)
     }

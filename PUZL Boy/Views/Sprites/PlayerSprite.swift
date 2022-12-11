@@ -157,15 +157,7 @@ class PlayerSprite {
     }
     
     func startPowerUpAnimation() {
-//        let powerUp = SKAction.sequence([
-//            SKAction.colorize(with: .systemYellow, colorBlendFactor: 1.0, duration: 0.5),
-//            SKAction.wait(forDuration: 0.25),
-//            SKAction.colorize(withColorBlendFactor: 0.0, duration: 0.5)
-//        ])
-    
         K.Audio.audioManager.playSound(for: "pickupitem")
-        
-//        sprite.run(powerUp, withKey: AnimationKey.playerPowerUp.rawValue)
     }
     
     func startSwordAnimation(on gameboard: GameboardSprite, at panel: K.GameboardPosition, completion: @escaping (() -> ())) {

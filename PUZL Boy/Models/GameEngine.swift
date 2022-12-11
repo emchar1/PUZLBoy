@@ -65,13 +65,11 @@ class GameEngine {
         self.level = LevelBuilder.levels[level]
         movesRemaining = self.level.moves
         gemsRemaining = self.level.gems
-        
+
         gameboardSprite = GameboardSprite(level: self.level)
+        K.ScreenDimensions.topOfGameboard = gameboardSprite.yPosition + gameboardSprite.gameboardSize * gameboardSprite.spriteScale
         playerSprite = PlayerSprite(shouldSpawn: true)
-        displaySprite = DisplaySprite(topYPosition: gameboardSprite.yPosition + gameboardSprite.gameboardSize * gameboardSprite.spriteScale,
-                                      bottomYPosition: gameboardSprite.yPosition,
-                                      margin: 40)
-        
+        displaySprite = DisplaySprite(topYPosition: K.ScreenDimensions.topOfGameboard, bottomYPosition: gameboardSprite.yPosition, margin: 40)
         displaySprite.setLabels(level: "\(level)", lives: "\(GameEngine.livesRemaining)", moves: "\(movesRemaining)", inventory: playerSprite.inventory)
         
         setPlayerSpritePosition(shouldAnimate: false, completion: nil)

@@ -24,12 +24,19 @@ struct BackgroundObject {
     }
     
     var speed: TimeInterval {
-        guard backgroundType != .mountain else { return 12.0 }
+        var dayMultiplier: TimeInterval
+        switch DayTheme.currentTheme {
+        case .morning: dayMultiplier = 0.8
+        case .afternoon: dayMultiplier = 1.5
+        case .night: dayMultiplier = 2
+        }
+        
+        guard backgroundType != .mountain else { return 20.0 * dayMultiplier }
         
         switch tierLevel {
-        case 0: return backgroundType != .cloud ? 3.0 : 100
-        case 1: return backgroundType != .cloud ? 3.5 : 50
-        default: return backgroundType != .cloud ? 4.0 : 25
+        case 0: return dayMultiplier * (backgroundType != .cloud ? 3.0 : 100)
+        case 1: return dayMultiplier * (backgroundType != .cloud ? 3.5 : 50)
+        default: return dayMultiplier * (backgroundType != .cloud ? 4.0 : 25)
         }
     }
     
@@ -38,7 +45,7 @@ struct BackgroundObject {
     }
     
     enum BackgroundType: String {
-        case tree, boulder, mountain, cloud, moon, grass
+        case tree, boulder, mountain, cloud, moon
     }
     
     
@@ -71,21 +78,6 @@ struct BackgroundObject {
                         color: .clear,
                         colorBlendFactor: 0,
                         zPosition: K.ZPosition.backgroundObjectTier4)
-        case .grass:
-            spriteScale = 0.2
-            
-            for i in 0..<200 {
-                let spriteNode = SKSpriteNode(texture: SKTexture(imageNamed: "grass0"))
-                spriteNode.position = CGPoint(x: CGFloat(i) * spriteWidth * spriteScale, y: 0)
-                spriteNode.anchorPoint = .zero
-                spriteNode.setScale(spriteScale)
-                spriteNode.zPosition = K.ZPosition.panel
-                                
-                sprite.addChild(spriteNode)
-            }
-            
-            sprite.position = CGPoint(x: K.ScreenDimensions.iPhoneWidth, y: 0)
-            sprite.anchorPoint = .zero
         default:
             switch tierLevel {
             case 0:

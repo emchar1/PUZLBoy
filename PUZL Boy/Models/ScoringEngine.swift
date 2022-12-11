@@ -37,50 +37,47 @@ class ScoringEngine {
     // MARK: - Initialization
     
     init() {
-        let fontName = "AvenirNext-BoldItalic"
-        let fontSize: CGFloat = 38
-        let fontColor: UIColor = .white
         let padding: CGFloat = 40
         
         numberFormatter.numberStyle = .decimal
         numberFormatter.maximumFractionDigits = 0
         
         scoreLabel = SKLabelNode()
-        scoreLabel.fontName = fontName
-        scoreLabel.fontSize = fontSize
-        scoreLabel.fontColor = fontColor
+        scoreLabel.fontName = UIFont.gameFont
+        scoreLabel.fontSize = UIFont.gameFontSizeSmall
+        scoreLabel.fontColor = UIFont.gameFontColor
         scoreLabel.position = CGPoint(x: padding, y: K.ScreenDimensions.height - K.ScreenDimensions.topMargin)
         scoreLabel.horizontalAlignmentMode = .left
         scoreLabel.verticalAlignmentMode = .top
         scoreLabel.zPosition = K.ZPosition.display
 
         totalScoreLabel = SKLabelNode()
-        totalScoreLabel.fontName = fontName
-        totalScoreLabel.fontSize = fontSize
-        totalScoreLabel.fontColor = fontColor
-        totalScoreLabel.position = CGPoint(x: padding, y: K.ScreenDimensions.height - 260)
+        totalScoreLabel.fontName = UIFont.gameFont
+        totalScoreLabel.fontSize = UIFont.gameFontSizeSmall
+        totalScoreLabel.fontColor = UIFont.gameFontColor
+        totalScoreLabel.position = CGPoint(x: padding, y: K.ScreenDimensions.height - K.ScreenDimensions.topMargin - 60)
         totalScoreLabel.horizontalAlignmentMode = .left
         totalScoreLabel.verticalAlignmentMode = .top
         totalScoreLabel.zPosition = K.ZPosition.display
 
         elapsedTimeLabel = SKLabelNode()
-        elapsedTimeLabel.fontName = fontName
-        elapsedTimeLabel.fontSize = fontSize
-        elapsedTimeLabel.fontColor = fontColor
-        elapsedTimeLabel.position = CGPoint(x: K.ScreenDimensions.iPhoneWidth / 2,
-                                            y: K.ScreenDimensions.height - 360)
-        elapsedTimeLabel.horizontalAlignmentMode = .center
-        elapsedTimeLabel.verticalAlignmentMode = .top
+        elapsedTimeLabel.fontName = UIFont.gameFont
+        elapsedTimeLabel.fontSize = UIFont.gameFontSizeMedium
+        elapsedTimeLabel.fontColor = UIFont.gameFontColor
+        elapsedTimeLabel.position = CGPoint(x: K.ScreenDimensions.iPhoneWidth / 2 - 60, y: K.ScreenDimensions.topOfGameboard + 18)
+        elapsedTimeLabel.horizontalAlignmentMode = .left
+        elapsedTimeLabel.verticalAlignmentMode = .bottom
         elapsedTimeLabel.zPosition = K.ZPosition.display
 
         statsLabel = SKLabelNode()
-        statsLabel.fontName = "AvenirNext-Regular"
-        statsLabel.fontSize = 18
-        statsLabel.fontColor = fontColor
-        statsLabel.position = CGPoint(x: padding, y: K.ScreenDimensions.height - 380)
+        statsLabel.fontName = UIFont.gameFont
+        statsLabel.fontSize = UIFont.gameFontSizeTiny
+        statsLabel.fontColor = UIFont.gameFontColor
+        statsLabel.position = CGPoint(x: padding, y: K.ScreenDimensions.bottomMargin + 200)
         statsLabel.horizontalAlignmentMode = .left
         statsLabel.verticalAlignmentMode = .top
         statsLabel.zPosition = K.ZPosition.display
+        statsLabel.numberOfLines = 0
 
         resetAllScores()
         updateLabels()
@@ -98,7 +95,6 @@ class ScoringEngine {
     
     func resetScore() {
         score = 0
-        statsLabel.text = "blank"
     }
     
     func resetTime() {
@@ -118,7 +114,7 @@ class ScoringEngine {
         
         totalScore += score
 
-        statsLabel.text = "elapsed time: \(Int(elapsedTime)), moves remaining: \(movesRemaining), items found: \(itemsFound), enemiesKilled: \(enemiesKilled), continue used: \(usedContinue)"
+        statsLabel.text = "Elapsed Time: \(Int(elapsedTime))\nMoves Remaining: \(movesRemaining)\nItems Found: \(itemsFound)\nEnemies Killed: \(enemiesKilled)\nContinue Used? \(usedContinue)"
     }
     
     func updateLabels() {
@@ -141,7 +137,7 @@ class ScoringEngine {
         superScene.addChild(scoreLabel)
         superScene.addChild(totalScoreLabel)
         superScene.addChild(elapsedTimeLabel)
-        superScene.addChild(statsLabel)
+//        superScene.addChild(statsLabel)
     }
 
 }

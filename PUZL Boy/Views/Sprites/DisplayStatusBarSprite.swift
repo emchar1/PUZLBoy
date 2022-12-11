@@ -40,8 +40,8 @@ class DisplayStatusBarSprite: SKNode {
         imageNode.position = CGPoint(x: -80, y: 0)
         imageNode.scale(to: CGSize(width: 80, height: 80))
         
-        textNode.fontName = "AvenirNext-BoldItalic"
-        textNode.fontSize = 40
+        textNode.fontName = UIFont.gameFont
+        textNode.fontSize = UIFont.gameFontSizeSmall
         textNode.position = CGPoint(x: 0, y: -14)
         
         addChild(backgroundBar)

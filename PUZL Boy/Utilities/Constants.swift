@@ -79,6 +79,11 @@ struct K {
         static let bottomMargin: CGFloat = 80
         
         /**
+         Top border of the gameboard sprite. Needs to be set in gameboardSprite, otherwise it defaults to topMargin.
+        */
+        static var topOfGameboard: CGFloat = topMargin
+        
+        /**
          The device's screen size.
          */
         static var screenSize: CGSize {

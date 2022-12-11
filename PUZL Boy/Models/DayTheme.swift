@@ -30,8 +30,6 @@ struct DayTheme {
             return (UIColor(red: 238 / 255, green: 175 / 255, blue: 97 / 255, alpha: 1.0),
                     UIColor(red: 206 / 255, green: 73 / 255, blue: 147 / 255, alpha: 1.0))
         case .night:
-//            return (UIColor(red: 12 / 255, green: 20 / 255, blue: 69 / 255, alpha: 1.0),
-//                    UIColor(red: 76 / 255, green: 64 / 255, blue: 142 / 255, alpha: 1.0))
             return (UIColor(red: 6 / 255, green: 21 / 255, blue: 30 / 255, alpha: 1.0),
                     UIColor(red: 32 / 255, green: 40 / 255, blue: 89 / 255, alpha: 1.0))
         }
@@ -40,18 +38,6 @@ struct DayTheme {
     static var grassColor: (top: UIColor, bottom: UIColor) {
         return (UIColor(red: 94 / 255, green: 177 / 255, blue: 72 / 255, alpha: 1.0),
                 UIColor(red: 44 / 255, green: 147 / 255, blue: 42 / 255, alpha: 1.0))
-
-        
-//        switch currentTheme {
-//        case .morning:
-//            return (UIColor(red: 94 / 255, green: 177 / 255, blue: 72 / 255, alpha: 1.0),
-//                    UIColor(red: 44 / 255, green: 147 / 255, blue: 42 / 255, alpha: 1.0))
-//        case .afternoon:
-//            return (UIColor(red: 124 / 255, green: 127 / 255, blue: 42 / 255, alpha: 1.0),
-//                    UIColor(red: 74 / 255, green: 127 / 255, blue: 32 / 255, alpha: 1.0))
-//        case .night:
-//            return (UIColor(red: 45 / 255, green: 46 / 255, blue: 71 / 255, alpha: 1.0),
-//                    UIColor(red: 35 / 255, green: 34 / 255, blue: 61 / 255, alpha: 1.0))
     }
     
     static var spriteColor: UIColor {
