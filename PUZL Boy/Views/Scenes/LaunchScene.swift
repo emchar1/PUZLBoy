@@ -43,13 +43,13 @@ class LaunchScene: SKScene {
         playerSprite.color = DayTheme.spriteColor
         playerSprite.colorBlendFactor = DayTheme.spriteShade
         
-        loadingLabel = SKLabelNode(text: "LOADING...")
+        loadingLabel = SKLabelNode(text: "LOADING")
         loadingLabel.fontName = UIFont.gameFont
         loadingLabel.fontSize = UIFont.gameFontSizeExtraLarge
         loadingLabel.fontColor = UIFont.gameFontColor
-        loadingLabel.horizontalAlignmentMode = .center
+        loadingLabel.horizontalAlignmentMode = .left
         loadingLabel.alpha = 0.95
-        loadingLabel.position = CGPoint(x: K.ScreenDimensions.iPhoneWidth / 2, y: K.ScreenDimensions.height / 6)
+        loadingLabel.position = CGPoint(x: K.ScreenDimensions.iPhoneWidth / 2 - loadingLabel.frame.width / 2, y: K.ScreenDimensions.height / 6)
         loadingLabel.zPosition = K.ZPosition.display
         
         //Setup BackgroundObjects
@@ -102,6 +102,18 @@ class LaunchScene: SKScene {
         for i in 0..<cloudCount {
             cloudSprites[i].animateSprite(withDelay: TimeInterval(i))
         }
+        
+        let animateLabel: [SKAction] = [
+            SKAction.run { [unowned self] in loadingLabel.text = "LOADING" },
+            SKAction.run { [unowned self] in loadingLabel.text = "LOADING." },
+            SKAction.run { [unowned self] in loadingLabel.text = "LOADING.." },
+            SKAction.run { [unowned self] in loadingLabel.text = "LOADING..." }
+        ]
+        
+        let wait = SKAction.wait(forDuration: 0.5)
+        let sequence = SKAction.sequence([animateLabel[0], wait, animateLabel[1], wait, animateLabel[2], wait, animateLabel[3], wait, wait])
+
+        loadingLabel.run(SKAction.repeatForever(sequence))
 
         mountainSprite.animateSprite(withDelay: nil)
     }

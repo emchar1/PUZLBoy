@@ -28,8 +28,8 @@ class ScoringEngine {
         TimeInterval(timeFinal.timeIntervalSince1970 - timeInitial.timeIntervalSince1970)
     }
 
-    var scoreLabel: SKLabelNode
     var totalScoreLabel: SKLabelNode
+    var scoreLabel: SKLabelNode
     var elapsedTimeLabel: SKLabelNode
     var statsLabel: SKLabelNode //temporary
     
@@ -42,29 +42,30 @@ class ScoringEngine {
         numberFormatter.numberStyle = .decimal
         numberFormatter.maximumFractionDigits = 0
         
-        scoreLabel = SKLabelNode()
-        scoreLabel.fontName = UIFont.gameFont
-        scoreLabel.fontSize = UIFont.gameFontSizeSmall
-        scoreLabel.fontColor = UIFont.gameFontColor
-        scoreLabel.position = CGPoint(x: padding, y: K.ScreenDimensions.height - K.ScreenDimensions.topMargin - 30)
-        scoreLabel.horizontalAlignmentMode = .left
-        scoreLabel.verticalAlignmentMode = .baseline
-        scoreLabel.zPosition = K.ZPosition.display
-
         totalScoreLabel = SKLabelNode()
         totalScoreLabel.fontName = UIFont.gameFont
         totalScoreLabel.fontSize = UIFont.gameFontSizeSmall
         totalScoreLabel.fontColor = UIFont.gameFontColor
-        totalScoreLabel.position = CGPoint(x: padding, y: K.ScreenDimensions.height - K.ScreenDimensions.topMargin - 90)
+        totalScoreLabel.position = CGPoint(x: padding, y: K.ScreenDimensions.height - K.ScreenDimensions.topMargin - 30)
         totalScoreLabel.horizontalAlignmentMode = .left
         totalScoreLabel.verticalAlignmentMode = .baseline
         totalScoreLabel.zPosition = K.ZPosition.display
 
-        elapsedTimeLabel = SKLabelNode()
+        scoreLabel = SKLabelNode()
+        scoreLabel.fontName = UIFont.gameFont
+        scoreLabel.fontSize = UIFont.gameFontSizeSmall
+        scoreLabel.fontColor = UIFont.gameFontColor
+        scoreLabel.position = CGPoint(x: padding, y: K.ScreenDimensions.height - K.ScreenDimensions.topMargin - 90)
+        scoreLabel.horizontalAlignmentMode = .left
+        scoreLabel.verticalAlignmentMode = .baseline
+        scoreLabel.zPosition = K.ZPosition.display
+
+        elapsedTimeLabel = SKLabelNode(text: "00:00")
         elapsedTimeLabel.fontName = UIFont.gameFont
         elapsedTimeLabel.fontSize = UIFont.gameFontSizeMedium
         elapsedTimeLabel.fontColor = UIFont.gameFontColor
-        elapsedTimeLabel.position = CGPoint(x: K.ScreenDimensions.iPhoneWidth / 2 - 60, y: K.ScreenDimensions.topOfGameboard + 18)
+        elapsedTimeLabel.position = CGPoint(x: K.ScreenDimensions.iPhoneWidth / 2 - elapsedTimeLabel.frame.width / 2,
+                                            y: K.ScreenDimensions.topOfGameboard + 18)
         elapsedTimeLabel.horizontalAlignmentMode = .left
         elapsedTimeLabel.verticalAlignmentMode = .bottom
         elapsedTimeLabel.zPosition = K.ZPosition.display
@@ -138,8 +139,8 @@ class ScoringEngine {
     }
     
     private func updateScoreLabels() {
-        scoreLabel.text = "SCORE: " + (numberFormatter.string(from: NSNumber(value: score)) ?? "-9999")
         totalScoreLabel.text = "TOTAL: " + (numberFormatter.string(from: NSNumber(value: totalScore)) ?? "-9999")
+        scoreLabel.text = "SCORE: " + (numberFormatter.string(from: NSNumber(value: score)) ?? "-9999")
     }
     
 
@@ -150,8 +151,8 @@ class ScoringEngine {
      - parameter superScene: The GameScene to add all the children to.
      */
     func moveSprites(to superScene: SKScene) {
-        superScene.addChild(scoreLabel)
         superScene.addChild(totalScoreLabel)
+        superScene.addChild(scoreLabel)
         superScene.addChild(elapsedTimeLabel)
 //        superScene.addChild(statsLabel)
     }
