@@ -113,18 +113,7 @@ class ScoringEngine {
         
         score = (max(0, maxTimeScore + Int(elapsedTime) * reductionPerSecondScore) + movesRemaining * moveScore + itemsFound * itemScore + enemiesKilled * killEnemyScore) * (usedContinue ? 1 : 2)
         
-        let savedScore: CGFloat = CGFloat(score)
-        let incrementWait = SKAction.wait(forDuration: 1 / savedScore)
-        let incrementAction = SKAction.run { [unowned self] in
-            score -= 1
-            totalScore += 1
-            
-            updateScoreLabels()
-        }
-        let incrementSequence = SKAction.sequence([incrementWait, incrementAction])
-        let repeatAction = SKAction.repeat(incrementSequence, count: Int(savedScore))
-        
-        scoreLabel.run(SKAction.sequence([SKAction.wait(forDuration: 2.0), repeatAction]))
+        animateScore()
         
         statsLabel.text = "Elapsed Time: \(Int(elapsedTime))\nMoves Remaining: \(movesRemaining)\nItems Found: \(itemsFound)\nEnemies Killed: \(enemiesKilled)\nContinue Used? \(usedContinue)"
     }
@@ -141,6 +130,61 @@ class ScoringEngine {
     private func updateScoreLabels() {
         totalScoreLabel.text = "TOTAL: " + (numberFormatter.string(from: NSNumber(value: totalScore)) ?? "-9999")
         scoreLabel.text = "SCORE: " + (numberFormatter.string(from: NSNumber(value: score)) ?? "-9999")
+    }
+    
+    
+    // MARK: - Animate Score Helper
+    
+    private func animateScore() {
+        scoreLabel.run(SKAction.sequence([scaleScoreAnimation(), SKAction.wait(forDuration: 1.0), incrementScoreAnimation()]))
+    }
+    
+    private func scaleScoreAnimation() -> SKAction {
+        let scaleUpDuration: TimeInterval = 0.125
+        let scaleDownDuration: TimeInterval = 0.5
+        let scaleCount = 250
+        let increment: CGFloat = 0.002
+        
+        let waitUp = SKAction.wait(forDuration: scaleUpDuration / TimeInterval(scaleCount))
+        let waitDown = SKAction.wait(forDuration: scaleDownDuration / TimeInterval(scaleCount))
+        
+        let scaleUpAction = SKAction.run { [unowned self] in
+            scoreLabel.setScale(scoreLabel.yScale + increment)
+        }
+        
+        let scaleDownAction = SKAction.run { [unowned self] in
+            scoreLabel.setScale(scoreLabel.yScale - increment)
+        }
+        
+        let scaleUpRepeat = SKAction.repeat(SKAction.sequence([waitUp, scaleUpAction]), count: scaleCount)
+        let scaleDownRepeat = SKAction.repeat(SKAction.sequence([waitDown, scaleDownAction]), count: scaleCount)
+
+        let scaleUpColor = SKAction.colorize(with: .cyan, colorBlendFactor: 0.75, duration: scaleUpDuration)
+        let scaleDownColor = SKAction.colorize(withColorBlendFactor: 0.0, duration: scaleDownDuration)
+        
+        let scaleSequence = SKAction.sequence([
+            SKAction.group([scaleUpColor, scaleUpRepeat]),
+            SKAction.wait(forDuration: 0.5),
+            SKAction.group([scaleDownColor, scaleDownRepeat])
+        ])
+        
+        return scaleSequence
+    }
+    
+    private func incrementScoreAnimation() -> SKAction {
+        let savedScore: CGFloat = CGFloat(score)
+        let wait = SKAction.wait(forDuration: 1 / savedScore)
+        
+        let incrementAction = SKAction.run { [unowned self] in
+            score -= 1
+            totalScore += 1
+            
+            updateScoreLabels()
+        }
+        
+        let incrementRepeat = SKAction.repeat(SKAction.sequence([wait, incrementAction]), count: Int(savedScore))
+        
+        return incrementRepeat
     }
     
 
