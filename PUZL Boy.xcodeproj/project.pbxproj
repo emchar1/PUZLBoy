@@ -23,8 +23,6 @@
 		EA35348B29241FCD00C11FC0 /* LevelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA35348A29241FCD00C11FC0 /* LevelType.swift */; };
 		EA3951ED2938165A00D0B14A /* Extension+UIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA3951EC2938165A00D0B14A /* Extension+UIImage.swift */; };
 		EA3951F12939DE5900D0B14A /* ScoringEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA3951F02939DE5900D0B14A /* ScoringEngine.swift */; };
-		EA3951F3293FE13B00D0B14A /* gemcollectOLDER.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA3951F2293FE13B00D0B14A /* gemcollectOLDER.mp3 */; };
-		EA3951F5293FE17A00D0B14A /* gemcollectOLDEST.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA3951F4293FE17A00D0B14A /* gemcollectOLDEST.mp3 */; };
 		EA65182B28E4199E00E535BF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA65182A28E4199E00E535BF /* AppDelegate.swift */; };
 		EA65182D28E4199E00E535BF /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA65182C28E4199E00E535BF /* SceneDelegate.swift */; };
 		EA65182F28E4199E00E535BF /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA65182E28E4199E00E535BF /* GameViewController.swift */; };
@@ -35,7 +33,6 @@
 		EA65189228E973D700E535BF /* Level.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA65189028E973D700E535BF /* Level.swift */; };
 		EA65189328E973D700E535BF /* LevelBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA65189128E973D700E535BF /* LevelBuilder.swift */; };
 		EA65189528EA207800E535BF /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA65189428EA207800E535BF /* Constants.swift */; };
-		EA75F0DC292D474B00F09BD7 /* dooropenOLD.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA75F0DB292D474B00F09BD7 /* dooropenOLD.mp3 */; };
 		EA75F0DE292DD61E00F09BD7 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = EA75F0DD292DD61E00F09BD7 /* GoogleService-Info.plist */; };
 		EA75F0E1292DDAAF00F09BD7 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = EA75F0E0292DDAAF00F09BD7 /* FirebaseAnalytics */; };
 		EA75F0E3292DDAAF00F09BD7 /* FirebaseAnalyticsSwift in Frameworks */ = {isa = PBXBuildFile; productRef = EA75F0E2292DDAAF00F09BD7 /* FirebaseAnalyticsSwift */; };
@@ -96,8 +93,6 @@
 		EA35348A29241FCD00C11FC0 /* LevelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelType.swift; sourceTree = "<group>"; };
 		EA3951EC2938165A00D0B14A /* Extension+UIImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+UIImage.swift"; sourceTree = "<group>"; };
 		EA3951F02939DE5900D0B14A /* ScoringEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoringEngine.swift; sourceTree = "<group>"; };
-		EA3951F2293FE13B00D0B14A /* gemcollectOLDER.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = gemcollectOLDER.mp3; sourceTree = "<group>"; };
-		EA3951F4293FE17A00D0B14A /* gemcollectOLDEST.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = gemcollectOLDEST.mp3; sourceTree = "<group>"; };
 		EA65182728E4199E00E535BF /* PUZL Boy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "PUZL Boy.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		EA65182A28E4199E00E535BF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		EA65182C28E4199E00E535BF /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -110,7 +105,6 @@
 		EA65189028E973D700E535BF /* Level.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Level.swift; sourceTree = "<group>"; };
 		EA65189128E973D700E535BF /* LevelBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LevelBuilder.swift; sourceTree = "<group>"; };
 		EA65189428EA207800E535BF /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
-		EA75F0DB292D474B00F09BD7 /* dooropenOLD.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = dooropenOLD.mp3; sourceTree = "<group>"; };
 		EA75F0DD292DD61E00F09BD7 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		EA75F0EA292DF46200F09BD7 /* FIRManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FIRManager.swift; sourceTree = "<group>"; };
 		EA75F0EC292DF57400F09BD7 /* LevelModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelModel.swift; sourceTree = "<group>"; };
@@ -266,12 +260,9 @@
 				EA95D1A1294691820061059C /* boygrunt1.mp3 */,
 				EA95D1A2294691820061059C /* boygrunt2.mp3 */,
 				EADEB3E82931404D00CDB232 /* dooropen.mp3 */,
-				EA75F0DB292D474B00F09BD7 /* dooropenOLD.mp3 */,
 				EA0F1490292CC8D90013038E /* enemydeath.mp3 */,
 				EAAEA3C52931F08300221963 /* gameover.mp3 */,
-				EA3951F4293FE17A00D0B14A /* gemcollectOLDEST.mp3 */,
 				EAAEA3C72931F0C500221963 /* gemcollect.mp3 */,
-				EA3951F2293FE13B00D0B14A /* gemcollectOLDER.mp3 */,
 				EAAEA3C12931AA6E00221963 /* hammerswing.mp3 */,
 				EA95D18829459BC80061059C /* moveglide.mp3 */,
 				EADEB3F4293197B900CDB232 /* movemarsh.mp3 */,
@@ -407,10 +398,8 @@
 				EADEB3F02931526700CDB232 /* overworld_galaxy.mp3 in Resources */,
 				EA0F145D292994330013038E /* moverun1.mp3 in Resources */,
 				EAAEA3C42931D0DA00221963 /* swordslash.mp3 in Resources */,
-				EA3951F5293FE17A00D0B14A /* gemcollectOLDEST.mp3 in Resources */,
 				EADEB3EF2931526700CDB232 /* overworld_egg.mp3 in Resources */,
 				EADEB3F12931526700CDB232 /* overworld_throwback.mp3 in Resources */,
-				EA75F0DC292D474B00F09BD7 /* dooropenOLD.mp3 in Resources */,
 				EADEB3F32931572C00CDB232 /* overworld2.mp3 in Resources */,
 				EA65183728E419A000E535BF /* LaunchScreen.storyboard in Resources */,
 				EA95D18929459BC80061059C /* moveglide.mp3 in Resources */,
@@ -420,7 +409,6 @@
 				EAAEA3C82931F0C500221963 /* gemcollect.mp3 in Resources */,
 				EA75F0DE292DD61E00F09BD7 /* GoogleService-Info.plist in Resources */,
 				EA95D19B294690B70061059C /* boydead.mp3 in Resources */,
-				EA3951F3293FE13B00D0B14A /* gemcollectOLDER.mp3 in Resources */,
 				EA95D19E294690B70061059C /* boyattack2.mp3 in Resources */,
 				EADEB3E92931404D00CDB232 /* dooropen.mp3 in Resources */,
 				EA0F146F2929D9C00013038E /* moverun4.mp3 in Resources */,
