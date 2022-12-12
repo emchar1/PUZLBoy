@@ -13,6 +13,7 @@ class ScoringEngine {
     // MARK: - Properties
     
     private let maxTimeScore = 1000
+    private let minTimeScore = 100
     private let reductionPerSecondScore = -5
     private let moveScore = 2000
     private let itemScore = 500
@@ -111,7 +112,7 @@ class ScoringEngine {
         //DON'T CHANGE THIS ORDER!!!
         pollTime()
         
-        score = (max(0, maxTimeScore + Int(elapsedTime) * reductionPerSecondScore) + movesRemaining * moveScore + itemsFound * itemScore + enemiesKilled * killEnemyScore) * (usedContinue ? 1 : 2)
+        score = (max(minTimeScore, maxTimeScore + Int(elapsedTime) * reductionPerSecondScore) + movesRemaining * moveScore + itemsFound * itemScore + enemiesKilled * killEnemyScore) * (usedContinue ? 1 : 2)
         
         animateScore()
         

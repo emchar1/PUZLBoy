@@ -214,10 +214,14 @@ class GameEngine {
             }
             
             //Update exitClosed panel to exitOpen
-            if isExitAvailable && position == level.end, let child = gameboardSprite.sprite.childNode(withName: row + "," + col) {
-                child.removeFromParent()
-                gameboardSprite.updatePanels(at: position, with: (terrain: LevelType.endOpen, overlay: LevelType.boundary))
+            if isExitAvailable && position == level.end && level.getLevelType(at: position) == .endClosed, let child = gameboardSprite.sprite.childNode(withName: row + "," + col) {
                 
+                let endOpen: K.GameboardPanel = (terrain: LevelType.endOpen, overlay: LevelType.boundary)
+                
+                child.removeFromParent()
+                gameboardSprite.updatePanels(at: position, with: endOpen)
+                level.setLevelType(at: position, with: endOpen)
+                                
                 K.Audio.audioManager.playSound(for: "dooropen")
             }
         }
