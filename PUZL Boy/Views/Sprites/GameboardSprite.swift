@@ -19,9 +19,6 @@ class GameboardSprite {
     var yPosition: CGFloat { (K.ScreenDimensions.height - gameboardSize * spriteScale) / 2 }
     var gameboardSize: CGFloat { CGFloat(panelCount) * panelSize }
 
-    // FIXME: - Check if gate is already open so you don't keep opening it for every overlay object removal AFTER all gems are already picked up
-    var endIsOpen = false
-    
     private var panels: [[SKSpriteNode]]
     private(set) var panelCount: Int
     private(set) var panelSize: CGFloat
