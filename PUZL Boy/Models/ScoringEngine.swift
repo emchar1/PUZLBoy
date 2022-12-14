@@ -124,7 +124,8 @@ class ScoringEngine {
         let seconds = Int(elapsedTime) % 60
         
         elapsedTimeLabel.text = String(format: "%02i:%02i", minutes, seconds)
-
+        elapsedTimeLabel.fontColor = elapsedTime >= 60 * 60 ? UIFont.gameFontColorOutOfTime : UIFont.gameFontColor
+        
         updateScoreLabels()
     }
     

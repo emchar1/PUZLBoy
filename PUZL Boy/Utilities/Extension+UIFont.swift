@@ -10,6 +10,7 @@ import UIKit
 extension UIFont {
     static let gameFont: String = "LuckiestGuy-Regular"
     static let gameFontColor: UIColor = .white
+    static let gameFontColorOutOfTime: UIColor = .red
     
     static let gameFontSizeExtraLarge: CGFloat = 100
     static let gameFontSizeLarge: CGFloat = 75

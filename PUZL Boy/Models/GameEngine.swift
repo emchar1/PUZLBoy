@@ -383,6 +383,7 @@ class GameEngine {
                     shouldUpdateRemainingForBoulderIfIcy = false
                 }
                 
+                Haptics.addHapticFeedback(withStyle: .rigid)
                 shouldDisableControlInput = true
                 playerSprite.startKnockbackAnimation(isAttacked: false, direction: direction) {
                     self.shouldDisableControlInput = false
@@ -405,6 +406,7 @@ class GameEngine {
                 }
 //                updateMovesRemaining() //removed here...
 
+                Haptics.executeHapticPattern()
                 shouldDisableControlInput = true
                 playerSprite.startKnockbackAnimation(isAttacked: true, direction: direction) {
                     self.updateMovesRemaining() //...added here

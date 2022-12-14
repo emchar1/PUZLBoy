@@ -56,6 +56,7 @@
 		EA95D19F294690B70061059C /* boyattack3.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA95D199294690B70061059C /* boyattack3.mp3 */; };
 		EA95D1A3294691820061059C /* boygrunt1.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA95D1A1294691820061059C /* boygrunt1.mp3 */; };
 		EA95D1A4294691820061059C /* boygrunt2.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA95D1A2294691820061059C /* boygrunt2.mp3 */; };
+		EA95D1A6294957060061059C /* Haptics.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA95D1A5294957060061059C /* Haptics.swift */; };
 		EAAEA3BE2931A31200221963 /* movepoisoned.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAAEA3BD2931A31200221963 /* movepoisoned.mp3 */; };
 		EAAEA3C22931AA6E00221963 /* hammerswing.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAAEA3C12931AA6E00221963 /* hammerswing.mp3 */; };
 		EAAEA3C42931D0DA00221963 /* swordslash.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAAEA3C32931D0DA00221963 /* swordslash.mp3 */; };
@@ -123,6 +124,7 @@
 		EA95D199294690B70061059C /* boyattack3.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = boyattack3.mp3; sourceTree = "<group>"; };
 		EA95D1A1294691820061059C /* boygrunt1.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = boygrunt1.mp3; sourceTree = "<group>"; };
 		EA95D1A2294691820061059C /* boygrunt2.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = boygrunt2.mp3; sourceTree = "<group>"; };
+		EA95D1A5294957060061059C /* Haptics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Haptics.swift; sourceTree = "<group>"; };
 		EAAEA3BD2931A31200221963 /* movepoisoned.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = movepoisoned.mp3; sourceTree = "<group>"; };
 		EAAEA3C12931AA6E00221963 /* hammerswing.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = hammerswing.mp3; sourceTree = "<group>"; };
 		EAAEA3C32931D0DA00221963 /* swordslash.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = swordslash.mp3; sourceTree = "<group>"; };
@@ -310,6 +312,7 @@
 			children = (
 				EA65189428EA207800E535BF /* Constants.swift */,
 				EA956C6929257B9C00879AD0 /* AudioManager.swift */,
+				EA95D1A5294957060061059C /* Haptics.swift */,
 				EA956C6B29257D9600879AD0 /* Extension+Comparable.swift */,
 				EA3951EC2938165A00D0B14A /* Extension+UIImage.swift */,
 				EA95D18C29459D550061059C /* Extension+UIFont.swift */,
@@ -440,6 +443,7 @@
 				EA119155290CCA39009D0E3E /* Inventory.swift in Sources */,
 				EA3534892920612300C11FC0 /* DisplayStatusBarSprite.swift in Sources */,
 				EA75F0EB292DF46200F09BD7 /* FIRManager.swift in Sources */,
+				EA95D1A6294957060061059C /* Haptics.swift in Sources */,
 				EA1191532904BC4C009D0E3E /* DisplaySprite.swift in Sources */,
 				EA75F0EF292F55F900F09BD7 /* LaunchScene.swift in Sources */,
 				EA0F84072937D4860031DA76 /* DayTheme.swift in Sources */,
