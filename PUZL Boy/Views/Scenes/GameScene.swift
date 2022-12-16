@@ -14,7 +14,7 @@ class GameScene: SKScene {
     private var gameEngine: GameEngine
     private var scoringEngine: ScoringEngine
 
-    private var currentLevel: Int = 1 {
+    private var currentLevel: Int = 15 {
         didSet {
             if currentLevel > LevelBuilder.maxLevel {
                 currentLevel = 0
@@ -117,13 +117,13 @@ extension GameScene: GameEngineDelegate {
     }
     
     func gameIsOver() {
-        guard gameEngine.canContinue else {
-            stopTimer()
+//        guard gameEngine.canContinue else {
+//            stopTimer()
             
 //            let continueScene = ContinueScene(size: K.ScreenDimensions.screenSize)
 //            removeAllChildren()
-            return
-        }
+//            return
+//        }
         
         scoringEngine.resetScore()
         scoringEngine.updateLabels()

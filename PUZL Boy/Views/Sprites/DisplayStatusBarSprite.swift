@@ -12,6 +12,7 @@ class DisplayStatusBarSprite: SKNode {
     // MARK: - Properties
     
     let width: CGFloat = 140
+    private let iconSize: CGFloat = 80
     private let backgroundBar: SKShapeNode
     private let imageNode: SKSpriteNode
     private let textNode: SKLabelNode
@@ -37,8 +38,8 @@ class DisplayStatusBarSprite: SKNode {
         backgroundBar.strokeColor = .white
         backgroundBar.position = .zero
 
-        imageNode.position = CGPoint(x: -80, y: 0)
-        imageNode.scale(to: CGSize(width: 80, height: 80))
+        imageNode.position = CGPoint(x: -iconSize, y: 0)
+        imageNode.scale(to: CGSize(width: iconSize, height: iconSize))
         
         textNode.fontName = UIFont.gameFont
         textNode.fontSize = UIFont.gameFontSizeSmall
@@ -64,6 +65,14 @@ class DisplayStatusBarSprite: SKNode {
     
     func appendNode(_ node: SKNode) {
         imageNode.addChild(node)
+    }
+    
+    func pulseImage() {
+        let scaleUp = SKAction.scale(to: CGSize(width: iconSize * 2, height: iconSize * 2), duration: 0.1)
+        let wait = SKAction.wait(forDuration: 0.2)
+        let scaleDown = SKAction.scale(to: CGSize(width: iconSize, height: iconSize), duration: 0.3)
+        
+        imageNode.run(SKAction.sequence([scaleUp, wait, scaleDown]))
     }
     
     func removeNode() {

@@ -12,11 +12,11 @@ class DisplaySprite {
     // MARK: - Properties
     
     private(set) var sprite: SKSpriteNode
-    private var levelLabel: SKLabelNode
-    private var statusLives: DisplayStatusBarSprite
-    private var statusMoves: DisplayStatusBarSprite
-    private var statusHammers: DisplayStatusBarSprite
-    private var statusSwords: DisplayStatusBarSprite
+    private(set) var levelLabel: SKLabelNode
+    private(set) var statusLives: DisplayStatusBarSprite
+    private(set) var statusMoves: DisplayStatusBarSprite
+    private(set) var statusHammers: DisplayStatusBarSprite
+    private(set) var statusSwords: DisplayStatusBarSprite
     
     private var heartsAtlas: SKTextureAtlas
     private var heartsTextures: [SKTexture]
@@ -71,7 +71,7 @@ class DisplaySprite {
     }
     
     func drainLives() {
-        let animation = SKAction.animate(with: heartsTextures, timePerFrame: 0.08)
+        let animation = SKAction.animate(with: heartsTextures, timePerFrame: 0.1)
         let heartsNode = SKSpriteNode(texture: heartsTextures[0])
         heartsNode.zPosition = K.ZPosition.displayAnimation
         heartsNode.run(animation)

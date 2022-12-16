@@ -143,12 +143,14 @@ class GameEngine {
             K.Audio.audioManager.playSound(for: "gemcollect")
             completion?()
         case .hammer:
+            displaySprite.statusHammers.pulseImage()
             playerSprite.inventory.hammers += 1
             consumeItem()
             
             playerSprite.startPowerUpAnimation()
             completion?()
         case .sword:
+            displaySprite.statusSwords.pulseImage()
             playerSprite.inventory.swords += 1
             consumeItem()
 
