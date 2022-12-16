@@ -235,32 +235,24 @@ class GameEngine {
      - parameter location: Location for which comparison is to occur.
      */
     func handleControls(in location: CGPoint) {
-        guard !isGameOver else { return print("Control attempted during game over animation...") }
-        guard !shouldDisableControlInput else { return print("Controls disabled while player is still moving") }
+        guard !isGameOver else { return }
+        guard !shouldDisableControlInput else { return }
 
         if inBounds(location: location, direction: .up) {
             movePlayerHelper(direction: .up)
-
-            print("Up pressed")
         }
         else if inBounds(location: location, direction: .down) {
             movePlayerHelper(direction: .down)
-
-            print("Down pressed")
         }
         else if inBounds(location: location, direction: .left) {
             playerSprite.sprite.xScale = -abs(playerSprite.sprite.xScale)
             
             movePlayerHelper(direction: .left)
-
-            print("Left pressed")
         }
         else if inBounds(location: location, direction: .right) {
             playerSprite.sprite.xScale = abs(playerSprite.sprite.xScale)
             
             movePlayerHelper(direction: .right)
-
-            print("Right pressed")
         }
     }
     
@@ -387,7 +379,6 @@ class GameEngine {
                 shouldDisableControlInput = true
                 playerSprite.startKnockbackAnimation(isAttacked: false, direction: direction) {
                     self.shouldDisableControlInput = false
-                    print("A boulder blocks your path... \(self.shouldUpdateRemainingForBoulderIfIcy)")
                 }
 
                 return false
@@ -411,7 +402,6 @@ class GameEngine {
                 playerSprite.startKnockbackAnimation(isAttacked: true, direction: direction) {
                     self.updateMovesRemaining() //...added here
                     self.shouldDisableControlInput = false
-                    print("Enemy attacked!!")
                 }
                                 
                 return false
@@ -442,23 +432,18 @@ class GameEngine {
             delegate?.gameIsSolved(movesRemaining: movesRemaining, itemsFound: playerSprite.inventory.getItemCount(), enemiesKilled: enemiesKilled, usedContinue: GameEngine.usedContinue)
             
             GameEngine.usedContinue = false
-            
-            print("WIN!")
         }
         else if isGameOver {
             K.Audio.audioManager.stopSound(for: K.Audio.overworldTheme)
             K.Audio.audioManager.playSound(for: "gameover")
 
-            playerSprite.startDeadAnimation {
-                K.Audio.audioManager.playSound(for: K.Audio.overworldTheme)
-
-                self.delegate?.gameIsOver()
-            }
-            
+            displaySprite.drainLives()
             GameEngine.livesRemaining -= 1
             GameEngine.usedContinue = true
-            
-            print("GAME OVER")
+
+            playerSprite.startDeadAnimation {
+                self.delegate?.gameIsOver()
+            }
         }
     }
         

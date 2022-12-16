@@ -53,9 +53,20 @@ class DisplayStatusBarSprite: SKNode {
         fatalError("init(coder:) has not been implemented")
     }
     
+    
+    // MARK: - Helper Functions
+    
     func updateAmount(_ newAmount: Int) {
         self.amount = newAmount
         
         textNode.text = "\(newAmount)"
+    }
+    
+    func appendNode(_ node: SKNode) {
+        imageNode.addChild(node)
+    }
+    
+    func removeNode() {
+        imageNode.removeAllChildren()
     }
 }

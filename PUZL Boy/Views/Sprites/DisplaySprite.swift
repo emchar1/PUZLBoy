@@ -18,6 +18,9 @@ class DisplaySprite {
     private var statusHammers: DisplayStatusBarSprite
     private var statusSwords: DisplayStatusBarSprite
     
+    private var heartsAtlas: SKTextureAtlas
+    private var heartsTextures: [SKTexture]
+    
     
     // MARK: - Initialization
     
@@ -45,6 +48,13 @@ class DisplaySprite {
         levelLabel.fontSize = UIFont.gameFontSizeLarge
         levelLabel.fontColor = UIFont.gameFontColor
         
+        heartsAtlas = SKTextureAtlas(named: "_heart")
+        heartsTextures = []
+
+        for i in 0...5 {
+            heartsTextures.append(heartsAtlas.textureNamed("heart\(i)"))
+        }
+        
         addToScene()
     }
     
@@ -58,6 +68,15 @@ class DisplaySprite {
         statusMoves.updateAmount(Int(moves) ?? 99)
         statusHammers.updateAmount(inventory.hammers)
         statusSwords.updateAmount(inventory.swords)
+    }
+    
+    func drainLives() {
+        let animation = SKAction.animate(with: heartsTextures, timePerFrame: 0.08)
+        let heartsNode = SKSpriteNode(texture: heartsTextures[0])
+        heartsNode.zPosition = K.ZPosition.displayAnimation
+        heartsNode.run(animation)
+        
+        statusLives.appendNode(heartsNode)
     }
 
     private func addToScene() {

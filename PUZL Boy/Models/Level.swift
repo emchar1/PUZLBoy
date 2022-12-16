@@ -94,19 +94,13 @@ struct Level: CustomStringConvertible {
     }
     
     mutating func setLevelType(at position: K.GameboardPosition, with gameboardPanel: K.GameboardPanel) {
-        guard (position.row >= 0 && position.row < gameboard.count) && (position.col >= 0 && position.col < gameboard[0].count) else {
-            print("Hit a wall...")
-            return
-        }
+        guard (position.row >= 0 && position.row < gameboard.count) && (position.col >= 0 && position.col < gameboard[0].count) else { return }
         
         gameboard[position.row][position.col] = gameboardPanel
     }
     
     func getLevelType(at position: K.GameboardPosition) -> LevelType {
-        guard (position.row >= 0 && position.row < gameboard.count) && (position.col >= 0 && position.col < gameboard[0].count) else {
-            print("Hit a wall...")
-            return .boundary
-        }
+        guard (position.row >= 0 && position.row < gameboard.count) && (position.col >= 0 && position.col < gameboard[0].count) else { return .boundary }
         
         let check = gameboard[position.row][position.col]
         

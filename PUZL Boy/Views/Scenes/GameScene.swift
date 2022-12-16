@@ -14,7 +14,7 @@ class GameScene: SKScene {
     private var gameEngine: GameEngine
     private var scoringEngine: ScoringEngine
 
-    private var currentLevel: Int = 71 {
+    private var currentLevel: Int = 1 {
         didSet {
             if currentLevel > LevelBuilder.maxLevel {
                 currentLevel = 0
@@ -79,6 +79,10 @@ class GameScene: SKScene {
         run(SKAction.repeatForever(sequence), withKey: "runTimerAction")
     }
     
+    private func stopTimer() {
+        removeAction(forKey: "runTimerAction")
+    }
+    
     private func newGame(level: Int, didWin: Bool) {
         removeAllChildren()
         
@@ -86,6 +90,10 @@ class GameScene: SKScene {
         gameEngine.delegate = self
         gameEngine.moveSprites(to: self)
         scoringEngine.moveSprites(to: self)
+        
+        if !didWin {
+            K.Audio.audioManager.playSound(for: K.Audio.overworldTheme)
+        }
     }
 }
 
@@ -109,15 +117,17 @@ extension GameScene: GameEngineDelegate {
     }
     
     func gameIsOver() {
-//        guard gameEngine.canContinue else {
+        guard gameEngine.canContinue else {
+            stopTimer()
+            
 //            let continueScene = ContinueScene(size: K.ScreenDimensions.screenSize)
 //            removeAllChildren()
-            
-//            return
-//        }
+            return
+        }
+        
         scoringEngine.resetScore()
         scoringEngine.updateLabels()
-        
+                
         newGame(level: currentLevel, didWin: false)
     }
 }
