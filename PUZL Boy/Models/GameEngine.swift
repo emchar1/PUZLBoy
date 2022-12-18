@@ -140,7 +140,7 @@ class GameEngine {
             gemsRemaining -= 1
             consumeItem()
             
-            K.Audio.audioManager.playSound(for: "gemcollect")
+            AudioManager.shared.playSound(for: "gemcollect")
             completion?()
         case .hammer:
             displaySprite.statusHammers.pulseImage()
@@ -181,7 +181,7 @@ class GameEngine {
                 return
             }
             
-            K.Audio.audioManager.playSound(for: "warp")
+            AudioManager.shared.playSound(for: "warp")
             
             playerSprite.startWarpAnimation(shouldReverse: false) {
                 self.level.updatePlayer(position: newWarpLocation)
@@ -226,7 +226,7 @@ class GameEngine {
                 gameboardSprite.updatePanels(at: position, with: endOpen)
                 level.setLevelType(at: position, with: endOpen)
                                 
-                K.Audio.audioManager.playSound(for: "dooropen")
+                AudioManager.shared.playSound(for: "dooropen")
             }
         }
     }
@@ -332,7 +332,7 @@ class GameEngine {
         }
         
         guard checkPanelForPathway(position: nextPanel, direction: direction) else {
-            K.Audio.audioManager.stopSound(for: "moveglide", fadeDuration: 0.5)
+            AudioManager.shared.stopSound(for: "moveglide", fadeDuration: 0.5)
             return
         }
         
@@ -345,7 +345,7 @@ class GameEngine {
                 self.shouldUpdateRemainingForBoulderIfIcy = false
                 self.isGliding = false
 
-                K.Audio.audioManager.stopSound(for: "moveglide", fadeDuration: 0.5)
+                AudioManager.shared.stopSound(for: "moveglide", fadeDuration: 0.5)
                 
                 // FIXME: - I don't like this being here...
                 if self.level.getLevelType(at: nextPanel) == .marsh {
@@ -433,14 +433,14 @@ class GameEngine {
         displaySprite.setLabels(level: "\(level.level)", lives: "\(GameEngine.livesRemaining)", moves: "\(movesRemaining)", inventory: playerSprite.inventory)
         
         if isSolved {
-            K.Audio.audioManager.playSound(for: "winlevel")
+            AudioManager.shared.playSound(for: "winlevel")
             delegate?.gameIsSolved(movesRemaining: movesRemaining, itemsFound: playerSprite.inventory.getItemCount(), enemiesKilled: enemiesKilled, usedContinue: GameEngine.usedContinue)
             
             GameEngine.usedContinue = false
         }
         else if isGameOver {
-            K.Audio.audioManager.stopSound(for: K.Audio.overworldTheme)
-            K.Audio.audioManager.playSound(for: "gameover")
+            AudioManager.shared.stopSound(for: K.Audio.overworldTheme)
+            AudioManager.shared.playSound(for: "gameover")
 
             displaySprite.drainLives()
             GameEngine.livesRemaining -= 1

@@ -44,12 +44,18 @@ class AudioManager {
     
     // MARK: - Properties
     
+    static let shared: AudioManager = {
+        let instance = AudioManager()
+        //additional setup, if needed
+        return instance
+    }()
+    
     var audioItems: [String : AudioItem] = [:]
     
 
     // MARK: - Setup
     
-    init() {
+    private init() {
         do {
             //ambient: Your app’s audio plays even while Music app music or other background audio is playing, and is silenced by the phone’s Silent switch and screen locking.
             //soloAmbient: (the default) Your app stops Music app music or other background audio from playing, and is silenced by the phone’s Silent switch and screen locking.

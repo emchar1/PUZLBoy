@@ -29,11 +29,6 @@ struct K {
          Current theme song for the overworld.
          */
         static let overworldTheme = "overworld"
-        
-        /**
-         Shared AudioManager property throughout the project.
-         */
-        static let audioManager = AudioManager()
     }
     
     
