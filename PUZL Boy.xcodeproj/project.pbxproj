@@ -57,6 +57,7 @@
 		EA95D1A3294691820061059C /* boygrunt1.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA95D1A1294691820061059C /* boygrunt1.mp3 */; };
 		EA95D1A4294691820061059C /* boygrunt2.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA95D1A2294691820061059C /* boygrunt2.mp3 */; };
 		EA95D1A6294957060061059C /* Haptics.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA95D1A5294957060061059C /* Haptics.swift */; };
+		EA95D1AC294D08BC0061059C /* overworld5.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA95D1AB294D08BB0061059C /* overworld5.mp3 */; };
 		EAAEA3BE2931A31200221963 /* movepoisoned.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAAEA3BD2931A31200221963 /* movepoisoned.mp3 */; };
 		EAAEA3C22931AA6E00221963 /* hammerswing.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAAEA3C12931AA6E00221963 /* hammerswing.mp3 */; };
 		EAAEA3C42931D0DA00221963 /* swordslash.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAAEA3C32931D0DA00221963 /* swordslash.mp3 */; };
@@ -125,6 +126,7 @@
 		EA95D1A1294691820061059C /* boygrunt1.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = boygrunt1.mp3; sourceTree = "<group>"; };
 		EA95D1A2294691820061059C /* boygrunt2.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = boygrunt2.mp3; sourceTree = "<group>"; };
 		EA95D1A5294957060061059C /* Haptics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Haptics.swift; sourceTree = "<group>"; };
+		EA95D1AB294D08BB0061059C /* overworld5.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = overworld5.mp3; sourceTree = "<group>"; };
 		EAAEA3BD2931A31200221963 /* movepoisoned.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = movepoisoned.mp3; sourceTree = "<group>"; };
 		EAAEA3C12931AA6E00221963 /* hammerswing.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = hammerswing.mp3; sourceTree = "<group>"; };
 		EAAEA3C32931D0DA00221963 /* swordslash.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = swordslash.mp3; sourceTree = "<group>"; };
@@ -281,6 +283,7 @@
 				EADEB3F22931572C00CDB232 /* overworld2.mp3 */,
 				EA0F147C292B0A050013038E /* overworld3.mp3 */,
 				EA956C74292595F400879AD0 /* overworld4.mp3 */,
+				EA95D1AB294D08BB0061059C /* overworld5.mp3 */,
 				EAAEA3C92931F12B00221963 /* pickupitem.mp3 */,
 				EAAEA3C32931D0DA00221963 /* swordslash.mp3 */,
 				EA95D193294690890061059C /* warp.mp3 */,
@@ -422,6 +425,7 @@
 				EA65183428E419A000E535BF /* Assets.xcassets in Resources */,
 				EA0F147D292B0A050013038E /* overworld3.mp3 in Resources */,
 				EA0F14712929D9C00013038E /* moverun2.mp3 in Resources */,
+				EA95D1AC294D08BC0061059C /* overworld5.mp3 in Resources */,
 				EA956C75292595F400879AD0 /* overworld4.mp3 in Resources */,
 				EAAEA3CC2931F14D00221963 /* winlevel.mp3 in Resources */,
 			);
