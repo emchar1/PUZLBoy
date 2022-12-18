@@ -91,8 +91,15 @@ class Haptics {
         case .boulder:
             addHapticFeedback(withStyle: .rigid)
         case .breakBoulder:
-            for index in stride(from: 0.2, to: 0.4, by: 0.1) {
-                let intensity = CHHapticEventParameter(parameterID: .hapticIntensity, value: 0.8)
+            //Hammer blow
+            events.append(CHHapticEvent(eventType: .hapticTransient, parameters: [
+                CHHapticEventParameter(parameterID: .hapticIntensity, value: 1.0),
+                CHHapticEventParameter(parameterID: .hapticSharpness, value: 1.0)
+            ], relativeTime: 0.2))
+            
+            //Boulder crumble
+            for index in stride(from: 1.0, to: 1.5, by: 0.1) {
+                let intensity = CHHapticEventParameter(parameterID: .hapticIntensity, value: 0.6)
                 let sharpness = CHHapticEventParameter(parameterID: .hapticSharpness, value: 0.3)
                 let event = CHHapticEvent(eventType: .hapticTransient, parameters: [intensity, sharpness], relativeTime: index)
                 
