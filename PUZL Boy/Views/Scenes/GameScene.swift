@@ -34,7 +34,7 @@ class GameScene: SKScene {
         gameEngine.delegate = self
         scaleMode = .aspectFill
 
-        AudioManager.shared.playSound(for: K.Audio.overworldTheme)
+        AudioManager.shared.playSound(for: AudioManager.shared.overworldTheme)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -92,7 +92,7 @@ class GameScene: SKScene {
         scoringEngine.moveSprites(to: self)
         
         if !didWin {
-            AudioManager.shared.playSound(for: K.Audio.overworldTheme)
+            AudioManager.shared.playSound(for: AudioManager.shared.overworldTheme)
         }
     }
 }

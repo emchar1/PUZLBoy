@@ -24,14 +24,6 @@ struct K {
     typealias Gameboard = [[GameboardPanel]]
     
     
-    struct Audio {
-        /**
-         Current theme song for the overworld.
-         */
-        static let overworldTheme = "overworld"
-    }
-    
-    
     struct ScreenDimensions {
         /**
          Default width of the iPhone device in Portrait mode, per RayWenderlich tutorial.

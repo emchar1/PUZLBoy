@@ -439,7 +439,7 @@ class GameEngine {
             GameEngine.usedContinue = false
         }
         else if isGameOver {
-            AudioManager.shared.stopSound(for: K.Audio.overworldTheme)
+            AudioManager.shared.stopSound(for: AudioManager.shared.overworldTheme)
             AudioManager.shared.playSound(for: "gameover")
 
             displaySprite.drainLives()
