@@ -58,6 +58,8 @@
 		EA95D1A4294691820061059C /* boygrunt2.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA95D1A2294691820061059C /* boygrunt2.mp3 */; };
 		EA95D1A6294957060061059C /* Haptics.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA95D1A5294957060061059C /* Haptics.swift */; };
 		EA95D1AC294D08BC0061059C /* overworld5.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA95D1AB294D08BB0061059C /* overworld5.mp3 */; };
+		EA95D1B0294FBE4E0061059C /* GameCenterManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA95D1AF294FBE4E0061059C /* GameCenterManager.swift */; };
+		EA95D1B2294FBF2A0061059C /* Extension+Notification.Name.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA95D1B1294FBF2A0061059C /* Extension+Notification.Name.swift */; };
 		EAAEA3BE2931A31200221963 /* movepoisoned.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAAEA3BD2931A31200221963 /* movepoisoned.mp3 */; };
 		EAAEA3C22931AA6E00221963 /* hammerswing.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAAEA3C12931AA6E00221963 /* hammerswing.mp3 */; };
 		EAAEA3C42931D0DA00221963 /* swordslash.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAAEA3C32931D0DA00221963 /* swordslash.mp3 */; };
@@ -127,6 +129,9 @@
 		EA95D1A2294691820061059C /* boygrunt2.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = boygrunt2.mp3; sourceTree = "<group>"; };
 		EA95D1A5294957060061059C /* Haptics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Haptics.swift; sourceTree = "<group>"; };
 		EA95D1AB294D08BB0061059C /* overworld5.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = overworld5.mp3; sourceTree = "<group>"; };
+		EA95D1AE294FBDD60061059C /* PUZL Boy.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "PUZL Boy.entitlements"; sourceTree = "<group>"; };
+		EA95D1AF294FBE4E0061059C /* GameCenterManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameCenterManager.swift; sourceTree = "<group>"; };
+		EA95D1B1294FBF2A0061059C /* Extension+Notification.Name.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+Notification.Name.swift"; sourceTree = "<group>"; };
 		EAAEA3BD2931A31200221963 /* movepoisoned.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = movepoisoned.mp3; sourceTree = "<group>"; };
 		EAAEA3C12931AA6E00221963 /* hammerswing.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = hammerswing.mp3; sourceTree = "<group>"; };
 		EAAEA3C32931D0DA00221963 /* swordslash.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = swordslash.mp3; sourceTree = "<group>"; };
@@ -186,11 +191,8 @@
 				EA65183E28E419B000E535BF /* Models */,
 				EA65183F28E419BB00E535BF /* Views */,
 				EA65184028E419D600E535BF /* Controllers */,
-				EA65182A28E4199E00E535BF /* AppDelegate.swift */,
-				EA65182C28E4199E00E535BF /* SceneDelegate.swift */,
-				EA95D18629459AF60061059C /* Game Assets */,
-				EA75F0DD292DD61E00F09BD7 /* GoogleService-Info.plist */,
-				EA65183828E419A000E535BF /* Info.plist */,
+				EA95D1B3294FC8D90061059C /* Delegates */,
+				EA95D18629459AF60061059C /* Supporting Files */,
 			);
 			path = "PUZL Boy";
 			sourceTree = "<group>";
@@ -199,6 +201,7 @@
 			isa = PBXGroup;
 			children = (
 				EA75F0EA292DF46200F09BD7 /* FIRManager.swift */,
+				EA95D1AF294FBE4E0061059C /* GameCenterManager.swift */,
 				EAAEA3CD2932C47500221963 /* BackgroundObject.swift */,
 				EA0F84062937D4860031DA76 /* DayTheme.swift */,
 				EA75F0EC292DF57400F09BD7 /* LevelModel.swift */,
@@ -292,14 +295,17 @@
 			path = Sounds;
 			sourceTree = "<group>";
 		};
-		EA95D18629459AF60061059C /* Game Assets */ = {
+		EA95D18629459AF60061059C /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				EA95D1AE294FBDD60061059C /* PUZL Boy.entitlements */,
+				EA75F0DD292DD61E00F09BD7 /* GoogleService-Info.plist */,
+				EA65183828E419A000E535BF /* Info.plist */,
 				EA65183328E419A000E535BF /* Assets.xcassets */,
 				EA95D18A29459C390061059C /* Fonts */,
 				EA956C6D292586F800879AD0 /* Sounds */,
 			);
-			path = "Game Assets";
+			path = "Supporting Files";
 			sourceTree = "<group>";
 		};
 		EA95D18A29459C390061059C /* Fonts */ = {
@@ -308,6 +314,15 @@
 				EA95D18B29459C4A0061059C /* LuckiestGuy-Regular.ttf */,
 			);
 			path = Fonts;
+			sourceTree = "<group>";
+		};
+		EA95D1B3294FC8D90061059C /* Delegates */ = {
+			isa = PBXGroup;
+			children = (
+				EA65182A28E4199E00E535BF /* AppDelegate.swift */,
+				EA65182C28E4199E00E535BF /* SceneDelegate.swift */,
+			);
+			path = Delegates;
 			sourceTree = "<group>";
 		};
 		EA98545728FE6F1900CDB0EF /* Utilities */ = {
@@ -319,6 +334,7 @@
 				EA956C6B29257D9600879AD0 /* Extension+Comparable.swift */,
 				EA3951EC2938165A00D0B14A /* Extension+UIImage.swift */,
 				EA95D18C29459D550061059C /* Extension+UIFont.swift */,
+				EA95D1B1294FBF2A0061059C /* Extension+Notification.Name.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -446,9 +462,11 @@
 				EA35348B29241FCD00C11FC0 /* LevelType.swift in Sources */,
 				EA119155290CCA39009D0E3E /* Inventory.swift in Sources */,
 				EA3534892920612300C11FC0 /* DisplayStatusBarSprite.swift in Sources */,
+				EA95D1B0294FBE4E0061059C /* GameCenterManager.swift in Sources */,
 				EA75F0EB292DF46200F09BD7 /* FIRManager.swift in Sources */,
 				EA95D1A6294957060061059C /* Haptics.swift in Sources */,
 				EA1191532904BC4C009D0E3E /* DisplaySprite.swift in Sources */,
+				EA95D1B2294FBF2A0061059C /* Extension+Notification.Name.swift in Sources */,
 				EA75F0EF292F55F900F09BD7 /* LaunchScene.swift in Sources */,
 				EA0F84072937D4860031DA76 /* DayTheme.swift in Sources */,
 				EA65182F28E4199E00E535BF /* GameViewController.swift in Sources */,
@@ -609,11 +627,12 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "PUZL Boy/Supporting Files/PUZL Boy.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = LZ8V996BTJ;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "PUZL Boy/Info.plist";
+				INFOPLIST_FILE = "PUZL Boy/Supporting Files/Info.plist";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -641,11 +660,12 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "PUZL Boy/Supporting Files/PUZL Boy.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = LZ8V996BTJ;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "PUZL Boy/Info.plist";
+				INFOPLIST_FILE = "PUZL Boy/Supporting Files/Info.plist";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
