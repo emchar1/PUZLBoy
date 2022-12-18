@@ -28,20 +28,31 @@ class Haptics {
     
     // MARK: - Initialization
     
+    /**
+     Private init ensures only one instance of Haptics exists in the entire app.
+     */
     private init() {
         guard CHHapticEngine.capabilitiesForHardware().supportsHaptics else { return }
-
-        do {
-            engine = try CHHapticEngine()
-            try engine?.start()
-            print("Initialized the Haptics engine.")
-        } catch {
-            print("There was an error creating the engine: \(error.localizedDescription)")
-        }
+        
+        startHapticEngine(shouldInitialize: true)
     }
     
     
     // MARK: - Functions
+    
+    func startHapticEngine(shouldInitialize: Bool) {
+        do {
+            if shouldInitialize {
+                engine = try CHHapticEngine()
+                print("Initialized the Haptics engine.")
+            }
+            
+            try engine?.start()
+            print("Started haptic engine.")
+        } catch {
+            print("There was an error creating the engine: \(error.localizedDescription)")
+        }
+    }
     
     /**
      Adds a haptic feedback vibration.
@@ -107,19 +118,18 @@ class Haptics {
         }
         
         // The engine stopped; print out why
-        engine?.stoppedHandler = { reason in
+        engine?.stoppedHandler = { [unowned self] reason in
             print("The engine stopped: \(reason)")
+
+            // FIXME: - This should work in resetHandler, but it's not starting the engine, so I put it here too. Is this correct???
+            startHapticEngine(shouldInitialize: false)
         }
 
         // If something goes wrong, attempt to restart the engine immediately
-        engine?.resetHandler = { [unowned self] in 
+        engine?.resetHandler = { [unowned self] in
             print("The engine reset")
 
-            do {
-                try engine?.start()
-            } catch {
-                print("Failed to restart the engine: \(error)")
-            }
+            startHapticEngine(shouldInitialize: false)
         }
     }
 }
