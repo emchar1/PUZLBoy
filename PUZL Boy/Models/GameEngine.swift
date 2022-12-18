@@ -159,6 +159,7 @@ class GameEngine {
         case .boulder:
             guard playerSprite.inventory.hammers > 0 else { return }
             
+            Haptics.shared.executeCustomPattern(pattern: .breakBoulder)
             playerSprite.inventory.hammers -= 1
             playerSprite.startHammerAnimation(on: gameboardSprite, at: level.player) {
                 self.consumeItem()
@@ -167,6 +168,7 @@ class GameEngine {
         case .enemy:
             guard playerSprite.inventory.swords > 0 else { return }
             
+            Haptics.shared.executeCustomPattern(pattern: .killEnemy)
             enemiesKilled += 1
             playerSprite.inventory.swords -= 1
             playerSprite.startSwordAnimation(on: gameboardSprite, at: level.player) {
@@ -347,6 +349,7 @@ class GameEngine {
                 
                 // FIXME: - I don't like this being here...
                 if self.level.getLevelType(at: nextPanel) == .marsh {
+                    Haptics.shared.executeCustomPattern(pattern: .marsh)
                     self.playerSprite.startMarshEffectAnimation()
                 }
 
@@ -377,7 +380,7 @@ class GameEngine {
                     shouldUpdateRemainingForBoulderIfIcy = false
                 }
                 
-                Haptics.addHapticFeedback(withStyle: .rigid)
+                Haptics.shared.executeCustomPattern(pattern: .boulder)
                 shouldDisableControlInput = true
                 playerSprite.startKnockbackAnimation(isAttacked: false, direction: direction) {
                     self.shouldDisableControlInput = false
@@ -399,7 +402,7 @@ class GameEngine {
                 }
 //                updateMovesRemaining() //removed here...
 
-                Haptics.executeHapticPattern()
+                Haptics.shared.executeCustomPattern(pattern: .enemy)
                 shouldDisableControlInput = true
                 playerSprite.startKnockbackAnimation(isAttacked: true, direction: direction) {
                     self.updateMovesRemaining() //...added here

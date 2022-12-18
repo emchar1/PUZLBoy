@@ -16,7 +16,6 @@ class GameViewController: UIViewController {
         super.viewDidLoad()
         
         let launchScene = LaunchScene(size: K.ScreenDimensions.screenSize)
-        Haptics.startHapticEngine()
 
         let skView = self.view as! SKView
         skView.showsFPS = true
