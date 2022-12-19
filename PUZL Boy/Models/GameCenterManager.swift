@@ -17,6 +17,7 @@ final class GameCenterManager: NSObject {
         return instance
     }()
     
+    private let leaderboardLevelIDPrefix = "PUZLBoy.HiScoreLV"
     var viewController: UIViewController?
 
     
@@ -47,6 +48,30 @@ final class GameCenterManager: NSObject {
     }
     
     
+    // MARK: - Functions
+    
+    func postScoreToLeaderboard(score: Int, level: Int) {
+        guard GKLocalPlayer.local.isAuthenticated else { return print("Unable to save score! Player is not authenticated.") }
+        
+        let scoreReporter = GKScore(leaderboardIdentifier: getLeaderboardLevelID(level))
+        scoreReporter.value = Int64(score)
+                        
+        GKScore.report([scoreReporter])
+    }
+    
+    func showLeaderboard(level: Int) {
+        let gcvc = GKGameCenterViewController()
+        gcvc.leaderboardIdentifier = getLeaderboardLevelID(level)
+        gcvc.gameCenterDelegate = self
+
+        viewController?.present(gcvc, animated: true)
+    }
+    
+    private func getLeaderboardLevelID(_ level: Int) -> String {
+        let levelString = String(format: "%04d", level) //4 digit level, with leading zeroes
+        
+        return leaderboardLevelIDPrefix + levelString
+    }
 }
 
 
@@ -54,4 +79,13 @@ final class GameCenterManager: NSObject {
 
 extension GameCenterManager: GKLocalPlayerListener {
     //what goes here???
+}
+
+
+// MARK: GKGameCenterControllerDelegate
+
+extension GameCenterManager: GKGameCenterControllerDelegate {
+    func gameCenterViewControllerDidFinish(_ gameCenterViewController: GKGameCenterViewController) {
+        gameCenterViewController.dismiss(animated: true)
+    }
 }

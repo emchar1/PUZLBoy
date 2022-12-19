@@ -108,15 +108,20 @@ class ScoringEngine {
         timeFinal = Date()
     }
     
-    func updateScore(movesRemaining: Int, itemsFound: Int, enemiesKilled: Int, usedContinue: Bool) {
+    func updateScore(movesRemaining: Int, itemsFound: Int, enemiesKilled: Int, usedContinue: Bool) -> Int {
         //DON'T CHANGE THIS ORDER!!!
+        let preservedScore: Int
+        
         pollTime()
         
         score = (max(minTimeScore, maxTimeScore + Int(elapsedTime) * reductionPerSecondScore) + movesRemaining * moveScore + itemsFound * itemScore + enemiesKilled * killEnemyScore) * (usedContinue ? 1 : 2)
+        preservedScore = score
         
         animateScore()
         
         statsLabel.text = "Elapsed Time: \(Int(elapsedTime))\nMoves Remaining: \(movesRemaining)\nItems Found: \(itemsFound)\nEnemies Killed: \(enemiesKilled)\nContinue Used? \(usedContinue)"
+        
+        return preservedScore
     }
     
     func updateLabels() {

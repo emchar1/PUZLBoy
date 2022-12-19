@@ -14,7 +14,7 @@ class GameScene: SKScene {
     private var gameEngine: GameEngine
     private var scoringEngine: ScoringEngine
 
-    private var currentLevel: Int = 30 {
+    private var currentLevel: Int = 1 {
         didSet {
             if currentLevel > LevelBuilder.maxLevel {
                 currentLevel = 0
@@ -102,11 +102,16 @@ class GameScene: SKScene {
 
 extension GameScene: GameEngineDelegate {
     func gameIsSolved(movesRemaining: Int, itemsFound: Int, enemiesKilled: Int, usedContinue: Bool) {
-        currentLevel += 1
-
-        scoringEngine.updateScore(movesRemaining: movesRemaining, itemsFound: itemsFound, enemiesKilled: enemiesKilled, usedContinue: usedContinue)
+        let score = scoringEngine.updateScore(movesRemaining: movesRemaining,
+                                              itemsFound: itemsFound,
+                                              enemiesKilled: enemiesKilled,
+                                              usedContinue: usedContinue)
         scoringEngine.updateLabels()
         removeAction(forKey: "runTimerAction")
+
+        GameCenterManager.shared.postScoreToLeaderboard(score: score, level: currentLevel)
+        
+        currentLevel += 1
         
         gameEngine.fadeGameboard(fadeOut: true) { [unowned self] in
             scoringEngine.resetTime()
