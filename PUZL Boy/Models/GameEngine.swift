@@ -140,6 +140,8 @@ class GameEngine {
             gemsRemaining -= 1
             consumeItem()
             
+            GameCenterManager.shared.updateProgress(achievement: .gemCollector, shouldReportImmediately: true)
+            
             AudioManager.shared.playSound(for: "gemcollect")
             completion?()
         case .hammer:
@@ -163,6 +165,9 @@ class GameEngine {
             playerSprite.inventory.hammers -= 1
             playerSprite.startHammerAnimation(on: gameboardSprite, at: level.player) {
                 self.consumeItem()
+                
+                GameCenterManager.shared.updateProgress(achievement: .boulderBreaker, shouldReportImmediately: true)
+
                 completion?()
             }
         case .enemy:
@@ -173,6 +178,9 @@ class GameEngine {
             playerSprite.inventory.swords -= 1
             playerSprite.startSwordAnimation(on: gameboardSprite, at: level.player) {
                 self.consumeItem()
+
+                GameCenterManager.shared.updateProgress(achievement: .dragonSlayer, shouldReportImmediately: true)
+
                 completion?()
             }
         case .warp:
@@ -384,6 +392,9 @@ class GameEngine {
                     updateMovesRemaining()
                     shouldUpdateRemainingForBoulderIfIcy = false
                 }
+                
+                // FIXME: - Testing only...
+                GameCenterManager.shared.resetAchievements()
                 
                 Haptics.shared.executeCustomPattern(pattern: .boulder)
                 shouldDisableControlInput = true

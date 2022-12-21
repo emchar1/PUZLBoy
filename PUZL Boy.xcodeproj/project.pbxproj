@@ -60,6 +60,11 @@
 		EA95D1AC294D08BC0061059C /* overworld5.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA95D1AB294D08BB0061059C /* overworld5.mp3 */; };
 		EA95D1B0294FBE4E0061059C /* GameCenterManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA95D1AF294FBE4E0061059C /* GameCenterManager.swift */; };
 		EA95D1B2294FBF2A0061059C /* Extension+Notification.Name.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA95D1B1294FBF2A0061059C /* Extension+Notification.Name.swift */; };
+		EA95D1B729524F0F0061059C /* BaseAchievement.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA95D1B629524F0F0061059C /* BaseAchievement.swift */; };
+		EA95D1B92952579A0061059C /* AchievementDragonSlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA95D1B82952579A0061059C /* AchievementDragonSlayer.swift */; };
+		EA95D1BB2952F0680061059C /* Achievement.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA95D1BA2952F0680061059C /* Achievement.swift */; };
+		EA95D1BD2952F14C0061059C /* AchievementBoulderBreaker.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA95D1BC2952F14C0061059C /* AchievementBoulderBreaker.swift */; };
+		EA95D1BF29538C450061059C /* AchievementGemCollector.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA95D1BE29538C450061059C /* AchievementGemCollector.swift */; };
 		EAAEA3BE2931A31200221963 /* movepoisoned.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAAEA3BD2931A31200221963 /* movepoisoned.mp3 */; };
 		EAAEA3C22931AA6E00221963 /* hammerswing.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAAEA3C12931AA6E00221963 /* hammerswing.mp3 */; };
 		EAAEA3C42931D0DA00221963 /* swordslash.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAAEA3C32931D0DA00221963 /* swordslash.mp3 */; };
@@ -132,6 +137,11 @@
 		EA95D1AE294FBDD60061059C /* PUZL Boy.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "PUZL Boy.entitlements"; sourceTree = "<group>"; };
 		EA95D1AF294FBE4E0061059C /* GameCenterManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameCenterManager.swift; sourceTree = "<group>"; };
 		EA95D1B1294FBF2A0061059C /* Extension+Notification.Name.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+Notification.Name.swift"; sourceTree = "<group>"; };
+		EA95D1B629524F0F0061059C /* BaseAchievement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseAchievement.swift; sourceTree = "<group>"; };
+		EA95D1B82952579A0061059C /* AchievementDragonSlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementDragonSlayer.swift; sourceTree = "<group>"; };
+		EA95D1BA2952F0680061059C /* Achievement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Achievement.swift; sourceTree = "<group>"; };
+		EA95D1BC2952F14C0061059C /* AchievementBoulderBreaker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementBoulderBreaker.swift; sourceTree = "<group>"; };
+		EA95D1BE29538C450061059C /* AchievementGemCollector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementGemCollector.swift; sourceTree = "<group>"; };
 		EAAEA3BD2931A31200221963 /* movepoisoned.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = movepoisoned.mp3; sourceTree = "<group>"; };
 		EAAEA3C12931AA6E00221963 /* hammerswing.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = hammerswing.mp3; sourceTree = "<group>"; };
 		EAAEA3C32931D0DA00221963 /* swordslash.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = swordslash.mp3; sourceTree = "<group>"; };
@@ -200,8 +210,8 @@
 		EA65183E28E419B000E535BF /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				EA95D1B429524EB60061059C /* Game Center */,
 				EA75F0EA292DF46200F09BD7 /* FIRManager.swift */,
-				EA95D1AF294FBE4E0061059C /* GameCenterManager.swift */,
 				EAAEA3CD2932C47500221963 /* BackgroundObject.swift */,
 				EA0F84062937D4860031DA76 /* DayTheme.swift */,
 				EA75F0EC292DF57400F09BD7 /* LevelModel.swift */,
@@ -323,6 +333,27 @@
 				EA65182C28E4199E00E535BF /* SceneDelegate.swift */,
 			);
 			path = Delegates;
+			sourceTree = "<group>";
+		};
+		EA95D1B429524EB60061059C /* Game Center */ = {
+			isa = PBXGroup;
+			children = (
+				EA95D1AF294FBE4E0061059C /* GameCenterManager.swift */,
+				EA95D1B529524EC10061059C /* Achievements */,
+			);
+			path = "Game Center";
+			sourceTree = "<group>";
+		};
+		EA95D1B529524EC10061059C /* Achievements */ = {
+			isa = PBXGroup;
+			children = (
+				EA95D1BA2952F0680061059C /* Achievement.swift */,
+				EA95D1B629524F0F0061059C /* BaseAchievement.swift */,
+				EA95D1B82952579A0061059C /* AchievementDragonSlayer.swift */,
+				EA95D1BC2952F14C0061059C /* AchievementBoulderBreaker.swift */,
+				EA95D1BE29538C450061059C /* AchievementGemCollector.swift */,
+			);
+			path = Achievements;
 			sourceTree = "<group>";
 		};
 		EA98545728FE6F1900CDB0EF /* Utilities */ = {
@@ -455,6 +486,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				EA65189228E973D700E535BF /* Level.swift in Sources */,
+				EA95D1B92952579A0061059C /* AchievementDragonSlayer.swift in Sources */,
 				EA65184528E5750C00E535BF /* GameboardSprite.swift in Sources */,
 				EA75F0ED292DF57400F09BD7 /* LevelModel.swift in Sources */,
 				EA3951ED2938165A00D0B14A /* Extension+UIImage.swift in Sources */,
@@ -462,10 +494,12 @@
 				EA35348B29241FCD00C11FC0 /* LevelType.swift in Sources */,
 				EA119155290CCA39009D0E3E /* Inventory.swift in Sources */,
 				EA3534892920612300C11FC0 /* DisplayStatusBarSprite.swift in Sources */,
+				EA95D1B729524F0F0061059C /* BaseAchievement.swift in Sources */,
 				EA95D1B0294FBE4E0061059C /* GameCenterManager.swift in Sources */,
 				EA75F0EB292DF46200F09BD7 /* FIRManager.swift in Sources */,
 				EA95D1A6294957060061059C /* Haptics.swift in Sources */,
 				EA1191532904BC4C009D0E3E /* DisplaySprite.swift in Sources */,
+				EA95D1BD2952F14C0061059C /* AchievementBoulderBreaker.swift in Sources */,
 				EA95D1B2294FBF2A0061059C /* Extension+Notification.Name.swift in Sources */,
 				EA75F0EF292F55F900F09BD7 /* LaunchScene.swift in Sources */,
 				EA0F84072937D4860031DA76 /* DayTheme.swift in Sources */,
@@ -473,6 +507,7 @@
 				EA65182B28E4199E00E535BF /* AppDelegate.swift in Sources */,
 				EA956C6C29257D9600879AD0 /* Extension+Comparable.swift in Sources */,
 				EAAEA3D02934225900221963 /* ContinueScene.swift in Sources */,
+				EA95D1BB2952F0680061059C /* Achievement.swift in Sources */,
 				EA65184328E420E400E535BF /* GameScene.swift in Sources */,
 				EA956C6A29257B9C00879AD0 /* AudioManager.swift in Sources */,
 				EAB69E0428F3333000C31DB3 /* GameEngine.swift in Sources */,
@@ -483,6 +518,7 @@
 				EA65189328E973D700E535BF /* LevelBuilder.swift in Sources */,
 				EA65189528EA207800E535BF /* Constants.swift in Sources */,
 				EAB69E0028EFCF5B00C31DB3 /* PlayerSprite.swift in Sources */,
+				EA95D1BF29538C450061059C /* AchievementGemCollector.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
