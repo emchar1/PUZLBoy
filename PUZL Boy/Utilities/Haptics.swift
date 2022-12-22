@@ -44,11 +44,9 @@ class Haptics {
         do {
             if shouldInitialize {
                 engine = try CHHapticEngine()
-                print("Initialized the Haptics engine.")
             }
             
             try engine?.start()
-            print("Started haptic engine.")
         } catch {
             print("There was an error creating the engine: \(error.localizedDescription)")
         }
@@ -126,16 +124,12 @@ class Haptics {
         
         // The engine stopped; print out why
         engine?.stoppedHandler = { [unowned self] reason in
-            print("The engine stopped: \(reason)")
-
             // FIXME: - This should work in resetHandler, but it's not starting the engine, so I put it here too. Is this correct???
             startHapticEngine(shouldInitialize: false)
         }
 
         // If something goes wrong, attempt to restart the engine immediately
         engine?.resetHandler = { [unowned self] in
-            print("The engine reset")
-
             startHapticEngine(shouldInitialize: false)
         }
     }

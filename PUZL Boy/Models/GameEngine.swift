@@ -23,7 +23,6 @@ class GameEngine {
     private static var usedContinue: Bool = false
     private static var winStreak: Int = 0 {
         didSet {
-            //FIXME: - Does/should this reset if user puts down game? Or persist the winstreak???
             switch winStreak {
             case 20: GameCenterManager.shared.updateProgress(achievement: .hotToTrot)
             case 40: GameCenterManager.shared.updateProgress(achievement: .onFire)
@@ -473,7 +472,14 @@ class GameEngine {
             GameEngine.usedContinue = false
             GameEngine.winStreak += 1
             
-            print("Winstreak: \(GameEngine.winStreak)")
+            switch level.level {
+            case 50:    GameCenterManager.shared.updateProgress(achievement: .braniac)
+            case 100:   GameCenterManager.shared.updateProgress(achievement: .enigmatologist)
+            case 500:   GameCenterManager.shared.updateProgress(achievement: .puzlMaster)
+            default: break
+            }
+            
+            print("Win streak: \(GameEngine.winStreak), Level: \(level.level)")
         }
         else if isGameOver {
             AudioManager.shared.stopSound(for: AudioManager.shared.overworldTheme)

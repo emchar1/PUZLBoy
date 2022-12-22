@@ -160,7 +160,6 @@ class AudioManager {
         }
         
         guard interruptPlayback || audioItems[item.fileName] != nil && !audioItems[item.fileName]!.player.isPlaying else {
-            print("Player is playing. Gonna quit...")
             return false
         }
                 
