@@ -92,7 +92,7 @@ class PlayerSprite {
     
     func startIdleAnimation() {
         let fadeDuration: TimeInterval = 0.25
-        let animation = SKAction.animate(with: playerTextures[Texture.idle.rawValue], timePerFrame: animationSpeed)
+        let animation = SKAction.animate(with: playerTextures[Texture.idle.rawValue], timePerFrame: animationSpeed + 0.02)
         
         AudioManager.shared.stopSound(for: "moverun1", fadeDuration: fadeDuration)
         AudioManager.shared.stopSound(for: "moverun2", fadeDuration: fadeDuration)

@@ -71,7 +71,7 @@ class Haptics {
         
         switch pattern {
         case .enemy:
-            for index in stride(from: 0.1, to: 0.3, by: 0.05) {
+            for index in stride(from: 0.1, to: 0.4, by: 0.05) {
                 let intensity = CHHapticEventParameter(parameterID: .hapticIntensity, value: 1.0)
                 let sharpness = CHHapticEventParameter(parameterID: .hapticSharpness, value: 0.5)
                 let event = CHHapticEvent(eventType: .hapticTransient, parameters: [intensity, sharpness], relativeTime: index)

@@ -165,6 +165,7 @@ class AudioManager {
                 
         audioItems[item.fileName]?.player = player
         audioItems[item.fileName]?.player.pan = pan
+        audioItems[item.fileName]?.player.prepareToPlay()
 
         if currentTime != nil {
             audioItems[item.fileName]?.player.currentTime = currentTime!

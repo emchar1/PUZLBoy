@@ -206,6 +206,7 @@ class GameEngine {
                 return
             }
             
+            AudioManager.shared.stopSound(for: "moveglide", fadeDuration: 0.5)
             AudioManager.shared.playSound(for: "warp")
             
             playerSprite.startWarpAnimation(shouldReverse: false) {
