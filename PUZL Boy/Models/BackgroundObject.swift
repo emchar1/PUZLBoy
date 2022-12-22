@@ -19,10 +19,6 @@ struct BackgroundObject {
     private var spriteScale: CGFloat = 1.0
     private(set) var sprite = SKSpriteNode()
 
-    var endPosition: CGPoint {
-        return CGPoint(x: -sprite.size.width, y: sprite.position.y)
-    }
-    
     var speed: TimeInterval {
         var dayMultiplier: TimeInterval
         switch DayTheme.currentTheme {
@@ -131,9 +127,9 @@ struct BackgroundObject {
     // MARK: - Helper Functions
     
     func animateSprite(withDelay delay: TimeInterval?) {
-        let animation = SKAction.move(to: endPosition, duration: speed)
+        let animation = SKAction.move(by: CGVector(dx: -1000, dy: 0), duration: speed)
         let sequence = SKAction.sequence([SKAction.wait(forDuration: delay == nil ? 0 : self.delay * 2 * delay!),
-                                          SKAction.repeat(animation, count: 1)])
+                                          SKAction.repeat(animation, count: 2)])
         sprite.run(sequence)
     }
 }
