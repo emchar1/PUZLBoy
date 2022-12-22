@@ -21,6 +21,18 @@ class GameEngine {
     
     private static var livesRemaining: Int = 3
     private static var usedContinue: Bool = false
+    private static var winStreak: Int = 0 {
+        didSet {
+            //FIXME: - Does/should this reset if user puts down game? Or persist the winstreak???
+            switch winStreak {
+            case 20: GameCenterManager.shared.updateProgress(achievement: .hotToTrot)
+            case 40: GameCenterManager.shared.updateProgress(achievement: .onFire)
+            case 80: GameCenterManager.shared.updateProgress(achievement: .nuclear)
+            default: break
+            }
+        }
+    }
+
     private var level: Level
     private var gemsRemaining: Int
     private var movesRemaining: Int {
@@ -141,7 +153,9 @@ class GameEngine {
             consumeItem()
             
             GameCenterManager.shared.updateProgress(achievement: .gemCollector, shouldReportImmediately: true)
-            
+            GameCenterManager.shared.updateProgress(achievement: .jewelConnoisseur, shouldReportImmediately: true)
+            GameCenterManager.shared.updateProgress(achievement: .myPreciouses, shouldReportImmediately: true)
+
             AudioManager.shared.playSound(for: "gemcollect")
             completion?()
         case .hammer:
@@ -166,7 +180,9 @@ class GameEngine {
             playerSprite.startHammerAnimation(on: gameboardSprite, at: level.player) {
                 self.consumeItem()
                 
+                GameCenterManager.shared.updateProgress(achievement: .stoneCutter, shouldReportImmediately: true)
                 GameCenterManager.shared.updateProgress(achievement: .boulderBreaker, shouldReportImmediately: true)
+                GameCenterManager.shared.updateProgress(achievement: .rockNRoller, shouldReportImmediately: true)
 
                 completion?()
             }
@@ -179,7 +195,9 @@ class GameEngine {
             playerSprite.startSwordAnimation(on: gameboardSprite, at: level.player) {
                 self.consumeItem()
 
+                GameCenterManager.shared.updateProgress(achievement: .exterminator, shouldReportImmediately: true)
                 GameCenterManager.shared.updateProgress(achievement: .dragonSlayer, shouldReportImmediately: true)
+                GameCenterManager.shared.updateProgress(achievement: .beastMaster, shouldReportImmediately: true)
 
                 completion?()
             }
@@ -453,6 +471,9 @@ class GameEngine {
             delegate?.gameIsSolved(movesRemaining: movesRemaining, itemsFound: playerSprite.inventory.getItemCount(), enemiesKilled: enemiesKilled, usedContinue: GameEngine.usedContinue)
             
             GameEngine.usedContinue = false
+            GameEngine.winStreak += 1
+            
+            print("Winstreak: \(GameEngine.winStreak)")
         }
         else if isGameOver {
             AudioManager.shared.stopSound(for: AudioManager.shared.overworldTheme)
@@ -461,6 +482,7 @@ class GameEngine {
             displaySprite.drainLives()
             GameEngine.livesRemaining -= 1
             GameEngine.usedContinue = true
+            GameEngine.winStreak = 0
 
             playerSprite.startDeadAnimation {
                 self.delegate?.gameIsOver()

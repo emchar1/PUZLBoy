@@ -12,9 +12,18 @@ enum Achievement: String, CaseIterable {
     // MARK: - Cases
     
     //Add achievements as we go, here.
+    case exterminator = "Exterminator"
     case dragonSlayer = "DragonSlayer"
+    case beastMaster = "BeastMaster"
+    case stoneCutter = "StoneCutter"
     case boulderBreaker = "BoulderBreaker"
+    case rockNRoller = "RockNRoller"
     case gemCollector = "GemCollector"
+    case jewelConnoisseur = "JewelConnoisseur"
+    case myPreciouses = "MyPreciouses"
+    case hotToTrot = "HotToTrot"
+    case onFire = "OnFire"
+    case nuclear = "Nuclear"
     
     
     // MARK: - Properties
@@ -55,9 +64,18 @@ enum Achievement: String, CaseIterable {
         
         //Add achievements as we go, here.
         switch achievement {
+        case .exterminator:         gkAchievement = AchievementExterminator(identifier: id)
         case .dragonSlayer:         gkAchievement = AchievementDragonSlayer(identifier: id)
+        case .beastMaster:          gkAchievement = AchievementBeastMaster(identifier: id)
+        case .stoneCutter:          gkAchievement = AchievementStoneCutter(identifier: id)
         case .boulderBreaker:       gkAchievement = AchievementBoulderBreaker(identifier: id)
+        case .rockNRoller:          gkAchievement = AchievementRockNRoller(identifier: id)
         case .gemCollector:         gkAchievement = AchievementGemCollector(identifier: id)
+        case .jewelConnoisseur:     gkAchievement = AchievementJewelConnoisseur(identifier: id)
+        case .myPreciouses:         gkAchievement = AchievementMyPreciouses(identifier: id)
+        case .hotToTrot:            gkAchievement = AchievementHotToTrot(identifier: id)
+        case .onFire:               gkAchievement = AchievementOnFire(identifier: id)
+        case .nuclear:              gkAchievement = AchievementNuclear(identifier: id)
         }
         
         gkAchievement.showsCompletionBanner = true
