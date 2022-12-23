@@ -16,7 +16,8 @@ class GameboardSprite {
     let spriteScale: CGFloat = 0.94
 
     var xPosition: CGFloat { (K.ScreenDimensions.iPhoneWidth * (1 - spriteScale)) / 2 }
-    var yPosition: CGFloat { (K.ScreenDimensions.height - gameboardSize * spriteScale) / 2 }
+//    var yPosition: CGFloat { (K.ScreenDimensions.height - gameboardSize * spriteScale) / 2 }
+    var yPosition: CGFloat { (K.ScreenDimensions.height - gameboardSize * spriteScale - K.ScreenDimensions.topMargin - 260) }
     var gameboardSize: CGFloat { CGFloat(panelCount) * panelSize }
 
     private var panels: [[SKSpriteNode]]

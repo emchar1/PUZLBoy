@@ -411,8 +411,7 @@ class GameEngine {
                     shouldUpdateRemainingForBoulderIfIcy = false
                 }
                 
-                // FIXME: - Testing only...
-                GameCenterManager.shared.resetAchievements()
+                GameCenterManager.shared.updateProgress(achievement: .klutz)
                 
                 Haptics.shared.executeCustomPattern(pattern: .boulder)
                 shouldDisableControlInput = true
