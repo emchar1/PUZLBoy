@@ -56,6 +56,7 @@ class GameEngine {
     private var gameboardSprite: GameboardSprite
     private var playerSprite: PlayerSprite
     private var displaySprite: DisplaySprite
+    private var chatSprite: ChatSprite
     
     weak var delegate: GameEngineDelegate?
     
@@ -78,8 +79,9 @@ class GameEngine {
         gemsRemaining = self.level.gems
 
         gameboardSprite = GameboardSprite(level: self.level)
-        K.ScreenDimensions.topOfGameboard = gameboardSprite.yPosition + gameboardSprite.gameboardSize * gameboardSprite.spriteScale
+        K.ScreenDimensions.topOfGameboard = gameboardSprite.yPosition + gameboardSprite.gameboardSize * GameboardSprite.spriteScale
         playerSprite = PlayerSprite(shouldSpawn: true)
+        chatSprite = ChatSprite(imageName: "puzlboy", imageLeft: true, color: .orange)
         displaySprite = DisplaySprite(topYPosition: K.ScreenDimensions.topOfGameboard, bottomYPosition: gameboardSprite.yPosition, margin: 40)
         displaySprite.setLabels(level: "\(level)", lives: "\(GameEngine.livesRemaining)", moves: "\(movesRemaining)", inventory: playerSprite.inventory)
         
@@ -302,7 +304,7 @@ class GameEngine {
      */
     private func inBounds(location: CGPoint, direction: Controls) -> Bool {
         let maxDistance = gameboardSprite.panelCount
-        let panelSize = gameboardSprite.panelSize * gameboardSprite.spriteScale
+        let panelSize = gameboardSprite.panelSize * GameboardSprite.spriteScale
         let gameboardSize = panelSize * CGFloat(maxDistance)
         
         var bottomBound = level.player.row + 1
@@ -506,6 +508,7 @@ class GameEngine {
     func moveSprites(to superScene: SKScene) {
         superScene.addChild(gameboardSprite.sprite)
         superScene.addChild(displaySprite.sprite)
+        superScene.addChild(chatSprite.sprite)
         
         playerSprite.setScale(panelSize: gameboardSprite.panelSize)
         gameboardSprite.sprite.addChild(playerSprite.sprite)

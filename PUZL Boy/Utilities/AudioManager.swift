@@ -50,7 +50,7 @@ class AudioManager {
         return instance
     }()
     
-    let overworldTheme = "overworld_galaxy"
+    let overworldTheme = "overworld_off"
     private var audioItems: [String : AudioItem] = [:]
     
 

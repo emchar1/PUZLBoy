@@ -13,11 +13,11 @@ class GameboardSprite {
     
     private let tiles: [LevelType] = LevelType.allCases
     let overlayTag = "-O"
-    let spriteScale: CGFloat = 0.94
+    static let spriteScale: CGFloat = 0.94
 
-    var xPosition: CGFloat { (K.ScreenDimensions.iPhoneWidth * (1 - spriteScale)) / 2 }
-//    var yPosition: CGFloat { (K.ScreenDimensions.height - gameboardSize * spriteScale) / 2 }
-    var yPosition: CGFloat { (K.ScreenDimensions.height - gameboardSize * spriteScale - K.ScreenDimensions.topMargin - 260) }
+    var xPosition: CGFloat { (K.ScreenDimensions.iPhoneWidth * (1 - GameboardSprite.spriteScale)) / 2 }
+//    var yPosition: CGFloat { (K.ScreenDimensions.height - gameboardSize * GameboardSprite.spriteScale) / 2 }
+    var yPosition: CGFloat { (K.ScreenDimensions.height - gameboardSize * GameboardSprite.spriteScale - K.ScreenDimensions.topMargin - 275) }
     var gameboardSize: CGFloat { CGFloat(panelCount) * panelSize }
 
     private var panels: [[SKSpriteNode]]
@@ -39,7 +39,7 @@ class GameboardSprite {
         sprite.anchorPoint = .zero
         sprite.position = CGPoint(x: xPosition, y: yPosition)
         sprite.zPosition = K.ZPosition.gameboard
-        sprite.setScale(spriteScale)
+        sprite.setScale(GameboardSprite.spriteScale)
 
         for row in 0..<panelCount {
             for col in 0..<panelCount {
