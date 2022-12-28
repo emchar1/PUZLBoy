@@ -13,7 +13,8 @@ class DisplaySprite {
     
     private(set) var sprite: SKSpriteNode
     private(set) var levelLabel: SKLabelNode
-    private(set) var statusLives: DisplayStatusBarSprite
+    private(set) var statusLives: DisplayLivesSprite
+    private(set) var statusHealth: DisplayStatusBarSprite
     private(set) var statusMoves: DisplayStatusBarSprite
     private(set) var statusHammers: DisplayStatusBarSprite
     private(set) var statusSwords: DisplayStatusBarSprite
@@ -28,8 +29,11 @@ class DisplaySprite {
         sprite = SKSpriteNode()
         sprite.zPosition = K.ZPosition.display
         
-        statusLives = DisplayStatusBarSprite(icon: "iconHeart", amount: 99, fillColor: .cyan)
-        statusLives.position = CGPoint(x: margin + statusLives.width, y: topYPosition + margin + statusLives.width / 2)
+        statusLives = DisplayLivesSprite(icon: "Run (6)", amount: 3)
+        statusLives.position = CGPoint(x: K.ScreenDimensions.iPhoneWidth - statusLives.width / 2, y: topYPosition + margin + statusLives.width + 18)
+        
+        statusHealth = DisplayStatusBarSprite(icon: "iconHeart", amount: 99, fillColor: .cyan)
+        statusHealth.position = CGPoint(x: margin + statusHealth.width, y: topYPosition + margin + statusHealth.width / 2)
 
         statusMoves = DisplayStatusBarSprite(icon: "iconBoot", amount: 99, fillColor: .cyan)
         statusMoves.position = CGPoint(x: margin + statusMoves.width, y: topYPosition + margin)
@@ -45,7 +49,7 @@ class DisplaySprite {
         levelLabel.verticalAlignmentMode = .top
         levelLabel.position = CGPoint(x: K.ScreenDimensions.iPhoneWidth - margin, y: K.ScreenDimensions.height - K.ScreenDimensions.topMargin)
         levelLabel.fontName = UIFont.gameFont
-        levelLabel.fontSize = UIFont.gameFontSizeLarge
+        levelLabel.fontSize = UIFont.gameFontSizeSmall
         levelLabel.fontColor = UIFont.gameFontColor
         
         heartsAtlas = SKTextureAtlas(named: "_heart")
@@ -61,28 +65,30 @@ class DisplaySprite {
     
     // MARK: - Helper Functions
     
-    func setLabels(level: String, lives: String, moves: String, inventory: Inventory) {
+    func setLabels(level: String, lives: String, moves: String, health: String, inventory: Inventory) {
         levelLabel.text = "LEVEL \(level)"
         
         statusLives.updateAmount(Int(lives) ?? 99)
         statusMoves.updateAmount(Int(moves) ?? 99)
+        statusHealth.updateAmount(Int(health) ?? 99)
         statusHammers.updateAmount(inventory.hammers)
         statusSwords.updateAmount(inventory.swords)
     }
     
-    func drainLives() {
+    func drainHealth() {
         let animation = SKAction.animate(with: heartsTextures, timePerFrame: 0.1)
         let heartsNode = SKSpriteNode(texture: heartsTextures[0])
         heartsNode.zPosition = K.ZPosition.displayAnimation
         heartsNode.run(animation)
         
-        statusLives.appendNode(heartsNode)
+        statusHealth.appendNode(heartsNode)
     }
 
     private func addToScene() {
         sprite.addChild(levelLabel)
         
         sprite.addChild(statusLives)
+        sprite.addChild(statusHealth)
         sprite.addChild(statusMoves)
         sprite.addChild(statusHammers)
         sprite.addChild(statusSwords)

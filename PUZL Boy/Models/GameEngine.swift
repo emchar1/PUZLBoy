@@ -34,11 +34,14 @@ class GameEngine {
 
     private var level: Level
     private var gemsRemaining: Int
+    private var healthRemaining: Int {
+        didSet {
+            healthRemaining = max(0, healthRemaining)
+        }
+    }
     private var movesRemaining: Int {
         didSet {
-            if movesRemaining < 0 {
-                movesRemaining = 0
-            }
+            movesRemaining = max(0, movesRemaining)
         }
     }
     
@@ -50,7 +53,7 @@ class GameEngine {
     
     private var isExitAvailable: Bool { gemsRemaining == 0 }
     private var isSolved: Bool { isExitAvailable && level.player == level.end }
-    private var isGameOver: Bool { movesRemaining <= 0 }
+    private var isGameOver: Bool { movesRemaining <= 0 || healthRemaining <= 0 }
     var canContinue: Bool { return GameEngine.livesRemaining >= 0 }
     
     private var gameboardSprite: GameboardSprite
@@ -76,6 +79,7 @@ class GameEngine {
         
         self.level = LevelBuilder.levels[level]
         movesRemaining = self.level.moves
+        healthRemaining = self.level.health
         gemsRemaining = self.level.gems
 
         gameboardSprite = GameboardSprite(level: self.level)
@@ -83,7 +87,7 @@ class GameEngine {
         playerSprite = PlayerSprite(shouldSpawn: true)
         chatSprite = ChatSprite(imageName: "puzlboy", imageLeft: true, color: .orange)
         displaySprite = DisplaySprite(topYPosition: K.ScreenDimensions.topOfGameboard, bottomYPosition: gameboardSprite.yPosition, margin: 40)
-        displaySprite.setLabels(level: "\(level)", lives: "\(GameEngine.livesRemaining)", moves: "\(movesRemaining)", inventory: playerSprite.inventory)
+        displaySprite.setLabels(level: "\(level)", lives: "\(GameEngine.livesRemaining)", moves: "\(movesRemaining)", health: "\(healthRemaining)", inventory: playerSprite.inventory)
         
         setPlayerSpritePosition(shouldAnimate: false, completion: nil)
         
@@ -425,7 +429,6 @@ class GameEngine {
             }
         case .enemy:
             if playerSprite.inventory.swords <= 0 {
-                // FIXME: - This is ugly!!! All to make sliding from ice to enemy hit twice!
                 if shouldUpdateRemainingForBoulderIfIcy {
                     updateMovesRemaining()
                     shouldUpdateRemainingForBoulderIfIcy = false
@@ -440,7 +443,7 @@ class GameEngine {
                 Haptics.shared.executeCustomPattern(pattern: .enemy)
                 shouldDisableControlInput = true
                 playerSprite.startKnockbackAnimation(isAttacked: true, direction: direction) {
-                    self.updateMovesRemaining() //...added here
+                    self.updateMovesRemaining(enemyAttacked: true) //...added here
                     self.shouldDisableControlInput = false
                 }
                                 
@@ -463,9 +466,15 @@ class GameEngine {
     /**
      Updates the moveRemaining property.
      */
-    private func updateMovesRemaining() {
-        movesRemaining -= level.getLevelType(at: level.player) == .marsh ? 2 : 1
-        displaySprite.setLabels(level: "\(level.level)", lives: "\(GameEngine.livesRemaining)", moves: "\(movesRemaining)", inventory: playerSprite.inventory)
+    private func updateMovesRemaining(enemyAttacked: Bool = false) {
+        if enemyAttacked {
+            healthRemaining -= 1
+        }
+        else {
+            movesRemaining -= level.getLevelType(at: level.player) == .marsh ? 2 : 1
+        }
+        
+        displaySprite.setLabels(level: "\(level.level)", lives: "\(GameEngine.livesRemaining)", moves: "\(movesRemaining)", health: "\(healthRemaining)", inventory: playerSprite.inventory)
         
         if isSolved {
             AudioManager.shared.playSound(for: "winlevel")
@@ -487,7 +496,10 @@ class GameEngine {
             AudioManager.shared.stopSound(for: AudioManager.shared.overworldTheme)
             AudioManager.shared.playSound(for: "gameover")
 
-            displaySprite.drainLives()
+            if healthRemaining <= 0 {
+                displaySprite.drainHealth()
+            }
+            
             GameEngine.livesRemaining -= 1
             GameEngine.usedContinue = true
             GameEngine.winStreak = 0

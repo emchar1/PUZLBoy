@@ -91,7 +91,7 @@ struct LevelBuilder {
                     ])
                 }
 
-                levels.append(Level(level: model.level, moves: model.moves, gameboard: gameboard))
+                levels.append(Level(level: model.level, moves: model.moves, health: model.health, gameboard: gameboard))
             } //end for model...
             
             LevelBuilder.levels = levels

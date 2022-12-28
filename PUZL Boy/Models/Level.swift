@@ -16,6 +16,7 @@ struct Level: CustomStringConvertible {
     
     private(set) var level: Int
     private(set) var moves: Int
+    private(set) var health: Int
     private(set) var gems: Int
     private(set) var gameboard: K.Gameboard
 
@@ -24,7 +25,7 @@ struct Level: CustomStringConvertible {
     private(set) var end: K.GameboardPosition!
 
     var description: String {
-        var returnValue = "\nlevel: \(level), moves: \(moves), gems: \(gems), gameboard:\n"
+        var returnValue = "\nlevel: \(level), health: \(health), moves: \(moves), gems: \(gems), gameboard:\n"
         
         for row in gameboard {
             returnValue += "\t["
@@ -42,7 +43,7 @@ struct Level: CustomStringConvertible {
     
     // MARK: - Initialization
     
-    init(level: Int, moves: Int, gameboard: K.Gameboard) {
+    init(level: Int, moves: Int, health: Int, gameboard: K.Gameboard) {
         guard gameboard.count == gameboard[0].count else { fatalError("Gameboard must be of equal rows and columns.") }
         
         var startFound = false
@@ -72,6 +73,7 @@ struct Level: CustomStringConvertible {
         
         self.level = level
         self.moves = moves
+        self.health = health
         self.gems = gemsCount
         self.gameboard = gameboard
 

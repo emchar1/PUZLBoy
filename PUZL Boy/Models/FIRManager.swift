@@ -19,6 +19,7 @@ struct FIRManager {
                 let levelModel = LevelModel(
                     level: obj["level"] as! Int,
                     moves: obj["moves"] as! Int,
+                    health: obj["health"] as! Int,
                     
                     //TERRAIN
                     r0c0: obj["r0c0"] as! String,
