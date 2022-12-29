@@ -12,6 +12,9 @@ class ChatSprite {
     // MARK: - Properties
     
     private(set) var sprite: SKShapeNode
+    private(set) var imageSprite: SKSpriteNode
+    private(set) var textSprite: SKLabelNode
+    
     
     // MARK: - Initialization
     
@@ -37,26 +40,38 @@ class ChatSprite {
         sprite.strokeColor = .white
         sprite.fillTexture = SKTexture(image: gradient)
         
-        let imageSprite = SKSpriteNode(texture: SKTexture(imageNamed: imageName))
+        imageSprite = SKSpriteNode(texture: SKTexture(imageNamed: imageName))
         imageSprite.position = CGPoint(x: imageLeft ? 60 : K.ScreenDimensions.iPhoneWidth * GameboardSprite.spriteScale,
                                        y: yOrigin + chatBorderWidth / 2)
         imageSprite.setScale(spriteSizeNew / spriteSizeOrig)
         imageSprite.xScale = (imageLeft ? 1 : -1) * imageSprite.xScale
         imageSprite.anchorPoint = .zero
         
-        // FIXME: - Label
-        let textSprite = SKLabelNode(text: "Watch out for the dragon! He'll eat away at your health. If you have a sword however, you can dispatch him easily. Swords and hammers can be used only once, so plan your next move carefully.")
-        textSprite.position = CGPoint(x: 40 + (imageLeft ? imageSprite.size.width : 20), y: yOrigin + spriteSizeNew - 20)
+        textSprite = SKLabelNode(text: "PUZL Boy is the newest puzzle game out there on the App Store. It's so popular, it's going to have over a million downloads, gamers are going to love it - casual gamers, hardcore gamers, and everyone in-between! So download your copy today!!")
+        textSprite.position = CGPoint(x: 40 + (imageLeft ? imageSprite.size.width : 20), y: yOrigin + spriteSizeNew - 8)
         textSprite.numberOfLines = 0
         textSprite.preferredMaxLayoutWidth = K.ScreenDimensions.iPhoneWidth - spriteSizeNew - 80
         textSprite.horizontalAlignmentMode = .left
         textSprite.verticalAlignmentMode = .top
-        textSprite.fontColor = .white
-        textSprite.fontName = UIFont.gameFont
-        textSprite.fontSize = 32
+        textSprite.fontName = UIFont.chatFont
+        textSprite.fontSize = UIFont.chatFontSize
+        textSprite.fontColor = UIFont.chatFontColor
         
         sprite.addChild(imageSprite)
         sprite.addChild(textSprite)
     }
+    
+    
+    // MARK: - Functions
+    
+    // FIXME: - Need to animate the chat like a typewriter..
+    func sendChat(_ chat: String) {
+        textSprite.text = ""
+        
+        for letter in chat {
+            self.textSprite.text! += "\(letter)"
+        }
+    }
+
     
 }

@@ -86,6 +86,7 @@ class GameEngine {
         K.ScreenDimensions.topOfGameboard = gameboardSprite.yPosition + gameboardSprite.gameboardSize * GameboardSprite.spriteScale
         playerSprite = PlayerSprite(shouldSpawn: true)
         chatSprite = ChatSprite(imageName: "puzlboy", imageLeft: true, color: .orange)
+        chatSprite.sendChat("Training is very important.")
         displaySprite = DisplaySprite(topYPosition: K.ScreenDimensions.topOfGameboard, bottomYPosition: gameboardSprite.yPosition, margin: 40)
         displaySprite.setLabels(level: "\(level)", lives: "\(GameEngine.livesRemaining)", moves: "\(movesRemaining)", health: "\(healthRemaining)", inventory: playerSprite.inventory)
         

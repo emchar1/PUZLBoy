@@ -4,6 +4,7 @@
 <dict>
 	<key>UIAppFonts</key>
 	<array>
+		<string>Boogaloo-Regular.ttf</string>
 		<string>LuckiestGuy-Regular.ttf</string>
 	</array>
 	<key>UIApplicationSceneManifest</key>
