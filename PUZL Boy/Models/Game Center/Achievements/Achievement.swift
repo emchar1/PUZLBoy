@@ -26,7 +26,7 @@ enum Achievement: String, CaseIterable {
     case nuclear = "Nuclear"
     case braniac = "Braniac"
     case enigmatologist = "Enigmatologist"
-    case puzlMaster = "PUZLMaster"
+    case puzlGuru = "PUZLGuru"
     case klutz = "Klutz"
     
     
@@ -82,7 +82,7 @@ enum Achievement: String, CaseIterable {
         case .nuclear:              gkAchievement = AchievementNuclear(identifier: id)
         case .braniac:              gkAchievement = AchievementBraniac(identifier: id)
         case .enigmatologist:       gkAchievement = AchievementEnigmatologist(identifier: id)
-        case .puzlMaster:           gkAchievement = AchievementPUZLMaster(identifier: id)
+        case .puzlGuru:             gkAchievement = AchievementPUZLGuru(identifier: id)
         case .klutz:                gkAchievement = AchievementKlutz(identifier: id)
         }
         

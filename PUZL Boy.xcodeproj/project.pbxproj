@@ -76,7 +76,7 @@
 		EA95D1D129542C720061059C /* AchievementNuclear.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA95D1D029542C720061059C /* AchievementNuclear.swift */; };
 		EA95D1D329544B4E0061059C /* AchievementBraniac.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA95D1D229544B4E0061059C /* AchievementBraniac.swift */; };
 		EA95D1D529544D990061059C /* AchievementEnigmatologist.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA95D1D429544D990061059C /* AchievementEnigmatologist.swift */; };
-		EA95D1D729544DBA0061059C /* AchievementPUZLMaster.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA95D1D629544DBA0061059C /* AchievementPUZLMaster.swift */; };
+		EA95D1D729544DBA0061059C /* AchievementPUZLGuru.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA95D1D629544DBA0061059C /* AchievementPUZLGuru.swift */; };
 		EA95D1DD295523FF0061059C /* AchievementKlutz.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA95D1DC295523FF0061059C /* AchievementKlutz.swift */; };
 		EA95D1DF295674AE0061059C /* ChatSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA95D1DE295674AE0061059C /* ChatSprite.swift */; };
 		EA95D1FA295BEC160061059C /* DisplayLivesSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA95D1F9295BEC160061059C /* DisplayLivesSprite.swift */; };
@@ -169,7 +169,7 @@
 		EA95D1D029542C720061059C /* AchievementNuclear.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementNuclear.swift; sourceTree = "<group>"; };
 		EA95D1D229544B4E0061059C /* AchievementBraniac.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementBraniac.swift; sourceTree = "<group>"; };
 		EA95D1D429544D990061059C /* AchievementEnigmatologist.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementEnigmatologist.swift; sourceTree = "<group>"; };
-		EA95D1D629544DBA0061059C /* AchievementPUZLMaster.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementPUZLMaster.swift; sourceTree = "<group>"; };
+		EA95D1D629544DBA0061059C /* AchievementPUZLGuru.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementPUZLGuru.swift; sourceTree = "<group>"; };
 		EA95D1DC295523FF0061059C /* AchievementKlutz.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementKlutz.swift; sourceTree = "<group>"; };
 		EA95D1DE295674AE0061059C /* ChatSprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatSprite.swift; sourceTree = "<group>"; };
 		EA95D1F9295BEC160061059C /* DisplayLivesSprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayLivesSprite.swift; sourceTree = "<group>"; };
@@ -398,7 +398,7 @@
 				EA95D1D029542C720061059C /* AchievementNuclear.swift */,
 				EA95D1D229544B4E0061059C /* AchievementBraniac.swift */,
 				EA95D1D429544D990061059C /* AchievementEnigmatologist.swift */,
-				EA95D1D629544DBA0061059C /* AchievementPUZLMaster.swift */,
+				EA95D1D629544DBA0061059C /* AchievementPUZLGuru.swift */,
 				EA95D1DC295523FF0061059C /* AchievementKlutz.swift */,
 			);
 			path = Achievements;
@@ -579,7 +579,7 @@
 				EA95D18D29459D550061059C /* Extension+UIFont.swift in Sources */,
 				EA65189328E973D700E535BF /* LevelBuilder.swift in Sources */,
 				EA65189528EA207800E535BF /* Constants.swift in Sources */,
-				EA95D1D729544DBA0061059C /* AchievementPUZLMaster.swift in Sources */,
+				EA95D1D729544DBA0061059C /* AchievementPUZLGuru.swift in Sources */,
 				EA95D1CB29541F7F0061059C /* AchievementRockNRoller.swift in Sources */,
 				EAB69E0028EFCF5B00C31DB3 /* PlayerSprite.swift in Sources */,
 				EA95D1BF29538C450061059C /* AchievementGemCollector.swift in Sources */,
