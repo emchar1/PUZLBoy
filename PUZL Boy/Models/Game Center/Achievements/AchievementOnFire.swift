@@ -8,7 +8,7 @@
 import Foundation
 
 class AchievementOnFire: BaseAchievement {
-    override func updatePercentage() {
+    override func updatePercentage(increment: Double = 1) {
         percentComplete = 100
         print("Percent complete for On Fire: \(percentComplete)")
     }

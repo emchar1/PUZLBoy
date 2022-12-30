@@ -10,8 +10,8 @@ import Foundation
 class AchievementKlutz: BaseAchievement {
     let requirement: Double = 100
     
-    override func updatePercentage() {
-        percentComplete += 1 / requirement * 100
+    override func updatePercentage(increment: Double = 1) {
+        percentComplete += increment / requirement * 100
         print("Percent complete for Klutz: \(percentComplete)")
     }
 }

@@ -29,10 +29,10 @@ class BaseAchievement: GKAchievement {
     // MARK: - Functions
     
     /// Updates the progress of the achievement
-    func updateProgress() {
+    func updateProgress(increment: Double = 1) {
         guard !isComplete else { return }
         
-        updatePercentage()
+        updatePercentage(increment: increment)
         
         inProgress = true
         
@@ -40,7 +40,7 @@ class BaseAchievement: GKAchievement {
     }
     
     /// Logic to update the percentage completed.
-    func updatePercentage() {
+    func updatePercentage(increment: Double = 1) {
         fatalError("updatePercentage() has not been implemented. Please override this method in the subclass.")
     }
     

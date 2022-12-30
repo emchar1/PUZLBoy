@@ -110,10 +110,10 @@ final class GameCenterManager: NSObject {
         }
     }
     
-    func updateProgress(achievement: Achievement, shouldReportImmediately: Bool = false) {
+    func updateProgress(achievement: Achievement, increment: Double = 1, shouldReportImmediately: Bool = false) {
         guard let achievmentToUpdate = Achievement.achievements[achievement] else { return }
         
-        achievmentToUpdate.updateProgress()
+        achievmentToUpdate.updateProgress(increment: increment)
         
         if shouldReportImmediately {
             report(soloAchievement: achievmentToUpdate)

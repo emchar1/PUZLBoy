@@ -34,6 +34,7 @@ class GameEngine {
 
     private var level: Level
     private var gemsRemaining: Int
+    private var gemsCollected: Int = 0
     private var healthRemaining: Int {
         didSet {
             healthRemaining = max(0, healthRemaining)
@@ -50,6 +51,7 @@ class GameEngine {
     private var shouldUpdateRemainingForBoulderIfIcy = false
     private var isGliding = false
     private var enemiesKilled: Int = 0
+    private var bouldersBroken: Int = 0
     
     private var isExitAvailable: Bool { gemsRemaining == 0 }
     private var isSolved: Bool { isExitAvailable && level.player == level.end }
@@ -155,14 +157,11 @@ class GameEngine {
         switch level.getLevelType(at: level.player) {
         case .gem:
             gemsRemaining -= 1
+            gemsCollected += 1
             consumeItem()
             
             chatSprite.sendChat(profile: .hero, chat: "Ooh, piece of candy!", startNewChat: true)
             
-            GameCenterManager.shared.updateProgress(achievement: .gemCollector, shouldReportImmediately: true)
-            GameCenterManager.shared.updateProgress(achievement: .jewelConnoisseur, shouldReportImmediately: true)
-            GameCenterManager.shared.updateProgress(achievement: .myPreciouses, shouldReportImmediately: true)
-
             AudioManager.shared.playSound(for: "gemcollect")
             completion?()
         case .hammer:
@@ -185,14 +184,11 @@ class GameEngine {
             chatSprite.sendChat(profile: .princess, chat: "Hie-yahhhh!!!!!", startNewChat: true)
             
             Haptics.shared.executeCustomPattern(pattern: .breakBoulder)
+            bouldersBroken += 1
             playerSprite.inventory.hammers -= 1
             playerSprite.startHammerAnimation(on: gameboardSprite, at: level.player) {
                 self.consumeItem()
                 
-                GameCenterManager.shared.updateProgress(achievement: .stoneCutter, shouldReportImmediately: true)
-                GameCenterManager.shared.updateProgress(achievement: .boulderBreaker, shouldReportImmediately: true)
-                GameCenterManager.shared.updateProgress(achievement: .rockNRoller, shouldReportImmediately: true)
-
                 completion?()
             }
         case .enemy:
@@ -205,10 +201,6 @@ class GameEngine {
             playerSprite.inventory.swords -= 1
             playerSprite.startSwordAnimation(on: gameboardSprite, at: level.player) {
                 self.consumeItem()
-
-                GameCenterManager.shared.updateProgress(achievement: .exterminator, shouldReportImmediately: true)
-                GameCenterManager.shared.updateProgress(achievement: .dragonSlayer, shouldReportImmediately: true)
-                GameCenterManager.shared.updateProgress(achievement: .beastMaster, shouldReportImmediately: true)
 
                 completion?()
             }
@@ -491,6 +483,20 @@ class GameEngine {
             GameEngine.usedContinue = false
             GameEngine.winStreak += 1
             
+            
+            //Achievement stuff
+            GameCenterManager.shared.updateProgress(achievement: .gemCollector, increment: Double(gemsCollected), shouldReportImmediately: true)
+            GameCenterManager.shared.updateProgress(achievement: .jewelConnoisseur, increment: Double(gemsCollected), shouldReportImmediately: true)
+            GameCenterManager.shared.updateProgress(achievement: .myPreciouses, increment: Double(gemsCollected), shouldReportImmediately: true)
+            
+            GameCenterManager.shared.updateProgress(achievement: .stoneCutter, increment: Double(bouldersBroken), shouldReportImmediately: true)
+            GameCenterManager.shared.updateProgress(achievement: .boulderBreaker, increment: Double(bouldersBroken), shouldReportImmediately: true)
+            GameCenterManager.shared.updateProgress(achievement: .rockNRoller, increment: Double(bouldersBroken), shouldReportImmediately: true)
+
+            GameCenterManager.shared.updateProgress(achievement: .exterminator, increment: Double(enemiesKilled), shouldReportImmediately: true)
+            GameCenterManager.shared.updateProgress(achievement: .dragonSlayer, increment: Double(enemiesKilled), shouldReportImmediately: true)
+            GameCenterManager.shared.updateProgress(achievement: .beastMaster, increment: Double(enemiesKilled), shouldReportImmediately: true)
+
             switch level.level {
             case 50:    GameCenterManager.shared.updateProgress(achievement: .braniac)
             case 100:   GameCenterManager.shared.updateProgress(achievement: .enigmatologist)
