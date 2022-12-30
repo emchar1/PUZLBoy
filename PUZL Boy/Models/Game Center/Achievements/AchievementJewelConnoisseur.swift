@@ -8,7 +8,7 @@
 import Foundation
 
 class AchievementJewelConnoisseur: BaseAchievement {
-    let requirement: Double = 250
+    let requirement: Double = 500
     
     override func updatePercentage(increment: Double = 1) {
         percentComplete += increment / requirement * 100

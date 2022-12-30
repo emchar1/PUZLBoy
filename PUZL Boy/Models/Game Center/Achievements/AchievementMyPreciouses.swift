@@ -8,7 +8,7 @@
 import Foundation
 
 class AchievementMyPreciouses: BaseAchievement {
-    let requirement: Double = 1000
+    let requirement: Double = 2000
     
     override func updatePercentage(increment: Double = 1) {
         percentComplete += increment / requirement * 100
