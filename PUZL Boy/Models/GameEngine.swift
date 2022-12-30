@@ -85,8 +85,7 @@ class GameEngine {
         gameboardSprite = GameboardSprite(level: self.level)
         K.ScreenDimensions.topOfGameboard = gameboardSprite.yPosition + gameboardSprite.gameboardSize * GameboardSprite.spriteScale
         playerSprite = PlayerSprite(shouldSpawn: true)
-        chatSprite = ChatSprite(imageName: "puzlboy", imageLeft: true, color: .orange)
-        chatSprite.sendChat("Training is very important.")
+        chatSprite = ChatSprite()
         displaySprite = DisplaySprite(topYPosition: K.ScreenDimensions.topOfGameboard, bottomYPosition: gameboardSprite.yPosition, margin: 40)
         displaySprite.setLabels(level: "\(level)", lives: "\(GameEngine.livesRemaining)", moves: "\(movesRemaining)", health: "\(healthRemaining)", inventory: playerSprite.inventory)
         
@@ -158,6 +157,8 @@ class GameEngine {
             gemsRemaining -= 1
             consumeItem()
             
+            chatSprite.sendChat(profile: .hero, chat: "Ooh, piece of candy!", startNewChat: true)
+            
             GameCenterManager.shared.updateProgress(achievement: .gemCollector, shouldReportImmediately: true)
             GameCenterManager.shared.updateProgress(achievement: .jewelConnoisseur, shouldReportImmediately: true)
             GameCenterManager.shared.updateProgress(achievement: .myPreciouses, shouldReportImmediately: true)
@@ -181,6 +182,8 @@ class GameEngine {
         case .boulder:
             guard playerSprite.inventory.hammers > 0 else { return }
             
+            chatSprite.sendChat(profile: .princess, chat: "Hie-yahhhh!!!!!", startNewChat: true)
+            
             Haptics.shared.executeCustomPattern(pattern: .breakBoulder)
             playerSprite.inventory.hammers -= 1
             playerSprite.startHammerAnimation(on: gameboardSprite, at: level.player) {
@@ -195,6 +198,8 @@ class GameEngine {
         case .enemy:
             guard playerSprite.inventory.swords > 0 else { return }
             
+            chatSprite.sendChat(profile: .villain, chat: "Die, bitch!", startNewChat: true)
+
             Haptics.shared.executeCustomPattern(pattern: .killEnemy)
             enemiesKilled += 1
             playerSprite.inventory.swords -= 1
@@ -418,6 +423,8 @@ class GameEngine {
                     shouldUpdateRemainingForBoulderIfIcy = false
                 }
                 
+                chatSprite.sendChat(profile: .trainer, chat: "You can't go that way, PUZL Boy!", startNewChat: true)
+
                 GameCenterManager.shared.updateProgress(achievement: .klutz)
                 
                 Haptics.shared.executeCustomPattern(pattern: .boulder)
