@@ -81,6 +81,9 @@
 		EA95D1DF295674AE0061059C /* ChatSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA95D1DE295674AE0061059C /* ChatSprite.swift */; };
 		EA95D1FA295BEC160061059C /* DisplayLivesSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA95D1F9295BEC160061059C /* DisplayLivesSprite.swift */; };
 		EA95D200295D83E40061059C /* Boogaloo-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = EA95D1FF295D83E40061059C /* Boogaloo-Regular.ttf */; };
+		EA95D204295F86B30061059C /* AchievementScavenger.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA95D203295F86B30061059C /* AchievementScavenger.swift */; };
+		EA95D206295F86F40061059C /* AchievementItemWielder.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA95D205295F86F40061059C /* AchievementItemWielder.swift */; };
+		EA95D208295F87120061059C /* AchievementHoarder.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA95D207295F87120061059C /* AchievementHoarder.swift */; };
 		EAAEA3BE2931A31200221963 /* movepoisoned.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAAEA3BD2931A31200221963 /* movepoisoned.mp3 */; };
 		EAAEA3C22931AA6E00221963 /* hammerswing.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAAEA3C12931AA6E00221963 /* hammerswing.mp3 */; };
 		EAAEA3C42931D0DA00221963 /* swordslash.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAAEA3C32931D0DA00221963 /* swordslash.mp3 */; };
@@ -174,6 +177,9 @@
 		EA95D1DE295674AE0061059C /* ChatSprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatSprite.swift; sourceTree = "<group>"; };
 		EA95D1F9295BEC160061059C /* DisplayLivesSprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayLivesSprite.swift; sourceTree = "<group>"; };
 		EA95D1FF295D83E40061059C /* Boogaloo-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Boogaloo-Regular.ttf"; sourceTree = "<group>"; };
+		EA95D203295F86B30061059C /* AchievementScavenger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementScavenger.swift; sourceTree = "<group>"; };
+		EA95D205295F86F40061059C /* AchievementItemWielder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementItemWielder.swift; sourceTree = "<group>"; };
+		EA95D207295F87120061059C /* AchievementHoarder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementHoarder.swift; sourceTree = "<group>"; };
 		EAAEA3BD2931A31200221963 /* movepoisoned.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = movepoisoned.mp3; sourceTree = "<group>"; };
 		EAAEA3C12931AA6E00221963 /* hammerswing.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = hammerswing.mp3; sourceTree = "<group>"; };
 		EAAEA3C32931D0DA00221963 /* swordslash.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = swordslash.mp3; sourceTree = "<group>"; };
@@ -399,6 +405,9 @@
 				EA95D1D229544B4E0061059C /* AchievementBraniac.swift */,
 				EA95D1D429544D990061059C /* AchievementEnigmatologist.swift */,
 				EA95D1D629544DBA0061059C /* AchievementPUZLGuru.swift */,
+				EA95D203295F86B30061059C /* AchievementScavenger.swift */,
+				EA95D205295F86F40061059C /* AchievementItemWielder.swift */,
+				EA95D207295F87120061059C /* AchievementHoarder.swift */,
 				EA95D1DC295523FF0061059C /* AchievementKlutz.swift */,
 			);
 			path = Achievements;
@@ -560,6 +569,7 @@
 				EA95D1DD295523FF0061059C /* AchievementKlutz.swift in Sources */,
 				EA1191532904BC4C009D0E3E /* DisplaySprite.swift in Sources */,
 				EA95D1BD2952F14C0061059C /* AchievementBoulderBreaker.swift in Sources */,
+				EA95D204295F86B30061059C /* AchievementScavenger.swift in Sources */,
 				EA95D1B2294FBF2A0061059C /* Extension+Notification.Name.swift in Sources */,
 				EA75F0EF292F55F900F09BD7 /* LaunchScene.swift in Sources */,
 				EA0F84072937D4860031DA76 /* DayTheme.swift in Sources */,
@@ -579,8 +589,10 @@
 				EA95D18D29459D550061059C /* Extension+UIFont.swift in Sources */,
 				EA65189328E973D700E535BF /* LevelBuilder.swift in Sources */,
 				EA65189528EA207800E535BF /* Constants.swift in Sources */,
+				EA95D206295F86F40061059C /* AchievementItemWielder.swift in Sources */,
 				EA95D1D729544DBA0061059C /* AchievementPUZLGuru.swift in Sources */,
 				EA95D1CB29541F7F0061059C /* AchievementRockNRoller.swift in Sources */,
+				EA95D208295F87120061059C /* AchievementHoarder.swift in Sources */,
 				EAB69E0028EFCF5B00C31DB3 /* PlayerSprite.swift in Sources */,
 				EA95D1BF29538C450061059C /* AchievementGemCollector.swift in Sources */,
 			);
