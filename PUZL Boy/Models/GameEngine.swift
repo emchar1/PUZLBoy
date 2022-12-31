@@ -24,17 +24,10 @@ class GameEngine {
     private static var winStreak: Int = 0 {
         didSet {
             switch winStreak {
-            case 20: GameCenterManager.shared.updateProgress(achievement: .hotToTrot)
-            case 40: GameCenterManager.shared.updateProgress(achievement: .onFire)
-            case 80: GameCenterManager.shared.updateProgress(achievement: .nuclear)
+            case 20: GameCenterManager.shared.updateProgress(achievement: .hotToTrot, shouldReportImmediately: true)
+            case 40: GameCenterManager.shared.updateProgress(achievement: .onFire, shouldReportImmediately: true)
+            case 80: GameCenterManager.shared.updateProgress(achievement: .nuclear, shouldReportImmediately: true)
             default: break
-            }
-        }
-    }
-    private static var deadCount: Int = 0 {
-        didSet {
-            if deadCount == 50 {
-                GameCenterManager.shared.updateProgress(achievement: .reckless)
             }
         }
     }
@@ -508,7 +501,8 @@ class GameEngine {
             GameEngine.livesRemaining -= 1
             GameEngine.usedContinue = true
             GameEngine.winStreak = 0
-            GameEngine.deadCount += 1
+            
+            GameCenterManager.shared.updateProgress(achievement: .reckless)
 
             playerSprite.startDeadAnimation {
                 self.delegate?.gameIsOver()
@@ -535,9 +529,9 @@ class GameEngine {
                                                 shouldReportImmediately: true)
 
         switch level.level {
-        case 50:    GameCenterManager.shared.updateProgress(achievement: .braniac)
-        case 100:   GameCenterManager.shared.updateProgress(achievement: .enigmatologist)
-        case 500:   GameCenterManager.shared.updateProgress(achievement: .puzlGuru)
+        case 50:    GameCenterManager.shared.updateProgress(achievement: .braniac, shouldReportImmediately: true)
+        case 100:   GameCenterManager.shared.updateProgress(achievement: .enigmatologist, shouldReportImmediately: true)
+        case 500:   GameCenterManager.shared.updateProgress(achievement: .puzlGuru, shouldReportImmediately: true)
         default: break
         }
     }

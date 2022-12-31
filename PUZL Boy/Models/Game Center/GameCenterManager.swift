@@ -138,7 +138,7 @@ final class GameCenterManager: NSObject {
         }
         
         GKAchievement.report(achievementsFiltered) { error in
-            guard error == nil else { return print("Error reporting achievements to Game Center: \(error!.localizedDescription)")}
+            guard error == nil else { return print("Error reporting achievements to Game Center: \(error!.localizedDescription)") }
             
             //handle stuff here
             print("Achievements reported!")
