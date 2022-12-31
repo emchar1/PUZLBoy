@@ -31,6 +31,7 @@ enum Achievement: String, CaseIterable {
     case itemWielder = "ItemWielder"
     case hoarder = "Hoarder"
     case klutz = "Klutz"
+    case reckless = "Reckless"
     
     
     // MARK: - Properties
@@ -90,6 +91,7 @@ enum Achievement: String, CaseIterable {
         case .itemWielder:          gkAchievement = AchievementItemWielder(identifier: id)
         case .hoarder:              gkAchievement = AchievementHoarder(identifier: id)
         case .klutz:                gkAchievement = AchievementKlutz(identifier: id)
+        case .reckless:             gkAchievement = AchievementReckless(identifier: id)
         }
         
         gkAchievement.showsCompletionBanner = true

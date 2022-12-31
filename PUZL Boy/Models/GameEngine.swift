@@ -31,6 +31,13 @@ class GameEngine {
             }
         }
     }
+    private static var deadCount: Int = 0 {
+        didSet {
+            if deadCount == 50 {
+                GameCenterManager.shared.updateProgress(achievement: .reckless)
+            }
+        }
+    }
 
     private var level: Level
     private var gemsRemaining: Int
@@ -501,6 +508,7 @@ class GameEngine {
             GameEngine.livesRemaining -= 1
             GameEngine.usedContinue = true
             GameEngine.winStreak = 0
+            GameEngine.deadCount += 1
 
             playerSprite.startDeadAnimation {
                 self.delegate?.gameIsOver()
