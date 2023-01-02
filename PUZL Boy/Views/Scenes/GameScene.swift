@@ -111,6 +111,14 @@ extension GameScene: GameEngineDelegate {
 
         GameCenterManager.shared.postScoreToLeaderboard(score: score, level: currentLevel)
         
+        if currentLevel >= 25 && scoringEngine.elapsedTime <= 6 {
+            GameCenterManager.shared.updateProgress(achievement: .speedDemon, shouldReportImmediately: true)
+        }
+        
+        if currentLevel >= 25 && scoringEngine.elapsedTime >= 15 * 60 {
+            GameCenterManager.shared.updateProgress(achievement: .slowPoke, shouldReportImmediately: true)
+        }
+        
         currentLevel += 1
         
         gameEngine.fadeGameboard(fadeOut: true) { [unowned self] in

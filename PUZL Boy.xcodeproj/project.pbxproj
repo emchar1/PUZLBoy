@@ -86,6 +86,8 @@
 		EA95D208295F87120061059C /* AchievementHoarder.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA95D207295F87120061059C /* AchievementHoarder.swift */; };
 		EA95D20A29602F540061059C /* AchievementReckless.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA95D20929602F540061059C /* AchievementReckless.swift */; };
 		EA95D20C296276670061059C /* AchievementSuperEfficient.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA95D20B296276670061059C /* AchievementSuperEfficient.swift */; };
+		EA95D20E2962C8AD0061059C /* AchievementSpeedDemon.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA95D20D2962C8AD0061059C /* AchievementSpeedDemon.swift */; };
+		EA95D2102962C9260061059C /* AchievementSlowPoke.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA95D20F2962C9260061059C /* AchievementSlowPoke.swift */; };
 		EAAEA3BE2931A31200221963 /* movepoisoned.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAAEA3BD2931A31200221963 /* movepoisoned.mp3 */; };
 		EAAEA3C22931AA6E00221963 /* hammerswing.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAAEA3C12931AA6E00221963 /* hammerswing.mp3 */; };
 		EAAEA3C42931D0DA00221963 /* swordslash.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAAEA3C32931D0DA00221963 /* swordslash.mp3 */; };
@@ -184,6 +186,8 @@
 		EA95D207295F87120061059C /* AchievementHoarder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementHoarder.swift; sourceTree = "<group>"; };
 		EA95D20929602F540061059C /* AchievementReckless.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementReckless.swift; sourceTree = "<group>"; };
 		EA95D20B296276670061059C /* AchievementSuperEfficient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementSuperEfficient.swift; sourceTree = "<group>"; };
+		EA95D20D2962C8AD0061059C /* AchievementSpeedDemon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementSpeedDemon.swift; sourceTree = "<group>"; };
+		EA95D20F2962C9260061059C /* AchievementSlowPoke.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementSlowPoke.swift; sourceTree = "<group>"; };
 		EAAEA3BD2931A31200221963 /* movepoisoned.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = movepoisoned.mp3; sourceTree = "<group>"; };
 		EAAEA3C12931AA6E00221963 /* hammerswing.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = hammerswing.mp3; sourceTree = "<group>"; };
 		EAAEA3C32931D0DA00221963 /* swordslash.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = swordslash.mp3; sourceTree = "<group>"; };
@@ -415,6 +419,8 @@
 				EA95D1DC295523FF0061059C /* AchievementKlutz.swift */,
 				EA95D20929602F540061059C /* AchievementReckless.swift */,
 				EA95D20B296276670061059C /* AchievementSuperEfficient.swift */,
+				EA95D20D2962C8AD0061059C /* AchievementSpeedDemon.swift */,
+				EA95D20F2962C9260061059C /* AchievementSlowPoke.swift */,
 			);
 			path = Achievements;
 			sourceTree = "<group>";
@@ -582,6 +588,7 @@
 				EA0F84072937D4860031DA76 /* DayTheme.swift in Sources */,
 				EA65182F28E4199E00E535BF /* GameViewController.swift in Sources */,
 				EA95D1C929541F360061059C /* AchievementStoneCutter.swift in Sources */,
+				EA95D20E2962C8AD0061059C /* AchievementSpeedDemon.swift in Sources */,
 				EA65182B28E4199E00E535BF /* AppDelegate.swift in Sources */,
 				EA956C6C29257D9600879AD0 /* Extension+Comparable.swift in Sources */,
 				EAAEA3D02934225900221963 /* ContinueScene.swift in Sources */,
@@ -589,6 +596,7 @@
 				EA95D1BB2952F0680061059C /* Achievement.swift in Sources */,
 				EA65184328E420E400E535BF /* GameScene.swift in Sources */,
 				EA95D20C296276670061059C /* AchievementSuperEfficient.swift in Sources */,
+				EA95D2102962C9260061059C /* AchievementSlowPoke.swift in Sources */,
 				EA956C6A29257B9C00879AD0 /* AudioManager.swift in Sources */,
 				EAB69E0428F3333000C31DB3 /* GameEngine.swift in Sources */,
 				EA3951F12939DE5900D0B14A /* ScoringEngine.swift in Sources */,

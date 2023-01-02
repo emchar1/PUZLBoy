@@ -9,7 +9,6 @@ import SpriteKit
 
 class ScoringEngine {
     
-    
     // MARK: - Properties
     
     private let maxTimeScore = 1000
@@ -25,7 +24,8 @@ class ScoringEngine {
     private var numberFormatter = NumberFormatter()
     private var timeInitial = Date()
     private var timeFinal = Date()
-    private var elapsedTime: TimeInterval {
+    
+    var elapsedTime: TimeInterval {
         TimeInterval(timeFinal.timeIntervalSince1970 - timeInitial.timeIntervalSince1970)
     }
 
