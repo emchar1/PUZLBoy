@@ -32,12 +32,14 @@ enum Achievement: String, CaseIterable {
     case hoarder = "Hoarder"
     case klutz = "Klutz"
     case reckless = "Reckless"
+    case superEfficient = "SuperEfficient"
     
     
     // MARK: - Properties
     
     private static let achievementIDPrefix = "PUZLBoy.Achievement"
     static var achievements: [Achievement: BaseAchievement] = [:]
+    static var allAchievements: [BaseAchievement] = []
     
     
     // MARK: - Functions
@@ -47,6 +49,7 @@ enum Achievement: String, CaseIterable {
         
         for achievement in allCases {
             achievements[achievement] = factory(achievement: achievement)
+            allAchievements.append(achievements[achievement]!)
         }
         
         print("Initialized Achievement.achievements dictionary.")
@@ -92,6 +95,7 @@ enum Achievement: String, CaseIterable {
         case .hoarder:              gkAchievement = AchievementHoarder(identifier: id)
         case .klutz:                gkAchievement = AchievementKlutz(identifier: id)
         case .reckless:             gkAchievement = AchievementReckless(identifier: id)
+        case .superEfficient:       gkAchievement = AchievementSuperEfficient(identifier: id)
         }
         
         gkAchievement.showsCompletionBanner = true

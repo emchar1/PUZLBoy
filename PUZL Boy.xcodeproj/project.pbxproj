@@ -85,6 +85,7 @@
 		EA95D206295F86F40061059C /* AchievementItemWielder.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA95D205295F86F40061059C /* AchievementItemWielder.swift */; };
 		EA95D208295F87120061059C /* AchievementHoarder.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA95D207295F87120061059C /* AchievementHoarder.swift */; };
 		EA95D20A29602F540061059C /* AchievementReckless.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA95D20929602F540061059C /* AchievementReckless.swift */; };
+		EA95D20C296276670061059C /* AchievementSuperEfficient.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA95D20B296276670061059C /* AchievementSuperEfficient.swift */; };
 		EAAEA3BE2931A31200221963 /* movepoisoned.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAAEA3BD2931A31200221963 /* movepoisoned.mp3 */; };
 		EAAEA3C22931AA6E00221963 /* hammerswing.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAAEA3C12931AA6E00221963 /* hammerswing.mp3 */; };
 		EAAEA3C42931D0DA00221963 /* swordslash.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAAEA3C32931D0DA00221963 /* swordslash.mp3 */; };
@@ -182,6 +183,7 @@
 		EA95D205295F86F40061059C /* AchievementItemWielder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementItemWielder.swift; sourceTree = "<group>"; };
 		EA95D207295F87120061059C /* AchievementHoarder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementHoarder.swift; sourceTree = "<group>"; };
 		EA95D20929602F540061059C /* AchievementReckless.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementReckless.swift; sourceTree = "<group>"; };
+		EA95D20B296276670061059C /* AchievementSuperEfficient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementSuperEfficient.swift; sourceTree = "<group>"; };
 		EAAEA3BD2931A31200221963 /* movepoisoned.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = movepoisoned.mp3; sourceTree = "<group>"; };
 		EAAEA3C12931AA6E00221963 /* hammerswing.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = hammerswing.mp3; sourceTree = "<group>"; };
 		EAAEA3C32931D0DA00221963 /* swordslash.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = swordslash.mp3; sourceTree = "<group>"; };
@@ -412,6 +414,7 @@
 				EA95D207295F87120061059C /* AchievementHoarder.swift */,
 				EA95D1DC295523FF0061059C /* AchievementKlutz.swift */,
 				EA95D20929602F540061059C /* AchievementReckless.swift */,
+				EA95D20B296276670061059C /* AchievementSuperEfficient.swift */,
 			);
 			path = Achievements;
 			sourceTree = "<group>";
@@ -585,6 +588,7 @@
 				EA95D1FA295BEC160061059C /* DisplayLivesSprite.swift in Sources */,
 				EA95D1BB2952F0680061059C /* Achievement.swift in Sources */,
 				EA65184328E420E400E535BF /* GameScene.swift in Sources */,
+				EA95D20C296276670061059C /* AchievementSuperEfficient.swift in Sources */,
 				EA956C6A29257B9C00879AD0 /* AudioManager.swift in Sources */,
 				EAB69E0428F3333000C31DB3 /* GameEngine.swift in Sources */,
 				EA3951F12939DE5900D0B14A /* ScoringEngine.swift in Sources */,

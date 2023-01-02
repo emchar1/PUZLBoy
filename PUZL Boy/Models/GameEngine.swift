@@ -433,7 +433,7 @@ class GameEngine {
                 
                 chatSprite.sendChat(profile: .trainer, startNewChat: false, endChat: false, chat: "You can't go that way, PUZL Boy!")
 
-                GameCenterManager.shared.updateProgress(achievement: .klutz)
+                GameCenterManager.shared.updateProgress(achievement: .klutz, shouldReportImmediately: false)
                 
                 Haptics.shared.executeCustomPattern(pattern: .boulder)
                 shouldDisableControlInput = true
@@ -515,7 +515,7 @@ class GameEngine {
             GameEngine.usedContinue = true
             GameEngine.winStreak = 0
             
-            GameCenterManager.shared.updateProgress(achievement: .reckless)
+            GameCenterManager.shared.updateProgress(achievement: .reckless, shouldReportImmediately: true)
 
             playerSprite.startDeadAnimation {
                 self.delegate?.gameIsOver()
@@ -540,6 +540,8 @@ class GameEngine {
         GameCenterManager.shared.updateProgress(achievement: .itemWielder, increment: Double(toolsCollected), shouldReportImmediately: true)
         GameCenterManager.shared.updateProgress(achievement: .hoarder, increment: Double(playerSprite.inventory.getItemCount()),
                                                 shouldReportImmediately: true)
+        
+        GameCenterManager.shared.updateProgress(achievement: .superEfficient, increment: Double(movesRemaining), shouldReportImmediately: true)
 
         switch level.level {
         case 50:    GameCenterManager.shared.updateProgress(achievement: .braniac, shouldReportImmediately: true)
@@ -547,6 +549,8 @@ class GameEngine {
         case 500:   GameCenterManager.shared.updateProgress(achievement: .puzlGuru, shouldReportImmediately: true)
         default: break
         }
+        
+        GameCenterManager.shared.report(achievements: Achievement.allAchievements)
     }
         
     

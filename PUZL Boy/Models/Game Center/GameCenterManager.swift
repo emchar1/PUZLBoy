@@ -110,6 +110,13 @@ final class GameCenterManager: NSObject {
         }
     }
     
+    /**
+     Updates the progress of the achievement.
+     - parameters:
+        - achievement: The achievement to update
+        - increment: The value (rate) at which to update the achievement
+        - shouldReportImmediately: If this is set to `true` then post it to App Store Connect using GKAchievement.report() and immediately update the percentage shown on the achievement page. Initially set to `false`.
+     */
     func updateProgress(achievement: Achievement, increment: Double = 1, shouldReportImmediately: Bool = false) {
         guard let achievmentToUpdate = Achievement.achievements[achievement] else { return }
         
