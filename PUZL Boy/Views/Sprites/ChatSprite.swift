@@ -16,20 +16,23 @@ class ChatSprite {
     private(set) var imageSprite: SKSpriteNode
     private(set) var textSprite: SKLabelNode
     
-    //Shared properties
+    //Shared static properties
     private static let spriteSizeNew: CGFloat = 300
     private static let spriteSizeOrig: CGFloat = 512
     private static let margin: CGFloat = 40
     private static let chatBorderWidth: CGFloat = 4
     private static let yOrigin: CGFloat = K.ScreenDimensions.topOfGameboard - K.ScreenDimensions.iPhoneWidth * GameboardSprite.spriteScale - spriteSizeNew - margin
 
+    //Shared properties. These seem weird..
     private var timer: Timer
     private var origScale: CGFloat
     private var chatText: String = ""
     private var chatIndex = 0
     private var allowNewChat = true
+    private var shouldClose = true
+    private var completion: (() -> ())?
     private var currentProfile: ChatProfile = .hero
-    
+        
     enum ChatProfile {
         case hero, trainer, princess, villain
     }
@@ -82,18 +85,19 @@ class ChatSprite {
     
     // MARK: - Functions
     
-    func sendChat(profile: ChatProfile, chat: String, startNewChat: Bool = false) {
+    func sendChat(profile: ChatProfile, startNewChat: Bool, endChat: Bool, chat: String, completion: (() -> ())? = nil) {
         //Only allow a new chat if current chat isn't happening
         guard allowNewChat else { return }
         
-        timer.invalidate()
-        
-        chatText = chat
         textSprite.text = ""
+        timer.invalidate()
+        chatText = chat
         chatIndex = 0
-        currentProfile = profile
         allowNewChat = false //prevents interruption of current chat, which could lead to crashing due to index out of bounds
-
+        shouldClose = endChat
+        currentProfile = profile
+        self.completion = completion
+        
         switch profile {
         case .hero:
             imageSprite.texture = SKTexture(imageNamed: "puzlboy")
@@ -110,10 +114,9 @@ class ChatSprite {
         }
         
         imageSprite.position.x = profile == .hero ? 60 : K.ScreenDimensions.iPhoneWidth * GameboardSprite.spriteScale
-        imageSprite.xScale = (profile == .hero ? 1 : -1) * abs(imageSprite.xScale)
+        imageSprite.xScale = profile == .hero ?  abs(imageSprite.xScale) : -abs(imageSprite.xScale)
         textSprite.position.x = ChatSprite.margin + (profile == .hero ? imageSprite.size.width : 20)
 
-        // FIXME: - Finesse this
         sprite.setScale(0)
         sprite.position.x = profile != .hero ? K.ScreenDimensions.iPhoneWidth * GameboardSprite.spriteScale : 0
         sprite.run(SKAction.group([
@@ -142,11 +145,14 @@ class ChatSprite {
     }
     
     private func closeChat() {
+        let duration: TimeInterval = shouldClose ? 0.2 : 0
+        
         sprite.run(SKAction.group([
-            SKAction.moveTo(x: currentProfile != .hero ? K.ScreenDimensions.iPhoneWidth * GameboardSprite.spriteScale : 0, duration: 0.2),
-            SKAction.scale(to: 0, duration: 0.2)
+            SKAction.moveTo(x: currentProfile != .hero ? K.ScreenDimensions.iPhoneWidth * GameboardSprite.spriteScale : 0, duration: duration),
+            SKAction.scale(to: 0, duration: duration)
         ])) { [unowned self] in
             allowNewChat = true
+            completion?()
         }
     }
 }

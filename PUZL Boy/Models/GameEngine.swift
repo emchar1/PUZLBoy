@@ -161,7 +161,20 @@ class GameEngine {
             gemsCollected += 1
             consumeItem()
             
-            chatSprite.sendChat(profile: .hero, chat: "Ooh, piece of candy!", startNewChat: true)
+            chatSprite.sendChat(profile: .hero, startNewChat: true, endChat: false,
+                                chat: "Ooh, piece of candy!") { [unowned self] in
+                chatSprite.sendChat(profile: .trainer, startNewChat: false, endChat: false,
+                                    chat: "Candy is dandy, but liquor is quicker!") { [unowned self] in
+                    chatSprite.sendChat(profile: .hero, startNewChat: false, endChat: false,
+                                        chat: "Liquor in the front, poker in the back") { [unowned self] in
+                        chatSprite.sendChat(profile: .princess, startNewChat: false, endChat: false,
+                                            chat: "Language, boys!! Oh golly gosh. Boys will be boys...") { [unowned self] in
+                            chatSprite.sendChat(profile: .hero, startNewChat: false, endChat: true,
+                                                chat: "Hey girl heyyy! Sorry, we won't do it again. Now go take your nap, princessa!")
+                        }
+                    }
+                }
+            }
             
             AudioManager.shared.playSound(for: "gemcollect")
             completion?()
@@ -184,7 +197,7 @@ class GameEngine {
         case .boulder:
             guard playerSprite.inventory.hammers > 0 else { return }
             
-            chatSprite.sendChat(profile: .princess, chat: "Hie-yahhhh!!!!!", startNewChat: true)
+            chatSprite.sendChat(profile: .princess, startNewChat: true, endChat: true, chat: "Hie-yahhhh!!!!!")
             
             Haptics.shared.executeCustomPattern(pattern: .breakBoulder)
             bouldersBroken += 1
@@ -197,7 +210,7 @@ class GameEngine {
         case .enemy:
             guard playerSprite.inventory.swords > 0 else { return }
             
-            chatSprite.sendChat(profile: .villain, chat: "Die, bitch!", startNewChat: true)
+            chatSprite.sendChat(profile: .villain, startNewChat: true, endChat: true, chat: "Die, bitch!")
 
             Haptics.shared.executeCustomPattern(pattern: .killEnemy)
             enemiesKilled += 1
@@ -418,7 +431,7 @@ class GameEngine {
                     shouldUpdateRemainingForBoulderIfIcy = false
                 }
                 
-                chatSprite.sendChat(profile: .trainer, chat: "You can't go that way, PUZL Boy!", startNewChat: true)
+                chatSprite.sendChat(profile: .trainer, startNewChat: false, endChat: false, chat: "You can't go that way, PUZL Boy!")
 
                 GameCenterManager.shared.updateProgress(achievement: .klutz)
                 
