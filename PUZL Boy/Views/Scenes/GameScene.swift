@@ -17,6 +17,7 @@ class GameScene: SKScene {
     // FIXME: - Debugging purposes only!!!
     private var levelSkipEngine: LevelSkipEngine
 
+    // FIXME: - Should read from Firebase "saved state"
     private var currentLevel: Int = LevelBuilder.maxLevel - 5 {
         didSet {
             if currentLevel > LevelBuilder.maxLevel {
