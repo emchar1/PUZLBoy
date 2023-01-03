@@ -52,17 +52,20 @@ class LevelSkipEngine {
         guard let superScene = superScene else { return print("superScene not set!") }
         
         let buttonPressAction = SKAction.sequence([SKAction.colorize(withColorBlendFactor: 0, duration: 0),
-                                                   SKAction.colorize(withColorBlendFactor: 1, duration: 0.5)])
+                                                   SKAction.wait(forDuration: 0.5),
+                                                   SKAction.colorize(withColorBlendFactor: 1, duration: 1.0)])
         
         for nodeTapped in superScene.nodes(at: location) {
             if nodeTapped.name == "forwardButton" {
                 forwardSprite.run(buttonPressAction)
                 delegate?.fowardPressed(forwardSprite)
+                Haptics.shared.addHapticFeedback(withStyle: .soft)
                 break
             }
             else if nodeTapped.name == "reverseButton" {
                 reverseSprite.run(buttonPressAction)
                 delegate?.reversePressed(reverseSprite)
+                Haptics.shared.addHapticFeedback(withStyle: .soft)
                 break
             }
         }
