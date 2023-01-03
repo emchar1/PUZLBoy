@@ -11,6 +11,9 @@ struct FIRManager {
     static func initializeRecords(completion: (([LevelModel]) -> ())?) {
         var allLevels: [LevelModel] = []
         
+        let db = Database.database()
+        db.isPersistenceEnabled = true
+
         let ref = Database.database().reference()
         ref.observe(DataEventType.value) { snapshot in
             for itemSnapshot in snapshot.children.allObjects as! [DataSnapshot] {
@@ -112,9 +115,10 @@ struct FIRManager {
             }//end for itemSnapshot...
             
             completion?(allLevels)
+            allLevels.removeAll()
 
             //MUST remove observer after downloading once. Is this the best way to do it, right after downloading?
-            ref.removeAllObservers()
+//            ref.removeAllObservers()
         }//end ref.observe()
     }//end initializeRecords()
     

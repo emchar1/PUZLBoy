@@ -96,6 +96,7 @@ struct LevelBuilder {
             
             LevelBuilder.levels = levels
             completion?()
+            levels.removeAll()
         }//end FIRManager.initializeRecords()
     }//end getLevels()
 }
