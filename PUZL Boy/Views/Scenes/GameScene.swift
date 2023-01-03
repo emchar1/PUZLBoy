@@ -13,11 +13,17 @@ class GameScene: SKScene {
     
     private var gameEngine: GameEngine
     private var scoringEngine: ScoringEngine
+    
+    // FIXME: - Debugging purposes only!!!
+    private var levelSkipEngine: LevelSkipEngine
 
     private var currentLevel: Int = LevelBuilder.maxLevel - 5 {
         didSet {
             if currentLevel > LevelBuilder.maxLevel {
                 currentLevel = 0
+            }
+            else if currentLevel < 0 {
+                currentLevel = LevelBuilder.maxLevel
             }
         }
     }
@@ -28,10 +34,12 @@ class GameScene: SKScene {
     override init(size: CGSize) {
         gameEngine = GameEngine(level: currentLevel, shouldSpawn: true)
         scoringEngine = ScoringEngine()
-
+        levelSkipEngine = LevelSkipEngine()
+        
         super.init(size: size)
 
         gameEngine.delegate = self
+        levelSkipEngine.delegate = self
         scaleMode = .aspectFill
 
         AudioManager.shared.playSound(for: AudioManager.shared.overworldTheme)
@@ -48,6 +56,7 @@ class GameScene: SKScene {
         guard let location = touches.first?.location(in: self) else { return }
         
         gameEngine.handleControls(in: location)
+        levelSkipEngine.handleControls(in: location)
     }
     
 
@@ -56,6 +65,7 @@ class GameScene: SKScene {
     override func didMove(to view: SKView) {
         gameEngine.moveSprites(to: self)
         scoringEngine.moveSprites(to: self)
+        levelSkipEngine.moveSprites(to: self)
         
         startTimer()
     }
@@ -90,6 +100,7 @@ class GameScene: SKScene {
         gameEngine.delegate = self
         gameEngine.moveSprites(to: self)
         scoringEngine.moveSprites(to: self)
+        levelSkipEngine.moveSprites(to: self)
         
         if !didWin {
             AudioManager.shared.playSound(for: AudioManager.shared.overworldTheme)
@@ -143,4 +154,22 @@ extension GameScene: GameEngineDelegate {
                 
         newGame(level: currentLevel, didWin: false)
     }
+}
+
+
+// MARK: - LevelSkipEngineDelegate
+
+extension GameScene: LevelSkipEngineDelegate {
+    func fowardPressed(_ node: SKSpriteNode) {
+        currentLevel += 1
+        scoringEngine.resetTime()
+        newGame(level: currentLevel, didWin: false)
+    }
+    
+    func reversePressed(_ node: SKSpriteNode) {
+        currentLevel -= 1
+        scoringEngine.resetTime()
+        newGame(level: currentLevel, didWin: false)
+    }
+    
 }

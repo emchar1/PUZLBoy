@@ -88,6 +88,7 @@
 		EA95D20C296276670061059C /* AchievementSuperEfficient.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA95D20B296276670061059C /* AchievementSuperEfficient.swift */; };
 		EA95D20E2962C8AD0061059C /* AchievementSpeedDemon.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA95D20D2962C8AD0061059C /* AchievementSpeedDemon.swift */; };
 		EA95D2102962C9260061059C /* AchievementSlowPoke.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA95D20F2962C9260061059C /* AchievementSlowPoke.swift */; };
+		EA95D2122963B4580061059C /* LevelSkipEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA95D2112963B4580061059C /* LevelSkipEngine.swift */; };
 		EAAEA3BE2931A31200221963 /* movepoisoned.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAAEA3BD2931A31200221963 /* movepoisoned.mp3 */; };
 		EAAEA3C22931AA6E00221963 /* hammerswing.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAAEA3C12931AA6E00221963 /* hammerswing.mp3 */; };
 		EAAEA3C42931D0DA00221963 /* swordslash.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAAEA3C32931D0DA00221963 /* swordslash.mp3 */; };
@@ -188,6 +189,7 @@
 		EA95D20B296276670061059C /* AchievementSuperEfficient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementSuperEfficient.swift; sourceTree = "<group>"; };
 		EA95D20D2962C8AD0061059C /* AchievementSpeedDemon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementSpeedDemon.swift; sourceTree = "<group>"; };
 		EA95D20F2962C9260061059C /* AchievementSlowPoke.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementSlowPoke.swift; sourceTree = "<group>"; };
+		EA95D2112963B4580061059C /* LevelSkipEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelSkipEngine.swift; sourceTree = "<group>"; };
 		EAAEA3BD2931A31200221963 /* movepoisoned.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = movepoisoned.mp3; sourceTree = "<group>"; };
 		EAAEA3C12931AA6E00221963 /* hammerswing.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = hammerswing.mp3; sourceTree = "<group>"; };
 		EAAEA3C32931D0DA00221963 /* swordslash.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = swordslash.mp3; sourceTree = "<group>"; };
@@ -258,16 +260,17 @@
 			children = (
 				EA95D1B429524EB60061059C /* Game Center */,
 				EA75F0EA292DF46200F09BD7 /* FIRManager.swift */,
-				EAAEA3CD2932C47500221963 /* BackgroundObject.swift */,
-				EA0F84062937D4860031DA76 /* DayTheme.swift */,
 				EA75F0EC292DF57400F09BD7 /* LevelModel.swift */,
 				EA65189128E973D700E535BF /* LevelBuilder.swift */,
 				EA65189028E973D700E535BF /* Level.swift */,
 				EA35348A29241FCD00C11FC0 /* LevelType.swift */,
+				EAAEA3CD2932C47500221963 /* BackgroundObject.swift */,
+				EA0F84062937D4860031DA76 /* DayTheme.swift */,
 				EA119154290CCA39009D0E3E /* Inventory.swift */,
 				EA11915629121798009D0E3E /* Controls.swift */,
 				EAB69E0328F3333000C31DB3 /* GameEngine.swift */,
 				EA3951F02939DE5900D0B14A /* ScoringEngine.swift */,
+				EA95D2112963B4580061059C /* LevelSkipEngine.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -602,6 +605,7 @@
 				EA3951F12939DE5900D0B14A /* ScoringEngine.swift in Sources */,
 				EAAEA3CE2932C47500221963 /* BackgroundObject.swift in Sources */,
 				EA65182D28E4199E00E535BF /* SceneDelegate.swift in Sources */,
+				EA95D2122963B4580061059C /* LevelSkipEngine.swift in Sources */,
 				EA95D18D29459D550061059C /* Extension+UIFont.swift in Sources */,
 				EA65189328E973D700E535BF /* LevelBuilder.swift in Sources */,
 				EA65189528EA207800E535BF /* Constants.swift in Sources */,
