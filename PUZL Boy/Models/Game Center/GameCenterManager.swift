@@ -5,6 +5,7 @@
 //  Created by Eddie Char on 12/18/22.
 //
 
+import FirebaseAuth
 import GameKit
 
 final class GameCenterManager: NSObject {
@@ -13,12 +14,15 @@ final class GameCenterManager: NSObject {
     
     static let shared: GameCenterManager = {
         let instance = GameCenterManager()
+
         //additional setup, if needed
+
         return instance
     }()
     
     private let leaderboardLevelIDPrefix = "PUZLBoy.HiScoreLV"
     var viewController: UIViewController?
+    var firebaseUser: User?
 
     
     // MARK: - Initialization
@@ -35,6 +39,11 @@ final class GameCenterManager: NSObject {
                 
                 //Uses GKLocalPlayerListener protocol implementation, defined at the bottom
                 GKLocalPlayer.local.register(self)
+                
+                self.getFirebaseCredentials { user in
+                    self.firebaseUser = user
+                    print("Firebase user: \(self.firebaseUser?.displayName ?? "<Game Center user not signed in!>") signed in.")
+                }
                 
                 //And load the achievements!
                 self.loadAchievements()
@@ -166,7 +175,25 @@ final class GameCenterManager: NSObject {
 // MARK: GKLocalPlayerListener
 
 extension GameCenterManager: GKLocalPlayerListener {
-    //what goes here???
+    /**
+     Gets the currently signed in Game Center user and creates/signs into a Firebase Auth user from it. The results of the Firebase Auth user is in the completion handler.
+     - parameter completion: completion handler with the User returned
+     */
+    func getFirebaseCredentials(completion: @escaping (User) -> Void) {
+        GameCenterAuthProvider.getCredential { credential, error in
+            guard let credential = credential else { return print(error?.localizedDescription ?? "No error") }
+            
+            Auth.auth().signIn(with: credential) { user, error in
+                guard let user = user else { return print(error?.localizedDescription ?? "No error") }
+                
+                completion(user.user)
+                
+                print("Player signed into Game Center via Firebase Auth!")
+            }
+        }
+    }
+    
+    
 }
 
 
