@@ -6,6 +6,7 @@
 //
 
 import SpriteKit
+import FirebaseAuth
 
 class GameScene: SKScene {
     
@@ -17,8 +18,10 @@ class GameScene: SKScene {
     // FIXME: - Debugging purposes only!!!
     private var levelSkipEngine: LevelSkipEngine
 
-    // FIXME: - Should read from Firebase "saved state"
-    private var currentLevel: Int = LevelBuilder.maxLevel - 5 {
+    private var user: User?
+
+    private var currentLevel: Int = 1 {
+        // FIXME: - Delete once debugging is done!
         didSet {
             if currentLevel > LevelBuilder.maxLevel {
                 currentLevel = 0
@@ -32,10 +35,22 @@ class GameScene: SKScene {
     
     // MARK: - Initialization
     
-    override init(size: CGSize) {
-        gameEngine = GameEngine(level: currentLevel, shouldSpawn: true)
-        scoringEngine = ScoringEngine()
+    init(size: CGSize, user: User?, saveStateModel: SaveStateModel?) {
+        if let saveStateModel = saveStateModel {
+            currentLevel = saveStateModel.level
+
+            gameEngine = GameEngine(level: currentLevel, livesRemaining: saveStateModel.livesRemaining, shouldSpawn: true)
+            scoringEngine = ScoringEngine(elapsedTime: saveStateModel.elapsedTime, totalScore: saveStateModel.totalScore)
+        }
+        else {
+            gameEngine = GameEngine(level: currentLevel, shouldSpawn: true)
+            scoringEngine = ScoringEngine()
+        }
+        
+        // FIXME: - Debugging purposes only
         levelSkipEngine = LevelSkipEngine()
+
+        self.user = user
         
         super.init(size: size)
 
@@ -138,6 +153,18 @@ extension GameScene: GameEngineDelegate {
             startTimer()
 
             newGame(level: currentLevel, didWin: true)
+
+            //Write to Firestore
+            if let user = user {
+                let saveStateModel = SaveStateModel(elapsedTime: scoringEngine.elapsedTime,
+                                                    saveDate: Date(),
+                                                    level: currentLevel,
+                                                    livesRemaining: GameEngine.livesRemaining,
+                                                    totalScore: scoringEngine.totalScore + scoringEngine.score,
+                                                    uid: user.uid)
+
+                FIRManager.writeToFirestoreRecord(user: user, saveStateModel: saveStateModel)
+            }
         }
     }
     

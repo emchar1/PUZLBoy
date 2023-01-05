@@ -19,7 +19,7 @@ class GameEngine {
     
     // MARK: - Properties
     
-    private static var livesRemaining: Int = 3
+    private(set) static var livesRemaining: Int = 3
     private static var usedContinue: Bool = false
     private static var winStreak: Int = 0 {
         didSet {
@@ -75,7 +75,7 @@ class GameEngine {
         - level: The initial level to load
         - shouldSpawn: determines whether should fade gameboard, i.e. if shouldSpawn is false
      */
-    init(level: Int = 1, shouldSpawn: Bool) {
+    init(level: Int = 1, livesRemaining: Int = GameEngine.livesRemaining, shouldSpawn: Bool) {
         guard LevelBuilder.maxLevel > 0 else {
             fatalError("Firebase records were not loaded!🙀")
         }
@@ -84,6 +84,7 @@ class GameEngine {
         movesRemaining = self.level.moves
         healthRemaining = self.level.health
         gemsRemaining = self.level.gems
+        GameEngine.livesRemaining = livesRemaining
 
         gameboardSprite = GameboardSprite(level: self.level)
         K.ScreenDimensions.topOfGameboard = gameboardSprite.yPosition + gameboardSprite.gameboardSize * GameboardSprite.spriteScale

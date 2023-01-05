@@ -11,6 +11,7 @@ import GameplayKit
 
 class GameViewController: UIViewController {
     override var prefersStatusBarHidden: Bool { return true }
+    private var levelLoaded = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,17 +24,28 @@ class GameViewController: UIViewController {
         skView.ignoresSiblingOrder = true
         skView.presentScene(launchScene)
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0) {
-            // FIXME: - Where should I put the Game Center authentication code???
-            GameCenterManager.shared.viewController = self
+        //Call this once, before calling LevelBuilder.getLevels().
+        FIRManager.enableDBPersistence
+
+        GameCenterManager.shared.viewController = self
+        GameCenterManager.shared.getUser { user in
+            //Ensures everything below the guard statement only gets called ONCE!
+            guard !self.levelLoaded else { return }
             
             LevelBuilder.getLevels {
-                let gameScene = GameScene(size: K.ScreenDimensions.screenSize)
-                
-                skView.presentScene(gameScene, transition: SKTransition.doorsOpenVertical(withDuration: 2.0))
+                FIRManager.initializeSaveStateFirestoreRecords(user: user) { saveStateModel in
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0) {
+                        let gameScene = GameScene(size: K.ScreenDimensions.screenSize, user: user, saveStateModel: saveStateModel)
+                        
+                        skView.presentScene(gameScene, transition: SKTransition.doorsOpenVertical(withDuration: 2.0))
+                        
+                        self.levelLoaded = true
+                    }
+                }
             }
-        }
-    }
+        }//end GameCenterManager.shared.getUser()
+        
+    }//end viewDidLoad()
     
     
 }

@@ -6,13 +6,20 @@
 //
 
 import Firebase
+import FirebaseFirestore
+import FirebaseAuth
 
 struct FIRManager {
-    static func initializeRecords(completion: (([LevelModel]) -> ())?) {
-        var allLevels: [LevelModel] = []
-        
+    ///Only call this once, otherwise App will crash. Also must call it before calling FIRManager.initializeLevelRealtimeRecords().
+    static var enableDBPersistence: Void {
         let db = Database.database()
         db.isPersistenceEnabled = true
+    }
+    
+    
+    ///Initializes the realtime database and returns all the levels in the rtdb in the completion handler.
+    static func initializeLevelRealtimeRecords(completion: (([LevelModel]) -> Void)?) {
+        var allLevels: [LevelModel] = []
 
         let ref = Database.database().reference()
         ref.observe(DataEventType.value) { snapshot in
@@ -120,6 +127,62 @@ struct FIRManager {
             //MUST remove observer after downloading once. Is this the best way to do it, right after downloading?
 //            ref.removeAllObservers()
         }//end ref.observe()
-    }//end initializeRecords()
+    }//end initializeLevelRealtimeRecords()
+    
+    
+    ///Initializes the Firestore database and obtains the documentID that matches the user's UID. Returns nil if document is not found.
+    static func initializeSaveStateFirestoreRecords(user: User?, completion: ((SaveStateModel?) -> Void)?) {
+        guard let user = user else {
+            completion?(nil)
+            print("User not signed in. Unable to load Firestore savedState.")
+            return
+        }
+        
+        let docRef = Firestore.firestore().collection("savedStates").document(user.uid)
+        docRef.getDocument { snapshot, error in
+            guard let snapshot = snapshot, let data = snapshot.data() else {
+                completion?(nil)
+                return
+            }
+            
+            guard let elapsedTime = data["elapsedTime"] as? TimeInterval,
+                  let saveDate = data["saveDate"] as? Timestamp,
+                  let level = data["level"] as? Int,
+                  let livesRemaining = data["livesRemaining"] as? Int,
+                  let totalScore = data["totalScore"] as? Int,
+                  let uid = data["uid"] as? String
+            else {
+                completion?(nil)
+                print("Error creating the data object.")
+                return
+            }
+            
+            completion?(SaveStateModel(elapsedTime: elapsedTime,
+                                       saveDate: saveDate.dateValue(),
+                                       level: level,
+                                       livesRemaining: livesRemaining,
+                                       totalScore: totalScore,
+                                       uid: uid))
+        }//end docRef.getDocument...
+    }//end initializeSaveStateFirestoreRecords()
+    
+    
+    ///Writes to the Firestore Record a.) if it exists, simply overwrite values, b.) if not, create and save the new record.
+    static func writeToFirestoreRecord(user: User?, saveStateModel: SaveStateModel) {
+        guard let user = user else {
+            print("User not signed in. Unable to load Firestore savedState.")
+            return
+        }
+        
+        let docRef = Firestore.firestore().collection("savedStates").document(user.uid)
+        docRef.setData([
+            "elapsedTime": saveStateModel.elapsedTime,
+            "saveDate": Timestamp(date: saveStateModel.saveDate),
+            "level": saveStateModel.level,
+            "livesRemaining": saveStateModel.livesRemaining,
+            "totalScore": saveStateModel.totalScore,
+            "uid": saveStateModel.uid
+        ])
+    }//end writeToFirestoreRecord()
     
 }

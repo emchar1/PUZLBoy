@@ -89,6 +89,9 @@
 		EA95D20E2962C8AD0061059C /* AchievementSpeedDemon.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA95D20D2962C8AD0061059C /* AchievementSpeedDemon.swift */; };
 		EA95D2102962C9260061059C /* AchievementSlowPoke.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA95D20F2962C9260061059C /* AchievementSlowPoke.swift */; };
 		EA95D2122963B4580061059C /* LevelSkipEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA95D2112963B4580061059C /* LevelSkipEngine.swift */; };
+		EA95D2142964FF350061059C /* SaveStateModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA95D2132964FF350061059C /* SaveStateModel.swift */; };
+		EA95D2172964FFCF0061059C /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = EA95D2162964FFCF0061059C /* FirebaseFirestore */; };
+		EA95D2192964FFCF0061059C /* FirebaseFirestoreSwift in Frameworks */ = {isa = PBXBuildFile; productRef = EA95D2182964FFCF0061059C /* FirebaseFirestoreSwift */; };
 		EAAEA3BE2931A31200221963 /* movepoisoned.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAAEA3BD2931A31200221963 /* movepoisoned.mp3 */; };
 		EAAEA3C22931AA6E00221963 /* hammerswing.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAAEA3C12931AA6E00221963 /* hammerswing.mp3 */; };
 		EAAEA3C42931D0DA00221963 /* swordslash.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAAEA3C32931D0DA00221963 /* swordslash.mp3 */; };
@@ -190,6 +193,7 @@
 		EA95D20D2962C8AD0061059C /* AchievementSpeedDemon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementSpeedDemon.swift; sourceTree = "<group>"; };
 		EA95D20F2962C9260061059C /* AchievementSlowPoke.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementSlowPoke.swift; sourceTree = "<group>"; };
 		EA95D2112963B4580061059C /* LevelSkipEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelSkipEngine.swift; sourceTree = "<group>"; };
+		EA95D2132964FF350061059C /* SaveStateModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveStateModel.swift; sourceTree = "<group>"; };
 		EAAEA3BD2931A31200221963 /* movepoisoned.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = movepoisoned.mp3; sourceTree = "<group>"; };
 		EAAEA3C12931AA6E00221963 /* hammerswing.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = hammerswing.mp3; sourceTree = "<group>"; };
 		EAAEA3C32931D0DA00221963 /* swordslash.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = swordslash.mp3; sourceTree = "<group>"; };
@@ -218,8 +222,10 @@
 				EA75F0E9292DDAAF00F09BD7 /* FirebaseDatabaseSwift in Frameworks */,
 				EA75F0E3292DDAAF00F09BD7 /* FirebaseAnalyticsSwift in Frameworks */,
 				EA75F0E5292DDAAF00F09BD7 /* FirebaseAuth in Frameworks */,
+				EA95D2192964FFCF0061059C /* FirebaseFirestoreSwift in Frameworks */,
 				EA75F0E7292DDAAF00F09BD7 /* FirebaseDatabase in Frameworks */,
 				EA75F0E1292DDAAF00F09BD7 /* FirebaseAnalytics in Frameworks */,
+				EA95D2172964FFCF0061059C /* FirebaseFirestore in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -231,6 +237,7 @@
 			children = (
 				EA65182928E4199E00E535BF /* PUZL Boy */,
 				EA65182828E4199E00E535BF /* Products */,
+				EA95D2152964FFCF0061059C /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -261,6 +268,7 @@
 				EA95D1B429524EB60061059C /* Game Center */,
 				EA75F0EA292DF46200F09BD7 /* FIRManager.swift */,
 				EA75F0EC292DF57400F09BD7 /* LevelModel.swift */,
+				EA95D2132964FF350061059C /* SaveStateModel.swift */,
 				EA65189128E973D700E535BF /* LevelBuilder.swift */,
 				EA65189028E973D700E535BF /* Level.swift */,
 				EA35348A29241FCD00C11FC0 /* LevelType.swift */,
@@ -428,6 +436,13 @@
 			path = Achievements;
 			sourceTree = "<group>";
 		};
+		EA95D2152964FFCF0061059C /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		EA98545728FE6F1900CDB0EF /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
@@ -464,6 +479,8 @@
 				EA75F0E4292DDAAF00F09BD7 /* FirebaseAuth */,
 				EA75F0E6292DDAAF00F09BD7 /* FirebaseDatabase */,
 				EA75F0E8292DDAAF00F09BD7 /* FirebaseDatabaseSwift */,
+				EA95D2162964FFCF0061059C /* FirebaseFirestore */,
+				EA95D2182964FFCF0061059C /* FirebaseFirestoreSwift */,
 			);
 			productName = "PUZL Man";
 			productReference = EA65182728E4199E00E535BF /* PUZL Boy.app */;
@@ -602,6 +619,7 @@
 				EA95D2102962C9260061059C /* AchievementSlowPoke.swift in Sources */,
 				EA956C6A29257B9C00879AD0 /* AudioManager.swift in Sources */,
 				EAB69E0428F3333000C31DB3 /* GameEngine.swift in Sources */,
+				EA95D2142964FF350061059C /* SaveStateModel.swift in Sources */,
 				EA3951F12939DE5900D0B14A /* ScoringEngine.swift in Sources */,
 				EAAEA3CE2932C47500221963 /* BackgroundObject.swift in Sources */,
 				EA65182D28E4199E00E535BF /* SceneDelegate.swift in Sources */,
@@ -879,6 +897,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = EA75F0DF292DDAAF00F09BD7 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseDatabaseSwift;
+		};
+		EA95D2162964FFCF0061059C /* FirebaseFirestore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = EA75F0DF292DDAAF00F09BD7 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestore;
+		};
+		EA95D2182964FFCF0061059C /* FirebaseFirestoreSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = EA75F0DF292DDAAF00F09BD7 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestoreSwift;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

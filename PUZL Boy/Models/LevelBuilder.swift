@@ -18,7 +18,7 @@ struct LevelBuilder {
     static func getLevels(completion: (() -> ())?) {
         var levels: [Level] = []
 
-        FIRManager.initializeRecords { levelModels in
+        FIRManager.initializeLevelRealtimeRecords { levelModels in
             for model in levelModels {
                 var gameboard: K.Gameboard = []
 
@@ -97,6 +97,6 @@ struct LevelBuilder {
             LevelBuilder.levels = levels
             completion?()
             levels.removeAll()
-        }//end FIRManager.initializeRecords()
+        }//end FIRManager.initializeLevelRealtimeRecords()
     }//end getLevels()
 }

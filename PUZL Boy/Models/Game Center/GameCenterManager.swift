@@ -12,26 +12,27 @@ final class GameCenterManager: NSObject {
     
     // MARK: - Properties
     
+    private let leaderboardLevelIDPrefix = "PUZLBoy.HiScoreLV"
+    var viewController: UIViewController?
+    
     static let shared: GameCenterManager = {
-        let instance = GameCenterManager()
+        let instance = GameCenterManager(completion: nil)
 
         //additional setup, if needed
 
         return instance
     }()
-    
-    private let leaderboardLevelIDPrefix = "PUZLBoy.HiScoreLV"
-    var viewController: UIViewController?
-    var firebaseUser: User?
 
     
     // MARK: - Initialization
     
-    private override init() {
+    private init(completion: ((User?) -> Void)?) {
         super.init()
         
         //Checks for authentication upon initialization
+        // FIXME: - Why is this getting called multiple times, when sending the app to background then back to foreground???
         GKLocalPlayer.local.authenticateHandler = { gcAuthVC, error in
+            print("FIXXXXXXXX MEEEEEEE!")
             NotificationCenter.default.post(name: .authenticationChanged, object: GKLocalPlayer.local.isAuthenticated)
             
             if GKLocalPlayer.local.isAuthenticated {
@@ -40,9 +41,9 @@ final class GameCenterManager: NSObject {
                 //Uses GKLocalPlayerListener protocol implementation, defined at the bottom
                 GKLocalPlayer.local.register(self)
                 
+                //Get Firebase user credentials
                 self.getFirebaseCredentials { user in
-                    self.firebaseUser = user
-                    print("Firebase user: \(self.firebaseUser?.displayName ?? "<Game Center user not signed in!>") signed in.")
+                    completion?(user)
                 }
                 
                 //And load the achievements!
@@ -56,6 +57,12 @@ final class GameCenterManager: NSObject {
                 print("Error authenticating to Game Center: \(error?.localizedDescription ?? "No error, actually.")")
             }
             
+        }
+    }
+    
+    func getUser(completion: ((User?) -> Void)?) {
+        let _ = GameCenterManager { user in
+            completion?(user)
         }
     }
     
@@ -163,7 +170,7 @@ final class GameCenterManager: NSObject {
     
     func resetAchievements() {
         GKAchievement.resetAchievements { error in
-            guard error == nil else { return print("Error resetting achievements") }
+            guard error == nil else { return print("Error resetting achievements: \(error!.localizedDescription)") }
             
             self.loadAchievements()
             print("Achievements reset!")
@@ -179,16 +186,22 @@ extension GameCenterManager: GKLocalPlayerListener {
      Gets the currently signed in Game Center user and creates/signs into a Firebase Auth user from it. The results of the Firebase Auth user is in the completion handler.
      - parameter completion: completion handler with the User returned
      */
-    func getFirebaseCredentials(completion: @escaping (User) -> Void) {
+    private func getFirebaseCredentials(completion: @escaping (User?) -> Void) {
         GameCenterAuthProvider.getCredential { credential, error in
-            guard let credential = credential else { return print(error?.localizedDescription ?? "No error") }
+            guard let credential = credential else {
+                completion(nil)
+                print("Can't get GameCenter credentials: \(error?.localizedDescription ?? "No error")")
+                return
+            }
             
             Auth.auth().signIn(with: credential) { user, error in
-                guard let user = user else { return print(error?.localizedDescription ?? "No error") }
+                guard let user = user else {
+                    completion(nil)
+                    print("Error signing into Firebase Auth: \(error?.localizedDescription ?? "No error")")
+                    return
+                }
                 
                 completion(user.user)
-                
-                print("Player signed into Game Center via Firebase Auth!")
             }
         }
     }

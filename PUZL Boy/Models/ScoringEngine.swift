@@ -18,12 +18,13 @@ class ScoringEngine {
     private let itemScore = 500
     private let killEnemyScore = 1000
 
-    private var score = 0
-    private var totalScore = 0
+    private(set) var score = 0
+    private(set) var totalScore = 0
 
     private var numberFormatter = NumberFormatter()
     private var timeInitial = Date()
     private var timeFinal = Date()
+    private var initialElapsedTime: TimeInterval = 0
     
     var elapsedTime: TimeInterval {
         TimeInterval(timeFinal.timeIntervalSince1970 - timeInitial.timeIntervalSince1970)
@@ -37,11 +38,15 @@ class ScoringEngine {
     
     // MARK: - Initialization
     
-    init() {
+    init(elapsedTime: TimeInterval = 0, totalScore: Int = 0) {
         let padding: CGFloat = 40
         
         numberFormatter.numberStyle = .decimal
         numberFormatter.maximumFractionDigits = 0
+        
+        self.totalScore = totalScore
+        initialElapsedTime = elapsedTime
+        timeFinal = timeInitial + elapsedTime
         
         totalScoreLabel = SKLabelNode()
         totalScoreLabel.fontName = UIFont.gameFont
@@ -81,15 +86,8 @@ class ScoringEngine {
         statsLabel.zPosition = K.ZPosition.display
         statsLabel.numberOfLines = 0
 
-        resetAllScores()
-        updateLabels()
-    }
-    
-    private func resetAllScores() {
-        totalScore = 0
-        
         resetScore()
-        resetTime()
+        updateLabels()
     }
 
     
@@ -100,12 +98,14 @@ class ScoringEngine {
     }
     
     func resetTime() {
+        initialElapsedTime = 0
+        
         timeInitial = Date()
         timeFinal = Date()
     }
 
     func pollTime() {
-        timeFinal = Date()
+        timeFinal = Date() + initialElapsedTime
     }
     
     func updateScore(movesRemaining: Int, itemsFound: Int, enemiesKilled: Int, usedContinue: Bool) -> Int {
