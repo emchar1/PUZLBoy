@@ -168,8 +168,8 @@ struct FIRManager {
     
     
     ///Writes to the Firestore Record a.) if it exists, simply overwrite values, b.) if not, create and save the new record.
-    static func writeToFirestoreRecord(user: User?, saveStateModel: SaveStateModel) {
-        guard let user = user else {
+    static func writeToFirestoreRecord(user: User?, saveStateModel: SaveStateModel?) {
+        guard let user = user, let saveStateModel = saveStateModel else {
             print("User not signed in. Unable to load Firestore savedState.")
             return
         }

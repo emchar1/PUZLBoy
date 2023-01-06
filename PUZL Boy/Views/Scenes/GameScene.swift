@@ -14,11 +14,13 @@ class GameScene: SKScene {
     
     private var gameEngine: GameEngine
     private var scoringEngine: ScoringEngine
+    private var chatEngine: ChatEngine
     
     // FIXME: - Debugging purposes only!!!
     private var levelSkipEngine: LevelSkipEngine
 
     private var user: User?
+    private var disableInput = false
 
     private var currentLevel: Int = 1 {
         // FIXME: - Delete once debugging is done!
@@ -47,10 +49,11 @@ class GameScene: SKScene {
             scoringEngine = ScoringEngine()
         }
         
+        chatEngine = ChatEngine()
+        self.user = user
+
         // FIXME: - Debugging purposes only
         levelSkipEngine = LevelSkipEngine()
-
-        self.user = user
         
         super.init(size: size)
 
@@ -69,6 +72,7 @@ class GameScene: SKScene {
     // MARK: - UI Touches
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        guard !disableInput else { return }
         guard let location = touches.first?.location(in: self) else { return }
         
         gameEngine.handleControls(in: location)
@@ -79,10 +83,7 @@ class GameScene: SKScene {
     // MARK: - Required Functions
     
     override func didMove(to view: SKView) {
-        gameEngine.moveSprites(to: self)
-        scoringEngine.moveSprites(to: self)
-        levelSkipEngine.moveSprites(to: self)
-        
+        moveSprites()
         startTimer()
     }
     
@@ -114,12 +115,23 @@ class GameScene: SKScene {
         
         gameEngine = GameEngine(level: level, shouldSpawn: !didWin)
         gameEngine.delegate = self
-        gameEngine.moveSprites(to: self)
-        scoringEngine.moveSprites(to: self)
-        levelSkipEngine.moveSprites(to: self)
+        
+        moveSprites()
         
         if !didWin {
             AudioManager.shared.playSound(for: AudioManager.shared.overworldTheme)
+        }
+    }
+    
+    private func moveSprites() {
+        gameEngine.moveSprites(to: self)
+        scoringEngine.moveSprites(to: self)
+        chatEngine.moveSprites(to: self)
+        levelSkipEngine.moveSprites(to: self)
+        
+        disableInput = true
+        chatEngine.dialogue(level: currentLevel) {
+            self.disableInput = false
         }
     }
 }

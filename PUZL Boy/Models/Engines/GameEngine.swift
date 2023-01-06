@@ -62,7 +62,6 @@ class GameEngine {
     private var gameboardSprite: GameboardSprite
     private var playerSprite: PlayerSprite
     private var displaySprite: DisplaySprite
-    private var chatSprite: ChatSprite
     
     weak var delegate: GameEngineDelegate?
     
@@ -89,7 +88,6 @@ class GameEngine {
         gameboardSprite = GameboardSprite(level: self.level)
         K.ScreenDimensions.topOfGameboard = gameboardSprite.yPosition + gameboardSprite.gameboardSize * GameboardSprite.spriteScale
         playerSprite = PlayerSprite(shouldSpawn: true)
-        chatSprite = ChatSprite()
         displaySprite = DisplaySprite(topYPosition: K.ScreenDimensions.topOfGameboard, bottomYPosition: gameboardSprite.yPosition, margin: 40)
         displaySprite.setLabels(level: "\(level)", lives: "\(GameEngine.livesRemaining)", moves: "\(movesRemaining)", health: "\(healthRemaining)", inventory: playerSprite.inventory)
         
@@ -162,21 +160,6 @@ class GameEngine {
             gemsCollected += 1
             consumeItem()
             
-            chatSprite.sendChat(profile: .hero, startNewChat: true, endChat: false,
-                                chat: "Ooh, piece of candy!") { [unowned self] in
-                chatSprite.sendChat(profile: .trainer, startNewChat: false, endChat: false,
-                                    chat: "Candy is dandy, but liquor is quicker!") { [unowned self] in
-                    chatSprite.sendChat(profile: .hero, startNewChat: false, endChat: false,
-                                        chat: "Liquor in the front, poker in the back") { [unowned self] in
-                        chatSprite.sendChat(profile: .princess, startNewChat: false, endChat: false,
-                                            chat: "Language, boys!! Oh golly gosh. Boys will be boys...") { [unowned self] in
-                            chatSprite.sendChat(profile: .hero, startNewChat: false, endChat: true,
-                                                chat: "Hey girl heyyy! Sorry, we won't do it again. Now go take your nap, princessa!")
-                        }
-                    }
-                }
-            }
-            
             AudioManager.shared.playSound(for: "gemcollect")
             completion?()
         case .hammer:
@@ -197,9 +180,7 @@ class GameEngine {
             completion?()
         case .boulder:
             guard playerSprite.inventory.hammers > 0 else { return }
-            
-            chatSprite.sendChat(profile: .princess, startNewChat: true, endChat: true, chat: "Hie-yahhhh!!!!!")
-            
+                        
             Haptics.shared.executeCustomPattern(pattern: .breakBoulder)
             bouldersBroken += 1
             playerSprite.inventory.hammers -= 1
@@ -211,8 +192,6 @@ class GameEngine {
         case .enemy:
             guard playerSprite.inventory.swords > 0 else { return }
             
-            chatSprite.sendChat(profile: .villain, startNewChat: true, endChat: true, chat: "Die, bitch!")
-
             Haptics.shared.executeCustomPattern(pattern: .killEnemy)
             enemiesKilled += 1
             playerSprite.inventory.swords -= 1
@@ -432,8 +411,6 @@ class GameEngine {
                     shouldUpdateRemainingForBoulderIfIcy = false
                 }
                 
-                chatSprite.sendChat(profile: .trainer, startNewChat: false, endChat: false, chat: "You can't go that way, PUZL Boy!")
-
                 GameCenterManager.shared.updateProgress(achievement: .klutz, shouldReportImmediately: false)
                 
                 Haptics.shared.executeCustomPattern(pattern: .boulder)
@@ -564,7 +541,6 @@ class GameEngine {
     func moveSprites(to superScene: SKScene) {
         superScene.addChild(gameboardSprite.sprite)
         superScene.addChild(displaySprite.sprite)
-        superScene.addChild(chatSprite.sprite)
         
         playerSprite.setScale(panelSize: gameboardSprite.panelSize)
         gameboardSprite.sprite.addChild(playerSprite.sprite)
