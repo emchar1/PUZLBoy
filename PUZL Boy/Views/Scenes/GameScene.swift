@@ -85,6 +85,7 @@ class GameScene: SKScene {
     override func didMove(to view: SKView) {
         moveSprites()
         startTimer()
+        playDialogue()
     }
     
     override func update(_ currentTime: TimeInterval) {
@@ -117,6 +118,7 @@ class GameScene: SKScene {
         gameEngine.delegate = self
         
         moveSprites()
+        playDialogue()
         
         if !didWin {
             AudioManager.shared.playSound(for: AudioManager.shared.overworldTheme)
@@ -128,8 +130,14 @@ class GameScene: SKScene {
         scoringEngine.moveSprites(to: self)
         chatEngine.moveSprites(to: self)
         levelSkipEngine.moveSprites(to: self)
+    }
+    
+    private func playDialogue() {
+        //Only disable input on certain levels, i.e. the important ones w/ instructions.
+        if currentLevel == 1 || currentLevel == 5 || currentLevel == 6 {
+            disableInput = true
+        }
         
-        disableInput = true
         chatEngine.dialogue(level: currentLevel) {
             self.disableInput = false
         }
@@ -189,10 +197,20 @@ extension GameScene: GameEngineDelegate {
 //            return
 //        }
         
-        scoringEngine.resetScore()
-        scoringEngine.updateLabels()
-                
-        newGame(level: currentLevel, didWin: false)
+        
+        
+        
+        chatEngine.dialogue(level: -1) { [unowned self] in
+            scoringEngine.resetScore()
+            scoringEngine.updateLabels()
+                    
+            newGame(level: currentLevel, didWin: false)
+        }
+        
+        
+        
+        
+        
     }
 }
 

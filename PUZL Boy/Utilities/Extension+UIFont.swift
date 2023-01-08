@@ -19,5 +19,5 @@ extension UIFont {
     
     static let chatFont: String = "Boogaloo-Regular"
     static let chatFontColor: UIColor = .white
-    static let chatFontSize: CGFloat = 38
+    static let chatFontSize: CGFloat = 48
 }

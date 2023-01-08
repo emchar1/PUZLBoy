@@ -32,6 +32,13 @@ class ChatEngine {
     private var shouldClose = true
     private var completion: (() -> ())?
     private var currentProfile: ChatProfile = .hero
+    
+    //Only play certain instructions once
+    private var lv1Played = false
+    private var lv5Played = false
+    private var lv6Played = false
+    private var lvNeg1Played = false
+    
         
     enum ChatProfile {
         case hero, trainer, princess, villain
@@ -88,39 +95,93 @@ class ChatEngine {
     func dialogue(level: Int, completion: (() -> Void)?) {
         switch level {
         case 1:
+            guard !lv1Played else {
+                completion?()
+                return
+            }
+            
             sendChat(profile: .trainer, startNewChat: true, endChat: false,
-                     chat: "TRAINER: Welcome, PUZL Boy! Boy, you look puzzled. Don't worry, it's just a puzzle.") { [unowned self] in
+                     chat: "TRAINER: Welcome, PUZL Boy! The goal of the game is to get to the exit under a certain amount of moves.") { [unowned self] in
                 sendChat(profile: .trainer, startNewChat: false, endChat: false,
-                         chat: "Also.... don't forget to use your potions. It's the only thing you've got!") { [unowned self] in
-                    sendChat(profile: .trainer, startNewChat: false, endChat: false,
-                             chat: "You may run into a dragon. that's ok. Just walk around him. Or her? They/them?") { [unowned self] in
-                        sendChat(profile: .trainer, startNewChat: false, endChat: false,
-                                 chat: "Oh, and one more thing.... I forgot.") { [unowned self] in
-                            sendChat(profile: .hero, startNewChat: false, endChat: true,
-                                     chat: "PUZL BOY: Yup, I got it. (Sheesh, does this guy ever stop talking???") {
-                                completion?()
-                            }
-                        }
+                         chat: "But in order to open the gate, you have to collect all the gems. Give it a try!") { [unowned self] in
+                    sendChat(profile: .hero, startNewChat: false, endChat: true,
+                             chat: "PUZL Boy: I got this, yo!") { [unowned self] in
+                        lv1Played = true
+                        completion?()
                     }
                 }
             }
-        case 10:
+        case 5:
+            guard !lv5Played else {
+                completion?()
+                return
+            }
+            
             sendChat(profile: .trainer, startNewChat: true, endChat: false,
-                     chat: "You've made it this far! Give your self a pat on the back 🤚🏼") { [unowned self] in
+                     chat: "Pretty easy, right? Levels get progressively harder with obstacles blocking your path. You'll have to go around those boulders.") { [unowned self] in
                 sendChat(profile: .hero, startNewChat: false, endChat: false,
-                         chat: "(Just go away already...)") { [unowned self] in
-                    sendChat(profile: .trainer, startNewChat: false, endChat: false,
-                             chat: "What?! I heard that!") { [unowned self] in
-                        sendChat(profile: .hero, startNewChat: false, endChat: false,
-                                 chat: "You weren't supposed to see that! That's my inner monologue vaginas.") { [unowned self] in
-                            sendChat(profile: .trainer, startNewChat: false, endChat: false,
-                                     chat: "I can see it on the screen, PUZ! And don't get on me about 4th wallin' it. I'm psychopathic!") { [unowned self] in
-                                sendChat(profile: .hero, startNewChat: false, endChat: true, chat: "(Ugh, whatever.)") {
-                                    completion?()
-                                }
-                            }
-                        }
+                         chat: "Thanks, Captain Obvious.") { [unowned self] in
+                    sendChat(profile: .trainer, startNewChat: false, endChat: true,
+                             chat: "(Why do I even bother.)") { [unowned self] in
+                        lv5Played = true
+                        completion?()
                     }
+                }
+            }
+        case 6:
+            guard !lv6Played else {
+                completion?()
+                return
+            }
+            
+            sendChat(profile: .trainer, startNewChat: true, endChat: false,
+                     chat: "Look, a hammer! Use it to break boulders and clear a path. But plan strategically, because hammers can only be used once, then it breaks.") { [unowned self] in
+                sendChat(profile: .hero, startNewChat: false, endChat: false,
+                         chat: "So hammers break boulders... got it.") { [unowned self] in
+                    sendChat(profile: .trainer, startNewChat: false, endChat: true,
+                             chat: "Well, I think you're getting the hang of it. I'll leave you be and chime in when I think you need it!") { [unowned self] in
+                        lv6Played = true
+                        completion?()
+                    }
+                }
+            }
+        case 7:
+            sendChat(profile: .trainer, startNewChat: true, endChat: true,
+                     chat: "Watch out for marsh! Stepping in one of these will cost ya 2 moves...") {
+                completion?()
+            }
+        case 8:
+            sendChat(profile: .trainer, startNewChat: true, endChat: true,
+                     chat: "Sometimes stepping in marsh is unavoidable, however.") {
+                completion?()
+            }
+        case 9:
+            sendChat(profile: .trainer, startNewChat: true, endChat: false,
+                     chat: "A dragon. \"Hey mister dragon!\" Looks like he's sleeping. Don't even try to wake him or it'll cost ya a health.") { [unowned self] in
+                sendChat(profile: .trainer, startNewChat: false, endChat: false,
+                         chat: "If only you had a sword...") { [unowned self] in
+                    sendChat(profile: .hero, startNewChat: false, endChat: true, chat: "That's savage.") {
+                        completion?()
+                    }
+                }
+            }
+        case 14:
+            sendChat(profile: .trainer, startNewChat: true, endChat: true,
+                     chat: "Look, a warp! Stepping in one of these will teleport you to the other one. Weeeeee!") {
+                completion?()
+            }
+        case -1: //Die
+            guard !lvNeg1Played else {
+                completion?()
+                return
+            }
+            
+            sendChat(profile: .trainer, startNewChat: true, endChat: false,
+                     chat: "You win some, you lose some... Next time try to use fewer moves to get to the exit." ) { [unowned self] in
+                sendChat(profile: .hero, startNewChat: false, endChat: true,
+                         chat: "Yeah yeah, I got it...") { [unowned self] in 
+                    lvNeg1Played = true
+                    completion?()
                 }
             }
         default:
