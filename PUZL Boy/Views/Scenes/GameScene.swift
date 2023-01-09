@@ -72,9 +72,12 @@ class GameScene: SKScene {
     // MARK: - UI Touches
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        guard !disableInput else { return }
         guard let location = touches.first?.location(in: self) else { return }
-        
+
+        chatEngine.fastForward(in: location)
+
+        guard !disableInput else { return }
+
         gameEngine.handleControls(in: location)
         levelSkipEngine.handleControls(in: location)
     }

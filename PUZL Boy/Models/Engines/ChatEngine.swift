@@ -21,6 +21,7 @@ class ChatEngine {
     private static let spriteSizeOrig: CGFloat = 512
     private static let margin: CGFloat = 40
     private static let chatBorderWidth: CGFloat = 4
+    private static let xOrigin: CGFloat = 30
     private static let yOrigin: CGFloat = K.ScreenDimensions.topOfGameboard - K.ScreenDimensions.iPhoneWidth * GameboardSprite.spriteScale - spriteSizeNew - margin
 
     //Shared properties. These seem weird..
@@ -32,7 +33,9 @@ class ChatEngine {
     private var shouldClose = true
     private var completion: (() -> ())?
     private var currentProfile: ChatProfile = .hero
-    
+    private var chatSpeed: TimeInterval
+    private let chatSpeedOrig: TimeInterval = 0.08
+
     //Only play certain instructions once
     private var lv1Played = false
     private var lv5Played = false
@@ -58,9 +61,11 @@ class ChatEngine {
         
         timer = Timer()
         
+        chatSpeed = chatSpeedOrig
+        
         sprite = SKShapeNode()
         sprite.lineWidth = ChatEngine.chatBorderWidth
-        sprite.path = UIBezierPath(roundedRect: CGRect(x: 30, y: ChatEngine.yOrigin,
+        sprite.path = UIBezierPath(roundedRect: CGRect(x: ChatEngine.xOrigin, y: ChatEngine.yOrigin,
                                                        width: K.ScreenDimensions.iPhoneWidth * GameboardSprite.spriteScale,
                                                        height: ChatEngine.spriteSizeNew + ChatEngine.chatBorderWidth),
                                    cornerRadius: 20).cgPath
@@ -92,6 +97,107 @@ class ChatEngine {
     
     // MARK: - Functions
     
+    func fastForward(in location: CGPoint) {
+        guard location.x >= ChatEngine.xOrigin && location.x <= ChatEngine.xOrigin + sprite.frame.size.width && location.y >= ChatEngine.yOrigin && location.y <= ChatEngine.yOrigin + sprite.frame.size.height else { return }
+        
+        chatSpeed = 0
+    }
+    
+    func sendChat(profile: ChatProfile, startNewChat: Bool, endChat: Bool, chat: String, completion: (() -> ())? = nil) {
+        //Only allow a new chat if current chat isn't happening
+        guard allowNewChat else { return }
+        
+        textSprite.text = ""
+        timer.invalidate()
+        chatText = chat
+        chatIndex = 0
+        allowNewChat = false //prevents interruption of current chat, which could lead to crashing due to index out of bounds
+        shouldClose = endChat
+        currentProfile = profile
+        self.completion = completion
+        
+        switch profile {
+        case .hero:
+            imageSprite.texture = SKTexture(imageNamed: "puzlboy")
+            sprite.fillColor = .orange
+        case .trainer:
+            imageSprite.texture = SKTexture(imageNamed: "trainer")
+            sprite.fillColor = .gray
+        case .princess:
+            imageSprite.texture = SKTexture(imageNamed: "trainer")
+            sprite.fillColor = .magenta
+        case .villain:
+            imageSprite.texture = SKTexture(imageNamed: "puzlboy")
+            sprite.fillColor = .red
+        }
+        
+        imageSprite.position.x = profile == .hero ? 60 : K.ScreenDimensions.iPhoneWidth * GameboardSprite.spriteScale
+        imageSprite.xScale = profile == .hero ?  abs(imageSprite.xScale) : -abs(imageSprite.xScale)
+        textSprite.position.x = ChatEngine.margin + (profile == .hero ? imageSprite.size.width : 20)
+
+        sprite.setScale(0)
+        sprite.position.x = profile != .hero ? K.ScreenDimensions.iPhoneWidth * GameboardSprite.spriteScale : 0
+        
+        //Animates the chat bubble zoom in for startNewChat
+        sprite.run(SKAction.group([
+            SKAction.moveTo(x: 0, duration: startNewChat ? 0.4 : 0),
+            SKAction.scale(to: origScale, duration: startNewChat ? 0.4 : 0)
+        ])) { [unowned self] in
+            timer = Timer.scheduledTimer(timeInterval: chatSpeed, target: self, selector: #selector(animateText(_:)), userInfo: nil, repeats: true)
+        }
+    }
+
+    ///This contains the magic of animating the characters of the string like a typewriter, until it gets to the end of the chat.
+    @objc private func animateText(_ sender: Timer) {
+        guard chatSpeed > 0 && chatIndex < chatText.count else {
+            timer.invalidate()
+            textSprite.text = chatText
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+                self.closeChat()
+            }
+            
+            return
+        }
+
+
+        let chatChar = chatText[chatText.index(chatText.startIndex, offsetBy: chatIndex)]
+
+        textSprite.text! += "\(chatChar)"
+                
+        chatIndex += 1
+    }
+    
+    private func closeChat() {
+        let duration: TimeInterval = shouldClose ? 0.2 : 0
+        
+        //Animates the chat bubble zoom out for endChat
+        sprite.run(SKAction.group([
+            SKAction.moveTo(x: currentProfile != .hero ? K.ScreenDimensions.iPhoneWidth * GameboardSprite.spriteScale : 0, duration: duration),
+            SKAction.scale(to: 0, duration: duration)
+        ])) { [unowned self] in
+            allowNewChat = true
+            chatSpeed = chatSpeedOrig
+            completion?()
+        }
+    }
+    
+    
+    // MARK: - Move Functions
+
+    /**
+     Adds all the sprites to the superScene, i.e. should be called in a GameScene's moveTo() function.
+     - parameter superScene: The GameScene to add all the children to.
+     */
+    func moveSprites(to superScene: SKScene) {
+        superScene.addChild(sprite)
+    }
+}
+
+
+// MARK: - Dialogue Function
+
+extension ChatEngine {
     func dialogue(level: Int, completion: (() -> Void)?) {
         switch level {
         case 1:
@@ -179,7 +285,7 @@ class ChatEngine {
             sendChat(profile: .trainer, startNewChat: true, endChat: false,
                      chat: "You win some, you lose some... Next time try to use fewer moves to get to the exit." ) { [unowned self] in
                 sendChat(profile: .hero, startNewChat: false, endChat: true,
-                         chat: "Yeah yeah, I got it...") { [unowned self] in 
+                         chat: "Yeah yeah, I got it...") { [unowned self] in
                     lvNeg1Played = true
                     completion?()
                 }
@@ -187,87 +293,5 @@ class ChatEngine {
         default:
             completion?()
         }
-    }
-    
-    func sendChat(profile: ChatProfile, startNewChat: Bool, endChat: Bool, chat: String, completion: (() -> ())? = nil) {
-        //Only allow a new chat if current chat isn't happening
-        guard allowNewChat else { return }
-        
-        textSprite.text = ""
-        timer.invalidate()
-        chatText = chat
-        chatIndex = 0
-        allowNewChat = false //prevents interruption of current chat, which could lead to crashing due to index out of bounds
-        shouldClose = endChat
-        currentProfile = profile
-        self.completion = completion
-        
-        switch profile {
-        case .hero:
-            imageSprite.texture = SKTexture(imageNamed: "puzlboy")
-            sprite.fillColor = .orange
-        case .trainer:
-            imageSprite.texture = SKTexture(imageNamed: "trainer")
-            sprite.fillColor = .gray
-        case .princess:
-            imageSprite.texture = SKTexture(imageNamed: "trainer")
-            sprite.fillColor = .magenta
-        case .villain:
-            imageSprite.texture = SKTexture(imageNamed: "puzlboy")
-            sprite.fillColor = .red
-        }
-        
-        imageSprite.position.x = profile == .hero ? 60 : K.ScreenDimensions.iPhoneWidth * GameboardSprite.spriteScale
-        imageSprite.xScale = profile == .hero ?  abs(imageSprite.xScale) : -abs(imageSprite.xScale)
-        textSprite.position.x = ChatEngine.margin + (profile == .hero ? imageSprite.size.width : 20)
-
-        sprite.setScale(0)
-        sprite.position.x = profile != .hero ? K.ScreenDimensions.iPhoneWidth * GameboardSprite.spriteScale : 0
-        sprite.run(SKAction.group([
-            SKAction.moveTo(x: 0, duration: startNewChat ? 0.4 : 0),
-            SKAction.scale(to: origScale, duration: startNewChat ? 0.4 : 0)
-        ])) { [unowned self] in
-            timer = Timer.scheduledTimer(timeInterval: 0.05, target: self, selector: #selector(animateText(_:)), userInfo: nil, repeats: true)
-        }
-    }
-
-    ///This contains the magic of animating the characters of the string like a typewriter, until it gets to the end of the chat.
-    @objc private func animateText(_ sender: Timer) {
-        let chatChar = chatText[chatText.index(chatText.startIndex, offsetBy: chatIndex)]
-
-        textSprite.text! += "\(chatChar)"
-                
-        chatIndex += 1
-
-        if chatIndex >= chatText.count {
-            timer.invalidate() //MUST be here, else crash!
-
-            DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
-                self.closeChat()
-            }
-        }
-    }
-    
-    private func closeChat() {
-        let duration: TimeInterval = shouldClose ? 0.2 : 0
-        
-        sprite.run(SKAction.group([
-            SKAction.moveTo(x: currentProfile != .hero ? K.ScreenDimensions.iPhoneWidth * GameboardSprite.spriteScale : 0, duration: duration),
-            SKAction.scale(to: 0, duration: duration)
-        ])) { [unowned self] in
-            allowNewChat = true
-            completion?()
-        }
-    }
-    
-    
-    // MARK: - Move Functions
-
-    /**
-     Adds all the sprites to the superScene, i.e. should be called in a GameScene's moveTo() function.
-     - parameter superScene: The GameScene to add all the children to.
-     */
-    func moveSprites(to superScene: SKScene) {
-        superScene.addChild(sprite)
     }
 }
