@@ -138,6 +138,10 @@ class ChatEngine {
         sprite.setScale(0)
         sprite.position.x = profile != .hero ? K.ScreenDimensions.iPhoneWidth * GameboardSprite.spriteScale : 0
         
+        if startNewChat {
+            AudioManager.shared.playSound(for: "chatopen2")
+        }
+        
         //Animates the chat bubble zoom in for startNewChat
         sprite.run(SKAction.group([
             SKAction.moveTo(x: 0, duration: startNewChat ? 0.4 : 0),
@@ -170,6 +174,10 @@ class ChatEngine {
     
     private func closeChat() {
         let duration: TimeInterval = shouldClose ? 0.2 : 0
+        
+        if shouldClose {
+            AudioManager.shared.playSound(for: "chatclose2")
+        }
         
         //Animates the chat bubble zoom out for endChat
         sprite.run(SKAction.group([
