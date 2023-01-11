@@ -34,7 +34,7 @@ class GameboardSprite {
         panelSize = K.ScreenDimensions.iPhoneWidth / CGFloat(panelCount)
         panels = Array(repeating: Array(repeating: SKSpriteNode(), count: panelCount), count: panelCount)
         
-        sprite = SKSpriteNode(color: UIColor(red: 200 / 255, green: 200 / 255, blue: 200 / 255, alpha: 1),
+        sprite = SKSpriteNode(texture: SKTexture(imageNamed: "gameboardTexture"),
                               size: CGSize(width: CGFloat(panelCount) * panelSize, height: CGFloat(panelCount) * panelSize))
         sprite.anchorPoint = .zero
         sprite.position = CGPoint(x: xPosition, y: yPosition)
