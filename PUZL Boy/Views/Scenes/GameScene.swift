@@ -21,6 +21,7 @@ class GameScene: SKScene {
 
     private var user: User?
     private var disableInput = false
+    private var pauseTimer = false
 
     private var currentLevel: Int = 1 {
         // FIXME: - Delete once debugging is done!
@@ -108,10 +109,16 @@ class GameScene: SKScene {
         let sequence = SKAction.sequence([wait, block])
         
         run(SKAction.repeatForever(sequence), withKey: "runTimerAction")
+        
+        pauseTimer = false
     }
     
     private func stopTimer() {
         removeAction(forKey: "runTimerAction")
+        
+        scoringEngine.updateLabels()
+        
+        pauseTimer = true
     }
     
     private func newGame(level: Int, didWin: Bool) {
@@ -137,12 +144,20 @@ class GameScene: SKScene {
     
     private func playDialogue() {
         //Only disable input on certain levels, i.e. the important ones w/ instructions.
-        if currentLevel == 1 || currentLevel == 5 || currentLevel == 6 {
+        if chatEngine.shouldPauseGame(level: currentLevel) {
+            scoringEngine.resetTime()
+            stopTimer()
+            
             disableInput = true
         }
         
-        chatEngine.dialogue(level: currentLevel) {
-            self.disableInput = false
+        chatEngine.dialogue(level: currentLevel) { [unowned self] in
+            if pauseTimer {
+                scoringEngine.resetTime()
+                startTimer()
+            }
+
+            disableInput = false
         }
     }
 }
@@ -156,8 +171,8 @@ extension GameScene: GameEngineDelegate {
                                               itemsFound: itemsFound,
                                               enemiesKilled: enemiesKilled,
                                               usedContinue: usedContinue)
-        scoringEngine.updateLabels()
-        removeAction(forKey: "runTimerAction")
+//        scoringEngine.updateLabels()
+//        removeAction(forKey: "runTimerAction")
 
         GameCenterManager.shared.postScoreToLeaderboard(score: score, level: currentLevel)
         
@@ -172,6 +187,9 @@ extension GameScene: GameEngineDelegate {
         currentLevel += 1
         
         gameEngine.fadeGameboard(fadeOut: true) { [unowned self] in
+            scoringEngine.updateLabels()
+            removeAction(forKey: "runTimerAction")
+            
             scoringEngine.resetTime()
             startTimer()
 

@@ -51,7 +51,7 @@ class AudioManager {
     }()
     
     let overworldTheme = "overworld_off"
-    private var audioItems: [String : AudioItem] = [:]
+    private var audioItems: [String: AudioItem] = [:]
     
 
     // MARK: - Setup
