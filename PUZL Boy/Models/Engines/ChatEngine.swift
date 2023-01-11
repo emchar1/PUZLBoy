@@ -123,7 +123,7 @@ class ChatEngine {
             sprite.fillColor = .orange
         case .trainer:
             imageSprite.texture = SKTexture(imageNamed: "trainer")
-            sprite.fillColor = .gray
+            sprite.fillColor = .blue
         case .princess:
             imageSprite.texture = SKTexture(imageNamed: "trainer")
             sprite.fillColor = .magenta
@@ -223,13 +223,16 @@ extension ChatEngine {
             sendChat(profile: .trainer, startNewChat: true, endChat: false,
                      chat: "TRAINER: Welcome, PUZL Boy! The goal of the game is to get to the gate in under a certain number of moves.") { [unowned self] in
                 sendChat(profile: .trainer, startNewChat: false, endChat: false,
-                         chat: "Your moves count can be found in the upper left corner - next to the boot. 👢") { [unowned self] in
+                         chat: "You can move to any available panel on your left, right, above and below. Simply tap the panel to move there. Diagonal moves are NOT allowed.") { [unowned self] in
                     sendChat(profile: .trainer, startNewChat: false, endChat: false,
-                             chat: "But in order to open the gate, you'll have to collect all the gems in the level. Give it a try!") { [unowned self] in
-                        sendChat(profile: .hero, startNewChat: false, endChat: true,
-                                 chat: "PUZL Boy: I got this, yo!") { [unowned self] in
-                            dialoguePlayed[level] = true
-                            completion?()
+                             chat: "If your move count hits 0, it's game over, buddy! Your move count can be found in the upper left corner next to the boot. 👢") { [unowned self] in
+                        sendChat(profile: .trainer, startNewChat: false, endChat: false,
+                                 chat: "Finally, in order to open the gate, you'll have to collect all the gems in the level. Give it a go!") { [unowned self] in
+                            sendChat(profile: .hero, startNewChat: false, endChat: true,
+                                     chat: "PUZL Boy: I got this, yo!") { [unowned self] in
+                                dialoguePlayed[level] = true
+                                completion?()
+                            }
                         }
                     }
                 }
@@ -241,13 +244,13 @@ extension ChatEngine {
             }
             
             sendChat(profile: .trainer, startNewChat: true, endChat: false,
-                     chat: "Pretty easy, right? Levels get progressively harder with various obstacles blocking your path.") { [unowned self] in
+                     chat: "Pretty easy, right?! Levels get progressively harder with various obstacles blocking your path.") { [unowned self] in
                 sendChat(profile: .trainer, startNewChat: false, endChat: false,
-                         chat: "You need a hammer to break through those boulders. Your hammer inventory count can be found in the upper right. 🔨") { [unowned self] in
+                         chat: "You need a hammer to break through those boulders. Your inventory count can be found in the upper right. 🔨") { [unowned self] in
                     sendChat(profile: .hero, startNewChat: false, endChat: false,
                              chat: "So hammers break boulders... got it.") { [unowned self] in
                         sendChat(profile: .trainer, startNewChat: false, endChat: true,
-                                 chat: "And one more thing... hammers can only be used once before breaking, so plan accordingly.") { [unowned self] in
+                                 chat: "Oh, and one more thing... hammers can only be used once before breaking, so plan accordingly.") { [unowned self] in
                             dialoguePlayed[level] = true
                             completion?()
                         }
@@ -261,11 +264,11 @@ extension ChatEngine {
             }
             
             sendChat(profile: .trainer, startNewChat: true, endChat: false,
-                     chat: "Watch out for marsh! Stepping on one of these purple colored squares will cost ya 2 moves.") { [unowned self] in
+                     chat: "Watch out for marsh! Stepping on one of these purple colored panels will drag you down, costing ya 2 moves.") { [unowned self] in
                 sendChat(profile: .trainer, startNewChat: false, endChat: false,
                          chat: "However, sometimes stepping in marsh is unavoidable.") { [unowned self] in
                     sendChat(profile: .hero, startNewChat: false, endChat: true,
-                             chat: "Man... and I just bought these new kicks!") { [unowned self] in
+                             chat: "Man... and I just got these new kicks!") { [unowned self] in
                         dialoguePlayed[level] = true
                         completion?()
                     }
@@ -278,12 +281,12 @@ extension ChatEngine {
             }
             
             sendChat(profile: .trainer, startNewChat: true, endChat: false,
-                     chat: "A dragon! Looks like he's sleeping. Don't even try to wake him or it'll cost ya a health point. 💖") { [unowned self] in
+                     chat: "A dragon! Looks like he's sleeping. Don't even try to wake him or it'll cost ya 1 health point. 💖") { [unowned self] in
                 sendChat(profile: .trainer, startNewChat: false, endChat: false,
-                         chat: "Once your health drops to 0, it's game over, baby. If only you had a sword. 🗡") { [unowned self] in
+                         chat: "Once your health drops to 0, it's lights out, baby. If only you had a sword. 🗡") { [unowned self] in
                     sendChat(profile: .hero, startNewChat: false, endChat: false, chat: "Lemme guess, I can only use the sword once before it breaks?") { [unowned self] in
                         sendChat(profile: .trainer, startNewChat: false, endChat: true,
-                                 chat: "B-I-N-G-O!!! Oh sorry, I was playing Bingo. Yes, that is correct.") { [unowned self] in
+                                 chat: "B-I-N-G-O!!! Oh sorry, I was playing Bingo with my grandmother. Yes, that is correct.") { [unowned self] in
                             dialoguePlayed[level] = true
                             completion?()
                         }
@@ -297,11 +300,11 @@ extension ChatEngine {
             }
             
             sendChat(profile: .trainer, startNewChat: true, endChat: false,
-                     chat: "Those fun things are warps. Stepping on one of them will teleport you to the other one. Weeeeeeeee!") { [unowned self] in
+                     chat: "Those fun looking things are warps. Stepping on one of them will teleport you to the other one. Weeeeeeeee!") { [unowned self] in
                 sendChat(profile: .hero, startNewChat: false, endChat: false,
-                         chat: "Is this thing safe?") { [unowned self] in
+                         chat: "Are those things safe?") { [unowned self] in
                     sendChat(profile: .trainer, startNewChat: false, endChat: false,
-                             chat: "Well it's not unsafe, if that's what you mean.") { [unowned self] in
+                             chat: "In my 4 months on the job, I haven't lost a PUZL Boy to them yet!") { [unowned self] in
                         sendChat(profile: .hero, startNewChat: false, endChat: true,
                                  chat: ".....") { [unowned self] in
                             dialoguePlayed[level] = true
@@ -317,9 +320,9 @@ extension ChatEngine {
             }
             
             sendChat(profile: .trainer, startNewChat: true, endChat: false,
-                     chat: "Ice, ice, baby! Walk on this and you'll slide until you hit either an obstacle, another terrain panel, or the edge of the level.") { [unowned self] in
+                     chat: "Ice, ice, baby! Step on this and you'll slide until you hit either an obstacle, another terrain panel, or the edge of the level.") { [unowned self] in
                 sendChat(profile: .trainer, startNewChat: false, endChat: false,
-                         chat: "The nice thing though is that it'll only cost you 1 move as long as you're gliding continuously.") { [unowned self] in
+                         chat: "The nice thing though is that it'll only cost you 1 move as long as you're sliding continuously.") { [unowned self] in
                     sendChat(profile: .hero, startNewChat: false, endChat: false,
                              chat: "Ok. I think I got it, old man.") { [unowned self] in
                         sendChat(profile: .trainer, startNewChat: false, endChat: true,
