@@ -328,6 +328,9 @@ extension ChatEngine {
                         sendChat(profile: .trainer, startNewChat: false, endChat: true,
                                  chat: "Well, I'll leave you alone for now. I'll chime in every now and then if I think you need it.") { [unowned self] in
                             dialoguePlayed[level] = true
+                            
+                            GameCenterManager.shared.updateProgress(achievement: .avidReader, shouldReportImmediately: true)
+                            
                             completion?()
                         }
                     }

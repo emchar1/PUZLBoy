@@ -12,6 +12,7 @@ enum Achievement: String, CaseIterable {
     // MARK: - Cases
     
     //Add achievements as we go, here.
+    case avidReader = "AvidReader"
     case exterminator = "Exterminator"
     case dragonSlayer = "DragonSlayer"
     case beastMaster = "BeastMaster"
@@ -77,6 +78,7 @@ enum Achievement: String, CaseIterable {
         
         //Add achievements as we go, here.
         switch achievement {
+        case .avidReader:           gkAchievement = AchievementAvidReader(identifier: id)
         case .exterminator:         gkAchievement = AchievementExterminator(identifier: id)
         case .dragonSlayer:         gkAchievement = AchievementDragonSlayer(identifier: id)
         case .beastMaster:          gkAchievement = AchievementBeastMaster(identifier: id)
