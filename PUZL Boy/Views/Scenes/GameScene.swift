@@ -171,8 +171,8 @@ extension GameScene: GameEngineDelegate {
                                               itemsFound: itemsFound,
                                               enemiesKilled: enemiesKilled,
                                               usedContinue: usedContinue)
-//        scoringEngine.updateLabels()
-//        removeAction(forKey: "runTimerAction")
+        scoringEngine.updateLabels()
+        removeAction(forKey: "runTimerAction")
 
         GameCenterManager.shared.postScoreToLeaderboard(score: score, level: currentLevel)
         
@@ -187,9 +187,6 @@ extension GameScene: GameEngineDelegate {
         currentLevel += 1
         
         gameEngine.fadeGameboard(fadeOut: true) { [unowned self] in
-            scoringEngine.updateLabels()
-            removeAction(forKey: "runTimerAction")
-            
             scoringEngine.resetTime()
             startTimer()
 

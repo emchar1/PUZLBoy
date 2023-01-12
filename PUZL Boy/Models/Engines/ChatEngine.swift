@@ -286,7 +286,7 @@ extension ChatEngine {
                          chat: "Once your health drops to 0, it's lights out, baby. If only you had a sword. 🗡") { [unowned self] in
                     sendChat(profile: .hero, startNewChat: false, endChat: false, chat: "Lemme guess, I can only use the sword once before it breaks?") { [unowned self] in
                         sendChat(profile: .trainer, startNewChat: false, endChat: true,
-                                 chat: "B-I-N-G-O!!! Oh sorry, I was playing Bingo with my grandmother. Yes, that is correct.") { [unowned self] in
+                                 chat: "B-I-N-G-O!!! Oh sorry, I was playing Bingo with my grandmother. Correct, one sword per dragon.") { [unowned self] in
                             dialoguePlayed[level] = true
                             completion?()
                         }
