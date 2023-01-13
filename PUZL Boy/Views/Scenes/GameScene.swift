@@ -151,7 +151,7 @@ class GameScene: SKScene {
             disableInput = true
         }
         
-        chatEngine.dialogue(level: currentLevel) { [unowned self] in
+        chatEngine.dialogue(level: currentLevel, superScene: self) { [unowned self] in
             if pauseTimer {
                 scoringEngine.resetTime()
                 startTimer()

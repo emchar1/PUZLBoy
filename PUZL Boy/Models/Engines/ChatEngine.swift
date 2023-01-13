@@ -212,7 +212,7 @@ extension ChatEngine {
         return dialoguePlayed[level] != nil
     }
     
-    func dialogue(level: Int, completion: (() -> Void)?) {
+    func dialogue(level: Int, superScene: SKScene? = nil, completion: (() -> Void)?) {
         switch level {
         case 1:
             guard let dialoguePlayedCheck = dialoguePlayed[level], !dialoguePlayedCheck else {
@@ -303,13 +303,37 @@ extension ChatEngine {
                      chat: "Those fun looking things are warps. Stepping on one of them will teleport you to the other one. Weeeeeeeee!") { [unowned self] in
                 sendChat(profile: .hero, startNewChat: false, endChat: false,
                          chat: "Are those things safe?") { [unowned self] in
-                    sendChat(profile: .trainer, startNewChat: false, endChat: false,
-                             chat: "In my 4 months on the job, I haven't lost a PUZL Boy to them yet!") { [unowned self] in
-                        sendChat(profile: .hero, startNewChat: false, endChat: true,
-                                 chat: ".....") { [unowned self] in
-                            dialoguePlayed[level] = true
+                    sendChat(profile: .trainer, startNewChat: false, endChat: true,
+                             chat: "Probably. Anyhoo, here's a word from our sponsor...") { [unowned self] in
+                        dialoguePlayed[level] = true
+                        
+                        
+                        
+                        
+                        // TODO: Fade out, fade into first interstitial ad
+                        if let superScene = superScene {
+                            let adSprite = SKSpriteNode(color: .clear,
+                                                        size: CGSize(width: K.ScreenDimensions.iPhoneWidth, height: K.ScreenDimensions.height))
+                            adSprite.anchorPoint = .zero
+                            adSprite.zPosition = K.ZPosition.adScene
+
+                            superScene.addChild(adSprite)
+                            
+                            let sequence = SKAction.sequence([SKAction.colorize(with: .black, colorBlendFactor: 1.0, duration: 1.0),
+                                                              SKAction.wait(forDuration: 2.0), //play ad here
+                                                              SKAction.colorize(with: .clear, colorBlendFactor: 1.0, duration: 1.0)])
+
+                            adSprite.run(sequence) {
+                                completion?()
+                            }
+                        }
+                        else {
                             completion?()
                         }
+                        
+                        
+                        
+                        
                     }
                 }
             }

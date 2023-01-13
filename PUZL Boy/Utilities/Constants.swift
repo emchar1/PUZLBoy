@@ -96,6 +96,7 @@ struct K {
         static let items: CGFloat = 350
         static let display: CGFloat = 400
         static let displayAnimation: CGFloat = 450
+        static let adScene: CGFloat = 777
     }
     
     
