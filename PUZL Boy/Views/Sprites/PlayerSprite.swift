@@ -19,7 +19,11 @@ class PlayerSprite {
     private(set) var sprite: SKSpriteNode
     private var playerAtlas: SKTextureAtlas
     private var playerTextures: [[SKTexture]]
-    
+    private var explodeEnemyAtlas: SKTextureAtlas
+    private var explodeEnemyTextures: [SKTexture]
+    private var explodeBoulderAtlas: SKTextureAtlas
+    private var explodeBoulderTextures: [SKTexture]
+
     enum Texture: Int {
         case idle = 0, run, win, dead, glide, marsh
         
@@ -67,6 +71,16 @@ class PlayerSprite {
             if i == 5 {
                 playerTextures[Texture.glide.rawValue].append(playerAtlas.textureNamed("Run (\(i))"))
             }
+        }
+        
+        explodeEnemyAtlas = SKTextureAtlas(named: "explode")
+        explodeEnemyTextures = []
+        explodeBoulderAtlas = SKTextureAtlas(named: "explode")
+        explodeBoulderTextures = []
+
+        for i in 1...7 {
+            explodeEnemyTextures.append(explodeEnemyAtlas.textureNamed("explode (\(i))"))
+            explodeBoulderTextures.append(explodeEnemyAtlas.textureNamed("explode2 (\(i))"))
         }
                     
         sprite = SKSpriteNode(texture: playerTextures[Texture.idle.rawValue][0])
@@ -179,8 +193,20 @@ class PlayerSprite {
 
         gameboard.sprite.addChild(attackSprite)
 
-        attackSprite.run(animation) {
+        attackSprite.run(animation) { [unowned self] in
             attackSprite.removeFromParent()
+            
+            let explodeSprite = SKSpriteNode(texture: explodeEnemyTextures[0])
+            explodeSprite.position = gameboard.getLocation(at: panel)
+            explodeSprite.zPosition = K.ZPosition.items
+            explodeSprite.setScale(scale * (gameboard.panelSize / explodeSprite.size.width))
+
+            gameboard.sprite.addChild(explodeSprite)
+
+            explodeSprite.run(SKAction.animate(with: explodeEnemyTextures, timePerFrame: 0.05)) {
+                explodeSprite.removeFromParent()
+            }
+            
             completion()
         }
     }
@@ -204,8 +230,20 @@ class PlayerSprite {
 
         gameboard.sprite.addChild(attackSprite)
 
-        attackSprite.run(animation) {
+        attackSprite.run(animation) { [unowned self] in
             attackSprite.removeFromParent()
+            
+            let explodeSprite = SKSpriteNode(texture: explodeBoulderTextures[0])
+            explodeSprite.position = gameboard.getLocation(at: panel)
+            explodeSprite.zPosition = K.ZPosition.items
+            explodeSprite.setScale(scale * (gameboard.panelSize / explodeSprite.size.width))
+
+            gameboard.sprite.addChild(explodeSprite)
+
+            explodeSprite.run(SKAction.animate(with: explodeBoulderTextures, timePerFrame: 0.05)) {
+                explodeSprite.removeFromParent()
+            }
+
             completion()
         }
     }
