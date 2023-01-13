@@ -239,13 +239,13 @@ extension GameScene: LevelSkipEngineDelegate {
     func fowardPressed(_ node: SKSpriteNode) {
         currentLevel += 1
         scoringEngine.resetTime()
-        newGame(level: currentLevel, didWin: false)
+        newGame(level: currentLevel, didWin: true)
     }
     
     func reversePressed(_ node: SKSpriteNode) {
         currentLevel -= 1
         scoringEngine.resetTime()
-        newGame(level: currentLevel, didWin: false)
+        newGame(level: currentLevel, didWin: true)
     }
     
 }

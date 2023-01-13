@@ -178,7 +178,7 @@ class ChatEngine {
         let duration: TimeInterval = shouldClose ? 0.2 : 0
         
         if shouldClose {
-            AudioManager.shared.playSound(for: "chatclose2")
+            AudioManager.shared.playSound(for: "chatclose")
         }
         
         //Animates the chat bubble zoom out for endChat
