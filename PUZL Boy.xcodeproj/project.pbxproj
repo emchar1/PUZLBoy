@@ -43,6 +43,7 @@
 		EA75F0EB292DF46200F09BD7 /* FIRManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA75F0EA292DF46200F09BD7 /* FIRManager.swift */; };
 		EA75F0ED292DF57400F09BD7 /* LevelModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA75F0EC292DF57400F09BD7 /* LevelModel.swift */; };
 		EA75F0EF292F55F900F09BD7 /* LaunchScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA75F0EE292F55F900F09BD7 /* LaunchScene.swift */; };
+		EA78C36C29763B1C00292744 /* AchievementAdMobster.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA78C36B29763B1C00292744 /* AchievementAdMobster.swift */; };
 		EA8F4589296CF35100AE21C5 /* chatopen2.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA8F4588296CF35100AE21C5 /* chatopen2.mp3 */; };
 		EA956C6A29257B9C00879AD0 /* AudioManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA956C6929257B9C00879AD0 /* AudioManager.swift */; };
 		EA956C6C29257D9600879AD0 /* Extension+Comparable.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA956C6B29257D9600879AD0 /* Extension+Comparable.swift */; };
@@ -151,6 +152,7 @@
 		EA75F0EA292DF46200F09BD7 /* FIRManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FIRManager.swift; sourceTree = "<group>"; };
 		EA75F0EC292DF57400F09BD7 /* LevelModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelModel.swift; sourceTree = "<group>"; };
 		EA75F0EE292F55F900F09BD7 /* LaunchScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchScene.swift; sourceTree = "<group>"; };
+		EA78C36B29763B1C00292744 /* AchievementAdMobster.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementAdMobster.swift; sourceTree = "<group>"; };
 		EA8F4588296CF35100AE21C5 /* chatopen2.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = chatopen2.mp3; sourceTree = "<group>"; };
 		EA956C6929257B9C00879AD0 /* AudioManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioManager.swift; sourceTree = "<group>"; };
 		EA956C6B29257D9600879AD0 /* Extension+Comparable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+Comparable.swift"; sourceTree = "<group>"; };
@@ -443,6 +445,7 @@
 				EA95D20B296276670061059C /* AchievementSuperEfficient.swift */,
 				EA95D20D2962C8AD0061059C /* AchievementSpeedDemon.swift */,
 				EA95D20F2962C9260061059C /* AchievementSlowPoke.swift */,
+				EA78C36B29763B1C00292744 /* AchievementAdMobster.swift */,
 			);
 			path = Achievements;
 			sourceTree = "<group>";
@@ -606,6 +609,7 @@
 				EA95D1B92952579A0061059C /* AchievementDragonSlayer.swift in Sources */,
 				EA95D1DF295674AE0061059C /* ChatEngine.swift in Sources */,
 				EA65184528E5750C00E535BF /* GameboardSprite.swift in Sources */,
+				EA78C36C29763B1C00292744 /* AchievementAdMobster.swift in Sources */,
 				EA75F0ED292DF57400F09BD7 /* LevelModel.swift in Sources */,
 				EA3951ED2938165A00D0B14A /* Extension+UIImage.swift in Sources */,
 				EA95D1D529544D990061059C /* AchievementEnigmatologist.swift in Sources */,

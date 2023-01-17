@@ -24,6 +24,12 @@ class AdMobManager: NSObject {
         let adMobManager = AdMobManager()
         return adMobManager
     }()
+    
+    //UID properties
+    static let puzlBoyAppID = "ca-app-pub-3047242308312153~8487486800"
+    static let myFirstInterstitialID = "ca-app-pub-3047242308312153/9074783932"
+    static let eddiesiPhoneTestingDeviceID = "6ff74173a673785005b5692f63fbaa25"//"00008110-000808E61E6A801E"
+    static let testingSimulatorID = GADSimulatorID
         
     //Public properties
     var superVC: UIViewController?
@@ -31,13 +37,6 @@ class AdMobManager: NSObject {
 
     //Ad properties
     private(set) var interstitialAd: GADInterstitialAd?
-    private var adsWatched = 0
-
-    //UID properties
-    private let puzlBoyAppID = "ca-app-pub-3047242308312153~8487486800"
-    private let myFirstInterstitialID = "ca-app-pub-3047242308312153/9074783932"
-    private let eddiesiPhoneTestingDeviceID = "00008110-000808E61E6A801E"
-    private let testingSimulatorID = GADSimulatorID
     
         
     // MARK: - Initialization
@@ -54,7 +53,7 @@ class AdMobManager: NSObject {
     func createAndLoadInterstitial() {
         let request = GADRequest()
         
-        GADInterstitialAd.load(withAdUnitID: AdMobManager.shared.myFirstInterstitialID, request: request) { interstitialAd, error in
+        GADInterstitialAd.load(withAdUnitID: AdMobManager.myFirstInterstitialID, request: request) { interstitialAd, error in
             guard error == nil else {
                 print("Error laoding the interstitial: \(error!.localizedDescription)")
                 return
@@ -92,14 +91,10 @@ extension AdMobManager: GADFullScreenContentDelegate {
     func adDidDismissFullScreenContent(_ ad: GADFullScreenPresentingAd) {
         print("Ad did dismiss full screen content.")
         
+        GameCenterManager.shared.updateProgress(achievement: .adMobster, shouldReportImmediately: true)
+
         //Queues up the next interstitial ad
         createAndLoadInterstitial()
-        adsWatched += 1
-        
-        // TODO: - AdMobster achievement
-        if adsWatched == 50 {
-            //AdMobster achievement!!
-        }
         
         delegate?.didDismissInterstitial()
     }

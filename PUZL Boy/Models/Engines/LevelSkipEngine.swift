@@ -10,6 +10,7 @@ import SpriteKit
 protocol LevelSkipEngineDelegate: AnyObject {
     func fowardPressed(_ node: SKSpriteNode)
     func reversePressed(_ node: SKSpriteNode)
+    func viewAchievementsPressed( node: SKSpriteNode)
 }
 
 class LevelSkipEngine {
@@ -18,6 +19,7 @@ class LevelSkipEngine {
     
     private var forwardSprite: SKSpriteNode
     private var reverseSprite: SKSpriteNode
+    private var viewAchievements: SKSpriteNode
     private var superScene: SKScene?
     
     weak var delegate: LevelSkipEngineDelegate?
@@ -41,8 +43,17 @@ class LevelSkipEngine {
         reverseSprite.color = .systemRed
         reverseSprite.colorBlendFactor = 1
         reverseSprite.setScale(buttonScale)
-        reverseSprite.position = CGPoint(x: 20, y: forwardSprite.size.height + 20)
+        reverseSprite.position = CGPoint(x: 20, y: reverseSprite.size.height + 20)
         reverseSprite.anchorPoint = .zero
+        
+        viewAchievements = SKSpriteNode(texture: SKTexture(imageNamed: "forwardButton"))
+        viewAchievements.name = "achievementButton"
+        viewAchievements.color = .systemBlue
+        viewAchievements.colorBlendFactor = 1
+        viewAchievements.setScale(buttonScale)
+        viewAchievements.position = CGPoint(x: (K.ScreenDimensions.iPhoneWidth - viewAchievements.size.width) / 2,
+                                            y: viewAchievements.size.height + 20)
+        viewAchievements.anchorPoint = .zero
     }
     
     
@@ -68,6 +79,12 @@ class LevelSkipEngine {
                 Haptics.shared.addHapticFeedback(withStyle: .soft)
                 break
             }
+            else if nodeTapped.name == "achievementButton" {
+                viewAchievements.run(buttonPressAction)
+                delegate?.viewAchievementsPressed(node: viewAchievements)
+                Haptics.shared.addHapticFeedback(withStyle: .soft)
+                break
+            }
         }
     }
     
@@ -80,5 +97,6 @@ class LevelSkipEngine {
 
         superScene.addChild(forwardSprite)
         superScene.addChild(reverseSprite)
+        superScene.addChild(viewAchievements)
     }
 }

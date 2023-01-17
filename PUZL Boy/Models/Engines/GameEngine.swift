@@ -284,11 +284,6 @@ class GameEngine {
             
             movePlayerHelper(direction: .right)
         }
-        
-        // FIXME: - Temporary, to see leaderboard!!
-        else if location.y > K.ScreenDimensions.height - K.ScreenDimensions.topMargin {
-            GameCenterManager.shared.showLeaderboard(level: level.level)
-        }
     }
     
     

@@ -267,6 +267,9 @@ extension GameScene: LevelSkipEngineDelegate {
         newGame(level: currentLevel, didWin: true)
     }
     
+    func viewAchievementsPressed(node: SKSpriteNode) {
+        GameCenterManager.shared.showLeaderboard(level: currentLevel)
+    }
 }
 
 
