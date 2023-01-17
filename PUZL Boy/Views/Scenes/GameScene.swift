@@ -22,6 +22,7 @@ class GameScene: SKScene {
     private var user: User?
     private var disableInput = false
     private var pauseTimer = false
+    private var adSprite = SKSpriteNode()
 
     private var currentLevel: Int = 1 {
         // FIXME: - Delete once debugging is done!
@@ -62,6 +63,7 @@ class GameScene: SKScene {
         levelSkipEngine.delegate = self
         scaleMode = .aspectFill
 
+        AdMobManager.shared.delegate = self
         AudioManager.shared.playSound(for: AudioManager.shared.overworldTheme)
     }
     
@@ -133,6 +135,23 @@ class GameScene: SKScene {
         if !didWin {
             AudioManager.shared.playSound(for: AudioManager.shared.overworldTheme)
         }
+        
+        //Play interstitial ad
+        if level % 10 == 0 && level >= 20 {
+            adSprite = SKSpriteNode(color: .clear,
+                                    size: CGSize(width: K.ScreenDimensions.iPhoneWidth, height: K.ScreenDimensions.height))
+            adSprite.anchorPoint = .zero
+            adSprite.zPosition = K.ZPosition.adScene
+
+            addChild(adSprite)
+
+            stopTimer()
+            disableInput = true
+
+            adSprite.run(SKAction.colorize(with: .black, colorBlendFactor: 1.0, duration: 1.0)) {
+                AdMobManager.shared.presentInterstitial()
+            }
+        }
     }
     
     private func moveSprites() {
@@ -151,7 +170,7 @@ class GameScene: SKScene {
             disableInput = true
         }
         
-        chatEngine.dialogue(level: currentLevel, superScene: self) { [unowned self] in
+        chatEngine.dialogue(level: currentLevel) { [unowned self] in
             if pauseTimer {
                 scoringEngine.resetTime()
                 startTimer()
@@ -247,5 +266,35 @@ extension GameScene: LevelSkipEngineDelegate {
         scoringEngine.resetTime()
         newGame(level: currentLevel, didWin: true)
     }
+    
+}
+
+
+// MARK: - AdMobManagerDelegate
+
+extension GameScene: AdMobManagerDelegate {
+    func willPresentInterstitial() {
+        
+    }
+    
+    func didDismissInterstitial() {
+        resumeGame()
+    }
+    
+    func interstitialFailed() {
+        resumeGame()
+    }
+    
+    private func resumeGame() {
+        adSprite.run(SKAction.colorize(with: .clear, colorBlendFactor: 1.0, duration: 1.0)) { [unowned self] in
+            scoringEngine.resetTime()
+            startTimer()
+            
+            disableInput = false
+            
+            adSprite.removeFromParent()
+        }
+    }
+    
     
 }

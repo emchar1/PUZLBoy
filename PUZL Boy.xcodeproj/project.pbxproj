@@ -19,6 +19,7 @@
 		EA1191532904BC4C009D0E3E /* DisplaySprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA1191522904BC4C009D0E3E /* DisplaySprite.swift */; };
 		EA119155290CCA39009D0E3E /* Inventory.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA119154290CCA39009D0E3E /* Inventory.swift */; };
 		EA11915729121798009D0E3E /* Controls.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA11915629121798009D0E3E /* Controls.swift */; };
+		EA26F29129739DE800BF1AC8 /* AdMobManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA26F29029739DE800BF1AC8 /* AdMobManager.swift */; };
 		EA3534892920612300C11FC0 /* DisplayStatusBarSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA3534882920612300C11FC0 /* DisplayStatusBarSprite.swift */; };
 		EA35348B29241FCD00C11FC0 /* LevelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA35348A29241FCD00C11FC0 /* LevelType.swift */; };
 		EA3951ED2938165A00D0B14A /* Extension+UIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA3951EC2938165A00D0B14A /* Extension+UIImage.swift */; };
@@ -95,6 +96,7 @@
 		EA95D2192964FFCF0061059C /* FirebaseFirestoreSwift in Frameworks */ = {isa = PBXBuildFile; productRef = EA95D2182964FFCF0061059C /* FirebaseFirestoreSwift */; };
 		EAACB4A7296F80E700973EB8 /* AchievementAvidReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAACB4A6296F80E700973EB8 /* AchievementAvidReader.swift */; };
 		EAACB4B92971E08A00973EB8 /* chatclose.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAACB4B82971E08A00973EB8 /* chatclose.mp3 */; };
+		EAACB4BE297255FC00973EB8 /* GoogleMobileAds in Frameworks */ = {isa = PBXBuildFile; productRef = EAACB4BD297255FC00973EB8 /* GoogleMobileAds */; };
 		EAAEA3BE2931A31200221963 /* movepoisoned.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAAEA3BD2931A31200221963 /* movepoisoned.mp3 */; };
 		EAAEA3C22931AA6E00221963 /* hammerswing.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAAEA3C12931AA6E00221963 /* hammerswing.mp3 */; };
 		EAAEA3C42931D0DA00221963 /* swordslash.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAAEA3C32931D0DA00221963 /* swordslash.mp3 */; };
@@ -128,6 +130,7 @@
 		EA1191522904BC4C009D0E3E /* DisplaySprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplaySprite.swift; sourceTree = "<group>"; };
 		EA119154290CCA39009D0E3E /* Inventory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Inventory.swift; sourceTree = "<group>"; };
 		EA11915629121798009D0E3E /* Controls.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Controls.swift; sourceTree = "<group>"; };
+		EA26F29029739DE800BF1AC8 /* AdMobManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdMobManager.swift; sourceTree = "<group>"; };
 		EA3534882920612300C11FC0 /* DisplayStatusBarSprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayStatusBarSprite.swift; sourceTree = "<group>"; };
 		EA35348A29241FCD00C11FC0 /* LevelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelType.swift; sourceTree = "<group>"; };
 		EA3951EC2938165A00D0B14A /* Extension+UIImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+UIImage.swift"; sourceTree = "<group>"; };
@@ -229,6 +232,7 @@
 				EA75F0E3292DDAAF00F09BD7 /* FirebaseAnalyticsSwift in Frameworks */,
 				EA75F0E5292DDAAF00F09BD7 /* FirebaseAuth in Frameworks */,
 				EA95D2192964FFCF0061059C /* FirebaseFirestoreSwift in Frameworks */,
+				EAACB4BE297255FC00973EB8 /* GoogleMobileAds in Frameworks */,
 				EA75F0E7292DDAAF00F09BD7 /* FirebaseDatabase in Frameworks */,
 				EA75F0E1292DDAAF00F09BD7 /* FirebaseAnalytics in Frameworks */,
 				EA95D2172964FFCF0061059C /* FirebaseFirestore in Frameworks */,
@@ -274,6 +278,7 @@
 				EA95D1B429524EB60061059C /* Game Center */,
 				EA95D21A2967E07F0061059C /* Engines */,
 				EA75F0EA292DF46200F09BD7 /* FIRManager.swift */,
+				EA26F29029739DE800BF1AC8 /* AdMobManager.swift */,
 				EA75F0EC292DF57400F09BD7 /* LevelModel.swift */,
 				EA95D2132964FF350061059C /* SaveStateModel.swift */,
 				EA65189128E973D700E535BF /* LevelBuilder.swift */,
@@ -498,6 +503,7 @@
 				EA75F0E8292DDAAF00F09BD7 /* FirebaseDatabaseSwift */,
 				EA95D2162964FFCF0061059C /* FirebaseFirestore */,
 				EA95D2182964FFCF0061059C /* FirebaseFirestoreSwift */,
+				EAACB4BD297255FC00973EB8 /* GoogleMobileAds */,
 			);
 			productName = "PUZL Man";
 			productReference = EA65182728E4199E00E535BF /* PUZL Boy.app */;
@@ -529,6 +535,7 @@
 			mainGroup = EA65181E28E4199E00E535BF;
 			packageReferences = (
 				EA75F0DF292DDAAF00F09BD7 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				EAACB4BC297255FC00973EB8 /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */,
 			);
 			productRefGroup = EA65182828E4199E00E535BF /* Products */;
 			projectDirPath = "";
@@ -625,6 +632,7 @@
 				EA95D204295F86B30061059C /* AchievementScavenger.swift in Sources */,
 				EA95D1B2294FBF2A0061059C /* Extension+Notification.Name.swift in Sources */,
 				EA75F0EF292F55F900F09BD7 /* LaunchScene.swift in Sources */,
+				EA26F29129739DE800BF1AC8 /* AdMobManager.swift in Sources */,
 				EA0F84072937D4860031DA76 /* DayTheme.swift in Sources */,
 				EA65182F28E4199E00E535BF /* GameViewController.swift in Sources */,
 				EA95D1C929541F360061059C /* AchievementStoneCutter.swift in Sources */,
@@ -799,7 +807,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "PUZL Boy/Supporting Files/PUZL Boy.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = LZ8V996BTJ;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "PUZL Boy/Supporting Files/Info.plist";
@@ -813,7 +821,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1;
+				MARKETING_VERSION = 1.2;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.5play-apps.PUZL-Boy";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -832,7 +840,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "PUZL Boy/Supporting Files/PUZL Boy.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = LZ8V996BTJ;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "PUZL Boy/Supporting Files/Info.plist";
@@ -846,7 +854,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1;
+				MARKETING_VERSION = 1.2;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.5play-apps.PUZL-Boy";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -890,6 +898,14 @@
 				kind = branch;
 			};
 		};
+		EAACB4BC297255FC00973EB8 /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/googleads/swift-package-manager-google-mobile-ads.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 9.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -927,6 +943,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = EA75F0DF292DDAAF00F09BD7 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseFirestoreSwift;
+		};
+		EAACB4BD297255FC00973EB8 /* GoogleMobileAds */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = EAACB4BC297255FC00973EB8 /* XCRemoteSwiftPackageReference "swift-package-manager-google-mobile-ads" */;
+			productName = GoogleMobileAds;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

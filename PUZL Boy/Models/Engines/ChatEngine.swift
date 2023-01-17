@@ -58,10 +58,10 @@ class ChatEngine {
         chatSpeed = chatSpeedOrig
         dialoguePlayed[1] = false
         dialoguePlayed[5] = false
-        dialoguePlayed[7] = false
-        dialoguePlayed[11] = false
-        dialoguePlayed[14] = false
-        dialoguePlayed[21] = false
+        dialoguePlayed[8] = false
+        dialoguePlayed[13] = false
+        dialoguePlayed[18] = false
+        dialoguePlayed[23] = false
         dialoguePlayed[-1] = false
         
         sprite = SKShapeNode()
@@ -188,7 +188,7 @@ class ChatEngine {
         ])) { [unowned self] in
             allowNewChat = true
             chatSpeed = chatSpeedOrig
-            completion?()
+            self.completion?()
         }
     }
     
@@ -212,7 +212,7 @@ extension ChatEngine {
         return dialoguePlayed[level] != nil
     }
     
-    func dialogue(level: Int, superScene: SKScene? = nil, completion: (() -> Void)?) {
+    func dialogue(level: Int, completion: (() -> Void)?) {
         switch level {
         case 1:
             guard let dialoguePlayedCheck = dialoguePlayed[level], !dialoguePlayedCheck else {
@@ -227,7 +227,7 @@ extension ChatEngine {
                     sendChat(profile: .trainer, startNewChat: false, endChat: false,
                              chat: "If your move count hits 0, it's game over, buddy! Your move count can be found in the upper left corner next to the boot. 👢") { [unowned self] in
                         sendChat(profile: .trainer, startNewChat: false, endChat: false,
-                                 chat: "Finally, in order to open the gate, you'll have to collect all the gems in the level. Give it a go!") { [unowned self] in
+                                 chat: "Now in order to open the gate, you'll have to collect all the gems in the level. Give it a go!") { [unowned self] in
                             sendChat(profile: .hero, startNewChat: false, endChat: true,
                                      chat: "PUZL Boy: I got this, yo!") { [unowned self] in
                                 dialoguePlayed[level] = true
@@ -247,17 +247,20 @@ extension ChatEngine {
                      chat: "Pretty easy, right?! Levels get progressively harder with various obstacles blocking your path.") { [unowned self] in
                 sendChat(profile: .trainer, startNewChat: false, endChat: false,
                          chat: "You need a hammer to break through those boulders. Your inventory count can be found in the upper right. 🔨") { [unowned self] in
-                    sendChat(profile: .hero, startNewChat: false, endChat: false,
-                             chat: "So hammers break boulders... got it.") { [unowned self] in
-                        sendChat(profile: .trainer, startNewChat: false, endChat: true,
-                                 chat: "Oh, and one more thing... hammers can only be used once before breaking, so plan accordingly.") { [unowned self] in
-                            dialoguePlayed[level] = true
-                            completion?()
+                    sendChat(profile: .trainer, startNewChat: false, endChat: false,
+                             chat: "Since there are no hammers nearby, you just have to go around, unfortunately. Get those steps in!") { [unowned self] in
+                        sendChat(profile: .hero, startNewChat: false, endChat: false,
+                                 chat: "So... hammers break boulders. Makes sense.") { [unowned self] in
+                            sendChat(profile: .trainer, startNewChat: false, endChat: true,
+                                     chat: "Oh, and one more thing... hammers can only be used once before breaking, so plan your moves ahead of time.") { [unowned self] in
+                                dialoguePlayed[level] = true
+                                completion?()
+                            }
                         }
                     }
                 }
             }
-        case 7:
+        case 8:
             guard let dialoguePlayedCheck = dialoguePlayed[level], !dialoguePlayedCheck else {
                 completion?()
                 return
@@ -274,26 +277,26 @@ extension ChatEngine {
                     }
                 }
             }
-        case 11:
+        case 13:
             guard let dialoguePlayedCheck = dialoguePlayed[level], !dialoguePlayedCheck else {
                 completion?()
                 return
             }
             
             sendChat(profile: .trainer, startNewChat: true, endChat: false,
-                     chat: "A dragon! Looks like he's sleeping. Don't even try to wake him or it'll cost ya 1 health point. 💖") { [unowned self] in
+                     chat: "Whoa, a dragon! Looks like he's sleeping. Don't even try waking him or it'll cost ya 1 health point. 💖") { [unowned self] in
                 sendChat(profile: .trainer, startNewChat: false, endChat: false,
                          chat: "Once your health drops to 0, it's lights out, baby. If only you had a sword. 🗡") { [unowned self] in
                     sendChat(profile: .hero, startNewChat: false, endChat: false, chat: "Lemme guess, I can only use the sword once before it breaks?") { [unowned self] in
                         sendChat(profile: .trainer, startNewChat: false, endChat: true,
-                                 chat: "B-I-N-G-O!!! Oh sorry, I was playing Bingo with my grandmother. Correct, one sword per dragon.") { [unowned self] in
+                                 chat: "B-I-N-G-O!!! Oh sorry, I was playing Bingo with my grandmother. Yep, one sword per dragon.") { [unowned self] in
                             dialoguePlayed[level] = true
                             completion?()
                         }
                     }
                 }
             }
-        case 14:
+        case 18:
             guard let dialoguePlayedCheck = dialoguePlayed[level], !dialoguePlayedCheck else {
                 completion?()
                 return
@@ -303,41 +306,17 @@ extension ChatEngine {
                      chat: "Those fun looking things are warps. Stepping on one of them will teleport you to the other one. Weeeeeeeee!") { [unowned self] in
                 sendChat(profile: .hero, startNewChat: false, endChat: false,
                          chat: "Are those things safe?") { [unowned self] in
-                    sendChat(profile: .trainer, startNewChat: false, endChat: true,
-                             chat: "Probably. Anyhoo, here's a word from our sponsor...") { [unowned self] in
-                        dialoguePlayed[level] = true
-                        
-                        
-                        
-                        
-                        // TODO: Fade out, fade into first interstitial ad
-                        if let superScene = superScene {
-                            let adSprite = SKSpriteNode(color: .clear,
-                                                        size: CGSize(width: K.ScreenDimensions.iPhoneWidth, height: K.ScreenDimensions.height))
-                            adSprite.anchorPoint = .zero
-                            adSprite.zPosition = K.ZPosition.adScene
-
-                            superScene.addChild(adSprite)
-                            
-                            let sequence = SKAction.sequence([SKAction.colorize(with: .black, colorBlendFactor: 1.0, duration: 1.0),
-                                                              SKAction.wait(forDuration: 2.0), //play ad here
-                                                              SKAction.colorize(with: .clear, colorBlendFactor: 1.0, duration: 1.0)])
-
-                            adSprite.run(sequence) {
-                                completion?()
-                            }
-                        }
-                        else {
+                    sendChat(profile: .trainer, startNewChat: false, endChat: false,
+                             chat: "Probably. Well, good luck!!") { [unowned self] in
+                        sendChat(profile: .hero, startNewChat: false, endChat: true,
+                                 chat: "Here goes nothing...") { [unowned self] in
+                            dialoguePlayed[level] = true
                             completion?()
                         }
-                        
-                        
-                        
-                        
                     }
                 }
             }
-        case 21:
+        case 23:
             guard let dialoguePlayedCheck = dialoguePlayed[level], !dialoguePlayedCheck else {
                 completion?()
                 return

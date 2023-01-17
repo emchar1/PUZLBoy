@@ -24,6 +24,9 @@ class GameViewController: UIViewController {
         skView.ignoresSiblingOrder = true
         skView.presentScene(launchScene)
         
+        AdMobManager.shared.superVC = self
+        AdMobManager.shared.createAndLoadInterstitial()
+
         //Call this once, before calling LevelBuilder.getLevels().
         FIRManager.enableDBPersistence
 
