@@ -529,6 +529,11 @@ class GameEngine {
     
     // MARK: - Other Functions
     
+    ///Just what it says. It increments livesRemaining.
+    func incrementLivesRemaining(lives: Int = 2) {
+        GameEngine.livesRemaining += lives
+    }
+    
     /**
      Adds all the sprites to the superScene, i.e. should be called in a GameScene's moveTo() function.
      - parameter superScene: The GameScene to add all the children to.

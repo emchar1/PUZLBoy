@@ -138,19 +138,34 @@ class GameScene: SKScene {
         
         //Play interstitial ad
         if level % 10 == 0 && level >= 20 {
-            adSprite = SKSpriteNode(color: .clear,
-                                    size: CGSize(width: K.ScreenDimensions.iPhoneWidth, height: K.ScreenDimensions.height))
-            adSprite.anchorPoint = .zero
-            adSprite.zPosition = K.ZPosition.adScene
-
-            addChild(adSprite)
-
-            stopTimer()
-            disableInput = true
-
-            adSprite.run(SKAction.colorize(with: .black, colorBlendFactor: 1.0, duration: 1.0)) {
+            prepareAd {
                 AdMobManager.shared.presentInterstitial()
             }
+        }
+    }
+    
+    private func prepareAd(completion: (() -> Void)?) {
+        adSprite = SKSpriteNode(color: .clear,
+                                size: CGSize(width: K.ScreenDimensions.iPhoneWidth, height: K.ScreenDimensions.height))
+        adSprite.anchorPoint = .zero
+        adSprite.zPosition = K.ZPosition.adScene
+
+        addChild(adSprite)
+
+        stopTimer()
+        disableInput = true
+
+        adSprite.run(SKAction.colorize(with: .black, colorBlendFactor: 1.0, duration: 1.0)) {
+            completion?()
+        }
+    }
+    
+    private func continueFromAd(completion: (() -> Void)?) {
+        adSprite.run(SKAction.colorize(with: .clear, colorBlendFactor: 1.0, duration: 1.0)) { [unowned self] in
+            disableInput = false
+            adSprite.removeFromParent()
+        
+            completion?()
         }
     }
     
@@ -226,13 +241,18 @@ extension GameScene: GameEngineDelegate {
     }
     
     func gameIsOver() {
-//        guard gameEngine.canContinue else {
-//            stopTimer()
+        guard gameEngine.canContinue else {
+            prepareAd {
+                AdMobManager.shared.presentRewarded { [unowned self] (adReward) in
+                    gameEngine.incrementLivesRemaining(lives: adReward.amount.intValue)
+                    print("You were rewarded: \(adReward.amount) lives!!!!!")
+                }
+            }
             
 //            let continueScene = ContinueScene(size: K.ScreenDimensions.screenSize)
 //            removeAllChildren()
-//            return
-//        }
+            return
+        }
         
         
         
@@ -276,6 +296,9 @@ extension GameScene: LevelSkipEngineDelegate {
 // MARK: - AdMobManagerDelegate
 
 extension GameScene: AdMobManagerDelegate {
+    
+    // MARK: - Interstitial Functions
+    
     func willPresentInterstitial() {
         
     }
@@ -289,13 +312,32 @@ extension GameScene: AdMobManagerDelegate {
     }
     
     private func resumeGame() {
-        adSprite.run(SKAction.colorize(with: .clear, colorBlendFactor: 1.0, duration: 1.0)) { [unowned self] in
+        continueFromAd { [unowned self] in
             scoringEngine.resetTime()
             startTimer()
-            
-            disableInput = false
-            
-            adSprite.removeFromParent()
+        }
+    }
+
+    
+    // MARK: - Rewarded Functions
+    
+    func willPresentRewarded() {
+        
+    }
+    
+    func didDismissRewarded() {
+        restartLevel()
+    }
+    
+    func rewardedFailed() {
+        restartLevel()
+    }
+    
+    private func restartLevel() {
+        continueFromAd { [unowned self] in
+            scoringEngine.resetScore()
+            scoringEngine.updateLabels()
+            newGame(level: currentLevel, didWin: false)
         }
     }
     

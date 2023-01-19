@@ -26,6 +26,7 @@ class GameViewController: UIViewController {
         
         AdMobManager.shared.superVC = self
         AdMobManager.shared.createAndLoadInterstitial()
+        AdMobManager.shared.createAndLoadRewarded()
 
         //Call this once, before calling LevelBuilder.getLevels().
         FIRManager.enableDBPersistence
