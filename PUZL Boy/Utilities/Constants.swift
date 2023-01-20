@@ -92,11 +92,10 @@ struct K {
         static let backgroundObjectTier2: CGFloat = 250
         static let backgroundObjectTier1: CGFloat = 255
         static let backgroundObjectTier0: CGFloat = 260
-        static let player: CGFloat = 300
-        static let items: CGFloat = 350
         static let display: CGFloat = 400
-        static let displayAnimation: CGFloat = 450
         static let adScene: CGFloat = 777
+        static let player: CGFloat = 1000 //originally 300
+        static let items: CGFloat = 1050 //originally 350
     }
     
     

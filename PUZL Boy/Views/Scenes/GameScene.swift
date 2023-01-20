@@ -137,7 +137,7 @@ class GameScene: SKScene {
         }
         
         //Play interstitial ad
-        if level % 10 == 0 && level >= 20 {
+        if level % 10 == 0 && level >= 20 && didWin {
             prepareAd {
                 AdMobManager.shared.presentInterstitial()
             }
@@ -160,6 +160,7 @@ class GameScene: SKScene {
         }
     }
     
+    // FIXME: - If continuing from game over (rewarded ad) timer should NOT reset, which it's doing right now...
     private func continueFromAd(completion: (() -> Void)?) {
         adSprite.run(SKAction.colorize(with: .clear, colorBlendFactor: 1.0, duration: 1.0)) { [unowned self] in
             disableInput = false
@@ -257,12 +258,12 @@ extension GameScene: GameEngineDelegate {
         
         
         
-        chatEngine.dialogue(level: -1) { [unowned self] in
+//        chatEngine.dialogue(level: -1) { [unowned self] in
             scoringEngine.resetScore()
             scoringEngine.updateLabels()
                     
             newGame(level: currentLevel, didWin: false)
-        }
+//        }
         
         
         
