@@ -20,10 +20,14 @@ class GameboardSprite {
     var yPosition: CGFloat { (K.ScreenDimensions.height - gameboardSize * GameboardSprite.spriteScale - K.ScreenDimensions.topMargin - 275) }
     var gameboardSize: CGFloat { CGFloat(panelCount) * panelSize }
 
+    typealias WarpTuple = (first: K.GameboardPosition?, second: K.GameboardPosition?)
+
     private var panels: [[SKSpriteNode]]
     private(set) var panelCount: Int
     private(set) var panelSize: CGFloat
-    private(set) var warps: (first: K.GameboardPosition?, second: K.GameboardPosition?)
+    private(set) var warps: WarpTuple = (nil, nil)
+    private(set) var warps2: WarpTuple = (nil, nil)
+    private(set) var warps3: WarpTuple = (nil, nil)
     private(set) var sprite: SKSpriteNode
 
     
@@ -87,6 +91,24 @@ class GameboardSprite {
                 warps.second = position
             }
         }
+        
+        if tile.overlay == .warp2 {
+            if warps2.first == nil {
+                warps2.first = position
+            }
+            else {
+                warps2.second = position
+            }
+        }
+        
+        if tile.overlay == .warp3 {
+            if warps3.first == nil {
+                warps3.first = position
+            }
+            else {
+                warps3.second = position
+            }
+        }
     }
     
     func getLocation(at position: K.GameboardPosition) -> CGPoint {
@@ -116,8 +138,22 @@ class GameboardSprite {
         }
     }
     
-    func warpTo(from initialPosition: K.GameboardPosition) -> K.GameboardPosition? {
-        guard let first = warps.first, let second = warps.second else {
+    func warpTo(warpType: LevelType, initialPosition: K.GameboardPosition) -> K.GameboardPosition? {
+        let chooseWarps: WarpTuple
+
+        switch warpType {
+        case .warp:
+            chooseWarps = warps
+        case .warp2:
+            chooseWarps = warps2
+        case .warp3:
+            chooseWarps = warps3
+        default:
+            print("Invalid warp type!")
+            return nil
+        }
+        
+        guard let first = chooseWarps.first, let second = chooseWarps.second else {
             print("Level has no warps!")
             return nil
         }

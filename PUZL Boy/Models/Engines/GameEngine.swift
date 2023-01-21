@@ -209,8 +209,8 @@ class GameEngine {
                 
                 completion?()
             }
-        case .warp:
-            guard let newWarpLocation = gameboardSprite.warpTo(from: level.player) else {
+        case .warp, .warp2, .warp3:
+            guard let newWarpLocation = gameboardSprite.warpTo(warpType: level.getLevelType(at: level.player), initialPosition: level.player) else {
                 completion?()
                 return
             }

@@ -186,7 +186,7 @@ class GameScene: SKScene {
             scoringEngine.resetTime()
             stopTimer()
             
-            disableInput = true
+            disableInput = false
         }
         
         chatEngine.dialogue(level: currentLevel) { [unowned self] in
