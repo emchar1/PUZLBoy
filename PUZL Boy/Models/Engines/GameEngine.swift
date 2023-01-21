@@ -90,8 +90,8 @@ class GameEngine {
         K.ScreenDimensions.topOfGameboard = gameboardSprite.yPosition + gameboardSprite.gameboardSize * GameboardSprite.spriteScale
         playerSprite = PlayerSprite(shouldSpawn: true)
         displaySprite = DisplaySprite(topYPosition: K.ScreenDimensions.topOfGameboard, bottomYPosition: gameboardSprite.yPosition, margin: 40)
-        displaySprite.setLabels(level: "\(level)", lives: "\(GameEngine.livesRemaining)", moves: "\(movesRemaining)", health: "\(healthRemaining)", inventory: playerSprite.inventory)
-        
+
+        setLabelsForDisplaySprite()
         setPlayerSpritePosition(shouldAnimate: false, completion: nil)
         
         if !shouldSpawn {
@@ -167,6 +167,8 @@ class GameEngine {
             displaySprite.statusHammers.pulseImage()
             playerSprite.inventory.hammers += 1
             toolsCollected += 1
+
+            setLabelsForDisplaySprite()
             consumeItem()
             
             playerSprite.startPowerUpAnimation()
@@ -175,6 +177,8 @@ class GameEngine {
             displaySprite.statusSwords.pulseImage()
             playerSprite.inventory.swords += 1
             toolsCollected += 1
+
+            setLabelsForDisplaySprite()
             consumeItem()
 
             playerSprite.startPowerUpAnimation()
@@ -182,6 +186,8 @@ class GameEngine {
         case .heart:
             displaySprite.statusHealth.pulseImage()
             healthRemaining += 1
+
+            setLabelsForDisplaySprite()
             consumeItem()
             
             AudioManager.shared.playSound(for: "pickupheart")
@@ -193,6 +199,7 @@ class GameEngine {
             bouldersBroken += 1
             playerSprite.inventory.hammers -= 1
             playerSprite.startHammerAnimation(on: gameboardSprite, at: level.player) {
+                self.setLabelsForDisplaySprite()
                 self.consumeItem()
                 
                 completion?()
@@ -204,6 +211,7 @@ class GameEngine {
             enemiesKilled += 1
             playerSprite.inventory.swords -= 1
             playerSprite.startSwordAnimation(on: gameboardSprite, at: level.player) {
+                self.setLabelsForDisplaySprite()
                 self.consumeItem()
                 self.delegate?.enemyIsKilled()
                 
@@ -264,6 +272,14 @@ class GameEngine {
                 AudioManager.shared.playSound(for: "dooropen")
             }
         }
+    }
+    
+    private func setLabelsForDisplaySprite() {
+        displaySprite.setLabels(level: "\(level.level)",
+                                lives: "\(GameEngine.livesRemaining)",
+                                moves: "\(movesRemaining)",
+                                health: "\(healthRemaining)",
+                                inventory: playerSprite.inventory)
     }
     
     
@@ -472,7 +488,7 @@ class GameEngine {
             movesRemaining -= level.getLevelType(at: level.player) == .marsh ? 2 : 1
         }
         
-        displaySprite.setLabels(level: "\(level.level)", lives: "\(GameEngine.livesRemaining)", moves: "\(movesRemaining)", health: "\(healthRemaining)", inventory: playerSprite.inventory)
+        setLabelsForDisplaySprite()
         
         if isSolved {
             AudioManager.shared.playSound(for: "winlevel")

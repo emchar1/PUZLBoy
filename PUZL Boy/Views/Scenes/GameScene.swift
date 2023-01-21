@@ -137,7 +137,7 @@ class GameScene: SKScene {
         }
         
         //Play interstitial ad
-        if level % 10 == 0 && level >= 20 && didWin {
+        if level % 100 == 0 && level >= 20 && didWin {
             prepareAd {
                 AdMobManager.shared.presentInterstitial()
             }
