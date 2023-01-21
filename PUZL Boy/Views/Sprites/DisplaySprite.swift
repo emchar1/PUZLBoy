@@ -75,15 +75,17 @@ class DisplaySprite {
         statusSwords.updateAmount(inventory.swords)
     }
     
-    func animateScores(movesScore: Int, inventoryScore: Int) {
+    func animateScores(movesScore: Int, inventoryScore: Int, usedContinue: Bool) {
         if inventoryScore > 0 {
             ScoringEngine.addScoreAnimation(score: inventoryScore,
+                                            usedContinue: usedContinue,
                                             originSprite: statusSwords,
                                             location: CGPoint(x: statusSwords.frame.width / 2, y: 30))
         }
         
         if movesScore > 0 {
             ScoringEngine.addScoreAnimation(score: movesScore,
+                                            usedContinue: usedContinue,
                                             originSprite: statusMoves,
                                             location: CGPoint(x: statusMoves.frame.width / 2, y: 0))
         }

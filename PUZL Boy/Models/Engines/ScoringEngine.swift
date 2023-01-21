@@ -119,10 +119,10 @@ class ScoringEngine {
         
         pollTime()
         
-        score = (getTimeScore() + ScoringEngine.getMovesScore(from: movesRemaining) + ScoringEngine.getItemsFoundScore(from: itemsFound) + enemiesKilled * killEnemyScore) * (usedContinue ? 1 : 2)
+        score = (getTimeScore() + ScoringEngine.getMovesScore(from: movesRemaining) + ScoringEngine.getItemsFoundScore(from: itemsFound) + enemiesKilled * killEnemyScore) * ScoringEngine.getUsedContinueMultiplier(usedContinue)
         preservedScore = score
         
-        animateScore()
+        animateScore(usedContinue: usedContinue)
         
         statsLabel.text = "Elapsed Time: \(Int(elapsedTime))\nMoves Remaining: \(movesRemaining)\nItems Found: \(itemsFound)\nEnemies Killed: \(enemiesKilled)\nContinue Used? \(usedContinue)"
         
@@ -147,6 +147,10 @@ class ScoringEngine {
         return itemScore * itemsFound
     }
     
+    static func getUsedContinueMultiplier(_ usedContinue: Bool) -> Int {
+        return usedContinue ? 1 : 2
+    }
+
     private func getTimeScore() -> Int {
         max(minTimeScore, maxTimeScore + Int(elapsedTime) * reductionPerSecondScore)
     }
@@ -159,10 +163,11 @@ class ScoringEngine {
     
     // MARK: - Animate Score Helper
     
-    private func animateScore() {
+    private func animateScore(usedContinue: Bool) {
         scoreLabel.run(SKAction.sequence([scaleScoreAnimation(), SKAction.wait(forDuration: 1.0), incrementScoreAnimation()]))
         
         ScoringEngine.addScoreAnimation(score: getTimeScore(),
+                                        usedContinue: usedContinue,
                                         originSprite: elapsedTimeLabel,
                                         location: CGPoint(x: elapsedTimeLabel.frame.width / 2, y: 0))
     }
@@ -222,11 +227,12 @@ class ScoringEngine {
         - originSprite: The sprite from which to add the label as a child
         - location: Location of the label node
      */
-    static func addScoreAnimation(score: Int, originSprite: SKNode, location: CGPoint) {
+    static func addScoreAnimation(score: Int, usedContinue: Bool?, originSprite: SKNode, location: CGPoint) {
         let numberFormatter = NumberFormatter()
         numberFormatter.numberStyle = .decimal
+        let score = numberFormatter.string(from: NSNumber(value: score * getUsedContinueMultiplier(usedContinue ?? true)))
         
-        let pointsSprite = SKLabelNode(text: "+" + (numberFormatter.string(from: NSNumber(value: score)) ?? "0"))
+        let pointsSprite = SKLabelNode(text: "+" + (score ?? "0"))
         pointsSprite.fontName = UIFont.gameFont
         pointsSprite.fontSize = 48
         pointsSprite.fontColor = .yellow

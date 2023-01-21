@@ -545,7 +545,8 @@ class GameEngine {
     
     func updateScores() {
         displaySprite.animateScores(movesScore: ScoringEngine.getMovesScore(from: movesRemaining),
-                                    inventoryScore: ScoringEngine.getItemsFoundScore(from: playerSprite.inventory.getItemCount()))
+                                    inventoryScore: ScoringEngine.getItemsFoundScore(from: playerSprite.inventory.getItemCount()),
+                                    usedContinue: GameEngine.usedContinue)
     }
     
     /**

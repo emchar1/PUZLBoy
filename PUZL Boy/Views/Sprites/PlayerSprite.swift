@@ -210,6 +210,7 @@ class PlayerSprite {
 
             //Points sprite
             ScoringEngine.addScoreAnimation(score: 1000,
+                                            usedContinue: nil,
                                             originSprite: gameboard.sprite,
                                             location: gameboard.getLocation(at: panel))
             
