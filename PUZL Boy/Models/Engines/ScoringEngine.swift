@@ -87,7 +87,6 @@ class ScoringEngine {
         statsLabel.numberOfLines = 0
 
         resetScore()
-        updateLabels()
     }
 
     
@@ -100,6 +99,7 @@ class ScoringEngine {
 
     func resetScore() {
         score = 0
+        updateLabels()
     }
     
     func resetTime() {
@@ -224,6 +224,7 @@ class ScoringEngine {
      Adds a floating score animaton from an originSprite and a location. Use this static method directly from ScoringEngine.
      - parameters:
         - score: The Int score to display
+        - usedContinue: Determines the multiplier, i.e. if false = 2, else = 1
         - originSprite: The sprite from which to add the label as a child
         - location: Location of the label node
      */

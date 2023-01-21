@@ -229,7 +229,6 @@ extension GameScene: GameEngineDelegate {
         gameEngine.fadeGameboard(fadeOut: true) { [unowned self] in
             scoringEngine.resetTime()
             startTimer()
-
             newGame(level: currentLevel, didWin: true)
 
             //Write to Firestore
@@ -265,8 +264,6 @@ extension GameScene: GameEngineDelegate {
         
 //        chatEngine.dialogue(level: -1) { [unowned self] in
             scoringEngine.resetScore()
-            scoringEngine.updateLabels()
-                    
             newGame(level: currentLevel, didWin: false)
 //        }
         
@@ -346,7 +343,6 @@ extension GameScene: AdMobManagerDelegate {
     private func restartLevel() {
         continueFromAd { [unowned self] in
             scoringEngine.resetScore()
-            scoringEngine.updateLabels()
             newGame(level: currentLevel, didWin: false)
         }
     }
