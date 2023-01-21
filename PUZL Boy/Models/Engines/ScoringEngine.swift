@@ -235,7 +235,7 @@ class ScoringEngine {
         
         let pointsSprite = SKLabelNode(text: "+" + (score ?? "0"))
         pointsSprite.fontName = UIFont.gameFont
-        pointsSprite.fontSize = UIFont.gameFontSizeSmall
+        pointsSprite.fontSize = UIFont.gameFontSizeMedium
         pointsSprite.fontColor = .yellow
         pointsSprite.position = location
         pointsSprite.zPosition = K.ZPosition.items

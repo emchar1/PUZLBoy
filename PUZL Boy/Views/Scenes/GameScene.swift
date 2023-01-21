@@ -154,6 +154,7 @@ class GameScene: SKScene {
 
         stopTimer()
         disableInput = true
+        AudioManager.shared.lowerVolume(for: AudioManager.shared.overworldTheme, fadeDuration: 1.0)
 
         adSprite.run(SKAction.colorize(with: .black, colorBlendFactor: 1.0, duration: 1.0)) {
             completion?()
@@ -162,10 +163,12 @@ class GameScene: SKScene {
     
     // FIXME: - If continuing from game over (rewarded ad) timer should NOT reset, which it's doing right now...
     private func continueFromAd(completion: (() -> Void)?) {
+        AudioManager.shared.raiseVolume(for: AudioManager.shared.overworldTheme, fadeDuration: 1.0)
+
         adSprite.run(SKAction.colorize(with: .clear, colorBlendFactor: 1.0, duration: 1.0)) { [unowned self] in
             disableInput = false
             adSprite.removeFromParent()
-        
+
             completion?()
         }
     }

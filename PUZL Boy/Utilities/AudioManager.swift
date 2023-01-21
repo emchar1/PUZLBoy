@@ -50,7 +50,7 @@ class AudioManager {
         return instance
     }()
     
-    let overworldTheme = "overworld_off"
+    let overworldTheme = "overworld"
     private var audioItems: [String: AudioItem] = [:]
     
 
@@ -218,6 +218,26 @@ class AudioManager {
         let panAdusted = pan.clamp(min: -1.0, max: 1.0)
         
         item.player.pan = panAdusted
+    }
+    
+    /**
+     Lowers the volume of the specified audio item to 0, with decrescendo if needed.
+     - parameters:
+        - audioKey: the key for the audio item to stop
+        - fadeDuration: length of time in seconds for music to fade before volume gets to zero.
+     */
+    func lowerVolume(for audioKey: String, fadeDuration: TimeInterval = 0.0) {
+        adjustVolume(to: 0, for: audioKey, fadeDuration: fadeDuration)
+    }
+    
+    /**
+     Returns  the volume of the specified audio item to 1, with crescendo if needed.
+     - parameters:
+        - audioKey: the key for the audio item to resume
+        - fadeDuration: length of time in seconds for music to fade before resuming to regular volume.
+     */
+    func raiseVolume(for audioKey: String, fadeDuration: TimeInterval = 0.0) {
+        adjustVolume(to: 1, for: audioKey, fadeDuration: fadeDuration)
     }
     
     /**
