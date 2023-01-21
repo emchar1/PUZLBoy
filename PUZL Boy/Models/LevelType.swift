@@ -13,7 +13,7 @@ import Foundation
 enum LevelType: Int, CaseIterable {
     case boundary = 0, start, endClosed, endOpen, gem //important panels
     case grass, marsh, ice //terrain panels
-    case hammer, sword //inventory panels
+    case hammer, sword, heart //inventory panels
     case boulder, enemy, warp //special panels
     
     var description: String {
@@ -32,6 +32,7 @@ enum LevelType: Int, CaseIterable {
         case "ice": return .ice
         case "hammer": return .hammer
         case "sword": return .sword
+        case "heart": return .heart
         case "boulder": return .boulder
         case "enemy": return .enemy
         case "warp": return .warp

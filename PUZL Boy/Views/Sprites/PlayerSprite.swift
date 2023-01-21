@@ -196,6 +196,7 @@ class PlayerSprite {
         attackSprite.run(animation) { [unowned self] in
             attackSprite.removeFromParent()
             
+            //Explosion sprite
             let explodeSprite = SKSpriteNode(texture: explodeEnemyTextures[0])
             explodeSprite.position = gameboard.getLocation(at: panel)
             explodeSprite.zPosition = K.ZPosition.items
@@ -206,6 +207,11 @@ class PlayerSprite {
             explodeSprite.run(SKAction.animate(with: explodeEnemyTextures, timePerFrame: 0.05)) {
                 explodeSprite.removeFromParent()
             }
+
+            //Points sprite
+            ScoringEngine.addScoreAnimation(score: 1000,
+                                            originSprite: gameboard.sprite,
+                                            location: gameboard.getLocation(at: panel))
             
             completion()
         }

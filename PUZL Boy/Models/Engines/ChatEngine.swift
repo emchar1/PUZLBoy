@@ -227,7 +227,7 @@ extension ChatEngine {
                     sendChat(profile: .trainer, startNewChat: false, endChat: false,
                              chat: "If your move count hits 0, it's game over, buddy! Your move count can be found in the upper left corner next to the boot. 👢") { [unowned self] in
                         sendChat(profile: .trainer, startNewChat: false, endChat: false,
-                                 chat: "Now in order to open the gate, you'll have to collect all the gems in the level. Give it a go!") { [unowned self] in
+                                 chat: "See the gate? It's closed. To open it, collect all the gems in the level. Give it a go!") { [unowned self] in
                             sendChat(profile: .hero, startNewChat: false, endChat: true,
                                      chat: "PUZL Boy: I got this, yo!") { [unowned self] in
                                 dialoguePlayed[level] = true
@@ -247,14 +247,17 @@ extension ChatEngine {
                      chat: "Pretty easy, right?! Levels get progressively harder with various obstacles blocking your path.") { [unowned self] in
                 sendChat(profile: .trainer, startNewChat: false, endChat: false,
                          chat: "You need a hammer to break through those boulders. Your inventory count can be found in the upper right. 🔨") { [unowned self] in
-                    sendChat(profile: .trainer, startNewChat: false, endChat: false,
-                             chat: "Since there are no hammers nearby, you just have to go around, unfortunately. Get those steps in!") { [unowned self] in
-                        sendChat(profile: .hero, startNewChat: false, endChat: false,
-                                 chat: "So... hammers break boulders. Makes sense.") { [unowned self] in
-                            sendChat(profile: .trainer, startNewChat: false, endChat: true,
-                                     chat: "Oh, and one more thing... hammers can only be used once before breaking, so plan your moves ahead of time.") { [unowned self] in
-                                dialoguePlayed[level] = true
-                                completion?()
+                    sendChat(profile: .hero, startNewChat: false, endChat: false,
+                             chat: "Hammers break boulders. Got it.") { [unowned self] in
+                        sendChat(profile: .trainer, startNewChat: false, endChat: false,
+                                 chat: "Since there are no hammers in this level, you'll just have to go around them.") { [unowned self] in
+                            sendChat(profile: .hero, startNewChat: false, endChat: false,
+                                     chat: "Well then, that was pointless.") { [unowned self] in
+                                sendChat(profile: .trainer, startNewChat: false, endChat: true,
+                                         chat: "Oh, and one more thing... hammers can only be used once before breaking, so plan your moves ahead of time.") { [unowned self] in
+                                    dialoguePlayed[level] = true
+                                    completion?()
+                                }
                             }
                         }
                     }
@@ -267,7 +270,7 @@ extension ChatEngine {
             }
             
             sendChat(profile: .trainer, startNewChat: true, endChat: false,
-                     chat: "Watch out for marsh! Stepping on one of these purple colored panels will drag you down, costing ya 2 moves.") { [unowned self] in
+                     chat: "Watch out for marsh! Stepping on one of the crimson colored panels will drag you down, costing ya 2 moves.") { [unowned self] in
                 sendChat(profile: .trainer, startNewChat: false, endChat: false,
                          chat: "However, sometimes stepping in marsh is unavoidable.") { [unowned self] in
                     sendChat(profile: .hero, startNewChat: false, endChat: true,
@@ -288,7 +291,7 @@ extension ChatEngine {
                 sendChat(profile: .trainer, startNewChat: false, endChat: false,
                          chat: "Once your health drops to 0, it's lights out, baby. If only you had a sword. 🗡") { [unowned self] in
                     sendChat(profile: .hero, startNewChat: false, endChat: false, chat: "Lemme guess, I can only use the sword once before it breaks?") { [unowned self] in
-                        sendChat(profile: .trainer, startNewChat: false, endChat: true,
+                        sendChat(profile: .trainer, startNewChat: false, endChat: false,
                                  chat: "B-I-N-G-O!!! Oh sorry, I was playing Bingo with my grandmother. Yep, one sword per dragon.") { [unowned self] in
                             dialoguePlayed[level] = true
                             completion?()
@@ -307,7 +310,7 @@ extension ChatEngine {
                 sendChat(profile: .hero, startNewChat: false, endChat: false,
                          chat: "Are those things safe?") { [unowned self] in
                     sendChat(profile: .trainer, startNewChat: false, endChat: false,
-                             chat: "Probably. Well, good luck!!") { [unowned self] in
+                             chat: "About to find out. Good luck!") { [unowned self] in
                         sendChat(profile: .hero, startNewChat: false, endChat: true,
                                  chat: "Here goes nothing...") { [unowned self] in
                             dialoguePlayed[level] = true

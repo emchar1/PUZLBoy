@@ -67,7 +67,7 @@ class AudioManager {
             print(error)
         }
         
-        //Setup all the sounds
+        //Sound FX
         addAudioItem("bouldersmash", category: .soundFX)
         addAudioItem("boyattack1", category: .soundFX)
         addAudioItem("boyattack2", category: .soundFX)
@@ -90,6 +90,13 @@ class AudioManager {
         addAudioItem("moverun3", category: .soundFX)
         addAudioItem("moverun4", category: .soundFX)
         addAudioItem("movewalk", category: .soundFX)
+        addAudioItem("pickupheart", category: .soundFX)
+        addAudioItem("pickupitem", category: .soundFX)
+        addAudioItem("swordslash", category: .soundFX)
+        addAudioItem("warp", category: .soundFX)
+        addAudioItem("winlevel", category: .soundFX)
+        
+        //Background music
         addAudioItem("overworld_egg", category: .music)
         addAudioItem("overworld_galaxy", category: .music)
         addAudioItem("overworld_throwback", category: .music)
@@ -98,10 +105,6 @@ class AudioManager {
         addAudioItem("overworld3", category: .music)
         addAudioItem("overworld4", category: .music)
         addAudioItem("overworld5", category: .music)
-        addAudioItem("pickupitem", category: .soundFX)
-        addAudioItem("swordslash", category: .soundFX)
-        addAudioItem("warp", category: .soundFX)
-        addAudioItem("winlevel", category: .soundFX)
     }
 
     /**

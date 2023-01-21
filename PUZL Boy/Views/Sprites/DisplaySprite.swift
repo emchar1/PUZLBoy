@@ -75,6 +75,20 @@ class DisplaySprite {
         statusSwords.updateAmount(inventory.swords)
     }
     
+    func animateScores(movesScore: Int, inventoryScore: Int) {
+        if inventoryScore > 0 {
+            ScoringEngine.addScoreAnimation(score: inventoryScore,
+                                            originSprite: statusSwords,
+                                            location: CGPoint(x: statusSwords.frame.width / 2, y: 30))
+        }
+        
+        if movesScore > 0 {
+            ScoringEngine.addScoreAnimation(score: movesScore,
+                                            originSprite: statusMoves,
+                                            location: CGPoint(x: statusMoves.frame.width / 2, y: 0))
+        }
+    }
+    
     func drainHealth() {
         let animation = SKAction.animate(with: heartsTextures, timePerFrame: 0.1)
         let heartsNode = SKSpriteNode(texture: heartsTextures[0])

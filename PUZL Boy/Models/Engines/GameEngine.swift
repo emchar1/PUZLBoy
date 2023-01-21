@@ -10,6 +10,7 @@ import SpriteKit
 protocol GameEngineDelegate: AnyObject {
     func gameIsSolved(movesRemaining: Int, itemsFound: Int, enemiesKilled: Int, usedContinue: Bool)
     func gameIsOver()
+    func enemyIsKilled()
 }
 
 /**
@@ -178,6 +179,13 @@ class GameEngine {
 
             playerSprite.startPowerUpAnimation()
             completion?()
+        case .heart:
+            displaySprite.statusHealth.pulseImage()
+            healthRemaining += 1
+            consumeItem()
+            
+            AudioManager.shared.playSound(for: "pickupheart")
+            completion?()
         case .boulder:
             guard playerSprite.inventory.hammers > 0 else { return }
                         
@@ -197,7 +205,8 @@ class GameEngine {
             playerSprite.inventory.swords -= 1
             playerSprite.startSwordAnimation(on: gameboardSprite, at: level.player) {
                 self.consumeItem()
-
+                self.delegate?.enemyIsKilled()
+                
                 completion?()
             }
         case .warp:
@@ -534,6 +543,11 @@ class GameEngine {
         GameEngine.livesRemaining += lives
     }
     
+    func updateScores() {
+        displaySprite.animateScores(movesScore: ScoringEngine.getMovesScore(from: movesRemaining),
+                                    inventoryScore: ScoringEngine.getItemsFoundScore(from: playerSprite.inventory.getItemCount()))
+    }
+    
     /**
      Adds all the sprites to the superScene, i.e. should be called in a GameScene's moveTo() function.
      - parameter superScene: The GameScene to add all the children to.
@@ -558,6 +572,6 @@ class GameEngine {
             self.gameboardSprite.sprite.alpha = 1.0
         }
         
-        gameboardSprite.colorizeGameboard(color: .clear, blendFactor: fadeOut ? 1.0 : 0.0, animationDuration: 0.5, completion: completion)
+        gameboardSprite.colorizeGameboard(color: .clear, blendFactor: fadeOut ? 1.0 : 0.0, animationDuration: fadeOut ? 1.0 : 0.5, completion: completion)
     }
 }

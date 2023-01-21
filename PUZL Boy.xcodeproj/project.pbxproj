@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		EA04F5C8297BAEBB00A48BC2 /* pickupheart.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA04F5C7297BAEBB00A48BC2 /* pickupheart.mp3 */; };
 		EA0F145D292994330013038E /* moverun1.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA0F145C292994330013038E /* moverun1.mp3 */; };
 		EA0F145F292994B00013038E /* movewalk.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA0F145E292994B00013038E /* movewalk.mp3 */; };
 		EA0F146F2929D9C00013038E /* moverun4.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA0F146C2929D9C00013038E /* moverun4.mp3 */; };
@@ -119,6 +120,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		EA04F5C7297BAEBB00A48BC2 /* pickupheart.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = pickupheart.mp3; sourceTree = "<group>"; };
 		EA0F145C292994330013038E /* moverun1.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = moverun1.mp3; sourceTree = "<group>"; };
 		EA0F145E292994B00013038E /* movewalk.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = movewalk.mp3; sourceTree = "<group>"; };
 		EA0F146C2929D9C00013038E /* moverun4.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = moverun4.mp3; sourceTree = "<group>"; };
@@ -368,6 +370,7 @@
 				EA0F147C292B0A050013038E /* overworld3.mp3 */,
 				EA956C74292595F400879AD0 /* overworld4.mp3 */,
 				EA95D1AB294D08BB0061059C /* overworld5.mp3 */,
+				EA04F5C7297BAEBB00A48BC2 /* pickupheart.mp3 */,
 				EAAEA3C92931F12B00221963 /* pickupitem.mp3 */,
 				EAAEA3C32931D0DA00221963 /* swordslash.mp3 */,
 				EA95D193294690890061059C /* warp.mp3 */,
@@ -584,6 +587,7 @@
 				EA0F146F2929D9C00013038E /* moverun4.mp3 in Resources */,
 				EA0F14702929D9C00013038E /* moverun3.mp3 in Resources */,
 				EA8F4589296CF35100AE21C5 /* chatopen2.mp3 in Resources */,
+				EA04F5C8297BAEBB00A48BC2 /* pickupheart.mp3 in Resources */,
 				EA95D19F294690B70061059C /* boyattack3.mp3 in Resources */,
 				EA95D18E2945A0200061059C /* LuckiestGuy-Regular.ttf in Resources */,
 				EA95D1A4294691820061059C /* boygrunt2.mp3 in Resources */,

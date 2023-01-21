@@ -11,11 +11,11 @@ class ScoringEngine {
     
     // MARK: - Properties
     
+    private static let moveScore = 2000
+    private static let itemScore = 500
     private let maxTimeScore = 1000
     private let minTimeScore = 100
     private let reductionPerSecondScore = -5
-    private let moveScore = 2000
-    private let itemScore = 500
     private let killEnemyScore = 1000
 
     private(set) var score = 0
@@ -93,6 +93,11 @@ class ScoringEngine {
     
     // MARK: - Helper Functions
     
+    func addToScore(_ score: Int) {
+        self.score += score
+        updateScoreLabels()
+    }
+
     func resetScore() {
         score = 0
     }
@@ -114,7 +119,7 @@ class ScoringEngine {
         
         pollTime()
         
-        score = (max(minTimeScore, maxTimeScore + Int(elapsedTime) * reductionPerSecondScore) + movesRemaining * moveScore + itemsFound * itemScore + enemiesKilled * killEnemyScore) * (usedContinue ? 1 : 2)
+        score = (getTimeScore() + ScoringEngine.getMovesScore(from: movesRemaining) + ScoringEngine.getItemsFoundScore(from: itemsFound) + enemiesKilled * killEnemyScore) * (usedContinue ? 1 : 2)
         preservedScore = score
         
         animateScore()
@@ -134,6 +139,18 @@ class ScoringEngine {
         updateScoreLabels()
     }
     
+    static func getMovesScore(from movesRemaining: Int) -> Int {
+        return moveScore * movesRemaining
+    }
+    
+    static func getItemsFoundScore(from itemsFound: Int) -> Int {
+        return itemScore * itemsFound
+    }
+    
+    private func getTimeScore() -> Int {
+        max(minTimeScore, maxTimeScore + Int(elapsedTime) * reductionPerSecondScore)
+    }
+    
     private func updateScoreLabels() {
         totalScoreLabel.text = "TOTAL: " + (numberFormatter.string(from: NSNumber(value: totalScore)) ?? "-9999")
         scoreLabel.text = "SCORE: " + (numberFormatter.string(from: NSNumber(value: score)) ?? "-9999")
@@ -144,6 +161,10 @@ class ScoringEngine {
     
     private func animateScore() {
         scoreLabel.run(SKAction.sequence([scaleScoreAnimation(), SKAction.wait(forDuration: 1.0), incrementScoreAnimation()]))
+        
+        ScoringEngine.addScoreAnimation(score: getTimeScore(),
+                                        originSprite: elapsedTimeLabel,
+                                        location: CGPoint(x: elapsedTimeLabel.frame.width / 2, y: 0))
     }
     
     private func scaleScoreAnimation() -> SKAction {
@@ -192,6 +213,34 @@ class ScoringEngine {
         let incrementRepeat = SKAction.repeat(SKAction.sequence([wait, incrementAction]), count: Int(savedScore))
         
         return incrementRepeat
+    }
+    
+    /**
+     Adds a floating score animaton from an originSprite and a location. Use this static method directly from ScoringEngine.
+     - parameters:
+        - score: The Int score to display
+        - originSprite: The sprite from which to add the label as a child
+        - location: Location of the label node
+     */
+    static func addScoreAnimation(score: Int, originSprite: SKNode, location: CGPoint) {
+        let numberFormatter = NumberFormatter()
+        numberFormatter.numberStyle = .decimal
+        
+        let pointsSprite = SKLabelNode(text: "+" + (numberFormatter.string(from: NSNumber(value: score)) ?? "0"))
+        pointsSprite.fontName = UIFont.gameFont
+        pointsSprite.fontSize = 48
+        pointsSprite.fontColor = .yellow
+        pointsSprite.position = location
+        pointsSprite.zPosition = K.ZPosition.items
+        
+        originSprite.addChild(pointsSprite)
+
+        let moveUp = SKAction.move(by: CGVector(dx: 0, dy: 100), duration: 1.0)
+        let fadeOut = SKAction.sequence([SKAction.wait(forDuration: 0.75), SKAction.fadeOut(withDuration: 0.25)])
+        
+        pointsSprite.run(SKAction.group([moveUp, fadeOut])) {
+            pointsSprite.removeFromParent()
+        }
     }
     
 

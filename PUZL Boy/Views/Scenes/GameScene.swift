@@ -201,12 +201,17 @@ class GameScene: SKScene {
 // MARK: - GameEngineDelegate
 
 extension GameScene: GameEngineDelegate {
+    func enemyIsKilled() {
+        scoringEngine.addToScore(1000)
+    }
+    
     func gameIsSolved(movesRemaining: Int, itemsFound: Int, enemiesKilled: Int, usedContinue: Bool) {
         let score = scoringEngine.updateScore(movesRemaining: movesRemaining,
                                               itemsFound: itemsFound,
                                               enemiesKilled: enemiesKilled,
                                               usedContinue: usedContinue)
         scoringEngine.updateLabels()
+        gameEngine.updateScores()
         removeAction(forKey: "runTimerAction")
 
         GameCenterManager.shared.postScoreToLeaderboard(score: score, level: currentLevel)
@@ -278,18 +283,22 @@ extension GameScene: GameEngineDelegate {
 extension GameScene: LevelSkipEngineDelegate {
     func fowardPressed(_ node: SKSpriteNode) {
         currentLevel += 1
-        scoringEngine.resetTime()
-        newGame(level: currentLevel, didWin: true)
+        forwardReverseHelper()
     }
     
     func reversePressed(_ node: SKSpriteNode) {
         currentLevel -= 1
-        scoringEngine.resetTime()
-        newGame(level: currentLevel, didWin: true)
+        forwardReverseHelper()
     }
     
     func viewAchievementsPressed(node: SKSpriteNode) {
         GameCenterManager.shared.showLeaderboard(level: currentLevel)
+    }
+    
+    private func forwardReverseHelper() {
+        scoringEngine.resetTime()
+        scoringEngine.resetScore()
+        newGame(level: currentLevel, didWin: true)
     }
 }
 
