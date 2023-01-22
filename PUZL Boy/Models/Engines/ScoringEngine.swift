@@ -18,22 +18,12 @@ class ScoringEngine {
     private let reductionPerSecondScore = -5
     private let killEnemyScore = 1000
 
-    private(set) var score = 0
-    private(set) var totalScore = 0
-
-    private var numberFormatter = NumberFormatter()
-    private var timeInitial = Date()
-    private var timeFinal = Date()
-    private var initialElapsedTime: TimeInterval = 0
-    
-    var elapsedTime: TimeInterval {
-        TimeInterval(timeFinal.timeIntervalSince1970 - timeInitial.timeIntervalSince1970)
-    }
+    private(set) var timerManager: TimerManager
+    private(set) var scoringManager: ScoringManager
 
     var totalScoreLabel: SKLabelNode
     var scoreLabel: SKLabelNode
     var elapsedTimeLabel: SKLabelNode
-    var statsLabel: SKLabelNode //temporary
     
     
     // MARK: - Initialization
@@ -41,13 +31,9 @@ class ScoringEngine {
     init(elapsedTime: TimeInterval = 0, totalScore: Int = 0) {
         let padding: CGFloat = 40
         
-        numberFormatter.numberStyle = .decimal
-        numberFormatter.maximumFractionDigits = 0
-        
-        self.totalScore = totalScore
-        initialElapsedTime = elapsedTime
-        timeFinal = timeInitial + elapsedTime
-        
+        timerManager = TimerManager(elapsedTime: elapsedTime)
+        scoringManager = ScoringManager(totalScore: totalScore)
+
         totalScoreLabel = SKLabelNode()
         totalScoreLabel.fontName = UIFont.gameFont
         totalScoreLabel.fontSize = UIFont.gameFontSizeSmall
@@ -76,69 +62,13 @@ class ScoringEngine {
         elapsedTimeLabel.verticalAlignmentMode = .bottom
         elapsedTimeLabel.zPosition = K.ZPosition.display
 
-        statsLabel = SKLabelNode()
-        statsLabel.fontName = UIFont.gameFont
-        statsLabel.fontSize = UIFont.gameFontSizeTiny
-        statsLabel.fontColor = UIFont.gameFontColor
-        statsLabel.position = CGPoint(x: padding, y: K.ScreenDimensions.bottomMargin + 200)
-        statsLabel.horizontalAlignmentMode = .left
-        statsLabel.verticalAlignmentMode = .top
-        statsLabel.zPosition = K.ZPosition.display
-        statsLabel.numberOfLines = 0
-
-        resetScore()
-    }
-
-    
-    // MARK: - Helper Functions
-    
-    func addToScore(_ score: Int) {
-        self.score += score
-        updateScoreLabels()
-    }
-
-    func resetScore() {
-        score = 0
+        scoringManager.resetScore()
         updateLabels()
     }
     
-    func resetTime() {
-        initialElapsedTime = 0
-        
-        timeInitial = Date()
-        timeFinal = Date()
-    }
+    
+    // MARK: - Scoring Multipliers
 
-    func pollTime() {
-        timeFinal = Date() + initialElapsedTime
-    }
-    
-    func updateScore(movesRemaining: Int, itemsFound: Int, enemiesKilled: Int, usedContinue: Bool) -> Int {
-        //DON'T CHANGE THIS ORDER!!!
-        let preservedScore: Int
-        
-        pollTime()
-        
-        score = (getTimeScore() + ScoringEngine.getMovesScore(from: movesRemaining) + ScoringEngine.getItemsFoundScore(from: itemsFound) + enemiesKilled * killEnemyScore) * ScoringEngine.getUsedContinueMultiplier(usedContinue)
-        preservedScore = score
-        
-        animateScore(usedContinue: usedContinue)
-        
-        statsLabel.text = "Elapsed Time: \(Int(elapsedTime))\nMoves Remaining: \(movesRemaining)\nItems Found: \(itemsFound)\nEnemies Killed: \(enemiesKilled)\nContinue Used? \(usedContinue)"
-        
-        return preservedScore
-    }
-    
-    func updateLabels() {
-        let minutes = Int(elapsedTime) / 60 % 60
-        let seconds = Int(elapsedTime) % 60
-        
-        elapsedTimeLabel.text = String(format: "%02i:%02i", minutes, seconds)
-        elapsedTimeLabel.fontColor = elapsedTime >= 60 * 60 ? UIFont.gameFontColorOutOfTime : UIFont.gameFontColor
-        
-        updateScoreLabels()
-    }
-    
     static func getMovesScore(from movesRemaining: Int) -> Int {
         return moveScore * movesRemaining
     }
@@ -151,19 +81,74 @@ class ScoringEngine {
         return usedContinue ? 1 : 2
     }
 
+    
+    // MARK: - Scoring Functions
+    
+    func calculateScore(movesRemaining: Int, itemsFound: Int, enemiesKilled: Int, usedContinue: Bool) -> Int {
+        timerManager.pollTime()
+        
+        scoringManager.setScore((getTimeScore() + ScoringEngine.getMovesScore(from: movesRemaining) + ScoringEngine.getItemsFoundScore(from: itemsFound) + enemiesKilled * killEnemyScore) * ScoringEngine.getUsedContinueMultiplier(usedContinue))
+
+        return scoringManager.score
+    }
+    
+    func updateLabels() {
+        let minutes = Int(timerManager.elapsedTime) / 60 % 60
+        let seconds = Int(timerManager.elapsedTime) % 60
+        
+        elapsedTimeLabel.text = String(format: "%02i:%02i", minutes, seconds)
+        elapsedTimeLabel.fontColor = timerManager.elapsedTime >= 60 * 60 ? UIFont.gameFontColorOutOfTime : UIFont.gameFontColor
+        
+        updateScoreLabels()
+    }
+
     private func getTimeScore() -> Int {
-        max(minTimeScore, maxTimeScore + Int(elapsedTime) * reductionPerSecondScore)
+        max(minTimeScore, maxTimeScore + Int(timerManager.elapsedTime) * reductionPerSecondScore)
     }
     
     private func updateScoreLabels() {
-        totalScoreLabel.text = "TOTAL: " + (numberFormatter.string(from: NSNumber(value: totalScore)) ?? "-9999")
-        scoreLabel.text = "SCORE: " + (numberFormatter.string(from: NSNumber(value: score)) ?? "-9999")
+        let numberFormatter = NumberFormatter()
+        numberFormatter.numberStyle = .decimal
+        numberFormatter.maximumFractionDigits = 0
+        
+        totalScoreLabel.text = "TOTAL: " + (numberFormatter.string(from: NSNumber(value: scoringManager.totalScore)) ?? "-9999")
+        scoreLabel.text = "SCORE: " + (numberFormatter.string(from: NSNumber(value: scoringManager.score)) ?? "-9999")
     }
     
     
     // MARK: - Animate Score Helper
     
-    private func animateScore(usedContinue: Bool) {
+    /**
+     Adds a floating score animaton from an originSprite and a location. Use this static method directly from ScoringEngine.
+     - parameters:
+        - score: The Int score to display
+        - usedContinue: Determines the multiplier, i.e. if false = 2, else = 1
+        - originSprite: The sprite from which to add the label as a child
+        - location: Location of the label node
+     */
+    static func addScoreAnimation(score: Int, usedContinue: Bool?, originSprite: SKNode, location: CGPoint) {
+        let numberFormatter = NumberFormatter()
+        numberFormatter.numberStyle = .decimal
+        let score = numberFormatter.string(from: NSNumber(value: score * getUsedContinueMultiplier(usedContinue ?? true)))
+        
+        let pointsSprite = SKLabelNode(text: "+" + (score ?? "0"))
+        pointsSprite.fontName = UIFont.gameFont
+        pointsSprite.fontSize = UIFont.gameFontSizeMedium
+        pointsSprite.fontColor = .yellow
+        pointsSprite.position = location
+        pointsSprite.zPosition = K.ZPosition.items
+        
+        originSprite.addChild(pointsSprite)
+
+        let moveUp = SKAction.move(by: CGVector(dx: 0, dy: 100), duration: 1.0)
+        let fadeOut = SKAction.sequence([SKAction.wait(forDuration: 0.75), SKAction.fadeOut(withDuration: 0.25)])
+        
+        pointsSprite.run(SKAction.group([moveUp, fadeOut])) {
+            pointsSprite.removeFromParent()
+        }
+    }
+    
+    func animateScore(usedContinue: Bool) {
         scoreLabel.run(SKAction.sequence([scaleScoreAnimation(), SKAction.wait(forDuration: 1.0), incrementScoreAnimation()]))
         
         ScoringEngine.addScoreAnimation(score: getTimeScore(),
@@ -205,49 +190,17 @@ class ScoringEngine {
     }
     
     private func incrementScoreAnimation() -> SKAction {
-        let savedScore: CGFloat = CGFloat(score)
+        let savedScore: CGFloat = CGFloat(scoringManager.score)
         let wait = SKAction.wait(forDuration: 1 / savedScore)
         
         let incrementAction = SKAction.run { [unowned self] in
-            score -= 1
-            totalScore += 1
-            
+            scoringManager.balanceScores()
             updateScoreLabels()
         }
         
         let incrementRepeat = SKAction.repeat(SKAction.sequence([wait, incrementAction]), count: Int(savedScore))
         
         return incrementRepeat
-    }
-    
-    /**
-     Adds a floating score animaton from an originSprite and a location. Use this static method directly from ScoringEngine.
-     - parameters:
-        - score: The Int score to display
-        - usedContinue: Determines the multiplier, i.e. if false = 2, else = 1
-        - originSprite: The sprite from which to add the label as a child
-        - location: Location of the label node
-     */
-    static func addScoreAnimation(score: Int, usedContinue: Bool?, originSprite: SKNode, location: CGPoint) {
-        let numberFormatter = NumberFormatter()
-        numberFormatter.numberStyle = .decimal
-        let score = numberFormatter.string(from: NSNumber(value: score * getUsedContinueMultiplier(usedContinue ?? true)))
-        
-        let pointsSprite = SKLabelNode(text: "+" + (score ?? "0"))
-        pointsSprite.fontName = UIFont.gameFont
-        pointsSprite.fontSize = UIFont.gameFontSizeMedium
-        pointsSprite.fontColor = .yellow
-        pointsSprite.position = location
-        pointsSprite.zPosition = K.ZPosition.items
-        
-        originSprite.addChild(pointsSprite)
-
-        let moveUp = SKAction.move(by: CGVector(dx: 0, dy: 100), duration: 1.0)
-        let fadeOut = SKAction.sequence([SKAction.wait(forDuration: 0.75), SKAction.fadeOut(withDuration: 0.25)])
-        
-        pointsSprite.run(SKAction.group([moveUp, fadeOut])) {
-            pointsSprite.removeFromParent()
-        }
     }
     
 
@@ -261,7 +214,6 @@ class ScoringEngine {
         superScene.addChild(totalScoreLabel)
         superScene.addChild(scoreLabel)
         superScene.addChild(elapsedTimeLabel)
-//        superScene.addChild(statsLabel)
     }
 
 }

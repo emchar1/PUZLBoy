@@ -105,7 +105,7 @@ class GameScene: SKScene {
     private func startTimer() {
         let wait = SKAction.wait(forDuration: 1.0)
         let block = SKAction.run { [unowned self] in
-            scoringEngine.pollTime()
+            scoringEngine.timerManager.pollTime()
             scoringEngine.updateLabels()
         }
         let sequence = SKAction.sequence([wait, block])
@@ -183,7 +183,7 @@ class GameScene: SKScene {
     private func playDialogue() {
         //Only disable input on certain levels, i.e. the important ones w/ instructions.
         if chatEngine.shouldPauseGame(level: currentLevel) {
-            scoringEngine.resetTime()
+            scoringEngine.timerManager.resetTime()
             stopTimer()
             
             disableInput = false
@@ -191,7 +191,7 @@ class GameScene: SKScene {
         
         chatEngine.dialogue(level: currentLevel) { [unowned self] in
             if pauseTimer {
-                scoringEngine.resetTime()
+                scoringEngine.timerManager.resetTime()
                 startTimer()
             }
 
@@ -205,42 +205,44 @@ class GameScene: SKScene {
 
 extension GameScene: GameEngineDelegate {
     func enemyIsKilled() {
-        scoringEngine.addToScore(1000)
+        scoringEngine.scoringManager.addToScore(1000)
+        scoringEngine.updateLabels()
     }
     
     func gameIsSolved(movesRemaining: Int, itemsFound: Int, enemiesKilled: Int, usedContinue: Bool) {
-        let score = scoringEngine.updateScore(movesRemaining: movesRemaining,
+        let score = scoringEngine.calculateScore(movesRemaining: movesRemaining,
                                               itemsFound: itemsFound,
                                               enemiesKilled: enemiesKilled,
                                               usedContinue: usedContinue)
+        scoringEngine.animateScore(usedContinue: usedContinue)
         scoringEngine.updateLabels()
         gameEngine.updateScores()
         removeAction(forKey: "runTimerAction")
 
         GameCenterManager.shared.postScoreToLeaderboard(score: score, level: currentLevel)
         
-        if currentLevel >= 25 && scoringEngine.elapsedTime <= 6 {
+        if currentLevel >= 25 && scoringEngine.timerManager.elapsedTime <= 6 {
             GameCenterManager.shared.updateProgress(achievement: .speedDemon, shouldReportImmediately: true)
         }
         
-        if currentLevel >= 25 && scoringEngine.elapsedTime >= 15 * 60 {
+        if currentLevel >= 25 && scoringEngine.timerManager.elapsedTime >= 15 * 60 {
             GameCenterManager.shared.updateProgress(achievement: .slowPoke, shouldReportImmediately: true)
         }
         
         currentLevel += 1
         
         gameEngine.fadeGameboard(fadeOut: true) { [unowned self] in
-            scoringEngine.resetTime()
+            scoringEngine.timerManager.resetTime()
             startTimer()
             newGame(level: currentLevel, didWin: true)
 
             //Write to Firestore
             if let user = user {
-                let saveStateModel = SaveStateModel(elapsedTime: scoringEngine.elapsedTime,
+                let saveStateModel = SaveStateModel(elapsedTime: scoringEngine.timerManager.elapsedTime,
                                                     saveDate: Date(),
                                                     level: currentLevel,
                                                     livesRemaining: GameEngine.livesRemaining,
-                                                    totalScore: scoringEngine.totalScore + scoringEngine.score,
+                                                    totalScore: scoringEngine.scoringManager.totalScore + scoringEngine.scoringManager.score,
                                                     uid: user.uid)
 
                 FIRManager.writeToFirestoreRecord(user: user, saveStateModel: saveStateModel)
@@ -266,10 +268,10 @@ extension GameScene: GameEngineDelegate {
         
         
 //        chatEngine.dialogue(level: -1) { [unowned self] in
-            scoringEngine.resetScore()
+            scoringEngine.scoringManager.resetScore()
+            scoringEngine.updateLabels()
             newGame(level: currentLevel, didWin: false)
 //        }
-        
         
         
         
@@ -296,8 +298,9 @@ extension GameScene: LevelSkipEngineDelegate {
     }
     
     private func forwardReverseHelper() {
-        scoringEngine.resetTime()
-        scoringEngine.resetScore()
+        scoringEngine.timerManager.resetTime()
+        scoringEngine.scoringManager.resetScore()
+        scoringEngine.updateLabels()
         newGame(level: currentLevel, didWin: true)
     }
 }
@@ -323,7 +326,7 @@ extension GameScene: AdMobManagerDelegate {
     
     private func resumeGame() {
         continueFromAd { [unowned self] in
-            scoringEngine.resetTime()
+            scoringEngine.timerManager.resetTime()
             startTimer()
         }
     }
@@ -345,7 +348,8 @@ extension GameScene: AdMobManagerDelegate {
     
     private func restartLevel() {
         continueFromAd { [unowned self] in
-            scoringEngine.resetScore()
+            scoringEngine.scoringManager.resetScore()
+            scoringEngine.updateLabels()
             newGame(level: currentLevel, didWin: false)
         }
     }

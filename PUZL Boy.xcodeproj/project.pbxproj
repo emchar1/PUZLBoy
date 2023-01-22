@@ -45,6 +45,8 @@
 		EA75F0EF292F55F900F09BD7 /* LaunchScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA75F0EE292F55F900F09BD7 /* LaunchScene.swift */; };
 		EA78C36C29763B1C00292744 /* AchievementAdMobster.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA78C36B29763B1C00292744 /* AchievementAdMobster.swift */; };
 		EA78C36E29767D7600292744 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = EA78C36D29767D7600292744 /* GoogleService-Info.plist */; };
+		EA826C74297CEFC500F19F81 /* TimerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA826C73297CEFC500F19F81 /* TimerManager.swift */; };
+		EA826C76297CF9E000F19F81 /* ScoringManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA826C75297CF9E000F19F81 /* ScoringManager.swift */; };
 		EA8F4589296CF35100AE21C5 /* chatopen2.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA8F4588296CF35100AE21C5 /* chatopen2.mp3 */; };
 		EA956C6A29257B9C00879AD0 /* AudioManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA956C6929257B9C00879AD0 /* AudioManager.swift */; };
 		EA956C6C29257D9600879AD0 /* Extension+Comparable.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA956C6B29257D9600879AD0 /* Extension+Comparable.swift */; };
@@ -155,6 +157,8 @@
 		EA75F0EE292F55F900F09BD7 /* LaunchScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchScene.swift; sourceTree = "<group>"; };
 		EA78C36B29763B1C00292744 /* AchievementAdMobster.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementAdMobster.swift; sourceTree = "<group>"; };
 		EA78C36D29767D7600292744 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		EA826C73297CEFC500F19F81 /* TimerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerManager.swift; sourceTree = "<group>"; };
+		EA826C75297CF9E000F19F81 /* ScoringManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoringManager.swift; sourceTree = "<group>"; };
 		EA8F4588296CF35100AE21C5 /* chatopen2.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = chatopen2.mp3; sourceTree = "<group>"; };
 		EA956C6929257B9C00879AD0 /* AudioManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioManager.swift; sourceTree = "<group>"; };
 		EA956C6B29257D9600879AD0 /* Extension+Comparable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+Comparable.swift"; sourceTree = "<group>"; };
@@ -285,6 +289,8 @@
 				EA26F29029739DE800BF1AC8 /* AdMobManager.swift */,
 				EA75F0EC292DF57400F09BD7 /* LevelModel.swift */,
 				EA95D2132964FF350061059C /* SaveStateModel.swift */,
+				EA826C73297CEFC500F19F81 /* TimerManager.swift */,
+				EA826C75297CF9E000F19F81 /* ScoringManager.swift */,
 				EA65189128E973D700E535BF /* LevelBuilder.swift */,
 				EA65189028E973D700E535BF /* Level.swift */,
 				EA35348A29241FCD00C11FC0 /* LevelType.swift */,
@@ -619,6 +625,7 @@
 				EA95D1D529544D990061059C /* AchievementEnigmatologist.swift in Sources */,
 				EA95D1CD29542C180061059C /* AchievementHotToTrot.swift in Sources */,
 				EA11915729121798009D0E3E /* Controls.swift in Sources */,
+				EA826C74297CEFC500F19F81 /* TimerManager.swift in Sources */,
 				EA35348B29241FCD00C11FC0 /* LevelType.swift in Sources */,
 				EA119155290CCA39009D0E3E /* Inventory.swift in Sources */,
 				EA95D1D129542C720061059C /* AchievementNuclear.swift in Sources */,
@@ -665,6 +672,7 @@
 				EA65189528EA207800E535BF /* Constants.swift in Sources */,
 				EA95D206295F86F40061059C /* AchievementItemWielder.swift in Sources */,
 				EA95D1D729544DBA0061059C /* AchievementPUZLGuru.swift in Sources */,
+				EA826C76297CF9E000F19F81 /* ScoringManager.swift in Sources */,
 				EA95D1CB29541F7F0061059C /* AchievementRockNRoller.swift in Sources */,
 				EA95D208295F87120061059C /* AchievementHoarder.swift in Sources */,
 				EAB69E0028EFCF5B00C31DB3 /* PlayerSprite.swift in Sources */,
