@@ -18,12 +18,13 @@ class GameViewController: UIViewController {
         
         let launchScene = LaunchScene(size: K.ScreenDimensions.screenSize)
 
-        let skView = self.view as! SKView
+        let skView = SKView()
         skView.showsFPS = true
         skView.showsNodeCount = true
         skView.ignoresSiblingOrder = true
         skView.presentScene(launchScene)
-        
+        view = skView
+
         AdMobManager.shared.superVC = self
         AdMobManager.shared.createAndLoadInterstitial()
         AdMobManager.shared.createAndLoadRewarded()

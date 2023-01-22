@@ -50,7 +50,6 @@
 		EA8F4589296CF35100AE21C5 /* chatopen2.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA8F4588296CF35100AE21C5 /* chatopen2.mp3 */; };
 		EA956C6A29257B9C00879AD0 /* AudioManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA956C6929257B9C00879AD0 /* AudioManager.swift */; };
 		EA956C6C29257D9600879AD0 /* Extension+Comparable.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA956C6B29257D9600879AD0 /* Extension+Comparable.swift */; };
-		EA956C7329258B1700879AD0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EA956C7129258B1700879AD0 /* Main.storyboard */; };
 		EA956C75292595F400879AD0 /* overworld4.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA956C74292595F400879AD0 /* overworld4.mp3 */; };
 		EA95D18929459BC80061059C /* moveglide.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA95D18829459BC80061059C /* moveglide.mp3 */; };
 		EA95D18D29459D550061059C /* Extension+UIFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA95D18C29459D550061059C /* Extension+UIFont.swift */; };
@@ -162,7 +161,6 @@
 		EA8F4588296CF35100AE21C5 /* chatopen2.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = chatopen2.mp3; sourceTree = "<group>"; };
 		EA956C6929257B9C00879AD0 /* AudioManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioManager.swift; sourceTree = "<group>"; };
 		EA956C6B29257D9600879AD0 /* Extension+Comparable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+Comparable.swift"; sourceTree = "<group>"; };
-		EA956C7229258B1700879AD0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		EA956C74292595F400879AD0 /* overworld4.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = overworld4.mp3; sourceTree = "<group>"; };
 		EA95D18829459BC80061059C /* moveglide.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = moveglide.mp3; sourceTree = "<group>"; };
 		EA95D18B29459C4A0061059C /* LuckiestGuy-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "LuckiestGuy-Regular.ttf"; sourceTree = "<group>"; };
@@ -285,10 +283,10 @@
 			children = (
 				EA95D1B429524EB60061059C /* Game Center */,
 				EA95D21A2967E07F0061059C /* Engines */,
-				EA75F0EA292DF46200F09BD7 /* FIRManager.swift */,
 				EA26F29029739DE800BF1AC8 /* AdMobManager.swift */,
-				EA75F0EC292DF57400F09BD7 /* LevelModel.swift */,
+				EA75F0EA292DF46200F09BD7 /* FIRManager.swift */,
 				EA95D2132964FF350061059C /* SaveStateModel.swift */,
+				EA75F0EC292DF57400F09BD7 /* LevelModel.swift */,
 				EA826C73297CEFC500F19F81 /* TimerManager.swift */,
 				EA826C75297CF9E000F19F81 /* ScoringManager.swift */,
 				EA65189128E973D700E535BF /* LevelBuilder.swift */,
@@ -307,7 +305,6 @@
 			children = (
 				EA65189628EAB1A600E535BF /* Sprites */,
 				EA75F0F0292F560300F09BD7 /* Scenes */,
-				EA956C7129258B1700879AD0 /* Main.storyboard */,
 				EA65183528E419A000E535BF /* LaunchScreen.storyboard */,
 			);
 			path = Views;
@@ -564,7 +561,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				EAAEA3CA2931F12B00221963 /* pickupitem.mp3 in Resources */,
-				EA956C7329258B1700879AD0 /* Main.storyboard in Resources */,
 				EAAEA3C62931F08300221963 /* gameover.mp3 in Resources */,
 				EAAEA3BE2931A31200221963 /* movepoisoned.mp3 in Resources */,
 				EA95D194294690890061059C /* warp.mp3 in Resources */,
@@ -689,14 +685,6 @@
 				EA65183628E419A000E535BF /* Base */,
 			);
 			name = LaunchScreen.storyboard;
-			sourceTree = "<group>";
-		};
-		EA956C7129258B1700879AD0 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				EA956C7229258B1700879AD0 /* Base */,
-			);
-			name = Main.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -829,7 +817,6 @@
 				INFOPLIST_FILE = "PUZL Boy/Supporting Files/Info.plist";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UIStatusBarStyle = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
@@ -862,7 +849,6 @@
 				INFOPLIST_FILE = "PUZL Boy/Supporting Files/Info.plist";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UIStatusBarStyle = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";

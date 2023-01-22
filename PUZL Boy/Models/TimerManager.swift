@@ -14,6 +14,7 @@ class TimerManager {
     private var timeInitial = Date()
     private var timeFinal = Date()
     private var initialElapsedTime: TimeInterval = 0
+    private var elapsedPause: TimeInterval = 0
     
     var elapsedTime: TimeInterval {
         TimeInterval(timeFinal.timeIntervalSince1970 - timeInitial.timeIntervalSince1970)
@@ -36,5 +37,13 @@ class TimerManager {
     
     func pollTime() {
         timeFinal = Date() + initialElapsedTime
+    }
+    
+    func pauseTime() {
+        elapsedPause = elapsedTime
+    }
+    
+    func resumeTime() {
+        timeInitial = timeFinal - elapsedPause
     }
 }
