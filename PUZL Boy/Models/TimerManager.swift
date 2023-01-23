@@ -13,37 +13,49 @@ class TimerManager {
     
     private var timeInitial = Date()
     private var timeFinal = Date()
-    private var initialElapsedTime: TimeInterval = 0
-    private var elapsedPause: TimeInterval = 0
     
     var elapsedTime: TimeInterval {
-        TimeInterval(timeFinal.timeIntervalSince1970 - timeInitial.timeIntervalSince1970)
+        TimeInterval(timeFinal.timeIntervalSinceNow - timeInitial.timeIntervalSinceNow)
     }
     
     
     // MARK: - Functions
     
     init(elapsedTime: TimeInterval = 0) {
-        initialElapsedTime = elapsedTime
-        timeFinal = timeInitial + elapsedTime
+        timeInitial = Date(timeIntervalSinceNow: -elapsedTime)
     }
     
     func resetTime() {
-        initialElapsedTime = 0
-        
         timeInitial = Date()
         timeFinal = Date()
     }
     
     func pollTime() {
-        timeFinal = Date() + initialElapsedTime
+        timeFinal = Date()
     }
     
     func pauseTime() {
-        elapsedPause = elapsedTime
+        pollTime()
+        
+        debugProperties(label: "paused")
     }
     
     func resumeTime() {
-        timeInitial = timeFinal - elapsedPause
+        timeInitial = Date(timeIntervalSinceNow: -elapsedTime)
+        pollTime()
+            
+        debugProperties(label: "resumed")
+    }
+    
+    private func debugProperties(label: String) {
+        let numberFormatter = NumberFormatter()
+        numberFormatter.numberStyle = .decimal
+        numberFormatter.maximumFractionDigits = 2
+        
+        print(" === \(label.uppercased()) === ")
+        print("timeInitial: \(numberFormatter.string(from: NSNumber(value: timeInitial.timeIntervalSinceNow)) ?? "-9999")")
+        print("timeFinal: \(numberFormatter.string(from: NSNumber(value: timeFinal.timeIntervalSinceNow)) ?? "-9999")")
+        print("elapsedTime: \(numberFormatter.string(from: NSNumber(value: elapsedTime)) ?? "-9999")")
+        print()
     }
 }

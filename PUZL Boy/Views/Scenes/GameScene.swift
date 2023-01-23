@@ -65,12 +65,29 @@ class GameScene: SKScene {
 
         AdMobManager.shared.delegate = self
         AudioManager.shared.playSound(for: AudioManager.shared.overworldTheme)
+        
+        
+        
+        
+        
+        // TODO: - Game Pause notification
+        let notificationCenter = NotificationCenter.default
+        notificationCenter.addObserver(self, selector: #selector(appMovedToBackground), name: UIApplication.willResignActiveNotification, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(appMovedToForeground), name: UIApplication.didBecomeActiveNotification, object: nil)
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
+    @objc private func appMovedToBackground() {
+        scoringEngine.timerManager.pauseTime()
+        saveState()
+    }
+    
+    @objc private func appMovedToForeground() {
+        scoringEngine.timerManager.resumeTime()
+    }
     
     // MARK: - UI Touches
 
@@ -121,6 +138,19 @@ class GameScene: SKScene {
         scoringEngine.updateLabels()
         
         pauseTimer = true
+    }
+    
+    private func saveState() {
+        if let user = user {
+            let saveStateModel = SaveStateModel(elapsedTime: scoringEngine.timerManager.elapsedTime,
+                                                saveDate: Date(),
+                                                level: currentLevel,
+                                                livesRemaining: GameEngine.livesRemaining,
+                                                totalScore: scoringEngine.scoringManager.totalScore + scoringEngine.scoringManager.score,
+                                                uid: user.uid)
+
+            FIRManager.writeToFirestoreRecord(user: user, saveStateModel: saveStateModel)
+        }
     }
     
     private func newGame(level: Int, didWin: Bool) {
@@ -186,6 +216,7 @@ class GameScene: SKScene {
             scoringEngine.timerManager.resetTime()
             stopTimer()
             
+            // FIXME: - Don't forget to set this to TRUE in production!!!!
             disableInput = false
         }
         
@@ -237,16 +268,7 @@ extension GameScene: GameEngineDelegate {
             newGame(level: currentLevel, didWin: true)
 
             //Write to Firestore
-            if let user = user {
-                let saveStateModel = SaveStateModel(elapsedTime: scoringEngine.timerManager.elapsedTime,
-                                                    saveDate: Date(),
-                                                    level: currentLevel,
-                                                    livesRemaining: GameEngine.livesRemaining,
-                                                    totalScore: scoringEngine.scoringManager.totalScore + scoringEngine.scoringManager.score,
-                                                    uid: user.uid)
-
-                FIRManager.writeToFirestoreRecord(user: user, saveStateModel: saveStateModel)
-            }
+            saveState()
         }
     }
     
