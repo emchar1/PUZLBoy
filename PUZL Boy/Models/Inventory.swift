@@ -7,9 +7,13 @@
 
 import Foundation
 
-struct Inventory {
+struct Inventory: CustomStringConvertible, Codable {
     var hammers: Int
     var swords: Int
+    
+    var description: String {
+        return "Hammers: \(hammers), Swords: \(swords)"
+    }
     
     init(hammers: Int, swords: Int) {
         self.hammers = hammers

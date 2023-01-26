@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct LevelModel: CustomStringConvertible {
+struct LevelModel: CustomStringConvertible, Codable {
     let level: Int
     let moves: Int
     let health: Int

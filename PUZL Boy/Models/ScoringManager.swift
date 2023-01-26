@@ -17,7 +17,8 @@ class ScoringManager {
     
     // MARK: - Functions
     
-    init(totalScore: Int = 0) {
+    init(score: Int = 0, totalScore: Int = 0) {
+        self.score = score
         self.totalScore = totalScore
     }
     

@@ -21,7 +21,6 @@ class GameScene: SKScene {
 
     private var user: User?
     private var disableInput = false
-    private var pauseTimer = false
     private var adSprite = SKSpriteNode()
 
     private var currentLevel: Int = 1 {
@@ -41,10 +40,11 @@ class GameScene: SKScene {
     
     init(size: CGSize, user: User?, saveStateModel: SaveStateModel?) {
         if let saveStateModel = saveStateModel {
-            currentLevel = saveStateModel.level
-
-            gameEngine = GameEngine(level: currentLevel, livesRemaining: saveStateModel.livesRemaining, shouldSpawn: true)
-            scoringEngine = ScoringEngine(elapsedTime: saveStateModel.elapsedTime, totalScore: saveStateModel.totalScore)
+            currentLevel = saveStateModel.levelModel.level
+            gameEngine = GameEngine(saveStateModel: saveStateModel)
+            scoringEngine = ScoringEngine(elapsedTime: saveStateModel.elapsedTime,
+                                          score: saveStateModel.score,
+                                          totalScore: saveStateModel.totalScore)
         }
         else {
             gameEngine = GameEngine(level: currentLevel, shouldSpawn: true)
@@ -66,11 +66,6 @@ class GameScene: SKScene {
         AdMobManager.shared.delegate = self
         AudioManager.shared.playSound(for: AudioManager.shared.overworldTheme)
         
-        
-        
-        
-        
-        // TODO: - Game Pause notification
         let notificationCenter = NotificationCenter.default
         notificationCenter.addObserver(self, selector: #selector(appMovedToBackground), name: UIApplication.willResignActiveNotification, object: nil)
         notificationCenter.addObserver(self, selector: #selector(appMovedToForeground), name: UIApplication.didBecomeActiveNotification, object: nil)
@@ -82,7 +77,7 @@ class GameScene: SKScene {
     
     @objc private func appMovedToBackground() {
         scoringEngine.timerManager.pauseTime()
-        saveState()
+        saveState(didWin: false)
     }
     
     @objc private func appMovedToForeground() {
@@ -128,26 +123,35 @@ class GameScene: SKScene {
         let sequence = SKAction.sequence([wait, block])
         
         run(SKAction.repeatForever(sequence), withKey: "runTimerAction")
-        
-        pauseTimer = false
     }
     
     private func stopTimer() {
         removeAction(forKey: "runTimerAction")
         
         scoringEngine.updateLabels()
-        
-        pauseTimer = true
     }
     
-    private func saveState() {
-        if let user = user {
-            let saveStateModel = SaveStateModel(elapsedTime: scoringEngine.timerManager.elapsedTime,
-                                                saveDate: Date(),
-                                                level: currentLevel,
-                                                livesRemaining: GameEngine.livesRemaining,
-                                                totalScore: scoringEngine.scoringManager.totalScore + scoringEngine.scoringManager.score,
-                                                uid: user.uid)
+    private func saveState(didWin: Bool) {
+        if let user = user, LevelBuilder.maxLevel > 0 {
+            let levelModel = gameEngine.level.getLevelModel(
+                level: currentLevel,
+                movesRemaining: gameEngine.movesRemaining,
+                heathRemaining: gameEngine.healthRemaining)
+            
+            let saveStateModel = SaveStateModel(
+                saveDate: Date(),
+                elapsedTime: scoringEngine.timerManager.elapsedTime,
+                livesRemaining: GameEngine.livesRemaining,
+                usedContinue: GameEngine.usedContinue,
+                score: didWin ? 0 : scoringEngine.scoringManager.score,
+                totalScore: scoringEngine.scoringManager.totalScore + (didWin ? scoringEngine.scoringManager.score : 0),
+                gemsRemaining: gameEngine.gemsRemaining,
+                gemsCollected: gameEngine.gemsCollected,
+                winStreak: GameEngine.winStreak,
+                inventory: gameEngine.level.inventory,
+                playerPosition: PlayerPosition(row: gameEngine.level.player.row, col: gameEngine.level.player.col),
+                levelModel: levelModel,
+                uid: user.uid)
 
             FIRManager.writeToFirestoreRecord(user: user, saveStateModel: saveStateModel)
         }
@@ -213,18 +217,16 @@ class GameScene: SKScene {
     private func playDialogue() {
         //Only disable input on certain levels, i.e. the important ones w/ instructions.
         if chatEngine.shouldPauseGame(level: currentLevel) {
-            scoringEngine.timerManager.resetTime()
+            scoringEngine.timerManager.pauseTime()
             stopTimer()
             
             // FIXME: - Don't forget to set this to TRUE in production!!!!
-            disableInput = false
+            disableInput = true
         }
         
         chatEngine.dialogue(level: currentLevel) { [unowned self] in
-            if pauseTimer {
-                scoringEngine.timerManager.resetTime()
-                startTimer()
-            }
+            scoringEngine.timerManager.resumeTime()
+            startTimer()
 
             disableInput = false
         }
@@ -242,9 +244,9 @@ extension GameScene: GameEngineDelegate {
     
     func gameIsSolved(movesRemaining: Int, itemsFound: Int, enemiesKilled: Int, usedContinue: Bool) {
         let score = scoringEngine.calculateScore(movesRemaining: movesRemaining,
-                                              itemsFound: itemsFound,
-                                              enemiesKilled: enemiesKilled,
-                                              usedContinue: usedContinue)
+                                                 itemsFound: itemsFound,
+                                                 enemiesKilled: enemiesKilled,
+                                                 usedContinue: usedContinue)
         scoringEngine.animateScore(usedContinue: usedContinue)
         scoringEngine.updateLabels()
         gameEngine.updateScores()
@@ -268,7 +270,7 @@ extension GameScene: GameEngineDelegate {
             newGame(level: currentLevel, didWin: true)
 
             //Write to Firestore
-            saveState()
+            saveState(didWin: true)
         }
     }
     

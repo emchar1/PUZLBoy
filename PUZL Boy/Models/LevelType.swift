@@ -17,7 +17,8 @@ enum LevelType: Int, CaseIterable {
     case boulder, enemy, warp, warp2, warp3 //special panels
     
     var description: String {
-        return String(describing: self)
+        // FIXME: - Should boundary default to ""?
+        return self == .boundary ? "" : String(describing: self)
     }
     
     static func getLevelType(from string: String) -> LevelType {
@@ -38,7 +39,7 @@ enum LevelType: Int, CaseIterable {
         case "warp": return .warp
         case "warp2": return .warp2
         case "warp3": return .warp3
-        default: return .boundary //.boundary is a good way to ensure all types are accounted for here.
+        default: return .boundary //.boundary ensures all types are accounted for.
         }
     }
 }

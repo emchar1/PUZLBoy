@@ -21,8 +21,8 @@ class GameEngine {
     // MARK: - Properties
     
     private(set) static var livesRemaining: Int = 3
-    private static var usedContinue: Bool = false
-    private static var winStreak: Int = 0 {
+    private(set) static var usedContinue: Bool = false
+    private(set) static var winStreak: Int = 0 {
         didSet {
             switch winStreak {
             case 20: GameCenterManager.shared.updateProgress(achievement: .hotToTrot, shouldReportImmediately: true)
@@ -33,15 +33,15 @@ class GameEngine {
         }
     }
 
-    private var level: Level
-    private var gemsRemaining: Int
-    private var gemsCollected: Int = 0
-    private var healthRemaining: Int {
+    private(set) var level: Level
+    private(set) var gemsRemaining: Int
+    private(set) var gemsCollected: Int = 0
+    private(set) var healthRemaining: Int {
         didSet {
             healthRemaining = max(0, healthRemaining)
         }
     }
-    private var movesRemaining: Int {
+    private(set) var movesRemaining: Int {
         didSet {
             movesRemaining = max(0, movesRemaining)
         }
@@ -59,10 +59,10 @@ class GameEngine {
     private var isSolved: Bool { isExitAvailable && level.player == level.end }
     private var isGameOver: Bool { movesRemaining <= 0 || healthRemaining <= 0 }
     var canContinue: Bool { return GameEngine.livesRemaining >= 0 }
-    
-    private var gameboardSprite: GameboardSprite
-    private var playerSprite: PlayerSprite
-    private var displaySprite: DisplaySprite
+
+    private var gameboardSprite: GameboardSprite!
+    private var playerSprite: PlayerSprite!
+    private var displaySprite: DisplaySprite!
     
     weak var delegate: GameEngineDelegate?
     
@@ -75,7 +75,7 @@ class GameEngine {
         - level: The initial level to load
         - shouldSpawn: determines whether should fade gameboard, i.e. if shouldSpawn is false
      */
-    init(level: Int = 1, livesRemaining: Int = GameEngine.livesRemaining, shouldSpawn: Bool) {
+    init(level: Int = 1, shouldSpawn: Bool) {
         guard LevelBuilder.maxLevel > 0 else {
             fatalError("Firebase records were not loaded!🙀")
         }
@@ -84,8 +84,32 @@ class GameEngine {
         movesRemaining = self.level.moves
         healthRemaining = self.level.health
         gemsRemaining = self.level.gems
-        GameEngine.livesRemaining = livesRemaining
-
+        
+        finishInit(shouldSpawn: shouldSpawn)
+    }
+    
+    ///For when reading from Firestore.
+    init(saveStateModel: SaveStateModel) {
+        //last saved level state, funky I know
+        level = Level(level: saveStateModel.levelModel.level,
+                      moves: saveStateModel.levelModel.moves,
+                      health: saveStateModel.levelModel.health,
+                      gameboard: LevelBuilder.buildGameboard(levelModel: saveStateModel.levelModel))
+        
+        level.inventory = saveStateModel.inventory
+        level.updatePlayer(position: (row: saveStateModel.playerPosition.row, col: saveStateModel.playerPosition.col))
+        movesRemaining = saveStateModel.levelModel.moves
+        healthRemaining = saveStateModel.levelModel.health
+        gemsRemaining = saveStateModel.gemsRemaining
+        gemsCollected = saveStateModel.gemsCollected
+        GameEngine.livesRemaining = saveStateModel.livesRemaining
+        GameEngine.usedContinue = saveStateModel.usedContinue
+        GameEngine.winStreak = saveStateModel.winStreak
+        
+        finishInit(shouldSpawn: true)
+    }
+    
+    private func finishInit(shouldSpawn: Bool) {
         gameboardSprite = GameboardSprite(level: self.level)
         K.ScreenDimensions.topOfGameboard = gameboardSprite.yPosition + gameboardSprite.gameboardSize * GameboardSprite.spriteScale
         playerSprite = PlayerSprite(shouldSpawn: true)
@@ -165,7 +189,7 @@ class GameEngine {
             completion?()
         case .hammer:
             displaySprite.statusHammers.pulseImage()
-            playerSprite.inventory.hammers += 1
+            level.inventory.hammers += 1
             toolsCollected += 1
 
             setLabelsForDisplaySprite()
@@ -175,7 +199,7 @@ class GameEngine {
             completion?()
         case .sword:
             displaySprite.statusSwords.pulseImage()
-            playerSprite.inventory.swords += 1
+            level.inventory.swords += 1
             toolsCollected += 1
 
             setLabelsForDisplaySprite()
@@ -193,11 +217,11 @@ class GameEngine {
             AudioManager.shared.playSound(for: "pickupheart")
             completion?()
         case .boulder:
-            guard playerSprite.inventory.hammers > 0 else { return }
+            guard level.inventory.hammers > 0 else { return }
                         
             Haptics.shared.executeCustomPattern(pattern: .breakBoulder)
             bouldersBroken += 1
-            playerSprite.inventory.hammers -= 1
+            level.inventory.hammers -= 1
             playerSprite.startHammerAnimation(on: gameboardSprite, at: level.player) {
                 self.setLabelsForDisplaySprite()
                 self.consumeItem()
@@ -205,11 +229,11 @@ class GameEngine {
                 completion?()
             }
         case .enemy:
-            guard playerSprite.inventory.swords > 0 else { return }
+            guard level.inventory.swords > 0 else { return }
             
             Haptics.shared.executeCustomPattern(pattern: .killEnemy)
             enemiesKilled += 1
-            playerSprite.inventory.swords -= 1
+            level.inventory.swords -= 1
             playerSprite.startSwordAnimation(on: gameboardSprite, at: level.player) {
                 self.setLabelsForDisplaySprite()
                 self.consumeItem()
@@ -279,7 +303,7 @@ class GameEngine {
                                 lives: "\(GameEngine.livesRemaining)",
                                 moves: "\(movesRemaining)",
                                 health: "\(healthRemaining)",
-                                inventory: playerSprite.inventory)
+                                inventory: level.inventory)
     }
     
     
@@ -425,7 +449,7 @@ class GameEngine {
     private func checkPanelForPathway(position: K.GameboardPosition, direction: Controls) -> Bool {
         switch level.getLevelType(at: position) {
         case .boulder:
-            if playerSprite.inventory.hammers <= 0 {
+            if level.inventory.hammers <= 0 {
                 if shouldUpdateRemainingForBoulderIfIcy {
                     updateMovesRemaining()
                     shouldUpdateRemainingForBoulderIfIcy = false
@@ -442,7 +466,7 @@ class GameEngine {
                 return false
             }
         case .enemy:
-            if playerSprite.inventory.swords <= 0 {
+            if level.inventory.swords <= 0 {
                 if shouldUpdateRemainingForBoulderIfIcy {
                     updateMovesRemaining()
                     shouldUpdateRemainingForBoulderIfIcy = false
@@ -492,7 +516,7 @@ class GameEngine {
         
         if isSolved {
             AudioManager.shared.playSound(for: "winlevel")
-            delegate?.gameIsSolved(movesRemaining: movesRemaining, itemsFound: playerSprite.inventory.getItemCount(), enemiesKilled: enemiesKilled, usedContinue: GameEngine.usedContinue)
+            delegate?.gameIsSolved(movesRemaining: movesRemaining, itemsFound: level.inventory.getItemCount(), enemiesKilled: enemiesKilled, usedContinue: GameEngine.usedContinue)
             
             GameEngine.usedContinue = false
             GameEngine.winStreak += 1
@@ -536,7 +560,7 @@ class GameEngine {
 
         GameCenterManager.shared.updateProgress(achievement: .scavenger, increment: Double(toolsCollected), shouldReportImmediately: true)
         GameCenterManager.shared.updateProgress(achievement: .itemWielder, increment: Double(toolsCollected), shouldReportImmediately: true)
-        GameCenterManager.shared.updateProgress(achievement: .hoarder, increment: Double(playerSprite.inventory.getItemCount()),
+        GameCenterManager.shared.updateProgress(achievement: .hoarder, increment: Double(level.inventory.getItemCount()),
                                                 shouldReportImmediately: true)
         
         GameCenterManager.shared.updateProgress(achievement: .superEfficient, increment: Double(movesRemaining), shouldReportImmediately: true)
@@ -561,7 +585,7 @@ class GameEngine {
     
     func updateScores() {
         displaySprite.animateScores(movesScore: ScoringEngine.getMovesScore(from: movesRemaining),
-                                    inventoryScore: ScoringEngine.getItemsFoundScore(from: playerSprite.inventory.getItemCount()),
+                                    inventoryScore: ScoringEngine.getItemsFoundScore(from: level.inventory.getItemCount()),
                                     usedContinue: GameEngine.usedContinue)
     }
     

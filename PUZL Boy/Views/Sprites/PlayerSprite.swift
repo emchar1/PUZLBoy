@@ -15,7 +15,6 @@ class PlayerSprite {
     private let animationSpeed: TimeInterval = 0.04
     private var spriteScale = 0.5
     
-    var inventory: Inventory
     private(set) var sprite: SKSpriteNode
     private var playerAtlas: SKTextureAtlas
     private var playerTextures: [[SKTexture]]
@@ -51,7 +50,6 @@ class PlayerSprite {
     // MARK: - Initialization
     
     init(shouldSpawn: Bool) {
-        inventory = Inventory(hammers: 0, swords: 0)
         playerAtlas = SKTextureAtlas(named: "player")
         playerTextures = []
         playerTextures.append([]) //idle
@@ -314,14 +312,6 @@ class PlayerSprite {
     
     // MARK: - Getters & Setters
 
-    func hasHammers() -> Bool {
-        return inventory.hammers > 0
-    }
-
-    func hasSwords() -> Bool {
-        return inventory.swords > 0
-    }
-        
     func setScale(panelSize: CGFloat) {
         //Changed scale from 0.5 to 1 to 1.5 due to new hero width size from 313 to original 614 to new 946
         let scale: CGFloat = 1.5

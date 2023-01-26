@@ -28,11 +28,11 @@ class ScoringEngine {
     
     // MARK: - Initialization
     
-    init(elapsedTime: TimeInterval = 0, totalScore: Int = 0) {
+    init(elapsedTime: TimeInterval = 0, score: Int = 0, totalScore: Int = 0) {
         let padding: CGFloat = 40
         
         timerManager = TimerManager(elapsedTime: elapsedTime)
-        scoringManager = ScoringManager(totalScore: totalScore)
+        scoringManager = ScoringManager(score: score, totalScore: totalScore)
 
         totalScoreLabel = SKLabelNode()
         totalScoreLabel.fontName = UIFont.gameFont
@@ -62,7 +62,6 @@ class ScoringEngine {
         elapsedTimeLabel.verticalAlignmentMode = .bottom
         elapsedTimeLabel.zPosition = K.ZPosition.display
 
-        scoringManager.resetScore()
         updateLabels()
     }
     
