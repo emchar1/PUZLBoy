@@ -124,8 +124,7 @@ class Haptics {
         
         // The engine stopped; print out why
         engine?.stoppedHandler = { [unowned self] reason in
-            // FIXME: - This should work in resetHandler, but it's not starting the engine, so I put it here too. Is this correct???
-            startHapticEngine(shouldInitialize: false)
+             startHapticEngine(shouldInitialize: false)
         }
 
         // If something goes wrong, attempt to restart the engine immediately

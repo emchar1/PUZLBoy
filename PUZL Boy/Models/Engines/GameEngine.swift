@@ -47,7 +47,6 @@ class GameEngine {
         }
     }
     
-    // FIXME: - These properties seem to make the code messy...
     private var shouldDisableControlInput = false
     private var shouldUpdateRemainingForBoulderIfIcy = false
     private var isGliding = false
@@ -177,7 +176,6 @@ class GameEngine {
     /**
      Checks for a special panel.
      */
-    // FIXME: - Not sure if adding a completion here was the best idea??
     private func checkSpecialPanel(completion: (() -> ())?) {
         switch level.getLevelType(at: level.player) {
         case .gem:
