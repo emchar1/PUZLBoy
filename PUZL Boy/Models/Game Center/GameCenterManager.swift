@@ -30,9 +30,7 @@ final class GameCenterManager: NSObject {
         super.init()
         
         //Checks for authentication upon initialization
-        // FIXME: - Why is this getting called multiple times, when sending the app to background then back to foreground???
         GKLocalPlayer.local.authenticateHandler = { gcAuthVC, error in
-            print("FIXXXXXXXX MEEEEEEE!")
             NotificationCenter.default.post(name: .authenticationChanged, object: GKLocalPlayer.local.isAuthenticated)
             
             if GKLocalPlayer.local.isAuthenticated {
@@ -91,15 +89,6 @@ final class GameCenterManager: NSObject {
         gcvc.leaderboardIdentifier = getLeaderboardLevelID(level)
         gcvc.leaderboardTimeScope = .allTime
         gcvc.gameCenterDelegate = self
-
-//        // FIXME: - TEST ONLY
-//        GKLeaderboard.loadLeaderboards { leaderboards, error in
-//            if #available(iOS 14.0, *) {
-//                leaderboards?[level].loadEntries(for: [GKLocalPlayer.local], timeScope: .allTime) { localPlayer, leaderboardEntry, error in
-//                    print("Level \(level) High Score: \(localPlayer?.score ?? -99)")
-//                }
-//            }
-//        }
  
         viewController?.present(gcvc, animated: true)
     }
@@ -164,7 +153,6 @@ final class GameCenterManager: NSObject {
             guard error == nil else { return print("Error reporting achievements to Game Center: \(error!.localizedDescription)") }
             
             //handle stuff here
-            print("Achievements reported!")
         }
     }
     

@@ -113,7 +113,6 @@ class GameScene: SKScene {
     
     // MARK: - Helper Functions
     
-    // FIXME: - Is this the best way to represent a timer?
     private func startTimer() {
         let wait = SKAction.wait(forDuration: 1.0)
         let block = SKAction.run { [unowned self] in
@@ -195,7 +194,6 @@ class GameScene: SKScene {
         }
     }
     
-    // FIXME: - If continuing from game over (rewarded ad) timer should NOT reset, which it's doing right now...
     private func continueFromAd(completion: (() -> Void)?) {
         AudioManager.shared.raiseVolume(for: AudioManager.shared.overworldTheme, fadeDuration: 1.0)
 
