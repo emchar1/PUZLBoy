@@ -47,6 +47,7 @@ class GameEngine {
         }
     }
     
+    private var justStartedDisableWarp = true
     private var shouldDisableControlInput = false
     private var shouldUpdateRemainingForBoulderIfIcy = false
     private var isGliding = false
@@ -116,6 +117,7 @@ class GameEngine {
 
         setLabelsForDisplaySprite()
         setPlayerSpritePosition(shouldAnimate: false, completion: nil)
+        justStartedDisableWarp = false
         
         if !shouldSpawn {
             fadeGameboard(fadeOut: false, completion: nil)
@@ -240,7 +242,7 @@ class GameEngine {
                 completion?()
             }
         case .warp, .warp2, .warp3:
-            guard let newWarpLocation = gameboardSprite.warpTo(warpType: level.getLevelType(at: level.player), initialPosition: level.player) else {
+            guard !justStartedDisableWarp, let newWarpLocation = gameboardSprite.warpTo(warpType: level.getLevelType(at: level.player), initialPosition: level.player) else {
                 completion?()
                 return
             }
@@ -312,7 +314,7 @@ class GameEngine {
      - parameter location: Location for which comparison is to occur.
      */
     func handleControls(in location: CGPoint) {
-        guard !isGameOver else { return }
+        guard !isGameOver else { return print("Game is over... can't move") }
         guard !shouldDisableControlInput else { return }
 
         if inBounds(location: location, direction: .up) {
@@ -579,6 +581,17 @@ class GameEngine {
     ///Just what it says. It increments livesRemaining.
     func incrementLivesRemaining(lives: Int = 2) {
         GameEngine.livesRemaining += lives
+    }
+    
+    func setLivesRemaining(lives: Int) {
+        GameEngine.livesRemaining = lives
+    }
+    
+    func shouldPlayAdOnStartup() {
+        if !canContinue {
+            AudioManager.shared.stopSound(for: AudioManager.shared.overworldTheme)
+            delegate?.gameIsOver()
+        }
     }
     
     func updateScores() {

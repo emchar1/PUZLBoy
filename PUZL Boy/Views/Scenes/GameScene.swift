@@ -59,12 +59,14 @@ class GameScene: SKScene {
         
         super.init(size: size)
 
-        gameEngine.delegate = self
-        levelSkipEngine.delegate = self
-        scaleMode = .aspectFill
-
         AdMobManager.shared.delegate = self
         AudioManager.shared.playSound(for: AudioManager.shared.overworldTheme)
+
+        gameEngine.delegate = self
+        gameEngine.shouldPlayAdOnStartup()
+        
+        levelSkipEngine.delegate = self
+        scaleMode = .aspectFill
         
         let notificationCenter = NotificationCenter.default
         notificationCenter.addObserver(self, selector: #selector(appMovedToBackground), name: UIApplication.willResignActiveNotification, object: nil)
@@ -219,7 +221,7 @@ class GameScene: SKScene {
             stopTimer()
             
             // FIXME: - Don't forget to set this to TRUE in production!!!!
-            disableInput = true
+            disableInput = false
         }
         
         chatEngine.dialogue(level: currentLevel) { [unowned self] in
@@ -275,8 +277,8 @@ extension GameScene: GameEngineDelegate {
     func gameIsOver() {
         guard gameEngine.canContinue else {
             prepareAd {
-                AdMobManager.shared.presentRewarded { [unowned self] (adReward) in
-                    gameEngine.incrementLivesRemaining(lives: adReward.amount.intValue)
+                AdMobManager.shared.presentRewarded { (adReward) in
+                    // FIXME: - Why grant the reward here, when I can grant it in ad did dismiss down below???
                     print("You were rewarded: \(adReward.amount) lives!!!!!")
                 }
             }
@@ -370,6 +372,9 @@ extension GameScene: AdMobManagerDelegate {
     
     private func restartLevel() {
         continueFromAd { [unowned self] in
+            AudioManager.shared.playSound(for: "revive")
+            
+            gameEngine.setLivesRemaining(lives: 3)
             scoringEngine.scoringManager.resetScore()
             scoringEngine.updateLabels()
             newGame(level: currentLevel, didWin: false)

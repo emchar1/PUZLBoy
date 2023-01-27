@@ -347,13 +347,11 @@ extension ChatEngine {
                 return
             }
             
+            // TODO: - dialogue for continue
             sendChat(profile: .trainer, startNewChat: true, endChat: false,
-                     chat: "You win some, you lose some. Next time try to make it to the gate in fewer moves." ) { [unowned self] in
-                sendChat(profile: .hero, startNewChat: false, endChat: true,
-                         chat: "Man, what a bummer.") { [unowned self] in
-                    dialoguePlayed[level] = true
-                    completion?()
-                }
+                     chat: "Play again? WATCH AD / BUY CONTINUES / DO NOTHING" ) { [unowned self] in
+                dialoguePlayed[level] = true
+                completion?()
             }
         default:
             completion?()
