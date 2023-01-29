@@ -11,7 +11,7 @@ class DecisionButtonSprite: SKNode {
     
     // MARK: - Properties
     
-    let buttonSize = CGSize(width: 400, height: 100)
+    let buttonSize = CGSize(width: 400, height: 120)
     let shadowOffset = CGPoint(x: -8, y: 8)
     private(set) var sprite: SKShapeNode
     private var topSprite: SKShapeNode
