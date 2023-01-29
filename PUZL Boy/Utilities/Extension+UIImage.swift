@@ -12,12 +12,12 @@ extension UIImage {
     static let chatGradientTexture = UIImage.createGradientImage(startPoint: CGPoint(x: 0.5, y: 1), endPoint: CGPoint(x: 0.5, y: 0.5), topColorWhiteValue: 100, bottomColorWhiteValue: 200)
 
     ///Convenience method to createGradientImage(withBounds:startPoint:endPoint:colors)
-    static func createGradientImage(startPoint: CGPoint, endPoint: CGPoint, topColorWhiteValue: CGFloat, bottomColorWhiteValue: CGFloat) -> UIImage {
+    static func createGradientImage(startPoint: CGPoint, endPoint: CGPoint, topColorWhiteValue topValue: CGFloat, bottomColorWhiteValue bottomValue: CGFloat) -> UIImage {
         let image = UIImage.createGradientImage(
             withBounds: CGRect(x: 0, y: 0, width: K.ScreenDimensions.iPhoneWidth, height: K.ScreenDimensions.height),
             startPoint: startPoint, endPoint: endPoint,
-            colors: [UIColor(red: topColorWhiteValue / 255, green: topColorWhiteValue / 255, blue: topColorWhiteValue / 255, alpha: 1).cgColor,
-                     UIColor(red: bottomColorWhiteValue / 255, green: bottomColorWhiteValue / 255, blue: bottomColorWhiteValue / 255, alpha: 1).cgColor])
+            colors: [UIColor(red: topValue / 255, green: topValue / 255, blue: topValue / 255, alpha: 1).cgColor,
+                     UIColor(red: bottomValue / 255, green: bottomValue / 255, blue: bottomValue / 255, alpha: 1).cgColor])
         
         return image
     }
