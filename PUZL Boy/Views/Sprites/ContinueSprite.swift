@@ -19,8 +19,6 @@ class ContinueSprite: SKNode {
     static let extraLivesAd = 3
     static let extraLivesBuy = 25
     
-    let offset = CGPoint(x: K.ScreenDimensions.iPhoneWidth / 2, y: K.ScreenDimensions.height / 2)
-    
     private(set) var backgroundSprite: SKShapeNode
     private(set) var watchAdButton: DecisionButtonSprite
     private(set) var buyButton: DecisionButtonSprite
@@ -40,15 +38,15 @@ class ContinueSprite: SKNode {
         backgroundSprite.setScale(GameboardSprite.spriteScale)
         
         watchAdButton = DecisionButtonSprite(text: "Watch Ad: +3🚶🏻‍♂️", color: .systemBlue)
-        watchAdButton.position = CGPoint(x: -K.ScreenDimensions.iPhoneWidth / 4, y: 0)
+        watchAdButton.position = CGPoint(x: -K.ScreenDimensions.iPhoneWidth / 4, y: -K.ScreenDimensions.iPhoneWidth / 8)
         
         buyButton = DecisionButtonSprite(text: "Buy $0.99: +25🚶🏻‍♂️", color: .systemGreen)
-        buyButton.position = CGPoint(x: K.ScreenDimensions.iPhoneWidth / 4, y: 0)
+        buyButton.position = CGPoint(x: K.ScreenDimensions.iPhoneWidth / 4, y: -K.ScreenDimensions.iPhoneWidth / 8)
         
         super.init()
         
         setScale(0)
-        position = offset
+        position = CGPoint(x: K.ScreenDimensions.iPhoneWidth / 2, y: K.ScreenDimensions.height / 2)
         zPosition = K.ZPosition.messagePrompt
         
         addChild(backgroundSprite)
@@ -89,9 +87,10 @@ class ContinueSprite: SKNode {
     }
     
     private func inBounds(location: CGPoint, button: DecisionButtonSprite) -> Bool {
-        return (location.x >= offset.x + button.position.x - button.buttonSize.width / 2 &&
-                location.x <= offset.x + button.position.x + button.buttonSize.width / 2 &&
-                location.y >= offset.y + button.position.y - button.buttonSize.height / 2  &&
-                location.y <= offset.y + button.position.y + button.buttonSize.height / 2)
+        // FIXME: - Hit bounds are not exactly within the button...
+        return (location.x >= position.x + button.position.x /*+ button.shadowOffset.x*/ - button.buttonSize.width / 2 &&
+                location.x <= position.x + button.position.x /*+ button.shadowOffset.x*/ + button.buttonSize.width / 2 &&
+                location.y >= position.y + button.position.y + button.shadowOffset.y - button.buttonSize.height / 2 &&
+                location.y <= position.y + button.position.y + button.shadowOffset.y + button.buttonSize.height / 2)
     }
 }
