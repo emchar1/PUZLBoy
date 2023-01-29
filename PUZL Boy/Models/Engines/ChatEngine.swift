@@ -61,7 +61,6 @@ class ChatEngine {
         dialoguePlayed[13] = false
         dialoguePlayed[18] = false
         dialoguePlayed[23] = false
-        dialoguePlayed[-1] = false
         
         sprite = SKShapeNode()
         sprite.lineWidth = ChatEngine.chatBorderWidth
@@ -290,7 +289,7 @@ extension ChatEngine {
                 sendChat(profile: .trainer, startNewChat: false, endChat: false,
                          chat: "Once your health drops to 0, it's lights out, baby. If only you had a sword. 🗡") { [unowned self] in
                     sendChat(profile: .hero, startNewChat: false, endChat: false, chat: "Lemme guess, I can only use the sword once before it breaks?") { [unowned self] in
-                        sendChat(profile: .trainer, startNewChat: false, endChat: false,
+                        sendChat(profile: .trainer, startNewChat: false, endChat: true,
                                  chat: "B-I-N-G-O!!! Oh sorry, I was playing Bingo with my grandmother. Yep, one sword per dragon.") { [unowned self] in
                             dialoguePlayed[level] = true
                             completion?()
@@ -340,18 +339,6 @@ extension ChatEngine {
                         }
                     }
                 }
-            }
-        case -1: //Game Over
-            guard let dialoguePlayedCheck = dialoguePlayed[level], !dialoguePlayedCheck else {
-                completion?()
-                return
-            }
-            
-            // TODO: - dialogue for continue
-            sendChat(profile: .trainer, startNewChat: true, endChat: false,
-                     chat: "Play again? WATCH AD / BUY CONTINUES / DO NOTHING" ) { [unowned self] in
-                dialoguePlayed[level] = true
-                completion?()
             }
         default:
             completion?()

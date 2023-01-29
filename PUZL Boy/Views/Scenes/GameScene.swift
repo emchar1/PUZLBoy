@@ -16,15 +16,13 @@ class GameScene: SKScene {
     private var scoringEngine: ScoringEngine
     private var chatEngine: ChatEngine
     
-    // FIXME: - Debugging purposes only!!!
-    private var levelSkipEngine: LevelSkipEngine
-
-    private var user: User?
-    private var disableInput = false
+    private var continueSprite = ContinueSprite()
     private var adSprite = SKSpriteNode()
+    private var user: User?
+    private let keyRunTimerAction = "runTimerAction"
 
     private var currentLevel: Int = 1 {
-        // FIXME: - Delete once debugging is done!
+        // FIXME: - Debuging purposes only!!!
         didSet {
             if currentLevel > LevelBuilder.maxLevel {
                 currentLevel = 0
@@ -34,6 +32,9 @@ class GameScene: SKScene {
             }
         }
     }
+    
+    // FIXME: - Debugging purposes only!!!
+    private var levelSkipEngine: LevelSkipEngine
     
     
     // MARK: - Initialization
@@ -51,6 +52,7 @@ class GameScene: SKScene {
             scoringEngine = ScoringEngine()
         }
         
+        //chatEngine MUST be initialized here, and not in properties, otherwise it just refuses to show up!
         chatEngine = ChatEngine()
         self.user = user
 
@@ -63,9 +65,11 @@ class GameScene: SKScene {
         AudioManager.shared.playSound(for: AudioManager.shared.overworldTheme)
 
         gameEngine.delegate = self
-        gameEngine.shouldPlayAdOnStartup()
-        
+        continueSprite.delegate = self
+
+        // FIXME: - Debuging purposes only!!!
         levelSkipEngine.delegate = self
+        
         scaleMode = .aspectFill
         
         let notificationCenter = NotificationCenter.default
@@ -78,13 +82,20 @@ class GameScene: SKScene {
     }
     
     @objc private func appMovedToBackground() {
-        scoringEngine.timerManager.pauseTime()
+        if action(forKey: keyRunTimerAction) != nil {
+            //Only pause/resume time if there's an active timer going, i.e. timer is started!
+            scoringEngine.timerManager.pauseTime()
+        }
+
         saveState(didWin: false)
     }
     
     @objc private func appMovedToForeground() {
-        scoringEngine.timerManager.resumeTime()
+        if action(forKey: keyRunTimerAction) != nil {
+            scoringEngine.timerManager.resumeTime()
+        }
     }
+    
     
     // MARK: - UI Touches
 
@@ -92,10 +103,10 @@ class GameScene: SKScene {
         guard let location = touches.first?.location(in: self) else { return }
 
         chatEngine.fastForward(in: location)
-
-        guard !disableInput else { return }
-
+        continueSprite.didTapButton(in: location)
         gameEngine.handleControls(in: location)
+        
+        // FIXME: - Debuging purposes only!!!
         levelSkipEngine.handleControls(in: location)
     }
     
@@ -103,9 +114,12 @@ class GameScene: SKScene {
     // MARK: - Required Functions
     
     override func didMove(to view: SKView) {
+        print("GameScene.didMove() called.")
         moveSprites()
         startTimer()
         playDialogue()
+        
+        gameEngine.shouldPlayAdOnStartup()
     }
     
     override func update(_ currentTime: TimeInterval) {
@@ -116,6 +130,7 @@ class GameScene: SKScene {
     // MARK: - Helper Functions
     
     private func startTimer() {
+        print("GameScene.startTimer() called!")
         let wait = SKAction.wait(forDuration: 1.0)
         let block = SKAction.run { [unowned self] in
             scoringEngine.timerManager.pollTime()
@@ -123,39 +138,40 @@ class GameScene: SKScene {
         }
         let sequence = SKAction.sequence([wait, block])
         
-        run(SKAction.repeatForever(sequence), withKey: "runTimerAction")
+        run(SKAction.repeatForever(sequence), withKey: keyRunTimerAction)
     }
     
     private func stopTimer() {
-        removeAction(forKey: "runTimerAction")
-        
+        print("GameScene.stopTimer() called!")
+        removeAction(forKey: keyRunTimerAction)
+                
         scoringEngine.updateLabels()
     }
     
     private func saveState(didWin: Bool) {
-        if let user = user, LevelBuilder.maxLevel > 0 {
-            let levelModel = gameEngine.level.getLevelModel(
-                level: currentLevel,
-                movesRemaining: gameEngine.movesRemaining,
-                heathRemaining: gameEngine.healthRemaining)
-            
-            let saveStateModel = SaveStateModel(
-                saveDate: Date(),
-                elapsedTime: scoringEngine.timerManager.elapsedTime,
-                livesRemaining: GameEngine.livesRemaining,
-                usedContinue: GameEngine.usedContinue,
-                score: didWin ? 0 : scoringEngine.scoringManager.score,
-                totalScore: scoringEngine.scoringManager.totalScore + (didWin ? scoringEngine.scoringManager.score : 0),
-                gemsRemaining: gameEngine.gemsRemaining,
-                gemsCollected: gameEngine.gemsCollected,
-                winStreak: GameEngine.winStreak,
-                inventory: gameEngine.level.inventory,
-                playerPosition: PlayerPosition(row: gameEngine.level.player.row, col: gameEngine.level.player.col),
-                levelModel: levelModel,
-                uid: user.uid)
-
-            FIRManager.writeToFirestoreRecord(user: user, saveStateModel: saveStateModel)
-        }
+        guard let user = user, LevelBuilder.maxLevel > 0 else { return }
+        
+        let levelModel = gameEngine.level.getLevelModel(
+            level: currentLevel,
+            movesRemaining: gameEngine.movesRemaining,
+            heathRemaining: gameEngine.healthRemaining)
+        
+        let saveStateModel = SaveStateModel(
+            saveDate: Date(),
+            elapsedTime: scoringEngine.timerManager.elapsedTime,
+            livesRemaining: GameEngine.livesRemaining,
+            usedContinue: GameEngine.usedContinue,
+            score: didWin ? 0 : scoringEngine.scoringManager.score,
+            totalScore: scoringEngine.scoringManager.totalScore + (didWin ? scoringEngine.scoringManager.score : 0),
+            gemsRemaining: gameEngine.gemsRemaining,
+            gemsCollected: gameEngine.gemsCollected,
+            winStreak: GameEngine.winStreak,
+            inventory: gameEngine.level.inventory,
+            playerPosition: PlayerPosition(row: gameEngine.level.player.row, col: gameEngine.level.player.col),
+            levelModel: levelModel,
+            uid: user.uid)
+        
+        FIRManager.writeToFirestoreRecord(user: user, saveStateModel: saveStateModel)
     }
     
     private func newGame(level: Int, didWin: Bool) {
@@ -180,16 +196,17 @@ class GameScene: SKScene {
     }
     
     private func prepareAd(completion: (() -> Void)?) {
+        AudioManager.shared.lowerVolume(for: AudioManager.shared.overworldTheme, fadeDuration: 1.0)
+
         adSprite = SKSpriteNode(color: .clear,
                                 size: CGSize(width: K.ScreenDimensions.iPhoneWidth, height: K.ScreenDimensions.height))
         adSprite.anchorPoint = .zero
         adSprite.zPosition = K.ZPosition.adScene
-
         addChild(adSprite)
 
+        scoringEngine.timerManager.pauseTime()
         stopTimer()
-        disableInput = true
-        AudioManager.shared.lowerVolume(for: AudioManager.shared.overworldTheme, fadeDuration: 1.0)
+        gameEngine.shouldDisableInput(true)
 
         adSprite.run(SKAction.colorize(with: .black, colorBlendFactor: 1.0, duration: 1.0)) {
             completion?()
@@ -200,8 +217,11 @@ class GameScene: SKScene {
         AudioManager.shared.raiseVolume(for: AudioManager.shared.overworldTheme, fadeDuration: 1.0)
 
         adSprite.run(SKAction.colorize(with: .clear, colorBlendFactor: 1.0, duration: 1.0)) { [unowned self] in
-            disableInput = false
             adSprite.removeFromParent()
+
+            scoringEngine.timerManager.resumeTime()
+            startTimer()
+            gameEngine.shouldDisableInput(false)
 
             completion?()
         }
@@ -211,24 +231,23 @@ class GameScene: SKScene {
         gameEngine.moveSprites(to: self)
         scoringEngine.moveSprites(to: self)
         chatEngine.moveSprites(to: self)
+        
+        // FIXME: - Debuging purposes only!!!
         levelSkipEngine.moveSprites(to: self)
     }
     
     private func playDialogue() {
         //Only disable input on certain levels, i.e. the important ones w/ instructions.
-        if chatEngine.shouldPauseGame(level: currentLevel) {
-            scoringEngine.timerManager.pauseTime()
-            stopTimer()
-            
-            // FIXME: - Don't forget to set this to TRUE in production!!!!
-            disableInput = false
-        }
+        guard chatEngine.shouldPauseGame(level: currentLevel) else { return }
+        
+        scoringEngine.timerManager.pauseTime()
+        stopTimer()
+        gameEngine.shouldDisableInput(true)
         
         chatEngine.dialogue(level: currentLevel) { [unowned self] in
             scoringEngine.timerManager.resumeTime()
             startTimer()
-
-            disableInput = false
+            gameEngine.shouldDisableInput(false)
         }
     }
 }
@@ -248,9 +267,8 @@ extension GameScene: GameEngineDelegate {
                                                  enemiesKilled: enemiesKilled,
                                                  usedContinue: usedContinue)
         scoringEngine.animateScore(usedContinue: usedContinue)
-        scoringEngine.updateLabels()
         gameEngine.updateScores()
-        removeAction(forKey: "runTimerAction")
+        stopTimer()
 
         GameCenterManager.shared.postScoreToLeaderboard(score: score, level: currentLevel)
         
@@ -275,32 +293,20 @@ extension GameScene: GameEngineDelegate {
     }
     
     func gameIsOver() {
-        guard gameEngine.canContinue else {
-            prepareAd {
-                AdMobManager.shared.presentRewarded { (adReward) in
-                    // FIXME: - Why grant the reward here, when I can grant it in ad did dismiss down below???
-                    print("You were rewarded: \(adReward.amount) lives!!!!!")
-                }
+        if !gameEngine.canContinue {
+            prepareAd { [unowned self] in
+                addChild(continueSprite)
+                continueSprite.animateShow {}
             }
-            
-//            let continueScene = ContinueScene(size: K.ScreenDimensions.screenSize)
-//            removeAllChildren()
-            return
         }
-        
-        
-        
-        
-//        chatEngine.dialogue(level: -1) { [unowned self] in
+        else {
             scoringEngine.scoringManager.resetScore()
             scoringEngine.updateLabels()
             newGame(level: currentLevel, didWin: false)
-//        }
-        
-        
-        
-        
+        }
     }
+    
+    
 }
 
 
@@ -345,7 +351,7 @@ extension GameScene: AdMobManagerDelegate {
     }
     
     func interstitialFailed() {
-        resumeGame()
+        print("Interstitial failed. Now what...")
     }
     
     private func resumeGame() {
@@ -367,19 +373,40 @@ extension GameScene: AdMobManagerDelegate {
     }
     
     func rewardedFailed() {
-        restartLevel()
+        print("Reward failed. Now what...")
     }
     
     private func restartLevel() {
-        continueFromAd { [unowned self] in
-            AudioManager.shared.playSound(for: "revive")
+        continueSprite.animateHide { [unowned self] in
+            continueFromAd { [unowned self] in
+                AudioManager.shared.playSound(for: "revive")
             
-            gameEngine.setLivesRemaining(lives: 3)
-            scoringEngine.scoringManager.resetScore()
-            scoringEngine.updateLabels()
-            newGame(level: currentLevel, didWin: false)
+                gameEngine.setLivesRemaining(lives: 3)
+                scoringEngine.scoringManager.resetScore()
+                scoringEngine.updateLabels()
+                newGame(level: currentLevel, didWin: false)
+                saveState(didWin: false)
+                
+                continueSprite.removeFromParent()
+            }
         }
     }
     
     
+}
+
+
+// MARK: - ContinueSpriteDelegate
+
+extension GameScene: ContinueSpriteDelegate {
+    func didTapWatchAd() {
+        AdMobManager.shared.presentRewarded { (adReward) in
+            // FIXME: - Why grant the reward here, when I can grant it in ad did dismiss down below???
+            print("You were rewarded: \(adReward.amount) lives!!!!!")
+        }
+    }
+    
+    func didTapBuyButton() {
+        print("Needs implementation")
+    }
 }

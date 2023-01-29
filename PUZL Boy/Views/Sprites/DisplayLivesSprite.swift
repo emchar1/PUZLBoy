@@ -52,7 +52,6 @@ class DisplayLivesSprite: SKNode {
         self.amount = newAmount
         
         textNode.text = "x\(max(newAmount, 0))"
-        textNode.fontColor = self.amount < 0 ? UIFont.gameFontColorOutOfTime : UIFont.gameFontColor
     }
     
     func appendNode(_ node: SKNode) {

@@ -47,6 +47,7 @@ class GameEngine {
         }
     }
     
+    private var disableInputFromOutside = false
     private var justStartedDisableWarp = true
     private var shouldDisableControlInput = false
     private var shouldUpdateRemainingForBoulderIfIcy = false
@@ -314,8 +315,9 @@ class GameEngine {
      - parameter location: Location for which comparison is to occur.
      */
     func handleControls(in location: CGPoint) {
-        guard !isGameOver else { return print("Game is over... can't move") }
+        guard !isGameOver else { return }
         guard !shouldDisableControlInput else { return }
+        guard !disableInputFromOutside else { return }
 
         if inBounds(location: location, direction: .up) {
             movePlayerHelper(direction: .up)
@@ -589,6 +591,7 @@ class GameEngine {
     
     func shouldPlayAdOnStartup() {
         if !canContinue {
+            print("Can't continue from GameEngine.shouldPlayAdOnStartup()... running delegate?.gameIsOver()...")
             AudioManager.shared.stopSound(for: AudioManager.shared.overworldTheme)
             delegate?.gameIsOver()
         }
@@ -598,6 +601,10 @@ class GameEngine {
         displaySprite.animateScores(movesScore: ScoringEngine.getMovesScore(from: movesRemaining),
                                     inventoryScore: ScoringEngine.getItemsFoundScore(from: level.inventory.getItemCount()),
                                     usedContinue: GameEngine.usedContinue)
+    }
+    
+    func shouldDisableInput(_ disableInput: Bool) {
+        disableInputFromOutside = disableInput
     }
     
     /**
