@@ -31,17 +31,10 @@ class ContinueSprite: SKNode {
     // MARK: - Initialization
     
     override init() {
-        let gradient: UIImage = UIImage.gradientImage(
-            withBounds: CGRect(x: 0, y: 0, width: K.ScreenDimensions.iPhoneWidth, height: K.ScreenDimensions.height),
-            startPoint: CGPoint(x: 0.5, y: 1),
-            endPoint: CGPoint(x: 0.5, y: 0.5),
-            colors: [UIColor(red: 100 / 255, green: 100 / 255, blue: 100 / 255, alpha: 1).cgColor,
-                     UIColor(red: 200 / 255, green: 200 / 255, blue: 200 / 255, alpha: 1).cgColor])
-        
         backgroundSprite = SKShapeNode(rectOf: CGSize(width: K.ScreenDimensions.iPhoneWidth, height: K.ScreenDimensions.iPhoneWidth / 2),
                                        cornerRadius: 20)
         backgroundSprite.fillColor = .systemGray
-        backgroundSprite.fillTexture = SKTexture(image: gradient)
+        backgroundSprite.fillTexture = SKTexture(image: UIImage.chatGradientTexture)
         backgroundSprite.lineWidth = 12
         backgroundSprite.strokeColor = .white
         backgroundSprite.setScale(GameboardSprite.spriteScale)

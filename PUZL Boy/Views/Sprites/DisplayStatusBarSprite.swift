@@ -31,15 +31,9 @@ class DisplayStatusBarSprite: SKNode {
 
         super.init()
         
-        let gradient: UIImage = UIImage.gradientImage(withBounds: CGRect(x: 0, y: 0,
-                                                                         width: K.ScreenDimensions.iPhoneWidth,
-                                                                         height: K.ScreenDimensions.height),
-                                                      startPoint: CGPoint(x: 0.5, y: 0.5),
-                                                      endPoint: CGPoint(x: 0.5, y: 1),
-                                                      colors: [UIColor(red: 150 / 255, green: 150 / 255, blue: 150 / 255, alpha: 1).cgColor,
-                                                               UIColor(red: 200 / 255, green: 200 / 255, blue: 200 / 255, alpha: 1).cgColor])
+        let customGradient: UIImage = UIImage.createGradientImage(startPoint: CGPoint(x: 0.5, y: 0.5), endPoint: CGPoint(x: 0.5, y: 1), topColorWhiteValue: 150, bottomColorWhiteValue: 200)
         
-        backgroundBar.fillTexture = SKTexture(image: gradient)
+        backgroundBar.fillTexture = SKTexture(image: customGradient)
         backgroundBar.fillColor = fillColor
         backgroundBar.lineWidth = 3
         backgroundBar.strokeColor = .white

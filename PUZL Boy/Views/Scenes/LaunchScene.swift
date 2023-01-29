@@ -122,12 +122,12 @@ class LaunchScene: SKScene {
     // MARK: - Functions
     
     override func didMove(to view: SKView) {
-        let skyImage: UIImage = UIImage.gradientImage(withBounds: CGRect(x: 0, y: 0, width: K.ScreenDimensions.iPhoneWidth, height: K.ScreenDimensions.height), startPoint: CGPoint(x: 0.5, y: 0), endPoint: CGPoint(x: 0.5, y: 0.5), colors: [DayTheme.skyColor.top.cgColor, DayTheme.skyColor.bottom.cgColor])
+        let skyImage: UIImage = UIImage.createGradientImage(withBounds: CGRect(x: 0, y: 0, width: K.ScreenDimensions.iPhoneWidth, height: K.ScreenDimensions.height), startPoint: CGPoint(x: 0.5, y: 0), endPoint: CGPoint(x: 0.5, y: 0.5), colors: [DayTheme.skyColor.top.cgColor, DayTheme.skyColor.bottom.cgColor])
         let skyNode = SKSpriteNode(texture: SKTexture(image: skyImage))
         skyNode.anchorPoint = .zero
         skyNode.zPosition = K.ZPosition.skyNode
         
-        let grassImage: UIImage = UIImage.gradientImage(withBounds: CGRect(x: 0, y: 0, width: K.ScreenDimensions.iPhoneWidth, height: K.ScreenDimensions.height / mountainSprite.backgroundBorder), startPoint: CGPoint(x: 0.5, y: 0), endPoint: CGPoint(x: 0.5, y: 1), colors: [DayTheme.grassColor.top.cgColor, DayTheme.grassColor.bottom.cgColor])
+        let grassImage: UIImage = UIImage.createGradientImage(withBounds: CGRect(x: 0, y: 0, width: K.ScreenDimensions.iPhoneWidth, height: K.ScreenDimensions.height / mountainSprite.backgroundBorder), startPoint: CGPoint(x: 0.5, y: 0), endPoint: CGPoint(x: 0.5, y: 1), colors: [DayTheme.grassColor.top.cgColor, DayTheme.grassColor.bottom.cgColor])
         let grassNode = SKSpriteNode(texture: SKTexture(image: grassImage))
         grassNode.color = DayTheme.spriteColor
         grassNode.colorBlendFactor = DayTheme.spriteShade
