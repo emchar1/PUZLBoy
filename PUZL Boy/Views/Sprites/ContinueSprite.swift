@@ -19,7 +19,6 @@ class ContinueSprite: SKNode {
     static let extraLivesAd = 3
     static let extraLivesBuy = 25
     
-    private var disableInputFromOutside = false
     private(set) var backgroundSprite: SKShapeNode
     private(set) var watchAdButton: DecisionButtonSprite
     private(set) var buyButton: DecisionButtonSprite
@@ -40,9 +39,11 @@ class ContinueSprite: SKNode {
         
         watchAdButton = DecisionButtonSprite(text: "Watch Ad: +3🚶🏻‍♂️", color: .systemBlue)
         watchAdButton.position = CGPoint(x: -K.ScreenDimensions.iPhoneWidth / 4, y: -K.ScreenDimensions.iPhoneWidth / 8)
+        watchAdButton.name = "watchAdButton"
         
         buyButton = DecisionButtonSprite(text: "Buy $0.99: +25🚶🏻‍♂️", color: .systemGreen)
         buyButton.position = CGPoint(x: K.ScreenDimensions.iPhoneWidth / 4, y: -K.ScreenDimensions.iPhoneWidth / 8)
+        buyButton.name = "buyButton"
         
         super.init()
         
@@ -90,28 +91,28 @@ class ContinueSprite: SKNode {
         run(SKAction.scale(to: 0, duration: 0.25), completion: completion)
     }
     
-    func shouldDisableInput(_ disableInput: Bool) {
-        disableInputFromOutside = disableInput
-    }
-    
-    func didTapButton(in location: CGPoint) {
-        guard !disableInputFromOutside else { return print("ContinueSprite controls diabled.") }
+    func didTapButton(_ touches: Set<UITouch>) {
+        guard let touch = touches.first else { return print("Error capturing touch in ContinueSprite.didTapButton") }
         
-        if inBounds(location: location, button: watchAdButton) {
-            watchAdButton.tapButton()
-            delegate?.didTapWatchAd()
-        }
-        else if inBounds(location: location, button: buyButton) {
-            buyButton.tapButton()
-            delegate?.didTapBuyButton()
+        let location = touch.location(in: self)
+        let nodes = self.nodes(at: location)
+        
+        for node in nodes {
+            if node.name == "watchAdButton" {
+                watchAdButton.tapButton()
+                delegate?.didTapWatchAd()
+                return
+            }
+            else if node.name == "buyButton" {
+                buyButton.tapButton()
+                delegate?.didTapBuyButton()
+                return
+            }
+            else {
+                print("Nothing tapped....")
+            }
         }
     }
     
-    private func inBounds(location: CGPoint, button: DecisionButtonSprite) -> Bool {
-        // FIXME: - Hit bounds are not exactly within the button...
-        return (location.x >= position.x + button.position.x /*+ button.shadowOffset.x*/ - button.buttonSize.width / 2 &&
-                location.x <= position.x + button.position.x /*+ button.shadowOffset.x*/ + button.buttonSize.width / 2 &&
-                location.y >= position.y + button.position.y + button.shadowOffset.y - button.buttonSize.height / 2 &&
-                location.y <= position.y + button.position.y + button.shadowOffset.y + button.buttonSize.height / 2)
-    }
+    
 }

@@ -66,7 +66,6 @@ class GameScene: SKScene {
 
         gameEngine.delegate = self
         continueSprite.delegate = self
-        continueSprite.shouldDisableInput(true)
 
         // FIXME: - Debuging purposes only!!!
         levelSkipEngine.delegate = self
@@ -104,7 +103,7 @@ class GameScene: SKScene {
         guard let location = touches.first?.location(in: self) else { return }
 
         chatEngine.fastForward(in: location)
-        continueSprite.didTapButton(in: location)
+        continueSprite.didTapButton(touches)
         gameEngine.handleControls(in: location)
         
         // FIXME: - Debuging purposes only!!!
@@ -302,9 +301,7 @@ extension GameScene: GameEngineDelegate {
         if !gameEngine.canContinue {
             prepareAd { [unowned self] in
                 addChild(continueSprite)
-                continueSprite.animateShow { [unowned self] in
-                    continueSprite.shouldDisableInput(false)
-                }
+                continueSprite.animateShow {}
             }
         }
         else {
@@ -364,7 +361,6 @@ extension GameScene: AdMobManagerDelegate {
     
     private func resumeGame() {
         continueFromAd { [unowned self] in
-            continueSprite.shouldDisableInput(true)
             scoringEngine.timerManager.resetTime()
             startTimer()
         }
@@ -390,13 +386,12 @@ extension GameScene: AdMobManagerDelegate {
             continueFromAd { [unowned self] in
                 AudioManager.shared.playSound(for: "revive")
             
-                gameEngine.setLivesRemaining(lives: 3)
+                gameEngine.setLivesRemaining(lives: ContinueSprite.extraLivesAd)
                 scoringEngine.scoringManager.resetScore()
                 scoringEngine.updateLabels()
                 newGame(level: currentLevel, didWin: false)
                 saveState(didWin: false)
                 
-                continueSprite.shouldDisableInput(true)
                 continueSprite.removeFromParent()
             }
         }
