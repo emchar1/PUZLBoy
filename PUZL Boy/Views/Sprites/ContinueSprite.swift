@@ -45,11 +45,25 @@ class ContinueSprite: SKNode {
         
         super.init()
         
+        let continueLabel = SKLabelNode(text: "CONTINUE?")
+        continueLabel.fontName = UIFont.gameFont
+        continueLabel.fontSize = UIFont.gameFontSizeMedium
+        continueLabel.fontColor = UIFont.gameFontColor
+        continueLabel.position = CGPoint(x: 0, y: K.ScreenDimensions.iPhoneWidth / 4 - 80)
+        
+        let livesRefreshLabel = SKLabelNode(text: "...or wait for 5 lives in: 03:00")
+        livesRefreshLabel.fontName = UIFont.chatFont
+        livesRefreshLabel.fontSize = UIFont.chatFontSize
+        livesRefreshLabel.fontColor = UIFont.chatFontColor
+        livesRefreshLabel.position = CGPoint(x: 0, y: continueLabel.position.y - 100)
+        
         setScale(0)
         position = CGPoint(x: K.ScreenDimensions.iPhoneWidth / 2, y: K.ScreenDimensions.height / 2)
         zPosition = K.ZPosition.messagePrompt
         
         addChild(backgroundSprite)
+        backgroundSprite.addChild(continueLabel)
+        backgroundSprite.addChild(livesRefreshLabel)
         backgroundSprite.addChild(watchAdButton)
         backgroundSprite.addChild(buyButton)
     }

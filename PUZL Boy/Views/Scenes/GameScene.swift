@@ -237,6 +237,11 @@ class GameScene: SKScene {
     }
     
     private func playDialogue() {
+        // FIXME: - Turning off temporarily
+        return
+        
+        
+        
         //Only disable input on certain levels, i.e. the important ones w/ instructions.
         guard chatEngine.shouldPauseGame(level: currentLevel) else { return }
         
