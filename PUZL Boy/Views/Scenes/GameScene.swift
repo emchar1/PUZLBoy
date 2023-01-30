@@ -103,8 +103,8 @@ class GameScene: SKScene {
         guard let location = touches.first?.location(in: self) else { return }
 
         chatEngine.fastForward(in: location)
-        continueSprite.didTapButton(touches)
         gameEngine.handleControls(in: location)
+        continueSprite.didTapButton(touches)
         
         // FIXME: - Debuging purposes only!!!
         levelSkipEngine.handleControls(in: location)
