@@ -19,6 +19,7 @@ class ContinueSprite: SKNode {
     static let extraLivesAd = 3
     static let extraLivesBuy = 25
     
+    private var disableInputFromOutside = false
     private(set) var backgroundSprite: SKShapeNode
     private(set) var watchAdButton: DecisionButtonSprite
     private(set) var buyButton: DecisionButtonSprite
@@ -89,7 +90,13 @@ class ContinueSprite: SKNode {
         run(SKAction.scale(to: 0, duration: 0.25), completion: completion)
     }
     
+    func shouldDisableInput(_ disableInput: Bool) {
+        disableInputFromOutside = disableInput
+    }
+    
     func didTapButton(in location: CGPoint) {
+        guard !disableInputFromOutside else { return print("ContinueSprite controls diabled.") }
+        
         if inBounds(location: location, button: watchAdButton) {
             watchAdButton.tapButton()
             delegate?.didTapWatchAd()

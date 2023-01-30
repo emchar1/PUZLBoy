@@ -66,6 +66,7 @@ class GameScene: SKScene {
 
         gameEngine.delegate = self
         continueSprite.delegate = self
+        continueSprite.shouldDisableInput(true)
 
         // FIXME: - Debuging purposes only!!!
         levelSkipEngine.delegate = self
@@ -301,7 +302,9 @@ extension GameScene: GameEngineDelegate {
         if !gameEngine.canContinue {
             prepareAd { [unowned self] in
                 addChild(continueSprite)
-                continueSprite.animateShow {}
+                continueSprite.animateShow { [unowned self] in
+                    continueSprite.shouldDisableInput(false)
+                }
             }
         }
         else {
@@ -361,6 +364,7 @@ extension GameScene: AdMobManagerDelegate {
     
     private func resumeGame() {
         continueFromAd { [unowned self] in
+            continueSprite.shouldDisableInput(true)
             scoringEngine.timerManager.resetTime()
             startTimer()
         }
@@ -392,6 +396,7 @@ extension GameScene: AdMobManagerDelegate {
                 newGame(level: currentLevel, didWin: false)
                 saveState(didWin: false)
                 
+                continueSprite.shouldDisableInput(true)
                 continueSprite.removeFromParent()
             }
         }
