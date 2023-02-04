@@ -53,6 +53,9 @@ class DecisionButtonSprite: SKNode {
         topSprite.position = .zero
         
         topSprite.run(SKAction.move(to: shadowOffset, duration: 0.25))
+        
+        AudioManager.shared.playSound(for: "buttontap")
+        Haptics.shared.addHapticFeedback(withStyle: .soft)
     }
     
     required init?(coder aDecoder: NSCoder) {

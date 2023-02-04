@@ -7,6 +7,7 @@
 
 import SpriteKit
 import FirebaseAuth
+import StoreKit
 
 class GameScene: SKScene {
     
@@ -17,7 +18,9 @@ class GameScene: SKScene {
     private var chatEngine: ChatEngine
     
     private var continueSprite = ContinueSprite()
+    private var activityIndicator = ActivityIndicatorSprite()
     private var adSprite = SKSpriteNode()
+    private var purchasedProducts: [SKProduct] = []
     private var user: User?
     private let keyRunTimerAction = "runTimerAction"
 
@@ -63,6 +66,12 @@ class GameScene: SKScene {
 
         AdMobManager.shared.delegate = self
         AudioManager.shared.playSound(for: AudioManager.shared.overworldTheme)
+        
+        IAPManager.shared.delegate = self
+        IAPManager.shared.requestProducts { success, products in
+            guard success else { return }
+            self.purchasedProducts = products!
+        }
 
         gameEngine.delegate = self
         continueSprite.delegate = self
@@ -237,23 +246,18 @@ class GameScene: SKScene {
     }
     
     private func playDialogue() {
-        // FIXME: - Turning off temporarily
-        return
-        
-        
-        
-        //Only disable input on certain levels, i.e. the important ones w/ instructions.
-        guard chatEngine.shouldPauseGame(level: currentLevel) else { return }
-        
-        scoringEngine.timerManager.pauseTime()
-        stopTimer()
-        gameEngine.shouldDisableInput(true)
-        
-        chatEngine.dialogue(level: currentLevel) { [unowned self] in
-            scoringEngine.timerManager.resumeTime()
-            startTimer()
-            gameEngine.shouldDisableInput(false)
-        }
+//        //Only disable input on certain levels, i.e. the important ones w/ instructions.
+//        guard chatEngine.shouldPauseGame(level: currentLevel) else { return }
+//        
+//        scoringEngine.timerManager.pauseTime()
+//        stopTimer()
+//        gameEngine.shouldDisableInput(true)
+//        
+//        chatEngine.dialogue(level: currentLevel) { [unowned self] in
+//            scoringEngine.timerManager.resumeTime()
+//            startTimer()
+//            gameEngine.shouldDisableInput(false)
+//        }
     }
 }
 
@@ -374,19 +378,19 @@ extension GameScene: AdMobManagerDelegate {
     }
     
     func didDismissRewarded() {
-        restartLevel()
+        restartLevel(lives: ContinueSprite.extraLivesAd)
     }
     
     func rewardedFailed() {
         print("Reward failed. Now what...")
     }
     
-    private func restartLevel() {
+    private func restartLevel(lives: Int) {
         continueSprite.animateHide { [unowned self] in
             continueFromAd { [unowned self] in
                 AudioManager.shared.playSound(for: "revive")
             
-                gameEngine.setLivesRemaining(lives: ContinueSprite.extraLivesAd)
+                gameEngine.setLivesRemaining(lives: lives)
                 scoringEngine.scoringManager.resetScore()
                 scoringEngine.updateLabels()
                 newGame(level: currentLevel, didWin: false)
@@ -412,6 +416,25 @@ extension GameScene: ContinueSpriteDelegate {
     }
     
     func didTapBuyButton() {
-        print("Needs implementation")
+        IAPManager.shared.buyProduct(purchasedProducts[0])
+    }
+}
+
+
+// MARK: - IAPManagerDelegate
+
+extension GameScene: IAPManagerDelegate {
+    func didCompletePurchase(transaction: SKPaymentTransaction) {
+        restartLevel(lives: ContinueSprite.extraLivesBuy)
+        activityIndicator.removeFromParent()
+    }
+    
+    func purchaseDidFail(transaction: SKPaymentTransaction) {
+        print("Purchase failed... womp womp")
+        activityIndicator.removeFromParent()
+    }
+    
+    func isPurchasing(transaction: SKPaymentTransaction) {
+        activityIndicator.move(toParent: self)
     }
 }

@@ -139,13 +139,13 @@ class GameEngine {
         let playerLastPosition = gameboardSprite.getLocation(at: level.player)
         let panel = lastPanel == nil ? level.getLevelType(at: level.player) : lastPanel!
         let panelIsMarsh = panel == .marsh
-        var animationType: PlayerSprite.Texture
+        var animationType: Player.Texture
         
         if isGliding {
             animationType = .glide
         }
         else if isSolved {
-            animationType = .win
+            animationType = .walk
         }
         else if panelIsMarsh {
             animationType = .marsh

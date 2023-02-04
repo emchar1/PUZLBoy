@@ -50,6 +50,11 @@
 		EA826C782983DA1700F19F81 /* revive.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA826C772983DA1700F19F81 /* revive.mp3 */; };
 		EA826C7A298492BA00F19F81 /* DecisionButtonSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA826C79298492BA00F19F81 /* DecisionButtonSprite.swift */; };
 		EA826C7C29858EBE00F19F81 /* ContinueSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA826C7B29858EBE00F19F81 /* ContinueSprite.swift */; };
+		EA826C81298CF3FF00F19F81 /* IAPManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA826C80298CF3FF00F19F81 /* IAPManager.swift */; };
+		EA826C83298D082B00F19F81 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EA826C82298D082B00F19F81 /* StoreKit.framework */; };
+		EA826C85298DD6C600F19F81 /* ActivityIndicatorSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA826C84298DD6C600F19F81 /* ActivityIndicatorSprite.swift */; };
+		EA826C87298E23A500F19F81 /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA826C86298E23A500F19F81 /* Player.swift */; };
+		EA826C8D298EE15A00F19F81 /* buttontap.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA826C8C298EE15A00F19F81 /* buttontap.mp3 */; };
 		EA8F4589296CF35100AE21C5 /* chatopen2.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA8F4588296CF35100AE21C5 /* chatopen2.mp3 */; };
 		EA956C6A29257B9C00879AD0 /* AudioManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA956C6929257B9C00879AD0 /* AudioManager.swift */; };
 		EA956C6C29257D9600879AD0 /* Extension+Comparable.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA956C6B29257D9600879AD0 /* Extension+Comparable.swift */; };
@@ -163,6 +168,11 @@
 		EA826C772983DA1700F19F81 /* revive.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = revive.mp3; sourceTree = "<group>"; };
 		EA826C79298492BA00F19F81 /* DecisionButtonSprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecisionButtonSprite.swift; sourceTree = "<group>"; };
 		EA826C7B29858EBE00F19F81 /* ContinueSprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContinueSprite.swift; sourceTree = "<group>"; };
+		EA826C80298CF3FF00F19F81 /* IAPManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IAPManager.swift; sourceTree = "<group>"; };
+		EA826C82298D082B00F19F81 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
+		EA826C84298DD6C600F19F81 /* ActivityIndicatorSprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityIndicatorSprite.swift; sourceTree = "<group>"; };
+		EA826C86298E23A500F19F81 /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
+		EA826C8C298EE15A00F19F81 /* buttontap.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = buttontap.mp3; sourceTree = "<group>"; };
 		EA8F4588296CF35100AE21C5 /* chatopen2.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = chatopen2.mp3; sourceTree = "<group>"; };
 		EA956C6929257B9C00879AD0 /* AudioManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioManager.swift; sourceTree = "<group>"; };
 		EA956C6B29257D9600879AD0 /* Extension+Comparable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+Comparable.swift"; sourceTree = "<group>"; };
@@ -238,6 +248,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EA826C83298D082B00F19F81 /* StoreKit.framework in Frameworks */,
 				EA75F0E9292DDAAF00F09BD7 /* FirebaseDatabaseSwift in Frameworks */,
 				EA75F0E3292DDAAF00F09BD7 /* FirebaseAnalyticsSwift in Frameworks */,
 				EA75F0E5292DDAAF00F09BD7 /* FirebaseAuth in Frameworks */,
@@ -276,7 +287,6 @@
 				EA65183E28E419B000E535BF /* Models */,
 				EA65183F28E419BB00E535BF /* Views */,
 				EA65184028E419D600E535BF /* Controllers */,
-				EA95D1B3294FC8D90061059C /* Delegates */,
 				EA95D18629459AF60061059C /* Supporting Files */,
 			);
 			path = "PUZL Boy";
@@ -288,6 +298,7 @@
 				EA95D1B429524EB60061059C /* Game Center */,
 				EA95D21A2967E07F0061059C /* Engines */,
 				EA26F29029739DE800BF1AC8 /* AdMobManager.swift */,
+				EA826C80298CF3FF00F19F81 /* IAPManager.swift */,
 				EA75F0EA292DF46200F09BD7 /* FIRManager.swift */,
 				EA826C73297CEFC500F19F81 /* TimerManager.swift */,
 				EA826C75297CF9E000F19F81 /* ScoringManager.swift */,
@@ -296,6 +307,7 @@
 				EA65189128E973D700E535BF /* LevelBuilder.swift */,
 				EA65189028E973D700E535BF /* Level.swift */,
 				EA35348A29241FCD00C11FC0 /* LevelType.swift */,
+				EA826C86298E23A500F19F81 /* Player.swift */,
 				EA119154290CCA39009D0E3E /* Inventory.swift */,
 				EAAEA3CD2932C47500221963 /* BackgroundObject.swift */,
 				EA0F84062937D4860031DA76 /* DayTheme.swift */,
@@ -317,6 +329,7 @@
 		EA65184028E419D600E535BF /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				EA95D1B3294FC8D90061059C /* Delegates */,
 				EA65182E28E4199E00E535BF /* GameViewController.swift */,
 			);
 			path = Controllers;
@@ -332,6 +345,7 @@
 				EA95D1F9295BEC160061059C /* DisplayLivesSprite.swift */,
 				EA826C7B29858EBE00F19F81 /* ContinueSprite.swift */,
 				EA826C79298492BA00F19F81 /* DecisionButtonSprite.swift */,
+				EA826C84298DD6C600F19F81 /* ActivityIndicatorSprite.swift */,
 			);
 			path = Sprites;
 			sourceTree = "<group>";
@@ -355,6 +369,7 @@
 				EA95D195294690B70061059C /* boydead.mp3 */,
 				EA95D1A1294691820061059C /* boygrunt1.mp3 */,
 				EA95D1A2294691820061059C /* boygrunt2.mp3 */,
+				EA826C8C298EE15A00F19F81 /* buttontap.mp3 */,
 				EAACB4B82971E08A00973EB8 /* chatclose.mp3 */,
 				EA8F4588296CF35100AE21C5 /* chatopen2.mp3 */,
 				EADEB3E82931404D00CDB232 /* dooropen.mp3 */,
@@ -465,6 +480,7 @@
 		EA95D2152964FFCF0061059C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				EA826C82298D082B00F19F81 /* StoreKit.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -597,6 +613,7 @@
 				EA8F4589296CF35100AE21C5 /* chatopen2.mp3 in Resources */,
 				EA04F5C8297BAEBB00A48BC2 /* pickupheart.mp3 in Resources */,
 				EA95D19F294690B70061059C /* boyattack3.mp3 in Resources */,
+				EA826C8D298EE15A00F19F81 /* buttontap.mp3 in Resources */,
 				EA95D18E2945A0200061059C /* LuckiestGuy-Regular.ttf in Resources */,
 				EA95D1A4294691820061059C /* boygrunt2.mp3 in Resources */,
 				EA826C782983DA1700F19F81 /* revive.mp3 in Resources */,
@@ -634,6 +651,7 @@
 				EA95D1D129542C720061059C /* AchievementNuclear.swift in Sources */,
 				EA95D1C529541DA50061059C /* AchievementJewelConnoisseur.swift in Sources */,
 				EA3534892920612300C11FC0 /* DisplayStatusBarSprite.swift in Sources */,
+				EA826C85298DD6C600F19F81 /* ActivityIndicatorSprite.swift in Sources */,
 				EA95D1B729524F0F0061059C /* BaseAchievement.swift in Sources */,
 				EA95D1B0294FBE4E0061059C /* GameCenterManager.swift in Sources */,
 				EA95D1C32953AC0F0061059C /* AchievementExterminator.swift in Sources */,
@@ -663,6 +681,7 @@
 				EA65184328E420E400E535BF /* GameScene.swift in Sources */,
 				EA95D20C296276670061059C /* AchievementSuperEfficient.swift in Sources */,
 				EA95D2102962C9260061059C /* AchievementSlowPoke.swift in Sources */,
+				EA826C81298CF3FF00F19F81 /* IAPManager.swift in Sources */,
 				EA956C6A29257B9C00879AD0 /* AudioManager.swift in Sources */,
 				EAB69E0428F3333000C31DB3 /* GameEngine.swift in Sources */,
 				EA95D2142964FF350061059C /* SaveStateModel.swift in Sources */,
@@ -678,6 +697,7 @@
 				EA826C76297CF9E000F19F81 /* ScoringManager.swift in Sources */,
 				EA95D1CB29541F7F0061059C /* AchievementRockNRoller.swift in Sources */,
 				EA95D208295F87120061059C /* AchievementHoarder.swift in Sources */,
+				EA826C87298E23A500F19F81 /* Player.swift in Sources */,
 				EA826C7C29858EBE00F19F81 /* ContinueSprite.swift in Sources */,
 				EAB69E0028EFCF5B00C31DB3 /* PlayerSprite.swift in Sources */,
 				EA95D1BF29538C450061059C /* AchievementGemCollector.swift in Sources */,

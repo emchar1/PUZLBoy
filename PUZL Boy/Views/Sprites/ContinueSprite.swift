@@ -17,7 +17,7 @@ class ContinueSprite: SKNode {
     // MARK: - Properties
     
     static let extraLivesAd = 3
-    static let extraLivesBuy = 25
+    static let extraLivesBuy = 2
     
     private(set) var backgroundSprite: SKShapeNode
     private(set) var watchAdButton: DecisionButtonSprite
@@ -37,11 +37,11 @@ class ContinueSprite: SKNode {
         backgroundSprite.strokeColor = .white
         backgroundSprite.setScale(GameboardSprite.spriteScale)
         
-        watchAdButton = DecisionButtonSprite(text: "Watch Ad: +3🚶🏻‍♂️", color: .systemBlue)
+        watchAdButton = DecisionButtonSprite(text: "Watch Ad: 🚶🏻‍♂️x3", color: .systemBlue)
         watchAdButton.position = CGPoint(x: -K.ScreenDimensions.iPhoneWidth / 4, y: -K.ScreenDimensions.iPhoneWidth / 8)
         watchAdButton.name = "watchAdButton"
         
-        buyButton = DecisionButtonSprite(text: "Buy $0.99: +25🚶🏻‍♂️", color: .systemGreen)
+        buyButton = DecisionButtonSprite(text: "Buy $0.99: 🚶🏻‍♂️x25", color: .systemGreen)
         buyButton.position = CGPoint(x: K.ScreenDimensions.iPhoneWidth / 4, y: -K.ScreenDimensions.iPhoneWidth / 8)
         buyButton.name = "buyButton"
         
@@ -107,9 +107,6 @@ class ContinueSprite: SKNode {
                 buyButton.tapButton()
                 delegate?.didTapBuyButton()
                 return
-            }
-            else {
-                print("Nothing tapped....")
             }
         }
     }

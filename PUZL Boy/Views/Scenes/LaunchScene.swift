@@ -20,28 +20,17 @@ class LaunchScene: SKScene {
     private var cloudSprites: [BackgroundObject] = []
     private var mountainSprite: BackgroundObject
     private var moonSprite: BackgroundObject
-    
-    private var playerTextures: [SKTexture] = []
-    private var playerSprite: SKSpriteNode
+    private var player = Player()
     private var loadingLabel: SKLabelNode
     
     
     // MARK: - Initialization
     
     override init(size: CGSize) {
-        //Setup playerSprite
-        let playerAtlas = SKTextureAtlas(named: "player")
-        
-        for i in 1...15 {
-            DayTheme.currentTheme == .night ? playerTextures.append(playerAtlas.textureNamed("Walk (\(i))")) : playerTextures.append(playerAtlas.textureNamed("Run (\(i))"))
-        }
-        
-        playerSprite = SKSpriteNode(texture: playerTextures[0])
-        playerSprite.position = CGPoint(x: K.ScreenDimensions.iPhoneWidth / 2, y: K.ScreenDimensions.height / 2)
-        playerSprite.setScale(2)
-        playerSprite.zPosition = K.ZPosition.player
-        playerSprite.color = DayTheme.spriteColor
-        playerSprite.colorBlendFactor = DayTheme.spriteShade
+        player.sprite.position = CGPoint(x: K.ScreenDimensions.iPhoneWidth / 2, y: K.ScreenDimensions.height / 2)
+        player.sprite.setScale(2)
+        player.sprite.color = DayTheme.spriteColor
+        player.sprite.colorBlendFactor = DayTheme.spriteShade
         
         loadingLabel = SKLabelNode(text: "LOADING")
         loadingLabel.fontName = UIFont.gameFont
@@ -88,8 +77,8 @@ class LaunchScene: SKScene {
         case .night: playerSpeed = 0.06
         }
         
-        let playerAnimation = SKAction.animate(with: playerTextures, timePerFrame: playerSpeed)
-        playerSprite.run(SKAction.repeatForever(playerAnimation))
+        let playerAnimation = SKAction.animate(with: DayTheme.currentTheme == .night ? player.textures[Player.Texture.walk.rawValue] : player.textures[Player.Texture.run.rawValue], timePerFrame: playerSpeed)
+        player.sprite.run(SKAction.repeatForever(playerAnimation))
 
         for i in 0..<treeCount {
             treeSprites[i].animateSprite(withDelay: TimeInterval(i))
@@ -136,7 +125,7 @@ class LaunchScene: SKScene {
         
         addChild(skyNode)
         addChild(grassNode)
-        addChild(playerSprite)
+        addChild(player.sprite)
         
         for i in 0..<treeCount {
             addChild(treeSprites[i].sprite)

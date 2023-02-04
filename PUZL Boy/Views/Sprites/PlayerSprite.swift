@@ -11,37 +11,15 @@ class PlayerSprite {
     
     // MARK: - Properties
     
-    private let playerSize = CGSize(width: 946, height: 564)
     private let animationSpeed: TimeInterval = 0.04
-    private var spriteScale = 0.5
-    
+
     private(set) var sprite: SKSpriteNode
-    private var playerAtlas: SKTextureAtlas
-    private var playerTextures: [[SKTexture]]
     private var explodeEnemyAtlas: SKTextureAtlas
     private var explodeEnemyTextures: [SKTexture]
     private var explodeBoulderAtlas: SKTextureAtlas
     private var explodeBoulderTextures: [SKTexture]
+    private var player = Player()
 
-    enum Texture: Int {
-        case idle = 0, run, win, dead, glide, marsh
-        
-        var animationSpeed: TimeInterval {
-            switch self {
-            case .run:
-                return 0.5
-            case .win:
-                return 0.75
-            case .glide:
-                return 0.5
-            case .marsh:
-                return 1.0
-            default:
-                return 0.25
-            }
-        }
-    }
-    
     enum AnimationKey: String {
         case playerRespawn, playerIdle, playerMove, playerGlide, playerMarsh, playerPowerUp
     }
@@ -50,27 +28,9 @@ class PlayerSprite {
     // MARK: - Initialization
     
     init(shouldSpawn: Bool) {
-        playerAtlas = SKTextureAtlas(named: "player")
-        playerTextures = []
-        playerTextures.append([]) //idle
-        playerTextures.append([]) //run
-        playerTextures.append([]) //win
-        playerTextures.append([]) //marsh
-        playerTextures.append([]) //dead
-        playerTextures.append([]) //glide
+        sprite = player.sprite
+        player.sprite.alpha = shouldSpawn ? 0 : 1
 
-        for i in 1...15 {
-            playerTextures[Texture.idle.rawValue].append(playerAtlas.textureNamed("Idle (\(i))"))
-            playerTextures[Texture.run.rawValue].append(playerAtlas.textureNamed("Run (\(i))"))
-            playerTextures[Texture.win.rawValue].append(playerAtlas.textureNamed("Walk (\(i))"))
-            playerTextures[Texture.marsh.rawValue].append(playerAtlas.textureNamed("Run (\(i))"))
-            playerTextures[Texture.dead.rawValue].append(playerAtlas.textureNamed("Dead (\(i))"))
-            
-            if i == 5 {
-                playerTextures[Texture.glide.rawValue].append(playerAtlas.textureNamed("Run (\(i))"))
-            }
-        }
-        
         explodeEnemyAtlas = SKTextureAtlas(named: "explode")
         explodeEnemyTextures = []
         explodeBoulderAtlas = SKTextureAtlas(named: "explode")
@@ -80,14 +40,7 @@ class PlayerSprite {
             explodeEnemyTextures.append(explodeEnemyAtlas.textureNamed("explode (\(i))"))
             explodeBoulderTextures.append(explodeEnemyAtlas.textureNamed("explode2 (\(i))"))
         }
-                    
-        sprite = SKSpriteNode(texture: playerTextures[Texture.idle.rawValue][0])
-        sprite.size = playerSize
-        sprite.setScale(spriteScale)
-        sprite.alpha = shouldSpawn ? 0 : 1 //important for respawn to work!
-        sprite.position = .zero
-        sprite.zPosition = K.ZPosition.player
-        
+                
         startIdleAnimation()
 
         if shouldSpawn {
@@ -99,12 +52,12 @@ class PlayerSprite {
     // MARK: - Animation Functions
     
     private func startRespawnAnimation() {
-        sprite.run(SKAction.fadeAlpha(to: 1.0, duration: 0.75), withKey: AnimationKey.playerRespawn.rawValue)
+        player.sprite.run(SKAction.fadeAlpha(to: 1.0, duration: 0.75), withKey: AnimationKey.playerRespawn.rawValue)
     }
     
     func startIdleAnimation() {
         let fadeDuration: TimeInterval = 0.25
-        let animation = SKAction.animate(with: playerTextures[Texture.idle.rawValue], timePerFrame: animationSpeed + 0.02)
+        let animation = SKAction.animate(with: player.textures[Player.Texture.idle.rawValue], timePerFrame: animationSpeed + 0.02)
         
         AudioManager.shared.stopSound(for: "moverun1", fadeDuration: fadeDuration)
         AudioManager.shared.stopSound(for: "moverun2", fadeDuration: fadeDuration)
@@ -113,26 +66,27 @@ class PlayerSprite {
         AudioManager.shared.stopSound(for: "movewalk", fadeDuration: fadeDuration)
         AudioManager.shared.stopSound(for: "movemarsh", fadeDuration: fadeDuration)
 
-        sprite.run(SKAction.repeatForever(animation), withKey: AnimationKey.playerIdle.rawValue)
+        player.sprite.run(SKAction.repeatForever(animation), withKey: AnimationKey.playerIdle.rawValue)
     }
     
-    func startMoveAnimation(animationType: Texture) {
+    func startMoveAnimation(animationType: Player.Texture) {
         let animationRate: TimeInterval = animationType == .marsh ? 1.25 : 1
-        let animation = SKAction.animate(with: playerTextures[animationType.rawValue], timePerFrame: animationSpeed * animationRate)
+        let animation = SKAction.animate(with: player.textures[animationType.rawValue], timePerFrame: animationSpeed * animationRate)
 
-        sprite.removeAction(forKey: AnimationKey.playerIdle.rawValue)
-        sprite.removeAction(forKey: AnimationKey.playerMove.rawValue)
+        player.sprite.removeAction(forKey: AnimationKey.playerIdle.rawValue)
+        player.sprite.removeAction(forKey: AnimationKey.playerMove.rawValue)
 
         if animationType == .glide {
             AudioManager.shared.playSound(for: "moveglide", interruptPlayback: false)
 
-            sprite.run(SKAction.sequence([SKAction.repeat(animation, count: 1), SKAction.wait(forDuration: 2.0)]), withKey: AnimationKey.playerGlide.rawValue)
+            player.sprite.run(SKAction.sequence([SKAction.repeat(animation, count: 1), SKAction.wait(forDuration: 2.0)]),
+                              withKey: AnimationKey.playerGlide.rawValue)
         }
         else {
             switch animationType {
             case .run:
                 AudioManager.shared.playSound(for: "moverun\(Int.random(in: 1...4))")
-            case .win:
+            case .walk:
                 AudioManager.shared.playSound(for: "movewalk")
 
                 //Fades the player as he's entering the gate
@@ -146,7 +100,7 @@ class PlayerSprite {
                 print("Unknown animationType")
             }
             
-            sprite.run(SKAction.repeatForever(animation), withKey: AnimationKey.playerMove.rawValue)
+            player.sprite.run(SKAction.repeatForever(animation), withKey: AnimationKey.playerMove.rawValue)
         }
     }
     
@@ -158,14 +112,16 @@ class PlayerSprite {
         
         AudioManager.shared.playSound(for: "movepoisoned")
 
-        sprite.run(marshEffect, withKey: AnimationKey.playerMarsh.rawValue)
+        player.sprite.run(marshEffect, withKey: AnimationKey.playerMarsh.rawValue)
     }
     
     func startWarpAnimation(shouldReverse: Bool, completion: @escaping (() -> ())) {
-        let warpEffect = SKAction.group([SKAction.rotate(byAngle: -3 * .pi, duration: 1.0),
-                                         SKAction.scale(to: shouldReverse ? spriteScale : 0, duration: 1.0)])
+        let warpEffect = SKAction.group([
+            SKAction.rotate(byAngle: -3 * .pi, duration: 1.0),
+            SKAction.scale(to: shouldReverse ? player.scale : 0, duration: 1.0)
+        ])
         
-        sprite.run(warpEffect, completion: completion)
+        player.sprite.run(warpEffect, completion: completion)
     }
     
     func startPowerUpAnimation() {
@@ -296,17 +252,17 @@ class PlayerSprite {
         
         AudioManager.shared.playSound(for: "boygrunt\(Int.random(in: 1...2))")
 
-        sprite.run(isAttacked ? SKAction.sequence([knockbackAnimation, blinkAnimation]) : knockbackAnimation, completion: completion)
+        player.sprite.run(isAttacked ? SKAction.sequence([knockbackAnimation, blinkAnimation]) : knockbackAnimation, completion: completion)
     }
     
     func startDeadAnimation(completion: @escaping (() -> ())) {
-        let animation = SKAction.animate(with: playerTextures[Texture.dead.rawValue], timePerFrame: animationSpeed / 2)
+        let animation = SKAction.animate(with: player.textures[Player.Texture.dead.rawValue], timePerFrame: animationSpeed / 2)
 
         AudioManager.shared.playSound(for: "boydead")
 
-        sprite.removeAction(forKey: AnimationKey.playerIdle.rawValue)
-        sprite.removeAction(forKey: AnimationKey.playerMove.rawValue)
-        sprite.run(SKAction.sequence([SKAction.repeat(animation, count: 1), SKAction.wait(forDuration: 1.5)]), completion: completion)
+        player.sprite.removeAction(forKey: AnimationKey.playerIdle.rawValue)
+        player.sprite.removeAction(forKey: AnimationKey.playerMove.rawValue)
+        player.sprite.run(SKAction.sequence([SKAction.repeat(animation, count: 1), SKAction.wait(forDuration: 1.5)]), completion: completion)
     }
 
     
@@ -316,7 +272,7 @@ class PlayerSprite {
         //Changed scale from 0.5 to 1 to 1.5 due to new hero width size from 313 to original 614 to new 946
         let scale: CGFloat = 1.5
         
-        sprite.setScale(scale * (panelSize / playerSize.width))
-        spriteScale = abs(sprite.xScale)
+        player.sprite.setScale(scale * (panelSize / player.size.width))
+        player.setScale(abs(player.sprite.xScale))
     }
 }
