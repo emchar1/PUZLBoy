@@ -123,12 +123,16 @@ final class GameCenterManager: NSObject {
         - shouldReportImmediately: If this is set to `true` then post it to App Store Connect using GKAchievement.report() and immediately update the percentage shown on the achievement page. Initially set to `false`.
      */
     func updateProgress(achievement: Achievement, increment: Double = 1, shouldReportImmediately: Bool = false) {
-        guard let achievmentToUpdate = Achievement.achievements[achievement] else { return }
+        guard let achievementToUpdate = Achievement.achievements[achievement] else { return }
         
-        achievmentToUpdate.updateProgress(increment: increment)
+        achievementToUpdate.updateProgress(increment: increment)
         
         if shouldReportImmediately {
-            report(soloAchievement: achievmentToUpdate)
+            report(soloAchievement: achievementToUpdate)
+        }
+        
+        if achievementToUpdate.isComplete, Achievement.isPUZLMasterAchieved() {
+            print("Congrats!!! You beat the game! You are the PUZL Master!!")
         }
     }
     

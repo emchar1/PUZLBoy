@@ -36,6 +36,7 @@ class BaseAchievement: GKAchievement {
         
         inProgress = true
         
+        // FIXME: - Will this ever get called??
         reportIfCompleted()
     }
     
@@ -47,6 +48,8 @@ class BaseAchievement: GKAchievement {
     /// Report the achievement if it is completed
     func reportIfCompleted() {
         guard isComplete else { return }
+        
+        print("BaseAchievement.reportIfCompleted() got called... I'll be damned!")
         
         GameCenterManager.shared.report(soloAchievement: self)
     }

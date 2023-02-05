@@ -58,6 +58,7 @@
 		EA826C8F298F485D00F19F81 /* AchievementBigSpender.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA826C8E298F485D00F19F81 /* AchievementBigSpender.swift */; };
 		EA826C91298F607E00F19F81 /* AchievementEndlessWallet.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA826C90298F607E00F19F81 /* AchievementEndlessWallet.swift */; };
 		EA826C93298F60C000F19F81 /* AchievementFatCat.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA826C92298F60C000F19F81 /* AchievementFatCat.swift */; };
+		EA826C95298F880B00F19F81 /* AchievementPUZLMaster.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA826C94298F880B00F19F81 /* AchievementPUZLMaster.swift */; };
 		EA8F4589296CF35100AE21C5 /* chatopen2.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA8F4588296CF35100AE21C5 /* chatopen2.mp3 */; };
 		EA956C6A29257B9C00879AD0 /* AudioManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA956C6929257B9C00879AD0 /* AudioManager.swift */; };
 		EA956C6C29257D9600879AD0 /* Extension+Comparable.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA956C6B29257D9600879AD0 /* Extension+Comparable.swift */; };
@@ -179,6 +180,7 @@
 		EA826C8E298F485D00F19F81 /* AchievementBigSpender.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementBigSpender.swift; sourceTree = "<group>"; };
 		EA826C90298F607E00F19F81 /* AchievementEndlessWallet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementEndlessWallet.swift; sourceTree = "<group>"; };
 		EA826C92298F60C000F19F81 /* AchievementFatCat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementFatCat.swift; sourceTree = "<group>"; };
+		EA826C94298F880B00F19F81 /* AchievementPUZLMaster.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementPUZLMaster.swift; sourceTree = "<group>"; };
 		EA8F4588296CF35100AE21C5 /* chatopen2.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = chatopen2.mp3; sourceTree = "<group>"; };
 		EA956C6929257B9C00879AD0 /* AudioManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioManager.swift; sourceTree = "<group>"; };
 		EA956C6B29257D9600879AD0 /* Extension+Comparable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+Comparable.swift"; sourceTree = "<group>"; };
@@ -482,6 +484,7 @@
 				EA826C8E298F485D00F19F81 /* AchievementBigSpender.swift */,
 				EA826C90298F607E00F19F81 /* AchievementEndlessWallet.swift */,
 				EA826C92298F60C000F19F81 /* AchievementFatCat.swift */,
+				EA826C94298F880B00F19F81 /* AchievementPUZLMaster.swift */,
 			);
 			path = Achievements;
 			sourceTree = "<group>";
@@ -652,6 +655,7 @@
 				EA78C36C29763B1C00292744 /* AchievementAdMobster.swift in Sources */,
 				EA75F0ED292DF57400F09BD7 /* LevelModel.swift in Sources */,
 				EA3951ED2938165A00D0B14A /* Extension+UIImage.swift in Sources */,
+				EA826C95298F880B00F19F81 /* AchievementPUZLMaster.swift in Sources */,
 				EA95D1D529544D990061059C /* AchievementEnigmatologist.swift in Sources */,
 				EA95D1CD29542C180061059C /* AchievementHotToTrot.swift in Sources */,
 				EA11915729121798009D0E3E /* Controls.swift in Sources */,
