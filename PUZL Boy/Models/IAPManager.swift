@@ -7,10 +7,6 @@
 
 import StoreKit
 
-extension Notification.Name {
-    static let IAPHelperPurchaseNotification = Notification.Name("IAPHelperPurchaseNotification")
-}
-
 protocol IAPManagerDelegate: AnyObject {
     func didCompletePurchase(transaction: SKPaymentTransaction)
     func purchaseDidFail(transaction: SKPaymentTransaction)
@@ -20,11 +16,19 @@ protocol IAPManagerDelegate: AnyObject {
 class IAPManager: NSObject {
     
     // MARK: - Properties
+    
+    // FIXME: - Keep adding product IDs here.. Or maybe have this in a list in Firebase???
+    static let lives25 = "com.5playapps.PUZLBoy.25Lives"
         
     static let shared: IAPManager = {
-        let iapManager = IAPManager(productIds: ["com.5playapps.PUZLBoy.25Lives"])
+        let iapManager = IAPManager(productIds: [
+            IAPManager.lives25
+        ])
         
         //Additional setup
+        iapManager.requestProducts { success, products in
+            //Do nothing here, just needed to populate allProducts!
+        }
         
         return iapManager
     }()
@@ -33,9 +37,10 @@ class IAPManager: NSObject {
     typealias ProductsRequestCompletionHandler = (_ success: Bool, _ products: [SKProduct]?) -> Void
 
     private let productIdentifiers: Set<ProductIdentifier>
-    private var purchasedProductIdentifiers: Set<ProductIdentifier> = []
     private var productRequests: SKProductsRequest?
     private var productsRequestCompletionHandler: ProductsRequestCompletionHandler?
+
+    var allProducts: [SKProduct] = []
     
     weak var delegate: IAPManagerDelegate?
     
@@ -44,20 +49,10 @@ class IAPManager: NSObject {
     
     init(productIds: Set<ProductIdentifier>) {
         productIdentifiers = productIds
-        
-        for productIdentifier in productIdentifiers {
-            let purchased = UserDefaults.standard.bool(forKey: productIdentifier)
-            
-            if purchased {
-                purchasedProductIdentifiers.insert(productIdentifier)
-                print("Previously purchased: \(productIdentifier)")
-            } else {
-                print("Not purchased: \(productIdentifier)")
-            }
-        }
-        
+                
         super.init()
         
+        //Starts the payment queue process
         SKPaymentQueue.default().add(self)
     }
 }
@@ -82,16 +77,8 @@ extension IAPManager {
         SKPaymentQueue.default().add(payment)
     }
     
-    func isProductPurchased(_ productIdentifier: ProductIdentifier) -> Bool {
-        return purchasedProductIdentifiers.contains(productIdentifier)
-    }
-    
     class func canMakePayments() -> Bool {
         return SKPaymentQueue.canMakePayments()
-    }
-    
-    func restorePurchases() {
-        SKPaymentQueue.default().restoreCompletedTransactions()
     }
 }
 
@@ -108,17 +95,17 @@ extension IAPManager: SKProductsRequestDelegate {
         
         for product in products {
             print("Found product: \(product.productIdentifier) \(product.localizedTitle) \(product.price.floatValue)")
+            allProducts.append(product)
         }
     }
     
     func request(_ request: SKRequest, didFailWithError error: Error) {
-        print("Failed to load list of products.")
-        print("Error: \(error.localizedDescription)")
+        print("Failed to load list of products. Error: \(error.localizedDescription)")
         productsRequestCompletionHandler?(false, nil)
         clearRequestAndHandler()
     }
     
-    func clearRequestAndHandler() {
+    private func clearRequestAndHandler() {
         productRequests = nil
         productsRequestCompletionHandler = nil
     }
@@ -132,15 +119,15 @@ extension IAPManager: SKPaymentTransactionObserver {
         for transaction in transactions {
             switch transaction.transactionState {
             case .purchased:
-                complete(transaction: transaction)
+                purchased(transaction: transaction)
             case .failed:
-                fail(transaction: transaction)
-            case .restored:
-                restore(transaction: transaction)
-            case .deferred:
-                break
+                failed(transaction: transaction)
             case .purchasing:
                 delegate?.isPurchasing(transaction: transaction)
+            case .deferred:
+                break
+            case .restored:
+                break
             default:
                 break
             }
@@ -148,23 +135,29 @@ extension IAPManager: SKPaymentTransactionObserver {
         
     }
     
-    private func complete(transaction: SKPaymentTransaction) {
+    private func purchased(transaction: SKPaymentTransaction) {
         print("Purchase Complete")
-        deliverPurchaseNotificationFor(identifier: transaction.payment.productIdentifier)
         SKPaymentQueue.default().finishTransaction(transaction)
         
         delegate?.didCompletePurchase(transaction: transaction)
-    }
-    
-    private func restore(transaction: SKPaymentTransaction) {
-        guard let productIdentifier = transaction.original?.payment.productIdentifier else { return }
         
-        print("Purchase Restored \(productIdentifier)")
-        deliverPurchaseNotificationFor(identifier: productIdentifier)
-        SKPaymentQueue.default().finishTransaction(transaction)
+        //Update Game Center Achievements!!!
+        if let purchasedProduct = allProducts.first(where: { $0.productIdentifier == transaction.payment.productIdentifier }) {
+            GameCenterManager.shared.updateProgress(achievement: .bigSpender,
+                                                    increment: purchasedProduct.price.doubleValue,
+                                                    shouldReportImmediately: true)
+
+            GameCenterManager.shared.updateProgress(achievement: .endlessWallet,
+                                                    increment: purchasedProduct.price.doubleValue,
+                                                    shouldReportImmediately: true)
+            
+            GameCenterManager.shared.updateProgress(achievement: .fatCat,
+                                                    increment: purchasedProduct.price.doubleValue,
+                                                    shouldReportImmediately: true)
+        }
     }
     
-    private func fail(transaction: SKPaymentTransaction) {
+    private func failed(transaction: SKPaymentTransaction) {
         print("Purchase Failed")
         
         if let transactionError = transaction.error as NSError?, let localizedDescription = transaction.error?.localizedDescription, transactionError.code != SKError.paymentCancelled.rawValue {
@@ -174,15 +167,5 @@ extension IAPManager: SKPaymentTransactionObserver {
         SKPaymentQueue.default().finishTransaction(transaction)
         
         delegate?.purchaseDidFail(transaction: transaction)
-    }
-    
-    private func deliverPurchaseNotificationFor(identifier: String?) {
-        guard let identifier = identifier else { return }
-        
-        purchasedProductIdentifiers.insert(identifier)
-        UserDefaults.standard.set(true, forKey: identifier)
-        
-        //This cool little notifiation is so that when things change, you can have it update the tableView, for instance.
-        NotificationCenter.default.post(name: .IAPHelperPurchaseNotification, object: identifier)
     }
 }

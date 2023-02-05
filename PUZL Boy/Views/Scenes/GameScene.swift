@@ -20,7 +20,6 @@ class GameScene: SKScene {
     private var continueSprite = ContinueSprite()
     private var activityIndicator = ActivityIndicatorSprite()
     private var adSprite = SKSpriteNode()
-    private var purchasedProducts: [SKProduct] = []
     private var user: User?
     private let keyRunTimerAction = "runTimerAction"
 
@@ -65,20 +64,15 @@ class GameScene: SKScene {
         super.init(size: size)
 
         AdMobManager.shared.delegate = self
-        AudioManager.shared.playSound(for: AudioManager.shared.overworldTheme)
-        
         IAPManager.shared.delegate = self
-        IAPManager.shared.requestProducts { success, products in
-            guard success else { return }
-            self.purchasedProducts = products!
-        }
-
         gameEngine.delegate = self
         continueSprite.delegate = self
 
         // FIXME: - Debuging purposes only!!!
         levelSkipEngine.delegate = self
         
+        AudioManager.shared.playSound(for: AudioManager.shared.overworldTheme)
+
         scaleMode = .aspectFill
         
         let notificationCenter = NotificationCenter.default
@@ -416,7 +410,12 @@ extension GameScene: ContinueSpriteDelegate {
     }
     
     func didTapBuyButton() {
-        IAPManager.shared.buyProduct(purchasedProducts[0])
+        guard let productToPurchase = IAPManager.shared.allProducts.first(where: { $0.productIdentifier == IAPManager.lives25 }) else {
+            print("Unable to find IAP: 25 Lives ($0.99)")
+            return
+        }
+        
+        IAPManager.shared.buyProduct(productToPurchase)
     }
 }
 
@@ -430,7 +429,6 @@ extension GameScene: IAPManagerDelegate {
     }
     
     func purchaseDidFail(transaction: SKPaymentTransaction) {
-        print("Purchase failed... womp womp")
         activityIndicator.removeFromParent()
     }
     

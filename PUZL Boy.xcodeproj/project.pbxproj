@@ -55,6 +55,9 @@
 		EA826C85298DD6C600F19F81 /* ActivityIndicatorSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA826C84298DD6C600F19F81 /* ActivityIndicatorSprite.swift */; };
 		EA826C87298E23A500F19F81 /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA826C86298E23A500F19F81 /* Player.swift */; };
 		EA826C8D298EE15A00F19F81 /* buttontap.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA826C8C298EE15A00F19F81 /* buttontap.mp3 */; };
+		EA826C8F298F485D00F19F81 /* AchievementBigSpender.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA826C8E298F485D00F19F81 /* AchievementBigSpender.swift */; };
+		EA826C91298F607E00F19F81 /* AchievementEndlessWallet.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA826C90298F607E00F19F81 /* AchievementEndlessWallet.swift */; };
+		EA826C93298F60C000F19F81 /* AchievementFatCat.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA826C92298F60C000F19F81 /* AchievementFatCat.swift */; };
 		EA8F4589296CF35100AE21C5 /* chatopen2.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA8F4588296CF35100AE21C5 /* chatopen2.mp3 */; };
 		EA956C6A29257B9C00879AD0 /* AudioManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA956C6929257B9C00879AD0 /* AudioManager.swift */; };
 		EA956C6C29257D9600879AD0 /* Extension+Comparable.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA956C6B29257D9600879AD0 /* Extension+Comparable.swift */; };
@@ -173,6 +176,9 @@
 		EA826C84298DD6C600F19F81 /* ActivityIndicatorSprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityIndicatorSprite.swift; sourceTree = "<group>"; };
 		EA826C86298E23A500F19F81 /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
 		EA826C8C298EE15A00F19F81 /* buttontap.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = buttontap.mp3; sourceTree = "<group>"; };
+		EA826C8E298F485D00F19F81 /* AchievementBigSpender.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementBigSpender.swift; sourceTree = "<group>"; };
+		EA826C90298F607E00F19F81 /* AchievementEndlessWallet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementEndlessWallet.swift; sourceTree = "<group>"; };
+		EA826C92298F60C000F19F81 /* AchievementFatCat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementFatCat.swift; sourceTree = "<group>"; };
 		EA8F4588296CF35100AE21C5 /* chatopen2.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = chatopen2.mp3; sourceTree = "<group>"; };
 		EA956C6929257B9C00879AD0 /* AudioManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioManager.swift; sourceTree = "<group>"; };
 		EA956C6B29257D9600879AD0 /* Extension+Comparable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+Comparable.swift"; sourceTree = "<group>"; };
@@ -473,6 +479,9 @@
 				EA95D20D2962C8AD0061059C /* AchievementSpeedDemon.swift */,
 				EA95D20F2962C9260061059C /* AchievementSlowPoke.swift */,
 				EA78C36B29763B1C00292744 /* AchievementAdMobster.swift */,
+				EA826C8E298F485D00F19F81 /* AchievementBigSpender.swift */,
+				EA826C90298F607E00F19F81 /* AchievementEndlessWallet.swift */,
+				EA826C92298F60C000F19F81 /* AchievementFatCat.swift */,
 			);
 			path = Achievements;
 			sourceTree = "<group>";
@@ -636,6 +645,7 @@
 			files = (
 				EAACB4A7296F80E700973EB8 /* AchievementAvidReader.swift in Sources */,
 				EA65189228E973D700E535BF /* Level.swift in Sources */,
+				EA826C8F298F485D00F19F81 /* AchievementBigSpender.swift in Sources */,
 				EA95D1B92952579A0061059C /* AchievementDragonSlayer.swift in Sources */,
 				EA95D1DF295674AE0061059C /* ChatEngine.swift in Sources */,
 				EA65184528E5750C00E535BF /* GameboardSprite.swift in Sources */,
@@ -684,10 +694,12 @@
 				EA826C81298CF3FF00F19F81 /* IAPManager.swift in Sources */,
 				EA956C6A29257B9C00879AD0 /* AudioManager.swift in Sources */,
 				EAB69E0428F3333000C31DB3 /* GameEngine.swift in Sources */,
+				EA826C91298F607E00F19F81 /* AchievementEndlessWallet.swift in Sources */,
 				EA95D2142964FF350061059C /* SaveStateModel.swift in Sources */,
 				EA3951F12939DE5900D0B14A /* ScoringEngine.swift in Sources */,
 				EAAEA3CE2932C47500221963 /* BackgroundObject.swift in Sources */,
 				EA65182D28E4199E00E535BF /* SceneDelegate.swift in Sources */,
+				EA826C93298F60C000F19F81 /* AchievementFatCat.swift in Sources */,
 				EA95D2122963B4580061059C /* LevelSkipEngine.swift in Sources */,
 				EA95D18D29459D550061059C /* Extension+UIFont.swift in Sources */,
 				EA65189328E973D700E535BF /* LevelBuilder.swift in Sources */,

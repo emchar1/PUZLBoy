@@ -37,6 +37,9 @@ enum Achievement: String, CaseIterable {
     case speedDemon = "SpeedDemon"
     case slowPoke = "SlowPoke"
     case adMobster = "AdMobster"
+    case bigSpender = "BigSpender"
+    case endlessWallet = "EndlessWallet"
+    case fatCat = "FatCat"
     
     
     // MARK: - Properties
@@ -104,6 +107,9 @@ enum Achievement: String, CaseIterable {
         case .speedDemon:           gkAchievement = AchievementSpeedDemon(identifier: id)
         case .slowPoke:             gkAchievement = AchievementSlowPoke(identifier: id)
         case .adMobster:            gkAchievement = AchievementAdMobster(identifier: id)
+        case .bigSpender:           gkAchievement = AchievementBigSpender(identifier: id)
+        case .endlessWallet:        gkAchievement = AchievementEndlessWallet(identifier: id)
+        case .fatCat:               gkAchievement = AchievementFatCat(identifier: id)
         }
         
         gkAchievement.showsCompletionBanner = true
