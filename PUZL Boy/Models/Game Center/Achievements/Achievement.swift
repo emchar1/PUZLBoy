@@ -48,7 +48,6 @@ enum Achievement: String, CaseIterable {
     private static let achievementIDPrefix = "PUZLBoy.Achievement"
     static var achievements: [Achievement: BaseAchievement] = [:]
     static var allAchievements: [BaseAchievement] = []
-    static var allAchievementsExceptPUZLMaster: [BaseAchievement] = []
     
     
     // MARK: - Functions
@@ -59,14 +58,7 @@ enum Achievement: String, CaseIterable {
         for achievement in allCases {
             achievements[achievement] = factory(achievement: achievement)
             allAchievements.append(achievements[achievement]!)
-            
-            //Populate allAchievementsExceptPUZLMaster, used to check for PUZL Master completion
-            if achievement != .puzlMaster {
-                allAchievementsExceptPUZLMaster.append(achievements[achievement]!)
-            }
         }
-        
-        allAchievementsExceptPUZLMaster = allAchievements
         
         print("Initialized Achievement.achievements dictionary.")
     }
@@ -85,22 +77,20 @@ enum Achievement: String, CaseIterable {
     static func isPUZLMasterAchieved() -> Bool {
         //First check if PUZL Master has already been obtained...
         if let puzlMasterAchievement = achievements[.puzlMaster], puzlMasterAchievement.isComplete {
-            print("Checking for PUZL Master... PUZL Master still in progress.")
+            print("Checking for PUZL Master... PUZL Master already completed.")
             return false
         }
 
         //...if not, check if all other achievements are complete
-        for achievement in allAchievementsExceptPUZLMaster {
-            if !achievement.isComplete {
+        for achievement in allAchievements {
+            if !(achievement is AchievementPUZLMaster) && !achievement.isComplete {
                 print("Checking for PUZL Master... PUZL Master still in progress.")
                 return false
             }
         }
         
-        //Grant PUZL Master achievement.
+        //PUZL Master is achieved!
         print("PUZL Master Achieved!")
-        GameCenterManager.shared.updateProgress(achievement: .puzlMaster, shouldReportImmediately: true)
-        
         return true
     }
     

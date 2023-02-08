@@ -49,8 +49,6 @@ class BaseAchievement: GKAchievement {
     func reportIfCompleted() {
         guard isComplete else { return }
         
-        print("BaseAchievement.reportIfCompleted() got called... I'll be damned!")
-        
         GameCenterManager.shared.report(soloAchievement: self)
     }
 }

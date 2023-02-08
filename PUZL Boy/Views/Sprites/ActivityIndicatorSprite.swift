@@ -12,6 +12,7 @@ class ActivityIndicatorSprite: SKNode {
     // MARK: - Properties
     
     private(set) var sprite: SKShapeNode
+    private(set) var isShowing = false
     
     
     // MARK: - Initialization
@@ -58,5 +59,20 @@ class ActivityIndicatorSprite: SKNode {
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    
+    // MARK: - Functions
+    
+    override func move(toParent parent: SKNode) {
+        super.move(toParent: parent)
+        
+        isShowing = true
+    }
+    
+    override func removeFromParent() {
+        super.removeFromParent()
+        
+        isShowing = false
     }
 }

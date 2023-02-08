@@ -548,33 +548,33 @@ class GameEngine {
     }
     
     private func updateAchievements() {
-        GameCenterManager.shared.updateProgress(achievement: .gemCollector, increment: Double(gemsCollected), shouldReportImmediately: true)
-        GameCenterManager.shared.updateProgress(achievement: .jewelConnoisseur, increment: Double(gemsCollected), shouldReportImmediately: true)
-        GameCenterManager.shared.updateProgress(achievement: .myPreciouses, increment: Double(gemsCollected), shouldReportImmediately: true)
+        GameCenterManager.shared.updateProgress(achievement: .gemCollector, increment: Double(gemsCollected))
+        GameCenterManager.shared.updateProgress(achievement: .jewelConnoisseur, increment: Double(gemsCollected))
+        GameCenterManager.shared.updateProgress(achievement: .myPreciouses, increment: Double(gemsCollected))
         
-        GameCenterManager.shared.updateProgress(achievement: .stoneCutter, increment: Double(bouldersBroken), shouldReportImmediately: true)
-        GameCenterManager.shared.updateProgress(achievement: .boulderBreaker, increment: Double(bouldersBroken), shouldReportImmediately: true)
-        GameCenterManager.shared.updateProgress(achievement: .rockNRoller, increment: Double(bouldersBroken), shouldReportImmediately: true)
+        GameCenterManager.shared.updateProgress(achievement: .stoneCutter, increment: Double(bouldersBroken))
+        GameCenterManager.shared.updateProgress(achievement: .boulderBreaker, increment: Double(bouldersBroken))
+        GameCenterManager.shared.updateProgress(achievement: .rockNRoller, increment: Double(bouldersBroken))
 
-        GameCenterManager.shared.updateProgress(achievement: .exterminator, increment: Double(enemiesKilled), shouldReportImmediately: true)
-        GameCenterManager.shared.updateProgress(achievement: .dragonSlayer, increment: Double(enemiesKilled), shouldReportImmediately: true)
-        GameCenterManager.shared.updateProgress(achievement: .beastMaster, increment: Double(enemiesKilled), shouldReportImmediately: true)
+        GameCenterManager.shared.updateProgress(achievement: .exterminator, increment: Double(enemiesKilled))
+        GameCenterManager.shared.updateProgress(achievement: .dragonSlayer, increment: Double(enemiesKilled))
+        GameCenterManager.shared.updateProgress(achievement: .beastMaster, increment: Double(enemiesKilled))
 
-        GameCenterManager.shared.updateProgress(achievement: .scavenger, increment: Double(toolsCollected), shouldReportImmediately: true)
-        GameCenterManager.shared.updateProgress(achievement: .itemWielder, increment: Double(toolsCollected), shouldReportImmediately: true)
-        GameCenterManager.shared.updateProgress(achievement: .hoarder, increment: Double(level.inventory.getItemCount()),
-                                                shouldReportImmediately: true)
+        GameCenterManager.shared.updateProgress(achievement: .scavenger, increment: Double(toolsCollected))
+        GameCenterManager.shared.updateProgress(achievement: .itemWielder, increment: Double(toolsCollected))
+        GameCenterManager.shared.updateProgress(achievement: .hoarder, increment: Double(level.inventory.getItemCount()))
         
-        GameCenterManager.shared.updateProgress(achievement: .superEfficient, increment: Double(movesRemaining), shouldReportImmediately: true)
+        GameCenterManager.shared.updateProgress(achievement: .superEfficient, increment: Double(movesRemaining))
 
         switch level.level {
-        case 50:    GameCenterManager.shared.updateProgress(achievement: .braniac, shouldReportImmediately: true)
-        case 100:   GameCenterManager.shared.updateProgress(achievement: .enigmatologist, shouldReportImmediately: true)
-        case 500:   GameCenterManager.shared.updateProgress(achievement: .puzlGuru, shouldReportImmediately: true)
+        case 50:    GameCenterManager.shared.updateProgress(achievement: .braniac)
+        case 100:   GameCenterManager.shared.updateProgress(achievement: .enigmatologist)
+        case 500:   GameCenterManager.shared.updateProgress(achievement: .puzlGuru)
         default: break
         }
         
-        GameCenterManager.shared.report(achievements: Achievement.allAchievements)
+        let allAchievements = Achievement.achievements.map { $0.1 }
+        GameCenterManager.shared.report(achievements: allAchievements)
     }
         
     

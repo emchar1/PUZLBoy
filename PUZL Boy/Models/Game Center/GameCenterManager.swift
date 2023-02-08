@@ -131,8 +131,10 @@ final class GameCenterManager: NSObject {
             report(soloAchievement: achievementToUpdate)
         }
         
-        if achievementToUpdate.isComplete, Achievement.isPUZLMasterAchieved() {
+        if Achievement.isPUZLMasterAchieved() {
+            //This should only be run once. Achievement.isPUZLMasterAchieved() will not run again if PUZL Master Achievement is already obtained.
             print("Congrats!!! You beat the game! You are the PUZL Master!!")
+            updateProgress(achievement: .puzlMaster, shouldReportImmediately: true)
         }
     }
     
