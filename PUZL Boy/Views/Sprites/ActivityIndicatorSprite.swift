@@ -21,7 +21,6 @@ class ActivityIndicatorSprite: SKNode {
         sprite = SKShapeNode(rectOf: CGSize(width: 350, height: 350), cornerRadius: 40)
         sprite.fillColor = .black
         sprite.lineWidth = 0
-        sprite.alpha = 0.95
                 
         super.init()
         

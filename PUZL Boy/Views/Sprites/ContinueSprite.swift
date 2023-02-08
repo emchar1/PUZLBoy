@@ -39,11 +39,11 @@ class ContinueSprite: SKNode {
         backgroundSprite.strokeColor = .white
         backgroundSprite.setScale(GameboardSprite.spriteScale)
         
-        watchAdButton = DecisionButtonSprite(text: "Watch Ad: 🚶🏻‍♂️x3", color: .systemBlue)
+        watchAdButton = DecisionButtonSprite(text: "Watch Ad:      x3", color: .systemBlue)
         watchAdButton.position = CGPoint(x: -K.ScreenDimensions.iPhoneWidth / 4, y: -K.ScreenDimensions.iPhoneWidth / 8)
         watchAdButton.name = "watchAdButton"
         
-        buyButton = DecisionButtonSprite(text: "Buy $0.99: 🚶🏻‍♂️x25", color: .systemGreen)
+        buyButton = DecisionButtonSprite(text: "Buy $0.99:      x25", color: .systemGreen)
         buyButton.position = CGPoint(x: K.ScreenDimensions.iPhoneWidth / 4, y: -K.ScreenDimensions.iPhoneWidth / 8)
         buyButton.name = "buyButton"
         

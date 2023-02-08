@@ -31,7 +31,7 @@ class DisplayLivesSprite: SKNode {
         
 
         imageNode.position = CGPoint(x: -iconSize + 20, y: 0)
-        imageNode.scale(to: CGSize(width: iconSize * 946 / 564, height: iconSize))
+        imageNode.scale(to: CGSize(width: iconSize * Player.size.width / Player.size.height, height: iconSize))
         
         textNode.fontName = UIFont.gameFont
         textNode.fontSize = UIFont.gameFontSizeSmall

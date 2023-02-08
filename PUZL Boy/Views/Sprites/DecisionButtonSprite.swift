@@ -13,6 +13,7 @@ class DecisionButtonSprite: SKNode {
     
     let buttonSize = CGSize(width: 400, height: 120)
     let shadowOffset = CGPoint(x: -8, y: 8)
+    let iconScale: CGFloat = 90
     private(set) var sprite: SKShapeNode
     private var topSprite: SKShapeNode
     
@@ -26,6 +27,7 @@ class DecisionButtonSprite: SKNode {
         
         topSprite = SKShapeNode(rectOf: buttonSize, cornerRadius: 12)
         topSprite.fillColor = color
+        topSprite.fillTexture = SKTexture(image: .chatGradientTexture)
         topSprite.lineWidth = 4
         topSprite.strokeColor = .white
         topSprite.position = shadowOffset
@@ -43,10 +45,15 @@ class DecisionButtonSprite: SKNode {
         textNode.fontColor = UIFont.chatFontColor
         textNode.position = CGPoint(x: 0, y: -18)
         
+        let iconNode = SKSpriteNode(imageNamed: "Run (6)")
+        iconNode.scale(to: CGSize(width: iconScale * Player.size.width / Player.size.height, height: iconScale))
+        iconNode.position = CGPoint(x: 65, y: 0)
+
         addChild(sprite)
         sprite.addChild(shadowSprite)
         sprite.addChild(topSprite)
         topSprite.addChild(textNode)
+        topSprite.addChild(iconNode)
     }
         
     func tapButton() {

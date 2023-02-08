@@ -11,7 +11,7 @@ struct Player {
     
     // MARK: - Properties
     
-    let size = CGSize(width: 946, height: 564)
+    static let size = CGSize(width: 946, height: 564)
     private(set) var scale = 0.5
 
     private(set) var sprite: SKSpriteNode
@@ -63,7 +63,7 @@ struct Player {
         }
         
         sprite = SKSpriteNode(texture: textures[Texture.idle.rawValue][0])
-        sprite.size = size
+        sprite.size = Player.size
         sprite.setScale(scale)
         sprite.position = .zero
         sprite.zPosition = K.ZPosition.player
