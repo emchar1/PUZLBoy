@@ -525,6 +525,8 @@ class GameEngine {
             
             updateAchievements()
             
+            StoreReviewManager.shared.incrementCount()
+
             print("Win streak: \(GameEngine.winStreak), Level: \(level.level)")
         }
         else if isGameOver {
@@ -540,6 +542,8 @@ class GameEngine {
             GameEngine.winStreak = 0
             
             GameCenterManager.shared.updateProgress(achievement: .reckless, shouldReportImmediately: true)
+
+            StoreReviewManager.shared.incrementCount()
 
             playerSprite.startDeadAnimation {
                 self.delegate?.gameIsOver()

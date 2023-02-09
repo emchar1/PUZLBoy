@@ -59,6 +59,7 @@
 		EA826C91298F607E00F19F81 /* AchievementEndlessWallet.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA826C90298F607E00F19F81 /* AchievementEndlessWallet.swift */; };
 		EA826C93298F60C000F19F81 /* AchievementFatCat.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA826C92298F60C000F19F81 /* AchievementFatCat.swift */; };
 		EA826C95298F880B00F19F81 /* AchievementPUZLMaster.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA826C94298F880B00F19F81 /* AchievementPUZLMaster.swift */; };
+		EA826C9729938CBB00F19F81 /* StoreReviewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA826C9629938CBB00F19F81 /* StoreReviewManager.swift */; };
 		EA8F4589296CF35100AE21C5 /* chatopen2.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA8F4588296CF35100AE21C5 /* chatopen2.mp3 */; };
 		EA956C6A29257B9C00879AD0 /* AudioManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA956C6929257B9C00879AD0 /* AudioManager.swift */; };
 		EA956C6C29257D9600879AD0 /* Extension+Comparable.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA956C6B29257D9600879AD0 /* Extension+Comparable.swift */; };
@@ -181,6 +182,7 @@
 		EA826C90298F607E00F19F81 /* AchievementEndlessWallet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementEndlessWallet.swift; sourceTree = "<group>"; };
 		EA826C92298F60C000F19F81 /* AchievementFatCat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementFatCat.swift; sourceTree = "<group>"; };
 		EA826C94298F880B00F19F81 /* AchievementPUZLMaster.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementPUZLMaster.swift; sourceTree = "<group>"; };
+		EA826C9629938CBB00F19F81 /* StoreReviewManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreReviewManager.swift; sourceTree = "<group>"; };
 		EA8F4588296CF35100AE21C5 /* chatopen2.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = chatopen2.mp3; sourceTree = "<group>"; };
 		EA956C6929257B9C00879AD0 /* AudioManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioManager.swift; sourceTree = "<group>"; };
 		EA956C6B29257D9600879AD0 /* Extension+Comparable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+Comparable.swift"; sourceTree = "<group>"; };
@@ -305,9 +307,6 @@
 			children = (
 				EA95D1B429524EB60061059C /* Game Center */,
 				EA95D21A2967E07F0061059C /* Engines */,
-				EA26F29029739DE800BF1AC8 /* AdMobManager.swift */,
-				EA826C80298CF3FF00F19F81 /* IAPManager.swift */,
-				EA75F0EA292DF46200F09BD7 /* FIRManager.swift */,
 				EA826C73297CEFC500F19F81 /* TimerManager.swift */,
 				EA826C75297CF9E000F19F81 /* ScoringManager.swift */,
 				EA95D2132964FF350061059C /* SaveStateModel.swift */,
@@ -365,6 +364,17 @@
 				EA65184228E420E400E535BF /* GameScene.swift */,
 			);
 			path = Scenes;
+			sourceTree = "<group>";
+		};
+		EA826C9829938CE200F19F81 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				EA956C6B29257D9600879AD0 /* Extension+Comparable.swift */,
+				EA3951EC2938165A00D0B14A /* Extension+UIImage.swift */,
+				EA95D18C29459D550061059C /* Extension+UIFont.swift */,
+				EA95D1B1294FBF2A0061059C /* Extension+Notification.Name.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 		EA956C6D292586F800879AD0 /* Sounds */ = {
@@ -511,13 +521,14 @@
 		EA98545728FE6F1900CDB0EF /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				EA826C9829938CE200F19F81 /* Extensions */,
 				EA65189428EA207800E535BF /* Constants.swift */,
 				EA956C6929257B9C00879AD0 /* AudioManager.swift */,
+				EA26F29029739DE800BF1AC8 /* AdMobManager.swift */,
+				EA826C80298CF3FF00F19F81 /* IAPManager.swift */,
+				EA75F0EA292DF46200F09BD7 /* FIRManager.swift */,
+				EA826C9629938CBB00F19F81 /* StoreReviewManager.swift */,
 				EA95D1A5294957060061059C /* Haptics.swift */,
-				EA956C6B29257D9600879AD0 /* Extension+Comparable.swift */,
-				EA3951EC2938165A00D0B14A /* Extension+UIImage.swift */,
-				EA95D18C29459D550061059C /* Extension+UIFont.swift */,
-				EA95D1B1294FBF2A0061059C /* Extension+Notification.Name.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -687,6 +698,7 @@
 				EA0F84072937D4860031DA76 /* DayTheme.swift in Sources */,
 				EA65182F28E4199E00E535BF /* GameViewController.swift in Sources */,
 				EA95D1C929541F360061059C /* AchievementStoneCutter.swift in Sources */,
+				EA826C9729938CBB00F19F81 /* StoreReviewManager.swift in Sources */,
 				EA95D20E2962C8AD0061059C /* AchievementSpeedDemon.swift in Sources */,
 				EA65182B28E4199E00E535BF /* AppDelegate.swift in Sources */,
 				EA956C6C29257D9600879AD0 /* Extension+Comparable.swift in Sources */,

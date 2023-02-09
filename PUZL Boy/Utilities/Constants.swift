@@ -78,5 +78,6 @@ struct K {
         static let soundIsMuted = "SoundIsMuted"
         static let hintsAreOff = "HintsAreOff"
         static let launchedBefore = "LaunchedBefore"
+        static let reviewStoreCount = "ReviewStoreCount"
     }
 }
