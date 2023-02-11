@@ -94,7 +94,7 @@ class DisplaySprite {
     func drainHealth() {
         let animation = SKAction.animate(with: heartsTextures, timePerFrame: 0.1)
         let heartsNode = SKSpriteNode(texture: heartsTextures[0])
-        heartsNode.zPosition = 50 //Actually 450 because parent node is at 400, and I think the 50 gets added to it.
+        heartsNode.zPosition = 50 //Actually 450 because parent node is at 400, and the 50 gets added to it.
         heartsNode.run(animation)
         
         statusHealth.appendNode(heartsNode)
@@ -102,7 +102,6 @@ class DisplaySprite {
 
     private func addToScene() {
         sprite.addChild(levelLabel)
-        
         sprite.addChild(statusLives)
         sprite.addChild(statusHealth)
         sprite.addChild(statusMoves)

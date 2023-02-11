@@ -193,6 +193,7 @@ class GameScene: SKScene {
             AudioManager.shared.playSound(for: AudioManager.shared.overworldTheme)
         }
         
+        // FIXME: - Do I need Interstitial Ads in my game?
         //Play interstitial ad
         if level % 100 == 0 && level >= 20 && didWin {
             prepareAd {
@@ -387,10 +388,14 @@ extension GameScene: AdMobManagerDelegate {
             continueFromAd { [unowned self] in
                 AudioManager.shared.playSound(for: "revive")
             
-                gameEngine.setLivesRemaining(lives: lives)
                 scoringEngine.scoringManager.resetScore()
                 scoringEngine.updateLabels()
+
                 newGame(level: currentLevel, didWin: false)
+
+                gameEngine.animateLives(newLives: lives)
+                gameEngine.setLivesRemaining(lives: lives)
+
                 saveState(didWin: false)
                 
                 continueSprite.removeFromParent()

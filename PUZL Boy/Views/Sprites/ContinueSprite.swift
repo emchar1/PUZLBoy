@@ -19,7 +19,7 @@ class ContinueSprite: SKNode {
     static let extraLivesAd = 3
     
     // FIXME: - Change to 25 before shipping
-    static let extraLivesBuy = 2
+    static let extraLivesBuy = 25
     
     private(set) var backgroundSprite: SKShapeNode
     private(set) var watchAdButton: DecisionButtonSprite
@@ -55,7 +55,8 @@ class ContinueSprite: SKNode {
         continueLabel.fontColor = UIFont.gameFontColor
         continueLabel.position = CGPoint(x: 0, y: K.ScreenDimensions.iPhoneWidth / 4 - 80)
         
-        let livesRefreshLabel = SKLabelNode(text: "...or wait for 5 lives in: 03:00")
+        // FIXME: - More lives in 3 hours...
+        let livesRefreshLabel = SKLabelNode(text: "")//"...or wait for 5 lives in: 03:00")
         livesRefreshLabel.fontName = UIFont.chatFont
         livesRefreshLabel.fontSize = UIFont.chatFontSize
         livesRefreshLabel.fontColor = UIFont.chatFontColor

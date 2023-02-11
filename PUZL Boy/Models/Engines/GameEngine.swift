@@ -593,6 +593,11 @@ class GameEngine {
         GameEngine.livesRemaining = lives
     }
     
+    ///Call this upon continuing.
+    func animateLives(newLives: Int) {
+        displaySprite.statusLives.animateLives(newLives: newLives)
+    }
+    
     func shouldPlayAdOnStartup() {
         if !canContinue {
             print("Can't continue from GameEngine.shouldPlayAdOnStartup()... running delegate?.gameIsOver()...")

@@ -58,15 +58,40 @@ class DisplayLivesSprite: SKNode {
         imageNode.addChild(node)
     }
     
-    func pulseImage() {
-        let scaleUp = SKAction.scale(to: CGSize(width: iconSize * 2, height: iconSize * 2), duration: 0.1)
-        let wait = SKAction.wait(forDuration: 0.2)
-        let scaleDown = SKAction.scale(to: CGSize(width: iconSize, height: iconSize), duration: 0.3)
-        
-        imageNode.run(SKAction.sequence([scaleUp, wait, scaleDown]))
-    }
-    
     func removeNode() {
         imageNode.removeAllChildren()
     }
+    
+    func pulseImage() {
+        let scaleUp = SKAction.scale(to: CGSize(width: iconSize * Player.size.width / Player.size.height * 2, height: iconSize * 2), duration: 0.1)
+        let wait = SKAction.wait(forDuration: 0.2)
+        let scaleDown = SKAction.scale(to: CGSize(width: iconSize * Player.size.width / Player.size.height, height: iconSize), duration: 0.3)
+
+        imageNode.run(SKAction.sequence([scaleUp, wait, scaleDown]))
+    }
+    
+    // FIXME: - How to increment lives after continuing???
+    func animateLives(newLives: Int) {
+        let speed: CGFloat = 0.05
+        var livesToIncrement = 0
+        
+        let incrementAction = SKAction.run { [unowned self] in
+            livesToIncrement += 1
+            textNode.text = "x\(livesToIncrement)"
+        }
+        
+        let animationGroup = SKAction.group([
+            incrementAction,
+            SKAction.scale(to: 1.5, duration: speed),
+        ])
+        
+        let repeatAction = SKAction.repeat(SKAction.sequence([
+            SKAction.wait(forDuration: speed),
+            animationGroup,
+            SKAction.scale(to: 1.0, duration: speed)
+        ]), count: max(newLives, 0))
+        
+        textNode.run(repeatAction)
+    }
+
 }
