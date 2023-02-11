@@ -621,6 +621,16 @@ class GameEngine {
         
         playerSprite.setScale(panelSize: gameboardSprite.panelSize)
         gameboardSprite.sprite.addChild(playerSprite.sprite)
+        
+        if !isGameOver {
+            // FIXME: - yPosition seems wonky...
+            let numMovesSprite = NumMovesSprite(numMoves: self.level.moves,
+                                                position: CGPoint(x: K.ScreenDimensions.iPhoneWidth / 2, y: gameboardSprite.yPosition * 3 / 2))
+            superScene.addChild(numMovesSprite)
+            numMovesSprite.play {
+                numMovesSprite.removeFromParent()
+            }
+        }
     }
     
     /**
