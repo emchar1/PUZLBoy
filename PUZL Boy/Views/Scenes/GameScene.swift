@@ -36,7 +36,7 @@ class GameScene: SKScene {
     }
     
     // FIXME: - Debugging purposes only!!!
-    private var levelSkipEngine: LevelSkipEngine
+//    private var levelSkipEngine: LevelSkipEngine
     
     
     // MARK: - Initialization
@@ -59,7 +59,7 @@ class GameScene: SKScene {
         self.user = user
 
         // FIXME: - Debugging purposes only
-        levelSkipEngine = LevelSkipEngine()
+//        levelSkipEngine = LevelSkipEngine()
         
         super.init(size: size)
 
@@ -69,7 +69,7 @@ class GameScene: SKScene {
         continueSprite.delegate = self
 
         // FIXME: - Debuging purposes only!!!
-        levelSkipEngine.delegate = self
+//        levelSkipEngine.delegate = self
         
         AudioManager.shared.playSound(for: AudioManager.shared.overworldTheme)
 
@@ -113,7 +113,7 @@ class GameScene: SKScene {
         }
         
         // FIXME: - Debuging purposes only!!!
-        levelSkipEngine.handleControls(in: location)
+//        levelSkipEngine.handleControls(in: location)
     }
     
 
@@ -240,7 +240,7 @@ class GameScene: SKScene {
         chatEngine.moveSprites(to: self)
         
         // FIXME: - Debuging purposes only!!!
-        levelSkipEngine.moveSprites(to: self)
+//        levelSkipEngine.moveSprites(to: self)
     }
     
     private func playDialogue() {

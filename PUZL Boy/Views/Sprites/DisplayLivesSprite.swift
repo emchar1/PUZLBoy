@@ -82,7 +82,7 @@ class DisplayLivesSprite: SKNode {
         
         let animationGroup = SKAction.group([
             incrementAction,
-            SKAction.scale(to: 1.5, duration: speed),
+            SKAction.scale(to: 1.25, duration: speed),
         ])
         
         let repeatAction = SKAction.repeat(SKAction.sequence([
