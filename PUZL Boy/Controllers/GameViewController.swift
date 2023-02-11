@@ -37,6 +37,7 @@ class GameViewController: UIViewController {
             //Ensures everything below the guard statement only gets called ONCE!
             guard !self.levelLoaded else { return }
             
+            //Should call LevelBuilder.getLevels BEFORE calling FIRManager.initializeSaveStateFirestoreRecords
             LevelBuilder.getLevels {
                 FIRManager.initializeSaveStateFirestoreRecords(user: user) { saveStateModel in
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0) {
