@@ -22,7 +22,7 @@
 		EA11915729121798009D0E3E /* Controls.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA11915629121798009D0E3E /* Controls.swift */; };
 		EA26F29129739DE800BF1AC8 /* AdMobManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA26F29029739DE800BF1AC8 /* AdMobManager.swift */; };
 		EA3467842996EBF2002DDA02 /* overworld6.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA3467832996EBF2002DDA02 /* overworld6.mp3 */; };
-		EA34678629977656002DDA02 /* buttontap.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA34678529977656002DDA02 /* buttontap.mp3 */; };
+		EA34678A2998574B002DDA02 /* buttontap.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA3467892998574B002DDA02 /* buttontap.mp3 */; };
 		EA3534892920612300C11FC0 /* DisplayStatusBarSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA3534882920612300C11FC0 /* DisplayStatusBarSprite.swift */; };
 		EA35348B29241FCD00C11FC0 /* LevelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA35348A29241FCD00C11FC0 /* LevelType.swift */; };
 		EA3951ED2938165A00D0B14A /* Extension+UIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA3951EC2938165A00D0B14A /* Extension+UIImage.swift */; };
@@ -150,7 +150,7 @@
 		EA11915629121798009D0E3E /* Controls.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Controls.swift; sourceTree = "<group>"; };
 		EA26F29029739DE800BF1AC8 /* AdMobManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdMobManager.swift; sourceTree = "<group>"; };
 		EA3467832996EBF2002DDA02 /* overworld6.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = overworld6.mp3; sourceTree = "<group>"; };
-		EA34678529977656002DDA02 /* buttontap.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = buttontap.mp3; sourceTree = "<group>"; };
+		EA3467892998574B002DDA02 /* buttontap.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = buttontap.mp3; path = "../../../../../../../Library/Mobile Documents/com~apple~CloudDocs/.Trash/buttontap.mp3"; sourceTree = "<group>"; };
 		EA3534882920612300C11FC0 /* DisplayStatusBarSprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayStatusBarSprite.swift; sourceTree = "<group>"; };
 		EA35348A29241FCD00C11FC0 /* LevelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelType.swift; sourceTree = "<group>"; };
 		EA3951EC2938165A00D0B14A /* Extension+UIImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+UIImage.swift"; sourceTree = "<group>"; };
@@ -392,7 +392,7 @@
 				EA95D195294690B70061059C /* boydead.mp3 */,
 				EA95D1A1294691820061059C /* boygrunt1.mp3 */,
 				EA95D1A2294691820061059C /* boygrunt2.mp3 */,
-				EA34678529977656002DDA02 /* buttontap.mp3 */,
+				EA3467892998574B002DDA02 /* buttontap.mp3 */,
 				EAACB4B82971E08A00973EB8 /* chatclose.mp3 */,
 				EA8F4588296CF35100AE21C5 /* chatopen2.mp3 */,
 				EADEB3E82931404D00CDB232 /* dooropen.mp3 */,
@@ -612,6 +612,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				EAAEA3CA2931F12B00221963 /* pickupitem.mp3 in Resources */,
+				EA34678A2998574B002DDA02 /* buttontap.mp3 in Resources */,
 				EAAEA3C62931F08300221963 /* gameover.mp3 in Resources */,
 				EAAEA3BE2931A31200221963 /* movepoisoned.mp3 in Resources */,
 				EA95D194294690890061059C /* warp.mp3 in Resources */,
@@ -633,7 +634,6 @@
 				EA0F1491292CC8D90013038E /* enemydeath.mp3 in Resources */,
 				EADEB3F5293197B900CDB232 /* movemarsh.mp3 in Resources */,
 				EAAEA3C82931F0C500221963 /* gemcollect.mp3 in Resources */,
-				EA34678629977656002DDA02 /* buttontap.mp3 in Resources */,
 				EAACB4B92971E08A00973EB8 /* chatclose.mp3 in Resources */,
 				EA95D200295D83E40061059C /* Boogaloo-Regular.ttf in Resources */,
 				EA95D19B294690B70061059C /* boydead.mp3 in Resources */,

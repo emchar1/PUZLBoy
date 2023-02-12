@@ -91,18 +91,33 @@ class GameEngine {
     
     ///For when reading from Firestore.
     init(saveStateModel: SaveStateModel) {
-        //last saved level state, funky I know
-        level = Level(level: saveStateModel.levelModel.level,
-                      moves: saveStateModel.levelModel.moves,
-                      health: saveStateModel.levelModel.health,
-                      gameboard: LevelBuilder.buildGameboard(levelModel: saveStateModel.levelModel))
+        if saveStateModel.newLevel == saveStateModel.levelModel.level {
+            //Grab the last level state w/ gameboard, level, moves and health data intact since last session...
+            level = Level(level: saveStateModel.levelModel.level,
+                          moves: saveStateModel.levelModel.moves,
+                          health: saveStateModel.levelModel.health,
+                          gameboard: LevelBuilder.buildGameboard(levelModel: saveStateModel.levelModel))
+            level.inventory = saveStateModel.inventory
+            level.updatePlayer(position: (row: saveStateModel.playerPosition.row, col: saveStateModel.playerPosition.col))
+            movesRemaining = saveStateModel.levelModel.moves
+            healthRemaining = saveStateModel.levelModel.health
+            gemsRemaining = saveStateModel.gemsRemaining
+            gemsCollected = saveStateModel.gemsCollected
+        }
+        else {
+            //...unless newLevel doesn't match level #, then create a new level from newLevel.
+            level = Level(level: saveStateModel.newLevel,
+                          moves: LevelBuilder.levels[saveStateModel.newLevel].moves,
+                          health: LevelBuilder.levels[saveStateModel.newLevel].health,
+                          gameboard: LevelBuilder.levels[saveStateModel.newLevel].gameboard)
+            level.inventory = Inventory(hammers: 0, swords: 0)
+            //level.updatePlayer(position: (row: saveStateModel.playerPosition.row, col: saveStateModel.playerPosition.col))
+            movesRemaining = level.moves
+            healthRemaining = level.health
+            gemsRemaining = level.gems
+            gemsCollected = 0
+        }
         
-        level.inventory = saveStateModel.inventory
-        level.updatePlayer(position: (row: saveStateModel.playerPosition.row, col: saveStateModel.playerPosition.col))
-        movesRemaining = saveStateModel.levelModel.moves
-        healthRemaining = saveStateModel.levelModel.health
-        gemsRemaining = saveStateModel.gemsRemaining
-        gemsCollected = saveStateModel.gemsCollected
         GameEngine.livesRemaining = saveStateModel.livesRemaining
         GameEngine.usedContinue = saveStateModel.usedContinue
         GameEngine.winStreak = saveStateModel.winStreak

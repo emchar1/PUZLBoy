@@ -22,6 +22,7 @@ struct SaveStateModel: Identifiable, Codable {
     let inventory: Inventory
     let playerPosition: PlayerPosition
     let levelModel: LevelModel
+    let newLevel: Int
     let uid: String
 }
 

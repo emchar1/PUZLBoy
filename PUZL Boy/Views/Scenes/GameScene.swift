@@ -43,7 +43,7 @@ class GameScene: SKScene {
     
     init(size: CGSize, user: User?, saveStateModel: SaveStateModel?) {
         if let saveStateModel = saveStateModel {
-            currentLevel = saveStateModel.levelModel.level
+            currentLevel = saveStateModel.newLevel //ALWAYS go with newLevel, because it takes precedence over levelModel.level
             gameEngine = GameEngine(saveStateModel: saveStateModel)
             scoringEngine = ScoringEngine(elapsedTime: saveStateModel.elapsedTime,
                                           score: saveStateModel.score,
@@ -175,6 +175,7 @@ class GameScene: SKScene {
             inventory: gameEngine.level.inventory,
             playerPosition: PlayerPosition(row: gameEngine.level.player.row, col: gameEngine.level.player.col),
             levelModel: levelModel,
+            newLevel: levelModel.level,
             uid: user.uid)
         
         FIRManager.writeToFirestoreRecord(user: user, saveStateModel: saveStateModel)

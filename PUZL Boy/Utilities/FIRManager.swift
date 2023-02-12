@@ -65,6 +65,7 @@ struct FIRManager {
                   let inventory = data["inventory"] as? [String : AnyObject],
                   let playerPosition = data["playerPosition"] as? [String : AnyObject],
                   let levelModel = data["levelModel"] as? [String : AnyObject],
+                  let newLevel = data["newLevel"] as? Int,
                   let uid = data["uid"] as? String else {
                 completion?(nil)
                 return
@@ -85,6 +86,7 @@ struct FIRManager {
                                        inventory: inventoryData,
                                        playerPosition: playerPositionData,
                                        levelModel: getLevelModel(from: levelModel),
+                                       newLevel: newLevel,
                                        uid: uid))
         }//end docRef.getDocument...
     }//end initializeSaveStateFirestoreRecords()
@@ -207,6 +209,7 @@ struct FIRManager {
                 "s5d4": saveStateModel.levelModel.s5d4,
                 "s5d5": saveStateModel.levelModel.s5d5
             ],
+            "newLevel": saveStateModel.newLevel,
             "uid": saveStateModel.uid
         ])
     }//end writeToFirestoreRecord()
@@ -214,6 +217,7 @@ struct FIRManager {
     
     ///Helper function to create a levelModel from Firestore object
     private static func getLevelModel(from obj: [String : AnyObject]) -> LevelModel {
+        //If obj is bogus, then basically recreate level 1, but make it off by 1 gem (for debugging purposes)
         let levelModel = LevelModel(
             level: obj["level"] as? Int ?? 1,
             moves: obj["moves"] as? Int ?? 4,
