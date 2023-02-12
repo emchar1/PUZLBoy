@@ -20,7 +20,7 @@ class GameEngine {
     
     // MARK: - Properties
     
-    private(set) static var livesRemaining: Int = 3
+    private(set) static var livesRemaining: Int = 5
     private(set) static var usedContinue: Bool = false
     private(set) static var winStreak: Int = 0 {
         didSet {

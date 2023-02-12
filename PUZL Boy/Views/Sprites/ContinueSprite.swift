@@ -16,7 +16,7 @@ class ContinueSprite: SKNode {
     
     // MARK: - Properties
     
-    static let extraLivesAd = 3
+    static let extraLivesAd = 2
     
     // FIXME: - Change to 25 before shipping
     static let extraLivesBuy = 25
@@ -39,11 +39,13 @@ class ContinueSprite: SKNode {
         backgroundSprite.strokeColor = .white
         backgroundSprite.setScale(GameboardSprite.spriteScale)
         
-        watchAdButton = DecisionButtonSprite(text: "Watch Ad:      x3", color: .systemBlue)
+        watchAdButton = DecisionButtonSprite(text: "Watch Ad:      x\(ContinueSprite.extraLivesAd)",
+                                             color: UIColor(red: 9 / 255, green: 132 / 255, blue: 227 / 255, alpha: 1.0))
         watchAdButton.position = CGPoint(x: -K.ScreenDimensions.iPhoneWidth / 4, y: -K.ScreenDimensions.iPhoneWidth / 8)
         watchAdButton.name = "watchAdButton"
         
-        buyButton = DecisionButtonSprite(text: "Buy $0.99:      x25", color: .systemGreen)
+        buyButton = DecisionButtonSprite(text: "Buy $0.99:      x\(ContinueSprite.extraLivesBuy)",
+                                         color: UIColor(red: 0 / 255, green: 148 / 255, blue: 96 / 255, alpha: 1.0))
         buyButton.position = CGPoint(x: K.ScreenDimensions.iPhoneWidth / 4, y: -K.ScreenDimensions.iPhoneWidth / 8)
         buyButton.name = "buyButton"
         

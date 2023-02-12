@@ -64,7 +64,7 @@ class AdMobManager: NSObject {
         
         GADInterstitialAd.load(withAdUnitID: AdMobManager.myFirstInterstitialID, request: request) { interstitialAd, error in
             guard error == nil else {
-                print("Error laoding the interstitial: \(error!.localizedDescription)")
+                print("Error loading the interstitial: \(error!.localizedDescription)")
                 return
             }
             
