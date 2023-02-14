@@ -7,11 +7,21 @@
 
 import Foundation
 
+//K.GameboardPosition can't be codable due to it being a tuple, so I need a separate struct here.
+struct PlayerPosition: Codable {
+    let row: Int
+    let col: Int
+}
+
 ///To be used for Firestore to store last saved state of a gameboard, level, moves and health.
 struct LevelModel: CustomStringConvertible, Codable {
     let level: Int
     let moves: Int
     let health: Int
+    let gemsCollected: Int
+    let gemsRemaining: Int
+    let playerPosition: PlayerPosition
+    let inventory: Inventory
 
     //TERRAIN
     //Row 0
@@ -113,6 +123,6 @@ struct LevelModel: CustomStringConvertible, Codable {
     let s5d5: String
     
     var description: String {
-        return "\nlevel: \(level), moves: \(moves), health: \(health), gameboard: \n\t[[\(r0c0), \(r0c1), \(r0c2), \(r0c3), \(r0c4), \(r0c5)], \n\t [\(r1c0), \(r1c1), \(r1c2), \(r1c3), \(r1c4), \(r1c5)], \n\t [\(r2c0), \(r2c1), \(r2c2), \(r2c3), \(r2c4), \(r2c5)], \n\t [\(r3c0), \(r3c1), \(r3c2), \(r3c3), \(r3c4), \(r3c5)], \n\t [\(r4c0), \(r4c1), \(r4c2), \(r4c3), \(r4c4), \(r4c5)], \n\t [\(r5c0), \(r5c1), \(r5c2), \(r5c3), \(r5c4), \(r5c5)]]"
+        return "\nlevel: \(level), moves: \(moves), health: \(health), gemsCollected: \(gemsCollected), gemsRemaining: \(gemsRemaining), gameboard: \n\t[[\(r0c0), \(r0c1), \(r0c2), \(r0c3), \(r0c4), \(r0c5)], \n\t [\(r1c0), \(r1c1), \(r1c2), \(r1c3), \(r1c4), \(r1c5)], \n\t [\(r2c0), \(r2c1), \(r2c2), \(r2c3), \(r2c4), \(r2c5)], \n\t [\(r3c0), \(r3c1), \(r3c2), \(r3c3), \(r3c4), \(r3c5)], \n\t [\(r4c0), \(r4c1), \(r4c2), \(r4c3), \(r4c4), \(r4c5)], \n\t [\(r5c0), \(r5c1), \(r5c2), \(r5c3), \(r5c4), \(r5c5)]]"
     }
 }

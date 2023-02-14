@@ -116,11 +116,12 @@ struct Level: CustomStringConvertible {
     
     
     // FIXME: - I REALLY HATE HOW SLOW AND INEFFICIENT THIS IS!!!
-    func getLevelModel(level: Int, movesRemaining: Int, heathRemaining: Int) -> LevelModel {
+    func getLevelModel(level: Int, movesRemaining: Int, heathRemaining: Int, gemsCollected: Int, gemsRemaining: Int, playerPosition: PlayerPosition, inventory: Inventory) -> LevelModel {
         let gameboardSize = gameboard[0].count
 
         return LevelModel(
-            level: level, moves: movesRemaining, health: heathRemaining,
+            level: level, moves: movesRemaining, health: heathRemaining, gemsCollected: gemsCollected, gemsRemaining: gemsRemaining,
+            playerPosition: playerPosition, inventory: inventory,
 
             //terrain
             r0c0: gameboard[0][0].terrain.description,

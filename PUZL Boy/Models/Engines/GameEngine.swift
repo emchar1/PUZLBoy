@@ -97,12 +97,12 @@ class GameEngine {
                           moves: saveStateModel.levelModel.moves,
                           health: saveStateModel.levelModel.health,
                           gameboard: LevelBuilder.buildGameboard(levelModel: saveStateModel.levelModel))
-            level.inventory = saveStateModel.inventory
-            level.updatePlayer(position: (row: saveStateModel.playerPosition.row, col: saveStateModel.playerPosition.col))
+            level.inventory = saveStateModel.levelModel.inventory
+            level.updatePlayer(position: (row: saveStateModel.levelModel.playerPosition.row, col: saveStateModel.levelModel.playerPosition.col))
             movesRemaining = saveStateModel.levelModel.moves
             healthRemaining = saveStateModel.levelModel.health
-            gemsRemaining = saveStateModel.gemsRemaining
-            gemsCollected = saveStateModel.gemsCollected
+            gemsRemaining = saveStateModel.levelModel.gemsRemaining
+            gemsCollected = saveStateModel.levelModel.gemsCollected
         }
         else {
             //...unless newLevel doesn't match level #, then create a new level from newLevel.

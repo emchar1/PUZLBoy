@@ -176,7 +176,11 @@ class GameScene: SKScene {
         let levelModel = gameEngine.level.getLevelModel(
             level: currentLevel,
             movesRemaining: gameEngine.movesRemaining,
-            heathRemaining: gameEngine.healthRemaining)
+            heathRemaining: gameEngine.healthRemaining,
+            gemsCollected: gameEngine.gemsCollected,
+            gemsRemaining: gameEngine.gemsRemaining,
+            playerPosition: PlayerPosition(row: gameEngine.level.player.row, col: gameEngine.level.player.col),
+            inventory: gameEngine.level.inventory)
         
         let saveStateModel = SaveStateModel(
             saveDate: Date(),
@@ -185,11 +189,7 @@ class GameScene: SKScene {
             usedContinue: GameEngine.usedContinue,
             score: didWin ? 0 : scoringEngine.scoringManager.score,
             totalScore: scoringEngine.scoringManager.totalScore + (didWin ? scoringEngine.scoringManager.score : 0),
-            gemsRemaining: gameEngine.gemsRemaining,
-            gemsCollected: gameEngine.gemsCollected,
             winStreak: GameEngine.winStreak,
-            inventory: gameEngine.level.inventory,
-            playerPosition: PlayerPosition(row: gameEngine.level.player.row, col: gameEngine.level.player.col),
             levelModel: levelModel,
             newLevel: levelModel.level,
             uid: user.uid)

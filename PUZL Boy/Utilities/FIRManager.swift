@@ -59,11 +59,7 @@ struct FIRManager {
                   let usedContinue = data["usedContinue"] as? Bool,
                   let score = data["score"] as? Int,
                   let totalScore = data["totalScore"] as? Int,
-                  let gemsRemaining = data["gemsRemaining"] as? Int,
-                  let gemsCollected = data["gemsCollected"] as? Int,
                   let winStreak = data["winStreak"] as? Int,
-                  let inventory = data["inventory"] as? [String : AnyObject],
-                  let playerPosition = data["playerPosition"] as? [String : AnyObject],
                   let levelModel = data["levelModel"] as? [String : AnyObject],
                   let newLevel = data["newLevel"] as? Int,
                   let uid = data["uid"] as? String else {
@@ -71,8 +67,6 @@ struct FIRManager {
                 return
             }
             
-            let inventoryData = Inventory(hammers: inventory["hammers"] as? Int ?? 0, swords: inventory["swords"] as? Int ?? 0)
-            let playerPositionData = PlayerPosition(row: playerPosition["row"] as? Int ?? 0, col: playerPosition["col"] as? Int ?? 0)
             
             completion?(SaveStateModel(saveDate: saveDate.dateValue(),
                                        elapsedTime: elapsedTime,
@@ -80,11 +74,7 @@ struct FIRManager {
                                        usedContinue: usedContinue,
                                        score: score,
                                        totalScore: totalScore,
-                                       gemsRemaining: gemsRemaining,
-                                       gemsCollected: gemsCollected,
                                        winStreak: winStreak,
-                                       inventory: inventoryData,
-                                       playerPosition: playerPositionData,
                                        levelModel: getLevelModel(from: levelModel),
                                        newLevel: newLevel,
                                        uid: uid))
@@ -107,21 +97,21 @@ struct FIRManager {
             "usedContinue": saveStateModel.usedContinue,
             "score": saveStateModel.score,
             "totalScore": saveStateModel.totalScore,
-            "gemsRemaining": saveStateModel.gemsRemaining,
-            "gemsCollected": saveStateModel.gemsCollected,
             "winStreak": saveStateModel.winStreak,
-            "inventory": [
-                "hammers": saveStateModel.inventory.hammers,
-                "swords": saveStateModel.inventory.swords
-            ],
-            "playerPosition": [
-                "row": saveStateModel.playerPosition.row,
-                "col": saveStateModel.playerPosition.col
-            ],
             "levelModel": [
                 "level": saveStateModel.levelModel.level,
                 "moves": saveStateModel.levelModel.moves,
                 "health": saveStateModel.levelModel.health,
+                "gemsCollected": saveStateModel.levelModel.gemsCollected,
+                "gemsRemaining": saveStateModel.levelModel.gemsRemaining,
+                "inventory": [
+                    "hammers": saveStateModel.levelModel.inventory.hammers,
+                    "swords": saveStateModel.levelModel.inventory.swords
+                ],
+                "playerPosition": [
+                    "row": saveStateModel.levelModel.playerPosition.row,
+                    "col": saveStateModel.levelModel.playerPosition.col
+                ],
 
                 //terrain
                 "r0c0": saveStateModel.levelModel.r0c0,
@@ -218,10 +208,17 @@ struct FIRManager {
     ///Helper function to create a levelModel from Firestore object
     private static func getLevelModel(from obj: [String : AnyObject]) -> LevelModel {
         //If obj is bogus, then basically recreate level 1, but make it off by 1 gem (for debugging purposes)
+        let playerPosition = obj["playerPosition"] as? [String: AnyObject]
+        let inventory = obj["inventory"] as? [String: AnyObject]
         let levelModel = LevelModel(
             level: obj["level"] as? Int ?? 1,
             moves: obj["moves"] as? Int ?? 4,
             health: obj["health"] as? Int ?? 1,
+            gemsCollected: obj["gemsCollected"] as? Int ?? 0,
+            gemsRemaining: obj["gemsRemaining"] as? Int ?? 1,
+            playerPosition: PlayerPosition(row: playerPosition?["row"] as? Int ?? 0, col: playerPosition?["col"] as? Int ?? 0),
+            inventory: Inventory(hammers: inventory?["hammers"] as? Int ?? 999, swords: inventory?["swords"] as? Int ?? 999),
+            
             
             //TERRAIN
             r0c0: obj["r0c0"] as? String ?? "start",
