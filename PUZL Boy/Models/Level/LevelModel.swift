@@ -7,6 +7,7 @@
 
 import Foundation
 
+///To be used for Firestore to store last saved state of a gameboard, level, moves and health.
 struct LevelModel: CustomStringConvertible, Codable {
     let level: Int
     let moves: Int

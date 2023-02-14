@@ -17,8 +17,6 @@ class ContinueSprite: SKNode {
     // MARK: - Properties
     
     static let extraLivesAd = 2
-    
-    // FIXME: - Change to 25 before shipping
     static let extraLivesBuy = 25
     
     private(set) var backgroundSprite: SKShapeNode

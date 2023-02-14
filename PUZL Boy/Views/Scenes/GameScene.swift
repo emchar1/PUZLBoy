@@ -78,12 +78,17 @@ class GameScene: SKScene {
         let notificationCenter = NotificationCenter.default
         notificationCenter.addObserver(self, selector: #selector(appMovedToBackground), name: UIApplication.willResignActiveNotification, object: nil)
         notificationCenter.addObserver(self, selector: #selector(appMovedToForeground), name: UIApplication.didBecomeActiveNotification, object: nil)
+        
+        // TODO: - Timer for when lives refresh again.
+        notificationCenter.addObserver(self, selector: #selector(appWillConnect), name: UIScene.willConnectNotification, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(appDidDisconnect), name: UIScene.didDisconnectNotification, object: nil)
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
+    //Save Level/Gameboard state
     @objc private func appMovedToBackground() {
         if action(forKey: keyRunTimerAction) != nil {
             //Only pause/resume time if there's an active timer going, i.e. timer is started!
@@ -96,6 +101,20 @@ class GameScene: SKScene {
     @objc private func appMovedToForeground() {
         if action(forKey: keyRunTimerAction) != nil {
             scoringEngine.timerManager.resumeTime()
+        }
+    }
+    
+    // TODO: - Start Timer for More Lives
+    @objc private func appWillConnect() {
+        print("------------connecting.... livesRemaining: \(GameEngine.livesRemaining)")
+        if GameEngine.livesRemaining == 0 {
+            print("------------------Has it been 3 hours? If so, grant X lives, else keep waiting⏰")
+        }
+    }
+    
+    @objc private func appDidDisconnect() {
+        if GameEngine.livesRemaining < 10 {
+            print("------------------Let Timer begin... 3 hours")
         }
     }
     
@@ -120,7 +139,6 @@ class GameScene: SKScene {
     // MARK: - Required Functions
     
     override func didMove(to view: SKView) {
-        print("GameScene.didMove() called.")
         moveSprites()
         startTimer()
         playDialogue()
@@ -136,7 +154,6 @@ class GameScene: SKScene {
     // MARK: - Helper Functions
     
     private func startTimer() {
-        print("GameScene.startTimer() called!")
         let wait = SKAction.wait(forDuration: 1.0)
         let block = SKAction.run { [unowned self] in
             scoringEngine.timerManager.pollTime()
@@ -148,7 +165,6 @@ class GameScene: SKScene {
     }
     
     private func stopTimer() {
-        print("GameScene.stopTimer() called!")
         removeAction(forKey: keyRunTimerAction)
                 
         scoringEngine.updateLabels()

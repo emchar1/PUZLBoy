@@ -8,11 +8,17 @@
 import Foundation
 
 /**
- Class with all the possible levels. These will need to be done thoughtfully.
+ Class with all the possible levels. Also creates the levels, like when first launching the app, in GameViewController.
  */
 struct LevelBuilder {
+    
+    // MARK: - Properties
+    
     static var maxLevel: Int { return levels.count - 1 }
     static var levels: [Level] = []
+    
+    
+    // MARK: - Functions
     
     static func getLevels(completion: (() -> ())?) {
         var levels: [Level] = []

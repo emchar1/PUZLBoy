@@ -36,13 +36,11 @@ class TimerManager {
     
     func pauseTime() {
         pollTime()
-        print("TimerManager.pauseTime() called.")
     }
     
     func resumeTime() {
         timeInitial = Date(timeIntervalSinceNow: -elapsedTime)
         pollTime()
-        print("TimerManager.resumeTime() called.")
     }
     
     private func debugProperties(label: String) {
