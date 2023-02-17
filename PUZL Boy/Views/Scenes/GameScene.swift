@@ -463,7 +463,7 @@ extension GameScene: ContinueSpriteDelegate {
     func didTapWatchAd() {
         AdMobManager.shared.presentRewarded { (adReward) in
             // FIXME: - Why grant the reward here, when I can grant it in ad did dismiss down below???
-            print("You were rewarded: \(adReward.amount) lives!!!!!")
+            print("You were rewarded: \(adReward.amount) lives!")
         }
     }
     

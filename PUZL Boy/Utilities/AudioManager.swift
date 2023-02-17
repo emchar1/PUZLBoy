@@ -108,6 +108,7 @@ class AudioManager {
         addAudioItem("overworld4", category: .music)
         addAudioItem("overworld5", category: .music)
         addAudioItem("overworld6", category: .music)
+        addAudioItem("overworld7", category: .music)
     }
 
     /**

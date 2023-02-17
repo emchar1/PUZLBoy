@@ -7,6 +7,7 @@
 
 import Foundation
 
+// TODO: - Spawns more lives after time elapsed.
 class LifeSpawnerModel {
 
     // MARK: - Properties

@@ -25,7 +25,8 @@
 		EA34678A2998574B002DDA02 /* buttontapOLD.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA3467892998574B002DDA02 /* buttontapOLD.mp3 */; };
 		EA34678E2998ED50002DDA02 /* LifeSpawnerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA34678D2998ED50002DDA02 /* LifeSpawnerModel.swift */; };
 		EA346791299B535F002DDA02 /* LevelStats.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA346790299B535F002DDA02 /* LevelStats.swift */; };
-		EA346793299C0231002DDA02 /* buttontap.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA346792299C0231002DDA02 /* buttontap.mp3 */; };
+		EA34679929A03A19002DDA02 /* overworld7.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA34679829A03A19002DDA02 /* overworld7.mp3 */; };
+		EA34679B29A03A6B002DDA02 /* buttontap.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA34679A29A03A6A002DDA02 /* buttontap.mp3 */; };
 		EA3534892920612300C11FC0 /* DisplayStatusBarSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA3534882920612300C11FC0 /* DisplayStatusBarSprite.swift */; };
 		EA35348B29241FCD00C11FC0 /* LevelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA35348A29241FCD00C11FC0 /* LevelType.swift */; };
 		EA3951ED2938165A00D0B14A /* Extension+UIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA3951EC2938165A00D0B14A /* Extension+UIImage.swift */; };
@@ -156,7 +157,8 @@
 		EA3467892998574B002DDA02 /* buttontapOLD.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = buttontapOLD.mp3; path = "../../../../../../../Library/Mobile Documents/com~apple~CloudDocs/.Trash/buttontapOLD.mp3"; sourceTree = "<group>"; };
 		EA34678D2998ED50002DDA02 /* LifeSpawnerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LifeSpawnerModel.swift; sourceTree = "<group>"; };
 		EA346790299B535F002DDA02 /* LevelStats.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelStats.swift; sourceTree = "<group>"; };
-		EA346792299C0231002DDA02 /* buttontap.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = buttontap.mp3; path = "../../../../../../../Music/iTunes/iTunes Media/Music/Unknown Artist/Unknown Album/buttontap.mp3"; sourceTree = "<group>"; };
+		EA34679829A03A19002DDA02 /* overworld7.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = overworld7.mp3; sourceTree = "<group>"; };
+		EA34679A29A03A6A002DDA02 /* buttontap.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = buttontap.mp3; path = ../../../../../../../Downloads/buttontap.mp3; sourceTree = "<group>"; };
 		EA3534882920612300C11FC0 /* DisplayStatusBarSprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayStatusBarSprite.swift; sourceTree = "<group>"; };
 		EA35348A29241FCD00C11FC0 /* LevelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelType.swift; sourceTree = "<group>"; };
 		EA3951EC2938165A00D0B14A /* Extension+UIImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+UIImage.swift"; sourceTree = "<group>"; };
@@ -408,7 +410,7 @@
 				EA95D195294690B70061059C /* boydead.mp3 */,
 				EA95D1A1294691820061059C /* boygrunt1.mp3 */,
 				EA95D1A2294691820061059C /* boygrunt2.mp3 */,
-				EA346792299C0231002DDA02 /* buttontap.mp3 */,
+				EA34679A29A03A6A002DDA02 /* buttontap.mp3 */,
 				EA3467892998574B002DDA02 /* buttontapOLD.mp3 */,
 				EAACB4B82971E08A00973EB8 /* chatclose.mp3 */,
 				EA8F4588296CF35100AE21C5 /* chatopen2.mp3 */,
@@ -434,6 +436,7 @@
 				EA956C74292595F400879AD0 /* overworld4.mp3 */,
 				EA95D1AB294D08BB0061059C /* overworld5.mp3 */,
 				EA3467832996EBF2002DDA02 /* overworld6.mp3 */,
+				EA34679829A03A19002DDA02 /* overworld7.mp3 */,
 				EA04F5C7297BAEBB00A48BC2 /* pickupheart.mp3 */,
 				EAAEA3C92931F12B00221963 /* pickupitem.mp3 */,
 				EA826C772983DA1700F19F81 /* revive.mp3 */,
@@ -628,7 +631,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EA346793299C0231002DDA02 /* buttontap.mp3 in Resources */,
 				EAAEA3CA2931F12B00221963 /* pickupitem.mp3 in Resources */,
 				EA34678A2998574B002DDA02 /* buttontapOLD.mp3 in Resources */,
 				EAAEA3C62931F08300221963 /* gameover.mp3 in Resources */,
@@ -641,6 +643,7 @@
 				EA0F145F292994B00013038E /* movewalk.mp3 in Resources */,
 				EADEB3F02931526700CDB232 /* overworld_galaxy.mp3 in Resources */,
 				EA3467842996EBF2002DDA02 /* overworld6.mp3 in Resources */,
+				EA34679929A03A19002DDA02 /* overworld7.mp3 in Resources */,
 				EA0F145D292994330013038E /* moverun1.mp3 in Resources */,
 				EAAEA3C42931D0DA00221963 /* swordslash.mp3 in Resources */,
 				EADEB3EF2931526700CDB232 /* overworld_egg.mp3 in Resources */,
@@ -656,6 +659,7 @@
 				EA95D200295D83E40061059C /* Boogaloo-Regular.ttf in Resources */,
 				EA95D19B294690B70061059C /* boydead.mp3 in Resources */,
 				EA95D19E294690B70061059C /* boyattack2.mp3 in Resources */,
+				EA34679B29A03A6B002DDA02 /* buttontap.mp3 in Resources */,
 				EADEB3E92931404D00CDB232 /* dooropen.mp3 in Resources */,
 				EA0F146F2929D9C00013038E /* moverun4.mp3 in Resources */,
 				EA0F14702929D9C00013038E /* moverun3.mp3 in Resources */,

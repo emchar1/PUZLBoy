@@ -72,7 +72,7 @@ class DisplayLivesSprite: SKNode {
     
     // FIXME: - How to increment lives after continuing???
     func animateLives(newLives: Int) {
-        let speed: CGFloat = 0.05
+        let speed: CGFloat = min(0.8 / CGFloat(newLives), 0.05)
         var livesToIncrement = 0
         
         let incrementAction = SKAction.run { [unowned self] in
