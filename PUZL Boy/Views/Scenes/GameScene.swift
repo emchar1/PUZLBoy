@@ -16,7 +16,8 @@ class GameScene: SKScene {
     private var gameEngine: GameEngine
     private var scoringEngine: ScoringEngine
     private var chatEngine: ChatEngine
-    
+    private var levelStatsArray: [LevelStats]
+
     private var continueSprite = ContinueSprite()
     private var activityIndicator = ActivityIndicatorSprite()
     private var adSprite = SKSpriteNode()
@@ -48,10 +49,12 @@ class GameScene: SKScene {
             scoringEngine = ScoringEngine(elapsedTime: saveStateModel.elapsedTime,
                                           score: saveStateModel.score,
                                           totalScore: saveStateModel.totalScore)
+            levelStatsArray = saveStateModel.levelStatsArray
         }
         else {
             gameEngine = GameEngine(level: currentLevel, shouldSpawn: true)
             scoringEngine = ScoringEngine()
+            levelStatsArray = []
         }
         
         //chatEngine MUST be initialized here, and not in properties, otherwise it just refuses to show up!
@@ -95,7 +98,7 @@ class GameScene: SKScene {
             scoringEngine.timerManager.pauseTime()
         }
 
-        saveState(didWin: false)
+        saveState(levelStatsItem: getLevelStatsItem(level: currentLevel, didWin: false))
     }
     
     @objc private func appMovedToForeground() {
@@ -153,6 +156,7 @@ class GameScene: SKScene {
     
     // MARK: - Helper Functions
     
+    ///Starts the timer, used for scoring in the game.
     private func startTimer() {
         let wait = SKAction.wait(forDuration: 1.0)
         let block = SKAction.run { [unowned self] in
@@ -164,14 +168,33 @@ class GameScene: SKScene {
         run(SKAction.repeatForever(sequence), withKey: keyRunTimerAction)
     }
     
+    //Stops the timer when gameplay has been paused.
     private func stopTimer() {
         removeAction(forKey: keyRunTimerAction)
                 
         scoringEngine.updateLabels()
     }
     
-    private func saveState(didWin: Bool) {
+    /**
+     Saves the state of the gameplay, including elapsed time, current gameboard state, lives remaining, and player position.
+     - parameters:
+        - didWin: returns true if the level has been beat
+        - levelStatsItem: the current level stats to save to Firebase
+     */
+    private func saveState(levelStatsItem: LevelStats) {
         guard let user = user, LevelBuilder.maxLevel > 0 else { return }
+        
+        if levelStatsArray.filter({ $0 == levelStatsItem }).first != nil {
+            if let indexFound = levelStatsArray.firstIndex(where: { $0 == levelStatsItem }) {
+                print("Level \(levelStatsItem.level) already exists. Updating...")
+                
+                levelStatsArray[indexFound] = levelStatsItem
+            }
+        }
+        else {
+            print("Level \(levelStatsItem.level) is new. Adding...")
+            levelStatsArray.append(levelStatsItem)
+        }
         
         let levelModel = gameEngine.level.getLevelModel(
             level: currentLevel,
@@ -187,9 +210,10 @@ class GameScene: SKScene {
             elapsedTime: scoringEngine.timerManager.elapsedTime,
             livesRemaining: GameEngine.livesRemaining,
             usedContinue: GameEngine.usedContinue,
-            score: didWin ? 0 : scoringEngine.scoringManager.score,
-            totalScore: scoringEngine.scoringManager.totalScore + (didWin ? scoringEngine.scoringManager.score : 0),
+            score: levelStatsItem.didWin ? 0 : scoringEngine.scoringManager.score,
+            totalScore: scoringEngine.scoringManager.totalScore + (levelStatsItem.didWin ? scoringEngine.scoringManager.score : 0),
             winStreak: GameEngine.winStreak,
+            levelStatsArray: levelStatsArray,
             levelModel: levelModel,
             newLevel: levelModel.level,
             uid: user.uid)
@@ -197,6 +221,12 @@ class GameScene: SKScene {
         FIRManager.writeToFirestoreRecord(user: user, saveStateModel: saveStateModel)
     }
     
+    ///Creates and returns a Level Stat object, used in the saveState method.
+    private func getLevelStatsItem(level: Int, didWin: Bool) -> LevelStats {
+        return LevelStats(level: level, elapsedTime: scoringEngine.timerManager.elapsedTime, livesUsed: GameEngine.livesUsed, movesRemaining: gameEngine.movesRemaining, enemiesKilled: gameEngine.enemiesKilled, bouldersBroken: gameEngine.bouldersBroken, score: !didWin ? 0 : scoringEngine.scoringManager.score, didWin: didWin, inventory: gameEngine.level.inventory)
+    }
+    
+    ///Creates a new Game Engine and sets up the appropriate properties.
     private func newGame(level: Int, didWin: Bool) {
         removeAllChildren()
         
@@ -212,11 +242,11 @@ class GameScene: SKScene {
         
         // FIXME: - Do I need Interstitial Ads in my game?
         //Play interstitial ad
-        if level % 100 == 0 && level >= 20 && didWin {
-            prepareAd {
-                AdMobManager.shared.presentInterstitial()
-            }
-        }
+//        if level % 100 == 0 && level >= 20 && didWin {
+//            prepareAd {
+//                AdMobManager.shared.presentInterstitial()
+//            }
+//        }
     }
     
     private func prepareAd(completion: (() -> Void)?) {
@@ -293,6 +323,9 @@ extension GameScene: GameEngineDelegate {
         scoringEngine.animateScore(usedContinue: usedContinue)
         gameEngine.updateScores()
         stopTimer()
+        
+        //Need to preserve game states before restarting the level but after setting score, so it can save them to Firestore down below.
+        let levelStatsItem = getLevelStatsItem(level: currentLevel, didWin: true)
 
         GameCenterManager.shared.postScoreToLeaderboard(score: score, level: currentLevel)
         
@@ -310,9 +343,9 @@ extension GameScene: GameEngineDelegate {
             scoringEngine.timerManager.resetTime()
             startTimer()
             newGame(level: currentLevel, didWin: true)
-
-            //Write to Firestore
-            saveState(didWin: true)
+            
+            //Write to Firestore, MUST come after newGame()
+            saveState(levelStatsItem: levelStatsItem)
         }
     }
     
@@ -413,7 +446,7 @@ extension GameScene: AdMobManagerDelegate {
                 gameEngine.animateLives(newLives: lives)
                 gameEngine.setLivesRemaining(lives: lives)
 
-                saveState(didWin: false)
+                saveState(levelStatsItem: getLevelStatsItem(level: currentLevel, didWin: false))
                 
                 continueSprite.removeFromParent()
             }

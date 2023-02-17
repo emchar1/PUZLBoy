@@ -89,7 +89,7 @@ class AdMobManager: NSObject {
         
         GADRewardedAd.load(withAdUnitID: AdMobManager.rewardedID, request: request) { rewardedAd, error in
             guard error == nil else {
-                print("Error loeding the rewarded: \(error!.localizedDescription)")
+                print("Error loading the rewarded: \(error!.localizedDescription)")
                 return
             }
             

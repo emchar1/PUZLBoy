@@ -22,6 +22,7 @@ class GameEngine {
     
     private(set) static var livesRemaining: Int = 5
     private(set) static var usedContinue: Bool = false
+    private(set) static var livesUsed: Int = 0
     private(set) static var winStreak: Int = 0 {
         didSet {
             switch winStreak {
@@ -34,6 +35,7 @@ class GameEngine {
     }
 
     private(set) var level: Level
+    private(set) var levelStatsArray: [LevelStats] = []
     private(set) var gemsRemaining: Int
     private(set) var gemsCollected: Int = 0
     private(set) var healthRemaining: Int {
@@ -52,8 +54,8 @@ class GameEngine {
     private var shouldDisableControlInput = false
     private var shouldUpdateRemainingForBoulderIfIcy = false
     private var isGliding = false
-    private var enemiesKilled: Int = 0
-    private var bouldersBroken: Int = 0
+    private(set) var enemiesKilled: Int = 0
+    private(set) var bouldersBroken: Int = 0
     private var toolsCollected: Int = 0
     
     private var isExitAvailable: Bool { gemsRemaining == 0 }
@@ -103,6 +105,12 @@ class GameEngine {
             healthRemaining = saveStateModel.levelModel.health
             gemsRemaining = saveStateModel.levelModel.gemsRemaining
             gemsCollected = saveStateModel.levelModel.gemsCollected
+            
+            for item in saveStateModel.levelStatsArray {
+                let levelStatsItem = LevelStats(level: item.level, elapsedTime: item.elapsedTime, livesUsed: item.livesUsed, movesRemaining: item.movesRemaining, enemiesKilled: item.enemiesKilled, bouldersBroken: item.bouldersBroken, score: item.score, didWin: item.didWin, inventory: item.inventory)
+                
+                levelStatsArray.append(levelStatsItem)
+            }
         }
         else {
             //...unless newLevel doesn't match level #, then create a new level from newLevel.
@@ -120,6 +128,7 @@ class GameEngine {
         
         GameEngine.livesRemaining = saveStateModel.livesRemaining
         GameEngine.usedContinue = saveStateModel.usedContinue
+        GameEngine.livesUsed = saveStateModel.levelStatsArray.filter({ $0.level == level.level }).first?.livesUsed ?? GameEngine.livesUsed
         GameEngine.winStreak = saveStateModel.winStreak
         
         finishInit(shouldSpawn: true)
@@ -536,6 +545,7 @@ class GameEngine {
             delegate?.gameIsSolved(movesRemaining: movesRemaining, itemsFound: level.inventory.getItemCount(), enemiesKilled: enemiesKilled, usedContinue: GameEngine.usedContinue)
             
             GameEngine.usedContinue = false
+            GameEngine.livesUsed = 0
             GameEngine.winStreak += 1
             
             updateAchievements()
@@ -554,6 +564,7 @@ class GameEngine {
             
             GameEngine.livesRemaining -= 1
             GameEngine.usedContinue = true
+            GameEngine.livesUsed += 1
             GameEngine.winStreak = 0
             
             GameCenterManager.shared.updateProgress(achievement: .reckless, shouldReportImmediately: true)

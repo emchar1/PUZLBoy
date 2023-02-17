@@ -60,6 +60,7 @@ struct FIRManager {
                   let score = data["score"] as? Int,
                   let totalScore = data["totalScore"] as? Int,
                   let winStreak = data["winStreak"] as? Int,
+                  let levelStatsArray = data["levelStatsArray"] as? [[String : AnyObject]],
                   let levelModel = data["levelModel"] as? [String : AnyObject],
                   let newLevel = data["newLevel"] as? Int,
                   let uid = data["uid"] as? String else {
@@ -75,6 +76,7 @@ struct FIRManager {
                                        score: score,
                                        totalScore: totalScore,
                                        winStreak: winStreak,
+                                       levelStatsArray: getLevelStatsArray(from: levelStatsArray),
                                        levelModel: getLevelModel(from: levelModel),
                                        newLevel: newLevel,
                                        uid: uid))
@@ -89,6 +91,25 @@ struct FIRManager {
             return
         }
         
+        var levelStatsArray: [Any] = []
+        
+        for item in saveStateModel.levelStatsArray {
+            levelStatsArray.append([
+                "level": item.level,
+                "elapsedTime": item.elapsedTime,
+                "livesUsed": item.livesUsed,
+                "movesRemaining": item.movesRemaining,
+                "enemiesKilled": item.enemiesKilled,
+                "bouldersBroken": item.bouldersBroken,
+                "score": item.score,
+                "didWin": item.didWin,
+                "inventory": [
+                    "hammers": item.inventory.hammers,
+                    "swords": item.inventory.swords
+                ]
+            ])
+        }
+        
         let docRef = Firestore.firestore().collection("savedStates").document(user.uid)
         docRef.setData([
             "saveDate": Timestamp(date: saveStateModel.saveDate),
@@ -98,6 +119,7 @@ struct FIRManager {
             "score": saveStateModel.score,
             "totalScore": saveStateModel.totalScore,
             "winStreak": saveStateModel.winStreak,
+            "levelStatsArray": levelStatsArray,
             "levelModel": [
                 "level": saveStateModel.levelModel.level,
                 "moves": saveStateModel.levelModel.moves,
@@ -205,106 +227,141 @@ struct FIRManager {
     }//end writeToFirestoreRecord()
     
     
+    ///Helper function to create levelStats array from Firestore objects
+    private static func getLevelStatsArray(from objects: [[String : AnyObject]]) -> [LevelStats] {
+        var levelStatsArray: [LevelStats] = []
+        
+        for object in objects {
+            guard let level = object["level"] as? Int,
+                  let elapsedTime = object["elapsedTime"] as? TimeInterval,
+                  let livesUsed = object["livesUsed"] as? Int,
+                  let movesRemaining = object["movesRemaining"] as? Int,
+                  let enemiesKilled = object["enemiesKilled"] as? Int,
+                  let bouldersBroken = object["bouldersBroken"] as? Int,
+                  let score = object["score"] as? Int,
+                  let didWin = object["didWin"] as? Bool,
+                  let inventory = object["inventory"] as? [String : AnyObject] else {
+                break
+            }
+            
+            let inventoryData = Inventory(hammers: inventory["hammers"] as? Int ?? 0, swords: inventory["swords"] as? Int ?? 0)
+            let levelStats = LevelStats(level: level,
+                                        elapsedTime: elapsedTime,
+                                        livesUsed: livesUsed,
+                                        movesRemaining: movesRemaining,
+                                        enemiesKilled: enemiesKilled,
+                                        bouldersBroken: bouldersBroken,
+                                        score: score,
+                                        didWin: didWin,
+                                        inventory: inventoryData)
+            
+            levelStatsArray.append(levelStats)
+        }
+        
+        return levelStatsArray
+    }
+    
+    
     ///Helper function to create a levelModel from Firestore object
-    private static func getLevelModel(from obj: [String : AnyObject]) -> LevelModel {
+    private static func getLevelModel(from object: [String : AnyObject]) -> LevelModel {
         //If obj is bogus, then basically recreate level 1, but make it off by 1 gem (for debugging purposes)
-        let playerPosition = obj["playerPosition"] as? [String: AnyObject]
-        let inventory = obj["inventory"] as? [String: AnyObject]
+        let playerPosition = object["playerPosition"] as? [String : AnyObject]
+        let inventory = object["inventory"] as? [String : AnyObject]
         let levelModel = LevelModel(
-            level: obj["level"] as? Int ?? 1,
-            moves: obj["moves"] as? Int ?? 4,
-            health: obj["health"] as? Int ?? 1,
-            gemsCollected: obj["gemsCollected"] as? Int ?? 0,
-            gemsRemaining: obj["gemsRemaining"] as? Int ?? 1,
+            level: object["level"] as? Int ?? 1,
+            moves: object["moves"] as? Int ?? 4,
+            health: object["health"] as? Int ?? 1,
+            gemsCollected: object["gemsCollected"] as? Int ?? 0,
+            gemsRemaining: object["gemsRemaining"] as? Int ?? 1,
             playerPosition: PlayerPosition(row: playerPosition?["row"] as? Int ?? 0, col: playerPosition?["col"] as? Int ?? 0),
             inventory: Inventory(hammers: inventory?["hammers"] as? Int ?? 999, swords: inventory?["swords"] as? Int ?? 999),
             
             
             //TERRAIN
-            r0c0: obj["r0c0"] as? String ?? "start",
-            r0c1: obj["r0c1"] as? String ?? "grass",
-            r0c2: obj["r0c2"] as? String ?? "grass",
-            r0c3: obj["r0c3"] as? String ?? "",
-            r0c4: obj["r0c4"] as? String ?? "",
-            r0c5: obj["r0c5"] as? String ?? "",
+            r0c0: object["r0c0"] as? String ?? "start",
+            r0c1: object["r0c1"] as? String ?? "grass",
+            r0c2: object["r0c2"] as? String ?? "grass",
+            r0c3: object["r0c3"] as? String ?? "",
+            r0c4: object["r0c4"] as? String ?? "",
+            r0c5: object["r0c5"] as? String ?? "",
             
-            r1c0: obj["r1c0"] as? String ?? "grass",
-            r1c1: obj["r1c1"] as? String ?? "grass",
-            r1c2: obj["r1c2"] as? String ?? "grass",
-            r1c3: obj["r1c3"] as? String ?? "",
-            r1c4: obj["r1c4"] as? String ?? "",
-            r1c5: obj["r1c5"] as? String ?? "",
+            r1c0: object["r1c0"] as? String ?? "grass",
+            r1c1: object["r1c1"] as? String ?? "grass",
+            r1c2: object["r1c2"] as? String ?? "grass",
+            r1c3: object["r1c3"] as? String ?? "",
+            r1c4: object["r1c4"] as? String ?? "",
+            r1c5: object["r1c5"] as? String ?? "",
             
-            r2c0: obj["r2c0"] as? String ?? "grass",
-            r2c1: obj["r2c1"] as? String ?? "grass",
-            r2c2: obj["r2c2"] as? String ?? "endClosed",
-            r2c3: obj["r2c3"] as? String ?? "",
-            r2c4: obj["r2c4"] as? String ?? "",
-            r2c5: obj["r2c5"] as? String ?? "",
+            r2c0: object["r2c0"] as? String ?? "grass",
+            r2c1: object["r2c1"] as? String ?? "grass",
+            r2c2: object["r2c2"] as? String ?? "endClosed",
+            r2c3: object["r2c3"] as? String ?? "",
+            r2c4: object["r2c4"] as? String ?? "",
+            r2c5: object["r2c5"] as? String ?? "",
             
-            r3c0: obj["r3c0"] as? String ?? "",
-            r3c1: obj["r3c1"] as? String ?? "",
-            r3c2: obj["r3c2"] as? String ?? "",
-            r3c3: obj["r3c3"] as? String ?? "",
-            r3c4: obj["r3c4"] as? String ?? "",
-            r3c5: obj["r3c5"] as? String ?? "",
+            r3c0: object["r3c0"] as? String ?? "",
+            r3c1: object["r3c1"] as? String ?? "",
+            r3c2: object["r3c2"] as? String ?? "",
+            r3c3: object["r3c3"] as? String ?? "",
+            r3c4: object["r3c4"] as? String ?? "",
+            r3c5: object["r3c5"] as? String ?? "",
             
-            r4c0: obj["r4c0"] as? String ?? "",
-            r4c1: obj["r4c1"] as? String ?? "",
-            r4c2: obj["r4c2"] as? String ?? "",
-            r4c3: obj["r4c3"] as? String ?? "",
-            r4c4: obj["r4c4"] as? String ?? "",
-            r4c5: obj["r4c5"] as? String ?? "",
+            r4c0: object["r4c0"] as? String ?? "",
+            r4c1: object["r4c1"] as? String ?? "",
+            r4c2: object["r4c2"] as? String ?? "",
+            r4c3: object["r4c3"] as? String ?? "",
+            r4c4: object["r4c4"] as? String ?? "",
+            r4c5: object["r4c5"] as? String ?? "",
             
-            r5c0: obj["r5c0"] as? String ?? "",
-            r5c1: obj["r5c1"] as? String ?? "",
-            r5c2: obj["r5c2"] as? String ?? "",
-            r5c3: obj["r5c3"] as? String ?? "",
-            r5c4: obj["r5c4"] as? String ?? "",
-            r5c5: obj["r5c5"] as? String ?? "",
+            r5c0: object["r5c0"] as? String ?? "",
+            r5c1: object["r5c1"] as? String ?? "",
+            r5c2: object["r5c2"] as? String ?? "",
+            r5c3: object["r5c3"] as? String ?? "",
+            r5c4: object["r5c4"] as? String ?? "",
+            r5c5: object["r5c5"] as? String ?? "",
             
             //OVERLAYS
-            s0d0: obj["s0d0"] as? String ?? "",
-            s0d1: obj["s0d1"] as? String ?? "gem",
-            s0d2: obj["s0d2"] as? String ?? "",
-            s0d3: obj["s0d3"] as? String ?? "",
-            s0d4: obj["s0d4"] as? String ?? "",
-            s0d5: obj["s0d5"] as? String ?? "",
+            s0d0: object["s0d0"] as? String ?? "",
+            s0d1: object["s0d1"] as? String ?? "gem",
+            s0d2: object["s0d2"] as? String ?? "",
+            s0d3: object["s0d3"] as? String ?? "",
+            s0d4: object["s0d4"] as? String ?? "",
+            s0d5: object["s0d5"] as? String ?? "",
             
-            s1d0: obj["s1d0"] as? String ?? "",
-            s1d1: obj["s1d1"] as? String ?? "",
-            s1d2: obj["s1d2"] as? String ?? "",
-            s1d3: obj["s1d3"] as? String ?? "",
-            s1d4: obj["s1d4"] as? String ?? "",
-            s1d5: obj["s1d5"] as? String ?? "",
+            s1d0: object["s1d0"] as? String ?? "",
+            s1d1: object["s1d1"] as? String ?? "",
+            s1d2: object["s1d2"] as? String ?? "",
+            s1d3: object["s1d3"] as? String ?? "",
+            s1d4: object["s1d4"] as? String ?? "",
+            s1d5: object["s1d5"] as? String ?? "",
             
-            s2d0: obj["s2d0"] as? String ?? "",
-            s2d1: obj["s2d1"] as? String ?? "",
-            s2d2: obj["s2d2"] as? String ?? "",
-            s2d3: obj["s2d3"] as? String ?? "",
-            s2d4: obj["s2d4"] as? String ?? "",
-            s2d5: obj["s2d5"] as? String ?? "",
+            s2d0: object["s2d0"] as? String ?? "",
+            s2d1: object["s2d1"] as? String ?? "",
+            s2d2: object["s2d2"] as? String ?? "",
+            s2d3: object["s2d3"] as? String ?? "",
+            s2d4: object["s2d4"] as? String ?? "",
+            s2d5: object["s2d5"] as? String ?? "",
             
-            s3d0: obj["s3d0"] as? String ?? "",
-            s3d1: obj["s3d1"] as? String ?? "",
-            s3d2: obj["s3d2"] as? String ?? "",
-            s3d3: obj["s3d3"] as? String ?? "",
-            s3d4: obj["s3d4"] as? String ?? "",
-            s3d5: obj["s3d5"] as? String ?? "",
+            s3d0: object["s3d0"] as? String ?? "",
+            s3d1: object["s3d1"] as? String ?? "",
+            s3d2: object["s3d2"] as? String ?? "",
+            s3d3: object["s3d3"] as? String ?? "",
+            s3d4: object["s3d4"] as? String ?? "",
+            s3d5: object["s3d5"] as? String ?? "",
             
-            s4d0: obj["s4d0"] as? String ?? "",
-            s4d1: obj["s4d1"] as? String ?? "",
-            s4d2: obj["s4d2"] as? String ?? "",
-            s4d3: obj["s4d3"] as? String ?? "",
-            s4d4: obj["s4d4"] as? String ?? "",
-            s4d5: obj["s4d5"] as? String ?? "",
+            s4d0: object["s4d0"] as? String ?? "",
+            s4d1: object["s4d1"] as? String ?? "",
+            s4d2: object["s4d2"] as? String ?? "",
+            s4d3: object["s4d3"] as? String ?? "",
+            s4d4: object["s4d4"] as? String ?? "",
+            s4d5: object["s4d5"] as? String ?? "",
             
-            s5d0: obj["s5d0"] as? String ?? "",
-            s5d1: obj["s5d1"] as? String ?? "",
-            s5d2: obj["s5d2"] as? String ?? "",
-            s5d3: obj["s5d3"] as? String ?? "",
-            s5d4: obj["s5d4"] as? String ?? "",
-            s5d5: obj["s5d5"] as? String ?? ""
+            s5d0: object["s5d0"] as? String ?? "",
+            s5d1: object["s5d1"] as? String ?? "",
+            s5d2: object["s5d2"] as? String ?? "",
+            s5d3: object["s5d3"] as? String ?? "",
+            s5d4: object["s5d4"] as? String ?? "",
+            s5d5: object["s5d5"] as? String ?? ""
         )
         
         return levelModel

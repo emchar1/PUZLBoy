@@ -11,6 +11,11 @@ class StoreReviewManager {
     
     // MARK: - Properties
     
+    private var reviewCount: Int
+    private let reviewMax = 4
+    private var levelRestartCount = 0
+    private let levelRestartMax = 10
+    
     static var shared: StoreReviewManager = {
         let manager = StoreReviewManager()
         
@@ -18,11 +23,6 @@ class StoreReviewManager {
         
         return manager
     }()
-    
-    private var reviewCount: Int
-    private var reviewMax = 4
-    private var levelRestartCount = 0
-    private let levelRestartMax = 10
     
     
     // MARK: - Initialization

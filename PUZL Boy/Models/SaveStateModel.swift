@@ -17,6 +17,7 @@ struct SaveStateModel: Identifiable, Codable {
     let score: Int
     let totalScore: Int
     let winStreak: Int
+    let levelStatsArray: [LevelStats]
     let levelModel: LevelModel
     let newLevel: Int
     let uid: String
