@@ -76,8 +76,7 @@ struct K {
     struct UserDefaults {
         //UserDefault Keys
         static let soundIsMuted = "SoundIsMuted"
-        static let hintsAreOff = "HintsAreOff"
-        static let launchedBefore = "LaunchedBefore"
         static let reviewStoreCount = "ReviewStoreCount"
+        static let savedTime = "SavedTimeForReplenishLives"
     }
 }

@@ -9,7 +9,7 @@ import SpriteKit
 
 protocol GameEngineDelegate: AnyObject {
     func gameIsSolved(movesRemaining: Int, itemsFound: Int, enemiesKilled: Int, usedContinue: Bool)
-    func gameIsOver()
+    func gameIsOver(firstTimeCalled: Bool)
     func enemyIsKilled()
 }
 
@@ -572,7 +572,7 @@ class GameEngine {
             StoreReviewManager.shared.incrementCount()
 
             playerSprite.startDeadAnimation {
-                self.delegate?.gameIsOver()
+                self.delegate?.gameIsOver(firstTimeCalled: true)
             }
         }
     }
@@ -624,11 +624,11 @@ class GameEngine {
         displaySprite.statusLives.animateLives(newLives: newLives)
     }
     
-    func shouldPlayAdOnStartup() {
+    func checkIfGameOverOnStartup() {
         if !canContinue {
             print("Can't continue from GameEngine.shouldPlayAdOnStartup()... running delegate?.gameIsOver()...")
             AudioManager.shared.stopSound(for: AudioManager.shared.overworldTheme)
-            delegate?.gameIsOver()
+            delegate?.gameIsOver(firstTimeCalled: false)
         }
     }
     

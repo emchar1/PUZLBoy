@@ -136,7 +136,7 @@ class ChatEngine {
             SKAction.scale(to: origScale, duration: startNewChat ? 0.4 : 0)
         ])) { [unowned self] in
             if startNewChat {
-                AudioManager.shared.playSound(for: "chatopen2")
+                AudioManager.shared.playSound(for: "chatopen")
             }
             
             timer = Timer.scheduledTimer(timeInterval: chatSpeed, target: self, selector: #selector(animateText(_:)), userInfo: nil, repeats: true)

@@ -77,7 +77,7 @@ class AudioManager {
         addAudioItem("boygrunt2", category: .soundFX)
         addAudioItem("buttontap", category: .soundFX)
         addAudioItem("chatclose", category: .soundFX)
-        addAudioItem("chatopen2", category: .soundFX)
+        addAudioItem("chatopen", category: .soundFX)
         addAudioItem("dooropen", category: .soundFX)
         addAudioItem("enemydeath", category: .soundFX)
         addAudioItem("gameover", category: .soundFX)

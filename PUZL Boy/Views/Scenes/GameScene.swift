@@ -22,7 +22,8 @@ class GameScene: SKScene {
     private var activityIndicator = ActivityIndicatorSprite()
     private var adSprite = SKSpriteNode()
     private var user: User?
-    private let keyRunTimerAction = "runTimerAction"
+    private let keyRunGameTimerAction = "runGameTimerAction"
+    private let keyRunReplenishLivesTimerAction = "runReplenishLivesTimerAction"
 
     private var currentLevel: Int = 1 {
         // FIXME: - Debuging purposes only!!!
@@ -81,44 +82,61 @@ class GameScene: SKScene {
         let notificationCenter = NotificationCenter.default
         notificationCenter.addObserver(self, selector: #selector(appMovedToBackground), name: UIApplication.willResignActiveNotification, object: nil)
         notificationCenter.addObserver(self, selector: #selector(appMovedToForeground), name: UIApplication.didBecomeActiveNotification, object: nil)
-        
-        // TODO: - Timer for when lives refresh again.
-        notificationCenter.addObserver(self, selector: #selector(appWillConnect), name: UIScene.willConnectNotification, object: nil)
-        notificationCenter.addObserver(self, selector: #selector(appDidDisconnect), name: UIScene.didDisconnectNotification, object: nil)
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
+    
+    // MARK: - Notification Center Functions
+    
     //Save Level/Gameboard state
     @objc private func appMovedToBackground() {
-        if action(forKey: keyRunTimerAction) != nil {
+        if action(forKey: keyRunGameTimerAction) != nil {
             //Only pause/resume time if there's an active timer going, i.e. timer is started!
             scoringEngine.timerManager.pauseTime()
         }
 
+        if gameEngine.canContinue {
+            LifeSpawnerModel.shared.removeAllNotifications()
+            LifeSpawnerModel.shared.scheduleNotification(title: "Play Again?", duration: LifeSpawnerModel.durationReminder, repeats: true)
+        }
+        
         saveState(levelStatsItem: getLevelStatsItem(level: currentLevel, didWin: false))
     }
     
     @objc private func appMovedToForeground() {
-        if action(forKey: keyRunTimerAction) != nil {
+        if action(forKey: keyRunGameTimerAction) != nil {
             scoringEngine.timerManager.resumeTime()
         }
+        
+        runReplenishLivesTimer()
     }
     
-    // TODO: - Start Timer for More Lives
-    @objc private func appWillConnect() {
-        print("------------connecting.... livesRemaining: \(GameEngine.livesRemaining)")
-        if GameEngine.livesRemaining == 0 {
-            print("------------------Has it been 3 hours? If so, grant X lives, else keep waiting⏰")
+    private func runReplenishLivesTimer() {
+        removeAction(forKey: keyRunReplenishLivesTimerAction)
+        
+        let wait = SKAction.wait(forDuration: 1.0)
+        let block = SKAction.run {
+            do {
+                let timeToReplenishLives = try LifeSpawnerModel.shared.getTimeToFinish(finishTime: LifeSpawnerModel.durationMoreLives)
+                
+                if timeToReplenishLives <= 0 {
+                    self.removeAction(forKey: self.keyRunReplenishLivesTimerAction)
+                    
+                    self.restartLevel(lives: LifeSpawnerModel.lives)
+                }
+                
+                self.continueSprite.updateTimeToReplenishLives(time: timeToReplenishLives)
+            }
+            catch {
+                print(error.localizedDescription)
+            }
         }
-    }
-    
-    @objc private func appDidDisconnect() {
-        if GameEngine.livesRemaining < 10 {
-            print("------------------Let Timer begin... 3 hours")
-        }
+        let sequence = SKAction.sequence([wait, block])
+        
+        run(SKAction.repeatForever(sequence), withKey: keyRunReplenishLivesTimerAction)
     }
     
     
@@ -146,7 +164,7 @@ class GameScene: SKScene {
         startTimer()
         playDialogue()
         
-        gameEngine.shouldPlayAdOnStartup()
+        gameEngine.checkIfGameOverOnStartup()
     }
     
     override func update(_ currentTime: TimeInterval) {
@@ -165,12 +183,12 @@ class GameScene: SKScene {
         }
         let sequence = SKAction.sequence([wait, block])
         
-        run(SKAction.repeatForever(sequence), withKey: keyRunTimerAction)
+        run(SKAction.repeatForever(sequence), withKey: keyRunGameTimerAction)
     }
     
     //Stops the timer when gameplay has been paused.
     private func stopTimer() {
-        removeAction(forKey: keyRunTimerAction)
+        removeAction(forKey: keyRunGameTimerAction)
                 
         scoringEngine.updateLabels()
     }
@@ -349,12 +367,22 @@ extension GameScene: GameEngineDelegate {
         }
     }
     
-    func gameIsOver() {
+    func gameIsOver(firstTimeCalled: Bool) {
         if !gameEngine.canContinue {
             prepareAd { [unowned self] in
                 addChild(continueSprite)
                 continueSprite.animateShow {}
             }
+                
+            if firstTimeCalled {
+                LifeSpawnerModel.shared.removeAllNotifications()
+                LifeSpawnerModel.shared.scheduleNotification(title: "\(LifeSpawnerModel.lives) Lives Granted!",
+                                                             duration: LifeSpawnerModel.durationMoreLives, repeats: false)
+                
+                LifeSpawnerModel.shared.setTimer()
+            }
+            
+            runReplenishLivesTimer()
         }
         else {
             scoringEngine.scoringManager.resetScore()
@@ -465,6 +493,8 @@ extension GameScene: ContinueSpriteDelegate {
             // FIXME: - Why grant the reward here, when I can grant it in ad did dismiss down below???
             print("You were rewarded: \(adReward.amount) lives!")
         }
+        
+        LifeSpawnerModel.shared.removeAllNotifications()
     }
     
     func didTapBuyButton() {
@@ -474,6 +504,7 @@ extension GameScene: ContinueSpriteDelegate {
         }
         
         IAPManager.shared.buyProduct(productToPurchase)
+        LifeSpawnerModel.shared.removeAllNotifications()
     }
 }
 

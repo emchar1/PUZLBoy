@@ -19,6 +19,7 @@ class ContinueSprite: SKNode {
     static let extraLivesAd = 2
     static let extraLivesBuy = 25
     
+    private let livesRefreshLabel: SKLabelNode
     private(set) var backgroundSprite: SKShapeNode
     private(set) var watchAdButton: DecisionButtonSprite
     private(set) var buyButton: DecisionButtonSprite
@@ -36,6 +37,8 @@ class ContinueSprite: SKNode {
         backgroundSprite.lineWidth = 12
         backgroundSprite.strokeColor = .white
         backgroundSprite.setScale(GameboardSprite.spriteScale)
+        
+        livesRefreshLabel = SKLabelNode(text: "Or wait for \(LifeSpawnerModel.lives) lives in: 99:99:99")
         
         watchAdButton = DecisionButtonSprite(text: "Watch Ad:      x\(ContinueSprite.extraLivesAd)",
                                              color: UIColor(red: 9 / 255, green: 132 / 255, blue: 227 / 255, alpha: 1.0))
@@ -55,8 +58,6 @@ class ContinueSprite: SKNode {
         continueLabel.fontColor = UIFont.gameFontColor
         continueLabel.position = CGPoint(x: 0, y: K.ScreenDimensions.iPhoneWidth / 4 - 80)
         
-        // FIXME: - More lives in 3 hours...
-        let livesRefreshLabel = SKLabelNode(text: "")//"...or wait for 5 lives in: 03:00")
         livesRefreshLabel.fontName = UIFont.chatFont
         livesRefreshLabel.fontSize = UIFont.chatFontSize
         livesRefreshLabel.fontColor = UIFont.chatFontColor
@@ -114,5 +115,12 @@ class ContinueSprite: SKNode {
         }
     }
     
-    
+    func updateTimeToReplenishLives(time: TimeInterval) {
+        let interval = Int(time)
+        let hours = max(0, (interval / 3600))
+        let minutes = max(0, (interval / 60) % 60)
+        let seconds = max(0, interval % 60)
+
+        livesRefreshLabel.text = "Or wait for \(LifeSpawnerModel.lives) lives in: " + String(format: "%02d:%02d:%02d", hours, minutes, seconds)
+    }
 }
