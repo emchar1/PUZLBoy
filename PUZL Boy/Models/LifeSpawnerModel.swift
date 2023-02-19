@@ -64,7 +64,7 @@ class LifeSpawnerModel {
         content.sound = .none
         content.badge = 1
         
-        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: repeats ? min(60, duration) : duration, repeats: repeats)
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: repeats ? max(60, duration) : duration, repeats: repeats)
         let request = UNNotificationRequest.init(identifier: UUID().uuidString, content: content, trigger: trigger)
         
         center.add(request)
@@ -84,6 +84,10 @@ class LifeSpawnerModel {
     
     func setTimer() {
         UserDefaults.standard.set(Date(), forKey: K.UserDefaults.savedTime)
+    }
+    
+    func removeTimer() {
+        UserDefaults.standard.set(nil, forKey: K.UserDefaults.savedTime)
     }
     
     func getTimeToFinish(finishTime: TimeInterval) throws -> TimeInterval {

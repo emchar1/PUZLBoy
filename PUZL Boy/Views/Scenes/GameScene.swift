@@ -111,11 +111,16 @@ class GameScene: SKScene {
             scoringEngine.timerManager.resumeTime()
         }
         
-        runReplenishLivesTimer()
+        if !gameEngine.canContinue {
+            runReplenishLivesTimer()
+        }
     }
     
     private func runReplenishLivesTimer() {
-        removeAction(forKey: keyRunReplenishLivesTimerAction)
+        guard action(forKey: keyRunReplenishLivesTimerAction) == nil else {
+            print("keyRunReplenishLivesTimerAction already active! Returning...")
+            return
+        }
         
         let wait = SKAction.wait(forDuration: 1.0)
         let block = SKAction.run {
@@ -129,9 +134,11 @@ class GameScene: SKScene {
                 }
                 
                 self.continueSprite.updateTimeToReplenishLives(time: timeToReplenishLives)
+                print("Time to replenish: \(timeToReplenishLives)")
             }
             catch {
-                print(error.localizedDescription)
+                self.removeAction(forKey: self.keyRunReplenishLivesTimerAction)
+                print("runReplenishLivesTimer() error: \(error.localizedDescription)")
             }
         }
         let sequence = SKAction.sequence([wait, block])
@@ -477,6 +484,9 @@ extension GameScene: AdMobManagerDelegate {
                 saveState(levelStatsItem: getLevelStatsItem(level: currentLevel, didWin: false))
                 
                 continueSprite.removeFromParent()
+                
+                LifeSpawnerModel.shared.removeTimer()
+                LifeSpawnerModel.shared.removeAllNotifications()
             }
         }
     }
@@ -493,8 +503,6 @@ extension GameScene: ContinueSpriteDelegate {
             // FIXME: - Why grant the reward here, when I can grant it in ad did dismiss down below???
             print("You were rewarded: \(adReward.amount) lives!")
         }
-        
-        LifeSpawnerModel.shared.removeAllNotifications()
     }
     
     func didTapBuyButton() {
@@ -504,7 +512,6 @@ extension GameScene: ContinueSpriteDelegate {
         }
         
         IAPManager.shared.buyProduct(productToPurchase)
-        LifeSpawnerModel.shared.removeAllNotifications()
     }
 }
 
