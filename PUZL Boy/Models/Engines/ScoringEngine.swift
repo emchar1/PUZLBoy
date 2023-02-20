@@ -148,15 +148,24 @@ class ScoringEngine {
     }
     
     func animateScore(usedContinue: Bool) {
-        scoreLabel.run(SKAction.sequence([scaleScoreAnimation(), SKAction.wait(forDuration: 1.0), incrementScoreAnimation()]))
+        scoreLabel.run(SKAction.sequence([
+            scaleScoreAnimation(fontColor: .cyan),
+            SKAction.wait(forDuration: 1.0),
+            incrementScoreAnimation()
+        ]))
         
         ScoringEngine.addScoreAnimation(score: getTimeScore(),
                                         usedContinue: usedContinue,
                                         originSprite: elapsedTimeLabel,
                                         location: CGPoint(x: elapsedTimeLabel.frame.width / 2, y: 0))
     }
+
+    ///Use this womp-womp animation because player skipped the level (but paid $1.99!)
+    func scaleScoreLabelDidSkipLevel() {
+        scoreLabel.run(scaleScoreAnimation(fontColor: .red))
+    }
     
-    private func scaleScoreAnimation() -> SKAction {
+    private func scaleScoreAnimation(fontColor: UIColor) -> SKAction {
         let scaleUpDuration: TimeInterval = 0.125
         let scaleDownDuration: TimeInterval = 0.5
         let scaleCount = 250
@@ -176,7 +185,7 @@ class ScoringEngine {
         let scaleUpRepeat = SKAction.repeat(SKAction.sequence([waitUp, scaleUpAction]), count: scaleCount)
         let scaleDownRepeat = SKAction.repeat(SKAction.sequence([waitDown, scaleDownAction]), count: scaleCount)
 
-        let scaleUpColor = SKAction.colorize(with: .cyan, colorBlendFactor: 0.75, duration: scaleUpDuration)
+        let scaleUpColor = SKAction.colorize(with: fontColor, colorBlendFactor: 0.75, duration: scaleUpDuration)
         let scaleDownColor = SKAction.colorize(withColorBlendFactor: 0.0, duration: scaleDownDuration)
         
         let scaleSequence = SKAction.sequence([

@@ -131,7 +131,7 @@ class GameScene: SKScene {
                 if timeToReplenishLives <= 0 {
                     self.removeAction(forKey: self.keyRunReplenishLivesTimerAction)
                     
-                    self.restartLevel(lives: LifeSpawnerModel.lives)
+                    self.restartLevel(lives: LifeSpawnerModel.defaultLives)
                 }
                 
                 self.continueSprite.updateTimeToReplenishLives(time: timeToReplenishLives)
@@ -384,7 +384,7 @@ extension GameScene: GameEngineDelegate {
                 
             if firstTimeCalled {
                 LifeSpawnerModel.shared.removeAllNotifications()
-                LifeSpawnerModel.shared.scheduleNotification(title: "\(LifeSpawnerModel.lives) Lives Granted!",
+                LifeSpawnerModel.shared.scheduleNotification(title: "\(LifeSpawnerModel.defaultLives) Lives Granted!",
                                                              duration: LifeSpawnerModel.durationMoreLives, repeats: false)
                 
                 LifeSpawnerModel.shared.setTimer()
@@ -472,19 +472,29 @@ extension GameScene: AdMobManagerDelegate {
         print("Reward failed. Now what...")
     }
     
-    private func restartLevel(lives: Int) {
+    private func restartLevel(shouldSkip shouldSkipLevel: Bool = false, lives: Int) {
         continueSprite.animateHide { [unowned self] in
             continueFromAd { [unowned self] in
                 AudioManager.shared.playSound(for: "revive")
             
                 scoringEngine.scoringManager.resetScore()
                 scoringEngine.updateLabels()
+                
+                //Make sure to save current state, and increment currentLevel if skipping ahead
+                if shouldSkipLevel {
+                    saveState(levelStatsItem: getLevelStatsItem(level: currentLevel, didWin: false))
 
+                    currentLevel += 1
+                    
+                    scoringEngine.scaleScoreLabelDidSkipLevel()
+                    scoringEngine.timerManager.resetTime()
+                }
+                
                 newGame(level: currentLevel, didWin: false)
-
+                
                 gameEngine.animateLives(newLives: lives)
                 gameEngine.setLivesRemaining(lives: lives)
-
+                
                 saveState(levelStatsItem: getLevelStatsItem(level: currentLevel, didWin: false))
                 
                 continueSprite.removeFromParent()
@@ -509,8 +519,13 @@ extension GameScene: ContinueSpriteDelegate {
         }
     }
     
-    func didTapFinishInstantly() {
-        print("Not yet implemented...")
+    func didTapSkipLevel() {
+        guard let productToPurchase = IAPManager.shared.allProducts.first(where: { $0.productIdentifier == IAPManager.skipLevel }) else {
+            print("Unable to find IAP: Skip Level ($1.99)")
+            return
+        }
+        
+        IAPManager.shared.buyProduct(productToPurchase)
     }
     
     func didTapBuy099Button() {
@@ -542,6 +557,9 @@ extension GameScene: IAPManagerDelegate {
         }
         else if transaction.payment.productIdentifier == IAPManager.lives100 {
             restartLevel(lives: ContinueSprite.extraLivesBuy299)
+        }
+        else if transaction.payment.productIdentifier == IAPManager.skipLevel {
+            restartLevel(shouldSkip: true, lives: LifeSpawnerModel.defaultLives)
         }
         
         activityIndicator.removeFromParent()

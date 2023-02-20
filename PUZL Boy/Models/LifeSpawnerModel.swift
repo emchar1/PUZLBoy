@@ -11,7 +11,7 @@ class LifeSpawnerModel {
 
     // MARK: - Properties
     
-    static let lives = 5
+    static let defaultLives = 5
     static let durationMoreLives: TimeInterval = 3 * 60 * 60
     static let durationReminder: TimeInterval = 24 * 60 * 60
     
@@ -68,15 +68,11 @@ class LifeSpawnerModel {
         let request = UNNotificationRequest.init(identifier: UUID().uuidString, content: content, trigger: trigger)
         
         center.add(request)
-        
-        print("Adding Notification for \(LifeSpawnerModel.lives) lives")
     }
     
     func removeAllNotifications() {
         center.removeAllDeliveredNotifications()
         center.removeAllPendingNotificationRequests()
-        
-        print("Removing Notification for \(LifeSpawnerModel.lives) lives")
     }
     
     
