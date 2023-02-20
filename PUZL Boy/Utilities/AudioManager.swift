@@ -99,6 +99,7 @@ class AudioManager {
         addAudioItem("winlevel", category: .soundFX)
         
         //Background music
+        addAudioItem("continueloop", category: .music)
         addAudioItem("overworld_egg", category: .music)
         addAudioItem("overworld_galaxy", category: .music)
         addAudioItem("overworld_throwback", category: .music)

@@ -379,7 +379,10 @@ extension GameScene: GameEngineDelegate {
         if !gameEngine.canContinue {
             prepareAd { [unowned self] in
                 addChild(continueSprite)
-                continueSprite.animateShow {}
+
+                continueSprite.animateShow {
+                    AudioManager.shared.playSound(for: "continueloop")
+                }
             }
                 
             if firstTimeCalled {
@@ -460,6 +463,7 @@ extension GameScene: AdMobManagerDelegate {
     func willPresentRewarded() {
         replenishLivesTimerOffset = Date()
         removeAction(forKey: keyRunReplenishLivesTimerAction)
+        AudioManager.shared.stopSound(for: "continueloop", fadeDuration: 0.5)
     }
     
     func didDismissRewarded() {
@@ -473,6 +477,8 @@ extension GameScene: AdMobManagerDelegate {
     }
     
     private func restartLevel(shouldSkip shouldSkipLevel: Bool = false, lives: Int) {
+        AudioManager.shared.stopSound(for: "continueloop")
+        
         continueSprite.animateHide { [unowned self] in
             continueFromAd { [unowned self] in
                 AudioManager.shared.playSound(for: "revive")
