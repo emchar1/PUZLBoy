@@ -86,6 +86,13 @@ class LifeSpawnerModel {
         UserDefaults.standard.set(Date(), forKey: K.UserDefaults.savedTime)
     }
     
+    func updateTimer(add timeInSeconds: TimeInterval) {
+        let savedTime = UserDefaults.standard.object(forKey: K.UserDefaults.savedTime) as? Date ?? Date()
+        let updatedTime = savedTime.addingTimeInterval(timeInSeconds)
+        
+        UserDefaults.standard.set(updatedTime, forKey: K.UserDefaults.savedTime)
+    }
+    
     func removeTimer() {
         UserDefaults.standard.set(nil, forKey: K.UserDefaults.savedTime)
     }

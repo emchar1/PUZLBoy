@@ -9,7 +9,9 @@ import SpriteKit
 
 protocol ContinueSpriteDelegate: AnyObject {
     func didTapWatchAd()
-    func didTapBuyButton()
+    func didTapFinishInstantly()
+    func didTapBuy099Button()
+    func didTapBuy299Button()
 }
 
 class ContinueSprite: SKNode {
@@ -17,12 +19,15 @@ class ContinueSprite: SKNode {
     // MARK: - Properties
     
     static let extraLivesAd = 2
-    static let extraLivesBuy = 25
+    static let extraLivesBuy099 = 25
+    static let extraLivesBuy299 = 100
     
     private let livesRefreshLabel: SKLabelNode
     private(set) var backgroundSprite: SKShapeNode
     private(set) var watchAdButton: DecisionButtonSprite
-    private(set) var buyButton: DecisionButtonSprite
+    private(set) var finishInstantlyButton: DecisionButtonSprite
+    private(set) var buy099Button: DecisionButtonSprite
+    private(set) var buy299Button: DecisionButtonSprite
     
     weak var delegate: ContinueSpriteDelegate?
 
@@ -30,7 +35,7 @@ class ContinueSprite: SKNode {
     // MARK: - Initialization
     
     override init() {
-        backgroundSprite = SKShapeNode(rectOf: CGSize(width: K.ScreenDimensions.iPhoneWidth, height: K.ScreenDimensions.iPhoneWidth / 2),
+        backgroundSprite = SKShapeNode(rectOf: CGSize(width: K.ScreenDimensions.iPhoneWidth, height: 2 * K.ScreenDimensions.iPhoneWidth / 3),
                                        cornerRadius: 20)
         backgroundSprite.fillColor = .systemGray
         backgroundSprite.fillTexture = SKTexture(image: UIImage.chatGradientTexture)
@@ -41,14 +46,28 @@ class ContinueSprite: SKNode {
         livesRefreshLabel = SKLabelNode(text: "Or wait for \(LifeSpawnerModel.lives) lives in: 99:99:99")
         
         watchAdButton = DecisionButtonSprite(text: "Watch Ad:      x\(ContinueSprite.extraLivesAd)",
-                                             color: UIColor(red: 9 / 255, green: 132 / 255, blue: 227 / 255, alpha: 1.0))
-        watchAdButton.position = CGPoint(x: -K.ScreenDimensions.iPhoneWidth / 4, y: -K.ScreenDimensions.iPhoneWidth / 8)
+                                             color: UIColor(red: 9 / 255, green: 132 / 255, blue: 227 / 255, alpha: 1.0),
+                                             iconImageName: "Run (6)")
+        watchAdButton.position = CGPoint(x: -K.ScreenDimensions.iPhoneWidth / 4, y: -K.ScreenDimensions.iPhoneWidth / 16)
         watchAdButton.name = "watchAdButton"
         
-        buyButton = DecisionButtonSprite(text: "Buy $0.99:      x\(ContinueSprite.extraLivesBuy)",
-                                         color: UIColor(red: 0 / 255, green: 148 / 255, blue: 96 / 255, alpha: 1.0))
-        buyButton.position = CGPoint(x: K.ScreenDimensions.iPhoneWidth / 4, y: -K.ScreenDimensions.iPhoneWidth / 8)
-        buyButton.name = "buyButton"
+        finishInstantlyButton = DecisionButtonSprite(text: "Buy $1.99: Skip Level",
+                                                     color: UIColor(red: 227 / 255, green: 148 / 255, blue: 9 / 255, alpha: 1.0),
+                                                     iconImageName: nil)
+        finishInstantlyButton.position = CGPoint(x: -K.ScreenDimensions.iPhoneWidth / 4, y: watchAdButton.position.y - 160)
+        finishInstantlyButton.name = "finishInstantlyButton"
+        
+        buy099Button = DecisionButtonSprite(text: "Buy $0.99:      x\(ContinueSprite.extraLivesBuy099)",
+                                            color: UIColor(red: 0 / 255, green: 148 / 255, blue: 96 / 255, alpha: 1.0),
+                                            iconImageName: "Run (6)")
+        buy099Button.position = CGPoint(x: K.ScreenDimensions.iPhoneWidth / 4, y: watchAdButton.position.y)
+        buy099Button.name = "buy099Button"
+        
+        buy299Button = DecisionButtonSprite(text: "Buy $2.99:      x\(ContinueSprite.extraLivesBuy299)",
+                                            color: UIColor(red: 0 / 255, green: 148 / 255, blue: 96 / 255, alpha: 1.0),
+                                            iconImageName: "Run (6)")
+        buy299Button.position = CGPoint(x: K.ScreenDimensions.iPhoneWidth / 4, y: watchAdButton.position.y - 160)
+        buy299Button.name = "buy299Button"
         
         super.init()
         
@@ -56,7 +75,7 @@ class ContinueSprite: SKNode {
         continueLabel.fontName = UIFont.gameFont
         continueLabel.fontSize = UIFont.gameFontSizeMedium
         continueLabel.fontColor = UIFont.gameFontColor
-        continueLabel.position = CGPoint(x: 0, y: K.ScreenDimensions.iPhoneWidth / 4 - 80)
+        continueLabel.position = CGPoint(x: 0, y: K.ScreenDimensions.iPhoneWidth / 4)
         
         livesRefreshLabel.fontName = UIFont.chatFont
         livesRefreshLabel.fontSize = UIFont.chatFontSize
@@ -71,7 +90,9 @@ class ContinueSprite: SKNode {
         backgroundSprite.addChild(continueLabel)
         backgroundSprite.addChild(livesRefreshLabel)
         backgroundSprite.addChild(watchAdButton)
-        backgroundSprite.addChild(buyButton)
+        backgroundSprite.addChild(finishInstantlyButton)
+        backgroundSprite.addChild(buy099Button)
+        backgroundSprite.addChild(buy299Button)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -107,9 +128,19 @@ class ContinueSprite: SKNode {
                 delegate?.didTapWatchAd()
                 return
             }
-            else if node.name == "buyButton" {
-                buyButton.tapButton()
-                delegate?.didTapBuyButton()
+            else if node.name == "finishInstantlyButton" {
+                finishInstantlyButton.tapButton()
+                delegate?.didTapFinishInstantly()
+                return
+            }
+            else if node.name == "buy099Button" {
+                buy099Button.tapButton()
+                delegate?.didTapBuy099Button()
+                return
+            }
+            else if node.name == "buy299Button" {
+                buy299Button.tapButton()
+                delegate?.didTapBuy299Button()
                 return
             }
         }

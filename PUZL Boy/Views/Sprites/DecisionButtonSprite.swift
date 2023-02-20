@@ -20,7 +20,7 @@ class DecisionButtonSprite: SKNode {
     
     // MARK: - Initialization
     
-    init(text: String, color: UIColor) {
+    init(text: String, color: UIColor, iconImageName: String?) {
         sprite = SKShapeNode(rectOf: buttonSize, cornerRadius: 12)
         sprite.fillColor = .clear
         sprite.lineWidth = 0
@@ -45,15 +45,18 @@ class DecisionButtonSprite: SKNode {
         textNode.fontColor = UIFont.chatFontColor
         textNode.position = CGPoint(x: 0, y: -18)
         
-        let iconNode = SKSpriteNode(imageNamed: "Run (6)")
-        iconNode.scale(to: CGSize(width: iconScale * Player.size.width / Player.size.height, height: iconScale))
-        iconNode.position = CGPoint(x: 65, y: 0)
+        if let iconImageName = iconImageName {
+            let iconNode = SKSpriteNode(imageNamed: iconImageName)
+            iconNode.scale(to: CGSize(width: iconScale * Player.size.width / Player.size.height, height: iconScale))
+            iconNode.position = CGPoint(x: 64, y: 0)
+
+            topSprite.addChild(iconNode)
+        }
 
         addChild(sprite)
         sprite.addChild(shadowSprite)
         sprite.addChild(topSprite)
         topSprite.addChild(textNode)
-        topSprite.addChild(iconNode)
     }
         
     func tapButton() {

@@ -22,6 +22,7 @@ class GameScene: SKScene {
     private var activityIndicator = ActivityIndicatorSprite()
     private var adSprite = SKSpriteNode()
     private var user: User?
+    private var replenishLivesTimerOffset: Date?
     private let keyRunGameTimerAction = "runGameTimerAction"
     private let keyRunReplenishLivesTimerAction = "runReplenishLivesTimerAction"
 
@@ -111,7 +112,7 @@ class GameScene: SKScene {
             scoringEngine.timerManager.resumeTime()
         }
         
-        if !gameEngine.canContinue {
+        if !gameEngine.canContinue && replenishLivesTimerOffset == nil {
             runReplenishLivesTimer()
         }
     }
@@ -457,10 +458,13 @@ extension GameScene: AdMobManagerDelegate {
     // MARK: - Rewarded Functions
     
     func willPresentRewarded() {
-        
+        replenishLivesTimerOffset = Date()
+        removeAction(forKey: keyRunReplenishLivesTimerAction)
     }
     
     func didDismissRewarded() {
+        pendingLivesReplenishmentTimerOffset()
+        
         restartLevel(lives: ContinueSprite.extraLivesAd)
     }
     
@@ -505,9 +509,22 @@ extension GameScene: ContinueSpriteDelegate {
         }
     }
     
-    func didTapBuyButton() {
+    func didTapFinishInstantly() {
+        print("Not yet implemented...")
+    }
+    
+    func didTapBuy099Button() {
         guard let productToPurchase = IAPManager.shared.allProducts.first(where: { $0.productIdentifier == IAPManager.lives25 }) else {
             print("Unable to find IAP: 25 Lives ($0.99)")
+            return
+        }
+        
+        IAPManager.shared.buyProduct(productToPurchase)
+    }
+    
+    func didTapBuy299Button() {
+        guard let productToPurchase = IAPManager.shared.allProducts.first(where: { $0.productIdentifier == IAPManager.lives100 }) else {
+            print("Unable to find IAP: 100 Lives ($2.99)")
             return
         }
         
@@ -520,15 +537,42 @@ extension GameScene: ContinueSpriteDelegate {
 
 extension GameScene: IAPManagerDelegate {
     func didCompletePurchase(transaction: SKPaymentTransaction) {
-        restartLevel(lives: ContinueSprite.extraLivesBuy)
+        if transaction.payment.productIdentifier == IAPManager.lives25 {
+            restartLevel(lives: ContinueSprite.extraLivesBuy099)
+        }
+        else if transaction.payment.productIdentifier == IAPManager.lives100 {
+            restartLevel(lives: ContinueSprite.extraLivesBuy299)
+        }
+        
         activityIndicator.removeFromParent()
+        
+        pendingLivesReplenishmentTimerOffset()
     }
     
     func purchaseDidFail(transaction: SKPaymentTransaction) {
         activityIndicator.removeFromParent()
+
+        pendingLivesReplenishmentTimerOffset()
     }
     
     func isPurchasing(transaction: SKPaymentTransaction) {
         activityIndicator.move(toParent: self)
+        
+        replenishLivesTimerOffset = Date()
+        removeAction(forKey: keyRunReplenishLivesTimerAction)
     }
+    
+    private func pendingLivesReplenishmentTimerOffset() {
+        guard let replenishLivesTimerOffset = replenishLivesTimerOffset else { return }
+
+        let newTimerOffset = Date()
+
+        LifeSpawnerModel.shared.updateTimer(add: newTimerOffset.timeIntervalSinceReferenceDate - replenishLivesTimerOffset.timeIntervalSinceReferenceDate)
+        
+        self.replenishLivesTimerOffset = nil
+
+        runReplenishLivesTimer()
+    }
+    
+    
 }
