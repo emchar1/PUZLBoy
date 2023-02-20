@@ -37,7 +37,7 @@ class ContinueSprite: SKNode {
     override init() {
         backgroundSprite = SKShapeNode(rectOf: CGSize(width: K.ScreenDimensions.iPhoneWidth, height: 2 * K.ScreenDimensions.iPhoneWidth / 3),
                                        cornerRadius: 20)
-        backgroundSprite.fillColor = .systemGray
+        backgroundSprite.fillColor = .gray
         backgroundSprite.fillTexture = SKTexture(image: UIImage.chatGradientTexture)
         backgroundSprite.lineWidth = 12
         backgroundSprite.strokeColor = .white

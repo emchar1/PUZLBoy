@@ -76,6 +76,7 @@ class GameScene: SKScene {
         // FIXME: - Debuging purposes only!!!
         levelSkipEngine.delegate = self
         
+        AudioManager.shared.stopSound(for: "continueloop")
         AudioManager.shared.playSound(for: AudioManager.shared.overworldTheme)
 
         scaleMode = .aspectFill
@@ -263,6 +264,7 @@ class GameScene: SKScene {
         playDialogue()
         
         if !didWin {
+            AudioManager.shared.stopSound(for: "continueloop")
             AudioManager.shared.playSound(for: AudioManager.shared.overworldTheme)
         }
         
