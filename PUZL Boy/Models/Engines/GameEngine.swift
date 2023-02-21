@@ -221,6 +221,12 @@ class GameEngine {
             consumeItem()
             
             playerSprite.startPowerUpAnimation()
+            
+            ScoringEngine.updateStatusIconsAnimation(icon: .hammer,
+                                                     amount: 1,
+                                                     originSprite: gameboardSprite.sprite,
+                                                     location: CGPoint(x: playerSprite.sprite.position.x,
+                                                                       y: playerSprite.sprite.position.y + 20))
             completion?()
         case .sword:
             displaySprite.statusSwords.pulseImage()
@@ -231,6 +237,12 @@ class GameEngine {
             consumeItem()
 
             playerSprite.startPowerUpAnimation()
+            
+            ScoringEngine.updateStatusIconsAnimation(icon: .sword,
+                                                     amount: 1,
+                                                     originSprite: gameboardSprite.sprite,
+                                                     location: CGPoint(x: playerSprite.sprite.position.x,
+                                                                       y: playerSprite.sprite.position.y + 20))
             completion?()
         case .heart:
             displaySprite.statusHealth.pulseImage()
@@ -240,6 +252,12 @@ class GameEngine {
             consumeItem()
             
             AudioManager.shared.playSound(for: "pickupheart")
+            
+            ScoringEngine.updateStatusIconsAnimation(icon: .health,
+                                                     amount: 1,
+                                                     originSprite: gameboardSprite.sprite,
+                                                     location: CGPoint(x: playerSprite.sprite.position.x,
+                                                                       y: playerSprite.sprite.position.y + 20))
             completion?()
         case .boulder:
             guard level.inventory.hammers > 0 else { return }
@@ -452,6 +470,12 @@ class GameEngine {
                 if self.level.getLevelType(at: nextPanel) == .marsh {
                     Haptics.shared.executeCustomPattern(pattern: .marsh)
                     self.playerSprite.startMarshEffectAnimation()
+                    
+                    ScoringEngine.updateStatusIconsAnimation(icon: .moves,
+                                                             amount: -2,
+                                                             originSprite: self.gameboardSprite.sprite,
+                                                             location: CGPoint(x: self.playerSprite.sprite.position.x,
+                                                                               y: self.playerSprite.sprite.position.y - 20))
                 }
 
                 //EXIT RECURSION
@@ -510,6 +534,12 @@ class GameEngine {
                     self.updateMovesRemaining(enemyAttacked: true) //...added here
                     self.shouldDisableControlInput = false
                 }
+                
+                ScoringEngine.updateStatusIconsAnimation(icon: .health,
+                                                         amount: -1,
+                                                         originSprite: gameboardSprite.sprite,
+                                                         location: CGPoint(x: playerSprite.sprite.position.x,
+                                                                           y: playerSprite.sprite.position.y - 20))
                                 
                 return false
             }

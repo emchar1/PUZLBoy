@@ -25,6 +25,10 @@ class ScoringEngine {
     var scoreLabel: SKLabelNode
     var elapsedTimeLabel: SKLabelNode
     
+    enum StatusIcon: String {
+        case health = "heart0", moves = "iconBoot", sword = "iconSword", hammer = "iconHammer"
+    }
+    
     
     // MARK: - Initialization
     
@@ -144,6 +148,45 @@ class ScoringEngine {
         
         pointsSprite.run(SKAction.group([moveUp, fadeOut])) {
             pointsSprite.removeFromParent()
+        }
+    }
+    
+    /**
+     Adds a floating status loss/gain animaton from an originSprite and a location. Use this static method directly from ScoringEngine.
+     - parameters:
+        - icon: the icon to use: health, moves, sword or hammer
+        - amount: Amount to adjust
+        - originSprite: The sprite from which to add the nodes as a child
+        - location: Location to place the containerNode
+     */
+    static func updateStatusIconsAnimation(icon: StatusIcon, amount: Int, originSprite: SKNode, location: CGPoint) {
+        let containerSprite = SKShapeNode(rectOf: CGSize(width: 160, height: 80))
+        containerSprite.fillColor = .clear
+        containerSprite.lineWidth = 0
+        containerSprite.position = location
+        containerSprite.zPosition = K.ZPosition.items
+        
+        let amountSprite = SKLabelNode(text: "\(amount > 0 ? "+" : "")\(amount)")
+        amountSprite.fontName = UIFont.gameFont
+        amountSprite.fontSize = UIFont.gameFontSizeMedium
+        amountSprite.fontColor = amount < 0 ? .red : .white
+        amountSprite.horizontalAlignmentMode = .center
+        amountSprite.verticalAlignmentMode = .center
+        amountSprite.position = .zero
+        
+        let iconSprite = SKSpriteNode(imageNamed: icon.rawValue)
+        iconSprite.scale(to: CGSize(width: 80, height: 80))
+        iconSprite.position = CGPoint(x: 60, y: 0)
+        
+        originSprite.addChild(containerSprite)
+        containerSprite.addChild(amountSprite)
+        containerSprite.addChild(iconSprite)
+
+        let moveUp = SKAction.move(by: CGVector(dx: 0, dy: 100), duration: 1.0)
+        let fadeOut = SKAction.sequence([SKAction.wait(forDuration: 0.75), SKAction.fadeOut(withDuration: 0.25)])
+        
+        containerSprite.run(SKAction.group([moveUp, fadeOut])) {
+            containerSprite.removeFromParent()
         }
     }
     
