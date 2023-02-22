@@ -357,9 +357,9 @@ class GameEngine {
      - parameter location: Location for which comparison is to occur.
      */
     func handleControls(in location: CGPoint) {
-        guard !isGameOver else { return }
-        guard !shouldDisableControlInput else { return }
-        guard !disableInputFromOutside else { return }
+        guard !isGameOver else { return print("Unable to move... isGameOver") }
+        guard !shouldDisableControlInput else { return print("Unable to move... shouldDisableControlInput") }
+        guard !disableInputFromOutside else { return print("Unable to move... disableInputFromOutside") }
 
         if inBounds(location: location, direction: .up) {
             movePlayerHelper(direction: .up)
@@ -656,7 +656,7 @@ class GameEngine {
     }
     
     func checkIfGameOverOnStartup() {
-        if !canContinue {
+        if !canContinue || isGameOver {
             print("Can't continue from GameEngine.shouldPlayAdOnStartup()... running delegate?.gameIsOver()...")
             AudioManager.shared.stopSound(for: AudioManager.shared.overworldTheme)
             delegate?.gameIsOver(firstTimeCalled: false)
