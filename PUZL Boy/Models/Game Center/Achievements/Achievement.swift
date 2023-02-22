@@ -77,14 +77,12 @@ enum Achievement: String, CaseIterable {
     static func isPUZLMasterAchieved() -> Bool {
         //First check if PUZL Master has already been obtained...
         if let puzlMasterAchievement = achievements[.puzlMaster], puzlMasterAchievement.isComplete {
-            print("Checking for PUZL Master... PUZL Master already completed.")
             return false
         }
 
         //...if not, check if all other achievements are complete
         for achievement in allAchievements {
             if !(achievement is AchievementPUZLMaster) && !achievement.isComplete {
-                print("Checking for PUZL Master... PUZL Master still in progress.")
                 return false
             }
         }

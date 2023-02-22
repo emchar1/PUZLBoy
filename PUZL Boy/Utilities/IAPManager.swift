@@ -91,14 +91,12 @@ extension IAPManager {
 
 extension IAPManager: SKProductsRequestDelegate {
     func productsRequest(_ request: SKProductsRequest, didReceive response: SKProductsResponse) {
-        print("Loaded list of products...")
-        
         let products = response.products
         productsRequestCompletionHandler?(true, products)
         clearRequestAndHandler()
         
         for product in products {
-            print("Found product: \(product.productIdentifier) \(product.localizedTitle) \(product.price.floatValue)")
+//            print("Found product: \(product.productIdentifier) \(product.localizedTitle) \(product.price.floatValue)")
             allProducts.append(product)
         }
     }

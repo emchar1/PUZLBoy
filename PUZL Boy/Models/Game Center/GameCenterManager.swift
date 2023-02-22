@@ -110,8 +110,6 @@ final class GameCenterManager: NSObject {
             guard let achievements = achievements else { return }
             
             Achievement.updateAchievements(achievements)
-
-            print("Achievements loaded!")
         }
     }
     
@@ -167,7 +165,6 @@ final class GameCenterManager: NSObject {
             guard error == nil else { return print("Error resetting achievements: \(error!.localizedDescription)") }
             
             self.loadAchievements()
-            print("Achievements reset!")
         }
     }
 }

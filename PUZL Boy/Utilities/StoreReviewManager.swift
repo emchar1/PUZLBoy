@@ -38,7 +38,7 @@ class StoreReviewManager {
         guard levelRestartCount < levelRestartMax else { return }
         
         levelRestartCount += 1
-        print("Incrementing winCount: \(levelRestartCount)")
+        print("Incrementing levelRestartCount: \(levelRestartCount)")
 
         //This should only run once, i.e. when the max is reached, then the guard statement prevents it from running again...
         if levelRestartCount >= levelRestartMax {

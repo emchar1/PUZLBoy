@@ -599,7 +599,8 @@ class GameEngine {
             
             GameCenterManager.shared.updateProgress(achievement: .reckless, shouldReportImmediately: true)
 
-            StoreReviewManager.shared.incrementCount()
+            //NEW 2/21/23 Don't increment the count if the player is losing. This might make them give a negative review...
+//            StoreReviewManager.shared.incrementCount()
 
             playerSprite.startDeadAnimation {
                 self.delegate?.gameIsOver(firstTimeCalled: true)

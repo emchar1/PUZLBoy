@@ -118,8 +118,6 @@ class AdMobManager: NSObject {
 
 extension AdMobManager: GADFullScreenContentDelegate {
     func ad(_ ad: GADFullScreenPresentingAd, didFailToPresentFullScreenContentWithError error: Error) {
-        print("Ad did fail to present full screen content.")
-        
         if ad.isEqual(interstitialAd) {
             delegate?.interstitialFailed()
         }
@@ -129,8 +127,6 @@ extension AdMobManager: GADFullScreenContentDelegate {
     }
     
     func adWillPresentFullScreenContent(_ ad: GADFullScreenPresentingAd) {
-        print("Ad will present full screen content.")
-        
         if ad.isEqual(interstitialAd) {
             delegate?.willPresentInterstitial()
         }
@@ -145,12 +141,10 @@ extension AdMobManager: GADFullScreenContentDelegate {
         if ad.isEqual(interstitialAd) {
             createAndLoadInterstitial()
             delegate?.didDismissInterstitial()
-            print("Dismissed an interstitial ad.")
         }
         else if ad.isEqual(rewardedAd) {
             createAndLoadRewarded()
             delegate?.didDismissRewarded()
-            print("Dismissed a rewarded ad.")
         }
     }
     
