@@ -12,7 +12,7 @@ class LifeSpawnerModel {
     // MARK: - Properties
     
     static let defaultLives = 5
-    static let durationMoreLives: TimeInterval = 3 * 60 * 60
+    static let durationMoreLives: TimeInterval = 2 * 60 * 60
     static let durationReminder: TimeInterval = 24 * 60 * 60
     
     static var shared: LifeSpawnerModel {
@@ -79,6 +79,7 @@ class LifeSpawnerModel {
     // MARK: - Timer Functions
     
     func setTimer() {
+        print("Timer set! All systems go!")
         UserDefaults.standard.set(Date(), forKey: K.UserDefaults.savedTime)
     }
     
@@ -104,5 +105,14 @@ class LifeSpawnerModel {
         return savedTime.timeIntervalSinceReferenceDate - checkTime.timeIntervalSinceReferenceDate
     }
     
+    ///I created this method for those users that try to break the game by cancelling the Continue Menu from appearing, thus causing the coundown timer to never initiate... I feel like this is a bandaid, because the class that uses this class isn't set up properly...
+    func setTimerIfNotSet() -> Bool {
+        if UserDefaults.standard.object(forKey: K.UserDefaults.savedTime) as? Date == nil {
+            setTimer()
+            return true
+        }
+        
+        return false
+    }
     
 }

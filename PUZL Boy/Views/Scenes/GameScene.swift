@@ -387,7 +387,7 @@ extension GameScene: GameEngineDelegate {
                 }
             }
                 
-            if firstTimeCalled {
+            if firstTimeCalled || LifeSpawnerModel.shared.setTimerIfNotSet() {
                 LifeSpawnerModel.shared.removeAllNotifications()
                 LifeSpawnerModel.shared.scheduleNotification(title: "\(LifeSpawnerModel.defaultLives) Lives Granted!",
                                                              duration: LifeSpawnerModel.durationMoreLives, repeats: false)

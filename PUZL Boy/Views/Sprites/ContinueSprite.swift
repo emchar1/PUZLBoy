@@ -18,7 +18,7 @@ class ContinueSprite: SKNode {
     
     // MARK: - Properties
     
-    static let extraLivesAd = 2
+    static let extraLivesAd = 1
     static let extraLivesBuy099 = 25
     static let extraLivesBuy299 = 100
     

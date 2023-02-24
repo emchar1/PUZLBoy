@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		EA04F5C8297BAEBB00A48BC2 /* pickupheart.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA04F5C7297BAEBB00A48BC2 /* pickupheart.mp3 */; };
 		EA0F145D292994330013038E /* moverun1.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA0F145C292994330013038E /* moverun1.mp3 */; };
 		EA0F145F292994B00013038E /* movewalk.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA0F145E292994B00013038E /* movewalk.mp3 */; };
 		EA0F146F2929D9C00013038E /* moverun4.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA0F146C2929D9C00013038E /* moverun4.mp3 */; };
@@ -21,14 +20,17 @@
 		EA119155290CCA39009D0E3E /* Inventory.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA119154290CCA39009D0E3E /* Inventory.swift */; };
 		EA11915729121798009D0E3E /* Controls.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA11915629121798009D0E3E /* Controls.swift */; };
 		EA26F29129739DE800BF1AC8 /* AdMobManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA26F29029739DE800BF1AC8 /* AdMobManager.swift */; };
-		EA3467842996EBF2002DDA02 /* overworld6.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA3467832996EBF2002DDA02 /* overworld6.mp3 */; };
 		EA34678E2998ED50002DDA02 /* LifeSpawnerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA34678D2998ED50002DDA02 /* LifeSpawnerModel.swift */; };
 		EA346791299B535F002DDA02 /* LevelStats.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA346790299B535F002DDA02 /* LevelStats.swift */; };
 		EA34679929A03A19002DDA02 /* overworld7.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA34679829A03A19002DDA02 /* overworld7.mp3 */; };
-		EA34679B29A03A6B002DDA02 /* buttontap.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA34679A29A03A6A002DDA02 /* buttontap.mp3 */; };
-		EA34679D29A36269002DDA02 /* continueloop.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA34679C29A36269002DDA02 /* continueloop.mp3 */; };
 		EA3467A129A400CB002DDA02 /* overworld8.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA3467A029A400CB002DDA02 /* overworld8.mp3 */; };
 		EA3467A329A403EF002DDA02 /* overworld9.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA3467A229A403EF002DDA02 /* overworld9.mp3 */; };
+		EA3467A529A8C659002DDA02 /* revive.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA3467A429A8C659002DDA02 /* revive.mp3 */; };
+		EA3467A729A8C68A002DDA02 /* pickupheart.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA3467A629A8C68A002DDA02 /* pickupheart.mp3 */; };
+		EA3467A929A8C6CA002DDA02 /* chatopen.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA3467A829A8C6CA002DDA02 /* chatopen.mp3 */; };
+		EA3467AB29A8C6F6002DDA02 /* buttontap.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA3467AA29A8C6F6002DDA02 /* buttontap.mp3 */; };
+		EA3467AD29A8C7C7002DDA02 /* continueloop.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA3467AC29A8C7C7002DDA02 /* continueloop.mp3 */; };
+		EA3467AF29A8CB39002DDA02 /* overworld6.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA3467AE29A8CB39002DDA02 /* overworld6.mp3 */; };
 		EA3534892920612300C11FC0 /* DisplayStatusBarSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA3534882920612300C11FC0 /* DisplayStatusBarSprite.swift */; };
 		EA35348B29241FCD00C11FC0 /* LevelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA35348A29241FCD00C11FC0 /* LevelType.swift */; };
 		EA3951ED2938165A00D0B14A /* Extension+UIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA3951EC2938165A00D0B14A /* Extension+UIImage.swift */; };
@@ -55,7 +57,6 @@
 		EA78C36E29767D7600292744 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = EA78C36D29767D7600292744 /* GoogleService-Info.plist */; };
 		EA826C74297CEFC500F19F81 /* TimerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA826C73297CEFC500F19F81 /* TimerManager.swift */; };
 		EA826C76297CF9E000F19F81 /* ScoringManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA826C75297CF9E000F19F81 /* ScoringManager.swift */; };
-		EA826C782983DA1700F19F81 /* revive.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA826C772983DA1700F19F81 /* revive.mp3 */; };
 		EA826C7A298492BA00F19F81 /* DecisionButtonSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA826C79298492BA00F19F81 /* DecisionButtonSprite.swift */; };
 		EA826C7C29858EBE00F19F81 /* ContinueSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA826C7B29858EBE00F19F81 /* ContinueSprite.swift */; };
 		EA826C81298CF3FF00F19F81 /* IAPManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA826C80298CF3FF00F19F81 /* IAPManager.swift */; };
@@ -68,7 +69,6 @@
 		EA826C95298F880B00F19F81 /* AchievementPUZLMaster.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA826C94298F880B00F19F81 /* AchievementPUZLMaster.swift */; };
 		EA826C9729938CBB00F19F81 /* StoreReviewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA826C9629938CBB00F19F81 /* StoreReviewManager.swift */; };
 		EA826C9A29950D0C00F19F81 /* NumMovesSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA826C9929950D0C00F19F81 /* NumMovesSprite.swift */; };
-		EA8F4589296CF35100AE21C5 /* chatopen.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA8F4588296CF35100AE21C5 /* chatopen.mp3 */; };
 		EA956C6A29257B9C00879AD0 /* AudioManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA956C6929257B9C00879AD0 /* AudioManager.swift */; };
 		EA956C6C29257D9600879AD0 /* Extension+Comparable.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA956C6B29257D9600879AD0 /* Extension+Comparable.swift */; };
 		EA956C75292595F400879AD0 /* overworld4.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA956C74292595F400879AD0 /* overworld4.mp3 */; };
@@ -141,7 +141,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		EA04F5C7297BAEBB00A48BC2 /* pickupheart.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = pickupheart.mp3; sourceTree = "<group>"; };
 		EA0F145C292994330013038E /* moverun1.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = moverun1.mp3; sourceTree = "<group>"; };
 		EA0F145E292994B00013038E /* movewalk.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = movewalk.mp3; sourceTree = "<group>"; };
 		EA0F146C2929D9C00013038E /* moverun4.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = moverun4.mp3; sourceTree = "<group>"; };
@@ -155,14 +154,17 @@
 		EA119154290CCA39009D0E3E /* Inventory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Inventory.swift; sourceTree = "<group>"; };
 		EA11915629121798009D0E3E /* Controls.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Controls.swift; sourceTree = "<group>"; };
 		EA26F29029739DE800BF1AC8 /* AdMobManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdMobManager.swift; sourceTree = "<group>"; };
-		EA3467832996EBF2002DDA02 /* overworld6.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = overworld6.mp3; sourceTree = "<group>"; };
 		EA34678D2998ED50002DDA02 /* LifeSpawnerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LifeSpawnerModel.swift; sourceTree = "<group>"; };
 		EA346790299B535F002DDA02 /* LevelStats.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelStats.swift; sourceTree = "<group>"; };
 		EA34679829A03A19002DDA02 /* overworld7.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = overworld7.mp3; sourceTree = "<group>"; };
-		EA34679A29A03A6A002DDA02 /* buttontap.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = buttontap.mp3; sourceTree = "<group>"; };
-		EA34679C29A36269002DDA02 /* continueloop.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = continueloop.mp3; sourceTree = "<group>"; };
 		EA3467A029A400CB002DDA02 /* overworld8.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = overworld8.mp3; sourceTree = "<group>"; };
 		EA3467A229A403EF002DDA02 /* overworld9.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = overworld9.mp3; sourceTree = "<group>"; };
+		EA3467A429A8C659002DDA02 /* revive.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = revive.mp3; sourceTree = "<group>"; };
+		EA3467A629A8C68A002DDA02 /* pickupheart.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = pickupheart.mp3; sourceTree = "<group>"; };
+		EA3467A829A8C6CA002DDA02 /* chatopen.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = chatopen.mp3; sourceTree = "<group>"; };
+		EA3467AA29A8C6F6002DDA02 /* buttontap.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = buttontap.mp3; sourceTree = "<group>"; };
+		EA3467AC29A8C7C7002DDA02 /* continueloop.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = continueloop.mp3; sourceTree = "<group>"; };
+		EA3467AE29A8CB39002DDA02 /* overworld6.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = overworld6.mp3; sourceTree = "<group>"; };
 		EA3534882920612300C11FC0 /* DisplayStatusBarSprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayStatusBarSprite.swift; sourceTree = "<group>"; };
 		EA35348A29241FCD00C11FC0 /* LevelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelType.swift; sourceTree = "<group>"; };
 		EA3951EC2938165A00D0B14A /* Extension+UIImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+UIImage.swift"; sourceTree = "<group>"; };
@@ -186,7 +188,6 @@
 		EA78C36D29767D7600292744 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		EA826C73297CEFC500F19F81 /* TimerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerManager.swift; sourceTree = "<group>"; };
 		EA826C75297CF9E000F19F81 /* ScoringManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoringManager.swift; sourceTree = "<group>"; };
-		EA826C772983DA1700F19F81 /* revive.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = revive.mp3; sourceTree = "<group>"; };
 		EA826C79298492BA00F19F81 /* DecisionButtonSprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecisionButtonSprite.swift; sourceTree = "<group>"; };
 		EA826C7B29858EBE00F19F81 /* ContinueSprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContinueSprite.swift; sourceTree = "<group>"; };
 		EA826C80298CF3FF00F19F81 /* IAPManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IAPManager.swift; sourceTree = "<group>"; };
@@ -199,7 +200,6 @@
 		EA826C94298F880B00F19F81 /* AchievementPUZLMaster.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementPUZLMaster.swift; sourceTree = "<group>"; };
 		EA826C9629938CBB00F19F81 /* StoreReviewManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreReviewManager.swift; sourceTree = "<group>"; };
 		EA826C9929950D0C00F19F81 /* NumMovesSprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumMovesSprite.swift; sourceTree = "<group>"; };
-		EA8F4588296CF35100AE21C5 /* chatopen.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = chatopen.mp3; sourceTree = "<group>"; };
 		EA956C6929257B9C00879AD0 /* AudioManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioManager.swift; sourceTree = "<group>"; };
 		EA956C6B29257D9600879AD0 /* Extension+Comparable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+Comparable.swift"; sourceTree = "<group>"; };
 		EA956C74292595F400879AD0 /* overworld4.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = overworld4.mp3; sourceTree = "<group>"; };
@@ -414,10 +414,10 @@
 				EA95D195294690B70061059C /* boydead.mp3 */,
 				EA95D1A1294691820061059C /* boygrunt1.mp3 */,
 				EA95D1A2294691820061059C /* boygrunt2.mp3 */,
-				EA34679A29A03A6A002DDA02 /* buttontap.mp3 */,
+				EA3467AA29A8C6F6002DDA02 /* buttontap.mp3 */,
 				EAACB4B82971E08A00973EB8 /* chatclose.mp3 */,
-				EA8F4588296CF35100AE21C5 /* chatopen.mp3 */,
-				EA34679C29A36269002DDA02 /* continueloop.mp3 */,
+				EA3467A829A8C6CA002DDA02 /* chatopen.mp3 */,
+				EA3467AC29A8C7C7002DDA02 /* continueloop.mp3 */,
 				EADEB3E82931404D00CDB232 /* dooropen.mp3 */,
 				EA0F1490292CC8D90013038E /* enemydeath.mp3 */,
 				EAAEA3C52931F08300221963 /* gameover.mp3 */,
@@ -439,13 +439,13 @@
 				EA0F147C292B0A050013038E /* overworld3.mp3 */,
 				EA956C74292595F400879AD0 /* overworld4.mp3 */,
 				EA95D1AB294D08BB0061059C /* overworld5.mp3 */,
-				EA3467832996EBF2002DDA02 /* overworld6.mp3 */,
+				EA3467AE29A8CB39002DDA02 /* overworld6.mp3 */,
 				EA34679829A03A19002DDA02 /* overworld7.mp3 */,
 				EA3467A029A400CB002DDA02 /* overworld8.mp3 */,
 				EA3467A229A403EF002DDA02 /* overworld9.mp3 */,
-				EA04F5C7297BAEBB00A48BC2 /* pickupheart.mp3 */,
+				EA3467A629A8C68A002DDA02 /* pickupheart.mp3 */,
 				EAAEA3C92931F12B00221963 /* pickupitem.mp3 */,
-				EA826C772983DA1700F19F81 /* revive.mp3 */,
+				EA3467A429A8C659002DDA02 /* revive.mp3 */,
 				EAAEA3C32931D0DA00221963 /* swordslash.mp3 */,
 				EA95D193294690890061059C /* warp.mp3 */,
 				EAAEA3CB2931F14D00221963 /* winlevel.mp3 */,
@@ -641,43 +641,43 @@
 				EAAEA3C62931F08300221963 /* gameover.mp3 in Resources */,
 				EAAEA3BE2931A31200221963 /* movepoisoned.mp3 in Resources */,
 				EA95D194294690890061059C /* warp.mp3 in Resources */,
-				EA34679D29A36269002DDA02 /* continueloop.mp3 in Resources */,
 				EA0F1481292B2F870013038E /* bouldersmash.mp3 in Resources */,
 				EA95D19C294690B70061059C /* boyattack1.mp3 in Resources */,
 				EA95D1A3294691820061059C /* boygrunt1.mp3 in Resources */,
 				EAAEA3C22931AA6E00221963 /* hammerswing.mp3 in Resources */,
 				EA0F145F292994B00013038E /* movewalk.mp3 in Resources */,
 				EADEB3F02931526700CDB232 /* overworld_galaxy.mp3 in Resources */,
-				EA3467842996EBF2002DDA02 /* overworld6.mp3 in Resources */,
 				EA34679929A03A19002DDA02 /* overworld7.mp3 in Resources */,
 				EA0F145D292994330013038E /* moverun1.mp3 in Resources */,
 				EAAEA3C42931D0DA00221963 /* swordslash.mp3 in Resources */,
 				EADEB3EF2931526700CDB232 /* overworld_egg.mp3 in Resources */,
 				EADEB3F12931526700CDB232 /* overworld_throwback.mp3 in Resources */,
 				EADEB3F32931572C00CDB232 /* overworld2.mp3 in Resources */,
+				EA3467AD29A8C7C7002DDA02 /* continueloop.mp3 in Resources */,
 				EA65183728E419A000E535BF /* LaunchScreen.storyboard in Resources */,
 				EA95D18929459BC80061059C /* moveglide.mp3 in Resources */,
 				EADEB3EB293150CB00CDB232 /* overworld.mp3 in Resources */,
 				EA3467A329A403EF002DDA02 /* overworld9.mp3 in Resources */,
 				EA0F1491292CC8D90013038E /* enemydeath.mp3 in Resources */,
 				EADEB3F5293197B900CDB232 /* movemarsh.mp3 in Resources */,
+				EA3467AB29A8C6F6002DDA02 /* buttontap.mp3 in Resources */,
 				EAAEA3C82931F0C500221963 /* gemcollect.mp3 in Resources */,
 				EAACB4B92971E08A00973EB8 /* chatclose.mp3 in Resources */,
 				EA95D200295D83E40061059C /* Boogaloo-Regular.ttf in Resources */,
 				EA95D19B294690B70061059C /* boydead.mp3 in Resources */,
 				EA95D19E294690B70061059C /* boyattack2.mp3 in Resources */,
-				EA34679B29A03A6B002DDA02 /* buttontap.mp3 in Resources */,
+				EA3467A529A8C659002DDA02 /* revive.mp3 in Resources */,
 				EADEB3E92931404D00CDB232 /* dooropen.mp3 in Resources */,
+				EA3467A729A8C68A002DDA02 /* pickupheart.mp3 in Resources */,
 				EA0F146F2929D9C00013038E /* moverun4.mp3 in Resources */,
 				EA0F14702929D9C00013038E /* moverun3.mp3 in Resources */,
-				EA8F4589296CF35100AE21C5 /* chatopen.mp3 in Resources */,
-				EA04F5C8297BAEBB00A48BC2 /* pickupheart.mp3 in Resources */,
 				EA3467A129A400CB002DDA02 /* overworld8.mp3 in Resources */,
 				EA95D19F294690B70061059C /* boyattack3.mp3 in Resources */,
 				EA95D18E2945A0200061059C /* LuckiestGuy-Regular.ttf in Resources */,
 				EA95D1A4294691820061059C /* boygrunt2.mp3 in Resources */,
-				EA826C782983DA1700F19F81 /* revive.mp3 in Resources */,
 				EA65183428E419A000E535BF /* Assets.xcassets in Resources */,
+				EA3467A929A8C6CA002DDA02 /* chatopen.mp3 in Resources */,
+				EA3467AF29A8CB39002DDA02 /* overworld6.mp3 in Resources */,
 				EA0F147D292B0A050013038E /* overworld3.mp3 in Resources */,
 				EA0F14712929D9C00013038E /* moverun2.mp3 in Resources */,
 				EA95D1AC294D08BC0061059C /* overworld5.mp3 in Resources */,
