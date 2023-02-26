@@ -43,7 +43,7 @@ class GameViewController: UIViewController {
                     DispatchQueue.main.asyncAfter(deadline: .now() + LoadingSprite.loadingDuration) {
                         let gameScene = GameScene(size: K.ScreenDimensions.screenSize, user: user, saveStateModel: saveStateModel)
                         
-                        skView.presentScene(gameScene, transition: SKTransition.doorsOpenVertical(withDuration: 2.0))
+                        skView.presentScene(gameScene, transition: SKTransition.doorsOpenHorizontal(withDuration: 2.0))
                         
                         self.levelLoaded = true
                     }
