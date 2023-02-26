@@ -52,8 +52,8 @@ class ContinueSprite: SKNode {
         watchAdButton.name = "watchAdButton"
         
         skipLevelButton = DecisionButtonSprite(text: "Buy $1.99: Skip Level",
-                                                     color: UIColor(red: 227 / 255, green: 148 / 255, blue: 9 / 255, alpha: 1.0),
-                                                     iconImageName: nil)
+                                               color: UIColor(red: 227 / 255, green: 148 / 255, blue: 9 / 255, alpha: 1.0),
+                                               iconImageName: nil)
         skipLevelButton.position = CGPoint(x: -K.ScreenDimensions.iPhoneWidth / 4, y: watchAdButton.position.y - 160)
         skipLevelButton.name = "skipLevelButton"
         

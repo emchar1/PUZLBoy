@@ -40,9 +40,7 @@ class GameViewController: UIViewController {
             //Should call LevelBuilder.getLevels BEFORE calling FIRManager.initializeSaveStateFirestoreRecords
             LevelBuilder.getLevels {
                 FIRManager.initializeSaveStateFirestoreRecords(user: user) { saveStateModel in
-
-                    // FIXME: - Create Assets, etc. loading bar [====90%]
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 7) {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + LoadingSprite.loadingDuration) {
                         let gameScene = GameScene(size: K.ScreenDimensions.screenSize, user: user, saveStateModel: saveStateModel)
                         
                         skView.presentScene(gameScene, transition: SKTransition.doorsOpenVertical(withDuration: 2.0))

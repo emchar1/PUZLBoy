@@ -21,7 +21,7 @@ class LaunchScene: SKScene {
     private var mountainSprite: BackgroundObject
     private var moonSprite: BackgroundObject
     private var player = Player()
-    private var loadingLabel: SKLabelNode
+    private var loadingSprite: LoadingSprite
     
     
     // MARK: - Initialization
@@ -32,14 +32,8 @@ class LaunchScene: SKScene {
         player.sprite.color = DayTheme.spriteColor
         player.sprite.colorBlendFactor = DayTheme.spriteShade
         
-        loadingLabel = SKLabelNode(text: "LOADING")
-        loadingLabel.fontName = UIFont.gameFont
-        loadingLabel.fontSize = UIFont.gameFontSizeExtraLarge
-        loadingLabel.fontColor = UIFont.gameFontColor
-        loadingLabel.horizontalAlignmentMode = .left
-        loadingLabel.alpha = 0.95
-        loadingLabel.position = CGPoint(x: K.ScreenDimensions.iPhoneWidth / 2 - loadingLabel.frame.width / 2, y: K.ScreenDimensions.height / 6)
-        loadingLabel.zPosition = K.ZPosition.display
+        loadingSprite = LoadingSprite(position: CGPoint(x: K.ScreenDimensions.iPhoneWidth / 2, y: K.ScreenDimensions.height / 6))
+        loadingSprite.zPosition = K.ZPosition.display
         
         //Setup BackgroundObjects
         for _ in 0..<treeCount {
@@ -92,18 +86,7 @@ class LaunchScene: SKScene {
             cloudSprites[i].animateSprite(withDelay: TimeInterval(i))
         }
         
-        let animateLabel: [SKAction] = [
-            SKAction.run { [unowned self] in loadingLabel.text = "LOADING" },
-            SKAction.run { [unowned self] in loadingLabel.text = "LOADING." },
-            SKAction.run { [unowned self] in loadingLabel.text = "LOADING.." },
-            SKAction.run { [unowned self] in loadingLabel.text = "LOADING..." }
-        ]
-        
-        let wait = SKAction.wait(forDuration: 0.5)
-        let sequence = SKAction.sequence([animateLabel[0], wait, animateLabel[1], wait, animateLabel[2], wait, animateLabel[3], wait, wait])
-
-        loadingLabel.run(SKAction.repeatForever(sequence))
-
+        loadingSprite.animate()
         mountainSprite.animateSprite(withDelay: nil)
     }
     
@@ -141,8 +124,7 @@ class LaunchScene: SKScene {
 
         addChild(mountainSprite.sprite)
         addChild(moonSprite.sprite)
-        
-        addChild(loadingLabel)
+        addChild(loadingSprite)
     }
     
 }
