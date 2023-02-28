@@ -10,12 +10,21 @@ import FirebaseFirestore
 import FirebaseAuth
 
 struct FIRManager {
+    
+    // MARK: - Properties
+    
     ///Only call this once, otherwise App will crash. Also must call it before calling FIRManager.initializeLevelRealtimeRecords().
     static var enableDBPersistence: Void {
         let db = Database.database()
         db.isPersistenceEnabled = true
     }
     
+    enum FirestoreError: Error {
+        case userNotSignedIn, saveStateNotFound, funnyQuotesNotFound
+    }
+    
+    
+    // MARK: - Functions
     
     ///Initializes the realtime database and returns all the levels in the rtdb in the completion handler.
     static func initializeLevelRealtimeRecords(completion: (([LevelModel]) -> Void)?) {
@@ -37,19 +46,66 @@ struct FIRManager {
         }//end ref.observe()
     }//end initializeLevelRealtimeRecords()
     
+    ///Convenience initializer for Firestore that loads all the collections, and returns them. How about that?!
+    static func initializeFirestore(user: User?, completion: ((SaveStateModel?, FirestoreError?) -> Void)?) {
+        guard let user = user else {
+            print("Error initializing Firestore: User not signed in.")
+            completion?(nil, .userNotSignedIn)
+            return
+        }
+        
+        initializeSaveStateFirestoreRecords(user: user) { saveStateModel, saveStateError in
+            guard saveStateError == nil, let saveStateModel = saveStateModel else {
+                print("Error finding saveState: \(saveStateError!)")
+                completion?(nil, .saveStateNotFound)
+                return
+            }
+            
+            initializeFunnyQuotes { loadingScreenQuotes, notificationItemQuotes, funnyQuotesError in
+                guard funnyQuotesError == nil, let loadingScreenQuotes = loadingScreenQuotes, let notificationItemQuotes = notificationItemQuotes else {
+                    print("Firestore saveState initialized, however there was an error populating funnyQuotes: \(funnyQuotesError!)")
+                    completion?(saveStateModel, .funnyQuotesNotFound)
+                    return
+                }
+                
+                LoadingSprite.funnyQuotes = loadingScreenQuotes
+                LifeSpawnerModel.funnyQuotes = notificationItemQuotes
+                
+                //This is the ultimate success, meaning saveState and funnyQuotes all exist, and the user is signed in!
+                print("Firestore initialized successfully!")
+                completion?(saveStateModel, nil)
+            }
+        }
+    }
+    
+    ///Initializes funny quotes arrays
+    static func initializeFunnyQuotes(completion: ((_ loadingScreenQuotes: [String]?, _ notificationItemQuotes: [String]?, FirestoreError?) -> Void)?) {
+        let collectionRef = Firestore.firestore().collection("funnyQuotes")
+        collectionRef.getDocuments { snapshot, error in
+            guard let snapshot = snapshot,
+                  let loadingScreenDoc = snapshot.documents.filter({ $0.documentID == "loadingScreen" }).first,
+                  let notificationItemDoc = snapshot.documents.filter({ $0.documentID == "notificationItem" }).first,
+                  let loadingQuotes = loadingScreenDoc.data()["quotes"] as? [String],
+                  let notificationQuotes = notificationItemDoc.data()["quotes"] as? [String] else {
+                completion?(nil, nil, .funnyQuotesNotFound)
+                return
+            }
+
+            completion?(loadingQuotes, notificationQuotes, nil)
+        }
+    }
     
     ///Initializes the Firestore database and obtains the documentID that matches the user's UID. Returns nil if document is not found.
-    static func initializeSaveStateFirestoreRecords(user: User?, completion: ((SaveStateModel?) -> Void)?) {
+    static func initializeSaveStateFirestoreRecords(user: User?, completion: ((SaveStateModel?, FirestoreError?) -> Void)?) {
         guard let user = user else {
-            completion?(nil)
-            print("User not signed in. Unable to load Firestore savedState.")
+            completion?(nil, .userNotSignedIn)
             return
         }
         
         let docRef = Firestore.firestore().collection("savedStates").document(user.uid)
         docRef.getDocument { snapshot, error in
             guard let snapshot = snapshot, let data = snapshot.data() else {
-                completion?(nil)
+                completion?(nil, .saveStateNotFound)
                 return
             }
             
@@ -64,7 +120,7 @@ struct FIRManager {
                   let levelModel = data["levelModel"] as? [String : AnyObject],
                   let newLevel = data["newLevel"] as? Int,
                   let uid = data["uid"] as? String else {
-                completion?(nil)
+                completion?(nil, .saveStateNotFound)
                 return
             }
             
@@ -79,10 +135,9 @@ struct FIRManager {
                                        levelStatsArray: getLevelStatsArray(from: levelStatsArray),
                                        levelModel: getLevelModel(from: levelModel),
                                        newLevel: newLevel,
-                                       uid: uid))
+                                       uid: uid), nil)
         }//end docRef.getDocument...
     }//end initializeSaveStateFirestoreRecords()
-    
     
     ///Writes to the Firestore Record a.) if it exists, simply overwrite values, b.) if not, create and save the new record.
     static func writeToFirestoreRecord(user: User?, saveStateModel: SaveStateModel?) {
@@ -227,6 +282,8 @@ struct FIRManager {
     }//end writeToFirestoreRecord()
     
     
+    // MARK: - Helper Functions
+    
     ///Helper function to create levelStats array from Firestore objects
     private static func getLevelStatsArray(from objects: [[String : AnyObject]]) -> [LevelStats] {
         var levelStatsArray: [LevelStats] = []
@@ -260,7 +317,6 @@ struct FIRManager {
         
         return levelStatsArray
     }
-    
     
     ///Helper function to create a levelModel from Firestore object
     private static func getLevelModel(from object: [String : AnyObject]) -> LevelModel {

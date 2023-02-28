@@ -18,19 +18,20 @@ class LoadingSprite: SKNode {
     private let statusBarLineWidth: CGFloat = 6
     private let cornerRadius: CGFloat = 16
     private let initialProgress: CGFloat = 10
-    private let randomFunny = [
+
+    private var sprite: SKShapeNode
+    private var statusSprite: SKShapeNode
+    private var loadingLabel: SKLabelNode
+    
+    static var funnyQuotes: [String] = [
         "World domination.",
         "Eggs are so freakin' expensive!",
         "Add me on TikTok: @puzlboy",
         "🏳️‍🌈",
         "Why am I soooo tired?",
-        "He loves me... he loves me not...",
-        "Tell your friends about PUZL Boy!"
+        "He loves me, he loves me not.",
+        "Tell all your friends about PUZL Boy!"
     ]
-
-    private var sprite: SKShapeNode
-    private var statusSprite: SKShapeNode
-    private var loadingLabel: SKLabelNode
 
     
     // MARK: - Initialization
@@ -100,7 +101,7 @@ class LoadingSprite: SKNode {
             SKAction.run { self.loadingLabel.text = "Rendering animations..." },
             SKAction.run { self.loadingLabel.text = "Creating gameboard..." },
             SKAction.run { self.loadingLabel.text = "Fetching last saved state..." },
-            SKAction.run { self.loadingLabel.text = self.randomFunny.randomElement() },
+            SKAction.run { self.loadingLabel.text = LoadingSprite.funnyQuotes.randomElement() },
             SKAction.run { self.loadingLabel.text = "Preparing game scenes..." }
         ]
         

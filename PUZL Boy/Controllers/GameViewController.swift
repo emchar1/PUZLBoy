@@ -39,7 +39,9 @@ class GameViewController: UIViewController {
             
             //Should call LevelBuilder.getLevels BEFORE calling FIRManager.initializeSaveStateFirestoreRecords
             LevelBuilder.getLevels {
-                FIRManager.initializeSaveStateFirestoreRecords(user: user) { saveStateModel in
+                FIRManager.initializeFirestore(user: user) { saveStateModel, error in
+                    //No error handling...
+                    
                     DispatchQueue.main.asyncAfter(deadline: .now() + LoadingSprite.loadingDuration) {
                         let gameScene = GameScene(size: K.ScreenDimensions.screenSize, user: user, saveStateModel: saveStateModel)
                         

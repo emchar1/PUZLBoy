@@ -25,12 +25,12 @@ class LifeSpawnerModel {
     
     private let center: UNUserNotificationCenter
 
-    private let funnyQuote: [String] = [
-        "These puzzles aren't going to solve themselves. ",
-        "Need a break? ",
-        "Expand your cranium. ",
-        "Flex that brain. ",
-        "Take a 10 minute break from your day. "
+    static var funnyQuotes: [String] = [
+        "These puzzles aren't going to solve themselves.",
+        "Need a break?",
+        "Expand your cranium.",
+        "Flex that brain.",
+        "Take a 10 minute break from your day."
     ]
     
     enum NotificationTimerError: Error {
@@ -58,8 +58,9 @@ class LifeSpawnerModel {
     
     func scheduleNotification(title: String, duration: TimeInterval, repeats: Bool) {
         let content = UNMutableNotificationContent()
+        let funnyQuote = LifeSpawnerModel.funnyQuotes.randomElement()
         content.title = title
-        content.body = "\(funnyQuote.randomElement() ?? "")Play PUZL Boy now!"
+        content.body = (funnyQuote == nil ? "" : funnyQuote! + " ") + "Play PUZL Boy now!"
         content.categoryIdentifier = "alert"
         content.sound = .none
         content.badge = 1
