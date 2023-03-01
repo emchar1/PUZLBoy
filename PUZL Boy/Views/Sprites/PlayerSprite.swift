@@ -14,8 +14,6 @@ class PlayerSprite {
     private let animationSpeed: TimeInterval = 0.04
 
     private(set) var sprite: SKSpriteNode
-    private var explodeEnemyAtlas: SKTextureAtlas
-    private var explodeEnemyTextures: [SKTexture]
     private var explodeBoulderAtlas: SKTextureAtlas
     private var explodeBoulderTextures: [SKTexture]
     private var player = Player()
@@ -31,14 +29,11 @@ class PlayerSprite {
         sprite = player.sprite
         player.sprite.alpha = shouldSpawn ? 0 : 1
 
-        explodeEnemyAtlas = SKTextureAtlas(named: "explode")
-        explodeEnemyTextures = []
         explodeBoulderAtlas = SKTextureAtlas(named: "explode")
         explodeBoulderTextures = []
 
         for i in 1...7 {
-            explodeEnemyTextures.append(explodeEnemyAtlas.textureNamed("explode (\(i))"))
-            explodeBoulderTextures.append(explodeEnemyAtlas.textureNamed("explode2 (\(i))"))
+            explodeBoulderTextures.append(explodeBoulderAtlas.textureNamed("explode2 (\(i))"))
         }
                 
         startIdleAnimation()
@@ -128,6 +123,26 @@ class PlayerSprite {
         AudioManager.shared.playSound(for: "pickupitem")
     }
     
+    func startGemCollectAnimation(on gameboard: GameboardSprite, at panel: K.GameboardPosition, completion: @escaping (() -> ())) {
+        let gemSprite = SKSpriteNode(imageNamed: "gem")
+        gemSprite.position = gameboard.getLocation(at: panel)
+        gemSprite.zPosition = K.ZPosition.items
+        gemSprite.setScale(gameboard.panelSize / gemSprite.size.width)
+        
+        gameboard.sprite.addChild(gemSprite)
+        
+        gemSprite.run(SKAction.group([
+            SKAction.scale(by: 2, duration: 0.5),
+            SKAction.fadeOut(withDuration: 0.5)
+        ])) {
+            gemSprite.removeFromParent()
+        }
+        
+        completion()
+        
+        AudioManager.shared.playSound(for: "gemcollect")
+    }
+    
     func startSwordAnimation(on gameboard: GameboardSprite, at panel: K.GameboardPosition, completion: @escaping (() -> ())) {
         let scale: CGFloat = 0.9
         let attackSprite = SKSpriteNode(texture: SKTexture(imageNamed: "iconSword"))
@@ -147,22 +162,43 @@ class PlayerSprite {
 
         gameboard.sprite.addChild(attackSprite)
 
-        attackSprite.run(animation) { [unowned self] in
+        attackSprite.run(animation) {
             attackSprite.removeFromParent()
             
-            //Explosion sprite
-            let explodeSprite = SKSpriteNode(texture: explodeEnemyTextures[0])
-            explodeSprite.position = gameboard.getLocation(at: panel)
-            explodeSprite.zPosition = K.ZPosition.items
-            explodeSprite.setScale(scale * (gameboard.panelSize / explodeSprite.size.width))
+            //Enemy death animation
+            let enemyTopSprite = SKSpriteNode(imageNamed: "enemy (1)")
+            let enemyBottomSprite = SKSpriteNode(imageNamed: "enemy (2)")
+            let enemyScale = gameboard.panelSize / enemyTopSprite.size.width
 
-            gameboard.sprite.addChild(explodeSprite)
+            enemyTopSprite.position = gameboard.getLocation(at: panel)
+            enemyTopSprite.zPosition = K.ZPosition.items
+            enemyTopSprite.setScale(enemyScale)
 
-            explodeSprite.run(SKAction.animate(with: explodeEnemyTextures, timePerFrame: 0.05)) {
-                explodeSprite.removeFromParent()
+            enemyBottomSprite.position = gameboard.getLocation(at: panel)
+            enemyBottomSprite.zPosition = K.ZPosition.items
+            enemyBottomSprite.setScale(enemyScale)
+            
+            gameboard.sprite.addChild(enemyTopSprite)
+            gameboard.sprite.addChild(enemyBottomSprite)
+            
+            let animationDuration: TimeInterval = 0.3
+            let animationMove: CGFloat = 300 * enemyScale
+            
+            let enemyTopMove = SKAction.moveBy(x: -animationMove, y: animationMove, duration: animationDuration)
+            let enemyTopFade = SKAction.fadeOut(withDuration: animationDuration * 2)
+            
+            let enemyBottomMove = SKAction.moveBy(x: animationMove, y: -animationMove, duration: animationDuration)
+            let enemyBottomFade = SKAction.fadeOut(withDuration: animationDuration * 2)
+            
+            enemyTopSprite.run(SKAction.sequence([enemyTopMove, enemyTopFade])) {
+                enemyTopSprite.removeFromParent()
             }
 
-            //Points sprite
+            enemyBottomSprite.run(SKAction.sequence([enemyBottomMove, enemyBottomFade])) {
+                enemyBottomSprite.removeFromParent()
+            }
+
+            //Points animation
             ScoringEngine.addScoreAnimation(score: 1000,
                                             usedContinue: nil,
                                             originSprite: gameboard.sprite,

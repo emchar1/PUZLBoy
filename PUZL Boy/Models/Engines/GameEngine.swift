@@ -208,10 +208,11 @@ class GameEngine {
         case .gem:
             gemsRemaining -= 1
             gemsCollected += 1
-            consumeItem()
             
-            AudioManager.shared.playSound(for: "gemcollect")
-            completion?()
+            playerSprite.startGemCollectAnimation(on: gameboardSprite, at: level.player) {
+                self.consumeItem()
+                completion?()
+            }
         case .hammer:
             displaySprite.statusHammers.pulseImage()
             level.inventory.hammers += 1

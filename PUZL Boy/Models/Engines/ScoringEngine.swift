@@ -139,7 +139,7 @@ class ScoringEngine {
         pointsSprite.fontSize = UIFont.gameFontSizeMedium
         pointsSprite.fontColor = .yellow
         pointsSprite.position = location
-        pointsSprite.zPosition = K.ZPosition.items
+        pointsSprite.zPosition = K.ZPosition.score
         
         originSprite.addChild(pointsSprite)
 
@@ -164,7 +164,7 @@ class ScoringEngine {
         containerSprite.fillColor = .clear
         containerSprite.lineWidth = 0
         containerSprite.position = location
-        containerSprite.zPosition = K.ZPosition.items
+        containerSprite.zPosition = K.ZPosition.score
         
         let amountSprite = SKLabelNode(text: "\(amount > 0 ? "+" : "")\(amount)")
         amountSprite.fontName = UIFont.gameFont
