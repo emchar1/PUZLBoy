@@ -230,6 +230,7 @@ class PlayerSprite {
         attackSprite.run(animation) { [unowned self] in
             attackSprite.removeFromParent()
             
+            let timePerFrame: TimeInterval = 0.06
             let explodeSprite = SKSpriteNode(texture: explodeBoulderTextures[0])
             explodeSprite.position = gameboard.getLocation(at: panel)
             explodeSprite.zPosition = K.ZPosition.items
@@ -237,7 +238,11 @@ class PlayerSprite {
 
             gameboard.sprite.addChild(explodeSprite)
 
-            explodeSprite.run(SKAction.animate(with: explodeBoulderTextures, timePerFrame: 0.05)) {
+            explodeSprite.run(SKAction.group([
+                SKAction.animate(with: explodeBoulderTextures, timePerFrame: timePerFrame),
+                SKAction.scale(by: 1.5, duration: timePerFrame * Double(explodeBoulderTextures.count) * 2),
+                SKAction.fadeOut(withDuration: timePerFrame * Double(explodeBoulderTextures.count) * 2)
+            ])) {
                 explodeSprite.removeFromParent()
             }
 
