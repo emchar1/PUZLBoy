@@ -240,7 +240,7 @@ class PlayerSprite {
 
             explodeSprite.run(SKAction.group([
                 SKAction.animate(with: explodeBoulderTextures, timePerFrame: timePerFrame),
-                SKAction.scale(by: 1.5, duration: timePerFrame * Double(explodeBoulderTextures.count) * 2),
+                SKAction.scale(by: 1.25, duration: timePerFrame * Double(explodeBoulderTextures.count) * 2),
                 SKAction.fadeOut(withDuration: timePerFrame * Double(explodeBoulderTextures.count) * 2)
             ])) {
                 explodeSprite.removeFromParent()
