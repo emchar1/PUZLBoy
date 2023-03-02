@@ -183,18 +183,18 @@ class PlayerSprite {
             
             let animationDuration: TimeInterval = 0.3
             let animationMove: CGFloat = 300 * enemyScale
-            
-            let enemyTopMove = SKAction.moveBy(x: -animationMove, y: animationMove, duration: animationDuration)
-            let enemyTopFade = SKAction.fadeOut(withDuration: animationDuration * 2)
-            
-            let enemyBottomMove = SKAction.moveBy(x: animationMove, y: -animationMove, duration: animationDuration)
-            let enemyBottomFade = SKAction.fadeOut(withDuration: animationDuration * 2)
-            
-            enemyTopSprite.run(SKAction.sequence([enemyTopMove, enemyTopFade])) {
+                        
+            enemyTopSprite.run(SKAction.group([
+                SKAction.moveBy(x: -animationMove, y: animationMove, duration: animationDuration),
+                SKAction.fadeOut(withDuration: animationDuration * 2)
+            ])) {
                 enemyTopSprite.removeFromParent()
             }
 
-            enemyBottomSprite.run(SKAction.sequence([enemyBottomMove, enemyBottomFade])) {
+            enemyBottomSprite.run(SKAction.group([
+                SKAction.moveBy(x: animationMove, y: -animationMove, duration: animationDuration),
+                SKAction.fadeOut(withDuration: animationDuration * 2)
+            ])) {
                 enemyBottomSprite.removeFromParent()
             }
 
