@@ -132,7 +132,7 @@ class PlayerSprite {
         gameboard.sprite.addChild(gemSprite)
         
         gemSprite.run(SKAction.group([
-            SKAction.scale(by: 2, duration: 0.25),
+            SKAction.scale(by: 1.75, duration: 0.25),
             SKAction.fadeOut(withDuration: 0.25)
         ])) {
             gemSprite.removeFromParent()
