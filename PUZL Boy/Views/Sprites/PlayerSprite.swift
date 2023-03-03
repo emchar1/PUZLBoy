@@ -60,6 +60,7 @@ class PlayerSprite {
         AudioManager.shared.stopSound(for: "moverun4", fadeDuration: fadeDuration)
         AudioManager.shared.stopSound(for: "movewalk", fadeDuration: fadeDuration)
         AudioManager.shared.stopSound(for: "movemarsh", fadeDuration: fadeDuration)
+        AudioManager.shared.stopSound(for: "movesand", fadeDuration: fadeDuration)
 
         player.sprite.run(SKAction.repeatForever(animation), withKey: AnimationKey.playerIdle.rawValue)
     }

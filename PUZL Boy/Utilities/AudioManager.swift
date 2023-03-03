@@ -50,7 +50,7 @@ class AudioManager {
         return instance
     }()
     
-    let overworldTheme = "overworld6"
+    let overworldTheme = "overworld10"
     private var audioItems: [String: AudioItem] = [:]
     
 
@@ -90,6 +90,7 @@ class AudioManager {
         addAudioItem("moverun2", category: .soundFX)
         addAudioItem("moverun3", category: .soundFX)
         addAudioItem("moverun4", category: .soundFX)
+        addAudioItem("movesand", category: .soundFX)
         addAudioItem("movewalk", category: .soundFX)
         addAudioItem("pickupheart", category: .soundFX)
         addAudioItem("pickupitem", category: .soundFX)
@@ -100,18 +101,18 @@ class AudioManager {
         
         //Background music
         addAudioItem("continueloop", category: .music)
-        addAudioItem("overworld_egg", category: .music)
-        addAudioItem("overworld_galaxy", category: .music)
-        addAudioItem("overworld_throwback", category: .music)
-        addAudioItem("overworld", category: .music)
-        addAudioItem("overworld2", category: .music)
-        addAudioItem("overworld3", category: .music)
-        addAudioItem("overworld4", category: .music)
-        addAudioItem("overworld5", category: .music)
+        addAudioItem("overworld_egg", category: .music) //delete
+        addAudioItem("overworld_galaxy", category: .music) //delete
+        addAudioItem("overworld_throwback", category: .music) //delete
+        addAudioItem("overworld", category: .music) //delete
+        addAudioItem("overworld2", category: .music) //delete
+        addAudioItem("overworld3", category: .music) //delete
+        addAudioItem("overworld4", category: .music) //delete
+        addAudioItem("overworld5", category: .music) //delete
         addAudioItem("overworld6", category: .music)
-        addAudioItem("overworld7", category: .music)
-        addAudioItem("overworld8", category: .music)
-        addAudioItem("overworld9", category: .music)
+        addAudioItem("overworld7", category: .music) //delete
+        addAudioItem("overworld8", category: .music) //delete
+        addAudioItem("overworld9", category: .music) //delete
         addAudioItem("overworld10", category: .music)
     }
 

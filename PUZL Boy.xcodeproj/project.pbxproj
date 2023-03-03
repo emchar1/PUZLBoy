@@ -140,6 +140,7 @@
 		EADEB3F32931572C00CDB232 /* overworld2.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EADEB3F22931572C00CDB232 /* overworld2.mp3 */; };
 		EADEB3F5293197B900CDB232 /* movemarsh.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EADEB3F4293197B900CDB232 /* movemarsh.mp3 */; };
 		EAF7181B29AFE65300E2ED82 /* overworld10.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAF7181A29AFE65300E2ED82 /* overworld10.mp3 */; };
+		EAF7181F29B1B2BC00E2ED82 /* movesand.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAF7181E29B1B2BC00E2ED82 /* movesand.mp3 */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -271,6 +272,7 @@
 		EADEB3F22931572C00CDB232 /* overworld2.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = overworld2.mp3; sourceTree = "<group>"; };
 		EADEB3F4293197B900CDB232 /* movemarsh.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = movemarsh.mp3; sourceTree = "<group>"; };
 		EAF7181A29AFE65300E2ED82 /* overworld10.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = overworld10.mp3; sourceTree = "<group>"; };
+		EAF7181E29B1B2BC00E2ED82 /* movesand.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = movesand.mp3; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -435,6 +437,7 @@
 				EA0F146E2929D9C00013038E /* moverun2.mp3 */,
 				EA0F146D2929D9C00013038E /* moverun3.mp3 */,
 				EA0F146C2929D9C00013038E /* moverun4.mp3 */,
+				EAF7181E29B1B2BC00E2ED82 /* movesand.mp3 */,
 				EA0F145E292994B00013038E /* movewalk.mp3 */,
 				EADEB3EC2931526600CDB232 /* overworld_egg.mp3 */,
 				EADEB3ED2931526600CDB232 /* overworld_galaxy.mp3 */,
@@ -670,6 +673,7 @@
 				EA3467AB29A8C6F6002DDA02 /* buttontap.mp3 in Resources */,
 				EAAEA3C82931F0C500221963 /* gemcollect.mp3 in Resources */,
 				EAACB4B92971E08A00973EB8 /* chatclose.mp3 in Resources */,
+				EAF7181F29B1B2BC00E2ED82 /* movesand.mp3 in Resources */,
 				EA95D200295D83E40061059C /* Boogaloo-Regular.ttf in Resources */,
 				EA95D19B294690B70061059C /* boydead.mp3 in Resources */,
 				EA95D19E294690B70061059C /* boyattack2.mp3 in Resources */,
