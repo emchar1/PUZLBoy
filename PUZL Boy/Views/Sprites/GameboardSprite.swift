@@ -180,18 +180,19 @@ class GameboardSprite {
         
         
         //Now for the animation...
-        let sandAnimationDuration: TimeInterval = 1.0
+        let shakeDistance: CGFloat = 3
         let sandShake: TimeInterval = 0.06
+        let sandAnimationDuration: TimeInterval = 1.0
         let sandSequence = SKAction.sequence([
-            SKAction.moveBy(x: -2, y: 0, duration: sandShake),
-            SKAction.moveBy(x: 2, y: 0, duration: sandShake)
+            SKAction.moveBy(x: -shakeDistance, y: 0, duration: sandShake),
+            SKAction.moveBy(x: shakeDistance, y: 0, duration: sandShake)
         ])
         
         panels[position.row][position.col].run(SKAction.repeat(sandSequence, count: Int(sandAnimationDuration / sandShake / 2)))
         sandNode.run(SKAction.fadeOut(withDuration: sandAnimationDuration))
-        lavaNode.run(SKAction.fadeIn(withDuration: sandAnimationDuration)){
+        lavaNode.run(SKAction.fadeIn(withDuration: sandAnimationDuration)) {
             // FIXME: - This intermittently bugs out where the lava panel disappears. Tried lavaNode.removeFromParent(), etc. to no avail!!!
-            self.panels[position.row][position.col].removeAllChildren()
+//            self.panels[position.row][position.col].removeAllChildren()
         }
     }
 }
