@@ -459,12 +459,35 @@ class GameEngine {
         level.updatePlayer(position: nextPanel)
         
         setPlayerSpritePosition(toLastPanel: level.getLevelType(at: lastPanel), shouldAnimate: true) {
-            if self.level.getLevelType(at: nextPanel) != .ice {
+            if self.level.getLevelType(at: lastPanel) == .sand {
                 self.updateMovesRemaining()
-                
                 self.shouldUpdateRemainingForBoulderIfIcy = false
                 self.isGliding = false
+                AudioManager.shared.stopSound(for: "moveglide", fadeDuration: 0.5)
+                
+                self.level.setLevelType(at: lastPanel, with: (terrain: LevelType.lava, overlay: LevelType.boundary))
+                self.gameboardSprite.animateDissolveSand(position: lastPanel)
+            }
+            
+            if self.level.getLevelType(at: nextPanel) == .lava {
+                self.playerSprite.startLavaEffectAnimation()
+                
+                ScoringEngine.updateStatusIconsAnimation(icon: .health,
+                                                         amount: -self.healthRemaining,
+                                                         originSprite: self.gameboardSprite.sprite,
+                                                         location: CGPoint(x: self.playerSprite.sprite.position.x,
+                                                                           y: self.playerSprite.sprite.position.y - 20))
 
+                self.healthRemaining = 0
+                self.updateMovesRemaining()
+                
+                //EXIT RECURSION
+                return
+            }
+            else if self.level.getLevelType(at: nextPanel) != .ice {
+                self.updateMovesRemaining()
+                self.shouldUpdateRemainingForBoulderIfIcy = false
+                self.isGliding = false
                 AudioManager.shared.stopSound(for: "moveglide", fadeDuration: 0.5)
                 
                 // FIXME: - I don't like this being here...
@@ -562,6 +585,7 @@ class GameEngine {
      Updates the moveRemaining property.
      */
     private func updateMovesRemaining(enemyAttacked: Bool = false) {
+        print("updateMovesRemaining called")
         if enemyAttacked {
             healthRemaining -= 1
         }

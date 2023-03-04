@@ -160,4 +160,23 @@ class GameboardSprite {
         
         return first == initialPosition ? second : first
     }
+    
+    func animateDissolveSand(position: K.GameboardPosition) {
+        let sandNode = SKSpriteNode(imageNamed: "sand")
+        sandNode.anchorPoint = .zero
+        sandNode.zPosition = K.ZPosition.panel
+        
+        let lavaNode = SKSpriteNode(imageNamed: "lava")
+        lavaNode.anchorPoint = .zero
+        lavaNode.zPosition = K.ZPosition.panel
+        lavaNode.addChild(sandNode)
+
+        updatePanels(at: position, with: (terrain: LevelType.lava, overlay: LevelType.boundary))
+        panels[position.row][position.col].addChild(lavaNode)
+
+        sandNode.run(SKAction.fadeOut(withDuration: 1.0))
+        lavaNode.run(SKAction.fadeIn(withDuration: 1.0)) {
+            lavaNode.removeFromParent()
+        }
+    }
 }

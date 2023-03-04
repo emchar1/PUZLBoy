@@ -111,6 +111,12 @@ class PlayerSprite {
         player.sprite.run(marshEffect, withKey: AnimationKey.playerMarsh.rawValue)
     }
     
+    func startLavaEffectAnimation() {
+//        AudioManager.shared.playSound(for: "movepoisoned")
+
+        player.sprite.run(SKAction.colorize(with: .systemOrange, colorBlendFactor: 1.0, duration: 0.5))
+    }
+    
     func startWarpAnimation(shouldReverse: Bool, completion: @escaping (() -> ())) {
         let warpEffect = SKAction.group([
             SKAction.rotate(byAngle: -3 * .pi, duration: 1.0),
