@@ -163,6 +163,7 @@ class GameEngine {
         let playerLastPosition = gameboardSprite.getLocation(at: level.player)
         let panel = lastPanel == nil ? level.getLevelType(at: level.player) : lastPanel!
         let panelIsMarsh = panel == .marsh
+        let panelIsSand = panel == .sand
         var animationType: Player.Texture
         
         if isGliding {
@@ -173,6 +174,9 @@ class GameEngine {
         }
         else if panelIsMarsh {
             animationType = .marsh
+        }
+        else if panelIsSand {
+            animationType = .sand
         }
         else {
             animationType = .run
@@ -358,6 +362,7 @@ class GameEngine {
      - parameter location: Location for which comparison is to occur.
      */
     func handleControls(in location: CGPoint) {
+        guard !isSolved else { return print("Unable to move... level isSolved") }
         guard !isGameOver else { return print("Unable to move... isGameOver") }
         guard !shouldDisableControlInput else { return print("Unable to move... shouldDisableControlInput") }
         guard !disableInputFromOutside else { return print("Unable to move... disableInputFromOutside") }
@@ -437,6 +442,14 @@ class GameEngine {
      - parameter direction: The direction the player is moving
      */
     private func movePlayerHelper(direction: Controls) {
+        ///Used when moving over certain terrain
+        func updateGliding() {
+            self.updateMovesRemaining()
+            self.shouldUpdateRemainingForBoulderIfIcy = false
+            self.isGliding = false
+            AudioManager.shared.stopSound(for: "moveglide", fadeDuration: 0.5)
+        }
+        
         let lastPanel: K.GameboardPosition = level.player
         var nextPanel: K.GameboardPosition
         
@@ -460,16 +473,12 @@ class GameEngine {
         
         setPlayerSpritePosition(toLastPanel: level.getLevelType(at: lastPanel), shouldAnimate: true) {
             if self.level.getLevelType(at: lastPanel) == .sand {
-                self.updateMovesRemaining()
-                self.shouldUpdateRemainingForBoulderIfIcy = false
-                self.isGliding = false
-                AudioManager.shared.stopSound(for: "moveglide", fadeDuration: 0.5)
-                
                 self.level.setLevelType(at: lastPanel, with: (terrain: LevelType.lava, overlay: LevelType.boundary))
                 self.gameboardSprite.animateDissolveSand(position: lastPanel)
             }
             
             if self.level.getLevelType(at: nextPanel) == .lava {
+                Haptics.shared.executeCustomPattern(pattern: .lava)
                 self.playerSprite.startLavaEffectAnimation()
                 
                 ScoringEngine.updateStatusIconsAnimation(icon: .health,
@@ -479,18 +488,16 @@ class GameEngine {
                                                                            y: self.playerSprite.sprite.position.y - 20))
 
                 self.healthRemaining = 0
-                self.updateMovesRemaining()
+                
+                updateGliding()
                 
                 //EXIT RECURSION
                 return
             }
             else if self.level.getLevelType(at: nextPanel) != .ice {
-                self.updateMovesRemaining()
-                self.shouldUpdateRemainingForBoulderIfIcy = false
-                self.isGliding = false
-                AudioManager.shared.stopSound(for: "moveglide", fadeDuration: 0.5)
+                updateGliding()
                 
-                // FIXME: - I don't like this being here...
+                //I don't like this being here...
                 if self.level.getLevelType(at: nextPanel) == .marsh {
                     Haptics.shared.executeCustomPattern(pattern: .marsh)
                     self.playerSprite.startMarshEffectAnimation()
@@ -585,7 +592,6 @@ class GameEngine {
      Updates the moveRemaining property.
      */
     private func updateMovesRemaining(enemyAttacked: Bool = false) {
-        print("updateMovesRemaining called")
         if enemyAttacked {
             healthRemaining -= 1
         }

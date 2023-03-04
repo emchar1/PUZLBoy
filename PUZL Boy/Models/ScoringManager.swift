@@ -34,8 +34,8 @@ class ScoringManager {
         score = 0
     }
     
-    func balanceScores() {
-        score -= 1
-        totalScore += 1
+    func balanceScores(step: Int = 1) {
+        score -= step
+        totalScore += step
     }
 }

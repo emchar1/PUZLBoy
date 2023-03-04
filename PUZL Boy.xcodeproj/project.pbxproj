@@ -141,6 +141,8 @@
 		EADEB3F5293197B900CDB232 /* movemarsh.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EADEB3F4293197B900CDB232 /* movemarsh.mp3 */; };
 		EAF7181B29AFE65300E2ED82 /* overworld10.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAF7181A29AFE65300E2ED82 /* overworld10.mp3 */; };
 		EAF7181F29B1B2BC00E2ED82 /* movesand.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAF7181E29B1B2BC00E2ED82 /* movesand.mp3 */; };
+		EAF7182129B3097300E2ED82 /* lavasizzle.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAF7182029B3097300E2ED82 /* lavasizzle.mp3 */; };
+		EAF7182929B31BE800E2ED82 /* lavaappear.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAF7182829B31BE800E2ED82 /* lavaappear.mp3 */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -273,6 +275,8 @@
 		EADEB3F4293197B900CDB232 /* movemarsh.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = movemarsh.mp3; sourceTree = "<group>"; };
 		EAF7181A29AFE65300E2ED82 /* overworld10.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = overworld10.mp3; sourceTree = "<group>"; };
 		EAF7181E29B1B2BC00E2ED82 /* movesand.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = movesand.mp3; sourceTree = "<group>"; };
+		EAF7182029B3097300E2ED82 /* lavasizzle.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = lavasizzle.mp3; sourceTree = "<group>"; };
+		EAF7182829B31BE800E2ED82 /* lavaappear.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = lavaappear.mp3; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -430,6 +434,8 @@
 				EAAEA3C52931F08300221963 /* gameover.mp3 */,
 				EAAEA3C72931F0C500221963 /* gemcollect.mp3 */,
 				EAAEA3C12931AA6E00221963 /* hammerswing.mp3 */,
+				EAF7182829B31BE800E2ED82 /* lavaappear.mp3 */,
+				EAF7182029B3097300E2ED82 /* lavasizzle.mp3 */,
 				EA95D18829459BC80061059C /* moveglide.mp3 */,
 				EADEB3F4293197B900CDB232 /* movemarsh.mp3 */,
 				EAAEA3BD2931A31200221963 /* movepoisoned.mp3 */,
@@ -657,6 +663,7 @@
 				EA0F145F292994B00013038E /* movewalk.mp3 in Resources */,
 				EADEB3F02931526700CDB232 /* overworld_galaxy.mp3 in Resources */,
 				EA34679929A03A19002DDA02 /* overworld7.mp3 in Resources */,
+				EAF7182129B3097300E2ED82 /* lavasizzle.mp3 in Resources */,
 				EA0F145D292994330013038E /* moverun1.mp3 in Resources */,
 				EAAEA3C42931D0DA00221963 /* swordslash.mp3 in Resources */,
 				EADEB3EF2931526700CDB232 /* overworld_egg.mp3 in Resources */,
@@ -687,6 +694,7 @@
 				EA95D18E2945A0200061059C /* LuckiestGuy-Regular.ttf in Resources */,
 				EA95D1A4294691820061059C /* boygrunt2.mp3 in Resources */,
 				EA65183428E419A000E535BF /* Assets.xcassets in Resources */,
+				EAF7182929B31BE800E2ED82 /* lavaappear.mp3 in Resources */,
 				EA3467A929A8C6CA002DDA02 /* chatopen.mp3 in Resources */,
 				EA3467AF29A8CB39002DDA02 /* overworld6.mp3 in Resources */,
 				EA0F147D292B0A050013038E /* overworld3.mp3 in Resources */,

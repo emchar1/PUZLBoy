@@ -242,16 +242,24 @@ class ScoringEngine {
     
     private func incrementScoreAnimation() -> SKAction {
         let savedScore: CGFloat = CGFloat(scoringManager.score)
-        let wait = SKAction.wait(forDuration: 1 / savedScore)
+        let multiplier: Int = Int(max(savedScore / 1000, 1))
+        let wait = SKAction.wait(forDuration: CGFloat(multiplier) * 1 / savedScore)
         
         let incrementAction = SKAction.run { [unowned self] in
-            scoringManager.balanceScores()
+            scoringManager.balanceScores(step: multiplier)
             updateScoreLabels()
         }
         
-        let incrementRepeat = SKAction.repeat(SKAction.sequence([wait, incrementAction]), count: Int(savedScore))
+        let incrementRepeat = SKAction.repeat(SKAction.sequence([wait, incrementAction]), count: Int(savedScore / CGFloat(multiplier)))
         
-        return incrementRepeat
+        let incrementRemainder = SKAction.run { [unowned self] in
+            scoringManager.balanceScores(step: scoringManager.score)
+            updateScoreLabels()
+        }
+        
+        let incrementSequence = SKAction.sequence([incrementRepeat, incrementRemainder])
+        
+        return incrementSequence
     }
     
 

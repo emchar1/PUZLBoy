@@ -82,6 +82,10 @@ class PlayerSprite {
             switch animationType {
             case .run:
                 AudioManager.shared.playSound(for: "moverun\(Int.random(in: 1...4))")
+            case .marsh:
+                AudioManager.shared.playSound(for: "movemarsh")
+            case .sand:
+                AudioManager.shared.playSound(for: "movesand")
             case .walk:
                 AudioManager.shared.playSound(for: "movewalk")
 
@@ -90,8 +94,6 @@ class PlayerSprite {
 //                sprite.run(SKAction.group([SKAction.repeatForever(animation), sequence]), withKey: AnimationKey.playerMove.rawValue)
 //
 //                return
-            case .marsh:
-                AudioManager.shared.playSound(for: "movemarsh")
             default:
                 print("Unknown animationType")
             }
@@ -112,9 +114,16 @@ class PlayerSprite {
     }
     
     func startLavaEffectAnimation() {
-//        AudioManager.shared.playSound(for: "movepoisoned")
+        let lavaEffect = SKAction.sequence([
+            SKAction.colorize(with: .systemOrange, colorBlendFactor: 1.0, duration: 0.0),
+            SKAction.wait(forDuration: 0.5),
+            SKAction.colorize(with: .black, colorBlendFactor: 1.0, duration: 0.5)
+        ])
+        
+        AudioManager.shared.playSound(for: "lavasizzle")
+        AudioManager.shared.stopSound(for: "lavasizzle", fadeDuration: 2.0)
 
-        player.sprite.run(SKAction.colorize(with: .systemOrange, colorBlendFactor: 1.0, duration: 0.5))
+        player.sprite.run(lavaEffect)
     }
     
     func startWarpAnimation(shouldReverse: Bool, completion: @escaping (() -> ())) {
