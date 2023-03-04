@@ -16,7 +16,6 @@ class GameboardSprite {
     static let spriteScale: CGFloat = 0.94
 
     var xPosition: CGFloat { (K.ScreenDimensions.iPhoneWidth * (1 - GameboardSprite.spriteScale)) / 2 }
-//    var yPosition: CGFloat { (K.ScreenDimensions.height - gameboardSize * GameboardSprite.spriteScale) / 2 }
     var yPosition: CGFloat { (K.ScreenDimensions.height - gameboardSize * GameboardSprite.spriteScale - K.ScreenDimensions.topMargin - 275) }
     var gameboardSize: CGFloat { CGFloat(panelCount) * panelSize }
 
@@ -124,17 +123,14 @@ class GameboardSprite {
         
         if completion == nil {
             sprite.run(SKAction.colorize(with: color, colorBlendFactor: blendFactor, duration: animationDuration))
-            
-            for overlayObject in sprite.children {
-                overlayObject.run(SKAction.colorize(with: color, colorBlendFactor: blendFactor, duration: animationDuration))
-            }
         }
         else {
             sprite.run(SKAction.colorize(with: color, colorBlendFactor: blendFactor, duration: animationDuration), completion: completion!)
-
-            for overlayObject in sprite.children {
-                overlayObject.run(SKAction.colorize(with: color, colorBlendFactor: blendFactor, duration: animationDuration), completion: completion!)
-            }
+        }
+        
+        for overlayObject in sprite.children {
+            //3/4/23 I removed the completion handler call in this for loop because it was causing writes to Firestore to happen too many times. Would've been an accounting nightmare!
+            overlayObject.run(SKAction.colorize(with: color, colorBlendFactor: blendFactor, duration: animationDuration))
         }
     }
     
@@ -174,13 +170,14 @@ class GameboardSprite {
         updatePanels(at: position, with: (terrain: LevelType.lava, overlay: LevelType.boundary))
         panels[position.row][position.col].addChild(lavaNode)
         
-        AudioManager.shared.playSound(for: "lavaappear")
-        AudioManager.shared.adjustVolume(to: 0.5, for: "lavaappear")
+        let lavaappear = "lavaappear\(Int.random(in: 1...3))"
+        AudioManager.shared.playSound(for: lavaappear)
+        AudioManager.shared.adjustVolume(to: 0.5, for: lavaappear)
+        AudioManager.shared.stopSound(for: lavaappear, fadeDuration: 1.5)
         Haptics.shared.executeCustomPattern(pattern: .sand)
         
-        
-        //Now for the animation...
-        let shakeDistance: CGFloat = 3
+        //Animation Stuff
+        let shakeDistance: CGFloat = 4
         let sandShake: TimeInterval = 0.06
         let sandAnimationDuration: TimeInterval = 1.0
         let sandSequence = SKAction.sequence([

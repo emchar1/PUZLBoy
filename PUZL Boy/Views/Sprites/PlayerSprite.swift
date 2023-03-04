@@ -60,7 +60,9 @@ class PlayerSprite {
         AudioManager.shared.stopSound(for: "moverun4", fadeDuration: fadeDuration)
         AudioManager.shared.stopSound(for: "movewalk", fadeDuration: fadeDuration)
         AudioManager.shared.stopSound(for: "movemarsh", fadeDuration: fadeDuration)
-        AudioManager.shared.stopSound(for: "movesand", fadeDuration: fadeDuration)
+        AudioManager.shared.stopSound(for: "movesand1", fadeDuration: fadeDuration)
+        AudioManager.shared.stopSound(for: "movesand2", fadeDuration: fadeDuration)
+        AudioManager.shared.stopSound(for: "movesand3", fadeDuration: fadeDuration)
 
         player.sprite.run(SKAction.repeatForever(animation), withKey: AnimationKey.playerIdle.rawValue)
     }
@@ -85,7 +87,7 @@ class PlayerSprite {
             case .marsh:
                 AudioManager.shared.playSound(for: "movemarsh")
             case .sand:
-                AudioManager.shared.playSound(for: "movesand")
+                AudioManager.shared.playSound(for: "movesand\(Int.random(in: 1...3))")
             case .walk:
                 AudioManager.shared.playSound(for: "movewalk")
 

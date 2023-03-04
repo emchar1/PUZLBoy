@@ -279,6 +279,8 @@ struct FIRManager {
             "newLevel": saveStateModel.newLevel,
             "uid": saveStateModel.uid
         ])
+        
+        print("Writing to Firestore.........")
     }//end writeToFirestoreRecord()
     
     
