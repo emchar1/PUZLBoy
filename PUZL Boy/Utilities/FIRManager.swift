@@ -43,6 +43,8 @@ struct FIRManager {
 
             //MUST remove observer after downloading once. Is this the best way to do it, right after downloading?
 //            ref.removeAllObservers()
+
+            print("Realtime database initialized.......")
         }//end ref.observe()
     }//end initializeLevelRealtimeRecords()
     
@@ -72,8 +74,9 @@ struct FIRManager {
                 LifeSpawnerModel.funnyQuotes = notificationItemQuotes
                 
                 //This is the ultimate success, meaning saveState and funnyQuotes all exist, and the user is signed in!
-                print("Firestore initialized successfully!")
                 completion?(saveStateModel, nil)
+
+                print("Firestore initialized successfully!")
             }
         }
     }
@@ -92,6 +95,8 @@ struct FIRManager {
             }
 
             completion?(loadingQuotes, notificationQuotes, nil)
+            
+            print("Firestore funny quotes initialized.......")
         }
     }
     
@@ -136,6 +141,8 @@ struct FIRManager {
                                        levelModel: getLevelModel(from: levelModel),
                                        newLevel: newLevel,
                                        uid: uid), nil)
+            
+            print("Firestore saveState initialized.......")
         }//end docRef.getDocument...
     }//end initializeSaveStateFirestoreRecords()
     
@@ -280,7 +287,7 @@ struct FIRManager {
             "uid": saveStateModel.uid
         ])
         
-        print("Writing to Firestore.........")
+        print("Writing to Firestore saveState.......")
     }//end writeToFirestoreRecord()
     
     

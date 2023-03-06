@@ -1,8 +1,8 @@
-[
-  {
-    "health": 1,
+{
+  "0": {
     "level": 0,
     "moves": 4,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -76,10 +76,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "1": {
     "level": 1,
     "moves": 4,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -153,10 +153,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "2": {
     "level": 2,
     "moves": 6,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -230,10 +230,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "3": {
     "level": 3,
     "moves": 6,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -307,10 +307,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "4": {
     "level": 4,
     "moves": 8,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -384,10 +384,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "5": {
     "level": 5,
     "moves": 8,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -461,10 +461,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "6": {
     "level": 6,
     "moves": 8,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -538,10 +538,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "7": {
     "level": 7,
     "moves": 8,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -615,10 +615,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "8": {
     "level": 8,
     "moves": 8,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -692,10 +692,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "9": {
     "level": 9,
     "moves": 4,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -769,10 +769,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "10": {
     "level": 10,
     "moves": 10,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -846,10 +846,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "11": {
     "level": 11,
     "moves": 6,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "endClosed",
@@ -923,10 +923,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "12": {
     "level": 12,
     "moves": 4,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -1000,10 +1000,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "13": {
     "level": 13,
     "moves": 8,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -1077,10 +1077,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "14": {
     "level": 14,
     "moves": 6,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -1154,10 +1154,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "15": {
     "level": 15,
     "moves": 7,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -1231,10 +1231,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "16": {
     "level": 16,
     "moves": 8,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -1308,10 +1308,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "17": {
     "level": 17,
     "moves": 6,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "endClosed",
@@ -1385,10 +1385,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "18": {
     "level": 18,
     "moves": 8,
+    "health": 1,
     "r0c0": "endClosed",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -1462,10 +1462,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "19": {
     "level": 19,
     "moves": 8,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "marsh",
     "r0c2": "grass",
@@ -1539,10 +1539,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "20": {
     "level": 20,
     "moves": 7,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "marsh",
     "r0c2": "marsh",
@@ -1616,10 +1616,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "21": {
     "level": 21,
     "moves": 10,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "marsh",
     "r0c2": "grass",
@@ -1693,10 +1693,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "22": {
     "level": 22,
     "moves": 11,
+    "health": 1,
     "r0c0": "grass",
     "r0c1": "marsh",
     "r0c2": "marsh",
@@ -1770,10 +1770,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "23": {
     "level": 23,
     "moves": 12,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "marsh",
     "r0c2": "grass",
@@ -1847,10 +1847,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "24": {
     "level": 24,
     "moves": 11,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -1924,10 +1924,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "25": {
     "level": 25,
     "moves": 6,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -2001,10 +2001,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "26": {
     "level": 26,
     "moves": 7,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -2078,10 +2078,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "27": {
     "level": 27,
     "moves": 10,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "marsh",
     "r0c2": "grass",
@@ -2155,10 +2155,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "28": {
     "level": 28,
     "moves": 8,
+    "health": 1,
     "r0c0": "marsh",
     "r0c1": "grass",
     "r0c2": "marsh",
@@ -2232,10 +2232,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "29": {
     "level": 29,
     "moves": 10,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -2309,10 +2309,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "30": {
     "level": 30,
     "moves": 13,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "marsh",
     "r0c2": "marsh",
@@ -2386,10 +2386,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "31": {
     "level": 31,
     "moves": 11,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "marsh",
     "r0c2": "endClosed",
@@ -2463,10 +2463,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "32": {
     "level": 32,
     "moves": 11,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "marsh",
     "r0c2": "grass",
@@ -2540,10 +2540,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "33": {
     "level": 33,
     "moves": 11,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "marsh",
     "r0c2": "grass",
@@ -2617,10 +2617,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "34": {
     "level": 34,
     "moves": 4,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -2694,10 +2694,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "35": {
     "level": 35,
     "moves": 6,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -2771,10 +2771,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "36": {
     "level": 36,
     "moves": 4,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -2848,10 +2848,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "37": {
     "level": 37,
     "moves": 9,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -2925,10 +2925,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "38": {
     "level": 38,
     "moves": 8,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "endClosed",
@@ -3002,10 +3002,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "39": {
     "level": 39,
     "moves": 8,
+    "health": 1,
     "r0c0": "grass",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -3079,10 +3079,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "40": {
     "level": 40,
     "moves": 6,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -3156,10 +3156,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "41": {
     "level": 41,
     "moves": 6,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "endClosed",
@@ -3233,10 +3233,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "42": {
     "level": 42,
     "moves": 6,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -3310,10 +3310,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "43": {
     "level": 43,
     "moves": 7,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -3387,10 +3387,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "44": {
     "level": 44,
     "moves": 8,
+    "health": 1,
     "r0c0": "grass",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -3464,10 +3464,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "45": {
     "level": 45,
     "moves": 6,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -3541,10 +3541,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "46": {
     "level": 46,
     "moves": 8,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "marsh",
     "r0c2": "marsh",
@@ -3618,10 +3618,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "47": {
     "level": 47,
     "moves": 12,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "marsh",
     "r0c2": "grass",
@@ -3695,10 +3695,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "48": {
     "level": 48,
     "moves": 11,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "marsh",
     "r0c2": "marsh",
@@ -3772,10 +3772,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "49": {
     "level": 49,
     "moves": 6,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -3849,10 +3849,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "50": {
     "level": 50,
     "moves": 9,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "marsh",
     "r0c2": "endClosed",
@@ -3926,10 +3926,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 10,
+  "51": {
     "level": 51,
     "moves": 7,
+    "health": 10,
     "r0c0": "start",
     "r0c1": "endClosed",
     "r0c2": "grass",
@@ -4003,10 +4003,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "52": {
     "level": 52,
     "moves": 6,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -4080,10 +4080,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "53": {
     "level": 53,
     "moves": 5,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -4157,10 +4157,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "54": {
     "level": 54,
     "moves": 8,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -4234,10 +4234,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "55": {
     "level": 55,
     "moves": 8,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -4311,10 +4311,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "56": {
     "level": 56,
     "moves": 9,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -4388,10 +4388,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "57": {
     "level": 57,
     "moves": 14,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "marsh",
     "r0c2": "marsh",
@@ -4465,10 +4465,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "58": {
     "level": 58,
     "moves": 8,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -4542,10 +4542,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "59": {
     "level": 59,
     "moves": 6,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -4619,10 +4619,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "60": {
     "level": 60,
     "moves": 6,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -4696,10 +4696,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "61": {
     "level": 61,
     "moves": 10,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "marsh",
     "r0c2": "grass",
@@ -4773,10 +4773,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "62": {
     "level": 62,
     "moves": 8,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -4850,10 +4850,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "63": {
     "level": 63,
     "moves": 5,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -4927,10 +4927,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "64": {
     "level": 64,
     "moves": 7,
+    "health": 1,
     "r0c0": "endClosed",
     "r0c1": "start",
     "r0c2": "grass",
@@ -5004,10 +5004,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "65": {
     "level": 65,
     "moves": 6,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -5081,10 +5081,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "66": {
     "level": 66,
     "moves": 7,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -5158,10 +5158,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "67": {
     "level": 67,
     "moves": 6,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -5235,10 +5235,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "68": {
     "level": 68,
     "moves": 6,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -5312,10 +5312,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "69": {
     "level": 69,
     "moves": 8,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -5389,10 +5389,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "70": {
     "level": 70,
     "moves": 8,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "endClosed",
@@ -5466,10 +5466,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "71": {
     "level": 71,
     "moves": 9,
+    "health": 1,
     "r0c0": "grass",
     "r0c1": "grass",
     "r0c2": "start",
@@ -5543,10 +5543,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "72": {
     "level": 72,
     "moves": 9,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "marsh",
     "r0c2": "grass",
@@ -5620,10 +5620,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "73": {
     "level": 73,
     "moves": 11,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "marsh",
     "r0c2": "marsh",
@@ -5697,10 +5697,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "74": {
     "level": 74,
     "moves": 12,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "marsh",
     "r0c2": "marsh",
@@ -5774,10 +5774,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "75": {
     "level": 75,
     "moves": 10,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "marsh",
     "r0c2": "marsh",
@@ -5851,10 +5851,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "76": {
     "level": 76,
     "moves": 2,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -5928,10 +5928,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "77": {
     "level": 77,
     "moves": 3,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -6005,10 +6005,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "78": {
     "level": 78,
     "moves": 4,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -6082,10 +6082,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "79": {
     "level": 79,
     "moves": 4,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -6159,10 +6159,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "80": {
     "level": 80,
     "moves": 7,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -6236,10 +6236,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "81": {
     "level": 81,
     "moves": 10,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "marsh",
@@ -6313,10 +6313,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "82": {
     "level": 82,
     "moves": 5,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -6390,10 +6390,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 2,
+  "83": {
     "level": 83,
     "moves": 6,
+    "health": 2,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -6467,10 +6467,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "84": {
     "level": 84,
     "moves": 6,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -6544,10 +6544,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "85": {
     "level": 85,
     "moves": 7,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "grass",
@@ -6621,10 +6621,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "86": {
     "level": 86,
     "moves": 6,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "endClosed",
     "r0c2": "ice",
@@ -6698,10 +6698,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "87": {
     "level": 87,
     "moves": 7,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -6775,10 +6775,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 3,
+  "88": {
     "level": 88,
     "moves": 7,
+    "health": 3,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "grass",
@@ -6852,10 +6852,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 2,
+  "89": {
     "level": 89,
     "moves": 7,
+    "health": 2,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "endClosed",
@@ -6929,10 +6929,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "90": {
     "level": 90,
     "moves": 7,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -7006,10 +7006,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 2,
+  "91": {
     "level": 91,
     "moves": 7,
+    "health": 2,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "grass",
@@ -7083,10 +7083,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "92": {
     "level": 92,
     "moves": 6,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "marsh",
@@ -7160,10 +7160,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "93": {
     "level": 93,
     "moves": 8,
+    "health": 1,
     "r0c0": "grass",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -7237,10 +7237,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "94": {
     "level": 94,
     "moves": 10,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -7314,10 +7314,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "95": {
     "level": 95,
     "moves": 7,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -7391,10 +7391,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "96": {
     "level": 96,
     "moves": 4,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -7468,10 +7468,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "97": {
     "level": 97,
     "moves": 5,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -7545,10 +7545,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 2,
+  "98": {
     "level": 98,
     "moves": 6,
+    "health": 2,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -7622,10 +7622,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "99": {
     "level": 99,
     "moves": 10,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -7699,10 +7699,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 3,
+  "100": {
     "level": 100,
     "moves": 5,
+    "health": 3,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -7776,10 +7776,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "101": {
     "level": 101,
     "moves": 7,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -7853,10 +7853,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "102": {
     "level": 102,
     "moves": 14,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -7930,10 +7930,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "103": {
     "level": 103,
     "moves": 12,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -8007,10 +8007,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "104": {
     "level": 104,
     "moves": 12,
+    "health": 1,
     "r0c0": "grass",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -8084,10 +8084,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "105": {
     "level": 105,
     "moves": 10,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -8161,10 +8161,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "106": {
     "level": 106,
     "moves": 12,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -8238,10 +8238,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "107": {
     "level": 107,
     "moves": 15,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "marsh",
     "r0c2": "grass",
@@ -8315,10 +8315,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "108": {
     "level": 108,
     "moves": 17,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "endClosed",
     "r0c2": "grass",
@@ -8392,10 +8392,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "109": {
     "level": 109,
     "moves": 5,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -8469,10 +8469,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "110": {
     "level": 110,
     "moves": 9,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -8546,10 +8546,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "111": {
     "level": 111,
     "moves": 12,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -8623,10 +8623,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "112": {
     "level": 112,
     "moves": 12,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -8700,10 +8700,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "113": {
     "level": 113,
     "moves": 13,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "marsh",
@@ -8777,10 +8777,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "114": {
     "level": 114,
     "moves": 16,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "marsh",
     "r0c2": "grass",
@@ -8854,10 +8854,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "115": {
     "level": 115,
     "moves": 7,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -8931,10 +8931,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "116": {
     "level": 116,
     "moves": 8,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "endClosed",
     "r0c2": "ice",
@@ -9008,10 +9008,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "117": {
     "level": 117,
     "moves": 16,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "marsh",
     "r0c2": "ice",
@@ -9085,10 +9085,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "118": {
     "level": 118,
     "moves": 8,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -9162,10 +9162,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "119": {
     "level": 119,
     "moves": 7,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -9239,10 +9239,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "120": {
     "level": 120,
     "moves": 8,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -9316,10 +9316,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 2,
+  "121": {
     "level": 121,
     "moves": 5,
+    "health": 2,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -9393,10 +9393,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "122": {
     "level": 122,
     "moves": 9,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -9470,10 +9470,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "123": {
     "level": 123,
     "moves": 7,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "ice",
@@ -9547,10 +9547,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "124": {
     "level": 124,
     "moves": 5,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -9624,10 +9624,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "125": {
     "level": 125,
     "moves": 12,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -9701,10 +9701,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "126": {
     "level": 126,
     "moves": 6,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -9778,10 +9778,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "127": {
     "level": 127,
     "moves": 9,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -9855,10 +9855,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 3,
+  "128": {
     "level": 128,
     "moves": 7,
+    "health": 3,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -9932,10 +9932,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "129": {
     "level": 129,
     "moves": 5,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -10009,10 +10009,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "130": {
     "level": 130,
     "moves": 7,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -10086,10 +10086,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 2,
+  "131": {
     "level": 131,
     "moves": 10,
+    "health": 2,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -10163,10 +10163,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 2,
+  "132": {
     "level": 132,
     "moves": 10,
+    "health": 2,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -10240,10 +10240,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "133": {
     "level": 133,
     "moves": 12,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "endClosed",
     "r0c2": "ice",
@@ -10317,10 +10317,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 2,
+  "134": {
     "level": 134,
     "moves": 5,
+    "health": 2,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -10394,10 +10394,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "135": {
     "level": 135,
     "moves": 9,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "ice",
@@ -10471,10 +10471,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 2,
+  "136": {
     "level": 136,
     "moves": 12,
+    "health": 2,
     "r0c0": "start",
     "r0c1": "endClosed",
     "r0c2": "marsh",
@@ -10548,10 +10548,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "137": {
     "level": 137,
     "moves": 8,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "endClosed",
     "r0c2": "ice",
@@ -10625,10 +10625,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "138": {
     "level": 138,
     "moves": 8,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -10702,10 +10702,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 2,
+  "139": {
     "level": 139,
     "moves": 6,
+    "health": 2,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -10779,10 +10779,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "140": {
     "level": 140,
     "moves": 9,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "endClosed",
     "r0c2": "grass",
@@ -10856,10 +10856,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 2,
+  "141": {
     "level": 141,
     "moves": 10,
+    "health": 2,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -10933,10 +10933,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "142": {
     "level": 142,
     "moves": 7,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -11010,10 +11010,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "143": {
     "level": 143,
     "moves": 11,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "marsh",
@@ -11087,10 +11087,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 2,
+  "144": {
     "level": 144,
     "moves": 13,
+    "health": 2,
     "r0c0": "start",
     "r0c1": "marsh",
     "r0c2": "ice",
@@ -11164,10 +11164,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "145": {
     "level": 145,
     "moves": 11,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "endClosed",
     "r0c2": "grass",
@@ -11241,10 +11241,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "146": {
     "level": 146,
     "moves": 11,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -11318,10 +11318,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "147": {
     "level": 147,
     "moves": 14,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "marsh",
     "r0c2": "marsh",
@@ -11395,10 +11395,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "148": {
     "level": 148,
     "moves": 15,
+    "health": 1,
     "r0c0": "grass",
     "r0c1": "marsh",
     "r0c2": "grass",
@@ -11472,10 +11472,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 2,
+  "149": {
     "level": 149,
     "moves": 7,
+    "health": 2,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -11549,10 +11549,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 4,
+  "150": {
     "level": 150,
     "moves": 6,
+    "health": 4,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -11626,10 +11626,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "151": {
     "level": 151,
     "moves": 13,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -11703,10 +11703,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "152": {
     "level": 152,
     "moves": 6,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -11780,10 +11780,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 2,
+  "153": {
     "level": 153,
     "moves": 8,
+    "health": 2,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -11857,10 +11857,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "154": {
     "level": 154,
     "moves": 8,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "endClosed",
@@ -11934,10 +11934,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "155": {
     "level": 155,
     "moves": 9,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -12011,10 +12011,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "156": {
     "level": 156,
     "moves": 9,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -12088,10 +12088,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "157": {
     "level": 157,
     "moves": 10,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -12165,10 +12165,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "158": {
     "level": 158,
     "moves": 11,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -12242,10 +12242,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "159": {
     "level": 159,
     "moves": 8,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -12319,10 +12319,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "160": {
     "level": 160,
     "moves": 5,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -12396,10 +12396,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "161": {
     "level": 161,
     "moves": 14,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "marsh",
     "r0c2": "ice",
@@ -12473,10 +12473,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "162": {
     "level": 162,
     "moves": 12,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "marsh",
     "r0c2": "ice",
@@ -12550,10 +12550,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 2,
+  "163": {
     "level": 163,
     "moves": 10,
+    "health": 2,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -12627,10 +12627,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "164": {
     "level": 164,
     "moves": 18,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -12704,10 +12704,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "165": {
     "level": 165,
     "moves": 13,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "marsh",
     "r0c2": "marsh",
@@ -12781,10 +12781,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "166": {
     "level": 166,
     "moves": 7,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -12858,10 +12858,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "167": {
     "level": 167,
     "moves": 9,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -12935,10 +12935,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "168": {
     "level": 168,
     "moves": 7,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -13012,10 +13012,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "169": {
     "level": 169,
     "moves": 8,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -13089,10 +13089,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "170": {
     "level": 170,
     "moves": 6,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -13166,10 +13166,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "171": {
     "level": 171,
     "moves": 11,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -13243,10 +13243,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "172": {
     "level": 172,
     "moves": 16,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -13320,10 +13320,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "173": {
     "level": 173,
     "moves": 12,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -13397,10 +13397,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "174": {
     "level": 174,
     "moves": 14,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -13474,10 +13474,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "175": {
     "level": 175,
     "moves": 11,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "grass",
@@ -13551,10 +13551,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "176": {
     "level": 176,
     "moves": 8,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -13628,10 +13628,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "177": {
     "level": 177,
     "moves": 13,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "marsh",
     "r0c2": "ice",
@@ -13705,10 +13705,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "178": {
     "level": 178,
     "moves": 9,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "marsh",
     "r0c2": "marsh",
@@ -13782,10 +13782,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "179": {
     "level": 179,
     "moves": 16,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -13859,10 +13859,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "180": {
     "level": 180,
     "moves": 9,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "endClosed",
     "r0c2": "grass",
@@ -13936,10 +13936,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "181": {
     "level": 181,
     "moves": 13,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -14013,10 +14013,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "182": {
     "level": 182,
     "moves": 14,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -14090,10 +14090,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "183": {
     "level": 183,
     "moves": 13,
+    "health": 1,
     "r0c0": "grass",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -14167,10 +14167,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "184": {
     "level": 184,
     "moves": 16,
+    "health": 1,
     "r0c0": "grass",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -14244,10 +14244,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "185": {
     "level": 185,
     "moves": 18,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -14321,10 +14321,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "186": {
     "level": 186,
     "moves": 14,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -14398,10 +14398,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "187": {
     "level": 187,
     "moves": 13,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -14475,10 +14475,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "188": {
     "level": 188,
     "moves": 7,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -14552,10 +14552,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "189": {
     "level": 189,
     "moves": 12,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "ice",
@@ -14629,10 +14629,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "190": {
     "level": 190,
     "moves": 13,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -14706,10 +14706,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "191": {
     "level": 191,
     "moves": 11,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -14783,10 +14783,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "192": {
     "level": 192,
     "moves": 6,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -14860,10 +14860,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "193": {
     "level": 193,
     "moves": 12,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -14937,10 +14937,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "194": {
     "level": 194,
     "moves": 9,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -15014,10 +15014,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "195": {
     "level": 195,
     "moves": 11,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -15091,10 +15091,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "196": {
     "level": 196,
     "moves": 12,
+    "health": 1,
     "r0c0": "marsh",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -15168,10 +15168,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "197": {
     "level": 197,
     "moves": 11,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "endClosed",
@@ -15245,10 +15245,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "198": {
     "level": 198,
     "moves": 13,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -15322,10 +15322,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "199": {
     "level": 199,
     "moves": 10,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -15399,10 +15399,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "200": {
     "level": 200,
     "moves": 13,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -15476,10 +15476,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "201": {
     "level": 201,
     "moves": 14,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -15553,10 +15553,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "202": {
     "level": 202,
     "moves": 19,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "marsh",
@@ -15630,10 +15630,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 2,
+  "203": {
     "level": 203,
     "moves": 14,
+    "health": 2,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "marsh",
@@ -15707,10 +15707,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 2,
+  "204": {
     "level": 204,
     "moves": 21,
+    "health": 2,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "marsh",
@@ -15784,10 +15784,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "205": {
     "level": 205,
     "moves": 24,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -15861,10 +15861,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 2,
+  "206": {
     "level": 206,
     "moves": 23,
+    "health": 2,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "marsh",
@@ -15938,10 +15938,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "207": {
     "level": 207,
     "moves": 18,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -16015,10 +16015,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 2,
+  "208": {
     "level": 208,
     "moves": 11,
+    "health": 2,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "ice",
@@ -16092,10 +16092,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "209": {
     "level": 209,
     "moves": 16,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -16169,10 +16169,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "210": {
     "level": 210,
     "moves": 21,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -16246,10 +16246,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "211": {
     "level": 211,
     "moves": 28,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "endClosed",
     "r0c2": "marsh",
@@ -16323,10 +16323,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "212": {
     "level": 212,
     "moves": 24,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "marsh",
     "r0c2": "endClosed",
@@ -16400,10 +16400,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "213": {
     "level": 213,
     "moves": 22,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "marsh",
     "r0c2": "grass",
@@ -16477,10 +16477,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "214": {
     "level": 214,
     "moves": 21,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "endClosed",
     "r0c2": "grass",
@@ -16554,10 +16554,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "215": {
     "level": 215,
     "moves": 19,
+    "health": 1,
     "r0c0": "grass",
     "r0c1": "ice",
     "r0c2": "start",
@@ -16631,10 +16631,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "216": {
     "level": 216,
     "moves": 20,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "grass",
@@ -16708,10 +16708,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "217": {
     "level": 217,
     "moves": 19,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -16785,10 +16785,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "218": {
     "level": 218,
     "moves": 12,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "endClosed",
@@ -16862,10 +16862,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "219": {
     "level": 219,
     "moves": 25,
+    "health": 1,
     "r0c0": "marsh",
     "r0c1": "grass",
     "r0c2": "start",
@@ -16939,10 +16939,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "220": {
     "level": 220,
     "moves": 11,
+    "health": 1,
     "r0c0": "grass",
     "r0c1": "grass",
     "r0c2": "ice",
@@ -17016,10 +17016,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "221": {
     "level": 221,
     "moves": 9,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -17093,10 +17093,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "222": {
     "level": 222,
     "moves": 16,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -17170,10 +17170,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "223": {
     "level": 223,
     "moves": 10,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -17247,10 +17247,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "224": {
     "level": 224,
     "moves": 12,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -17324,10 +17324,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "225": {
     "level": 225,
     "moves": 9,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -17401,10 +17401,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "226": {
     "level": 226,
     "moves": 11,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -17478,10 +17478,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "227": {
     "level": 227,
     "moves": 7,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -17555,10 +17555,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "228": {
     "level": 228,
     "moves": 16,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "endClosed",
     "r0c2": "ice",
@@ -17632,10 +17632,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "229": {
     "level": 229,
     "moves": 13,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -17709,10 +17709,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "230": {
     "level": 230,
     "moves": 10,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -17786,10 +17786,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "231": {
     "level": 231,
     "moves": 12,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -17863,10 +17863,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "232": {
     "level": 232,
     "moves": 12,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -17940,10 +17940,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "233": {
     "level": 233,
     "moves": 16,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -18017,10 +18017,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "234": {
     "level": 234,
     "moves": 11,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -18094,10 +18094,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "235": {
     "level": 235,
     "moves": 10,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -18171,10 +18171,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "236": {
     "level": 236,
     "moves": 13,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "ice",
@@ -18248,10 +18248,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "237": {
     "level": 237,
     "moves": 14,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "grass",
@@ -18325,10 +18325,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 2,
+  "238": {
     "level": 238,
     "moves": 18,
+    "health": 2,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -18402,10 +18402,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "239": {
     "level": 239,
     "moves": 23,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "marsh",
@@ -18479,10 +18479,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 2,
+  "240": {
     "level": 240,
     "moves": 12,
+    "health": 2,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "grass",
@@ -18556,10 +18556,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 2,
+  "241": {
     "level": 241,
     "moves": 6,
+    "health": 2,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -18633,10 +18633,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "242": {
     "level": 242,
     "moves": 22,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -18710,10 +18710,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "243": {
     "level": 243,
     "moves": 15,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -18787,10 +18787,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "244": {
     "level": 244,
     "moves": 15,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -18864,10 +18864,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "245": {
     "level": 245,
     "moves": 20,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -18941,10 +18941,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 2,
+  "246": {
     "level": 246,
     "moves": 9,
+    "health": 2,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -19018,10 +19018,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 2,
+  "247": {
     "level": 247,
     "moves": 14,
+    "health": 2,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -19095,10 +19095,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "248": {
     "level": 248,
     "moves": 12,
+    "health": 1,
     "r0c0": "grass",
     "r0c1": "start",
     "r0c2": "grass",
@@ -19172,10 +19172,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "249": {
     "level": 249,
     "moves": 7,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -19249,10 +19249,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "250": {
     "level": 250,
     "moves": 20,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -19326,10 +19326,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "251": {
     "level": 251,
     "moves": 13,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -19403,10 +19403,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "252": {
     "level": 252,
     "moves": 17,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -19480,10 +19480,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "253": {
     "level": 253,
     "moves": 18,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "marsh",
@@ -19557,10 +19557,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "254": {
     "level": 254,
     "moves": 18,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "marsh",
@@ -19634,10 +19634,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "255": {
     "level": 255,
     "moves": 23,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -19711,10 +19711,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "256": {
     "level": 256,
     "moves": 26,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "marsh",
@@ -19788,10 +19788,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "257": {
     "level": 257,
     "moves": 27,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "marsh",
@@ -19865,10 +19865,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "258": {
     "level": 258,
     "moves": 20,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "marsh",
@@ -19942,10 +19942,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "259": {
     "level": 259,
     "moves": 15,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -20019,10 +20019,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "260": {
     "level": 260,
     "moves": 14,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -20096,10 +20096,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "261": {
     "level": 261,
     "moves": 21,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -20173,10 +20173,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "262": {
     "level": 262,
     "moves": 18,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "marsh",
     "r0c2": "grass",
@@ -20250,10 +20250,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "263": {
     "level": 263,
     "moves": 24,
+    "health": 1,
     "r0c0": "grass",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -20327,10 +20327,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "264": {
     "level": 264,
     "moves": 28,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "marsh",
@@ -20404,10 +20404,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "265": {
     "level": 265,
     "moves": 24,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -20481,10 +20481,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "266": {
     "level": 266,
     "moves": 15,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -20558,10 +20558,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "267": {
     "level": 267,
     "moves": 11,
+    "health": 1,
     "r0c0": "ice",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -20635,10 +20635,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 2,
+  "268": {
     "level": 268,
     "moves": 26,
+    "health": 2,
     "r0c0": "ice",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -20712,10 +20712,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "269": {
     "level": 269,
     "moves": 15,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -20789,10 +20789,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "270": {
     "level": 270,
     "moves": 15,
+    "health": 1,
     "r0c0": "ice",
     "r0c1": "ice",
     "r0c2": "start",
@@ -20866,10 +20866,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "271": {
     "level": 271,
     "moves": 16,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -20943,10 +20943,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "272": {
     "level": 272,
     "moves": 10,
+    "health": 1,
     "r0c0": "ice",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -21020,10 +21020,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "273": {
     "level": 273,
     "moves": 11,
+    "health": 1,
     "r0c0": "ice",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -21097,10 +21097,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "274": {
     "level": 274,
     "moves": 13,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -21174,10 +21174,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "275": {
     "level": 275,
     "moves": 13,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -21251,10 +21251,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "276": {
     "level": 276,
     "moves": 9,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -21328,10 +21328,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "277": {
     "level": 277,
     "moves": 19,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -21405,10 +21405,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "278": {
     "level": 278,
     "moves": 12,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -21482,10 +21482,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "279": {
     "level": 279,
     "moves": 15,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "marsh",
@@ -21559,10 +21559,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "280": {
     "level": 280,
     "moves": 10,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "endClosed",
     "r0c2": "ice",
@@ -21636,10 +21636,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "281": {
     "level": 281,
     "moves": 13,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -21713,10 +21713,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "282": {
     "level": 282,
     "moves": 20,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -21790,10 +21790,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "283": {
     "level": 283,
     "moves": 17,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "marsh",
@@ -21867,10 +21867,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "284": {
     "level": 284,
     "moves": 11,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "marsh",
     "r0c2": "marsh",
@@ -21944,10 +21944,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "285": {
     "level": 285,
     "moves": 13,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "grass",
@@ -22021,10 +22021,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "286": {
     "level": 286,
     "moves": 9,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "marsh",
     "r0c2": "marsh",
@@ -22098,10 +22098,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "287": {
     "level": 287,
     "moves": 27,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "ice",
@@ -22175,10 +22175,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "288": {
     "level": 288,
     "moves": 19,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "ice",
@@ -22252,10 +22252,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "289": {
     "level": 289,
     "moves": 25,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "marsh",
     "r0c2": "ice",
@@ -22329,10 +22329,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "290": {
     "level": 290,
     "moves": 15,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "marsh",
@@ -22406,10 +22406,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 2,
+  "291": {
     "level": 291,
     "moves": 21,
+    "health": 2,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "ice",
@@ -22483,10 +22483,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "292": {
     "level": 292,
     "moves": 25,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -22560,10 +22560,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "293": {
     "level": 293,
     "moves": 23,
+    "health": 1,
     "r0c0": "grass",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -22637,10 +22637,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "294": {
     "level": 294,
     "moves": 20,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "marsh",
@@ -22714,10 +22714,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "295": {
     "level": 295,
     "moves": 24,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "marsh",
     "r0c2": "ice",
@@ -22791,10 +22791,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "296": {
     "level": 296,
     "moves": 22,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "ice",
@@ -22868,10 +22868,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "297": {
     "level": 297,
     "moves": 22,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -22945,10 +22945,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "298": {
     "level": 298,
     "moves": 28,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -23022,10 +23022,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "299": {
     "level": 299,
     "moves": 36,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "marsh",
     "r0c2": "marsh",
@@ -23099,10 +23099,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "300": {
     "level": 300,
     "moves": 43,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "marsh",
     "r0c2": "marsh",
@@ -23176,10 +23176,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "301": {
     "level": 301,
     "moves": 26,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -23253,10 +23253,10 @@
     "s5d4": "gem",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "302": {
     "level": 302,
     "moves": 36,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -23330,10 +23330,10 @@
     "s5d4": "gem",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "303": {
     "level": 303,
     "moves": 28,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -23407,10 +23407,10 @@
     "s5d4": "gem",
     "s5d5": "boulder"
   },
-  {
-    "health": 1,
+  "304": {
     "level": 304,
     "moves": 31,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -23484,10 +23484,10 @@
     "s5d4": "boulder",
     "s5d5": "gem"
   },
-  {
-    "health": 1,
+  "305": {
     "level": 305,
     "moves": 35,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -23561,10 +23561,10 @@
     "s5d4": "gem",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "306": {
     "level": 306,
     "moves": 38,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -23638,10 +23638,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "307": {
     "level": 307,
     "moves": 31,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -23715,10 +23715,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "308": {
     "level": 308,
     "moves": 18,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -23792,10 +23792,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "309": {
     "level": 309,
     "moves": 48,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -23869,10 +23869,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "310": {
     "level": 310,
     "moves": 41,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -23946,10 +23946,10 @@
     "s5d4": "sword",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "311": {
     "level": 311,
     "moves": 25,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "marsh",
     "r0c2": "marsh",
@@ -24023,10 +24023,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "312": {
     "level": 312,
     "moves": 40,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -24100,10 +24100,10 @@
     "s5d4": "sword",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "313": {
     "level": 313,
     "moves": 33,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -24177,10 +24177,10 @@
     "s5d4": "warp2",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "314": {
     "level": 314,
     "moves": 34,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "endClosed",
     "r0c2": "grass",
@@ -24254,10 +24254,10 @@
     "s5d4": "boulder",
     "s5d5": "sword"
   },
-  {
-    "health": 1,
+  "315": {
     "level": 315,
     "moves": 24,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "marsh",
@@ -24331,10 +24331,10 @@
     "s5d4": "boulder",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "316": {
     "level": 316,
     "moves": 40,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -24408,10 +24408,10 @@
     "s5d4": "boulder",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "317": {
     "level": 317,
     "moves": 22,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "marsh",
@@ -24485,10 +24485,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "318": {
     "level": 318,
     "moves": 38,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -24562,10 +24562,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "319": {
     "level": 319,
     "moves": 33,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -24639,10 +24639,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "320": {
     "level": 320,
     "moves": 36,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -24716,10 +24716,10 @@
     "s5d4": "boulder",
     "s5d5": "gem"
   },
-  {
-    "health": 1,
+  "321": {
     "level": 321,
     "moves": 23,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "ice",
@@ -24793,10 +24793,10 @@
     "s5d4": "boulder",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "322": {
     "level": 322,
     "moves": 16,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "marsh",
     "r0c2": "ice",
@@ -24870,10 +24870,10 @@
     "s5d4": "hammer",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "323": {
     "level": 323,
     "moves": 12,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "ice",
@@ -24947,10 +24947,10 @@
     "s5d4": "",
     "s5d5": "gem"
   },
-  {
-    "health": 1,
+  "324": {
     "level": 324,
     "moves": 18,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -25024,10 +25024,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "325": {
     "level": 325,
     "moves": 16,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -25101,10 +25101,10 @@
     "s5d4": "enemy",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "326": {
     "level": 326,
     "moves": 29,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -25178,10 +25178,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "327": {
     "level": 327,
     "moves": 11,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -25255,10 +25255,10 @@
     "s5d4": "boulder",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "328": {
     "level": 328,
     "moves": 22,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -25332,10 +25332,10 @@
     "s5d4": "boulder",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "329": {
     "level": 329,
     "moves": 17,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "marsh",
@@ -25409,10 +25409,10 @@
     "s5d4": "warp2",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "330": {
     "level": 330,
     "moves": 7,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -25486,10 +25486,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "331": {
     "level": 331,
     "moves": 18,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -25563,10 +25563,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "332": {
     "level": 332,
     "moves": 33,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -25640,10 +25640,10 @@
     "s5d4": "",
     "s5d5": "hammer"
   },
-  {
-    "health": 2,
+  "333": {
     "level": 333,
     "moves": 12,
+    "health": 2,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -25717,10 +25717,10 @@
     "s5d4": "boulder",
     "s5d5": "heart"
   },
-  {
-    "health": 1,
+  "334": {
     "level": 334,
     "moves": 16,
+    "health": 1,
     "r0c0": "ice",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -25794,10 +25794,10 @@
     "s5d4": "",
     "s5d5": "heart"
   },
-  {
-    "health": 1,
+  "335": {
     "level": 335,
     "moves": 21,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -25871,10 +25871,10 @@
     "s5d4": "warp2",
     "s5d5": "boulder"
   },
-  {
-    "health": 1,
+  "336": {
     "level": 336,
     "moves": 14,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -25948,10 +25948,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "337": {
     "level": 337,
     "moves": 22,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -26025,10 +26025,10 @@
     "s5d4": "",
     "s5d5": "enemy"
   },
-  {
-    "health": 1,
+  "338": {
     "level": 338,
     "moves": 17,
+    "health": 1,
     "r0c0": "ice",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -26102,10 +26102,10 @@
     "s5d4": "",
     "s5d5": "gem"
   },
-  {
-    "health": 1,
+  "339": {
     "level": 339,
     "moves": 28,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -26179,10 +26179,10 @@
     "s5d4": "gem",
     "s5d5": "gem"
   },
-  {
-    "health": 1,
+  "340": {
     "level": 340,
     "moves": 13,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -26256,10 +26256,10 @@
     "s5d4": "",
     "s5d5": "boulder"
   },
-  {
-    "health": 1,
+  "341": {
     "level": 341,
     "moves": 12,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -26333,10 +26333,10 @@
     "s5d4": "gem",
     "s5d5": "boulder"
   },
-  {
-    "health": 1,
+  "342": {
     "level": 342,
     "moves": 26,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -26410,10 +26410,10 @@
     "s5d4": "",
     "s5d5": "sword"
   },
-  {
-    "health": 1,
+  "343": {
     "level": 343,
     "moves": 21,
+    "health": 1,
     "r0c0": "ice",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -26487,10 +26487,10 @@
     "s5d4": "gem",
     "s5d5": "heart"
   },
-  {
-    "health": 1,
+  "344": {
     "level": 344,
     "moves": 14,
+    "health": 1,
     "r0c0": "ice",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -26564,10 +26564,10 @@
     "s5d4": "hammer",
     "s5d5": "gem"
   },
-  {
-    "health": 1,
+  "345": {
     "level": 345,
     "moves": 17,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -26641,10 +26641,10 @@
     "s5d4": "boulder",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "346": {
     "level": 346,
     "moves": 23,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "grass",
@@ -26718,10 +26718,10 @@
     "s5d4": "heart",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "347": {
     "level": 347,
     "moves": 15,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -26795,10 +26795,10 @@
     "s5d4": "enemy",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "348": {
     "level": 348,
     "moves": 17,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -26872,10 +26872,10 @@
     "s5d4": "gem",
     "s5d5": "warp"
   },
-  {
-    "health": 1,
+  "349": {
     "level": 349,
     "moves": 19,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -26949,10 +26949,10 @@
     "s5d4": "warp",
     "s5d5": "gem"
   },
-  {
-    "health": 1,
+  "350": {
     "level": 350,
     "moves": 15,
+    "health": 1,
     "r0c0": "ice",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -27026,10 +27026,10 @@
     "s5d4": "",
     "s5d5": "gem"
   },
-  {
-    "health": 99,
+  "351": {
     "level": 351,
     "moves": 14,
+    "health": 99,
     "r0c0": "start",
     "r0c1": "sand",
     "r0c2": "sand",
@@ -27103,10 +27103,10 @@
     "s5d4": "gem",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "352": {
     "level": 352,
     "moves": 19,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "sand",
     "r0c2": "sand",
@@ -27180,10 +27180,10 @@
     "s5d4": "gem",
     "s5d5": "gem"
   },
-  {
-    "health": 1,
+  "353": {
     "level": 353,
     "moves": 18,
+    "health": 1,
     "r0c0": "grass",
     "r0c1": "grass",
     "r0c2": "start",
@@ -27257,10 +27257,10 @@
     "s5d4": "gem",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "354": {
     "level": 354,
     "moves": 26,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -27334,10 +27334,10 @@
     "s5d4": "gem",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "355": {
     "level": 355,
     "moves": 18,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -27411,10 +27411,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "356": {
     "level": 356,
     "moves": 23,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -27488,10 +27488,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "357": {
     "level": 357,
     "moves": 20,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "sand",
     "r0c2": "grass",
@@ -27565,10 +27565,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "358": {
     "level": 358,
     "moves": 24,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "sand",
@@ -27642,626 +27642,10 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "359": {
     "level": 359,
-    "moves": 24,
-    "r0c0": "start",
-    "r0c1": "sand",
-    "r0c2": "sand",
-    "r0c3": "sand",
-    "r0c4": "sand",
-    "r0c5": "sand",
-    "r1c0": "lava",
-    "r1c1": "sand",
-    "r1c2": "lava",
-    "r1c3": "sand",
-    "r1c4": "lava",
-    "r1c5": "sand",
-    "r2c0": "sand",
-    "r2c1": "lava",
-    "r2c2": "sand",
-    "r2c3": "sand",
-    "r2c4": "sand",
-    "r2c5": "sand",
-    "r3c0": "sand",
-    "r3c1": "sand",
-    "r3c2": "sand",
-    "r3c3": "endClosed",
-    "r3c4": "sand",
-    "r3c5": "sand",
-    "r4c0": "sand",
-    "r4c1": "lava",
-    "r4c2": "sand",
-    "r4c3": "lava",
-    "r4c4": "sand",
-    "r4c5": "sand",
-    "r5c0": "sand",
-    "r5c1": "sand",
-    "r5c2": "sand",
-    "r5c3": "sand",
-    "r5c4": "sand",
-    "r5c5": "sand",
-    "s0d0": "",
-    "s0d1": "hammer",
-    "s0d2": "gem",
-    "s0d3": "boulder",
-    "s0d4": "gem",
-    "s0d5": "",
-    "s1d0": "",
-    "s1d1": "",
-    "s1d2": "",
-    "s1d3": "",
-    "s1d4": "",
-    "s1d5": "",
-    "s2d0": "",
-    "s2d1": "",
-    "s2d2": "",
-    "s2d3": "gem",
-    "s2d4": "",
-    "s2d5": "",
-    "s3d0": "hammer",
-    "s3d1": "",
-    "s3d2": "",
-    "s3d3": "",
-    "s3d4": "boulder",
-    "s3d5": "",
-    "s4d0": "",
-    "s4d1": "",
-    "s4d2": "",
-    "s4d3": "",
-    "s4d4": "gem",
-    "s4d5": "gem",
-    "s5d0": "gem",
-    "s5d1": "",
-    "s5d2": "",
-    "s5d3": "",
-    "s5d4": "",
-    "s5d5": ""
-  },
-  {
-    "health": 1,
-    "level": 360,
-    "moves": 17,
-    "r0c0": "start",
-    "r0c1": "lava",
-    "r0c2": "sand",
-    "r0c3": "sand",
-    "r0c4": "sand",
-    "r0c5": "sand",
-    "r1c0": "sand",
-    "r1c1": "sand",
-    "r1c2": "sand",
-    "r1c3": "ice",
-    "r1c4": "sand",
-    "r1c5": "ice",
-    "r2c0": "lava",
-    "r2c1": "lava",
-    "r2c2": "sand",
-    "r2c3": "ice",
-    "r2c4": "sand",
-    "r2c5": "ice",
-    "r3c0": "sand",
-    "r3c1": "sand",
-    "r3c2": "sand",
-    "r3c3": "ice",
-    "r3c4": "sand",
-    "r3c5": "ice",
-    "r4c0": "lava",
-    "r4c1": "sand",
-    "r4c2": "sand",
-    "r4c3": "ice",
-    "r4c4": "ice",
-    "r4c5": "ice",
-    "r5c0": "sand",
-    "r5c1": "sand",
-    "r5c2": "sand",
-    "r5c3": "lava",
-    "r5c4": "lava",
-    "r5c5": "endClosed",
-    "s0d0": "",
-    "s0d1": "",
-    "s0d2": "",
-    "s0d3": "gem",
-    "s0d4": "gem",
-    "s0d5": "",
-    "s1d0": "",
-    "s1d1": "",
-    "s1d2": "gem",
-    "s1d3": "",
-    "s1d4": "",
-    "s1d5": "",
-    "s2d0": "",
-    "s2d1": "",
-    "s2d2": "gem",
-    "s2d3": "",
-    "s2d4": "",
-    "s2d5": "",
-    "s3d0": "",
-    "s3d1": "gem",
-    "s3d2": "gem",
-    "s3d3": "",
-    "s3d4": "",
-    "s3d5": "",
-    "s4d0": "",
-    "s4d1": "hammer",
-    "s4d2": "gem",
-    "s4d3": "boulder",
-    "s4d4": "",
-    "s4d5": "",
-    "s5d0": "",
-    "s5d1": "gem",
-    "s5d2": "gem",
-    "s5d3": "boulder",
-    "s5d4": "",
-    "s5d5": ""
-  },
-  {
-    "health": 1,
-    "level": 361,
-    "moves": 23,
-    "r0c0": "start",
-    "r0c1": "sand",
-    "r0c2": "sand",
-    "r0c3": "lava",
-    "r0c4": "sand",
-    "r0c5": "sand",
-    "r1c0": "sand",
-    "r1c1": "sand",
-    "r1c2": "lava",
-    "r1c3": "sand",
-    "r1c4": "sand",
-    "r1c5": "sand",
-    "r2c0": "sand",
-    "r2c1": "lava",
-    "r2c2": "sand",
-    "r2c3": "sand",
-    "r2c4": "sand",
-    "r2c5": "sand",
-    "r3c0": "lava",
-    "r3c1": "sand",
-    "r3c2": "sand",
-    "r3c3": "sand",
-    "r3c4": "lava",
-    "r3c5": "lava",
-    "r4c0": "sand",
-    "r4c1": "sand",
-    "r4c2": "sand",
-    "r4c3": "lava",
-    "r4c4": "sand",
-    "r4c5": "sand",
-    "r5c0": "sand",
-    "r5c1": "sand",
-    "r5c2": "sand",
-    "r5c3": "sand",
-    "r5c4": "sand",
-    "r5c5": "endClosed",
-    "s0d0": "",
-    "s0d1": "gem",
-    "s0d2": "",
-    "s0d3": "",
-    "s0d4": "",
-    "s0d5": "gem",
-    "s1d0": "gem",
-    "s1d1": "warp",
-    "s1d2": "",
-    "s1d3": "gem",
-    "s1d4": "warp",
-    "s1d5": "warp2",
-    "s2d0": "",
-    "s2d1": "",
-    "s2d2": "",
-    "s2d3": "gem",
-    "s2d4": "",
-    "s2d5": "gem",
-    "s3d0": "",
-    "s3d1": "gem",
-    "s3d2": "gem",
-    "s3d3": "",
-    "s3d4": "",
-    "s3d5": "",
-    "s4d0": "",
-    "s4d1": "",
-    "s4d2": "",
-    "s4d3": "",
-    "s4d4": "warp2",
-    "s4d5": "gem",
-    "s5d0": "",
-    "s5d1": "gem",
-    "s5d2": "",
-    "s5d3": "gem",
-    "s5d4": "",
-    "s5d5": ""
-  },
-  {
-    "health": 1,
-    "level": 362,
-    "moves": 22,
-    "r0c0": "start",
-    "r0c1": "sand",
-    "r0c2": "sand",
-    "r0c3": "sand",
-    "r0c4": "sand",
-    "r0c5": "sand",
-    "r1c0": "sand",
-    "r1c1": "lava",
-    "r1c2": "lava",
-    "r1c3": "sand",
-    "r1c4": "lava",
-    "r1c5": "sand",
-    "r2c0": "sand",
-    "r2c1": "sand",
-    "r2c2": "sand",
-    "r2c3": "sand",
-    "r2c4": "lava",
-    "r2c5": "sand",
-    "r3c0": "sand",
-    "r3c1": "lava",
-    "r3c2": "lava",
-    "r3c3": "sand",
-    "r3c4": "lava",
-    "r3c5": "sand",
-    "r4c0": "sand",
-    "r4c1": "sand",
-    "r4c2": "sand",
-    "r4c3": "sand",
-    "r4c4": "lava",
-    "r4c5": "sand",
-    "r5c0": "sand",
-    "r5c1": "sand",
-    "r5c2": "lava",
-    "r5c3": "lava",
-    "r5c4": "sand",
-    "r5c5": "endClosed",
-    "s0d0": "",
-    "s0d1": "warp2",
-    "s0d2": "boulder",
-    "s0d3": "gem",
-    "s0d4": "",
-    "s0d5": "gem",
-    "s1d0": "",
-    "s1d1": "",
-    "s1d2": "",
-    "s1d3": "",
-    "s1d4": "",
-    "s1d5": "",
-    "s2d0": "gem",
-    "s2d1": "warp",
-    "s2d2": "gem",
-    "s2d3": "hammer",
-    "s2d4": "",
-    "s2d5": "warp",
-    "s3d0": "",
-    "s3d1": "",
-    "s3d2": "",
-    "s3d3": "",
-    "s3d4": "",
-    "s3d5": "",
-    "s4d0": "",
-    "s4d1": "gem",
-    "s4d2": "",
-    "s4d3": "gem",
-    "s4d4": "",
-    "s4d5": "gem",
-    "s5d0": "gem",
-    "s5d1": "",
-    "s5d2": "",
-    "s5d3": "",
-    "s5d4": "warp2",
-    "s5d5": ""
-  },
-  {
-    "health": 1,
-    "level": 363,
-    "moves": 24,
-    "r0c0": "start",
-    "r0c1": "sand",
-    "r0c2": "lava",
-    "r0c3": "sand",
-    "r0c4": "lava",
-    "r0c5": "sand",
-    "r1c0": "sand",
-    "r1c1": "sand",
-    "r1c2": "sand",
-    "r1c3": "sand",
-    "r1c4": "lava",
-    "r1c5": "sand",
-    "r2c0": "sand",
-    "r2c1": "lava",
-    "r2c2": "lava",
-    "r2c3": "sand",
-    "r2c4": "sand",
-    "r2c5": "sand",
-    "r3c0": "sand",
-    "r3c1": "sand",
-    "r3c2": "sand",
-    "r3c3": "sand",
-    "r3c4": "lava",
-    "r3c5": "sand",
-    "r4c0": "lava",
-    "r4c1": "sand",
-    "r4c2": "sand",
-    "r4c3": "lava",
-    "r4c4": "sand",
-    "r4c5": "sand",
-    "r5c0": "sand",
-    "r5c1": "sand",
-    "r5c2": "sand",
-    "r5c3": "sand",
-    "r5c4": "sand",
-    "r5c5": "endClosed",
-    "s0d0": "",
-    "s0d1": "gem",
-    "s0d2": "",
-    "s0d3": "gem",
-    "s0d4": "",
-    "s0d5": "gem",
-    "s1d0": "gem",
-    "s1d1": "",
-    "s1d2": "",
-    "s1d3": "warp",
-    "s1d4": "",
-    "s1d5": "warp",
-    "s2d0": "",
-    "s2d1": "",
-    "s2d2": "",
-    "s2d3": "gem",
-    "s2d4": "",
-    "s2d5": "gem",
-    "s3d0": "gem",
-    "s3d1": "",
-    "s3d2": "hammer",
-    "s3d3": "",
-    "s3d4": "",
-    "s3d5": "boulder",
-    "s4d0": "",
-    "s4d1": "",
-    "s4d2": "gem",
-    "s4d3": "",
-    "s4d4": "",
-    "s4d5": "gem",
-    "s5d0": "",
-    "s5d1": "gem",
-    "s5d2": "",
-    "s5d3": "",
-    "s5d4": "gem",
-    "s5d5": ""
-  },
-  {
-    "health": 1,
-    "level": 364,
-    "moves": 23,
-    "r0c0": "start",
-    "r0c1": "lava",
-    "r0c2": "sand",
-    "r0c3": "sand",
-    "r0c4": "sand",
-    "r0c5": "lava",
-    "r1c0": "sand",
-    "r1c1": "sand",
-    "r1c2": "sand",
-    "r1c3": "lava",
-    "r1c4": "lava",
-    "r1c5": "sand",
-    "r2c0": "sand",
-    "r2c1": "sand",
-    "r2c2": "sand",
-    "r2c3": "sand",
-    "r2c4": "sand",
-    "r2c5": "sand",
-    "r3c0": "sand",
-    "r3c1": "lava",
-    "r3c2": "lava",
-    "r3c3": "sand",
-    "r3c4": "lava",
-    "r3c5": "sand",
-    "r4c0": "sand",
-    "r4c1": "sand",
-    "r4c2": "sand",
-    "r4c3": "lava",
-    "r4c4": "sand",
-    "r4c5": "sand",
-    "r5c0": "lava",
-    "r5c1": "sand",
-    "r5c2": "lava",
-    "r5c3": "sand",
-    "r5c4": "sand",
-    "r5c5": "endClosed",
-    "s0d0": "",
-    "s0d1": "",
-    "s0d2": "gem",
-    "s0d3": "warp",
-    "s0d4": "gem",
-    "s0d5": "",
-    "s1d0": "",
-    "s1d1": "gem",
-    "s1d2": "",
-    "s1d3": "",
-    "s1d4": "",
-    "s1d5": "",
-    "s2d0": "gem",
-    "s2d1": "",
-    "s2d2": "gem",
-    "s2d3": "warp2",
-    "s2d4": "",
-    "s2d5": "gem",
-    "s3d0": "",
-    "s3d1": "",
-    "s3d2": "",
-    "s3d3": "",
-    "s3d4": "",
-    "s3d5": "",
-    "s4d0": "gem",
-    "s4d1": "warp",
-    "s4d2": "warp2",
-    "s4d3": "",
-    "s4d4": "",
-    "s4d5": "gem",
-    "s5d0": "",
-    "s5d1": "gem",
-    "s5d2": "",
-    "s5d3": "",
-    "s5d4": "gem",
-    "s5d5": ""
-  },
-  {
-    "health": 1,
-    "level": 365,
-    "moves": 23,
-    "r0c0": "start",
-    "r0c1": "sand",
-    "r0c2": "sand",
-    "r0c3": "sand",
-    "r0c4": "sand",
-    "r0c5": "sand",
-    "r1c0": "sand",
-    "r1c1": "sand",
-    "r1c2": "lava",
-    "r1c3": "sand",
-    "r1c4": "lava",
-    "r1c5": "sand",
-    "r2c0": "sand",
-    "r2c1": "lava",
-    "r2c2": "sand",
-    "r2c3": "sand",
-    "r2c4": "lava",
-    "r2c5": "sand",
-    "r3c0": "lava",
-    "r3c1": "sand",
-    "r3c2": "lava",
-    "r3c3": "sand",
-    "r3c4": "sand",
-    "r3c5": "lava",
-    "r4c0": "sand",
-    "r4c1": "sand",
-    "r4c2": "sand",
-    "r4c3": "sand",
-    "r4c4": "ice",
-    "r4c5": "ice",
-    "r5c0": "sand",
-    "r5c1": "lava",
-    "r5c2": "sand",
-    "r5c3": "sand",
-    "r5c4": "sand",
-    "r5c5": "endClosed",
-    "s0d0": "",
-    "s0d1": "gem",
-    "s0d2": "",
-    "s0d3": "boulder",
-    "s0d4": "",
-    "s0d5": "gem",
-    "s1d0": "gem",
-    "s1d1": "warp2",
-    "s1d2": "",
-    "s1d3": "",
-    "s1d4": "",
-    "s1d5": "warp",
-    "s2d0": "",
-    "s2d1": "",
-    "s2d2": "warp2",
-    "s2d3": "hammer",
-    "s2d4": "",
-    "s2d5": "gem",
-    "s3d0": "",
-    "s3d1": "",
-    "s3d2": "",
-    "s3d3": "gem",
-    "s3d4": "gem",
-    "s3d5": "",
-    "s4d0": "warp",
-    "s4d1": "gem",
-    "s4d2": "boulder",
-    "s4d3": "gem",
-    "s4d4": "",
-    "s4d5": "",
-    "s5d0": "hammer",
-    "s5d1": "",
-    "s5d2": "",
-    "s5d3": "gem",
-    "s5d4": "gem",
-    "s5d5": ""
-  },
-  {
-    "health": 1,
-    "level": 366,
-    "moves": 26,
-    "r0c0": "start",
-    "r0c1": "sand",
-    "r0c2": "sand",
-    "r0c3": "sand",
-    "r0c4": "sand",
-    "r0c5": "sand",
-    "r1c0": "sand",
-    "r1c1": "sand",
-    "r1c2": "sand",
-    "r1c3": "sand",
-    "r1c4": "sand",
-    "r1c5": "sand",
-    "r2c0": "sand",
-    "r2c1": "sand",
-    "r2c2": "sand",
-    "r2c3": "sand",
-    "r2c4": "sand",
-    "r2c5": "sand",
-    "r3c0": "sand",
-    "r3c1": "sand",
-    "r3c2": "sand",
-    "r3c3": "sand",
-    "r3c4": "lava",
-    "r3c5": "ice",
-    "r4c0": "sand",
-    "r4c1": "sand",
-    "r4c2": "sand",
-    "r4c3": "sand",
-    "r4c4": "lava",
-    "r4c5": "ice",
-    "r5c0": "sand",
-    "r5c1": "sand",
-    "r5c2": "sand",
-    "r5c3": "sand",
-    "r5c4": "lava",
-    "r5c5": "endClosed",
-    "s0d0": "",
-    "s0d1": "",
-    "s0d2": "",
-    "s0d3": "",
-    "s0d4": "",
-    "s0d5": "hammer",
-    "s1d0": "gem",
-    "s1d1": "",
-    "s1d2": "",
-    "s1d3": "",
-    "s1d4": "",
-    "s1d5": "",
-    "s2d0": "boulder",
-    "s2d1": "boulder",
-    "s2d2": "gem",
-    "s2d3": "",
-    "s2d4": "",
-    "s2d5": "",
-    "s3d0": "hammer",
-    "s3d1": "gem",
-    "s3d2": "boulder",
-    "s3d3": "",
-    "s3d4": "",
-    "s3d5": "boulder",
-    "s4d0": "boulder",
-    "s4d1": "boulder",
-    "s4d2": "boulder",
-    "s4d3": "",
-    "s4d4": "",
-    "s4d5": "",
-    "s5d0": "hammer",
-    "s5d1": "gem",
-    "s5d2": "hammer",
-    "s5d3": "boulder",
-    "s5d4": "",
-    "s5d5": ""
-  },
-  {
-    "health": 1,
-    "level": 367,
     "moves": 28,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "sand",
     "r0c2": "sand",
@@ -28335,87 +27719,10 @@
     "s5d4": "gem",
     "s5d5": ""
   },
-  {
-    "health": 1,
-    "level": 368,
-    "moves": 25,
-    "r0c0": "start",
-    "r0c1": "sand",
-    "r0c2": "sand",
-    "r0c3": "sand",
-    "r0c4": "sand",
-    "r0c5": "sand",
-    "r1c0": "sand",
-    "r1c1": "sand",
-    "r1c2": "sand",
-    "r1c3": "sand",
-    "r1c4": "lava",
-    "r1c5": "sand",
-    "r2c0": "sand",
-    "r2c1": "sand",
-    "r2c2": "lava",
-    "r2c3": "sand",
-    "r2c4": "sand",
-    "r2c5": "sand",
-    "r3c0": "sand",
-    "r3c1": "lava",
-    "r3c2": "sand",
-    "r3c3": "lava",
-    "r3c4": "sand",
-    "r3c5": "ice",
-    "r4c0": "sand",
-    "r4c1": "lava",
-    "r4c2": "sand",
-    "r4c3": "sand",
-    "r4c4": "lava",
-    "r4c5": "ice",
-    "r5c0": "sand",
-    "r5c1": "sand",
-    "r5c2": "sand",
-    "r5c3": "sand",
-    "r5c4": "sand",
-    "r5c5": "endClosed",
-    "s0d0": "",
-    "s0d1": "",
-    "s0d2": "",
-    "s0d3": "hammer",
-    "s0d4": "gem",
-    "s0d5": "gem",
-    "s1d0": "",
-    "s1d1": "gem",
-    "s1d2": "",
-    "s1d3": "",
-    "s1d4": "",
-    "s1d5": "gem",
-    "s2d0": "",
-    "s2d1": "",
-    "s2d2": "",
-    "s2d3": "",
-    "s2d4": "",
-    "s2d5": "boulder",
-    "s3d0": "hammer",
-    "s3d1": "",
-    "s3d2": "",
-    "s3d3": "",
-    "s3d4": "gem",
-    "s3d5": "",
-    "s4d0": "gem",
-    "s4d1": "",
-    "s4d2": "",
-    "s4d3": "gem",
-    "s4d4": "",
-    "s4d5": "",
-    "s5d0": "gem",
-    "s5d1": "gem",
-    "s5d2": "boulder",
-    "s5d3": "",
-    "s5d4": "",
-    "s5d5": ""
-  },
-  {
-    "health": 1,
-    "level": 369,
+  "360": {
+    "level": 360,
     "moves": 26,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "sand",
     "r0c2": "sand",
@@ -28489,241 +27796,10 @@
     "s5d4": "gem",
     "s5d5": ""
   },
-  {
-    "health": 1,
-    "level": 370,
-    "moves": 19,
-    "r0c0": "start",
-    "r0c1": "sand",
-    "r0c2": "lava",
-    "r0c3": "sand",
-    "r0c4": "sand",
-    "r0c5": "sand",
-    "r1c0": "lava",
-    "r1c1": "sand",
-    "r1c2": "lava",
-    "r1c3": "sand",
-    "r1c4": "sand",
-    "r1c5": "sand",
-    "r2c0": "lava",
-    "r2c1": "sand",
-    "r2c2": "lava",
-    "r2c3": "lava",
-    "r2c4": "lava",
-    "r2c5": "lava",
-    "r3c0": "lava",
-    "r3c1": "sand",
-    "r3c2": "sand",
-    "r3c3": "sand",
-    "r3c4": "sand",
-    "r3c5": "sand",
-    "r4c0": "sand",
-    "r4c1": "sand",
-    "r4c2": "lava",
-    "r4c3": "lava",
-    "r4c4": "sand",
-    "r4c5": "sand",
-    "r5c0": "sand",
-    "r5c1": "sand",
-    "r5c2": "sand",
-    "r5c3": "lava",
-    "r5c4": "lava",
-    "r5c5": "endClosed",
-    "s0d0": "",
-    "s0d1": "",
-    "s0d2": "",
-    "s0d3": "gem",
-    "s0d4": "gem",
-    "s0d5": "gem",
-    "s1d0": "",
-    "s1d1": "",
-    "s1d2": "",
-    "s1d3": "gem",
-    "s1d4": "warp2",
-    "s1d5": "warp",
-    "s2d0": "",
-    "s2d1": "",
-    "s2d2": "",
-    "s2d3": "",
-    "s2d4": "",
-    "s2d5": "",
-    "s3d0": "",
-    "s3d1": "",
-    "s3d2": "warp2",
-    "s3d3": "",
-    "s3d4": "gem",
-    "s3d5": "",
-    "s4d0": "gem",
-    "s4d1": "gem",
-    "s4d2": "",
-    "s4d3": "",
-    "s4d4": "gem",
-    "s4d5": "gem",
-    "s5d0": "gem",
-    "s5d1": "gem",
-    "s5d2": "warp",
-    "s5d3": "",
-    "s5d4": "",
-    "s5d5": ""
-  },
-  {
-    "health": 1,
-    "level": 371,
+  "361": {
+    "level": 361,
     "moves": 24,
-    "r0c0": "start",
-    "r0c1": "sand",
-    "r0c2": "sand",
-    "r0c3": "sand",
-    "r0c4": "sand",
-    "r0c5": "sand",
-    "r1c0": "sand",
-    "r1c1": "sand",
-    "r1c2": "sand",
-    "r1c3": "lava",
-    "r1c4": "sand",
-    "r1c5": "sand",
-    "r2c0": "lava",
-    "r2c1": "sand",
-    "r2c2": "sand",
-    "r2c3": "sand",
-    "r2c4": "lava",
-    "r2c5": "sand",
-    "r3c0": "lava",
-    "r3c1": "sand",
-    "r3c2": "sand",
-    "r3c3": "sand",
-    "r3c4": "sand",
-    "r3c5": "sand",
-    "r4c0": "sand",
-    "r4c1": "lava",
-    "r4c2": "sand",
-    "r4c3": "sand",
-    "r4c4": "lava",
-    "r4c5": "sand",
-    "r5c0": "sand",
-    "r5c1": "sand",
-    "r5c2": "sand",
-    "r5c3": "sand",
-    "r5c4": "sand",
-    "r5c5": "endClosed",
-    "s0d0": "",
-    "s0d1": "",
-    "s0d2": "",
-    "s0d3": "gem",
-    "s0d4": "gem",
-    "s0d5": "warp",
-    "s1d0": "",
-    "s1d1": "gem",
-    "s1d2": "gem",
-    "s1d3": "",
-    "s1d4": "",
-    "s1d5": "gem",
-    "s2d0": "",
-    "s2d1": "",
-    "s2d2": "gem",
-    "s2d3": "",
-    "s2d4": "",
-    "s2d5": "",
-    "s3d0": "",
-    "s3d1": "",
-    "s3d2": "",
-    "s3d3": "",
-    "s3d4": "gem",
-    "s3d5": "",
-    "s4d0": "gem",
-    "s4d1": "",
-    "s4d2": "",
-    "s4d3": "",
-    "s4d4": "",
-    "s4d5": "gem",
-    "s5d0": "warp",
-    "s5d1": "gem",
-    "s5d2": "",
-    "s5d3": "",
-    "s5d4": "gem",
-    "s5d5": ""
-  },
-  {
     "health": 1,
-    "level": 372,
-    "moves": 24,
-    "r0c0": "start",
-    "r0c1": "sand",
-    "r0c2": "sand",
-    "r0c3": "sand",
-    "r0c4": "sand",
-    "r0c5": "endClosed",
-    "r1c0": "sand",
-    "r1c1": "sand",
-    "r1c2": "sand",
-    "r1c3": "sand",
-    "r1c4": "sand",
-    "r1c5": "sand",
-    "r2c0": "sand",
-    "r2c1": "lava",
-    "r2c2": "sand",
-    "r2c3": "sand",
-    "r2c4": "sand",
-    "r2c5": "sand",
-    "r3c0": "sand",
-    "r3c1": "lava",
-    "r3c2": "lava",
-    "r3c3": "sand",
-    "r3c4": "lava",
-    "r3c5": "sand",
-    "r4c0": "sand",
-    "r4c1": "sand",
-    "r4c2": "sand",
-    "r4c3": "sand",
-    "r4c4": "lava",
-    "r4c5": "sand",
-    "r5c0": "sand",
-    "r5c1": "sand",
-    "r5c2": "sand",
-    "r5c3": "lava",
-    "r5c4": "sand",
-    "r5c5": "sand",
-    "s0d0": "",
-    "s0d1": "",
-    "s0d2": "gem",
-    "s0d3": "warp",
-    "s0d4": "gem",
-    "s0d5": "",
-    "s1d0": "",
-    "s1d1": "",
-    "s1d2": "",
-    "s1d3": "gem",
-    "s1d4": "",
-    "s1d5": "",
-    "s2d0": "gem",
-    "s2d1": "",
-    "s2d2": "",
-    "s2d3": "gem",
-    "s2d4": "",
-    "s2d5": "gem",
-    "s3d0": "",
-    "s3d1": "",
-    "s3d2": "",
-    "s3d3": "",
-    "s3d4": "",
-    "s3d5": "",
-    "s4d0": "",
-    "s4d1": "gem",
-    "s4d2": "",
-    "s4d3": "",
-    "s4d4": "",
-    "s4d5": "",
-    "s5d0": "",
-    "s5d1": "gem",
-    "s5d2": "",
-    "s5d3": "",
-    "s5d4": "gem",
-    "s5d5": "warp"
-  },
-  {
-    "health": 1,
-    "level": 373,
-    "moves": 24,
     "r0c0": "start",
     "r0c1": "sand",
     "r0c2": "sand",
@@ -28797,10 +27873,934 @@
     "s5d4": "",
     "s5d5": ""
   },
-  {
+  "362": {
+    "level": 362,
+    "moves": 24,
     "health": 1,
+    "r0c0": "start",
+    "r0c1": "sand",
+    "r0c2": "sand",
+    "r0c3": "sand",
+    "r0c4": "sand",
+    "r0c5": "sand",
+    "r1c0": "lava",
+    "r1c1": "sand",
+    "r1c2": "lava",
+    "r1c3": "sand",
+    "r1c4": "lava",
+    "r1c5": "sand",
+    "r2c0": "sand",
+    "r2c1": "lava",
+    "r2c2": "sand",
+    "r2c3": "sand",
+    "r2c4": "sand",
+    "r2c5": "sand",
+    "r3c0": "sand",
+    "r3c1": "sand",
+    "r3c2": "sand",
+    "r3c3": "endClosed",
+    "r3c4": "sand",
+    "r3c5": "sand",
+    "r4c0": "sand",
+    "r4c1": "lava",
+    "r4c2": "sand",
+    "r4c3": "lava",
+    "r4c4": "sand",
+    "r4c5": "sand",
+    "r5c0": "sand",
+    "r5c1": "sand",
+    "r5c2": "sand",
+    "r5c3": "sand",
+    "r5c4": "sand",
+    "r5c5": "sand",
+    "s0d0": "",
+    "s0d1": "hammer",
+    "s0d2": "gem",
+    "s0d3": "boulder",
+    "s0d4": "gem",
+    "s0d5": "",
+    "s1d0": "",
+    "s1d1": "",
+    "s1d2": "",
+    "s1d3": "",
+    "s1d4": "",
+    "s1d5": "",
+    "s2d0": "",
+    "s2d1": "",
+    "s2d2": "",
+    "s2d3": "gem",
+    "s2d4": "",
+    "s2d5": "",
+    "s3d0": "hammer",
+    "s3d1": "",
+    "s3d2": "",
+    "s3d3": "",
+    "s3d4": "boulder",
+    "s3d5": "",
+    "s4d0": "",
+    "s4d1": "",
+    "s4d2": "",
+    "s4d3": "",
+    "s4d4": "gem",
+    "s4d5": "gem",
+    "s5d0": "gem",
+    "s5d1": "",
+    "s5d2": "",
+    "s5d3": "",
+    "s5d4": "",
+    "s5d5": ""
+  },
+  "363": {
+    "level": 363,
+    "moves": 26,
+    "health": 1,
+    "r0c0": "start",
+    "r0c1": "sand",
+    "r0c2": "sand",
+    "r0c3": "sand",
+    "r0c4": "sand",
+    "r0c5": "sand",
+    "r1c0": "sand",
+    "r1c1": "sand",
+    "r1c2": "sand",
+    "r1c3": "sand",
+    "r1c4": "sand",
+    "r1c5": "sand",
+    "r2c0": "sand",
+    "r2c1": "sand",
+    "r2c2": "sand",
+    "r2c3": "sand",
+    "r2c4": "sand",
+    "r2c5": "sand",
+    "r3c0": "sand",
+    "r3c1": "sand",
+    "r3c2": "sand",
+    "r3c3": "sand",
+    "r3c4": "lava",
+    "r3c5": "ice",
+    "r4c0": "sand",
+    "r4c1": "sand",
+    "r4c2": "sand",
+    "r4c3": "sand",
+    "r4c4": "lava",
+    "r4c5": "ice",
+    "r5c0": "sand",
+    "r5c1": "sand",
+    "r5c2": "sand",
+    "r5c3": "sand",
+    "r5c4": "lava",
+    "r5c5": "endClosed",
+    "s0d0": "",
+    "s0d1": "",
+    "s0d2": "",
+    "s0d3": "",
+    "s0d4": "",
+    "s0d5": "hammer",
+    "s1d0": "gem",
+    "s1d1": "",
+    "s1d2": "",
+    "s1d3": "",
+    "s1d4": "",
+    "s1d5": "",
+    "s2d0": "boulder",
+    "s2d1": "boulder",
+    "s2d2": "gem",
+    "s2d3": "",
+    "s2d4": "",
+    "s2d5": "",
+    "s3d0": "hammer",
+    "s3d1": "gem",
+    "s3d2": "boulder",
+    "s3d3": "",
+    "s3d4": "",
+    "s3d5": "boulder",
+    "s4d0": "boulder",
+    "s4d1": "boulder",
+    "s4d2": "boulder",
+    "s4d3": "",
+    "s4d4": "",
+    "s4d5": "",
+    "s5d0": "hammer",
+    "s5d1": "gem",
+    "s5d2": "hammer",
+    "s5d3": "boulder",
+    "s5d4": "",
+    "s5d5": ""
+  },
+  "364": {
+    "level": 364,
+    "moves": 25,
+    "health": 1,
+    "r0c0": "start",
+    "r0c1": "sand",
+    "r0c2": "sand",
+    "r0c3": "sand",
+    "r0c4": "sand",
+    "r0c5": "sand",
+    "r1c0": "sand",
+    "r1c1": "sand",
+    "r1c2": "sand",
+    "r1c3": "sand",
+    "r1c4": "lava",
+    "r1c5": "sand",
+    "r2c0": "sand",
+    "r2c1": "sand",
+    "r2c2": "lava",
+    "r2c3": "sand",
+    "r2c4": "sand",
+    "r2c5": "sand",
+    "r3c0": "sand",
+    "r3c1": "lava",
+    "r3c2": "sand",
+    "r3c3": "lava",
+    "r3c4": "sand",
+    "r3c5": "ice",
+    "r4c0": "sand",
+    "r4c1": "lava",
+    "r4c2": "sand",
+    "r4c3": "sand",
+    "r4c4": "lava",
+    "r4c5": "ice",
+    "r5c0": "sand",
+    "r5c1": "sand",
+    "r5c2": "sand",
+    "r5c3": "sand",
+    "r5c4": "sand",
+    "r5c5": "endClosed",
+    "s0d0": "",
+    "s0d1": "",
+    "s0d2": "",
+    "s0d3": "hammer",
+    "s0d4": "gem",
+    "s0d5": "gem",
+    "s1d0": "",
+    "s1d1": "gem",
+    "s1d2": "",
+    "s1d3": "",
+    "s1d4": "",
+    "s1d5": "gem",
+    "s2d0": "",
+    "s2d1": "",
+    "s2d2": "",
+    "s2d3": "",
+    "s2d4": "",
+    "s2d5": "boulder",
+    "s3d0": "hammer",
+    "s3d1": "",
+    "s3d2": "",
+    "s3d3": "",
+    "s3d4": "gem",
+    "s3d5": "",
+    "s4d0": "gem",
+    "s4d1": "",
+    "s4d2": "",
+    "s4d3": "gem",
+    "s4d4": "",
+    "s4d5": "",
+    "s5d0": "gem",
+    "s5d1": "gem",
+    "s5d2": "boulder",
+    "s5d3": "",
+    "s5d4": "",
+    "s5d5": ""
+  },
+  "365": {
+    "level": 365,
+    "moves": 17,
+    "health": 1,
+    "r0c0": "start",
+    "r0c1": "lava",
+    "r0c2": "sand",
+    "r0c3": "sand",
+    "r0c4": "sand",
+    "r0c5": "sand",
+    "r1c0": "sand",
+    "r1c1": "sand",
+    "r1c2": "sand",
+    "r1c3": "ice",
+    "r1c4": "sand",
+    "r1c5": "ice",
+    "r2c0": "lava",
+    "r2c1": "lava",
+    "r2c2": "sand",
+    "r2c3": "ice",
+    "r2c4": "sand",
+    "r2c5": "ice",
+    "r3c0": "sand",
+    "r3c1": "sand",
+    "r3c2": "sand",
+    "r3c3": "ice",
+    "r3c4": "sand",
+    "r3c5": "ice",
+    "r4c0": "lava",
+    "r4c1": "sand",
+    "r4c2": "sand",
+    "r4c3": "ice",
+    "r4c4": "ice",
+    "r4c5": "ice",
+    "r5c0": "sand",
+    "r5c1": "sand",
+    "r5c2": "sand",
+    "r5c3": "lava",
+    "r5c4": "lava",
+    "r5c5": "endClosed",
+    "s0d0": "",
+    "s0d1": "",
+    "s0d2": "",
+    "s0d3": "gem",
+    "s0d4": "gem",
+    "s0d5": "",
+    "s1d0": "",
+    "s1d1": "",
+    "s1d2": "gem",
+    "s1d3": "",
+    "s1d4": "",
+    "s1d5": "",
+    "s2d0": "",
+    "s2d1": "",
+    "s2d2": "gem",
+    "s2d3": "",
+    "s2d4": "",
+    "s2d5": "",
+    "s3d0": "",
+    "s3d1": "gem",
+    "s3d2": "gem",
+    "s3d3": "",
+    "s3d4": "",
+    "s3d5": "",
+    "s4d0": "",
+    "s4d1": "hammer",
+    "s4d2": "gem",
+    "s4d3": "boulder",
+    "s4d4": "",
+    "s4d5": "",
+    "s5d0": "",
+    "s5d1": "gem",
+    "s5d2": "gem",
+    "s5d3": "boulder",
+    "s5d4": "",
+    "s5d5": ""
+  },
+  "366": {
+    "level": 366,
+    "moves": 24,
+    "health": 1,
+    "r0c0": "start",
+    "r0c1": "sand",
+    "r0c2": "sand",
+    "r0c3": "sand",
+    "r0c4": "sand",
+    "r0c5": "sand",
+    "r1c0": "sand",
+    "r1c1": "sand",
+    "r1c2": "sand",
+    "r1c3": "lava",
+    "r1c4": "sand",
+    "r1c5": "sand",
+    "r2c0": "lava",
+    "r2c1": "sand",
+    "r2c2": "sand",
+    "r2c3": "sand",
+    "r2c4": "lava",
+    "r2c5": "sand",
+    "r3c0": "lava",
+    "r3c1": "sand",
+    "r3c2": "sand",
+    "r3c3": "sand",
+    "r3c4": "sand",
+    "r3c5": "sand",
+    "r4c0": "sand",
+    "r4c1": "lava",
+    "r4c2": "sand",
+    "r4c3": "sand",
+    "r4c4": "lava",
+    "r4c5": "sand",
+    "r5c0": "sand",
+    "r5c1": "sand",
+    "r5c2": "sand",
+    "r5c3": "sand",
+    "r5c4": "sand",
+    "r5c5": "endClosed",
+    "s0d0": "",
+    "s0d1": "",
+    "s0d2": "",
+    "s0d3": "gem",
+    "s0d4": "gem",
+    "s0d5": "warp",
+    "s1d0": "",
+    "s1d1": "gem",
+    "s1d2": "gem",
+    "s1d3": "",
+    "s1d4": "",
+    "s1d5": "gem",
+    "s2d0": "",
+    "s2d1": "",
+    "s2d2": "gem",
+    "s2d3": "",
+    "s2d4": "",
+    "s2d5": "",
+    "s3d0": "",
+    "s3d1": "",
+    "s3d2": "",
+    "s3d3": "",
+    "s3d4": "gem",
+    "s3d5": "",
+    "s4d0": "gem",
+    "s4d1": "",
+    "s4d2": "",
+    "s4d3": "",
+    "s4d4": "",
+    "s4d5": "gem",
+    "s5d0": "warp",
+    "s5d1": "gem",
+    "s5d2": "",
+    "s5d3": "",
+    "s5d4": "gem",
+    "s5d5": ""
+  },
+  "367": {
+    "level": 367,
+    "moves": 24,
+    "health": 1,
+    "r0c0": "start",
+    "r0c1": "sand",
+    "r0c2": "sand",
+    "r0c3": "sand",
+    "r0c4": "sand",
+    "r0c5": "endClosed",
+    "r1c0": "sand",
+    "r1c1": "sand",
+    "r1c2": "sand",
+    "r1c3": "sand",
+    "r1c4": "sand",
+    "r1c5": "sand",
+    "r2c0": "sand",
+    "r2c1": "lava",
+    "r2c2": "sand",
+    "r2c3": "sand",
+    "r2c4": "sand",
+    "r2c5": "sand",
+    "r3c0": "sand",
+    "r3c1": "lava",
+    "r3c2": "lava",
+    "r3c3": "sand",
+    "r3c4": "lava",
+    "r3c5": "sand",
+    "r4c0": "sand",
+    "r4c1": "sand",
+    "r4c2": "sand",
+    "r4c3": "sand",
+    "r4c4": "lava",
+    "r4c5": "sand",
+    "r5c0": "sand",
+    "r5c1": "sand",
+    "r5c2": "sand",
+    "r5c3": "lava",
+    "r5c4": "sand",
+    "r5c5": "sand",
+    "s0d0": "",
+    "s0d1": "",
+    "s0d2": "gem",
+    "s0d3": "warp",
+    "s0d4": "gem",
+    "s0d5": "",
+    "s1d0": "",
+    "s1d1": "",
+    "s1d2": "",
+    "s1d3": "gem",
+    "s1d4": "",
+    "s1d5": "",
+    "s2d0": "gem",
+    "s2d1": "",
+    "s2d2": "",
+    "s2d3": "gem",
+    "s2d4": "",
+    "s2d5": "gem",
+    "s3d0": "",
+    "s3d1": "",
+    "s3d2": "",
+    "s3d3": "",
+    "s3d4": "",
+    "s3d5": "",
+    "s4d0": "",
+    "s4d1": "gem",
+    "s4d2": "",
+    "s4d3": "",
+    "s4d4": "",
+    "s4d5": "",
+    "s5d0": "",
+    "s5d1": "gem",
+    "s5d2": "",
+    "s5d3": "",
+    "s5d4": "gem",
+    "s5d5": "warp"
+  },
+  "368": {
+    "level": 368,
+    "moves": 19,
+    "health": 1,
+    "r0c0": "start",
+    "r0c1": "sand",
+    "r0c2": "lava",
+    "r0c3": "sand",
+    "r0c4": "sand",
+    "r0c5": "sand",
+    "r1c0": "lava",
+    "r1c1": "sand",
+    "r1c2": "lava",
+    "r1c3": "sand",
+    "r1c4": "sand",
+    "r1c5": "sand",
+    "r2c0": "lava",
+    "r2c1": "sand",
+    "r2c2": "lava",
+    "r2c3": "lava",
+    "r2c4": "lava",
+    "r2c5": "lava",
+    "r3c0": "lava",
+    "r3c1": "sand",
+    "r3c2": "sand",
+    "r3c3": "sand",
+    "r3c4": "sand",
+    "r3c5": "sand",
+    "r4c0": "sand",
+    "r4c1": "sand",
+    "r4c2": "lava",
+    "r4c3": "lava",
+    "r4c4": "sand",
+    "r4c5": "sand",
+    "r5c0": "sand",
+    "r5c1": "sand",
+    "r5c2": "sand",
+    "r5c3": "lava",
+    "r5c4": "lava",
+    "r5c5": "endClosed",
+    "s0d0": "",
+    "s0d1": "",
+    "s0d2": "",
+    "s0d3": "gem",
+    "s0d4": "gem",
+    "s0d5": "gem",
+    "s1d0": "",
+    "s1d1": "",
+    "s1d2": "",
+    "s1d3": "gem",
+    "s1d4": "warp2",
+    "s1d5": "warp",
+    "s2d0": "",
+    "s2d1": "",
+    "s2d2": "",
+    "s2d3": "",
+    "s2d4": "",
+    "s2d5": "",
+    "s3d0": "",
+    "s3d1": "",
+    "s3d2": "warp2",
+    "s3d3": "",
+    "s3d4": "gem",
+    "s3d5": "",
+    "s4d0": "gem",
+    "s4d1": "gem",
+    "s4d2": "",
+    "s4d3": "",
+    "s4d4": "gem",
+    "s4d5": "gem",
+    "s5d0": "gem",
+    "s5d1": "gem",
+    "s5d2": "warp",
+    "s5d3": "",
+    "s5d4": "",
+    "s5d5": ""
+  },
+  "369": {
+    "level": 369,
+    "moves": 23,
+    "health": 1,
+    "r0c0": "start",
+    "r0c1": "sand",
+    "r0c2": "sand",
+    "r0c3": "lava",
+    "r0c4": "sand",
+    "r0c5": "sand",
+    "r1c0": "sand",
+    "r1c1": "sand",
+    "r1c2": "lava",
+    "r1c3": "sand",
+    "r1c4": "sand",
+    "r1c5": "sand",
+    "r2c0": "sand",
+    "r2c1": "lava",
+    "r2c2": "sand",
+    "r2c3": "sand",
+    "r2c4": "sand",
+    "r2c5": "sand",
+    "r3c0": "lava",
+    "r3c1": "sand",
+    "r3c2": "sand",
+    "r3c3": "sand",
+    "r3c4": "lava",
+    "r3c5": "lava",
+    "r4c0": "sand",
+    "r4c1": "sand",
+    "r4c2": "sand",
+    "r4c3": "lava",
+    "r4c4": "sand",
+    "r4c5": "sand",
+    "r5c0": "sand",
+    "r5c1": "sand",
+    "r5c2": "sand",
+    "r5c3": "sand",
+    "r5c4": "sand",
+    "r5c5": "endClosed",
+    "s0d0": "",
+    "s0d1": "gem",
+    "s0d2": "",
+    "s0d3": "",
+    "s0d4": "",
+    "s0d5": "gem",
+    "s1d0": "gem",
+    "s1d1": "warp",
+    "s1d2": "",
+    "s1d3": "gem",
+    "s1d4": "warp",
+    "s1d5": "warp2",
+    "s2d0": "",
+    "s2d1": "",
+    "s2d2": "",
+    "s2d3": "gem",
+    "s2d4": "",
+    "s2d5": "gem",
+    "s3d0": "",
+    "s3d1": "gem",
+    "s3d2": "gem",
+    "s3d3": "",
+    "s3d4": "",
+    "s3d5": "",
+    "s4d0": "",
+    "s4d1": "",
+    "s4d2": "",
+    "s4d3": "",
+    "s4d4": "warp2",
+    "s4d5": "gem",
+    "s5d0": "",
+    "s5d1": "gem",
+    "s5d2": "",
+    "s5d3": "gem",
+    "s5d4": "",
+    "s5d5": ""
+  },
+  "370": {
+    "level": 370,
+    "moves": 22,
+    "health": 1,
+    "r0c0": "start",
+    "r0c1": "sand",
+    "r0c2": "sand",
+    "r0c3": "sand",
+    "r0c4": "sand",
+    "r0c5": "sand",
+    "r1c0": "sand",
+    "r1c1": "lava",
+    "r1c2": "lava",
+    "r1c3": "sand",
+    "r1c4": "lava",
+    "r1c5": "sand",
+    "r2c0": "sand",
+    "r2c1": "sand",
+    "r2c2": "sand",
+    "r2c3": "sand",
+    "r2c4": "lava",
+    "r2c5": "sand",
+    "r3c0": "sand",
+    "r3c1": "lava",
+    "r3c2": "lava",
+    "r3c3": "sand",
+    "r3c4": "lava",
+    "r3c5": "sand",
+    "r4c0": "sand",
+    "r4c1": "sand",
+    "r4c2": "sand",
+    "r4c3": "sand",
+    "r4c4": "lava",
+    "r4c5": "sand",
+    "r5c0": "sand",
+    "r5c1": "sand",
+    "r5c2": "lava",
+    "r5c3": "lava",
+    "r5c4": "sand",
+    "r5c5": "endClosed",
+    "s0d0": "",
+    "s0d1": "warp2",
+    "s0d2": "boulder",
+    "s0d3": "gem",
+    "s0d4": "",
+    "s0d5": "gem",
+    "s1d0": "",
+    "s1d1": "",
+    "s1d2": "",
+    "s1d3": "",
+    "s1d4": "",
+    "s1d5": "",
+    "s2d0": "gem",
+    "s2d1": "warp",
+    "s2d2": "gem",
+    "s2d3": "hammer",
+    "s2d4": "",
+    "s2d5": "warp",
+    "s3d0": "",
+    "s3d1": "",
+    "s3d2": "",
+    "s3d3": "",
+    "s3d4": "",
+    "s3d5": "",
+    "s4d0": "",
+    "s4d1": "gem",
+    "s4d2": "",
+    "s4d3": "gem",
+    "s4d4": "",
+    "s4d5": "gem",
+    "s5d0": "gem",
+    "s5d1": "",
+    "s5d2": "",
+    "s5d3": "",
+    "s5d4": "warp2",
+    "s5d5": ""
+  },
+  "371": {
+    "level": 371,
+    "moves": 24,
+    "health": 1,
+    "r0c0": "start",
+    "r0c1": "sand",
+    "r0c2": "lava",
+    "r0c3": "sand",
+    "r0c4": "lava",
+    "r0c5": "sand",
+    "r1c0": "sand",
+    "r1c1": "sand",
+    "r1c2": "sand",
+    "r1c3": "sand",
+    "r1c4": "lava",
+    "r1c5": "sand",
+    "r2c0": "sand",
+    "r2c1": "lava",
+    "r2c2": "lava",
+    "r2c3": "sand",
+    "r2c4": "sand",
+    "r2c5": "sand",
+    "r3c0": "sand",
+    "r3c1": "sand",
+    "r3c2": "sand",
+    "r3c3": "sand",
+    "r3c4": "lava",
+    "r3c5": "sand",
+    "r4c0": "lava",
+    "r4c1": "sand",
+    "r4c2": "sand",
+    "r4c3": "lava",
+    "r4c4": "sand",
+    "r4c5": "sand",
+    "r5c0": "sand",
+    "r5c1": "sand",
+    "r5c2": "sand",
+    "r5c3": "sand",
+    "r5c4": "sand",
+    "r5c5": "endClosed",
+    "s0d0": "",
+    "s0d1": "gem",
+    "s0d2": "",
+    "s0d3": "gem",
+    "s0d4": "",
+    "s0d5": "gem",
+    "s1d0": "gem",
+    "s1d1": "",
+    "s1d2": "",
+    "s1d3": "warp",
+    "s1d4": "",
+    "s1d5": "warp",
+    "s2d0": "",
+    "s2d1": "",
+    "s2d2": "",
+    "s2d3": "gem",
+    "s2d4": "",
+    "s2d5": "gem",
+    "s3d0": "gem",
+    "s3d1": "",
+    "s3d2": "hammer",
+    "s3d3": "",
+    "s3d4": "",
+    "s3d5": "boulder",
+    "s4d0": "",
+    "s4d1": "",
+    "s4d2": "gem",
+    "s4d3": "",
+    "s4d4": "",
+    "s4d5": "gem",
+    "s5d0": "",
+    "s5d1": "gem",
+    "s5d2": "",
+    "s5d3": "",
+    "s5d4": "gem",
+    "s5d5": ""
+  },
+  "372": {
+    "level": 372,
+    "moves": 23,
+    "health": 1,
+    "r0c0": "start",
+    "r0c1": "lava",
+    "r0c2": "sand",
+    "r0c3": "sand",
+    "r0c4": "sand",
+    "r0c5": "lava",
+    "r1c0": "sand",
+    "r1c1": "sand",
+    "r1c2": "sand",
+    "r1c3": "lava",
+    "r1c4": "lava",
+    "r1c5": "sand",
+    "r2c0": "sand",
+    "r2c1": "sand",
+    "r2c2": "sand",
+    "r2c3": "sand",
+    "r2c4": "sand",
+    "r2c5": "sand",
+    "r3c0": "sand",
+    "r3c1": "lava",
+    "r3c2": "lava",
+    "r3c3": "sand",
+    "r3c4": "lava",
+    "r3c5": "sand",
+    "r4c0": "sand",
+    "r4c1": "sand",
+    "r4c2": "sand",
+    "r4c3": "lava",
+    "r4c4": "sand",
+    "r4c5": "sand",
+    "r5c0": "lava",
+    "r5c1": "sand",
+    "r5c2": "lava",
+    "r5c3": "sand",
+    "r5c4": "sand",
+    "r5c5": "endClosed",
+    "s0d0": "",
+    "s0d1": "",
+    "s0d2": "gem",
+    "s0d3": "warp",
+    "s0d4": "gem",
+    "s0d5": "",
+    "s1d0": "",
+    "s1d1": "gem",
+    "s1d2": "",
+    "s1d3": "",
+    "s1d4": "",
+    "s1d5": "",
+    "s2d0": "gem",
+    "s2d1": "",
+    "s2d2": "gem",
+    "s2d3": "warp2",
+    "s2d4": "",
+    "s2d5": "gem",
+    "s3d0": "",
+    "s3d1": "",
+    "s3d2": "",
+    "s3d3": "",
+    "s3d4": "",
+    "s3d5": "",
+    "s4d0": "gem",
+    "s4d1": "warp",
+    "s4d2": "warp2",
+    "s4d3": "",
+    "s4d4": "",
+    "s4d5": "gem",
+    "s5d0": "",
+    "s5d1": "gem",
+    "s5d2": "",
+    "s5d3": "",
+    "s5d4": "gem",
+    "s5d5": ""
+  },
+  "373": {
+    "level": 373,
+    "moves": 23,
+    "health": 1,
+    "r0c0": "start",
+    "r0c1": "sand",
+    "r0c2": "sand",
+    "r0c3": "sand",
+    "r0c4": "sand",
+    "r0c5": "sand",
+    "r1c0": "sand",
+    "r1c1": "sand",
+    "r1c2": "lava",
+    "r1c3": "sand",
+    "r1c4": "lava",
+    "r1c5": "sand",
+    "r2c0": "sand",
+    "r2c1": "lava",
+    "r2c2": "sand",
+    "r2c3": "sand",
+    "r2c4": "lava",
+    "r2c5": "sand",
+    "r3c0": "lava",
+    "r3c1": "sand",
+    "r3c2": "lava",
+    "r3c3": "sand",
+    "r3c4": "sand",
+    "r3c5": "lava",
+    "r4c0": "sand",
+    "r4c1": "sand",
+    "r4c2": "sand",
+    "r4c3": "sand",
+    "r4c4": "ice",
+    "r4c5": "ice",
+    "r5c0": "sand",
+    "r5c1": "lava",
+    "r5c2": "sand",
+    "r5c3": "sand",
+    "r5c4": "sand",
+    "r5c5": "endClosed",
+    "s0d0": "",
+    "s0d1": "gem",
+    "s0d2": "",
+    "s0d3": "boulder",
+    "s0d4": "",
+    "s0d5": "gem",
+    "s1d0": "gem",
+    "s1d1": "warp2",
+    "s1d2": "",
+    "s1d3": "",
+    "s1d4": "",
+    "s1d5": "warp",
+    "s2d0": "",
+    "s2d1": "",
+    "s2d2": "warp2",
+    "s2d3": "hammer",
+    "s2d4": "",
+    "s2d5": "gem",
+    "s3d0": "",
+    "s3d1": "",
+    "s3d2": "",
+    "s3d3": "gem",
+    "s3d4": "gem",
+    "s3d5": "",
+    "s4d0": "warp",
+    "s4d1": "gem",
+    "s4d2": "boulder",
+    "s4d3": "gem",
+    "s4d4": "",
+    "s4d5": "",
+    "s5d0": "hammer",
+    "s5d1": "",
+    "s5d2": "",
+    "s5d3": "gem",
+    "s5d4": "gem",
+    "s5d5": ""
+  },
+  "374": {
     "level": 374,
     "moves": 25,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "sand",
     "r0c2": "sand",
@@ -28874,10 +28874,10 @@
     "s5d4": "boulder",
     "s5d5": ""
   },
-  {
-    "health": 1,
+  "375": {
     "level": 375,
     "moves": 18,
+    "health": 1,
     "r0c0": "start",
     "r0c1": "sand",
     "r0c2": "sand",
@@ -28951,4 +28951,4 @@
     "s5d4": "",
     "s5d5": ""
   }
-]
+}

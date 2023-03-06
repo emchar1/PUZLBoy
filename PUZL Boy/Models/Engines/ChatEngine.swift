@@ -48,13 +48,16 @@ class ChatEngine {
         timer = Timer()
         
         chatSpeed = chatSpeedOrig
-        dialoguePlayed[1] = false
-        dialoguePlayed[5] = false
-        dialoguePlayed[8] = false
-        dialoguePlayed[13] = false
-        dialoguePlayed[18] = false
-        dialoguePlayed[23] = false
         
+        // MARK: - Include key dialogue here
+        dialoguePlayed[1] = false
+        dialoguePlayed[8] = false
+        dialoguePlayed[19] = false
+        dialoguePlayed[34] = false
+        dialoguePlayed[51] = false
+        dialoguePlayed[76] = false
+        dialoguePlayed[101] = false
+
         sprite = SKShapeNode()
         sprite.lineWidth = ChatEngine.chatBorderWidth
         sprite.path = UIBezierPath(roundedRect: CGRect(x: ChatEngine.xOrigin, y: ChatEngine.yOrigin,
@@ -228,7 +231,7 @@ extension ChatEngine {
                     }
                 }
             }
-        case 5:
+        case 8:
             guard let dialoguePlayedCheck = dialoguePlayed[level], !dialoguePlayedCheck else {
                 completion?()
                 return
@@ -254,7 +257,7 @@ extension ChatEngine {
                     }
                 }
             }
-        case 8:
+        case 19:
             guard let dialoguePlayedCheck = dialoguePlayed[level], !dialoguePlayedCheck else {
                 completion?()
                 return
@@ -271,26 +274,7 @@ extension ChatEngine {
                     }
                 }
             }
-        case 13:
-            guard let dialoguePlayedCheck = dialoguePlayed[level], !dialoguePlayedCheck else {
-                completion?()
-                return
-            }
-            
-            sendChat(profile: .trainer, startNewChat: true, endChat: false,
-                     chat: "Whoa, a dragon! Looks like he's sleeping. Don't even try waking him or it'll cost ya 1 health point. 💖") { [unowned self] in
-                sendChat(profile: .trainer, startNewChat: false, endChat: false,
-                         chat: "Once your health drops to 0, it's lights out, baby. If only you had a sword. 🗡") { [unowned self] in
-                    sendChat(profile: .hero, startNewChat: false, endChat: false, chat: "Lemme guess, I can only use the sword once before it breaks?") { [unowned self] in
-                        sendChat(profile: .trainer, startNewChat: false, endChat: true,
-                                 chat: "B-I-N-G-O!!! Oh sorry, I was playing Bingo with my grandmother. Yep, one sword per dragon.") { [unowned self] in
-                            dialoguePlayed[level] = true
-                            completion?()
-                        }
-                    }
-                }
-            }
-        case 18:
+        case 34:
             guard let dialoguePlayedCheck = dialoguePlayed[level], !dialoguePlayedCheck else {
                 completion?()
                 return
@@ -310,7 +294,30 @@ extension ChatEngine {
                     }
                 }
             }
-        case 23:
+        case 51:
+            guard let dialoguePlayedCheck = dialoguePlayed[level], !dialoguePlayedCheck else {
+                completion?()
+                return
+            }
+            
+            sendChat(profile: .trainer, startNewChat: true, endChat: false,
+                     chat: "Whoa, a dragon! Looks like he's sleeping. Don't even try waking him or it'll cost ya 1 health point. 💖") { [unowned self] in
+                sendChat(profile: .trainer, startNewChat: false, endChat: false,
+                         chat: "Don't believe me??? Go ahead. Try and pet him, I DARE YOU!") { [unowned self] in // Let player touch dragon before continuing...
+                    sendChat(profile: .trainer, startNewChat: false, endChat: false,
+                             chat: "Once your health drops to 0, it's lights out, baby. If only you had a sword. 🗡") { [unowned self] in
+                        sendChat(profile: .hero, startNewChat: false, endChat: false, chat: "Lemme guess, I can only use the sword once before it breaks?") { [unowned self] in
+                            sendChat(profile: .trainer, startNewChat: false, endChat: true,
+                                     chat: "B-I-N-G-O!!! Oh sorry, I was playing Bingo with my grandmother. Yep, one sword per dragon.") { [unowned self] in
+                                dialoguePlayed[level] = true
+                                completion?()
+                            }
+                        }
+                    }
+                }
+            }
+        
+        case 76:
             guard let dialoguePlayedCheck = dialoguePlayed[level], !dialoguePlayedCheck else {
                 completion?()
                 return
@@ -325,13 +332,26 @@ extension ChatEngine {
                         sendChat(profile: .trainer, startNewChat: false, endChat: true,
                                  chat: "Well, I'll leave you alone for now. I'll chime in every now and then if I think you need it.") { [unowned self] in
                             dialoguePlayed[level] = true
-                            
-                            GameCenterManager.shared.updateProgress(achievement: .avidReader, shouldReportImmediately: true)
-                            
+                                                        
                             completion?()
                         }
                     }
                 }
+            }
+        case 101:
+            guard let dialoguePlayedCheck = dialoguePlayed[level], !dialoguePlayedCheck else {
+                completion?()
+                return
+            }
+            
+            sendChat(profile: .trainer, startNewChat: true, endChat: true,
+                     chat: "You made it to 4-panel. Rock on!!") { [unowned self] in
+                
+                dialoguePlayed[level] = true
+
+                GameCenterManager.shared.updateProgress(achievement: .avidReader, shouldReportImmediately: true)
+
+                completion?()
             }
         default:
             completion?()
