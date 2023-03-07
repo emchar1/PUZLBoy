@@ -59,7 +59,9 @@ class PlayerSprite {
         AudioManager.shared.stopSound(for: "moverun3", fadeDuration: fadeDuration)
         AudioManager.shared.stopSound(for: "moverun4", fadeDuration: fadeDuration)
         AudioManager.shared.stopSound(for: "movewalk", fadeDuration: fadeDuration)
-        AudioManager.shared.stopSound(for: "movemarsh", fadeDuration: fadeDuration)
+        AudioManager.shared.stopSound(for: "movemarsh1", fadeDuration: fadeDuration)
+        AudioManager.shared.stopSound(for: "movemarsh2", fadeDuration: fadeDuration)
+        AudioManager.shared.stopSound(for: "movemarsh3", fadeDuration: fadeDuration)
         AudioManager.shared.stopSound(for: "movesand1", fadeDuration: fadeDuration)
         AudioManager.shared.stopSound(for: "movesand2", fadeDuration: fadeDuration)
         AudioManager.shared.stopSound(for: "movesand3", fadeDuration: fadeDuration)
@@ -85,7 +87,7 @@ class PlayerSprite {
             case .run:
                 AudioManager.shared.playSound(for: "moverun\(Int.random(in: 1...4))")
             case .marsh:
-                AudioManager.shared.playSound(for: "movemarsh")
+                AudioManager.shared.playSound(for: "movemarsh\(Int.random(in: 1...3))")
             case .sand:
                 AudioManager.shared.playSound(for: "movesand\(Int.random(in: 1...3))")
             case .walk:
@@ -107,6 +109,7 @@ class PlayerSprite {
     func startMarshEffectAnimation() {
         let marshEffect = SKAction.sequence([
             SKAction.colorize(with: .systemPurple, colorBlendFactor: 1.0, duration: 0.0),
+            SKAction.wait(forDuration: 0.5),
             SKAction.colorize(withColorBlendFactor: 0.0, duration: 1.5)
         ])
         
