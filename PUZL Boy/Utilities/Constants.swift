@@ -66,8 +66,8 @@ struct K {
         static let backgroundObjectTier0: CGFloat = 260
         static let adScene: CGFloat = 777
         static let display: CGFloat = 800
-        static let player: CGFloat = 1000 //originally 300
-        static let items: CGFloat = 1050 //originally 350
+        static let player: CGFloat = 1000
+        static let items: CGFloat = 1050
         static let score: CGFloat = 1100
         static let messagePrompt: CGFloat = 2000
         static let activityIndicator: CGFloat = 2100

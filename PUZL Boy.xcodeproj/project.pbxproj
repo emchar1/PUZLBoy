@@ -128,7 +128,6 @@
 		EAAEA3C22931AA6E00221963 /* hammerswing.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAAEA3C12931AA6E00221963 /* hammerswing.mp3 */; };
 		EAAEA3C42931D0DA00221963 /* swordslash.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAAEA3C32931D0DA00221963 /* swordslash.mp3 */; };
 		EAAEA3C62931F08300221963 /* gameover.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAAEA3C52931F08300221963 /* gameover.mp3 */; };
-		EAAEA3C82931F0C500221963 /* gemcollectOLD.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAAEA3C72931F0C500221963 /* gemcollectOLD.mp3 */; };
 		EAAEA3CA2931F12B00221963 /* pickupitem.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAAEA3C92931F12B00221963 /* pickupitem.mp3 */; };
 		EAAEA3CC2931F14D00221963 /* winlevel.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAAEA3CB2931F14D00221963 /* winlevel.mp3 */; };
 		EAAEA3CE2932C47500221963 /* BackgroundObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAAEA3CD2932C47500221963 /* BackgroundObject.swift */; };
@@ -268,7 +267,6 @@
 		EAAEA3C12931AA6E00221963 /* hammerswing.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = hammerswing.mp3; sourceTree = "<group>"; };
 		EAAEA3C32931D0DA00221963 /* swordslash.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = swordslash.mp3; sourceTree = "<group>"; };
 		EAAEA3C52931F08300221963 /* gameover.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = gameover.mp3; sourceTree = "<group>"; };
-		EAAEA3C72931F0C500221963 /* gemcollectOLD.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = gemcollectOLD.mp3; sourceTree = "<group>"; };
 		EAAEA3C92931F12B00221963 /* pickupitem.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = pickupitem.mp3; sourceTree = "<group>"; };
 		EAAEA3CB2931F14D00221963 /* winlevel.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = winlevel.mp3; sourceTree = "<group>"; };
 		EAAEA3CD2932C47500221963 /* BackgroundObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundObject.swift; sourceTree = "<group>"; };
@@ -445,7 +443,6 @@
 				EADEB3E82931404D00CDB232 /* dooropen.mp3 */,
 				EA0F1490292CC8D90013038E /* enemydeath.mp3 */,
 				EAAEA3C52931F08300221963 /* gameover.mp3 */,
-				EAAEA3C72931F0C500221963 /* gemcollectOLD.mp3 */,
 				EA2AF74729B6EDAC00444E5A /* gemcollect.mp3 */,
 				EAAEA3C12931AA6E00221963 /* hammerswing.mp3 */,
 				EAF7182829B31BE800E2ED82 /* lavaappear1.mp3 */,
@@ -697,7 +694,6 @@
 				EA0F1491292CC8D90013038E /* enemydeath.mp3 in Resources */,
 				EADEB3F5293197B900CDB232 /* movemarsh.mp3 in Resources */,
 				EA3467AB29A8C6F6002DDA02 /* buttontap.mp3 in Resources */,
-				EAAEA3C82931F0C500221963 /* gemcollectOLD.mp3 in Resources */,
 				EAACB4B92971E08A00973EB8 /* chatclose.mp3 in Resources */,
 				EAF7181F29B1B2BC00E2ED82 /* movesand1.mp3 in Resources */,
 				EA95D200295D83E40061059C /* Boogaloo-Regular.ttf in Resources */,
