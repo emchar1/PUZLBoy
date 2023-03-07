@@ -21,11 +21,13 @@ class DecisionButtonSprite: SKNode {
     // MARK: - Initialization
     
     init(text: String, color: UIColor, iconImageName: String?) {
-        sprite = SKShapeNode(rectOf: buttonSize, cornerRadius: 12)
+        let cornerRadius: CGFloat = 16
+        
+        sprite = SKShapeNode(rectOf: buttonSize, cornerRadius: cornerRadius)
         sprite.fillColor = .clear
         sprite.lineWidth = 0
         
-        topSprite = SKShapeNode(rectOf: buttonSize, cornerRadius: 12)
+        topSprite = SKShapeNode(rectOf: buttonSize, cornerRadius: cornerRadius)
         topSprite.fillColor = color
         topSprite.fillTexture = SKTexture(image: .chatGradientTexture)
         topSprite.lineWidth = 4
@@ -34,7 +36,7 @@ class DecisionButtonSprite: SKNode {
 
         super.init()
                 
-        let shadowSprite = SKShapeNode(rectOf: buttonSize, cornerRadius: 12)
+        let shadowSprite = SKShapeNode(rectOf: buttonSize, cornerRadius: cornerRadius)
         shadowSprite.fillColor = .black
         shadowSprite.lineWidth = 0
         shadowSprite.alpha = 0.05

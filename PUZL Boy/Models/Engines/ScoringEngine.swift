@@ -42,18 +42,18 @@ class ScoringEngine {
         totalScoreLabel.fontName = UIFont.gameFont
         totalScoreLabel.fontSize = UIFont.gameFontSizeSmall
         totalScoreLabel.fontColor = UIFont.gameFontColor
-        totalScoreLabel.position = CGPoint(x: padding, y: K.ScreenDimensions.height - K.ScreenDimensions.topMargin - 30)
+        totalScoreLabel.position = CGPoint(x: padding, y: K.ScreenDimensions.height - K.ScreenDimensions.topMargin)
         totalScoreLabel.horizontalAlignmentMode = .left
-        totalScoreLabel.verticalAlignmentMode = .baseline
+        totalScoreLabel.verticalAlignmentMode = .top
         totalScoreLabel.zPosition = K.ZPosition.display
 
         scoreLabel = SKLabelNode()
         scoreLabel.fontName = UIFont.gameFont
         scoreLabel.fontSize = UIFont.gameFontSizeSmall
         scoreLabel.fontColor = UIFont.gameFontColor
-        scoreLabel.position = CGPoint(x: padding, y: K.ScreenDimensions.height - K.ScreenDimensions.topMargin - 90)
+        scoreLabel.position = CGPoint(x: padding, y: K.ScreenDimensions.height - K.ScreenDimensions.topMargin - 59)
         scoreLabel.horizontalAlignmentMode = .left
-        scoreLabel.verticalAlignmentMode = .baseline
+        scoreLabel.verticalAlignmentMode = .top
         scoreLabel.zPosition = K.ZPosition.display
 
         elapsedTimeLabel = SKLabelNode(text: "00:00")

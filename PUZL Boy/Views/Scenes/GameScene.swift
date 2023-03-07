@@ -16,6 +16,7 @@ class GameScene: SKScene {
     private var gameEngine: GameEngine
     private var scoringEngine: ScoringEngine
     private var chatEngine: ChatEngine
+    private var offlinePlaySprite: OfflinePlaySprite
     private var levelStatsArray: [LevelStats]
 
     private var continueSprite = ContinueSprite()
@@ -51,11 +52,13 @@ class GameScene: SKScene {
             scoringEngine = ScoringEngine(elapsedTime: saveStateModel.elapsedTime,
                                           score: saveStateModel.score,
                                           totalScore: saveStateModel.totalScore)
+            offlinePlaySprite = OfflinePlaySprite(shouldShowOfflinePlay: false)
             levelStatsArray = saveStateModel.levelStatsArray
         }
         else {
             gameEngine = GameEngine(level: currentLevel, shouldSpawn: true)
             scoringEngine = ScoringEngine()
+            offlinePlaySprite = OfflinePlaySprite(shouldShowOfflinePlay: true)
             levelStatsArray = []
         }
         
@@ -314,6 +317,9 @@ class GameScene: SKScene {
         scoringEngine.moveSprites(to: self)
         chatEngine.moveSprites(to: self)
         
+        offlinePlaySprite.refreshStatus()
+        addChild(offlinePlaySprite)
+        
         // FIXME: - Debuging purposes only!!!
         levelSkipEngine.moveSprites(to: self)
     }
@@ -321,11 +327,11 @@ class GameScene: SKScene {
     private func playDialogue() {
 //        //Only disable input on certain levels, i.e. the important ones w/ instructions.
 //        guard chatEngine.shouldPauseGame(level: currentLevel) else { return }
-//        
+//
 //        scoringEngine.timerManager.pauseTime()
 //        stopTimer()
 //        gameEngine.shouldDisableInput(true)
-//        
+//
 //        chatEngine.dialogue(level: currentLevel) { [unowned self] in
 //            scoringEngine.timerManager.resumeTime()
 //            startTimer()

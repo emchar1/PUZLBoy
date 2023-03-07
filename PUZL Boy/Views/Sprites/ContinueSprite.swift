@@ -58,13 +58,13 @@ class ContinueSprite: SKNode {
         skipLevelButton.name = "skipLevelButton"
         
         buy099Button = DecisionButtonSprite(text: "Buy $0.99:      x\(ContinueSprite.extraLivesBuy099)",
-                                            color: UIColor(red: 0 / 255, green: 148 / 255, blue: 96 / 255, alpha: 1.0),
+                                            color: UIColor(red: 0 / 255, green: 168 / 255, blue: 86 / 255, alpha: 1.0),
                                             iconImageName: "Run (6)")
         buy099Button.position = CGPoint(x: K.ScreenDimensions.iPhoneWidth / 4, y: watchAdButton.position.y)
         buy099Button.name = "buy099Button"
         
         buy299Button = DecisionButtonSprite(text: "Buy $2.99:      x\(ContinueSprite.extraLivesBuy299)",
-                                            color: UIColor(red: 0 / 255, green: 148 / 255, blue: 96 / 255, alpha: 1.0),
+                                            color: UIColor(red: 0 / 255, green: 168 / 255, blue: 86 / 255, alpha: 1.0),
                                             iconImageName: "Run (6)")
         buy299Button.position = CGPoint(x: K.ScreenDimensions.iPhoneWidth / 4, y: watchAdButton.position.y - 160)
         buy299Button.name = "buy299Button"

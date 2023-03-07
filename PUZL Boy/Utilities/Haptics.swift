@@ -96,7 +96,7 @@ class Haptics {
             ], relativeTime: 0.2))
             
             //Boulder crumble
-            for index in stride(from: 1.0, to: 1.5, by: 0.1) {
+            for index in stride(from: 1.0, to: 1.7, by: 0.1) {
                 let intensity = CHHapticEventParameter(parameterID: .hapticIntensity, value: 0.6)
                 let sharpness = CHHapticEventParameter(parameterID: .hapticSharpness, value: 0.3)
                 let event = CHHapticEvent(eventType: .hapticTransient, parameters: [intensity, sharpness], relativeTime: index)
