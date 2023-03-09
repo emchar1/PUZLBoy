@@ -18,7 +18,7 @@ class GameScene: SKScene {
     private var chatEngine: ChatEngine
     private var offlinePlaySprite: OfflinePlaySprite
     private var levelStatsArray: [LevelStats]
-
+    
     private var continueSprite = ContinueSprite()
     private var activityIndicator = ActivityIndicatorSprite()
     private var adSprite = SKSpriteNode()
@@ -26,7 +26,7 @@ class GameScene: SKScene {
     private var replenishLivesTimerOffset: Date?
     private let keyRunGameTimerAction = "runGameTimerAction"
     private let keyRunReplenishLivesTimerAction = "runReplenishLivesTimerAction"
-
+    
     private var currentLevel: Int = 1 {
         // FIXME: - Debuging purposes only!!!
         didSet {
@@ -65,23 +65,23 @@ class GameScene: SKScene {
         //chatEngine MUST be initialized here, and not in properties, otherwise it just refuses to show up!
         chatEngine = ChatEngine()
         self.user = user
-
+        
         // FIXME: - Debugging purposes only
         levelSkipEngine = LevelSkipEngine()
         
         super.init(size: size)
-
+        
         AdMobManager.shared.delegate = self
         IAPManager.shared.delegate = self
         gameEngine.delegate = self
         continueSprite.delegate = self
-
+        
         // FIXME: - Debuging purposes only!!!
         levelSkipEngine.delegate = self
         
         AudioManager.shared.stopSound(for: "continueloop")
         AudioManager.shared.playSound(for: AudioManager.shared.overworldTheme)
-
+        
         backgroundColor = .black
         scaleMode = .aspectFill
         
@@ -103,7 +103,7 @@ class GameScene: SKScene {
             //Only pause/resume time if there's an active timer going, i.e. timer is started!
             scoringEngine.timerManager.pauseTime()
         }
-
+        
         if gameEngine.canContinue {
             LifeSpawnerModel.shared.removeAllNotifications()
             LifeSpawnerModel.shared.scheduleNotification(title: "Play Again?", duration: LifeSpawnerModel.durationReminder, repeats: true)
@@ -161,7 +161,7 @@ class GameScene: SKScene {
         chatEngine.fastForward(in: location)
         gameEngine.handleControls(in: location)
         
-        if !activityIndicator.isShowing {
+        if !activityIndicator.isShowing && !gameEngine.canContinue {
             continueSprite.didTapButton(touches)
         }
         
