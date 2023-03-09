@@ -731,7 +731,7 @@ class GameEngine {
             }
         }
         
-//        superScene.addChild(partyModeSprite)
+        superScene.addChild(partyModeSprite)
     }
     
     /**

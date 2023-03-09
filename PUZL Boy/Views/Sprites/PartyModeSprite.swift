@@ -198,13 +198,13 @@ class PartyModeSprite: SKNode {
             sequence += fullBeat(color: .purple, noteLength: 1/2)
             sequence += fullBeat(color: .purple, noteLength: 1/4)
             sequence += fullBeat(color: .blue, noteLength: 1/4)
-            sequence += fullBeat(color: .green, noteLength: 1/4)
+            sequence += fullBeat(color: .orange, noteLength: 1/4)
             sequence += fullBeat(color: .blue, noteLength: 1/4)
             
             //2nd measure
             if i < 3 {
                 sequence.append(offBeat(noteLength: 1/4))
-                sequence += fullBeat(color: .orange, noteLength:  3/4)
+                sequence += fullBeat(color: .green, noteLength:  3/4)
                 sequence.append(offBeat(noteLength: 1/2))
                 sequence += fullBeat(color: .green, noteLength: 1)
                 sequence += fullBeat(color: .purple, noteLength: 1/2)
