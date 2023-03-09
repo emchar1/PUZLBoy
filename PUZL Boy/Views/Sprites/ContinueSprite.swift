@@ -22,6 +22,7 @@ class ContinueSprite: SKNode {
     static let extraLivesBuy099 = 25
     static let extraLivesBuy299 = 100
     
+    private var disableControls: Bool = true
     private let livesRefreshLabel: SKLabelNode
     private(set) var backgroundSprite: SKShapeNode
     private(set) var watchAdButton: DecisionButtonSprite
@@ -86,7 +87,6 @@ class ContinueSprite: SKNode {
         position = CGPoint(x: K.ScreenDimensions.iPhoneWidth / 2, y: K.ScreenDimensions.height / 2)
         zPosition = K.ZPosition.messagePrompt
         
-        addChild(backgroundSprite)
         backgroundSprite.addChild(continueLabel)
         backgroundSprite.addChild(livesRefreshLabel)
         backgroundSprite.addChild(watchAdButton)
@@ -103,20 +103,30 @@ class ContinueSprite: SKNode {
     // MARK: - Functions
     
     func animateShow(completion: @escaping (() -> Void)) {
+        addChild(backgroundSprite)
+        
         run(SKAction.sequence([
             SKAction.scale(to: 1.1, duration: 0.25),
             SKAction.scale(to: 0.95, duration: 0.2),
             SKAction.scale(to: 1, duration: 0.2),
-        ]), completion: completion)
+        ])) {
+            self.disableControls = false
+            completion()
+        }
     }
     
     func animateHide(completion: @escaping (() -> Void)) {
+        disableControls = true
         AudioManager.shared.playSound(for: "chatclose")
-        
-        run(SKAction.scale(to: 0, duration: 0.25), completion: completion)
+
+        run(SKAction.scale(to: 0, duration: 0.25)) {
+            self.backgroundSprite.removeFromParent()
+            completion()
+        }
     }
     
     func didTapButton(_ touches: Set<UITouch>) {
+        guard !disableControls else { return print("Controls disabled. Aborting.") }
         guard let touch = touches.first else { return print("Error capturing touch in ContinueSprite.didTapButton") }
         
         let location = touch.location(in: self)

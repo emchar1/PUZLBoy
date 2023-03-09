@@ -137,7 +137,7 @@ class GameEngine {
     
     private func finishInit(shouldSpawn: Bool) {
         partyModeSprite = PartyModeSprite()
-        partyModeSprite.startParty()
+//        partyModeSprite.startParty()
 
         gameboardSprite = GameboardSprite(level: self.level)
         K.ScreenDimensions.topOfGameboard = GameboardSprite.yPosition + K.ScreenDimensions.iPhoneWidth * GameboardSprite.spriteScale

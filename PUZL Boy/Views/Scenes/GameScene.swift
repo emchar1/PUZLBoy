@@ -161,7 +161,7 @@ class GameScene: SKScene {
         chatEngine.fastForward(in: location)
         gameEngine.handleControls(in: location)
         
-        if !activityIndicator.isShowing && !gameEngine.canContinue {
+        if !activityIndicator.isShowing {
             continueSprite.didTapButton(touches)
         }
         
