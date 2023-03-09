@@ -66,6 +66,7 @@ class GameEngine {
     private var gameboardSprite: GameboardSprite!
     private var playerSprite: PlayerSprite!
     private var displaySprite: DisplaySprite!
+//    private var partyModeSprite: PartyModeSprite!
     
     weak var delegate: GameEngineDelegate?
     
@@ -136,9 +137,9 @@ class GameEngine {
     
     private func finishInit(shouldSpawn: Bool) {
         gameboardSprite = GameboardSprite(level: self.level)
-        K.ScreenDimensions.topOfGameboard = gameboardSprite.yPosition + gameboardSprite.gameboardSize * GameboardSprite.spriteScale
+        K.ScreenDimensions.topOfGameboard = GameboardSprite.yPosition + K.ScreenDimensions.iPhoneWidth * GameboardSprite.spriteScale
         playerSprite = PlayerSprite(shouldSpawn: true)
-        displaySprite = DisplaySprite(topYPosition: K.ScreenDimensions.topOfGameboard, bottomYPosition: gameboardSprite.yPosition, margin: 40)
+        displaySprite = DisplaySprite(topYPosition: K.ScreenDimensions.topOfGameboard, bottomYPosition: GameboardSprite.yPosition, margin: 40)
 
         setLabelsForDisplaySprite()
         setPlayerSpritePosition(shouldAnimate: false, completion: nil)
@@ -147,6 +148,8 @@ class GameEngine {
         if !shouldSpawn {
             fadeGameboard(fadeOut: false, completion: nil)
         }
+        
+//        partyModeSprite = PartyModeSprite()
     }
     
     
@@ -431,10 +434,10 @@ class GameEngine {
             rightBound = maxDistance
         }
         
-        return location.x > gameboardSprite.xPosition + (CGFloat(leftBound) * panelSize) &&
-        location.x < gameboardSprite.xPosition + (CGFloat(rightBound) * panelSize) &&
-        location.y > gameboardSprite.yPosition + gameboardSize - (CGFloat(bottomBound) * panelSize) &&
-        location.y < gameboardSprite.yPosition + gameboardSize - (CGFloat(topBound) * panelSize)
+        return location.x > GameboardSprite.xPosition + (CGFloat(leftBound) * panelSize) &&
+        location.x < GameboardSprite.xPosition + (CGFloat(rightBound) * panelSize) &&
+        location.y > GameboardSprite.yPosition + gameboardSize - (CGFloat(bottomBound) * panelSize) &&
+        location.y < GameboardSprite.yPosition + gameboardSize - (CGFloat(topBound) * panelSize)
     }
     
     /**
@@ -636,6 +639,8 @@ class GameEngine {
             playerSprite.startDeadAnimation {
                 self.delegate?.gameIsOver(firstTimeCalled: true)
             }
+            
+//            partyModeSprite.stopParty()
         }
     }
     
@@ -718,12 +723,15 @@ class GameEngine {
         if !isGameOver {
             // FIXME: - yPosition seems wonky...
             let numMovesSprite = NumMovesSprite(numMoves: self.level.moves,
-                                                position: CGPoint(x: K.ScreenDimensions.iPhoneWidth / 2, y: gameboardSprite.yPosition * 3 / 2))
+                                                position: CGPoint(x: K.ScreenDimensions.iPhoneWidth / 2, y: GameboardSprite.yPosition * 3 / 2))
             superScene.addChild(numMovesSprite)
             numMovesSprite.play {
                 numMovesSprite.removeFromParent()
             }
         }
+        
+//        superScene.addChild(partyModeSprite)
+//        partyModeSprite.startParty()
     }
     
     /**

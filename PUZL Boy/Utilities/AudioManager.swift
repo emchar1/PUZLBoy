@@ -50,7 +50,7 @@ class AudioManager {
         return instance
     }()
     
-    let overworldTheme = "overworld10"
+    let overworldTheme = "overworld6"
     private var audioItems: [String: AudioItem] = [:]
     
 
@@ -82,6 +82,7 @@ class AudioManager {
         addAudioItem("enemydeath", category: .soundFX)
         addAudioItem("gameover", category: .soundFX)
         addAudioItem("gemcollect", category: .soundFX)
+        addAudioItem("gemcollectspecial", category: .soundFX)
         addAudioItem("hammerswing", category: .soundFX)
         addAudioItem("lavaappear1", category: .soundFX)
         addAudioItem("lavaappear2", category: .soundFX)

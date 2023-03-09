@@ -82,6 +82,7 @@ class GameScene: SKScene {
         AudioManager.shared.stopSound(for: "continueloop")
         AudioManager.shared.playSound(for: AudioManager.shared.overworldTheme)
 
+        backgroundColor = .black
         scaleMode = .aspectFill
         
         let notificationCenter = NotificationCenter.default

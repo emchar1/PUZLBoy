@@ -15,9 +15,8 @@ class GameboardSprite {
     let overlayTag = "-O"
     static let spriteScale: CGFloat = 0.94
 
-    var xPosition: CGFloat { (K.ScreenDimensions.iPhoneWidth * (1 - GameboardSprite.spriteScale)) / 2 }
-    var yPosition: CGFloat { (K.ScreenDimensions.height - gameboardSize * GameboardSprite.spriteScale - K.ScreenDimensions.topMargin - 275) }
-    var gameboardSize: CGFloat { CGFloat(panelCount) * panelSize }
+    static var xPosition: CGFloat { (K.ScreenDimensions.iPhoneWidth * (1 - GameboardSprite.spriteScale)) / 2 }
+    static var yPosition: CGFloat { (K.ScreenDimensions.height - K.ScreenDimensions.iPhoneWidth * GameboardSprite.spriteScale - K.ScreenDimensions.topMargin - 275) }
 
     typealias WarpTuple = (first: K.GameboardPosition?, second: K.GameboardPosition?)
 
@@ -40,7 +39,7 @@ class GameboardSprite {
         sprite = SKSpriteNode(texture: SKTexture(imageNamed: "gameboardTexture"),
                               size: CGSize(width: CGFloat(panelCount) * panelSize, height: CGFloat(panelCount) * panelSize))
         sprite.anchorPoint = .zero
-        sprite.position = CGPoint(x: xPosition, y: yPosition)
+        sprite.position = CGPoint(x: GameboardSprite.xPosition, y: GameboardSprite.yPosition)
         sprite.zPosition = K.ZPosition.gameboard
         sprite.setScale(GameboardSprite.spriteScale)
 

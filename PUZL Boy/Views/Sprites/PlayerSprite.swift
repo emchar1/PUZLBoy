@@ -19,7 +19,7 @@ class PlayerSprite {
     private var player = Player()
 
     enum AnimationKey: String {
-        case playerRespawn, playerIdle, playerMove, playerGlide, playerMarsh, playerPowerUp
+        case playerRespawn, playerIdle, playerMove, playerGlide, playerMarsh, playerPowerUp, playerParty
     }
     
     
@@ -41,6 +41,9 @@ class PlayerSprite {
         if shouldSpawn {
             startRespawnAnimation()
         }
+        
+        
+//        startPartyAnimation()
     }
     
     
@@ -142,6 +145,21 @@ class PlayerSprite {
     
     func startPowerUpAnimation() {
         AudioManager.shared.playSound(for: "pickupitem")
+    }
+    
+    func startPartyAnimation() {
+        let speed: TimeInterval = 0.25
+        
+        let sequenceAnimation = SKAction.sequence([
+            SKAction.colorize(with: .red, colorBlendFactor: 1.0, duration: speed),
+            SKAction.colorize(with: .orange, colorBlendFactor: 1.0, duration: speed),
+            SKAction.colorize(with: .yellow, colorBlendFactor: 1.0, duration: speed),
+            SKAction.colorize(with: .green, colorBlendFactor: 1.0, duration: speed),
+            SKAction.colorize(with: .blue, colorBlendFactor: 1.0, duration: speed),
+            SKAction.colorize(with: .purple, colorBlendFactor: 1.0, duration: speed),
+        ])
+        
+        player.sprite.run(SKAction.repeatForever(sequenceAnimation), withKey: AnimationKey.playerParty.rawValue)
     }
     
     func startGemCollectAnimation(on gameboard: GameboardSprite, at panel: K.GameboardPosition, completion: @escaping (() -> ())) {
