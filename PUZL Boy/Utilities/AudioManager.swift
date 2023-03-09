@@ -82,7 +82,7 @@ class AudioManager {
         addAudioItem("enemydeath", category: .soundFX)
         addAudioItem("gameover", category: .soundFX)
         addAudioItem("gemcollect", category: .soundFX)
-        addAudioItem("gemcollectspecial", category: .soundFX)
+        addAudioItem("gemcollectparty", category: .soundFX)
         addAudioItem("hammerswing", category: .soundFX)
         addAudioItem("lavaappear1", category: .soundFX)
         addAudioItem("lavaappear2", category: .soundFX)
