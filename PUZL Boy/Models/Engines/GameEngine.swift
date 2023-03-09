@@ -66,7 +66,7 @@ class GameEngine {
     private var gameboardSprite: GameboardSprite!
     private var playerSprite: PlayerSprite!
     private var displaySprite: DisplaySprite!
-//    private var partyModeSprite: PartyModeSprite!
+    private var partyModeSprite: PartyModeSprite!
     
     weak var delegate: GameEngineDelegate?
     
@@ -136,6 +136,9 @@ class GameEngine {
     }
     
     private func finishInit(shouldSpawn: Bool) {
+        partyModeSprite = PartyModeSprite()
+        partyModeSprite.startParty()
+
         gameboardSprite = GameboardSprite(level: self.level)
         K.ScreenDimensions.topOfGameboard = GameboardSprite.yPosition + K.ScreenDimensions.iPhoneWidth * GameboardSprite.spriteScale
         playerSprite = PlayerSprite(shouldSpawn: true)
@@ -148,8 +151,6 @@ class GameEngine {
         if !shouldSpawn {
             fadeGameboard(fadeOut: false, completion: nil)
         }
-        
-//        partyModeSprite = PartyModeSprite()
     }
     
     
@@ -640,7 +641,7 @@ class GameEngine {
                 self.delegate?.gameIsOver(firstTimeCalled: true)
             }
             
-//            partyModeSprite.stopParty()
+            partyModeSprite.stopParty()
         }
     }
     
@@ -731,7 +732,6 @@ class GameEngine {
         }
         
 //        superScene.addChild(partyModeSprite)
-//        partyModeSprite.startParty()
     }
     
     /**

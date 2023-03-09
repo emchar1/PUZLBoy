@@ -42,8 +42,9 @@ class PlayerSprite {
             startRespawnAnimation()
         }
         
-        
-//        startPartyAnimation()
+        if PartyModeSprite.isPartying {
+            startPartyAnimation()
+        }
     }
     
     
@@ -55,7 +56,8 @@ class PlayerSprite {
     
     func startIdleAnimation() {
         let fadeDuration: TimeInterval = 0.25
-        let animation = SKAction.animate(with: player.textures[Player.Texture.idle.rawValue], timePerFrame: animationSpeed + 0.02)
+        let animation = SKAction.animate(with: player.textures[Player.Texture.idle.rawValue],
+                                         timePerFrame: PartyModeSprite.isPartying ? PartyModeSprite.quarterNote / TimeInterval(player.textures[Player.Texture.idle.rawValue].count) : animationSpeed + 0.02)
         
         AudioManager.shared.stopSound(for: "moverun1", fadeDuration: fadeDuration)
         AudioManager.shared.stopSound(for: "moverun2", fadeDuration: fadeDuration)
@@ -148,15 +150,17 @@ class PlayerSprite {
     }
     
     func startPartyAnimation() {
-        let speed: TimeInterval = 0.25
+        let speed: TimeInterval = PartyModeSprite.quarterNote / 2
         
         let sequenceAnimation = SKAction.sequence([
             SKAction.colorize(with: .red, colorBlendFactor: 1.0, duration: speed),
             SKAction.colorize(with: .orange, colorBlendFactor: 1.0, duration: speed),
             SKAction.colorize(with: .yellow, colorBlendFactor: 1.0, duration: speed),
             SKAction.colorize(with: .green, colorBlendFactor: 1.0, duration: speed),
+            SKAction.colorize(with: .cyan, colorBlendFactor: 1.0, duration: speed),
             SKAction.colorize(with: .blue, colorBlendFactor: 1.0, duration: speed),
             SKAction.colorize(with: .purple, colorBlendFactor: 1.0, duration: speed),
+            SKAction.colorize(with: .systemPink, colorBlendFactor: 1.0, duration: speed)
         ])
         
         player.sprite.run(SKAction.repeatForever(sequenceAnimation), withKey: AnimationKey.playerParty.rawValue)

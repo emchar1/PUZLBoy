@@ -11,9 +11,10 @@ class PartyModeSprite: SKNode {
 
     // MARK: - Properties
     
-    private let quarterNote: TimeInterval = 0.48 //DON'T CHANGE THIS!!! 0.48 works perfectly with party music
+    static let quarterNote: TimeInterval = 0.48 //DON'T CHANGE THIS!!! 0.48 works perfectly with party music
+    private(set) static var isPartying: Bool = false
+    
     private let baseColor: UIColor = .clear
-
     private var backgroundSprite: SKSpriteNode
     private var foregroundSprite: SKSpriteNode
 
@@ -46,6 +47,8 @@ class PartyModeSprite: SKNode {
     // MARK: - Functions
     
     func stopParty() {
+        PartyModeSprite.isPartying = false
+        
         backgroundSprite.removeFromParent()
         backgroundSprite.removeAllActions()
         
@@ -66,6 +69,8 @@ class PartyModeSprite: SKNode {
         foregroundSequence += breakSection()
         foregroundSequence += chorusSection()
 
+        PartyModeSprite.isPartying = true
+        
         backgroundSprite.run(SKAction.repeatForever(SKAction.sequence(mainBeatSection())))
         foregroundSprite.run(SKAction.repeatForever(SKAction.sequence(foregroundSequence)))
         
@@ -77,7 +82,7 @@ class PartyModeSprite: SKNode {
     // MARK: - Helper Functions
     
     private func offBeat(noteLength: TimeInterval) -> SKAction {
-        return SKAction.colorize(with: baseColor, colorBlendFactor: 1.0, duration: noteLength * quarterNote)
+        return SKAction.colorize(with: baseColor, colorBlendFactor: 1.0, duration: noteLength * PartyModeSprite.quarterNote)
     }
     
     private func onBeat(color: UIColor) -> SKAction {
@@ -91,11 +96,25 @@ class PartyModeSprite: SKNode {
     private func mainBeatSection() -> [SKAction] {
         var sequence: [SKAction] = []
         
-        for _ in 0..<8 {
-            sequence += fullBeat(color: .systemPink, noteLength: 1)
-            sequence += fullBeat(color: .yellow, noteLength: 1)
-            sequence += fullBeat(color: .green, noteLength: 1)
-            sequence += fullBeat(color: .cyan, noteLength: 1)
+        for i in 0..<4 {
+            for _ in 0..<8 {
+                if i != 2 {
+                    sequence += fullBeat(color: .yellow, noteLength: 1)
+                    sequence += fullBeat(color: .green, noteLength: 1)
+                    sequence += fullBeat(color: .cyan, noteLength: 1)
+                    sequence += fullBeat(color: .systemPink, noteLength: 1)
+                }
+                else {
+                    sequence.append(onBeat(color: .yellow))
+                    sequence.append(SKAction.wait(forDuration: PartyModeSprite.quarterNote))
+                    sequence.append(onBeat(color: .systemGreen))
+                    sequence.append(SKAction.wait(forDuration: PartyModeSprite.quarterNote))
+                    sequence.append(onBeat(color: .cyan))
+                    sequence.append(SKAction.wait(forDuration: PartyModeSprite.quarterNote))
+                    sequence.append(onBeat(color: .systemPink))
+                    sequence.append(SKAction.wait(forDuration: PartyModeSprite.quarterNote))
+                }
+            }
         }
         
         return sequence
@@ -105,6 +124,7 @@ class PartyModeSprite: SKNode {
         var sequence: [SKAction] = []
         
         for i in 0..<2 {
+            //1st measure
             if i % 2 == 0 {
                 sequence += fullBeat(color: .systemPink, noteLength: 4)
             }
@@ -113,27 +133,42 @@ class PartyModeSprite: SKNode {
                 sequence.append(offBeat(noteLength: 3))
             }
             
-            sequence.append(offBeat(noteLength: 2))
+            //2nd measure
             if i % 2 == 0 {
+                sequence.append(offBeat(noteLength: 2))
                 sequence.append(offBeat(noteLength: 1))
-            }
-            else {
                 sequence += fullBeat(color: .yellow, noteLength: 1)
             }
-            sequence += fullBeat(color: .cyan, noteLength: 1)
+            else {
+                sequence.append(offBeat(noteLength: 2))
+                sequence += fullBeat(color: .purple, noteLength: 1)
+                sequence += fullBeat(color: .orange, noteLength: 1)
+            }
             
-            sequence += fullBeat(color: .green, noteLength: 3/2)
-            sequence += fullBeat(color: .yellow, noteLength: 3/2)
-            sequence += fullBeat(color: .orange, noteLength: 1)
-            
-            sequence += fullBeat(color: .systemPink, noteLength: 3/2)
-            sequence += fullBeat(color: .purple, noteLength: 1)
-            sequence.append(offBeat(noteLength: 1/2))
+            //3rd measure
             if i % 2 == 0 {
+                sequence += fullBeat(color: .green, noteLength: 3/2)
+                sequence += fullBeat(color: .orange, noteLength: 3/2)
+                sequence += fullBeat(color: .purple, noteLength: 1)
+            }
+            else {
+                sequence += fullBeat(color: .yellow, noteLength: 3/2)
+                sequence += fullBeat(color: .green, noteLength: 3/2)
+                sequence += fullBeat(color: .systemPink, noteLength: 1)
+            }
+            
+            //4th measure
+            if i % 2 == 0 {
+                sequence += fullBeat(color: .cyan, noteLength: 3/2)
+                sequence += fullBeat(color: .blue, noteLength: 1)
+                sequence.append(offBeat(noteLength: 1/2))
                 sequence.append(offBeat(noteLength: 1))
             }
             else {
-                sequence += fullBeat(color: .systemPink, noteLength: 1)
+                sequence += fullBeat(color: .cyan, noteLength: 3/2)
+                sequence += fullBeat(color: .blue, noteLength: 1)
+                sequence.append(offBeat(noteLength: 1/2))
+                sequence += fullBeat(color: .cyan, noteLength: 1)
             }
         }
 
@@ -143,15 +178,9 @@ class PartyModeSprite: SKNode {
     private func breakSection() -> [SKAction] {
         var sequence: [SKAction] = []
         
-        for _ in 0..<4 {
-            sequence += fullBeat(color: .cyan, noteLength: 1)
+        for _ in 0..<16 {
             sequence += fullBeat(color: .systemPink, noteLength: 1)
-            sequence += fullBeat(color: .cyan, noteLength: 1)
-            sequence += fullBeat(color: .systemPink, noteLength: 1)
-            sequence += fullBeat(color: .cyan, noteLength: 1)
-            sequence += fullBeat(color: .systemPink, noteLength: 1)
-            sequence += fullBeat(color: .cyan, noteLength: 1)
-            sequence += fullBeat(color: .systemPink, noteLength: 1)
+            sequence += fullBeat(color: .blue, noteLength: 1)
         }
         
         return sequence
@@ -161,30 +190,34 @@ class PartyModeSprite: SKNode {
         var sequence: [SKAction] = []
         
         for i in 0..<4 {
+            //1st measure
             sequence.append(offBeat(noteLength: 1/4))
-            sequence += fullBeat(color: .yellow, noteLength: 3/4)
+            sequence += fullBeat(color: .systemPink, noteLength: 3/4)
             sequence.append(offBeat(noteLength: 1/2))
-            sequence += fullBeat(color: .orange, noteLength: 1)
-            sequence += fullBeat(color: .yellow, noteLength: 1/2)
-            sequence += fullBeat(color: .systemPink, noteLength: 1/4)
-            sequence += fullBeat(color: .orange, noteLength: 1/4)
-            sequence += fullBeat(color: .yellow, noteLength: 1/4)
+            sequence += fullBeat(color: .systemPink, noteLength: 1)
+            sequence += fullBeat(color: .purple, noteLength: 1/2)
+            sequence += fullBeat(color: .purple, noteLength: 1/4)
+            sequence += fullBeat(color: .blue, noteLength: 1/4)
             sequence += fullBeat(color: .green, noteLength: 1/4)
+            sequence += fullBeat(color: .blue, noteLength: 1/4)
             
-            sequence.append(offBeat(noteLength: 1/4))
-            sequence += fullBeat(color: .yellow, noteLength:  3/4)
+            //2nd measure
             if i < 3 {
+                sequence.append(offBeat(noteLength: 1/4))
+                sequence += fullBeat(color: .orange, noteLength:  3/4)
                 sequence.append(offBeat(noteLength: 1/2))
-                sequence += fullBeat(color: .orange, noteLength: 1)
-                sequence += fullBeat(color: .yellow, noteLength: 1/2)
-                sequence += fullBeat(color: .purple, noteLength: 1)
+                sequence += fullBeat(color: .green, noteLength: 1)
+                sequence += fullBeat(color: .purple, noteLength: 1/2)
+                sequence += fullBeat(color: .blue, noteLength: 1)
             }
             else {
                 sequence.append(offBeat(noteLength: 1/4))
+                sequence += fullBeat(color: .orange, noteLength:  3/4)
+                sequence.append(offBeat(noteLength: 1/4))
                 sequence += fullBeat(color: .orange, noteLength: 3/4)
-                sequence += fullBeat(color: .yellow, noteLength: 3/4)
-                sequence += fullBeat(color: .cyan, noteLength: 3/4)
-                sequence += fullBeat(color: .green, noteLength: 1/2)
+                sequence += fullBeat(color: .blue, noteLength: 3/4)
+                sequence += fullBeat(color: .green, noteLength: 3/4)
+                sequence += fullBeat(color: .blue, noteLength: 1/2)
             }
         }
 
