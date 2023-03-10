@@ -665,8 +665,8 @@ class GameEngine {
         GameCenterManager.shared.updateProgress(achievement: .superEfficient, increment: Double(movesRemaining))
 
         switch level.level {
-        case 50:    GameCenterManager.shared.updateProgress(achievement: .braniac)
-        case 100:   GameCenterManager.shared.updateProgress(achievement: .enigmatologist)
+        case 100:    GameCenterManager.shared.updateProgress(achievement: .braniac)
+        case 250:   GameCenterManager.shared.updateProgress(achievement: .enigmatologist)
         case 500:   GameCenterManager.shared.updateProgress(achievement: .puzlGuru)
         default: break
         }

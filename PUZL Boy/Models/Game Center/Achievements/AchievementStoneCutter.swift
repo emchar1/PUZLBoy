@@ -8,7 +8,7 @@
 import Foundation
 
 class AchievementStoneCutter: BaseAchievement {
-    let requirement: Double = 10
+    let requirement: Double = 25
     
     override func updatePercentage(increment: Double = 1) {
         percentComplete += increment / requirement * 100

@@ -8,7 +8,7 @@
 import Foundation
 
 class AchievementBeastMaster: BaseAchievement {
-    let requirement: Double = 100
+    let requirement: Double = 700
     
     override func updatePercentage(increment: Double = 1) {
         percentComplete += increment / requirement * 100
