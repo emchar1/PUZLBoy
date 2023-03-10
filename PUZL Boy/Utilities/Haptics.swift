@@ -113,7 +113,8 @@ class Haptics {
             }
         case .sand:
             for index in stride(from: 0.0, to: 1.25, by: 0.15) {
-                let intensity = CHHapticEventParameter(parameterID: .hapticIntensity, value: 0.6)
+                //FIXME: - If 0.4 is too strong, change intensity to 0.3
+                let intensity = CHHapticEventParameter(parameterID: .hapticIntensity, value: 0.4)
                 let sharpness = CHHapticEventParameter(parameterID: .hapticSharpness, value: 0.1)
                 let event = CHHapticEvent(eventType: .hapticTransient, parameters: [intensity, sharpness], relativeTime: index)
                 

@@ -53,7 +53,7 @@ class PlayerSprite {
     ///Helper function to go with startIdleAnimation()
     private func restartIdleAnimation(isPartying: Bool) {
         let animation = SKAction.animate(with: player.textures[Player.Texture.idle.rawValue],
-                                         timePerFrame: isPartying ? PartyModeSprite.shared.quarterNote / TimeInterval(player.textures[Player.Texture.idle.rawValue].count) : animationSpeed + 0.02)
+                                         timePerFrame: isPartying ? PartyModeSprite.shared.quarterNote / TimeInterval(player.textures[Player.Texture.idle.rawValue].count) : animationSpeed * 1.5)
 
         player.sprite.removeAction(forKey: AnimationKey.playerIdle.rawValue)
         player.sprite.run(SKAction.repeatForever(animation), withKey: AnimationKey.playerIdle.rawValue)
