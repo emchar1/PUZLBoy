@@ -64,9 +64,9 @@ class GameEngine {
     var canContinue: Bool { return GameEngine.livesRemaining >= 0 }
 
     private var gameboardSprite: GameboardSprite!
-    private var playerSprite: PlayerSprite!
+    private(set) var playerSprite: PlayerSprite!
     private var displaySprite: DisplaySprite!
-    private var partyModeSprite: PartyModeSprite!
+    private var tabBarEngine: TabBarEngine!
     
     weak var delegate: GameEngineDelegate?
     
@@ -136,8 +136,7 @@ class GameEngine {
     }
     
     private func finishInit(shouldSpawn: Bool) {
-        partyModeSprite = PartyModeSprite()
-//        partyModeSprite.startParty()
+        tabBarEngine = TabBarEngine()
 
         gameboardSprite = GameboardSprite(level: self.level)
         K.ScreenDimensions.topOfGameboard = GameboardSprite.yPosition + K.ScreenDimensions.iPhoneWidth * GameboardSprite.spriteScale
@@ -620,7 +619,7 @@ class GameEngine {
             print("Win streak: \(GameEngine.winStreak), Level: \(level.level)")
         }
         else if isGameOver {
-            AudioManager.shared.stopSound(for: AudioManager.shared.overworldTheme)
+            AudioManager.shared.stopSound(for: AudioManager.shared.currentTheme)
             AudioManager.shared.playSound(for: "gameover")
 
             if healthRemaining <= 0 {
@@ -637,11 +636,12 @@ class GameEngine {
             //NEW 2/21/23 Don't increment the count if the player is losing. This might make them give a negative review...
 //            StoreReviewManager.shared.incrementCount()
 
+            //Run this BEFORE startDeadAnimation!!
+            PartyModeSprite.shared.stopParty(partyBoy: playerSprite)
+            
             playerSprite.startDeadAnimation {
                 self.delegate?.gameIsOver(firstTimeCalled: true)
             }
-            
-            partyModeSprite.stopParty()
         }
     }
     
@@ -695,7 +695,7 @@ class GameEngine {
     func checkIfGameOverOnStartup() {
         if !canContinue || isGameOver {
             print("Can't continue from GameEngine.shouldPlayAdOnStartup()... running delegate?.gameIsOver()...")
-            AudioManager.shared.stopSound(for: AudioManager.shared.overworldTheme)
+            AudioManager.shared.stopSound(for: AudioManager.shared.currentTheme)
             delegate?.gameIsOver(firstTimeCalled: false)
         }
     }
@@ -731,7 +731,7 @@ class GameEngine {
             }
         }
         
-        superScene.addChild(partyModeSprite)
+        superScene.addChild(tabBarEngine.sprite)
     }
     
     /**

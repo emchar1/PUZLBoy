@@ -51,12 +51,16 @@ class AudioManager {
     }()
     
     let overworldTheme = "overworld6"
+    let overworldPartyTheme = "overworld10"
+    private(set) var currentTheme: String
     private var audioItems: [String: AudioItem] = [:]
     
 
     // MARK: - Setup
     
     private init() {
+        currentTheme = overworldTheme
+
         do {
             //ambient: Your app’s audio plays even while Music app music or other background audio is playing, and is silenced by the phone’s Silent switch and screen locking.
             //soloAmbient: (the default) Your app stops Music app music or other background audio from playing, and is silenced by the phone’s Silent switch and screen locking.
@@ -272,6 +276,13 @@ class AudioManager {
         }
         
         item.player.setVolume(volume, fadeDuration: fadeDuration)
+    }
+    
+    func changeTheme(newTheme theme: String) {
+        stopSound(for: currentTheme)
+        playSound(for: theme)
+
+        currentTheme = theme
     }
     
 //    /**

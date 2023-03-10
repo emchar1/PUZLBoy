@@ -11,8 +11,28 @@ class PartyModeSprite: SKNode {
 
     // MARK: - Properties
     
-    static let quarterNote: TimeInterval = 0.48 //DON'T CHANGE THIS!!! 0.48 works perfectly with party music
-    private(set) static var isPartying: Bool = false
+    static var shared: PartyModeSprite = {
+        let party = PartyModeSprite()
+
+        //Add'l setup
+
+        return party
+    }()
+    
+    let quarterNote: TimeInterval = 0.48 //DON'T CHANGE THIS!!! 0.48 works perfectly with party music
+    let backgroundKey: String = "BackgroundKey"
+    let foregroundKey: String = "ForegroundKey"
+
+    var isPartying: Bool = false {
+        didSet {
+            if isPartying {
+                AudioManager.shared.changeTheme(newTheme: AudioManager.shared.overworldPartyTheme)
+            }
+            else {
+                AudioManager.shared.changeTheme(newTheme: AudioManager.shared.overworldTheme)
+            }
+        }
+    }
     
     private let baseColor: UIColor = .clear
     private var backgroundSprite: SKSpriteNode
@@ -21,7 +41,7 @@ class PartyModeSprite: SKNode {
     
     // MARK: - Initialization
     
-    override init() {
+    private override init() {
         let gameboardSize = K.ScreenDimensions.iPhoneWidth * GameboardSprite.spriteScale
         
         backgroundSprite = SKSpriteNode(color: baseColor, size: CGSize(width: K.ScreenDimensions.iPhoneWidth, height: K.ScreenDimensions.height))
@@ -46,19 +66,21 @@ class PartyModeSprite: SKNode {
     
     // MARK: - Functions
     
-    func stopParty() {
-        PartyModeSprite.isPartying = false
-        
+    func stopParty(partyBoy: PlayerSprite) {
         backgroundSprite.removeFromParent()
         backgroundSprite.removeAllActions()
         
         foregroundSprite.removeFromParent()
         foregroundSprite.removeAllActions()
+        
+        removeFromParent()
+
+        partyBoy.stopPartyAnimation()
     }
     
-    func startParty() {
+    func startParty(to superScene: SKScene, partyBoy: PlayerSprite) {
         //Stop the party, first...
-        stopParty()
+        stopParty(partyBoy: partyBoy)
         
         
         //...then you can start the party!
@@ -69,20 +91,21 @@ class PartyModeSprite: SKNode {
         foregroundSequence += breakSection()
         foregroundSequence += chorusSection()
 
-        PartyModeSprite.isPartying = true
-        
-        backgroundSprite.run(SKAction.repeatForever(SKAction.sequence(mainBeatSection())))
-        foregroundSprite.run(SKAction.repeatForever(SKAction.sequence(foregroundSequence)))
+        backgroundSprite.run(SKAction.repeatForever(SKAction.sequence(mainBeatSection())), withKey: backgroundKey)
+        foregroundSprite.run(SKAction.repeatForever(SKAction.sequence(foregroundSequence)), withKey: foregroundKey)
         
         addChild(backgroundSprite)
         addChild(foregroundSprite)
+
+        superScene.addChild(self)
+        partyBoy.startPartyAnimation()
     }
     
     
     // MARK: - Helper Functions
     
     private func offBeat(noteLength: TimeInterval) -> SKAction {
-        return SKAction.colorize(with: baseColor, colorBlendFactor: 1.0, duration: noteLength * PartyModeSprite.quarterNote)
+        return SKAction.colorize(with: baseColor, colorBlendFactor: 1.0, duration: noteLength * quarterNote)
     }
     
     private func onBeat(color: UIColor) -> SKAction {
@@ -106,13 +129,13 @@ class PartyModeSprite: SKNode {
                 }
                 else {
                     sequence.append(onBeat(color: .yellow))
-                    sequence.append(SKAction.wait(forDuration: PartyModeSprite.quarterNote))
+                    sequence.append(SKAction.wait(forDuration: quarterNote))
                     sequence.append(onBeat(color: .systemGreen))
-                    sequence.append(SKAction.wait(forDuration: PartyModeSprite.quarterNote))
+                    sequence.append(SKAction.wait(forDuration: quarterNote))
                     sequence.append(onBeat(color: .cyan))
-                    sequence.append(SKAction.wait(forDuration: PartyModeSprite.quarterNote))
+                    sequence.append(SKAction.wait(forDuration: quarterNote))
                     sequence.append(onBeat(color: .systemPink))
-                    sequence.append(SKAction.wait(forDuration: PartyModeSprite.quarterNote))
+                    sequence.append(SKAction.wait(forDuration: quarterNote))
                 }
             }
         }

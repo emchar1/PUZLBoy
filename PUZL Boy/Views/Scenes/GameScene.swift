@@ -80,7 +80,7 @@ class GameScene: SKScene {
         levelSkipEngine.delegate = self
         
         AudioManager.shared.stopSound(for: "continueloop")
-        AudioManager.shared.playSound(for: AudioManager.shared.overworldTheme)
+        AudioManager.shared.playSound(for: AudioManager.shared.currentTheme)
         
         backgroundColor = .black
         scaleMode = .aspectFill
@@ -259,7 +259,13 @@ class GameScene: SKScene {
     
     ///Creates a new Game Engine and sets up the appropriate properties.
     private func newGame(level: Int, didWin: Bool) {
-        removeAllChildren()
+        for child in children {
+            //don't kill the party.....
+            if !(child is PartyModeSprite) {
+                child.removeFromParent()
+            }
+        }
+//        removeAllChildren()
         
         gameEngine = GameEngine(level: level, shouldSpawn: !didWin)
         gameEngine.delegate = self
@@ -269,7 +275,9 @@ class GameScene: SKScene {
         
         if !didWin {
             AudioManager.shared.stopSound(for: "continueloop")
-            AudioManager.shared.playSound(for: AudioManager.shared.overworldTheme)
+            AudioManager.shared.playSound(for: AudioManager.shared.currentTheme)
+
+            checkForParty()
         }
         
         // FIXME: - Do I need Interstitial Ads in my game?
@@ -282,7 +290,7 @@ class GameScene: SKScene {
     }
     
     private func prepareAd(completion: (() -> Void)?) {
-        AudioManager.shared.lowerVolume(for: AudioManager.shared.overworldTheme, fadeDuration: 1.0)
+        AudioManager.shared.lowerVolume(for: AudioManager.shared.currentTheme, fadeDuration: 1.0)
 
         adSprite = SKSpriteNode(color: .clear,
                                 size: CGSize(width: K.ScreenDimensions.iPhoneWidth, height: K.ScreenDimensions.height))
@@ -300,7 +308,7 @@ class GameScene: SKScene {
     }
     
     private func continueFromAd(completion: (() -> Void)?) {
-        AudioManager.shared.raiseVolume(for: AudioManager.shared.overworldTheme, fadeDuration: 1.0)
+        AudioManager.shared.raiseVolume(for: AudioManager.shared.currentTheme, fadeDuration: 1.0)
 
         adSprite.run(SKAction.colorize(with: .clear, colorBlendFactor: 1.0, duration: 1.0)) { [unowned self] in
             adSprite.removeFromParent()
@@ -428,15 +436,29 @@ extension GameScene: LevelSkipEngineDelegate {
         forwardReverseHelper()
     }
     
-    func viewAchievementsPressed(node: SKSpriteNode) {
-        GameCenterManager.shared.showLeaderboard(level: currentLevel)
-    }
-    
     private func forwardReverseHelper() {
         scoringEngine.timerManager.resetTime()
         scoringEngine.scoringManager.resetScore()
         scoringEngine.updateLabels()
         newGame(level: currentLevel, didWin: true)
+    }
+    
+    func viewAchievementsPressed(node: SKSpriteNode) {
+//        GameCenterManager.shared.showLeaderboard(level: currentLevel)
+
+        
+        //FIXME: Testing only!!!
+        PartyModeSprite.shared.isPartying.toggle()
+        checkForParty()
+    }
+    
+    private func checkForParty() {
+        if PartyModeSprite.shared.isPartying {
+            PartyModeSprite.shared.startParty(to: self, partyBoy: gameEngine.playerSprite)
+        }
+        else {
+            PartyModeSprite.shared.stopParty(partyBoy: gameEngine.playerSprite)
+        }
     }
 }
 

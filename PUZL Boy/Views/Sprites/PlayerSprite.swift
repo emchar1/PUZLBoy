@@ -41,10 +41,6 @@ class PlayerSprite {
         if shouldSpawn {
             startRespawnAnimation()
         }
-        
-        if PartyModeSprite.isPartying {
-            startPartyAnimation()
-        }
     }
     
     
@@ -54,11 +50,17 @@ class PlayerSprite {
         player.sprite.run(SKAction.fadeAlpha(to: 1.0, duration: 0.75), withKey: AnimationKey.playerRespawn.rawValue)
     }
     
+    ///Helper function to go with startIdleAnimation()
+    private func restartIdleAnimation(isPartying: Bool) {
+        let animation = SKAction.animate(with: player.textures[Player.Texture.idle.rawValue],
+                                         timePerFrame: isPartying ? PartyModeSprite.shared.quarterNote / TimeInterval(player.textures[Player.Texture.idle.rawValue].count) : animationSpeed + 0.02)
+
+        player.sprite.removeAction(forKey: AnimationKey.playerIdle.rawValue)
+        player.sprite.run(SKAction.repeatForever(animation), withKey: AnimationKey.playerIdle.rawValue)
+    }
+    
     func startIdleAnimation() {
         let fadeDuration: TimeInterval = 0.25
-        let animation = SKAction.animate(with: player.textures[Player.Texture.idle.rawValue],
-                                         timePerFrame: PartyModeSprite.isPartying ? PartyModeSprite.quarterNote / TimeInterval(player.textures[Player.Texture.idle.rawValue].count) : animationSpeed + 0.02)
-        
         AudioManager.shared.stopSound(for: "moverun1", fadeDuration: fadeDuration)
         AudioManager.shared.stopSound(for: "moverun2", fadeDuration: fadeDuration)
         AudioManager.shared.stopSound(for: "moverun3", fadeDuration: fadeDuration)
@@ -71,7 +73,14 @@ class PlayerSprite {
         AudioManager.shared.stopSound(for: "movesand2", fadeDuration: fadeDuration)
         AudioManager.shared.stopSound(for: "movesand3", fadeDuration: fadeDuration)
 
-        player.sprite.run(SKAction.repeatForever(animation), withKey: AnimationKey.playerIdle.rawValue)
+        restartIdleAnimation(isPartying: PartyModeSprite.shared.isPartying)
+        
+        if PartyModeSprite.shared.isPartying {
+            startPartyAnimation()
+        }
+        else {
+            stopPartyAnimation()
+        }
     }
     
     func startMoveAnimation(animationType: Player.Texture) {
@@ -150,7 +159,7 @@ class PlayerSprite {
     }
     
     func startPartyAnimation() {
-        let speed: TimeInterval = PartyModeSprite.quarterNote / 2
+        let speed: TimeInterval = PartyModeSprite.shared.quarterNote / 2
         
         let sequenceAnimation = SKAction.sequence([
             SKAction.colorize(with: .red, colorBlendFactor: 1.0, duration: speed),
@@ -163,7 +172,14 @@ class PlayerSprite {
             SKAction.colorize(with: .systemPink, colorBlendFactor: 1.0, duration: speed)
         ])
         
+        restartIdleAnimation(isPartying: true)
         player.sprite.run(SKAction.repeatForever(sequenceAnimation), withKey: AnimationKey.playerParty.rawValue)
+    }
+    
+    func stopPartyAnimation() {
+        restartIdleAnimation(isPartying: false)
+        player.sprite.removeAction(forKey: AnimationKey.playerParty.rawValue)
+        player.sprite.run(SKAction.colorize(withColorBlendFactor: 0.0, duration: 2.0))
     }
     
     func startGemCollectAnimation(on gameboard: GameboardSprite, at panel: K.GameboardPosition, completion: @escaping (() -> ())) {

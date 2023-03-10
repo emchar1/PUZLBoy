@@ -71,8 +71,9 @@ struct K {
         static let score: CGFloat = 1100
         static let messagePrompt: CGFloat = 2000
         static let activityIndicator: CGFloat = 2100
+        
         static let partyBackgroundOverlay: CGFloat = 50
-        static let partyForegroundOverlay: CGFloat = 2500
+        static let partyForegroundOverlay: CGFloat = 1200
     }
     
     

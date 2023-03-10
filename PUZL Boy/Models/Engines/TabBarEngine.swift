@@ -11,7 +11,8 @@ class TabBarEngine {
     
     // MARK: - Properties
     
-    private var sprite: SKShapeNode
+    private var disableControls: Bool = false
+    private(set) var sprite: SKShapeNode
     private(set) var titleButton: TabBarButton
     private(set) var buyButton: TabBarButton
     private(set) var pauseResetButton: TabBarButton
@@ -30,7 +31,7 @@ class TabBarEngine {
         
         let buttonSize: CGFloat = 60
         
-        titleButton = TabBarButton(imageName: "enemy", type: .title, position: CGPoint(x: 0, y: 0))
+        titleButton = TabBarButton(imageName: "enemy", type: .title, position: CGPoint(x: 100, y: 100))
         buyButton = TabBarButton(imageName: "enemy", type: .buy, position: CGPoint(x: buttonSize, y: 0))
         pauseResetButton = TabBarButton(imageName: "enemy", type: .pauseReset, position: CGPoint(x: 2 * buttonSize, y: 0))
         leaderboardButton = TabBarButton(imageName: "enemy", type: .leaderboard, position: CGPoint(x: 3 * buttonSize, y: 0))
@@ -41,7 +42,7 @@ class TabBarEngine {
     // MARK: - Functions
     
     func moveTo(superScene: SKScene) {
-        sprite.addChild(titleButton)
+        sprite.addChild(titleButton.sprite)
         sprite.addChild(buyButton)
         sprite.addChild(pauseResetButton)
         sprite.addChild(leaderboardButton)
@@ -49,5 +50,32 @@ class TabBarEngine {
 
         superScene.addChild(sprite)
     }
+    
+    func didTapButton(_ touches: Set<UITouch>) {
+        guard !disableControls else { return print("Controls disabled. Aborting.") }
+        guard let touch = touches.first else { return print("Error capturing touch in TabBarEngine.didTapButton") }
+        
+        let location = touch.location(in: sprite)
+        let nodes = sprite.nodes(at: location)
+        
+        for node in nodes {
+            switch node.name {
+            case TabBarButton.TabBarType.title.rawValue:
+                titleButton.tapButton()
+            case TabBarButton.TabBarType.buy.rawValue:
+                buyButton.tapButton()
+            case TabBarButton.TabBarType.pauseReset.rawValue:
+                pauseResetButton.tapButton()
+            case TabBarButton.TabBarType.leaderboard.rawValue:
+                leaderboardButton.tapButton()
+            case TabBarButton.TabBarType.settings.rawValue:
+                settingsButton.tapButton()
+            default:
+                print("unknown button pressed")
+            }
+        }
+    }
+    
+    
     
 }
