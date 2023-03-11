@@ -45,6 +45,7 @@
 		EA4D026529B90BF800F0C7B1 /* gemcollect.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA4D026429B90BF700F0C7B1 /* gemcollect.mp3 */; };
 		EA4D026729BA656200F0C7B1 /* TabBarEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA4D026629BA656200F0C7B1 /* TabBarEngine.swift */; };
 		EA4D026929BA8C8E00F0C7B1 /* TabBarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA4D026829BA8C8E00F0C7B1 /* TabBarButton.swift */; };
+		EA4D026B29BC6ACE00F0C7B1 /* Extension+UIDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA4D026A29BC6ACE00F0C7B1 /* Extension+UIDevice.swift */; };
 		EA65182B28E4199E00E535BF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA65182A28E4199E00E535BF /* AppDelegate.swift */; };
 		EA65182D28E4199E00E535BF /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA65182C28E4199E00E535BF /* SceneDelegate.swift */; };
 		EA65182F28E4199E00E535BF /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA65182E28E4199E00E535BF /* GameViewController.swift */; };
@@ -195,6 +196,7 @@
 		EA4D026429B90BF700F0C7B1 /* gemcollect.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = gemcollect.mp3; sourceTree = "<group>"; };
 		EA4D026629BA656200F0C7B1 /* TabBarEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarEngine.swift; sourceTree = "<group>"; };
 		EA4D026829BA8C8E00F0C7B1 /* TabBarButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarButton.swift; sourceTree = "<group>"; };
+		EA4D026A29BC6ACE00F0C7B1 /* Extension+UIDevice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+UIDevice.swift"; sourceTree = "<group>"; };
 		EA65182728E4199E00E535BF /* PUZL Boy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "PUZL Boy.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		EA65182A28E4199E00E535BF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		EA65182C28E4199E00E535BF /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -435,6 +437,7 @@
 				EA3951EC2938165A00D0B14A /* Extension+UIImage.swift */,
 				EA95D18C29459D550061059C /* Extension+UIFont.swift */,
 				EA95D1B1294FBF2A0061059C /* Extension+Notification.Name.swift */,
+				EA4D026A29BC6ACE00F0C7B1 /* Extension+UIDevice.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -818,6 +821,7 @@
 				EA826C93298F60C000F19F81 /* AchievementFatCat.swift in Sources */,
 				EA346791299B535F002DDA02 /* LevelStats.swift in Sources */,
 				EA4D026329B7F3AF00F0C7B1 /* PartyModeSprite.swift in Sources */,
+				EA4D026B29BC6ACE00F0C7B1 /* Extension+UIDevice.swift in Sources */,
 				EA95D2122963B4580061059C /* LevelSkipEngine.swift in Sources */,
 				EA4D026729BA656200F0C7B1 /* TabBarEngine.swift in Sources */,
 				EA95D18D29459D550061059C /* Extension+UIFont.swift in Sources */,

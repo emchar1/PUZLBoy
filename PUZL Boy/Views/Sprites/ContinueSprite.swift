@@ -126,7 +126,7 @@ class ContinueSprite: SKNode {
     }
     
     func didTapButton(_ touches: Set<UITouch>) {
-        guard !disableControls else { return print("Controls disabled. Aborting.") }
+        guard !disableControls else { return }
         guard let touch = touches.first else { return print("Error capturing touch in ContinueSprite.didTapButton") }
         
         let location = touch.location(in: self)

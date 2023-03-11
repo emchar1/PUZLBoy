@@ -25,34 +25,40 @@ class TabBarEngine {
     // MARK: - Initialization
     
     init() {
-        sprite = SKShapeNode(rect: CGRect(x: 0, y: 0, width: K.ScreenDimensions.iPhoneWidth, height: K.ScreenDimensions.bottomMargin + 200))
+        let buttonSize: CGFloat = K.ScreenDimensions.iPhoneWidth / 5
+        let bottomMargin: CGFloat = K.ScreenDimensions.bottomMargin
+
+        sprite = SKShapeNode(rect: CGRect(x: 0, y: 0, width: K.ScreenDimensions.iPhoneWidth, height: bottomMargin + buttonSize))
         sprite.fillColor = .lightGray
         sprite.lineWidth = 0
         
-        let buttonSize: CGFloat = 60
-        
-        titleButton = TabBarButton(imageName: "enemy", type: .title, position: CGPoint(x: 100, y: 100))
-        buyButton = TabBarButton(imageName: "enemy", type: .buy, position: CGPoint(x: buttonSize, y: 0))
-        pauseResetButton = TabBarButton(imageName: "enemy", type: .pauseReset, position: CGPoint(x: 2 * buttonSize, y: 0))
-        leaderboardButton = TabBarButton(imageName: "enemy", type: .leaderboard, position: CGPoint(x: 3 * buttonSize, y: 0))
-        settingsButton = TabBarButton(imageName: "enemy", type: .settings, position: CGPoint(x: 4 * buttonSize, y: 0))
+        titleButton = TabBarButton(imageName: "enemy", type: .title,
+                                   position: CGPoint(x: buttonSize / 2, y: buttonSize / 2 + bottomMargin))
+        buyButton = TabBarButton(imageName: "enemy", type: .buy,
+                                 position: CGPoint(x: 3 * buttonSize / 2, y: buttonSize / 2 + bottomMargin))
+        pauseResetButton = TabBarButton(imageName: "enemy", type: .pauseReset,
+                                        position: CGPoint(x: 5 * buttonSize / 2, y: buttonSize / 2 + bottomMargin))
+        leaderboardButton = TabBarButton(imageName: "enemy", type: .leaderboard,
+                                         position: CGPoint(x: 7 * buttonSize / 2, y: buttonSize / 2 + bottomMargin))
+        settingsButton = TabBarButton(imageName: "enemy", type: .settings,
+                                      position: CGPoint(x: 9 * buttonSize / 2, y: buttonSize / 2 + bottomMargin))
+
+        sprite.addChild(titleButton)
+        sprite.addChild(buyButton)
+        sprite.addChild(pauseResetButton)
+        sprite.addChild(leaderboardButton)
+        sprite.addChild(settingsButton)
     }
     
     
     // MARK: - Functions
     
     func moveTo(superScene: SKScene) {
-        sprite.addChild(titleButton.sprite)
-        sprite.addChild(buyButton)
-        sprite.addChild(pauseResetButton)
-        sprite.addChild(leaderboardButton)
-        sprite.addChild(settingsButton)
-
         superScene.addChild(sprite)
     }
     
     func didTapButton(_ touches: Set<UITouch>) {
-        guard !disableControls else { return print("Controls disabled. Aborting.") }
+//        guard !disableControls else { return print("Controls disabled in TabBarEngine.didTapButton. Aborting.") }
         guard let touch = touches.first else { return print("Error capturing touch in TabBarEngine.didTapButton") }
         
         let location = touch.location(in: sprite)

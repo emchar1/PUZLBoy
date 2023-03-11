@@ -5,7 +5,7 @@
 //  Created by Eddie Char on 10/2/22.
 //
 
-import Foundation
+import UIKit
 
 struct K {
     ///Position, row, col, on the gameboard.
@@ -29,7 +29,7 @@ struct K {
         static let ratio: CGFloat = width / height
         
         ///Aspect ratio of the most recent iPhone, i.e. iPhone 14. Ratio is 2.16667
-        static let iPhoneRatio: CGFloat = 19.5 / 9
+        static let iPhoneRatio: CGFloat = UIDevice.modelInfo.ratio//19.5 / 9
         
         ///Width of the most recent iPhone, i.e. iPhone 14. Width is 945
         static let iPhoneWidth: CGFloat = height / iPhoneRatio
@@ -38,10 +38,10 @@ struct K {
         static let iPhoneMargin: CGFloat = (width - iPhoneWidth) / 2
         
         ///Top margin of the device.
-        static let topMargin: CGFloat = 200
+        static let topMargin: CGFloat = UIDevice.modelInfo.topSafeArea//200
         
         ///Bottom margin of the device.
-        static let bottomMargin: CGFloat = 80
+        static let bottomMargin: CGFloat = UIDevice.modelInfo.bottomSafeArea//40
         
         ///Top border of the gameboard sprite. Needs to be set in gameboardSprite, otherwise it defaults to topMargin.
         static var topOfGameboard: CGFloat = topMargin

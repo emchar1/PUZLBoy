@@ -66,7 +66,6 @@ class GameEngine {
     private var gameboardSprite: GameboardSprite!
     private(set) var playerSprite: PlayerSprite!
     private var displaySprite: DisplaySprite!
-    private var tabBarEngine: TabBarEngine!
     
     weak var delegate: GameEngineDelegate?
     
@@ -136,8 +135,6 @@ class GameEngine {
     }
     
     private func finishInit(shouldSpawn: Bool) {
-        tabBarEngine = TabBarEngine()
-
         gameboardSprite = GameboardSprite(level: self.level)
         K.ScreenDimensions.topOfGameboard = GameboardSprite.yPosition + K.ScreenDimensions.iPhoneWidth * GameboardSprite.spriteScale
         playerSprite = PlayerSprite(shouldSpawn: true)
@@ -730,8 +727,6 @@ class GameEngine {
                 numMovesSprite.removeFromParent()
             }
         }
-        
-        superScene.addChild(tabBarEngine.sprite)
     }
     
     /**

@@ -52,7 +52,8 @@ class GameViewController: UIViewController {
                 }
             }
         }//end GameCenterManager.shared.getUser()
-        
+                
+        print(UIDevice.modelInfo)
     }//end viewDidLoad()
     
     
