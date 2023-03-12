@@ -53,7 +53,7 @@ class GameViewController: UIViewController {
             }
         }//end GameCenterManager.shared.getUser()
                 
-        print(UIDevice.modelInfo)
+        print("Testing device info: \(UIDevice.modelInfo)")
     }//end viewDidLoad()
     
     

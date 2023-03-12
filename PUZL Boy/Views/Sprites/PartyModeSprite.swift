@@ -35,8 +35,8 @@ class PartyModeSprite: SKNode {
     }
     
     private(set) var speedMultiplier: TimeInterval = 1
-    
     private let speedMultipliers: [TimeInterval] = [0.5, 0.75, 1.5, 2.0]
+
     private let baseColor: UIColor = .clear
     private var backgroundSprite: SKSpriteNode
     private var foregroundSprite: SKSpriteNode
@@ -74,11 +74,13 @@ class PartyModeSprite: SKNode {
 
         backgroundSprite.removeFromParent()
         backgroundSprite.removeAllActions()
-        
+        backgroundSprite.removeAllChildren()
+
         foregroundSprite.removeFromParent()
         foregroundSprite.removeAllActions()
         
         removeFromParent()
+        removeAllActions()
 
         partyBoy.stopPartyAnimation()
     }
@@ -108,6 +110,18 @@ class PartyModeSprite: SKNode {
         partyBoy.startPartyAnimation()
         
         print("Startying the party... partySpeedMultiplier: \(speedMultiplier)")
+        
+        
+        // TODO: - Do I want to keep these bubbles???
+        let bubbleFun = SKAction.run {
+            let partyBubble = PartyEffectSprite()
+            partyBubble.animateEffect(to: self.backgroundSprite)
+        }
+        
+        backgroundSprite.run(SKAction.repeatForever(SKAction.group([
+            bubbleFun,
+            SKAction.wait(forDuration: 0.25)
+        ])))
     }
     
     
