@@ -34,6 +34,9 @@ class PartyModeSprite: SKNode {
         }
     }
     
+    private(set) var speedMultiplier: TimeInterval = 1
+    
+    private let speedMultipliers: [TimeInterval] = [0.5, 0.75, 1.5, 2.0]
     private let baseColor: UIColor = .clear
     private var backgroundSprite: SKSpriteNode
     private var foregroundSprite: SKSpriteNode
@@ -67,6 +70,8 @@ class PartyModeSprite: SKNode {
     // MARK: - Functions
     
     func stopParty(partyBoy: PlayerSprite) {
+        speedMultiplier = 1
+
         backgroundSprite.removeFromParent()
         backgroundSprite.removeAllActions()
         
@@ -84,6 +89,8 @@ class PartyModeSprite: SKNode {
         
         
         //...then you can start the party!
+        speedMultiplier = speedMultipliers.randomElement() ?? 1.0
+        
         var foregroundSequence: [SKAction] = []
         
         foregroundSequence += verseSection()
@@ -99,6 +106,8 @@ class PartyModeSprite: SKNode {
 
         superScene.addChild(self)
         partyBoy.startPartyAnimation()
+        
+        print("Startying the party... partySpeedMultiplier: \(speedMultiplier)")
     }
     
     

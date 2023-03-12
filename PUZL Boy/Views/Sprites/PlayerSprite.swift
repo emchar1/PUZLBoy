@@ -47,7 +47,8 @@ class PlayerSprite {
     // MARK: - Animation Functions
     
     private func startRespawnAnimation() {
-        player.sprite.run(SKAction.fadeAlpha(to: 1.0, duration: 0.75), withKey: AnimationKey.playerRespawn.rawValue)
+        player.sprite.run(SKAction.fadeAlpha(to: 1.0, duration: 0.75 * PartyModeSprite.shared.speedMultiplier),
+                          withKey: AnimationKey.playerRespawn.rawValue)
     }
     
     ///Helper function to go with startIdleAnimation()
@@ -85,7 +86,8 @@ class PlayerSprite {
     
     func startMoveAnimation(animationType: Player.Texture) {
         let animationRate: TimeInterval = animationType == .marsh ? 1.25 : 1
-        let animation = SKAction.animate(with: player.textures[animationType.rawValue], timePerFrame: animationSpeed * animationRate)
+        let animation = SKAction.animate(with: player.textures[animationType.rawValue],
+                                         timePerFrame: animationSpeed * animationRate * PartyModeSprite.shared.speedMultiplier)
 
         player.sprite.removeAction(forKey: AnimationKey.playerIdle.rawValue)
         player.sprite.removeAction(forKey: AnimationKey.playerMove.rawValue)
@@ -93,8 +95,10 @@ class PlayerSprite {
         if animationType == .glide {
             AudioManager.shared.playSound(for: "moveglide", interruptPlayback: false)
 
-            player.sprite.run(SKAction.sequence([SKAction.repeat(animation, count: 1), SKAction.wait(forDuration: 2.0)]),
-                              withKey: AnimationKey.playerGlide.rawValue)
+            player.sprite.run(SKAction.sequence([
+                SKAction.repeat(animation, count: 1),
+                SKAction.wait(forDuration: 2.0 * PartyModeSprite.shared.speedMultiplier)
+            ]), withKey: AnimationKey.playerGlide.rawValue)
         }
         else {
             switch animationType {
@@ -123,8 +127,8 @@ class PlayerSprite {
     func startMarshEffectAnimation() {
         let marshEffect = SKAction.sequence([
             SKAction.colorize(with: .systemPurple, colorBlendFactor: 1.0, duration: 0.0),
-            SKAction.wait(forDuration: 0.5),
-            SKAction.colorize(withColorBlendFactor: 0.0, duration: 1.5)
+            SKAction.wait(forDuration: 0.5 * PartyModeSprite.shared.speedMultiplier),
+            SKAction.colorize(withColorBlendFactor: 0.0, duration: 1.5 * PartyModeSprite.shared.speedMultiplier)
         ])
         
         AudioManager.shared.playSound(for: "movepoisoned")
@@ -147,8 +151,8 @@ class PlayerSprite {
     
     func startWarpAnimation(shouldReverse: Bool, completion: @escaping (() -> ())) {
         let warpEffect = SKAction.group([
-            SKAction.rotate(byAngle: -3 * .pi, duration: 1.0),
-            SKAction.scale(to: shouldReverse ? player.scale : 0, duration: 1.0)
+            SKAction.rotate(byAngle: -3 * .pi, duration: 1.0 * PartyModeSprite.shared.speedMultiplier),
+            SKAction.scale(to: shouldReverse ? player.scale : 0, duration: 1.0 * PartyModeSprite.shared.speedMultiplier)
         ])
         
         player.sprite.run(warpEffect, completion: completion)
@@ -179,7 +183,7 @@ class PlayerSprite {
     func stopPartyAnimation() {
         restartIdleAnimation(isPartying: false)
         player.sprite.removeAction(forKey: AnimationKey.playerParty.rawValue)
-        player.sprite.run(SKAction.colorize(withColorBlendFactor: 0.0, duration: 2.0))
+        player.sprite.run(SKAction.colorize(withColorBlendFactor: 0.0, duration: 0))
     }
     
     func startGemCollectAnimation(on gameboard: GameboardSprite, at panel: K.GameboardPosition, completion: @escaping (() -> ())) {
@@ -191,8 +195,8 @@ class PlayerSprite {
         gameboard.sprite.addChild(gemSprite)
         
         gemSprite.run(SKAction.group([
-            SKAction.scale(by: 1.75, duration: 0.25),
-            SKAction.fadeOut(withDuration: 0.25)
+            SKAction.scale(by: 1.75, duration: 0.25 * PartyModeSprite.shared.speedMultiplier),
+            SKAction.fadeOut(withDuration: 0.25 * PartyModeSprite.shared.speedMultiplier)
         ])) {
             gemSprite.removeFromParent()
         }
@@ -210,14 +214,14 @@ class PlayerSprite {
         attackSprite.setScale(scale * (gameboard.panelSize / attackSprite.size.width))
 
         let animation = SKAction.sequence([
-            SKAction.wait(forDuration: 0.25),
-            SKAction.rotate(byAngle: -3 * .pi / 2, duration: 0.25),
-            SKAction.fadeAlpha(to: 0, duration: 0.5)
+            SKAction.wait(forDuration: 0.25 * PartyModeSprite.shared.speedMultiplier),
+            SKAction.rotate(byAngle: -3 * .pi / 2, duration: 0.25 * PartyModeSprite.shared.speedMultiplier),
+            SKAction.fadeAlpha(to: 0, duration: 0.5 * PartyModeSprite.shared.speedMultiplier)
         ])
         
         AudioManager.shared.playSound(for: "boyattack\(Int.random(in: 1...3))")
         AudioManager.shared.playSound(for: "swordslash")
-        AudioManager.shared.playSound(for: "enemydeath", delay: 0.8)
+        AudioManager.shared.playSound(for: "enemydeath", delay: 0.8 * PartyModeSprite.shared.speedMultiplier)
 
         gameboard.sprite.addChild(attackSprite)
 
@@ -244,15 +248,15 @@ class PlayerSprite {
             let animationMove: CGFloat = 300 * enemyScale
                         
             enemyTopSprite.run(SKAction.group([
-                SKAction.moveBy(x: -animationMove, y: animationMove, duration: animationDuration),
-                SKAction.fadeOut(withDuration: animationDuration * 2)
+                SKAction.moveBy(x: -animationMove, y: animationMove, duration: animationDuration * PartyModeSprite.shared.speedMultiplier),
+                SKAction.fadeOut(withDuration: animationDuration * 2 * PartyModeSprite.shared.speedMultiplier)
             ])) {
                 enemyTopSprite.removeFromParent()
             }
 
             enemyBottomSprite.run(SKAction.group([
-                SKAction.moveBy(x: animationMove, y: -animationMove, duration: animationDuration),
-                SKAction.fadeOut(withDuration: animationDuration * 2)
+                SKAction.moveBy(x: animationMove, y: -animationMove, duration: animationDuration * PartyModeSprite.shared.speedMultiplier),
+                SKAction.fadeOut(withDuration: animationDuration * 2 * PartyModeSprite.shared.speedMultiplier)
             ])) {
                 enemyBottomSprite.removeFromParent()
             }
@@ -275,14 +279,14 @@ class PlayerSprite {
         attackSprite.setScale(scale * (gameboard.panelSize / attackSprite.size.width))
 
         let animation = SKAction.sequence([
-            SKAction.rotate(byAngle: -3 * .pi / 4, duration: 0.2),
-            SKAction.wait(forDuration: 0.3),
-            SKAction.fadeAlpha(to: 0, duration: 0.5)
+            SKAction.rotate(byAngle: -3 * .pi / 4, duration: 0.2 * PartyModeSprite.shared.speedMultiplier),
+            SKAction.wait(forDuration: 0.3 * PartyModeSprite.shared.speedMultiplier),
+            SKAction.fadeAlpha(to: 0, duration: 0.5 * PartyModeSprite.shared.speedMultiplier)
         ])
         
         AudioManager.shared.playSound(for: "boyattack\(Int.random(in: 1...3))")
         AudioManager.shared.playSound(for: "hammerswing")
-        AudioManager.shared.playSound(for: "bouldersmash", delay: 0.8)
+        AudioManager.shared.playSound(for: "bouldersmash", delay: 0.8 * PartyModeSprite.shared.speedMultiplier)
 
         gameboard.sprite.addChild(attackSprite)
 
@@ -298,9 +302,9 @@ class PlayerSprite {
             gameboard.sprite.addChild(explodeSprite)
 
             explodeSprite.run(SKAction.group([
-                SKAction.animate(with: explodeBoulderTextures, timePerFrame: timePerFrame),
-                SKAction.scale(by: 1.25, duration: timePerFrame * Double(explodeBoulderTextures.count) * 2),
-                SKAction.fadeOut(withDuration: timePerFrame * Double(explodeBoulderTextures.count) * 2)
+                SKAction.animate(with: explodeBoulderTextures, timePerFrame: timePerFrame * PartyModeSprite.shared.speedMultiplier),
+                SKAction.scale(by: 1.25, duration: timePerFrame * Double(explodeBoulderTextures.count) * 2 * PartyModeSprite.shared.speedMultiplier),
+                SKAction.fadeOut(withDuration: timePerFrame * Double(explodeBoulderTextures.count) * 2 * PartyModeSprite.shared.speedMultiplier)
             ])) {
                 explodeSprite.removeFromParent()
             }
@@ -334,20 +338,20 @@ class PlayerSprite {
         let knockbackAnimation = SKAction.sequence([
             moveAction,
             SKAction.colorize(with: blinkColor, colorBlendFactor: isAttacked ? 1.0 : 0.0, duration: 0),
-            SKAction.wait(forDuration: 0.2),
+            SKAction.wait(forDuration: 0.2 * PartyModeSprite.shared.speedMultiplier),
             unmoveAction
         ])
         
         let blinkAnimation = SKAction.sequence([
-            SKAction.colorize(withColorBlendFactor: 0.0, duration: 0.12),
+            SKAction.colorize(withColorBlendFactor: 0.0, duration: 0.12 * PartyModeSprite.shared.speedMultiplier),
             SKAction.colorize(with: blinkColor, colorBlendFactor: 1.0, duration: 0),
-            SKAction.colorize(withColorBlendFactor: 0.0, duration: 0.12),
+            SKAction.colorize(withColorBlendFactor: 0.0, duration: 0.12 * PartyModeSprite.shared.speedMultiplier),
             SKAction.colorize(with: blinkColor, colorBlendFactor: 0.75, duration: 0),
-            SKAction.colorize(withColorBlendFactor: 0.0, duration: 0.12),
+            SKAction.colorize(withColorBlendFactor: 0.0, duration: 0.12 * PartyModeSprite.shared.speedMultiplier),
             SKAction.colorize(with: blinkColor, colorBlendFactor: 0.5, duration: 0),
-            SKAction.colorize(withColorBlendFactor: 0.0, duration: 0.12),
+            SKAction.colorize(withColorBlendFactor: 0.0, duration: 0.12 * PartyModeSprite.shared.speedMultiplier),
             SKAction.colorize(with: blinkColor, colorBlendFactor: 0.25, duration: 0),
-            SKAction.colorize(withColorBlendFactor: 0.0, duration: 0.12),
+            SKAction.colorize(withColorBlendFactor: 0.0, duration: 0.12 * PartyModeSprite.shared.speedMultiplier),
         ])
         
         AudioManager.shared.playSound(for: "boygrunt\(Int.random(in: 1...2))")

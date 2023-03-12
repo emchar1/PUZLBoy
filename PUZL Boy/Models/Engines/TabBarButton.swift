@@ -24,18 +24,20 @@ class TabBarButton: SKNode {
     // MARK: - Initialization
     
     init(imageName: String, type: TabBarType, position: CGPoint) {
-        sprite = SKShapeNode(rectOf: CGSize(width: K.ScreenDimensions.iPhoneWidth / 5, height: K.ScreenDimensions.iPhoneWidth / 5))
-        sprite.fillColor = .red
-        sprite.lineWidth = 2
+        let buttonSize: CGFloat = K.ScreenDimensions.iPhoneWidth / 5
+        
+        sprite = SKShapeNode(rectOf: CGSize(width: buttonSize, height: buttonSize))
+//        sprite.fillColor = .red
+        sprite.lineWidth = 0
         
         iconNode = SKSpriteNode(imageNamed: imageName)
-        iconNode.scale(to: CGSize(width: 50, height: 50))
-        iconNode.anchorPoint = .zero
+        iconNode.scale(to: CGSize(width: 100, height: 100))
         iconNode.position = .zero
         
         textNode = SKLabelNode(text: type.rawValue)
+        textNode.position = CGPoint(x: 0, y: -buttonSize / 2)
         textNode.fontName = UIFont.chatFont
-        textNode.fontSize = UIFont.chatFontSize
+        textNode.fontSize = UIFont.gameFontSizeSmall
         textNode.fontColor = UIFont.chatFontColor
         
         self.type = type

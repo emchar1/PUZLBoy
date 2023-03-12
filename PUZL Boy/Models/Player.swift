@@ -22,20 +22,18 @@ struct Player {
         case idle = 0, run, walk, marsh, sand, dead, glide
         
         var animationSpeed: TimeInterval {
+            var speed: TimeInterval
+            
             switch self {
-            case .run:
-                return 0.5
-            case .walk:
-                return 0.75
-            case .glide:
-                return 0.5
-            case .marsh:
-                return 1.0
-            case .sand:
-                return 0.5
-            default:
-                return 0.25
+            case .run:      speed = 0.5
+            case .walk:     speed = 0.75
+            case .glide:    speed = 0.5
+            case .marsh:    speed = 1.0
+            case .sand:     speed = 0.5
+            default:        speed = 0.25
             }
+            
+            return speed * PartyModeSprite.shared.speedMultiplier
         }
     }
     
