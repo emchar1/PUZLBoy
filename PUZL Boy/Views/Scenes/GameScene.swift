@@ -16,7 +16,8 @@ class GameScene: SKScene {
     private var gameEngine: GameEngine
     private var scoringEngine: ScoringEngine
     private var chatEngine: ChatEngine
-    private var tabBarEngine: TabBarEngine
+//    private var tabBarEngine: TabBarEngine
+    private var pauseResetEngine: PauseResetEngine
     private var offlinePlaySprite: OfflinePlaySprite
     private var levelStatsArray: [LevelStats]
     
@@ -65,7 +66,8 @@ class GameScene: SKScene {
         
         //chatEngine MUST be initialized here, and not in properties, otherwise it just refuses to show up!
         chatEngine = ChatEngine()
-        tabBarEngine = TabBarEngine()
+//        tabBarEngine = TabBarEngine()
+        pauseResetEngine = PauseResetEngine()
         self.user = user
         
         // FIXME: - Debugging purposes only
@@ -162,7 +164,8 @@ class GameScene: SKScene {
 
         chatEngine.fastForward(in: location)
         gameEngine.handleControls(in: location)
-        tabBarEngine.didTapButton(touches)
+//        tabBarEngine.didTapButton(touches)
+        pauseResetEngine.handleControls(in: location)
         
         if !activityIndicator.isShowing {
             continueSprite.didTapButton(touches)
@@ -328,7 +331,8 @@ class GameScene: SKScene {
         gameEngine.moveSprites(to: self)
         scoringEngine.moveSprites(to: self)
         chatEngine.moveSprites(to: self)
-        tabBarEngine.moveTo(superScene: self)
+//        tabBarEngine.moveTo(superScene: self)
+        pauseResetEngine.moveSprites(to: self)
         
         offlinePlaySprite.refreshStatus()
         addChild(offlinePlaySprite)
@@ -338,18 +342,18 @@ class GameScene: SKScene {
     }
     
     private func playDialogue() {
-        //Only disable input on certain levels, i.e. the important ones w/ instructions.
-        guard chatEngine.shouldPauseGame(level: currentLevel) else { return }
-
-        scoringEngine.timerManager.pauseTime()
-        stopTimer()
-        gameEngine.shouldDisableInput(true)
-
-        chatEngine.dialogue(level: currentLevel) { [unowned self] in
-            scoringEngine.timerManager.resumeTime()
-            startTimer()
-            gameEngine.shouldDisableInput(false)
-        }
+//        //Only disable input on certain levels, i.e. the important ones w/ instructions.
+//        guard chatEngine.shouldPauseGame(level: currentLevel) else { return }
+//
+//        scoringEngine.timerManager.pauseTime()
+//        stopTimer()
+//        gameEngine.shouldDisableInput(true)
+//
+//        chatEngine.dialogue(level: currentLevel) { [unowned self] in
+//            scoringEngine.timerManager.resumeTime()
+//            startTimer()
+//            gameEngine.shouldDisableInput(false)
+//        }
     }
 }
 

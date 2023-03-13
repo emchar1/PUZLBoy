@@ -11,8 +11,8 @@ class GameboardSprite {
     
     // MARK: - Properties
     
-    private let tiles: [LevelType] = LevelType.allCases
-    let overlayTag = "-O"
+    static let gameboardColor: UIColor = UIColor(red: 225/255, green: 225/255, blue: 225/255, alpha: 1.0)
+    static let overlayTag = "-O"
     static let spriteScale: CGFloat = 0.94
 
     static var xPosition: CGFloat { (K.ScreenDimensions.iPhoneWidth * (1 - GameboardSprite.spriteScale)) / 2 }
@@ -20,6 +20,7 @@ class GameboardSprite {
 
     typealias WarpTuple = (first: K.GameboardPosition?, second: K.GameboardPosition?)
 
+    private let tiles: [LevelType] = LevelType.allCases
     private var panels: [[SKSpriteNode]]
     private(set) var panelCount: Int
     private(set) var panelSize: CGFloat
@@ -36,7 +37,7 @@ class GameboardSprite {
         panelSize = K.ScreenDimensions.iPhoneWidth / CGFloat(panelCount)
         panels = Array(repeating: Array(repeating: SKSpriteNode(), count: panelCount), count: panelCount)
         
-        sprite = SKSpriteNode(texture: SKTexture(imageNamed: "gameboardTexture"),
+        sprite = SKSpriteNode(color: GameboardSprite.gameboardColor,
                               size: CGSize(width: CGFloat(panelCount) * panelSize, height: CGFloat(panelCount) * panelSize))
         sprite.anchorPoint = .zero
         sprite.position = CGPoint(x: GameboardSprite.xPosition, y: GameboardSprite.yPosition)
@@ -76,7 +77,7 @@ class GameboardSprite {
             overlayPanel.position = spritePosition
             overlayPanel.anchorPoint = .zero
             overlayPanel.zPosition = K.ZPosition.overlay
-            overlayPanel.name = "\(position.row),\(position.col)\(overlayTag)"
+            overlayPanel.name = "\(position.row),\(position.col)\(GameboardSprite.overlayTag)"
 
             sprite.addChild(overlayPanel)
         }

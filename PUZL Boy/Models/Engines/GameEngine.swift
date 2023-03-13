@@ -323,12 +323,12 @@ class GameEngine {
             guard let name = child.name else { continue }
             
             let row = String(name.prefix(upTo: name.firstIndex(of: ",")!))
-            let col = String(name.suffix(from: name.firstIndex(of: ",")!).dropFirst()).replacingOccurrences(of: gameboardSprite.overlayTag, with: "")
-            let isOverlay = name.contains(gameboardSprite.overlayTag)
+            let col = String(name.suffix(from: name.firstIndex(of: ",")!).dropFirst()).replacingOccurrences(of: GameboardSprite.overlayTag, with: "")
+            let isOverlay = name.contains(GameboardSprite.overlayTag)
             let position: K.GameboardPosition = (row: Int(row) ?? -1, col: Int(col) ?? -1)
 
             //Remove overlay object, if found
-            if position == level.player && isOverlay, let child = gameboardSprite.sprite.childNode(withName: row + "," + col + gameboardSprite.overlayTag) {
+            if position == level.player && isOverlay, let child = gameboardSprite.sprite.childNode(withName: row + "," + col + GameboardSprite.overlayTag) {
                 child.removeFromParent()
             }
             
@@ -737,10 +737,16 @@ class GameEngine {
      */
     func fadeGameboard(fadeOut: Bool, completion: (() -> ())?) {
         gameboardSprite.sprite.alpha = fadeOut ? 1.0 : 0.0
-        gameboardSprite.colorizeGameboard(color: .clear, blendFactor: fadeOut ? 0.0 : 1.0, animationDuration: 0.0) {
+        
+        gameboardSprite.colorizeGameboard(color: .clear,//fadeOut ? GameboardSprite.gameboardColor : .clear,
+                                          blendFactor: fadeOut ? 0.0 : 1.0,
+                                          animationDuration: 0.0) {
             self.gameboardSprite.sprite.alpha = 1.0
         }
         
-        gameboardSprite.colorizeGameboard(color: .clear, blendFactor: fadeOut ? 1.0 : 0.0, animationDuration: fadeOut ? 1.0 : 0.5, completion: completion)
+        gameboardSprite.colorizeGameboard(color: fadeOut ? .clear : GameboardSprite.gameboardColor,
+                                          blendFactor: fadeOut ? 1.0 : 0.0,
+                                          animationDuration: fadeOut ? 1.0 : 0.5,
+                                          completion: completion)
     }
 }
