@@ -35,7 +35,7 @@ class PartyModeSprite: SKNode {
     }
     
     private(set) var speedMultiplier: TimeInterval = 1
-    private let speedMultipliers: [TimeInterval] = [0.5, 0.75, 1.5, 2.0]
+    private let speedMultipliers: [TimeInterval] = [0.75]//[0.5, 0.75, 1.5, 2.0]
 
     private let baseColor: UIColor = .clear
     private var backgroundSprite: SKSpriteNode
@@ -54,7 +54,7 @@ class PartyModeSprite: SKNode {
         backgroundSprite.zPosition = K.ZPosition.partyBackgroundOverlay
         
         foregroundSprite = SKSpriteNode(color: baseColor, size: CGSize(width: gameboardSize, height: gameboardSize))
-        foregroundSprite.alpha = 0.75
+        foregroundSprite.alpha = 0.5
         foregroundSprite.anchorPoint = .zero
         foregroundSprite.position = CGPoint(x: GameboardSprite.xPosition, y: GameboardSprite.yPosition)
         foregroundSprite.zPosition = K.ZPosition.partyForegroundOverlay

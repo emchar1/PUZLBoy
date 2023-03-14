@@ -313,7 +313,7 @@ class GameEngine {
     }
     
     /**
-     Converts a panel to grass, after consuming the item.
+     Removes the overlay from the terrain tile, after consuming the item.
      */
     private func consumeItem() {
         level.removeOverlayObject(at: level.player)

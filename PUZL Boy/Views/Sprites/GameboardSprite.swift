@@ -68,6 +68,17 @@ class GameboardSprite {
         panels[position.row][position.col].anchorPoint = .zero
         panels[position.row][position.col].zPosition = K.ZPosition.panel
         panels[position.row][position.col].name = "\(position.row),\(position.col)"
+        
+        // FIXME: - Testing for partytile
+        if tile.terrain == .partytile {
+            let randomHue = UIColor(hue: CGFloat.random(in: 0.0...1.0), saturation: 1.0, brightness: 1.0, alpha: 1.0)
+            let randomDuration = TimeInterval.random(in: 0.75...1.0)
+
+            panels[position.row][position.col].run(SKAction.repeatForever(SKAction.sequence([
+                SKAction.colorize(with: GameboardSprite.gameboardColor, colorBlendFactor: 0.0, duration: randomDuration),
+                SKAction.colorize(with: randomHue, colorBlendFactor: 1.0, duration: randomDuration)
+            ])))
+        }
 
         sprite.addChild(panels[position.row][position.col])
         
