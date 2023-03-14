@@ -19,7 +19,8 @@ class PauseResetEngine {
     init() {
         let buttonSize: CGFloat = K.ScreenDimensions.iPhoneWidth / 5
         
-        sprite = SKSpriteNode(color: .purple, size: CGSize(width: buttonSize, height: buttonSize))
+        sprite = SKSpriteNode(imageNamed: "pauseresetbutton")
+        sprite.scale(to: CGSize(width: buttonSize, height: buttonSize))
         sprite.anchorPoint = .zero
         sprite.position = CGPoint(x: K.ScreenDimensions.iPhoneWidth / 2 - buttonSize / 2, y: K.ScreenDimensions.bottomMargin)
         sprite.name = "pauseResetButton"

@@ -162,8 +162,6 @@ class GameEngine {
     private func setPlayerSpritePosition(toLastPanel lastPanel: LevelType? = nil, shouldAnimate animate: Bool, completion: (() -> ())?) {
         let playerLastPosition = gameboardSprite.getLocation(at: level.player)
         let panel = lastPanel == nil ? level.getLevelType(at: level.player) : lastPanel!
-        let panelIsMarsh = panel == .marsh
-        let panelIsSand = panel == .sand
         var animationType: Player.Texture
         
         if isGliding {
@@ -172,18 +170,21 @@ class GameEngine {
         else if isSolved {
             animationType = .walk
         }
-        else if panelIsMarsh {
+        else if panel == .marsh {
             animationType = .marsh
         }
-        else if panelIsSand {
+        else if panel == .sand {
             animationType = .sand
+        }
+        else if panel == .partytile {
+            animationType = .party
         }
         else {
             animationType = .run
         }
 
         if animate {
-            let playerMove = SKAction.move(to: playerLastPosition, duration: animationType.animationSpeed)
+            let playerMove = SKAction.move(to: playerLastPosition, duration: animationType.movementSpeed)
                         
             shouldDisableControlInput = true
 

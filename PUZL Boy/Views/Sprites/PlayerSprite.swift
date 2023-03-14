@@ -73,6 +73,9 @@ class PlayerSprite {
         AudioManager.shared.stopSound(for: "movesand1", fadeDuration: fadeDuration)
         AudioManager.shared.stopSound(for: "movesand2", fadeDuration: fadeDuration)
         AudioManager.shared.stopSound(for: "movesand3", fadeDuration: fadeDuration)
+        AudioManager.shared.stopSound(for: "movetile1", fadeDuration: fadeDuration)
+        AudioManager.shared.stopSound(for: "movetile2", fadeDuration: fadeDuration)
+        AudioManager.shared.stopSound(for: "movetile3", fadeDuration: fadeDuration)
 
         restartIdleAnimation(isPartying: PartyModeSprite.shared.isPartying)
         
@@ -108,6 +111,8 @@ class PlayerSprite {
                 AudioManager.shared.playSound(for: "movemarsh\(Int.random(in: 1...3))")
             case .sand:
                 AudioManager.shared.playSound(for: "movesand\(Int.random(in: 1...3))")
+            case .party:
+                AudioManager.shared.playSound(for: "movetile\(Int.random(in: 1...3))")
             case .walk:
                 AudioManager.shared.playSound(for: "movewalk")
 
