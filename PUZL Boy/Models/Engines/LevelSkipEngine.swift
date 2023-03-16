@@ -51,7 +51,7 @@ class LevelSkipEngine {
         viewAchievements.color = .systemBlue
         viewAchievements.colorBlendFactor = 1
         viewAchievements.setScale(buttonScale)
-        viewAchievements.position = CGPoint(x: (K.ScreenDimensions.iPhoneWidth - viewAchievements.size.width) / 2,
+        viewAchievements.position = CGPoint(x: (K.ScreenDimensions.iPhoneWidth - viewAchievements.size.width) / 2 - 200,
                                             y: viewAchievements.size.height + 20)
         viewAchievements.anchorPoint = .zero
     }

@@ -78,6 +78,7 @@ class GameScene: SKScene {
         AdMobManager.shared.delegate = self
         IAPManager.shared.delegate = self
         gameEngine.delegate = self
+        pauseResetEngine.delegate = self
         continueSprite.delegate = self
         
         // FIXME: - Debuging purposes only!!!
@@ -162,10 +163,13 @@ class GameScene: SKScene {
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard let location = touches.first?.location(in: self) else { return }
 
+        pauseResetEngine.handleControls(in: location)
+
+        guard !pauseResetEngine.isPaused else { return print("Game is paused. quitting.") }
+        
         chatEngine.fastForward(in: location)
         gameEngine.handleControls(in: location)
-//        tabBarEngine.didTapButton(touches)
-        pauseResetEngine.handleControls(in: location)
+        //        tabBarEngine.didTapButton(touches)
         
         if !activityIndicator.isShowing {
             continueSprite.didTapButton(touches)
@@ -452,12 +456,7 @@ extension GameScene: LevelSkipEngineDelegate {
     }
     
     func viewAchievementsPressed(node: SKSpriteNode) {
-//        GameCenterManager.shared.showLeaderboard(level: currentLevel)
-
-        
-        //FIXME: Testing only!!!
-        PartyModeSprite.shared.isPartying.toggle()
-        checkForParty()
+        GameCenterManager.shared.showLeaderboard(level: currentLevel)
     }
     
     private func checkForParty() {
@@ -466,6 +465,28 @@ extension GameScene: LevelSkipEngineDelegate {
         }
         else {
             PartyModeSprite.shared.stopParty(partyBoy: gameEngine.playerSprite)
+        }
+    }
+}
+
+
+// MARK: - PauseResetEngineDelegate
+
+extension GameScene: PauseResetEngineDelegate {
+    func didTapPause(isPaused: Bool) {
+//        PartyModeSprite.shared.isPartying.toggle()
+//        checkForParty()
+        if isPaused {
+            scoringEngine.timerManager.pauseTime()
+            stopTimer()
+            AudioManager.shared.lowerVolume(for: AudioManager.shared.currentTheme, fadeDuration: 0.25)
+            print("Pausing game")
+        }
+        else {
+            scoringEngine.timerManager.resumeTime()
+            startTimer()
+            AudioManager.shared.raiseVolume(for: AudioManager.shared.currentTheme, fadeDuration: 0.25)
+            print("Unpausing game")
         }
     }
 }

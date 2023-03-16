@@ -38,10 +38,10 @@ struct K {
         static let iPhoneMargin: CGFloat = (width - iPhoneWidth) / 2
         
         ///Top margin of the device.
-        static let topMargin: CGFloat = UIDevice.modelInfo.topSafeArea//200
+        static let topMargin: CGFloat = UIDevice.modelInfo.topSafeArea
         
         ///Bottom margin of the device.
-        static let bottomMargin: CGFloat = UIDevice.modelInfo.bottomSafeArea//40
+        static let bottomMargin: CGFloat = UIDevice.modelInfo.bottomSafeArea
         
         ///Top border of the gameboard sprite. Needs to be set in gameboardSprite, otherwise it defaults to topMargin.
         static var topOfGameboard: CGFloat = topMargin
