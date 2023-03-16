@@ -85,6 +85,7 @@
 		EA94E87329C0DE2C009F2614 /* movetile3.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA94E87029C0DE2C009F2614 /* movetile3.mp3 */; };
 		EA94E87429C0DE2C009F2614 /* movetile2.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA94E87129C0DE2C009F2614 /* movetile2.mp3 */; };
 		EA94E87529C0DE2C009F2614 /* movetile1.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA94E87229C0DE2C009F2614 /* movetile1.mp3 */; };
+		EA94E87729C2DCE0009F2614 /* Extension+CGPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA94E87629C2DCE0009F2614 /* Extension+CGPoint.swift */; };
 		EA956C6A29257B9C00879AD0 /* AudioManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA956C6929257B9C00879AD0 /* AudioManager.swift */; };
 		EA956C6C29257D9600879AD0 /* Extension+Comparable.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA956C6B29257D9600879AD0 /* Extension+Comparable.swift */; };
 		EA956C75292595F400879AD0 /* overworld4.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA956C74292595F400879AD0 /* overworld4.mp3 */; };
@@ -238,6 +239,7 @@
 		EA94E87029C0DE2C009F2614 /* movetile3.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = movetile3.mp3; sourceTree = "<group>"; };
 		EA94E87129C0DE2C009F2614 /* movetile2.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = movetile2.mp3; sourceTree = "<group>"; };
 		EA94E87229C0DE2C009F2614 /* movetile1.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = movetile1.mp3; sourceTree = "<group>"; };
+		EA94E87629C2DCE0009F2614 /* Extension+CGPoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+CGPoint.swift"; sourceTree = "<group>"; };
 		EA956C6929257B9C00879AD0 /* AudioManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioManager.swift; sourceTree = "<group>"; };
 		EA956C6B29257D9600879AD0 /* Extension+Comparable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+Comparable.swift"; sourceTree = "<group>"; };
 		EA956C74292595F400879AD0 /* overworld4.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = overworld4.mp3; sourceTree = "<group>"; };
@@ -449,6 +451,7 @@
 				EA95D18C29459D550061059C /* Extension+UIFont.swift */,
 				EA95D1B1294FBF2A0061059C /* Extension+Notification.Name.swift */,
 				EA4D026A29BC6ACE00F0C7B1 /* Extension+UIDevice.swift */,
+				EA94E87629C2DCE0009F2614 /* Extension+CGPoint.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -828,6 +831,7 @@
 				EA65184328E420E400E535BF /* GameScene.swift in Sources */,
 				EA95D20C296276670061059C /* AchievementSuperEfficient.swift in Sources */,
 				EA95D2102962C9260061059C /* AchievementSlowPoke.swift in Sources */,
+				EA94E87729C2DCE0009F2614 /* Extension+CGPoint.swift in Sources */,
 				EA826C81298CF3FF00F19F81 /* IAPManager.swift in Sources */,
 				EA4D026929BA8C8E00F0C7B1 /* TabBarButton.swift in Sources */,
 				EA956C6A29257B9C00879AD0 /* AudioManager.swift in Sources */,

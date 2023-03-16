@@ -125,14 +125,22 @@ class ContinueSprite: SKNode {
         }
     }
     
-    func didTapButton(_ touches: Set<UITouch>) {
+    func updateTimeToReplenishLives(time: TimeInterval) {
+        let interval = Int(time)
+        let hours = max(0, (interval / 3600))
+        let minutes = max(0, (interval / 60) % 60)
+        let seconds = max(0, interval % 60)
+
+        livesRefreshLabel.text = "Or wait for \(LifeSpawnerModel.defaultLives) lives in: " + String(format: "%02d:%02d:%02d", hours, minutes, seconds)
+    }
+    
+    
+    // MARK: - UI Controls
+    
+    func didTapButton(in location: CGPoint) {
         guard !disableControls else { return }
-        guard let touch = touches.first else { return print("Error capturing touch in ContinueSprite.didTapButton") }
-        
-        let location = touch.location(in: self)
-        let nodes = self.nodes(at: location)
-        
-        for node in nodes {
+
+        for node in nodes(at: location - position) {
             if node.name == "watchAdButton" {
                 watchAdButton.tapButton()
                 delegate?.didTapWatchAd()
@@ -156,12 +164,5 @@ class ContinueSprite: SKNode {
         }
     }
     
-    func updateTimeToReplenishLives(time: TimeInterval) {
-        let interval = Int(time)
-        let hours = max(0, (interval / 3600))
-        let minutes = max(0, (interval / 60) % 60)
-        let seconds = max(0, interval % 60)
-
-        livesRefreshLabel.text = "Or wait for \(LifeSpawnerModel.defaultLives) lives in: " + String(format: "%02d:%02d:%02d", hours, minutes, seconds)
-    }
+    
 }

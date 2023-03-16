@@ -161,7 +161,7 @@ class GameScene: SKScene {
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard let location = touches.first?.location(in: self) else { return }
         
-        pauseResetEngine.touch(location: location, function: pauseResetEngine.touchDown(_:))
+        pauseResetEngine.touch(in: location, function: pauseResetEngine.touchDown(_:))
 
         guard !pauseResetEngine.isPaused else { return print("Game is paused. quitting.") }
         
@@ -169,7 +169,7 @@ class GameScene: SKScene {
         gameEngine.handleControls(in: location)
         
         if !activityIndicator.isShowing {
-            continueSprite.didTapButton(touches)
+            continueSprite.didTapButton(in: location)
         }
         
         // FIXME: - Debuging purposes only!!!
@@ -179,8 +179,8 @@ class GameScene: SKScene {
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard let location = touches.first?.location(in: self) else { return }
 
-        pauseResetEngine.touch(location: location, function: pauseResetEngine.handleControls(_:))
-        pauseResetEngine.touch(location: nil, function: pauseResetEngine.touchUp(_:))
+        pauseResetEngine.touch(in: location, function: pauseResetEngine.handleControls(_:))
+        pauseResetEngine.touch(in: nil, function: pauseResetEngine.touchUp(_:))
     }
     
 

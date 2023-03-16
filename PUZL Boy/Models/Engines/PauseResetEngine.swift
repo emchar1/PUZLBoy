@@ -58,7 +58,7 @@ class PauseResetEngine {
         - location: location of the touch
         - function: the passed in function to be executed once the node has ben found
      */
-    func touch(location: CGPoint?, function: (CGPoint?) -> Void) {
+    func touch(in location: CGPoint?, function: (CGPoint?) -> Void) {
         guard let superScene = sprite.parent else { return print("superScene not set in PauseResetEngine!") }
         
         if let location = location {
