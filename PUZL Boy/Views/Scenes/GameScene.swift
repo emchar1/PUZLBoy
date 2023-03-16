@@ -16,7 +16,6 @@ class GameScene: SKScene {
     private var gameEngine: GameEngine
     private var scoringEngine: ScoringEngine
     private var chatEngine: ChatEngine
-//    private var tabBarEngine: TabBarEngine
     private var pauseResetEngine: PauseResetEngine
     private var offlinePlaySprite: OfflinePlaySprite
     private var levelStatsArray: [LevelStats]
@@ -66,7 +65,6 @@ class GameScene: SKScene {
         
         //chatEngine MUST be initialized here, and not in properties, otherwise it just refuses to show up!
         chatEngine = ChatEngine()
-//        tabBarEngine = TabBarEngine()
         pauseResetEngine = PauseResetEngine()
         self.user = user
         
@@ -162,14 +160,13 @@ class GameScene: SKScene {
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard let location = touches.first?.location(in: self) else { return }
-
-        pauseResetEngine.handleControls(in: location)
+        
+        pauseResetEngine.touch(location: location, function: pauseResetEngine.touchDown(_:))
 
         guard !pauseResetEngine.isPaused else { return print("Game is paused. quitting.") }
         
         chatEngine.fastForward(in: location)
         gameEngine.handleControls(in: location)
-        //        tabBarEngine.didTapButton(touches)
         
         if !activityIndicator.isShowing {
             continueSprite.didTapButton(touches)
@@ -177,6 +174,13 @@ class GameScene: SKScene {
         
         // FIXME: - Debuging purposes only!!!
         levelSkipEngine.handleControls(in: location)
+    }
+        
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        guard let location = touches.first?.location(in: self) else { return }
+
+        pauseResetEngine.touch(location: location, function: pauseResetEngine.handleControls(_:))
+        pauseResetEngine.touch(location: nil, function: pauseResetEngine.touchUp(_:))
     }
     
 
@@ -335,7 +339,6 @@ class GameScene: SKScene {
         gameEngine.moveSprites(to: self)
         scoringEngine.moveSprites(to: self)
         chatEngine.moveSprites(to: self)
-//        tabBarEngine.moveTo(superScene: self)
         pauseResetEngine.moveSprites(to: self)
         
         offlinePlaySprite.refreshStatus()
