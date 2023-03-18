@@ -16,7 +16,6 @@ class GameScene: SKScene {
     private var gameEngine: GameEngine
     private var scoringEngine: ScoringEngine
     private var chatEngine: ChatEngine
-    private var pauseResetEngine: PauseResetEngine
     private var offlinePlaySprite: OfflinePlaySprite
     private var levelStatsArray: [LevelStats]
     
@@ -65,7 +64,6 @@ class GameScene: SKScene {
         
         //chatEngine MUST be initialized here, and not in properties, otherwise it just refuses to show up!
         chatEngine = ChatEngine()
-        pauseResetEngine = PauseResetEngine()
         self.user = user
         
         // FIXME: - Debugging purposes only
@@ -76,7 +74,6 @@ class GameScene: SKScene {
         AdMobManager.shared.delegate = self
         IAPManager.shared.delegate = self
         gameEngine.delegate = self
-        pauseResetEngine.delegate = self
         continueSprite.delegate = self
         
         // FIXME: - Debuging purposes only!!!
@@ -143,7 +140,6 @@ class GameScene: SKScene {
                 }
                 
                 self.continueSprite.updateTimeToReplenishLives(time: timeToReplenishLives)
-                print("Time to replenish: \(timeToReplenishLives)")
             }
             catch {
                 self.removeAction(forKey: self.keyRunReplenishLivesTimerAction)
@@ -160,11 +156,7 @@ class GameScene: SKScene {
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard let location = touches.first?.location(in: self) else { return }
-        
-        pauseResetEngine.touch(in: location, function: pauseResetEngine.touchDown(_:))
-
-        guard !pauseResetEngine.isPaused else { return print("Game is paused. quitting.") }
-        
+                
         chatEngine.fastForward(in: location)
         gameEngine.handleControls(in: location)
         
@@ -179,8 +171,7 @@ class GameScene: SKScene {
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard let location = touches.first?.location(in: self) else { return }
 
-        pauseResetEngine.touch(in: location, function: pauseResetEngine.handleControls(_:))
-        pauseResetEngine.touch(in: nil, function: pauseResetEngine.touchUp(_:))
+        gameEngine.executeIfTouchEnded(in: location)
     }
     
 
@@ -339,7 +330,6 @@ class GameScene: SKScene {
         gameEngine.moveSprites(to: self)
         scoringEngine.moveSprites(to: self)
         chatEngine.moveSprites(to: self)
-        pauseResetEngine.moveSprites(to: self)
         
         offlinePlaySprite.refreshStatus()
         addChild(offlinePlaySprite)
@@ -368,6 +358,21 @@ class GameScene: SKScene {
 // MARK: - GameEngineDelegate
 
 extension GameScene: GameEngineDelegate {
+    func gameIsPaused(isPaused: Bool) {
+        if isPaused {
+            scoringEngine.timerManager.pauseTime()
+            stopTimer()
+            AudioManager.shared.lowerVolume(for: AudioManager.shared.currentTheme, fadeDuration: 0.25)
+            print("Pausing game")
+        }
+        else {
+            scoringEngine.timerManager.resumeTime()
+            startTimer()
+            AudioManager.shared.raiseVolume(for: AudioManager.shared.currentTheme, fadeDuration: 0.25)
+            print("Unpausing game")
+        }
+    }
+    
     func enemyIsKilled() {
         scoringEngine.scoringManager.addToScore(1000)
         scoringEngine.updateLabels()
@@ -468,28 +473,6 @@ extension GameScene: LevelSkipEngineDelegate {
         }
         else {
             PartyModeSprite.shared.stopParty(partyBoy: gameEngine.playerSprite)
-        }
-    }
-}
-
-
-// MARK: - PauseResetEngineDelegate
-
-extension GameScene: PauseResetEngineDelegate {
-    func didTapPause(isPaused: Bool) {
-//        PartyModeSprite.shared.isPartying.toggle()
-//        checkForParty()
-        if isPaused {
-            scoringEngine.timerManager.pauseTime()
-            stopTimer()
-            AudioManager.shared.lowerVolume(for: AudioManager.shared.currentTheme, fadeDuration: 0.25)
-            print("Pausing game")
-        }
-        else {
-            scoringEngine.timerManager.resumeTime()
-            startTimer()
-            AudioManager.shared.raiseVolume(for: AudioManager.shared.currentTheme, fadeDuration: 0.25)
-            print("Unpausing game")
         }
     }
 }

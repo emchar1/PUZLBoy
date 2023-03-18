@@ -11,6 +11,7 @@ protocol GameEngineDelegate: AnyObject {
     func gameIsSolved(movesRemaining: Int, itemsFound: Int, enemiesKilled: Int, usedContinue: Bool)
     func gameIsOver(firstTimeCalled: Bool)
     func enemyIsKilled()
+    func gameIsPaused(isPaused: Bool)
 }
 
 /**
@@ -66,6 +67,7 @@ class GameEngine {
     private var gameboardSprite: GameboardSprite!
     private(set) var playerSprite: PlayerSprite!
     private var displaySprite: DisplaySprite!
+    private var pauseResetEngine: PauseResetEngine!
     
     weak var delegate: GameEngineDelegate?
     
@@ -139,6 +141,8 @@ class GameEngine {
         K.ScreenDimensions.topOfGameboard = GameboardSprite.yPosition + K.ScreenDimensions.iPhoneWidth * GameboardSprite.spriteScale
         playerSprite = PlayerSprite(shouldSpawn: true)
         displaySprite = DisplaySprite(topYPosition: K.ScreenDimensions.topOfGameboard, bottomYPosition: GameboardSprite.yPosition, margin: 40)
+        pauseResetEngine = PauseResetEngine()
+        pauseResetEngine.delegate = self
 
         setLabelsForDisplaySprite()
         setPlayerSpritePosition(shouldAnimate: false, completion: nil)
@@ -368,6 +372,14 @@ class GameEngine {
         guard !shouldDisableControlInput else { return print("Unable to move... shouldDisableControlInput") }
         guard !disableInputFromOutside else { return print("Unable to move... disableInputFromOutside") }
 
+        pauseResetEngine.touchDown(in: location, resetCompletion: { [unowned self] in
+            killAndReset()
+        })
+
+        guard !pauseResetEngine.isPaused else { return print("Game is paused. quitting.") }
+
+        
+        //NOW you may proceed... if you pass all the above guards.
         if inBounds(location: location, direction: .up) {
             movePlayerHelper(direction: .up)
         }
@@ -384,6 +396,20 @@ class GameEngine {
             
             movePlayerHelper(direction: .right)
         }
+    }
+    
+    /**
+     Run this to simulate touchesEnded, i.e. touchUpInside, especially for pauseResetButton..
+     */
+    func executeIfTouchEnded(in location: CGPoint) {
+        //Save 4 guards as in handleControls...
+        guard !isSolved else { return print("Unable to move... level isSolved") }
+        guard !isGameOver else { return print("Unable to move... isGameOver") }
+        guard !shouldDisableControlInput else { return print("Unable to move... shouldDisableControlInput") }
+        guard !disableInputFromOutside else { return print("Unable to move... disableInputFromOutside") }
+        
+        pauseResetEngine.touch(in: location, function: pauseResetEngine.handleControls(_:))
+        pauseResetEngine.touch(in: nil, function: pauseResetEngine.touchUp(_:))
     }
     
     
@@ -676,16 +702,25 @@ class GameEngine {
     
     // MARK: - Other Functions
     
+    ///Resets the level and reduces one life.
+    private func killAndReset() {
+        movesRemaining = 0
+        updateMovesRemaining()
+    }
+    
     ///Just what it says. It increments livesRemaining.
     func incrementLivesRemaining(lives: Int = 2) {
         GameEngine.livesRemaining += lives
     }
     
+    /**Sets livesRemaining to the specified # of lives.
+    - parameter lives: number of lives to set to
+     */
     func setLivesRemaining(lives: Int) {
         GameEngine.livesRemaining = lives
     }
     
-    ///Call this upon continuing.
+    ///Call this upon continuing after 0 lives, i.e. thru an ad, purchase, or time lapse.
     func animateLives(newLives: Int) {
         displaySprite.statusLives.animateLives(newLives: newLives)
     }
@@ -715,10 +750,11 @@ class GameEngine {
     func moveSprites(to superScene: SKScene) {
         superScene.addChild(gameboardSprite.sprite)
         superScene.addChild(displaySprite.sprite)
-        
+        pauseResetEngine.moveSprites(to: superScene)
+
         playerSprite.setScale(panelSize: gameboardSprite.panelSize)
         gameboardSprite.sprite.addChild(playerSprite.sprite)
-        
+
         if !isGameOver {
             // FIXME: - yPosition seems wonky...
             let numMovesSprite = NumMovesSprite(numMoves: self.level.moves,
@@ -749,5 +785,14 @@ class GameEngine {
                                           blendFactor: fadeOut ? 1.0 : 0.0,
                                           animationDuration: fadeOut ? 1.0 : 0.5,
                                           completion: completion)
+    }
+}
+
+
+// MARK: - PauseResetEngineDelegate
+
+extension GameEngine: PauseResetEngineDelegate {
+    func didTapPause(isPaused: Bool) {
+        delegate?.gameIsPaused(isPaused: isPaused)
     }
 }
