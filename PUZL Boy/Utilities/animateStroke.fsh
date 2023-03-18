@@ -5,6 +5,7 @@
 //  Created by Eddie Char on 3/16/23.
 //
 
+
 void main() {
     if(u_path_length == 0.0) {
         gl_FragColor = vec4(0.0, 0.0, 1.0, 1.0);

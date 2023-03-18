@@ -112,6 +112,10 @@ class PauseResetEngine {
     func touchUp(_ location: CGPoint?) {
         sprite.run(SKAction.colorize(withColorBlendFactor: 0, duration: 0))
 
+        if isPressed {
+            Haptics.shared.addHapticFeedback(withStyle: .light)
+        }
+
         isPressed = false
         resetFinal = Date()
         
@@ -136,7 +140,8 @@ class PauseResetEngine {
             
             isPressed = true
             resetAll()
-            
+            Haptics.shared.addHapticFeedback(withStyle: .light)
+
             
             //Counts down to see if should reset the level
             let block = SKAction.run {
