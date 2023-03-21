@@ -77,21 +77,25 @@ class LevelSkipEngine {
         for nodeTapped in superScene.nodes(at: location) {
             if nodeTapped.name == "forwardButton" {
                 delegate?.fowardPressed(forwardSprite)
+                AudioManager.shared.playSound(for: "buttontap")
                 Haptics.shared.addHapticFeedback(withStyle: .soft)
                 break
             }
             else if nodeTapped.name == "reverseButton" {
                 delegate?.reversePressed(reverseSprite)
+                AudioManager.shared.playSound(for: "buttontap")
                 Haptics.shared.addHapticFeedback(withStyle: .soft)
                 break
             }
             else if nodeTapped.name == "achievementButton" {
                 delegate?.viewAchievementsPressed(viewAchievements)
+                AudioManager.shared.playSound(for: "buttontap")
                 Haptics.shared.addHapticFeedback(withStyle: .soft)
                 break
             }
             else if nodeTapped.name == "partyModeButton" {
                 delegate?.partyModePressed(partyMode)
+                AudioManager.shared.playSound(for: "buttontap")
                 Haptics.shared.addHapticFeedback(withStyle: .soft)
                 break
             }

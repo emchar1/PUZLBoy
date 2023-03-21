@@ -72,6 +72,7 @@ class PauseResetEngine {
         buttonSprite.anchorPoint = .zero
         buttonSprite.position = position
         buttonSprite.name = pauseResetName
+        buttonSprite.zPosition = K.ZPosition.messagePrompt
         
         resetAll()
     }

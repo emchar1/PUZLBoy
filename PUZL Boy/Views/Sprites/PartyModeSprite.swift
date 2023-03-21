@@ -23,7 +23,8 @@ class PartyModeSprite: SKNode {
     let backgroundKey: String = "BackgroundKey"
     let foregroundKey: String = "ForegroundKey"
 
-    var isPartying: Bool = false {
+    private var isPartyStopping: Bool = false
+    private(set) var isPartying: Bool = false {
         didSet {
             if isPartying {
                 AudioManager.shared.changeTheme(newTheme: AudioManager.shared.overworldPartyTheme)
@@ -39,7 +40,8 @@ class PartyModeSprite: SKNode {
 
     private let baseColor: UIColor = .clear
     private var backgroundSprite: SKSpriteNode
-    private var foregroundSprite: SKSpriteNode
+    private var backgroundLights: SKSpriteNode
+    private var foregroundLights: SKSpriteNode
 
     
     // MARK: - Initialization
@@ -47,17 +49,21 @@ class PartyModeSprite: SKNode {
     private override init() {
         let gameboardSize = K.ScreenDimensions.iPhoneWidth * GameboardSprite.spriteScale
         
-        backgroundSprite = SKSpriteNode(color: baseColor, size: CGSize(width: K.ScreenDimensions.iPhoneWidth, height: K.ScreenDimensions.height))
-        backgroundSprite.alpha = 0.5
+        backgroundSprite = SKSpriteNode(color: .black, size: CGSize(width: K.ScreenDimensions.iPhoneWidth, height: K.ScreenDimensions.height))
         backgroundSprite.anchorPoint = .zero
         backgroundSprite.position = .zero
-        backgroundSprite.zPosition = K.ZPosition.partyBackgroundOverlay
         
-        foregroundSprite = SKSpriteNode(color: baseColor, size: CGSize(width: gameboardSize, height: gameboardSize))
-        foregroundSprite.alpha = 0.5
-        foregroundSprite.anchorPoint = .zero
-        foregroundSprite.position = CGPoint(x: GameboardSprite.xPosition, y: GameboardSprite.yPosition)
-        foregroundSprite.zPosition = K.ZPosition.partyForegroundOverlay
+        backgroundLights = SKSpriteNode(color: baseColor, size: CGSize(width: K.ScreenDimensions.iPhoneWidth, height: K.ScreenDimensions.height))
+        backgroundLights.alpha = 0.5
+        backgroundLights.anchorPoint = .zero
+        backgroundLights.position = .zero
+        backgroundLights.zPosition = K.ZPosition.partyBackgroundOverlay
+        
+        foregroundLights = SKSpriteNode(color: baseColor, size: CGSize(width: gameboardSize, height: gameboardSize))
+        foregroundLights.alpha = 0.5
+        foregroundLights.anchorPoint = .zero
+        foregroundLights.position = CGPoint(x: GameboardSprite.xPosition, y: GameboardSprite.yPosition)
+        foregroundLights.zPosition = K.ZPosition.partyForegroundOverlay
         
         super.init()
     }
@@ -69,28 +75,43 @@ class PartyModeSprite: SKNode {
     
     // MARK: - Functions
     
-    func stopParty(partyBoy: PlayerSprite) {
-        speedMultiplier = 1
-
-        backgroundSprite.removeFromParent()
-        backgroundSprite.removeAllActions()
-        backgroundSprite.removeAllChildren()
-
-        foregroundSprite.removeFromParent()
-        foregroundSprite.removeAllActions()
+    func toggleIsPartying() {
+        guard !isPartyStopping else { return }
         
-        removeFromParent()
-        removeAllActions()
+        isPartying.toggle()
+    }
+    
+    func stopParty(partyBoy: PlayerSprite) {
+        guard !isPartyStopping else { return }
+        
+        isPartyStopping = true
+        
+        speedMultiplier = 1
+        
+        backgroundLights.removeAllChildren()
+        backgroundLights.removeAllActions()
+        foregroundLights.removeAllActions()
 
         partyBoy.stopPartyAnimation()
+        
+        backgroundLights.run(SKAction.colorize(with: .clear, colorBlendFactor: 1.0, duration: 1.0))
+        foregroundLights.run(SKAction.colorize(with: .clear, colorBlendFactor: 1.0, duration: 1.0)) {
+            self.backgroundLights.removeFromParent()
+            self.foregroundLights.removeFromParent()
+        }
+
+        backgroundSprite.run(SKAction.colorize(with: .clear, colorBlendFactor: 1.0, duration: 2.0)) {
+            self.backgroundSprite.color = .black
+            self.backgroundSprite.removeFromParent()
+            self.removeFromParent()
+            self.removeAllActions()
+            self.isPartyStopping = false
+        }
     }
     
     func startParty(to superScene: SKScene, partyBoy: PlayerSprite) {
-        //Stop the party, first...
-        stopParty(partyBoy: partyBoy)
+        guard !isPartyStopping else { return }
         
-        
-        //...then you can start the party!
         speedMultiplier = speedMultipliers.randomElement() ?? 1.0
         
         var foregroundSequence: [SKAction] = []
@@ -100,11 +121,12 @@ class PartyModeSprite: SKNode {
         foregroundSequence += breakSection()
         foregroundSequence += chorusSection()
 
-        backgroundSprite.run(SKAction.repeatForever(SKAction.sequence(mainBeatSection())), withKey: backgroundKey)
-        foregroundSprite.run(SKAction.repeatForever(SKAction.sequence(foregroundSequence)), withKey: foregroundKey)
+        backgroundLights.run(SKAction.repeatForever(SKAction.sequence(mainBeatSection())), withKey: backgroundKey)
+        foregroundLights.run(SKAction.repeatForever(SKAction.sequence(foregroundSequence)), withKey: foregroundKey)
         
         addChild(backgroundSprite)
-        addChild(foregroundSprite)
+        backgroundSprite.addChild(backgroundLights)
+        backgroundSprite.addChild(foregroundLights)
 
         superScene.addChild(self)
         partyBoy.startPartyAnimation()
@@ -115,10 +137,10 @@ class PartyModeSprite: SKNode {
         // TODO: - Do I want to keep these bubbles???
         let bubbleFun = SKAction.run {
             let partyBubble = PartyEffectSprite()
-            partyBubble.animateEffect(to: self.backgroundSprite)
+            partyBubble.animateEffect(to: self.backgroundLights)
         }
         
-        backgroundSprite.run(SKAction.repeatForever(SKAction.group([
+        backgroundLights.run(SKAction.repeatForever(SKAction.group([
             bubbleFun,
             SKAction.wait(forDuration: 0.25)
         ])))

@@ -82,7 +82,7 @@ class GameScene: SKScene {
         AudioManager.shared.stopSound(for: "continueloop")
         AudioManager.shared.playSound(for: AudioManager.shared.currentTheme)
         
-        backgroundColor = .black
+        backgroundColor = .systemBlue
         scaleMode = .aspectFill
         
         let notificationCenter = NotificationCenter.default
@@ -363,7 +363,7 @@ extension GameScene: GameEngineDelegate {
         if isPaused {
             scoringEngine.timerManager.pauseTime()
             stopTimer()
-            AudioManager.shared.lowerVolume(for: AudioManager.shared.currentTheme, fadeDuration: 0.25)
+            AudioManager.shared.adjustVolume(to: 0.1, for: AudioManager.shared.currentTheme, fadeDuration: 0.25)
             print("Pausing game")
         }
         else {
@@ -469,7 +469,7 @@ extension GameScene: LevelSkipEngineDelegate {
     }
     
     func partyModePressed(_ node: SKSpriteNode) {
-        PartyModeSprite.shared.isPartying.toggle()
+        PartyModeSprite.shared.toggleIsPartying()
         checkForParty()
     }
     
