@@ -100,7 +100,7 @@ class PartyModeSprite: SKNode {
             self.foregroundLights.removeFromParent()
         }
 
-        backgroundSprite.run(SKAction.colorize(with: .clear, colorBlendFactor: 1.0, duration: 2.0)) {
+        backgroundSprite.run(SKAction.colorize(with: .clear, colorBlendFactor: 1.0, duration: 1.5)) {
             self.backgroundSprite.color = .black
             self.backgroundSprite.removeFromParent()
             self.removeFromParent()
