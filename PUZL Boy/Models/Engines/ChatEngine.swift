@@ -11,22 +11,21 @@ class ChatEngine {
     
     // MARK: - Properties
     
-    //Sprite properties
-    private(set) var sprite: SKShapeNode
-    private(set) var imageSprite: SKSpriteNode
-    private(set) var textSprite: SKLabelNode
+    //avatarSizeNew and Orig should be static so other classes can access w/o creating an instance
+    static let avatarSizeNew: CGFloat = 300
+    static let avatarSizeOrig: CGFloat = 512
     
-    //Shared static properties
-    private static let spriteSizeNew: CGFloat = 300
-    private static let spriteSizeOrig: CGFloat = 512
-    private static let margin: CGFloat = 40
-    private static let chatBorderWidth: CGFloat = 4
-    private static let xOrigin: CGFloat = 30
-    private static let yOrigin: CGFloat = K.ScreenDimensions.topOfGameboard - K.ScreenDimensions.iPhoneWidth * GameboardSprite.spriteScale - spriteSizeNew - margin
+    //Size and position properties
+    private let padding: CGPoint = CGPoint(x: 20, y: 8)
+    private var origin: CGPoint {
+        CGPoint(x: GameboardSprite.xPosition, y: K.ScreenDimensions.topOfGameboard - backgroundSpriteWidth - ChatEngine.avatarSizeNew - 40)
+    }
+    private var backgroundSpriteWidth: CGFloat {
+        K.ScreenDimensions.iPhoneWidth * GameboardSprite.spriteScale
+    }
 
-    //Shared properties
+    //Other properties
     private var timer: Timer
-    private var origScale: CGFloat
     private var chatText: String = ""
     private var chatIndex = 0
     private var allowNewChat = true
@@ -37,6 +36,12 @@ class ChatEngine {
     private var chatSpeed: TimeInterval
     private let chatSpeedOrig: TimeInterval = 0.08
             
+    //Sprite properties
+    private var backgroundSprite: SKShapeNode
+    private var avatarSprite: SKSpriteNode
+    private var textSprite: SKLabelNode
+    private var superScene: SKScene?
+    
     enum ChatProfile {
         case hero, trainer, princess, villain
     }
@@ -56,46 +61,57 @@ class ChatEngine {
         dialoguePlayed[34] = false
         dialoguePlayed[51] = false
         dialoguePlayed[76] = false
-        dialoguePlayed[101] = false
 
-        sprite = SKShapeNode()
-        sprite.lineWidth = ChatEngine.chatBorderWidth
-        sprite.path = UIBezierPath(roundedRect: CGRect(x: ChatEngine.xOrigin, y: ChatEngine.yOrigin,
-                                                       width: K.ScreenDimensions.iPhoneWidth * GameboardSprite.spriteScale,
-                                                       height: ChatEngine.spriteSizeNew + ChatEngine.chatBorderWidth),
-                                   cornerRadius: 20).cgPath
-        sprite.fillColor = .orange
-        sprite.strokeColor = .white
-        sprite.fillTexture = SKTexture(image: UIImage.chatGradientTexture)
-        origScale = sprite.xScale
-        sprite.setScale(0)
-
-        imageSprite = SKSpriteNode(texture: SKTexture(imageNamed: "puzlboy"))
-        imageSprite.position = CGPoint(x: 60, y: ChatEngine.yOrigin + ChatEngine.chatBorderWidth / 2)
-        imageSprite.setScale(ChatEngine.spriteSizeNew / ChatEngine.spriteSizeOrig)
-        imageSprite.anchorPoint = .zero
-        
+        //Property initialization
+        backgroundSprite = SKShapeNode()
+        avatarSprite = SKSpriteNode(texture: SKTexture(imageNamed: "puzlboy"))
         textSprite = SKLabelNode(text: "PUZL Boy is the newest puzzle game out there on the App Store. It's so popular, it's going to have over a million downloads, gamers are going to love it - casual gamers, hardcore gamers, and everyone in-between! So download your copy today!!")
-        textSprite.position = CGPoint(x: ChatEngine.margin + imageSprite.size.width, y: ChatEngine.yOrigin + ChatEngine.spriteSizeNew - 8)
+
+        //Setup
+        let borderLineWidth: CGFloat = 4
+        
+        backgroundSprite.lineWidth = borderLineWidth
+        backgroundSprite.path = UIBezierPath(roundedRect: CGRect(x: origin.x, y: origin.y,
+                                                                 width: backgroundSpriteWidth, height: ChatEngine.avatarSizeNew + borderLineWidth),
+                                             cornerRadius: 20).cgPath
+        backgroundSprite.fillColor = .orange
+        backgroundSprite.strokeColor = .white
+        backgroundSprite.fillTexture = SKTexture(image: UIImage.chatGradientTexture)
+        backgroundSprite.setScale(0)
+        backgroundSprite.name = "backgroundSprite"
+
+        avatarSprite.position = CGPoint(x: origin.x, y: origin.y + borderLineWidth / 2)
+        avatarSprite.setScale(ChatEngine.avatarSizeNew / ChatEngine.avatarSizeOrig)
+        avatarSprite.anchorPoint = .zero
+        avatarSprite.color = .magenta
+        
+        textSprite.position = CGPoint(x: origin.x, y: origin.y + ChatEngine.avatarSizeNew - padding.y)
         textSprite.numberOfLines = 0
-        textSprite.preferredMaxLayoutWidth = K.ScreenDimensions.iPhoneWidth - ChatEngine.spriteSizeNew - 2 * ChatEngine.margin
+        textSprite.preferredMaxLayoutWidth = backgroundSpriteWidth - ChatEngine.avatarSizeNew
         textSprite.horizontalAlignmentMode = .left
         textSprite.verticalAlignmentMode = .top
         textSprite.fontName = UIFont.chatFont
         textSprite.fontSize = UIFont.chatFontSize
         textSprite.fontColor = UIFont.chatFontColor
         
-        sprite.addChild(imageSprite)
-        sprite.addChild(textSprite)        
+        //Add sprites to background
+        backgroundSprite.addChild(avatarSprite)
+        backgroundSprite.addChild(textSprite)        
     }
     
     
     // MARK: - Functions
     
     func fastForward(in location: CGPoint) {
-        guard location.x >= ChatEngine.xOrigin && location.x <= ChatEngine.xOrigin + sprite.frame.size.width && location.y >= ChatEngine.yOrigin && location.y <= ChatEngine.yOrigin + sprite.frame.size.height else { return }
+        guard let superScene = superScene else { return print("superScene not set in ChatEngine! Can't fast forward.") }
         
-        chatSpeed = 0
+        for node in superScene.nodes(at: location) {
+            if node.name == "backgroundSprite" {
+                chatSpeed = 0
+                
+                return
+            }
+        }
     }
     
     func sendChat(profile: ChatProfile, startNewChat: Bool, endChat: Bool, chat: String, completion: (() -> ())? = nil) {
@@ -113,30 +129,30 @@ class ChatEngine {
         
         switch profile {
         case .hero:
-            imageSprite.texture = SKTexture(imageNamed: "puzlboy")
-            sprite.fillColor = .orange
+            avatarSprite.texture = SKTexture(imageNamed: "puzlboy")
+            backgroundSprite.fillColor = .orange
         case .trainer:
-            imageSprite.texture = SKTexture(imageNamed: "trainer")
-            sprite.fillColor = .blue
+            avatarSprite.texture = SKTexture(imageNamed: "trainer")
+            backgroundSprite.fillColor = .blue
         case .princess:
-            imageSprite.texture = SKTexture(imageNamed: "trainer")
-            sprite.fillColor = .magenta
+            avatarSprite.texture = SKTexture(imageNamed: "trainer")
+            backgroundSprite.fillColor = .magenta
         case .villain:
-            imageSprite.texture = SKTexture(imageNamed: "puzlboy")
-            sprite.fillColor = .red
+            avatarSprite.texture = SKTexture(imageNamed: "puzlboy")
+            backgroundSprite.fillColor = .red
         }
         
-        imageSprite.position.x = profile == .hero ? 60 : K.ScreenDimensions.iPhoneWidth * GameboardSprite.spriteScale
-        imageSprite.xScale = profile == .hero ?  abs(imageSprite.xScale) : -abs(imageSprite.xScale)
-        textSprite.position.x = ChatEngine.margin + (profile == .hero ? imageSprite.size.width : 20)
+        textSprite.position.x = origin.x + (profile != .hero ? padding.x : avatarSprite.size.width)
+        avatarSprite.position.x = origin.x + (profile == .hero ? padding.x : backgroundSpriteWidth - padding.x)
+        backgroundSprite.position.x = profile == .hero ? 0 : K.ScreenDimensions.width
 
-        sprite.setScale(0)
-        sprite.position.x = profile != .hero ? K.ScreenDimensions.iPhoneWidth * GameboardSprite.spriteScale : 0
+        avatarSprite.xScale = profile == .hero ? abs(avatarSprite.xScale) : -abs(avatarSprite.xScale)
+        backgroundSprite.setScale(0)
         
         //Animates the chat bubble zoom in for startNewChat
-        sprite.run(SKAction.group([
+        backgroundSprite.run(SKAction.group([
             SKAction.moveTo(x: 0, duration: startNewChat ? 0.4 : 0),
-            SKAction.scale(to: origScale, duration: startNewChat ? 0.4 : 0)
+            SKAction.scale(to: 1.0, duration: startNewChat ? 0.4 : 0)
         ])) { [unowned self] in
             if startNewChat {
                 AudioManager.shared.playSound(for: "chatopen")
@@ -176,8 +192,8 @@ class ChatEngine {
         }
         
         //Animates the chat bubble zoom out for endChat
-        sprite.run(SKAction.group([
-            SKAction.moveTo(x: currentProfile != .hero ? K.ScreenDimensions.iPhoneWidth * GameboardSprite.spriteScale : 0, duration: duration),
+        backgroundSprite.run(SKAction.group([
+            SKAction.moveTo(x: currentProfile != .hero ? backgroundSpriteWidth : 0, duration: duration),
             SKAction.scale(to: 0, duration: duration)
         ])) { [unowned self] in
             allowNewChat = true
@@ -194,7 +210,9 @@ class ChatEngine {
      - parameter superScene: The GameScene to add all the children to.
      */
     func moveSprites(to superScene: SKScene) {
-        superScene.addChild(sprite)
+        self.superScene = superScene
+        
+        superScene.addChild(backgroundSprite)
     }
 }
 
@@ -337,21 +355,6 @@ extension ChatEngine {
                         }
                     }
                 }
-            }
-        case 101:
-            guard let dialoguePlayedCheck = dialoguePlayed[level], !dialoguePlayedCheck else {
-                completion?()
-                return
-            }
-            
-            sendChat(profile: .trainer, startNewChat: true, endChat: true,
-                     chat: "You made it to 4-panel. Rock on!!") { [unowned self] in
-                
-                dialoguePlayed[level] = true
-
-                GameCenterManager.shared.updateProgress(achievement: .avidReader, shouldReportImmediately: true)
-
-                completion?()
             }
         default:
             completion?()

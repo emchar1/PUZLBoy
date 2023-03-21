@@ -6,11 +6,13 @@
 //
 
 import SpriteKit
+import FirebaseAuth
 
 protocol LevelSkipEngineDelegate: AnyObject {
     func fowardPressed(_ node: SKSpriteNode)
     func reversePressed(_ node: SKSpriteNode)
-    func viewAchievementsPressed( node: SKSpriteNode)
+    func viewAchievementsPressed(_ node: SKSpriteNode)
+    func partyModePressed(_ node: SKSpriteNode)
 }
 
 class LevelSkipEngine {
@@ -20,22 +22,29 @@ class LevelSkipEngine {
     private var forwardSprite: SKSpriteNode
     private var reverseSprite: SKSpriteNode
     private var viewAchievements: SKSpriteNode
+    private var partyMode: SKSpriteNode
     private var superScene: SKScene?
+    private var user: User?
     
     weak var delegate: LevelSkipEngineDelegate?
     
     
     // MARK: - Initialization
     
-    init() {
+    init(user: User?) {
         let buttonScale: CGFloat = 0.5
+        let buttonSpacing: CGFloat = 180
+        let padding: CGFloat = 20
+        
+        self.user = user
         
         forwardSprite = SKSpriteNode(texture: SKTexture(imageNamed: "forwardButton"))
         forwardSprite.name = "forwardButton"
         forwardSprite.color = .systemGreen
         forwardSprite.colorBlendFactor = 1
         forwardSprite.setScale(buttonScale)
-        forwardSprite.position = CGPoint(x: K.ScreenDimensions.iPhoneWidth - forwardSprite.size.width - 20, y: forwardSprite.size.height + 20)
+        forwardSprite.position = CGPoint(x: K.ScreenDimensions.iPhoneWidth - K.ScreenDimensions.lrMargin - forwardSprite.size.width - padding,
+                                         y: forwardSprite.size.height + padding)
         forwardSprite.anchorPoint = .zero
         
         reverseSprite = SKSpriteNode(texture: SKTexture(imageNamed: "reverseButton"))
@@ -43,17 +52,20 @@ class LevelSkipEngine {
         reverseSprite.color = .systemRed
         reverseSprite.colorBlendFactor = 1
         reverseSprite.setScale(buttonScale)
-        reverseSprite.position = CGPoint(x: 20, y: reverseSprite.size.height + 20)
+        reverseSprite.position = CGPoint(x: K.ScreenDimensions.lrMargin + padding, y: reverseSprite.size.height + padding)
         reverseSprite.anchorPoint = .zero
         
-        viewAchievements = SKSpriteNode(texture: SKTexture(imageNamed: "forwardButton"))
+        viewAchievements = SKSpriteNode(texture: SKTexture(imageNamed: "leaderboards"))
         viewAchievements.name = "achievementButton"
-        viewAchievements.color = .systemBlue
-        viewAchievements.colorBlendFactor = 1
         viewAchievements.setScale(buttonScale)
-        viewAchievements.position = CGPoint(x: (K.ScreenDimensions.iPhoneWidth - viewAchievements.size.width) / 2 - 200,
-                                            y: viewAchievements.size.height + 20)
+        viewAchievements.position = CGPoint(x: reverseSprite.position.x + buttonSpacing, y: viewAchievements.size.height + padding)
         viewAchievements.anchorPoint = .zero
+        
+        partyMode = SKSpriteNode(texture: SKTexture(imageNamed: "party"))
+        partyMode.name = "partyModeButton"
+        partyMode.setScale(buttonScale)
+        partyMode.position = CGPoint(x: forwardSprite.position.x - buttonSpacing, y: partyMode.size.height + padding)
+        partyMode.anchorPoint = .zero
     }
     
     
@@ -62,26 +74,24 @@ class LevelSkipEngine {
     func handleControls(in location: CGPoint) {
         guard let superScene = superScene else { return print("superScene not set!") }
         
-        let buttonPressAction = SKAction.sequence([SKAction.colorize(withColorBlendFactor: 0, duration: 0),
-                                                   SKAction.wait(forDuration: 0.5),
-                                                   SKAction.colorize(withColorBlendFactor: 1, duration: 1.0)])
-        
         for nodeTapped in superScene.nodes(at: location) {
             if nodeTapped.name == "forwardButton" {
-                forwardSprite.run(buttonPressAction)
                 delegate?.fowardPressed(forwardSprite)
                 Haptics.shared.addHapticFeedback(withStyle: .soft)
                 break
             }
             else if nodeTapped.name == "reverseButton" {
-                reverseSprite.run(buttonPressAction)
                 delegate?.reversePressed(reverseSprite)
                 Haptics.shared.addHapticFeedback(withStyle: .soft)
                 break
             }
             else if nodeTapped.name == "achievementButton" {
-                viewAchievements.run(buttonPressAction)
-                delegate?.viewAchievementsPressed(node: viewAchievements)
+                delegate?.viewAchievementsPressed(viewAchievements)
+                Haptics.shared.addHapticFeedback(withStyle: .soft)
+                break
+            }
+            else if nodeTapped.name == "partyModeButton" {
+                delegate?.partyModePressed(partyMode)
                 Haptics.shared.addHapticFeedback(withStyle: .soft)
                 break
             }
@@ -98,5 +108,9 @@ class LevelSkipEngine {
         superScene.addChild(forwardSprite)
         superScene.addChild(reverseSprite)
         superScene.addChild(viewAchievements)
+        
+        if let user = user, user.uid == "3SeIWmlATmbav7jwCDjXyiA0TgA3" {
+            superScene.addChild(partyMode)
+        }
     }
 }

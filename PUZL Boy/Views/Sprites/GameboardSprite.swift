@@ -13,7 +13,7 @@ class GameboardSprite {
     
     static let gameboardColor: UIColor = UIColor(red: 225/255, green: 225/255, blue: 225/255, alpha: 1.0)
     static let overlayTag = "-O"
-    static let spriteScale: CGFloat = 0.94
+    static let spriteScale: CGFloat = UIDevice.isiPad ? 0.75 : 0.94
 
     static var xPosition: CGFloat { (K.ScreenDimensions.iPhoneWidth * (1 - GameboardSprite.spriteScale)) / 2 }
     static var yPosition: CGFloat { (K.ScreenDimensions.height - K.ScreenDimensions.iPhoneWidth * GameboardSprite.spriteScale - K.ScreenDimensions.topMargin - 275) }

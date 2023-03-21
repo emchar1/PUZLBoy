@@ -43,6 +43,11 @@ struct K {
         ///Bottom margin of the device.
         static let bottomMargin: CGFloat = UIDevice.modelInfo.bottomSafeArea
         
+        ///Adds an additional margin size to the left and right sides of the screen, if it's an iPad (due to the 4/3 aspect ratio).
+        static var lrMargin: CGFloat {
+            UIDevice.isiPad ? 80 : 0
+        }
+        
         ///Top border of the gameboard sprite. Needs to be set in gameboardSprite, otherwise it defaults to topMargin.
         static var topOfGameboard: CGFloat = topMargin
         

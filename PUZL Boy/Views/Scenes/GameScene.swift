@@ -62,12 +62,12 @@ class GameScene: SKScene {
             levelStatsArray = []
         }
         
-        //chatEngine MUST be initialized here, and not in properties, otherwise it just refuses to show up!
+        // FIXME: - chatEngine MUST be initialized here, and not in properties, otherwise it just refuses to show up! Because K.ScreenDimensions.topOfGameboard is set in the gameEngine(). Is there a better way to do this??
         chatEngine = ChatEngine()
         self.user = user
         
         // FIXME: - Debugging purposes only
-        levelSkipEngine = LevelSkipEngine()
+        levelSkipEngine = LevelSkipEngine(user: user)
         
         super.init(size: size)
         
@@ -270,7 +270,6 @@ class GameScene: SKScene {
                 child.removeFromParent()
             }
         }
-//        removeAllChildren()
         
         gameEngine = GameEngine(level: level, shouldSpawn: !didWin)
         gameEngine.delegate = self
@@ -335,22 +334,24 @@ class GameScene: SKScene {
         addChild(offlinePlaySprite)
         
         // FIXME: - Debuging purposes only!!!
-        levelSkipEngine.moveSprites(to: self)
+        if let user = user, user.uid == "3SeIWmlATmbav7jwCDjXyiA0TgA3" || user.uid == "NB9OLr2X8kRLJ7S0G8W3800qo8U2" || user.uid == "jnsBD8RFVDMN9cSN8yDnFDoVJp32" {
+            levelSkipEngine.moveSprites(to: self)
+        }
     }
     
     private func playDialogue() {
-//        //Only disable input on certain levels, i.e. the important ones w/ instructions.
-//        guard chatEngine.shouldPauseGame(level: currentLevel) else { return }
-//
-//        scoringEngine.timerManager.pauseTime()
-//        stopTimer()
-//        gameEngine.shouldDisableInput(true)
-//
-//        chatEngine.dialogue(level: currentLevel) { [unowned self] in
-//            scoringEngine.timerManager.resumeTime()
-//            startTimer()
-//            gameEngine.shouldDisableInput(false)
-//        }
+        //Only disable input on certain levels, i.e. the important ones w/ instructions.
+        guard chatEngine.shouldPauseGame(level: currentLevel) else { return }
+
+        scoringEngine.timerManager.pauseTime()
+        stopTimer()
+        gameEngine.shouldDisableInput(true)
+
+        chatEngine.dialogue(level: currentLevel) { [unowned self] in
+            scoringEngine.timerManager.resumeTime()
+            startTimer()
+            gameEngine.shouldDisableInput(false)
+        }
     }
 }
 
@@ -463,8 +464,13 @@ extension GameScene: LevelSkipEngineDelegate {
         newGame(level: currentLevel, didWin: true)
     }
     
-    func viewAchievementsPressed(node: SKSpriteNode) {
+    func viewAchievementsPressed(_ node: SKSpriteNode) {
         GameCenterManager.shared.showLeaderboard(level: currentLevel)
+    }
+    
+    func partyModePressed(_ node: SKSpriteNode) {
+        PartyModeSprite.shared.isPartying.toggle()
+        checkForParty()
     }
     
     private func checkForParty() {

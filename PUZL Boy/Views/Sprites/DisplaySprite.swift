@@ -30,24 +30,30 @@ class DisplaySprite {
         sprite.zPosition = K.ZPosition.display
         
         statusLives = DisplayLivesSprite(icon: "Run (6)", amount: 3)
-        statusLives.position = CGPoint(x: K.ScreenDimensions.iPhoneWidth - statusLives.width / 2, y: topYPosition + margin + statusLives.width + 18)
+        statusLives.position = CGPoint(x: K.ScreenDimensions.iPhoneWidth - K.ScreenDimensions.lrMargin - statusLives.width / 2,
+                                       y: topYPosition + margin + statusLives.width + 18)
         
         statusHealth = DisplayStatusBarSprite(icon: "iconHeart", amount: 99, fillColor: .cyan)
-        statusHealth.position = CGPoint(x: margin + statusHealth.width, y: topYPosition + margin + statusHealth.width / 2)
+        statusHealth.position = CGPoint(x: margin + statusHealth.width + K.ScreenDimensions.lrMargin,
+                                        y: topYPosition + margin + statusHealth.width / 2)
 
         statusMoves = DisplayStatusBarSprite(icon: "iconBoot", amount: 99, fillColor: .cyan)
-        statusMoves.position = CGPoint(x: margin + statusMoves.width, y: topYPosition + margin)
+        statusMoves.position = CGPoint(x: margin + statusMoves.width + K.ScreenDimensions.lrMargin,
+                                       y: topYPosition + margin)
 
         statusHammers = DisplayStatusBarSprite(icon: "iconHammer", amount: 99, fillColor: .yellow)
-        statusHammers.position = CGPoint(x: K.ScreenDimensions.iPhoneWidth - statusHammers.width, y: topYPosition + margin + statusHammers.width / 2)
+        statusHammers.position = CGPoint(x: K.ScreenDimensions.iPhoneWidth - K.ScreenDimensions.lrMargin - statusHammers.width,
+                                         y: topYPosition + margin + statusHammers.width / 2)
 
         statusSwords = DisplayStatusBarSprite(icon: "iconSword", amount: 99, fillColor: .yellow)
-        statusSwords.position = CGPoint(x: K.ScreenDimensions.iPhoneWidth - statusSwords.width, y: topYPosition + margin)
+        statusSwords.position = CGPoint(x: K.ScreenDimensions.iPhoneWidth - K.ScreenDimensions.lrMargin - statusSwords.width,
+                                        y: topYPosition + margin)
 
         levelLabel = SKLabelNode(text: nil)
         levelLabel.horizontalAlignmentMode = .right
         levelLabel.verticalAlignmentMode = .top
-        levelLabel.position = CGPoint(x: K.ScreenDimensions.iPhoneWidth - margin, y: K.ScreenDimensions.height - K.ScreenDimensions.topMargin)
+        levelLabel.position = CGPoint(x: K.ScreenDimensions.iPhoneWidth - K.ScreenDimensions.lrMargin - margin,
+                                      y: K.ScreenDimensions.height - K.ScreenDimensions.topMargin)
         levelLabel.fontName = UIFont.gameFont
         levelLabel.fontSize = UIFont.gameFontSizeSmall
         levelLabel.fontColor = UIFont.gameFontColor

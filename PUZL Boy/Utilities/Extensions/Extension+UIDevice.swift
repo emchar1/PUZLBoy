@@ -8,6 +8,10 @@
 import UIKit
 
 extension UIDevice {
+    static var isiPad: Bool {
+        return modelInfo.name.contains("iPad")
+    }
+    
     static let modelInfo: (name: String, ratio: CGFloat, topSafeArea: CGFloat, bottomSafeArea: CGFloat) = {
         var systemInfo = utsname()
         uname(&systemInfo)

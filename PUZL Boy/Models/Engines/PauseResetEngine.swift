@@ -17,7 +17,8 @@ class PauseResetEngine {
     // MARK: - Properties
     
     private let pauseResetName = "pauseresetbutton"
-    private let buttonSize: CGFloat = K.ScreenDimensions.iPhoneWidth / 5
+    private let buttonSize: CGFloat = 180
+    private let settingsButtonHeight: CGFloat = 80
     private var position: CGPoint {
         CGPoint(x: (K.ScreenDimensions.iPhoneWidth - buttonSize) / 2, y: K.ScreenDimensions.bottomMargin)
     }
@@ -30,11 +31,13 @@ class PauseResetEngine {
         TimeInterval(resetFinal.timeIntervalSinceNow - resetInitial.timeIntervalSinceNow)
     }
     
-    private var sprite: SKSpriteNode
+    private var buttonSprite: SKSpriteNode
+    private var foregroundSprite: SKShapeNode
+    private var backgroundSprite: SKShapeNode
     private var isPressed: Bool = false
     private(set) var isPaused: Bool = false {
         didSet {
-            sprite.texture = SKTexture(imageNamed: isPaused ? "\(pauseResetName)2" : pauseResetName)
+            buttonSprite.texture = SKTexture(imageNamed: isPaused ? "\(pauseResetName)2" : pauseResetName)
         }
     }
     
@@ -44,11 +47,31 @@ class PauseResetEngine {
     // MARK: - Initialization
     
     init() {
-        sprite = SKSpriteNode(imageNamed: pauseResetName)
-        sprite.scale(to: CGSize(width: buttonSize, height: buttonSize))
-        sprite.anchorPoint = .zero
-        sprite.position = position
-        sprite.name = pauseResetName
+        let settingsSize: CGFloat = K.ScreenDimensions.iPhoneWidth
+        let settingsScale: CGFloat = GameboardSprite.spriteScale
+        
+        backgroundSprite = SKShapeNode(rectOf: CGSize(width: settingsSize, height: settingsSize + ChatEngine.avatarSizeNew + settingsButtonHeight),
+                                       cornerRadius: 20)
+        backgroundSprite.position = CGPoint(x: settingsScale * settingsSize / 2 + GameboardSprite.xPosition,
+                                            y: settingsScale * (settingsSize - ChatEngine.avatarSizeNew - settingsButtonHeight) / 2 + GameboardSprite.yPosition)
+        backgroundSprite.fillColor = .gray
+        backgroundSprite.fillTexture = SKTexture(image: UIImage.chatGradientTexture)
+        backgroundSprite.lineWidth = 12
+        backgroundSprite.strokeColor = .white
+        backgroundSprite.setScale(settingsScale)
+        backgroundSprite.zPosition = K.ZPosition.messagePrompt
+        
+        foregroundSprite = SKShapeNode(rectOf: CGSize(width: settingsSize, height: settingsSize + ChatEngine.avatarSizeNew - settingsButtonHeight))
+        foregroundSprite.position = CGPoint(x: 0, y: settingsButtonHeight)
+        foregroundSprite.fillColor = .blue
+        foregroundSprite.lineWidth = 0
+        foregroundSprite.setScale(settingsScale)
+        
+        buttonSprite = SKSpriteNode(imageNamed: pauseResetName)
+        buttonSprite.scale(to: CGSize(width: buttonSize, height: buttonSize))
+        buttonSprite.anchorPoint = .zero
+        buttonSprite.position = position
+        buttonSprite.name = pauseResetName
         
         resetAll()
     }
@@ -57,7 +80,10 @@ class PauseResetEngine {
     // MARK: - Move Functions
     
     func moveSprites(to superScene: SKScene) {
-        superScene.addChild(sprite)
+//        superScene.addChild(backgroundSprite)
+        superScene.addChild(buttonSprite)
+//        
+//        backgroundSprite.addChild(foregroundSprite)
     }
     
     
@@ -78,7 +104,7 @@ class PauseResetEngine {
      - function: the passed in function to be executed once the node has ben found
      */
     func touch(in location: CGPoint?, function: (CGPoint?) -> Void) {
-        guard let superScene = sprite.parent else { return print("superScene not set in PauseResetEngine!") }
+        guard let superScene = buttonSprite.parent else { return print("superScene not set in PauseResetEngine!") }
         
         if let location = location {
             for nodeTapped in superScene.nodes(at: location) {
@@ -110,7 +136,7 @@ class PauseResetEngine {
      - parameter location: location of the tap.
      */
     func touchUp(_ location: CGPoint?) {
-        sprite.run(SKAction.colorize(withColorBlendFactor: 0, duration: 0))
+        buttonSprite.run(SKAction.colorize(withColorBlendFactor: 0, duration: 0))
 
         if isPressed {
             Haptics.shared.addHapticFeedback(withStyle: .light)
@@ -119,7 +145,7 @@ class PauseResetEngine {
         isPressed = false
         resetFinal = Date()
         
-        sprite.removeAction(forKey: resetAnimationKey)
+        buttonSprite.removeAction(forKey: resetAnimationKey)
     }
     
     /**
@@ -129,14 +155,14 @@ class PauseResetEngine {
      - resetCompletion: if user has button held down for count of the resetThreshold, then the completion gets executed, otherwise it's short circuited in touchUp.
      */
     func touchDown(in location: CGPoint?, resetCompletion: (() -> Void)?) {
-        guard let superScene = sprite.parent else { return print("superScene not set in PauseResetEngine!") }
+        guard let superScene = buttonSprite.parent else { return print("superScene not set in PauseResetEngine!") }
         guard let location = location else { return print("Location nil. Unable to pauseReset.") }
         
         for nodeTapped in superScene.nodes(at: location) {
             guard nodeTapped.name == pauseResetName else { break }
             
             
-            sprite.run(SKAction.colorize(with: .black, colorBlendFactor: 0.25, duration: 0))
+            buttonSprite.run(SKAction.colorize(with: .black, colorBlendFactor: 0.25, duration: 0))
             
             isPressed = true
             resetAll()
@@ -168,7 +194,7 @@ class PauseResetEngine {
                 completionAction
             ])
             
-            sprite.run(sequenceAction, withKey: resetAnimationKey)
+            buttonSprite.run(sequenceAction, withKey: resetAnimationKey)
         }
     }
     
