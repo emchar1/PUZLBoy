@@ -62,7 +62,7 @@ struct K {
     struct ZPosition {
         static let skyNode: CGFloat = 80
         static let gameboard: CGFloat = 100
-        static let panel: CGFloat = 200
+        static let terrain: CGFloat = 200
         static let overlay: CGFloat = 210
         static let backgroundObjectTier4: CGFloat = 240
         static let backgroundObjectTier3: CGFloat = 245
@@ -74,6 +74,7 @@ struct K {
         static let player: CGFloat = 1000
         static let items: CGFloat = 1050
         static let score: CGFloat = 1100
+        static let buttons: CGFloat = 1200
         static let messagePrompt: CGFloat = 2000
         static let activityIndicator: CGFloat = 2100
         

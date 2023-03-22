@@ -64,6 +64,7 @@ class GameEngine {
     private var isGameOver: Bool { movesRemaining <= 0 || healthRemaining <= 0 }
     var canContinue: Bool { return GameEngine.livesRemaining >= 0 }
 
+    private var backgroundSprite: SKSpriteNode!
     private var gameboardSprite: GameboardSprite!
     private(set) var playerSprite: PlayerSprite!
     private var displaySprite: DisplaySprite!
@@ -137,6 +138,11 @@ class GameEngine {
     }
     
     private func finishInit(shouldSpawn: Bool) {
+        backgroundSprite = SKSpriteNode(texture: SKTexture(image: DayTheme.skyImage))
+        backgroundSprite.size = CGSize(width: K.ScreenDimensions.iPhoneWidth, height: K.ScreenDimensions.height)
+        backgroundSprite.position = .zero
+        backgroundSprite.anchorPoint = .zero
+        
         gameboardSprite = GameboardSprite(level: self.level)
         K.ScreenDimensions.topOfGameboard = GameboardSprite.yPosition + K.ScreenDimensions.iPhoneWidth * GameboardSprite.spriteScale
         playerSprite = PlayerSprite(shouldSpawn: true)
@@ -748,6 +754,7 @@ class GameEngine {
      - parameter superScene: The GameScene to add all the children to.
      */
     func moveSprites(to superScene: SKScene) {
+        superScene.addChild(backgroundSprite)
         superScene.addChild(gameboardSprite.sprite)
         superScene.addChild(displaySprite.sprite)
         pauseResetEngine.moveSprites(to: superScene)

@@ -8,6 +8,8 @@
 import SpriteKit
 
 struct DayTheme {
+    static let skyImage: UIImage = UIImage.createGradientImage(withBounds: CGRect(x: 0, y: 0, width: K.ScreenDimensions.iPhoneWidth, height: K.ScreenDimensions.height), startPoint: CGPoint(x: 0.5, y: 0), endPoint: CGPoint(x: 0.5, y: 0.5), colors: [DayTheme.skyColor.top.cgColor, DayTheme.skyColor.bottom.cgColor])
+    
     static var currentTheme: Theme {
         let currentHour = Calendar.current.component(.hour, from: Date())
         

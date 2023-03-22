@@ -79,6 +79,7 @@ class ChatEngine {
         backgroundSprite.fillTexture = SKTexture(image: UIImage.chatGradientTexture)
         backgroundSprite.setScale(0)
         backgroundSprite.name = "backgroundSprite"
+        backgroundSprite.zPosition = K.ZPosition.gameboard
 
         avatarSprite.position = CGPoint(x: origin.x, y: origin.y + borderLineWidth / 2)
         avatarSprite.setScale(ChatEngine.avatarSizeNew / ChatEngine.avatarSizeOrig)

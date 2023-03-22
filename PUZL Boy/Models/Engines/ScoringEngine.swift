@@ -106,7 +106,10 @@ class ScoringEngine {
     }
 
     private func getTimeScore() -> Int {
-        max(minTimeScore, maxTimeScore + Int(timerManager.elapsedTime) * reductionPerSecondScore)
+        //Penalizes user if they change system time manually to try and get a higher score.
+        guard timerManager.elapsedTime >= 0 else { return 0 }
+
+        return max(minTimeScore, maxTimeScore + Int(timerManager.elapsedTime) * reductionPerSecondScore)
     }
     
     private func updateScoreLabels() {

@@ -46,6 +46,7 @@ class LevelSkipEngine {
         forwardSprite.position = CGPoint(x: K.ScreenDimensions.iPhoneWidth - K.ScreenDimensions.lrMargin - forwardSprite.size.width - padding,
                                          y: forwardSprite.size.height + padding)
         forwardSprite.anchorPoint = .zero
+        forwardSprite.zPosition = K.ZPosition.buttons
         
         reverseSprite = SKSpriteNode(texture: SKTexture(imageNamed: "reverseButton"))
         reverseSprite.name = "reverseButton"
@@ -54,18 +55,21 @@ class LevelSkipEngine {
         reverseSprite.setScale(buttonScale)
         reverseSprite.position = CGPoint(x: K.ScreenDimensions.lrMargin + padding, y: reverseSprite.size.height + padding)
         reverseSprite.anchorPoint = .zero
+        reverseSprite.zPosition = K.ZPosition.buttons
         
         viewAchievements = SKSpriteNode(texture: SKTexture(imageNamed: "leaderboards"))
         viewAchievements.name = "achievementButton"
         viewAchievements.setScale(buttonScale)
         viewAchievements.position = CGPoint(x: reverseSprite.position.x + buttonSpacing, y: viewAchievements.size.height + padding)
         viewAchievements.anchorPoint = .zero
+        viewAchievements.zPosition = K.ZPosition.buttons
         
         partyMode = SKSpriteNode(texture: SKTexture(imageNamed: "party"))
         partyMode.name = "partyModeButton"
         partyMode.setScale(buttonScale)
         partyMode.position = CGPoint(x: forwardSprite.position.x - buttonSpacing, y: partyMode.size.height + padding)
         partyMode.anchorPoint = .zero
+        partyMode.zPosition = K.ZPosition.buttons
     }
     
     

@@ -66,7 +66,7 @@ class GameboardSprite {
         panels[position.row][position.col].scale(to: scaleSize)
         panels[position.row][position.col].position = spritePosition
         panels[position.row][position.col].anchorPoint = .zero
-        panels[position.row][position.col].zPosition = K.ZPosition.panel
+        panels[position.row][position.col].zPosition = K.ZPosition.terrain
         panels[position.row][position.col].name = "\(position.row),\(position.col)"
         
         // FIXME: - Testing for partytile
@@ -171,11 +171,11 @@ class GameboardSprite {
     func animateDissolveSand(position: K.GameboardPosition) {
         let sandNode = SKSpriteNode(imageNamed: "sand")
         sandNode.anchorPoint = .zero
-        sandNode.zPosition = K.ZPosition.panel
+        sandNode.zPosition = K.ZPosition.terrain
         
         let lavaNode = SKSpriteNode(imageNamed: "lava")
         lavaNode.anchorPoint = .zero
-        lavaNode.zPosition = K.ZPosition.panel
+        lavaNode.zPosition = K.ZPosition.terrain
         lavaNode.addChild(sandNode)
 
         updatePanels(at: position, with: (terrain: LevelType.lava, overlay: LevelType.boundary))

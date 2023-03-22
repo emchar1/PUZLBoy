@@ -23,7 +23,6 @@ class PartyModeSprite: SKNode {
     let backgroundKey: String = "BackgroundKey"
     let foregroundKey: String = "ForegroundKey"
 
-    private var isPartyStopping: Bool = false
     private(set) var isPartying: Bool = false {
         didSet {
             if isPartying {
@@ -52,12 +51,12 @@ class PartyModeSprite: SKNode {
         backgroundSprite = SKSpriteNode(color: .black, size: CGSize(width: K.ScreenDimensions.iPhoneWidth, height: K.ScreenDimensions.height))
         backgroundSprite.anchorPoint = .zero
         backgroundSprite.position = .zero
+        backgroundSprite.zPosition = K.ZPosition.partyBackgroundOverlay
         
         backgroundLights = SKSpriteNode(color: baseColor, size: CGSize(width: K.ScreenDimensions.iPhoneWidth, height: K.ScreenDimensions.height))
         backgroundLights.alpha = 0.5
         backgroundLights.anchorPoint = .zero
         backgroundLights.position = .zero
-        backgroundLights.zPosition = K.ZPosition.partyBackgroundOverlay
         
         foregroundLights = SKSpriteNode(color: baseColor, size: CGSize(width: gameboardSize, height: gameboardSize))
         foregroundLights.alpha = 0.5
@@ -76,42 +75,29 @@ class PartyModeSprite: SKNode {
     // MARK: - Functions
     
     func toggleIsPartying() {
-        guard !isPartyStopping else { return }
-        
         isPartying.toggle()
     }
     
     func stopParty(partyBoy: PlayerSprite) {
-        guard !isPartyStopping else { return }
-        
-        isPartyStopping = true
-        
         speedMultiplier = 1
         
         backgroundLights.removeAllChildren()
         backgroundLights.removeAllActions()
+        backgroundLights.removeFromParent()
+
         foregroundLights.removeAllActions()
+        foregroundLights.removeFromParent()
+
+        backgroundSprite.color = .black
+        backgroundSprite.removeFromParent()
+
+        removeFromParent()
+        removeAllActions()
 
         partyBoy.stopPartyAnimation()
-        
-        backgroundLights.run(SKAction.colorize(with: .clear, colorBlendFactor: 1.0, duration: 1.0))
-        foregroundLights.run(SKAction.colorize(with: .clear, colorBlendFactor: 1.0, duration: 1.0)) {
-            self.backgroundLights.removeFromParent()
-            self.foregroundLights.removeFromParent()
-        }
-
-        backgroundSprite.run(SKAction.colorize(with: .clear, colorBlendFactor: 1.0, duration: 1.5)) {
-            self.backgroundSprite.color = .black
-            self.backgroundSprite.removeFromParent()
-            self.removeFromParent()
-            self.removeAllActions()
-            self.isPartyStopping = false
-        }
     }
     
     func startParty(to superScene: SKScene, partyBoy: PlayerSprite) {
-        guard !isPartyStopping else { return }
-        
         speedMultiplier = speedMultipliers.randomElement() ?? 1.0
         
         var foregroundSequence: [SKAction] = []
@@ -131,7 +117,7 @@ class PartyModeSprite: SKNode {
         superScene.addChild(self)
         partyBoy.startPartyAnimation()
         
-        print("Startying the party... partySpeedMultiplier: \(speedMultiplier)")
+        print("Starting the party... partySpeedMultiplier: \(speedMultiplier)")
         
         
         // TODO: - Do I want to keep these bubbles???

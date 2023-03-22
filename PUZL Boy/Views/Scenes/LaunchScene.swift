@@ -56,8 +56,7 @@ class LaunchScene: SKScene {
         mountainSprite = BackgroundObject(tierLevel: 0, backgroundType: .mountain)
         moonSprite = BackgroundObject(tierLevel: 0, backgroundType: .moon)
         
-        let skyImage: UIImage = UIImage.createGradientImage(withBounds: CGRect(x: 0, y: 0, width: K.ScreenDimensions.iPhoneWidth, height: K.ScreenDimensions.height), startPoint: CGPoint(x: 0.5, y: 0), endPoint: CGPoint(x: 0.5, y: 0.5), colors: [DayTheme.skyColor.top.cgColor, DayTheme.skyColor.bottom.cgColor])
-        skyNode = SKSpriteNode(texture: SKTexture(image: skyImage))
+        skyNode = SKSpriteNode(texture: SKTexture(image: DayTheme.skyImage))
         skyNode.anchorPoint = .zero
         skyNode.zPosition = K.ZPosition.skyNode
         
