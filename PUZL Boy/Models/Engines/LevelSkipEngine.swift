@@ -77,6 +77,7 @@ class LevelSkipEngine {
     
     func handleControls(in location: CGPoint) {
         guard let superScene = superScene else { return print("superScene not set!") }
+        guard GameEngine.livesRemaining >= 0 else { return print("Can't level skip. Player he dead.") }
         
         for nodeTapped in superScene.nodes(at: location) {
             if nodeTapped.name == "forwardButton" {

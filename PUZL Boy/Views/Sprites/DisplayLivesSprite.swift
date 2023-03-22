@@ -35,7 +35,7 @@ class DisplayLivesSprite: SKNode {
         textNode.fontName = UIFont.gameFont
         textNode.fontSize = UIFont.gameFontSizeSmall
         textNode.horizontalAlignmentMode = .right
-        textNode.position = CGPoint(x: 36, y: -14)
+        textNode.position = CGPoint(x: 50, y: -14)
 
         addChild(imageNode)
         addChild(textNode)

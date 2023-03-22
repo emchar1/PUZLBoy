@@ -31,23 +31,23 @@ class DisplaySprite {
         
         statusLives = DisplayLivesSprite(icon: "Run (6)", amount: 3)
         statusLives.position = CGPoint(x: K.ScreenDimensions.iPhoneWidth - K.ScreenDimensions.lrMargin - statusLives.iconSize,
-                                       y: topYPosition + margin + 158)
+                                       y: topYPosition + margin + 172)
         
         statusHealth = DisplayStatusBarSprite(icon: "iconHeart", amount: 99, fillColor: .cyan)
         statusHealth.position = CGPoint(x: margin + statusHealth.width + K.ScreenDimensions.lrMargin,
-                                        y: topYPosition + margin + statusHealth.width / 2)
+                                        y: topYPosition + margin + statusHealth.width / 2 + 14)
 
         statusMoves = DisplayStatusBarSprite(icon: "iconBoot", amount: 99, fillColor: .cyan)
         statusMoves.position = CGPoint(x: margin + statusMoves.width + K.ScreenDimensions.lrMargin,
-                                       y: topYPosition + margin)
+                                       y: topYPosition + margin + 14)
 
         statusHammers = DisplayStatusBarSprite(icon: "iconHammer", amount: 99, fillColor: .yellow)
         statusHammers.position = CGPoint(x: K.ScreenDimensions.iPhoneWidth - K.ScreenDimensions.lrMargin - statusHammers.width,
-                                         y: topYPosition + margin + statusHammers.width / 2)
+                                         y: topYPosition + margin + statusHammers.width / 2 + 14)
 
         statusSwords = DisplayStatusBarSprite(icon: "iconSword", amount: 99, fillColor: .yellow)
         statusSwords.position = CGPoint(x: K.ScreenDimensions.iPhoneWidth - K.ScreenDimensions.lrMargin - statusSwords.width,
-                                        y: topYPosition + margin)
+                                        y: topYPosition + margin + 14)
 
         levelLabel = SKLabelNode(text: nil)
         levelLabel.horizontalAlignmentMode = .right

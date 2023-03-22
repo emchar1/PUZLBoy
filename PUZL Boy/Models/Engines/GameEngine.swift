@@ -146,7 +146,7 @@ class GameEngine {
         gameboardSprite = GameboardSprite(level: self.level)
         K.ScreenDimensions.topOfGameboard = GameboardSprite.yPosition + K.ScreenDimensions.iPhoneWidth * GameboardSprite.spriteScale
         playerSprite = PlayerSprite(shouldSpawn: true)
-        displaySprite = DisplaySprite(topYPosition: K.ScreenDimensions.topOfGameboard, bottomYPosition: GameboardSprite.yPosition, margin: 54)
+        displaySprite = DisplaySprite(topYPosition: K.ScreenDimensions.topOfGameboard, bottomYPosition: GameboardSprite.yPosition, margin: 40)
         pauseResetEngine = PauseResetEngine()
         pauseResetEngine.delegate = self
 
