@@ -56,7 +56,7 @@ class LaunchScene: SKScene {
         mountainSprite = BackgroundObject(tierLevel: 0, backgroundType: .mountain)
         moonSprite = BackgroundObject(tierLevel: 0, backgroundType: .moon)
         
-        skyNode = SKSpriteNode(texture: SKTexture(image: DayTheme.skyImage))
+        skyNode = SKSpriteNode(texture: SKTexture(image: DayTheme.getSkyImage()))
         skyNode.anchorPoint = .zero
         skyNode.zPosition = K.ZPosition.skyNode
         

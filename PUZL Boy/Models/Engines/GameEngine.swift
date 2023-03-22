@@ -138,7 +138,7 @@ class GameEngine {
     }
     
     private func finishInit(shouldSpawn: Bool) {
-        backgroundSprite = SKSpriteNode(texture: SKTexture(image: DayTheme.skyImage))
+        backgroundSprite = SKSpriteNode(texture: SKTexture(image: DayTheme.getSkyImage(endPointY: 1.0)))
         backgroundSprite.size = CGSize(width: K.ScreenDimensions.iPhoneWidth, height: K.ScreenDimensions.height)
         backgroundSprite.position = .zero
         backgroundSprite.anchorPoint = .zero

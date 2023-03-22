@@ -60,6 +60,7 @@ struct K {
     
     ///Various zPosition values used throughout the app.
     struct ZPosition {
+        static let partyBackgroundOverlay: CGFloat = 50
         static let skyNode: CGFloat = 80
         static let gameboard: CGFloat = 100
         static let terrain: CGFloat = 200
@@ -74,12 +75,10 @@ struct K {
         static let player: CGFloat = 1000
         static let items: CGFloat = 1050
         static let score: CGFloat = 1100
-        static let buttons: CGFloat = 1200
+        static let partyForegroundOverlay: CGFloat = 1200
+        static let buttons: CGFloat = 1300
         static let messagePrompt: CGFloat = 2000
         static let activityIndicator: CGFloat = 2100
-        
-        static let partyBackgroundOverlay: CGFloat = 50
-        static let partyForegroundOverlay: CGFloat = 1200
     }
     
     
