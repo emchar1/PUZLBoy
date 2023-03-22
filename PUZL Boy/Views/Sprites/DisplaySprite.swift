@@ -30,8 +30,8 @@ class DisplaySprite {
         sprite.zPosition = K.ZPosition.display
         
         statusLives = DisplayLivesSprite(icon: "Run (6)", amount: 3)
-        statusLives.position = CGPoint(x: K.ScreenDimensions.iPhoneWidth - K.ScreenDimensions.lrMargin - statusLives.width / 2,
-                                       y: topYPosition + margin + statusLives.width + 18)
+        statusLives.position = CGPoint(x: K.ScreenDimensions.iPhoneWidth - K.ScreenDimensions.lrMargin - statusLives.iconSize,
+                                       y: topYPosition + margin + 158)
         
         statusHealth = DisplayStatusBarSprite(icon: "iconHeart", amount: 99, fillColor: .cyan)
         statusHealth.position = CGPoint(x: margin + statusHealth.width + K.ScreenDimensions.lrMargin,

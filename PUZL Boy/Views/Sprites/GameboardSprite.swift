@@ -15,12 +15,12 @@ class GameboardSprite {
     static let overlayTag = "-O"
     static let spriteScale: CGFloat = UIDevice.isiPad ? 0.75 : 0.94
 
-    static var xPosition: CGFloat { (K.ScreenDimensions.iPhoneWidth * (1 - GameboardSprite.spriteScale)) / 2 }
-    static var yPosition: CGFloat { (K.ScreenDimensions.height - K.ScreenDimensions.iPhoneWidth * GameboardSprite.spriteScale - K.ScreenDimensions.topMargin - 289) }
+    private static let padding: CGFloat = 12
+    static var xPosition: CGFloat { (K.ScreenDimensions.iPhoneWidth * (1 - GameboardSprite.spriteScale)) / 2 - (padding / 2) }
+    static var yPosition: CGFloat { (K.ScreenDimensions.height - K.ScreenDimensions.iPhoneWidth * GameboardSprite.spriteScale - K.ScreenDimensions.topMargin - 283) - (padding / 2) }
 
     typealias WarpTuple = (first: K.GameboardPosition?, second: K.GameboardPosition?)
 
-    private let padding: CGFloat = 12
     private let tiles: [LevelType] = LevelType.allCases
     private var panels: [[SKSpriteNode]]
     private(set) var panelCount: Int
@@ -39,7 +39,8 @@ class GameboardSprite {
         panels = Array(repeating: Array(repeating: SKSpriteNode(), count: panelCount), count: panelCount)
         
         sprite = SKSpriteNode(color: GameboardSprite.gameboardColor,
-                              size: CGSize(width: CGFloat(panelCount) * panelSize + padding, height: CGFloat(panelCount) * panelSize + padding))
+                              size: CGSize(width: CGFloat(panelCount) * panelSize + GameboardSprite.padding,
+                                           height: CGFloat(panelCount) * panelSize + GameboardSprite.padding))
         sprite.anchorPoint = .zero
         sprite.position = CGPoint(x: GameboardSprite.xPosition, y: GameboardSprite.yPosition)
         sprite.zPosition = K.ZPosition.gameboard
@@ -65,7 +66,7 @@ class GameboardSprite {
         
         panels[position.row][position.col] = SKSpriteNode(imageNamed: tile.terrain.description)
         panels[position.row][position.col].scale(to: scaleSize)
-        panels[position.row][position.col].position = spritePosition + CGPoint(x: padding / 2, y: padding / 2)
+        panels[position.row][position.col].position = spritePosition + CGPoint(x: GameboardSprite.padding / 2, y: GameboardSprite.padding / 2)
         panels[position.row][position.col].anchorPoint = .zero
         panels[position.row][position.col].zPosition = K.ZPosition.terrain
         panels[position.row][position.col].name = "\(position.row),\(position.col)"

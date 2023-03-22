@@ -782,13 +782,13 @@ class GameEngine {
     func fadeGameboard(fadeOut: Bool, completion: (() -> ())?) {
         gameboardSprite.sprite.alpha = fadeOut ? 1.0 : 0.0
         
-        gameboardSprite.colorizeGameboard(color: .clear,//fadeOut ? GameboardSprite.gameboardColor : .clear,
+        gameboardSprite.colorizeGameboard(color: fadeOut ? GameboardSprite.gameboardColor : .black,
                                           blendFactor: fadeOut ? 0.0 : 1.0,
                                           animationDuration: 0.0) {
             self.gameboardSprite.sprite.alpha = 1.0
         }
         
-        gameboardSprite.colorizeGameboard(color: fadeOut ? .clear : GameboardSprite.gameboardColor,
+        gameboardSprite.colorizeGameboard(color: fadeOut ? .black : GameboardSprite.gameboardColor,
                                           blendFactor: fadeOut ? 1.0 : 0.0,
                                           animationDuration: fadeOut ? 1.0 : 0.5,
                                           completion: completion)

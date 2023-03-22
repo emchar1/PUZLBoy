@@ -11,8 +11,7 @@ class DisplayLivesSprite: SKNode {
     
     // MARK: - Properties
     
-    let width: CGFloat = 140
-    private let iconSize: CGFloat = 90
+    let iconSize: CGFloat = 90
     private let imageNode: SKSpriteNode
     private let textNode: SKLabelNode
     private let icon: String
@@ -23,7 +22,7 @@ class DisplayLivesSprite: SKNode {
     
     init(icon: String, amount: Int) {
         self.imageNode = SKSpriteNode(imageNamed: icon)
-        self.textNode = SKLabelNode(text: "x\(amount)")
+        self.textNode = SKLabelNode(text: "xx\(amount)")
         self.icon = icon
         self.amount = amount
 
@@ -35,8 +34,9 @@ class DisplayLivesSprite: SKNode {
         
         textNode.fontName = UIFont.gameFont
         textNode.fontSize = UIFont.gameFontSizeSmall
-        textNode.position = CGPoint(x: 0, y: -14)
-        
+        textNode.horizontalAlignmentMode = .right
+        textNode.position = CGPoint(x: 36, y: -14)
+
         addChild(imageNode)
         addChild(textNode)
     }

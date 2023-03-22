@@ -17,8 +17,10 @@ class ChatEngine {
     
     //Size and position properties
     private let padding: CGPoint = CGPoint(x: 20, y: 8)
+    private let borderLineWidth: CGFloat = 6
     private var origin: CGPoint {
-        CGPoint(x: GameboardSprite.xPosition, y: K.ScreenDimensions.topOfGameboard - backgroundSpriteWidth - ChatEngine.avatarSizeNew - 40)
+        CGPoint(x: GameboardSprite.xPosition + borderLineWidth / 2,
+                y: K.ScreenDimensions.topOfGameboard - backgroundSpriteWidth - ChatEngine.avatarSizeNew - 40)
     }
     private var backgroundSpriteWidth: CGFloat {
         K.ScreenDimensions.iPhoneWidth * GameboardSprite.spriteScale
@@ -68,8 +70,6 @@ class ChatEngine {
         textSprite = SKLabelNode(text: "PUZL Boy is the newest puzzle game out there on the App Store. It's so popular, it's going to have over a million downloads, gamers are going to love it - casual gamers, hardcore gamers, and everyone in-between! So download your copy today!!")
 
         //Setup
-        let borderLineWidth: CGFloat = 4
-        
         backgroundSprite.lineWidth = borderLineWidth
         backgroundSprite.path = UIBezierPath(roundedRect: CGRect(x: origin.x, y: origin.y,
                                                                  width: backgroundSpriteWidth, height: ChatEngine.avatarSizeNew + borderLineWidth),
