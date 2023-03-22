@@ -61,7 +61,7 @@ class ScoringEngine {
         elapsedTimeLabel.fontSize = UIFont.gameFontSizeMedium
         elapsedTimeLabel.fontColor = UIFont.gameFontColor
         elapsedTimeLabel.position = CGPoint(x: K.ScreenDimensions.iPhoneWidth / 2 - elapsedTimeLabel.frame.width / 2,
-                                            y: K.ScreenDimensions.topOfGameboard + 18)
+                                            y: K.ScreenDimensions.topOfGameboard + 32)
         elapsedTimeLabel.horizontalAlignmentMode = .left
         elapsedTimeLabel.verticalAlignmentMode = .bottom
         elapsedTimeLabel.zPosition = K.ZPosition.display
