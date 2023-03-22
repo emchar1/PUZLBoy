@@ -22,7 +22,7 @@ extension UIDevice {
         }
 
         func mapToDevice(identifier: String) -> (name: String, ratio: CGFloat, topSafeArea: CGFloat, bottomSafeArea: CGFloat) { // swiftlint:disable:this cyclomatic_complexity
-            let safe: (top: CGFloat, btm: CGFloat) = (20, 20)
+            let safe: (top: CGFloat, btm: CGFloat) = (20, 40)
             let safeNew: (top: CGFloat, btm: CGFloat) = (200, 100)
 
             #if os(iOS)

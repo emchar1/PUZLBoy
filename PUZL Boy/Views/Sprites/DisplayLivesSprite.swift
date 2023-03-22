@@ -22,14 +22,14 @@ class DisplayLivesSprite: SKNode {
     
     init(icon: String, amount: Int) {
         self.imageNode = SKSpriteNode(imageNamed: icon)
-        self.textNode = SKLabelNode(text: "xx\(amount)")
+        self.textNode = SKLabelNode(text: "x\(amount)")
         self.icon = icon
         self.amount = amount
 
         super.init()
         
 
-        imageNode.position = CGPoint(x: -iconSize + 20, y: 0)
+        imageNode.position = CGPoint(x: 0, y: 0)
         imageNode.scale(to: CGSize(width: iconSize * Player.size.width / Player.size.height, height: iconSize))
         
         textNode.fontName = UIFont.gameFont
@@ -52,6 +52,7 @@ class DisplayLivesSprite: SKNode {
         self.amount = newAmount
         
         textNode.text = "x\(max(newAmount, 0))"
+        imageNode.position.x = 20 - textNode.frame.width
     }
     
     func appendNode(_ node: SKNode) {
