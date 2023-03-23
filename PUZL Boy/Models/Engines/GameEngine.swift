@@ -414,8 +414,8 @@ class GameEngine {
         guard !shouldDisableControlInput else { return print("Unable to move... shouldDisableControlInput") }
         guard !disableInputFromOutside else { return print("Unable to move... disableInputFromOutside") }
         
-        pauseResetEngine.touch(in: location, function: pauseResetEngine.handleControls(_:))
-        pauseResetEngine.touch(in: nil, function: pauseResetEngine.touchUp(_:))
+        pauseResetEngine.touch(in: location, function: pauseResetEngine.handleControls)
+        pauseResetEngine.touch(in: nil, function: pauseResetEngine.touchUp)
     }
     
     
@@ -801,5 +801,9 @@ class GameEngine {
 extension GameEngine: PauseResetEngineDelegate {
     func didTapPause(isPaused: Bool) {
         delegate?.gameIsPaused(isPaused: isPaused)
+    }
+    
+    func didTapButtonSpecial() {
+        print("I'm special!")
     }
 }

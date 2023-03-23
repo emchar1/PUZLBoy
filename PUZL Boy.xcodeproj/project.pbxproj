@@ -439,6 +439,14 @@
 			path = Sprites;
 			sourceTree = "<group>";
 		};
+		EA6A79F529CC035B00F47A73 /* PauseReset */ = {
+			isa = PBXGroup;
+			children = (
+				EA94E86629BE6BCC009F2614 /* PauseResetEngine.swift */,
+			);
+			path = PauseReset;
+			sourceTree = "<group>";
+		};
 		EA75F0F0292F560300F09BD7 /* Scenes */ = {
 			isa = PBXGroup;
 			children = (
@@ -619,7 +627,7 @@
 				EA95D1DE295674AE0061059C /* ChatEngine.swift */,
 				EA4D026629BA656200F0C7B1 /* TabBarEngine.swift */,
 				EA4D026829BA8C8E00F0C7B1 /* TabBarButton.swift */,
-				EA94E86629BE6BCC009F2614 /* PauseResetEngine.swift */,
+				EA6A79F529CC035B00F47A73 /* PauseReset */,
 			);
 			path = Engines;
 			sourceTree = "<group>";

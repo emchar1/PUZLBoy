@@ -15,7 +15,7 @@ class GameboardSprite {
     static let overlayTag = "-O"
     static let spriteScale: CGFloat = UIDevice.isiPad ? 0.75 : 0.94
 
-    private static let padding: CGFloat = 12
+    static let padding: CGFloat = 12
     static var xPosition: CGFloat { (K.ScreenDimensions.iPhoneWidth * (1 - GameboardSprite.spriteScale)) / 2 - (padding / 2) }
     static var yPosition: CGFloat { (K.ScreenDimensions.height - K.ScreenDimensions.iPhoneWidth * GameboardSprite.spriteScale - K.ScreenDimensions.topMargin - 283) - (padding / 2) }
 
