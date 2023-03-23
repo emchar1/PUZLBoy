@@ -50,26 +50,26 @@ class GameEngine {
         }
     }
     
-    private var disableInputFromOutside = false
+    private(set) var shouldDisableControlInput = false
+    private(set) var disableInputFromOutside = false
     private var justStartedDisableWarp = true
-    private var shouldDisableControlInput = false
     private var shouldUpdateRemainingForBoulderIfIcy = false
     private var isGliding = false
+    
     private(set) var enemiesKilled: Int = 0
     private(set) var bouldersBroken: Int = 0
     private var toolsCollected: Int = 0
     
-    private var isExitAvailable: Bool { gemsRemaining == 0 }
-    private var isSolved: Bool { isExitAvailable && level.player == level.end }
-    private var isGameOver: Bool { movesRemaining <= 0 || healthRemaining <= 0 }
+    var isExitAvailable: Bool { gemsRemaining == 0 }
+    var isSolved: Bool { isExitAvailable && level.player == level.end }
+    var isGameOver: Bool { movesRemaining <= 0 || healthRemaining <= 0 }
     var canContinue: Bool { return GameEngine.livesRemaining >= 0 }
 
     private var backgroundSprite: SKSpriteNode!
     private var gameboardSprite: GameboardSprite!
     private(set) var playerSprite: PlayerSprite!
     private var displaySprite: DisplaySprite!
-    private var pauseResetEngine: PauseResetEngine!
-    
+
     weak var delegate: GameEngineDelegate?
     
     
@@ -147,8 +147,6 @@ class GameEngine {
         K.ScreenDimensions.topOfGameboard = GameboardSprite.yPosition + K.ScreenDimensions.iPhoneWidth * GameboardSprite.spriteScale
         playerSprite = PlayerSprite(shouldSpawn: true)
         displaySprite = DisplaySprite(topYPosition: K.ScreenDimensions.topOfGameboard, bottomYPosition: GameboardSprite.yPosition, margin: 40)
-        pauseResetEngine = PauseResetEngine()
-        pauseResetEngine.delegate = self
 
         setLabelsForDisplaySprite()
         setPlayerSpritePosition(shouldAnimate: false, completion: nil)
@@ -373,16 +371,7 @@ class GameEngine {
      - parameter location: Location for which comparison is to occur.
      */
     func handleControls(in location: CGPoint) {
-        guard !isSolved else { return print("Unable to move... level isSolved") }
-        guard !isGameOver else { return print("Unable to move... isGameOver") }
-        guard !shouldDisableControlInput else { return print("Unable to move... shouldDisableControlInput") }
-        guard !disableInputFromOutside else { return print("Unable to move... disableInputFromOutside") }
-
-        pauseResetEngine.touchDown(in: location, resetCompletion: { [unowned self] in
-            killAndReset()
-        })
-
-        guard !pauseResetEngine.isPaused else { return print("Game is paused. quitting.") }
+        guard checkControlGuardsIfPassed(includeDisableInputFromOutside: true) else { return }
 
         
         //NOW you may proceed... if you pass all the above guards.
@@ -404,18 +393,30 @@ class GameEngine {
         }
     }
     
-    /**
-     Run this to simulate touchesEnded, i.e. touchUpInside, especially for pauseResetButton..
-     */
-    func executeIfTouchEnded(in location: CGPoint) {
-        //Save 4 guards as in handleControls...
-        guard !isSolved else { return print("Unable to move... level isSolved") }
-        guard !isGameOver else { return print("Unable to move... isGameOver") }
-        guard !shouldDisableControlInput else { return print("Unable to move... shouldDisableControlInput") }
-        guard !disableInputFromOutside else { return print("Unable to move... disableInputFromOutside") }
+    func checkControlGuardsIfPassed(includeDisableInputFromOutside: Bool) -> Bool {
+        guard !isSolved else {
+            print("Controls disabled: isSolved is animating.")
+            return false
+        }
         
-        pauseResetEngine.touch(in: location, function: pauseResetEngine.handleControls)
-        pauseResetEngine.touch(in: nil, function: pauseResetEngine.touchUp)
+        guard !isGameOver else {
+            print("Controls disabled: isGameOver is animating.")
+            return false
+        }
+        
+        guard !shouldDisableControlInput else {
+            print("Controls disabled: shouldDisableControlInput == true from GameEngine.")
+            return false
+        }
+        
+        if includeDisableInputFromOutside {
+            guard !disableInputFromOutside else {
+                print("Controls disabled: disableInputFromOutside == true from outside class.")
+                return false
+            }
+        }
+        
+        return true
     }
     
     
@@ -709,7 +710,7 @@ class GameEngine {
     // MARK: - Other Functions
     
     ///Resets the level and reduces one life.
-    private func killAndReset() {
+    func killAndReset() {
         movesRemaining = 0
         updateMovesRemaining()
     }
@@ -757,7 +758,6 @@ class GameEngine {
         superScene.addChild(backgroundSprite)
         superScene.addChild(gameboardSprite.sprite)
         superScene.addChild(displaySprite.sprite)
-        pauseResetEngine.moveSprites(to: superScene)
 
         playerSprite.setScale(panelSize: gameboardSprite.panelSize)
         gameboardSprite.sprite.addChild(playerSprite.sprite)
@@ -792,18 +792,5 @@ class GameEngine {
                                           blendFactor: fadeOut ? 1.0 : 0.0,
                                           animationDuration: fadeOut ? 1.0 : 0.5,
                                           completion: completion)
-    }
-}
-
-
-// MARK: - PauseResetEngineDelegate
-
-extension GameEngine: PauseResetEngineDelegate {
-    func didTapPause(isPaused: Bool) {
-        delegate?.gameIsPaused(isPaused: isPaused)
-    }
-    
-    func didTapButtonSpecial() {
-        print("I'm special!")
     }
 }

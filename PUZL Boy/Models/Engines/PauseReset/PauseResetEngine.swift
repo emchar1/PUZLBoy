@@ -38,10 +38,15 @@ class PauseResetEngine {
     private var superScene: SKScene?
     private var temporaryPauseLabel: SKLabelNode
     
-    var specialFunctionEnabled: Bool = false
     private var isPressed: Bool = false
     private var isAnimating: Bool = false
-    private(set) var isPaused: Bool = false {
+
+    var specialFunctionEnabled: Bool = false {
+        didSet {
+            buttonSprite.texture = SKTexture(imageNamed: specialFunctionEnabled ? "\(pauseResetName)3" : (isPaused ? "\(pauseResetName)2" : pauseResetName))
+        }
+    }
+    var isPaused: Bool = false {
         didSet {
             buttonSprite.texture = SKTexture(imageNamed: isPaused ? "\(pauseResetName)2" : pauseResetName)
         }
@@ -77,12 +82,12 @@ class PauseResetEngine {
         foregroundSprite.setScale(1)
         
         // FIXME: - Temporary label
-        temporaryPauseLabel = SKLabelNode(text: "Settings\n(Coming Soon...)")
+        temporaryPauseLabel = SKLabelNode(text: "        SETTINGS\n(Coming Soon...)")
         temporaryPauseLabel.numberOfLines = 0
         temporaryPauseLabel.horizontalAlignmentMode = .center
         temporaryPauseLabel.verticalAlignmentMode = .center
         temporaryPauseLabel.fontName = UIFont.gameFont
-        temporaryPauseLabel.fontSize = UIFont.gameFontSizeLarge
+        temporaryPauseLabel.fontSize = UIFont.gameFontSizeMedium
         temporaryPauseLabel.fontColor = .yellow
         
         buttonSprite = SKSpriteNode(imageNamed: pauseResetName)
@@ -140,21 +145,19 @@ class PauseResetEngine {
      Handles the actual logic for when the user taps the button. Pass this in the touch helper function because it doesn't contain any setup to handle location of the tap.
      */
     func handleControls() {
+        guard !isAnimating else { return print("isAnimating is true. Aborting.") }
+
         if !specialFunctionEnabled {
             openSettingsMenu()
         }
         else {
             callSpecialFunc()
         }
-        
-        AudioManager.shared.playSound(for: "buttontap")
-        Haptics.shared.addHapticFeedback(withStyle: .soft)
     }
     
     private func openSettingsMenu() {
         guard let superScene = superScene else { return print("superScene not set in PauseResetEngine!") }
         guard isPressed else { return }
-        guard !isAnimating else { return }
         
         isPaused.toggle()
         
@@ -199,12 +202,15 @@ class PauseResetEngine {
         
         
         
-        delegate?.didTapPause(isPaused: self.isPaused)
+        AudioManager.shared.playSound(for: "buttontap")
+        Haptics.shared.addHapticFeedback(withStyle: .soft)
 
+        delegate?.didTapPause(isPaused: self.isPaused)
     }
     
     private func callSpecialFunc() {
-        print("Special Func called.")
+        Haptics.shared.addHapticFeedback(withStyle: .soft)
+
         delegate?.didTapButtonSpecial()
     }
     
@@ -260,8 +266,14 @@ class PauseResetEngine {
             
             let completionAction = SKAction.run {
                 // TODO: - Handle what happens once Reset has been activated, i.e. reset level and subtract a life
-                self.isPaused = true
-                self.handleControls()
+                if self.isPaused {
+                    self.handleControls()
+                }
+                else {
+                    AudioManager.shared.playSound(for: "buttontap")
+                    Haptics.shared.addHapticFeedback(withStyle: .soft)
+                }
+
                 self.touchUp()
                 
                 resetCompletion?()

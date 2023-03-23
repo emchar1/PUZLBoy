@@ -102,17 +102,9 @@ class ChatEngine {
     
     
     // MARK: - Functions
-    
-    func fastForward(in location: CGPoint) {
-        guard let superScene = superScene else { return print("superScene not set in ChatEngine! Can't fast forward.") }
-        
-        for node in superScene.nodes(at: location) {
-            if node.name == "backgroundSprite" {
-                chatSpeed = 0
-                
-                return
-            }
-        }
+
+    func fastForward() {
+        chatSpeed = 0
     }
     
     func sendChat(profile: ChatProfile, startNewChat: Bool, endChat: Bool, chat: String, completion: (() -> ())? = nil) {
@@ -236,7 +228,7 @@ extension ChatEngine {
             sendChat(profile: .trainer, startNewChat: true, endChat: false,
                      chat: "TRAINER: Welcome, PUZL Boy! The goal of the game is to get to the gate in under a certain number of moves.") { [unowned self] in
                 sendChat(profile: .trainer, startNewChat: false, endChat: false,
-                         chat: "You can move to any available panel on your left, right, above and below. Simply tap the panel to move there. Diagonal moves are NOT allowed.") { [unowned self] in
+                         chat: "You can move to any available panel on your left, right, above and below. Simply tap the panel to move there. Diagonal moves are not allowed.") { [unowned self] in
                     sendChat(profile: .trainer, startNewChat: false, endChat: false,
                              chat: "If your move count hits 0, it's game over, buddy! Your move count can be found in the upper left corner next to the boot. 👢") { [unowned self] in
                         sendChat(profile: .trainer, startNewChat: false, endChat: false,
@@ -322,7 +314,7 @@ extension ChatEngine {
             sendChat(profile: .trainer, startNewChat: true, endChat: false,
                      chat: "Whoa, a dragon! Looks like he's sleeping. Don't even try waking him or it'll cost ya 1 health point. 💖") { [unowned self] in
                 sendChat(profile: .trainer, startNewChat: false, endChat: false,
-                         chat: "Don't believe me??? Go ahead. Try and pet him, I DARE YOU!") { [unowned self] in // Let player touch dragon before continuing...
+                         chat: "Don't believe me??? Go ahead. Try and pet him, I dare you!") { [unowned self] in // Let player touch dragon before continuing...
                     sendChat(profile: .trainer, startNewChat: false, endChat: false,
                              chat: "Once your health drops to 0, it's lights out, baby. If only you had a sword. 🗡") { [unowned self] in
                         sendChat(profile: .hero, startNewChat: false, endChat: false, chat: "Lemme guess, I can only use the sword once before it breaks?") { [unowned self] in
@@ -343,7 +335,7 @@ extension ChatEngine {
             }
             
             sendChat(profile: .trainer, startNewChat: true, endChat: false,
-                     chat: "Ice, ice, baby! Step on this and you'll slide until you hit either an obstacle, another terrain panel, or the edge of the level.") { [unowned self] in
+                     chat: "Ice, ice, baby! Step on this and you'll slide until you hit either an obstacle or the edge of the level.") { [unowned self] in
                 sendChat(profile: .trainer, startNewChat: false, endChat: false,
                          chat: "The nice thing though is that it'll only cost you 1 move as long as you're sliding continuously.") { [unowned self] in
                     sendChat(profile: .hero, startNewChat: false, endChat: false,

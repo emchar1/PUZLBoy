@@ -16,6 +16,7 @@ class GameScene: SKScene {
     private var gameEngine: GameEngine
     private var scoringEngine: ScoringEngine
     private var chatEngine: ChatEngine
+    private var pauseResetEngine: PauseResetEngine
     private var offlinePlaySprite: OfflinePlaySprite
     private var levelStatsArray: [LevelStats]
     
@@ -64,6 +65,7 @@ class GameScene: SKScene {
         
         // FIXME: - chatEngine MUST be initialized here, and not in properties, otherwise it just refuses to show up! Because K.ScreenDimensions.topOfGameboard is set in the gameEngine(). Is there a better way to do this??
         chatEngine = ChatEngine()
+        pauseResetEngine = PauseResetEngine()
         self.user = user
         
         // FIXME: - Debugging purposes only
@@ -75,6 +77,7 @@ class GameScene: SKScene {
         IAPManager.shared.delegate = self
         gameEngine.delegate = self
         continueSprite.delegate = self
+        pauseResetEngine.delegate = self
         
         // FIXME: - Debuging purposes only!!!
         levelSkipEngine.delegate = self
@@ -156,8 +159,18 @@ class GameScene: SKScene {
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard let location = touches.first?.location(in: self) else { return }
-                
-        chatEngine.fastForward(in: location)
+        
+        if gameEngine.checkControlGuardsIfPassed(includeDisableInputFromOutside: false) {
+            // FIXME: - Too many if/else to handle disabled from outside BUT special function is enabled...
+            if !gameEngine.disableInputFromOutside || pauseResetEngine.specialFunctionEnabled {
+                pauseResetEngine.touchDown(in: location, resetCompletion: { [unowned self] in
+                    gameEngine.killAndReset()
+                })
+            }
+        }
+
+        guard !pauseResetEngine.isPaused else { return print("Game is paused. quitting.") }
+        
         gameEngine.handleControls(in: location)
         
         if !activityIndicator.isShowing {
@@ -170,8 +183,13 @@ class GameScene: SKScene {
         
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard let location = touches.first?.location(in: self) else { return }
-
-        gameEngine.executeIfTouchEnded(in: location)
+        guard gameEngine.checkControlGuardsIfPassed(includeDisableInputFromOutside: false) else { return }
+        
+        // FIXME: - Too many if/else to handle disabled from outside BUT special function is enabled...
+        if !gameEngine.disableInputFromOutside || pauseResetEngine.specialFunctionEnabled {
+            pauseResetEngine.touch(in: location, function: pauseResetEngine.handleControls)
+            pauseResetEngine.touch(in: nil, function: pauseResetEngine.touchUp)
+        }
     }
     
 
@@ -329,6 +347,7 @@ class GameScene: SKScene {
         gameEngine.moveSprites(to: self)
         scoringEngine.moveSprites(to: self)
         chatEngine.moveSprites(to: self)
+        pauseResetEngine.moveSprites(to: self)
         
         offlinePlaySprite.refreshStatus()
         addChild(offlinePlaySprite)
@@ -345,11 +364,13 @@ class GameScene: SKScene {
 
         scoringEngine.timerManager.pauseTime()
         stopTimer()
+        pauseResetEngine.specialFunctionEnabled = true
         gameEngine.shouldDisableInput(true)
 
         chatEngine.dialogue(level: currentLevel) { [unowned self] in
             scoringEngine.timerManager.resumeTime()
             startTimer()
+            pauseResetEngine.specialFunctionEnabled = false
             gameEngine.shouldDisableInput(false)
         }
     }
@@ -648,6 +669,30 @@ extension GameScene: IAPManagerDelegate {
         self.replenishLivesTimerOffset = nil
 
         runReplenishLivesTimer()
+    }
+    
+    
+}
+
+
+// MARK: - PauseResetEngineDelegate
+
+extension GameScene: PauseResetEngineDelegate {
+    func didTapPause(isPaused: Bool) {
+        if isPaused {
+            scoringEngine.timerManager.pauseTime()
+            stopTimer()
+            AudioManager.shared.adjustVolume(to: 0.1, for: AudioManager.shared.currentTheme, fadeDuration: 0.25)
+        }
+        else {
+            scoringEngine.timerManager.resumeTime()
+            startTimer()
+            AudioManager.shared.raiseVolume(for: AudioManager.shared.currentTheme, fadeDuration: 0.25)
+        }
+    }
+    
+    func didTapButtonSpecial() {
+        chatEngine.fastForward()
     }
     
     
