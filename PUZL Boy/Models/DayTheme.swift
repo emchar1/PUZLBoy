@@ -39,8 +39,8 @@ struct DayTheme {
             return (UIColor(red: 196 / 255, green: 93 / 255, blue: 117 / 255, alpha: 1.0),
                     UIColor(red: 238 / 255, green: 175 / 255, blue: 97 / 255, alpha: 1.0))
         case .night:
-            return (UIColor(red: 6 / 255, green: 21 / 255, blue: 30 / 255, alpha: 1.0),
-                    UIColor(red: 32 / 255, green: 40 / 255, blue: 89 / 255, alpha: 1.0))
+            return (UIColor(red: 1 / 255, green: 5 / 255, blue: 10 / 255, alpha: 1.0),
+                    UIColor(red: 22 / 255, green: 50 / 255, blue: 129 / 255, alpha: 1.0))
         }
     }
     

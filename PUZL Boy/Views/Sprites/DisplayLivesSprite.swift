@@ -52,6 +52,10 @@ class DisplayLivesSprite: SKNode {
         self.amount = newAmount
         
         textNode.text = "x\(max(newAmount, 0))"
+        adjustImageNodeXPosition()
+    }
+    
+    private func adjustImageNodeXPosition() {
         imageNode.position.x = 20 - textNode.frame.width
     }
     
@@ -79,6 +83,7 @@ class DisplayLivesSprite: SKNode {
         let incrementAction = SKAction.run { [unowned self] in
             livesToIncrement += 1
             textNode.text = "x\(livesToIncrement)"
+            adjustImageNodeXPosition()
         }
         
         let animationGroup = SKAction.group([
