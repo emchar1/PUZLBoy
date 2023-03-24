@@ -21,9 +21,11 @@ struct DayTheme {
         let currentHour = Calendar.current.component(.hour, from: Date())
         
         switch currentHour {
-        case 6...12:
+        case 4...7:
+            return .dawn
+        case 8...15:
             return .morning
-        case 13...18:
+        case 16...19:
             return .afternoon
         default:
             return .night
@@ -32,6 +34,9 @@ struct DayTheme {
     
     static var skyColor: (top: UIColor, bottom: UIColor) {
         switch currentTheme {
+        case .dawn:
+            return (UIColor(red: 12 / 255, green: 30 / 255, blue: 99 / 255, alpha: 1.0),
+                    UIColor(red: 176 / 255, green: 83 / 255, blue: 117 / 255, alpha: 1.0))
         case .morning:
             return (UIColor(red: 32 / 255, green: 99 / 255, blue: 207 / 255, alpha: 1.0),
                     UIColor(red: 174 / 255, green: 232 / 255, blue: 246 / 255, alpha: 1.0))
@@ -51,6 +56,8 @@ struct DayTheme {
     
     static var spriteColor: UIColor {
         switch currentTheme {
+        case .dawn:
+            return .blue
         case .morning:
             return .clear
         case .afternoon:
@@ -62,6 +69,8 @@ struct DayTheme {
 
     static var spriteShade: CGFloat {
         switch currentTheme {
+        case .dawn:
+            return 0.5
         case .morning:
             return 0
         case .afternoon:
@@ -72,6 +81,6 @@ struct DayTheme {
     }
         
     enum Theme {
-        case morning, afternoon, night
+        case dawn, morning, afternoon, night
     }
 }

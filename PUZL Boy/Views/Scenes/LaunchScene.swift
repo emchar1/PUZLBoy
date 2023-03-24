@@ -79,12 +79,13 @@ class LaunchScene: SKScene {
     private func animateSprites() {
         var playerSpeed: TimeInterval
         switch DayTheme.currentTheme {
+        case .dawn: playerSpeed = 0.06
         case .morning: playerSpeed = 0.05
         case .afternoon: playerSpeed = 0.06
         case .night: playerSpeed = 0.06
         }
         
-        let playerAnimation = SKAction.animate(with: DayTheme.currentTheme == .night ? player.textures[Player.Texture.walk.rawValue] : player.textures[Player.Texture.run.rawValue], timePerFrame: playerSpeed)
+        let playerAnimation = SKAction.animate(with: DayTheme.currentTheme == .night || DayTheme.currentTheme == .dawn ? player.textures[Player.Texture.walk.rawValue] : player.textures[Player.Texture.run.rawValue], timePerFrame: playerSpeed)
         player.sprite.run(SKAction.repeatForever(playerAnimation))
 
         for i in 0..<treeCount {
