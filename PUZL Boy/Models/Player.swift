@@ -19,7 +19,7 @@ struct Player {
     private var atlas: SKTextureAtlas
 
     enum Texture: Int {
-        case idle = 0, run, walk, marsh, sand, party, dead, glide
+        case idle = 0, run, walk, marsh, sand, party, dead, glide, jump
         
         var movementSpeed: TimeInterval {
             var speed: TimeInterval
@@ -52,6 +52,7 @@ struct Player {
         textures.append([]) //party
         textures.append([]) //dead
         textures.append([]) //glide
+        textures.append([]) //jump
 
         for i in 1...15 {
             textures[Texture.idle.rawValue].append(atlas.textureNamed("Idle (\(i))"))
@@ -61,7 +62,8 @@ struct Player {
             textures[Texture.sand.rawValue].append(atlas.textureNamed("Run (\(i))"))
             textures[Texture.party.rawValue].append(atlas.textureNamed("Run (\(i))"))
             textures[Texture.dead.rawValue].append(atlas.textureNamed("Dead (\(i))"))
-            
+            textures[Texture.jump.rawValue].append(atlas.textureNamed("Jump (\(i))"))
+
             if i == 5 {
                 textures[Texture.glide.rawValue].append(atlas.textureNamed("Run (\(i))"))
             }

@@ -33,9 +33,11 @@ class LaunchScene: SKScene {
         player.sprite.setScale(2)
         player.sprite.color = DayTheme.spriteColor
         player.sprite.colorBlendFactor = DayTheme.spriteShade
+        player.sprite.name = "playerSprite"
         
         loadingSprite = LoadingSprite(position: CGPoint(x: K.ScreenDimensions.iPhoneWidth / 2, y: K.ScreenDimensions.height / 6))
         loadingSprite.zPosition = K.ZPosition.display
+        loadingSprite.name = "loadingSprite"
         
         //Setup BackgroundObjects
         for _ in 0..<treeCount {
@@ -51,14 +53,17 @@ class LaunchScene: SKScene {
         for i in 0..<cloudCount {
             let cloudObject = BackgroundObject(tierLevel: i.clamp(min: 0, max: BackgroundObject.maxTier), backgroundType: .cloud)
             cloudSprites.append(cloudObject)
+            cloudSprites[i].sprite.name = "skyNode"
         }
 
         mountainSprite = BackgroundObject(tierLevel: 0, backgroundType: .mountain)
         moonSprite = BackgroundObject(tierLevel: 0, backgroundType: .moon)
+        moonSprite.sprite.name = "skyNode"
         
         skyNode = SKSpriteNode(texture: SKTexture(image: DayTheme.getSkyImage()))
         skyNode.anchorPoint = .zero
         skyNode.zPosition = K.ZPosition.skyNode
+        skyNode.name = "skyNode"
         
         let grassImage: UIImage = UIImage.createGradientImage(withBounds: CGRect(x: 0, y: 0, width: K.ScreenDimensions.iPhoneWidth, height: K.ScreenDimensions.height / mountainSprite.backgroundBorder), startPoint: CGPoint(x: 0.5, y: 0), endPoint: CGPoint(x: 0.5, y: 1), colors: [DayTheme.grassColor.top.cgColor, DayTheme.grassColor.bottom.cgColor])
         grassNode = SKSpriteNode(texture: SKTexture(image: grassImage))
@@ -129,4 +134,45 @@ class LaunchScene: SKScene {
         addChild(loadingSprite)
     }
     
+    func animateTransition(completion: @escaping () -> Void) {
+        let playerTimePerFrame: TimeInterval = 0.1
+        var playerCrouchDuration: TimeInterval { playerTimePerFrame * 5 }
+        var moveDuration: TimeInterval { playerCrouchDuration * 2 }
+
+        for node in self.children {
+            guard node.name != "skyNode" else { continue }
+            
+            if node.name == "loadingSprite" {
+                node.run(SKAction.fadeOut(withDuration: 0.5))
+            }
+            else if node.name == "playerSprite" {
+                node.removeAllActions()
+                
+                let playerAnimation = SKAction.animate(with: player.textures[Player.Texture.jump.rawValue], timePerFrame: playerTimePerFrame)
+                
+                node.run(SKAction.group([
+                    SKAction.moveTo(x: K.ScreenDimensions.iPhoneWidth / 4, duration: playerCrouchDuration),
+                    playerAnimation,
+                    SKAction.sequence([
+                        SKAction.wait(forDuration: playerCrouchDuration),
+                        SKAction.moveBy(x: K.ScreenDimensions.iPhoneWidth / 2, y: K.ScreenDimensions.height, duration: moveDuration)
+                    ])
+                ]))
+            }
+            else { //ground nodes
+                node.run(SKAction.sequence([
+                    SKAction.wait(forDuration: playerCrouchDuration * 2),
+                    SKAction.moveBy(x: node.speed, y: -K.ScreenDimensions.height, duration: moveDuration / 2)
+                ]))
+            }
+        }
+        
+        run(SKAction.wait(forDuration: (playerCrouchDuration + moveDuration) * 2), completion: completion)
+    }
+    
+    override func willMove(from view: SKView) {
+        super.willMove(from: view)
+        
+        print("Scene transitioned...")
+    }
 }
