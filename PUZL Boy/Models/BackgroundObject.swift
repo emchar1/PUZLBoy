@@ -71,7 +71,7 @@ struct BackgroundObject {
                         position: CGPoint(x: K.ScreenDimensions.iPhoneWidth - spriteWidth, y: K.ScreenDimensions.height - spriteWidth),
                         anchorPoint: .zero,
                         scale: 0.7,
-                        alpha: DayTheme.currentTheme == .night ? 1.0 : (DayTheme.currentTheme == .dawn ? 0.75 : 0.0),
+                        alpha: DayTheme.currentTheme == .night ? 1.0 : (DayTheme.currentTheme == .dawn ? 0.5 : 0.0),
                         color: .clear,
                         colorBlendFactor: 0,
                         zPosition: K.ZPosition.backgroundObjectTier4)
