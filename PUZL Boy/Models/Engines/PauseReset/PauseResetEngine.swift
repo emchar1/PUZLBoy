@@ -36,7 +36,8 @@ class PauseResetEngine {
     private var foregroundSprite: SKShapeNode
     private var backgroundSprite: SKShapeNode
     private var superScene: SKScene?
-    private var temporaryPauseLabel: SKLabelNode
+    private var comingSoonLabel: SKLabelNode
+    private var countdownLabel: SKLabelNode
     
     private var isPressed: Bool = false
     private var isAnimating: Bool = false
@@ -65,14 +66,12 @@ class PauseResetEngine {
         // FIXME: - This is atrocious
         backgroundSprite = SKShapeNode(rectOf: CGSize(width: settingsSize, height: settingsSize + ChatEngine.avatarSizeNew + settingsButtonHeight),
                                        cornerRadius: 20)
-        backgroundSprite.position = CGPoint(
-            x: settingsScale * (settingsSize + padding) / 2 + GameboardSprite.xPosition,
-            y: 0)//settingsScale * (settingsSize - ChatEngine.avatarSizeNew - settingsButtonHeight + padding) / 2 + GameboardSprite.yPosition)
+        backgroundSprite.position = CGPoint(x: settingsScale * (settingsSize + padding) / 2 + GameboardSprite.xPosition, y: 0)
         backgroundSprite.fillColor = .gray
         backgroundSprite.fillTexture = SKTexture(image: UIImage.chatGradientTexture)
         backgroundSprite.lineWidth = 12
         backgroundSprite.strokeColor = .white
-        backgroundSprite.setScale(0)//settingsScale)
+        backgroundSprite.setScale(0)
         backgroundSprite.zPosition = K.ZPosition.messagePrompt
         
         foregroundSprite = SKShapeNode(rectOf: CGSize(width: settingsSize, height: settingsSize + ChatEngine.avatarSizeNew - settingsButtonHeight))
@@ -82,13 +81,23 @@ class PauseResetEngine {
         foregroundSprite.setScale(1)
         
         // FIXME: - Temporary label
-        temporaryPauseLabel = SKLabelNode(text: "        SETTINGS\n(Coming Soon...)")
-        temporaryPauseLabel.numberOfLines = 0
-        temporaryPauseLabel.horizontalAlignmentMode = .center
-        temporaryPauseLabel.verticalAlignmentMode = .center
-        temporaryPauseLabel.fontName = UIFont.gameFont
-        temporaryPauseLabel.fontSize = UIFont.gameFontSizeMedium
-        temporaryPauseLabel.fontColor = .yellow
+        comingSoonLabel = SKLabelNode(text: "        SETTINGS\n(Coming Soon...)")
+        comingSoonLabel.numberOfLines = 0
+        comingSoonLabel.horizontalAlignmentMode = .center
+        comingSoonLabel.verticalAlignmentMode = .center
+        comingSoonLabel.fontName = UIFont.gameFont
+        comingSoonLabel.fontSize = UIFont.gameFontSizeMedium
+        comingSoonLabel.fontColor = .yellow
+        
+        countdownLabel = SKLabelNode(text: "3")
+        countdownLabel.horizontalAlignmentMode = .center
+        countdownLabel.verticalAlignmentMode = .center
+        countdownLabel.fontSize = UIFont.gameFontSizeExtraLarge
+        countdownLabel.fontName = UIFont.gameFont
+        countdownLabel.fontColor = .white
+        countdownLabel.zPosition = K.ZPosition.messagePrompt
+        countdownLabel.name = pauseResetName
+        countdownLabel.alpha = 0
         
         buttonSprite = SKSpriteNode(imageNamed: pauseResetName)
         buttonSprite.scale(to: CGSize(width: buttonSize, height: buttonSize))
@@ -96,7 +105,9 @@ class PauseResetEngine {
         buttonSprite.position = position
         buttonSprite.name = pauseResetName
         buttonSprite.zPosition = K.ZPosition.buttons
-        
+
+        countdownLabel.position = CGPoint(x: position.x + buttonSize / 2, y: position.y + buttonSize * 1.5)
+
         resetAll()
     }
     
@@ -107,6 +118,7 @@ class PauseResetEngine {
         self.superScene = superScene
         
         superScene.addChild(buttonSprite)
+        superScene.addChild(countdownLabel)
     }
     
     
@@ -179,7 +191,7 @@ class PauseResetEngine {
                 self.isAnimating = false
             }
             
-            foregroundSprite.addChild(temporaryPauseLabel)
+            foregroundSprite.addChild(comingSoonLabel)
             backgroundSprite.addChild(foregroundSprite)
             superScene.addChild(backgroundSprite)
         }
@@ -193,7 +205,7 @@ class PauseResetEngine {
             ])) {
                 self.isAnimating = false
                 
-                self.temporaryPauseLabel.removeFromParent()
+                self.comingSoonLabel.removeFromParent()
                 self.foregroundSprite.removeFromParent()
                 self.backgroundSprite.removeFromParent()
             }
@@ -209,6 +221,7 @@ class PauseResetEngine {
     }
     
     private func callSpecialFunc() {
+        AudioManager.shared.playSound(for: "buttontap2")
         Haptics.shared.addHapticFeedback(withStyle: .soft)
 
         delegate?.didTapButtonSpecial()
@@ -227,6 +240,7 @@ class PauseResetEngine {
         isPressed = false
         resetFinal = Date()
         
+        countdownLabel.alpha = 0
         buttonSprite.removeAction(forKey: resetAnimationKey)
     }
     
@@ -256,16 +270,23 @@ class PauseResetEngine {
             //Counts down to see if should reset the level
             let block = SKAction.run {
                 self.resetFinal = Date()
-                print("Touch down... \(self.resetElapsed)")
+                
+                self.countdownLabel.text = "\(self.resetThreshold - Int(self.resetElapsed))"
+                
+                if self.resetElapsed >= 0.3 {
+                    self.buttonSprite.texture = SKTexture(imageNamed: "\(self.pauseResetName)4")
+                    self.countdownLabel.alpha = 1.0
+                    
+                }
+                
             }
             
             let repeatAction = SKAction.repeat(SKAction.sequence([
                 block,
-                SKAction.wait(forDuration: 1.0)
-            ]), count: resetThreshold)
+                SKAction.wait(forDuration: 1.0 / 10)
+            ]), count: resetThreshold * 10)
             
             let completionAction = SKAction.run {
-                // TODO: - Handle what happens once Reset has been activated, i.e. reset level and subtract a life
                 if self.isPaused {
                     self.handleControls()
                 }
@@ -274,6 +295,7 @@ class PauseResetEngine {
                     Haptics.shared.addHapticFeedback(withStyle: .soft)
                 }
 
+                self.buttonSprite.texture = SKTexture(imageNamed: "\(self.pauseResetName)")
                 self.touchUp()
                 
                 resetCompletion?()

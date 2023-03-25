@@ -80,6 +80,7 @@ class AudioManager {
         addAudioItem("boygrunt1", category: .soundFX)
         addAudioItem("boygrunt2", category: .soundFX)
         addAudioItem("buttontap", category: .soundFX)
+        addAudioItem("buttontap2", category: .soundFX)
         addAudioItem("chatclose", category: .soundFX)
         addAudioItem("chatopen", category: .soundFX)
         addAudioItem("dooropen", category: .soundFX)

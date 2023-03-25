@@ -46,7 +46,7 @@ class GameViewController: UIViewController {
                         launchScene.animateTransition {
                             let gameScene = GameScene(size: K.ScreenDimensions.screenSize, user: user, saveStateModel: saveStateModel)
 
-                            skView.presentScene(gameScene, transition: SKTransition.fade(with: .white, duration: 2.0))
+                            skView.presentScene(gameScene, transition: SKTransition.fade(with: .white, duration: 1.0))
                         }
                                                 
                         self.levelLoaded = true

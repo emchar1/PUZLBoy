@@ -24,6 +24,7 @@ class LaunchScene: SKScene {
     private var loadingSprite: LoadingSprite
     private var skyNode: SKSpriteNode
     private var grassNode: SKSpriteNode
+    private var fadeSprite: SKSpriteNode
 
     
     // MARK: - Initialization
@@ -38,6 +39,12 @@ class LaunchScene: SKScene {
         loadingSprite = LoadingSprite(position: CGPoint(x: K.ScreenDimensions.iPhoneWidth / 2, y: K.ScreenDimensions.height / 6))
         loadingSprite.zPosition = K.ZPosition.display
         loadingSprite.name = "loadingSprite"
+        
+        fadeSprite = SKSpriteNode(color: .white, size: CGSize(width: K.ScreenDimensions.iPhoneWidth, height: K.ScreenDimensions.height))
+        fadeSprite.zPosition = K.ZPosition.display
+        fadeSprite.alpha = 0
+        fadeSprite.anchorPoint = .zero
+        fadeSprite.name = "fadeSprite"
         
         //Setup BackgroundObjects
         for _ in 0..<treeCount {
@@ -132,6 +139,7 @@ class LaunchScene: SKScene {
         addChild(mountainSprite.sprite)
         addChild(moonSprite.sprite)
         addChild(loadingSprite)
+        addChild(fadeSprite)
     }
     
     func animateTransition(completion: @escaping () -> Void) {
@@ -158,6 +166,15 @@ class LaunchScene: SKScene {
                         SKAction.moveBy(x: K.ScreenDimensions.iPhoneWidth / 2, y: K.ScreenDimensions.height, duration: moveDuration)
                     ])
                 ]))
+                
+                AudioManager.shared.playSound(for: "boyattack3")
+
+            }
+            else if node.name == "fadeSprite" {
+                node.run(SKAction.sequence([
+                    SKAction.wait(forDuration: moveDuration * 2),
+                    SKAction.fadeIn(withDuration: moveDuration * 2)
+                ]))
             }
             else { //ground nodes
                 node.run(SKAction.sequence([
@@ -167,7 +184,7 @@ class LaunchScene: SKScene {
             }
         }
         
-        run(SKAction.wait(forDuration: (playerCrouchDuration + moveDuration) * 2), completion: completion)
+        run(SKAction.wait(forDuration: moveDuration * 4), completion: completion)
     }
     
     override func willMove(from view: SKView) {

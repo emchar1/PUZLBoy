@@ -56,6 +56,7 @@
 		EA65189228E973D700E535BF /* Level.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA65189028E973D700E535BF /* Level.swift */; };
 		EA65189328E973D700E535BF /* LevelBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA65189128E973D700E535BF /* LevelBuilder.swift */; };
 		EA65189528EA207800E535BF /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA65189428EA207800E535BF /* Constants.swift */; };
+		EA6A79F929CF0F2C00F47A73 /* buttontap2.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA6A79F829CF0F2C00F47A73 /* buttontap2.mp3 */; };
 		EA75F0E1292DDAAF00F09BD7 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = EA75F0E0292DDAAF00F09BD7 /* FirebaseAnalytics */; };
 		EA75F0E3292DDAAF00F09BD7 /* FirebaseAnalyticsSwift in Frameworks */ = {isa = PBXBuildFile; productRef = EA75F0E2292DDAAF00F09BD7 /* FirebaseAnalyticsSwift */; };
 		EA75F0E5292DDAAF00F09BD7 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = EA75F0E4292DDAAF00F09BD7 /* FirebaseAuth */; };
@@ -217,6 +218,7 @@
 		EA65189028E973D700E535BF /* Level.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Level.swift; sourceTree = "<group>"; };
 		EA65189128E973D700E535BF /* LevelBuilder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LevelBuilder.swift; sourceTree = "<group>"; };
 		EA65189428EA207800E535BF /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		EA6A79F829CF0F2C00F47A73 /* buttontap2.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = buttontap2.mp3; sourceTree = "<group>"; };
 		EA75F0EA292DF46200F09BD7 /* FIRManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FIRManager.swift; sourceTree = "<group>"; };
 		EA75F0EC292DF57400F09BD7 /* LevelModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelModel.swift; sourceTree = "<group>"; };
 		EA75F0EE292F55F900F09BD7 /* LaunchScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchScene.swift; sourceTree = "<group>"; };
@@ -480,6 +482,7 @@
 				EA95D1A1294691820061059C /* boygrunt1.mp3 */,
 				EA95D1A2294691820061059C /* boygrunt2.mp3 */,
 				EA3467AA29A8C6F6002DDA02 /* buttontap.mp3 */,
+				EA6A79F829CF0F2C00F47A73 /* buttontap2.mp3 */,
 				EAACB4B82971E08A00973EB8 /* chatclose.mp3 */,
 				EA3467A829A8C6CA002DDA02 /* chatopen.mp3 */,
 				EA3467AC29A8C7C7002DDA02 /* continueloop.mp3 */,
@@ -749,6 +752,7 @@
 				EA3467A329A403EF002DDA02 /* overworld9.mp3 in Resources */,
 				EA4D025B29B7D61C00F0C7B1 /* movemarsh3.mp3 in Resources */,
 				EA0F1491292CC8D90013038E /* enemydeath.mp3 in Resources */,
+				EA6A79F929CF0F2C00F47A73 /* buttontap2.mp3 in Resources */,
 				EA4D026529B90BF800F0C7B1 /* gemcollect.mp3 in Resources */,
 				EA3467AB29A8C6F6002DDA02 /* buttontap.mp3 in Resources */,
 				EAACB4B92971E08A00973EB8 /* chatclose.mp3 in Resources */,
