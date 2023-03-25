@@ -138,6 +138,7 @@
 		EA95D2142964FF350061059C /* SaveStateModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA95D2132964FF350061059C /* SaveStateModel.swift */; };
 		EA95D2172964FFCF0061059C /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = EA95D2162964FFCF0061059C /* FirebaseFirestore */; };
 		EA95D2192964FFCF0061059C /* FirebaseFirestoreSwift in Frameworks */ = {isa = PBXBuildFile; productRef = EA95D2182964FFCF0061059C /* FirebaseFirestoreSwift */; };
+		EA9F4DD929CFAB0C006F4B2F /* Extension+Double.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA9F4DD829CFAB0C006F4B2F /* Extension+Double.swift */; };
 		EAACB4A7296F80E700973EB8 /* AchievementAvidReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAACB4A6296F80E700973EB8 /* AchievementAvidReader.swift */; };
 		EAACB4B92971E08A00973EB8 /* chatclose.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAACB4B82971E08A00973EB8 /* chatclose.mp3 */; };
 		EAACB4BE297255FC00973EB8 /* GoogleMobileAds in Frameworks */ = {isa = PBXBuildFile; productRef = EAACB4BD297255FC00973EB8 /* GoogleMobileAds */; };
@@ -294,6 +295,7 @@
 		EA95D20F2962C9260061059C /* AchievementSlowPoke.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementSlowPoke.swift; sourceTree = "<group>"; };
 		EA95D2112963B4580061059C /* LevelSkipEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelSkipEngine.swift; sourceTree = "<group>"; };
 		EA95D2132964FF350061059C /* SaveStateModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveStateModel.swift; sourceTree = "<group>"; };
+		EA9F4DD829CFAB0C006F4B2F /* Extension+Double.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+Double.swift"; sourceTree = "<group>"; };
 		EAACB4A6296F80E700973EB8 /* AchievementAvidReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementAvidReader.swift; sourceTree = "<group>"; };
 		EAACB4B82971E08A00973EB8 /* chatclose.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = chatclose.mp3; sourceTree = "<group>"; };
 		EAAEA3BD2931A31200221963 /* movepoisoned.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = movepoisoned.mp3; sourceTree = "<group>"; };
@@ -467,6 +469,7 @@
 				EA95D1B1294FBF2A0061059C /* Extension+Notification.Name.swift */,
 				EA4D026A29BC6ACE00F0C7B1 /* Extension+UIDevice.swift */,
 				EA94E87629C2DCE0009F2614 /* Extension+CGPoint.swift */,
+				EA9F4DD829CFAB0C006F4B2F /* Extension+Double.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -864,6 +867,7 @@
 				EA826C9A29950D0C00F19F81 /* NumMovesSprite.swift in Sources */,
 				EA826C93298F60C000F19F81 /* AchievementFatCat.swift in Sources */,
 				EA346791299B535F002DDA02 /* LevelStats.swift in Sources */,
+				EA9F4DD929CFAB0C006F4B2F /* Extension+Double.swift in Sources */,
 				EA4D026329B7F3AF00F0C7B1 /* PartyModeSprite.swift in Sources */,
 				EA4D026B29BC6ACE00F0C7B1 /* Extension+UIDevice.swift in Sources */,
 				EA95D2122963B4580061059C /* LevelSkipEngine.swift in Sources */,

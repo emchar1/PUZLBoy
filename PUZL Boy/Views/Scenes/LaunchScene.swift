@@ -167,7 +167,7 @@ class LaunchScene: SKScene {
                     ])
                 ]))
                 
-                AudioManager.shared.playSound(for: "boyattack3")
+                AudioManager.shared.playSound(for: "boyattack\(Int.random(in: 1...3))")
 
             }
             else if node.name == "fadeSprite" {

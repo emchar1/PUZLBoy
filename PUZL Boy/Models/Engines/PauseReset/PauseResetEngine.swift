@@ -236,11 +236,21 @@ class PauseResetEngine {
         if isPressed {
             Haptics.shared.addHapticFeedback(withStyle: .light)
         }
+        
+        //Prevents touch drag exit keeping it stuck on the refresh button.
+        if !specialFunctionEnabled {
+            buttonSprite.texture = SKTexture(imageNamed: isPaused ? "\(pauseResetName)2" : "\(pauseResetName)")
+        }
 
         isPressed = false
         resetFinal = Date()
         
+        //Reset settings from touchDown animation
         countdownLabel.alpha = 0
+        countdownLabel.setScale(1.0)
+        countdownLabel.removeAllActions()
+        countdownLabel.run(SKAction.rotate(toAngle: 0, duration: 0))
+
         buttonSprite.removeAction(forKey: resetAnimationKey)
     }
     
@@ -268,21 +278,34 @@ class PauseResetEngine {
             guard !specialFunctionEnabled else { return }
             
             //Counts down to see if should reset the level
-            let block = SKAction.run {
-                self.resetFinal = Date()
+            let animateCountdown = SKAction.run { [unowned self] in
+                resetFinal = Date()
                 
-                self.countdownLabel.text = "\(self.resetThreshold - Int(self.resetElapsed))"
+                countdownLabel.text = "\(resetThreshold - Int(resetElapsed))"
                 
-                if self.resetElapsed >= 0.3 {
-                    self.buttonSprite.texture = SKTexture(imageNamed: "\(self.pauseResetName)4")
-                    self.countdownLabel.alpha = 1.0
+                if resetElapsed >= 0.4 {
+                    buttonSprite.texture = SKTexture(imageNamed: "\(pauseResetName)4")
                     
+                    countdownLabel.alpha = 1.0
+                    
+                    //All this to animate the countdown timer, make it more exciting.
+                    if floor(resetElapsed) == resetElapsed.truncate(placesAfterDecimal: 1) {
+                        countdownLabel.run(SKAction.group([
+                            SKAction.sequence([
+                                SKAction.scale(to: ceil(resetElapsed) * 0.75, duration: 0.25),
+                                SKAction.scale(to: ceil(resetElapsed) * 0.65, duration: 0.25)
+                            ]),
+                            SKAction.repeatForever(SKAction.sequence([
+                                SKAction.rotate(toAngle: .pi / 32 * resetElapsed, duration: 0.1),
+                                SKAction.rotate(toAngle: -.pi / 32 * resetElapsed, duration: 0.1)
+                            ]))
+                        ]))
+                    }
                 }
-                
-            }
+            } //animateCountdown
             
             let repeatAction = SKAction.repeat(SKAction.sequence([
-                block,
+                animateCountdown,
                 SKAction.wait(forDuration: 1.0 / 10)
             ]), count: resetThreshold * 10)
             
