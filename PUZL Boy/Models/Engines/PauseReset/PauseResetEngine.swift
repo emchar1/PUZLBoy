@@ -221,9 +221,6 @@ class PauseResetEngine {
     }
     
     private func callSpecialFunc() {
-        AudioManager.shared.playSound(for: "buttontap2")
-        Haptics.shared.addHapticFeedback(withStyle: .soft)
-
         delegate?.didTapButtonSpecial()
     }
     

@@ -394,26 +394,12 @@ class GameEngine {
     }
     
     func checkControlGuardsIfPassed(includeDisableInputFromOutside: Bool) -> Bool {
-        guard !isSolved else {
-            print("Controls disabled: isSolved is animating.")
-            return false
-        }
-        
-        guard !isGameOver else {
-            print("Controls disabled: isGameOver is animating.")
-            return false
-        }
-        
-        guard !shouldDisableControlInput else {
-            print("Controls disabled: shouldDisableControlInput == true from GameEngine.")
-            return false
-        }
+        guard !isSolved else { return false }
+        guard !isGameOver else { return false }
+        guard !shouldDisableControlInput else { return false }
         
         if includeDisableInputFromOutside {
-            guard !disableInputFromOutside else {
-                print("Controls disabled: disableInputFromOutside == true from outside class.")
-                return false
-            }
+            guard !disableInputFromOutside else { return false }
         }
         
         return true

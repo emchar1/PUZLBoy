@@ -32,8 +32,8 @@ struct BackgroundObject {
         
         switch tierLevel {
         case 0: return dayMultiplier * (backgroundType != .cloud ? 3.0 : 100)
-        case 1: return dayMultiplier * (backgroundType != .cloud ? 3.5 : 50)
-        default: return dayMultiplier * (backgroundType != .cloud ? 4.0 : 25)
+        case 1: return dayMultiplier * (backgroundType != .cloud ? 3.5 : 250)
+        default: return dayMultiplier * (backgroundType != .cloud ? 4.0 : 525)
         }
     }
     
@@ -97,7 +97,7 @@ struct BackgroundObject {
                             zPosition: backgroundType == .cloud ? K.ZPosition.backgroundObjectTier3 : K.ZPosition.backgroundObjectTier1)
             default:
                 setupSprite(imageNameShouldIncludeTier: true,
-                            position: backgroundType == .cloud ? CGPoint(x: K.ScreenDimensions.iPhoneWidth / 3, y: K.ScreenDimensions.height / (backgroundBorder - 0.1)) : CGPoint(x: K.ScreenDimensions.iPhoneWidth, y: K.ScreenDimensions.height / (backgroundBorder + 0.2)),
+                            position: backgroundType == .cloud ? CGPoint(x: K.ScreenDimensions.iPhoneWidth * 2 / 3, y: K.ScreenDimensions.height / (backgroundBorder - 0.1)) : CGPoint(x: K.ScreenDimensions.iPhoneWidth, y: K.ScreenDimensions.height / (backgroundBorder + 0.2)),
                             anchorPoint: .zero,
                             scale: 0.25,
                             alpha: backgroundType == .cloud ? 0.6 : 0.85,
@@ -129,8 +129,10 @@ struct BackgroundObject {
     
     func animateSprite(withDelay delay: TimeInterval?) {
         let animation = SKAction.move(by: CGVector(dx: -1000, dy: 0), duration: speed)
-        let sequence = SKAction.sequence([SKAction.wait(forDuration: delay == nil ? 0 : self.delay * 2 * delay!),
-                                          SKAction.repeat(animation, count: 2)])
+        let sequence = SKAction.sequence([
+            SKAction.wait(forDuration: delay == nil ? 0 : self.delay * 2 * delay!),
+            SKAction.repeat(animation, count: 2)
+        ])
         sprite.run(sequence)
     }
 }

@@ -11,8 +11,8 @@ class LaunchScene: SKScene {
     
     // MARK: - Properties
     
-    private let treeCount = 6
-    private let boulderCount = 8
+    private let treeCount = 60
+    private let boulderCount = 80
     private let cloudCount = 3
     
     private var treeSprites: [BackgroundObject] = []
@@ -109,7 +109,7 @@ class LaunchScene: SKScene {
         }
         
         for i in 0..<cloudCount {
-            cloudSprites[i].animateSprite(withDelay: TimeInterval(i))
+            cloudSprites[i].animateSprite(withDelay: nil)
         }
         
         loadingSprite.animate()
@@ -166,9 +166,6 @@ class LaunchScene: SKScene {
                         SKAction.moveBy(x: K.ScreenDimensions.iPhoneWidth / 2, y: K.ScreenDimensions.height, duration: moveDuration)
                     ])
                 ]))
-                
-                AudioManager.shared.playSound(for: "boyattack\(Int.random(in: 1...3))")
-
             }
             else if node.name == "fadeSprite" {
                 node.run(SKAction.sequence([

@@ -103,8 +103,12 @@ class ChatEngine {
     
     // MARK: - Functions
 
-    func fastForward() {
+    @discardableResult func fastForward() -> Bool {
+        guard chatSpeed > 0 else { return false }
+        
         chatSpeed = 0
+        
+        return true
     }
     
     func sendChat(profile: ChatProfile, startNewChat: Bool, endChat: Bool, chat: String, completion: (() -> ())? = nil) {
