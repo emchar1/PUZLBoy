@@ -238,9 +238,6 @@ class GameboardSprite {
         
         panels[position.row][position.col].run(SKAction.repeat(sandSequence, count: Int(sandAnimationDuration / sandShake / 2)))
         sandNode.run(SKAction.fadeOut(withDuration: sandAnimationDuration))
-        lavaNode.run(SKAction.fadeIn(withDuration: sandAnimationDuration)) {
-            // FIXME: - This intermittently bugs out where the lava panel disappears. Tried lavaNode.removeFromParent(), etc. to no avail!!!
-//            self.panels[position.row][position.col].removeAllChildren()
-        }
+        lavaNode.run(SKAction.fadeIn(withDuration: sandAnimationDuration))
     }
 }
