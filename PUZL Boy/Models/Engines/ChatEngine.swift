@@ -7,6 +7,13 @@
 
 import SpriteKit
 
+protocol ChatEngineDelegate: AnyObject {
+    func illuminatePanel(at panelName: (row: Int, col: Int), useOverlay: Bool)
+    func deIlluminatePanel(at panelName: (row: Int, col: Int), useOverlay: Bool)
+    func illuminateDisplayNode(for displayType: DisplaySprite.DisplayStatusName)
+    func deIlluminateDisplayNode(for displayType: DisplaySprite.DisplayStatusName)
+}
+
 class ChatEngine {
     
     // MARK: - Properties
@@ -39,6 +46,7 @@ class ChatEngine {
     private let chatSpeedOrig: TimeInterval = 0.08
             
     //Sprite properties
+    private var dimOverlaySprite: SKShapeNode
     private var backgroundSprite: SKShapeNode
     private var avatarSprite: SKSpriteNode
     private var textSprite: SKLabelNode
@@ -47,6 +55,8 @@ class ChatEngine {
     enum ChatProfile {
         case hero, trainer, princess, villain
     }
+    
+    weak var delegate: ChatEngineDelegate?
     
     
     // MARK: - Initialization
@@ -66,6 +76,7 @@ class ChatEngine {
 
         //Property initialization
         backgroundSprite = SKShapeNode()
+        dimOverlaySprite = SKShapeNode(rectOf: CGSize(width: K.ScreenDimensions.iPhoneWidth, height: K.ScreenDimensions.height))
         avatarSprite = SKSpriteNode(texture: SKTexture(imageNamed: "puzlboy"))
         textSprite = SKLabelNode(text: "PUZL Boy is the newest puzzle game out there on the App Store. It's so popular, it's going to have over a million downloads, gamers are going to love it - casual gamers, hardcore gamers, and everyone in-between! So download your copy today!!")
 
@@ -79,7 +90,13 @@ class ChatEngine {
         backgroundSprite.fillTexture = SKTexture(image: UIImage.chatGradientTexture)
         backgroundSprite.setScale(0)
         backgroundSprite.name = "backgroundSprite"
-        backgroundSprite.zPosition = K.ZPosition.gameboard
+        backgroundSprite.zPosition = K.ZPosition.chatDialogue
+        
+        dimOverlaySprite.position = CGPoint(x: K.ScreenDimensions.iPhoneWidth / 2, y: K.ScreenDimensions.height / 2)
+        dimOverlaySprite.fillColor = .black
+        dimOverlaySprite.lineWidth = 0
+        dimOverlaySprite.alpha = 0
+        dimOverlaySprite.zPosition = K.ZPosition.chatDimOverlay
 
         avatarSprite.position = CGPoint(x: origin.x, y: origin.y + borderLineWidth / 2)
         avatarSprite.setScale(ChatEngine.avatarSizeNew / ChatEngine.avatarSizeOrig)
@@ -157,6 +174,11 @@ class ChatEngine {
             
             timer = Timer.scheduledTimer(timeInterval: chatSpeed, target: self, selector: #selector(animateText(_:)), userInfo: nil, repeats: true)
         }
+        
+        //Animates overlaySprite
+        if startNewChat {
+            dimOverlaySprite.run(SKAction.fadeAlpha(to: 0.8, duration: 1.0))
+        }
     }
 
     ///This contains the magic of animating the characters of the string like a typewriter, until it gets to the end of the chat.
@@ -199,6 +221,10 @@ class ChatEngine {
         }
     }
     
+    private func fadeDimOverlay() {
+        dimOverlaySprite.run(SKAction.fadeAlpha(to: 0.0, duration: 1.0))
+    }
+    
     
     // MARK: - Move Functions
 
@@ -209,6 +235,7 @@ class ChatEngine {
     func moveSprites(to superScene: SKScene) {
         self.superScene = superScene
         
+        superScene.addChild(dimOverlaySprite)
         superScene.addChild(backgroundSprite)
     }
 }
@@ -231,15 +258,35 @@ extension ChatEngine {
             
             sendChat(profile: .trainer, startNewChat: true, endChat: false,
                      chat: "TRAINER: Welcome, PUZL Boy! The goal of the game is to get to the gate in under a certain number of moves.") { [unowned self] in
+                
+                delegate?.illuminatePanel(at: (0, 1), useOverlay: false)
+                delegate?.illuminatePanel(at: (1, 0), useOverlay: false)
+                delegate?.illuminatePanel(at: (1, 2), useOverlay: false)
+                delegate?.illuminatePanel(at: (2, 1), useOverlay: false)
+
                 sendChat(profile: .trainer, startNewChat: false, endChat: false,
                          chat: "You can move to any available panel on your left, right, above and below. Simply tap the panel to move there. Diagonal moves are not allowed.") { [unowned self] in
+
+                    delegate?.deIlluminatePanel(at: (0, 1), useOverlay: false)
+                    delegate?.deIlluminatePanel(at: (1, 0), useOverlay: false)
+                    delegate?.deIlluminatePanel(at: (1, 2), useOverlay: false)
+                    delegate?.deIlluminatePanel(at: (2, 1), useOverlay: false)
+                    delegate?.illuminateDisplayNode(for: .moves)
+                    
                     sendChat(profile: .trainer, startNewChat: false, endChat: false,
                              chat: "If your move count hits 0, it's game over, buddy! Your move count can be found in the upper left corner next to the boot. 👢") { [unowned self] in
+                        
+                        delegate?.deIlluminateDisplayNode(for: .moves)
+                        delegate?.illuminatePanel(at: (0, 2), useOverlay: true)
+                        delegate?.illuminatePanel(at: (2, 2), useOverlay: false)
+                        
                         sendChat(profile: .trainer, startNewChat: false, endChat: false,
                                  chat: "See the gate? It's closed. To open it, collect all the gems in the level. Give it a go!") { [unowned self] in
                             sendChat(profile: .hero, startNewChat: false, endChat: true,
                                      chat: "PUZL Boy: I got this, yo!") { [unowned self] in
                                 dialoguePlayed[level] = true
+                                delegate?.deIlluminatePanel(at: (0, 2), useOverlay: true)
+                                fadeDimOverlay()
                                 completion?()
                             }
                         }
@@ -252,10 +299,16 @@ extension ChatEngine {
                 return
             }
             
+            delegate?.illuminatePanel(at: (0, 1), useOverlay: true)
+            delegate?.illuminatePanel(at: (1, 1), useOverlay: true)
+
             sendChat(profile: .trainer, startNewChat: true, endChat: false,
-                     chat: "Pretty easy, right?! Levels get progressively harder with various obstacles blocking your path.") { [unowned self] in
+                     chat: "Pretty easy, right?! Levels get progressively harder with various obstacles blocking your path. You need a hammer to break through those boulders.") { [unowned self] in
+                
+                delegate?.illuminateDisplayNode(for: .hammers)
+                
                 sendChat(profile: .trainer, startNewChat: false, endChat: false,
-                         chat: "You need a hammer to break through those boulders. Your inventory count can be found in the upper right. 🔨") { [unowned self] in
+                         chat: "Your inventory count can be found in the upper right. 🔨") { [unowned self] in
                     sendChat(profile: .hero, startNewChat: false, endChat: false,
                              chat: "Hammers break boulders. Got it.") { [unowned self] in
                         sendChat(profile: .trainer, startNewChat: false, endChat: false,
@@ -265,6 +318,7 @@ extension ChatEngine {
                                 sendChat(profile: .trainer, startNewChat: false, endChat: true,
                                          chat: "Oh, and one more thing... hammers can only be used once before breaking, so plan your moves ahead of time.") { [unowned self] in
                                     dialoguePlayed[level] = true
+                                    fadeDimOverlay()
                                     completion?()
                                 }
                             }
@@ -278,6 +332,9 @@ extension ChatEngine {
                 return
             }
             
+            delegate?.illuminatePanel(at: (0, 1), useOverlay: false)
+            delegate?.illuminatePanel(at: (2, 1), useOverlay: false)
+
             sendChat(profile: .trainer, startNewChat: true, endChat: false,
                      chat: "Watch out for marsh! Stepping on one of the crimson colored panels will drag you down, costing ya 2 moves.") { [unowned self] in
                 sendChat(profile: .trainer, startNewChat: false, endChat: false,
@@ -285,6 +342,9 @@ extension ChatEngine {
                     sendChat(profile: .hero, startNewChat: false, endChat: true,
                              chat: "Man... and I just got these new kicks!") { [unowned self] in
                         dialoguePlayed[level] = true
+                        delegate?.deIlluminatePanel(at: (0, 1), useOverlay: false)
+                        delegate?.deIlluminatePanel(at: (2, 1), useOverlay: false)
+                        fadeDimOverlay()
                         completion?()
                     }
                 }
@@ -295,6 +355,9 @@ extension ChatEngine {
                 return
             }
             
+            delegate?.illuminatePanel(at: (0, 1), useOverlay: true)
+            delegate?.illuminatePanel(at: (1, 2), useOverlay: true)
+
             sendChat(profile: .trainer, startNewChat: true, endChat: false,
                      chat: "Those fun looking things are warps. Stepping on one of them will teleport you to the other one. Weeeeeeeee!") { [unowned self] in
                 sendChat(profile: .hero, startNewChat: false, endChat: false,
@@ -304,6 +367,9 @@ extension ChatEngine {
                         sendChat(profile: .hero, startNewChat: false, endChat: true,
                                  chat: "Here goes nothing...") { [unowned self] in
                             dialoguePlayed[level] = true
+                            delegate?.deIlluminatePanel(at: (0, 1), useOverlay: true)
+                            delegate?.deIlluminatePanel(at: (1, 2), useOverlay: true)
+                            fadeDimOverlay()
                             completion?()
                         }
                     }
@@ -315,16 +381,25 @@ extension ChatEngine {
                 return
             }
             
+            delegate?.illuminatePanel(at: (1, 1), useOverlay: true)
+
             sendChat(profile: .trainer, startNewChat: true, endChat: false,
                      chat: "Whoa, a dragon! Looks like he's sleeping. Don't even try waking him or it'll cost ya 1 health point. 💖") { [unowned self] in
+
+                delegate?.illuminateDisplayNode(for: .health)
+
                 sendChat(profile: .trainer, startNewChat: false, endChat: false,
                          chat: "Don't believe me??? Go ahead. Try and pet him, I dare you!") { [unowned self] in // Let player touch dragon before continuing...
+                    
+                    delegate?.illuminateDisplayNode(for: .swords)
+
                     sendChat(profile: .trainer, startNewChat: false, endChat: false,
                              chat: "Once your health drops to 0, it's lights out, baby. If only you had a sword. 🗡") { [unowned self] in
                         sendChat(profile: .hero, startNewChat: false, endChat: false, chat: "Lemme guess, I can only use the sword once before it breaks?") { [unowned self] in
                             sendChat(profile: .trainer, startNewChat: false, endChat: true,
                                      chat: "B-I-N-G-O!!! Oh sorry, I was playing Bingo with my grandmother. Yep, one sword per dragon.") { [unowned self] in
                                 dialoguePlayed[level] = true
+                                fadeDimOverlay()
                                 completion?()
                             }
                         }
@@ -338,16 +413,29 @@ extension ChatEngine {
                 return
             }
             
+            delegate?.illuminatePanel(at: (0, 1), useOverlay: false)
+            delegate?.illuminatePanel(at: (0, 2), useOverlay: false)
+            delegate?.illuminatePanel(at: (1, 2), useOverlay: false)
+            delegate?.illuminatePanel(at: (0, 1), useOverlay: true)
+            delegate?.illuminatePanel(at: (1, 2), useOverlay: true)
+
             sendChat(profile: .trainer, startNewChat: true, endChat: false,
                      chat: "Ice, ice, baby! Step on this and you'll slide until you hit either an obstacle or the edge of the level.") { [unowned self] in
                 sendChat(profile: .trainer, startNewChat: false, endChat: false,
                          chat: "The nice thing though is that it'll only cost you 1 move as long as you're sliding continuously.") { [unowned self] in
                     sendChat(profile: .hero, startNewChat: false, endChat: false,
                              chat: "Ok. I think I got it, old man.") { [unowned self] in
+                        
+                        delegate?.deIlluminatePanel(at: (0, 1), useOverlay: false)
+                        delegate?.deIlluminatePanel(at: (0, 2), useOverlay: false)
+                        delegate?.deIlluminatePanel(at: (1, 2), useOverlay: false)
+                        delegate?.deIlluminatePanel(at: (0, 1), useOverlay: true)
+                        delegate?.deIlluminatePanel(at: (1, 2), useOverlay: true)
+                        fadeDimOverlay()
+                        
                         sendChat(profile: .trainer, startNewChat: false, endChat: true,
                                  chat: "Well, I'll leave you alone for now. I'll chime in every now and then if I think you need it.") { [unowned self] in
                             dialoguePlayed[level] = true
-                                                        
                             completion?()
                         }
                     }

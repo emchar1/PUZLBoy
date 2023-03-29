@@ -77,6 +77,7 @@ class GameScene: SKScene {
         IAPManager.shared.delegate = self
         gameEngine.delegate = self
         continueSprite.delegate = self
+        chatEngine.delegate = self
         pauseResetEngine.delegate = self
         
         // FIXME: - Debuging purposes only!!!
@@ -317,7 +318,7 @@ class GameScene: SKScene {
         adSprite = SKSpriteNode(color: .clear,
                                 size: CGSize(width: K.ScreenDimensions.iPhoneWidth, height: K.ScreenDimensions.height))
         adSprite.anchorPoint = .zero
-        adSprite.zPosition = K.ZPosition.adScene
+        adSprite.zPosition = K.ZPosition.adSceneBlackout
         addChild(adSprite)
 
         scoringEngine.timerManager.pauseTime()
@@ -361,6 +362,9 @@ class GameScene: SKScene {
     private func playDialogue() {
         //Only disable input on certain levels, i.e. the important ones w/ instructions.
         guard chatEngine.shouldPauseGame(level: currentLevel) else { return }
+
+        //Prevents chat dialogue from appearing if user dies on a level with instructions and continue message prompt is showing.
+        guard gameEngine.canContinue else { return }
 
         scoringEngine.timerManager.pauseTime()
         stopTimer()
@@ -700,4 +704,37 @@ extension GameScene: PauseResetEngineDelegate {
     }
     
     
+}
+
+
+// MARK: - ChatEngineDelegate
+
+extension GameScene: ChatEngineDelegate {
+    func illuminatePanel(at panelName: (row: Int, col: Int), useOverlay: Bool) {
+        gameEngine.gameboardSprite.illuminatePanel(at: panelName, useOverlay: useOverlay)
+    }
+    
+    func deIlluminatePanel(at panelName: (row: Int, col: Int), useOverlay: Bool) {
+        gameEngine.gameboardSprite.deIlluminatePanel(at: panelName, useOverlay: useOverlay)
+    }
+    
+    func illuminateDisplayNode(for displayType: DisplaySprite.DisplayStatusName) {
+        switch displayType {
+        case .lives:    gameEngine.displaySprite.statusLives.illuminateNode()
+        case .health:   gameEngine.displaySprite.statusHealth.illuminateNode()
+        case .moves:    gameEngine.displaySprite.statusMoves.illuminateNode()
+        case .hammers:  gameEngine.displaySprite.statusHammers.illuminateNode()
+        case .swords:   gameEngine.displaySprite.statusSwords.illuminateNode()
+        }
+    }
+    
+    func deIlluminateDisplayNode(for displayType: DisplaySprite.DisplayStatusName) {
+        switch displayType {
+        case .lives:    gameEngine.displaySprite.statusLives.deIlluminateNode()
+        case .health:   gameEngine.displaySprite.statusHealth.deIlluminateNode()
+        case .moves:    gameEngine.displaySprite.statusMoves.deIlluminateNode()
+        case .hammers:  gameEngine.displaySprite.statusHammers.deIlluminateNode()
+        case .swords:   gameEngine.displaySprite.statusSwords.deIlluminateNode()
+        }
+    }
 }

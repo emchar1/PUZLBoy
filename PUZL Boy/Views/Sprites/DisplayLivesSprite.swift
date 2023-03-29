@@ -99,5 +99,12 @@ class DisplayLivesSprite: SKNode {
         
         textNode.run(repeatAction)
     }
-
+    
+    func illuminateNode() {
+        zPosition = K.ZPosition.chatDimOverlay + 10
+    }
+    
+    func deIlluminateNode() {
+        zPosition = 0
+    }
 }

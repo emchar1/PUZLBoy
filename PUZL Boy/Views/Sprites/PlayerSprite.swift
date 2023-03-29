@@ -194,7 +194,7 @@ class PlayerSprite {
     func startGemCollectAnimation(on gameboard: GameboardSprite, at panel: K.GameboardPosition, completion: @escaping (() -> ())) {
         let gemSprite = SKSpriteNode(imageNamed: "gem")
         gemSprite.position = gameboard.getLocation(at: panel)
-        gemSprite.zPosition = K.ZPosition.items
+        gemSprite.zPosition = K.ZPosition.itemsAndEffects
         gemSprite.setScale(gameboard.panelSize / gemSprite.size.width)
         
         gameboard.sprite.addChild(gemSprite)
@@ -215,7 +215,7 @@ class PlayerSprite {
         let scale: CGFloat = 0.9
         let attackSprite = SKSpriteNode(texture: SKTexture(imageNamed: "iconSword"))
         attackSprite.position = gameboard.getLocation(at: panel)
-        attackSprite.zPosition = K.ZPosition.items
+        attackSprite.zPosition = K.ZPosition.itemsAndEffects
         attackSprite.setScale(scale * (gameboard.panelSize / attackSprite.size.width))
 
         let animation = SKAction.sequence([
@@ -239,11 +239,11 @@ class PlayerSprite {
             let enemyScale = gameboard.panelSize / enemyTopSprite.size.width
 
             enemyTopSprite.position = gameboard.getLocation(at: panel)
-            enemyTopSprite.zPosition = K.ZPosition.items
+            enemyTopSprite.zPosition = K.ZPosition.itemsAndEffects
             enemyTopSprite.setScale(enemyScale)
 
             enemyBottomSprite.position = gameboard.getLocation(at: panel)
-            enemyBottomSprite.zPosition = K.ZPosition.items
+            enemyBottomSprite.zPosition = K.ZPosition.itemsAndEffects
             enemyBottomSprite.setScale(enemyScale)
             
             gameboard.sprite.addChild(enemyTopSprite)
@@ -280,7 +280,7 @@ class PlayerSprite {
         let scale: CGFloat = 0.75
         let attackSprite = SKSpriteNode(texture: SKTexture(imageNamed: "iconHammer"))
         attackSprite.position = gameboard.getLocation(at: panel)
-        attackSprite.zPosition = K.ZPosition.items
+        attackSprite.zPosition = K.ZPosition.itemsAndEffects
         attackSprite.setScale(scale * (gameboard.panelSize / attackSprite.size.width))
 
         let animation = SKAction.sequence([
@@ -301,7 +301,7 @@ class PlayerSprite {
             let timePerFrame: TimeInterval = 0.06
             let explodeSprite = SKSpriteNode(texture: explodeBoulderTextures[0])
             explodeSprite.position = gameboard.getLocation(at: panel)
-            explodeSprite.zPosition = K.ZPosition.items
+            explodeSprite.zPosition = K.ZPosition.itemsAndEffects
             explodeSprite.setScale(scale * (gameboard.panelSize / explodeSprite.size.width))
 
             gameboard.sprite.addChild(explodeSprite)

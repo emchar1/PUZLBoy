@@ -72,7 +72,7 @@ class PauseResetEngine {
         backgroundSprite.lineWidth = 12
         backgroundSprite.strokeColor = .white
         backgroundSprite.setScale(0)
-        backgroundSprite.zPosition = K.ZPosition.messagePrompt
+        backgroundSprite.zPosition = K.ZPosition.pauseScreen
         
         foregroundSprite = SKShapeNode(rectOf: CGSize(width: settingsSize, height: settingsSize + ChatEngine.avatarSizeNew - settingsButtonHeight))
         foregroundSprite.position = CGPoint(x: 0, y: settingsButtonHeight)
@@ -95,7 +95,7 @@ class PauseResetEngine {
         countdownLabel.fontSize = UIFont.gameFontSizeExtraLarge
         countdownLabel.fontName = UIFont.gameFont
         countdownLabel.fontColor = .white
-        countdownLabel.zPosition = K.ZPosition.messagePrompt
+        countdownLabel.zPosition = K.ZPosition.pauseButton
         countdownLabel.name = pauseResetName
         countdownLabel.alpha = 0
         
@@ -104,7 +104,7 @@ class PauseResetEngine {
         buttonSprite.anchorPoint = .zero
         buttonSprite.position = position
         buttonSprite.name = pauseResetName
-        buttonSprite.zPosition = K.ZPosition.buttons
+        buttonSprite.zPosition = K.ZPosition.pauseButton
 
         countdownLabel.position = CGPoint(x: position.x + buttonSize / 2, y: position.y + buttonSize * 1.5)
 

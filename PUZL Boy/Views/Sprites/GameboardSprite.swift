@@ -123,27 +123,65 @@ class GameboardSprite {
         }
     }
     
+    func illuminatePanel(at spriteName: (row: Int, col: Int), useOverlay: Bool) {
+        guard let panel = getPanel(at: spriteName, useOverlay: useOverlay) else { return }
+        
+        panel.zPosition = K.ZPosition.chatDimOverlay + (useOverlay ? K.ZPosition.overlay : K.ZPosition.terrain)
+    }
+    
+    func deIlluminatePanel(at spriteName: (row: Int, col: Int), useOverlay: Bool) {
+        guard let panel = getPanel(at: spriteName, useOverlay: useOverlay) else { return }
+        
+        panel.zPosition = useOverlay ? K.ZPosition.overlay : K.ZPosition.terrain
+    }
+    
+    private func getPanel(at spriteName: (row: Int, col: Int), useOverlay: Bool) -> SKNode? {
+        let panelName = "\(spriteName.row),\(spriteName.col)"
+        
+        if useOverlay {
+            return sprite.childNode(withName: panelName + GameboardSprite.overlayTag)
+        }
+        else {
+            for panelRows in panels {
+                for panel in panelRows {
+                    if panel.name == panelName {
+                        return panel
+                    }
+                }
+            }
+        }
+        
+        return nil
+    }
+    
     func getLocation(at position: K.GameboardPosition) -> CGPoint {
         return CGPoint(x: panelSize * (CGFloat(position.col) + 0.5), y: panelSize * (CGFloat(panelCount - 1 - position.row) + 0.5))
     }
     
     func colorizeGameboard(color: UIColor, blendFactor: CGFloat, animationDuration: TimeInterval, completion: (() -> ())?) {
+        let colorizeAction = SKAction.colorize(with: color, colorBlendFactor: blendFactor, duration: animationDuration)
+
         for (row, panelRows) in panels.enumerated() {
             for (col, _) in panelRows.enumerated() {
-                panels[row][col].run(SKAction.colorize(with: color, colorBlendFactor: blendFactor, duration: animationDuration))
+                panels[row][col].run(colorizeAction)
+                
+                //if lavaPanel exists...
+                for lavaPanel in panels[row][col].children {
+                    lavaPanel.run(colorizeAction)
+                }
             }
         }
         
         if completion == nil {
-            sprite.run(SKAction.colorize(with: color, colorBlendFactor: blendFactor, duration: animationDuration))
+            sprite.run(colorizeAction)
         }
         else {
-            sprite.run(SKAction.colorize(with: color, colorBlendFactor: blendFactor, duration: animationDuration), completion: completion!)
+            sprite.run(colorizeAction, completion: completion!)
         }
         
         for overlayObject in sprite.children {
             //3/4/23 I removed the completion handler call in this for loop because it was causing writes to Firestore to happen too many times. Would've been an accounting nightmare!
-            overlayObject.run(SKAction.colorize(with: color, colorBlendFactor: blendFactor, duration: animationDuration))
+            overlayObject.run(colorizeAction)
         }
     }
     

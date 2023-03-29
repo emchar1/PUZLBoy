@@ -66,9 +66,9 @@ class GameEngine {
     var canContinue: Bool { return GameEngine.livesRemaining >= 0 }
 
     private var backgroundSprite: SKSpriteNode!
-    private var gameboardSprite: GameboardSprite!
+    private(set) var gameboardSprite: GameboardSprite!
     private(set) var playerSprite: PlayerSprite!
-    private var displaySprite: DisplaySprite!
+    private(set) var displaySprite: DisplaySprite!
 
     weak var delegate: GameEngineDelegate?
     

@@ -42,7 +42,7 @@ class GameViewController: UIViewController {
                 FIRManager.initializeFirestore(user: user) { saveStateModel, error in
                     //No error handling...
                     
-                    DispatchQueue.main.asyncAfter(deadline: .now() + LoadingSprite.loadingDuration + 5999) {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + LoadingSprite.loadingDuration) {
                         launchScene.animateTransition {
                             let gameScene = GameScene(size: K.ScreenDimensions.screenSize, user: user, saveStateModel: saveStateModel)
 

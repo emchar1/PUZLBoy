@@ -65,7 +65,7 @@ struct BackgroundObject {
                         alpha: 0.75,
                         color: DayTheme.spriteColor,
                         colorBlendFactor: DayTheme.spriteShade,
-                        zPosition: K.ZPosition.backgroundObjectTier2)
+                        zPosition: K.ZPosition.backgroundObjectMountain)
         case .moon:
             setupSprite(imageNameShouldIncludeTier: true,
                         position: CGPoint(x: K.ScreenDimensions.iPhoneWidth - spriteWidth, y: K.ScreenDimensions.height - spriteWidth),
@@ -74,7 +74,7 @@ struct BackgroundObject {
                         alpha: DayTheme.currentTheme == .night ? 1.0 : (DayTheme.currentTheme == .dawn ? 0.5 : 0.0),
                         color: .clear,
                         colorBlendFactor: 0,
-                        zPosition: K.ZPosition.backgroundObjectTier4)
+                        zPosition: K.ZPosition.backgroundObjectMoon)
         default:
             switch tierLevel {
             case 0:
@@ -85,7 +85,7 @@ struct BackgroundObject {
                             alpha: backgroundType == .cloud ? 0.6 : 1.0,
                             color: backgroundType == .cloud ? .clear : DayTheme.spriteColor,
                             colorBlendFactor: DayTheme.spriteShade,
-                            zPosition: backgroundType == .cloud ? K.ZPosition.backgroundObjectTier3 : K.ZPosition.backgroundObjectTier0)
+                            zPosition: backgroundType == .cloud ? K.ZPosition.backgroundObjectCloud : K.ZPosition.backgroundObjectTier0)
             case 1:
                 setupSprite(imageNameShouldIncludeTier: true,
                             position: backgroundType == .cloud ? CGPoint(x: K.ScreenDimensions.iPhoneWidth / 4, y: K.ScreenDimensions.height / (backgroundBorder - 0.2)) : CGPoint(x: K.ScreenDimensions.iPhoneWidth, y: K.ScreenDimensions.height / (backgroundBorder + 0.25)),
@@ -94,7 +94,7 @@ struct BackgroundObject {
                             alpha: backgroundType == .cloud ? 0.6 : 0.9,
                             color: backgroundType == .cloud ? .clear : DayTheme.spriteColor,
                             colorBlendFactor: DayTheme.spriteShade,
-                            zPosition: backgroundType == .cloud ? K.ZPosition.backgroundObjectTier3 : K.ZPosition.backgroundObjectTier1)
+                            zPosition: backgroundType == .cloud ? K.ZPosition.backgroundObjectCloud : K.ZPosition.backgroundObjectTier1)
             default:
                 setupSprite(imageNameShouldIncludeTier: true,
                             position: backgroundType == .cloud ? CGPoint(x: K.ScreenDimensions.iPhoneWidth * 2 / 3, y: K.ScreenDimensions.height / (backgroundBorder - 0.1)) : CGPoint(x: K.ScreenDimensions.iPhoneWidth, y: K.ScreenDimensions.height / (backgroundBorder + 0.2)),
@@ -103,7 +103,7 @@ struct BackgroundObject {
                             alpha: backgroundType == .cloud ? 0.6 : 0.85,
                             color: backgroundType == .cloud ? .clear : DayTheme.spriteColor,
                             colorBlendFactor: DayTheme.spriteShade,
-                            zPosition: backgroundType == .cloud ? K.ZPosition.backgroundObjectTier3 : K.ZPosition.backgroundObjectTier2)
+                            zPosition: backgroundType == .cloud ? K.ZPosition.backgroundObjectCloud : K.ZPosition.backgroundObjectTier2)
             } //end switch tierLevel
         }//end switch backgroundTypes
     }//end setupBackgroundTypes

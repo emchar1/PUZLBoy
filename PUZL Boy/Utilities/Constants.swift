@@ -60,25 +60,54 @@ struct K {
     
     ///Various zPosition values used throughout the app.
     struct ZPosition {
-        static let partyBackgroundOverlay: CGFloat = 50
-        static let skyNode: CGFloat = 80
+        
+        //--LAUNCH SCENE--
+        static let skyNode: CGFloat = 25
+        static let grassNode: CGFloat = 30
+        static let backgroundObjectMoon: CGFloat = 40
+        static let backgroundObjectCloud: CGFloat = 45
+        static let backgroundObjectMountain: CGFloat = 50
+        static let backgroundObjectTier2: CGFloat = 55
+        static let backgroundObjectTier1: CGFloat = 60
+        static let backgroundObjectTier0: CGFloat = 65
+        static let loadingNode: CGFloat = 75
+        static let fadeTransitionNode: CGFloat = 80
+        
+        
+        //--GAME SCENE--
+        //Party Background
+        static let partyBackgroundOverlay: CGFloat = 90
+
+        //Gameboard
         static let gameboard: CGFloat = 100
-        static let terrain: CGFloat = 200
-        static let overlay: CGFloat = 210
-        static let backgroundObjectTier4: CGFloat = 240
-        static let backgroundObjectTier3: CGFloat = 245
-        static let backgroundObjectTier2: CGFloat = 250
-        static let backgroundObjectTier1: CGFloat = 255
-        static let backgroundObjectTier0: CGFloat = 260
-        static let adScene: CGFloat = 777
-        static let display: CGFloat = 800
-        static let player: CGFloat = 1000
-        static let items: CGFloat = 1050
-        static let score: CGFloat = 1100
-        static let partyForegroundOverlay: CGFloat = 1200
-        static let buttons: CGFloat = 1300
-        static let messagePrompt: CGFloat = 2000
-        static let activityIndicator: CGFloat = 2100
+        static let terrain: CGFloat = 120 //stacks with gameboard
+        static let overlay: CGFloat = 130 //stacks with gameboard
+        
+        //AdScene - at least 300 over gameboard!!
+        static let adSceneBlackout: CGFloat = 400
+
+        //DisplaySprite
+        static let display: CGFloat = 450
+
+        //ChatEngine
+        static let chatDimOverlay: CGFloat = 500
+        static let chatDialogue: CGFloat = 510
+
+        //Player
+        static let player: CGFloat = 600
+        static let itemsAndEffects: CGFloat = 620
+        static let itemsPoints: CGFloat = 630
+
+        //Party Foreground
+        static let partyForegroundOverlay: CGFloat = 777
+        
+        //Pause Menu - at least 200 over partyForegroundOverlay!!
+        static let pauseScreen: CGFloat = 900
+        static let pauseButton: CGFloat = 910
+
+        //Important messaging
+        static let messagePrompt: CGFloat = 1000
+        static let activityIndicator: CGFloat = 1020
     }
     
     

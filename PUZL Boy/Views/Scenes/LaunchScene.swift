@@ -37,11 +37,11 @@ class LaunchScene: SKScene {
         player.sprite.name = "playerSprite"
         
         loadingSprite = LoadingSprite(position: CGPoint(x: K.ScreenDimensions.iPhoneWidth / 2, y: K.ScreenDimensions.height / 6))
-        loadingSprite.zPosition = K.ZPosition.display
+        loadingSprite.zPosition = K.ZPosition.loadingNode
         loadingSprite.name = "loadingSprite"
         
         fadeSprite = SKSpriteNode(color: .white, size: CGSize(width: K.ScreenDimensions.iPhoneWidth, height: K.ScreenDimensions.height))
-        fadeSprite.zPosition = K.ZPosition.display
+        fadeSprite.zPosition = K.ZPosition.fadeTransitionNode
         fadeSprite.alpha = 0
         fadeSprite.anchorPoint = .zero
         fadeSprite.name = "fadeSprite"
@@ -77,7 +77,7 @@ class LaunchScene: SKScene {
         grassNode.color = DayTheme.spriteColor
         grassNode.colorBlendFactor = DayTheme.spriteShade
         grassNode.anchorPoint = .zero
-        grassNode.zPosition = K.ZPosition.gameboard
+        grassNode.zPosition = K.ZPosition.grassNode
 
         super.init(size: size)
         

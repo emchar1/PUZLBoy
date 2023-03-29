@@ -22,6 +22,10 @@ class DisplaySprite {
     private var heartsAtlas: SKTextureAtlas
     private var heartsTextures: [SKTexture]
     
+    enum DisplayStatusName: String {
+        case lives, health, moves, hammers, swords
+    }
+    
     
     // MARK: - Initialization
     
@@ -32,22 +36,27 @@ class DisplaySprite {
         statusLives = DisplayLivesSprite(icon: "Run (6)", amount: 3)
         statusLives.position = CGPoint(x: K.ScreenDimensions.iPhoneWidth - K.ScreenDimensions.lrMargin - statusLives.iconSize,
                                        y: topYPosition + margin + 172)
+        statusLives.name = DisplayStatusName.lives.rawValue
         
         statusHealth = DisplayStatusBarSprite(icon: "iconHeart", amount: 99, fillColor: .cyan)
         statusHealth.position = CGPoint(x: margin + statusHealth.width + K.ScreenDimensions.lrMargin,
                                         y: topYPosition + margin + statusHealth.width / 2 + 14)
-
+        statusHealth.name = DisplayStatusName.health.rawValue
+        
         statusMoves = DisplayStatusBarSprite(icon: "iconBoot", amount: 99, fillColor: .cyan)
         statusMoves.position = CGPoint(x: margin + statusMoves.width + K.ScreenDimensions.lrMargin,
                                        y: topYPosition + margin + 14)
+        statusMoves.name = DisplayStatusName.moves.rawValue
 
         statusHammers = DisplayStatusBarSprite(icon: "iconHammer", amount: 99, fillColor: .yellow)
         statusHammers.position = CGPoint(x: K.ScreenDimensions.iPhoneWidth - K.ScreenDimensions.lrMargin - statusHammers.width,
                                          y: topYPosition + margin + statusHammers.width / 2 + 14)
+        statusHammers.name = DisplayStatusName.hammers.rawValue
 
         statusSwords = DisplayStatusBarSprite(icon: "iconSword", amount: 99, fillColor: .yellow)
         statusSwords.position = CGPoint(x: K.ScreenDimensions.iPhoneWidth - K.ScreenDimensions.lrMargin - statusSwords.width,
                                         y: topYPosition + margin + 14)
+        statusSwords.name = DisplayStatusName.swords.rawValue
 
         levelLabel = SKLabelNode(text: nil)
         levelLabel.horizontalAlignmentMode = .right
