@@ -286,6 +286,7 @@ extension ChatEngine {
                                      chat: "PUZL Boy: I got this, yo!") { [unowned self] in
                                 dialoguePlayed[level] = true
                                 delegate?.deIlluminatePanel(at: (0, 2), useOverlay: true)
+                                delegate?.deIlluminatePanel(at: (2, 2), useOverlay: false)
                                 fadeDimOverlay()
                                 completion?()
                             }
