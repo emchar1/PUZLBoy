@@ -129,8 +129,10 @@ class GameboardSprite {
         panel.zPosition = K.ZPosition.chatDimOverlay + (useOverlay ? K.ZPosition.overlay : K.ZPosition.terrain)
         
         if !useOverlay {
-            let goldBorder = SKSpriteNode(imageNamed: "goldborder")
-            goldBorder.anchorPoint = .zero
+            let goldBorder = SKShapeNode(rect: CGRect(x: 0, y: 0, width: 1125, height: 1125), cornerRadius: 40)
+            goldBorder.fillColor = .clear
+            goldBorder.strokeColor = .systemYellow
+            goldBorder.lineWidth = 40
             goldBorder.zPosition = 10
             goldBorder.name = "goldborder"
             
@@ -150,12 +152,7 @@ class GameboardSprite {
         guard let panel = getPanel(at: spriteName, useOverlay: useOverlay) else { return }
         
         panel.zPosition = useOverlay ? K.ZPosition.overlay : K.ZPosition.terrain
-        
-        for childPanel in panel.children {
-            if childPanel.name == "goldborder" {
-                childPanel.removeFromParent()
-            }
-        }
+        panel.children.filter({ $0.name == "goldborder" }).first?.removeFromParent()
     }
     
     private func getPanel(at spriteName: (row: Int, col: Int), useOverlay: Bool) -> SKNode? {

@@ -83,9 +83,11 @@ class DisplayStatusBarSprite: SKNode {
     func illuminateNode(pointLeft: Bool) {
         zPosition = K.ZPosition.chatDimOverlay + 10
         
-        let goldArrow = SKSpriteNode(imageNamed: "goldarrow")
-        goldArrow.setScale(width / 518 * 7 / 8)
+        let goldArrow = SKSpriteNode(imageNamed: "whitearrow")
+        goldArrow.setScale(width / 1125 * (7 / 8))
         goldArrow.position.x = pointLeft ? width : -width - iconSize / 2
+        goldArrow.color = .systemYellow
+        goldArrow.colorBlendFactor = 1.0
         goldArrow.name = "goldarrow"
 
         if !pointLeft {
@@ -106,11 +108,6 @@ class DisplayStatusBarSprite: SKNode {
     
     func deIlluminateNode() {
         zPosition = 0
-        
-        for goldArrow in children {
-            if goldArrow.name == "goldarrow" {
-                goldArrow.removeFromParent()
-            }
-        }
+        children.filter({ $0.name == "goldarrow" }).first?.removeFromParent()
     }
 }
