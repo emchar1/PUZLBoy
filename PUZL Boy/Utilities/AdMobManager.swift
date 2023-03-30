@@ -37,6 +37,7 @@ class AdMobManager: NSObject {
     static let myFirstInterstitialID = "ca-app-pub-3047242308312153/9074783932"
     static let rewardedID = "ca-app-pub-3047242308312153/7555829885"
     static let eddiesiPhoneTestingDeviceID = "6ff74173a673785005b5692f63fbaa25"//"00008110-000808E61E6A801E"
+    static let momsiPhoneTestingDeviceID = "6582222a25a290e89ca6a1c4f29924d6"
     static let testingSimulatorID = GADSimulatorID
         
     //Public properties

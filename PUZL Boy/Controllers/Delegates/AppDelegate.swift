@@ -18,7 +18,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         FirebaseApp.configure()
         
-        GADMobileAds.sharedInstance().requestConfiguration.testDeviceIdentifiers = [AdMobManager.testingSimulatorID, AdMobManager.eddiesiPhoneTestingDeviceID]
+        GADMobileAds.sharedInstance().requestConfiguration.testDeviceIdentifiers = [
+            AdMobManager.testingSimulatorID,
+            AdMobManager.eddiesiPhoneTestingDeviceID,
+            AdMobManager.momsiPhoneTestingDeviceID
+        ]
+        
         GADMobileAds.sharedInstance().start(completionHandler: nil)
 
         return true
