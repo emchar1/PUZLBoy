@@ -15,4 +15,3 @@ class AchievementStoneCutter: BaseAchievement {
         print("Percent complete for Stone Cutter: \(percentComplete)")
     }
 }
-

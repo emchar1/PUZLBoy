@@ -721,10 +721,10 @@ extension GameScene: ChatEngineDelegate {
     func illuminateDisplayNode(for displayType: DisplaySprite.DisplayStatusName) {
         switch displayType {
         case .lives:    gameEngine.displaySprite.statusLives.illuminateNode()
-        case .health:   gameEngine.displaySprite.statusHealth.illuminateNode()
-        case .moves:    gameEngine.displaySprite.statusMoves.illuminateNode()
-        case .hammers:  gameEngine.displaySprite.statusHammers.illuminateNode()
-        case .swords:   gameEngine.displaySprite.statusSwords.illuminateNode()
+        case .health:   gameEngine.displaySprite.statusHealth.illuminateNode(pointLeft: true)
+        case .moves:    gameEngine.displaySprite.statusMoves.illuminateNode(pointLeft: true)
+        case .hammers:  gameEngine.displaySprite.statusHammers.illuminateNode(pointLeft: false)
+        case .swords:   gameEngine.displaySprite.statusSwords.illuminateNode(pointLeft: false)
         }
     }
     

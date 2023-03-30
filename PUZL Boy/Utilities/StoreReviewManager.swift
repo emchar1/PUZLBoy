@@ -26,6 +26,7 @@ class StoreReviewManager {
     
     
     // MARK: - Initialization
+    
     init() {
         reviewCount = UserDefaults.standard.integer(forKey: K.UserDefaults.reviewStoreCount)
     }

@@ -312,6 +312,9 @@ extension ChatEngine {
                          chat: "Your inventory count can be found in the upper right. 🔨") { [unowned self] in
                     sendChat(profile: .hero, startNewChat: false, endChat: false,
                              chat: "Hammers break boulders. Got it.") { [unowned self] in
+                        
+                        delegate?.deIlluminateDisplayNode(for: .hammers)
+                        
                         sendChat(profile: .trainer, startNewChat: false, endChat: false,
                                  chat: "Since there are no hammers in this level, you'll just have to go around them.") { [unowned self] in
                             sendChat(profile: .hero, startNewChat: false, endChat: false,
@@ -385,18 +388,22 @@ extension ChatEngine {
             delegate?.illuminatePanel(at: (1, 1), useOverlay: true)
 
             sendChat(profile: .trainer, startNewChat: true, endChat: false,
-                     chat: "Whoa, a dragon! Looks like he's sleeping. Don't even try waking him or it'll cost ya 1 health point. 💖") { [unowned self] in
+                     chat: "Whoa, a dragon! Looks like he's sleeping. Don't even try waking him or it'll cost ya 1 health point.") { [unowned self] in
 
                 delegate?.illuminateDisplayNode(for: .health)
 
                 sendChat(profile: .trainer, startNewChat: false, endChat: false,
-                         chat: "Don't believe me??? Go ahead. Try and pet him, I dare you!") { [unowned self] in // Let player touch dragon before continuing...
+                         chat: "Once your health drops to 0, it's lights out, baby. Your health can be found in the upper left next to the heart. 💖") { [unowned self] in
                     
+                    delegate?.deIlluminateDisplayNode(for: .health)
                     delegate?.illuminateDisplayNode(for: .swords)
 
                     sendChat(profile: .trainer, startNewChat: false, endChat: false,
-                             chat: "Once your health drops to 0, it's lights out, baby. If only you had a sword. 🗡") { [unowned self] in
+                             chat: "Don't believe me??? Go ahead. Try and pet him, I dare you! If only you had a sword. 🗡") { [unowned self] in
                         sendChat(profile: .hero, startNewChat: false, endChat: false, chat: "Lemme guess, I can only use the sword once before it breaks?") { [unowned self] in
+                            
+                            delegate?.deIlluminateDisplayNode(for: .swords)
+                            
                             sendChat(profile: .trainer, startNewChat: false, endChat: true,
                                      chat: "B-I-N-G-O!!! Oh sorry, I was playing Bingo with my grandmother. Yep, one sword per dragon.") { [unowned self] in
                                 dialoguePlayed[level] = true

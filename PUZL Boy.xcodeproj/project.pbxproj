@@ -86,8 +86,6 @@
 		EA94E87429C0DE2C009F2614 /* movetile2.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA94E87129C0DE2C009F2614 /* movetile2.mp3 */; };
 		EA94E87529C0DE2C009F2614 /* movetile1.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA94E87229C0DE2C009F2614 /* movetile1.mp3 */; };
 		EA94E87729C2DCE0009F2614 /* Extension+CGPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA94E87629C2DCE0009F2614 /* Extension+CGPoint.swift */; };
-		EA94E87929C3E0E9009F2614 /* ResetViewSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA94E87829C3E0E9009F2614 /* ResetViewSprite.swift */; };
-		EA94E87B29C4309D009F2614 /* animateStroke.fsh in Resources */ = {isa = PBXBuildFile; fileRef = EA94E87A29C4309D009F2614 /* animateStroke.fsh */; };
 		EA956C6A29257B9C00879AD0 /* AudioManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA956C6929257B9C00879AD0 /* AudioManager.swift */; };
 		EA956C6C29257D9600879AD0 /* Extension+Comparable.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA956C6B29257D9600879AD0 /* Extension+Comparable.swift */; };
 		EA956C75292595F400879AD0 /* overworld4.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA956C74292595F400879AD0 /* overworld4.mp3 */; };
@@ -247,8 +245,6 @@
 		EA94E87129C0DE2C009F2614 /* movetile2.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = movetile2.mp3; sourceTree = "<group>"; };
 		EA94E87229C0DE2C009F2614 /* movetile1.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = movetile1.mp3; sourceTree = "<group>"; };
 		EA94E87629C2DCE0009F2614 /* Extension+CGPoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+CGPoint.swift"; sourceTree = "<group>"; };
-		EA94E87829C3E0E9009F2614 /* ResetViewSprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetViewSprite.swift; sourceTree = "<group>"; };
-		EA94E87A29C4309D009F2614 /* animateStroke.fsh */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = animateStroke.fsh; sourceTree = "<group>"; };
 		EA956C6929257B9C00879AD0 /* AudioManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioManager.swift; sourceTree = "<group>"; };
 		EA956C6B29257D9600879AD0 /* Extension+Comparable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+Comparable.swift"; sourceTree = "<group>"; };
 		EA956C74292595F400879AD0 /* overworld4.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = overworld4.mp3; sourceTree = "<group>"; };
@@ -444,7 +440,6 @@
 				EA2AF74329B6D06000444E5A /* OfflinePlaySprite.swift */,
 				EA4D026229B7F3AF00F0C7B1 /* PartyModeSprite.swift */,
 				EA94E86429BDA536009F2614 /* PartyEffectSprite.swift */,
-				EA94E87829C3E0E9009F2614 /* ResetViewSprite.swift */,
 			);
 			path = Sprites;
 			sourceTree = "<group>";
@@ -453,6 +448,8 @@
 			isa = PBXGroup;
 			children = (
 				EA94E86629BE6BCC009F2614 /* PauseResetEngine.swift */,
+				EA4D026629BA656200F0C7B1 /* TabBarEngine.swift */,
+				EA4D026829BA8C8E00F0C7B1 /* TabBarButton.swift */,
 			);
 			path = PauseReset;
 			sourceTree = "<group>";
@@ -640,8 +637,6 @@
 				EA3951F02939DE5900D0B14A /* ScoringEngine.swift */,
 				EA95D2112963B4580061059C /* LevelSkipEngine.swift */,
 				EA95D1DE295674AE0061059C /* ChatEngine.swift */,
-				EA4D026629BA656200F0C7B1 /* TabBarEngine.swift */,
-				EA4D026829BA8C8E00F0C7B1 /* TabBarButton.swift */,
 				EA6A79F529CC035B00F47A73 /* PauseReset */,
 			);
 			path = Engines;
@@ -658,7 +653,6 @@
 				EA75F0EA292DF46200F09BD7 /* FIRManager.swift */,
 				EA826C9629938CBB00F19F81 /* StoreReviewManager.swift */,
 				EA95D1A5294957060061059C /* Haptics.swift */,
-				EA94E87A29C4309D009F2614 /* animateStroke.fsh */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -787,7 +781,6 @@
 				EA65183428E419A000E535BF /* Assets.xcassets in Resources */,
 				EAF7182929B31BE800E2ED82 /* lavaappear1.mp3 in Resources */,
 				EAF7183329B3D26F00E2ED82 /* movesand2.mp3 in Resources */,
-				EA94E87B29C4309D009F2614 /* animateStroke.fsh in Resources */,
 				EA94E87329C0DE2C009F2614 /* movetile3.mp3 in Resources */,
 				EA3467A929A8C6CA002DDA02 /* chatopen.mp3 in Resources */,
 				EAF7182D29B3CC0500E2ED82 /* lavaappear2.mp3 in Resources */,
@@ -821,7 +814,6 @@
 				EA78C36C29763B1C00292744 /* AchievementAdMobster.swift in Sources */,
 				EA75F0ED292DF57400F09BD7 /* LevelModel.swift in Sources */,
 				EA3951ED2938165A00D0B14A /* Extension+UIImage.swift in Sources */,
-				EA94E87929C3E0E9009F2614 /* ResetViewSprite.swift in Sources */,
 				EA826C95298F880B00F19F81 /* AchievementPUZLMaster.swift in Sources */,
 				EA95D1D529544D990061059C /* AchievementEnigmatologist.swift in Sources */,
 				EA94E86529BDA536009F2614 /* PartyEffectSprite.swift in Sources */,

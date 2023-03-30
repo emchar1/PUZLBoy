@@ -125,14 +125,29 @@ class GameboardSprite {
     
     func illuminatePanel(at spriteName: (row: Int, col: Int), useOverlay: Bool) {
         guard let panel = getPanel(at: spriteName, useOverlay: useOverlay) else { return }
-        
+                
         panel.zPosition = K.ZPosition.chatDimOverlay + (useOverlay ? K.ZPosition.overlay : K.ZPosition.terrain)
+        
+        if !useOverlay {
+            let goldBorder = SKSpriteNode(imageNamed: "goldborder")
+            goldBorder.anchorPoint = .zero
+            goldBorder.zPosition = 10
+            goldBorder.name = "goldborder"
+            
+            panel.addChild(goldBorder)
+        }
     }
     
     func deIlluminatePanel(at spriteName: (row: Int, col: Int), useOverlay: Bool) {
         guard let panel = getPanel(at: spriteName, useOverlay: useOverlay) else { return }
         
         panel.zPosition = useOverlay ? K.ZPosition.overlay : K.ZPosition.terrain
+        
+        for childPanel in panel.children {
+            if childPanel.name == "goldborder" {
+                childPanel.removeFromParent()
+            }
+        }
     }
     
     private func getPanel(at spriteName: (row: Int, col: Int), useOverlay: Bool) -> SKNode? {
