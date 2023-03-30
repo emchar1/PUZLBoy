@@ -84,7 +84,7 @@ class DisplayStatusBarSprite: SKNode {
         zPosition = K.ZPosition.chatDimOverlay + 10
         
         let goldArrow = SKSpriteNode(imageNamed: "goldarrow")
-        goldArrow.setScale(width / 518 * 3 / 4)
+        goldArrow.setScale(width / 518 * 7 / 8)
         goldArrow.position.x = pointLeft ? width : -width - iconSize / 2
         goldArrow.name = "goldarrow"
 

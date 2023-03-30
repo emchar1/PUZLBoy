@@ -134,7 +134,15 @@ class GameboardSprite {
             goldBorder.zPosition = 10
             goldBorder.name = "goldborder"
             
+            let pulseAnimation = SKAction.sequence([
+                SKAction.fadeAlpha(to: 0.0, duration: 0.5),
+                SKAction.fadeAlpha(to: 1.0, duration: 0.25),
+                SKAction.wait(forDuration: 0.5)
+            ])
+            
             panel.addChild(goldBorder)
+            
+            goldBorder.run(SKAction.repeatForever(pulseAnimation))
         }
     }
     
