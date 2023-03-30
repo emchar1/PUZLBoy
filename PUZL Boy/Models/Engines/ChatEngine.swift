@@ -386,35 +386,40 @@ extension ChatEngine {
             }
             
             delegate?.illuminatePanel(at: (1, 1), useOverlay: true)
-
+            
             sendChat(profile: .trainer, startNewChat: true, endChat: false,
-                     chat: "Whoa, a dragon! Looks like he's sleeping. Don't even try waking him or it'll cost ya 1 health point.") { [unowned self] in
+                     chat: "Look, a terrifyingly majestic dragon! Wonder in awe in his magnificence! But don't get too close or it'll cost ya 1 health point.") { [unowned self] in
+                sendChat(profile: .hero, startNewChat: false, endChat: false,
+                         chat: "He looks kinda small and underwhelming to me...") { [unowned self] in
+                    sendChat(profile: .trainer, startNewChat: false, endChat: false, chat: "Hey, this is a solo project with 0 budget, whaddya want from me?!\n\nAnyway...") { [unowned self] in
+                        
+                        delegate?.illuminateDisplayNode(for: .health)
 
-                delegate?.illuminateDisplayNode(for: .health)
-
-                sendChat(profile: .trainer, startNewChat: false, endChat: false,
-                         chat: "Once your health drops to 0, it's lights out, baby. Your health can be found in the upper left next to the heart. 💖") { [unowned self] in
-                    
-                    delegate?.deIlluminateDisplayNode(for: .health)
-                    delegate?.illuminateDisplayNode(for: .swords)
-
-                    sendChat(profile: .trainer, startNewChat: false, endChat: false,
-                             chat: "Don't believe me??? Go ahead. Try and pet him, I dare you! If only you had a sword. 🗡") { [unowned self] in
-                        sendChat(profile: .hero, startNewChat: false, endChat: false, chat: "Lemme guess, I can only use the sword once before it breaks?") { [unowned self] in
+                        sendChat(profile: .trainer, startNewChat: false, endChat: false,
+                                 chat: "Once your health drops to 0, it's lights out, baby. Your health can be found in the upper left next to the heart. 💖") { [unowned self] in
                             
-                            delegate?.deIlluminateDisplayNode(for: .swords)
+                            delegate?.deIlluminateDisplayNode(for: .health)
+                            delegate?.illuminateDisplayNode(for: .swords)
                             
-                            sendChat(profile: .trainer, startNewChat: false, endChat: true,
-                                     chat: "B-I-N-G-O!!! Oh sorry, I was playing Bingo with my grandmother. Yep, one sword per dragon.") { [unowned self] in
-                                dialoguePlayed[level] = true
-                                fadeDimOverlay()
-                                completion?()
+                            sendChat(profile: .trainer, startNewChat: false, endChat: false,
+                                     chat: "Don't believe me? Go ahead. Try and pet him, I dare you! But you won't be able to defeat him without a sword. 🗡") { [unowned self] in
+                                sendChat(profile: .hero, startNewChat: false, endChat: false, chat: "Lemme guess, I can only use the sword once before it breaks?") { [unowned self] in
+                                    
+                                    delegate?.deIlluminateDisplayNode(for: .swords)
+                                    
+                                    sendChat(profile: .trainer, startNewChat: false, endChat: true,
+                                             chat: "B-I-N-G-O!!! Oh sorry, I was playing Bingo with my grandmother. Yep, one sword per dragon.") { [unowned self] in
+                                        dialoguePlayed[level] = true
+                                        fadeDimOverlay()
+                                        completion?()
+                                    }
+                                }
                             }
                         }
                     }
                 }
             }
-        
+            
         case 76:
             guard let dialoguePlayedCheck = dialoguePlayed[level], !dialoguePlayedCheck else {
                 completion?()

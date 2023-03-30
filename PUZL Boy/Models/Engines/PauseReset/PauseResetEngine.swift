@@ -199,7 +199,7 @@ class PauseResetEngine {
             backgroundSprite.run(SKAction.sequence([
                 SKAction.scale(to: GameboardSprite.spriteScale + 0.05, duration: 0.1),
                 SKAction.group([
-                    SKAction.moveTo(y: 0, duration: 0.2),
+                    SKAction.moveTo(y: self.position.y, duration: 0.2),
                     SKAction.scale(to: 0, duration: 0.2)
                 ])
             ])) {

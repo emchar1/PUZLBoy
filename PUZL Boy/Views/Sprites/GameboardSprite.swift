@@ -129,12 +129,12 @@ class GameboardSprite {
         panel.zPosition = K.ZPosition.chatDimOverlay + (useOverlay ? K.ZPosition.overlay : K.ZPosition.terrain)
         
         if !useOverlay {
-            let goldBorder = SKShapeNode(rect: CGRect(x: 0, y: 0, width: 1125, height: 1125), cornerRadius: 40)
-            goldBorder.fillColor = .clear
-            goldBorder.strokeColor = .systemYellow
-            goldBorder.lineWidth = 40
-            goldBorder.zPosition = 10
-            goldBorder.name = "goldborder"
+            let hintborder = SKShapeNode(rect: CGRect(x: 0, y: 0, width: 1125, height: 1125), cornerRadius: 40)
+            hintborder.fillColor = .clear
+            hintborder.strokeColor = .systemYellow
+            hintborder.lineWidth = 40
+            hintborder.zPosition = 10
+            hintborder.name = "hintborder"
             
             let pulseAnimation = SKAction.sequence([
                 SKAction.fadeAlpha(to: 0.0, duration: 0.5),
@@ -142,9 +142,9 @@ class GameboardSprite {
                 SKAction.wait(forDuration: 0.5)
             ])
             
-            panel.addChild(goldBorder)
+            panel.addChild(hintborder)
             
-            goldBorder.run(SKAction.repeatForever(pulseAnimation))
+            hintborder.run(SKAction.repeatForever(pulseAnimation))
         }
     }
     
@@ -152,7 +152,7 @@ class GameboardSprite {
         guard let panel = getPanel(at: spriteName, useOverlay: useOverlay) else { return }
         
         panel.zPosition = useOverlay ? K.ZPosition.overlay : K.ZPosition.terrain
-        panel.children.filter({ $0.name == "goldborder" }).first?.removeFromParent()
+        panel.children.filter({ $0.name == "hintborder" }).first?.removeFromParent()
     }
     
     private func getPanel(at spriteName: (row: Int, col: Int), useOverlay: Bool) -> SKNode? {

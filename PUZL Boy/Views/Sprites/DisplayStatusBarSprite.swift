@@ -83,15 +83,15 @@ class DisplayStatusBarSprite: SKNode {
     func illuminateNode(pointLeft: Bool) {
         zPosition = K.ZPosition.chatDimOverlay + 10
         
-        let goldArrow = SKSpriteNode(imageNamed: "whitearrow")
-        goldArrow.setScale(width / 1125 * (7 / 8))
-        goldArrow.position.x = pointLeft ? width : -width - iconSize / 2
-        goldArrow.color = .systemYellow
-        goldArrow.colorBlendFactor = 1.0
-        goldArrow.name = "goldarrow"
+        let hintarrow = SKSpriteNode(imageNamed: "hintarrow")
+        hintarrow.setScale(width / 1125 * (7 / 8))
+        hintarrow.position.x = pointLeft ? width : -width - iconSize / 2
+        hintarrow.color = .systemYellow
+        hintarrow.colorBlendFactor = 1.0
+        hintarrow.name = "hintarrow"
 
         if !pointLeft {
-            goldArrow.xScale *= -1
+            hintarrow.xScale *= -1
         }
         
         let moveDistance: CGFloat = width / 2
@@ -101,13 +101,13 @@ class DisplayStatusBarSprite: SKNode {
             SKAction.wait(forDuration: 0.5)
         ])
 
-        addChild(goldArrow)
+        addChild(hintarrow)
         
-        goldArrow.run(SKAction.repeatForever(animation))
+        hintarrow.run(SKAction.repeatForever(animation))
     }
     
     func deIlluminateNode() {
         zPosition = 0
-        children.filter({ $0.name == "goldarrow" }).first?.removeFromParent()
+        children.filter({ $0.name == "hintarrow" }).first?.removeFromParent()
     }
 }
