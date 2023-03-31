@@ -71,7 +71,7 @@ struct K {
         static let backgroundObjectTier1: CGFloat = 60
         static let backgroundObjectTier0: CGFloat = 65
         static let loadingNode: CGFloat = 75
-        static let fadeTransitionNode: CGFloat = 80
+        static let fadeTransitionNode: CGFloat = 680
         
         
         //--GAME SCENE--
