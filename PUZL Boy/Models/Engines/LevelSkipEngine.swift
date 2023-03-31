@@ -70,6 +70,8 @@ class LevelSkipEngine {
         partyMode.position = CGPoint(x: forwardSprite.position.x - buttonSpacing, y: partyMode.size.height + padding)
         partyMode.anchorPoint = .zero
         partyMode.zPosition = K.ZPosition.pauseButton
+        
+        fadeButtons()
     }
     
     
@@ -78,6 +80,10 @@ class LevelSkipEngine {
     func handleControls(in location: CGPoint) {
         guard let superScene = superScene else { return print("superScene not set!") }
         guard GameEngine.livesRemaining >= 0 else { return print("Can't level skip. Player he dead.") }
+        
+        if location.y < UIDevice.modelInfo.bottomSafeArea * 2 + 180 {
+            fadeButtons()
+        }
         
         for nodeTapped in superScene.nodes(at: location) {
             if nodeTapped.name == "forwardButton" {
@@ -121,5 +127,30 @@ class LevelSkipEngine {
         if let user = user, user.uid == "3SeIWmlATmbav7jwCDjXyiA0TgA3" {
             superScene.addChild(partyMode)
         }
+    }
+    
+    
+    // MARK: - Helper Functions
+    
+    private func fadeButtons() {
+        forwardSprite.removeAllActions()
+        reverseSprite.removeAllActions()
+        viewAchievements.removeAllActions()
+        partyMode.removeAllActions()
+        
+        forwardSprite.alpha = 1
+        reverseSprite.alpha = 1
+        viewAchievements.alpha = 1
+        partyMode.alpha = 1
+                
+        let fadeAway = SKAction.sequence([
+            SKAction.wait(forDuration: 3.0),
+            SKAction.fadeAlpha(to: 0, duration: 0.5)
+        ])
+
+        forwardSprite.run(fadeAway)
+        reverseSprite.run(fadeAway)
+        viewAchievements.run(fadeAway)
+        partyMode.run(fadeAway)
     }
 }
