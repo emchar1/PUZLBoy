@@ -71,7 +71,7 @@ class LevelSkipEngine {
         partyMode.anchorPoint = .zero
         partyMode.zPosition = K.ZPosition.pauseButton
         
-        fadeButtons()
+        showButtons()
     }
     
     
@@ -82,7 +82,7 @@ class LevelSkipEngine {
         guard GameEngine.livesRemaining >= 0 else { return print("Can't level skip. Player he dead.") }
         
         if location.y < UIDevice.modelInfo.bottomSafeArea * 2 + 180 {
-            fadeButtons()
+            showButtons()
         }
         
         for nodeTapped in superScene.nodes(at: location) {
@@ -132,25 +132,21 @@ class LevelSkipEngine {
     
     // MARK: - Helper Functions
     
-    private func fadeButtons() {
+    private func showButtons() {
         forwardSprite.removeAllActions()
         reverseSprite.removeAllActions()
         viewAchievements.removeAllActions()
         partyMode.removeAllActions()
-        
-        forwardSprite.alpha = 1
-        reverseSprite.alpha = 1
-        viewAchievements.alpha = 1
-        partyMode.alpha = 1
                 
-        let fadeAway = SKAction.sequence([
+        let showHideAction = SKAction.sequence([
+            SKAction.moveTo(y: forwardSprite.size.height + 20, duration: 0.25),
             SKAction.wait(forDuration: 3.0),
-            SKAction.fadeAlpha(to: 0, duration: 0.5)
+            SKAction.moveTo(y: -forwardSprite.size.height, duration: 0.25)
         ])
 
-        forwardSprite.run(fadeAway)
-        reverseSprite.run(fadeAway)
-        viewAchievements.run(fadeAway)
-        partyMode.run(fadeAway)
+        forwardSprite.run(showHideAction)
+        reverseSprite.run(showHideAction)
+        viewAchievements.run(showHideAction)
+        partyMode.run(showHideAction)
     }
 }
