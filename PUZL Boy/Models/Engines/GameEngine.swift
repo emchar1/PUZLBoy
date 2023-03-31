@@ -35,16 +35,16 @@ class GameEngine {
         }
     }
 
-    private(set) var level: Level
+    private(set) var level: Level!
     private(set) var levelStatsArray: [LevelStats] = []
-    private(set) var gemsRemaining: Int
+    private(set) var gemsRemaining: Int!
     private(set) var gemsCollected: Int = 0
-    private(set) var healthRemaining: Int {
+    private(set) var healthRemaining: Int! {
         didSet {
             healthRemaining = max(0, healthRemaining)
         }
     }
-    private(set) var movesRemaining: Int {
+    private(set) var movesRemaining: Int! {
         didSet {
             movesRemaining = max(0, movesRemaining)
         }
@@ -82,6 +82,11 @@ class GameEngine {
         - shouldSpawn: determines whether should fade gameboard, i.e. if shouldSpawn is false
      */
     init(level: Int = 1, shouldSpawn: Bool) {
+        newGame(level: level, shouldSpawn: shouldSpawn)
+    }
+    
+    ///This function replaces having to keep initializing a new GameEngines in newGame in GameScene, which was causing huge memory spikes and app crashing for lower level devices.
+    func newGame(level: Int, shouldSpawn: Bool) {
         guard LevelBuilder.maxLevel > 0 else {
             fatalError("Firebase records were not loaded!🙀")
         }
@@ -155,6 +160,10 @@ class GameEngine {
         if !shouldSpawn {
             fadeGameboard(fadeOut: false, completion: nil)
         }
+    }
+    
+    deinit {
+        print("Game Engine deinitialized.")
     }
     
     
@@ -358,8 +367,8 @@ class GameEngine {
     private func setLabelsForDisplaySprite() {
         displaySprite.setLabels(level: "\(level.level)",
                                 lives: "\(GameEngine.livesRemaining)",
-                                moves: "\(movesRemaining)",
-                                health: "\(healthRemaining)",
+                                moves: "\(movesRemaining ?? -99)",
+                                health: "\(healthRemaining ?? -99)",
                                 inventory: level.inventory)
     }
     

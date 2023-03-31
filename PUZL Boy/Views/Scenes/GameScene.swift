@@ -290,8 +290,11 @@ class GameScene: SKScene {
             }
         }
         
-        gameEngine = GameEngine(level: level, shouldSpawn: !didWin)
-        gameEngine.delegate = self
+        gameEngine.newGame(level: level, shouldSpawn: !didWin)
+        
+        //DO NOT CREATE NEW INSTANCES EVERY TIME!!! THIS CAUSES MEMORY LEAKS! 3/30/23
+//        gameEngine = GameEngine(level: level, shouldSpawn: !didWin)
+//        gameEngine.delegate = self
         
         moveSprites()
         playDialogue()
