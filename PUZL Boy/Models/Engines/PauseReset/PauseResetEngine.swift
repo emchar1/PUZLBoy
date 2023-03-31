@@ -66,7 +66,6 @@ class PauseResetEngine {
         // FIXME: - This is atrocious
         backgroundSprite = SKShapeNode(rectOf: CGSize(width: settingsSize, height: settingsSize + ChatEngine.avatarSizeNew + settingsButtonHeight),
                                        cornerRadius: 20)
-        backgroundSprite.position = CGPoint(x: settingsScale * (settingsSize + padding) / 2 + GameboardSprite.xPosition, y: 0)
         backgroundSprite.fillColor = .gray
         backgroundSprite.fillTexture = SKTexture(image: UIImage.chatGradientTexture)
         backgroundSprite.lineWidth = 12
@@ -106,6 +105,7 @@ class PauseResetEngine {
         buttonSprite.name = pauseResetName
         buttonSprite.zPosition = K.ZPosition.pauseButton
 
+        backgroundSprite.position = CGPoint(x: settingsScale * (settingsSize + padding) / 2 + GameboardSprite.xPosition, y: position.y)
         countdownLabel.position = CGPoint(x: position.x + buttonSize / 2, y: position.y + buttonSize * 1.5)
 
         resetAll()
