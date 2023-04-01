@@ -242,7 +242,7 @@ class TitleScene: SKScene {
             case "menuStart":
                 let fadeDuration: TimeInterval = 2.0
                                 
-                AudioManager.shared.stopSound(for: AudioManager.shared.overworldTitle, fadeDuration: fadeDuration + 1) {
+                AudioManager.shared.stopSound(for: AudioManager.shared.overworldTitle, fadeDuration: fadeDuration) {
                     self.titleSceneDelegate?.didTapStart()
                     self.boyTitle.removeAllActions()
                 }

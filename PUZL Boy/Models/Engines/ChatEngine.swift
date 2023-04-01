@@ -304,12 +304,12 @@ extension ChatEngine {
             delegate?.illuminatePanel(at: (1, 1), useOverlay: true)
 
             sendChat(profile: .trainer, startNewChat: true, endChat: false,
-                     chat: "Pretty easy, right?! Levels get progressively harder with various obstacles blocking your path. You need a hammer to break through those boulders.") { [unowned self] in
+                     chat: "Pretty easy, right?! Levels get progressively harder with various obstacles blocking your path.") { [unowned self] in
                 
                 delegate?.illuminateDisplayNode(for: .hammers)
                 
                 sendChat(profile: .trainer, startNewChat: false, endChat: false,
-                         chat: "Your inventory count can be found in the upper right. 🔨") { [unowned self] in
+                         chat: "You need a hammer to break through those boulders. Your inventory count can be found in the upper right. 🔨") { [unowned self] in
                     sendChat(profile: .hero, startNewChat: false, endChat: false,
                              chat: "Hammers break boulders. Got it.") { [unowned self] in
                         

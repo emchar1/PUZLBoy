@@ -50,11 +50,10 @@ class GameViewController: UIViewController {
                     
                     DispatchQueue.main.asyncAfter(deadline: .now() + LoadingSprite.loadingDuration) {
                         launchScene.animateTransition {
-//                            let gameScene = GameScene(size: K.ScreenDimensions.screenSize, user: user, saveStateModel: saveStateModel)
                             let titleScene = TitleScene(size: K.ScreenDimensions.screenSize)
                             titleScene.titleSceneDelegate = self
                             
-                            self.skView.presentScene(titleScene)//, transition: SKTransition.fade(with: .white, duration: 1.0))
+                            self.skView.presentScene(titleScene)
                         }
                                                 
                         self.levelLoaded = true
@@ -76,6 +75,6 @@ extension GameViewController: TitleSceneDelegate {
     func didTapStart() {
         let gameScene = GameScene(size: K.ScreenDimensions.screenSize, user: user, saveStateModel: saveStateModel)
         
-        skView.presentScene(gameScene)
+        skView.presentScene(gameScene, transition: SKTransition.fade(with: .white, duration: 1.0))
     }
 }
