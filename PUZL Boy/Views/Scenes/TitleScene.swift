@@ -40,8 +40,8 @@ class TitleScene: SKScene {
     ]
     private static let selectedColor = Int.random(in: 0..<boyColors.count)
     
-    private let menuSize = CGSize(width: 600, height: K.ScreenDimensions.height / 4)
-    private let menuGap: CGFloat = 100
+    private let menuSize = CGSize(width: 650, height: K.ScreenDimensions.height / 3)
+    private let menuGap: CGFloat = 133
     private var player = Player()
     private var skyNode: SKSpriteNode
     private var puzlTitle: SKLabelNode
@@ -54,8 +54,6 @@ class TitleScene: SKScene {
     private var menuBackground: SKShapeNode
     private var fadeSprite: SKSpriteNode
     
-    
-
     weak var titleSceneDelegate: TitleSceneDelegate?
     
     
@@ -149,13 +147,10 @@ class TitleScene: SKScene {
         
         menuBackground = SKShapeNode(rectOf: CGSize(width: menuSize.width, height: menuSize.height), cornerRadius: 20)
         menuBackground.position = CGPoint(x: K.ScreenDimensions.iPhoneWidth / 2, y: K.ScreenDimensions.bottomMargin + menuSize.height / 2)
-//        menuBackground.fillTexture = SKTexture(image: UIImage.createGradientImage(startPoint: CGPoint(x: 0.5, y: 1),
-//                                                                                  endPoint: CGPoint(x: 0.5, y: 0.5),
-//                                                                                  topColorWhiteValue: 225,
-//                                                                                  bottomColorWhiteValue: 255))
         menuBackground.fillColor = DayTheme.skyColor.top
         menuBackground.strokeColor = .white
         menuBackground.lineWidth = 0
+        menuBackground.alpha = 0.9
         menuBackground.zPosition = K.ZPosition.menuBackground
 
         fadeSprite = SKSpriteNode(color: .white, size: CGSize(width: K.ScreenDimensions.iPhoneWidth, height: K.ScreenDimensions.height))
