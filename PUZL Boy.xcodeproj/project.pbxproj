@@ -158,6 +158,7 @@
 		EADEB3F02931526700CDB232 /* overworld_galaxy.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EADEB3ED2931526600CDB232 /* overworld_galaxy.mp3 */; };
 		EADEB3F12931526700CDB232 /* overworld_throwback.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EADEB3EE2931526700CDB232 /* overworld_throwback.mp3 */; };
 		EADEB3F32931572C00CDB232 /* overworld2.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EADEB3F22931572C00CDB232 /* overworld2.mp3 */; };
+		EAE565AA29D6E0C700BC43CB /* TitleScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAE565A929D6E0C700BC43CB /* TitleScene.swift */; };
 		EAF7181B29AFE65300E2ED82 /* overworld10.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAF7181A29AFE65300E2ED82 /* overworld10.mp3 */; };
 		EAF7181F29B1B2BC00E2ED82 /* movesand1.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAF7181E29B1B2BC00E2ED82 /* movesand1.mp3 */; };
 		EAF7182129B3097300E2ED82 /* lavasizzle.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAF7182029B3097300E2ED82 /* lavasizzle.mp3 */; };
@@ -315,6 +316,7 @@
 		EADEB3ED2931526600CDB232 /* overworld_galaxy.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = overworld_galaxy.mp3; sourceTree = "<group>"; };
 		EADEB3EE2931526700CDB232 /* overworld_throwback.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = overworld_throwback.mp3; sourceTree = "<group>"; };
 		EADEB3F22931572C00CDB232 /* overworld2.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = overworld2.mp3; sourceTree = "<group>"; };
+		EAE565A929D6E0C700BC43CB /* TitleScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleScene.swift; sourceTree = "<group>"; };
 		EAF7181A29AFE65300E2ED82 /* overworld10.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = overworld10.mp3; sourceTree = "<group>"; };
 		EAF7181E29B1B2BC00E2ED82 /* movesand1.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = movesand1.mp3; sourceTree = "<group>"; };
 		EAF7182029B3097300E2ED82 /* lavasizzle.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = lavasizzle.mp3; sourceTree = "<group>"; };
@@ -458,6 +460,7 @@
 			isa = PBXGroup;
 			children = (
 				EA75F0EE292F55F900F09BD7 /* LaunchScene.swift */,
+				EAE565A929D6E0C700BC43CB /* TitleScene.swift */,
 				EA65184228E420E400E535BF /* GameScene.swift */,
 			);
 			path = Scenes;
@@ -869,6 +872,7 @@
 				EAAEA3CE2932C47500221963 /* BackgroundObject.swift in Sources */,
 				EA65182D28E4199E00E535BF /* SceneDelegate.swift in Sources */,
 				EA826C9A29950D0C00F19F81 /* NumMovesSprite.swift in Sources */,
+				EAE565AA29D6E0C700BC43CB /* TitleScene.swift in Sources */,
 				EA826C93298F60C000F19F81 /* AchievementFatCat.swift in Sources */,
 				EA346791299B535F002DDA02 /* LevelStats.swift in Sources */,
 				EA9F4DD929CFAB0C006F4B2F /* Extension+Double.swift in Sources */,

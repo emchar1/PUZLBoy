@@ -701,8 +701,7 @@ extension GameScene: PauseResetEngineDelegate {
     func didTapButtonSpecial() {
         if chatEngine.fastForward() {
             //Putting these here so that I can only have it execute if fastForward is successful. Prevents spamming the button
-            AudioManager.shared.playSound(for: "buttontap2")
-            Haptics.shared.addHapticFeedback(withStyle: .soft)
+            K.ButtonTaps.tap2()
         }
     }
     

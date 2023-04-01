@@ -61,7 +61,6 @@ class TabBarButton: SKNode {
     
     func tapButton() {
         print("Tapped button for \(type.rawValue).")
-        AudioManager.shared.playSound(for: "buttontap")
-        Haptics.shared.addHapticFeedback(withStyle: .soft)
+        K.ButtonTaps.tap1()
     }
 }

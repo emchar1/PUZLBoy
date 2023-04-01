@@ -71,8 +71,16 @@ struct K {
         static let backgroundObjectTier1: CGFloat = 60
         static let backgroundObjectTier0: CGFloat = 65
         static let loadingNode: CGFloat = 75
-        static let fadeTransitionNode: CGFloat = 680
         
+        
+        //--TITLE SCENE--
+        static let puzlTitleShadow: CGFloat = 650
+        static let puzlTitle: CGFloat = 655
+        static let boyTitle: CGFloat = 660
+        static let menuBackground: CGFloat = 665
+        static let menuItem: CGFloat = 670
+        static let fadeTransitionNode: CGFloat = 700
+
         
         //--GAME SCENE--
         //Party Background
@@ -116,5 +124,19 @@ struct K {
         static let soundIsMuted = "SoundIsMuted"
         static let reviewStoreCount = "ReviewStoreCount"
         static let savedTime = "SavedTimeForReplenishLives"
+    }
+    
+    
+    struct ButtonTaps {
+        static func tap1() {
+            AudioManager.shared.playSound(for: "buttontap")
+            Haptics.shared.addHapticFeedback(withStyle: .soft)
+        }
+        
+        static func tap2() {
+            AudioManager.shared.playSound(for: "buttontap2")
+            Haptics.shared.addHapticFeedback(withStyle: .soft)
+        }
+
     }
 }

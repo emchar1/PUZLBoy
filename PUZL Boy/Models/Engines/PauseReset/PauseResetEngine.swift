@@ -214,8 +214,7 @@ class PauseResetEngine {
         
         
         
-        AudioManager.shared.playSound(for: "buttontap")
-        Haptics.shared.addHapticFeedback(withStyle: .soft)
+        K.ButtonTaps.tap1()
 
         delegate?.didTapPause(isPaused: self.isPaused)
     }
@@ -311,8 +310,7 @@ class PauseResetEngine {
                     self.handleControls()
                 }
                 else {
-                    AudioManager.shared.playSound(for: "buttontap")
-                    Haptics.shared.addHapticFeedback(withStyle: .soft)
+                    K.ButtonTaps.tap1()
                 }
 
                 self.buttonSprite.texture = SKTexture(imageNamed: "\(self.pauseResetName)")

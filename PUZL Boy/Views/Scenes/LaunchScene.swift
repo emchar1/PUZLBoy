@@ -24,7 +24,7 @@ class LaunchScene: SKScene {
     private var loadingSprite: LoadingSprite
     private var skyNode: SKSpriteNode
     private var grassNode: SKSpriteNode
-    private var fadeSprite: SKSpriteNode
+//    private var fadeSprite: SKSpriteNode
 
     
     // MARK: - Initialization
@@ -40,11 +40,11 @@ class LaunchScene: SKScene {
         loadingSprite.zPosition = K.ZPosition.loadingNode
         loadingSprite.name = "loadingSprite"
         
-        fadeSprite = SKSpriteNode(color: .white, size: CGSize(width: K.ScreenDimensions.iPhoneWidth, height: K.ScreenDimensions.height))
-        fadeSprite.zPosition = K.ZPosition.fadeTransitionNode
-        fadeSprite.alpha = 0
-        fadeSprite.anchorPoint = .zero
-        fadeSprite.name = "fadeSprite"
+//        fadeSprite = SKSpriteNode(color: .white, size: CGSize(width: K.ScreenDimensions.iPhoneWidth, height: K.ScreenDimensions.height))
+//        fadeSprite.zPosition = K.ZPosition.fadeTransitionNode
+//        fadeSprite.alpha = 0
+//        fadeSprite.anchorPoint = .zero
+//        fadeSprite.name = "fadeSprite"
         
         //Setup BackgroundObjects
         for _ in 0..<treeCount {
@@ -139,7 +139,7 @@ class LaunchScene: SKScene {
         addChild(mountainSprite.sprite)
         addChild(moonSprite.sprite)
         addChild(loadingSprite)
-        addChild(fadeSprite)
+//        addChild(fadeSprite)
     }
     
     func animateTransition(completion: @escaping () -> Void) {
@@ -150,28 +150,34 @@ class LaunchScene: SKScene {
         for node in self.children {
             guard node.name != "skyNode" else { continue }
             
-            if node.name == "loadingSprite" {
+            switch node.name {
+            case "loadingSprite":
                 node.run(SKAction.fadeOut(withDuration: 0.5))
-            }
-            else if node.name == "skyObjectNode" {
-                node.run(SKAction.sequence([
-                    SKAction.wait(forDuration: moveDuration * 4),
-                    SKAction.fadeOut(withDuration: moveDuration * 2)
-                ]))
-            }
-            else if node.name == "playerSprite" {
+            case "skyObjectNode":
+                node.run(SKAction.fadeOut(withDuration: moveDuration * 5))
+            case "playerSprite":
                 guard let node = node as? SKSpriteNode else { return }
                 
                 node.removeAllActions()
                 
-                let playerAnimation = SKAction.animate(with: player.textures[Player.Texture.jump.rawValue], timePerFrame: playerTimePerFrame)
-                let playerDescendAction = SKAction.moveTo(y: K.ScreenDimensions.height / 2, duration: moveDuration * 4)
-                playerDescendAction.timingMode = .easeOut
+                let jumpAnimation = SKAction.animate(with: player.textures[Player.Texture.jump.rawValue], timePerFrame: playerTimePerFrame)
+                let playerDescendAction = SKAction.moveTo(y: K.ScreenDimensions.height * (2 / 3), duration: moveDuration * 1)
+                let playerDescendSlowerAction = SKAction.moveTo(y: K.ScreenDimensions.height / 2, duration: moveDuration * 2)
+                let floatDistance: CGFloat = 30
+                let floatAction = SKAction.repeat(SKAction.sequence([
+                    SKAction.moveBy(x: 0, y: -floatDistance, duration: moveDuration / 4),
+                    SKAction.moveBy(x: -floatDistance, y: 0, duration: moveDuration / 4),
+                    SKAction.moveBy(x: 0, y: floatDistance, duration: moveDuration / 4),
+                    SKAction.moveBy(x: floatDistance, y: 0, duration: moveDuration / 4)
+                ]), count: Int(moveDuration) * 3)
                 
-                //Duration = 2
+                playerDescendAction.timingMode = .easeIn
+                playerDescendSlowerAction.timingMode = .easeOut
+
+                //Jump animation: duration = 2
                 node.run(SKAction.group([
                     SKAction.moveTo(x: K.ScreenDimensions.iPhoneWidth / 4, duration: playerCrouchDuration),
-                    playerAnimation,
+                    jumpAnimation,
                     SKAction.sequence([
                         SKAction.wait(forDuration: playerCrouchDuration),
                         SKAction.group([
@@ -183,37 +189,29 @@ class LaunchScene: SKScene {
                     node.texture = SKTexture(imageNamed: "Run (5)")
                 }
                 
-                //Duration = 8
+                //Descend animation: duration = 5
                 node.run(SKAction.sequence([
                     SKAction.wait(forDuration: moveDuration * 2),
                     SKAction.sequence([
                         SKAction.moveTo(x: K.ScreenDimensions.iPhoneWidth / 2, duration: 0),
                         SKAction.group([
-                            SKAction.repeat(SKAction.sequence([
-                                SKAction.moveBy(x: -25, y: 0, duration: 0.5),
-                                SKAction.moveBy(x: 25, y: 0, duration: 0.5)
-                            ]), count: Int(moveDuration) * 6),
-                            playerDescendAction
+                            floatAction,
+                            SKAction.sequence([
+                                playerDescendAction,
+                                playerDescendSlowerAction
+                            ])
                         ])
                     ])
                 ]))
-            }
-            else if node.name == "fadeSprite" {
-                //Duration = 8
-                node.run(SKAction.sequence([
-                    SKAction.wait(forDuration: moveDuration * 6),
-                    SKAction.fadeIn(withDuration: moveDuration * 2)
-                ]))
-            }
-            else { //ground nodes
+            default:
                 node.run(SKAction.sequence([
                     SKAction.wait(forDuration: playerCrouchDuration),
                     SKAction.moveBy(x: node.speed, y: -K.ScreenDimensions.height, duration: moveDuration / 2)
                 ]))
-            }
-        }
+            } //end switch node.name
+        } //end for node in self.children
         
-        run(SKAction.wait(forDuration: moveDuration * 8), completion: completion)
+        run(SKAction.wait(forDuration: moveDuration * 5), completion: completion)
     }
     
     override func willMove(from view: SKView) {

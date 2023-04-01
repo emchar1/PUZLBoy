@@ -8,17 +8,20 @@
 import UIKit
 import SpriteKit
 import GameplayKit
+import FirebaseAuth
 
 class GameViewController: UIViewController {
     override var prefersStatusBarHidden: Bool { return true }
     private var levelLoaded = false
+    private var user: User?
+    private var saveStateModel: SaveStateModel?
+    private let skView = SKView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         let launchScene = LaunchScene(size: K.ScreenDimensions.screenSize)
 
-        let skView = SKView()
         skView.showsFPS = true
         skView.showsNodeCount = true
         skView.ignoresSiblingOrder = true
@@ -42,11 +45,16 @@ class GameViewController: UIViewController {
                 FIRManager.initializeFirestore(user: user) { saveStateModel, error in
                     //No error handling...
                     
+                    self.user = user
+                    self.saveStateModel = saveStateModel
+                    
                     DispatchQueue.main.asyncAfter(deadline: .now() + LoadingSprite.loadingDuration) {
                         launchScene.animateTransition {
-                            let gameScene = GameScene(size: K.ScreenDimensions.screenSize, user: user, saveStateModel: saveStateModel)
-
-                            skView.presentScene(gameScene, transition: SKTransition.fade(with: .white, duration: 1.0))
+//                            let gameScene = GameScene(size: K.ScreenDimensions.screenSize, user: user, saveStateModel: saveStateModel)
+                            let titleScene = TitleScene(size: K.ScreenDimensions.screenSize)
+                            titleScene.titleSceneDelegate = self
+                            
+                            self.skView.presentScene(titleScene)//, transition: SKTransition.fade(with: .white, duration: 1.0))
                         }
                                                 
                         self.levelLoaded = true
@@ -61,3 +69,13 @@ class GameViewController: UIViewController {
     
 }
 
+
+// MARK: - TitleSceneDelegate
+
+extension GameViewController: TitleSceneDelegate {
+    func didTapStart() {
+        let gameScene = GameScene(size: K.ScreenDimensions.screenSize, user: user, saveStateModel: saveStateModel)
+        
+        skView.presentScene(gameScene)
+    }
+}
