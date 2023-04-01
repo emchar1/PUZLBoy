@@ -97,7 +97,7 @@ class TitleScene: SKScene {
         boyTitle.position = CGPoint(x: sizeA, y: K.ScreenDimensions.height - K.ScreenDimensions.topMargin - sizeB)
         boyTitle.fontName = UIFont.gameFont
         boyTitle.fontSize = sizeB
-        boyTitle.fontColor = .white//TitleScene.boyColors[TitleScene.selectedColor]
+        boyTitle.fontColor = TitleScene.boyColors[TitleScene.selectedColor]
         boyTitle.horizontalAlignmentMode = .left
         boyTitle.verticalAlignmentMode = .top
         boyTitle.zPosition = K.ZPosition.boyTitle
@@ -124,6 +124,7 @@ class TitleScene: SKScene {
         menuLevelSelect.verticalAlignmentMode = .center
         menuLevelSelect.alpha = 0.25
         menuLevelSelect.zPosition = K.ZPosition.menuItem
+        menuLevelSelect.name = "menuLevelSelect"
 
         menuOptions = SKLabelNode(text: "Options")
         menuOptions.position = CGPoint(x: 0, y: menuSize.height / 2 - 3 * menuGap)
@@ -134,6 +135,7 @@ class TitleScene: SKScene {
         menuOptions.verticalAlignmentMode = .center
         menuOptions.alpha = 0.25
         menuOptions.zPosition = K.ZPosition.menuItem
+        menuOptions.name = "menuOptions"
 
         menuCredits = SKLabelNode(text: "Credits")
         menuCredits.position = CGPoint(x: 0, y: menuSize.height / 2 - 4 * menuGap)
@@ -144,6 +146,7 @@ class TitleScene: SKScene {
         menuCredits.verticalAlignmentMode = .center
         menuCredits.alpha = 0.25
         menuCredits.zPosition = K.ZPosition.menuItem
+        menuCredits.name = "menuCredits"
         
         menuBackground = SKShapeNode(rectOf: CGSize(width: menuSize.width, height: menuSize.height), cornerRadius: 20)
         menuBackground.position = CGPoint(x: K.ScreenDimensions.iPhoneWidth / 2, y: K.ScreenDimensions.bottomMargin + menuSize.height / 2)
@@ -157,7 +160,6 @@ class TitleScene: SKScene {
         fadeSprite.anchorPoint = .zero
         fadeSprite.alpha = 0
         fadeSprite.zPosition = K.ZPosition.fadeTransitionNode
-        fadeSprite.name = "fadeSprite"
 
         super.init(size: size)
         
@@ -230,7 +232,7 @@ class TitleScene: SKScene {
             SKAction.wait(forDuration: 0.25),
             SKAction.fadeIn(withDuration: 0),
             stampAction,
-            seizureAction
+//            seizureAction
         ]))
     }
     
@@ -249,8 +251,14 @@ class TitleScene: SKScene {
 
                 fadeSprite.run(SKAction.fadeIn(withDuration: fadeDuration))
                 buttonTap(button: menuStart)
-            default:
+            case "menuLevelSelect":
                 Haptics.shared.addHapticFeedback(withStyle: .rigid)
+            case "menuOptions":
+                Haptics.shared.addHapticFeedback(withStyle: .rigid)
+            case "menuCredits":
+                Haptics.shared.addHapticFeedback(withStyle: .rigid)
+            default:
+                continue
             }
         }
     }

@@ -24,7 +24,6 @@ class LaunchScene: SKScene {
     private var loadingSprite: LoadingSprite
     private var skyNode: SKSpriteNode
     private var grassNode: SKSpriteNode
-//    private var fadeSprite: SKSpriteNode
 
     
     // MARK: - Initialization
@@ -39,12 +38,6 @@ class LaunchScene: SKScene {
         loadingSprite = LoadingSprite(position: CGPoint(x: K.ScreenDimensions.iPhoneWidth / 2, y: K.ScreenDimensions.height / 6))
         loadingSprite.zPosition = K.ZPosition.loadingNode
         loadingSprite.name = "loadingSprite"
-        
-//        fadeSprite = SKSpriteNode(color: .white, size: CGSize(width: K.ScreenDimensions.iPhoneWidth, height: K.ScreenDimensions.height))
-//        fadeSprite.zPosition = K.ZPosition.fadeTransitionNode
-//        fadeSprite.alpha = 0
-//        fadeSprite.anchorPoint = .zero
-//        fadeSprite.name = "fadeSprite"
         
         //Setup BackgroundObjects
         for _ in 0..<treeCount {
@@ -139,7 +132,6 @@ class LaunchScene: SKScene {
         addChild(mountainSprite.sprite)
         addChild(moonSprite.sprite)
         addChild(loadingSprite)
-//        addChild(fadeSprite)
     }
     
     func animateTransition(completion: @escaping () -> Void) {
@@ -174,9 +166,10 @@ class LaunchScene: SKScene {
                 playerDescendAction.timingMode = .easeIn
                 playerDescendSlowerAction.timingMode = .easeOut
 
-                //Jump animation: duration = 2
+                //Jump animation: duration = 4.5 = 1.5 + 3
                 node.run(SKAction.group([
                     SKAction.moveTo(x: K.ScreenDimensions.iPhoneWidth / 4, duration: playerCrouchDuration),
+                    SKAction.scale(to: 0.75, duration: playerCrouchDuration),
                     jumpAnimation,
                     SKAction.sequence([
                         SKAction.wait(forDuration: playerCrouchDuration),
@@ -185,24 +178,20 @@ class LaunchScene: SKScene {
                             SKAction.moveBy(x: K.ScreenDimensions.iPhoneWidth / 2, y: K.ScreenDimensions.height, duration: moveDuration)
                         ])
                     ])
-                ])) {
+                ])) { //Completion:
                     node.texture = SKTexture(imageNamed: "Run (5)")
-                }
-                
-                //Descend animation: duration = 5
-                node.run(SKAction.sequence([
-                    SKAction.wait(forDuration: moveDuration * 2),
-                    SKAction.sequence([
+                    
+                    //Descend animation: duration = 3
+                    node.run(SKAction.group([
+                        SKAction.scale(to: 2, duration: 0),
                         SKAction.moveTo(x: K.ScreenDimensions.iPhoneWidth / 2, duration: 0),
-                        SKAction.group([
-                            floatAction,
-                            SKAction.sequence([
-                                playerDescendAction,
-                                playerDescendSlowerAction
-                            ])
+                        floatAction,
+                        SKAction.sequence([
+                            playerDescendAction,
+                            playerDescendSlowerAction
                         ])
-                    ])
-                ]))
+                    ]))
+                }
             default:
                 node.run(SKAction.sequence([
                     SKAction.wait(forDuration: playerCrouchDuration),
