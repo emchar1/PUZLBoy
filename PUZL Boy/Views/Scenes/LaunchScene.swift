@@ -175,6 +175,7 @@ class LaunchScene: SKScene {
                         SKAction.wait(forDuration: playerCrouchDuration),
                         SKAction.group([
                             SKAction.colorize(withColorBlendFactor: 0.0, duration: moveDuration),
+                            SKAction.scale(to: 4, duration: moveDuration),
                             SKAction.moveBy(x: K.ScreenDimensions.iPhoneWidth / 2, y: K.ScreenDimensions.height, duration: moveDuration)
                         ])
                     ])
@@ -183,7 +184,7 @@ class LaunchScene: SKScene {
                     
                     //Descend animation: duration = 3
                     node.run(SKAction.group([
-                        SKAction.scale(to: 2, duration: 0),
+                        SKAction.scale(to: 2, duration: moveDuration),
                         SKAction.moveTo(x: K.ScreenDimensions.iPhoneWidth / 2, duration: 0),
                         floatAction,
                         SKAction.sequence([

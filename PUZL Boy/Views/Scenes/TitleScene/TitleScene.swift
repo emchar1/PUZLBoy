@@ -75,7 +75,7 @@ class TitleScene: SKScene {
         puzlTitleShadow.horizontalAlignmentMode = .left
         puzlTitleShadow.verticalAlignmentMode = .top
         puzlTitleShadow.setScale(2)
-        puzlTitleShadow.alpha = 0.75
+        puzlTitleShadow.alpha = 0
         puzlTitleShadow.zPosition = K.ZPosition.puzlTitleShadow + 2
 
         puzlTitleShadow2 = SKLabelNode(text: "PUZL")
@@ -85,7 +85,7 @@ class TitleScene: SKScene {
         puzlTitleShadow2.horizontalAlignmentMode = .left
         puzlTitleShadow2.verticalAlignmentMode = .top
         puzlTitleShadow2.setScale(2)
-        puzlTitleShadow2.alpha = 0.5
+        puzlTitleShadow2.alpha = 0
         puzlTitleShadow2.zPosition = K.ZPosition.puzlTitleShadow + 1
 
         puzlTitleShadow3 = SKLabelNode(text: "PUZL")
@@ -95,7 +95,7 @@ class TitleScene: SKScene {
         puzlTitleShadow3.horizontalAlignmentMode = .left
         puzlTitleShadow3.verticalAlignmentMode = .top
         puzlTitleShadow3.setScale(2)
-        puzlTitleShadow3.alpha = 0.25
+        puzlTitleShadow3.alpha = 0
         puzlTitleShadow3.zPosition = K.ZPosition.puzlTitleShadow
 
         boyTitle = SKLabelNode(text: "Boy")
@@ -203,10 +203,19 @@ class TitleScene: SKScene {
             ])
         ])
         
-        puzlTitleShadow.run(stampAction)
-        puzlTitleShadow2.run(stampAction)
-        puzlTitleShadow3.run(stampAction)
         puzlTitle.run(stampAction)
+        puzlTitleShadow.run(SKAction.sequence([
+            stampAction,
+            SKAction.fadeAlpha(to: 0.75, duration: 0.1)
+        ]))
+        puzlTitleShadow2.run(SKAction.sequence([
+            stampAction,
+            SKAction.fadeAlpha(to: 0.5, duration: 0.2)
+        ]))
+        puzlTitleShadow3.run(SKAction.sequence([
+            stampAction,
+            SKAction.fadeAlpha(to: 0.25, duration: 0.3)
+        ]))
         
         boyTitle.run(SKAction.sequence([
             SKAction.wait(forDuration: 0.25),
