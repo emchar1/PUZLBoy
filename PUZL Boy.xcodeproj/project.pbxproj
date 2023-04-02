@@ -66,6 +66,7 @@
 		EA75F0EF292F55F900F09BD7 /* LaunchScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA75F0EE292F55F900F09BD7 /* LaunchScene.swift */; };
 		EA78C36C29763B1C00292744 /* AchievementAdMobster.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA78C36B29763B1C00292744 /* AchievementAdMobster.swift */; };
 		EA78C36E29767D7600292744 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = EA78C36D29767D7600292744 /* GoogleService-Info.plist */; };
+		EA793E7729D959A4001A0CA0 /* titletheme.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA793E7629D959A4001A0CA0 /* titletheme.mp3 */; };
 		EA826C74297CEFC500F19F81 /* TimerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA826C73297CEFC500F19F81 /* TimerManager.swift */; };
 		EA826C76297CF9E000F19F81 /* ScoringManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA826C75297CF9E000F19F81 /* ScoringManager.swift */; };
 		EA826C7A298492BA00F19F81 /* DecisionButtonSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA826C79298492BA00F19F81 /* DecisionButtonSprite.swift */; };
@@ -80,6 +81,8 @@
 		EA826C95298F880B00F19F81 /* AchievementPUZLMaster.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA826C94298F880B00F19F81 /* AchievementPUZLMaster.swift */; };
 		EA826C9729938CBB00F19F81 /* StoreReviewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA826C9629938CBB00F19F81 /* StoreReviewManager.swift */; };
 		EA826C9A29950D0C00F19F81 /* NumMovesSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA826C9929950D0C00F19F81 /* NumMovesSprite.swift */; };
+		EA84645C29D8E5A50075F2A9 /* MenuItemLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA84645B29D8E5A50075F2A9 /* MenuItemLabel.swift */; };
+		EA84645F29D9230B0075F2A9 /* Extensions+UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA84645E29D9230B0075F2A9 /* Extensions+UIColor.swift */; };
 		EA94E86529BDA536009F2614 /* PartyEffectSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA94E86429BDA536009F2614 /* PartyEffectSprite.swift */; };
 		EA94E86729BE6BCC009F2614 /* PauseResetEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA94E86629BE6BCC009F2614 /* PauseResetEngine.swift */; };
 		EA94E87329C0DE2C009F2614 /* movetile3.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA94E87029C0DE2C009F2614 /* movetile3.mp3 */; };
@@ -226,6 +229,7 @@
 		EA75F0EE292F55F900F09BD7 /* LaunchScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchScene.swift; sourceTree = "<group>"; };
 		EA78C36B29763B1C00292744 /* AchievementAdMobster.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementAdMobster.swift; sourceTree = "<group>"; };
 		EA78C36D29767D7600292744 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		EA793E7629D959A4001A0CA0 /* titletheme.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = titletheme.mp3; sourceTree = "<group>"; };
 		EA826C73297CEFC500F19F81 /* TimerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerManager.swift; sourceTree = "<group>"; };
 		EA826C75297CF9E000F19F81 /* ScoringManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoringManager.swift; sourceTree = "<group>"; };
 		EA826C79298492BA00F19F81 /* DecisionButtonSprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecisionButtonSprite.swift; sourceTree = "<group>"; };
@@ -240,6 +244,8 @@
 		EA826C94298F880B00F19F81 /* AchievementPUZLMaster.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementPUZLMaster.swift; sourceTree = "<group>"; };
 		EA826C9629938CBB00F19F81 /* StoreReviewManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreReviewManager.swift; sourceTree = "<group>"; };
 		EA826C9929950D0C00F19F81 /* NumMovesSprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumMovesSprite.swift; sourceTree = "<group>"; };
+		EA84645B29D8E5A50075F2A9 /* MenuItemLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuItemLabel.swift; sourceTree = "<group>"; };
+		EA84645E29D9230B0075F2A9 /* Extensions+UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extensions+UIColor.swift"; sourceTree = "<group>"; };
 		EA94E86429BDA536009F2614 /* PartyEffectSprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PartyEffectSprite.swift; sourceTree = "<group>"; };
 		EA94E86629BE6BCC009F2614 /* PauseResetEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PauseResetEngine.swift; sourceTree = "<group>"; };
 		EA94E87029C0DE2C009F2614 /* movetile3.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = movetile3.mp3; sourceTree = "<group>"; };
@@ -460,7 +466,7 @@
 			isa = PBXGroup;
 			children = (
 				EA75F0EE292F55F900F09BD7 /* LaunchScene.swift */,
-				EAE565A929D6E0C700BC43CB /* TitleScene.swift */,
+				EA84645D29D8E5B10075F2A9 /* TitleScene */,
 				EA65184228E420E400E535BF /* GameScene.swift */,
 			);
 			path = Scenes;
@@ -476,8 +482,18 @@
 				EA4D026A29BC6ACE00F0C7B1 /* Extension+UIDevice.swift */,
 				EA94E87629C2DCE0009F2614 /* Extension+CGPoint.swift */,
 				EA9F4DD829CFAB0C006F4B2F /* Extension+Double.swift */,
+				EA84645E29D9230B0075F2A9 /* Extensions+UIColor.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		EA84645D29D8E5B10075F2A9 /* TitleScene */ = {
+			isa = PBXGroup;
+			children = (
+				EAE565A929D6E0C700BC43CB /* TitleScene.swift */,
+				EA84645B29D8E5A50075F2A9 /* MenuItemLabel.swift */,
+			);
+			path = TitleScene;
 			sourceTree = "<group>";
 		};
 		EA956C6D292586F800879AD0 /* Sounds */ = {
@@ -541,6 +557,7 @@
 				EAAEA3C92931F12B00221963 /* pickupitem.mp3 */,
 				EA3467A429A8C659002DDA02 /* revive.mp3 */,
 				EAAEA3C32931D0DA00221963 /* swordslash.mp3 */,
+				EA793E7629D959A4001A0CA0 /* titletheme.mp3 */,
 				EA95D193294690890061059C /* warp.mp3 */,
 				EAAEA3CB2931F14D00221963 /* winlevel.mp3 */,
 			);
@@ -768,6 +785,7 @@
 				EAACB4B92971E08A00973EB8 /* chatclose.mp3 in Resources */,
 				EAF7181F29B1B2BC00E2ED82 /* movesand1.mp3 in Resources */,
 				EA95D200295D83E40061059C /* Boogaloo-Regular.ttf in Resources */,
+				EA793E7729D959A4001A0CA0 /* titletheme.mp3 in Resources */,
 				EA95D19B294690B70061059C /* boydead.mp3 in Resources */,
 				EA95D19E294690B70061059C /* boyattack2.mp3 in Resources */,
 				EA3467A529A8C659002DDA02 /* revive.mp3 in Resources */,
@@ -835,12 +853,14 @@
 				EA95D1CF29542C4C0061059C /* AchievementOnFire.swift in Sources */,
 				EA75F0EB292DF46200F09BD7 /* FIRManager.swift in Sources */,
 				EA95D1C12953AB4B0061059C /* AchievementBeastMaster.swift in Sources */,
+				EA84645C29D8E5A50075F2A9 /* MenuItemLabel.swift in Sources */,
 				EA95D1C729541E8E0061059C /* AchievementMyPreciouses.swift in Sources */,
 				EA95D1A6294957060061059C /* Haptics.swift in Sources */,
 				EA95D1D329544B4E0061059C /* AchievementBraniac.swift in Sources */,
 				EA95D1DD295523FF0061059C /* AchievementKlutz.swift in Sources */,
 				EA1191532904BC4C009D0E3E /* DisplaySprite.swift in Sources */,
 				EA95D20A29602F540061059C /* AchievementReckless.swift in Sources */,
+				EA84645F29D9230B0075F2A9 /* Extensions+UIColor.swift in Sources */,
 				EA826C7A298492BA00F19F81 /* DecisionButtonSprite.swift in Sources */,
 				EA95D1BD2952F14C0061059C /* AchievementBoulderBreaker.swift in Sources */,
 				EA95D204295F86B30061059C /* AchievementScavenger.swift in Sources */,

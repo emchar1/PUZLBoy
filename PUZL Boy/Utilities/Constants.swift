@@ -129,14 +129,16 @@ struct K {
     
     struct ButtonTaps {
         static func tap1() {
-            AudioManager.shared.playSound(for: "buttontap")
-            Haptics.shared.addHapticFeedback(withStyle: .soft)
+            tapCustom(soundFile: "buttontap")
         }
         
         static func tap2() {
-            AudioManager.shared.playSound(for: "buttontap2")
-            Haptics.shared.addHapticFeedback(withStyle: .soft)
+            tapCustom(soundFile: "buttontap2")
         }
 
+        static func tapCustom(soundFile: String, style: UIImpactFeedbackGenerator.FeedbackStyle = .soft) {
+            AudioManager.shared.playSound(for: soundFile)
+            Haptics.shared.addHapticFeedback(withStyle: style)
+        }
     }
 }

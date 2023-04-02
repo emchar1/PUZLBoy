@@ -50,7 +50,7 @@ class AudioManager {
         return instance
     }()
     
-    let overworldTitle = "overworld5"
+    let overworldTitle = "titletheme"
     let overworldTheme = "overworld6"
     let overworldPartyTheme = "overworld10"
     private(set) var currentTheme: String
@@ -135,6 +135,7 @@ class AudioManager {
         addAudioItem("overworld8", category: .music) //delete
         addAudioItem("overworld9", category: .music) //delete
         addAudioItem("overworld10", category: .music)
+        addAudioItem("titletheme", category: .music)
     }
 
     /**
@@ -220,7 +221,7 @@ class AudioManager {
         - audioKey: the key for the audio item to stop
         - fadeDuration: length of time in seconds for music to fade before stopping.
      */
-    func stopSound(for audioKey: String, fadeDuration: TimeInterval = 0.0, completion: (() -> Void)? = nil) {
+    func stopSound(for audioKey: String, fadeDuration: TimeInterval = 0.0) {
         guard let item = audioItems[audioKey] else {
             print("Unable to find \(audioKey) in AudioManager.audioItems[]")
             return
@@ -230,7 +231,6 @@ class AudioManager {
         
         DispatchQueue.main.asyncAfter(deadline: .now() + fadeDuration) {
             item.player.stop()
-            completion?()
         }
     }
     
