@@ -229,6 +229,22 @@ class TitleScene: SKScene {
         guard !preventTouch else { return }
         
         for node in nodes(at: location) {
+            guard let node = node as? MenuItemLabel else { return }
+
+            node.touchDown()
+        }
+    }
+    
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        guard let location = touches.first?.location(in: self) else { return }
+        guard !preventTouch else { return }
+        
+        for node in nodes(at: location) {
+            menuStart.touchUp()
+            menuLevelSelect.touchUp()
+            menuOptions.touchUp()
+            menuCredits.touchUp()
+            
             guard let node = node as? MenuItemLabel else { continue }
             
             node.tapButton(toColor: boyTitle.fontColor!)

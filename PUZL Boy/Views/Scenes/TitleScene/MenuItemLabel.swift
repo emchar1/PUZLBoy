@@ -73,30 +73,39 @@ class MenuItemLabel: SKLabelNode {
         isEnabled = enabled
     }
     
+    func touchDown() {
+        guard isEnabled else { return }
+        
+        self.run(SKAction.scale(to: 0.95, duration: 0.1))
+    }
+    
+    func touchUp() {
+        guard isEnabled else { return }
+        
+        self.run(SKAction.scale(to: 1.0, duration: 0))
+    }
+    
     func tapButton(toColor tappedColor: UIColor) {
-        if isEnabled {
-            self.run(SKAction.group([
-                SKAction.sequence([
-                    SKAction.colorize(with: .white, colorBlendFactor: 1.0, duration: 0),
-                    SKAction.colorize(with: tappedColor, colorBlendFactor: 1.0, duration: 0.25),
-                    SKAction.colorize(with: .white, colorBlendFactor: 1.0, duration: 0.25)
-                ]),
-                SKAction.sequence([
-                    SKAction.scale(to: 1.1, duration: 0.1),
-                    SKAction.scale(to: 0.95, duration: 0.1),
-                    SKAction.scale(to: 1, duration: 0.2)
-                ])
-            ]))
-                        
-            if type == .menuStart {
-                K.ButtonTaps.tap3()
-            }
-            else {
-                K.ButtonTaps.tap1()
-            }
+        guard isEnabled else { return }
+        
+        self.run(SKAction.group([
+            SKAction.sequence([
+                SKAction.colorize(with: .white, colorBlendFactor: 1.0, duration: 0),
+                SKAction.colorize(with: tappedColor, colorBlendFactor: 1.0, duration: 0.25),
+                SKAction.colorize(with: .white, colorBlendFactor: 1.0, duration: 0.25)
+            ]),
+            SKAction.sequence([
+                SKAction.scale(to: 1.1, duration: 0.1),
+                SKAction.scale(to: 0.95, duration: 0.1),
+                SKAction.scale(to: 1, duration: 0.2)
+            ])
+        ]))
+        
+        if type == .menuStart {
+            K.ButtonTaps.tap3()
         }
         else {
-            Haptics.shared.addHapticFeedback(withStyle: .rigid)
+            K.ButtonTaps.tap1()
         }
     }
     
