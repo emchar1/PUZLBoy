@@ -74,11 +74,9 @@ struct K {
         
         
         //--TITLE SCENE--
-        static let puzlTitleShadow: CGFloat = 650
         static let puzlTitle: CGFloat = 655
         static let boyTitle: CGFloat = 660
         static let menuBackground: CGFloat = 665
-        static let menuItem: CGFloat = 670
         static let fadeTransitionNode: CGFloat = 700
 
         

@@ -67,7 +67,6 @@
 		EA78C36C29763B1C00292744 /* AchievementAdMobster.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA78C36B29763B1C00292744 /* AchievementAdMobster.swift */; };
 		EA78C36E29767D7600292744 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = EA78C36D29767D7600292744 /* GoogleService-Info.plist */; };
 		EA793E7729D959A4001A0CA0 /* titletheme.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA793E7629D959A4001A0CA0 /* titletheme.mp3 */; };
-		EA793E7929D9E9DB001A0CA0 /* buttontap3.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA793E7829D9E9DB001A0CA0 /* buttontap3.mp3 */; };
 		EA826C74297CEFC500F19F81 /* TimerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA826C73297CEFC500F19F81 /* TimerManager.swift */; };
 		EA826C76297CF9E000F19F81 /* ScoringManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA826C75297CF9E000F19F81 /* ScoringManager.swift */; };
 		EA826C7A298492BA00F19F81 /* DecisionButtonSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA826C79298492BA00F19F81 /* DecisionButtonSprite.swift */; };
@@ -154,6 +153,7 @@
 		EAAEA3CA2931F12B00221963 /* pickupitem.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAAEA3C92931F12B00221963 /* pickupitem.mp3 */; };
 		EAAEA3CC2931F14D00221963 /* winlevel.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAAEA3CB2931F14D00221963 /* winlevel.mp3 */; };
 		EAAEA3CE2932C47500221963 /* BackgroundObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAAEA3CD2932C47500221963 /* BackgroundObject.swift */; };
+		EAB4F66E29DA27290063AC4B /* buttontap3.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAB4F66D29DA27290063AC4B /* buttontap3.mp3 */; };
 		EAB69E0028EFCF5B00C31DB3 /* PlayerSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAB69DFF28EFCF5B00C31DB3 /* PlayerSprite.swift */; };
 		EAB69E0428F3333000C31DB3 /* GameEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAB69E0328F3333000C31DB3 /* GameEngine.swift */; };
 		EADEB3E92931404D00CDB232 /* dooropen.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EADEB3E82931404D00CDB232 /* dooropen.mp3 */; };
@@ -231,7 +231,6 @@
 		EA78C36B29763B1C00292744 /* AchievementAdMobster.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementAdMobster.swift; sourceTree = "<group>"; };
 		EA78C36D29767D7600292744 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		EA793E7629D959A4001A0CA0 /* titletheme.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = titletheme.mp3; sourceTree = "<group>"; };
-		EA793E7829D9E9DB001A0CA0 /* buttontap3.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = buttontap3.mp3; sourceTree = "<group>"; };
 		EA826C73297CEFC500F19F81 /* TimerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerManager.swift; sourceTree = "<group>"; };
 		EA826C75297CF9E000F19F81 /* ScoringManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoringManager.swift; sourceTree = "<group>"; };
 		EA826C79298492BA00F19F81 /* DecisionButtonSprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecisionButtonSprite.swift; sourceTree = "<group>"; };
@@ -316,6 +315,7 @@
 		EAAEA3C92931F12B00221963 /* pickupitem.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = pickupitem.mp3; sourceTree = "<group>"; };
 		EAAEA3CB2931F14D00221963 /* winlevel.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = winlevel.mp3; sourceTree = "<group>"; };
 		EAAEA3CD2932C47500221963 /* BackgroundObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundObject.swift; sourceTree = "<group>"; };
+		EAB4F66D29DA27290063AC4B /* buttontap3.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = buttontap3.mp3; sourceTree = "<group>"; };
 		EAB69DFF28EFCF5B00C31DB3 /* PlayerSprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerSprite.swift; sourceTree = "<group>"; };
 		EAB69E0328F3333000C31DB3 /* GameEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameEngine.swift; sourceTree = "<group>"; };
 		EADEB3E82931404D00CDB232 /* dooropen.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = dooropen.mp3; sourceTree = "<group>"; };
@@ -510,7 +510,7 @@
 				EA95D1A2294691820061059C /* boygrunt2.mp3 */,
 				EA3467AA29A8C6F6002DDA02 /* buttontap.mp3 */,
 				EA9F4DDC29D2B766006F4B2F /* buttontap2.mp3 */,
-				EA793E7829D9E9DB001A0CA0 /* buttontap3.mp3 */,
+				EAB4F66D29DA27290063AC4B /* buttontap3.mp3 */,
 				EAACB4B82971E08A00973EB8 /* chatclose.mp3 */,
 				EA3467A829A8C6CA002DDA02 /* chatopen.mp3 */,
 				EA3467AC29A8C7C7002DDA02 /* continueloop.mp3 */,
@@ -754,7 +754,6 @@
 			files = (
 				EAAEA3CA2931F12B00221963 /* pickupitem.mp3 in Resources */,
 				EA94E87429C0DE2C009F2614 /* movetile2.mp3 in Resources */,
-				EA793E7929D9E9DB001A0CA0 /* buttontap3.mp3 in Resources */,
 				EAAEA3C62931F08300221963 /* gameover.mp3 in Resources */,
 				EAF7183729B3D3FD00E2ED82 /* movesand3.mp3 in Resources */,
 				EAAEA3BE2931A31200221963 /* movepoisoned1.mp3 in Resources */,
@@ -788,6 +787,7 @@
 				EA3467AB29A8C6F6002DDA02 /* buttontap.mp3 in Resources */,
 				EAACB4B92971E08A00973EB8 /* chatclose.mp3 in Resources */,
 				EAF7181F29B1B2BC00E2ED82 /* movesand1.mp3 in Resources */,
+				EAB4F66E29DA27290063AC4B /* buttontap3.mp3 in Resources */,
 				EA95D200295D83E40061059C /* Boogaloo-Regular.ttf in Resources */,
 				EA793E7729D959A4001A0CA0 /* titletheme.mp3 in Resources */,
 				EA95D19B294690B70061059C /* boydead.mp3 in Resources */,

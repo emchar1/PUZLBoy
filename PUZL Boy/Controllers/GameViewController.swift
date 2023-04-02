@@ -26,6 +26,7 @@ class GameViewController: UIViewController {
         skView.showsNodeCount = true
         skView.ignoresSiblingOrder = true
         skView.presentScene(launchScene)
+//        skView.presentScene(TitleScene(size: K.ScreenDimensions.screenSize)) //DEBUG ONLY
         view = skView
 
         AdMobManager.shared.superVC = self

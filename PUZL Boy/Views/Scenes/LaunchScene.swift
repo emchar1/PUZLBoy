@@ -152,9 +152,15 @@ class LaunchScene: SKScene {
                 
                 node.removeAllActions()
                 
+                
+                //Animation Properties
                 let jumpAnimation = SKAction.animate(with: player.textures[Player.Texture.jump.rawValue], timePerFrame: playerTimePerFrame)
                 let playerDescendAction = SKAction.moveTo(y: K.ScreenDimensions.height * (2 / 3), duration: moveDuration * 1)
                 let playerDescendSlowerAction = SKAction.moveTo(y: K.ScreenDimensions.height / 2, duration: moveDuration * 2)
+
+                playerDescendAction.timingMode = .easeIn
+                playerDescendSlowerAction.timingMode = .easeOut
+
                 let floatDistance: CGFloat = 30
                 let floatAction = SKAction.repeat(SKAction.sequence([
                     SKAction.moveBy(x: 0, y: -floatDistance, duration: moveDuration / 4),
@@ -162,9 +168,15 @@ class LaunchScene: SKScene {
                     SKAction.moveBy(x: 0, y: floatDistance, duration: moveDuration / 4),
                     SKAction.moveBy(x: floatDistance, y: 0, duration: moveDuration / 4)
                 ]), count: Int(moveDuration) * 3)
+
+                let rotateDistance: CGFloat = 1 / 16
+                let rotateAction = SKAction.repeat(SKAction.sequence([
+                    SKAction.rotate(byAngle: -.pi * rotateDistance, duration: moveDuration * 3 / 4),
+                    SKAction.rotate(toAngle: 0, duration: moveDuration * 3 / 4),
+                    SKAction.rotate(byAngle: .pi * rotateDistance, duration: moveDuration * 3 / 4),
+                    SKAction.rotate(toAngle: 0, duration: moveDuration * 3 / 4)
+                ]), count: 1)
                 
-                playerDescendAction.timingMode = .easeIn
-                playerDescendSlowerAction.timingMode = .easeOut
 
                 //Jump animation: duration = 4.5 = 1.5 + 3
                 node.run(SKAction.group([
@@ -187,6 +199,7 @@ class LaunchScene: SKScene {
                         SKAction.scale(to: 2, duration: moveDuration),
                         SKAction.moveTo(x: K.ScreenDimensions.iPhoneWidth / 2, duration: 0),
                         floatAction,
+                        rotateAction,
                         SKAction.sequence([
                             playerDescendAction,
                             playerDescendSlowerAction
