@@ -55,7 +55,8 @@ class ContinueSprite: SKNode {
         skipLevelButton = DecisionButtonSprite(text: "Buy $1.99: Skip Level",
                                                color: UIColor(red: 227 / 255, green: 148 / 255, blue: 9 / 255, alpha: 1.0),
                                                iconImageName: nil)
-        skipLevelButton.position = CGPoint(x: -K.ScreenDimensions.iPhoneWidth / 4, y: watchAdButton.position.y - 160)
+        skipLevelButton.position = CGPoint(x: -K.ScreenDimensions.iPhoneWidth / 4,
+                                           y: watchAdButton.position.y - K.ScreenDimensions.iPhoneWidth / 8 - 40)
         skipLevelButton.name = "skipLevelButton"
         
         buy099Button = DecisionButtonSprite(text: "Buy $0.99:      x\(ContinueSprite.extraLivesBuy099)",
@@ -67,7 +68,8 @@ class ContinueSprite: SKNode {
         buy299Button = DecisionButtonSprite(text: "Buy $2.99:      x\(ContinueSprite.extraLivesBuy299)",
                                             color: UIColor(red: 0 / 255, green: 168 / 255, blue: 86 / 255, alpha: 1.0),
                                             iconImageName: "Run (6)")
-        buy299Button.position = CGPoint(x: K.ScreenDimensions.iPhoneWidth / 4, y: watchAdButton.position.y - 160)
+        buy299Button.position = CGPoint(x: K.ScreenDimensions.iPhoneWidth / 4,
+                                        y: watchAdButton.position.y - K.ScreenDimensions.iPhoneWidth / 8 - 40)
         buy299Button.name = "buy299Button"
         
         super.init()
@@ -79,14 +81,14 @@ class ContinueSprite: SKNode {
         
         let continueLabel = SKLabelNode(text: "CONTINUE?")
         continueLabel.fontName = UIFont.gameFont
-        continueLabel.fontSize = UIFont.gameFontSizeMedium
+        continueLabel.fontSize = UIDevice.isiPad ? UIFont.gameFontSizeExtraLarge : UIFont.gameFontSizeMedium
         continueLabel.fontColor = UIFont.gameFontColor
         continueLabel.position = CGPoint(x: 0, y: K.ScreenDimensions.iPhoneWidth / 4)
         
         livesRefreshLabel.fontName = UIFont.chatFont
-        livesRefreshLabel.fontSize = UIFont.chatFontSize
+        livesRefreshLabel.fontSize = UIDevice.isiPad ? UIFont.gameFontSizeLarge : UIFont.chatFontSize
         livesRefreshLabel.fontColor = UIFont.chatFontColor
-        livesRefreshLabel.position = CGPoint(x: 0, y: continueLabel.position.y - 100)
+        livesRefreshLabel.position = CGPoint(x: 0, y: continueLabel.position.y - (UIDevice.isiPad ? 200 : 100))
         
         setScale(0)
         position = CGPoint(x: K.ScreenDimensions.iPhoneWidth / 2, y: K.ScreenDimensions.height / 2)

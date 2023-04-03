@@ -15,9 +15,9 @@ class DecisionButtonSprite: SKNode {
     
     // MARK: - Properties
     
-    let buttonSize = CGSize(width: 400, height: 120)
-    let shadowOffset = CGPoint(x: -8, y: 8)
-    let iconScale: CGFloat = 90
+    let buttonSize = CGSize(width: K.ScreenDimensions.iPhoneWidth * (4 / 9), height: K.ScreenDimensions.iPhoneWidth / 8)
+    let shadowOffset = CGPoint(x: 8, y: -8)
+    let iconScale: CGFloat = UIDevice.isiPad ? 120 : 90
     private var isPressed: Bool = false
     private(set) var sprite: SKShapeNode
     private var topSprite: SKShapeNode
@@ -39,7 +39,7 @@ class DecisionButtonSprite: SKNode {
         topSprite.fillTexture = SKTexture(image: .chatGradientTexture)
         topSprite.lineWidth = 4
         topSprite.strokeColor = .white
-        topSprite.position = shadowOffset
+        topSprite.position = .zero
 
         super.init()
                 
@@ -50,14 +50,14 @@ class DecisionButtonSprite: SKNode {
         
         let textNode = SKLabelNode(text: text)
         textNode.fontName = UIFont.chatFont
-        textNode.fontSize = UIFont.chatFontSize
+        textNode.fontSize = UIDevice.isiPad ? UIFont.gameFontSizeLarge : UIFont.chatFontSize
         textNode.fontColor = UIFont.chatFontColor
         textNode.position = CGPoint(x: 0, y: -18)
         
         if let iconImageName = iconImageName {
             let iconNode = SKSpriteNode(imageNamed: iconImageName)
             iconNode.scale(to: CGSize(width: iconScale * Player.size.width / Player.size.height, height: iconScale))
-            iconNode.position = CGPoint(x: 64, y: 0)
+            iconNode.position = CGPoint(x: UIDevice.isiPad ? 96 : 64, y: 0)
 
             topSprite.addChild(iconNode)
         }
@@ -78,13 +78,13 @@ class DecisionButtonSprite: SKNode {
     func touchDown() {
         isPressed = true
                 
-        topSprite.position = .zero
+        topSprite.position = shadowOffset
     }
     
     func touchUp() {
         isPressed = false
 
-        topSprite.run(SKAction.move(to: shadowOffset, duration: 0.25))
+        topSprite.run(SKAction.move(to: .zero, duration: 0.25))
     }
     
     func tapButton() {
