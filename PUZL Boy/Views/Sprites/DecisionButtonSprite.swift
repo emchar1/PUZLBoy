@@ -7,6 +7,10 @@
 
 import SpriteKit
 
+protocol DecisionButtonSpriteDelegate: AnyObject {
+    func buttonWasTapped(_ node: DecisionButtonSprite)
+}
+
 class DecisionButtonSprite: SKNode {
     
     // MARK: - Properties
@@ -14,8 +18,11 @@ class DecisionButtonSprite: SKNode {
     let buttonSize = CGSize(width: 400, height: 120)
     let shadowOffset = CGPoint(x: -8, y: 8)
     let iconScale: CGFloat = 90
+    private var isPressed: Bool = false
     private(set) var sprite: SKShapeNode
     private var topSprite: SKShapeNode
+    
+    weak var delegate: DecisionButtonSpriteDelegate?
     
     
     // MARK: - Initialization
@@ -60,16 +67,31 @@ class DecisionButtonSprite: SKNode {
         sprite.addChild(topSprite)
         topSprite.addChild(textNode)
     }
-        
-    func tapButton() {
-        topSprite.position = .zero
-        
-        topSprite.run(SKAction.move(to: shadowOffset, duration: 0.25))
-        
-        K.ButtonTaps.tap1()
-    }
-    
+            
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+
+    // MARK: - Touches
+    
+    func touchDown() {
+        isPressed = true
+                
+        topSprite.position = .zero
+    }
+    
+    func touchUp() {
+        isPressed = false
+
+        topSprite.run(SKAction.move(to: shadowOffset, duration: 0.25))
+    }
+    
+    func tapButton() {
+        guard isPressed else { return }
+        
+        delegate?.buttonWasTapped(self)
+        K.ButtonTaps.tap1()
+    }
+
 }

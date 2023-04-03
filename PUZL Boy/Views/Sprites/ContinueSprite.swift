@@ -72,6 +72,11 @@ class ContinueSprite: SKNode {
         
         super.init()
         
+        watchAdButton.delegate = self
+        skipLevelButton.delegate = self
+        buy099Button.delegate = self
+        buy299Button.delegate = self
+        
         let continueLabel = SKLabelNode(text: "CONTINUE?")
         continueLabel.fontName = UIFont.gameFont
         continueLabel.fontSize = UIFont.gameFontSizeMedium
@@ -137,32 +142,51 @@ class ContinueSprite: SKNode {
     
     // MARK: - UI Controls
     
+    func touchDown(in location: CGPoint) {
+        guard !disableControls else { return }
+        
+        for node in nodes(at: location - position) {
+            guard let node = node as? DecisionButtonSprite else { continue }
+
+            node.touchDown()
+        }
+
+    }
+    
+    func touchUp(in location: CGPoint) {
+        guard !disableControls else { return }
+        
+        watchAdButton.touchUp()
+        skipLevelButton.touchUp()
+        buy099Button.touchUp()
+        buy299Button.touchUp()
+    }
+    
+    
     func didTapButton(in location: CGPoint) {
         guard !disableControls else { return }
 
         for node in nodes(at: location - position) {
-            if node.name == "watchAdButton" {
-                watchAdButton.tapButton()
-                delegate?.didTapWatchAd()
-                return
-            }
-            else if node.name == "skipLevelButton" {
-                skipLevelButton.tapButton()
-                delegate?.didTapSkipLevel()
-                return
-            }
-            else if node.name == "buy099Button" {
-                buy099Button.tapButton()
-                delegate?.didTapBuy099Button()
-                return
-            }
-            else if node.name == "buy299Button" {
-                buy299Button.tapButton()
-                delegate?.didTapBuy299Button()
-                return
-            }
+            guard let node = node as? DecisionButtonSprite else { continue }
+            
+            node.tapButton()
         }
     }
     
     
+}
+
+
+// MARK: - DecisionButtonSpriteDelegate
+
+extension ContinueSprite: DecisionButtonSpriteDelegate {
+    func buttonWasTapped(_ node: DecisionButtonSprite) {
+        switch node.name {
+        case "watchAdButton": delegate?.didTapWatchAd()
+        case "skipLevelButton": delegate?.didTapSkipLevel()
+        case "buy099Button": delegate?.didTapBuy099Button()
+        case "buy299Button": delegate?.didTapBuy299Button()
+        default: print("Invalid button press.")
+        }
+    }
 }

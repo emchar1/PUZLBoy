@@ -175,7 +175,7 @@ class GameScene: SKScene {
         gameEngine.handleControls(in: location)
         
         if !activityIndicator.isShowing {
-            continueSprite.didTapButton(in: location)
+            continueSprite.touchDown(in: location)
         }
         
         // FIXME: - Debuging purposes only!!!
@@ -184,6 +184,13 @@ class GameScene: SKScene {
         
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard let location = touches.first?.location(in: self) else { return }
+        
+        if !activityIndicator.isShowing {
+            continueSprite.didTapButton(in: location)
+            continueSprite.touchUp(in: location)
+        }
+
+        
         guard gameEngine.checkControlGuardsIfPassed(includeDisableInputFromOutside: false) else { return }
         
         // FIXME: - Too many if/else to handle disabled from outside BUT special function is enabled...
