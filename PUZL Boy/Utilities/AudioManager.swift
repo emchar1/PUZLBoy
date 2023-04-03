@@ -82,6 +82,7 @@ class AudioManager {
         addAudioItem("boygrunt2", category: .soundFX)
         addAudioItem("buttontap", category: .soundFX)
         addAudioItem("buttontap2", category: .soundFX)
+        addAudioItem("buttontap3", category: .soundFX) //needs purchase
         addAudioItem("chatclose", category: .soundFX)
         addAudioItem("chatopen", category: .soundFX)
         addAudioItem("dooropen", category: .soundFX)
@@ -135,7 +136,7 @@ class AudioManager {
         addAudioItem("overworld8", category: .music) //delete
         addAudioItem("overworld9", category: .music) //delete
         addAudioItem("overworld10", category: .music)
-        addAudioItem("titletheme", category: .music)
+        addAudioItem("titletheme", category: .music) //needs purchase
     }
 
     /**

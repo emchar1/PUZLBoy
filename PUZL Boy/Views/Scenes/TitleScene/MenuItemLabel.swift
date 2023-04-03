@@ -87,11 +87,12 @@ class MenuItemLabel: SKLabelNode {
                     SKAction.scale(to: 1, duration: 0.2)
                 ])
             ]))
-            
-            K.ButtonTaps.tap1()
-            
+                        
             if type == .menuStart {
-                AudioManager.shared.playSound(for: "revive")
+                K.ButtonTaps.tap3()
+            }
+            else {
+                K.ButtonTaps.tap1()
             }
         }
         else {

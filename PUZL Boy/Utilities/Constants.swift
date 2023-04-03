@@ -135,6 +135,10 @@ struct K {
         static func tap2() {
             tapCustom(soundFile: "buttontap2")
         }
+        
+        static func tap3() {
+            tapCustom(soundFile: "buttontap3")
+        }
 
         static func tapCustom(soundFile: String, style: UIImpactFeedbackGenerator.FeedbackStyle = .soft) {
             AudioManager.shared.playSound(for: soundFile)
