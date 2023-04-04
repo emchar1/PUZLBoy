@@ -7,11 +7,16 @@
 
 import SpriteKit
 
+protocol MenuItemLabelDelegate: AnyObject {
+    func buttonWasTapped(_ node: MenuItemLabel)
+}
+
 class MenuItemLabel: SKLabelNode {
     
     // MARK: - Properties
     
     private var shadowNode: SKLabelNode = SKLabelNode()
+    private var isPressed: Bool = false
     private(set) var type: MenuType
     
     private(set) var isEnabled: Bool = true {
@@ -30,6 +35,8 @@ class MenuItemLabel: SKLabelNode {
     enum MenuType: String {
         case menuStart, menuLevelSelect, menuOptions, menuCredits
     }
+    
+    weak var delegate: MenuItemLabelDelegate?
     
     
     // MARK: - Initialization
@@ -76,17 +83,24 @@ class MenuItemLabel: SKLabelNode {
     func touchDown() {
         guard isEnabled else { return }
         
+        isPressed = true
+        
         self.run(SKAction.scale(to: 0.95, duration: 0.1))
     }
     
     func touchUp() {
         guard isEnabled else { return }
         
+        isPressed = false
+        
         self.run(SKAction.scale(to: 1.0, duration: 0))
     }
     
     func tapButton(toColor tappedColor: UIColor) {
         guard isEnabled else { return }
+        guard isPressed else { return }
+        
+        delegate?.buttonWasTapped(self)
         
         self.run(SKAction.group([
             SKAction.sequence([

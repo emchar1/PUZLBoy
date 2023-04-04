@@ -171,6 +171,11 @@ class TitleScene: SKScene {
         
         super.init(size: size)
         
+        menuStart.delegate = self
+        menuLevelSelect.delegate = self
+        menuOptions.delegate = self
+        menuCredits.delegate = self
+        
         AudioManager.shared.playSound(for: AudioManager.shared.overworldTitle)
         
         menuLevelSelect.setIsEnabled(false)
@@ -325,6 +330,9 @@ class TitleScene: SKScene {
 
     }
     
+    
+    // MARK: - UI Touch
+    
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard let location = touches.first?.location(in: self) else { return }
         guard !preventTouch else { return }
@@ -341,37 +349,48 @@ class TitleScene: SKScene {
         guard !preventTouch else { return }
         
         for node in nodes(at: location) {
-            menuStart.touchUp()
-            menuLevelSelect.touchUp()
-            menuOptions.touchUp()
-            menuCredits.touchUp()
-            
-            guard let node = node as? MenuItemLabel else { continue }
+            guard let node = node as? MenuItemLabel else {
+                touchUpButtons()
+                continue
+            }
             
             node.tapButton(toColor: menuBackgroundShadow1.fillColor)
-            
-            switch node.type {
-            case .menuStart:
-                let fadeDuration: TimeInterval = 2.0
-                
-                preventTouch = true
-                                                
-                AudioManager.shared.stopSound(for: AudioManager.shared.overworldTitle, fadeDuration: fadeDuration)
-
-                fadeSprite.run(SKAction.fadeIn(withDuration: fadeDuration)) {
-                    self.titleSceneDelegate?.didTapStart()
-                    self.boyTitle.removeAllActions()
-                    self.preventTouch = false
-                }
-            case .menuLevelSelect:
-                print("Level Select not implemented.")
-            case .menuOptions:
-                print("Options not implemented.")
-            case .menuCredits:
-                print("Credits not implemented.")
-            }
+            touchUpButtons()
         }
     }
     
-    
+    private func touchUpButtons() {
+        menuStart.touchUp()
+        menuLevelSelect.touchUp()
+        menuOptions.touchUp()
+        menuCredits.touchUp()
+    }
+}
+
+
+// MARK: - MenuItemLabelDelegate
+
+extension TitleScene: MenuItemLabelDelegate {
+    func buttonWasTapped(_ node: MenuItemLabel) {
+        switch node.type {
+        case .menuStart:
+            let fadeDuration: TimeInterval = 2.0
+            
+            preventTouch = true
+                                            
+            AudioManager.shared.stopSound(for: AudioManager.shared.overworldTitle, fadeDuration: fadeDuration)
+
+            fadeSprite.run(SKAction.fadeIn(withDuration: fadeDuration)) {
+                self.titleSceneDelegate?.didTapStart()
+                self.boyTitle.removeAllActions()
+                self.preventTouch = false
+            }
+        case .menuLevelSelect:
+            print("Level Select not implemented.")
+        case .menuOptions:
+            print("Options not implemented.")
+        case .menuCredits:
+            print("Credits not implemented.")
+        }
+    }
 }
