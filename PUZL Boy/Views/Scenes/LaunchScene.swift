@@ -110,7 +110,7 @@ class LaunchScene: SKScene {
     }
     
     
-    // MARK: - Functions
+    // MARK: - Move Functions
     
     override func didMove(to view: SKView) {
         addChild(skyNode)
@@ -134,78 +134,84 @@ class LaunchScene: SKScene {
         addChild(loadingSprite)
     }
     
+    override func willMove(from view: SKView) {
+        super.willMove(from: view)
+        
+        print("Scene transitioned...")
+    }
+    
+    
+    // MARK: - Animation Functions
+    
     func animateTransition(completion: @escaping () -> Void) {
         let playerTimePerFrame: TimeInterval = 0.1
         var playerCrouchDuration: TimeInterval { playerTimePerFrame * 5 }
         var moveDuration: TimeInterval { playerCrouchDuration * 2 }
-
+        
+        let maxAnimationDuration: TimeInterval = 6.5
+        let paddingDuration: TimeInterval = 0.25
+        
         for node in self.children {
             guard node.name != "skyNode" else { continue }
             
             switch node.name {
             case "loadingSprite":
-                node.run(SKAction.fadeOut(withDuration: 0.5))
+                node.run(SKAction.fadeOut(withDuration: moveDuration / 2))
             case "skyObjectNode":
-                node.run(SKAction.fadeOut(withDuration: moveDuration * 5))
+                node.run(SKAction.fadeOut(withDuration: moveDuration * maxAnimationDuration))
             case "playerSprite":
                 guard let node = node as? SKSpriteNode else { return }
                 
                 node.removeAllActions()
                 
+                //Player Action properties
+                let jumpStartPoint = CGPoint(x: K.ScreenDimensions.iPhoneWidth / 2, y: K.ScreenDimensions.height / 2)
+                let jumpEndPoint = CGPoint(x: K.ScreenDimensions.iPhoneWidth / 2, y: K.ScreenDimensions.height / 2)
+                let jumpControlPoint = CGPoint(x: 0, y: 0)
+
+                let descendAction = SKAction.moveTo(y: jumpStartPoint.y, duration: moveDuration * 4)
+                descendAction.timingFunction = { time in 1 + pow(time - 1, 3) }
                 
-                //Animation Properties
-                let jumpAnimation = SKAction.animate(with: player.textures[Player.Texture.jump.rawValue], timePerFrame: playerTimePerFrame)
-                let playerDescendAction = SKAction.moveTo(y: K.ScreenDimensions.height * (2 / 3), duration: moveDuration * 1)
-                let playerDescendSlowerAction = SKAction.moveTo(y: K.ScreenDimensions.height / 2, duration: moveDuration * 2)
+                let path = UIBezierPath()
+                path.move(to: jumpStartPoint)
+                path.addQuadCurve(to: jumpEndPoint, controlPoint: CGPoint(x: jumpControlPoint.x, y: jumpControlPoint.y))
 
-                playerDescendAction.timingMode = .easeIn
-                playerDescendSlowerAction.timingMode = .easeOut
-
-                let floatDistance: CGFloat = 30
-                let floatAction = SKAction.repeat(SKAction.sequence([
-                    SKAction.moveBy(x: 0, y: -floatDistance, duration: moveDuration / 4),
-                    SKAction.moveBy(x: -floatDistance, y: 0, duration: moveDuration / 4),
-                    SKAction.moveBy(x: 0, y: floatDistance, duration: moveDuration / 4),
-                    SKAction.moveBy(x: floatDistance, y: 0, duration: moveDuration / 4)
-                ]), count: Int(moveDuration) * 3)
-
-                let rotateDistance: CGFloat = 1 / 16
-                let rotateAction = SKAction.repeat(SKAction.sequence([
-                    SKAction.rotate(byAngle: -.pi * rotateDistance, duration: moveDuration * 3 / 4),
-                    SKAction.rotate(toAngle: 0, duration: moveDuration * 3 / 4),
-                    SKAction.rotate(byAngle: .pi * rotateDistance, duration: moveDuration * 3 / 4),
-                    SKAction.rotate(toAngle: 0, duration: moveDuration * 3 / 4)
-                ]), count: 1)
+                let followBezierAction = SKAction.follow(path.cgPath, asOffset: false, orientToPath: false, duration: moveDuration)
+                followBezierAction.timingFunction = { time in pow(time, 8) }
+                let scaleAction = SKAction.scale(to: 2, duration: moveDuration)
+                scaleAction.timingFunction = { time in pow(time, 8) }
                 
 
-                //Jump animation: duration = 4.5 = 1.5 + 3
-                node.run(SKAction.group([
-                    SKAction.moveTo(x: K.ScreenDimensions.iPhoneWidth / 4, duration: playerCrouchDuration),
-                    SKAction.scale(to: 0.75, duration: playerCrouchDuration),
-                    jumpAnimation,
-                    SKAction.sequence([
-                        SKAction.wait(forDuration: playerCrouchDuration),
-                        SKAction.group([
-                            SKAction.colorize(withColorBlendFactor: 0.0, duration: moveDuration),
-                            SKAction.scale(to: 4, duration: moveDuration),
-                            SKAction.moveBy(x: K.ScreenDimensions.iPhoneWidth / 2, y: K.ScreenDimensions.height, duration: moveDuration)
-                        ])
-                    ])
-                ])) { //Completion:
-                    node.texture = SKTexture(imageNamed: "Run (5)")
-                    
-                    //Descend animation: duration = 3
-                    node.run(SKAction.group([
-                        SKAction.scale(to: 2, duration: moveDuration),
-                        SKAction.moveTo(x: K.ScreenDimensions.iPhoneWidth / 2, duration: 0),
-                        floatAction,
-                        rotateAction,
+                //Total = 6.5
+                node.run(SKAction.sequence([
+                    //1st Jump = 1.5
+                    SKAction.group([
+                        SKAction.moveTo(x: K.ScreenDimensions.iPhoneWidth / 4, duration: playerCrouchDuration),
+                        SKAction.scale(to: 0.75, duration: playerCrouchDuration),
+                        SKAction.animate(with: player.textures[Player.Texture.jump.rawValue], timePerFrame: playerTimePerFrame),
                         SKAction.sequence([
-                            playerDescendAction,
-                            playerDescendSlowerAction
+                            SKAction.wait(forDuration: playerCrouchDuration),
+                            SKAction.group([
+                                SKAction.colorize(withColorBlendFactor: 0, duration: moveDuration),
+                                SKAction.scale(to: 0, duration: moveDuration),
+                                SKAction.moveBy(x: K.ScreenDimensions.iPhoneWidth / 2, y: K.ScreenDimensions.height, duration: moveDuration)
+                            ])
                         ])
-                    ]))
-                }
+                    ]),
+                    //Descend = 4
+                    SKAction.group([
+                        SKAction.setTexture(SKTexture(imageNamed: "Jump (12)")),
+                        SKAction.scale(to: 0.1, duration: 0),
+                        SKAction.moveTo(x: jumpStartPoint.x, duration: 0),
+                        descendAction
+                    ]),
+                    //2nd Jump = 1
+                    SKAction.group([
+                        SKAction.setTexture(SKTexture(imageNamed: "Run (5)")),
+                        followBezierAction,
+                        scaleAction
+                    ])
+                ]))
             default:
                 node.run(SKAction.sequence([
                     SKAction.wait(forDuration: playerCrouchDuration),
@@ -214,12 +220,7 @@ class LaunchScene: SKScene {
             } //end switch node.name
         } //end for node in self.children
         
-        run(SKAction.wait(forDuration: moveDuration * 5), completion: completion)
+        run(SKAction.wait(forDuration: moveDuration * (maxAnimationDuration + paddingDuration)), completion: completion)
     }
     
-    override func willMove(from view: SKView) {
-        super.willMove(from: view)
-        
-        print("Scene transitioned...")
-    }
 }
