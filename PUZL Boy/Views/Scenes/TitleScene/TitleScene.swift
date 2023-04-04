@@ -186,7 +186,7 @@ class TitleScene: SKScene {
         case 0:
             puzlTitleShadow1.fontColor = DayTheme.skyColor.top.complementary
             boyTitle.fontColor = DayTheme.skyColor.bottom.complementary
-            menuBackgroundColor.fillColor = DayTheme.skyColor.top.complementary
+            menuBackgroundColor.fillColor = DayTheme.skyColor.top.complementary.complementary
         case 1:
             puzlTitleShadow1.fontColor = DayTheme.skyColor.bottom.splitComplementary.first
             boyTitle.fontColor = DayTheme.skyColor.bottom.splitComplementary.second
