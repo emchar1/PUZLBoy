@@ -50,7 +50,7 @@ class AudioManager {
         return instance
     }()
     
-    let overworldTitle = "titletheme\(Int.random(in: 1...5))"
+    let titleLogo = "titletheme\(Int.random(in: 1...5))"
     let overworldTheme = "overworld6"
     let overworldPartyTheme = "overworld10"
     private(set) var currentTheme: String
@@ -78,7 +78,7 @@ class AudioManager {
         addAudioItem("boyattack2", category: .soundFX)
         addAudioItem("boyattack3", category: .soundFX)
         addAudioItem("boydead", category: .soundFX)
-        addAudioItem("boyfall", category: .soundFX)
+        addAudioItem("boyfallbang", category: .soundFX) //needs purchase
         addAudioItem("boygrunt1", category: .soundFX)
         addAudioItem("boygrunt2", category: .soundFX)
         addAudioItem("buttontap", category: .soundFX)
@@ -144,7 +144,6 @@ class AudioManager {
         addAudioItem("overworld8", category: .music) //delete
         addAudioItem("overworld9", category: .music) //delete
         addAudioItem("overworld10", category: .music)
-        addAudioItem("titletheme", category: .music) //needs purchase
     }
 
     /**

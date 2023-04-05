@@ -66,7 +66,6 @@
 		EA75F0EF292F55F900F09BD7 /* LaunchScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA75F0EE292F55F900F09BD7 /* LaunchScene.swift */; };
 		EA78C36C29763B1C00292744 /* AchievementAdMobster.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA78C36B29763B1C00292744 /* AchievementAdMobster.swift */; };
 		EA78C36E29767D7600292744 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = EA78C36D29767D7600292744 /* GoogleService-Info.plist */; };
-		EA793E7729D959A4001A0CA0 /* titletheme.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA793E7629D959A4001A0CA0 /* titletheme.mp3 */; };
 		EA826C74297CEFC500F19F81 /* TimerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA826C73297CEFC500F19F81 /* TimerManager.swift */; };
 		EA826C76297CF9E000F19F81 /* ScoringManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA826C75297CF9E000F19F81 /* ScoringManager.swift */; };
 		EA826C7A298492BA00F19F81 /* DecisionButtonSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA826C79298492BA00F19F81 /* DecisionButtonSprite.swift */; };
@@ -173,12 +172,12 @@
 		EAF7183929B3D56B00E2ED82 /* lavaappear3.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAF7183829B3D56B00E2ED82 /* lavaappear3.mp3 */; };
 		EAFA6A6229DCED36002287C2 /* punchwhack2.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAFA6A6129DCED35002287C2 /* punchwhack2.mp3 */; };
 		EAFA6A6429DCEEC3002287C2 /* punchwhack1.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAFA6A6329DCEEC3002287C2 /* punchwhack1.mp3 */; };
-		EAFA6A6629DCF455002287C2 /* boyfall.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAFA6A6529DCF455002287C2 /* boyfall.mp3 */; };
 		EAFA6A6829DCF643002287C2 /* titletheme2.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAFA6A6729DCF643002287C2 /* titletheme2.mp3 */; };
 		EAFA6A6A29DCFA7F002287C2 /* titletheme3.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAFA6A6929DCFA7F002287C2 /* titletheme3.mp3 */; };
 		EAFA6A6C29DCFC11002287C2 /* titletheme4.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAFA6A6B29DCFC11002287C2 /* titletheme4.mp3 */; };
 		EAFA6A6E29DCFD63002287C2 /* titletheme5.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAFA6A6D29DCFD63002287C2 /* titletheme5.mp3 */; };
 		EAFA6A7029DCFE79002287C2 /* titletheme1.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAFA6A6F29DCFE79002287C2 /* titletheme1.mp3 */; };
+		EAFA6A7229DDF551002287C2 /* boyfallbang.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAFA6A7129DDF551002287C2 /* boyfallbang.mp3 */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -238,7 +237,6 @@
 		EA75F0EE292F55F900F09BD7 /* LaunchScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchScene.swift; sourceTree = "<group>"; };
 		EA78C36B29763B1C00292744 /* AchievementAdMobster.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementAdMobster.swift; sourceTree = "<group>"; };
 		EA78C36D29767D7600292744 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		EA793E7629D959A4001A0CA0 /* titletheme.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = titletheme.mp3; sourceTree = "<group>"; };
 		EA826C73297CEFC500F19F81 /* TimerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerManager.swift; sourceTree = "<group>"; };
 		EA826C75297CF9E000F19F81 /* ScoringManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoringManager.swift; sourceTree = "<group>"; };
 		EA826C79298492BA00F19F81 /* DecisionButtonSprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecisionButtonSprite.swift; sourceTree = "<group>"; };
@@ -343,12 +341,12 @@
 		EAF7183829B3D56B00E2ED82 /* lavaappear3.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = lavaappear3.mp3; sourceTree = "<group>"; };
 		EAFA6A6129DCED35002287C2 /* punchwhack2.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = punchwhack2.mp3; sourceTree = "<group>"; };
 		EAFA6A6329DCEEC3002287C2 /* punchwhack1.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = punchwhack1.mp3; sourceTree = "<group>"; };
-		EAFA6A6529DCF455002287C2 /* boyfall.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = boyfall.mp3; sourceTree = "<group>"; };
 		EAFA6A6729DCF643002287C2 /* titletheme2.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = titletheme2.mp3; sourceTree = "<group>"; };
 		EAFA6A6929DCFA7F002287C2 /* titletheme3.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = titletheme3.mp3; sourceTree = "<group>"; };
 		EAFA6A6B29DCFC11002287C2 /* titletheme4.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = titletheme4.mp3; sourceTree = "<group>"; };
 		EAFA6A6D29DCFD63002287C2 /* titletheme5.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = titletheme5.mp3; sourceTree = "<group>"; };
 		EAFA6A6F29DCFE79002287C2 /* titletheme1.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = titletheme1.mp3; sourceTree = "<group>"; };
+		EAFA6A7129DDF551002287C2 /* boyfallbang.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = boyfallbang.mp3; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -522,7 +520,7 @@
 				EA95D198294690B70061059C /* boyattack2.mp3 */,
 				EA95D199294690B70061059C /* boyattack3.mp3 */,
 				EA95D195294690B70061059C /* boydead.mp3 */,
-				EAFA6A6529DCF455002287C2 /* boyfall.mp3 */,
+				EAFA6A7129DDF551002287C2 /* boyfallbang.mp3 */,
 				EA95D1A1294691820061059C /* boygrunt1.mp3 */,
 				EA95D1A2294691820061059C /* boygrunt2.mp3 */,
 				EA3467AA29A8C6F6002DDA02 /* buttontap.mp3 */,
@@ -579,7 +577,6 @@
 				EAFA6A6129DCED35002287C2 /* punchwhack2.mp3 */,
 				EA3467A429A8C659002DDA02 /* revive.mp3 */,
 				EAAEA3C32931D0DA00221963 /* swordslash.mp3 */,
-				EA793E7629D959A4001A0CA0 /* titletheme.mp3 */,
 				EAFA6A6F29DCFE79002287C2 /* titletheme1.mp3 */,
 				EAFA6A6729DCF643002287C2 /* titletheme2.mp3 */,
 				EAFA6A6929DCFA7F002287C2 /* titletheme3.mp3 */,
@@ -816,10 +813,8 @@
 				EAFA6A6229DCED36002287C2 /* punchwhack2.mp3 in Resources */,
 				EAFA6A6A29DCFA7F002287C2 /* titletheme3.mp3 in Resources */,
 				EA95D200295D83E40061059C /* Boogaloo-Regular.ttf in Resources */,
-				EA793E7729D959A4001A0CA0 /* titletheme.mp3 in Resources */,
 				EA95D19B294690B70061059C /* boydead.mp3 in Resources */,
 				EA95D19E294690B70061059C /* boyattack2.mp3 in Resources */,
-				EAFA6A6629DCF455002287C2 /* boyfall.mp3 in Resources */,
 				EAFA6A7029DCFE79002287C2 /* titletheme1.mp3 in Resources */,
 				EA3467A529A8C659002DDA02 /* revive.mp3 in Resources */,
 				EA9F4DE229D36F02006F4B2F /* movepoisoned3.mp3 in Resources */,
@@ -838,6 +833,7 @@
 				EAF7182929B31BE800E2ED82 /* lavaappear1.mp3 in Resources */,
 				EAF7183329B3D26F00E2ED82 /* movesand2.mp3 in Resources */,
 				EA94E87329C0DE2C009F2614 /* movetile3.mp3 in Resources */,
+				EAFA6A7229DDF551002287C2 /* boyfallbang.mp3 in Resources */,
 				EA3467A929A8C6CA002DDA02 /* chatopen.mp3 in Resources */,
 				EAF7182D29B3CC0500E2ED82 /* lavaappear2.mp3 in Resources */,
 				EA3467AF29A8CB39002DDA02 /* overworld6.mp3 in Resources */,

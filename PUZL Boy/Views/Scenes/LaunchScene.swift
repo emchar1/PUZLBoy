@@ -181,7 +181,7 @@ class LaunchScene: SKScene {
                 
                 //Audio fun
                 AudioManager.shared.playSound(for: "boyattack3", delay: moveDuration / 2)
-                AudioManager.shared.playSound(for: "boyfall", delay: moveDuration * 2)
+                AudioManager.shared.playSound(for: "boyfallbang", delay: moveDuration * 2)
                 
                 //Jump Animation: Total = 6.5
                 node.run(SKAction.sequence([

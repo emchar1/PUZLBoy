@@ -328,7 +328,7 @@ class TitleScene: SKScene {
         
         AudioManager.shared.playSound(for: "punchwhack1")
         AudioManager.shared.playSound(for: "punchwhack2", delay: animationDuration)
-        AudioManager.shared.playSound(for: AudioManager.shared.overworldTitle, delay: delayMenu)
+        AudioManager.shared.playSound(for: AudioManager.shared.titleLogo, delay: delayMenu)
     }
     
     
@@ -379,7 +379,7 @@ extension TitleScene: MenuItemLabelDelegate {
             
             preventTouch = true
                                             
-            AudioManager.shared.stopSound(for: AudioManager.shared.overworldTitle, fadeDuration: fadeDuration)
+            AudioManager.shared.stopSound(for: AudioManager.shared.titleLogo, fadeDuration: fadeDuration)
 
             fadeSprite.run(SKAction.fadeIn(withDuration: fadeDuration)) {
                 self.titleSceneDelegate?.didTapStart()
