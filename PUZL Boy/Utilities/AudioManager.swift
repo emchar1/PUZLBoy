@@ -50,7 +50,7 @@ class AudioManager {
         return instance
     }()
     
-    let overworldTitle = "titletheme"
+    let overworldTitle = "titletheme\(Int.random(in: 1...5))"
     let overworldTheme = "overworld6"
     let overworldPartyTheme = "overworld10"
     private(set) var currentTheme: String
@@ -78,6 +78,7 @@ class AudioManager {
         addAudioItem("boyattack2", category: .soundFX)
         addAudioItem("boyattack3", category: .soundFX)
         addAudioItem("boydead", category: .soundFX)
+        addAudioItem("boyfall", category: .soundFX)
         addAudioItem("boygrunt1", category: .soundFX)
         addAudioItem("boygrunt2", category: .soundFX)
         addAudioItem("buttontap", category: .soundFX)
@@ -116,8 +117,15 @@ class AudioManager {
         addAudioItem("movewalk", category: .soundFX)
         addAudioItem("pickupheart", category: .soundFX)
         addAudioItem("pickupitem", category: .soundFX)
+        addAudioItem("punchwhack1", category: .soundFX) //needs purchase
+        addAudioItem("punchwhack2", category: .soundFX) //needs purchase
         addAudioItem("revive", category: .soundFX)
         addAudioItem("swordslash", category: .soundFX)
+        addAudioItem("titletheme1", category: .soundFX) //needs purchase
+        addAudioItem("titletheme2", category: .soundFX) //needs purchase
+        addAudioItem("titletheme3", category: .soundFX) //needs purchase
+        addAudioItem("titletheme4", category: .soundFX) //needs purchase
+        addAudioItem("titletheme5", category: .soundFX) //needs purchase
         addAudioItem("warp", category: .soundFX)
         addAudioItem("winlevel", category: .soundFX)
         

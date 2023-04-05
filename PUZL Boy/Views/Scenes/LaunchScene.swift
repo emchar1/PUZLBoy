@@ -181,7 +181,9 @@ class LaunchScene: SKScene {
                 let scaleAction = SKAction.scale(to: 2, duration: moveDuration)
                 scaleAction.timingFunction = { time in pow(time, 8) }
                 
-
+                AudioManager.shared.playSound(for: "boyattack3", delay: moveDuration / 2)
+                AudioManager.shared.playSound(for: "boyfall", delay: moveDuration * 2)
+                
                 //Total = 7.5
                 node.run(SKAction.sequence([
                     //1st Jump = 1.5

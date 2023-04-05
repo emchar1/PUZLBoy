@@ -171,6 +171,14 @@
 		EAF7183329B3D26F00E2ED82 /* movesand2.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAF7183229B3D26F00E2ED82 /* movesand2.mp3 */; };
 		EAF7183729B3D3FD00E2ED82 /* movesand3.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAF7183629B3D3FD00E2ED82 /* movesand3.mp3 */; };
 		EAF7183929B3D56B00E2ED82 /* lavaappear3.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAF7183829B3D56B00E2ED82 /* lavaappear3.mp3 */; };
+		EAFA6A6229DCED36002287C2 /* punchwhack2.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAFA6A6129DCED35002287C2 /* punchwhack2.mp3 */; };
+		EAFA6A6429DCEEC3002287C2 /* punchwhack1.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAFA6A6329DCEEC3002287C2 /* punchwhack1.mp3 */; };
+		EAFA6A6629DCF455002287C2 /* boyfall.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAFA6A6529DCF455002287C2 /* boyfall.mp3 */; };
+		EAFA6A6829DCF643002287C2 /* titletheme2.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAFA6A6729DCF643002287C2 /* titletheme2.mp3 */; };
+		EAFA6A6A29DCFA7F002287C2 /* titletheme3.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAFA6A6929DCFA7F002287C2 /* titletheme3.mp3 */; };
+		EAFA6A6C29DCFC11002287C2 /* titletheme4.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAFA6A6B29DCFC11002287C2 /* titletheme4.mp3 */; };
+		EAFA6A6E29DCFD63002287C2 /* titletheme5.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAFA6A6D29DCFD63002287C2 /* titletheme5.mp3 */; };
+		EAFA6A7029DCFE79002287C2 /* titletheme1.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAFA6A6F29DCFE79002287C2 /* titletheme1.mp3 */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -333,6 +341,14 @@
 		EAF7183229B3D26F00E2ED82 /* movesand2.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = movesand2.mp3; sourceTree = "<group>"; };
 		EAF7183629B3D3FD00E2ED82 /* movesand3.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = movesand3.mp3; sourceTree = "<group>"; };
 		EAF7183829B3D56B00E2ED82 /* lavaappear3.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = lavaappear3.mp3; sourceTree = "<group>"; };
+		EAFA6A6129DCED35002287C2 /* punchwhack2.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = punchwhack2.mp3; sourceTree = "<group>"; };
+		EAFA6A6329DCEEC3002287C2 /* punchwhack1.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = punchwhack1.mp3; sourceTree = "<group>"; };
+		EAFA6A6529DCF455002287C2 /* boyfall.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = boyfall.mp3; sourceTree = "<group>"; };
+		EAFA6A6729DCF643002287C2 /* titletheme2.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = titletheme2.mp3; sourceTree = "<group>"; };
+		EAFA6A6929DCFA7F002287C2 /* titletheme3.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = titletheme3.mp3; sourceTree = "<group>"; };
+		EAFA6A6B29DCFC11002287C2 /* titletheme4.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = titletheme4.mp3; sourceTree = "<group>"; };
+		EAFA6A6D29DCFD63002287C2 /* titletheme5.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = titletheme5.mp3; sourceTree = "<group>"; };
+		EAFA6A6F29DCFE79002287C2 /* titletheme1.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = titletheme1.mp3; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -506,6 +522,7 @@
 				EA95D198294690B70061059C /* boyattack2.mp3 */,
 				EA95D199294690B70061059C /* boyattack3.mp3 */,
 				EA95D195294690B70061059C /* boydead.mp3 */,
+				EAFA6A6529DCF455002287C2 /* boyfall.mp3 */,
 				EA95D1A1294691820061059C /* boygrunt1.mp3 */,
 				EA95D1A2294691820061059C /* boygrunt2.mp3 */,
 				EA3467AA29A8C6F6002DDA02 /* buttontap.mp3 */,
@@ -558,9 +575,16 @@
 				EAF7181A29AFE65300E2ED82 /* overworld10.mp3 */,
 				EA3467A629A8C68A002DDA02 /* pickupheart.mp3 */,
 				EAAEA3C92931F12B00221963 /* pickupitem.mp3 */,
+				EAFA6A6329DCEEC3002287C2 /* punchwhack1.mp3 */,
+				EAFA6A6129DCED35002287C2 /* punchwhack2.mp3 */,
 				EA3467A429A8C659002DDA02 /* revive.mp3 */,
 				EAAEA3C32931D0DA00221963 /* swordslash.mp3 */,
 				EA793E7629D959A4001A0CA0 /* titletheme.mp3 */,
+				EAFA6A6F29DCFE79002287C2 /* titletheme1.mp3 */,
+				EAFA6A6729DCF643002287C2 /* titletheme2.mp3 */,
+				EAFA6A6929DCFA7F002287C2 /* titletheme3.mp3 */,
+				EAFA6A6B29DCFC11002287C2 /* titletheme4.mp3 */,
+				EAFA6A6D29DCFD63002287C2 /* titletheme5.mp3 */,
 				EA95D193294690890061059C /* warp.mp3 */,
 				EAAEA3CB2931F14D00221963 /* winlevel.mp3 */,
 			);
@@ -758,6 +782,7 @@
 				EAF7183729B3D3FD00E2ED82 /* movesand3.mp3 in Resources */,
 				EAAEA3BE2931A31200221963 /* movepoisoned1.mp3 in Resources */,
 				EA95D194294690890061059C /* warp.mp3 in Resources */,
+				EAFA6A6C29DCFC11002287C2 /* titletheme4.mp3 in Resources */,
 				EA0F1481292B2F870013038E /* bouldersmash.mp3 in Resources */,
 				EA95D19C294690B70061059C /* boyattack1.mp3 in Resources */,
 				EA95D1A3294691820061059C /* boygrunt1.mp3 in Resources */,
@@ -788,10 +813,14 @@
 				EAACB4B92971E08A00973EB8 /* chatclose.mp3 in Resources */,
 				EAF7181F29B1B2BC00E2ED82 /* movesand1.mp3 in Resources */,
 				EAB4F66E29DA27290063AC4B /* buttontap3.mp3 in Resources */,
+				EAFA6A6229DCED36002287C2 /* punchwhack2.mp3 in Resources */,
+				EAFA6A6A29DCFA7F002287C2 /* titletheme3.mp3 in Resources */,
 				EA95D200295D83E40061059C /* Boogaloo-Regular.ttf in Resources */,
 				EA793E7729D959A4001A0CA0 /* titletheme.mp3 in Resources */,
 				EA95D19B294690B70061059C /* boydead.mp3 in Resources */,
 				EA95D19E294690B70061059C /* boyattack2.mp3 in Resources */,
+				EAFA6A6629DCF455002287C2 /* boyfall.mp3 in Resources */,
+				EAFA6A7029DCFE79002287C2 /* titletheme1.mp3 in Resources */,
 				EA3467A529A8C659002DDA02 /* revive.mp3 in Resources */,
 				EA9F4DE229D36F02006F4B2F /* movepoisoned3.mp3 in Resources */,
 				EA2AF74829B6EDAC00444E5A /* gemcollectparty.mp3 in Resources */,
@@ -799,6 +828,8 @@
 				EA3467A729A8C68A002DDA02 /* pickupheart.mp3 in Resources */,
 				EA0F146F2929D9C00013038E /* moverun4.mp3 in Resources */,
 				EA0F14702929D9C00013038E /* moverun3.mp3 in Resources */,
+				EAFA6A6829DCF643002287C2 /* titletheme2.mp3 in Resources */,
+				EAFA6A6E29DCFD63002287C2 /* titletheme5.mp3 in Resources */,
 				EA3467A129A400CB002DDA02 /* overworld8.mp3 in Resources */,
 				EA95D19F294690B70061059C /* boyattack3.mp3 in Resources */,
 				EA95D18E2945A0200061059C /* LuckiestGuy-Regular.ttf in Resources */,
@@ -816,6 +847,7 @@
 				EA4D025F29B7E33600F0C7B1 /* movemarsh1.mp3 in Resources */,
 				EA95D1AC294D08BC0061059C /* overworld5.mp3 in Resources */,
 				EA956C75292595F400879AD0 /* overworld4.mp3 in Resources */,
+				EAFA6A6429DCEEC3002287C2 /* punchwhack1.mp3 in Resources */,
 				EA78C36E29767D7600292744 /* GoogleService-Info.plist in Resources */,
 				EAAEA3CC2931F14D00221963 /* winlevel.mp3 in Resources */,
 				EA9F4DE729D37206006F4B2F /* movepoisoned2.mp3 in Resources */,
@@ -1055,7 +1087,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "PUZL Boy/Supporting Files/PUZL Boy.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 8;
+				CURRENT_PROJECT_VERSION = 9;
 				DEVELOPMENT_TEAM = LZ8V996BTJ;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "PUZL Boy/Supporting Files/Info.plist";
@@ -1068,7 +1100,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.7;
+				MARKETING_VERSION = 1.8;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.5play-apps.PUZL-Boy";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -1087,7 +1119,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "PUZL Boy/Supporting Files/PUZL Boy.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 8;
+				CURRENT_PROJECT_VERSION = 9;
 				DEVELOPMENT_TEAM = LZ8V996BTJ;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "PUZL Boy/Supporting Files/Info.plist";
@@ -1100,7 +1132,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.7;
+				MARKETING_VERSION = 1.8;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.5play-apps.PUZL-Boy";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";

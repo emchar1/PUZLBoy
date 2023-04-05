@@ -175,9 +175,7 @@ class TitleScene: SKScene {
         menuLevelSelect.delegate = self
         menuOptions.delegate = self
         menuCredits.delegate = self
-        
-        AudioManager.shared.playSound(for: AudioManager.shared.overworldTitle)
-        
+                
         menuLevelSelect.setIsEnabled(false)
         mixColors()
     }
@@ -275,7 +273,7 @@ class TitleScene: SKScene {
         ]))
         
         boyTitle.run(SKAction.sequence([
-            SKAction.wait(forDuration: 3 * animationDuration),
+            SKAction.wait(forDuration: animationDuration),
             SKAction.fadeIn(withDuration: 0),
             stampAction,
         ]))
@@ -286,7 +284,7 @@ class TitleScene: SKScene {
         
         menuBackgroundText.run(SKAction.sequence([
             SKAction.wait(forDuration: delayMenu + 3 * animationDuration),
-            SKAction.fadeAlpha(to: 1.0, duration: 3 * animationDuration)
+            SKAction.fadeAlpha(to: 1.0, duration: 2 * 3 * animationDuration)
         ]))
         
         menuBackgroundColor.run(SKAction.sequence([
@@ -327,7 +325,10 @@ class TitleScene: SKScene {
             ])
         ]))
 
-
+        
+        AudioManager.shared.playSound(for: "punchwhack1")
+        AudioManager.shared.playSound(for: "punchwhack2", delay: animationDuration)
+        AudioManager.shared.playSound(for: AudioManager.shared.overworldTitle, delay: delayMenu)
     }
     
     
