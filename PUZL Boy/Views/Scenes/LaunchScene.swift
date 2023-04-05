@@ -148,7 +148,7 @@ class LaunchScene: SKScene {
         var playerCrouchDuration: TimeInterval { playerTimePerFrame * 5 }
         var moveDuration: TimeInterval { playerCrouchDuration * 2 }
         
-        let maxAnimationDuration: TimeInterval = 7.5
+        let maxAnimationDuration: TimeInterval = 6.5
         let paddingDuration: TimeInterval = 0.25
         
         for node in self.children {
@@ -165,26 +165,25 @@ class LaunchScene: SKScene {
                 node.removeAllActions()
                 
                 //Player Action properties
-                let jumpStartPoint = CGPoint(x: K.ScreenDimensions.iPhoneWidth / 2, y: K.ScreenDimensions.height / 2)
+                let jumpStartPoint = CGPoint(x: K.ScreenDimensions.iPhoneWidth / 2, y: K.ScreenDimensions.height * 2 / 3)
                 let jumpEndPoint = CGPoint(x: K.ScreenDimensions.iPhoneWidth / 2, y: K.ScreenDimensions.height / 2)
                 let jumpControlPoint = CGPoint(x: 0, y: 0)
-
-                let descendAction = SKAction.moveTo(y: jumpStartPoint.y, duration: moveDuration * 5)
-                descendAction.timingFunction = { time in 1 + pow(time - 1, 3) }
                 
-                let path = UIBezierPath()
-                path.move(to: jumpStartPoint)
-                path.addQuadCurve(to: jumpEndPoint, controlPoint: CGPoint(x: jumpControlPoint.x, y: jumpControlPoint.y))
+                let jumpBezierPath = UIBezierPath()
+                jumpBezierPath.move(to: jumpStartPoint)
+                jumpBezierPath.addQuadCurve(to: jumpEndPoint, controlPoint: jumpControlPoint)
 
-                let followBezierAction = SKAction.follow(path.cgPath, asOffset: false, orientToPath: false, duration: moveDuration)
-                followBezierAction.timingFunction = { time in pow(time, 8) }
+                let followBezierAction = SKAction.follow(jumpBezierPath.cgPath, asOffset: false, orientToPath: false, duration: moveDuration)
+                followBezierAction.timingFunction = { time in pow(time, 2) }
+                
                 let scaleAction = SKAction.scale(to: 2, duration: moveDuration)
                 scaleAction.timingFunction = { time in pow(time, 8) }
                 
+                //Audio fun
                 AudioManager.shared.playSound(for: "boyattack3", delay: moveDuration / 2)
                 AudioManager.shared.playSound(for: "boyfall", delay: moveDuration * 2)
                 
-                //Total = 7.5
+                //Jump Animation: Total = 6.5
                 node.run(SKAction.sequence([
                     //1st Jump = 1.5
                     SKAction.group([
@@ -200,16 +199,15 @@ class LaunchScene: SKScene {
                             ])
                         ])
                     ]),
-                    //Descend = 5
+                    //Descend = 4
                     SKAction.group([
-                        SKAction.setTexture(SKTexture(imageNamed: "Jump (12)")),
+                        SKAction.setTexture(SKTexture(imageNamed: "Run (5)")),
                         SKAction.scale(to: 0.1, duration: 0),
-                        SKAction.moveTo(x: jumpStartPoint.x, duration: 0),
-                        descendAction
+                        SKAction.moveTo(x: K.ScreenDimensions.iPhoneWidth * 2 / 3, duration: 0),
+                        SKAction.move(to: jumpStartPoint, duration: moveDuration * 4)
                     ]),
                     //2nd Jump = 1
                     SKAction.group([
-                        SKAction.setTexture(SKTexture(imageNamed: "Run (5)")),
                         followBezierAction,
                         scaleAction
                     ])
