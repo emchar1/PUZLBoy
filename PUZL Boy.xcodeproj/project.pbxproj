@@ -177,7 +177,8 @@
 		EAFA6A6C29DCFC11002287C2 /* titletheme4.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAFA6A6B29DCFC11002287C2 /* titletheme4.mp3 */; };
 		EAFA6A6E29DCFD63002287C2 /* titletheme5.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAFA6A6D29DCFD63002287C2 /* titletheme5.mp3 */; };
 		EAFA6A7029DCFE79002287C2 /* titletheme1.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAFA6A6F29DCFE79002287C2 /* titletheme1.mp3 */; };
-		EAFA6A7229DDF551002287C2 /* boyfallbang.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAFA6A7129DDF551002287C2 /* boyfallbang.mp3 */; };
+		EAFA6A7729DE13EB002287C2 /* boyimpact.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAFA6A7529DE13EB002287C2 /* boyimpact.mp3 */; };
+		EAFA6A7829DE13EB002287C2 /* boyfall.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAFA6A7629DE13EB002287C2 /* boyfall.mp3 */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -346,7 +347,8 @@
 		EAFA6A6B29DCFC11002287C2 /* titletheme4.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = titletheme4.mp3; sourceTree = "<group>"; };
 		EAFA6A6D29DCFD63002287C2 /* titletheme5.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = titletheme5.mp3; sourceTree = "<group>"; };
 		EAFA6A6F29DCFE79002287C2 /* titletheme1.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = titletheme1.mp3; sourceTree = "<group>"; };
-		EAFA6A7129DDF551002287C2 /* boyfallbang.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = boyfallbang.mp3; sourceTree = "<group>"; };
+		EAFA6A7529DE13EB002287C2 /* boyimpact.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = boyimpact.mp3; sourceTree = "<group>"; };
+		EAFA6A7629DE13EB002287C2 /* boyfall.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = boyfall.mp3; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -520,9 +522,10 @@
 				EA95D198294690B70061059C /* boyattack2.mp3 */,
 				EA95D199294690B70061059C /* boyattack3.mp3 */,
 				EA95D195294690B70061059C /* boydead.mp3 */,
-				EAFA6A7129DDF551002287C2 /* boyfallbang.mp3 */,
+				EAFA6A7629DE13EB002287C2 /* boyfall.mp3 */,
 				EA95D1A1294691820061059C /* boygrunt1.mp3 */,
 				EA95D1A2294691820061059C /* boygrunt2.mp3 */,
+				EAFA6A7529DE13EB002287C2 /* boyimpact.mp3 */,
 				EA3467AA29A8C6F6002DDA02 /* buttontap.mp3 */,
 				EA9F4DDC29D2B766006F4B2F /* buttontap2.mp3 */,
 				EAB4F66D29DA27290063AC4B /* buttontap3.mp3 */,
@@ -815,6 +818,7 @@
 				EA95D200295D83E40061059C /* Boogaloo-Regular.ttf in Resources */,
 				EA95D19B294690B70061059C /* boydead.mp3 in Resources */,
 				EA95D19E294690B70061059C /* boyattack2.mp3 in Resources */,
+				EAFA6A7829DE13EB002287C2 /* boyfall.mp3 in Resources */,
 				EAFA6A7029DCFE79002287C2 /* titletheme1.mp3 in Resources */,
 				EA3467A529A8C659002DDA02 /* revive.mp3 in Resources */,
 				EA9F4DE229D36F02006F4B2F /* movepoisoned3.mp3 in Resources */,
@@ -833,12 +837,12 @@
 				EAF7182929B31BE800E2ED82 /* lavaappear1.mp3 in Resources */,
 				EAF7183329B3D26F00E2ED82 /* movesand2.mp3 in Resources */,
 				EA94E87329C0DE2C009F2614 /* movetile3.mp3 in Resources */,
-				EAFA6A7229DDF551002287C2 /* boyfallbang.mp3 in Resources */,
 				EA3467A929A8C6CA002DDA02 /* chatopen.mp3 in Resources */,
 				EAF7182D29B3CC0500E2ED82 /* lavaappear2.mp3 in Resources */,
 				EA3467AF29A8CB39002DDA02 /* overworld6.mp3 in Resources */,
 				EA0F147D292B0A050013038E /* overworld3.mp3 in Resources */,
 				EA0F14712929D9C00013038E /* moverun2.mp3 in Resources */,
+				EAFA6A7729DE13EB002287C2 /* boyimpact.mp3 in Resources */,
 				EAF7183929B3D56B00E2ED82 /* lavaappear3.mp3 in Resources */,
 				EA4D025F29B7E33600F0C7B1 /* movemarsh1.mp3 in Resources */,
 				EA95D1AC294D08BC0061059C /* overworld5.mp3 in Resources */,

@@ -78,9 +78,10 @@ class AudioManager {
         addAudioItem("boyattack2", category: .soundFX)
         addAudioItem("boyattack3", category: .soundFX)
         addAudioItem("boydead", category: .soundFX)
-        addAudioItem("boyfallbang", category: .soundFX) //needs purchase
+        addAudioItem("boyfall", category: .soundFX) //needs purchase
         addAudioItem("boygrunt1", category: .soundFX)
         addAudioItem("boygrunt2", category: .soundFX)
+        addAudioItem("boyimpact", category: .soundFX) //needs purchase
         addAudioItem("buttontap", category: .soundFX)
         addAudioItem("buttontap2", category: .soundFX)
         addAudioItem("buttontap3", category: .soundFX) //needs purchase
