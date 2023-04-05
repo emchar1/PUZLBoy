@@ -148,7 +148,7 @@ class LaunchScene: SKScene {
         var playerCrouchDuration: TimeInterval { playerTimePerFrame * 5 }
         var moveDuration: TimeInterval { playerCrouchDuration * 2 }
         
-        let maxAnimationDuration: TimeInterval = 6.5
+        let maxAnimationDuration: TimeInterval = 5.5
         let paddingDuration: TimeInterval = 0.25
         
         for node in self.children {
@@ -181,9 +181,9 @@ class LaunchScene: SKScene {
                 
                 //Audio fun
                 AudioManager.shared.playSound(for: "boyattack3", delay: moveDuration / 2)
-                AudioManager.shared.playSound(for: "boyfallbang", delay: moveDuration * 2)
+                AudioManager.shared.playSound(for: "boyfallbang", delay: moveDuration)
                 
-                //Jump Animation: Total = 6.5
+                //Jump Animation: Total = 5.5
                 node.run(SKAction.sequence([
                     //1st Jump = 1.5
                     SKAction.group([
@@ -201,10 +201,10 @@ class LaunchScene: SKScene {
                             ])
                         ])
                     ]),
-                    //Descend = 4
+                    //Descend = 3
                     SKAction.group([
                         SKAction.setTexture(SKTexture(imageNamed: "Run (5)")),
-                        SKAction.move(to: jumpStartPoint, duration: moveDuration * 4)
+                        SKAction.move(to: jumpStartPoint, duration: moveDuration * 3)
                     ]),
                     //2nd Jump = 1
                     SKAction.group([
