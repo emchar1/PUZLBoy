@@ -71,6 +71,7 @@ class LaunchScene: SKScene {
         grassNode.colorBlendFactor = DayTheme.spriteShade
         grassNode.anchorPoint = .zero
         grassNode.zPosition = K.ZPosition.grassNode
+        grassNode.name = "grassNode"
 
         super.init(size: size)
         
@@ -143,7 +144,16 @@ class LaunchScene: SKScene {
     
     // MARK: - Animation Functions
     
-    func animateTransition(completion: @escaping () -> Void) {
+    func animateTransition(animationSequence: Int, completion: @escaping () -> Void) {
+        switch animationSequence {
+        case 0: transitionRunning(completion: completion)
+        case 1: transitionFall(completion: completion)
+        default: transitionJump(completion: completion)
+        }
+    }
+    
+    ///Boy jumping up and bezier path to center.
+    private func transitionJump(completion: @escaping () -> Void) {
         let playerTimePerFrame: TimeInterval = 0.1
         var playerCrouchDuration: TimeInterval { playerTimePerFrame * 5 }
         var moveDuration: TimeInterval { playerCrouchDuration * 2 }
@@ -156,7 +166,7 @@ class LaunchScene: SKScene {
             
             switch node.name {
             case "loadingSprite":
-                node.run(SKAction.fadeOut(withDuration: moveDuration / 2))
+                node.run(SKAction.fadeOut(withDuration: 0.5))
             case "skyObjectNode":
                 node.run(SKAction.fadeOut(withDuration: moveDuration * maxAnimationDuration))
             case "playerSprite":
@@ -224,4 +234,47 @@ class LaunchScene: SKScene {
         run(SKAction.wait(forDuration: moveDuration * (maxAnimationDuration + paddingDuration)), completion: completion)
     }
     
+    ///Boy continues running. Forever.
+    private func transitionRunning(completion: @escaping () -> Void) {
+        //needs implementation
+    }
+    
+    ///Boy falls like Peter when he bangs his knee
+    private func transitionFall(completion: @escaping () -> Void) {
+        let playerTimePerFrame: TimeInterval = 0.04
+        
+        for node in self.children {
+            guard node.name != "skyNode" else { continue }
+            
+            switch node.name {
+            case "loadingSprite":
+                node.run(SKAction.fadeOut(withDuration: 0.5))
+            case "playerSprite":
+                guard let node = node as? SKSpriteNode else { return }
+                
+                node.removeAllActions()
+                
+                node.run(SKAction.group([
+                    SKAction.animate(with: player.textures[Player.Texture.dead.rawValue], timePerFrame: playerTimePerFrame),
+                    SKAction.moveTo(x: -K.ScreenDimensions.iPhoneWidth * 2, duration: 1)
+                ]))
+            case "skyObjectNode", "grassNode":
+                break
+            default:
+                node.run(SKAction.wait(forDuration: 2.0)) {
+                    node.removeAllActions()
+
+                    node.run(SKAction.sequence([
+                        SKAction.wait(forDuration: 2.0),
+                        SKAction.moveBy(x: K.ScreenDimensions.iPhoneWidth * 2, y: 0, duration: 0.5)
+                    ]))
+                }
+                
+            }
+            
+            
+            
+            
+        }
+    }
 }
