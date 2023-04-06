@@ -193,21 +193,21 @@ class LaunchScene: SKScene {
                         SKAction.sequence([
                             SKAction.wait(forDuration: playerCrouchDuration),
                             SKAction.group([
-                                SKAction.colorize(withColorBlendFactor: 0, duration: moveDuration),
-                                SKAction.scale(to: 0, duration: moveDuration),
-                                SKAction.moveBy(x: K.ScreenDimensions.iPhoneWidth / 2, y: K.ScreenDimensions.height, duration: moveDuration)
+                                SKAction.scale(to: 0.1, duration: moveDuration),
+                                SKAction.move(to: CGPoint(x: K.ScreenDimensions.iPhoneWidth * 2 / 3,
+                                                          y: K.ScreenDimensions.height + player.sprite.size.height * 0.1),
+                                              duration: moveDuration)
                             ])
                         ])
                     ]),
                     //Descend = 4
                     SKAction.group([
                         SKAction.setTexture(SKTexture(imageNamed: "Run (5)")),
-                        SKAction.scale(to: 0.1, duration: 0),
-                        SKAction.moveTo(x: K.ScreenDimensions.iPhoneWidth * 2 / 3, duration: 0),
                         SKAction.move(to: jumpStartPoint, duration: moveDuration * 4)
                     ]),
                     //2nd Jump = 1
                     SKAction.group([
+                        SKAction.colorize(withColorBlendFactor: 0, duration: moveDuration),
                         followBezierAction,
                         scaleAction
                     ])
