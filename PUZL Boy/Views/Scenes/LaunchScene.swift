@@ -193,6 +193,7 @@ class LaunchScene: SKScene {
                         SKAction.sequence([
                             SKAction.wait(forDuration: playerCrouchDuration),
                             SKAction.group([
+                                SKAction.colorize(withColorBlendFactor: 0, duration: moveDuration),
                                 SKAction.scale(to: 0.1, duration: moveDuration),
                                 SKAction.move(to: CGPoint(x: K.ScreenDimensions.iPhoneWidth * 2 / 3,
                                                           y: K.ScreenDimensions.height + player.sprite.size.height * 0.1),
@@ -207,7 +208,6 @@ class LaunchScene: SKScene {
                     ]),
                     //2nd Jump = 1
                     SKAction.group([
-                        SKAction.colorize(withColorBlendFactor: 0, duration: moveDuration),
                         followBezierAction,
                         scaleAction
                     ])
