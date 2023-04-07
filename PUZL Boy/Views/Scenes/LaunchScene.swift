@@ -196,7 +196,7 @@ class LaunchScene: SKScene {
         var playerCrouchDuration: TimeInterval { playerTimePerFrame * 5 }
         var moveDuration: TimeInterval { playerCrouchDuration * 2 }
         
-        let maxAnimationDuration: TimeInterval = 5
+        let maxAnimationDuration: TimeInterval = 2
         let paddingDuration: TimeInterval = 0.25
         
         for node in self.children {
@@ -213,9 +213,9 @@ class LaunchScene: SKScene {
                 node.removeAllActions()
                 
                 //Player Action properties
-                let jumpStartPoint = CGPoint(x: K.ScreenDimensions.iPhoneWidth / 2, y: K.ScreenDimensions.height * 2 / 3)
+                let jumpStartPoint = CGPoint(x: K.ScreenDimensions.iPhoneWidth * 2 / 3, y: K.ScreenDimensions.height / 2)
                 let jumpEndPoint = CGPoint(x: K.ScreenDimensions.iPhoneWidth / 2, y: K.ScreenDimensions.height / 2)
-                let jumpControlPoint = CGPoint(x: 0, y: 0)
+                let jumpControlPoint = CGPoint(x: K.ScreenDimensions.iPhoneWidth, y: K.ScreenDimensions.height)
                 
                 let jumpBezierPath = UIBezierPath()
                 jumpBezierPath.move(to: jumpStartPoint)
@@ -229,7 +229,6 @@ class LaunchScene: SKScene {
                 
                 //Audio fun
                 AudioManager.shared.playSound(for: "boyattack3", delay: moveDuration / 2)
-                AudioManager.shared.playSound(for: "boyfall", delay: moveDuration * 2)
                 AudioManager.shared.playSound(for: "boyimpact", delay: moveDuration * maxAnimationDuration)
 
                 //Jump Animation: Total = 5
@@ -242,24 +241,15 @@ class LaunchScene: SKScene {
                         SKAction.sequence([
                             SKAction.wait(forDuration: playerCrouchDuration),
                             SKAction.group([
-                                SKAction.colorize(withColorBlendFactor: 0, duration: moveDuration),
-                                SKAction.scale(to: 0.1, duration: moveDuration),
-                                SKAction.move(to: CGPoint(x: K.ScreenDimensions.iPhoneWidth * 2 / 3,
-                                                          y: K.ScreenDimensions.height + player.sprite.size.height * 0.1),
-                                              duration: moveDuration)
+                                SKAction.colorize(withColorBlendFactor: 0, duration: moveDuration * 0.5),
+                                SKAction.scale(to: 0.1, duration: moveDuration * 0.5),
+                                SKAction.move(to: jumpStartPoint, duration: moveDuration * 0.5)
                             ])
-                        ])
-                    ]),
-                    //Descend = 2.5
-                    SKAction.group([
-                        SKAction.setTexture(SKTexture(imageNamed: "Run (5)")),
-                        SKAction.sequence([
-                            SKAction.wait(forDuration: moveDuration),
-                            SKAction.move(to: jumpStartPoint, duration: moveDuration * 1.5)
                         ])
                     ]),
                     //2nd Jump = 1
                     SKAction.group([
+                        SKAction.setTexture(SKTexture(imageNamed: "Run (5)")),
                         followBezierAction,
                         scaleAction
                     ])

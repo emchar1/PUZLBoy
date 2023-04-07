@@ -62,7 +62,10 @@ struct Player {
             textures[Texture.sand.rawValue].append(atlas.textureNamed("Run (\(i))"))
             textures[Texture.party.rawValue].append(atlas.textureNamed("Run (\(i))"))
             textures[Texture.dead.rawValue].append(atlas.textureNamed("Dead (\(i))"))
-            textures[Texture.jump.rawValue].append(atlas.textureNamed("Jump (\(i))"))
+            
+            if i <= 12 {
+                textures[Texture.jump.rawValue].append(atlas.textureNamed("Jump (\(i))"))
+            }
 
             if i == 5 {
                 textures[Texture.glide.rawValue].append(atlas.textureNamed("Run (\(i))"))
