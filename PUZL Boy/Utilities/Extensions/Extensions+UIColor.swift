@@ -44,9 +44,6 @@ extension UIColor {
         self.getHue(&hue, saturation: &saturation, brightness: &brightness, alpha: &alpha)
         
         let offsetColor = UIColor(hue: fmod(hue + offset, 1), saturation: saturation, brightness: brightness, alpha: alpha)
-        
-        print("color: R:\(components.red), G:\(components.green), B:\(components.blue), A:\(components.alpha)")
-        print("offsetColor: R:\(offsetColor.components.red), G:\(offsetColor.components.green), B:\(offsetColor.components.blue), A:\(offsetColor.components.alpha)")
 
         return offsetColor
     }

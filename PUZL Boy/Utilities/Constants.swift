@@ -127,7 +127,7 @@ struct K {
     
     struct ButtonTaps {
         static func tap1() {
-            tapCustom(soundFile: "buttontap")
+            tapCustom(soundFile: "buttontap1")
         }
         
         static func tap2() {
