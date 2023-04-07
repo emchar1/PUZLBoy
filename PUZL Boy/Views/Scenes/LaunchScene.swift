@@ -196,7 +196,7 @@ class LaunchScene: SKScene {
         var playerCrouchDuration: TimeInterval { playerTimePerFrame * 5 }
         var moveDuration: TimeInterval { playerCrouchDuration * 2 }
         
-        let maxAnimationDuration: TimeInterval = 2
+        let maxAnimationDuration: TimeInterval = 2.5
         let paddingDuration: TimeInterval = 0.25
         
         for node in self.children {
@@ -231,7 +231,7 @@ class LaunchScene: SKScene {
                 AudioManager.shared.playSound(for: "boyattack3", delay: moveDuration / 2)
                 AudioManager.shared.playSound(for: "boyimpact", delay: moveDuration * maxAnimationDuration)
 
-                //Jump Animation: Total = 5
+                //Jump Animation: Total = 2.5
                 node.run(SKAction.sequence([
                     //1st Jump = 1.5
                     SKAction.group([
@@ -241,9 +241,9 @@ class LaunchScene: SKScene {
                         SKAction.sequence([
                             SKAction.wait(forDuration: playerCrouchDuration),
                             SKAction.group([
-                                SKAction.colorize(withColorBlendFactor: 0, duration: moveDuration * 0.5),
-                                SKAction.scale(to: 0.1, duration: moveDuration * 0.5),
-                                SKAction.move(to: jumpStartPoint, duration: moveDuration * 0.5)
+                                SKAction.colorize(withColorBlendFactor: 0, duration: moveDuration),
+                                SKAction.scale(to: 0.1, duration: moveDuration),
+                                SKAction.move(to: jumpStartPoint, duration: moveDuration)
                             ])
                         ])
                     ]),
