@@ -11,8 +11,8 @@ class LaunchScene: SKScene {
     
     // MARK: - Properties
     
-    private let treeCount = 60
-    private let boulderCount = 80
+    private let treeCount = 3
+    private let boulderCount = 4
     private let cloudCount = 3
     
     private var treeSprites: [BackgroundObject] = []
@@ -22,6 +22,7 @@ class LaunchScene: SKScene {
     private var moonSprite: BackgroundObject
     private var player = Player()
     private var loadingSprite: LoadingSprite
+    private var isTransitioning: Bool = false
     private var skyNode: SKSpriteNode
     private var grassNode: SKSpriteNode
 
@@ -94,24 +95,30 @@ class LaunchScene: SKScene {
         let playerAnimation = SKAction.animate(with: DayTheme.currentTheme == .night || DayTheme.currentTheme == .dawn ? player.textures[Player.Texture.walk.rawValue] : player.textures[Player.Texture.run.rawValue], timePerFrame: playerSpeed)
         player.sprite.run(SKAction.repeatForever(playerAnimation))
 
+        loadingSprite.animate()
+        
         for i in 0..<treeCount {
-            treeSprites[i].animateSprite(withDelay: TimeInterval(i))
+            animateBackgroundObject(treeSprites[i], shouldStartAtEdge: false)
         }
         
         for i in 0..<boulderCount {
-            boulderSprites[i].animateSprite(withDelay: TimeInterval(i))
+            animateBackgroundObject(boulderSprites[i], shouldStartAtEdge: false)
         }
         
         for i in 0..<cloudCount {
-            cloudSprites[i].animateSprite(withDelay: nil)
+            animateBackgroundObject(cloudSprites[i], shouldStartAtEdge: false)
         }
         
-        loadingSprite.animate()
-        mountainSprite.animateSprite(withDelay: nil)
+        animateBackgroundObject(mountainSprite, shouldStartAtEdge: false)
+    }
+    
+    private func animateBackgroundObject(_ object: BackgroundObject, shouldStartAtEdge: Bool, withDelay: TimeInterval? = nil) {
+        object.resetSprite(shouldStartAtEdge: shouldStartAtEdge)
+        object.animateSprite(withDelay: withDelay)
     }
     
     
-    // MARK: - Move Functions
+    // MARK: - Overriden Functions
     
     override func didMove(to view: SKView) {
         addChild(skyNode)
@@ -141,10 +148,41 @@ class LaunchScene: SKScene {
         print("Scene transitioned...")
     }
     
+    override func update(_ currentTime: TimeInterval) {
+        super.update(currentTime)
+        
+        guard !isTransitioning else { return }
+        
+        
+        for i in 0..<treeCount {
+            if treeSprites[i].didFinishAnimating {
+                animateBackgroundObject(treeSprites[i], shouldStartAtEdge: true, withDelay: TimeInterval(i))
+            }
+        }
+
+        for i in 0..<boulderCount {
+            if boulderSprites[i].didFinishAnimating {
+                animateBackgroundObject(boulderSprites[i], shouldStartAtEdge: true, withDelay: TimeInterval(i))
+            }
+        }
+        
+        for i in 0..<cloudCount {
+            if cloudSprites[i].didFinishAnimating {
+                animateBackgroundObject(cloudSprites[i], shouldStartAtEdge: true, withDelay: TimeInterval(i))
+            }
+        }
+        
+        if mountainSprite.didFinishAnimating {
+            animateBackgroundObject(mountainSprite, shouldStartAtEdge: true)
+        }
+    }
+    
     
     // MARK: - Animation Functions
     
     func animateTransition(animationSequence: Int, completion: @escaping () -> Void) {
+        isTransitioning = true
+        
         switch animationSequence {
         case 0: transitionRunning(completion: completion)
         case 1: transitionFall(completion: completion)
@@ -158,7 +196,7 @@ class LaunchScene: SKScene {
         var playerCrouchDuration: TimeInterval { playerTimePerFrame * 5 }
         var moveDuration: TimeInterval { playerCrouchDuration * 2 }
         
-        let maxAnimationDuration: TimeInterval = 5.5
+        let maxAnimationDuration: TimeInterval = 5
         let paddingDuration: TimeInterval = 0.25
         
         for node in self.children {
@@ -194,7 +232,7 @@ class LaunchScene: SKScene {
                 AudioManager.shared.playSound(for: "boyfall", delay: moveDuration * 2)
                 AudioManager.shared.playSound(for: "boyimpact", delay: moveDuration * maxAnimationDuration)
 
-                //Jump Animation: Total = 5.5
+                //Jump Animation: Total = 5
                 node.run(SKAction.sequence([
                     //1st Jump = 1.5
                     SKAction.group([
@@ -212,10 +250,13 @@ class LaunchScene: SKScene {
                             ])
                         ])
                     ]),
-                    //Descend = 3
+                    //Descend = 2.5
                     SKAction.group([
                         SKAction.setTexture(SKTexture(imageNamed: "Run (5)")),
-                        SKAction.move(to: jumpStartPoint, duration: moveDuration * 3)
+                        SKAction.sequence([
+                            SKAction.wait(forDuration: moveDuration),
+                            SKAction.move(to: jumpStartPoint, duration: moveDuration * 1.5)
+                        ])
                     ]),
                     //2nd Jump = 1
                     SKAction.group([
@@ -226,7 +267,7 @@ class LaunchScene: SKScene {
             default:
                 node.run(SKAction.sequence([
                     SKAction.wait(forDuration: playerCrouchDuration),
-                    SKAction.moveBy(x: node.speed, y: -K.ScreenDimensions.height, duration: moveDuration / 2)
+                    SKAction.moveBy(x: node.speed, y: -K.ScreenDimensions.height, duration: moveDuration / 5)
                 ]))
             } //end switch node.name
         } //end for node in self.children
@@ -269,12 +310,9 @@ class LaunchScene: SKScene {
                         SKAction.moveBy(x: K.ScreenDimensions.iPhoneWidth * 2, y: 0, duration: 0.5)
                     ]))
                 }
-                
-            }
-            
-            
-            
-            
-        }
-    }
+            } //end switch
+        } //end for node
+    } //end transitionFall()
+    
+    
 }

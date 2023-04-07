@@ -7,7 +7,7 @@
 
 import SpriteKit
 
-struct BackgroundObject {
+class BackgroundObject {
     
     // MARK: - Properties
     
@@ -17,7 +17,10 @@ struct BackgroundObject {
     private let backgroundType: BackgroundType
     private let spriteWidth: CGFloat = 500
     private var spriteScale: CGFloat = 1.0
+    private var originalPosition: CGPoint = .zero
+
     private(set) var sprite = SKSpriteNode()
+    private(set) var didFinishAnimating: Bool = false
 
     var speed: TimeInterval {
         var dayMultiplier: TimeInterval
@@ -31,9 +34,9 @@ struct BackgroundObject {
         guard backgroundType != .mountain else { return 20.0 * dayMultiplier }
         
         switch tierLevel {
-        case 0: return dayMultiplier * (backgroundType != .cloud ? 3.0 : 100)
-        case 1: return dayMultiplier * (backgroundType != .cloud ? 3.5 : 250)
-        default: return dayMultiplier * (backgroundType != .cloud ? 4.0 : 525)
+        case 0: return dayMultiplier * (backgroundType != .cloud ? 3.0 : CGFloat.random(in: 50...100))
+        case 1: return dayMultiplier * (backgroundType != .cloud ? 3.5 : CGFloat.random(in: 100...250))
+        default: return dayMultiplier * (backgroundType != .cloud ? 4.0 : CGFloat.random(in: 250...500))
         }
     }
     
@@ -55,10 +58,13 @@ struct BackgroundObject {
         setupBackgroundTypes()
     }
     
-    private mutating func setupBackgroundTypes() {
+    private func setupBackgroundTypes() {
+        var randPosition: CGFloat { CGFloat.random(in: 0...(2 * K.ScreenDimensions.iPhoneWidth)) }
+        var mountainRandPosition: CGFloat { CGFloat.random(in: 0...(K.ScreenDimensions.iPhoneWidth - spriteWidth)) }
+        
         switch backgroundType {
         case .mountain:
-            setupSprite(position: CGPoint(x: K.ScreenDimensions.iPhoneWidth / 2, y: K.ScreenDimensions.height / backgroundBorder),
+            setupSprite(position: CGPoint(x: mountainRandPosition, y: K.ScreenDimensions.height / backgroundBorder),
                         anchorPoint: .zero,
                         scale: 0.4,
                         alpha: 0.75,
@@ -76,7 +82,7 @@ struct BackgroundObject {
         default:
             switch tierLevel {
             case 0:
-                setupSprite(position: backgroundType == .cloud ? CGPoint(x: K.ScreenDimensions.iPhoneWidth / 2, y: K.ScreenDimensions.height / (backgroundBorder - 0.3)) : CGPoint(x: K.ScreenDimensions.iPhoneWidth, y: K.ScreenDimensions.height / (backgroundBorder + 0.5)),
+                setupSprite(position: CGPoint(x: randPosition, y: getYPosition(offset: (backgroundType == .cloud ? -0.3 : 0.5))),
                             anchorPoint: .zero,
                             scale: 0.75,
                             alpha: backgroundType == .cloud ? 0.6 : 1.0,
@@ -84,7 +90,7 @@ struct BackgroundObject {
                             colorBlendFactor: DayTheme.spriteShade,
                             zPosition: backgroundType == .cloud ? K.ZPosition.backgroundObjectCloud : K.ZPosition.backgroundObjectTier0)
             case 1:
-                setupSprite(position: backgroundType == .cloud ? CGPoint(x: K.ScreenDimensions.iPhoneWidth / 4, y: K.ScreenDimensions.height / (backgroundBorder - 0.2)) : CGPoint(x: K.ScreenDimensions.iPhoneWidth, y: K.ScreenDimensions.height / (backgroundBorder + 0.25)),
+                setupSprite(position: CGPoint(x: randPosition, y: getYPosition(offset: (backgroundType == .cloud ? -0.2 : 0.25))),
                             anchorPoint: .zero,
                             scale: 0.5,
                             alpha: backgroundType == .cloud ? 0.6 : 0.9,
@@ -92,7 +98,7 @@ struct BackgroundObject {
                             colorBlendFactor: DayTheme.spriteShade,
                             zPosition: backgroundType == .cloud ? K.ZPosition.backgroundObjectCloud : K.ZPosition.backgroundObjectTier1)
             default:
-                setupSprite(position: backgroundType == .cloud ? CGPoint(x: K.ScreenDimensions.iPhoneWidth * 2 / 3, y: K.ScreenDimensions.height / (backgroundBorder - 0.1)) : CGPoint(x: K.ScreenDimensions.iPhoneWidth, y: K.ScreenDimensions.height / (backgroundBorder + 0.2)),
+                setupSprite(position: CGPoint(x: randPosition, y: getYPosition(offset: (backgroundType == .cloud ? -0.1 : 0.2))),
                             anchorPoint: .zero,
                             scale: 0.25,
                             alpha: backgroundType == .cloud ? 0.6 : 0.85,
@@ -103,7 +109,11 @@ struct BackgroundObject {
         }//end switch backgroundTypes
     }//end setupBackgroundTypes
     
-    private mutating func setupSprite(position: CGPoint, anchorPoint: CGPoint, scale: CGFloat, alpha: CGFloat, color: UIColor, colorBlendFactor: CGFloat, zPosition: CGFloat) {
+    private func getYPosition(offset: CGFloat) -> CGFloat {
+        return K.ScreenDimensions.height / (backgroundBorder + offset)
+    }
+    
+    private func setupSprite(position: CGPoint, anchorPoint: CGPoint, scale: CGFloat, alpha: CGFloat, color: UIColor, colorBlendFactor: CGFloat, zPosition: CGFloat) {
         
         let imageName = "\(backgroundType.rawValue)\(Int.random(in: 0...BackgroundObject.maxTier))"
         
@@ -117,17 +127,42 @@ struct BackgroundObject {
         sprite.color = color
         sprite.colorBlendFactor = colorBlendFactor
         sprite.zPosition = zPosition
+        
+        originalPosition = position
     }
     
     
     // MARK: - Helper Functions
     
-    func animateSprite(withDelay delay: TimeInterval?) {
+    func animateSprite(withDelay delay: TimeInterval?, completion: (() -> Void)? = nil) {
         let animation = SKAction.move(by: CGVector(dx: -1000, dy: 0), duration: speed)
+
         let sequence = SKAction.sequence([
             SKAction.wait(forDuration: delay == nil ? 0 : self.delay * 2 * delay!),
-            SKAction.repeat(animation, count: 2)
+            SKAction.repeatForever(SKAction.sequence([
+                animation,
+                SKAction.run { [unowned self] in
+                    if sprite.position.x + sprite.size.width < 0 {
+                        didFinishAnimating = true
+                        
+                        sprite.removeAllActions()
+                        
+                        completion?()
+                    }
+                }
+            ]))
         ])
+        
         sprite.run(sequence)
+    }
+    
+    func resetSprite(shouldStartAtEdge: Bool) {
+        sprite.position = originalPosition
+
+        if shouldStartAtEdge {
+            sprite.position.x = K.ScreenDimensions.iPhoneWidth + CGFloat.random(in: 0...K.ScreenDimensions.iPhoneWidth)
+        }
+        
+        didFinishAnimating = false
     }
 }
