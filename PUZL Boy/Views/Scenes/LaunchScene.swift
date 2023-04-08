@@ -43,23 +43,27 @@ class LaunchScene: SKScene {
         //Setup BackgroundObjects
         for _ in 0..<treeCount {
             let treeObject = BackgroundObject(tierLevel: Int.random(in: 0...BackgroundObject.maxTier), backgroundType: .tree)
+            treeObject.name = "groundObjectNode"
             treeSprites.append(treeObject)
         }
 
         for _ in 0..<boulderCount {
             let boulderObject = BackgroundObject(tierLevel: Int.random(in: 0...BackgroundObject.maxTier), backgroundType: .boulder)
+            boulderObject.name = "groundObjectNode"
             boulderSprites.append(boulderObject)
         }
 
         for i in 0..<cloudCount {
             let cloudObject = BackgroundObject(tierLevel: i.clamp(min: 0, max: BackgroundObject.maxTier), backgroundType: .cloud)
+            cloudObject.name = "skyObjectNode"
             cloudSprites.append(cloudObject)
-            cloudSprites[i].sprite.name = "skyObjectNode"
         }
 
         mountainSprite = BackgroundObject(tierLevel: 0, backgroundType: .mountain)
+        mountainSprite.name = "groundObjectNode"
+        
         moonSprite = BackgroundObject(tierLevel: 0, backgroundType: .moon)
-        moonSprite.sprite.name = "skyObjectNode"
+        moonSprite.name = "skyObjectNode"
         
         skyNode = SKSpriteNode(texture: SKTexture(image: DayTheme.getSkyImage()))
         skyNode.anchorPoint = .zero
@@ -112,9 +116,9 @@ class LaunchScene: SKScene {
         animateBackgroundObject(mountainSprite, shouldStartAtEdge: false)
     }
     
-    private func animateBackgroundObject(_ object: BackgroundObject, shouldStartAtEdge: Bool, withDelay: TimeInterval? = nil) {
-        object.resetSprite(shouldStartAtEdge: shouldStartAtEdge)
-        object.animateSprite(withDelay: withDelay)
+    private func animateBackgroundObject(_ object: BackgroundObject, shouldStartAtEdge: Bool, shouldReverse: Bool = false, withDelay: TimeInterval? = nil) {
+        object.resetSprite(shouldStartAtEdge: shouldStartAtEdge, shouldReverse: shouldReverse)
+        object.animateSprite(withDelay: withDelay, shouldReverse: shouldReverse)
     }
     
     
@@ -126,19 +130,19 @@ class LaunchScene: SKScene {
         addChild(player.sprite)
         
         for i in 0..<treeCount {
-            addChild(treeSprites[i].sprite)
+            addChild(treeSprites[i])
         }
 
         for i in 0..<boulderCount {
-            addChild(boulderSprites[i].sprite)
+            addChild(boulderSprites[i])
         }
 
         for i in 0..<cloudCount {
-            addChild(cloudSprites[i].sprite)
+            addChild(cloudSprites[i])
         }
 
-        addChild(mountainSprite.sprite)
-        addChild(moonSprite.sprite)
+        addChild(mountainSprite)
+        addChild(moonSprite)
         addChild(loadingSprite)
     }
     
@@ -254,11 +258,16 @@ class LaunchScene: SKScene {
                         scaleAction
                     ])
                 ]))
-            default:
+            case "groundObjectNode", "grassNode":
+                let objectNode = node as? BackgroundObject
+                let xSpeed: CGFloat = objectNode?.objectSpeed ?? 0
+                
                 node.run(SKAction.sequence([
                     SKAction.wait(forDuration: playerCrouchDuration),
-                    SKAction.moveBy(x: node.speed, y: -K.ScreenDimensions.height, duration: moveDuration / 5)
+                    SKAction.moveBy(x: xSpeed, y: -K.ScreenDimensions.height, duration: moveDuration / 5)
                 ]))
+            default:
+                break
             } //end switch node.name
         } //end for node in self.children
         
@@ -291,7 +300,9 @@ class LaunchScene: SKScene {
                 ]))
             case "skyObjectNode", "grassNode":
                 break
-            default:
+            case "groundObjectNode":
+                guard let node = node as? BackgroundObject else { return }
+
                 node.run(SKAction.wait(forDuration: 2.0)) {
                     node.removeAllActions()
 
@@ -300,6 +311,8 @@ class LaunchScene: SKScene {
                         SKAction.moveBy(x: K.ScreenDimensions.iPhoneWidth * 2, y: 0, duration: 0.5)
                     ]))
                 }
+            default:
+                break
             } //end switch
         } //end for node
     } //end transitionFall()

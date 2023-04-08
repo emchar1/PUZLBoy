@@ -50,7 +50,7 @@ class GameViewController: UIViewController {
                     self.saveStateModel = saveStateModel
                     
                     DispatchQueue.main.asyncAfter(deadline: .now() + LoadingSprite.loadingDuration) {
-                        launchScene.animateTransition(animationSequence: 2) {
+                        launchScene.animateTransition(animationSequence: 1) {
                             let titleScene = TitleScene(size: K.ScreenDimensions.screenSize)
                             titleScene.titleSceneDelegate = self
                             

@@ -7,7 +7,7 @@
 
 import SpriteKit
 
-class BackgroundObject {
+class BackgroundObject: SKNode {
     
     // MARK: - Properties
     
@@ -22,7 +22,7 @@ class BackgroundObject {
     private(set) var sprite = SKSpriteNode()
     private(set) var didFinishAnimating: Bool = false
 
-    var speed: TimeInterval {
+    var objectSpeed: TimeInterval {
         var dayMultiplier: TimeInterval
         switch DayTheme.currentTheme {
         case .dawn: dayMultiplier = 2
@@ -55,7 +55,15 @@ class BackgroundObject {
         self.tierLevel = tierLevel
         self.backgroundType = backgroundType
         
+        super.init()
+
         setupBackgroundTypes()
+        
+        addChild(sprite)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     private func setupBackgroundTypes() {
@@ -134,15 +142,20 @@ class BackgroundObject {
     
     // MARK: - Helper Functions
     
-    func animateSprite(withDelay delay: TimeInterval?, completion: (() -> Void)? = nil) {
-        let animation = SKAction.move(by: CGVector(dx: -1000, dy: 0), duration: speed)
+    func animateSprite(withDelay delay: TimeInterval?, shouldReverse: Bool = false, completion: (() -> Void)? = nil) {
+        let xOffset: CGFloat = shouldReverse ? 1000 : -1000
+        let animation = SKAction.move(by: CGVector(dx: xOffset, dy: 0), duration: objectSpeed)
+
+        var xBoundaryCheck: Bool {
+            shouldReverse ? sprite.position.x > K.ScreenDimensions.iPhoneWidth : sprite.position.x + sprite.size.width < 0
+        }
 
         let sequence = SKAction.sequence([
             SKAction.wait(forDuration: delay == nil ? 0 : self.delay * 2 * delay!),
             SKAction.repeatForever(SKAction.sequence([
                 animation,
                 SKAction.run { [unowned self] in
-                    if sprite.position.x + sprite.size.width < 0 {
+                    if xBoundaryCheck {
                         didFinishAnimating = true
                         
                         sprite.removeAllActions()
@@ -156,11 +169,13 @@ class BackgroundObject {
         sprite.run(sequence)
     }
     
-    func resetSprite(shouldStartAtEdge: Bool) {
+    func resetSprite(shouldStartAtEdge: Bool, shouldReverse: Bool = false) {
+        let edgePositionStart: CGFloat = shouldReverse ? -sprite.size.width - CGFloat.random(in: 0...K.ScreenDimensions.iPhoneWidth) : K.ScreenDimensions.iPhoneWidth + CGFloat.random(in: 0...K.ScreenDimensions.iPhoneWidth)
+        
         sprite.position = originalPosition
 
         if shouldStartAtEdge {
-            sprite.position.x = K.ScreenDimensions.iPhoneWidth + CGFloat.random(in: 0...K.ScreenDimensions.iPhoneWidth)
+            sprite.position.x = edgePositionStart
         }
         
         didFinishAnimating = false
