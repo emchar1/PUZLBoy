@@ -25,6 +25,10 @@ class LaunchScene: SKScene {
     private var isTransitioning: Bool = false
     private var skyNode: SKSpriteNode
     private var grassNode: SKSpriteNode
+    
+    enum AnimationSequence {
+        case jump, fall, running
+    }
 
     
     // MARK: - Initialization
@@ -184,13 +188,13 @@ class LaunchScene: SKScene {
     
     // MARK: - Animation Functions
     
-    func animateTransition(animationSequence: Int, completion: @escaping () -> Void) {
+    func animateTransition(animationSequence: AnimationSequence, completion: @escaping () -> Void) {
         isTransitioning = true
         
         switch animationSequence {
-        case 0: transitionRunning(completion: completion)
-        case 1: transitionFall(completion: completion)
-        default: transitionJump(completion: completion)
+        case .running: transitionRunning(completion: completion)
+        case .fall: transitionFall(completion: completion)
+        case .jump: transitionJump(completion: completion)
         }
     }
     
