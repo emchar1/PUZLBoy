@@ -26,7 +26,7 @@ class LaunchScene: SKScene {
     private var skyNode: SKSpriteNode
     private var grassNode: SKSpriteNode
     
-    enum AnimationSequence {
+    enum AnimationSequence: CaseIterable {
         case jump, fall, running
     }
 
@@ -302,19 +302,54 @@ class LaunchScene: SKScene {
                     SKAction.animate(with: player.textures[Player.Texture.dead.rawValue], timePerFrame: playerTimePerFrame),
                     SKAction.moveTo(x: -K.ScreenDimensions.iPhoneWidth * 2, duration: 1)
                 ]))
-            case "skyObjectNode", "grassNode":
+            case "grassNode":
                 break
-            case "groundObjectNode":
+            case "groundObjectNode", "skyObjectNode":
                 guard let node = node as? BackgroundObject else { return }
 
-                node.run(SKAction.wait(forDuration: 2.0)) {
-                    node.removeAllActions()
+                //Original
+//                node.run(SKAction.wait(forDuration: 2.0)) {
+//                    node.removeAllActions()
+//
+//                    node.run(SKAction.sequence([
+//                        SKAction.wait(forDuration: 2.0),
+//                        SKAction.moveBy(x: K.ScreenDimensions.iPhoneWidth * 2, y: 0, duration: 0.5)
+//                    ]))
+//                }
+                
+                
+                
+                
+                
+                let sequence = SKAction.sequence([
+                    SKAction.wait(forDuration: 2.0),
+                    
+                    SKAction.run {
+                        node.stopSprite()
+                    },
 
-                    node.run(SKAction.sequence([
-                        SKAction.wait(forDuration: 2.0),
-                        SKAction.moveBy(x: K.ScreenDimensions.iPhoneWidth * 2, y: 0, duration: 0.5)
-                    ]))
-                }
+                    SKAction.wait(forDuration: 1.0),
+
+                    // FIXME: - Reverse for a time, then stop.
+                    SKAction.run {
+//                        node.resetSprite(shouldStartAtEdge: true, shouldReverse: true)
+                        node.animateSprite(withDelay: 0, shouldReverse: true)
+                    }
+                    
+//                    SKAction.repeatForever(SKAction.run {
+//                        if node.didFinishAnimating {
+//                            self.animateBackgroundObject(node, shouldStartAtEdge: true, shouldReverse: true, withDelay: 0)
+//                        }
+//                    })
+                    
+
+                ])
+                
+                node.run(sequence)
+                
+                
+                
+                
             default:
                 break
             } //end switch

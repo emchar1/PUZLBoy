@@ -156,10 +156,7 @@ class BackgroundObject: SKNode {
                 animation,
                 SKAction.run { [unowned self] in
                     if xBoundaryCheck {
-                        didFinishAnimating = true
-                        
-                        sprite.removeAllActions()
-                        
+                        stopSprite()
                         completion?()
                     }
                 }
@@ -167,6 +164,11 @@ class BackgroundObject: SKNode {
         ])
         
         sprite.run(sequence)
+    }
+    
+    func stopSprite() {
+        didFinishAnimating = true
+        sprite.removeAllActions()
     }
     
     func resetSprite(shouldStartAtEdge: Bool, shouldReverse: Bool = false) {

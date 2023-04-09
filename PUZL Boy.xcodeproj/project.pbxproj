@@ -422,7 +422,6 @@
 				EA34678D2998ED50002DDA02 /* LifeSpawnerModel.swift */,
 				EA826C86298E23A500F19F81 /* Player.swift */,
 				EA119154290CCA39009D0E3E /* Inventory.swift */,
-				EAAEA3CD2932C47500221963 /* BackgroundObject.swift */,
 				EA0F84062937D4860031DA76 /* DayTheme.swift */,
 				EA11915629121798009D0E3E /* Controls.swift */,
 			);
@@ -481,7 +480,7 @@
 		EA75F0F0292F560300F09BD7 /* Scenes */ = {
 			isa = PBXGroup;
 			children = (
-				EA75F0EE292F55F900F09BD7 /* LaunchScene.swift */,
+				EAFA6A7929E1CD8D002287C2 /* LaunchScene */,
 				EA84645D29D8E5B10075F2A9 /* TitleScene */,
 				EA65184228E420E400E535BF /* GameScene.swift */,
 			);
@@ -699,6 +698,15 @@
 				EA95D1A5294957060061059C /* Haptics.swift */,
 			);
 			path = Utilities;
+			sourceTree = "<group>";
+		};
+		EAFA6A7929E1CD8D002287C2 /* LaunchScene */ = {
+			isa = PBXGroup;
+			children = (
+				EA75F0EE292F55F900F09BD7 /* LaunchScene.swift */,
+				EAAEA3CD2932C47500221963 /* BackgroundObject.swift */,
+			);
+			path = LaunchScene;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
