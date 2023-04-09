@@ -208,8 +208,6 @@ class LaunchScene: SKScene {
         let paddingDuration: TimeInterval = 0.25
         
         for node in self.children {
-            guard node.name != "skyNode" else { continue }
-            
             switch node.name {
             case "loadingSprite":
                 node.run(SKAction.fadeOut(withDuration: 0.5))
@@ -288,8 +286,6 @@ class LaunchScene: SKScene {
         let playerTimePerFrame: TimeInterval = 0.04
         
         for node in self.children {
-            guard node.name != "skyNode" else { continue }
-            
             switch node.name {
             case "loadingSprite":
                 node.run(SKAction.fadeOut(withDuration: 0.5))
@@ -304,7 +300,7 @@ class LaunchScene: SKScene {
                 ]))
             case "grassNode":
                 break
-            case "groundObjectNode", "skyObjectNode":
+            case "groundObjectNode":
                 guard let node = node as? BackgroundObject else { return }
 
                 //Original
