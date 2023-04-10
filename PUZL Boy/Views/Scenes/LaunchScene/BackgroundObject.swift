@@ -143,8 +143,8 @@ class BackgroundObject: SKNode {
     // MARK: - Helper Functions
     
     func animateSprite(withDelay delay: TimeInterval?, shouldReverse: Bool = false, completion: (() -> Void)? = nil) {
-        let xOffset: CGFloat = shouldReverse ? 1000 : -1000
-        let animation = SKAction.move(by: CGVector(dx: xOffset, dy: 0), duration: objectSpeed)
+        let xOffset: CGFloat = shouldReverse ? 1 : -1
+        let animation = SKAction.move(by: CGVector(dx: xOffset, dy: 0), duration: objectSpeed / 1000)
 
         var xBoundaryCheck: Bool {
             shouldReverse ? sprite.position.x > K.ScreenDimensions.iPhoneWidth : sprite.position.x + sprite.size.width < 0

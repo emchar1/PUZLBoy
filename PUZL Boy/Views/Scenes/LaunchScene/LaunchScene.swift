@@ -204,8 +204,10 @@ class LaunchScene: SKScene {
         var playerCrouchDuration: TimeInterval { playerTimePerFrame * 5 }
         var moveDuration: TimeInterval { playerCrouchDuration * 2 }
         
-        let maxAnimationDuration: TimeInterval = 2.5
-        let paddingDuration: TimeInterval = 0.25
+        var jumpDuration: TimeInterval { moveDuration }
+        var bezierDuration: TimeInterval { moveDuration }
+        var maxAnimationDuration: TimeInterval { playerCrouchDuration + jumpDuration + bezierDuration }
+        let paddingDuration: TimeInterval = 0.5
         
         for node in self.children {
             switch node.name {
@@ -227,10 +229,10 @@ class LaunchScene: SKScene {
                 jumpBezierPath.move(to: jumpStartPoint)
                 jumpBezierPath.addQuadCurve(to: jumpEndPoint, controlPoint: jumpControlPoint)
 
-                let followBezierAction = SKAction.follow(jumpBezierPath.cgPath, asOffset: false, orientToPath: false, duration: moveDuration)
+                let followBezierAction = SKAction.follow(jumpBezierPath.cgPath, asOffset: false, orientToPath: false, duration: bezierDuration)
                 followBezierAction.timingFunction = { time in pow(time, 2) }
                 
-                let scaleAction = SKAction.scale(to: 2, duration: moveDuration)
+                let scaleAction = SKAction.scale(to: 2, duration: bezierDuration)
                 scaleAction.timingFunction = { time in pow(time, 8) }
                 
                 //Audio fun
@@ -247,9 +249,9 @@ class LaunchScene: SKScene {
                         SKAction.sequence([
                             SKAction.wait(forDuration: playerCrouchDuration),
                             SKAction.group([
-                                SKAction.colorize(withColorBlendFactor: 0, duration: moveDuration),
-                                SKAction.scale(to: 0.1, duration: moveDuration),
-                                SKAction.move(to: jumpStartPoint, duration: moveDuration)
+                                SKAction.colorize(withColorBlendFactor: 0, duration: jumpDuration),
+                                SKAction.scale(to: 0.1, duration: jumpDuration),
+                                SKAction.move(to: jumpStartPoint, duration: jumpDuration)
                             ])
                         ])
                     ]),
@@ -327,16 +329,19 @@ class LaunchScene: SKScene {
                     SKAction.wait(forDuration: 1.0),
 
                     // FIXME: - Reverse for a time, then stop.
-                    SKAction.run {
-//                        node.resetSprite(shouldStartAtEdge: true, shouldReverse: true)
-                        node.animateSprite(withDelay: 0, shouldReverse: true)
-                    }
-                    
-//                    SKAction.repeatForever(SKAction.run {
-//                        if node.didFinishAnimating {
-//                            self.animateBackgroundObject(node, shouldStartAtEdge: true, shouldReverse: true, withDelay: 0)
-//                        }
-//                    })
+//                    SKAction.run {
+////                        node.resetSprite(shouldStartAtEdge: true, shouldReverse: true)
+//                        node.animateSprite(withDelay: 0, shouldReverse: true)
+//                    }
+
+
+
+                    SKAction.repeatForever(
+                        SKAction.run {
+                            if node.didFinishAnimating {
+                                self.animateBackgroundObject(node, shouldStartAtEdge: true, shouldReverse: true, withDelay: 0)
+                            }
+                        })
                     
 
                 ])
