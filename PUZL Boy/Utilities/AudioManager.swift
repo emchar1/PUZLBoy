@@ -121,6 +121,7 @@ class AudioManager {
         addAudioItem("punchwhack2", category: .soundFX) //needs purchase
         addAudioItem("revive", category: .soundFX)
         addAudioItem("swordslash", category: .soundFX)
+        addAudioItem("titletheme_mario64", category: .soundFX) //delete
         addAudioItem("titletheme1", category: .soundFX) //needs purchase
         addAudioItem("titletheme2", category: .soundFX) //needs purchase
         addAudioItem("titletheme3", category: .soundFX) //needs purchase
@@ -131,6 +132,7 @@ class AudioManager {
         
         //Background music
         addAudioItem("continueloop", category: .music)
+        addAudioItem("overworld_castle", category: .music) //delete
         addAudioItem("overworld_egg", category: .music) //delete
         addAudioItem("overworld_galaxy", category: .music) //delete
         addAudioItem("overworld_throwback", category: .music) //delete

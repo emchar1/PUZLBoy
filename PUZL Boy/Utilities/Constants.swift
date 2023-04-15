@@ -63,14 +63,9 @@ struct K {
         
         //--LAUNCH SCENE--
         static let skyNode: CGFloat = 25
-        static let grassNode: CGFloat = 30
-        static let backgroundObjectMoon: CGFloat = 40
-        static let backgroundObjectCloud: CGFloat = 45
-        static let backgroundObjectMountain: CGFloat = 50
-        static let backgroundObjectTier2: CGFloat = 55
-        static let backgroundObjectTier1: CGFloat = 60
-        static let backgroundObjectTier0: CGFloat = 65
-        static let loadingNode: CGFloat = 75
+        static let backgroundObjectMoon: CGFloat = 30
+        static let loadingNode: CGFloat = 80
+        static let parallaxLayer0: CGFloat = 70
         
         
         //--TITLE SCENE--
