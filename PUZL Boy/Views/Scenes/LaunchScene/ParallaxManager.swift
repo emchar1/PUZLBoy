@@ -32,7 +32,7 @@ class ParallaxManager: SKNode {
     private func setupSprites() {
         switch set {
         case .grass:
-            parallaxSprites = makeSprite(layers: 5, size: CGSize(width: 8192, height: 1550), skyObjectNodes: [2, 4])
+            parallaxSprites = makeSprite(layers: 6, size: CGSize(width: 8192, height: 1550), skyObjectNodes: [2, 4])
         case .marsh:
             parallaxSprites = makeSprite(layers: 4, size: CGSize(width: 8192, height: 1902), skyObjectNodes: [2, 3])
         case .ice:
