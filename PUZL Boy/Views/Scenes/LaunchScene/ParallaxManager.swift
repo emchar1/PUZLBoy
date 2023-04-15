@@ -13,6 +13,14 @@ class ParallaxManager: SKNode {
     
     private var set: ParallaxObject.SetType
     private var parallaxSprites: [ParallaxSprite] = []
+    var speedFactor: TimeInterval {
+        switch DayTheme.currentTheme {
+        case .dawn:         return 3
+        case .morning:      return 1
+        case .afternoon:    return 1.5
+        case .night:        return 3
+        }
+    }
         
     
     // MARK: - Initialization
@@ -37,12 +45,10 @@ class ParallaxManager: SKNode {
             parallaxSprites = makeSprite(layers: 4, size: CGSize(width: 8192, height: 1902), skyObjectNodes: [2, 3])
         case .ice:
             parallaxSprites = makeSprite(layers: 4, size: CGSize(width: 8192, height: 1824), skyObjectNodes: [2, 3])
-//        case .sand:
-//            // FIXME: - Implement Sand
-//            parallaxSprites = makeSprite(layers: 5, size: CGSize(width: 8192, height: 1550), skyObjectNodes: [2, 4])
-//        case .lava:
-//            // FIXME: - Implement Lava
-//            parallaxSprites = makeSprite(layers: 5, size: CGSize(width: 8192, height: 1550), skyObjectNodes: [2, 4])
+        case .sand:
+            parallaxSprites = makeSprite(layers: 4, size: CGSize(width: 8192, height: 1824), skyObjectNodes: [1, 3])
+        case .lava:
+            parallaxSprites = makeSprite(layers: 4, size: CGSize(width: 8192, height: 1824), skyObjectNodes: [2, 3])
         }
     }
     
@@ -52,14 +58,6 @@ class ParallaxManager: SKNode {
         for i in 0..<layers {
             var type: ParallaxObject.ObjectType = .ground
             var speed: TimeInterval = max(20, TimeInterval(i) * 100)
-            var speedFactor: TimeInterval {
-                switch DayTheme.currentTheme {
-                case .dawn:         return 3
-                case .morning:      return 1
-                case .afternoon:    return 1.5
-                case .night:        return 3
-                }
-            }
 
             for skyObject in skyObjectNodes {
                 if i == skyObject {

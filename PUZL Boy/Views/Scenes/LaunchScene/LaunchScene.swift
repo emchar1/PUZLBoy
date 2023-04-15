@@ -154,7 +154,7 @@ class LaunchScene: SKScene {
                 node.run(SKAction.sequence([
                     //1st Jump = 1.5
                     SKAction.group([
-                        SKAction.moveTo(x: K.ScreenDimensions.iPhoneWidth / 4, duration: playerCrouchDuration),
+                        SKAction.moveTo(x: K.ScreenDimensions.iPhoneWidth / 4, duration: playerCrouchDuration * parallaxManager.speedFactor),
                         SKAction.animate(with: player.textures[Player.Texture.jump.rawValue], timePerFrame: playerTimePerFrame),
                         SKAction.sequence([
                             SKAction.wait(forDuration: playerCrouchDuration),
