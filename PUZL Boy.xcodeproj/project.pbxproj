@@ -32,7 +32,7 @@
 		EA3467A929A8C6CA002DDA02 /* chatopen.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA3467A829A8C6CA002DDA02 /* chatopen.mp3 */; };
 		EA3467AB29A8C6F6002DDA02 /* buttontap1.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA3467AA29A8C6F6002DDA02 /* buttontap1.mp3 */; };
 		EA3467AD29A8C7C7002DDA02 /* continueloop.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA3467AC29A8C7C7002DDA02 /* continueloop.mp3 */; };
-		EA3467AF29A8CB39002DDA02 /* overworld6.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA3467AE29A8CB39002DDA02 /* overworld6.mp3 */; };
+		EA3467AF29A8CB39002DDA02 /* overworld.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA3467AE29A8CB39002DDA02 /* overworld.mp3 */; };
 		EA3467B129A99332002DDA02 /* LoadingSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA3467B029A99332002DDA02 /* LoadingSprite.swift */; };
 		EA3534892920612300C11FC0 /* DisplayStatusBarSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA3534882920612300C11FC0 /* DisplayStatusBarSprite.swift */; };
 		EA35348B29241FCD00C11FC0 /* LevelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA35348A29241FCD00C11FC0 /* LevelType.swift */; };
@@ -155,7 +155,7 @@
 		EAB69E0028EFCF5B00C31DB3 /* PlayerSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAB69DFF28EFCF5B00C31DB3 /* PlayerSprite.swift */; };
 		EAB69E0428F3333000C31DB3 /* GameEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAB69E0328F3333000C31DB3 /* GameEngine.swift */; };
 		EADEB3E92931404D00CDB232 /* dooropen.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EADEB3E82931404D00CDB232 /* dooropen.mp3 */; };
-		EADEB3EB293150CB00CDB232 /* overworld.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EADEB3EA293150CB00CDB232 /* overworld.mp3 */; };
+		EADEB3EB293150CB00CDB232 /* overworld6.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EADEB3EA293150CB00CDB232 /* overworld6.mp3 */; };
 		EADEB3EF2931526700CDB232 /* overworld_egg.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EADEB3EC2931526600CDB232 /* overworld_egg.mp3 */; };
 		EADEB3F02931526700CDB232 /* overworld_galaxy.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EADEB3ED2931526600CDB232 /* overworld_galaxy.mp3 */; };
 		EADEB3F12931526700CDB232 /* overworld_throwback.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EADEB3EE2931526700CDB232 /* overworld_throwback.mp3 */; };
@@ -170,7 +170,7 @@
 		EAF07C0E29EA736F0034CD1A /* MoonSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAF07C0D29EA736F0034CD1A /* MoonSprite.swift */; };
 		EAF07C1029EA7B8C0034CD1A /* Extension+CGSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAF07C0F29EA7B8C0034CD1A /* Extension+CGSize.swift */; };
 		EAF07C1229EAB5D30034CD1A /* Extension+SKSpriteNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAF07C1129EAB5D30034CD1A /* Extension+SKSpriteNode.swift */; };
-		EAF7181B29AFE65300E2ED82 /* overworld10.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAF7181A29AFE65300E2ED82 /* overworld10.mp3 */; };
+		EAF7181B29AFE65300E2ED82 /* overworldparty.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAF7181A29AFE65300E2ED82 /* overworldparty.mp3 */; };
 		EAF7181F29B1B2BC00E2ED82 /* movesand1.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAF7181E29B1B2BC00E2ED82 /* movesand1.mp3 */; };
 		EAF7182129B3097300E2ED82 /* lavasizzle.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAF7182029B3097300E2ED82 /* lavasizzle.mp3 */; };
 		EAF7182929B31BE800E2ED82 /* lavaappear1.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAF7182829B31BE800E2ED82 /* lavaappear1.mp3 */; };
@@ -184,7 +184,7 @@
 		EAFA6A6A29DCFA7F002287C2 /* titletheme3.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAFA6A6929DCFA7F002287C2 /* titletheme3.mp3 */; };
 		EAFA6A6C29DCFC11002287C2 /* titletheme4.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAFA6A6B29DCFC11002287C2 /* titletheme4.mp3 */; };
 		EAFA6A6E29DCFD63002287C2 /* titletheme5.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAFA6A6D29DCFD63002287C2 /* titletheme5.mp3 */; };
-		EAFA6A7029DCFE79002287C2 /* titletheme1.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAFA6A6F29DCFE79002287C2 /* titletheme1.mp3 */; };
+		EAFA6A7029DCFE79002287C2 /* titletheme.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAFA6A6F29DCFE79002287C2 /* titletheme.mp3 */; };
 		EAFA6A7729DE13EB002287C2 /* boyimpact.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAFA6A7529DE13EB002287C2 /* boyimpact.mp3 */; };
 /* End PBXBuildFile section */
 
@@ -214,7 +214,7 @@
 		EA3467A829A8C6CA002DDA02 /* chatopen.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = chatopen.mp3; sourceTree = "<group>"; };
 		EA3467AA29A8C6F6002DDA02 /* buttontap1.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = buttontap1.mp3; sourceTree = "<group>"; };
 		EA3467AC29A8C7C7002DDA02 /* continueloop.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = continueloop.mp3; sourceTree = "<group>"; };
-		EA3467AE29A8CB39002DDA02 /* overworld6.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = overworld6.mp3; sourceTree = "<group>"; };
+		EA3467AE29A8CB39002DDA02 /* overworld.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = overworld.mp3; sourceTree = "<group>"; };
 		EA3467B029A99332002DDA02 /* LoadingSprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingSprite.swift; sourceTree = "<group>"; };
 		EA3534882920612300C11FC0 /* DisplayStatusBarSprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayStatusBarSprite.swift; sourceTree = "<group>"; };
 		EA35348A29241FCD00C11FC0 /* LevelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelType.swift; sourceTree = "<group>"; };
@@ -332,7 +332,7 @@
 		EAB69DFF28EFCF5B00C31DB3 /* PlayerSprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerSprite.swift; sourceTree = "<group>"; };
 		EAB69E0328F3333000C31DB3 /* GameEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameEngine.swift; sourceTree = "<group>"; };
 		EADEB3E82931404D00CDB232 /* dooropen.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = dooropen.mp3; sourceTree = "<group>"; };
-		EADEB3EA293150CB00CDB232 /* overworld.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = overworld.mp3; sourceTree = "<group>"; };
+		EADEB3EA293150CB00CDB232 /* overworld6.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = overworld6.mp3; sourceTree = "<group>"; };
 		EADEB3EC2931526600CDB232 /* overworld_egg.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = overworld_egg.mp3; sourceTree = "<group>"; };
 		EADEB3ED2931526600CDB232 /* overworld_galaxy.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = overworld_galaxy.mp3; sourceTree = "<group>"; };
 		EADEB3EE2931526700CDB232 /* overworld_throwback.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = overworld_throwback.mp3; sourceTree = "<group>"; };
@@ -347,7 +347,7 @@
 		EAF07C0D29EA736F0034CD1A /* MoonSprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoonSprite.swift; sourceTree = "<group>"; };
 		EAF07C0F29EA7B8C0034CD1A /* Extension+CGSize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+CGSize.swift"; sourceTree = "<group>"; };
 		EAF07C1129EAB5D30034CD1A /* Extension+SKSpriteNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+SKSpriteNode.swift"; sourceTree = "<group>"; };
-		EAF7181A29AFE65300E2ED82 /* overworld10.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = overworld10.mp3; sourceTree = "<group>"; };
+		EAF7181A29AFE65300E2ED82 /* overworldparty.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = overworldparty.mp3; sourceTree = "<group>"; };
 		EAF7181E29B1B2BC00E2ED82 /* movesand1.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = movesand1.mp3; sourceTree = "<group>"; };
 		EAF7182029B3097300E2ED82 /* lavasizzle.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = lavasizzle.mp3; sourceTree = "<group>"; };
 		EAF7182829B31BE800E2ED82 /* lavaappear1.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = lavaappear1.mp3; sourceTree = "<group>"; };
@@ -361,7 +361,7 @@
 		EAFA6A6929DCFA7F002287C2 /* titletheme3.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = titletheme3.mp3; sourceTree = "<group>"; };
 		EAFA6A6B29DCFC11002287C2 /* titletheme4.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = titletheme4.mp3; sourceTree = "<group>"; };
 		EAFA6A6D29DCFD63002287C2 /* titletheme5.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = titletheme5.mp3; sourceTree = "<group>"; };
-		EAFA6A6F29DCFE79002287C2 /* titletheme1.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = titletheme1.mp3; sourceTree = "<group>"; };
+		EAFA6A6F29DCFE79002287C2 /* titletheme.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = titletheme.mp3; sourceTree = "<group>"; };
 		EAFA6A7529DE13EB002287C2 /* boyimpact.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = boyimpact.mp3; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -574,28 +574,28 @@
 				EA94E87129C0DE2C009F2614 /* movetile2.mp3 */,
 				EA94E87029C0DE2C009F2614 /* movetile3.mp3 */,
 				EA0F145E292994B00013038E /* movewalk.mp3 */,
+				EA3467AE29A8CB39002DDA02 /* overworld.mp3 */,
+				EAF7181A29AFE65300E2ED82 /* overworldparty.mp3 */,
 				EAF07BFE29E5E45B0034CD1A /* overworld_castle.mp3 */,
 				EADEB3EC2931526600CDB232 /* overworld_egg.mp3 */,
 				EADEB3ED2931526600CDB232 /* overworld_galaxy.mp3 */,
 				EADEB3EE2931526700CDB232 /* overworld_throwback.mp3 */,
-				EADEB3EA293150CB00CDB232 /* overworld.mp3 */,
 				EADEB3F22931572C00CDB232 /* overworld2.mp3 */,
 				EA0F147C292B0A050013038E /* overworld3.mp3 */,
 				EA956C74292595F400879AD0 /* overworld4.mp3 */,
 				EA95D1AB294D08BB0061059C /* overworld5.mp3 */,
-				EA3467AE29A8CB39002DDA02 /* overworld6.mp3 */,
+				EADEB3EA293150CB00CDB232 /* overworld6.mp3 */,
 				EA34679829A03A19002DDA02 /* overworld7.mp3 */,
 				EA3467A029A400CB002DDA02 /* overworld8.mp3 */,
 				EA3467A229A403EF002DDA02 /* overworld9.mp3 */,
-				EAF7181A29AFE65300E2ED82 /* overworld10.mp3 */,
 				EA3467A629A8C68A002DDA02 /* pickupheart.mp3 */,
 				EAAEA3C92931F12B00221963 /* pickupitem.mp3 */,
 				EAFA6A6329DCEEC3002287C2 /* punchwhack1.mp3 */,
 				EAFA6A6129DCED35002287C2 /* punchwhack2.mp3 */,
 				EA3467A429A8C659002DDA02 /* revive.mp3 */,
 				EAAEA3C32931D0DA00221963 /* swordslash.mp3 */,
+				EAFA6A6F29DCFE79002287C2 /* titletheme.mp3 */,
 				EAF07C0029E5E4910034CD1A /* titletheme_mario64.mp3 */,
-				EAFA6A6F29DCFE79002287C2 /* titletheme1.mp3 */,
 				EAFA6A6729DCF643002287C2 /* titletheme2.mp3 */,
 				EAFA6A6929DCFA7F002287C2 /* titletheme3.mp3 */,
 				EAFA6A6B29DCFC11002287C2 /* titletheme4.mp3 */,
@@ -830,10 +830,10 @@
 				EA3467AD29A8C7C7002DDA02 /* continueloop.mp3 in Resources */,
 				EA4D025D29B7E2B400F0C7B1 /* movemarsh2.mp3 in Resources */,
 				EA65183728E419A000E535BF /* LaunchScreen.storyboard in Resources */,
-				EAF7181B29AFE65300E2ED82 /* overworld10.mp3 in Resources */,
+				EAF7181B29AFE65300E2ED82 /* overworldparty.mp3 in Resources */,
 				EA95D18929459BC80061059C /* moveglide.mp3 in Resources */,
 				EA9F4DEB29D37532006F4B2F /* movepoisoned4.mp3 in Resources */,
-				EADEB3EB293150CB00CDB232 /* overworld.mp3 in Resources */,
+				EADEB3EB293150CB00CDB232 /* overworld6.mp3 in Resources */,
 				EA3467A329A403EF002DDA02 /* overworld9.mp3 in Resources */,
 				EA4D025B29B7D61C00F0C7B1 /* movemarsh3.mp3 in Resources */,
 				EA0F1491292CC8D90013038E /* enemydeath.mp3 in Resources */,
@@ -848,7 +848,7 @@
 				EA95D200295D83E40061059C /* Boogaloo-Regular.ttf in Resources */,
 				EA95D19B294690B70061059C /* boydead.mp3 in Resources */,
 				EA95D19E294690B70061059C /* boyattack2.mp3 in Resources */,
-				EAFA6A7029DCFE79002287C2 /* titletheme1.mp3 in Resources */,
+				EAFA6A7029DCFE79002287C2 /* titletheme.mp3 in Resources */,
 				EA3467A529A8C659002DDA02 /* revive.mp3 in Resources */,
 				EA9F4DE229D36F02006F4B2F /* movepoisoned3.mp3 in Resources */,
 				EA2AF74829B6EDAC00444E5A /* gemcollectparty.mp3 in Resources */,
@@ -869,7 +869,7 @@
 				EA94E87329C0DE2C009F2614 /* movetile3.mp3 in Resources */,
 				EA3467A929A8C6CA002DDA02 /* chatopen.mp3 in Resources */,
 				EAF7182D29B3CC0500E2ED82 /* lavaappear2.mp3 in Resources */,
-				EA3467AF29A8CB39002DDA02 /* overworld6.mp3 in Resources */,
+				EA3467AF29A8CB39002DDA02 /* overworld.mp3 in Resources */,
 				EA0F147D292B0A050013038E /* overworld3.mp3 in Resources */,
 				EA0F14712929D9C00013038E /* moverun2.mp3 in Resources */,
 				EAFA6A7729DE13EB002287C2 /* boyimpact.mp3 in Resources */,

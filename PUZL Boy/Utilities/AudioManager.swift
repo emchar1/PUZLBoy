@@ -16,7 +16,7 @@ enum AudioType: String {
 }
 
 enum AudioCategory {
-    case music, soundFX
+    case music, musicNoLoop, soundFX
 }
 
 
@@ -50,9 +50,9 @@ class AudioManager {
         return instance
     }()
     
-    let titleLogo = "titletheme\(Int.random(in: 1...5))"
-    let overworldTheme = "overworld6"
-    let overworldPartyTheme = "overworld10"
+    let titleLogo = "titletheme"
+    let overworldTheme = "overworld"
+    let overworldPartyTheme = "overworldparty"
     private(set) var currentTheme: String
     private var audioItems: [String: AudioItem] = [:]
     
@@ -121,31 +121,34 @@ class AudioManager {
         addAudioItem("punchwhack2", category: .soundFX) //needs purchase
         addAudioItem("revive", category: .soundFX)
         addAudioItem("swordslash", category: .soundFX)
-        addAudioItem("titletheme_mario64", category: .soundFX) //delete
-        addAudioItem("titletheme1", category: .soundFX) //needs purchase
-        addAudioItem("titletheme2", category: .soundFX) //needs purchase
-        addAudioItem("titletheme3", category: .soundFX) //needs purchase
-        addAudioItem("titletheme4", category: .soundFX) //needs purchase
-        addAudioItem("titletheme5", category: .soundFX) //needs purchase
         addAudioItem("warp", category: .soundFX)
         addAudioItem("winlevel", category: .soundFX)
         
+        
         //Background music
         addAudioItem("continueloop", category: .music)
+        addAudioItem("overworld", category: .music)
+        addAudioItem("overworldparty", category: .music)
+        addAudioItem("titletheme", category: .musicNoLoop) //needs purchase
+
+        //DELETE
         addAudioItem("overworld_castle", category: .music) //delete
         addAudioItem("overworld_egg", category: .music) //delete
         addAudioItem("overworld_galaxy", category: .music) //delete
         addAudioItem("overworld_throwback", category: .music) //delete
-        addAudioItem("overworld", category: .music) //delete
         addAudioItem("overworld2", category: .music) //delete
         addAudioItem("overworld3", category: .music) //delete
         addAudioItem("overworld4", category: .music) //delete
         addAudioItem("overworld5", category: .music) //delete
-        addAudioItem("overworld6", category: .music)
+        addAudioItem("overworld6", category: .music) //delete
         addAudioItem("overworld7", category: .music) //delete
         addAudioItem("overworld8", category: .music) //delete
         addAudioItem("overworld9", category: .music) //delete
-        addAudioItem("overworld10", category: .music)
+        addAudioItem("titletheme_mario64", category: .musicNoLoop) //delete
+        addAudioItem("titletheme2", category: .musicNoLoop) //delete
+        addAudioItem("titletheme3", category: .musicNoLoop) //delete
+        addAudioItem("titletheme4", category: .musicNoLoop) //delete
+        addAudioItem("titletheme5", category: .musicNoLoop) //delete
     }
 
     /**
