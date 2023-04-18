@@ -11,7 +11,7 @@ class ParallaxManager: SKNode {
     
     // MARK: - Properties
     
-    private var set: ParallaxObject.SetType
+    private(set) var set: ParallaxObject.SetType
     private var parallaxSprites: [ParallaxSprite] = []
     var speedFactor: TimeInterval {
         switch DayTheme.currentTheme {

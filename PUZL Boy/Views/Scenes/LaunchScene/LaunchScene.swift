@@ -13,12 +13,14 @@ class LaunchScene: SKScene {
     
     //Shared node names to be used across any object in the LaunchScene folder
     static let nodeName_playerSprite = "playerSprite"
+    static let nodeName_playerReflection = "playerReflection"
     static let nodeName_loadingSprite = "loadingSprite"
     static let nodeName_skyNode = "skyNode"
     static let nodeName_skyObjectNode = "skyObjectNode"
     static let nodeName_groundObjectNode = "groundObjectNode"
     
     private var player = Player()
+    private var playerReflection = Player()
     private var loadingSprite: LoadingSprite
     private var skyNode: SKSpriteNode
     private var moonSprite: MoonSprite
@@ -32,11 +34,22 @@ class LaunchScene: SKScene {
     // MARK: - Initialization
     
     override init(size: CGSize) {
-        player.sprite.position = CGPoint(x: K.ScreenDimensions.iPhoneWidth / 2, y: K.ScreenDimensions.height / 3)
-        player.sprite.setScale(0.75)
+        let playerPosition = CGPoint(x: K.ScreenDimensions.iPhoneWidth / 2, y: K.ScreenDimensions.height / 3)
+        let playerScale: CGFloat = 0.75
+        
+        player.sprite.position = playerPosition
+        player.sprite.setScale(playerScale)
         player.sprite.color = DayTheme.spriteColor
         player.sprite.colorBlendFactor = DayTheme.spriteShade
         player.sprite.name = LaunchScene.nodeName_playerSprite
+        
+        playerReflection.sprite.position = playerPosition - CGPoint(x: 0, y: Player.size.height / 2 + 50) //why +50???
+        playerReflection.sprite.setScale(playerScale)
+        playerReflection.sprite.color = DayTheme.spriteColor
+        playerReflection.sprite.colorBlendFactor = DayTheme.spriteShade
+        playerReflection.sprite.name = LaunchScene.nodeName_playerReflection
+        playerReflection.sprite.yScale *= -1
+        playerReflection.sprite.alpha = 0.5
         
         loadingSprite = LoadingSprite(position: CGPoint(x: K.ScreenDimensions.iPhoneWidth / 2, y: K.ScreenDimensions.height / 6))
         loadingSprite.zPosition = K.ZPosition.loadingNode
@@ -75,6 +88,7 @@ class LaunchScene: SKScene {
         )
         
         player.sprite.run(SKAction.repeatForever(playerAnimation))
+        playerReflection.sprite.run(SKAction.repeatForever(playerAnimation))
 
         loadingSprite.animate()
         parallaxManager.animate()
@@ -90,6 +104,11 @@ class LaunchScene: SKScene {
         addChild(loadingSprite)
         
         parallaxManager.addSpritesToParent(scene: self)
+        
+        //Only add a reflection to the marsh background.
+        if parallaxManager.set == .marsh {
+            addChild(playerReflection.sprite)
+        }
     }
     
     override func willMove(from view: SKView) {
@@ -126,15 +145,16 @@ class LaunchScene: SKScene {
                 node.run(SKAction.fadeOut(withDuration: 0.5))
             case LaunchScene.nodeName_skyObjectNode:
                 node.run(SKAction.fadeOut(withDuration: moveDuration * maxAnimationDuration))
-            case LaunchScene.nodeName_playerSprite:
+            case LaunchScene.nodeName_playerSprite, LaunchScene.nodeName_playerReflection:
                 guard let node = node as? SKSpriteNode else { return }
                 
                 node.removeAllActions()
                 
                 //Player Action properties
-                let jumpStartPoint = CGPoint(x: K.ScreenDimensions.iPhoneWidth * 2 / 3, y: K.ScreenDimensions.height / 2)
-                let jumpEndPoint = CGPoint(x: K.ScreenDimensions.iPhoneWidth / 2, y: K.ScreenDimensions.height / 2)
-                let jumpControlPoint = CGPoint(x: K.ScreenDimensions.iPhoneWidth, y: K.ScreenDimensions.height)
+                let reflectionMultiplier: CGFloat = node.name == LaunchScene.nodeName_playerReflection ? -4 : 1
+                let jumpStartPoint = CGPoint(x: K.ScreenDimensions.iPhoneWidth * 2 / 3, y: K.ScreenDimensions.height / 2 * reflectionMultiplier)
+                let jumpEndPoint = CGPoint(x: K.ScreenDimensions.iPhoneWidth / 2, y: K.ScreenDimensions.height / 2 * reflectionMultiplier)
+                let jumpControlPoint = CGPoint(x: K.ScreenDimensions.iPhoneWidth, y: K.ScreenDimensions.height * reflectionMultiplier)
                 
                 let jumpBezierPath = UIBezierPath()
                 jumpBezierPath.move(to: jumpStartPoint)
