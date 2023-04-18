@@ -20,6 +20,7 @@
 		EA119155290CCA39009D0E3E /* Inventory.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA119154290CCA39009D0E3E /* Inventory.swift */; };
 		EA11915729121798009D0E3E /* Controls.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA11915629121798009D0E3E /* Controls.swift */; };
 		EA26F29129739DE800BF1AC8 /* AdMobManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA26F29029739DE800BF1AC8 /* AdMobManager.swift */; };
+		EA284E7029EE8F4F007ED3D3 /* ResetConfirmSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA284E6F29EE8F4F007ED3D3 /* ResetConfirmSprite.swift */; };
 		EA2AF74429B6D06000444E5A /* OfflinePlaySprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA2AF74329B6D06000444E5A /* OfflinePlaySprite.swift */; };
 		EA2AF74829B6EDAC00444E5A /* gemcollectparty.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA2AF74729B6EDAC00444E5A /* gemcollectparty.mp3 */; };
 		EA34678E2998ED50002DDA02 /* LifeSpawnerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA34678D2998ED50002DDA02 /* LifeSpawnerModel.swift */; };
@@ -202,6 +203,7 @@
 		EA119154290CCA39009D0E3E /* Inventory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Inventory.swift; sourceTree = "<group>"; };
 		EA11915629121798009D0E3E /* Controls.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Controls.swift; sourceTree = "<group>"; };
 		EA26F29029739DE800BF1AC8 /* AdMobManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdMobManager.swift; sourceTree = "<group>"; };
+		EA284E6F29EE8F4F007ED3D3 /* ResetConfirmSprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetConfirmSprite.swift; sourceTree = "<group>"; };
 		EA2AF74329B6D06000444E5A /* OfflinePlaySprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfflinePlaySprite.swift; sourceTree = "<group>"; };
 		EA2AF74729B6EDAC00444E5A /* gemcollectparty.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = gemcollectparty.mp3; sourceTree = "<group>"; };
 		EA34678D2998ED50002DDA02 /* LifeSpawnerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LifeSpawnerModel.swift; sourceTree = "<group>"; };
@@ -486,6 +488,7 @@
 			isa = PBXGroup;
 			children = (
 				EA94E86629BE6BCC009F2614 /* PauseResetEngine.swift */,
+				EA284E6F29EE8F4F007ED3D3 /* ResetConfirmSprite.swift */,
 				EA4D026629BA656200F0C7B1 /* TabBarEngine.swift */,
 				EA4D026829BA8C8E00F0C7B1 /* TabBarButton.swift */,
 			);
@@ -948,6 +951,7 @@
 				EA95D1BB2952F0680061059C /* Achievement.swift in Sources */,
 				EAF07C0529E796AE0034CD1A /* TemplateClass.swift in Sources */,
 				EA3467B129A99332002DDA02 /* LoadingSprite.swift in Sources */,
+				EA284E7029EE8F4F007ED3D3 /* ResetConfirmSprite.swift in Sources */,
 				EA65184328E420E400E535BF /* GameScene.swift in Sources */,
 				EAF07C0B29E9DADC0034CD1A /* ParallaxManager.swift in Sources */,
 				EA95D20C296276670061059C /* AchievementSuperEfficient.swift in Sources */,

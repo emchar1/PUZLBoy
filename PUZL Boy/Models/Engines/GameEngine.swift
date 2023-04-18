@@ -62,7 +62,11 @@ class GameEngine {
     
     var isExitAvailable: Bool { gemsRemaining == 0 }
     var isSolved: Bool { isExitAvailable && level.player == level.end }
+
+    ///Returns true if there are 0 moves left and health is 0.
     var isGameOver: Bool { movesRemaining <= 0 || healthRemaining <= 0 }
+    
+    ///Returns true if there are 0 lives remaining.
     var canContinue: Bool { return GameEngine.livesRemaining >= 0 }
 
     private var backgroundSprite: SKSpriteNode!
@@ -163,7 +167,7 @@ class GameEngine {
     }
     
     deinit {
-        print("Game Engine deinitialized.")
+        print("deinit GameEngine")
     }
     
     

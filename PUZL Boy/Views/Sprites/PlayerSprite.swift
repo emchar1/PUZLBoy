@@ -14,6 +14,7 @@ class PlayerSprite {
     private let animationSpeed: TimeInterval = 0.04
 
     private(set) var sprite: SKSpriteNode
+    private(set) var isDying: Bool = false
     private var explodeBoulderAtlas: SKTextureAtlas
     private var explodeBoulderTextures: [SKTexture]
     private var player = Player()
@@ -154,7 +155,7 @@ class PlayerSprite {
         player.sprite.run(lavaEffect)
     }
     
-    func startWarpAnimation(shouldReverse: Bool, completion: @escaping (() -> ())) {
+    func startWarpAnimation(shouldReverse: Bool, completion: @escaping (() -> Void)) {
         let warpEffect = SKAction.group([
             SKAction.rotate(byAngle: -3 * .pi, duration: 1.0 * PartyModeSprite.shared.speedMultiplier),
             SKAction.scale(to: shouldReverse ? player.scale : 0, duration: 1.0 * PartyModeSprite.shared.speedMultiplier)
@@ -191,7 +192,7 @@ class PlayerSprite {
         player.sprite.run(SKAction.colorize(withColorBlendFactor: 0.0, duration: 0))
     }
     
-    func startGemCollectAnimation(on gameboard: GameboardSprite, at panel: K.GameboardPosition, completion: @escaping (() -> ())) {
+    func startGemCollectAnimation(on gameboard: GameboardSprite, at panel: K.GameboardPosition, completion: @escaping (() -> Void)) {
         let gemSprite = SKSpriteNode(imageNamed: "gem")
         gemSprite.position = gameboard.getLocation(at: panel)
         gemSprite.zPosition = K.ZPosition.itemsAndEffects
@@ -211,7 +212,7 @@ class PlayerSprite {
         AudioManager.shared.playSound(for: "gemcollect")
     }
     
-    func startSwordAnimation(on gameboard: GameboardSprite, at panel: K.GameboardPosition, completion: @escaping (() -> ())) {
+    func startSwordAnimation(on gameboard: GameboardSprite, at panel: K.GameboardPosition, completion: @escaping (() -> Void)) {
         let scale: CGFloat = 0.9
         let attackSprite = SKSpriteNode(texture: SKTexture(imageNamed: "iconSword"))
         attackSprite.position = gameboard.getLocation(at: panel)
@@ -276,7 +277,7 @@ class PlayerSprite {
         }
     }
     
-    func startHammerAnimation(on gameboard: GameboardSprite, at panel: K.GameboardPosition, completion: @escaping (() -> ())) {
+    func startHammerAnimation(on gameboard: GameboardSprite, at panel: K.GameboardPosition, completion: @escaping (() -> Void)) {
         let scale: CGFloat = 0.75
         let attackSprite = SKSpriteNode(texture: SKTexture(imageNamed: "iconHammer"))
         attackSprite.position = gameboard.getLocation(at: panel)
@@ -318,7 +319,7 @@ class PlayerSprite {
         }
     }
         
-    func startKnockbackAnimation(isAttacked: Bool, direction: Controls, completion: @escaping (() -> ())) {
+    func startKnockbackAnimation(isAttacked: Bool, direction: Controls, completion: @escaping (() -> Void)) {
         let newDirection = isAttacked ? direction.getOpposite : direction
         let knockback: CGFloat = 10
         let blinkColor: UIColor = .systemRed
@@ -364,14 +365,19 @@ class PlayerSprite {
         player.sprite.run(isAttacked ? SKAction.sequence([knockbackAnimation, blinkAnimation]) : knockbackAnimation, completion: completion)
     }
     
-    func startDeadAnimation(completion: @escaping (() -> ())) {
+    func startDeadAnimation(completion: @escaping (() -> Void)) {
         let animation = SKAction.animate(with: player.textures[Player.Texture.dead.rawValue], timePerFrame: animationSpeed / 2)
 
         AudioManager.shared.playSound(for: "boydead")
+        
+        isDying = true
 
         player.sprite.removeAction(forKey: AnimationKey.playerIdle.rawValue)
         player.sprite.removeAction(forKey: AnimationKey.playerMove.rawValue)
-        player.sprite.run(SKAction.sequence([SKAction.repeat(animation, count: 1), SKAction.wait(forDuration: 1.5)]), completion: completion)
+        player.sprite.run(SKAction.sequence([SKAction.repeat(animation, count: 1), SKAction.wait(forDuration: 1.5)])) {
+            self.isDying = false
+            completion()
+        }
     }
 
     

@@ -20,7 +20,7 @@ class GameViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let launchScene = LaunchScene(size: K.ScreenDimensions.screenSize)
+        var launchScene: LaunchScene? = LaunchScene(size: K.ScreenDimensions.screenSize)
 
         skView.showsFPS = true
         skView.showsNodeCount = true
@@ -50,11 +50,13 @@ class GameViewController: UIViewController {
                     self.saveStateModel = saveStateModel
                     
                     DispatchQueue.main.asyncAfter(deadline: .now() + LoadingSprite.loadingDuration) {
-                        launchScene.animateTransition(animationSequence: .jump) {
+                        launchScene?.animateTransition(animationSequence: .jump) {
                             let titleScene = TitleScene(size: K.ScreenDimensions.screenSize)
                             titleScene.titleSceneDelegate = self
                             
                             self.skView.presentScene(titleScene)
+                            
+                            launchScene = nil
                         }
                                                 
                         self.levelLoaded = true
@@ -66,7 +68,13 @@ class GameViewController: UIViewController {
         print("Testing device info: \(UIDevice.modelInfo)")
     }//end viewDidLoad()
     
-    
+    override func motionEnded(_ motion: UIEvent.EventSubtype, with event: UIEvent?) {
+        if motion == .motionShake {
+            guard let skView = view as? SKView, let scene = skView.scene as? GameScene else { return }
+            
+            scene.shake()
+        }
+    }
 }
 
 

@@ -21,6 +21,7 @@ class DecisionButtonSprite: SKNode {
     private var isPressed: Bool = false
     private(set) var sprite: SKShapeNode
     private var topSprite: SKShapeNode
+    private var textNode: SKLabelNode
     
     weak var delegate: DecisionButtonSpriteDelegate?
     
@@ -41,19 +42,19 @@ class DecisionButtonSprite: SKNode {
         topSprite.strokeColor = .white
         topSprite.position = .zero
 
+        textNode = SKLabelNode(text: text)
+        textNode.fontName = UIFont.chatFont
+        textNode.fontSize = UIDevice.isiPad ? UIFont.gameFontSizeLarge : UIFont.chatFontSize
+        textNode.fontColor = UIFont.chatFontColor
+        textNode.position = CGPoint(x: 0, y: -18)
+        
         super.init()
                 
         let shadowSprite = SKShapeNode(rectOf: buttonSize, cornerRadius: cornerRadius)
         shadowSprite.fillColor = .black
         shadowSprite.lineWidth = 0
         shadowSprite.alpha = 0.05
-        
-        let textNode = SKLabelNode(text: text)
-        textNode.fontName = UIFont.chatFont
-        textNode.fontSize = UIDevice.isiPad ? UIFont.gameFontSizeLarge : UIFont.chatFontSize
-        textNode.fontColor = UIFont.chatFontColor
-        textNode.position = CGPoint(x: 0, y: -18)
-        
+                
         if let iconImageName = iconImageName {
             let iconNode = SKSpriteNode(imageNamed: iconImageName)
             iconNode.scale(to: CGSize(width: iconScale * Player.size.width / Player.size.height, height: iconScale))
@@ -94,4 +95,7 @@ class DecisionButtonSprite: SKNode {
         K.ButtonTaps.tap1()
     }
 
+    func setText(_ text: String) {
+        textNode.text = text
+    }
 }

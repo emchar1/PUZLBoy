@@ -94,6 +94,10 @@ class LaunchScene: SKScene {
         parallaxManager.animate()
     }
     
+    deinit {
+        print("deinit LaunchScene")
+    }
+    
     
     // MARK: - Overriden Functions
     
@@ -144,7 +148,10 @@ class LaunchScene: SKScene {
             case LaunchScene.nodeName_loadingSprite:
                 node.run(SKAction.fadeOut(withDuration: 0.5))
             case LaunchScene.nodeName_skyObjectNode:
-                node.run(SKAction.fadeOut(withDuration: moveDuration * maxAnimationDuration))
+                node.run(SKAction.sequence([
+                    SKAction.wait(forDuration: playerCrouchDuration),
+                    SKAction.fadeOut(withDuration: moveDuration * maxAnimationDuration - playerCrouchDuration)
+                ]))
             case LaunchScene.nodeName_playerSprite, LaunchScene.nodeName_playerReflection:
                 guard let node = node as? SKSpriteNode else { return }
                 

@@ -17,6 +17,7 @@ class GameScene: SKScene {
     private var scoringEngine: ScoringEngine
     private var chatEngine: ChatEngine
     private var pauseResetEngine: PauseResetEngine
+    private var resetConfirmSprite = ResetConfirmSprite()
     private var offlinePlaySprite: OfflinePlaySprite
     private var levelStatsArray: [LevelStats]
     
@@ -79,6 +80,7 @@ class GameScene: SKScene {
         continueSprite.delegate = self
         chatEngine.delegate = self
         pauseResetEngine.delegate = self
+        resetConfirmSprite.delegate = self
         
         // FIXME: - Debuging purposes only!!!
         levelSkipEngine.delegate = self
@@ -96,6 +98,10 @@ class GameScene: SKScene {
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    deinit {
+        print("deinit GameScene")
     }
     
     
@@ -164,9 +170,9 @@ class GameScene: SKScene {
         if gameEngine.checkControlGuardsIfPassed(includeDisableInputFromOutside: false) {
             // FIXME: - Too many if/else to handle disabled from outside BUT special function is enabled...
             if !gameEngine.disableInputFromOutside || pauseResetEngine.specialFunctionEnabled {
-                pauseResetEngine.touchDown(in: location, resetCompletion: { [unowned self] in
-                    gameEngine.killAndReset()
-                })
+                pauseResetEngine.touchDown(in: location, resetCompletion: nil)//, resetCompletion: { [unowned self] in
+//                    gameEngine.killAndReset()
+//                })
             }
         }
 
@@ -176,6 +182,7 @@ class GameScene: SKScene {
         
         if !activityIndicator.isShowing {
             continueSprite.touchDown(in: location)
+            resetConfirmSprite.touchDown(in: location)
         }
         
         // FIXME: - Debuging purposes only!!!
@@ -188,6 +195,8 @@ class GameScene: SKScene {
         if !activityIndicator.isShowing {
             continueSprite.didTapButton(in: location)
             continueSprite.touchUp(in: location)
+            resetConfirmSprite.didTapButton(in: location)
+            resetConfirmSprite.touchUp(in: location)
         }
 
         
@@ -711,8 +720,46 @@ extension GameScene: PauseResetEngineDelegate {
             K.ButtonTaps.tap2()
         }
     }
+}
+
+
+// MARK: - ResetConfirmSpriteDelegate
+
+extension GameScene: ResetConfirmSpriteDelegate {
+    func didTapConfirm() {
+        hideResetConfirm()
+        gameEngine.killAndReset()
+        
+        Haptics.shared.executeCustomPattern(pattern: .enemy)
+    }
     
+    func didTapCancel() {
+        hideResetConfirm()
+    }
     
+    func shake() {
+        guard resetConfirmSprite.parent == nil else { return }
+        guard !pauseResetEngine.isPaused else { return }
+        guard !gameEngine.playerSprite.isDying else { return }
+        guard gameEngine.canContinue else { return }
+        
+        scoringEngine.timerManager.pauseTime()
+        stopTimer()
+        gameEngine.shouldDisableInput(true)
+
+        addChild(resetConfirmSprite)
+        
+        resetConfirmSprite.animateShow(livesRemaining: GameEngine.livesRemaining) { }
+    }
+    
+    private func hideResetConfirm() {
+        resetConfirmSprite.animateHide { [unowned self] in
+            scoringEngine.timerManager.resumeTime()
+            startTimer()
+            gameEngine.shouldDisableInput(false)
+            resetConfirmSprite.removeFromParent()
+        }
+    }
 }
 
 

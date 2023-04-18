@@ -214,6 +214,10 @@ class TitleScene: SKScene {
         menuBackgroundShadow3.fillColor = menuBackgroundShadow1.fillColor
     }
     
+    deinit {
+        print("deinit TitleScene")
+    }
+    
     
     // MARK: - Functions
     
