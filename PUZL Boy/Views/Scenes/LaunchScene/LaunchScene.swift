@@ -49,7 +49,7 @@ class LaunchScene: SKScene {
         playerReflection.sprite.colorBlendFactor = DayTheme.spriteShade
         playerReflection.sprite.name = LaunchScene.nodeName_playerReflection
         playerReflection.sprite.yScale *= -1
-        playerReflection.sprite.alpha = 0.5
+        playerReflection.sprite.alpha = 0.25
         
         loadingSprite = LoadingSprite(position: CGPoint(x: K.ScreenDimensions.iPhoneWidth / 2, y: K.ScreenDimensions.height / 6))
         loadingSprite.zPosition = K.ZPosition.loadingNode
