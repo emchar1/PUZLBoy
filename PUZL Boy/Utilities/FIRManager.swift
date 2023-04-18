@@ -169,7 +169,7 @@ struct FIRManager {
                     "hammers": item.inventory.hammers,
                     "swords": item.inventory.swords
                 ]
-            ])
+            ] as [String : Any])
         }
         
         let docRef = Firestore.firestore().collection("savedStates").document(user.uid)
@@ -282,7 +282,7 @@ struct FIRManager {
                 "s5d3": saveStateModel.levelModel.s5d3,
                 "s5d4": saveStateModel.levelModel.s5d4,
                 "s5d5": saveStateModel.levelModel.s5d5
-            ],
+            ] as [String : Any],
             "newLevel": saveStateModel.newLevel,
             "uid": saveStateModel.uid
         ])
