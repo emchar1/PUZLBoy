@@ -26,10 +26,11 @@ class PauseResetEngine {
     
     private let resetAnimationKey = "resetAnimationKey"
     private let resetThreshold: Int = 3
+    private let resetTimerSpeed: TimeInterval = 2
     private var resetInitial = Date()
     private var resetFinal = Date()
     private var resetElapsed: TimeInterval {
-        TimeInterval(resetFinal.timeIntervalSinceNow - resetInitial.timeIntervalSinceNow)
+        TimeInterval(resetFinal.timeIntervalSinceNow - resetInitial.timeIntervalSinceNow) * resetTimerSpeed
     }
     
     private var buttonSprite: SKSpriteNode
@@ -301,7 +302,7 @@ class PauseResetEngine {
             
             let repeatAction = SKAction.repeat(SKAction.sequence([
                 animateCountdown,
-                SKAction.wait(forDuration: 1.0 / 10)
+                SKAction.wait(forDuration: 1.0 / (10 * resetTimerSpeed))
             ]), count: resetThreshold * 10)
             
             let completionAction = SKAction.run {
