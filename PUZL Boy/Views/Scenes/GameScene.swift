@@ -170,9 +170,9 @@ class GameScene: SKScene {
         if gameEngine.checkControlGuardsIfPassed(includeDisableInputFromOutside: false) {
             // FIXME: - Too many if/else to handle disabled from outside BUT special function is enabled...
             if !gameEngine.disableInputFromOutside || pauseResetEngine.specialFunctionEnabled {
-                pauseResetEngine.touchDown(in: location, resetCompletion: nil)//, resetCompletion: { [unowned self] in
-//                    gameEngine.killAndReset()
-//                })
+                pauseResetEngine.touchDown(in: location, resetCompletion: { [unowned self] in
+                    showResetConfirm()
+                })
             }
         }
 
@@ -738,8 +738,13 @@ extension GameScene: ResetConfirmSpriteDelegate {
     }
     
     func shake() {
-        guard resetConfirmSprite.parent == nil else { return }
         guard !pauseResetEngine.isPaused else { return }
+
+        showResetConfirm()
+    }
+    
+    private func showResetConfirm() {
+        guard resetConfirmSprite.parent == nil else { return }
         guard !gameEngine.playerSprite.isAnimating else { return }
         guard gameEngine.canContinue else { return }
         

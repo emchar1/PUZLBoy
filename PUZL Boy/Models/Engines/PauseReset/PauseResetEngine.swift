@@ -270,8 +270,6 @@ class PauseResetEngine {
             resetAll()
             Haptics.shared.addHapticFeedback(withStyle: .light)
 
-            /*
-            //This handles the reset countdown feature, which has been disabled in favor of a shake to reset gesture.
             guard !specialFunctionEnabled else { return }
             
             //Counts down to see if should reset the level
@@ -326,9 +324,8 @@ class PauseResetEngine {
             ])
             
             buttonSprite.run(sequenceAction, withKey: resetAnimationKey)
-             */
         } //end for
-    }
+    } //end func touchDown
     
     
 }
