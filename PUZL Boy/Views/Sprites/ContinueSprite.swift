@@ -44,33 +44,48 @@ class ContinueSprite: SKNode {
         backgroundSprite.strokeColor = .white
         backgroundSprite.setScale(GameboardSprite.spriteScale)
         
-        livesRefreshLabel = SKLabelNode(text: "Or wait for \(LifeSpawnerModel.defaultLives) lives in: 99:99:99")
-        
-        watchAdButton = DecisionButtonSprite(text: "Watch Ad:      x\(ContinueSprite.extraLivesAd)",
-                                             color: UIColor(red: 9 / 255, green: 132 / 255, blue: 227 / 255, alpha: 1.0),
-                                             iconImageName: "Run (6)")
-        watchAdButton.position = CGPoint(x: -K.ScreenDimensions.iPhoneWidth / 4, y: -K.ScreenDimensions.iPhoneWidth / 16)
-        watchAdButton.name = "watchAdButton"
+        let continueLabel = SKLabelNode(text: "CONTINUE?")
+        continueLabel.fontName = UIFont.gameFont
+        continueLabel.fontSize = UIDevice.isiPad ? UIFont.gameFontSizeExtraLarge : UIFont.gameFontSizeMedium
+        continueLabel.fontColor = UIFont.gameFontColor
+        continueLabel.verticalAlignmentMode = .top
+        continueLabel.position = CGPoint(x: 0, y: backgroundSprite.frame.size.height / (UIDevice.isiPad ? 1.5 : 2) - continueLabel.frame.size.height / 2)
         
         skipLevelButton = DecisionButtonSprite(text: "Buy $1.99: Skip Level",
                                                color: UIColor(red: 227 / 255, green: 148 / 255, blue: 9 / 255, alpha: 1.0),
                                                iconImageName: nil)
         skipLevelButton.position = CGPoint(x: -K.ScreenDimensions.iPhoneWidth / 4,
-                                           y: watchAdButton.position.y - K.ScreenDimensions.iPhoneWidth / 8 - 40)
+                                           y: -backgroundSprite.frame.size.height / 2 + continueLabel.frame.height / (UIDevice.isiPad ? 2 : 0.5))
         skipLevelButton.name = "skipLevelButton"
-        
-        buy099Button = DecisionButtonSprite(text: "Buy $0.99:      x\(ContinueSprite.extraLivesBuy099)",
-                                            color: UIColor(red: 0 / 255, green: 168 / 255, blue: 86 / 255, alpha: 1.0),
-                                            iconImageName: "Run (6)")
-        buy099Button.position = CGPoint(x: K.ScreenDimensions.iPhoneWidth / 4, y: watchAdButton.position.y)
-        buy099Button.name = "buy099Button"
+
+        watchAdButton = DecisionButtonSprite(text: "Watch Ad:      x\(ContinueSprite.extraLivesAd)",
+                                             color: UIColor(red: 9 / 255, green: 132 / 255, blue: 227 / 255, alpha: 1.0),
+                                             iconImageName: "Run (6)")
+        watchAdButton.position = CGPoint(
+            x: -K.ScreenDimensions.iPhoneWidth / 4,
+            y: skipLevelButton.position.y + skipLevelButton.buttonSize.height + continueLabel.frame.height / 2
+        )
+        watchAdButton.name = "watchAdButton"
         
         buy299Button = DecisionButtonSprite(text: "Buy $2.99:      x\(ContinueSprite.extraLivesBuy299)",
                                             color: UIColor(red: 0 / 255, green: 168 / 255, blue: 86 / 255, alpha: 1.0),
                                             iconImageName: "Run (6)")
         buy299Button.position = CGPoint(x: K.ScreenDimensions.iPhoneWidth / 4,
-                                        y: watchAdButton.position.y - K.ScreenDimensions.iPhoneWidth / 8 - 40)
+                                        y: skipLevelButton.position.y)
         buy299Button.name = "buy299Button"
+
+        buy099Button = DecisionButtonSprite(text: "Buy $0.99:      x\(ContinueSprite.extraLivesBuy099)",
+                                            color: UIColor(red: 0 / 255, green: 168 / 255, blue: 86 / 255, alpha: 1.0),
+                                            iconImageName: "Run (6)")
+        buy099Button.position = CGPoint(x: K.ScreenDimensions.iPhoneWidth / 4, y: watchAdButton.position.y)
+        buy099Button.name = "buy099Button"
+                
+        livesRefreshLabel = SKLabelNode(text: "Or wait for \(LifeSpawnerModel.defaultLives) lives in: 99:99:99")
+        livesRefreshLabel.fontName = UIFont.chatFont
+        livesRefreshLabel.fontSize = UIDevice.isiPad ? UIFont.gameFontSizeLarge : UIFont.chatFontSize
+        livesRefreshLabel.fontColor = UIFont.chatFontColor
+        livesRefreshLabel.verticalAlignmentMode = .top
+        livesRefreshLabel.position = CGPoint(x: 0, y: ((continueLabel.position.y - continueLabel.frame.size.height) - (watchAdButton.position.y + watchAdButton.frame.size.height)) / 2)
         
         super.init()
         
@@ -78,17 +93,6 @@ class ContinueSprite: SKNode {
         skipLevelButton.delegate = self
         buy099Button.delegate = self
         buy299Button.delegate = self
-        
-        let continueLabel = SKLabelNode(text: "CONTINUE?")
-        continueLabel.fontName = UIFont.gameFont
-        continueLabel.fontSize = UIDevice.isiPad ? UIFont.gameFontSizeExtraLarge : UIFont.gameFontSizeMedium
-        continueLabel.fontColor = UIFont.gameFontColor
-        continueLabel.position = CGPoint(x: 0, y: K.ScreenDimensions.iPhoneWidth / 4)
-        
-        livesRefreshLabel.fontName = UIFont.chatFont
-        livesRefreshLabel.fontSize = UIDevice.isiPad ? UIFont.gameFontSizeLarge : UIFont.chatFontSize
-        livesRefreshLabel.fontColor = UIFont.chatFontColor
-        livesRefreshLabel.position = CGPoint(x: 0, y: continueLabel.position.y - (UIDevice.isiPad ? 200 : 100))
         
         setScale(0)
         position = CGPoint(x: K.ScreenDimensions.iPhoneWidth / 2, y: K.ScreenDimensions.height / 2)
