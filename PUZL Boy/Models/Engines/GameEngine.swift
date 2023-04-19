@@ -320,10 +320,10 @@ class GameEngine {
             AudioManager.shared.stopSound(for: "moveglide", fadeDuration: 0.5)
             AudioManager.shared.playSound(for: "warp")
             
-            playerSprite.startWarpAnimation(shouldReverse: false) {
+            playerSprite.startWarpAnimation(shouldReverse: false, stopAnimating: false) {
                 self.level.updatePlayer(position: newWarpLocation)
                 self.playerSprite.sprite.position = self.gameboardSprite.getLocation(at: newWarpLocation)
-                self.playerSprite.startWarpAnimation(shouldReverse: true) {
+                self.playerSprite.startWarpAnimation(shouldReverse: true, stopAnimating: true) {
                     completion?()
                 }
                 

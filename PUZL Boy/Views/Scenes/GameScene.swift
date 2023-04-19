@@ -740,7 +740,7 @@ extension GameScene: ResetConfirmSpriteDelegate {
     func shake() {
         guard resetConfirmSprite.parent == nil else { return }
         guard !pauseResetEngine.isPaused else { return }
-        guard !gameEngine.playerSprite.isDying else { return }
+        guard !gameEngine.playerSprite.isAnimating else { return }
         guard gameEngine.canContinue else { return }
         
         scoringEngine.timerManager.pauseTime()

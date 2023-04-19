@@ -14,7 +14,7 @@ class PlayerSprite {
     private let animationSpeed: TimeInterval = 0.04
 
     private(set) var sprite: SKSpriteNode
-    private(set) var isDying: Bool = false
+    private(set) var isAnimating: Bool = false
     private var explodeBoulderAtlas: SKTextureAtlas
     private var explodeBoulderTextures: [SKTexture]
     private var player = Player()
@@ -80,6 +80,8 @@ class PlayerSprite {
 
         restartIdleAnimation(isPartying: PartyModeSprite.shared.isPartying)
         
+        isAnimating = false
+        
         if PartyModeSprite.shared.isPartying {
             startPartyAnimation()
         }
@@ -95,6 +97,8 @@ class PlayerSprite {
 
         player.sprite.removeAction(forKey: AnimationKey.playerIdle.rawValue)
         player.sprite.removeAction(forKey: AnimationKey.playerMove.rawValue)
+        
+        isAnimating = true
 
         if animationType == .glide {
             AudioManager.shared.playSound(for: "moveglide", interruptPlayback: false)
@@ -155,13 +159,18 @@ class PlayerSprite {
         player.sprite.run(lavaEffect)
     }
     
-    func startWarpAnimation(shouldReverse: Bool, completion: @escaping (() -> Void)) {
+    func startWarpAnimation(shouldReverse: Bool, stopAnimating: Bool, completion: @escaping (() -> Void)) {
+        isAnimating = true
+        
         let warpEffect = SKAction.group([
             SKAction.rotate(byAngle: -3 * .pi, duration: 1.0 * PartyModeSprite.shared.speedMultiplier),
             SKAction.scale(to: shouldReverse ? player.scale : 0, duration: 1.0 * PartyModeSprite.shared.speedMultiplier)
         ])
         
-        player.sprite.run(warpEffect, completion: completion)
+        player.sprite.run(warpEffect) {
+            self.isAnimating = !stopAnimating
+            completion()
+        }
     }
     
     func startPowerUpAnimation() {
@@ -225,6 +234,8 @@ class PlayerSprite {
             SKAction.fadeAlpha(to: 0, duration: 0.5 * PartyModeSprite.shared.speedMultiplier)
         ])
         
+        isAnimating = true
+        
         AudioManager.shared.playSound(for: "boyattack\(Int.random(in: 1...3))")
         AudioManager.shared.playSound(for: "swordslash")
         AudioManager.shared.playSound(for: "enemydeath", delay: 0.8 * PartyModeSprite.shared.speedMultiplier)
@@ -265,6 +276,7 @@ class PlayerSprite {
                 SKAction.fadeOut(withDuration: animationDuration * 2 * PartyModeSprite.shared.speedMultiplier)
             ])) {
                 enemyBottomSprite.removeFromParent()
+                self.isAnimating = false
             }
 
             //Points animation
@@ -290,6 +302,8 @@ class PlayerSprite {
             SKAction.fadeAlpha(to: 0, duration: 0.5 * PartyModeSprite.shared.speedMultiplier)
         ])
         
+        isAnimating = true
+        
         AudioManager.shared.playSound(for: "boyattack\(Int.random(in: 1...3))")
         AudioManager.shared.playSound(for: "hammerswing")
         AudioManager.shared.playSound(for: "bouldersmash", delay: 0.8 * PartyModeSprite.shared.speedMultiplier)
@@ -313,6 +327,7 @@ class PlayerSprite {
                 SKAction.fadeOut(withDuration: timePerFrame * Double(explodeBoulderTextures.count) * 2 * PartyModeSprite.shared.speedMultiplier)
             ])) {
                 explodeSprite.removeFromParent()
+                self.isAnimating = false
             }
 
             completion()
@@ -325,6 +340,8 @@ class PlayerSprite {
         let blinkColor: UIColor = .systemRed
         var moveAction: SKAction
         var unmoveAction: SKAction
+        
+        isAnimating = true
         
         switch newDirection {
         case .up:
@@ -362,20 +379,23 @@ class PlayerSprite {
         
         AudioManager.shared.playSound(for: "boygrunt\(Int.random(in: 1...2))")
 
-        player.sprite.run(isAttacked ? SKAction.sequence([knockbackAnimation, blinkAnimation]) : knockbackAnimation, completion: completion)
+        player.sprite.run(isAttacked ? SKAction.sequence([knockbackAnimation, blinkAnimation]) : knockbackAnimation) {
+            self.isAnimating = false
+            completion()
+        }
     }
     
     func startDeadAnimation(completion: @escaping (() -> Void)) {
         let animation = SKAction.animate(with: player.textures[Player.Texture.dead.rawValue], timePerFrame: animationSpeed / 2)
 
+        isAnimating = true
+
         AudioManager.shared.playSound(for: "boydead")
         
-        isDying = true
-
         player.sprite.removeAction(forKey: AnimationKey.playerIdle.rawValue)
         player.sprite.removeAction(forKey: AnimationKey.playerMove.rawValue)
         player.sprite.run(SKAction.sequence([SKAction.repeat(animation, count: 1), SKAction.wait(forDuration: 1.5)])) {
-            self.isDying = false
+            self.isAnimating = false
             completion()
         }
     }
