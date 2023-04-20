@@ -81,11 +81,11 @@ class PauseResetEngine {
         foregroundSprite.setScale(1)
         
         // FIXME: - Temporary label
-        comingSoonLabel = SKLabelNode(text: "SETTINGS\n(Coming Soon...)\n\nPlease do not ask me when the game is going to be finished.\nIt will be finished when I say it will be finished.\nWhen will it be finished, you ask?\nJuly 4, 2023.")
+        comingSoonLabel = SKLabelNode(text: "SETTINGS\n(Coming Soon...)\n\nPlease do not ask me when the game is going to be finished. It will be finished when I say it will be finished. When will it be finished, you ask? July 4, 2023. Thanks, you're welcome.")
         comingSoonLabel.numberOfLines = 0
+        comingSoonLabel.preferredMaxLayoutWidth = settingsSize * 0.8
         comingSoonLabel.horizontalAlignmentMode = .center
         comingSoonLabel.verticalAlignmentMode = .center
-        comingSoonLabel.preferredMaxLayoutWidth = settingsSize * 0.8
         comingSoonLabel.fontName = UIFont.chatFont
         comingSoonLabel.fontSize = UIDevice.isiPad ? UIFont.gameFontSizeLarge : UIFont.gameFontSizeMedium
         comingSoonLabel.fontColor = .white
