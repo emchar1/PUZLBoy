@@ -29,12 +29,16 @@ class NumMovesSprite: SKNode {
         bigText.fontSize = UIFont.gameFontSizeExtraLarge
         bigText.fontColor = UIFont.chatFontColor
         bigText.setScale(4)
+        bigText.zPosition = 10
+        bigText.addDropShadow()
         
         littleText = SKLabelNode(text: "Move\(numMoves == 1 ? "" : "s")")
         littleText.fontName = UIFont.chatFont
         littleText.fontSize = UIFont.gameFontSizeExtraLarge
         littleText.fontColor = UIFont.chatFontColor
         littleText.position.y -= 140
+        littleText.zPosition = 10
+        littleText.addDropShadow()
         
         super.init()
         

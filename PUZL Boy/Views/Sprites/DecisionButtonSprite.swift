@@ -47,6 +47,8 @@ class DecisionButtonSprite: SKNode {
         textNode.fontSize = UIDevice.isiPad ? UIFont.gameFontSizeLarge : UIFont.chatFontSize
         textNode.fontColor = UIFont.chatFontColor
         textNode.position = CGPoint(x: 0, y: -18)
+        textNode.zPosition = 10
+        textNode.addDropShadow()
         
         super.init()
                 
@@ -97,5 +99,6 @@ class DecisionButtonSprite: SKNode {
 
     func setText(_ text: String) {
         textNode.text = text
+        textNode.updateShadow()
     }
 }

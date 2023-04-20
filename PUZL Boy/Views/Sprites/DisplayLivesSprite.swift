@@ -36,6 +36,8 @@ class DisplayLivesSprite: SKNode {
         textNode.fontSize = UIFont.gameFontSizeSmall
         textNode.horizontalAlignmentMode = .right
         textNode.position = CGPoint(x: 50, y: -14)
+        textNode.zPosition = 10
+        textNode.addDropShadow()
 
         addChild(imageNode)
         addChild(textNode)
@@ -52,6 +54,7 @@ class DisplayLivesSprite: SKNode {
         self.amount = newAmount
         
         textNode.text = "x\(max(newAmount, 0))"
+        textNode.updateShadow()
         adjustImageNodeXPosition()
     }
     
@@ -83,6 +86,7 @@ class DisplayLivesSprite: SKNode {
         let incrementAction = SKAction.run { [unowned self] in
             livesToIncrement += 1
             textNode.text = "x\(livesToIncrement)"
+            textNode.updateShadow()
             adjustImageNodeXPosition()
         }
         

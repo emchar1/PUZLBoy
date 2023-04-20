@@ -113,6 +113,8 @@ class ChatEngine {
         textSprite.fontName = UIFont.chatFont
         textSprite.fontSize = UIFont.chatFontSize
         textSprite.fontColor = UIFont.chatFontColor
+        textSprite.zPosition = 10
+        textSprite.addDropShadow()
         
         //Add sprites to background
         backgroundSprite.addChild(avatarSprite)
@@ -135,6 +137,7 @@ class ChatEngine {
         guard allowNewChat else { return }
         
         textSprite.text = ""
+        textSprite.updateShadow()
         timer.invalidate()
         chatText = chat
         chatIndex = 0
@@ -188,6 +191,7 @@ class ChatEngine {
         guard chatSpeed > 0 && chatIndex < chatText.count else {
             timer.invalidate()
             textSprite.text = chatText
+            textSprite.updateShadow()
             
             //If you fast forward, add >= 2 more seconds delay
             DispatchQueue.main.asyncAfter(deadline: .now() + (chatSpeed > 0 ? 2.0 : max(2.0, Double(chatText.count) / 30))) {
@@ -201,6 +205,7 @@ class ChatEngine {
         let chatChar = chatText[chatText.index(chatText.startIndex, offsetBy: chatIndex)]
 
         textSprite.text! += "\(chatChar)"
+        textSprite.updateShadow()
                 
         chatIndex += 1
     }
@@ -478,7 +483,7 @@ extension ChatEngine {
             }
             
             sendChat(profile: .trainer, startNewChat: true, endChat: false,
-                     chat: "Congrats! You made it to level 100. There's a bonus at the end of every 100 levels. Beat this and you're one step closer to indescribable fun!!! 🤗") { [unowned self] in
+                     chat: "Congrats! You made it to level 100. There's a bonus at the end of every 100 levels. Beat this and you're one step closer to indescribable fun!!! 🕺🏻") { [unowned self] in
                 sendChat(profile: .hero, startNewChat: false, endChat: false, chat: "I can hardly contain my excitement. 😒") { [unowned self] in
                     sendChat(profile: .trainer, startNewChat: false, endChat: false, chat: "That's the spirit! Now if you ever get stuck, you can give your device a shake or hold down the ⏯️ button for a count of 3 to restart the level.") { [unowned self] in
                         sendChat(profile: .trainer, startNewChat: false, endChat: false, chat: "Be warned though, restarting a level will cost you one of your precious lives...") { [unowned self] in

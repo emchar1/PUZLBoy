@@ -50,6 +50,8 @@ class ContinueSprite: SKNode {
         continueLabel.fontColor = UIFont.gameFontColor
         continueLabel.verticalAlignmentMode = .top
         continueLabel.position = CGPoint(x: 0, y: backgroundSprite.frame.size.height / (UIDevice.isiPad ? 1.5 : 2) - continueLabel.frame.size.height / 2)
+        continueLabel.zPosition = 10
+        continueLabel.addHeavyDropShadow()
         
         skipLevelButton = DecisionButtonSprite(text: "Buy $1.99: Skip Level",
                                                color: UIColor(red: 227 / 255, green: 148 / 255, blue: 9 / 255, alpha: 1.0),
@@ -86,6 +88,8 @@ class ContinueSprite: SKNode {
         livesRefreshLabel.fontColor = UIFont.chatFontColor
         livesRefreshLabel.verticalAlignmentMode = .top
         livesRefreshLabel.position = CGPoint(x: 0, y: ((continueLabel.position.y - continueLabel.frame.size.height) - (watchAdButton.position.y + watchAdButton.frame.size.height)) / 2)
+        livesRefreshLabel.zPosition = 10
+        livesRefreshLabel.addDropShadow()
         
         super.init()
         
@@ -143,6 +147,7 @@ class ContinueSprite: SKNode {
         let seconds = max(0, interval % 60)
 
         livesRefreshLabel.text = "Or wait for \(LifeSpawnerModel.defaultLives) lives in: " + String(format: "%02d:%02d:%02d", hours, minutes, seconds)
+        livesRefreshLabel.updateShadow()
     }
     
     

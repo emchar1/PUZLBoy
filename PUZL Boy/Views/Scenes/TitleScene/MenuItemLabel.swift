@@ -55,18 +55,7 @@ class MenuItemLabel: SKLabelNode {
         verticalAlignmentMode = .center
         zPosition = 10
         name = type.rawValue
-
-        shadowNode.text = text
-        shadowNode.position = CGPoint(x: -10, y: -10)
-        shadowNode.fontName = UIFont.chatFont
-        shadowNode.fontSize = 75
-        shadowNode.fontColor = .black
-        shadowNode.horizontalAlignmentMode = .center
-        shadowNode.verticalAlignmentMode = .center
-        shadowNode.zPosition = -5
-        shadowNode.alpha = 0.25
-        
-        self.addChild(shadowNode)
+        addHeavyDropShadow()
     }
     
     required init?(coder aDecoder: NSCoder) {

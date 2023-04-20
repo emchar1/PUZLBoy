@@ -39,6 +39,8 @@ class PauseResetEngine {
     private var superScene: SKScene?
     private var comingSoonLabel: SKLabelNode
     private var countdownLabel: SKLabelNode
+    private var backgroundColor: UIColor { (DayTheme.skyColor.bottom.isLight() ?? true) ? DayTheme.skyColor.top : DayTheme.skyColor.bottom }
+    private var backgroundShadowColor: UIColor { DayTheme.skyColor.bottom.triadic.first }
     
     private var isPressed: Bool = false
     private var isAnimating: Bool = false
@@ -67,14 +69,10 @@ class PauseResetEngine {
         // FIXME: - This is atrocious
         backgroundSprite = SKShapeNode(rectOf: CGSize(width: settingsSize, height: settingsSize + ChatEngine.avatarSizeNew + settingsButtonHeight),
                                        cornerRadius: 20)
-        backgroundSprite.fillColor = DayTheme.skyColor.top.complementary
         backgroundSprite.strokeColor = .white
         backgroundSprite.lineWidth = 0
         backgroundSprite.setScale(0)
         backgroundSprite.zPosition = K.ZPosition.pauseScreen
-        backgroundSprite.addShadow(rectOf: CGSize(width: settingsSize, height: settingsSize + ChatEngine.avatarSizeNew + settingsButtonHeight),
-                                   cornerRadius: 20,
-                                   shadowColor: DayTheme.skyColor.top.complementary.complementary)
         
         foregroundSprite = SKShapeNode(rectOf: CGSize(width: settingsSize, height: settingsSize + ChatEngine.avatarSizeNew - settingsButtonHeight))
         foregroundSprite.position = CGPoint(x: 0, y: settingsButtonHeight)
@@ -83,13 +81,15 @@ class PauseResetEngine {
         foregroundSprite.setScale(1)
         
         // FIXME: - Temporary label
-        comingSoonLabel = SKLabelNode(text: "        SETTINGS\n(Coming Soon...)")
+        comingSoonLabel = SKLabelNode(text: "SETTINGS\n(Coming Soon...)\nPlease do not ask me when the game is going to be finished.\nIt will be finished when I say it will be finished.\nWhen will it be finished, you ask?\nJuly 4, 2023.")
         comingSoonLabel.numberOfLines = 0
         comingSoonLabel.horizontalAlignmentMode = .center
         comingSoonLabel.verticalAlignmentMode = .center
-        comingSoonLabel.fontName = UIFont.gameFont
-        comingSoonLabel.fontSize = UIFont.gameFontSizeMedium
-        comingSoonLabel.fontColor = .yellow
+        comingSoonLabel.fontName = UIFont.chatFont
+        comingSoonLabel.fontSize = UIDevice.isiPad ? UIFont.gameFontSizeLarge : UIFont.gameFontSizeMedium
+        comingSoonLabel.fontColor = .white
+        comingSoonLabel.zPosition = 10
+        comingSoonLabel.addDropShadow()
         
         countdownLabel = SKLabelNode(text: "3")
         countdownLabel.horizontalAlignmentMode = .center
@@ -100,6 +100,8 @@ class PauseResetEngine {
         countdownLabel.zPosition = K.ZPosition.pauseButton
         countdownLabel.name = pauseResetName
         countdownLabel.alpha = 0
+        countdownLabel.zPosition = 10
+        countdownLabel.addDropShadow()
         
         buttonSprite = SKSpriteNode(imageNamed: pauseResetName)
         buttonSprite.scale(to: CGSize(width: buttonSize, height: buttonSize))
@@ -108,8 +110,13 @@ class PauseResetEngine {
         buttonSprite.name = pauseResetName
         buttonSprite.zPosition = K.ZPosition.pauseButton
 
-        backgroundSprite.position = CGPoint(x: settingsScale * (settingsSize + padding) / 2 + GameboardSprite.xPosition + 10, y: position.y)
+        //Add'l setup/customization
         countdownLabel.position = CGPoint(x: position.x + buttonSize / 2, y: position.y + buttonSize * 1.5)
+        backgroundSprite.position = CGPoint(x: settingsScale * (settingsSize + padding) / 2 + GameboardSprite.xPosition + 10, y: position.y)
+        backgroundSprite.fillColor = backgroundColor
+        backgroundSprite.addShadow(rectOf: CGSize(width: settingsSize, height: settingsSize + ChatEngine.avatarSizeNew + settingsButtonHeight),
+                                   cornerRadius: 20,
+                                   shadowColor: backgroundShadowColor)
 
         resetAll()
     }
@@ -186,8 +193,14 @@ class PauseResetEngine {
             backgroundSprite.run(SKAction.group([
                 SKAction.moveTo(y: GameboardSprite.spriteScale * (K.ScreenDimensions.iPhoneWidth - ChatEngine.avatarSizeNew - settingsButtonHeight + GameboardSprite.padding * 4 + 2) / 2 + GameboardSprite.yPosition, duration: 0.2),
                 SKAction.sequence([
+                    SKAction.run { [unowned self] in
+                        backgroundSprite.fillColor = backgroundColor
+                        backgroundSprite.updateShadowColor(backgroundShadowColor)
+                    },
                     SKAction.scale(to: GameboardSprite.spriteScale, duration: 0.2),
-                    SKAction.run { self.backgroundSprite.showShadow(completion: nil) }
+                    SKAction.run { [unowned self] in
+                        backgroundSprite.showShadow(completion: nil)
+                    }
                 ])
             ])) {
                 self.isAnimating = false
@@ -198,18 +211,20 @@ class PauseResetEngine {
             superScene.addChild(backgroundSprite)
         }
         else {
-            backgroundSprite.hideShadow {
-                self.backgroundSprite.run(SKAction.group([
-                    SKAction.moveTo(y: self.position.y, duration: 0.2),
-                    SKAction.scale(to: 0, duration: 0.2)
-                ])) {
-                    self.isAnimating = false
-                    
-                    self.comingSoonLabel.removeFromParent()
-                    self.foregroundSprite.removeFromParent()
-                    self.backgroundSprite.removeFromParent()
-                }
+            backgroundSprite.run(SKAction.group([
+                SKAction.run {
+                    self.backgroundSprite.hideShadow(completion: nil)
+                },
+                SKAction.moveTo(y: self.position.y, duration: 0.2),
+                SKAction.scale(to: 0, duration: 0.2)
+            ])) {
+                self.isAnimating = false
+                
+                self.comingSoonLabel.removeFromParent()
+                self.foregroundSprite.removeFromParent()
+                self.backgroundSprite.removeFromParent()
             }
+            
         }
         
         
@@ -278,6 +293,7 @@ class PauseResetEngine {
                 resetFinal = Date()
                 
                 countdownLabel.text = "\(resetThreshold - Int(resetElapsed))"
+                countdownLabel.updateShadow()
                 
                 if resetElapsed >= 0.4 {
                     buttonSprite.texture = SKTexture(imageNamed: "\(pauseResetName)4")

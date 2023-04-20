@@ -66,6 +66,8 @@ class DisplaySprite {
         levelLabel.fontName = UIFont.gameFont
         levelLabel.fontSize = UIFont.gameFontSizeSmall
         levelLabel.fontColor = UIFont.gameFontColor
+        levelLabel.zPosition = 10
+        levelLabel.addDropShadow()
         
         heartsAtlas = SKTextureAtlas(named: "_heart")
         heartsTextures = []
@@ -82,6 +84,7 @@ class DisplaySprite {
     
     func setLabels(level: String, lives: String, moves: String, health: String, inventory: Inventory) {
         levelLabel.text = "LEVEL \(level)"
+        levelLabel.updateShadow()
         
         statusLives.updateAmount(Int(lives) ?? 99)
         statusMoves.updateAmount(Int(moves) ?? 99)

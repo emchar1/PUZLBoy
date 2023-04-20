@@ -20,6 +20,8 @@
 		EA119155290CCA39009D0E3E /* Inventory.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA119154290CCA39009D0E3E /* Inventory.swift */; };
 		EA11915729121798009D0E3E /* Controls.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA11915629121798009D0E3E /* Controls.swift */; };
 		EA1D5A6C29F1019800677B06 /* Extension+SKShapeNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA1D5A6B29F1019800677B06 /* Extension+SKShapeNode.swift */; };
+		EA1D5A6E29F217D200677B06 /* Extension+SKLabelNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA1D5A6D29F217D200677B06 /* Extension+SKLabelNode.swift */; };
+		EA1D5A7029F219AA00677B06 /* Extension+SKNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA1D5A6F29F219AA00677B06 /* Extension+SKNode.swift */; };
 		EA26F29129739DE800BF1AC8 /* AdMobManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA26F29029739DE800BF1AC8 /* AdMobManager.swift */; };
 		EA284E7029EE8F4F007ED3D3 /* ResetConfirmSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA284E6F29EE8F4F007ED3D3 /* ResetConfirmSprite.swift */; };
 		EA2AF74429B6D06000444E5A /* OfflinePlaySprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA2AF74329B6D06000444E5A /* OfflinePlaySprite.swift */; };
@@ -204,6 +206,8 @@
 		EA119154290CCA39009D0E3E /* Inventory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Inventory.swift; sourceTree = "<group>"; };
 		EA11915629121798009D0E3E /* Controls.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Controls.swift; sourceTree = "<group>"; };
 		EA1D5A6B29F1019800677B06 /* Extension+SKShapeNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+SKShapeNode.swift"; sourceTree = "<group>"; };
+		EA1D5A6D29F217D200677B06 /* Extension+SKLabelNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+SKLabelNode.swift"; sourceTree = "<group>"; };
+		EA1D5A6F29F219AA00677B06 /* Extension+SKNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+SKNode.swift"; sourceTree = "<group>"; };
 		EA26F29029739DE800BF1AC8 /* AdMobManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdMobManager.swift; sourceTree = "<group>"; };
 		EA284E6F29EE8F4F007ED3D3 /* ResetConfirmSprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetConfirmSprite.swift; sourceTree = "<group>"; };
 		EA2AF74329B6D06000444E5A /* OfflinePlaySprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfflinePlaySprite.swift; sourceTree = "<group>"; };
@@ -389,6 +393,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		EA1D5A7129F219B300677B06 /* SKNode */ = {
+			isa = PBXGroup;
+			children = (
+				EA1D5A6F29F219AA00677B06 /* Extension+SKNode.swift */,
+				EAF07C1129EAB5D30034CD1A /* Extension+SKSpriteNode.swift */,
+				EA1D5A6B29F1019800677B06 /* Extension+SKShapeNode.swift */,
+				EA1D5A6D29F217D200677B06 /* Extension+SKLabelNode.swift */,
+			);
+			path = SKNode;
+			sourceTree = "<group>";
+		};
 		EA34678F299AFF62002DDA02 /* Level */ = {
 			isa = PBXGroup;
 			children = (
@@ -510,17 +525,16 @@
 		EA826C9829938CE200F19F81 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				EA956C6B29257D9600879AD0 /* Extension+Comparable.swift */,
-				EA3951EC2938165A00D0B14A /* Extension+UIImage.swift */,
-				EA95D18C29459D550061059C /* Extension+UIFont.swift */,
-				EA95D1B1294FBF2A0061059C /* Extension+Notification.Name.swift */,
-				EA4D026A29BC6ACE00F0C7B1 /* Extension+UIDevice.swift */,
 				EA94E87629C2DCE0009F2614 /* Extension+CGPoint.swift */,
 				EAF07C0F29EA7B8C0034CD1A /* Extension+CGSize.swift */,
+				EA956C6B29257D9600879AD0 /* Extension+Comparable.swift */,
 				EA9F4DD829CFAB0C006F4B2F /* Extension+Double.swift */,
+				EA95D1B1294FBF2A0061059C /* Extension+Notification.Name.swift */,
 				EA84645E29D9230B0075F2A9 /* Extension+UIColor.swift */,
-				EAF07C1129EAB5D30034CD1A /* Extension+SKSpriteNode.swift */,
-				EA1D5A6B29F1019800677B06 /* Extension+SKShapeNode.swift */,
+				EA4D026A29BC6ACE00F0C7B1 /* Extension+UIDevice.swift */,
+				EA95D18C29459D550061059C /* Extension+UIFont.swift */,
+				EA3951EC2938165A00D0B14A /* Extension+UIImage.swift */,
+				EA1D5A7129F219B300677B06 /* SKNode */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -955,6 +969,7 @@
 				EAF07C0529E796AE0034CD1A /* TemplateClass.swift in Sources */,
 				EA3467B129A99332002DDA02 /* LoadingSprite.swift in Sources */,
 				EA284E7029EE8F4F007ED3D3 /* ResetConfirmSprite.swift in Sources */,
+				EA1D5A6E29F217D200677B06 /* Extension+SKLabelNode.swift in Sources */,
 				EA65184328E420E400E535BF /* GameScene.swift in Sources */,
 				EAF07C0B29E9DADC0034CD1A /* ParallaxManager.swift in Sources */,
 				EA95D20C296276670061059C /* AchievementSuperEfficient.swift in Sources */,
@@ -987,6 +1002,7 @@
 				EA95D206295F86F40061059C /* AchievementItemWielder.swift in Sources */,
 				EA95D1D729544DBA0061059C /* AchievementPUZLGuru.swift in Sources */,
 				EA826C76297CF9E000F19F81 /* ScoringManager.swift in Sources */,
+				EA1D5A7029F219AA00677B06 /* Extension+SKNode.swift in Sources */,
 				EA95D1CB29541F7F0061059C /* AchievementRockNRoller.swift in Sources */,
 				EA95D208295F87120061059C /* AchievementHoarder.swift in Sources */,
 				EA826C87298E23A500F19F81 /* Player.swift in Sources */,

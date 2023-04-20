@@ -41,10 +41,13 @@ class DisplayStatusBarSprite: SKNode {
 
         imageNode.position = CGPoint(x: -iconSize, y: 0)
         imageNode.scale(to: CGSize(width: iconSize, height: iconSize))
+        imageNode.zPosition = 5
         
         textNode.fontName = UIFont.gameFont
         textNode.fontSize = UIFont.gameFontSizeSmall
         textNode.position = CGPoint(x: 0, y: -14)
+        textNode.zPosition = 10
+        textNode.addDropShadow()
         
         addChild(backgroundBar)
         addChild(imageNode)
@@ -62,6 +65,7 @@ class DisplayStatusBarSprite: SKNode {
         self.amount = newAmount
         
         textNode.text = "\(newAmount)"
+        textNode.updateShadow()
     }
     
     func appendNode(_ node: SKNode) {

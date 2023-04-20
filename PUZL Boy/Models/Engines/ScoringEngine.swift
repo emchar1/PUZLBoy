@@ -46,6 +46,7 @@ class ScoringEngine {
         totalScoreLabel.horizontalAlignmentMode = .left
         totalScoreLabel.verticalAlignmentMode = .top
         totalScoreLabel.zPosition = K.ZPosition.display
+        totalScoreLabel.addDropShadow()
 
         scoreLabel = SKLabelNode()
         scoreLabel.fontName = UIFont.gameFont
@@ -55,6 +56,7 @@ class ScoringEngine {
         scoreLabel.horizontalAlignmentMode = .left
         scoreLabel.verticalAlignmentMode = .top
         scoreLabel.zPosition = K.ZPosition.display
+        scoreLabel.addDropShadow()
 
         elapsedTimeLabel = SKLabelNode(text: "00:00")
         elapsedTimeLabel.fontName = UIFont.gameFont
@@ -65,6 +67,7 @@ class ScoringEngine {
         elapsedTimeLabel.horizontalAlignmentMode = .left
         elapsedTimeLabel.verticalAlignmentMode = .bottom
         elapsedTimeLabel.zPosition = K.ZPosition.display
+        elapsedTimeLabel.addDropShadow()
 
         updateLabels()
     }
@@ -101,6 +104,7 @@ class ScoringEngine {
         
         elapsedTimeLabel.text = String(format: "%02i:%02i", minutes, seconds)
         elapsedTimeLabel.fontColor = timerManager.elapsedTime >= 60 * 60 ? UIFont.gameFontColorOutOfTime : UIFont.gameFontColor
+        elapsedTimeLabel.updateShadow()
         
         updateScoreLabels()
     }
@@ -118,7 +122,9 @@ class ScoringEngine {
         numberFormatter.maximumFractionDigits = 0
         
         totalScoreLabel.text = "TOTAL: " + (numberFormatter.string(from: NSNumber(value: scoringManager.totalScore)) ?? "-9999")
+        totalScoreLabel.updateShadow()
         scoreLabel.text = "SCORE: " + (numberFormatter.string(from: NSNumber(value: scoringManager.score)) ?? "-9999")
+        scoreLabel.updateShadow()
     }
     
     

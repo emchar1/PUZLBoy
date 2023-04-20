@@ -115,6 +115,7 @@ class TitleScene: SKScene {
         boyTitle.setScale(4)
         boyTitle.alpha = 0
         boyTitle.run(SKAction.rotate(toAngle: .pi / 12, duration: 0))
+        boyTitle.addHeavyDropShadow()
         
         
         //Menu Setup

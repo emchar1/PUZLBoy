@@ -8,9 +8,7 @@
 import SpriteKit
 
 extension SKShapeNode {
-    func addShadow(rectOf: CGSize, cornerRadius: CGFloat, shadowOffset: CGFloat = 10, shadowColor: UIColor = .white) {
-        let zPositionOffset: CGFloat = -5
-        
+    func addShadow(rectOf: CGSize, cornerRadius: CGFloat, shadowOffset: CGFloat = 10, shadowColor: UIColor = .gray) {
         let shadow1 = SKShapeNode(rectOf: rectOf, cornerRadius: cornerRadius)
         shadow1.position = CGPoint(x: -shadowOffset, y: -shadowOffset)
         shadow1.fillColor = shadowColor
@@ -43,6 +41,15 @@ extension SKShapeNode {
         addChild(shadow3)
     }
     
+    func updateShadowColor(_ color: UIColor = .gray) {
+        for node in children {
+            guard node.name == "shadow1" || node.name == "shadow2" || node.name == "shadow3" else { continue }
+            guard let shadow = node as? SKShapeNode else { continue }
+                                
+            shadow.fillColor = color
+        }
+    }
+    
     func showShadow(animationDuration: TimeInterval = 0.1, completion: (() -> Void)?) {
         guard childNode(withName: "shadow1") != nil else { return print("No shadow to show, so shoo!") }
         
@@ -71,7 +78,7 @@ extension SKShapeNode {
         }
     }
     
-    func hideShadow(animationDuration: TimeInterval = 0.1, completion: (() -> Void)?) {
+    func hideShadow(animationDuration: TimeInterval = 0.05, completion: (() -> Void)?) {
         guard childNode(withName: "shadow1") != nil else { return print("No shadow to hide.") }
         
         for node in children {
