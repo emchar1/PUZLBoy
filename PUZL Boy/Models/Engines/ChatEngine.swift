@@ -34,6 +34,7 @@ class ChatEngine {
     }
 
     //Other properties
+    private(set) var isChatting: Bool = false
     private var timer: Timer
     private var chatText: String = ""
     private var chatIndex = 0
@@ -73,6 +74,7 @@ class ChatEngine {
         dialoguePlayed[34] = false
         dialoguePlayed[51] = false
         dialoguePlayed[76] = false
+        dialoguePlayed[100] = false
 
         //Property initialization
         backgroundSprite = SKShapeNode()
@@ -128,7 +130,7 @@ class ChatEngine {
         return true
     }
     
-    func sendChat(profile: ChatProfile, startNewChat: Bool, endChat: Bool, chat: String, completion: (() -> ())? = nil) {
+    private func sendChat(profile: ChatProfile, startNewChat: Bool, endChat: Bool, chat: String, completion: (() -> ())? = nil) {
         //Only allow a new chat if current chat isn't happening
         guard allowNewChat else { return }
         
@@ -249,9 +251,12 @@ extension ChatEngine {
     }
     
     func dialogue(level: Int, completion: (() -> Void)?) {
+        isChatting = true
+        
         switch level {
         case 1:
             guard let dialoguePlayedCheck = dialoguePlayed[level], !dialoguePlayedCheck else {
+                isChatting = false
                 completion?()
                 return
             }
@@ -288,6 +293,7 @@ extension ChatEngine {
                                 delegate?.deIlluminatePanel(at: (0, 2), useOverlay: true)
                                 delegate?.deIlluminatePanel(at: (2, 2), useOverlay: false)
                                 fadeDimOverlay()
+                                isChatting = false
                                 completion?()
                             }
                         }
@@ -296,6 +302,7 @@ extension ChatEngine {
             }
         case 8:
             guard let dialoguePlayedCheck = dialoguePlayed[level], !dialoguePlayedCheck else {
+                isChatting = false
                 completion?()
                 return
             }
@@ -323,6 +330,7 @@ extension ChatEngine {
                                          chat: "Oh, and one more thing... hammers can only be used once before breaking, so plan your moves ahead of time.") { [unowned self] in
                                     dialoguePlayed[level] = true
                                     fadeDimOverlay()
+                                    isChatting = false
                                     completion?()
                                 }
                             }
@@ -332,6 +340,7 @@ extension ChatEngine {
             }
         case 19:
             guard let dialoguePlayedCheck = dialoguePlayed[level], !dialoguePlayedCheck else {
+                isChatting = false
                 completion?()
                 return
             }
@@ -349,12 +358,14 @@ extension ChatEngine {
                         delegate?.deIlluminatePanel(at: (0, 1), useOverlay: false)
                         delegate?.deIlluminatePanel(at: (2, 1), useOverlay: false)
                         fadeDimOverlay()
+                        isChatting = false
                         completion?()
                     }
                 }
             }
         case 34:
             guard let dialoguePlayedCheck = dialoguePlayed[level], !dialoguePlayedCheck else {
+                isChatting = false
                 completion?()
                 return
             }
@@ -374,6 +385,7 @@ extension ChatEngine {
                             delegate?.deIlluminatePanel(at: (0, 1), useOverlay: true)
                             delegate?.deIlluminatePanel(at: (1, 2), useOverlay: true)
                             fadeDimOverlay()
+                            isChatting = false
                             completion?()
                         }
                     }
@@ -381,6 +393,7 @@ extension ChatEngine {
             }
         case 51:
             guard let dialoguePlayedCheck = dialoguePlayed[level], !dialoguePlayedCheck else {
+                isChatting = false
                 completion?()
                 return
             }
@@ -411,6 +424,7 @@ extension ChatEngine {
                                              chat: "B-I-N-G-O!!! Oh sorry, I was playing Bingo with my grandmother. Yep, one sword per dragon.") { [unowned self] in
                                         dialoguePlayed[level] = true
                                         fadeDimOverlay()
+                                        isChatting = false
                                         completion?()
                                     }
                                 }
@@ -422,6 +436,7 @@ extension ChatEngine {
             
         case 76:
             guard let dialoguePlayedCheck = dialoguePlayed[level], !dialoguePlayedCheck else {
+                isChatting = false
                 completion?()
                 return
             }
@@ -449,12 +464,36 @@ extension ChatEngine {
                         sendChat(profile: .trainer, startNewChat: false, endChat: true,
                                  chat: "Well, I'll leave you alone for now. I'll chime in every now and then if I think you need it.") { [unowned self] in
                             dialoguePlayed[level] = true
+                            isChatting = false
                             completion?()
                         }
                     }
                 }
             }
+        case 100:
+            guard let dialoguePlayedCheck = dialoguePlayed[level], !dialoguePlayedCheck else {
+                isChatting = false
+                completion?()
+                return
+            }
+            
+            sendChat(profile: .trainer, startNewChat: true, endChat: false,
+                     chat: "Congrats! You made it to level 100. There's a bonus at the end of every 100 levels. Beat this and you're one step closer to indescribable fun!!! 🤗") { [unowned self] in
+                sendChat(profile: .hero, startNewChat: false, endChat: false, chat: "I can hardly contain my excitement. 😒") { [unowned self] in
+                    sendChat(profile: .trainer, startNewChat: false, endChat: false, chat: "That's the spirit! Now if you ever get stuck, you can give your device a shake or hold down the ⏯️ button for a count of 3 to restart the level.") { [unowned self] in
+                        sendChat(profile: .trainer, startNewChat: false, endChat: false, chat: "Be warned though, restarting a level will cost you one of your precious lives...") { [unowned self] in
+                            sendChat(profile: .hero, startNewChat: false, endChat: true, chat: "It's all good. My mom can buy me more lives if I need it. 😃") { [unowned self] in
+                                dialoguePlayed[level] = true
+                                fadeDimOverlay()
+                                isChatting = false
+                                completion?()
+                            }
+                        }
+                    }
+                }
+            }
         default:
+            isChatting = false
             completion?()
         }
     }

@@ -67,12 +67,14 @@ class PauseResetEngine {
         // FIXME: - This is atrocious
         backgroundSprite = SKShapeNode(rectOf: CGSize(width: settingsSize, height: settingsSize + ChatEngine.avatarSizeNew + settingsButtonHeight),
                                        cornerRadius: 20)
-        backgroundSprite.fillColor = .gray
-        backgroundSprite.fillTexture = SKTexture(image: UIImage.chatGradientTexture)
-        backgroundSprite.lineWidth = 12
+        backgroundSprite.fillColor = DayTheme.skyColor.top.complementary
         backgroundSprite.strokeColor = .white
+        backgroundSprite.lineWidth = 0
         backgroundSprite.setScale(0)
         backgroundSprite.zPosition = K.ZPosition.pauseScreen
+        backgroundSprite.addShadow(rectOf: CGSize(width: settingsSize, height: settingsSize + ChatEngine.avatarSizeNew + settingsButtonHeight),
+                                   cornerRadius: 20,
+                                   shadowColor: DayTheme.skyColor.top.complementary.complementary)
         
         foregroundSprite = SKShapeNode(rectOf: CGSize(width: settingsSize, height: settingsSize + ChatEngine.avatarSizeNew - settingsButtonHeight))
         foregroundSprite.position = CGPoint(x: 0, y: settingsButtonHeight)
@@ -106,7 +108,7 @@ class PauseResetEngine {
         buttonSprite.name = pauseResetName
         buttonSprite.zPosition = K.ZPosition.pauseButton
 
-        backgroundSprite.position = CGPoint(x: settingsScale * (settingsSize + padding) / 2 + GameboardSprite.xPosition, y: position.y)
+        backgroundSprite.position = CGPoint(x: settingsScale * (settingsSize + padding) / 2 + GameboardSprite.xPosition + 10, y: position.y)
         countdownLabel.position = CGPoint(x: position.x + buttonSize / 2, y: position.y + buttonSize * 1.5)
 
         resetAll()
@@ -184,9 +186,8 @@ class PauseResetEngine {
             backgroundSprite.run(SKAction.group([
                 SKAction.moveTo(y: GameboardSprite.spriteScale * (K.ScreenDimensions.iPhoneWidth - ChatEngine.avatarSizeNew - settingsButtonHeight + GameboardSprite.padding * 4 + 2) / 2 + GameboardSprite.yPosition, duration: 0.2),
                 SKAction.sequence([
-                    SKAction.scale(to: GameboardSprite.spriteScale + 0.05, duration: 0.2),
-                    SKAction.scale(to: GameboardSprite.spriteScale - 0.01, duration: 0.1),
-                    SKAction.scale(to: GameboardSprite.spriteScale, duration: 0.2)
+                    SKAction.scale(to: GameboardSprite.spriteScale, duration: 0.2),
+                    SKAction.run { self.backgroundSprite.showShadow(completion: nil) }
                 ])
             ])) {
                 self.isAnimating = false
@@ -197,18 +198,17 @@ class PauseResetEngine {
             superScene.addChild(backgroundSprite)
         }
         else {
-            backgroundSprite.run(SKAction.sequence([
-                SKAction.scale(to: GameboardSprite.spriteScale + 0.05, duration: 0.1),
-                SKAction.group([
+            backgroundSprite.hideShadow {
+                self.backgroundSprite.run(SKAction.group([
                     SKAction.moveTo(y: self.position.y, duration: 0.2),
                     SKAction.scale(to: 0, duration: 0.2)
-                ])
-            ])) {
-                self.isAnimating = false
-                
-                self.comingSoonLabel.removeFromParent()
-                self.foregroundSprite.removeFromParent()
-                self.backgroundSprite.removeFromParent()
+                ])) {
+                    self.isAnimating = false
+                    
+                    self.comingSoonLabel.removeFromParent()
+                    self.foregroundSprite.removeFromParent()
+                    self.backgroundSprite.removeFromParent()
+                }
             }
         }
         

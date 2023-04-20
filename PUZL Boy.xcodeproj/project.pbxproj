@@ -19,6 +19,7 @@
 		EA1191532904BC4C009D0E3E /* DisplaySprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA1191522904BC4C009D0E3E /* DisplaySprite.swift */; };
 		EA119155290CCA39009D0E3E /* Inventory.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA119154290CCA39009D0E3E /* Inventory.swift */; };
 		EA11915729121798009D0E3E /* Controls.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA11915629121798009D0E3E /* Controls.swift */; };
+		EA1D5A6C29F1019800677B06 /* Extension+SKShapeNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA1D5A6B29F1019800677B06 /* Extension+SKShapeNode.swift */; };
 		EA26F29129739DE800BF1AC8 /* AdMobManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA26F29029739DE800BF1AC8 /* AdMobManager.swift */; };
 		EA284E7029EE8F4F007ED3D3 /* ResetConfirmSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA284E6F29EE8F4F007ED3D3 /* ResetConfirmSprite.swift */; };
 		EA2AF74429B6D06000444E5A /* OfflinePlaySprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA2AF74329B6D06000444E5A /* OfflinePlaySprite.swift */; };
@@ -202,6 +203,7 @@
 		EA1191522904BC4C009D0E3E /* DisplaySprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplaySprite.swift; sourceTree = "<group>"; };
 		EA119154290CCA39009D0E3E /* Inventory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Inventory.swift; sourceTree = "<group>"; };
 		EA11915629121798009D0E3E /* Controls.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Controls.swift; sourceTree = "<group>"; };
+		EA1D5A6B29F1019800677B06 /* Extension+SKShapeNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+SKShapeNode.swift"; sourceTree = "<group>"; };
 		EA26F29029739DE800BF1AC8 /* AdMobManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdMobManager.swift; sourceTree = "<group>"; };
 		EA284E6F29EE8F4F007ED3D3 /* ResetConfirmSprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetConfirmSprite.swift; sourceTree = "<group>"; };
 		EA2AF74329B6D06000444E5A /* OfflinePlaySprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfflinePlaySprite.swift; sourceTree = "<group>"; };
@@ -518,6 +520,7 @@
 				EA9F4DD829CFAB0C006F4B2F /* Extension+Double.swift */,
 				EA84645E29D9230B0075F2A9 /* Extension+UIColor.swift */,
 				EAF07C1129EAB5D30034CD1A /* Extension+SKSpriteNode.swift */,
+				EA1D5A6B29F1019800677B06 /* Extension+SKShapeNode.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -977,6 +980,7 @@
 				EA95D2122963B4580061059C /* LevelSkipEngine.swift in Sources */,
 				EA4D026729BA656200F0C7B1 /* TabBarEngine.swift in Sources */,
 				EA95D18D29459D550061059C /* Extension+UIFont.swift in Sources */,
+				EA1D5A6C29F1019800677B06 /* Extension+SKShapeNode.swift in Sources */,
 				EA34678E2998ED50002DDA02 /* LifeSpawnerModel.swift in Sources */,
 				EA65189328E973D700E535BF /* LevelBuilder.swift in Sources */,
 				EA65189528EA207800E535BF /* Constants.swift in Sources */,

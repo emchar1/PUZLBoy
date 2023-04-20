@@ -745,8 +745,9 @@ extension GameScene: ResetConfirmSpriteDelegate {
     
     private func showResetConfirm() {
         guard resetConfirmSprite.parent == nil else { return }
-        guard !gameEngine.playerSprite.isAnimating else { return }
         guard gameEngine.canContinue else { return }
+        guard !gameEngine.playerSprite.isAnimating else { return }
+        guard !chatEngine.isChatting else { return }
         
         scoringEngine.timerManager.pauseTime()
         stopTimer()
