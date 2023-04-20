@@ -81,7 +81,7 @@ class PauseResetEngine {
         foregroundSprite.setScale(1)
         
         // FIXME: - Temporary label
-        comingSoonLabel = SKLabelNode(text: "SETTINGS\n(Coming Soon...)\n\nPlease do not ask me when the game is going to be finished. It will be finished when I say it will be finished. When will it be finished, you ask? July 4, 2023. Thanks, you're welcome.")
+        comingSoonLabel = SKLabelNode(text: "      SETTINGS\n(Coming Soon...)")
         comingSoonLabel.numberOfLines = 0
         comingSoonLabel.preferredMaxLayoutWidth = settingsSize * 0.8
         comingSoonLabel.horizontalAlignmentMode = .center
@@ -101,7 +101,6 @@ class PauseResetEngine {
         countdownLabel.zPosition = K.ZPosition.pauseButton
         countdownLabel.name = pauseResetName
         countdownLabel.alpha = 0
-        countdownLabel.zPosition = 10
         countdownLabel.addDropShadow()
         
         buttonSprite = SKSpriteNode(imageNamed: pauseResetName)

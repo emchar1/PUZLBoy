@@ -38,7 +38,7 @@ class NumMovesSprite: SKNode {
         littleText.fontColor = UIFont.chatFontColor
         littleText.position.y -= 140
         littleText.zPosition = 10
-        littleText.addDropShadow()
+        littleText.addHeavyDropShadow()
         
         super.init()
         

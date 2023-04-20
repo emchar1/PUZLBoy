@@ -98,7 +98,7 @@ class ResetConfirmSprite: SKNode {
     func animateShow(livesRemaining: Int, completion: @escaping (() -> Void)) {
         backgroundSprite.removeFromParent()
         
-        messageLabel.text = "Tap Restart to start over. Be warned: \(livesRemaining <= 0 ? "you have 0 lives left, so it'll be GAME OVER." : "you'll lose a life in the process.")"
+        messageLabel.text = "Tap Restart to start over. \(livesRemaining <= 0 ? "Careful! You have 0 lives left, so it'll be GAME OVER." : "You'll lose a life in the process.")"
         messageLabel.updateShadow()
 
         addChild(backgroundSprite)
