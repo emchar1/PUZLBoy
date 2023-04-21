@@ -149,6 +149,7 @@ class ScoringEngine {
         pointsSprite.fontColor = .yellow
         pointsSprite.position = location
         pointsSprite.zPosition = K.ZPosition.itemsPoints
+        pointsSprite.addDropShadow()
         
         originSprite.addChild(pointsSprite)
 
@@ -182,6 +183,8 @@ class ScoringEngine {
         amountSprite.horizontalAlignmentMode = .center
         amountSprite.verticalAlignmentMode = .center
         amountSprite.position = .zero
+        amountSprite.zPosition = 10
+        amountSprite.addDropShadow()
         
         let iconSprite = SKSpriteNode(imageNamed: icon.rawValue)
         iconSprite.scale(to: CGSize(width: 80, height: 80))

@@ -28,6 +28,7 @@ class OfflinePlaySprite: SKNode {
         sprite.fontSize = UIFont.gameFontSizeSmall
         sprite.fontColor = .yellow
         sprite.zPosition = K.ZPosition.display
+        sprite.addDropShadow()
         
         super.init()
     }
