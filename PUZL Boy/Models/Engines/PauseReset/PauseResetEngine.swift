@@ -36,9 +36,10 @@ class PauseResetEngine {
     private var buttonSprite: SKSpriteNode
     private var foregroundSprite: SKShapeNode
     private var backgroundSprite: SKShapeNode
-    private var superScene: SKScene?
     private var comingSoonLabel: SKLabelNode
     private var countdownLabel: SKLabelNode
+    private var superScene: SKScene?
+    
     private var backgroundColor: UIColor { (DayTheme.skyColor.bottom.isLight() ?? true) ? DayTheme.skyColor.top : DayTheme.skyColor.bottom }
     private var backgroundShadowColor: UIColor { DayTheme.skyColor.bottom.triadic.first }
     

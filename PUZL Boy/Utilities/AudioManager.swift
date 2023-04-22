@@ -51,7 +51,7 @@ class AudioManager {
     }()
     
     let titleLogo = "titletheme"
-    let overworldTheme = "overworld_galaxy"
+    let overworldTheme = "overworld"
     let overworldPartyTheme = "overworldparty"
     private(set) var currentTheme: String
     private var audioItems: [String: AudioItem] = [:]

@@ -51,7 +51,6 @@ extension UIColor {
     func isLight() -> Bool? {
         guard let componentColors: [CGFloat] = self.cgColor.components else { return nil }
         
-        print("self: \(self.cgColor), componentColors: \(componentColors)")
         let threshold = ((componentColors[0] * 299) + (componentColors[1] * 587) + (componentColors[2] * 114)) / 1000
         
         return threshold > 0.5
