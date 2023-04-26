@@ -8,6 +8,19 @@
 import SpriteKit
 
 extension SKShapeNode {
+    func addDropShadow(rectOf: CGSize, cornerRadius: CGFloat, shadowOffset: CGFloat = 10, shadowColor: UIColor = .gray) {
+        let shadow = SKShapeNode(rectOf: rectOf, cornerRadius: cornerRadius)
+        shadow.position = CGPoint(x: -shadowOffset, y: -shadowOffset)
+        shadow.fillColor = shadowColor
+        shadow.strokeColor = .white
+        shadow.lineWidth = 0
+        shadow.zPosition = zPositionOffset
+        shadow.name = "dropShadow"
+        shadow.alpha = 0.75
+
+        addChild(shadow)
+    }
+    
     func addShadow(rectOf: CGSize, cornerRadius: CGFloat, shadowOffset: CGFloat = 10, shadowColor: UIColor = .gray) {
         let shadow1 = SKShapeNode(rectOf: rectOf, cornerRadius: cornerRadius)
         shadow1.position = CGPoint(x: -shadowOffset, y: -shadowOffset)
@@ -43,7 +56,7 @@ extension SKShapeNode {
     
     func updateShadowColor(_ color: UIColor = .gray) {
         for node in children {
-            guard node.name == "shadow1" || node.name == "shadow2" || node.name == "shadow3" else { continue }
+            guard node.name == "shadow1" || node.name == "shadow2" || node.name == "shadow3" || node.name == "dropShadow" else { continue }
             guard let shadow = node as? SKShapeNode else { continue }
                                 
             shadow.fillColor = color
@@ -58,7 +71,7 @@ extension SKShapeNode {
             case "shadow1":
                 node.run(SKAction.sequence([
                     SKAction.wait(forDuration: 0 * animationDuration),
-                    SKAction.fadeAlpha(to: 0.5, duration: animationDuration)
+                    SKAction.fadeAlpha(to: 0.75, duration: animationDuration)
                 ]))
             case "shadow2":
                 node.run(SKAction.sequence([

@@ -9,6 +9,11 @@ import SpriteKit
 import FirebaseAuth
 import StoreKit
 
+protocol GameSceneDelegate: AnyObject {
+    func confirmQuitTapped()
+}
+
+
 class GameScene: SKScene {
     
     // MARK: - Properties
@@ -43,6 +48,8 @@ class GameScene: SKScene {
     
     // FIXME: - Debugging purposes only!!!
     private var levelSkipEngine: LevelSkipEngine
+    
+    weak var gameSceneDelegate: GameSceneDelegate?
     
     
     // MARK: - Initialization
@@ -194,9 +201,9 @@ class GameScene: SKScene {
         
         if !activityIndicator.isShowing {
             continueSprite.didTapButton(in: location)
-            continueSprite.touchUp(in: location)
+            continueSprite.touchUp()
             resetConfirmSprite.didTapButton(in: location)
-            resetConfirmSprite.touchUp(in: location)
+            resetConfirmSprite.touchUp()
         }
 
         
@@ -719,6 +726,15 @@ extension GameScene: PauseResetEngineDelegate {
             //Putting these here so that I can only have it execute if fastForward is successful. Prevents spamming the button
             K.ButtonTaps.tap2()
         }
+    }
+    
+    // FIXME: - Retain cycle not deinitializing GameScene
+    func confirmQuitTapped() {
+        removeAllActions()
+        removeAllChildren()
+        removeFromParent()
+        
+        gameSceneDelegate?.confirmQuitTapped()
     }
 }
 

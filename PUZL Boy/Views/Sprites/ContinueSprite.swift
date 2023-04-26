@@ -164,7 +164,7 @@ class ContinueSprite: SKNode {
 
     }
     
-    func touchUp(in location: CGPoint) {
+    func touchUp() {
         guard !disableControls else { return }
         
         watchAdButton.touchUp()

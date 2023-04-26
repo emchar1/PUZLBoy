@@ -62,7 +62,6 @@ class PauseResetButton: SKNode {
         self.name = text
         buttonSprite.fillColor = backgroundColor
         shadowSprite.fillColor = backgroundShadowColor
-        shadowSprite.alpha = 0.75
 
         addChild(buttonSprite)
         buttonSprite.addChild(shadowSprite)

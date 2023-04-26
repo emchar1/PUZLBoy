@@ -1,18 +1,18 @@
 //
-//  ResetConfirmSprite.swift
+//  ConfirmSprite.swift
 //  PUZL Boy
 //
-//  Created by Eddie Char on 4/18/23.
+//  Created by Eddie Char on 4/26/23.
 //
 
 import SpriteKit
 
-protocol ResetConfirmSpriteDelegate: AnyObject {
+protocol ConfirmSpriteDelegate: AnyObject {
     func didTapConfirm()
     func didTapCancel()
 }
 
-class ResetConfirmSprite: SKNode {
+class ConfirmSprite: SKNode {
     
     // MARK: - Properties
         
@@ -22,12 +22,12 @@ class ResetConfirmSprite: SKNode {
     private(set) var confirmButton: DecisionButtonSprite
     private(set) var cancelButton: DecisionButtonSprite
     
-    weak var delegate: ResetConfirmSpriteDelegate?
+    weak var delegate: ConfirmSpriteDelegate?
 
     
     // MARK: - Initialization
     
-    override init() {
+    init(title: String, message: String, confirm: String, cancel: String) {
         backgroundSprite = SKShapeNode(rectOf: CGSize(width: K.ScreenDimensions.iPhoneWidth, height: K.ScreenDimensions.iPhoneWidth / 2),
                                        cornerRadius: 20)
         backgroundSprite.fillColor = .gray
@@ -36,7 +36,7 @@ class ResetConfirmSprite: SKNode {
         backgroundSprite.strokeColor = .white
         backgroundSprite.setScale(GameboardSprite.spriteScale)
         
-        let titleLabel = SKLabelNode(text: "FEELING STUCK?")
+        let titleLabel = SKLabelNode(text: title.uppercased())
         titleLabel.fontName = UIFont.gameFont
         titleLabel.fontSize = UIDevice.isiPad ? UIFont.gameFontSizeExtraLarge : UIFont.gameFontSizeMedium
         titleLabel.fontColor = UIFont.gameFontColor
@@ -45,20 +45,20 @@ class ResetConfirmSprite: SKNode {
         titleLabel.zPosition = 10
         titleLabel.addHeavyDropShadow()
         
-        confirmButton = DecisionButtonSprite(text: "Restart",
+        confirmButton = DecisionButtonSprite(text: confirm,
                                              color: UIColor(red: 227 / 255, green: 32 / 255, blue: 9 / 255, alpha: 1.0),
                                              iconImageName: nil)
         confirmButton.position = CGPoint(x: -K.ScreenDimensions.iPhoneWidth / 4,
                                          y: -backgroundSprite.frame.size.height / 2 + titleLabel.frame.height / (UIDevice.isiPad ? 2 : 0.5))
         confirmButton.name = "confirmButton"
         
-        cancelButton = DecisionButtonSprite(text: "Cancel",
+        cancelButton = DecisionButtonSprite(text: cancel,
                                             color: UIColor(red: 9 / 255, green: 132 / 255, blue: 227 / 255, alpha: 1.0),
                                             iconImageName: nil)
         cancelButton.position = CGPoint(x: K.ScreenDimensions.iPhoneWidth / 4, y: confirmButton.position.y)
         cancelButton.name = "cancelButton"
         
-        messageLabel = SKLabelNode(text: "Tap Restart to start over. You'll lose a life in the process.")
+        messageLabel = SKLabelNode(text: message)
         messageLabel.fontName = UIFont.chatFont
         messageLabel.fontSize = UIDevice.isiPad ? UIFont.gameFontSizeLarge : UIFont.chatFontSize
         messageLabel.fontColor = UIFont.chatFontColor
@@ -95,12 +95,9 @@ class ResetConfirmSprite: SKNode {
     
     // MARK: - Functions
     
-    func animateShow(livesRemaining: Int, completion: @escaping (() -> Void)) {
+    func animateShow(completion: @escaping (() -> Void)) {
         backgroundSprite.removeFromParent()
         
-        messageLabel.text = "Tap Restart to start over. \(livesRemaining <= 0 ? "Careful! You have 0 lives left, so it'll be GAME OVER." : "You'll lose a life in the process.")"
-        messageLabel.updateShadow()
-
         addChild(backgroundSprite)
         
         Haptics.shared.addHapticFeedback(withStyle: .heavy)
@@ -160,7 +157,7 @@ class ResetConfirmSprite: SKNode {
 
 // MARK: - DecisionButtonSpriteDelegate
 
-extension ResetConfirmSprite: DecisionButtonSpriteDelegate {
+extension ConfirmSprite: DecisionButtonSpriteDelegate {
     func buttonWasTapped(_ node: DecisionButtonSprite) {
         switch node.name {
         case "confirmButton":

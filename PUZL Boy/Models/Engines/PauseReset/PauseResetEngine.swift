@@ -10,6 +10,7 @@ import SpriteKit
 protocol PauseResetEngineDelegate: AnyObject {
     func didTapPause(isPaused: Bool)
     func didTapButtonSpecial()
+    func confirmQuitTapped()
 }
 
 
@@ -51,7 +52,8 @@ class PauseResetEngine {
     private var leaderboardButton: PauseResetButton
     private var howToPlayButton: PauseResetButton
     private var settingsButton: PauseResetButton
-    
+    private var confirmSprite: ConfirmSprite
+
     private var backgroundColor: UIColor { (DayTheme.skyColor.bottom.isLight() ?? true) ? DayTheme.skyColor.top : DayTheme.skyColor.bottom }
     private var backgroundShadowColor: UIColor { DayTheme.skyColor.bottom.triadic.first }
     
@@ -130,20 +132,28 @@ class PauseResetEngine {
         leaderboardButton = PauseResetButton(text: nameLeaderboard, position: .zero, size: pauseResetButtonSize)
         howToPlayButton = PauseResetButton(text: nameHowToPlay, position: .zero, size: pauseResetButtonSize)
         settingsButton = PauseResetButton(text: nameSettings, position: .zero, size: pauseResetButtonSize)
+        
+        confirmSprite = ConfirmSprite(title: "RETURN TO MAIN MENU?",
+                                      message: "Tap Quit to return to the main menu. Your progress will be saved.",
+                                      confirm: "Quit",
+                                      cancel: "Cancel")
 
         //Add'l setup/customization
         countdownLabel.position = CGPoint(x: position.x + buttonSize / 2, y: position.y + buttonSize * 1.5)
         buttonSprite.position = position
-        backgroundSprite.position = CGPoint(x: settingsScale * (settingsSize + padding) / 2 + GameboardSprite.xPosition + GameboardSprite.padding,
+        backgroundSprite.position = CGPoint(x: settingsScale * (settingsSize + padding) / 2 + GameboardSprite.xPosition + GameboardSprite.padding / 2,
                                             y: position.y + settingsButtonHeight)
         backgroundSprite.fillColor = backgroundColor
-        backgroundSprite.addShadow(rectOf: CGSize(width: settingsSize, height: settingsSize + ChatEngine.avatarSizeNew + settingsButtonHeight),
-                                   cornerRadius: 20,
-                                   shadowColor: backgroundShadowColor)
+//        backgroundSprite.addShadow(rectOf: CGSize(width: settingsSize, height: settingsSize + ChatEngine.avatarSizeNew + settingsButtonHeight),
+//                                   cornerRadius: 20,
+//                                   shadowColor: backgroundShadowColor)
+        backgroundSprite.addDropShadow(rectOf: CGSize(width: settingsSize, height: settingsSize + ChatEngine.avatarSizeNew + settingsButtonHeight),
+                                       cornerRadius: 20,
+                                       shadowColor: backgroundShadowColor)
         
 //        let pauseResetInitialPosition = CGPoint(x: -(settingsSize * settingsScale / 2) + (pauseResetButtonSize.width / 2),
 //    y: -settingsSize / 2 - settingsButtonHeight)
-        let xPosition = -backgroundSprite.position.x + pauseResetButtonSize.width / pauseResetScale / 2 + abs(titleButton.shadowSize.x) + GameboardSprite.padding
+        let xPosition = -backgroundSprite.position.x + pauseResetButtonSize.width / pauseResetScale / 2 + abs(titleButton.shadowSize.x) + GameboardSprite.padding / 2
         let yPosition = -settingsSize / 2 - pauseResetButtonSize.height + abs(titleButton.shadowSize.y)
         let pauseResetInitialPosition = CGPoint(x: xPosition, y: yPosition)
         titleButton.position = pauseResetInitialPosition
@@ -157,6 +167,7 @@ class PauseResetEngine {
         leaderboardButton.delegate = self
         howToPlayButton.delegate = self
         settingsButton.delegate = self
+        confirmSprite.delegate = self
         
         settingsButton.touchDown()
 
@@ -197,9 +208,12 @@ class PauseResetEngine {
         
         if let location = location {
             for nodeTapped in superScene.nodes(at: location) {
-                guard nodeTapped.name == pauseResetName else { break }
-                
-                function()
+                if nodeTapped.name == pauseResetName {
+                    function()
+                }
+                else if nodeTapped is DecisionButtonSprite {
+                    confirmSprite.didTapButton(in: location)
+                }
             }
         }
         else {
@@ -241,10 +255,7 @@ class PauseResetEngine {
                         backgroundSprite.fillColor = backgroundColor
                         backgroundSprite.updateShadowColor(backgroundShadowColor)
                     },
-                    SKAction.scale(to: GameboardSprite.spriteScale, duration: 0.2),
-                    SKAction.run { [unowned self] in
-                        backgroundSprite.showShadow(completion: nil)
-                    }
+                    SKAction.scale(to: GameboardSprite.spriteScale, duration: 0.2)
                 ])
             ])) {
                 self.isAnimating = false
@@ -263,9 +274,6 @@ class PauseResetEngine {
         }
         else {
             backgroundSprite.run(SKAction.group([
-                SKAction.run {
-                    self.backgroundSprite.hideShadow(completion: nil)
-                },
                 SKAction.moveTo(y: self.position.y, duration: 0.2),
                 SKAction.scale(to: 0, duration: 0.2)
             ])) {
@@ -325,6 +333,7 @@ class PauseResetEngine {
         
         titleButton.touchUp()
         leaderboardButton.touchUp()
+        confirmSprite.touchUp()
     }
     
     /**
@@ -336,6 +345,11 @@ class PauseResetEngine {
     func touchDown(in location: CGPoint?, resetCompletion: (() -> Void)?) {
         guard let superScene = superScene else { return print("superScene not set in PauseResetEngine!") }
         guard let location = location else { return print("Location nil. Unable to pauseReset.") }
+
+        guard confirmSprite.parent == nil else {
+            confirmSprite.touchDown(in: location)
+            return
+        }
         
         for nodeTapped in superScene.nodes(at: location) {
             switch nodeTapped.name {
@@ -346,11 +360,6 @@ class PauseResetEngine {
                 
                 titleButton.touchDown()
                 titleButton.tapButton()
-
-//                purchaseButton.touchUp()
-//                leaderboardButton.touchUp()
-//                howToPlayButton.touchUp()
-//                settingsButton.touchUp()
             case namePurchase:
                 guard !purchaseButton.isPressed else { break }
 
@@ -366,11 +375,6 @@ class PauseResetEngine {
 
                 leaderboardButton.touchDown()
                 leaderboardButton.tapButton()
-
-//                titleButton.touchUp()
-//                purchaseButton.touchUp()
-//                howToPlayButton.touchUp()
-//                settingsButton.touchUp()
             case nameHowToPlay:
                 guard !howToPlayButton.isPressed else { break }
 
@@ -472,19 +476,48 @@ extension PauseResetEngine: PauseResetButtonDelegate {
     func didTapButton(_ node: PauseResetButton) {
         switch node.name {
         case nameTitle:
-            print("Title tapped")
+            guard let superScene = superScene else { return print("superScene not set up. Unable to show title confirm!") }
+                        
+            confirmSprite.animateShow { }
+        
+            superScene.addChild(confirmSprite)
         case namePurchase:
-            print("Purchase tapped")
+            comingSoonLabel.text = "     PURCHASE\n(Coming Soon...)"
+            comingSoonLabel.updateShadow()
         case nameLeaderboard:
             GameCenterManager.shared.showLeaderboard(level: currentLevel) {
                 self.leaderboardButton.touchUp()
             }
         case nameHowToPlay:
-            print("How To Play tapped")
+            comingSoonLabel.text = "    HOW TO PLAY\n(Coming Soon...)"
+            comingSoonLabel.updateShadow()
         case nameSettings:
-            print("Settings tapped")
+            comingSoonLabel.text = "      SETTINGS\n(Coming Soon...)"
+            comingSoonLabel.updateShadow()
         default:
             print("Unknown button tapped")
+        }
+    }
+}
+
+
+// MARK: - ConfirmSpriteDelegate
+
+extension PauseResetEngine: ConfirmSpriteDelegate {
+    func didTapConfirm() {
+        print("Confirm tapped")
+
+        confirmSprite.animateHide {
+            self.confirmSprite.removeFromParent()
+            self.delegate?.confirmQuitTapped()
+        }
+    }
+    
+    func didTapCancel() {
+        print("Cancel tapped")
+        
+        confirmSprite.animateHide {
+            self.confirmSprite.removeFromParent()
         }
     }
 }

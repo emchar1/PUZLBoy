@@ -83,7 +83,20 @@ class GameViewController: UIViewController {
 extension GameViewController: TitleSceneDelegate {
     func didTapStart() {
         let gameScene = GameScene(size: K.ScreenDimensions.screenSize, user: user, saveStateModel: saveStateModel)
+        gameScene.gameSceneDelegate = self
         
         skView.presentScene(gameScene, transition: SKTransition.fade(with: .white, duration: 1.0))
+    }
+}
+
+
+// MARK: - GameSceneDelegate
+
+extension GameViewController: GameSceneDelegate {
+    func confirmQuitTapped() {
+        let titleScene = TitleScene(size: K.ScreenDimensions.screenSize)
+        titleScene.titleSceneDelegate = self
+        
+        skView.presentScene(titleScene, transition: SKTransition.fade(with: .white, duration: 1.0))
     }
 }
