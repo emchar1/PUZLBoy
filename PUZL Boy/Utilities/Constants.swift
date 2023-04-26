@@ -25,17 +25,19 @@ struct K {
         ///Default height of the iPhone device in Portrait mode, per RayWenderlich tutorial.
         static let height: CGFloat = 2048
         
-        ///Default aspect ratio of the iPhone device in Portrait mode, per  RayWenderlich tutorial, i.e. 1.3333
-        static let ratio: CGFloat = width / height
-        
-        ///Aspect ratio of the most recent iPhone, i.e. iPhone 14. Ratio is 2.16667
-        static let iPhoneRatio: CGFloat = UIDevice.modelInfo.ratio//19.5 / 9
-        
         ///Width of the most recent iPhone, i.e. iPhone 14. Width is 945
         static let iPhoneWidth: CGFloat = height / iPhoneRatio
+
+        ///Aspect ratio of the most recent iPhone, i.e. iPhone 14. Ratio is 2.16667
+        static let iPhoneRatio: CGFloat = UIDevice.modelInfo.ratio//19.5 / 9
+
+        //CAN I DELETE THIS PROPERTY???
+//        ///Default aspect ratio of the iPhone device in Portrait mode, per  RayWenderlich tutorial, i.e. 1.3333
+//        static let ratio: CGFloat = width / height
         
-        ///Margin of the most recent iPhone, i.e. iPhone 14. Set to half of the difference between the default width and the width of the most recent iPhone, i.e. 296
-        static let iPhoneMargin: CGFloat = (width - iPhoneWidth) / 2
+        //CAN I DELETE THIS PROPERTY???
+//        ///Margin of the most recent iPhone, i.e. iPhone 14. Set to half of the difference between the default width and the width of the most recent iPhone, i.e. 296
+//        static let iPhoneMargin: CGFloat = (width - iPhoneWidth) / 2
         
         ///Top margin of the device.
         static let topMargin: CGFloat = UIDevice.modelInfo.topSafeArea
@@ -44,17 +46,13 @@ struct K {
         static let bottomMargin: CGFloat = UIDevice.modelInfo.bottomSafeArea
         
         ///Adds an additional margin size to the left and right sides of the screen, if it's an iPad (due to the 4/3 aspect ratio).
-        static var lrMargin: CGFloat {
-            UIDevice.isiPad ? 80 : 0
-        }
+        static var lrMargin: CGFloat { UIDevice.isiPad ? 80 : 0 }
         
         ///Top border of the gameboard sprite. Needs to be set in gameboardSprite, otherwise it defaults to topMargin.
         static var topOfGameboard: CGFloat = topMargin
         
         ///The device's screen size.
-        static var screenSize: CGSize {
-            CGSize(width: iPhoneWidth, height: height)
-        }
+        static var screenSize: CGSize { CGSize(width: iPhoneWidth, height: height) }
     }
     
     
@@ -104,7 +102,7 @@ struct K {
         
         //Pause Menu - at least 200 over partyForegroundOverlay!!
         static let pauseScreen: CGFloat = 900
-        static let pauseButton: CGFloat = 910
+        static let pauseButton: CGFloat = 950
 
         //Important messaging
         static let messagePrompt: CGFloat = 1000
@@ -114,7 +112,7 @@ struct K {
     
     struct UserDefaults {
         //UserDefault Keys
-        static let soundIsMuted = "SoundIsMuted"
+        static let soundIsMuted = "SoundIsMuted" //NEED TO IMPLEMENT, FOR USE IN SETTINGS
         static let reviewStoreCount = "ReviewStoreCount"
         static let savedTime = "SavedTimeForReplenishLives"
     }

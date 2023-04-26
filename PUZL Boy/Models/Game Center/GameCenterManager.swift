@@ -83,14 +83,14 @@ final class GameCenterManager: NSObject {
         }
     }
     
-    func showLeaderboard(level: Int) {
+    func showLeaderboard(level: Int, completion: (() -> Void)?) {
         let gcvc = GKGameCenterViewController()
 //        gcvc.leaderboardIdentifier = "PUZLBoy.AllLevelsHiScore"
         gcvc.leaderboardIdentifier = getLeaderboardLevelID(level)
         gcvc.leaderboardTimeScope = .allTime
         gcvc.gameCenterDelegate = self
  
-        viewController?.present(gcvc, animated: true)
+        viewController?.present(gcvc, animated: true, completion: completion)
     }
     
     private func getLeaderboardLevelID(_ level: Int) -> String {

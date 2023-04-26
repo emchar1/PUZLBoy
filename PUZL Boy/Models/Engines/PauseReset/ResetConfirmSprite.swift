@@ -36,7 +36,7 @@ class ResetConfirmSprite: SKNode {
         backgroundSprite.strokeColor = .white
         backgroundSprite.setScale(GameboardSprite.spriteScale)
         
-        let titleLabel = SKLabelNode(text: "KEEP GETTING STUCK?")
+        let titleLabel = SKLabelNode(text: "FEELING STUCK?")
         titleLabel.fontName = UIFont.gameFont
         titleLabel.fontSize = UIDevice.isiPad ? UIFont.gameFontSizeExtraLarge : UIFont.gameFontSizeMedium
         titleLabel.fontColor = UIFont.gameFontColor

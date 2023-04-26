@@ -24,6 +24,12 @@ class PauseResetEngine {
         CGPoint(x: (K.ScreenDimensions.iPhoneWidth - buttonSize) / 2, y: K.ScreenDimensions.bottomMargin)
     }
     
+    private let nameTitle = "Title"
+    private let namePurchase = "Purchase"
+    private let nameLeaderboard = "Leaderboard"
+    private let nameHowToPlay = "How to Play"
+    private let nameSettings = "Settings"
+    
     private let resetAnimationKey = "resetAnimationKey"
     private let resetThreshold: Int = 3
     private let resetTimerSpeed: TimeInterval = 2
@@ -40,11 +46,18 @@ class PauseResetEngine {
     private var countdownLabel: SKLabelNode
     private var superScene: SKScene?
     
+    private var titleButton: PauseResetButton
+    private var purchaseButton: PauseResetButton
+    private var leaderboardButton: PauseResetButton
+    private var howToPlayButton: PauseResetButton
+    private var settingsButton: PauseResetButton
+    
     private var backgroundColor: UIColor { (DayTheme.skyColor.bottom.isLight() ?? true) ? DayTheme.skyColor.top : DayTheme.skyColor.bottom }
     private var backgroundShadowColor: UIColor { DayTheme.skyColor.bottom.triadic.first }
     
     private var isPressed: Bool = false
     private var isAnimating: Bool = false
+    private var currentLevel: Int = 1
 
     var specialFunctionEnabled: Bool = false {
         didSet {
@@ -107,17 +120,45 @@ class PauseResetEngine {
         buttonSprite = SKSpriteNode(imageNamed: pauseResetName)
         buttonSprite.scale(to: CGSize(width: buttonSize, height: buttonSize))
         buttonSprite.anchorPoint = .zero
-        buttonSprite.position = position
         buttonSprite.name = pauseResetName
         buttonSprite.zPosition = K.ZPosition.pauseButton
+        
+        let pauseResetScale: CGFloat = 0.95
+        let pauseResetButtonSize = CGSize(width: settingsSize / 5 * pauseResetScale, height: 120)
+        titleButton = PauseResetButton(text: nameTitle, position: .zero, size: pauseResetButtonSize)
+        purchaseButton = PauseResetButton(text: namePurchase, position: .zero, size: pauseResetButtonSize)
+        leaderboardButton = PauseResetButton(text: nameLeaderboard, position: .zero, size: pauseResetButtonSize)
+        howToPlayButton = PauseResetButton(text: nameHowToPlay, position: .zero, size: pauseResetButtonSize)
+        settingsButton = PauseResetButton(text: nameSettings, position: .zero, size: pauseResetButtonSize)
 
         //Add'l setup/customization
         countdownLabel.position = CGPoint(x: position.x + buttonSize / 2, y: position.y + buttonSize * 1.5)
-        backgroundSprite.position = CGPoint(x: settingsScale * (settingsSize + padding) / 2 + GameboardSprite.xPosition + 10, y: position.y)
+        buttonSprite.position = position
+        backgroundSprite.position = CGPoint(x: settingsScale * (settingsSize + padding) / 2 + GameboardSprite.xPosition + GameboardSprite.padding,
+                                            y: position.y + settingsButtonHeight)
         backgroundSprite.fillColor = backgroundColor
         backgroundSprite.addShadow(rectOf: CGSize(width: settingsSize, height: settingsSize + ChatEngine.avatarSizeNew + settingsButtonHeight),
                                    cornerRadius: 20,
                                    shadowColor: backgroundShadowColor)
+        
+//        let pauseResetInitialPosition = CGPoint(x: -(settingsSize * settingsScale / 2) + (pauseResetButtonSize.width / 2),
+//    y: -settingsSize / 2 - settingsButtonHeight)
+        let xPosition = -backgroundSprite.position.x + pauseResetButtonSize.width / pauseResetScale / 2 + abs(titleButton.shadowSize.x) + GameboardSprite.padding
+        let yPosition = -settingsSize / 2 - pauseResetButtonSize.height + abs(titleButton.shadowSize.y)
+        let pauseResetInitialPosition = CGPoint(x: xPosition, y: yPosition)
+        titleButton.position = pauseResetInitialPosition
+        purchaseButton.position = titleButton.position + CGPoint(x: pauseResetButtonSize.width / pauseResetScale, y: 0)
+        leaderboardButton.position = purchaseButton.position + CGPoint(x: pauseResetButtonSize.width / pauseResetScale, y: 0)
+        howToPlayButton.position = leaderboardButton.position + CGPoint(x: pauseResetButtonSize.width / pauseResetScale, y: 0)
+        settingsButton.position = howToPlayButton.position + CGPoint(x: pauseResetButtonSize.width / pauseResetScale, y: 0)
+        
+        titleButton.delegate = self
+        purchaseButton.delegate = self
+        leaderboardButton.delegate = self
+        howToPlayButton.delegate = self
+        settingsButton.delegate = self
+        
+        settingsButton.touchDown()
 
         resetAll()
     }
@@ -125,11 +166,13 @@ class PauseResetEngine {
     
     // MARK: - Move Functions
     
-    func moveSprites(to superScene: SKScene) {
+    func moveSprites(to superScene: SKScene, level: Int) {
         self.superScene = superScene
         
         superScene.addChild(buttonSprite)
         superScene.addChild(countdownLabel)
+        
+        currentLevel = level
     }
     
     
@@ -209,6 +252,13 @@ class PauseResetEngine {
             
             foregroundSprite.addChild(comingSoonLabel)
             backgroundSprite.addChild(foregroundSprite)
+            
+            backgroundSprite.addChild(titleButton)
+            backgroundSprite.addChild(purchaseButton)
+            backgroundSprite.addChild(leaderboardButton)
+            backgroundSprite.addChild(howToPlayButton)
+            backgroundSprite.addChild(settingsButton)
+            
             superScene.addChild(backgroundSprite)
         }
         else {
@@ -223,6 +273,13 @@ class PauseResetEngine {
                 
                 self.comingSoonLabel.removeFromParent()
                 self.foregroundSprite.removeFromParent()
+
+                self.titleButton.removeFromParent()
+                self.purchaseButton.removeFromParent()
+                self.leaderboardButton.removeFromParent()
+                self.howToPlayButton.removeFromParent()
+                self.settingsButton.removeFromParent()
+
                 self.backgroundSprite.removeFromParent()
             }
             
@@ -265,6 +322,9 @@ class PauseResetEngine {
         countdownLabel.run(SKAction.rotate(toAngle: 0, duration: 0))
 
         buttonSprite.removeAction(forKey: resetAnimationKey)
+        
+        titleButton.touchUp()
+        leaderboardButton.touchUp()
     }
     
     /**
@@ -278,72 +338,153 @@ class PauseResetEngine {
         guard let location = location else { return print("Location nil. Unable to pauseReset.") }
         
         for nodeTapped in superScene.nodes(at: location) {
-            guard nodeTapped.name == pauseResetName else { break }
-            
-            
-            buttonSprite.run(SKAction.colorize(with: .black, colorBlendFactor: 0.25, duration: 0))
-            
-            isPressed = true
-            resetAll()
-            Haptics.shared.addHapticFeedback(withStyle: .light)
+            switch nodeTapped.name {
+            case pauseResetName:
+                handlePauseReset(resetCompletion: resetCompletion)
+            case nameTitle:
+                guard !titleButton.isPressed else { break }
+                
+                titleButton.touchDown()
+                titleButton.tapButton()
 
-            guard !specialFunctionEnabled else { return }
-            
-            //Counts down to see if should reset the level
-            let animateCountdown = SKAction.run { [unowned self] in
-                resetFinal = Date()
-                
-                countdownLabel.text = "\(resetThreshold - Int(resetElapsed))"
-                countdownLabel.updateShadow()
-                
-                if resetElapsed >= 0.4 {
-                    buttonSprite.texture = SKTexture(imageNamed: "\(pauseResetName)4")
-                    
-                    countdownLabel.alpha = 1.0
-                    
-                    //All this to animate the countdown timer, make it more exciting.
-                    if floor(resetElapsed) == resetElapsed.truncate(placesAfterDecimal: 1) {
-                        countdownLabel.run(SKAction.group([
-                            SKAction.sequence([
-                                SKAction.scale(to: ceil(resetElapsed) * 0.75, duration: 0.25),
-                                SKAction.scale(to: ceil(resetElapsed) * 0.65, duration: 0.25)
-                            ]),
-                            SKAction.repeatForever(SKAction.sequence([
-                                SKAction.rotate(toAngle: .pi / 32 * resetElapsed, duration: 0.1),
-                                SKAction.rotate(toAngle: -.pi / 32 * resetElapsed, duration: 0.1)
-                            ]))
-                        ]))
-                    }
-                }
-            } //animateCountdown
-            
-            let repeatAction = SKAction.repeat(SKAction.sequence([
-                animateCountdown,
-                SKAction.wait(forDuration: 1.0 / (10 * resetTimerSpeed))
-            ]), count: resetThreshold * 10)
-            
-            let completionAction = SKAction.run {
-                if self.isPaused {
-                    self.handleControls()
-                }
-                else {
-                    K.ButtonTaps.tap1()
-                }
+//                purchaseButton.touchUp()
+//                leaderboardButton.touchUp()
+//                howToPlayButton.touchUp()
+//                settingsButton.touchUp()
+            case namePurchase:
+                guard !purchaseButton.isPressed else { break }
 
-                self.buttonSprite.texture = SKTexture(imageNamed: "\(self.pauseResetName)")
-                self.touchUp()
-                
-                resetCompletion?()
+                purchaseButton.touchDown()
+                purchaseButton.tapButton()
+
+                titleButton.touchUp()
+                leaderboardButton.touchUp()
+                howToPlayButton.touchUp()
+                settingsButton.touchUp()
+            case nameLeaderboard:
+                guard !leaderboardButton.isPressed else { break }
+
+                leaderboardButton.touchDown()
+                leaderboardButton.tapButton()
+
+//                titleButton.touchUp()
+//                purchaseButton.touchUp()
+//                howToPlayButton.touchUp()
+//                settingsButton.touchUp()
+            case nameHowToPlay:
+                guard !howToPlayButton.isPressed else { break }
+
+                howToPlayButton.touchDown()
+                howToPlayButton.tapButton()
+
+                titleButton.touchUp()
+                purchaseButton.touchUp()
+                leaderboardButton.touchUp()
+                settingsButton.touchUp()
+            case nameSettings:
+                guard !settingsButton.isPressed else { break }
+
+                settingsButton.touchDown()
+                settingsButton.tapButton()
+
+                titleButton.touchUp()
+                purchaseButton.touchUp()
+                leaderboardButton.touchUp()
+                howToPlayButton.touchUp()
+            default:
+                break
             }
-            
-            let sequenceAction = SKAction.sequence([
-                repeatAction,
-                completionAction
-            ])
-            
-            buttonSprite.run(sequenceAction, withKey: resetAnimationKey)
         } //end for
     } //end func touchDown
     
     
+    private func handlePauseReset(resetCompletion: (() -> Void)?) {
+        buttonSprite.run(SKAction.colorize(with: .black, colorBlendFactor: 0.25, duration: 0))
+        
+        isPressed = true
+        resetAll()
+        Haptics.shared.addHapticFeedback(withStyle: .light)
+
+        guard !specialFunctionEnabled else { return }
+        
+        //Counts down to see if should reset the level
+        let animateCountdown = SKAction.run { [unowned self] in
+            resetFinal = Date()
+            
+            countdownLabel.text = "\(resetThreshold - Int(resetElapsed))"
+            countdownLabel.updateShadow()
+            
+            if resetElapsed >= 0.4 {
+                buttonSprite.texture = SKTexture(imageNamed: "\(pauseResetName)4")
+                
+                countdownLabel.alpha = 1.0
+                
+                //All this to animate the countdown timer, make it more exciting.
+                if floor(resetElapsed) == resetElapsed.truncate(placesAfterDecimal: 1) {
+                    countdownLabel.run(SKAction.group([
+                        SKAction.sequence([
+                            SKAction.scale(to: ceil(resetElapsed) * 0.75, duration: 0.25),
+                            SKAction.scale(to: ceil(resetElapsed) * 0.65, duration: 0.25)
+                        ]),
+                        SKAction.repeatForever(SKAction.sequence([
+                            SKAction.rotate(toAngle: .pi / 32 * resetElapsed, duration: 0.1),
+                            SKAction.rotate(toAngle: -.pi / 32 * resetElapsed, duration: 0.1)
+                        ]))
+                    ]))
+                }
+            }
+        } //animateCountdown
+        
+        let repeatAction = SKAction.repeat(SKAction.sequence([
+            animateCountdown,
+            SKAction.wait(forDuration: 1.0 / (10 * resetTimerSpeed))
+        ]), count: resetThreshold * 10)
+        
+        let completionAction = SKAction.run {
+            if self.isPaused {
+                self.handleControls()
+            }
+            else {
+                K.ButtonTaps.tap1()
+            }
+
+            self.buttonSprite.texture = SKTexture(imageNamed: "\(self.pauseResetName)")
+            self.touchUp()
+            
+            resetCompletion?()
+        }
+        
+        let sequenceAction = SKAction.sequence([
+            repeatAction,
+            completionAction
+        ])
+        
+        buttonSprite.run(sequenceAction, withKey: resetAnimationKey)
+    }
+    
+    
+}
+
+
+// MARK: - CustomButtonDelegate
+
+extension PauseResetEngine: PauseResetButtonDelegate {
+    func didTapButton(_ node: PauseResetButton) {
+        switch node.name {
+        case nameTitle:
+            print("Title tapped")
+        case namePurchase:
+            print("Purchase tapped")
+        case nameLeaderboard:
+            GameCenterManager.shared.showLeaderboard(level: currentLevel) {
+                self.leaderboardButton.touchUp()
+            }
+        case nameHowToPlay:
+            print("How To Play tapped")
+        case nameSettings:
+            print("Settings tapped")
+        default:
+            print("Unknown button tapped")
+        }
+    }
 }

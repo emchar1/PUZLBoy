@@ -367,7 +367,7 @@ class GameScene: SKScene {
         gameEngine.moveSprites(to: self)
         scoringEngine.moveSprites(to: self)
         chatEngine.moveSprites(to: self)
-        pauseResetEngine.moveSprites(to: self)
+        pauseResetEngine.moveSprites(to: self, level: currentLevel)
         
         offlinePlaySprite.refreshStatus()
         addChild(offlinePlaySprite)
@@ -509,7 +509,7 @@ extension GameScene: LevelSkipEngineDelegate {
     }
     
     func viewAchievementsPressed(_ node: SKSpriteNode) {
-        GameCenterManager.shared.showLeaderboard(level: currentLevel)
+        GameCenterManager.shared.showLeaderboard(level: currentLevel, completion: nil)
     }
     
     func partyModePressed(_ node: SKSpriteNode) {

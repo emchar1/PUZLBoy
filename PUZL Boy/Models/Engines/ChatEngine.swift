@@ -163,7 +163,7 @@ class ChatEngine {
         
         textSprite.position.x = origin.x + (profile != .hero ? padding.x : avatarSprite.size.width)
         avatarSprite.position.x = origin.x + (profile == .hero ? padding.x : backgroundSpriteWidth - padding.x)
-        backgroundSprite.position.x = profile == .hero ? 0 : K.ScreenDimensions.width
+        backgroundSprite.position.x = profile == .hero ? 0 : K.ScreenDimensions.iPhoneWidth
 
         avatarSprite.xScale = profile == .hero ? abs(avatarSprite.xScale) : -abs(avatarSprite.xScale)
         backgroundSprite.setScale(0)
