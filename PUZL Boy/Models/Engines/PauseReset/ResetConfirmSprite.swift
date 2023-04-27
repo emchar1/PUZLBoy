@@ -92,6 +92,10 @@ class ResetConfirmSprite: SKNode {
         fatalError("init(coder:) has not been implemented")
     }
     
+    deinit {
+        print("ResetConfirmSprite deinit")
+    }
+    
     
     // MARK: - Functions
     

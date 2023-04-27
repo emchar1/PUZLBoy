@@ -121,6 +121,10 @@ class ChatEngine {
         backgroundSprite.addChild(textSprite)        
     }
     
+    deinit {
+        print("ChatEngine deinit")
+    }
+    
     
     // MARK: - Functions
 

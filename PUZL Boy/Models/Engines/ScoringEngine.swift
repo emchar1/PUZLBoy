@@ -72,6 +72,10 @@ class ScoringEngine {
         updateLabels()
     }
     
+    deinit {
+        print("ScoringEngine deinit")
+    }
+    
     
     // MARK: - Scoring Multipliers
 

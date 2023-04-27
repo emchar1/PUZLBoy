@@ -114,6 +114,10 @@ class ContinueSprite: SKNode {
         fatalError("init(coder:) has not been implemented")
     }
     
+    deinit {
+        print("ContinueSprite deinit")
+    }
+    
     
     // MARK: - Functions
     

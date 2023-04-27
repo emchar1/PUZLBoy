@@ -37,6 +37,10 @@ class OfflinePlaySprite: SKNode {
         fatalError("init(coder:) has not been implemented")
     }
     
+    deinit {
+        print("OfflinePlaySprite deinit")
+    }
+    
     
     // MARK: - Functions
     

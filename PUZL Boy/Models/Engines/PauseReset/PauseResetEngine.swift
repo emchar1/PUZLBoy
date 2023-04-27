@@ -174,6 +174,10 @@ class PauseResetEngine {
         resetAll()
     }
     
+    deinit {
+        print("PauseResetEngine deinit")
+    }
+    
     
     // MARK: - Move Functions
     

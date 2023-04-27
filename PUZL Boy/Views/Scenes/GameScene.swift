@@ -734,6 +734,8 @@ extension GameScene: PauseResetEngineDelegate {
         removeAllChildren()
         removeFromParent()
         
+        AudioManager.shared.stopSound(for: AudioManager.shared.currentTheme)
+        
         gameSceneDelegate?.confirmQuitTapped()
     }
 }

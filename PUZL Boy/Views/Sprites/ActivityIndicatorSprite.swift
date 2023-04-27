@@ -61,6 +61,10 @@ class ActivityIndicatorSprite: SKNode {
         fatalError("init(coder:) has not been implemented")
     }
     
+    deinit {
+        print("ActivityIndicatorSprite deinit")
+    }
+    
     
     // MARK: - Functions
     
