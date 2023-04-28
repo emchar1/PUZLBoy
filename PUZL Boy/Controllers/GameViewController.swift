@@ -15,6 +15,7 @@ class GameViewController: UIViewController {
     private var levelLoaded = false
     private var user: User?
     private var saveStateModel: SaveStateModel?
+    private var gameScenePreserved: GameScene?
     private let skView = SKView()
     
     override func viewDidLoad() {
@@ -82,10 +83,15 @@ class GameViewController: UIViewController {
 
 extension GameViewController: TitleSceneDelegate {
     func didTapStart() {
-        let gameScene = GameScene(size: K.ScreenDimensions.screenSize, user: user, saveStateModel: saveStateModel)
-        gameScene.gameSceneDelegate = self
-        
-        skView.presentScene(gameScene, transition: SKTransition.fade(with: .white, duration: 1.0))
+        if let gameScenePreserved = gameScenePreserved {
+            skView.presentScene(gameScenePreserved, transition: SKTransition.fade(with: .white, duration: 1.0))
+        }
+        else {
+            let gameScene = GameScene(size: K.ScreenDimensions.screenSize, user: user, saveStateModel: saveStateModel)
+            gameScene.gameSceneDelegate = self
+            
+            skView.presentScene(gameScene, transition: SKTransition.fade(with: .white, duration: 1.0))
+        }
     }
 }
 
@@ -97,6 +103,9 @@ extension GameViewController: GameSceneDelegate {
         let titleScene = TitleScene(size: K.ScreenDimensions.screenSize)
         titleScene.titleSceneDelegate = self
         
-        skView.presentScene(titleScene, transition: SKTransition.fade(with: .white, duration: 1.0))
+        //NEEDS to have a transition, otherwise the state won't save, trust me.
+        skView.presentScene(titleScene, transition: SKTransition.fade(with: .white, duration: 0))
+        
+        gameScenePreserved = skView.scene as? GameScene
     }
 }

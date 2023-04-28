@@ -91,10 +91,7 @@ class GameScene: SKScene {
         
         // FIXME: - Debuging purposes only!!!
         levelSkipEngine.delegate = self
-        
-        AudioManager.shared.stopSound(for: "continueloop")
-        AudioManager.shared.playSound(for: AudioManager.shared.currentTheme)
-        
+                
         backgroundColor = .systemBlue
         scaleMode = .aspectFill
         
@@ -183,7 +180,7 @@ class GameScene: SKScene {
             }
         }
 
-        guard !pauseResetEngine.isPaused else { return print("Game is paused. quitting.") }
+        guard !pauseResetEngine.isPaused else { return }
         
         gameEngine.handleControls(in: location)
         
@@ -221,10 +218,21 @@ class GameScene: SKScene {
     
     override func didMove(to view: SKView) {
         moveSprites()
+        
+        //These alway need to go in THIS order!
+        scoringEngine.timerManager.resumeTime()
         startTimer()
+        
         playDialogue()
         
+        AudioManager.shared.stopSound(for: "continueloop")
+        AudioManager.shared.playSound(for: AudioManager.shared.currentTheme)
+
         gameEngine.checkIfGameOverOnStartup()
+    }
+    
+    override func willMove(from view: SKView) {
+        AudioManager.shared.stopSound(for: AudioManager.shared.currentTheme)
     }
     
     override func update(_ currentTime: TimeInterval) {
@@ -734,7 +742,7 @@ extension GameScene: PauseResetEngineDelegate {
         removeAllChildren()
         removeFromParent()
         
-        AudioManager.shared.stopSound(for: AudioManager.shared.currentTheme)
+        saveState(levelStatsItem: getLevelStatsItem(level: currentLevel, didWin: false))
         
         gameSceneDelegate?.confirmQuitTapped()
     }

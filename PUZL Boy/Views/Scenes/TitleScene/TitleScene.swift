@@ -178,7 +178,9 @@ class TitleScene: SKScene {
         menuCredits.delegate = self
                 
         menuLevelSelect.setIsEnabled(false)
+
         mixColors()
+        animateSprites()
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -215,37 +217,7 @@ class TitleScene: SKScene {
         menuBackgroundShadow3.fillColor = menuBackgroundShadow1.fillColor
     }
     
-    deinit {
-        print("deinit TitleScene")
-    }
-    
-    
-    // MARK: - Functions
-    
-    override func didMove(to view: SKView) {
-        addChild(skyNode)
-        addChild(player.sprite)
-        addChild(puzlTitle)
-        addChild(boyTitle)
-        addChild(menuBackground)
-        addChild(fadeSprite)
-        
-        puzlTitle.addChild(puzlTitleShadow1)
-        puzlTitle.addChild(puzlTitleShadow2)
-        puzlTitle.addChild(puzlTitleShadow3)
-
-        menuBackground.addChild(menuBackgroundText)
-        menuBackground.addChild(menuBackgroundColor)
-        menuBackground.addChild(menuBackgroundShadow1)
-        menuBackground.addChild(menuBackgroundShadow2)
-        menuBackground.addChild(menuBackgroundShadow3)
-        
-        menuBackgroundText.addChild(menuStart)
-        menuBackgroundText.addChild(menuLevelSelect)
-        menuBackgroundText.addChild(menuOptions)
-        menuBackgroundText.addChild(menuCredits)
-        
-
+    private func animateSprites() {
         //Title Animation
         let animationDuration: TimeInterval = 0.15
 
@@ -334,6 +306,37 @@ class TitleScene: SKScene {
         AudioManager.shared.playSound(for: "punchwhack1")
         AudioManager.shared.playSound(for: "punchwhack2", delay: animationDuration)
         AudioManager.shared.playSound(for: AudioManager.shared.titleLogo, delay: delayMenu)
+    }
+    
+    deinit {
+        print("deinit TitleScene")
+    }
+    
+    
+    // MARK: - Functions
+    
+    override func didMove(to view: SKView) {
+        addChild(skyNode)
+        addChild(player.sprite)
+        addChild(puzlTitle)
+        addChild(boyTitle)
+        addChild(menuBackground)
+        addChild(fadeSprite)
+        
+        puzlTitle.addChild(puzlTitleShadow1)
+        puzlTitle.addChild(puzlTitleShadow2)
+        puzlTitle.addChild(puzlTitleShadow3)
+
+        menuBackground.addChild(menuBackgroundText)
+        menuBackground.addChild(menuBackgroundColor)
+        menuBackground.addChild(menuBackgroundShadow1)
+        menuBackground.addChild(menuBackgroundShadow2)
+        menuBackground.addChild(menuBackgroundShadow3)
+        
+        menuBackgroundText.addChild(menuStart)
+        menuBackgroundText.addChild(menuLevelSelect)
+        menuBackgroundText.addChild(menuOptions)
+        menuBackgroundText.addChild(menuCredits)
     }
     
     

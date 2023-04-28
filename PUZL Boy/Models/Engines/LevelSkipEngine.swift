@@ -78,8 +78,8 @@ class LevelSkipEngine {
     // MARK: - Necessary Functions
     
     func handleControls(in location: CGPoint) {
-        guard let superScene = superScene else { return print("superScene not set!") }
-        guard GameEngine.livesRemaining >= 0 else { return print("Can't level skip. Player he dead.") }
+        guard let superScene = superScene else { return }
+        guard GameEngine.livesRemaining >= 0 else { return }
         
         if location.y < UIDevice.modelInfo.bottomSafeArea * 2 + 180 {
             showButtons()

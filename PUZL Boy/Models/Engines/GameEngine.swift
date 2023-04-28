@@ -758,6 +758,7 @@ class GameEngine {
         superScene.addChild(gameboardSprite.sprite)
         superScene.addChild(displaySprite.sprite)
 
+        playerSprite.sprite.removeFromParent() //This is needed, otherwise gameboardSprite keeps adding it, below
         playerSprite.setScale(panelSize: gameboardSprite.panelSize)
         gameboardSprite.sprite.addChild(playerSprite.sprite)
 

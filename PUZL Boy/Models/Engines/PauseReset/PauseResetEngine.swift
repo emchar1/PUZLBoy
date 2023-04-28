@@ -133,9 +133,9 @@ class PauseResetEngine {
         howToPlayButton = PauseResetButton(text: nameHowToPlay, position: .zero, size: pauseResetButtonSize)
         settingsButton = PauseResetButton(text: nameSettings, position: .zero, size: pauseResetButtonSize)
         
-        confirmSprite = ConfirmSprite(title: "RETURN TO MAIN MENU?",
-                                      message: "Tap Quit to return to the main menu. Your progress will be saved.",
-                                      confirm: "Quit",
+        confirmSprite = ConfirmSprite(title: "RETURN TO TITLE SCREEN?",
+                                      message: "Tap Quit Game to return to the main menu. Your progress will be saved.",
+                                      confirm: "Quit Game",
                                       cancel: "Cancel")
 
         //Add'l setup/customization
@@ -241,7 +241,7 @@ class PauseResetEngine {
     
     private func openSettingsMenu() {
         guard let superScene = superScene else { return print("superScene not set in PauseResetEngine!") }
-        guard isPressed else { return }
+        guard isPressed else { return print("isPressed is false in PauseResetEngine!") }
         
         isPaused.toggle()
         
@@ -489,8 +489,14 @@ extension PauseResetEngine: PauseResetButtonDelegate {
             comingSoonLabel.text = "     PURCHASE\n(Coming Soon...)"
             comingSoonLabel.updateShadow()
         case nameLeaderboard:
+            guard let superScene = superScene else { return print("superScene not set up. Unable to show leaderboard!") }
+            
+            let activityIndicator = ActivityIndicatorSprite()
+            activityIndicator.move(toParent: superScene)
+            
             GameCenterManager.shared.showLeaderboard(level: currentLevel) {
                 self.leaderboardButton.touchUp()
+                activityIndicator.removeFromParent()
             }
         case nameHowToPlay:
             comingSoonLabel.text = "    HOW TO PLAY\n(Coming Soon...)"
@@ -514,6 +520,24 @@ extension PauseResetEngine: ConfirmSpriteDelegate {
         confirmSprite.animateHide {
             self.confirmSprite.removeFromParent()
             self.delegate?.confirmQuitTapped()
+            
+            
+            
+            
+            
+            
+            
+            
+            // FIXME: - Can this be functionized
+            self.isPaused = false
+            self.isAnimating = false
+            
+            self.backgroundSprite.position.y = self.position.y
+            self.backgroundSprite.setScale(0)
+            
+            self.foregroundSprite.removeAllChildren()
+            self.backgroundSprite.removeAllChildren()
+            self.backgroundSprite.removeFromParent()
         }
     }
     

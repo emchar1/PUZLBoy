@@ -45,7 +45,7 @@ class ResetConfirmSprite: SKNode {
         titleLabel.zPosition = 10
         titleLabel.addHeavyDropShadow()
         
-        confirmButton = DecisionButtonSprite(text: "Restart",
+        confirmButton = DecisionButtonSprite(text: "Restart Level",
                                              color: UIColor(red: 227 / 255, green: 32 / 255, blue: 9 / 255, alpha: 1.0),
                                              iconImageName: nil)
         confirmButton.position = CGPoint(x: -K.ScreenDimensions.iPhoneWidth / 4,
@@ -58,7 +58,7 @@ class ResetConfirmSprite: SKNode {
         cancelButton.position = CGPoint(x: K.ScreenDimensions.iPhoneWidth / 4, y: confirmButton.position.y)
         cancelButton.name = "cancelButton"
         
-        messageLabel = SKLabelNode(text: "Tap Restart to start over. You'll lose a life in the process.")
+        messageLabel = SKLabelNode(text: "Tap Restart Level to start over. You'll lose a life in the process.")
         messageLabel.fontName = UIFont.chatFont
         messageLabel.fontSize = UIDevice.isiPad ? UIFont.gameFontSizeLarge : UIFont.chatFontSize
         messageLabel.fontColor = UIFont.chatFontColor
@@ -102,7 +102,7 @@ class ResetConfirmSprite: SKNode {
     func animateShow(livesRemaining: Int, completion: @escaping (() -> Void)) {
         backgroundSprite.removeFromParent()
         
-        messageLabel.text = "Tap Restart to start over. \(livesRemaining <= 0 ? "Careful! You have 0 lives left, so it'll be GAME OVER." : "You'll lose a life in the process.")"
+        messageLabel.text = "Tap Restart Level to start over. \(livesRemaining <= 0 ? "Careful! You have 0 lives left, so it'll be GAME OVER." : "You'll lose a life in the process.")"
         messageLabel.updateShadow()
 
         addChild(backgroundSprite)
