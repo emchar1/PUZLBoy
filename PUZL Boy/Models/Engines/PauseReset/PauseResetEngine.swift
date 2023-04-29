@@ -46,7 +46,7 @@ class PauseResetEngine {
     private var settingsManager: SettingsManager
     private var quitConfirmSprite: ConfirmSprite
 
-    private var backgroundColor: UIColor { DayTheme.skyColor.top.triadic.first.darkenColor(factor: 6) }
+    private var backgroundColor: UIColor { DayTheme.skyColor.top.analogous.first.darkenColor(factor: 6) }
     private var isPressed: Bool = false
     private var isAnimating: Bool = false
     private var currentLevelLeaderboard: Int = 1
