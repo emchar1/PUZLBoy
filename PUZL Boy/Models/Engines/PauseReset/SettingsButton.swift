@@ -1,5 +1,5 @@
 //
-//  PauseResetButton.swift
+//  SettingsButton.swift
 //  PUZL Boy
 //
 //  Created by Eddie Char on 4/22/23.
@@ -7,31 +7,38 @@
 
 import SpriteKit
 
-protocol PauseResetButtonDelegate: AnyObject {
-    func didTapButton(_ node: PauseResetButton)
+protocol SettingsButtonDelegate: AnyObject {
+    func didTapButton(_ node: SettingsButton)
 }
 
-class PauseResetButton: SKNode {
+class SettingsButton: SKNode {
     
     // MARK: - Properties
     
     var buttonSize: CGSize
     private(set) var isPressed: Bool = false
     private(set) var shadowSize: CGPoint = CGPoint(x: -10, y: -10)
+    private(set) var type: SettingsButtonType
     private var buttonSprite: SKShapeNode
     private var shadowSprite: SKShapeNode
     private var labelSprite: SKLabelNode
     
-    private var backgroundColor: UIColor { (DayTheme.skyColor.bottom.isLight() ?? true) ? DayTheme.skyColor.top : DayTheme.skyColor.bottom }
+//    private var backgroundColor: UIColor { (DayTheme.skyColor.bottom.isLight() ?? true) ? DayTheme.skyColor.top : DayTheme.skyColor.bottom }
+//    private var backgroundShadowColor: UIColor { DayTheme.skyColor.bottom.triadic.first }
+    private var backgroundColor: UIColor { DayTheme.skyColor.top.analogous.first }
     private var backgroundShadowColor: UIColor { DayTheme.skyColor.bottom.triadic.first }
-
     
-    weak var delegate: PauseResetButtonDelegate?
+    weak var delegate: SettingsButtonDelegate?
     
+    enum SettingsButtonType: String {
+        case button1 = "Title", button2 = "Purchase", button3 = "Leaderboard", button4 = "How To Play", button5 = "Settings"
+    }
     
     // MARK: - Initialization
     
-    init(text: String, position: CGPoint, size: CGSize) {
+    init(type: SettingsButtonType, position: CGPoint, size: CGSize) {
+        self.type = type
+        
         buttonSize = size
         
         buttonSprite = SKShapeNode(rectOf: buttonSize, cornerRadius: 20)
@@ -46,22 +53,21 @@ class PauseResetButton: SKNode {
         shadowSprite.alpha = 0.75
         shadowSprite.zPosition = -1
         
-        labelSprite = SKLabelNode(text: text)
+        labelSprite = SKLabelNode(text: type.rawValue)
         labelSprite.fontColor = .white
         labelSprite.fontName = UIFont.chatFont
         labelSprite.fontSize = UIDevice.isiPad ? UIFont.gameFontSizeMedium : UIFont.gameFontSizeSmall
         labelSprite.verticalAlignmentMode = .center
         labelSprite.horizontalAlignmentMode = .center
-        labelSprite.alpha = 0.5
+        labelSprite.alpha = 0.75
         labelSprite.zPosition = 10
         labelSprite.addDropShadow()
         
         super.init()
 
         self.position = position
-        self.name = text
-        buttonSprite.fillColor = backgroundColor
-        shadowSprite.fillColor = backgroundShadowColor
+        self.name = type.rawValue
+        updateColors()
 
         addChild(buttonSprite)
         buttonSprite.addChild(shadowSprite)
@@ -89,7 +95,7 @@ class PauseResetButton: SKNode {
         
         let animationDuration: CGFloat = 0.1
         
-        labelSprite.alpha = 0.5
+        labelSprite.alpha = 0.75
         buttonSprite.fillColor = backgroundColor
         buttonSprite.run(SKAction.move(to: .zero, duration: animationDuration))
         shadowSprite.run(SKAction.move(to: shadowSize, duration: animationDuration))
@@ -100,5 +106,16 @@ class PauseResetButton: SKNode {
         
         delegate?.didTapButton(self)
         K.ButtonTaps.tap2()
+    }
+    
+    func updateColors() {
+        if type == .button1 || type == .button3 {
+            buttonSprite.fillColor = backgroundColor
+        }
+        else {
+            buttonSprite.fillColor = isPressed ? backgroundShadowColor : backgroundColor
+        }
+        
+        shadowSprite.fillColor = backgroundShadowColor
     }
 }
