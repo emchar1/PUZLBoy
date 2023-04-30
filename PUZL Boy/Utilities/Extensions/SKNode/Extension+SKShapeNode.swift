@@ -8,6 +8,7 @@
 import SpriteKit
 
 extension SKShapeNode {
+    ///Adds a simple drop shadow effect.
     func addDropShadow(rectOf: CGSize, cornerRadius: CGFloat, shadowOffset: CGFloat = 10, shadowColor: UIColor = .gray) {
         let shadow = SKShapeNode(rectOf: rectOf, cornerRadius: cornerRadius)
         shadow.position = CGPoint(x: -shadowOffset, y: -shadowOffset)
@@ -21,6 +22,7 @@ extension SKShapeNode {
         addChild(shadow)
     }
     
+    ///Adds a triple shadow effect.
     func addShadow(rectOf: CGSize, cornerRadius: CGFloat, shadowOffset: CGFloat = 10, shadowColor: UIColor = .gray) {
         let shadow1 = SKShapeNode(rectOf: rectOf, cornerRadius: cornerRadius)
         shadow1.position = CGPoint(x: -shadowOffset, y: -shadowOffset)
@@ -55,12 +57,23 @@ extension SKShapeNode {
     }
     
     func updateShadowColor(_ color: UIColor = .gray) {
+        for node in getShadowNodes() {
+            node.fillColor = color
+        }
+    }
+    
+    ///Returns an array of all shadow related SKShapeNodes.
+    func getShadowNodes() -> [SKShapeNode] {
+        var shadowNodes: [SKShapeNode] = []
+        
         for node in children {
             guard node.name == "shadow1" || node.name == "shadow2" || node.name == "shadow3" || node.name == "dropShadow" else { continue }
-            guard let shadow = node as? SKShapeNode else { continue }
-                                
-            shadow.fillColor = color
+            guard let shadowNode = node as? SKShapeNode else { continue }
+            
+            shadowNodes.append(shadowNode)
         }
+        
+        return shadowNodes
     }
     
     func showShadow(animationDuration: TimeInterval = 0.1, completion: (() -> Void)?) {

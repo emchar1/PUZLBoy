@@ -71,7 +71,7 @@ class SettingsManager: SKNode {
         
     func setInitialPosition(_ initialPosition: CGPoint) {
         let adjustedX = initialPosition.x + buttonSize.width / settingsScale / 2 + abs(button1.shadowSize.x)
-        let adjustedY = initialPosition.y - 1.5 * buttonSize.height + abs(button1.shadowSize.y)
+        let adjustedY = initialPosition.y - 0.5 * buttonSize.height - 3 * 10 //30 for the triple shadow size
         let adjustedPosition = CGPoint(x: adjustedX, y: adjustedY)
         
         button1.position = (adjustedPosition)

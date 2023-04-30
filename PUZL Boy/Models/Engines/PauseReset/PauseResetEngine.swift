@@ -18,13 +18,14 @@ class PauseResetEngine {
     
     // MARK: - Properties
 
-    private let settingsWidth: CGFloat = K.ScreenDimensions.iPhoneWidth
+    private let settingsSize: CGSize = CGSize(width: K.ScreenDimensions.iPhoneWidth,
+                                              height: K.ScreenDimensions.iPhoneWidth * (UIDevice.isiPad ? 1.2 : 1.25))
     private let settingsScale: CGFloat = GameboardSprite.spriteScale
 
     private let pauseResetName = "pauseresetbutton"
     private let pauseResetButtonSize: CGFloat = 180
     private var pauseResetButtonPosition: CGPoint {
-        CGPoint(x: (settingsWidth - pauseResetButtonSize) / 2, y: K.ScreenDimensions.bottomMargin)
+        CGPoint(x: (settingsSize.width - pauseResetButtonSize) / 2, y: K.ScreenDimensions.bottomMargin)
     }
     
     private let resetAnimationKey = "resetAnimationKey"
@@ -47,6 +48,7 @@ class PauseResetEngine {
     private var quitConfirmSprite: ConfirmSprite
 
     private var backgroundColor: UIColor { DayTheme.skyColor.top.analogous.first.darkenColor(factor: 6) }
+    private var backgroundShadowColor: UIColor { DayTheme.skyColor.bottom.analogous.first }
     private var isPressed: Bool = false
     private var isAnimating: Bool = false
     private var currentLevelLeaderboard: Int = 1
@@ -68,24 +70,25 @@ class PauseResetEngine {
     // MARK: - Initialization
     
     init() {
-        // FIXME: - This is atrocious
-        backgroundSprite = SKShapeNode(rectOf: CGSize(width: settingsWidth, height: settingsWidth + ChatEngine.avatarSizeNew),
-                                       cornerRadius: 20)
+        let settingsCorner: CGFloat = 20
+        
+        backgroundSprite = SKShapeNode(rectOf: settingsSize, cornerRadius: settingsCorner)
         backgroundSprite.strokeColor = .white
         backgroundSprite.lineWidth = 0
         backgroundSprite.setScale(0)
         backgroundSprite.zPosition = K.ZPosition.pauseScreen
         
-        foregroundSprite = SKShapeNode(rectOf: CGSize(width: settingsWidth, height: settingsWidth + ChatEngine.avatarSizeNew))
+        foregroundSprite = SKShapeNode(rectOf: settingsSize, cornerRadius: settingsCorner)
         foregroundSprite.position = CGPoint(x: 0, y: 0)
         foregroundSprite.fillColor = .clear
+        foregroundSprite.strokeColor = .white
         foregroundSprite.lineWidth = 0
         foregroundSprite.setScale(1)
         
         // FIXME: - Temporary label
         comingSoonLabel = SKLabelNode(text: "      SETTINGS\n(Coming Soon...)")
         comingSoonLabel.numberOfLines = 0
-        comingSoonLabel.preferredMaxLayoutWidth = settingsWidth * 0.8
+        comingSoonLabel.preferredMaxLayoutWidth = settingsSize.width * 0.8
         comingSoonLabel.horizontalAlignmentMode = .center
         comingSoonLabel.verticalAlignmentMode = .center
         comingSoonLabel.fontName = UIFont.chatFont
@@ -111,7 +114,7 @@ class PauseResetEngine {
         pauseResetButtonSprite.name = pauseResetName
         pauseResetButtonSprite.zPosition = K.ZPosition.pauseButton
         
-        settingsManager = SettingsManager(settingsWidth: settingsWidth, buttonHeight: 120)
+        settingsManager = SettingsManager(settingsWidth: settingsSize.width, buttonHeight: 120)
         quitConfirmSprite = ConfirmSprite(title: "RETURN TO TITLE SCREEN?",
                                       message: "Tap Quit Game to return to the main menu. Your progress will be saved.",
                                       confirm: "Quit Game",
@@ -121,11 +124,13 @@ class PauseResetEngine {
         countdownLabel.position = CGPoint(x: pauseResetButtonPosition.x + pauseResetButtonSize / 2,
                                           y: pauseResetButtonPosition.y + pauseResetButtonSize * 1.5)
         pauseResetButtonSprite.position = pauseResetButtonPosition
-        backgroundSprite.position = CGPoint(x: settingsScale * (settingsWidth + GameboardSprite.padding) / 2 + GameboardSprite.xPosition,
-                                            y: pauseResetButtonPosition.y)
+        backgroundSprite.position = CGPoint(
+            x: settingsScale * (settingsSize.width + GameboardSprite.padding) / 2 + GameboardSprite.xPosition + GameboardSprite.padding / 2,
+            y: pauseResetButtonPosition.y)
         backgroundSprite.fillColor = backgroundColor
+        backgroundSprite.addShadow(rectOf: settingsSize, cornerRadius: settingsCorner, shadowOffset: 10, shadowColor: backgroundShadowColor)
 
-        settingsManager.setInitialPosition(CGPoint(x: -backgroundSprite.position.x, y: -settingsWidth / 2))
+        settingsManager.setInitialPosition(CGPoint(x: -backgroundSprite.position.x, y: -settingsSize.height / 2))
         settingsManager.button5.touchDown()
         settingsManager.delegate = self
         quitConfirmSprite.delegate = self
@@ -142,6 +147,15 @@ class PauseResetEngine {
     
     func moveSprites(to superScene: SKScene, level: Int) {
         self.superScene = superScene
+        
+        comingSoonLabel.removeFromParent()
+        foregroundSprite.removeFromParent()
+        settingsManager.removeFromParent()
+        
+        foregroundSprite.addChild(comingSoonLabel)
+        backgroundSprite.addChild(foregroundSprite)
+        backgroundSprite.addChild(settingsManager)
+        superScene.addChild(backgroundSprite)
         
         superScene.addChild(pauseResetButtonSprite)
         superScene.addChild(countdownLabel)
@@ -199,10 +213,19 @@ class PauseResetEngine {
     }
     
     private func openSettingsMenu() {
-        guard let superScene = superScene else { return print("superScene not set in PauseResetEngine!") }
         guard isPressed else { return print("isPressed is false in PauseResetEngine!") }
         
         isPaused.toggle()
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
         
         
         
@@ -212,38 +235,40 @@ class PauseResetEngine {
         
         if isPaused {
             backgroundSprite.run(SKAction.group([
-                SKAction.moveTo(y: GameboardSprite.spriteScale * (settingsWidth - ChatEngine.avatarSizeNew + GameboardSprite.padding * 4 + 2) / 2 + GameboardSprite.yPosition, duration: 0.2),
+                SKAction.moveTo(y: K.ScreenDimensions.topOfGameboard - settingsSize.height/2 * settingsScale + GameboardSprite.padding, duration: 0.2),
                 SKAction.sequence([
                     SKAction.run { [unowned self] in
                         backgroundSprite.fillColor = backgroundColor
                         settingsManager.updateColors()
                     },
-                    SKAction.scale(to: GameboardSprite.spriteScale, duration: 0.2)
+                    SKAction.scale(to: GameboardSprite.spriteScale, duration: 0.2),
+                    SKAction.run {
+                        self.backgroundSprite.showShadow(animationDuration: 0.1, completion: nil)
+                    }
                 ])
             ])) {
                 self.isAnimating = false
             }
-            
-            foregroundSprite.addChild(comingSoonLabel)
-            backgroundSprite.addChild(foregroundSprite)
-            backgroundSprite.addChild(settingsManager)
-            
-            superScene.addChild(backgroundSprite)
         }
         else {
             backgroundSprite.run(SKAction.group([
+                SKAction.run {
+                    self.backgroundSprite.hideShadow(animationDuration: 0.05, completion: nil)
+                },
                 SKAction.moveTo(y: self.pauseResetButtonPosition.y, duration: 0.2),
                 SKAction.scale(to: 0, duration: 0.2)
             ])) {
                 self.isAnimating = false
-                
-                self.comingSoonLabel.removeFromParent()
-                self.foregroundSprite.removeFromParent()
-                self.settingsManager.removeFromParent()
-                self.backgroundSprite.removeFromParent()
             }
             
         }
+        
+        
+        
+        
+        
+        
+        
         
         
         
@@ -430,23 +455,11 @@ extension PauseResetEngine: ConfirmSpriteDelegate {
             self.quitConfirmSprite.removeFromParent()
             self.delegate?.confirmQuitTapped()
             
-            
-            
-            
-            
-            
-            
-            
-            // FIXME: - Can this be functionized
             self.isPaused = false
             self.isAnimating = false
             
             self.backgroundSprite.position.y = self.pauseResetButtonPosition.y
             self.backgroundSprite.setScale(0)
-            
-            self.foregroundSprite.removeAllChildren()
-            self.backgroundSprite.removeAllChildren()
-            self.backgroundSprite.removeFromParent()
         }
     }
     
