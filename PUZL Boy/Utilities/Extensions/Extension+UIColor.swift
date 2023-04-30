@@ -11,11 +11,11 @@ extension UIColor {
     var complementary: UIColor {
         return self.withHueOffset(180 / 360)
     }
-
+    
     var splitComplementary: (first: UIColor, second: UIColor) {
         return (self.withHueOffset(150 / 360), self.withHueOffset(210 / 360))
     }
-
+    
     var triadic: (first: UIColor, second: UIColor) {
         return (self.withHueOffset(120 / 360), self.withHueOffset(240 / 360))
     }
@@ -44,7 +44,7 @@ extension UIColor {
         self.getHue(&hue, saturation: &saturation, brightness: &brightness, alpha: &alpha)
         
         let offsetColor = UIColor(hue: fmod(hue + offset, 1), saturation: saturation, brightness: brightness, alpha: alpha)
-
+        
         return offsetColor
     }
     
@@ -54,5 +54,20 @@ extension UIColor {
         let threshold = ((componentColors[0] * 299) + (componentColors[1] * 587) + (componentColors[2] * 114)) / 1000
         
         return threshold > 0.5
+    }
+    
+    func lightenColor(factor: CGFloat = 1) -> UIColor {
+        return adjustColor(UIColor(red: (10 * factor) / 255, green: (10 * factor) / 255, blue: (10 * factor) / 255, alpha: 0))
+    }
+
+    func darkenColor(factor: CGFloat = 1) -> UIColor {
+        return adjustColor(UIColor(red: (-10 * factor) / 255, green: (-10 * factor) / 255, blue: (-10 * factor) / 255, alpha: 0))
+    }
+
+    func adjustColor(_ adjusted: UIColor) -> UIColor {
+        return UIColor(red: min(255, max(0, self.components.red + adjusted.components.red)),
+                       green: min(255, max(0, self.components.green + adjusted.components.green)),
+                       blue: min(255, max(0, self.components.blue + adjusted.components.blue)),
+                       alpha: min(255, max(0, self.components.alpha + adjusted.components.alpha)))
     }
 }

@@ -23,9 +23,7 @@ class SettingsButton: SKNode {
     private var shadowSprite: SKShapeNode
     private var labelSprite: SKLabelNode
     
-//    private var backgroundColor: UIColor { (DayTheme.skyColor.bottom.isLight() ?? true) ? DayTheme.skyColor.top : DayTheme.skyColor.bottom }
-//    private var backgroundShadowColor: UIColor { DayTheme.skyColor.bottom.triadic.first }
-    private var backgroundColor: UIColor { DayTheme.skyColor.top.analogous.first }
+    private var backgroundColor: UIColor { DayTheme.skyColor.top.triadic.first.darkenColor(factor: 6) }
     private var backgroundShadowColor: UIColor { DayTheme.skyColor.bottom.triadic.first }
     
     weak var delegate: SettingsButtonDelegate?

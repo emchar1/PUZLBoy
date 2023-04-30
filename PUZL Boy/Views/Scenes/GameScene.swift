@@ -22,7 +22,7 @@ class GameScene: SKScene {
     private var scoringEngine: ScoringEngine
     private var chatEngine: ChatEngine
     private var pauseResetEngine: PauseResetEngine
-    private var resetConfirmSprite = ResetConfirmSprite()
+    private var resetConfirmSprite: ConfirmSprite
     private var offlinePlaySprite: OfflinePlaySprite
     private var levelStatsArray: [LevelStats]
     
@@ -74,6 +74,10 @@ class GameScene: SKScene {
         // FIXME: - chatEngine MUST be initialized here, and not in properties, otherwise it just refuses to show up! Because K.ScreenDimensions.topOfGameboard is set in the gameEngine(). Is there a better way to do this??
         chatEngine = ChatEngine()
         pauseResetEngine = PauseResetEngine()
+        resetConfirmSprite = ConfirmSprite(title: "FEELING STUCK?",
+                                      message: "Tap Restart Level to start over. You'll lose a life in the process.",
+                                      confirm: "Restart Level",
+                                      cancel: "Cancel")
         self.user = user
         
         // FIXME: - Debugging purposes only
@@ -749,9 +753,9 @@ extension GameScene: PauseResetEngineDelegate {
 }
 
 
-// MARK: - ResetConfirmSpriteDelegate
+// MARK: - ConfirmSpriteDelegate
 
-extension GameScene: ResetConfirmSpriteDelegate {
+extension GameScene: ConfirmSpriteDelegate {
     func didTapConfirm() {
         hideResetConfirm()
         gameEngine.killAndReset()
@@ -781,7 +785,7 @@ extension GameScene: ResetConfirmSpriteDelegate {
 
         addChild(resetConfirmSprite)
         
-        resetConfirmSprite.animateShow(livesRemaining: GameEngine.livesRemaining) { }
+        resetConfirmSprite.animateShow(newMessage: GameEngine.livesRemaining <= 0 ? "Tap Restart Level to start over. Careful! You have 0 lives left, so it'll be GAME OVER." : nil) { }
     }
     
     private func hideResetConfirm() {

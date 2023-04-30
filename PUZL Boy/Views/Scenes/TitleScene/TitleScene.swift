@@ -192,19 +192,19 @@ class TitleScene: SKScene {
         case 0:
             puzlTitleShadow1.fontColor = DayTheme.skyColor.top.complementary
             boyTitle.fontColor = DayTheme.skyColor.bottom.complementary
-            menuBackgroundColor.fillColor = DayTheme.skyColor.top.complementary.complementary
+            menuBackgroundColor.fillColor = DayTheme.skyColor.top.complementary.complementary.darkenColor(factor: 6)
         case 1:
             puzlTitleShadow1.fontColor = DayTheme.skyColor.bottom.splitComplementary.first
             boyTitle.fontColor = DayTheme.skyColor.bottom.splitComplementary.second
-            menuBackgroundColor.fillColor = DayTheme.skyColor.top.splitComplementary.first
+            menuBackgroundColor.fillColor = DayTheme.skyColor.top.splitComplementary.first.darkenColor(factor: 6)
         case 2:
             puzlTitleShadow1.fontColor = DayTheme.skyColor.bottom.analogous.first
             boyTitle.fontColor = DayTheme.skyColor.bottom.analogous.second
-            menuBackgroundColor.fillColor = DayTheme.skyColor.top.analogous.first
+            menuBackgroundColor.fillColor = DayTheme.skyColor.top.analogous.first.darkenColor(factor: 6)
         default:
             puzlTitleShadow1.fontColor = DayTheme.skyColor.bottom.triadic.first
             boyTitle.fontColor = DayTheme.skyColor.bottom.triadic.second
-            menuBackgroundColor.fillColor = DayTheme.skyColor.top.triadic.first
+            menuBackgroundColor.fillColor = DayTheme.skyColor.top.triadic.first.darkenColor(factor: 6)
         }
 
         puzlTitle.fontColor = .white

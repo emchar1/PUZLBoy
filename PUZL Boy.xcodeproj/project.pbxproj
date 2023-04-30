@@ -23,7 +23,6 @@
 		EA1D5A6E29F217D200677B06 /* Extension+SKLabelNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA1D5A6D29F217D200677B06 /* Extension+SKLabelNode.swift */; };
 		EA1D5A7029F219AA00677B06 /* Extension+SKNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA1D5A6F29F219AA00677B06 /* Extension+SKNode.swift */; };
 		EA26F29129739DE800BF1AC8 /* AdMobManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA26F29029739DE800BF1AC8 /* AdMobManager.swift */; };
-		EA284E7029EE8F4F007ED3D3 /* ResetConfirmSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA284E6F29EE8F4F007ED3D3 /* ResetConfirmSprite.swift */; };
 		EA2AF74429B6D06000444E5A /* OfflinePlaySprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA2AF74329B6D06000444E5A /* OfflinePlaySprite.swift */; };
 		EA2AF74829B6EDAC00444E5A /* gemcollectparty.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA2AF74729B6EDAC00444E5A /* gemcollectparty.mp3 */; };
 		EA34678E2998ED50002DDA02 /* LifeSpawnerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA34678D2998ED50002DDA02 /* LifeSpawnerModel.swift */; };
@@ -47,8 +46,6 @@
 		EA4D025F29B7E33600F0C7B1 /* movemarsh1.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA4D025E29B7E33600F0C7B1 /* movemarsh1.mp3 */; };
 		EA4D026329B7F3AF00F0C7B1 /* PartyModeSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA4D026229B7F3AF00F0C7B1 /* PartyModeSprite.swift */; };
 		EA4D026529B90BF800F0C7B1 /* gemcollect.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA4D026429B90BF700F0C7B1 /* gemcollect.mp3 */; };
-		EA4D026729BA656200F0C7B1 /* TabBarEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA4D026629BA656200F0C7B1 /* TabBarEngine.swift */; };
-		EA4D026929BA8C8E00F0C7B1 /* TabBarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA4D026829BA8C8E00F0C7B1 /* TabBarButton.swift */; };
 		EA4D026B29BC6ACE00F0C7B1 /* Extension+UIDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA4D026A29BC6ACE00F0C7B1 /* Extension+UIDevice.swift */; };
 		EA65182B28E4199E00E535BF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA65182A28E4199E00E535BF /* AppDelegate.swift */; };
 		EA65182D28E4199E00E535BF /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA65182C28E4199E00E535BF /* SceneDelegate.swift */; };
@@ -212,7 +209,6 @@
 		EA1D5A6D29F217D200677B06 /* Extension+SKLabelNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+SKLabelNode.swift"; sourceTree = "<group>"; };
 		EA1D5A6F29F219AA00677B06 /* Extension+SKNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+SKNode.swift"; sourceTree = "<group>"; };
 		EA26F29029739DE800BF1AC8 /* AdMobManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdMobManager.swift; sourceTree = "<group>"; };
-		EA284E6F29EE8F4F007ED3D3 /* ResetConfirmSprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetConfirmSprite.swift; sourceTree = "<group>"; };
 		EA2AF74329B6D06000444E5A /* OfflinePlaySprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfflinePlaySprite.swift; sourceTree = "<group>"; };
 		EA2AF74729B6EDAC00444E5A /* gemcollectparty.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = gemcollectparty.mp3; sourceTree = "<group>"; };
 		EA34678D2998ED50002DDA02 /* LifeSpawnerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LifeSpawnerModel.swift; sourceTree = "<group>"; };
@@ -236,8 +232,6 @@
 		EA4D025E29B7E33600F0C7B1 /* movemarsh1.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = movemarsh1.mp3; sourceTree = "<group>"; };
 		EA4D026229B7F3AF00F0C7B1 /* PartyModeSprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PartyModeSprite.swift; sourceTree = "<group>"; };
 		EA4D026429B90BF700F0C7B1 /* gemcollect.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = gemcollect.mp3; sourceTree = "<group>"; };
-		EA4D026629BA656200F0C7B1 /* TabBarEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarEngine.swift; sourceTree = "<group>"; };
-		EA4D026829BA8C8E00F0C7B1 /* TabBarButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarButton.swift; sourceTree = "<group>"; };
 		EA4D026A29BC6ACE00F0C7B1 /* Extension+UIDevice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+UIDevice.swift"; sourceTree = "<group>"; };
 		EA65182728E4199E00E535BF /* PUZL Boy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "PUZL Boy.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		EA65182A28E4199E00E535BF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -511,12 +505,9 @@
 			isa = PBXGroup;
 			children = (
 				EA94E86629BE6BCC009F2614 /* PauseResetEngine.swift */,
-				EA284E6F29EE8F4F007ED3D3 /* ResetConfirmSprite.swift */,
 				EAFC9A5429FCD44C002792F2 /* SettingsManager.swift */,
 				EADFD95B29F4CE8500C6F9D1 /* SettingsButton.swift */,
 				EADFD96129F90B6A00C6F9D1 /* ConfirmSprite.swift */,
-				EA4D026629BA656200F0C7B1 /* TabBarEngine.swift */,
-				EA4D026829BA8C8E00F0C7B1 /* TabBarButton.swift */,
 			);
 			path = PauseReset;
 			sourceTree = "<group>";
@@ -978,7 +969,6 @@
 				EA95D1BB2952F0680061059C /* Achievement.swift in Sources */,
 				EAF07C0529E796AE0034CD1A /* TemplateClass.swift in Sources */,
 				EA3467B129A99332002DDA02 /* LoadingSprite.swift in Sources */,
-				EA284E7029EE8F4F007ED3D3 /* ResetConfirmSprite.swift in Sources */,
 				EA1D5A6E29F217D200677B06 /* Extension+SKLabelNode.swift in Sources */,
 				EA65184328E420E400E535BF /* GameScene.swift in Sources */,
 				EAF07C0B29E9DADC0034CD1A /* ParallaxManager.swift in Sources */,
@@ -987,7 +977,6 @@
 				EAF07C1029EA7B8C0034CD1A /* Extension+CGSize.swift in Sources */,
 				EA94E87729C2DCE0009F2614 /* Extension+CGPoint.swift in Sources */,
 				EA826C81298CF3FF00F19F81 /* IAPManager.swift in Sources */,
-				EA4D026929BA8C8E00F0C7B1 /* TabBarButton.swift in Sources */,
 				EA956C6A29257B9C00879AD0 /* AudioManager.swift in Sources */,
 				EAB69E0428F3333000C31DB3 /* GameEngine.swift in Sources */,
 				EA826C91298F607E00F19F81 /* AchievementEndlessWallet.swift in Sources */,
@@ -1005,7 +994,6 @@
 				EA4D026B29BC6ACE00F0C7B1 /* Extension+UIDevice.swift in Sources */,
 				EA95D2122963B4580061059C /* LevelSkipEngine.swift in Sources */,
 				EADFD95C29F4CE8500C6F9D1 /* SettingsButton.swift in Sources */,
-				EA4D026729BA656200F0C7B1 /* TabBarEngine.swift in Sources */,
 				EA95D18D29459D550061059C /* Extension+UIFont.swift in Sources */,
 				EA1D5A6C29F1019800677B06 /* Extension+SKShapeNode.swift in Sources */,
 				EA34678E2998ED50002DDA02 /* LifeSpawnerModel.swift in Sources */,

@@ -44,13 +44,9 @@ class PauseResetEngine {
     private var superScene: SKScene?
     
     private var settingsManager: SettingsManager
-    private var confirmSprite: ConfirmSprite
+    private var quitConfirmSprite: ConfirmSprite
 
-//    private var backgroundColor: UIColor { (DayTheme.skyColor.bottom.isLight() ?? true) ? DayTheme.skyColor.top : DayTheme.skyColor.bottom }
-//    private var backgroundShadowColor: UIColor { DayTheme.skyColor.bottom.triadic.first }
-    private var backgroundColor: UIColor { DayTheme.skyColor.top.analogous.first }
-    private var backgroundShadowColor: UIColor { DayTheme.skyColor.bottom.triadic.first }
-
+    private var backgroundColor: UIColor { DayTheme.skyColor.top.triadic.first.darkenColor(factor: 6) }
     private var isPressed: Bool = false
     private var isAnimating: Bool = false
     private var currentLevelLeaderboard: Int = 1
@@ -116,8 +112,7 @@ class PauseResetEngine {
         pauseResetButtonSprite.zPosition = K.ZPosition.pauseButton
         
         settingsManager = SettingsManager(settingsWidth: settingsWidth, buttonHeight: 120)
-        
-        confirmSprite = ConfirmSprite(title: "RETURN TO TITLE SCREEN?",
+        quitConfirmSprite = ConfirmSprite(title: "RETURN TO TITLE SCREEN?",
                                       message: "Tap Quit Game to return to the main menu. Your progress will be saved.",
                                       confirm: "Quit Game",
                                       cancel: "Cancel")
@@ -133,7 +128,7 @@ class PauseResetEngine {
         settingsManager.setInitialPosition(CGPoint(x: -backgroundSprite.position.x, y: -settingsWidth / 2))
         settingsManager.button5.touchDown()
         settingsManager.delegate = self
-        confirmSprite.delegate = self
+        quitConfirmSprite.delegate = self
                 
         resetAll()
     }
@@ -180,7 +175,7 @@ class PauseResetEngine {
                     function()
                 }
                 else if nodeTapped is DecisionButtonSprite {
-                    confirmSprite.didTapButton(in: location)
+                    quitConfirmSprite.didTapButton(in: location)
                 }
             }
         }
@@ -221,7 +216,6 @@ class PauseResetEngine {
                 SKAction.sequence([
                     SKAction.run { [unowned self] in
                         backgroundSprite.fillColor = backgroundColor
-                        backgroundSprite.updateShadowColor(backgroundShadowColor)
                         settingsManager.updateColors()
                     },
                     SKAction.scale(to: GameboardSprite.spriteScale, duration: 0.2)
@@ -291,7 +285,7 @@ class PauseResetEngine {
         
         settingsManager.button1.touchUp() //title
         settingsManager.button3.touchUp() //leaderboard
-        confirmSprite.touchUp()
+        quitConfirmSprite.touchUp()
     }
     
     /**
@@ -304,8 +298,8 @@ class PauseResetEngine {
         guard let superScene = superScene else { return print("superScene not set in PauseResetEngine!") }
         guard let location = location else { return print("Location nil. Unable to pauseReset.") }
 
-        guard confirmSprite.parent == nil else {
-            confirmSprite.touchDown(in: location)
+        guard quitConfirmSprite.parent == nil else {
+            quitConfirmSprite.touchDown(in: location)
             return
         }
         
@@ -399,9 +393,9 @@ extension PauseResetEngine: SettingsManagerDelegate {
         case .button1: //title
             guard let superScene = superScene else { return print("superScene not set up. Unable to show title confirm!") }
                         
-            confirmSprite.animateShow { }
+            quitConfirmSprite.animateShow { }
         
-            superScene.addChild(confirmSprite)
+            superScene.addChild(quitConfirmSprite)
         case .button2: //purchase
             comingSoonLabel.text = "     PURCHASE\n(Coming Soon...)"
             comingSoonLabel.updateShadow()
@@ -432,8 +426,8 @@ extension PauseResetEngine: ConfirmSpriteDelegate {
     func didTapConfirm() {
         print("Confirm tapped")
 
-        confirmSprite.animateHide {
-            self.confirmSprite.removeFromParent()
+        quitConfirmSprite.animateHide {
+            self.quitConfirmSprite.removeFromParent()
             self.delegate?.confirmQuitTapped()
             
             
@@ -459,8 +453,8 @@ extension PauseResetEngine: ConfirmSpriteDelegate {
     func didTapCancel() {
         print("Cancel tapped")
         
-        confirmSprite.animateHide {
-            self.confirmSprite.removeFromParent()
+        quitConfirmSprite.animateHide {
+            self.quitConfirmSprite.removeFromParent()
         }
     }
 }

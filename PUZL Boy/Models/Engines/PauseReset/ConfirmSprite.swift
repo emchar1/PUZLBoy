@@ -92,11 +92,20 @@ class ConfirmSprite: SKNode {
         fatalError("init(coder:) has not been implemented")
     }
     
+    deinit {
+        print("ConfirmSprite deinit")
+    }
+    
     
     // MARK: - Functions
     
-    func animateShow(completion: @escaping (() -> Void)) {
+    func animateShow(newMessage: String? = nil, completion: @escaping (() -> Void)) {
         backgroundSprite.removeFromParent()
+        
+        if let newMessage = newMessage {
+            messageLabel.text = newMessage
+            messageLabel.updateShadow()
+        }
         
         addChild(backgroundSprite)
         
