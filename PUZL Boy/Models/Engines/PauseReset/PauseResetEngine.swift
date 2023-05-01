@@ -94,7 +94,7 @@ class PauseResetEngine {
         foregroundSprite.setScale(1)
         
         // FIXME: - Temporary label
-        comingSoonLabel = SKLabelNode(text: "      SETTINGS\n(Coming Soon...)")
+        comingSoonLabel = SKLabelNode(text: "")
         comingSoonLabel.numberOfLines = 0
         comingSoonLabel.preferredMaxLayoutWidth = settingsSize.width * 0.8
         comingSoonLabel.horizontalAlignmentMode = .center
@@ -128,6 +128,7 @@ class PauseResetEngine {
                                       confirm: "Quit Game",
                                       cancel: "Cancel")
         settingsPage = SettingsPage()
+        settingsPage.zPosition = 10
 
         //Add'l setup/customization
         countdownLabel.position = CGPoint(x: pauseResetButtonPosition.x + pauseResetButtonSize / 2,
@@ -447,6 +448,8 @@ extension PauseResetEngine: SettingsManagerDelegate {
         case .button2: //purchase
             comingSoonLabel.text = "     PURCHASE\n(Coming Soon...)"
             comingSoonLabel.updateShadow()
+            
+            settingsPage.removeFromParent()
         case .button3: //leaderboard
             guard let superScene = superScene else { return print("superScene not set up. Unable to show leaderboard!") }
             
@@ -460,9 +463,14 @@ extension PauseResetEngine: SettingsManagerDelegate {
         case .button4: //howToPlay
             comingSoonLabel.text = "    HOW TO PLAY\n(Coming Soon...)"
             comingSoonLabel.updateShadow()
+            
+            settingsPage.removeFromParent()
         case .button5: //settings
-            comingSoonLabel.text = "      SETTINGS\n(Coming Soon...)"
+            comingSoonLabel.text = ""
             comingSoonLabel.updateShadow()
+            
+            settingsPage.removeFromParent()
+            backgroundSprite.addChild(settingsPage)
         }
     }
 }

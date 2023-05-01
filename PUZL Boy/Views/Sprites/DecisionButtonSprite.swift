@@ -16,7 +16,7 @@ class DecisionButtonSprite: SKNode {
     // MARK: - Properties
     
     let buttonSize = CGSize(width: K.ScreenDimensions.iPhoneWidth * (4 / 9), height: K.ScreenDimensions.iPhoneWidth / 8)
-    let shadowOffset = CGPoint(x: 8, y: -8)
+    let shadowOffset = CGPoint(x: -8, y: -8)
     let iconScale: CGFloat = UIDevice.isiPad ? 120 : 90
     private var isPressed: Bool = false
     private(set) var sprite: SKShapeNode
@@ -87,7 +87,7 @@ class DecisionButtonSprite: SKNode {
     func touchUp() {
         isPressed = false
 
-        topSprite.run(SKAction.move(to: .zero, duration: 0.25))
+        topSprite.run(SKAction.move(to: .zero, duration: 0.1))
     }
     
     func tapButton() {

@@ -100,6 +100,10 @@ class GameEngine {
         healthRemaining = self.level.health
         gemsRemaining = self.level.gems
         
+        enemiesKilled = 0
+        bouldersBroken = 0
+        toolsCollected = 0
+        
         finishInit(shouldSpawn: shouldSpawn)
     }
     
