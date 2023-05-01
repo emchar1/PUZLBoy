@@ -50,8 +50,8 @@ class GameEngine {
         }
     }
     
-    private(set) var shouldDisableControlInput = false
     private(set) var disableInputFromOutside = false
+    private var shouldDisableControlInput = false
     private var justStartedDisableWarp = true
     private var shouldUpdateRemainingForBoulderIfIcy = false
     private var isGliding = false
