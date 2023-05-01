@@ -18,16 +18,19 @@ class PauseResetEngine {
     
     // MARK: - Properties
 
+    //Size Properties
     private let settingsSize: CGSize = CGSize(width: K.ScreenDimensions.iPhoneWidth,
                                               height: K.ScreenDimensions.iPhoneWidth * (UIDevice.isiPad ? 1.2 : 1.25))
     private let settingsScale: CGFloat = GameboardSprite.spriteScale
 
+    //Pause Button
     private let pauseResetName = "pauseresetbutton"
     private let pauseResetButtonSize: CGFloat = 180
     private var pauseResetButtonPosition: CGPoint {
         CGPoint(x: (settingsSize.width - pauseResetButtonSize) / 2, y: K.ScreenDimensions.bottomMargin)
     }
     
+    //Reset Countdown
     private let resetAnimationKey = "resetAnimationKey"
     private let resetThreshold: Int = 3
     private let resetTimerSpeed: TimeInterval = 2
@@ -37,6 +40,7 @@ class PauseResetEngine {
         TimeInterval(resetFinal.timeIntervalSinceNow - resetInitial.timeIntervalSinceNow) * resetTimerSpeed
     }
     
+    //SKNodes
     private var pauseResetButtonSprite: SKSpriteNode
     private var foregroundSprite: SKShapeNode
     private var backgroundSprite: SKShapeNode
@@ -44,20 +48,24 @@ class PauseResetEngine {
     private var countdownLabel: SKLabelNode
     private var superScene: SKScene?
     
+    //Custom Objects
     private var settingsManager: SettingsManager
     private var quitConfirmSprite: ConfirmSprite
+    private var settingsPage: SettingsPage
 
+    //Misc Properties
     private var backgroundColor: UIColor { DayTheme.skyColor.top.analogous.first.darkenColor(factor: 6) }
     private var backgroundShadowColor: UIColor { DayTheme.skyColor.bottom.analogous.first }
+    private var currentLevelLeaderboard: Int = 1
     private var isPressed: Bool = false
     private var isAnimating: Bool = false
-    private var currentLevelLeaderboard: Int = 1
 
     var specialFunctionEnabled: Bool = false {
         didSet {
             pauseResetButtonSprite.texture = SKTexture(imageNamed: specialFunctionEnabled ? "\(pauseResetName)3" : (isPaused ? "\(pauseResetName)2" : pauseResetName))
         }
     }
+    
     var isPaused: Bool = false {
         didSet {
             pauseResetButtonSprite.texture = SKTexture(imageNamed: isPaused ? "\(pauseResetName)2" : pauseResetName)
@@ -119,6 +127,7 @@ class PauseResetEngine {
                                       message: "Tap Quit Game to return to the main menu. Your progress will be saved.",
                                       confirm: "Quit Game",
                                       cancel: "Cancel")
+        settingsPage = SettingsPage()
 
         //Add'l setup/customization
         countdownLabel.position = CGPoint(x: pauseResetButtonPosition.x + pauseResetButtonSize / 2,
@@ -151,10 +160,12 @@ class PauseResetEngine {
         comingSoonLabel.removeFromParent()
         foregroundSprite.removeFromParent()
         settingsManager.removeFromParent()
+        settingsPage.removeFromParent()
         
         foregroundSprite.addChild(comingSoonLabel)
         backgroundSprite.addChild(foregroundSprite)
         backgroundSprite.addChild(settingsManager)
+        backgroundSprite.addChild(settingsPage)
         superScene.addChild(backgroundSprite)
         
         superScene.addChild(pauseResetButtonSprite)
@@ -311,6 +322,7 @@ class PauseResetEngine {
         settingsManager.button1.touchUp() //title
         settingsManager.button3.touchUp() //leaderboard
         quitConfirmSprite.touchUp()
+        settingsPage.touchUp()
     }
     
     /**
@@ -332,6 +344,8 @@ class PauseResetEngine {
             switch nodeTapped.name {
             case pauseResetName:
                 handlePauseReset(resetCompletion: resetCompletion)
+            case SettingsPage.nodeName:
+                settingsPage.touchDown(at: location)
             default:
                 guard !isAnimating else { break }
                 guard let node = nodeTapped as? SettingsButton else { break }
@@ -340,6 +354,15 @@ class PauseResetEngine {
             }
         } //end for
     } //end func touchDown
+    
+    func touchMove(in location: CGPoint?) {
+        guard let superScene = superScene else { return }
+        guard let location = location else { return }
+        guard let settingsNode = superScene.nodes(at: location).filter({ $0.name == SettingsPage.nodeName }).first else { return }
+        guard let settingsPage = settingsNode as? SettingsPage else { return }
+        
+        settingsPage.scrollNode(to: location)
+    }
     
     
     private func handlePauseReset(resetCompletion: (() -> Void)?) {

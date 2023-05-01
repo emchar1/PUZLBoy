@@ -196,6 +196,12 @@ class GameScene: SKScene {
         // FIXME: - Debuging purposes only!!!
         levelSkipEngine.handleControls(in: location)
     }
+    
+    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+        guard let location = touches.first?.location(in: self) else { return }
+
+        pauseResetEngine.touchMove(in: location)
+    }
         
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard let location = touches.first?.location(in: self) else { return }
@@ -740,7 +746,6 @@ extension GameScene: PauseResetEngineDelegate {
         }
     }
     
-    // FIXME: - Retain cycle not deinitializing GameScene
     func confirmQuitTapped() {
         removeAllActions()
         removeAllChildren()
