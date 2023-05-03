@@ -19,8 +19,7 @@ class PauseResetEngine {
     // MARK: - Properties
 
     //Size Properties
-    private let settingsSize: CGSize = CGSize(width: K.ScreenDimensions.iPhoneWidth,
-                                              height: K.ScreenDimensions.iPhoneWidth * (UIDevice.isiPad ? 1.2 : 1.25))
+    private let settingsSize = CGSize(width: K.ScreenDimensions.iPhoneWidth, height: K.ScreenDimensions.iPhoneWidth * (UIDevice.isiPad ? 1.2 : 1.25))
     private let settingsScale: CGFloat = GameboardSprite.spriteScale
 
     //Pause Button
@@ -127,7 +126,7 @@ class PauseResetEngine {
                                       message: "Tap Quit Game to return to the main menu. Your progress will be saved.",
                                       confirm: "Quit Game",
                                       cancel: "Cancel")
-        settingsPage = SettingsPage()
+        settingsPage = SettingsPage(maskSize: settingsSize)
         settingsPage.zPosition = 10
 
         //Add'l setup/customization

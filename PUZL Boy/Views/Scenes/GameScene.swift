@@ -404,23 +404,23 @@ class GameScene: SKScene {
     }
     
     private func playDialogue() {
-        //Only disable input on certain levels, i.e. the important ones w/ instructions.
-        guard chatEngine.shouldPauseGame(level: currentLevel) else { return }
-
-        //Prevents chat dialogue from appearing if user dies on a level with instructions and continue message prompt is showing.
-        guard gameEngine.canContinue else { return }
-
-        scoringEngine.timerManager.pauseTime()
-        stopTimer()
-        pauseResetEngine.specialFunctionEnabled = true
-        gameEngine.shouldDisableInput(true)
-
-        chatEngine.dialogue(level: currentLevel) { [unowned self] in
-            scoringEngine.timerManager.resumeTime()
-            startTimer()
-            pauseResetEngine.specialFunctionEnabled = false
-            gameEngine.shouldDisableInput(false)
-        }
+//        //Only disable input on certain levels, i.e. the important ones w/ instructions.
+//        guard chatEngine.shouldPauseGame(level: currentLevel) else { return }
+//
+//        //Prevents chat dialogue from appearing if user dies on a level with instructions and continue message prompt is showing.
+//        guard gameEngine.canContinue else { return }
+//
+//        scoringEngine.timerManager.pauseTime()
+//        stopTimer()
+//        pauseResetEngine.specialFunctionEnabled = true
+//        gameEngine.shouldDisableInput(true)
+//
+//        chatEngine.dialogue(level: currentLevel) { [unowned self] in
+//            scoringEngine.timerManager.resumeTime()
+//            startTimer()
+//            pauseResetEngine.specialFunctionEnabled = false
+//            gameEngine.shouldDisableInput(false)
+//        }
     }
 }
 

@@ -139,6 +139,7 @@
 		EA95D2172964FFCF0061059C /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = EA95D2162964FFCF0061059C /* FirebaseFirestore */; };
 		EA95D2192964FFCF0061059C /* FirebaseFirestoreSwift in Frameworks */ = {isa = PBXBuildFile; productRef = EA95D2182964FFCF0061059C /* FirebaseFirestoreSwift */; };
 		EA9DFF0029FE481300D02683 /* SettingsPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA9DFEFF29FE481300D02683 /* SettingsPage.swift */; };
+		EA9DFF022A0084F600D02683 /* SettingsRadioNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA9DFF012A0084F600D02683 /* SettingsRadioNode.swift */; };
 		EA9F4DD929CFAB0C006F4B2F /* Extension+Double.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA9F4DD829CFAB0C006F4B2F /* Extension+Double.swift */; };
 		EA9F4DDD29D2B766006F4B2F /* buttontap2.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA9F4DDC29D2B766006F4B2F /* buttontap2.mp3 */; };
 		EA9F4DE229D36F02006F4B2F /* movepoisoned3.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA9F4DDF29D36F01006F4B2F /* movepoisoned3.mp3 */; };
@@ -322,6 +323,7 @@
 		EA95D2112963B4580061059C /* LevelSkipEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelSkipEngine.swift; sourceTree = "<group>"; };
 		EA95D2132964FF350061059C /* SaveStateModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveStateModel.swift; sourceTree = "<group>"; };
 		EA9DFEFF29FE481300D02683 /* SettingsPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPage.swift; sourceTree = "<group>"; };
+		EA9DFF012A0084F600D02683 /* SettingsRadioNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsRadioNode.swift; sourceTree = "<group>"; };
 		EA9F4DD829CFAB0C006F4B2F /* Extension+Double.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+Double.swift"; sourceTree = "<group>"; };
 		EA9F4DDC29D2B766006F4B2F /* buttontap2.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = buttontap2.mp3; sourceTree = "<group>"; };
 		EA9F4DDF29D36F01006F4B2F /* movepoisoned3.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = movepoisoned3.mp3; sourceTree = "<group>"; };
@@ -511,6 +513,7 @@
 				EADFD95B29F4CE8500C6F9D1 /* SettingsButton.swift */,
 				EADFD96129F90B6A00C6F9D1 /* ConfirmSprite.swift */,
 				EA9DFEFF29FE481300D02683 /* SettingsPage.swift */,
+				EA9DFF012A0084F600D02683 /* SettingsRadioNode.swift */,
 			);
 			path = PauseReset;
 			sourceTree = "<group>";
@@ -966,6 +969,7 @@
 				EA826C9729938CBB00F19F81 /* StoreReviewManager.swift in Sources */,
 				EA95D20E2962C8AD0061059C /* AchievementSpeedDemon.swift in Sources */,
 				EA9DFF0029FE481300D02683 /* SettingsPage.swift in Sources */,
+				EA9DFF022A0084F600D02683 /* SettingsRadioNode.swift in Sources */,
 				EA65182B28E4199E00E535BF /* AppDelegate.swift in Sources */,
 				EA956C6C29257D9600879AD0 /* Extension+Comparable.swift in Sources */,
 				EA95D1FA295BEC160061059C /* DisplayLivesSprite.swift in Sources */,

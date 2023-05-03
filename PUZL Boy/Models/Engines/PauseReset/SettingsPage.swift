@@ -21,18 +21,27 @@ class SettingsPage: SKNode {
     }
     
     static let nodeName = "settingsPage"
-    private let maskSize = CGSize(width: K.ScreenDimensions.iPhoneWidth, height: K.ScreenDimensions.iPhoneWidth * 1.2)
-    private let contentSize = CGSize(width: K.ScreenDimensions.iPhoneWidth, height: K.ScreenDimensions.iPhoneWidth * 2)
+    private var maskSize: CGSize
+    private var contentSize: CGSize
     private var isPressed = false
 
     private var cropNode: SKCropNode
     private var maskNode: SKSpriteNode
     private var contentNode: SKSpriteNode
     
+    //Radio Buttons
+    private var radioMusic: SettingsRadioNode
+    private var radioSoundFX: SettingsRadioNode
+    private var radioStrobeLights: SettingsRadioNode
+    private var radioFunGame: SettingsRadioNode
+    
     
     // MARK: - Initialization
     
-    override init() {
+    init(maskSize: CGSize) {
+        self.maskSize = maskSize
+        self.contentSize = CGSize(width: maskSize.width, height: K.ScreenDimensions.iPhoneWidth * 2)
+        
         maskNode = SKSpriteNode(color: .magenta, size: maskSize)
         maskNode.anchorPoint = CGPoint(x: 0.5, y: 1.0)
                 
@@ -40,12 +49,12 @@ class SettingsPage: SKNode {
         cropNode.position = CGPoint(x: 0, y: maskSize.height / 2)
         cropNode.maskNode = maskNode
         
-        contentNode = SKSpriteNode(color: .clear, size: contentSize)
+        contentNode = SKSpriteNode(color: .orange, size: contentSize)
         contentNode.anchorPoint = CGPoint(x: 0, y: 1.0)
         contentNode.position = CGPoint(x: -contentSize.width / 2, y: 0)
         
         // TODO: Add Settings fields
-        let titleLabel = SKLabelNode(text: "Settings")
+        let titleLabel = SKLabelNode(text: "SETTINGS")
         titleLabel.position = CGPoint(x: contentSize.width / 2, y: -20)
         titleLabel.horizontalAlignmentMode = .center
         titleLabel.verticalAlignmentMode = .top
@@ -55,11 +64,33 @@ class SettingsPage: SKNode {
         titleLabel.addHeavyDropShadow()
         titleLabel.zPosition = 10
         
+        let radioNodeSize = CGSize(width: contentSize.width, height: SettingsRadioNode.radioNodeSize.height)
+        
+        radioMusic = SettingsRadioNode(text: "Music", settingsSize: radioNodeSize)
+        radioMusic.position = CGPoint(x: 0, y: -200)
+        radioMusic.zPosition = 20
+
+        radioSoundFX = SettingsRadioNode(text: "SoundFX", settingsSize: radioNodeSize)
+        radioSoundFX.position = CGPoint(x: 0, y: -300)
+        radioSoundFX.zPosition = 20
+
+        radioStrobeLights = SettingsRadioNode(text: "StrobeLights", settingsSize: radioNodeSize)
+        radioStrobeLights.position = CGPoint(x: 0, y: -400)
+        radioStrobeLights.zPosition = 20
+
+        radioFunGame = SettingsRadioNode(text: "FunGame", settingsSize: radioNodeSize)
+        radioFunGame.position = CGPoint(x: 0, y: -500)
+        radioFunGame.zPosition = 20
+
         super.init()
         
         name = SettingsPage.nodeName
         
         contentNode.addChild(titleLabel)
+        contentNode.addChild(radioMusic)
+        contentNode.addChild(radioSoundFX)
+        contentNode.addChild(radioStrobeLights)
+        contentNode.addChild(radioFunGame)
         cropNode.addChild(contentNode)
         addChild(cropNode)
     }
@@ -75,6 +106,18 @@ class SettingsPage: SKNode {
         isPressed = true
         
         initialYPosition = location.y
+        
+        let yOffset: CGFloat = -contentNode.position.y - maskSize.height - SettingsRadioNode.radioNodeSize.height
+
+        radioMusic.touchDown(in: CGPoint(x: location.x, y: location.y - radioMusic.position.y + yOffset))
+        radioSoundFX.touchDown(in: CGPoint(x: location.x, y: location.y - radioSoundFX.position.y + yOffset))
+        radioStrobeLights.touchDown(in: CGPoint(x: location.x, y: location.y - radioStrobeLights.position.y + yOffset))
+        radioFunGame.touchDown(in: CGPoint(x: location.x, y: location.y - radioFunGame.position.y + yOffset))
+
+        //TODO: - Debug this shit.
+        print("cropNode: \(cropNode.position)")
+        print("      maskNode: \(maskNode.position)")
+        print("      contentNode: \(contentNode.position)")
     }
     
     func touchUp() {
