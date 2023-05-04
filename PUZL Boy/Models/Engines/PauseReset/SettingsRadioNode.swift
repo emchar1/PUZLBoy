@@ -49,31 +49,24 @@ class SettingsRadioNode: SKNode {
         }
         
         labelNode = SKLabelNode(text: text)
-        labelNode.position = CGPoint(x: 20, y: settingsSize.height / 2)
+        labelNode.position = CGPoint(x: SettingsPage.padding, y: settingsSize.height / 2)
         labelNode.verticalAlignmentMode = .center
         labelNode.horizontalAlignmentMode = .left
         labelNode.fontName = UIFont.gameFont
         labelNode.fontSize = UIFont.gameFontSizeMedium
         labelNode.fontColor = UIFont.gameFontColor
+        labelNode.zPosition = 10
         labelNode.addDropShadow()
         
         radioNode = SKSpriteNode(imageNamed: isOn ? "radiobuttonOn0" : "radiobuttonOff0")
-        radioNode.position = CGPoint(x: settingsSize.width - 20, y: settingsSize.height / 2)
+        radioNode.position = CGPoint(x: settingsSize.width - SettingsPage.padding, y: settingsSize.height / 2)
         radioNode.anchorPoint = CGPoint(x: 1, y: 0.5)
         radioNode.scale(to: SettingsRadioNode.radioNodeSize)
-        
-        //FIXME: - Delete
-        let backgroundNode = SKSpriteNode(color: .systemPink, size: settingsSize)
-        backgroundNode.anchorPoint = .zero
         
         super.init()
         
         radioNode.name = nodeName
-        labelNode.name = "PattiLabel"
-        name = "BoyGoerge"
         
-
-        addChild(backgroundNode)
         addChild(labelNode)
         addChild(radioNode)
     }
@@ -87,7 +80,11 @@ class SettingsRadioNode: SKNode {
     
     func touchDown(in location: CGPoint) {
         guard !isAnimating else { return }
-        guard let radioNode = nodes(at: location).filter({ $0.name == nodeName }).first else { return }
+        guard let radioNodePositionInScene = radioNode.positionInScene else { return }
+        
+        let adjustedLocation = CGPoint(x: location.x, y: location.y - radioNodePositionInScene.y + SettingsRadioNode.radioNodeSize.height / 2)
+        
+        guard let radioNode = nodes(at: adjustedLocation).filter({ $0.name == nodeName }).first else { return }
 
         isAnimating = true
 

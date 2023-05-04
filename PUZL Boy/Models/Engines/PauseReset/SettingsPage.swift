@@ -11,6 +11,7 @@ class SettingsPage: SKNode {
     
     // MARK: - Properties
     
+    static let padding: CGFloat = 20
     private let maxPositionChange: CGFloat = 50
     private var initialYPosition: CGFloat?
     private var finalYPosition: CGFloat?
@@ -55,7 +56,7 @@ class SettingsPage: SKNode {
         
         // TODO: Add Settings fields
         let titleLabel = SKLabelNode(text: "SETTINGS")
-        titleLabel.position = CGPoint(x: contentSize.width / 2, y: -20)
+        titleLabel.position = CGPoint(x: contentSize.width / 2, y: -SettingsPage.padding)
         titleLabel.horizontalAlignmentMode = .center
         titleLabel.verticalAlignmentMode = .top
         titleLabel.fontName = UIFont.gameFont
@@ -64,22 +65,22 @@ class SettingsPage: SKNode {
         titleLabel.addHeavyDropShadow()
         titleLabel.zPosition = 10
         
-        let radioNodeSize = CGSize(width: contentSize.width, height: SettingsRadioNode.radioNodeSize.height)
+        let settingsSize = CGSize(width: contentSize.width, height: SettingsRadioNode.radioNodeSize.height)
         
-        radioMusic = SettingsRadioNode(text: "Music", settingsSize: radioNodeSize)
+        radioMusic = SettingsRadioNode(text: "Music", settingsSize: settingsSize)
         radioMusic.position = CGPoint(x: 0, y: -200)
         radioMusic.zPosition = 20
 
-        radioSoundFX = SettingsRadioNode(text: "SoundFX", settingsSize: radioNodeSize)
+        radioSoundFX = SettingsRadioNode(text: "SoundFX", settingsSize: settingsSize)
         radioSoundFX.position = CGPoint(x: 0, y: -300)
         radioSoundFX.zPosition = 20
 
-        radioStrobeLights = SettingsRadioNode(text: "StrobeLights", settingsSize: radioNodeSize)
+        radioStrobeLights = SettingsRadioNode(text: "StrobeLights", settingsSize: settingsSize)
         radioStrobeLights.position = CGPoint(x: 0, y: -400)
         radioStrobeLights.zPosition = 20
 
-        radioFunGame = SettingsRadioNode(text: "FunGame", settingsSize: radioNodeSize)
-        radioFunGame.position = CGPoint(x: 0, y: -500)
+        radioFunGame = SettingsRadioNode(text: "FunGame", settingsSize: settingsSize)
+        radioFunGame.position = CGPoint(x: 0, y: -600)
         radioFunGame.zPosition = 20
 
         super.init()
@@ -106,18 +107,11 @@ class SettingsPage: SKNode {
         isPressed = true
         
         initialYPosition = location.y
-        
-        let yOffset: CGFloat = -contentNode.position.y - maskSize.height - SettingsRadioNode.radioNodeSize.height
 
-        radioMusic.touchDown(in: CGPoint(x: location.x, y: location.y - radioMusic.position.y + yOffset))
-        radioSoundFX.touchDown(in: CGPoint(x: location.x, y: location.y - radioSoundFX.position.y + yOffset))
-        radioStrobeLights.touchDown(in: CGPoint(x: location.x, y: location.y - radioStrobeLights.position.y + yOffset))
-        radioFunGame.touchDown(in: CGPoint(x: location.x, y: location.y - radioFunGame.position.y + yOffset))
-
-        //TODO: - Debug this shit.
-        print("cropNode: \(cropNode.position)")
-        print("      maskNode: \(maskNode.position)")
-        print("      contentNode: \(contentNode.position)")
+        radioMusic.touchDown(in: location)
+        radioSoundFX.touchDown(in: location)
+        radioStrobeLights.touchDown(in: location)
+        radioFunGame.touchDown(in: location)
     }
     
     func touchUp() {
@@ -155,7 +149,5 @@ class SettingsPage: SKNode {
         else {
             contentNode.position.y += positionChange
         }
-
-//        print("contentNode.position.y: \(contentNode.position.y), positionChange: \(positionChange)")
     }
 }
