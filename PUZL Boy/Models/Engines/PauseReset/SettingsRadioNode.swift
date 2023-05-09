@@ -41,7 +41,7 @@ class SettingsRadioNode: SKNode {
         self.isOn = isOn
         self.settingsSize = settingsSize
         
-        labelNode = SKLabelNode(text: text)
+        labelNode = SKLabelNode(text: text.uppercased())
         labelNode.position = CGPoint(x: SettingsPage.padding, y: settingsSize.height / 2)
         labelNode.verticalAlignmentMode = .center
         labelNode.horizontalAlignmentMode = .left
@@ -121,7 +121,6 @@ class SettingsRadioNode: SKNode {
             }
         }
         
-        // FIXME: - Find radio button toggle sound
         K.ButtonTaps.tap2()
 
         delegate?.didTapRadio(self)

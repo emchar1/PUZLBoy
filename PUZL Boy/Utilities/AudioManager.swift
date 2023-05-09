@@ -90,7 +90,6 @@ class AudioManager {
         addAudioItem("chatopen", category: .soundFX)
         addAudioItem("dooropen", category: .soundFX)
         addAudioItem("enemydeath", category: .soundFX)
-        addAudioItem("gameover", category: .soundFX)
         addAudioItem("gemcollect", category: .soundFX)
         addAudioItem("gemcollectparty", category: .soundFX)
         addAudioItem("hammerswing", category: .soundFX)
@@ -121,18 +120,24 @@ class AudioManager {
         addAudioItem("pickupitem", category: .soundFX)
         addAudioItem("punchwhack1", category: .soundFX) //needs purchase
         addAudioItem("punchwhack2", category: .soundFX) //needs purchase
+        addAudioItem("radiotick", category: .soundFX) //needs purchase
         addAudioItem("revive", category: .soundFX)
         addAudioItem("swordslash", category: .soundFX)
         addAudioItem("warp", category: .soundFX)
-        addAudioItem("winlevel", category: .soundFX)
         
+        
+        //No Loop music
+        addAudioItem("gameover", category: .musicNoLoop)
+        addAudioItem("winlevel", category: .musicNoLoop)
+        addAudioItem("titletheme", category: .musicNoLoop) //needs purchase
+
         
         //Background music
         addAudioItem("continueloop", category: .music)
         addAudioItem("overworld", category: .music)
         addAudioItem("overworldparty", category: .music)
-        addAudioItem("titletheme", category: .musicNoLoop) //needs purchase
 
+        
         //DELETE
         addAudioItem("overworld_castle", category: .music) //delete
         addAudioItem("overworld_egg", category: .music) //delete
@@ -302,7 +307,7 @@ class AudioManager {
             return
         }
         
-        let volumeToSet: Float = UserDefaults.standard.bool(forKey: item.category == .music ? K.UserDefaults.muteMusic : K.UserDefaults.muteSoundFX) ? 0 : volume
+        let volumeToSet: Float = UserDefaults.standard.bool(forKey: (item.category == .music || item.category == .musicNoLoop) ? K.UserDefaults.muteMusic : K.UserDefaults.muteSoundFX) ? 0 : volume
 
         audioItems[audioKey]!.currentVolume = volumeToSet
         audioItems[audioKey]!.player.setVolume(volumeToSet, fadeDuration: fadeDuration)
@@ -320,7 +325,7 @@ class AudioManager {
      */
     func updateVolumes() {
         for (index, item) in audioItems {
-            if item.category == .music {
+            if item.category == .music || item.category == .musicNoLoop {
                 let volumeToSet: Float = UserDefaults.standard.bool(forKey: K.UserDefaults.muteMusic) ? 0 : item.maxVolume
                 
                 audioItems[index]?.currentVolume = volumeToSet

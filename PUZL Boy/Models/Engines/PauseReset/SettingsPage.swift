@@ -33,6 +33,7 @@ class SettingsPage: SKNode {
     //Radio Buttons
     private var radioMusic: SettingsRadioNode
     private var radioSoundFX: SettingsRadioNode
+    private var radioVibrations: SettingsRadioNode
     private var radioPartyLights: SettingsRadioNode
 
     
@@ -73,9 +74,13 @@ class SettingsPage: SKNode {
         radioSoundFX = SettingsRadioNode(text: "Sound FX", settingsSize: settingsSize, isOn: !UserDefaults.standard.bool(forKey: K.UserDefaults.muteSoundFX))
         radioSoundFX.position = CGPoint(x: 0, y: -300)
         radioSoundFX.zPosition = 20
+        
+        radioVibrations = SettingsRadioNode(text: "Vibrations", settingsSize: settingsSize, isOn: !UserDefaults.standard.bool(forKey: K.UserDefaults.disableVibrations))
+        radioVibrations.position = CGPoint(x: 0, y: -400)
+        radioVibrations.zPosition = 20
 
         radioPartyLights = SettingsRadioNode(text: "Bonus Level Lights", settingsSize: settingsSize, isOn: !UserDefaults.standard.bool(forKey: K.UserDefaults.disablePartyLights))
-        radioPartyLights.position = CGPoint(x: 0, y: -400)
+        radioPartyLights.position = CGPoint(x: 0, y: -500)
         radioPartyLights.zPosition = 20
         
         super.init()
@@ -84,11 +89,13 @@ class SettingsPage: SKNode {
         
         radioMusic.delegate = self
         radioSoundFX.delegate = self
+        radioVibrations.delegate = self
         radioPartyLights.delegate = self
         
         contentNode.addChild(titleLabel)
         contentNode.addChild(radioMusic)
         contentNode.addChild(radioSoundFX)
+        contentNode.addChild(radioVibrations)
         contentNode.addChild(radioPartyLights)
         cropNode.addChild(contentNode)
         addChild(cropNode)
@@ -108,6 +115,7 @@ class SettingsPage: SKNode {
 
         radioMusic.touchDown(in: location)
         radioSoundFX.touchDown(in: location)
+        radioVibrations.touchDown(in: location)
         radioPartyLights.touchDown(in: location)
     }
     
@@ -161,6 +169,12 @@ extension SettingsPage: SettingsRadioNodeDelegate {
         case let radioNode where radioNode == radioSoundFX:
             UserDefaults.standard.set(!radioNode.isOn, forKey: K.UserDefaults.muteSoundFX)
             AudioManager.shared.updateVolumes()
+        case let radioNode where radioNode == radioVibrations:
+            UserDefaults.standard.set(!radioNode.isOn, forKey: K.UserDefaults.disableVibrations)
+            
+            if radioNode.isOn {
+                Haptics.shared.executeCustomPattern(pattern: .enableVibrations)
+            }
         case let radioNode where radioNode == radioPartyLights:
             UserDefaults.standard.set(!radioNode.isOn, forKey: K.UserDefaults.disablePartyLights)
         default:

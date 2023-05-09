@@ -81,6 +81,7 @@
 		EA826C95298F880B00F19F81 /* AchievementPUZLMaster.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA826C94298F880B00F19F81 /* AchievementPUZLMaster.swift */; };
 		EA826C9729938CBB00F19F81 /* StoreReviewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA826C9629938CBB00F19F81 /* StoreReviewManager.swift */; };
 		EA826C9A29950D0C00F19F81 /* NumMovesSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA826C9929950D0C00F19F81 /* NumMovesSprite.swift */; };
+		EA83FEC82A0ACA12004A0AA3 /* radiotick.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA83FEC72A0ACA12004A0AA3 /* radiotick.mp3 */; };
 		EA84645C29D8E5A50075F2A9 /* MenuItemLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA84645B29D8E5A50075F2A9 /* MenuItemLabel.swift */; };
 		EA84645F29D9230B0075F2A9 /* Extension+UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA84645E29D9230B0075F2A9 /* Extension+UIColor.swift */; };
 		EA94E86529BDA536009F2614 /* PartyEffectSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA94E86429BDA536009F2614 /* PartyEffectSprite.swift */; };
@@ -266,6 +267,7 @@
 		EA826C94298F880B00F19F81 /* AchievementPUZLMaster.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementPUZLMaster.swift; sourceTree = "<group>"; };
 		EA826C9629938CBB00F19F81 /* StoreReviewManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreReviewManager.swift; sourceTree = "<group>"; };
 		EA826C9929950D0C00F19F81 /* NumMovesSprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumMovesSprite.swift; sourceTree = "<group>"; };
+		EA83FEC72A0ACA12004A0AA3 /* radiotick.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = radiotick.mp3; sourceTree = "<group>"; };
 		EA84645B29D8E5A50075F2A9 /* MenuItemLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuItemLabel.swift; sourceTree = "<group>"; };
 		EA84645E29D9230B0075F2A9 /* Extension+UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+UIColor.swift"; sourceTree = "<group>"; };
 		EA94E86429BDA536009F2614 /* PartyEffectSprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PartyEffectSprite.swift; sourceTree = "<group>"; };
@@ -618,6 +620,7 @@
 				EAAEA3C92931F12B00221963 /* pickupitem.mp3 */,
 				EAFA6A6329DCEEC3002287C2 /* punchwhack1.mp3 */,
 				EAFA6A6129DCED35002287C2 /* punchwhack2.mp3 */,
+				EA83FEC72A0ACA12004A0AA3 /* radiotick.mp3 */,
 				EA3467A429A8C659002DDA02 /* revive.mp3 */,
 				EAAEA3C32931D0DA00221963 /* swordslash.mp3 */,
 				EAFA6A6F29DCFE79002287C2 /* titletheme.mp3 */,
@@ -887,6 +890,7 @@
 				EAFA6A6E29DCFD63002287C2 /* titletheme5.mp3 in Resources */,
 				EA3467A129A400CB002DDA02 /* overworld8.mp3 in Resources */,
 				EA95D19F294690B70061059C /* boyattack3.mp3 in Resources */,
+				EA83FEC82A0ACA12004A0AA3 /* radiotick.mp3 in Resources */,
 				EA95D18E2945A0200061059C /* LuckiestGuy-Regular.ttf in Resources */,
 				EA95D1A4294691820061059C /* boygrunt2.mp3 in Resources */,
 				EA65183428E419A000E535BF /* Assets.xcassets in Resources */,
@@ -1155,7 +1159,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "PUZL Boy/Supporting Files/PUZL Boy.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 10;
+				CURRENT_PROJECT_VERSION = 11;
 				DEVELOPMENT_TEAM = LZ8V996BTJ;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "PUZL Boy/Supporting Files/Info.plist";
@@ -1168,7 +1172,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.9;
+				MARKETING_VERSION = 1.10;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.5play-apps.PUZL-Boy";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -1187,7 +1191,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "PUZL Boy/Supporting Files/PUZL Boy.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 10;
+				CURRENT_PROJECT_VERSION = 11;
 				DEVELOPMENT_TEAM = LZ8V996BTJ;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "PUZL Boy/Supporting Files/Info.plist";
@@ -1200,7 +1204,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.9;
+				MARKETING_VERSION = 1.10;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.5play-apps.PUZL-Boy";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
