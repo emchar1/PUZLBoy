@@ -241,10 +241,7 @@ class GameboardSprite {
         updatePanels(at: position, with: (terrain: LevelType.lava, overlay: LevelType.boundary))
         panels[position.row][position.col].addChild(lavaNode)
         
-        let lavaappear = "lavaappear\(Int.random(in: 1...3))"
-        AudioManager.shared.playSound(for: lavaappear)
-        AudioManager.shared.adjustVolume(to: 0.5, for: lavaappear)
-        AudioManager.shared.stopSound(for: lavaappear, fadeDuration: 1.5)
+        AudioManager.shared.playSound(for: "lavaappear\(Int.random(in: 1...3))")
         Haptics.shared.executeCustomPattern(pattern: .sand)
         
         //Animation Stuff

@@ -432,13 +432,11 @@ extension GameScene: GameEngineDelegate {
         if isPaused {
             scoringEngine.timerManager.pauseTime()
             stopTimer()
-            AudioManager.shared.adjustVolume(to: 0.1, for: AudioManager.shared.currentTheme, fadeDuration: 0.25)
             print("Pausing game")
         }
         else {
             scoringEngine.timerManager.resumeTime()
             startTimer()
-            AudioManager.shared.raiseVolume(for: AudioManager.shared.currentTheme, fadeDuration: 0.25)
             print("Unpausing game")
         }
     }
@@ -730,12 +728,10 @@ extension GameScene: PauseResetEngineDelegate {
         if isPaused {
             scoringEngine.timerManager.pauseTime()
             stopTimer()
-            AudioManager.shared.adjustVolume(to: 0.1, for: AudioManager.shared.currentTheme, fadeDuration: 0.25)
         }
         else {
             scoringEngine.timerManager.resumeTime()
             startTimer()
-            AudioManager.shared.raiseVolume(for: AudioManager.shared.currentTheme, fadeDuration: 0.25)
         }
     }
     

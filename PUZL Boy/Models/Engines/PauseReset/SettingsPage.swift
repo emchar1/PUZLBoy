@@ -33,9 +33,8 @@ class SettingsPage: SKNode {
     //Radio Buttons
     private var radioMusic: SettingsRadioNode
     private var radioSoundFX: SettingsRadioNode
-    private var radioStrobeLights: SettingsRadioNode
-    private var radioFunGame: SettingsRadioNode
-    
+    private var radioPartyLights: SettingsRadioNode
+
     
     // MARK: - Initialization
     
@@ -50,7 +49,7 @@ class SettingsPage: SKNode {
         cropNode.position = CGPoint(x: 0, y: maskSize.height / 2)
         cropNode.maskNode = maskNode
         
-        contentNode = SKSpriteNode(color: .orange, size: contentSize)
+        contentNode = SKSpriteNode(color: .clear, size: contentSize)
         contentNode.anchorPoint = CGPoint(x: 0, y: 1.0)
         contentNode.position = CGPoint(x: -contentSize.width / 2, y: 0)
         
@@ -67,31 +66,30 @@ class SettingsPage: SKNode {
         
         let settingsSize = CGSize(width: contentSize.width, height: SettingsRadioNode.radioNodeSize.height)
         
-        radioMusic = SettingsRadioNode(text: "Music", settingsSize: settingsSize)
+        radioMusic = SettingsRadioNode(text: "Music", settingsSize: settingsSize, isOn: !UserDefaults.standard.bool(forKey: K.UserDefaults.muteMusic))
         radioMusic.position = CGPoint(x: 0, y: -200)
         radioMusic.zPosition = 20
 
-        radioSoundFX = SettingsRadioNode(text: "SoundFX", settingsSize: settingsSize)
+        radioSoundFX = SettingsRadioNode(text: "Sound FX", settingsSize: settingsSize, isOn: !UserDefaults.standard.bool(forKey: K.UserDefaults.muteSoundFX))
         radioSoundFX.position = CGPoint(x: 0, y: -300)
         radioSoundFX.zPosition = 20
 
-        radioStrobeLights = SettingsRadioNode(text: "StrobeLights", settingsSize: settingsSize)
-        radioStrobeLights.position = CGPoint(x: 0, y: -400)
-        radioStrobeLights.zPosition = 20
-
-        radioFunGame = SettingsRadioNode(text: "FunGame", settingsSize: settingsSize)
-        radioFunGame.position = CGPoint(x: 0, y: -600)
-        radioFunGame.zPosition = 20
-
+        radioPartyLights = SettingsRadioNode(text: "Bonus Level Lights", settingsSize: settingsSize, isOn: !UserDefaults.standard.bool(forKey: K.UserDefaults.disablePartyLights))
+        radioPartyLights.position = CGPoint(x: 0, y: -400)
+        radioPartyLights.zPosition = 20
+        
         super.init()
         
         name = SettingsPage.nodeName
         
+        radioMusic.delegate = self
+        radioSoundFX.delegate = self
+        radioPartyLights.delegate = self
+        
         contentNode.addChild(titleLabel)
         contentNode.addChild(radioMusic)
         contentNode.addChild(radioSoundFX)
-        contentNode.addChild(radioStrobeLights)
-        contentNode.addChild(radioFunGame)
+        contentNode.addChild(radioPartyLights)
         cropNode.addChild(contentNode)
         addChild(cropNode)
     }
@@ -110,8 +108,7 @@ class SettingsPage: SKNode {
 
         radioMusic.touchDown(in: location)
         radioSoundFX.touchDown(in: location)
-        radioStrobeLights.touchDown(in: location)
-        radioFunGame.touchDown(in: location)
+        radioPartyLights.touchDown(in: location)
     }
     
     func touchUp() {
@@ -148,6 +145,26 @@ class SettingsPage: SKNode {
         }
         else {
             contentNode.position.y += positionChange
+        }
+    }
+}
+
+
+// MARK: - SettingsRadioNodeDelegate
+
+extension SettingsPage: SettingsRadioNodeDelegate {
+    func didTapRadio(_ radioNode: SettingsRadioNode) {
+        switch radioNode {
+        case let radioNode where radioNode == radioMusic:
+            UserDefaults.standard.set(!radioNode.isOn, forKey: K.UserDefaults.muteMusic)
+            AudioManager.shared.updateVolumes()
+        case let radioNode where radioNode == radioSoundFX:
+            UserDefaults.standard.set(!radioNode.isOn, forKey: K.UserDefaults.muteSoundFX)
+            AudioManager.shared.updateVolumes()
+        case let radioNode where radioNode == radioPartyLights:
+            UserDefaults.standard.set(!radioNode.isOn, forKey: K.UserDefaults.disablePartyLights)
+        default:
+            return
         }
     }
 }

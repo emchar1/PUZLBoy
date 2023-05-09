@@ -154,7 +154,6 @@ class PlayerSprite {
         ])
         
         AudioManager.shared.playSound(for: "lavasizzle")
-        AudioManager.shared.stopSound(for: "lavasizzle", fadeDuration: 2.0)
 
         player.sprite.run(lavaEffect)
     }

@@ -28,17 +28,9 @@ struct K {
         ///Width of the most recent iPhone, i.e. iPhone 14. Width is 945
         static let iPhoneWidth: CGFloat = height / iPhoneRatio
 
-        ///Aspect ratio of the most recent iPhone, i.e. iPhone 14. Ratio is 2.16667
-        static let iPhoneRatio: CGFloat = UIDevice.modelInfo.ratio//19.5 / 9
+        ///Aspect ratio of the most recent iPhone, i.e. iPhone 14. Ratio is 19.5/9 = 2.16667
+        static let iPhoneRatio: CGFloat = UIDevice.modelInfo.ratio
 
-        //CAN I DELETE THIS PROPERTY???
-//        ///Default aspect ratio of the iPhone device in Portrait mode, per  RayWenderlich tutorial, i.e. 1.3333
-//        static let ratio: CGFloat = width / height
-        
-        //CAN I DELETE THIS PROPERTY???
-//        ///Margin of the most recent iPhone, i.e. iPhone 14. Set to half of the difference between the default width and the width of the most recent iPhone, i.e. 296
-//        static let iPhoneMargin: CGFloat = (width - iPhoneWidth) / 2
-        
         ///Top margin of the device.
         static let topMargin: CGFloat = UIDevice.modelInfo.topSafeArea
         
@@ -112,7 +104,9 @@ struct K {
     
     struct UserDefaults {
         //UserDefault Keys
-        static let soundIsMuted = "SoundIsMuted" //NEED TO IMPLEMENT, FOR USE IN SETTINGS
+        static let muteMusic = "MuteMusic"
+        static let muteSoundFX = "MuteSoundFX"
+        static let disablePartyLights = "DisablePartyLights"
         static let reviewStoreCount = "ReviewStoreCount"
         static let savedTime = "SavedTimeForReplenishLives"
     }

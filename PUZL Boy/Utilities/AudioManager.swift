@@ -27,6 +27,7 @@ struct AudioItem {
     let fileType: AudioType
     let category: AudioCategory
     let maxVolume: Float
+    var currentVolume: Float
     var player = AVAudioPlayer()
     
     init(fileName: String, fileType: AudioType = .mp3, category: AudioCategory, maxVolume: Float = 1.0) {
@@ -34,6 +35,7 @@ struct AudioItem {
         self.fileType = fileType
         self.category = category
         self.maxVolume = maxVolume
+        self.currentVolume = maxVolume
     }
 }
 
@@ -51,7 +53,7 @@ class AudioManager {
     }()
     
     let titleLogo = "titletheme"
-    let overworldTheme = "overworld_"
+    let overworldTheme = "overworld"
     let overworldPartyTheme = "overworldparty"
     private(set) var currentTheme: String
     private var audioItems: [String: AudioItem] = [:]
@@ -161,7 +163,9 @@ class AudioManager {
         audioItems[audioKey] = AudioItem(fileName: audioKey, category: category)
         
         if let item = audioItems[audioKey], let player = configureAudioPlayer(for: item) {
-            audioItems[audioKey]?.player = player
+            updateVolumes()
+            
+            audioItems[audioKey]!.player = player
         }
     }
     
@@ -180,7 +184,7 @@ class AudioManager {
             var audioPlayer = audioItem.player
             
             audioPlayer = try AVAudioPlayer(contentsOf: URL(fileURLWithPath: audioURL))
-            audioPlayer.volume = UserDefaults.standard.bool(forKey: K.UserDefaults.soundIsMuted) ? 0.0 : audioItem.maxVolume
+            audioPlayer.volume = audioItem.currentVolume
             audioPlayer.numberOfLoops = audioItem.category == .music ? -1 : 0
             
             return audioPlayer
@@ -213,16 +217,17 @@ class AudioManager {
             return false
         }
                 
-        audioItems[item.fileName]?.player = player
-        audioItems[item.fileName]?.player.pan = pan
-        audioItems[item.fileName]?.player.prepareToPlay()
+        audioItems[item.fileName]!.player = player
+        audioItems[item.fileName]!.player.volume = audioItems[item.fileName]!.currentVolume
+        audioItems[item.fileName]!.player.pan = pan
+        audioItems[item.fileName]!.player.prepareToPlay()
 
         if currentTime != nil {
-            audioItems[item.fileName]?.player.currentTime = currentTime!
+            audioItems[item.fileName]!.player.currentTime = currentTime!
         }
         
         DispatchQueue.main.asyncAfter(deadline: .now() + (delay == nil ? 0 : delay!)) {
-            self.audioItems[item.fileName]?.player.play()
+            self.audioItems[item.fileName]!.player.play()
         }
                 
         return true
@@ -297,7 +302,10 @@ class AudioManager {
             return
         }
         
-        item.player.setVolume(volume, fadeDuration: fadeDuration)
+        let volumeToSet: Float = UserDefaults.standard.bool(forKey: item.category == .music ? K.UserDefaults.muteMusic : K.UserDefaults.muteSoundFX) ? 0 : volume
+
+        audioItems[audioKey]!.currentVolume = volumeToSet
+        audioItems[audioKey]!.player.setVolume(volumeToSet, fadeDuration: fadeDuration)
     }
     
     func changeTheme(newTheme theme: String) {
@@ -307,19 +315,23 @@ class AudioManager {
         currentTheme = theme
     }
     
-//    /**
-//     Updates the volume across all audio players. Sets it to 0 (off) or 1 (on) based on if the app is muted or not.
-//     */
-//    func updateVolumes() {
-//        for (_, item) in audioItems {
-//            let volumeToSet: Float = UserDefaults.standard.bool(forKey: K.UserDefaults.SoundIsMuted) ? 0.0 : item.maxVolume
-//
-//            if item.category == .music {
-//                item.player.setVolume(volumeToSet, fadeDuration: 0.25)
-//            }
-//            else {
-//                item.player.volume = volumeToSet
-//            }
-//        }
-//    }
+    /**
+     Updates the volume across all audio players. Sets it to 0 (off) or maxVolume (on) based on if the app is muted or not.
+     */
+    func updateVolumes() {
+        for (index, item) in audioItems {
+            if item.category == .music {
+                let volumeToSet: Float = UserDefaults.standard.bool(forKey: K.UserDefaults.muteMusic) ? 0 : item.maxVolume
+                
+                audioItems[index]?.currentVolume = volumeToSet
+                item.player.setVolume(volumeToSet, fadeDuration: 0.25)
+            }
+            else {
+                let volumeToSet: Float = UserDefaults.standard.bool(forKey: K.UserDefaults.muteSoundFX) ? 0 : item.maxVolume
+                
+                audioItems[index]?.currentVolume = volumeToSet
+                item.player.volume = volumeToSet
+            }
+        }
+    }
 }

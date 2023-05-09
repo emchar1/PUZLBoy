@@ -8,7 +8,7 @@
 import SpriteKit
 
 protocol SettingsRadioNodeDelegate: AnyObject {
-    func didTapRadio()
+    func didTapRadio(_ radioNode: SettingsRadioNode)
 }
 
 class SettingsRadioNode: SKNode {
@@ -21,7 +21,7 @@ class SettingsRadioNode: SKNode {
     static let radioStatus: (on: CGFloat, off: CGFloat) = (-radioNodeSizeOrig.width, -radioNodeSizeOrig.height)
 
     private var text: String
-    private var isOn: Bool
+    private(set) var isOn: Bool
     private var nodeName: String { "radiobutton" + text }
     private var settingsSize: CGSize
     private var isAnimating = false
@@ -68,10 +68,10 @@ class SettingsRadioNode: SKNode {
 
         super.init()
 
-        //FIXME: - DELETE
-        let backgroundNode = SKSpriteNode(color: .systemPink, size: settingsSize)
-        backgroundNode.anchorPoint = .zero
-        addChild(backgroundNode)
+//        //FIXME: - DELETE
+//        let backgroundNode = SKSpriteNode(color: .systemPink, size: settingsSize)
+//        backgroundNode.anchorPoint = .zero
+//        addChild(backgroundNode)
         
         radioButton.name = nodeName
 
@@ -91,35 +91,39 @@ class SettingsRadioNode: SKNode {
         guard !isAnimating else { return }
         guard let radioButtonPositionInScene = radioButton.positionInScene else { return }
         
-        let adjustedLocation = CGPoint(x: location.x, y: location.y - radioButtonPositionInScene.y + SettingsRadioNode.radioNodeSize.height / 2)
+        let adjustedLocation = CGPoint(
+            // FIXME: - Closer, but still not correct. The x value is off!
+            x: location.x + (UIDevice.isiPad ? SettingsRadioNode.radioNodeSize.width : 0),
+            y: location.y - radioButtonPositionInScene.y + SettingsRadioNode.radioNodeSize.height / 2
+        )
         
         guard nodes(at: adjustedLocation).filter({ $0.name == nodeName }).first != nil else { return }
 
         isAnimating = true
+        isOn.toggle()
         
         if isOn {
-            radioOn.run(SKAction.moveTo(x: SettingsRadioNode.radioStatus.off, duration: 0.2)) {
-                self.radioOn.removeFromParent()
-                self.radioOn.position.x = SettingsRadioNode.radioStatus.on
-                self.radioButton.addChild(self.radioOff)
-                
-                self.isOn.toggle()
-                self.isAnimating = false
-            }
-        }
-        else {
             radioOff.run(SKAction.moveTo(x: SettingsRadioNode.radioStatus.on, duration: 0.2)) {
                 self.radioOff.removeFromParent()
                 self.radioOff.position.x = SettingsRadioNode.radioStatus.off
                 self.radioButton.addChild(self.radioOn)
                 
-                self.isOn.toggle()
+                self.isAnimating = false
+            }
+        }
+        else {
+            radioOn.run(SKAction.moveTo(x: SettingsRadioNode.radioStatus.off, duration: 0.2)) {
+                self.radioOn.removeFromParent()
+                self.radioOn.position.x = SettingsRadioNode.radioStatus.on
+                self.radioButton.addChild(self.radioOff)
+                
                 self.isAnimating = false
             }
         }
         
+        // FIXME: - Find radio button toggle sound
         K.ButtonTaps.tap2()
 
-        delegate?.didTapRadio()
+        delegate?.didTapRadio(self)
     }
 }
