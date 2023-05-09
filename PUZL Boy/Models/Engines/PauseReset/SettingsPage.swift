@@ -41,7 +41,7 @@ class SettingsPage: SKNode {
     
     init(maskSize: CGSize) {
         self.maskSize = maskSize
-        self.contentSize = CGSize(width: maskSize.width, height: K.ScreenDimensions.iPhoneWidth * 2)
+        self.contentSize = CGSize(width: maskSize.width, height: K.ScreenDimensions.iPhoneWidth * (UIDevice.isiPad ? 1.2 : 1.25))
         
         maskNode = SKSpriteNode(color: .magenta, size: maskSize)
         maskNode.anchorPoint = CGPoint(x: 0.5, y: 1.0)
