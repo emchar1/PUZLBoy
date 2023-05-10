@@ -8,8 +8,19 @@
 import UIKit
 
 extension UIImage {
+    ///Commonly used in menu background colors.
+    static let menuGradientTexture = UIImage.createGradientImage(startPoint: CGPoint(x: 0.5, y: 1), endPoint: CGPoint(x: 0.5, y: 0.5), topColorWhiteValue: 200, bottomColorWhiteValue: 255)
+    
     ///Commonly used gradient texture used in chat bubbles, etc.
     static let chatGradientTexture = UIImage.createGradientImage(startPoint: CGPoint(x: 0.5, y: 1), endPoint: CGPoint(x: 0.5, y: 0.5), topColorWhiteValue: 100, bottomColorWhiteValue: 200)
+
+    ///Can also be used in menu background colors.
+    static var skyGradientTexture: UIImage {
+        UIImage.createGradientImage(
+            withBounds: CGRect(x: 0, y: 0, width: K.ScreenDimensions.iPhoneWidth, height: K.ScreenDimensions.height),
+            startPoint: CGPoint(x: 0.5, y: 1), endPoint: CGPoint(x: 0.5, y: 0.5),
+            colors: [DayTheme.skyColor.top.cgColor, DayTheme.skyColor.bottom.cgColor])
+    }
 
     ///Convenience method to createGradientImage(withBounds:startPoint:endPoint:colors)
     static func createGradientImage(startPoint: CGPoint, endPoint: CGPoint, topColorWhiteValue topValue: CGFloat, bottomColorWhiteValue bottomValue: CGFloat) -> UIImage {

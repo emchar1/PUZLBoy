@@ -65,6 +65,7 @@ class SettingsButton: SKNode {
 
         self.position = position
         self.name = type.rawValue
+        
         updateColors()
 
         addChild(buttonSprite)
@@ -99,11 +100,14 @@ class SettingsButton: SKNode {
         shadowSprite.run(SKAction.move(to: shadowSize, duration: animationDuration))
     }
     
-    func tapButton() {
+    func tapButton(tapQuietly: Bool = false) {
         guard isPressed else { return }
         
         delegate?.didTapButton(self)
-        K.ButtonTaps.tap2()
+        
+        if !tapQuietly {
+            K.ButtonTaps.tap2()
+        }
     }
     
     func updateColors() {
@@ -114,6 +118,7 @@ class SettingsButton: SKNode {
             buttonSprite.fillColor = isPressed ? backgroundShadowColor : backgroundColor
         }
         
+        buttonSprite.fillTexture = SKTexture(image: UIImage.menuGradientTexture)
         shadowSprite.fillColor = backgroundShadowColor
     }
 }

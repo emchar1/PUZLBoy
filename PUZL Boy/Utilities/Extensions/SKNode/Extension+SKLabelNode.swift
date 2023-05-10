@@ -38,12 +38,12 @@ extension SKLabelNode {
         updateShadow()
     }
     
-    func addDropShadow(shadowOffset: CGPoint = CGPoint(x: -3, y: -3)) {
+    func addDropShadow(shadowOffset: CGPoint = CGPoint(x: -3, y: -3), alpha: CGFloat = 0.25) {
         let shadow = SKLabelNode(text: self.text)
         shadow.position = shadowOffset
         shadow.fontColor = .black
         shadow.zPosition = zPositionOffset
-        shadow.alpha = 0.25
+        shadow.alpha = alpha
         shadow.name = "dropShadow"
         
         addChild(shadow)
@@ -51,8 +51,8 @@ extension SKLabelNode {
         updateShadow()
     }
     
-    func addHeavyDropShadow() {
-        addDropShadow(shadowOffset: CGPoint(x: -8, y: -8))
+    func addHeavyDropShadow(alpha: CGFloat = 0.25) {
+        addDropShadow(shadowOffset: CGPoint(x: -8, y: -8), alpha: alpha)
     }
     
     func updateShadow() {

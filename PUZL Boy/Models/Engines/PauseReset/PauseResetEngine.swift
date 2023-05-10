@@ -83,6 +83,7 @@ class PauseResetEngine {
         backgroundSprite.strokeColor = .white
         backgroundSprite.lineWidth = 0
         backgroundSprite.setScale(0)
+        backgroundSprite.alpha = 0.9
         backgroundSprite.zPosition = K.ZPosition.pauseScreen
         
         foregroundSprite = SKShapeNode(rectOf: settingsSize, cornerRadius: settingsCorner)
@@ -136,11 +137,9 @@ class PauseResetEngine {
         backgroundSprite.position = CGPoint(
             x: settingsScale * (settingsSize.width + GameboardSprite.padding) / 2 + GameboardSprite.xPosition + GameboardSprite.padding / 2,
             y: pauseResetButtonPosition.y)
-        backgroundSprite.fillColor = backgroundColor
         backgroundSprite.addShadow(rectOf: settingsSize, cornerRadius: settingsCorner, shadowOffset: 10, shadowColor: backgroundShadowColor)
 
         settingsManager.setInitialPosition(CGPoint(x: -backgroundSprite.position.x, y: -settingsSize.height / 2))
-        settingsManager.button5.touchDown()
         settingsManager.delegate = self
         quitConfirmSprite.delegate = self
                 
@@ -250,6 +249,10 @@ class PauseResetEngine {
                 SKAction.sequence([
                     SKAction.run { [unowned self] in
                         backgroundSprite.fillColor = backgroundColor
+                        backgroundSprite.fillTexture = SKTexture(image: UIImage.skyGradientTexture)
+                        backgroundSprite.updateShadowColor(backgroundShadowColor)
+                        
+                        settingsManager.tap(settingsManager.button5, tapQuietly: true)
                         settingsManager.updateColors()
                     },
                     SKAction.scale(to: GameboardSprite.spriteScale, duration: 0.2),

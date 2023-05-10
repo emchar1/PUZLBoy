@@ -115,7 +115,7 @@ class TitleScene: SKScene {
         boyTitle.setScale(4)
         boyTitle.alpha = 0
         boyTitle.run(SKAction.rotate(toAngle: .pi / 12, duration: 0))
-        boyTitle.addHeavyDropShadow()
+        boyTitle.addHeavyDropShadow(alpha: 0.1)
         
         
         //Menu Setup
@@ -215,6 +215,8 @@ class TitleScene: SKScene {
         menuBackgroundShadow1.fillColor = puzlTitleShadow1.fontColor ?? .black
         menuBackgroundShadow2.fillColor = menuBackgroundShadow1.fillColor
         menuBackgroundShadow3.fillColor = menuBackgroundShadow1.fillColor
+        
+        menuBackgroundColor.fillTexture = SKTexture(image: UIImage.menuGradientTexture)
     }
     
     private func animateSprites() {

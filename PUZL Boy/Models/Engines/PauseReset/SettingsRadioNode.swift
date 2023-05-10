@@ -121,7 +121,7 @@ class SettingsRadioNode: SKNode {
             }
         }
         
-        K.ButtonTaps.tap2()
+        K.ButtonTaps.tap4()
 
         delegate?.didTapRadio(self)
     }

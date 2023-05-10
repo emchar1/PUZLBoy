@@ -41,7 +41,7 @@ class SettingsPage: SKNode {
     
     init(maskSize: CGSize) {
         self.maskSize = maskSize
-        self.contentSize = CGSize(width: maskSize.width, height: K.ScreenDimensions.iPhoneWidth * (UIDevice.isiPad ? 1.2 : 1.25))
+        self.contentSize = CGSize(width: maskSize.width, height: K.ScreenDimensions.iPhoneWidth * 2)
         
         maskNode = SKSpriteNode(color: .magenta, size: maskSize)
         maskNode.anchorPoint = CGPoint(x: 0.5, y: 1.0)
@@ -177,6 +177,8 @@ extension SettingsPage: SettingsRadioNodeDelegate {
             }
         case let radioNode where radioNode == radioPartyLights:
             UserDefaults.standard.set(!radioNode.isOn, forKey: K.UserDefaults.disablePartyLights)
+            
+            // FIXME: - Requires Implementation
         default:
             return
         }

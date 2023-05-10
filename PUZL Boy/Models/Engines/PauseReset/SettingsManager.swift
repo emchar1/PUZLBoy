@@ -19,7 +19,8 @@ class SettingsManager: SKNode {
     private var settingsWidth: CGFloat
     private var buttonHeight: CGFloat
     private var buttonSize: CGSize
-
+    private var currentButtonPressed: SettingsButton?
+    
     private(set) var button1: SettingsButton
     private(set) var button2: SettingsButton
     private(set) var button3: SettingsButton
@@ -27,7 +28,7 @@ class SettingsManager: SKNode {
     private(set) var button5: SettingsButton
     
     weak var delegate: SettingsManagerDelegate?
-
+    
     
     // MARK: - Initialization
     
@@ -35,7 +36,7 @@ class SettingsManager: SKNode {
         self.settingsWidth = settingsWidth
         self.buttonHeight = buttonHeight
         buttonSize = CGSize(width: settingsWidth / 5 * settingsScale, height: buttonHeight)
-
+        
         button1 = SettingsButton(type: .button1, position: .zero, size: buttonSize)
         button2 = SettingsButton(type: .button2, position: .zero, size: buttonSize)
         button3 = SettingsButton(type: .button3, position: .zero, size: buttonSize)
@@ -64,11 +65,11 @@ class SettingsManager: SKNode {
         addChild(button4)
         addChild(button5)
     }
-
+    
     
     
     // MARK: - Functions
-        
+    
     func setInitialPosition(_ initialPosition: CGPoint) {
         let adjustedX = initialPosition.x + buttonSize.width / settingsScale / 2 + abs(button1.shadowSize.x)
         let adjustedY = initialPosition.y - 0.5 * buttonSize.height - 3 * 10 //30 for the triple shadow size
@@ -88,6 +89,21 @@ class SettingsManager: SKNode {
         button4.updateColors()
         button5.updateColors()
     }
+    
+    func tap(_ button: SettingsButton, tapQuietly: Bool = false) {
+        guard currentButtonPressed?.type != button.type else { return }
+
+        button.touchDown()
+        button.tapButton(tapQuietly: tapQuietly)
+                
+        if !(button.type == .button1 || button.type == .button3) {
+            if button2.type != button.type { button2.touchUp() }
+            if button4.type != button.type { button4.touchUp() }
+            if button5.type != button.type { button5.touchUp() }
+            
+            currentButtonPressed = button
+        }
+    }
 }
 
 
@@ -98,14 +114,4 @@ extension SettingsManager: SettingsButtonDelegate {
         delegate?.didTapButton(node)
     }
     
-    func tap(_ button: SettingsButton) {
-        button.touchDown()
-        button.tapButton()
-                
-        if !(button.type == .button1 || button.type == .button3) {
-            if button2.type != button.type { button2.touchUp() }
-            if button4.type != button.type { button4.touchUp() }
-            if button5.type != button.type { button5.touchUp() }
-        }
-    }
 }
