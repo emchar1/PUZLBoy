@@ -178,7 +178,12 @@ extension SettingsPage: SettingsRadioNodeDelegate {
         case let radioNode where radioNode == radioPartyLights:
             UserDefaults.standard.set(!radioNode.isOn, forKey: K.UserDefaults.disablePartyLights)
             
-            // FIXME: - Requires Implementation
+            if radioNode.isOn {
+                PartyModeSprite.shared.addLights()
+            }
+            else {
+                PartyModeSprite.shared.removeLights()
+            }
         default:
             return
         }

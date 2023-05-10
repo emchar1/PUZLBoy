@@ -84,10 +84,10 @@ class PartyModeSprite: SKNode {
         
         backgroundLights.removeAllChildren()
         backgroundLights.removeAllActions()
-        backgroundLights.removeFromParent()
 
         foregroundLights.removeAllActions()
-        foregroundLights.removeFromParent()
+        
+        removeLights()
 
         backgroundSprite.color = .black
         backgroundSprite.removeFromParent()
@@ -112,8 +112,11 @@ class PartyModeSprite: SKNode {
         foregroundLights.run(SKAction.repeatForever(SKAction.sequence(foregroundSequence)), withKey: foregroundKey)
         
         addChild(backgroundSprite)
-        backgroundSprite.addChild(backgroundLights)
-        backgroundSprite.addChild(foregroundLights)
+        
+        if !UserDefaults.standard.bool(forKey: K.UserDefaults.disablePartyLights) {
+            removeLights()
+            addLights()
+        }
 
         superScene.addChild(self)
         partyBoy.startPartyAnimation()
@@ -131,6 +134,16 @@ class PartyModeSprite: SKNode {
             bubbleFun,
             SKAction.wait(forDuration: 0.25)
         ])))
+    }
+    
+    func addLights() {
+        backgroundSprite.addChild(backgroundLights)
+        backgroundSprite.addChild(foregroundLights)
+    }
+    
+    func removeLights() {
+        backgroundLights.removeFromParent()
+        foregroundLights.removeFromParent()
     }
     
     
