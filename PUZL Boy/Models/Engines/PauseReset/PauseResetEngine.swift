@@ -53,8 +53,8 @@ class PauseResetEngine {
     private var settingsPage: SettingsPage
 
     //Misc Properties
-    private var backgroundColor: UIColor { DayTheme.skyColor.top.analogous.first.darkenColor(factor: 6) }
-    private var backgroundShadowColor: UIColor { DayTheme.skyColor.bottom.analogous.first }
+    static var backgroundColor: UIColor { DayTheme.skyColor.top.analogous.first.darkenColor(factor: 6) }
+    static var backgroundShadowColor: UIColor { DayTheme.skyColor.bottom.analogous.first }
     private var currentLevelLeaderboard: Int = 1
     private var isPressed: Bool = false
     private var isAnimating: Bool = false
@@ -137,7 +137,7 @@ class PauseResetEngine {
         backgroundSprite.position = CGPoint(
             x: settingsScale * (settingsSize.width + GameboardSprite.padding) / 2 + GameboardSprite.xPosition + GameboardSprite.padding / 2,
             y: pauseResetButtonPosition.y)
-        backgroundSprite.addShadow(rectOf: settingsSize, cornerRadius: settingsCorner, shadowOffset: 10, shadowColor: backgroundShadowColor)
+        backgroundSprite.addShadow(rectOf: settingsSize, cornerRadius: settingsCorner, shadowOffset: 10, shadowColor: PauseResetEngine.backgroundShadowColor)
 
         settingsManager.setInitialPosition(CGPoint(x: -backgroundSprite.position.x, y: -settingsSize.height / 2))
         settingsManager.delegate = self
@@ -248,9 +248,9 @@ class PauseResetEngine {
                 SKAction.moveTo(y: K.ScreenDimensions.topOfGameboard - settingsSize.height/2 * settingsScale + GameboardSprite.padding, duration: 0.2),
                 SKAction.sequence([
                     SKAction.run { [unowned self] in
-                        backgroundSprite.fillColor = backgroundColor
+                        backgroundSprite.fillColor = PauseResetEngine.backgroundColor
                         backgroundSprite.fillTexture = SKTexture(image: UIImage.skyGradientTexture)
-                        backgroundSprite.updateShadowColor(backgroundShadowColor)
+                        backgroundSprite.updateShadowColor(PauseResetEngine.backgroundShadowColor)
                         
                         settingsManager.tap(settingsManager.button5, tapQuietly: true)
                         settingsManager.updateColors()
