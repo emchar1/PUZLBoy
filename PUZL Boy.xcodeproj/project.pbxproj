@@ -43,6 +43,7 @@
 		EA3951F12939DE5900D0B14A /* ScoringEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA3951F02939DE5900D0B14A /* ScoringEngine.swift */; };
 		EA41F8352A0C7D8000DF47EC /* HowToPlayPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA41F8342A0C7D8000DF47EC /* HowToPlayPage.swift */; };
 		EA41F8372A0C915100DF47EC /* radiotick.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA41F8362A0C915100DF47EC /* radiotick.mp3 */; };
+		EA41F83A2A0D71EE00DF47EC /* ParentPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA41F8392A0D71EE00DF47EC /* ParentPage.swift */; };
 		EA4D025B29B7D61C00F0C7B1 /* movemarsh3.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA4D025A29B7D61C00F0C7B1 /* movemarsh3.mp3 */; };
 		EA4D025D29B7E2B400F0C7B1 /* movemarsh2.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA4D025C29B7E2B400F0C7B1 /* movemarsh2.mp3 */; };
 		EA4D025F29B7E33600F0C7B1 /* movemarsh1.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA4D025E29B7E33600F0C7B1 /* movemarsh1.mp3 */; };
@@ -233,6 +234,7 @@
 		EA3951F02939DE5900D0B14A /* ScoringEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoringEngine.swift; sourceTree = "<group>"; };
 		EA41F8342A0C7D8000DF47EC /* HowToPlayPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HowToPlayPage.swift; sourceTree = "<group>"; };
 		EA41F8362A0C915100DF47EC /* radiotick.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = radiotick.mp3; sourceTree = "<group>"; };
+		EA41F8392A0D71EE00DF47EC /* ParentPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParentPage.swift; sourceTree = "<group>"; };
 		EA4D025A29B7D61C00F0C7B1 /* movemarsh3.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = movemarsh3.mp3; sourceTree = "<group>"; };
 		EA4D025C29B7E2B400F0C7B1 /* movemarsh2.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = movemarsh2.mp3; sourceTree = "<group>"; };
 		EA4D025E29B7E33600F0C7B1 /* movemarsh1.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = movemarsh1.mp3; sourceTree = "<group>"; };
@@ -424,6 +426,17 @@
 			path = Level;
 			sourceTree = "<group>";
 		};
+		EA41F8382A0D71B300DF47EC /* Pages */ = {
+			isa = PBXGroup;
+			children = (
+				EA41F8392A0D71EE00DF47EC /* ParentPage.swift */,
+				EA41F8342A0C7D8000DF47EC /* HowToPlayPage.swift */,
+				EA9DFEFF29FE481300D02683 /* SettingsPage.swift */,
+				EA9DFF012A0084F600D02683 /* SettingsRadioNode.swift */,
+			);
+			path = Pages;
+			sourceTree = "<group>";
+		};
 		EA65181E28E4199E00E535BF = {
 			isa = PBXGroup;
 			children = (
@@ -516,9 +529,7 @@
 				EAFC9A5429FCD44C002792F2 /* SettingsManager.swift */,
 				EADFD95B29F4CE8500C6F9D1 /* SettingsButton.swift */,
 				EADFD96129F90B6A00C6F9D1 /* ConfirmSprite.swift */,
-				EA41F8342A0C7D8000DF47EC /* HowToPlayPage.swift */,
-				EA9DFEFF29FE481300D02683 /* SettingsPage.swift */,
-				EA9DFF012A0084F600D02683 /* SettingsRadioNode.swift */,
+				EA41F8382A0D71B300DF47EC /* Pages */,
 			);
 			path = PauseReset;
 			sourceTree = "<group>";
@@ -1014,6 +1025,7 @@
 				EA1D5A6C29F1019800677B06 /* Extension+SKShapeNode.swift in Sources */,
 				EA34678E2998ED50002DDA02 /* LifeSpawnerModel.swift in Sources */,
 				EA65189328E973D700E535BF /* LevelBuilder.swift in Sources */,
+				EA41F83A2A0D71EE00DF47EC /* ParentPage.swift in Sources */,
 				EA65189528EA207800E535BF /* Constants.swift in Sources */,
 				EA95D206295F86F40061059C /* AchievementItemWielder.swift in Sources */,
 				EA95D1D729544DBA0061059C /* AchievementPUZLGuru.swift in Sources */,

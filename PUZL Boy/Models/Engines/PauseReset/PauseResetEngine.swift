@@ -359,12 +359,12 @@ class PauseResetEngine {
             switch nodeTapped.name {
             case pauseResetName:
                 handlePauseReset(resetCompletion: resetCompletion)
-            case HowToPlayPage.nodeName:
+            case howToPlayPage.nodeName:
                 //limit touch to within the settings page boundary
                 guard location.y >= getBottomOfSettings(halved: false) && location.y <= getBottomOfSettings(halved: false) + settingsSize.height * settingsScale else { break }
 
                 howToPlayPage.touchDown(at: location)
-            case SettingsPage.nodeName:
+            case settingsPage.nodeName:
                 settingsPage.touchDown(at: location)
             default:
                 guard !isAnimating else { break }
@@ -378,7 +378,7 @@ class PauseResetEngine {
     func touchMove(in location: CGPoint?) {
         guard let superScene = superScene else { return }
         guard let location = location else { return }
-        guard let howToPlayNode = superScene.nodes(at: location).filter({ $0.name == HowToPlayPage.nodeName }).first else { return }
+        guard let howToPlayNode = superScene.nodes(at: location).filter({ $0.name == howToPlayPage.nodeName }).first else { return }
         guard let howToPlayPage = howToPlayNode as? HowToPlayPage else { return }
         
         howToPlayPage.scrollNode(to: location)

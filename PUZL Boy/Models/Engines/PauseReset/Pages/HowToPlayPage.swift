@@ -7,12 +7,12 @@
 
 import SpriteKit
 
-class HowToPlayPage: SKNode {
+class HowToPlayPage: ParentPage {
     
     // MARK: - Properties
     
-    static let padding: CGFloat = 40
     private let maxPositionChange: CGFloat = 50
+    private var isPressed = false
     private var initialYPosition: CGFloat?
     private var finalYPosition: CGFloat?
     private var positionChange: CGFloat {
@@ -21,21 +21,20 @@ class HowToPlayPage: SKNode {
         return min(max(-maxPositionChange, finalYPosition - initialYPosition), maxPositionChange)
     }
     
-    static let nodeName = "howToPlayPage"
-    private var maskSize: CGSize
-    private var contentSize: CGSize
-    private var isPressed = false
-
-    private var cropNode: SKCropNode
-    private var maskNode: SKSpriteNode
-    private var contentNode: SKSpriteNode
+    private var maskSize: CGSize!
+    private var cropNode: SKCropNode!
+    private var maskNode: SKSpriteNode!
     
     
     // MARK: - Initialization
     
     init(maskSize: CGSize) {
+        let content = CGSize(width: maskSize.width, height: maskSize.height * 2)
+
+        super.init(contentSize: content, titleText: "How To Play")
+
         self.maskSize = maskSize
-        self.contentSize = CGSize(width: maskSize.width, height: maskSize.height * 2)
+        self.contentSize = content
         
         maskNode = SKSpriteNode(color: .magenta, size: maskSize)
         maskNode.anchorPoint = CGPoint(x: 0.5, y: 1.0)
@@ -45,23 +44,9 @@ class HowToPlayPage: SKNode {
         cropNode.position = CGPoint(x: 0, y: maskSize.height / 2)
         cropNode.maskNode = maskNode
         
-        contentNode = SKSpriteNode(color: .green, size: contentSize)
-        contentNode.anchorPoint = CGPoint(x: 0, y: 1)
-        contentNode.position = CGPoint(x: -contentSize.width / 2, y: 0)
-        
-        let titleLabel = SKLabelNode(text: "HOW TO PLAY")
-        titleLabel.position = CGPoint(x: contentSize.width / 2, y: -HowToPlayPage.padding)
-        titleLabel.horizontalAlignmentMode = .center
-        titleLabel.verticalAlignmentMode = .top
-        titleLabel.fontName = UIFont.gameFont
-        titleLabel.fontSize = UIFont.gameFontSizeMedium
-        titleLabel.fontColor = UIFont.gameFontColor
-        titleLabel.addHeavyDropShadow()
-        titleLabel.zPosition = 20
-        
-        super.init()
-        
-        name = HowToPlayPage.nodeName
+        contentNode.color = .brown
+                
+        name = nodeName
         
         addChild(cropNode)
         cropNode.addChild(contentNode)
@@ -73,15 +58,19 @@ class HowToPlayPage: SKNode {
     }
     
     
-    // MARK: - Functions
+    // MARK: - Touch Functions
     
-    func touchDown(at location: CGPoint) {
+    override func touchDown(at location: CGPoint) {
+        super.touchDown(at: location)
+        
         isPressed = true
         
         initialYPosition = location.y
     }
     
-    func touchUp() {
+    override func touchUp() {
+        super.touchUp()
+        
         isPressed = false
 
         if contentNode.position.y <= 0 {
