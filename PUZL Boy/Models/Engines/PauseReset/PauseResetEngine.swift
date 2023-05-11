@@ -254,7 +254,7 @@ class PauseResetEngine {
         
         if isPaused {
             backgroundSprite.run(SKAction.group([
-                SKAction.moveTo(y: getBottomOfSettings(halved: true), duration: 0.2),
+                SKAction.moveTo(y: getBottomOfSettings(halved: true), duration: 0.25),
                 SKAction.sequence([
                     SKAction.run { [unowned self] in
                         //These need to be here due to time of day feature.
@@ -266,7 +266,7 @@ class PauseResetEngine {
                         settingsManager.tap(settingsManager.button5, tapQuietly: true)
                         settingsManager.updateColors()
                     },
-                    SKAction.scale(to: GameboardSprite.spriteScale, duration: 0.2),
+                    SKAction.scale(to: GameboardSprite.spriteScale, duration: 0.25),
                     SKAction.run {
                         self.backgroundSprite.showShadow(animationDuration: 0.1, completion: nil)
                     }
@@ -280,8 +280,8 @@ class PauseResetEngine {
                 SKAction.run {
                     self.backgroundSprite.hideShadow(animationDuration: 0.05, completion: nil)
                 },
-                SKAction.moveTo(y: self.pauseResetButtonPosition.y, duration: 0.2),
-                SKAction.scale(to: 0, duration: 0.2)
+                SKAction.moveTo(y: self.pauseResetButtonPosition.y, duration: 0.25),
+                SKAction.scale(to: 0, duration: 0.25)
             ])) {
                 self.isAnimating = false
             }
