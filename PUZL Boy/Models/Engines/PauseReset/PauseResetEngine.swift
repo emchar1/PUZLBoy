@@ -127,7 +127,7 @@ class PauseResetEngine {
                                       message: "Tap Quit Game to return to the main menu. Your progress will be saved.",
                                       confirm: "Quit Game",
                                       cancel: "Cancel")
-        settingsPage = SettingsPage(maskSize: settingsSize)
+        settingsPage = SettingsPage(contentSize: settingsSize)
         settingsPage.zPosition = 10
 
         //Add'l setup/customization
@@ -325,7 +325,7 @@ class PauseResetEngine {
         settingsManager.button1.touchUp() //title
         settingsManager.button3.touchUp() //leaderboard
         quitConfirmSprite.touchUp()
-        settingsPage.touchUp()
+//        settingsPage.touchUp()
     }
     
     /**
@@ -359,12 +359,12 @@ class PauseResetEngine {
     } //end func touchDown
     
     func touchMove(in location: CGPoint?) {
-        guard let superScene = superScene else { return }
-        guard let location = location else { return }
-        guard let settingsNode = superScene.nodes(at: location).filter({ $0.name == SettingsPage.nodeName }).first else { return }
-        guard let settingsPage = settingsNode as? SettingsPage else { return }
-        
-        settingsPage.scrollNode(to: location)
+//        guard let superScene = superScene else { return }
+//        guard let location = location else { return }
+//        guard let settingsNode = superScene.nodes(at: location).filter({ $0.name == SettingsPage.nodeName }).first else { return }
+//        guard let settingsPage = settingsNode as? SettingsPage else { return }
+//        
+//        settingsPage.scrollNode(to: location)
     }
     
     
