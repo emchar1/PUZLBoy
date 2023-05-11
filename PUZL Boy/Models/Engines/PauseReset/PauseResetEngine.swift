@@ -50,6 +50,7 @@ class PauseResetEngine {
     //Custom Objects
     private var settingsManager: SettingsManager
     private var quitConfirmSprite: ConfirmSprite
+    private var howToPlayPage: HowToPlayPage
     private var settingsPage: SettingsPage
 
     //Misc Properties
@@ -129,6 +130,8 @@ class PauseResetEngine {
                                       cancel: "Cancel")
         settingsPage = SettingsPage(contentSize: settingsSize)
         settingsPage.zPosition = 10
+        howToPlayPage = HowToPlayPage(maskSize: settingsSize)
+        howToPlayPage.zPosition = 10
 
         //Add'l setup/customization
         countdownLabel.position = CGPoint(x: pauseResetButtonPosition.x + pauseResetButtonSize / 2,
@@ -159,14 +162,12 @@ class PauseResetEngine {
         comingSoonLabel.removeFromParent()
         foregroundSprite.removeFromParent()
         settingsManager.removeFromParent()
-        settingsPage.removeFromParent()
         
         foregroundSprite.addChild(comingSoonLabel)
         backgroundSprite.addChild(foregroundSprite)
         backgroundSprite.addChild(settingsManager)
-        backgroundSprite.addChild(settingsPage)
+
         superScene.addChild(backgroundSprite)
-        
         superScene.addChild(pauseResetButtonSprite)
         superScene.addChild(countdownLabel)
         
@@ -174,11 +175,19 @@ class PauseResetEngine {
     }
     
     
-    // MARK: - Reset Functions
+    // MARK: - HelperFunctions
     
     private func resetAll() {
         resetInitial = Date()
         resetFinal = Date()
+    }
+    
+    ///Feels like a clunky way of returning the bottom y-value of the settings content page. Needs to be halved depending on where the anchor point is set.
+    private func getBottomOfSettings(halved: Bool = true) -> CGFloat {
+        let divisor: CGFloat = halved ? 2 : 1
+        let value: CGFloat = K.ScreenDimensions.topOfGameboard - settingsSize.height / divisor * settingsScale + GameboardSprite.padding
+
+        return value
     }
     
     
@@ -245,13 +254,15 @@ class PauseResetEngine {
         
         if isPaused {
             backgroundSprite.run(SKAction.group([
-                SKAction.moveTo(y: K.ScreenDimensions.topOfGameboard - settingsSize.height/2 * settingsScale + GameboardSprite.padding, duration: 0.2),
+                SKAction.moveTo(y: getBottomOfSettings(halved: true), duration: 0.2),
                 SKAction.sequence([
                     SKAction.run { [unowned self] in
+                        //These need to be here due to time of day feature.
                         backgroundSprite.fillColor = PauseResetEngine.backgroundColor
                         backgroundSprite.fillTexture = SKTexture(image: UIImage.skyGradientTexture)
                         backgroundSprite.updateShadowColor(PauseResetEngine.backgroundShadowColor)
                         
+                        //Makes it easier if you tap here each time, trust me.
                         settingsManager.tap(settingsManager.button5, tapQuietly: true)
                         settingsManager.updateColors()
                     },
@@ -325,7 +336,8 @@ class PauseResetEngine {
         settingsManager.button1.touchUp() //title
         settingsManager.button3.touchUp() //leaderboard
         quitConfirmSprite.touchUp()
-//        settingsPage.touchUp()
+        
+        howToPlayPage.touchUp()
     }
     
     /**
@@ -347,6 +359,11 @@ class PauseResetEngine {
             switch nodeTapped.name {
             case pauseResetName:
                 handlePauseReset(resetCompletion: resetCompletion)
+            case HowToPlayPage.nodeName:
+                //limit touch to within the settings page boundary
+                guard location.y >= getBottomOfSettings(halved: false) && location.y <= getBottomOfSettings(halved: false) + settingsSize.height * settingsScale else { break }
+
+                howToPlayPage.touchDown(at: location)
             case SettingsPage.nodeName:
                 settingsPage.touchDown(at: location)
             default:
@@ -359,12 +376,12 @@ class PauseResetEngine {
     } //end func touchDown
     
     func touchMove(in location: CGPoint?) {
-//        guard let superScene = superScene else { return }
-//        guard let location = location else { return }
-//        guard let settingsNode = superScene.nodes(at: location).filter({ $0.name == SettingsPage.nodeName }).first else { return }
-//        guard let settingsPage = settingsNode as? SettingsPage else { return }
-//        
-//        settingsPage.scrollNode(to: location)
+        guard let superScene = superScene else { return }
+        guard let location = location else { return }
+        guard let howToPlayNode = superScene.nodes(at: location).filter({ $0.name == HowToPlayPage.nodeName }).first else { return }
+        guard let howToPlayPage = howToPlayNode as? HowToPlayPage else { return }
+        
+        howToPlayPage.scrollNode(to: location)
     }
     
     
@@ -451,7 +468,7 @@ extension PauseResetEngine: SettingsManagerDelegate {
             comingSoonLabel.text = "     PURCHASE\n(Coming Soon...)"
             comingSoonLabel.updateShadow()
             
-            settingsPage.removeFromParent()
+            removePages()
         case .button3: //leaderboard
             guard let superScene = superScene else { return print("superScene not set up. Unable to show leaderboard!") }
             
@@ -463,17 +480,26 @@ extension PauseResetEngine: SettingsManagerDelegate {
                 activityIndicator.removeFromParent()
             }
         case .button4: //howToPlay
-            comingSoonLabel.text = "    HOW TO PLAY\n(Coming Soon...)"
+            comingSoonLabel.text = ""
             comingSoonLabel.updateShadow()
             
-            settingsPage.removeFromParent()
+            removePages()
+
+            howToPlayPage.moveContentNode(to: 0, duration: 0)
+            backgroundSprite.addChild(howToPlayPage)
         case .button5: //settings
             comingSoonLabel.text = ""
             comingSoonLabel.updateShadow()
             
-            settingsPage.removeFromParent()
+            removePages()
+
             backgroundSprite.addChild(settingsPage)
         }
+    }
+    
+    private func removePages() {
+        howToPlayPage.removeFromParent()
+        settingsPage.removeFromParent()
     }
 }
 

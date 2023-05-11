@@ -42,7 +42,7 @@ class SettingsRadioNode: SKNode {
         self.settingsSize = settingsSize
         
         labelNode = SKLabelNode(text: text.uppercased())
-        labelNode.position = CGPoint(x: SettingsPage.padding, y: settingsSize.height / 2)
+        labelNode.position = CGPoint(x: 0, y: settingsSize.height / 2)
         labelNode.verticalAlignmentMode = .center
         labelNode.horizontalAlignmentMode = .left
         labelNode.fontName = UIFont.gameFont
@@ -52,7 +52,7 @@ class SettingsRadioNode: SKNode {
         labelNode.addDropShadow()
         
         radioButton = SKSpriteNode(imageNamed: "radioButton")
-        radioButton.position = CGPoint(x: settingsSize.width - SettingsPage.padding, y: settingsSize.height / 2)
+        radioButton.position = CGPoint(x: settingsSize.width, y: settingsSize.height / 2)
         radioButton.anchorPoint = CGPoint(x: 1, y: 0.5)
         radioButton.scale(to: SettingsRadioNode.radioNodeSize)
         
@@ -69,9 +69,9 @@ class SettingsRadioNode: SKNode {
         super.init()
 
 //        //FIXME: - DELETE
-        let backgroundNode = SKSpriteNode(color: .systemPink, size: settingsSize)
-        backgroundNode.anchorPoint = .zero
-        addChild(backgroundNode)
+//        let backgroundNode = SKSpriteNode(color: .systemPink, size: settingsSize)
+//        backgroundNode.anchorPoint = .zero
+//        addChild(backgroundNode)
         
         radioButton.name = nodeName
 

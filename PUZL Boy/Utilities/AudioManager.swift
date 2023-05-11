@@ -120,7 +120,7 @@ class AudioManager {
         addAudioItem("pickupitem", category: .soundFX)
         addAudioItem("punchwhack1", category: .soundFX) //needs purchase
         addAudioItem("punchwhack2", category: .soundFX) //needs purchase
-        addAudioItem("radiotick", category: .soundFX) //needs purchase
+        addAudioItem("radiotick", category: .soundFX)
         addAudioItem("revive", category: .soundFX)
         addAudioItem("swordslash", category: .soundFX)
         addAudioItem("warp", category: .soundFX)
