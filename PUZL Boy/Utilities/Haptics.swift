@@ -22,7 +22,7 @@ class Haptics {
     var engine: CHHapticEngine?
     
     enum Pattern {
-        case enemy, killEnemy, boulder, breakBoulder, marsh, sand, lava, enableVibrations
+        case enemy, killEnemy, boulder, breakBoulder, marsh, sand, lava, enableVibration
     }
     
     
@@ -57,7 +57,7 @@ class Haptics {
      - parameter style: style of feedback to produce
      */
     func addHapticFeedback(withStyle style: UIImpactFeedbackGenerator.FeedbackStyle) {
-        guard !UserDefaults.standard.bool(forKey: K.UserDefaults.disableVibrations) else { return }
+        guard !UserDefaults.standard.bool(forKey: K.UserDefaults.disableVibration) else { return }
             
         let generator = UIImpactFeedbackGenerator(style: style)
         generator.impactOccurred()
@@ -65,7 +65,7 @@ class Haptics {
     
     func executeCustomPattern(pattern: Pattern) {
         guard CHHapticEngine.capabilitiesForHardware().supportsHaptics else { return }
-        guard !UserDefaults.standard.bool(forKey: K.UserDefaults.disableVibrations) else { return }
+        guard !UserDefaults.standard.bool(forKey: K.UserDefaults.disableVibration) else { return }
 
         var events = [CHHapticEvent]()
         
@@ -128,7 +128,7 @@ class Haptics {
                 
                 events.append(event)
             }
-        case .enableVibrations:
+        case .enableVibration:
             for index in stride(from: 0.0, to: 0.3, by: 0.1) {
                 let intensity = CHHapticEventParameter(parameterID: .hapticIntensity, value: 0.7)
                 let sharpness = CHHapticEventParameter(parameterID: .hapticSharpness, value: 0.1)

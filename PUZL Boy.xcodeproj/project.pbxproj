@@ -44,6 +44,7 @@
 		EA41F8352A0C7D8000DF47EC /* HowToPlayPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA41F8342A0C7D8000DF47EC /* HowToPlayPage.swift */; };
 		EA41F8372A0C915100DF47EC /* radiotick.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA41F8362A0C915100DF47EC /* radiotick.mp3 */; };
 		EA41F83A2A0D71EE00DF47EC /* ParentPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA41F8392A0D71EE00DF47EC /* ParentPage.swift */; };
+		EA41F83C2A0DD3F800DF47EC /* SettingsTapButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA41F83B2A0DD3F800DF47EC /* SettingsTapButton.swift */; };
 		EA4D025B29B7D61C00F0C7B1 /* movemarsh3.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA4D025A29B7D61C00F0C7B1 /* movemarsh3.mp3 */; };
 		EA4D025D29B7E2B400F0C7B1 /* movemarsh2.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA4D025C29B7E2B400F0C7B1 /* movemarsh2.mp3 */; };
 		EA4D025F29B7E33600F0C7B1 /* movemarsh1.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA4D025E29B7E33600F0C7B1 /* movemarsh1.mp3 */; };
@@ -235,6 +236,7 @@
 		EA41F8342A0C7D8000DF47EC /* HowToPlayPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HowToPlayPage.swift; sourceTree = "<group>"; };
 		EA41F8362A0C915100DF47EC /* radiotick.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = radiotick.mp3; sourceTree = "<group>"; };
 		EA41F8392A0D71EE00DF47EC /* ParentPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParentPage.swift; sourceTree = "<group>"; };
+		EA41F83B2A0DD3F800DF47EC /* SettingsTapButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTapButton.swift; sourceTree = "<group>"; };
 		EA4D025A29B7D61C00F0C7B1 /* movemarsh3.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = movemarsh3.mp3; sourceTree = "<group>"; };
 		EA4D025C29B7E2B400F0C7B1 /* movemarsh2.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = movemarsh2.mp3; sourceTree = "<group>"; };
 		EA4D025E29B7E33600F0C7B1 /* movemarsh1.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = movemarsh1.mp3; sourceTree = "<group>"; };
@@ -433,6 +435,7 @@
 				EA41F8342A0C7D8000DF47EC /* HowToPlayPage.swift */,
 				EA9DFEFF29FE481300D02683 /* SettingsPage.swift */,
 				EA9DFF012A0084F600D02683 /* SettingsRadioNode.swift */,
+				EA41F83B2A0DD3F800DF47EC /* SettingsTapButton.swift */,
 			);
 			path = Pages;
 			sourceTree = "<group>";
@@ -1019,6 +1022,7 @@
 				EA9F4DD929CFAB0C006F4B2F /* Extension+Double.swift in Sources */,
 				EA4D026329B7F3AF00F0C7B1 /* PartyModeSprite.swift in Sources */,
 				EA4D026B29BC6ACE00F0C7B1 /* Extension+UIDevice.swift in Sources */,
+				EA41F83C2A0DD3F800DF47EC /* SettingsTapButton.swift in Sources */,
 				EA95D2122963B4580061059C /* LevelSkipEngine.swift in Sources */,
 				EADFD95C29F4CE8500C6F9D1 /* SettingsButton.swift in Sources */,
 				EA95D18D29459D550061059C /* Extension+UIFont.swift in Sources */,

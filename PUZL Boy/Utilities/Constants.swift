@@ -106,7 +106,7 @@ struct K {
         //UserDefault Keys
         static let muteMusic = "MuteMusic"
         static let muteSoundFX = "MuteSoundFX"
-        static let disableVibrations = "DisableVibrations"
+        static let disableVibration = "DisableVibration"
         static let disablePartyLights = "DisablePartyLights"
         static let reviewStoreCount = "ReviewStoreCount"
         static let savedTime = "SavedTimeForReplenishLives"
