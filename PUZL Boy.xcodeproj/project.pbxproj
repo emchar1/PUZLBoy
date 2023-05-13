@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		EA01BB5F2A10746800EAB70B /* buttontap6.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA01BB5E2A10746800EAB70B /* buttontap6.mp3 */; };
+		EA01BB612A10746800EAB70B /* ButtonTap.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA01BB602A10746800EAB70B /* ButtonTap.swift */; };
+		EA01BB632A10746800EAB70B /* buttontap5.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA01BB622A10746800EAB70B /* buttontap5.mp3 */; };
+		EA01BB652A10746800EAB70B /* buttontap7.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA01BB642A10746800EAB70B /* buttontap7.mp3 */; };
 		EA0F145D292994330013038E /* moverun1.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA0F145C292994330013038E /* moverun1.mp3 */; };
 		EA0F145F292994B00013038E /* movewalk.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA0F145E292994B00013038E /* movewalk.mp3 */; };
 		EA0F146F2929D9C00013038E /* moverun4.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA0F146C2929D9C00013038E /* moverun4.mp3 */; };
@@ -42,7 +46,7 @@
 		EA3951ED2938165A00D0B14A /* Extension+UIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA3951EC2938165A00D0B14A /* Extension+UIImage.swift */; };
 		EA3951F12939DE5900D0B14A /* ScoringEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA3951F02939DE5900D0B14A /* ScoringEngine.swift */; };
 		EA41F8352A0C7D8000DF47EC /* HowToPlayPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA41F8342A0C7D8000DF47EC /* HowToPlayPage.swift */; };
-		EA41F8372A0C915100DF47EC /* radiotick.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA41F8362A0C915100DF47EC /* radiotick.mp3 */; };
+		EA41F8372A0C915100DF47EC /* buttontap4.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA41F8362A0C915100DF47EC /* buttontap4.mp3 */; };
 		EA41F83A2A0D71EE00DF47EC /* ParentPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA41F8392A0D71EE00DF47EC /* ParentPage.swift */; };
 		EA41F83C2A0DD3F800DF47EC /* SettingsTapButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA41F83B2A0DD3F800DF47EC /* SettingsTapButton.swift */; };
 		EA4D025B29B7D61C00F0C7B1 /* movemarsh3.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA4D025A29B7D61C00F0C7B1 /* movemarsh3.mp3 */; };
@@ -199,6 +203,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		EA01BB5E2A10746800EAB70B /* buttontap6.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = buttontap6.mp3; sourceTree = "<group>"; };
+		EA01BB602A10746800EAB70B /* ButtonTap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonTap.swift; sourceTree = "<group>"; };
+		EA01BB622A10746800EAB70B /* buttontap5.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = buttontap5.mp3; sourceTree = "<group>"; };
+		EA01BB642A10746800EAB70B /* buttontap7.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = buttontap7.mp3; sourceTree = "<group>"; };
 		EA0F145C292994330013038E /* moverun1.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = moverun1.mp3; sourceTree = "<group>"; };
 		EA0F145E292994B00013038E /* movewalk.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = movewalk.mp3; sourceTree = "<group>"; };
 		EA0F146C2929D9C00013038E /* moverun4.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = moverun4.mp3; sourceTree = "<group>"; };
@@ -234,7 +242,7 @@
 		EA3951EC2938165A00D0B14A /* Extension+UIImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+UIImage.swift"; sourceTree = "<group>"; };
 		EA3951F02939DE5900D0B14A /* ScoringEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoringEngine.swift; sourceTree = "<group>"; };
 		EA41F8342A0C7D8000DF47EC /* HowToPlayPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HowToPlayPage.swift; sourceTree = "<group>"; };
-		EA41F8362A0C915100DF47EC /* radiotick.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = radiotick.mp3; sourceTree = "<group>"; };
+		EA41F8362A0C915100DF47EC /* buttontap4.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = buttontap4.mp3; sourceTree = "<group>"; };
 		EA41F8392A0D71EE00DF47EC /* ParentPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParentPage.swift; sourceTree = "<group>"; };
 		EA41F83B2A0DD3F800DF47EC /* SettingsTapButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTapButton.swift; sourceTree = "<group>"; };
 		EA4D025A29B7D61C00F0C7B1 /* movemarsh3.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = movemarsh3.mp3; sourceTree = "<group>"; };
@@ -587,6 +595,10 @@
 				EA3467AA29A8C6F6002DDA02 /* buttontap1.mp3 */,
 				EA9F4DDC29D2B766006F4B2F /* buttontap2.mp3 */,
 				EAB4F66D29DA27290063AC4B /* buttontap3.mp3 */,
+				EA41F8362A0C915100DF47EC /* buttontap4.mp3 */,
+				EA01BB622A10746800EAB70B /* buttontap5.mp3 */,
+				EA01BB5E2A10746800EAB70B /* buttontap6.mp3 */,
+				EA01BB642A10746800EAB70B /* buttontap7.mp3 */,
 				EAACB4B82971E08A00973EB8 /* chatclose.mp3 */,
 				EA3467A829A8C6CA002DDA02 /* chatopen.mp3 */,
 				EA3467AC29A8C7C7002DDA02 /* continueloop.mp3 */,
@@ -637,7 +649,6 @@
 				EAAEA3C92931F12B00221963 /* pickupitem.mp3 */,
 				EAFA6A6329DCEEC3002287C2 /* punchwhack1.mp3 */,
 				EAFA6A6129DCED35002287C2 /* punchwhack2.mp3 */,
-				EA41F8362A0C915100DF47EC /* radiotick.mp3 */,
 				EA3467A429A8C659002DDA02 /* revive.mp3 */,
 				EAAEA3C32931D0DA00221963 /* swordslash.mp3 */,
 				EAFA6A6F29DCFE79002287C2 /* titletheme.mp3 */,
@@ -755,6 +766,7 @@
 			children = (
 				EA826C9829938CE200F19F81 /* Extensions */,
 				EA65189428EA207800E535BF /* Constants.swift */,
+				EA01BB602A10746800EAB70B /* ButtonTap.swift */,
 				EA956C6929257B9C00879AD0 /* AudioManager.swift */,
 				EA26F29029739DE800BF1AC8 /* AdMobManager.swift */,
 				EA826C80298CF3FF00F19F81 /* IAPManager.swift */,
@@ -859,6 +871,7 @@
 				EA95D194294690890061059C /* warp.mp3 in Resources */,
 				EAFA6A6C29DCFC11002287C2 /* titletheme4.mp3 in Resources */,
 				EAF07C0129E5E4910034CD1A /* titletheme_mario64.mp3 in Resources */,
+				EA01BB652A10746800EAB70B /* buttontap7.mp3 in Resources */,
 				EA0F1481292B2F870013038E /* bouldersmash.mp3 in Resources */,
 				EA95D19C294690B70061059C /* boyattack1.mp3 in Resources */,
 				EA95D1A3294691820061059C /* boygrunt1.mp3 in Resources */,
@@ -869,6 +882,7 @@
 				EA34679929A03A19002DDA02 /* overworld7.mp3 in Resources */,
 				EAF7182129B3097300E2ED82 /* lavasizzle.mp3 in Resources */,
 				EA0F145D292994330013038E /* moverun1.mp3 in Resources */,
+				EA01BB5F2A10746800EAB70B /* buttontap6.mp3 in Resources */,
 				EAAEA3C42931D0DA00221963 /* swordslash.mp3 in Resources */,
 				EADEB3EF2931526700CDB232 /* overworld_egg.mp3 in Resources */,
 				EADEB3F12931526700CDB232 /* overworld_throwback.mp3 in Resources */,
@@ -886,7 +900,7 @@
 				EA4D026529B90BF800F0C7B1 /* gemcollect.mp3 in Resources */,
 				EA9F4DDD29D2B766006F4B2F /* buttontap2.mp3 in Resources */,
 				EA3467AB29A8C6F6002DDA02 /* buttontap1.mp3 in Resources */,
-				EA41F8372A0C915100DF47EC /* radiotick.mp3 in Resources */,
+				EA41F8372A0C915100DF47EC /* buttontap4.mp3 in Resources */,
 				EAACB4B92971E08A00973EB8 /* chatclose.mp3 in Resources */,
 				EAF7181F29B1B2BC00E2ED82 /* movesand1.mp3 in Resources */,
 				EAB4F66E29DA27290063AC4B /* buttontap3.mp3 in Resources */,
@@ -911,6 +925,7 @@
 				EA95D18E2945A0200061059C /* LuckiestGuy-Regular.ttf in Resources */,
 				EA95D1A4294691820061059C /* boygrunt2.mp3 in Resources */,
 				EA65183428E419A000E535BF /* Assets.xcassets in Resources */,
+				EA01BB632A10746800EAB70B /* buttontap5.mp3 in Resources */,
 				EAF7182929B31BE800E2ED82 /* lavaappear1.mp3 in Resources */,
 				EAF7183329B3D26F00E2ED82 /* movesand2.mp3 in Resources */,
 				EA94E87329C0DE2C009F2614 /* movetile3.mp3 in Resources */,
@@ -989,6 +1004,7 @@
 				EA95D1C929541F360061059C /* AchievementStoneCutter.swift in Sources */,
 				EA826C9729938CBB00F19F81 /* StoreReviewManager.swift in Sources */,
 				EA95D20E2962C8AD0061059C /* AchievementSpeedDemon.swift in Sources */,
+				EA01BB612A10746800EAB70B /* ButtonTap.swift in Sources */,
 				EA9DFF0029FE481300D02683 /* SettingsPage.swift in Sources */,
 				EA9DFF022A0084F600D02683 /* SettingsRadioNode.swift in Sources */,
 				EA65182B28E4199E00E535BF /* AppDelegate.swift in Sources */,

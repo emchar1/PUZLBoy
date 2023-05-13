@@ -90,11 +90,11 @@ class DecisionButtonSprite: SKNode {
         topSprite.run(SKAction.move(to: .zero, duration: 0.1))
     }
     
-    func tapButton() {
+    func tapButton(_ type: ButtonTap.ButtonType = .buttontap1) {
         guard isPressed else { return }
         
         delegate?.buttonWasTapped(self)
-        K.ButtonTaps.tap1()
+        ButtonTap.shared.tap(type: type)
     }
 
     func setText(_ text: String) {

@@ -76,9 +76,7 @@ extension SKShapeNode {
         return shadowNodes
     }
     
-    func showShadow(animationDuration: TimeInterval = 0.1, completion: (() -> Void)?) {
-        guard childNode(withName: "shadow1") != nil else { return print("No shadow to show, so shoo!") }
-        
+    func showShadow(shadowOffset: CGFloat = 10, animationDuration: TimeInterval = 0.1, completion: (() -> Void)?) {
         for node in children {
             switch node.name {
             case "shadow1":
@@ -98,6 +96,8 @@ extension SKShapeNode {
                 ])) {
                     completion?()
                 }
+            case "dropShadow":
+                node.run(SKAction.move(to: CGPoint(x: -shadowOffset, y: -shadowOffset), duration: animationDuration))
             default:
                 break
             }
@@ -105,8 +105,6 @@ extension SKShapeNode {
     }
     
     func hideShadow(animationDuration: TimeInterval = 0.05, completion: (() -> Void)?) {
-        guard childNode(withName: "shadow1") != nil else { return print("No shadow to hide.") }
-        
         for node in children {
             switch node.name {
             case "shadow1":
@@ -126,6 +124,8 @@ extension SKShapeNode {
                     SKAction.wait(forDuration: 0 * animationDuration),
                     SKAction.fadeAlpha(to: 0, duration: animationDuration)
                 ]))
+            case "dropShadow":
+                node.run(SKAction.move(to: CGPoint(x: 0, y: 0), duration: animationDuration))
             default:
                 break
             }

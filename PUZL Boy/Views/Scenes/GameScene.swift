@@ -73,7 +73,7 @@ class GameScene: SKScene {
         
         // FIXME: - chatEngine MUST be initialized here, and not in properties, otherwise it just refuses to show up! Because K.ScreenDimensions.topOfGameboard is set in the gameEngine(). Is there a better way to do this??
         chatEngine = ChatEngine()
-        pauseResetEngine = PauseResetEngine()
+        pauseResetEngine = PauseResetEngine(user: user)
         resetConfirmSprite = ConfirmSprite(title: "FEELING STUCK?",
                                       message: "Tap Restart Level to start over. You'll lose a life in the process.",
                                       confirm: "Restart Level",
@@ -738,7 +738,7 @@ extension GameScene: PauseResetEngineDelegate {
     func didTapButtonSpecial() {
         if chatEngine.fastForward() {
             //Putting these here so that I can only have it execute if fastForward is successful. Prevents spamming the button
-            K.ButtonTaps.tap2()
+            ButtonTap.shared.tap(type: .buttontap2)
         }
     }
     

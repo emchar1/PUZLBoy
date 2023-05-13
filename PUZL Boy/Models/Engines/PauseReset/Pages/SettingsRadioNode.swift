@@ -89,15 +89,7 @@ class SettingsRadioNode: SKNode {
     
     func touchDown(in location: CGPoint) {
         guard !isAnimating else { return }
-        guard let radioButtonPositionInScene = radioButton.positionInScene else { return }
-        
-        let adjustedLocation = CGPoint(
-            // FIXME: - Closer, but still not correct. The x value is off!
-            x: location.x + (UIDevice.isiPad ? SettingsRadioNode.radioNodeSize.width : 0),
-            y: location.y - radioButtonPositionInScene.y + SettingsRadioNode.radioNodeSize.height / 2
-        )
-        
-        guard nodes(at: adjustedLocation).filter({ $0.name == nodeName }).first != nil else { return }
+        guard scene?.nodes(at: location).filter({ $0.name == nodeName }).first != nil else { return }
 
         isAnimating = true
         isOn.toggle()
@@ -121,7 +113,7 @@ class SettingsRadioNode: SKNode {
             }
         }
         
-        K.ButtonTaps.tap4()
+        ButtonTap.shared.tap(type: .buttontap4)
 
         delegate?.didTapRadio(self)
     }

@@ -105,10 +105,10 @@ class MenuItemLabel: SKLabelNode {
         ]))
         
         if type == .menuStart {
-            K.ButtonTaps.tap3()
+            ButtonTap.shared.tap(type: .buttontap3)
         }
         else {
-            K.ButtonTaps.tap1()
+            ButtonTap.shared.tap(type: .buttontap1)
         }
     }
     

@@ -86,6 +86,10 @@ class AudioManager {
         addAudioItem("buttontap1", category: .soundFX)
         addAudioItem("buttontap2", category: .soundFX)
         addAudioItem("buttontap3", category: .soundFX) //needs purchase
+        addAudioItem("buttontap4", category: .soundFX)
+        addAudioItem("buttontap5", category: .soundFX)
+        addAudioItem("buttontap6", category: .soundFX)
+        addAudioItem("buttontap7", category: .soundFX) //needs purchase
         addAudioItem("chatclose", category: .soundFX)
         addAudioItem("chatopen", category: .soundFX)
         addAudioItem("dooropen", category: .soundFX)
@@ -120,7 +124,6 @@ class AudioManager {
         addAudioItem("pickupitem", category: .soundFX)
         addAudioItem("punchwhack1", category: .soundFX) //needs purchase
         addAudioItem("punchwhack2", category: .soundFX) //needs purchase
-        addAudioItem("radiotick", category: .soundFX)
         addAudioItem("revive", category: .soundFX)
         addAudioItem("swordslash", category: .soundFX)
         addAudioItem("warp", category: .soundFX)

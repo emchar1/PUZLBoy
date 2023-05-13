@@ -156,7 +156,7 @@ class ConfirmSprite: SKNode {
         for node in nodes(at: location - position) {
             guard let node = node as? DecisionButtonSprite else { continue }
             
-            node.tapButton()
+            node.tapButton(node == cancelButton ? .buttontap6 : .buttontap1)
         }
     }
     

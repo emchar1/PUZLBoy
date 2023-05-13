@@ -6,6 +6,7 @@
 //
 
 import SpriteKit
+import FirebaseAuth
 
 protocol PauseResetEngineDelegate: AnyObject {
     func didTapPause(isPaused: Bool)
@@ -56,6 +57,7 @@ class PauseResetEngine {
     //Misc Properties
     static var backgroundColor: UIColor { DayTheme.skyColor.top.analogous.first.darkenColor(factor: 6) }
     static var backgroundShadowColor: UIColor { DayTheme.skyColor.bottom.analogous.first }
+    private var user: User?
     private var currentLevelLeaderboard: Int = 1
     private var isPressed: Bool = false
     private var isAnimating: Bool = false
@@ -77,14 +79,15 @@ class PauseResetEngine {
     
     // MARK: - Initialization
     
-    init() {
+    init(user: User?) {
         let settingsCorner: CGFloat = 20
+        
+        self.user = user
         
         backgroundSprite = SKShapeNode(rectOf: settingsSize, cornerRadius: settingsCorner)
         backgroundSprite.strokeColor = .white
         backgroundSprite.lineWidth = 0
         backgroundSprite.setScale(0)
-        backgroundSprite.alpha = 0.9
         backgroundSprite.zPosition = K.ZPosition.pauseScreen
         
         foregroundSprite = SKShapeNode(rectOf: settingsSize, cornerRadius: settingsCorner)
@@ -128,7 +131,7 @@ class PauseResetEngine {
                                       message: "Tap Quit Game to return to the main menu. Your progress will be saved.",
                                       confirm: "Quit Game",
                                       cancel: "Cancel")
-        settingsPage = SettingsPage(contentSize: settingsSize)
+        settingsPage = SettingsPage(user: user, contentSize: settingsSize)
         settingsPage.zPosition = 10
         howToPlayPage = HowToPlayPage(maskSize: settingsSize)
         howToPlayPage.zPosition = 10
@@ -265,6 +268,8 @@ class PauseResetEngine {
                         //Makes it easier if you tap here each time, trust me.
                         settingsManager.tap(settingsManager.button5, tapQuietly: true)
                         settingsManager.updateColors()
+                        
+                        settingsPage.updateColors()
                     },
                     SKAction.scale(to: GameboardSprite.spriteScale, duration: 0.25),
                     SKAction.run {
@@ -274,6 +279,8 @@ class PauseResetEngine {
             ])) {
                 self.isAnimating = false
             }
+            
+            ButtonTap.shared.tap(type: .buttontap7)
         }
         else {
             backgroundSprite.run(SKAction.group([
@@ -286,6 +293,7 @@ class PauseResetEngine {
                 self.isAnimating = false
             }
             
+            ButtonTap.shared.tap(type: .buttontap1)
         }
         
         
@@ -298,7 +306,6 @@ class PauseResetEngine {
         
         
         
-        K.ButtonTaps.tap1()
 
         delegate?.didTapPause(isPaused: self.isPaused)
     }
@@ -338,6 +345,7 @@ class PauseResetEngine {
         quitConfirmSprite.touchUp()
         
         howToPlayPage.touchUp()
+        settingsPage.touchUp()
     }
     
     /**
@@ -432,7 +440,7 @@ class PauseResetEngine {
                 self.handleControls()
             }
             else {
-                K.ButtonTaps.tap1()
+                ButtonTap.shared.tap(type: .buttontap1)
             }
 
             self.pauseResetButtonSprite.texture = SKTexture(imageNamed: "\(self.pauseResetName)")

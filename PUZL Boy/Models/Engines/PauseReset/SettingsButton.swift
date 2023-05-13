@@ -23,9 +23,6 @@ class SettingsButton: SKNode {
     private var shadowSprite: SKShapeNode
     private var labelSprite: SKLabelNode
     
-    private var backgroundColor: UIColor { DayTheme.skyColor.top.analogous.first.darkenColor(factor: 6) }
-    private var backgroundShadowColor: UIColor { DayTheme.skyColor.bottom.analogous.first }
-    
     weak var delegate: SettingsButtonDelegate?
     
     enum SettingsButtonType: String {
@@ -84,7 +81,7 @@ class SettingsButton: SKNode {
         isPressed = true
         
         labelSprite.alpha = 1.0
-        buttonSprite.fillColor = backgroundShadowColor
+        buttonSprite.fillColor = PauseResetEngine.backgroundShadowColor
         buttonSprite.run(SKAction.move(to: shadowSize, duration: 0))
         shadowSprite.run(SKAction.move(to: .zero, duration: 0))
     }
@@ -95,7 +92,7 @@ class SettingsButton: SKNode {
         let animationDuration: CGFloat = 0.1
         
         labelSprite.alpha = 0.75
-        buttonSprite.fillColor = backgroundColor
+        buttonSprite.fillColor = PauseResetEngine.backgroundColor
         buttonSprite.run(SKAction.move(to: .zero, duration: animationDuration))
         shadowSprite.run(SKAction.move(to: shadowSize, duration: animationDuration))
     }
@@ -106,19 +103,19 @@ class SettingsButton: SKNode {
         delegate?.didTapButton(self)
         
         if !tapQuietly {
-            K.ButtonTaps.tap2()
+            ButtonTap.shared.tap(type: .buttontap2)
         }
     }
     
     func updateColors() {
         if type == .button1 || type == .button3 {
-            buttonSprite.fillColor = backgroundColor
+            buttonSprite.fillColor = PauseResetEngine.backgroundColor
         }
         else {
-            buttonSprite.fillColor = isPressed ? backgroundShadowColor : backgroundColor
+            buttonSprite.fillColor = isPressed ? PauseResetEngine.backgroundShadowColor : PauseResetEngine.backgroundColor
         }
         
         buttonSprite.fillTexture = SKTexture(image: UIImage.menuGradientTexture)
-        shadowSprite.fillColor = backgroundShadowColor
+        shadowSprite.fillColor = PauseResetEngine.backgroundShadowColor
     }
 }

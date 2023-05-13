@@ -88,22 +88,22 @@ class LevelSkipEngine {
         for nodeTapped in superScene.nodes(at: location) {
             if nodeTapped.name == "forwardButton" {
                 delegate?.fowardPressed(forwardSprite)
-                K.ButtonTaps.tap1()
+                ButtonTap.shared.tap(type: .buttontap1)
                 break
             }
             else if nodeTapped.name == "reverseButton" {
                 delegate?.reversePressed(reverseSprite)
-                K.ButtonTaps.tap1()
+                ButtonTap.shared.tap(type: .buttontap1)
                 break
             }
             else if nodeTapped.name == "achievementButton" {
                 delegate?.viewAchievementsPressed(viewAchievements)
-                K.ButtonTaps.tap1()
+                ButtonTap.shared.tap(type: .buttontap1)
                 break
             }
             else if nodeTapped.name == "partyModeButton" {
                 delegate?.partyModePressed(partyMode)
-                K.ButtonTaps.tap1()
+                ButtonTap.shared.tap(type: .buttontap1)
                 break
             }
         }

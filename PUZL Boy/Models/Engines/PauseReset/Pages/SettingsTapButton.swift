@@ -14,11 +14,18 @@ protocol SettingsTapButtonDelegate: AnyObject {
 class SettingsTapButton: SKNode {
     
     // MARK: - Properties
+    
+    static let buttonSize = CGSize(width: 250, height: 100)
+    let shadowOffset: CGFloat = 6
 
     private var text: String
     private var nodeName: String { "tapbutton" + text }
     private var settingsSize: CGSize
     private var isAnimating = false
+    private var isPressed = true
+    
+    private var backgroundColor: UIColor { DayTheme.skyColor.bottom.triadic.first.darkenColor(factor: 3) }
+    private var backgroundShadowColor: UIColor { DayTheme.skyColor.bottom.splitComplementary.first.lightenColor(factor: 6) }
     
     private var labelNode: SKLabelNode
     private var tapButton: SKShapeNode
@@ -28,7 +35,7 @@ class SettingsTapButton: SKNode {
     
     // MARK: - Initialization
     
-    init(text: String, settingsSize: CGSize) {
+    init(text: String, buttonText: String, settingsSize: CGSize) {
         self.text = text
         self.settingsSize = settingsSize
         
@@ -41,24 +48,35 @@ class SettingsTapButton: SKNode {
         labelNode.fontColor = UIFont.gameFontColor
         labelNode.zPosition = 10
         labelNode.addDropShadow()
-        
-        tapButton = SKShapeNode(rect: CGRect(x: 0, y: 0, width: 300, height: 100), cornerRadius: 20)
-        tapButton.fillColor = .purple
+                
+        tapButton = SKShapeNode(rectOf: SettingsTapButton.buttonSize, cornerRadius: 20)
+        tapButton.position = CGPoint(x: settingsSize.width - SettingsTapButton.buttonSize.width/2 - shadowOffset,
+                                     y: SettingsTapButton.buttonSize.height/2 - shadowOffset)
+        tapButton.fillTexture = SKTexture(image: UIImage.menuGradientTexture)
         tapButton.strokeColor = .white
         tapButton.lineWidth = 0
-        tapButton.addDropShadow(rectOf: CGSize(width: 300, height: 100), cornerRadius: 20)
+        tapButton.addDropShadow(rectOf: SettingsTapButton.buttonSize, cornerRadius: 20, shadowOffset: shadowOffset)
         
+        let buttonLabelNode = SKLabelNode(text: buttonText)
+        buttonLabelNode.position = CGPoint(x: 0, y: 0)
+        buttonLabelNode.verticalAlignmentMode = .center
+        buttonLabelNode.horizontalAlignmentMode = .center
+        buttonLabelNode.fontName = UIFont.chatFont
+        buttonLabelNode.fontSize = UIFont.chatFontSize
+        buttonLabelNode.fontColor = UIFont.chatFontColor
+        buttonLabelNode.zPosition = 5
+        buttonLabelNode.addDropShadow()
+
         super.init()
 
-//        //FIXME: - DELETE
-//        let backgroundNode = SKSpriteNode(color: .systemPink, size: settingsSize)
-//        backgroundNode.anchorPoint = .zero
-//        addChild(backgroundNode)
         
         tapButton.name = nodeName
+        
+        updateColors()
 
         addChild(labelNode)
         addChild(tapButton)
+        tapButton.addChild(buttonLabelNode)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -70,26 +88,43 @@ class SettingsTapButton: SKNode {
     
     func touchDown(in location: CGPoint) {
         guard !isAnimating else { return }
-        guard let tapButtonPositionInScene = tapButton.positionInScene else { return }
-        
-        let adjustedLocation = CGPoint(
-            // FIXME: - Closer, but still not correct. The x value is off!
-            x: location.x + (UIDevice.isiPad ? 300 : 0),
-            y: location.y - tapButtonPositionInScene.y + 100 / 2
-        )
-        
-        guard nodes(at: adjustedLocation).filter({ $0.name == nodeName }).first != nil else { return }
+        guard scene?.nodes(at: location).filter({ $0.name == nodeName }).first != nil else { return }
 
-        isAnimating = true
+        isPressed = true
         
-        tapButton.run(SKAction.move(to: CGPoint(x: -6, y: -6), duration: 0.2)) {
+        tapButton.run(SKAction.group([
+            SKAction.move(to: tapButton.position + CGPoint(x: -shadowOffset, y: -shadowOffset), duration: 0),
+            SKAction.run {
+                self.tapButton.hideShadow(animationDuration: 0, completion: nil)
+            }
+        ])) {
             //Delegate here???
             
-            self.isAnimating = false
         }
         
-        K.ButtonTaps.tap4()
+        ButtonTap.shared.tap(type: .buttontap5)
 
         delegate?.didTapButton(self)
+    }
+    
+    func touchUp() {
+        guard isPressed else { return }
+        
+        isAnimating = true
+        isPressed = false
+        
+        tapButton.run(SKAction.group([
+            SKAction.move(to: tapButton.position + CGPoint(x: shadowOffset, y: shadowOffset), duration: 0.2),
+            SKAction.run {
+                self.tapButton.showShadow(shadowOffset: self.shadowOffset, animationDuration: 0.2, completion: nil)
+            }
+        ])) {
+            self.isAnimating = false
+        }
+    }
+    
+    func updateColors() {
+        tapButton.fillColor = backgroundColor
+        tapButton.updateShadowColor(backgroundShadowColor)
     }
 }
