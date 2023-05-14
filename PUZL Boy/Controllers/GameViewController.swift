@@ -9,6 +9,7 @@ import UIKit
 import SpriteKit
 import GameplayKit
 import FirebaseAuth
+import MessageUI
 
 class GameViewController: UIViewController {
     override var prefersStatusBarHidden: Bool { return true }
@@ -36,6 +37,8 @@ class GameViewController: UIViewController {
 
         //Call this once, before calling LevelBuilder.getLevels().
         FIRManager.enableDBPersistence
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(sendEmail), name: .showMailCompose, object: nil)
 
         GameCenterManager.shared.viewController = self
         GameCenterManager.shared.getUser { user in
@@ -107,5 +110,26 @@ extension GameViewController: GameSceneDelegate {
         skView.presentScene(titleScene, transition: SKTransition.fade(with: .white, duration: 0))
         
         gameScenePreserved = skView.scene as? GameScene
+    }
+}
+
+
+// MARK: - MFMailComposeViewControllerDelegate
+
+extension GameViewController: MFMailComposeViewControllerDelegate {
+    func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
+        controller.dismiss(animated: true)
+    }
+    
+    @objc private func sendEmail(_ sender: Any) {
+        if MFMailComposeViewController.canSendMail() {
+            let mail = MFMailComposeViewController()
+            mail.mailComposeDelegate = self
+            mail.setToRecipients(["emchar1@gmail.com"])
+            mail.setSubject("Report a Bug")
+            mail.setMessageBody("Hello, Eddie.", isHTML: true)
+            
+            present(mail, animated: true)
+        }
     }
 }

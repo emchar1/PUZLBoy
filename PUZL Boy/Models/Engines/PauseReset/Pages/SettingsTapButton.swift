@@ -100,13 +100,15 @@ class SettingsTapButton: SKNode {
             SKAction.run {
                 self.tapButton.hideShadow(animationDuration: 0, completion: nil)
             }
-        ]))
-        
-        ButtonTap.shared.tap(type: .buttontap5)
-        delegate?.didTapButton(self)
+        ])) {
+            self.touchUp()
+         
+            ButtonTap.shared.tap(type: .buttontap5)
+            self.delegate?.didTapButton(self)
+        }
     }
     
-    func touchUp() {
+    private func touchUp() {
         guard isPressed else { return }
         
         isAnimating = true

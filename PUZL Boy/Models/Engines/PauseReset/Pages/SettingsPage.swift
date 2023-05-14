@@ -7,6 +7,7 @@
 
 import SpriteKit
 import FirebaseAuth
+import StoreKit
 
 class SettingsPage: ParentPage {
     
@@ -139,14 +140,6 @@ class SettingsPage: ParentPage {
         tapButtonRateReview.touchDown(in: location)
         tapButtonReportBug.touchDown(in: location)
     }
-    
-    override func touchUp() {
-        super.touchUp()
-        
-        tapButtonNotifications.touchUp()
-        tapButtonRateReview.touchUp()
-        tapButtonReportBug.touchUp()
-    }
 }
 
 
@@ -189,11 +182,13 @@ extension SettingsPage: SettingsTapButtonDelegate {
     func didTapButton(_ buttonNode: SettingsTapButton) {
         switch buttonNode {
         case let buttonNode where buttonNode == tapButtonNotifications:
-            print("Implement Notifications button")
+            if let appSettings = URL(string: UIApplication.openSettingsURLString), UIApplication.shared.canOpenURL(appSettings) {
+                UIApplication.shared.open(appSettings)
+            }
         case let buttonNode where buttonNode == tapButtonRateReview:
-            print("Implement Rate/Review button")
+            SKStoreReviewController.requestReview()
         case let buttonNode where buttonNode == tapButtonReportBug:
-            print("Implement Report Bug button")
+            NotificationCenter.default.post(name: .showMailCompose , object: nil)
         default:
             return
         }

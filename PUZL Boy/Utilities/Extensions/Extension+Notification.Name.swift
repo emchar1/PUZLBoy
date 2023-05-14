@@ -11,4 +11,5 @@ extension Notification.Name {
     static let presentGame = Notification.Name(rawValue: "presentGame")
     static let authenticationChanged = Notification.Name(rawValue: "authenticationChanged")
     static let iapHelperPurchaseNotification = Notification.Name("iapHelperPurchaseNotification")
+    static let showMailCompose = Notification.Name(rawValue: "showMailCompose")
 }
