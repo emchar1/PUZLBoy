@@ -16,7 +16,11 @@ class SettingsTapButton: SKNode {
     // MARK: - Properties
     
     static let buttonSize = CGSize(width: 250, height: 100)
-    let shadowOffset: CGFloat = 6
+    private let shadowOffset: CGFloat = 6
+    private var positionOrig: CGPoint {
+        CGPoint(x: settingsSize.width - SettingsTapButton.buttonSize.width / 2 - shadowOffset,
+                y: SettingsTapButton.buttonSize.height / 2 - shadowOffset)
+    }
 
     private var text: String
     private var nodeName: String { "tapbutton" + text }
@@ -50,8 +54,6 @@ class SettingsTapButton: SKNode {
         labelNode.addDropShadow()
                 
         tapButton = SKShapeNode(rectOf: SettingsTapButton.buttonSize, cornerRadius: 20)
-        tapButton.position = CGPoint(x: settingsSize.width - SettingsTapButton.buttonSize.width/2 - shadowOffset,
-                                     y: SettingsTapButton.buttonSize.height/2 - shadowOffset)
         tapButton.fillTexture = SKTexture(image: UIImage.menuGradientTexture)
         tapButton.strokeColor = .white
         tapButton.lineWidth = 0
@@ -70,6 +72,7 @@ class SettingsTapButton: SKNode {
         super.init()
 
         
+        tapButton.position = positionOrig
         tapButton.name = nodeName
         
         updateColors()
@@ -97,13 +100,9 @@ class SettingsTapButton: SKNode {
             SKAction.run {
                 self.tapButton.hideShadow(animationDuration: 0, completion: nil)
             }
-        ])) {
-            //Delegate here???
-            
-        }
+        ]))
         
         ButtonTap.shared.tap(type: .buttontap5)
-
         delegate?.didTapButton(self)
     }
     
@@ -114,7 +113,7 @@ class SettingsTapButton: SKNode {
         isPressed = false
         
         tapButton.run(SKAction.group([
-            SKAction.move(to: tapButton.position + CGPoint(x: shadowOffset, y: shadowOffset), duration: 0.2),
+            SKAction.move(to: positionOrig, duration: 0.2),
             SKAction.run {
                 self.tapButton.showShadow(shadowOffset: self.shadowOffset, animationDuration: 0.2, completion: nil)
             }

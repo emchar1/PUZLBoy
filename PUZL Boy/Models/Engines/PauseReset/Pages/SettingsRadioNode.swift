@@ -114,7 +114,6 @@ class SettingsRadioNode: SKNode {
         }
         
         ButtonTap.shared.tap(type: .buttontap4)
-
         delegate?.didTapRadio(self)
     }
 }

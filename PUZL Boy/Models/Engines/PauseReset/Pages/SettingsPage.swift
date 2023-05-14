@@ -36,11 +36,11 @@ class SettingsPage: ParentPage {
         
         let radioSectionHeight: CGFloat = 100
         let radioSize = CGSize(width: contentSize.width - 2 * padding, height: SettingsRadioNode.radioNodeSize.height)
-        let radioStart: CGFloat = -padding - 1.0 * radioSectionHeight
+        let radioStart: CGFloat = -padding - 1.5 * radioSectionHeight
         
         let tapButtonSectionHeight: CGFloat = 120
         let tapButtonSize = CGSize(width: contentSize.width - 2 * padding, height: SettingsTapButton.buttonSize.height)
-        let tapButtonStart: CGFloat = -padding - 1.0 * tapButtonSectionHeight
+        let tapButtonStart: CGFloat = -padding - 1.5 * tapButtonSectionHeight
         
         radioMusic = SettingsRadioNode(
             text: "🎵 Music",
@@ -111,7 +111,7 @@ class SettingsPage: ParentPage {
         contentNode.addChild(tapButtonNotifications)
         contentNode.addChild(tapButtonRateReview)
         contentNode.addChild(tapButtonReportBug)
-        contentNode.addChild(idLabel)
+//        contentNode.addChild(idLabel)
     }
     
     required init?(coder: NSCoder) {
