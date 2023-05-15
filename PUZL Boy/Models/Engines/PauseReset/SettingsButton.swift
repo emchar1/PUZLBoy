@@ -89,7 +89,7 @@ class SettingsButton: SKNode {
     func touchUp() {
         isPressed = false
         
-        let animationDuration: CGFloat = 0.1
+        let animationDuration: CGFloat = 0.2
         
         labelSprite.alpha = 0.75
         buttonSprite.fillColor = PauseResetEngine.backgroundColor

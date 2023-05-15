@@ -25,6 +25,7 @@ class SettingsRadioNode: SKNode {
     private var nodeName: String { "radiobutton" + text }
     private var settingsSize: CGSize
     private var isAnimating = false
+    private var isPressed = false
     
     private var labelNode: SKLabelNode
     private var radioButton: SKSpriteNode
@@ -91,6 +92,19 @@ class SettingsRadioNode: SKNode {
         guard !isAnimating else { return }
         guard scene?.nodes(at: location).filter({ $0.name == nodeName }).first != nil else { return }
 
+        isPressed = true
+    }
+    
+    func touchUp() {
+        guard isPressed else { return }
+        
+        isPressed = false
+    }
+    
+    func tapRadio(in location: CGPoint) {
+        guard isPressed else { return }
+        guard scene?.nodes(at: location).filter({ $0.name == nodeName }).first != nil else { return }
+
         isAnimating = true
         isOn.toggle()
         
@@ -99,7 +113,6 @@ class SettingsRadioNode: SKNode {
                 self.radioOff.removeFromParent()
                 self.radioOff.position.x = SettingsRadioNode.radioStatus.off
                 self.radioButton.addChild(self.radioOn)
-                
                 self.isAnimating = false
             }
         }
@@ -108,7 +121,6 @@ class SettingsRadioNode: SKNode {
                 self.radioOn.removeFromParent()
                 self.radioOn.position.x = SettingsRadioNode.radioStatus.on
                 self.radioButton.addChild(self.radioOff)
-                
                 self.isAnimating = false
             }
         }

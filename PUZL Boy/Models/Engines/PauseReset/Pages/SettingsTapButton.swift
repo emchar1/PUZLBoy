@@ -100,15 +100,10 @@ class SettingsTapButton: SKNode {
             SKAction.run {
                 self.tapButton.hideShadow(animationDuration: 0, completion: nil)
             }
-        ])) {
-            self.touchUp()
-         
-            ButtonTap.shared.tap(type: .buttontap5)
-            self.delegate?.didTapButton(self)
-        }
+        ]))
     }
     
-    private func touchUp() {
+    func touchUp() {
         guard isPressed else { return }
         
         isAnimating = true
@@ -122,6 +117,14 @@ class SettingsTapButton: SKNode {
         ])) {
             self.isAnimating = false
         }
+    }
+    
+    func tapButton(in location: CGPoint) {
+        guard isPressed else { return }
+        guard scene?.nodes(at: location).filter({ $0.name == nodeName }).first != nil else { return }
+
+        ButtonTap.shared.tap(type: .buttontap5)
+        self.delegate?.didTapButton(self)
     }
     
     func updateColors() {

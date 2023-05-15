@@ -213,6 +213,9 @@ class PauseResetEngine {
                 else if nodeTapped is DecisionButtonSprite {
                     quitConfirmSprite.didTapButton(in: location)
                 }
+                else if nodeTapped is SettingsPage {
+                    settingsPage.touchNode(at: location)
+                }
             }
         }
         else {

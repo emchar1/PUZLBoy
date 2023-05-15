@@ -140,6 +140,32 @@ class SettingsPage: ParentPage {
         tapButtonRateReview.touchDown(in: location)
         tapButtonReportBug.touchDown(in: location)
     }
+    
+    override func touchUp() {
+        super.touchUp()
+        
+        radioMusic.touchUp()
+        radioSoundFX.touchUp()
+        radioVibration.touchUp()
+        radioPartyLights.touchUp()
+        
+        tapButtonNotifications.touchUp()
+        tapButtonRateReview.touchUp()
+        tapButtonReportBug.touchUp()
+    }
+    
+    override func touchNode(at location: CGPoint) {
+        super.touchNode(at: location)
+        
+        radioMusic.tapRadio(in: location)
+        radioSoundFX.tapRadio(in: location)
+        radioVibration.tapRadio(in: location)
+        radioPartyLights.tapRadio(in: location)
+        
+        tapButtonNotifications.tapButton(in: location)
+        tapButtonRateReview.tapButton(in: location)
+        tapButtonReportBug.tapButton(in: location)
+    }
 }
 
 

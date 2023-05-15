@@ -56,4 +56,8 @@ class ParentPage: SKNode {
     func touchUp() {
         //Implement in subclass
     }
+    
+    func touchNode(at location: CGPoint) {
+        //Implement in subclass
+    }
 }
