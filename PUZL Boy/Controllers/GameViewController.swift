@@ -122,14 +122,23 @@ extension GameViewController: MFMailComposeViewControllerDelegate {
     }
     
     @objc private func sendEmail(_ sender: Any) {
-        if MFMailComposeViewController.canSendMail() {
-            let mail = MFMailComposeViewController()
-            mail.mailComposeDelegate = self
-            mail.setToRecipients(["emchar1@gmail.com"])
-            mail.setSubject("Report a Bug")
-            mail.setMessageBody("Hello, Eddie.", isHTML: true)
-            
-            present(mail, animated: true)
-        }
+        guard MFMailComposeViewController.canSendMail() else { return }
+        
+        let os = ProcessInfo.processInfo.operatingSystemVersion
+        
+        var deviceStats = "PUZL Boy version: \(Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "N/A") "
+        deviceStats += "(\(Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? "N/A"))<br>"
+        deviceStats += "Device: \(UIDevice.modelInfo.name)<br>"
+        deviceStats += "OS version: \(os.majorVersion).\(os.minorVersion).\(os.patchVersion)<br>"
+        deviceStats += "Language: \(Locale.current.languageCode ?? "N/A")<br>"
+        deviceStats += "User ID: \(user?.uid ?? "N/A")"
+
+        let mail = MFMailComposeViewController()
+        mail.mailComposeDelegate = self
+        mail.setToRecipients(["puzlboygame@gmail.com"])
+        mail.setSubject("Feedback")
+        mail.setMessageBody("<br><br><br><br>\(deviceStats)", isHTML: true)
+        
+        present(mail, animated: true)
     }
 }
