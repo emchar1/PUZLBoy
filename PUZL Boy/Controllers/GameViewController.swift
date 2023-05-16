@@ -39,6 +39,7 @@ class GameViewController: UIViewController {
         FIRManager.enableDBPersistence
         
         NotificationCenter.default.addObserver(self, selector: #selector(sendEmail), name: .showMailCompose, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(shareURL), name: .shareURL, object: nil)
 
         GameCenterManager.shared.viewController = self
         GameCenterManager.shared.getUser { user in
@@ -140,5 +141,17 @@ extension GameViewController: MFMailComposeViewControllerDelegate {
         mail.setMessageBody("<br><br><br><br>\(deviceStats)", isHTML: true)
         
         present(mail, animated: true)
+    }
+}
+
+
+// MARK: - Share URL
+
+extension GameViewController {
+    @objc private func shareURL(_ sender: Any) {
+        let productURL = "https://www.puzlboy.com"
+        let activityViewController = UIActivityViewController(activityItems: [productURL], applicationActivities: nil)
+        
+        present(activityViewController, animated: true)
     }
 }

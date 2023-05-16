@@ -15,7 +15,7 @@ class SettingsRadioNode: SKNode {
     
     // MARK: - Properties
     
-    static let radioNodeScale: CGFloat = 0.36
+    static let radioNodeScale: CGFloat = UIDevice.isiPad ? 0.52 : 0.36
     static let radioNodeSizeOrig = CGSize(width: 512, height: 225)
     static let radioNodeSize = CGSize(width: radioNodeSizeOrig.width * radioNodeScale, height: radioNodeSizeOrig.height * radioNodeScale)
     static let radioStatus: (on: CGFloat, off: CGFloat) = (-radioNodeSizeOrig.width, -radioNodeSizeOrig.height)
@@ -47,7 +47,7 @@ class SettingsRadioNode: SKNode {
         labelNode.verticalAlignmentMode = .center
         labelNode.horizontalAlignmentMode = .left
         labelNode.fontName = UIFont.gameFont
-        labelNode.fontSize = UIFont.gameFontSizeMedium
+        labelNode.fontSize = UIDevice.isiPad ? UIFont.gameFontSizeLarge : UIFont.gameFontSizeMedium
         labelNode.fontColor = UIFont.gameFontColor
         labelNode.zPosition = 10
         labelNode.addDropShadow()

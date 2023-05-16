@@ -32,7 +32,7 @@ class ParentPage: SKNode {
         titleLabel.horizontalAlignmentMode = .center
         titleLabel.verticalAlignmentMode = .top
         titleLabel.fontName = UIFont.gameFont
-        titleLabel.fontSize = UIFont.gameFontSizeMedium
+        titleLabel.fontSize = UIDevice.isiPad ? UIFont.gameFontSizeLarge : UIFont.gameFontSizeMedium
         titleLabel.fontColor = UIFont.gameFontColor
         titleLabel.addHeavyDropShadow()
         titleLabel.zPosition = 10

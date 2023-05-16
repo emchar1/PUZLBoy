@@ -12,4 +12,5 @@ extension Notification.Name {
     static let authenticationChanged = Notification.Name(rawValue: "authenticationChanged")
     static let iapHelperPurchaseNotification = Notification.Name("iapHelperPurchaseNotification")
     static let showMailCompose = Notification.Name(rawValue: "showMailCompose")
+    static let shareURL = Notification.Name(rawValue: "shareURL")
 }

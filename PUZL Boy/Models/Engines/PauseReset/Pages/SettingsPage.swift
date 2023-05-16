@@ -35,11 +35,11 @@ class SettingsPage: ParentPage {
         self.user = user
         name = nodeName
         
-        let radioSectionHeight: CGFloat = 100
+        let radioSectionHeight: CGFloat = UIDevice.isiPad ? 150 : 100
         let radioSize = CGSize(width: contentSize.width - 2 * padding, height: SettingsRadioNode.radioNodeSize.height)
         let radioStart: CGFloat = -padding - 1.5 * radioSectionHeight
         
-        let tapButtonSectionHeight: CGFloat = 120
+        let tapButtonSectionHeight: CGFloat = UIDevice.isiPad ? 180 : 120
         let tapButtonSize = CGSize(width: contentSize.width - 2 * padding, height: SettingsTapButton.buttonSize.height)
         let tapButtonStart: CGFloat = -padding - 1.5 * tapButtonSectionHeight
         
@@ -80,7 +80,7 @@ class SettingsPage: ParentPage {
         tapButtonNotifications.zPosition = 10
         tapButtonNotifications.delegate = self
 
-        tapButtonRateReview = SettingsTapButton(text: "❤️ Rate & Review", buttonText: "Review", settingsSize: tapButtonSize)
+        tapButtonRateReview = SettingsTapButton(text: "❤️ Tell Your Friends", buttonText: "Share", settingsSize: tapButtonSize)
         tapButtonRateReview.position = CGPoint(x: padding, y: tapButtonStart - SettingsTapButton.buttonSize.height - 5 * tapButtonSectionHeight)
         tapButtonRateReview.zPosition = 10
         tapButtonRateReview.delegate = self
@@ -212,7 +212,9 @@ extension SettingsPage: SettingsTapButtonDelegate {
                 UIApplication.shared.open(appSettings)
             }
         case let buttonNode where buttonNode == tapButtonRateReview:
-            SKStoreReviewController.requestReview()
+            NotificationCenter.default.post(name: .shareURL, object: nil)
+            
+//            SKStoreReviewController.requestReview()
         case let buttonNode where buttonNode == tapButtonReportBug:
             NotificationCenter.default.post(name: .showMailCompose , object: nil)
         default:

@@ -15,7 +15,7 @@ class SettingsTapButton: SKNode {
     
     // MARK: - Properties
     
-    static let buttonSize = CGSize(width: 250, height: 100)
+    static let buttonSize = UIDevice.isiPad ? CGSize(width: 400, height: 140) : CGSize(width: 250, height: 100)
     private let shadowOffset: CGFloat = 6
     private var positionOrig: CGPoint {
         CGPoint(x: settingsSize.width - SettingsTapButton.buttonSize.width / 2 - shadowOffset,
@@ -48,7 +48,7 @@ class SettingsTapButton: SKNode {
         labelNode.verticalAlignmentMode = .center
         labelNode.horizontalAlignmentMode = .left
         labelNode.fontName = UIFont.gameFont
-        labelNode.fontSize = UIFont.gameFontSizeMedium
+        labelNode.fontSize = UIDevice.isiPad ? UIFont.gameFontSizeLarge : UIFont.gameFontSizeMedium
         labelNode.fontColor = UIFont.gameFontColor
         labelNode.zPosition = 10
         labelNode.addDropShadow()
@@ -64,7 +64,7 @@ class SettingsTapButton: SKNode {
         buttonLabelNode.verticalAlignmentMode = .center
         buttonLabelNode.horizontalAlignmentMode = .center
         buttonLabelNode.fontName = UIFont.chatFont
-        buttonLabelNode.fontSize = UIFont.chatFontSize
+        buttonLabelNode.fontSize = UIDevice.isiPad ? UIFont.gameFontSizeLarge : UIFont.chatFontSize
         buttonLabelNode.fontColor = UIFont.chatFontColor
         buttonLabelNode.zPosition = 5
         buttonLabelNode.addDropShadow()

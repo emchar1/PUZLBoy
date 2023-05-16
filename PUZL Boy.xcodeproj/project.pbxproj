@@ -173,7 +173,7 @@
 		EADFD95C29F4CE8500C6F9D1 /* SettingsButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = EADFD95B29F4CE8500C6F9D1 /* SettingsButton.swift */; };
 		EADFD96229F90B6A00C6F9D1 /* ConfirmSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = EADFD96129F90B6A00C6F9D1 /* ConfirmSprite.swift */; };
 		EAE565AA29D6E0C700BC43CB /* TitleScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAE565A929D6E0C700BC43CB /* TitleScene.swift */; };
-		EAE6EC322A120115001842C6 /* buttontap7.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAE6EC312A120115001842C6 /* buttontap7.mp3 */; };
+		EAE6EC342A12D27F001842C6 /* buttontap7.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAE6EC332A12D27F001842C6 /* buttontap7.mp3 */; };
 		EAF07BFF29E5E45B0034CD1A /* overworld_castle.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAF07BFE29E5E45B0034CD1A /* overworld_castle.mp3 */; };
 		EAF07C0129E5E4910034CD1A /* titletheme_mario64.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAF07C0029E5E4910034CD1A /* titletheme_mario64.mp3 */; };
 		EAF07C0329E796640034CD1A /* ParallaxSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAF07C0229E796630034CD1A /* ParallaxSprite.swift */; };
@@ -364,7 +364,7 @@
 		EADFD95B29F4CE8500C6F9D1 /* SettingsButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsButton.swift; sourceTree = "<group>"; };
 		EADFD96129F90B6A00C6F9D1 /* ConfirmSprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmSprite.swift; sourceTree = "<group>"; };
 		EAE565A929D6E0C700BC43CB /* TitleScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleScene.swift; sourceTree = "<group>"; };
-		EAE6EC312A120115001842C6 /* buttontap7.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = buttontap7.mp3; sourceTree = "<group>"; };
+		EAE6EC332A12D27F001842C6 /* buttontap7.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = buttontap7.mp3; sourceTree = "<group>"; };
 		EAF07BFE29E5E45B0034CD1A /* overworld_castle.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = overworld_castle.mp3; sourceTree = "<group>"; };
 		EAF07C0029E5E4910034CD1A /* titletheme_mario64.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = titletheme_mario64.mp3; sourceTree = "<group>"; };
 		EAF07C0229E796630034CD1A /* ParallaxSprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParallaxSprite.swift; sourceTree = "<group>"; };
@@ -598,7 +598,7 @@
 				EA41F8362A0C915100DF47EC /* buttontap4.mp3 */,
 				EA01BB622A10746800EAB70B /* buttontap5.mp3 */,
 				EA01BB5E2A10746800EAB70B /* buttontap6.mp3 */,
-				EAE6EC312A120115001842C6 /* buttontap7.mp3 */,
+				EAE6EC332A12D27F001842C6 /* buttontap7.mp3 */,
 				EAACB4B82971E08A00973EB8 /* chatclose.mp3 */,
 				EA3467A829A8C6CA002DDA02 /* chatopen.mp3 */,
 				EA3467AC29A8C7C7002DDA02 /* continueloop.mp3 */,
@@ -873,7 +873,6 @@
 				EAF07C0129E5E4910034CD1A /* titletheme_mario64.mp3 in Resources */,
 				EA0F1481292B2F870013038E /* bouldersmash.mp3 in Resources */,
 				EA95D19C294690B70061059C /* boyattack1.mp3 in Resources */,
-				EAE6EC322A120115001842C6 /* buttontap7.mp3 in Resources */,
 				EA95D1A3294691820061059C /* boygrunt1.mp3 in Resources */,
 				EA94E87529C0DE2C009F2614 /* movetile1.mp3 in Resources */,
 				EAAEA3C22931AA6E00221963 /* hammerswing.mp3 in Resources */,
@@ -883,6 +882,7 @@
 				EAF7182129B3097300E2ED82 /* lavasizzle.mp3 in Resources */,
 				EA0F145D292994330013038E /* moverun1.mp3 in Resources */,
 				EA01BB5F2A10746800EAB70B /* buttontap6.mp3 in Resources */,
+				EAE6EC342A12D27F001842C6 /* buttontap7.mp3 in Resources */,
 				EAAEA3C42931D0DA00221963 /* swordslash.mp3 in Resources */,
 				EADEB3EF2931526700CDB232 /* overworld_egg.mp3 in Resources */,
 				EADEB3F12931526700CDB232 /* overworld_throwback.mp3 in Resources */,
