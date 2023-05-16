@@ -51,10 +51,30 @@ class HowToPlayPage: ParentPage {
         addChild(cropNode)
         cropNode.addChild(contentNode)
         contentNode.addChild(titleLabel)
+        
+        loadContent(currentLevel: 30)
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    private func loadContent(currentLevel: Int) {
+        loadContentHelper(
+            imageName: "grass", currentLevel: currentLevel, requiredLevel: 2, nodePosition: CGPoint(x: padding, y: -padding - 150),
+            descriptionText: "Your typical terrain. Stepping on grass will cost you 1 move. Diagonal moves are not allowed."
+        )
+        
+        loadContentHelper(
+            imageName: "marsh", currentLevel: currentLevel, requiredLevel: 8, nodePosition: CGPoint(x: padding, y: -2 * padding - 150 - HowToPlayNode.iconSize),
+            descriptionText: "This crimson colored panel will cost you 2 moves if you're so unfortunate to step in it."
+        )
+    }
+    
+    private func loadContentHelper(imageName: String, currentLevel: Int, requiredLevel: Int, nodePosition: CGPoint, descriptionText: String) {
+        let howToPlayNode = HowToPlayNode( imageName: imageName, currentLevel: currentLevel, requiredLevel: requiredLevel, nodeWidth: maskSize.width - 2 * padding, descriptionText: descriptionText)
+        howToPlayNode.position = nodePosition
+        contentNode.addChild(howToPlayNode)
     }
     
     
