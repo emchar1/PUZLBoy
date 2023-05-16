@@ -137,7 +137,7 @@ extension GameViewController: MFMailComposeViewControllerDelegate {
         let mail = MFMailComposeViewController()
         mail.mailComposeDelegate = self
         mail.setToRecipients(["puzlboygame@gmail.com"])
-        mail.setSubject("Feedback")
+        mail.setSubject("In-Game Feedback")
         mail.setMessageBody("<br><br><br><br>\(deviceStats)", isHTML: true)
         
         present(mail, animated: true)
