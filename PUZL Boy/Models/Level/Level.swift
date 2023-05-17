@@ -114,6 +114,13 @@ struct Level: CustomStringConvertible {
         return check.overlay == .boundary ? check.terrain : check.overlay
     }
     
+    ///Similar to getLevelType(at:), but returns the terrain, always.
+    func getTerrainType(at position: K.GameboardPosition) -> LevelType {
+        guard (position.row >= 0 && position.row < gameboard.count) && (position.col >= 0 && position.col < gameboard[0].count) else { return .boundary }
+        
+        return gameboard[position.row][position.col].terrain
+    }
+    
     
     // FIXME: - I REALLY HATE HOW SLOW AND INEFFICIENT THIS IS!!!
     func getLevelModel(level: Int, movesRemaining: Int, heathRemaining: Int, gemsCollected: Int, gemsRemaining: Int, playerPosition: PlayerPosition, inventory: Inventory) -> LevelModel {

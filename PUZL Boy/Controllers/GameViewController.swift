@@ -132,7 +132,7 @@ extension GameViewController: MFMailComposeViewControllerDelegate {
         deviceStats += "Device: \(UIDevice.modelInfo.name)<br>"
         deviceStats += "OS version: \(os.majorVersion).\(os.minorVersion).\(os.patchVersion)<br>"
         deviceStats += "Language: \(Locale.current.languageCode ?? "N/A")<br>"
-        deviceStats += "User ID: \(user?.uid ?? "N/A")"
+        deviceStats += "UID: \(user?.uid ?? "N/A")"
 
         let mail = MFMailComposeViewController()
         mail.mailComposeDelegate = self

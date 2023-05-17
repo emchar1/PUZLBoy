@@ -253,11 +253,12 @@ class GameEngine {
             
             playerSprite.startPowerUpAnimation()
             
-            ScoringEngine.updateStatusIconsAnimation(icon: .hammer,
-                                                     amount: 1,
-                                                     originSprite: gameboardSprite.sprite,
-                                                     location: CGPoint(x: playerSprite.sprite.position.x,
-                                                                       y: playerSprite.sprite.position.y + 20))
+            ScoringEngine.updateStatusIconsAnimation(
+                icon: .hammer,
+                amount: 1,
+                originSprite: gameboardSprite.sprite,
+                location: CGPoint(x: playerSprite.sprite.position.x, y: playerSprite.sprite.position.y + 20))
+            
             completion?()
         case .sword:
             displaySprite.statusSwords.pulseImage()
@@ -269,11 +270,12 @@ class GameEngine {
 
             playerSprite.startPowerUpAnimation()
             
-            ScoringEngine.updateStatusIconsAnimation(icon: .sword,
-                                                     amount: 1,
-                                                     originSprite: gameboardSprite.sprite,
-                                                     location: CGPoint(x: playerSprite.sprite.position.x,
-                                                                       y: playerSprite.sprite.position.y + 20))
+            ScoringEngine.updateStatusIconsAnimation(
+                icon: .sword,
+                amount: 1,
+                originSprite: gameboardSprite.sprite,
+                location: CGPoint(x: playerSprite.sprite.position.x, y: playerSprite.sprite.position.y + 20))
+
             completion?()
         case .heart:
             displaySprite.statusHealth.pulseImage()
@@ -284,11 +286,12 @@ class GameEngine {
             
             AudioManager.shared.playSound(for: "pickupheart")
             
-            ScoringEngine.updateStatusIconsAnimation(icon: .health,
-                                                     amount: 1,
-                                                     originSprite: gameboardSprite.sprite,
-                                                     location: CGPoint(x: playerSprite.sprite.position.x,
-                                                                       y: playerSprite.sprite.position.y + 20))
+            ScoringEngine.updateStatusIconsAnimation(
+                icon: .health,
+                amount: 1,
+                originSprite: gameboardSprite.sprite,
+                location: CGPoint(x: playerSprite.sprite.position.x, y: playerSprite.sprite.position.y + 20))
+
             completion?()
         case .boulder:
             guard level.inventory.hammers > 0 else { return }
@@ -324,18 +327,46 @@ class GameEngine {
             AudioManager.shared.stopSound(for: "moveglide", fadeDuration: 0.5)
             AudioManager.shared.playSound(for: "warp")
             
+            let initialWarpLocation = level.player ?? newWarpLocation
+
+            //Start marsh animation if initial warp location has marsh, regardless.
+            if level.getTerrainType(at: initialWarpLocation) == .marsh {
+                handleMarsh()
+            }
+            
             playerSprite.startWarpAnimation(shouldReverse: false, stopAnimating: false) {
                 self.level.updatePlayer(position: newWarpLocation)
                 self.playerSprite.sprite.position = self.gameboardSprite.getLocation(at: newWarpLocation)
                 self.playerSprite.startWarpAnimation(shouldReverse: true, stopAnimating: true) {
+                    
+                    //But, also do marsh animation if end warp has marsh, but not initial warp; it's one or the other, not both.. clunky!
+                    if self.level.getTerrainType(at: initialWarpLocation) != .marsh && self.level.getTerrainType(at: newWarpLocation) == .marsh {
+                        self.handleMarsh()
+                    }
+
+                    //Deduct an additional move due to marsh
+                    if self.level.getTerrainType(at: initialWarpLocation) == .marsh || self.level.getTerrainType(at: newWarpLocation) == .marsh {
+                        self.movesRemaining -= 1
+                    }
+
                     completion?()
                 }
-                
             }
         default:
             completion?()
             break
         }
+    }
+    
+    private func handleMarsh() {
+        Haptics.shared.executeCustomPattern(pattern: .marsh)
+        playerSprite.startMarshEffectAnimation()
+        
+        ScoringEngine.updateStatusIconsAnimation(
+            icon: .moves,
+            amount: -2,
+            originSprite: gameboardSprite.sprite,
+            location: CGPoint(x: playerSprite.sprite.position.x, y: playerSprite.sprite.position.y - 20))
     }
     
     /**
@@ -518,11 +549,11 @@ class GameEngine {
                 Haptics.shared.executeCustomPattern(pattern: .lava)
                 self.playerSprite.startLavaEffectAnimation()
                 
-                ScoringEngine.updateStatusIconsAnimation(icon: .health,
-                                                         amount: -self.healthRemaining,
-                                                         originSprite: self.gameboardSprite.sprite,
-                                                         location: CGPoint(x: self.playerSprite.sprite.position.x,
-                                                                           y: self.playerSprite.sprite.position.y - 20))
+                ScoringEngine.updateStatusIconsAnimation(
+                    icon: .health,
+                    amount: -self.healthRemaining,
+                    originSprite: self.gameboardSprite.sprite,
+                    location: CGPoint(x: self.playerSprite.sprite.position.x, y: self.playerSprite.sprite.position.y - 20))
 
                 self.healthRemaining = 0
                 
@@ -536,14 +567,7 @@ class GameEngine {
                 
                 //I don't like this being here...
                 if self.level.getLevelType(at: nextPanel) == .marsh {
-                    Haptics.shared.executeCustomPattern(pattern: .marsh)
-                    self.playerSprite.startMarshEffectAnimation()
-                    
-                    ScoringEngine.updateStatusIconsAnimation(icon: .moves,
-                                                             amount: -2,
-                                                             originSprite: self.gameboardSprite.sprite,
-                                                             location: CGPoint(x: self.playerSprite.sprite.position.x,
-                                                                               y: self.playerSprite.sprite.position.y - 20))
+                    self.handleMarsh()
                 }
 
                 //EXIT RECURSION
@@ -603,11 +627,11 @@ class GameEngine {
                     self.shouldDisableControlInput = false
                 }
                 
-                ScoringEngine.updateStatusIconsAnimation(icon: .health,
-                                                         amount: -1,
-                                                         originSprite: gameboardSprite.sprite,
-                                                         location: CGPoint(x: playerSprite.sprite.position.x,
-                                                                           y: playerSprite.sprite.position.y - 20))
+                ScoringEngine.updateStatusIconsAnimation(
+                    icon: .health,
+                    amount: -1,
+                    originSprite: gameboardSprite.sprite,
+                    location: CGPoint(x: playerSprite.sprite.position.x, y: playerSprite.sprite.position.y - 20))
                                 
                 return false
             }
@@ -640,7 +664,10 @@ class GameEngine {
         
         if isSolved {
             AudioManager.shared.playSound(for: "winlevel")
-            delegate?.gameIsSolved(movesRemaining: movesRemaining, itemsFound: level.inventory.getItemCount(), enemiesKilled: enemiesKilled, usedContinue: GameEngine.usedContinue)
+            delegate?.gameIsSolved(movesRemaining: movesRemaining,
+                                   itemsFound: level.inventory.getItemCount(),
+                                   enemiesKilled: enemiesKilled,
+                                   usedContinue: GameEngine.usedContinue)
             
             GameEngine.usedContinue = false
             GameEngine.livesUsed = 0
@@ -699,7 +726,7 @@ class GameEngine {
         GameCenterManager.shared.updateProgress(achievement: .superEfficient, increment: Double(movesRemaining))
 
         switch level.level {
-        case 100:    GameCenterManager.shared.updateProgress(achievement: .braniac)
+        case 100:   GameCenterManager.shared.updateProgress(achievement: .braniac)
         case 250:   GameCenterManager.shared.updateProgress(achievement: .enigmatologist)
         case 500:   GameCenterManager.shared.updateProgress(achievement: .puzlGuru)
         default: break
@@ -768,9 +795,12 @@ class GameEngine {
 
         if !isGameOver {
             // FIXME: - yPosition seems wonky...
-            let numMovesSprite = NumMovesSprite(numMoves: self.level.moves,
-                                                position: CGPoint(x: K.ScreenDimensions.iPhoneWidth / 2, y: GameboardSprite.yPosition * 3 / 2))
+            let numMovesSprite = NumMovesSprite(
+                numMoves: self.level.moves,
+                position: CGPoint(x: K.ScreenDimensions.iPhoneWidth / 2, y: GameboardSprite.yPosition * 3 / 2))
+            
             superScene.addChild(numMovesSprite)
+            
             numMovesSprite.play {
                 numMovesSprite.removeFromParent()
             }
