@@ -58,7 +58,7 @@ class PauseResetEngine {
     static var backgroundColor: UIColor { DayTheme.skyColor.top.analogous.first.darkenColor(factor: 6) }
     static var backgroundShadowColor: UIColor { DayTheme.skyColor.bottom.analogous.first }
     private var user: User?
-    private var currentLevelLeaderboard: Int = 1
+    private var currentLevel: Int = 1
     private var isPressed: Bool = false
     private var isAnimating: Bool = false
 
@@ -79,10 +79,11 @@ class PauseResetEngine {
     
     // MARK: - Initialization
     
-    init(user: User?) {
+    init(user: User?, level: Int) {
         let settingsCorner: CGFloat = 20
         
         self.user = user
+        self.currentLevel = level
         
         backgroundSprite = SKShapeNode(rectOf: settingsSize, cornerRadius: settingsCorner)
         backgroundSprite.strokeColor = .white
@@ -133,7 +134,7 @@ class PauseResetEngine {
                                       cancel: "Cancel")
         settingsPage = SettingsPage(user: user, contentSize: settingsSize)
         settingsPage.zPosition = 10
-        howToPlayPage = HowToPlayPage(maskSize: settingsSize)
+        howToPlayPage = HowToPlayPage(maskSize: settingsSize, level: currentLevel)
         howToPlayPage.zPosition = 10
 
         //Add'l setup/customization
@@ -174,7 +175,7 @@ class PauseResetEngine {
         superScene.addChild(pauseResetButtonSprite)
         superScene.addChild(countdownLabel)
         
-        currentLevelLeaderboard = level
+        currentLevel = level
     }
     
     
@@ -486,7 +487,7 @@ extension PauseResetEngine: SettingsManagerDelegate {
             let activityIndicator = ActivityIndicatorSprite()
             activityIndicator.move(toParent: superScene)
             
-            GameCenterManager.shared.showLeaderboard(level: currentLevelLeaderboard) {
+            GameCenterManager.shared.showLeaderboard(level: currentLevel) {
                 self.settingsManager.button3.touchUp()
                 activityIndicator.removeFromParent()
             }
@@ -497,6 +498,7 @@ extension PauseResetEngine: SettingsManagerDelegate {
             removePages()
 
             howToPlayPage.moveContentNode(to: 0, duration: 0)
+            howToPlayPage.updatLabels(level: currentLevel)
             backgroundSprite.addChild(howToPlayPage)
         case .button5: //settings
             comingSoonLabel.text = ""

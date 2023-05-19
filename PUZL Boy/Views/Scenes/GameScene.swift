@@ -73,7 +73,7 @@ class GameScene: SKScene {
         
         // FIXME: - chatEngine MUST be initialized here, and not in properties, otherwise it just refuses to show up! Because K.ScreenDimensions.topOfGameboard is set in the gameEngine(). Is there a better way to do this??
         chatEngine = ChatEngine()
-        pauseResetEngine = PauseResetEngine(user: user)
+        pauseResetEngine = PauseResetEngine(user: user, level: currentLevel)
         resetConfirmSprite = ConfirmSprite(title: "FEELING STUCK?",
                                       message: "Tap Restart Level to start over. You'll lose a life in the process.",
                                       confirm: "Restart Level",
@@ -198,7 +198,13 @@ class GameScene: SKScene {
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        guard let location = touches.first?.location(in: self) else { return }
+        guard let touch = touches.first else { return }
+        
+        let location = touch.location(in: self)
+        
+        //FIXME: - TEST
+        let velocity = touch.force
+        print("velocity: \(velocity)")
 
         pauseResetEngine.touchMove(in: location)
     }

@@ -13,40 +13,53 @@ class HowToPlayNode: SKNode {
     
     static let iconSize: CGFloat = UIDevice.isiPad ? 350 : 250
     
+    private var imageName: String
+    private var titleText: String
+    private var descriptionText: String
     private var currentLevel: Int
     private var requiredLevel: Int
+    private var hintType: HintType
     private var canShow: Bool { currentLevel >= requiredLevel }
 
     private var iconNode: SKSpriteNode!
     private var titleNode: SKLabelNode!
     private var descriptionNode: SKLabelNode!
     
+    enum HintType {
+        case terrain, overlay
+    }
+    
     
     // MARK: - Initialization
     
-    init(imageName: String, currentLevel: Int, requiredLevel: Int, nodeWidth: CGFloat, descriptionText: String) {
+    init(imageName: String, titleText: String, hintType: HintType, currentLevel: Int, requiredLevel: Int, nodeWidth: CGFloat, descriptionText: String) {
+        self.imageName = imageName
+        self.titleText = titleText
+        self.descriptionText = descriptionText
         self.currentLevel = currentLevel
         self.requiredLevel = requiredLevel
+        self.hintType = hintType
                 
         super.init()
         
         let padding: CGFloat = 20
+        let lineWidth: CGFloat = 8
         
-        let borderNode = SKShapeNode(rectOf: CGSize(width: HowToPlayNode.iconSize, height: HowToPlayNode.iconSize), cornerRadius: 20)
+        let borderNode = SKShapeNode(rectOf: CGSize(width: HowToPlayNode.iconSize + lineWidth, height: HowToPlayNode.iconSize + lineWidth), cornerRadius: 20)
         borderNode.position = CGPoint(x: HowToPlayNode.iconSize / 2, y: -HowToPlayNode.iconSize / 2)
         borderNode.fillColor = .clear
         borderNode.strokeColor = .white
-        borderNode.lineWidth = 8
+        borderNode.lineWidth = lineWidth
         borderNode.zPosition = 5
 
-        iconNode = canShow ? SKSpriteNode(imageNamed: imageName) : SKSpriteNode(color: .black, size: CGSize(width: HowToPlayNode.iconSize, height: HowToPlayNode.iconSize))
+        iconNode = SKSpriteNode(color: .black, size: CGSize(width: HowToPlayNode.iconSize, height: HowToPlayNode.iconSize))
         iconNode.position = CGPoint(x: 0, y: 0)
         iconNode.anchorPoint = CGPoint(x: 0, y: 1)
         iconNode.size = CGSize(width: HowToPlayNode.iconSize, height: HowToPlayNode.iconSize)
         iconNode.name = "iconNode"
         iconNode.zPosition = 10
         
-        titleNode = SKLabelNode(text: canShow ? imageName.uppercased() : "???")
+        titleNode = SKLabelNode()
         titleNode.position = CGPoint(x: HowToPlayNode.iconSize + padding, y: 0)
         titleNode.horizontalAlignmentMode = .left
         titleNode.verticalAlignmentMode = .top
@@ -57,7 +70,7 @@ class HowToPlayNode: SKNode {
         titleNode.zPosition = 10
         titleNode.addDropShadow()
         
-        descriptionNode = SKLabelNode(text: canShow ? descriptionText : "\nReach level \(requiredLevel) to unlock this hint.")
+        descriptionNode = SKLabelNode()
         descriptionNode.position = CGPoint(x: HowToPlayNode.iconSize + padding, y: UIDevice.isiPad ? -80 : -60)
         descriptionNode.horizontalAlignmentMode = .left
         descriptionNode.verticalAlignmentMode = .top
@@ -71,10 +84,23 @@ class HowToPlayNode: SKNode {
         descriptionNode.addDropShadow()
         
         
+        updateLabels(level: currentLevel)
+        
         iconNode.addChild(borderNode)
         addChild(iconNode)
         addChild(titleNode)
         addChild(descriptionNode)
+        
+        if hintType == .overlay {
+            let terrainBackground = SKSpriteNode(imageNamed: imageName == "gemparty" ? "partytile" : "grass")
+            terrainBackground.position = CGPoint(x: 0, y: -HowToPlayNode.iconSize)
+            terrainBackground.anchorPoint = .zero
+            terrainBackground.size = CGSize(width: HowToPlayNode.iconSize, height: HowToPlayNode.iconSize)
+            terrainBackground.zPosition = -5
+
+            iconNode.addChild(terrainBackground)
+        }
+
 
 //        //FIXME: - Debug only
 //        let backgroundColor = SKSpriteNode(color: .magenta, size: CGSize(width: nodeWidth, height: iconSize))
@@ -89,5 +115,11 @@ class HowToPlayNode: SKNode {
     
     // MARK: - Functions
     
-    
+    func updateLabels(level: Int) {
+        currentLevel = level
+        
+        iconNode.texture = canShow ? SKTexture(imageNamed: imageName) : nil
+        titleNode.text = canShow ? titleText.uppercased() : "???"
+        descriptionNode.text = canShow ? descriptionText : "\nReach level \(requiredLevel) to unlock this hint."
+    }
 }
