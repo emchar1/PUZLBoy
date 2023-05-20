@@ -111,23 +111,27 @@ class PartyModeSprite: SKNode {
         backgroundLights.run(SKAction.repeatForever(SKAction.sequence(mainBeatSection())), withKey: backgroundKey)
         foregroundLights.run(SKAction.repeatForever(SKAction.sequence(foregroundSequence)), withKey: foregroundKey)
         
-        addChild(backgroundSprite)
-        
+        //Only actually show lights if enabled in Settings.
         if !UserDefaults.standard.bool(forKey: K.UserDefaults.disablePartyLights) {
             removeLights()
             addLights()
         }
 
+        addChild(backgroundSprite)
         superScene.addChild(self)
         partyBoy.startPartyAnimation()
         
         print("Starting the party... partySpeedMultiplier: \(speedMultiplier)")
-        
-        
+    }
+    
+    func addLights() {
+        backgroundSprite.addChild(backgroundLights)
+        backgroundSprite.addChild(foregroundLights)
+
         // TODO: - Do I want to keep these bubbles???
         let bubbleFun = SKAction.run {
             let partyBubble = PartyEffectSprite()
-            partyBubble.animateEffect(to: self.backgroundLights)
+            partyBubble.animateEffect(to: self.backgroundLights) //adds partyBubble child nodes to backgroundLights
         }
         
         backgroundLights.run(SKAction.repeatForever(SKAction.group([
@@ -136,12 +140,9 @@ class PartyModeSprite: SKNode {
         ])))
     }
     
-    func addLights() {
-        backgroundSprite.addChild(backgroundLights)
-        backgroundSprite.addChild(foregroundLights)
-    }
-    
     func removeLights() {
+        backgroundLights.removeAllActions()
+        backgroundLights.removeAllChildren()
         backgroundLights.removeFromParent()
         foregroundLights.removeFromParent()
     }
