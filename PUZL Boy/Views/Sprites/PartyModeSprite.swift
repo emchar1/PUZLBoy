@@ -20,8 +20,6 @@ class PartyModeSprite: SKNode {
     }()
     
     let quarterNote: TimeInterval = 0.48 //DON'T CHANGE THIS!!! 0.48 works perfectly with party music
-    let backgroundKey: String = "BackgroundKey"
-    let foregroundKey: String = "ForegroundKey"
 
     private(set) var isPartying: Bool = false {
         didSet {
@@ -39,6 +37,7 @@ class PartyModeSprite: SKNode {
 
     private let baseColor: UIColor = .clear
     private var backgroundSprite: SKSpriteNode
+    private var lightsSprite: SKSpriteNode
     private var backgroundLights: SKSpriteNode
     private var foregroundLights: SKSpriteNode
 
@@ -48,12 +47,16 @@ class PartyModeSprite: SKNode {
     private override init() {
         let gameboardSize = K.ScreenDimensions.iPhoneWidth * GameboardSprite.spriteScale
         
-        backgroundSprite = SKSpriteNode(color: .black, size: CGSize(width: K.ScreenDimensions.iPhoneWidth, height: K.ScreenDimensions.height))
+        backgroundSprite = SKSpriteNode(color: .black, size: K.ScreenDimensions.screenSize)
         backgroundSprite.anchorPoint = .zero
         backgroundSprite.position = .zero
         backgroundSprite.zPosition = K.ZPosition.partyBackgroundOverlay
         
-        backgroundLights = SKSpriteNode(color: baseColor, size: CGSize(width: K.ScreenDimensions.iPhoneWidth, height: K.ScreenDimensions.height))
+        lightsSprite = SKSpriteNode(color: .clear, size: K.ScreenDimensions.screenSize)
+        lightsSprite.anchorPoint = .zero
+        lightsSprite.position = .zero
+        
+        backgroundLights = SKSpriteNode(color: baseColor, size: K.ScreenDimensions.screenSize)
         backgroundLights.alpha = 0.5
         backgroundLights.anchorPoint = .zero
         backgroundLights.position = .zero
@@ -84,11 +87,10 @@ class PartyModeSprite: SKNode {
         
         backgroundLights.removeAllChildren()
         backgroundLights.removeAllActions()
-
         foregroundLights.removeAllActions()
+        lightsSprite.removeAllChildren()
+        backgroundSprite.removeAllChildren()
         
-        removeLights()
-
         backgroundSprite.color = .black
         backgroundSprite.removeFromParent()
 
@@ -108,27 +110,36 @@ class PartyModeSprite: SKNode {
         foregroundSequence += breakSection()
         foregroundSequence += chorusSection()
 
-        backgroundLights.run(SKAction.repeatForever(SKAction.sequence(mainBeatSection())), withKey: backgroundKey)
-        foregroundLights.run(SKAction.repeatForever(SKAction.sequence(foregroundSequence)), withKey: foregroundKey)
+        backgroundLights.run(SKAction.repeatForever(SKAction.sequence(mainBeatSection())))
+        foregroundLights.run(SKAction.repeatForever(SKAction.sequence(foregroundSequence)))
         
-        //Only actually show lights if enabled in Settings.
-        if !UserDefaults.standard.bool(forKey: K.UserDefaults.disablePartyLights) {
+        startLights()
+        
+        if UserDefaults.standard.bool(forKey: K.UserDefaults.disablePartyLights) {
             removeLights()
+        }
+        else {
             addLights()
         }
 
-        addChild(backgroundSprite)
         superScene.addChild(self)
+        self.addChild(backgroundSprite)
+        backgroundSprite.addChild(lightsSprite)
         partyBoy.startPartyAnimation()
         
         print("Starting the party... partySpeedMultiplier: \(speedMultiplier)")
     }
     
-    func addLights() {
-        backgroundSprite.addChild(backgroundLights)
-        backgroundSprite.addChild(foregroundLights)
-
-        // TODO: - Do I want to keep these bubbles???
+    private func startLights() {
+        guard backgroundLights.parent == nil && foregroundLights.parent == nil else { return }
+        
+        lightsSprite.addChild(backgroundLights)
+        lightsSprite.addChild(foregroundLights)
+        
+        startPartyBubbles()
+    }
+    
+    private func startPartyBubbles() {
         let bubbleFun = SKAction.run {
             let partyBubble = PartyEffectSprite()
             partyBubble.animateEffect(to: self.backgroundLights) //adds partyBubble child nodes to backgroundLights
@@ -140,11 +151,12 @@ class PartyModeSprite: SKNode {
         ])))
     }
     
-    func removeLights() {
-        backgroundLights.removeAllActions()
-        backgroundLights.removeAllChildren()
-        backgroundLights.removeFromParent()
-        foregroundLights.removeFromParent()
+    func addLights(duration: TimeInterval = 0) {
+        lightsSprite.run(SKAction.fadeIn(withDuration: duration))
+    }
+    
+    func removeLights(duration: TimeInterval = 0) {
+        lightsSprite.run(SKAction.fadeOut(withDuration: duration))
     }
     
     
