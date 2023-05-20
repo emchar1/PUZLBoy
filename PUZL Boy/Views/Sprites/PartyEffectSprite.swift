@@ -20,12 +20,11 @@ class PartyEffectSprite: SKNode {
         let radius: CGFloat = CGFloat.random(in: 50...500)
         
         sprite = SKShapeNode(ellipseIn: CGRect(x: -radius / 2, y: -radius / 2, width: radius, height: radius))
-        sprite.lineWidth = 0
+        sprite.position = CGPoint(x: CGFloat.random(in: 0...K.ScreenDimensions.iPhoneWidth), y: CGFloat.random(in: 0...K.ScreenDimensions.height))
         sprite.fillColor = UIColor(red: CGFloat.random(in: 0...1), green: CGFloat.random(in: 0...1), blue: CGFloat.random(in: 0...1), alpha: 1)
+        sprite.lineWidth = 0
         sprite.alpha = 0
-        sprite.zPosition = K.ZPosition.partyForegroundOverlay
-        sprite.position = CGPoint(x: CGFloat.random(in: 0...K.ScreenDimensions.iPhoneWidth),
-                                  y: CGFloat.random(in: 0...K.ScreenDimensions.height))
+        sprite.zPosition = K.ZPosition.partyForegroundOverlay + 10
         
         super.init()
     }
@@ -45,13 +44,11 @@ class PartyEffectSprite: SKNode {
         let waitDuration = TimeInterval.random(in: 1...2)
         let randomAlpha = CGFloat.random(in: 0.1..<0.5)
         
-        let twinkleAnimation = SKAction.sequence([
+        sprite.run(SKAction.sequence([
             SKAction.fadeAlpha(to: randomAlpha, duration: fadeDuration),
             SKAction.wait(forDuration: waitDuration),
             SKAction.fadeAlpha(to: 0, duration: fadeDuration)
-        ])
-        
-        sprite.run(twinkleAnimation) {
+        ])) {
             self.sprite.removeFromParent()
             self.removeFromParent()
         }
