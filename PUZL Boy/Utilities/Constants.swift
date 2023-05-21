@@ -45,6 +45,12 @@ struct K {
         
         ///The device's screen size.
         static var screenSize: CGSize { CGSize(width: iPhoneWidth, height: height) }
+        
+        ///The device's screen size in UI terms, which is different than [SpriteKit] screenSize.
+        static var screenSizeUI: CGSize { UIScreen.main.bounds.size }
+        
+        ///The ratio of SpriteKit screenSize to UIKit screenSize
+        static var ratioSKtoUI: CGFloat { (screenSize / screenSizeUI).width }
     }
     
     
