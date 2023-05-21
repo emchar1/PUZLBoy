@@ -12,6 +12,7 @@ protocol PauseResetEngineDelegate: AnyObject {
     func didTapPause(isPaused: Bool)
     func didTapButtonSpecial()
     func confirmQuitTapped()
+    func didTapHowToPlay(_ tableView: HowToPlayTableView)
 }
 
 
@@ -134,7 +135,7 @@ class PauseResetEngine {
                                       cancel: "Cancel")
         settingsPage = SettingsPage(user: user, contentSize: settingsSize)
         settingsPage.zPosition = 10
-        howToPlayPage = HowToPlayPage(maskSize: settingsSize, level: currentLevel)
+        howToPlayPage = HowToPlayPage(contentSize: settingsSize, level: currentLevel)
         howToPlayPage.zPosition = 10
 
         //Add'l setup/customization
@@ -179,7 +180,7 @@ class PauseResetEngine {
     }
     
     
-    // MARK: - HelperFunctions
+    // MARK: - Helper Functions
     
     private func resetAll() {
         resetInitial = Date()
@@ -195,6 +196,23 @@ class PauseResetEngine {
     }
     
     
+    // MARK: - Table View Functions
+    
+    func registerHowToPlayTableView() {
+        let topMargin: CGFloat = UIDevice.isiPad ? 80 : 40
+        let bottomMargin: CGFloat = UIDevice.isiPad ? 30 : 50
+        let rightMargin: CGFloat = UIDevice.isiPad ? -8 : 8
+        
+        howToPlayPage.tableView.register(HowToPlayTVCell.self, forCellReuseIdentifier: HowToPlayTVCell.reuseID)
+        
+        howToPlayPage.tableView.frame = CGRect(
+            origin: CGPoint(x: howToPlayPage.padding / K.ScreenDimensions.ratioSKtoUI + K.ScreenDimensions.lrMargin,
+                            y: (K.ScreenDimensions.height - K.ScreenDimensions.topOfGameboard) / K.ScreenDimensions.ratioSKtoUI + topMargin),
+            size: CGSize(width: settingsSize.width / K.ScreenDimensions.ratioSKtoUI * GameboardSprite.spriteScale - rightMargin,
+                         height: settingsSize.height / K.ScreenDimensions.ratioSKtoUI * GameboardSprite.spriteScale - bottomMargin))
+    }
+        
+    
     // MARK: - Touch Functions
     
     /**
@@ -203,24 +221,24 @@ class PauseResetEngine {
      - location: location of the touch
      - function: the passed in function to be executed once the node has ben found
      */
-    func touch(in location: CGPoint?, function: () -> Void) {
+    func touch(for touches: Set<UITouch>, function: (Set<UITouch>) -> Void) {
         guard let superScene = superScene else { return print("superScene not set in PauseResetEngine!") }
+        guard let location = touches.first?.location(in: superScene) else { return }
         
-        if let location = location {
-            for nodeTapped in superScene.nodes(at: location) {
-                if nodeTapped.name == pauseResetName {
-                    function()
-                }
-                else if nodeTapped is DecisionButtonSprite {
-                    quitConfirmSprite.didTapButton(in: location)
-                }
-                else if nodeTapped is SettingsPage {
-                    settingsPage.touchNode(at: location)
-                }
+        for nodeTapped in superScene.nodes(at: location) {
+            if nodeTapped.name == pauseResetName {
+                function(touches)
             }
-        }
-        else {
-            function()
+            else if nodeTapped is DecisionButtonSprite {
+                quitConfirmSprite.didTapButton(in: location)
+            }
+            else if nodeTapped is SettingsPage {
+                settingsPage.superScene = superScene
+                settingsPage.touchNode(for: touches)
+            }
+            else {
+                function(touches)
+            }
         }
     }
     
@@ -228,7 +246,7 @@ class PauseResetEngine {
      Handles the actual logic for when the user taps the button. Pass this in the touch helper function because it doesn't contain any setup to handle location of the tap.
      */
     func handleControls() {
-        guard !isAnimating else { return print("isAnimating is true. Aborting.") }
+        guard !isAnimating else { return }
 
         if !specialFunctionEnabled {
             openSettingsMenu()
@@ -239,7 +257,7 @@ class PauseResetEngine {
     }
     
     private func openSettingsMenu() {
-        guard isPressed else { return print("isPressed is false in PauseResetEngine!") }
+        guard isPressed else { return }
         
         isPaused.toggle()
         
@@ -287,6 +305,8 @@ class PauseResetEngine {
             ButtonTap.shared.tap(type: .buttontap7)
         }
         else {
+            howToPlayPage.tableView.removeFromSuperview()
+
             backgroundSprite.run(SKAction.group([
                 SKAction.run {
                     self.backgroundSprite.hideShadow(animationDuration: 0.05, completion: nil)
@@ -321,7 +341,7 @@ class PauseResetEngine {
     /**
      Handles when user lifts finger off the button. Pass this in the touch helper function because it doesn't contain any setup to handle location of the tap.
      */
-    func touchUp() {
+    func touchUp(for touches: Set<UITouch>) {
         pauseResetButtonSprite.run(SKAction.colorize(withColorBlendFactor: 0, duration: 0))
 
         if isPressed {
@@ -348,8 +368,8 @@ class PauseResetEngine {
         settingsManager.button3.touchUp() //leaderboard
         quitConfirmSprite.touchUp()
         
-        howToPlayPage.touchUp()
-        settingsPage.touchUp()
+        howToPlayPage.touchUp(for: touches)
+        settingsPage.touchUp(for: touches)
     }
     
     /**
@@ -358,10 +378,9 @@ class PauseResetEngine {
      - location: location of the tap
      - resetCompletion: if user has button held down for count of the resetThreshold, then the completion gets executed, otherwise it's short circuited in touchUp.
      */
-    func touchDown(in location: CGPoint?, resetCompletion: (() -> Void)?) {
+    func touchDown(for touches: Set<UITouch>, resetCompletion: (() -> Void)?) {
         guard let superScene = superScene else { return print("superScene not set in PauseResetEngine!") }
-        guard let location = location else { return print("Location nil. Unable to pauseReset.") }
-
+        guard let location = touches.first?.location(in: superScene) else { return }
         guard quitConfirmSprite.parent == nil else {
             quitConfirmSprite.touchDown(in: location)
             return
@@ -370,14 +389,16 @@ class PauseResetEngine {
         for nodeTapped in superScene.nodes(at: location) {
             switch nodeTapped.name {
             case pauseResetName:
-                handlePauseReset(resetCompletion: resetCompletion)
+                handlePauseReset(for: touches, resetCompletion: resetCompletion)
             case howToPlayPage.nodeName:
                 //limit touch to within the settings page boundary
                 guard location.y >= getBottomOfSettings(halved: false) && location.y <= getBottomOfSettings(halved: false) + settingsSize.height * settingsScale else { break }
 
-                howToPlayPage.touchDown(at: location)
+                howToPlayPage.superScene = superScene
+                howToPlayPage.touchDown(for: touches)
             case settingsPage.nodeName:
-                settingsPage.touchDown(at: location)
+                settingsPage.superScene = superScene
+                settingsPage.touchDown(for: touches)
             default:
                 guard !isAnimating else { break }
                 guard let node = nodeTapped as? SettingsButton else { break }
@@ -387,17 +408,17 @@ class PauseResetEngine {
         } //end for
     } //end func touchDown
     
-    func touchMove(in location: CGPoint?) {
+    func touchMove(for touches: Set<UITouch>) {
         guard let superScene = superScene else { return }
-        guard let location = location else { return }
+        guard let location = touches.first?.location(in: superScene) else { return }        
         guard let howToPlayNode = superScene.nodes(at: location).filter({ $0.name == howToPlayPage.nodeName }).first else { return }
         guard let howToPlayPage = howToPlayNode as? HowToPlayPage else { return }
         
-        howToPlayPage.scrollNode(to: location)
+        howToPlayPage.touchMove(for: touches)
     }
     
     
-    private func handlePauseReset(resetCompletion: (() -> Void)?) {
+    private func handlePauseReset(for touches: Set<UITouch>, resetCompletion: (() -> Void)?) {
         pauseResetButtonSprite.run(SKAction.colorize(with: .black, colorBlendFactor: 0.25, duration: 0))
         
         isPressed = true
@@ -448,7 +469,7 @@ class PauseResetEngine {
             }
 
             self.pauseResetButtonSprite.texture = SKTexture(imageNamed: "\(self.pauseResetName)")
-            self.touchUp()
+            self.touchUp(for: touches)
             
             resetCompletion?()
         }
@@ -472,6 +493,8 @@ extension PauseResetEngine: SettingsManagerDelegate {
         switch node.type {
         case .button1: //title
             guard let superScene = superScene else { return print("superScene not set up. Unable to show title confirm!") }
+            
+            howToPlayPage.tableView.removeFromSuperview()
                         
             quitConfirmSprite.animateShow { }
         
@@ -487,9 +510,15 @@ extension PauseResetEngine: SettingsManagerDelegate {
             let activityIndicator = ActivityIndicatorSprite()
             activityIndicator.move(toParent: superScene)
             
-            GameCenterManager.shared.showLeaderboard(level: currentLevel) {
-                self.settingsManager.button3.touchUp()
+            howToPlayPage.tableView.removeFromSuperview()
+            
+            GameCenterManager.shared.showLeaderboard(level: currentLevel) { [unowned self] in
+                settingsManager.button3.touchUp()
                 activityIndicator.removeFromParent()
+                
+                if settingsManager.currentButtonPressed?.type == settingsManager.button4.type {
+                    delegate?.didTapHowToPlay(howToPlayPage.tableView)
+                }
             }
         case .button4: //howToPlay
             comingSoonLabel.text = ""
@@ -497,9 +526,12 @@ extension PauseResetEngine: SettingsManagerDelegate {
             
             removePages()
 
-            howToPlayPage.moveContentNode(to: 0, duration: 0)
-            howToPlayPage.updatLabels(level: currentLevel)
             backgroundSprite.addChild(howToPlayPage)
+            
+            howToPlayPage.tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: false)
+            howToPlayPage.tableView.flashScrollIndicators()
+            
+            delegate?.didTapHowToPlay(howToPlayPage.tableView)
         case .button5: //settings
             comingSoonLabel.text = ""
             comingSoonLabel.updateShadow()
@@ -513,6 +545,7 @@ extension PauseResetEngine: SettingsManagerDelegate {
     private func removePages() {
         howToPlayPage.removeFromParent()
         settingsPage.removeFromParent()
+        howToPlayPage.tableView.removeFromSuperview()
     }
 }
 
@@ -540,6 +573,10 @@ extension PauseResetEngine: ConfirmSpriteDelegate {
         
         quitConfirmSprite.animateHide {
             self.quitConfirmSprite.removeFromParent()
+
+            if self.settingsManager.currentButtonPressed?.type == self.settingsManager.button4.type {
+                self.delegate?.didTapHowToPlay(self.howToPlayPage.tableView)
+            }
         }
     }
 }

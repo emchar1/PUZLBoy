@@ -176,9 +176,8 @@ class GameScene: SKScene {
         guard let location = touches.first?.location(in: self) else { return }
         
         if gameEngine.checkControlGuardsIfPassed(includeDisableInputFromOutside: false) {
-            // FIXME: - Too many if/else to handle disabled from outside BUT special function is enabled...
             if !gameEngine.disableInputFromOutside || pauseResetEngine.specialFunctionEnabled {
-                pauseResetEngine.touchDown(in: location, resetCompletion: { [unowned self] in
+                pauseResetEngine.touchDown(for: touches, resetCompletion: { [unowned self] in
                     showResetConfirm()
                 })
             }
@@ -198,15 +197,7 @@ class GameScene: SKScene {
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        guard let touch = touches.first else { return }
-        
-        let location = touch.location(in: self)
-        
-        //FIXME: - TEST
-        let velocity = touch.force
-        print("velocity: \(velocity)")
-
-        pauseResetEngine.touchMove(in: location)
+        pauseResetEngine.touchMove(for: touches)
     }
         
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -222,10 +213,15 @@ class GameScene: SKScene {
         
         guard gameEngine.checkControlGuardsIfPassed(includeDisableInputFromOutside: false) else { return }
         
-        // FIXME: - Too many if/else to handle disabled from outside BUT special function is enabled...
         if !gameEngine.disableInputFromOutside || pauseResetEngine.specialFunctionEnabled {
-            pauseResetEngine.touch(in: location, function: pauseResetEngine.handleControls)
-            pauseResetEngine.touch(in: nil, function: pauseResetEngine.touchUp)
+            //MUST run these separately!! Can't combine handleControls() and touchUp(for:) in one closure.
+            pauseResetEngine.touch(for: touches) { _ in
+                pauseResetEngine.handleControls()
+            }
+            
+            pauseResetEngine.touch(for: touches) { touches in
+                pauseResetEngine.touchUp(for: touches)
+            }            
         }
     }
     
@@ -398,7 +394,9 @@ class GameScene: SKScene {
         gameEngine.moveSprites(to: self)
         scoringEngine.moveSprites(to: self)
         chatEngine.moveSprites(to: self)
+
         pauseResetEngine.moveSprites(to: self, level: currentLevel)
+        pauseResetEngine.registerHowToPlayTableView()
         
         offlinePlaySprite.refreshStatus()
         addChild(offlinePlaySprite)
@@ -757,6 +755,14 @@ extension GameScene: PauseResetEngineDelegate {
         
         gameSceneDelegate?.confirmQuitTapped()
     }
+    
+    func didTapHowToPlay(_ tableView: HowToPlayTableView) {
+        tableView.currentLevel = currentLevel
+        
+        scene?.view?.addSubview(tableView)
+        tableView.reloadData()
+    }
+    
 }
 
 

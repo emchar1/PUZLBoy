@@ -16,6 +16,7 @@ class ParentPage: SKNode {
     var contentSize: CGSize
     var contentNode: SKSpriteNode
     var titleLabel: SKLabelNode
+    var superScene: SKScene?
 
     
     // MARK: - Initialization
@@ -49,15 +50,19 @@ class ParentPage: SKNode {
     
     // MARK: - Touch Functions
     
-    func touchDown(at location: CGPoint) {
+    func touchDown(for touches: Set<UITouch>) {
         //Implement in subclass
     }
     
-    func touchUp() {
+    func touchUp(for touches: Set<UITouch>) {
         //Implement in subclass
     }
     
-    func touchNode(at location: CGPoint) {
+    func touchMove(for touches: Set<UITouch>) {
+        //Implement in subclass
+    }
+    
+    func touchNode(for touches: Set<UITouch>) {
         //Implement in subclass
     }
 }

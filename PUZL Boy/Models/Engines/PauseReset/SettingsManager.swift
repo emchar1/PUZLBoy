@@ -19,8 +19,8 @@ class SettingsManager: SKNode {
     private var settingsWidth: CGFloat
     private var buttonHeight: CGFloat
     private var buttonSize: CGSize
-    private var currentButtonPressed: SettingsButton?
     
+    private(set) var currentButtonPressed: SettingsButton?
     private(set) var button1: SettingsButton
     private(set) var button2: SettingsButton
     private(set) var button3: SettingsButton

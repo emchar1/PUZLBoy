@@ -90,18 +90,6 @@ class SettingsPage: ParentPage {
         tapButtonReportBug.zPosition = 10
         tapButtonReportBug.delegate = self
         
-        let idLabel = SKLabelNode(text: "ID: \(user?.uid ?? "0000")")
-        idLabel.position = CGPoint(x: padding, y: -contentSize.height + 10)
-        idLabel.fontName = UIFont.chatFont
-        idLabel.fontSize = UIFont.chatFontSize
-        idLabel.fontColor = UIFont.chatFontColor
-        idLabel.horizontalAlignmentMode = .left
-        idLabel.verticalAlignmentMode = .bottom
-        idLabel.alpha = 0.75
-        idLabel.zPosition = 10
-        idLabel.addDropShadow()
-
-        
         addChild(contentNode)
         contentNode.addChild(titleLabel)
         contentNode.addChild(radioMusic)
@@ -112,7 +100,6 @@ class SettingsPage: ParentPage {
         contentNode.addChild(tapButtonNotifications)
         contentNode.addChild(tapButtonRateReview)
         contentNode.addChild(tapButtonReportBug)
-//        contentNode.addChild(idLabel)
     }
     
     required init?(coder: NSCoder) {
@@ -128,9 +115,12 @@ class SettingsPage: ParentPage {
         tapButtonReportBug.updateColors()
     }
     
-    override func touchDown(at location: CGPoint) {
-        super.touchDown(at: location)
+    override func touchDown(for touches: Set<UITouch>) {
+        super.touchDown(for: touches)
         
+        guard let superScene = superScene else { return }
+        guard let location = touches.first?.location(in: superScene) else { return }
+
         radioMusic.touchDown(in: location)
         radioSoundFX.touchDown(in: location)
         radioVibration.touchDown(in: location)
@@ -141,8 +131,8 @@ class SettingsPage: ParentPage {
         tapButtonReportBug.touchDown(in: location)
     }
     
-    override func touchUp() {
-        super.touchUp()
+    override func touchUp(for touches: Set<UITouch>) {
+        super.touchUp(for: touches)
         
         radioMusic.touchUp()
         radioSoundFX.touchUp()
@@ -154,8 +144,11 @@ class SettingsPage: ParentPage {
         tapButtonReportBug.touchUp()
     }
     
-    override func touchNode(at location: CGPoint) {
-        super.touchNode(at: location)
+    override func touchNode(for touches: Set<UITouch>) {
+        super.touchNode(for: touches)
+        
+        guard let superScene = superScene else { return }
+        guard let location = touches.first?.location(in: superScene) else { return }
         
         radioMusic.tapRadio(in: location)
         radioSoundFX.tapRadio(in: location)
@@ -190,10 +183,10 @@ extension SettingsPage: SettingsRadioNodeDelegate {
             UserDefaults.standard.set(!radioNode.isOn, forKey: K.UserDefaults.disablePartyLights)
             
             if radioNode.isOn {
-                PartyModeSprite.shared.addLights()
+                PartyModeSprite.shared.addLights(duration: 0.5)
             }
             else {
-                PartyModeSprite.shared.removeLights()
+                PartyModeSprite.shared.removeLights(duration: 0.5)
             }
         default:
             return

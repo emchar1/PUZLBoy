@@ -48,6 +48,9 @@
 		EA41F8372A0C915100DF47EC /* buttontap4.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA41F8362A0C915100DF47EC /* buttontap4.mp3 */; };
 		EA41F83A2A0D71EE00DF47EC /* ParentPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA41F8392A0D71EE00DF47EC /* ParentPage.swift */; };
 		EA41F83C2A0DD3F800DF47EC /* SettingsTapButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA41F83B2A0DD3F800DF47EC /* SettingsTapButton.swift */; };
+		EA49B0692A1923D300E6B96D /* HowToPlayTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA49B0682A1923D300E6B96D /* HowToPlayTableView.swift */; };
+		EA49B06B2A1953C500E6B96D /* HowToPlayTVCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA49B06A2A1953C500E6B96D /* HowToPlayTVCell.swift */; };
+		EA49B06D2A19D03000E6B96D /* HowToPlayModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA49B06C2A19D03000E6B96D /* HowToPlayModel.swift */; };
 		EA4D025B29B7D61C00F0C7B1 /* movemarsh3.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA4D025A29B7D61C00F0C7B1 /* movemarsh3.mp3 */; };
 		EA4D025D29B7E2B400F0C7B1 /* movemarsh2.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA4D025C29B7E2B400F0C7B1 /* movemarsh2.mp3 */; };
 		EA4D025F29B7E33600F0C7B1 /* movemarsh1.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA4D025E29B7E33600F0C7B1 /* movemarsh1.mp3 */; };
@@ -245,6 +248,9 @@
 		EA41F8362A0C915100DF47EC /* buttontap4.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = buttontap4.mp3; sourceTree = "<group>"; };
 		EA41F8392A0D71EE00DF47EC /* ParentPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParentPage.swift; sourceTree = "<group>"; };
 		EA41F83B2A0DD3F800DF47EC /* SettingsTapButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTapButton.swift; sourceTree = "<group>"; };
+		EA49B0682A1923D300E6B96D /* HowToPlayTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HowToPlayTableView.swift; sourceTree = "<group>"; };
+		EA49B06A2A1953C500E6B96D /* HowToPlayTVCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HowToPlayTVCell.swift; sourceTree = "<group>"; };
+		EA49B06C2A19D03000E6B96D /* HowToPlayModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HowToPlayModel.swift; sourceTree = "<group>"; };
 		EA4D025A29B7D61C00F0C7B1 /* movemarsh3.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = movemarsh3.mp3; sourceTree = "<group>"; };
 		EA4D025C29B7E2B400F0C7B1 /* movemarsh2.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = movemarsh2.mp3; sourceTree = "<group>"; };
 		EA4D025E29B7E33600F0C7B1 /* movemarsh1.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = movemarsh1.mp3; sourceTree = "<group>"; };
@@ -443,6 +449,9 @@
 			children = (
 				EA41F8392A0D71EE00DF47EC /* ParentPage.swift */,
 				EA41F8342A0C7D8000DF47EC /* HowToPlayPage.swift */,
+				EA49B0682A1923D300E6B96D /* HowToPlayTableView.swift */,
+				EA49B06A2A1953C500E6B96D /* HowToPlayTVCell.swift */,
+				EA49B06C2A19D03000E6B96D /* HowToPlayModel.swift */,
 				EAE6EC352A133B04001842C6 /* HowToPlayNode.swift */,
 				EA9DFEFF29FE481300D02683 /* SettingsPage.swift */,
 				EA9DFF012A0084F600D02683 /* SettingsRadioNode.swift */,
@@ -961,6 +970,7 @@
 				EA65189228E973D700E535BF /* Level.swift in Sources */,
 				EA826C8F298F485D00F19F81 /* AchievementBigSpender.swift in Sources */,
 				EA95D1B92952579A0061059C /* AchievementDragonSlayer.swift in Sources */,
+				EA49B06B2A1953C500E6B96D /* HowToPlayTVCell.swift in Sources */,
 				EA95D1DF295674AE0061059C /* ChatEngine.swift in Sources */,
 				EA65184528E5750C00E535BF /* GameboardSprite.swift in Sources */,
 				EA78C36C29763B1C00292744 /* AchievementAdMobster.swift in Sources */,
@@ -990,6 +1000,7 @@
 				EA95D1C12953AB4B0061059C /* AchievementBeastMaster.swift in Sources */,
 				EA84645C29D8E5A50075F2A9 /* MenuItemLabel.swift in Sources */,
 				EA95D1C729541E8E0061059C /* AchievementMyPreciouses.swift in Sources */,
+				EA49B06D2A19D03000E6B96D /* HowToPlayModel.swift in Sources */,
 				EA95D1A6294957060061059C /* Haptics.swift in Sources */,
 				EA95D1D329544B4E0061059C /* AchievementBraniac.swift in Sources */,
 				EA95D1DD295523FF0061059C /* AchievementKlutz.swift in Sources */,
@@ -1053,6 +1064,7 @@
 				EA65189528EA207800E535BF /* Constants.swift in Sources */,
 				EA95D206295F86F40061059C /* AchievementItemWielder.swift in Sources */,
 				EA95D1D729544DBA0061059C /* AchievementPUZLGuru.swift in Sources */,
+				EA49B0692A1923D300E6B96D /* HowToPlayTableView.swift in Sources */,
 				EA826C76297CF9E000F19F81 /* ScoringManager.swift in Sources */,
 				EA1D5A7029F219AA00677B06 /* Extension+SKNode.swift in Sources */,
 				EA95D1CB29541F7F0061059C /* AchievementRockNRoller.swift in Sources */,
