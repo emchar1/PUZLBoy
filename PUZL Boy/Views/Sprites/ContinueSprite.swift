@@ -56,38 +56,35 @@ class ContinueSprite: SKNode {
         skipLevelButton = DecisionButtonSprite(text: "Buy $1.99: Skip Level",
                                                color: UIColor(red: 227 / 255, green: 148 / 255, blue: 9 / 255, alpha: 1.0),
                                                iconImageName: nil)
-        skipLevelButton.position = CGPoint(x: -K.ScreenDimensions.iPhoneWidth / 4,
-                                           y: -backgroundSprite.frame.size.height / 2 + continueLabel.frame.height / (UIDevice.isiPad ? 2 : 0.5))
-        skipLevelButton.name = "skipLevelButton"
+        skipLevelButton.position = CGPoint(
+            x: -K.ScreenDimensions.iPhoneWidth / 4,
+            y: -backgroundSprite.frame.size.height / 2 + continueLabel.frame.height / (UIDevice.isiPad ? 2 : 0.5))
 
         watchAdButton = DecisionButtonSprite(text: "Watch Ad:      x\(ContinueSprite.extraLivesAd)",
                                              color: UIColor(red: 9 / 255, green: 132 / 255, blue: 227 / 255, alpha: 1.0),
                                              iconImageName: "Run (6)")
         watchAdButton.position = CGPoint(
             x: -K.ScreenDimensions.iPhoneWidth / 4,
-            y: skipLevelButton.position.y + skipLevelButton.buttonSize.height + continueLabel.frame.height / 2
-        )
-        watchAdButton.name = "watchAdButton"
+            y: skipLevelButton.position.y + skipLevelButton.buttonSize.height + continueLabel.frame.height / 2)
         
         buy299Button = DecisionButtonSprite(text: "Buy $2.99:      x\(ContinueSprite.extraLivesBuy299)",
                                             color: UIColor(red: 0 / 255, green: 168 / 255, blue: 86 / 255, alpha: 1.0),
                                             iconImageName: "Run (6)")
-        buy299Button.position = CGPoint(x: K.ScreenDimensions.iPhoneWidth / 4,
-                                        y: skipLevelButton.position.y)
-        buy299Button.name = "buy299Button"
+        buy299Button.position = CGPoint(x: K.ScreenDimensions.iPhoneWidth / 4, y: skipLevelButton.position.y)
 
         buy099Button = DecisionButtonSprite(text: "Buy $0.99:      x\(ContinueSprite.extraLivesBuy099)",
                                             color: UIColor(red: 0 / 255, green: 168 / 255, blue: 86 / 255, alpha: 1.0),
                                             iconImageName: "Run (6)")
         buy099Button.position = CGPoint(x: K.ScreenDimensions.iPhoneWidth / 4, y: watchAdButton.position.y)
-        buy099Button.name = "buy099Button"
                 
         livesRefreshLabel = SKLabelNode(text: "Or wait for \(LifeSpawnerModel.defaultLives) lives in: 99:99:99")
         livesRefreshLabel.fontName = UIFont.chatFont
         livesRefreshLabel.fontSize = UIDevice.isiPad ? UIFont.gameFontSizeLarge : UIFont.chatFontSize
         livesRefreshLabel.fontColor = UIFont.chatFontColor
         livesRefreshLabel.verticalAlignmentMode = .top
-        livesRefreshLabel.position = CGPoint(x: 0, y: ((continueLabel.position.y - continueLabel.frame.size.height) - (watchAdButton.position.y + watchAdButton.frame.size.height)) / 2)
+        livesRefreshLabel.position = CGPoint(
+            x: 0,
+            y: ((continueLabel.position.y - continueLabel.frame.size.height) - (watchAdButton.position.y + watchAdButton.frame.size.height)) / 2)
         livesRefreshLabel.zPosition = 10
         livesRefreshLabel.addDropShadow()
         
@@ -159,13 +156,14 @@ class ContinueSprite: SKNode {
     
     func touchDown(in location: CGPoint) {
         guard !disableControls else { return }
+        guard let nodes = scene?.nodes(at: location) else { return }
         
-        for node in nodes(at: location - position) {
-            guard let node = node as? DecisionButtonSprite else { continue }
-
-            node.touchDown()
+        for node in nodes {
+            guard node.name == DecisionButtonSprite.tappableAreaName else { continue }
+            guard let decisionSprite = node.parent as? DecisionButtonSprite else { continue }
+            
+            decisionSprite.touchDown(in: location)
         }
-
     }
     
     func touchUp() {
@@ -180,11 +178,13 @@ class ContinueSprite: SKNode {
     
     func didTapButton(in location: CGPoint) {
         guard !disableControls else { return }
-
-        for node in nodes(at: location - position) {
-            guard let node = node as? DecisionButtonSprite else { continue }
+        guard let nodes = scene?.nodes(at: location) else { return }
+        
+        for node in nodes {
+            guard node.name == DecisionButtonSprite.tappableAreaName else { continue }
+            guard let decisionSprite = node.parent as? DecisionButtonSprite else { continue }
             
-            node.tapButton()
+            decisionSprite.tapButton(in: location)
         }
     }
     
@@ -196,12 +196,17 @@ class ContinueSprite: SKNode {
 
 extension ContinueSprite: DecisionButtonSpriteDelegate {
     func buttonWasTapped(_ node: DecisionButtonSprite) {
-        switch node.name {
-        case "watchAdButton": delegate?.didTapWatchAd()
-        case "skipLevelButton": delegate?.didTapSkipLevel()
-        case "buy099Button": delegate?.didTapBuy099Button()
-        case "buy299Button": delegate?.didTapBuy299Button()
-        default: print("Invalid button press.")
+        switch node {
+        case let decisionSprite where decisionSprite == watchAdButton:
+            delegate?.didTapWatchAd()
+        case let decisionSprite where decisionSprite == skipLevelButton:
+            delegate?.didTapSkipLevel()
+        case let decisionSprite where decisionSprite == buy099Button:
+            delegate?.didTapBuy099Button()
+        case let decisionSprite where decisionSprite == buy299Button:
+            delegate?.didTapBuy299Button()
+        default:
+            print("Invalid button press.")
         }
     }
 }

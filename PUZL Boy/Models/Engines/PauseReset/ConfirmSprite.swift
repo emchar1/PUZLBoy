@@ -50,13 +50,11 @@ class ConfirmSprite: SKNode {
                                              iconImageName: nil)
         confirmButton.position = CGPoint(x: -K.ScreenDimensions.iPhoneWidth / 4,
                                          y: -backgroundSprite.frame.size.height / 2 + titleLabel.frame.height / (UIDevice.isiPad ? 2 : 0.5))
-        confirmButton.name = "confirmButton"
         
         cancelButton = DecisionButtonSprite(text: cancel,
                                             color: UIColor(red: 9 / 255, green: 132 / 255, blue: 227 / 255, alpha: 1.0),
                                             iconImageName: nil)
         cancelButton.position = CGPoint(x: K.ScreenDimensions.iPhoneWidth / 4, y: confirmButton.position.y)
-        cancelButton.name = "cancelButton"
         
         messageLabel = SKLabelNode(text: message)
         messageLabel.fontName = UIFont.chatFont
@@ -135,13 +133,14 @@ class ConfirmSprite: SKNode {
     
     func touchDown(in location: CGPoint) {
         guard !disableControls else { return }
+        guard let nodes = scene?.nodes(at: location) else { return }
         
-        for node in nodes(at: location - position) {
-            guard let node = node as? DecisionButtonSprite else { continue }
-
-            node.touchDown()
+        for node in nodes {
+            guard node.name == DecisionButtonSprite.tappableAreaName else { continue }
+            guard let decisionSprite = node.parent as? DecisionButtonSprite else { continue }
+            
+            decisionSprite.touchDown(in: location)
         }
-
     }
     
     func touchUp() {
@@ -152,11 +151,15 @@ class ConfirmSprite: SKNode {
     
     func didTapButton(in location: CGPoint) {
         guard !disableControls else { return }
-
-        for node in nodes(at: location - position) {
-            guard let node = node as? DecisionButtonSprite else { continue }
+        guard let nodes = scene?.nodes(at: location) else { return }
+        
+        for node in nodes {
+            guard node.name == DecisionButtonSprite.tappableAreaName else { continue }
+            guard let decisionSprite = node.parent as? DecisionButtonSprite else { continue }
             
-            node.tapButton(node == cancelButton ? .buttontap6 : .buttontap1)
+            let buttonType: ButtonTap.ButtonType = decisionSprite == cancelButton ? .buttontap6 : .buttontap1
+            
+            decisionSprite.tapButton(in: location, type: buttonType)
         }
     }
     
@@ -168,10 +171,10 @@ class ConfirmSprite: SKNode {
 
 extension ConfirmSprite: DecisionButtonSpriteDelegate {
     func buttonWasTapped(_ node: DecisionButtonSprite) {
-        switch node.name {
-        case "confirmButton":
+        switch node {
+        case let decisionSprite where decisionSprite == confirmButton:
             delegate?.didTapConfirm()
-        case "cancelButton":
+        case let decisionSprite where decisionSprite == cancelButton:
             delegate?.didTapCancel()
         default:
             print("Invalid button press.")
