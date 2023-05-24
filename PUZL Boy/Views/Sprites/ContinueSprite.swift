@@ -10,8 +10,8 @@ import SpriteKit
 protocol ContinueSpriteDelegate: AnyObject {
     func didTapWatchAd()
     func didTapSkipLevel()
-    func didTapBuy099Button()
-    func didTapBuy299Button()
+    func didTapBuy25LivesButton()
+    func didTapBuy100LivesButton()
 }
 
 class ContinueSprite: SKNode {
@@ -19,16 +19,16 @@ class ContinueSprite: SKNode {
     // MARK: - Properties
     
     static let extraLivesAd = 1
-    static let extraLivesBuy099 = 25
-    static let extraLivesBuy299 = 100
+    static let extraLivesBuy25 = 25
+    static let extraLivesBuy100 = 100
     
     private var disableControls: Bool = true
     private let livesRefreshLabel: SKLabelNode
     private(set) var backgroundSprite: SKShapeNode
     private(set) var watchAdButton: DecisionButtonSprite
     private(set) var skipLevelButton: DecisionButtonSprite
-    private(set) var buy099Button: DecisionButtonSprite
-    private(set) var buy299Button: DecisionButtonSprite
+    private(set) var buy25LivesButton: DecisionButtonSprite
+    private(set) var buy100LivesButton: DecisionButtonSprite
     
     weak var delegate: ContinueSpriteDelegate?
 
@@ -53,7 +53,7 @@ class ContinueSprite: SKNode {
         continueLabel.zPosition = 10
         continueLabel.addHeavyDropShadow()
         
-        skipLevelButton = DecisionButtonSprite(text: "Buy $1.99: Skip Level",
+        skipLevelButton = DecisionButtonSprite(text: "Buy $2.99: Skip Level",
                                                color: UIColor(red: 227 / 255, green: 148 / 255, blue: 9 / 255, alpha: 1.0),
                                                iconImageName: nil)
         skipLevelButton.position = CGPoint(
@@ -67,15 +67,15 @@ class ContinueSprite: SKNode {
             x: -K.ScreenDimensions.iPhoneWidth / 4,
             y: skipLevelButton.position.y + skipLevelButton.buttonSize.height + continueLabel.frame.height / 2)
         
-        buy299Button = DecisionButtonSprite(text: "Buy $2.99:      x\(ContinueSprite.extraLivesBuy299)",
+        buy100LivesButton = DecisionButtonSprite(text: "Buy $9.99:      x\(ContinueSprite.extraLivesBuy100)",
                                             color: UIColor(red: 0 / 255, green: 168 / 255, blue: 86 / 255, alpha: 1.0),
                                             iconImageName: "Run (6)")
-        buy299Button.position = CGPoint(x: K.ScreenDimensions.iPhoneWidth / 4, y: skipLevelButton.position.y)
+        buy100LivesButton.position = CGPoint(x: K.ScreenDimensions.iPhoneWidth / 4, y: skipLevelButton.position.y)
 
-        buy099Button = DecisionButtonSprite(text: "Buy $0.99:      x\(ContinueSprite.extraLivesBuy099)",
+        buy25LivesButton = DecisionButtonSprite(text: "Buy $4.99:      x\(ContinueSprite.extraLivesBuy25)",
                                             color: UIColor(red: 0 / 255, green: 168 / 255, blue: 86 / 255, alpha: 1.0),
                                             iconImageName: "Run (6)")
-        buy099Button.position = CGPoint(x: K.ScreenDimensions.iPhoneWidth / 4, y: watchAdButton.position.y)
+        buy25LivesButton.position = CGPoint(x: K.ScreenDimensions.iPhoneWidth / 4, y: watchAdButton.position.y)
                 
         livesRefreshLabel = SKLabelNode(text: "Or wait for \(LifeSpawnerModel.defaultLives) lives in: 99:99:99")
         livesRefreshLabel.fontName = UIFont.chatFont
@@ -92,8 +92,8 @@ class ContinueSprite: SKNode {
         
         watchAdButton.delegate = self
         skipLevelButton.delegate = self
-        buy099Button.delegate = self
-        buy299Button.delegate = self
+        buy25LivesButton.delegate = self
+        buy100LivesButton.delegate = self
         
         setScale(0)
         position = CGPoint(x: K.ScreenDimensions.iPhoneWidth / 2, y: K.ScreenDimensions.height / 2)
@@ -103,8 +103,8 @@ class ContinueSprite: SKNode {
         backgroundSprite.addChild(livesRefreshLabel)
         backgroundSprite.addChild(watchAdButton)
         backgroundSprite.addChild(skipLevelButton)
-        backgroundSprite.addChild(buy099Button)
-        backgroundSprite.addChild(buy299Button)
+        backgroundSprite.addChild(buy25LivesButton)
+        backgroundSprite.addChild(buy100LivesButton)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -171,8 +171,8 @@ class ContinueSprite: SKNode {
         
         watchAdButton.touchUp()
         skipLevelButton.touchUp()
-        buy099Button.touchUp()
-        buy299Button.touchUp()
+        buy25LivesButton.touchUp()
+        buy100LivesButton.touchUp()
     }
     
     
@@ -201,10 +201,10 @@ extension ContinueSprite: DecisionButtonSpriteDelegate {
             delegate?.didTapWatchAd()
         case let decisionSprite where decisionSprite == skipLevelButton:
             delegate?.didTapSkipLevel()
-        case let decisionSprite where decisionSprite == buy099Button:
-            delegate?.didTapBuy099Button()
-        case let decisionSprite where decisionSprite == buy299Button:
-            delegate?.didTapBuy299Button()
+        case let decisionSprite where decisionSprite == buy25LivesButton:
+            delegate?.didTapBuy25LivesButton()
+        case let decisionSprite where decisionSprite == buy100LivesButton:
+            delegate?.didTapBuy100LivesButton()
         default:
             print("Invalid button press.")
         }

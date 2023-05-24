@@ -653,7 +653,7 @@ extension GameScene: ContinueSpriteDelegate {
         IAPManager.shared.buyProduct(productToPurchase)
     }
     
-    func didTapBuy099Button() {
+    func didTapBuy25LivesButton() {
         guard let productToPurchase = IAPManager.shared.allProducts.first(where: { $0.productIdentifier == IAPManager.lives25 }) else {
             print("Unable to find IAP: 25 Lives ($0.99)")
             return
@@ -662,7 +662,7 @@ extension GameScene: ContinueSpriteDelegate {
         IAPManager.shared.buyProduct(productToPurchase)
     }
     
-    func didTapBuy299Button() {
+    func didTapBuy100LivesButton() {
         guard let productToPurchase = IAPManager.shared.allProducts.first(where: { $0.productIdentifier == IAPManager.lives100 }) else {
             print("Unable to find IAP: 100 Lives ($2.99)")
             return
@@ -678,10 +678,10 @@ extension GameScene: ContinueSpriteDelegate {
 extension GameScene: IAPManagerDelegate {
     func didCompletePurchase(transaction: SKPaymentTransaction) {
         if transaction.payment.productIdentifier == IAPManager.lives25 {
-            restartLevel(lives: ContinueSprite.extraLivesBuy099)
+            restartLevel(lives: ContinueSprite.extraLivesBuy25)
         }
         else if transaction.payment.productIdentifier == IAPManager.lives100 {
-            restartLevel(lives: ContinueSprite.extraLivesBuy299)
+            restartLevel(lives: ContinueSprite.extraLivesBuy100)
         }
         else if transaction.payment.productIdentifier == IAPManager.skipLevel {
             restartLevel(shouldSkip: true, lives: LifeSpawnerModel.defaultLives)

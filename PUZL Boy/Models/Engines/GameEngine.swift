@@ -746,7 +746,7 @@ class GameEngine {
     }
     
     ///Just what it says. It increments livesRemaining.
-    func incrementLivesRemaining(lives: Int = 2) {
+    func incrementLivesRemaining(lives: Int = 1) {
         GameEngine.livesRemaining += lives
     }
     
