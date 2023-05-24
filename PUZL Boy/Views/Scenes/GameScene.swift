@@ -646,7 +646,7 @@ extension GameScene: ContinueSpriteDelegate {
     
     func didTapSkipLevel() {
         guard let productToPurchase = IAPManager.shared.allProducts.first(where: { $0.productIdentifier == IAPManager.skipLevel }) else {
-            print("Unable to find IAP: Skip Level ($1.99)")
+            print("Unable to find IAP: Skip Level ($2.99)")
             return
         }
         
@@ -655,7 +655,7 @@ extension GameScene: ContinueSpriteDelegate {
     
     func didTapBuy25LivesButton() {
         guard let productToPurchase = IAPManager.shared.allProducts.first(where: { $0.productIdentifier == IAPManager.lives25 }) else {
-            print("Unable to find IAP: 25 Lives ($0.99)")
+            print("Unable to find IAP: 25 Lives ($4.99)")
             return
         }
         
@@ -664,7 +664,7 @@ extension GameScene: ContinueSpriteDelegate {
     
     func didTapBuy100LivesButton() {
         guard let productToPurchase = IAPManager.shared.allProducts.first(where: { $0.productIdentifier == IAPManager.lives100 }) else {
-            print("Unable to find IAP: 100 Lives ($2.99)")
+            print("Unable to find IAP: 100 Lives ($9.99)")
             return
         }
         
