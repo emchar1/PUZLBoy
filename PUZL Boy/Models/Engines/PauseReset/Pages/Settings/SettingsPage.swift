@@ -36,18 +36,18 @@ class SettingsPage: ParentPage {
         name = nodeName
         
         let radioSectionHeight: CGFloat = UIDevice.isiPad ? 150 : 100
-        let radioSize = CGSize(width: contentSize.width - 2 * padding, height: SettingsRadioNode.radioNodeSize.height)
-        let radioStart: CGFloat = -padding - 1.5 * radioSectionHeight
+        let radioSize = CGSize(width: contentSize.width - 2 * SettingsPage.padding, height: SettingsRadioNode.radioNodeSize.height)
+        let radioStart: CGFloat = -SettingsPage.padding - 1.5 * radioSectionHeight
         
         let tapButtonSectionHeight: CGFloat = UIDevice.isiPad ? 180 : 120
-        let tapButtonSize = CGSize(width: contentSize.width - 2 * padding, height: SettingsTapButton.buttonSize.height)
-        let tapButtonStart: CGFloat = -padding - 1.5 * tapButtonSectionHeight
+        let tapButtonSize = CGSize(width: contentSize.width - 2 * SettingsPage.padding, height: SettingsTapButton.buttonSize.height)
+        let tapButtonStart: CGFloat = -SettingsPage.padding - 1.5 * tapButtonSectionHeight
         
         radioMusic = SettingsRadioNode(
             text: "🎵 Music",
             settingsSize: radioSize,
             isOn: !UserDefaults.standard.bool(forKey: K.UserDefaults.muteMusic))
-        radioMusic.position = CGPoint(x: padding, y: radioStart - SettingsRadioNode.radioNodeSize.height)
+        radioMusic.position = CGPoint(x: SettingsPage.padding, y: radioStart - SettingsRadioNode.radioNodeSize.height)
         radioMusic.zPosition = 10
         radioMusic.delegate = self
         
@@ -55,7 +55,7 @@ class SettingsPage: ParentPage {
             text: "🔈 Sound FX",
             settingsSize: radioSize,
             isOn: !UserDefaults.standard.bool(forKey: K.UserDefaults.muteSoundFX))
-        radioSoundFX.position = CGPoint(x: padding, y: radioStart - SettingsRadioNode.radioNodeSize.height - radioSectionHeight )
+        radioSoundFX.position = CGPoint(x: SettingsPage.padding, y: radioStart - SettingsRadioNode.radioNodeSize.height - radioSectionHeight )
         radioSoundFX.zPosition = 10
         radioSoundFX.delegate = self
         
@@ -63,7 +63,7 @@ class SettingsPage: ParentPage {
             text: "📳 Vibration",
             settingsSize: radioSize,
             isOn: !UserDefaults.standard.bool(forKey: K.UserDefaults.disableVibration))
-        radioVibration.position = CGPoint(x: padding, y: radioStart - SettingsRadioNode.radioNodeSize.height - 2 * radioSectionHeight)
+        radioVibration.position = CGPoint(x: SettingsPage.padding, y: radioStart - SettingsRadioNode.radioNodeSize.height - 2 * radioSectionHeight)
         radioVibration.zPosition = 10
         radioVibration.delegate = self
         
@@ -71,22 +71,22 @@ class SettingsPage: ParentPage {
             text: "🪩 Bonus Level Lights",
             settingsSize: radioSize,
             isOn: !UserDefaults.standard.bool(forKey: K.UserDefaults.disablePartyLights))
-        radioPartyLights.position = CGPoint(x: padding, y: radioStart - SettingsRadioNode.radioNodeSize.height - 3 * radioSectionHeight)
+        radioPartyLights.position = CGPoint(x: SettingsPage.padding, y: radioStart - SettingsRadioNode.radioNodeSize.height - 3 * radioSectionHeight)
         radioPartyLights.zPosition = 10
         radioPartyLights.delegate = self
         
         tapButtonNotifications = SettingsTapButton(text: "🔔 Notifications", buttonText: "Enable", settingsSize: tapButtonSize)
-        tapButtonNotifications.position = CGPoint(x: padding, y: tapButtonStart - SettingsTapButton.buttonSize.height - 4 * tapButtonSectionHeight)
+        tapButtonNotifications.position = CGPoint(x: SettingsPage.padding, y: tapButtonStart - SettingsTapButton.buttonSize.height - 4 * tapButtonSectionHeight)
         tapButtonNotifications.zPosition = 10
         tapButtonNotifications.delegate = self
 
         tapButtonRateReview = SettingsTapButton(text: "❤️ Tell Your Friends", buttonText: "Share", settingsSize: tapButtonSize)
-        tapButtonRateReview.position = CGPoint(x: padding, y: tapButtonStart - SettingsTapButton.buttonSize.height - 5 * tapButtonSectionHeight)
+        tapButtonRateReview.position = CGPoint(x: SettingsPage.padding, y: tapButtonStart - SettingsTapButton.buttonSize.height - 5 * tapButtonSectionHeight)
         tapButtonRateReview.zPosition = 10
         tapButtonRateReview.delegate = self
 
         tapButtonReportBug = SettingsTapButton(text: "✉️ Report a Bug", buttonText: "Feedback", settingsSize: tapButtonSize)
-        tapButtonReportBug.position = CGPoint(x: padding, y: tapButtonStart - SettingsTapButton.buttonSize.height - 6 * tapButtonSectionHeight)
+        tapButtonReportBug.position = CGPoint(x: SettingsPage.padding, y: tapButtonStart - SettingsTapButton.buttonSize.height - 6 * tapButtonSectionHeight)
         tapButtonReportBug.zPosition = 10
         tapButtonReportBug.delegate = self
         

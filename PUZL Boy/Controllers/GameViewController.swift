@@ -153,5 +153,13 @@ extension GameViewController {
         let activityViewController = UIActivityViewController(activityItems: [productURL], applicationActivities: nil)
         
         present(activityViewController, animated: true)
+        
+        //IMPORTANT!! Required for iPad, else program crashes
+        if let popOver = activityViewController.popoverPresentationController {
+            popOver.sourceView = self.view
+            popOver.sourceRect = CGRect(
+                origin: CGPoint(x: K.ScreenDimensions.screenSizeUI.width / 2 + 140, y: K.ScreenDimensions.screenSizeUI.height / 2 + 140),
+                size: .zero)
+        }
     }
 }

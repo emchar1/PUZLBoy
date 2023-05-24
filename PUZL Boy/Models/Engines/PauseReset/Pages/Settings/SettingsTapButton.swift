@@ -16,23 +16,23 @@ class SettingsTapButton: SKNode {
     // MARK: - Properties
     
     static let buttonSize = UIDevice.isiPad ? CGSize(width: 400, height: 140) : CGSize(width: 250, height: 100)
+    private var nodeName: String { "SettingsTapButton" + text }
+
     private let shadowOffset: CGFloat = 6
+    private var backgroundColor: UIColor { DayTheme.skyColor.bottom.triadic.first.darkenColor(factor: 3) }
+    private var backgroundShadowColor: UIColor { DayTheme.skyColor.bottom.splitComplementary.first.lightenColor(factor: 6) }
     private var positionOrig: CGPoint {
         CGPoint(x: settingsSize.width - SettingsTapButton.buttonSize.width / 2 - shadowOffset,
                 y: SettingsTapButton.buttonSize.height / 2 - shadowOffset)
     }
 
     private var text: String
-    private var nodeName: String { "tapbutton" + text }
     private var settingsSize: CGSize
     private var isAnimating = false
     private var isPressed = true
     
-    private var backgroundColor: UIColor { DayTheme.skyColor.bottom.triadic.first.darkenColor(factor: 3) }
-    private var backgroundShadowColor: UIColor { DayTheme.skyColor.bottom.splitComplementary.first.lightenColor(factor: 6) }
-    
-    private var labelNode: SKLabelNode
-    private var tapButton: SKShapeNode
+    private var labelNode: SKLabelNode!
+    private var tapButton: SKShapeNode!
     
     weak var delegate: SettingsTapButtonDelegate?
     
@@ -42,6 +42,8 @@ class SettingsTapButton: SKNode {
     init(text: String, buttonText: String, settingsSize: CGSize) {
         self.text = text
         self.settingsSize = settingsSize
+        
+        super.init()
         
         labelNode = SKLabelNode(text: text.uppercased())
         labelNode.position = CGPoint(x: 0, y: settingsSize.height / 2)
@@ -54,9 +56,11 @@ class SettingsTapButton: SKNode {
         labelNode.addDropShadow()
                 
         tapButton = SKShapeNode(rectOf: SettingsTapButton.buttonSize, cornerRadius: 20)
+        tapButton.position = positionOrig
         tapButton.fillTexture = SKTexture(image: UIImage.menuGradientTexture)
         tapButton.strokeColor = .white
         tapButton.lineWidth = 0
+        tapButton.name = nodeName
         tapButton.addDropShadow(rectOf: SettingsTapButton.buttonSize, cornerRadius: 20, shadowOffset: shadowOffset)
         
         let buttonLabelNode = SKLabelNode(text: buttonText)
@@ -69,12 +73,6 @@ class SettingsTapButton: SKNode {
         buttonLabelNode.zPosition = 5
         buttonLabelNode.addDropShadow()
 
-        super.init()
-
-        
-        tapButton.position = positionOrig
-        tapButton.name = nodeName
-        
         updateColors()
 
         addChild(labelNode)

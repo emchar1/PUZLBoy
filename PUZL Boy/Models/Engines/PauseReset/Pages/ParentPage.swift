@@ -11,7 +11,7 @@ class ParentPage: SKNode {
     
     // MARK: - Properties
     
-    let padding: CGFloat = 40
+    static let padding: CGFloat = 40
     var nodeName = "parentPage"
     var contentSize: CGSize
     var contentNode: SKSpriteNode
@@ -29,7 +29,7 @@ class ParentPage: SKNode {
         contentNode.position = CGPoint(x: -contentSize.width / 2, y: contentSize.height / 2)
         
         titleLabel = SKLabelNode(text: titleText.uppercased())
-        titleLabel.position = CGPoint(x: contentSize.width / 2, y: -padding)
+        titleLabel.position = CGPoint(x: contentSize.width / 2, y: -ParentPage.padding)
         titleLabel.horizontalAlignmentMode = .center
         titleLabel.verticalAlignmentMode = .top
         titleLabel.fontName = UIFont.gameFont

@@ -13,11 +13,11 @@ class HowToPlayTableView: UITableView, UITableViewDelegate, UITableViewDataSourc
     
     var terrainItems: [HowToPlayModel] = [
         HowToPlayModel(image: "start", title: "Start", requiredLevel: 0,
-                       description: "Your starting point. PUZL Boy begins each level on this panel."),
+                       description: "Your starting point. Tap any available panel adjacent to you to move to it. Diagonal moves are not allowed."),
         HowToPlayModel(image: "endClosed", title: "End", requiredLevel: 0,
                        description: "Your ending point. You'll need to collect all the gems to open the gate and move on to the next level."),
         HowToPlayModel(image: "grass", title: "Grass", requiredLevel: 0,
-                       description: "Your typical terrain. Stepping on grass will cost you 1 move. Diagonal moves are not allowed."),
+                       description: "Grass is your basic terrain panel - nothing special about it. Stepping on grass will cost you 1 move."),
         HowToPlayModel(image: "marsh", title: "Poison Marsh", requiredLevel: 19,
                        description: "This crimson colored panel will cost you 2 moves if you're so unlucky to wander into it."),
         HowToPlayModel(image: "ice", title: "Ice", requiredLevel: 76,
@@ -36,10 +36,10 @@ class HowToPlayTableView: UITableView, UITableViewDelegate, UITableViewDataSourc
         HowToPlayModel(image: "boulder", title: "Boulder", requiredLevel: 8,
                        description: "Boulders block you from passing through. Find a hammer and smash them to bits."),
         HowToPlayModel(image: "hammer", title: "Hammer", requiredLevel: 12,
-                       description: "Hammers can break boulders to clear a path. One hammer can break only one boulder."),
+                       description: "Hammers can break boulders to clear a path. One hammer can break only one boulder, so use them wisely."),
         HowToPlayModel(image: "warp", title: "Yellow Warp", requiredLevel: 34,
                        description: "Stepping on a warp will transport you to the other warp, and vice versa. Don't ask me how it works."),
-        HowToPlayModel(image: "enemy", title: "Enemy", requiredLevel: 51,
+        HowToPlayModel(image: "enemy", title: "Dragon", requiredLevel: 51,
                        description: "Like boulders, dragons block your path. Unlike boulders, if you touch a dragon, it'll cost you 1 health."),
         HowToPlayModel(image: "sword", title: "Sword", requiredLevel: 53,
                        description: "A sword can dispatch a dragon effectively to clear a path so you can proceed."),
@@ -48,9 +48,9 @@ class HowToPlayTableView: UITableView, UITableViewDelegate, UITableViewDataSourc
         HowToPlayModel(image: "heart", title: "Heart", requiredLevel: 151,
                        description: "Hearts increase your health, protecting against dragon attacks. If your health hits 0 it's game over."),
         HowToPlayModel(image: "warp2", title: "Green Warp", requiredLevel: 251,
-                       description: "Just like the Yellow Warp, the Green Warp will teleport you to the next Green Warp. Color coding yeah!"),
+                       description: "Just like the Yellow Warp, the Green Warp will teleport you to the next Green Warp. Color coding, yeah!"),
         HowToPlayModel(image: "warp3", title: "Blue Warp", requiredLevel: 401,
-                       description: "As if two warps aren't enough, the Blue Warp takes you to, you guessed it, the other Blue Warp.")
+                       description: "As if two warps aren't confusing enough, the Blue Warp takes you to, you guessed it... the other Blue Warp.")
     ]
     
     var currentLevel: Int = 1
@@ -80,7 +80,7 @@ class HowToPlayTableView: UITableView, UITableViewDelegate, UITableViewDataSourc
     
     func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         let header = view as! UITableViewHeaderFooterView
-        header.textLabel?.font = UIFont(name: UIFont.gameFont, size: UIDevice.isiPad ? 32 : 20)
+        header.textLabel?.font = UIFont(name: UIFont.gameFont, size: UIDevice.isiPad ? 36 : 24)
         header.textLabel?.textColor = UIFont.gameFontColor
         header.textLabel?.layer.shadowOffset = CGSize(width: -2, height: 2)
         header.textLabel?.layer.shadowColor = UIColor.gray.cgColor

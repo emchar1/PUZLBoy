@@ -37,9 +37,9 @@ class DecisionButtonSprite: SKNode {
         
         tappableAreaNode = SKShapeNode(rectOf: buttonSize, cornerRadius: cornerRadius)
         tappableAreaNode.fillColor = .clear
-        tappableAreaNode.strokeColor = .clear
+        tappableAreaNode.strokeColor = .white
         tappableAreaNode.lineWidth = 4
-        tappableAreaNode.zPosition = 20
+        tappableAreaNode.zPosition = 10
         tappableAreaNode.name = DecisionButtonSprite.tappableAreaName
 
         sprite = SKShapeNode(rectOf: buttonSize, cornerRadius: cornerRadius)
@@ -58,7 +58,7 @@ class DecisionButtonSprite: SKNode {
         textNode.fontSize = UIDevice.isiPad ? UIFont.gameFontSizeLarge : UIFont.chatFontSize
         textNode.fontColor = UIFont.chatFontColor
         textNode.position = CGPoint(x: 0, y: -18)
-        textNode.zPosition = 10
+        textNode.zPosition = 20
         textNode.addDropShadow()
         
         super.init()
@@ -69,24 +69,11 @@ class DecisionButtonSprite: SKNode {
         shadowSprite.alpha = 0.05
                 
         if let iconImageName = iconImageName {
-            let lineWidth: CGFloat = 4
-            
-            let maskNode = SKShapeNode(rectOf: buttonSize - CGSize(width: lineWidth * 2, height: lineWidth * 2), cornerRadius: cornerRadius)
-            maskNode.fillColor = .orange
-            maskNode.lineWidth = lineWidth
-            maskNode.strokeColor = .white
-
-            let cropNode = SKCropNode()
-            cropNode.position = .zero
-            cropNode.maskNode = maskNode
-            
             let iconNode = SKSpriteNode(imageNamed: iconImageName)
-//            iconNode.scale(to: CGSize(width: iconScale * Player.size.width / Player.size.height, height: iconScale))
+            iconNode.scale(to: CGSize(width: iconScale * Player.size.width / Player.size.height, height: iconScale))
             iconNode.position = CGPoint(x: UIDevice.isiPad ? 96 : 64, y: 0)
         
-//            topSprite.addChild(iconNode)
-            topSprite.addChild(cropNode)
-            cropNode.addChild(iconNode)
+            topSprite.addChild(iconNode)
         }
                 
         addChild(tappableAreaNode)
@@ -107,12 +94,14 @@ class DecisionButtonSprite: SKNode {
         isPressed = true
                 
         topSprite.position = shadowOffset
+        tappableAreaNode.position = shadowOffset
     }
     
     func touchUp() {
         isPressed = false
 
         topSprite.run(SKAction.move(to: .zero, duration: 0.1))
+        tappableAreaNode.run(SKAction.move(to: .zero, duration: 0.1))
     }
     
     func tapButton(in location: CGPoint, type: ButtonTap.ButtonType = .buttontap1) {
