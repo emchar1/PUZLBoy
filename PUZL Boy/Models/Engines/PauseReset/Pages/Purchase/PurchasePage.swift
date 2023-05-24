@@ -37,23 +37,23 @@ class PurchasePage: ParentPage {
         buy099Button.zPosition = 10
         buy099Button.delegate = self
                 
-        buy299Button = PurchaseTapButton(price: 2.99, text: "10 Hints", image: "Run (6)", imageScale: UIDevice.isiPad ? 1 : 0.5)
+        buy299Button = PurchaseTapButton(price: 2.99, text: "Skip Level", image: "enemy", imageScale: UIDevice.isiPad ? 1 : 0.75)
         buy299Button.position = CGPoint(x: PurchasePage.padding, y: buy099Button.position.y - buttonSize.height - paddingFactor * PurchasePage.padding)
         buy299Button.zPosition = 10
         buy299Button.delegate = self
 
-        buy999Button = PurchaseTapButton(price: 9.99, text: "100 Lives", image: "Run (6)", imageScale: UIDevice.isiPad ? 1 : 0.5)
+        buy999Button = PurchaseTapButton(price: 9.99, text: "100 Lives", image: "Run (6)", imageScale: UIDevice.isiPad ? 1 : 0.75)
         buy999Button.position = CGPoint(x: PurchasePage.padding, y: buy299Button.position.y - buttonSize.height - paddingFactor * PurchasePage.padding)
         buy999Button.zPosition = 10
         buy999Button.delegate = self
 
         //Right column
-        buy199Button = PurchaseTapButton(price: 1.99, text: "Skip Level", image: "enemy", imageScale: UIDevice.isiPad ? 1 : 0.5)
+        buy199Button = PurchaseTapButton(price: 1.99, text: "10 Hints", image: "Run (6)", imageScale: UIDevice.isiPad ? 1 : 0.75)
         buy199Button.position = CGPoint(x: buy099Button.position.x + PurchaseTapButton.buttonSize.width + PurchasePage.padding, y: -topMargin)
         buy199Button.zPosition = 10
         buy199Button.delegate = self
 
-        buy499Button = PurchaseTapButton(price: 4.99, text: "25 Lives", image: "Run (6)", imageScale: UIDevice.isiPad ? 1 : 0.5)
+        buy499Button = PurchaseTapButton(price: 4.99, text: "25 Lives", image: "Run (6)", imageScale: UIDevice.isiPad ? 1 : 0.75)
         buy499Button.position = CGPoint(x: buy099Button.position.x + buttonSize.width + PurchasePage.padding,
                                         y: buy199Button.position.y - buttonSize.height - paddingFactor * PurchasePage.padding)
         buy499Button.zPosition = 10

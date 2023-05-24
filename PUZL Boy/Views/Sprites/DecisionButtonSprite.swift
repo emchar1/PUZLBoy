@@ -58,7 +58,7 @@ class DecisionButtonSprite: SKNode {
         textNode.fontSize = UIDevice.isiPad ? UIFont.gameFontSizeLarge : UIFont.chatFontSize
         textNode.fontColor = UIFont.chatFontColor
         textNode.position = CGPoint(x: 0, y: -18)
-        textNode.zPosition = 20
+        textNode.zPosition = 10
         textNode.addDropShadow()
         
         super.init()
