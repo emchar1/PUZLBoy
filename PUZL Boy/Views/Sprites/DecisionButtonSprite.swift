@@ -16,11 +16,21 @@ class DecisionButtonSprite: SKNode {
     // MARK: - Properties
     
     static let tappableAreaName = "DecisionButtonSpriteTappableArea"
+    static let colorBlue = UIColor(red: 9 / 255, green: 132 / 255, blue: 227 / 255, alpha: 1.0)
+    static let colorYellow = UIColor(red: 227 / 255, green: 148 / 255, blue: 9 / 255, alpha: 1.0)
+    static let colorRed = UIColor(red: 227 / 255, green: 32 / 255, blue: 9 / 255, alpha: 1.0)
+    static let colorGreen = UIColor(red: 0 / 255, green: 168 / 255, blue: 86 / 255, alpha: 1.0)
 
     let buttonSize = CGSize(width: K.ScreenDimensions.iPhoneWidth * (4 / 9), height: K.ScreenDimensions.iPhoneWidth / 8)
     let shadowOffset = CGPoint(x: -8, y: -8)
     let iconScale: CGFloat = UIDevice.isiPad ? 120 : 90
 
+    var isDisabled: Bool = false {
+        didSet {
+            sprite.alpha = isDisabled ? 0.25 : 1
+        }
+    }
+    
     private var isPressed: Bool = false
     private(set) var tappableAreaNode: SKShapeNode
     private var sprite: SKShapeNode
@@ -70,8 +80,8 @@ class DecisionButtonSprite: SKNode {
                 
         if let iconImageName = iconImageName {
             let iconNode = SKSpriteNode(imageNamed: iconImageName)
-            iconNode.scale(to: CGSize(width: iconScale * Player.size.width / Player.size.height, height: iconScale))
-            iconNode.position = CGPoint(x: UIDevice.isiPad ? 96 : 64, y: 0)
+            iconNode.scale(to: CGSize(width: iconScale, height: iconScale))
+            iconNode.position = CGPoint(x: UIDevice.isiPad ? 120 : 78, y: 0)
         
             topSprite.addChild(iconNode)
         }
@@ -91,6 +101,8 @@ class DecisionButtonSprite: SKNode {
     // MARK: - Touches
     
     func touchDown(in location: CGPoint) {
+        guard !isDisabled else { return }
+
         isPressed = true
                 
         topSprite.position = shadowOffset
@@ -98,6 +110,8 @@ class DecisionButtonSprite: SKNode {
     }
     
     func touchUp() {
+        guard !isDisabled else { return }
+
         isPressed = false
 
         topSprite.run(SKAction.move(to: .zero, duration: 0.1))
@@ -105,6 +119,7 @@ class DecisionButtonSprite: SKNode {
     }
     
     func tapButton(in location: CGPoint, type: ButtonTap.ButtonType = .buttontap1) {
+        guard !isDisabled else { return }
         guard isPressed else { return }
 
         delegate?.buttonWasTapped(self)

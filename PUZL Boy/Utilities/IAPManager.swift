@@ -20,12 +20,14 @@ class IAPManager: NSObject {
     // TODO: - Keep adding product IDs here.. Or maybe have this in a list in Firebase???
     static let lives25 = "com.5playapps.PUZLBoy.25Lives"
     static let lives100 = "com.5playapps.PUZLBoy.100Lives"
+    static let moves5 = "com.5playapps.PUZLBoy.5Moves"
     static let skipLevel = "com.5playapps.PUZLBoy.SkipLevel"
         
     static let shared: IAPManager = {
         let iapManager = IAPManager(productIds: [
             IAPManager.lives25,
             IAPManager.lives100,
+            IAPManager.moves5,
             IAPManager.skipLevel
         ])
         

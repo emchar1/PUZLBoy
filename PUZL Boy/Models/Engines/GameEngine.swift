@@ -107,6 +107,11 @@ class GameEngine {
         finishInit(shouldSpawn: shouldSpawn)
     }
     
+    ///Use this when resuming from 0 moves, for example.
+    func continueGame() {
+        playerSprite.startIdleAnimation()
+    }
+    
     ///For when reading from Firestore.
     init(saveStateModel: SaveStateModel) {
         if saveStateModel.newLevel == saveStateModel.levelModel.level {
@@ -760,6 +765,15 @@ class GameEngine {
     ///Call this upon continuing after 0 lives, i.e. thru an ad, purchase, or time lapse.
     func animateLives(newLives: Int) {
         displaySprite.statusLives.animateLives(newLives: newLives)
+    }
+    
+    ///Increment movesRemaining with moves.
+    func incrementMovesRemaining(moves: Int) {
+        movesRemaining += moves
+    }
+    
+    func animateMoves(newMoves: Int) {
+        displaySprite.statusMoves.animateMoves(newMoves: newMoves)
     }
     
     func checkIfGameOverOnStartup() {

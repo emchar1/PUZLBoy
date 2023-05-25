@@ -84,6 +84,30 @@ class DisplayStatusBarSprite: SKNode {
         imageNode.removeAllChildren()
     }
     
+    func animateMoves(newMoves: Int) {
+        let speed: CGFloat = min(0.8 / CGFloat(newMoves), 0.05)
+        var movesToIncrement = 0
+        
+        let incrementAction = SKAction.run { [unowned self] in
+            movesToIncrement += 1
+            textNode.text = "\(movesToIncrement)"
+            textNode.updateShadow()
+        }
+        
+        let animationGroup = SKAction.group([
+            incrementAction,
+            SKAction.scale(to: 1.25, duration: speed),
+        ])
+        
+        let repeatAction = SKAction.repeat(SKAction.sequence([
+            SKAction.wait(forDuration: speed),
+            animationGroup,
+            SKAction.scale(to: 1.0, duration: speed)
+        ]), count: max(newMoves, 0))
+        
+        textNode.run(repeatAction)
+    }
+    
     func illuminateNode(pointLeft: Bool) {
         zPosition = K.ZPosition.chatDimOverlay + 10
         

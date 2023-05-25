@@ -46,13 +46,13 @@ class ConfirmSprite: SKNode {
         titleLabel.addHeavyDropShadow()
         
         confirmButton = DecisionButtonSprite(text: confirm,
-                                             color: UIColor(red: 227 / 255, green: 32 / 255, blue: 9 / 255, alpha: 1.0),
+                                             color: DecisionButtonSprite.colorRed,
                                              iconImageName: nil)
         confirmButton.position = CGPoint(x: -K.ScreenDimensions.iPhoneWidth / 4,
                                          y: -backgroundSprite.frame.size.height / 2 + titleLabel.frame.height / (UIDevice.isiPad ? 2 : 0.5))
         
         cancelButton = DecisionButtonSprite(text: cancel,
-                                            color: UIColor(red: 9 / 255, green: 132 / 255, blue: 227 / 255, alpha: 1.0),
+                                            color: DecisionButtonSprite.colorBlue,
                                             iconImageName: nil)
         cancelButton.position = CGPoint(x: K.ScreenDimensions.iPhoneWidth / 4, y: confirmButton.position.y)
         

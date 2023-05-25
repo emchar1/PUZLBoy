@@ -485,7 +485,7 @@ extension GameScene: GameEngineDelegate {
             prepareAd { [unowned self] in
                 addChild(continueSprite)
 
-                continueSprite.animateShow {
+                continueSprite.animateShow(shouldDisable5Moves: gameEngine.healthRemaining <= 0) {
                     AudioManager.shared.playSound(for: "continueloop")
                 }
             }
@@ -630,7 +630,30 @@ extension GameScene: AdMobManagerDelegate {
         }
     }
     
-    
+    private func continueLevel(moves: Int) {
+        continueSprite.animateHide { [unowned self] in
+            continueFromAd { [unowned self] in
+                AudioManager.shared.playSound(for: "revive")
+                AudioManager.shared.stopSound(for: "continueloop")
+                AudioManager.shared.playSound(for: AudioManager.shared.currentTheme)
+                
+                checkForParty()
+
+                gameEngine.continueGame()
+
+                gameEngine.animateMoves(newMoves: moves)
+                gameEngine.incrementMovesRemaining(moves: moves)
+                gameEngine.setLivesRemaining(lives: 0)
+                
+                saveState(levelStatsItem: getLevelStatsItem(level: currentLevel, didWin: false))
+                
+                continueSprite.removeFromParent()
+                
+                LifeSpawnerModel.shared.removeTimer()
+                LifeSpawnerModel.shared.removeAllNotifications()
+            }
+        }
+    }
 }
 
 
@@ -670,6 +693,15 @@ extension GameScene: ContinueSpriteDelegate {
         
         IAPManager.shared.buyProduct(productToPurchase)
     }
+    
+    func didTapBuy5MovesButton() {
+        guard let productToPurchase = IAPManager.shared.allProducts.first(where: { $0.productIdentifier == IAPManager.moves5 }) else {
+            print("Unable to find IAP: 5 Moves ($0.99)")
+            return
+        }
+        
+        IAPManager.shared.buyProduct(productToPurchase)
+    }
 }
 
 
@@ -682,6 +714,9 @@ extension GameScene: IAPManagerDelegate {
         }
         else if transaction.payment.productIdentifier == IAPManager.lives100 {
             restartLevel(lives: ContinueSprite.extraLivesBuy100)
+        }
+        else if transaction.payment.productIdentifier == IAPManager.moves5 {
+            continueLevel(moves: ContinueSprite.extraMovesBuy5)
         }
         else if transaction.payment.productIdentifier == IAPManager.skipLevel {
             restartLevel(shouldSkip: true, lives: LifeSpawnerModel.defaultLives)
@@ -699,6 +734,7 @@ extension GameScene: IAPManagerDelegate {
     }
     
     func isPurchasing(transaction: SKPaymentTransaction) {
+        activityIndicator = ActivityIndicatorSprite()
         activityIndicator.move(toParent: self)
         
         replenishLivesTimerOffset = Date()

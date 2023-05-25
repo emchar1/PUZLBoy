@@ -13,6 +13,8 @@ class ActivityIndicatorSprite: SKNode {
     
     private(set) var sprite: SKShapeNode
     private(set) var isShowing = false
+    private var player: Player
+    private var label: SKLabelNode
     
     
     // MARK: - Initialization
@@ -23,31 +25,18 @@ class ActivityIndicatorSprite: SKNode {
         sprite.lineWidth = 0
         sprite.alpha = 0.9
                 
-        super.init()
-        
-        let player = Player()
-        let animation = SKAction.animate(with: player.textures[Player.Texture.run.rawValue], timePerFrame: 0.02)
-        player.sprite.run(SKAction.repeatForever(animation))
+        player = Player()
         player.sprite.setScale(0.25)
         player.sprite.position = CGPoint(x: 0, y: 30)
-        
-        let label = SKLabelNode(text: "Please wait...")
+
+        label = SKLabelNode(text: "PLEASE WAIT...")
         label.fontName = UIFont.gameFont
         label.fontColor = UIFont.gameFontColor
         label.fontSize = UIFont.gameFontSizeSmall
         label.position = CGPoint(x: -label.frame.width / 2, y: -125)
         label.horizontalAlignmentMode = .left
         
-        let animateLabel: [SKAction] = [
-            SKAction.run { label.text = "Please wait..." },
-            SKAction.run { label.text = "Please wait" },
-            SKAction.run { label.text = "Please wait." },
-            SKAction.run { label.text = "Please wait.." }
-        ]
-        let wait = SKAction.wait(forDuration: 0.5)
-        let sequence = SKAction.sequence([animateLabel[0], wait, wait, animateLabel[1], wait, animateLabel[2], wait, animateLabel[3], wait])
-
-        label.run(SKAction.repeatForever(sequence))
+        super.init()
         
         position = CGPoint(x: K.ScreenDimensions.iPhoneWidth / 2, y: K.ScreenDimensions.height / 2)
         zPosition = K.ZPosition.activityIndicator
@@ -68,15 +57,38 @@ class ActivityIndicatorSprite: SKNode {
     
     // MARK: - Functions
     
+    private func animateSprites() {
+        let animation = SKAction.animate(with: player.textures[Player.Texture.run.rawValue], timePerFrame: 0.02)
+        player.sprite.run(SKAction.repeatForever(animation), withKey: "animatePlayer")
+        
+        let animateLabel: [SKAction] = [
+            SKAction.run { self.label.text = "PLEASE WAIT..." },
+            SKAction.run { self.label.text = "PLEASE WAIT" },
+            SKAction.run { self.label.text = "PLEASE WAIT." },
+            SKAction.run { self.label.text = "PLEASE WAIT.." }
+        ]
+        let wait = SKAction.wait(forDuration: 0.5)
+        let sequence = SKAction.sequence([animateLabel[0], wait, wait, animateLabel[1], wait, animateLabel[2], wait, animateLabel[3], wait])
+
+        label.run(SKAction.repeatForever(sequence), withKey: "animateLabel")
+    }
+    
+    private func deAnimateSprites() {
+        player.sprite.removeAction(forKey: "animatePlayer")
+        label.removeAction(forKey: "animateLabel")
+    }
+    
     override func move(toParent parent: SKNode) {
         super.move(toParent: parent)
         
         isShowing = true
+        animateSprites()
     }
     
     override func removeFromParent() {
         super.removeFromParent()
         
         isShowing = false
+        deAnimateSprites()
     }
 }

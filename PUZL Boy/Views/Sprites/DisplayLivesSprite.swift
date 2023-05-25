@@ -30,7 +30,7 @@ class DisplayLivesSprite: SKNode {
         
 
         imageNode.position = CGPoint(x: 0, y: 0)
-        imageNode.scale(to: CGSize(width: iconSize * Player.size.width / Player.size.height, height: iconSize))
+        imageNode.scale(to: CGSize(width: iconSize, height: iconSize))
         
         textNode.fontName = UIFont.gameFont
         textNode.fontSize = UIFont.gameFontSizeSmall
@@ -78,7 +78,6 @@ class DisplayLivesSprite: SKNode {
         imageNode.run(SKAction.sequence([scaleUp, wait, scaleDown]))
     }
     
-    // FIXME: - How to increment lives after continuing???
     func animateLives(newLives: Int) {
         let speed: CGFloat = min(0.8 / CGFloat(newLives), 0.05)
         var livesToIncrement = 0

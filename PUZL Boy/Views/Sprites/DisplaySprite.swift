@@ -33,7 +33,7 @@ class DisplaySprite {
         sprite = SKSpriteNode()
         sprite.zPosition = K.ZPosition.display
         
-        statusLives = DisplayLivesSprite(icon: "Run (6)", amount: 3)
+        statusLives = DisplayLivesSprite(icon: "iconPlayer", amount: 3)
         statusLives.position = CGPoint(x: K.ScreenDimensions.iPhoneWidth - K.ScreenDimensions.lrMargin - statusLives.iconSize,
                                        y: topYPosition + margin + 172)
         statusLives.name = DisplayStatusName.lives.rawValue
