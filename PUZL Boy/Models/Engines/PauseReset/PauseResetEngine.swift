@@ -306,7 +306,7 @@ class PauseResetEngine {
                 self.isAnimating = false
             }
             
-//            ButtonTap.shared.tap(type: .buttontap1)
+            AudioManager.shared.playSound(for: "chatclose")
         }
         
         

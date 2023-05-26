@@ -127,11 +127,11 @@ class AudioManager {
         addAudioItem("revive", category: .soundFX)
         addAudioItem("swordslash", category: .soundFX)
         addAudioItem("warp", category: .soundFX)
-        
+        addAudioItem("winlevel", category: .soundFX)
+
         
         //No Loop music
         addAudioItem("gameover", category: .musicNoLoop)
-        addAudioItem("winlevel", category: .musicNoLoop)
         addAudioItem("titletheme", category: .musicNoLoop) //needs purchase
 
         
