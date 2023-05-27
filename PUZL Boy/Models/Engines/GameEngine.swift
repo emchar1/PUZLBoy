@@ -772,8 +772,8 @@ class GameEngine {
         movesRemaining += moves
     }
     
-    func animateMoves(newMoves: Int) {
-        displaySprite.statusMoves.animateMoves(newMoves: newMoves)
+    func animateMoves(originalMoves: Int, newMoves: Int) {
+        displaySprite.statusMoves.animateMoves(originalMoves: originalMoves, newMoves: newMoves)
     }
     
     func checkIfGameOverOnStartup() {

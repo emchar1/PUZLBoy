@@ -84,9 +84,9 @@ class DisplayStatusBarSprite: SKNode {
         imageNode.removeAllChildren()
     }
     
-    func animateMoves(newMoves: Int) {
+    func animateMoves(originalMoves: Int, newMoves: Int) {
         let speed: CGFloat = min(0.8 / CGFloat(newMoves), 0.05)
-        var movesToIncrement = 0
+        var movesToIncrement = originalMoves
         
         let incrementAction = SKAction.run { [unowned self] in
             movesToIncrement += 1

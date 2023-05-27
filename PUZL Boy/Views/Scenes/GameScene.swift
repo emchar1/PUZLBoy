@@ -86,7 +86,6 @@ class GameScene: SKScene {
         super.init(size: size)
         
         AdMobManager.shared.delegate = self
-        IAPManager.shared.delegate = self
         gameEngine.delegate = self
         continueSprite.delegate = self
         chatEngine.delegate = self
@@ -486,6 +485,8 @@ extension GameScene: GameEngineDelegate {
                 addChild(continueSprite)
 
                 continueSprite.animateShow(shouldDisable5Moves: gameEngine.healthRemaining <= 0) {
+                    IAPManager.shared.delegate = self
+
                     AudioManager.shared.playSound(for: "continueloop")
                 }
             }
@@ -641,7 +642,7 @@ extension GameScene: AdMobManagerDelegate {
 
                 gameEngine.continueGame()
 
-                gameEngine.animateMoves(newMoves: moves)
+                gameEngine.animateMoves(originalMoves: gameEngine.movesRemaining, newMoves: moves)
                 gameEngine.incrementMovesRemaining(moves: moves)
                 gameEngine.setLivesRemaining(lives: 0)
                 
@@ -709,27 +710,20 @@ extension GameScene: ContinueSpriteDelegate {
 
 extension GameScene: IAPManagerDelegate {
     func didCompletePurchase(transaction: SKPaymentTransaction) {
-        if transaction.payment.productIdentifier == IAPManager.lives25 {
-            restartLevel(lives: ContinueSprite.extraLivesBuy25)
-        }
-        else if transaction.payment.productIdentifier == IAPManager.lives100 {
-            restartLevel(lives: ContinueSprite.extraLivesBuy100)
-        }
-        else if transaction.payment.productIdentifier == IAPManager.moves5 {
-            continueLevel(moves: ContinueSprite.extraMovesBuy5)
-        }
-        else if transaction.payment.productIdentifier == IAPManager.skipLevel {
-            restartLevel(shouldSkip: true, lives: LifeSpawnerModel.defaultLives)
+        switch transaction.payment.productIdentifier {
+        case IAPManager.lives25:        restartLevel(lives: ContinueSprite.extraLivesBuy25)
+        case IAPManager.lives100:       restartLevel(lives: ContinueSprite.extraLivesBuy100)
+        case IAPManager.moves5:         continueLevel(moves: ContinueSprite.extraMovesBuy5)
+        case IAPManager.skipLevel:      restartLevel(shouldSkip: true, lives: LifeSpawnerModel.defaultLives)
+        default:                        print("Unknown purchase transaction identifier")
         }
         
         activityIndicator.removeFromParent()
-        
         pendingLivesReplenishmentTimerOffset()
     }
     
     func purchaseDidFail(transaction: SKPaymentTransaction) {
         activityIndicator.removeFromParent()
-
         pendingLivesReplenishmentTimerOffset()
     }
     
@@ -795,6 +789,16 @@ extension GameScene: PauseResetEngineDelegate {
         tableView.reloadData()
     }
     
+    func didCompletePurchase(_ currentButton: PurchaseTapButton) {
+        //TODO: - Implement actual purchase implementation!!!
+        
+        gameEngine.animateMoves(originalMoves: gameEngine.movesRemaining, newMoves: ContinueSprite.extraMovesBuy5)
+        gameEngine.incrementMovesRemaining(moves: ContinueSprite.extraMovesBuy5)
+        
+        saveState(levelStatsItem: getLevelStatsItem(level: currentLevel, didWin: false))
+
+        print("From GameScene: \(currentButton.tappableAreaNode.name ?? "Gidget")")
+    }
 }
 
 

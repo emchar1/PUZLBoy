@@ -13,6 +13,7 @@ protocol PauseResetEngineDelegate: AnyObject {
     func didTapButtonSpecial()
     func confirmQuitTapped()
     func didTapHowToPlay(_ tableView: HowToPlayTableView)
+    func didCompletePurchase(_ currentButton: PurchaseTapButton)
 }
 
 
@@ -62,6 +63,7 @@ class PauseResetEngine {
     private var currentLevel: Int = 1
     private var isPressed: Bool = false
     private var isAnimating: Bool = false
+    private var isDisabled: Bool = false
 
     var specialFunctionEnabled: Bool = false {
         didSet {
@@ -121,11 +123,15 @@ class PauseResetEngine {
                                       message: "Tap Quit Game to return to the main menu. Your progress will be saved.",
                                       confirm: "Quit Game",
                                       cancel: "Cancel")
+        
         settingsPage = SettingsPage(user: user, contentSize: settingsSize)
         settingsPage.zPosition = 10
+        
         howToPlayPage = HowToPlayPage(contentSize: settingsSize, level: currentLevel)
         howToPlayPage.zPosition = 10
+        
         purchasePage = PurchasePage(contentSize: settingsSize)
+        purchasePage.delegate = self
         purchasePage.zPosition = 10
 
         //Add'l setup/customization
@@ -207,6 +213,7 @@ class PauseResetEngine {
      - function: the passed in function to be executed once the node has ben found
      */
     func touch(for touches: Set<UITouch>, function: (Set<UITouch>) -> Void) {
+        guard !isDisabled else { return }
         guard let superScene = superScene else { return print("superScene not set in PauseResetEngine!") }
         guard let location = touches.first?.location(in: superScene) else { return }
         
@@ -235,6 +242,7 @@ class PauseResetEngine {
      Handles the actual logic for when the user taps the button. Pass this in the touch helper function because it doesn't contain any setup to handle location of the tap.
      */
     func handleControls() {
+        guard !isDisabled else { return }
         guard !isAnimating else { return }
 
         if !specialFunctionEnabled {
@@ -331,6 +339,7 @@ class PauseResetEngine {
      Handles when user lifts finger off the button. Pass this in the touch helper function because it doesn't contain any setup to handle location of the tap.
      */
     func touchUp(for touches: Set<UITouch>) {
+        guard !isDisabled else { return }
         pauseResetButtonSprite.run(SKAction.colorize(withColorBlendFactor: 0, duration: 0))
 
         if isPressed {
@@ -369,6 +378,7 @@ class PauseResetEngine {
      - resetCompletion: if user has button held down for count of the resetThreshold, then the completion gets executed, otherwise it's short circuited in touchUp.
      */
     func touchDown(for touches: Set<UITouch>, resetCompletion: (() -> Void)?) {
+        guard !isDisabled else { return }
         guard let superScene = superScene else { return print("superScene not set in PauseResetEngine!") }
         guard let location = touches.first?.location(in: superScene) else { return }
         guard quitConfirmSprite.parent == nil else {
@@ -552,5 +562,27 @@ extension PauseResetEngine: ConfirmSpriteDelegate {
                 self.delegate?.didTapHowToPlay(self.howToPlayPage.tableView)
             }
         }
+    }
+}
+
+
+// MARK: - PurchasePageDelegate
+
+extension PauseResetEngine: PurchasePageDelegate {
+    func purchaseCompleted(_ currentButton: PurchaseTapButton) {
+        //This seems hokey, but it works...
+        isDisabled = false
+        isPressed = true
+        openSettingsMenu()
+        
+        delegate?.didCompletePurchase(currentButton)
+    }
+    
+    func purchaseFailed() {
+        isDisabled = false
+    }
+    
+    func purchaseDidTap() {
+        isDisabled = true
     }
 }
