@@ -100,12 +100,6 @@ class HowToPlayNode: SKNode {
 
             iconNode.addChild(terrainBackground)
         }
-
-
-//        //FIXME: - Debug only
-//        let backgroundColor = SKSpriteNode(color: .magenta, size: CGSize(width: nodeWidth, height: iconSize))
-//        backgroundColor.anchorPoint = CGPoint(x: 0, y: 1)
-//        addChild(backgroundColor)
     }
     
     required init?(coder aDecoder: NSCoder) {

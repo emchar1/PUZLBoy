@@ -201,7 +201,7 @@ extension PurchasePage: IAPManagerDelegate {
             delegate?.purchaseCompleted(currentButton)
         }
         
-        //FIXME: - I hate how this is needed, otherwise button won't touch up after purchase is made
+        //I hate how this is needed, otherwise button won't touch up after purchase is made
         touchUp(for: [])
     }
     
@@ -211,12 +211,12 @@ extension PurchasePage: IAPManagerDelegate {
         
         delegate?.purchaseFailed()
         
-        //FIXME: - I hate how this is needed, otherwise button won't touch up after purchase is made
+        //I hate how this is needed, otherwise button won't touch up after purchase is made
         touchUp(for: [])
     }
     
     func isPurchasing(transaction: SKPaymentTransaction) {
-        //TODO: - No implementation needed??
+
     }
     
 }

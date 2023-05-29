@@ -71,7 +71,7 @@ class GameScene: SKScene {
             levelStatsArray = []
         }
         
-        // FIXME: - chatEngine MUST be initialized here, and not in properties, otherwise it just refuses to show up! Because K.ScreenDimensions.topOfGameboard is set in the gameEngine(). Is there a better way to do this??
+        //chatEngine MUST be initialized here, and not in properties, otherwise it just refuses to show up! Because K.ScreenDimensions.topOfGameboard is set in the gameEngine(). Is there a better way to do this??
         chatEngine = ChatEngine()
         pauseResetEngine = PauseResetEngine(user: user, level: currentLevel)
         resetConfirmSprite = ConfirmSprite(title: "FEELING STUCK?",

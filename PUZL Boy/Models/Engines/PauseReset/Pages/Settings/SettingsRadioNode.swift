@@ -68,11 +68,6 @@ class SettingsRadioNode: SKNode {
         radioOff.zPosition = 1
 
         super.init()
-
-//        //FIXME: - DELETE
-//        let backgroundNode = SKSpriteNode(color: .systemPink, size: settingsSize)
-//        backgroundNode.anchorPoint = .zero
-//        addChild(backgroundNode)
         
         radioButton.name = nodeName
 

@@ -7,8 +7,6 @@
 
 import Foundation
 
-// FIXME: - Don't scroll down to the bottom (getLevelModel()) it lags...
-
 /**
  Represents a Level object, with level #, total number of moves, total number of gems needed to finish the level, and the gameboard.
  */
@@ -121,8 +119,6 @@ struct Level: CustomStringConvertible {
         return gameboard[position.row][position.col].terrain
     }
     
-    
-    // FIXME: - I REALLY HATE HOW SLOW AND INEFFICIENT THIS IS!!!
     func getLevelModel(level: Int, movesRemaining: Int, heathRemaining: Int, gemsCollected: Int, gemsRemaining: Int, playerPosition: PlayerPosition, inventory: Inventory) -> LevelModel {
         let gameboardSize = gameboard[0].count
 

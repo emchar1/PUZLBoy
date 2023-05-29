@@ -36,7 +36,6 @@ class BaseAchievement: GKAchievement {
         
         inProgress = true
         
-        // FIXME: - Will this ever get called??
         reportIfCompleted()
     }
     
