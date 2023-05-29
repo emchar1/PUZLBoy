@@ -48,28 +48,28 @@ class PurchasePage: ParentPage {
         let buttonSize: CGSize = PurchaseTapButton.buttonSize
 
         //Left column
-        buy099Button = PurchaseTapButton(price: 0.99, text: "Add 5 Moves", image: "iconBoot", imageScale: UIDevice.isiPad ? 3 : 1.5)
+        buy099Button = PurchaseTapButton(price: 0.99, text: "Add 5 Moves", type: .add5Moves, image: "iconBoot", imageScale: UIDevice.isiPad ? 3 : 1.5)
         buy099Button.position = CGPoint(x: PurchasePage.padding, y: -topMargin)
         buy099Button.zPosition = 10
         buy099Button.delegate = self
                 
-        buy299Button = PurchaseTapButton(price: 2.99, text: "Skip Level", image: "enemy", imageScale: UIDevice.isiPad ? 1 : 0.75)
+        buy299Button = PurchaseTapButton(price: 2.99, text: "Skip Level", type: .skipLevel, image: "enemy", imageScale: UIDevice.isiPad ? 1 : 0.75)
         buy299Button.position = CGPoint(x: PurchasePage.padding, y: buy099Button.position.y - buttonSize.height - paddingFactor * PurchasePage.padding)
         buy299Button.zPosition = 10
         buy299Button.delegate = self
 
-        buy999Button = PurchaseTapButton(price: 9.99, text: "100 Lives", image: "iconPlayer", imageScale: UIDevice.isiPad ? 3 : 1.5)
+        buy999Button = PurchaseTapButton(price: 9.99, text: "100 Lives", type: .add100Lives, image: "iconPlayer", imageScale: UIDevice.isiPad ? 3 : 1.5)
         buy999Button.position = CGPoint(x: PurchasePage.padding, y: buy299Button.position.y - buttonSize.height - paddingFactor * PurchasePage.padding)
         buy999Button.zPosition = 10
         buy999Button.delegate = self
 
         //Right column
-        buy199Button = PurchaseTapButton(price: 1.99, text: "10 Hints", image: "iconPlayer", imageScale: UIDevice.isiPad ? 3 : 1.5)
+        buy199Button = PurchaseTapButton(price: 1.99, text: "10 Hints", type: .add10Hints, image: "iconPlayer", imageScale: UIDevice.isiPad ? 3 : 1.5)
         buy199Button.position = CGPoint(x: buy099Button.position.x + PurchaseTapButton.buttonSize.width + PurchasePage.padding, y: -topMargin)
         buy199Button.zPosition = 10
         buy199Button.delegate = self
 
-        buy499Button = PurchaseTapButton(price: 4.99, text: "25 Lives", image: "iconPlayer", imageScale: UIDevice.isiPad ? 3 : 1.5)
+        buy499Button = PurchaseTapButton(price: 4.99, text: "25 Lives", type: .add25Lives, image: "iconPlayer", imageScale: UIDevice.isiPad ? 3 : 1.5)
         buy499Button.position = CGPoint(x: buy099Button.position.x + buttonSize.width + PurchasePage.padding,
                                         y: buy199Button.position.y - buttonSize.height - paddingFactor * PurchasePage.padding)
         buy499Button.zPosition = 10
@@ -142,8 +142,8 @@ extension PurchasePage: PurchaseTapButtonDelegate {
 
         IAPManager.shared.delegate = self //2. need this here as well, to re-assign delegate to PurchasePage
 
-        switch buttonNode {
-        case let buttonNode where buttonNode == buy099Button:
+        switch buttonNode.type {
+        case .add5Moves:
             guard let productToPurchase = IAPManager.shared.allProducts.first(where: { $0.productIdentifier == IAPManager.moves5 }) else {
                 print("Unable to find IAP: 5 Moves ($0.99)")
                 return
@@ -151,7 +151,7 @@ extension PurchasePage: PurchaseTapButtonDelegate {
             
             currentButton = buy099Button
             IAPManager.shared.buyProduct(productToPurchase)
-        case let buttonNode where buttonNode == buy299Button:
+        case .skipLevel:
             guard let productToPurchase = IAPManager.shared.allProducts.first(where: { $0.productIdentifier == IAPManager.skipLevel }) else {
                 print("Unable to find IAP: Skip Level ($1.99)")
                 return
@@ -159,7 +159,7 @@ extension PurchasePage: PurchaseTapButtonDelegate {
             
             currentButton = buy299Button
             IAPManager.shared.buyProduct(productToPurchase)
-        case let buttonNode where buttonNode == buy999Button:
+        case .add100Lives:
             guard let productToPurchase = IAPManager.shared.allProducts.first(where: { $0.productIdentifier == IAPManager.lives100 }) else {
                 print("Unable to find IAP: 100 Lives ($9.99)")
                 return
@@ -167,13 +167,13 @@ extension PurchasePage: PurchaseTapButtonDelegate {
             
             currentButton = buy999Button
             IAPManager.shared.buyProduct(productToPurchase)
-        case let buttonNode where buttonNode == buy199Button:
+        case .add10Hints:
             //TODO: - 10 Hints???
             currentButton = buy199Button
             isDisabled = false
             activityIndicator.removeFromParent()
             touchUp(for: [])
-        case let buttonNode where buttonNode == buy499Button:
+        case .add25Lives:
             guard let productToPurchase = IAPManager.shared.allProducts.first(where: { $0.productIdentifier == IAPManager.lives25 }) else {
                 print("Unable to find IAP: 25 Lives ($4.99)")
                 return
@@ -181,8 +181,6 @@ extension PurchasePage: PurchaseTapButtonDelegate {
             
             currentButton = buy499Button
             IAPManager.shared.buyProduct(productToPurchase)
-        default:
-            print("Unknown button tapped.")
         }
         
         delegate?.purchaseDidTap()

@@ -763,8 +763,8 @@ class GameEngine {
     }
     
     ///Call this upon continuing after 0 lives, i.e. thru an ad, purchase, or time lapse.
-    func animateLives(newLives: Int) {
-        displaySprite.statusLives.animateLives(newLives: newLives)
+    func animateLives(originalLives: Int, newLives: Int) {
+        displaySprite.statusLives.animateLives(originalLives: originalLives, newLives: newLives)
     }
     
     ///Increment movesRemaining with moves.

@@ -618,7 +618,7 @@ extension GameScene: AdMobManagerDelegate {
                 
                 newGame(level: currentLevel, didWin: false)
                 
-                gameEngine.animateLives(newLives: lives)
+                gameEngine.animateLives(originalLives: 0, newLives: lives)
                 gameEngine.setLivesRemaining(lives: lives)
                 
                 saveState(levelStatsItem: getLevelStatsItem(level: currentLevel, didWin: false))
@@ -790,14 +790,43 @@ extension GameScene: PauseResetEngineDelegate {
     }
     
     func didCompletePurchase(_ currentButton: PurchaseTapButton) {
-        //TODO: - Implement actual purchase implementation!!!
-        
-        gameEngine.animateMoves(originalMoves: gameEngine.movesRemaining, newMoves: ContinueSprite.extraMovesBuy5)
-        gameEngine.incrementMovesRemaining(moves: ContinueSprite.extraMovesBuy5)
-        
-        saveState(levelStatsItem: getLevelStatsItem(level: currentLevel, didWin: false))
-
-        print("From GameScene: \(currentButton.tappableAreaNode.name ?? "Gidget")")
+        switch currentButton.type {
+        case .add5Moves:
+            gameEngine.animateMoves(originalMoves: gameEngine.movesRemaining, newMoves: ContinueSprite.extraMovesBuy5)
+            gameEngine.incrementMovesRemaining(moves: ContinueSprite.extraMovesBuy5)
+            
+            saveState(levelStatsItem: getLevelStatsItem(level: currentLevel, didWin: false))
+        case .add10Hints:
+            print("NEED TO IMPLEMENT~~~~~~~~~~~> Buy $1.99")
+        case .skipLevel:
+            currentLevel += 1
+            
+            scoringEngine.scaleScoreLabelDidSkipLevel()
+            scoringEngine.timerManager.resetTime()
+            
+            newGame(level: currentLevel, didWin: false)
+            
+            AudioManager.shared.playSound(for: "winlevel")
+            
+            if GameEngine.livesRemaining < LifeSpawnerModel.defaultLives {
+                let livesToAdd = LifeSpawnerModel.defaultLives - GameEngine.livesRemaining
+                
+                gameEngine.animateLives(originalLives: GameEngine.livesRemaining, newLives: livesToAdd)
+                gameEngine.setLivesRemaining(lives: LifeSpawnerModel.defaultLives)
+            }
+            
+            saveState(levelStatsItem: getLevelStatsItem(level: currentLevel, didWin: false))
+        case .add25Lives:
+            gameEngine.animateLives(originalLives: GameEngine.livesRemaining, newLives: ContinueSprite.extraLivesBuy25)
+            gameEngine.incrementLivesRemaining(lives: ContinueSprite.extraLivesBuy25)
+            
+            saveState(levelStatsItem: getLevelStatsItem(level: currentLevel, didWin: false))
+        case .add100Lives:
+            gameEngine.animateLives(originalLives: GameEngine.livesRemaining, newLives: ContinueSprite.extraLivesBuy100)
+            gameEngine.incrementLivesRemaining(lives: ContinueSprite.extraLivesBuy100)
+            
+            saveState(levelStatsItem: getLevelStatsItem(level: currentLevel, didWin: false))
+        }
     }
 }
 

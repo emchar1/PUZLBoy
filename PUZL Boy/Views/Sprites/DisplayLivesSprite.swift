@@ -78,9 +78,9 @@ class DisplayLivesSprite: SKNode {
         imageNode.run(SKAction.sequence([scaleUp, wait, scaleDown]))
     }
     
-    func animateLives(newLives: Int) {
+    func animateLives(originalLives: Int, newLives: Int) {
         let speed: CGFloat = min(0.8 / CGFloat(newLives), 0.05)
-        var livesToIncrement = 0
+        var livesToIncrement = originalLives
         
         let incrementAction = SKAction.run { [unowned self] in
             livesToIncrement += 1

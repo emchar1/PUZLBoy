@@ -30,6 +30,7 @@ class PurchaseTapButton: SKNode {
     private let backgroundShadowColor: UIColor = .darkGray
 
     private var text: String
+    private(set) var type: TapButtonType
     private var isAnimating = false
     private var isPressed = true
         
@@ -38,11 +39,16 @@ class PurchaseTapButton: SKNode {
     
     weak var delegate: PurchaseTapButtonDelegate?
     
+    enum TapButtonType {
+        case add5Moves, add10Hints, skipLevel, add25Lives, add100Lives
+    }
+    
     
     // MARK: - Initialization
     
-    init(price: Double, text: String, image: String, imageScale: CGFloat = 1) {
+    init(price: Double, text: String, type: TapButtonType, image: String, imageScale: CGFloat = 1) {
         self.text = text
+        self.type = type
                 
         super.init()
         
