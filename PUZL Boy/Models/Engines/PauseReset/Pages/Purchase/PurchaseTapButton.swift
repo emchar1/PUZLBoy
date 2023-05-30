@@ -26,7 +26,7 @@ class PurchaseTapButton: SKNode {
     }
 
     private let shadowOffset: CGFloat = 10
-    private let backgroundColor: UIColor = UIColor(red: 0 / 255, green: 168 / 255, blue: 86 / 255, alpha: 1.0)
+    private let backgroundColor: UIColor = DecisionButtonSprite.colorBlue
     private let backgroundShadowColor: UIColor = .darkGray
 
     private var text: String

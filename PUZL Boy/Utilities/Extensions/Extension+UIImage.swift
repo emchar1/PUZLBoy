@@ -19,7 +19,7 @@ extension UIImage {
         withBounds: CGRect(x: 0, y: 0, width: K.ScreenDimensions.iPhoneWidth, height: K.ScreenDimensions.height),
         startPoint: CGPoint(x: 0.5, y: 1), endPoint: CGPoint(x: 0.5, y: 0.5),
         colors: [UIColor(red: 100 / 255, green: 100 / 255, blue: 100 / 255, alpha: 1).cgColor,
-                 UIColor(red: 200 / 255, green: 200 / 255, blue: 200 / 255, alpha: 0.25).cgColor]
+                 UIColor(red: 200 / 255, green: 200 / 255, blue: 200 / 255, alpha: 0.1).cgColor]
     )
 
     ///Can also be used in menu background colors.
