@@ -792,13 +792,18 @@ extension GameScene: PauseResetEngineDelegate {
     func didCompletePurchase(_ currentButton: PurchaseTapButton) {
         switch currentButton.type {
         case .add5Moves:
+            AudioManager.shared.playSound(for: "revive")
+
             gameEngine.animateMoves(originalMoves: gameEngine.movesRemaining, newMoves: ContinueSprite.extraMovesBuy5)
             gameEngine.incrementMovesRemaining(moves: ContinueSprite.extraMovesBuy5)
             
             saveState(levelStatsItem: getLevelStatsItem(level: currentLevel, didWin: false))
         case .add10Hints:
+            // TODO: - IMPLEMENT 10 HINTS (Or some other use of this button)
             print("NEED TO IMPLEMENT~~~~~~~~~~~> Buy $1.99")
         case .skipLevel:
+            AudioManager.shared.playSound(for: "revive")
+
             currentLevel += 1
             
             scoringEngine.scaleScoreLabelDidSkipLevel()
@@ -817,11 +822,15 @@ extension GameScene: PauseResetEngineDelegate {
             
             saveState(levelStatsItem: getLevelStatsItem(level: currentLevel, didWin: false))
         case .add25Lives:
+            AudioManager.shared.playSound(for: "revive")
+
             gameEngine.animateLives(originalLives: GameEngine.livesRemaining, newLives: ContinueSprite.extraLivesBuy25)
             gameEngine.incrementLivesRemaining(lives: ContinueSprite.extraLivesBuy25)
             
             saveState(levelStatsItem: getLevelStatsItem(level: currentLevel, didWin: false))
         case .add100Lives:
+            AudioManager.shared.playSound(for: "revive")
+
             gameEngine.animateLives(originalLives: GameEngine.livesRemaining, newLives: ContinueSprite.extraLivesBuy100)
             gameEngine.incrementLivesRemaining(lives: ContinueSprite.extraLivesBuy100)
             

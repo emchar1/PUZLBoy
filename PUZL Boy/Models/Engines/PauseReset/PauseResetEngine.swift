@@ -574,6 +574,7 @@ extension PauseResetEngine: PurchasePageDelegate {
         isDisabled = false
         isPressed = true
         openSettingsMenu()
+        isPressed = false
         
         delegate?.didCompletePurchase(currentButton)
     }
