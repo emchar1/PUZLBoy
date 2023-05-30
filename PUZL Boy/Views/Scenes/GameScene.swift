@@ -597,6 +597,21 @@ extension GameScene: AdMobManagerDelegate {
     }
     
     private func restartLevel(shouldSkip shouldSkipLevel: Bool = false, lives: Int) {
+        func restartHelper() {
+            newGame(level: currentLevel, didWin: false)
+            
+            gameEngine.animateLives(originalLives: 0, newLives: lives)
+            gameEngine.setLivesRemaining(lives: lives)
+            
+            saveState(levelStatsItem: getLevelStatsItem(level: currentLevel, didWin: false))
+            
+            continueSprite.removeFromParent()
+            
+            LifeSpawnerModel.shared.removeTimer()
+            LifeSpawnerModel.shared.removeAllNotifications()
+        }
+        
+        
         AudioManager.shared.stopSound(for: "continueloop")
         
         continueSprite.animateHide { [unowned self] in
@@ -614,19 +629,14 @@ extension GameScene: AdMobManagerDelegate {
                     
                     scoringEngine.scaleScoreLabelDidSkipLevel()
                     scoringEngine.timerManager.resetTime()
+                    
+                    gameEngine.fadeGameboard(fadeOut: true) {
+                        restartHelper()
+                    }
                 }
-                
-                newGame(level: currentLevel, didWin: false)
-                
-                gameEngine.animateLives(originalLives: 0, newLives: lives)
-                gameEngine.setLivesRemaining(lives: lives)
-                
-                saveState(levelStatsItem: getLevelStatsItem(level: currentLevel, didWin: false))
-                
-                continueSprite.removeFromParent()
-                
-                LifeSpawnerModel.shared.removeTimer()
-                LifeSpawnerModel.shared.removeAllNotifications()
+                else {
+                    restartHelper()
+                }
             }
         }
     }
@@ -805,22 +815,25 @@ extension GameScene: PauseResetEngineDelegate {
             AudioManager.shared.playSound(for: "revive")
 
             currentLevel += 1
+                        
+            scoringEngine.scoringManager.resetScore()
+            scoringEngine.updateLabels()
             
             scoringEngine.scaleScoreLabelDidSkipLevel()
             scoringEngine.timerManager.resetTime()
-            
-            newGame(level: currentLevel, didWin: false)
-            
-            AudioManager.shared.playSound(for: "winlevel")
-            
-            if GameEngine.livesRemaining < LifeSpawnerModel.defaultLives {
-                let livesToAdd = LifeSpawnerModel.defaultLives - GameEngine.livesRemaining
+
+            gameEngine.fadeGameboard(fadeOut: true) { [unowned self] in
+                newGame(level: currentLevel, didWin: true)
                 
-                gameEngine.animateLives(originalLives: GameEngine.livesRemaining, newLives: livesToAdd)
-                gameEngine.setLivesRemaining(lives: LifeSpawnerModel.defaultLives)
+                if GameEngine.livesRemaining < LifeSpawnerModel.defaultLives {
+                    let livesToAdd = LifeSpawnerModel.defaultLives - GameEngine.livesRemaining
+                    
+                    gameEngine.animateLives(originalLives: GameEngine.livesRemaining, newLives: livesToAdd)
+                    gameEngine.setLivesRemaining(lives: LifeSpawnerModel.defaultLives)
+                }
+                
+                saveState(levelStatsItem: getLevelStatsItem(level: currentLevel, didWin: false))
             }
-            
-            saveState(levelStatsItem: getLevelStatsItem(level: currentLevel, didWin: false))
         case .add25Lives:
             AudioManager.shared.playSound(for: "revive")
 
