@@ -85,7 +85,7 @@ class GameScene: SKScene {
         
         super.init(size: size)
         
-        AdMobManager.shared.delegate = self
+//        AdMobManager.shared.delegate = self
         gameEngine.delegate = self
         continueSprite.delegate = self
         chatEngine.delegate = self
@@ -486,6 +486,7 @@ extension GameScene: GameEngineDelegate {
 
                 continueSprite.animateShow(shouldDisable5Moves: gameEngine.healthRemaining <= 0) {
                     IAPManager.shared.delegate = self
+                    AdMobManager.shared.delegate = self
 
                     AudioManager.shared.playSound(for: "continueloop")
                 }
@@ -808,9 +809,13 @@ extension GameScene: PauseResetEngineDelegate {
             gameEngine.incrementMovesRemaining(moves: ContinueSprite.extraMovesBuy5)
             
             saveState(levelStatsItem: getLevelStatsItem(level: currentLevel, didWin: false))
-        case .add10Hints:
-            // TODO: - IMPLEMENT 10 HINTS (Or some other use of this button)
-            print("NEED TO IMPLEMENT~~~~~~~~~~~> Buy $1.99")
+        case .add1Life:
+            AudioManager.shared.playSound(for: "revive")
+
+            gameEngine.animateLives(originalLives: GameEngine.livesRemaining, newLives: ContinueSprite.extraLivesAd)
+            gameEngine.incrementLivesRemaining(lives: ContinueSprite.extraLivesAd)
+            
+            saveState(levelStatsItem: getLevelStatsItem(level: currentLevel, didWin: false))
         case .skipLevel:
             AudioManager.shared.playSound(for: "revive")
 
@@ -846,6 +851,13 @@ extension GameScene: PauseResetEngineDelegate {
 
             gameEngine.animateLives(originalLives: GameEngine.livesRemaining, newLives: ContinueSprite.extraLivesBuy100)
             gameEngine.incrementLivesRemaining(lives: ContinueSprite.extraLivesBuy100)
+            
+            saveState(levelStatsItem: getLevelStatsItem(level: currentLevel, didWin: false))
+        case .add1000Lives:
+            AudioManager.shared.playSound(for: "revive")
+
+            gameEngine.animateLives(originalLives: GameEngine.livesRemaining, newLives: ContinueSprite.extraLivesBuy1000)
+            gameEngine.incrementLivesRemaining(lives: ContinueSprite.extraLivesBuy1000)
             
             saveState(levelStatsItem: getLevelStatsItem(level: currentLevel, didWin: false))
         }

@@ -40,7 +40,7 @@ class PurchaseTapButton: SKNode {
     weak var delegate: PurchaseTapButtonDelegate?
     
     enum TapButtonType {
-        case add5Moves, add10Hints, skipLevel, add25Lives, add100Lives
+        case add5Moves, skipLevel, add1Life, add25Lives, add100Lives, add1000Lives
     }
     
     
@@ -93,7 +93,7 @@ class PurchaseTapButton: SKNode {
         priceBackground.lineWidth = 0
         priceBackground.zRotation = .pi / 6
         
-        let priceLabel = SKLabelNode(text: currencyFormatter.string(from: NSNumber(value: price)))
+        let priceLabel = SKLabelNode(text: price == 0 ? "View Ad" : currencyFormatter.string(from: NSNumber(value: price)))
         priceLabel.verticalAlignmentMode = .center
         priceLabel.horizontalAlignmentMode = .center
         priceLabel.fontName = UIFont.chatFont

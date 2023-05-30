@@ -21,6 +21,7 @@ class ContinueSprite: SKNode {
     static let extraLivesAd = 1
     static let extraLivesBuy25 = 25
     static let extraLivesBuy100 = 100
+    static let extraLivesBuy1000 = 1000
     static let extraMovesBuy5 = 5
     
     private var disableControls: Bool = true
