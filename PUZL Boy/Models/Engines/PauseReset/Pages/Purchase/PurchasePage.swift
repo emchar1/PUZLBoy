@@ -50,34 +50,64 @@ class PurchasePage: ParentPage {
         let imageScale: CGFloat = UIDevice.isiPad ? 2.0 : 1.25
 
         //Left column
-        watchAdButton = PurchaseTapButton(price: 0, text: "+1 Life [▶️ Ad]", type: .add1Life, color: DecisionButtonSprite.colorBlue, image: "iconPlayer", imageScale: imageScale)
+        watchAdButton = PurchaseTapButton(price: 0,
+                                          text: "+1 Life - ▶️ Ad",
+                                          type: .add1Life,
+                                          color: DecisionButtonSprite.colorBlue,
+                                          image: "iconPlayer",
+                                          imageScale: imageScale)
         watchAdButton.position = CGPoint(x: PurchasePage.padding, y: -topMargin)
         watchAdButton.zPosition = 10
         watchAdButton.delegate = self
 
-        buy299Button = PurchaseTapButton(price: 2.99, text: "Skip Level", type: .skipLevel, color: DecisionButtonSprite.colorYellow, image: "iconPrincess", imageScale: imageScale)
+        buy299Button = PurchaseTapButton(price: 2.99,
+                                         text: "Skip Level",
+                                         type: .skipLevel,
+                                         color: DecisionButtonSprite.colorYellow,
+                                         image: "iconPrincess",
+                                         imageScale: imageScale)
         buy299Button.position = CGPoint(x: PurchasePage.padding, y: watchAdButton.position.y - buttonSize.height - paddingFactor * PurchasePage.padding)
         buy299Button.zPosition = 10
         buy299Button.delegate = self
 
-        buy999Button = PurchaseTapButton(price: 9.99, text: "+100 Lives", type: .add100Lives, color: DecisionButtonSprite.colorGreen, image: "iconPlayer", imageScale: imageScale)
+        buy999Button = PurchaseTapButton(price: 9.99,
+                                         text: "+100 Lives",
+                                         type: .add100Lives,
+                                         color: DecisionButtonSprite.colorGreen,
+                                         image: "iconPlayer",
+                                         imageScale: imageScale)
         buy999Button.position = CGPoint(x: PurchasePage.padding, y: buy299Button.position.y - buttonSize.height - paddingFactor * PurchasePage.padding)
         buy999Button.zPosition = 10
         buy999Button.delegate = self
 
         //Right column
-        buy099Button = PurchaseTapButton(price: 0.99, text: "+5 Moves", type: .add5Moves, color: DecisionButtonSprite.colorBlue, image: "iconBoot", imageScale: imageScale)
+        buy099Button = PurchaseTapButton(price: 0.99,
+                                         text: "+5 Moves",
+                                         type: .add5Moves,
+                                         color: DecisionButtonSprite.colorBlue,
+                                         image: "iconBoot",
+                                         imageScale: imageScale)
         buy099Button.position = CGPoint(x: watchAdButton.position.x + PurchaseTapButton.buttonSize.width + PurchasePage.padding, y: -topMargin)
         buy099Button.zPosition = 10
         buy099Button.delegate = self
         
-        buy499Button = PurchaseTapButton(price: 4.99, text: "+25 Lives", type: .add25Lives, color: DecisionButtonSprite.colorYellow, image: "iconPlayer", imageScale: imageScale)
+        buy499Button = PurchaseTapButton(price: 4.99,
+                                         text: "+25 Lives",
+                                         type: .add25Lives,
+                                         color: DecisionButtonSprite.colorYellow,
+                                         image: "iconPlayer",
+                                         imageScale: imageScale)
         buy499Button.position = CGPoint(x: watchAdButton.position.x + buttonSize.width + PurchasePage.padding,
                                         y: buy099Button.position.y - buttonSize.height - paddingFactor * PurchasePage.padding)
         buy499Button.zPosition = 10
         buy499Button.delegate = self
 
-        buy1999Button = PurchaseTapButton(price: 19.99, text: "+1,000 Lives", type: .add1000Lives, color: DecisionButtonSprite.colorGreen, image: "iconPlayer", imageScale: imageScale)
+        buy1999Button = PurchaseTapButton(price: 19.99,
+                                          text: "+1,000 Lives",
+                                          type: .add1000Lives,
+                                          color: DecisionButtonSprite.colorGreen,
+                                          image: "iconPlayer",
+                                          imageScale: imageScale)
         buy1999Button.position = CGPoint(x: watchAdButton.position.x + PurchaseTapButton.buttonSize.width + PurchasePage.padding,
                                          y: buy499Button.position.y - buttonSize.height - paddingFactor * PurchasePage.padding)
         buy1999Button.zPosition = 10
