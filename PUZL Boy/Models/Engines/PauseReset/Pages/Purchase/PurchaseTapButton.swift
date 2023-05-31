@@ -26,8 +26,8 @@ class PurchaseTapButton: SKNode {
     }
 
     private let shadowOffset: CGFloat = 10
-    private let backgroundColor: UIColor = DecisionButtonSprite.colorBlue
-    private let backgroundShadowColor: UIColor = .darkGray
+    private let backgroundColor: UIColor
+    private var shadowColor: UIColor { backgroundColor.lightenColor(factor: 6) }
 
     private var text: String
     private(set) var type: TapButtonType
@@ -46,9 +46,10 @@ class PurchaseTapButton: SKNode {
     
     // MARK: - Initialization
     
-    init(price: Double, text: String, type: TapButtonType, image: String, imageScale: CGFloat = 1) {
+    init(price: Double, text: String, type: TapButtonType, color: UIColor, image: String, imageScale: CGFloat = 1) {
         self.text = text
         self.type = type
+        self.backgroundColor = color
                 
         super.init()
         
@@ -71,7 +72,7 @@ class PurchaseTapButton: SKNode {
         sprite.fillTexture = SKTexture(image: UIImage.menuGradientTexture)
         sprite.strokeColor = .clear
         sprite.lineWidth = 0
-        sprite.addDropShadow(rectOf: PurchaseTapButton.buttonSize, cornerRadius: cornerRadius, shadowOffset: shadowOffset)
+        sprite.addDropShadow(rectOf: PurchaseTapButton.buttonSize, cornerRadius: cornerRadius, shadowOffset: shadowOffset, shadowColor: shadowColor)
                 
         
         let maskNode = SKShapeNode(rectOf: PurchaseTapButton.buttonSize, cornerRadius: cornerRadius)
@@ -93,7 +94,7 @@ class PurchaseTapButton: SKNode {
         priceBackground.lineWidth = 0
         priceBackground.zRotation = .pi / 6
         
-        let priceLabel = SKLabelNode(text: price == 0 ? "View Ad" : currencyFormatter.string(from: NSNumber(value: price)))
+        let priceLabel = SKLabelNode(text: price == 0 ? "FREE!" : currencyFormatter.string(from: NSNumber(value: price)))
         priceLabel.verticalAlignmentMode = .center
         priceLabel.horizontalAlignmentMode = .center
         priceLabel.fontName = UIFont.chatFont

@@ -85,7 +85,6 @@ class GameScene: SKScene {
         
         super.init(size: size)
         
-//        AdMobManager.shared.delegate = self
         gameEngine.delegate = self
         continueSprite.delegate = self
         chatEngine.delegate = self

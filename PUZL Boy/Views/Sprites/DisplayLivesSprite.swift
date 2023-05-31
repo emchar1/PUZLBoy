@@ -15,12 +15,16 @@ class DisplayLivesSprite: SKNode {
     private let imageNode: SKSpriteNode
     private let textNode: SKLabelNode
     private let icon: String
+    private let numberFormatter = NumberFormatter()
     private var amount: Int
 
     
     // MARK: - Initialization
     
     init(icon: String, amount: Int) {
+        numberFormatter.numberStyle = .decimal
+        numberFormatter.maximumFractionDigits = 0
+        
         self.imageNode = SKSpriteNode(imageNamed: icon)
         self.textNode = SKLabelNode(text: "x\(amount)")
         self.icon = icon
@@ -53,13 +57,17 @@ class DisplayLivesSprite: SKNode {
     func updateAmount(_ newAmount: Int) {
         self.amount = newAmount
         
-        textNode.text = "x\(max(newAmount, 0))"
+        textNode.text = "x\(formattedInt(max(newAmount, 0)))"
         textNode.updateShadow()
         adjustImageNodeXPosition()
     }
     
     private func adjustImageNodeXPosition() {
         imageNode.position.x = 20 - textNode.frame.width
+    }
+    
+    private func formattedInt(_ value: Int) -> String {
+        return numberFormatter.string(from: NSNumber(value: value)) ?? "-999"
     }
     
     func appendNode(_ node: SKNode) {
@@ -84,7 +92,7 @@ class DisplayLivesSprite: SKNode {
         
         let incrementAction = SKAction.run { [unowned self] in
             livesToIncrement += 1
-            textNode.text = "x\(livesToIncrement)"
+            textNode.text = "x\(formattedInt(livesToIncrement))"
             textNode.updateShadow()
             adjustImageNodeXPosition()
         }
