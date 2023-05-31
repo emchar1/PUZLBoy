@@ -746,8 +746,8 @@ class GameEngine {
     
     ///Resets the level and reduces one life.
     func killAndReset() {        
-        updateMovesRemaining(enemyAttacked: true)
         healthRemaining = 0
+        updateMovesRemaining(enemyAttacked: true)
     }
     
     ///Just what it says. It increments livesRemaining.
