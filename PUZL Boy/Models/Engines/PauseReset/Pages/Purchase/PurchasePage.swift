@@ -185,8 +185,6 @@ extension PurchasePage: PurchaseTapButtonDelegate {
 
         switch buttonNode.type {
         case .add1Life:
-            AudioManager.shared.lowerVolume(for: AudioManager.shared.currentTheme, fadeDuration: 1.0)
-
             AdMobManager.shared.delegate = self
 
             AdMobManager.shared.presentRewarded { (adReward) in
@@ -194,7 +192,6 @@ extension PurchasePage: PurchaseTapButtonDelegate {
 
                 print("You were rewarded: \(adReward.amount) lives!")
             }
-            
         case .add5Moves:
             IAPManager.shared.delegate = self
 
@@ -315,7 +312,7 @@ extension PurchasePage: AdMobManagerDelegate {
     // MARK: - Rewarded ads
     
     func willPresentRewarded() {
-        //No implementation
+        AudioManager.shared.lowerVolume(for: AudioManager.shared.currentTheme, fadeDuration: 1.0)
     }
     
     func didDismissRewarded() {
