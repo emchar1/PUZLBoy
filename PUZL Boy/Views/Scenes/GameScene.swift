@@ -75,9 +75,9 @@ class GameScene: SKScene {
         chatEngine = ChatEngine()
         pauseResetEngine = PauseResetEngine(user: user, level: currentLevel)
         resetConfirmSprite = ConfirmSprite(title: "FEELING STUCK?",
-                                      message: "Tap Restart Level to start over. You'll lose a life in the process.",
-                                      confirm: "Restart Level",
-                                      cancel: "Cancel")
+                                           message: "Tap Restart Level to start over. You'll lose a life in the process.",
+                                           confirm: "Restart Level",
+                                           cancel: "Cancel")
         self.user = user
         
         // FIXME: - Debugging purposes only
@@ -355,8 +355,7 @@ class GameScene: SKScene {
     private func prepareAd(completion: (() -> Void)?) {
         AudioManager.shared.lowerVolume(for: AudioManager.shared.currentTheme, fadeDuration: 1.0)
 
-        adSprite = SKSpriteNode(color: .clear,
-                                size: CGSize(width: K.ScreenDimensions.iPhoneWidth, height: K.ScreenDimensions.height))
+        adSprite = SKSpriteNode(color: .clear, size: CGSize(width: K.ScreenDimensions.iPhoneWidth, height: K.ScreenDimensions.height))
         adSprite.anchorPoint = .zero
         adSprite.zPosition = K.ZPosition.adSceneBlackout
         addChild(adSprite)
@@ -396,7 +395,11 @@ class GameScene: SKScene {
         addChild(offlinePlaySprite)
         
         // FIXME: - Debuging purposes only!!!
-        if let user = user, user.uid == "3SeIWmlATmbav7jwCDjXyiA0TgA3" || user.uid == "NB9OLr2X8kRLJ7S0G8W3800qo8U2" || user.uid == "jnsBD8RFVDMN9cSN8yDnFDoVJp32" {
+        if let user = user,
+            user.uid == "3SeIWmlATmbav7jwCDjXyiA0TgA3" ||   //Eddie
+            user.uid == "NB9OLr2X8kRLJ7S0G8W3800qo8U2" ||   //Michel
+            user.uid == "jnsBD8RFVDMN9cSN8yDnFDoVJp32"      //Mom
+        {
             levelSkipEngine.moveSprites(to: self)
         }
     }
