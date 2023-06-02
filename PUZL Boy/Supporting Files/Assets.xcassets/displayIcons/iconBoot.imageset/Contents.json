@@ -1,7 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "boot.png",
+      "filename" : "iconBoot.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
