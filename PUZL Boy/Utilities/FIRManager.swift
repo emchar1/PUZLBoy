@@ -41,7 +41,7 @@ struct FIRManager {
             completion?(allLevels)
             allLevels.removeAll()
 
-            //MUST remove observer after downloading once. Is this the best way to do it, right after downloading?
+            //IMPORTANT!! - If you remove all observers, it won't listen for level updates in real time; it'll only update sporadically, when? I'm not sure. Leave this commented out for now... 6/2/23
 //            ref.removeAllObservers()
 
             print("Realtime database initialized.......")
