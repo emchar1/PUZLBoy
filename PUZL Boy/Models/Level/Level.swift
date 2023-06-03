@@ -93,7 +93,7 @@ struct Level: CustomStringConvertible {
     }
     
     mutating func removeOverlayObject(at position: K.GameboardPosition) {
-        // FIXME: - Is .boundary the right way to represent non-existent overlay object?
+        //.boundary represents non-existent overlay object
         gameboard[position.row][position.col].overlay = .boundary
     }
     

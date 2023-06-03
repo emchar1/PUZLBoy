@@ -808,7 +808,6 @@ class GameEngine {
         gameboardSprite.sprite.addChild(playerSprite.sprite)
 
         if !isGameOver {
-            // FIXME: - yPosition seems wonky...
             let numMovesSprite = NumMovesSprite(
                 numMoves: self.level.moves,
                 position: CGPoint(x: K.ScreenDimensions.iPhoneWidth / 2, y: GameboardSprite.yPosition * 3 / 2))

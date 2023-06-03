@@ -17,7 +17,6 @@ class IAPManager: NSObject {
     
     // MARK: - Properties
     
-    // TODO: - Keep adding product IDs here.. Or maybe have this in a list in Firebase???
     static let moves5 = "com.5playapps.PUZLBoy.5Moves"
     static let skipLevel = "com.5playapps.PUZLBoy.SkipLevel"
     static let lives25 = "com.5playapps.PUZLBoy.25Lives"

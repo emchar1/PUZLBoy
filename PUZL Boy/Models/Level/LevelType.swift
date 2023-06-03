@@ -17,7 +17,7 @@ enum LevelType: Int, CaseIterable {
     case boulder, enemy, warp, warp2, warp3 //special panels
     
     var description: String {
-        // FIXME: - Should boundary default to ""?
+        //Should boundary default to ""?
         return self == .boundary ? "" : String(describing: self)
     }
     

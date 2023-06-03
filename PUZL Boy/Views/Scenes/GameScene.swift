@@ -327,6 +327,7 @@ class GameScene: SKScene {
             }
         }
         
+        // TODO: - Here is where you insert Party Bonus Level. Activates every (100?) levels, or if you die 10x in a row. If so, go to party level to collect power ups and shit.
         gameEngine.newGame(level: level, shouldSpawn: !didWin)
         
         //DO NOT CREATE NEW INSTANCES EVERY TIME!!! THIS CAUSES MEMORY LEAKS! 3/30/23
