@@ -36,7 +36,7 @@ class PurchasePage: ParentPage {
     // MARK: - Initialization
     
     init(contentSize: CGSize) {
-        super.init(contentSize: contentSize, titleText: "Purchase")
+        super.init(contentSize: contentSize, titleText: "Shop")
 
         self.nodeName = "purchasePage"
         self.contentSize = contentSize

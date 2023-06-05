@@ -90,6 +90,8 @@ class AudioManager {
         addAudioItem("buttontap5", category: .soundFX)
         addAudioItem("buttontap6", category: .soundFX)
         addAudioItem("buttontap7", category: .soundFX) //needs purchase
+        addAudioItem("buttontap8", category: .soundFX) //needs purchase
+        addAudioItem("buttontap9", category: .soundFX) //needs purchase (combined with buttontap8)
         addAudioItem("chatclose", category: .soundFX)
         addAudioItem("chatopen", category: .soundFX)
         addAudioItem("dooropen", category: .soundFX)

@@ -26,7 +26,7 @@ class SettingsButton: SKNode {
     weak var delegate: SettingsButtonDelegate?
     
     enum SettingsButtonType: String {
-        case button1 = "Title", button2 = "Purchase", button3 = "Leaderboard", button4 = "How To Play", button5 = "Settings"
+        case button1 = "Home", button2 = "Shop", button3 = "Leaderboard", button4 = "How To Play", button5 = "Settings"
     }
     
     // MARK: - Initialization

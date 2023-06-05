@@ -149,7 +149,7 @@ class ScoringEngine {
         
         let pointsSprite = SKLabelNode(text: "+" + (score ?? "0"))
         pointsSprite.fontName = UIFont.gameFont
-        pointsSprite.fontSize = UIFont.gameFontSizeMedium
+        pointsSprite.fontSize = UIDevice.isiPad ? UIFont.gameFontSizeLarge : UIFont.gameFontSizeMedium
         pointsSprite.fontColor = .yellow
         pointsSprite.position = location
         pointsSprite.zPosition = K.ZPosition.itemsPoints
@@ -174,7 +174,7 @@ class ScoringEngine {
         - location: Location to place the containerNode
      */
     static func updateStatusIconsAnimation(icon: StatusIcon, amount: Int, originSprite: SKNode, location: CGPoint) {
-        let containerSprite = SKShapeNode(rectOf: CGSize(width: 160, height: 80))
+        let containerSprite = SKShapeNode(rectOf: UIDevice.isiPad ? CGSize(width: 240, height: 120) : CGSize(width: 160, height: 80))
         containerSprite.fillColor = .clear
         containerSprite.lineWidth = 0
         containerSprite.position = location
@@ -182,7 +182,7 @@ class ScoringEngine {
         
         let amountSprite = SKLabelNode(text: "\(amount > 0 ? "+" : "")\(amount)")
         amountSprite.fontName = UIFont.gameFont
-        amountSprite.fontSize = UIFont.gameFontSizeMedium
+        amountSprite.fontSize = UIDevice.isiPad ? UIFont.gameFontSizeLarge : UIFont.gameFontSizeMedium
         amountSprite.fontColor = amount < 0 ? .red : .white
         amountSprite.horizontalAlignmentMode = .center
         amountSprite.verticalAlignmentMode = .center
@@ -191,8 +191,8 @@ class ScoringEngine {
         amountSprite.addDropShadow()
         
         let iconSprite = SKSpriteNode(imageNamed: icon.rawValue)
-        iconSprite.scale(to: CGSize(width: 80, height: 80))
-        iconSprite.position = CGPoint(x: 60, y: 0)
+        iconSprite.scale(to: UIDevice.isiPad ? CGSize(width: 120, height: 120) : CGSize(width: 80, height: 80))
+        iconSprite.position = CGPoint(x: UIDevice.isiPad ? 80 : 60, y: 0)
         
         originSprite.addChild(containerSprite)
         containerSprite.addChild(amountSprite)
