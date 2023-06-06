@@ -426,11 +426,13 @@ class GameScene: SKScene {
         scoringEngine.timerManager.pauseTime()
         stopTimer()
         gameEngine.shouldDisableInput(true)
+        pauseResetEngine.shouldDisable(true)
 
         chatEngine.dialogue(level: currentLevel) { [unowned self] in
             scoringEngine.timerManager.resumeTime()
             startTimer()
             gameEngine.shouldDisableInput(false)
+            pauseResetEngine.shouldDisable(false)
         }
     }
 }
@@ -496,7 +498,7 @@ extension GameScene: GameEngineDelegate {
             prepareAd { [unowned self] in
                 addChild(continueSprite)
                 
-                pauseResetEngine.isDisabled = true
+                pauseResetEngine.shouldDisable(true)
 
                 continueSprite.animateShow(shouldDisable5Moves: gameEngine.healthRemaining <= 0) {
                     IAPManager.shared.delegate = self
@@ -636,7 +638,7 @@ extension GameScene: AdMobManagerDelegate {
                 scoringEngine.scoringManager.resetScore()
                 scoringEngine.updateLabels()
                 
-                pauseResetEngine.isDisabled = false
+                pauseResetEngine.shouldDisable(false)
                 
                 //Make sure to save current state, and increment currentLevel if skipping ahead
                 if shouldSkipLevel {

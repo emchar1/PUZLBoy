@@ -56,29 +56,8 @@ class PauseResetEngine {
     private var currentLevel: Int = 1
     private var isPressed: Bool = false
     private var isAnimating: Bool = false
+    private var isDisabled: Bool = false
     private(set) var isPaused: Bool = false
-    var isDisabled: Bool = false {
-        didSet {
-            if isDisabled {
-                pauseResetButtonSprite.texture = SKTexture(imageNamed: "\(pauseResetName)Disabled")
-                resetButtonSprite.texture = SKTexture(imageNamed: "\(resetName)Disabled")
-                hintButtonSprite.texture = SKTexture(imageNamed: "\(hintName)Disabled")
-                
-                guard !isPaused else { return }
-                
-                hideMinorButtons()
-            }
-            else {
-                pauseResetButtonSprite.texture = SKTexture(imageNamed: pauseResetName)
-                resetButtonSprite.texture = SKTexture(imageNamed: resetName)
-                hintButtonSprite.texture = SKTexture(imageNamed: hintName)
-                
-                guard !isPaused else { return }
-
-                showMinorButtons()
-            }
-        }
-    }
 
     weak var delegate: PauseResetEngineDelegate?
     
@@ -168,6 +147,29 @@ class PauseResetEngine {
     
     
     // MARK: - Helper Functions
+    
+    func shouldDisable(_ disable: Bool) {
+        isDisabled = disable
+        
+        if disable {
+            pauseResetButtonSprite.texture = SKTexture(imageNamed: "\(pauseResetName)Disabled")
+            resetButtonSprite.texture = SKTexture(imageNamed: "\(resetName)Disabled")
+            hintButtonSprite.texture = SKTexture(imageNamed: "\(hintName)Disabled")
+            
+            guard !isPaused else { return }
+            
+            hideMinorButtons()
+        }
+        else {
+            pauseResetButtonSprite.texture = SKTexture(imageNamed: pauseResetName)
+            resetButtonSprite.texture = SKTexture(imageNamed: resetName)
+            hintButtonSprite.texture = SKTexture(imageNamed: hintName)
+            
+            guard !isPaused else { return }
+
+            showMinorButtons()
+        }
+    }
     
     ///Feels like a clunky way of returning the bottom y-value of the settings content page. Needs to be halved depending on where the anchor point is set.
     private func getBottomOfSettings() -> CGFloat {
@@ -509,10 +511,10 @@ extension PauseResetEngine: ConfirmSpriteDelegate {
 extension PauseResetEngine: PurchasePageDelegate {
     func purchaseCompleted(_ currentButton: PurchaseTapButton) {
         //This seems hokey, but it works...
-        isDisabled = false
         isAnimating = false
         isPressed = true
 
+        shouldDisable(false)
         openCloseSettings()
 
         isPressed = false
@@ -521,10 +523,10 @@ extension PauseResetEngine: PurchasePageDelegate {
     }
     
     func purchaseFailed() {
-        isDisabled = false
+        shouldDisable(false)
     }
     
     func purchaseDidTap() {
-        isDisabled = true
+        shouldDisable(true)
     }
 }
