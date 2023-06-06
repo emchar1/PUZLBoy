@@ -15,7 +15,7 @@ class HowToPlayTableView: UITableView, UITableViewDelegate, UITableViewDataSourc
         HowToPlayModel(image: "start", title: "Start", requiredLevel: 0,
                        description: "Your starting point. Tap any available panel adjacent to you to move to it. Diagonal moves are not allowed."),
         HowToPlayModel(image: "endClosed", title: "End", requiredLevel: 0,
-                       description: "Your ending point. You'll need to collect all the gems to open the gate and move on to the next level."),
+                       description: "Collect all the gems to open the gate. Reach the gate in under a certain number of moves to advance."),
         HowToPlayModel(image: "grass", title: "Grass", requiredLevel: 0,
                        description: "Grass is your basic terrain panel - nothing special about it. Stepping on grass will cost you 1 move."),
         HowToPlayModel(image: "marsh", title: "Poison Marsh", requiredLevel: 19,
