@@ -67,7 +67,7 @@ class LevelSkipEngine {
         partyMode = SKSpriteNode(texture: SKTexture(imageNamed: "party"))
         partyMode.name = "partyModeButton"
         partyMode.setScale(buttonScale)
-        partyMode.position = CGPoint(x: forwardSprite.position.x - buttonSpacing, y: partyMode.size.height + padding)
+        partyMode.position = CGPoint(x: forwardSprite.position.x - buttonSpacing / 2, y: partyMode.size.height + padding)
         partyMode.anchorPoint = .zero
         partyMode.zPosition = K.ZPosition.pauseButton
         
