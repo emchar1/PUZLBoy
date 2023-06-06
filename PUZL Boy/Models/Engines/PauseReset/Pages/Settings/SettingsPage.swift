@@ -131,8 +131,8 @@ class SettingsPage: ParentPage {
         tapButtonReportBug.touchDown(in: location)
     }
     
-    override func touchUp(for touches: Set<UITouch>) {
-        super.touchUp(for: touches)
+    override func touchUp() {
+        super.touchUp()
         
         radioMusic.touchUp()
         radioSoundFX.touchUp()

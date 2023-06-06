@@ -146,7 +146,9 @@ class PurchasePage: ParentPage {
         buy1999Button.touchDown(in: location)
     }
     
-    override func touchUp(for touches: Set<UITouch>) {
+    override func touchUp() {
+        super.touchUp()
+        
         guard !isDisabled else { return }
 
         watchAdButton.touchUp()
@@ -274,7 +276,7 @@ extension PurchasePage: IAPManagerDelegate {
         }
         
         //I hate how this is needed, otherwise button won't touch up after purchase is made
-        touchUp(for: [])
+        touchUp()
     }
     
     ///To be used in IAPManagerDelegate and AdMobManagerDelegate, when purchase/reward has failed.
@@ -285,7 +287,7 @@ extension PurchasePage: IAPManagerDelegate {
         delegate?.purchaseFailed()
         
         //I hate how this is needed, otherwise button won't touch up after purchase is made
-        touchUp(for: [])
+        touchUp()
     }
 }
 

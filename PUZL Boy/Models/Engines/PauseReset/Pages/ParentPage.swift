@@ -54,7 +54,7 @@ class ParentPage: SKNode {
         //Implement in subclass
     }
     
-    func touchUp(for touches: Set<UITouch>) {
+    func touchUp() {
         //Implement in subclass
     }
     
