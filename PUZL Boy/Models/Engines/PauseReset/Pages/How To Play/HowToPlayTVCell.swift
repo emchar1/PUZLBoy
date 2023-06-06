@@ -60,9 +60,10 @@ class HowToPlayTVCell: UITableViewCell {
         titleText = UILabel()
         titleText.font = UIFont(name: UIFont.gameFont, size: UIDevice.isiPad ? 32 : 20)
         titleText.textColor = UIFont.gameFontColor
-        titleText.layer.shadowColor = UIColor.gray.cgColor
-        titleText.layer.shadowOffset = CGSize(width: -2, height: 2)
-        titleText.layer.shadowOpacity = 0.75
+        titleText.layer.shadowColor = UIColor.black.cgColor
+        titleText.layer.shadowOffset = CGSize(width: -1.5, height: 1.5)
+        titleText.layer.shadowRadius = 0
+        titleText.layer.shadowOpacity = 0.25
         titleText.layer.masksToBounds = false
         titleText.translatesAutoresizingMaskIntoConstraints = false
         titleText.setContentHuggingPriority(.defaultHigh, for: .vertical)
@@ -72,9 +73,10 @@ class HowToPlayTVCell: UITableViewCell {
         descriptionText.sizeToFit()
         descriptionText.font = UIFont(name: UIFont.chatFont, size: UIDevice.isiPad ? 30 : 18)
         descriptionText.textColor = UIFont.chatFontColor
-        descriptionText.layer.shadowColor = UIColor.gray.cgColor
-        descriptionText.layer.shadowOffset = CGSize(width: -2, height: 2)
-        descriptionText.layer.shadowOpacity = 0.75
+        descriptionText.layer.shadowColor = UIColor.black.cgColor
+        descriptionText.layer.shadowOffset = CGSize(width: -1.5, height: 1.5)
+        descriptionText.layer.shadowRadius = 0
+        descriptionText.layer.shadowOpacity = 0.25
         descriptionText.layer.masksToBounds = false
         descriptionText.translatesAutoresizingMaskIntoConstraints = false
         descriptionText.setContentHuggingPriority(.defaultLow, for: .vertical)

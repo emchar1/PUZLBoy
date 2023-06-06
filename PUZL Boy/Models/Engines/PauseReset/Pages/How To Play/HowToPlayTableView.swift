@@ -17,7 +17,7 @@ class HowToPlayTableView: UITableView, UITableViewDelegate, UITableViewDataSourc
         HowToPlayModel(image: "endClosed", title: "End", requiredLevel: 0,
                        description: "Collect all the gems to open the gate. Reach the gate in under a certain number of moves to advance."),
         HowToPlayModel(image: "grass", title: "Grass", requiredLevel: 0,
-                       description: "Grass is your basic terrain panel - nothing special about it. Stepping on grass will cost you 1 move."),
+                       description: "Grass is your basic terrain panel - nothing special about it. Stepping on grass will cost you 1 move. 👢"),
         HowToPlayModel(image: "marsh", title: "Poison Marsh", requiredLevel: 19,
                        description: "This crimson colored panel will cost you 2 moves if you're so unlucky to wander into it."),
         HowToPlayModel(image: "ice", title: "Ice", requiredLevel: 76,
@@ -40,7 +40,7 @@ class HowToPlayTableView: UITableView, UITableViewDelegate, UITableViewDataSourc
         HowToPlayModel(image: "warp", title: "Yellow Warp", requiredLevel: 34,
                        description: "Stepping on a warp will transport you to the other warp, and vice versa. Don't ask me how it works."),
         HowToPlayModel(image: "enemy", title: "Dragon", requiredLevel: 51,
-                       description: "Like boulders, dragons block your path. Unlike boulders, if you touch a dragon, it'll cost you 1 health."),
+                       description: "Like boulders, dragons block your path. Unlike boulders, if you touch a dragon, it'll cost you 1 health. 💖"),
         HowToPlayModel(image: "sword", title: "Sword", requiredLevel: 53,
                        description: "A sword can dispatch a dragon effectively to clear a path so you can proceed."),
         HowToPlayModel(image: "gemparty", title: "Party Gem", requiredLevel: 100,
@@ -82,9 +82,10 @@ class HowToPlayTableView: UITableView, UITableViewDelegate, UITableViewDataSourc
         let header = view as! UITableViewHeaderFooterView
         header.textLabel?.font = UIFont(name: UIFont.gameFont, size: UIDevice.isiPad ? 36 : 24)
         header.textLabel?.textColor = UIFont.gameFontColor
-        header.textLabel?.layer.shadowOffset = CGSize(width: -2, height: 2)
-        header.textLabel?.layer.shadowColor = UIColor.gray.cgColor
-        header.textLabel?.layer.shadowOpacity = 0.75
+        header.textLabel?.layer.shadowColor = UIColor.black.cgColor
+        header.textLabel?.layer.shadowOffset = CGSize(width: -1.5, height: 1.5)
+        header.textLabel?.layer.shadowRadius = 0
+        header.textLabel?.layer.shadowOpacity = 0.25
         header.sizeToFit()
     }
     
