@@ -23,7 +23,7 @@ class HowToPlayTableView: UITableView, UITableViewDelegate, UITableViewDataSourc
         HowToPlayModel(image: "ice", title: "Ice", requiredLevel: 76,
                        description: "Walking on this will cause you to slide for only 1 move until you hit an obstacle or other terrain."),
         HowToPlayModel(image: "partytile", title: "Rainbow", requiredLevel: 100,
-                       description: "These tiles don't take up any moves and are here for your enjoyment. Run around to your heart's content!"),
+                       description: "These tiles don't take up any moves and were created for your enjoyment. Run around to your heart's content!"),
         HowToPlayModel(image: "sand", title: "Sand", requiredLevel: 351,
                        description: "Once you move off of a sand panel, it'll turn into lava, so retracing your steps is a huge no no."),
         HowToPlayModel(image: "lava", title: "Lava", requiredLevel: 351,
