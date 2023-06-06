@@ -32,7 +32,7 @@ class HowToPlayTableView: UITableView, UITableViewDelegate, UITableViewDataSourc
     
     var overlayItems: [HowToPlayModel] = [
         HowToPlayModel(image: "gem", title: "Gem", requiredLevel: 1,
-                       description: "Collect all the gems in each level to open the gate and advance to the next level."),
+                       description: "Collect all the purple gems in each level to open the gate and advance to the next level."),
         HowToPlayModel(image: "boulder", title: "Boulder", requiredLevel: 8,
                        description: "Boulders block you from passing through. Find a hammer and smash them to bits."),
         HowToPlayModel(image: "hammer", title: "Hammer", requiredLevel: 12,
