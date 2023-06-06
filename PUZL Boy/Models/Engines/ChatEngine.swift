@@ -36,6 +36,7 @@ class ChatEngine {
     //Other properties
     private(set) var isChatting: Bool = false
     private var timer: Timer
+    private var dispatchWorkItem: DispatchWorkItem! //Used to closeChat() and cancel any scheduled closeChat() calls. It works!!!
     private var chatText: String = ""
     private var chatIndex = 0
     private var allowNewChat = true
@@ -50,6 +51,7 @@ class ChatEngine {
     private var dimOverlaySprite: SKShapeNode
     private var backgroundSprite: SKShapeNode
     private var avatarSprite: SKSpriteNode
+    private var fastForwardSprite: SKSpriteNode
     private var textSprite: SKLabelNode
     private var superScene: SKScene?
     
@@ -80,6 +82,7 @@ class ChatEngine {
         backgroundSprite = SKShapeNode()
         dimOverlaySprite = SKShapeNode(rectOf: CGSize(width: K.ScreenDimensions.iPhoneWidth, height: K.ScreenDimensions.height))
         avatarSprite = SKSpriteNode(texture: SKTexture(imageNamed: "puzlboy"))
+        fastForwardSprite = SKSpriteNode(imageNamed: "forwardButton")
         textSprite = SKLabelNode(text: "PUZL Boy is the newest puzzle game out there on the App Store. It's so popular, it's going to have over a million downloads, gamers are going to love it - casual gamers, hardcore gamers, and everyone in-between! So download your copy today!!")
 
         //Setup
@@ -116,9 +119,18 @@ class ChatEngine {
         textSprite.zPosition = 10
         textSprite.addDropShadow()
         
+        fastForwardSprite.setScale(0.35)
+        fastForwardSprite.anchorPoint = CGPoint(x: 1, y: 0)
+        fastForwardSprite.position = CGPoint(x: origin.x + backgroundSpriteWidth - padding.x, y: origin.y + padding.x)
+        fastForwardSprite.alpha = 1
+        fastForwardSprite.zPosition = 15
+        
+        animateFFButton()
+        
         //Add sprites to background
         backgroundSprite.addChild(avatarSprite)
-        backgroundSprite.addChild(textSprite)        
+        backgroundSprite.addChild(textSprite)
+        backgroundSprite.addChild(fastForwardSprite)
     }
     
     deinit {
@@ -128,12 +140,29 @@ class ChatEngine {
     
     // MARK: - Functions
 
-    @discardableResult func fastForward() -> Bool {
-        guard chatSpeed > 0 else { return false }
+    func fastForward() {
+        if chatSpeed > 0 && chatIndex < chatText.count {
+            chatSpeed = 0
+
+            ButtonTap.shared.tap(type: .buttontap9)
+        }
+        else {
+            dispatchWorkItem.cancel()
+            closeChat()
+            
+            ButtonTap.shared.tap(type: shouldClose ? .noSound : .buttontap8)
+        }
+    }
+    
+    private func animateFFButton() {
+        fastForwardSprite.removeAllActions()
         
-        chatSpeed = 0
-        
-        return true
+        fastForwardSprite.run(SKAction.repeatForever(SKAction.sequence([
+            SKAction.wait(forDuration: 0.5),
+            SKAction.fadeAlpha(to: 0, duration: 0.75),
+            SKAction.wait(forDuration: 0.5),
+            SKAction.fadeAlpha(to: 1, duration: 0.75)
+        ])))
     }
     
     private func sendChat(profile: ChatProfile, startNewChat: Bool, endChat: Bool, chat: String, completion: (() -> ())? = nil) {
@@ -192,26 +221,30 @@ class ChatEngine {
 
     ///This contains the magic of animating the characters of the string like a typewriter, until it gets to the end of the chat.
     @objc private func animateText(_ sender: Timer) {
-        guard chatSpeed > 0 && chatIndex < chatText.count else {
-            timer.invalidate()
+        if chatSpeed > 0 && chatIndex < chatText.count {
+            let chatChar = chatText[chatText.index(chatText.startIndex, offsetBy: chatIndex)]
+
+            textSprite.text! += "\(chatChar)"
+            textSprite.updateShadow()
+                    
+            chatIndex += 1
+        }
+        else if chatSpeed <= 0 && chatIndex < chatText.count {
             textSprite.text = chatText
             textSprite.updateShadow()
             
-            //If you fast forward, add >= 2 more seconds delay
-            DispatchQueue.main.asyncAfter(deadline: .now() + (chatSpeed > 0 ? 2.0 : max(2.0, Double(chatText.count) / 30))) {
-                self.closeChat()
-            }
-            
-            return
+            chatIndex = chatText.count
         }
-
-
-        let chatChar = chatText[chatText.index(chatText.startIndex, offsetBy: chatIndex)]
-
-        textSprite.text! += "\(chatChar)"
-        textSprite.updateShadow()
-                
-        chatIndex += 1
+        else if chatIndex >= chatText.count {
+            timer.invalidate()
+            
+            //Set it here so you can cancel it if needed.
+            dispatchWorkItem = DispatchWorkItem(block: {
+                self.closeChat()
+            })
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + (chatSpeed > 0 ? 5.0 : max(5.0, Double(chatText.count) / 10)), execute: dispatchWorkItem)
+        }
     }
     
     private func closeChat() {
@@ -248,6 +281,23 @@ class ChatEngine {
         
         superScene.addChild(dimOverlaySprite)
         superScene.addChild(backgroundSprite)
+    }
+    
+    
+    // MARK: - Touch Functions
+    
+    func touchDown(in location: CGPoint) {
+        guard let superScene = superScene else { return }
+        guard superScene.nodes(at: location).filter({ $0.name == "backgroundSprite" }).first != nil else { return }
+        
+        fastForwardSprite.removeAllActions()
+        fastForwardSprite.alpha = 1
+        
+        fastForward()
+    }
+        
+    func touchUp() {
+        animateFFButton()
     }
 }
 
@@ -430,7 +480,7 @@ extension ChatEngine {
                                     delegate?.deIlluminateDisplayNode(for: .swords)
                                     
                                     sendChat(profile: .trainer, startNewChat: false, endChat: true,
-                                             chat: "B-I-N-G-O!!! Oh sorry, I was playing Bingo with my grandmother. Yep, one sword per dragon.") { [unowned self] in
+                                             chat: "B-I-N-G-O!!! Oh whoops, I was playing Bingo with my grams. Yep, one sword per dragon.") { [unowned self] in
                                         dialoguePlayed[level] = true
                                         fadeDimOverlay()
                                         isChatting = false

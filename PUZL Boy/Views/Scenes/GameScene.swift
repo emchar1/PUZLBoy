@@ -174,7 +174,7 @@ class GameScene: SKScene {
         guard let location = touches.first?.location(in: self) else { return }
         
         if gameEngine.checkControlGuardsIfPassed(includeDisableInputFromOutside: false) {
-            if !gameEngine.disableInputFromOutside || pauseResetEngine.specialFunctionEnabled {
+            if !gameEngine.disableInputFromOutside {
                 pauseResetEngine.touchDown(for: touches, resetCompletion: { [unowned self] in
                     showResetConfirm()
                 })
@@ -184,6 +184,7 @@ class GameScene: SKScene {
         guard !pauseResetEngine.isPaused else { return }
         
         gameEngine.handleControls(in: location)
+        chatEngine.touchDown(in: location)
         
         if !activityIndicator.isShowing {
             continueSprite.touchDown(in: location)
@@ -202,12 +203,13 @@ class GameScene: SKScene {
             continueSprite.touchUp()
             resetConfirmSprite.didTapButton(in: location)
             resetConfirmSprite.touchUp()
+            chatEngine.touchUp()
         }
 
         
         guard gameEngine.checkControlGuardsIfPassed(includeDisableInputFromOutside: false) else { return }
         
-        if !gameEngine.disableInputFromOutside || pauseResetEngine.specialFunctionEnabled {
+        if !gameEngine.disableInputFromOutside {
             //MUST run these separately!! Can't combine handleControls() and touchUp(for:) in one closure.
             pauseResetEngine.touch(for: touches) { _ in
                 pauseResetEngine.handleControls()
@@ -406,23 +408,21 @@ class GameScene: SKScene {
     }
     
     private func playDialogue() {
-//        //Only disable input on certain levels, i.e. the important ones w/ instructions.
-//        guard chatEngine.shouldPauseGame(level: currentLevel) else { return }
-//
-//        //Prevents chat dialogue from appearing if user dies on a level with instructions and continue message prompt is showing.
-//        guard gameEngine.canContinue else { return }
-//
-//        scoringEngine.timerManager.pauseTime()
-//        stopTimer()
-//        pauseResetEngine.specialFunctionEnabled = true
-//        gameEngine.shouldDisableInput(true)
-//
-//        chatEngine.dialogue(level: currentLevel) { [unowned self] in
-//            scoringEngine.timerManager.resumeTime()
-//            startTimer()
-//            pauseResetEngine.specialFunctionEnabled = false
-//            gameEngine.shouldDisableInput(false)
-//        }
+        //Only disable input on certain levels, i.e. the important ones w/ instructions.
+        guard chatEngine.shouldPauseGame(level: currentLevel) else { return }
+
+        //Prevents chat dialogue from appearing if user dies on a level with instructions and continue message prompt is showing.
+        guard gameEngine.canContinue else { return }
+
+        scoringEngine.timerManager.pauseTime()
+        stopTimer()
+        gameEngine.shouldDisableInput(true)
+
+        chatEngine.dialogue(level: currentLevel) { [unowned self] in
+            scoringEngine.timerManager.resumeTime()
+            startTimer()
+            gameEngine.shouldDisableInput(false)
+        }
     }
 }
 
@@ -776,13 +776,6 @@ extension GameScene: PauseResetEngineDelegate {
         else {
             scoringEngine.timerManager.resumeTime()
             startTimer()
-        }
-    }
-    
-    func didTapButtonSpecial() {
-        if chatEngine.fastForward() {
-            //Putting these here so that I can only have it execute if fastForward is successful. Prevents spamming the button
-            ButtonTap.shared.tap(type: .buttontap2)
         }
     }
     
