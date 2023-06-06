@@ -10,6 +10,8 @@ import FirebaseAuth
 
 protocol PauseResetEngineDelegate: AnyObject {
     func didTapPause(isPaused: Bool)
+    func didTapReset()
+    func didTapHint()
     func confirmQuitTapped()
     func didTapHowToPlay(_ tableView: HowToPlayTableView)
     func didCompletePurchase(_ currentButton: PurchaseTapButton)
@@ -26,25 +28,18 @@ class PauseResetEngine {
 
     //Pause Button
     private let pauseResetName = "settingsButton"
+    private let resetName = "resetButton"
+    private let hintName = "hintButton"
     private let pauseResetButtonSize: CGFloat = 180
     private var pauseResetButtonPosition: CGPoint {
         CGPoint(x: (settingsSize.width - pauseResetButtonSize) / 2, y: K.ScreenDimensions.bottomMargin)
     }
     
-    //Reset Countdown
-    private let resetAnimationKey = "resetAnimationKey"
-    private let resetThreshold: Int = 3
-    private let resetTimerSpeed: TimeInterval = 2
-    private var resetInitial = Date()
-    private var resetFinal = Date()
-    private var resetElapsed: TimeInterval {
-        TimeInterval(resetFinal.timeIntervalSinceNow - resetInitial.timeIntervalSinceNow) * resetTimerSpeed
-    }
-    
     //SKNodes
     private var pauseResetButtonSprite: SKSpriteNode
+    private var resetButtonSprite: SKSpriteNode
+    private var hintButtonSprite: SKSpriteNode
     private var backgroundSprite: SKShapeNode
-    private var countdownLabel: SKLabelNode
     private var superScene: SKScene?
     
     //Custom Objects
@@ -61,13 +56,30 @@ class PauseResetEngine {
     private var currentLevel: Int = 1
     private var isPressed: Bool = false
     private var isAnimating: Bool = false
-    private var isDisabled: Bool = false {
+    private(set) var isPaused: Bool = false
+    var isDisabled: Bool = false {
         didSet {
-            pauseResetButtonSprite.texture = SKTexture(imageNamed: isDisabled ? "\(pauseResetName)Disabled" : pauseResetName)
+            if isDisabled {
+                pauseResetButtonSprite.texture = SKTexture(imageNamed: "\(pauseResetName)Disabled")
+                resetButtonSprite.texture = SKTexture(imageNamed: "\(resetName)Disabled")
+                hintButtonSprite.texture = SKTexture(imageNamed: "\(hintName)Disabled")
+                
+                guard !isPaused else { return }
+                
+                hideMinorButtons()
+            }
+            else {
+                pauseResetButtonSprite.texture = SKTexture(imageNamed: pauseResetName)
+                resetButtonSprite.texture = SKTexture(imageNamed: resetName)
+                hintButtonSprite.texture = SKTexture(imageNamed: hintName)
+                
+                guard !isPaused else { return }
+
+                showMinorButtons()
+            }
         }
     }
-    var isPaused: Bool = false
-    
+
     weak var delegate: PauseResetEngineDelegate?
     
     
@@ -84,23 +96,24 @@ class PauseResetEngine {
         backgroundSprite.lineWidth = 0
         backgroundSprite.setScale(0)
         backgroundSprite.zPosition = K.ZPosition.pauseScreen
-                
-        countdownLabel = SKLabelNode(text: "3")
-        countdownLabel.horizontalAlignmentMode = .center
-        countdownLabel.verticalAlignmentMode = .center
-        countdownLabel.fontSize = UIFont.gameFontSizeExtraLarge
-        countdownLabel.fontName = UIFont.gameFont
-        countdownLabel.fontColor = .white
-        countdownLabel.zPosition = K.ZPosition.pauseButton
-        countdownLabel.name = pauseResetName
-        countdownLabel.alpha = 0
-        countdownLabel.addDropShadow()
         
         pauseResetButtonSprite = SKSpriteNode(imageNamed: pauseResetName)
         pauseResetButtonSprite.scale(to: CGSize(width: pauseResetButtonSize, height: pauseResetButtonSize))
         pauseResetButtonSprite.anchorPoint = .zero
         pauseResetButtonSprite.name = pauseResetName
         pauseResetButtonSprite.zPosition = K.ZPosition.pauseButton
+        
+        resetButtonSprite = SKSpriteNode(imageNamed: resetName)
+        resetButtonSprite.scale(to: CGSize(width: pauseResetButtonSize * 2 / 3, height: pauseResetButtonSize * 2 / 3))
+        resetButtonSprite.anchorPoint = .zero
+        resetButtonSprite.name = resetName
+        resetButtonSprite.zPosition = K.ZPosition.pauseButton - 5
+        
+        hintButtonSprite = SKSpriteNode(imageNamed: hintName)
+        hintButtonSprite.scale(to: CGSize(width: pauseResetButtonSize * 2 / 3, height: pauseResetButtonSize * 2 / 3))
+        hintButtonSprite.anchorPoint = .zero
+        hintButtonSprite.name = hintName
+        hintButtonSprite.zPosition = K.ZPosition.pauseButton - 5
         
         settingsManager = SettingsManager(settingsWidth: settingsSize.width, buttonHeight: 120)
         quitConfirmSprite = ConfirmSprite(title: "RETURN HOME?",
@@ -119,9 +132,9 @@ class PauseResetEngine {
         purchasePage.zPosition = 10
 
         //Add'l setup/customization
-        countdownLabel.position = CGPoint(x: pauseResetButtonPosition.x + pauseResetButtonSize / 2,
-                                          y: pauseResetButtonPosition.y + pauseResetButtonSize * 1.5)
         pauseResetButtonSprite.position = pauseResetButtonPosition
+        resetButtonSprite.position = pauseResetButtonPosition + CGPoint(x: -pauseResetButtonSize, y: 1 / 6 * pauseResetButtonSize)
+        hintButtonSprite.position = pauseResetButtonPosition + CGPoint(x: 4 / 3 * pauseResetButtonSize , y: 1 / 6 * pauseResetButtonSize)
         backgroundSprite.position = CGPoint(
             x: settingsScale * (settingsSize.width + GameboardSprite.padding) / 2 + GameboardSprite.xPosition + GameboardSprite.padding / 2,
             y: pauseResetButtonPosition.y)
@@ -130,8 +143,6 @@ class PauseResetEngine {
         settingsManager.setInitialPosition(CGPoint(x: -backgroundSprite.position.x, y: -settingsSize.height / 2))
         settingsManager.delegate = self
         quitConfirmSprite.delegate = self
-                
-        resetAll()
     }
     
     deinit {
@@ -149,7 +160,8 @@ class PauseResetEngine {
         backgroundSprite.addChild(settingsManager)
         superScene.addChild(backgroundSprite)
         superScene.addChild(pauseResetButtonSprite)
-        superScene.addChild(countdownLabel)
+        superScene.addChild(resetButtonSprite)
+        superScene.addChild(hintButtonSprite)
         
         currentLevel = level
     }
@@ -157,14 +169,33 @@ class PauseResetEngine {
     
     // MARK: - Helper Functions
     
-    private func resetAll() {
-        resetInitial = Date()
-        resetFinal = Date()
-    }
-    
     ///Feels like a clunky way of returning the bottom y-value of the settings content page. Needs to be halved depending on where the anchor point is set.
     private func getBottomOfSettings() -> CGFloat {
         return K.ScreenDimensions.topOfGameboard - settingsSize.height / 2 * settingsScale + GameboardSprite.padding
+    }
+    
+    private func showMinorButtons(duration: TimeInterval = 0.25) {
+        resetButtonSprite.run(SKAction.group([
+            SKAction.moveTo(x: pauseResetButtonPosition.x - pauseResetButtonSize, duration: duration),
+            SKAction.fadeAlpha(to: 1, duration: duration)
+        ]))
+        
+        hintButtonSprite.run(SKAction.group([
+            SKAction.moveTo(x: pauseResetButtonPosition.x + 4 / 3 * pauseResetButtonSize, duration: duration),
+            SKAction.fadeAlpha(to: 1, duration: duration)
+        ]))
+    }
+    
+    private func hideMinorButtons(duration: TimeInterval = 0.25) {
+        resetButtonSprite.run(SKAction.group([
+            SKAction.moveTo(x: pauseResetButtonPosition.x, duration: duration),
+            SKAction.fadeAlpha(to: 0, duration: duration)
+        ]))
+        
+        hintButtonSprite.run(SKAction.group([
+            SKAction.moveTo(x: pauseResetButtonPosition.x, duration: duration),
+            SKAction.fadeAlpha(to: 0, duration: duration)
+        ]))
     }
     
     
@@ -222,30 +253,38 @@ class PauseResetEngine {
     /**
      Handles the actual logic for when the user taps the button, i.e. opens the settings menu.
      */
-    func handleControls() {
+    func handleControls(for touches: Set<UITouch>) {
         guard !isDisabled else { return }
         guard !isAnimating else { return }
         guard isPressed else { return }
         
+        guard let superScene = superScene else { return print("superScene not set in PauseResetEngine!") }
+        guard let location = touches.first?.location(in: superScene) else { return }
+
+        for nodeTapped in superScene.nodes(at: location) {
+            switch nodeTapped.name {
+            case pauseResetName:
+                openCloseSettings()
+            case resetName:
+                ButtonTap.shared.tap(type: .buttontap1)
+                delegate?.didTapReset()
+            case hintName:
+                ButtonTap.shared.tap(type: .buttontap1)
+                delegate?.didTapHint()
+            default:
+                break
+            }
+        }
+    }
+    
+    private func openCloseSettings() {
         isPaused.toggle()
         
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-
-        // TODO: - Handle actual pause screen here.
         isAnimating = true
         
         if isPaused {
+            hideMinorButtons()
+            
             backgroundSprite.run(SKAction.group([
                 SKAction.moveTo(y: getBottomOfSettings(), duration: 0.25),
                 SKAction.sequence([
@@ -275,6 +314,8 @@ class PauseResetEngine {
         else {
             howToPlayPage.tableView.removeFromSuperview()
 
+            showMinorButtons()
+
             backgroundSprite.run(SKAction.group([
                 SKAction.run {
                     self.backgroundSprite.hideShadow(animationDuration: 0.05, completion: nil)
@@ -288,49 +329,32 @@ class PauseResetEngine {
             AudioManager.shared.playSound(for: "chatclose")
         }
         
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-
         delegate?.didTapPause(isPaused: self.isPaused)
     }
     
     /**
      Handles when user lifts finger off the button. Pass this in the touch helper function because it doesn't contain any setup to handle location of the tap.
      */
-    func touchUp(for touches: Set<UITouch>) {
+    func touchUp() {
         guard !isDisabled else { return }
+        
         pauseResetButtonSprite.run(SKAction.colorize(withColorBlendFactor: 0, duration: 0))
-
+        resetButtonSprite.run(SKAction.colorize(withColorBlendFactor: 0, duration: 0))
+        hintButtonSprite.run(SKAction.colorize(withColorBlendFactor: 0, duration: 0))
+        
         if isPressed {
             Haptics.shared.addHapticFeedback(withStyle: .light)
         }
         
         isPressed = false
-        resetFinal = Date()
-        
-        //Reset settings from touchDown animation
-        countdownLabel.alpha = 0
-        countdownLabel.setScale(1.0)
-        countdownLabel.removeAllActions()
-        countdownLabel.run(SKAction.rotate(toAngle: 0, duration: 0))
-
-        pauseResetButtonSprite.removeAction(forKey: resetAnimationKey)
         
         settingsManager.button1.touchUp() //title
         settingsManager.button3.touchUp() //leaderboard
         quitConfirmSprite.touchUp()
         
-        howToPlayPage.touchUp(for: touches)
-        settingsPage.touchUp(for: touches)
-        purchasePage.touchUp(for: touches)
+        howToPlayPage.touchUp()
+        settingsPage.touchUp()
+        purchasePage.touchUp()
     }
     
     /**
@@ -339,7 +363,7 @@ class PauseResetEngine {
      - location: location of the tap
      - resetCompletion: if user has button held down for count of the resetThreshold, then the completion gets executed, otherwise it's short circuited in touchUp.
      */
-    func touchDown(for touches: Set<UITouch>, resetCompletion: (() -> Void)?) {
+    func touchDown(for touches: Set<UITouch>) {
         guard !isDisabled else { return }
         guard let superScene = superScene else { return print("superScene not set in PauseResetEngine!") }
         guard let location = touches.first?.location(in: superScene) else { return }
@@ -351,7 +375,26 @@ class PauseResetEngine {
         for nodeTapped in superScene.nodes(at: location) {
             switch nodeTapped.name {
             case pauseResetName:
-                handlePauseReset(for: touches, resetCompletion: resetCompletion)
+                guard !isAnimating else { break }
+                
+                isPressed = true
+
+                pauseResetButtonSprite.run(SKAction.colorize(with: .black, colorBlendFactor: 0.25, duration: 0))
+                Haptics.shared.addHapticFeedback(withStyle: .light)
+            case resetName:
+                guard !isAnimating else { break }
+                
+                isPressed = true
+                
+                resetButtonSprite.run(SKAction.colorize(with: .black, colorBlendFactor: 0.25, duration: 0))
+                Haptics.shared.addHapticFeedback(withStyle: .light)
+            case hintName:
+                guard !isAnimating else { break }
+                
+                isPressed = true
+                
+                hintButtonSprite.run(SKAction.colorize(with: .black, colorBlendFactor: 0.25, duration: 0))
+                Haptics.shared.addHapticFeedback(withStyle: .light)
             case howToPlayPage.nodeName:
                 howToPlayPage.superScene = superScene
                 howToPlayPage.touchDown(for: touches)
@@ -369,66 +412,6 @@ class PauseResetEngine {
             }
         } //end for
     } //end func touchDown
-    
-    private func handlePauseReset(for touches: Set<UITouch>, resetCompletion: (() -> Void)?) {
-        pauseResetButtonSprite.run(SKAction.colorize(with: .black, colorBlendFactor: 0.25, duration: 0))
-        
-        isPressed = true
-        resetAll()
-        Haptics.shared.addHapticFeedback(withStyle: .light)
-
-        //Counts down to see if should reset the level
-        let animateCountdown = SKAction.run { [unowned self] in
-            resetFinal = Date()
-            
-            countdownLabel.text = "\(resetThreshold - Int(resetElapsed))"
-            countdownLabel.updateShadow()
-            
-            if resetElapsed >= 0.4 {
-                countdownLabel.alpha = 1.0
-                
-                //All this to animate the countdown timer, make it more exciting.
-                if floor(resetElapsed) == resetElapsed.truncate(placesAfterDecimal: 1) {
-                    countdownLabel.run(SKAction.group([
-                        SKAction.sequence([
-                            SKAction.scale(to: ceil(resetElapsed) * 0.75, duration: 0.25),
-                            SKAction.scale(to: ceil(resetElapsed) * 0.65, duration: 0.25)
-                        ]),
-                        SKAction.repeatForever(SKAction.sequence([
-                            SKAction.rotate(toAngle: .pi / 32 * resetElapsed, duration: 0.1),
-                            SKAction.rotate(toAngle: -.pi / 32 * resetElapsed, duration: 0.1)
-                        ]))
-                    ]))
-                }
-            }
-        } //animateCountdown
-        
-        let repeatAction = SKAction.repeat(SKAction.sequence([
-            animateCountdown,
-            SKAction.wait(forDuration: 1.0 / (10 * resetTimerSpeed))
-        ]), count: resetThreshold * 10)
-        
-        let completionAction = SKAction.run {
-            if self.isPaused {
-                self.handleControls()
-            }
-            else {
-                ButtonTap.shared.tap(type: .buttontap1)
-            }
-
-            self.touchUp(for: touches)
-            
-            resetCompletion?()
-        }
-        
-        let sequenceAction = SKAction.sequence([
-            repeatAction,
-            completionAction
-        ])
-        
-        pauseResetButtonSprite.run(sequenceAction, withKey: resetAnimationKey)
-    }
-    
     
 }
 
@@ -494,10 +477,10 @@ extension PauseResetEngine: SettingsManagerDelegate {
 // MARK: - ConfirmSpriteDelegate
 
 extension PauseResetEngine: ConfirmSpriteDelegate {
-    func didTapConfirm() {
-        print("Confirm tapped")
-
+    func didTapConfirm(_ confirmSprite: ConfirmSprite) {
         quitConfirmSprite.animateHide {
+            self.showMinorButtons(duration: 0)
+
             self.quitConfirmSprite.removeFromParent()
             self.delegate?.confirmQuitTapped()
             
@@ -509,9 +492,7 @@ extension PauseResetEngine: ConfirmSpriteDelegate {
         }
     }
     
-    func didTapCancel() {
-        print("Cancel tapped")
-        
+    func didTapCancel(_ confirmSprite: ConfirmSprite) {
         quitConfirmSprite.animateHide {
             self.quitConfirmSprite.removeFromParent()
 
@@ -532,7 +513,7 @@ extension PauseResetEngine: PurchasePageDelegate {
         isAnimating = false
         isPressed = true
 
-        handleControls()
+        openCloseSettings()
 
         isPressed = false
         

@@ -178,6 +178,8 @@ class TitleScene: SKScene {
         menuCredits.delegate = self
                 
         menuLevelSelect.setIsEnabled(false)
+        menuOptions.setIsEnabled(false)
+        menuCredits.setIsEnabled(false)
 
         mixColors()
         animateSprites()

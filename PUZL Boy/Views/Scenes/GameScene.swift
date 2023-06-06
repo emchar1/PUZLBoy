@@ -23,6 +23,7 @@ class GameScene: SKScene {
     private var chatEngine: ChatEngine
     private var pauseResetEngine: PauseResetEngine
     private var resetConfirmSprite: ConfirmSprite
+    private var hintConfirmSprite: ConfirmSprite
     private var offlinePlaySprite: OfflinePlaySprite
     private var levelStatsArray: [LevelStats]
     
@@ -78,6 +79,12 @@ class GameScene: SKScene {
                                            message: "Tap Restart Level to start over. You'll lose a life in the process.",
                                            confirm: "Restart Level",
                                            cancel: "Cancel")
+        
+        hintConfirmSprite = ConfirmSprite(title: "NEED A HINT?",
+                                          message: "The hint feature is not yet available, but will be soon. Maybe in the next version... Stay tuned!",
+                                          confirm: "OK",
+                                          cancel: "OK, but in blue")
+        
         self.user = user
         
         // FIXME: - Debugging purposes only
@@ -90,6 +97,7 @@ class GameScene: SKScene {
         chatEngine.delegate = self
         pauseResetEngine.delegate = self
         resetConfirmSprite.delegate = self
+        hintConfirmSprite.delegate = self
         
         // FIXME: - Debuging purposes only!!!
         levelSkipEngine.delegate = self
@@ -175,9 +183,7 @@ class GameScene: SKScene {
         
         if gameEngine.checkControlGuardsIfPassed(includeDisableInputFromOutside: false) {
             if !gameEngine.disableInputFromOutside {
-                pauseResetEngine.touchDown(for: touches, resetCompletion: { [unowned self] in
-                    showResetConfirm()
-                })
+                pauseResetEngine.touchDown(for: touches)
             }
         }
 
@@ -189,6 +195,7 @@ class GameScene: SKScene {
         if !activityIndicator.isShowing {
             continueSprite.touchDown(in: location)
             resetConfirmSprite.touchDown(in: location)
+            hintConfirmSprite.touchDown(in: location)
         }
         
         // FIXME: - Debuging purposes only!!!
@@ -203,6 +210,8 @@ class GameScene: SKScene {
             continueSprite.touchUp()
             resetConfirmSprite.didTapButton(in: location)
             resetConfirmSprite.touchUp()
+            hintConfirmSprite.didTapButton(in: location)
+            hintConfirmSprite.touchUp()
             chatEngine.touchUp()
         }
 
@@ -211,12 +220,12 @@ class GameScene: SKScene {
         
         if !gameEngine.disableInputFromOutside {
             //MUST run these separately!! Can't combine handleControls() and touchUp(for:) in one closure.
-            pauseResetEngine.touch(for: touches) { _ in
-                pauseResetEngine.handleControls()
+            pauseResetEngine.touch(for: touches) { touches in
+                pauseResetEngine.handleControls(for: touches)
             }
             
-            pauseResetEngine.touch(for: touches) { touches in
-                pauseResetEngine.touchUp(for: touches)
+            pauseResetEngine.touch(for: touches) { _ in
+                pauseResetEngine.touchUp()
             }            
         }
     }
@@ -486,6 +495,8 @@ extension GameScene: GameEngineDelegate {
         if !gameEngine.canContinue {
             prepareAd { [unowned self] in
                 addChild(continueSprite)
+                
+                pauseResetEngine.isDisabled = true
 
                 continueSprite.animateShow(shouldDisable5Moves: gameEngine.healthRemaining <= 0) {
                     IAPManager.shared.delegate = self
@@ -624,6 +635,8 @@ extension GameScene: AdMobManagerDelegate {
             
                 scoringEngine.scoringManager.resetScore()
                 scoringEngine.updateLabels()
+                
+                pauseResetEngine.isDisabled = false
                 
                 //Make sure to save current state, and increment currentLevel if skipping ahead
                 if shouldSkipLevel {
@@ -779,6 +792,14 @@ extension GameScene: PauseResetEngineDelegate {
         }
     }
     
+    func didTapReset() {
+        showConfirmSprite(resetConfirmSprite)
+    }
+    
+    func didTapHint() {
+        showConfirmSprite(hintConfirmSprite)
+    }
+    
     func confirmQuitTapped() {
         removeAllActions()
         removeAllChildren()
@@ -864,25 +885,27 @@ extension GameScene: PauseResetEngineDelegate {
 // MARK: - ConfirmSpriteDelegate
 
 extension GameScene: ConfirmSpriteDelegate {
-    func didTapConfirm() {
-        hideResetConfirm()
-        gameEngine.killAndReset()
+    func didTapConfirm(_ confirmSprite: ConfirmSprite) {
+        hideConfirmSprite(confirmSprite)
         
-        Haptics.shared.executeCustomPattern(pattern: .enemy)
+        if confirmSprite == resetConfirmSprite {
+            gameEngine.killAndReset()
+            Haptics.shared.executeCustomPattern(pattern: .enemy)
+        }
     }
     
-    func didTapCancel() {
-        hideResetConfirm()
+    func didTapCancel(_ confirmSprite: ConfirmSprite) {
+        hideConfirmSprite(confirmSprite)
     }
     
     func shake() {
         guard !pauseResetEngine.isPaused else { return }
 
-        showResetConfirm()
+        showConfirmSprite(resetConfirmSprite)
     }
     
-    private func showResetConfirm() {
-        guard resetConfirmSprite.parent == nil else { return }
+    private func showConfirmSprite(_ confirmSprite: ConfirmSprite) {
+        guard confirmSprite.parent == nil else { return }
         guard gameEngine.canContinue else { return }
         guard !gameEngine.playerSprite.isAnimating else { return }
         guard !chatEngine.isChatting else { return }
@@ -891,17 +914,19 @@ extension GameScene: ConfirmSpriteDelegate {
         stopTimer()
         gameEngine.shouldDisableInput(true)
 
-        addChild(resetConfirmSprite)
+        addChild(confirmSprite)
         
-        resetConfirmSprite.animateShow(newMessage: GameEngine.livesRemaining <= 0 ? "Tap Restart Level to start over. Careful! You have 0 lives left, so it'll be GAME OVER." : "Tap Restart Level to start over. You'll lose a life in the process.") { }
+        let resetConfirmMessage = GameEngine.livesRemaining <= 0 ? "Tap Restart Level to start over. Careful! You have 0 lives left, so it'll be GAME OVER." : "Tap Restart Level to start over. You'll lose a life in the process."
+        
+        confirmSprite.animateShow(newMessage: confirmSprite == resetConfirmSprite ? resetConfirmMessage : nil) { }
     }
     
-    private func hideResetConfirm() {
-        resetConfirmSprite.animateHide { [unowned self] in
+    private func hideConfirmSprite(_ confirmSprite: ConfirmSprite) {
+        confirmSprite.animateHide { [unowned self] in
             scoringEngine.timerManager.resumeTime()
             startTimer()
             gameEngine.shouldDisableInput(false)
-            resetConfirmSprite.removeFromParent()
+            confirmSprite.removeFromParent()
         }
     }
 }

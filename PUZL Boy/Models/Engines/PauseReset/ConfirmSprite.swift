@@ -8,8 +8,8 @@
 import SpriteKit
 
 protocol ConfirmSpriteDelegate: AnyObject {
-    func didTapConfirm()
-    func didTapCancel()
+    func didTapConfirm(_ confirmSprite: ConfirmSprite)
+    func didTapCancel(_ confirmSprite: ConfirmSprite)
 }
 
 class ConfirmSprite: SKNode {
@@ -169,9 +169,9 @@ extension ConfirmSprite: DecisionButtonSpriteDelegate {
     func buttonWasTapped(_ node: DecisionButtonSprite) {
         switch node {
         case let decisionSprite where decisionSprite == confirmButton:
-            delegate?.didTapConfirm()
+            delegate?.didTapConfirm(self)
         case let decisionSprite where decisionSprite == cancelButton:
-            delegate?.didTapCancel()
+            delegate?.didTapCancel(self)
         default:
             print("Invalid button press.")
         }
