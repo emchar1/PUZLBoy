@@ -13,7 +13,7 @@ class HowToPlayTVCell: UITableViewCell {
     
     class var reuseID: String { "HowToPlayCell" }
     class var padding: CGFloat { UIDevice.isiPad ? 16 : 8 }
-    class var imageSize: CGFloat { UIDevice.isiPad ? 152 : 86 }
+    class var imageSize: CGFloat { UIDevice.isiPad ? 154 : 88 }
     
     private var hStack: UIStackView!
     private var vStack: UIStackView!
@@ -74,7 +74,7 @@ class HowToPlayTVCell: UITableViewCell {
         descriptionText.font = UIFont(name: UIFont.chatFont, size: UIDevice.isiPad ? 30 : 18)
         descriptionText.textColor = UIFont.chatFontColor
         descriptionText.layer.shadowColor = UIColor.black.cgColor
-        descriptionText.layer.shadowOffset = CGSize(width: -1.5, height: 1.5)
+        descriptionText.layer.shadowOffset = CGSize(width: -1, height: 1)
         descriptionText.layer.shadowRadius = 0
         descriptionText.layer.shadowOpacity = 0.25
         descriptionText.layer.masksToBounds = false
@@ -110,6 +110,7 @@ class HowToPlayTVCell: UITableViewCell {
             
             titleText.centerYAnchor.constraint(equalTo: vStack.arrangedSubviews[0].centerYAnchor, constant: 0),
             titleText.leadingAnchor.constraint(equalTo: vStack.arrangedSubviews[0].leadingAnchor, constant: 0),
+            titleText.heightAnchor.constraint(equalToConstant: titleText.font.pointSize + 2),
             vStack.arrangedSubviews[0].trailingAnchor.constraint(equalTo: titleText.trailingAnchor, constant: 0),
 
             descriptionText.topAnchor.constraint(equalTo: vStack.arrangedSubviews[1].topAnchor, constant: 0),

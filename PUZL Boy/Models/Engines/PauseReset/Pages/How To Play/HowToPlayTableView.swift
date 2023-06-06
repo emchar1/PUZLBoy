@@ -44,7 +44,7 @@ class HowToPlayTableView: UITableView, UITableViewDelegate, UITableViewDataSourc
         HowToPlayModel(image: "sword", title: "Sword", requiredLevel: 53,
                        description: "A sword can dispatch a dragon effectively to clear a path so you can proceed."),
         HowToPlayModel(image: "gemparty", title: "Party Gem", requiredLevel: 100,
-                       description: "Collect party gems to earn extra lives. Sooo shiny!"),
+                       description: "Collect party gems to earn special prizes and bonuses, like extra lives. They're sooo shiny!"),
         HowToPlayModel(image: "heart", title: "Heart", requiredLevel: 151,
                        description: "Hearts increase your health, protecting against dragon attacks. If your health hits 0 it's game over."),
         HowToPlayModel(image: "warp2", title: "Green Warp", requiredLevel: 251,
