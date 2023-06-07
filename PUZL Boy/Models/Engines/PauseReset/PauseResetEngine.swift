@@ -12,6 +12,7 @@ protocol PauseResetEngineDelegate: AnyObject {
     func didTapPause(isPaused: Bool)
     func didTapReset()
     func didTapHint()
+    
     func confirmQuitTapped()
     func didTapHowToPlay(_ tableView: HowToPlayTableView)
     func didCompletePurchase(_ currentButton: PurchaseTapButton)
@@ -26,17 +27,23 @@ class PauseResetEngine {
     private let settingsSize = CGSize(width: K.ScreenDimensions.iPhoneWidth, height: K.ScreenDimensions.iPhoneWidth * (UIDevice.isiPad ? 1.2 : 1.25))
     private let settingsScale: CGFloat = GameboardSprite.spriteScale
 
-    //Pause Button
-    private let pauseResetName = "settingsButton"
+    //Pause, Reset, Hint Buttons
+    private let pauseName = "settingsButton"
     private let resetName = "resetButton"
     private let hintName = "hintButton"
-    private let pauseResetButtonSize: CGFloat = 180
-    private var pauseResetButtonPosition: CGPoint {
-        CGPoint(x: (settingsSize.width - pauseResetButtonSize) / 2, y: K.ScreenDimensions.bottomMargin)
+    private let pauseButtonSize: CGFloat = 180
+    private var minorButtonSize: CGFloat { 2 / 3 * pauseButtonSize }
+    private var pauseButtonPosition: CGPoint {
+        CGPoint(x: settingsSize.width / 2, y: K.ScreenDimensions.bottomMargin)
+    }
+    private var minorButtonOffset: CGPoint {
+        let spacing: CGFloat = UIDevice.isiPad ? 80 : 60
+        
+        return CGPoint(x: 0.5 * (pauseButtonSize + minorButtonSize) + spacing, y: 0.5 * (pauseButtonSize - minorButtonSize))
     }
     
     //SKNodes
-    private var pauseResetButtonSprite: SKSpriteNode
+    private var pauseButtonSprite: SKSpriteNode
     private var resetButtonSprite: SKSpriteNode
     private var hintButtonSprite: SKSpriteNode
     private var backgroundSprite: SKShapeNode
@@ -54,6 +61,8 @@ class PauseResetEngine {
     static var backgroundShadowColor: UIColor { DayTheme.skyColor.bottom.analogous.first }
     private var user: User?
     private var currentLevel: Int = 1
+    
+    //Boolean properties
     private var isPressed: Bool = false
     private var isAnimating: Bool = false
     private var isDisabled: Bool = false
@@ -76,29 +85,23 @@ class PauseResetEngine {
         backgroundSprite.setScale(0)
         backgroundSprite.zPosition = K.ZPosition.pauseScreen
         
-        pauseResetButtonSprite = SKSpriteNode(imageNamed: pauseResetName)
-        pauseResetButtonSprite.scale(to: CGSize(width: pauseResetButtonSize, height: pauseResetButtonSize))
-        pauseResetButtonSprite.anchorPoint = .zero
-        pauseResetButtonSprite.name = pauseResetName
-        pauseResetButtonSprite.zPosition = K.ZPosition.pauseButton
+        pauseButtonSprite = SKSpriteNode(imageNamed: pauseName)
+        pauseButtonSprite.scale(to: CGSize(width: pauseButtonSize, height: pauseButtonSize))
+        pauseButtonSprite.anchorPoint = CGPoint(x: 0.5, y: 0)
+        pauseButtonSprite.name = pauseName
+        pauseButtonSprite.zPosition = K.ZPosition.pauseButton
         
         resetButtonSprite = SKSpriteNode(imageNamed: resetName)
-        resetButtonSprite.scale(to: CGSize(width: pauseResetButtonSize * 2 / 3, height: pauseResetButtonSize * 2 / 3))
-        resetButtonSprite.anchorPoint = .zero
+        resetButtonSprite.anchorPoint = CGPoint(x: 0.5, y: 0)
         resetButtonSprite.name = resetName
         resetButtonSprite.zPosition = K.ZPosition.pauseButton - 5
         
         hintButtonSprite = SKSpriteNode(imageNamed: hintName)
-        hintButtonSprite.scale(to: CGSize(width: pauseResetButtonSize * 2 / 3, height: pauseResetButtonSize * 2 / 3))
-        hintButtonSprite.anchorPoint = .zero
+        hintButtonSprite.anchorPoint = CGPoint(x: 0.5, y: 0)
         hintButtonSprite.name = hintName
         hintButtonSprite.zPosition = K.ZPosition.pauseButton - 5
         
         settingsManager = SettingsManager(settingsWidth: settingsSize.width, buttonHeight: 120)
-        quitConfirmSprite = ConfirmSprite(title: "RETURN HOME?",
-                                          message: "Tap Quit Game to return to the main menu. Your progress will be saved.",
-                                          confirm: "Quit Game",
-                                          cancel: "Cancel")
         
         settingsPage = SettingsPage(user: user, contentSize: settingsSize)
         settingsPage.zPosition = 10
@@ -107,21 +110,30 @@ class PauseResetEngine {
         howToPlayPage.zPosition = 10
         
         purchasePage = PurchasePage(contentSize: settingsSize)
-        purchasePage.delegate = self
         purchasePage.zPosition = 10
+        
+        quitConfirmSprite = ConfirmSprite(title: "RETURN HOME?",
+                                          message: "Tap Quit Game to return to the main menu. Your progress will be saved.",
+                                          confirm: "Quit Game",
+                                          cancel: "Cancel")
 
+        
         //Add'l setup/customization
-        pauseResetButtonSprite.position = pauseResetButtonPosition
-        resetButtonSprite.position = pauseResetButtonPosition + CGPoint(x: -pauseResetButtonSize, y: 1 / 6 * pauseResetButtonSize)
-        hintButtonSprite.position = pauseResetButtonPosition + CGPoint(x: 4 / 3 * pauseResetButtonSize , y: 1 / 6 * pauseResetButtonSize)
+        pauseButtonSprite.position = pauseButtonPosition
+        resetButtonSprite.scale(to: CGSize(width: minorButtonSize, height: minorButtonSize))
+        resetButtonSprite.position = pauseButtonPosition + CGPoint(x: -minorButtonOffset.x, y: minorButtonOffset.y)
+        hintButtonSprite.scale(to: CGSize(width: minorButtonSize, height: minorButtonSize))
+        hintButtonSprite.position = pauseButtonPosition + CGPoint(x: minorButtonOffset.x, y: minorButtonOffset.y)
+        
         backgroundSprite.position = CGPoint(
             x: settingsScale * (settingsSize.width + GameboardSprite.padding) / 2 + GameboardSprite.xPosition + GameboardSprite.padding / 2,
-            y: pauseResetButtonPosition.y)
+            y: pauseButtonPosition.y)
         backgroundSprite.addShadow(rectOf: settingsSize, cornerRadius: settingsCorner, shadowOffset: 10, shadowColor: PauseResetEngine.backgroundShadowColor)
 
         settingsManager.setInitialPosition(CGPoint(x: -backgroundSprite.position.x, y: -settingsSize.height / 2))
         settingsManager.delegate = self
         quitConfirmSprite.delegate = self
+        purchasePage.delegate = self
     }
     
     deinit {
@@ -138,7 +150,7 @@ class PauseResetEngine {
         
         backgroundSprite.addChild(settingsManager)
         superScene.addChild(backgroundSprite)
-        superScene.addChild(pauseResetButtonSprite)
+        superScene.addChild(pauseButtonSprite)
         superScene.addChild(resetButtonSprite)
         superScene.addChild(hintButtonSprite)
         
@@ -152,7 +164,7 @@ class PauseResetEngine {
         isDisabled = disable
         
         if disable {
-            pauseResetButtonSprite.texture = SKTexture(imageNamed: "\(pauseResetName)Disabled")
+            pauseButtonSprite.texture = SKTexture(imageNamed: "\(pauseName)Disabled")
             resetButtonSprite.texture = SKTexture(imageNamed: "\(resetName)Disabled")
             hintButtonSprite.texture = SKTexture(imageNamed: "\(hintName)Disabled")
             
@@ -161,7 +173,7 @@ class PauseResetEngine {
             hideMinorButtons()
         }
         else {
-            pauseResetButtonSprite.texture = SKTexture(imageNamed: pauseResetName)
+            pauseButtonSprite.texture = SKTexture(imageNamed: pauseName)
             resetButtonSprite.texture = SKTexture(imageNamed: resetName)
             hintButtonSprite.texture = SKTexture(imageNamed: hintName)
             
@@ -178,24 +190,24 @@ class PauseResetEngine {
     
     private func showMinorButtons(duration: TimeInterval = 0.25) {
         resetButtonSprite.run(SKAction.group([
-            SKAction.moveTo(x: pauseResetButtonPosition.x - pauseResetButtonSize, duration: duration),
+            SKAction.moveTo(x: pauseButtonPosition.x - minorButtonOffset.x, duration: duration),
             SKAction.fadeAlpha(to: 1, duration: duration)
         ]))
         
         hintButtonSprite.run(SKAction.group([
-            SKAction.moveTo(x: pauseResetButtonPosition.x + 4 / 3 * pauseResetButtonSize, duration: duration),
+            SKAction.moveTo(x: pauseButtonPosition.x + minorButtonOffset.x, duration: duration),
             SKAction.fadeAlpha(to: 1, duration: duration)
         ]))
     }
     
     private func hideMinorButtons(duration: TimeInterval = 0.25) {
         resetButtonSprite.run(SKAction.group([
-            SKAction.moveTo(x: pauseResetButtonPosition.x, duration: duration),
+            SKAction.moveTo(x: pauseButtonPosition.x, duration: duration),
             SKAction.fadeAlpha(to: 0, duration: duration)
         ]))
         
         hintButtonSprite.run(SKAction.group([
-            SKAction.moveTo(x: pauseResetButtonPosition.x, duration: duration),
+            SKAction.moveTo(x: pauseButtonPosition.x, duration: duration),
             SKAction.fadeAlpha(to: 0, duration: duration)
         ]))
     }
@@ -232,7 +244,7 @@ class PauseResetEngine {
         guard let location = touches.first?.location(in: superScene) else { return }
         
         for nodeTapped in superScene.nodes(at: location) {
-            if nodeTapped.name == pauseResetName {
+            if nodeTapped.name == pauseName {
                 function(touches)
             }
             else if nodeTapped is DecisionButtonSprite {
@@ -265,7 +277,7 @@ class PauseResetEngine {
 
         for nodeTapped in superScene.nodes(at: location) {
             switch nodeTapped.name {
-            case pauseResetName:
+            case pauseName:
                 openCloseSettings()
             case resetName:
                 ButtonTap.shared.tap(type: .buttontap1)
@@ -303,12 +315,12 @@ class PauseResetEngine {
                         settingsPage.updateColors()
                     },
                     SKAction.scale(to: GameboardSprite.spriteScale, duration: 0.25),
-                    SKAction.run {
-                        self.backgroundSprite.showShadow(animationDuration: 0.1, completion: nil)
+                    SKAction.run { [unowned self] in
+                        backgroundSprite.showShadow(animationDuration: 0.1, completion: nil)
                     }
                 ])
-            ])) {
-                self.isAnimating = false
+            ])) { [unowned self] in
+                isAnimating = false
             }
             
             ButtonTap.shared.tap(type: .buttontap7)
@@ -319,19 +331,19 @@ class PauseResetEngine {
             showMinorButtons()
 
             backgroundSprite.run(SKAction.group([
-                SKAction.run {
-                    self.backgroundSprite.hideShadow(animationDuration: 0.05, completion: nil)
+                SKAction.run { [unowned self] in
+                    backgroundSprite.hideShadow(animationDuration: 0.05, completion: nil)
                 },
-                SKAction.moveTo(y: self.pauseResetButtonPosition.y, duration: 0.25),
+                SKAction.moveTo(y: pauseButtonPosition.y, duration: 0.25),
                 SKAction.scale(to: 0, duration: 0.25)
-            ])) {
-                self.isAnimating = false
+            ])) { [unowned self] in
+                isAnimating = false
             }
             
             AudioManager.shared.playSound(for: "chatclose")
         }
         
-        delegate?.didTapPause(isPaused: self.isPaused)
+        delegate?.didTapPause(isPaused: isPaused)
     }
     
     /**
@@ -340,7 +352,7 @@ class PauseResetEngine {
     func touchUp() {
         guard !isDisabled else { return }
         
-        pauseResetButtonSprite.run(SKAction.colorize(withColorBlendFactor: 0, duration: 0))
+        pauseButtonSprite.run(SKAction.colorize(withColorBlendFactor: 0, duration: 0))
         resetButtonSprite.run(SKAction.colorize(withColorBlendFactor: 0, duration: 0))
         hintButtonSprite.run(SKAction.colorize(withColorBlendFactor: 0, duration: 0))
         
@@ -376,12 +388,12 @@ class PauseResetEngine {
         
         for nodeTapped in superScene.nodes(at: location) {
             switch nodeTapped.name {
-            case pauseResetName:
+            case pauseName:
                 guard !isAnimating else { break }
                 
                 isPressed = true
 
-                pauseResetButtonSprite.run(SKAction.colorize(with: .black, colorBlendFactor: 0.25, duration: 0))
+                pauseButtonSprite.run(SKAction.colorize(with: .black, colorBlendFactor: 0.25, duration: 0))
                 Haptics.shared.addHapticFeedback(withStyle: .light)
             case resetName:
                 guard !isAnimating else { break }
@@ -480,26 +492,26 @@ extension PauseResetEngine: SettingsManagerDelegate {
 
 extension PauseResetEngine: ConfirmSpriteDelegate {
     func didTapConfirm(_ confirmSprite: ConfirmSprite) {
-        quitConfirmSprite.animateHide {
-            self.showMinorButtons(duration: 0)
+        quitConfirmSprite.animateHide { [unowned self] in
+            showMinorButtons(duration: 0)
 
-            self.quitConfirmSprite.removeFromParent()
-            self.delegate?.confirmQuitTapped()
+            quitConfirmSprite.removeFromParent()
+            delegate?.confirmQuitTapped()
             
-            self.isPaused = false
-            self.isAnimating = false
+            isPaused = false
+            isAnimating = false
             
-            self.backgroundSprite.position.y = self.pauseResetButtonPosition.y
-            self.backgroundSprite.setScale(0)
+            backgroundSprite.position.y = pauseButtonPosition.y
+            backgroundSprite.setScale(0)
         }
     }
     
     func didTapCancel(_ confirmSprite: ConfirmSprite) {
-        quitConfirmSprite.animateHide {
-            self.quitConfirmSprite.removeFromParent()
+        quitConfirmSprite.animateHide { [unowned self] in
+            quitConfirmSprite.removeFromParent()
 
-            if self.settingsManager.currentButtonPressed?.type == self.settingsManager.button4.type {
-                self.delegate?.didTapHowToPlay(self.howToPlayPage.tableView)
+            if settingsManager.currentButtonPressed?.type == settingsManager.button4.type {
+                delegate?.didTapHowToPlay(howToPlayPage.tableView)
             }
         }
     }
