@@ -79,8 +79,6 @@
 		EA75F0EF292F55F900F09BD7 /* LaunchScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA75F0EE292F55F900F09BD7 /* LaunchScene.swift */; };
 		EA78C36C29763B1C00292744 /* AchievementAdMobster.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA78C36B29763B1C00292744 /* AchievementAdMobster.swift */; };
 		EA78C36E29767D7600292744 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = EA78C36D29767D7600292744 /* GoogleService-Info.plist */; };
-		EA7C05AA2A2E74870072DE47 /* buttontap8.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA7C05A92A2E74860072DE47 /* buttontap8.mp3 */; };
-		EA7C05AC2A2E75470072DE47 /* buttontap9.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA7C05AB2A2E75470072DE47 /* buttontap9.mp3 */; };
 		EA826C74297CEFC500F19F81 /* TimerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA826C73297CEFC500F19F81 /* TimerManager.swift */; };
 		EA826C76297CF9E000F19F81 /* ScoringManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA826C75297CF9E000F19F81 /* ScoringManager.swift */; };
 		EA826C7A298492BA00F19F81 /* DecisionButtonSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA826C79298492BA00F19F81 /* DecisionButtonSprite.swift */; };
@@ -280,8 +278,6 @@
 		EA75F0EE292F55F900F09BD7 /* LaunchScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchScene.swift; sourceTree = "<group>"; };
 		EA78C36B29763B1C00292744 /* AchievementAdMobster.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementAdMobster.swift; sourceTree = "<group>"; };
 		EA78C36D29767D7600292744 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		EA7C05A92A2E74860072DE47 /* buttontap8.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = buttontap8.mp3; sourceTree = "<group>"; };
-		EA7C05AB2A2E75470072DE47 /* buttontap9.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = buttontap9.mp3; sourceTree = "<group>"; };
 		EA826C73297CEFC500F19F81 /* TimerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerManager.swift; sourceTree = "<group>"; };
 		EA826C75297CF9E000F19F81 /* ScoringManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoringManager.swift; sourceTree = "<group>"; };
 		EA826C79298492BA00F19F81 /* DecisionButtonSprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecisionButtonSprite.swift; sourceTree = "<group>"; };
@@ -645,8 +641,6 @@
 				EA705CDF2A1C64760051519B /* buttontap5.mp3 */,
 				EA01BB5E2A10746800EAB70B /* buttontap6.mp3 */,
 				EAE6EC332A12D27F001842C6 /* buttontap7.mp3 */,
-				EA7C05A92A2E74860072DE47 /* buttontap8.mp3 */,
-				EA7C05AB2A2E75470072DE47 /* buttontap9.mp3 */,
 				EAACB4B82971E08A00973EB8 /* chatclose.mp3 */,
 				EA3467A829A8C6CA002DDA02 /* chatopen.mp3 */,
 				EA3467AC29A8C7C7002DDA02 /* continueloop.mp3 */,
@@ -961,7 +955,6 @@
 				EAFA6A7029DCFE79002287C2 /* titletheme.mp3 in Resources */,
 				EA3467A529A8C659002DDA02 /* revive.mp3 in Resources */,
 				EA9F4DE229D36F02006F4B2F /* movepoisoned3.mp3 in Resources */,
-				EA7C05AA2A2E74870072DE47 /* buttontap8.mp3 in Resources */,
 				EA2AF74829B6EDAC00444E5A /* gemcollectparty.mp3 in Resources */,
 				EADEB3E92931404D00CDB232 /* dooropen.mp3 in Resources */,
 				EA3467A729A8C68A002DDA02 /* pickupheart.mp3 in Resources */,
@@ -973,7 +966,6 @@
 				EA3467A129A400CB002DDA02 /* overworld8.mp3 in Resources */,
 				EA95D19F294690B70061059C /* boyattack3.mp3 in Resources */,
 				EA95D18E2945A0200061059C /* LuckiestGuy-Regular.ttf in Resources */,
-				EA7C05AC2A2E75470072DE47 /* buttontap9.mp3 in Resources */,
 				EA95D1A4294691820061059C /* boygrunt2.mp3 in Resources */,
 				EA65183428E419A000E535BF /* Assets.xcassets in Resources */,
 				EAF7182929B31BE800E2ED82 /* lavaappear1.mp3 in Resources */,

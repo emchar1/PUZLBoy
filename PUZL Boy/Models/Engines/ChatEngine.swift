@@ -144,13 +144,13 @@ class ChatEngine {
         if chatSpeed > 0 && chatIndex < chatText.count {
             chatSpeed = 0
 
-            ButtonTap.shared.tap(type: .buttontap9)
+            ButtonTap.shared.tap(type: .buttontap2)
         }
         else {
             dispatchWorkItem.cancel()
             closeChat()
             
-            ButtonTap.shared.tap(type: shouldClose ? .noSound : .buttontap8)
+            ButtonTap.shared.tap(type: shouldClose ? .noSound : .buttontap2)
         }
     }
     

@@ -20,7 +20,7 @@ struct ButtonTap {
     }()
     
     enum ButtonType: String {
-        case noSound, buttontap1, buttontap2, buttontap3, buttontap4, buttontap5, buttontap6, buttontap7, buttontap8, buttontap9
+        case noSound, buttontap1, buttontap2, buttontap3, buttontap4, buttontap5, buttontap6, buttontap7
     }
     
     // MARK: - Functions
