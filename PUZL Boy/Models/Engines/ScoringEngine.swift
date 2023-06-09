@@ -21,9 +21,9 @@ class ScoringEngine {
     private(set) var timerManager: TimerManager
     private(set) var scoringManager: ScoringManager
 
-    var totalScoreLabel: SKLabelNode
-    var scoreLabel: SKLabelNode
-    var elapsedTimeLabel: SKLabelNode
+    private var totalScoreLabel: SKLabelNode
+    private var scoreLabel: SKLabelNode
+    private var elapsedTimeLabel: SKLabelNode
     
     enum StatusIcon: String {
         case health = "heart0", moves = "iconBoot", sword = "iconSword", hammer = "iconHammer"
