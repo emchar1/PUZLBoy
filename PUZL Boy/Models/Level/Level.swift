@@ -14,6 +14,8 @@ struct Level: CustomStringConvertible {
     
     // MARK: - Properties
     
+    static let partyLevel: Int = 0
+    
     private(set) var level: Int
     private(set) var moves: Int
     private(set) var health: Int
@@ -70,18 +72,33 @@ struct Level: CustomStringConvertible {
             }
         }
         
-        guard startFound && endFound else { fatalError("Gameboard must have a start panel and an end panel.") }
-        
-        self.level = level
-        self.moves = moves
-        self.health = health
-        self.gems = gemsCount
-        self.gameboard = gameboard
-        self.inventory = Inventory(hammers: 0, swords: 0)
+        if startFound && endFound {
+            //If it's a normal level...
+            self.level = level
+            self.moves = moves
+            self.health = health
+            self.gems = gemsCount
+            self.gameboard = gameboard
+            self.inventory = Inventory(hammers: 0, swords: 0)
+            
+            //Opens the door initially, if 0 gems are found on the gameboard
+            if self.gems == 0 {
+                self.gameboard[self.end.row][self.end.col].terrain = .endOpen
+            }
+        }
+        else {
+            // TODO: - Party Levels
+            //Else, it's a party level...
+            start = (0, 0)
+            player = start
+            end = (gameboard.count - 1, gameboard.count - 1)
 
-        //Opens the door initially, if 0 gems are found on the gameboard
-        if self.gems == 0 {
-            self.gameboard[self.end.row][self.end.col].terrain = .endOpen
+            self.level = Level.partyLevel
+            self.moves = 999
+            self.health = 999
+            self.gems = 1 //MUST NOT BE 0!!
+            self.gameboard = gameboard
+            self.inventory = Inventory(hammers: 999, swords: 999)
         }
     }
     

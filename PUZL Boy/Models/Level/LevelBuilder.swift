@@ -110,5 +110,46 @@ struct LevelBuilder {
         return gameboard
     } //end buildGameboard()
     
+    ///Builds a party gameboard with all party tiles.
+    static func buildPartyGameboard(ofSize size: Int = 3) -> K.Gameboard {
+        let sizeAdjusted = min(max(size, 3), 6)
+        let partyPanel: K.GameboardPanel = (terrain: .partytile, overlay: .boundary)
+        var gameboard: K.Gameboard = []
+        
+        //Guaranteed 3x3
+        for _ in 0..<3 {
+            gameboard.append([partyPanel, partyPanel, partyPanel])
+        }
+
+        //size == 4
+        if sizeAdjusted > 3 {
+            for i in 0..<3 {
+                gameboard[i].append(partyPanel)
+            }
+
+            gameboard.append([partyPanel, partyPanel, partyPanel, partyPanel])
+        }
+
+        //size == 5
+        if sizeAdjusted > 4 {
+            for i in 0..<4 {
+                gameboard[i].append(partyPanel)
+            }
+
+            gameboard.append([partyPanel, partyPanel, partyPanel, partyPanel, partyPanel])
+        }
+
+        //size == 6
+        if sizeAdjusted > 5 {
+            for i in 0..<5 {
+                gameboard[i].append(partyPanel)
+            }
+
+            gameboard.append([partyPanel, partyPanel, partyPanel, partyPanel, partyPanel, partyPanel])
+        }
+        
+        return gameboard
+    }
+    
     
 }

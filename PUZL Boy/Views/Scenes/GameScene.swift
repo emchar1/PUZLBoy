@@ -36,12 +36,12 @@ class GameScene: SKScene {
     private let keyRunReplenishLivesTimerAction = "runReplenishLivesTimerAction"
     
     private var currentLevel: Int = 1 {
-        // FIXME: - Debuging purposes only!!!
+        // FIXME: - Debugging purposes only!!!
         didSet {
             if currentLevel > LevelBuilder.maxLevel {
-                currentLevel = 0
+                currentLevel = Level.partyLevel + 1
             }
-            else if currentLevel < 0 {
+            else if currentLevel < Level.partyLevel + 1 {
                 currentLevel = LevelBuilder.maxLevel
             }
         }
@@ -87,7 +87,7 @@ class GameScene: SKScene {
         
         self.user = user
         
-        // FIXME: - Debugging purposes only
+        // FIXME: - Debugging purposes only!!!
         levelSkipEngine = LevelSkipEngine(user: user)
         
         super.init(size: size)
@@ -99,7 +99,7 @@ class GameScene: SKScene {
         resetConfirmSprite.delegate = self
         hintConfirmSprite.delegate = self
         
-        // FIXME: - Debuging purposes only!!!
+        // FIXME: - Debugging purposes only!!!
         levelSkipEngine.delegate = self
                 
         backgroundColor = .systemBlue
@@ -198,7 +198,7 @@ class GameScene: SKScene {
             hintConfirmSprite.touchDown(in: location)
         }
         
-        // FIXME: - Debuging purposes only!!!
+        // FIXME: - Debugging purposes only!!!
         levelSkipEngine.handleControls(in: location)
     }
         
@@ -355,7 +355,6 @@ class GameScene: SKScene {
             checkForParty()
         }
         
-        // FIXME: - Do I need Interstitial Ads in my game?
         //Play interstitial ad
 //        if level % 100 == 0 && level >= 20 && didWin {
 //            prepareAd {
@@ -406,7 +405,7 @@ class GameScene: SKScene {
         offlinePlaySprite.refreshStatus()
         addChild(offlinePlaySprite)
         
-        // FIXME: - Debuging purposes only!!!
+        // FIXME: - Debugging purposes only!!!
         if let user = user,
             user.uid == "3SeIWmlATmbav7jwCDjXyiA0TgA3" ||   //Eddie
             user.uid == "NB9OLr2X8kRLJ7S0G8W3800qo8U2" ||   //Michel
@@ -692,7 +691,7 @@ extension GameScene: AdMobManagerDelegate {
 extension GameScene: ContinueSpriteDelegate {
     func didTapWatchAd() {
         AdMobManager.shared.presentRewarded { (adReward) in
-            // FIXME: - Why grant the reward here, when I can grant it in ad did dismiss down below???
+            //Why grant the reward here, when I can grant it in ad did dismiss down below???
             print("You were rewarded: \(adReward.amount) lives!")
         }
     }
