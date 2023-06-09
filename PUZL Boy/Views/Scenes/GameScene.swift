@@ -472,11 +472,11 @@ extension GameScene: GameEngineDelegate {
 
         GameCenterManager.shared.postScoreToLeaderboard(score: score, level: currentLevel)
         
-        if currentLevel >= 80 && scoringEngine.timerManager.elapsedTime <= 6 {
+        if currentLevel >= AchievementSpeedDemon.levelRequirement && scoringEngine.timerManager.elapsedTime <= AchievementSpeedDemon.timeRequirement {
             GameCenterManager.shared.updateProgress(achievement: .speedDemon, shouldReportImmediately: true)
         }
         
-        if currentLevel >= 80 && scoringEngine.timerManager.elapsedTime >= 15 * 60 {
+        if currentLevel >= AchievementSlowPoke.levelRequirement && scoringEngine.timerManager.elapsedTime >= AchievementSlowPoke.timeRequirement {
             GameCenterManager.shared.updateProgress(achievement: .slowPoke, shouldReportImmediately: true)
         }
         
