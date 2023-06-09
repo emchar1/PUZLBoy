@@ -82,6 +82,10 @@ class PartyModeSprite: SKNode {
         isPartying.toggle()
     }
     
+    func setIsPartying(_ isPartying: Bool) {
+        self.isPartying = isPartying
+    }
+    
     func stopParty(partyBoy: PlayerSprite) {
         speedMultiplier = 1
         
