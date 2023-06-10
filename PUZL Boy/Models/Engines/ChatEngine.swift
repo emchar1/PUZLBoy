@@ -36,7 +36,7 @@ class ChatEngine {
     //Other properties
     private(set) var isChatting: Bool = false
     private var timer: Timer
-    private var dispatchWorkItem: DispatchWorkItem! //Used to closeChat() and cancel any scheduled closeChat() calls. It works!!!
+    private var dispatchWorkItem: DispatchWorkItem //Used to closeChat() and cancel any scheduled closeChat() calls. It works!!!
     private var chatText: String = ""
     private var chatIndex = 0
     private var allowNewChat = true
@@ -66,6 +66,7 @@ class ChatEngine {
     
     init() {
         timer = Timer()
+        dispatchWorkItem = DispatchWorkItem(block: { })
         
         chatSpeed = chatSpeedOrig
         
