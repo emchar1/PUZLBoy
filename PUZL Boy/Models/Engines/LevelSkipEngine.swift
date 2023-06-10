@@ -120,9 +120,9 @@ class LevelSkipEngine {
         superScene.addChild(reverseSprite)
 //        superScene.addChild(viewAchievements)
         
-        if let user = user, user.uid == "3SeIWmlATmbav7jwCDjXyiA0TgA3" {
-            superScene.addChild(partyMode)
-        }
+//        if let user = user, user.uid == "3SeIWmlATmbav7jwCDjXyiA0TgA3" {
+//            superScene.addChild(partyMode)
+//        }
     }
     
     
