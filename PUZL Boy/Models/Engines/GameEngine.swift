@@ -109,7 +109,7 @@ class GameEngine {
     
     ///Use this when resuming from 0 moves, for example.
     func continueGame() {
-        playerSprite.startIdleAnimation()
+        playerSprite.startIdleAnimation(hasSword: level.inventory.hasSwords(), hasHammer: level.inventory.hasHammers())
     }
     
     ///For when reading from Firestore.
@@ -195,22 +195,66 @@ class GameEngine {
         var animationType: Player.Texture
         
         if isGliding {
-            animationType = .glide
+            if level.inventory.hasSwords() && level.inventory.hasHammers() {
+                animationType = .glideHammerSword
+            }
+            else if level.inventory.hasSwords() {
+                animationType = .glideSword
+            }
+            else if level.inventory.hasHammers() {
+                animationType = .glideHammer
+            }
+            else {
+                animationType = .glide
+            }
         }
         else if isSolved {
             animationType = .walk
         }
         else if panel == .marsh {
-            animationType = .marsh
+            if level.inventory.hasSwords() && level.inventory.hasHammers() {
+                animationType = .marshHammerSword
+            }
+            else if level.inventory.hasSwords() {
+                animationType = .marshSword
+            }
+            else if level.inventory.hasHammers() {
+                animationType = .marshHammer
+            }
+            else {
+                animationType = .marsh
+            }
         }
         else if panel == .sand {
-            animationType = .sand
+            if level.inventory.hasSwords() && level.inventory.hasHammers() {
+                animationType = .sandHammerSword
+            }
+            else if level.inventory.hasSwords() {
+                animationType = .sandSword
+            }
+            else if level.inventory.hasHammers() {
+                animationType = .sandHammer
+            }
+            else {
+                animationType = .sand
+            }
         }
         else if panel == .partytile {
             animationType = .party
         }
         else {
-            animationType = .run
+            if level.inventory.hasSwords() && level.inventory.hasHammers() {
+                animationType = .runHammerSword
+            }
+            else if level.inventory.hasSwords() {
+                animationType = .runSword
+            }
+            else if level.inventory.hasHammers() {
+                animationType = .runHammer
+            }
+            else {
+                animationType = .run
+            }
         }
 
         if animate {
@@ -220,10 +264,10 @@ class GameEngine {
 
             playerSprite.startMoveAnimation(animationType: animationType)
             
-            playerSprite.sprite.run(playerMove) {
-                self.playerSprite.startIdleAnimation()
-                self.checkSpecialPanel {
-                    self.shouldDisableControlInput = false
+            playerSprite.sprite.run(playerMove) { [unowned self] in
+                playerSprite.startIdleAnimation(hasSword: level.inventory.hasSwords(), hasHammer: level.inventory.hasHammers())
+                checkSpecialPanel { [unowned self] in
+                    shouldDisableControlInput = false
                     completion?()
                 }
             }
@@ -257,6 +301,7 @@ class GameEngine {
             consumeItem()
             
             playerSprite.startPowerUpAnimation()
+            playerSprite.startIdleAnimation(hasSword: level.inventory.hasSwords(), hasHammer: level.inventory.hasHammers())
             
             ScoringEngine.updateStatusIconsAnimation(
                 icon: .hammer,
@@ -274,6 +319,7 @@ class GameEngine {
             consumeItem()
 
             playerSprite.startPowerUpAnimation()
+            playerSprite.startIdleAnimation(hasSword: level.inventory.hasSwords(), hasHammer: level.inventory.hasHammers())
             
             ScoringEngine.updateStatusIconsAnimation(
                 icon: .sword,
@@ -310,6 +356,7 @@ class GameEngine {
                 
                 completion?()
             }
+            playerSprite.startIdleAnimation(hasSword: level.inventory.hasSwords(), hasHammer: level.inventory.hasHammers())
         case .enemy:
             guard level.inventory.swords > 0 else { return }
             
@@ -323,6 +370,7 @@ class GameEngine {
                 
                 completion?()
             }
+            playerSprite.startIdleAnimation(hasSword: level.inventory.hasSwords(), hasHammer: level.inventory.hasHammers())
         case .warp, .warp2, .warp3:
             guard !justStartedDisableWarp, let newWarpLocation = gameboardSprite.warpTo(warpType: level.getLevelType(at: level.player), initialPosition: level.player) else {
                 completion?()
@@ -703,7 +751,8 @@ class GameEngine {
 //            StoreReviewManager.shared.incrementCount()
 
             //Run this BEFORE startDeadAnimation!!
-            PartyModeSprite.shared.stopParty(partyBoy: playerSprite)
+            PartyModeSprite.shared.stopParty(partyBoy: playerSprite,
+                                             hasSword: level.inventory.hasSwords(), hasHammer: level.inventory.hasHammers())
             
             playerSprite.startDeadAnimation {
                 self.delegate?.gameIsOver(firstTimeCalled: true)

@@ -23,4 +23,12 @@ struct Inventory: CustomStringConvertible, Codable {
     func getItemCount() -> Int {
         return hammers + swords
     }
+    
+    func hasSwords() -> Bool {
+        return swords > 0
+    }
+    
+    func hasHammers() -> Bool {
+        return hammers > 0
+    }
 }

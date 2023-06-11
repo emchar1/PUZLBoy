@@ -18,6 +18,22 @@ class TimerManager {
         TimeInterval(timeFinal.timeIntervalSinceNow - timeInitial.timeIntervalSinceNow)
     }
     
+    var formattedText: String {
+        let minutes = Int(elapsedTime) / 60 % 60
+        let seconds = Int(elapsedTime) % 60
+        let milliseconds = Int(elapsedTime * 10) % 10
+        var returnString: String
+        
+        if isParty && minutes <= 0 {
+            returnString = String(format: "%02i.%i%i", seconds, milliseconds, Int.random(in: 0...9))
+        }
+        else {
+            returnString = String(format: "%02i:%02i", minutes, seconds)
+        }
+        
+        return returnString
+    }
+    
     
     // MARK: - Functions
     

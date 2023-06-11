@@ -103,10 +103,7 @@ class ScoringEngine {
     }
     
     func updateLabels() {
-        let minutes = Int(timerManager.elapsedTime) / 60 % 60
-        let seconds = Int(timerManager.elapsedTime) % 60
-        
-        elapsedTimeLabel.text = String(format: "%02i:%02i", minutes, seconds)
+        elapsedTimeLabel.text = timerManager.formattedText
         elapsedTimeLabel.fontColor = timerManager.elapsedTime >= 60 * 60 ? UIFont.gameFontColorOutOfTime : UIFont.gameFontColor
         elapsedTimeLabel.updateShadow()
         

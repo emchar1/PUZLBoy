@@ -559,10 +559,12 @@ extension GameScene: LevelSkipEngineDelegate {
     
     private func checkForParty() {
         if PartyModeSprite.shared.isPartying {
-            PartyModeSprite.shared.startParty(to: self, partyBoy: gameEngine.playerSprite)
+            PartyModeSprite.shared.startParty(to: self, partyBoy: gameEngine.playerSprite,
+                                              hasSword: gameEngine.level.inventory.hasSwords(), hasHammer: gameEngine.level.inventory.hasHammers())
         }
         else {
-            PartyModeSprite.shared.stopParty(partyBoy: gameEngine.playerSprite)
+            PartyModeSprite.shared.stopParty(partyBoy: gameEngine.playerSprite,
+                                             hasSword: gameEngine.level.inventory.hasSwords(), hasHammer: gameEngine.level.inventory.hasHammers())
         }
     }
 }

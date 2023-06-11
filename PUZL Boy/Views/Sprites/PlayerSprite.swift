@@ -37,7 +37,7 @@ class PlayerSprite {
             explodeBoulderTextures.append(explodeBoulderAtlas.textureNamed("explode2 (\(i))"))
         }
                 
-        startIdleAnimation()
+        startIdleAnimation(hasSword: false, hasHammer: false)
 
         if shouldSpawn {
             startRespawnAnimation()
@@ -53,15 +53,27 @@ class PlayerSprite {
     }
     
     ///Helper function to go with startIdleAnimation()
-    private func restartIdleAnimation(isPartying: Bool) {
-        let animation = SKAction.animate(with: player.textures[Player.Texture.idle.rawValue],
+    func restartIdleAnimation(hasSword: Bool, hasHammer: Bool, isPartying: Bool) {
+        var idleTexture: Player.Texture = Player.Texture.idle
+        
+        if hasSword && hasHammer {
+            idleTexture = Player.Texture.idleHammerSword
+        }
+        else if hasSword {
+            idleTexture = Player.Texture.idleSword
+        }
+        else if hasHammer {
+            idleTexture = Player.Texture.idleHammer
+        }
+        
+        let animation = SKAction.animate(with: player.textures[idleTexture.rawValue],
                                          timePerFrame: isPartying ? PartyModeSprite.shared.quarterNote / TimeInterval(player.textures[Player.Texture.idle.rawValue].count) : animationSpeed * 1.5)
 
         player.sprite.removeAction(forKey: AnimationKey.playerIdle.rawValue)
         player.sprite.run(SKAction.repeatForever(animation), withKey: AnimationKey.playerIdle.rawValue)
     }
     
-    func startIdleAnimation() {
+    func startIdleAnimation(hasSword: Bool, hasHammer: Bool) {
         let fadeDuration: TimeInterval = 0.25
         AudioManager.shared.stopSound(for: "moverun1", fadeDuration: fadeDuration)
         AudioManager.shared.stopSound(for: "moverun2", fadeDuration: fadeDuration)
@@ -78,15 +90,15 @@ class PlayerSprite {
         AudioManager.shared.stopSound(for: "movetile2", fadeDuration: fadeDuration)
         AudioManager.shared.stopSound(for: "movetile3", fadeDuration: fadeDuration)
 
-        restartIdleAnimation(isPartying: PartyModeSprite.shared.isPartying)
+        restartIdleAnimation(hasSword: hasSword, hasHammer: hasHammer, isPartying: PartyModeSprite.shared.isPartying)
         
         isAnimating = false
         
         if PartyModeSprite.shared.isPartying {
-            startPartyAnimation()
+            startPartyAnimation(hasSword: hasSword, hasHammer: hasHammer)
         }
         else {
-            stopPartyAnimation()
+            stopPartyAnimation(hasSword: hasSword, hasHammer: hasHammer)
         }
     }
     
@@ -100,7 +112,7 @@ class PlayerSprite {
         
         isAnimating = true
 
-        if animationType == .glide {
+        if animationType == .glide || animationType == .glideSword || animationType == .glideHammer || animationType == .glideHammerSword {
             AudioManager.shared.playSound(for: "moveglide", interruptPlayback: false)
 
             player.sprite.run(SKAction.sequence([
@@ -110,11 +122,11 @@ class PlayerSprite {
         }
         else {
             switch animationType {
-            case .run:
+            case .run, .runSword, .runHammer, .runHammerSword:
                 AudioManager.shared.playSound(for: "moverun\(Int.random(in: 1...4))")
-            case .marsh:
+            case .marsh, .marshSword, .marshHammer, .marshHammerSword:
                 AudioManager.shared.playSound(for: "movemarsh\(Int.random(in: 1...3))")
-            case .sand:
+            case .sand, .sandSword, .sandHammer, .sandHammerSword:
                 AudioManager.shared.playSound(for: "movesand\(Int.random(in: 1...3))")
             case .party:
                 AudioManager.shared.playSound(for: "movetile\(Int.random(in: 1...3))")
@@ -176,7 +188,7 @@ class PlayerSprite {
         AudioManager.shared.playSound(for: "pickupitem")
     }
     
-    func startPartyAnimation() {
+    func startPartyAnimation(hasSword: Bool, hasHammer: Bool) {
         let speed: TimeInterval = PartyModeSprite.shared.quarterNote / 2
         
         let sequenceAnimation = SKAction.sequence([
@@ -190,12 +202,12 @@ class PlayerSprite {
             SKAction.colorize(with: .systemPink, colorBlendFactor: 1.0, duration: speed)
         ])
         
-        restartIdleAnimation(isPartying: true)
+        restartIdleAnimation(hasSword: hasSword, hasHammer: hasHammer, isPartying: true)
         player.sprite.run(SKAction.repeatForever(sequenceAnimation), withKey: AnimationKey.playerParty.rawValue)
     }
     
-    func stopPartyAnimation() {
-        restartIdleAnimation(isPartying: false)
+    func stopPartyAnimation(hasSword: Bool, hasHammer: Bool) {
+        restartIdleAnimation(hasSword: hasSword, hasHammer: hasHammer, isPartying: false)
         player.sprite.removeAction(forKey: AnimationKey.playerParty.rawValue)
         player.sprite.run(SKAction.colorize(withColorBlendFactor: 0.0, duration: 0))
     }
