@@ -155,6 +155,14 @@ class PauseResetEngine {
         superScene.addChild(hintButtonSprite)
         
         currentLevel = level
+        
+        // TODO: - Party Levels
+        if currentLevel % 100 == Level.partyLevel {
+            hideMinorButtons()
+        }
+        else {
+            showMinorButtons()
+        }
     }
     
     
@@ -178,6 +186,9 @@ class PauseResetEngine {
             hintButtonSprite.texture = SKTexture(imageNamed: hintName)
             
             guard !isPaused else { return }
+
+            // TODO: - Party Levels
+            guard currentLevel % 100 != Level.partyLevel else { return }
 
             showMinorButtons()
         }
@@ -328,7 +339,10 @@ class PauseResetEngine {
         else {
             howToPlayPage.tableView.removeFromSuperview()
 
-            showMinorButtons()
+            // TODO: - Party Levels
+            if currentLevel % 100 != Level.partyLevel {
+                showMinorButtons()
+            }
 
             backgroundSprite.run(SKAction.group([
                 SKAction.run { [unowned self] in
@@ -422,6 +436,12 @@ class PauseResetEngine {
                 guard !isAnimating else { break }
                 guard let node = nodeTapped as? SettingsButton else { break }
 
+                // TODO: - Party Levels
+                guard currentLevel % 100 != Level.partyLevel || (node.type != .button1 && node.type != .button2 && node.type != .button3) else {
+                    ButtonTap.shared.tap(type: .buttontap6)
+                    return
+                }
+                
                 settingsManager.tap(node)
             }
         } //end for
