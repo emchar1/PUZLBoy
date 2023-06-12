@@ -139,26 +139,6 @@ class AudioManager {
         addAudioItem("continueloop", category: .music)
         addAudioItem("overworld", category: .music)
         addAudioItem("overworldparty", category: .music)
-
-        
-        //DELETE
-        addAudioItem("overworld_castle", category: .music) //delete
-        addAudioItem("overworld_egg", category: .music) //delete
-        addAudioItem("overworld_galaxy", category: .music) //delete
-        addAudioItem("overworld_throwback", category: .music) //delete
-        addAudioItem("overworld2", category: .music) //delete
-        addAudioItem("overworld3", category: .music) //delete
-        addAudioItem("overworld4", category: .music) //delete
-        addAudioItem("overworld5", category: .music) //delete
-        addAudioItem("overworld6", category: .music) //delete
-        addAudioItem("overworld7", category: .music) //delete
-        addAudioItem("overworld8", category: .music) //delete
-        addAudioItem("overworld9", category: .music) //delete
-        addAudioItem("titletheme_mario64", category: .musicNoLoop) //delete
-        addAudioItem("titletheme2", category: .musicNoLoop) //delete
-        addAudioItem("titletheme3", category: .musicNoLoop) //delete
-        addAudioItem("titletheme4", category: .musicNoLoop) //delete
-        addAudioItem("titletheme5", category: .musicNoLoop) //delete
     }
 
     /**

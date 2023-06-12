@@ -112,7 +112,7 @@ class DisplayStatusBarSprite: SKNode {
         zPosition = K.ZPosition.chatDimOverlay + 10
         
         let hintarrow = SKSpriteNode(imageNamed: "hintarrow")
-        hintarrow.setScale(width / 1125 * (7 / 8))
+        hintarrow.setScale(width / 256 * (7 / 8))
         hintarrow.position.x = pointLeft ? width : -width - iconSize / 2
         hintarrow.color = .systemYellow
         hintarrow.colorBlendFactor = 1.0
