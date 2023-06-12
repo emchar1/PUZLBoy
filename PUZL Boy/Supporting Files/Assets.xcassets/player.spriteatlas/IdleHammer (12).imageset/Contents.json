@@ -1,15 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "IdleHammer (12).png",
+      "filename" : "IdleHammer (12)@1x.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
+      "filename" : "IdleHammer (12)@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
+      "filename" : "IdleHammer (12)@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

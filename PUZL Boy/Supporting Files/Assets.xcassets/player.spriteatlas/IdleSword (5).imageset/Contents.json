@@ -1,15 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "IdleSword (5).png",
+      "filename" : "IdleSword (5)@1x.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
+      "filename" : "IdleSword (5)@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
+      "filename" : "IdleSword (5)@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }
