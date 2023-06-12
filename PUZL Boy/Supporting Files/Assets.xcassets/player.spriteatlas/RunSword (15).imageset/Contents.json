@@ -1,15 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "RunSword (15).png",
+      "filename" : "RunSword (15)@1x.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
+      "filename" : "RunSword (15)@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
+      "filename" : "RunSword (15)@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

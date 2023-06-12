@@ -1,15 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "Walk (14).png",
+      "filename" : "Walk (14)@1x.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
+      "filename" : "Walk (14)@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
+      "filename" : "Walk (14)@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

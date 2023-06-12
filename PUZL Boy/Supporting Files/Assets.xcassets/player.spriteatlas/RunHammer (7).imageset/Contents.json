@@ -1,15 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "RunHammer (7).png",
+      "filename" : "RunHammer (7)@1x.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
+      "filename" : "RunHammer (7)@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
+      "filename" : "RunHammer (7)@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }
