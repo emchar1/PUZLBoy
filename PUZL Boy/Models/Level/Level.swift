@@ -98,7 +98,7 @@ struct Level: CustomStringConvertible {
             self.health = 999
             self.gems = 1 //MUST NOT BE 0!!
             self.gameboard = gameboard
-            self.inventory = Inventory(hammers: 999, swords: 999)
+            self.inventory = Inventory(hammers: 0, swords: 0)
         }
     }
     
