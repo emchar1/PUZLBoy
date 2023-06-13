@@ -1,15 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "partytile.png",
+      "filename" : "partytile@1x.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
+      "filename" : "partytile@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
+      "filename" : "partytile@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

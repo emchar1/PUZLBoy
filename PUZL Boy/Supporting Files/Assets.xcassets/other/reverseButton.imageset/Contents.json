@@ -1,15 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "reverseButton.png",
+      "filename" : "reverseButton@1x.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
+      "filename" : "reverseButton@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
+      "filename" : "reverseButton@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

@@ -129,10 +129,11 @@ class GameboardSprite {
         panel.zPosition = K.ZPosition.chatDimOverlay + (useOverlay ? K.ZPosition.overlay : K.ZPosition.terrain)
         
         if !useOverlay {
-            let hintborder = SKShapeNode(rect: CGRect(x: 0, y: 0, width: 1125, height: 1125), cornerRadius: 40)
+            let hintborder = SKShapeNode(rect: CGRect(x: 0, y: 0, width: 512, height: 512), cornerRadius: 20)
             hintborder.fillColor = .clear
             hintborder.strokeColor = .systemYellow
-            hintborder.lineWidth = 40
+            hintborder.setScale(1 / 3)
+            hintborder.lineWidth = 20
             hintborder.zPosition = 10
             hintborder.name = "hintborder"
             

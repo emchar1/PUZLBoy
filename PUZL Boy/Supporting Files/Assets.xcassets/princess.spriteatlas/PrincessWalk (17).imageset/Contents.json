@@ -1,15 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "PrincessWalk (17).png",
+      "filename" : "PrincessWalk (17)@1x.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
+      "filename" : "PrincessWalk (17)@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
+      "filename" : "PrincessWalk (17)@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

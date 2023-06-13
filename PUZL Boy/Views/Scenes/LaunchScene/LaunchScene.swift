@@ -60,7 +60,7 @@ class LaunchScene: SKScene {
         skyNode.zPosition = K.ZPosition.skyNode
         skyNode.name = LaunchScene.nodeName_skyNode
 
-        moonSprite = MoonSprite(position: CGPoint(x: K.ScreenDimensions.iPhoneWidth, y: K.ScreenDimensions.height), scale: 0.7, moonPhase: nil)
+        moonSprite = MoonSprite(position: CGPoint(x: K.ScreenDimensions.iPhoneWidth, y: K.ScreenDimensions.height), scale: 0.7 * 3, moonPhase: nil)
         parallaxManager = ParallaxManager(useSet: .allCases.randomElement() ?? .grass)
 
         super.init(size: size)

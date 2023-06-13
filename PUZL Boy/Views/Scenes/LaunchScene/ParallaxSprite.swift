@@ -37,7 +37,7 @@ class ParallaxSprite: SKNode {
             let sprite = SKSpriteNode(imageNamed: parallaxObject.imageName)
             sprite.anchorPoint = .zero
             sprite.position = CGPoint(x: CGFloat(i) * parallaxObject.sizeScaled, y: 0)
-            sprite.setScale(parallaxObject.scale)
+            sprite.setScale(parallaxObject.scale * 3)
             sprite.color = DayTheme.spriteColor
             sprite.colorBlendFactor = DayTheme.spriteShade
             sprite.zPosition = parallaxObject.zPosition

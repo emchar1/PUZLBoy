@@ -1,15 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "set3_layer2.png",
+      "filename" : "set3_layer2@1x.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
+      "filename" : "set3_layer2@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
+      "filename" : "set3_layer2@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

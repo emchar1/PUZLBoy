@@ -105,7 +105,7 @@ class ChatEngine {
         dimOverlaySprite.zPosition = K.ZPosition.chatDimOverlay
 
         avatarSprite.position = CGPoint(x: origin.x, y: origin.y + borderLineWidth / 2)
-        avatarSprite.setScale(ChatEngine.avatarSizeNew / ChatEngine.avatarSizeOrig)
+        avatarSprite.setScale(ChatEngine.avatarSizeNew / ChatEngine.avatarSizeOrig * 3)
         avatarSprite.anchorPoint = .zero
         avatarSprite.color = .magenta
         
@@ -120,7 +120,7 @@ class ChatEngine {
         textSprite.zPosition = 10
         textSprite.addDropShadow()
         
-        fastForwardSprite.setScale(0.35)
+        fastForwardSprite.setScale(0.35 * 3)
         fastForwardSprite.anchorPoint = CGPoint(x: 1, y: 0)
         fastForwardSprite.position = CGPoint(x: origin.x + backgroundSpriteWidth - padding.x, y: origin.y + padding.x)
         fastForwardSprite.alpha = 1

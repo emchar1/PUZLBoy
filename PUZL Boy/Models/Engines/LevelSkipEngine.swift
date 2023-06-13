@@ -32,7 +32,7 @@ class LevelSkipEngine {
     // MARK: - Initialization
     
     init(user: User?) {
-        let buttonScale: CGFloat = 0.5
+        let buttonScale: CGFloat = 0.5 * 3
         let buttonSpacing: CGFloat = 180
         let padding: CGFloat = 20
         
@@ -57,10 +57,10 @@ class LevelSkipEngine {
         reverseSprite.anchorPoint = .zero
         reverseSprite.zPosition = K.ZPosition.pauseButton
         
-        viewAchievements = SKSpriteNode(texture: SKTexture(imageNamed: "leaderboards"))
+        viewAchievements = SKSpriteNode(texture: SKTexture(imageNamed: "lb2Gold"))
         viewAchievements.name = "achievementButton"
         viewAchievements.setScale(buttonScale)
-        viewAchievements.position = CGPoint(x: reverseSprite.position.x + buttonSpacing, y: viewAchievements.size.height + padding)
+        viewAchievements.position = CGPoint(x: reverseSprite.position.x + buttonSpacing / 2, y: viewAchievements.size.height + padding)
         viewAchievements.anchorPoint = .zero
         viewAchievements.zPosition = K.ZPosition.pauseButton
         
@@ -119,7 +119,7 @@ class LevelSkipEngine {
         superScene.addChild(forwardSprite)
         superScene.addChild(reverseSprite)
 //        superScene.addChild(viewAchievements)
-        
+//
 //        if let user = user, user.uid == "3SeIWmlATmbav7jwCDjXyiA0TgA3" {
 //            superScene.addChild(partyMode)
 //        }

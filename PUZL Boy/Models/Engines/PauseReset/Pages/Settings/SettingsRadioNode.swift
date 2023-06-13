@@ -18,7 +18,7 @@ class SettingsRadioNode: SKNode {
     static let radioNodeScale: CGFloat = UIDevice.isiPad ? 0.52 : 0.36
     static let radioNodeSizeOrig = CGSize(width: 512, height: 225)
     static let radioNodeSize = CGSize(width: radioNodeSizeOrig.width * radioNodeScale, height: radioNodeSizeOrig.height * radioNodeScale)
-    static let radioStatus: (on: CGFloat, off: CGFloat) = (-radioNodeSizeOrig.width, -radioNodeSizeOrig.height)
+    static let radioStatus: (on: CGFloat, off: CGFloat) = (-radioNodeSizeOrig.width / 3, -radioNodeSizeOrig.height / 3)
 
     private var text: String
     private(set) var isOn: Bool
