@@ -176,6 +176,8 @@ class PauseResetEngine {
             resetButtonSprite.texture = SKTexture(imageNamed: "\(resetName)Disabled")
             hintButtonSprite.texture = SKTexture(imageNamed: "\(hintName)Disabled")
             
+            pauseButtonSprite.alpha = 0.5
+
             guard !isPaused else { return }
             
             hideMinorButtons()
@@ -185,6 +187,8 @@ class PauseResetEngine {
             resetButtonSprite.texture = SKTexture(imageNamed: resetName)
             hintButtonSprite.texture = SKTexture(imageNamed: hintName)
             
+            pauseButtonSprite.alpha = 1.0
+
             guard !isPaused else { return }
 
             // TODO: - Party Levels

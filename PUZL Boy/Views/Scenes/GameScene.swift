@@ -693,6 +693,7 @@ extension GameScene: AdMobManagerDelegate {
                 
                 checkForParty()
 
+                pauseResetEngine.shouldDisable(false)
                 gameEngine.continueGame()
 
                 gameEngine.animateMoves(originalMoves: gameEngine.movesRemaining, newMoves: moves)
