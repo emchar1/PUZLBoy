@@ -30,6 +30,7 @@ class SettingsTapButton: SKNode {
     private var settingsSize: CGSize
     private var isAnimating = false
     private var isPressed = true
+    private(set) var isDisabled = false
     
     private var labelNode: SKLabelNode!
     private var tapButton: SKShapeNode!
@@ -90,7 +91,11 @@ class SettingsTapButton: SKNode {
     func touchDown(in location: CGPoint) {
         guard !isAnimating else { return }
         guard scene?.nodes(at: location).filter({ $0.name == nodeName }).first != nil else { return }
-
+        guard !isDisabled else {
+            ButtonTap.shared.tap(type: .buttontap6)
+            return
+        }
+        
         isPressed = true
         
         tapButton.run(SKAction.group([
@@ -128,5 +133,9 @@ class SettingsTapButton: SKNode {
     func updateColors() {
         tapButton.fillColor = backgroundColor
         tapButton.updateShadowColor(backgroundShadowColor)
+    }
+    
+    func setDisabled(_ disabled: Bool) {
+        isDisabled = disabled
     }
 }

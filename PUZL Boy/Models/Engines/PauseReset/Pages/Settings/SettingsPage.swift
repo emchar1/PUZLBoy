@@ -18,9 +18,9 @@ class SettingsPage: ParentPage {
     private var radioVibration: SettingsRadioNode!
     private var radioPartyLights: SettingsRadioNode!
     
-    private var tapButtonNotifications: SettingsTapButton!
-    private var tapButtonRateReview: SettingsTapButton!
-    private var tapButtonReportBug: SettingsTapButton!
+    private(set) var tapButtonNotifications: SettingsTapButton!
+    private(set) var tapButtonRateReview: SettingsTapButton!
+    private(set) var tapButtonReportBug: SettingsTapButton!
     
     private var user: User?
 
