@@ -11,7 +11,7 @@ class TimerManager {
     
     // MARK: - Properties
     
-    private let partyLevelTime: TimeInterval = 75
+    private let partyLevelTime: TimeInterval = 60
     private var isParty = false
     private var timeInitial = Date()
     private var timeFinal = Date()
