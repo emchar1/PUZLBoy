@@ -273,7 +273,7 @@ class PlayerSprite {
             gameboard.sprite.addChild(enemyBottomSprite)
             
             let animationDuration: TimeInterval = 0.3
-            let animationMove: CGFloat = 300 / 3 * enemyScale
+            let animationMove: CGFloat = 150 / 3 * enemyScale
                         
             enemyTopSprite.run(SKAction.group([
                 SKAction.moveBy(x: -animationMove, y: animationMove, duration: animationDuration * PartyModeSprite.shared.speedMultiplier),

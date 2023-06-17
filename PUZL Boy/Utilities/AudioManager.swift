@@ -120,6 +120,7 @@ class AudioManager {
         addAudioItem("movetile2", category: .soundFX)
         addAudioItem("movetile3", category: .soundFX)
         addAudioItem("movewalk", category: .soundFX)
+        addAudioItem("partypill", category: .soundFX) //needs purchase
         addAudioItem("pickupheart", category: .soundFX)
         addAudioItem("pickupitem", category: .soundFX)
         addAudioItem("punchwhack1", category: .soundFX) //needs purchase

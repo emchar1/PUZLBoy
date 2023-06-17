@@ -9,7 +9,7 @@ import SpriteKit
 import FirebaseAuth
 
 protocol LevelSkipEngineDelegate: AnyObject {
-    func fowardPressed(_ node: SKSpriteNode)
+    func forwardPressed(_ node: SKSpriteNode)
     func reversePressed(_ node: SKSpriteNode)
     func viewAchievementsPressed(_ node: SKSpriteNode)
     func partyModePressed(_ node: SKSpriteNode)
@@ -87,7 +87,7 @@ class LevelSkipEngine {
         
         for nodeTapped in superScene.nodes(at: location) {
             if nodeTapped.name == "forwardButton" {
-                delegate?.fowardPressed(forwardSprite)
+                delegate?.forwardPressed(forwardSprite)
                 ButtonTap.shared.tap(type: .buttontap1)
                 break
             }
