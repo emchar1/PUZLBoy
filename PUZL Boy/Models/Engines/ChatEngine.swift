@@ -71,6 +71,7 @@ class ChatEngine {
         chatSpeed = chatSpeedOrig
         
         // MARK: - Include key dialogue here
+        dialoguePlayed[Level.partyLevel] = false
         dialoguePlayed[1] = false
         dialoguePlayed[8] = false
         dialoguePlayed[19] = false
@@ -314,6 +315,35 @@ extension ChatEngine {
         isChatting = true
         
         switch level {
+        case Level.partyLevel:
+            guard let dialoguePlayedCheck = dialoguePlayed[level], !dialoguePlayedCheck else {
+                isChatting = false
+                completion?()
+                return
+            }
+            
+            sendChat(profile: .hero, startNewChat: true, endChat: false,
+                     chat: "Yo, I feel funny. I see colorful flashing lights and the music is bumping... I can't stop moving!") { [unowned self] in
+                sendChat(profile: .trainer, startNewChat: false, endChat: false,
+                         chat: "Heh, welcome to the PARTY ZONE! Looks like you ate one of those rainbow colored jelly beans.") { [unowned self] in
+                    sendChat(profile: .hero, startNewChat: false, endChat: false,
+                             chat: "Jelly beans, right...") { [unowned self] in
+                        sendChat(profile: .trainer, startNewChat: false, endChat: false,
+                                 chat: "Don't worry, the feeling lasts only a short amount of time, but while you're under its effects you can move as much as your heart desires.") { [unowned self] in
+                            sendChat(profile: .trainer, startNewChat: false, endChat: false,
+                                     chat: "Run around collecting all the gems and bonuses that pop up around the level. But be quick before time runs out.") { [unowned self] in
+                                sendChat(profile: .trainer, startNewChat: false, endChat: true,
+                                         chat: "Oh, and if you start feeling dizzy, you can tap the disco ball up top to turn off the lights. 🪩") { [unowned self] in
+                                    dialoguePlayed[level] = true
+                                    fadeDimOverlay()
+                                    isChatting = false
+                                    completion?()
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         case 1:
             guard let dialoguePlayedCheck = dialoguePlayed[level], !dialoguePlayedCheck else {
                 isChatting = false
