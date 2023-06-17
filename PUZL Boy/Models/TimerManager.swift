@@ -27,7 +27,9 @@ class TimerManager {
         var returnString: String
         
         if isParty && minutes <= 0 {
-            returnString = String(format: "%02i.%i%i", seconds, milliseconds, Int.random(in: 0...9))
+            let randomHundredth = elapsedTime <= 0 ? 0 : Int.random(in: 0...9)
+            
+            returnString = String(format: "%02i.%i%i", seconds, milliseconds, randomHundredth)
         }
         else {
             returnString = String(format: "%02i:%02i", minutes, seconds)

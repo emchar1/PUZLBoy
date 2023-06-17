@@ -18,7 +18,7 @@ class NumMovesSprite: SKNode {
     
     // MARK: - Initialization
 
-    init(numMoves: Int, position: CGPoint) {
+    init(numMoves: Int, position: CGPoint, isPartyLevel: Bool) {
         sprite = SKShapeNode(rectOf: CGSize(width: K.ScreenDimensions.iPhoneWidth * GameboardSprite.spriteScale,
                                             height: K.ScreenDimensions.iPhoneWidth * GameboardSprite.spriteScale))
         sprite.lineWidth = 0
@@ -29,14 +29,16 @@ class NumMovesSprite: SKNode {
         bigText.fontSize = UIFont.gameFontSizeExtraLarge
         bigText.fontColor = UIFont.chatFontColor
         bigText.setScale(4)
+        bigText.position.y += UIDevice.isiPad ? 200 : 0
         bigText.zPosition = 10
         bigText.addDropShadow()
         
-        littleText = SKLabelNode(text: "Move\(numMoves == 1 ? "" : "s")")
+        littleText = SKLabelNode(text: isPartyLevel ? "Bonus Level" : "Move\(numMoves == 1 ? "" : "s")")
         littleText.fontName = UIFont.chatFont
         littleText.fontSize = UIFont.gameFontSizeExtraLarge
         littleText.fontColor = UIFont.chatFontColor
-        littleText.position.y -= 140
+        littleText.position.y += UIDevice.isiPad ? 200 : 0
+        littleText.position.y += isPartyLevel ? 80 : -140
         littleText.zPosition = 10
         littleText.addHeavyDropShadow()
         
@@ -45,7 +47,11 @@ class NumMovesSprite: SKNode {
         self.position = position
 
         addChild(sprite)
-        sprite.addChild(bigText)
+
+        if !isPartyLevel {
+            sprite.addChild(bigText)
+        }
+
         sprite.addChild(littleText)
     }
     

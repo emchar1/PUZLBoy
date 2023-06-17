@@ -156,8 +156,7 @@ class PauseResetEngine {
         
         currentLevel = level
         
-        // TODO: - Party Levels
-        if currentLevel % 100 == Level.partyLevel {
+        if Level.isPartyLevel(currentLevel) {
             hideMinorButtons()
         }
         else {
@@ -190,9 +189,7 @@ class PauseResetEngine {
             pauseButtonSprite.alpha = 1.0
 
             guard !isPaused else { return }
-
-            // TODO: - Party Levels
-            guard currentLevel % 100 != Level.partyLevel else { return }
+            guard !Level.isPartyLevel(currentLevel) else { return }
 
             showMinorButtons()
         }
@@ -343,8 +340,7 @@ class PauseResetEngine {
         else {
             howToPlayPage.tableView.removeFromSuperview()
 
-            // TODO: - Party Levels
-            if currentLevel % 100 != Level.partyLevel {
+            if !Level.isPartyLevel(currentLevel) {
                 showMinorButtons()
             }
 
@@ -435,13 +431,12 @@ class PauseResetEngine {
                 purchasePage.touchDown(for: touches)
             case settingsPage.nodeName:
                 settingsPage.superScene = superScene
+                settingsPage.tapButtonNotifications.setDisabled(Level.isPartyLevel(currentLevel))
                 settingsPage.touchDown(for: touches)
             default:
                 guard !isAnimating else { break }
                 guard let node = nodeTapped as? SettingsButton else { break }
-
-                // TODO: - Party Levels
-                guard currentLevel % 100 != Level.partyLevel || (node.type != .button1 && node.type != .button2 && node.type != .button3) else {
+                guard !Level.isPartyLevel(currentLevel) || (node.type != .button1 && node.type != .button2 && node.type != .button3) else {
                     ButtonTap.shared.tap(type: .buttontap6)
                     return
                 }

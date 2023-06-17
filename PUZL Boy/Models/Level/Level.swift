@@ -14,8 +14,10 @@ struct Level: CustomStringConvertible {
     
     // MARK: - Properties
     
-    static let partyLevel: Int = 0
-    
+    static let partyFrequency: Int = 100
+    static let partyLevel: Int = -1
+    static let finalLevel: Int = 500
+
     private(set) var level: Int
     private(set) var moves: Int
     private(set) var health: Int
@@ -100,6 +102,27 @@ struct Level: CustomStringConvertible {
             self.gameboard = gameboard
             self.inventory = Inventory(hammers: 0, swords: 0)
         }
+    }
+    
+    
+    // MARK: - Party Functions
+    
+    /**
+     Checks if a level is a party level or not.
+     - parameter level: The level (Int) to check
+     - returns: True if it is a party level.
+     */
+    static func isPartyLevel(_ level: Int) -> Bool {
+        return level == partyLevel
+    }
+    
+    /**
+     Checks if a level should provide a pill.
+     - parameter level: The level (Int) to check
+     - returns: True if it is a level that should provide a pill.
+     */
+    static func shouldProvidePill(_ level: Int) -> Bool {
+        return level % partyFrequency == 0 && level < finalLevel
     }
     
     
