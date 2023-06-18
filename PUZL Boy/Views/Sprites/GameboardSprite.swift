@@ -21,7 +21,6 @@ class GameboardSprite {
 
     typealias WarpTuple = (first: K.GameboardPosition?, second: K.GameboardPosition?)
 
-    private let tiles: [LevelType] = LevelType.allCases
     private var panels: [[SKSpriteNode]]
     private(set) var panelCount: Int
     private(set) var panelSize: CGFloat
@@ -71,7 +70,6 @@ class GameboardSprite {
         panels[position.row][position.col].zPosition = K.ZPosition.terrain
         panels[position.row][position.col].name = "\(position.row),\(position.col)"
         
-        // TODO: - Party Levels
         if tile.terrain == .partytile {
             let randomHue = UIColor(hue: CGFloat.random(in: 0.0...1.0), saturation: 1.0, brightness: 1.0, alpha: 1.0)
             let randomDuration = TimeInterval.random(in: 0.75...1.0)
