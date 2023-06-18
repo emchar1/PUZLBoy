@@ -323,15 +323,15 @@ extension ChatEngine {
             }
             
             sendChat(profile: .hero, startNewChat: true, endChat: false,
-                     chat: "Yo, I feel funny. I see colorful flashing lights and the music is bumping... I can't stop moving!") { [unowned self] in
+                     chat: "Yo, I feel funny. I'm seeing colorful flashing lights and the music is bumping. I can't stop moving, and I like it!") { [unowned self] in
                 sendChat(profile: .trainer, startNewChat: false, endChat: false,
-                         chat: "Heh, welcome to the PARTY ZONE! Looks like you ate one of those rainbow colored jelly beans.") { [unowned self] in
+                         chat: "Welcome to the PARTY ZONE! Looks like you ate one of those rainbow colored jelly beans, I see.") { [unowned self] in
                     sendChat(profile: .hero, startNewChat: false, endChat: false,
                              chat: "Jelly beans, right...") { [unowned self] in
                         sendChat(profile: .trainer, startNewChat: false, endChat: false,
                                  chat: "Don't worry, the feeling lasts only a short amount of time, but while you're under its effects you can move as much as your heart desires.") { [unowned self] in
                             sendChat(profile: .trainer, startNewChat: false, endChat: false,
-                                     chat: "Run around collecting all the gems and bonuses that pop up around the level. But be quick before time runs out.") { [unowned self] in
+                                     chat: "Run around collecting all the gems and bonuses that pop up in the level. But you gotta be quick before the time runs out.") { [unowned self] in
                                 sendChat(profile: .trainer, startNewChat: false, endChat: true,
                                          chat: "Oh, and if you start feeling dizzy, you can tap the disco ball up top to turn off the lights. 🪩") { [unowned self] in
                                     dialoguePlayed[level] = true
@@ -568,7 +568,7 @@ extension ChatEngine {
             }
             
             sendChat(profile: .trainer, startNewChat: true, endChat: false,
-                     chat: "Congrats! You made it to level 100. There's a bonus at the end of every 100 levels. Beat this and you're one step closer to indescribable fun!!! 🕺🏻") { [unowned self] in
+                     chat: "Congrats! You made it to level 100. There's a bonus at the end of every 50 levels. Beat this and you're one step closer to indescribable fun!!! 🕺🏻") { [unowned self] in
                 sendChat(profile: .hero, startNewChat: false, endChat: false, chat: "I can hardly contain my excitement. 😒") { [unowned self] in
                     sendChat(profile: .trainer, startNewChat: false, endChat: false, chat: "That's the spirit! Now if you ever get stuck, you can give your device a shake or tap the red Reset button to restart the level.") { [unowned self] in
                         sendChat(profile: .trainer, startNewChat: false, endChat: false, chat: "Be warned though, restarting a level will cost you one of your precious lives...") { [unowned self] in

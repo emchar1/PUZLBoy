@@ -61,9 +61,9 @@ class OfflinePlaySprite: SKNode {
         addChild(sprite)
 
         sprite.run(SKAction.repeatForever(SKAction.sequence([
-            SKAction.wait(forDuration: 1.0),
-            SKAction.fadeOut(withDuration: 1.5),
-            SKAction.fadeIn(withDuration: 1.5)
+            SKAction.wait(forDuration: 0.5),
+            SKAction.fadeOut(withDuration: 0.5),
+            SKAction.fadeIn(withDuration: 0.5)
         ])))
     }
     
