@@ -436,7 +436,7 @@ class PauseResetEngine {
             default:
                 guard !isAnimating else { break }
                 guard let node = nodeTapped as? SettingsButton else { break }
-                guard !Level.isPartyLevel(currentLevel) || (node.type != .button1 && node.type != .button2 && node.type != .button3) else {
+                guard !Level.isPartyLevel(currentLevel) || (node.type != .button1 && node.type != .button2 && node.type != .button3 && node.type != .button4) else {
                     ButtonTap.shared.tap(type: .buttontap6)
                     return
                 }

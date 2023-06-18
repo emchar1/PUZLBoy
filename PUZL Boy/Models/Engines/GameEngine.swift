@@ -12,6 +12,7 @@ protocol GameEngineDelegate: AnyObject {
     func gameIsOver(firstTimeCalled: Bool)
     func enemyIsKilled()
     func gameIsPaused(isPaused: Bool)
+    func didTakePartyPill()
 }
 
 /**
@@ -95,8 +96,7 @@ class GameEngine {
             fatalError("Firebase records were not loaded!🙀")
         }
         
-        // TODO: - Party Levels
-        if level == Level.partyLevel {
+        if Level.isPartyLevel(level) {
             self.level = Level(level: Level.partyLevel, moves: 0, health: 0,
                                gameboard: LevelBuilder.buildPartyGameboard(ofSize: self.level.gameboard.count))
         }
@@ -413,6 +413,12 @@ class GameEngine {
                     completion?()
                 }
             }
+        case .partyPill:
+            AudioManager.shared.playSound(for: "pickupheart")
+            consumeItem() //MUST be here else game freezes
+            completion?()
+            
+            delegate?.didTakePartyPill()
         default:
             completion?()
             break
@@ -453,16 +459,21 @@ class GameEngine {
             //Update exitClosed panel to exitOpen
             if isExitAvailable && position == level.end && level.getLevelType(at: position) == .endClosed, let child = gameboardSprite.sprite.childNode(withName: row + "," + col) {
                 
-                let endOpen: K.GameboardPanel = (terrain: LevelType.endOpen, overlay: LevelType.boundary)
+                let endOpen: K.GameboardPanel = (terrain: .endOpen, overlay: Level.shouldProvidePill(level.level) ? .partyPill : .boundary)
                 
                 child.removeFromParent()
                 gameboardSprite.updatePanels(at: position, with: endOpen)
                 level.setLevelType(at: position, with: endOpen)
                                 
                 AudioManager.shared.playSound(for: "dooropen")
+                
+                if Level.shouldProvidePill(level.level) {
+                    AudioManager.shared.playSound(for: "partypill")
+                }
+                
             }
-        }
-    }
+        } //end for
+    } //end consumeItem()
     
     private func setLabelsForDisplaySprite() {
         displaySprite.setLabels(level: "\(level.level)",
@@ -860,7 +871,8 @@ class GameEngine {
         superScene.addChild(gameboardSprite.sprite)
         
         // TODO: - Party Levels
-        if level.level != Level.partyLevel {
+        //Remove score as well???
+        if !Level.isPartyLevel(level.level) {
             superScene.addChild(displaySprite.sprite)
         }
 
@@ -871,7 +883,8 @@ class GameEngine {
         if !isGameOver {
             let numMovesSprite = NumMovesSprite(
                 numMoves: self.level.moves,
-                position: CGPoint(x: K.ScreenDimensions.iPhoneWidth / 2, y: GameboardSprite.yPosition * 3 / 2))
+                position: CGPoint(x: K.ScreenDimensions.iPhoneWidth / 2, y: GameboardSprite.yPosition * 3 / 2),
+                isPartyLevel: Level.isPartyLevel(level.level))
             
             superScene.addChild(numMovesSprite)
             

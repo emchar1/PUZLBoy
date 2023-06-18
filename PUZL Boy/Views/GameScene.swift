@@ -35,13 +35,16 @@ class GameScene: SKScene {
     private let keyRunGameTimerAction = "runGameTimerAction"
     private let keyRunReplenishLivesTimerAction = "runReplenishLivesTimerAction"
     
+    private var lastCurrentLevel: Int?
     private var currentLevel: Int = 1 {
         // FIXME: - Debugging purposes only!!!
         didSet {
+            guard !Level.isPartyLevel(currentLevel) else { return }
+            
             if currentLevel > LevelBuilder.maxLevel {
-                currentLevel = Level.partyLevel + 1
+                currentLevel = 1
             }
-            else if currentLevel < Level.partyLevel + 1 {
+            else if currentLevel < 1 {
                 currentLevel = LevelBuilder.maxLevel
             }
         }
@@ -133,7 +136,10 @@ class GameScene: SKScene {
             LifeSpawnerModel.shared.scheduleNotification(title: "Play Again?", duration: LifeSpawnerModel.durationReminder, repeats: true)
         }
         
-        saveState(levelStatsItem: getLevelStatsItem(level: currentLevel, didWin: false))
+        //Disable saving in a party level
+        if !Level.isPartyLevel(currentLevel) {
+            saveState(levelStatsItem: getLevelStatsItem(level: currentLevel, didWin: false))
+        }
     }
     
     @objc private func appMovedToForeground() {
@@ -261,10 +267,14 @@ class GameScene: SKScene {
     
     ///Starts the timer, used for scoring in the game.
     private func startTimer() {
-        let wait = SKAction.wait(forDuration: 0.1)
+        let wait = SKAction.wait(forDuration: Level.isPartyLevel(currentLevel) ? 0.1 : 1.0)
         let block = SKAction.run { [unowned self] in
             scoringEngine.timerManager.pollTime()
             scoringEngine.updateLabels()
+            
+            if currentLevel == Level.partyLevel && scoringEngine.timerManager.elapsedTime <= 0 {
+                prepareForParty()
+            }
         }
         let sequence = SKAction.sequence([wait, block])
         
@@ -276,6 +286,31 @@ class GameScene: SKScene {
         removeAction(forKey: keyRunGameTimerAction)
                 
         scoringEngine.updateLabels()
+    }
+    
+    ///Used in startTimer() block
+    // FIXME: - Can this be reused? I see other parts of the code that is similar
+    private func prepareForParty() {
+        removeAction(forKey: keyRunGameTimerAction)
+        
+        guard let lastCurrentLevel = lastCurrentLevel else { return }
+
+        currentLevel = lastCurrentLevel
+        self.lastCurrentLevel = nil
+        
+        gameEngine.shouldDisableInput(true)
+        
+        gameEngine.fadeGameboard(fadeOut: true) { [unowned self] in
+            scoringEngine.timerManager.resetTime()
+            startTimer()
+            newGame(level: currentLevel, didWin: true)
+            
+            gameEngine.shouldDisableInput(false)
+            
+            //Write to Firestore, MUST come after newGame()
+            let levelStatsItem = getLevelStatsItem(level: currentLevel, didWin: true)
+            saveState(levelStatsItem: levelStatsItem)
+        }
     }
     
     /**
@@ -338,13 +373,9 @@ class GameScene: SKScene {
             }
         }
         
+        gameEngine.newGame(level: Level.isPartyLevel(level) ? Level.partyLevel : level, shouldSpawn: !didWin)
         
-        
-        
-        // TODO: - Party Levels
-        gameEngine.newGame(level: level % 100 == 0 ? Level.partyLevel : level, shouldSpawn: !didWin)
-        
-        if level % 100 == 0 {
+        if Level.isPartyLevel(level) {
             if !PartyModeSprite.shared.isPartying {
                 PartyModeSprite.shared.setIsPartying(true)
                 PartyModeSprite.shared.startParty(to: self, partyBoy: gameEngine.playerSprite,
@@ -360,9 +391,6 @@ class GameScene: SKScene {
                 scoringEngine.timerManager.setIsParty(false)
             }
         }
-        
-        
-        
         
         //DO NOT CREATE NEW INSTANCES EVERY TIME!!! THIS CAUSES MEMORY LEAKS! 3/30/23
 //        gameEngine = GameEngine(level: level, shouldSpawn: !didWin)
@@ -430,6 +458,7 @@ class GameScene: SKScene {
         
         // FIXME: - Debugging purposes only!!!
         if let user = user,
+           !Level.isPartyLevel(currentLevel),
             user.uid == "3SeIWmlATmbav7jwCDjXyiA0TgA3" ||   //Eddie
             user.uid == "NB9OLr2X8kRLJ7S0G8W3800qo8U2" ||   //Michel
             user.uid == "jnsBD8RFVDMN9cSN8yDnFDoVJp32"      //Mom
@@ -439,10 +468,8 @@ class GameScene: SKScene {
     }
     
     private func playDialogue() {
-        //Only disable input on certain levels, i.e. the important ones w/ instructions.
+        guard !Level.isPartyLevel(currentLevel) || (lastCurrentLevel != nil && lastCurrentLevel! <= (Level.partyMinLevelRequired + 1)) else { return }
         guard chatEngine.shouldPauseGame(level: currentLevel) else { return }
-
-        //Prevents chat dialogue from appearing if user dies on a level with instructions and continue message prompt is showing.
         guard gameEngine.canContinue else { return }
 
         scoringEngine.timerManager.pauseTime()
@@ -511,7 +538,9 @@ extension GameScene: GameEngineDelegate {
             newGame(level: currentLevel, didWin: true)
             
             //Write to Firestore, MUST come after newGame()
-            saveState(levelStatsItem: levelStatsItem)
+            if !Level.isPartyLevel(currentLevel) {
+                saveState(levelStatsItem: levelStatsItem)
+            }
         }
     }
     
@@ -547,14 +576,17 @@ extension GameScene: GameEngineDelegate {
         }
     }
     
-    
+    func didTakePartyPill() {
+        lastCurrentLevel = currentLevel
+        currentLevel = Level.partyLevel
+    }
 }
 
 
 // MARK: - LevelSkipEngineDelegate
 
 extension GameScene: LevelSkipEngineDelegate {
-    func fowardPressed(_ node: SKSpriteNode) {
+    func forwardPressed(_ node: SKSpriteNode) {
         currentLevel += 1
         forwardReverseHelper()
     }

@@ -13,7 +13,9 @@ import Foundation
 struct Level: CustomStringConvertible {
     
     // MARK: - Properties
-    
+
+    //Party time
+    static let partyMinLevelRequired: Int = 100
     static let partyFrequency: Int = 50
     static let partyLevel: Int = -1
     static let finalLevel: Int = 500
@@ -122,7 +124,7 @@ struct Level: CustomStringConvertible {
      - returns: True if it is a level that should provide a pill.
      */
     static func shouldProvidePill(_ level: Int) -> Bool {
-        return level % partyFrequency == 0 && level < finalLevel && level >= partyFrequency * 2
+        return level % partyFrequency == 0 && level < finalLevel && level >= partyMinLevelRequired
     }
     
     
