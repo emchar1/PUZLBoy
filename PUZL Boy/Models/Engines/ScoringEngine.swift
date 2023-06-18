@@ -282,9 +282,12 @@ class ScoringEngine {
      Adds all the sprites to the superScene, i.e. should be called in a GameScene's moveTo() function.
      - parameter superScene: The GameScene to add all the children to.
      */
-    func moveSprites(to superScene: SKScene) {
-        superScene.addChild(totalScoreLabel)
-        superScene.addChild(scoreLabel)
+    func moveSprites(to superScene: SKScene, isPartyLevel: Bool) {
+        if !isPartyLevel {
+            superScene.addChild(totalScoreLabel)
+            superScene.addChild(scoreLabel)
+        }
+        
         superScene.addChild(elapsedTimeLabel)
     }
 

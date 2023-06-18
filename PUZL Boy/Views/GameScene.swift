@@ -447,7 +447,7 @@ class GameScene: SKScene {
     
     private func moveSprites() {
         gameEngine.moveSprites(to: self)
-        scoringEngine.moveSprites(to: self)
+        scoringEngine.moveSprites(to: self, isPartyLevel: Level.isPartyLevel(currentLevel))
         chatEngine.moveSprites(to: self)
 
         pauseResetEngine.moveSprites(to: self, level: currentLevel)

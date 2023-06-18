@@ -11,7 +11,7 @@ class TimerManager {
     
     // MARK: - Properties
     
-    private let partyLevelTime: TimeInterval = 60
+    private let partyLevelTime: TimeInterval = 60.9
     private var isParty = false
     private var timeInitial = Date()
     private var timeFinal = Date()
@@ -47,13 +47,7 @@ class TimerManager {
     
     func resetTime() {
         timeInitial = Date()
-        
-        // FIXME: - partyLevelTime - NOPE! there's a quick blip of the 75 seconds. blink and you miss it.
-        //It's fine that this is offset by partyLevelTime because pollTime() resets it to Date() for non-party level. This assumes pollTime will always be called; it doesn't have to, but this game calls it every second.
-        timeFinal = Date(timeIntervalSinceNow: partyLevelTime)
-        
-        //Ideally, but isParty is set AFTER resetTime() causing it to be off sync.
-//        timeFinal = isParty ? Date(timeIntervalSinceNow: partyLevelTime) : Date()
+        timeFinal = isParty ? Date(timeIntervalSinceNow: partyLevelTime) : Date()
     }
     
     func pollTime() {
@@ -82,6 +76,10 @@ class TimerManager {
     
     func setIsParty(_ isParty: Bool) {
         self.isParty = isParty
+
+        if isParty {
+            resetTime()
+        }
     }
     
     private func debugProperties(label: String) {

@@ -33,7 +33,7 @@ class NumMovesSprite: SKNode {
         bigText.zPosition = 10
         bigText.addDropShadow()
         
-        littleText = SKLabelNode(text: isPartyLevel ? "Bonus Level" : "Move\(numMoves == 1 ? "" : "s")")
+        littleText = SKLabelNode(text: isPartyLevel ? "✨Bonus Level✨" : "Move\(numMoves == 1 ? "" : "s")")
         littleText.fontName = UIFont.chatFont
         littleText.fontSize = UIFont.gameFontSizeExtraLarge
         littleText.fontColor = UIFont.chatFontColor
