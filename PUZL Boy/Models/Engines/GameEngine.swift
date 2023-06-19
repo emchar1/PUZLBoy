@@ -115,80 +115,71 @@ class GameEngine {
         
         finishInit(shouldSpawn: shouldSpawn)
         
-        // TODO: - Party Levels - Spawn party gems ad infinitum here
-        spawnPartyItems()
+        spawnPartyItems(maxItems: 500)
     }
     
     ///Spawns items in a party level.
-    func spawnPartyItems() {
+    func spawnPartyItems(maxItems: Int) {
         guard Level.isPartyLevel(level.level) else { return }
         
-        let gameboardSize = self.level.gameboard.count
-        var randomizePosition: K.GameboardPosition { (row: Int.random(in: 0..<gameboardSize), col: Int.random(in: 0..<gameboardSize)) }
-        var gemPosition: K.GameboardPosition = randomizePosition
-        var gemPosition2: K.GameboardPosition = randomizePosition
-        var gemPosition3: K.GameboardPosition = randomizePosition
-
         partyGemsCollected = 0
         
-        gameboardSprite.sprite.run(SKAction.repeatForever(SKAction.sequence([
-            //Spawn
-            SKAction.run { [unowned self] in
-                while gemPosition == self.level.player || gemPosition == gemPosition2 || gemPosition == gemPosition3 {
-                    gemPosition = randomizePosition
+        let gameboardSize = self.level.gameboard.count
+        var spawnDelayDuration: TimeInterval = 0.5
+        var itemWaitDuration: TimeInterval = 2
+        var counterCheck = 0
+        var itemPositions: [K.GameboardPosition] = Array(repeating: (row: 0, col: 0), count: maxItems)
+        var randomizePosition: K.GameboardPosition { (row: Int.random(in: 0..<gameboardSize), col: Int.random(in: 0..<gameboardSize)) }
+        
+        switch gameboardSize {
+        case 6:
+            spawnDelayDuration = 0.2
+            itemWaitDuration = 3
+        case 5:
+            spawnDelayDuration = 0.3
+            itemWaitDuration = 3
+        case 4:
+            spawnDelayDuration = 0.4
+            itemWaitDuration = 2
+        default:
+            spawnDelayDuration = 0.5
+            itemWaitDuration = 2
+        }
+        
+        for i in 0..<maxItems {
+            gameboardSprite.sprite.run(SKAction.sequence([
+                SKAction.wait(forDuration: spawnDelayDuration * TimeInterval(i)),
+                SKAction.run { [unowned self] in
+                    while itemPositions[i] == self.level.player || self.level.getOverlayType(at: itemPositions[i]) != .boundary {
+                        itemPositions[i] = randomizePosition
+                        counterCheck += 1
+                        
+                        //Prevents infinite while loop
+                        if counterCheck > gameboardSize * gameboardSize {
+                            print("Too many party gems!")
+                            break
+                        }
+                    }
+                    
+                    counterCheck = 0
+                    print("gems spawned: \(i)")
+                    
+                    gameboardSprite.spawnItem(at: itemPositions[i], with: .partyGem) { }
+                    self.level.setLevelType(at: itemPositions[i], with: (terrain: .partytile, overlay: .partyGem))
+                },
+                SKAction.wait(forDuration: itemWaitDuration),
+                SKAction.run { [unowned self] in
+                    gameboardSprite.despawnItem(at: itemPositions[i]) {
+                        self.level.setLevelType(at: itemPositions[i], with: (terrain: .partytile, overlay: .boundary))
+                    }
                 }
-
-                gameboardSprite.spawnItem(at: gemPosition, with: .partyGem) { }
-                self.level.setLevelType(at: gemPosition, with: (terrain: .partytile, overlay: .partyGem))
-            },
-            SKAction.wait(forDuration: 0.5),
-            
-            SKAction.run { [unowned self] in
-                while gemPosition2 == self.level.player || gemPosition2 == gemPosition || gemPosition2 == gemPosition3 {
-                    gemPosition2 = randomizePosition
-                }
-
-                gameboardSprite.spawnItem(at: gemPosition2, with: .partyGem) { }
-                self.level.setLevelType(at: gemPosition2, with: (terrain: .partytile, overlay: .partyGem))
-            },
-            SKAction.wait(forDuration: 0.5),
-            
-            SKAction.run { [unowned self] in
-                while gemPosition3 == self.level.player || gemPosition3 == gemPosition || gemPosition3 == gemPosition2 {
-                    gemPosition3 = randomizePosition
-                }
-
-                gameboardSprite.spawnItem(at: gemPosition3, with: .partyGem) { }
-                self.level.setLevelType(at: gemPosition3, with: (terrain: .partytile, overlay: .partyGem))
-            },
-            
-            
-            //Despawn
-            SKAction.run { [unowned self] in
-                gameboardSprite.despawnItem(at: gemPosition) {
-                    self.level.setLevelType(at: gemPosition, with: (terrain: .partytile, overlay: .boundary))
-                }
-            },
-            SKAction.wait(forDuration: 0.5),
-            
-            SKAction.run { [unowned self] in
-                gameboardSprite.despawnItem(at: gemPosition2) {
-                    self.level.setLevelType(at: gemPosition2, with: (terrain: .partytile, overlay: .boundary))
-                }
-            },
-            SKAction.wait(forDuration: 0.5),
-            
-            SKAction.run { [unowned self] in
-                gameboardSprite.despawnItem(at: gemPosition3) {
-                    self.level.setLevelType(at: gemPosition3, with: (terrain: .partytile, overlay: .boundary))
-                }
-            }
-        ])), withKey: "spawnPartyItems")
-    }
+            ]))
+        } //end for
+    } //end spawnPartyItems()
     
     ///Stops the spawning of party items.
     func stopSpawner() {
-        gameboardSprite.sprite.removeAction(forKey: "spawnPartyItems")
+        gameboardSprite.sprite.removeAllActions()
     }
     
     ///For when reading from Firestore.
@@ -497,7 +488,7 @@ class GameEngine {
                 self.consumeItem()
                 completion?()
                 
-                print("party gems: \(self.partyGemsCollected)")
+                print("party gems collected: \(self.partyGemsCollected)")
             }
         default:
             completion?()
