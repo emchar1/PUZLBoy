@@ -124,19 +124,19 @@ class GameEngine {
         guard Level.isPartyLevel(level.level) else { return }
         
         let gameboardSize = self.level.gameboard.count
-        var gemPosition: K.GameboardPosition = (row: 0, col: 0)
-        var gemPosition2: K.GameboardPosition = (row: 0, col: 0)
-        var gemPosition3: K.GameboardPosition = (row: 0, col: 0)
         var randomizePosition: K.GameboardPosition { (row: Int.random(in: 0..<gameboardSize), col: Int.random(in: 0..<gameboardSize)) }
+        var gemPosition: K.GameboardPosition = randomizePosition
+        var gemPosition2: K.GameboardPosition = randomizePosition
+        var gemPosition3: K.GameboardPosition = randomizePosition
 
         partyGemsCollected = 0
         
         gameboardSprite.sprite.run(SKAction.repeatForever(SKAction.sequence([
             //Spawn
             SKAction.run { [unowned self] in
-                repeat {
+                while gemPosition == self.level.player || gemPosition == gemPosition2 || gemPosition == gemPosition3 {
                     gemPosition = randomizePosition
-                } while gemPosition == self.level.player || gemPosition == gemPosition2 || gemPosition == gemPosition3
+                }
 
                 gameboardSprite.spawnItem(at: gemPosition, with: .partyGem) { }
                 self.level.setLevelType(at: gemPosition, with: (terrain: .partytile, overlay: .partyGem))
@@ -144,9 +144,9 @@ class GameEngine {
             SKAction.wait(forDuration: 0.5),
             
             SKAction.run { [unowned self] in
-                repeat {
+                while gemPosition2 == self.level.player || gemPosition2 == gemPosition || gemPosition2 == gemPosition3 {
                     gemPosition2 = randomizePosition
-                } while gemPosition2 == self.level.player || gemPosition2 == gemPosition || gemPosition2 == gemPosition3
+                }
 
                 gameboardSprite.spawnItem(at: gemPosition2, with: .partyGem) { }
                 self.level.setLevelType(at: gemPosition2, with: (terrain: .partytile, overlay: .partyGem))
@@ -154,9 +154,9 @@ class GameEngine {
             SKAction.wait(forDuration: 0.5),
             
             SKAction.run { [unowned self] in
-                repeat {
+                while gemPosition3 == self.level.player || gemPosition3 == gemPosition || gemPosition3 == gemPosition2 {
                     gemPosition3 = randomizePosition
-                } while gemPosition3 == self.level.player || gemPosition3 == gemPosition || gemPosition3 == gemPosition2
+                }
 
                 gameboardSprite.spawnItem(at: gemPosition3, with: .partyGem) { }
                 self.level.setLevelType(at: gemPosition3, with: (terrain: .partytile, overlay: .partyGem))
