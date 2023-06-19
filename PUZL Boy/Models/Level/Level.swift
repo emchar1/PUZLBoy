@@ -160,6 +160,13 @@ struct Level: CustomStringConvertible {
         return gameboard[position.row][position.col].terrain
     }
     
+    ///Similar to getLevelType(at:), but returns the overlay, always.
+    func getOverlayType(at position: K.GameboardPosition) -> LevelType {
+        guard (position.row >= 0 && position.row < gameboard.count) && (position.col >= 0 && position.col < gameboard[0].count) else { return .boundary }
+        
+        return gameboard[position.row][position.col].overlay
+    }
+    
     func getLevelModel(level: Int, movesRemaining: Int, heathRemaining: Int, gemsCollected: Int, gemsRemaining: Int, playerPosition: PlayerPosition, inventory: Inventory) -> LevelModel {
         let gameboardSize = gameboard[0].count
 
