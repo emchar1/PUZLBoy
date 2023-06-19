@@ -212,8 +212,8 @@ class PlayerSprite {
         player.sprite.run(SKAction.colorize(withColorBlendFactor: 0.0, duration: 0))
     }
     
-    func startGemCollectAnimation(on gameboard: GameboardSprite, at panel: K.GameboardPosition, completion: @escaping (() -> Void)) {
-        let gemSprite = SKSpriteNode(imageNamed: "gem")
+    func startGemCollectAnimation(on gameboard: GameboardSprite, at panel: K.GameboardPosition, isParty: Bool, completion: @escaping (() -> Void)) {
+        let gemSprite = SKSpriteNode(imageNamed: isParty ? "partyGem" : "gem")
         gemSprite.position = gameboard.getLocation(at: panel)
         gemSprite.zPosition = K.ZPosition.itemsAndEffects
         gemSprite.setScale(gameboard.panelSize / gemSprite.size.width)
@@ -229,7 +229,7 @@ class PlayerSprite {
         
         completion()
         
-        AudioManager.shared.playSound(for: "gemcollect")
+        AudioManager.shared.playSound(for: isParty ? "gemcollectparty" : "gemcollect")
     }
     
     func startSwordAnimation(on gameboard: GameboardSprite, at panel: K.GameboardPosition, completion: @escaping (() -> Void)) {
