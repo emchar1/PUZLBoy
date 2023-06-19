@@ -124,6 +124,65 @@ class GameboardSprite {
         }
     }
     
+    /**
+     Spawns an item in a panel with a little growth animation.
+     - parameters:
+        - position: position on the gameboard to spawn
+        - itemOverlay: the item LevelType to spawn
+     */
+    func spawnItem(at position: K.GameboardPosition, with itemOverlay: LevelType, completion: @escaping () -> Void) {
+        let duration: TimeInterval = 0.25
+        let bounceFactor: CGFloat = scaleSize.width * 0.25
+        let overlayPanel = SKSpriteNode(imageNamed: itemOverlay.description)
+
+        overlayPanel.scale(to: .zero)
+        overlayPanel.position = getSpritePosition(at: position) + CGPoint(x: scaleSize.width / 2, y: scaleSize.height / 2)
+        overlayPanel.anchorPoint = .zero
+        overlayPanel.zPosition = K.ZPosition.overlay
+        overlayPanel.name = "\(position.row),\(position.col)\(GameboardSprite.overlayTag)"
+
+        sprite.addChild(overlayPanel)
+        
+        overlayPanel.run(SKAction.sequence([
+            SKAction.group([
+                SKAction.scale(to: scaleSize + CGSize(width: bounceFactor, height: bounceFactor), duration: duration),
+                SKAction.move(to: getSpritePosition(at: position) - CGPoint(x: bounceFactor / 2, y: bounceFactor / 2), duration: duration)
+            ]),
+            SKAction.group([
+                SKAction.scale(to: scaleSize, duration: duration),
+                SKAction.move(to: getSpritePosition(at: position), duration: duration)
+            ])
+        ]), completion: completion)
+    }
+    
+    /**
+     The opposite of spawning, this removes an item with a shrink to 0 animation.
+     - parameters:
+        - position: the position on the gameboard to despawn
+        - itemOverlay: the item to remove, assuming the item exists on that panel position
+     */
+    func despawnItem(at position: K.GameboardPosition, completion: @escaping () -> Void) {
+        let duration: TimeInterval = 0.25
+        let bounceFactor: CGFloat = scaleSize.width * 0.25
+        let itemOverlays = sprite.children.filter({ $0.name == "\(position.row),\(position.col)\(GameboardSprite.overlayTag)" })
+        
+        for itemOverlay in itemOverlays {
+            itemOverlay.run(SKAction.sequence([
+                SKAction.group([
+                    SKAction.scale(to: scaleSize + CGSize(width: bounceFactor, height: bounceFactor), duration: duration),
+                    SKAction.move(to: getSpritePosition(at: position) - CGPoint(x: bounceFactor / 2, y: bounceFactor / 2), duration: duration)
+                ]),
+                SKAction.group([
+                    SKAction.scale(to: 0, duration: duration),
+                    SKAction.move(to: getSpritePosition(at: position) + CGPoint(x: scaleSize.width / 2, y: scaleSize.height / 2), duration: duration)
+                ])
+            ])) {
+                itemOverlay.removeFromParent()
+                completion()
+            }
+        }
+    }
+    
     func illuminatePanel(at spriteName: (row: Int, col: Int), useOverlay: Bool) {
         guard let panel = getPanel(at: spriteName, useOverlay: useOverlay) else { return }
                 

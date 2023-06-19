@@ -323,7 +323,7 @@ extension ChatEngine {
             }
             
             sendChat(profile: .hero, startNewChat: true, endChat: false,
-                     chat: "Yo, I feel funny. I'm seeing colorful flashing lights and the music is bumping. I can't stop moving.. and I like it!") { [unowned self] in
+                     chat: "Yo, I feel funny. I'm seeing colorful flashing lights and the music is bumpin'. I can't stop moving.. and I like it!") { [unowned self] in
                 sendChat(profile: .trainer, startNewChat: false, endChat: false,
                          chat: "Welcome to the PARTY ZONE! Looks like you ate one of those rainbow colored jelly beans, I see.") { [unowned self] in
                     sendChat(profile: .hero, startNewChat: false, endChat: false,
