@@ -91,7 +91,6 @@ struct Level: CustomStringConvertible {
             }
         }
         else {
-            // TODO: - Party Levels
             //Else, it's a party level...
             start = (0, 0)
             player = start

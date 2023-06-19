@@ -870,8 +870,6 @@ class GameEngine {
         superScene.addChild(backgroundSprite)
         superScene.addChild(gameboardSprite.sprite)
         
-        // TODO: - Party Levels
-        //Remove score as well???
         if !Level.isPartyLevel(level.level) {
             superScene.addChild(displaySprite.sprite)
         }
