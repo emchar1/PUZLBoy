@@ -40,7 +40,7 @@ class GameEngine {
     private(set) var levelStatsArray: [LevelStats] = []
     private(set) var gemsRemaining: Int!
     private(set) var gemsCollected: Int = 0
-    private(set) var partyGemsCollected: Int = 0
+    private(set) var partyInventory: PartyInventory = PartyInventory()
     private(set) var healthRemaining: Int! {
         didSet {
             healthRemaining = max(0, healthRemaining)
@@ -114,19 +114,18 @@ class GameEngine {
         toolsCollected = 0
         
         finishInit(shouldSpawn: shouldSpawn)
-        
-        spawnPartyItems(maxItems: 500)
     }
     
     ///Spawns items in a party level.
     func spawnPartyItems(maxItems: Int) {
         guard Level.isPartyLevel(level.level) else { return }
         
-        partyGemsCollected = 0
+        partyInventory.gems = 0
         
         let gameboardSize = self.level.gameboard.count
-        var spawnDelayDuration: TimeInterval = 0.5
-        var itemWaitDuration: TimeInterval = 2
+        var randomItem: LevelType = .partyGem
+        var spawnDelayDuration: TimeInterval
+        var itemWaitDuration: TimeInterval
         var counterCheck = 0
         var itemPositions: [K.GameboardPosition] = Array(repeating: (row: 0, col: 0), count: maxItems)
         var randomizePosition: K.GameboardPosition { (row: Int.random(in: 0..<gameboardSize), col: Int.random(in: 0..<gameboardSize)) }
@@ -155,17 +154,17 @@ class GameEngine {
                         counterCheck += 1
                         
                         //Prevents infinite while loop
-                        if counterCheck > gameboardSize * gameboardSize {
+                        if counterCheck > gameboardSize * gameboardSize * 2 {
                             print("Too many party gems!")
                             break
                         }
                     }
                     
+                    randomItem = partyInventory.getRandomItem()
                     counterCheck = 0
-                    print("gems spawned: \(i)")
                     
-                    gameboardSprite.spawnItem(at: itemPositions[i], with: .partyGem) { }
-                    self.level.setLevelType(at: itemPositions[i], with: (terrain: .partytile, overlay: .partyGem))
+                    gameboardSprite.spawnItem(at: itemPositions[i], with: randomItem) { }
+                    self.level.setLevelType(at: itemPositions[i], with: (terrain: .partytile, overlay: randomItem))
                 },
                 SKAction.wait(forDuration: itemWaitDuration),
                 SKAction.run { [unowned self] in
@@ -482,13 +481,31 @@ class GameEngine {
             
             delegate?.didTakePartyPill()
         case .partyGem:
-            partyGemsCollected += 1
+            partyInventory.gems += 1
                         
-            playerSprite.startItemCollectAnimation(on: gameboardSprite, at: level.player, item: .partyGem) {
-                self.consumeItem()
+            playerSprite.startItemCollectAnimation(on: gameboardSprite, at: level.player, item: .partyGem) { [unowned self] in
+                consumeItem()
                 completion?()
                 
-                print("party gems collected: \(self.partyGemsCollected)")
+                partyInventory.getStatus()
+            }
+        case .partyGemDouble:
+            partyInventory.gemsDouble += 1
+            
+            playerSprite.startItemCollectAnimation(on: gameboardSprite, at: level.player, item: .partyGemDouble) { [unowned self] in
+                consumeItem()
+                completion?()
+
+                partyInventory.getStatus()
+            }
+        case .partyGemTriple:
+            partyInventory.gemsTriple += 1
+
+            playerSprite.startItemCollectAnimation(on: gameboardSprite, at: level.player, item: .partyGemTriple) { [unowned self] in
+                consumeItem()
+                completion?()
+
+                partyInventory.getStatus()
             }
         default:
             completion?()

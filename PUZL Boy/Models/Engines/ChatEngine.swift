@@ -35,6 +35,7 @@ class ChatEngine {
 
     //Other properties
     private(set) var isChatting: Bool = false
+    private var isAnimating: Bool = false
     private var timer: Timer
     private var dispatchWorkItem: DispatchWorkItem //Used to closeChat() and cancel any scheduled closeChat() calls. It works!!!
     private var chatText: String = ""
@@ -143,6 +144,8 @@ class ChatEngine {
     // MARK: - Functions
 
     func fastForward() {
+        guard isAnimating else { return }
+        
         if chatSpeed > 0 && chatIndex < chatText.count {
             chatSpeed = 0
 
@@ -153,6 +156,11 @@ class ChatEngine {
             closeChat()
             
             ButtonTap.shared.tap(type: shouldClose ? .noSound : .buttontap2)
+        }
+        
+        //Prevents spamming of the chat fast forward tapping. Adds a 0.25 second delay.
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
+            self.isAnimating = false
         }
     }
     
@@ -291,6 +299,9 @@ class ChatEngine {
     func touchDown(in location: CGPoint) {
         guard let superScene = superScene else { return }
         guard superScene.nodes(at: location).filter({ $0.name == "backgroundSprite" }).first != nil else { return }
+        guard !isAnimating else { return print("No spamming tapping the chat allowed!") }
+        
+        isAnimating = true
         
         fastForwardSprite.removeAllActions()
         fastForwardSprite.alpha = 1
