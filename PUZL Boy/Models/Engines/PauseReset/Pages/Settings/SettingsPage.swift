@@ -13,10 +13,10 @@ class SettingsPage: ParentPage {
     
     // MARK: - Properties
     
-    private var radioMusic: SettingsRadioNode!
+    private(set) var radioMusic: SettingsRadioNode!
     private var radioSoundFX: SettingsRadioNode!
     private var radioVibration: SettingsRadioNode!
-    private var radioPartyLights: SettingsRadioNode!
+    private(set) var radioPartyLights: SettingsRadioNode!
     
     private(set) var tapButtonNotifications: SettingsTapButton!
     private(set) var tapButtonRateReview: SettingsTapButton!

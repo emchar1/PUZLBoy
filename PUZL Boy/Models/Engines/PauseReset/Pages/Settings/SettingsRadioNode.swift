@@ -123,4 +123,18 @@ class SettingsRadioNode: SKNode {
         ButtonTap.shared.tap(type: .buttontap4)
         delegate?.didTapRadio(self)
     }
+    
+    func setIsOn(_ isOn: Bool) {
+        self.isOn = isOn
+        
+        self.radioOff.removeFromParent()
+        self.radioOn.removeFromParent()
+
+        if isOn {
+            self.radioButton.addChild(self.radioOn)
+        }
+        else {
+            self.radioButton.addChild(self.radioOff)
+        }
+    }
 }

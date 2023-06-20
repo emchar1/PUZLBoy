@@ -358,7 +358,7 @@ class GameEngine {
             gemsRemaining -= 1
             gemsCollected += 1
             
-            playerSprite.startGemCollectAnimation(on: gameboardSprite, at: level.player, isParty: false) {
+            playerSprite.startItemCollectAnimation(on: gameboardSprite, at: level.player, item: .gem) {
                 self.consumeItem()
                 completion?()
             }
@@ -484,7 +484,7 @@ class GameEngine {
         case .partyGem:
             partyGemsCollected += 1
                         
-            playerSprite.startGemCollectAnimation(on: gameboardSprite, at: level.player, isParty: true) {
+            playerSprite.startItemCollectAnimation(on: gameboardSprite, at: level.player, item: .partyGem) {
                 self.consumeItem()
                 completion?()
                 

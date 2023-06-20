@@ -212,24 +212,27 @@ class PlayerSprite {
         player.sprite.run(SKAction.colorize(withColorBlendFactor: 0.0, duration: 0))
     }
     
-    func startGemCollectAnimation(on gameboard: GameboardSprite, at panel: K.GameboardPosition, isParty: Bool, completion: @escaping (() -> Void)) {
-        let gemSprite = SKSpriteNode(imageNamed: isParty ? "partyGem" : "gem")
-        gemSprite.position = gameboard.getLocation(at: panel)
-        gemSprite.zPosition = K.ZPosition.itemsAndEffects
-        gemSprite.setScale(gameboard.panelSize / gemSprite.size.width)
+    func startItemCollectAnimation(on gameboard: GameboardSprite, at panel: K.GameboardPosition, item: LevelType, completion: @escaping (() -> Void)) {
+        let itemSprite = SKSpriteNode(imageNamed: item.description)
+        itemSprite.position = gameboard.getLocation(at: panel)
+        itemSprite.zPosition = K.ZPosition.itemsAndEffects
+        itemSprite.setScale(gameboard.panelSize / itemSprite.size.width)
         
-        gameboard.sprite.addChild(gemSprite)
+        gameboard.sprite.addChild(itemSprite)
         
-        gemSprite.run(SKAction.group([
+        itemSprite.run(SKAction.group([
             SKAction.scale(by: 1.75, duration: 0.25 * PartyModeSprite.shared.speedMultiplier),
             SKAction.fadeOut(withDuration: 0.25 * PartyModeSprite.shared.speedMultiplier)
         ])) {
-            gemSprite.removeFromParent()
+            itemSprite.removeFromParent()
         }
         
         completion()
         
-        AudioManager.shared.playSound(for: isParty ? "gemcollectparty" : "gemcollect")
+        switch item {
+        case .partyGem, .partyGemDouble, .partyGemTriple:       AudioManager.shared.playSound(for: "gemcollectparty")
+        default:                                                AudioManager.shared.playSound(for: "gemcollect")
+        }
     }
     
     func startSwordAnimation(on gameboard: GameboardSprite, at panel: K.GameboardPosition, completion: @escaping (() -> Void)) {

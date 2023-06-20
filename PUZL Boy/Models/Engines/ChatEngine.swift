@@ -333,7 +333,7 @@ extension ChatEngine {
                             sendChat(profile: .trainer, startNewChat: false, endChat: false,
                                      chat: "Run around collecting all the gems and bonuses that pop up in the level. But you gotta be quick before the time runs out.") { [unowned self] in
                                 sendChat(profile: .trainer, startNewChat: false, endChat: true,
-                                         chat: "Oh, and if you start feeling dizzy, you can tap the disco ball up top to turn off the lights. 🪩") { [unowned self] in
+                                         chat: "Oh, and if you start feeling dizzy, you can tap the disco ball below to turn off the lights. 🪩") { [unowned self] in
                                     dialoguePlayed[level] = true
                                     fadeDimOverlay()
                                     isChatting = false

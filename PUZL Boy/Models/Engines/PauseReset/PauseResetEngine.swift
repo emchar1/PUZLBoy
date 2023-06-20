@@ -31,6 +31,7 @@ class PauseResetEngine {
     private let pauseName = "settingsButton"
     private let resetName = "resetButton"
     private let hintName = "hintButton"
+    private let discoName = "discoball"
     private let pauseButtonSize: CGFloat = 180
     private var minorButtonSize: CGFloat { 2 / 3 * pauseButtonSize }
     private var pauseButtonPosition: CGPoint {
@@ -157,9 +158,15 @@ class PauseResetEngine {
         currentLevel = level
         
         if Level.isPartyLevel(currentLevel) {
+            pauseButtonSprite.texture = SKTexture(imageNamed: discoName)
+            pauseButtonSprite.run(SKAction.colorize(with: .black,
+                                                    colorBlendFactor: !UserDefaults.standard.bool(forKey: K.UserDefaults.disablePartyLights) ? 0 : 0.52,
+                                                    duration: 0))
             hideMinorButtons()
         }
         else {
+            pauseButtonSprite.texture = SKTexture(imageNamed: pauseName)
+            pauseButtonSprite.run(SKAction.colorize(with: .black, colorBlendFactor: 0, duration: 0))
             showMinorButtons()
         }
     }
@@ -171,7 +178,7 @@ class PauseResetEngine {
         isDisabled = disable
         
         if disable {
-            pauseButtonSprite.texture = SKTexture(imageNamed: "\(pauseName)Disabled")
+            pauseButtonSprite.texture = SKTexture(imageNamed: Level.isPartyLevel(currentLevel) ? "\(discoName)Disabled" : "\(pauseName)Disabled")
             resetButtonSprite.texture = SKTexture(imageNamed: "\(resetName)Disabled")
             hintButtonSprite.texture = SKTexture(imageNamed: "\(hintName)Disabled")
             
@@ -182,7 +189,7 @@ class PauseResetEngine {
             hideMinorButtons()
         }
         else {
-            pauseButtonSprite.texture = SKTexture(imageNamed: pauseName)
+            pauseButtonSprite.texture = SKTexture(imageNamed: Level.isPartyLevel(currentLevel) ? discoName : pauseName)
             resetButtonSprite.texture = SKTexture(imageNamed: resetName)
             hintButtonSprite.texture = SKTexture(imageNamed: hintName)
             
@@ -290,7 +297,12 @@ class PauseResetEngine {
         for nodeTapped in superScene.nodes(at: location) {
             switch nodeTapped.name {
             case pauseName:
-                openCloseSettings()
+                if Level.isPartyLevel(currentLevel) {
+                    tapDiscoBall()
+                }
+                else {
+                    openCloseSettings()
+                }
             case resetName:
                 ButtonTap.shared.tap(type: .buttontap1)
                 delegate?.didTapReset()
@@ -301,6 +313,32 @@ class PauseResetEngine {
                 break
             }
         }
+    }
+    
+    private func tapDiscoBall() {
+        guard isPressed else { return }
+        
+        isPressed = false
+        
+        let partyLightsOn = !UserDefaults.standard.bool(forKey: K.UserDefaults.disablePartyLights)
+                
+        UserDefaults.standard.set(partyLightsOn, forKey: K.UserDefaults.muteMusic)
+        UserDefaults.standard.set(partyLightsOn, forKey: K.UserDefaults.disablePartyLights)
+
+        settingsPage.radioMusic.setIsOn(!partyLightsOn)
+        settingsPage.radioPartyLights.setIsOn(!partyLightsOn)
+
+        if partyLightsOn {
+            PartyModeSprite.shared.removeLights(duration: 0.5)
+            pauseButtonSprite.run(SKAction.colorize(with: .black, colorBlendFactor: 0.52, duration: 0))
+        }
+        else {
+            PartyModeSprite.shared.addLights(duration: 0.5)
+            pauseButtonSprite.run(SKAction.colorize(with: .black, colorBlendFactor: 0, duration: 0))
+        }
+
+        AudioManager.shared.updateVolumes()
+        ButtonTap.shared.tap(type: .buttontap1)
     }
     
     private func openCloseSettings() {
@@ -366,7 +404,7 @@ class PauseResetEngine {
     func touchUp() {
         guard !isDisabled else { return }
         
-        pauseButtonSprite.run(SKAction.colorize(withColorBlendFactor: 0, duration: 0))
+        pauseButtonSprite.run(SKAction.colorize(withColorBlendFactor: Level.isPartyLevel(currentLevel) ? (!UserDefaults.standard.bool(forKey: K.UserDefaults.disablePartyLights) ? 0 : 0.52) : 0, duration: 0))
         resetButtonSprite.run(SKAction.colorize(withColorBlendFactor: 0, duration: 0))
         hintButtonSprite.run(SKAction.colorize(withColorBlendFactor: 0, duration: 0))
         
