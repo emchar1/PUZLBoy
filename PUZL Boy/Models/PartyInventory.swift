@@ -35,7 +35,7 @@ struct PartyInventory {
     }
     
     func getTotalLives() -> Int {
-        return getTotalGems() / gemsPerLife
+        return lives + getTotalGems() / gemsPerLife
     }
     
     func getRandomItem() -> LevelType {
@@ -45,6 +45,7 @@ struct PartyInventory {
         switch randomizeItem {
         case 0..<20:    randomItem = .partyGemDouble
         case 20..<30:   randomItem = .partyGemTriple
+        case 30..<35:   randomItem = .partyLife
         default:        randomItem = .partyGem
         }
 
@@ -52,6 +53,6 @@ struct PartyInventory {
     }
     
     func getStatus() {
-        print("Gems: \(gems), 2x: \(gemsDouble), 3x: \(gemsTriple), Total Gems: \(getTotalGems()), Total Lives: \(getTotalLives())")
+        print("Gems: \(gems), 2x: \(gemsDouble), 3x: \(gemsTriple), Total Gems: \(getTotalGems()), Lives: \(lives), Total Lives: \(getTotalLives())")
     }
 }

@@ -15,7 +15,7 @@ enum LevelType: Int, CaseIterable {
     case grass, marsh, ice, sand, lava, partytile //terrain panels
     case hammer, sword, heart //inventory panels
     case boulder, enemy, warp, warp2, warp3 //special panels
-    case partyPill, partyGem, partyGemDouble, partyGemTriple //party time!!!
+    case partyPill, partyGem, partyGemDouble, partyGemTriple, partyLife //party items
     
     var description: String {
         //Should boundary default to ""?
@@ -47,6 +47,7 @@ enum LevelType: Int, CaseIterable {
         case "partyGem": return .partyGem
         case "partyGemDouble": return .partyGemDouble
         case "partyGemTriple": return .partyGemTriple
+        case "partyLife": return .partyLife
         default: return .boundary //.boundary ensures all types are accounted for.
         }
     }

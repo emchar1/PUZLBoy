@@ -507,6 +507,15 @@ class GameEngine {
 
                 partyInventory.getStatus()
             }
+        case .partyLife:
+            partyInventory.lives += 1
+
+            playerSprite.startItemCollectAnimation(on: gameboardSprite, at: level.player, item: .partyLife) { [unowned self] in
+                consumeItem()
+                completion?()
+
+                partyInventory.getStatus()
+            }
         default:
             completion?()
             break
