@@ -11,6 +11,7 @@ struct PartyInventory {
     
     // MARK: - Properties
     
+    let timeVal: TimeInterval = 5
     let gemsPerLife = 100
     var gems: Int
     var gemsDouble: Int
@@ -31,7 +32,9 @@ struct PartyInventory {
     // MARK: - Functions
     
     func getTotalGems() -> Int {
-        return gems * (2 * gemsDouble + 3 * gemsTriple)
+        let multiplier = max(2 * gemsDouble + 3 * gemsTriple, 1)
+        
+        return gems * multiplier
     }
     
     func getTotalLives() -> Int {
@@ -44,8 +47,9 @@ struct PartyInventory {
         
         switch randomizeItem {
         case 0..<20:    randomItem = .partyGemDouble
-        case 20..<30:   randomItem = .partyGemTriple
-        case 30..<35:   randomItem = .partyLife
+        case 120..<130: randomItem = .partyGemTriple
+        case 230..<235: randomItem = .partyLife
+        case 340..<360: randomItem = .partyTime
         default:        randomItem = .partyGem
         }
 

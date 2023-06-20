@@ -92,7 +92,8 @@ class HowToPlayNode: SKNode {
         addChild(descriptionNode)
         
         if hintType == .overlay {
-            let terrainBackground = SKSpriteNode(imageNamed: imageName == "gemparty" ? "partytile" : "grass")
+            // FIXME: - When does this get called???
+            let terrainBackground = SKSpriteNode(imageNamed: imageName == "partyGem" ? "partytile" : "grass")
             terrainBackground.position = CGPoint(x: 0, y: -HowToPlayNode.iconSize)
             terrainBackground.anchorPoint = .zero
             terrainBackground.size = CGSize(width: HowToPlayNode.iconSize, height: HowToPlayNode.iconSize)

@@ -63,6 +63,12 @@ class TimerManager {
         pollTime()
     }
     
+    func addTime(_ seconds: TimeInterval) {
+        guard isParty else { return print("Can only add time in a bonus level") }
+
+        timeFinal += seconds
+    }
+    
     func resumeTime() {
         if isParty {
             timeFinal = Date(timeIntervalSinceNow: elapsedTime)

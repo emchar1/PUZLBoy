@@ -584,6 +584,10 @@ extension GameScene: GameEngineDelegate {
         lastCurrentLevel = currentLevel
         currentLevel = Level.partyLevel
     }
+    
+    func didGetPartyTime(_ seconds: TimeInterval) {
+        scoringEngine.timerManager.addTime(seconds)
+    }
 }
 
 

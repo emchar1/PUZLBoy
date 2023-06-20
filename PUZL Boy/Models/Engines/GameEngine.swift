@@ -13,6 +13,7 @@ protocol GameEngineDelegate: AnyObject {
     func enemyIsKilled()
     func gameIsPaused(isPaused: Bool)
     func didTakePartyPill()
+    func didGetPartyTime(_ seconds: TimeInterval)
 }
 
 /**
@@ -120,7 +121,7 @@ class GameEngine {
     func spawnPartyItems(maxItems: Int) {
         guard Level.isPartyLevel(level.level) else { return }
         
-        partyInventory.gems = 0
+        partyInventory = PartyInventory()
         
         let gameboardSize = self.level.gameboard.count
         var randomItem: LevelType = .partyGem
@@ -515,6 +516,15 @@ class GameEngine {
                 completion?()
 
                 partyInventory.getStatus()
+            }
+        case .partyTime:
+            delegate?.didGetPartyTime(partyInventory.timeVal)
+            
+            playerSprite.startItemCollectAnimation(on: gameboardSprite, at: level.player, item: .partyTime) { [unowned self] in 
+                consumeItem()
+                completion?()
+                
+                
             }
         default:
             completion?()

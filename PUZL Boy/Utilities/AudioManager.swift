@@ -123,6 +123,7 @@ class AudioManager {
         addAudioItem("partypill", category: .soundFX) //needs purchase
         addAudioItem("pickupheart", category: .soundFX)
         addAudioItem("pickupitem", category: .soundFX)
+        addAudioItem("pickuptime", category: .soundFX)
         addAudioItem("punchwhack1", category: .soundFX) //needs purchase
         addAudioItem("punchwhack2", category: .soundFX) //needs purchase
         addAudioItem("revive", category: .soundFX)

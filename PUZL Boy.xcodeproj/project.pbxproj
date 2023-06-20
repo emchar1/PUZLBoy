@@ -45,6 +45,7 @@
 		EA41F83A2A0D71EE00DF47EC /* ParentPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA41F8392A0D71EE00DF47EC /* ParentPage.swift */; };
 		EA41F83C2A0DD3F800DF47EC /* SettingsTapButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA41F83B2A0DD3F800DF47EC /* SettingsTapButton.swift */; };
 		EA4583372A420AAA00279056 /* PartyInventory.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA4583362A420AAA00279056 /* PartyInventory.swift */; };
+		EA45833B2A42622000279056 /* pickuptime.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA45833A2A42622000279056 /* pickuptime.mp3 */; };
 		EA49B0692A1923D300E6B96D /* HowToPlayTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA49B0682A1923D300E6B96D /* HowToPlayTableView.swift */; };
 		EA49B06B2A1953C500E6B96D /* HowToPlayTVCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA49B06A2A1953C500E6B96D /* HowToPlayTVCell.swift */; };
 		EA49B06D2A19D03000E6B96D /* HowToPlayModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA49B06C2A19D03000E6B96D /* HowToPlayModel.swift */; };
@@ -232,6 +233,7 @@
 		EA41F8392A0D71EE00DF47EC /* ParentPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParentPage.swift; sourceTree = "<group>"; };
 		EA41F83B2A0DD3F800DF47EC /* SettingsTapButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTapButton.swift; sourceTree = "<group>"; };
 		EA4583362A420AAA00279056 /* PartyInventory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PartyInventory.swift; sourceTree = "<group>"; };
+		EA45833A2A42622000279056 /* pickuptime.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = pickuptime.mp3; sourceTree = "<group>"; };
 		EA49B0682A1923D300E6B96D /* HowToPlayTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HowToPlayTableView.swift; sourceTree = "<group>"; };
 		EA49B06A2A1953C500E6B96D /* HowToPlayTVCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HowToPlayTVCell.swift; sourceTree = "<group>"; };
 		EA49B06C2A19D03000E6B96D /* HowToPlayModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HowToPlayModel.swift; sourceTree = "<group>"; };
@@ -649,6 +651,7 @@
 				EA2450802A3D9666004A2FEC /* partypill.mp3 */,
 				EA3467A629A8C68A002DDA02 /* pickupheart.mp3 */,
 				EAAEA3C92931F12B00221963 /* pickupitem.mp3 */,
+				EA45833A2A42622000279056 /* pickuptime.mp3 */,
 				EAFA6A6329DCEEC3002287C2 /* punchwhack1.mp3 */,
 				EAFA6A6129DCED35002287C2 /* punchwhack2.mp3 */,
 				EA3467A429A8C659002DDA02 /* revive.mp3 */,
@@ -883,6 +886,7 @@
 				EA65183728E419A000E535BF /* LaunchScreen.storyboard in Resources */,
 				EAF7181B29AFE65300E2ED82 /* overworldparty.mp3 in Resources */,
 				EA95D18929459BC80061059C /* moveglide.mp3 in Resources */,
+				EA45833B2A42622000279056 /* pickuptime.mp3 in Resources */,
 				EA9F4DEB29D37532006F4B2F /* movepoisoned4.mp3 in Resources */,
 				EA4D025B29B7D61C00F0C7B1 /* movemarsh3.mp3 in Resources */,
 				EA0F1491292CC8D90013038E /* enemydeath.mp3 in Resources */,

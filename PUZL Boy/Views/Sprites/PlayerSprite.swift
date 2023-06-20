@@ -232,6 +232,8 @@ class PlayerSprite {
         switch item {
         case .partyGem, .partyGemDouble, .partyGemTriple:
             AudioManager.shared.playSound(for: "gemcollectparty")
+        case .partyTime:
+            AudioManager.shared.playSound(for: "pickuptime")
         case .partyLife:
             AudioManager.shared.playSound(for: "boyattack2")
         default:
