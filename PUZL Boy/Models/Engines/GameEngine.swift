@@ -141,9 +141,9 @@ class GameEngine {
         case 4:
             spawnDelayDuration = 0.4
             itemWaitDuration = 2
-        default:
+        default: //gameboardSize = 3
             spawnDelayDuration = 0.5
-            itemWaitDuration = 2
+            itemWaitDuration = 1.5
         }
         
         for i in 0..<maxItems {

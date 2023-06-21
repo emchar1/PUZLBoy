@@ -235,7 +235,7 @@ class PlayerSprite {
         case .partyTime:
             AudioManager.shared.playSound(for: "pickuptime")
         case .partyLife:
-            AudioManager.shared.playSound(for: "boyattack2")
+            AudioManager.shared.playSound(for: "boywin")
         default:
             AudioManager.shared.playSound(for: "gemcollect")
         }

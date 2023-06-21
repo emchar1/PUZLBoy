@@ -468,7 +468,14 @@ class GameScene: SKScene {
     }
     
     private func playDialogue() {
-        guard !Level.isPartyLevel(currentLevel) || (lastCurrentLevel != nil && lastCurrentLevel! <= (Level.partyMinLevelRequired + 1)) else { return }
+        
+        // FIXME: - Party Levels is 500 items enough??? Don't want to run out of spawning items...
+        let maxSpawnedItemsForParty = 500
+        
+        guard !Level.isPartyLevel(currentLevel) || (lastCurrentLevel != nil && lastCurrentLevel! <= (Level.partyMinLevelRequired + 1)) else {
+            gameEngine.spawnPartyItems(maxItems: maxSpawnedItemsForParty)
+            return
+        }
         guard chatEngine.shouldPauseGame(level: currentLevel) else { return }
         guard gameEngine.canContinue else { return }
 
@@ -481,9 +488,7 @@ class GameScene: SKScene {
             scoringEngine.timerManager.resumeTime()
             startTimer()
             gameEngine.shouldDisableInput(false)
-            
-            // FIXME: - Party Levels is 500 items enough??? Don't want to run out of spawning items...
-            gameEngine.spawnPartyItems(maxItems: 500)
+            gameEngine.spawnPartyItems(maxItems: maxSpawnedItemsForParty)
             
             pauseResetEngine.shouldDisable(false)
         }

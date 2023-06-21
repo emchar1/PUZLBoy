@@ -83,6 +83,7 @@ class AudioManager {
         addAudioItem("boygrunt1", category: .soundFX)
         addAudioItem("boygrunt2", category: .soundFX)
         addAudioItem("boyimpact", category: .soundFX)
+        addAudioItem("boywin", category: .soundFX) //needs purchase - where can I find?
         addAudioItem("buttontap1", category: .soundFX)
         addAudioItem("buttontap2", category: .soundFX)
         addAudioItem("buttontap3", category: .soundFX) //needs purchase
