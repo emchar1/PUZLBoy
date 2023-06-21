@@ -273,7 +273,12 @@ class GameScene: SKScene {
             scoringEngine.updateLabels()
             
             if currentLevel == Level.partyLevel && scoringEngine.timerManager.elapsedTime <= 0 {
-                prepareForParty()
+                stopParty()
+            }
+            
+            // FIXME: - Countdown - why are edges 11 and 1 (not 10 and 0)
+            if currentLevel == Level.partyLevel && scoringEngine.timerManager.elapsedTime <= 11 && scoringEngine.timerManager.elapsedTime > 1 && scoringEngine.timerManager.milliseconds <= 0 {
+                scoringEngine.pulseColorTimeAnimation(fontColor: .red)
             }
         }
         let sequence = SKAction.sequence([wait, block])
@@ -290,7 +295,7 @@ class GameScene: SKScene {
     
     ///Used in startTimer() block
     // FIXME: - Can this be reused? I see other parts of the code that is similar
-    private func prepareForParty() {
+    private func stopParty() {
         removeAction(forKey: keyRunGameTimerAction)
         
         guard let lastCurrentLevel = lastCurrentLevel else { return }
@@ -298,6 +303,7 @@ class GameScene: SKScene {
         currentLevel = lastCurrentLevel
         self.lastCurrentLevel = nil
         
+        gameEngine.stopSpawner()
         gameEngine.shouldDisableInput(true)
         
         gameEngine.fadeGameboard(fadeOut: true) { [unowned self] in
@@ -592,6 +598,7 @@ extension GameScene: GameEngineDelegate {
     
     func didGetPartyTime(_ seconds: TimeInterval) {
         scoringEngine.timerManager.addTime(seconds)
+        scoringEngine.addTimeAnimation(seconds: seconds)
     }
 }
 

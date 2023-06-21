@@ -205,7 +205,7 @@ class ScoringEngine {
     
     func animateScore(usedContinue: Bool) {
         scoreLabel.run(SKAction.sequence([
-            scaleScoreAnimation(fontColor: .cyan),
+            scaleScoreAnimation(sprite: scoreLabel, fontColor: .cyan),
             SKAction.wait(forDuration: 1.0),
             incrementScoreAnimation()
         ]))
@@ -218,10 +218,10 @@ class ScoringEngine {
 
     ///Use this womp-womp animation because player skipped the level (but paid $1.99!)
     func scaleScoreLabelDidSkipLevel() {
-        scoreLabel.run(scaleScoreAnimation(fontColor: .red))
+        scoreLabel.run(scaleScoreAnimation(sprite: scoreLabel, fontColor: .red))
     }
     
-    private func scaleScoreAnimation(fontColor: UIColor) -> SKAction {
+    private func scaleScoreAnimation(sprite: SKNode, fontColor: UIColor, shouldCenter: Bool = false) -> SKAction {
         let scaleUpDuration: TimeInterval = 0.125
         let scaleDownDuration: TimeInterval = 0.5
         let scaleCount = 250
@@ -230,13 +230,16 @@ class ScoringEngine {
         let waitUp = SKAction.wait(forDuration: scaleUpDuration / TimeInterval(scaleCount))
         let waitDown = SKAction.wait(forDuration: scaleDownDuration / TimeInterval(scaleCount))
         
-        let scaleUpAction = SKAction.run { [unowned self] in
-            scoreLabel.setScale(scoreLabel.yScale + increment)
+        let scaleUpAction = SKAction.run {
+            sprite.setScale(sprite.yScale + increment)
         }
         
-        let scaleDownAction = SKAction.run { [unowned self] in
-            scoreLabel.setScale(scoreLabel.yScale - increment)
+        let scaleDownAction = SKAction.run {
+            sprite.setScale(sprite.yScale - increment)
         }
+                
+        let moveLeft = SKAction.moveBy(x: (shouldCenter ? -sprite.frame.width / 4 : 0), y: 0, duration: scaleUpDuration)
+        let moveRight = SKAction.moveBy(x: (shouldCenter ? sprite.frame.width / 4 : 0), y: 0, duration: scaleDownDuration)
         
         let scaleUpRepeat = SKAction.repeat(SKAction.sequence([waitUp, scaleUpAction]), count: scaleCount)
         let scaleDownRepeat = SKAction.repeat(SKAction.sequence([waitDown, scaleDownAction]), count: scaleCount)
@@ -245,9 +248,9 @@ class ScoringEngine {
         let scaleDownColor = SKAction.colorize(withColorBlendFactor: 0.0, duration: scaleDownDuration)
         
         let scaleSequence = SKAction.sequence([
-            SKAction.group([scaleUpColor, scaleUpRepeat]),
+            SKAction.group([scaleUpColor, scaleUpRepeat, moveLeft]),
             SKAction.wait(forDuration: 0.5),
-            SKAction.group([scaleDownColor, scaleDownRepeat])
+            SKAction.group([scaleDownColor, scaleDownRepeat, moveRight])
         ])
         
         return scaleSequence
@@ -273,6 +276,43 @@ class ScoringEngine {
         let incrementSequence = SKAction.sequence([incrementRepeat, incrementRemainder])
         
         return incrementSequence
+    }
+    
+    
+    // MARK: - Animate Time Functions
+    
+    func pulseColorTimeAnimation(fontColor: UIColor) {
+        elapsedTimeLabel.run(SKAction.sequence([
+            SKAction.colorize(with: fontColor, colorBlendFactor: 1.0, duration: 0),
+            SKAction.colorize(withColorBlendFactor: 0, duration: 0.5)
+        ]))
+    }
+        
+    func addTimeAnimation(seconds: TimeInterval) {
+        let numberFormatter = NumberFormatter()
+        numberFormatter.numberStyle = .decimal
+        numberFormatter.minimumFractionDigits = 2
+        let secondsFormatted = numberFormatter.string(from: NSNumber(value: seconds)) ?? "0.XX"
+        
+        let pointsSprite = SKLabelNode(text: "+\(secondsFormatted)")
+        pointsSprite.fontName = UIFont.gameFont
+        pointsSprite.fontSize = UIFont.gameFontSizeMedium //Same size for iPad
+        pointsSprite.fontColor = .yellow
+        pointsSprite.position = .zero
+        pointsSprite.horizontalAlignmentMode = .left
+        pointsSprite.zPosition = K.ZPosition.itemsPoints
+        pointsSprite.addDropShadow()
+        
+        elapsedTimeLabel.addChild(pointsSprite)
+
+        let moveUp = SKAction.move(by: CGVector(dx: 0, dy: 100), duration: 1.0)
+        let fadeOut = SKAction.sequence([SKAction.wait(forDuration: 0.75), SKAction.fadeOut(withDuration: 0.25)])
+        
+        pointsSprite.run(SKAction.group([moveUp, fadeOut])) {
+            pointsSprite.removeFromParent()
+        }
+        
+        elapsedTimeLabel.run(scaleScoreAnimation(sprite: elapsedTimeLabel, fontColor: .green, shouldCenter: true))
     }
     
 
