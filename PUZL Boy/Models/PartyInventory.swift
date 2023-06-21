@@ -46,10 +46,10 @@ struct PartyInventory {
         var randomItem: LevelType
         
         switch randomizeItem {
-        case 0..<20:    randomItem = .partyGemDouble
-        case 120..<130: randomItem = .partyGemTriple
-        case 230..<235: randomItem = .partyLife
-        case 340..<360: randomItem = .partyTime
+        case 100..<120:    randomItem = .partyGemDouble
+        case 220..<230: randomItem = .partyGemTriple
+        case 330..<335: randomItem = .partyLife
+        case 440..<460: randomItem = .partyTime
         default:        randomItem = .partyGem
         }
 

@@ -137,7 +137,7 @@ class GameEngine {
             itemWaitDuration = 3
         case 5:
             spawnDelayDuration = 0.3
-            itemWaitDuration = 3
+            itemWaitDuration = 2.5
         case 4:
             spawnDelayDuration = 0.4
             itemWaitDuration = 2

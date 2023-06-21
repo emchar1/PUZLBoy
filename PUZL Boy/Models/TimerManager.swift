@@ -15,7 +15,8 @@ class TimerManager {
     private var isParty = false
     private var timeInitial = Date()
     private var timeFinal = Date()
-    
+    var milliseconds: Int { Int(elapsedTime * 10) % 10 }
+
     var elapsedTime: TimeInterval {
         TimeInterval(timeFinal.timeIntervalSinceNow - timeInitial.timeIntervalSinceNow)
     }
@@ -23,7 +24,6 @@ class TimerManager {
     var formattedText: String {
         let minutes = Int(elapsedTime) / 60 % 60
         let seconds = Int(elapsedTime) % 60
-        let milliseconds = Int(elapsedTime * 10) % 10
         var returnString: String
         
         if isParty && minutes <= 0 {
