@@ -212,7 +212,7 @@ class PlayerSprite {
         player.sprite.run(SKAction.colorize(withColorBlendFactor: 0.0, duration: 0))
     }
     
-    func startItemCollectAnimation(on gameboard: GameboardSprite, at panel: K.GameboardPosition, item: LevelType, completion: @escaping (() -> Void)) {
+    func startItemCollectAnimation(on gameboard: GameboardSprite, at panel: K.GameboardPosition, item: LevelType, sound: LevelType = .gem, completion: @escaping (() -> Void)) {
         let itemSprite = SKSpriteNode(imageNamed: item.description)
         itemSprite.position = gameboard.getLocation(at: panel)
         itemSprite.zPosition = K.ZPosition.itemsAndEffects
@@ -229,12 +229,13 @@ class PlayerSprite {
         
         completion()
         
-        switch item {
+        switch sound {
         case .partyGem, .partyGemDouble, .partyGemTriple:
             AudioManager.shared.playSound(for: "gemcollectparty")
         case .partyTime:
             AudioManager.shared.playSound(for: "pickuptime")
         case .partyLife:
+            AudioManager.shared.playSound(for: "gemcollectparty")
             AudioManager.shared.playSound(for: "boywin")
         case .partyFast:
             AudioManager.shared.playSound(for: "partyfast")

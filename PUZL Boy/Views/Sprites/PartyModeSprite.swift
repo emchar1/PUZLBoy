@@ -32,9 +32,11 @@ class PartyModeSprite: SKNode {
         }
     }
     
-    private(set) var speedMultiplier: TimeInterval = 1.0
-    private let speedMultipliers: [TimeInterval] = [0.5, 0.75, 1.0, 1.5, 2.0]
+    private let speedMultipliers: [TimeInterval] = [2.0, 1.5, 1.0, 0.75, 0.5]
     private var currentMultiplier = 2
+    private(set) var speedMultiplier: TimeInterval = 1.0
+    var multiplierMinReached: Bool { currentMultiplier <= 0 }
+    var multiplierMaxReached: Bool { currentMultiplier >= speedMultipliers.count - 1 }
 
     private let baseColor: UIColor = .clear
     private var backgroundSprite: SKSpriteNode
@@ -88,8 +90,18 @@ class PartyModeSprite: SKNode {
     }
     
     func increaseSpeedMultiplier(shouldDecrease: Bool) {
-        currentMultiplier = shouldDecrease ? min(currentMultiplier + 1, speedMultipliers.count - 1) : max(currentMultiplier - 1, 0)
-        speedMultiplier = speedMultipliers[currentMultiplier]
+        if shouldDecrease {
+            if !multiplierMinReached {
+                currentMultiplier = currentMultiplier - 1
+                speedMultiplier = speedMultipliers[currentMultiplier]
+            }
+        }
+        else {
+            if !multiplierMaxReached {
+                currentMultiplier = currentMultiplier + 1
+                speedMultiplier = speedMultipliers[currentMultiplier]
+            }
+        }
     }
     
     func stopParty(partyBoy: PlayerSprite, hasSword: Bool, hasHammer: Bool) {

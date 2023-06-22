@@ -505,7 +505,7 @@ class GameEngine {
         case .partyGem:
             partyInventory.gems += 1
                         
-            playerSprite.startItemCollectAnimation(on: gameboardSprite, at: level.player, item: .partyGem) { [unowned self] in
+            playerSprite.startItemCollectAnimation(on: gameboardSprite, at: level.player, item: .partyGem, sound: .partyGem) { [unowned self] in
                 consumeItem()
                 completion?()
                 
@@ -514,7 +514,7 @@ class GameEngine {
         case .partyGemDouble:
             partyInventory.gemsDouble += 1
             
-            playerSprite.startItemCollectAnimation(on: gameboardSprite, at: level.player, item: .partyGemDouble) { [unowned self] in
+            playerSprite.startItemCollectAnimation(on: gameboardSprite, at: level.player, item: .partyGemDouble, sound: .partyGemDouble) { [unowned self] in
                 consumeItem()
                 completion?()
 
@@ -523,7 +523,7 @@ class GameEngine {
         case .partyGemTriple:
             partyInventory.gemsTriple += 1
 
-            playerSprite.startItemCollectAnimation(on: gameboardSprite, at: level.player, item: .partyGemTriple) { [unowned self] in
+            playerSprite.startItemCollectAnimation(on: gameboardSprite, at: level.player, item: .partyGemTriple, sound: .partyGemTriple) { [unowned self] in
                 consumeItem()
                 completion?()
 
@@ -534,7 +534,7 @@ class GameEngine {
 
             ScoringEngine.addTextAnimation(text: "1-UP", textColor: .green, originSprite: gameboardSprite.sprite, location: gameboardSprite.getLocation(at: level.player))
 
-            playerSprite.startItemCollectAnimation(on: gameboardSprite, at: level.player, item: .partyLife) { [unowned self] in
+            playerSprite.startItemCollectAnimation(on: gameboardSprite, at: level.player, item: .partyLife, sound: .partyLife) { [unowned self] in
                 consumeItem()
                 completion?()
 
@@ -545,33 +545,39 @@ class GameEngine {
 
             delegate?.didGetPartyTime(partyInventory.timeIncrement)
             
-            playerSprite.startItemCollectAnimation(on: gameboardSprite, at: level.player, item: .partyTime) { [unowned self] in 
+            playerSprite.startItemCollectAnimation(on: gameboardSprite, at: level.player, item: .partyTime, sound: .partyTime) { [unowned self] in
                 consumeItem()
                 completion?()
 
                 partyInventory.getStatus()
             }
         case .partyFast:
+            let maxReached = PartyModeSprite.shared.multiplierMaxReached
+            
             partyInventory.speedUp += 1
-
             PartyModeSprite.shared.increaseSpeedMultiplier(shouldDecrease: false)
 
-            ScoringEngine.addTextAnimation(text: "SPEED+", textColor: .cyan, originSprite: gameboardSprite.sprite, location: gameboardSprite.getLocation(at: level.player))
+            if !maxReached {
+                ScoringEngine.addTextAnimation(text: "SPEED+", textColor: .cyan, originSprite: gameboardSprite.sprite, location: gameboardSprite.getLocation(at: level.player))
+            }
 
-            playerSprite.startItemCollectAnimation(on: gameboardSprite, at: level.player, item: .partyFast) { [unowned self] in
+            playerSprite.startItemCollectAnimation(on: gameboardSprite, at: level.player, item: .partyFast, sound: maxReached ? .partyGem : .partyFast) { [unowned self] in
                 consumeItem()
                 completion?()
 
                 partyInventory.getStatus()
             }
         case .partySlow:
+            let minReached = PartyModeSprite.shared.multiplierMinReached
+            
             partyInventory.speedDown += 1
-
             PartyModeSprite.shared.increaseSpeedMultiplier(shouldDecrease: true)
 
-            ScoringEngine.addTextAnimation(text: "SPEED-", textColor: .magenta, originSprite: gameboardSprite.sprite, location: gameboardSprite.getLocation(at: level.player))
-
-            playerSprite.startItemCollectAnimation(on: gameboardSprite, at: level.player, item: .partySlow) { [unowned self] in
+            if !minReached {
+                ScoringEngine.addTextAnimation(text: "SPEED-", textColor: .magenta, originSprite: gameboardSprite.sprite, location: gameboardSprite.getLocation(at: level.player))
+            }
+                
+            playerSprite.startItemCollectAnimation(on: gameboardSprite, at: level.player, item: .partySlow, sound: minReached ? .partyGem : .partySlow) { [unowned self] in
                 consumeItem()
                 completion?()
 
