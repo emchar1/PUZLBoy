@@ -42,7 +42,7 @@ class GameEngine {
     private(set) var gemsRemaining: Int!
     private(set) var gemsCollected: Int = 0
     private(set) var partyInventory: PartyInventory = PartyInventory()
-    private(set) var healthRemaining: Int! {
+    private(set) var healthRemaining: Int = 1 {
         didSet {
             healthRemaining = max(0, healthRemaining)
         }
@@ -107,7 +107,7 @@ class GameEngine {
         }
         
         movesRemaining = self.level.moves
-        healthRemaining = self.level.health
+        healthRemaining = 1
         gemsRemaining = self.level.gems
         
         enemiesKilled = 0
@@ -193,7 +193,6 @@ class GameEngine {
             level.inventory = saveStateModel.levelModel.inventory
             level.updatePlayer(position: (row: saveStateModel.levelModel.playerPosition.row, col: saveStateModel.levelModel.playerPosition.col))
             movesRemaining = saveStateModel.levelModel.moves
-            healthRemaining = saveStateModel.levelModel.health
             gemsRemaining = saveStateModel.levelModel.gemsRemaining
             gemsCollected = saveStateModel.levelModel.gemsCollected
             
@@ -212,7 +211,6 @@ class GameEngine {
             level.inventory = Inventory(hammers: 0, swords: 0)
             //level.updatePlayer(position: (row: saveStateModel.playerPosition.row, col: saveStateModel.playerPosition.col))
             movesRemaining = level.moves
-            healthRemaining = level.health
             gemsRemaining = level.gems
             gemsCollected = 0
         }
@@ -235,6 +233,30 @@ class GameEngine {
         K.ScreenDimensions.topOfGameboard = GameboardSprite.yPosition + K.ScreenDimensions.iPhoneWidth * GameboardSprite.spriteScale
         playerSprite = PlayerSprite(shouldSpawn: true)
         displaySprite = DisplaySprite(topYPosition: K.ScreenDimensions.topOfGameboard, bottomYPosition: GameboardSprite.yPosition, margin: 40)
+        
+        //Explicitly add additional hearts from the princess, at the start of the level if healthRemaining > 1
+        if level.health > 1 {
+            displaySprite.sprite.run(SKAction.repeat(SKAction.sequence([
+                SKAction.run { [unowned self] in
+                    displaySprite.statusHealth.pulseImage()
+                    
+                    //Level 51 is the dragon level, and it's annoying to hear pickupheart 10 times...
+                    if level.level > 51 {
+                        AudioManager.shared.playSound(for: "pickupheart")
+                        
+                        ScoringEngine.updateStatusIconsAnimation(
+                            icon: .health,
+                            amount: 1,
+                            originSprite: gameboardSprite.sprite,
+                            location: CGPoint(x: playerSprite.sprite.position.x, y: playerSprite.sprite.position.y + 20))
+                    }
+                    
+                    healthRemaining += 1
+                    setLabelsForDisplaySprite()
+                },
+                SKAction.wait(forDuration: 0.5)
+            ]), count: level.health - 1))
+        }
 
         setLabelsForDisplaySprite()
         setPlayerSpritePosition(shouldAnimate: false, completion: nil)
@@ -586,7 +608,7 @@ class GameEngine {
         displaySprite.setLabels(level: "\(level.level)",
                                 lives: "\(GameEngine.livesRemaining)",
                                 moves: "\(movesRemaining ?? -99)",
-                                health: "\(healthRemaining ?? -99)",
+                                health: "\(healthRemaining)",
                                 inventory: level.inventory)
     }
     
