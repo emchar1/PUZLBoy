@@ -86,7 +86,7 @@ class AudioManager {
         addAudioItem("boywin", category: .soundFX) //needs purchase - where can I find?
         addAudioItem("buttontap1", category: .soundFX)
         addAudioItem("buttontap2", category: .soundFX)
-        addAudioItem("buttontap3", category: .soundFX) //needs purchase
+        addAudioItem("buttontap3", category: .soundFX)
         addAudioItem("buttontap4", category: .soundFX)
         addAudioItem("buttontap5", category: .soundFX)
         addAudioItem("buttontap6", category: .soundFX)
@@ -121,12 +121,14 @@ class AudioManager {
         addAudioItem("movetile2", category: .soundFX)
         addAudioItem("movetile3", category: .soundFX)
         addAudioItem("movewalk", category: .soundFX)
-        addAudioItem("partypill", category: .soundFX) //needs purchase
+        addAudioItem("partypill", category: .soundFX)
+        addAudioItem("partyfast", category: .soundFX)
+        addAudioItem("partyslow", category: .soundFX)
         addAudioItem("pickupheart", category: .soundFX)
         addAudioItem("pickupitem", category: .soundFX)
         addAudioItem("pickuptime", category: .soundFX)
-        addAudioItem("punchwhack1", category: .soundFX) //needs purchase
-        addAudioItem("punchwhack2", category: .soundFX) //needs purchase
+        addAudioItem("punchwhack1", category: .soundFX)
+        addAudioItem("punchwhack2", category: .soundFX)
         addAudioItem("revive", category: .soundFX)
         addAudioItem("swordslash", category: .soundFX)
         addAudioItem("warp", category: .soundFX)
@@ -135,7 +137,7 @@ class AudioManager {
         
         //No Loop music
         addAudioItem("gameover", category: .musicNoLoop)
-        addAudioItem("titletheme", category: .musicNoLoop) //needs purchase
+        addAudioItem("titletheme", category: .musicNoLoop)
 
         
         //Background music

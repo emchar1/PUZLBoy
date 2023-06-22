@@ -1015,7 +1015,9 @@ extension GameScene: ConfirmSpriteDelegate {
             confirmMessage = GameEngine.livesRemaining <= 0 ? "Tap Restart Level to start over. Careful! You have 0 lives left, so it'll be GAME OVER." : "Tap Restart Level to start over. You'll lose a life in the process."
         }
         else if confirmSprite == partyResultsConfirmSprite {
-            confirmMessage = "You've earned \(gameEngine.partyInventory.getTotalLives()) lives!"
+            let livesEarned = gameEngine.partyInventory.getTotalLives()
+            
+            confirmMessage = "You've earned \(livesEarned == 1 ? "1 life!" : "\(livesEarned) lives!")"
         }
                 
         confirmSprite.animateShow(newMessage: confirmMessage) { }

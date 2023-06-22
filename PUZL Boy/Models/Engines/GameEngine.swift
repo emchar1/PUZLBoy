@@ -498,7 +498,6 @@ class GameEngine {
                 }
             }
         case .partyPill:
-            AudioManager.shared.playSound(for: "pickupheart")
             consumeItem() //MUST be here else game freezes
             completion?()
             
@@ -533,6 +532,8 @@ class GameEngine {
         case .partyLife:
             partyInventory.lives += 1
 
+            ScoringEngine.addTextAnimation(text: "1-UP", textColor: .green, originSprite: gameboardSprite.sprite, location: gameboardSprite.getLocation(at: level.player))
+
             playerSprite.startItemCollectAnimation(on: gameboardSprite, at: level.player, item: .partyLife) { [unowned self] in
                 consumeItem()
                 completion?()
@@ -545,8 +546,24 @@ class GameEngine {
             playerSprite.startItemCollectAnimation(on: gameboardSprite, at: level.player, item: .partyTime) { [unowned self] in 
                 consumeItem()
                 completion?()
-                
-                
+            }
+        case .partyFast:
+            PartyModeSprite.shared.increaseSpeedMultiplier(shouldDecrease: false)
+
+            ScoringEngine.addTextAnimation(text: "SPEED+", textColor: .cyan, originSprite: gameboardSprite.sprite, location: gameboardSprite.getLocation(at: level.player))
+
+            playerSprite.startItemCollectAnimation(on: gameboardSprite, at: level.player, item: .partyFast) { [unowned self] in
+                consumeItem()
+                completion?()
+            }
+        case .partySlow:
+            PartyModeSprite.shared.increaseSpeedMultiplier(shouldDecrease: true)
+
+            ScoringEngine.addTextAnimation(text: "SPEED-", textColor: .magenta, originSprite: gameboardSprite.sprite, location: gameboardSprite.getLocation(at: level.player))
+
+            playerSprite.startItemCollectAnimation(on: gameboardSprite, at: level.player, item: .partySlow) { [unowned self] in
+                consumeItem()
+                completion?()
             }
         default:
             completion?()

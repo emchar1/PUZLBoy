@@ -37,8 +37,9 @@ struct PartyInventory {
         return gems * multiplier
     }
     
+    ///Returns the total lives earned during the party level round, with a minimum of 1 life possible earned.
     func getTotalLives() -> Int {
-        return lives + getTotalGems() / gemsPerLife
+        return max(1, lives + getTotalGems() / gemsPerLife)
     }
     
     func getRandomItem() -> LevelType {
@@ -46,10 +47,12 @@ struct PartyInventory {
         var randomItem: LevelType
         
         switch randomizeItem {
-        case 100..<120:    randomItem = .partyGemDouble
+        case 100..<120: randomItem = .partyGemDouble
         case 220..<230: randomItem = .partyGemTriple
         case 330..<335: randomItem = .partyLife
-        case 440..<460: randomItem = .partyTime
+        case 440..<475: randomItem = .partyTime
+        case 520..<580: randomItem = .partyFast
+        case 630..<690: randomItem = .partySlow
         default:        randomItem = .partyGem
         }
 

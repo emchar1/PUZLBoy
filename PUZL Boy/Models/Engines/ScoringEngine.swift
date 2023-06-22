@@ -163,7 +163,7 @@ class ScoringEngine {
     }
     
     /**
-     Adds a floating status loss/gain animaton from an originSprite and a location. Use this static method directly from ScoringEngine.
+     Adds a floating status loss/gain animation from an originSprite and a location. Use this static method directly from ScoringEngine.
      - parameters:
         - icon: the icon to use: health, moves, sword or hammer
         - amount: Amount to adjust
@@ -320,8 +320,39 @@ class ScoringEngine {
             pointsSprite.removeFromParent()
         }
         
-        elapsedTimeLabel.run(scaleScoreAnimation(sprite: elapsedTimeLabel, fontColor: .green, shouldCenter: true))
+        elapsedTimeLabel.run(scaleScoreAnimation(sprite: elapsedTimeLabel, fontColor: .orange, shouldCenter: true))
     }
+    
+    
+    // MARK: - Misc. Functions
+    
+    /**
+     Adds  floating text animaton from an originSprite and a location. Use this static method directly from ScoringEngine.
+     - parameters:
+        - text: The text to display
+        - textColor: The color of the text that will be displayed
+        - originSprite: The sprite from which to add the label as a child
+        - location: Location of the label node
+     */
+    static func addTextAnimation(text: String, textColor: UIColor, originSprite: SKNode, location: CGPoint) {
+        let textSprite = SKLabelNode(text: text)
+        textSprite.fontName = UIFont.gameFont
+        textSprite.fontSize = UIDevice.isiPad ? UIFont.gameFontSizeLarge : UIFont.gameFontSizeMedium
+        textSprite.fontColor = textColor
+        textSprite.position = location
+        textSprite.zPosition = K.ZPosition.itemsPoints
+        textSprite.addDropShadow()
+        
+        originSprite.addChild(textSprite)
+
+        let moveUp = SKAction.move(by: CGVector(dx: 0, dy: 100), duration: 1.0)
+        let fadeOut = SKAction.sequence([SKAction.wait(forDuration: 0.75), SKAction.fadeOut(withDuration: 0.25)])
+        
+        textSprite.run(SKAction.group([moveUp, fadeOut])) {
+            textSprite.removeFromParent()
+        }
+    }
+    
     
 
     // MARK: - Move Functions
