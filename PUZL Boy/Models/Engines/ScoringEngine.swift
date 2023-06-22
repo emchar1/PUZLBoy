@@ -287,6 +287,14 @@ class ScoringEngine {
             SKAction.colorize(withColorBlendFactor: 0, duration: 0.5)
         ]))
     }
+    
+    func fadeOutTimeAnimation(duration: TimeInterval = 0.5) {
+        elapsedTimeLabel.run(SKAction.fadeOut(withDuration: duration))
+    }
+    
+    func fadeInTimeAnimation(duration: TimeInterval = 0) {
+        elapsedTimeLabel.run(SKAction.fadeIn(withDuration: duration))
+    }
         
     func addTimeAnimation(seconds: TimeInterval) {
         let numberFormatter = NumberFormatter()
