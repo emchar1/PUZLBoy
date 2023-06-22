@@ -489,8 +489,8 @@ class GameScene: SKScene {
     
     private func playDialogue() {
         
-        // FIXME: - Party Levels is 500 items enough??? Don't want to run out of spawning items...
-        let maxSpawnedItemsForParty = 500
+        // FIXME: - Party Levels is 998 items enough??? Don't want to run out of spawning items...
+        let maxSpawnedItemsForParty = 998
         
         guard !Level.isPartyLevel(currentLevel) || (lastCurrentLevel != nil && lastCurrentLevel! <= (Level.partyMinLevelRequired + 1)) else {
             gameEngine.spawnPartyItems(maxItems: maxSpawnedItemsForParty)

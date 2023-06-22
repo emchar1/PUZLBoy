@@ -11,11 +11,14 @@ struct PartyInventory {
     
     // MARK: - Properties
     
-    let timeVal: TimeInterval = 5
+    let timeIncrement: TimeInterval = 5
     let gemsPerLife = 100
     var gems: Int
     var gemsDouble: Int
     var gemsTriple: Int
+    var time: Int
+    var speedUp: Int
+    var speedDown: Int
     var lives: Int
 
     
@@ -25,6 +28,9 @@ struct PartyInventory {
         gems = 0
         gemsDouble = 0
         gemsTriple = 0
+        time = 0
+        speedUp = 0
+        speedDown = 0
         lives = 0
     }
     
@@ -50,9 +56,9 @@ struct PartyInventory {
         case 100..<120: randomItem = .partyGemDouble
         case 220..<230: randomItem = .partyGemTriple
         case 330..<335: randomItem = .partyLife
-        case 440..<475: randomItem = .partyTime
+        case 440..<460: randomItem = .partyTime
         case 520..<580: randomItem = .partyFast
-        case 630..<690: randomItem = .partySlow
+        case 630..<700: randomItem = .partySlow
         default:        randomItem = .partyGem
         }
 
@@ -60,6 +66,6 @@ struct PartyInventory {
     }
     
     func getStatus() {
-        print("Gems: \(gems), 2x: \(gemsDouble), 3x: \(gemsTriple), Total Gems: \(getTotalGems()), Lives: \(lives), Total Lives: \(getTotalLives())")
+        print("Gems: \(gems), 2x: \(gemsDouble), 3x: \(gemsTriple), Total Gems: \(getTotalGems()) | Time: \(time), Speed+: \(speedUp), Speed-: \(speedDown) | 1-UP: \(lives), Total Lives: \(getTotalLives())")
     }
 }

@@ -541,13 +541,19 @@ class GameEngine {
                 partyInventory.getStatus()
             }
         case .partyTime:
-            delegate?.didGetPartyTime(partyInventory.timeVal)
+            partyInventory.time += 1
+
+            delegate?.didGetPartyTime(partyInventory.timeIncrement)
             
             playerSprite.startItemCollectAnimation(on: gameboardSprite, at: level.player, item: .partyTime) { [unowned self] in 
                 consumeItem()
                 completion?()
+
+                partyInventory.getStatus()
             }
         case .partyFast:
+            partyInventory.speedUp += 1
+
             PartyModeSprite.shared.increaseSpeedMultiplier(shouldDecrease: false)
 
             ScoringEngine.addTextAnimation(text: "SPEED+", textColor: .cyan, originSprite: gameboardSprite.sprite, location: gameboardSprite.getLocation(at: level.player))
@@ -555,8 +561,12 @@ class GameEngine {
             playerSprite.startItemCollectAnimation(on: gameboardSprite, at: level.player, item: .partyFast) { [unowned self] in
                 consumeItem()
                 completion?()
+
+                partyInventory.getStatus()
             }
         case .partySlow:
+            partyInventory.speedDown += 1
+
             PartyModeSprite.shared.increaseSpeedMultiplier(shouldDecrease: true)
 
             ScoringEngine.addTextAnimation(text: "SPEED-", textColor: .magenta, originSprite: gameboardSprite.sprite, location: gameboardSprite.getLocation(at: level.player))
@@ -564,6 +574,8 @@ class GameEngine {
             playerSprite.startItemCollectAnimation(on: gameboardSprite, at: level.player, item: .partySlow) { [unowned self] in
                 consumeItem()
                 completion?()
+
+                partyInventory.getStatus()
             }
         default:
             completion?()

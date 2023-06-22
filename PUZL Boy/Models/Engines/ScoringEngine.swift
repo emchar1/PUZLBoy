@@ -305,7 +305,7 @@ class ScoringEngine {
         let pointsSprite = SKLabelNode(text: "+\(secondsFormatted)")
         pointsSprite.fontName = UIFont.gameFont
         pointsSprite.fontSize = UIFont.gameFontSizeMedium //Same size for iPad
-        pointsSprite.fontColor = .yellow
+        pointsSprite.fontColor = .green
         pointsSprite.position = .zero
         pointsSprite.horizontalAlignmentMode = .left
         pointsSprite.zPosition = K.ZPosition.itemsPoints
