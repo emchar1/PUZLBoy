@@ -532,7 +532,7 @@ class GameEngine {
         case .partyLife:
             partyInventory.lives += 1
 
-            ScoringEngine.addTextAnimation(text: "1-UP", textColor: .green, originSprite: gameboardSprite.sprite, location: gameboardSprite.getLocation(at: level.player))
+            ScoringEngine.addTextAnimation(text: "1-UP", textColor: .yellow, originSprite: gameboardSprite.sprite, location: gameboardSprite.getLocation(at: level.player))
 
             playerSprite.startItemCollectAnimation(on: gameboardSprite, at: level.player, item: .partyLife, sound: .partyLife) { [unowned self] in
                 consumeItem()

@@ -230,8 +230,14 @@ class PlayerSprite {
         completion()
         
         switch sound {
-        case .partyGem, .partyGemDouble, .partyGemTriple:
+        case .partyGem:
             AudioManager.shared.playSound(for: "gemcollectparty")
+        case .partyGemDouble:
+            AudioManager.shared.playSound(for: "gemcollectparty")
+            AudioManager.shared.playSound(for: "gemcollectparty2x")
+        case .partyGemTriple:
+            AudioManager.shared.playSound(for: "gemcollectparty")
+            AudioManager.shared.playSound(for: "gemcollectparty3x")
         case .partyTime:
             AudioManager.shared.playSound(for: "pickuptime")
         case .partyLife:
