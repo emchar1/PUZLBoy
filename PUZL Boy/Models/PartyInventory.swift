@@ -11,8 +11,9 @@ struct PartyInventory {
     
     // MARK: - Properties
     
-    let timeIncrement: TimeInterval = 5
-    let gemsPerLife = 100
+    static let timeIncrement: TimeInterval = 5
+    static let gemsPerLife = 100
+    
     var gems: Int
     var gemsDouble: Int
     var gemsTriple: Int
@@ -20,11 +21,13 @@ struct PartyInventory {
     var speedUp: Int
     var speedDown: Int
     var lives: Int
+    
+    private var panelCount: Int
 
     
     // MARK: - Initialization
     
-    init() {
+    init(panelCount: Int = 3) {
         gems = 0
         gemsDouble = 0
         gemsTriple = 0
@@ -32,6 +35,8 @@ struct PartyInventory {
         speedUp = 0
         speedDown = 0
         lives = 0
+        
+        self.panelCount = panelCount
     }
     
     
@@ -45,7 +50,7 @@ struct PartyInventory {
     
     ///Returns the total lives earned during the party level round, with a minimum of 1 life possible earned.
     func getTotalLives() -> Int {
-        return max(1, lives + getTotalGems() / gemsPerLife)
+        return max(1, lives + getTotalGems() / PartyInventory.gemsPerLife)
     }
     
     func getRandomItem() -> LevelType {
@@ -53,13 +58,20 @@ struct PartyInventory {
         var randomItem: LevelType
         
         switch randomizeItem {
-        case 100..<120: randomItem = .partyGemDouble
-        case 220..<230: randomItem = .partyGemTriple
-        case 330..<335: randomItem = .partyLife
-        case 440..<460: randomItem = .partyTime
-        case 520..<580: randomItem = .partyFast
-        case 630..<700: randomItem = .partySlow
-        default:        randomItem = .partyGem
+        case 100..<120:
+            randomItem = .partyGemDouble
+        case 220..<230:
+            randomItem = .partyGemTriple
+        case 330..<335:
+            randomItem = .partyLife
+        case 440..<460:
+            randomItem = .partyTime
+        case (panelCount <= 4 ? 520..<580 : 520..<560):
+            randomItem = .partyFast
+        case (panelCount <= 4 ? 630..<700 : 600..<700):
+            randomItem = .partySlow
+        default:
+            randomItem = .partyGem
         }
 
         return randomItem

@@ -24,7 +24,7 @@ class GameScene: SKScene {
     private var pauseResetEngine: PauseResetEngine
     private var resetConfirmSprite: ConfirmSprite
     private var hintConfirmSprite: ConfirmSprite
-    private var partyResultsConfirmSprite: ConfirmSprite
+    private var partyResultsSprite: PartyResultsSprite
     private var offlinePlaySprite: OfflinePlaySprite
     private var levelStatsArray: [LevelStats]
     
@@ -89,10 +89,7 @@ class GameScene: SKScene {
                                           confirm: "OK",
                                           cancel: "OK, but in blue")
         
-        partyResultsConfirmSprite = ConfirmSprite(title: "RESULTS",
-                                                  message: "You've earned XX lives!",
-                                                  confirm: "OK",
-                                                  cancel: "Thanks, ma'am sir.")
+        partyResultsSprite = PartyResultsSprite()
         
         self.user = user
         
@@ -107,7 +104,7 @@ class GameScene: SKScene {
         pauseResetEngine.delegate = self
         resetConfirmSprite.delegate = self
         hintConfirmSprite.delegate = self
-        partyResultsConfirmSprite.delegate = self
+        partyResultsSprite.delegate = self
         
         // FIXME: - Debugging purposes only!!!
         levelSkipEngine.delegate = self
@@ -142,11 +139,8 @@ class GameScene: SKScene {
             LifeSpawnerModel.shared.removeAllNotifications()
             LifeSpawnerModel.shared.scheduleNotification(title: "Play Again?", duration: LifeSpawnerModel.durationReminder, repeats: true)
         }
-        
-        //Disable saving in a party level
-        if !Level.isPartyLevel(currentLevel) {
-            saveState(levelStatsItem: getLevelStatsItem(level: currentLevel, didWin: false))
-        }
+
+        saveState(levelStatsItem: getLevelStatsItem(level: currentLevel, didWin: false))
     }
     
     @objc private func appMovedToForeground() {
@@ -209,7 +203,7 @@ class GameScene: SKScene {
             continueSprite.touchDown(in: location)
             resetConfirmSprite.touchDown(in: location)
             hintConfirmSprite.touchDown(in: location)
-            partyResultsConfirmSprite.touchDown(in: location)
+            partyResultsSprite.touchDown(in: location)
         }
         
         // FIXME: - Debugging purposes only!!!
@@ -226,8 +220,8 @@ class GameScene: SKScene {
             resetConfirmSprite.touchUp()
             hintConfirmSprite.didTapButton(in: location)
             hintConfirmSprite.touchUp()
-            partyResultsConfirmSprite.didTapButton(in: location)
-            partyResultsConfirmSprite.touchUp()
+            partyResultsSprite.didTapButton(in: location)
+            partyResultsSprite.touchUp()
             chatEngine.touchUp()
         }
 
@@ -308,28 +302,27 @@ class GameScene: SKScene {
     private func stopParty() {
         removeAction(forKey: keyRunGameTimerAction)
         
-        guard let lastCurrentLevel = lastCurrentLevel else { return }
-
-        currentLevel = lastCurrentLevel
-        self.lastCurrentLevel = nil
-        
         scoringEngine.fadeOutTimeAnimation()
         gameEngine.stopSpawner()
         gameEngine.shouldDisableInput(true)
         
         gameEngine.fadeGameboard(fadeOut: true) { [unowned self] in
-            showConfirmSprite(partyResultsConfirmSprite)
-//            newGame(level: currentLevel, didWin: true)
-//
-//            scoringEngine.timerManager.resetTime()
-//            scoringEngine.fadeInTimeAnimation()
-//            startTimer()
-//
-//            gameEngine.shouldDisableInput(false)
-//
-//            //Write to Firestore, MUST come after newGame()
-//            let levelStatsItem = getLevelStatsItem(level: currentLevel, didWin: true)
-//            saveState(levelStatsItem: levelStatsItem)
+            
+            
+            
+            // FIXME: - Testing new partyResultsSprite.
+            addChild(partyResultsSprite)
+            partyResultsSprite.updateAmounts(gems: gameEngine.partyInventory.gems,
+                                             gemsDouble: gameEngine.partyInventory.gemsDouble,
+                                             gemsTriple: gameEngine.partyInventory.gemsTriple,
+                                             lives: gameEngine.partyInventory.lives)
+            
+            partyResultsSprite.animateShow(totalGems: gameEngine.partyInventory.getTotalGems(),
+                                           lives: gameEngine.partyInventory.lives,
+                                           totalLives: gameEngine.partyInventory.getTotalLives()) { }
+            
+            
+            
         }
     }
     
@@ -373,7 +366,7 @@ class GameScene: SKScene {
             winStreak: GameEngine.winStreak,
             levelStatsArray: levelStatsArray,
             levelModel: levelModel,
-            newLevel: levelModel.level,
+            newLevel: lastCurrentLevel != nil ? lastCurrentLevel! : currentLevel, //prevents saving within a party level, i.e. fast fwd to next level
             uid: user.uid)
         
         FIRManager.writeToFirestoreRecord(user: user, saveStateModel: saveStateModel)
@@ -1014,46 +1007,52 @@ extension GameScene: ConfirmSpriteDelegate {
         if confirmSprite == resetConfirmSprite {
             confirmMessage = GameEngine.livesRemaining <= 0 ? "Tap Restart Level to start over. Careful! You have 0 lives left, so it'll be GAME OVER." : "Tap Restart Level to start over. You'll lose a life in the process."
         }
-        else if confirmSprite == partyResultsConfirmSprite {
-            let livesEarned = gameEngine.partyInventory.getTotalLives()
-            
-            confirmMessage = "You've earned \(livesEarned == 1 ? "1 life!" : "\(livesEarned) lives!")"
-        }
                 
         confirmSprite.animateShow(newMessage: confirmMessage) { }
     }
     
     private func hideConfirmSprite(_ confirmSprite: ConfirmSprite) {
         confirmSprite.animateHide { [unowned self] in
-            if confirmSprite == partyResultsConfirmSprite {
-                newGame(level: currentLevel, didWin: true)
+            scoringEngine.timerManager.resumeTime()
+            startTimer()
+            gameEngine.shouldDisableInput(false)
+            confirmSprite.removeFromParent()
+        }
+    }
+}
 
-                scoringEngine.timerManager.resetTime()
-                scoringEngine.fadeInTimeAnimation()
-                startTimer()
 
-                gameEngine.shouldDisableInput(false)
+// MARK - PartyResultsSpriteDelegate
+
+extension GameScene: PartyResultsSpriteDelegate {
+    func didTapConfirm() {
+        partyResultsSprite.animateHide { [unowned self] in
+            guard let lastCurrentLevel = lastCurrentLevel else { fatalError("lastCurrentLevel is nil, which shouldn't happen after a party level") }
+
+            currentLevel = lastCurrentLevel
+            self.lastCurrentLevel = nil
+            
+            newGame(level: currentLevel, didWin: true)
+
+            scoringEngine.timerManager.resetTime()
+            scoringEngine.fadeInTimeAnimation()
+            startTimer()
+
+            gameEngine.shouldDisableInput(false)
+            
+            //Animate lives earned from party
+            let livesEarned = gameEngine.partyInventory.getTotalLives()
+            
+            if livesEarned > 0 {
+                AudioManager.shared.playSound(for: "revive")
                 
-                //Animate lives earned from party
-                let livesEarned = gameEngine.partyInventory.getTotalLives()
-                
-                if livesEarned > 0 {
-                    AudioManager.shared.playSound(for: "revive")
-                    
-                    gameEngine.animateLives(originalLives: GameEngine.livesRemaining, newLives: livesEarned)
-                    gameEngine.incrementLivesRemaining(lives: livesEarned)
-                }
-                
-                //Write to Firestore, MUST come after newGame()
-                let levelStatsItem = getLevelStatsItem(level: currentLevel, didWin: true)
-                saveState(levelStatsItem: levelStatsItem)
+                gameEngine.animateLives(originalLives: GameEngine.livesRemaining, newLives: livesEarned)
+                gameEngine.incrementLivesRemaining(lives: livesEarned)
             }
-            else {
-                scoringEngine.timerManager.resumeTime()
-                startTimer()
-                gameEngine.shouldDisableInput(false)
-                confirmSprite.removeFromParent()
-            }
+            
+            //Write to Firestore, MUST come after newGame()
+            let levelStatsItem = getLevelStatsItem(level: currentLevel, didWin: true)
+            saveState(levelStatsItem: levelStatsItem)
         }
     }
 }

@@ -121,7 +121,7 @@ class GameEngine {
     func spawnPartyItems(maxItems: Int) {
         guard Level.isPartyLevel(level.level) else { return }
         
-        partyInventory = PartyInventory()
+        partyInventory = PartyInventory(panelCount: level.gameboard.count)
         
         let gameboardSize = self.level.gameboard.count
         var randomItem: LevelType = .partyGem
@@ -543,7 +543,7 @@ class GameEngine {
         case .partyTime:
             partyInventory.time += 1
 
-            delegate?.didGetPartyTime(partyInventory.timeIncrement)
+            delegate?.didGetPartyTime(PartyInventory.timeIncrement)
             
             playerSprite.startItemCollectAnimation(on: gameboardSprite, at: level.player, item: .partyTime, sound: .partyTime) { [unowned self] in
                 consumeItem()
