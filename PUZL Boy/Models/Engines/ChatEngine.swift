@@ -344,13 +344,22 @@ extension ChatEngine {
                             sendChat(profile: .trainer, startNewChat: false, endChat: false,
                                      chat: "Run around collecting all the gems and bonuses that pop up in the level. But you gotta be quick before the time runs out.") { [unowned self] in
                                 sendChat(profile: .trainer, startNewChat: false, endChat: false,
-                                         chat: "Also, I know it's colorful and fun looking, but avoid the bombs at ALL costs or it's instant return to reality. 💣") { [unowned self] in
-                                    sendChat(profile: .trainer, startNewChat: false, endChat: true,
-                                             chat: "Oh, and if you start feeling dizzy, you can tap the disco ball below to turn off the lights. 🪩") { [unowned self] in
-                                        dialoguePlayed[level] = true
-                                        fadeDimOverlay()
-                                        isChatting = false
-                                        completion?()
+                                         chat: "Oh, and the one thing you want to look out for are rainbow bombs.") { [unowned self] in
+                                    sendChat(profile: .trainer, startNewChat: false, endChat: false,
+                                             chat: "Like, I know it's all pretty and fun looking, but avoid them at all costs, or it's the end of the bonus round.") { [unowned self] in
+                                        sendChat(profile: .trainer, startNewChat: false, endChat: false,
+                                                 chat: "Why is it always the pretty things in life that are the most deadly...") { [unowned self] in
+                                            sendChat(profile: .hero, startNewChat: false, endChat: false,
+                                                     chat: "Don't step on the bombs. Yeah got it.") { [unowned self] in
+                                                sendChat(profile: .trainer, startNewChat: false, endChat: true,
+                                                         chat: "OK. Now if the flashing lights become too much, you can tap the disco ball below to turn them off. 🪩") { [unowned self] in
+                                                    dialoguePlayed[level] = true
+                                                    fadeDimOverlay()
+                                                    isChatting = false
+                                                    completion?()
+                                                }
+                                            }
+                                        }
                                     }
                                 }
                             }
