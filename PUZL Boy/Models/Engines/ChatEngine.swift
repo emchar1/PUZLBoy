@@ -352,7 +352,7 @@ extension ChatEngine {
                                             sendChat(profile: .hero, startNewChat: false, endChat: false,
                                                      chat: "Don't step on the bombs. Yeah got it.") { [unowned self] in
                                                 sendChat(profile: .trainer, startNewChat: false, endChat: true,
-                                                         chat: "OK. Now if the flashing lights become too much, you can tap the disco ball below to turn them off. 🪩") { [unowned self] in
+                                                         chat: "OK. Now if the flashing lights become too much, you can tap the disco ball below to turn them off. 🪩 GET READY!!!") { [unowned self] in
                                                     dialoguePlayed[level] = true
                                                     fadeDimOverlay()
                                                     isChatting = false
@@ -593,7 +593,7 @@ extension ChatEngine {
             sendChat(profile: .trainer, startNewChat: true, endChat: false,
                      chat: "Congrats! You made it to level 100. There's a bonus at the end of every 50 levels. Beat this and you're one step closer to indescribable fun!!! 💃🏾🪩🕺🏻") { [unowned self] in
                 sendChat(profile: .hero, startNewChat: false, endChat: false, chat: "I can hardly contain my excitement. 😒") { [unowned self] in
-                    sendChat(profile: .trainer, startNewChat: false, endChat: false, chat: "That's the spirit! Now if you ever get stuck, you can give your device a shake or tap the red Reset button to restart the level.") { [unowned self] in
+                    sendChat(profile: .trainer, startNewChat: false, endChat: false, chat: "That's the spirit! Now if you ever get stuck, you can tap the red Reset button to restart the level.") { [unowned self] in
                         sendChat(profile: .trainer, startNewChat: false, endChat: false, chat: "Be warned though, restarting a level will cost you one of your precious lives...") { [unowned self] in
                             sendChat(profile: .hero, startNewChat: false, endChat: true, chat: "It's all good. My mom can buy me more lives if I need it. 😃") { [unowned self] in
                                 dialoguePlayed[level] = true

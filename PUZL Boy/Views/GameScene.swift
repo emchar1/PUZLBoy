@@ -990,7 +990,7 @@ extension GameScene: ConfirmSpriteDelegate {
     }
     
     func shake() {
-        guard !pauseResetEngine.isPaused else { return }
+        guard !pauseResetEngine.isPaused && !Level.isPartyLevel(currentLevel) else { return }
 
         showConfirmSprite(resetConfirmSprite)
     }
