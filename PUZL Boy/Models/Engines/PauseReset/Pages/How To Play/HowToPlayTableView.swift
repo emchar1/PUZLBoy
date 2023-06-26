@@ -55,6 +55,8 @@ class HowToPlayTableView: UITableView, UITableViewDelegate, UITableViewDataSourc
                        description: "Avoid the blue shoes at all costs... unless you like going really really slow for some reason."),
         HowToPlayModel(image: "partyLife", title: "Extra Life", requiredLevel: Level.partyMinLevelRequired + 1,
                        description: "If you're able to nab one of these in time, you'll get an extra life at the end of the Bonus Level!"),
+        HowToPlayModel(image: "partyBomb", title: "Rainbow Bomb", requiredLevel: Level.partyMinLevelRequired + 1,
+                       description: "Don't, I said, DON'T touch these or else your time in the Party Realm is instantly over. Womp womp."),
         HowToPlayModel(image: "heart", title: "Heart", requiredLevel: 151,
                        description: "Hearts increase your health, protecting against dragon attacks. If your health hits 0 it's game over."),
         HowToPlayModel(image: "warp2", title: "Green Warp", requiredLevel: 251,

@@ -12,6 +12,8 @@ protocol GameEngineDelegate: AnyObject {
     func gameIsOver(firstTimeCalled: Bool)
     func enemyIsKilled()
     func gameIsPaused(isPaused: Bool)
+
+    //Party Functions
     func didTakePartyPill()
     func didGetPartyTime(_ seconds: TimeInterval)
     func didGetPartyBomb()

@@ -305,6 +305,7 @@ class GameScene: SKScene {
         scoringEngine.fadeOutTimeAnimation()
         gameEngine.stopSpawner()
         gameEngine.shouldDisableInput(true)
+        pauseResetEngine.shouldDisable(true)
         
         gameEngine.fadeGameboard(fadeOut: true) { [unowned self] in
             
@@ -1026,7 +1027,7 @@ extension GameScene: ConfirmSpriteDelegate {
 }
 
 
-// MARK - PartyResultsSpriteDelegate
+// MARK: - PartyResultsSpriteDelegate
 
 extension GameScene: PartyResultsSpriteDelegate {
     func didTapConfirm() {
@@ -1043,6 +1044,7 @@ extension GameScene: PartyResultsSpriteDelegate {
             startTimer()
 
             gameEngine.shouldDisableInput(false)
+            pauseResetEngine.shouldDisable(false)
             
             //Animate lives earned from party
             let livesEarned = gameEngine.partyInventory.getTotalLives()

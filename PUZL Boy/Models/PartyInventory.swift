@@ -59,10 +59,10 @@ struct PartyInventory {
         var bombRange: Range<Int>
         
         switch panelCount {
-        case 4:     bombRange = 860..<870
-        case 5:     bombRange = 860..<880
-        case 6:     bombRange = 860..<900
-        default:    bombRange = 860..<865
+        case 4:     bombRange = 800..<825
+        case 5:     bombRange = 800..<850
+        case 6:     bombRange = 800..<900
+        default:    bombRange = 800..<825
         }
         
         switch randomizeItem {

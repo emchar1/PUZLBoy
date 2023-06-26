@@ -165,7 +165,7 @@ class PartyResultsSprite: SKNode {
                                             gemsTotalLineItem.addTextAnimation("1-UP")
                                             livesTotalLineItem.animateAmount(livesToIncrement) { }
                                             
-                                            AudioManager.shared.playSound(for: "boywin")
+                                            AudioManager.shared.playSound(for: "gemcollectparty3x")
                                         }
                                     }
                                     
@@ -182,7 +182,7 @@ class PartyResultsSprite: SKNode {
                                         if livesToIncrement != totalLives {
                                             livesTotalLineItem.animateAmount(totalLives) { }
                                             
-                                            AudioManager.shared.playSound(for: "boywin")
+                                            AudioManager.shared.playSound(for: "gemcollectparty3x")
                                         }
                                         
                                         confirmButton.animateAppear()
