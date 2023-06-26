@@ -37,7 +37,7 @@ class PartyResultsSprite: SKNode {
         let topBorder: CGFloat = UIDevice.isiPad ? 200 : 150
         
         backgroundSprite = SKShapeNode(rectOf: backgroundSize, cornerRadius: backgroundCorner)
-        backgroundSprite.fillColor = .systemIndigo
+        backgroundSprite.fillColor = .magenta
         backgroundSprite.strokeColor = .white
         backgroundSprite.lineWidth = 0
         backgroundSprite.setScale(GameboardSprite.spriteScale)
@@ -75,7 +75,7 @@ class PartyResultsSprite: SKNode {
         titleLabel.zPosition = 10
         titleLabel.addHeavyDropShadow()
         
-        confirmButton = DecisionButtonSprite(text: "Next", color: DecisionButtonSprite.colorBlue, iconImageName: nil)
+        confirmButton = DecisionButtonSprite(text: "Continue", color: DecisionButtonSprite.colorBlue, iconImageName: nil)
         confirmButton.position = CGPoint(x: 0, y: -backgroundSprite.frame.size.height / 2 + titleLabel.frame.height / (UIDevice.isiPad ? 2 : 0.5))
         
         super.init()
@@ -87,6 +87,9 @@ class PartyResultsSprite: SKNode {
                            y: K.ScreenDimensions.topOfGameboard - backgroundSize.height / 2 * GameboardSprite.spriteScale + GameboardSprite.padding)
         zPosition = K.ZPosition.messagePrompt
         
+        backgroundSprite.addShadow(rectOf: backgroundSize, cornerRadius: backgroundCorner, shadowOffset: 10, shadowColor: .cyan)
+        confirmButton.alpha = 0
+
         backgroundSprite.addChild(titleLabel)
         backgroundSprite.addChild(gemsLineItem)
         backgroundSprite.addChild(gemsDoubleLineItem)
@@ -122,12 +125,16 @@ class PartyResultsSprite: SKNode {
         
         addChild(backgroundSprite)
         
+        backgroundSprite.fillTexture = SKTexture(image: UIImage.skyGradientTexture)
+        
         run(SKAction.sequence([
             SKAction.scale(to: 1.1, duration: 0.25),
             SKAction.scale(to: 0.95, duration: 0.2),
             SKAction.scale(to: 1, duration: 0.2),
         ])) { [unowned self] in
             let xPosition = -backgroundSize.width / 2
+            
+            backgroundSprite.showShadow(animationDuration: 0.1, completion: nil)
             
             // FIXME: - I hate this nesting of death
             gemsLineItem.animateAppear(xPosition: xPosition) { [unowned self] in
@@ -136,8 +143,11 @@ class PartyResultsSprite: SKNode {
                         gemsTotalLineItem.animateAppear(xPosition: xPosition) { [unowned self] in
                             livesLineItem.animateAppear(xPosition: xPosition) { [unowned self] in
                                 livesTotalLineItem.animateAppear(xPosition: xPosition) { [unowned self] in
-                                    let multiplier: Int = Int(max(CGFloat(totalGems) / 100, 1))
-                                    let wait = SKAction.wait(forDuration: CGFloat(multiplier) * 3 / CGFloat(totalGems))
+                                    let multiplierIncrement: CGFloat = 100
+                                    let waitFactor: TimeInterval = 3
+                                    let multiplier: Int = Int(max(CGFloat(totalGems) / multiplierIncrement, 1))
+                                    let wait = SKAction.wait(forDuration: min(CGFloat(multiplier) * waitFactor / CGFloat(totalGems),
+                                                                              waitFactor / multiplierIncrement))
                                     var counter: Int = 0
                                     var lifeCounter: Int = 0
                                     var livesToIncrement: Int = lives
@@ -154,6 +164,8 @@ class PartyResultsSprite: SKNode {
                                             
                                             gemsTotalLineItem.addTextAnimation("1-UP")
                                             livesTotalLineItem.animateAmount(livesToIncrement) { }
+                                            
+                                            AudioManager.shared.playSound(for: "boywin")
                                         }
                                     }
                                     
@@ -169,8 +181,12 @@ class PartyResultsSprite: SKNode {
                                             
                                         if livesToIncrement != totalLives {
                                             livesTotalLineItem.animateAmount(totalLives) { }
+                                            
+                                            AudioManager.shared.playSound(for: "boywin")
                                         }
                                         
+                                        confirmButton.animateAppear()
+
                                         disableControls = false
                                         completion()
                                     }
@@ -187,14 +203,24 @@ class PartyResultsSprite: SKNode {
     func animateHide(completion: @escaping (() -> Void)) {
         disableControls = true
         
-        run(SKAction.scale(to: 0, duration: 0.25)) { [unowned self] in
+        backgroundSprite.hideShadow(animationDuration: 0.05, completion: nil)
+        
+        let fadeBackground = SKSpriteNode(color: .white, size: K.ScreenDimensions.screenSize)
+        fadeBackground.alpha = 0
+        fadeBackground.zPosition = K.ZPosition.messagePrompt + 100
+        
+        addChild(fadeBackground)
+        
+        fadeBackground.run(SKAction.fadeIn(withDuration: 1.0)) { [unowned self] in
             gemsLineItem.animateDisappear()
             gemsDoubleLineItem.animateDisappear()
             gemsTripleLineItem.animateDisappear()
             gemsTotalLineItem.animateDisappear()
             livesLineItem.animateDisappear()
             livesTotalLineItem.animateDisappear()
-            
+            confirmButton.alpha = 0
+
+            fadeBackground.removeFromParent()
             backgroundSprite.removeFromParent()
             completion()
         }

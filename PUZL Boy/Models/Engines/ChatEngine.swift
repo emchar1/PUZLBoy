@@ -343,12 +343,15 @@ extension ChatEngine {
                                  chat: "Don't worry, the feeling lasts only a short amount of time, but while you're under its effects you can move as much as your heart desires.") { [unowned self] in
                             sendChat(profile: .trainer, startNewChat: false, endChat: false,
                                      chat: "Run around collecting all the gems and bonuses that pop up in the level. But you gotta be quick before the time runs out.") { [unowned self] in
-                                sendChat(profile: .trainer, startNewChat: false, endChat: true,
-                                         chat: "Oh, and if you start feeling dizzy, you can tap the disco ball below to turn off the lights. 🪩") { [unowned self] in
-                                    dialoguePlayed[level] = true
-                                    fadeDimOverlay()
-                                    isChatting = false
-                                    completion?()
+                                sendChat(profile: .trainer, startNewChat: false, endChat: false,
+                                         chat: "Also, I know it's colorful and fun looking, but avoid the bombs at ALL costs or it's instant return to reality. 💣") { [unowned self] in
+                                    sendChat(profile: .trainer, startNewChat: false, endChat: true,
+                                             chat: "Oh, and if you start feeling dizzy, you can tap the disco ball below to turn off the lights. 🪩") { [unowned self] in
+                                        dialoguePlayed[level] = true
+                                        fadeDimOverlay()
+                                        isChatting = false
+                                        completion?()
+                                    }
                                 }
                             }
                         }

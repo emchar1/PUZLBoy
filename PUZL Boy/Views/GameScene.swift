@@ -607,6 +607,10 @@ extension GameScene: GameEngineDelegate {
         scoringEngine.timerManager.addTime(seconds)
         scoringEngine.addTimeAnimation(seconds: seconds)
     }
+    
+    func didGetPartyBomb() {
+        scoringEngine.timerManager.killTime()
+    }
 }
 
 

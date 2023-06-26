@@ -247,6 +247,9 @@ class PlayerSprite {
             AudioManager.shared.playSound(for: "partyfast")
         case .partySlow:
             AudioManager.shared.playSound(for: "partyslow")
+        case .partyBomb:
+            AudioManager.shared.playSound(for: "boyimpact")
+            AudioManager.shared.playSound(for: "boydead")
         default:
             AudioManager.shared.playSound(for: "gemcollect")
         }
@@ -343,24 +346,30 @@ class PlayerSprite {
 
         attackSprite.run(animation) { [unowned self] in
             attackSprite.removeFromParent()
+                        
+            animateExplosion(on: gameboard, at: panel, scale: scale) { }
+
+            completion()
+        }
+    }
+    
+    func animateExplosion(on gameboard: GameboardSprite, at panel: K.GameboardPosition, scale: CGFloat, completion: @escaping () -> Void) {
+        let timePerFrame: TimeInterval = 0.06
+        let explodeSprite = SKSpriteNode(texture: explodeBoulderTextures[0])
+        explodeSprite.position = gameboard.getLocation(at: panel)
+        explodeSprite.zPosition = K.ZPosition.itemsAndEffects
+        explodeSprite.setScale(scale * (gameboard.panelSize / explodeSprite.size.width))
+
+        gameboard.sprite.addChild(explodeSprite)
+
+        explodeSprite.run(SKAction.group([
+            SKAction.animate(with: explodeBoulderTextures, timePerFrame: timePerFrame * PartyModeSprite.shared.speedMultiplier),
+            SKAction.scale(by: 1.25, duration: timePerFrame * Double(explodeBoulderTextures.count) * 2 * PartyModeSprite.shared.speedMultiplier),
+            SKAction.fadeOut(withDuration: timePerFrame * Double(explodeBoulderTextures.count) * 2 * PartyModeSprite.shared.speedMultiplier)
+        ])) {
+            explodeSprite.removeFromParent()
+            self.isAnimating = false
             
-            let timePerFrame: TimeInterval = 0.06
-            let explodeSprite = SKSpriteNode(texture: explodeBoulderTextures[0])
-            explodeSprite.position = gameboard.getLocation(at: panel)
-            explodeSprite.zPosition = K.ZPosition.itemsAndEffects
-            explodeSprite.setScale(scale * (gameboard.panelSize / explodeSprite.size.width))
-
-            gameboard.sprite.addChild(explodeSprite)
-
-            explodeSprite.run(SKAction.group([
-                SKAction.animate(with: explodeBoulderTextures, timePerFrame: timePerFrame * PartyModeSprite.shared.speedMultiplier),
-                SKAction.scale(by: 1.25, duration: timePerFrame * Double(explodeBoulderTextures.count) * 2 * PartyModeSprite.shared.speedMultiplier),
-                SKAction.fadeOut(withDuration: timePerFrame * Double(explodeBoulderTextures.count) * 2 * PartyModeSprite.shared.speedMultiplier)
-            ])) {
-                explodeSprite.removeFromParent()
-                self.isAnimating = false
-            }
-
             completion()
         }
     }

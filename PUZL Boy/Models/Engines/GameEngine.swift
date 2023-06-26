@@ -14,6 +14,7 @@ protocol GameEngineDelegate: AnyObject {
     func gameIsPaused(isPaused: Bool)
     func didTakePartyPill()
     func didGetPartyTime(_ seconds: TimeInterval)
+    func didGetPartyBomb()
 }
 
 /**
@@ -582,6 +583,18 @@ class GameEngine {
                 completion?()
 
                 partyInventory.getStatus()
+            }
+        case .partyBomb:
+            disableInputFromOutside = true
+            
+            playerSprite.startItemCollectAnimation(on: gameboardSprite, at: level.player, item: .partyBomb, sound: .partyBomb) { [unowned self] in
+                consumeItem()
+                
+                playerSprite.animateExplosion(on: gameboardSprite, at: level.player, scale: 2) { [unowned self] in
+                    completion?()
+                    
+                    delegate?.didGetPartyBomb()
+                }
             }
         default:
             completion?()

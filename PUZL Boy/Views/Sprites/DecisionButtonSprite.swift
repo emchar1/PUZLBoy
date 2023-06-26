@@ -130,4 +130,14 @@ class DecisionButtonSprite: SKNode {
         textNode.text = text
         textNode.updateShadow()
     }
+    
+    func animateAppear() {
+        alpha = 1.0
+        
+        run(SKAction.sequence([
+            SKAction.scale(to: 1.1, duration: 0.25),
+            SKAction.scale(to: 0.95, duration: 0.2),
+            SKAction.scale(to: 1.0, duration: 0.2),
+        ]))
+    }
 }

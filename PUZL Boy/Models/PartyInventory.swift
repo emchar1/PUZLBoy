@@ -56,6 +56,14 @@ struct PartyInventory {
     func getRandomItem() -> LevelType {
         let randomizeItem = Int.random(in: 0..<1000)
         var randomItem: LevelType
+        var bombRange: Range<Int>
+        
+        switch panelCount {
+        case 4:     bombRange = 860..<870
+        case 5:     bombRange = 860..<880
+        case 6:     bombRange = 860..<900
+        default:    bombRange = 860..<865
+        }
         
         switch randomizeItem {
         case 100..<120:
@@ -70,6 +78,8 @@ struct PartyInventory {
             randomItem = .partyFast
         case (panelCount <= 4 ? 630..<700 : 600..<700):
             randomItem = .partySlow
+        case bombRange:
+            randomItem = .partyBomb
         default:
             randomItem = .partyGem
         }
