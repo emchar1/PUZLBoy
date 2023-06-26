@@ -111,13 +111,37 @@ class PartyResultsLineItemSprite: SKNode {
     
     ///Animates the amount change with a slight size increase, decrease, scale = 1.
     func animateAmount(_ newAmount: Int, completion: @escaping () -> Void) {
-        updateAmount(newAmount)
-
-        amountLabel.run(SKAction.sequence([
-            SKAction.scale(to: 2, duration: 0.125),
-            SKAction.scale(to: 0.95, duration: 0.125),
-            SKAction.scale(to: 1, duration: 0.25)
-        ]))
+        //OLD METHOD
+//        updateAmount(newAmount)
+//
+//        amountLabel.run(SKAction.sequence([
+//            SKAction.scale(to: 2, duration: 0.125),
+//            SKAction.scale(to: 0.95, duration: 0.125),
+//            SKAction.scale(to: 1, duration: 0.25)
+//        ]))
+        
+        
+        
+        
+        //NEW METHOD
+        let speed: CGFloat = min(0.8 / CGFloat(newAmount), 0.05)
+        
+        let incrementAction = SKAction.run { [unowned self] in
+            updateAmount(newAmount)
+        }
+        
+        let groupAction = SKAction.group([
+            incrementAction,
+            SKAction.scale(to: 1.25, duration: speed),
+        ])
+        
+        let sequenceAction = SKAction.sequence([
+            SKAction.wait(forDuration: speed),
+            groupAction,
+            SKAction.scale(to: 1.0, duration: speed)
+        ])
+        
+        amountLabel.run(sequenceAction)
     }
     
     ///Animates text in typical y-position change, then fade out.
