@@ -72,6 +72,7 @@ class GameViewController: UIViewController {
         print("Testing device info: \(UIDevice.modelInfo)")
     }//end viewDidLoad()
     
+    //Disable shake to reset for now...
 //    override func motionEnded(_ motion: UIEvent.EventSubtype, with event: UIEvent?) {
 //        if motion == .motionShake {
 //            guard let skView = view as? SKView, let scene = skView.scene as? GameScene else { return }

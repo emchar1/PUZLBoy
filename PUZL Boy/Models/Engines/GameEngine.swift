@@ -591,14 +591,13 @@ class GameEngine {
             
             Haptics.shared.executeCustomPattern(pattern: .lava)
             
+            playerSprite.animateExplosion(on: gameboardSprite, at: level.player, scale: 2) { }
+            
             playerSprite.startItemCollectAnimation(on: gameboardSprite, at: level.player, item: .partyBomb, sound: .partyBomb) { [unowned self] in
                 consumeItem()
-                
-                playerSprite.animateExplosion(on: gameboardSprite, at: level.player, scale: 2) { [unowned self] in
-                    completion?()
-                    
-                    delegate?.didGetPartyBomb()
-                }
+                completion?()
+
+                delegate?.didGetPartyBomb()
             }
         default:
             completion?()

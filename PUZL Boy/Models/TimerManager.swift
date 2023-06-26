@@ -83,7 +83,8 @@ class TimerManager {
     func killTime() {
         guard isParty else { return print("Can only kill time in a bonus level") }
         
-        timeFinal = timeInitial
+        timeInitial = Date()
+        timeFinal = Date()
     }
     
     func setIsParty(_ isParty: Bool) {
