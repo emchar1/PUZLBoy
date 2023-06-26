@@ -587,6 +587,8 @@ class GameEngine {
         case .partyBomb:
             disableInputFromOutside = true
             
+            Haptics.shared.executeCustomPattern(pattern: .lava)
+            
             playerSprite.startItemCollectAnimation(on: gameboardSprite, at: level.player, item: .partyBomb, sound: .partyBomb) { [unowned self] in
                 consumeItem()
                 
