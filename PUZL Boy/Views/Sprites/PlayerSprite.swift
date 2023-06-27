@@ -221,8 +221,8 @@ class PlayerSprite {
         gameboard.sprite.addChild(itemSprite)
         
         itemSprite.run(SKAction.group([
-            SKAction.scale(by: 1.75, duration: 0.25 * PartyModeSprite.shared.speedMultiplier),
-            SKAction.fadeOut(withDuration: 0.25 * PartyModeSprite.shared.speedMultiplier)
+            SKAction.scale(by: 1.75, duration: 0.25),
+            SKAction.fadeOut(withDuration: 0.25)
         ])) {
             itemSprite.removeFromParent()
         }
@@ -363,9 +363,9 @@ class PlayerSprite {
         gameboard.sprite.addChild(explodeSprite)
 
         explodeSprite.run(SKAction.group([
-            SKAction.animate(with: explodeBoulderTextures, timePerFrame: timePerFrame * PartyModeSprite.shared.speedMultiplier),
-            SKAction.scale(by: 1.25, duration: timePerFrame * Double(explodeBoulderTextures.count) * 2 * PartyModeSprite.shared.speedMultiplier),
-            SKAction.fadeOut(withDuration: timePerFrame * Double(explodeBoulderTextures.count) * 2 * PartyModeSprite.shared.speedMultiplier)
+            SKAction.animate(with: explodeBoulderTextures, timePerFrame: timePerFrame),
+            SKAction.scale(by: 1.25, duration: timePerFrame * Double(explodeBoulderTextures.count) * 2),
+            SKAction.fadeOut(withDuration: timePerFrame * Double(explodeBoulderTextures.count) * 2)
         ])) {
             explodeSprite.removeFromParent()
             self.isAnimating = false
