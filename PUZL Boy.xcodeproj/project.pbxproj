@@ -56,7 +56,6 @@
 		EA4583592A4431C400279056 /* punchwhack1.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA4583572A4431C400279056 /* punchwhack1.mp3 */; };
 		EA45835B2A4431D300279056 /* titletheme.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA45835A2A4431D300279056 /* titletheme.mp3 */; };
 		EA4583622A44E4AE00279056 /* gemcollectparty2x.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA4583602A44E4AE00279056 /* gemcollectparty2x.mp3 */; };
-		EA4583632A44E4AE00279056 /* gemcollectparty3x.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA4583612A44E4AE00279056 /* gemcollectparty3x.mp3 */; };
 		EA4583652A460D7200279056 /* PartyResultsLineItemSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA4583642A460D7200279056 /* PartyResultsLineItemSprite.swift */; };
 		EA49B0692A1923D300E6B96D /* HowToPlayTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA49B0682A1923D300E6B96D /* HowToPlayTableView.swift */; };
 		EA49B06B2A1953C500E6B96D /* HowToPlayTVCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA49B06A2A1953C500E6B96D /* HowToPlayTVCell.swift */; };
@@ -183,6 +182,8 @@
 		EAE565AA29D6E0C700BC43CB /* TitleScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAE565A929D6E0C700BC43CB /* TitleScene.swift */; };
 		EAE6EC342A12D27F001842C6 /* buttontap7.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAE6EC332A12D27F001842C6 /* buttontap7.mp3 */; };
 		EAE6EC362A133B04001842C6 /* HowToPlayNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAE6EC352A133B04001842C6 /* HowToPlayNode.swift */; };
+		EAE919392A4A8BC100AF67D1 /* gemcollectparty3x.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAE919382A4A8BC100AF67D1 /* gemcollectparty3x.mp3 */; };
+		EAE9193B2A4A8E7D00AF67D1 /* gemcollectpartylife.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAE9193A2A4A8E7D00AF67D1 /* gemcollectpartylife.mp3 */; };
 		EAF07C0329E796640034CD1A /* ParallaxSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAF07C0229E796630034CD1A /* ParallaxSprite.swift */; };
 		EAF07C0529E796AE0034CD1A /* TemplateClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAF07C0429E796AE0034CD1A /* TemplateClass.swift */; };
 		EAF07C0929E7A13F0034CD1A /* ParallaxObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAF07C0829E7A13F0034CD1A /* ParallaxObject.swift */; };
@@ -251,7 +252,6 @@
 		EA4583572A4431C400279056 /* punchwhack1.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = punchwhack1.mp3; sourceTree = "<group>"; };
 		EA45835A2A4431D300279056 /* titletheme.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = titletheme.mp3; sourceTree = "<group>"; };
 		EA4583602A44E4AE00279056 /* gemcollectparty2x.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = gemcollectparty2x.mp3; sourceTree = "<group>"; };
-		EA4583612A44E4AE00279056 /* gemcollectparty3x.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = gemcollectparty3x.mp3; sourceTree = "<group>"; };
 		EA4583642A460D7200279056 /* PartyResultsLineItemSprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PartyResultsLineItemSprite.swift; sourceTree = "<group>"; };
 		EA49B0682A1923D300E6B96D /* HowToPlayTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HowToPlayTableView.swift; sourceTree = "<group>"; };
 		EA49B06A2A1953C500E6B96D /* HowToPlayTVCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HowToPlayTVCell.swift; sourceTree = "<group>"; };
@@ -373,6 +373,8 @@
 		EAE565A929D6E0C700BC43CB /* TitleScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleScene.swift; sourceTree = "<group>"; };
 		EAE6EC332A12D27F001842C6 /* buttontap7.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = buttontap7.mp3; sourceTree = "<group>"; };
 		EAE6EC352A133B04001842C6 /* HowToPlayNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HowToPlayNode.swift; sourceTree = "<group>"; };
+		EAE919382A4A8BC100AF67D1 /* gemcollectparty3x.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = gemcollectparty3x.mp3; sourceTree = "<group>"; };
+		EAE9193A2A4A8E7D00AF67D1 /* gemcollectpartylife.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = gemcollectpartylife.mp3; sourceTree = "<group>"; };
 		EAF07C0229E796630034CD1A /* ParallaxSprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParallaxSprite.swift; sourceTree = "<group>"; };
 		EAF07C0429E796AE0034CD1A /* TemplateClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemplateClass.swift; sourceTree = "<group>"; };
 		EAF07C0829E7A13F0034CD1A /* ParallaxObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParallaxObject.swift; sourceTree = "<group>"; };
@@ -648,7 +650,8 @@
 				EA4D026429B90BF700F0C7B1 /* gemcollect.mp3 */,
 				EA2AF74729B6EDAC00444E5A /* gemcollectparty.mp3 */,
 				EA4583602A44E4AE00279056 /* gemcollectparty2x.mp3 */,
-				EA4583612A44E4AE00279056 /* gemcollectparty3x.mp3 */,
+				EAE919382A4A8BC100AF67D1 /* gemcollectparty3x.mp3 */,
+				EAE9193A2A4A8E7D00AF67D1 /* gemcollectpartylife.mp3 */,
 				EAAEA3C12931AA6E00221963 /* hammerswing.mp3 */,
 				EAF7182829B31BE800E2ED82 /* lavaappear1.mp3 */,
 				EAF7182C29B3CC0500E2ED82 /* lavaappear2.mp3 */,
@@ -893,7 +896,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				EAAEA3CA2931F12B00221963 /* pickupitem.mp3 in Resources */,
-				EA4583632A44E4AE00279056 /* gemcollectparty3x.mp3 in Resources */,
 				EA94E87429C0DE2C009F2614 /* movetile2.mp3 in Resources */,
 				EAAEA3C62931F08300221963 /* gameover.mp3 in Resources */,
 				EAF7183729B3D3FD00E2ED82 /* movesand3.mp3 in Resources */,
@@ -936,6 +938,7 @@
 				EA95D19B294690B70061059C /* boydead.mp3 in Resources */,
 				EA95D19E294690B70061059C /* boyattack2.mp3 in Resources */,
 				EA45834D2A44315900279056 /* buttontap3.mp3 in Resources */,
+				EAE919392A4A8BC100AF67D1 /* gemcollectparty3x.mp3 in Resources */,
 				EA3467A529A8C659002DDA02 /* revive.mp3 in Resources */,
 				EA9F4DE229D36F02006F4B2F /* movepoisoned3.mp3 in Resources */,
 				EA2AF74829B6EDAC00444E5A /* gemcollectparty.mp3 in Resources */,
@@ -962,6 +965,7 @@
 				EA78C36E29767D7600292744 /* GoogleService-Info.plist in Resources */,
 				EAAEA3CC2931F14D00221963 /* winlevel.mp3 in Resources */,
 				EA9F4DE729D37206006F4B2F /* movepoisoned2.mp3 in Resources */,
+				EAE9193B2A4A8E7D00AF67D1 /* gemcollectpartylife.mp3 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

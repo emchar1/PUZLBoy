@@ -99,6 +99,7 @@ class AudioManager {
         addAudioItem("gemcollectparty", category: .soundFX)
         addAudioItem("gemcollectparty2x", category: .soundFX) //needs purchase
         addAudioItem("gemcollectparty3x", category: .soundFX) //needs purchase
+        addAudioItem("gemcollectpartylife", category: .soundFX) //needs purchase
         addAudioItem("hammerswing", category: .soundFX)
         addAudioItem("lavaappear1", category: .soundFX)
         addAudioItem("lavaappear2", category: .soundFX)

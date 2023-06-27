@@ -20,6 +20,7 @@ class PartyResultsLineItemSprite: SKNode {
     private var amount: Int
     
     private var amountLabel: SKLabelNode
+    private var amountAnchor: SKLabelNode
     
     
     // MARK: - Initialization
@@ -33,6 +34,7 @@ class PartyResultsLineItemSprite: SKNode {
         self.amount = amount
         
         self.amountLabel = SKLabelNode(text: numberFormatter.string(from: NSNumber(value: amount)) ?? "XXX")
+        self.amountAnchor = SKLabelNode(text: "000")
         
         super.init()
         
@@ -66,12 +68,22 @@ class PartyResultsLineItemSprite: SKNode {
         amountLabel.zPosition = 10
         amountLabel.addDropShadow()
         
+        amountAnchor.position = amountLabel.position
+        amountAnchor.fontName = amountLabel.fontName
+        amountAnchor.fontSize = amountLabel.fontSize
+        amountAnchor.fontColor = .clear
+        amountAnchor.horizontalAlignmentMode = .right
+        amountAnchor.verticalAlignmentMode = .center
+        amountAnchor.zPosition = 8
+        
+        
         alpha = 0
         
         addChild(backgroundSprite)
         backgroundSprite.addChild(iconNode)
         backgroundSprite.addChild(descriptionLabel)
         backgroundSprite.addChild(amountLabel)
+        backgroundSprite.addChild(amountAnchor)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -124,7 +136,7 @@ class PartyResultsLineItemSprite: SKNode {
         
         
         //NEW METHOD
-        let speed: CGFloat = min(0.8 / CGFloat(newAmount), 0.05)
+        let speed: CGFloat = min(0.8 / CGFloat(newAmount), 0.125)
         
         let incrementAction = SKAction.run { [unowned self] in
             updateAmount(newAmount)
@@ -155,7 +167,7 @@ class PartyResultsLineItemSprite: SKNode {
         textSprite.zPosition = K.ZPosition.itemsPoints
         textSprite.addDropShadow()
         
-        amountLabel.addChild(textSprite)
+        amountAnchor.addChild(textSprite)
 
         let moveUp = SKAction.move(by: CGVector(dx: 0, dy: 100), duration: 1.0)
         let fadeOut = SKAction.sequence([SKAction.wait(forDuration: 0.75), SKAction.fadeOut(withDuration: 0.25)])
