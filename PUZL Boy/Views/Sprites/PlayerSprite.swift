@@ -215,7 +215,7 @@ class PlayerSprite {
     func startItemCollectAnimation(on gameboard: GameboardSprite, at panel: K.GameboardPosition, item: LevelType, sound: LevelType = .gem, completion: @escaping (() -> Void)) {
         let itemSprite = SKSpriteNode(imageNamed: item.description)
         itemSprite.position = gameboard.getLocation(at: panel)
-        itemSprite.zPosition = K.ZPosition.itemsAndEffects
+        itemSprite.zPosition = K.ZPosition.itemsAndEffects + 10
         itemSprite.setScale(gameboard.panelSize / itemSprite.size.width)
         
         gameboard.sprite.addChild(itemSprite)
@@ -247,7 +247,7 @@ class PlayerSprite {
             AudioManager.shared.playSound(for: "partyfast")
         case .partySlow:
             AudioManager.shared.playSound(for: "partyslow")
-        case .partyBomb:
+        case .partyBomb, .partyBoom:
             AudioManager.shared.playSound(for: "boyimpact")
             AudioManager.shared.playSound(for: "boydead")
         default:

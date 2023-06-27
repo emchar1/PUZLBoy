@@ -593,7 +593,7 @@ class GameEngine {
             
             playerSprite.animateExplosion(on: gameboardSprite, at: level.player, scale: 2) { }
             
-            playerSprite.startItemCollectAnimation(on: gameboardSprite, at: level.player, item: .partyBomb, sound: .partyBomb) { [unowned self] in
+            playerSprite.startItemCollectAnimation(on: gameboardSprite, at: level.player, item: .partyBoom, sound: .partyBomb) { [unowned self] in
                 consumeItem()
                 completion?()
 
