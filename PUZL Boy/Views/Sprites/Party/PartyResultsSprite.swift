@@ -44,27 +44,27 @@ class PartyResultsSprite: SKNode {
         
         gemsLineItem = PartyResultsLineItemSprite(iconName: "partyGem", iconDescription: "Gems", amount: 0)
         gemsLineItem.position = CGPoint(x: -backgroundSize.width / 2,
-                                        y: backgroundSize.height / 2 - PartyResultsLineItemSprite.height - topBorder)
+                                        y: backgroundSize.height / 2 - PartyResultsLineItemSprite.lineItemHeight - topBorder)
         
         gemsDoubleLineItem = PartyResultsLineItemSprite(iconName: "partyGemDouble", iconDescription: "2x Multiplier", amount: 0)
         gemsDoubleLineItem.position = CGPoint(x: -backgroundSize.width / 2,
-                                              y: gemsLineItem.position.y - PartyResultsLineItemSprite.height)
+                                              y: gemsLineItem.position.y - PartyResultsLineItemSprite.lineItemHeight)
         
         gemsTripleLineItem = PartyResultsLineItemSprite(iconName: "partyGemTriple", iconDescription: "3x Multiplier", amount: 0)
         gemsTripleLineItem.position = CGPoint(x: -backgroundSize.width / 2,
-                                              y: gemsDoubleLineItem.position.y - PartyResultsLineItemSprite.height)
+                                              y: gemsDoubleLineItem.position.y - PartyResultsLineItemSprite.lineItemHeight)
         
         gemsTotalLineItem = PartyResultsLineItemSprite(iconName: nil, iconDescription: "Total Gems", amount: 0)
         gemsTotalLineItem.position = CGPoint(x: -backgroundSize.width / 2,
-                                             y: gemsTripleLineItem.position.y - PartyResultsLineItemSprite.height)
+                                             y: gemsTripleLineItem.position.y - PartyResultsLineItemSprite.lineItemHeight)
         
         livesLineItem = PartyResultsLineItemSprite(iconName: "partyLife", iconDescription: "Lives", amount: 0)
         livesLineItem.position = CGPoint(x: -backgroundSize.width / 2,
-                                         y: gemsTotalLineItem.position.y - PartyResultsLineItemSprite.height - topBorder / 2)
+                                         y: gemsTotalLineItem.position.y - PartyResultsLineItemSprite.lineItemHeight - topBorder / 2)
         
         livesTotalLineItem = PartyResultsLineItemSprite(iconName: nil, iconDescription: "Total Lives", amount: 0)
         livesTotalLineItem.position = CGPoint(x: -backgroundSize.width / 2,
-                                              y: livesLineItem.position.y - PartyResultsLineItemSprite.height)
+                                              y: livesLineItem.position.y - PartyResultsLineItemSprite.lineItemHeight)
         
         let titleLabel = SKLabelNode(text: "RESULTS")
         titleLabel.fontName = UIFont.gameFont

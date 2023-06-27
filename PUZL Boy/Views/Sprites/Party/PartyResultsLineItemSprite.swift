@@ -11,8 +11,8 @@ class PartyResultsLineItemSprite: SKNode {
     
     // MARK: - Properties
     
-    static let iconSize: CGFloat = 400 * (UIDevice.isiPad ? 0.52 : 0.36)
-    static let height: CGFloat = iconSize * 0.75
+    static let iconSize: CGFloat = 512 * (UIDevice.isiPad ? 0.41 : 0.28)
+    static let lineItemHeight: CGFloat = iconSize * 0.75
     
     private var numberFormatter: NumberFormatter
     private var iconName: String?
@@ -40,7 +40,7 @@ class PartyResultsLineItemSprite: SKNode {
         
         let lrBorder: CGFloat = 40
         let backgroundSprite = SKSpriteNode(color: .clear, size: CGSize(width: K.ScreenDimensions.iPhoneWidth,
-                                                                        height: PartyResultsLineItemSprite.height))
+                                                                        height: PartyResultsLineItemSprite.lineItemHeight))
         backgroundSprite.anchorPoint = CGPoint(x: 0, y: 0.5)
         backgroundSprite.position = .zero
         
