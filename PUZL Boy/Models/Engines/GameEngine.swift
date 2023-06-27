@@ -507,58 +507,60 @@ class GameEngine {
             delegate?.didTakePartyPill()
         case .partyGem:
             partyInventory.gems += 1
+            
+            Haptics.shared.addHapticFeedback(withStyle: .light)
                         
             playerSprite.startItemCollectAnimation(on: gameboardSprite, at: level.player, item: .partyGem, sound: .partyGem) { [unowned self] in
                 consumeItem()
                 completion?()
-                
-                partyInventory.getStatus()
             }
         case .partyGemDouble:
             partyInventory.gemsDouble += 1
-            
+
+            Haptics.shared.addHapticFeedback(withStyle: .light)
+
             playerSprite.startItemCollectAnimation(on: gameboardSprite, at: level.player, item: .partyGemDouble, sound: .partyGemDouble) { [unowned self] in
                 consumeItem()
                 completion?()
-
-                partyInventory.getStatus()
             }
         case .partyGemTriple:
             partyInventory.gemsTriple += 1
 
+            Haptics.shared.addHapticFeedback(withStyle: .light)
+
             playerSprite.startItemCollectAnimation(on: gameboardSprite, at: level.player, item: .partyGemTriple, sound: .partyGemTriple) { [unowned self] in
                 consumeItem()
                 completion?()
-
-                partyInventory.getStatus()
             }
         case .partyLife:
             partyInventory.lives += 1
+
+            Haptics.shared.addHapticFeedback(withStyle: .light)
 
             ScoringEngine.addTextAnimation(text: "1-UP", textColor: .yellow, originSprite: gameboardSprite.sprite, location: gameboardSprite.getLocation(at: level.player))
 
             playerSprite.startItemCollectAnimation(on: gameboardSprite, at: level.player, item: .partyLife, sound: .partyLife) { [unowned self] in
                 consumeItem()
                 completion?()
-
-                partyInventory.getStatus()
             }
         case .partyTime:
             partyInventory.time += 1
+
+            Haptics.shared.addHapticFeedback(withStyle: .light)
 
             delegate?.didGetPartyTime(PartyInventory.timeIncrement)
             
             playerSprite.startItemCollectAnimation(on: gameboardSprite, at: level.player, item: .partyTime, sound: .partyTime) { [unowned self] in
                 consumeItem()
                 completion?()
-
-                partyInventory.getStatus()
             }
         case .partyFast:
             let maxReached = PartyModeSprite.shared.multiplierMaxReached
             
             partyInventory.speedUp += 1
             PartyModeSprite.shared.increaseSpeedMultiplier(shouldDecrease: false)
+
+            Haptics.shared.addHapticFeedback(withStyle: .light)
 
             if !maxReached {
                 ScoringEngine.addTextAnimation(text: "SPEED+", textColor: .cyan, originSprite: gameboardSprite.sprite, location: gameboardSprite.getLocation(at: level.player))
@@ -567,14 +569,14 @@ class GameEngine {
             playerSprite.startItemCollectAnimation(on: gameboardSprite, at: level.player, item: .partyFast, sound: maxReached ? .partyGem : .partyFast) { [unowned self] in
                 consumeItem()
                 completion?()
-
-                partyInventory.getStatus()
             }
         case .partySlow:
             let minReached = PartyModeSprite.shared.multiplierMinReached
             
             partyInventory.speedDown += 1
             PartyModeSprite.shared.increaseSpeedMultiplier(shouldDecrease: true)
+
+            Haptics.shared.addHapticFeedback(withStyle: .light)
 
             if !minReached {
                 ScoringEngine.addTextAnimation(text: "SPEED-", textColor: .magenta, originSprite: gameboardSprite.sprite, location: gameboardSprite.getLocation(at: level.player))
@@ -583,8 +585,6 @@ class GameEngine {
             playerSprite.startItemCollectAnimation(on: gameboardSprite, at: level.player, item: .partySlow, sound: minReached ? .partyGem : .partySlow) { [unowned self] in
                 consumeItem()
                 completion?()
-
-                partyInventory.getStatus()
             }
         case .partyBomb:
             disableInputFromOutside = true

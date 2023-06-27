@@ -74,7 +74,7 @@ class PartyResultsLineItemSprite: SKNode {
         amountAnchor.fontColor = .clear
         amountAnchor.horizontalAlignmentMode = .right
         amountAnchor.verticalAlignmentMode = .center
-        amountAnchor.zPosition = 8
+        amountAnchor.zPosition = 15
         
         
         alpha = 0
