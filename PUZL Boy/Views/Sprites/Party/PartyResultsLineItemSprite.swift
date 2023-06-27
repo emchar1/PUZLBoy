@@ -104,14 +104,14 @@ class PartyResultsLineItemSprite: SKNode {
         run(SKAction.group([
             SKAction.fadeIn(withDuration: 0),
             SKAction.sequence([
-                SKAction.moveTo(x: xPosition * 1.1, duration: 0.25),
-                SKAction.moveTo(x: xPosition * 0.95, duration: 0.2),
-                SKAction.moveTo(x: xPosition, duration: 0.2)
+                SKAction.moveTo(x: xPosition * 1.1, duration: 0),
+                SKAction.moveTo(x: xPosition * 0.95, duration: 0.25),
+                SKAction.moveTo(x: xPosition, duration: 0.125)
             ]),
             SKAction.sequence([
-                SKAction.scale(to: 1.1, duration: 0.25),
-                SKAction.scale(to: 0.95, duration: 0.2),
-                SKAction.scale(to: 1, duration: 0.2)
+                SKAction.scale(to: 1.1, duration: 0),
+                SKAction.scale(to: 0.95, duration: 0.25),
+                SKAction.scale(to: 1, duration: 0.125)
             ])
         ]), completion: completion)
     }
@@ -163,8 +163,7 @@ class PartyResultsLineItemSprite: SKNode {
         textSprite.fontSize = UIDevice.isiPad ? UIFont.gameFontSizeLarge : UIFont.gameFontSizeMedium
         textSprite.horizontalAlignmentMode = .right
         textSprite.fontColor = .yellow
-        textSprite.position = .zero
-        textSprite.zPosition = K.ZPosition.itemsPoints
+        textSprite.position = CGPoint(x: 0, y: 20)
         textSprite.addDropShadow()
         
         amountAnchor.addChild(textSprite)
