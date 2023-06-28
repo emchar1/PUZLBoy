@@ -83,7 +83,7 @@ class AudioManager {
         addAudioItem("boygrunt1", category: .soundFX)
         addAudioItem("boygrunt2", category: .soundFX)
         addAudioItem("boyimpact", category: .soundFX)
-        addAudioItem("boywin", category: .soundFX) //needs purchase - where can I find?
+        addAudioItem("boywin", category: .soundFX)
         addAudioItem("buttontap1", category: .soundFX)
         addAudioItem("buttontap2", category: .soundFX)
         addAudioItem("buttontap3", category: .soundFX)
@@ -97,9 +97,9 @@ class AudioManager {
         addAudioItem("enemydeath", category: .soundFX)
         addAudioItem("gemcollect", category: .soundFX)
         addAudioItem("gemcollectparty", category: .soundFX)
-        addAudioItem("gemcollectparty2x", category: .soundFX) //needs purchase
-        addAudioItem("gemcollectparty3x", category: .soundFX) //needs purchase
-        addAudioItem("gemcollectpartylife", category: .soundFX) //needs purchase
+        addAudioItem("gemcollectparty2x", category: .soundFX)
+        addAudioItem("gemcollectparty3x", category: .soundFX)
+        addAudioItem("gemcollectpartylife", category: .soundFX)
         addAudioItem("hammerswing", category: .soundFX)
         addAudioItem("lavaappear1", category: .soundFX)
         addAudioItem("lavaappear2", category: .soundFX)
