@@ -184,6 +184,8 @@
 		EAE6EC362A133B04001842C6 /* HowToPlayNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAE6EC352A133B04001842C6 /* HowToPlayNode.swift */; };
 		EAE919392A4A8BC100AF67D1 /* gemcollectparty3x.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAE919382A4A8BC100AF67D1 /* gemcollectparty3x.mp3 */; };
 		EAE9193B2A4A8E7D00AF67D1 /* gemcollectpartylife.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAE9193A2A4A8E7D00AF67D1 /* gemcollectpartylife.mp3 */; };
+		EAE919412A4CA13200AF67D1 /* clocktickNEW.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAE919402A4CA13200AF67D1 /* clocktickNEW.mp3 */; };
+		EAE919452A4CA4A800AF67D1 /* clocktick.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAE919442A4CA4A800AF67D1 /* clocktick.mp3 */; };
 		EAF07C0329E796640034CD1A /* ParallaxSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAF07C0229E796630034CD1A /* ParallaxSprite.swift */; };
 		EAF07C0529E796AE0034CD1A /* TemplateClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAF07C0429E796AE0034CD1A /* TemplateClass.swift */; };
 		EAF07C0929E7A13F0034CD1A /* ParallaxObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAF07C0829E7A13F0034CD1A /* ParallaxObject.swift */; };
@@ -375,6 +377,8 @@
 		EAE6EC352A133B04001842C6 /* HowToPlayNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HowToPlayNode.swift; sourceTree = "<group>"; };
 		EAE919382A4A8BC100AF67D1 /* gemcollectparty3x.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = gemcollectparty3x.mp3; sourceTree = "<group>"; };
 		EAE9193A2A4A8E7D00AF67D1 /* gemcollectpartylife.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = gemcollectpartylife.mp3; sourceTree = "<group>"; };
+		EAE919402A4CA13200AF67D1 /* clocktickNEW.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = clocktickNEW.mp3; sourceTree = "<group>"; };
+		EAE919442A4CA4A800AF67D1 /* clocktick.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = clocktick.mp3; sourceTree = "<group>"; };
 		EAF07C0229E796630034CD1A /* ParallaxSprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParallaxSprite.swift; sourceTree = "<group>"; };
 		EAF07C0429E796AE0034CD1A /* TemplateClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemplateClass.swift; sourceTree = "<group>"; };
 		EAF07C0829E7A13F0034CD1A /* ParallaxObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParallaxObject.swift; sourceTree = "<group>"; };
@@ -643,6 +647,8 @@
 				EAE6EC332A12D27F001842C6 /* buttontap7.mp3 */,
 				EAACB4B82971E08A00973EB8 /* chatclose.mp3 */,
 				EA3467A829A8C6CA002DDA02 /* chatopen.mp3 */,
+				EAE919442A4CA4A800AF67D1 /* clocktick.mp3 */,
+				EAE919402A4CA13200AF67D1 /* clocktickNEW.mp3 */,
 				EA3467AC29A8C7C7002DDA02 /* continueloop.mp3 */,
 				EADEB3E82931404D00CDB232 /* dooropen.mp3 */,
 				EA0F1490292CC8D90013038E /* enemydeath.mp3 */,
@@ -908,6 +914,8 @@
 				EA95D1A3294691820061059C /* boygrunt1.mp3 in Resources */,
 				EA94E87529C0DE2C009F2614 /* movetile1.mp3 in Resources */,
 				EAAEA3C22931AA6E00221963 /* hammerswing.mp3 in Resources */,
+				EAE919452A4CA4A800AF67D1 /* clocktick.mp3 in Resources */,
+				EAE919412A4CA13200AF67D1 /* clocktickNEW.mp3 in Resources */,
 				EA0F145F292994B00013038E /* movewalk.mp3 in Resources */,
 				EA45833D2A4267AA00279056 /* boywin.mp3 in Resources */,
 				EAF7182129B3097300E2ED82 /* lavasizzle.mp3 in Resources */,

@@ -139,7 +139,7 @@ class AudioManager {
 
         
         //Looped SFX
-        addAudioItem("clocktick", category: .soundFXLoop) //needs purchase
+        addAudioItem("clocktick", category: .soundFXLoop)
         
         
         //No Loop music
