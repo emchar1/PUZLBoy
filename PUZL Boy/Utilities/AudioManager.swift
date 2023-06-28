@@ -16,7 +16,7 @@ enum AudioType: String {
 }
 
 enum AudioCategory {
-    case music, musicNoLoop, soundFX
+    case music, musicNoLoop, soundFX, soundFXLoop
 }
 
 
@@ -138,6 +138,10 @@ class AudioManager {
         addAudioItem("winlevel", category: .soundFX)
 
         
+        //Looped SFX
+        addAudioItem("clocktick", category: .soundFXLoop) //needs purchase
+        
+        
         //No Loop music
         addAudioItem("gameover", category: .musicNoLoop)
         addAudioItem("titletheme", category: .musicNoLoop)
@@ -177,11 +181,12 @@ class AudioManager {
         }
         
         do {
+            let shouldLoop = audioItem.category == .music || audioItem.category == .soundFXLoop
+
             var audioPlayer = audioItem.player
-            
             audioPlayer = try AVAudioPlayer(contentsOf: URL(fileURLWithPath: audioURL))
             audioPlayer.volume = audioItem.currentVolume
-            audioPlayer.numberOfLoops = audioItem.category == .music ? -1 : 0
+            audioPlayer.numberOfLoops = shouldLoop ? -1 : 0
             
             return audioPlayer
         }
@@ -316,13 +321,13 @@ class AudioManager {
      */
     func updateVolumes() {
         for (index, item) in audioItems {
-            if item.category == .music || item.category == .musicNoLoop {
+            switch item.category {
+            case .music, .musicNoLoop:
                 let volumeToSet: Float = UserDefaults.standard.bool(forKey: K.UserDefaults.muteMusic) ? 0 : item.maxVolume
                 
                 audioItems[index]?.currentVolume = volumeToSet
                 item.player.setVolume(volumeToSet, fadeDuration: 0.25)
-            }
-            else {
+            case .soundFX, .soundFXLoop:
                 let volumeToSet: Float = UserDefaults.standard.bool(forKey: K.UserDefaults.muteSoundFX) ? 0 : item.maxVolume
                 
                 audioItems[index]?.currentVolume = volumeToSet

@@ -278,11 +278,19 @@ class GameScene: SKScene {
             
             if currentLevel == Level.partyLevel && scoringEngine.timerManager.elapsedTime <= 0 {
                 stopParty()
+                
+                AudioManager.shared.stopSound(for: "clocktick")
+            }
+            
+            if currentLevel == Level.partyLevel && scoringEngine.timerManager.elapsedTime > 11 {
+                AudioManager.shared.stopSound(for: "clocktick")
             }
             
             // FIXME: - Countdown - why are edges 11 and 1 (not 10 and 0)
             if currentLevel == Level.partyLevel && scoringEngine.timerManager.elapsedTime <= 11 && scoringEngine.timerManager.elapsedTime > 1 && scoringEngine.timerManager.milliseconds <= 0 {
                 scoringEngine.pulseColorTimeAnimation(fontColor: .red)
+                
+                AudioManager.shared.playSound(for: "clocktick", interruptPlayback: false)
             }
         }
         let sequence = SKAction.sequence([wait, block])
