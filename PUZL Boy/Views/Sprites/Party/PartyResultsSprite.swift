@@ -143,53 +143,7 @@ class PartyResultsSprite: SKNode {
                         gemsTotalLineItem.animateAppear(xPosition: xPosition) { [unowned self] in
                             livesLineItem.animateAppear(xPosition: xPosition) { [unowned self] in
                                 livesTotalLineItem.animateAppear(xPosition: xPosition) { [unowned self] in
-                                    let multiplierIncrement: CGFloat = 100
-                                    let waitFactor: TimeInterval = 3
-                                    let multiplier: Int = Int(max(CGFloat(totalGems) / multiplierIncrement, 1))
-                                    let wait = SKAction.wait(forDuration: min(CGFloat(multiplier) * waitFactor / CGFloat(totalGems),
-                                                                              waitFactor / multiplierIncrement))
-                                    var counter: Int = 0
-                                    var lifeCounter: Int = 0
-                                    var livesToIncrement: Int = lives
-                                    
-                                    let incrementAction = SKAction.run { [unowned self] in
-                                        gemsTotalLineItem.animateAmount(counter) { }
-                                                                                
-                                        counter += multiplier
-                                        lifeCounter += multiplier
-                                        
-                                        if lifeCounter > 100 {
-                                            livesToIncrement += 1
-                                            lifeCounter = 0
-                                            
-                                            gemsTotalLineItem.addTextAnimation("1-UP")
-                                            livesTotalLineItem.animateAmount(livesToIncrement) { }
-                                            
-                                            AudioManager.shared.playSound(for: "gemcollectpartylife")
-                                        }
-                                    }
-                                    
-                                    let incrementRepeat = SKAction.repeat(SKAction.sequence([
-                                        wait,
-                                        incrementAction
-                                    ]), count: Int(CGFloat(totalGems) / CGFloat(multiplier)))
-                                
-                                    run(incrementRepeat) { [unowned self] in
-                                        if totalGems > 0 {
-                                            gemsTotalLineItem.animateAmount(totalGems) { }
-                                        }
-                                            
-                                        if livesToIncrement != totalLives {
-                                            livesTotalLineItem.animateAmount(totalLives) { }
-                                            
-                                            AudioManager.shared.playSound(for: "gemcollectpartylife")
-                                        }
-                                        
-                                        confirmButton.animateAppear()
-
-                                        disableControls = false
-                                        completion()
-                                    }
+                                    animateHelper(totalGems: totalGems, lives: lives, totalLives: totalLives, completion: completion)
                                 }
                             }
                         }
@@ -197,6 +151,55 @@ class PartyResultsSprite: SKNode {
                 }
             } //end nesting of death
 
+        }
+    }
+    
+    private func animateHelper(totalGems: Int, lives: Int, totalLives: Int, completion: @escaping (() -> Void)) {
+        let waitFactor: TimeInterval = 3
+        let multiplier: Int = Int(max(CGFloat(totalGems) / CGFloat(PartyInventory.gemsPerLife), 1))
+        let wait = SKAction.wait(forDuration: min(CGFloat(multiplier) * waitFactor / CGFloat(totalGems),
+                                                  waitFactor / CGFloat(PartyInventory.gemsPerLife)))
+        var counter: Int = 0
+        var lifeCounter: Int = 0
+        var livesToIncrement: Int = lives
+        
+        let incrementAction = SKAction.run { [unowned self] in
+            gemsTotalLineItem.animateAmount(counter) { }
+                                                    
+            counter += multiplier
+            lifeCounter += multiplier
+            
+            if lifeCounter > 100 {
+                livesToIncrement += 1
+                lifeCounter = 0
+                
+                gemsTotalLineItem.addTextAnimation("1-UP")
+                livesTotalLineItem.animateAmount(livesToIncrement) { }
+                
+                AudioManager.shared.playSound(for: "gemcollectpartylife")
+            }
+        }
+        
+        let incrementRepeat = SKAction.repeat(SKAction.sequence([
+            wait,
+            incrementAction
+        ]), count: Int(CGFloat(totalGems) / CGFloat(multiplier)))
+    
+        run(incrementRepeat) { [unowned self] in
+            if totalGems > 0 {
+                gemsTotalLineItem.animateAmount(totalGems) { }
+            }
+                
+            if livesToIncrement != totalLives {
+                livesTotalLineItem.animateAmount(totalLives) { }
+                
+                AudioManager.shared.playSound(for: "gemcollectpartylife")
+            }
+            
+            confirmButton.animateAppear()
+
+            disableControls = false
+            completion()
         }
     }
     
