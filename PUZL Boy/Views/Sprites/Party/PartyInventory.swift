@@ -11,9 +11,11 @@ struct PartyInventory {
     
     // MARK: - Properties
     
+    //Shared properties
     static let timeIncrement: TimeInterval = 5
     static let gemsPerLife = 100
     
+    //Items
     var gems: Int
     var gemsDouble: Int
     var gemsTriple: Int
@@ -22,7 +24,14 @@ struct PartyInventory {
     var speedDown: Int
     var lives: Int
     
+    //Misc properties
     private var panelCount: Int
+    private(set) var spawnDelayDuration: TimeInterval
+    private(set) var itemWaitDuration: TimeInterval
+    
+    var randomizePosition: K.GameboardPosition {
+        (row: Int.random(in: 0..<panelCount), col: Int.random(in: 0..<panelCount))
+    }
 
     
     // MARK: - Initialization
@@ -37,6 +46,21 @@ struct PartyInventory {
         lives = 0
         
         self.panelCount = panelCount
+        
+        switch panelCount {
+        case 6:
+            spawnDelayDuration = 0.2
+            itemWaitDuration = 3
+        case 5:
+            spawnDelayDuration = 0.3
+            itemWaitDuration = 2.5
+        case 4:
+            spawnDelayDuration = 0.4
+            itemWaitDuration = 2
+        default: //gameboardSize = 3
+            spawnDelayDuration = 0.5
+            itemWaitDuration = 1.5
+        }
     }
     
     
@@ -61,7 +85,7 @@ struct PartyInventory {
         switch panelCount {
         case 4:     bombRange = 800..<825
         case 5:     bombRange = 800..<850
-        case 6:     bombRange = 800..<900
+        case 6:     bombRange = 800..<1000
         default:    bombRange = 800..<825
         }
         

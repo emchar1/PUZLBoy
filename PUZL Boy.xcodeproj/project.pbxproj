@@ -456,6 +456,7 @@
 				EA94E86429BDA536009F2614 /* PartyEffectSprite.swift */,
 				EA45833E2A43CE3100279056 /* PartyResultsSprite.swift */,
 				EA4583642A460D7200279056 /* PartyResultsLineItemSprite.swift */,
+				EA4583362A420AAA00279056 /* PartyInventory.swift */,
 			);
 			path = Party;
 			sourceTree = "<group>";
@@ -501,7 +502,6 @@
 				EA34678D2998ED50002DDA02 /* LifeSpawnerModel.swift */,
 				EA826C86298E23A500F19F81 /* Player.swift */,
 				EA119154290CCA39009D0E3E /* Inventory.swift */,
-				EA4583362A420AAA00279056 /* PartyInventory.swift */,
 				EA0F84062937D4860031DA76 /* DayTheme.swift */,
 				EA11915629121798009D0E3E /* Controls.swift */,
 			);

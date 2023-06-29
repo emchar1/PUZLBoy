@@ -123,59 +123,44 @@ class GameEngine {
     ///Spawns items in a party level.
     func spawnPartyItems(maxItems: Int) {
         guard Level.isPartyLevel(level.level) else { return }
-        
-        partyInventory = PartyInventory(panelCount: level.gameboard.count)
-        
-        let gameboardSize = self.level.gameboard.count
-        var randomItem: LevelType = .partyGem
-        var spawnDelayDuration: TimeInterval
-        var itemWaitDuration: TimeInterval
-        var counterCheck = 0
+                
         var itemPositions: [K.GameboardPosition] = Array(repeating: (row: 0, col: 0), count: maxItems)
-        var randomizePosition: K.GameboardPosition { (row: Int.random(in: 0..<gameboardSize), col: Int.random(in: 0..<gameboardSize)) }
-        
-        switch gameboardSize {
-        case 6:
-            spawnDelayDuration = 0.2
-            itemWaitDuration = 3
-        case 5:
-            spawnDelayDuration = 0.3
-            itemWaitDuration = 2.5
-        case 4:
-            spawnDelayDuration = 0.4
-            itemWaitDuration = 2
-        default: //gameboardSize = 3
-            spawnDelayDuration = 0.5
-            itemWaitDuration = 1.5
-        }
-        
+
+        partyInventory = PartyInventory(panelCount: level.gameboard.count)
+
         for i in 0..<maxItems {
-            gameboardSprite.sprite.run(SKAction.sequence([
-                SKAction.wait(forDuration: spawnDelayDuration * TimeInterval(i)),
-                SKAction.run { [unowned self] in
-                    while itemPositions[i] == self.level.player || self.level.getOverlayType(at: itemPositions[i]) != .boundary {
-                        itemPositions[i] = randomizePosition
-                        counterCheck += 1
-                        
-                        //Prevents infinite while loop
-                        if counterCheck > gameboardSize * gameboardSize * 2 {
-                            print("Too many party gems!")
-                            break
-                        }
-                    }
+            let spawnAction = SKAction.run { [unowned self] in
+                let randomItem: LevelType = partyInventory.getRandomItem()
+                var counterCheck = 0
+
+                while itemPositions[i] == level.player || level.getOverlayType(at: itemPositions[i]) != .boundary {
+                    itemPositions[i] = partyInventory.randomizePosition
+                    counterCheck += 1
                     
-                    randomItem = partyInventory.getRandomItem()
-                    counterCheck = 0
-                    
-                    gameboardSprite.spawnItem(at: itemPositions[i], with: randomItem) { }
-                    self.level.setLevelType(at: itemPositions[i], with: (terrain: .partytile, overlay: randomItem))
-                },
-                SKAction.wait(forDuration: itemWaitDuration),
-                SKAction.run { [unowned self] in
-                    gameboardSprite.despawnItem(at: itemPositions[i]) {
-                        self.level.setLevelType(at: itemPositions[i], with: (terrain: .partytile, overlay: .boundary))
+                    //Prevents infinite while loop
+                    if counterCheck > 2 * level.gameboard.count * level.gameboard.count {
+                        print("Too many party gems!")
+                        break
                     }
                 }
+                
+                counterCheck = 0
+                
+                gameboardSprite.spawnItem(at: itemPositions[i], with: randomItem) { }
+                level.setLevelType(at: itemPositions[i], with: (terrain: .partytile, overlay: randomItem))
+            }
+            
+            let despawnAction = SKAction.run { [unowned self] in
+                gameboardSprite.despawnItem(at: itemPositions[i]) { [unowned self] in
+                    level.setLevelType(at: itemPositions[i], with: (terrain: .partytile, overlay: .boundary))
+                }
+            }
+            
+            gameboardSprite.sprite.run(SKAction.sequence([
+                SKAction.wait(forDuration: partyInventory.spawnDelayDuration * TimeInterval(i)),
+                spawnAction,
+                SKAction.wait(forDuration: partyInventory.itemWaitDuration),
+                despawnAction
             ]))
         } //end for
     } //end spawnPartyItems()
