@@ -32,7 +32,7 @@ class ChatEngine {
     private var backgroundSpriteWidth: CGFloat {
         K.ScreenDimensions.iPhoneWidth * GameboardSprite.spriteScale
     }
-
+    
     //Other properties
     private(set) var isChatting: Bool = false
     private var isAnimating: Bool = false
@@ -47,7 +47,7 @@ class ChatEngine {
     private var dialoguePlayed: [Int: Bool] = [:]           //Only play certain instructions once
     private var chatSpeed: TimeInterval
     private let chatSpeedOrig: TimeInterval = 0.08
-            
+    
     //Sprite properties
     private var dimOverlaySprite: SKShapeNode
     private var backgroundSprite: SKShapeNode
@@ -80,14 +80,14 @@ class ChatEngine {
         dialoguePlayed[51] = false
         dialoguePlayed[76] = false
         dialoguePlayed[100] = false
-
+        
         //Property initialization
         backgroundSprite = SKShapeNode()
         dimOverlaySprite = SKShapeNode(rectOf: CGSize(width: K.ScreenDimensions.iPhoneWidth, height: K.ScreenDimensions.height))
         avatarSprite = SKSpriteNode(texture: SKTexture(imageNamed: "puzlboy"))
         fastForwardSprite = SKSpriteNode(imageNamed: "forwardButton")
         textSprite = SKLabelNode(text: "PUZL Boy is the newest puzzle game out there on the App Store. It's so popular, it's going to have over a million downloads, gamers are going to love it - casual gamers, hardcore gamers, and everyone in-between! So download your copy today!!")
-
+        
         //Setup
         backgroundSprite.lineWidth = borderLineWidth
         backgroundSprite.path = UIBezierPath(roundedRect: CGRect(x: origin.x, y: origin.y,
@@ -105,7 +105,7 @@ class ChatEngine {
         dimOverlaySprite.lineWidth = 0
         dimOverlaySprite.alpha = 0
         dimOverlaySprite.zPosition = K.ZPosition.chatDimOverlay
-
+        
         avatarSprite.position = CGPoint(x: origin.x, y: origin.y + borderLineWidth / 2)
         avatarSprite.setScale(ChatEngine.avatarSizeNew / ChatEngine.avatarSizeOrig * 3)
         avatarSprite.anchorPoint = .zero
@@ -141,14 +141,52 @@ class ChatEngine {
     }
     
     
-    // MARK: - Functions
+    // MARK: - Move Functions
+    
+    /**
+     Adds all the sprites to the superScene, i.e. should be called in a GameScene's moveTo() function.
+     - parameter superScene: The GameScene to add all the children to.
+     */
+    func moveSprites(to superScene: SKScene) {
+        self.superScene = superScene
+        
+        superScene.addChild(dimOverlaySprite)
+        superScene.addChild(backgroundSprite)
+    }
+    
+    
+    // MARK: - Touch Functions
+    
+    func touchDown(in location: CGPoint) {
+        guard let superScene = superScene else { return }
+        guard superScene.nodes(at: location).filter({ $0.name == "backgroundSprite" }).first != nil else { return }
+        guard !isAnimating else { return print("No spamming tapping the chat allowed!") }
+        
+        isAnimating = true
+        
+        fastForwardSprite.removeAllActions()
+        fastForwardSprite.alpha = 1
+        
+        fastForward()
+    }
+    
+    func touchUp() {
+        animateFFButton()
+    }
+    
+    
+    // MARK: - Misc Functions
+
+    func shouldPauseGame(level: Int) -> Bool {
+        return dialoguePlayed[level] != nil
+    }
 
     func fastForward() {
         guard isAnimating else { return }
         
         if chatSpeed > 0 && chatIndex < chatText.count {
             chatSpeed = 0
-
+            
             ButtonTap.shared.tap(type: .buttontap2)
         }
         else {
@@ -174,6 +212,9 @@ class ChatEngine {
             SKAction.fadeAlpha(to: 1, duration: 0.75)
         ])))
     }
+    
+    
+    // MARK: - Chat Functions
     
     private func sendChat(profile: ChatProfile, startNewChat: Bool, endChat: Bool, chat: String, completion: (() -> ())? = nil) {
         //Only allow a new chat if current chat isn't happening
@@ -207,7 +248,7 @@ class ChatEngine {
         textSprite.position.x = origin.x + (profile != .hero ? padding.x : avatarSprite.size.width)
         avatarSprite.position.x = origin.x + (profile == .hero ? padding.x : backgroundSpriteWidth - padding.x)
         backgroundSprite.position.x = profile == .hero ? 0 : K.ScreenDimensions.iPhoneWidth
-
+        
         avatarSprite.xScale = profile == .hero ? abs(avatarSprite.xScale) : -abs(avatarSprite.xScale)
         backgroundSprite.setScale(0)
         
@@ -228,15 +269,15 @@ class ChatEngine {
             dimOverlaySprite.run(SKAction.fadeAlpha(to: 0.8, duration: 1.0))
         }
     }
-
+    
     ///This contains the magic of animating the characters of the string like a typewriter, until it gets to the end of the chat.
     @objc private func animateText(_ sender: Timer) {
         if chatSpeed > 0 && chatIndex < chatText.count {
             let chatChar = chatText[chatText.index(chatText.startIndex, offsetBy: chatIndex)]
-
+            
             textSprite.text! += "\(chatChar)"
             textSprite.updateShadow()
-                    
+            
             chatIndex += 1
         }
         else if chatSpeed <= 0 && chatIndex < chatText.count {
@@ -278,50 +319,12 @@ class ChatEngine {
     private func fadeDimOverlay() {
         dimOverlaySprite.run(SKAction.fadeAlpha(to: 0.0, duration: 1.0))
     }
-    
-    
-    // MARK: - Move Functions
-
-    /**
-     Adds all the sprites to the superScene, i.e. should be called in a GameScene's moveTo() function.
-     - parameter superScene: The GameScene to add all the children to.
-     */
-    func moveSprites(to superScene: SKScene) {
-        self.superScene = superScene
-        
-        superScene.addChild(dimOverlaySprite)
-        superScene.addChild(backgroundSprite)
-    }
-    
-    
-    // MARK: - Touch Functions
-    
-    func touchDown(in location: CGPoint) {
-        guard let superScene = superScene else { return }
-        guard superScene.nodes(at: location).filter({ $0.name == "backgroundSprite" }).first != nil else { return }
-        guard !isAnimating else { return print("No spamming tapping the chat allowed!") }
-        
-        isAnimating = true
-        
-        fastForwardSprite.removeAllActions()
-        fastForwardSprite.alpha = 1
-        
-        fastForward()
-    }
-        
-    func touchUp() {
-        animateFFButton()
-    }
 }
 
 
 // MARK: - Dialogue Function
 
 extension ChatEngine {
-    func shouldPauseGame(level: Int) -> Bool {
-        return dialoguePlayed[level] != nil
-    }
-    
     func dialogue(level: Int, completion: (() -> Void)?) {
         isChatting = true
         

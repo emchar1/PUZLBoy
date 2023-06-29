@@ -315,24 +315,25 @@ class GameScene: SKScene {
         gameEngine.shouldDisableInput(true)
         pauseResetEngine.shouldDisable(true)
         
-        gameEngine.fadeGameboard(fadeOut: true) { [unowned self] in
-            
-            
-            
-            // FIXME: - Testing new partyResultsSprite.
-            addChild(partyResultsSprite)
-            partyResultsSprite.updateAmounts(gems: gameEngine.partyInventory.gems,
-                                             gemsDouble: gameEngine.partyInventory.gemsDouble,
-                                             gemsTriple: gameEngine.partyInventory.gemsTriple,
-                                             lives: gameEngine.partyInventory.lives)
-            
-            partyResultsSprite.animateShow(totalGems: gameEngine.partyInventory.getTotalGems(),
-                                           lives: gameEngine.partyInventory.lives,
-                                           totalLives: gameEngine.partyInventory.getTotalLives()) { }
-            
-            
-            
+        let fadeGameboardAction = SKAction.run { [unowned self] in
+            gameEngine.fadeGameboard(fadeOut: true) { [unowned self] in
+                addChild(partyResultsSprite)
+                
+                partyResultsSprite.updateAmounts(gems: gameEngine.partyInventory.gems,
+                                                 gemsDouble: gameEngine.partyInventory.gemsDouble,
+                                                 gemsTriple: gameEngine.partyInventory.gemsTriple,
+                                                 lives: gameEngine.partyInventory.lives)
+                
+                partyResultsSprite.animateShow(totalGems: gameEngine.partyInventory.getTotalGems(),
+                                               lives: gameEngine.partyInventory.lives,
+                                               totalLives: gameEngine.partyInventory.getTotalLives()) { }
+            }
         }
+        
+        run(SKAction.sequence([
+            SKAction.wait(forDuration: 0.5),
+            fadeGameboardAction
+        ]))
     }
     
     /**
