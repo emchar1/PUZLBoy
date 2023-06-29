@@ -56,6 +56,22 @@ class ChatEngine {
     private var textSprite: SKLabelNode
     private var superScene: SKScene?
     
+    private struct ChatItem {
+        let profile: ChatProfile
+        let chat: String
+        let handler: (() -> Void)?
+        
+        init(profile: ChatProfile, chat: String, handler: (() -> Void)?) {
+            self.profile = profile
+            self.chat = chat
+            self.handler = handler
+        }
+        
+        init(profile: ChatProfile, chat: String) {
+            self.init(profile: profile, chat: chat, handler: nil)
+        }
+    }
+    
     enum ChatProfile {
         case hero, trainer, princess, villain
     }
@@ -216,6 +232,25 @@ class ChatEngine {
     
     // MARK: - Chat Functions
     
+    ///Helper function that handles the nesting of chats via recursion
+    private func sendChatArray(items: [ChatItem], currentIndex: Int = 0, completion: (() -> Void)?) {
+        if currentIndex == items.count {
+            //Base case
+            completion?()
+        }
+        else {
+            sendChat(profile: items[currentIndex].profile,
+                     startNewChat: currentIndex == 0,
+                     endChat: currentIndex == items.count - 1,
+                     chat: items[currentIndex].chat) { [unowned self] in
+                items[currentIndex].handler?()
+
+                //Recursion!!
+                sendChatArray(items: items, currentIndex: currentIndex + 1, completion: completion)
+            }
+        }
+    }
+    
     private func sendChat(profile: ChatProfile, startNewChat: Bool, endChat: Bool, chat: String, completion: (() -> ())? = nil) {
         //Only allow a new chat if current chat isn't happening
         guard allowNewChat else { return }
@@ -325,7 +360,7 @@ class ChatEngine {
 // MARK: - Dialogue Function
 
 extension ChatEngine {
-    func dialogue(level: Int, completion: (() -> Void)?) {
+    func playDialogue(level: Int, completion: (() -> Void)?) {
         isChatting = true
         
         switch level {
@@ -336,39 +371,22 @@ extension ChatEngine {
                 return
             }
             
-            sendChat(profile: .hero, startNewChat: true, endChat: false,
-                     chat: "Yo, I feel funny. I'm seeing colorful flashing lights and the music is bumpin'. I can't stop moving.. and I like it!") { [unowned self] in
-                sendChat(profile: .trainer, startNewChat: false, endChat: false,
-                         chat: "Welcome to the PARTY ZONE! Looks like you ate one of those rainbow colored jelly beans, I see.") { [unowned self] in
-                    sendChat(profile: .hero, startNewChat: false, endChat: false,
-                             chat: "Jelly beans, right...") { [unowned self] in
-                        sendChat(profile: .trainer, startNewChat: false, endChat: false,
-                                 chat: "Don't worry, the feeling lasts only a short amount of time, but while you're under its effects you can move as much as your heart desires.") { [unowned self] in
-                            sendChat(profile: .trainer, startNewChat: false, endChat: false,
-                                     chat: "Run around collecting all the gems and bonuses that pop up in the level. But you gotta be quick before the time runs out.") { [unowned self] in
-                                sendChat(profile: .trainer, startNewChat: false, endChat: false,
-                                         chat: "Oh, and the one thing you want to look out for are rainbow bombs.") { [unowned self] in
-                                    sendChat(profile: .trainer, startNewChat: false, endChat: false,
-                                             chat: "Like, I know it's all pretty and fun looking, but avoid them at all costs, or it's the end of the bonus round.") { [unowned self] in
-                                        sendChat(profile: .trainer, startNewChat: false, endChat: false,
-                                                 chat: "Why is it always the pretty things in life that are the most deadly...") { [unowned self] in
-                                            sendChat(profile: .hero, startNewChat: false, endChat: false,
-                                                     chat: "Don't step on the bombs. Yeah got it.") { [unowned self] in
-                                                sendChat(profile: .trainer, startNewChat: false, endChat: true,
-                                                         chat: "OK. Now if the flashing lights become too much, you can tap the disco ball below to turn them off. 🪩 GET READY!!!") { [unowned self] in
-                                                    dialoguePlayed[level] = true
-                                                    fadeDimOverlay()
-                                                    isChatting = false
-                                                    completion?()
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
+            sendChatArray(items: [
+                ChatItem(profile: .hero, chat: "Yo, I feel funny. I'm seeing colorful flashing lights and the music is bumpin'. I can't stop moving.. and I like it!"),
+                ChatItem(profile: .trainer, chat: "Welcome to the PARTY ZONE! Looks like you ate one of those rainbow colored jelly beans, I see."),
+                ChatItem(profile: .hero, chat: "Jelly beans, right..."),
+                ChatItem(profile: .trainer, chat: "Don't worry, the feeling lasts only a short amount of time, but while you're under its effects you can move as much as your heart desires."),
+                ChatItem(profile: .trainer, chat: "Run around collecting all the gems and bonuses that pop up in the level. But you gotta be quick before the time runs out."),
+                ChatItem(profile: .trainer, chat: "Oh, and the one thing you want to look out for are rainbow bombs."),
+                ChatItem(profile: .trainer, chat: "Like, I know it's all pretty and fun looking, but avoid them at all costs, or it's the end of the bonus round."),
+                ChatItem(profile: .trainer, chat: "Why is it always the pretty things in life that are the most deadly..."),
+                ChatItem(profile: .hero, chat: "Don't step on the bombs. Yeah got it."),
+                ChatItem(profile: .trainer, chat: "OK. Now if the flashing lights become too much, you can tap the disco ball below to turn them off. 🪩 GET READY!!!")
+            ]) { [unowned self] in
+                dialoguePlayed[level] = true
+                fadeDimOverlay()
+                isChatting = false
+                completion?()
             }
         case 1:
             guard let dialoguePlayedCheck = dialoguePlayed[level], !dialoguePlayedCheck else {
@@ -377,44 +395,34 @@ extension ChatEngine {
                 return
             }
             
-            sendChat(profile: .trainer, startNewChat: true, endChat: false,
-                     chat: "TRAINER: Welcome, PUZL Boy! The goal of the game is to get to the gate in under a certain number of moves.") { [unowned self] in
-                
-                delegate?.illuminatePanel(at: (0, 1), useOverlay: false)
-                delegate?.illuminatePanel(at: (1, 0), useOverlay: false)
-                delegate?.illuminatePanel(at: (1, 2), useOverlay: false)
-                delegate?.illuminatePanel(at: (2, 1), useOverlay: false)
-
-                sendChat(profile: .trainer, startNewChat: false, endChat: false,
-                         chat: "You can move to any available panel on your left, right, above and below. Simply tap the panel to move there. Diagonal moves are not allowed.") { [unowned self] in
-
+            sendChatArray(items: [
+                ChatItem(profile: .trainer, chat: "TRAINER: Welcome, PUZL Boy! The goal of the game is to get to the gate in under a certain number of moves.", handler: { [unowned self] in
+                    delegate?.illuminatePanel(at: (0, 1), useOverlay: false)
+                    delegate?.illuminatePanel(at: (1, 0), useOverlay: false)
+                    delegate?.illuminatePanel(at: (1, 2), useOverlay: false)
+                    delegate?.illuminatePanel(at: (2, 1), useOverlay: false)
+                }),
+                ChatItem(profile: .trainer, chat: "You can move to any available panel on your left, right, above and below. Simply tap the panel to move there. Diagonal moves are not allowed.", handler: { [unowned self] in
                     delegate?.deIlluminatePanel(at: (0, 1), useOverlay: false)
                     delegate?.deIlluminatePanel(at: (1, 0), useOverlay: false)
                     delegate?.deIlluminatePanel(at: (1, 2), useOverlay: false)
                     delegate?.deIlluminatePanel(at: (2, 1), useOverlay: false)
                     delegate?.illuminateDisplayNode(for: .moves)
-                    
-                    sendChat(profile: .trainer, startNewChat: false, endChat: false,
-                             chat: "If your move count hits 0, it's game over, buddy! Your move count can be found in the upper left corner next to the boot. 👢") { [unowned self] in
-                        
-                        delegate?.deIlluminateDisplayNode(for: .moves)
-                        delegate?.illuminatePanel(at: (0, 2), useOverlay: true)
-                        delegate?.illuminatePanel(at: (2, 2), useOverlay: false)
-                        
-                        sendChat(profile: .trainer, startNewChat: false, endChat: false,
-                                 chat: "See the gate? It's closed. To open it, collect all the gems in the level. Give it a go!") { [unowned self] in
-                            sendChat(profile: .hero, startNewChat: false, endChat: true,
-                                     chat: "PUZL Boy: I got this, yo!") { [unowned self] in
-                                dialoguePlayed[level] = true
-                                delegate?.deIlluminatePanel(at: (0, 2), useOverlay: true)
-                                delegate?.deIlluminatePanel(at: (2, 2), useOverlay: false)
-                                fadeDimOverlay()
-                                isChatting = false
-                                completion?()
-                            }
-                        }
-                    }
-                }
+                }),
+                ChatItem(profile: .trainer, chat: "If your move count hits 0, it's game over, buddy! Your move count can be found in the upper left corner next to the boot. 👢", handler: { [unowned self] in
+                    delegate?.deIlluminateDisplayNode(for: .moves)
+                    delegate?.illuminatePanel(at: (0, 2), useOverlay: true)
+                    delegate?.illuminatePanel(at: (2, 2), useOverlay: false)
+                }),
+                ChatItem(profile: .trainer, chat: "See the gate? It's closed. To open it, collect all the gems in the level. Give it a go!"),
+                ChatItem(profile: .hero, chat: "PUZL Boy: I got this, yo!")
+            ]) { [unowned self] in
+                dialoguePlayed[level] = true
+                delegate?.deIlluminatePanel(at: (0, 2), useOverlay: true)
+                delegate?.deIlluminatePanel(at: (2, 2), useOverlay: false)
+                fadeDimOverlay()
+                isChatting = false
+                completion?()
             }
         case 8:
             guard let dialoguePlayedCheck = dialoguePlayed[level], !dialoguePlayedCheck else {
@@ -425,34 +433,23 @@ extension ChatEngine {
             
             delegate?.illuminatePanel(at: (0, 1), useOverlay: true)
             delegate?.illuminatePanel(at: (1, 1), useOverlay: true)
-
-            sendChat(profile: .trainer, startNewChat: true, endChat: false,
-                     chat: "Pretty easy, right?! Levels get progressively harder with various obstacles blocking your path.") { [unowned self] in
-                
-                delegate?.illuminateDisplayNode(for: .hammers)
-                
-                sendChat(profile: .trainer, startNewChat: false, endChat: false,
-                         chat: "You need a hammer to break through those boulders. Your inventory count can be found in the upper right. 🔨") { [unowned self] in
-                    sendChat(profile: .hero, startNewChat: false, endChat: false,
-                             chat: "Hammers break boulders. Got it.") { [unowned self] in
-                        
-                        delegate?.deIlluminateDisplayNode(for: .hammers)
-                        
-                        sendChat(profile: .trainer, startNewChat: false, endChat: false,
-                                 chat: "Since there are no hammers in this level, you'll just have to go around them.") { [unowned self] in
-                            sendChat(profile: .hero, startNewChat: false, endChat: false,
-                                     chat: "Well then, that was pointless.") { [unowned self] in
-                                sendChat(profile: .trainer, startNewChat: false, endChat: true,
-                                         chat: "Oh, and one more thing... hammers can only be used once before breaking, so plan your moves ahead of time.") { [unowned self] in
-                                    dialoguePlayed[level] = true
-                                    fadeDimOverlay()
-                                    isChatting = false
-                                    completion?()
-                                }
-                            }
-                        }
-                    }
-                }
+            
+            sendChatArray(items: [
+                ChatItem(profile: .trainer, chat: "Pretty easy, right?! Levels get progressively harder with various obstacles blocking your path.", handler: { [unowned self] in
+                    delegate?.illuminateDisplayNode(for: .hammers)
+                }),
+                ChatItem(profile: .trainer, chat: "You need a hammer to break through those boulders. Your inventory count can be found in the upper right. 🔨"),
+                ChatItem(profile: .hero, chat: "Hammers break boulders. Got it.", handler: { [unowned self] in
+                    delegate?.deIlluminateDisplayNode(for: .hammers)
+                }),
+                ChatItem(profile: .trainer, chat: "Since there are no hammers in this level, you'll just have to go around them."),
+                ChatItem(profile: .hero, chat: "Well then, that was pointless."),
+                ChatItem(profile: .trainer, chat: "Oh, and one more thing... hammers can only be used once before breaking, so plan your moves ahead of time.")
+            ]) { [unowned self] in
+                dialoguePlayed[level] = true
+                fadeDimOverlay()
+                isChatting = false
+                completion?()
             }
         case 19:
             guard let dialoguePlayedCheck = dialoguePlayed[level], !dialoguePlayedCheck else {
@@ -463,21 +460,18 @@ extension ChatEngine {
             
             delegate?.illuminatePanel(at: (0, 1), useOverlay: false)
             delegate?.illuminatePanel(at: (2, 1), useOverlay: false)
-
-            sendChat(profile: .trainer, startNewChat: true, endChat: false,
-                     chat: "Watch out for marsh! Stepping on one of the crimson colored panels will drag you down, costing ya 2 moves.") { [unowned self] in
-                sendChat(profile: .trainer, startNewChat: false, endChat: false,
-                         chat: "However, sometimes stepping in marsh is unavoidable.") { [unowned self] in
-                    sendChat(profile: .hero, startNewChat: false, endChat: true,
-                             chat: "Man... and I just got these new kicks!") { [unowned self] in
-                        dialoguePlayed[level] = true
-                        delegate?.deIlluminatePanel(at: (0, 1), useOverlay: false)
-                        delegate?.deIlluminatePanel(at: (2, 1), useOverlay: false)
-                        fadeDimOverlay()
-                        isChatting = false
-                        completion?()
-                    }
-                }
+            
+            sendChatArray(items: [
+                ChatItem(profile: .trainer, chat: "Watch out for marsh! Stepping on one of the crimson colored panels will drag you down, costing ya 2 moves."),
+                ChatItem(profile: .trainer, chat: "However, sometimes stepping in marsh is unavoidable."),
+                ChatItem(profile: .hero, chat: "Man... and I just got these new kicks!")
+            ]) { [unowned self] in
+                dialoguePlayed[level] = true
+                delegate?.deIlluminatePanel(at: (0, 1), useOverlay: false)
+                delegate?.deIlluminatePanel(at: (2, 1), useOverlay: false)
+                fadeDimOverlay()
+                isChatting = false
+                completion?()
             }
         case 34:
             guard let dialoguePlayedCheck = dialoguePlayed[level], !dialoguePlayedCheck else {
@@ -488,24 +482,19 @@ extension ChatEngine {
             
             delegate?.illuminatePanel(at: (0, 1), useOverlay: true)
             delegate?.illuminatePanel(at: (1, 2), useOverlay: true)
-
-            sendChat(profile: .trainer, startNewChat: true, endChat: false,
-                     chat: "Those fun looking things are warps. Stepping on one of them will teleport you to the other one. Weeeeeeeee!") { [unowned self] in
-                sendChat(profile: .hero, startNewChat: false, endChat: false,
-                         chat: "Are those things safe?") { [unowned self] in
-                    sendChat(profile: .trainer, startNewChat: false, endChat: false,
-                             chat: "About to find out. Good luck!") { [unowned self] in
-                        sendChat(profile: .hero, startNewChat: false, endChat: true,
-                                 chat: "Here goes nothing...") { [unowned self] in
-                            dialoguePlayed[level] = true
-                            delegate?.deIlluminatePanel(at: (0, 1), useOverlay: true)
-                            delegate?.deIlluminatePanel(at: (1, 2), useOverlay: true)
-                            fadeDimOverlay()
-                            isChatting = false
-                            completion?()
-                        }
-                    }
-                }
+            
+            sendChatArray(items: [
+                ChatItem(profile: .trainer, chat: "Those fun looking things are warps. Stepping on one of them will teleport you to the other one. Weeeeeeeee!"),
+                ChatItem(profile: .hero, chat: "Are those things safe?"),
+                ChatItem(profile: .trainer, chat: "We're about to find out. Good luck!"),
+                ChatItem(profile: .hero, chat: "\n...")
+            ]) { [unowned self] in
+                dialoguePlayed[level] = true
+                delegate?.deIlluminatePanel(at: (0, 1), useOverlay: true)
+                delegate?.deIlluminatePanel(at: (1, 2), useOverlay: true)
+                fadeDimOverlay()
+                isChatting = false
+                completion?()
             }
         case 51:
             guard let dialoguePlayedCheck = dialoguePlayed[level], !dialoguePlayedCheck else {
@@ -516,40 +505,27 @@ extension ChatEngine {
             
             delegate?.illuminatePanel(at: (1, 1), useOverlay: true)
             
-            sendChat(profile: .trainer, startNewChat: true, endChat: false,
-                     chat: "Look, a terrifyingly majestic dragon! Wonder in awe in his magnificence! But don't get too close or it'll cost ya 1 health point.") { [unowned self] in
-                sendChat(profile: .hero, startNewChat: false, endChat: false,
-                         chat: "He looks kinda small and underwhelming to me...") { [unowned self] in
-                    sendChat(profile: .trainer, startNewChat: false, endChat: false, chat: "Hey, this is a solo project with 0 budget, whaddya want from me?!\n\nAnyway...") { [unowned self] in
-                        
-                        delegate?.illuminateDisplayNode(for: .health)
-
-                        sendChat(profile: .trainer, startNewChat: false, endChat: false,
-                                 chat: "Once your health drops to 0, it's lights out, baby. Your health can be found in the upper left next to the heart. 💖") { [unowned self] in
-                            
-                            delegate?.deIlluminateDisplayNode(for: .health)
-                            delegate?.illuminateDisplayNode(for: .swords)
-                            
-                            sendChat(profile: .trainer, startNewChat: false, endChat: false,
-                                     chat: "Don't believe me? Go ahead. Try and pet him, I dare you! But you won't be able to defeat him without a sword. 🗡") { [unowned self] in
-                                sendChat(profile: .hero, startNewChat: false, endChat: false, chat: "Lemme guess, I can only use the sword once before it breaks?") { [unowned self] in
-                                    
-                                    delegate?.deIlluminateDisplayNode(for: .swords)
-                                    
-                                    sendChat(profile: .trainer, startNewChat: false, endChat: true,
-                                             chat: "B-I-N-G-O!!! Oh whoops, I was playing Bingo with my grams. Yep, one sword per dragon.") { [unowned self] in
-                                        dialoguePlayed[level] = true
-                                        fadeDimOverlay()
-                                        isChatting = false
-                                        completion?()
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
+            sendChatArray(items: [
+                ChatItem(profile: .trainer, chat: "Look, a terrifyingly majestic dragon! Wonder in awe in his magnificence! But don't get too close or it'll cost ya 1 health point."),
+                ChatItem(profile: .hero, chat: "He looks kinda small and underwhelming to me..."),
+                ChatItem(profile: .trainer, chat: "Hey, this is a solo project with 0 budget, whaddya want from me?!\n\nAnyway...", handler: { [unowned self] in
+                    delegate?.illuminateDisplayNode(for: .health)
+                }),
+                ChatItem(profile: .trainer, chat: "Once your health drops to 0, it's lights out, baby. Your health can be found in the upper left next to the heart. 💖", handler: { [unowned self] in
+                    delegate?.deIlluminateDisplayNode(for: .health)
+                    delegate?.illuminateDisplayNode(for: .swords)
+                }),
+                ChatItem(profile: .trainer, chat: "Don't believe me? Go ahead. Try and pet him, I dare you! But you won't be able to defeat him without a sword. 🗡"),
+                ChatItem(profile: .hero, chat: "Lemme guess, I can only use the sword once before it breaks?", handler: { [unowned self] in
+                    delegate?.deIlluminateDisplayNode(for: .swords)
+                }),
+                ChatItem(profile: .trainer, chat: "B-I-N-G-O!!! Oh whoops, I was playing Bingo with my grams. Yep, one sword per dragon.")
+            ]) { [unowned self] in
+                dialoguePlayed[level] = true
+                fadeDimOverlay()
+                isChatting = false
+                completion?()
             }
-            
         case 76:
             guard let dialoguePlayedCheck = dialoguePlayed[level], !dialoguePlayedCheck else {
                 isChatting = false
@@ -562,29 +538,23 @@ extension ChatEngine {
             delegate?.illuminatePanel(at: (1, 2), useOverlay: false)
             delegate?.illuminatePanel(at: (0, 1), useOverlay: true)
             delegate?.illuminatePanel(at: (1, 2), useOverlay: true)
-
-            sendChat(profile: .trainer, startNewChat: true, endChat: false,
-                     chat: "Ice, ice, baby! Step on this and you'll slide until you hit either an obstacle or the edge of the level.") { [unowned self] in
-                sendChat(profile: .trainer, startNewChat: false, endChat: false,
-                         chat: "The nice thing though is that it'll only cost you 1 move as long as you're sliding continuously.") { [unowned self] in
-                    sendChat(profile: .hero, startNewChat: false, endChat: false,
-                             chat: "Ok. I think I got it, old man.") { [unowned self] in
-                        
-                        delegate?.deIlluminatePanel(at: (0, 1), useOverlay: false)
-                        delegate?.deIlluminatePanel(at: (0, 2), useOverlay: false)
-                        delegate?.deIlluminatePanel(at: (1, 2), useOverlay: false)
-                        delegate?.deIlluminatePanel(at: (0, 1), useOverlay: true)
-                        delegate?.deIlluminatePanel(at: (1, 2), useOverlay: true)
-                        fadeDimOverlay()
-                        
-                        sendChat(profile: .trainer, startNewChat: false, endChat: true,
-                                 chat: "Well, I'll leave you alone for now. I'll chime in every now and then if I think you need it.") { [unowned self] in
-                            dialoguePlayed[level] = true
-                            isChatting = false
-                            completion?()
-                        }
-                    }
-                }
+            
+            sendChatArray(items: [
+                ChatItem(profile: .trainer, chat: "Ice, ice, baby! Step on this and you'll slide until you hit either an obstacle or the edge of the level."),
+                ChatItem(profile: .trainer, chat: "The nice thing though is that it'll only cost you 1 move as long as you're sliding continuously."),
+                ChatItem(profile: .hero, chat: "Ok. I think I got it, old man.", handler: { [unowned self] in
+                    delegate?.deIlluminatePanel(at: (0, 1), useOverlay: false)
+                    delegate?.deIlluminatePanel(at: (0, 2), useOverlay: false)
+                    delegate?.deIlluminatePanel(at: (1, 2), useOverlay: false)
+                    delegate?.deIlluminatePanel(at: (0, 1), useOverlay: true)
+                    delegate?.deIlluminatePanel(at: (1, 2), useOverlay: true)
+                    fadeDimOverlay()
+                }),
+                ChatItem(profile: .trainer, chat: "Well, I'll leave you alone for now. I'll chime in every now and then if I think you need it.")
+            ]) { [unowned self] in
+                dialoguePlayed[level] = true
+                isChatting = false
+                completion?()
             }
         case 100:
             guard let dialoguePlayedCheck = dialoguePlayed[level], !dialoguePlayedCheck else {
@@ -593,20 +563,17 @@ extension ChatEngine {
                 return
             }
             
-            sendChat(profile: .trainer, startNewChat: true, endChat: false,
-                     chat: "Congrats! You made it to level 100. There's a bonus at the end of every 50 levels. Beat this and you're one step closer to indescribable fun!!! 💃🏾🪩🕺🏻") { [unowned self] in
-                sendChat(profile: .hero, startNewChat: false, endChat: false, chat: "I can hardly contain my excitement. 😒") { [unowned self] in
-                    sendChat(profile: .trainer, startNewChat: false, endChat: false, chat: "That's the spirit! Now if you ever get stuck, you can tap the red Reset button to restart the level.") { [unowned self] in
-                        sendChat(profile: .trainer, startNewChat: false, endChat: false, chat: "Be warned though, restarting a level will cost you one of your precious lives...") { [unowned self] in
-                            sendChat(profile: .hero, startNewChat: false, endChat: true, chat: "It's all good. My mom can buy me more lives if I need it. 😃") { [unowned self] in
-                                dialoguePlayed[level] = true
-                                fadeDimOverlay()
-                                isChatting = false
-                                completion?()
-                            }
-                        }
-                    }
-                }
+            sendChatArray(items: [
+                ChatItem(profile: .trainer, chat: "Congrats! You made it to level 100. There's a bonus at the end of every 50 levels. Beat this and you're one step closer to indescribable fun!!! 💃🏾🪩🕺🏻"),
+                ChatItem(profile: .hero, chat: "I can hardly contain my excitement."),
+                ChatItem(profile: .trainer, chat: "That's the spirit! Now if you ever get stuck, you can tap the red Reset button to restart the level."),
+                ChatItem(profile: .trainer, chat: "Be warned though, restarting a level will cost you one of your precious lives..."),
+                ChatItem(profile: .hero, chat: "It's all good. My mom can buy me more lives if I need it. 😃")
+            ]) { [unowned self] in
+                dialoguePlayed[level] = true
+                fadeDimOverlay()
+                isChatting = false
+                completion?()
             }
         default:
             isChatting = false
