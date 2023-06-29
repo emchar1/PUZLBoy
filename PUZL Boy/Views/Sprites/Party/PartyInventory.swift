@@ -84,7 +84,7 @@ struct PartyInventory {
         
         switch panelCount {
         case 4:     bombRange = 800..<825
-        case 5:     bombRange = 800..<850
+        case 5:     bombRange = 800..<900
         case 6:     bombRange = 800..<1000
         default:    bombRange = 800..<825
         }
