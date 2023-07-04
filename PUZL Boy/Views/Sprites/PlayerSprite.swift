@@ -374,7 +374,8 @@ class PlayerSprite {
         }
     }
         
-    func startKnockbackAnimation(isAttacked: Bool, direction: Controls, completion: @escaping (() -> Void)) {
+    func startKnockbackAnimation(on gameboard: GameboardSprite, at panel: K.GameboardPosition, isAttacked: Bool, direction: Controls, completion: @escaping (() -> Void)) {
+        
         let newDirection = isAttacked ? direction.getOpposite : direction
         let knockback: CGFloat = 10
         let blinkColor: UIColor = .systemRed
@@ -419,6 +420,24 @@ class PlayerSprite {
         
         AudioManager.shared.playSound(for: "boygrunt\(Int.random(in: 1...2))")
 
+        if isAttacked {
+            let dragonAttackSprite = SKSpriteNode(imageNamed: "dragonScratch")
+            dragonAttackSprite.position = gameboard.getLocation(at: panel)
+            dragonAttackSprite.zPosition = K.ZPosition.itemsAndEffects
+            dragonAttackSprite.setScale(gameboard.panelSize / dragonAttackSprite.size.width)
+
+            gameboard.sprite.addChild(dragonAttackSprite)
+
+            dragonAttackSprite.run(SKAction.sequence([
+                SKAction.scale(to: 1.5, duration: 0.2),
+                SKAction.fadeOut(withDuration: 0.2)
+            ])) {
+                dragonAttackSprite.removeFromParent()
+            }
+            
+            AudioManager.shared.playSound(for: "enemyscratch")
+        }
+        
         player.sprite.run(isAttacked ? SKAction.sequence([knockbackAnimation, blinkAnimation]) : knockbackAnimation) {
             self.isAnimating = false
             completion()

@@ -838,7 +838,7 @@ class GameEngine {
                 
                 Haptics.shared.executeCustomPattern(pattern: .boulder)
                 shouldDisableControlInput = true
-                playerSprite.startKnockbackAnimation(isAttacked: false, direction: direction) {
+                playerSprite.startKnockbackAnimation(on: gameboardSprite, at: level.player, isAttacked: false, direction: direction) {
                     self.shouldDisableControlInput = false
                 }
 
@@ -859,7 +859,7 @@ class GameEngine {
 
                 Haptics.shared.executeCustomPattern(pattern: .enemy)
                 shouldDisableControlInput = true
-                playerSprite.startKnockbackAnimation(isAttacked: true, direction: direction) {
+                playerSprite.startKnockbackAnimation(on: gameboardSprite, at: level.player, isAttacked: true, direction: direction) {
                     self.updateMovesRemaining(enemyAttacked: true) //...added here
                     self.shouldDisableControlInput = false
                 }

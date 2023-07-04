@@ -94,6 +94,7 @@ class AudioManager {
         addAudioItem("chatclose", category: .soundFX)
         addAudioItem("chatopen", category: .soundFX)
         addAudioItem("dooropen", category: .soundFX)
+        addAudioItem("enemyscratch", category: .soundFX)
         addAudioItem("enemydeath", category: .soundFX)
         addAudioItem("gemcollect", category: .soundFX)
         addAudioItem("gemcollectparty", category: .soundFX)
