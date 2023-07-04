@@ -115,6 +115,13 @@ class SettingsPage: ParentPage {
         tapButtonReportBug.updateColors()
     }
     
+    func updateRadioNodes() {
+        radioMusic.setIsOn(!UserDefaults.standard.bool(forKey: K.UserDefaults.muteMusic))
+        radioSoundFX.setIsOn(!UserDefaults.standard.bool(forKey: K.UserDefaults.muteSoundFX))
+        radioVibration.setIsOn(!UserDefaults.standard.bool(forKey: K.UserDefaults.disableVibration))
+        radioPartyLights.setIsOn(!UserDefaults.standard.bool(forKey: K.UserDefaults.disablePartyLights))
+    }
+    
     override func touchDown(for touches: Set<UITouch>) {
         super.touchDown(for: touches)
         

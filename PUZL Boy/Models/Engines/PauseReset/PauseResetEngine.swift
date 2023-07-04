@@ -362,6 +362,7 @@ class PauseResetEngine {
                         settingsManager.tap(settingsManager.button5, tapQuietly: true)
                         settingsManager.updateColors()
                         
+                        settingsPage.updateRadioNodes()
                         settingsPage.updateColors()
                     },
                     SKAction.scale(to: GameboardSprite.spriteScale, duration: 0.25),
@@ -469,7 +470,6 @@ class PauseResetEngine {
                 purchasePage.touchDown(for: touches)
             case settingsPage.nodeName:
                 settingsPage.superScene = superScene
-                settingsPage.tapButtonNotifications.setDisabled(Level.isPartyLevel(currentLevel))
                 settingsPage.touchDown(for: touches)
             default:
                 guard !isAnimating else { break }

@@ -55,7 +55,7 @@ class GameViewController: UIViewController {
                     
                     DispatchQueue.main.asyncAfter(deadline: .now() + LoadingSprite.loadingDuration) {
                         launchScene?.animateTransition(animationSequence: .jump) {
-                            let titleScene = TitleScene(size: K.ScreenDimensions.screenSize)
+                            let titleScene = TitleScene(size: K.ScreenDimensions.screenSize, user: user)
                             titleScene.titleSceneDelegate = self
                             
                             self.skView.presentScene(titleScene)
@@ -104,7 +104,7 @@ extension GameViewController: TitleSceneDelegate {
 
 extension GameViewController: GameSceneDelegate {
     func confirmQuitTapped() {
-        let titleScene = TitleScene(size: K.ScreenDimensions.screenSize)
+        let titleScene = TitleScene(size: K.ScreenDimensions.screenSize, user: user)
         titleScene.titleSceneDelegate = self
         
         //NEEDS to have a transition, otherwise the state won't save, trust me.
