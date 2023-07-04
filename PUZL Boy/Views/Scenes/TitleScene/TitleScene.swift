@@ -126,10 +126,11 @@ class TitleScene: SKScene {
         
         //Settings Setup
         let closeSize: CGFloat = 80
+        let closeInset: CGFloat = 20
         
         settingsClose = SKSpriteNode(imageNamed: "closeButton")
         settingsClose.scale(to: CGSize(width: closeSize, height: closeSize))
-        settingsClose.position = CGPoint(x: settingsSize.width / 2 - closeSize, y: settingsSize.height / 2 - closeSize)
+        settingsClose.position = CGPoint(x: (settingsSize.width - closeSize) / 2 - closeInset, y: (settingsSize.height - closeSize) / 2 - closeInset)
         settingsClose.zPosition = 10
         settingsClose.name = "closeSettings"
         
