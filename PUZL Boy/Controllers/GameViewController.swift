@@ -97,6 +97,27 @@ extension GameViewController: TitleSceneDelegate {
             skView.presentScene(gameScene, transition: SKTransition.fade(with: .white, duration: 1.0))
         }
     }
+    
+    // TODO: - CreditsScene
+    func didTapCredits() {
+        let creditsScene = CreditsScene(size: K.ScreenDimensions.screenSize)
+        creditsScene.creditsSceneDelegate = self
+        
+        skView.presentScene(creditsScene, transition: SKTransition.doorsOpenVertical(withDuration: 1.0))
+    }
+}
+
+
+// MARK: - CreditsSceneDelegate
+
+extension GameViewController: CreditsSceneDelegate {
+    func goBackTapped() {
+        let titleScene = TitleScene(size: K.ScreenDimensions.screenSize, user: user)
+        titleScene.titleSceneDelegate = self
+        
+        //NEEDS to have a transition, otherwise the state won't save, trust me.
+        skView.presentScene(titleScene, transition: SKTransition.fade(with: .white, duration: 0))
+    }
 }
 
 

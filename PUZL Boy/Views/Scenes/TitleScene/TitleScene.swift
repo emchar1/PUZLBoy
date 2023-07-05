@@ -10,6 +10,7 @@ import FirebaseAuth
 
 protocol TitleSceneDelegate: AnyObject {
     func didTapStart()
+    func didTapCredits()
 }
 
 class TitleScene: SKScene {
@@ -20,6 +21,7 @@ class TitleScene: SKScene {
     private var player = Player()
     private var skyNode: SKSpriteNode
     private var fadeSprite: SKSpriteNode
+    private var fadeOutSprite: SKSpriteNode
 
     //Title Properties
     private var puzlTitle: SKLabelNode
@@ -63,10 +65,16 @@ class TitleScene: SKScene {
         skyNode.zPosition = K.ZPosition.skyNode
         skyNode.name = "skyNode"
         
-        fadeSprite = SKSpriteNode(color: .white, size: CGSize(width: K.ScreenDimensions.iPhoneWidth, height: K.ScreenDimensions.height))
+        fadeSprite = SKSpriteNode(color: .white, size: K.ScreenDimensions.screenSize)
         fadeSprite.anchorPoint = .zero
         fadeSprite.alpha = 0
         fadeSprite.zPosition = K.ZPosition.fadeTransitionNode
+        
+        // TODO: - CreditsScene
+        fadeOutSprite = SKSpriteNode(color: .black, size: K.ScreenDimensions.screenSize)
+        fadeOutSprite.anchorPoint = .zero
+        fadeOutSprite.alpha = 0
+        fadeOutSprite.zPosition = K.ZPosition.fadeTransitionNode
         
         
         //Title Setup
@@ -156,7 +164,6 @@ class TitleScene: SKScene {
         menuCredits.delegate = self
                 
         menuLevelSelect.setIsEnabled(false)
-        menuCredits.setIsEnabled(false)
 
         mixColors()
         animateSprites()
@@ -269,6 +276,7 @@ class TitleScene: SKScene {
         addChild(boyTitle)
         addChild(menuBackground)
         addChild(fadeSprite)
+        addChild(fadeOutSprite)
 
         menuBackground.addChild(menuBackgroundText)
         menuBackgroundText.addChild(menuStart)
@@ -406,7 +414,21 @@ extension TitleScene: MenuItemLabelDelegate {
         case .menuOptions:
             showSettings(shouldHide: false)
         case .menuCredits:
-            print("Credits not implemented.")
+            let fadeDuration: TimeInterval = 1.0
+            
+            disableInput = true
+            
+            AudioManager.shared.stopSound(for: AudioManager.shared.titleLogo, fadeDuration: fadeDuration)
+
+            // TODO: - Credits Scene
+            fadeOutSprite.run(SKAction.fadeIn(withDuration: fadeDuration)) { [unowned self] in
+                titleSceneDelegate?.didTapCredits()
+                boyTitle.removeAllActions()
+                disableInput = false
+                
+                puzlTitle.hideShadow(completion: nil)
+                menuBackground.hideShadow(completion: nil)
+            }
         }
     }
 }
