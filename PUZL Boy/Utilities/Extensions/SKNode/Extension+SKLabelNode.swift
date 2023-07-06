@@ -10,21 +10,21 @@ import SpriteKit
 extension SKLabelNode {
     
     func addTripleShadow(shadowOffset: CGFloat = -3, shadow1Color: UIColor = .black, shadow2Color: UIColor = .black, shadow3Color: UIColor = .black) {
-        let shadow1 = SKLabelNode(text: self.text)
+        let shadow1 = SKLabelNode(text: text)
         shadow1.position = CGPoint(x: shadowOffset, y: shadowOffset)
         shadow1.fontColor = shadow1Color
         shadow1.zPosition = zPositionOffset
         shadow1.name = "shadow1"
         shadow1.alpha = 0
 
-        let shadow2 = SKLabelNode(text: self.text)
+        let shadow2 = SKLabelNode(text: text)
         shadow2.position = CGPoint(x: 2 * shadowOffset, y: 2 * shadowOffset)
         shadow2.fontColor = shadow2Color
         shadow2.zPosition = 2 * zPositionOffset
         shadow2.name = "shadow2"
         shadow2.alpha = 0
 
-        let shadow3 = SKLabelNode(text: self.text)
+        let shadow3 = SKLabelNode(text: text)
         shadow3.position = CGPoint(x: 3 * shadowOffset, y: 3 * shadowOffset)
         shadow3.fontColor = shadow3Color
         shadow3.zPosition = 3 * zPositionOffset
@@ -39,7 +39,7 @@ extension SKLabelNode {
     }
     
     func addDropShadow(shadowOffset: CGPoint = CGPoint(x: -3, y: -3), alpha: CGFloat = 0.25) {
-        let shadow = SKLabelNode(text: self.text)
+        let shadow = SKLabelNode(text: text)
         shadow.position = shadowOffset
         shadow.fontColor = .black
         shadow.zPosition = zPositionOffset
@@ -61,13 +61,13 @@ extension SKLabelNode {
             guard let shadow = node as? SKLabelNode else { continue }
                 
                 
-            shadow.text = self.text
-            shadow.fontName = self.fontName
-            shadow.fontSize = self.fontSize
-            shadow.verticalAlignmentMode = self.verticalAlignmentMode
-            shadow.horizontalAlignmentMode = self.horizontalAlignmentMode
-            shadow.numberOfLines = self.numberOfLines
-            shadow.preferredMaxLayoutWidth = self.preferredMaxLayoutWidth
+            shadow.text = text
+            shadow.fontName = fontName
+            shadow.fontSize = fontSize
+            shadow.verticalAlignmentMode = verticalAlignmentMode
+            shadow.horizontalAlignmentMode = horizontalAlignmentMode
+            shadow.numberOfLines = numberOfLines
+            shadow.preferredMaxLayoutWidth = preferredMaxLayoutWidth
         }
     }
     

@@ -98,12 +98,8 @@ class SettingsTapButton: SKNode {
         
         isPressed = true
         
-        tapButton.run(SKAction.group([
-            SKAction.move(to: tapButton.position + CGPoint(x: -shadowOffset, y: -shadowOffset), duration: 0),
-            SKAction.run {
-                self.tapButton.hideShadow(animationDuration: 0, completion: nil)
-            }
-        ]))
+        tapButton.run(SKAction.move(to: tapButton.position + CGPoint(x: -shadowOffset, y: -shadowOffset), duration: 0))
+        tapButton.hideShadow(animationDuration: 0, completion: nil)
     }
     
     func touchUp() {
@@ -112,14 +108,11 @@ class SettingsTapButton: SKNode {
         isAnimating = true
         isPressed = false
         
-        tapButton.run(SKAction.group([
-            SKAction.move(to: positionOrig, duration: 0.2),
-            SKAction.run {
-                self.tapButton.showShadow(shadowOffset: self.shadowOffset, animationDuration: 0.2, completion: nil)
-            }
-        ])) {
-            self.isAnimating = false
+        tapButton.run(SKAction.move(to: positionOrig, duration: 0.2)) { [unowned self] in
+            isAnimating = false
         }
+        
+        tapButton.showShadow(shadowOffset: shadowOffset, animationDuration: 0.2, completion: nil)
     }
     
     func tapButton(in location: CGPoint) {

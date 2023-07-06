@@ -9,19 +9,19 @@ import UIKit
 
 extension UIColor {
     var complementary: UIColor {
-        return self.withHueOffset(180 / 360)
+        return withHueOffset(180 / 360)
     }
     
     var splitComplementary: (first: UIColor, second: UIColor) {
-        return (self.withHueOffset(150 / 360), self.withHueOffset(210 / 360))
+        return (withHueOffset(150 / 360), withHueOffset(210 / 360))
     }
     
     var triadic: (first: UIColor, second: UIColor) {
-        return (self.withHueOffset(120 / 360), self.withHueOffset(240 / 360))
+        return (withHueOffset(120 / 360), withHueOffset(240 / 360))
     }
     
     var analogous: (first: UIColor, second: UIColor) {
-        return (self.withHueOffset(-30 / 360), self.withHueOffset(30 / 360))
+        return (withHueOffset(-30 / 360), withHueOffset(30 / 360))
     }
     
     private var components: (red: CGFloat, green: CGFloat, blue: CGFloat, alpha: CGFloat) {
@@ -30,7 +30,7 @@ extension UIColor {
         var blue: CGFloat = 0
         var alpha: CGFloat = 0
         
-        self.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
+        getRed(&red, green: &green, blue: &blue, alpha: &alpha)
         
         return (red, green, blue, alpha)
     }
@@ -41,7 +41,7 @@ extension UIColor {
         var brightness: CGFloat = 0
         var alpha: CGFloat = 0
         
-        self.getHue(&hue, saturation: &saturation, brightness: &brightness, alpha: &alpha)
+        getHue(&hue, saturation: &saturation, brightness: &brightness, alpha: &alpha)
         
         let offsetColor = UIColor(hue: fmod(hue + offset, 1), saturation: saturation, brightness: brightness, alpha: alpha)
         
@@ -49,7 +49,7 @@ extension UIColor {
     }
     
     func isLight() -> Bool? {
-        guard let componentColors: [CGFloat] = self.cgColor.components else { return nil }
+        guard let componentColors: [CGFloat] = cgColor.components else { return nil }
         
         let threshold = ((componentColors[0] * 299) + (componentColors[1] * 587) + (componentColors[2] * 114)) / 1000
         
@@ -65,9 +65,9 @@ extension UIColor {
     }
 
     func adjustColor(_ adjusted: UIColor) -> UIColor {
-        return UIColor(red: min(255, max(0, self.components.red + adjusted.components.red)),
-                       green: min(255, max(0, self.components.green + adjusted.components.green)),
-                       blue: min(255, max(0, self.components.blue + adjusted.components.blue)),
-                       alpha: min(255, max(0, self.components.alpha + adjusted.components.alpha)))
+        return UIColor(red: min(255, max(0, components.red + adjusted.components.red)),
+                       green: min(255, max(0, components.green + adjusted.components.green)),
+                       blue: min(255, max(0, components.blue + adjusted.components.blue)),
+                       alpha: min(255, max(0, components.alpha + adjusted.components.alpha)))
     }
 }

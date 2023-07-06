@@ -11,7 +11,7 @@ extension SKSpriteNode {
     func addGlow(textureName: String, radiusPercentage: Float = 0.1) {
         let effectNode = SKEffectNode()
         effectNode.shouldRasterize = true
-        effectNode.filter = CIFilter(name: "CIGaussianBlur", parameters: ["inputRadius" : Float(self.size.width) * radiusPercentage])
+        effectNode.filter = CIFilter(name: "CIGaussianBlur", parameters: ["inputRadius" : Float(size.width) * radiusPercentage])
 
         let effect = SKSpriteNode(texture: SKTexture(imageNamed: textureName))
         effect.anchorPoint = .zero
