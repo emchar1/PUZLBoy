@@ -144,8 +144,10 @@ class TitleScene: SKScene {
         
         settingsBackground = SKShapeNode(rectOf: settingsSize, cornerRadius: menuCornerRadius)
         settingsBackground.lineWidth = 0
-        settingsBackground.position = CGPoint(x: K.ScreenDimensions.screenSize.width / 2, y: settingsSize.height / 2 + K.ScreenDimensions.bottomMargin)
-        settingsBackground.alpha = 0.9
+        settingsBackground.position = CGPoint(x: K.ScreenDimensions.screenSize.width / 2, y: menuSize.height / 2 + K.ScreenDimensions.bottomMargin)
+        settingsBackground.xScale = menuSize.width / settingsSize.width
+        settingsBackground.yScale = menuSize.height / settingsSize.height
+        settingsBackground.alpha = 0
         settingsBackground.zPosition = K.ZPosition.pauseScreen
         settingsBackground.addShadow(rectOf: settingsSize, cornerRadius: menuCornerRadius)
 
@@ -275,6 +277,7 @@ class TitleScene: SKScene {
         addChild(puzlTitle)
         addChild(boyTitle)
         addChild(menuBackground)
+        addChild(settingsBackground)
         addChild(fadeSprite)
         addChild(fadeOutSprite)
 
@@ -295,37 +298,45 @@ class TitleScene: SKScene {
         
         if shouldHide {
             settingsBackground.hideShadow(completion: nil)
-            
+
             settingsBackground.run(SKAction.group([
                 SKAction.scaleX(to: menuSize.width / settingsSize.width, duration: animationDuration),
                 SKAction.scaleY(to: menuSize.height / settingsSize.height, duration: animationDuration),
-                SKAction.moveTo(y: menuSize.height / 2 + K.ScreenDimensions.bottomMargin, duration: animationDuration)
+                SKAction.moveTo(y: menuSize.height / 2 + K.ScreenDimensions.bottomMargin, duration: animationDuration),
+                SKAction.fadeOut(withDuration: animationDuration)
             ])) { [unowned self] in
-                addChild(menuBackground)
-                menuBackground.setScale(1)
-                menuBackground.position.y = menuSize.height / 2 + K.ScreenDimensions.bottomMargin
                 menuBackground.showShadow(completion: nil)
-                settingsBackground.removeFromParent()
                 
                 disableInput = false
             }
+            
+            menuBackground.run(SKAction.group([
+                SKAction.scaleX(to: 1, duration: animationDuration),
+                SKAction.scaleY(to: 1, duration: animationDuration),
+                SKAction.moveTo(y: menuSize.height / 2 + K.ScreenDimensions.bottomMargin, duration: animationDuration),
+                SKAction.fadeAlpha(to: 0.9, duration: animationDuration)
+            ]))
         }
         else {
             menuBackground.hideShadow(completion: nil)
-            
+
             menuBackground.run(SKAction.group([
                 SKAction.scaleX(to: settingsSize.width / menuSize.width * GameboardSprite.spriteScale, duration: animationDuration),
                 SKAction.scaleY(to: settingsSize.height / menuSize.height * GameboardSprite.spriteScale, duration: animationDuration),
-                SKAction.moveTo(y: settingsSize.height / 2 * GameboardSprite.spriteScale + K.ScreenDimensions.bottomMargin, duration: animationDuration)
+                SKAction.moveTo(y: settingsSize.height / 2 * GameboardSprite.spriteScale + K.ScreenDimensions.bottomMargin, duration: animationDuration),
+                SKAction.fadeOut(withDuration: animationDuration)
             ])) { [unowned self] in
-                addChild(settingsBackground)
-                settingsBackground.setScale(GameboardSprite.spriteScale)
-                settingsBackground.position.y = settingsSize.height / 2 * GameboardSprite.spriteScale + K.ScreenDimensions.bottomMargin
                 settingsBackground.showShadow(completion: nil)
-                menuBackground.removeFromParent()
                 
                 disableInput = false
             }
+            
+            settingsBackground.run(SKAction.group([
+                SKAction.scaleX(to: GameboardSprite.spriteScale, duration: animationDuration),
+                SKAction.scaleY(to: GameboardSprite.spriteScale, duration: animationDuration),
+                SKAction.moveTo(y: settingsSize.height / 2 * GameboardSprite.spriteScale + K.ScreenDimensions.bottomMargin, duration: animationDuration),
+                SKAction.fadeAlpha(to: 0.9, duration: animationDuration)
+            ]))
         }
     }
     
@@ -396,16 +407,11 @@ extension TitleScene: MenuItemLabelDelegate {
             let fadeDuration: TimeInterval = 2.0
             
             disableInput = true
-                                            
             AudioManager.shared.stopSound(for: AudioManager.shared.titleLogo, fadeDuration: fadeDuration)
 
             fadeSprite.run(SKAction.fadeIn(withDuration: fadeDuration)) { [unowned self] in
-                titleSceneDelegate?.didTapStart()
-                boyTitle.removeAllActions()
                 disableInput = false
-                
-                puzlTitle.hideShadow(completion: nil)
-                menuBackground.hideShadow(completion: nil)
+                titleSceneDelegate?.didTapStart()
             }
         case .menuLevelSelect:
             print("Level Select not implemented.")
@@ -415,17 +421,12 @@ extension TitleScene: MenuItemLabelDelegate {
             let fadeDuration: TimeInterval = 1.0
             
             disableInput = true
-            
             AudioManager.shared.stopSound(for: AudioManager.shared.titleLogo, fadeDuration: fadeDuration)
 
             // TODO: - Credits Scene
             fadeOutSprite.run(SKAction.fadeIn(withDuration: fadeDuration)) { [unowned self] in
-                titleSceneDelegate?.didTapCredits()
-                boyTitle.removeAllActions()
                 disableInput = false
-                
-                puzlTitle.hideShadow(completion: nil)
-                menuBackground.hideShadow(completion: nil)
+                titleSceneDelegate?.didTapCredits()
             }
         }
     }

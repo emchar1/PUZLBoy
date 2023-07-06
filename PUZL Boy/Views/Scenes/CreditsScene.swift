@@ -15,7 +15,8 @@ class CreditsScene: SKScene {
     
     // MARK: - Properties
     
-    var goBackLabel: SKLabelNode
+    private var disableInput = false
+    private var goBackLabel: SKLabelNode
     
     weak var creditsSceneDelegate: CreditsSceneDelegate?
     
@@ -56,17 +57,20 @@ class CreditsScene: SKScene {
     // MARK: - Touch Functions
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        guard !disableInput else { return }
         guard let location = touches.first?.location(in: self) else { return }
         guard let _ = nodes(at: location).first(where: { $0.name == "goBack" }) else { return }
         
+        disableInput = true
+        ButtonTap.shared.tap(type: .buttontap1)
+
         run(SKAction.fadeOut(withDuration: 1.0)) { [unowned self] in
             removeAllActions()
             removeAllChildren()
             removeFromParent()
 
+            disableInput = false
             creditsSceneDelegate?.goBackTapped()
         }
-        
-        ButtonTap.shared.tap(type: .buttontap1)
     }
 }
