@@ -106,6 +106,10 @@ class SettingsPage: ParentPage {
         fatalError("init(coder:) has not been implemented")
     }
     
+    deinit {
+        print("SettingsPage deinit")
+    }
+    
     
     // MARK: - Functions
     
