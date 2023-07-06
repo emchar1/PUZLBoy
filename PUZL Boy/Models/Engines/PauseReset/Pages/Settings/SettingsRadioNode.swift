@@ -80,6 +80,10 @@ class SettingsRadioNode: SKNode {
         fatalError("init(coder:) has not been implemented")
     }
     
+    deinit {
+        print("SettingsRadioNode deinit")
+    }
+    
     
     // MARK: - Functions
     

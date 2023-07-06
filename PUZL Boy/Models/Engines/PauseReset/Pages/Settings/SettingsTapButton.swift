@@ -85,6 +85,10 @@ class SettingsTapButton: SKNode {
         fatalError("init(coder:) has not been implemented")
     }
     
+    deinit {
+        print("SettingsTapButton deinit")
+    }
+    
     
     // MARK: - Functions
     
