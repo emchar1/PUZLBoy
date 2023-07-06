@@ -229,6 +229,7 @@ class AudioManager {
         }
         
         DispatchQueue.main.asyncAfter(deadline: .now() + (delay == nil ? 0 : delay!)) {
+            //No need to make completions inside DispatchQueue.main.asyncAfter weak!
             self.audioItems[item.fileName]!.player.play()
         }
                 
