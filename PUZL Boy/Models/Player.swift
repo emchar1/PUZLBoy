@@ -54,7 +54,7 @@ struct Player {
     // MARK: - Initialization
     
     init() {
-        atlas = SKTextureAtlas(named: "player")
+        atlas = SKTextureAtlas(named: "hero")
         textures = []
         textures.append([]) //idle
         textures.append([]) //run
