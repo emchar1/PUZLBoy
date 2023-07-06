@@ -109,8 +109,8 @@ class ConfirmSprite: SKNode {
             SKAction.scale(to: 1.1, duration: 0.25),
             SKAction.scale(to: 0.95, duration: 0.2),
             SKAction.scale(to: 1, duration: 0.2),
-        ])) {
-            self.disableControls = false
+        ])) { [unowned self] in
+            disableControls = false
             completion()
         }
     }
@@ -118,8 +118,8 @@ class ConfirmSprite: SKNode {
     func animateHide(completion: @escaping (() -> Void)) {
         disableControls = true
 
-        run(SKAction.scale(to: 0, duration: 0.25)) {
-            self.backgroundSprite.removeFromParent()
+        run(SKAction.scale(to: 0, duration: 0.25)) { [unowned self] in
+            backgroundSprite.removeFromParent()
             completion()
         }
     }

@@ -325,8 +325,8 @@ class ChatEngine {
             timer.invalidate()
             
             //Set it here so you can cancel it if needed.
-            dispatchWorkItem = DispatchWorkItem(block: {
-                self.closeChat()
+            dispatchWorkItem = DispatchWorkItem(block: { [unowned self] in
+                closeChat()
             })
             
             DispatchQueue.main.asyncAfter(deadline: .now() + (chatSpeed > 0 ? 5.0 : max(5.0, Double(chatText.count) / 10)), execute: dispatchWorkItem)

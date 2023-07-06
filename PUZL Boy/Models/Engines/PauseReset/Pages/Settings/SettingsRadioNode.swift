@@ -104,19 +104,19 @@ class SettingsRadioNode: SKNode {
         isOn.toggle()
         
         if isOn {
-            radioOff.run(SKAction.moveTo(x: SettingsRadioNode.radioStatus.on, duration: 0.2)) {
-                self.radioOff.removeFromParent()
-                self.radioOff.position.x = SettingsRadioNode.radioStatus.off
-                self.radioButton.addChild(self.radioOn)
-                self.isAnimating = false
+            radioOff.run(SKAction.moveTo(x: SettingsRadioNode.radioStatus.on, duration: 0.2)) { [unowned self] in
+                radioOff.removeFromParent()
+                radioOff.position.x = SettingsRadioNode.radioStatus.off
+                radioButton.addChild(radioOn)
+                isAnimating = false
             }
         }
         else {
-            radioOn.run(SKAction.moveTo(x: SettingsRadioNode.radioStatus.off, duration: 0.2)) {
-                self.radioOn.removeFromParent()
-                self.radioOn.position.x = SettingsRadioNode.radioStatus.on
-                self.radioButton.addChild(self.radioOff)
-                self.isAnimating = false
+            radioOn.run(SKAction.moveTo(x: SettingsRadioNode.radioStatus.off, duration: 0.2)) { [unowned self] in
+                radioOn.removeFromParent()
+                radioOn.position.x = SettingsRadioNode.radioStatus.on
+                radioButton.addChild(radioOff)
+                isAnimating = false
             }
         }
         
@@ -127,14 +127,14 @@ class SettingsRadioNode: SKNode {
     func setIsOn(_ isOn: Bool) {
         self.isOn = isOn
         
-        self.radioOff.removeFromParent()
-        self.radioOn.removeFromParent()
+        radioOff.removeFromParent()
+        radioOn.removeFromParent()
 
         if isOn {
-            self.radioButton.addChild(self.radioOn)
+            radioButton.addChild(radioOn)
         }
         else {
-            self.radioButton.addChild(self.radioOff)
+            radioButton.addChild(radioOff)
         }
     }
 }

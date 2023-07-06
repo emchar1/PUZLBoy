@@ -105,7 +105,7 @@ class PartyResultsSprite: SKNode {
     }
     
     deinit {
-        print("ConfirmSprite deinit")
+        print("PartyResultsSprite deinit")
     }
     
     

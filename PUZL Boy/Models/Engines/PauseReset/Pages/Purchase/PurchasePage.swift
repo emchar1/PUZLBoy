@@ -189,8 +189,8 @@ extension PurchasePage: PurchaseTapButtonDelegate {
         case .add1Life:
             AdMobManager.shared.delegate = self
 
-            AdMobManager.shared.presentRewarded { (adReward) in
-                self.currentButton = self.watchAdButton
+            AdMobManager.shared.presentRewarded { [unowned self] (adReward) in
+                currentButton = watchAdButton
 
                 print("You were rewarded: \(adReward.amount) lives!")
             }

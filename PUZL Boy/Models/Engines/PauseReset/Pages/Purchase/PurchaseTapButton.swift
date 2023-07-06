@@ -141,8 +141,8 @@ class PurchaseTapButton: SKNode {
         tappableAreaNode.run(SKAction.move(to: tappableAreaNode.position + CGPoint(x: -shadowOffset, y: -shadowOffset), duration: 0))
         sprite.run(SKAction.group([
             SKAction.move(to: sprite.position + CGPoint(x: -shadowOffset, y: -shadowOffset), duration: 0),
-            SKAction.run {
-                self.sprite.hideShadow(animationDuration: 0, completion: nil)
+            SKAction.run { [unowned self] in
+                sprite.hideShadow(animationDuration: 0, completion: nil)
             }
         ]))
     }
@@ -156,11 +156,11 @@ class PurchaseTapButton: SKNode {
         tappableAreaNode.run(SKAction.move(to: positionOrig, duration: 0.2))
         sprite.run(SKAction.group([
             SKAction.move(to: positionOrig, duration: 0.2),
-            SKAction.run {
-                self.sprite.showShadow(shadowOffset: self.shadowOffset, animationDuration: 0.2, completion: nil)
+            SKAction.run { [unowned self] in
+                sprite.showShadow(shadowOffset: shadowOffset, animationDuration: 0.2, completion: nil)
             }
-        ])) {
-            self.isAnimating = false
+        ])) { [unowned self] in
+            isAnimating = false
         }
     }
     
@@ -169,6 +169,6 @@ class PurchaseTapButton: SKNode {
         guard scene?.nodes(at: location).filter({ $0.name == nodeName }).first != nil else { return }
 
         ButtonTap.shared.tap(type: .buttontap1)
-        self.delegate?.didTapButton(self)
+        delegate?.didTapButton(self)
     }
 }
