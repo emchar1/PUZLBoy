@@ -160,20 +160,20 @@ class GameScene: SKScene {
         }
         
         let wait = SKAction.wait(forDuration: 1.0)
-        let block = SKAction.run {
+        let block = SKAction.run { [unowned self] in
             do {
                 let timeToReplenishLives = try LifeSpawnerModel.shared.getTimeToFinish(finishTime: LifeSpawnerModel.durationMoreLives)
                 
                 if timeToReplenishLives <= 0 {
-                    self.removeAction(forKey: self.keyRunReplenishLivesTimerAction)
+                    removeAction(forKey: keyRunReplenishLivesTimerAction)
                     
-                    self.restartLevel(lives: LifeSpawnerModel.defaultLives)
+                    restartLevel(lives: LifeSpawnerModel.defaultLives)
                 }
                 
-                self.continueSprite.updateTimeToReplenishLives(time: timeToReplenishLives)
+                continueSprite.updateTimeToReplenishLives(time: timeToReplenishLives)
             }
             catch {
-                self.removeAction(forKey: self.keyRunReplenishLivesTimerAction)
+                removeAction(forKey: keyRunReplenishLivesTimerAction)
                 print("runReplenishLivesTimer() error: \(error.localizedDescription)")
             }
         }

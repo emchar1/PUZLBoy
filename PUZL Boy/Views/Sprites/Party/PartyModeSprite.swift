@@ -147,7 +147,7 @@ class PartyModeSprite: SKNode {
         }
 
         superScene.addChild(self)
-        self.addChild(backgroundSprite)
+        addChild(backgroundSprite)
         backgroundSprite.addChild(lightsSprite)
         partyBoy.startPartyAnimation(hasSword: hasSword, hasHammer: hasHammer)
         
