@@ -178,8 +178,8 @@ class PlayerSprite {
             SKAction.scale(to: shouldReverse ? player.scale : 0, duration: 1.0 * PartyModeSprite.shared.speedMultiplier)
         ])
         
-        player.sprite.run(warpEffect) {
-            self.isAnimating = !stopAnimating
+        player.sprite.run(warpEffect) { [unowned self] in
+            isAnimating = !stopAnimating
             completion()
         }
     }
@@ -308,9 +308,9 @@ class PlayerSprite {
             enemyBottomSprite.run(SKAction.group([
                 SKAction.moveBy(x: animationMove, y: -animationMove, duration: animationDuration * PartyModeSprite.shared.speedMultiplier),
                 SKAction.fadeOut(withDuration: animationDuration * 2 * PartyModeSprite.shared.speedMultiplier)
-            ])) {
+            ])) { [unowned self] in
                 enemyBottomSprite.removeFromParent()
-                self.isAnimating = false
+                isAnimating = false
             }
 
             //Points animation
@@ -366,9 +366,9 @@ class PlayerSprite {
             SKAction.animate(with: explodeBoulderTextures, timePerFrame: timePerFrame),
             SKAction.scale(by: 1.25, duration: timePerFrame * Double(explodeBoulderTextures.count) * 2),
             SKAction.fadeOut(withDuration: timePerFrame * Double(explodeBoulderTextures.count) * 2)
-        ])) {
+        ])) { [unowned self] in
             explodeSprite.removeFromParent()
-            self.isAnimating = false
+            isAnimating = false
             
             completion()
         }
@@ -438,8 +438,8 @@ class PlayerSprite {
             AudioManager.shared.playSound(for: "enemyscratch")
         }
         
-        player.sprite.run(isAttacked ? SKAction.sequence([knockbackAnimation, blinkAnimation]) : knockbackAnimation) {
-            self.isAnimating = false
+        player.sprite.run(isAttacked ? SKAction.sequence([knockbackAnimation, blinkAnimation]) : knockbackAnimation) { [unowned self] in
+            isAnimating = false
             completion()
         }
     }
@@ -453,8 +453,8 @@ class PlayerSprite {
         
         player.sprite.removeAction(forKey: AnimationKey.playerIdle.rawValue)
         player.sprite.removeAction(forKey: AnimationKey.playerMove.rawValue)
-        player.sprite.run(SKAction.sequence([SKAction.repeat(animation, count: 1), SKAction.wait(forDuration: 1.5)])) {
-            self.isAnimating = false
+        player.sprite.run(SKAction.sequence([SKAction.repeat(animation, count: 1), SKAction.wait(forDuration: 1.5)])) { [unowned self] in
+            isAnimating = false
             completion()
         }
     }

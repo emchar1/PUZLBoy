@@ -120,7 +120,7 @@ class SettingsTapButton: SKNode {
         guard scene?.nodes(at: location).filter({ $0.name == nodeName }).first != nil else { return }
 
         ButtonTap.shared.tap(type: .buttontap5)
-        self.delegate?.didTapButton(self)
+        delegate?.didTapButton(self)
     }
     
     func updateColors() {

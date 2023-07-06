@@ -143,7 +143,7 @@ class LaunchScene: SKScene {
         var maxAnimationDuration: TimeInterval { playerCrouchDuration + jumpDuration + bezierDuration }
         let paddingDuration: TimeInterval = 0.5
         
-        for node in self.children {
+        for node in children {
             switch node.name {
             case LaunchScene.nodeName_loadingSprite:
                 node.run(SKAction.fadeOut(withDuration: 0.5))
@@ -207,7 +207,7 @@ class LaunchScene: SKScene {
             default:
                 break
             } //end switch node.name
-        } //end for node in self.children
+        } //end for node in children
         
         run(SKAction.wait(forDuration: moveDuration * (maxAnimationDuration + paddingDuration)), completion: completion)
     }

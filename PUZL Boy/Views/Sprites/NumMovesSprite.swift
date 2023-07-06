@@ -73,6 +73,6 @@ class NumMovesSprite: SKNode {
             animationGroup
         ])
         
-        self.run(animationSequence, completion: completion)
+        run(animationSequence, completion: completion)
     }
 }

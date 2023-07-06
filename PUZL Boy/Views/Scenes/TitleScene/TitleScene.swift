@@ -294,10 +294,9 @@ class TitleScene: SKScene {
         disableInput = true
         
         if shouldHide {
+            settingsBackground.hideShadow(completion: nil)
+            
             settingsBackground.run(SKAction.group([
-                SKAction.run {
-                    self.settingsBackground.hideShadow(completion: nil)
-                },
                 SKAction.scaleX(to: menuSize.width / settingsSize.width, duration: animationDuration),
                 SKAction.scaleY(to: menuSize.height / settingsSize.height, duration: animationDuration),
                 SKAction.moveTo(y: menuSize.height / 2 + K.ScreenDimensions.bottomMargin, duration: animationDuration)
@@ -312,10 +311,9 @@ class TitleScene: SKScene {
             }
         }
         else {
+            menuBackground.hideShadow(completion: nil)
+            
             menuBackground.run(SKAction.group([
-                SKAction.run {
-                    self.menuBackground.hideShadow(completion: nil)
-                },
                 SKAction.scaleX(to: settingsSize.width / menuSize.width * GameboardSprite.spriteScale, duration: animationDuration),
                 SKAction.scaleY(to: settingsSize.height / menuSize.height * GameboardSprite.spriteScale, duration: animationDuration),
                 SKAction.moveTo(y: settingsSize.height / 2 * GameboardSprite.spriteScale + K.ScreenDimensions.bottomMargin, duration: animationDuration)

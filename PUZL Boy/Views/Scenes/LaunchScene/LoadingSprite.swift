@@ -95,14 +95,14 @@ class LoadingSprite: SKNode {
         
         
         let animateLabel: [SKAction] = [
-            SKAction.run { self.loadingLabel.text = "Authenticating to Game Center..." },
-            SKAction.run { self.loadingLabel.text = "Loading assets..." },
-            SKAction.run { self.loadingLabel.text = "Building levels..." },
-            SKAction.run { self.loadingLabel.text = "Rendering animations..." },
-            SKAction.run { self.loadingLabel.text = "Creating gameboard..." },
-            SKAction.run { self.loadingLabel.text = "Fetching last saved state..." },
-            SKAction.run { self.loadingLabel.text = LoadingSprite.funnyQuotes.randomElement() },
-            SKAction.run { self.loadingLabel.text = "Preparing game scenes..." }
+            SKAction.run { [unowned self] in loadingLabel.text = "Authenticating to Game Center..." },
+            SKAction.run { [unowned self] in loadingLabel.text = "Loading assets..." },
+            SKAction.run { [unowned self] in loadingLabel.text = "Building levels..." },
+            SKAction.run { [unowned self] in loadingLabel.text = "Rendering animations..." },
+            SKAction.run { [unowned self] in loadingLabel.text = "Creating gameboard..." },
+            SKAction.run { [unowned self] in loadingLabel.text = "Fetching last saved state..." },
+            SKAction.run { [unowned self] in loadingLabel.text = LoadingSprite.funnyQuotes.randomElement() },
+            SKAction.run { [unowned self] in loadingLabel.text = "Preparing game scenes..." }
         ]
         
         let minDuration: TimeInterval = 0.1

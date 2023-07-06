@@ -62,10 +62,10 @@ class ActivityIndicatorSprite: SKNode {
         player.sprite.run(SKAction.repeatForever(animation), withKey: "animatePlayer")
         
         let animateLabel: [SKAction] = [
-            SKAction.run { self.label.text = "PLEASE WAIT..." },
-            SKAction.run { self.label.text = "PLEASE WAIT" },
-            SKAction.run { self.label.text = "PLEASE WAIT." },
-            SKAction.run { self.label.text = "PLEASE WAIT.." }
+            SKAction.run { [unowned self] in label.text = "PLEASE WAIT..." },
+            SKAction.run { [unowned self] in label.text = "PLEASE WAIT" },
+            SKAction.run { [unowned self] in label.text = "PLEASE WAIT." },
+            SKAction.run { [unowned self] in label.text = "PLEASE WAIT.." }
         ]
         let wait = SKAction.wait(forDuration: 0.5)
         let sequence = SKAction.sequence([animateLabel[0], wait, wait, animateLabel[1], wait, animateLabel[2], wait, animateLabel[3], wait])

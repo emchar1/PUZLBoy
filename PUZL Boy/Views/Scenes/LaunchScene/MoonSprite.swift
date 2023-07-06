@@ -57,7 +57,7 @@ class MoonSprite: SKNode {
         
         addChild(sprite)
 
-        self.name = LaunchScene.nodeName_skyObjectNode // set self.name, NOT sprite.name!
+        name = LaunchScene.nodeName_skyObjectNode // set self.name, NOT sprite.name!
     }
     
     required init?(coder aDecoder: NSCoder) {

@@ -368,8 +368,8 @@ class GameEngine {
             gemsRemaining -= 1
             gemsCollected += 1
             
-            playerSprite.startItemCollectAnimation(on: gameboardSprite, at: level.player, item: .gem) {
-                self.consumeItem()
+            playerSprite.startItemCollectAnimation(on: gameboardSprite, at: level.player, item: .gem) { [unowned self] in
+                consumeItem()
                 completion?()
             }
         case .hammer:
@@ -430,9 +430,9 @@ class GameEngine {
             Haptics.shared.executeCustomPattern(pattern: .breakBoulder)
             bouldersBroken += 1
             level.inventory.hammers -= 1
-            playerSprite.startHammerAnimation(on: gameboardSprite, at: level.player) {
-                self.setLabelsForDisplaySprite()
-                self.consumeItem()
+            playerSprite.startHammerAnimation(on: gameboardSprite, at: level.player) { [unowned self] in
+                setLabelsForDisplaySprite()
+                consumeItem()
                 
                 completion?()
             }
@@ -443,10 +443,10 @@ class GameEngine {
             Haptics.shared.executeCustomPattern(pattern: .killEnemy)
             enemiesKilled += 1
             level.inventory.swords -= 1
-            playerSprite.startSwordAnimation(on: gameboardSprite, at: level.player) {
-                self.setLabelsForDisplaySprite()
-                self.consumeItem()
-                self.delegate?.enemyIsKilled()
+            playerSprite.startSwordAnimation(on: gameboardSprite, at: level.player) { [unowned self] in
+                setLabelsForDisplaySprite()
+                consumeItem()
+                delegate?.enemyIsKilled()
                 
                 completion?()
             }
@@ -467,19 +467,19 @@ class GameEngine {
                 handleMarsh()
             }
             
-            playerSprite.startWarpAnimation(shouldReverse: false, stopAnimating: false) {
-                self.level.updatePlayer(position: newWarpLocation)
-                self.playerSprite.sprite.position = self.gameboardSprite.getLocation(at: newWarpLocation)
-                self.playerSprite.startWarpAnimation(shouldReverse: true, stopAnimating: true) {
+            playerSprite.startWarpAnimation(shouldReverse: false, stopAnimating: false) { [unowned self] in
+                level.updatePlayer(position: newWarpLocation)
+                playerSprite.sprite.position = gameboardSprite.getLocation(at: newWarpLocation)
+                playerSprite.startWarpAnimation(shouldReverse: true, stopAnimating: true) { [unowned self] in
                     
                     //But, also do marsh animation if end warp has marsh, but not initial warp; it's one or the other, not both.. clunky!
-                    if self.level.getTerrainType(at: initialWarpLocation) != .marsh && self.level.getTerrainType(at: newWarpLocation) == .marsh {
-                        self.handleMarsh()
+                    if level.getTerrainType(at: initialWarpLocation) != .marsh && level.getTerrainType(at: newWarpLocation) == .marsh {
+                        handleMarsh()
                     }
 
                     //Deduct an additional move due to marsh
-                    if self.level.getTerrainType(at: initialWarpLocation) == .marsh || self.level.getTerrainType(at: newWarpLocation) == .marsh {
-                        self.movesRemaining -= 1
+                    if level.getTerrainType(at: initialWarpLocation) == .marsh || level.getTerrainType(at: newWarpLocation) == .marsh {
+                        movesRemaining -= 1
                     }
 
                     completion?()
@@ -749,9 +749,9 @@ class GameEngine {
     private func movePlayerHelper(direction: Controls) {
         ///Used when moving over certain terrain
         func updateGliding() {
-            self.updateMovesRemaining()
-            self.shouldUpdateRemainingForBoulderIfIcy = false
-            self.isGliding = false
+            updateMovesRemaining()
+            shouldUpdateRemainingForBoulderIfIcy = false
+            isGliding = false
             AudioManager.shared.stopSound(for: "moveglide", fadeDuration: 0.5)
         }
         
@@ -776,47 +776,47 @@ class GameEngine {
         
         level.updatePlayer(position: nextPanel)
         
-        setPlayerSpritePosition(toLastPanel: level.getLevelType(at: lastPanel), shouldAnimate: true) {
-            if self.level.getLevelType(at: lastPanel) == .sand {
-                self.level.setLevelType(at: lastPanel, with: (terrain: LevelType.lava, overlay: LevelType.boundary))
-                self.gameboardSprite.animateDissolveSand(position: lastPanel)
+        setPlayerSpritePosition(toLastPanel: level.getLevelType(at: lastPanel), shouldAnimate: true) { [unowned self] in
+            if level.getLevelType(at: lastPanel) == .sand {
+                level.setLevelType(at: lastPanel, with: (terrain: LevelType.lava, overlay: LevelType.boundary))
+                gameboardSprite.animateDissolveSand(position: lastPanel)
             }
             
-            if self.level.getLevelType(at: nextPanel) == .lava {
+            if level.getLevelType(at: nextPanel) == .lava {
                 Haptics.shared.executeCustomPattern(pattern: .lava)
-                self.playerSprite.startLavaEffectAnimation()
+                playerSprite.startLavaEffectAnimation()
                 
                 ScoringEngine.updateStatusIconsAnimation(
                     icon: .health,
-                    amount: -self.healthRemaining,
-                    originSprite: self.gameboardSprite.sprite,
-                    location: CGPoint(x: self.playerSprite.sprite.position.x, y: self.playerSprite.sprite.position.y - 20))
+                    amount: -healthRemaining,
+                    originSprite: gameboardSprite.sprite,
+                    location: CGPoint(x: playerSprite.sprite.position.x, y: playerSprite.sprite.position.y - 20))
 
-                self.healthRemaining = 0
+                healthRemaining = 0
                 
                 updateGliding()
                 
                 //EXIT RECURSION
                 return
             }
-            else if self.level.getLevelType(at: nextPanel) != .ice {
+            else if level.getLevelType(at: nextPanel) != .ice {
                 updateGliding()
                 
                 //I don't like this being here...
-                if self.level.getLevelType(at: nextPanel) == .marsh {
-                    self.handleMarsh()
+                if level.getLevelType(at: nextPanel) == .marsh {
+                    handleMarsh()
                 }
 
                 //EXIT RECURSION
                 return
             }
             else {
-                self.shouldUpdateRemainingForBoulderIfIcy = true
-                self.isGliding = true
+                shouldUpdateRemainingForBoulderIfIcy = true
+                isGliding = true
             }
             
             //ENTER RECURSION
-            self.movePlayerHelper(direction: direction)
+            movePlayerHelper(direction: direction)
         }
     }
     
@@ -838,8 +838,8 @@ class GameEngine {
                 
                 Haptics.shared.executeCustomPattern(pattern: .boulder)
                 shouldDisableControlInput = true
-                playerSprite.startKnockbackAnimation(on: gameboardSprite, at: level.player, isAttacked: false, direction: direction) {
-                    self.shouldDisableControlInput = false
+                playerSprite.startKnockbackAnimation(on: gameboardSprite, at: level.player, isAttacked: false, direction: direction) { [unowned self] in
+                    shouldDisableControlInput = false
                 }
 
                 return false
@@ -859,9 +859,9 @@ class GameEngine {
 
                 Haptics.shared.executeCustomPattern(pattern: .enemy)
                 shouldDisableControlInput = true
-                playerSprite.startKnockbackAnimation(on: gameboardSprite, at: level.player, isAttacked: true, direction: direction) {
-                    self.updateMovesRemaining(enemyAttacked: true) //...added here
-                    self.shouldDisableControlInput = false
+                playerSprite.startKnockbackAnimation(on: gameboardSprite, at: level.player, isAttacked: true, direction: direction) { [unowned self] in
+                    updateMovesRemaining(enemyAttacked: true) //...added here
+                    shouldDisableControlInput = false
                 }
                 
                 ScoringEngine.updateStatusIconsAnimation(
@@ -938,8 +938,8 @@ class GameEngine {
             PartyModeSprite.shared.stopParty(partyBoy: playerSprite,
                                              hasSword: level.inventory.hasSwords(), hasHammer: level.inventory.hasHammers())
             
-            playerSprite.startDeadAnimation {
-                self.delegate?.gameIsOver(firstTimeCalled: true)
+            playerSprite.startDeadAnimation { [unowned self] in
+                delegate?.gameIsOver(firstTimeCalled: true)
             }
         }
     }
@@ -1074,8 +1074,8 @@ class GameEngine {
         
         gameboardSprite.colorizeGameboard(color: fadeOut ? GameboardSprite.gameboardColor : .black,
                                           blendFactor: fadeOut ? 0.0 : 1.0,
-                                          animationDuration: 0.0) {
-            self.gameboardSprite.sprite.alpha = 1.0
+                                          animationDuration: 0.0) { [weak gameboardSprite] in
+            gameboardSprite?.sprite.alpha = 1.0
         }
         
         gameboardSprite.colorizeGameboard(color: fadeOut ? .black : GameboardSprite.gameboardColor,

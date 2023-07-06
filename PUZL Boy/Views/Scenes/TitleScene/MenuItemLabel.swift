@@ -74,7 +74,7 @@ class MenuItemLabel: SKLabelNode {
         
         isPressed = true
         
-        self.run(SKAction.scale(to: 0.95, duration: 0.1))
+        run(SKAction.scale(to: 0.95, duration: 0.1))
     }
     
     func touchUp() {
@@ -82,7 +82,7 @@ class MenuItemLabel: SKLabelNode {
         
         isPressed = false
         
-        self.run(SKAction.scale(to: 1.0, duration: 0))
+        run(SKAction.scale(to: 1.0, duration: 0))
     }
     
     func tapButton(toColor tappedColor: UIColor) {
@@ -91,7 +91,7 @@ class MenuItemLabel: SKLabelNode {
         
         delegate?.buttonWasTapped(self)
         
-        self.run(SKAction.group([
+        run(SKAction.group([
             SKAction.sequence([
                 SKAction.colorize(with: .white, colorBlendFactor: 1.0, duration: 0),
                 SKAction.colorize(with: tappedColor, colorBlendFactor: 1.0, duration: 0.25),
