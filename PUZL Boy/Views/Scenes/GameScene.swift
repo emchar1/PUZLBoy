@@ -536,7 +536,7 @@ extension GameScene: GameEngineDelegate {
     }
     
     func enemyIsKilled() {
-        scoringEngine.scoringManager.addToScore(1000)
+        scoringEngine.scoringManager.addToScore(ScoringEngine.killEnemyScore)
         scoringEngine.updateLabels()
     }
     

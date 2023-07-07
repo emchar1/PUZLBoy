@@ -11,12 +11,12 @@ class ScoringEngine {
     
     // MARK: - Properties
     
-    private static let moveScore = 2000
+    static let killEnemyScore = 1000
+    private static let moveScore = 200
     private static let itemScore = 500
-    private let maxTimeScore = 1000
+    private let maxTimeScore = 18000
     private let minTimeScore = 100
-    private let reductionPerSecondScore = -5
-    private let killEnemyScore = 1000
+    private let reductionPerSecondScore = -10
 
     private(set) var timerManager: TimerManager
     private(set) var scoringManager: ScoringManager
@@ -88,7 +88,8 @@ class ScoringEngine {
     }
     
     static func getUsedContinueMultiplier(_ usedContinue: Bool) -> Int {
-        return usedContinue ? 1 : 2
+        //Don't multiply by 2 anymore!! 7/6/23
+        return usedContinue ? 1 : 1
     }
 
     
@@ -97,7 +98,14 @@ class ScoringEngine {
     func calculateScore(movesRemaining: Int, itemsFound: Int, enemiesKilled: Int, usedContinue: Bool) -> Int {
         timerManager.pollTime()
         
-        scoringManager.setScore((getTimeScore() + ScoringEngine.getMovesScore(from: movesRemaining) + ScoringEngine.getItemsFoundScore(from: itemsFound) + enemiesKilled * killEnemyScore) * ScoringEngine.getUsedContinueMultiplier(usedContinue))
+        scoringManager.setScore(
+            (
+                getTimeScore() +
+                ScoringEngine.getMovesScore(from: movesRemaining) +
+                ScoringEngine.getItemsFoundScore(from: itemsFound) +
+                enemiesKilled * ScoringEngine.killEnemyScore
+            ) * ScoringEngine.getUsedContinueMultiplier(usedContinue)
+        )
 
         return scoringManager.score
     }

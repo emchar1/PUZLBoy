@@ -314,7 +314,7 @@ class PlayerSprite {
             }
 
             //Points animation
-            ScoringEngine.addScoreAnimation(score: 1000,
+            ScoringEngine.addScoreAnimation(score: ScoringEngine.killEnemyScore,
                                             usedContinue: nil,
                                             originSprite: gameboard.sprite,
                                             location: gameboard.getLocation(at: panel))
