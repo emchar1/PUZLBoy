@@ -345,6 +345,7 @@ class GameEngine {
             playerSprite.startMoveAnimation(animationType: animationType)
             
             playerSprite.sprite.run(playerMove) { [unowned self] in
+                // FIXME: - Is this a Retain Cycle???
                 playerSprite.startIdleAnimation(hasSword: !isSolved && level.inventory.hasSwords(), hasHammer: !isSolved && level.inventory.hasHammers())
                 checkSpecialPanel { [unowned self] in
                     shouldDisableControlInput = false
