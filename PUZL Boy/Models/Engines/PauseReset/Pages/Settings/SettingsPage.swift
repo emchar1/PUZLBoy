@@ -18,9 +18,9 @@ class SettingsPage: ParentPage {
     private var radioVibration: SettingsRadioNode!
     private(set) var radioPartyLights: SettingsRadioNode!
     
-    private(set) var tapButtonNotifications: SettingsTapButton!
-    private(set) var tapButtonRateReview: SettingsTapButton!
-    private(set) var tapButtonReportBug: SettingsTapButton!
+    private(set) var tapButtonNotifications: SettingsTapArea!
+    private(set) var tapButtonShare: SettingsTapArea!
+    private(set) var tapButtonReportBug: SettingsTapArea!
     
     private var user: User?
 
@@ -75,17 +75,17 @@ class SettingsPage: ParentPage {
         radioPartyLights.zPosition = 10
         radioPartyLights.delegate = self
         
-        tapButtonNotifications = SettingsTapButton(text: "🔔 Notifications", buttonText: "Enable", settingsSize: tapButtonSize)
+        tapButtonNotifications = SettingsTapArea(labelText: "🔔 Notifications", buttonText: "Enable", settingsSize: tapButtonSize)
         tapButtonNotifications.position = CGPoint(x: SettingsPage.padding, y: tapButtonStart - SettingsTapButton.buttonSize.height - 4 * tapButtonSectionHeight)
         tapButtonNotifications.zPosition = 10
         tapButtonNotifications.delegate = self
 
-        tapButtonRateReview = SettingsTapButton(text: "❤️ Tell Your Friends", buttonText: "Share", settingsSize: tapButtonSize)
-        tapButtonRateReview.position = CGPoint(x: SettingsPage.padding, y: tapButtonStart - SettingsTapButton.buttonSize.height - 5 * tapButtonSectionHeight)
-        tapButtonRateReview.zPosition = 10
-        tapButtonRateReview.delegate = self
+        tapButtonShare = SettingsTapArea(labelText: "❤️ Tell Your Friends", buttonText: "Share", settingsSize: tapButtonSize)
+        tapButtonShare.position = CGPoint(x: SettingsPage.padding, y: tapButtonStart - SettingsTapButton.buttonSize.height - 5 * tapButtonSectionHeight)
+        tapButtonShare.zPosition = 10
+        tapButtonShare.delegate = self
 
-        tapButtonReportBug = SettingsTapButton(text: "✉️ Report a Bug", buttonText: "Feedback", settingsSize: tapButtonSize)
+        tapButtonReportBug = SettingsTapArea(labelText: "✉️ Report a Bug", buttonText: "Feedback", settingsSize: tapButtonSize)
         tapButtonReportBug.position = CGPoint(x: SettingsPage.padding, y: tapButtonStart - SettingsTapButton.buttonSize.height - 6 * tapButtonSectionHeight)
         tapButtonReportBug.zPosition = 10
         tapButtonReportBug.delegate = self
@@ -98,7 +98,7 @@ class SettingsPage: ParentPage {
         contentNode.addChild(radioPartyLights)
         
         contentNode.addChild(tapButtonNotifications)
-        contentNode.addChild(tapButtonRateReview)
+        contentNode.addChild(tapButtonShare)
         contentNode.addChild(tapButtonReportBug)
     }
     
@@ -115,7 +115,7 @@ class SettingsPage: ParentPage {
     
     func updateColors() {
         tapButtonNotifications.updateColors()
-        tapButtonRateReview.updateColors()
+        tapButtonShare.updateColors()
         tapButtonReportBug.updateColors()
     }
     
@@ -138,7 +138,7 @@ class SettingsPage: ParentPage {
         radioPartyLights.touchDown(in: location)
         
         tapButtonNotifications.touchDown(in: location)
-        tapButtonRateReview.touchDown(in: location)
+        tapButtonShare.touchDown(in: location)
         tapButtonReportBug.touchDown(in: location)
     }
     
@@ -151,7 +151,7 @@ class SettingsPage: ParentPage {
         radioPartyLights.touchUp()
         
         tapButtonNotifications.touchUp()
-        tapButtonRateReview.touchUp()
+        tapButtonShare.touchUp()
         tapButtonReportBug.touchUp()
     }
     
@@ -167,7 +167,7 @@ class SettingsPage: ParentPage {
         radioPartyLights.tapRadio(in: location)
         
         tapButtonNotifications.tapButton(in: location)
-        tapButtonRateReview.tapButton(in: location)
+        tapButtonShare.tapButton(in: location)
         tapButtonReportBug.tapButton(in: location)
     }
 }
@@ -206,22 +206,21 @@ extension SettingsPage: SettingsRadioNodeDelegate {
 }
 
 
-// MARK: - SettingsTapButtonDelegate
+// MARK: - SettingsTapAreaDelegate
 
-extension SettingsPage: SettingsTapButtonDelegate {
-    func didTapButton(_ buttonNode: SettingsTapButton) {
-        switch buttonNode {
-        case let buttonNode where buttonNode == tapButtonNotifications:
+extension SettingsPage: SettingsTapAreaDelegate {
+    func didTapArea(_ tapArea: SettingsTapArea) {
+        switch tapArea {
+        case let tapArea where tapArea == tapButtonNotifications:
             if let appSettings = URL(string: UIApplication.openSettingsURLString), UIApplication.shared.canOpenURL(appSettings) {
                 UIApplication.shared.open(appSettings)
             }
-        case let buttonNode where buttonNode == tapButtonRateReview:
+        case let tapArea where tapArea == tapButtonShare:
             NotificationCenter.default.post(name: .shareURL, object: nil)
-            
-//            SKStoreReviewController.requestReview()
-        case let buttonNode where buttonNode == tapButtonReportBug:
+        case let tapArea where tapArea == tapButtonReportBug:
             NotificationCenter.default.post(name: .showMailCompose , object: nil)
         default:
+            print("Unknown SettingsTapButton tapped.")
             return
         }
     }

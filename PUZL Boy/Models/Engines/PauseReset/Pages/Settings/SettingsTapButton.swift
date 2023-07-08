@@ -2,7 +2,7 @@
 //  SettingsTapButton.swift
 //  PUZL Boy
 //
-//  Created by Eddie Char on 5/11/23.
+//  Created by Eddie Char on 7/7/23.
 //
 
 import SpriteKit
@@ -19,20 +19,22 @@ class SettingsTapButton: SKNode {
     private var nodeName: String { "SettingsTapButton" + text }
 
     private let shadowOffset: CGFloat = 6
-    private var backgroundColor: UIColor { DayTheme.skyColor.bottom.triadic.first.darkenColor(factor: 3) }
-    private var backgroundShadowColor: UIColor { DayTheme.skyColor.bottom.splitComplementary.first.lightenColor(factor: 6) }
+    private var colors: (background: UIColor?, shadow: UIColor?)
+    private var backgroundColor: UIColor {
+        colors.background != nil ? colors.background! : DayTheme.skyColor.bottom.triadic.first.darkenColor(factor: 3)
+    }
+    private var backgroundShadowColor: UIColor {
+        colors.shadow != nil ? colors.shadow! : DayTheme.skyColor.bottom.splitComplementary.first.lightenColor(factor: 6)
+    }
     private var positionOrig: CGPoint {
-        CGPoint(x: settingsSize.width - SettingsTapButton.buttonSize.width / 2 - shadowOffset,
-                y: SettingsTapButton.buttonSize.height / 2 - shadowOffset)
+        CGPoint(x: -SettingsTapButton.buttonSize.width / 2 - shadowOffset, y: SettingsTapButton.buttonSize.height / 2 - shadowOffset)
     }
 
     private var text: String
-    private var settingsSize: CGSize
     private var isAnimating = false
     private var isPressed = true
     private(set) var isDisabled = false
     
-    private var labelNode: SKLabelNode!
     private var tapButton: SKShapeNode!
     
     weak var delegate: SettingsTapButtonDelegate?
@@ -40,20 +42,20 @@ class SettingsTapButton: SKNode {
     
     // MARK: - Initialization
     
-    init(text: String, buttonText: String, settingsSize: CGSize) {
+    init(text: String, colors: (background: UIColor?, shadow: UIColor?) = (nil, nil)) {
         self.text = text
-        self.settingsSize = settingsSize
+        self.colors = colors
         
         super.init()
         
-        labelNode = SKLabelNode(text: text.uppercased())
-        labelNode.position = CGPoint(x: 0, y: settingsSize.height / 2)
+        let labelNode = SKLabelNode(text: text)
+        labelNode.position = CGPoint(x: 0, y: 0)
         labelNode.verticalAlignmentMode = .center
-        labelNode.horizontalAlignmentMode = .left
-        labelNode.fontName = UIFont.gameFont
-        labelNode.fontSize = UIDevice.isiPad ? UIFont.gameFontSizeLarge : UIFont.gameFontSizeMedium
-        labelNode.fontColor = UIFont.gameFontColor
-        labelNode.zPosition = 10
+        labelNode.horizontalAlignmentMode = .center
+        labelNode.fontName = UIFont.chatFont
+        labelNode.fontSize = UIDevice.isiPad ? UIFont.gameFontSizeLarge : UIFont.chatFontSize
+        labelNode.fontColor = UIFont.chatFontColor
+        labelNode.zPosition = 5
         labelNode.addDropShadow()
                 
         tapButton = SKShapeNode(rectOf: SettingsTapButton.buttonSize, cornerRadius: 20)
@@ -64,21 +66,10 @@ class SettingsTapButton: SKNode {
         tapButton.name = nodeName
         tapButton.addDropShadow(rectOf: SettingsTapButton.buttonSize, cornerRadius: 20, shadowOffset: shadowOffset)
         
-        let buttonLabelNode = SKLabelNode(text: buttonText)
-        buttonLabelNode.position = CGPoint(x: 0, y: 0)
-        buttonLabelNode.verticalAlignmentMode = .center
-        buttonLabelNode.horizontalAlignmentMode = .center
-        buttonLabelNode.fontName = UIFont.chatFont
-        buttonLabelNode.fontSize = UIDevice.isiPad ? UIFont.gameFontSizeLarge : UIFont.chatFontSize
-        buttonLabelNode.fontColor = UIFont.chatFontColor
-        buttonLabelNode.zPosition = 5
-        buttonLabelNode.addDropShadow()
-
         updateColors()
-
-        addChild(labelNode)
+        
         addChild(tapButton)
-        tapButton.addChild(buttonLabelNode)
+        tapButton.addChild(labelNode)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -134,5 +125,9 @@ class SettingsTapButton: SKNode {
     
     func setDisabled(_ disabled: Bool) {
         isDisabled = disabled
+    }
+    
+    func animateAppear() {
+        run(SKAction.fadeIn(withDuration: 0.5))
     }
 }

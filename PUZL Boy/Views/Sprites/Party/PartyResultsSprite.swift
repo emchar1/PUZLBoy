@@ -25,7 +25,7 @@ class PartyResultsSprite: SKNode {
     private var gemsTotalLineItem: PartyResultsLineItemSprite
     private var livesLineItem: PartyResultsLineItemSprite
     private var livesTotalLineItem: PartyResultsLineItemSprite
-    private var confirmButton: DecisionButtonSprite
+    private var continueButton: SettingsTapButton
     
     weak var delegate: PartyResultsSpriteDelegate?
     
@@ -75,12 +75,13 @@ class PartyResultsSprite: SKNode {
         titleLabel.zPosition = 10
         titleLabel.addHeavyDropShadow()
         
-        confirmButton = DecisionButtonSprite(text: "Continue", color: DecisionButtonSprite.colorBlue, iconImageName: nil)
-        confirmButton.position = CGPoint(x: 0, y: -backgroundSprite.frame.size.height / 2 + titleLabel.frame.height / (UIDevice.isiPad ? 2 : 0.5))
+        continueButton = SettingsTapButton(text: "Continue", colors: (DecisionButtonSprite.colorBlue, .cyan))
+        continueButton.position = CGPoint(x: SettingsTapButton.buttonSize.width / 2, y: -backgroundSprite.frame.size.height / 2 + titleLabel.frame.height / (UIDevice.isiPad ? 2 : 0.5))
+        continueButton.zPosition = 10
         
         super.init()
         
-        confirmButton.delegate = self
+        continueButton.delegate = self
         
         setScale(0)
         position = CGPoint(x: K.ScreenDimensions.iPhoneWidth / 2,
@@ -88,7 +89,7 @@ class PartyResultsSprite: SKNode {
         zPosition = K.ZPosition.messagePrompt
         
         backgroundSprite.addShadow(rectOf: backgroundSize, cornerRadius: backgroundCorner, shadowOffset: 10, shadowColor: .cyan)
-        confirmButton.alpha = 0
+        continueButton.alpha = 0
 
         backgroundSprite.addChild(titleLabel)
         backgroundSprite.addChild(gemsLineItem)
@@ -97,7 +98,7 @@ class PartyResultsSprite: SKNode {
         backgroundSprite.addChild(gemsTotalLineItem)
         backgroundSprite.addChild(livesLineItem)
         backgroundSprite.addChild(livesTotalLineItem)
-        backgroundSprite.addChild(confirmButton)
+        backgroundSprite.addChild(continueButton)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -196,7 +197,7 @@ class PartyResultsSprite: SKNode {
                 AudioManager.shared.playSound(for: "gemcollectpartylife")
             }
             
-            confirmButton.animateAppear()
+            continueButton.animateAppear()
 
             disableControls = false
             completion()
@@ -214,16 +215,18 @@ class PartyResultsSprite: SKNode {
         
         addChild(fadeBackground)
         
-        fadeBackground.run(SKAction.fadeIn(withDuration: 1.0)) { [unowned self] in
+        fadeBackground.run(SKAction.sequence([
+            SKAction.fadeIn(withDuration: 1.0),
+            SKAction.removeFromParent()
+        ])) { [unowned self] in
             gemsLineItem.animateDisappear()
             gemsDoubleLineItem.animateDisappear()
             gemsTripleLineItem.animateDisappear()
             gemsTotalLineItem.animateDisappear()
             livesLineItem.animateDisappear()
             livesTotalLineItem.animateDisappear()
-            confirmButton.alpha = 0
+            continueButton.alpha = 0
 
-            fadeBackground.removeFromParent()
             backgroundSprite.removeFromParent()
             completion()
         }
@@ -237,15 +240,14 @@ class PartyResultsSprite: SKNode {
         guard let nodes = scene?.nodes(at: location) else { return }
         
         for node in nodes {
-            guard node.name == DecisionButtonSprite.tappableAreaName else { continue }
-            guard let decisionSprite = node.parent as? DecisionButtonSprite else { continue }
+            guard let decisionSprite = node as? SettingsTapButton else { continue }
             
             decisionSprite.touchDown(in: location)
         }
     }
     
     func touchUp() {
-        confirmButton.touchUp()
+        continueButton.touchUp()
     }
     
     
@@ -254,12 +256,10 @@ class PartyResultsSprite: SKNode {
         guard let nodes = scene?.nodes(at: location) else { return }
         
         for node in nodes {
-            guard node.name == DecisionButtonSprite.tappableAreaName else { continue }
-            guard let decisionSprite = node.parent as? DecisionButtonSprite else { continue }
+            guard let decisionSprite = node as? SettingsTapButton else { continue }
             
-            let buttonType: ButtonTap.ButtonType = .buttontap3
-            
-            decisionSprite.tapButton(in: location, type: buttonType)
+            decisionSprite.tapButton(in: location)
+            ButtonTap.shared.tap(type: .buttontap3)
         }
     }
     
@@ -267,10 +267,10 @@ class PartyResultsSprite: SKNode {
 }
 
 
-// MARK: - DecisionButtonSpriteDelegate
+// MARK: - SettingsTapButtonDelegate
 
-extension PartyResultsSprite: DecisionButtonSpriteDelegate {
-    func buttonWasTapped(_ node: DecisionButtonSprite) {
+extension PartyResultsSprite: SettingsTapButtonDelegate {
+    func didTapButton(_ buttonNode: SettingsTapButton) {
         delegate?.didTapConfirm()
     }
 }
