@@ -127,7 +127,7 @@ class PauseResetEngine {
         hintButtonSprite.position = pauseButtonPosition + CGPoint(x: minorButtonOffset.x, y: minorButtonOffset.y)
         
         backgroundSprite.position = CGPoint(
-            x: settingsScale * (settingsSize.width + GameboardSprite.padding) / 2 + GameboardSprite.xPosition + GameboardSprite.padding / 2,
+            x: settingsScale * (settingsSize.width + GameboardSprite.padding) / 2 + GameboardSprite.offsetPosition.x + GameboardSprite.padding / 2,
             y: pauseButtonPosition.y)
         backgroundSprite.addShadow(rectOf: settingsSize, cornerRadius: settingsCorner, shadowOffset: 10, shadowColor: PauseResetEngine.backgroundShadowColor)
 

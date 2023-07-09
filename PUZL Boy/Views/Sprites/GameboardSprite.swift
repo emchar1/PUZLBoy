@@ -16,8 +16,10 @@ class GameboardSprite {
     static let spriteScale: CGFloat = UIDevice.isiPad ? 0.75 : 0.94
 
     static let padding: CGFloat = 12
-    static var xPosition: CGFloat { (K.ScreenDimensions.iPhoneWidth * (1 - GameboardSprite.spriteScale)) / 2 - (padding / 2) }
-    static var yPosition: CGFloat { (K.ScreenDimensions.height - K.ScreenDimensions.iPhoneWidth * GameboardSprite.spriteScale - K.ScreenDimensions.topMargin - 283) - (padding / 2) }
+    static var offsetPosition: CGPoint {
+        CGPoint(x: (K.ScreenDimensions.iPhoneWidth * (1 - GameboardSprite.spriteScale)) / 2 - (padding / 2),
+                y: (K.ScreenDimensions.height - K.ScreenDimensions.iPhoneWidth * GameboardSprite.spriteScale - K.ScreenDimensions.topMargin - 283) - (padding / 2))
+    }
 
     typealias WarpTuple = (first: K.GameboardPosition?, second: K.GameboardPosition?)
     
@@ -43,7 +45,7 @@ class GameboardSprite {
                               size: CGSize(width: CGFloat(panelCount) * panelSize + GameboardSprite.padding,
                                            height: CGFloat(panelCount) * panelSize + GameboardSprite.padding))
         sprite.anchorPoint = .zero
-        sprite.position = CGPoint(x: GameboardSprite.xPosition, y: GameboardSprite.yPosition)
+        sprite.position = CGPoint(x: GameboardSprite.offsetPosition.x, y: GameboardSprite.offsetPosition.y)
         sprite.zPosition = K.ZPosition.gameboard
         sprite.setScale(GameboardSprite.spriteScale)
 
@@ -63,6 +65,19 @@ class GameboardSprite {
     private func getSpritePosition(at position: K.GameboardPosition) -> CGPoint {
         return CGPoint(x: CGFloat(position.col) * panelSize + panelSpacing / 2,
                        y: CGFloat(panelCount - 1 - position.row) * panelSize + panelSpacing / 2)
+    }
+    
+    ///Returns the panel at the location provided, offset by the offsetPosition.
+    func getPanel(at location: CGPoint) -> K.GameboardPosition? {
+        guard let node = sprite.nodes(at: location - GameboardSprite.offsetPosition).first else { return nil }
+        guard let nodeName = node.name?.replacingOccurrences(of: GameboardSprite.overlayTag, with: "") else { return nil }
+        guard let range = nodeName.range(of: ",") else { return nil }
+        guard let row = Int(nodeName[..<range.lowerBound]) else { return nil }
+        guard let col = Int(nodeName[range.upperBound...]) else { return nil }
+        guard row >= 0 && row < panelCount && col >= 0 && col < panelCount else { return nil }
+        
+        //Finally!
+        return (row: row, col: col)
     }
 
     func updatePanels(at position: K.GameboardPosition, with tile: K.GameboardPanel) {
@@ -317,5 +332,23 @@ class GameboardSprite {
         panels[position.row][position.col].run(SKAction.repeat(sandSequence, count: Int(sandAnimationDuration / sandShake / 2)))
         sandNode.run(SKAction.fadeOut(withDuration: sandAnimationDuration))
         lavaNode.run(SKAction.fadeIn(withDuration: sandAnimationDuration))
+    }
+    
+    func highlightPanel(color: UIColor, at position: K.GameboardPosition) {
+        guard position.row >= 0 && position.row < panelCount && position.col >= 0 && position.col < panelCount else { return }
+        
+        let highlightborder = SKShapeNode(rect: CGRect(x: 0, y: 0, width: 512, height: 512), cornerRadius: 20)
+        highlightborder.fillColor = .clear
+        highlightborder.strokeColor = color
+        highlightborder.setScale(1 / 3)
+        highlightborder.lineWidth = 20
+        highlightborder.zPosition = 10
+        
+        panels[position.row][position.col].addChild(highlightborder)
+        
+        highlightborder.run(SKAction.sequence([
+            SKAction.fadeOut(withDuration: 0.5),
+            SKAction.removeFromParent()
+        ]))
     }
 }

@@ -67,8 +67,8 @@ class PartyModeSprite: SKNode {
         foregroundLights = SKSpriteNode(color: baseColor, size: CGSize(width: gameboardSize, height: gameboardSize))
         foregroundLights.alpha = 0.5
         foregroundLights.anchorPoint = .zero
-        foregroundLights.position = CGPoint(x: GameboardSprite.xPosition + GameboardSprite.padding / 2,
-                                            y: GameboardSprite.yPosition + GameboardSprite.padding / 2)
+        foregroundLights.position = CGPoint(x: GameboardSprite.offsetPosition.x + GameboardSprite.padding / 2,
+                                            y: GameboardSprite.offsetPosition.y + GameboardSprite.padding / 2)
         foregroundLights.zPosition = K.ZPosition.partyForegroundOverlay
         
         super.init()

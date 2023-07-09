@@ -128,6 +128,6 @@ class SettingsTapButton: SKNode {
     }
     
     func animateAppear() {
-        run(SKAction.fadeIn(withDuration: 0.5))
+        run(SKAction.fadeIn(withDuration: 0.25))
     }
 }

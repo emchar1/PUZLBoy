@@ -26,7 +26,7 @@ class ChatEngine {
     private let padding: CGPoint = CGPoint(x: 20, y: 8)
     private let borderLineWidth: CGFloat = 6
     private var origin: CGPoint {
-        CGPoint(x: GameboardSprite.xPosition + borderLineWidth / 2,
+        CGPoint(x: GameboardSprite.offsetPosition.x + borderLineWidth / 2,
                 y: K.ScreenDimensions.topOfGameboard - backgroundSpriteWidth - ChatEngine.avatarSizeNew - 40)
     }
     private var backgroundSpriteWidth: CGFloat {

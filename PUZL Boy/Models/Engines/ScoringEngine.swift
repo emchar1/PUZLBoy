@@ -14,9 +14,9 @@ class ScoringEngine {
     static let killEnemyScore = 1000
     private static let moveScore = 200
     private static let itemScore = 500
-    private let maxTimeScore = 18000
+    private let maxTimeScore = 9000
     private let minTimeScore = 100
-    private let reductionPerSecondScore = -10
+    private let reductionPerSecondScore = -5
 
     private(set) var timerManager: TimerManager
     private(set) var scoringManager: ScoringManager

@@ -218,9 +218,9 @@ class GameEngine {
         backgroundSprite.anchorPoint = .zero
         
         gameboardSprite = GameboardSprite(level: self.level)
-        K.ScreenDimensions.topOfGameboard = GameboardSprite.yPosition + K.ScreenDimensions.iPhoneWidth * GameboardSprite.spriteScale
+        K.ScreenDimensions.topOfGameboard = GameboardSprite.offsetPosition.y + K.ScreenDimensions.iPhoneWidth * GameboardSprite.spriteScale
         playerSprite = PlayerSprite(shouldSpawn: true)
-        displaySprite = DisplaySprite(topYPosition: K.ScreenDimensions.topOfGameboard, bottomYPosition: GameboardSprite.yPosition, margin: 40)
+        displaySprite = DisplaySprite(topYPosition: K.ScreenDimensions.topOfGameboard, bottomYPosition: GameboardSprite.offsetPosition.y, margin: 40)
         
         //Explicitly add additional hearts from the princess, at the start of the level if healthRemaining > 1
         if level.health > 1 {
@@ -680,6 +680,10 @@ class GameEngine {
             
             movePlayerHelper(direction: .right)
         }
+        else {
+            guard let tappedPanel = gameboardSprite.getPanel(at: location) else { return }
+            gameboardSprite.highlightPanel(color: .red, at: tappedPanel)
+        }
     }
     
     func checkControlGuardsIfPassed(includeDisableInputFromOutside: Bool) -> Bool {
@@ -740,10 +744,10 @@ class GameEngine {
             rightBound = maxDistance
         }
         
-        return location.x > GameboardSprite.xPosition + (CGFloat(leftBound) * panelSize) &&
-        location.x < GameboardSprite.xPosition + (CGFloat(rightBound) * panelSize) &&
-        location.y > GameboardSprite.yPosition + gameboardSize - (CGFloat(bottomBound) * panelSize) &&
-        location.y < GameboardSprite.yPosition + gameboardSize - (CGFloat(topBound) * panelSize)
+        return location.x > GameboardSprite.offsetPosition.x + (CGFloat(leftBound) * panelSize) &&
+        location.x < GameboardSprite.offsetPosition.x + (CGFloat(rightBound) * panelSize) &&
+        location.y > GameboardSprite.offsetPosition.y + gameboardSize - (CGFloat(bottomBound) * panelSize) &&
+        location.y < GameboardSprite.offsetPosition.y + gameboardSize - (CGFloat(topBound) * panelSize)
     }
     
     /**
@@ -774,9 +778,12 @@ class GameEngine {
         }
         
         guard checkPanelForPathway(position: nextPanel, direction: direction) else {
+            gameboardSprite.highlightPanel(color: .red, at: nextPanel)
             AudioManager.shared.stopSound(for: "moveglide", fadeDuration: 0.5)
             return
         }
+        
+        gameboardSprite.highlightPanel(color: .green, at: nextPanel)
         
         level.updatePlayer(position: nextPanel)
         
@@ -1059,7 +1066,7 @@ class GameEngine {
         if !isGameOver {
             let numMovesSprite = NumMovesSprite(
                 numMoves: self.level.moves,
-                position: CGPoint(x: K.ScreenDimensions.iPhoneWidth / 2, y: GameboardSprite.yPosition * 3 / 2),
+                position: CGPoint(x: K.ScreenDimensions.iPhoneWidth / 2, y: GameboardSprite.offsetPosition.y * 3 / 2),
                 isPartyLevel: Level.isPartyLevel(level.level))
             
             superScene.addChild(numMovesSprite)
