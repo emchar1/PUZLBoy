@@ -428,6 +428,119 @@ extension TitleScene: MenuItemLabelDelegate {
                 disableInput = false
                 titleSceneDelegate?.didTapCredits()
             }
+            
+            
+            print("Credits Tapped")
+            
+            
+            // TODO: - Cirle Animation Transition
+            //Attempt 1
+//            let fullScreen = SKSpriteNode(color: .black, size: K.ScreenDimensions.screenSize)
+//            let mask = SKSpriteNode(color: .black, size: K.ScreenDimensions.screenSize)
+//            let circle = SKShapeNode(circleOfRadius: K.ScreenDimensions.height / 2)
+//            circle.fillColor = .white
+//            circle.blendMode = .subtract
+//            circle.setScale(0)
+//            circle.isHidden = true
+//            circle.name = "circleShape"
+//            mask.addChild(circle)
+//
+//            let crop = SKCropNode()
+//            crop.position = CGPoint(x: K.ScreenDimensions.iPhoneWidth / 2, y: K.ScreenDimensions.height / 2)
+//            crop.maskNode = mask
+//            crop.name = "cropNode"
+//            crop.addChild(fullScreen)
+//            crop.zPosition = 9999
+//
+//            addChild(crop)
+//
+//            let waitAction = SKAction.wait(forDuration: 2.0)
+//            let callAction = SKAction.run { [unowned self] in
+//                let cropNode = childNode(withName: "cropNode") as! SKCropNode
+//                let maskNode = cropNode.maskNode as! SKSpriteNode
+//                let circleNode = maskNode.childNode(withName: "circleShape") as! SKShapeNode
+//                circleNode.isHidden = false
+//                let scaleAction = SKAction.scale(to: 2, duration: 1)
+//                circleNode.run(scaleAction) {
+//                    cropNode.removeFromParent()
+//                }
+//            }
+//
+//            let seqAction = SKAction.sequence([waitAction, callAction])
+//            run(seqAction) {
+//                self.disableInput = false
+////                self.titleSceneDelegate?.didTapCredits()
+//            }
+            
+            //Attempt 2
+//            circleTransition()
+            
+            //Attempt 3
+//            let spriteSize = vector_float2(Float(K.ScreenDimensions.iPhoneWidth / 40), Float(K.ScreenDimensions.height / 40))
+//
+//            let shader = SKShader(fileNamed: "transitionShader.fsh")
+//            shader.attributes = [SKAttribute(name: "a_sprite_size", type: .vectorFloat2), SKAttribute(name:"a_duration", type: .float)]
+//
+//            let fullScreen = SKSpriteNode(color: .red, size: K.ScreenDimensions.screenSize)
+//            fullScreen.position = CGPoint(x: K.ScreenDimensions.iPhoneWidth / 2, y: K.ScreenDimensions.height / 2)
+//            fullScreen.zPosition = 9999
+//            fullScreen.shader = shader
+//            fullScreen.setValue(SKAttributeValue(vectorFloat2: spriteSize), forAttribute: "a_sprite_size")
+//            fullScreen.setValue(SKAttributeValue(float: Float(fadeDuration)), forAttribute: "a_duration")
+//
+//            addChild(fullScreen)
+//
+//            run(SKAction.wait(forDuration: fadeDuration)) { [unowned self] in
+//                disableInput = false
+//                fullScreen.removeFromParent()
+//            }
+            
+
+            //Attempt 4
+//            let effect = SKEffectNode()
+//            effect.zPosition = 9999
+//            addChild(effect)
+//
+//            let rect = SKShapeNode(rect: CGRect(x: 0, y: 0, width: K.ScreenDimensions.iPhoneWidth, height: K.ScreenDimensions.height))
+//            rect.fillColor = .black
+//            effect.addChild(rect)
+//
+//            let mask = SKShapeNode(circleOfRadius: 100)
+//            mask.position = CGPoint(x: 200, y: 300)
+//            mask.fillColor = .white
+//            mask.blendMode = .subtract
+//            rect.addChild(mask)
+                                                                                                                                                                                                                   
         }
     }
+    
+    
+    // TODO: - Circle Animation Transition
+    func circleTransition() {
+        let bgMask = SKSpriteNode(color: .black, size: K.ScreenDimensions.screenSize)
+        bgMask.position = CGPoint(x: K.ScreenDimensions.iPhoneWidth / 2, y: K.ScreenDimensions.height / 2)
+        bgMask.zPosition = 5000
+        addChild(bgMask)
+
+        let transitionCircle = SKSpriteNode(texture: SKTexture(imageNamed: "transition_circle"), color: .clear, size: CGSize(width: 13, height: 13))
+        transitionCircle.position = CGPoint.zero
+        transitionCircle.zPosition = 1
+        transitionCircle.blendMode = .subtract
+        bgMask.addChild(transitionCircle)
+
+//        let bgOverlay = SKSpriteNode(texture: SKTexture(imageNamed: "bg_overlay"), color: .clear, size: CGSize(width: self.size.width, height: self.size.height))
+//        let bgOverlay = SKSpriteNode(color: .black, size: K.ScreenDimensions.screenSize)
+//        bgOverlay.position = CGPoint(x: self.size.width / 2, y: self.size.height / 2)
+//        bgOverlay.zPosition = 5001
+//        addChild(bgOverlay)
+
+        bgMask.run(SKAction.sequence([SKAction.scale(to: 100.0, duration: 2.0), SKAction.removeFromParent()])) { [weak self] in
+            self?.disableInput = false
+        }
+        
+//        bgOverlay.run(SKAction.sequence([SKAction.fadeOut(withDuration: 0.1), SKAction.removeFromParent()]))
+    }
+    
+    
+    
 }

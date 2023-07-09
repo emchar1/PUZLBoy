@@ -226,6 +226,7 @@ class GameEngine {
         if level.health > 1 {
             displaySprite.sprite.run(SKAction.repeat(SKAction.sequence([
                 SKAction.run { [unowned self] in
+                    // FIXME: - Is this a retain cycle???
                     displaySprite.statusHealth.pulseImage()
                     
                     //Level 51 is the dragon level, and it's annoying to hear pickupheart 10 times...
@@ -345,7 +346,7 @@ class GameEngine {
             playerSprite.startMoveAnimation(animationType: animationType)
             
             playerSprite.sprite.run(playerMove) { [unowned self] in
-                // FIXME: - Is this a Retain Cycle???
+                // FIXME: - Is this a retain cycle???
                 playerSprite.startIdleAnimation(hasSword: !isSolved && level.inventory.hasSwords(), hasHammer: !isSolved && level.inventory.hasHammers())
                 checkSpecialPanel { [unowned self] in
                     shouldDisableControlInput = false
@@ -470,6 +471,8 @@ class GameEngine {
             
             playerSprite.startWarpAnimation(shouldReverse: false, stopAnimating: false) { [unowned self] in
                 level.updatePlayer(position: newWarpLocation)
+                
+                // FIXME: - Is this a retain cycle???
                 playerSprite.sprite.position = gameboardSprite.getLocation(at: newWarpLocation)
                 playerSprite.startWarpAnimation(shouldReverse: true, stopAnimating: true) { [unowned self] in
                     
@@ -785,6 +788,8 @@ class GameEngine {
             
             if level.getLevelType(at: nextPanel) == .lava {
                 Haptics.shared.executeCustomPattern(pattern: .lava)
+
+                // FIXME: - Is this a retain cycle???
                 playerSprite.startLavaEffectAnimation()
                 
                 ScoringEngine.updateStatusIconsAnimation(
@@ -861,6 +866,7 @@ class GameEngine {
                 Haptics.shared.executeCustomPattern(pattern: .enemy)
                 shouldDisableControlInput = true
                 playerSprite.startKnockbackAnimation(on: gameboardSprite, at: level.player, isAttacked: true, direction: direction) { [unowned self] in
+                    // FIXME: - Is this a retain cycle??? (because updateMovesRemaining calls playerSprite.startDeadAnimation())
                     updateMovesRemaining(enemyAttacked: true) //...added here
                     shouldDisableControlInput = false
                 }

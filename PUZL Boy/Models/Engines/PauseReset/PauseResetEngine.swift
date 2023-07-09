@@ -349,15 +349,15 @@ class PauseResetEngine {
         if isPaused {
             hideMinorButtons()
             
+            //These need to be here due to time of day feature.
+            backgroundSprite.fillColor = PauseResetEngine.backgroundColor
+            backgroundSprite.fillTexture = SKTexture(image: UIImage.skyGradientTexture)
+            backgroundSprite.updateShadowColor(PauseResetEngine.backgroundShadowColor)
+
             backgroundSprite.run(SKAction.group([
                 SKAction.moveTo(y: getBottomOfSettings(), duration: 0.25),
                 SKAction.sequence([
                     SKAction.run { [unowned self] in
-                        //These need to be here due to time of day feature.
-                        backgroundSprite.fillColor = PauseResetEngine.backgroundColor
-                        backgroundSprite.fillTexture = SKTexture(image: UIImage.skyGradientTexture)
-                        backgroundSprite.updateShadowColor(PauseResetEngine.backgroundShadowColor)
-                        
                         //Makes it easier if you tap here each time, trust me.
                         settingsManager.tap(settingsManager.button5, tapQuietly: true)
                         settingsManager.updateColors()
@@ -367,6 +367,7 @@ class PauseResetEngine {
                     },
                     SKAction.scale(to: GameboardSprite.spriteScale, duration: 0.25),
                     SKAction.run { [unowned self] in
+                        // FIXME: - Does this create a retain cycle???
                         backgroundSprite.showShadow(animationDuration: 0.1, completion: nil)
                     }
                 ])
@@ -383,10 +384,9 @@ class PauseResetEngine {
                 showMinorButtons()
             }
 
+            backgroundSprite.hideShadow(animationDuration: 0.05, completion: nil)
+            
             backgroundSprite.run(SKAction.group([
-                SKAction.run { [unowned self] in
-                    backgroundSprite.hideShadow(animationDuration: 0.05, completion: nil)
-                },
                 SKAction.moveTo(y: pauseButtonPosition.y, duration: 0.25),
                 SKAction.scale(to: 0, duration: 0.25)
             ])) { [unowned self] in
