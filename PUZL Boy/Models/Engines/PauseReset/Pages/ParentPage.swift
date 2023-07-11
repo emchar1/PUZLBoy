@@ -14,8 +14,10 @@ class ParentPage: SKNode {
     static let padding: CGFloat = 40
     var nodeName = "parentPage"
     var contentSize: CGSize
-    var contentNode: SKSpriteNode
-    var titleLabel: SKLabelNode
+    var titleText: String
+    
+    var contentNode: SKSpriteNode!
+    var titleLabel: SKLabelNode!
     var superScene: SKScene?
 
     
@@ -23,7 +25,20 @@ class ParentPage: SKNode {
     
     init(contentSize: CGSize, titleText: String) {
         self.contentSize = contentSize
+        self.titleText = titleText
 
+        super.init()
+
+        name = nodeName
+        
+        setupSprites()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    private func setupSprites() {
         contentNode = SKSpriteNode(color: .clear, size: contentSize)
         contentNode.anchorPoint = CGPoint(x: 0, y: 1)
         contentNode.position = CGPoint(x: -contentSize.width / 2, y: contentSize.height / 2)
@@ -37,14 +52,6 @@ class ParentPage: SKNode {
         titleLabel.fontColor = UIFont.gameFontColor
         titleLabel.addHeavyDropShadow()
         titleLabel.zPosition = 10
-        
-        super.init()
-        
-        name = nodeName
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
     }
     
     

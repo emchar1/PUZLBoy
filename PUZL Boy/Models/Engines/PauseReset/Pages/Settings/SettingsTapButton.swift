@@ -48,6 +48,19 @@ class SettingsTapButton: SKNode {
         
         super.init()
         
+        setupSprites()
+        updateColors()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    deinit {
+        print("SettingsTapButton deinit")
+    }
+    
+    private func setupSprites() {
         let labelNode = SKLabelNode(text: text)
         labelNode.position = CGPoint(x: 0, y: 0)
         labelNode.verticalAlignmentMode = .center
@@ -66,18 +79,8 @@ class SettingsTapButton: SKNode {
         tapButton.name = nodeName
         tapButton.addDropShadow(rectOf: SettingsTapButton.buttonSize, cornerRadius: 20, shadowOffset: shadowOffset)
         
-        updateColors()
-        
         addChild(tapButton)
         tapButton.addChild(labelNode)
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    deinit {
-        print("SettingsTapButton deinit")
     }
     
     

@@ -16,6 +16,7 @@ class SettingsTapArea: SKNode {
     // MARK: - Properties
     
     private var labelText: String
+    private var buttonText: String
     private var settingsSize: CGSize
     
     private var tapButton: SettingsTapButton!
@@ -27,10 +28,24 @@ class SettingsTapArea: SKNode {
     
     init(labelText: String, buttonText: String, settingsSize: CGSize) {
         self.labelText = labelText
+        self.buttonText = buttonText
         self.settingsSize = settingsSize
         
         super.init()
         
+        setupSprites()
+        updateColors()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    deinit {
+        print("SettingsTapButton deinit")
+    }
+    
+    private func setupSprites() {
         let labelNode = SKLabelNode(text: labelText.uppercased())
         labelNode.position = CGPoint(x: 0, y: settingsSize.height / 2)
         labelNode.verticalAlignmentMode = .center
@@ -44,19 +59,9 @@ class SettingsTapArea: SKNode {
         tapButton = SettingsTapButton(text: buttonText)
         tapButton.position.x = settingsSize.width
         tapButton.delegate = self
-
-        updateColors()
-
+        
         addChild(labelNode)
         addChild(tapButton)
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    deinit {
-        print("SettingsTapButton deinit")
     }
     
     

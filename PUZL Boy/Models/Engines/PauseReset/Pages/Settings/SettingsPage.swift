@@ -13,6 +13,8 @@ class SettingsPage: ParentPage {
     
     // MARK: - Properties
     
+    private var user: User?
+
     private(set) var radioMusic: SettingsRadioNode!
     private var radioSoundFX: SettingsRadioNode!
     private var radioVibration: SettingsRadioNode!
@@ -20,21 +22,31 @@ class SettingsPage: ParentPage {
     
     private(set) var tapButtonNotifications: SettingsTapArea!
     private(set) var tapButtonShare: SettingsTapArea!
-    private(set) var tapButtonReportBug: SettingsTapArea!
-    
-    private var user: User?
+    private(set) var tapButtonReportBug: SettingsTapArea!    
 
     
     // MARK: - Initialization
     
     init(user: User?, contentSize: CGSize) {
+        self.user = user
+
         super.init(contentSize: contentSize, titleText: "Settings")
         
         self.nodeName = "settingsPage"
-        self.contentSize = contentSize
-        self.user = user
         name = nodeName
         
+        setupSprites()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    deinit {
+        print("SettingsPage deinit")
+    }
+    
+    private func setupSprites() {
         let radioSectionHeight: CGFloat = UIDevice.isiPad ? 150 : 100
         let radioSize = CGSize(width: contentSize.width - 2 * SettingsPage.padding, height: SettingsRadioNode.radioNodeSize.height)
         let radioStart: CGFloat = -SettingsPage.padding - 1.5 * radioSectionHeight
@@ -100,14 +112,6 @@ class SettingsPage: ParentPage {
         contentNode.addChild(tapButtonNotifications)
         contentNode.addChild(tapButtonShare)
         contentNode.addChild(tapButtonReportBug)
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    deinit {
-        print("SettingsPage deinit")
     }
     
     

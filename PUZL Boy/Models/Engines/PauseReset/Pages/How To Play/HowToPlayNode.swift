@@ -19,6 +19,7 @@ class HowToPlayNode: SKNode {
     private var currentLevel: Int
     private var requiredLevel: Int
     private var hintType: HintType
+    private var nodeWidth: CGFloat
     private var canShow: Bool { currentLevel >= requiredLevel }
 
     private var iconNode: SKSpriteNode!
@@ -39,9 +40,19 @@ class HowToPlayNode: SKNode {
         self.currentLevel = currentLevel
         self.requiredLevel = requiredLevel
         self.hintType = hintType
+        self.nodeWidth = nodeWidth
                 
         super.init()
         
+        setupSprites()
+        updateLabels(level: currentLevel)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    private func setupSprites() {
         let padding: CGFloat = 20
         let lineWidth: CGFloat = 8
         
@@ -83,9 +94,6 @@ class HowToPlayNode: SKNode {
         descriptionNode.zPosition = 10
         descriptionNode.addDropShadow()
         
-        
-        updateLabels(level: currentLevel)
-        
         iconNode.addChild(borderNode)
         addChild(iconNode)
         addChild(titleNode)
@@ -101,10 +109,6 @@ class HowToPlayNode: SKNode {
 
             iconNode.addChild(terrainBackground)
         }
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
     }
     
     

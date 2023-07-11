@@ -19,7 +19,6 @@ class PurchasePage: ParentPage {
     
     // MARK: - Properties
     
-    private var activityIndicator: ActivityIndicatorSprite!
     private var isDisabled = false
     
     private var buy099Button: PurchaseTapButton!
@@ -29,7 +28,8 @@ class PurchasePage: ParentPage {
     private var buy999Button: PurchaseTapButton!
     private var buy1999Button: PurchaseTapButton!
     private(set) var currentButton: PurchaseTapButton?
-    
+    private var activityIndicator: ActivityIndicatorSprite!
+
     weak var delegate: PurchasePageDelegate?
     
     
@@ -37,13 +37,20 @@ class PurchasePage: ParentPage {
     
     init(contentSize: CGSize) {
         super.init(contentSize: contentSize, titleText: "Shop")
-
+        
         self.nodeName = "purchasePage"
-        self.contentSize = contentSize
         name = nodeName
         
         IAPManager.shared.delegate = self //1. need this here to initialize
-        
+
+        setupSprites()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    private func setupSprites() {
         let topMargin: CGFloat = UIDevice.isiPad ? 280 : 200
         let paddingFactor: CGFloat = UIDevice.isiPad ? 2 : 1
         let buttonSize: CGSize = PurchaseTapButton.buttonSize
@@ -122,10 +129,6 @@ class PurchasePage: ParentPage {
         contentNode.addChild(buy499Button)
         contentNode.addChild(buy999Button)
         contentNode.addChild(buy1999Button)
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
     }
     
     

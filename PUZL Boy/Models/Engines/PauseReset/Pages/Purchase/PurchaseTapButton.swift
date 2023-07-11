@@ -29,8 +29,11 @@ class PurchaseTapButton: SKNode {
     private let backgroundColor: UIColor
     private var shadowColor: UIColor { backgroundColor.lightenColor(factor: 6) }
 
+    private var price: Double
     private var text: String
     private(set) var type: TapButtonType
+    private var image: String
+    private var imageScale: CGFloat
     private var isAnimating = false
     private var isPressed = true
         
@@ -47,12 +50,23 @@ class PurchaseTapButton: SKNode {
     // MARK: - Initialization
     
     init(price: Double, text: String, type: TapButtonType, color: UIColor, image: String, imageScale: CGFloat = 1) {
+        self.price = price
         self.text = text
         self.type = type
         self.backgroundColor = color
-                
+        self.image = image
+        self.imageScale = imageScale
+        
         super.init()
         
+        setupSprites()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    private func setupSprites() {
         let cornerRadius: CGFloat = 20
         let currencyFormatter = NumberFormatter()
         currencyFormatter.numberStyle = .currency
@@ -123,10 +137,6 @@ class PurchaseTapButton: SKNode {
         cropNode.addChild(priceBackground)
         cropNodeFade.addChild(imageNode)
         priceBackground.addChild(priceLabel)
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
     }
     
     

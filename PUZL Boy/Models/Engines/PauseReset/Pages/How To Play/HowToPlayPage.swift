@@ -18,19 +18,21 @@ class HowToPlayPage: ParentPage {
     
     init(contentSize: CGSize, level: Int) {
         super.init(contentSize: contentSize, titleText: "How To Play")
-
+        
         self.nodeName = "howToPlayPage"
-        self.contentSize = contentSize
-        tableView = HowToPlayTableView(frame: .zero, style: .grouped)
         name = nodeName
         
-        addChild(contentNode)
-        contentNode.addChild(super.titleLabel)
+        setupSprites()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    
+    private func setupSprites() {
+        tableView = HowToPlayTableView(frame: .zero, style: .grouped)
+
+        addChild(contentNode)
+        contentNode.addChild(super.titleLabel)
+    }
 }

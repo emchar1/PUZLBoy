@@ -27,10 +27,10 @@ class SettingsRadioNode: SKNode {
     private var isAnimating = false
     private var isPressed = false
     
-    private var labelNode: SKLabelNode
-    private var radioButton: SKSpriteNode
-    private var radioOn: SKSpriteNode
-    private var radioOff: SKSpriteNode
+    private var labelNode: SKLabelNode!
+    private var radioButton: SKSpriteNode!
+    private var radioOn: SKSpriteNode!
+    private var radioOff: SKSpriteNode!
     
     weak var delegate: SettingsRadioNodeDelegate?
     
@@ -42,6 +42,20 @@ class SettingsRadioNode: SKNode {
         self.isOn = isOn
         self.settingsSize = settingsSize
         
+        super.init()
+
+        setupSprites()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    deinit {
+        print("SettingsRadioNode deinit")
+    }
+    
+    private func setupSprites() {
         labelNode = SKLabelNode(text: text.uppercased())
         labelNode.position = CGPoint(x: 0, y: settingsSize.height / 2)
         labelNode.verticalAlignmentMode = .center
@@ -56,7 +70,8 @@ class SettingsRadioNode: SKNode {
         radioButton.position = CGPoint(x: settingsSize.width, y: settingsSize.height / 2)
         radioButton.anchorPoint = CGPoint(x: 1, y: 0.5)
         radioButton.scale(to: SettingsRadioNode.radioNodeSize)
-        
+        radioButton.name = nodeName
+
         radioOn = SKSpriteNode(imageNamed: "radioOn")
         radioOn.position = CGPoint(x: SettingsRadioNode.radioStatus.on, y: 0)
         radioOn.anchorPoint = CGPoint(x: 0, y: 0.5)
@@ -67,21 +82,9 @@ class SettingsRadioNode: SKNode {
         radioOff.anchorPoint = CGPoint(x: 0, y: 0.5)
         radioOff.zPosition = 1
 
-        super.init()
-        
-        radioButton.name = nodeName
-
         radioButton.addChild(isOn ? radioOn : radioOff)
         addChild(labelNode)
         addChild(radioButton)
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    deinit {
-        print("SettingsRadioNode deinit")
     }
     
     
