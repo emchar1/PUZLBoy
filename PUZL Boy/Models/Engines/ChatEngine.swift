@@ -49,11 +49,11 @@ class ChatEngine {
     private let chatSpeedOrig: TimeInterval = 0.08
     
     //Sprite properties
-    private var dimOverlaySprite: SKShapeNode
-    private var backgroundSprite: SKShapeNode
-    private var avatarSprite: SKSpriteNode
-    private var fastForwardSprite: SKSpriteNode
-    private var textSprite: SKLabelNode
+    private var dimOverlaySprite: SKShapeNode!
+    private var backgroundSprite: SKShapeNode!
+    private var avatarSprite: SKSpriteNode!
+    private var fastForwardSprite: SKSpriteNode!
+    private var textSprite: SKLabelNode!
     private var superScene: SKScene?
     
     private struct ChatItem {
@@ -96,15 +96,17 @@ class ChatEngine {
         dialoguePlayed[51] = false
         dialoguePlayed[76] = false
         dialoguePlayed[100] = false
-        
-        //Property initialization
+
+        setupSprites()
+        animateFFButton()
+    }
+    
+    deinit {
+        print("ChatEngine deinit")
+    }
+    
+    private func setupSprites() {
         backgroundSprite = SKShapeNode()
-        dimOverlaySprite = SKShapeNode(rectOf: CGSize(width: K.ScreenDimensions.iPhoneWidth, height: K.ScreenDimensions.height))
-        avatarSprite = SKSpriteNode(texture: SKTexture(imageNamed: "puzlboy"))
-        fastForwardSprite = SKSpriteNode(imageNamed: "forwardButton")
-        textSprite = SKLabelNode(text: "PUZL Boy is the newest puzzle game out there on the App Store. It's so popular, it's going to have over a million downloads, gamers are going to love it - casual gamers, hardcore gamers, and everyone in-between! So download your copy today!!")
-        
-        //Setup
         backgroundSprite.lineWidth = borderLineWidth
         backgroundSprite.path = UIBezierPath(roundedRect: CGRect(x: origin.x, y: origin.y,
                                                                  width: backgroundSpriteWidth, height: ChatEngine.avatarSizeNew + borderLineWidth),
@@ -116,17 +118,20 @@ class ChatEngine {
         backgroundSprite.name = "backgroundSprite"
         backgroundSprite.zPosition = K.ZPosition.chatDialogue
         
+        dimOverlaySprite = SKShapeNode(rectOf: CGSize(width: K.ScreenDimensions.iPhoneWidth, height: K.ScreenDimensions.height))
         dimOverlaySprite.position = CGPoint(x: K.ScreenDimensions.iPhoneWidth / 2, y: K.ScreenDimensions.height / 2)
         dimOverlaySprite.fillColor = .black
         dimOverlaySprite.lineWidth = 0
         dimOverlaySprite.alpha = 0
         dimOverlaySprite.zPosition = K.ZPosition.chatDimOverlay
         
+        avatarSprite = SKSpriteNode(texture: SKTexture(imageNamed: "puzlboy"))
         avatarSprite.position = CGPoint(x: origin.x, y: origin.y + borderLineWidth / 2)
         avatarSprite.setScale(ChatEngine.avatarSizeNew / ChatEngine.avatarSizeOrig * 3)
         avatarSprite.anchorPoint = .zero
         avatarSprite.color = .magenta
         
+        textSprite = SKLabelNode(text: "PUZL Boy is the newest puzzle game out there on the App Store. It's so popular, it's going to have over a million downloads, gamers are going to love it - casual gamers, hardcore gamers, and everyone in-between! So download your copy today!!")
         textSprite.position = CGPoint(x: origin.x, y: origin.y + ChatEngine.avatarSizeNew - padding.y)
         textSprite.numberOfLines = 0
         textSprite.preferredMaxLayoutWidth = backgroundSpriteWidth - ChatEngine.avatarSizeNew
@@ -138,22 +143,18 @@ class ChatEngine {
         textSprite.zPosition = 10
         textSprite.addDropShadow()
         
+        fastForwardSprite = SKSpriteNode(imageNamed: "forwardButton")
         fastForwardSprite.setScale(0.35 * 3)
         fastForwardSprite.anchorPoint = CGPoint(x: 1, y: 0)
         fastForwardSprite.position = CGPoint(x: origin.x + backgroundSpriteWidth - padding.x, y: origin.y + padding.x)
         fastForwardSprite.alpha = 1
         fastForwardSprite.zPosition = 15
         
-        animateFFButton()
-        
+
         //Add sprites to background
         backgroundSprite.addChild(avatarSprite)
         backgroundSprite.addChild(textSprite)
         backgroundSprite.addChild(fastForwardSprite)
-    }
-    
-    deinit {
-        print("ChatEngine deinit")
     }
     
     

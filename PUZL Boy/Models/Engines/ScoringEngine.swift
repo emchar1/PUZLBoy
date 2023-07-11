@@ -18,12 +18,15 @@ class ScoringEngine {
     private let minTimeScore = 100
     private let reductionPerSecondScore = -5
 
-    private(set) var timerManager: TimerManager
-    private(set) var scoringManager: ScoringManager
-
-    private var totalScoreLabel: SKLabelNode
-    private var scoreLabel: SKLabelNode
-    private var elapsedTimeLabel: SKLabelNode
+    private var elapsedTime: TimeInterval
+    private var score: Int
+    private var totalScore: Int
+    
+    private(set) var timerManager: TimerManager!
+    private(set) var scoringManager: ScoringManager!
+    private var totalScoreLabel: SKLabelNode!
+    private var scoreLabel: SKLabelNode!
+    private var elapsedTimeLabel: SKLabelNode!
     
     enum StatusIcon: String {
         case health = "heart0", moves = "iconBoot", sword = "iconSword", hammer = "iconHammer"
@@ -33,6 +36,19 @@ class ScoringEngine {
     // MARK: - Initialization
     
     init(elapsedTime: TimeInterval = 0, score: Int = 0, totalScore: Int = 0) {
+        self.elapsedTime = elapsedTime
+        self.score = score
+        self.totalScore = totalScore
+        
+        setupSprites()
+        updateLabels()
+    }
+    
+    deinit {
+        print("ScoringEngine deinit")
+    }
+    
+    private func setupSprites() {
         let padding: CGFloat = 40
         
         timerManager = TimerManager(elapsedTime: elapsedTime)
@@ -68,12 +84,6 @@ class ScoringEngine {
         elapsedTimeLabel.verticalAlignmentMode = .bottom
         elapsedTimeLabel.zPosition = K.ZPosition.display
         elapsedTimeLabel.addDropShadow()
-
-        updateLabels()
-    }
-    
-    deinit {
-        print("ScoringEngine deinit")
     }
     
     

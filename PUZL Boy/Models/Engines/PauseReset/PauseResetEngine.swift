@@ -44,18 +44,18 @@ class PauseResetEngine {
     }
     
     //SKNodes
-    private var pauseButtonSprite: SKSpriteNode
-    private var resetButtonSprite: SKSpriteNode
-    private var hintButtonSprite: SKSpriteNode
-    private var backgroundSprite: SKShapeNode
+    private var pauseButtonSprite: SKSpriteNode!
+    private var resetButtonSprite: SKSpriteNode!
+    private var hintButtonSprite: SKSpriteNode!
+    private var backgroundSprite: SKShapeNode!
     private var superScene: SKScene?
     
     //Custom Objects
-    private var settingsManager: SettingsManager
-    private var quitConfirmSprite: ConfirmSprite
-    private var howToPlayPage: HowToPlayPage
-    private var purchasePage: PurchasePage
-    private var settingsPage: SettingsPage
+    private var settingsManager: SettingsManager!
+    private var quitConfirmSprite: ConfirmSprite!
+    private var howToPlayPage: HowToPlayPage!
+    private var purchasePage: PurchasePage!
+    private var settingsPage: SettingsPage!
 
     //Misc Properties
     static var backgroundColor: UIColor { DayTheme.skyColor.top.analogous.first.darkenColor(factor: 6) }
@@ -75,35 +75,57 @@ class PauseResetEngine {
     // MARK: - Initialization
     
     init(user: User?, level: Int) {
-        let settingsCorner: CGFloat = 20
-        
         self.user = user
         self.currentLevel = level
         
+        setupSprites()
+    }
+    
+    deinit {
+        print("PauseResetEngine deinit")
+    }
+    
+    private func setupSprites() {
+        let settingsCorner: CGFloat = 20
+        
         backgroundSprite = SKShapeNode(rectOf: settingsSize, cornerRadius: settingsCorner)
+        backgroundSprite.position = CGPoint(
+            x: settingsScale * (settingsSize.width + GameboardSprite.padding) / 2 + GameboardSprite.offsetPosition.x + GameboardSprite.padding / 2,
+            y: pauseButtonPosition.y)
         backgroundSprite.strokeColor = .white
         backgroundSprite.lineWidth = 0
         backgroundSprite.setScale(0)
         backgroundSprite.zPosition = K.ZPosition.pauseScreen
+        backgroundSprite.addShadow(rectOf: settingsSize, cornerRadius: settingsCorner, shadowOffset: 10, shadowColor: PauseResetEngine.backgroundShadowColor)
         
+        //The 3 Buttons
         pauseButtonSprite = SKSpriteNode(imageNamed: pauseName)
+        pauseButtonSprite.position = pauseButtonPosition
         pauseButtonSprite.scale(to: CGSize(width: pauseButtonSize, height: pauseButtonSize))
         pauseButtonSprite.anchorPoint = CGPoint(x: 0.5, y: 0)
         pauseButtonSprite.name = pauseName
         pauseButtonSprite.zPosition = K.ZPosition.pauseButton
         
         resetButtonSprite = SKSpriteNode(imageNamed: resetName)
+        resetButtonSprite.position = pauseButtonPosition + CGPoint(x: -minorButtonOffset.x, y: minorButtonOffset.y)
+        resetButtonSprite.scale(to: CGSize(width: minorButtonSize, height: minorButtonSize))
         resetButtonSprite.anchorPoint = CGPoint(x: 0.5, y: 0)
         resetButtonSprite.name = resetName
         resetButtonSprite.zPosition = K.ZPosition.pauseButton - 5
         
         hintButtonSprite = SKSpriteNode(imageNamed: hintName)
+        hintButtonSprite.position = pauseButtonPosition + CGPoint(x: minorButtonOffset.x, y: minorButtonOffset.y)
+        hintButtonSprite.scale(to: CGSize(width: minorButtonSize, height: minorButtonSize))
         hintButtonSprite.anchorPoint = CGPoint(x: 0.5, y: 0)
         hintButtonSprite.name = hintName
         hintButtonSprite.zPosition = K.ZPosition.pauseButton - 5
         
-        settingsManager = SettingsManager(settingsWidth: settingsSize.width, buttonHeight: 120)
         
+        //Settings Manager
+        settingsManager = SettingsManager(settingsWidth: settingsSize.width, buttonHeight: 120)
+        settingsManager.setInitialPosition(CGPoint(x: -backgroundSprite.position.x, y: -settingsSize.height / 2))
+        settingsManager.delegate = self
+
         settingsPage = SettingsPage(user: user, contentSize: settingsSize)
         settingsPage.zPosition = 10
         
@@ -112,33 +134,13 @@ class PauseResetEngine {
         
         purchasePage = PurchasePage(contentSize: settingsSize)
         purchasePage.zPosition = 10
-        
+        purchasePage.delegate = self
+
         quitConfirmSprite = ConfirmSprite(title: "RETURN HOME?",
                                           message: "Tap Quit Game to return to the main menu. Your progress will be saved.",
                                           confirm: "Quit Game",
                                           cancel: "Cancel")
-
-        
-        //Add'l setup/customization
-        pauseButtonSprite.position = pauseButtonPosition
-        resetButtonSprite.scale(to: CGSize(width: minorButtonSize, height: minorButtonSize))
-        resetButtonSprite.position = pauseButtonPosition + CGPoint(x: -minorButtonOffset.x, y: minorButtonOffset.y)
-        hintButtonSprite.scale(to: CGSize(width: minorButtonSize, height: minorButtonSize))
-        hintButtonSprite.position = pauseButtonPosition + CGPoint(x: minorButtonOffset.x, y: minorButtonOffset.y)
-        
-        backgroundSprite.position = CGPoint(
-            x: settingsScale * (settingsSize.width + GameboardSprite.padding) / 2 + GameboardSprite.offsetPosition.x + GameboardSprite.padding / 2,
-            y: pauseButtonPosition.y)
-        backgroundSprite.addShadow(rectOf: settingsSize, cornerRadius: settingsCorner, shadowOffset: 10, shadowColor: PauseResetEngine.backgroundShadowColor)
-
-        settingsManager.setInitialPosition(CGPoint(x: -backgroundSprite.position.x, y: -settingsSize.height / 2))
-        settingsManager.delegate = self
         quitConfirmSprite.delegate = self
-        purchasePage.delegate = self
-    }
-    
-    deinit {
-        print("PauseResetEngine deinit")
     }
     
     

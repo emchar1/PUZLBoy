@@ -17,10 +17,15 @@ class ConfirmSprite: SKNode {
     // MARK: - Properties
         
     private var disableControls: Bool = true
-    private let messageLabel: SKLabelNode
-    private(set) var backgroundSprite: SKShapeNode
-    private(set) var confirmButton: DecisionButtonSprite
-    private(set) var cancelButton: DecisionButtonSprite
+    private var title: String
+    private var message: String
+    private var confirm: String
+    private var cancel: String
+    
+    private var messageLabel: SKLabelNode!
+    private(set) var backgroundSprite: SKShapeNode!
+    private(set) var confirmButton: DecisionButtonSprite!
+    private(set) var cancelButton: DecisionButtonSprite!
     
     weak var delegate: ConfirmSpriteDelegate?
 
@@ -28,6 +33,29 @@ class ConfirmSprite: SKNode {
     // MARK: - Initialization
     
     init(title: String, message: String, confirm: String, cancel: String) {
+        self.title = title
+        self.message = message
+        self.confirm = confirm
+        self.cancel = cancel
+        
+        super.init()
+        
+        setScale(0)
+        position = CGPoint(x: K.ScreenDimensions.iPhoneWidth / 2, y: K.ScreenDimensions.height / 2)
+        zPosition = K.ZPosition.messagePrompt
+        
+        setupSprites()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    deinit {
+        print("ConfirmSprite deinit")
+    }
+    
+    private func setupSprites() {
         backgroundSprite = SKShapeNode(rectOf: CGSize(width: K.ScreenDimensions.iPhoneWidth, height: K.ScreenDimensions.iPhoneWidth / 2),
                                        cornerRadius: 20)
         backgroundSprite.fillColor = .gray
@@ -48,10 +76,12 @@ class ConfirmSprite: SKNode {
         confirmButton = DecisionButtonSprite(text: confirm, color: DecisionButtonSprite.colorRed, iconImageName: nil)
         confirmButton.position = CGPoint(x: -K.ScreenDimensions.iPhoneWidth / 4,
                                          y: -backgroundSprite.frame.size.height / 2 + titleLabel.frame.height / (UIDevice.isiPad ? 2 : 0.5))
-        
+        confirmButton.delegate = self
+
         cancelButton = DecisionButtonSprite(text: cancel, color: DecisionButtonSprite.colorBlue, iconImageName: nil)
         cancelButton.position = CGPoint(x: K.ScreenDimensions.iPhoneWidth / 4, y: confirmButton.position.y)
-        
+        cancelButton.delegate = self
+
         messageLabel = SKLabelNode(text: message)
         messageLabel.fontName = UIFont.chatFont
         messageLabel.fontSize = UIDevice.isiPad ? UIFont.gameFontSizeLarge : UIFont.chatFontSize
@@ -66,28 +96,10 @@ class ConfirmSprite: SKNode {
         messageLabel.zPosition = 10
         messageLabel.addDropShadow()
 
-        
-        super.init()
-        
-        confirmButton.delegate = self
-        cancelButton.delegate = self
-        
-        setScale(0)
-        position = CGPoint(x: K.ScreenDimensions.iPhoneWidth / 2, y: K.ScreenDimensions.height / 2)
-        zPosition = K.ZPosition.messagePrompt
-        
         backgroundSprite.addChild(titleLabel)
         backgroundSprite.addChild(messageLabel)
         backgroundSprite.addChild(confirmButton)
         backgroundSprite.addChild(cancelButton)
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    deinit {
-        print("ConfirmSprite deinit")
     }
     
     

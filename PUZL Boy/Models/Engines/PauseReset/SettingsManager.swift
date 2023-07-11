@@ -21,11 +21,11 @@ class SettingsManager: SKNode {
     private var buttonSize: CGSize
     
     private(set) var currentButtonPressed: SettingsButton?
-    private(set) var button1: SettingsButton
-    private(set) var button2: SettingsButton
-    private(set) var button3: SettingsButton
-    private(set) var button4: SettingsButton
-    private(set) var button5: SettingsButton
+    private(set) var button1: SettingsButton!
+    private(set) var button2: SettingsButton!
+    private(set) var button3: SettingsButton!
+    private(set) var button4: SettingsButton!
+    private(set) var button5: SettingsButton!
     
     weak var delegate: SettingsManagerDelegate?
     
@@ -37,35 +37,34 @@ class SettingsManager: SKNode {
         self.buttonHeight = buttonHeight
         buttonSize = CGSize(width: settingsWidth / 5 * settingsScale, height: buttonHeight)
         
-        button1 = SettingsButton(type: .button1, position: .zero, size: buttonSize)
-        button2 = SettingsButton(type: .button2, position: .zero, size: buttonSize)
-        button3 = SettingsButton(type: .button3, position: .zero, size: buttonSize)
-        button4 = SettingsButton(type: .button4, position: .zero, size: buttonSize)
-        button5 = SettingsButton(type: .button5, position: .zero, size: buttonSize)
-        
         super.init()
         
-        button1.delegate = self
-        button2.delegate = self
-        button3.delegate = self
-        button4.delegate = self
-        button5.delegate = self
-        
-        addButtonNodes()
+        setupSprites()
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func addButtonNodes() {
+    private func setupSprites() {
+        button1 = SettingsButton(type: .button1, position: .zero, size: buttonSize)
+        button2 = SettingsButton(type: .button2, position: .zero, size: buttonSize)
+        button3 = SettingsButton(type: .button3, position: .zero, size: buttonSize)
+        button4 = SettingsButton(type: .button4, position: .zero, size: buttonSize)
+        button5 = SettingsButton(type: .button5, position: .zero, size: buttonSize)
+
+        button1.delegate = self
+        button2.delegate = self
+        button3.delegate = self
+        button4.delegate = self
+        button5.delegate = self
+        
         addChild(button1)
         addChild(button2)
         addChild(button3)
         addChild(button4)
         addChild(button5)
     }
-    
     
     
     // MARK: - Functions

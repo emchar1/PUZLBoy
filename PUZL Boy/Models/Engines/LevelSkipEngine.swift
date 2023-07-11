@@ -19,10 +19,10 @@ class LevelSkipEngine {
     
     // MARK: - Properties
     
-    private var forwardSprite: SKSpriteNode
-    private var reverseSprite: SKSpriteNode
-    private var viewAchievements: SKSpriteNode
-    private var partyMode: SKSpriteNode
+    private var forwardSprite: SKSpriteNode!
+    private var reverseSprite: SKSpriteNode!
+    private var viewAchievements: SKSpriteNode!
+    private var partyMode: SKSpriteNode!
     private var superScene: SKScene?
     private var user: User?
     
@@ -32,11 +32,16 @@ class LevelSkipEngine {
     // MARK: - Initialization
     
     init(user: User?) {
+        self.user = user
+
+        setupSprites()
+        showButtons()
+    }
+    
+    private func setupSprites() {
         let buttonScale: CGFloat = 0.5 * 3
         let buttonSpacing: CGFloat = 180
         let padding: CGFloat = 20
-        
-        self.user = user
         
         forwardSprite = SKSpriteNode(texture: SKTexture(imageNamed: "forwardButton"))
         forwardSprite.name = "forwardButton"
@@ -70,8 +75,6 @@ class LevelSkipEngine {
         partyMode.position = CGPoint(x: forwardSprite.position.x - buttonSpacing / 2, y: partyMode.size.height + padding)
         partyMode.anchorPoint = .zero
         partyMode.zPosition = K.ZPosition.pauseButton
-        
-        showButtons()
     }
     
     

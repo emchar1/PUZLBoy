@@ -19,9 +19,10 @@ class SettingsButton: SKNode {
     private(set) var isPressed: Bool = false
     private(set) var shadowSize: CGPoint = CGPoint(x: -10, y: -10)
     private(set) var type: SettingsButtonType
-    private var buttonSprite: SKShapeNode
-    private var shadowSprite: SKShapeNode
-    private var labelSprite: SKLabelNode
+    
+    private var buttonSprite: SKShapeNode!
+    private var shadowSprite: SKShapeNode!
+    private var labelSprite: SKLabelNode!
     
     weak var delegate: SettingsButtonDelegate?
     
@@ -33,9 +34,22 @@ class SettingsButton: SKNode {
     
     init(type: SettingsButtonType, position: CGPoint, size: CGSize) {
         self.type = type
-        
-        buttonSize = size
-        
+        self.buttonSize = size
+
+        super.init()
+
+        self.position = position
+        self.name = type.rawValue
+
+        setupSprites()
+        updateColors()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    private func setupSprites() {
         buttonSprite = SKShapeNode(rectOf: buttonSize, cornerRadius: 20)
         buttonSprite.strokeColor = .white
         buttonSprite.lineWidth = 0
@@ -57,23 +71,11 @@ class SettingsButton: SKNode {
         labelSprite.alpha = 0.75
         labelSprite.zPosition = 10
         labelSprite.addDropShadow()
-        
-        super.init()
-
-        self.position = position
-        self.name = type.rawValue
-        
-        updateColors()
 
         addChild(buttonSprite)
         buttonSprite.addChild(shadowSprite)
         buttonSprite.addChild(labelSprite)
     }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
     
     // MARK: - Functions
     
