@@ -1030,7 +1030,6 @@ extension GameScene: ConfirmSpriteDelegate {
             scoringEngine.timerManager.resumeTime()
             startTimer()
             gameEngine.shouldDisableInput(false)
-            confirmSprite.removeFromParent()
         }
     }
 }

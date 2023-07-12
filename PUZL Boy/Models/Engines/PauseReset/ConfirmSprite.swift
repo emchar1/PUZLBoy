@@ -96,6 +96,7 @@ class ConfirmSprite: SKNode {
         messageLabel.zPosition = 10
         messageLabel.addDropShadow()
 
+        addChild(backgroundSprite)
         backgroundSprite.addChild(titleLabel)
         backgroundSprite.addChild(messageLabel)
         backgroundSprite.addChild(confirmButton)
@@ -106,14 +107,10 @@ class ConfirmSprite: SKNode {
     // MARK: - Functions
     
     func animateShow(newMessage: String? = nil, completion: @escaping (() -> Void)) {
-        backgroundSprite.removeFromParent()
-        
         if let newMessage = newMessage {
             messageLabel.text = newMessage
             messageLabel.updateShadow()
         }
-        
-        addChild(backgroundSprite)
         
         Haptics.shared.addHapticFeedback(withStyle: .heavy)
         
@@ -130,8 +127,10 @@ class ConfirmSprite: SKNode {
     func animateHide(completion: @escaping (() -> Void)) {
         disableControls = true
 
-        run(SKAction.scale(to: 0, duration: 0.25)) { [unowned self] in
-            backgroundSprite.removeFromParent()
+        run(SKAction.sequence([
+            SKAction.scale(to: 0, duration: 0.25),
+            SKAction.removeFromParent()
+        ])) {
             completion()
         }
     }
