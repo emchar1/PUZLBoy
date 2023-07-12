@@ -236,7 +236,7 @@ class GameScene: SKScene {
             
             pauseResetEngine.touch(for: touches) { _ in
                 pauseResetEngine.touchUp()
-            }            
+            }
         }
     }
     
@@ -998,11 +998,11 @@ extension GameScene: ConfirmSpriteDelegate {
         hideConfirmSprite(confirmSprite)
     }
     
-    func shake() {
-        guard !pauseResetEngine.isPaused && !Level.isPartyLevel(currentLevel) else { return }
-
-        showConfirmSprite(resetConfirmSprite)
-    }
+//    func shake() {
+//        guard !pauseResetEngine.isPaused && !Level.isPartyLevel(currentLevel) else { return }
+//
+//        showConfirmSprite(resetConfirmSprite)
+//    }
     
     private func showConfirmSprite(_ confirmSprite: ConfirmSprite) {
         guard confirmSprite.parent == nil else { return }
