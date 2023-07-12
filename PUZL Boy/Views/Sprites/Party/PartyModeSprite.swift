@@ -32,22 +32,32 @@ class PartyModeSprite: SKNode {
         }
     }
     
+    private let baseColor: UIColor = .clear
     private let speedMultipliers: [TimeInterval] = [2.0, 1.5, 1.0, 0.75, 0.5]
     private var currentMultiplier = 2
     private(set) var speedMultiplier: TimeInterval = 1.0
     var multiplierMinReached: Bool { currentMultiplier <= 0 }
     var multiplierMaxReached: Bool { currentMultiplier >= speedMultipliers.count - 1 }
 
-    private let baseColor: UIColor = .clear
-    private var backgroundSprite: SKSpriteNode
-    private var lightsSprite: SKSpriteNode
-    private var backgroundLights: SKSpriteNode
-    private var foregroundLights: SKSpriteNode
+    private var backgroundSprite: SKSpriteNode!
+    private var lightsSprite: SKSpriteNode!
+    private var backgroundLights: SKSpriteNode!
+    private var foregroundLights: SKSpriteNode!
 
     
     // MARK: - Initialization
     
     private override init() {
+        super.init()
+        
+        setupSprites()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    private func setupSprites() {
         let gameboardSize = K.ScreenDimensions.iPhoneWidth * GameboardSprite.spriteScale
         
         backgroundSprite = SKSpriteNode(color: .black, size: K.ScreenDimensions.screenSize)
@@ -70,12 +80,6 @@ class PartyModeSprite: SKNode {
         foregroundLights.position = CGPoint(x: GameboardSprite.offsetPosition.x + GameboardSprite.padding / 2,
                                             y: GameboardSprite.offsetPosition.y + GameboardSprite.padding / 2)
         foregroundLights.zPosition = K.ZPosition.partyForegroundOverlay
-        
-        super.init()
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
     }
     
     

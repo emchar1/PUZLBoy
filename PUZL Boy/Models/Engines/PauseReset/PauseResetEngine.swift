@@ -553,22 +553,19 @@ extension PauseResetEngine: ConfirmSpriteDelegate {
     func didTapConfirm(_ confirmSprite: ConfirmSprite) {
         quitConfirmSprite.animateHide { [unowned self] in
             showMinorButtons(duration: 0)
-
-            quitConfirmSprite.removeFromParent()
-            delegate?.confirmQuitTapped()
             
             isPaused = false
             isAnimating = false
             
             backgroundSprite.position.y = pauseButtonPosition.y
             backgroundSprite.setScale(0)
+
+            delegate?.confirmQuitTapped()
         }
     }
     
     func didTapCancel(_ confirmSprite: ConfirmSprite) {
         quitConfirmSprite.animateHide { [unowned self] in
-            quitConfirmSprite.removeFromParent()
-
             if settingsManager.currentButtonPressed?.type == settingsManager.button4.type {
                 delegate?.didTapHowToPlay(howToPlayPage.tableView)
             }

@@ -11,12 +11,22 @@ class PartyEffectSprite: SKNode {
     
     // MARK: - Properties
     
-    private var sprite: SKShapeNode
+    private var sprite: SKShapeNode!
 
     
     // MARK: - Initialization
     
     override init() {
+        super.init()
+        
+        setupSprites()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    private func setupSprites() {
         let radius: CGFloat = CGFloat.random(in: 50...500)
         
         sprite = SKShapeNode(ellipseIn: CGRect(x: -radius / 2, y: -radius / 2, width: radius, height: radius))
@@ -25,12 +35,6 @@ class PartyEffectSprite: SKNode {
         sprite.lineWidth = 0
         sprite.alpha = 0
         sprite.zPosition = K.ZPosition.partyForegroundOverlay + 10
-        
-        super.init()
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
     }
     
     

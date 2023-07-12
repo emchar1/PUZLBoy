@@ -23,9 +23,9 @@ class ConfirmSprite: SKNode {
     private var cancel: String
     
     private var messageLabel: SKLabelNode!
-    private(set) var backgroundSprite: SKShapeNode!
-    private(set) var confirmButton: DecisionButtonSprite!
-    private(set) var cancelButton: DecisionButtonSprite!
+    private var backgroundSprite: SKShapeNode!
+    private var confirmButton: DecisionButtonSprite!
+    private var cancelButton: DecisionButtonSprite!
     
     weak var delegate: ConfirmSpriteDelegate?
 

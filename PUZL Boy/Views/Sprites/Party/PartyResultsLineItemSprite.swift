@@ -19,8 +19,8 @@ class PartyResultsLineItemSprite: SKNode {
     private var iconDescription: String
     private var amount: Int
     
-    private var amountLabel: SKLabelNode
-    private var amountAnchor: SKLabelNode
+    private var amountLabel: SKLabelNode!
+    private var amountAnchor: SKLabelNode!
     
     
     // MARK: - Initialization
@@ -33,14 +33,22 @@ class PartyResultsLineItemSprite: SKNode {
         self.iconDescription = iconDescription
         self.amount = amount
         
-        self.amountLabel = SKLabelNode(text: numberFormatter.string(from: NSNumber(value: amount)) ?? "XXX")
-        self.amountAnchor = SKLabelNode(text: "000")
-        
         super.init()
+
+        alpha = 0
         
+        setupSprites()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    private func setupSprites() {
         let lrBorder: CGFloat = 40
-        let backgroundSprite = SKSpriteNode(color: .clear, size: CGSize(width: K.ScreenDimensions.iPhoneWidth,
-                                                                        height: PartyResultsLineItemSprite.lineItemHeight))
+        
+        let backgroundSprite = SKSpriteNode(color: .clear,
+                                            size: CGSize(width: K.ScreenDimensions.iPhoneWidth, height: PartyResultsLineItemSprite.lineItemHeight))
         backgroundSprite.anchorPoint = CGPoint(x: 0, y: 0.5)
         backgroundSprite.position = .zero
         
@@ -59,6 +67,7 @@ class PartyResultsLineItemSprite: SKNode {
         descriptionLabel.zPosition = 10
         descriptionLabel.addDropShadow()
         
+        amountLabel = SKLabelNode(text: numberFormatter.string(from: NSNumber(value: amount)) ?? "XXX")
         amountLabel.position = CGPoint(x: K.ScreenDimensions.iPhoneWidth - 2 * lrBorder, y: 0)
         amountLabel.fontName = UIFont.gameFont
         amountLabel.fontSize = UIDevice.isiPad ? UIFont.gameFontSizeLarge : UIFont.gameFontSizeMedium
@@ -68,6 +77,7 @@ class PartyResultsLineItemSprite: SKNode {
         amountLabel.zPosition = 10
         amountLabel.addDropShadow()
         
+        amountAnchor = SKLabelNode(text: "000")
         amountAnchor.position = amountLabel.position
         amountAnchor.fontName = amountLabel.fontName
         amountAnchor.fontSize = amountLabel.fontSize
@@ -76,18 +86,11 @@ class PartyResultsLineItemSprite: SKNode {
         amountAnchor.verticalAlignmentMode = .center
         amountAnchor.zPosition = 15
         
-        
-        alpha = 0
-        
         addChild(backgroundSprite)
         backgroundSprite.addChild(iconNode)
         backgroundSprite.addChild(descriptionLabel)
         backgroundSprite.addChild(amountLabel)
         backgroundSprite.addChild(amountAnchor)
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
     }
     
     

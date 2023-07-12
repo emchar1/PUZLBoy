@@ -32,10 +32,14 @@ class DecisionButtonSprite: SKNode {
     }
     
     private var isPressed: Bool = false
-    private(set) var tappableAreaNode: SKShapeNode
-    private var sprite: SKShapeNode
-    private var topSprite: SKShapeNode
-    private var textNode: SKLabelNode
+    private var text: String
+    private var color: UIColor
+    private var iconImageName: String?
+    
+    private(set) var tappableAreaNode: SKShapeNode!
+    private var sprite: SKShapeNode!
+    private var topSprite: SKShapeNode!
+    private var textNode: SKLabelNode!
 
     weak var delegate: DecisionButtonSpriteDelegate?
     
@@ -43,6 +47,24 @@ class DecisionButtonSprite: SKNode {
     // MARK: - Initialization
     
     init(text: String, color: UIColor, iconImageName: String?) {
+        self.text = text
+        self.color = color
+        self.iconImageName = iconImageName
+        
+        super.init()
+        
+        setupSprites()
+    }
+            
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    deinit {
+        print("DecisionButtonSprite deinit")
+    }
+    
+    private func setupSprites() {
         let cornerRadius: CGFloat = 16
         
         tappableAreaNode = SKShapeNode(rectOf: buttonSize, cornerRadius: cornerRadius)
@@ -70,8 +92,6 @@ class DecisionButtonSprite: SKNode {
         textNode.position = CGPoint(x: 0, y: -18)
         textNode.zPosition = 10
         textNode.addDropShadow()
-        
-        super.init()
                 
         let shadowSprite = SKShapeNode(rectOf: buttonSize, cornerRadius: cornerRadius)
         shadowSprite.fillColor = .black
@@ -91,10 +111,6 @@ class DecisionButtonSprite: SKNode {
         sprite.addChild(shadowSprite)
         sprite.addChild(topSprite)
         topSprite.addChild(textNode)
-    }
-            
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
     }
     
 

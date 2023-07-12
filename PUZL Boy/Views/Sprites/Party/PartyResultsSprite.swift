@@ -18,14 +18,14 @@ class PartyResultsSprite: SKNode {
     private let backgroundSize = CGSize(width: K.ScreenDimensions.iPhoneWidth, height: K.ScreenDimensions.iPhoneWidth * (UIDevice.isiPad ? 1.2 : 1.25))
     
     private var disableControls: Bool = true
-    private var backgroundSprite: SKShapeNode
-    private var gemsLineItem: PartyResultsLineItemSprite
-    private var gemsDoubleLineItem: PartyResultsLineItemSprite
-    private var gemsTripleLineItem: PartyResultsLineItemSprite
-    private var gemsTotalLineItem: PartyResultsLineItemSprite
-    private var livesLineItem: PartyResultsLineItemSprite
-    private var livesTotalLineItem: PartyResultsLineItemSprite
-    private var continueButton: SettingsTapButton
+    private var backgroundSprite: SKShapeNode!
+    private var gemsLineItem: PartyResultsLineItemSprite!
+    private var gemsDoubleLineItem: PartyResultsLineItemSprite!
+    private var gemsTripleLineItem: PartyResultsLineItemSprite!
+    private var gemsTotalLineItem: PartyResultsLineItemSprite!
+    private var livesLineItem: PartyResultsLineItemSprite!
+    private var livesTotalLineItem: PartyResultsLineItemSprite!
+    private var continueButton: SettingsTapButton!
     
     weak var delegate: PartyResultsSpriteDelegate?
     
@@ -33,6 +33,25 @@ class PartyResultsSprite: SKNode {
     // MARK: - Initialization
     
     override init() {
+        super.init()
+
+        setScale(0)
+        position = CGPoint(x: K.ScreenDimensions.iPhoneWidth / 2,
+                           y: K.ScreenDimensions.topOfGameboard - backgroundSize.height / 2 * GameboardSprite.spriteScale + GameboardSprite.padding)
+        zPosition = K.ZPosition.messagePrompt
+
+        setupSprites()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    deinit {
+        print("PartyResultsSprite deinit")
+    }
+    
+    private func setupSprites() {
         let backgroundCorner: CGFloat = 20
         let topBorder: CGFloat = UIDevice.isiPad ? 200 : 150
         
@@ -41,7 +60,8 @@ class PartyResultsSprite: SKNode {
         backgroundSprite.strokeColor = .white
         backgroundSprite.lineWidth = 0
         backgroundSprite.setScale(GameboardSprite.spriteScale)
-        
+        backgroundSprite.addShadow(rectOf: backgroundSize, cornerRadius: backgroundCorner, shadowOffset: 10, shadowColor: .cyan)
+
         gemsLineItem = PartyResultsLineItemSprite(iconName: "partyGem", iconDescription: "Gems", amount: 0)
         gemsLineItem.position = CGPoint(x: -backgroundSize.width / 2,
                                         y: backgroundSize.height / 2 - PartyResultsLineItemSprite.lineItemHeight - topBorder)
@@ -78,17 +98,7 @@ class PartyResultsSprite: SKNode {
         continueButton = SettingsTapButton(text: "Continue", colors: (DecisionButtonSprite.colorBlue, .cyan))
         continueButton.position = CGPoint(x: SettingsTapButton.buttonSize.width / 2, y: -backgroundSprite.frame.size.height / 2 + titleLabel.frame.height / (UIDevice.isiPad ? 2 : 0.5))
         continueButton.zPosition = 10
-        
-        super.init()
-        
         continueButton.delegate = self
-        
-        setScale(0)
-        position = CGPoint(x: K.ScreenDimensions.iPhoneWidth / 2,
-                           y: K.ScreenDimensions.topOfGameboard - backgroundSize.height / 2 * GameboardSprite.spriteScale + GameboardSprite.padding)
-        zPosition = K.ZPosition.messagePrompt
-        
-        backgroundSprite.addShadow(rectOf: backgroundSize, cornerRadius: backgroundCorner, shadowOffset: 10, shadowColor: .cyan)
         continueButton.alpha = 0
 
         backgroundSprite.addChild(titleLabel)
@@ -99,14 +109,6 @@ class PartyResultsSprite: SKNode {
         backgroundSprite.addChild(livesLineItem)
         backgroundSprite.addChild(livesTotalLineItem)
         backgroundSprite.addChild(continueButton)
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    deinit {
-        print("PartyResultsSprite deinit")
     }
     
     
