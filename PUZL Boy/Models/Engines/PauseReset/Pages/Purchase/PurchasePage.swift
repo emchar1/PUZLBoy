@@ -50,6 +50,10 @@ class PurchasePage: ParentPage {
         fatalError("init(coder:) has not been implemented")
     }
     
+    deinit {
+        print("PurchasePage deinit")
+    }
+    
     private func setupSprites() {
         let topMargin: CGFloat = UIDevice.isiPad ? 280 : 200
         let paddingFactor: CGFloat = UIDevice.isiPad ? 2 : 1

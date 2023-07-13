@@ -25,12 +25,12 @@ class ContinueSprite: SKNode {
     static let extraMovesBuy5 = 5
     
     private var disableControls: Bool = true
-    private let livesRefreshLabel: SKLabelNode
-    private(set) var backgroundSprite: SKShapeNode
-    private(set) var watchAdButton: DecisionButtonSprite
-    private(set) var skipLevelButton: DecisionButtonSprite
-    private(set) var buy25LivesButton: DecisionButtonSprite
-    private(set) var buy5MovesButton: DecisionButtonSprite
+    private var livesRefreshLabel: SKLabelNode!
+    private(set) var backgroundSprite: SKShapeNode!
+    private(set) var watchAdButton: DecisionButtonSprite!
+    private(set) var skipLevelButton: DecisionButtonSprite!
+    private(set) var buy25LivesButton: DecisionButtonSprite!
+    private(set) var buy5MovesButton: DecisionButtonSprite!
     
     weak var delegate: ContinueSpriteDelegate?
 
@@ -38,6 +38,24 @@ class ContinueSprite: SKNode {
     // MARK: - Initialization
     
     override init() {
+        super.init()
+                
+        setScale(0)
+        position = CGPoint(x: K.ScreenDimensions.iPhoneWidth / 2, y: K.ScreenDimensions.height / 2)
+        zPosition = K.ZPosition.messagePrompt
+
+        setupSprites()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    deinit {
+        print("ContinueSprite deinit")
+    }
+    
+    private func setupSprites() {
         backgroundSprite = SKShapeNode(rectOf: CGSize(width: K.ScreenDimensions.iPhoneWidth, height: 2 * K.ScreenDimensions.iPhoneWidth / 3),
                                        cornerRadius: 20)
         backgroundSprite.fillColor = .gray
@@ -61,25 +79,29 @@ class ContinueSprite: SKNode {
         skipLevelButton.position = CGPoint(
             x: -K.ScreenDimensions.iPhoneWidth / 4,
             y: -backgroundSprite.frame.size.height / 2 + continueLabel.frame.height / (UIDevice.isiPad ? 2 : 0.5))
-        
+        skipLevelButton.delegate = self
+
         buy5MovesButton = DecisionButtonSprite(text: "Buy $0.99:      x\(ContinueSprite.extraMovesBuy5)",
                                                color: DecisionButtonSprite.colorBlue,
                                                iconImageName: "iconBoot")
         buy5MovesButton.position = CGPoint(
             x: -K.ScreenDimensions.iPhoneWidth / 4,
             y: skipLevelButton.position.y + skipLevelButton.buttonSize.height + continueLabel.frame.height / 2)
+        buy5MovesButton.delegate = self
 
         watchAdButton = DecisionButtonSprite(text: "Watch Ad:      x\(ContinueSprite.extraLivesAd)",
                                              color: DecisionButtonSprite.colorGreen,
                                              iconImageName: "iconPlayer")
         watchAdButton.position = CGPoint(x: K.ScreenDimensions.iPhoneWidth / 4, y: buy5MovesButton.position.y)
+        watchAdButton.delegate = self
 
         buy25LivesButton = DecisionButtonSprite(text: "Buy $4.99:      x\(ContinueSprite.extraLivesBuy25)",
                                                 color: DecisionButtonSprite.colorGreen,
                                             iconImageName: "iconPlayer")
         buy25LivesButton.position = CGPoint(x: K.ScreenDimensions.iPhoneWidth / 4, y: skipLevelButton.position.y)
-                
-        livesRefreshLabel = SKLabelNode(text: "Or wait for \(LifeSpawnerModel.defaultLives) lives in: 99:99:99")
+        buy25LivesButton.delegate = self
+
+        livesRefreshLabel = SKLabelNode(text: "Or wait for \(LifeSpawnerModel.defaultLives) lives in: 02:00:00")
         livesRefreshLabel.fontName = UIFont.chatFont
         livesRefreshLabel.fontSize = UIDevice.isiPad ? UIFont.gameFontSizeLarge : UIFont.chatFontSize
         livesRefreshLabel.fontColor = UIFont.chatFontColor
@@ -90,17 +112,7 @@ class ContinueSprite: SKNode {
         livesRefreshLabel.zPosition = 10
         livesRefreshLabel.addDropShadow()
         
-        super.init()
-        
-        watchAdButton.delegate = self
-        skipLevelButton.delegate = self
-        buy25LivesButton.delegate = self
-        buy5MovesButton.delegate = self
-        
-        setScale(0)
-        position = CGPoint(x: K.ScreenDimensions.iPhoneWidth / 2, y: K.ScreenDimensions.height / 2)
-        zPosition = K.ZPosition.messagePrompt
-        
+        addChild(backgroundSprite)
         backgroundSprite.addChild(continueLabel)
         backgroundSprite.addChild(livesRefreshLabel)
         backgroundSprite.addChild(watchAdButton)
@@ -109,22 +121,12 @@ class ContinueSprite: SKNode {
         backgroundSprite.addChild(buy5MovesButton)
     }
     
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    deinit {
-        print("ContinueSprite deinit")
-    }
-    
     
     // MARK: - Functions
     
     func animateShow(shouldDisable5Moves: Bool, completion: @escaping (() -> Void)) {
         buy5MovesButton.isDisabled = shouldDisable5Moves
 
-        addChild(backgroundSprite)
-        
         run(SKAction.sequence([
             SKAction.scale(to: 1.1, duration: 0.25),
             SKAction.scale(to: 0.95, duration: 0.2),
@@ -139,8 +141,10 @@ class ContinueSprite: SKNode {
         disableControls = true
         AudioManager.shared.playSound(for: "chatclose")
 
-        run(SKAction.scale(to: 0, duration: 0.25)) { [unowned self] in
-            backgroundSprite.removeFromParent()
+        run(SKAction.sequence([
+            SKAction.scale(to: 0, duration: 0.25),
+            SKAction.removeFromParent()
+        ])) {
             completion()
         }
     }

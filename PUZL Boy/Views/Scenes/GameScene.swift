@@ -25,10 +25,10 @@ class GameScene: SKScene {
     private var resetConfirmSprite: ConfirmSprite?
     private var hintConfirmSprite: ConfirmSprite?
     private var partyResultsSprite: PartyResultsSprite?
+    private var continueSprite: ContinueSprite?
     private var offlinePlaySprite: OfflinePlaySprite
     private var levelStatsArray: [LevelStats]
     
-    private var continueSprite = ContinueSprite()
     private var activityIndicator = ActivityIndicatorSprite()
     private var adSprite = SKSpriteNode()
     private var user: User?
@@ -88,7 +88,6 @@ class GameScene: SKScene {
         super.init(size: size)
         
         gameEngine.delegate = self
-        continueSprite.delegate = self
         chatEngine.delegate = self
         pauseResetEngine.delegate = self
         
@@ -156,7 +155,7 @@ class GameScene: SKScene {
                     restartLevel(lives: LifeSpawnerModel.defaultLives)
                 }
                 
-                continueSprite.updateTimeToReplenishLives(time: timeToReplenishLives)
+                continueSprite?.updateTimeToReplenishLives(time: timeToReplenishLives)
             }
             catch {
                 removeAction(forKey: keyRunReplenishLivesTimerAction)
@@ -186,7 +185,7 @@ class GameScene: SKScene {
         chatEngine.touchDown(in: location)
         
         if !activityIndicator.isShowing {
-            continueSprite.touchDown(in: location)
+            continueSprite?.touchDown(in: location)
             resetConfirmSprite?.touchDown(in: location)
             hintConfirmSprite?.touchDown(in: location)
             partyResultsSprite?.touchDown(in: location)
@@ -200,8 +199,8 @@ class GameScene: SKScene {
         guard let location = touches.first?.location(in: self) else { return }
         
         if !activityIndicator.isShowing {
-            continueSprite.didTapButton(in: location)
-            continueSprite.touchUp()
+            continueSprite?.didTapButton(in: location)
+            continueSprite?.touchUp()
             resetConfirmSprite?.didTapButton(in: location)
             resetConfirmSprite?.touchUp()
             hintConfirmSprite?.didTapButton(in: location)
@@ -562,11 +561,14 @@ extension GameScene: GameEngineDelegate {
     func gameIsOver(firstTimeCalled: Bool) {
         if !gameEngine.canContinue {
             prepareAd { [unowned self] in
-                addChild(continueSprite)
+                continueSprite = ContinueSprite()
+                continueSprite!.delegate = self
+                
+                addChild(continueSprite!)
                 
                 pauseResetEngine.shouldDisable(true)
 
-                continueSprite.animateShow(shouldDisable5Moves: gameEngine.healthRemaining <= 0) {
+                continueSprite!.animateShow(shouldDisable5Moves: gameEngine.healthRemaining <= 0) {
                     IAPManager.shared.delegate = self
                     AdMobManager.shared.delegate = self
 
@@ -701,9 +703,7 @@ extension GameScene: AdMobManagerDelegate {
             gameEngine.setLivesRemaining(lives: lives)
             
             saveState(levelStatsItem: getLevelStatsItem(level: currentLevel, didWin: false))
-            
-            continueSprite.removeFromParent()
-            
+                        
             LifeSpawnerModel.shared.removeTimer()
             LifeSpawnerModel.shared.removeAllNotifications()
         }
@@ -711,7 +711,7 @@ extension GameScene: AdMobManagerDelegate {
         
         AudioManager.shared.stopSound(for: "continueloop")
         
-        continueSprite.animateHide { [unowned self] in
+        continueSprite?.animateHide { [unowned self] in
             continueFromAd { [unowned self] in
                 AudioManager.shared.playSound(for: "revive")
             
@@ -736,12 +736,14 @@ extension GameScene: AdMobManagerDelegate {
                 else {
                     restartHelper()
                 }
+
+                continueSprite = nil
             }
         }
     }
     
     private func continueLevel(moves: Int) {
-        continueSprite.animateHide { [unowned self] in
+        continueSprite?.animateHide { [unowned self] in
             continueFromAd { [unowned self] in
                 AudioManager.shared.playSound(for: "revive")
                 AudioManager.shared.stopSound(for: "continueloop")
@@ -758,10 +760,10 @@ extension GameScene: AdMobManagerDelegate {
                 
                 saveState(levelStatsItem: getLevelStatsItem(level: currentLevel, didWin: false))
                 
-                continueSprite.removeFromParent()
-                
                 LifeSpawnerModel.shared.removeTimer()
                 LifeSpawnerModel.shared.removeAllNotifications()
+
+                continueSprite = nil
             }
         }
     }
@@ -915,24 +917,20 @@ extension GameScene: PauseResetEngineDelegate {
     }
     
     func didCompletePurchase(_ currentButton: PurchaseTapButton) {
+        AudioManager.shared.playSound(for: "revive")
+
         switch currentButton.type {
         case .add5Moves:
-            AudioManager.shared.playSound(for: "revive")
-
             gameEngine.animateMoves(originalMoves: gameEngine.movesRemaining, newMoves: ContinueSprite.extraMovesBuy5)
             gameEngine.incrementMovesRemaining(moves: ContinueSprite.extraMovesBuy5)
             
             saveState(levelStatsItem: getLevelStatsItem(level: currentLevel, didWin: false))
         case .add1Life:
-            AudioManager.shared.playSound(for: "revive")
-
             gameEngine.animateLives(originalLives: GameEngine.livesRemaining, newLives: ContinueSprite.extraLivesAd)
             gameEngine.incrementLivesRemaining(lives: ContinueSprite.extraLivesAd)
             
             saveState(levelStatsItem: getLevelStatsItem(level: currentLevel, didWin: false))
         case .skipLevel:
-            AudioManager.shared.playSound(for: "revive")
-
             currentLevel += 1
                         
             scoringEngine.scoringManager.resetScore()
@@ -954,22 +952,16 @@ extension GameScene: PauseResetEngineDelegate {
                 saveState(levelStatsItem: getLevelStatsItem(level: currentLevel, didWin: false))
             }
         case .add25Lives:
-            AudioManager.shared.playSound(for: "revive")
-
             gameEngine.animateLives(originalLives: GameEngine.livesRemaining, newLives: ContinueSprite.extraLivesBuy25)
             gameEngine.incrementLivesRemaining(lives: ContinueSprite.extraLivesBuy25)
             
             saveState(levelStatsItem: getLevelStatsItem(level: currentLevel, didWin: false))
         case .add100Lives:
-            AudioManager.shared.playSound(for: "revive")
-
             gameEngine.animateLives(originalLives: GameEngine.livesRemaining, newLives: ContinueSprite.extraLivesBuy100)
             gameEngine.incrementLivesRemaining(lives: ContinueSprite.extraLivesBuy100)
             
             saveState(levelStatsItem: getLevelStatsItem(level: currentLevel, didWin: false))
         case .add1000Lives:
-            AudioManager.shared.playSound(for: "revive")
-
             gameEngine.animateLives(originalLives: GameEngine.livesRemaining, newLives: ContinueSprite.extraLivesBuy1000)
             gameEngine.incrementLivesRemaining(lives: ContinueSprite.extraLivesBuy1000)
             
