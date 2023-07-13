@@ -683,6 +683,8 @@ class GameEngine {
         else {
             guard let tappedPanel = gameboardSprite.getPanel(at: location) else { return }
             gameboardSprite.highlightPanel(color: .red, at: tappedPanel)
+            
+            Haptics.shared.addHapticFeedback(withStyle: .rigid)
         }
     }
     

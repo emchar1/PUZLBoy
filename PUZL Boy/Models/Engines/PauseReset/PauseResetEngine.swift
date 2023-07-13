@@ -259,14 +259,19 @@ class PauseResetEngine {
      - location: location of the touch
      - function: the passed in function to be executed once the node has ben found
      */
-    func touch(for touches: Set<UITouch>, function: (Set<UITouch>) -> Void) {
+    func touchHandler(for touches: Set<UITouch>) {
         guard !isDisabled else { return }
         guard let superScene = superScene else { return print("superScene not set in PauseResetEngine!") }
         guard let location = touches.first?.location(in: superScene) else { return }
         
         for nodeTapped in superScene.nodes(at: location) {
-            if nodeTapped.name == pauseName {
-                function(touches)
+            if nodeTapped.name == pauseName
+                || nodeTapped.name == resetName
+                || nodeTapped.name == hintName
+                || nodeTapped is SettingsRadioNode
+                || nodeTapped is SettingsTapButton {
+                
+                handleControls(for: touches)
             }
             else if nodeTapped is DecisionButtonSprite {
                 quitConfirmSprite.didTapButton(in: location)
@@ -279,16 +284,13 @@ class PauseResetEngine {
                 settingsPage.superScene = superScene
                 settingsPage.touchNode(for: touches)
             }
-            else {
-                function(touches)
-            }
         }
     }
     
     /**
      Handles the actual logic for when the user taps the button, i.e. opens the settings menu.
      */
-    func handleControls(for touches: Set<UITouch>) {
+    private func handleControls(for touches: Set<UITouch>) {
         guard !isDisabled else { return }
         guard !isAnimating else { return }
         guard isPressed else { return }

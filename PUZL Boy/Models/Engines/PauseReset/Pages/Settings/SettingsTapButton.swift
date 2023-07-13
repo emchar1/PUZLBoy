@@ -113,11 +113,11 @@ class SettingsTapButton: SKNode {
         tapButton.showShadow(shadowOffset: shadowOffset, animationDuration: 0.2, completion: nil)
     }
     
-    func tapButton(in location: CGPoint) {
+    func tapButton(in location: CGPoint, type: ButtonTap.ButtonType) {
         guard isPressed else { return }
         guard scene?.nodes(at: location).filter({ $0.name == nodeName }).first != nil else { return }
 
-        ButtonTap.shared.tap(type: .buttontap5)
+        ButtonTap.shared.tap(type: type)
         delegate?.didTapButton(self)
     }
     

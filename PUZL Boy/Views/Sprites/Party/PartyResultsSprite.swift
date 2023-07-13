@@ -260,8 +260,7 @@ class PartyResultsSprite: SKNode {
         for node in nodes {
             guard let decisionSprite = node as? SettingsTapButton else { continue }
             
-            decisionSprite.tapButton(in: location)
-            ButtonTap.shared.tap(type: .buttontap3)
+            decisionSprite.tapButton(in: location, type: .buttontap3)
         }
     }
     

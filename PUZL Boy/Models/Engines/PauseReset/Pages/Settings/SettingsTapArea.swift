@@ -76,7 +76,7 @@ class SettingsTapArea: SKNode {
     }
     
     func tapButton(in location: CGPoint) {
-        tapButton.tapButton(in: location)
+        tapButton.tapButton(in: location, type: .buttontap5)
     }
     
     func updateColors() {

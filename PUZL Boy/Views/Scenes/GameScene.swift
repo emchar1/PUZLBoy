@@ -22,9 +22,9 @@ class GameScene: SKScene {
     private var scoringEngine: ScoringEngine
     private var chatEngine: ChatEngine
     private var pauseResetEngine: PauseResetEngine
-    private var resetConfirmSprite: ConfirmSprite
-    private var hintConfirmSprite: ConfirmSprite
-    private var partyResultsSprite: PartyResultsSprite
+    private var resetConfirmSprite: ConfirmSprite?
+    private var hintConfirmSprite: ConfirmSprite?
+    private var partyResultsSprite: PartyResultsSprite?
     private var offlinePlaySprite: OfflinePlaySprite
     private var levelStatsArray: [LevelStats]
     
@@ -79,17 +79,6 @@ class GameScene: SKScene {
         //chatEngine MUST be initialized here, and not in properties, otherwise it just refuses to show up! Because K.ScreenDimensions.topOfGameboard is set in the gameEngine(). Is there a better way to do this??
         chatEngine = ChatEngine()
         pauseResetEngine = PauseResetEngine(user: user, level: currentLevel)
-        resetConfirmSprite = ConfirmSprite(title: "FEELING STUCK?",
-                                           message: "Tap Restart Level to start over. You'll lose a life in the process.",
-                                           confirm: "Restart Level",
-                                           cancel: "Cancel")
-        
-        hintConfirmSprite = ConfirmSprite(title: "NEED A HINT?",
-                                          message: "The hint feature is not yet available, but will be soon. Maybe in the next version... Stay tuned!",
-                                          confirm: "OK",
-                                          cancel: "OK, but in blue")
-        
-        partyResultsSprite = PartyResultsSprite()
         
         self.user = user
         
@@ -102,9 +91,6 @@ class GameScene: SKScene {
         continueSprite.delegate = self
         chatEngine.delegate = self
         pauseResetEngine.delegate = self
-        resetConfirmSprite.delegate = self
-        hintConfirmSprite.delegate = self
-        partyResultsSprite.delegate = self
         
         // FIXME: - Debugging purposes only!!!
         levelSkipEngine.delegate = self
@@ -201,9 +187,9 @@ class GameScene: SKScene {
         
         if !activityIndicator.isShowing {
             continueSprite.touchDown(in: location)
-            resetConfirmSprite.touchDown(in: location)
-            hintConfirmSprite.touchDown(in: location)
-            partyResultsSprite.touchDown(in: location)
+            resetConfirmSprite?.touchDown(in: location)
+            hintConfirmSprite?.touchDown(in: location)
+            partyResultsSprite?.touchDown(in: location)
         }
         
         // FIXME: - Debugging purposes only!!!
@@ -216,12 +202,12 @@ class GameScene: SKScene {
         if !activityIndicator.isShowing {
             continueSprite.didTapButton(in: location)
             continueSprite.touchUp()
-            resetConfirmSprite.didTapButton(in: location)
-            resetConfirmSprite.touchUp()
-            hintConfirmSprite.didTapButton(in: location)
-            hintConfirmSprite.touchUp()
-            partyResultsSprite.didTapButton(in: location)
-            partyResultsSprite.touchUp()
+            resetConfirmSprite?.didTapButton(in: location)
+            resetConfirmSprite?.touchUp()
+            hintConfirmSprite?.didTapButton(in: location)
+            hintConfirmSprite?.touchUp()
+            partyResultsSprite?.didTapButton(in: location)
+            partyResultsSprite?.touchUp()
             chatEngine.touchUp()
         }
 
@@ -229,14 +215,8 @@ class GameScene: SKScene {
         guard gameEngine.checkControlGuardsIfPassed(includeDisableInputFromOutside: false) else { return }
         
         if !gameEngine.disableInputFromOutside {
-            //MUST run these separately!! Can't combine handleControls() and touchUp(for:) in one closure.
-            pauseResetEngine.touch(for: touches) { touches in
-                pauseResetEngine.handleControls(for: touches)
-            }
-            
-            pauseResetEngine.touch(for: touches) { _ in
-                pauseResetEngine.touchUp()
-            }
+            pauseResetEngine.touchHandler(for: touches)
+            pauseResetEngine.touchUp()
         }
     }
     
@@ -317,14 +297,17 @@ class GameScene: SKScene {
         
         let fadeGameboardAction = SKAction.run { [unowned self] in
             gameEngine.fadeGameboard(fadeOut: true) { [unowned self] in
-                addChild(partyResultsSprite)
+                partyResultsSprite = PartyResultsSprite()
+                partyResultsSprite!.delegate = self
+
+                addChild(partyResultsSprite!)
                 
-                partyResultsSprite.updateAmounts(gems: gameEngine.partyInventory.gems,
+                partyResultsSprite!.updateAmounts(gems: gameEngine.partyInventory.gems,
                                                  gemsDouble: gameEngine.partyInventory.gemsDouble,
                                                  gemsTriple: gameEngine.partyInventory.gemsTriple,
                                                  lives: gameEngine.partyInventory.lives)
                 
-                partyResultsSprite.animateShow(totalGems: gameEngine.partyInventory.getTotalGems(),
+                partyResultsSprite!.animateShow(totalGems: gameEngine.partyInventory.getTotalGems(),
                                                lives: gameEngine.partyInventory.lives,
                                                totalLives: gameEngine.partyInventory.getTotalLives()) { }
             }
@@ -893,11 +876,25 @@ extension GameScene: PauseResetEngineDelegate {
     }
     
     func didTapReset() {
-        showConfirmSprite(resetConfirmSprite)
+        resetConfirmSprite = ConfirmSprite(title: "FEELING STUCK?",
+                                           message: "Tap Restart Level to start over. You'll lose a life in the process.",
+                                           confirm: "Restart Level",
+                                           cancel: "Cancel")
+        resetConfirmSprite!.delegate = self
+
+        addChild(resetConfirmSprite!)
+        showConfirmSprite(resetConfirmSprite!)
     }
     
     func didTapHint() {
-        showConfirmSprite(hintConfirmSprite)
+        hintConfirmSprite = ConfirmSprite(title: "NEED A HINT?",
+                                          message: "The hint feature is not yet available, but will be soon. Maybe in the next version... Stay tuned!",
+                                          confirm: "OK",
+                                          cancel: "OK, but in blue")
+        hintConfirmSprite!.delegate = self
+
+        addChild(hintConfirmSprite!)
+        showConfirmSprite(hintConfirmSprite!)
     }
     
     func confirmQuitTapped() {
@@ -998,6 +995,7 @@ extension GameScene: ConfirmSpriteDelegate {
         hideConfirmSprite(confirmSprite)
     }
     
+    //Disable shake to reset for now...
 //    func shake() {
 //        guard !pauseResetEngine.isPaused && !Level.isPartyLevel(currentLevel) else { return }
 //
@@ -1005,7 +1003,6 @@ extension GameScene: ConfirmSpriteDelegate {
 //    }
     
     private func showConfirmSprite(_ confirmSprite: ConfirmSprite) {
-        guard confirmSprite.parent == nil else { return }
         guard gameEngine.canContinue else { return }
         guard !gameEngine.playerSprite.isAnimating else { return }
         guard !chatEngine.isChatting else { return }
@@ -1013,8 +1010,6 @@ extension GameScene: ConfirmSpriteDelegate {
         scoringEngine.timerManager.pauseTime()
         stopTimer()
         gameEngine.shouldDisableInput(true)
-
-        addChild(confirmSprite)
         
         var confirmMessage: String?
         
@@ -1030,6 +1025,14 @@ extension GameScene: ConfirmSpriteDelegate {
             scoringEngine.timerManager.resumeTime()
             startTimer()
             gameEngine.shouldDisableInput(false)
+            
+            //VERY IMPORTANT to release memory!!!
+            if confirmSprite == resetConfirmSprite {
+                resetConfirmSprite = nil
+            }
+            else if confirmSprite == hintConfirmSprite {
+                hintConfirmSprite = nil
+            }
         }
     }
 }
@@ -1039,7 +1042,7 @@ extension GameScene: ConfirmSpriteDelegate {
 
 extension GameScene: PartyResultsSpriteDelegate {
     func didTapConfirm() {
-        partyResultsSprite.animateHide { [unowned self] in
+        partyResultsSprite?.animateHide { [unowned self] in
             guard let lastCurrentLevel = lastCurrentLevel else { fatalError("lastCurrentLevel is nil, which shouldn't happen after a party level") }
 
             currentLevel = lastCurrentLevel
@@ -1067,6 +1070,9 @@ extension GameScene: PartyResultsSpriteDelegate {
             //Write to Firestore, MUST come after newGame()
             let levelStatsItem = getLevelStatsItem(level: currentLevel, didWin: true)
             saveState(levelStatsItem: levelStatsItem)
+            
+            partyResultsSprite?.removeFromParent()
+            partyResultsSprite = nil
         }
     }
 }
