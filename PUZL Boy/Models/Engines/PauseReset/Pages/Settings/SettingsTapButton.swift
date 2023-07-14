@@ -57,7 +57,7 @@ class SettingsTapButton: SKNode {
     }
     
     deinit {
-        print("SettingsTapButton deinit")
+//        print("SettingsTapButton deinit")
     }
     
     private func setupSprites() {

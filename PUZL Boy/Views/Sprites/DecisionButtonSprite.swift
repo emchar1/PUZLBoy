@@ -61,7 +61,7 @@ class DecisionButtonSprite: SKNode {
     }
     
     deinit {
-        print("DecisionButtonSprite deinit")
+        print("DecisionButtonSprite deinit \(name ?? "")")
     }
     
     private func setupSprites() {

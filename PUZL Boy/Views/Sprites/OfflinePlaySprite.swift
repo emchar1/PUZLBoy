@@ -11,14 +11,15 @@ class OfflinePlaySprite: SKNode {
 
     // MARK: - Properties
     
-    var shouldShowOfflinePlay: Bool
     private var sprite: SKLabelNode!
+//    private var memoryTest: [Int]
 
     
     // MARK: - Initialization
     
-    init(shouldShowOfflinePlay: Bool) {
-        self.shouldShowOfflinePlay = shouldShowOfflinePlay
+    override init() {
+        // FIXME: - Obviously TESTING ONLY!!
+//        memoryTest = Array(repeating: 0, count: 10000000)
         
         super.init()
         
@@ -43,36 +44,23 @@ class OfflinePlaySprite: SKNode {
         sprite.fontColor = .yellow
         sprite.zPosition = K.ZPosition.display
         sprite.addDropShadow()
+        
+        addChild(sprite)
     }
     
     
     // MARK: - Functions
     
-    func refreshStatus() {
-        if shouldShowOfflinePlay {
-            showOfflinePlay()
-        }
-        else {
-            hideOfflinePlay()
-        }
-    }
-    
-    func showOfflinePlay() {
-        //MUST reset everything first!
-        hideOfflinePlay()
-        
-        //Then can proceed as usual
-        addChild(sprite)
-
-        sprite.run(SKAction.repeatForever(SKAction.sequence([
+    func animateSprite() {
+        run(SKAction.repeatForever(SKAction.sequence([
             SKAction.wait(forDuration: 0.5),
             SKAction.fadeOut(withDuration: 0.5),
             SKAction.fadeIn(withDuration: 0.5)
         ])))
     }
     
-    func hideOfflinePlay() {
-        sprite.removeFromParent()
-        sprite.removeAllActions()
+    func deanimateSprite() {
+        removeAllActions()
+        removeFromParent()
     }
 }

@@ -18,24 +18,29 @@ class GameScene: SKScene {
     
     // MARK: - Properties
     
+    //Custom Objects
     private var gameEngine: GameEngine
     private var scoringEngine: ScoringEngine
     private var chatEngine: ChatEngine
     private var pauseResetEngine: PauseResetEngine
+    private var levelStatsArray: [LevelStats]
+
+    //SKNodes
     private var resetConfirmSprite: ConfirmSprite?
     private var hintConfirmSprite: ConfirmSprite?
     private var partyResultsSprite: PartyResultsSprite?
     private var continueSprite: ContinueSprite?
     private var activityIndicator: ActivityIndicatorSprite?
+    private var offlinePlaySprite: OfflinePlaySprite?
     private var adSprite: SKSpriteNode?
-    private var offlinePlaySprite: OfflinePlaySprite
-    private var levelStatsArray: [LevelStats]
     
+    //Misc Properties
     private var user: User?
     private var replenishLivesTimerOffset: Date?
     private let keyRunGameTimerAction = "runGameTimerAction"
     private let keyRunReplenishLivesTimerAction = "runReplenishLivesTimerAction"
     
+    //Level Properties
     private var lastCurrentLevel: Int?
     private var currentLevel: Int = 1 {
         // FIXME: - Debugging purposes only!!!
@@ -66,13 +71,13 @@ class GameScene: SKScene {
             scoringEngine = ScoringEngine(elapsedTime: saveStateModel.elapsedTime,
                                           score: saveStateModel.score,
                                           totalScore: saveStateModel.totalScore)
-            offlinePlaySprite = OfflinePlaySprite(shouldShowOfflinePlay: false)
+            offlinePlaySprite = nil
             levelStatsArray = saveStateModel.levelStatsArray
         }
         else {
             gameEngine = GameEngine(level: currentLevel, shouldSpawn: true)
             scoringEngine = ScoringEngine()
-            offlinePlaySprite = OfflinePlaySprite(shouldShowOfflinePlay: true)
+            offlinePlaySprite = OfflinePlaySprite()
             levelStatsArray = []
         }
         
@@ -461,8 +466,10 @@ class GameScene: SKScene {
         pauseResetEngine.moveSprites(to: self, level: currentLevel)
         pauseResetEngine.registerHowToPlayTableView()
         
-        offlinePlaySprite.refreshStatus()
-        addChild(offlinePlaySprite)
+        if let offlinePlaySprite = offlinePlaySprite {
+            addChild(offlinePlaySprite)
+            offlinePlaySprite.animateSprite()
+        }
         
         // FIXME: - Debugging purposes only!!!
         if let user = user,
