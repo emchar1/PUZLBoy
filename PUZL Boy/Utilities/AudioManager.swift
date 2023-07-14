@@ -185,7 +185,12 @@ class AudioManager {
             let shouldLoop = audioItem.category == .music || audioItem.category == .soundFXLoop
 
             var audioPlayer = audioItem.player
+            
+            
+            // FIXME: - This is causing a MEMORY LEAK in Instruments for library AudioToolbox. Not sure how to get around this...
             audioPlayer = try AVAudioPlayer(contentsOf: URL(fileURLWithPath: audioURL))
+            
+            
             audioPlayer.volume = audioItem.currentVolume
             audioPlayer.numberOfLoops = shouldLoop ? -1 : 0
             

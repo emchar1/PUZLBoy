@@ -18,6 +18,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         FirebaseApp.configure()
         
+        
+        // FIXME: - GoogleMobileAds is responsible for 20 MEMORY LEAKS in Instruments!!
         GADMobileAds.sharedInstance().requestConfiguration.testDeviceIdentifiers = [
             AdMobManager.testingSimulatorID,
             AdMobManager.eddiesiPhoneTestingDeviceID,
@@ -26,6 +28,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         GADMobileAds.sharedInstance().start(completionHandler: nil)
 
+        
         return true
     }
 
