@@ -186,10 +186,8 @@ class AudioManager {
 
             var audioPlayer = audioItem.player
             
-            
-            // FIXME: - This is causing a MEMORY LEAK in Instruments for library AudioToolbox. Not sure how to get around this...
+            // Memory leak here, according to instruments, but only on Simulator. Device is fine!
             audioPlayer = try AVAudioPlayer(contentsOf: URL(fileURLWithPath: audioURL))
-            
             
             audioPlayer.volume = audioItem.currentVolume
             audioPlayer.numberOfLoops = shouldLoop ? -1 : 0
