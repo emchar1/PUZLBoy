@@ -11,15 +11,32 @@ class ActivityIndicatorSprite: SKNode {
     
     // MARK: - Properties
     
-    private(set) var sprite: SKShapeNode
     private(set) var isShowing = false
-    private var player: Player
-    private var label: SKLabelNode
+    private(set) var sprite: SKShapeNode!
+    private var player: Player!
+    private var label: SKLabelNode!
     
     
     // MARK: - Initialization
     
     override init() {
+        super.init()
+        
+        position = CGPoint(x: K.ScreenDimensions.iPhoneWidth / 2, y: K.ScreenDimensions.height / 2)
+        zPosition = K.ZPosition.activityIndicator
+        
+        setupSprites()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    deinit {
+        print("ActivityIndicatorSprite deinit")
+    }
+    
+    private func setupSprites() {
         sprite = SKShapeNode(rectOf: CGSize(width: 350, height: 350), cornerRadius: 40)
         sprite.fillColor = .black
         sprite.lineWidth = 0
@@ -36,22 +53,9 @@ class ActivityIndicatorSprite: SKNode {
         label.position = CGPoint(x: -label.frame.width / 2, y: -125)
         label.horizontalAlignmentMode = .left
         
-        super.init()
-        
-        position = CGPoint(x: K.ScreenDimensions.iPhoneWidth / 2, y: K.ScreenDimensions.height / 2)
-        zPosition = K.ZPosition.activityIndicator
-        
         addChild(sprite)
         sprite.addChild(player.sprite)
         sprite.addChild(label)
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    deinit {
-        print("ActivityIndicatorSprite deinit")
     }
     
     

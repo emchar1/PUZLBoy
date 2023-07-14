@@ -18,25 +18,25 @@ class TitleScene: SKScene {
     // MARK: - Properties
 
     //Sprites
-    private var player = Player()
-    private var skyNode: SKSpriteNode
-    private var fadeSprite: SKSpriteNode
-    private var fadeOutSprite: SKSpriteNode
+    private var player: Player!
+    private var skyNode: SKSpriteNode!
+    private var fadeSprite: SKSpriteNode!
+    private var fadeOutSprite: SKSpriteNode!
 
     //Title Properties
-    private var puzlTitle: SKLabelNode
-    private var boyTitle: SKLabelNode
+    private var puzlTitle: SKLabelNode!
+    private var boyTitle: SKLabelNode!
     
     //Menu Properties
-    private var menuStart: MenuItemLabel
-    private var menuLevelSelect: MenuItemLabel
-    private var menuOptions: MenuItemLabel
-    private var menuCredits: MenuItemLabel
-    private var menuBackground: SKShapeNode
-    private var menuBackgroundText: SKShapeNode
-    private var settingsBackground: SKShapeNode
-    private var settingsClose: SKSpriteNode
-    private var settingsPage: SettingsPage
+    private var menuStart: MenuItemLabel!
+    private var menuLevelSelect: MenuItemLabel!
+    private var menuOptions: MenuItemLabel!
+    private var menuCredits: MenuItemLabel!
+    private var menuBackground: SKShapeNode!
+    private var menuBackgroundText: SKShapeNode!
+    private var settingsBackground: SKShapeNode!
+    private var settingsClose: SKSpriteNode!
+    private var settingsPage: SettingsPage!
 
     //Misc.
     private var user: User?
@@ -54,7 +54,24 @@ class TitleScene: SKScene {
     init(size: CGSize, user: User?) {
         self.user = user
         
+        super.init(size: size)
+        
+        setupSprites()
+        mixColors()
+        animateSprites()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    deinit {
+        print("deinit TitleScene")
+    }
+
+    private func setupSprites() {
         //Sprites Setup
+        player = Player()
         player.sprite.position = CGPoint(x: K.ScreenDimensions.iPhoneWidth / 2, y: K.ScreenDimensions.height / 2)
         player.sprite.setScale(2)
         player.sprite.texture = SKTexture(imageNamed: "Run (5)")
@@ -131,7 +148,13 @@ class TitleScene: SKScene {
         menuOptions = MenuItemLabel(text: "Settings", ofType: .menuOptions, at: CGPoint(x: 0, y: menuSize.height / 2 - 3 * menuGap))
         menuCredits = MenuItemLabel(text: "Credits", ofType: .menuCredits, at: CGPoint(x: 0, y: menuSize.height / 2 - 4 * menuGap))
         
+        menuStart.delegate = self
+        menuLevelSelect.delegate = self
+        menuOptions.delegate = self
+        menuCredits.delegate = self
         
+        menuLevelSelect.setIsEnabled(false)
+
         //Settings Setup
         let closeSize: CGFloat = 80
         let closeInset: CGFloat = 20
@@ -153,26 +176,6 @@ class TitleScene: SKScene {
 
         settingsPage = SettingsPage(user: user, contentSize: settingsSize)
         settingsPage.zPosition = 10
-
-        settingsBackground.addChild(settingsPage)
-        settingsBackground.addChild(settingsClose)
-
-        
-        super.init(size: size)
-        
-        menuStart.delegate = self
-        menuLevelSelect.delegate = self
-        menuOptions.delegate = self
-        menuCredits.delegate = self
-                
-        menuLevelSelect.setIsEnabled(false)
-
-        mixColors()
-        animateSprites()
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
     }
     
     private func mixColors() {
@@ -264,10 +267,6 @@ class TitleScene: SKScene {
         AudioManager.shared.playSound(for: AudioManager.shared.titleLogo, delay: delayMenu)
     }
     
-    deinit {
-        print("deinit TitleScene")
-    }
-    
     
     // MARK: - Functions
     
@@ -286,6 +285,9 @@ class TitleScene: SKScene {
         menuBackgroundText.addChild(menuLevelSelect)
         menuBackgroundText.addChild(menuOptions)
         menuBackgroundText.addChild(menuCredits)
+
+        settingsBackground.addChild(settingsPage)
+        settingsBackground.addChild(settingsClose)
     }
     
     
@@ -516,30 +518,30 @@ extension TitleScene: MenuItemLabelDelegate {
     
     
     // TODO: - Circle Animation Transition
-    func circleTransition() {
-        let bgMask = SKSpriteNode(color: .black, size: K.ScreenDimensions.screenSize)
-        bgMask.position = CGPoint(x: K.ScreenDimensions.iPhoneWidth / 2, y: K.ScreenDimensions.height / 2)
-        bgMask.zPosition = 5000
-        addChild(bgMask)
-
-        let transitionCircle = SKSpriteNode(texture: SKTexture(imageNamed: "transition_circle"), color: .clear, size: CGSize(width: 13, height: 13))
-        transitionCircle.position = CGPoint.zero
-        transitionCircle.zPosition = 1
-        transitionCircle.blendMode = .subtract
-        bgMask.addChild(transitionCircle)
-
-//        let bgOverlay = SKSpriteNode(texture: SKTexture(imageNamed: "bg_overlay"), color: .clear, size: CGSize(width: self.size.width, height: self.size.height))
-//        let bgOverlay = SKSpriteNode(color: .black, size: K.ScreenDimensions.screenSize)
-//        bgOverlay.position = CGPoint(x: self.size.width / 2, y: self.size.height / 2)
-//        bgOverlay.zPosition = 5001
-//        addChild(bgOverlay)
-
-        bgMask.run(SKAction.sequence([SKAction.scale(to: 100.0, duration: 2.0), SKAction.removeFromParent()])) { [weak self] in
-            self?.disableInput = false
-        }
-        
-//        bgOverlay.run(SKAction.sequence([SKAction.fadeOut(withDuration: 0.1), SKAction.removeFromParent()]))
-    }
+//    func circleTransition() {
+//        let bgMask = SKSpriteNode(color: .black, size: K.ScreenDimensions.screenSize)
+//        bgMask.position = CGPoint(x: K.ScreenDimensions.iPhoneWidth / 2, y: K.ScreenDimensions.height / 2)
+//        bgMask.zPosition = 5000
+//        addChild(bgMask)
+//
+//        let transitionCircle = SKSpriteNode(texture: SKTexture(imageNamed: "transition_circle"), color: .clear, size: CGSize(width: 13, height: 13))
+//        transitionCircle.position = CGPoint.zero
+//        transitionCircle.zPosition = 1
+//        transitionCircle.blendMode = .subtract
+//        bgMask.addChild(transitionCircle)
+//
+////        let bgOverlay = SKSpriteNode(texture: SKTexture(imageNamed: "bg_overlay"), color: .clear, size: CGSize(width: self.size.width, height: self.size.height))
+////        let bgOverlay = SKSpriteNode(color: .black, size: K.ScreenDimensions.screenSize)
+////        bgOverlay.position = CGPoint(x: self.size.width / 2, y: self.size.height / 2)
+////        bgOverlay.zPosition = 5001
+////        addChild(bgOverlay)
+//
+//        bgMask.run(SKAction.sequence([SKAction.scale(to: 100.0, duration: 2.0), SKAction.removeFromParent()])) { [weak self] in
+//            self?.disableInput = false
+//        }
+//
+////        bgOverlay.run(SKAction.sequence([SKAction.fadeOut(withDuration: 0.1), SKAction.removeFromParent()]))
+//    }
     
     
     

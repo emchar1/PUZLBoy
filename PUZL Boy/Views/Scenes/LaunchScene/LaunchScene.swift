@@ -19,12 +19,12 @@ class LaunchScene: SKScene {
     static let nodeName_skyObjectNode = "skyObjectNode"
     static let nodeName_groundObjectNode = "groundObjectNode"
     
-    private var player = Player()
-    private var playerReflection = Player()
-    private var loadingSprite: LoadingSprite
-    private var skyNode: SKSpriteNode
-    private var moonSprite: MoonSprite
-    private var parallaxManager: ParallaxManager
+    private var player: Player!
+    private var playerReflection: Player!
+    private var loadingSprite: LoadingSprite!
+    private var skyNode: SKSpriteNode!
+    private var moonSprite: MoonSprite!
+    private var parallaxManager: ParallaxManager!
 
     enum AnimationSequence: CaseIterable {
         case jump, fall, running
@@ -34,15 +34,32 @@ class LaunchScene: SKScene {
     // MARK: - Initialization
     
     override init(size: CGSize) {
+        super.init(size: size)
+
+        setupSprites()
+        animateSprites()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    deinit {
+        print("deinit LaunchScene")
+    }
+    
+    private func setupSprites() {
         let playerPosition = CGPoint(x: K.ScreenDimensions.iPhoneWidth / 2, y: K.ScreenDimensions.height / 3)
         let playerScale: CGFloat = 0.75
         
+        player = Player()
         player.sprite.position = playerPosition
         player.sprite.setScale(playerScale)
         player.sprite.color = DayTheme.spriteColor
         player.sprite.colorBlendFactor = DayTheme.spriteShade
         player.sprite.name = LaunchScene.nodeName_playerSprite
         
+        playerReflection = Player()
         playerReflection.sprite.position = playerPosition - CGPoint(x: 0, y: Player.size.height / 2 + 50) //why +50???
         playerReflection.sprite.setScale(playerScale)
         playerReflection.sprite.color = DayTheme.spriteColor
@@ -61,15 +78,8 @@ class LaunchScene: SKScene {
         skyNode.name = LaunchScene.nodeName_skyNode
 
         moonSprite = MoonSprite(position: CGPoint(x: K.ScreenDimensions.iPhoneWidth, y: K.ScreenDimensions.height), scale: 0.7 * 3, moonPhase: nil)
-        parallaxManager = ParallaxManager(useSet: .allCases.randomElement() ?? .grass)
 
-        super.init(size: size)
-        
-        animateSprites()
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        parallaxManager = ParallaxManager(useSet: .allCases.randomElement() ?? .grass)
     }
     
     private func animateSprites() {
@@ -93,11 +103,7 @@ class LaunchScene: SKScene {
         loadingSprite.animate()
         parallaxManager.animate()
     }
-    
-    deinit {
-        print("deinit LaunchScene")
-    }
-    
+        
     
     // MARK: - Overriden Functions
     

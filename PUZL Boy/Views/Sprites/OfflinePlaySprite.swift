@@ -12,14 +12,28 @@ class OfflinePlaySprite: SKNode {
     // MARK: - Properties
     
     var shouldShowOfflinePlay: Bool
-    private var sprite: SKLabelNode
+    private var sprite: SKLabelNode!
 
     
     // MARK: - Initialization
     
     init(shouldShowOfflinePlay: Bool) {
         self.shouldShowOfflinePlay = shouldShowOfflinePlay
-
+        
+        super.init()
+        
+        setupSprites()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    deinit {
+        print("OfflinePlaySprite deinit")
+    }
+    
+    private func setupSprites() {
         sprite = SKLabelNode(text: "OFFLINE PLAY")
         sprite.horizontalAlignmentMode = .center
         sprite.verticalAlignmentMode = .top
@@ -29,16 +43,6 @@ class OfflinePlaySprite: SKNode {
         sprite.fontColor = .yellow
         sprite.zPosition = K.ZPosition.display
         sprite.addDropShadow()
-        
-        super.init()
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    deinit {
-        print("OfflinePlaySprite deinit")
     }
     
     

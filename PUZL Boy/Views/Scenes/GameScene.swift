@@ -26,11 +26,11 @@ class GameScene: SKScene {
     private var hintConfirmSprite: ConfirmSprite?
     private var partyResultsSprite: PartyResultsSprite?
     private var continueSprite: ContinueSprite?
+    private var activityIndicator: ActivityIndicatorSprite?
+    private var adSprite: SKSpriteNode?
     private var offlinePlaySprite: OfflinePlaySprite
     private var levelStatsArray: [LevelStats]
     
-    private var activityIndicator = ActivityIndicatorSprite()
-    private var adSprite = SKSpriteNode()
     private var user: User?
     private var replenishLivesTimerOffset: Date?
     private let keyRunGameTimerAction = "runGameTimerAction"
@@ -184,7 +184,7 @@ class GameScene: SKScene {
         gameEngine.handleControls(in: location)
         chatEngine.touchDown(in: location)
         
-        if !activityIndicator.isShowing {
+        if activityIndicator == nil || !activityIndicator!.isShowing {
             continueSprite?.touchDown(in: location)
             resetConfirmSprite?.touchDown(in: location)
             hintConfirmSprite?.touchDown(in: location)
@@ -198,7 +198,7 @@ class GameScene: SKScene {
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard let location = touches.first?.location(in: self) else { return }
         
-        if !activityIndicator.isShowing {
+        if activityIndicator == nil || !activityIndicator!.isShowing {
             continueSprite?.didTapButton(in: location)
             continueSprite?.touchUp()
             resetConfirmSprite?.didTapButton(in: location)
@@ -423,15 +423,15 @@ class GameScene: SKScene {
         AudioManager.shared.lowerVolume(for: AudioManager.shared.currentTheme, fadeDuration: 1.0)
 
         adSprite = SKSpriteNode(color: .clear, size: CGSize(width: K.ScreenDimensions.iPhoneWidth, height: K.ScreenDimensions.height))
-        adSprite.anchorPoint = .zero
-        adSprite.zPosition = K.ZPosition.adSceneBlackout
-        addChild(adSprite)
+        adSprite!.anchorPoint = .zero
+        adSprite!.zPosition = K.ZPosition.adSceneBlackout
+        addChild(adSprite!)
 
         scoringEngine.timerManager.pauseTime()
         stopTimer()
         gameEngine.shouldDisableInput(true)
 
-        adSprite.run(SKAction.colorize(with: .black, colorBlendFactor: 1.0, duration: 1.0)) {
+        adSprite!.run(SKAction.colorize(with: .black, colorBlendFactor: 1.0, duration: 1.0)) {
             completion?()
         }
     }
@@ -439,12 +439,15 @@ class GameScene: SKScene {
     private func continueFromAd(completion: (() -> Void)?) {
         AudioManager.shared.raiseVolume(for: AudioManager.shared.currentTheme, fadeDuration: 1.0)
 
-        adSprite.run(SKAction.colorize(with: .clear, colorBlendFactor: 1.0, duration: 1.0)) { [unowned self] in
-            adSprite.removeFromParent()
-
+        adSprite?.run(SKAction.sequence([
+            SKAction.colorize(with: .clear, colorBlendFactor: 1.0, duration: 1.0),
+            SKAction.removeFromParent()
+        ])) { [unowned self] in
             scoringEngine.timerManager.resumeTime()
             startTimer()
             gameEngine.shouldDisableInput(false)
+            
+            adSprite = nil
 
             completion?()
         }
@@ -560,13 +563,13 @@ extension GameScene: GameEngineDelegate {
     
     func gameIsOver(firstTimeCalled: Bool) {
         if !gameEngine.canContinue {
+            continueSprite = ContinueSprite()
+            continueSprite!.delegate = self
+            
             prepareAd { [unowned self] in
-                continueSprite = ContinueSprite()
-                continueSprite!.delegate = self
-                
-                addChild(continueSprite!)
-                
                 pauseResetEngine.shouldDisable(true)
+
+                addChild(continueSprite!)
 
                 continueSprite!.animateShow(shouldDisable5Moves: gameEngine.healthRemaining <= 0) {
                     IAPManager.shared.delegate = self
@@ -830,18 +833,22 @@ extension GameScene: IAPManagerDelegate {
         default:                        print("Unknown purchase transaction identifier")
         }
         
-        activityIndicator.removeFromParent()
+        activityIndicator?.removeFromParent()
+        activityIndicator = nil
+
         pendingLivesReplenishmentTimerOffset()
     }
     
     func purchaseDidFail(transaction: SKPaymentTransaction) {
-        activityIndicator.removeFromParent()
+        activityIndicator?.removeFromParent()
+        activityIndicator = nil
+        
         pendingLivesReplenishmentTimerOffset()
     }
     
     func isPurchasing(transaction: SKPaymentTransaction) {
         activityIndicator = ActivityIndicatorSprite()
-        activityIndicator.move(toParent: self)
+        activityIndicator!.move(toParent: self)
         
         replenishLivesTimerOffset = Date()
         removeAction(forKey: keyRunReplenishLivesTimerAction)
