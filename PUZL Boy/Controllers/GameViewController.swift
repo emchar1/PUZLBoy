@@ -25,6 +25,7 @@ class GameViewController: UIViewController {
         var launchScene: LaunchScene? = LaunchScene(size: K.ScreenDimensions.screenSize)
 
         skView.showsFPS = true
+        skView.showsDrawCount = true
         skView.showsNodeCount = true
         skView.ignoresSiblingOrder = true
         skView.presentScene(launchScene)
