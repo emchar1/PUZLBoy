@@ -53,13 +53,13 @@ struct PartyInventory {
             itemWaitDuration = 3
         case 5:
             spawnDelayDuration = 0.3
-            itemWaitDuration = 2.5
+            itemWaitDuration = 3
         case 4:
             spawnDelayDuration = 0.4
-            itemWaitDuration = 2
+            itemWaitDuration = 2.5
         default: //gameboardSize = 3
-            spawnDelayDuration = 0.5
-            itemWaitDuration = 1.5
+            spawnDelayDuration = 0.6
+            itemWaitDuration = 2
         }
     }
     
