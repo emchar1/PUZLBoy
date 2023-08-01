@@ -680,12 +680,12 @@ class GameEngine {
             
             movePlayerHelper(direction: .right)
         }
-        else {
-            guard let tappedPanel = gameboardSprite.getPanel(at: location) else { return }
-            gameboardSprite.highlightPanel(color: .red, at: tappedPanel)
-            
-            Haptics.shared.addHapticFeedback(withStyle: .rigid)
-        }
+//        else {
+//            guard let tappedPanel = gameboardSprite.getPanel(at: location) else { return }
+//            gameboardSprite.highlightPanel(color: .red, at: tappedPanel)
+//
+//            Haptics.shared.addHapticFeedback(withStyle: .rigid)
+//        }
     }
     
     func checkControlGuardsIfPassed(includeDisableInputFromOutside: Bool) -> Bool {
@@ -780,12 +780,12 @@ class GameEngine {
         }
         
         guard checkPanelForPathway(position: nextPanel, direction: direction) else {
-            gameboardSprite.highlightPanel(color: .red, at: nextPanel)
+//            gameboardSprite.highlightPanel(color: .red, at: nextPanel)
             AudioManager.shared.stopSound(for: "moveglide", fadeDuration: 0.5)
             return
         }
         
-        gameboardSprite.highlightPanel(color: .green, at: nextPanel)
+//        gameboardSprite.highlightPanel(color: .green, at: nextPanel)
         
         level.updatePlayer(position: nextPanel)
         

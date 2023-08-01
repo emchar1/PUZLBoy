@@ -186,7 +186,7 @@ class GameScene: SKScene {
 
         guard !pauseResetEngine.isPaused else { return }
         
-        gameEngine.handleControls(in: location)
+//        gameEngine.handleControls(in: location)
         chatEngine.touchDown(in: location)
         
         if activityIndicator == nil || !activityIndicator!.isShowing {
@@ -222,6 +222,12 @@ class GameScene: SKScene {
             pauseResetEngine.touchHandler(for: touches)
             pauseResetEngine.touchUp()
         }
+        
+        
+        //Move handleControls to touchesEnded so you can consider if you want to move there.
+        guard !pauseResetEngine.isPaused else { return }
+        
+        gameEngine.handleControls(in: location)
     }
     
 
