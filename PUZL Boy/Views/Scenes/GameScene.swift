@@ -364,7 +364,6 @@ class GameScene: SKScene {
             elapsedTime: scoringEngine.timerManager.elapsedTime,
             livesRemaining: GameEngine.livesRemaining,
             usedContinue: GameEngine.usedContinue,
-//            notFirstTimePlaying: true,
             score: levelStatsItem.didWin ? 0 : scoringEngine.scoringManager.score,
             totalScore: scoringEngine.scoringManager.totalScore + (levelStatsItem.didWin ? scoringEngine.scoringManager.score : 0),
             winStreak: GameEngine.winStreak,
@@ -481,7 +480,7 @@ class GameScene: SKScene {
         // FIXME: - Debugging purposes only!!!
         if let user = user,
            !Level.isPartyLevel(currentLevel),
-            user.uid == "3SeIWmlATmbav7jwCDjXyiA0TgA3" ||   //Eddie
+            user.uid == "2bjhz2grYVVOn37qmUipG4CKps62" ||   //Eddie
             user.uid == "NB9OLr2X8kRLJ7S0G8W3800qo8U2" ||   //Michel
             user.uid == "jnsBD8RFVDMN9cSN8yDnFDoVJp32"      //Mom
         {
