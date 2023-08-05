@@ -364,6 +364,7 @@ class GameScene: SKScene {
             elapsedTime: scoringEngine.timerManager.elapsedTime,
             livesRemaining: GameEngine.livesRemaining,
             usedContinue: GameEngine.usedContinue,
+//            notFirstTimePlaying: true,
             score: levelStatsItem.didWin ? 0 : scoringEngine.scoringManager.score,
             totalScore: scoringEngine.scoringManager.totalScore + (levelStatsItem.didWin ? scoringEngine.scoringManager.score : 0),
             winStreak: GameEngine.winStreak,

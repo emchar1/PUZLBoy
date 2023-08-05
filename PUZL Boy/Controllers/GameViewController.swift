@@ -20,9 +20,12 @@ class GameViewController: UIViewController {
     private let skView = SKView()
     
     override func viewDidLoad() {
+//        DayTheme.setCurrentHour(automatic: false, timeIfManual: 8)
+
         super.viewDidLoad()
         
         var launchScene: LaunchScene? = LaunchScene(size: K.ScreenDimensions.screenSize)
+        var cutsceneIntro: CutsceneIntro?// = CutsceneIntro(size: K.ScreenDimensions.screenSize)
 
         skView.showsFPS = true
         skView.showsDrawCount = true
@@ -55,7 +58,7 @@ class GameViewController: UIViewController {
                     self.saveStateModel = saveStateModel
                     
                     DispatchQueue.main.asyncAfter(deadline: .now() + LoadingSprite.loadingDuration) {
-                        launchScene?.animateTransition(animationSequence: .jump) {
+                        launchScene?.animateTransition(animationSequence: .jump) { _ in
                             let titleScene = TitleScene(size: K.ScreenDimensions.screenSize, user: user)
                             titleScene.titleSceneDelegate = self
                             
@@ -63,6 +66,15 @@ class GameViewController: UIViewController {
                             
                             launchScene = nil
                         }
+                         
+//                        // FIXME: - Testing...
+//                        launchScene?.animateTransition(animationSequence: .running) { xOffsetsArray in
+//                            guard let xOffsetsArray = xOffsetsArray else { return }
+//
+//                            cutsceneIntro = CutsceneIntro(size: K.ScreenDimensions.screenSize, xOffsetsArray: xOffsetsArray)
+//                            self.skView.presentScene(cutsceneIntro)
+//                            launchScene = nil
+//                        }
                                                 
                         self.levelLoaded = true
                     }

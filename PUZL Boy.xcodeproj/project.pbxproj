@@ -55,6 +55,7 @@
 		EA4583592A4431C400279056 /* punchwhack1.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA4583572A4431C400279056 /* punchwhack1.mp3 */; };
 		EA45835B2A4431D300279056 /* titletheme.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA45835A2A4431D300279056 /* titletheme.mp3 */; };
 		EA4583652A460D7200279056 /* PartyResultsLineItemSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA4583642A460D7200279056 /* PartyResultsLineItemSprite.swift */; };
+		EA496AAC2A79B25A0096DB35 /* CutsceneIntro.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA496AAB2A79B25A0096DB35 /* CutsceneIntro.swift */; };
 		EA49B0692A1923D300E6B96D /* HowToPlayTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA49B0682A1923D300E6B96D /* HowToPlayTableView.swift */; };
 		EA49B06B2A1953C500E6B96D /* HowToPlayTVCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA49B06A2A1953C500E6B96D /* HowToPlayTVCell.swift */; };
 		EA49B06D2A19D03000E6B96D /* HowToPlayModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA49B06C2A19D03000E6B96D /* HowToPlayModel.swift */; };
@@ -256,6 +257,7 @@
 		EA4583572A4431C400279056 /* punchwhack1.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = punchwhack1.mp3; sourceTree = "<group>"; };
 		EA45835A2A4431D300279056 /* titletheme.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = titletheme.mp3; sourceTree = "<group>"; };
 		EA4583642A460D7200279056 /* PartyResultsLineItemSprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PartyResultsLineItemSprite.swift; sourceTree = "<group>"; };
+		EA496AAB2A79B25A0096DB35 /* CutsceneIntro.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CutsceneIntro.swift; sourceTree = "<group>"; };
 		EA49B0682A1923D300E6B96D /* HowToPlayTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HowToPlayTableView.swift; sourceTree = "<group>"; };
 		EA49B06A2A1953C500E6B96D /* HowToPlayTVCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HowToPlayTVCell.swift; sourceTree = "<group>"; };
 		EA49B06C2A19D03000E6B96D /* HowToPlayModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HowToPlayModel.swift; sourceTree = "<group>"; };
@@ -469,6 +471,14 @@
 			path = Party;
 			sourceTree = "<group>";
 		};
+		EA496AAA2A79B22E0096DB35 /* Cutscenes */ = {
+			isa = PBXGroup;
+			children = (
+				EA496AAB2A79B25A0096DB35 /* CutsceneIntro.swift */,
+			);
+			path = Cutscenes;
+			sourceTree = "<group>";
+		};
 		EA65181E28E4199E00E535BF = {
 			isa = PBXGroup;
 			children = (
@@ -510,8 +520,8 @@
 				EA34678D2998ED50002DDA02 /* LifeSpawnerModel.swift */,
 				EA826C86298E23A500F19F81 /* Player.swift */,
 				EA119154290CCA39009D0E3E /* Inventory.swift */,
-				EA0F84062937D4860031DA76 /* DayTheme.swift */,
 				EA11915629121798009D0E3E /* Controls.swift */,
+				EA0F84062937D4860031DA76 /* DayTheme.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -600,6 +610,7 @@
 		EA75F0F0292F560300F09BD7 /* Scenes */ = {
 			isa = PBXGroup;
 			children = (
+				EA496AAA2A79B22E0096DB35 /* Cutscenes */,
 				EAFA6A7929E1CD8D002287C2 /* LaunchScene */,
 				EA84645D29D8E5B10075F2A9 /* TitleScene */,
 				EACDF09E2A55E9A100F28A41 /* CreditsScene.swift */,
@@ -1034,6 +1045,7 @@
 				EA49B06D2A19D03000E6B96D /* HowToPlayModel.swift in Sources */,
 				EA95D1A6294957060061059C /* Haptics.swift in Sources */,
 				EA95D1D329544B4E0061059C /* AchievementBraniac.swift in Sources */,
+				EA496AAC2A79B25A0096DB35 /* CutsceneIntro.swift in Sources */,
 				EA95D1DD295523FF0061059C /* AchievementKlutz.swift in Sources */,
 				EA1191532904BC4C009D0E3E /* DisplaySprite.swift in Sources */,
 				EA95D20A29602F540061059C /* AchievementReckless.swift in Sources */,

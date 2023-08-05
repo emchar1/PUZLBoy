@@ -8,18 +8,12 @@
 import SpriteKit
 
 struct DayTheme {
-    static func getSkyImage(endPointY: CGFloat = 0.5) -> UIImage {
-        return UIImage.createGradientImage(
-            withBounds: CGRect(x: 0, y: 0, width: K.ScreenDimensions.iPhoneWidth, height: K.ScreenDimensions.height),
-            startPoint: CGPoint(x: 0.5, y: 0),
-            endPoint: CGPoint(x: 0.5, y: endPointY),
-            colors: [DayTheme.skyColor.top.cgColor, DayTheme.skyColor.bottom.cgColor]
-        )
-    }
+    
+    // MARK: - Properties
+    
+    private static var currentHour: Int = Calendar.current.component(.hour, from: Date())
     
     static var currentTheme: Theme {
-        let currentHour = Calendar.current.component(.hour, from: Date())
-        
         switch currentHour {
         case 4...7:
             return .dawn
@@ -47,11 +41,6 @@ struct DayTheme {
             return (UIColor(red: 1 / 255, green: 5 / 255, blue: 20 / 255, alpha: 1.0),
                     UIColor(red: 22 / 255, green: 50 / 255, blue: 129 / 255, alpha: 1.0))
         }
-    }
-    
-    static var grassColor: (top: UIColor, bottom: UIColor) {
-        return (UIColor(red: 94 / 255, green: 177 / 255, blue: 72 / 255, alpha: 1.0),
-                UIColor(red: 44 / 255, green: 147 / 255, blue: 42 / 255, alpha: 1.0))
     }
     
     static var spriteColor: UIColor {
@@ -82,5 +71,21 @@ struct DayTheme {
         
     enum Theme {
         case dawn, morning, afternoon, night
+    }
+    
+    
+    // MARK: - Functions
+    
+    static func setCurrentHour(automatic: Bool, timeIfManual: Int = 8) {
+        currentHour = automatic ? Calendar.current.component(.hour, from: Date()) : timeIfManual
+    }
+    
+    static func getSkyImage(endPointY: CGFloat = 0.5) -> UIImage {
+        return UIImage.createGradientImage(
+            withBounds: CGRect(x: 0, y: 0, width: K.ScreenDimensions.iPhoneWidth, height: K.ScreenDimensions.height),
+            startPoint: CGPoint(x: 0.5, y: 0),
+            endPoint: CGPoint(x: 0.5, y: endPointY),
+            colors: [DayTheme.skyColor.top.cgColor, DayTheme.skyColor.bottom.cgColor]
+        )
     }
 }

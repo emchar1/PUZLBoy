@@ -11,14 +11,18 @@ class ParallaxSprite: SKNode {
     
     // MARK: - Properties
     
+    typealias SpriteXPositions = (first: CGFloat, second: CGFloat)
+
     private var parallaxObject: ParallaxObject
     private var sprites: [SKSpriteNode] = []
+    private var xOffsets: SpriteXPositions?
     
     
     // MARK: - Initialization
     
-    init(object: ParallaxObject) {
-        parallaxObject = object
+    init(object: ParallaxObject, xOffsets: SpriteXPositions?) {
+        self.parallaxObject = object
+        self.xOffsets = xOffsets
         
         super.init()
 
@@ -36,7 +40,14 @@ class ParallaxSprite: SKNode {
         for i in 0...1 {
             let sprite = SKSpriteNode(imageNamed: parallaxObject.imageName)
             sprite.anchorPoint = .zero
-            sprite.position = CGPoint(x: CGFloat(i) * parallaxObject.sizeScaled, y: 0)
+
+            if let xOffsets = xOffsets {
+                sprite.position = CGPoint(x: i == 0 ? xOffsets.first : xOffsets.second, y: 0)
+            }
+            else {
+                sprite.position = CGPoint(x: CGFloat(i) * parallaxObject.sizeScaled, y: 0)
+            }
+                
             sprite.setScale(parallaxObject.scale * 3)
             sprite.color = DayTheme.spriteColor
             sprite.colorBlendFactor = DayTheme.spriteShade
@@ -59,5 +70,11 @@ class ParallaxSprite: SKNode {
         sprites[1].run(SKAction.repeatForever(SKAction.sequence([moveAction, moveAction, resetAction])))
     }
     
-    
+    func pollxOffsets() -> SpriteXPositions {
+        let offsets: SpriteXPositions = (sprites[0].position.x, sprites[1].position.x)
+        
+        xOffsets = offsets
+        
+        return offsets
+    }
 }

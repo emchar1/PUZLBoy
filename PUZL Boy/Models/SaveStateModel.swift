@@ -14,6 +14,7 @@ struct SaveStateModel: Identifiable, Codable {
     let elapsedTime: TimeInterval
     let livesRemaining: Int
     let usedContinue: Bool
+//    let notFirstTimePlaying: Bool
     let score: Int
     let totalScore: Int
     let winStreak: Int

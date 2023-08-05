@@ -13,6 +13,8 @@ class ParallaxManager: SKNode {
     
     private(set) var set: ParallaxObject.SetType
     private var parallaxSprites: [ParallaxSprite] = []
+    private var xOffsetsArray: [ParallaxSprite.SpriteXPositions]?
+
     var speedFactor: TimeInterval {
         switch DayTheme.currentTheme {
         case .dawn:         return 3
@@ -25,8 +27,9 @@ class ParallaxManager: SKNode {
     
     // MARK: - Initialization
     
-    init(useSet set: ParallaxObject.SetType) {
+    init(useSet set: ParallaxObject.SetType, xOffsetsArray: [ParallaxSprite.SpriteXPositions]?) {
         self.set = set
+        self.xOffsetsArray = xOffsetsArray
 
         super.init()
                 
@@ -69,7 +72,7 @@ class ParallaxManager: SKNode {
             let size: CGSize = size
             let zPosition: CGFloat = K.ZPosition.parallaxLayer0 - 5 * CGFloat(i)
             let object = ParallaxObject(set: set, layer: i, type: type, speed: speed * speedFactor, size: size, zPosition: zPosition)
-            let sprite = ParallaxSprite(object: object)
+            let sprite = ParallaxSprite(object: object, xOffsets: xOffsetsArray?[i])
             
             sprites.append(sprite)
         }
@@ -94,5 +97,17 @@ class ParallaxManager: SKNode {
         for sprite in parallaxSprites {
             sprite.animate()
         }
+    }
+    
+    func pollxOffsetsArray() -> [ParallaxSprite.SpriteXPositions] {
+        var offsetsArray: [ParallaxSprite.SpriteXPositions] = []
+        
+        for sprite in parallaxSprites {
+            offsetsArray.append(sprite.pollxOffsets())
+        }
+        
+        xOffsetsArray = offsetsArray
+        
+        return offsetsArray
     }
 }

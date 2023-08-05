@@ -79,7 +79,7 @@ class LaunchScene: SKScene {
 
         moonSprite = MoonSprite(position: CGPoint(x: K.ScreenDimensions.iPhoneWidth, y: K.ScreenDimensions.height), scale: 0.7 * 3, moonPhase: nil)
 
-        parallaxManager = ParallaxManager(useSet: .allCases.randomElement() ?? .grass)
+        parallaxManager = ParallaxManager(useSet: .grass, xOffsetsArray: nil)//.allCases.randomElement() ?? .grass, xOffsetsArray: nil)
     }
     
     private func animateSprites() {
@@ -130,7 +130,7 @@ class LaunchScene: SKScene {
     
     // MARK: - Animation Functions
     
-    func animateTransition(animationSequence: AnimationSequence, completion: @escaping () -> Void) {
+    func animateTransition(animationSequence: AnimationSequence, completion: @escaping ([ParallaxSprite.SpriteXPositions]?) -> Void) {
         switch animationSequence {
         case .running: transitionRunning(completion: completion)
         case .fall: transitionFall(completion: completion)
@@ -139,7 +139,7 @@ class LaunchScene: SKScene {
     }
     
     ///Boy jumping up and bezier path to center.
-    private func transitionJump(completion: @escaping () -> Void) {
+    private func transitionJump(completion: @escaping ([ParallaxSprite.SpriteXPositions]?) -> Void) {
         let playerTimePerFrame: TimeInterval = 0.1
         var playerCrouchDuration: TimeInterval { playerTimePerFrame * 5 }
         var moveDuration: TimeInterval { playerCrouchDuration * 2 }
@@ -208,24 +208,55 @@ class LaunchScene: SKScene {
             case LaunchScene.nodeName_groundObjectNode:
                 node.run(SKAction.sequence([
                     SKAction.wait(forDuration: playerCrouchDuration),
-                    SKAction.moveBy(x: 0, y: -K.ScreenDimensions.height * 2, duration: moveDuration)
+                    SKAction.moveBy(x: 0, y: -K.ScreenDimensions.height * 2, duration: moveDuration),
+                    SKAction.removeFromParent()
                 ]))
             default:
                 break
             } //end switch node.name
         } //end for node in children
         
-        run(SKAction.wait(forDuration: moveDuration * (maxAnimationDuration + paddingDuration)), completion: completion)
+        run(SKAction.wait(forDuration: moveDuration * (maxAnimationDuration + paddingDuration))) {
+            completion(nil)
+        }
     }
     
     ///Boy continues running. Forever.
-    private func transitionRunning(completion: @escaping () -> Void) {
-        //needs implementation
+    private func transitionRunning(completion: @escaping ([ParallaxSprite.SpriteXPositions]?) -> Void) {
+        // TODO: - Needs implementation
+        
+        let duration: TimeInterval = 1.0
+        var xOffsetsArray: [ParallaxSprite.SpriteXPositions] = []
+        
+        for node in children {
+            switch node.name {
+            case LaunchScene.nodeName_loadingSprite:
+                node.run(SKAction.fadeOut(withDuration: duration))
+            case LaunchScene.nodeName_groundObjectNode:
+                node.run(SKAction.sequence([
+                    SKAction.wait(forDuration: duration),
+                    SKAction.removeFromParent()
+                ]))
+            default:
+                break
+            }
+        }
+        
+        run(SKAction.sequence([
+            SKAction.wait(forDuration: duration),
+            SKAction.run { [unowned self] in
+                xOffsetsArray = parallaxManager.pollxOffsetsArray()
+            }
+        ])) {
+            completion(xOffsetsArray)
+        }
+//        run(SKAction.wait(forDuration: duration), completion: completion)
     }
     
     ///Boy falls like Peter when he bangs his knee
-    private func transitionFall(completion: @escaping () -> Void) {
+    private func transitionFall(completion: @escaping ([ParallaxSprite.SpriteXPositions]?) -> Void) {
         //needs implementation
+        completion(nil)
     }
     
     
