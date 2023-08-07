@@ -14,8 +14,17 @@ class ParallaxManager: SKNode {
     private(set) var set: ParallaxObject.SetType
     private var parallaxSprites: [ParallaxSprite] = []
     private var xOffsetsArray: [ParallaxSprite.SpriteXPositions]?
+    private var shouldWalk: Bool
 
     var speedFactor: TimeInterval {
+        if !UserDefaults.standard.bool(forKey: K.UserDefaults.shouldSkipIntro) {
+            if shouldWalk {
+                return 3
+            }
+            
+            return 1
+        }
+                
         switch DayTheme.currentTheme {
         case .dawn:         return 3
         case .morning:      return 1
@@ -27,11 +36,16 @@ class ParallaxManager: SKNode {
     
     // MARK: - Initialization
     
-    init(useSet set: ParallaxObject.SetType, xOffsetsArray: [ParallaxSprite.SpriteXPositions]?) {
+    init(useSet set: ParallaxObject.SetType, xOffsetsArray: [ParallaxSprite.SpriteXPositions]?, shouldWalk: Bool = false) {
         self.set = set
         self.xOffsetsArray = xOffsetsArray
+        self.shouldWalk = shouldWalk
 
         super.init()
+        
+        if !UserDefaults.standard.bool(forKey: K.UserDefaults.shouldSkipIntro) {
+            self.set = .grass
+        }
                 
         setupSprites()
     }

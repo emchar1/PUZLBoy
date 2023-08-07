@@ -80,23 +80,32 @@ class GameViewController: UIViewController {
                     self.saveStateModel = saveStateModel
                     
                     DispatchQueue.main.asyncAfter(deadline: .now() + LoadingSprite.loadingDuration) {
-                        launchScene?.animateTransition(animationSequence: .jump) { _ in
-                            let titleScene = TitleScene(size: K.ScreenDimensions.screenSize, user: user)
-                            titleScene.titleSceneDelegate = self
-                            
-                            self.skView.presentScene(titleScene)
-                            
-                            launchScene = nil
+                        if !UserDefaults.standard.bool(forKey: K.UserDefaults.shouldSkipIntro) {
+                            // TODO: - CutsceneIntro
+                            launchScene?.animateTransition(animationSequence: .running) { xOffsetsArray in
+                                guard let xOffsetsArray = xOffsetsArray else { return }
+                                
+                                cutsceneIntro = CutsceneIntro(size: K.ScreenDimensions.screenSize, xOffsetsArray: xOffsetsArray)
+                                self.skView.presentScene(cutsceneIntro)
+                                launchScene = nil
+                                
+                                // FIXME: - Delay
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 10) {
+                                    cutsceneIntro?.finishAnimating {
+                                        self.presentTitleScene()
+                                        
+                                        cutsceneIntro = nil
+                                    }
+                                }
+                            }
                         }
-                         
-//                        // FIXME: - Testing...
-//                        launchScene?.animateTransition(animationSequence: .running) { xOffsetsArray in
-//                            guard let xOffsetsArray = xOffsetsArray else { return }
-//
-//                            cutsceneIntro = CutsceneIntro(size: K.ScreenDimensions.screenSize, xOffsetsArray: xOffsetsArray)
-//                            self.skView.presentScene(cutsceneIntro)
-//                            launchScene = nil
-//                        }
+                        else {
+                            launchScene?.animateTransition(animationSequence: .jump) { _ in
+                                self.presentTitleScene()
+                                
+                                launchScene = nil
+                            }
+                        }
                                                 
                         self.levelLoaded = true
                     }
@@ -106,6 +115,13 @@ class GameViewController: UIViewController {
                 
         print("Testing device info: \(UIDevice.modelInfo)")
     }//end viewDidLoad()
+    
+    private func presentTitleScene() {
+        let titleScene = TitleScene(size: K.ScreenDimensions.screenSize, user: user)
+        titleScene.titleSceneDelegate = self
+        
+        skView.presentScene(titleScene)
+    }
     
     //Disable shake to reset for now...
 //    override func motionEnded(_ motion: UIEvent.EventSubtype, with event: UIEvent?) {
@@ -131,6 +147,7 @@ extension GameViewController: TitleSceneDelegate {
             
             skView.presentScene(gameScene, transition: SKTransition.fade(with: .white, duration: 1.0))
             monitor.cancel()
+            UserDefaults.standard.set(true, forKey: K.UserDefaults.shouldSkipIntro)
         }
     }
     

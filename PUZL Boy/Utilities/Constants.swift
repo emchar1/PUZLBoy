@@ -116,5 +116,6 @@ struct K {
         static let disablePartyLights = "DisablePartyLights"
         static let reviewStoreCount = "ReviewStoreCount"
         static let savedTime = "SavedTimeForReplenishLives"
+        static let shouldSkipIntro = "ShouldSkipIntro"
     }
 }

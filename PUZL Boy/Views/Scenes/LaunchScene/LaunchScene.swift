@@ -55,9 +55,12 @@ class LaunchScene: SKScene {
         player = Player()
         player.sprite.position = playerPosition
         player.sprite.setScale(playerScale)
-        player.sprite.color = DayTheme.spriteColor
-        player.sprite.colorBlendFactor = DayTheme.spriteShade
         player.sprite.name = LaunchScene.nodeName_playerSprite
+
+        if UserDefaults.standard.bool(forKey: K.UserDefaults.shouldSkipIntro) {
+            player.sprite.color = DayTheme.spriteColor
+            player.sprite.colorBlendFactor = DayTheme.spriteShade
+        }
         
         playerReflection = Player()
         playerReflection.sprite.position = playerPosition - CGPoint(x: 0, y: Player.size.height / 2 + 50) //why +50???
@@ -72,14 +75,18 @@ class LaunchScene: SKScene {
         loadingSprite.zPosition = K.ZPosition.loadingNode
         loadingSprite.name = LaunchScene.nodeName_loadingSprite
                 
-        skyNode = SKSpriteNode(texture: SKTexture(image: DayTheme.getSkyImage()))
+        skyNode = SKSpriteNode(texture: SKTexture(image: DayTheme.getSkyImage(useMorningSky: !UserDefaults.standard.bool(forKey: K.UserDefaults.shouldSkipIntro))))
         skyNode.anchorPoint = .zero
         skyNode.zPosition = K.ZPosition.skyNode
         skyNode.name = LaunchScene.nodeName_skyNode
 
         moonSprite = MoonSprite(position: CGPoint(x: K.ScreenDimensions.iPhoneWidth, y: K.ScreenDimensions.height), scale: 0.7 * 3, moonPhase: nil)
+        
+        if !UserDefaults.standard.bool(forKey: K.UserDefaults.shouldSkipIntro) {
+            moonSprite.alpha = 0
+        }
 
-        parallaxManager = ParallaxManager(useSet: .grass, xOffsetsArray: nil)//.allCases.randomElement() ?? .grass, xOffsetsArray: nil)
+        parallaxManager = ParallaxManager(useSet: .allCases.randomElement() ?? .grass, xOffsetsArray: nil)
     }
     
     private func animateSprites() {
@@ -92,8 +99,12 @@ class LaunchScene: SKScene {
         case .night: playerSpeed = 0.06
         }
         
+        if !UserDefaults.standard.bool(forKey: K.UserDefaults.shouldSkipIntro) {
+            playerSpeed = 0.05
+        }
+        
         let playerAnimation = SKAction.animate(
-            with: DayTheme.currentTheme == .night || DayTheme.currentTheme == .dawn ? player.textures[Player.Texture.walk.rawValue] : player.textures[Player.Texture.run.rawValue],
+            with: (DayTheme.currentTheme == .night || DayTheme.currentTheme == .dawn) && UserDefaults.standard.bool(forKey: K.UserDefaults.shouldSkipIntro) ? player.textures[Player.Texture.walk.rawValue] : player.textures[Player.Texture.run.rawValue],
             timePerFrame: playerSpeed
         )
         

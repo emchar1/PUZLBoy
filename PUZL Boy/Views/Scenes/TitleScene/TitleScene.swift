@@ -77,7 +77,7 @@ class TitleScene: SKScene {
         player.sprite.texture = SKTexture(imageNamed: "Run (5)")
         player.sprite.name = "playerSprite"
         
-        skyNode = SKSpriteNode(texture: SKTexture(image: DayTheme.getSkyImage()))
+        skyNode = SKSpriteNode(texture: SKTexture(image: DayTheme.getSkyImage(useMorningSky: !UserDefaults.standard.bool(forKey: K.UserDefaults.shouldSkipIntro))))
         skyNode.anchorPoint = .zero
         skyNode.zPosition = K.ZPosition.skyNode
         skyNode.name = "skyNode"
@@ -179,23 +179,25 @@ class TitleScene: SKScene {
     }
     
     private func mixColors() {
+        let skyColor: DayTheme.SkyColors = !UserDefaults.standard.bool(forKey: K.UserDefaults.shouldSkipIntro) ? DayTheme.morningSky : DayTheme.skyColor
+        
         switch Int.random(in: 0...3) {
         case 0:
-            myColors.title = DayTheme.skyColor.bottom.complementary
-            myColors.background = DayTheme.skyColor.top.complementary.complementary.darkenColor(factor: 6)
-            myColors.shadow = DayTheme.skyColor.top.complementary
+            myColors.title = skyColor.bottom.complementary
+            myColors.background = skyColor.top.complementary.complementary.darkenColor(factor: 6)
+            myColors.shadow = skyColor.top.complementary
         case 1:
-            myColors.title = DayTheme.skyColor.bottom.splitComplementary.second
-            myColors.background = DayTheme.skyColor.top.splitComplementary.first.darkenColor(factor: 6)
-            myColors.shadow = DayTheme.skyColor.bottom.splitComplementary.first
+            myColors.title = skyColor.bottom.splitComplementary.second
+            myColors.background = skyColor.top.splitComplementary.first.darkenColor(factor: 6)
+            myColors.shadow = skyColor.bottom.splitComplementary.first
         case 2:
-            myColors.title = DayTheme.skyColor.bottom.analogous.second
-            myColors.background = DayTheme.skyColor.top.analogous.first.darkenColor(factor: 6)
-            myColors.shadow = DayTheme.skyColor.bottom.analogous.first
+            myColors.title = skyColor.bottom.analogous.second
+            myColors.background = skyColor.top.analogous.first.darkenColor(factor: 6)
+            myColors.shadow = skyColor.bottom.analogous.first
         default:
-            myColors.title = DayTheme.skyColor.bottom.triadic.second
-            myColors.background = DayTheme.skyColor.top.triadic.first.darkenColor(factor: 6)
-            myColors.shadow = DayTheme.skyColor.bottom.triadic.first
+            myColors.title = skyColor.bottom.triadic.second
+            myColors.background = skyColor.top.triadic.first.darkenColor(factor: 6)
+            myColors.shadow = skyColor.bottom.triadic.first
         }
         
         puzlTitle.fontColor = .white

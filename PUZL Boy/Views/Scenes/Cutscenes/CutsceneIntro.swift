@@ -40,16 +40,14 @@ class CutsceneIntro: SKScene {
         player = Player()
         player.sprite.position = playerPosition
         player.sprite.setScale(playerScale)
-        player.sprite.color = DayTheme.spriteColor
-        player.sprite.colorBlendFactor = DayTheme.spriteShade
         player.sprite.name = LaunchScene.nodeName_playerSprite
 
-        skyNode = SKSpriteNode(texture: SKTexture(image: DayTheme.getSkyImage()))
+        skyNode = SKSpriteNode(texture: SKTexture(image: DayTheme.getSkyImage(useMorningSky: true)))
         skyNode.anchorPoint = .zero
         skyNode.zPosition = K.ZPosition.skyNode
         skyNode.name = LaunchScene.nodeName_skyNode
         
-        parallaxManager = ParallaxManager(useSet: .grass, xOffsetsArray: xOffsetsArray)
+        parallaxManager = ParallaxManager(useSet: .grass, xOffsetsArray: xOffsetsArray, shouldWalk: true)
     }
     
     private func animateScene() {
@@ -69,5 +67,14 @@ class CutsceneIntro: SKScene {
         addChild(player.sprite)
 
         parallaxManager.addSpritesToParent(scene: self)
+    }
+    
+    func finishAnimating(completion: @escaping () -> Void) {
+        player.sprite.removeAllActions()
+        parallaxManager.removeAllActions()
+        parallaxManager.removeFromParent()
+        player.sprite.removeFromParent()
+
+        completion()
     }
 }

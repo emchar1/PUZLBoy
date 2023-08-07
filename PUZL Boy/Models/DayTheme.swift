@@ -10,6 +10,11 @@ import SpriteKit
 struct DayTheme {
     
     // MARK: - Properties
+
+    typealias SkyColors = (top: UIColor, bottom: UIColor)
+    
+    static let morningSky: SkyColors = (UIColor(red: 32 / 255, green: 99 / 255, blue: 207 / 255, alpha: 1.0),
+                                        UIColor(red: 174 / 255, green: 232 / 255, blue: 246 / 255, alpha: 1.0))
     
     private static var currentHour: Int = Calendar.current.component(.hour, from: Date())
     
@@ -26,14 +31,13 @@ struct DayTheme {
         }
     }
     
-    static var skyColor: (top: UIColor, bottom: UIColor) {
+    static var skyColor: SkyColors {
         switch currentTheme {
         case .dawn:
             return (UIColor(red: 12 / 255, green: 30 / 255, blue: 99 / 255, alpha: 1.0),
                     UIColor(red: 176 / 255, green: 83 / 255, blue: 117 / 255, alpha: 1.0))
         case .morning:
-            return (UIColor(red: 32 / 255, green: 99 / 255, blue: 207 / 255, alpha: 1.0),
-                    UIColor(red: 174 / 255, green: 232 / 255, blue: 246 / 255, alpha: 1.0))
+            return morningSky
         case .afternoon:
             return (UIColor(red: 226 / 255, green: 93 / 255, blue: 127 / 255, alpha: 1.0),
                     UIColor(red: 238 / 255, green: 175 / 255, blue: 47 / 255, alpha: 1.0))
@@ -80,12 +84,14 @@ struct DayTheme {
         currentHour = automatic ? Calendar.current.component(.hour, from: Date()) : timeIfManual
     }
     
-    static func getSkyImage(endPointY: CGFloat = 0.5) -> UIImage {
+    static func getSkyImage(endPointY: CGFloat = 0.5, useMorningSky: Bool = false) -> UIImage {
+        let skyColor: SkyColors = useMorningSky ? morningSky : self.skyColor
+        
         return UIImage.createGradientImage(
             withBounds: CGRect(x: 0, y: 0, width: K.ScreenDimensions.iPhoneWidth, height: K.ScreenDimensions.height),
             startPoint: CGPoint(x: 0.5, y: 0),
             endPoint: CGPoint(x: 0.5, y: endPointY),
-            colors: [DayTheme.skyColor.top.cgColor, DayTheme.skyColor.bottom.cgColor]
+            colors: [skyColor.top.cgColor, skyColor.bottom.cgColor]
         )
     }
 }
