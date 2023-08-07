@@ -29,8 +29,6 @@ class GameViewController: UIViewController {
     // MARK: - Initialization
     
     override func viewDidLoad() {
-//        DayTheme.setCurrentHour(automatic: false, timeIfManual: 8)
-
         super.viewDidLoad()
         
         var launchScene: LaunchScene? = LaunchScene(size: K.ScreenDimensions.screenSize)

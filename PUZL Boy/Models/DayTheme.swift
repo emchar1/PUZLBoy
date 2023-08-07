@@ -16,9 +16,9 @@ struct DayTheme {
     static let morningSky: SkyColors = (UIColor(red: 32 / 255, green: 99 / 255, blue: 207 / 255, alpha: 1.0),
                                         UIColor(red: 174 / 255, green: 232 / 255, blue: 246 / 255, alpha: 1.0))
     
-    private static var currentHour: Int = Calendar.current.component(.hour, from: Date())
-    
     static var currentTheme: Theme {
+        let currentHour = Calendar.current.component(.hour, from: Date())
+        
         switch currentHour {
         case 4...7:
             return .dawn
@@ -79,10 +79,6 @@ struct DayTheme {
     
     
     // MARK: - Functions
-    
-    static func setCurrentHour(automatic: Bool, timeIfManual: Int = 8) {
-        currentHour = automatic ? Calendar.current.component(.hour, from: Date()) : timeIfManual
-    }
     
     static func getSkyImage(endPointY: CGFloat = 0.5, useMorningSky: Bool = false) -> UIImage {
         let skyColor: SkyColors = useMorningSky ? morningSky : self.skyColor
