@@ -174,7 +174,7 @@ class TitleScene: SKScene {
         settingsBackground.zPosition = K.ZPosition.pauseScreen
         settingsBackground.addShadow(rectOf: settingsSize, cornerRadius: menuCornerRadius)
 
-        settingsPage = SettingsPage(user: user, contentSize: settingsSize)
+        settingsPage = SettingsPage(user: user, contentSize: settingsSize, useMorningSky: !UserDefaults.standard.bool(forKey: K.UserDefaults.shouldSkipIntro))
         settingsPage.zPosition = 10
     }
     

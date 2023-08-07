@@ -22,13 +22,16 @@ class SettingsPage: ParentPage {
     
     private(set) var tapButtonNotifications: SettingsTapArea!
     private(set) var tapButtonShare: SettingsTapArea!
-    private(set) var tapButtonReportBug: SettingsTapArea!    
+    private(set) var tapButtonReportBug: SettingsTapArea!
+    
+    private var useMorningSky: Bool
 
     
     // MARK: - Initialization
     
-    init(user: User?, contentSize: CGSize) {
+    init(user: User?, contentSize: CGSize, useMorningSky: Bool = false) {
         self.user = user
+        self.useMorningSky = useMorningSky
 
         super.init(contentSize: contentSize, titleText: "Settings")
         
@@ -87,17 +90,17 @@ class SettingsPage: ParentPage {
         radioPartyLights.zPosition = 10
         radioPartyLights.delegate = self
         
-        tapButtonNotifications = SettingsTapArea(labelText: "🔔 Notifications", buttonText: "Enable", settingsSize: tapButtonSize)
+        tapButtonNotifications = SettingsTapArea(labelText: "🔔 Notifications", buttonText: "Enable", settingsSize: tapButtonSize, useMorningSky: useMorningSky)
         tapButtonNotifications.position = CGPoint(x: SettingsPage.padding, y: tapButtonStart - SettingsTapButton.buttonSize.height - 4 * tapButtonSectionHeight)
         tapButtonNotifications.zPosition = 10
         tapButtonNotifications.delegate = self
 
-        tapButtonShare = SettingsTapArea(labelText: "❤️ Tell Your Friends", buttonText: "Share", settingsSize: tapButtonSize)
+        tapButtonShare = SettingsTapArea(labelText: "❤️ Tell Your Friends", buttonText: "Share", settingsSize: tapButtonSize, useMorningSky: useMorningSky)
         tapButtonShare.position = CGPoint(x: SettingsPage.padding, y: tapButtonStart - SettingsTapButton.buttonSize.height - 5 * tapButtonSectionHeight)
         tapButtonShare.zPosition = 10
         tapButtonShare.delegate = self
 
-        tapButtonReportBug = SettingsTapArea(labelText: "✉️ Report a Bug", buttonText: "Feedback", settingsSize: tapButtonSize)
+        tapButtonReportBug = SettingsTapArea(labelText: "✉️ Report a Bug", buttonText: "Feedback", settingsSize: tapButtonSize, useMorningSky: useMorningSky)
         tapButtonReportBug.position = CGPoint(x: SettingsPage.padding, y: tapButtonStart - SettingsTapButton.buttonSize.height - 6 * tapButtonSectionHeight)
         tapButtonReportBug.zPosition = 10
         tapButtonReportBug.delegate = self
