@@ -64,26 +64,25 @@ class GameScene: SKScene {
     
     // MARK: - Initialization
     
-    init(size: CGSize, user: User?, saveStateModel: SaveStateModel?) {
+    init(size: CGSize, user: User?, saveStateModel: SaveStateModel?, hasInternet: Bool) {
         if let saveStateModel = saveStateModel {
             currentLevel = saveStateModel.newLevel //ALWAYS go with newLevel, because it takes precedence over levelModel.level
             gameEngine = GameEngine(saveStateModel: saveStateModel)
             scoringEngine = ScoringEngine(elapsedTime: saveStateModel.elapsedTime,
                                           score: saveStateModel.score,
                                           totalScore: saveStateModel.totalScore)
-            offlinePlaySprite = nil
             levelStatsArray = saveStateModel.levelStatsArray
         }
         else {
             gameEngine = GameEngine(level: currentLevel, shouldSpawn: true)
             scoringEngine = ScoringEngine()
-            offlinePlaySprite = OfflinePlaySprite()
             levelStatsArray = []
         }
         
         //chatEngine MUST be initialized here, and not in properties, otherwise it just refuses to show up! Because K.ScreenDimensions.topOfGameboard is set in the gameEngine(). Is there a better way to do this??
         chatEngine = ChatEngine()
         pauseResetEngine = PauseResetEngine(user: user, level: currentLevel)
+        offlinePlaySprite = hasInternet ? nil : OfflinePlaySprite()
         
         self.user = user
         
@@ -473,6 +472,9 @@ class GameScene: SKScene {
         pauseResetEngine.registerHowToPlayTableView()
         
         if let offlinePlaySprite = offlinePlaySprite {
+            offlinePlaySprite.removeAllActions()
+            offlinePlaySprite.removeFromParent()
+            
             addChild(offlinePlaySprite)
             offlinePlaySprite.animateSprite()
         }

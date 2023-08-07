@@ -10,14 +10,23 @@ import SpriteKit
 import GameplayKit
 import FirebaseAuth
 import MessageUI
+import Network
 
 class GameViewController: UIViewController {
+    
+    // MARK: - Properties
+    
     override var prefersStatusBarHidden: Bool { return true }
     private var levelLoaded = false
+    private var hasInternet = false
+    private var monitor: NWPathMonitor!
     private var user: User?
     private var saveStateModel: SaveStateModel?
     private var gameScenePreserved: GameScene?
     private let skView = SKView()
+    
+    
+    // MARK: - Initialization
     
     override func viewDidLoad() {
 //        DayTheme.setCurrentHour(automatic: false, timeIfManual: 8)
@@ -25,7 +34,20 @@ class GameViewController: UIViewController {
         super.viewDidLoad()
         
         var launchScene: LaunchScene? = LaunchScene(size: K.ScreenDimensions.screenSize)
-        var cutsceneIntro: CutsceneIntro?// = CutsceneIntro(size: K.ScreenDimensions.screenSize)
+        var cutsceneIntro: CutsceneIntro?
+        
+        monitor = NWPathMonitor()
+        monitor.pathUpdateHandler = { path in
+            if path.status == .satisfied {
+                self.hasInternet = true
+                print("Internet connection successful. Is using WiFi: \(!path.isExpensive)")
+            }
+            else {
+                self.hasInternet = false
+                print("No Internet connection.")
+            }
+        }
+        monitor.start(queue: DispatchQueue(label: "Monitor"))
 
         skView.showsFPS = true
         skView.showsDrawCount = true
@@ -104,10 +126,11 @@ extension GameViewController: TitleSceneDelegate {
             skView.presentScene(gameScenePreserved, transition: SKTransition.fade(with: .white, duration: 1.0))
         }
         else {
-            let gameScene = GameScene(size: K.ScreenDimensions.screenSize, user: user, saveStateModel: saveStateModel)
+            let gameScene = GameScene(size: K.ScreenDimensions.screenSize, user: user, saveStateModel: saveStateModel, hasInternet: hasInternet)
             gameScene.gameSceneDelegate = self
             
             skView.presentScene(gameScene, transition: SKTransition.fade(with: .white, duration: 1.0))
+            monitor.cancel()
         }
     }
     
