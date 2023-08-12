@@ -73,6 +73,14 @@ class ParallaxSprite: SKNode {
         sprites[1].run(SKAction.repeatForever(SKAction.sequence([moveAction, moveAction, resetAction])))
     }
     
+    func stopAnimation(excludeSkyObjects: Bool) {
+        //I know this looks confusing, but basically if excludeSkyObjects == true, allow clouds to keep animating. Otherwise stop everything.
+        guard !(excludeSkyObjects && name == LaunchScene.nodeName_skyObjectNode) else { return }
+
+        sprites[0].removeAllActions()
+        sprites[1].removeAllActions()
+    }
+    
     func pollxOffsets() -> SpriteXPositions {
         let offsets: SpriteXPositions = (sprites[0].position.x, sprites[1].position.x)
         

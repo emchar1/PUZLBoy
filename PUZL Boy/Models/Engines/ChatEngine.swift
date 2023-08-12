@@ -73,7 +73,7 @@ class ChatEngine {
     }
     
     enum ChatProfile {
-        case hero, trainer, princess, villain
+        case hero, trainer, princess, princess2, villain
     }
     
     weak var delegate: ChatEngineDelegate?
@@ -90,6 +90,7 @@ class ChatEngine {
         // MARK: - Include key dialogue here
         dialoguePlayed[Level.partyLevel] = false
         dialoguePlayed[1] = false
+        dialoguePlayed[4] = false //FIXME: - 4 is test
         dialoguePlayed[8] = false
         dialoguePlayed[19] = false
         dialoguePlayed[34] = false
@@ -274,10 +275,13 @@ class ChatEngine {
             avatarSprite.texture = SKTexture(imageNamed: "trainer")
             backgroundSprite.fillColor = .blue
         case .princess:
-            avatarSprite.texture = SKTexture(imageNamed: "trainer")
+            avatarSprite.texture = SKTexture(imageNamed: "princess")
+            backgroundSprite.fillColor = .magenta
+        case .princess2:
+            avatarSprite.texture = SKTexture(imageNamed: "princess2")
             backgroundSprite.fillColor = .magenta
         case .villain:
-            avatarSprite.texture = SKTexture(imageNamed: "puzlboy")
+            avatarSprite.texture = SKTexture(imageNamed: "villain")
             backgroundSprite.fillColor = .red
         }
         
@@ -421,6 +425,25 @@ extension ChatEngine {
                 dialoguePlayed[level] = true
                 delegate?.deIlluminatePanel(at: (0, 2), useOverlay: true)
                 delegate?.deIlluminatePanel(at: (2, 2), useOverlay: false)
+                fadeDimOverlay()
+                isChatting = false
+                completion?()
+            }
+        case 4: //FIXME: - 4 is test
+            guard let dialoguePlayedCheck = dialoguePlayed[level], !dialoguePlayedCheck else {
+                isChatting = false
+                completion?()
+                return
+            }
+
+            sendChatArray(items: [
+                ChatItem(profile: .princess, chat: "PRINCESS OLIVIA: I am a little princess who likes rainbows and unicorns and my little sister Alana!"),
+                ChatItem(profile: .princess, chat: "If you want to beat the game, you need to rescue me from the clutches of the angry dragon."),
+                ChatItem(profile: .villain, chat: "Well good luck with that. I'm the villain of the game. Nobody knows who I am. I'm a figment of your imagination."),
+                ChatItem(profile: .villain, chat: "But I bring heartache and heartbreak to anyone who dares cross me!"),
+                ChatItem(profile: .hero, chat: "Ya'll cray cray!"),
+                ChatItem(profile: .princess2, chat: "And now I am evolved into a little girl of 30. I own these dragons. Go home!!")
+            ]) { [unowned self] in
                 fadeDimOverlay()
                 isChatting = false
                 completion?()

@@ -17,19 +17,23 @@ class ParallaxManager: SKNode {
     private var shouldWalk: Bool
 
     var speedFactor: TimeInterval {
+        let walk: TimeInterval = 3
+        let run: TimeInterval = 1
+        let slowRun: TimeInterval = 1.5
+
         if !UserDefaults.standard.bool(forKey: K.UserDefaults.shouldSkipIntro) {
             if shouldWalk {
-                return 3
+                return walk
             }
             
-            return 1
+            return run
         }
                 
         switch DayTheme.currentTheme {
-        case .dawn:         return 3
-        case .morning:      return 1
-        case .afternoon:    return 1.5
-        case .night:        return 3
+        case .dawn:         return walk
+        case .morning:      return run
+        case .afternoon:    return slowRun
+        case .night:        return walk
         }
     }
         
@@ -110,6 +114,12 @@ class ParallaxManager: SKNode {
     func animate() {
         for sprite in parallaxSprites {
             sprite.animate()
+        }
+    }
+    
+    func stopAnimation() {
+        for sprite in parallaxSprites {
+            sprite.stopAnimation(excludeSkyObjects: true)
         }
     }
     

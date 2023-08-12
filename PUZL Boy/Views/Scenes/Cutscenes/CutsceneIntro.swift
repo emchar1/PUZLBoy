@@ -11,6 +11,9 @@ class CutsceneIntro: SKScene {
     
     // MARK: - Properties
     
+    private let playerPosition = CGPoint(x: K.ScreenDimensions.iPhoneWidth / 2, y: K.ScreenDimensions.height / 3)
+    private let playerScale: CGFloat = 0.75
+    
     private var player: Player!
     private var skyNode: SKSpriteNode!
     private var parallaxManager: ParallaxManager!
@@ -34,9 +37,6 @@ class CutsceneIntro: SKScene {
     }
     
     private func setupScene(xOffsetsArray: [ParallaxSprite.SpriteXPositions]) {
-        let playerPosition = CGPoint(x: K.ScreenDimensions.iPhoneWidth / 2, y: K.ScreenDimensions.height / 3)
-        let playerScale: CGFloat = 0.75
-
         player = Player()
         player.sprite.position = playerPosition
         player.sprite.setScale(playerScale)
@@ -51,12 +51,35 @@ class CutsceneIntro: SKScene {
     }
     
     private func animateScene() {
-        let playerSpeed: TimeInterval = 0.06
-        let playerAnimation = SKAction.animate(with: player.textures[Player.Texture.walk.rawValue], timePerFrame: playerSpeed)
+        let frameRate: TimeInterval = 0.06
+        let walkCycle: TimeInterval = frameRate * 15 //1 cycle at 0.06s x 15 frames = 0.9s
+        let playerWalk = SKAction.animate(with: player.textures[Player.Texture.walk.rawValue], timePerFrame: frameRate)
+        let playerIdle = SKAction.animate(with: player.textures[Player.Texture.idle.rawValue], timePerFrame: frameRate)
         
-        player.sprite.run(SKAction.repeatForever(playerAnimation))
+//        player.sprite.run(SKAction.repeatForever(playerAnimation))
 
+        player.sprite.run(SKAction.group([
+            SKAction.repeat(playerWalk, count: 8),
+            SKAction.sequence([
+                SKAction.wait(forDuration: 2 * walkCycle),
+                SKAction.group([
+                    SKAction.moveTo(x: 120, duration: 4 * walkCycle),
+                    SKAction.moveTo(y: playerPosition.y - 60, duration: 4 * walkCycle),
+                    SKAction.scale(to: playerScale * 0.75, duration: 4 * walkCycle)
+                ]),
+                SKAction.wait(forDuration: 2 * walkCycle),
+                SKAction.repeatForever(playerIdle)
+            ])
+        ]))
+                
         parallaxManager.animate()
+        
+        run(SKAction.sequence([
+            SKAction.wait(forDuration: 8 * walkCycle),
+            SKAction.run { [unowned self] in
+                parallaxManager.stopAnimation()
+            }
+        ]))
     }
     
     
