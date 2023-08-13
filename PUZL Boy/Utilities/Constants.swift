@@ -62,6 +62,7 @@ struct K {
         static let backgroundObjectMoon: CGFloat = 30
         static let loadingNode: CGFloat = 610
         static let parallaxLayer0: CGFloat = 70
+        static let speechBubble: CGFloat = 80
         
         
         //--TITLE SCENE--

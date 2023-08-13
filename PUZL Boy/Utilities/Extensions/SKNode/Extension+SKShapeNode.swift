@@ -34,7 +34,7 @@ extension SKShapeNode {
         shadow1.alpha = 0
 
         let shadow2 = SKShapeNode(rectOf: rectOf, cornerRadius: cornerRadius)
-        shadow2.position = CGPoint(x: -2 * shadowOffset, y: -2 * shadowOffset)
+        shadow2.position = -2 * CGPoint(x: shadowOffset, y: shadowOffset)
         shadow2.fillColor = shadowColor
         shadow2.strokeColor = .white
         shadow2.lineWidth = 0
@@ -43,7 +43,7 @@ extension SKShapeNode {
         shadow2.alpha = 0
 
         let shadow3 = SKShapeNode(rectOf: rectOf, cornerRadius: cornerRadius)
-        shadow3.position = CGPoint(x: -3 * shadowOffset, y: -3 * shadowOffset)
+        shadow3.position = -3 * CGPoint(x: shadowOffset, y: shadowOffset)
         shadow3.fillColor = shadowColor
         shadow3.strokeColor = .white
         shadow3.lineWidth = 0

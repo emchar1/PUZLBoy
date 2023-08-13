@@ -18,14 +18,14 @@ extension SKLabelNode {
         shadow1.alpha = 0
 
         let shadow2 = SKLabelNode(text: text)
-        shadow2.position = CGPoint(x: 2 * shadowOffset, y: 2 * shadowOffset)
+        shadow2.position = 2 * CGPoint(x: shadowOffset, y: shadowOffset)
         shadow2.fontColor = shadow2Color
         shadow2.zPosition = 2 * zPositionOffset
         shadow2.name = "shadow2"
         shadow2.alpha = 0
 
         let shadow3 = SKLabelNode(text: text)
-        shadow3.position = CGPoint(x: 3 * shadowOffset, y: 3 * shadowOffset)
+        shadow3.position = 3 * CGPoint(x: shadowOffset, y: shadowOffset)
         shadow3.fontColor = shadow3Color
         shadow3.zPosition = 3 * zPositionOffset
         shadow3.name = "shadow3"

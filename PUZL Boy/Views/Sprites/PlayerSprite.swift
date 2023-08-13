@@ -134,10 +134,14 @@ class PlayerSprite {
                 AudioManager.shared.playSound(for: "movewalk")
 
                 //Fades the player as he's entering the gate
-//                let sequence = SKAction.sequence([SKAction.wait(forDuration: 0.55), SKAction.fadeAlpha(to: 0, duration: 0.2)])
-//                sprite.run(SKAction.group([SKAction.repeatForever(animation), sequence]), withKey: AnimationKey.playerMove.rawValue)
-//
-//                return
+                let sequence = SKAction.sequence([
+                    SKAction.wait(forDuration: 0.75),
+                    SKAction.fadeAlpha(to: 0, duration: 0.25)
+                ])
+                
+                sprite.run(SKAction.group([SKAction.repeatForever(animation), sequence]), withKey: AnimationKey.playerMove.rawValue)
+
+                return
             default:
                 print("Unknown animationType")
             }
