@@ -21,7 +21,7 @@ class CutsceneIntro: SKScene {
     
     // MARK: - Initialization
     
-    init(size: CGSize, xOffsetsArray: [ParallaxSprite.SpriteXPositions]) {
+    init(size: CGSize, xOffsetsArray: [ParallaxSprite.SpriteXPositions]?) {
         super.init(size: size)
         
         setupScene(xOffsetsArray: xOffsetsArray)
@@ -36,7 +36,7 @@ class CutsceneIntro: SKScene {
         print("CutsceneIntro deinit")
     }
     
-    private func setupScene(xOffsetsArray: [ParallaxSprite.SpriteXPositions]) {
+    private func setupScene(xOffsetsArray: [ParallaxSprite.SpriteXPositions]?) {
         player = Player()
         player.sprite.position = playerPosition
         player.sprite.setScale(playerScale)
@@ -56,29 +56,55 @@ class CutsceneIntro: SKScene {
         let playerWalk = SKAction.animate(with: player.textures[Player.Texture.walk.rawValue], timePerFrame: frameRate)
         let playerIdle = SKAction.animate(with: player.textures[Player.Texture.idle.rawValue], timePerFrame: frameRate)
         
-//        player.sprite.run(SKAction.repeatForever(playerAnimation))
+        let speechSmallThings = SpeechBubbleSprite(text: "All the| small things.| True care| truth brings.| I'll take| one lift—/Oh.. hello!",
+                                                   width: 460,
+                                                   position: CGPoint(x: playerPosition.x, y: playerPosition.y + 200))
 
+        //Player Sprite
         player.sprite.run(SKAction.group([
-            SKAction.repeat(playerWalk, count: 8),
+            SKAction.repeat(playerWalk, count: 13),
             SKAction.sequence([
-                SKAction.wait(forDuration: 2 * walkCycle),
+                SKAction.wait(forDuration: 6 * walkCycle),
                 SKAction.group([
                     SKAction.moveTo(x: 120, duration: 4 * walkCycle),
-                    SKAction.moveTo(y: playerPosition.y - 60, duration: 4 * walkCycle),
-                    SKAction.scale(to: playerScale * 0.75, duration: 4 * walkCycle)
+//                    SKAction.moveTo(y: playerPosition.y - 60, duration: 4 * walkCycle),
+//                    SKAction.scale(to: playerScale * 0.75, duration: 4 * walkCycle)
                 ]),
-                SKAction.wait(forDuration: 2 * walkCycle),
+                SKAction.wait(forDuration: 3 * walkCycle),
                 SKAction.repeatForever(playerIdle)
             ])
         ]))
-                
-        parallaxManager.animate()
-        
+                        
+        //Parallax Manager
         run(SKAction.sequence([
-            SKAction.wait(forDuration: 8 * walkCycle),
+            SKAction.run { [unowned self] in
+                parallaxManager.animate()
+            },
+            SKAction.wait(forDuration: 13 * walkCycle),
             SKAction.run { [unowned self] in
                 parallaxManager.stopAnimation()
             }
+        ]))
+
+        //Speech Bubbles
+        run(SKAction.sequence([
+            SKAction.wait(forDuration: 2 * walkCycle),
+            SKAction.run {
+                speechSmallThings.beginAnimation(superScene: self) { [unowned self] in
+                    print("Certida")
+                    speechSmallThings.setText(text: "Oh, and I also don't like the fact that you're this rich spoiled girl who just nags and nags and nags and nags...", superScene: self) { [unowned self] in
+                        speechSmallThings.setText(text: "But I guess that's all I have to say on that...", superScene: self) {
+                            print("Now... done.")
+                        }
+                        print("Even more.")
+                    }
+                }
+            }
+        ]))
+        
+        speechSmallThings.run(SKAction.sequence([
+            SKAction.wait(forDuration: 6 * walkCycle),
+            SKAction.moveTo(x: 120 + speechSmallThings.bubbleDimensions.width / 2, duration: 4 * walkCycle)
         ]))
     }
     

@@ -12,16 +12,17 @@ class SpeechBubbleSprite: SKNode {
     // MARK: - Properties
     
     //Speech Bubble Properties
-    private let bubbleDimensions = CGSize(width: 512, height: 384)
+    private let bubbleDimensionsOrig = CGSize(width: 512, height: 384)
+    private(set) var bubbleDimensions: CGSize
     private var bubbleText: String
-    private var bubbleWidth: CGFloat
-    private var bubblePosition: CGPoint
     
     //Speech Animation Properties
     private let animationSpeedOrig: TimeInterval = 0.08
     private var animationSpeed: TimeInterval
     private var animationIndex = 0
-    private var animationTimer = Timer()
+    private var timer = Timer()
+    private var dispatchWorkItem = DispatchWorkItem(block: {})
+    private var completion: (() -> Void)?
 
     private var bubbleSprite: SKSpriteNode!
     private var textSprite: SKLabelNode!
@@ -31,14 +32,15 @@ class SpeechBubbleSprite: SKNode {
     
     init(text: String, width: CGFloat = 512, position: CGPoint = .zero) {
         self.bubbleText = text
-        self.bubbleWidth = width
-        self.bubblePosition = position
+        self.bubbleDimensions = CGSize(width: width, height: (width / bubbleDimensionsOrig.width) * bubbleDimensionsOrig.height)
         self.animationSpeed = animationSpeedOrig
         
         super.init()
         
+        self.position = position
+        self.zPosition = K.ZPosition.speechBubble
+
         setupSprites()
-        beginAnimation()
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -46,32 +48,26 @@ class SpeechBubbleSprite: SKNode {
     }
     
     deinit {
-        
+        print("deinit SpeechBubbleSprite")
     }
     
     private func setupSprites() {
         let paddingPercentage: CGFloat = 0.9
-        let bubbleHeight = (bubbleWidth / bubbleDimensions.width) * bubbleDimensions.height
         
         bubbleSprite = SKSpriteNode(imageNamed: "speechBubble")
-//        bubbleSprite.anchorPoint = CGPoint(x: bubbleBorder, y: 1 - bubbleBorder)
-//        bubbleSprite.position = CGPoint(x: bubbleWidth / 2, y: -bubbleHeight / 2)
-        bubbleSprite.size = CGSize(width: bubbleWidth, height: bubbleHeight)
+        bubbleSprite.size = bubbleDimensions
         bubbleSprite.setScale(0)
         
         textSprite = SKLabelNode(text: "")
         textSprite.fontName = UIFont.chatFont
         textSprite.fontSize = UIFont.chatFontSize
         textSprite.fontColor = .black
-        textSprite.position = paddingPercentage * CGPoint(x: -bubbleWidth / 2, y: bubbleHeight / 2)
+        textSprite.position = paddingPercentage * CGPoint(x: -bubbleDimensions.width / 2, y: bubbleDimensions.height / 2)
         textSprite.numberOfLines = 0
-        textSprite.preferredMaxLayoutWidth = bubbleSprite.size.width * paddingPercentage
+        textSprite.preferredMaxLayoutWidth = bubbleDimensions.width * paddingPercentage
         textSprite.horizontalAlignmentMode = .left
         textSprite.verticalAlignmentMode = .top
         textSprite.zPosition = 5
-        
-        position = bubblePosition
-        zPosition = K.ZPosition.speechBubble
         
         addChild(bubbleSprite)
         bubbleSprite.addChild(textSprite)
@@ -80,40 +76,82 @@ class SpeechBubbleSprite: SKNode {
     
     // MARK: - Functions
     
-    func setText(text: String) {
-        self.bubbleText = text
+    func setText(text: String, superScene: SKScene, completion: (() -> Void)?) {
+        bubbleText = text
+        textSprite.text = ""
+        animationIndex = 0
         
-        beginAnimation()
+        beginAnimation(superScene: superScene, completion: completion)
     }
     
-    private func beginAnimation() {
+    func beginAnimation(superScene: SKScene, completion: (() -> Void)?) {
+        self.completion = completion
+        
+        superScene.addChild(self)
+        
         bubbleSprite.run(SKAction.sequence([
-            SKAction.scale(to: 1.1, duration: 0.25),
-            SKAction.scale(to: 0.9, duration: 0.25),
-            SKAction.scale(to: 1, duration: 0.5)
+            SKAction.scale(to: 1.25, duration: 0.25),
+            SKAction.scale(to: 0.85, duration: 0.2),
+            SKAction.scale(to: 1, duration: 0.2)
         ])) { [unowned self] in
-            animationTimer = Timer.scheduledTimer(timeInterval: animationSpeed,
-                                                  target: self,
-                                                  selector: #selector(animateText(_:)),
-                                                  userInfo: nil,
-                                                  repeats: true)
-            
+            animateText()
         }
     }
+        
+    private func animateText() {
+        timer = Timer.scheduledTimer(timeInterval: animationSpeed,
+                                     target: self,
+                                     selector: #selector(animateTextHelper(_:)),
+                                     userInfo: nil,
+                                     repeats: true)
+    }
     
-    @objc private func animateText(_ sender: Timer) {
-        if animationIndex < bubbleText.count {
-            let speechBubbleChar = bubbleText[bubbleText.index(bubbleText.startIndex, offsetBy: animationIndex)]
+    @objc private func animateTextHelper(_ sender: Timer) {
+        guard animationIndex < bubbleText.count else {
+            timer.invalidate()
             
-            textSprite.text! += "\(speechBubbleChar)"
+            endAnimation()
+
+            return
+        }
+        
+        let animationPause: TimeInterval = 0.75
+        let delimiterPause: Character = "|"
+        let delimiterClear: Character = "/"
+        let speechBubbleChar = bubbleText[bubbleText.index(bubbleText.startIndex, offsetBy: animationIndex)]
+        
+        animationIndex += 1
+        
+        if speechBubbleChar == delimiterPause {
+            timer.invalidate()
             
-            animationIndex += 1
+            dispatchWorkItem = DispatchWorkItem(block: { [unowned self] in
+                animateText()
+            })
+            
+            //Adds a little pause when it comes across the delimiterPause character.
+            DispatchQueue.main.asyncAfter(deadline: .now() + animationPause, execute: dispatchWorkItem)
         }
         else {
-            animationTimer.invalidate()
-            removeFromParent()
+            textSprite.text! += "\(speechBubbleChar)"
+            
+            //Clears the text bubble, like it's starting over
+            if speechBubbleChar == delimiterClear {
+                textSprite.text = ""
+            }
         }
     }
     
+    private func endAnimation(wait: TimeInterval = 2) {
+        bubbleSprite.run(SKAction.sequence([
+            SKAction.wait(forDuration: wait),
+            SKAction.scale(to: 1.1, duration: 0.2),
+            SKAction.scale(to: 0, duration: 0.2)
+        ])) { [unowned self] in
+            removeFromParent()
+            completion?()
+        }
+    }
+
     
 }

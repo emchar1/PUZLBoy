@@ -83,7 +83,7 @@ class ChatEngine {
     
     init() {
         timer = Timer()
-        dispatchWorkItem = DispatchWorkItem(block: { })
+        dispatchWorkItem = DispatchWorkItem(block: {})
         
         chatSpeed = chatSpeedOrig
         
