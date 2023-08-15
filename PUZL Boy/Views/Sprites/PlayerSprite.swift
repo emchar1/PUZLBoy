@@ -17,7 +17,7 @@ class PlayerSprite {
     private(set) var isAnimating: Bool = false
     private var explodeBoulderAtlas: SKTextureAtlas
     private var explodeBoulderTextures: [SKTexture]
-    private var player = Player()
+    private var player = Player(type: .hero)
 
     enum AnimationKey: String {
         case playerRespawn, playerIdle, playerMove, playerGlide, playerMarsh, playerPowerUp, playerParty

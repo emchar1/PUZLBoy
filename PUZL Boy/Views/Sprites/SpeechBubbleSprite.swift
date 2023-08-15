@@ -115,7 +115,7 @@ class SpeechBubbleSprite: SKNode {
             return
         }
         
-        let animationPause: TimeInterval = 0.75
+        let animationPause: TimeInterval = 0.25
         let delimiterPause: Character = "|"
         let delimiterClear: Character = "/"
         let speechBubbleChar = bubbleText[bubbleText.index(bubbleText.startIndex, offsetBy: animationIndex)]

@@ -52,7 +52,7 @@ class LaunchScene: SKScene {
         let playerPosition = CGPoint(x: K.ScreenDimensions.iPhoneWidth / 2, y: K.ScreenDimensions.height / 3)
         let playerScale: CGFloat = 0.75
         
-        player = Player()
+        player = Player(type: .hero)
         player.sprite.position = playerPosition
         player.sprite.setScale(playerScale)
         player.sprite.name = LaunchScene.nodeName_playerSprite
@@ -62,7 +62,7 @@ class LaunchScene: SKScene {
             player.sprite.colorBlendFactor = DayTheme.spriteShade
         }
         
-        playerReflection = Player()
+        playerReflection = Player(type: .hero)
         playerReflection.sprite.position = playerPosition - CGPoint(x: 0, y: Player.size.height / 2 + 50) //why +50???
         playerReflection.sprite.setScale(playerScale)
         playerReflection.sprite.color = DayTheme.spriteColor

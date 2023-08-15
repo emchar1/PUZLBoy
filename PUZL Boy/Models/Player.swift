@@ -14,9 +14,13 @@ struct Player {
     static let size = CGSize(width: 946, height: 564)
     private(set) var scale = 0.5
 
-    private(set) var sprite: SKSpriteNode
+    private(set) var sprite: SKSpriteNode!
     private(set) var textures: [[SKTexture]]
     private var atlas: SKTextureAtlas
+    
+    enum PlayerType: String {
+        case hero = "hero", princess
+    }
 
     enum Texture: Int {
         case idle = 0, run, walk, marsh, sand, party, dead, glide, jump, idleHammer, idleSword, idleHammerSword, runHammer, runSword, runHammerSword, marshHammer, marshSword, marshHammerSword, sandHammer, sandSword, sandHammerSword, glideHammer, glideSword, glideHammerSword
@@ -53,8 +57,9 @@ struct Player {
     
     // MARK: - Initialization
     
-    init() {
-        atlas = SKTextureAtlas(named: "hero")
+    init(type: PlayerType) {
+        atlas = SKTextureAtlas(named: type.rawValue)
+        
         textures = []
         textures.append([]) //idle
         textures.append([]) //run
@@ -81,6 +86,21 @@ struct Player {
         textures.append([]) //glideSword
         textures.append([]) //glideHammerSword
 
+        switch type {
+        case .hero:
+            setupHero()
+        case .princess:
+            setupPrincess()
+        }
+        
+        sprite = SKSpriteNode(texture: textures[Texture.idle.rawValue][0])
+        sprite.size = Player.size
+        sprite.setScale(scale)
+        sprite.position = .zero
+        sprite.zPosition = K.ZPosition.player
+    }
+    
+    private mutating func setupHero() {
         for i in 1...15 {
             textures[Texture.idle.rawValue].append(atlas.textureNamed("Idle (\(i))"))
             textures[Texture.run.rawValue].append(atlas.textureNamed("Run (\(i))"))
@@ -113,12 +133,17 @@ struct Player {
                 textures[Texture.glideHammerSword.rawValue].append(atlas.textureNamed("RunHammerSword (\(i))"))
             }
         }
+    }
+    
+    private mutating func setupPrincess() {
+        for i in 1...16 {
+            textures[Texture.idle.rawValue].append(atlas.textureNamed("PrincessIdle (\(i))"))
+            textures[Texture.walk.rawValue].append(atlas.textureNamed("PrincessWalk (\(i))"))
+        }
         
-        sprite = SKSpriteNode(texture: textures[Texture.idle.rawValue][0])
-        sprite.size = Player.size
-        sprite.setScale(scale)
-        sprite.position = .zero
-        sprite.zPosition = K.ZPosition.player
+        for i in 17...20 {
+            textures[Texture.walk.rawValue].append(atlas.textureNamed("PrincessWalk (\(i))"))
+        }
     }
     
     

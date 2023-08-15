@@ -42,7 +42,7 @@ class ActivityIndicatorSprite: SKNode {
         sprite.lineWidth = 0
         sprite.alpha = 0.9
                 
-        player = Player()
+        player = Player(type: .hero)
         player.sprite.setScale(0.25)
         player.sprite.position = CGPoint(x: 0, y: 30)
 

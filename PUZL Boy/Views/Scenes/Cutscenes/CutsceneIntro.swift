@@ -11,10 +11,12 @@ class CutsceneIntro: SKScene {
     
     // MARK: - Properties
     
-    private let playerPosition = CGPoint(x: K.ScreenDimensions.iPhoneWidth / 2, y: K.ScreenDimensions.height / 3)
+    private let heroPosition = CGPoint(x: K.ScreenDimensions.iPhoneWidth / 2, y: K.ScreenDimensions.height / 3)
+    private let princessPosition = CGPoint(x: K.ScreenDimensions.iPhoneWidth + 80, y: K.ScreenDimensions.height / 3 - 40)
     private let playerScale: CGFloat = 0.75
     
-    private var player: Player!
+    private var hero: Player!
+    private var princess: Player!
     private var skyNode: SKSpriteNode!
     private var parallaxManager: ParallaxManager!
     
@@ -37,10 +39,16 @@ class CutsceneIntro: SKScene {
     }
     
     private func setupScene(xOffsetsArray: [ParallaxSprite.SpriteXPositions]?) {
-        player = Player()
-        player.sprite.position = playerPosition
-        player.sprite.setScale(playerScale)
-        player.sprite.name = LaunchScene.nodeName_playerSprite
+        hero = Player(type: .hero)
+        hero.sprite.position = heroPosition
+        hero.sprite.setScale(playerScale)
+        hero.sprite.name = LaunchScene.nodeName_playerSprite
+        
+        princess = Player(type: .princess)
+        princess.sprite.position = princessPosition
+        princess.sprite.setScale(playerScale * 0.75)
+        princess.sprite.xScale = -playerScale * 0.75
+        princess.sprite.name = LaunchScene.nodeName_playerSprite
 
         skyNode = SKSpriteNode(texture: SKTexture(image: DayTheme.getSkyImage(useMorningSky: true)))
         skyNode.anchorPoint = .zero
@@ -53,16 +61,17 @@ class CutsceneIntro: SKScene {
     private func animateScene() {
         let frameRate: TimeInterval = 0.06
         let walkCycle: TimeInterval = frameRate * 15 //1 cycle at 0.06s x 15 frames = 0.9s
-        let playerWalk = SKAction.animate(with: player.textures[Player.Texture.walk.rawValue], timePerFrame: frameRate)
-        let playerIdle = SKAction.animate(with: player.textures[Player.Texture.idle.rawValue], timePerFrame: frameRate)
+        let heroWalk = SKAction.animate(with: hero.textures[Player.Texture.walk.rawValue], timePerFrame: frameRate)
+        let heroIdle = SKAction.animate(with: hero.textures[Player.Texture.idle.rawValue], timePerFrame: frameRate)
+        let princessIdle = SKAction.animate(with: princess.textures[Player.Texture.idle.rawValue], timePerFrame: frameRate * 1.5)
         
-        let speechSmallThings = SpeechBubbleSprite(text: "All the| small things.| True care| truth brings.| I'll take| one lift—/Oh.. hello!",
-                                                   width: 460,
-                                                   position: CGPoint(x: playerPosition.x, y: playerPosition.y + 200))
+        let speechHero = SpeechBubbleSprite(text: "🎵I'm a Barbie girl,| in the Barbie world.|| Life in plastic,| it's fantastic. You can brush my—/Oh.. hello!",
+                                            width: 460,
+                                            position: CGPoint(x: heroPosition.x + 200, y: heroPosition.y + 400))
 
-        //Player Sprite
-        player.sprite.run(SKAction.group([
-            SKAction.repeat(playerWalk, count: 13),
+        //Hero Sprite
+        hero.sprite.run(SKAction.group([
+            SKAction.repeat(heroWalk, count: 13),
             SKAction.sequence([
                 SKAction.wait(forDuration: 6 * walkCycle),
                 SKAction.group([
@@ -71,7 +80,16 @@ class CutsceneIntro: SKScene {
 //                    SKAction.scale(to: playerScale * 0.75, duration: 4 * walkCycle)
                 ]),
                 SKAction.wait(forDuration: 3 * walkCycle),
-                SKAction.repeatForever(playerIdle)
+                SKAction.repeatForever(heroIdle)
+            ])
+        ]))
+        
+        //Princess Sprite
+        princess.sprite.run(SKAction.sequence([
+            SKAction.wait(forDuration: 11 * walkCycle),
+            SKAction.group([
+                SKAction.moveTo(x: princessPosition.x - 200, duration: 2 * walkCycle),
+                SKAction.repeatForever(princessIdle)
             ])
         ]))
                         
@@ -90,21 +108,16 @@ class CutsceneIntro: SKScene {
         run(SKAction.sequence([
             SKAction.wait(forDuration: 2 * walkCycle),
             SKAction.run {
-                speechSmallThings.beginAnimation(superScene: self) { [unowned self] in
+                speechHero.beginAnimation(superScene: self) {
                     print("Certida")
-                    speechSmallThings.setText(text: "Oh, and I also don't like the fact that you're this rich spoiled girl who just nags and nags and nags and nags...", superScene: self) { [unowned self] in
-                        speechSmallThings.setText(text: "But I guess that's all I have to say on that...", superScene: self) {
-                            print("Now... done.")
-                        }
-                        print("Even more.")
-                    }
+                    
                 }
             }
         ]))
         
-        speechSmallThings.run(SKAction.sequence([
+        speechHero.run(SKAction.sequence([
             SKAction.wait(forDuration: 6 * walkCycle),
-            SKAction.moveTo(x: 120 + speechSmallThings.bubbleDimensions.width / 2, duration: 4 * walkCycle)
+            SKAction.moveTo(x: 120 + speechHero.bubbleDimensions.width / 2, duration: 4 * walkCycle)
         ]))
     }
     
@@ -113,17 +126,21 @@ class CutsceneIntro: SKScene {
     
     override func didMove(to view: SKView) {
         addChild(skyNode)
-        addChild(player.sprite)
+        addChild(hero.sprite)
+        addChild(princess.sprite)
 
         parallaxManager.addSpritesToParent(scene: self)
     }
     
     func finishAnimating(completion: @escaping () -> Void) {
-        player.sprite.removeAllActions()
+        hero.sprite.removeAllActions()
+        princess.sprite.removeAllActions()
         parallaxManager.removeAllActions()
+        
+        hero.sprite.removeFromParent()
+        princess.sprite.removeFromParent()
         parallaxManager.removeFromParent()
-        player.sprite.removeFromParent()
-
+        
         completion()
     }
 }

@@ -71,7 +71,7 @@ class TitleScene: SKScene {
 
     private func setupSprites() {
         //Sprites Setup
-        player = Player()
+        player = Player(type: .hero)
         player.sprite.position = CGPoint(x: K.ScreenDimensions.iPhoneWidth / 2, y: K.ScreenDimensions.height / 2)
         player.sprite.setScale(2)
         player.sprite.texture = SKTexture(imageNamed: "Run (5)")
