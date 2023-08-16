@@ -65,9 +65,8 @@ class CutsceneIntro: SKScene {
         let heroIdle = SKAction.animate(with: hero.textures[Player.Texture.idle.rawValue], timePerFrame: frameRate)
         let princessIdle = SKAction.animate(with: princess.textures[Player.Texture.idle.rawValue], timePerFrame: frameRate * 1.5)
         
-        let speechHero = SpeechBubbleSprite(text: "🎵I'm a Barbie girl,| in the Barbie world.|| Life in plastic,| it's fantastic. You can brush my—/Oh.. hello!",
-                                            width: 460,
-                                            position: CGPoint(x: heroPosition.x + 200, y: heroPosition.y + 400))
+        let speechHero = SpeechBubbleSprite(width: 460, position: heroPosition + CGPoint(x: 200, y: 400))
+        let speechPrincess = SpeechBubbleSprite(width: 460, position: princessPosition + CGPoint(x: -400, y: 400), shouldFlipTail: true)
 
         //Hero Sprite
         hero.sprite.run(SKAction.group([
@@ -108,15 +107,22 @@ class CutsceneIntro: SKScene {
         run(SKAction.sequence([
             SKAction.wait(forDuration: 2 * walkCycle),
             SKAction.run {
-                speechHero.beginAnimation(superScene: self) {
-                    print("Certida")
-                    
+                speechHero.setText(text: "🎵 I'm a Barbie girl,| in the Barbie world.|| Life in plastic,| it's fantastic. You can brush my—/Oh.....|| hello.", superScene: self) {
+                    speechPrincess.setText(text: "Hi! My name is Princess Olivia and I'm 7 years old.| I'm late for a very important meeting.", superScene: self) {
+                        speechHero.setText(text: "I'm PUZL Boy— Wait, like an actual princess, or...| more of a self-proclaimed title?||||||||/Also what kind of important meeting does a 7 year old need to attend?||||||||/And where are you parents? Are you here by yourself???", superScene: self) {
+                            speechPrincess.setText(text: "Well, if you must know, the reason why I'm here is blah blah blah, blah...||||||||/Blah blah blah, blah blah blah blah blah, blah blah, blah blah blah, blah blah blah.||||||||/And furthermore, blah blah, blah blah blah blah, blah blah blah last known descendant.", superScene: self) {
+                                speechHero.setText(text: "Wow that is some story! Don't worry Princess, I'll get you to where you need to go—", superScene: self, completion: nil)
+                            }
+                            print("Done-zo!")
+                        }
+                    }
                 }
             }
         ]))
         
+        //Speech - Hero Move
         speechHero.run(SKAction.sequence([
-            SKAction.wait(forDuration: 6 * walkCycle),
+            SKAction.wait(forDuration: 4 * walkCycle),
             SKAction.moveTo(x: 120 + speechHero.bubbleDimensions.width / 2, duration: 4 * walkCycle)
         ]))
     }
