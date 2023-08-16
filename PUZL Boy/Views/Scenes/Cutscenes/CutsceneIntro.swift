@@ -119,11 +119,11 @@ class CutsceneIntro: SKScene {
         run(SKAction.sequence([
             SKAction.wait(forDuration: 2 * walkCycle),
             SKAction.run {
-                speechHero.setText(text: "🎵 I'm a Barbie girl,| in the Barbie world.|| Life in plastic,| it's fantastic. You can brush my—/Oh.....|| hello.", superScene: self) {
-                    speechPrincess.setText(text: "Hi! My name is Princess Olivia and I'm 7 years old.| I'm late for a very important appointment.", superScene: self) {
-                        speechHero.setText(text: "I'm PUZL Boy— Wait, like an actual princess, or...| more of a self-proclaimed title?||||||||/Also what kind of important meeting does a 7 year old need to attend?||||||||/And where are your parents? Are you here by yourself???", superScene: self) {
-                            speechPrincess.setText(text: "If you must know, the reason why I'm here is blah blah blah...||||||||/Blah blah blah, blah blah blah blah blah, blah blah, blah blah blah, blah blah blah.||||||||/And furthermore, blah blah blah, blah blah blah, last known descendant.", superScene: self) {
-                                speechHero.setText(text: "Wow that is some story! Well don't worry Princess, I'll get you to where you need to go—", superScene: self) { [unowned self] in
+                speechHero.setText(text: "🎵 I'm a Barbie girl,| in the Barbie world.|| Life in plastic,| it's fantastic! You can brush my—/Oh.....|| hello.|| Didn't see you there...", superScene: self) {
+                    speechPrincess.setText(text: "Hi! My name is Princess Olivia and I'm 7 years old.|| I'm late for a very important appointment.", superScene: self) {
+                        speechHero.setText(text: "I'm PUZL Boy— Wait,| like an actual princess, or...| more of a self-proclaimed title?||||||||/Also what kind of important meeting does a 7 year old need to attend?||||||||/And where are your parents?|| Are you here by yourself???", superScene: self) {
+                            speechPrincess.setText(text: "If you must know,| the reason why I'm here is blah blah blah...||/Blah blah blah, blah blah blah blah blah, blah blah, blah blah blah, blah blah blah.||||||||/And furthermore, blah blah blah, blah blah blah,|| ...last known descendant.", superScene: self) {
+                                speechHero.setText(text: "Wow that is some story!|| Well don't worry Princess, I'll get you to where you need to go—", superScene: self) { [unowned self] in
                                     didFinishAnimating(completion: completion)
                                 }
                             }
