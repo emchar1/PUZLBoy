@@ -90,7 +90,7 @@ class ChatEngine {
         // MARK: - Include key dialogue here
         dialoguePlayed[Level.partyLevel] = false
         dialoguePlayed[1] = false
-        dialoguePlayed[4] = false //FIXME: - 4 is test
+        dialoguePlayed[4] = false //FIXME: - Test LV4
         dialoguePlayed[8] = false
         dialoguePlayed[19] = false
         dialoguePlayed[34] = false
@@ -429,7 +429,7 @@ extension ChatEngine {
                 isChatting = false
                 completion?()
             }
-        case 4: //FIXME: - 4 is test
+        case 4: //FIXME: - Test LV4
             guard let dialoguePlayedCheck = dialoguePlayed[level], !dialoguePlayedCheck else {
                 isChatting = false
                 completion?()
@@ -438,11 +438,11 @@ extension ChatEngine {
 
             sendChatArray(items: [
                 ChatItem(profile: .princess, chat: "PRINCESS OLIVIA: I am a little princess who likes rainbows and unicorns and my little sister Alana!"),
-                ChatItem(profile: .princess, chat: "If you want to beat the game, you need to rescue me from the clutches of the angry dragon."),
-                ChatItem(profile: .villain, chat: "Well good luck with that. I'm the villain of the game. Nobody knows who I am. I'm a figment of your imagination."),
-                ChatItem(profile: .villain, chat: "But I bring heartache and heartbreak to anyone who dares cross me!"),
+                ChatItem(profile: .princess, chat: "If you want to beat the game, you need to rescue me in the dragon's lair."),
+                ChatItem(profile: .villain, chat: "Ha, good luck with that. I'm the villain of the game. Nobody knows who I am. I hide in the shadows and I'm really an enigma."),
+                ChatItem(profile: .villain, chat: "But I'm here to make your life a living hell!"),
                 ChatItem(profile: .hero, chat: "Ya'll cray cray!"),
-                ChatItem(profile: .princess2, chat: "And now I am evolved into a little girl of 30. I own these dragons. Go home!!")
+                ChatItem(profile: .princess2, chat: "This is the real me. I won't be revealed until the end so... FIND ME!")
             ]) { [unowned self] in
                 fadeDimOverlay()
                 isChatting = false

@@ -27,7 +27,6 @@ class CutsceneIntro: SKScene {
         super.init(size: size)
         
         setupScene(xOffsetsArray: xOffsetsArray)
-        animateScene()
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -58,7 +57,18 @@ class CutsceneIntro: SKScene {
         parallaxManager = ParallaxManager(useSet: .grass, xOffsetsArray: xOffsetsArray, shouldWalk: true)
     }
     
-    private func animateScene() {
+    
+    // MARK: - Functions
+    
+    override func didMove(to view: SKView) {
+        addChild(skyNode)
+        addChild(hero.sprite)
+        addChild(princess.sprite)
+
+        parallaxManager.addSpritesToParent(scene: self)
+    }
+    
+    func animateScene(completion: (() -> Void)?) {
         let frameRate: TimeInterval = 0.06
         let walkCycle: TimeInterval = frameRate * 15 //1 cycle at 0.06s x 15 frames = 0.9s
         let heroWalk = SKAction.animate(with: hero.textures[Player.Texture.walk.rawValue], timePerFrame: frameRate)
@@ -73,11 +83,7 @@ class CutsceneIntro: SKScene {
             SKAction.repeat(heroWalk, count: 13),
             SKAction.sequence([
                 SKAction.wait(forDuration: 6 * walkCycle),
-                SKAction.group([
-                    SKAction.moveTo(x: 120, duration: 4 * walkCycle),
-//                    SKAction.moveTo(y: playerPosition.y - 60, duration: 4 * walkCycle),
-//                    SKAction.scale(to: playerScale * 0.75, duration: 4 * walkCycle)
-                ]),
+                SKAction.moveTo(x: 120, duration: 4 * walkCycle),
                 SKAction.wait(forDuration: 3 * walkCycle),
                 SKAction.repeatForever(heroIdle)
             ])
@@ -102,43 +108,33 @@ class CutsceneIntro: SKScene {
                 parallaxManager.stopAnimation()
             }
         ]))
-
-        //Speech Bubbles
-        run(SKAction.sequence([
-            SKAction.wait(forDuration: 2 * walkCycle),
-            SKAction.run {
-                speechHero.setText(text: "🎵 I'm a Barbie girl,| in the Barbie world.|| Life in plastic,| it's fantastic. You can brush my—/Oh.....|| hello.", superScene: self) {
-                    speechPrincess.setText(text: "Hi! My name is Princess Olivia and I'm 7 years old.| I'm late for a very important meeting.", superScene: self) {
-                        speechHero.setText(text: "I'm PUZL Boy— Wait, like an actual princess, or...| more of a self-proclaimed title?||||||||/Also what kind of important meeting does a 7 year old need to attend?||||||||/And where are you parents? Are you here by yourself???", superScene: self) {
-                            speechPrincess.setText(text: "Well, if you must know, the reason why I'm here is blah blah blah, blah...||||||||/Blah blah blah, blah blah blah blah blah, blah blah, blah blah blah, blah blah blah.||||||||/And furthermore, blah blah, blah blah blah blah, blah blah blah last known descendant.", superScene: self) {
-                                speechHero.setText(text: "Wow that is some story! Don't worry Princess, I'll get you to where you need to go—", superScene: self, completion: nil)
-                            }
-                            print("Done-zo!")
-                        }
-                    }
-                }
-            }
-        ]))
         
         //Speech - Hero Move
         speechHero.run(SKAction.sequence([
             SKAction.wait(forDuration: 4 * walkCycle),
             SKAction.moveTo(x: 120 + speechHero.bubbleDimensions.width / 2, duration: 4 * walkCycle)
         ]))
-    }
-    
-    
-    // MARK: - Functions
-    
-    override func didMove(to view: SKView) {
-        addChild(skyNode)
-        addChild(hero.sprite)
-        addChild(princess.sprite)
 
-        parallaxManager.addSpritesToParent(scene: self)
+        //Speech Bubbles
+        run(SKAction.sequence([
+            SKAction.wait(forDuration: 2 * walkCycle),
+            SKAction.run {
+                speechHero.setText(text: "🎵 I'm a Barbie girl,| in the Barbie world.|| Life in plastic,| it's fantastic. You can brush my—/Oh.....|| hello.", superScene: self) {
+                    speechPrincess.setText(text: "Hi! My name is Princess Olivia and I'm 7 years old.| I'm late for a very important appointment.", superScene: self) {
+                        speechHero.setText(text: "I'm PUZL Boy— Wait, like an actual princess, or...| more of a self-proclaimed title?||||||||/Also what kind of important meeting does a 7 year old need to attend?||||||||/And where are your parents? Are you here by yourself???", superScene: self) {
+                            speechPrincess.setText(text: "If you must know, the reason why I'm here is blah blah blah...||||||||/Blah blah blah, blah blah blah blah blah, blah blah, blah blah blah, blah blah blah.||||||||/And furthermore, blah blah blah, blah blah blah, last known descendant.", superScene: self) {
+                                speechHero.setText(text: "Wow that is some story! Well don't worry Princess, I'll get you to where you need to go—", superScene: self) { [unowned self] in
+                                    didFinishAnimating(completion: completion)
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        ]))
     }
     
-    func finishAnimating(completion: @escaping () -> Void) {
+    private func didFinishAnimating(completion: (() -> Void)?) {
         hero.sprite.removeAllActions()
         princess.sprite.removeAllActions()
         parallaxManager.removeAllActions()
@@ -147,6 +143,6 @@ class CutsceneIntro: SKScene {
         princess.sprite.removeFromParent()
         parallaxManager.removeFromParent()
         
-        completion()
+        completion?()
     }
 }

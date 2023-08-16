@@ -134,6 +134,7 @@ class AudioManager {
         addAudioItem("punchwhack1", category: .soundFX)
         addAudioItem("punchwhack2", category: .soundFX)
         addAudioItem("revive", category: .soundFX)
+        addAudioItem("speechbubble", category: .soundFX)
         addAudioItem("swordslash", category: .soundFX)
         addAudioItem("warp", category: .soundFX)
         addAudioItem("winlevel", category: .soundFX)

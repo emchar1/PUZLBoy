@@ -32,7 +32,7 @@ class GameViewController: UIViewController {
         super.viewDidLoad()
         
         var launchScene: LaunchScene? = LaunchScene(size: K.ScreenDimensions.screenSize)
-        var cutsceneIntro: CutsceneIntro?
+        var cutsceneIntro: CutsceneIntro?// = CutsceneIntro(size: K.ScreenDimensions.screenSize, xOffsetsArray: nil)
         
         monitor = NWPathMonitor()
         monitor.pathUpdateHandler = { path in
@@ -87,13 +87,10 @@ class GameViewController: UIViewController {
                                 self.skView.presentScene(cutsceneIntro)
                                 launchScene = nil
                                 
-                                // FIXME: - Delay
-                                DispatchQueue.main.asyncAfter(deadline: .now() + 10) {
-                                    cutsceneIntro?.finishAnimating {
-                                        self.presentTitleScene()
-                                        
-                                        cutsceneIntro = nil
-                                    }
+                                cutsceneIntro?.animateScene() {
+                                    self.presentTitleScene()
+                                    
+                                    cutsceneIntro = nil
                                 }
                             }
                         }
@@ -110,7 +107,7 @@ class GameViewController: UIViewController {
                 }
             }
         }//end GameCenterManager.shared.getUser()
-                
+        
         print("Testing device info: \(UIDevice.modelInfo)")
     }//end viewDidLoad()
     
