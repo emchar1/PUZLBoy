@@ -19,6 +19,8 @@ class CutsceneIntro: SKScene {
     private var princess: Player!
     private var skyNode: SKSpriteNode!
     private var parallaxManager: ParallaxManager!
+    private var speechHero: SpeechBubbleSprite!
+    private var speechPrincess: SpeechBubbleSprite!
     
     
     // MARK: - Initialization
@@ -55,10 +57,14 @@ class CutsceneIntro: SKScene {
         skyNode.name = LaunchScene.nodeName_skyNode
         
         parallaxManager = ParallaxManager(useSet: .grass, xOffsetsArray: xOffsetsArray, shouldWalk: true)
+        
+        speechHero = SpeechBubbleSprite(width: 460, position: heroPosition + CGPoint(x: 200, y: 400))
+        speechPrincess = SpeechBubbleSprite(width: 460, position: princessPosition + CGPoint(x: -400, y: 400), shouldFlipTail: true)
+
     }
     
     
-    // MARK: - Functions
+    // MARK: - Move Functions
     
     override func didMove(to view: SKView) {
         addChild(skyNode)
@@ -68,6 +74,9 @@ class CutsceneIntro: SKScene {
         parallaxManager.addSpritesToParent(scene: self)
     }
     
+    
+    // MARK: - Animation Functions
+    
     func animateScene(completion: (() -> Void)?) {
         let frameRate: TimeInterval = 0.06
         let walkCycle: TimeInterval = frameRate * 15 //1 cycle at 0.06s x 15 frames = 0.9s
@@ -75,9 +84,6 @@ class CutsceneIntro: SKScene {
         let heroIdle = SKAction.animate(with: hero.textures[Player.Texture.idle.rawValue], timePerFrame: frameRate)
         let princessIdle = SKAction.animate(with: princess.textures[Player.Texture.idle.rawValue], timePerFrame: frameRate * 1.5)
         
-        let speechHero = SpeechBubbleSprite(width: 460, position: heroPosition + CGPoint(x: 200, y: 400))
-        let speechPrincess = SpeechBubbleSprite(width: 460, position: princessPosition + CGPoint(x: -400, y: 400), shouldFlipTail: true)
-
         //Hero Sprite
         hero.sprite.run(SKAction.group([
             SKAction.repeat(heroWalk, count: 13),
@@ -118,11 +124,23 @@ class CutsceneIntro: SKScene {
         //Speech Bubbles
         run(SKAction.sequence([
             SKAction.wait(forDuration: 2 * walkCycle),
-            SKAction.run {
-                speechHero.setText(text: "🎵 I'm a Barbie girl,| in the Barbie world.|| Life in plastic,| it's fantastic! You can brush my—/Oh.....|| hello.|| Didn't see you there...", superScene: self) {
-                    speechPrincess.setText(text: "Hi! My name is Princess Olivia and I'm 7 years old.|| I'm late for a very important appointment.", superScene: self) {
-                        speechHero.setText(text: "I'm PUZL Boy— Wait,| like an actual princess, or...| more of a self-proclaimed title?||||||||/Also what kind of important meeting does a 7 year old need to attend?||||||||/And where are your parents?|| Are you here by yourself???", superScene: self) {
-                            speechPrincess.setText(text: "If you must know,| the reason why I'm here is blah blah blah...||/Blah blah blah, blah blah blah blah blah, blah blah, blah blah blah, blah blah blah.||||||||/And furthermore, blah blah blah, blah blah blah,|| ...last known descendant.", superScene: self) {
+            SKAction.run { [unowned self] in
+                speechHero.setText(text: "🎵 I'm a Barbie girl,| in the Barbie world.|| Life in plastic,| it's fantastic! You can brush my hair—/Oh.....|| hello.| Didn't see you there... 😬|||| I'm PUZL Boy. 👋🏼", superScene: self) { [unowned self] in
+                    
+                    closeUpPrincess()
+                    
+                    speechPrincess.setText(text: "Hi! My name is Princess Olivia and I'm 7 years old.|| I'm late for a V|E|R|Y| important appointment.", superScene: self) { [unowned self] in
+                        
+                        closeUpHero()
+                        
+                        speechHero.setText(text: "Wait,| like an actual princess, or...| is that more of a self-proclaimed title?||||||||/Also what kind of important meeting does a 7 year old need to attend?||||||||/And where are your parents?|| Are you here by yourself???", superScene: self) { [unowned self] in
+                            
+                            closeUpPrincess()
+                            
+                            speechPrincess.setText(text: "Oh, umm...|| you ask too many questons!||||||||/But if you must know,| the reason why I'm here is because— blah blah blah...||||/Blah blah blah, blah blah blah d|r|a|g|o|n|s| blah, blah blah, blah blah blah, blah blah blah.||||||||/Blah blah, blah. BLAH blah blah blah, blahhhhh blah. Blah. Blah. Blah. Blah, blah blah c|a|p|t|u|r|e.||||||||/And furthermore— blah blah blah, blah blah blah|| ...last known descendant.", superScene: self) { [unowned self] in
+                                
+                                wideShot()
+                                
                                 speechHero.setText(text: "Wow that is some story!|| Well don't worry Princess, I'll get you to where you need to go—", superScene: self) { [unowned self] in
                                     didFinishAnimating(completion: completion)
                                 }
@@ -144,5 +162,51 @@ class CutsceneIntro: SKScene {
         parallaxManager.removeFromParent()
         
         completion?()
+    }
+    
+    private func closeUpPrincess() {
+        princess.sprite.position.x = K.ScreenDimensions.width / 2 - princess.sprite.size.width / 2
+        princess.sprite.setScale(2 * 0.75)
+        princess.sprite.xScale = -2 * 0.75
+        
+        hero.sprite.position.x = -200
+        hero.sprite.setScale(playerScale)
+
+        parallaxManager.backgroundSprite.setScale(2)
+        parallaxManager.backgroundSprite.position.y = -K.ScreenDimensions.height / 2
+        parallaxManager.backgroundSprite.position.x = -K.ScreenDimensions.width / 2
+        
+        speechPrincess.position = CGPoint(x: K.ScreenDimensions.screenSize.width - 200, y: K.ScreenDimensions.screenSize.height + 400) / 2
+    }
+    
+    private func closeUpHero() {
+        princess.sprite.position.x = princessPosition.x
+        princess.sprite.setScale(playerScale * 0.75)
+        princess.sprite.xScale = -playerScale * 0.75
+        
+        hero.sprite.position.x = K.ScreenDimensions.width / 2 - hero.sprite.size.width / 2
+        hero.sprite.setScale(2)
+        
+        parallaxManager.backgroundSprite.setScale(2)
+        parallaxManager.backgroundSprite.position.y = -K.ScreenDimensions.height / 2
+        parallaxManager.backgroundSprite.position.x = K.ScreenDimensions.width / 2
+        
+        speechHero.position = CGPoint(x: K.ScreenDimensions.screenSize.width + 300, y: K.ScreenDimensions.screenSize.height + 700) / 2
+    }
+    
+    private func wideShot() {
+        princess.sprite.position.x = princessPosition.x - 200
+        princess.sprite.setScale(playerScale * 0.75)
+        princess.sprite.xScale = -playerScale * 0.75
+        
+        hero.sprite.position.x = 120
+        hero.sprite.setScale(playerScale)
+
+        parallaxManager.backgroundSprite.setScale(1)
+        parallaxManager.backgroundSprite.position = .zero
+        
+        speechPrincess.position = princessPosition + CGPoint(x: -400, y: 400)
+        
+        speechHero.position = CGPoint(x: 120 + speechHero.bubbleDimensions.width / 2, y: heroPosition.y + 400)
     }
 }
