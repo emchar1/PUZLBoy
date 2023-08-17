@@ -20,7 +20,8 @@ struct K {
     
     struct ScreenDimensions {
         ///Default width of the iPhone device in Portrait mode, per RayWenderlich tutorial.
-        static let width: CGFloat = 1536
+        ///Should not be used. Use K.ScreenDimensions.iPhoneWidth instead!
+        private static let width: CGFloat = 1536
         
         ///Default height of the iPhone device in Portrait mode, per RayWenderlich tutorial.
         static let height: CGFloat = 2048

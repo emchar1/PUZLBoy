@@ -137,7 +137,7 @@ class CutsceneIntro: SKScene {
                             
                             closeUpPrincess()
                             
-                            speechPrincess.setText(text: "Oh, umm...|| you ask too many questons!||||||||/But if you must know,| the reason why I'm here is because— blah blah blah...||||/Blah blah blah, blah blah blah d|r|a|g|o|n|s| blah, blah blah, blah blah blah, blah blah blah.||||||||/Blah blah, blah. BLAH blah blah blah, blahhhhh blah. Blah. Blah. Blah. Blah, blah blah c|a|p|t|u|r|e.||||||||/And furthermore— blah blah blah, blah blah blah|| ...last known descendant.", superScene: self) { [unowned self] in
+                            speechPrincess.setText(text: "Oh, umm...|| you ask too many questions!||||||||/But if you must know,| the reason why I'm here is because— blah blah blah...||||/Blah blah blah, blah blah blah dragons blah, blah blah, blah blah blah, magic.||||||||/Blah blah, blah. BLAH blah blah blah, blahhhhh blah. Blah. Blah. Blah. Blah blah captured...||||||||/And furthermore— blah blah blah, blah blah blah|| ...last known descendant.", superScene: self) { [unowned self] in
                                 
                                 wideShot()
                                 
@@ -165,7 +165,7 @@ class CutsceneIntro: SKScene {
     }
     
     private func closeUpPrincess() {
-        princess.sprite.position.x = K.ScreenDimensions.width / 2 - princess.sprite.size.width / 2
+        princess.sprite.position.x = K.ScreenDimensions.iPhoneWidth / 2
         princess.sprite.setScale(2 * 0.75)
         princess.sprite.xScale = -2 * 0.75
         
@@ -174,9 +174,9 @@ class CutsceneIntro: SKScene {
 
         parallaxManager.backgroundSprite.setScale(2)
         parallaxManager.backgroundSprite.position.y = -K.ScreenDimensions.height / 2
-        parallaxManager.backgroundSprite.position.x = -K.ScreenDimensions.width / 2
+        parallaxManager.backgroundSprite.position.x = -K.ScreenDimensions.iPhoneWidth / 2
         
-        speechPrincess.position = CGPoint(x: K.ScreenDimensions.screenSize.width - 200, y: K.ScreenDimensions.screenSize.height + 400) / 2
+        speechPrincess.position = CGPoint(x: K.ScreenDimensions.screenSize.width - 300, y: K.ScreenDimensions.screenSize.height + 400) / 2
     }
     
     private func closeUpHero() {
@@ -184,12 +184,12 @@ class CutsceneIntro: SKScene {
         princess.sprite.setScale(playerScale * 0.75)
         princess.sprite.xScale = -playerScale * 0.75
         
-        hero.sprite.position.x = K.ScreenDimensions.width / 2 - hero.sprite.size.width / 2
+        hero.sprite.position.x = K.ScreenDimensions.iPhoneWidth / 2
         hero.sprite.setScale(2)
         
         parallaxManager.backgroundSprite.setScale(2)
         parallaxManager.backgroundSprite.position.y = -K.ScreenDimensions.height / 2
-        parallaxManager.backgroundSprite.position.x = K.ScreenDimensions.width / 2
+        parallaxManager.backgroundSprite.position.x = K.ScreenDimensions.iPhoneWidth / 2
         
         speechHero.position = CGPoint(x: K.ScreenDimensions.screenSize.width + 300, y: K.ScreenDimensions.screenSize.height + 700) / 2
     }
