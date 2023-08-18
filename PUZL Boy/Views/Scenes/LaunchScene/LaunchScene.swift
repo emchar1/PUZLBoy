@@ -18,6 +18,7 @@ class LaunchScene: SKScene {
     static let nodeName_skyNode = "skyNode"
     static let nodeName_skyObjectNode = "skyObjectNode"
     static let nodeName_groundObjectNode = "groundObjectNode"
+    static let nodeName_backgroundNode = "backgroundNode"
     
     private var player: Player!
     private var playerReflection: Player!
@@ -160,15 +161,34 @@ class LaunchScene: SKScene {
         var maxAnimationDuration: TimeInterval { playerCrouchDuration + jumpDuration + bezierDuration }
         let paddingDuration: TimeInterval = 0.5
         
+        func fadeSkyObjectNode(_ node: SKNode) {
+            node.run(SKAction.sequence([
+                SKAction.wait(forDuration: playerCrouchDuration),
+                SKAction.fadeOut(withDuration: moveDuration * maxAnimationDuration - playerCrouchDuration)
+            ]))
+        }
+        
         for node in children {
             switch node.name {
             case LaunchScene.nodeName_loadingSprite:
                 node.run(SKAction.fadeOut(withDuration: 0.5))
             case LaunchScene.nodeName_skyObjectNode:
-                node.run(SKAction.sequence([
-                    SKAction.wait(forDuration: playerCrouchDuration),
-                    SKAction.fadeOut(withDuration: moveDuration * maxAnimationDuration - playerCrouchDuration)
-                ]))
+                fadeSkyObjectNode(node)
+            case LaunchScene.nodeName_backgroundNode:
+                for backgroundNode in node.children {
+                    switch backgroundNode.name {
+                    case LaunchScene.nodeName_groundObjectNode:
+                        backgroundNode.run(SKAction.sequence([
+                            SKAction.wait(forDuration: playerCrouchDuration),
+                            SKAction.moveBy(x: 0, y: -K.ScreenDimensions.height * 2, duration: moveDuration),
+                            SKAction.removeFromParent()
+                        ]))
+                    case LaunchScene.nodeName_skyObjectNode:
+                        fadeSkyObjectNode(backgroundNode)
+                    default:
+                        break
+                    }
+                }
             case LaunchScene.nodeName_playerSprite, LaunchScene.nodeName_playerReflection:
                 guard let node = node as? SKSpriteNode else { return }
                 
@@ -216,13 +236,8 @@ class LaunchScene: SKScene {
                         scaleAction
                     ])
                 ]))
-            case LaunchScene.nodeName_groundObjectNode:
-                node.run(SKAction.sequence([
-                    SKAction.wait(forDuration: playerCrouchDuration),
-                    SKAction.moveBy(x: 0, y: -K.ScreenDimensions.height * 2, duration: moveDuration),
-                    SKAction.removeFromParent()
-                ]))
             default:
+                //ignore skyNode
                 break
             } //end switch node.name
         } //end for node in children
@@ -243,11 +258,15 @@ class LaunchScene: SKScene {
             switch node.name {
             case LaunchScene.nodeName_loadingSprite:
                 node.run(SKAction.fadeOut(withDuration: duration))
-            case LaunchScene.nodeName_groundObjectNode:
-                node.run(SKAction.sequence([
-                    SKAction.wait(forDuration: duration),
-                    SKAction.removeFromParent()
-                ]))
+            case LaunchScene.nodeName_backgroundNode:
+                for backgroundNode in node.children {
+                    if backgroundNode.name == LaunchScene.nodeName_groundObjectNode {
+                        backgroundNode.run(SKAction.sequence([
+                            SKAction.wait(forDuration: duration),
+                            SKAction.removeFromParent()
+                        ]))
+                    }
+                }
             default:
                 break
             }
@@ -261,7 +280,6 @@ class LaunchScene: SKScene {
         ])) {
             completion(xOffsetsArray)
         }
-//        run(SKAction.wait(forDuration: duration), completion: completion)
     }
     
     ///Boy falls like Peter when he bangs his knee

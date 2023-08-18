@@ -173,7 +173,7 @@ class CutsceneIntro: SKScene {
         hero.sprite.setScale(playerScale)
 
         parallaxManager.backgroundSprite.setScale(2)
-        parallaxManager.backgroundSprite.position.y = -K.ScreenDimensions.height / 2
+        parallaxManager.backgroundSprite.position.y = -K.ScreenDimensions.height / 2 + 400
         parallaxManager.backgroundSprite.position.x = -K.ScreenDimensions.iPhoneWidth / 2
         
         speechPrincess.position = CGPoint(x: K.ScreenDimensions.screenSize.width - 300, y: K.ScreenDimensions.screenSize.height + 400) / 2
@@ -188,7 +188,7 @@ class CutsceneIntro: SKScene {
         hero.sprite.setScale(2)
         
         parallaxManager.backgroundSprite.setScale(2)
-        parallaxManager.backgroundSprite.position.y = -K.ScreenDimensions.height / 2
+        parallaxManager.backgroundSprite.position.y = -K.ScreenDimensions.height / 2 + 400
         parallaxManager.backgroundSprite.position.x = K.ScreenDimensions.iPhoneWidth / 2
         
         speechHero.position = CGPoint(x: K.ScreenDimensions.screenSize.width + 300, y: K.ScreenDimensions.screenSize.height + 700) / 2

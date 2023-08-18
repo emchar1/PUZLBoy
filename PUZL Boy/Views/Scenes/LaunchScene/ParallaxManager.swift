@@ -61,6 +61,7 @@ class ParallaxManager: SKNode {
     
     private func setupSprites() {
         backgroundSprite = SKSpriteNode(color: .clear, size: K.ScreenDimensions.screenSize)
+        backgroundSprite.name = LaunchScene.nodeName_backgroundNode
         
         switch set {
         case .grass:
