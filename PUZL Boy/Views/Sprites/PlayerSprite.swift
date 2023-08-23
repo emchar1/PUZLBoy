@@ -225,7 +225,7 @@ class PlayerSprite {
         gameboard.sprite.addChild(itemSprite)
         
         itemSprite.run(SKAction.group([
-            SKAction.scale(by: 1.75, duration: 0.25),
+            SKAction.scale(by: 2, duration: 0.25),
             SKAction.fadeOut(withDuration: 0.25)
         ])) {
             itemSprite.removeFromParent()
@@ -233,30 +233,47 @@ class PlayerSprite {
         
         completion()
         
+        var particleType: ParticleEngine.ParticleType
+
         switch sound {
         case .partyGem:
+            particleType = .partyGem
             AudioManager.shared.playSound(for: "gemcollectparty")
         case .partyGemDouble:
+            particleType = .partyGem
             AudioManager.shared.playSound(for: "gemcollectparty")
             AudioManager.shared.playSound(for: "gemcollectparty2x")
         case .partyGemTriple:
+            particleType = .partyGem
             AudioManager.shared.playSound(for: "gemcollectparty")
             AudioManager.shared.playSound(for: "gemcollectparty3x")
         case .partyTime:
+            particleType = .none
             AudioManager.shared.playSound(for: "pickuptime")
         case .partyLife:
+            particleType = .none
             AudioManager.shared.playSound(for: "gemcollectpartylife")
             AudioManager.shared.playSound(for: "boywin")
         case .partyFast:
+            particleType = .none
             AudioManager.shared.playSound(for: "partyfast")
         case .partySlow:
+            particleType = .none
             AudioManager.shared.playSound(for: "partyslow")
         case .partyBomb, .partyBoom:
+            particleType = .none
             AudioManager.shared.playSound(for: "boyimpact")
             AudioManager.shared.playSound(for: "boydead")
         default:
+            particleType = .gemCollect
             AudioManager.shared.playSound(for: "gemcollect")
         }
+        
+        ParticleEngine.shared.animateParticles(type: particleType,
+                                               toNode: gameboard.sprite,
+                                               position: gameboard.getLocation(at: panel),
+                                               scale: 3 / CGFloat(gameboard.panelCount),
+                                               duration: 1)
     }
     
     func startSwordAnimation(on gameboard: GameboardSprite, at panel: K.GameboardPosition, completion: @escaping (() -> Void)) {
@@ -337,7 +354,8 @@ class PlayerSprite {
         let animation = SKAction.sequence([
             SKAction.rotate(byAngle: -3 * .pi / 4, duration: 0.2 * PartyModeSprite.shared.speedMultiplier),
             SKAction.wait(forDuration: 0.3 * PartyModeSprite.shared.speedMultiplier),
-            SKAction.fadeAlpha(to: 0, duration: 0.5 * PartyModeSprite.shared.speedMultiplier)
+            SKAction.fadeAlpha(to: 0, duration: 0.5 * PartyModeSprite.shared.speedMultiplier),
+            SKAction.removeFromParent()
         ])
         
         isAnimating = true
@@ -349,10 +367,14 @@ class PlayerSprite {
         gameboard.sprite.addChild(attackSprite)
 
         attackSprite.run(animation) { [unowned self] in
-            attackSprite.removeFromParent()
-                        
             animateExplosion(on: gameboard, at: panel, scale: scale) { }
-
+            
+            ParticleEngine.shared.animateParticles(type: .boulderCrush,
+                                                   toNode: gameboard.sprite,
+                                                   position: gameboard.getLocation(at: panel),
+                                                   scale: 3 / CGFloat(gameboard.panelCount),
+                                                   duration: 5)
+            
             completion()
         }
     }

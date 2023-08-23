@@ -221,6 +221,7 @@ class ScoringEngine {
         }
     }
     
+    ///Use this to animate the score accumulated from the level and add it to the total score in an incremented fashion.
     func animateScore(usedContinue: Bool) {
         scoreLabel.run(SKAction.sequence([
             scaleScoreAnimation(sprite: scoreLabel, fontColor: .cyan),
@@ -239,6 +240,14 @@ class ScoringEngine {
         scoreLabel.run(scaleScoreAnimation(sprite: scoreLabel, fontColor: .red))
     }
     
+    /**
+     Animates the accumulated score earned from passing the level.
+     - parameters:
+        - sprite: The SKNode to add the score to.
+        - fontColor: the color of the font to be animated.
+        - shouldCenter: whether the font to be animated should be centered on the node. Default is `false`.
+     - returns: SKAction of the resulting animation.
+     */
     private func scaleScoreAnimation(sprite: SKNode, fontColor: UIColor, shouldCenter: Bool = false) -> SKAction {
         let scaleUpDuration: TimeInterval = 0.125
         let scaleDownDuration: TimeInterval = 0.5
@@ -274,6 +283,10 @@ class ScoringEngine {
         return scaleSequence
     }
     
+    /**
+     Animation that increments from the score earned in the level, to the total score.
+     - returns: an SKAction of the resulting animation.
+     */
     private func incrementScoreAnimation() -> SKAction {
         let savedScore: CGFloat = CGFloat(scoringManager.score)
         let multiplier: Int = Int(max(savedScore / 1000, 1))
