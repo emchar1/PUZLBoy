@@ -332,6 +332,11 @@ class GameboardSprite {
         panels[position.row][position.col].run(SKAction.repeat(sandSequence, count: Int(sandAnimationDuration / sandShake / 2)))
         sandNode.run(SKAction.fadeOut(withDuration: sandAnimationDuration))
         lavaNode.run(SKAction.fadeIn(withDuration: sandAnimationDuration))
+        
+        ParticleEngine.shared.animateParticles(type: .lavaAppear,
+                                               toNode: sprite,
+                                               position: getLocation(at: position),
+                                               duration: 3)
     }
     
     func highlightPanel(color: UIColor, at position: K.GameboardPosition) {

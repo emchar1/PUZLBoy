@@ -186,6 +186,7 @@
 		EAD19A042A9698B700A07A63 /* PartyGemParticles.sks in Resources */ = {isa = PBXBuildFile; fileRef = EAD19A032A9698B700A07A63 /* PartyGemParticles.sks */; };
 		EAD19A082A96AA6D00A07A63 /* DragonCleaveParticles.sks in Resources */ = {isa = PBXBuildFile; fileRef = EAD19A062A96AA6D00A07A63 /* DragonCleaveParticles.sks */; };
 		EAD19A092A96AA6D00A07A63 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EAD19A072A96AA6D00A07A63 /* Assets.xcassets */; };
+		EAD19A0B2A96F52500A07A63 /* LavaAppearParticles.sks in Resources */ = {isa = PBXBuildFile; fileRef = EAD19A0A2A96F52500A07A63 /* LavaAppearParticles.sks */; };
 		EAD59A542A88200800F86EED /* SpeechBubbleSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD59A532A88200800F86EED /* SpeechBubbleSprite.swift */; };
 		EADEB3E92931404D00CDB232 /* dooropen.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EADEB3E82931404D00CDB232 /* dooropen.mp3 */; };
 		EADFD95C29F4CE8500C6F9D1 /* SettingsButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = EADFD95B29F4CE8500C6F9D1 /* SettingsButton.swift */; };
@@ -391,6 +392,7 @@
 		EAD19A032A9698B700A07A63 /* PartyGemParticles.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = PartyGemParticles.sks; sourceTree = "<group>"; };
 		EAD19A062A96AA6D00A07A63 /* DragonCleaveParticles.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = DragonCleaveParticles.sks; sourceTree = "<group>"; };
 		EAD19A072A96AA6D00A07A63 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		EAD19A0A2A96F52500A07A63 /* LavaAppearParticles.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = LavaAppearParticles.sks; sourceTree = "<group>"; };
 		EAD59A532A88200800F86EED /* SpeechBubbleSprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechBubbleSprite.swift; sourceTree = "<group>"; };
 		EADEB3E82931404D00CDB232 /* dooropen.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = dooropen.mp3; sourceTree = "<group>"; };
 		EADFD95B29F4CE8500C6F9D1 /* SettingsButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsButton.swift; sourceTree = "<group>"; };
@@ -859,11 +861,12 @@
 			isa = PBXGroup;
 			children = (
 				EAD199FF2A9688E500A07A63 /* ParticleEngine.swift */,
+				EAD19A072A96AA6D00A07A63 /* Assets.xcassets */,
 				EAD199FD2A95E9EE00A07A63 /* BoulderCrushParticles.sks */,
 				EAD19A062A96AA6D00A07A63 /* DragonCleaveParticles.sks */,
 				EAD199FB2A95A2ED00A07A63 /* GemCollectParticles.sks */,
+				EAD19A0A2A96F52500A07A63 /* LavaAppearParticles.sks */,
 				EAD19A032A9698B700A07A63 /* PartyGemParticles.sks */,
-				EAD19A072A96AA6D00A07A63 /* Assets.xcassets */,
 			);
 			path = ParticleSystem;
 			sourceTree = "<group>";
@@ -1023,6 +1026,7 @@
 				EA94E87329C0DE2C009F2614 /* movetile3.mp3 in Resources */,
 				EA3467A929A8C6CA002DDA02 /* chatopen.mp3 in Resources */,
 				EAF7182D29B3CC0500E2ED82 /* lavaappear2.mp3 in Resources */,
+				EAD19A0B2A96F52500A07A63 /* LavaAppearParticles.sks in Resources */,
 				EAE919492A4CB02900AF67D1 /* gemcollectpartylife.mp3 in Resources */,
 				EA3467AF29A8CB39002DDA02 /* overworld.mp3 in Resources */,
 				EAE9194D2A4CB08C00AF67D1 /* boywin.mp3 in Resources */,

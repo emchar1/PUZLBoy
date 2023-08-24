@@ -24,6 +24,7 @@ class ParticleEngine: SKNode {
         case boulderCrush = "BoulderCrushParticles"
         case dragonCleave = "DragonCleaveParticles"
         case gemCollect = "GemCollectParticles"
+        case lavaAppear = "LavaAppearParticles"
         case partyGem = "PartyGemParticles"
     }
     
