@@ -266,7 +266,7 @@ class PlayerSprite {
             AudioManager.shared.playSound(for: "boydead")
         case .boundary: //used when speedUp and speedDown are at their limit, i.e. "boundary"
             particleType = .none
-            AudioManager.shared.playSound(for: "gemcollect")
+            AudioManager.shared.playSound(for: "gemcollectparty")
         default:
             particleType = .gemCollect
             AudioManager.shared.playSound(for: "gemcollect")

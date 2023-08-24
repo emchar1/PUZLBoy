@@ -185,7 +185,7 @@ class GameScene: SKScene {
 
         guard !pauseResetEngine.isPaused else { return }
         
-//        gameEngine.handleControls(in: location)
+//        gameEngine.handleControls(in: location)   // This is now called in touchesEnded()!!!
         chatEngine.touchDown(in: location)
         
         if activityIndicator == nil || !activityIndicator!.isShowing {
