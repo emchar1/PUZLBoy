@@ -680,17 +680,46 @@ extension GameScene: AdMobManagerDelegate {
     }
     
     func didDismissInterstitial() {
-        resumeGame()
+        resumeGameFromPartyLevel()
     }
     
     func interstitialFailed() {
         print("Interstitial failed. Now what...")
     }
     
-    private func resumeGame() {
+    ///Used after the interstial ad plays after a Party Level is completed. Should not be used anywhere else because of the proprietary code!!!
+    private func resumeGameFromPartyLevel() {
         continueFromAd { [unowned self] in
+            guard let lastCurrentLevel = lastCurrentLevel else { fatalError("lastCurrentLevel is nil, which shouldn't happen after a party level") }
+
+            currentLevel = lastCurrentLevel
+            self.lastCurrentLevel = nil
+            
+            newGame(level: currentLevel, didWin: true)
+
             scoringEngine.timerManager.resetTime()
+            scoringEngine.fadeInTimeAnimation()
             startTimer()
+
+            gameEngine.shouldDisableInput(false)
+            pauseResetEngine.shouldDisable(false)
+            
+            //Animate lives earned from party
+            let livesEarned = gameEngine.partyInventory.getTotalLives()
+            
+            if livesEarned > 0 {
+                AudioManager.shared.playSound(for: "revive")
+                
+                gameEngine.animateLives(originalLives: GameEngine.livesRemaining, newLives: livesEarned)
+                gameEngine.incrementLivesRemaining(lives: livesEarned)
+            }
+            
+            //Write to Firestore, MUST come after newGame()
+            let levelStatsItem = getLevelStatsItem(level: currentLevel, didWin: true)
+            saveState(levelStatsItem: levelStatsItem)
+            
+            partyResultsSprite?.removeFromParent()
+            partyResultsSprite = nil
         }
     }
 
@@ -1057,36 +1086,10 @@ extension GameScene: ConfirmSpriteDelegate {
 extension GameScene: PartyResultsSpriteDelegate {
     func didTapConfirm() {
         partyResultsSprite?.animateHide { [unowned self] in
-            guard let lastCurrentLevel = lastCurrentLevel else { fatalError("lastCurrentLevel is nil, which shouldn't happen after a party level") }
-
-            currentLevel = lastCurrentLevel
-            self.lastCurrentLevel = nil
-            
-            newGame(level: currentLevel, didWin: true)
-
-            scoringEngine.timerManager.resetTime()
-            scoringEngine.fadeInTimeAnimation()
-            startTimer()
-
-            gameEngine.shouldDisableInput(false)
-            pauseResetEngine.shouldDisable(false)
-            
-            //Animate lives earned from party
-            let livesEarned = gameEngine.partyInventory.getTotalLives()
-            
-            if livesEarned > 0 {
-                AudioManager.shared.playSound(for: "revive")
-                
-                gameEngine.animateLives(originalLives: GameEngine.livesRemaining, newLives: livesEarned)
-                gameEngine.incrementLivesRemaining(lives: livesEarned)
+            prepareAd {
+                AdMobManager.shared.delegate = self
+                AdMobManager.shared.presentInterstitial()
             }
-            
-            //Write to Firestore, MUST come after newGame()
-            let levelStatsItem = getLevelStatsItem(level: currentLevel, didWin: true)
-            saveState(levelStatsItem: levelStatsItem)
-            
-            partyResultsSprite?.removeFromParent()
-            partyResultsSprite = nil
         }
     }
 }
