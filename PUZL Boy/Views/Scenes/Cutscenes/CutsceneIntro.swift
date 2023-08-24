@@ -15,10 +15,10 @@ class CutsceneIntro: SKScene {
     private let princessPosition = CGPoint(x: K.ScreenDimensions.iPhoneWidth + 80, y: K.ScreenDimensions.height / 3 - 40)
     private let playerScale: CGFloat = 0.75
     
+    private(set) var parallaxManager: ParallaxManager!
     private var hero: Player!
     private var princess: Player!
     private var skyNode: SKSpriteNode!
-    private var parallaxManager: ParallaxManager!
     private var speechHero: SpeechBubbleSprite!
     private var speechPrincess: SpeechBubbleSprite!
     

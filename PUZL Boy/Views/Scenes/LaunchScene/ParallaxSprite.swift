@@ -88,4 +88,9 @@ class ParallaxSprite: SKNode {
         
         return offsets
     }
+    
+    func setxPositions(xOffsets: SpriteXPositions) {
+        sprites[0].position.x = xOffsets.first
+        sprites[1].position.x = xOffsets.second
+    }
 }

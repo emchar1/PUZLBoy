@@ -140,4 +140,10 @@ class ParallaxManager: SKNode {
         
         return offsetsArray
     }
+    
+    func setxPositions(xOffsetsArray: [ParallaxSprite.SpriteXPositions]) {
+        for (i, sprite) in parallaxSprites.enumerated() {
+            sprite.setxPositions(xOffsets: xOffsetsArray[i])
+        }
+    }
 }

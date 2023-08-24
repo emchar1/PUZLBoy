@@ -32,7 +32,7 @@ class GameViewController: UIViewController {
         super.viewDidLoad()
         
         var launchScene: LaunchScene? = LaunchScene(size: K.ScreenDimensions.screenSize)
-        var cutsceneIntro: CutsceneIntro?// = CutsceneIntro(size: K.ScreenDimensions.screenSize, xOffsetsArray: nil)
+        var cutsceneIntro: CutsceneIntro?
         
         monitor = NWPathMonitor()
         monitor.pathUpdateHandler = { path in
@@ -79,11 +79,12 @@ class GameViewController: UIViewController {
                     
                     DispatchQueue.main.asyncAfter(deadline: .now() + LoadingSprite.loadingDuration) {
                         if !UserDefaults.standard.bool(forKey: K.UserDefaults.shouldSkipIntro) {
-                            // TODO: - CutsceneIntro
+                            cutsceneIntro = CutsceneIntro(size: K.ScreenDimensions.screenSize, xOffsetsArray: nil)
+
                             launchScene?.animateTransition(animationSequence: .running) { xOffsetsArray in
                                 guard let xOffsetsArray = xOffsetsArray else { return }
                                 
-                                cutsceneIntro = CutsceneIntro(size: K.ScreenDimensions.screenSize, xOffsetsArray: xOffsetsArray)
+                                cutsceneIntro?.parallaxManager.setxPositions(xOffsetsArray: xOffsetsArray)
                                 self.skView.presentScene(cutsceneIntro)
                                 launchScene = nil
                                 

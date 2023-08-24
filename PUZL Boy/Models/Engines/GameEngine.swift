@@ -555,7 +555,7 @@ class GameEngine {
                 ScoringEngine.addTextAnimation(text: "SPEED+", textColor: .cyan, originSprite: gameboardSprite.sprite, location: gameboardSprite.getLocation(at: level.player))
             }
 
-            playerSprite.startItemCollectAnimation(on: gameboardSprite, at: level.player, item: .partyFast, sound: maxReached ? .partyGem : .partyFast) { [unowned self] in
+            playerSprite.startItemCollectAnimation(on: gameboardSprite, at: level.player, item: .partyFast, sound: maxReached ? .boundary : .partyFast) { [unowned self] in
                 consumeItem()
                 completion?()
             }
@@ -571,7 +571,7 @@ class GameEngine {
                 ScoringEngine.addTextAnimation(text: "SPEED-", textColor: .magenta, originSprite: gameboardSprite.sprite, location: gameboardSprite.getLocation(at: level.player))
             }
                 
-            playerSprite.startItemCollectAnimation(on: gameboardSprite, at: level.player, item: .partySlow, sound: minReached ? .partyGem : .partySlow) { [unowned self] in
+            playerSprite.startItemCollectAnimation(on: gameboardSprite, at: level.player, item: .partySlow, sound: minReached ? .boundary : .partySlow) { [unowned self] in
                 consumeItem()
                 completion?()
             }

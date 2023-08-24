@@ -22,6 +22,7 @@ class ParticleEngine: SKNode {
     enum ParticleType: String {
         case none = "none"
         case boulderCrush = "BoulderCrushParticles"
+        case dragonCleave = "DragonCleaveParticles"
         case gemCollect = "GemCollectParticles"
         case partyGem = "PartyGemParticles"
     }

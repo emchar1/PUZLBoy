@@ -264,6 +264,9 @@ class PlayerSprite {
             particleType = .none
             AudioManager.shared.playSound(for: "boyimpact")
             AudioManager.shared.playSound(for: "boydead")
+        case .boundary: //used when speedUp and speedDown are at their limit, i.e. "boundary"
+            particleType = .none
+            AudioManager.shared.playSound(for: "gemcollect")
         default:
             particleType = .gemCollect
             AudioManager.shared.playSound(for: "gemcollect")
@@ -333,6 +336,12 @@ class PlayerSprite {
                 enemyBottomSprite.removeFromParent()
                 isAnimating = false
             }
+            
+            ParticleEngine.shared.animateParticles(type: .dragonCleave,
+                                                   toNode: gameboard.sprite,
+                                                   position: gameboard.getLocation(at: panel),
+                                                   scale: 3 / CGFloat(gameboard.panelCount),
+                                                   duration: 2)
 
             //Points animation
             ScoringEngine.addScoreAnimation(score: ScoringEngine.killEnemyScore,

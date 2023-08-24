@@ -180,11 +180,12 @@
 		EAB69E0428F3333000C31DB3 /* GameEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAB69E0328F3333000C31DB3 /* GameEngine.swift */; };
 		EACDF09D2A54B7D500F28A41 /* enemyscratch.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EACDF09C2A54B7D400F28A41 /* enemyscratch.mp3 */; };
 		EACDF09F2A55E9A100F28A41 /* CreditsScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = EACDF09E2A55E9A100F28A41 /* CreditsScene.swift */; };
-		EAD199F82A95476100A07A63 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EAD199F62A95476100A07A63 /* Assets.xcassets */; };
 		EAD199FC2A95A2ED00A07A63 /* GemCollectParticles.sks in Resources */ = {isa = PBXBuildFile; fileRef = EAD199FB2A95A2ED00A07A63 /* GemCollectParticles.sks */; };
 		EAD199FE2A95E9EE00A07A63 /* BoulderCrushParticles.sks in Resources */ = {isa = PBXBuildFile; fileRef = EAD199FD2A95E9EE00A07A63 /* BoulderCrushParticles.sks */; };
 		EAD19A002A9688E500A07A63 /* ParticleEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD199FF2A9688E500A07A63 /* ParticleEngine.swift */; };
 		EAD19A042A9698B700A07A63 /* PartyGemParticles.sks in Resources */ = {isa = PBXBuildFile; fileRef = EAD19A032A9698B700A07A63 /* PartyGemParticles.sks */; };
+		EAD19A082A96AA6D00A07A63 /* DragonCleaveParticles.sks in Resources */ = {isa = PBXBuildFile; fileRef = EAD19A062A96AA6D00A07A63 /* DragonCleaveParticles.sks */; };
+		EAD19A092A96AA6D00A07A63 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EAD19A072A96AA6D00A07A63 /* Assets.xcassets */; };
 		EAD59A542A88200800F86EED /* SpeechBubbleSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD59A532A88200800F86EED /* SpeechBubbleSprite.swift */; };
 		EADEB3E92931404D00CDB232 /* dooropen.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EADEB3E82931404D00CDB232 /* dooropen.mp3 */; };
 		EADFD95C29F4CE8500C6F9D1 /* SettingsButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = EADFD95B29F4CE8500C6F9D1 /* SettingsButton.swift */; };
@@ -384,11 +385,12 @@
 		EAB69E0328F3333000C31DB3 /* GameEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameEngine.swift; sourceTree = "<group>"; };
 		EACDF09C2A54B7D400F28A41 /* enemyscratch.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = enemyscratch.mp3; sourceTree = "<group>"; };
 		EACDF09E2A55E9A100F28A41 /* CreditsScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreditsScene.swift; sourceTree = "<group>"; };
-		EAD199F62A95476100A07A63 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		EAD199FB2A95A2ED00A07A63 /* GemCollectParticles.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GemCollectParticles.sks; sourceTree = "<group>"; };
 		EAD199FD2A95E9EE00A07A63 /* BoulderCrushParticles.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = BoulderCrushParticles.sks; sourceTree = "<group>"; };
 		EAD199FF2A9688E500A07A63 /* ParticleEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParticleEngine.swift; sourceTree = "<group>"; };
 		EAD19A032A9698B700A07A63 /* PartyGemParticles.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = PartyGemParticles.sks; sourceTree = "<group>"; };
+		EAD19A062A96AA6D00A07A63 /* DragonCleaveParticles.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = DragonCleaveParticles.sks; sourceTree = "<group>"; };
+		EAD19A072A96AA6D00A07A63 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		EAD59A532A88200800F86EED /* SpeechBubbleSprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechBubbleSprite.swift; sourceTree = "<group>"; };
 		EADEB3E82931404D00CDB232 /* dooropen.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = dooropen.mp3; sourceTree = "<group>"; };
 		EADFD95B29F4CE8500C6F9D1 /* SettingsButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsButton.swift; sourceTree = "<group>"; };
@@ -839,6 +841,7 @@
 			isa = PBXGroup;
 			children = (
 				EA826C9829938CE200F19F81 /* Extensions */,
+				EAD19A052A96A40200A07A63 /* ParticleSystem */,
 				EA65189428EA207800E535BF /* Constants.swift */,
 				EA01BB602A10746800EAB70B /* ButtonTap.swift */,
 				EA956C6929257B9C00879AD0 /* AudioManager.swift */,
@@ -848,13 +851,21 @@
 				EA826C9629938CBB00F19F81 /* StoreReviewManager.swift */,
 				EA95D1A5294957060061059C /* Haptics.swift */,
 				EAF07C0429E796AE0034CD1A /* TemplateClass.swift */,
-				EAD199FF2A9688E500A07A63 /* ParticleEngine.swift */,
-				EAD199FD2A95E9EE00A07A63 /* BoulderCrushParticles.sks */,
-				EAD199FB2A95A2ED00A07A63 /* GemCollectParticles.sks */,
-				EAD19A032A9698B700A07A63 /* PartyGemParticles.sks */,
-				EAD199F62A95476100A07A63 /* Assets.xcassets */,
 			);
 			path = Utilities;
+			sourceTree = "<group>";
+		};
+		EAD19A052A96A40200A07A63 /* ParticleSystem */ = {
+			isa = PBXGroup;
+			children = (
+				EAD199FF2A9688E500A07A63 /* ParticleEngine.swift */,
+				EAD199FD2A95E9EE00A07A63 /* BoulderCrushParticles.sks */,
+				EAD19A062A96AA6D00A07A63 /* DragonCleaveParticles.sks */,
+				EAD199FB2A95A2ED00A07A63 /* GemCollectParticles.sks */,
+				EAD19A032A9698B700A07A63 /* PartyGemParticles.sks */,
+				EAD19A072A96AA6D00A07A63 /* Assets.xcassets */,
+			);
+			path = ParticleSystem;
 			sourceTree = "<group>";
 		};
 		EAFA6A7929E1CD8D002287C2 /* LaunchScene */ = {
@@ -956,6 +967,7 @@
 				EA45835B2A4431D300279056 /* titletheme.mp3 in Resources */,
 				EA95D1A3294691820061059C /* boygrunt1.mp3 in Resources */,
 				EA94E87529C0DE2C009F2614 /* movetile1.mp3 in Resources */,
+				EAD19A092A96AA6D00A07A63 /* Assets.xcassets in Resources */,
 				EAAEA3C22931AA6E00221963 /* hammerswing.mp3 in Resources */,
 				EAE919452A4CA4A800AF67D1 /* clocktick.mp3 in Resources */,
 				EA0F145F292994B00013038E /* movewalk.mp3 in Resources */,
@@ -989,7 +1001,6 @@
 				EAF7181F29B1B2BC00E2ED82 /* movesand1.mp3 in Resources */,
 				EA95D200295D83E40061059C /* Boogaloo-Regular.ttf in Resources */,
 				EA4583582A4431C400279056 /* punchwhack2.mp3 in Resources */,
-				EAD199F82A95476100A07A63 /* Assets.xcassets in Resources */,
 				EA95D19B294690B70061059C /* boydead.mp3 in Resources */,
 				EA95D19E294690B70061059C /* boyattack2.mp3 in Resources */,
 				EA45834D2A44315900279056 /* buttontap3.mp3 in Resources */,
@@ -1006,6 +1017,7 @@
 				EA95D18E2945A0200061059C /* LuckiestGuy-Regular.ttf in Resources */,
 				EA95D1A4294691820061059C /* boygrunt2.mp3 in Resources */,
 				EA65183428E419A000E535BF /* Assets.xcassets in Resources */,
+				EAD19A082A96AA6D00A07A63 /* DragonCleaveParticles.sks in Resources */,
 				EAF7182929B31BE800E2ED82 /* lavaappear1.mp3 in Resources */,
 				EAF7183329B3D26F00E2ED82 /* movesand2.mp3 in Resources */,
 				EA94E87329C0DE2C009F2614 /* movetile3.mp3 in Resources */,
