@@ -20,10 +20,11 @@ class ParticleEngine: SKNode {
     }()
     
     enum ParticleType: String {
-        case none = "none"
         case boulderCrush = "BoulderCrushParticles"
         case dragonCleave = "DragonCleaveParticles"
         case gemCollect = "GemCollectParticles"
+        case hearts = "HeartsParticles"
+        case itemPickup = "ItemPickupParticles"
         case lavaAppear = "LavaAppearParticles"
         case partyGem = "PartyGemParticles"
     }
@@ -42,7 +43,7 @@ class ParticleEngine: SKNode {
     // MARK: - Functions
     
     func animateParticles(type: ParticleType, toNode node: SKNode, position: CGPoint, scale: CGFloat = 1, duration: TimeInterval) {
-        guard type != .none, let particles = SKEmitterNode(fileNamed: type.rawValue) else { return }
+        guard let particles = SKEmitterNode(fileNamed: type.rawValue) else { return print("Particle file not found: \(type.rawValue).sks")}
         
         particles.position = position
         particles.setScale(scale)

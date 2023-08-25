@@ -365,11 +365,22 @@ class GameEngine {
      Checks for a special panel.
      */
     private func checkSpecialPanel(completion: (() -> ())?) {
+        func animateParticles(type: ParticleEngine.ParticleType, duration: TimeInterval = 2) {
+            ParticleEngine.shared.animateParticles(type: type,
+                                                   toNode: gameboardSprite.sprite,
+                                                   position: gameboardSprite.getLocation(at: level.player),
+                                                   scale: 3 / CGFloat(gameboardSprite.panelCount),
+                                                   duration: duration)
+        }
+        
+        
         switch level.getLevelType(at: level.player) {
         case .gem:
             gemsRemaining -= 1
             gemsCollected += 1
             
+            animateParticles(type: .gemCollect)
+
             playerSprite.startItemCollectAnimation(on: gameboardSprite, at: level.player, item: .gem) { [unowned self] in
                 consumeItem()
                 completion?()
@@ -381,6 +392,8 @@ class GameEngine {
 
             setLabelsForDisplaySprite()
             consumeItem()
+            
+            animateParticles(type: .itemPickup)
             
             playerSprite.startPowerUpAnimation()
             playerSprite.startIdleAnimation(hasSword: level.inventory.hasSwords(), hasHammer: level.inventory.hasHammers())
@@ -400,6 +413,8 @@ class GameEngine {
             setLabelsForDisplaySprite()
             consumeItem()
 
+            animateParticles(type: .itemPickup)
+            
             playerSprite.startPowerUpAnimation()
             playerSprite.startIdleAnimation(hasSword: level.inventory.hasSwords(), hasHammer: level.inventory.hasHammers())
             
@@ -417,6 +432,7 @@ class GameEngine {
             setLabelsForDisplaySprite()
             consumeItem()
             
+            animateParticles(type: .hearts)
             AudioManager.shared.playSound(for: "pickupheart")
             
             ScoringEngine.updateStatusIconsAnimation(
@@ -432,12 +448,16 @@ class GameEngine {
             Haptics.shared.executeCustomPattern(pattern: .breakBoulder)
             bouldersBroken += 1
             level.inventory.hammers -= 1
+            
             playerSprite.startHammerAnimation(on: gameboardSprite, at: level.player) { [unowned self] in
+                animateParticles(type: .boulderCrush, duration: 5)
+                
                 setLabelsForDisplaySprite()
                 consumeItem()
                 
                 completion?()
             }
+
             playerSprite.startIdleAnimation(hasSword: level.inventory.hasSwords(), hasHammer: level.inventory.hasHammers())
         case .enemy:
             guard level.inventory.swords > 0 else { return }
@@ -445,6 +465,7 @@ class GameEngine {
             Haptics.shared.executeCustomPattern(pattern: .killEnemy)
             enemiesKilled += 1
             level.inventory.swords -= 1
+            
             playerSprite.startSwordAnimation(on: gameboardSprite, at: level.player) { [unowned self] in
                 setLabelsForDisplaySprite()
                 consumeItem()
@@ -452,6 +473,7 @@ class GameEngine {
                 
                 completion?()
             }
+            
             playerSprite.startIdleAnimation(hasSword: level.inventory.hasSwords(), hasHammer: level.inventory.hasHammers())
         case .warp, .warp2, .warp3:
             guard !justStartedDisableWarp, let newWarpLocation = gameboardSprite.warpTo(warpType: level.getLevelType(at: level.player), initialPosition: level.player) else {
@@ -468,6 +490,9 @@ class GameEngine {
             if level.getTerrainType(at: initialWarpLocation) == .marsh {
                 handleMarsh()
             }
+            
+            // FIXME: - test
+            animateParticles(type: .dragonCleave)
             
             playerSprite.startWarpAnimation(shouldReverse: false, stopAnimating: false) { [unowned self] in
                 level.updatePlayer(position: newWarpLocation)
@@ -498,6 +523,7 @@ class GameEngine {
             partyInventory.gems += 1
             
             Haptics.shared.addHapticFeedback(withStyle: .light)
+            animateParticles(type: .partyGem)
                         
             playerSprite.startItemCollectAnimation(on: gameboardSprite, at: level.player, item: .partyGem, sound: .partyGem) { [unowned self] in
                 consumeItem()
@@ -507,6 +533,7 @@ class GameEngine {
             partyInventory.gemsDouble += 1
 
             Haptics.shared.addHapticFeedback(withStyle: .light)
+            animateParticles(type: .partyGem)
 
             playerSprite.startItemCollectAnimation(on: gameboardSprite, at: level.player, item: .partyGemDouble, sound: .partyGemDouble) { [unowned self] in
                 consumeItem()
@@ -516,6 +543,7 @@ class GameEngine {
             partyInventory.gemsTriple += 1
 
             Haptics.shared.addHapticFeedback(withStyle: .light)
+            animateParticles(type: .partyGem)
 
             playerSprite.startItemCollectAnimation(on: gameboardSprite, at: level.player, item: .partyGemTriple, sound: .partyGemTriple) { [unowned self] in
                 consumeItem()

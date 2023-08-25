@@ -233,50 +233,32 @@ class PlayerSprite {
         
         completion()
         
-        var particleType: ParticleEngine.ParticleType
-
         switch sound {
         case .partyGem:
-            particleType = .partyGem
             AudioManager.shared.playSound(for: "gemcollectparty")
         case .partyGemDouble:
-            particleType = .partyGem
             AudioManager.shared.playSound(for: "gemcollectparty")
             AudioManager.shared.playSound(for: "gemcollectparty2x")
         case .partyGemTriple:
-            particleType = .partyGem
             AudioManager.shared.playSound(for: "gemcollectparty")
             AudioManager.shared.playSound(for: "gemcollectparty3x")
         case .partyTime:
-            particleType = .none
             AudioManager.shared.playSound(for: "pickuptime")
         case .partyLife:
-            particleType = .none
             AudioManager.shared.playSound(for: "gemcollectpartylife")
             AudioManager.shared.playSound(for: "boywin")
         case .partyFast:
-            particleType = .none
             AudioManager.shared.playSound(for: "partyfast")
         case .partySlow:
-            particleType = .none
             AudioManager.shared.playSound(for: "partyslow")
         case .partyBomb, .partyBoom:
-            particleType = .none
             AudioManager.shared.playSound(for: "boyimpact")
             AudioManager.shared.playSound(for: "boydead")
         case .boundary: //used when speedUp and speedDown are at their limit, i.e. "boundary"
-            particleType = .none
             AudioManager.shared.playSound(for: "gemcollectparty")
         default:
-            particleType = .gemCollect
             AudioManager.shared.playSound(for: "gemcollect")
         }
-        
-        ParticleEngine.shared.animateParticles(type: particleType,
-                                               toNode: gameboard.sprite,
-                                               position: gameboard.getLocation(at: panel),
-                                               scale: 3 / CGFloat(gameboard.panelCount),
-                                               duration: 1)
     }
     
     func startSwordAnimation(on gameboard: GameboardSprite, at panel: K.GameboardPosition, completion: @escaping (() -> Void)) {
@@ -337,12 +319,6 @@ class PlayerSprite {
                 isAnimating = false
             }
             
-            ParticleEngine.shared.animateParticles(type: .dragonCleave,
-                                                   toNode: gameboard.sprite,
-                                                   position: gameboard.getLocation(at: panel),
-                                                   scale: 3 / CGFloat(gameboard.panelCount),
-                                                   duration: 2)
-
             //Points animation
             ScoringEngine.addScoreAnimation(score: ScoringEngine.killEnemyScore,
                                             usedContinue: nil,
@@ -377,12 +353,6 @@ class PlayerSprite {
 
         attackSprite.run(animation) { [unowned self] in
             animateExplosion(on: gameboard, at: panel, scale: scale) { }
-            
-            ParticleEngine.shared.animateParticles(type: .boulderCrush,
-                                                   toNode: gameboard.sprite,
-                                                   position: gameboard.getLocation(at: panel),
-                                                   scale: 3 / CGFloat(gameboard.panelCount),
-                                                   duration: 5)
             
             completion()
         }
