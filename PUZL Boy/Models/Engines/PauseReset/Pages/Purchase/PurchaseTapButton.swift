@@ -36,9 +36,15 @@ class PurchaseTapButton: SKNode {
     private var imageScale: CGFloat
     private var isAnimating = false
     private var isPressed = true
+    var isDisabled = false {
+        didSet {
+            disabledOverlayNode.alpha = isDisabled ? 0.8 : 0
+        }
+    }
         
     private(set) var tappableAreaNode: SKShapeNode!
     private var sprite: SKShapeNode!
+    private var disabledOverlayNode: SKShapeNode!
     
     weak var delegate: PurchaseTapButtonDelegate?
     
@@ -87,6 +93,13 @@ class PurchaseTapButton: SKNode {
         sprite.strokeColor = .clear
         sprite.lineWidth = 0
         sprite.addDropShadow(rectOf: PurchaseTapButton.buttonSize, cornerRadius: cornerRadius, shadowOffset: shadowOffset, shadowColor: shadowColor)
+        
+        disabledOverlayNode = SKShapeNode(rectOf: PurchaseTapButton.buttonSize, cornerRadius: cornerRadius)
+        disabledOverlayNode.position = .zero
+        disabledOverlayNode.fillColor = .systemGray
+        disabledOverlayNode.strokeColor = .clear
+        disabledOverlayNode.alpha = isDisabled ? 0.8 : 0
+        disabledOverlayNode.zPosition = 30
                 
         
         let maskNode = SKShapeNode(rectOf: PurchaseTapButton.buttonSize, cornerRadius: cornerRadius)
@@ -131,6 +144,7 @@ class PurchaseTapButton: SKNode {
         
         addChild(tappableAreaNode)
         addChild(sprite)
+        sprite.addChild(disabledOverlayNode)
         sprite.addChild(cropNode)
         sprite.addChild(cropNodeFade)
         cropNode.addChild(buttonLabelNode)
@@ -143,6 +157,11 @@ class PurchaseTapButton: SKNode {
     // MARK: - Functions
     
     func touchDown(in location: CGPoint) {
+        guard !isDisabled else {
+            ButtonTap.shared.tap(type: .buttontap6)
+            return
+        }
+        
         guard !isAnimating else { return }
         guard scene?.nodes(at: location).filter({ $0.name == nodeName }).first != nil else { return }
 

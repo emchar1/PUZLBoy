@@ -507,6 +507,7 @@ extension PauseResetEngine: SettingsManagerDelegate {
         case .button2: //purchase
             removePages()
             
+            purchasePage.checkWatchAdButtonIsDisabled()
             backgroundSprite.addChild(purchasePage)
         case .button3: //leaderboard
             guard let superScene = superScene else { return print("superScene not set up. Unable to show leaderboard!") }

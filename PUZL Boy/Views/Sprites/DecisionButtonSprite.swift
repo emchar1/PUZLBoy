@@ -117,7 +117,10 @@ class DecisionButtonSprite: SKNode {
     // MARK: - Touches
     
     func touchDown(in location: CGPoint) {
-        guard !isDisabled else { return }
+        guard !isDisabled else {
+            ButtonTap.shared.tap(type: .buttontap6)
+            return
+        }
 
         isPressed = true
                 

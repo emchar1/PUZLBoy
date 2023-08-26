@@ -70,6 +70,7 @@ class PurchasePage: ParentPage {
         watchAdButton.position = CGPoint(x: PurchasePage.padding, y: -topMargin)
         watchAdButton.zPosition = 10
         watchAdButton.delegate = self
+        checkWatchAdButtonIsDisabled()
 
         buy299Button = PurchaseTapButton(price: 2.99,
                                          text: "Skip Level",
@@ -179,6 +180,14 @@ class PurchasePage: ParentPage {
         buy499Button.tapButton(in: location)
         buy999Button.tapButton(in: location)
         buy1999Button.tapButton(in: location)
+    }
+    
+    
+    // MARK: - Other Functions
+    
+    func checkWatchAdButtonIsDisabled() {
+        watchAdButton.isDisabled = !AdMobManager.rewardedAdIsReady
+        print("watchAdButton is\(watchAdButton.isDisabled ? " NOT" : "") available!")
     }
 }
 

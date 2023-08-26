@@ -39,14 +39,18 @@ class AdMobManager: NSObject {
 //    static let myFirstInterstitialID = "ca-app-pub-3047242308312153/9074783932"
 //    static let rewardedID = "ca-app-pub-3047242308312153/7555829885"
 
-    // FIXME: - ...AND DELETE THESE ONE!!!
+    // FIXME: - ...AND DELETE THESE TEST ONES!!!
     static let myFirstInterstitialID = "ca-app-pub-3940256099942544/5135589807"
     static let rewardedID = "ca-app-pub-3940256099942544/1712485313"
 
     
-    static let eddiesiPhoneTestingDeviceID = "3f4aed5e3dafdbe6435ec3679a8e07fa"//"00008110-000808E61E6A801E"
+    static let eddiesiPhoneTestingDeviceID = "3f4aed5e3dafdbe6435ec3679a8e07fa"//I don't know what this is: "00008110-000808E61E6A801E"
     static let momsiPhoneTestingDeviceID = "6582222a25a290e89ca6a1c4f29924d6"
     static let testingSimulatorID = GADSimulatorID
+    
+    //Checks for Ad Readiness
+    static var interstitialAdIsReady = false
+    static var rewardedAdIsReady = false
         
     //Public properties
     var superVC: UIViewController?
@@ -73,12 +77,16 @@ class AdMobManager: NSObject {
         
         GADInterstitialAd.load(withAdUnitID: AdMobManager.myFirstInterstitialID, request: request) { interstitialAd, error in
             guard error == nil else {
+                AdMobManager.interstitialAdIsReady = false
                 print("Error loading the interstitial: \(error!.localizedDescription)")
                 return
             }
             
             self.interstitialAd = interstitialAd
             self.interstitialAd?.fullScreenContentDelegate = self
+            
+            AdMobManager.interstitialAdIsReady = true
+            print("Interstitial ad has been loaded and is ready to present...")
         }
     }
     
@@ -98,12 +106,16 @@ class AdMobManager: NSObject {
         
         GADRewardedAd.load(withAdUnitID: AdMobManager.rewardedID, request: request) { rewardedAd, error in
             guard error == nil else {
+                AdMobManager.rewardedAdIsReady = false
                 print("Error loading the rewarded: \(error!.localizedDescription)")
                 return
             }
             
             self.rewardedAd = rewardedAd
             self.rewardedAd?.fullScreenContentDelegate = self
+            
+            AdMobManager.rewardedAdIsReady = true
+            print("Rewarded ad has been loaded and is ready to present...")
         }
     }
     
@@ -157,5 +169,11 @@ extension AdMobManager: GADFullScreenContentDelegate {
         }
     }
     
+    func adDidRecordClick(_ ad: GADFullScreenPresentingAd) {
+        print("User clicked on the ad!")
+    }
     
+    func adDidRecordImpression(_ ad: GADFullScreenPresentingAd) {
+        print("Impression recorded.")
+    }
 }
