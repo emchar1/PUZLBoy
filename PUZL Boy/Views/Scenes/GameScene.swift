@@ -260,6 +260,7 @@ class GameScene: SKScene {
     
     ///Starts the timer, used for scoring in the game.
     private func startTimer() {
+        //The 0.1 seconds for Party Levels is important for rounding so that the seconds rounds to 00 instead of some weird non-zero number.
         let wait = SKAction.wait(forDuration: Level.isPartyLevel(currentLevel) ? 0.1 : 1.0)
         let block = SKAction.run { [unowned self] in
             scoringEngine.timerManager.pollTime()

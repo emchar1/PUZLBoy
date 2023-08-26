@@ -491,8 +491,7 @@ class GameEngine {
                 handleMarsh()
             }
             
-            // FIXME: - test
-            animateParticles(type: .dragonCleave)
+            animateParticles(type: .warp)
             
             playerSprite.startWarpAnimation(shouldReverse: false, stopAnimating: false) { [unowned self] in
                 level.updatePlayer(position: newWarpLocation)
