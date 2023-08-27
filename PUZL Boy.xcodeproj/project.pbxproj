@@ -190,6 +190,7 @@
 		EAD19A0F2A97E73400A07A63 /* HeartsParticles.sks in Resources */ = {isa = PBXBuildFile; fileRef = EAD19A0E2A97E73400A07A63 /* HeartsParticles.sks */; };
 		EAD19A112A98177400A07A63 /* ItemPickupParticles.sks in Resources */ = {isa = PBXBuildFile; fileRef = EAD19A102A98177400A07A63 /* ItemPickupParticles.sks */; };
 		EAD19A172A992E3600A07A63 /* HeroRainbowParticles.sks in Resources */ = {isa = PBXBuildFile; fileRef = EAD19A162A992E3600A07A63 /* HeroRainbowParticles.sks */; };
+		EAD19A1B2A9BD48400A07A63 /* GemSparkleParticles.sks in Resources */ = {isa = PBXBuildFile; fileRef = EAD19A1A2A9BD48400A07A63 /* GemSparkleParticles.sks */; };
 		EAD59A542A88200800F86EED /* SpeechBubbleSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD59A532A88200800F86EED /* SpeechBubbleSprite.swift */; };
 		EADEB3E92931404D00CDB232 /* dooropen.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EADEB3E82931404D00CDB232 /* dooropen.mp3 */; };
 		EADFD95C29F4CE8500C6F9D1 /* SettingsButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = EADFD95B29F4CE8500C6F9D1 /* SettingsButton.swift */; };
@@ -399,6 +400,7 @@
 		EAD19A0E2A97E73400A07A63 /* HeartsParticles.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = HeartsParticles.sks; sourceTree = "<group>"; };
 		EAD19A102A98177400A07A63 /* ItemPickupParticles.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = ItemPickupParticles.sks; sourceTree = "<group>"; };
 		EAD19A162A992E3600A07A63 /* HeroRainbowParticles.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = HeroRainbowParticles.sks; sourceTree = "<group>"; };
+		EAD19A1A2A9BD48400A07A63 /* GemSparkleParticles.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GemSparkleParticles.sks; sourceTree = "<group>"; };
 		EAD59A532A88200800F86EED /* SpeechBubbleSprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechBubbleSprite.swift; sourceTree = "<group>"; };
 		EADEB3E82931404D00CDB232 /* dooropen.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = dooropen.mp3; sourceTree = "<group>"; };
 		EADFD95B29F4CE8500C6F9D1 /* SettingsButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsButton.swift; sourceTree = "<group>"; };
@@ -872,6 +874,7 @@
 				EAD19A162A992E3600A07A63 /* HeroRainbowParticles.sks */,
 				EAD19A062A96AA6D00A07A63 /* WarpParticles.sks */,
 				EAD199FB2A95A2ED00A07A63 /* GemCollectParticles.sks */,
+				EAD19A1A2A9BD48400A07A63 /* GemSparkleParticles.sks */,
 				EAD19A0E2A97E73400A07A63 /* HeartsParticles.sks */,
 				EAD19A102A98177400A07A63 /* ItemPickupParticles.sks */,
 				EAD19A0A2A96F52500A07A63 /* LavaAppearParticles.sks */,
@@ -1005,6 +1008,7 @@
 				EA0F1491292CC8D90013038E /* enemydeath.mp3 in Resources */,
 				EA999F6C2A5805C300B422B2 /* transitionShader.fsh in Resources */,
 				EA4D026529B90BF800F0C7B1 /* gemcollect.mp3 in Resources */,
+				EAD19A1B2A9BD48400A07A63 /* GemSparkleParticles.sks in Resources */,
 				EA9F4DDD29D2B766006F4B2F /* buttontap2.mp3 in Resources */,
 				EAD199FC2A95A2ED00A07A63 /* GemCollectParticles.sks in Resources */,
 				EA3467AB29A8C6F6002DDA02 /* buttontap1.mp3 in Resources */,

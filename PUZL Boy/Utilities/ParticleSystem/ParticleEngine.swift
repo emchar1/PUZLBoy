@@ -22,6 +22,7 @@ class ParticleEngine: SKNode {
     enum ParticleType: String {
         case boulderCrush = "BoulderCrushParticles"
         case gemCollect = "GemCollectParticles"
+        case gemSparkle = "GemSparkleParticles"
         case hearts = "HeartsParticles"
         case heroRainbow = "HeroRainbowParticles"
         case itemPickup = "ItemPickupParticles"
@@ -38,6 +39,10 @@ class ParticleEngine: SKNode {
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    deinit {
+        print("Deinit ParticleEngine")
     }
     
     

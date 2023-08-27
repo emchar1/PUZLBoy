@@ -62,14 +62,14 @@ class LevelSkipEngine {
         reverseSprite.anchorPoint = .zero
         reverseSprite.zPosition = K.ZPosition.pauseButton
         
-        viewAchievements = SKSpriteNode(texture: SKTexture(imageNamed: "lb2Gold"))
+        viewAchievements = SKSpriteNode()
         viewAchievements.name = "achievementButton"
         viewAchievements.setScale(buttonScale)
         viewAchievements.position = CGPoint(x: reverseSprite.position.x + buttonSpacing / 2, y: viewAchievements.size.height + padding)
         viewAchievements.anchorPoint = .zero
         viewAchievements.zPosition = K.ZPosition.pauseButton
         
-        partyMode = SKSpriteNode(texture: SKTexture(imageNamed: "party"))
+        partyMode = SKSpriteNode()
         partyMode.name = "partyModeButton"
         partyMode.setScale(buttonScale)
         partyMode.position = CGPoint(x: forwardSprite.position.x - buttonSpacing / 2, y: partyMode.size.height + padding)

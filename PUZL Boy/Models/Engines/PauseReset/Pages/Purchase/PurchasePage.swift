@@ -187,6 +187,11 @@ class PurchasePage: ParentPage {
     
     func checkWatchAdButtonIsDisabled() {
         watchAdButton.isDisabled = !AdMobManager.rewardedAdIsReady
+        
+        if watchAdButton.isDisabled {
+            AdMobManager.shared.createAndLoadRewarded()
+        }
+        
         print("watchAdButton is\(watchAdButton.isDisabled ? " NOT" : "") available!")
     }
 }

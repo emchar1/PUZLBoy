@@ -127,6 +127,10 @@ class ContinueSprite: SKNode {
     func animateShow(shouldDisable5Moves: Bool, completion: @escaping (() -> Void)) {
         buy5MovesButton.isDisabled = shouldDisable5Moves
         watchAdButton.isDisabled = !AdMobManager.rewardedAdIsReady
+        
+        if watchAdButton.isDisabled {
+            AdMobManager.shared.createAndLoadRewarded()
+        }
 
         run(SKAction.sequence([
             SKAction.scale(to: 1.1, duration: 0.25),

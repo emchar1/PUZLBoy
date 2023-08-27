@@ -234,6 +234,8 @@ class PlayerSprite {
         completion()
         
         switch sound {
+        case .heart:
+            AudioManager.shared.playSound(for: "pickupheart")
         case .partyGem:
             AudioManager.shared.playSound(for: "gemcollectparty")
         case .partyGemDouble:

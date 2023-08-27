@@ -380,6 +380,7 @@ class GameEngine {
             gemsCollected += 1
             
             animateParticles(type: .gemCollect)
+            animateParticles(type: .gemSparkle)
 
             playerSprite.startItemCollectAnimation(on: gameboardSprite, at: level.player, item: .gem) { [unowned self] in
                 consumeItem()
@@ -430,10 +431,8 @@ class GameEngine {
             healthRemaining += 1
 
             setLabelsForDisplaySprite()
-            consumeItem()
             
             animateParticles(type: .hearts)
-            AudioManager.shared.playSound(for: "pickupheart")
             
             ScoringEngine.updateStatusIconsAnimation(
                 icon: .health,
@@ -441,7 +440,10 @@ class GameEngine {
                 originSprite: gameboardSprite.sprite,
                 location: CGPoint(x: playerSprite.sprite.position.x, y: playerSprite.sprite.position.y + 20))
 
-            completion?()
+            playerSprite.startItemCollectAnimation(on: gameboardSprite, at: level.player, item: .heart, sound: .heart) { [unowned self] in
+                consumeItem()
+                completion?()
+            }
         case .boulder:
             guard level.inventory.hammers > 0 else { return }
                         
@@ -523,7 +525,8 @@ class GameEngine {
             
             Haptics.shared.addHapticFeedback(withStyle: .light)
             animateParticles(type: .partyGem)
-                        
+            animateParticles(type: .gemSparkle)
+
             playerSprite.startItemCollectAnimation(on: gameboardSprite, at: level.player, item: .partyGem, sound: .partyGem) { [unowned self] in
                 consumeItem()
                 completion?()
@@ -533,6 +536,7 @@ class GameEngine {
 
             Haptics.shared.addHapticFeedback(withStyle: .light)
             animateParticles(type: .partyGem)
+            animateParticles(type: .gemSparkle)
 
             playerSprite.startItemCollectAnimation(on: gameboardSprite, at: level.player, item: .partyGemDouble, sound: .partyGemDouble) { [unowned self] in
                 consumeItem()
@@ -543,6 +547,7 @@ class GameEngine {
 
             Haptics.shared.addHapticFeedback(withStyle: .light)
             animateParticles(type: .partyGem)
+            animateParticles(type: .gemSparkle)
 
             playerSprite.startItemCollectAnimation(on: gameboardSprite, at: level.player, item: .partyGemTriple, sound: .partyGemTriple) { [unowned self] in
                 consumeItem()
