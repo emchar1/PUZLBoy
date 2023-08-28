@@ -97,6 +97,13 @@ class GameboardSprite {
                 SKAction.colorize(with: randomHue, colorBlendFactor: 1.0, duration: randomDuration)
             ])))
         }
+        
+        if tile.terrain == .marsh {
+            ParticleEngine.shared.animateParticles(type: .poisonBubbles,
+                                                   toNode: sprite,
+                                                   position: getLocation(at: position),
+                                                   duration: 0)
+        }
 
         sprite.addChild(panels[position.row][position.col])
         

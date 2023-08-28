@@ -28,6 +28,7 @@ class ParticleEngine: SKNode {
         case itemPickup = "ItemPickupParticles"
         case lavaAppear = "LavaAppearParticles"
         case partyGem = "PartyGemParticles"
+        case poisonBubbles = "PoisonBubblesParticles"
         case warp = "WarpParticles"
     }
     
@@ -56,6 +57,9 @@ class ParticleEngine: SKNode {
         particles.zPosition = K.ZPosition.itemsAndEffects + 10
         
         node.addChild(particles)
+        
+        
+        guard duration > 0 else { return }
         
         particles.run(SKAction.sequence([
             SKAction.wait(forDuration: duration),
