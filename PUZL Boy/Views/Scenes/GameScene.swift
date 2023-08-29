@@ -584,6 +584,7 @@ extension GameScene: GameEngineDelegate {
             
             prepareAd { [unowned self] in
                 pauseResetEngine.shouldDisable(true)
+                gameEngine.hideParticles()
 
                 addChild(continueSprite!)
 
@@ -806,6 +807,7 @@ extension GameScene: AdMobManagerDelegate {
 
                 pauseResetEngine.shouldDisable(false)
                 gameEngine.continueGame()
+                gameEngine.showParticles()
 
                 gameEngine.animateMoves(originalMoves: gameEngine.movesRemaining, newMoves: moves)
                 gameEngine.incrementMovesRemaining(moves: moves)

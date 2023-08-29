@@ -97,11 +97,18 @@ class GameboardSprite {
                 SKAction.colorize(with: randomHue, colorBlendFactor: 1.0, duration: randomDuration)
             ])))
         }
-        
-        if tile.terrain == .marsh {
+        else if tile.terrain == .marsh {
             ParticleEngine.shared.animateParticles(type: .poisonBubbles,
                                                    toNode: sprite,
                                                    position: getLocation(at: position),
+                                                   scale: 3 / CGFloat(panelCount),
+                                                   duration: 0)
+        }
+        else if tile.terrain == .lava {
+            ParticleEngine.shared.animateParticles(type: .lavaSizzle,
+                                                   toNode: sprite,
+                                                   position: getLocation(at: position),
+                                                   scale: 3 / CGFloat(panelCount),
                                                    duration: 0)
         }
 
@@ -343,6 +350,7 @@ class GameboardSprite {
         ParticleEngine.shared.animateParticles(type: .lavaAppear,
                                                toNode: sprite,
                                                position: getLocation(at: position),
+                                               scale: 3 / CGFloat(panelCount),
                                                duration: 3)
     }
     

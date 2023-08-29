@@ -11,6 +11,8 @@ class ParticleEngine: SKNode {
     
     // MARK: - Properties
     
+    static let nodeName = "ParticleEmitter"
+    
     static let shared: ParticleEngine = {
         let engine = ParticleEngine()
         
@@ -27,6 +29,7 @@ class ParticleEngine: SKNode {
         case heroRainbow = "HeroRainbowParticles"
         case itemPickup = "ItemPickupParticles"
         case lavaAppear = "LavaAppearParticles"
+        case lavaSizzle = "LavaSizzleParticles"
         case partyGem = "PartyGemParticles"
         case poisonBubbles = "PoisonBubblesParticles"
         case warp = "WarpParticles"
@@ -55,6 +58,7 @@ class ParticleEngine: SKNode {
         particles.position = position
         particles.setScale(scale)
         particles.zPosition = K.ZPosition.itemsAndEffects + 10
+        particles.name = ParticleEngine.nodeName
         
         node.addChild(particles)
         
@@ -67,5 +71,28 @@ class ParticleEngine: SKNode {
         ]))
     }
     
+    func removeParticles(fromNode node: SKNode) {
+        for particleNode in node.children {
+            guard particleNode.name == ParticleEngine.nodeName else { continue }
+                    
+            particleNode.removeAllActions()
+            particleNode.removeFromParent()
+        }
+    }
     
+    func hideParticles(fromNode node: SKNode) {
+        for particleNode in node.children {
+            guard particleNode.name == ParticleEngine.nodeName else { continue }
+                    
+            particleNode.run(SKAction.fadeOut(withDuration: 0.25))
+        }
+    }
+    
+    func showParticles(fromNode node: SKNode) {
+        for particleNode in node.children {
+            guard particleNode.name == ParticleEngine.nodeName else { continue }
+                    
+            particleNode.run(SKAction.fadeIn(withDuration: 0.25))
+        }
+    }
 }

@@ -644,8 +644,8 @@ class GameEngine {
         level.removeOverlayObject(at: level.player)
 
         for child in gameboardSprite.sprite.children {
-            //Exclude Player, which will have no name
-            guard let name = child.name else { continue }
+            //Exclude Player, which will have no name, AND any Particle Emitter nodes!!
+            guard let name = child.name, name != ParticleEngine.nodeName else { continue }
             
             let row = String(name.prefix(upTo: name.firstIndex(of: ",")!))
             let col = String(name.suffix(from: name.firstIndex(of: ",")!).dropFirst()).replacingOccurrences(of: GameboardSprite.overlayTag, with: "")
@@ -1130,5 +1130,17 @@ class GameEngine {
                                           blendFactor: fadeOut ? 1.0 : 0.0,
                                           animationDuration: fadeOut ? 1.0 : 0.5,
                                           completion: completion)
+    }
+    
+    func removeParticles() {
+        ParticleEngine.shared.removeParticles(fromNode: gameboardSprite.sprite)
+    }
+    
+    func hideParticles() {
+        ParticleEngine.shared.hideParticles(fromNode: gameboardSprite.sprite)
+    }
+    
+    func showParticles() {
+        ParticleEngine.shared.showParticles(fromNode: gameboardSprite.sprite)
     }
 }
