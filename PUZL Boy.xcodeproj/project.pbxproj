@@ -858,12 +858,12 @@
 				EAD19A052A96A40200A07A63 /* ParticleSystem */,
 				EA65189428EA207800E535BF /* Constants.swift */,
 				EA01BB602A10746800EAB70B /* ButtonTap.swift */,
+				EA95D1A5294957060061059C /* Haptics.swift */,
 				EA956C6929257B9C00879AD0 /* AudioManager.swift */,
 				EA26F29029739DE800BF1AC8 /* AdMobManager.swift */,
 				EA826C80298CF3FF00F19F81 /* IAPManager.swift */,
 				EA75F0EA292DF46200F09BD7 /* FIRManager.swift */,
 				EA826C9629938CBB00F19F81 /* StoreReviewManager.swift */,
-				EA95D1A5294957060061059C /* Haptics.swift */,
 				EAF07C0429E796AE0034CD1A /* TemplateClass.swift */,
 			);
 			path = Utilities;

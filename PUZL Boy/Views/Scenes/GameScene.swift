@@ -548,6 +548,7 @@ extension GameScene: GameEngineDelegate {
                                                  usedContinue: usedContinue)
         scoringEngine.animateScore(usedContinue: usedContinue)
         gameEngine.updateScores()
+        gameEngine.hideParticles()
         stopTimer()
         
         //Need to preserve game states before restarting the level but after setting score, so it can save them to Firestore down below.

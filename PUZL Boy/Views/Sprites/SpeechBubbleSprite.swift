@@ -42,7 +42,7 @@ class SpeechBubbleSprite: SKNode {
         super.init()
         
         self.position = position
-        self.zPosition = K.ZPosition.speechBubble
+        self.zPosition = K.ZPosition.chatDialogue
 
         setupSprites()
     }
