@@ -177,6 +177,7 @@
 		EAAEA3CA2931F12B00221963 /* pickupitem.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAAEA3C92931F12B00221963 /* pickupitem.mp3 */; };
 		EAAEA3CC2931F14D00221963 /* winlevel.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAAEA3CB2931F14D00221963 /* winlevel.mp3 */; };
 		EAB2DE102A9D4BD700172478 /* LavaSizzleParticles.sks in Resources */ = {isa = PBXBuildFile; fileRef = EAB2DE0F2A9D4BD700172478 /* LavaSizzleParticles.sks */; };
+		EAB2DE122AA0415D00172478 /* SpeechBubbleItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAB2DE112AA0415D00172478 /* SpeechBubbleItem.swift */; };
 		EAB69E0028EFCF5B00C31DB3 /* PlayerSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAB69DFF28EFCF5B00C31DB3 /* PlayerSprite.swift */; };
 		EAB69E0428F3333000C31DB3 /* GameEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAB69E0328F3333000C31DB3 /* GameEngine.swift */; };
 		EACDF09D2A54B7D500F28A41 /* enemyscratch.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EACDF09C2A54B7D400F28A41 /* enemyscratch.mp3 */; };
@@ -389,6 +390,7 @@
 		EAAEA3C92931F12B00221963 /* pickupitem.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = pickupitem.mp3; sourceTree = "<group>"; };
 		EAAEA3CB2931F14D00221963 /* winlevel.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = winlevel.mp3; sourceTree = "<group>"; };
 		EAB2DE0F2A9D4BD700172478 /* LavaSizzleParticles.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = LavaSizzleParticles.sks; sourceTree = "<group>"; };
+		EAB2DE112AA0415D00172478 /* SpeechBubbleItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechBubbleItem.swift; sourceTree = "<group>"; };
 		EAB69DFF28EFCF5B00C31DB3 /* PlayerSprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerSprite.swift; sourceTree = "<group>"; };
 		EAB69E0328F3333000C31DB3 /* GameEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameEngine.swift; sourceTree = "<group>"; };
 		EACDF09C2A54B7D400F28A41 /* enemyscratch.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = enemyscratch.mp3; sourceTree = "<group>"; };
@@ -504,6 +506,8 @@
 		EA496AAA2A79B22E0096DB35 /* Cutscenes */ = {
 			isa = PBXGroup;
 			children = (
+				EAB2DE112AA0415D00172478 /* SpeechBubbleItem.swift */,
+				EAD59A532A88200800F86EED /* SpeechBubbleSprite.swift */,
 				EA496AAB2A79B25A0096DB35 /* CutsceneIntro.swift */,
 			);
 			path = Cutscenes;
@@ -589,7 +593,6 @@
 				EA826C84298DD6C600F19F81 /* ActivityIndicatorSprite.swift */,
 				EA826C9929950D0C00F19F81 /* NumMovesSprite.swift */,
 				EA2AF74329B6D06000444E5A /* OfflinePlaySprite.swift */,
-				EAD59A532A88200800F86EED /* SpeechBubbleSprite.swift */,
 			);
 			path = Sprites;
 			sourceTree = "<group>";
@@ -1188,6 +1191,7 @@
 				EA826C87298E23A500F19F81 /* Player.swift in Sources */,
 				EA826C7C29858EBE00F19F81 /* ContinueSprite.swift in Sources */,
 				EAB69E0028EFCF5B00C31DB3 /* PlayerSprite.swift in Sources */,
+				EAB2DE122AA0415D00172478 /* SpeechBubbleItem.swift in Sources */,
 				EA95D1BF29538C450061059C /* AchievementGemCollector.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -19,6 +19,7 @@ class CutsceneIntro: SKScene {
     private var hero: Player!
     private var princess: Player!
     private var skyNode: SKSpriteNode!
+    private var dimOverlayNode: SKShapeNode!
     private var speechHero: SpeechBubbleSprite!
     private var speechPrincess: SpeechBubbleSprite!
     
@@ -56,6 +57,13 @@ class CutsceneIntro: SKScene {
         skyNode.zPosition = K.ZPosition.skyNode
         skyNode.name = LaunchScene.nodeName_skyNode
         
+        dimOverlayNode = SKShapeNode(rectOf: K.ScreenDimensions.screenSize)
+        dimOverlayNode.position = CGPoint(x: K.ScreenDimensions.iPhoneWidth / 2, y: K.ScreenDimensions.height / 2)
+        dimOverlayNode.fillColor = .black
+        dimOverlayNode.lineWidth = 0
+        dimOverlayNode.alpha = 0
+        dimOverlayNode.zPosition = K.ZPosition.chatDimOverlay
+        
         parallaxManager = ParallaxManager(useSet: .grass, xOffsetsArray: xOffsetsArray, shouldWalk: true)
         
         speechHero = SpeechBubbleSprite(width: 460, position: heroPosition + CGPoint(x: 200, y: 400))
@@ -68,6 +76,7 @@ class CutsceneIntro: SKScene {
     
     override func didMove(to view: SKView) {
         addChild(skyNode)
+        addChild(dimOverlayNode)
         addChild(hero.sprite)
         addChild(princess.sprite)
 
@@ -125,34 +134,65 @@ class CutsceneIntro: SKScene {
         run(SKAction.sequence([
             SKAction.wait(forDuration: 2 * walkCycle),
             SKAction.run { [unowned self] in
-                speechHero.setText(text: "🎵 I'm a Barbie girl,| in the Barbie world.|| Life in plastic,| it's fantastic! You can brush my hair—/Oh.....|| hello.| Didn't see you there... 😬|||| I'm PUZL Boy. 👋🏼", superScene: self) { [unowned self] in
-                    
-                    closeUpPrincess()
-                    
-                    speechPrincess.setText(text: "Hi! My name is Princess Olivia and I'm 7 years old.|| I'm late for a V|E|R|Y| important appointment.", superScene: self) { [unowned self] in
+                setTextArray(items: [
+                    SpeechBubbleItem(profile: speechHero, chat: "🎵 I'm a Barbie girl,| in the Barbie world.|| Life in plastic,| it's fantastic! You can brush my hair—/Oh.....|| hello.| Didn't see you there... 😬|||| I'm PUZL Boy. 👋🏼", handler: closeUpPrincess),
+                    SpeechBubbleItem(profile: speechPrincess, chat: "Hi! My name is Princess Olivia and I'm 9 years old.|| I'm late for a V|E|R|Y| important appointment.", handler: closeUpHero),
+                    SpeechBubbleItem(profile: speechHero, chat: "Wait,| like an actual princess, or...| is that more of a self-proclaimed title?||||||||/Also what kind of important meeting does a 9 year old need to attend?||||||||/And where are your parents?|| Are you here by yourself???") { [unowned self] in
+                        closeUpPrincess()
                         
-                        closeUpHero()
+                        dimOverlayNode.run(SKAction.sequence([
+                            SKAction.wait(forDuration: 12),
+                            SKAction.fadeAlpha(to: 0.8, duration: 1)
+                        ]))
+                    },
+                    SpeechBubbleItem(profile: speechPrincess, chat: "Oh, umm...|| you ask too many questions!||||||||/But if you must know,| the reason why I'm here is because— blah blah blah...||||/Blah blah blah, blah blah blah dragons blah, blah blah, blah blah blah, magic.||||||||/Blah blah, blah. BLAH blah blah blah, blahhhhh blah. Blah. Blah. Blah. Blah blah captured...||||||||/And furthermore— blah blah blah, blah blah blah|| ...last known descendant.") { [unowned self] in
+                        wideShot()
                         
-                        speechHero.setText(text: "Wait,| like an actual princess, or...| is that more of a self-proclaimed title?||||||||/Also what kind of important meeting does a 7 year old need to attend?||||||||/And where are your parents?|| Are you here by yourself???", superScene: self) { [unowned self] in
-                            
-                            closeUpPrincess()
-                            
-                            speechPrincess.setText(text: "Oh, umm...|| you ask too many questions!||||||||/But if you must know,| the reason why I'm here is because— blah blah blah...||||/Blah blah blah, blah blah blah dragons blah, blah blah, blah blah blah, magic.||||||||/Blah blah, blah. BLAH blah blah blah, blahhhhh blah. Blah. Blah. Blah. Blah blah captured...||||||||/And furthermore— blah blah blah, blah blah blah|| ...last known descendant.", superScene: self) { [unowned self] in
-                                
-                                wideShot()
-                                
-                                speechHero.setText(text: "Wow that is some story!|| Well don't worry Princess, I'll get you to where you need to go—", superScene: self) { [unowned self] in
-                                    didFinishAnimating(completion: completion)
-                                }
+                        dimOverlayNode.run(SKAction.fadeOut(withDuration: 1))
+                    },
+                    SpeechBubbleItem(profile: speechHero, chat: "Wow that is some story!|| Well don't worry Princess, I'll get you to where you need to go—") { [unowned self] in
+                        // FIXME: - Not working...
+                        run(SKAction.sequence([
+                            SKAction.run { [unowned self] in
+                                skyNode.texture = SKTexture(image: DayTheme.getSkyImage())
+                            },
+                            SKAction.wait(forDuration: 5),
+                            SKAction.run { [unowned self] in
+                                didFinishAnimating()
                             }
-                        }
+                        ]))
                     }
-                }
+                ], completion: completion)
             }
-        ]))
+        ])) //end Speech Bubbles animation
+        
+        
+    }
+
+    /**
+     Helper to SpeechBubbleSprite.setText(). Takes in an array of SpeechBubbleItems and process them recursively, with nesting completion handlers.
+     - parameters:
+        - items: array of SpeechBubbleItems to process
+        - currentIndex: keeps track of the array index, which is handled recursively
+        - completion: process any handlers between text animations.
+     */
+    private func setTextArray(items: [SpeechBubbleItem], currentIndex: Int = 0, completion: (() -> Void)?) {
+        guard currentIndex < items.count else {
+            //Base case
+            completion?()
+
+            return
+        }
+        
+        items[currentIndex].profile.setText(text: items[currentIndex].chat, superScene: self) { [unowned self] in
+            items[currentIndex].handler?()
+            
+            //Recursion!!
+            setTextArray(items: items, currentIndex: currentIndex + 1, completion: completion)
+        }
     }
     
-    private func didFinishAnimating(completion: (() -> Void)?) {
+    private func didFinishAnimating() {
         hero.sprite.removeAllActions()
         princess.sprite.removeAllActions()
         parallaxManager.removeAllActions()
@@ -160,8 +200,6 @@ class CutsceneIntro: SKScene {
         hero.sprite.removeFromParent()
         princess.sprite.removeFromParent()
         parallaxManager.removeFromParent()
-        
-        completion?()
     }
     
     private func closeUpPrincess() {

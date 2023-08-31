@@ -16,6 +16,9 @@ struct DayTheme {
     static let morningSky: SkyColors = (UIColor(red: 32 / 255, green: 99 / 255, blue: 207 / 255, alpha: 1.0),
                                         UIColor(red: 174 / 255, green: 232 / 255, blue: 246 / 255, alpha: 1.0))
     
+    static let bloodSky: SkyColors = (UIColor(red: 202 / 255, green: 0 / 255, blue: 0 / 255, alpha: 1.0),
+                                        UIColor(red: 69 / 255, green: 22 / 255, blue: 22 / 255, alpha: 1.0))
+    
     static var currentTheme: Theme {
         let currentHour = Calendar.current.component(.hour, from: Date())
         
