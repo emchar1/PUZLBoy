@@ -178,6 +178,8 @@
 		EAAEA3CC2931F14D00221963 /* winlevel.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAAEA3CB2931F14D00221963 /* winlevel.mp3 */; };
 		EAB2DE102A9D4BD700172478 /* LavaSizzleParticles.sks in Resources */ = {isa = PBXBuildFile; fileRef = EAB2DE0F2A9D4BD700172478 /* LavaSizzleParticles.sks */; };
 		EAB2DE122AA0415D00172478 /* SpeechBubbleItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAB2DE112AA0415D00172478 /* SpeechBubbleItem.swift */; };
+		EAB2DE142AA1AB8F00172478 /* SpeechOverlaySprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAB2DE132AA1AB8F00172478 /* SpeechOverlaySprite.swift */; };
+		EAB2DE162AA1C5F400172478 /* SpeechNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAB2DE152AA1C5F400172478 /* SpeechNode.swift */; };
 		EAB69E0028EFCF5B00C31DB3 /* PlayerSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAB69DFF28EFCF5B00C31DB3 /* PlayerSprite.swift */; };
 		EAB69E0428F3333000C31DB3 /* GameEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAB69E0328F3333000C31DB3 /* GameEngine.swift */; };
 		EACDF09D2A54B7D500F28A41 /* enemyscratch.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EACDF09C2A54B7D400F28A41 /* enemyscratch.mp3 */; };
@@ -391,6 +393,8 @@
 		EAAEA3CB2931F14D00221963 /* winlevel.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = winlevel.mp3; sourceTree = "<group>"; };
 		EAB2DE0F2A9D4BD700172478 /* LavaSizzleParticles.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = LavaSizzleParticles.sks; sourceTree = "<group>"; };
 		EAB2DE112AA0415D00172478 /* SpeechBubbleItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechBubbleItem.swift; sourceTree = "<group>"; };
+		EAB2DE132AA1AB8F00172478 /* SpeechOverlaySprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechOverlaySprite.swift; sourceTree = "<group>"; };
+		EAB2DE152AA1C5F400172478 /* SpeechNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechNode.swift; sourceTree = "<group>"; };
 		EAB69DFF28EFCF5B00C31DB3 /* PlayerSprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerSprite.swift; sourceTree = "<group>"; };
 		EAB69E0328F3333000C31DB3 /* GameEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameEngine.swift; sourceTree = "<group>"; };
 		EACDF09C2A54B7D400F28A41 /* enemyscratch.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = enemyscratch.mp3; sourceTree = "<group>"; };
@@ -507,7 +511,9 @@
 			isa = PBXGroup;
 			children = (
 				EAB2DE112AA0415D00172478 /* SpeechBubbleItem.swift */,
+				EAB2DE152AA1C5F400172478 /* SpeechNode.swift */,
 				EAD59A532A88200800F86EED /* SpeechBubbleSprite.swift */,
+				EAB2DE132AA1AB8F00172478 /* SpeechOverlaySprite.swift */,
 				EA496AAB2A79B25A0096DB35 /* CutsceneIntro.swift */,
 			);
 			path = Cutscenes;
@@ -1079,6 +1085,7 @@
 				EA65189228E973D700E535BF /* Level.swift in Sources */,
 				EA826C8F298F485D00F19F81 /* AchievementBigSpender.swift in Sources */,
 				EA95D1B92952579A0061059C /* AchievementDragonSlayer.swift in Sources */,
+				EAB2DE142AA1AB8F00172478 /* SpeechOverlaySprite.swift in Sources */,
 				EA49B06B2A1953C500E6B96D /* HowToPlayTVCell.swift in Sources */,
 				EA95D1DF295674AE0061059C /* ChatEngine.swift in Sources */,
 				EA65184528E5750C00E535BF /* GameboardSprite.swift in Sources */,
@@ -1138,6 +1145,7 @@
 				EA956C6C29257D9600879AD0 /* Extension+Comparable.swift in Sources */,
 				EA45833F2A43CE3100279056 /* PartyResultsSprite.swift in Sources */,
 				EA95D1FA295BEC160061059C /* DisplayLivesSprite.swift in Sources */,
+				EAB2DE162AA1C5F400172478 /* SpeechNode.swift in Sources */,
 				EAF07C0E29EA736F0034CD1A /* MoonSprite.swift in Sources */,
 				EA95D1BB2952F0680061059C /* Achievement.swift in Sources */,
 				EAF07C0529E796AE0034CD1A /* TemplateClass.swift in Sources */,

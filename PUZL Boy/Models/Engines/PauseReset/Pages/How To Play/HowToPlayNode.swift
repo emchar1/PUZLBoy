@@ -88,7 +88,7 @@ class HowToPlayNode: SKNode {
         descriptionNode.preferredMaxLayoutWidth = nodeWidth - (HowToPlayNode.iconSize + padding)
         descriptionNode.numberOfLines = 0
         descriptionNode.fontName = UIFont.chatFont
-        descriptionNode.fontSize = UIDevice.isiPad ? UIFont.gameFontSizeLarge : UIFont.chatFontSize
+        descriptionNode.fontSize = UIDevice.isiPad ? UIFont.gameFontSizeLarge : UIFont.chatFontSizeRegular
         descriptionNode.fontColor = UIFont.chatFontColor
         descriptionNode.name = "descriptionNode"
         descriptionNode.zPosition = 10

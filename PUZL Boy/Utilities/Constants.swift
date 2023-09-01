@@ -63,7 +63,6 @@ struct K {
         static let backgroundObjectMoon: CGFloat = 30
         static let loadingNode: CGFloat = 610
         static let parallaxLayer0: CGFloat = 70
-        static let speechBubble: CGFloat = 80
         
         
         //--TITLE SCENE--
@@ -96,6 +95,10 @@ struct K {
         static let player: CGFloat = 600
         static let itemsAndEffects: CGFloat = 620
         static let itemsPoints: CGFloat = 630
+        
+        //SpeechBubbles
+        static let bloodOverlay: CGFloat = 640
+        static let speechBubble: CGFloat = 650
 
         //Party Foreground
         static let partyForegroundOverlay: CGFloat = 777

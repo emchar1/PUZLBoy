@@ -103,7 +103,7 @@ class ContinueSprite: SKNode {
 
         livesRefreshLabel = SKLabelNode(text: "Or wait for \(LifeSpawnerModel.defaultLives) lives in: 02:00:00")
         livesRefreshLabel.fontName = UIFont.chatFont
-        livesRefreshLabel.fontSize = UIDevice.isiPad ? UIFont.gameFontSizeLarge : UIFont.chatFontSize
+        livesRefreshLabel.fontSize = UIDevice.isiPad ? UIFont.gameFontSizeLarge : UIFont.chatFontSizeRegular
         livesRefreshLabel.fontColor = UIFont.chatFontColor
         livesRefreshLabel.verticalAlignmentMode = .top
         livesRefreshLabel.position = CGPoint(

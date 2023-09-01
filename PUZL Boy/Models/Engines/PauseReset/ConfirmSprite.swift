@@ -86,7 +86,7 @@ class ConfirmSprite: SKNode {
 
         messageLabel = SKLabelNode(text: message)
         messageLabel.fontName = UIFont.chatFont
-        messageLabel.fontSize = UIDevice.isiPad ? UIFont.gameFontSizeLarge : UIFont.chatFontSize
+        messageLabel.fontSize = UIDevice.isiPad ? UIFont.gameFontSizeLarge : UIFont.chatFontSizeRegular
         messageLabel.fontColor = UIFont.chatFontColor
         messageLabel.position = CGPoint(
             x: 0,

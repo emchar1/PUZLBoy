@@ -42,7 +42,7 @@ class SpeechBubbleSprite: SKNode {
         super.init()
         
         self.position = position
-        self.zPosition = K.ZPosition.chatDialogue
+        self.zPosition = K.ZPosition.speechBubble
 
         setupSprites()
     }
@@ -69,7 +69,7 @@ class SpeechBubbleSprite: SKNode {
         
         textSprite = SKLabelNode(text: "")
         textSprite.fontName = UIFont.chatFont
-        textSprite.fontSize = UIFont.chatFontSize
+        textSprite.fontSize = UIFont.chatFontSizeRegular
         textSprite.fontColor = .black
         textSprite.position = paddingPercentage * CGPoint(x: -bubbleDimensions.width / 2, y: bubbleDimensions.height / 2)
         textSprite.numberOfLines = 0

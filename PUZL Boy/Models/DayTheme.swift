@@ -90,7 +90,14 @@ struct DayTheme {
             withBounds: CGRect(x: 0, y: 0, width: K.ScreenDimensions.iPhoneWidth, height: K.ScreenDimensions.height),
             startPoint: CGPoint(x: 0.5, y: 0),
             endPoint: CGPoint(x: 0.5, y: endPointY),
-            colors: [skyColor.top.cgColor, skyColor.bottom.cgColor]
-        )
+            colors: [skyColor.top.cgColor, skyColor.bottom.cgColor])
+    }
+    
+    static func getBloodSkyImage() -> UIImage {
+        return UIImage.createGradientImage(
+            withBounds: CGRect(x: 0, y: 0, width: K.ScreenDimensions.iPhoneWidth, height: K.ScreenDimensions.height),
+            startPoint: CGPoint(x: 0.5, y: 0),
+            endPoint: CGPoint(x: 0.5, y: 0.5),
+            colors: [bloodSky.top.cgColor, bloodSky.bottom.cgColor])
     }
 }

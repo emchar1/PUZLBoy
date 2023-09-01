@@ -139,7 +139,7 @@ class ChatEngine {
         textSprite.horizontalAlignmentMode = .left
         textSprite.verticalAlignmentMode = .top
         textSprite.fontName = UIFont.chatFont
-        textSprite.fontSize = UIFont.chatFontSize
+        textSprite.fontSize = UIFont.chatFontSizeRegular
         textSprite.fontColor = UIFont.chatFontColor
         textSprite.zPosition = 10
         textSprite.addDropShadow()
