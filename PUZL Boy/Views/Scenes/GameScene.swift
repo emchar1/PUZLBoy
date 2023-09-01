@@ -82,7 +82,9 @@ class GameScene: SKScene {
         //chatEngine MUST be initialized here, and not in properties, otherwise it just refuses to show up! Because K.ScreenDimensions.topOfGameboard is set in the gameEngine(). Is there a better way to do this??
         chatEngine = ChatEngine()
         pauseResetEngine = PauseResetEngine(user: user, level: currentLevel)
-        offlinePlaySprite = hasInternet ? nil : OfflinePlaySprite()
+
+        // FIXME: - 8/30/23 Added '&& user != nil' here to also show offline play if user is nil, i.e. error connecting to Firebase.
+        offlinePlaySprite = (hasInternet && user != nil) ? nil : OfflinePlaySprite()
         
         self.user = user
         

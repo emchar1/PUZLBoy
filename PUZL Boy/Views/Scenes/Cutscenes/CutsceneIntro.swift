@@ -10,20 +10,29 @@ import SpriteKit
 class CutsceneIntro: SKScene {
     
     // MARK: - Properties
-    
+
+    //Positions, Scales
     private let heroPosition = CGPoint(x: K.ScreenDimensions.iPhoneWidth / 2, y: K.ScreenDimensions.height / 3)
     private let princessPosition = CGPoint(x: K.ScreenDimensions.iPhoneWidth + 80, y: K.ScreenDimensions.height / 3 - 40)
     private let playerScale: CGFloat = 0.75
     
+    //Main Nodes
     private(set) var parallaxManager: ParallaxManager!
+    private var skyNode: SKSpriteNode!
     private var hero: Player!
     private var princess: Player!
-    private var skyNode: SKSpriteNode!
-    private var dimOverlayNode: SKShapeNode!
+    private var dragonSprite: SKSpriteNode!
+    
+    //Speech
     private var speechHero: SpeechBubbleSprite!
     private var speechPrincess: SpeechBubbleSprite!
+    private var overlaySpeech: SpeechOverlaySprite!
     
-    
+    //Overlays
+    private var dimOverlayNode: SKShapeNode!
+    private var bloodOverlayNode: SKShapeNode!
+    private var flashOverlayNode: SKShapeNode!
+
     // MARK: - Initialization
     
     init(size: CGSize, xOffsetsArray: [ParallaxSprite.SpriteXPositions]?) {
@@ -41,6 +50,8 @@ class CutsceneIntro: SKScene {
     }
     
     private func setupScene(xOffsetsArray: [ParallaxSprite.SpriteXPositions]?) {
+        let screenSize: CGSize = K.ScreenDimensions.screenSize
+        
         hero = Player(type: .hero)
         hero.sprite.position = heroPosition
         hero.sprite.setScale(playerScale)
@@ -51,18 +62,38 @@ class CutsceneIntro: SKScene {
         princess.sprite.setScale(playerScale * 0.75)
         princess.sprite.xScale = -playerScale * 0.75
         princess.sprite.name = LaunchScene.nodeName_playerSprite
+        
+        overlaySpeech = SpeechOverlaySprite(text: "She just kept rambling and rambling and rambling... I had no idea what she was talking about but she mentioned something about Dragons appearing out of nowhere and the capture of the king. It was surreal...")
+        
+        dragonSprite = SKSpriteNode(imageNamed: "enemy")
+        dragonSprite.position = CGPoint(x: -dragonSprite.size.width, y: K.ScreenDimensions.height + dragonSprite.size.height)
+        dragonSprite.zPosition = K.ZPosition.player + 10
 
         skyNode = SKSpriteNode(texture: SKTexture(image: DayTheme.getSkyImage(useMorningSky: true)))
         skyNode.anchorPoint = .zero
         skyNode.zPosition = K.ZPosition.skyNode
         skyNode.name = LaunchScene.nodeName_skyNode
         
-        dimOverlayNode = SKShapeNode(rectOf: K.ScreenDimensions.screenSize)
-        dimOverlayNode.position = CGPoint(x: K.ScreenDimensions.iPhoneWidth / 2, y: K.ScreenDimensions.height / 2)
+        dimOverlayNode = SKShapeNode(rectOf: screenSize)
+        dimOverlayNode.position = CGPoint(x: screenSize.width / 2, y: screenSize.height / 2)
         dimOverlayNode.fillColor = .black
         dimOverlayNode.lineWidth = 0
         dimOverlayNode.alpha = 0
         dimOverlayNode.zPosition = K.ZPosition.chatDimOverlay
+        
+        bloodOverlayNode = SKShapeNode(rectOf: screenSize)
+        bloodOverlayNode.position = CGPoint(x: screenSize.width / 2, y: screenSize.height / 2)
+        bloodOverlayNode.fillColor = .red
+        bloodOverlayNode.lineWidth = 0
+        bloodOverlayNode.alpha = 0
+        bloodOverlayNode.zPosition = K.ZPosition.bloodOverlay
+        
+        flashOverlayNode = SKShapeNode(rectOf: screenSize)
+        flashOverlayNode.position = CGPoint(x: screenSize.width / 2, y: screenSize.height / 2)
+        flashOverlayNode.fillColor = .yellow
+        flashOverlayNode.lineWidth = 0
+        flashOverlayNode.alpha = 0
+        flashOverlayNode.zPosition = K.ZPosition.bloodOverlay + 10
         
         parallaxManager = ParallaxManager(useSet: .grass, xOffsetsArray: xOffsetsArray, shouldWalk: true)
         
@@ -77,8 +108,11 @@ class CutsceneIntro: SKScene {
     override func didMove(to view: SKView) {
         addChild(skyNode)
         addChild(dimOverlayNode)
+        addChild(bloodOverlayNode)
+        addChild(flashOverlayNode)
         addChild(hero.sprite)
         addChild(princess.sprite)
+        addChild(dragonSprite)
 
         parallaxManager.addSpritesToParent(scene: self)
     }
@@ -151,16 +185,34 @@ class CutsceneIntro: SKScene {
                         dimOverlayNode.run(SKAction.fadeOut(withDuration: 1))
                     },
                     SpeechBubbleItem(profile: speechHero, chat: "Wow that is some story!|| Well don't worry Princess, I'll get you to where you need to go—") { [unowned self] in
-                        // FIXME: - Not working...
+                        
+                        // TODO: - All the dragon action here...
                         run(SKAction.sequence([
                             SKAction.run { [unowned self] in
-                                skyNode.texture = SKTexture(image: DayTheme.getSkyImage())
+                                skyNode.texture = SKTexture(image: DayTheme.getBloodSkyImage())
+                                bloodOverlayNode.run(SKAction.fadeAlpha(to: 0.5, duration: 1))
                             },
-                            SKAction.wait(forDuration: 5),
+                            SKAction.wait(forDuration: 2),
                             SKAction.run { [unowned self] in
-                                didFinishAnimating()
+                                dragonSprite.run(SKAction.group([
+                                    SKAction.scale(to: 5, duration: 0.5),
+                                    SKAction.move(to: CGPoint(x: K.ScreenDimensions.screenSize.width / 2, y: K.ScreenDimensions.screenSize.height / 2), duration: 0.5)
+                                ]))
+                            },
+                            SKAction.wait(forDuration: 2),
+                            SKAction.run { [unowned self] in
+                                flashOverlayNode.run(SKAction.sequence([
+                                    SKAction.fadeIn(withDuration: 0),
+                                    SKAction.fadeOut(withDuration: 0.25)
+                                ]))
+                                AudioManager.shared.playSound(for: "enemyscratch")
                             }
                         ]))
+                        
+                        
+                    },
+                    SpeechBubbleItem(profile: speechPrincess, chat: "Great, now I'm being captured. Could this day get any worse?!?!") { [unowned self] in
+                        didFinishAnimating()
                     }
                 ], completion: completion)
             }
