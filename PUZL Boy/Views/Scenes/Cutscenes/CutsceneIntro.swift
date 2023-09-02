@@ -172,8 +172,8 @@ class CutsceneIntro: SKScene {
             SKAction.run { [unowned self] in
                 setTextArray(items: [
                     SpeechBubbleItem(profile: speechHero, chat: "🎵 I'm a Barbie girl,| in the Barbie world.|| Life in plastic,| it's fantastic! You can brush my hair—/Oh.....|| hello.| Didn't see you there... 😬|||| I'm PUZL Boy. 👋🏼", handler: closeUpPrincess),
-                    SpeechBubbleItem(profile: speechPrincess, chat: "Hi! My name is Princess Olivia and I'm 9 years old.|| I'm late for a V|E|R|Y| important appointment.", handler: closeUpHero),
-                    SpeechBubbleItem(profile: speechHero, chat: "Wait,| like an actual princess, or...| is that more of a self-proclaimed title?||||||||/Also what kind of important meeting does a 9 year old need to attend?||||||||/And where are your parents?|| Are you here by yourself???") { [unowned self] in
+                    SpeechBubbleItem(profile: speechPrincess, chat: "Hi! My name is Princess Olivia and I'm 7 years old.|| I'm late for a V|E|R|Y| important appointment.", handler: closeUpHero),
+                    SpeechBubbleItem(profile: speechHero, chat: "Wait,| like an actual princess, or...| is that more of a self-proclaimed title?||||||||/Also what kind of important meeting does a 7 year old need to attend?||||||||/And where are your parents? Are you here by yourself???") { [unowned self] in
                         closeUpPrincess()
                         
                         dimOverlayNode.run(SKAction.sequence([
@@ -186,7 +186,7 @@ class CutsceneIntro: SKScene {
                         
                         dimOverlayNode.run(SKAction.fadeOut(withDuration: 1))
                     },
-                    SpeechBubbleItem(profile: speechHero, chat: "Wow that is some story!|| Well don't worry Princess, I'll get you to where you need to go—") { [unowned self] in
+                    SpeechBubbleItem(profile: speechHero, chat: "Whew, that is some story!|| Well don't worry Princess, I'll get you to where you need to go—") { [unowned self] in
                         
                         // TODO: - All the dragon action here...
                         run(SKAction.sequence([

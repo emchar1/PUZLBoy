@@ -4,7 +4,7 @@
 //
 //  Created by Eddie Char on 5/15/23.
 // FIXME: - I don't think this class is being used!!! 9/1/23
-
+/*
 import SpriteKit
 
 class HowToPlayNode: SKNode {
@@ -122,3 +122,4 @@ class HowToPlayNode: SKNode {
         descriptionNode.text = canShow ? descriptionText : "\nReach level \(requiredLevel) to unlock this hint."
     }
 }
+*/
