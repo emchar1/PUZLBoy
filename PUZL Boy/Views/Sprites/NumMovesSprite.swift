@@ -26,7 +26,7 @@ class NumMovesSprite: SKNode {
 
         bigText = SKLabelNode(text: "\(numMoves)")
         bigText.fontName = UIFont.chatFont
-        bigText.fontSize = UIFont.gameFontSizeExtraLarge
+        bigText.fontSize = UIFont.chatFontSizeExtraLarge
         bigText.fontColor = UIFont.chatFontColor
         bigText.setScale(4)
         bigText.position.y += UIDevice.isiPad ? 200 : 0
@@ -35,7 +35,7 @@ class NumMovesSprite: SKNode {
         
         littleText = SKLabelNode(text: isPartyLevel ? "✨Bonus Level✨" : "Move\(numMoves == 1 ? "" : "s")")
         littleText.fontName = UIFont.chatFont
-        littleText.fontSize = UIFont.gameFontSizeExtraLarge
+        littleText.fontSize = UIFont.chatFontSizeExtraLarge
         littleText.fontColor = UIFont.chatFontColor
         littleText.position.y += UIDevice.isiPad ? 200 : 0
         littleText.position.y += isPartyLevel ? 80 : -140

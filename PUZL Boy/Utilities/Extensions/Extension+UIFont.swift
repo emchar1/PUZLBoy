@@ -15,10 +15,11 @@ extension UIFont {
     static let gameFontSizeLarge: CGFloat = 75
     static let gameFontSizeMedium: CGFloat = 50
     static let gameFontSizeSmall: CGFloat = 40
-    static let gameFontSizeTiny: CGFloat = 24
     
     static let chatFont: String = "Boogaloo-Regular"
     static let chatFontColor: UIColor = .white
-    static let chatFontSizeRegular: CGFloat = 48
-    static let chatFontSizeLarge: CGFloat = 64
+    static let chatFontSizeExtraLarge: CGFloat = 99
+    static let chatFontSizeLarge: CGFloat = 72
+    static let chatFontSizeMedium: CGFloat = 48
+    static let chatFontSizeSmall: CGFloat = 40
 }

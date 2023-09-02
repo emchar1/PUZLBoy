@@ -3,7 +3,7 @@
 //  PUZL Boy
 //
 //  Created by Eddie Char on 5/15/23.
-//
+// FIXME: - I don't think this class is being used!!! 9/1/23
 
 import SpriteKit
 
@@ -88,7 +88,7 @@ class HowToPlayNode: SKNode {
         descriptionNode.preferredMaxLayoutWidth = nodeWidth - (HowToPlayNode.iconSize + padding)
         descriptionNode.numberOfLines = 0
         descriptionNode.fontName = UIFont.chatFont
-        descriptionNode.fontSize = UIDevice.isiPad ? UIFont.gameFontSizeLarge : UIFont.chatFontSizeRegular
+        descriptionNode.fontSize = UIDevice.isiPad ? UIFont.chatFontSizeLarge : UIFont.chatFontSizeMedium
         descriptionNode.fontColor = UIFont.chatFontColor
         descriptionNode.name = "descriptionNode"
         descriptionNode.zPosition = 10

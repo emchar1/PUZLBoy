@@ -69,7 +69,7 @@ class SpeechBubbleSprite: SKNode {
         
         textSprite = SKLabelNode(text: "")
         textSprite.fontName = UIFont.chatFont
-        textSprite.fontSize = UIFont.chatFontSizeRegular
+        textSprite.fontSize = UIFont.chatFontSizeMedium
         textSprite.fontColor = .black
         textSprite.position = paddingPercentage * CGPoint(x: -bubbleDimensions.width / 2, y: bubbleDimensions.height / 2)
         textSprite.numberOfLines = 0

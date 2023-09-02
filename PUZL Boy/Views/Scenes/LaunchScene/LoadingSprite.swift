@@ -52,7 +52,7 @@ class LoadingSprite: SKNode {
         
         loadingLabel = SKLabelNode(text: "Loading...")
         loadingLabel.fontName = UIFont.chatFont
-        loadingLabel.fontSize = UIFont.gameFontSizeSmall
+        loadingLabel.fontSize = UIFont.chatFontSizeSmall
         loadingLabel.fontColor = UIFont.chatFontColor
         loadingLabel.horizontalAlignmentMode = .left
         loadingLabel.position = CGPoint(x: -statusBarLength / 2 + 10, y: -statusBarHeight - 20)

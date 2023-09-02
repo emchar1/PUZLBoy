@@ -49,7 +49,7 @@ class MenuItemLabel: SKLabelNode {
         self.text = text
         self.position = position
         fontName = UIFont.chatFont
-        fontSize = 75
+        fontSize = UIFont.chatFontSizeLarge
         fontColor = .white
         horizontalAlignmentMode = .center
         verticalAlignmentMode = .center

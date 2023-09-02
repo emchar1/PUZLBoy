@@ -113,6 +113,8 @@ class CutsceneIntro: SKScene {
         addChild(hero.sprite)
         addChild(princess.sprite)
         addChild(dragonSprite)
+        
+        addChild(overlaySpeech)
 
         parallaxManager.addSpritesToParent(scene: self)
     }
