@@ -24,8 +24,9 @@ class CreditsScene: SKScene {
     // MARK: - Initialization
     
     override init(size: CGSize) {
-        goBackLabel = SKLabelNode(text: "COMING SOON")
+        goBackLabel = SKLabelNode(text: "          COMING SOON\n(TAP HERE TO GO BACK)")
         goBackLabel.position = CGPoint(x: K.ScreenDimensions.iPhoneWidth / 2, y: K.ScreenDimensions.height / 2)
+        goBackLabel.numberOfLines = 0
         goBackLabel.fontName = UIFont.gameFont
         goBackLabel.fontSize = UIFont.gameFontSizeLarge
         goBackLabel.fontColor = .yellow

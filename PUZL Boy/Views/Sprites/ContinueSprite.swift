@@ -66,7 +66,7 @@ class ContinueSprite: SKNode {
         
         let continueLabel = SKLabelNode(text: "CONTINUE?")
         continueLabel.fontName = UIFont.gameFont
-        continueLabel.fontSize = UIDevice.isiPad ? UIFont.gameFontSizeExtraLarge : UIFont.gameFontSizeMedium
+        continueLabel.fontSize = UIFont.gameFontSizeExtraLarge
         continueLabel.fontColor = UIFont.gameFontColor
         continueLabel.verticalAlignmentMode = .top
         continueLabel.position = CGPoint(x: 0, y: backgroundSprite.frame.size.height / (UIDevice.isiPad ? 1.5 : 2) - continueLabel.frame.size.height / 2)
@@ -103,7 +103,7 @@ class ContinueSprite: SKNode {
 
         livesRefreshLabel = SKLabelNode(text: "Or wait for \(LifeSpawnerModel.defaultLives) lives in: 02:00:00")
         livesRefreshLabel.fontName = UIFont.chatFont
-        livesRefreshLabel.fontSize = UIDevice.isiPad ? UIFont.chatFontSizeLarge : UIFont.chatFontSizeMedium
+        livesRefreshLabel.fontSize = UIFont.chatFontSizeLarge
         livesRefreshLabel.fontColor = UIFont.chatFontColor
         livesRefreshLabel.verticalAlignmentMode = .top
         livesRefreshLabel.position = CGPoint(

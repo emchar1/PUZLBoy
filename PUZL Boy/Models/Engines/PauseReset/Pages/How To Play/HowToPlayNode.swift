@@ -75,7 +75,7 @@ class HowToPlayNode: SKNode {
         titleNode.horizontalAlignmentMode = .left
         titleNode.verticalAlignmentMode = .top
         titleNode.fontName = UIFont.gameFont
-        titleNode.fontSize = UIDevice.isiPad ? UIFont.gameFontSizeLarge : UIFont.gameFontSizeMedium
+        titleNode.fontSize = UIFont.gameFontSizeLarge
         titleNode.fontColor = UIFont.gameFontColor
         titleNode.name = "titleNode"
         titleNode.zPosition = 10
@@ -88,7 +88,7 @@ class HowToPlayNode: SKNode {
         descriptionNode.preferredMaxLayoutWidth = nodeWidth - (HowToPlayNode.iconSize + padding)
         descriptionNode.numberOfLines = 0
         descriptionNode.fontName = UIFont.chatFont
-        descriptionNode.fontSize = UIDevice.isiPad ? UIFont.chatFontSizeLarge : UIFont.chatFontSizeMedium
+        descriptionNode.fontSize = UIFont.chatFontSizeLarge
         descriptionNode.fontColor = UIFont.chatFontColor
         descriptionNode.name = "descriptionNode"
         descriptionNode.zPosition = 10

@@ -66,7 +66,7 @@ class ConfirmSprite: SKNode {
         
         let titleLabel = SKLabelNode(text: title.uppercased())
         titleLabel.fontName = UIFont.gameFont
-        titleLabel.fontSize = UIDevice.isiPad ? UIFont.gameFontSizeExtraLarge : UIFont.gameFontSizeMedium
+        titleLabel.fontSize = UIFont.gameFontSizeExtraLarge
         titleLabel.fontColor = UIFont.gameFontColor
         titleLabel.position = CGPoint(x: 0, y: backgroundSprite.frame.size.height / (UIDevice.isiPad ? 1.5 : 2) - titleLabel.frame.size.height / 2)
         titleLabel.verticalAlignmentMode = .top
@@ -86,7 +86,7 @@ class ConfirmSprite: SKNode {
 
         messageLabel = SKLabelNode(text: message)
         messageLabel.fontName = UIFont.chatFont
-        messageLabel.fontSize = UIDevice.isiPad ? UIFont.chatFontSizeLarge : UIFont.chatFontSizeMedium
+        messageLabel.fontSize = UIFont.chatFontSizeLarge
         messageLabel.fontColor = UIFont.chatFontColor
         messageLabel.position = CGPoint(
             x: 0,

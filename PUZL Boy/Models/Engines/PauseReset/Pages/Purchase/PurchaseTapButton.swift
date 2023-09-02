@@ -125,7 +125,7 @@ class PurchaseTapButton: SKNode {
         priceLabel.verticalAlignmentMode = .center
         priceLabel.horizontalAlignmentMode = .center
         priceLabel.fontName = UIFont.chatFont
-        priceLabel.fontSize = UIDevice.isiPad ? UIFont.chatFontSizeLarge : UIFont.chatFontSizeMedium
+        priceLabel.fontSize = UIFont.chatFontSizeLarge
         priceLabel.fontColor = UIFont.chatFontColor
         priceLabel.addDropShadow()
 
@@ -138,7 +138,7 @@ class PurchaseTapButton: SKNode {
         buttonLabelNode.verticalAlignmentMode = .bottom
         buttonLabelNode.horizontalAlignmentMode = .center
         buttonLabelNode.fontName = UIFont.gameFont
-        buttonLabelNode.fontSize = UIDevice.isiPad ? UIFont.gameFontSizeLarge : UIFont.gameFontSizeMedium
+        buttonLabelNode.fontSize = UIFont.gameFontSizeLarge
         buttonLabelNode.fontColor = UIFont.gameFontColor
         buttonLabelNode.addDropShadow()
         

@@ -87,7 +87,7 @@ class DecisionButtonSprite: SKNode {
 
         textNode = SKLabelNode(text: text)
         textNode.fontName = UIFont.chatFont
-        textNode.fontSize = UIDevice.isiPad ? UIFont.chatFontSizeLarge : UIFont.chatFontSizeMedium
+        textNode.fontSize = UIFont.chatFontSizeLarge
         textNode.fontColor = UIFont.chatFontColor
         textNode.position = CGPoint(x: 0, y: -18)
         textNode.zPosition = 10

@@ -164,7 +164,7 @@ class ScoringEngine {
         
         let pointsSprite = SKLabelNode(text: "+" + (score ?? "0"))
         pointsSprite.fontName = UIFont.gameFont
-        pointsSprite.fontSize = UIDevice.isiPad ? UIFont.gameFontSizeLarge : UIFont.gameFontSizeMedium
+        pointsSprite.fontSize = UIFont.gameFontSizeLarge
         pointsSprite.fontColor = .yellow
         pointsSprite.position = location
         pointsSprite.zPosition = K.ZPosition.itemsPoints
@@ -197,7 +197,7 @@ class ScoringEngine {
         
         let amountSprite = SKLabelNode(text: "\(amount > 0 ? "+" : "")\(amount)")
         amountSprite.fontName = UIFont.gameFont
-        amountSprite.fontSize = UIDevice.isiPad ? UIFont.gameFontSizeLarge : UIFont.gameFontSizeMedium
+        amountSprite.fontSize = UIFont.gameFontSizeLarge
         amountSprite.fontColor = amount < 0 ? .red : .white
         amountSprite.horizontalAlignmentMode = .center
         amountSprite.verticalAlignmentMode = .center
@@ -335,7 +335,7 @@ class ScoringEngine {
         
         let pointsSprite = SKLabelNode(text: "+\(secondsFormatted)")
         pointsSprite.fontName = UIFont.gameFont
-        pointsSprite.fontSize = UIFont.gameFontSizeMedium //Same size for iPad
+        pointsSprite.fontSize = UIFont.gameFontSizeMedium
         pointsSprite.fontColor = .green
         pointsSprite.position = .zero
         pointsSprite.horizontalAlignmentMode = .left
@@ -368,7 +368,7 @@ class ScoringEngine {
     static func addTextAnimation(text: String, textColor: UIColor, originSprite: SKNode, location: CGPoint) {
         let textSprite = SKLabelNode(text: text)
         textSprite.fontName = UIFont.gameFont
-        textSprite.fontSize = UIDevice.isiPad ? UIFont.gameFontSizeLarge : UIFont.gameFontSizeMedium
+        textSprite.fontSize = UIFont.gameFontSizeLarge
         textSprite.fontColor = textColor
         textSprite.position = location
         textSprite.zPosition = K.ZPosition.itemsPoints

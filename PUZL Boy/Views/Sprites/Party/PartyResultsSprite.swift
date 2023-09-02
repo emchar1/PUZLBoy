@@ -88,7 +88,7 @@ class PartyResultsSprite: SKNode {
         
         let titleLabel = SKLabelNode(text: "RESULTS")
         titleLabel.fontName = UIFont.gameFont
-        titleLabel.fontSize = UIDevice.isiPad ? UIFont.gameFontSizeExtraLarge : UIFont.gameFontSizeMedium
+        titleLabel.fontSize = UIFont.gameFontSizeExtraLarge
         titleLabel.fontColor = UIFont.gameFontColor
         titleLabel.position = CGPoint(x: 0, y: backgroundSprite.frame.size.height / (UIDevice.isiPad ? 1.5 : 2) - titleLabel.frame.size.height / 2)
         titleLabel.verticalAlignmentMode = .top

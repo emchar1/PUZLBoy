@@ -53,7 +53,7 @@ class SettingsTapArea: SKNode {
         labelNode.verticalAlignmentMode = .center
         labelNode.horizontalAlignmentMode = .left
         labelNode.fontName = UIFont.gameFont
-        labelNode.fontSize = UIDevice.isiPad ? UIFont.gameFontSizeLarge : UIFont.gameFontSizeMedium
+        labelNode.fontSize = UIFont.gameFontSizeLarge
         labelNode.fontColor = UIFont.gameFontColor
         labelNode.zPosition = 10
         labelNode.addDropShadow()

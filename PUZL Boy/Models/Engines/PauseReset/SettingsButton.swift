@@ -65,7 +65,7 @@ class SettingsButton: SKNode {
         labelSprite = SKLabelNode(text: type.rawValue)
         labelSprite.fontColor = .white
         labelSprite.fontName = UIFont.chatFont
-        labelSprite.fontSize = UIDevice.isiPad ? UIFont.chatFontSizeMedium : UIFont.chatFontSizeSmall
+        labelSprite.fontSize = UIFont.pauseTabsFontSize
         labelSprite.verticalAlignmentMode = .center
         labelSprite.horizontalAlignmentMode = .center
         labelSprite.alpha = 0.75

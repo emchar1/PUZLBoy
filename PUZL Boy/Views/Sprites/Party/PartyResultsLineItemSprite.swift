@@ -60,7 +60,7 @@ class PartyResultsLineItemSprite: SKNode {
         let descriptionLabel = SKLabelNode(text: "\(iconDescription.uppercased()):")
         descriptionLabel.position = CGPoint(x: lrBorder + (iconName == nil ? lrBorder : PartyResultsLineItemSprite.iconSize), y: 0)
         descriptionLabel.fontName = UIFont.gameFont
-        descriptionLabel.fontSize = UIDevice.isiPad ? UIFont.gameFontSizeLarge : UIFont.gameFontSizeMedium
+        descriptionLabel.fontSize = UIFont.gameFontSizeLarge
         descriptionLabel.fontColor = UIFont.gameFontColor
         descriptionLabel.horizontalAlignmentMode = .left
         descriptionLabel.verticalAlignmentMode = .center
@@ -70,7 +70,7 @@ class PartyResultsLineItemSprite: SKNode {
         amountLabel = SKLabelNode(text: numberFormatter.string(from: NSNumber(value: amount)) ?? "XXX")
         amountLabel.position = CGPoint(x: K.ScreenDimensions.iPhoneWidth - 2 * lrBorder, y: 0)
         amountLabel.fontName = UIFont.gameFont
-        amountLabel.fontSize = UIDevice.isiPad ? UIFont.gameFontSizeLarge : UIFont.gameFontSizeMedium
+        amountLabel.fontSize = UIFont.gameFontSizeLarge
         amountLabel.fontColor = UIFont.gameFontColor
         amountLabel.horizontalAlignmentMode = .right
         amountLabel.verticalAlignmentMode = .center
@@ -160,7 +160,7 @@ class PartyResultsLineItemSprite: SKNode {
     func addTextAnimation(_ text: String) {
         let textSprite = SKLabelNode(text: text)
         textSprite.fontName = UIFont.gameFont
-        textSprite.fontSize = UIDevice.isiPad ? UIFont.gameFontSizeLarge : UIFont.gameFontSizeMedium
+        textSprite.fontSize = UIFont.gameFontSizeLarge
         textSprite.horizontalAlignmentMode = .right
         textSprite.fontColor = .yellow
         textSprite.position = CGPoint(x: 0, y: 20)

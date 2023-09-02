@@ -72,7 +72,7 @@ class SettingsTapButton: SKNode {
         labelNode.verticalAlignmentMode = .center
         labelNode.horizontalAlignmentMode = .center
         labelNode.fontName = UIFont.chatFont
-        labelNode.fontSize = UIDevice.isiPad ? UIFont.chatFontSizeLarge : UIFont.chatFontSizeMedium
+        labelNode.fontSize = UIFont.chatFontSizeLarge
         labelNode.fontColor = UIFont.chatFontColor
         labelNode.zPosition = 5
         labelNode.addDropShadow()

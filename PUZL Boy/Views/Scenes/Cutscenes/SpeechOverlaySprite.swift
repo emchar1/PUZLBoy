@@ -43,7 +43,7 @@ class SpeechOverlaySprite: SKNode {
         
         speechNode = SKLabelNode(text: text)
         speechNode.fontName = UIFont.chatFont
-        speechNode.fontSize = UIDevice.isiPad ? UIFont.chatFontSizeLarge : UIFont.chatFontSizeMedium
+        speechNode.fontSize = UIFont.chatFontSizeLarge
         speechNode.fontColor = .white
         speechNode.position = .zero
         speechNode.numberOfLines = 0
