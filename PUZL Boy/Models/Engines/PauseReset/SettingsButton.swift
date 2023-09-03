@@ -22,7 +22,6 @@ class SettingsButton: SKNode {
     
     private var buttonSprite: SKShapeNode!
     private var shadowSprite: SKShapeNode!
-//    private var labelSprite: SKLabelNode!
     private var iconSprite: SKSpriteNode!
     
     weak var delegate: SettingsButtonDelegate?
@@ -65,28 +64,14 @@ class SettingsButton: SKNode {
         shadowSprite.alpha = 0.75
         shadowSprite.zPosition = -1
         
-//        labelSprite = SKLabelNode(text: "\n\n\(type.rawValue)")
-//        labelSprite.fontColor = .white
-//        labelSprite.fontName = UIFont.chatFont
-//        labelSprite.fontSize = UIFont.pauseTabsFontSize
-//        labelSprite.verticalAlignmentMode = .center
-//        labelSprite.horizontalAlignmentMode = .center
-//        labelSprite.numberOfLines = 0
-//        labelSprite.alpha = 0.75
-//        labelSprite.zPosition = 10
-//        labelSprite.addDropShadow()
-        
         iconSprite = SKSpriteNode(texture: SKTexture(imageNamed: "tab\(type.rawValue.replacingOccurrences(of: " ", with: ""))"))
-        iconSprite.color = .white
+        iconSprite.color = PauseResetEngine.backgroundShadowColor.lightenColor(factor: 3)
         iconSprite.colorBlendFactor = 1
         iconSprite.size = CGSize(width: iconSize, height: iconSize)
-        iconSprite.alpha = 0.75
         iconSprite.zPosition = 10
-        iconSprite.addShadow()
 
         addChild(buttonSprite)
         buttonSprite.addChild(shadowSprite)
-//        buttonSprite.addChild(labelSprite)
         buttonSprite.addChild(iconSprite)
     }
     
@@ -95,8 +80,7 @@ class SettingsButton: SKNode {
     func touchDown() {
         isPressed = true
         
-//        labelSprite.alpha = 1.0
-        iconSprite.alpha = 1.0
+        iconSprite.color = PauseResetEngine.backgroundColor.darkenColor(factor: 3)
         buttonSprite.fillColor = PauseResetEngine.backgroundShadowColor
         buttonSprite.run(SKAction.move(to: shadowSize, duration: 0))
         shadowSprite.run(SKAction.move(to: .zero, duration: 0))
@@ -107,8 +91,7 @@ class SettingsButton: SKNode {
         
         let animationDuration: CGFloat = 0.2
         
-//        labelSprite.alpha = 0.75
-        iconSprite.alpha = 0.75
+        iconSprite.color = PauseResetEngine.backgroundShadowColor.lightenColor(factor: 3)
         buttonSprite.fillColor = PauseResetEngine.backgroundColor
         buttonSprite.run(SKAction.move(to: .zero, duration: animationDuration))
         shadowSprite.run(SKAction.move(to: shadowSize, duration: animationDuration))

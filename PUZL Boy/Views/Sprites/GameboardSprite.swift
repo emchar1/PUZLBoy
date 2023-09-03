@@ -321,11 +321,11 @@ class GameboardSprite {
     func animateDissolveSand(position: K.GameboardPosition) {
         let sandNode = SKSpriteNode(imageNamed: "sand")
         sandNode.anchorPoint = .zero
-        sandNode.zPosition = K.ZPosition.terrain
+        sandNode.zPosition = 10
         
         let lavaNode = SKSpriteNode(imageNamed: "lava")
         lavaNode.anchorPoint = .zero
-        lavaNode.zPosition = K.ZPosition.terrain
+        lavaNode.zPosition = 5
         lavaNode.addChild(sandNode)
 
         updatePanels(at: position, with: (terrain: LevelType.lava, overlay: LevelType.boundary))
