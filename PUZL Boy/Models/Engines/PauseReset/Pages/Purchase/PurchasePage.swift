@@ -56,7 +56,7 @@ class PurchasePage: ParentPage {
     
     private func setupSprites() {
         let topMargin: CGFloat = UIDevice.isiPad ? 280 : 200
-        let paddingFactor: CGFloat = UIDevice.isiPad ? 2 : 1
+        let paddingFactor: CGFloat = UIDevice.isiPad ? 1.5 : 1
         let buttonSize: CGSize = PurchaseTapButton.buttonSize
         let imageScale: CGFloat = (UIDevice.isiPad ? 2.0 : 1.25) * 3
 

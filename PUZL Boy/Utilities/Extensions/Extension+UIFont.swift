@@ -27,5 +27,5 @@ extension UIFont {
     
     //Misc
     static let titleMenuFontSize: CGFloat = 72
-    static let pauseTabsFontSize: CGFloat = UIDevice.isiPad ? chatFontSizeMedium : chatFontSizeSmall
+    static let pauseTabsFontSize: CGFloat = UIDevice.isiPad ? 34 : 28
 }

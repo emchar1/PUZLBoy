@@ -22,7 +22,8 @@ class SettingsButton: SKNode {
     
     private var buttonSprite: SKShapeNode!
     private var shadowSprite: SKShapeNode!
-    private var labelSprite: SKLabelNode!
+//    private var labelSprite: SKLabelNode!
+    private var iconSprite: SKSpriteNode!
     
     weak var delegate: SettingsButtonDelegate?
     
@@ -50,6 +51,8 @@ class SettingsButton: SKNode {
     }
     
     private func setupSprites() {
+        let iconSize: CGFloat = UIDevice.isiPad ? 80 : 60
+        
         buttonSprite = SKShapeNode(rectOf: buttonSize, cornerRadius: 20)
         buttonSprite.strokeColor = .white
         buttonSprite.lineWidth = 0
@@ -62,19 +65,29 @@ class SettingsButton: SKNode {
         shadowSprite.alpha = 0.75
         shadowSprite.zPosition = -1
         
-        labelSprite = SKLabelNode(text: type.rawValue)
-        labelSprite.fontColor = .white
-        labelSprite.fontName = UIFont.chatFont
-        labelSprite.fontSize = UIFont.pauseTabsFontSize
-        labelSprite.verticalAlignmentMode = .center
-        labelSprite.horizontalAlignmentMode = .center
-        labelSprite.alpha = 0.75
-        labelSprite.zPosition = 10
-        labelSprite.addDropShadow()
+//        labelSprite = SKLabelNode(text: "\n\n\(type.rawValue)")
+//        labelSprite.fontColor = .white
+//        labelSprite.fontName = UIFont.chatFont
+//        labelSprite.fontSize = UIFont.pauseTabsFontSize
+//        labelSprite.verticalAlignmentMode = .center
+//        labelSprite.horizontalAlignmentMode = .center
+//        labelSprite.numberOfLines = 0
+//        labelSprite.alpha = 0.75
+//        labelSprite.zPosition = 10
+//        labelSprite.addDropShadow()
+        
+        iconSprite = SKSpriteNode(texture: SKTexture(imageNamed: "tab\(type.rawValue.replacingOccurrences(of: " ", with: ""))"))
+        iconSprite.color = .white
+        iconSprite.colorBlendFactor = 1
+        iconSprite.size = CGSize(width: iconSize, height: iconSize)
+        iconSprite.alpha = 0.75
+        iconSprite.zPosition = 10
+        iconSprite.addShadow()
 
         addChild(buttonSprite)
         buttonSprite.addChild(shadowSprite)
-        buttonSprite.addChild(labelSprite)
+//        buttonSprite.addChild(labelSprite)
+        buttonSprite.addChild(iconSprite)
     }
     
     // MARK: - Functions
@@ -82,7 +95,8 @@ class SettingsButton: SKNode {
     func touchDown() {
         isPressed = true
         
-        labelSprite.alpha = 1.0
+//        labelSprite.alpha = 1.0
+        iconSprite.alpha = 1.0
         buttonSprite.fillColor = PauseResetEngine.backgroundShadowColor
         buttonSprite.run(SKAction.move(to: shadowSize, duration: 0))
         shadowSprite.run(SKAction.move(to: .zero, duration: 0))
@@ -93,7 +107,8 @@ class SettingsButton: SKNode {
         
         let animationDuration: CGFloat = 0.2
         
-        labelSprite.alpha = 0.75
+//        labelSprite.alpha = 0.75
+        iconSprite.alpha = 0.75
         buttonSprite.fillColor = PauseResetEngine.backgroundColor
         buttonSprite.run(SKAction.move(to: .zero, duration: animationDuration))
         shadowSprite.run(SKAction.move(to: shadowSize, duration: animationDuration))

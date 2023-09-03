@@ -21,4 +21,18 @@ extension SKSpriteNode {
         effectNode.addChild(effect)
         addChild(effectNode)
     }
+    
+    func addShadow(offset: CGPoint = CGPoint(x: -3, y: -3)) {
+        let shadow = SKSpriteNode(texture: self.texture)
+        shadow.position = self.position + offset
+        shadow.anchorPoint = self.anchorPoint
+        shadow.size = self.size
+        shadow.color = .black
+        shadow.colorBlendFactor = 1
+        shadow.alpha = 0.25
+        shadow.zPosition = -1
+        shadow.name = "shadowNode"
+        
+        addChild(shadow)
+    }
 }

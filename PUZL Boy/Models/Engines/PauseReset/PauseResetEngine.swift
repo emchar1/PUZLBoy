@@ -24,7 +24,7 @@ class PauseResetEngine {
     // MARK: - Properties
 
     //Size Properties
-    private let settingsSize = CGSize(width: K.ScreenDimensions.iPhoneWidth, height: K.ScreenDimensions.iPhoneWidth * (UIDevice.isiPad ? 1.2 : 1.25))
+    private let settingsSize = CGSize(width: K.ScreenDimensions.iPhoneWidth, height: K.ScreenDimensions.iPhoneWidth * (UIDevice.isiPad ? 1.17 : 1.25))
     private let settingsScale: CGFloat = GameboardSprite.spriteScale
 
     //Pause, Reset, Hint Buttons
@@ -122,7 +122,7 @@ class PauseResetEngine {
         
         
         //Settings Manager
-        settingsManager = SettingsManager(settingsWidth: settingsSize.width, buttonHeight: 120)
+        settingsManager = SettingsManager(settingsWidth: settingsSize.width, buttonHeight: UIDevice.isiPad ? 160 : 120)
         settingsManager.setInitialPosition(CGPoint(x: -backgroundSprite.position.x, y: -settingsSize.height / 2))
         settingsManager.delegate = self
 
