@@ -22,6 +22,7 @@ class CutsceneIntro: SKScene {
     private var hero: Player!
     private var princess: Player!
     private var dragonSprite: SKSpriteNode!
+    private var flyingDragon: Dragon!
     
     //Speech
     private var speechHero: SpeechBubbleSprite!
@@ -63,11 +64,13 @@ class CutsceneIntro: SKScene {
         princess.sprite.xScale = -playerScale * 0.75
         princess.sprite.name = LaunchScene.nodeName_playerSprite
         
-        overlaySpeech = SpeechOverlaySprite(text: "She just kept rambling and rambling and rambling... I had no idea what she was talking about but she mentioned something about Dragons appearing out of nowhere and the capture of the king. It was surreal...")
+        overlaySpeech = SpeechOverlaySprite()
         
         dragonSprite = SKSpriteNode(imageNamed: "enemy")
         dragonSprite.position = CGPoint(x: -dragonSprite.size.width, y: K.ScreenDimensions.height + dragonSprite.size.height)
         dragonSprite.zPosition = K.ZPosition.player + 10
+        
+        flyingDragon = Dragon()
 
         skyNode = SKSpriteNode(texture: SKTexture(image: DayTheme.getSkyImage(useMorningSky: true)))
         skyNode.anchorPoint = .zero
@@ -114,7 +117,7 @@ class CutsceneIntro: SKScene {
         addChild(princess.sprite)
         addChild(dragonSprite)
         
-        addChild(overlaySpeech)
+//        addChild(overlaySpeech)
 
         parallaxManager.addSpritesToParent(scene: self)
     }
@@ -171,20 +174,32 @@ class CutsceneIntro: SKScene {
             SKAction.wait(forDuration: 2 * walkCycle),
             SKAction.run { [unowned self] in
                 setTextArray(items: [
-                    SpeechBubbleItem(profile: speechHero, chat: "🎵 I'm a Barbie girl,| in the Barbie world.|| Life in plastic,| it's fantastic! You can brush my hair—/Oh.....|| hello.| Didn't see you there... 😬|||| I'm PUZL Boy. 👋🏼", handler: closeUpPrincess),
-                    SpeechBubbleItem(profile: speechPrincess, chat: "Hi! My name is Princess Olivia and I'm 7 years old.|| I'm late for a V|E|R|Y| important appointment.", handler: closeUpHero),
+                    SpeechBubbleItem(profile: speechHero, chat: "🎵 I'm a Barbie girl,| in the Barbie world.|| Life in plastic,| it's fantastic! You can brush my hair—/Oh.....|| hello.| Didn't see you there... 😬|||| I'm PUZL Boy.", handler: nil),
+                    SpeechBubbleItem(profile: speechPrincess, chat: "Hi! 👋🏼 I'm Princess Olivia and I'm 7 years old.|| I'm late for a V|E|R|Y| important appointment.", handler: closeUpHero),
                     SpeechBubbleItem(profile: speechHero, chat: "Wait,| like an actual princess, or...| is that more of a self-proclaimed title?||||||||/Also what kind of important meeting does a 7 year old need to attend?||||||||/And where are your parents? Are you here by yourself???") { [unowned self] in
                         closeUpPrincess()
                         
                         dimOverlayNode.run(SKAction.sequence([
                             SKAction.wait(forDuration: 12),
-                            SKAction.fadeAlpha(to: 0.8, duration: 1)
+                            SKAction.fadeAlpha(to: 0.8, duration: 1),
+                            SKAction.wait(forDuration: 2),
+                            SKAction.run { [unowned self] in
+                                overlaySpeech.setText(
+                                    text: "She went on to explain how dragons had disappeared from the realm of some place called Eldoria,| where she's allegedly from,|| and that the balance of magic had been disrupted.||||||||/She also mentioned that she's the last of her kind—||whatever that means...|||| And then the CRAZIEST thing happened!!",
+                                    superScene: self, completion: nil)
+                            }
                         ]))
                     },
-                    SpeechBubbleItem(profile: speechPrincess, chat: "Oh, umm...|| you ask too many questions!||||||||/But if you must know,| the reason why I'm here is because— blah blah blah...||||/Blah blah blah, blah blah blah dragons blah, blah blah, blah blah blah, magic.||||||||/Blah blah, blah. BLAH blah blah blah, blahhhhh blah. Blah. Blah. Blah. Blah blah captured...||||||||/And furthermore— blah blah blah, blah blah blah|| ...last known descendant.") { [unowned self] in
+                    SpeechBubbleItem(profile: speechPrincess, chat: "Oh, umm...|| you ask too many questions!||||||||/But if you must know,| the reason why I'm here is because— blah blah blah...||||/Blah blah blah, blah blah blah dragons blah, blah blah, blah blah blah, blah.||||||||/Blah blah, blah. BLAH blah blah blah, blahhhhh blah. Blah. Blah. Blah. Blah blah Eldoria...||||||||/Blah-de blah blah blah. Blahbitty blahbitty bloo, BLAAAAAH! BLAH BLAH BLAH, MAGIC!!||||||||/And furthermore— blah blah blah, blah blah blah.|| ...last known descendant.") { [unowned self] in
                         wideShot()
                         
                         dimOverlayNode.run(SKAction.fadeOut(withDuration: 1))
+                        
+                        flyingDragon.sprite.position = CGPoint(x: K.ScreenDimensions.screenSize.width, y: K.ScreenDimensions.screenSize.height * 7 / 8)
+                        flyingDragon.animate(toNode: self)
+                        flyingDragon.sprite.run(SKAction.moveTo(x: -flyingDragon.sprite.size.width, duration: 10.0))
+                        
+                        overlaySpeech.removeFromParent()
                     },
                     SpeechBubbleItem(profile: speechHero, chat: "Whew, that is some story!|| Well don't worry Princess, I'll get you to where you need to go—") { [unowned self] in
                         
@@ -194,7 +209,6 @@ class CutsceneIntro: SKScene {
                                 skyNode.texture = SKTexture(image: DayTheme.getBloodSkyImage())
                                 bloodOverlayNode.run(SKAction.fadeAlpha(to: 0.5, duration: 1))
                             },
-                            SKAction.wait(forDuration: 2),
                             SKAction.run { [unowned self] in
                                 dragonSprite.run(SKAction.group([
                                     SKAction.scale(to: 5, duration: 0.5),

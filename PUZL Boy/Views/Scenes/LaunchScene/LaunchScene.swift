@@ -196,9 +196,9 @@ class LaunchScene: SKScene {
                 
                 //Player Action properties
                 let reflectionMultiplier: CGFloat = node.name == LaunchScene.nodeName_playerReflection ? -4 : 1
-                let jumpStartPoint = CGPoint(x: K.ScreenDimensions.iPhoneWidth * 2 / 3, y: K.ScreenDimensions.height / 2 * reflectionMultiplier)
+                let jumpStartPoint = CGPoint(x: K.ScreenDimensions.iPhoneWidth / 3, y: K.ScreenDimensions.height / 3 * reflectionMultiplier)
                 let jumpEndPoint = CGPoint(x: K.ScreenDimensions.iPhoneWidth / 2, y: K.ScreenDimensions.height / 2 * reflectionMultiplier)
-                let jumpControlPoint = CGPoint(x: K.ScreenDimensions.iPhoneWidth, y: K.ScreenDimensions.height * reflectionMultiplier)
+                let jumpControlPoint = CGPoint(x: K.ScreenDimensions.iPhoneWidth * 2 / 3, y: K.ScreenDimensions.height * 2 / 3 * reflectionMultiplier)
                 
                 let jumpBezierPath = UIBezierPath()
                 jumpBezierPath.move(to: jumpStartPoint)
@@ -208,7 +208,7 @@ class LaunchScene: SKScene {
                 followBezierAction.timingFunction = { time in pow(time, 2) }
                 
                 let scaleAction = SKAction.scale(to: 2, duration: bezierDuration)
-                scaleAction.timingFunction = { time in pow(time, 8) }
+                scaleAction.timingFunction = { time in pow(time, 16) }
                 
                 //Audio fun
                 AudioManager.shared.playSound(for: "boyattack3", delay: moveDuration / 2)

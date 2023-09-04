@@ -15,15 +15,24 @@ class SpeechOverlaySprite: SKNode {
     private let nodeHeight: CGFloat = 200
     private var text: String
     
+    //Animation Properties
+    private let animationSpeedOrig: TimeInterval = 0.1
+    private var animationSpeed: TimeInterval
+    private var animationIndex = 0
+    private var timer = Timer()
+    private var dispatchWorkItem = DispatchWorkItem(block: {})
+    private var completion: (() -> Void)?
+    
     private var backgroundNode: SKShapeNode!
     private var speechNode: SKLabelNode!
     
     
     // MARK: - Initialization
 
-    init(text: String) {
-        self.text = text
-        
+    override init() {
+        self.text = ""
+        self.animationSpeed = animationSpeedOrig
+
         super.init()
         
         self.position = CGPoint(x: padding, y: K.ScreenDimensions.screenSize.height - K.ScreenDimensions.topMargin - padding)
@@ -56,4 +65,72 @@ class SpeechOverlaySprite: SKNode {
         addChild(backgroundNode)
         backgroundNode.addChild(speechNode)
     }
+    
+    
+    // MARK: - Animation Functions
+    
+    func setText(text: String, superScene: SKScene, completion: (() -> Void)?) {
+        self.text = text
+        speechNode.text = ""
+        animationIndex = 0
+        self.completion = completion
+
+        superScene.addChild(self)
+        
+        beginAnimation()
+    }
+    
+    private func beginAnimation() {
+        animateText()
+    }
+        
+    private func animateText() {
+        timer = Timer.scheduledTimer(timeInterval: animationSpeed,
+                                     target: self,
+                                     selector: #selector(animateTextHelper(_:)),
+                                     userInfo: nil,
+                                     repeats: true)
+    }
+    
+    @objc private func animateTextHelper(_ sender: Timer) {
+        guard animationIndex < self.text.count else {
+            timer.invalidate()
+            
+            endAnimation()
+
+            return
+        }
+        
+        let animationPause: TimeInterval = 0.25
+        let delimiterPause: Character = "|"
+        let delimiterClear: Character = "/"
+        let speechBubbleChar = self.text[self.text.index(self.text.startIndex, offsetBy: animationIndex)]
+        
+        animationIndex += 1
+        
+        if speechBubbleChar == delimiterPause {
+            timer.invalidate()
+            
+            dispatchWorkItem = DispatchWorkItem(block: { [unowned self] in
+                animateText()
+            })
+            
+            //Adds a little pause when it comes across the delimiterPause character.
+            DispatchQueue.main.asyncAfter(deadline: .now() + animationPause, execute: dispatchWorkItem)
+        }
+        else {
+            speechNode.text! += "\(speechBubbleChar)"
+            
+            //Clears the text bubble, like it's starting over
+            if speechBubbleChar == delimiterClear {
+                speechNode.text = ""
+            }
+        }
+    }
+    
+    private func endAnimation() {
+        completion?()
+    }
+
+    
 }

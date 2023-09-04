@@ -15,6 +15,9 @@ class SettingsButton: SKNode {
     
     // MARK: - Properties
     
+    private let iconSize: CGFloat = UIDevice.isiPad ? 80 : 60
+    private let colorFactor: CGFloat = 3
+    
     var buttonSize: CGSize
     private(set) var isPressed: Bool = false
     private(set) var shadowSize: CGPoint = CGPoint(x: -10, y: -10)
@@ -50,8 +53,6 @@ class SettingsButton: SKNode {
     }
     
     private func setupSprites() {
-        let iconSize: CGFloat = UIDevice.isiPad ? 80 : 60
-        
         buttonSprite = SKShapeNode(rectOf: buttonSize, cornerRadius: 20)
         buttonSprite.strokeColor = .white
         buttonSprite.lineWidth = 0
@@ -65,7 +66,7 @@ class SettingsButton: SKNode {
         shadowSprite.zPosition = -1
         
         iconSprite = SKSpriteNode(texture: SKTexture(imageNamed: "tab\(type.rawValue.replacingOccurrences(of: " ", with: ""))"))
-        iconSprite.color = PauseResetEngine.backgroundShadowColor.lightenColor(factor: 3)
+        iconSprite.color = PauseResetEngine.backgroundShadowColor.lightenColor(factor: colorFactor)
         iconSprite.colorBlendFactor = 1
         iconSprite.size = CGSize(width: iconSize, height: iconSize)
         iconSprite.zPosition = 10
@@ -80,7 +81,7 @@ class SettingsButton: SKNode {
     func touchDown() {
         isPressed = true
         
-        iconSprite.color = PauseResetEngine.backgroundColor.darkenColor(factor: 3)
+        iconSprite.color = PauseResetEngine.backgroundColor.darkenColor(factor: colorFactor)
         buttonSprite.fillColor = PauseResetEngine.backgroundShadowColor
         buttonSprite.run(SKAction.move(to: shadowSize, duration: 0))
         shadowSprite.run(SKAction.move(to: .zero, duration: 0))
@@ -91,7 +92,7 @@ class SettingsButton: SKNode {
         
         let animationDuration: CGFloat = 0.2
         
-        iconSprite.color = PauseResetEngine.backgroundShadowColor.lightenColor(factor: 3)
+        iconSprite.color = PauseResetEngine.backgroundShadowColor.lightenColor(factor: colorFactor)
         buttonSprite.fillColor = PauseResetEngine.backgroundColor
         buttonSprite.run(SKAction.move(to: .zero, duration: animationDuration))
         shadowSprite.run(SKAction.move(to: shadowSize, duration: animationDuration))
@@ -112,6 +113,7 @@ class SettingsButton: SKNode {
             buttonSprite.fillColor = PauseResetEngine.backgroundColor
         }
         else {
+            iconSprite.color = isPressed ? PauseResetEngine.backgroundColor.darkenColor(factor: colorFactor) : PauseResetEngine.backgroundShadowColor.lightenColor(factor: colorFactor)
             buttonSprite.fillColor = isPressed ? PauseResetEngine.backgroundShadowColor : PauseResetEngine.backgroundColor
         }
         
