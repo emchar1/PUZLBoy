@@ -13,6 +13,9 @@ struct FIRManager {
     
     // MARK: - Properties
     
+    static var user: User?
+    static var saveStateModel: SaveStateModel?
+    
     ///Only call this once, otherwise App will crash. Also must call it before calling FIRManager.initializeLevelRealtimeRecords().
     static var enableDBPersistence: Void {
         let db = Database.database()
@@ -56,12 +59,16 @@ struct FIRManager {
             return
         }
         
+        self.user = user
+        
         initializeSaveStateFirestoreRecords(user: user) { saveStateModel, saveStateError in
             guard saveStateError == nil, let saveStateModel = saveStateModel else {
                 print("Error finding saveState: \(saveStateError!)")
                 completion?(nil, .saveStateNotFound)
                 return
             }
+            
+            self.saveStateModel = saveStateModel
             
             initializeFunnyQuotes { loadingScreenQuotes, notificationItemQuotes, funnyQuotesError in
                 guard funnyQuotesError == nil, let loadingScreenQuotes = loadingScreenQuotes, let notificationItemQuotes = notificationItemQuotes else {
@@ -101,7 +108,7 @@ struct FIRManager {
     }
     
     ///Initializes the Firestore database and obtains the documentID that matches the user's UID. Returns nil if document is not found.
-    static func initializeSaveStateFirestoreRecords(user: User?, completion: ((SaveStateModel?, FirestoreError?) -> Void)?) {
+    private static func initializeSaveStateFirestoreRecords(user: User?, completion: ((SaveStateModel?, FirestoreError?) -> Void)?) {
         guard let user = user else {
             completion?(nil, .userNotSignedIn)
             return
@@ -152,6 +159,9 @@ struct FIRManager {
             print("User not signed in. Unable to load Firestore savedState.")
             return
         }
+        
+        self.user = user
+        self.saveStateModel = saveStateModel
         
         var levelStatsArray: [Any] = []
         

@@ -20,8 +20,6 @@ class GameViewController: UIViewController {
     private var levelLoaded = false
     private var hasInternet = false
     private var monitor: NWPathMonitor!
-    private var user: User?
-    private var saveStateModel: SaveStateModel?
     private var gameScenePreserved: GameScene?
     private let skView = SKView()
     
@@ -74,9 +72,6 @@ class GameViewController: UIViewController {
                 FIRManager.initializeFirestore(user: user) { saveStateModel, error in
                     //No error handling...
                     
-                    self.user = user
-                    self.saveStateModel = saveStateModel
-                    
                     DispatchQueue.main.asyncAfter(deadline: .now() + LoadingSprite.loadingDuration) {
                         if !UserDefaults.standard.bool(forKey: K.UserDefaults.shouldSkipIntro) {
                             cutsceneIntro = CutsceneIntro(size: K.ScreenDimensions.screenSize, xOffsetsArray: nil)
@@ -113,7 +108,7 @@ class GameViewController: UIViewController {
     }//end viewDidLoad()
     
     private func presentTitleScene() {
-        let titleScene = TitleScene(size: K.ScreenDimensions.screenSize, user: user)
+        let titleScene = TitleScene(size: K.ScreenDimensions.screenSize)
         titleScene.titleSceneDelegate = self
         
         skView.presentScene(titleScene)
@@ -138,7 +133,7 @@ extension GameViewController: TitleSceneDelegate {
             skView.presentScene(gameScenePreserved, transition: SKTransition.fade(with: .white, duration: 1.0))
         }
         else {
-            let gameScene = GameScene(size: K.ScreenDimensions.screenSize, user: user, saveStateModel: saveStateModel, hasInternet: hasInternet)
+            let gameScene = GameScene(size: K.ScreenDimensions.screenSize, hasInternet: hasInternet)
             gameScene.gameSceneDelegate = self
             
             skView.presentScene(gameScene, transition: SKTransition.fade(with: .white, duration: 1.0))
@@ -161,7 +156,7 @@ extension GameViewController: TitleSceneDelegate {
 
 extension GameViewController: CreditsSceneDelegate {
     func goBackTapped() {
-        let titleScene = TitleScene(size: K.ScreenDimensions.screenSize, user: user)
+        let titleScene = TitleScene(size: K.ScreenDimensions.screenSize)
         titleScene.titleSceneDelegate = self
         
         //NEEDS to have a transition, otherwise the state won't save, trust me.
@@ -174,7 +169,7 @@ extension GameViewController: CreditsSceneDelegate {
 
 extension GameViewController: GameSceneDelegate {
     func confirmQuitTapped() {
-        let titleScene = TitleScene(size: K.ScreenDimensions.screenSize, user: user)
+        let titleScene = TitleScene(size: K.ScreenDimensions.screenSize)
         titleScene.titleSceneDelegate = self
         
         //NEEDS to have a transition, otherwise the state won't save, trust me.
@@ -202,7 +197,7 @@ extension GameViewController: MFMailComposeViewControllerDelegate {
         deviceStats += "Device: \(UIDevice.modelInfo.name)<br>"
         deviceStats += "OS version: \(os.majorVersion).\(os.minorVersion).\(os.patchVersion)<br>"
         deviceStats += "Language: \(Locale.current.languageCode ?? "N/A")<br>"
-        deviceStats += "UID: \(user?.uid ?? "N/A")"
+        deviceStats += "UID: \(FIRManager.user?.uid ?? "N/A")"
 
         let mail = MFMailComposeViewController()
         mail.mailComposeDelegate = self

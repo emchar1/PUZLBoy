@@ -35,7 +35,6 @@ class GameScene: SKScene {
     private var adSprite: SKSpriteNode?
     
     //Misc Properties
-    private var user: User?
     private var replenishLivesTimerOffset: Date?
     private let keyRunGameTimerAction = "runGameTimerAction"
     private let keyRunReplenishLivesTimerAction = "runReplenishLivesTimerAction"
@@ -64,8 +63,8 @@ class GameScene: SKScene {
     
     // MARK: - Initialization
     
-    init(size: CGSize, user: User?, saveStateModel: SaveStateModel?, hasInternet: Bool) {
-        if let saveStateModel = saveStateModel {
+    init(size: CGSize, hasInternet: Bool) {
+        if let saveStateModel = FIRManager.saveStateModel {
             currentLevel = saveStateModel.newLevel //ALWAYS go with newLevel, because it takes precedence over levelModel.level
             gameEngine = GameEngine(saveStateModel: saveStateModel)
             scoringEngine = ScoringEngine(elapsedTime: saveStateModel.elapsedTime,
@@ -81,15 +80,13 @@ class GameScene: SKScene {
         
         //chatEngine MUST be initialized here, and not in properties, otherwise it just refuses to show up! Because K.ScreenDimensions.topOfGameboard is set in the gameEngine(). Is there a better way to do this??
         chatEngine = ChatEngine()
-        pauseResetEngine = PauseResetEngine(user: user, level: currentLevel)
+        pauseResetEngine = PauseResetEngine(level: currentLevel)
 
         // FIXME: - 8/30/23 Added '&& user != nil' here to also show offline play if user is nil, i.e. error connecting to Firebase.
-        offlinePlaySprite = (hasInternet && user != nil) ? nil : OfflinePlaySprite()
-        
-        self.user = user
-        
+        offlinePlaySprite = (hasInternet && FIRManager.user != nil) ? nil : OfflinePlaySprite()
+                
         // FIXME: - Debugging purposes only!!!
-        levelSkipEngine = LevelSkipEngine(user: user)
+        levelSkipEngine = LevelSkipEngine()
         
         super.init(size: size)
         
@@ -338,7 +335,7 @@ class GameScene: SKScene {
         - levelStatsItem: the current level stats to save to Firebase
      */
     private func saveState(levelStatsItem: LevelStats) {
-        guard let user = user, LevelBuilder.maxLevel > 0 else { return }
+        guard let user = FIRManager.user, LevelBuilder.maxLevel > 0 else { return }
         
         if levelStatsArray.filter({ $0 == levelStatsItem }).first != nil {
             if let indexFound = levelStatsArray.firstIndex(where: { $0 == levelStatsItem }) {
@@ -483,7 +480,7 @@ class GameScene: SKScene {
         }
         
         // FIXME: - Debugging purposes only!!!
-        if let user = user,
+        if let user = FIRManager.user,
            !Level.isPartyLevel(currentLevel),
             user.uid == "2bjhz2grYVVOn37qmUipG4CKps62" ||   //Eddie
             user.uid == "NB9OLr2X8kRLJ7S0G8W3800qo8U2" ||   //Michel

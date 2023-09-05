@@ -13,8 +13,6 @@ class SettingsPage: ParentPage {
     
     // MARK: - Properties
     
-    private var user: User?
-
     private(set) var radioMusic: SettingsRadioNode!
     private var radioSoundFX: SettingsRadioNode!
     private var radioVibration: SettingsRadioNode!
@@ -29,8 +27,7 @@ class SettingsPage: ParentPage {
     
     // MARK: - Initialization
     
-    init(user: User?, contentSize: CGSize, useMorningSky: Bool = false) {
-        self.user = user
+    init(contentSize: CGSize, useMorningSky: Bool = false) {
         self.useMorningSky = useMorningSky
 
         super.init(contentSize: contentSize, titleText: "Settings")

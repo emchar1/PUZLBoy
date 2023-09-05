@@ -60,7 +60,6 @@ class PauseResetEngine {
     //Misc Properties
     static var backgroundColor: UIColor { DayTheme.skyColor.top.analogous.first.darkenColor(factor: 6) }
     static var backgroundShadowColor: UIColor { DayTheme.skyColor.bottom.analogous.first }
-    private var user: User?
     private var currentLevel: Int = 1
     
     //Boolean properties
@@ -74,8 +73,7 @@ class PauseResetEngine {
     
     // MARK: - Initialization
     
-    init(user: User?, level: Int) {
-        self.user = user
+    init(level: Int) {
         self.currentLevel = level
         
         setupSprites()
@@ -126,7 +124,7 @@ class PauseResetEngine {
         settingsManager.setInitialPosition(CGPoint(x: -backgroundSprite.position.x, y: -settingsSize.height / 2))
         settingsManager.delegate = self
 
-        settingsPage = SettingsPage(user: user, contentSize: settingsSize)
+        settingsPage = SettingsPage(contentSize: settingsSize)
         settingsPage.zPosition = 10
         
         howToPlayPage = HowToPlayPage(contentSize: settingsSize, level: currentLevel)

@@ -24,16 +24,13 @@ class LevelSkipEngine {
     private var viewAchievements: SKSpriteNode!
     private var partyMode: SKSpriteNode!
     private var superScene: SKScene?
-    private var user: User?
     
     weak var delegate: LevelSkipEngineDelegate?
     
     
     // MARK: - Initialization
     
-    init(user: User?) {
-        self.user = user
-
+    init() {
         setupSprites()
         showButtons()
     }
@@ -121,11 +118,6 @@ class LevelSkipEngine {
 
         superScene.addChild(forwardSprite)
         superScene.addChild(reverseSprite)
-//        superScene.addChild(viewAchievements)
-//
-//        if let user = user, user.uid == "2bjhz2grYVVOn37qmUipG4CKps62" {
-//            superScene.addChild(partyMode)
-//        }
     }
     
     

@@ -39,7 +39,6 @@ class TitleScene: SKScene {
     private var settingsPage: SettingsPage!
 
     //Misc.
-    private var user: User?
     private var myColors: (title: UIColor, background: UIColor, shadow: UIColor) = (.black, .black, .black)
     private let shadowDepth: CGFloat = 10
     private var disableInput: Bool = false
@@ -51,9 +50,7 @@ class TitleScene: SKScene {
     
     // MARK: - Initializtion
     
-    init(size: CGSize, user: User?) {
-        self.user = user
-        
+    override init(size: CGSize) {
         super.init(size: size)
         
         setupSprites()
@@ -174,7 +171,7 @@ class TitleScene: SKScene {
         settingsBackground.zPosition = K.ZPosition.pauseScreen
         settingsBackground.addShadow(rectOf: settingsSize, cornerRadius: menuCornerRadius)
 
-        settingsPage = SettingsPage(user: user, contentSize: settingsSize, useMorningSky: !UserDefaults.standard.bool(forKey: K.UserDefaults.shouldSkipIntro))
+        settingsPage = SettingsPage(contentSize: settingsSize, useMorningSky: !UserDefaults.standard.bool(forKey: K.UserDefaults.shouldSkipIntro))
         settingsPage.zPosition = 10
     }
     
