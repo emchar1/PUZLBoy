@@ -304,7 +304,7 @@ class TitleScene: SKScene {
                 SKAction.scaleX(to: menuSize.width / settingsSize.width, duration: animationDuration),
                 SKAction.scaleY(to: menuSize.height / settingsSize.height, duration: animationDuration),
                 SKAction.moveTo(y: menuSize.height / 2 + K.ScreenDimensions.bottomMargin, duration: animationDuration),
-                SKAction.fadeOut(withDuration: animationDuration)
+                SKAction.fadeOut(withDuration: 0)
             ])) { [unowned self] in
                 menuBackground.showShadow(completion: nil)
                 
@@ -315,7 +315,7 @@ class TitleScene: SKScene {
                 SKAction.scaleX(to: 1, duration: animationDuration),
                 SKAction.scaleY(to: 1, duration: animationDuration),
                 SKAction.moveTo(y: menuSize.height / 2 + K.ScreenDimensions.bottomMargin, duration: animationDuration),
-                SKAction.fadeAlpha(to: 0.9, duration: animationDuration)
+                SKAction.fadeAlpha(to: 0.9, duration: 0)
             ]))
         }
         else {
@@ -325,7 +325,7 @@ class TitleScene: SKScene {
                 SKAction.scaleX(to: settingsSize.width / menuSize.width * GameboardSprite.spriteScale, duration: animationDuration),
                 SKAction.scaleY(to: settingsSize.height / menuSize.height * GameboardSprite.spriteScale, duration: animationDuration),
                 SKAction.moveTo(y: settingsSize.height / 2 * GameboardSprite.spriteScale + K.ScreenDimensions.bottomMargin, duration: animationDuration),
-                SKAction.fadeOut(withDuration: animationDuration)
+                SKAction.fadeOut(withDuration: 0)
             ])) { [unowned self] in
                 settingsBackground.showShadow(completion: nil)
                 
@@ -336,7 +336,7 @@ class TitleScene: SKScene {
                 SKAction.scaleX(to: GameboardSprite.spriteScale, duration: animationDuration),
                 SKAction.scaleY(to: GameboardSprite.spriteScale, duration: animationDuration),
                 SKAction.moveTo(y: settingsSize.height / 2 * GameboardSprite.spriteScale + K.ScreenDimensions.bottomMargin, duration: animationDuration),
-                SKAction.fadeAlpha(to: 0.9, duration: animationDuration)
+                SKAction.fadeAlpha(to: 0.9, duration: 0)
             ]))
         }
     }

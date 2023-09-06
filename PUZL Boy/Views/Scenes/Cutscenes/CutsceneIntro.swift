@@ -207,7 +207,7 @@ class CutsceneIntro: SKScene {
                         addChild(skipIntroSprite)
                         skipIntroSprite.animateSprite()
                     },
-                    SpeechBubbleItem(profile: speechPrincess, chat: "Hi! 👋🏼 I'm Princess Olivia and I'm 7 years old.|| I'm late for a V|E|R|Y| important appointment.") { [unowned self] in
+                    SpeechBubbleItem(profile: speechPrincess, chat: "Hi! 👋🏽 I'm Princess Olivia and I'm 7 years old.|| I'm late for a V|E|R|Y| important appointment.") { [unowned self] in
                         closeUpHero()
                     },
                     SpeechBubbleItem(profile: speechHero, chat: "Wait,| like an actual princess, or...| is that more of a self-proclaimed title?||||||||/Also what kind of important meeting does a 7 year old need to attend?||||||||/And where are your parents? Are you here by yourself???") { [unowned self] in
