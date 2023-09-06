@@ -28,11 +28,15 @@ class CutsceneIntro: SKScene {
     private var speechHero: SpeechBubbleSprite!
     private var speechPrincess: SpeechBubbleSprite!
     private var overlaySpeech: SpeechOverlaySprite!
-    
+    private var skipIntroSprite: SkipIntroSprite!
+
     //Overlays
     private var dimOverlayNode: SKShapeNode!
     private var bloodOverlayNode: SKShapeNode!
     private var flashOverlayNode: SKShapeNode!
+    private var fadeTransitionNode: SKShapeNode!
+    
+    private var completion: (() -> Void)?
 
     // MARK: - Initialization
     
@@ -66,6 +70,12 @@ class CutsceneIntro: SKScene {
         
         overlaySpeech = SpeechOverlaySprite()
         
+        skipIntroSprite = SkipIntroSprite()
+        skipIntroSprite.position = CGPoint(x: K.ScreenDimensions.screenSize.width / 2, y: K.ScreenDimensions.screenSize.height / 6)
+        skipIntroSprite.zPosition = K.ZPosition.speechBubble
+        skipIntroSprite.delegate = self
+
+        
         dragonSprite = SKSpriteNode(imageNamed: "enemy")
         dragonSprite.position = CGPoint(x: -dragonSprite.size.width, y: K.ScreenDimensions.height + dragonSprite.size.height)
         dragonSprite.zPosition = K.ZPosition.player + 10
@@ -98,6 +108,13 @@ class CutsceneIntro: SKScene {
         flashOverlayNode.alpha = 0
         flashOverlayNode.zPosition = K.ZPosition.bloodOverlay + 10
         
+        fadeTransitionNode = SKShapeNode(rectOf: screenSize)
+        fadeTransitionNode.position = CGPoint(x: screenSize.width / 2, y: screenSize.height / 2)
+        fadeTransitionNode.fillColor = .black
+        fadeTransitionNode.lineWidth = 0
+        fadeTransitionNode.alpha = 0
+        fadeTransitionNode.zPosition = K.ZPosition.fadeTransitionNode
+        
         parallaxManager = ParallaxManager(useSet: .grass, xOffsetsArray: xOffsetsArray, shouldWalk: true)
         
         speechHero = SpeechBubbleSprite(width: 460, position: heroPosition + CGPoint(x: 200, y: 400))
@@ -113,13 +130,23 @@ class CutsceneIntro: SKScene {
         addChild(dimOverlayNode)
         addChild(bloodOverlayNode)
         addChild(flashOverlayNode)
+        addChild(fadeTransitionNode)
         addChild(hero.sprite)
         addChild(princess.sprite)
         addChild(dragonSprite)
         
-//        addChild(overlaySpeech)
-
         parallaxManager.addSpritesToParent(scene: self)
+    }
+    
+    
+    // MARK: - Touch Functions
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        skipIntroSprite.touchesBegan(touches, with: event)
+    }
+    
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        skipIntroSprite.touchesEnded(touches, with: event)
     }
     
     
@@ -131,6 +158,8 @@ class CutsceneIntro: SKScene {
         let heroWalk = SKAction.animate(with: hero.textures[Player.Texture.walk.rawValue], timePerFrame: frameRate)
         let heroIdle = SKAction.animate(with: hero.textures[Player.Texture.idle.rawValue], timePerFrame: frameRate)
         let princessIdle = SKAction.animate(with: princess.textures[Player.Texture.idle.rawValue], timePerFrame: frameRate * 1.5)
+        
+        self.completion = completion
         
         //Hero Sprite
         hero.sprite.run(SKAction.group([
@@ -174,8 +203,13 @@ class CutsceneIntro: SKScene {
             SKAction.wait(forDuration: 2 * walkCycle),
             SKAction.run { [unowned self] in
                 setTextArray(items: [
-                    SpeechBubbleItem(profile: speechHero, chat: "🎵 I'm a Barbie girl,| in the Barbie world.|| Life in plastic,| it's fantastic! You can brush my hair—/Oh.....|| hello.| Didn't see you there... 😬|||| I'm PUZL Boy.", handler: nil),
-                    SpeechBubbleItem(profile: speechPrincess, chat: "Hi! 👋🏼 I'm Princess Olivia and I'm 7 years old.|| I'm late for a V|E|R|Y| important appointment.", handler: closeUpHero),
+                    SpeechBubbleItem(profile: speechHero, chat: "🎵 I'm a Barbie girl,| in the Barbie world.|| Life in plastic,| it's fantastic! You can brush my hair—/Oh.....|| hello.| Didn't see you there... 😬|||| I'm PUZL Boy.") { [unowned self] in
+                        addChild(skipIntroSprite)
+                        skipIntroSprite.animateSprite()
+                    },
+                    SpeechBubbleItem(profile: speechPrincess, chat: "Hi! 👋🏼 I'm Princess Olivia and I'm 7 years old.|| I'm late for a V|E|R|Y| important appointment.") { [unowned self] in
+                        closeUpHero()
+                    },
                     SpeechBubbleItem(profile: speechHero, chat: "Wait,| like an actual princess, or...| is that more of a self-proclaimed title?||||||||/Also what kind of important meeting does a 7 year old need to attend?||||||||/And where are your parents? Are you here by yourself???") { [unowned self] in
                         closeUpPrincess()
                         
@@ -227,8 +261,8 @@ class CutsceneIntro: SKScene {
                         
                         
                     },
-                    SpeechBubbleItem(profile: speechPrincess, chat: "Great, now I'm being captured. Could this day get any worse?!?!") { [unowned self] in
-                        didFinishAnimating()
+                    SpeechBubbleItem(profile: speechPrincess, chat: "Great, now I'm being captured. Could this day get any worse?!?!") {
+                        //continue convo here
                     }
                 ], completion: completion)
             }
@@ -258,16 +292,6 @@ class CutsceneIntro: SKScene {
             //Recursion!!
             setTextArray(items: items, currentIndex: currentIndex + 1, completion: completion)
         }
-    }
-    
-    private func didFinishAnimating() {
-        hero.sprite.removeAllActions()
-        princess.sprite.removeAllActions()
-        parallaxManager.removeAllActions()
-        
-        hero.sprite.removeFromParent()
-        princess.sprite.removeFromParent()
-        parallaxManager.removeFromParent()
     }
     
     private func closeUpPrincess() {
@@ -315,4 +339,21 @@ class CutsceneIntro: SKScene {
         
         speechHero.position = CGPoint(x: 120 + speechHero.bubbleDimensions.width / 2, y: heroPosition.y + 400)
     }
+}
+
+
+// MARK: - SkipIntroSpriteDelegate
+
+extension CutsceneIntro: SkipIntroSpriteDelegate {
+    func buttonWasTapped() {
+        ButtonTap.shared.tap(type: .buttontap1)
+
+        fadeTransitionNode.run(SKAction.sequence([
+            SKAction.fadeIn(withDuration: 1),
+            SKAction.removeFromParent()
+        ])) { [unowned self] in
+            self.completion?()
+        }
+    }
+    
 }

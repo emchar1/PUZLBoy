@@ -138,7 +138,9 @@ extension GameViewController: TitleSceneDelegate {
             
             skView.presentScene(gameScene, transition: SKTransition.fade(with: .white, duration: 1.0))
             monitor.cancel()
-            UserDefaults.standard.set(true, forKey: K.UserDefaults.shouldSkipIntro)
+            
+            //FIXME: - Test by setting it to false, triggering the cutscene always
+            UserDefaults.standard.set(false, forKey: K.UserDefaults.shouldSkipIntro)
         }
     }
     
