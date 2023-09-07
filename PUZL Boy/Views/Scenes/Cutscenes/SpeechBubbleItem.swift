@@ -9,16 +9,18 @@ import Foundation
 
 struct SpeechBubbleItem {
     let profile: SpeechBubbleSprite
+    let speed: TimeInterval
     let chat: String
     let handler: (() -> Void)?
     
-    init(profile: SpeechBubbleSprite, chat: String, handler: (() -> Void)?) {
+    init(profile: SpeechBubbleSprite, speed: TimeInterval = SpeechBubbleSprite.animationSpeedOrig, chat: String, handler: (() -> Void)?) {
         self.profile = profile
+        self.speed = speed
         self.chat = chat
         self.handler = handler
     }
     
-    init(profile: SpeechBubbleSprite, chat: String) {
-        self.init(profile: profile, chat: chat, handler: nil)
+    init(profile: SpeechBubbleSprite, speed: TimeInterval = SpeechBubbleSprite.animationSpeedOrig, chat: String) {
+        self.init(profile: profile, speed: speed, chat: chat, handler: nil)
     }
 }

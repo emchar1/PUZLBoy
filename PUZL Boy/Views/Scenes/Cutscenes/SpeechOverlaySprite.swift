@@ -16,7 +16,7 @@ class SpeechOverlaySprite: SKNode {
     private var text: String
     
     //Animation Properties
-    private let animationSpeedOrig: TimeInterval = 0.1
+    private let animationSpeedOrig: TimeInterval = 0.06
     private var animationSpeed: TimeInterval
     private var animationIndex = 0
     private var timer = Timer()
@@ -101,7 +101,7 @@ class SpeechOverlaySprite: SKNode {
             return
         }
         
-        let animationPause: TimeInterval = 0.25
+        let animationPause: TimeInterval = 0.75
         let delimiterPause: Character = "|"
         let delimiterClear: Character = "/"
         let speechBubbleChar = self.text[self.text.index(self.text.startIndex, offsetBy: animationIndex)]

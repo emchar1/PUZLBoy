@@ -18,7 +18,7 @@ class SpeechBubbleSprite: SKNode {
     private var shouldFlipTail: Bool
     
     //Animation Properties
-    private let animationSpeedOrig: TimeInterval = 0.08
+    static let animationSpeedOrig: TimeInterval = 0.08
     private var animationSpeed: TimeInterval
     private var animationIndex = 0
     private var timer = Timer()
@@ -37,7 +37,7 @@ class SpeechBubbleSprite: SKNode {
         self.bubbleText = ""
         self.shouldFlipTail = shouldFlipTail
         self.bubbleDimensions = CGSize(width: width, height: (width / bubbleDimensionsOrig.width) * bubbleDimensionsOrig.height)
-        self.animationSpeed = animationSpeedOrig
+        self.animationSpeed = SpeechBubbleSprite.animationSpeedOrig
         
         super.init()
         
@@ -86,9 +86,10 @@ class SpeechBubbleSprite: SKNode {
     
     // MARK: - Animation Functions
     
-    func setText(text: String, superScene: SKScene, completion: (() -> Void)?) {
+    func setText(text: String, speed: TimeInterval = SpeechBubbleSprite.animationSpeedOrig, superScene: SKScene, completion: (() -> Void)?) {
         bubbleText = text
         textSprite.text = ""
+        animationSpeed = speed
         animationIndex = 0
         self.completion = completion
 

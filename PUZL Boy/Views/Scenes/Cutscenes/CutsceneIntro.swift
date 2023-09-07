@@ -12,9 +12,10 @@ class CutsceneIntro: SKScene {
     // MARK: - Properties
 
     //Positions, Scales
-    private let heroPosition = CGPoint(x: K.ScreenDimensions.iPhoneWidth / 2, y: K.ScreenDimensions.height / 3)
-    private let princessPosition = CGPoint(x: K.ScreenDimensions.iPhoneWidth + 80, y: K.ScreenDimensions.height / 3 - 40)
+    private let heroPosition = CGPoint(x: K.ScreenDimensions.screenSize.width / 2, y: K.ScreenDimensions.screenSize.height / 3)
+    private let princessPosition = CGPoint(x: K.ScreenDimensions.screenSize.width - 120, y: K.ScreenDimensions.screenSize.height / 3 - 40)
     private let playerScale: CGFloat = 0.75
+    private let screenSize = K.ScreenDimensions.screenSize
     
     //Main Nodes
     private(set) var parallaxManager: ParallaxManager!
@@ -22,7 +23,7 @@ class CutsceneIntro: SKScene {
     private var hero: Player!
     private var princess: Player!
     private var dragonSprite: SKSpriteNode!
-    private var flyingDragon: Dragon!
+    private var flyingDragon: FlyingDragon!
     
     //Speech
     private var speechHero: SpeechBubbleSprite!
@@ -55,15 +56,13 @@ class CutsceneIntro: SKScene {
     }
     
     private func setupScene(xOffsetsArray: [ParallaxSprite.SpriteXPositions]?) {
-        let screenSize: CGSize = K.ScreenDimensions.screenSize
-        
         hero = Player(type: .hero)
         hero.sprite.position = heroPosition
         hero.sprite.setScale(playerScale)
         hero.sprite.name = LaunchScene.nodeName_playerSprite
         
         princess = Player(type: .princess)
-        princess.sprite.position = princessPosition
+        princess.sprite.position = CGPoint(x: princessPosition.x + 200, y: princessPosition.y)
         princess.sprite.setScale(playerScale * 0.75)
         princess.sprite.xScale = -playerScale * 0.75
         princess.sprite.name = LaunchScene.nodeName_playerSprite
@@ -71,7 +70,7 @@ class CutsceneIntro: SKScene {
         overlaySpeech = SpeechOverlaySprite()
         
         skipIntroSprite = SkipIntroSprite()
-        skipIntroSprite.position = CGPoint(x: K.ScreenDimensions.screenSize.width / 2, y: K.ScreenDimensions.screenSize.height / 6)
+        skipIntroSprite.position = CGPoint(x: screenSize.width / 2, y: screenSize.height / 6)
         skipIntroSprite.zPosition = K.ZPosition.speechBubble
         skipIntroSprite.delegate = self
 
@@ -80,7 +79,7 @@ class CutsceneIntro: SKScene {
         dragonSprite.position = CGPoint(x: -dragonSprite.size.width, y: K.ScreenDimensions.height + dragonSprite.size.height)
         dragonSprite.zPosition = K.ZPosition.player + 10
         
-        flyingDragon = Dragon()
+        flyingDragon = FlyingDragon()
 
         skyNode = SKSpriteNode(texture: SKTexture(image: DayTheme.getSkyImage(useMorningSky: true)))
         skyNode.anchorPoint = .zero
@@ -118,7 +117,7 @@ class CutsceneIntro: SKScene {
         parallaxManager = ParallaxManager(useSet: .grass, xOffsetsArray: xOffsetsArray, shouldWalk: true)
         
         speechHero = SpeechBubbleSprite(width: 460, position: heroPosition + CGPoint(x: 200, y: 400))
-        speechPrincess = SpeechBubbleSprite(width: 460, position: princessPosition + CGPoint(x: -400, y: 400), shouldFlipTail: true)
+        speechPrincess = SpeechBubbleSprite(width: 460, position: princessPosition + CGPoint(x: -200, y: 400), shouldFlipTail: true)
 
     }
     
@@ -176,7 +175,7 @@ class CutsceneIntro: SKScene {
         princess.sprite.run(SKAction.sequence([
             SKAction.wait(forDuration: 11 * walkCycle),
             SKAction.group([
-                SKAction.moveTo(x: princessPosition.x - 200, duration: 2 * walkCycle),
+                SKAction.moveTo(x: princessPosition.x, duration: 2 * walkCycle),
                 SKAction.repeatForever(princessIdle)
             ])
         ]))
@@ -214,24 +213,25 @@ class CutsceneIntro: SKScene {
                         closeUpPrincess()
                         
                         dimOverlayNode.run(SKAction.sequence([
-                            SKAction.wait(forDuration: 12),
+                            SKAction.wait(forDuration: 16),
                             SKAction.fadeAlpha(to: 0.8, duration: 1),
                             SKAction.wait(forDuration: 2),
                             SKAction.run { [unowned self] in
                                 overlaySpeech.setText(
-                                    text: "She went on to explain how dragons had disappeared from the realm of some place called Eldoria,| where she's allegedly from,|| and that the balance of magic had been disrupted.||||||||/She also mentioned that she's the last of her kind—||whatever that means...|||| And then the CRAZIEST thing happened!!",
+                                    text: "She went on to explain how dragons had disappeared from the realm of some place called Eldoria, where she claims she's from,|| and that the balance of magic had been disrupted.||||||||/She also mentioned that she's the last of her kind—|| At first, it sounded like some make believe story...|||| And then the CRAZIEST thing happened!!",
                                     superScene: self, completion: nil)
                             }
                         ]))
                     },
-                    SpeechBubbleItem(profile: speechPrincess, chat: "Oh, umm...|| you ask too many questions!||||||||/But if you must know,| the reason why I'm here is because— blah blah blah...||||/Blah blah blah, blah blah blah dragons blah, blah blah, blah blah blah, blah.||||||||/Blah blah, blah. BLAH blah blah blah, blahhhhh blah. Blah. Blah. Blah. Blah blah Eldoria...||||||||/Blah-de blah blah blah. Blahbitty blahbitty bloo, BLAAAAAH! BLAH BLAH BLAH, MAGIC!!||||||||/And furthermore— blah blah blah, blah blah blah.|| ...last known descendant.") { [unowned self] in
+                    SpeechBubbleItem(profile: speechPrincess, speed: 0.12, chat: "Oh, umm...|| you ask too many questions!||||||||/But if you must know,| the reason why I'm here is because— blah blah blah...||||/Blah blah blah, blah blah blah DRAGONS blah, blah blah, blah blah blah, blah.||||||||/ELDORIA blah, blah. BLAH blah blah blah, blahhhhh blah. Blah. Blah. Blah. MAGIC!!||||||||/And furthermore— blah blah blah, blah blah blah.||| ...last known descendant.") { [unowned self] in
                         wideShot()
                         
                         dimOverlayNode.run(SKAction.fadeOut(withDuration: 1))
                         
-                        flyingDragon.sprite.position = CGPoint(x: K.ScreenDimensions.screenSize.width, y: K.ScreenDimensions.screenSize.height * 7 / 8)
-                        flyingDragon.animate(toNode: self)
-                        flyingDragon.sprite.run(SKAction.moveTo(x: -flyingDragon.sprite.size.width, duration: 10.0))
+                        flyingDragon.animate(toNode: self,
+                                             from: CGPoint(x: screenSize.width, y: screenSize.height * 7 / 8),
+                                             to: CGPoint(x: -flyingDragon.sprite.size.width, y: 0),
+                                             duration: 10)
                         
                         overlaySpeech.removeFromParent()
                     },
@@ -246,22 +246,27 @@ class CutsceneIntro: SKScene {
                             SKAction.run { [unowned self] in
                                 dragonSprite.run(SKAction.group([
                                     SKAction.scale(to: 5, duration: 0.5),
-                                    SKAction.move(to: CGPoint(x: K.ScreenDimensions.screenSize.width / 2, y: K.ScreenDimensions.screenSize.height / 2), duration: 0.5)
+                                    SKAction.move(to: CGPoint(x: princessPosition.x, y: princessPosition.y + dragonSprite.size.height / 2 + princess.sprite.size.height / 2), duration: 0.5)
                                 ]))
                             },
-                            SKAction.wait(forDuration: 2),
                             SKAction.run { [unowned self] in
                                 flashOverlayNode.run(SKAction.sequence([
                                     SKAction.fadeIn(withDuration: 0),
                                     SKAction.fadeOut(withDuration: 0.25)
                                 ]))
                                 AudioManager.shared.playSound(for: "enemyscratch")
+                            },
+                            SKAction.wait(forDuration: 1),
+                            SKAction.run { [unowned self] in
+                                dragonSprite.position = CGPoint(x: screenSize.width / 2, y: screenSize.height / 2 + princess.sprite.size.height / 2)
+                                dragonSprite.setScale(10)
+                                closeUpPrincess()
                             }
                         ]))
                         
                         
                     },
-                    SpeechBubbleItem(profile: speechPrincess, chat: "Great, now I'm being captured. Could this day get any worse?!?!") {
+                    SpeechBubbleItem(profile: speechPrincess, speed: 0.02, chat: "AAAAAAHHHH!!!!||||HELP ME MAR—|| I mean,|| PUZL BOY!!!") {
                         //continue convo here
                     }
                 ], completion: completion)
@@ -286,7 +291,7 @@ class CutsceneIntro: SKScene {
             return
         }
         
-        items[currentIndex].profile.setText(text: items[currentIndex].chat, superScene: self) { [unowned self] in
+        items[currentIndex].profile.setText(text: items[currentIndex].chat, speed: items[currentIndex].speed, superScene: self) { [unowned self] in
             items[currentIndex].handler?()
             
             //Recursion!!
@@ -295,7 +300,7 @@ class CutsceneIntro: SKScene {
     }
     
     private func closeUpPrincess() {
-        princess.sprite.position.x = K.ScreenDimensions.iPhoneWidth / 2
+        princess.sprite.position.x = screenSize.width / 2
         princess.sprite.setScale(2 * 0.75)
         princess.sprite.xScale = -2 * 0.75
         
@@ -303,29 +308,29 @@ class CutsceneIntro: SKScene {
         hero.sprite.setScale(playerScale)
 
         parallaxManager.backgroundSprite.setScale(2)
-        parallaxManager.backgroundSprite.position.y = -K.ScreenDimensions.height / 2 + 400
-        parallaxManager.backgroundSprite.position.x = -K.ScreenDimensions.iPhoneWidth / 2
+        parallaxManager.backgroundSprite.position.y = -screenSize.height / 2 + 400
+        parallaxManager.backgroundSprite.position.x = -screenSize.width / 2
         
-        speechPrincess.position = CGPoint(x: K.ScreenDimensions.screenSize.width - 300, y: K.ScreenDimensions.screenSize.height + 400) / 2
+        speechPrincess.position = CGPoint(x: screenSize.width - 300, y: screenSize.height + 400) / 2
     }
     
     private func closeUpHero() {
-        princess.sprite.position.x = princessPosition.x
+        princess.sprite.position.x = princessPosition.x + 200
         princess.sprite.setScale(playerScale * 0.75)
         princess.sprite.xScale = -playerScale * 0.75
         
-        hero.sprite.position.x = K.ScreenDimensions.iPhoneWidth / 2
+        hero.sprite.position.x = screenSize.width / 2
         hero.sprite.setScale(2)
         
         parallaxManager.backgroundSprite.setScale(2)
-        parallaxManager.backgroundSprite.position.y = -K.ScreenDimensions.height / 2 + 400
-        parallaxManager.backgroundSprite.position.x = K.ScreenDimensions.iPhoneWidth / 2
+        parallaxManager.backgroundSprite.position.y = -screenSize.height / 2 + 400
+        parallaxManager.backgroundSprite.position.x = screenSize.width / 2
         
-        speechHero.position = CGPoint(x: K.ScreenDimensions.screenSize.width + 300, y: K.ScreenDimensions.screenSize.height + 700) / 2
+        speechHero.position = CGPoint(x: screenSize.width + 300, y: screenSize.height + 700) / 2
     }
     
     private func wideShot() {
-        princess.sprite.position.x = princessPosition.x - 200
+        princess.sprite.position.x = princessPosition.x
         princess.sprite.setScale(playerScale * 0.75)
         princess.sprite.xScale = -playerScale * 0.75
         
@@ -335,7 +340,7 @@ class CutsceneIntro: SKScene {
         parallaxManager.backgroundSprite.setScale(1)
         parallaxManager.backgroundSprite.position = .zero
         
-        speechPrincess.position = princessPosition + CGPoint(x: -400, y: 400)
+        speechPrincess.position = princessPosition + CGPoint(x: -200, y: 400)
         
         speechHero.position = CGPoint(x: 120 + speechHero.bubbleDimensions.width / 2, y: heroPosition.y + 400)
     }
