@@ -401,7 +401,8 @@ extension ChatEngine {
             }
             
             sendChatArray(items: [
-                ChatItem(profile: .trainer, chat: "TRAINER: Welcome, PUZL Boy! The goal of the game is to get to the gate in under a certain number of moves.", handler: { [unowned self] in
+                ChatItem(profile: .trainer, chat: "TRAINER: Ok, we've got to move fast in order to save the princess, so I'll show you how to reach the dragon's lair."),
+                ChatItem(profile: .trainer, chat: "Now pay attention! The goal for each level is to get to the gate in under a certain number of moves.", handler: { [unowned self] in
                     delegate?.illuminatePanel(at: (0, 1), useOverlay: false)
                     delegate?.illuminatePanel(at: (1, 0), useOverlay: false)
                     delegate?.illuminatePanel(at: (1, 2), useOverlay: false)
@@ -419,7 +420,7 @@ extension ChatEngine {
                     delegate?.illuminatePanel(at: (0, 2), useOverlay: true)
                     delegate?.illuminatePanel(at: (2, 2), useOverlay: false)
                 }),
-                ChatItem(profile: .trainer, chat: "See the gate? It's closed. To open it, collect all the gems in the level. Give it a go!"),
+                ChatItem(profile: .trainer, chat: "See the gate? It's closed. To open it, collect all the gems in the level. Simple, right?"),
                 ChatItem(profile: .hero, chat: "PUZL Boy: I got this, yo!")
             ]) { [unowned self] in
                 dialoguePlayed[level] = true
@@ -511,7 +512,7 @@ extension ChatEngine {
                 ChatItem(profile: .trainer, chat: "Those fun looking things are warps. Stepping on one of them will teleport you to the other one. Weeeeeeeee!"),
                 ChatItem(profile: .hero, chat: "Are those things safe?"),
                 ChatItem(profile: .trainer, chat: "We're about to find out. Good luck!"),
-                ChatItem(profile: .hero, chat: "\n...")
+                ChatItem(profile: .hero, chat: ".......")
             ]) { [unowned self] in
                 dialoguePlayed[level] = true
                 delegate?.deIlluminatePanel(at: (0, 1), useOverlay: true)

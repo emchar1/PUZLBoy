@@ -11,18 +11,15 @@ import FirebaseAuth
 protocol LevelSkipEngineDelegate: AnyObject {
     func forwardPressed(_ node: SKSpriteNode)
     func reversePressed(_ node: SKSpriteNode)
-    func viewAchievementsPressed(_ node: SKSpriteNode)
-    func partyModePressed(_ node: SKSpriteNode)
 }
 
 class LevelSkipEngine {
     
     // MARK: - Properties
     
+    private let padding: CGFloat = 20
     private var forwardSprite: SKSpriteNode!
     private var reverseSprite: SKSpriteNode!
-    private var viewAchievements: SKSpriteNode!
-    private var partyMode: SKSpriteNode!
     private var superScene: SKScene?
     
     weak var delegate: LevelSkipEngineDelegate?
@@ -37,15 +34,13 @@ class LevelSkipEngine {
     
     private func setupSprites() {
         let buttonScale: CGFloat = 0.5 * 3
-        let buttonSpacing: CGFloat = 180
-        let padding: CGFloat = 20
         
         forwardSprite = SKSpriteNode(texture: SKTexture(imageNamed: "forwardButton"))
         forwardSprite.name = "forwardButton"
         forwardSprite.color = .systemGreen
         forwardSprite.colorBlendFactor = 1
         forwardSprite.setScale(buttonScale)
-        forwardSprite.position = CGPoint(x: K.ScreenDimensions.iPhoneWidth - K.ScreenDimensions.lrMargin - forwardSprite.size.width - padding,
+        forwardSprite.position = CGPoint(x: K.ScreenDimensions.screenSize.width - K.ScreenDimensions.lrMargin - forwardSprite.size.width - padding,
                                          y: forwardSprite.size.height + padding)
         forwardSprite.anchorPoint = .zero
         forwardSprite.zPosition = K.ZPosition.pauseButton
@@ -55,23 +50,9 @@ class LevelSkipEngine {
         reverseSprite.color = .systemRed
         reverseSprite.colorBlendFactor = 1
         reverseSprite.setScale(buttonScale)
-        reverseSprite.position = CGPoint(x: K.ScreenDimensions.lrMargin + padding, y: reverseSprite.size.height + padding)
+        reverseSprite.position = CGPoint(x: forwardSprite.position.x, y: forwardSprite.position.y + forwardSprite.size.height + padding)
         reverseSprite.anchorPoint = .zero
         reverseSprite.zPosition = K.ZPosition.pauseButton
-        
-        viewAchievements = SKSpriteNode()
-        viewAchievements.name = "achievementButton"
-        viewAchievements.setScale(buttonScale)
-        viewAchievements.position = CGPoint(x: reverseSprite.position.x + buttonSpacing / 2, y: viewAchievements.size.height + padding)
-        viewAchievements.anchorPoint = .zero
-        viewAchievements.zPosition = K.ZPosition.pauseButton
-        
-        partyMode = SKSpriteNode()
-        partyMode.name = "partyModeButton"
-        partyMode.setScale(buttonScale)
-        partyMode.position = CGPoint(x: forwardSprite.position.x - buttonSpacing / 2, y: partyMode.size.height + padding)
-        partyMode.anchorPoint = .zero
-        partyMode.zPosition = K.ZPosition.pauseButton
     }
     
     
@@ -96,16 +77,6 @@ class LevelSkipEngine {
                 ButtonTap.shared.tap(type: .buttontap1)
                 break
             }
-            else if nodeTapped.name == "achievementButton" {
-                delegate?.viewAchievementsPressed(viewAchievements)
-                ButtonTap.shared.tap(type: .buttontap1)
-                break
-            }
-            else if nodeTapped.name == "partyModeButton" {
-                delegate?.partyModePressed(partyMode)
-                ButtonTap.shared.tap(type: .buttontap1)
-                break
-            }
         }
     }
     
@@ -126,18 +97,20 @@ class LevelSkipEngine {
     private func showButtons() {
         forwardSprite.removeAllActions()
         reverseSprite.removeAllActions()
-        viewAchievements.removeAllActions()
-        partyMode.removeAllActions()
                 
-        let showHideAction = SKAction.sequence([
-            SKAction.moveTo(y: forwardSprite.size.height + 20, duration: 0.25),
+        let showHideActionForward = SKAction.sequence([
+            SKAction.moveTo(y: forwardSprite.size.height + padding, duration: 0.25),
             SKAction.wait(forDuration: 3.0),
             SKAction.moveTo(y: -forwardSprite.size.height, duration: 0.25)
         ])
+        
+        let showHideActionReverse = SKAction.sequence([
+            SKAction.moveTo(x: forwardSprite.position.x, duration: 0.25),
+            SKAction.wait(forDuration: 3.0),
+            SKAction.moveTo(x: K.ScreenDimensions.screenSize.width, duration: 0.25)
+        ])
 
-        forwardSprite.run(showHideAction)
-        reverseSprite.run(showHideAction)
-        viewAchievements.run(showHideAction)
-        partyMode.run(showHideAction)
+        forwardSprite.run(showHideActionForward)
+        reverseSprite.run(showHideActionReverse)
     }
 }

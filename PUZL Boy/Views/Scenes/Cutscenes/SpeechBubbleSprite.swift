@@ -12,10 +12,11 @@ class SpeechBubbleSprite: SKNode {
     // MARK: - Properties
     
     //Speech Bubble Properties
+    private let paddingPercentage: CGFloat = 0.9
     private let bubbleDimensionsOrig = CGSize(width: 512, height: 384)
     private(set) var bubbleDimensions: CGSize
     private var bubbleText: String
-    private var shouldFlipTail: Bool
+    private var tailOrientation: TailOrientation
     
     //Animation Properties
     static let animationSpeedOrig: TimeInterval = 0.08
@@ -30,12 +31,16 @@ class SpeechBubbleSprite: SKNode {
     private var bubbleSprite: SKSpriteNode!
     private var textSprite: SKLabelNode!
     
+    enum TailOrientation {
+        case bottomLeft, bottomRight, topLeft, topRight
+    }
+    
     
     // MARK: - Initialization
     
-    init(width: CGFloat = 512, position: CGPoint = .zero, shouldFlipTail: Bool = false) {
+    init(width: CGFloat = 512, position: CGPoint = .zero, tailOrientation: TailOrientation = .bottomLeft) {
         self.bubbleText = ""
-        self.shouldFlipTail = shouldFlipTail
+        self.tailOrientation = tailOrientation
         self.bubbleDimensions = CGSize(width: width, height: (width / bubbleDimensionsOrig.width) * bubbleDimensionsOrig.height)
         self.animationSpeed = SpeechBubbleSprite.animationSpeedOrig
         
@@ -56,8 +61,6 @@ class SpeechBubbleSprite: SKNode {
     }
     
     private func setupSprites() {
-        let paddingPercentage: CGFloat = 0.9
-        
         backgroundSprite = SKShapeNode(rectOf: bubbleDimensions)
         backgroundSprite.fillColor = .clear
         backgroundSprite.lineWidth = 0
@@ -65,13 +68,14 @@ class SpeechBubbleSprite: SKNode {
         
         bubbleSprite = SKSpriteNode(imageNamed: "speechBubble")
         bubbleSprite.size = bubbleDimensions
-        bubbleSprite.xScale = shouldFlipTail ? -1 : 1
+        bubbleSprite.xScale = tailIsRight() ? -1 : 1
+        bubbleSprite.yScale = tailIsTop() ? -1 : 1
         
         textSprite = SKLabelNode(text: "")
         textSprite.fontName = UIFont.chatFont
         textSprite.fontSize = UIFont.chatFontSizeMedium
         textSprite.fontColor = .black
-        textSprite.position = paddingPercentage * CGPoint(x: -bubbleDimensions.width / 2, y: bubbleDimensions.height / 2)
+        textSprite.position = paddingPercentage * CGPoint(x: -bubbleDimensions.width / 2, y: bubbleDimensions.height / (tailIsTop() ? 4 : 2))
         textSprite.numberOfLines = 0
         textSprite.preferredMaxLayoutWidth = bubbleDimensions.width * paddingPercentage
         textSprite.horizontalAlignmentMode = .left
@@ -81,6 +85,26 @@ class SpeechBubbleSprite: SKNode {
         addChild(backgroundSprite)
         backgroundSprite.addChild(bubbleSprite)
         backgroundSprite.addChild(textSprite)
+    }
+    
+    
+    // MARK: - Tail Orientation Functions
+    
+    func updateTailOrientation(_ newTailOrientation: TailOrientation) {
+        self.tailOrientation = newTailOrientation
+
+        bubbleSprite.xScale = tailIsRight() ? -1 : 1
+        bubbleSprite.yScale = tailIsTop() ? -1 : 1
+        
+        textSprite.position.y = paddingPercentage * bubbleDimensions.height / (tailIsTop() ? 4 : 2)
+    }
+    
+    private func tailIsRight() -> Bool {
+        return tailOrientation == .bottomRight || tailOrientation == .topRight
+    }
+    
+    private func tailIsTop() -> Bool {
+        return tailOrientation == .topLeft || tailOrientation == .topRight
     }
     
     

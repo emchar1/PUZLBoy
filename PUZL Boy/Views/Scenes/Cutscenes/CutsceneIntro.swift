@@ -117,7 +117,7 @@ class CutsceneIntro: SKScene {
         parallaxManager = ParallaxManager(useSet: .grass, xOffsetsArray: xOffsetsArray, shouldWalk: true)
         
         speechHero = SpeechBubbleSprite(width: 460, position: heroPosition + CGPoint(x: 200, y: 400))
-        speechPrincess = SpeechBubbleSprite(width: 460, position: princessPosition + CGPoint(x: -200, y: 400), shouldFlipTail: true)
+        speechPrincess = SpeechBubbleSprite(width: 460, position: princessPosition + CGPoint(x: -200, y: 400), tailOrientation: .bottomRight)
 
     }
     
@@ -209,7 +209,7 @@ class CutsceneIntro: SKScene {
                     SpeechBubbleItem(profile: speechPrincess, chat: "Hi! 👋🏽 I'm Princess Olivia and I'm 7 years old.|| I'm late for a V|E|R|Y| important appointment.") { [unowned self] in
                         closeUpHero()
                     },
-                    SpeechBubbleItem(profile: speechHero, chat: "Wait,| like an actual princess, or...| is that more of a self-proclaimed title?||||||||/Also what kind of important meeting does a 7 year old need to attend?||||||||/And where are your parents? Are you here by yourself???") { [unowned self] in
+                    SpeechBubbleItem(profile: speechHero, chat: "Wait,| like an actual princess, or...| is that more of a self-proclaimed title?||||||||/And what kind of important meeting does a 7 year old need to attend?||||||||/Also, where are your parents? Are you here by yourself???") { [unowned self] in
                         closeUpPrincess()
                         
                         dimOverlayNode.run(SKAction.sequence([
@@ -246,7 +246,7 @@ class CutsceneIntro: SKScene {
                             SKAction.run { [unowned self] in
                                 dragonSprite.run(SKAction.group([
                                     SKAction.scale(to: 5, duration: 0.5),
-                                    SKAction.move(to: CGPoint(x: princessPosition.x, y: princessPosition.y + dragonSprite.size.height / 2 + princess.sprite.size.height / 2), duration: 0.5)
+                                    SKAction.move(to: CGPoint(x: princessPosition.x, y: princessPosition.y + princess.sprite.size.height / 2), duration: 0.5)
                                 ]))
                             },
                             SKAction.run { [unowned self] in
@@ -263,12 +263,51 @@ class CutsceneIntro: SKScene {
                                 closeUpPrincess()
                             }
                         ]))
-                        
-                        
+
+
                     },
-                    SpeechBubbleItem(profile: speechPrincess, speed: 0.02, chat: "AAAAAAHHHH!!!!||||HELP ME MAR—|| I mean,|| PUZL BOY!!!") {
-                        //continue convo here
-                    }
+                    SpeechBubbleItem(profile: speechPrincess, speed: 0.02, chat: "AAAAAAAAAAAAAAAAAAHHHHHHHHHHHHHH!!!!!!!!!!!!!!!!!") { [unowned self] in
+                        wideShot()
+                        dragonSprite.position = CGPoint(x: princessPosition.x, y: princessPosition.y + princess.sprite.size.height / 2)
+                        dragonSprite.setScale(5)
+                        
+                        let abductionSpeed: TimeInterval = 1
+                        
+                        princess.sprite.run(SKAction.group([
+                            SKAction.move(to: CGPoint(x: 0, y: screenSize.height + dragonSprite.size.height), duration: abductionSpeed),
+                            SKAction.scaleX(to: -playerScale / 8 * 0.75, duration: abductionSpeed),
+                            SKAction.scaleY(to: playerScale / 8 * 0.75, duration: abductionSpeed)
+                        ]))
+                        
+                        dragonSprite.run(SKAction.group([
+                            SKAction.move(to: CGPoint(x: 0, y: screenSize.height + dragonSprite.size.height), duration: abductionSpeed),
+                            SKAction.scale(to: 0.5, duration: abductionSpeed)
+                        ]))
+                        
+                        speechPrincess.run(SKAction.group([
+                            SKAction.run { [unowned self] in
+                                speechPrincess.updateTailOrientation(.topLeft)
+                            },
+                            SKAction.move(to: CGPoint(x: speechPrincess.bubbleDimensions.width / 2, y: screenSize.height - speechPrincess.bubbleDimensions.height / 2), duration: abductionSpeed),
+                            
+                        ]))
+                    },
+                    SpeechBubbleItem(profile: speechPrincess, speed: 0.04, chat: "HELP ME MAR—| I mean,| PUZL BOYYYYYYY!!!!!!!") { [unowned self] in
+                        let frameRate: TimeInterval = 0.04
+                        let runCycle: TimeInterval = frameRate * 15 //1 cycle at 0.04s x 15 frames = 0.6s
+                        let heroRun = SKAction.animate(with: hero.textures[Player.Texture.run.rawValue], timePerFrame: frameRate)
+                        
+                        hero.sprite.run(SKAction.group([
+                            SKAction.repeat(heroRun, count: 1),
+                            SKAction.sequence([
+                                SKAction.moveTo(x: screenSize.width / 3, duration: 1 * runCycle),
+                                SKAction.repeatForever(heroIdle)
+                            ])
+                        ]))
+                        
+                        speechHero.run(SKAction.moveTo(x: speechHero.position.x + screenSize.width / 3 - hero.sprite.position.x, duration: 1 * runCycle))
+                    },
+                    SpeechBubbleItem(profile: speechHero, chat: "Hang on princess, I'm coming to get you!!!")
                 ], completion: completion)
             }
         ])) //end Speech Bubbles animation
