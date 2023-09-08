@@ -14,9 +14,9 @@ class ScoringEngine {
     static let killEnemyScore = 1000
     private static let moveScore = 200
     private static let itemScore = 500
-    private let maxTimeScore = 9000
+    private let maxTimeScore = 1800
     private let minTimeScore = 100
-    private let reductionPerSecondScore = -5
+    private let reductionPerSecondScore = -1
 
     private var elapsedTime: TimeInterval
     private var score: Int
@@ -98,8 +98,7 @@ class ScoringEngine {
     }
     
     static func getUsedContinueMultiplier(_ usedContinue: Bool) -> Int {
-        //Don't multiply by 2 anymore!! 7/6/23
-        return usedContinue ? 1 : 1
+        return usedContinue ? 1 : 2
     }
 
     
