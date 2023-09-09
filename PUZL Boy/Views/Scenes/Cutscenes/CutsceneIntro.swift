@@ -20,6 +20,7 @@ class CutsceneIntro: SKScene {
     //Main Nodes
     private(set) var parallaxManager: ParallaxManager!
     private var skyNode: SKSpriteNode!
+    private var bloodSkyNode: SKSpriteNode!
     private var hero: Player!
     private var princess: Player!
     private var dragonSprite: SKSpriteNode!
@@ -86,6 +87,12 @@ class CutsceneIntro: SKScene {
         skyNode.zPosition = K.ZPosition.skyNode
         skyNode.name = LaunchScene.nodeName_skyNode
         
+        bloodSkyNode = SKSpriteNode(texture: SKTexture(image: DayTheme.getBloodSkyImage()))
+        bloodSkyNode.anchorPoint = .zero
+        bloodSkyNode.zPosition = K.ZPosition.skyNode
+        bloodSkyNode.name = LaunchScene.nodeName_skyNode
+        bloodSkyNode.alpha = 0
+        
         dimOverlayNode = SKShapeNode(rectOf: screenSize)
         dimOverlayNode.position = CGPoint(x: screenSize.width / 2, y: screenSize.height / 2)
         dimOverlayNode.fillColor = .black
@@ -126,6 +133,7 @@ class CutsceneIntro: SKScene {
     
     override func didMove(to view: SKView) {
         addChild(skyNode)
+        addChild(bloodSkyNode)
         addChild(dimOverlayNode)
         addChild(bloodOverlayNode)
         addChild(flashOverlayNode)
@@ -235,9 +243,9 @@ class CutsceneIntro: SKScene {
                         
                         overlaySpeech.removeFromParent()
                         
-                        bloodOverlayNode.run(SKAction.fadeAlpha(to: 0.5, duration: 10)) { [unowned self] in
-                            skyNode.texture = SKTexture(image: DayTheme.getBloodSkyImage())
-                        }
+                        skyNode.run(SKAction.fadeOut(withDuration: 10))
+                        bloodSkyNode.run(SKAction.fadeIn(withDuration: 10))
+                        bloodOverlayNode.run(SKAction.fadeAlpha(to: 0.25, duration: 10))
                     },
                     SpeechBubbleItem(profile: speechHero, chat: "Whew, that is some story!|| Well don't worry Princess, I'll get you to where you need to go—") { [unowned self] in
                         run(SKAction.sequence([
@@ -247,18 +255,18 @@ class CutsceneIntro: SKScene {
                                     SKAction.move(to: CGPoint(x: princessPosition.x, y: princessPosition.y + princess.sprite.size.height / 2), duration: 0.5)
                                 ]))
                             },
+                            SKAction.wait(forDuration: 0.6),
                             SKAction.run { [unowned self] in
                                 flashOverlayNode.run(SKAction.sequence([
                                     SKAction.fadeIn(withDuration: 0),
                                     SKAction.fadeOut(withDuration: 0.25)
                                 ]))
-                                AudioManager.shared.playSound(for: "enemyscratch")
-                            },
-                            SKAction.wait(forDuration: 0.6),
-                            SKAction.run { [unowned self] in
+                                
                                 dragonSprite.position = CGPoint(x: screenSize.width / 2, y: screenSize.height / 2 + princess.sprite.size.height / 2)
                                 dragonSprite.setScale(10)
                                 closeUpPrincess()
+
+                                AudioManager.shared.playSound(for: "enemyscratch")
                             }
                         ]))
                     },
@@ -317,7 +325,7 @@ class CutsceneIntro: SKScene {
                                              duration: 10,
                                              reverseDirection: true)
                     },
-                    SpeechBubbleItem(profile: speechPrincess, speed: 0.04, chat: "HELP ME MAR—| I mean,| PUZL BOYYYYYYY!!!!!!!||||||||/The fate of Eldoria rests in your hands!") { [unowned self] in
+                    SpeechBubbleItem(profile: speechPrincess, speed: 0.04, chat: "HELP ME MAR—| I mean,| PUZL BOYYYYYYY!!!!!!!||||||||/The fate of Eldoria rests in your haaaaaaaands!") { [unowned self] in
                         let frameRate: TimeInterval = 0.02
                         let runCycle: TimeInterval = frameRate * 15 //1 cycle at 0.02s x 15 frames = 0.3s
                         let heroRun = SKAction.animate(with: hero.textures[Player.Texture.run.rawValue], timePerFrame: frameRate)
