@@ -70,7 +70,7 @@ class CutsceneIntro: SKScene {
         overlaySpeech = SpeechOverlaySprite()
         
         skipIntroSprite = SkipIntroSprite()
-        skipIntroSprite.position = CGPoint(x: screenSize.width / 2, y: screenSize.height / 6)
+        skipIntroSprite.position = CGPoint(x: screenSize.width / 2, y: screenSize.height / 9)
         skipIntroSprite.zPosition = K.ZPosition.speechBubble
         skipIntroSprite.delegate = self
 
@@ -213,17 +213,17 @@ class CutsceneIntro: SKScene {
                         closeUpPrincess()
                         
                         dimOverlayNode.run(SKAction.sequence([
-                            SKAction.wait(forDuration: 16),
+                            SKAction.wait(forDuration: 15),
                             SKAction.fadeAlpha(to: 0.8, duration: 1),
-                            SKAction.wait(forDuration: 2),
+                            SKAction.wait(forDuration: 1),
                             SKAction.run { [unowned self] in
                                 overlaySpeech.setText(
-                                    text: "She went on to explain how dragons had disappeared from the realm of some place called Eldoria, where she claims she's from,|| and that the balance of magic had been disrupted.||||||||/She also mentioned that she's the last of her kind—|| At first, it sounded like some make believe story...|||| And then the CRAZIEST thing happened!!",
+                                    text: "She went on to explain how dragons had disappeared from the realm of some place called Eldoria, where she claims she's from,|| and that the balance of magic had been disrupted.||||||||/The princess then foretold a prophecy where the sky turns blood red, ushering a new era—||At first, it sounded like make believe...|||| And then the CRAZIEST thing happened!!",
                                     superScene: self, completion: nil)
                             }
                         ]))
                     },
-                    SpeechBubbleItem(profile: speechPrincess, speed: 0.12, chat: "Oh, umm...|| you ask too many questions!||||||||/But if you must know,| the reason why I'm here is because— blah blah blah...||||/Blah blah blah, blah blah blah DRAGONS blah, blah blah, blah blah blah, blah.||||||||/ELDORIA blah, blah. BLAH blah blah blah, blahhhhh blah. Blah. Blah. Blah. MAGIC!!||||||||/And furthermore— blah blah blah, blah blah blah.||| ...last known descendant.") { [unowned self] in
+                    SpeechBubbleItem(profile: speechPrincess, chat: "Oh, umm...|| you ask too many questions!||||||||/But if you must know,| the reason why I'm here is because— blah blah blah...||||/Blah blah blah, blah blah blah DRAGONS blah, blah blah, blah blah blah, blah.||||||||/ELDORIA blah, blah. BLAH blah blah blah, blahhhhh blah. Blah. Blah. Blah. MAGIC!!||||||||/And furthermore— blah blah blah, blah blah blah. Blah, blah, blah|||| ...A|G|E| O|F| R|U|I|N.||||||||") { [unowned self] in
                         wideShot()
                         
                         dimOverlayNode.run(SKAction.fadeOut(withDuration: 1))
@@ -234,15 +234,13 @@ class CutsceneIntro: SKScene {
                                              duration: 10)
                         
                         overlaySpeech.removeFromParent()
+                        
+                        bloodOverlayNode.run(SKAction.fadeAlpha(to: 0.5, duration: 10)) { [unowned self] in
+                            skyNode.texture = SKTexture(image: DayTheme.getBloodSkyImage())
+                        }
                     },
                     SpeechBubbleItem(profile: speechHero, chat: "Whew, that is some story!|| Well don't worry Princess, I'll get you to where you need to go—") { [unowned self] in
-                        
-                        // TODO: - All the dragon action here...
                         run(SKAction.sequence([
-                            SKAction.run { [unowned self] in
-                                skyNode.texture = SKTexture(image: DayTheme.getBloodSkyImage())
-                                bloodOverlayNode.run(SKAction.fadeAlpha(to: 0.5, duration: 1))
-                            },
                             SKAction.run { [unowned self] in
                                 dragonSprite.run(SKAction.group([
                                     SKAction.scale(to: 5, duration: 0.5),
@@ -256,27 +254,38 @@ class CutsceneIntro: SKScene {
                                 ]))
                                 AudioManager.shared.playSound(for: "enemyscratch")
                             },
-                            SKAction.wait(forDuration: 1),
+                            SKAction.wait(forDuration: 0.6),
                             SKAction.run { [unowned self] in
                                 dragonSprite.position = CGPoint(x: screenSize.width / 2, y: screenSize.height / 2 + princess.sprite.size.height / 2)
                                 dragonSprite.setScale(10)
                                 closeUpPrincess()
                             }
                         ]))
-
-
                     },
-                    SpeechBubbleItem(profile: speechPrincess, speed: 0.02, chat: "AAAAAAAAAAAAAAAAAAHHHHHHHHHHHHHH!!!!!!!!!!!!!!!!!") { [unowned self] in
+                    SpeechBubbleItem(profile: speechPrincess, speed: 0.01, chat: "AAAAAAAAAAAAAAAAAAAAAAAAAAHHHHHHHHHHHHHH!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!") { [unowned self] in
                         wideShot()
+                        
                         dragonSprite.position = CGPoint(x: princessPosition.x, y: princessPosition.y + princess.sprite.size.height / 2)
                         dragonSprite.setScale(5)
                         
                         let abductionSpeed: TimeInterval = 1
                         
-                        princess.sprite.run(SKAction.group([
-                            SKAction.move(to: CGPoint(x: 0, y: screenSize.height + dragonSprite.size.height), duration: abductionSpeed),
-                            SKAction.scaleX(to: -playerScale / 8 * 0.75, duration: abductionSpeed),
-                            SKAction.scaleY(to: playerScale / 8 * 0.75, duration: abductionSpeed)
+                        princess.sprite.run(SKAction.sequence([
+                            SKAction.group([
+                                SKAction.move(to: CGPoint(x: 0, y: screenSize.height + dragonSprite.size.height), duration: abductionSpeed),
+                                SKAction.scaleX(to: -playerScale / 8 * 0.75, duration: abductionSpeed),
+                                SKAction.scaleY(to: playerScale / 8 * 0.75, duration: abductionSpeed)
+                            ]),
+                            SKAction.group([
+                                SKAction.removeFromParent(),
+                                SKAction.run { [unowned self] in
+                                    princess.sprite.position = CGPoint(x: 150, y: -130)
+                                    princess.sprite.setScale(-playerScale / 4 * 0.75)
+                                    princess.sprite.zPosition = 1
+                                    
+                                    flyingDragon.sprite.addChild(princess.sprite)
+                                }
+                            ])
                         ]))
                         
                         dragonSprite.run(SKAction.group([
@@ -284,35 +293,49 @@ class CutsceneIntro: SKScene {
                             SKAction.scale(to: 0.5, duration: abductionSpeed)
                         ]))
                         
-                        speechPrincess.run(SKAction.group([
-                            SKAction.run { [unowned self] in
-                                speechPrincess.updateTailOrientation(.topLeft)
-                            },
-                            SKAction.move(to: CGPoint(x: speechPrincess.bubbleDimensions.width / 2, y: screenSize.height - speechPrincess.bubbleDimensions.height / 2), duration: abductionSpeed),
-                            
+                        speechPrincess.run(SKAction.sequence([
+                            SKAction.group([
+                                SKAction.run { [unowned self] in
+                                    speechPrincess.updateTailOrientation(.topLeft)
+                                },
+                                SKAction.move(to: CGPoint(x: speechPrincess.bubbleDimensions.width / 2, y: screenSize.height * 7 / 8 - speechPrincess.bubbleDimensions.height), duration: abductionSpeed),
+                            ]),
+                            SKAction.group([
+                                SKAction.moveTo(x: screenSize.width - speechPrincess.bubbleDimensions.width / 2, duration: 8),
+                                SKAction.sequence([
+                                    SKAction.wait(forDuration: 6),
+                                    SKAction.run { [unowned self] in
+                                        speechPrincess.updateTailOrientation(.topRight)
+                                    }
+                                ])
+                            ])
                         ]))
+                        
+                        flyingDragon.animate(toNode: self,
+                                             from: CGPoint(x: -2 * flyingDragon.sprite.size.width, y: screenSize.height * 7 / 8),
+                                             to: CGPoint(x: screenSize.width + flyingDragon.sprite.size.width, y: 0),
+                                             duration: 10,
+                                             reverseDirection: true)
                     },
-                    SpeechBubbleItem(profile: speechPrincess, speed: 0.04, chat: "HELP ME MAR—| I mean,| PUZL BOYYYYYYY!!!!!!!") { [unowned self] in
-                        let frameRate: TimeInterval = 0.04
-                        let runCycle: TimeInterval = frameRate * 15 //1 cycle at 0.04s x 15 frames = 0.6s
+                    SpeechBubbleItem(profile: speechPrincess, speed: 0.04, chat: "HELP ME MAR—| I mean,| PUZL BOYYYYYYY!!!!!!!||||||||/The fate of Eldoria rests in your hands!") { [unowned self] in
+                        let frameRate: TimeInterval = 0.02
+                        let runCycle: TimeInterval = frameRate * 15 //1 cycle at 0.02s x 15 frames = 0.3s
                         let heroRun = SKAction.animate(with: hero.textures[Player.Texture.run.rawValue], timePerFrame: frameRate)
                         
                         hero.sprite.run(SKAction.group([
-                            SKAction.repeat(heroRun, count: 1),
+                            SKAction.repeat(heroRun, count: 2),
                             SKAction.sequence([
-                                SKAction.moveTo(x: screenSize.width / 3, duration: 1 * runCycle),
+                                SKAction.moveTo(x: screenSize.width / 2, duration: 2 * runCycle),
                                 SKAction.repeatForever(heroIdle)
                             ])
                         ]))
                         
-                        speechHero.run(SKAction.moveTo(x: speechHero.position.x + screenSize.width / 3 - hero.sprite.position.x, duration: 1 * runCycle))
+                        speechHero.run(SKAction.moveTo(x: speechHero.position.x + screenSize.width / 2 - hero.sprite.position.x, duration: 2 * runCycle))
                     },
                     SpeechBubbleItem(profile: speechHero, chat: "Hang on princess, I'm coming to get you!!!")
                 ], completion: completion)
             }
         ])) //end Speech Bubbles animation
-        
-        
     }
 
     /**

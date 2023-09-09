@@ -16,7 +16,7 @@ class SpeechOverlaySprite: SKNode {
     private var text: String
     
     //Animation Properties
-    private let animationSpeedOrig: TimeInterval = 0.06
+    private let animationSpeedOrig: TimeInterval = 0.04
     private var animationSpeed: TimeInterval
     private var animationIndex = 0
     private var timer = Timer()

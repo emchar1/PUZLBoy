@@ -48,10 +48,11 @@ struct FlyingDragon {
         self.scale = scale
     }
     
-    func animate(toNode node: SKNode, from positionOrig: CGPoint, to positionNew: CGPoint, duration: TimeInterval) {
+    func animate(toNode node: SKNode, from positionOrig: CGPoint, to positionNew: CGPoint, duration: TimeInterval, reverseDirection: Bool = false) {
         let animation = SKAction.animate(with: textures, timePerFrame: 0.2)
         
         sprite.position = positionOrig
+        sprite.xScale = reverseDirection ? -scale : scale
         
         sprite.run(SKAction.group([
             SKAction.repeatForever(animation),
@@ -59,7 +60,13 @@ struct FlyingDragon {
                 SKAction.moveBy(x: 0, y: -10, duration: 0.85),
                 SKAction.moveBy(x: 0, y: 20, duration: 0.35),
             ])),
-            SKAction.moveTo(x: positionNew.x, duration: duration)
+            SKAction.sequence([
+                SKAction.moveTo(x: positionNew.x, duration: duration),
+                SKAction.run {
+                    sprite.removeAllActions()
+                },
+                SKAction.removeFromParent()
+            ])
         ]))
         
         node.addChild(sprite)
