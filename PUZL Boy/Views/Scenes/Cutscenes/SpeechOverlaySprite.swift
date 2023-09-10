@@ -45,6 +45,12 @@ class SpeechOverlaySprite: SKNode {
         fatalError("init(coder:) has not been implemented")
     }
     
+    deinit {
+        dispatchWorkItem.cancel() //MUST DO THIS!! Otherwise app crashes if you skip intro while this is playing. Bug Fix #230910E01
+        
+        print("Deinit SpeechOverlaySprite. DispatchWorkItem has been cancelled as well.")
+    }
+    
     private func setupNodes() {
         backgroundNode = SKShapeNode(rectOf: CGSize(width: K.ScreenDimensions.iPhoneWidth - 2 * padding, height: nodeHeight))
         backgroundNode.fillColor = .clear

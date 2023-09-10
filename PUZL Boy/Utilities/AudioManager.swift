@@ -145,11 +145,13 @@ class AudioManager {
         
         
         //No Loop music
+        addAudioItem("ageofruin", category: .musicNoLoop) //needs purchase
         addAudioItem("gameover", category: .musicNoLoop)
         addAudioItem("titletheme", category: .musicNoLoop)
 
         
         //Background music
+        addAudioItem("birdsambience", category: .music)
         addAudioItem("continueloop", category: .music)
         addAudioItem("overworld", category: .music)
         addAudioItem("overworldparty", category: .music)
@@ -213,7 +215,7 @@ class AudioManager {
         - pan: pan value to initialize, defaults to center of player
      - returns: True if the player can play. False, otherwise.
      */
-    @discardableResult func playSound(for audioKey: String, currentTime: TimeInterval? = nil, delay: TimeInterval? = nil, pan: Float = 0, interruptPlayback: Bool = true) -> Bool? {
+    @discardableResult func playSound(for audioKey: String, currentTime: TimeInterval? = nil, fadeIn: TimeInterval = 0.0, delay: TimeInterval? = nil, pan: Float = 0, interruptPlayback: Bool = true) -> Bool? {
         guard let item = audioItems[audioKey], let player = configureAudioPlayer(for: item) else {
             print("Unable to find \(audioKey) in AudioManager.audioItems[]")
             return false
@@ -234,7 +236,16 @@ class AudioManager {
         
         DispatchQueue.main.asyncAfter(deadline: .now() + (delay == nil ? 0 : delay!)) {
             //No need to make completions inside DispatchQueue.main.asyncAfter weak!
-            self.audioItems[item.fileName]!.player.play()
+            let audioItem = self.audioItems[item.fileName]!
+            
+            if fadeIn > 0 {
+                audioItem.player.setVolume(0.0, fadeDuration: 0)
+                audioItem.player.play()
+                audioItem.player.setVolume(audioItem.currentVolume, fadeDuration: fadeIn)
+            }
+            else {
+                audioItem.player.play()
+            }
         }
                 
         return true
