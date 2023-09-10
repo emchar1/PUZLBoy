@@ -151,7 +151,7 @@ class AudioManager {
 
         
         //Background music
-        addAudioItem("birdsambience", category: .music)
+        addAudioItem("birdsambience", category: .music, maxVolume: 0.3)
         addAudioItem("continueloop", category: .music)
         addAudioItem("overworld", category: .music)
         addAudioItem("overworldparty", category: .music)
@@ -163,8 +163,8 @@ class AudioManager {
         - audioKey: The key and filename to add to the dictionary
         - category: The AudioCategory of the sound being added
      */
-    private func addAudioItem(_ audioKey: String, category: AudioCategory) {
-        audioItems[audioKey] = AudioItem(fileName: audioKey, category: category)
+    private func addAudioItem(_ audioKey: String, category: AudioCategory, maxVolume: Float = 1.0) {
+        audioItems[audioKey] = AudioItem(fileName: audioKey, category: category, maxVolume: maxVolume)
         
         if let item = audioItems[audioKey], let player = configureAudioPlayer(for: item) {
             updateVolumes()

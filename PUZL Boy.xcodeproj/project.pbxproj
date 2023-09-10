@@ -26,6 +26,9 @@
 		EA26F29129739DE800BF1AC8 /* AdMobManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA26F29029739DE800BF1AC8 /* AdMobManager.swift */; };
 		EA2AF74429B6D06000444E5A /* OfflinePlaySprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA2AF74329B6D06000444E5A /* OfflinePlaySprite.swift */; };
 		EA2AF74829B6EDAC00444E5A /* gemcollectparty.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA2AF74729B6EDAC00444E5A /* gemcollectparty.mp3 */; };
+		EA32AE312AAC198300DFF5CD /* DragonFire.sks in Resources */ = {isa = PBXBuildFile; fileRef = EA32AE302AAC198300DFF5CD /* DragonFire.sks */; };
+		EA32AE352AAD1BDE00DFF5CD /* ageofruin.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA32AE332AAD1BDE00DFF5CD /* ageofruin.mp3 */; };
+		EA32AE392AADAC6400DFF5CD /* birdsambience.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA32AE382AADAC6400DFF5CD /* birdsambience.mp3 */; };
 		EA34678E2998ED50002DDA02 /* LifeSpawnerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA34678D2998ED50002DDA02 /* LifeSpawnerModel.swift */; };
 		EA346791299B535F002DDA02 /* LevelStats.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA346790299B535F002DDA02 /* LevelStats.swift */; };
 		EA3467A529A8C659002DDA02 /* revive.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA3467A429A8C659002DDA02 /* revive.mp3 */; };
@@ -247,6 +250,9 @@
 		EA26F29029739DE800BF1AC8 /* AdMobManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdMobManager.swift; sourceTree = "<group>"; };
 		EA2AF74329B6D06000444E5A /* OfflinePlaySprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfflinePlaySprite.swift; sourceTree = "<group>"; };
 		EA2AF74729B6EDAC00444E5A /* gemcollectparty.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = gemcollectparty.mp3; sourceTree = "<group>"; };
+		EA32AE302AAC198300DFF5CD /* DragonFire.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = DragonFire.sks; sourceTree = "<group>"; };
+		EA32AE332AAD1BDE00DFF5CD /* ageofruin.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = ageofruin.mp3; sourceTree = "<group>"; };
+		EA32AE382AADAC6400DFF5CD /* birdsambience.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = birdsambience.mp3; sourceTree = "<group>"; };
 		EA34678D2998ED50002DDA02 /* LifeSpawnerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LifeSpawnerModel.swift; sourceTree = "<group>"; };
 		EA346790299B535F002DDA02 /* LevelStats.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelStats.swift; sourceTree = "<group>"; };
 		EA3467A429A8C659002DDA02 /* revive.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = revive.mp3; sourceTree = "<group>"; };
@@ -692,6 +698,8 @@
 		EA956C6D292586F800879AD0 /* Sounds */ = {
 			isa = PBXGroup;
 			children = (
+				EA32AE332AAD1BDE00DFF5CD /* ageofruin.mp3 */,
+				EA32AE382AADAC6400DFF5CD /* birdsambience.mp3 */,
 				EA0F1480292B2F870013038E /* bouldersmash.mp3 */,
 				EA95D196294690B70061059C /* boyattack1.mp3 */,
 				EA95D198294690B70061059C /* boyattack2.mp3 */,
@@ -887,6 +895,7 @@
 				EAD199FF2A9688E500A07A63 /* ParticleEngine.swift */,
 				EAD19A072A96AA6D00A07A63 /* Assets.xcassets */,
 				EAD199FD2A95E9EE00A07A63 /* BoulderCrushParticles.sks */,
+				EA32AE302AAC198300DFF5CD /* DragonFire.sks */,
 				EAD19A162A992E3600A07A63 /* HeroRainbowParticles.sks */,
 				EAD199FB2A95A2ED00A07A63 /* GemCollectParticles.sks */,
 				EAD19A1A2A9BD48400A07A63 /* GemSparkleParticles.sks */,
@@ -987,6 +996,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				EAAEA3CA2931F12B00221963 /* pickupitem.mp3 in Resources */,
+				EA32AE392AADAC6400DFF5CD /* birdsambience.mp3 in Resources */,
 				EAD199FE2A95E9EE00A07A63 /* BoulderCrushParticles.sks in Resources */,
 				EAD19A0F2A97E73400A07A63 /* HeartsParticles.sks in Resources */,
 				EA94E87429C0DE2C009F2614 /* movetile2.mp3 in Resources */,
@@ -1024,6 +1034,7 @@
 				EACDF09D2A54B7D500F28A41 /* enemyscratch.mp3 in Resources */,
 				EA9F4DEB29D37532006F4B2F /* movepoisoned4.mp3 in Resources */,
 				EA4D025B29B7D61C00F0C7B1 /* movemarsh3.mp3 in Resources */,
+				EA32AE312AAC198300DFF5CD /* DragonFire.sks in Resources */,
 				EA0F1491292CC8D90013038E /* enemydeath.mp3 in Resources */,
 				EA999F6C2A5805C300B422B2 /* transitionShader.fsh in Resources */,
 				EA4D026529B90BF800F0C7B1 /* gemcollect.mp3 in Resources */,
@@ -1061,6 +1072,7 @@
 				EAD19A1D2A9C14B500A07A63 /* PoisonBubblesParticles.sks in Resources */,
 				EA3467A929A8C6CA002DDA02 /* chatopen.mp3 in Resources */,
 				EAF7182D29B3CC0500E2ED82 /* lavaappear2.mp3 in Resources */,
+				EA32AE352AAD1BDE00DFF5CD /* ageofruin.mp3 in Resources */,
 				EAD19A0B2A96F52500A07A63 /* LavaAppearParticles.sks in Resources */,
 				EAE919492A4CB02900AF67D1 /* gemcollectpartylife.mp3 in Resources */,
 				EAD19A172A992E3600A07A63 /* HeroRainbowParticles.sks in Resources */,

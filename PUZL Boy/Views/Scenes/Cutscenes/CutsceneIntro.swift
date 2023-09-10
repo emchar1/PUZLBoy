@@ -197,6 +197,7 @@ class CutsceneIntro: SKScene {
             SKAction.wait(forDuration: 13 * walkCycle),
             SKAction.run { [unowned self] in
                 parallaxManager.stopAnimation()
+                Haptics.shared.addHapticFeedback(withStyle: .heavy)
             }
         ]))
         
@@ -218,23 +219,23 @@ class CutsceneIntro: SKScene {
                     SpeechBubbleItem(profile: speechPrincess, chat: "Hi! 👋🏽| I'm Princess Olivia and I'm 7 years old.|| I'm late for a V|E|R|Y| important appointment.") { [unowned self] in
                         closeUpHero()
                     },
-                    SpeechBubbleItem(profile: speechHero, chat: "Wait,| like an actual princess, or...| is that more of a self-proclaimed title?||||||||/And what kind of important meeting does a 7 year old need to attend?||||||||/Also, where are your parents? Are you here by yourself???") { [unowned self] in
+                    SpeechBubbleItem(profile: speechHero, chat: "Awww...|| wait, like an actual princess, or is that what mommy and daddy call you?||||||||/And what kind of important meeting does a 7 year old need to attend?||||||||/Speaking of which, where are your parents?| Are you here by yourself???") { [unowned self] in
                         closeUpPrincess()
                         
                         dimOverlayNode.run(SKAction.sequence([
-                            SKAction.wait(forDuration: 15),
+                            SKAction.wait(forDuration: 14),
                             SKAction.fadeAlpha(to: 0.8, duration: 1),
-                            SKAction.wait(forDuration: 1),
+                            SKAction.wait(forDuration: 2),
                             SKAction.run { [unowned self] in
                                 overlaySpeech.setText(
-                                    text: "The princess went on to explain how dragons had disappeared from the realm of some place called Eldoria, where she claims she's from,|| and that the balance of magic had been disrupted.||||||||/She foretold of a prophecy where the sky turns blood red, ushering in a new era,|| and that she was the only one who could stop it—||At first, I thought she just had an overactive imagination...|| then the CRAZIEST thing happened!!",
+                                    text: "The princess went on to explain how dragons had disappeared from the realm of some place called Eldoria, where she claims she's from,|| and that the balance of magic had been disrupted threatening our very existence.||||||||/She foretold of a prophecy where the sky turns blood red, and that she was the only one who could stop it—||At first, I thought this little girl just had an overactive imagination...|| then the CRAZIEST thing happened!!",
                                     superScene: self, completion: nil)
                                 
                                 AudioManager.shared.stopSound(for: "birdsambience", fadeDuration: 5)
                             }
                         ]))
                     },
-                    SpeechBubbleItem(profile: speechPrincess, chat: "Oh, umm...|| you sure ask a lot of questions!||||||||/But if you must know,| the reason why I'm here is because—blah blah blah...||||/Blah blah blah, blah blah blah DRAGONS blah, blah blah, blah blah blah, blah.||||||||/ELDORIA blah, blah.| BLAH blah blah blah, blahhhhh blah.| Blah.| Blah.| Blah.| M|A|G|I|C!!||||||||/And furthermore—|| blah blah blah,| blah blah blah.|| Blah, blah, blah|||| .|.|.|A|G|E| O|F| R|U|I|N|.||||||||") { [unowned self] in
+                    SpeechBubbleItem(profile: speechPrincess, chat: "Oh, umm...|| you sure ask a lot of questions!||||||||/But if you must know,| the reason why I'm here is because—blah blah blah...||||/Blah blah blah, blah blah blah DRAGONS blah, blah blah, blah blah blah, blah.||||||||/ELDORIA blah, blah.| BLAH blah blah blah, blahhhhh blah.| Blah. Blah. Blah. M|A|G|I|C!!||||||||/And furthermore—||blah blah blah,| blah blah blah.| Blah, blah, blah|| .|.|.|A|G|E| O|F| R|U|I|N|.||||||||") { [unowned self] in
                         wideShot()
                         
                         dimOverlayNode.run(SKAction.fadeOut(withDuration: 1))
@@ -252,7 +253,7 @@ class CutsceneIntro: SKScene {
 
                         AudioManager.shared.playSound(for: "birdsambience", fadeIn: 3)
                     },
-                    SpeechBubbleItem(profile: speechHero, chat: "Whew, that is some story!|| Well don't worry Princess, I'll get you to where you need to go—") { [unowned self] in
+                    SpeechBubbleItem(profile: speechHero, chat: "Whew, that is some story!|| Well don't worry princess, I'll get you to where you need to go—") { [unowned self] in
                         run(SKAction.sequence([
                             SKAction.run { [unowned self] in
                                 dragonSprite.run(SKAction.group([
@@ -275,6 +276,7 @@ class CutsceneIntro: SKScene {
                                 closeUpPrincess()
                                 
                                 AudioManager.shared.playSound(for: "enemyscratch")
+                                Haptics.shared.executeCustomPattern(pattern: .enemy)
                             }
                         ]))
                     },
@@ -295,8 +297,9 @@ class CutsceneIntro: SKScene {
                             SKAction.group([
                                 SKAction.removeFromParent(),
                                 SKAction.run { [unowned self] in
-                                    princess.sprite.position = CGPoint(x: 150, y: -130)
-                                    princess.sprite.setScale(-playerScale / 4 * 0.75)
+                                    princess.sprite.position = CGPoint(x: 180, y: -140)
+                                    princess.sprite.xScale = playerScale / 4 * 0.75
+                                    princess.sprite.yScale = -playerScale / 4 * 0.75
                                     princess.sprite.zPosition = 1
                                     
                                     flyingDragon.sprite.addChild(princess.sprite)
@@ -334,7 +337,7 @@ class CutsceneIntro: SKScene {
                                              duration: 10,
                                              reverseDirection: true)
                     },
-                    SpeechBubbleItem(profile: speechPrincess, speed: 0.04, chat: "HELP ME MAR—| I mean,| PUZL BOYYYYYYY!!!!!!!||||||||/The fate of Eldoria now rests in your haaaaaaaands!") { [unowned self] in
+                    SpeechBubbleItem(profile: speechPrincess, speed: 0.04, chat: "HELP ME MAR—|I mean,| PUZL BOYYYYYYY!!!!!!!||||||||/The fate of the world now rests in your haaaaands!") { [unowned self] in
                         let frameRate: TimeInterval = 0.02
                         let runCycle: TimeInterval = frameRate * 15 //1 cycle at 0.02s x 15 frames = 0.3s
                         let heroRun = SKAction.animate(with: hero.textures[Player.Texture.run.rawValue], timePerFrame: frameRate)
@@ -349,12 +352,8 @@ class CutsceneIntro: SKScene {
                         
                         speechHero.run(SKAction.moveTo(x: speechHero.position.x + screenSize.width / 2 - hero.sprite.position.x, duration: 2 * runCycle))
                     },
-                    SpeechBubbleItem(profile: speechHero, chat: "Hang on princess...|||| I'm coming to rescue you!!!||||")
-                ]) {
-                    AudioManager.shared.stopSound(for: "ageofruin", fadeDuration: 1)
-                    
-                    completion?()
-                }
+                    SpeechBubbleItem(profile: speechHero, chat: "Hang on princess...| I'm coming to rescue you!!!||||")
+                ], completion: completion)
             }
         ])) //end Speech Bubbles animation
     }

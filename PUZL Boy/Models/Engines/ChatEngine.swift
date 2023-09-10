@@ -401,27 +401,33 @@ extension ChatEngine {
             }
             
             sendChatArray(items: [
-                ChatItem(profile: .trainer, chat: "TRAINER: Ok, we've got to move fast in order to save the princess, so I'll show you how to reach the dragon's lair."),
-                ChatItem(profile: .trainer, chat: "Now pay attention! The goal for each level is to get to the gate in under a certain number of moves.", handler: { [unowned self] in
+                ChatItem(profile: .hero, chat: "PUZL BOY: ...and that's the whole story! So what's our game plan?"),
+                ChatItem(profile: .trainer, chat: "TRAINER: I suspect she is being held captive in the dragon's lair, so it is important we move fast. I am going to guide you there, so pay attention."),
+                ChatItem(profile: .hero, chat: "How do you know that's where they've taken her??"),
+                ChatItem(profile: .trainer, chat: "Don't worry about it... OK. The lair is buried miles beneath the Earth's surface, and the only way to reach it is to solve logic puzzles."),
+                ChatItem(profile: .hero, chat: "Makes no sense, but go on..."),
+                ChatItem(profile: .trainer, chat: "There are 500 levels in total you will have to solve, each with increasing difficulty."),
+                ChatItem(profile: .hero, chat: "500 levels?!! What do I get if I win?"),
+                ChatItem(profile: .trainer, chat: "You save the world!!! Now where was I... Oh yeah, the goal for each level is to get to the gate in under a certain number of moves.", handler: { [unowned self] in
                     delegate?.illuminatePanel(at: (0, 1), useOverlay: false)
                     delegate?.illuminatePanel(at: (1, 0), useOverlay: false)
                     delegate?.illuminatePanel(at: (1, 2), useOverlay: false)
                     delegate?.illuminatePanel(at: (2, 1), useOverlay: false)
                 }),
-                ChatItem(profile: .trainer, chat: "You can move to any available panel on your left, right, above and below. Simply tap the panel to move there. Diagonal moves are not allowed.", handler: { [unowned self] in
+                ChatItem(profile: .trainer, chat: "You can move to any available panel on your left, right, above, and below. Simply tap the panel to move there. Diagonal moves are not allowed.", handler: { [unowned self] in
                     delegate?.deIlluminatePanel(at: (0, 1), useOverlay: false)
                     delegate?.deIlluminatePanel(at: (1, 0), useOverlay: false)
                     delegate?.deIlluminatePanel(at: (1, 2), useOverlay: false)
                     delegate?.deIlluminatePanel(at: (2, 1), useOverlay: false)
                     delegate?.illuminateDisplayNode(for: .moves)
                 }),
-                ChatItem(profile: .trainer, chat: "If your move count hits 0, it's game over, buddy! Your move count can be found in the upper left corner next to the boot. 👢", handler: { [unowned self] in
+                ChatItem(profile: .trainer, chat: "If your move count hits 0, it's game over. Your move count can be found in the upper left corner next to the boot. 👢", handler: { [unowned self] in
                     delegate?.deIlluminateDisplayNode(for: .moves)
                     delegate?.illuminatePanel(at: (0, 2), useOverlay: true)
                     delegate?.illuminatePanel(at: (2, 2), useOverlay: false)
                 }),
                 ChatItem(profile: .trainer, chat: "See the gate? It's closed. To open it, collect all the gems in the level. Simple, right?"),
-                ChatItem(profile: .hero, chat: "PUZL Boy: I got this, yo!")
+                ChatItem(profile: .hero, chat: "Let's go save the princess!")
             ]) { [unowned self] in
                 dialoguePlayed[level] = true
                 delegate?.deIlluminatePanel(at: (0, 2), useOverlay: true)
@@ -441,7 +447,6 @@ extension ChatEngine {
                 ChatItem(profile: .princess, chat: "PRINCESS OLIVIA: I am a little princess who likes rainbows and unicorns and my little sister Alana!"),
                 ChatItem(profile: .princess, chat: "If you want to beat the game, you need to rescue me in the dragon's lair."),
                 ChatItem(profile: .villain, chat: "Ha, good luck with that. I'm the villain of the game. Nobody knows who I am. I hide in the shadows and I'm really an enigma."),
-                ChatItem(profile: .villain, chat: "But I'm here to make your life a living hell!"),
                 ChatItem(profile: .hero, chat: "Ya'll cray cray!"),
                 ChatItem(profile: .princess2, chat: "This is the real me. I won't be revealed until the end so... FIND ME!")
             ]) { [unowned self] in
