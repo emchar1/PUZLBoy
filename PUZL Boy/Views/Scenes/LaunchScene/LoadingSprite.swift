@@ -24,13 +24,9 @@ class LoadingSprite: SKNode {
     private var loadingLabel: SKLabelNode
     
     static var funnyQuotes: [String] = [
-        "World domination.",
-        "Eggs are so freakin' expensive!",
-        "Add me on TikTok: @puzlboy",
-        "🏳️‍🌈",
-        "Why am I soooo tired?",
-        "He loves me, he loves me not.",
-        "Tell all your friends about PUZL Boy!"
+        "Add me on Instagram @puzlboy",
+        "Tell all your friends about PUZL Boy!!",
+        "Don't forget to leave a review!🫶🏼"
     ]
 
     

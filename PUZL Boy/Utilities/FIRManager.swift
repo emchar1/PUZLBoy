@@ -70,8 +70,8 @@ struct FIRManager {
             
             self.saveStateModel = saveStateModel
             
-            initializeFunnyQuotes { loadingScreenQuotes, notificationItemQuotes, funnyQuotesError in
-                guard funnyQuotesError == nil, let loadingScreenQuotes = loadingScreenQuotes, let notificationItemQuotes = notificationItemQuotes else {
+            initializeFunnyQuotes { loadingScreenQuotes, notificationItemQuotes, songLyricsQuotes, funnyQuotesError in
+                guard funnyQuotesError == nil, let loadingScreenQuotes = loadingScreenQuotes, let notificationItemQuotes = notificationItemQuotes, let songLyricsQuotes = songLyricsQuotes else {
                     print("Firestore saveState initialized, however there was an error populating funnyQuotes: \(funnyQuotesError!)")
                     completion?(saveStateModel, .funnyQuotesNotFound)
                     return
@@ -79,6 +79,7 @@ struct FIRManager {
                 
                 LoadingSprite.funnyQuotes = loadingScreenQuotes
                 LifeSpawnerModel.funnyQuotes = notificationItemQuotes
+                CutsceneIntro.funnyQuotes = songLyricsQuotes
                 
                 //This is the ultimate success, meaning saveState and funnyQuotes all exist, and the user is signed in!
                 completion?(saveStateModel, nil)
@@ -89,19 +90,21 @@ struct FIRManager {
     }
     
     ///Initializes funny quotes arrays
-    static func initializeFunnyQuotes(completion: ((_ loadingScreenQuotes: [String]?, _ notificationItemQuotes: [String]?, FirestoreError?) -> Void)?) {
+    static func initializeFunnyQuotes(completion: ((_ loadingScreenQuotes: [String]?, _ notificationItemQuotes: [String]?, _ songLyricsQuotes: [String]?, FirestoreError?) -> Void)?) {
         let collectionRef = Firestore.firestore().collection("funnyQuotes")
         collectionRef.getDocuments { snapshot, error in
             guard let snapshot = snapshot,
                   let loadingScreenDoc = snapshot.documents.filter({ $0.documentID == "loadingScreen" }).first,
                   let notificationItemDoc = snapshot.documents.filter({ $0.documentID == "notificationItem" }).first,
+                  let songLyricsDoc = snapshot.documents.filter({ $0.documentID == "songLyrics" }).first,
                   let loadingQuotes = loadingScreenDoc.data()["quotes"] as? [String],
-                  let notificationQuotes = notificationItemDoc.data()["quotes"] as? [String] else {
-                completion?(nil, nil, .funnyQuotesNotFound)
+                  let notificationQuotes = notificationItemDoc.data()["quotes"] as? [String],
+                  let lyricsQuotes = songLyricsDoc.data()["quotes"] as? [String] else {
+                completion?(nil, nil, nil, .funnyQuotesNotFound)
                 return
             }
 
-            completion?(loadingQuotes, notificationQuotes, nil)
+            completion?(loadingQuotes, notificationQuotes, lyricsQuotes, nil)
             
             print("Firestore funny quotes initialized.......")
         }

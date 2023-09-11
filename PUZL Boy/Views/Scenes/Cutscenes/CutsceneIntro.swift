@@ -10,7 +10,7 @@ import SpriteKit
 class CutsceneIntro: SKScene {
     
     // MARK: - Properties
-
+    
     //Positions, Scales
     private let heroPosition = CGPoint(x: K.ScreenDimensions.screenSize.width / 2, y: K.ScreenDimensions.screenSize.height / 3)
     private let princessPosition = CGPoint(x: K.ScreenDimensions.screenSize.width - 120, y: K.ScreenDimensions.screenSize.height / 3 - 40)
@@ -38,7 +38,14 @@ class CutsceneIntro: SKScene {
     private var flashOverlayNode: SKShapeNode!
     private var fadeTransitionNode: SKShapeNode!
     
+    //Misc.
     private var completion: (() -> Void)?
+
+    //Funny Quotes
+    static var funnyQuotes: [String] = [
+        "I'm a Barbie girl,| in a Barbie world.|| Life in plastic,| it's fantastic! You can brush my hair",
+    ]
+
 
     // MARK: - Initialization
     
@@ -212,7 +219,7 @@ class CutsceneIntro: SKScene {
             SKAction.wait(forDuration: 2 * walkCycle),
             SKAction.run { [unowned self] in
                 setTextArray(items: [
-                    SpeechBubbleItem(profile: speechHero, chat: "🎵 I'm a Barbie girl,| in the Barbie world.|| Life in plastic,| it's fantastic! You can brush my hair—/Oh.....|| hello.| Didn't see you there... 😬|||| I'm PUZL Boy.") { [unowned self] in
+                    SpeechBubbleItem(profile: speechHero, chat: "🎵 \(CutsceneIntro.funnyQuotes.randomElement() ?? "Error0")—/Oh.....|| hello.| Didn't see you there... 😬|||| I'm PUZL Boy.") { [unowned self] in
                         addChild(skipIntroSprite)
                         skipIntroSprite.animateSprite()
                     },
@@ -335,7 +342,7 @@ class CutsceneIntro: SKScene {
                                              duration: 10,
                                              reverseDirection: true)
                     },
-                    SpeechBubbleItem(profile: speechPrincess, speed: 0.04, chat: "HELP ME MAR—|I mean,| PUZL BOYYYYYYY!!!!!!!||||||||/The fate of the world now rests in your haaaaands!") { [unowned self] in
+                    SpeechBubbleItem(profile: speechPrincess, speed: 0.04, chat: "SAVE ME MAR—|I mean,| PUZL BOYYYYYYY!!!!!!!||||||||/The fate of the world now rests in your haaaaands!") { [unowned self] in
                         let frameRate: TimeInterval = 0.02
                         let runCycle: TimeInterval = frameRate * 15 //1 cycle at 0.02s x 15 frames = 0.3s
                         let heroRun = SKAction.animate(with: hero.textures[Player.Texture.run.rawValue], timePerFrame: frameRate)
