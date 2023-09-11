@@ -76,7 +76,7 @@ class CutsceneIntro: SKScene {
         skipIntroSprite.delegate = self
 
         
-        dragonSprite = SKSpriteNode(imageNamed: "enemy")
+        dragonSprite = SKSpriteNode(imageNamed: "enemyLarge")
         dragonSprite.position = CGPoint(x: -dragonSprite.size.width, y: K.ScreenDimensions.height + dragonSprite.size.height)
         dragonSprite.zPosition = K.ZPosition.player + 10
         
@@ -257,7 +257,7 @@ class CutsceneIntro: SKScene {
                         run(SKAction.sequence([
                             SKAction.run { [unowned self] in
                                 dragonSprite.run(SKAction.group([
-                                    SKAction.scale(to: 5, duration: 0.5),
+                                    SKAction.scale(to: 2, duration: 0.5),
                                     SKAction.move(to: CGPoint(x: princessPosition.x, y: princessPosition.y + princess.sprite.size.height / 2), duration: 0.5)
                                 ]))
                                 
@@ -271,9 +271,7 @@ class CutsceneIntro: SKScene {
                                     SKAction.fadeOut(withDuration: 0.25)
                                 ]))
                                 
-                                dragonSprite.position = CGPoint(x: screenSize.width / 2, y: screenSize.height / 2 + princess.sprite.size.height / 2)
-                                dragonSprite.setScale(10)
-                                closeUpPrincess()
+                                midShotPrincessDragon()
                                 
                                 AudioManager.shared.playSound(for: "enemyscratch")
                                 Haptics.shared.executeCustomPattern(pattern: .enemy)
@@ -284,7 +282,7 @@ class CutsceneIntro: SKScene {
                         wideShot()
                         
                         dragonSprite.position = CGPoint(x: princessPosition.x, y: princessPosition.y + princess.sprite.size.height / 2)
-                        dragonSprite.setScale(5)
+                        dragonSprite.setScale(2)
                         
                         let abductionSpeed: TimeInterval = 1
                         
@@ -309,7 +307,7 @@ class CutsceneIntro: SKScene {
                         
                         dragonSprite.run(SKAction.group([
                             SKAction.move(to: CGPoint(x: 0, y: screenSize.height + dragonSprite.size.height), duration: abductionSpeed),
-                            SKAction.scale(to: 0.5, duration: abductionSpeed)
+                            SKAction.scale(to: 0.25, duration: abductionSpeed)
                         ]))
                         
                         speechPrincess.run(SKAction.sequence([
@@ -381,6 +379,21 @@ class CutsceneIntro: SKScene {
         }
     }
     
+    private func closeUpHero() {
+        princess.sprite.position.x = princessPosition.x + 200
+        princess.sprite.setScale(playerScale * 0.75)
+        princess.sprite.xScale = -playerScale * 0.75
+        
+        hero.sprite.position.x = screenSize.width / 2
+        hero.sprite.setScale(2)
+        
+        parallaxManager.backgroundSprite.setScale(2)
+        parallaxManager.backgroundSprite.position.y = -screenSize.height / 2 + 400
+        parallaxManager.backgroundSprite.position.x = screenSize.width / 2
+        
+        speechHero.position = CGPoint(x: screenSize.width + 300, y: screenSize.height + 700) / 2
+    }
+    
     private func closeUpPrincess() {
         princess.sprite.position.x = screenSize.width / 2
         princess.sprite.setScale(2 * 0.75)
@@ -396,19 +409,22 @@ class CutsceneIntro: SKScene {
         speechPrincess.position = CGPoint(x: screenSize.width - 300, y: screenSize.height + 400) / 2
     }
     
-    private func closeUpHero() {
-        princess.sprite.position.x = princessPosition.x + 200
-        princess.sprite.setScale(playerScale * 0.75)
-        princess.sprite.xScale = -playerScale * 0.75
+    private func midShotPrincessDragon() {
+        princess.sprite.position.x = screenSize.width / 2
+        princess.sprite.setScale(0.75)
+        princess.sprite.xScale = -0.75
         
-        hero.sprite.position.x = screenSize.width / 2
-        hero.sprite.setScale(2)
+        hero.sprite.position.x = -200
+        hero.sprite.setScale(playerScale)
         
-        parallaxManager.backgroundSprite.setScale(2)
-        parallaxManager.backgroundSprite.position.y = -screenSize.height / 2 + 400
-        parallaxManager.backgroundSprite.position.x = screenSize.width / 2
+        dragonSprite.position = CGPoint(x: screenSize.width / 2, y: screenSize.height / 2)
+        dragonSprite.setScale(4)
+
+        parallaxManager.backgroundSprite.setScale(1 / 0.75)
+        parallaxManager.backgroundSprite.position.y = -screenSize.height / 2 + 750
+        parallaxManager.backgroundSprite.position.x = -screenSize.width / 2
         
-        speechHero.position = CGPoint(x: screenSize.width + 300, y: screenSize.height + 700) / 2
+        speechPrincess.position = CGPoint(x: screenSize.width - 300, y: screenSize.height) / 2
     }
     
     private func wideShot() {
