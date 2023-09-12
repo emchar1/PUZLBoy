@@ -260,7 +260,7 @@ class CutsceneIntro: SKScene {
 
                         AudioManager.shared.playSound(for: "birdsambience", fadeIn: 3)
                     },
-                    SpeechBubbleItem(profile: speechHero, chat: "Whew, that is some story!|| Well don't worry princess, I'll get you to where you need to go—") { [unowned self] in
+                    SpeechBubbleItem(profile: speechHero, chat: "Whew, that is some story!|| Well don't worry, I'll get you to where you need to...|| WHAT THE—") { [unowned self] in
                         run(SKAction.sequence([
                             SKAction.run { [unowned self] in
                                 dragonSprite.run(SKAction.group([

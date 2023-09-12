@@ -96,6 +96,7 @@ class ChatEngine {
         dialoguePlayed[51] = false
         dialoguePlayed[76] = false
         dialoguePlayed[100] = false
+        dialoguePlayed[125] = false
 
         setupSprites()
         animateFFButton()
@@ -400,14 +401,14 @@ extension ChatEngine {
             }
             
             sendChatArray(items: [
-                ChatItem(profile: .hero, chat: "PUZL BOY: ...and that's the whole story! So what's our game plan?"),
-                ChatItem(profile: .trainer, chat: "TRAINER: I suspect she is being held captive in the dragon's lair, so it's important we move fast. I am going to guide you there, so pay attention."),
-                ChatItem(profile: .hero, chat: "How do you know that's where they've taken her??"),
-                ChatItem(profile: .trainer, chat: "Don't worry about it... OK. The lair is buried miles beneath the Earth's surface, and the only way to reach it is to solve logic puzzles."),
-                ChatItem(profile: .hero, chat: "Makes no sense, but go on..."),
-                ChatItem(profile: .trainer, chat: "There are 500 levels in total you will have to solve, each with increasing difficulty."),
+                ChatItem(profile: .hero, chat: "PUZL BOY: ...then the dragon swooped down and carried her away to who knows where! So what's our game plan? Also I didn't catch your name."),
+                ChatItem(profile: .trainer, chat: "MARLIN: It's Marlin. I suspect she is being held captive in the dragon's lair, so it's important we move fast. I'm going to guide you there, so pay attention."),
+                ChatItem(profile: .hero, chat: "Marlin, like the fish??? How do you know that's where they've taken her?"),
+                ChatItem(profile: .trainer, chat: "Marlin like the magician. Don't worry about it... OK. The lair is buried miles beneath the Earth's surface, and the only way to reach it is to solve logic puzzles."),
+                ChatItem(profile: .hero, chat: "A marlin is a fish... You're thinking of Merlin the Magician. Is that your name? Merlin?"),
+                ChatItem(profile: .trainer, chat: "I think I know my own name. Listen! There are 500 levels in total you will have to solve, each with increasing difficulty."),
                 ChatItem(profile: .hero, chat: "500 levels?!! What do I get if I win?"),
-                ChatItem(profile: .trainer, chat: "You save the world!!! Now where was I... Oh yeah, the goal for each level is to get to the gate in under a certain number of moves.", handler: { [unowned self] in
+                ChatItem(profile: .trainer, chat: "You save the world!!! Geez! Now where was I... Oh yeah, the goal for each level is to get to the gate in under a certain number of moves.", handler: { [unowned self] in
                     delegate?.illuminatePanel(at: (0, 1), useOverlay: false)
                     delegate?.illuminatePanel(at: (1, 0), useOverlay: false)
                     delegate?.illuminatePanel(at: (1, 2), useOverlay: false)
@@ -454,7 +455,7 @@ extension ChatEngine {
                     delegate?.deIlluminateDisplayNode(for: .hammers)
                 }),
                 ChatItem(profile: .trainer, chat: "Since there are no hammers in this level, you'll just have to go around them."),
-                ChatItem(profile: .hero, chat: "Well then, that was pointless."),
+                ChatItem(profile: .hero, chat: "Ah well, gotta get my steps in."),
                 ChatItem(profile: .trainer, chat: "Oh, and one more thing... hammers can only be used once before breaking, so plan your moves ahead of time.")
             ]) { [unowned self] in
                 dialoguePlayed[level] = true
@@ -497,7 +498,7 @@ extension ChatEngine {
             sendChatArray(items: [
                 ChatItem(profile: .trainer, chat: "Those fun looking things are warps. Stepping on one of them will teleport you to the other one. Weeeeeeeee!"),
                 ChatItem(profile: .hero, chat: "Are those things safe?"),
-                ChatItem(profile: .trainer, chat: "We're about to find out. Good luck!"),
+                ChatItem(profile: .trainer, chat: "Ummmmmmm yeah, sure! I've tested it myself hundreds of times."),
                 ChatItem(profile: .hero, chat: ".......")
             ]) { [unowned self] in
                 dialoguePlayed[level] = true
@@ -531,7 +532,7 @@ extension ChatEngine {
                 ChatItem(profile: .hero, chat: "Lemme guess, I can only use the sword once before it breaks?", handler: { [unowned self] in
                     delegate?.deIlluminateDisplayNode(for: .swords)
                 }),
-                ChatItem(profile: .trainer, chat: "B-I-N-G-O!!! Oh whoops, I was playing Bingo with my grams. Yep, one sword per dragon.")
+                ChatItem(profile: .trainer, chat: "Now you're getting it!")
             ]) { [unowned self] in
                 dialoguePlayed[level] = true
                 fadeDimOverlay()
@@ -581,6 +582,34 @@ extension ChatEngine {
                 ChatItem(profile: .trainer, chat: "That's the spirit! Now if you ever get stuck, you can tap the red Reset button to restart the level."),
                 ChatItem(profile: .trainer, chat: "Be warned though, restarting a level will cost you one of your precious lives..."),
                 ChatItem(profile: .hero, chat: "It's all good. My mom can buy me more lives if I need it. 😃")
+            ]) { [unowned self] in
+                dialoguePlayed[level] = true
+                fadeDimOverlay()
+                isChatting = false
+                completion?()
+            }
+        case 125:
+            guard let dialoguePlayedCheck = dialoguePlayed[level], !dialoguePlayedCheck else {
+                isChatting = false
+                completion?()
+                return
+            }
+            
+            sendChatArray(items: [
+                ChatItem(profile: .hero, chat: "Is everything OK?? You've been awfully quiet. You're usually chewing my ear off right about now."),
+                ChatItem(profile: .trainer, chat: "..."),
+                ChatItem(profile: .hero, chat: "Look, if it's the old man comment, everybody gets old. It's just an inevitability of life. I'm 16 so everyone looks old to me."),
+                ChatItem(profile: .trainer, chat: "No, it's not that. I'm 1,000 years old. I AM old. I'm just thinking about how important it is we complete the mission."),
+                ChatItem(profile: .hero, chat: "ONE THOUSAND??!! What are you, like a wizard or something? \"Marlin the Fishy Wizard...\""),
+                ChatItem(profile: .hero, chat: "Wait... ARE YOU REALLY A WIZARD?!?! Because I'm not surprised by anything anymore at this point..."),
+                ChatItem(profile: .trainer, chat: "There's a lot you must learn to prepare for the upcoming battle to save your world and the worlds beyond your world."),
+                ChatItem(profile: .hero, chat: "I mean you don't look a day over 800 to be honest..."),
+                ChatItem(profile: .trainer, chat: "PUZL Boy, I need you to be serious! What lies ahead will test your patience. It will make you want to throw your phone out the window. You need to be prepared!"),
+                ChatItem(profile: .hero, chat: "Ok, ok. I'll be ready. I already know how to use swords and hammers. Nothing can stop me!"),
+                ChatItem(profile: .trainer, chat: "You reached out to me for my help. I need you to trust me now."),
+                ChatItem(profile: .hero, chat: "Well yeah, after I saw a friggin' dragon swoop down from a blood soaked sky and snatch a 7 year old girl, you appeared almost out of nowhere."),
+                ChatItem(profile: .trainer, chat: "Good. Then we're in agreement. Now no more silly questions. Let's keep pushing forward."),
+                ChatItem(profile: .hero, chat: "Wow.. 1,000 years old. I have soooo many questions...")
             ]) { [unowned self] in
                 dialoguePlayed[level] = true
                 fadeDimOverlay()
