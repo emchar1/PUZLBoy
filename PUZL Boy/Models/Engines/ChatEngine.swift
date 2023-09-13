@@ -401,12 +401,12 @@ extension ChatEngine {
             }
             
             sendChatArray(items: [
-                ChatItem(profile: .hero, chat: "PUZL BOY: ...then the dragon swooped down and carried her away to who knows where! So what's our game plan? Also I didn't catch your name."),
-                ChatItem(profile: .trainer, chat: "MARLIN: It's Marlin. I suspect she is being held captive in the dragon's lair, so it's important we move fast. I'm going to guide you there, so pay attention."),
+                ChatItem(profile: .hero, chat: "PUZL BOY: ...then the dragon swooped down and carried her away! So... what's our game plan? Also I didn't catch your name."),
+                ChatItem(profile: .trainer, chat: "MARLIN: I am Marlin. I suspect she is being held captive in the dragon's lair. We must move quickly. I'm going to guide you there, so pay attention."),
                 ChatItem(profile: .hero, chat: "Marlin, like the fish??? How do you know that's where they've taken her?"),
                 ChatItem(profile: .trainer, chat: "Marlin like the magician. Don't worry about it... OK. The lair is buried miles beneath the Earth's surface, and the only way to reach it is to solve logic puzzles."),
                 ChatItem(profile: .hero, chat: "A marlin is a fish... You're thinking of Merlin the Magician. Is that your name? Merlin?"),
-                ChatItem(profile: .trainer, chat: "I think I know my own name. Listen! There are 500 levels in total you will have to solve, each with increasing difficulty."),
+                ChatItem(profile: .trainer, chat: "I think I know my own name. Listen!! There are 500 levels in total you will have to solve, each with increasing difficulty."),
                 ChatItem(profile: .hero, chat: "500 levels?!! What do I get if I win?"),
                 ChatItem(profile: .trainer, chat: "You save the world!!! Geez! Now where was I... Oh yeah, the goal for each level is to get to the gate in under a certain number of moves.", handler: { [unowned self] in
                     delegate?.illuminatePanel(at: (0, 1), useOverlay: false)
@@ -607,7 +607,7 @@ extension ChatEngine {
                 ChatItem(profile: .trainer, chat: "PUZL Boy, I need you to be serious! What lies ahead will test your patience. It will make you want to throw your phone out the window. You need to be prepared!"),
                 ChatItem(profile: .hero, chat: "Ok, ok. I'll be ready. I already know how to use swords and hammers. Nothing can stop me!"),
                 ChatItem(profile: .trainer, chat: "You reached out to me for my help. I need you to trust me now."),
-                ChatItem(profile: .hero, chat: "Well yeah, after I saw a friggin' dragon swoop down from a blood soaked sky and snatch a 7 year old girl, you appeared almost out of nowhere."),
+                ChatItem(profile: .hero, chat: "Well yeah, after I saw a freakin' dragon swoop down from a blood soaked sky and snatch a 7 year old girl, ...then you appeared almost out of nowhere!"),
                 ChatItem(profile: .trainer, chat: "Good. Then we're in agreement. Now no more silly questions. Let's keep pushing forward."),
                 ChatItem(profile: .hero, chat: "Wow.. 1,000 years old. I have soooo many questions...")
             ]) { [unowned self] in

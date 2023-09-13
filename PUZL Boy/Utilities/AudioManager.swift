@@ -151,7 +151,7 @@ class AudioManager {
 
         
         //Background music
-        addAudioItem("birdsambience", category: .music, maxVolume: 0.3)
+        addAudioItem("birdsambience", category: .music, maxVolume: 0.2)
         addAudioItem("continueloop", category: .music)
         addAudioItem("overworld", category: .music)
         addAudioItem("overworldparty", category: .music)

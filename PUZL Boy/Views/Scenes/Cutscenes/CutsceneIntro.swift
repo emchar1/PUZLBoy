@@ -282,6 +282,10 @@ class CutsceneIntro: SKScene {
                                 
                                 AudioManager.shared.playSound(for: "enemyscratch")
                                 Haptics.shared.executeCustomPattern(pattern: .enemy)
+                                ParticleEngine.shared.animateParticles(type: .dragonFire,
+                                                                       toNode: dragonSprite,
+                                                                       position: CGPoint(x: 10, y: 80),
+                                                                       duration: 5)
                             }
                         ]))
                     },
@@ -290,6 +294,8 @@ class CutsceneIntro: SKScene {
                         
                         dragonSprite.position = CGPoint(x: princessPosition.x, y: princessPosition.y + princess.sprite.size.height / 2)
                         dragonSprite.setScale(2)
+                        
+                        ParticleEngine.shared.removeParticles(fromNode: dragonSprite)
                         
                         let abductionSpeed: TimeInterval = 1
                         
