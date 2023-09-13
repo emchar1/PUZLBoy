@@ -123,7 +123,7 @@ class SpeechBubbleSprite: SKNode {
     }
     
     private func beginAnimation() {
-        AudioManager.shared.playSound(for: "speechbubble")
+        AudioManager.shared.playSound(for: "speechbubble", ignoreSoundOff: true)
         
         backgroundSprite.run(SKAction.sequence([
             SKAction.scale(to: 1.25, duration: 0.25),

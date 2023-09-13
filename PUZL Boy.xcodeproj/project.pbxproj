@@ -58,6 +58,7 @@
 		EA4583592A4431C400279056 /* punchwhack1.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA4583572A4431C400279056 /* punchwhack1.mp3 */; };
 		EA45835B2A4431D300279056 /* titletheme.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA45835A2A4431D300279056 /* titletheme.mp3 */; };
 		EA4583652A460D7200279056 /* PartyResultsLineItemSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA4583642A460D7200279056 /* PartyResultsLineItemSprite.swift */; };
+		EA48EE552AB1B4A800552DAF /* thunderrumble.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA48EE542AB1B4A800552DAF /* thunderrumble.mp3 */; };
 		EA496AAC2A79B25A0096DB35 /* CutsceneIntro.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA496AAB2A79B25A0096DB35 /* CutsceneIntro.swift */; };
 		EA49B0692A1923D300E6B96D /* HowToPlayTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA49B0682A1923D300E6B96D /* HowToPlayTableView.swift */; };
 		EA49B06B2A1953C500E6B96D /* HowToPlayTVCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA49B06A2A1953C500E6B96D /* HowToPlayTVCell.swift */; };
@@ -282,6 +283,7 @@
 		EA4583572A4431C400279056 /* punchwhack1.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = punchwhack1.mp3; sourceTree = "<group>"; };
 		EA45835A2A4431D300279056 /* titletheme.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = titletheme.mp3; sourceTree = "<group>"; };
 		EA4583642A460D7200279056 /* PartyResultsLineItemSprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PartyResultsLineItemSprite.swift; sourceTree = "<group>"; };
+		EA48EE542AB1B4A800552DAF /* thunderrumble.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = thunderrumble.mp3; sourceTree = "<group>"; };
 		EA496AAB2A79B25A0096DB35 /* CutsceneIntro.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CutsceneIntro.swift; sourceTree = "<group>"; };
 		EA49B0682A1923D300E6B96D /* HowToPlayTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HowToPlayTableView.swift; sourceTree = "<group>"; };
 		EA49B06A2A1953C500E6B96D /* HowToPlayTVCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HowToPlayTVCell.swift; sourceTree = "<group>"; };
@@ -766,6 +768,7 @@
 				EA3467A429A8C659002DDA02 /* revive.mp3 */,
 				EA95B3082A8C9DA300C5F028 /* speechbubble.mp3 */,
 				EAAEA3C32931D0DA00221963 /* swordslash.mp3 */,
+				EA48EE542AB1B4A800552DAF /* thunderrumble.mp3 */,
 				EA45835A2A4431D300279056 /* titletheme.mp3 */,
 				EA95D193294690890061059C /* warp.mp3 */,
 				EAAEA3CB2931F14D00221963 /* winlevel.mp3 */,
@@ -996,6 +999,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				EAAEA3CA2931F12B00221963 /* pickupitem.mp3 in Resources */,
+				EA48EE552AB1B4A800552DAF /* thunderrumble.mp3 in Resources */,
 				EA32AE392AADAC6400DFF5CD /* birdsambience.mp3 in Resources */,
 				EAD199FE2A95E9EE00A07A63 /* BoulderCrushParticles.sks in Resources */,
 				EAD19A0F2A97E73400A07A63 /* HeartsParticles.sks in Resources */,

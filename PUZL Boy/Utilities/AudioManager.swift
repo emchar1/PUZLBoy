@@ -136,6 +136,7 @@ class AudioManager {
         addAudioItem("revive", category: .soundFX)
         addAudioItem("speechbubble", category: .soundFX)
         addAudioItem("swordslash", category: .soundFX)
+        addAudioItem("thunderrumble", category: .soundFX)
         addAudioItem("warp", category: .soundFX)
         addAudioItem("winlevel", category: .soundFX)
 
@@ -155,6 +156,10 @@ class AudioManager {
         addAudioItem("continueloop", category: .music)
         addAudioItem("overworld", category: .music)
         addAudioItem("overworldparty", category: .music)
+        
+        
+        //9/13/23 Call this AFTER adding all the audioItems above!
+        updateVolumes()
     }
 
     /**
@@ -167,8 +172,6 @@ class AudioManager {
         audioItems[audioKey] = AudioItem(fileName: audioKey, category: category, maxVolume: maxVolume)
         
         if let item = audioItems[audioKey], let player = configureAudioPlayer(for: item) {
-            updateVolumes()
-            
             audioItems[audioKey]!.player = player
         }
     }
@@ -215,7 +218,7 @@ class AudioManager {
         - pan: pan value to initialize, defaults to center of player
      - returns: True if the player can play. False, otherwise.
      */
-    @discardableResult func playSound(for audioKey: String, currentTime: TimeInterval? = nil, fadeIn: TimeInterval = 0.0, delay: TimeInterval? = nil, pan: Float = 0, interruptPlayback: Bool = true) -> Bool? {
+    @discardableResult func playSound(for audioKey: String, currentTime: TimeInterval? = nil, fadeIn: TimeInterval = 0.0, delay: TimeInterval? = nil, pan: Float = 0, interruptPlayback: Bool = true, ignoreSoundOff: Bool = false) -> Bool? {
         guard let item = audioItems[audioKey], let player = configureAudioPlayer(for: item) else {
             print("Unable to find \(audioKey) in AudioManager.audioItems[]")
             return false
@@ -226,7 +229,7 @@ class AudioManager {
         }
                 
         audioItems[item.fileName]!.player = player
-        audioItems[item.fileName]!.player.volume = audioItems[item.fileName]!.currentVolume
+        audioItems[item.fileName]!.player.volume = ignoreSoundOff ? audioItems[item.fileName]!.maxVolume : audioItems[item.fileName]!.currentVolume
         audioItems[item.fileName]!.player.pan = pan
         audioItems[item.fileName]!.player.prepareToPlay()
 
@@ -241,7 +244,7 @@ class AudioManager {
             if fadeIn > 0 {
                 audioItem.player.setVolume(0.0, fadeDuration: 0)
                 audioItem.player.play()
-                audioItem.player.setVolume(audioItem.currentVolume, fadeDuration: fadeIn)
+                audioItem.player.setVolume(ignoreSoundOff ? audioItem.maxVolume : audioItem.currentVolume, fadeDuration: fadeIn)
             }
             else {
                 audioItem.player.play()

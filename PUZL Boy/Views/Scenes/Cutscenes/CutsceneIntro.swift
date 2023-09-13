@@ -133,7 +133,7 @@ class CutsceneIntro: SKScene {
         speechHero = SpeechBubbleSprite(width: 460, position: heroPosition + CGPoint(x: 200, y: 400))
         speechPrincess = SpeechBubbleSprite(width: 460, position: princessPosition + CGPoint(x: -200, y: 400), tailOrientation: .bottomRight)
 
-        AudioManager.shared.playSound(for: "birdsambience", fadeIn: 5)
+        AudioManager.shared.playSound(for: "birdsambience", fadeIn: 5, ignoreSoundOff: true)
     }
     
     
@@ -258,7 +258,16 @@ class CutsceneIntro: SKScene {
                         bloodSkyNode.run(SKAction.fadeIn(withDuration: 10))
                         bloodOverlayNode.run(SKAction.fadeAlpha(to: 0.25, duration: 10))
 
-                        AudioManager.shared.playSound(for: "birdsambience", fadeIn: 3)
+                        run(SKAction.sequence([
+                            SKAction.run {
+                                AudioManager.shared.playSound(for: "birdsambience", fadeIn: 2, ignoreSoundOff: true)
+                            },
+                            SKAction.wait(forDuration: 2),
+                            SKAction.run {
+                                AudioManager.shared.playSound(for: "thunderrumble", ignoreSoundOff: true)
+                                AudioManager.shared.stopSound(for: "birdsambience", fadeDuration: 3)
+                            }
+                        ]))
                     },
                     SpeechBubbleItem(profile: speechHero, chat: "Whew, that is some story!|| Well don't worry, I'll get you to where you need to...|| WHAT THE—") { [unowned self] in
                         run(SKAction.sequence([
@@ -268,8 +277,7 @@ class CutsceneIntro: SKScene {
                                     SKAction.move(to: CGPoint(x: princessPosition.x, y: princessPosition.y + princess.sprite.size.height / 2), duration: 0.5)
                                 ]))
                                 
-                                AudioManager.shared.stopSound(for: "birdsambience", fadeDuration: 2)
-                                AudioManager.shared.playSound(for: "ageofruin")
+                                AudioManager.shared.playSound(for: "ageofruin", ignoreSoundOff: true)
                             },
                             SKAction.wait(forDuration: 0.6),
                             SKAction.run { [unowned self] in
@@ -280,7 +288,7 @@ class CutsceneIntro: SKScene {
                                 
                                 midShotPrincessDragon()
                                 
-                                AudioManager.shared.playSound(for: "enemyscratch")
+                                AudioManager.shared.playSound(for: "enemyscratch", ignoreSoundOff: true)
                                 Haptics.shared.executeCustomPattern(pattern: .enemy)
                                 ParticleEngine.shared.animateParticles(type: .dragonFire,
                                                                        toNode: dragonSprite,
