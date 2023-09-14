@@ -86,18 +86,8 @@ class ChatEngine {
         dispatchWorkItem = DispatchWorkItem(block: {})
         
         chatSpeed = chatSpeedOrig
-        
-        // MARK: - Include key dialogue here
-        dialoguePlayed[Level.partyLevel] = false
-        dialoguePlayed[1] = false
-        dialoguePlayed[8] = false
-        dialoguePlayed[19] = false
-        dialoguePlayed[34] = false
-        dialoguePlayed[51] = false
-        dialoguePlayed[76] = false
-        dialoguePlayed[100] = false
-        dialoguePlayed[125] = false
 
+        populateKeyDialogue()
         setupSprites()
         animateFFButton()
     }
@@ -359,33 +349,31 @@ class ChatEngine {
     private func fadeDimOverlay() {
         dimOverlaySprite.run(SKAction.fadeAlpha(to: 0.0, duration: 1.0))
     }
+    
+    ///Helper function to wrap up a chat dialogue and call the completion handler.
+    private func handleDialogueCompletion(level: Int, completion: (() -> Void)?) {
+        dialoguePlayed[level] = true
+        isChatting = false
+        fadeDimOverlay()
+        completion?()
+    }
 }
 
 
 // MARK: - Dialogue Function
 
 extension ChatEngine {
-    ///Helper function that does a guard check to make sure dialogue has not yet been played.
-    private func checkDialogueNotYetPlayed(level: Int, completion: (() -> Void)?) -> Bool {
-        guard let dialoguePlayedCheck = dialoguePlayed[level], !dialoguePlayedCheck else {
-            isChatting = false
-            completion?()
-            return false
-        }
-        
-        return true
-    }
-    
-    ///Helper function to wrap up a chat dialogue and call the completion handler.
-    private func executeDialogueCompletion(shouldFadeDim: Bool = true, level: Int, completion: (() -> Void)?) {
-        dialoguePlayed[level] = true
-
-        if shouldFadeDim {
-            fadeDimOverlay()
-        }
-
-        isChatting = false
-        completion?()
+    ///Populates the dialoguePlayed array. Need to include all levels where dialogue is to occur, and also add the level case in the playDialogue() function.
+    private func populateKeyDialogue() {
+        dialoguePlayed[Level.partyLevel] = false
+        dialoguePlayed[1] = false
+        dialoguePlayed[8] = false
+        dialoguePlayed[19] = false
+        dialoguePlayed[34] = false
+        dialoguePlayed[51] = false
+        dialoguePlayed[76] = false
+        dialoguePlayed[100] = false
+        dialoguePlayed[125] = false
     }
     
     /**
@@ -395,12 +383,16 @@ extension ChatEngine {
         - completion: completion handler to execute at the end of the dialogue
      */
     func playDialogue(level: Int, completion: (() -> Void)?) {
+        guard let dialoguePlayedCheck = dialoguePlayed[level], !dialoguePlayedCheck else {
+            isChatting = false
+            completion?()
+            return
+        }
+
         isChatting = true
-        
+
         switch level {
         case Level.partyLevel:
-            guard checkDialogueNotYetPlayed(level: level, completion: completion) else { return }
-            
             sendChatArray(items: [
                 ChatItem(profile: .hero, chat: "Yo, I feel funny. I'm seeing colorful flashing lights and the music is bumpin'. I can't stop moving.. and I like it!"),
                 ChatItem(profile: .trainer, chat: "Welcome to the DARK REALM! Looks like you ate one of those rainbow colored jelly beans, I see."),
@@ -413,11 +405,9 @@ extension ChatEngine {
                 ChatItem(profile: .hero, chat: "Don't step on the bombs. Yeah got it."),
                 ChatItem(profile: .trainer, chat: "OK. Now if the flashing lights become too much, you can tap the disco ball below to turn them off. 🪩 GET READY!!!")
             ]) { [unowned self] in
-                executeDialogueCompletion(level: level, completion: completion)
+                handleDialogueCompletion(level: level, completion: completion)
             }
         case 1:
-            guard checkDialogueNotYetPlayed(level: level, completion: completion) else { return }
-
             sendChatArray(items: [
                 ChatItem(profile: .hero, chat: "PUZL BOY: ...then the dragon swooped down and carried her away! So... what's our game plan? Also I didn't catch your name."),
                 ChatItem(profile: .trainer, chat: "MARLIN: I am Marlin. I suspect she is being held captive in the dragon's lair. We must move quickly. I'm going to guide you there, so pay attention."),
@@ -450,11 +440,9 @@ extension ChatEngine {
                 delegate?.deIlluminatePanel(at: (0, 2), useOverlay: true)
                 delegate?.deIlluminatePanel(at: (2, 2), useOverlay: false)
 
-                executeDialogueCompletion(level: level, completion: completion)
+                handleDialogueCompletion(level: level, completion: completion)
             }
         case 8:
-            guard checkDialogueNotYetPlayed(level: level, completion: completion) else { return }
-
             delegate?.illuminatePanel(at: (0, 1), useOverlay: true)
             delegate?.illuminatePanel(at: (1, 1), useOverlay: true)
             
@@ -470,11 +458,9 @@ extension ChatEngine {
                 ChatItem(profile: .hero, chat: "Ah well, gotta get my steps in."),
                 ChatItem(profile: .trainer, chat: "Oh, and one more thing... hammers can only be used once before breaking, so plan your moves ahead of time.")
             ]) { [unowned self] in
-                executeDialogueCompletion(level: level, completion: completion)
+                handleDialogueCompletion(level: level, completion: completion)
             }
         case 19:
-            guard checkDialogueNotYetPlayed(level: level, completion: completion) else { return }
-
             delegate?.illuminatePanel(at: (0, 1), useOverlay: false)
             delegate?.illuminatePanel(at: (2, 1), useOverlay: false)
             
@@ -486,11 +472,9 @@ extension ChatEngine {
                 delegate?.deIlluminatePanel(at: (0, 1), useOverlay: false)
                 delegate?.deIlluminatePanel(at: (2, 1), useOverlay: false)
 
-                executeDialogueCompletion(level: level, completion: completion)
+                handleDialogueCompletion(level: level, completion: completion)
             }
         case 34:
-            guard checkDialogueNotYetPlayed(level: level, completion: completion) else { return }
-
             delegate?.illuminatePanel(at: (0, 1), useOverlay: true)
             delegate?.illuminatePanel(at: (1, 2), useOverlay: true)
             
@@ -503,11 +487,9 @@ extension ChatEngine {
                 delegate?.deIlluminatePanel(at: (0, 1), useOverlay: true)
                 delegate?.deIlluminatePanel(at: (1, 2), useOverlay: true)
 
-                executeDialogueCompletion(level: level, completion: completion)
+                handleDialogueCompletion(level: level, completion: completion)
             }
         case 51:
-            guard checkDialogueNotYetPlayed(level: level, completion: completion) else { return }
-
             delegate?.illuminatePanel(at: (1, 1), useOverlay: true)
             
             sendChatArray(items: [
@@ -527,11 +509,9 @@ extension ChatEngine {
                 }),
                 ChatItem(profile: .trainer, chat: "Now you're getting it!")
             ]) { [unowned self] in
-                executeDialogueCompletion(level: level, completion: completion)
+                handleDialogueCompletion(level: level, completion: completion)
             }
         case 76:
-            guard checkDialogueNotYetPlayed(level: level, completion: completion) else { return }
-
             delegate?.illuminatePanel(at: (0, 1), useOverlay: false)
             delegate?.illuminatePanel(at: (0, 2), useOverlay: false)
             delegate?.illuminatePanel(at: (1, 2), useOverlay: false)
@@ -547,15 +527,12 @@ extension ChatEngine {
                     delegate?.deIlluminatePanel(at: (1, 2), useOverlay: false)
                     delegate?.deIlluminatePanel(at: (0, 1), useOverlay: true)
                     delegate?.deIlluminatePanel(at: (1, 2), useOverlay: true)
-                    fadeDimOverlay()
                 }),
                 ChatItem(profile: .trainer, chat: "Well, I'll leave you alone for now. I'll chime in every now and then if I think you need it.")
             ]) { [unowned self] in
-                executeDialogueCompletion(shouldFadeDim: false, level: level, completion: completion)
+                handleDialogueCompletion(level: level, completion: completion)
             }
         case 100:
-            guard checkDialogueNotYetPlayed(level: level, completion: completion) else { return }
-
             sendChatArray(items: [
                 ChatItem(profile: .trainer, chat: "Congrats! You made it to level 100. There's a bonus at the end of every 50 levels. Beat this and you're one step closer to indescribable fun!!! 💃🏾🪩🕺🏻"),
                 ChatItem(profile: .hero, chat: "I can hardly contain my excitement."),
@@ -563,11 +540,9 @@ extension ChatEngine {
                 ChatItem(profile: .trainer, chat: "Be warned though, restarting a level will cost you one of your precious lives..."),
                 ChatItem(profile: .hero, chat: "It's all good. My mom can buy me more lives if I need it. 😃")
             ]) { [unowned self] in
-                executeDialogueCompletion(level: level, completion: completion)
+                handleDialogueCompletion(level: level, completion: completion)
             }
         case 125:
-            guard checkDialogueNotYetPlayed(level: level, completion: completion) else { return }
-
             sendChatArray(items: [
                 ChatItem(profile: .hero, chat: "Is everything OK?? You've been awfully quiet. You're usually chewing my ear off right about now."),
                 ChatItem(profile: .trainer, chat: "..."),
@@ -584,7 +559,7 @@ extension ChatEngine {
                 ChatItem(profile: .trainer, chat: "Good. Then we're in agreement. Now no more silly questions. Let's keep pushing forward."),
                 ChatItem(profile: .hero, chat: "Wow.. 900 years old. I have soooo many questions...")
             ]) { [unowned self] in
-                executeDialogueCompletion(level: level, completion: completion)
+                handleDialogueCompletion(level: level, completion: completion)
             }
         default:
             isChatting = false
