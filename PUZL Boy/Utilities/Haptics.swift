@@ -143,18 +143,21 @@ class Haptics {
 
             try player?.start(atTime: 0)
         } catch {
-            print(error)
-        }
-        
-        // The engine stopped; print out why
-        engine?.stoppedHandler = { [unowned self] reason in
-             startHapticEngine(shouldInitialize: false)
-        }
-
-        // If something goes wrong, attempt to restart the engine immediately
-        engine?.resetHandler = { [unowned self] in
+            print("There was an error executing a custom pattern: \(error.localizedDescription)")
+            
+            //BUGFIX# 230913E01 because stoppedHandler and resetHandler below weren't calling when the engine was stopped and needed to be reset!
             startHapticEngine(shouldInitialize: false)
         }
+        
+//        // The engine stopped; print out why
+//        engine?.stoppedHandler = { [unowned self] reason in
+//            startHapticEngine(shouldInitialize: false)
+//        }
+//
+//        // If something goes wrong, attempt to restart the engine immediately
+//        engine?.resetHandler = { [unowned self] in
+//            startHapticEngine(shouldInitialize: false)
+//        }
     }
 }
 
