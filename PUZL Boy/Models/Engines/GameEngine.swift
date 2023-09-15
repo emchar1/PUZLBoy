@@ -121,6 +121,7 @@ class GameEngine {
     }
     
     ///Spawns items in a party level.
+    // FIXME: - Party items spawned especially in panel(0,0) seem to disappear instantly, especially with 3x3 size grids. BUG# 230914E01
     func spawnPartyItems(maxItems: Int) {
         guard Level.isPartyLevel(level.level) else { return }
                 

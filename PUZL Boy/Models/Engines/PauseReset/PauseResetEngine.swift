@@ -28,6 +28,7 @@ class PauseResetEngine {
     private let settingsScale: CGFloat = GameboardSprite.spriteScale
 
     //Pause, Reset, Hint Buttons
+    private var niteModifier: String { DayTheme.currentTheme == .dawn || DayTheme.currentTheme == .night ? "NITE" : "" }
     private let pauseName = "settingsButton"
     private let resetName = "resetButton"
     private let hintName = "hintButton"
@@ -97,21 +98,21 @@ class PauseResetEngine {
         backgroundSprite.addShadow(rectOf: settingsSize, cornerRadius: settingsCorner, shadowOffset: 10, shadowColor: PauseResetEngine.backgroundShadowColor)
         
         //The 3 Buttons
-        pauseButtonSprite = SKSpriteNode(imageNamed: pauseName)
+        pauseButtonSprite = SKSpriteNode(imageNamed: pauseName + niteModifier)
         pauseButtonSprite.position = pauseButtonPosition
         pauseButtonSprite.scale(to: CGSize(width: pauseButtonSize, height: pauseButtonSize))
         pauseButtonSprite.anchorPoint = CGPoint(x: 0.5, y: 0)
         pauseButtonSprite.name = pauseName
         pauseButtonSprite.zPosition = K.ZPosition.pauseButton
         
-        resetButtonSprite = SKSpriteNode(imageNamed: resetName)
+        resetButtonSprite = SKSpriteNode(imageNamed: resetName + niteModifier)
         resetButtonSprite.position = pauseButtonPosition + CGPoint(x: -minorButtonOffset.x, y: minorButtonOffset.y)
         resetButtonSprite.scale(to: CGSize(width: minorButtonSize, height: minorButtonSize))
         resetButtonSprite.anchorPoint = CGPoint(x: 0.5, y: 0)
         resetButtonSprite.name = resetName
         resetButtonSprite.zPosition = K.ZPosition.pauseButton - 5
         
-        hintButtonSprite = SKSpriteNode(imageNamed: hintName)
+        hintButtonSprite = SKSpriteNode(imageNamed: hintName + niteModifier)
         hintButtonSprite.position = pauseButtonPosition + CGPoint(x: minorButtonOffset.x, y: minorButtonOffset.y)
         hintButtonSprite.scale(to: CGSize(width: minorButtonSize, height: minorButtonSize))
         hintButtonSprite.anchorPoint = CGPoint(x: 0.5, y: 0)
@@ -153,7 +154,7 @@ class PauseResetEngine {
         superScene.addChild(backgroundSprite)
         superScene.addChild(pauseButtonSprite)
         superScene.addChild(resetButtonSprite)
-        superScene.addChild(hintButtonSprite)
+//        superScene.addChild(hintButtonSprite)
         
         currentLevel = level
         
@@ -165,8 +166,10 @@ class PauseResetEngine {
             hideMinorButtons()
         }
         else {
-            pauseButtonSprite.texture = SKTexture(imageNamed: pauseName)
+            pauseButtonSprite.texture = SKTexture(imageNamed: pauseName + niteModifier)
             pauseButtonSprite.run(SKAction.colorize(with: .black, colorBlendFactor: 0, duration: 0))
+            resetButtonSprite.texture = SKTexture(imageNamed: resetName + niteModifier)
+            hintButtonSprite.texture = SKTexture(imageNamed: hintName + niteModifier)
             showMinorButtons()
         }
     }
@@ -189,9 +192,9 @@ class PauseResetEngine {
             hideMinorButtons()
         }
         else {
-            pauseButtonSprite.texture = SKTexture(imageNamed: Level.isPartyLevel(currentLevel) ? discoName : pauseName)
-            resetButtonSprite.texture = SKTexture(imageNamed: resetName)
-            hintButtonSprite.texture = SKTexture(imageNamed: hintName)
+            pauseButtonSprite.texture = SKTexture(imageNamed: Level.isPartyLevel(currentLevel) ? discoName : pauseName + niteModifier)
+            resetButtonSprite.texture = SKTexture(imageNamed: resetName + niteModifier)
+            hintButtonSprite.texture = SKTexture(imageNamed: hintName + niteModifier)
             
             pauseButtonSprite.alpha = 1.0
 

@@ -536,7 +536,7 @@ extension ChatEngine {
             sendChatArray(items: [
                 ChatItem(profile: .trainer, chat: "Congrats! You made it to level 100. There's a bonus at the end of every 50 levels. Beat this and you're one step closer to indescribable fun!!! 💃🏾🪩🕺🏻"),
                 ChatItem(profile: .hero, chat: "I can hardly contain my excitement."),
-                ChatItem(profile: .trainer, chat: "That's the spirit! Now if you ever get stuck, you can tap the red Reset button to restart the level."),
+                ChatItem(profile: .trainer, chat: "That's the spirit! Now if you ever get stuck, you can tap the Reset button to restart the level."),
                 ChatItem(profile: .trainer, chat: "Be warned though, restarting a level will cost you one of your precious lives..."),
                 ChatItem(profile: .hero, chat: "It's all good. My mom can buy me more lives if I need it. 😃")
             ]) { [unowned self] in
