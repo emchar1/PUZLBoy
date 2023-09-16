@@ -120,57 +120,6 @@ class GameEngine {
         finishInit(shouldSpawn: shouldSpawn)
     }
     
-    ///Spawns items in a party level.
-    // FIXME: - Party items spawned especially in panel(0,0) seem to disappear instantly, especially with 3x3 size grids. BUG# 230914E01
-    func spawnPartyItems(maxItems: Int) {
-        guard Level.isPartyLevel(level.level) else { return }
-                
-        var itemPositions: [K.GameboardPosition] = Array(repeating: (row: 0, col: 0), count: maxItems)
-
-        partyInventory = PartyInventory(panelCount: level.gameboard.count)
-
-        for i in 0..<maxItems {
-            let spawnAction = SKAction.run { [unowned self] in
-                let randomItem: LevelType = partyInventory.getRandomItem()
-                var counterCheck = 0
-
-                while itemPositions[i] == level.player || level.getOverlayType(at: itemPositions[i]) != .boundary {
-                    itemPositions[i] = partyInventory.randomizePosition
-                    counterCheck += 1
-                    
-                    //Prevents infinite while loop
-                    if counterCheck > 2 * level.gameboard.count * level.gameboard.count {
-                        print("Too many party gems!")
-                        break
-                    }
-                }
-                
-                counterCheck = 0
-                
-                gameboardSprite.spawnItem(at: itemPositions[i], with: randomItem) { }
-                level.setLevelType(at: itemPositions[i], with: (terrain: .partytile, overlay: randomItem))
-            }
-            
-            let despawnAction = SKAction.run { [unowned self] in
-                gameboardSprite.despawnItem(at: itemPositions[i]) { [unowned self] in
-                    level.setLevelType(at: itemPositions[i], with: (terrain: .partytile, overlay: .boundary))
-                }
-            }
-            
-            gameboardSprite.sprite.run(SKAction.sequence([
-                SKAction.wait(forDuration: partyInventory.spawnDelayDuration * TimeInterval(i)),
-                spawnAction,
-                SKAction.wait(forDuration: partyInventory.itemWaitDuration),
-                despawnAction
-            ]))
-        } //end for
-    } //end spawnPartyItems()
-    
-    ///Stops the spawning of party items.
-    func stopSpawner() {
-        gameboardSprite.sprite.removeAllActions()
-    }
-    
     ///For when reading from Firestore.
     init(saveStateModel: SaveStateModel) {
         if saveStateModel.newLevel == saveStateModel.levelModel.level {
@@ -683,6 +632,68 @@ class GameEngine {
                                 moves: "\(movesRemaining ?? -99)",
                                 health: "\(healthRemaining)",
                                 inventory: level.inventory)
+    }
+    
+    
+    // MARK: - Spawn Functions
+    
+    ///Spawns items in a party level.
+    // FIXME: - Party items spawned especially in panel(0,0) seem to disappear instantly, especially with 3x3 size grids. BUG# 230914E01
+    func spawnPartyItems(maxItems: Int) {
+        guard Level.isPartyLevel(level.level) else { return }
+                
+        var itemPositions: [K.GameboardPosition] = Array(repeating: (row: 0, col: 0), count: maxItems)
+
+        partyInventory = PartyInventory(panelCount: level.gameboard.count)
+
+        for i in 0..<maxItems {
+            let spawnAction = SKAction.run { [unowned self] in
+                let randomItem: LevelType = partyInventory.getRandomItem()
+                var counterCheck = 0
+
+                while itemPositions[i] == level.player || level.getOverlayType(at: itemPositions[i]) != .boundary {
+                    itemPositions[i] = partyInventory.randomizePosition
+                    counterCheck += 1
+                    
+                    //Prevents infinite while loop
+                    if counterCheck > 2 * level.gameboard.count * level.gameboard.count {
+                        print("Too many party gems!")
+                        break
+                    }
+                }
+                
+                counterCheck = 0
+                
+                gameboardSprite.spawnItem(at: itemPositions[i], with: randomItem) { }
+                level.setLevelType(at: itemPositions[i], with: (terrain: .partytile, overlay: randomItem))
+            }
+            
+            let despawnAction = SKAction.run { [unowned self] in
+                gameboardSprite.despawnItem(at: itemPositions[i]) { [unowned self] in
+                    level.setLevelType(at: itemPositions[i], with: (terrain: .partytile, overlay: .boundary))
+                }
+            }
+            
+            gameboardSprite.sprite.run(SKAction.sequence([
+                SKAction.wait(forDuration: partyInventory.spawnDelayDuration * TimeInterval(i)),
+                spawnAction,
+                SKAction.wait(forDuration: partyInventory.itemWaitDuration),
+                despawnAction
+            ]))
+        } //end for
+    } //end spawnPartyItems()
+    
+    ///Stops the spawning of party items.
+    func stopSpawner() {
+        gameboardSprite.sprite.removeAllActions()
+    }
+    
+    // TODO: - spawnPrincess and villain capture
+    ///Spawns the princess in a cutscene-style animation
+    func spawnPrincess(at position: K.GameboardPosition) {
+        gameboardSprite.spawnItem(at: position, with: .princessJump) {
+            
+        }
     }
     
     

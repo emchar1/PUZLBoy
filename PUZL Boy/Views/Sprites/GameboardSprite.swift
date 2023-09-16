@@ -59,12 +59,17 @@ class GameboardSprite {
     }
     
     
-    // MARK: - Helper Functions
+    // MARK: - Getter/Setter Functions
     
     ///Helper function that takes in the gameboard position and returns where it lies on the screen's CGPoint coordinates.
     private func getSpritePosition(at position: K.GameboardPosition) -> CGPoint {
         return CGPoint(x: CGFloat(position.col) * panelSize + panelSpacing / 2,
                        y: CGFloat(panelCount - 1 - position.row) * panelSize + panelSpacing / 2)
+    }
+    
+    // FIXME: - Possible duplicate of getSpritePosition(at:)???
+    func getLocation(at position: K.GameboardPosition) -> CGPoint {
+        return CGPoint(x: panelSize * (CGFloat(position.col) + 0.5), y: panelSize * (CGFloat(panelCount - 1 - position.row) + 0.5))
     }
     
     ///Returns the panel at the location provided, offset by the offsetPosition.
@@ -153,6 +158,9 @@ class GameboardSprite {
         }
     }
     
+    
+    // MARK: - Spawn Functions
+    
     /**
      Spawns an item in a panel with a little growth animation.
      - parameters:
@@ -212,61 +220,8 @@ class GameboardSprite {
         }
     }
     
-    func illuminatePanel(at spriteName: (row: Int, col: Int), useOverlay: Bool) {
-        guard let panel = getPanel(at: spriteName, useOverlay: useOverlay) else { return }
-                
-        panel.zPosition = K.ZPosition.chatDimOverlay + (useOverlay ? K.ZPosition.overlay : K.ZPosition.terrain)
-        
-        if !useOverlay {
-            let hintborder = SKShapeNode(rect: CGRect(x: 0, y: 0, width: 512, height: 512), cornerRadius: 20)
-            hintborder.fillColor = .clear
-            hintborder.strokeColor = .systemYellow
-            hintborder.setScale(1 / 3)
-            hintborder.lineWidth = 20
-            hintborder.zPosition = 10
-            hintborder.name = "hintborder"
-            
-            let pulseAnimation = SKAction.sequence([
-                SKAction.fadeAlpha(to: 0.0, duration: 0.5),
-                SKAction.fadeAlpha(to: 1.0, duration: 0.25),
-                SKAction.wait(forDuration: 0.5)
-            ])
-            
-            panel.addChild(hintborder)
-            
-            hintborder.run(SKAction.repeatForever(pulseAnimation))
-        }
-    }
     
-    func deIlluminatePanel(at spriteName: (row: Int, col: Int), useOverlay: Bool) {
-        guard let panel = getPanel(at: spriteName, useOverlay: useOverlay) else { return }
-        
-        panel.zPosition = useOverlay ? K.ZPosition.overlay : K.ZPosition.terrain
-        panel.children.filter({ $0.name == "hintborder" }).first?.removeFromParent()
-    }
-    
-    private func getPanel(at spriteName: (row: Int, col: Int), useOverlay: Bool) -> SKNode? {
-        let panelName = "\(spriteName.row),\(spriteName.col)"
-        
-        if useOverlay {
-            return sprite.childNode(withName: panelName + GameboardSprite.overlayTag)
-        }
-        else {
-            for panelRows in panels {
-                for panel in panelRows {
-                    if panel.name == panelName {
-                        return panel
-                    }
-                }
-            }
-        }
-        
-        return nil
-    }
-    
-    func getLocation(at position: K.GameboardPosition) -> CGPoint {
-        return CGPoint(x: panelSize * (CGFloat(position.col) + 0.5), y: panelSize * (CGFloat(panelCount - 1 - position.row) + 0.5))
-    }
+    // MARK: - Panel Highlight/Colorization Functions
     
     func colorizeGameboard(color: UIColor, blendFactor: CGFloat, animationDuration: TimeInterval, completion: (() -> Void)?) {
         let colorizeAction = SKAction.colorize(with: color, colorBlendFactor: blendFactor, duration: animationDuration)
@@ -294,6 +249,79 @@ class GameboardSprite {
             overlayObject.run(colorizeAction)
         }
     }
+
+    func highlightPanel(color: UIColor, at position: K.GameboardPosition) {
+        guard position.row >= 0 && position.row < panelCount && position.col >= 0 && position.col < panelCount else { return }
+        
+        let highlightborder = SKShapeNode(rect: CGRect(x: 0, y: 0, width: 512, height: 512), cornerRadius: 20)
+        highlightborder.fillColor = .clear
+        highlightborder.strokeColor = color
+        highlightborder.setScale(1 / 3)
+        highlightborder.lineWidth = 20
+        highlightborder.zPosition = 10
+        
+        panels[position.row][position.col].addChild(highlightborder)
+        
+        highlightborder.run(SKAction.sequence([
+            SKAction.fadeOut(withDuration: 0.5),
+            SKAction.removeFromParent()
+        ]))
+    }
+    
+    func illuminatePanel(at spriteName: (row: Int, col: Int), useOverlay: Bool) {
+        guard let panel = getIlluminatedPanel(at: spriteName, useOverlay: useOverlay) else { return }
+                
+        panel.zPosition = K.ZPosition.chatDimOverlay + (useOverlay ? K.ZPosition.overlay : K.ZPosition.terrain)
+        
+        if !useOverlay {
+            let hintborder = SKShapeNode(rect: CGRect(x: 0, y: 0, width: 512, height: 512), cornerRadius: 20)
+            hintborder.fillColor = .clear
+            hintborder.strokeColor = .systemYellow
+            hintborder.setScale(1 / 3)
+            hintborder.lineWidth = 20
+            hintborder.zPosition = 10
+            hintborder.name = "hintborder"
+            
+            let pulseAnimation = SKAction.sequence([
+                SKAction.fadeAlpha(to: 0.0, duration: 0.5),
+                SKAction.fadeAlpha(to: 1.0, duration: 0.25),
+                SKAction.wait(forDuration: 0.5)
+            ])
+            
+            panel.addChild(hintborder)
+            
+            hintborder.run(SKAction.repeatForever(pulseAnimation))
+        }
+    }
+    
+    func deIlluminatePanel(at spriteName: (row: Int, col: Int), useOverlay: Bool) {
+        guard let panel = getIlluminatedPanel(at: spriteName, useOverlay: useOverlay) else { return }
+        
+        panel.zPosition = useOverlay ? K.ZPosition.overlay : K.ZPosition.terrain
+        panel.children.filter({ $0.name == "hintborder" }).first?.removeFromParent()
+    }
+    
+    private func getIlluminatedPanel(at spriteName: (row: Int, col: Int), useOverlay: Bool) -> SKNode? {
+        let panelName = "\(spriteName.row),\(spriteName.col)"
+        
+        if useOverlay {
+            return sprite.childNode(withName: panelName + GameboardSprite.overlayTag)
+        }
+        else {
+            for panelRows in panels {
+                for panel in panelRows {
+                    if panel.name == panelName {
+                        return panel
+                    }
+                }
+            }
+        }
+        
+        return nil
+    }
+    
+    
+    // MARK: - Other Functions
     
     func warpTo(warpType: LevelType, initialPosition: K.GameboardPosition) -> K.GameboardPosition? {
         let chooseWarps: WarpTuple
@@ -352,23 +380,5 @@ class GameboardSprite {
                                                position: getLocation(at: position),
                                                scale: 3 / CGFloat(panelCount),
                                                duration: 3)
-    }
-    
-    func highlightPanel(color: UIColor, at position: K.GameboardPosition) {
-        guard position.row >= 0 && position.row < panelCount && position.col >= 0 && position.col < panelCount else { return }
-        
-        let highlightborder = SKShapeNode(rect: CGRect(x: 0, y: 0, width: 512, height: 512), cornerRadius: 20)
-        highlightborder.fillColor = .clear
-        highlightborder.strokeColor = color
-        highlightborder.setScale(1 / 3)
-        highlightborder.lineWidth = 20
-        highlightborder.zPosition = 10
-        
-        panels[position.row][position.col].addChild(highlightborder)
-        
-        highlightborder.run(SKAction.sequence([
-            SKAction.fadeOut(withDuration: 0.5),
-            SKAction.removeFromParent()
-        ]))
     }
 }
