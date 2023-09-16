@@ -373,7 +373,7 @@ extension ChatEngine {
         dialoguePlayed[51] = false
         dialoguePlayed[76] = false
         dialoguePlayed[100] = false
-        dialoguePlayed[125] = false
+        dialoguePlayed[131] = false
     }
     
     /**
@@ -542,7 +542,7 @@ extension ChatEngine {
             ]) { [unowned self] in
                 handleDialogueCompletion(level: level, completion: completion)
             }
-        case 125:
+        case 131:
             sendChatArray(items: [
                 ChatItem(profile: .hero, chat: "Is everything OK?? You've been awfully quiet. You're usually chewing my ear off right about now."),
                 ChatItem(profile: .trainer, chat: "..."),
