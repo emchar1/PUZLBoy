@@ -63,13 +63,14 @@ class GameboardSprite {
     
     ///Helper function that takes in the gameboard position and returns where it lies on the screen's CGPoint coordinates.
     private func getSpritePosition(at position: K.GameboardPosition) -> CGPoint {
-        return CGPoint(x: CGFloat(position.col) * panelSize + panelSpacing / 2,
-                       y: CGFloat(panelCount - 1 - position.row) * panelSize + panelSpacing / 2)
+        return CGPoint(x: panelSize * CGFloat(position.col) + panelSpacing / 2,
+                       y: panelSize * CGFloat(panelCount - 1 - position.row) + panelSpacing / 2)
     }
     
-    // FIXME: - Possible duplicate of getSpritePosition(at:)???
+    ///SImilar to getSpritePosition(at:) but different in where it situates the returned CGPoint.
     func getLocation(at position: K.GameboardPosition) -> CGPoint {
-        return CGPoint(x: panelSize * (CGFloat(position.col) + 0.5), y: panelSize * (CGFloat(panelCount - 1 - position.row) + 0.5))
+        return CGPoint(x: panelSize * (CGFloat(position.col) + 0.5),
+                       y: panelSize * (CGFloat(panelCount - 1 - position.row) + 0.5))
     }
     
     ///Returns the panel at the location provided, offset by the offsetPosition.
