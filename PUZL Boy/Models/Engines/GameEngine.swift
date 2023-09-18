@@ -690,10 +690,8 @@ class GameEngine {
     
     // TODO: - spawnPrincess and villain capture
     ///Spawns the princess in a cutscene-style animation
-    func spawnPrincess(at position: K.GameboardPosition) {
-        gameboardSprite.spawnItem(at: position, with: .princessJump) {
-            
-        }
+    func spawnPrincessCapture(at position: K.GameboardPosition) {
+        gameboardSprite.spawnPrincessCapture(at: position)
     }
     
     

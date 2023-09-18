@@ -13,13 +13,14 @@ struct Player {
     
     static let size = CGSize(width: 946, height: 564)
     private(set) var scale = 0.5
+    private(set) var scaleMultiplier: CGFloat = 1
 
     private(set) var sprite: SKSpriteNode!
     private(set) var textures: [[SKTexture]]
     private var atlas: SKTextureAtlas
     
     enum PlayerType: String {
-        case hero = "hero", princess
+        case hero = "hero", princess, villain
     }
 
     enum Texture: Int {
@@ -47,6 +48,7 @@ struct Player {
             case .sandSword:        speed = 0.5
             case .sandHammerSword:  speed = 0.5
             case .party:            speed = 0.5
+            case .jump:             speed = 0.02 //FIXME: - Where is this really used???
             default:                speed = 0.25
             }
             
@@ -86,21 +88,26 @@ struct Player {
         textures.append([]) //glideSword
         textures.append([]) //glideHammerSword
 
+        //This must come BEFORE setting up the sprite below!!
         switch type {
         case .hero:
             setupHero()
         case .princess:
             setupPrincess()
+        case .villain:
+            setupVillain()
         }
         
         sprite = SKSpriteNode(texture: textures[Texture.idle.rawValue][0])
         sprite.size = Player.size
-        sprite.setScale(scale)
+        sprite.setScale(scale * scaleMultiplier)
         sprite.position = .zero
         sprite.zPosition = K.ZPosition.player
     }
     
     private mutating func setupHero() {
+        scaleMultiplier = 1
+        
         for i in 1...15 {
             textures[Texture.idle.rawValue].append(atlas.textureNamed("Idle (\(i))"))
             textures[Texture.run.rawValue].append(atlas.textureNamed("Run (\(i))"))
@@ -136,6 +143,8 @@ struct Player {
     }
     
     private mutating func setupPrincess() {
+        scaleMultiplier = 0.8
+        
         for i in 1...16 {
             textures[Texture.idle.rawValue].append(atlas.textureNamed("PrincessIdle (\(i))"))
             textures[Texture.walk.rawValue].append(atlas.textureNamed("PrincessWalk (\(i))"))
@@ -144,12 +153,24 @@ struct Player {
         for i in 17...20 {
             textures[Texture.walk.rawValue].append(atlas.textureNamed("PrincessWalk (\(i))"))
         }
+        
+        for i in 26...33 {
+            textures[Texture.jump.rawValue].append(atlas.textureNamed("PrincessJump (\(i))"))
+        }
+    }
+    
+    private mutating func setupVillain() {
+        scaleMultiplier = 1.5
+        
+        for i in 1...15 {
+            textures[Texture.idle.rawValue].append(atlas.textureNamed("VillainIdle (\(i))"))
+        }
     }
     
     
     // MARK: - Functions
     
     mutating func setScale(_ scale: CGFloat) {
-        self.scale = scale
+        self.scale = scale * scaleMultiplier
     }
 }

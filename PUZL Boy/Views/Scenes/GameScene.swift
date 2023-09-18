@@ -512,7 +512,8 @@ class GameScene: SKScene {
             startTimer()
             gameEngine.shouldDisableInput(false)
             gameEngine.spawnPartyItems(maxItems: maxSpawnedItemsForParty)
-            
+            gameEngine.spawnPrincessCapture(at: (row: 2, col: 2))
+
             pauseResetEngine.shouldDisable(false)
         }
     }

@@ -221,6 +221,31 @@ class GameboardSprite {
         }
     }
     
+    ///Spawns a short animation of the whereabouts of the princess being captured by the villain.
+    func spawnPrincessCapture(at position: K.GameboardPosition) {
+        let princess = Player(type: .princess)
+        princess.sprite.position = getLocation(at: position) + CGPoint(x: -panelSize / 4, y: 0)
+        princess.sprite.setScale(1.5 * (panelSize / Player.size.width) * princess.scaleMultiplier)
+        princess.sprite.xScale = -abs(princess.sprite.xScale)
+        princess.sprite.zPosition = K.ZPosition.player + 20
+        princess.sprite.run(SKAction.repeatForever(SKAction.animate(with: princess.textures[Player.Texture.jump.rawValue], timePerFrame: 0.02)))
+        
+        let villain = Player(type: .villain)
+        villain.sprite.position = getLocation(at: position) + CGPoint(x: panelSize / 4, y: 20)
+        villain.sprite.setScale(1.5 * (panelSize / Player.size.width) * villain.scaleMultiplier)
+        villain.sprite.xScale = -abs(villain.sprite.xScale)
+        villain.sprite.zPosition = K.ZPosition.player + 10
+        villain.sprite.run(SKAction.repeatForever(SKAction.animate(with: villain.textures[Player.Texture.idle.rawValue], timePerFrame: 0.08)))
+        
+        sprite.addChild(princess.sprite)
+        sprite.addChild(villain.sprite)
+    }
+    
+    ///Despawns the princess being captured by the villain, as he escapes through the back door.
+    func despawnPrincessCapture(at position: K.GameboardPosition) {
+        //Needs implementation
+    }
+    
     
     // MARK: - Panel Highlight/Colorization Functions
     
