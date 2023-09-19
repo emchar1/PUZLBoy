@@ -114,8 +114,6 @@ class ConfirmSprite: SKNode {
             messageLabel.updateShadow()
         }
         
-        Haptics.shared.addHapticFeedback(withStyle: .heavy)
-        
         run(SKAction.sequence([
             SKAction.scale(to: 1.1, duration: 0.25),
             SKAction.scale(to: 0.95, duration: 0.2),

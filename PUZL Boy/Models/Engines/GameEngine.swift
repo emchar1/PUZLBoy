@@ -603,12 +603,12 @@ class GameEngine {
             let position: K.GameboardPosition = (row: Int(row) ?? -1, col: Int(col) ?? -1)
 
             //Remove overlay object, if found
-            if position == level.player && isOverlay, let child = gameboardSprite.sprite.childNode(withName: row + GameboardSprite.delimiter + col + GameboardSprite.overlayTag) {
+            if position == level.player && isOverlay, let child = gameboardSprite.sprite.childNode(withName: GameboardSprite.getNodeName(row: Int(row) ?? 0, col: Int(col) ?? 0, includeOverlayTag: true)) {
                 child.removeFromParent()
             }
             
             //Update exitClosed panel to exitOpen
-            if isExitAvailable && position == level.end && level.getLevelType(at: position) == .endClosed, let child = gameboardSprite.sprite.childNode(withName: row + GameboardSprite.delimiter + col) {
+            if isExitAvailable && position == level.end && level.getLevelType(at: position) == .endClosed, let child = gameboardSprite.sprite.childNode(withName: GameboardSprite.getNodeName(row: Int(row) ?? 0, col: Int(col) ?? 0)) {
                 
                 let endOpen: K.GameboardPanel = (terrain: .endOpen, overlay: Level.shouldProvidePill(level.level) ? .partyPill : .boundary)
                 

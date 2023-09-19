@@ -415,7 +415,7 @@ class PauseResetEngine {
         hintButtonSprite.run(SKAction.colorize(withColorBlendFactor: 0, duration: 0))
         
         if isPressed {
-            Haptics.shared.addHapticFeedback(withStyle: .light)
+            Haptics.shared.addHapticFeedback(withStyle: .soft)
         }
         
         isPressed = false
@@ -452,21 +452,21 @@ class PauseResetEngine {
                 isPressed = true
 
                 pauseButtonSprite.run(SKAction.colorize(with: .black, colorBlendFactor: 0.25, duration: 0))
-                Haptics.shared.addHapticFeedback(withStyle: .light)
+                Haptics.shared.addHapticFeedback(withStyle: .soft)
             case resetName:
                 guard !isAnimating else { break }
                 
                 isPressed = true
                 
                 resetButtonSprite.run(SKAction.colorize(with: .black, colorBlendFactor: 0.25, duration: 0))
-                Haptics.shared.addHapticFeedback(withStyle: .light)
+                Haptics.shared.addHapticFeedback(withStyle: .soft)
             case hintName:
                 guard !isAnimating else { break }
                 
                 isPressed = true
                 
                 hintButtonSprite.run(SKAction.colorize(with: .black, colorBlendFactor: 0.25, duration: 0))
-                Haptics.shared.addHapticFeedback(withStyle: .light)
+                Haptics.shared.addHapticFeedback(withStyle: .soft)
             case howToPlayPage.nodeName:
                 howToPlayPage.superScene = superScene
                 howToPlayPage.touchDown(for: touches)

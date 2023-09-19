@@ -25,7 +25,7 @@ class GameboardSprite {
     typealias WarpTuple = (first: K.GameboardPosition?, second: K.GameboardPosition?)
     
     private let panelSpacing: CGFloat = 4
-    private var scaleSize: CGSize { CGSize(width: panelSize - panelSpacing, height: panelSize - panelSpacing) }
+    private var scaleSize: CGSize { CGSize.zero + panelSize - panelSpacing }
     private var panels: [[SKSpriteNode]]
     private var endPanel: K.GameboardPosition?
     private(set) var panelCount: Int
@@ -43,11 +43,9 @@ class GameboardSprite {
         panelSize = K.ScreenDimensions.iPhoneWidth / CGFloat(panelCount)
         panels = Array(repeating: Array(repeating: SKSpriteNode(), count: panelCount), count: panelCount)
         
-        sprite = SKSpriteNode(color: GameboardSprite.gameboardColor,
-                              size: CGSize(width: CGFloat(panelCount) * panelSize + GameboardSprite.padding,
-                                           height: CGFloat(panelCount) * panelSize + GameboardSprite.padding))
+        sprite = SKSpriteNode(color: GameboardSprite.gameboardColor, size: CGSize.zero + CGFloat(panelCount) * panelSize + GameboardSprite.padding)
         sprite.anchorPoint = .zero
-        sprite.position = CGPoint(x: GameboardSprite.offsetPosition.x, y: GameboardSprite.offsetPosition.y)
+        sprite.position = GameboardSprite.offsetPosition
         sprite.zPosition = K.ZPosition.gameboard
         sprite.setScale(GameboardSprite.spriteScale)
 
@@ -66,6 +64,18 @@ class GameboardSprite {
     
     
     // MARK: - Getter/Setter Functions
+    
+    /**
+     Returns a string formatted to be used as a node name for the gameboard panel.
+     - parameters:
+        - row: The row number of the panel
+        - col: The column number of the panel
+        - overlay: True if using the overlay tag, otherwise it's a terrain panel
+     - returns: A string in the format: R,C<-O> with the optional overlay tag
+     */
+    static func getNodeName(row: Int, col: Int, includeOverlayTag: Bool = false) -> String {
+        return "\(row)\(GameboardSprite.delimiter)\(col)" + (includeOverlayTag ? GameboardSprite.overlayTag : "")
+    }
     
     ///Helper function that takes in the gameboard position and returns where it lies on the screen's CGPoint coordinates.
     private func getSpritePosition(at position: K.GameboardPosition) -> CGPoint {
@@ -95,10 +105,10 @@ class GameboardSprite {
     func updatePanels(at position: K.GameboardPosition, with tile: K.GameboardPanel) {
         panels[position.row][position.col] = SKSpriteNode(imageNamed: tile.terrain.description)
         panels[position.row][position.col].scale(to: scaleSize)
-        panels[position.row][position.col].position = getSpritePosition(at: position) + CGPoint(x: GameboardSprite.padding / 2, y: GameboardSprite.padding / 2)
+        panels[position.row][position.col].position = getSpritePosition(at: position) + GameboardSprite.padding / 2
         panels[position.row][position.col].anchorPoint = .zero
         panels[position.row][position.col].zPosition = K.ZPosition.terrain
-        panels[position.row][position.col].name = "\(position.row)\(GameboardSprite.delimiter)\(position.col)"
+        panels[position.row][position.col].name = GameboardSprite.getNodeName(row: position.row, col: position.col)
         
         if tile.terrain == .partytile {
             let randomHue = UIColor(hue: CGFloat.random(in: 0.0...1.0), saturation: 1.0, brightness: 1.0, alpha: 1.0)
@@ -129,10 +139,21 @@ class GameboardSprite {
         if tile.overlay != .boundary {
             let overlayPanel = SKSpriteNode(imageNamed: tile.overlay.description)
             overlayPanel.scale(to: scaleSize)
-            overlayPanel.position = getSpritePosition(at: position)
-            overlayPanel.anchorPoint = .zero
+            overlayPanel.position = getSpritePosition(at: position) + GameboardSprite.padding / 2 + scaleSize.width / 2
             overlayPanel.zPosition = K.ZPosition.overlay
             overlayPanel.name = "\(position.row)\(GameboardSprite.delimiter)\(position.col)\(GameboardSprite.overlayTag)"
+            
+            let rotationAngle: CGFloat = 2 * .pi
+            let rotationDuration: TimeInterval = 10
+            
+            switch tile.overlay {
+            case .warp, .warp3:
+                overlayPanel.run(SKAction.repeatForever(SKAction.rotate(byAngle: rotationAngle, duration: rotationDuration)))
+            case .warp2, .warp4:
+                overlayPanel.run(SKAction.repeatForever(SKAction.rotate(byAngle: -rotationAngle, duration: rotationDuration)))
+            default:
+                break
+            }
 
             sprite.addChild(overlayPanel)
         }
@@ -183,14 +204,14 @@ class GameboardSprite {
         overlayPanel.position = getSpritePosition(at: position) + CGPoint(x: scaleSize.width / 2, y: scaleSize.height / 2)
         overlayPanel.anchorPoint = .zero
         overlayPanel.zPosition = K.ZPosition.overlay
-        overlayPanel.name = "\(position.row)\(GameboardSprite.delimiter)\(position.col)\(GameboardSprite.overlayTag)"
+        overlayPanel.name = GameboardSprite.getNodeName(row: position.row, col: position.col, includeOverlayTag: true)
 
         sprite.addChild(overlayPanel)
         
         overlayPanel.run(SKAction.sequence([
             SKAction.group([
-                SKAction.scale(to: scaleSize + CGSize(width: bounceFactor, height: bounceFactor), duration: duration),
-                SKAction.move(to: getSpritePosition(at: position) - CGPoint(x: bounceFactor / 2, y: bounceFactor / 2), duration: duration)
+                SKAction.scale(to: scaleSize + bounceFactor, duration: duration),
+                SKAction.move(to: getSpritePosition(at: position) - bounceFactor / 2, duration: duration)
             ]),
             SKAction.group([
                 SKAction.scale(to: scaleSize, duration: duration),
@@ -208,13 +229,13 @@ class GameboardSprite {
     func despawnItem(at position: K.GameboardPosition, completion: @escaping () -> Void) {
         let duration: TimeInterval = 0.25
         let bounceFactor: CGFloat = scaleSize.width * 0.25
-        let itemOverlays = sprite.children.filter({ $0.name == "\(position.row)\(GameboardSprite.delimiter)\(position.col)\(GameboardSprite.overlayTag)" })
+        let itemOverlays = sprite.children.filter({ $0.name == GameboardSprite.getNodeName(row: position.row, col: position.col, includeOverlayTag: true) })
         
         for itemOverlay in itemOverlays {
             itemOverlay.run(SKAction.sequence([
                 SKAction.group([
-                    SKAction.scale(to: scaleSize + CGSize(width: bounceFactor, height: bounceFactor), duration: duration),
-                    SKAction.move(to: getSpritePosition(at: position) - CGPoint(x: bounceFactor / 2, y: bounceFactor / 2), duration: duration)
+                    SKAction.scale(to: scaleSize + bounceFactor, duration: duration),
+                    SKAction.move(to: getSpritePosition(at: position) - bounceFactor / 2, duration: duration)
                 ]),
                 SKAction.group([
                     SKAction.scale(to: 0, duration: duration),
@@ -231,7 +252,7 @@ class GameboardSprite {
     func spawnPrincessCapture(at position: K.GameboardPosition) {
         for node in sprite.children {
             if let nodeName = node.name,
-               nodeName.contains("\(position.row)\(GameboardSprite.delimiter)\(position.col)\(GameboardSprite.overlayTag)") {
+               nodeName.contains(GameboardSprite.getNodeName(row: position.row, col: position.col, includeOverlayTag: true)) {
                 //Exit function if there's an overlay item, like a gem or dragon
                 return print("Can't spawn here!")
             }
@@ -240,7 +261,7 @@ class GameboardSprite {
         if let endPanel = endPanel {
             let overlayPanel = SKSpriteNode(imageNamed: LevelType.endOpen.description)
             overlayPanel.scale(to: scaleSize)
-            overlayPanel.position = getSpritePosition(at: endPanel) + CGPoint(x: GameboardSprite.padding / 2, y: GameboardSprite.padding / 2)
+            overlayPanel.position = getSpritePosition(at: endPanel) + GameboardSprite.padding / 2
             overlayPanel.anchorPoint = .zero
             overlayPanel.zPosition = K.ZPosition.overlay
             overlayPanel.name = "captureEndOpen"
@@ -423,7 +444,7 @@ class GameboardSprite {
     }
     
     private func getIlluminatedPanel(at spriteName: (row: Int, col: Int), useOverlay: Bool) -> SKNode? {
-        let panelName = "\(spriteName.row)\(GameboardSprite.delimiter)\(spriteName.col)"
+        let panelName = GameboardSprite.getNodeName(row: spriteName.row, col: spriteName.col)
         
         if useOverlay {
             return sprite.childNode(withName: panelName + GameboardSprite.overlayTag)
@@ -459,10 +480,20 @@ class GameboardSprite {
             return nil
         }
         
-        guard let first = chooseWarps.first, let second = chooseWarps.second else {
+        guard let first = chooseWarps.first,
+              let second = chooseWarps.second,
+              let warpStart = sprite.childNode(withName: GameboardSprite.getNodeName(row: first.row, col: first.col, includeOverlayTag: true)),
+              let warpEnd = sprite.childNode(withName: GameboardSprite.getNodeName(row: second.row, col: second.col, includeOverlayTag: true))
+        else {
             print("Level has no warps!")
             return nil
         }
+        
+        //Animate the warps
+        let rotationAngle: CGFloat = 2 * .pi
+        let rotationDuration: TimeInterval = 2 * PartyModeSprite.shared.speedMultiplier
+        warpStart.run(SKAction.rotate(byAngle: rotationAngle, duration: rotationDuration))
+        warpEnd.run(SKAction.rotate(byAngle: -rotationAngle, duration: rotationDuration))
         
         return first == initialPosition ? second : first
     }

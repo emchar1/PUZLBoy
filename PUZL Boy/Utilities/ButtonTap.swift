@@ -25,7 +25,7 @@ struct ButtonTap {
     
     // MARK: - Functions
     
-    func tap(type: ButtonTap.ButtonType, hapticStyle: UIImpactFeedbackGenerator.FeedbackStyle = .soft) {
+    func tap(type: ButtonTap.ButtonType, hapticStyle: UIImpactFeedbackGenerator.FeedbackStyle = .light) {
         if type != .noSound {
             AudioManager.shared.playSound(for: type.rawValue)
         }
