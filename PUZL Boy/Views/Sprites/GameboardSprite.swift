@@ -11,28 +11,30 @@ class GameboardSprite {
     
     // MARK: - Properties
     
+    //Static Properties
     static let gameboardColor: UIColor = UIColor(red: 225/255, green: 225/255, blue: 225/255, alpha: 1.0)
     static let delimiter = ","
     static let overlayTag = "-O"
     static let spriteScale: CGFloat = UIDevice.isiPad ? 0.75 : 0.94
-
     static let padding: CGFloat = 12
     static var offsetPosition: CGPoint {
         CGPoint(x: (K.ScreenDimensions.iPhoneWidth * (1 - GameboardSprite.spriteScale)) / 2 - (padding / 2),
                 y: (K.ScreenDimensions.height - K.ScreenDimensions.iPhoneWidth * GameboardSprite.spriteScale - K.ScreenDimensions.topMargin - 283) - (padding / 2))
     }
 
+    //Warp Properties
     typealias WarpTuple = (first: K.GameboardPosition?, second: K.GameboardPosition?)
-    
+    private(set) var warps: WarpTuple = (nil, nil)
+    private(set) var warps2: WarpTuple = (nil, nil)
+    private(set) var warps3: WarpTuple = (nil, nil)
+
+    //Misc Properties
     private let panelSpacing: CGFloat = 4
     private var scaleSize: CGSize { CGSize.zero + panelSize - panelSpacing }
     private var panels: [[SKSpriteNode]]
     private var endPanel: K.GameboardPosition?
     private(set) var panelCount: Int
     private(set) var panelSize: CGFloat
-    private(set) var warps: WarpTuple = (nil, nil)
-    private(set) var warps2: WarpTuple = (nil, nil)
-    private(set) var warps3: WarpTuple = (nil, nil)
     private(set) var sprite: SKSpriteNode
 
     
@@ -143,14 +145,11 @@ class GameboardSprite {
             overlayPanel.zPosition = K.ZPosition.overlay
             overlayPanel.name = "\(position.row)\(GameboardSprite.delimiter)\(position.col)\(GameboardSprite.overlayTag)"
             
-            let rotationAngle: CGFloat = 2 * .pi
-            let rotationDuration: TimeInterval = 10
-            
             switch tile.overlay {
             case .warp, .warp3:
-                overlayPanel.run(SKAction.repeatForever(SKAction.rotate(byAngle: rotationAngle, duration: rotationDuration)))
+                rotateWarp(node: overlayPanel, clockwise: false, slow: true, repeatForever: true)
             case .warp2, .warp4:
-                overlayPanel.run(SKAction.repeatForever(SKAction.rotate(byAngle: -rotationAngle, duration: rotationDuration)))
+                rotateWarp(node: overlayPanel, clockwise: true, slow: true, repeatForever: true)
             default:
                 break
             }
@@ -198,26 +197,28 @@ class GameboardSprite {
     func spawnItem(at position: K.GameboardPosition, with itemOverlay: LevelType, completion: @escaping () -> Void) {
         let duration: TimeInterval = 0.25
         let bounceFactor: CGFloat = scaleSize.width * 0.25
+        
         let overlayPanel = SKSpriteNode(imageNamed: itemOverlay.description)
-
         overlayPanel.scale(to: .zero)
-        overlayPanel.position = getSpritePosition(at: position) + CGPoint(x: scaleSize.width / 2, y: scaleSize.height / 2)
-        overlayPanel.anchorPoint = .zero
+        overlayPanel.position = getSpritePosition(at: position) + GameboardSprite.padding / 2 + scaleSize.width / 2
         overlayPanel.zPosition = K.ZPosition.overlay
         overlayPanel.name = GameboardSprite.getNodeName(row: position.row, col: position.col, includeOverlayTag: true)
 
-        sprite.addChild(overlayPanel)
+        switch itemOverlay {
+        case .warp, .warp3:
+            rotateWarp(node: overlayPanel, clockwise: false, slow: true, repeatForever: true)
+        case .warp2, .warp4:
+            rotateWarp(node: overlayPanel, clockwise: true, slow: true, repeatForever: true)
+        default:
+            break
+        }
         
         overlayPanel.run(SKAction.sequence([
-            SKAction.group([
-                SKAction.scale(to: scaleSize + bounceFactor, duration: duration),
-                SKAction.move(to: getSpritePosition(at: position) - bounceFactor / 2, duration: duration)
-            ]),
-            SKAction.group([
-                SKAction.scale(to: scaleSize, duration: duration),
-                SKAction.move(to: getSpritePosition(at: position), duration: duration)
-            ])
+            SKAction.scale(to: scaleSize + bounceFactor, duration: duration),
+            SKAction.scale(to: scaleSize, duration: duration),
         ]), completion: completion)
+
+        sprite.addChild(overlayPanel)
     }
     
     /**
@@ -233,16 +234,10 @@ class GameboardSprite {
         
         for itemOverlay in itemOverlays {
             itemOverlay.run(SKAction.sequence([
-                SKAction.group([
-                    SKAction.scale(to: scaleSize + bounceFactor, duration: duration),
-                    SKAction.move(to: getSpritePosition(at: position) - bounceFactor / 2, duration: duration)
-                ]),
-                SKAction.group([
-                    SKAction.scale(to: 0, duration: duration),
-                    SKAction.move(to: getSpritePosition(at: position) + CGPoint(x: scaleSize.width / 2, y: scaleSize.height / 2), duration: duration)
-                ])
+                SKAction.scale(to: scaleSize + bounceFactor, duration: duration),
+                SKAction.scale(to: 0, duration: duration),
+                SKAction.removeFromParent()
             ])) {
-                itemOverlay.removeFromParent()
                 completion()
             }
         }
@@ -465,6 +460,20 @@ class GameboardSprite {
     
     // MARK: - Other Functions
     
+    private func rotateWarp(node: SKNode, clockwise: Bool, slow: Bool, repeatForever: Bool) {
+        let rotationAngle: CGFloat = 2 * .pi
+        let durationFast: TimeInterval = 2 * PartyModeSprite.shared.speedMultiplier
+        var durationSlow: TimeInterval { durationFast * 8 }
+        let rotateAction = SKAction.rotate(byAngle: rotationAngle * (clockwise ? -1 : 1), duration: slow ? durationSlow : durationFast)
+        
+        if repeatForever {
+            node.run(SKAction.repeatForever(rotateAction))
+        }
+        else {
+            node.run(rotateAction)
+        }
+    }
+    
     func warpTo(warpType: LevelType, initialPosition: K.GameboardPosition) -> K.GameboardPosition? {
         let chooseWarps: WarpTuple
 
@@ -489,11 +498,8 @@ class GameboardSprite {
             return nil
         }
         
-        //Animate the warps
-        let rotationAngle: CGFloat = 2 * .pi
-        let rotationDuration: TimeInterval = 2 * PartyModeSprite.shared.speedMultiplier
-        warpStart.run(SKAction.rotate(byAngle: rotationAngle, duration: rotationDuration))
-        warpEnd.run(SKAction.rotate(byAngle: -rotationAngle, duration: rotationDuration))
+        rotateWarp(node: warpStart, clockwise: false, slow: false, repeatForever: false)
+        rotateWarp(node: warpEnd, clockwise: true, slow: false, repeatForever: false)
         
         return first == initialPosition ? second : first
     }
