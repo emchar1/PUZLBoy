@@ -544,18 +544,18 @@ extension ChatEngine {
             }
         case 131:
             sendChatArray(items: [
-                ChatItem(profile: .hero, chat: "Is everything OK?? You've been awfully quiet. You're usually chewing my ear off right about now."),
+                ChatItem(profile: .hero, chat: "You good, old man?? You've been awfully quiet. You're usually chewing my ear off right about now."),
                 ChatItem(profile: .trainer, chat: "..."),
-                ChatItem(profile: .hero, chat: "Look, if it's the old man comment, everybody gets old. It's just an inevitability of life. I'm 16 so everyone looks old to me."),
+                ChatItem(profile: .hero, chat: "Look, if it's the old man comments, everybody gets old. It's just an inevitability of life. I'm 16 so everyone looks old to me."),
                 ChatItem(profile: .trainer, chat: "No, it's not that. I'm 900 years old. I AM old. I'm just thinking about how important it is we complete the mission."),
-                ChatItem(profile: .hero, chat: "NINE HUNDRED??!! What are you, like a wizard or something? \"Marlin the Fishy Wizard...\""),
+                ChatItem(profile: .hero, chat: "NINE HUNDRED??!! What are you, like a wizard or something? \"Marlin the Fish Wizard...\""),
                 ChatItem(profile: .hero, chat: "Wait... ARE YOU REALLY A WIZARD?!?! Because I'm not surprised by anything anymore at this point..."),
                 ChatItem(profile: .trainer, chat: "There's a lot you must learn to prepare for the upcoming battle to save your world and the worlds beyond your world."),
                 ChatItem(profile: .hero, chat: "I mean you don't look a day over 800 to be honest..."),
                 ChatItem(profile: .trainer, chat: "PUZL Boy, I need you to be serious! What lies ahead will test your patience. It will make you want to throw your phone out the window. You need to be prepared!"),
-                ChatItem(profile: .hero, chat: "Ok, ok. I'll be ready. I already know how to use swords and hammers. Nothing can stop me!"),
+                ChatItem(profile: .hero, chat: "Ok ok. I'll be ready. I already know how to use hammers and swords. Nothing can stop me!"),
                 ChatItem(profile: .trainer, chat: "You reached out to me for my help. I need you to trust me now."),
-                ChatItem(profile: .hero, chat: "Well yeah, after I saw a freakin' dragon swoop down from a blood soaked sky and snatch a 7 year old girl, ...then you appeared almost out of nowhere!"),
+                ChatItem(profile: .hero, chat: "Well yeah, after I saw a freakin' dragon swoop down from the sky and snatch a 7 year old girl ...then you appeared almost out of nowhere!"),
                 ChatItem(profile: .trainer, chat: "Good. Then we're in agreement. Now no more silly questions. Let's keep pushing forward."),
                 ChatItem(profile: .hero, chat: "Wow.. 900 years old. I have soooo many questions...")
             ]) { [unowned self] in

@@ -144,6 +144,7 @@ struct Level: CustomStringConvertible {
         gameboard[position.row][position.col] = gameboardPanel
     }
     
+    ///Returns the level type for the terrain, or, if it has it, the overlay panel.
     func getLevelType(at position: K.GameboardPosition) -> LevelType {
         guard (position.row >= 0 && position.row < gameboard.count) && (position.col >= 0 && position.col < gameboard[0].count) else { return .boundary }
         

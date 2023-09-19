@@ -12,6 +12,7 @@ class GameboardSprite {
     // MARK: - Properties
     
     static let gameboardColor: UIColor = UIColor(red: 225/255, green: 225/255, blue: 225/255, alpha: 1.0)
+    static let delimiter = ","
     static let overlayTag = "-O"
     static let spriteScale: CGFloat = UIDevice.isiPad ? 0.75 : 0.94
 
@@ -26,6 +27,7 @@ class GameboardSprite {
     private let panelSpacing: CGFloat = 4
     private var scaleSize: CGSize { CGSize(width: panelSize - panelSpacing, height: panelSize - panelSpacing) }
     private var panels: [[SKSpriteNode]]
+    private var endPanel: K.GameboardPosition?
     private(set) var panelCount: Int
     private(set) var panelSize: CGFloat
     private(set) var warps: WarpTuple = (nil, nil)
@@ -53,6 +55,10 @@ class GameboardSprite {
             for col in 0..<panelCount {
                 let levelType: K.GameboardPanel = level.gameboard[row][col]
                 
+                if levelType.terrain == .endClosed || levelType.terrain == .endOpen {
+                    endPanel = (row: row, col: col)
+                }
+                
                 updatePanels(at: (row: row, col: col), with: levelType)
             }
         }
@@ -77,7 +83,7 @@ class GameboardSprite {
     func getPanel(at location: CGPoint) -> K.GameboardPosition? {
         guard let node = sprite.nodes(at: location - GameboardSprite.offsetPosition).first else { return nil }
         guard let nodeName = node.name?.replacingOccurrences(of: GameboardSprite.overlayTag, with: "") else { return nil }
-        guard let range = nodeName.range(of: ",") else { return nil }
+        guard let range = nodeName.range(of: GameboardSprite.delimiter) else { return nil }
         guard let row = Int(nodeName[..<range.lowerBound]) else { return nil }
         guard let col = Int(nodeName[range.upperBound...]) else { return nil }
         guard row >= 0 && row < panelCount && col >= 0 && col < panelCount else { return nil }
@@ -92,7 +98,7 @@ class GameboardSprite {
         panels[position.row][position.col].position = getSpritePosition(at: position) + CGPoint(x: GameboardSprite.padding / 2, y: GameboardSprite.padding / 2)
         panels[position.row][position.col].anchorPoint = .zero
         panels[position.row][position.col].zPosition = K.ZPosition.terrain
-        panels[position.row][position.col].name = "\(position.row),\(position.col)"
+        panels[position.row][position.col].name = "\(position.row)\(GameboardSprite.delimiter)\(position.col)"
         
         if tile.terrain == .partytile {
             let randomHue = UIColor(hue: CGFloat.random(in: 0.0...1.0), saturation: 1.0, brightness: 1.0, alpha: 1.0)
@@ -126,7 +132,7 @@ class GameboardSprite {
             overlayPanel.position = getSpritePosition(at: position)
             overlayPanel.anchorPoint = .zero
             overlayPanel.zPosition = K.ZPosition.overlay
-            overlayPanel.name = "\(position.row),\(position.col)\(GameboardSprite.overlayTag)"
+            overlayPanel.name = "\(position.row)\(GameboardSprite.delimiter)\(position.col)\(GameboardSprite.overlayTag)"
 
             sprite.addChild(overlayPanel)
         }
@@ -177,7 +183,7 @@ class GameboardSprite {
         overlayPanel.position = getSpritePosition(at: position) + CGPoint(x: scaleSize.width / 2, y: scaleSize.height / 2)
         overlayPanel.anchorPoint = .zero
         overlayPanel.zPosition = K.ZPosition.overlay
-        overlayPanel.name = "\(position.row),\(position.col)\(GameboardSprite.overlayTag)"
+        overlayPanel.name = "\(position.row)\(GameboardSprite.delimiter)\(position.col)\(GameboardSprite.overlayTag)"
 
         sprite.addChild(overlayPanel)
         
@@ -202,7 +208,7 @@ class GameboardSprite {
     func despawnItem(at position: K.GameboardPosition, completion: @escaping () -> Void) {
         let duration: TimeInterval = 0.25
         let bounceFactor: CGFloat = scaleSize.width * 0.25
-        let itemOverlays = sprite.children.filter({ $0.name == "\(position.row),\(position.col)\(GameboardSprite.overlayTag)" })
+        let itemOverlays = sprite.children.filter({ $0.name == "\(position.row)\(GameboardSprite.delimiter)\(position.col)\(GameboardSprite.overlayTag)" })
         
         for itemOverlay in itemOverlays {
             itemOverlay.run(SKAction.sequence([
@@ -223,27 +229,116 @@ class GameboardSprite {
     
     ///Spawns a short animation of the whereabouts of the princess being captured by the villain.
     func spawnPrincessCapture(at position: K.GameboardPosition) {
-        let princess = Player(type: .princess)
-        princess.sprite.position = getLocation(at: position) + CGPoint(x: -panelSize / 4, y: 0)
-        princess.sprite.setScale(1.5 * (panelSize / Player.size.width) * princess.scaleMultiplier)
-        princess.sprite.xScale = -abs(princess.sprite.xScale)
-        princess.sprite.zPosition = K.ZPosition.player + 20
-        princess.sprite.run(SKAction.repeatForever(SKAction.animate(with: princess.textures[Player.Texture.jump.rawValue], timePerFrame: 0.02)))
+        for node in sprite.children {
+            if let nodeName = node.name,
+               nodeName.contains("\(position.row)\(GameboardSprite.delimiter)\(position.col)\(GameboardSprite.overlayTag)") {
+                //Exit function if there's an overlay item, like a gem or dragon
+                return print("Can't spawn here!")
+            }
+        }
         
-        let villain = Player(type: .villain)
-        villain.sprite.position = getLocation(at: position) + CGPoint(x: panelSize / 4, y: 20)
-        villain.sprite.setScale(1.5 * (panelSize / Player.size.width) * villain.scaleMultiplier)
-        villain.sprite.xScale = -abs(villain.sprite.xScale)
-        villain.sprite.zPosition = K.ZPosition.player + 10
-        villain.sprite.run(SKAction.repeatForever(SKAction.animate(with: villain.textures[Player.Texture.idle.rawValue], timePerFrame: 0.08)))
+        if let endPanel = endPanel {
+            let overlayPanel = SKSpriteNode(imageNamed: LevelType.endOpen.description)
+            overlayPanel.scale(to: scaleSize)
+            overlayPanel.position = getSpritePosition(at: endPanel) + CGPoint(x: GameboardSprite.padding / 2, y: GameboardSprite.padding / 2)
+            overlayPanel.anchorPoint = .zero
+            overlayPanel.zPosition = K.ZPosition.overlay
+            overlayPanel.name = "captureEndOpen"
+            sprite.addChild(overlayPanel)
+        }
         
-        sprite.addChild(princess.sprite)
-        sprite.addChild(villain.sprite)
+        spawnItem(at: position, with: .warp4) { [unowned self] in
+            AudioManager.shared.playSound(for: "movepoisoned4")
+            ParticleEngine.shared.animateParticles(type: .warp4,
+                                                   toNode: sprite,
+                                                   position: getLocation(at: position),
+                                                   scale: 3 / CGFloat(panelCount),
+                                                   duration: 0)
+                        
+            let princess = Player(type: .princess)
+            princess.sprite.position = getLocation(at: position)
+            princess.sprite.setScale(0)
+            princess.sprite.zPosition = K.ZPosition.itemsAndEffects + 30
+            princess.sprite.run(SKAction.repeatForever(SKAction.animate(with: princess.textures[Player.Texture.jump.rawValue], timePerFrame: 0.02)))
+            princess.sprite.name = "capturePrincess"
+            
+            let villain = Player(type: .villain)
+            villain.sprite.position = getLocation(at: position) + CGPoint(x: 0, y: 20)
+            villain.sprite.setScale(0)
+            villain.sprite.zPosition = K.ZPosition.itemsAndEffects + 20
+            villain.sprite.run(SKAction.repeatForever(SKAction.animate(with: villain.textures[Player.Texture.idle.rawValue], timePerFrame: 0.08)))
+            villain.sprite.name = "captureVillain"
+                        
+            
+            let playerScale = 1.5 * panelSize / Player.size.width
+            let waitDuration: TimeInterval = 1
+            let appearDuration: TimeInterval = 0.5
+
+            princess.sprite.run(SKAction.sequence([
+                SKAction.wait(forDuration: waitDuration),
+                SKAction.group([
+                    SKAction.scaleX(to: -playerScale * princess.scaleMultiplier, duration: appearDuration),
+                    SKAction.scaleY(to: playerScale * princess.scaleMultiplier, duration: appearDuration),
+                    SKAction.moveBy(x: -panelSize / 4, y: 0, duration: appearDuration)
+                ])
+            ]))
+            
+            villain.sprite.run(SKAction.sequence([
+                SKAction.wait(forDuration: waitDuration),
+                SKAction.group([
+                    SKAction.scaleX(to: -playerScale * villain.scaleMultiplier, duration: appearDuration),
+                    SKAction.scaleY(to: playerScale * villain.scaleMultiplier, duration: appearDuration),
+                    SKAction.moveBy(x: panelSize / 4, y: 0, duration: appearDuration)
+                ])
+            ]))
+            
+            sprite.addChild(princess.sprite)
+            sprite.addChild(villain.sprite)
+            
+            sprite.run(SKAction.sequence([
+                SKAction.wait(forDuration: 3),
+                SKAction.run { [unowned self] in
+                    // FIXME: - Does this create a retain cycle?
+                    despawnItem(at: position) { }
+                }
+            ]))
+        }
     }
     
     ///Despawns the princess being captured by the villain, as he escapes through the back door.
-    func despawnPrincessCapture(at position: K.GameboardPosition) {
-        //Needs implementation
+    func despawnPrincessCapture() {
+        let endPanel: K.GameboardPosition = self.endPanel ?? (row: 0, col: 0)
+        
+        let waitDuration: TimeInterval = 1
+        let actionDuration: TimeInterval = 0.5
+        
+        for node in sprite.children {
+            if node.name == "capturePrincess" {
+                node.run(SKAction.sequence([
+                    SKAction.move(to: getLocation(at: endPanel) + CGPoint(x: -panelSize / 4, y: 0), duration: actionDuration * 2),
+                    SKAction.wait(forDuration: waitDuration),
+                    SKAction.fadeOut(withDuration: actionDuration),
+                    SKAction.removeFromParent()
+                ]))
+            }
+            else if node.name == "captureVillain" {
+                node.run(SKAction.sequence([
+                    SKAction.move(to: getLocation(at: endPanel) + CGPoint(x: panelSize / 4, y: 20), duration: actionDuration * 2),
+                    SKAction.wait(forDuration: waitDuration),
+                    SKAction.fadeOut(withDuration: actionDuration),
+                    SKAction.removeFromParent()
+                ]))
+            }
+            else if node.name == "captureEndOpen" {
+                node.run(SKAction.sequence([
+                    SKAction.wait(forDuration: actionDuration * 3 + waitDuration),
+                    SKAction.removeFromParent(),
+                    SKAction.run {
+                        AudioManager.shared.playSound(for: "dooropen")
+                    }
+                ]))
+            }
+        }
     }
     
     
@@ -328,7 +423,7 @@ class GameboardSprite {
     }
     
     private func getIlluminatedPanel(at spriteName: (row: Int, col: Int), useOverlay: Bool) -> SKNode? {
-        let panelName = "\(spriteName.row),\(spriteName.col)"
+        let panelName = "\(spriteName.row)\(GameboardSprite.delimiter)\(spriteName.col)"
         
         if useOverlay {
             return sprite.childNode(withName: panelName + GameboardSprite.overlayTag)

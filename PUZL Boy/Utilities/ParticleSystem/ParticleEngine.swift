@@ -34,6 +34,7 @@ class ParticleEngine: SKNode {
         case partyGem = "PartyGemParticles"
         case poisonBubbles = "PoisonBubblesParticles"
         case warp = "WarpParticles"
+        case warp4 = "Warp4Particles"
     }
     
     

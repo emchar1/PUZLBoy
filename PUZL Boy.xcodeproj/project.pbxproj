@@ -204,6 +204,7 @@
 		EADEB3E92931404D00CDB232 /* dooropen.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EADEB3E82931404D00CDB232 /* dooropen.mp3 */; };
 		EADFD95C29F4CE8500C6F9D1 /* SettingsButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = EADFD95B29F4CE8500C6F9D1 /* SettingsButton.swift */; };
 		EADFD96229F90B6A00C6F9D1 /* ConfirmSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = EADFD96129F90B6A00C6F9D1 /* ConfirmSprite.swift */; };
+		EAE215122AB920160090735A /* Warp4Particles.sks in Resources */ = {isa = PBXBuildFile; fileRef = EAE215112AB920160090735A /* Warp4Particles.sks */; };
 		EAE565AA29D6E0C700BC43CB /* TitleScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAE565A929D6E0C700BC43CB /* TitleScene.swift */; };
 		EAE6EC342A12D27F001842C6 /* buttontap7.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAE6EC332A12D27F001842C6 /* buttontap7.mp3 */; };
 		EAE6EC362A133B04001842C6 /* HowToPlayNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAE6EC352A133B04001842C6 /* HowToPlayNode.swift */; };
@@ -424,6 +425,7 @@
 		EADEB3E82931404D00CDB232 /* dooropen.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = dooropen.mp3; sourceTree = "<group>"; };
 		EADFD95B29F4CE8500C6F9D1 /* SettingsButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsButton.swift; sourceTree = "<group>"; };
 		EADFD96129F90B6A00C6F9D1 /* ConfirmSprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmSprite.swift; sourceTree = "<group>"; };
+		EAE215112AB920160090735A /* Warp4Particles.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Warp4Particles.sks; sourceTree = "<group>"; };
 		EAE565A929D6E0C700BC43CB /* TitleScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleScene.swift; sourceTree = "<group>"; };
 		EAE6EC332A12D27F001842C6 /* buttontap7.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = buttontap7.mp3; sourceTree = "<group>"; };
 		EAE6EC352A133B04001842C6 /* HowToPlayNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HowToPlayNode.swift; sourceTree = "<group>"; };
@@ -909,6 +911,7 @@
 				EAD19A032A9698B700A07A63 /* PartyGemParticles.sks */,
 				EAD19A1C2A9C14B500A07A63 /* PoisonBubblesParticles.sks */,
 				EAD19A062A96AA6D00A07A63 /* WarpParticles.sks */,
+				EAE215112AB920160090735A /* Warp4Particles.sks */,
 			);
 			path = ParticleSystem;
 			sourceTree = "<group>";
@@ -1076,6 +1079,7 @@
 				EAD19A1D2A9C14B500A07A63 /* PoisonBubblesParticles.sks in Resources */,
 				EA3467A929A8C6CA002DDA02 /* chatopen.mp3 in Resources */,
 				EAF7182D29B3CC0500E2ED82 /* lavaappear2.mp3 in Resources */,
+				EAE215122AB920160090735A /* Warp4Particles.sks in Resources */,
 				EA32AE352AAD1BDE00DFF5CD /* ageofruin.mp3 in Resources */,
 				EAD19A0B2A96F52500A07A63 /* LavaAppearParticles.sks in Resources */,
 				EAE919492A4CB02900AF67D1 /* gemcollectpartylife.mp3 in Resources */,

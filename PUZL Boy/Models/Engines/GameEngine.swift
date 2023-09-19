@@ -473,7 +473,7 @@ class GameEngine {
         case .partyGem:
             partyInventory.gems += 1
             
-            Haptics.shared.addHapticFeedback(withStyle: .light)
+            Haptics.shared.addHapticFeedback(withStyle: .medium)
             animateParticles(type: .partyGem)
             animateParticles(type: .gemSparkle)
 
@@ -484,7 +484,7 @@ class GameEngine {
         case .partyGemDouble:
             partyInventory.gemsDouble += 1
 
-            Haptics.shared.addHapticFeedback(withStyle: .light)
+            Haptics.shared.addHapticFeedback(withStyle: .medium)
             animateParticles(type: .partyGem)
             animateParticles(type: .gemSparkle)
 
@@ -495,7 +495,7 @@ class GameEngine {
         case .partyGemTriple:
             partyInventory.gemsTriple += 1
 
-            Haptics.shared.addHapticFeedback(withStyle: .light)
+            Haptics.shared.addHapticFeedback(withStyle: .medium)
             animateParticles(type: .partyGem)
             animateParticles(type: .gemSparkle)
 
@@ -506,7 +506,7 @@ class GameEngine {
         case .partyLife:
             partyInventory.lives += 1
 
-            Haptics.shared.addHapticFeedback(withStyle: .light)
+            Haptics.shared.addHapticFeedback(withStyle: .medium)
 
             ScoringEngine.addTextAnimation(text: "1-UP", textColor: .yellow, originSprite: gameboardSprite.sprite, location: gameboardSprite.getLocation(at: level.player))
 
@@ -517,7 +517,7 @@ class GameEngine {
         case .partyTime:
             partyInventory.time += 1
 
-            Haptics.shared.addHapticFeedback(withStyle: .light)
+            Haptics.shared.addHapticFeedback(withStyle: .medium)
 
             delegate?.didGetPartyTime(PartyInventory.timeIncrement)
             
@@ -531,7 +531,7 @@ class GameEngine {
             partyInventory.speedUp += 1
             PartyModeSprite.shared.increaseSpeedMultiplier(shouldDecrease: false)
 
-            Haptics.shared.addHapticFeedback(withStyle: .light)
+            Haptics.shared.addHapticFeedback(withStyle: .medium)
 
             if !maxReached {
                 ScoringEngine.addTextAnimation(text: "SPEED+", textColor: .cyan, originSprite: gameboardSprite.sprite, location: gameboardSprite.getLocation(at: level.player))
@@ -547,7 +547,7 @@ class GameEngine {
             partyInventory.speedDown += 1
             PartyModeSprite.shared.increaseSpeedMultiplier(shouldDecrease: true)
 
-            Haptics.shared.addHapticFeedback(withStyle: .light)
+            Haptics.shared.addHapticFeedback(withStyle: .medium)
 
             if !minReached {
                 ScoringEngine.addTextAnimation(text: "SPEED-", textColor: .magenta, originSprite: gameboardSprite.sprite, location: gameboardSprite.getLocation(at: level.player))
@@ -595,20 +595,20 @@ class GameEngine {
 
         for child in gameboardSprite.sprite.children {
             //Exclude Player, which will have no name, AND any Particle Emitter nodes!!
-            guard let name = child.name, name != ParticleEngine.nodeName else { continue }
+            guard let name = child.name, name != ParticleEngine.nodeName, name.contains(GameboardSprite.delimiter) else { continue }
             
-            let row = String(name.prefix(upTo: name.firstIndex(of: ",")!))
-            let col = String(name.suffix(from: name.firstIndex(of: ",")!).dropFirst()).replacingOccurrences(of: GameboardSprite.overlayTag, with: "")
+            let row = String(name.prefix(upTo: name.firstIndex(of: Character(GameboardSprite.delimiter))!))
+            let col = String(name.suffix(from: name.firstIndex(of: Character(GameboardSprite.delimiter))!).dropFirst()).replacingOccurrences(of: GameboardSprite.overlayTag, with: "")
             let isOverlay = name.contains(GameboardSprite.overlayTag)
             let position: K.GameboardPosition = (row: Int(row) ?? -1, col: Int(col) ?? -1)
 
             //Remove overlay object, if found
-            if position == level.player && isOverlay, let child = gameboardSprite.sprite.childNode(withName: row + "," + col + GameboardSprite.overlayTag) {
+            if position == level.player && isOverlay, let child = gameboardSprite.sprite.childNode(withName: row + GameboardSprite.delimiter + col + GameboardSprite.overlayTag) {
                 child.removeFromParent()
             }
             
             //Update exitClosed panel to exitOpen
-            if isExitAvailable && position == level.end && level.getLevelType(at: position) == .endClosed, let child = gameboardSprite.sprite.childNode(withName: row + "," + col) {
+            if isExitAvailable && position == level.end && level.getLevelType(at: position) == .endClosed, let child = gameboardSprite.sprite.childNode(withName: row + GameboardSprite.delimiter + col) {
                 
                 let endOpen: K.GameboardPanel = (terrain: .endOpen, overlay: Level.shouldProvidePill(level.level) ? .partyPill : .boundary)
                 
@@ -692,6 +692,10 @@ class GameEngine {
     ///Spawns the princess in a cutscene-style animation
     func spawnPrincessCapture(at position: K.GameboardPosition) {
         gameboardSprite.spawnPrincessCapture(at: position)
+    }
+    
+    func despawnPrincessCapture() {
+        gameboardSprite.despawnPrincessCapture()
     }
     
     
