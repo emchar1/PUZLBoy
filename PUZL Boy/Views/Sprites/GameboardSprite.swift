@@ -85,12 +85,16 @@ class GameboardSprite {
                        y: panelSize * CGFloat(panelCount - 1 - position.row) + panelSpacing / 2)
     }
     
-    ///SImilar to getSpritePosition(at:) but different in where it situates the returned CGPoint.
-    func getLocation(at position: K.GameboardPosition) -> CGPoint {
-        return CGPoint(x: panelSize * (CGFloat(position.col) + 0.5),
-                       y: panelSize * (CGFloat(panelCount - 1 - position.row) + 0.5))
+    ///Similar to getSpritePosition(at:) but different in where it situates the returned CGPoint.
+    func getLocation(rowf: CGFloat, colf: CGFloat) -> CGPoint {
+        return CGPoint(x: panelSize * (colf + 0.5), y: panelSize * (CGFloat(panelCount) - rowf - 0.5))
     }
-    
+
+    ///Conveniece function to getLocation(rowf:colf) that takes in a K.GameboardPosition as its argument.
+    func getLocation(at position: K.GameboardPosition) -> CGPoint {
+        return getLocation(rowf: CGFloat(position.row), colf: CGFloat(position.col))
+    }
+
     ///Returns the panel at the location provided, offset by the offsetPosition.
     func getPanel(at location: CGPoint) -> K.GameboardPosition? {
         guard let node = sprite.nodes(at: location - GameboardSprite.offsetPosition).first else { return nil }
@@ -345,6 +349,23 @@ class GameboardSprite {
                     SKAction.group([
                         SKAction.move(to: getLocation(at: endPanel) + CGPoint(x: panelSize / 4, y: 20), duration: actionDuration * 2),
                         SKAction.repeat(SKAction.sequence([
+//                            SKAction.run {
+//                                let playerScale = 1.5 * panelSize / Player.size.width
+//
+//                                let intermediarySprite = SKSpriteNode(texture: SKTexture(imageNamed: node.texture?.getFilename() ?? "VillainIdle (1)"))
+//                                intermediarySprite.position = getLocation(at: <#T##K.GameboardPosition#>)
+//                                
+//                                
+//                                
+//                                
+//                                
+//                                villain.sprite.position = getLocation(at: position) + CGPoint(x: 0, y: 20)
+//                                villain.sprite.setScale(0)
+//                                villain.sprite.zPosition = K.ZPosition.itemsAndEffects + 20
+//                                villain.sprite.run(SKAction.repeatForever(SKAction.animate(with: villain.textures[Player.Texture.idle.rawValue], timePerFrame: 0.08)))
+//                                villain.sprite.name = "captureVillain"
+//
+//                            },
                             SKAction.fadeOut(withDuration: 0),
                             SKAction.wait(forDuration: actionDuration / TimeInterval(blinkDivision)),
                             SKAction.fadeIn(withDuration: 0),

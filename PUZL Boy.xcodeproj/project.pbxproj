@@ -205,6 +205,7 @@
 		EADFD95C29F4CE8500C6F9D1 /* SettingsButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = EADFD95B29F4CE8500C6F9D1 /* SettingsButton.swift */; };
 		EADFD96229F90B6A00C6F9D1 /* ConfirmSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = EADFD96129F90B6A00C6F9D1 /* ConfirmSprite.swift */; };
 		EAE215122AB920160090735A /* Warp4Particles.sks in Resources */ = {isa = PBXBuildFile; fileRef = EAE215112AB920160090735A /* Warp4Particles.sks */; };
+		EAE215142ABB88DF0090735A /* Extension+SKTexture.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAE215132ABB88DF0090735A /* Extension+SKTexture.swift */; };
 		EAE565AA29D6E0C700BC43CB /* TitleScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAE565A929D6E0C700BC43CB /* TitleScene.swift */; };
 		EAE6EC342A12D27F001842C6 /* buttontap7.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAE6EC332A12D27F001842C6 /* buttontap7.mp3 */; };
 		EAE6EC362A133B04001842C6 /* HowToPlayNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAE6EC352A133B04001842C6 /* HowToPlayNode.swift */; };
@@ -426,6 +427,7 @@
 		EADFD95B29F4CE8500C6F9D1 /* SettingsButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsButton.swift; sourceTree = "<group>"; };
 		EADFD96129F90B6A00C6F9D1 /* ConfirmSprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmSprite.swift; sourceTree = "<group>"; };
 		EAE215112AB920160090735A /* Warp4Particles.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Warp4Particles.sks; sourceTree = "<group>"; };
+		EAE215132ABB88DF0090735A /* Extension+SKTexture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+SKTexture.swift"; sourceTree = "<group>"; };
 		EAE565A929D6E0C700BC43CB /* TitleScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleScene.swift; sourceTree = "<group>"; };
 		EAE6EC332A12D27F001842C6 /* buttontap7.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = buttontap7.mp3; sourceTree = "<group>"; };
 		EAE6EC352A133B04001842C6 /* HowToPlayNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HowToPlayNode.swift; sourceTree = "<group>"; };
@@ -473,15 +475,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		EA1D5A7129F219B300677B06 /* SKNode */ = {
+		EA1D5A7129F219B300677B06 /* SpriteKit */ = {
 			isa = PBXGroup;
 			children = (
+				EAE215132ABB88DF0090735A /* Extension+SKTexture.swift */,
 				EA1D5A6F29F219AA00677B06 /* Extension+SKNode.swift */,
 				EAF07C1129EAB5D30034CD1A /* Extension+SKSpriteNode.swift */,
 				EA1D5A6B29F1019800677B06 /* Extension+SKShapeNode.swift */,
 				EA1D5A6D29F217D200677B06 /* Extension+SKLabelNode.swift */,
 			);
-			path = SKNode;
+			path = SpriteKit;
 			sourceTree = "<group>";
 		};
 		EA34678F299AFF62002DDA02 /* Level */ = {
@@ -685,7 +688,7 @@
 				EA4D026A29BC6ACE00F0C7B1 /* Extension+UIDevice.swift */,
 				EA95D18C29459D550061059C /* Extension+UIFont.swift */,
 				EA3951EC2938165A00D0B14A /* Extension+UIImage.swift */,
-				EA1D5A7129F219B300677B06 /* SKNode */,
+				EA1D5A7129F219B300677B06 /* SpriteKit */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1207,6 +1210,7 @@
 				EADFD95C29F4CE8500C6F9D1 /* SettingsButton.swift in Sources */,
 				EA95D18D29459D550061059C /* Extension+UIFont.swift in Sources */,
 				EA1D5A6C29F1019800677B06 /* Extension+SKShapeNode.swift in Sources */,
+				EAE215142ABB88DF0090735A /* Extension+SKTexture.swift in Sources */,
 				EA34678E2998ED50002DDA02 /* LifeSpawnerModel.swift in Sources */,
 				EA65189328E973D700E535BF /* LevelBuilder.swift in Sources */,
 				EA41F83A2A0D71EE00DF47EC /* ParentPage.swift in Sources */,
