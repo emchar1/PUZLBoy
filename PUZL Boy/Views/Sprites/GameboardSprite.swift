@@ -147,9 +147,9 @@ class GameboardSprite {
             
             switch tile.overlay {
             case .warp, .warp3:
-                rotateWarp(node: overlayPanel, clockwise: false, slow: true, repeatForever: true)
+                rotateWarp(node: overlayPanel, slow: true, repeatForever: true)
             case .warp2, .warp4:
-                rotateWarp(node: overlayPanel, clockwise: true, slow: true, repeatForever: true)
+                rotateWarp(node: overlayPanel, slow: true, repeatForever: true)
             default:
                 break
             }
@@ -206,9 +206,9 @@ class GameboardSprite {
 
         switch itemOverlay {
         case .warp, .warp3:
-            rotateWarp(node: overlayPanel, clockwise: false, slow: true, repeatForever: true)
+            rotateWarp(node: overlayPanel, slow: true, repeatForever: true)
         case .warp2, .warp4:
-            rotateWarp(node: overlayPanel, clockwise: true, slow: true, repeatForever: true)
+            rotateWarp(node: overlayPanel, slow: true, repeatForever: true)
         default:
             break
         }
@@ -460,11 +460,11 @@ class GameboardSprite {
     
     // MARK: - Other Functions
     
-    private func rotateWarp(node: SKNode, clockwise: Bool, slow: Bool, repeatForever: Bool) {
+    private func rotateWarp(node: SKNode, slow: Bool, repeatForever: Bool) {
         let rotationAngle: CGFloat = 2 * .pi
         let durationFast: TimeInterval = 2 * PartyModeSprite.shared.speedMultiplier
-        var durationSlow: TimeInterval { durationFast * 8 }
-        let rotateAction = SKAction.rotate(byAngle: rotationAngle * (clockwise ? -1 : 1), duration: slow ? durationSlow : durationFast)
+        var durationSlow: TimeInterval { durationFast * 6 }
+        let rotateAction = SKAction.rotate(byAngle: -rotationAngle, duration: slow ? durationSlow : durationFast)
         
         if repeatForever {
             node.run(SKAction.repeatForever(rotateAction))
@@ -491,15 +491,15 @@ class GameboardSprite {
         
         guard let first = chooseWarps.first,
               let second = chooseWarps.second,
-              let warpStart = sprite.childNode(withName: GameboardSprite.getNodeName(row: first.row, col: first.col, includeOverlayTag: true)),
-              let warpEnd = sprite.childNode(withName: GameboardSprite.getNodeName(row: second.row, col: second.col, includeOverlayTag: true))
+              let warpFirst = sprite.childNode(withName: GameboardSprite.getNodeName(row: first.row, col: first.col, includeOverlayTag: true)),
+              let warpSecond = sprite.childNode(withName: GameboardSprite.getNodeName(row: second.row, col: second.col, includeOverlayTag: true))
         else {
             print("Level has no warps!")
             return nil
         }
         
-        rotateWarp(node: warpStart, clockwise: false, slow: false, repeatForever: false)
-        rotateWarp(node: warpEnd, clockwise: true, slow: false, repeatForever: false)
+        rotateWarp(node: warpFirst, slow: false, repeatForever: false)
+        rotateWarp(node: warpSecond, slow: false, repeatForever: false)
         
         return first == initialPosition ? second : first
     }
