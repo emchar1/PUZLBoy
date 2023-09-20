@@ -507,12 +507,23 @@ class GameScene: SKScene {
         gameEngine.shouldDisableInput(true)
         pauseResetEngine.shouldDisable(true)
 
+        // TODO: - Make this happen at certain levels only.
+        gameEngine.spawnPrincessCapture(at: (row: 1, col: 1))
+
         chatEngine.playDialogue(level: currentLevel) { [unowned self] in
             scoringEngine.timerManager.resumeTime()
             startTimer()
             gameEngine.shouldDisableInput(false)
             gameEngine.spawnPartyItems(maxItems: maxSpawnedItemsForParty)
-            gameEngine.spawnPrincessCapture(at: (row: 2, col: 2))
+            
+            // TODO: - Make this happen at certain levels only.
+            run(SKAction.sequence([
+                SKAction.wait(forDuration: 5),
+                SKAction.run {
+                    self.gameEngine.despawnPrincessCapture()
+                }
+            ]))
+            
 
             pauseResetEngine.shouldDisable(false)
         }

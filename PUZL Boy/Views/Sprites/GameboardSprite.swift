@@ -325,10 +325,13 @@ class GameboardSprite {
     func despawnPrincessCapture() {
         let endPanel: K.GameboardPosition = self.endPanel ?? (row: 0, col: 0)
         
-        let waitDuration: TimeInterval = 1
-        let actionDuration: TimeInterval = 0.5
+        let waitDuration: TimeInterval = 0
+        let actionDuration: TimeInterval = 1
+        let blinkDivision: Int = 5
         
         for node in sprite.children {
+            guard let node = node as? SKSpriteNode else { continue }
+            
             if node.name == "capturePrincess" {
                 node.run(SKAction.sequence([
                     SKAction.move(to: getLocation(at: endPanel) + CGPoint(x: -panelSize / 4, y: 0), duration: actionDuration * 2),
@@ -339,7 +342,15 @@ class GameboardSprite {
             }
             else if node.name == "captureVillain" {
                 node.run(SKAction.sequence([
-                    SKAction.move(to: getLocation(at: endPanel) + CGPoint(x: panelSize / 4, y: 20), duration: actionDuration * 2),
+                    SKAction.group([
+                        SKAction.move(to: getLocation(at: endPanel) + CGPoint(x: panelSize / 4, y: 20), duration: actionDuration * 2),
+                        SKAction.repeat(SKAction.sequence([
+                            SKAction.fadeOut(withDuration: 0),
+                            SKAction.wait(forDuration: actionDuration / TimeInterval(blinkDivision)),
+                            SKAction.fadeIn(withDuration: 0),
+                            SKAction.wait(forDuration: actionDuration / TimeInterval(blinkDivision)),
+                        ]), count: blinkDivision)
+                    ]),
                     SKAction.wait(forDuration: waitDuration),
                     SKAction.fadeOut(withDuration: actionDuration),
                     SKAction.removeFromParent()
@@ -463,7 +474,7 @@ class GameboardSprite {
     private func rotateWarp(node: SKNode, slow: Bool, repeatForever: Bool) {
         let rotationAngle: CGFloat = 2 * .pi
         let durationFast: TimeInterval = 2 * PartyModeSprite.shared.speedMultiplier
-        var durationSlow: TimeInterval { durationFast * 6 }
+        var durationSlow: TimeInterval { durationFast * 8 }
         let rotateAction = SKAction.rotate(byAngle: -rotationAngle, duration: slow ? durationSlow : durationFast)
         
         if repeatForever {
