@@ -194,14 +194,10 @@ class ChatEngine {
         
         if chatSpeed > 0 && chatIndex < chatText.count {
             chatSpeed = 0
-            
-            ButtonTap.shared.tap(type: .buttontap2)
         }
         else {
             dispatchWorkItem.cancel()
             closeChat()
-            
-            ButtonTap.shared.tap(type: shouldClose ? .noSound : .buttontap2)
         }
         
         //Prevents spamming of the chat fast forward tapping. Adds a 0.5 second delay.
@@ -333,6 +329,9 @@ class ChatEngine {
         
         if shouldClose {
             AudioManager.shared.playSound(for: "chatclose")
+        }
+        else {
+            ButtonTap.shared.tap(type: .buttontap2)
         }
         
         //Animates the chat bubble zoom out for endChat
