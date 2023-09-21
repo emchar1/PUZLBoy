@@ -203,7 +203,7 @@ class GameboardSprite {
         let overlayPanel = SKSpriteNode(imageNamed: itemOverlay.description)
         overlayPanel.scale(to: .zero)
         overlayPanel.position = getSpritePosition(at: position) + GameboardSprite.padding / 2 + scaleSize.width / 2
-        overlayPanel.zPosition = K.ZPosition.overlay
+        overlayPanel.zPosition = itemOverlay == .warp4 ? K.ZPosition.itemsAndEffects - 10 : K.ZPosition.overlay
         overlayPanel.name = GameboardSprite.getNodeName(row: position.row, col: position.col, includeOverlayTag: true)
 
         switch itemOverlay {
