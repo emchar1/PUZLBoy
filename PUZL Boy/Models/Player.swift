@@ -173,4 +173,11 @@ struct Player {
     mutating func setScale(_ scale: CGFloat) {
         self.scale = scale * scaleMultiplier
     }
+    
+    static func getStandardScale(panelSize: CGFloat) -> CGFloat {
+        //Changed scale from 0.5 to 1 to 1.5 due to new hero width size from 313 to original 614 to new 946
+        let scale: CGFloat = 1.5
+
+        return scale * panelSize / Player.size.width
+    }
 }

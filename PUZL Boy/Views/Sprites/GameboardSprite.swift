@@ -150,9 +150,7 @@ class GameboardSprite {
             overlayPanel.name = "\(position.row)\(GameboardSprite.delimiter)\(position.col)\(GameboardSprite.overlayTag)"
             
             switch tile.overlay {
-            case .warp, .warp3:
-                rotateWarp(node: overlayPanel, slow: true, repeatForever: true)
-            case .warp2, .warp4:
+            case .warp, .warp2, .warp3, .warp4:
                 rotateWarp(node: overlayPanel, slow: true, repeatForever: true)
             default:
                 break
@@ -209,9 +207,7 @@ class GameboardSprite {
         overlayPanel.name = GameboardSprite.getNodeName(row: position.row, col: position.col, includeOverlayTag: true)
 
         switch itemOverlay {
-        case .warp, .warp3:
-            rotateWarp(node: overlayPanel, slow: true, repeatForever: true)
-        case .warp2, .warp4:
+        case .warp, .warp2, .warp3, .warp4:
             rotateWarp(node: overlayPanel, slow: true, repeatForever: true)
         default:
             break
@@ -274,12 +270,14 @@ class GameboardSprite {
                                                    position: getLocation(at: position),
                                                    scale: 3 / CGFloat(panelCount),
                                                    duration: 0)
-                        
+
+            let playerOffsetPosition = CGPoint(x: panelSize / 4, y: 0)
+
             let princess = Player(type: .princess)
             princess.sprite.position = getLocation(at: position)
             princess.sprite.setScale(0)
             princess.sprite.zPosition = K.ZPosition.itemsAndEffects + 30
-            princess.sprite.run(SKAction.repeatForever(SKAction.animate(with: princess.textures[Player.Texture.jump.rawValue], timePerFrame: 0.02)))
+            princess.sprite.run(SKAction.repeatForever(SKAction.animate(with: princess.textures[Player.Texture.jump.rawValue], timePerFrame: 0.02)), withKey: "keySquirm")
             princess.sprite.name = "capturePrincess"
             
             let villain = Player(type: .villain)
@@ -290,25 +288,24 @@ class GameboardSprite {
             villain.sprite.name = "captureVillain"
                         
             
-            let playerScale = 1.5 * panelSize / Player.size.width
             let waitDuration: TimeInterval = 1
             let appearDuration: TimeInterval = 0.5
 
             princess.sprite.run(SKAction.sequence([
                 SKAction.wait(forDuration: waitDuration),
                 SKAction.group([
-                    SKAction.scaleX(to: -playerScale * princess.scaleMultiplier, duration: appearDuration),
-                    SKAction.scaleY(to: playerScale * princess.scaleMultiplier, duration: appearDuration),
-                    SKAction.moveBy(x: -panelSize / 4, y: 0, duration: appearDuration)
+                    SKAction.scaleX(to: -Player.getStandardScale(panelSize: panelSize) * princess.scaleMultiplier, duration: appearDuration),
+                    SKAction.scaleY(to: Player.getStandardScale(panelSize: panelSize) * princess.scaleMultiplier, duration: appearDuration),
+                    SKAction.moveBy(x: -playerOffsetPosition.x, y: playerOffsetPosition.y, duration: appearDuration)
                 ])
             ]))
             
             villain.sprite.run(SKAction.sequence([
                 SKAction.wait(forDuration: waitDuration),
                 SKAction.group([
-                    SKAction.scaleX(to: -playerScale * villain.scaleMultiplier, duration: appearDuration),
-                    SKAction.scaleY(to: playerScale * villain.scaleMultiplier, duration: appearDuration),
-                    SKAction.moveBy(x: panelSize / 4, y: 0, duration: appearDuration)
+                    SKAction.scaleX(to: -Player.getStandardScale(panelSize: panelSize) * villain.scaleMultiplier, duration: appearDuration),
+                    SKAction.scaleY(to: Player.getStandardScale(panelSize: panelSize) * villain.scaleMultiplier, duration: appearDuration),
+                    SKAction.moveBy(x: playerOffsetPosition.x, y: playerOffsetPosition.y, duration: appearDuration)
                 ])
             ]))
             
@@ -326,60 +323,79 @@ class GameboardSprite {
     }
     
     ///Despawns the princess being captured by the villain, as he escapes through the back door.
-    func despawnPrincessCapture() {
-        let endPanel: K.GameboardPosition = self.endPanel ?? (row: 0, col: 0)
+    func despawnPrincessCapture(at position: K.GameboardPosition) {
+        let playerOffsetPosition = CGPoint(x: panelSize / 4, y: 0)
+        let endPanel: K.GameboardPosition = self.endPanel ?? (row: 1, col: 1)
         
-        let waitDuration: TimeInterval = 0
         let actionDuration: TimeInterval = 1
-        let blinkDivision: Int = 5
+        let blinkDivision: Int = 10
+        let exitDoorScale: CGFloat = 0.25
         
         for node in sprite.children {
             guard let node = node as? SKSpriteNode else { continue }
             
             if node.name == "capturePrincess" {
                 node.run(SKAction.sequence([
-                    SKAction.move(to: getLocation(at: endPanel) + CGPoint(x: -panelSize / 4, y: 0), duration: actionDuration * 2),
-                    SKAction.wait(forDuration: waitDuration),
-                    SKAction.fadeOut(withDuration: actionDuration),
+                    SKAction.wait(forDuration: actionDuration),
+                    SKAction.run {
+                        node.removeAction(forKey: "keySquirm")
+                    },
+                    SKAction.move(to: getLocation(at: endPanel) - playerOffsetPosition, duration: actionDuration),
+                    SKAction.group([
+                        SKAction.scaleX(to: node.xScale * exitDoorScale, y: node.yScale * exitDoorScale, duration: actionDuration),
+                        SKAction.moveBy(x: playerOffsetPosition.x / 2, y: 0, duration: actionDuration),
+                        SKAction.fadeOut(withDuration: actionDuration)
+                    ]),
                     SKAction.removeFromParent()
                 ]))
             }
             else if node.name == "captureVillain" {
+                let villainScaleMultiplier: CGFloat = 1.5
+                var illusionStep = 1
+                
                 node.run(SKAction.sequence([
+                    SKAction.fadeOut(withDuration: 0),
+                    SKAction.repeat(SKAction.sequence([
+                        SKAction.run { [unowned self] in
+                            let illusionSprite = SKSpriteNode(imageNamed: node.texture?.getFilename() ?? "VillainIdle (1)")
+                            illusionSprite.size = Player.size
+                            illusionSprite.xScale = -Player.getStandardScale(panelSize: panelSize) * villainScaleMultiplier
+                            illusionSprite.yScale = Player.getStandardScale(panelSize: panelSize) * villainScaleMultiplier
+                            illusionSprite.position = getMidpoint(beginPoint: getLocation(at: position) + CGPoint(x: playerOffsetPosition.x, y: 20),
+                                                                  endPoint: getLocation(at: endPanel) + CGPoint(x: playerOffsetPosition.x, y: 20),
+                                                                  step: illusionStep,
+                                                                  totalSteps: blinkDivision)
+                            illusionSprite.zPosition = K.ZPosition.itemsAndEffects + 20 - CGFloat(blinkDivision - illusionStep)
+                            illusionSprite.name = "escapeVillain\(illusionStep)"
+                            
+                            sprite.addChild(illusionSprite)
+                        },
+                        SKAction.wait(forDuration: actionDuration / TimeInterval(blinkDivision)),
+                        SKAction.run { [unowned self] in
+                            if let illusionSprite = sprite.childNode(withName: "escapeVillain\(illusionStep)") {
+                                illusionSprite.run(SKAction.sequence([
+                                    SKAction.fadeOut(withDuration: actionDuration / 2),
+                                    SKAction.removeFromParent()
+                                ]))
+                            }
+                            
+                            illusionStep += 1
+                        }
+                    ]), count: blinkDivision),
+                    SKAction.move(to: getLocation(at: endPanel) + CGPoint(x: playerOffsetPosition.x, y: 20), duration: 0),
+                    SKAction.fadeIn(withDuration: 0),
+                    SKAction.wait(forDuration: actionDuration),
                     SKAction.group([
-                        SKAction.move(to: getLocation(at: endPanel) + CGPoint(x: panelSize / 4, y: 20), duration: actionDuration * 2),
-                        SKAction.repeat(SKAction.sequence([
-//                            SKAction.run {
-//                                let playerScale = 1.5 * panelSize / Player.size.width
-//
-//                                let intermediarySprite = SKSpriteNode(texture: SKTexture(imageNamed: node.texture?.getFilename() ?? "VillainIdle (1)"))
-//                                intermediarySprite.position = getLocation(at: <#T##K.GameboardPosition#>)
-//                                
-//                                
-//                                
-//                                
-//                                
-//                                villain.sprite.position = getLocation(at: position) + CGPoint(x: 0, y: 20)
-//                                villain.sprite.setScale(0)
-//                                villain.sprite.zPosition = K.ZPosition.itemsAndEffects + 20
-//                                villain.sprite.run(SKAction.repeatForever(SKAction.animate(with: villain.textures[Player.Texture.idle.rawValue], timePerFrame: 0.08)))
-//                                villain.sprite.name = "captureVillain"
-//
-//                            },
-                            SKAction.fadeOut(withDuration: 0),
-                            SKAction.wait(forDuration: actionDuration / TimeInterval(blinkDivision)),
-                            SKAction.fadeIn(withDuration: 0),
-                            SKAction.wait(forDuration: actionDuration / TimeInterval(blinkDivision)),
-                        ]), count: blinkDivision)
+                        SKAction.scaleX(to: node.xScale * exitDoorScale, y: node.yScale * exitDoorScale, duration: actionDuration),
+                        SKAction.moveBy(x: -playerOffsetPosition.x / 2, y: 0, duration: actionDuration),
+                        SKAction.fadeOut(withDuration: actionDuration)
                     ]),
-                    SKAction.wait(forDuration: waitDuration),
-                    SKAction.fadeOut(withDuration: actionDuration),
                     SKAction.removeFromParent()
                 ]))
             }
             else if node.name == "captureEndOpen" {
                 node.run(SKAction.sequence([
-                    SKAction.wait(forDuration: actionDuration * 3 + waitDuration),
+                    SKAction.wait(forDuration: 3 * actionDuration),
                     SKAction.removeFromParent(),
                     SKAction.run {
                         AudioManager.shared.playSound(for: "dooropen")
@@ -387,6 +403,19 @@ class GameboardSprite {
                 ]))
             }
         }
+    }
+    
+    private func getMidpoint(beginPoint: CGPoint, endPoint: CGPoint, step: Int, totalSteps: Int) -> CGPoint {
+        guard step > 0 && totalSteps > 0 else { return .zero }
+        
+        let deltaX = endPoint.x - beginPoint.x
+        let deltaY = endPoint.y - beginPoint.y
+        let hypotenuse = CGFloat(sqrt(pow(deltaX, 2) + pow(deltaY, 2)))
+        let alpha = asin(deltaX / hypotenuse) //in radians
+        let hypotenuseMid = hypotenuse * CGFloat(step) / CGFloat(totalSteps)
+        let midPoint = CGPoint(x: sin(alpha) * hypotenuseMid, y: cos(alpha) * hypotenuseMid)
+        
+        return CGPoint(x: beginPoint.x + midPoint.x, y: beginPoint.y - midPoint.y)
     }
     
     

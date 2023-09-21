@@ -694,8 +694,8 @@ class GameEngine {
         gameboardSprite.spawnPrincessCapture(at: position)
     }
     
-    func despawnPrincessCapture() {
-        gameboardSprite.despawnPrincessCapture()
+    func despawnPrincessCapture(at position: K.GameboardPosition) {
+        gameboardSprite.despawnPrincessCapture(at: position)
     }
     
     

@@ -470,10 +470,7 @@ class PlayerSprite {
     // MARK: - Getters & Setters
 
     func setScale(panelSize: CGFloat) {
-        //Changed scale from 0.5 to 1 to 1.5 due to new hero width size from 313 to original 614 to new 946
-        let scale: CGFloat = 1.5
-        
-        player.sprite.setScale(scale * (panelSize / Player.size.width))
+        player.sprite.setScale(Player.getStandardScale(panelSize: panelSize))
         player.setScale(abs(player.sprite.xScale))
     }
 }

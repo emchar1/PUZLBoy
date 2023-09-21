@@ -46,7 +46,6 @@ class GameViewController: UIViewController {
         monitor.start(queue: DispatchQueue(label: "Monitor"))
 
         skView.showsFPS = true
-        skView.showsDrawCount = true
         skView.showsNodeCount = true
         skView.ignoresSiblingOrder = true
         skView.presentScene(launchScene)
