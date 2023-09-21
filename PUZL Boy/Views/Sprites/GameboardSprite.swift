@@ -336,15 +336,17 @@ class GameboardSprite {
             
             if node.name == "capturePrincess" {
                 node.run(SKAction.sequence([
-                    SKAction.wait(forDuration: actionDuration),
+                    SKAction.wait(forDuration: actionDuration * 1.5),
                     SKAction.run {
                         node.removeAction(forKey: "keySquirm")
                     },
-                    SKAction.move(to: getLocation(at: endPanel) - playerOffsetPosition, duration: actionDuration),
-                    SKAction.group([
-                        SKAction.scaleX(to: node.xScale * exitDoorScale, y: node.yScale * exitDoorScale, duration: actionDuration),
-                        SKAction.moveBy(x: playerOffsetPosition.x / 2, y: 0, duration: actionDuration),
-                        SKAction.fadeOut(withDuration: actionDuration)
+                    SKAction.move(to: getLocation(at: endPanel) - playerOffsetPosition, duration: actionDuration / 2),
+                    SKAction.sequence([
+                        SKAction.group([
+                            SKAction.scaleX(to: node.xScale * exitDoorScale, y: node.yScale * exitDoorScale, duration: actionDuration / 2),
+                            SKAction.moveBy(x: playerOffsetPosition.x / 2, y: 0, duration: actionDuration / 2)
+                        ]),
+                        SKAction.fadeOut(withDuration: actionDuration / 2)
                     ]),
                     SKAction.removeFromParent()
                 ]))
@@ -354,41 +356,45 @@ class GameboardSprite {
                 var illusionStep = 1
                 
                 node.run(SKAction.sequence([
-                    SKAction.fadeOut(withDuration: 0),
-                    SKAction.repeat(SKAction.sequence([
-                        SKAction.run { [unowned self] in
-                            let illusionSprite = SKSpriteNode(imageNamed: node.texture?.getFilename() ?? "VillainIdle (1)")
-                            illusionSprite.size = Player.size
-                            illusionSprite.xScale = -Player.getStandardScale(panelSize: panelSize) * villainScaleMultiplier
-                            illusionSprite.yScale = Player.getStandardScale(panelSize: panelSize) * villainScaleMultiplier
-                            illusionSprite.position = getMidpoint(beginPoint: getLocation(at: position) + CGPoint(x: playerOffsetPosition.x, y: 20),
-                                                                  endPoint: getLocation(at: endPanel) + CGPoint(x: playerOffsetPosition.x, y: 20),
-                                                                  step: illusionStep,
-                                                                  totalSteps: blinkDivision)
-                            illusionSprite.zPosition = K.ZPosition.itemsAndEffects + 20 - CGFloat(blinkDivision - illusionStep)
-                            illusionSprite.name = "escapeVillain\(illusionStep)"
-                            
-                            sprite.addChild(illusionSprite)
-                        },
-                        SKAction.wait(forDuration: actionDuration / TimeInterval(blinkDivision)),
-                        SKAction.run { [unowned self] in
-                            if let illusionSprite = sprite.childNode(withName: "escapeVillain\(illusionStep)") {
-                                illusionSprite.run(SKAction.sequence([
-                                    SKAction.fadeOut(withDuration: actionDuration / 2),
-                                    SKAction.removeFromParent()
-                                ]))
+                    SKAction.group([
+                        SKAction.fadeOut(withDuration: actionDuration / 2),
+                        SKAction.repeat(SKAction.sequence([
+                            SKAction.run { [unowned self] in
+                                let illusionSprite = SKSpriteNode(imageNamed: node.texture?.getFilename() ?? "VillainIdle (1)")
+                                illusionSprite.size = Player.size
+                                illusionSprite.xScale = -Player.getStandardScale(panelSize: panelSize) * villainScaleMultiplier
+                                illusionSprite.yScale = Player.getStandardScale(panelSize: panelSize) * villainScaleMultiplier
+                                illusionSprite.position = getMidpoint(beginPoint: getLocation(at: position) + CGPoint(x: playerOffsetPosition.x, y: 20),
+                                                                      endPoint: getLocation(at: endPanel) + CGPoint(x: playerOffsetPosition.x, y: 20),
+                                                                      step: illusionStep,
+                                                                      totalSteps: blinkDivision)
+                                illusionSprite.zPosition = K.ZPosition.itemsAndEffects + 20 - CGFloat(blinkDivision - illusionStep)
+                                illusionSprite.name = "escapeVillain\(illusionStep)"
+                                
+                                sprite.addChild(illusionSprite)
+                            },
+                            SKAction.wait(forDuration: actionDuration / TimeInterval(blinkDivision)),
+                            SKAction.run { [unowned self] in
+                                if let illusionSprite = sprite.childNode(withName: "escapeVillain\(illusionStep)") {
+                                    illusionSprite.run(SKAction.sequence([
+                                        SKAction.fadeOut(withDuration: actionDuration / 2),
+                                        SKAction.removeFromParent()
+                                    ]))
+                                }
+                                
+                                illusionStep += 1
                             }
-                            
-                            illusionStep += 1
-                        }
-                    ]), count: blinkDivision),
+                        ]), count: blinkDivision)
+                    ]),
                     SKAction.move(to: getLocation(at: endPanel) + CGPoint(x: playerOffsetPosition.x, y: 20), duration: 0),
                     SKAction.fadeIn(withDuration: 0),
                     SKAction.wait(forDuration: actionDuration),
-                    SKAction.group([
-                        SKAction.scaleX(to: node.xScale * exitDoorScale, y: node.yScale * exitDoorScale, duration: actionDuration),
-                        SKAction.moveBy(x: -playerOffsetPosition.x / 2, y: 0, duration: actionDuration),
-                        SKAction.fadeOut(withDuration: actionDuration)
+                    SKAction.sequence([
+                        SKAction.group([
+                            SKAction.scaleX(to: node.xScale * exitDoorScale, y: node.yScale * exitDoorScale, duration: actionDuration / 2),
+                            SKAction.moveBy(x: -playerOffsetPosition.x / 2, y: 0, duration: actionDuration / 2)
+                        ]),
+                        SKAction.fadeOut(withDuration: actionDuration / 2)
                     ]),
                     SKAction.removeFromParent()
                 ]))

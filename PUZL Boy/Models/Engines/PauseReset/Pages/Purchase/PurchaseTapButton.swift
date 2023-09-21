@@ -197,7 +197,7 @@ class PurchaseTapButton: SKNode {
         guard isPressed else { return }
         guard scene?.nodes(at: location).filter({ $0.name == nodeName }).first != nil else { return }
 
-        ButtonTap.shared.tap(type: .buttontap1)
+        ButtonTap.shared.tap(type: .buttontap1, hapticStyle: .heavy)
         delegate?.didTapButton(self)
     }
 }

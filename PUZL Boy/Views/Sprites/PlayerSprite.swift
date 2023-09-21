@@ -136,7 +136,10 @@ class PlayerSprite {
                 //Fades the player as he's entering the gate
                 let sequence = SKAction.sequence([
                     SKAction.wait(forDuration: 0.75),
-                    SKAction.fadeAlpha(to: 0, duration: 0.25)
+                    SKAction.group([
+                        SKAction.scaleX(to: sprite.xScale / 2, y: sprite.yScale / 2, duration: 0.25),
+                        SKAction.fadeAlpha(to: 0, duration: 0.25)
+                    ])
                 ])
                 
                 sprite.run(SKAction.group([SKAction.repeatForever(animation), sequence]), withKey: AnimationKey.playerMove.rawValue)

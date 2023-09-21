@@ -104,7 +104,7 @@ class SettingsButton: SKNode {
         delegate?.didTapButton(self)
         
         if !tapQuietly {
-            ButtonTap.shared.tap(type: .buttontap2)
+            ButtonTap.shared.tap(type: .buttontap2, hapticStyle: .medium)
         }
     }
     
