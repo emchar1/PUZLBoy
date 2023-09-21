@@ -168,7 +168,7 @@ class ChatEngine {
     func touchDown(in location: CGPoint) {
         guard let superScene = superScene else { return }
         guard superScene.nodes(at: location).filter({ $0.name == "backgroundSprite" }).first != nil else { return }
-        guard !isAnimating else { return print("No spamming tapping the chat allowed!") }
+        guard !isAnimating else { return }
         
         isAnimating = true
         
@@ -204,8 +204,8 @@ class ChatEngine {
             ButtonTap.shared.tap(type: shouldClose ? .noSound : .buttontap2)
         }
         
-        //Prevents spamming of the chat fast forward tapping. Adds a 0.25 second delay.
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
+        //Prevents spamming of the chat fast forward tapping. Adds a 0.5 second delay.
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
             self.isAnimating = false
         }
     }
