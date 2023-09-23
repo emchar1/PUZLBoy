@@ -31,6 +31,7 @@ class ParticleEngine: SKNode {
         case itemPickup = "ItemPickupParticles"
         case lavaAppear = "LavaAppearParticles"
         case lavaSizzle = "LavaSizzleParticles"
+        case magicBlast = "MagicParticles"
         case partyGem = "PartyGemParticles"
         case poisonBubbles = "PoisonBubblesParticles"
         case warp = "WarpParticles"
@@ -39,6 +40,7 @@ class ParticleEngine: SKNode {
     
     
     // MARK: - Initialization
+    
     private override init() {
         super.init()
     }
@@ -54,7 +56,7 @@ class ParticleEngine: SKNode {
     
     // MARK: - Functions
     
-    func animateParticles(type: ParticleType, toNode node: SKNode, position: CGPoint, scale: CGFloat = 1, duration: TimeInterval) {
+    func animateParticles(type: ParticleType, toNode node: SKNode, position: CGPoint, scale: CGFloat = 1, angle: CGFloat = 0, duration: TimeInterval) {
         guard let particles = SKEmitterNode(fileNamed: type.rawValue) else { return print("Particle file not found: \(type.rawValue).sks")}
         
         particles.position = position
@@ -62,13 +64,20 @@ class ParticleEngine: SKNode {
         particles.zPosition = K.ZPosition.itemsAndEffects + 10
         particles.name = ParticleEngine.nodeName
         
+        if angle != 0 {
+            particles.run(SKAction.rotate(toAngle: angle, duration: 0))
+        }
+        
         node.addChild(particles)
         
         
         guard duration > 0 else { return }
         
+        let fadeDuration: TimeInterval = 0.25
+        
         particles.run(SKAction.sequence([
-            SKAction.wait(forDuration: duration),
+            SKAction.wait(forDuration: duration - fadeDuration),
+            SKAction.fadeOut(withDuration: fadeDuration),
             SKAction.removeFromParent()
         ]))
     }

@@ -206,6 +206,9 @@
 		EADFD96229F90B6A00C6F9D1 /* ConfirmSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = EADFD96129F90B6A00C6F9D1 /* ConfirmSprite.swift */; };
 		EAE215122AB920160090735A /* Warp4Particles.sks in Resources */ = {isa = PBXBuildFile; fileRef = EAE215112AB920160090735A /* Warp4Particles.sks */; };
 		EAE215142ABB88DF0090735A /* Extension+SKTexture.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAE215132ABB88DF0090735A /* Extension+SKTexture.swift */; };
+		EAE215582ABD1DEB0090735A /* MagicParticles.sks in Resources */ = {isa = PBXBuildFile; fileRef = EAE215572ABD1DEB0090735A /* MagicParticles.sks */; };
+		EAE2155A2ABE23370090735A /* SpriteMath.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAE215592ABE23370090735A /* SpriteMath.swift */; };
+		EAE2155C2ABE38FC0090735A /* Extension+CGFloat.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAE2155B2ABE38FC0090735A /* Extension+CGFloat.swift */; };
 		EAE565AA29D6E0C700BC43CB /* TitleScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAE565A929D6E0C700BC43CB /* TitleScene.swift */; };
 		EAE6EC342A12D27F001842C6 /* buttontap7.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAE6EC332A12D27F001842C6 /* buttontap7.mp3 */; };
 		EAE6EC362A133B04001842C6 /* HowToPlayNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAE6EC352A133B04001842C6 /* HowToPlayNode.swift */; };
@@ -428,6 +431,9 @@
 		EADFD96129F90B6A00C6F9D1 /* ConfirmSprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmSprite.swift; sourceTree = "<group>"; };
 		EAE215112AB920160090735A /* Warp4Particles.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Warp4Particles.sks; sourceTree = "<group>"; };
 		EAE215132ABB88DF0090735A /* Extension+SKTexture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+SKTexture.swift"; sourceTree = "<group>"; };
+		EAE215572ABD1DEB0090735A /* MagicParticles.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = MagicParticles.sks; sourceTree = "<group>"; };
+		EAE215592ABE23370090735A /* SpriteMath.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpriteMath.swift; sourceTree = "<group>"; };
+		EAE2155B2ABE38FC0090735A /* Extension+CGFloat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+CGFloat.swift"; sourceTree = "<group>"; };
 		EAE565A929D6E0C700BC43CB /* TitleScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleScene.swift; sourceTree = "<group>"; };
 		EAE6EC332A12D27F001842C6 /* buttontap7.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = buttontap7.mp3; sourceTree = "<group>"; };
 		EAE6EC352A133B04001842C6 /* HowToPlayNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HowToPlayNode.swift; sourceTree = "<group>"; };
@@ -679,6 +685,7 @@
 		EA826C9829938CE200F19F81 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				EAE2155B2ABE38FC0090735A /* Extension+CGFloat.swift */,
 				EA94E87629C2DCE0009F2614 /* Extension+CGPoint.swift */,
 				EAF07C0F29EA7B8C0034CD1A /* Extension+CGSize.swift */,
 				EA956C6B29257D9600879AD0 /* Extension+Comparable.swift */,
@@ -885,6 +892,7 @@
 				EA826C9829938CE200F19F81 /* Extensions */,
 				EAD19A052A96A40200A07A63 /* ParticleSystem */,
 				EA65189428EA207800E535BF /* Constants.swift */,
+				EAE215592ABE23370090735A /* SpriteMath.swift */,
 				EA01BB602A10746800EAB70B /* ButtonTap.swift */,
 				EA95D1A5294957060061059C /* Haptics.swift */,
 				EA956C6929257B9C00879AD0 /* AudioManager.swift */,
@@ -911,6 +919,7 @@
 				EAD19A102A98177400A07A63 /* ItemPickupParticles.sks */,
 				EAD19A0A2A96F52500A07A63 /* LavaAppearParticles.sks */,
 				EAB2DE0F2A9D4BD700172478 /* LavaSizzleParticles.sks */,
+				EAE215572ABD1DEB0090735A /* MagicParticles.sks */,
 				EAD19A032A9698B700A07A63 /* PartyGemParticles.sks */,
 				EAD19A1C2A9C14B500A07A63 /* PoisonBubblesParticles.sks */,
 				EAD19A062A96AA6D00A07A63 /* WarpParticles.sks */,
@@ -1019,6 +1028,7 @@
 				EA95D19C294690B70061059C /* boyattack1.mp3 in Resources */,
 				EA45834F2A44316F00279056 /* overworldparty.mp3 in Resources */,
 				EA45835B2A4431D300279056 /* titletheme.mp3 in Resources */,
+				EAE215582ABD1DEB0090735A /* MagicParticles.sks in Resources */,
 				EA95D1A3294691820061059C /* boygrunt1.mp3 in Resources */,
 				EA94E87529C0DE2C009F2614 /* movetile1.mp3 in Resources */,
 				EAD19A092A96AA6D00A07A63 /* Assets.xcassets in Resources */,
@@ -1168,7 +1178,9 @@
 				EA01BB612A10746800EAB70B /* ButtonTap.swift in Sources */,
 				EA9DFF0029FE481300D02683 /* SettingsPage.swift in Sources */,
 				EA9DFF022A0084F600D02683 /* SettingsRadioNode.swift in Sources */,
+				EAE2155C2ABE38FC0090735A /* Extension+CGFloat.swift in Sources */,
 				EA65182B28E4199E00E535BF /* AppDelegate.swift in Sources */,
+				EAE2155A2ABE23370090735A /* SpriteMath.swift in Sources */,
 				EA956C6C29257D9600879AD0 /* Extension+Comparable.swift in Sources */,
 				EA45833F2A43CE3100279056 /* PartyResultsSprite.swift in Sources */,
 				EA95D1FA295BEC160061059C /* DisplayLivesSprite.swift in Sources */,
