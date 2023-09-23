@@ -102,7 +102,7 @@ class PlayerSprite {
         }
     }
     
-    func startMoveAnimation(animationType: Player.Texture) {
+    func startMoveAnimation(animationType: Player.Texture, soundFXType: Player.Texture) {
         let animationRate: TimeInterval = animationType == .marsh ? 1.25 : 1
         let animation = SKAction.animate(with: player.textures[animationType.rawValue],
                                          timePerFrame: animationSpeed * animationRate * PartyModeSprite.shared.speedMultiplier)
@@ -121,36 +121,40 @@ class PlayerSprite {
             ]), withKey: AnimationKey.playerGlide.rawValue)
         }
         else {
-            switch animationType {
-            case .run, .runSword, .runHammer, .runHammerSword:
+            switch soundFXType {
+            case .run:
                 AudioManager.shared.playSound(for: "moverun\(Int.random(in: 1...4))")
-            case .marsh, .marshSword, .marshHammer, .marshHammerSword:
+            case .marsh:
                 AudioManager.shared.playSound(for: "movemarsh\(Int.random(in: 1...3))")
-            case .sand, .sandSword, .sandHammer, .sandHammerSword:
+            case .sand:
                 AudioManager.shared.playSound(for: "movesand\(Int.random(in: 1...3))")
             case .party:
                 AudioManager.shared.playSound(for: "movetile\(Int.random(in: 1...3))")
             case .walk:
                 AudioManager.shared.playSound(for: "movewalk")
-
-                //Fades the player as he's entering the gate
-                let sequence = SKAction.sequence([
-                    SKAction.wait(forDuration: 0.75),
-                    SKAction.group([
-                        SKAction.scaleX(to: sprite.xScale / 2, y: sprite.yScale / 2, duration: 0.25),
-                        SKAction.fadeAlpha(to: 0, duration: 0.25)
-                    ])
-                ])
-                
-                sprite.run(SKAction.group([SKAction.repeatForever(animation), sequence]), withKey: AnimationKey.playerMove.rawValue)
-
-                return
             default:
-                print("Unknown animationType")
+                print("Unknown soundFXType")
             }
             
             player.sprite.run(SKAction.repeatForever(animation), withKey: AnimationKey.playerMove.rawValue)
         }
+    }
+    
+    ///Fades the player as he's exiting through the gate
+    func startPlayerExitAnimation() {
+        let runAnimation = SKAction.animate(with: player.textures[Player.Texture.run.rawValue],
+                                             timePerFrame: animationSpeed * PartyModeSprite.shared.speedMultiplier)
+        let exitAction = SKAction.group([
+            SKAction.repeatForever(runAnimation),
+            SKAction.scaleX(to: player.sprite.xScale / 4, y: player.sprite.yScale / 4, duration: 0.5),
+            SKAction.fadeOut(withDuration: 0.5)
+        ])
+
+        player.sprite.run(exitAction)
+
+        let exitSound = "movetile\(Int.random(in: 1...3))"
+        AudioManager.shared.playSound(for: exitSound)
+        AudioManager.shared.stopSound(for: exitSound, fadeDuration: 1)
     }
     
     func startMarshEffectAnimation() {

@@ -24,7 +24,10 @@ struct Player {
     }
 
     enum Texture: Int {
-        case idle = 0, run, walk, marsh, sand, party, dead, glide, jump, idleHammer, idleSword, idleHammerSword, runHammer, runSword, runHammerSword, marshHammer, marshSword, marshHammerSword, sandHammer, sandSword, sandHammerSword, glideHammer, glideSword, glideHammerSword
+        case idle = 0, run, walk, dead, glide, jump, idleHammer, idleSword, idleHammerSword, runHammer, runSword, runHammerSword, glideHammer, glideSword, glideHammerSword,
+
+             //IMPORTANT: marsh, sand, party MUST come last! They're not part of textures[[]] so their Int.rawValue will throw off the indexing
+             marsh, sand, party
         
         var movementSpeed: TimeInterval {
             var speed: TimeInterval
@@ -40,15 +43,8 @@ struct Player {
             case .glideSword:       speed = 0.5
             case .glideHammerSword: speed = 0.5
             case .marsh:            speed = 1.0
-            case .marshHammer:      speed = 1.0
-            case .marshSword:       speed = 1.0
-            case .marshHammerSword: speed = 1.0
             case .sand:             speed = 0.5
-            case .sandHammer:       speed = 0.5
-            case .sandSword:        speed = 0.5
-            case .sandHammerSword:  speed = 0.5
             case .party:            speed = 0.5
-            case .jump:             speed = 0.02 //FIXME: - Where is this really used???
             default:                speed = 0.25
             }
             
@@ -66,9 +62,6 @@ struct Player {
         textures.append([]) //idle
         textures.append([]) //run
         textures.append([]) //walk
-        textures.append([]) //marsh
-        textures.append([]) //sand
-        textures.append([]) //party
         textures.append([]) //dead
         textures.append([]) //glide
         textures.append([]) //jump
@@ -78,12 +71,6 @@ struct Player {
         textures.append([]) //runHammer
         textures.append([]) //runSword
         textures.append([]) //runHammerSword
-        textures.append([]) //marshHammer
-        textures.append([]) //marshSword
-        textures.append([]) //marshHammerSword
-        textures.append([]) //sandHammer
-        textures.append([]) //sandSword
-        textures.append([]) //sandHammerSword
         textures.append([]) //glideHammer
         textures.append([]) //glideSword
         textures.append([]) //glideHammerSword
@@ -112,9 +99,6 @@ struct Player {
             textures[Texture.idle.rawValue].append(atlas.textureNamed("Idle (\(i))"))
             textures[Texture.run.rawValue].append(atlas.textureNamed("Run (\(i))"))
             textures[Texture.walk.rawValue].append(atlas.textureNamed("Walk (\(i))"))
-            textures[Texture.marsh.rawValue].append(atlas.textureNamed("Run (\(i))"))
-            textures[Texture.sand.rawValue].append(atlas.textureNamed("Run (\(i))"))
-            textures[Texture.party.rawValue].append(atlas.textureNamed("Run (\(i))"))
             textures[Texture.dead.rawValue].append(atlas.textureNamed("Dead (\(i))"))
             textures[Texture.idleHammer.rawValue].append(atlas.textureNamed("IdleHammer (\(i))"))
             textures[Texture.idleSword.rawValue].append(atlas.textureNamed("IdleSword (\(i))"))
@@ -122,12 +106,6 @@ struct Player {
             textures[Texture.runHammer.rawValue].append(atlas.textureNamed("RunHammer (\(i))"))
             textures[Texture.runSword.rawValue].append(atlas.textureNamed("RunSword (\(i))"))
             textures[Texture.runHammerSword.rawValue].append(atlas.textureNamed("RunHammerSword (\(i))"))
-            textures[Texture.marshHammer.rawValue].append(atlas.textureNamed("RunHammer (\(i))"))
-            textures[Texture.marshSword.rawValue].append(atlas.textureNamed("RunSword (\(i))"))
-            textures[Texture.marshHammerSword.rawValue].append(atlas.textureNamed("RunHammerSword (\(i))"))
-            textures[Texture.sandHammer.rawValue].append(atlas.textureNamed("RunHammer (\(i))"))
-            textures[Texture.sandSword.rawValue].append(atlas.textureNamed("RunSword (\(i))"))
-            textures[Texture.sandHammerSword.rawValue].append(atlas.textureNamed("RunHammerSword (\(i))"))
 
             if i <= 12 {
                 textures[Texture.jump.rawValue].append(atlas.textureNamed("Jump (\(i))"))

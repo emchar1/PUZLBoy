@@ -224,6 +224,7 @@ class GameEngine {
         let playerLastPosition = gameboardSprite.getLocation(at: level.player)
         let panel = lastPanel == nil ? level.getLevelType(at: level.player) : lastPanel!
         var animationType: Player.Texture
+        var soundFXTypeAndMovementSpeed: Player.Texture
         
         if isGliding {
             if level.inventory.hasSwords() && level.inventory.hasHammers() {
@@ -238,40 +239,12 @@ class GameEngine {
             else {
                 animationType = .glide
             }
+            
+            soundFXTypeAndMovementSpeed = .glide
         }
         else if isSolved {
             animationType = .walk
-        }
-        else if panel == .marsh {
-            if level.inventory.hasSwords() && level.inventory.hasHammers() {
-                animationType = .marshHammerSword
-            }
-            else if level.inventory.hasSwords() {
-                animationType = .marshSword
-            }
-            else if level.inventory.hasHammers() {
-                animationType = .marshHammer
-            }
-            else {
-                animationType = .marsh
-            }
-        }
-        else if panel == .sand {
-            if level.inventory.hasSwords() && level.inventory.hasHammers() {
-                animationType = .sandHammerSword
-            }
-            else if level.inventory.hasSwords() {
-                animationType = .sandSword
-            }
-            else if level.inventory.hasHammers() {
-                animationType = .sandHammer
-            }
-            else {
-                animationType = .sand
-            }
-        }
-        else if panel == .partytile {
-            animationType = .party
+            soundFXTypeAndMovementSpeed = .walk
         }
         else {
             if level.inventory.hasSwords() && level.inventory.hasHammers() {
@@ -286,14 +259,21 @@ class GameEngine {
             else {
                 animationType = .run
             }
+            
+            switch panel {
+            case .marsh:                                        soundFXTypeAndMovementSpeed = .marsh
+            case .sand:                                         soundFXTypeAndMovementSpeed = .sand
+            case .partytile, .start, .endClosed, .endOpen:      soundFXTypeAndMovementSpeed = .party
+            default:                                            soundFXTypeAndMovementSpeed = .run
+            }
         }
 
         if animate {
-            let playerMove = SKAction.move(to: playerLastPosition, duration: animationType.movementSpeed)
+            let playerMove = SKAction.move(to: playerLastPosition, duration: soundFXTypeAndMovementSpeed.movementSpeed)
                         
             shouldDisableControlInput = true
 
-            playerSprite.startMoveAnimation(animationType: animationType)
+            playerSprite.startMoveAnimation(animationType: animationType, soundFXType: soundFXTypeAndMovementSpeed)
             
             playerSprite.sprite.run(playerMove) { [unowned self] in
                 // FIXME: - Is this a retain cycle???
@@ -962,6 +942,8 @@ class GameEngine {
         setLabelsForDisplaySprite()
         
         if isSolved {
+            playerSprite.startPlayerExitAnimation()
+            
             AudioManager.shared.playSound(for: "winlevel")
             delegate?.gameIsSolved(movesRemaining: movesRemaining,
                                    itemsFound: level.inventory.getItemCount(),

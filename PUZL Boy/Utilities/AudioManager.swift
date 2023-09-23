@@ -109,6 +109,7 @@ class AudioManager {
         addAudioItem("magicblast", category: .soundFX) //needs purchase $1
         addAudioItem("magicteleport", category: .soundFX) //needs purchase $1
         addAudioItem("magicwarp", category: .soundFX)
+        addAudioItem("magicwarpNEW", category: .soundFX) //needs purchase $1
         addAudioItem("moveglide", category: .soundFX)
         addAudioItem("movemarsh1", category: .soundFX)
         addAudioItem("movemarsh2", category: .soundFX)
@@ -146,6 +147,7 @@ class AudioManager {
         //Looped SFX
         addAudioItem("clocktick", category: .soundFXLoop)
         addAudioItem("magicdoomloop", category: .soundFXLoop) //needs purchase $1
+        addAudioItem("magicdoomloopNEW", category: .soundFXLoop) //needs purchase $2
         
         
         //No Loop music

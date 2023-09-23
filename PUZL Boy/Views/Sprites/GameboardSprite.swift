@@ -269,11 +269,11 @@ class GameboardSprite {
         overlayPanel.name = "captureEndOpen"
         sprite.addChild(overlayPanel)
         
-        AudioManager.shared.playSound(for: "magicdoomloop", interruptPlayback: false)
+        AudioManager.shared.playSound(for: "magicdoomloopNEW", fadeIn: 0.5, interruptPlayback: false)
         AudioManager.shared.adjustVolume(to: 0.25, for: AudioManager.shared.currentTheme, fadeDuration: 0.5)
         
         spawnItem(at: position, with: .warp4) { [unowned self] in
-            AudioManager.shared.playSound(for: "magicwarp")
+//            AudioManager.shared.playSound(for: "magicwarpNEW")
             ParticleEngine.shared.animateParticles(type: .warp4,
                                                    toNode: sprite,
                                                    position: getLocation(at: position),
@@ -284,14 +284,14 @@ class GameboardSprite {
             princess.sprite.position = startPoint
             princess.sprite.setScale(0)
             princess.sprite.zPosition = K.ZPosition.itemsAndEffects + 30
-            princess.sprite.run(SKAction.repeatForever(SKAction.animate(with: princess.textures[Player.Texture.jump.rawValue], timePerFrame: 0.02)), withKey: "keySquirm")
+            princess.sprite.run(SKAction.repeatForever(SKAction.animate(with: princess.textures[Player.Texture.jump.rawValue], timePerFrame: 0.02)))
             princess.sprite.name = "capturePrincess"
             
             let villain = Player(type: .villain)
             villain.sprite.position = startPoint + villainOffset
             villain.sprite.setScale(0)
             villain.sprite.zPosition = K.ZPosition.itemsAndEffects + 20
-            villain.sprite.run(SKAction.repeatForever(SKAction.animate(with: villain.textures[Player.Texture.idle.rawValue], timePerFrame: 0.08)))
+            villain.sprite.run(SKAction.repeatForever(SKAction.animate(with: villain.textures[Player.Texture.idle.rawValue], timePerFrame: 0.1)))
             villain.sprite.name = "captureVillain"
                         
             
@@ -349,9 +349,6 @@ class GameboardSprite {
             if node.name == "capturePrincess" {
                 node.run(SKAction.sequence([
                     SKAction.wait(forDuration: actionDuration * 2.5),
-                    SKAction.run {
-                        node.removeAction(forKey: "keySquirm")
-                    },
                     SKAction.move(to: endPoint + facingMultiplier * playerOffset, duration: actionDuration * 2),
                     SKAction.sequence([
                         SKAction.group([
@@ -428,7 +425,7 @@ class GameboardSprite {
                     SKAction.removeFromParent(),
                     SKAction.run {
                         AudioManager.shared.playSound(for: "dooropen")
-                        AudioManager.shared.stopSound(for: "magicdoomloop", fadeDuration: 1)
+                        AudioManager.shared.stopSound(for: "magicdoomloopNEW", fadeDuration: 1)
                         AudioManager.shared.adjustVolume(to: 1, for: AudioManager.shared.currentTheme, fadeDuration: 1)
                     }
                 ]))
