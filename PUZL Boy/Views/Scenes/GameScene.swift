@@ -508,7 +508,7 @@ class GameScene: SKScene {
         pauseResetEngine.shouldDisable(true)
 
         // TODO: - Make this happen at certain levels only.
-        gameEngine.spawnPrincessCapture(at: (row: 0, col: 2))
+        gameEngine.spawnPrincessCapture(at: (row: 2, col: 1))
 
         chatEngine.playDialogue(level: currentLevel) { [unowned self] in
             scoringEngine.timerManager.resumeTime()
@@ -520,7 +520,7 @@ class GameScene: SKScene {
             run(SKAction.sequence([
                 SKAction.wait(forDuration: 5),
                 SKAction.run {
-                    self.gameEngine.despawnPrincessCapture(at: (row: 0, col: 2))
+                    self.gameEngine.despawnPrincessCapture(at: (row: 2, col: 1))
                 }
             ]))
             

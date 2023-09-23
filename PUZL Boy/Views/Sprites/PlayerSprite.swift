@@ -160,7 +160,7 @@ class PlayerSprite {
             SKAction.colorize(withColorBlendFactor: 0.0, duration: 1.5 * PartyModeSprite.shared.speedMultiplier)
         ])
         
-        AudioManager.shared.playSound(for: "movepoisoned\(Int.random(in: 1...4))")
+        AudioManager.shared.playSound(for: "movepoisoned\(Int.random(in: 1...3))")
 
         player.sprite.run(marshEffect, withKey: AnimationKey.playerMarsh.rawValue)
     }

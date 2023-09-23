@@ -269,8 +269,11 @@ class GameboardSprite {
         overlayPanel.name = "captureEndOpen"
         sprite.addChild(overlayPanel)
         
+        AudioManager.shared.playSound(for: "magicdoomloop", interruptPlayback: false)
+        AudioManager.shared.adjustVolume(to: 0.25, for: AudioManager.shared.currentTheme, fadeDuration: 0.5)
+        
         spawnItem(at: position, with: .warp4) { [unowned self] in
-            AudioManager.shared.playSound(for: "movepoisoned4")
+            AudioManager.shared.playSound(for: "magicwarp")
             ParticleEngine.shared.animateParticles(type: .warp4,
                                                    toNode: sprite,
                                                    position: getLocation(at: position),
@@ -367,6 +370,9 @@ class GameboardSprite {
                 node.run(SKAction.sequence([
                     SKAction.group([
                         SKAction.fadeOut(withDuration: actionDuration / 2),
+                        SKAction.run {
+                            AudioManager.shared.playSound(for: "magicteleport")
+                        },
                         SKAction.repeat(SKAction.sequence([
                             SKAction.run { [unowned self] in
                                 let illusionSprite = SKSpriteNode(imageNamed: node.texture?.getFilename() ?? "VillainIdle (1)")
@@ -395,6 +401,8 @@ class GameboardSprite {
                     SKAction.run {
                         let angleOfAttack: CGFloat = SpriteMath.Trigonometry.getAngles(startPoint: startPoint + playerOffset + villainOffset, endPoint: endPoint + playerOffset + villainOffset).beta * (endPoint.y < startPoint.y ? 1 : -1)
                         
+                        AudioManager.shared.playSound(for: "magicblast")
+                        
                         ParticleEngine.shared.animateParticles(type: .magicBlast,
                                                                toNode: node,
                                                                position: CGPoint(x: 160, y: 100),
@@ -420,6 +428,8 @@ class GameboardSprite {
                     SKAction.removeFromParent(),
                     SKAction.run {
                         AudioManager.shared.playSound(for: "dooropen")
+                        AudioManager.shared.stopSound(for: "magicdoomloop", fadeDuration: 1)
+                        AudioManager.shared.adjustVolume(to: 1, for: AudioManager.shared.currentTheme, fadeDuration: 1)
                     }
                 ]))
             }

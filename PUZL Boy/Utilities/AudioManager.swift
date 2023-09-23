@@ -106,6 +106,9 @@ class AudioManager {
         addAudioItem("lavaappear2", category: .soundFX)
         addAudioItem("lavaappear3", category: .soundFX)
         addAudioItem("lavasizzle", category: .soundFX)
+        addAudioItem("magicblast", category: .soundFX) //needs purchase $1
+        addAudioItem("magicteleport", category: .soundFX) //needs purchase $1
+        addAudioItem("magicwarp", category: .soundFX)
         addAudioItem("moveglide", category: .soundFX)
         addAudioItem("movemarsh1", category: .soundFX)
         addAudioItem("movemarsh2", category: .soundFX)
@@ -113,7 +116,6 @@ class AudioManager {
         addAudioItem("movepoisoned1", category: .soundFX)
         addAudioItem("movepoisoned2", category: .soundFX)
         addAudioItem("movepoisoned3", category: .soundFX)
-        addAudioItem("movepoisoned4", category: .soundFX)
         addAudioItem("moverun1", category: .soundFX)
         addAudioItem("moverun2", category: .soundFX)
         addAudioItem("moverun3", category: .soundFX)
@@ -143,10 +145,11 @@ class AudioManager {
         
         //Looped SFX
         addAudioItem("clocktick", category: .soundFXLoop)
+        addAudioItem("magicdoomloop", category: .soundFXLoop) //needs purchase $1
         
         
         //No Loop music
-        addAudioItem("ageofruin", category: .musicNoLoop) //needs purchase
+        addAudioItem("ageofruin", category: .musicNoLoop) //needs purchase $20
         addAudioItem("gameover", category: .musicNoLoop)
         addAudioItem("titletheme", category: .musicNoLoop)
 
@@ -215,10 +218,13 @@ class AudioManager {
      - parameters:
         - audioKey: the key for the audio item to play
         - currentTime: currentTime to start the playback at; if nil, don't set
+        - fadeIn: ramp up time in TimeInterval before reaching max volume. Default is 0.
+        - delay: adds a delay in TimeInterval before playing the sound. Default is nil.
         - pan: pan value to initialize, defaults to center of player
+        - interruptPlayback: I forgot what this meant, but the default is true 🤷🏻‍♀️
      - returns: True if the player can play. False, otherwise.
      */
-    @discardableResult func playSound(for audioKey: String, currentTime: TimeInterval? = nil, fadeIn: TimeInterval = 0.0, delay: TimeInterval? = nil, pan: Float = 0, interruptPlayback: Bool = true, ignoreSoundOff: Bool = false) -> Bool? {
+    @discardableResult func playSound(for audioKey: String, currentTime: TimeInterval? = nil, fadeIn: TimeInterval = 0.0, delay: TimeInterval? = nil, pan: Float = 0, interruptPlayback: Bool = true) -> Bool? {
         guard let item = audioItems[audioKey], let player = configureAudioPlayer(for: item) else {
             print("Unable to find \(audioKey) in AudioManager.audioItems[]")
             return false
@@ -229,7 +235,7 @@ class AudioManager {
         }
                 
         audioItems[item.fileName]!.player = player
-        audioItems[item.fileName]!.player.volume = ignoreSoundOff ? audioItems[item.fileName]!.maxVolume : audioItems[item.fileName]!.currentVolume
+        audioItems[item.fileName]!.player.volume = audioItems[item.fileName]!.currentVolume
         audioItems[item.fileName]!.player.pan = pan
         audioItems[item.fileName]!.player.prepareToPlay()
 
@@ -244,7 +250,7 @@ class AudioManager {
             if fadeIn > 0 {
                 audioItem.player.setVolume(0.0, fadeDuration: 0)
                 audioItem.player.play()
-                audioItem.player.setVolume(ignoreSoundOff ? audioItem.maxVolume : audioItem.currentVolume, fadeDuration: fadeIn)
+                audioItem.player.setVolume(audioItem.currentVolume, fadeDuration: fadeIn)
             }
             else {
                 audioItem.player.play()
