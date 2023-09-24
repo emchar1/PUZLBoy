@@ -118,9 +118,8 @@ struct K {
         static let muteMusic = "MuteMusic"
         static let muteSoundFX = "MuteSoundFX"
         static let disableVibration = "DisableVibration"
-        static let disablePartyLights = "DisablePartyLights"
+        static let shouldSkipIntro = "ShouldSkipIntro"
         static let reviewStoreCount = "ReviewStoreCount"
         static let savedTime = "SavedTimeForReplenishLives"
-        static let shouldSkipIntro = "ShouldSkipIntro"
     }
 }

@@ -161,7 +161,7 @@ class PauseResetEngine {
         if Level.isPartyLevel(currentLevel) {
             pauseButtonSprite.texture = SKTexture(imageNamed: discoName)
             pauseButtonSprite.run(SKAction.colorize(with: .black,
-                                                    colorBlendFactor: !UserDefaults.standard.bool(forKey: K.UserDefaults.disablePartyLights) ? 0 : 0.52,
+                                                    colorBlendFactor: !UserDefaults.standard.bool(forKey: K.UserDefaults.muteMusic) ? 0 : 0.52,
                                                     duration: 0))
             hideMinorButtons()
         }
@@ -325,13 +325,11 @@ class PauseResetEngine {
         
         isPressed = false
         
-        let partyLightsOn = !UserDefaults.standard.bool(forKey: K.UserDefaults.disablePartyLights)
+        let partyLightsOn = !UserDefaults.standard.bool(forKey: K.UserDefaults.muteMusic)
                 
         UserDefaults.standard.set(partyLightsOn, forKey: K.UserDefaults.muteMusic)
-        UserDefaults.standard.set(partyLightsOn, forKey: K.UserDefaults.disablePartyLights)
 
         settingsPage.radioMusic.setIsOn(!partyLightsOn)
-        settingsPage.radioPartyLights.setIsOn(!partyLightsOn)
 
         if partyLightsOn {
             PartyModeSprite.shared.removeLights(duration: 0.5)
@@ -410,7 +408,7 @@ class PauseResetEngine {
     func touchUp() {
         guard !isDisabled else { return }
         
-        pauseButtonSprite.run(SKAction.colorize(withColorBlendFactor: Level.isPartyLevel(currentLevel) ? (!UserDefaults.standard.bool(forKey: K.UserDefaults.disablePartyLights) ? 0 : 0.52) : 0, duration: 0))
+        pauseButtonSprite.run(SKAction.colorize(withColorBlendFactor: Level.isPartyLevel(currentLevel) ? (!UserDefaults.standard.bool(forKey: K.UserDefaults.muteMusic) ? 0 : 0.52) : 0, duration: 0))
         resetButtonSprite.run(SKAction.colorize(withColorBlendFactor: 0, duration: 0))
         hintButtonSprite.run(SKAction.colorize(withColorBlendFactor: 0, duration: 0))
         

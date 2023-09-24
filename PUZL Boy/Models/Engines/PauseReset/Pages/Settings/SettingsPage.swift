@@ -16,7 +16,7 @@ class SettingsPage: ParentPage {
     private(set) var radioMusic: SettingsRadioNode!
     private var radioSoundFX: SettingsRadioNode!
     private var radioVibration: SettingsRadioNode!
-    private(set) var radioPartyLights: SettingsRadioNode!
+    private var radioSkipIntro: SettingsRadioNode!
     
     private(set) var tapButtonNotifications: SettingsTapArea!
     private(set) var tapButtonShare: SettingsTapArea!
@@ -79,13 +79,13 @@ class SettingsPage: ParentPage {
         radioVibration.zPosition = 10
         radioVibration.delegate = self
         
-        radioPartyLights = SettingsRadioNode(
-            text: "🪩 Bonus Level Lights",
+        radioSkipIntro = SettingsRadioNode(
+            text: "❎ Skip Intro",
             settingsSize: radioSize,
-            isOn: !UserDefaults.standard.bool(forKey: K.UserDefaults.disablePartyLights))
-        radioPartyLights.position = CGPoint(x: SettingsPage.padding, y: radioStart - SettingsRadioNode.radioNodeSize.height - 3 * radioSectionHeight)
-        radioPartyLights.zPosition = 10
-        radioPartyLights.delegate = self
+            isOn: UserDefaults.standard.bool(forKey: K.UserDefaults.shouldSkipIntro))
+        radioSkipIntro.position = CGPoint(x: SettingsPage.padding, y: radioStart - SettingsRadioNode.radioNodeSize.height - 3 * radioSectionHeight)
+        radioSkipIntro.zPosition = 10
+        radioSkipIntro.delegate = self
         
         tapButtonNotifications = SettingsTapArea(labelText: "🔔 Notifications", buttonText: "Enable", settingsSize: tapButtonSize, useMorningSky: useMorningSky)
         tapButtonNotifications.position = CGPoint(x: SettingsPage.padding, y: tapButtonStart - SettingsTapButton.buttonSize.height - 4 * tapButtonSectionHeight)
@@ -107,7 +107,7 @@ class SettingsPage: ParentPage {
         contentNode.addChild(radioMusic)
         contentNode.addChild(radioSoundFX)
         contentNode.addChild(radioVibration)
-        contentNode.addChild(radioPartyLights)
+        contentNode.addChild(radioSkipIntro)
         
         contentNode.addChild(tapButtonNotifications)
         contentNode.addChild(tapButtonShare)
@@ -127,7 +127,7 @@ class SettingsPage: ParentPage {
         radioMusic.setIsOn(!UserDefaults.standard.bool(forKey: K.UserDefaults.muteMusic))
         radioSoundFX.setIsOn(!UserDefaults.standard.bool(forKey: K.UserDefaults.muteSoundFX))
         radioVibration.setIsOn(!UserDefaults.standard.bool(forKey: K.UserDefaults.disableVibration))
-        radioPartyLights.setIsOn(!UserDefaults.standard.bool(forKey: K.UserDefaults.disablePartyLights))
+        radioSkipIntro.setIsOn(UserDefaults.standard.bool(forKey: K.UserDefaults.shouldSkipIntro))
     }
     
     override func touchDown(for touches: Set<UITouch>) {
@@ -139,7 +139,7 @@ class SettingsPage: ParentPage {
         radioMusic.touchDown(in: location)
         radioSoundFX.touchDown(in: location)
         radioVibration.touchDown(in: location)
-        radioPartyLights.touchDown(in: location)
+        radioSkipIntro.touchDown(in: location)
         
         tapButtonNotifications.touchDown(in: location)
         tapButtonShare.touchDown(in: location)
@@ -152,7 +152,7 @@ class SettingsPage: ParentPage {
         radioMusic.touchUp()
         radioSoundFX.touchUp()
         radioVibration.touchUp()
-        radioPartyLights.touchUp()
+        radioSkipIntro.touchUp()
         
         tapButtonNotifications.touchUp()
         tapButtonShare.touchUp()
@@ -168,7 +168,7 @@ class SettingsPage: ParentPage {
         radioMusic.tapRadio(in: location)
         radioSoundFX.tapRadio(in: location)
         radioVibration.tapRadio(in: location)
-        radioPartyLights.tapRadio(in: location)
+        radioSkipIntro.tapRadio(in: location)
         
         tapButtonNotifications.tapButton(in: location)
         tapButtonShare.tapButton(in: location)
@@ -185,6 +185,13 @@ extension SettingsPage: SettingsRadioNodeDelegate {
         case let radioNode where radioNode == radioMusic:
             UserDefaults.standard.set(!radioNode.isOn, forKey: K.UserDefaults.muteMusic)
             AudioManager.shared.updateVolumes()
+            
+            if radioNode.isOn {
+                PartyModeSprite.shared.addLights(duration: 0.5)
+            }
+            else {
+                PartyModeSprite.shared.removeLights(duration: 0.5)
+            }
         case let radioNode where radioNode == radioSoundFX:
             UserDefaults.standard.set(!radioNode.isOn, forKey: K.UserDefaults.muteSoundFX)
             AudioManager.shared.updateVolumes()
@@ -194,15 +201,8 @@ extension SettingsPage: SettingsRadioNodeDelegate {
             if radioNode.isOn {
                 Haptics.shared.executeCustomPattern(pattern: .enableVibration)
             }
-        case let radioNode where radioNode == radioPartyLights:
-            UserDefaults.standard.set(!radioNode.isOn, forKey: K.UserDefaults.disablePartyLights)
-            
-            if radioNode.isOn {
-                PartyModeSprite.shared.addLights(duration: 0.5)
-            }
-            else {
-                PartyModeSprite.shared.removeLights(duration: 0.5)
-            }
+        case let radioNode where radioNode == radioSkipIntro:
+            UserDefaults.standard.set(radioNode.isOn, forKey: K.UserDefaults.shouldSkipIntro)
         default:
             return
         }

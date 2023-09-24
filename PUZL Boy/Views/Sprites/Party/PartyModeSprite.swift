@@ -143,7 +143,7 @@ class PartyModeSprite: SKNode {
         
         startLights()
         
-        if UserDefaults.standard.bool(forKey: K.UserDefaults.disablePartyLights) {
+        if UserDefaults.standard.bool(forKey: K.UserDefaults.muteMusic) {
             removeLights()
         }
         else {

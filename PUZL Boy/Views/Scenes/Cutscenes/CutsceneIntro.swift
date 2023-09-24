@@ -370,9 +370,17 @@ class CutsceneIntro: SKScene {
                         ]))
                         
                         speechHero.run(SKAction.moveTo(x: speechHero.position.x + screenSize.width / 2 - hero.sprite.position.x, duration: 2 * runCycle))
+
+                        skyNode.run(SKAction.fadeIn(withDuration: 5))
+                        bloodSkyNode.run(SKAction.fadeOut(withDuration: 5))
+                        bloodOverlayNode.run(SKAction.fadeOut(withDuration: 5))
                     },
                     SpeechBubbleItem(profile: speechHero, chat: "Hang on princess...| I'm coming to rescue you!!!||||")
-                ], completion: completion)
+                ]) {
+                    UserDefaults.standard.set(true, forKey: K.UserDefaults.shouldSkipIntro)
+
+                    completion?()
+                }
             }
         ])) //end Speech Bubbles animation
     }
@@ -471,6 +479,9 @@ class CutsceneIntro: SKScene {
 extension CutsceneIntro: SkipIntroSpriteDelegate {
     func buttonWasTapped() {
         ButtonTap.shared.tap(type: .buttontap1)
+        AudioManager.shared.stopSound(for: "birdsambience", fadeDuration: 1)
+        AudioManager.shared.stopSound(for: "ageofruin", fadeDuration: 1)
+        UserDefaults.standard.set(true, forKey: K.UserDefaults.shouldSkipIntro)
 
         fadeTransitionNode.run(SKAction.sequence([
             SKAction.fadeIn(withDuration: 1),
@@ -478,9 +489,6 @@ extension CutsceneIntro: SkipIntroSpriteDelegate {
         ])) { [unowned self] in
             self.completion?()
         }
-        
-        AudioManager.shared.stopSound(for: "birdsambience", fadeDuration: 1)
-        AudioManager.shared.stopSound(for: "ageofruin", fadeDuration: 1)
     }
     
 }
