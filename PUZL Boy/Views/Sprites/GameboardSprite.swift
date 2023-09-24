@@ -269,11 +269,11 @@ class GameboardSprite {
         overlayPanel.name = "captureEndOpen"
         sprite.addChild(overlayPanel)
         
-        AudioManager.shared.playSound(for: "magicdoomloopNEW", fadeIn: 0.5, interruptPlayback: false)
+        AudioManager.shared.playSound(for: "magicdoomloop", fadeIn: 0.5, interruptPlayback: false)
         AudioManager.shared.adjustVolume(to: 0.25, for: AudioManager.shared.currentTheme, fadeDuration: 0.5)
         
         spawnItem(at: position, with: .warp4) { [unowned self] in
-//            AudioManager.shared.playSound(for: "magicwarpNEW")
+            AudioManager.shared.playSound(for: "magicwarp")
             ParticleEngine.shared.animateParticles(type: .warp4,
                                                    toNode: sprite,
                                                    position: getLocation(at: position),
@@ -425,7 +425,7 @@ class GameboardSprite {
                     SKAction.removeFromParent(),
                     SKAction.run {
                         AudioManager.shared.playSound(for: "dooropen")
-                        AudioManager.shared.stopSound(for: "magicdoomloopNEW", fadeDuration: 1)
+                        AudioManager.shared.stopSound(for: "magicdoomloop", fadeDuration: 1)
                         AudioManager.shared.adjustVolume(to: 1, for: AudioManager.shared.currentTheme, fadeDuration: 1)
                     }
                 ]))

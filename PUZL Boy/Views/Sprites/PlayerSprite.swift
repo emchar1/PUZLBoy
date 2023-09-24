@@ -225,7 +225,7 @@ class PlayerSprite {
     
     func startItemCollectAnimation(on gameboard: GameboardSprite, at panel: K.GameboardPosition, item: LevelType, sound: LevelType = .gem, completion: @escaping (() -> Void)) {
         let itemSprite = SKSpriteNode(imageNamed: item.description)
-        itemSprite.position = gameboard.getLocation(at: panel)
+        itemSprite.position = gameboard.getLocation(at: panel) + GameboardSprite.padding / 2
         itemSprite.zPosition = K.ZPosition.itemsAndEffects + 10
         itemSprite.setScale(gameboard.panelSize / itemSprite.size.width)
         
