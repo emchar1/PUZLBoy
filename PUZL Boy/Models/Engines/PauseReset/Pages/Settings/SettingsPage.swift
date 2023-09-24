@@ -80,7 +80,7 @@ class SettingsPage: ParentPage {
         radioVibration.delegate = self
         
         radioSkipIntro = SettingsRadioNode(
-            text: "❎ Skip Intro",
+            text: "⏩ Skip Intro",
             settingsSize: radioSize,
             isOn: UserDefaults.standard.bool(forKey: K.UserDefaults.shouldSkipIntro))
         radioSkipIntro.position = CGPoint(x: SettingsPage.padding, y: radioStart - SettingsRadioNode.radioNodeSize.height - 3 * radioSectionHeight)
