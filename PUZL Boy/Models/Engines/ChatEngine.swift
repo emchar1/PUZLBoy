@@ -104,7 +104,7 @@ class ChatEngine {
                                              cornerRadius: 20).cgPath
         backgroundSprite.fillColor = .orange
         backgroundSprite.strokeColor = .white
-        backgroundSprite.fillTexture = SKTexture(image: UIImage.chatGradientTexture)
+        backgroundSprite.fillTexture = SKTexture(image: UIImage.gradientTextureChat)
         backgroundSprite.setScale(0)
         backgroundSprite.name = "backgroundSprite"
         backgroundSprite.zPosition = K.ZPosition.chatDialogue

@@ -80,7 +80,7 @@ class DecisionButtonSprite: SKNode {
         
         topSprite = SKShapeNode(rectOf: buttonSize, cornerRadius: cornerRadius)
         topSprite.fillColor = color
-        topSprite.fillTexture = SKTexture(image: .chatGradientTexture)
+        topSprite.fillTexture = SKTexture(image: UIImage.gradientTextureChat)
         topSprite.strokeColor = .white
         topSprite.lineWidth = 4
         topSprite.position = .zero

@@ -79,7 +79,7 @@ class SettingsTapButton: SKNode {
                 
         tapButton = SKShapeNode(rectOf: SettingsTapButton.buttonSize, cornerRadius: 20)
         tapButton.position = positionOrig
-        tapButton.fillTexture = SKTexture(image: UIImage.menuGradientTexture)
+        tapButton.fillTexture = SKTexture(image: UIImage.gradientTextureMenu)
         tapButton.strokeColor = .white
         tapButton.lineWidth = 0
         tapButton.name = nodeName

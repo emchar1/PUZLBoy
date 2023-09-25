@@ -203,11 +203,11 @@ class TitleScene: SKScene {
         boyTitle.fontColor = myColors.title
         
         menuBackground.fillColor = myColors.background
-        menuBackground.fillTexture = SKTexture(image: UIImage.menuGradientTexture)
+        menuBackground.fillTexture = SKTexture(image: UIImage.gradientTextureMenu)
         menuBackground.updateShadowColor(myColors.shadow)
         
         settingsBackground.fillColor = myColors.background
-        settingsBackground.fillTexture = SKTexture(image: UIImage.menuGradientTexture)
+        settingsBackground.fillTexture = SKTexture(image: UIImage.gradientTextureMenu)
         settingsBackground.updateShadowColor(myColors.shadow)
         
         settingsClose.color = .black

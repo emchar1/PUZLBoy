@@ -80,7 +80,7 @@ class PurchaseTapButton: SKNode {
         tappableAreaNode = SKShapeNode(rectOf: PurchaseTapButton.buttonSize, cornerRadius: cornerRadius)
         tappableAreaNode.position = positionOrig
         tappableAreaNode.fillColor = backgroundColor
-        tappableAreaNode.fillTexture = SKTexture(image: UIImage.purchaseButtonGradientTexture)
+        tappableAreaNode.fillTexture = SKTexture(image: UIImage.gradientTexturePurchaseButton)
         tappableAreaNode.strokeColor = .clear
         tappableAreaNode.lineWidth = 0
         tappableAreaNode.zPosition = 10
@@ -89,7 +89,7 @@ class PurchaseTapButton: SKNode {
         sprite = SKShapeNode(rectOf: PurchaseTapButton.buttonSize, cornerRadius: cornerRadius)
         sprite.position = positionOrig
         sprite.fillColor = backgroundColor
-        sprite.fillTexture = SKTexture(image: UIImage.menuGradientTexture)
+        sprite.fillTexture = SKTexture(image: UIImage.gradientTextureMenu)
         sprite.strokeColor = .clear
         sprite.lineWidth = 0
         sprite.addDropShadow(rectOf: PurchaseTapButton.buttonSize, cornerRadius: cornerRadius, shadowOffset: shadowOffset, shadowColor: shadowColor)

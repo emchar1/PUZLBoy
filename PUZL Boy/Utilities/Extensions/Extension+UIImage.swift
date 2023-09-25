@@ -8,19 +8,12 @@
 import UIKit
 
 extension UIImage {
-    ///Commonly used in menu background colors.
-    static let menuGradientTexture = UIImage.createGradientImage(startPoint: CGPoint(x: 0.5, y: 1), endPoint: CGPoint(x: 0.5, y: 0.5), topColorWhiteValue: 200, bottomColorWhiteValue: 255)
-    
-    ///Commonly used gradient texture used in chat bubbles, etc.
-    static let chatGradientTexture = UIImage.createGradientImage(startPoint: CGPoint(x: 0.5, y: 1), endPoint: CGPoint(x: 0.5, y: 0.5), topColorWhiteValue: 100, bottomColorWhiteValue: 200)
-    
-    ///Commonly used in Purchase Buttons, with image inlay.
-    static let purchaseButtonGradientTexture = UIImage.createGradientImage(
-        withBounds: CGRect(x: 0, y: 0, width: K.ScreenDimensions.iPhoneWidth, height: K.ScreenDimensions.height),
-        startPoint: CGPoint(x: 0.5, y: 1), endPoint: CGPoint(x: 0.5, y: 0.5),
-        colors: [UIColor(red: 100 / 255, green: 100 / 255, blue: 100 / 255, alpha: 1).cgColor,
-                 UIColor(red: 200 / 255, green: 200 / 255, blue: 200 / 255, alpha: 0.1).cgColor]
-    )
+    static let gradientTextureMenu = UIImage(named: "gradientMenu") ?? UIImage() //(yStart: 0.5, yEnd: 1); (whitenessStart: 100%, whitenessEnd: 80%)
+    static let gradientTextureChat = UIImage(named: "gradientChat") ?? UIImage() //(0.5, 1); (80%, 40%)
+    static let gradientTextureDisplayIcon = UIImage(named: "gradientDisplayIcon") ?? UIImage() //(0.5, 1); (60%, 80%)
+    static let gradientTexturePurchaseButton = UIImage(named: "gradientPurchaseButton") ?? UIImage() //(0.5, 1); (60%, 40%)
+    static let gradientTextureLoadingBar = UIImage(named: "gradientLoadingBar") ?? UIImage() //(0.5, 1); (80%, 100%)
+    static let gradientTextureLoadingContainer = UIImage(named: "gradientLoadingContainer") ?? UIImage() //(0, 1); (0%, 60%)
 
     ///Can also be used in menu background colors.
     static var skyGradientTexture: UIImage {

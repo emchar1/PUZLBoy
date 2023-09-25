@@ -38,11 +38,9 @@ class LoadingSprite: SKNode {
         sprite.lineWidth = 0
         sprite.position = position
         
-        let statusGradient: UIImage = UIImage.createGradientImage(startPoint: CGPoint(x: 0.5, y: 0.5), endPoint: CGPoint(x: 0.5, y: 1.0),
-                                                                  topColorWhiteValue: 250, bottomColorWhiteValue: 200)
         statusSprite = SKShapeNode(rectOf: CGSize(width: initialProgress, height: statusBarHeight - statusBarLineWidth))
         statusSprite.fillColor = .green
-        statusSprite.fillTexture = SKTexture(image: statusGradient)
+        statusSprite.fillTexture = SKTexture(image: UIImage.gradientTextureLoadingBar)
         statusSprite.lineWidth = 0
         statusSprite.position = CGPoint(x: -(statusBarLength - statusBarLineWidth - initialProgress) / 2, y: 0)
         
@@ -55,11 +53,9 @@ class LoadingSprite: SKNode {
 
         super.init()
         
-        let statusBarGradient: UIImage = UIImage.createGradientImage(startPoint: CGPoint(x: 0.5, y: 0.0), endPoint: CGPoint(x: 0.5, y: 1.0),
-                                                                     topColorWhiteValue: 0, bottomColorWhiteValue: 150)
         let statusBar = SKShapeNode(rectOf: CGSize(width: statusBarLength, height: statusBarHeight), cornerRadius: cornerRadius)
         statusBar.fillColor = .darkGray
-        statusBar.fillTexture = SKTexture(image: statusBarGradient)
+        statusBar.fillTexture = SKTexture(image: UIImage.gradientTextureLoadingContainer)
         statusBar.lineWidth = 0
         
         let statusBarFrame = SKShapeNode(rectOf: CGSize(width: statusBarLength, height: statusBarHeight), cornerRadius: cornerRadius)

@@ -59,7 +59,7 @@ class ConfirmSprite: SKNode {
         backgroundSprite = SKShapeNode(rectOf: CGSize(width: K.ScreenDimensions.iPhoneWidth, height: K.ScreenDimensions.iPhoneWidth / 2),
                                        cornerRadius: 20)
         backgroundSprite.fillColor = .gray
-        backgroundSprite.fillTexture = SKTexture(image: UIImage.chatGradientTexture)
+        backgroundSprite.fillTexture = SKTexture(image: UIImage.gradientTextureChat)
         backgroundSprite.lineWidth = 12
         backgroundSprite.strokeColor = .white
         backgroundSprite.setScale(GameboardSprite.spriteScale)

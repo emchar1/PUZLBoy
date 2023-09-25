@@ -117,7 +117,7 @@ class SettingsButton: SKNode {
             buttonSprite.fillColor = isPressed ? PauseResetEngine.backgroundShadowColor : PauseResetEngine.backgroundColor
         }
         
-        buttonSprite.fillTexture = SKTexture(image: UIImage.menuGradientTexture)
+        buttonSprite.fillTexture = SKTexture(image: UIImage.gradientTextureMenu)
         shadowSprite.fillColor = PauseResetEngine.backgroundShadowColor
     }
 }
