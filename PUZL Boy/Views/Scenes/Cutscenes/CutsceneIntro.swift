@@ -97,7 +97,9 @@ class CutsceneIntro: SKScene {
         skyNode.name = LaunchScene.nodeName_skyNode
         
         bloodSkyNode = SKSpriteNode(texture: SKTexture(image: UIImage.gradientTextureSkyBlood))
-        bloodSkyNode.anchorPoint = .zero
+        bloodSkyNode.size = CGSize(width: K.ScreenDimensions.screenSize.width, height: K.ScreenDimensions.screenSize.height / 2)
+        bloodSkyNode.position = CGPoint(x: 0, y: K.ScreenDimensions.screenSize.height)
+        bloodSkyNode.anchorPoint = CGPoint(x: 0, y: 1)
         bloodSkyNode.zPosition = K.ZPosition.skyNode
         bloodSkyNode.name = LaunchScene.nodeName_skyNode
         bloodSkyNode.alpha = 0
