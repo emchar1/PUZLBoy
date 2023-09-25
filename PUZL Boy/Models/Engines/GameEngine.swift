@@ -618,7 +618,7 @@ class GameEngine {
     // MARK: - Spawn Functions
     
     ///Spawns items in a party level.
-    // FIXME: - Party items spawned especially in panel(0,0) seem to disappear instantly, especially with 3x3 size grids. BUG# 230914E01
+    // FIXME: - Party items spawned especially in panel(0,0) seem to disappear instantly, especially with 3x3 size grids. BUGFIX# 230914E01
     func spawnPartyItems(maxItems: Int) {
         guard Level.isPartyLevel(level.level) else { return }
                 
@@ -967,6 +967,9 @@ class GameEngine {
             if healthRemaining <= 0 {
                 displaySprite.drainHealth()
             }
+            
+            //Need this here otherwise when you die while gliding, it doesn't get reset and you start out gliding BUGFIX# 230924E01
+            isGliding = false
             
             GameEngine.livesRemaining -= 1
             GameEngine.usedContinue = true

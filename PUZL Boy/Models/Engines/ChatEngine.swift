@@ -200,7 +200,7 @@ class ChatEngine {
             closeChat()
         }
         
-        //Prevents spamming of the chat fast forward tapping. Adds a 0.5 second delay.
+        //Prevents spamming of the chat while FF tapping. Adds a 0.5s delay; MUST be 0.5s and no shorter to prevent crashing. BUGFIX# 230921E01
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
             self.isAnimating = false
         }
