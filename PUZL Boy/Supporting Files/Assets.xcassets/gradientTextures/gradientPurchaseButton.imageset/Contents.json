@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "spark.png",
+      "filename" : "gradientPurchaseButton.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "spark@2x.png",
+      "filename" : "gradientPurchaseButton@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "spark@3x.png",
+      "filename" : "gradientPurchaseButton@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }
