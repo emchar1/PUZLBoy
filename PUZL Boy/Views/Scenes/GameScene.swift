@@ -193,9 +193,6 @@ class GameScene: SKScene {
             hintConfirmSprite?.touchDown(in: location)
             partyResultsSprite?.touchDown(in: location)
         }
-        
-        // FIXME: - Debugging purposes only!!!
-        levelSkipEngine.handleControls(in: location)
     }
         
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -226,6 +223,9 @@ class GameScene: SKScene {
         guard !pauseResetEngine.isPaused else { return }
         
         gameEngine.handleControls(in: location)
+
+        // FIXME: - Debugging purposes only!!!
+        levelSkipEngine.handleControls(in: location)
     }
     
 
