@@ -162,7 +162,7 @@ class GameEngine {
     }
     
     private func finishInit(shouldSpawn: Bool) {
-        backgroundSprite = SKSpriteNode(texture: SKTexture(image: DayTheme.getSkyImage(endPointY: 1.0)))
+        backgroundSprite = SKSpriteNode(texture: SKTexture(image: DayTheme.getSkyImage()))
         backgroundSprite.size = CGSize(width: K.ScreenDimensions.iPhoneWidth, height: K.ScreenDimensions.height)
         backgroundSprite.position = .zero
         backgroundSprite.anchorPoint = .zero
@@ -204,6 +204,10 @@ class GameEngine {
         if !shouldSpawn {
             fadeGameboard(fadeOut: false, completion: nil)
         }
+        
+        // FIXME: - Added here otherwise doom loop will keep going if you skip level while it's animating.
+        AudioManager.shared.stopSound(for: "magicdoomloop")
+        AudioManager.shared.adjustVolume(to: 1, for: AudioManager.shared.currentTheme)
     }
     
     deinit {

@@ -128,7 +128,7 @@ class PartyResultsSprite: SKNode {
         
         addChild(backgroundSprite)
         
-        backgroundSprite.fillTexture = SKTexture(image: UIImage.skyGradientTexture)
+        backgroundSprite.fillTexture = SKTexture(image: DayTheme.getSkyImage())
         
         run(SKAction.sequence([
             SKAction.scale(to: 1.1, duration: 0.25),

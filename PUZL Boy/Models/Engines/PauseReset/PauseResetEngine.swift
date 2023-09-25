@@ -354,7 +354,7 @@ class PauseResetEngine {
             
             //These need to be here due to time of day feature.
             backgroundSprite.fillColor = PauseResetEngine.backgroundColor
-            backgroundSprite.fillTexture = SKTexture(image: UIImage.skyGradientTexture)
+            backgroundSprite.fillTexture = SKTexture(image: DayTheme.getSkyImage())
             backgroundSprite.updateShadowColor(PauseResetEngine.backgroundShadowColor)
 
             backgroundSprite.run(SKAction.group([

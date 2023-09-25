@@ -75,6 +75,7 @@ class TitleScene: SKScene {
         player.sprite.name = "playerSprite"
         
         skyNode = SKSpriteNode(texture: SKTexture(image: DayTheme.getSkyImage(useMorningSky: !UserDefaults.standard.bool(forKey: K.UserDefaults.shouldSkipIntro))))
+        skyNode.size = K.ScreenDimensions.screenSize
         skyNode.anchorPoint = .zero
         skyNode.zPosition = K.ZPosition.skyNode
         skyNode.name = "skyNode"

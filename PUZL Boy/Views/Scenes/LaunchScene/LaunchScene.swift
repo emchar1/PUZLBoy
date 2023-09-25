@@ -77,7 +77,9 @@ class LaunchScene: SKScene {
         loadingSprite.name = LaunchScene.nodeName_loadingSprite
                 
         skyNode = SKSpriteNode(texture: SKTexture(image: DayTheme.getSkyImage(useMorningSky: !UserDefaults.standard.bool(forKey: K.UserDefaults.shouldSkipIntro))))
-        skyNode.anchorPoint = .zero
+        skyNode.size = CGSize(width: K.ScreenDimensions.screenSize.width, height: K.ScreenDimensions.screenSize.height / 2)
+        skyNode.position = CGPoint(x: 0, y: K.ScreenDimensions.screenSize.height)
+        skyNode.anchorPoint = CGPoint(x: 0, y: 1)
         skyNode.zPosition = K.ZPosition.skyNode
         skyNode.name = LaunchScene.nodeName_skyNode
 
@@ -174,6 +176,11 @@ class LaunchScene: SKScene {
                 node.run(SKAction.fadeOut(withDuration: 0.5))
             case LaunchScene.nodeName_skyObjectNode:
                 fadeSkyObjectNode(node)
+            case LaunchScene.nodeName_skyNode:
+                node.run(SKAction.sequence([
+                    SKAction.wait(forDuration: playerCrouchDuration),
+                    SKAction.scaleY(to: 2, duration: moveDuration / 4)
+                ]))
             case LaunchScene.nodeName_backgroundNode:
                 for backgroundNode in node.children {
                     switch backgroundNode.name {

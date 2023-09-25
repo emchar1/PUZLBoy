@@ -90,11 +90,13 @@ class CutsceneIntro: SKScene {
         flyingDragon = FlyingDragon()
 
         skyNode = SKSpriteNode(texture: SKTexture(image: DayTheme.getSkyImage(useMorningSky: true)))
-        skyNode.anchorPoint = .zero
+        skyNode.size = CGSize(width: K.ScreenDimensions.screenSize.width, height: K.ScreenDimensions.screenSize.height / 2)
+        skyNode.position = CGPoint(x: 0, y: K.ScreenDimensions.screenSize.height)
+        skyNode.anchorPoint = CGPoint(x: 0, y: 1)
         skyNode.zPosition = K.ZPosition.skyNode
         skyNode.name = LaunchScene.nodeName_skyNode
         
-        bloodSkyNode = SKSpriteNode(texture: SKTexture(image: DayTheme.getBloodSkyImage()))
+        bloodSkyNode = SKSpriteNode(texture: SKTexture(image: UIImage.gradientTextureSkyBlood))
         bloodSkyNode.anchorPoint = .zero
         bloodSkyNode.zPosition = K.ZPosition.skyNode
         bloodSkyNode.name = LaunchScene.nodeName_skyNode

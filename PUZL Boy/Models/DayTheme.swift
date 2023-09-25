@@ -83,21 +83,24 @@ struct DayTheme {
     
     // MARK: - Functions
     
-    static func getSkyImage(endPointY: CGFloat = 0.5, useMorningSky: Bool = false) -> UIImage {
-        let skyColor: SkyColors = useMorningSky ? morningSky : self.skyColor
+    static func getSkyImage(useMorningSky: Bool = false) -> UIImage {
+        guard !useMorningSky else { return UIImage.gradientTextureSkyMorning }
         
-        return UIImage.createGradientImage(
-            withBounds: CGRect(x: 0, y: 0, width: K.ScreenDimensions.iPhoneWidth, height: K.ScreenDimensions.height),
-            startPoint: CGPoint(x: 0.5, y: 0),
-            endPoint: CGPoint(x: 0.5, y: endPointY),
-            colors: [skyColor.top.cgColor, skyColor.bottom.cgColor])
+        let skyImage: UIImage
+        
+        switch currentTheme {
+        case .dawn:
+            skyImage = UIImage.gradientTextureSkyDawn
+        case .morning:
+            skyImage = UIImage.gradientTextureSkyMorning
+        case .afternoon:
+            skyImage = UIImage.gradientTextureSkyAfternoon
+        case .night:
+            skyImage = UIImage.gradientTextureSkyNight
+        }
+        
+        return skyImage
     }
     
-    static func getBloodSkyImage() -> UIImage {
-        return UIImage.createGradientImage(
-            withBounds: CGRect(x: 0, y: 0, width: K.ScreenDimensions.iPhoneWidth, height: K.ScreenDimensions.height),
-            startPoint: CGPoint(x: 0.5, y: 0),
-            endPoint: CGPoint(x: 0.5, y: 0.5),
-            colors: [bloodSky.top.cgColor, bloodSky.bottom.cgColor])
-    }
+    
 }
