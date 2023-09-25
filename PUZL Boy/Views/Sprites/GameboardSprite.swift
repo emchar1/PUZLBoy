@@ -18,8 +18,8 @@ class GameboardSprite {
     static let spriteScale: CGFloat = UIDevice.isiPad ? 0.75 : 0.94
     static let padding: CGFloat = 12
     static var offsetPosition: CGPoint {
-        CGPoint(x: (K.ScreenDimensions.iPhoneWidth * (1 - GameboardSprite.spriteScale)) / 2 - (padding / 2),
-                y: (K.ScreenDimensions.height - K.ScreenDimensions.iPhoneWidth * GameboardSprite.spriteScale - K.ScreenDimensions.topMargin - 283) - (padding / 2))
+        CGPoint(x: (K.ScreenDimensions.size.width * (1 - GameboardSprite.spriteScale)) / 2 - (padding / 2),
+                y: (K.ScreenDimensions.size.height - K.ScreenDimensions.size.width * GameboardSprite.spriteScale - K.ScreenDimensions.topMargin - 283) - (padding / 2))
     }
 
     //Warp Properties
@@ -42,7 +42,7 @@ class GameboardSprite {
     
     init(level: Level) {
         panelCount = level.gameboard.count
-        panelSize = K.ScreenDimensions.iPhoneWidth / CGFloat(panelCount)
+        panelSize = K.ScreenDimensions.size.width / CGFloat(panelCount)
         panels = Array(repeating: Array(repeating: SKSpriteNode(), count: panelCount), count: panelCount)
         
         sprite = SKSpriteNode(color: GameboardSprite.gameboardColor, size: CGSize.zero + CGFloat(panelCount) * panelSize + GameboardSprite.padding)

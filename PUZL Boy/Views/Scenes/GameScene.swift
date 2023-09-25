@@ -432,7 +432,7 @@ class GameScene: SKScene {
     private func prepareAd(completion: (() -> Void)?) {
         AudioManager.shared.lowerVolume(for: AudioManager.shared.currentTheme, fadeDuration: 1.0)
 
-        adSprite = SKSpriteNode(color: .clear, size: CGSize(width: K.ScreenDimensions.iPhoneWidth, height: K.ScreenDimensions.height))
+        adSprite = SKSpriteNode(color: .clear, size: K.ScreenDimensions.size)
         adSprite!.anchorPoint = .zero
         adSprite!.zPosition = K.ZPosition.adSceneBlackout
         addChild(adSprite!)

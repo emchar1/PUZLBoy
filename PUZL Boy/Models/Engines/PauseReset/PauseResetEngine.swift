@@ -24,7 +24,7 @@ class PauseResetEngine {
     // MARK: - Properties
 
     //Size Properties
-    private let settingsSize = CGSize(width: K.ScreenDimensions.iPhoneWidth, height: K.ScreenDimensions.iPhoneWidth * (UIDevice.isiPad ? 1.17 : 1.25))
+    private let settingsSize = CGSize(width: K.ScreenDimensions.size.width, height: K.ScreenDimensions.size.width * (UIDevice.isiPad ? 1.17 : 1.25))
     private let settingsScale: CGFloat = GameboardSprite.spriteScale
 
     //Pause, Reset, Hint Buttons
@@ -246,7 +246,7 @@ class PauseResetEngine {
         
         howToPlayPage.tableView.frame = CGRect(
             origin: CGPoint(x: HowToPlayPage.padding / K.ScreenDimensions.ratioSKtoUI + K.ScreenDimensions.lrMargin,
-                            y: (K.ScreenDimensions.height - K.ScreenDimensions.topOfGameboard) / K.ScreenDimensions.ratioSKtoUI + topMargin),
+                            y: (K.ScreenDimensions.size.height - K.ScreenDimensions.topOfGameboard) / K.ScreenDimensions.ratioSKtoUI + topMargin),
             size: CGSize(width: settingsSize.width / K.ScreenDimensions.ratioSKtoUI * GameboardSprite.spriteScale - rightMargin,
                          height: settingsSize.height / K.ScreenDimensions.ratioSKtoUI * GameboardSprite.spriteScale - bottomMargin))
     }

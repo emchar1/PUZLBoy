@@ -30,7 +30,7 @@ class ChatEngine {
                 y: K.ScreenDimensions.topOfGameboard - backgroundSpriteWidth - ChatEngine.avatarSizeNew - 40)
     }
     private var backgroundSpriteWidth: CGFloat {
-        K.ScreenDimensions.iPhoneWidth * GameboardSprite.spriteScale
+        K.ScreenDimensions.size.width * GameboardSprite.spriteScale
     }
     
     //Other properties
@@ -109,8 +109,8 @@ class ChatEngine {
         backgroundSprite.name = "backgroundSprite"
         backgroundSprite.zPosition = K.ZPosition.chatDialogue
         
-        dimOverlaySprite = SKShapeNode(rectOf: CGSize(width: K.ScreenDimensions.iPhoneWidth, height: K.ScreenDimensions.height))
-        dimOverlaySprite.position = CGPoint(x: K.ScreenDimensions.iPhoneWidth / 2, y: K.ScreenDimensions.height / 2)
+        dimOverlaySprite = SKShapeNode(rectOf: K.ScreenDimensions.size)
+        dimOverlaySprite.position = CGPoint(x: K.ScreenDimensions.size.width / 2, y: K.ScreenDimensions.size.height / 2)
         dimOverlaySprite.fillColor = .black
         dimOverlaySprite.lineWidth = 0
         dimOverlaySprite.alpha = 0
@@ -273,7 +273,7 @@ class ChatEngine {
         
         textSprite.position.x = origin.x + (profile != .hero ? padding.x : avatarSprite.size.width)
         avatarSprite.position.x = origin.x + (profile == .hero ? padding.x : backgroundSpriteWidth - padding.x)
-        backgroundSprite.position.x = profile == .hero ? 0 : K.ScreenDimensions.iPhoneWidth
+        backgroundSprite.position.x = profile == .hero ? 0 : K.ScreenDimensions.size.width
         
         avatarSprite.xScale = profile == .hero ? abs(avatarSprite.xScale) : -abs(avatarSprite.xScale)
         backgroundSprite.setScale(0)

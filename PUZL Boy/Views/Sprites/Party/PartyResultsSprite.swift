@@ -15,7 +15,7 @@ class PartyResultsSprite: SKNode {
     
     // MARK: - Properties
     
-    private let backgroundSize = CGSize(width: K.ScreenDimensions.iPhoneWidth, height: K.ScreenDimensions.iPhoneWidth * (UIDevice.isiPad ? 1.2 : 1.25))
+    private let backgroundSize = CGSize(width: K.ScreenDimensions.size.width, height: K.ScreenDimensions.size.width * (UIDevice.isiPad ? 1.2 : 1.25))
     
     private var disableControls: Bool = true
     private var backgroundSprite: SKShapeNode!
@@ -36,7 +36,7 @@ class PartyResultsSprite: SKNode {
         super.init()
 
         setScale(0)
-        position = CGPoint(x: K.ScreenDimensions.iPhoneWidth / 2,
+        position = CGPoint(x: K.ScreenDimensions.size.width / 2,
                            y: K.ScreenDimensions.topOfGameboard - backgroundSize.height / 2 * GameboardSprite.spriteScale + GameboardSprite.padding)
         zPosition = K.ZPosition.messagePrompt
 
@@ -211,7 +211,7 @@ class PartyResultsSprite: SKNode {
         
         backgroundSprite.hideShadow(animationDuration: 0.05, completion: nil)
         
-        let fadeBackground = SKSpriteNode(color: .white, size: K.ScreenDimensions.screenSize)
+        let fadeBackground = SKSpriteNode(color: .white, size: K.ScreenDimensions.size)
         fadeBackground.alpha = 0
         fadeBackground.zPosition = K.ZPosition.messagePrompt + 100
         

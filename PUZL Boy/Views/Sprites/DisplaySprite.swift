@@ -34,7 +34,7 @@ class DisplaySprite {
         sprite.zPosition = K.ZPosition.display
         
         statusLives = DisplayLivesSprite(icon: "iconPlayer", amount: 3)
-        statusLives.position = CGPoint(x: K.ScreenDimensions.iPhoneWidth - K.ScreenDimensions.lrMargin - statusLives.iconSize,
+        statusLives.position = CGPoint(x: K.ScreenDimensions.size.width - K.ScreenDimensions.lrMargin - statusLives.iconSize,
                                        y: topYPosition + margin + 172)
         statusLives.name = DisplayStatusName.lives.rawValue
         
@@ -49,20 +49,20 @@ class DisplaySprite {
         statusMoves.name = DisplayStatusName.moves.rawValue
 
         statusHammers = DisplayStatusBarSprite(icon: "iconHammer", amount: 99, fillColor: .yellow)
-        statusHammers.position = CGPoint(x: K.ScreenDimensions.iPhoneWidth - K.ScreenDimensions.lrMargin - statusHammers.width,
+        statusHammers.position = CGPoint(x: K.ScreenDimensions.size.width - K.ScreenDimensions.lrMargin - statusHammers.width,
                                          y: topYPosition + margin + statusHammers.width / 2 + 14)
         statusHammers.name = DisplayStatusName.hammers.rawValue
 
         statusSwords = DisplayStatusBarSprite(icon: "iconSword", amount: 99, fillColor: .yellow)
-        statusSwords.position = CGPoint(x: K.ScreenDimensions.iPhoneWidth - K.ScreenDimensions.lrMargin - statusSwords.width,
+        statusSwords.position = CGPoint(x: K.ScreenDimensions.size.width - K.ScreenDimensions.lrMargin - statusSwords.width,
                                         y: topYPosition + margin + 14)
         statusSwords.name = DisplayStatusName.swords.rawValue
 
         levelLabel = SKLabelNode(text: nil)
         levelLabel.horizontalAlignmentMode = .right
         levelLabel.verticalAlignmentMode = .top
-        levelLabel.position = CGPoint(x: K.ScreenDimensions.iPhoneWidth - K.ScreenDimensions.lrMargin - margin,
-                                      y: K.ScreenDimensions.height - K.ScreenDimensions.topMargin)
+        levelLabel.position = CGPoint(x: K.ScreenDimensions.size.width - K.ScreenDimensions.lrMargin - margin,
+                                      y: K.ScreenDimensions.size.height - K.ScreenDimensions.topMargin)
         levelLabel.fontName = UIFont.gameFont
         levelLabel.fontSize = UIFont.gameFontSizeSmall
         levelLabel.fontColor = UIFont.gameFontColor

@@ -48,7 +48,7 @@ class PartyResultsLineItemSprite: SKNode {
         let lrBorder: CGFloat = 40
         
         let backgroundSprite = SKSpriteNode(color: .clear,
-                                            size: CGSize(width: K.ScreenDimensions.iPhoneWidth, height: PartyResultsLineItemSprite.lineItemHeight))
+                                            size: CGSize(width: K.ScreenDimensions.size.width, height: PartyResultsLineItemSprite.lineItemHeight))
         backgroundSprite.anchorPoint = CGPoint(x: 0, y: 0.5)
         backgroundSprite.position = .zero
         
@@ -68,7 +68,7 @@ class PartyResultsLineItemSprite: SKNode {
         descriptionLabel.addDropShadow()
         
         amountLabel = SKLabelNode(text: numberFormatter.string(from: NSNumber(value: amount)) ?? "XXX")
-        amountLabel.position = CGPoint(x: K.ScreenDimensions.iPhoneWidth - 2 * lrBorder, y: 0)
+        amountLabel.position = CGPoint(x: K.ScreenDimensions.size.width - 2 * lrBorder, y: 0)
         amountLabel.fontName = UIFont.gameFont
         amountLabel.fontSize = UIFont.gameFontSizeLarge
         amountLabel.fontColor = UIFont.gameFontColor

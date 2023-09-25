@@ -38,7 +38,7 @@ class OfflinePlaySprite: SKNode {
         sprite = SKLabelNode(text: "OFFLINE PLAY")
         sprite.horizontalAlignmentMode = .center
         sprite.verticalAlignmentMode = .top
-        sprite.position = CGPoint(x: K.ScreenDimensions.iPhoneWidth / 2, y: K.ScreenDimensions.height - K.ScreenDimensions.topMargin - 59)
+        sprite.position = CGPoint(x: K.ScreenDimensions.size.width / 2, y: K.ScreenDimensions.size.height - K.ScreenDimensions.topMargin - 59)
         sprite.fontName = UIFont.gameFont
         sprite.fontSize = UIFont.gameFontSizeSmall
         sprite.fontColor = .yellow

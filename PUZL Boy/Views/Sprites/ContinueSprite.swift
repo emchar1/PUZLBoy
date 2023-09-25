@@ -41,7 +41,7 @@ class ContinueSprite: SKNode {
         super.init()
                 
         setScale(0)
-        position = CGPoint(x: K.ScreenDimensions.iPhoneWidth / 2, y: K.ScreenDimensions.height / 2)
+        position = CGPoint(x: K.ScreenDimensions.size.width / 2, y: K.ScreenDimensions.size.height / 2)
         zPosition = K.ZPosition.messagePrompt
 
         setupSprites()
@@ -56,7 +56,7 @@ class ContinueSprite: SKNode {
     }
     
     private func setupSprites() {
-        backgroundSprite = SKShapeNode(rectOf: CGSize(width: K.ScreenDimensions.iPhoneWidth, height: 2 * K.ScreenDimensions.iPhoneWidth / 3),
+        backgroundSprite = SKShapeNode(rectOf: CGSize(width: K.ScreenDimensions.size.width, height: 2 * K.ScreenDimensions.size.width / 3),
                                        cornerRadius: 20)
         backgroundSprite.fillColor = .gray
         backgroundSprite.fillTexture = SKTexture(image: UIImage.gradientTextureChat)
@@ -77,7 +77,7 @@ class ContinueSprite: SKNode {
                                                color: DecisionButtonSprite.colorYellow,
                                                iconImageName: nil)
         skipLevelButton.position = CGPoint(
-            x: -K.ScreenDimensions.iPhoneWidth / 4,
+            x: -K.ScreenDimensions.size.width / 4,
             y: -backgroundSprite.frame.size.height / 2 + continueLabel.frame.height / (UIDevice.isiPad ? 2 : 0.5))
         skipLevelButton.delegate = self
 
@@ -85,20 +85,20 @@ class ContinueSprite: SKNode {
                                                color: DecisionButtonSprite.colorBlue,
                                                iconImageName: "iconBoot")
         buy5MovesButton.position = CGPoint(
-            x: -K.ScreenDimensions.iPhoneWidth / 4,
+            x: -K.ScreenDimensions.size.width / 4,
             y: skipLevelButton.position.y + skipLevelButton.buttonSize.height + continueLabel.frame.height / 2)
         buy5MovesButton.delegate = self
 
         watchAdButton = DecisionButtonSprite(text: "Watch Ad:      x\(ContinueSprite.extraLivesAd)",
                                              color: DecisionButtonSprite.colorGreen,
                                              iconImageName: "iconPlayer")
-        watchAdButton.position = CGPoint(x: K.ScreenDimensions.iPhoneWidth / 4, y: buy5MovesButton.position.y)
+        watchAdButton.position = CGPoint(x: K.ScreenDimensions.size.width / 4, y: buy5MovesButton.position.y)
         watchAdButton.delegate = self
 
         buy25LivesButton = DecisionButtonSprite(text: "Buy $4.99:      x\(ContinueSprite.extraLivesBuy25)",
                                                 color: DecisionButtonSprite.colorGreen,
                                             iconImageName: "iconPlayer")
-        buy25LivesButton.position = CGPoint(x: K.ScreenDimensions.iPhoneWidth / 4, y: skipLevelButton.position.y)
+        buy25LivesButton.position = CGPoint(x: K.ScreenDimensions.size.width / 4, y: skipLevelButton.position.y)
         buy25LivesButton.delegate = self
 
         livesRefreshLabel = SKLabelNode(text: "Or wait for \(LifeSpawnerModel.defaultLives) lives in: 02:00:00")

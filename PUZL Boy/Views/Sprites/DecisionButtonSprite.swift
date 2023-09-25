@@ -21,7 +21,7 @@ class DecisionButtonSprite: SKNode {
     static let colorRed = UIColor(red: 227 / 255, green: 32 / 255, blue: 9 / 255, alpha: 1.0)
     static let colorGreen = UIColor(red: 0 / 255, green: 168 / 255, blue: 86 / 255, alpha: 1.0)
 
-    let buttonSize = CGSize(width: K.ScreenDimensions.iPhoneWidth * (4 / 9), height: K.ScreenDimensions.iPhoneWidth / 8)
+    let buttonSize = CGSize(width: K.ScreenDimensions.size.width * (4 / 9), height: K.ScreenDimensions.size.width / 8)
     let shadowOffset = CGPoint(x: -8, y: -8)
     let iconScale: CGFloat = UIDevice.isiPad ? 120 : 90
 

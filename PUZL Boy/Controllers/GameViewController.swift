@@ -29,7 +29,7 @@ class GameViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        var launchScene: LaunchScene? = LaunchScene(size: K.ScreenDimensions.screenSize)
+        var launchScene: LaunchScene? = LaunchScene(size: K.ScreenDimensions.size)
         var cutsceneIntro: CutsceneIntro?
         
         monitor = NWPathMonitor()
@@ -73,7 +73,7 @@ class GameViewController: UIViewController {
                     
                     DispatchQueue.main.asyncAfter(deadline: .now() + LoadingSprite.loadingDuration) {
                         if !UserDefaults.standard.bool(forKey: K.UserDefaults.shouldSkipIntro) {
-                            cutsceneIntro = CutsceneIntro(size: K.ScreenDimensions.screenSize, xOffsetsArray: nil)
+                            cutsceneIntro = CutsceneIntro(size: K.ScreenDimensions.size, xOffsetsArray: nil)
 
                             launchScene?.animateTransition(animationSequence: .running) { xOffsetsArray in
                                 guard let xOffsetsArray = xOffsetsArray else { return }
@@ -107,7 +107,7 @@ class GameViewController: UIViewController {
     }//end viewDidLoad()
     
     private func presentTitleScene() {
-        let titleScene = TitleScene(size: K.ScreenDimensions.screenSize)
+        let titleScene = TitleScene(size: K.ScreenDimensions.size)
         titleScene.titleSceneDelegate = self
         
         skView.presentScene(titleScene)
@@ -132,7 +132,7 @@ extension GameViewController: TitleSceneDelegate {
             skView.presentScene(gameScenePreserved, transition: SKTransition.fade(with: .white, duration: 1.0))
         }
         else {
-            let gameScene = GameScene(size: K.ScreenDimensions.screenSize, hasInternet: hasInternet)
+            let gameScene = GameScene(size: K.ScreenDimensions.size, hasInternet: hasInternet)
             gameScene.gameSceneDelegate = self
             
             skView.presentScene(gameScene, transition: SKTransition.fade(with: .white, duration: 1.0))
@@ -142,7 +142,7 @@ extension GameViewController: TitleSceneDelegate {
     
     // TODO: - CreditsScene
     func didTapCredits() {
-        let creditsScene = CreditsScene(size: K.ScreenDimensions.screenSize)
+        let creditsScene = CreditsScene(size: K.ScreenDimensions.size)
         creditsScene.creditsSceneDelegate = self
         
         skView.presentScene(creditsScene, transition: SKTransition.doorsOpenVertical(withDuration: 1.0))
@@ -154,7 +154,7 @@ extension GameViewController: TitleSceneDelegate {
 
 extension GameViewController: CreditsSceneDelegate {
     func goBackTapped() {
-        let titleScene = TitleScene(size: K.ScreenDimensions.screenSize)
+        let titleScene = TitleScene(size: K.ScreenDimensions.size)
         titleScene.titleSceneDelegate = self
         
         //NEEDS to have a transition, otherwise the state won't save, trust me.
@@ -167,7 +167,7 @@ extension GameViewController: CreditsSceneDelegate {
 
 extension GameViewController: GameSceneDelegate {
     func confirmQuitTapped() {
-        let titleScene = TitleScene(size: K.ScreenDimensions.screenSize)
+        let titleScene = TitleScene(size: K.ScreenDimensions.size)
         titleScene.titleSceneDelegate = self
         
         //NEEDS to have a transition, otherwise the state won't save, trust me.
@@ -221,7 +221,7 @@ extension GameViewController {
         if let popOver = activityViewController.popoverPresentationController {
             popOver.sourceView = self.view
             popOver.sourceRect = CGRect(
-                origin: CGPoint(x: K.ScreenDimensions.screenSizeUI.width / 2 + 140, y: K.ScreenDimensions.screenSizeUI.height / 2 + 140),
+                origin: CGPoint(x: K.ScreenDimensions.sizeUI.width / 2 + 140, y: K.ScreenDimensions.sizeUI.height / 2 + 140),
                 size: .zero)
         }
     }

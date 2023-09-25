@@ -41,7 +41,7 @@ class ConfirmSprite: SKNode {
         super.init()
         
         setScale(0)
-        position = CGPoint(x: K.ScreenDimensions.iPhoneWidth / 2, y: K.ScreenDimensions.height / 2)
+        position = CGPoint(x: K.ScreenDimensions.size.width / 2, y: K.ScreenDimensions.size.height / 2)
         zPosition = K.ZPosition.messagePrompt
         
         setupSprites()
@@ -56,7 +56,7 @@ class ConfirmSprite: SKNode {
     }
     
     private func setupSprites() {
-        backgroundSprite = SKShapeNode(rectOf: CGSize(width: K.ScreenDimensions.iPhoneWidth, height: K.ScreenDimensions.iPhoneWidth / 2),
+        backgroundSprite = SKShapeNode(rectOf: CGSize(width: K.ScreenDimensions.size.width, height: K.ScreenDimensions.size.width / 2),
                                        cornerRadius: 20)
         backgroundSprite.fillColor = .gray
         backgroundSprite.fillTexture = SKTexture(image: UIImage.gradientTextureChat)
@@ -74,13 +74,13 @@ class ConfirmSprite: SKNode {
         titleLabel.addHeavyDropShadow()
         
         confirmButton = DecisionButtonSprite(text: confirm, color: DecisionButtonSprite.colorRed, iconImageName: nil)
-        confirmButton.position = CGPoint(x: -K.ScreenDimensions.iPhoneWidth / 4,
+        confirmButton.position = CGPoint(x: -K.ScreenDimensions.size.width / 4,
                                          y: -backgroundSprite.frame.size.height / 2 + titleLabel.frame.height / (UIDevice.isiPad ? 2 : 0.5))
         confirmButton.name = "confirmButton"
         confirmButton.delegate = self
 
         cancelButton = DecisionButtonSprite(text: cancel, color: DecisionButtonSprite.colorBlue, iconImageName: nil)
-        cancelButton.position = CGPoint(x: K.ScreenDimensions.iPhoneWidth / 4, y: confirmButton.position.y)
+        cancelButton.position = CGPoint(x: K.ScreenDimensions.size.width / 4, y: confirmButton.position.y)
         cancelButton.name = "cancelButton"
         cancelButton.delegate = self
 
@@ -92,7 +92,7 @@ class ConfirmSprite: SKNode {
             x: 0,
             y: ((titleLabel.position.y - titleLabel.frame.size.height) - (confirmButton.position.y + confirmButton.frame.size.height)) / 3
         )
-        messageLabel.preferredMaxLayoutWidth = K.ScreenDimensions.iPhoneWidth * GameboardSprite.spriteScale
+        messageLabel.preferredMaxLayoutWidth = K.ScreenDimensions.size.width * GameboardSprite.spriteScale
         messageLabel.verticalAlignmentMode = .top
         messageLabel.numberOfLines = 0
         messageLabel.zPosition = 10

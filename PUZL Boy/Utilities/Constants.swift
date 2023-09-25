@@ -19,18 +19,17 @@ struct K {
     
     
     struct ScreenDimensions {
-        ///Default width of the iPhone device in Portrait mode, per RayWenderlich tutorial.
-        ///Should not be used. Use K.ScreenDimensions.iPhoneWidth instead!
+        ///Default width of the iPhone device in Portrait mode, per RayWenderlich tutorial. Should not be used AT ALL. Use K.ScreenDimensions.screenSize.width!!!
         private static let width: CGFloat = 1536
         
-        ///Default height of the iPhone device in Portrait mode, per RayWenderlich tutorial.
-        static let height: CGFloat = 2048
+        ///Default height of the iPhone device in Portrait mode, per RayWenderlich tutorial. Should not be used directly. Use K.ScreenDimensions.screenSize.height instead!!!
+        private static let height: CGFloat = 2048
         
-        ///Width of the most recent iPhone, i.e. iPhone 14. Width is 945
-        static let iPhoneWidth: CGFloat = height / iPhoneRatio
+        ///Width of the most recent iPhone, i.e. iPhone 14. Width is 945. Should not be used directly. Use K.ScreenDimensions.screenSize.width instead!!!
+        private static let iPhoneWidth: CGFloat = height / iPhoneRatio
 
         ///Aspect ratio of the most recent iPhone, i.e. iPhone 14. Ratio is 19.5/9 = 2.16667
-        static let iPhoneRatio: CGFloat = UIDevice.modelInfo.ratio
+        private static let iPhoneRatio: CGFloat = UIDevice.modelInfo.ratio
 
         ///Top margin of the device.
         static let topMargin: CGFloat = UIDevice.modelInfo.topSafeArea
@@ -45,13 +44,13 @@ struct K {
         static var topOfGameboard: CGFloat = topMargin
         
         ///The device's screen size.
-        static var screenSize: CGSize { CGSize(width: iPhoneWidth, height: height) }
+        static var size: CGSize { CGSize(width: iPhoneWidth, height: height) }
         
         ///The device's screen size in UI terms, which is different than [SpriteKit] screenSize.
-        static var screenSizeUI: CGSize { UIScreen.main.bounds.size }
+        static var sizeUI: CGSize { UIScreen.main.bounds.size }
         
         ///The ratio of SpriteKit screenSize to UIKit screenSize
-        static var ratioSKtoUI: CGFloat { (screenSize / screenSizeUI).width }
+        static var ratioSKtoUI: CGFloat { (size / sizeUI).width }
     }
     
     

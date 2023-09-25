@@ -14,7 +14,7 @@ class LoadingSprite: SKNode {
     static let loadingDuration: TimeInterval = TimeInterval.random(in: 0.5...7)
     
     private let statusBarHeight: CGFloat = 44
-    private let statusBarLength: CGFloat = K.ScreenDimensions.iPhoneWidth * 0.75
+    private let statusBarLength: CGFloat = K.ScreenDimensions.size.width * 0.75
     private let statusBarLineWidth: CGFloat = 6
     private let cornerRadius: CGFloat = 16
     private let initialProgress: CGFloat = 10
@@ -33,7 +33,7 @@ class LoadingSprite: SKNode {
     // MARK: - Initialization
     
     init(position: CGPoint) {
-        sprite = SKShapeNode(rectOf: CGSize(width: K.ScreenDimensions.iPhoneWidth, height: 200))
+        sprite = SKShapeNode(rectOf: CGSize(width: K.ScreenDimensions.size.width, height: 200))
         sprite.fillColor = .clear
         sprite.lineWidth = 0
         sprite.position = position

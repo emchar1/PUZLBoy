@@ -22,7 +22,7 @@ class ActivityIndicatorSprite: SKNode {
     override init() {
         super.init()
         
-        position = CGPoint(x: K.ScreenDimensions.iPhoneWidth / 2, y: K.ScreenDimensions.height / 2)
+        position = CGPoint(x: K.ScreenDimensions.size.width / 2, y: K.ScreenDimensions.size.height / 2)
         zPosition = K.ZPosition.activityIndicator
         
         setupSprites()

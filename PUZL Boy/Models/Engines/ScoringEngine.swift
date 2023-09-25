@@ -58,7 +58,7 @@ class ScoringEngine {
         totalScoreLabel.fontName = UIFont.gameFont
         totalScoreLabel.fontSize = UIFont.gameFontSizeSmall
         totalScoreLabel.fontColor = UIFont.gameFontColor
-        totalScoreLabel.position = CGPoint(x: K.ScreenDimensions.lrMargin + padding, y: K.ScreenDimensions.height - K.ScreenDimensions.topMargin)
+        totalScoreLabel.position = CGPoint(x: K.ScreenDimensions.lrMargin + padding, y: K.ScreenDimensions.size.height - K.ScreenDimensions.topMargin)
         totalScoreLabel.horizontalAlignmentMode = .left
         totalScoreLabel.verticalAlignmentMode = .top
         totalScoreLabel.zPosition = K.ZPosition.display
@@ -68,7 +68,7 @@ class ScoringEngine {
         scoreLabel.fontName = UIFont.gameFont
         scoreLabel.fontSize = UIFont.gameFontSizeSmall
         scoreLabel.fontColor = UIFont.gameFontColor
-        scoreLabel.position = CGPoint(x: K.ScreenDimensions.lrMargin + padding, y: K.ScreenDimensions.height - K.ScreenDimensions.topMargin - 59)
+        scoreLabel.position = CGPoint(x: K.ScreenDimensions.lrMargin + padding, y: K.ScreenDimensions.size.height - K.ScreenDimensions.topMargin - 59)
         scoreLabel.horizontalAlignmentMode = .left
         scoreLabel.verticalAlignmentMode = .top
         scoreLabel.zPosition = K.ZPosition.display
@@ -78,7 +78,7 @@ class ScoringEngine {
         elapsedTimeLabel.fontName = UIFont.gameFont
         elapsedTimeLabel.fontSize = UIFont.gameFontSizeMedium
         elapsedTimeLabel.fontColor = UIFont.gameFontColor
-        elapsedTimeLabel.position = CGPoint(x: K.ScreenDimensions.iPhoneWidth / 2 - elapsedTimeLabel.frame.width / 2,
+        elapsedTimeLabel.position = CGPoint(x: K.ScreenDimensions.size.width / 2 - elapsedTimeLabel.frame.width / 2,
                                             y: K.ScreenDimensions.topOfGameboard + 32)
         elapsedTimeLabel.horizontalAlignmentMode = .left
         elapsedTimeLabel.verticalAlignmentMode = .bottom

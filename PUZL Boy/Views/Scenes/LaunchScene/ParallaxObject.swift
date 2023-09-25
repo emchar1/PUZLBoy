@@ -17,7 +17,7 @@ struct ParallaxObject {
     let speed: TimeInterval
     let size: CGSize
     let zPosition: CGFloat
-    var scale: CGFloat { K.ScreenDimensions.height / size.height }
+    var scale: CGFloat { K.ScreenDimensions.size.height / size.height }
     var sizeScaled: CGFloat { size.width * scale }
     var imageName: String { "set\(set.rawValue)_layer\(layer)" }
     var nodeName: String {

@@ -30,7 +30,7 @@ class PartyEffectSprite: SKNode {
         let radius: CGFloat = CGFloat.random(in: 50...500)
         
         sprite = SKShapeNode(ellipseIn: CGRect(x: -radius / 2, y: -radius / 2, width: radius, height: radius))
-        sprite.position = CGPoint(x: CGFloat.random(in: 0...K.ScreenDimensions.iPhoneWidth), y: CGFloat.random(in: 0...K.ScreenDimensions.height))
+        sprite.position = CGPoint(x: CGFloat.random(in: 0...K.ScreenDimensions.size.width), y: CGFloat.random(in: 0...K.ScreenDimensions.size.height))
         sprite.fillColor = UIColor(red: CGFloat.random(in: 0...1), green: CGFloat.random(in: 0...1), blue: CGFloat.random(in: 0...1), alpha: 1)
         sprite.lineWidth = 0
         sprite.alpha = 0

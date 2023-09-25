@@ -58,18 +58,18 @@ class PartyModeSprite: SKNode {
     }
     
     private func setupSprites() {
-        let gameboardSize = K.ScreenDimensions.iPhoneWidth * GameboardSprite.spriteScale
+        let gameboardSize = K.ScreenDimensions.size.width * GameboardSprite.spriteScale
         
-        backgroundSprite = SKSpriteNode(color: .black, size: K.ScreenDimensions.screenSize)
+        backgroundSprite = SKSpriteNode(color: .black, size: K.ScreenDimensions.size)
         backgroundSprite.anchorPoint = .zero
         backgroundSprite.position = .zero
         backgroundSprite.zPosition = K.ZPosition.partyBackgroundOverlay
         
-        lightsSprite = SKSpriteNode(color: .clear, size: K.ScreenDimensions.screenSize)
+        lightsSprite = SKSpriteNode(color: .clear, size: K.ScreenDimensions.size)
         lightsSprite.anchorPoint = .zero
         lightsSprite.position = .zero
         
-        backgroundLights = SKSpriteNode(color: baseColor, size: K.ScreenDimensions.screenSize)
+        backgroundLights = SKSpriteNode(color: baseColor, size: K.ScreenDimensions.size)
         backgroundLights.alpha = 0.5
         backgroundLights.anchorPoint = .zero
         backgroundLights.position = .zero

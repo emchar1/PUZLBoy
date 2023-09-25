@@ -50,7 +50,7 @@ class LaunchScene: SKScene {
     }
     
     private func setupSprites() {
-        let playerPosition = CGPoint(x: K.ScreenDimensions.iPhoneWidth / 2, y: K.ScreenDimensions.height / 3)
+        let playerPosition = CGPoint(x: K.ScreenDimensions.size.width / 2, y: K.ScreenDimensions.size.height / 3)
         let playerScale: CGFloat = 0.75
         
         player = Player(type: .hero)
@@ -72,18 +72,18 @@ class LaunchScene: SKScene {
         playerReflection.sprite.yScale *= -1
         playerReflection.sprite.alpha = 0.25
         
-        loadingSprite = LoadingSprite(position: CGPoint(x: K.ScreenDimensions.iPhoneWidth / 2, y: K.ScreenDimensions.height / 6))
+        loadingSprite = LoadingSprite(position: CGPoint(x: K.ScreenDimensions.size.width / 2, y: K.ScreenDimensions.size.height / 6))
         loadingSprite.zPosition = K.ZPosition.loadingNode
         loadingSprite.name = LaunchScene.nodeName_loadingSprite
                 
         skyNode = SKSpriteNode(texture: SKTexture(image: DayTheme.getSkyImage(useMorningSky: !UserDefaults.standard.bool(forKey: K.UserDefaults.shouldSkipIntro))))
-        skyNode.size = CGSize(width: K.ScreenDimensions.screenSize.width, height: K.ScreenDimensions.screenSize.height / 2)
-        skyNode.position = CGPoint(x: 0, y: K.ScreenDimensions.screenSize.height)
+        skyNode.size = CGSize(width: K.ScreenDimensions.size.width, height: K.ScreenDimensions.size.height / 2)
+        skyNode.position = CGPoint(x: 0, y: K.ScreenDimensions.size.height)
         skyNode.anchorPoint = CGPoint(x: 0, y: 1)
         skyNode.zPosition = K.ZPosition.skyNode
         skyNode.name = LaunchScene.nodeName_skyNode
 
-        moonSprite = MoonSprite(position: CGPoint(x: K.ScreenDimensions.iPhoneWidth, y: K.ScreenDimensions.height), scale: 0.7 * 3, moonPhase: nil)
+        moonSprite = MoonSprite(position: CGPoint(x: K.ScreenDimensions.size.width, y: K.ScreenDimensions.size.height), scale: 0.7 * 3, moonPhase: nil)
         
         if !UserDefaults.standard.bool(forKey: K.UserDefaults.shouldSkipIntro) {
             moonSprite.alpha = 0
@@ -187,7 +187,7 @@ class LaunchScene: SKScene {
                     case LaunchScene.nodeName_groundObjectNode:
                         backgroundNode.run(SKAction.sequence([
                             SKAction.wait(forDuration: playerCrouchDuration),
-                            SKAction.moveBy(x: 0, y: -K.ScreenDimensions.height * 2, duration: moveDuration),
+                            SKAction.moveBy(x: 0, y: -K.ScreenDimensions.size.height * 2, duration: moveDuration),
                             SKAction.removeFromParent()
                         ]))
                     case LaunchScene.nodeName_skyObjectNode:
@@ -203,9 +203,9 @@ class LaunchScene: SKScene {
                 
                 //Player Action properties
                 let reflectionMultiplier: CGFloat = node.name == LaunchScene.nodeName_playerReflection ? -4 : 1
-                let jumpStartPoint = CGPoint(x: K.ScreenDimensions.iPhoneWidth / 3, y: K.ScreenDimensions.height / 3 * reflectionMultiplier)
-                let jumpEndPoint = CGPoint(x: K.ScreenDimensions.iPhoneWidth / 2, y: K.ScreenDimensions.height / 2 * reflectionMultiplier)
-                let jumpControlPoint = CGPoint(x: K.ScreenDimensions.iPhoneWidth * 2 / 3, y: K.ScreenDimensions.height * 2 / 3 * reflectionMultiplier)
+                let jumpStartPoint = CGPoint(x: K.ScreenDimensions.size.width / 3, y: K.ScreenDimensions.size.height / 3 * reflectionMultiplier)
+                let jumpEndPoint = CGPoint(x: K.ScreenDimensions.size.width / 2, y: K.ScreenDimensions.size.height / 2 * reflectionMultiplier)
+                let jumpControlPoint = CGPoint(x: K.ScreenDimensions.size.width * 2 / 3, y: K.ScreenDimensions.size.height * 2 / 3 * reflectionMultiplier)
                 
                 let jumpBezierPath = UIBezierPath()
                 jumpBezierPath.move(to: jumpStartPoint)
@@ -225,7 +225,7 @@ class LaunchScene: SKScene {
                 node.run(SKAction.sequence([
                     //1st Jump = 1.5
                     SKAction.group([
-                        SKAction.moveTo(x: K.ScreenDimensions.iPhoneWidth / 4, duration: playerCrouchDuration * parallaxManager.speedFactor),
+                        SKAction.moveTo(x: K.ScreenDimensions.size.width / 4, duration: playerCrouchDuration * parallaxManager.speedFactor),
                         SKAction.animate(with: player.textures[Player.Texture.jump.rawValue], timePerFrame: playerTimePerFrame),
                         SKAction.sequence([
                             SKAction.wait(forDuration: playerCrouchDuration),

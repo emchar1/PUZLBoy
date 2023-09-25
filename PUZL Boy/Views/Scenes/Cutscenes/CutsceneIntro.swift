@@ -12,10 +12,10 @@ class CutsceneIntro: SKScene {
     // MARK: - Properties
     
     //Positions, Scales
-    private let heroPosition = CGPoint(x: K.ScreenDimensions.screenSize.width / 2, y: K.ScreenDimensions.screenSize.height / 3)
-    private let princessPosition = CGPoint(x: K.ScreenDimensions.screenSize.width - 120, y: K.ScreenDimensions.screenSize.height / 3 - 40)
+    private let heroPosition = CGPoint(x: K.ScreenDimensions.size.width / 2, y: K.ScreenDimensions.size.height / 3)
+    private let princessPosition = CGPoint(x: K.ScreenDimensions.size.width - 120, y: K.ScreenDimensions.size.height / 3 - 40)
     private let playerScale: CGFloat = 0.75
-    private let screenSize = K.ScreenDimensions.screenSize
+    private let screenSize = K.ScreenDimensions.size
     
     //Main Nodes
     private(set) var parallaxManager: ParallaxManager!
@@ -84,21 +84,21 @@ class CutsceneIntro: SKScene {
 
         
         dragonSprite = SKSpriteNode(imageNamed: "enemyLarge")
-        dragonSprite.position = CGPoint(x: -dragonSprite.size.width, y: K.ScreenDimensions.height + dragonSprite.size.height)
+        dragonSprite.position = CGPoint(x: -dragonSprite.size.width, y: K.ScreenDimensions.size.height + dragonSprite.size.height)
         dragonSprite.zPosition = K.ZPosition.player + 10
         
         flyingDragon = FlyingDragon()
 
         skyNode = SKSpriteNode(texture: SKTexture(image: DayTheme.getSkyImage(useMorningSky: true)))
-        skyNode.size = CGSize(width: K.ScreenDimensions.screenSize.width, height: K.ScreenDimensions.screenSize.height / 2)
-        skyNode.position = CGPoint(x: 0, y: K.ScreenDimensions.screenSize.height)
+        skyNode.size = CGSize(width: K.ScreenDimensions.size.width, height: K.ScreenDimensions.size.height / 2)
+        skyNode.position = CGPoint(x: 0, y: K.ScreenDimensions.size.height)
         skyNode.anchorPoint = CGPoint(x: 0, y: 1)
         skyNode.zPosition = K.ZPosition.skyNode
         skyNode.name = LaunchScene.nodeName_skyNode
         
         bloodSkyNode = SKSpriteNode(texture: SKTexture(image: UIImage.gradientTextureSkyBlood))
-        bloodSkyNode.size = CGSize(width: K.ScreenDimensions.screenSize.width, height: K.ScreenDimensions.screenSize.height / 2)
-        bloodSkyNode.position = CGPoint(x: 0, y: K.ScreenDimensions.screenSize.height)
+        bloodSkyNode.size = CGSize(width: K.ScreenDimensions.size.width, height: K.ScreenDimensions.size.height / 2)
+        bloodSkyNode.position = CGPoint(x: 0, y: K.ScreenDimensions.size.height)
         bloodSkyNode.anchorPoint = CGPoint(x: 0, y: 1)
         bloodSkyNode.zPosition = K.ZPosition.skyNode
         bloodSkyNode.name = LaunchScene.nodeName_skyNode

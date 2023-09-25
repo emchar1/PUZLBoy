@@ -16,8 +16,8 @@ class PurchaseTapButton: SKNode {
     // MARK: - Properties
     
     static let buttonSize = CGSize(
-        width: K.ScreenDimensions.iPhoneWidth / 2 - 1.5 * PurchasePage.padding,
-        height: K.ScreenDimensions.iPhoneWidth / 3.5
+        width: K.ScreenDimensions.size.width / 2 - 1.5 * PurchasePage.padding,
+        height: K.ScreenDimensions.size.width / 3.5
     )
     
     private var nodeName: String { "PurchaseTapButton" + text }

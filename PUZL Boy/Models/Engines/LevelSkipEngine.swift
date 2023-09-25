@@ -40,7 +40,7 @@ class LevelSkipEngine {
         forwardSprite.color = .systemGreen
         forwardSprite.colorBlendFactor = 1
         forwardSprite.setScale(buttonScale)
-        forwardSprite.position = CGPoint(x: K.ScreenDimensions.screenSize.width - K.ScreenDimensions.lrMargin - forwardSprite.size.width - padding,
+        forwardSprite.position = CGPoint(x: K.ScreenDimensions.size.width - K.ScreenDimensions.lrMargin - forwardSprite.size.width - padding,
                                          y: forwardSprite.size.height + padding)
         forwardSprite.anchorPoint = .zero
         forwardSprite.zPosition = K.ZPosition.pauseButton
@@ -107,7 +107,7 @@ class LevelSkipEngine {
         let showHideActionReverse = SKAction.sequence([
             SKAction.moveTo(x: forwardSprite.position.x, duration: 0.25),
             SKAction.wait(forDuration: 3.0),
-            SKAction.moveTo(x: K.ScreenDimensions.screenSize.width, duration: 0.25)
+            SKAction.moveTo(x: K.ScreenDimensions.size.width, duration: 0.25)
         ])
 
         forwardSprite.run(showHideActionForward)

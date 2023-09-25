@@ -35,7 +35,7 @@ class SpeechOverlaySprite: SKNode {
 
         super.init()
         
-        self.position = CGPoint(x: padding, y: K.ScreenDimensions.screenSize.height - K.ScreenDimensions.topMargin - padding)
+        self.position = CGPoint(x: padding, y: K.ScreenDimensions.size.height - K.ScreenDimensions.topMargin - padding)
         self.zPosition = K.ZPosition.speechBubble
         
         setupNodes()
@@ -52,7 +52,7 @@ class SpeechOverlaySprite: SKNode {
     }
     
     private func setupNodes() {
-        backgroundNode = SKShapeNode(rectOf: CGSize(width: K.ScreenDimensions.iPhoneWidth - 2 * padding, height: nodeHeight))
+        backgroundNode = SKShapeNode(rectOf: CGSize(width: K.ScreenDimensions.size.width - 2 * padding, height: nodeHeight))
         backgroundNode.fillColor = .clear
         backgroundNode.lineWidth = 0
         

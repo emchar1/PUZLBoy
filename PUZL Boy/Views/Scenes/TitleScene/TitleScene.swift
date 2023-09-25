@@ -42,8 +42,8 @@ class TitleScene: SKScene {
     private var myColors: (title: UIColor, background: UIColor, shadow: UIColor) = (.black, .black, .black)
     private let shadowDepth: CGFloat = 10
     private var disableInput: Bool = false
-    private let menuSize = CGSize(width: 650, height: K.ScreenDimensions.height / 3)
-    private let settingsSize = CGSize(width: K.ScreenDimensions.iPhoneWidth, height: K.ScreenDimensions.iPhoneWidth * 5 / 4)
+    private let menuSize = CGSize(width: 650, height: K.ScreenDimensions.size.height / 3)
+    private let settingsSize = CGSize(width: K.ScreenDimensions.size.width, height: K.ScreenDimensions.size.width * 5 / 4)
 
     weak var titleSceneDelegate: TitleSceneDelegate?
     
@@ -69,36 +69,36 @@ class TitleScene: SKScene {
     private func setupSprites() {
         //Sprites Setup
         player = Player(type: .hero)
-        player.sprite.position = CGPoint(x: K.ScreenDimensions.iPhoneWidth / 2, y: K.ScreenDimensions.height / 2)
+        player.sprite.position = CGPoint(x: K.ScreenDimensions.size.width / 2, y: K.ScreenDimensions.size.height / 2)
         player.sprite.setScale(2)
         player.sprite.texture = SKTexture(imageNamed: "Run (5)")
         player.sprite.name = "playerSprite"
         
         skyNode = SKSpriteNode(texture: SKTexture(image: DayTheme.getSkyImage(useMorningSky: !UserDefaults.standard.bool(forKey: K.UserDefaults.shouldSkipIntro))))
-        skyNode.size = K.ScreenDimensions.screenSize
+        skyNode.size = K.ScreenDimensions.size
         skyNode.anchorPoint = .zero
         skyNode.zPosition = K.ZPosition.skyNode
         skyNode.name = "skyNode"
         
-        fadeSprite = SKSpriteNode(color: .white, size: K.ScreenDimensions.screenSize)
+        fadeSprite = SKSpriteNode(color: .white, size: K.ScreenDimensions.size)
         fadeSprite.anchorPoint = .zero
         fadeSprite.alpha = 0
         fadeSprite.zPosition = K.ZPosition.fadeTransitionNode
         
         // TODO: - CreditsScene
-        fadeOutSprite = SKSpriteNode(color: .black, size: K.ScreenDimensions.screenSize)
+        fadeOutSprite = SKSpriteNode(color: .black, size: K.ScreenDimensions.size)
         fadeOutSprite.anchorPoint = .zero
         fadeOutSprite.alpha = 0
         fadeOutSprite.zPosition = K.ZPosition.fadeTransitionNode
         
         
         //Title Setup
-        let sizeA: CGFloat = K.ScreenDimensions.iPhoneWidth / 4
+        let sizeA: CGFloat = K.ScreenDimensions.size.width / 4
         let sizeB: CGFloat = sizeA * (4 / 5)
         let zPositionOffset: CGFloat = 5
 
         puzlTitle = SKLabelNode(text: "PUZL")
-        puzlTitle.position = CGPoint(x: 0, y: K.ScreenDimensions.height - K.ScreenDimensions.topMargin)
+        puzlTitle.position = CGPoint(x: 0, y: K.ScreenDimensions.size.height - K.ScreenDimensions.topMargin)
         puzlTitle.fontName = UIFont.gameFont
         puzlTitle.fontSize = sizeA
         puzlTitle.horizontalAlignmentMode = .left
@@ -109,7 +109,7 @@ class TitleScene: SKScene {
         puzlTitle.addTripleShadow(shadowOffset: -shadowDepth)
 
         boyTitle = SKLabelNode(text: "Boy")
-        boyTitle.position = CGPoint(x: sizeA, y: K.ScreenDimensions.height - K.ScreenDimensions.topMargin - sizeB)
+        boyTitle.position = CGPoint(x: sizeA, y: K.ScreenDimensions.size.height - K.ScreenDimensions.topMargin - sizeB)
         boyTitle.fontName = UIFont.gameFont
         boyTitle.fontSize = sizeB
         boyTitle.horizontalAlignmentMode = .left
@@ -122,7 +122,7 @@ class TitleScene: SKScene {
         
         
         //Menu Setup
-        let menuPosition = CGPoint(x: K.ScreenDimensions.iPhoneWidth / 2, y: menuSize.height / 2 + K.ScreenDimensions.bottomMargin)
+        let menuPosition = CGPoint(x: K.ScreenDimensions.size.width / 2, y: menuSize.height / 2 + K.ScreenDimensions.bottomMargin)
         let menuGap: CGFloat = 133
         let menuCornerRadius: CGFloat = 20
 
@@ -165,7 +165,7 @@ class TitleScene: SKScene {
         
         settingsBackground = SKShapeNode(rectOf: settingsSize, cornerRadius: menuCornerRadius)
         settingsBackground.lineWidth = 0
-        settingsBackground.position = CGPoint(x: K.ScreenDimensions.screenSize.width / 2, y: menuSize.height / 2 + K.ScreenDimensions.bottomMargin)
+        settingsBackground.position = CGPoint(x: K.ScreenDimensions.size.width / 2, y: menuSize.height / 2 + K.ScreenDimensions.bottomMargin)
         settingsBackground.xScale = menuSize.width / settingsSize.width
         settingsBackground.yScale = menuSize.height / settingsSize.height
         settingsBackground.alpha = 0
@@ -439,7 +439,7 @@ extension TitleScene: MenuItemLabelDelegate {
             //Attempt 1
 //            let fullScreen = SKSpriteNode(color: .black, size: K.ScreenDimensions.screenSize)
 //            let mask = SKSpriteNode(color: .black, size: K.ScreenDimensions.screenSize)
-//            let circle = SKShapeNode(circleOfRadius: K.ScreenDimensions.height / 2)
+//            let circle = SKShapeNode(circleOfRadius: K.ScreenDimensions.screenSize.height / 2)
 //            circle.fillColor = .white
 //            circle.blendMode = .subtract
 //            circle.setScale(0)
@@ -448,7 +448,7 @@ extension TitleScene: MenuItemLabelDelegate {
 //            mask.addChild(circle)
 //
 //            let crop = SKCropNode()
-//            crop.position = CGPoint(x: K.ScreenDimensions.iPhoneWidth / 2, y: K.ScreenDimensions.height / 2)
+//            crop.position = CGPoint(x: K.ScreenDimensions.screenSize.width / 2, y: K.ScreenDimensions.screenSize.height / 2)
 //            crop.maskNode = mask
 //            crop.name = "cropNode"
 //            crop.addChild(fullScreen)
@@ -478,13 +478,13 @@ extension TitleScene: MenuItemLabelDelegate {
 //            circleTransition()
             
             //Attempt 3
-//            let spriteSize = vector_float2(Float(K.ScreenDimensions.iPhoneWidth / 40), Float(K.ScreenDimensions.height / 40))
+//            let spriteSize = vector_float2(Float(K.ScreenDimensions.screenSize.width / 40), Float(K.ScreenDimensions.screenSize.height / 40))
 //
 //            let shader = SKShader(fileNamed: "transitionShader.fsh")
 //            shader.attributes = [SKAttribute(name: "a_sprite_size", type: .vectorFloat2), SKAttribute(name:"a_duration", type: .float)]
 //
 //            let fullScreen = SKSpriteNode(color: .red, size: K.ScreenDimensions.screenSize)
-//            fullScreen.position = CGPoint(x: K.ScreenDimensions.iPhoneWidth / 2, y: K.ScreenDimensions.height / 2)
+//            fullScreen.position = CGPoint(x: K.ScreenDimensions.screenSize.width / 2, y: K.ScreenDimensions.screenSize.height / 2)
 //            fullScreen.zPosition = 9999
 //            fullScreen.shader = shader
 //            fullScreen.setValue(SKAttributeValue(vectorFloat2: spriteSize), forAttribute: "a_sprite_size")
@@ -503,7 +503,7 @@ extension TitleScene: MenuItemLabelDelegate {
 //            effect.zPosition = 9999
 //            addChild(effect)
 //
-//            let rect = SKShapeNode(rect: CGRect(x: 0, y: 0, width: K.ScreenDimensions.iPhoneWidth, height: K.ScreenDimensions.height))
+//            let rect = SKShapeNode(rect: CGRect(x: 0, y: 0, width: K.ScreenDimensions.screenSize.width, height: K.ScreenDimensions.screenSize.height))
 //            rect.fillColor = .black
 //            effect.addChild(rect)
 //
@@ -520,7 +520,7 @@ extension TitleScene: MenuItemLabelDelegate {
     // TODO: - Circle Animation Transition
 //    func circleTransition() {
 //        let bgMask = SKSpriteNode(color: .black, size: K.ScreenDimensions.screenSize)
-//        bgMask.position = CGPoint(x: K.ScreenDimensions.iPhoneWidth / 2, y: K.ScreenDimensions.height / 2)
+//        bgMask.position = CGPoint(x: K.ScreenDimensions.screenSize.width / 2, y: K.ScreenDimensions.screenSize.height / 2)
 //        bgMask.zPosition = 5000
 //        addChild(bgMask)
 //

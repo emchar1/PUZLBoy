@@ -163,12 +163,12 @@ class GameEngine {
     
     private func finishInit(shouldSpawn: Bool) {
         backgroundSprite = SKSpriteNode(texture: SKTexture(image: DayTheme.getSkyImage()))
-        backgroundSprite.size = CGSize(width: K.ScreenDimensions.iPhoneWidth, height: K.ScreenDimensions.height)
+        backgroundSprite.size = K.ScreenDimensions.size
         backgroundSprite.position = .zero
         backgroundSprite.anchorPoint = .zero
         
         gameboardSprite = GameboardSprite(level: self.level)
-        K.ScreenDimensions.topOfGameboard = GameboardSprite.offsetPosition.y + K.ScreenDimensions.iPhoneWidth * GameboardSprite.spriteScale
+        K.ScreenDimensions.topOfGameboard = GameboardSprite.offsetPosition.y + K.ScreenDimensions.size.width * GameboardSprite.spriteScale
         playerSprite = PlayerSprite(shouldSpawn: true)
         displaySprite = DisplaySprite(topYPosition: K.ScreenDimensions.topOfGameboard, bottomYPosition: GameboardSprite.offsetPosition.y, margin: 40)
         
@@ -1101,7 +1101,7 @@ class GameEngine {
         if !isGameOver {
             let numMovesSprite = NumMovesSprite(
                 numMoves: self.level.moves,
-                position: CGPoint(x: K.ScreenDimensions.iPhoneWidth / 2, y: GameboardSprite.offsetPosition.y * 3 / 2),
+                position: CGPoint(x: K.ScreenDimensions.size.width / 2, y: GameboardSprite.offsetPosition.y * 3 / 2),
                 isPartyLevel: Level.isPartyLevel(level.level))
             
             superScene.addChild(numMovesSprite)
