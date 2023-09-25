@@ -200,12 +200,12 @@ class GameEngine {
         setLabelsForDisplaySprite()
         setPlayerSpritePosition(shouldAnimate: false, completion: nil)
         justStartedDisableWarp = false
+        isGliding = false //Need this here otherwise when you die while gliding, it doesn't get reset and you start out gliding BUGFIX# 230924E01
         
         if !shouldSpawn {
             fadeGameboard(fadeOut: false, completion: nil)
         }
         
-        // FIXME: - Added here otherwise doom loop will keep going if you skip level while it's animating.
         AudioManager.shared.stopSound(for: "magicdoomloop", fadeDuration: 0.5)
         AudioManager.shared.adjustVolume(to: 1, for: AudioManager.shared.currentTheme, fadeDuration: 0.5)
     }
@@ -971,9 +971,6 @@ class GameEngine {
             if healthRemaining <= 0 {
                 displaySprite.drainHealth()
             }
-            
-            //Need this here otherwise when you die while gliding, it doesn't get reset and you start out gliding BUGFIX# 230924E01
-            isGliding = false
             
             GameEngine.livesRemaining -= 1
             GameEngine.usedContinue = true
