@@ -206,8 +206,8 @@ class GameEngine {
         }
         
         // FIXME: - Added here otherwise doom loop will keep going if you skip level while it's animating.
-        AudioManager.shared.stopSound(for: "magicdoomloop")
-        AudioManager.shared.adjustVolume(to: 1, for: AudioManager.shared.currentTheme)
+        AudioManager.shared.stopSound(for: "magicdoomloop", fadeDuration: 0.5)
+        AudioManager.shared.adjustVolume(to: 1, for: AudioManager.shared.currentTheme, fadeDuration: 0.5)
     }
     
     deinit {
