@@ -372,23 +372,34 @@ class TitleScene: SKScene {
                 showSettings(shouldHide: true)
 
                 ButtonTap.shared.tap(type: .buttontap6)
+                
+                touchUpButtons()
             }
             else if let node = node as? MenuItemLabel {
                 node.tapButton(toColor: myColors.shadow)
+
+                touchUpButtons()
             }
             else if let node = node as? SettingsPage {
                 node.touchNode(for: touches)
+
+                touchUpButtons()
             }
-            
-            touchUpButtons()
+            else {
+                touchUpMenuItems()
+            }
         }
     }
     
-    private func touchUpButtons() {
+    private func touchUpMenuItems() {
         menuStart.touchUp()
         menuLevelSelect.touchUp()
         menuOptions.touchUp()
         menuCredits.touchUp()
+    }
+    
+    private func touchUpButtons() {
+        touchUpMenuItems()
         
         settingsPage.touchUp()
         settingsClose.colorBlendFactor = 0
