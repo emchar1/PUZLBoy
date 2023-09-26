@@ -225,7 +225,9 @@ class GameScene: SKScene {
         gameEngine.handleControls(in: location)
 
         // FIXME: - Debugging purposes only!!!
-        levelSkipEngine.handleControls(in: location)
+        if !chatEngine.isChatting {
+            levelSkipEngine.handleControls(in: location)
+        }
     }
     
 
