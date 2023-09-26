@@ -673,16 +673,6 @@ class GameEngine {
         gameboardSprite.sprite.removeAllActions()
     }
     
-    // TODO: - spawnPrincess and villain capture
-    ///Spawns the princess in a cutscene-style animation
-    func spawnPrincessCapture(at position: K.GameboardPosition) {
-        gameboardSprite.spawnPrincessCapture(at: position)
-    }
-    
-    func despawnPrincessCapture(at position: K.GameboardPosition) {
-        gameboardSprite.despawnPrincessCapture(at: position)
-    }
-    
     
     // MARK: - Controls Functions
     

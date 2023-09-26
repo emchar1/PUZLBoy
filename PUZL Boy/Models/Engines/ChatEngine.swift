@@ -8,10 +8,12 @@
 import SpriteKit
 
 protocol ChatEngineDelegate: AnyObject {
-    func illuminatePanel(at panelName: (row: Int, col: Int), useOverlay: Bool)
-    func deIlluminatePanel(at panelName: (row: Int, col: Int), useOverlay: Bool)
+    func illuminatePanel(at position: K.GameboardPosition, useOverlay: Bool)
+    func deIlluminatePanel(at position: K.GameboardPosition, useOverlay: Bool)
     func illuminateDisplayNode(for displayType: DisplaySprite.DisplayStatusName)
     func deIlluminateDisplayNode(for displayType: DisplaySprite.DisplayStatusName)
+    func spawnPrincessCapture(at position: K.GameboardPosition)
+    func despawnPrincessCapture(at position: K.GameboardPosition, completion: @escaping () -> Void)
 }
 
 class ChatEngine {
@@ -373,6 +375,11 @@ extension ChatEngine {
         dialoguePlayed[76] = false
         dialoguePlayed[100] = false
         dialoguePlayed[131] = false
+
+        //Villain capture levels - hand selected. Preferred spawn points are in the comments below.
+        dialoguePlayed[132] = false //(3, 1)
+        dialoguePlayed[154] = false //(0, 3)
+        dialoguePlayed[187] = false //(2, 1)
     }
     
     /**
@@ -391,6 +398,33 @@ extension ChatEngine {
         isChatting = true
 
         switch level {
+        // TODO: - Villain Capture Levels: Come up with better dialogue, different dialogue for each level!
+        case 132, 154, 187:
+            let spawnPoint: K.GameboardPosition
+            
+            switch level {
+            case 132:   spawnPoint = (3, 1)
+            case 154:   spawnPoint = (0, 3)
+            case 187:   spawnPoint = (2, 1)
+            default:    spawnPoint = (1, 1) //should not be reached but, whatevs
+            }
+            
+            delegate?.spawnPrincessCapture(at: spawnPoint)
+            
+            sendChatArray(items: [
+                ChatItem(profile: .princess, chat: "PRINCESS OLIVIA: Help meeeee PUZL Boy!!! It's scary over here. And this guy's breath is really stinky!"),
+                ChatItem(profile: .villain, chat: "MASKED VILLAIN: If you want to see your precious princess again, you need to go deeper into the dungeon... MUAHAHAHAHAHAHA!!!!"),
+                ChatItem(profile: .princess, chat: "Dude, your breath!"),
+                ChatItem(profile: .hero, chat: "If you touch a hair on her head, it's gonna be the end for you, smelly shadow man!"),
+                ChatItem(profile: .villain, chat: "MUAHAHAHAHAHHAHAHAAGGGGGHH! *cough* *cough* 😮‍💨"),
+                ChatItem(profile: .princess, chat: "Oh God.. 🤮")
+            ]) { [unowned self] in
+                fadeDimOverlay()
+                
+                delegate?.despawnPrincessCapture(at: spawnPoint) { [unowned self] in
+                    handleDialogueCompletion(level: level, completion: completion)
+                }
+            }
         case Level.partyLevel:
             sendChatArray(items: [
                 ChatItem(profile: .hero, chat: "Yo, I feel funny. I'm seeing colorful flashing lights and the music is bumpin'. I can't stop moving.. and I like it!"),

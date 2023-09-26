@@ -237,9 +237,7 @@ class GameboardSprite {
                 SKAction.scale(to: scaleSize + bounceFactor, duration: duration),
                 SKAction.scale(to: 0, duration: duration),
                 SKAction.removeFromParent()
-            ])) {
-                completion()
-            }
+            ]), completion: completion)
         }
     }
     
@@ -330,7 +328,7 @@ class GameboardSprite {
     }
     
     ///Despawns the princess being captured by the villain, as he escapes through the back door.
-    func despawnPrincessCapture(at position: K.GameboardPosition) {
+    func despawnPrincessCapture(at position: K.GameboardPosition, completion: @escaping () -> Void) {
         guard let endPanel = endPanel else { return print("Can't despawn here, there's no endPanel!")}
         
         let playerOffset = CGPoint(x: panelSize / 4, y: 0)
@@ -428,7 +426,7 @@ class GameboardSprite {
                         AudioManager.shared.stopSound(for: "magicdoomloop", fadeDuration: 1)
                         AudioManager.shared.adjustVolume(to: 1, for: AudioManager.shared.currentTheme, fadeDuration: 1)
                     }
-                ]))
+                ]), completion: completion)
             }
         }
     }
@@ -481,8 +479,8 @@ class GameboardSprite {
         ]))
     }
     
-    func illuminatePanel(at spriteName: (row: Int, col: Int), useOverlay: Bool) {
-        guard let panel = getIlluminatedPanel(at: spriteName, useOverlay: useOverlay) else { return }
+    func illuminatePanel(at position: K.GameboardPosition, useOverlay: Bool) {
+        guard let panel = getIlluminatedPanel(at: position, useOverlay: useOverlay) else { return }
                 
         panel.zPosition = K.ZPosition.chatDimOverlay + (useOverlay ? K.ZPosition.overlay : K.ZPosition.terrain)
         
@@ -507,15 +505,15 @@ class GameboardSprite {
         }
     }
     
-    func deIlluminatePanel(at spriteName: (row: Int, col: Int), useOverlay: Bool) {
-        guard let panel = getIlluminatedPanel(at: spriteName, useOverlay: useOverlay) else { return }
+    func deIlluminatePanel(at position: K.GameboardPosition, useOverlay: Bool) {
+        guard let panel = getIlluminatedPanel(at: position, useOverlay: useOverlay) else { return }
         
         panel.zPosition = useOverlay ? K.ZPosition.overlay : K.ZPosition.terrain
         panel.children.filter({ $0.name == "hintborder" }).first?.removeFromParent()
     }
     
-    private func getIlluminatedPanel(at spriteName: (row: Int, col: Int), useOverlay: Bool) -> SKNode? {
-        let panelName = GameboardSprite.getNodeName(row: spriteName.row, col: spriteName.col)
+    private func getIlluminatedPanel(at position: K.GameboardPosition, useOverlay: Bool) -> SKNode? {
+        let panelName = GameboardSprite.getNodeName(row: position.row, col: position.col)
         
         if useOverlay {
             return sprite.childNode(withName: panelName + GameboardSprite.overlayTag)

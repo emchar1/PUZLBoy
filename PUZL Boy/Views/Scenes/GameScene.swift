@@ -507,24 +507,11 @@ class GameScene: SKScene {
         gameEngine.shouldDisableInput(true)
         pauseResetEngine.shouldDisable(true)
 
-        // TODO: - Make this happen at certain levels only.
-        gameEngine.spawnPrincessCapture(at: (row: 2, col: 1))
-
         chatEngine.playDialogue(level: currentLevel) { [unowned self] in
             scoringEngine.timerManager.resumeTime()
             startTimer()
             gameEngine.shouldDisableInput(false)
             gameEngine.spawnPartyItems(maxItems: maxSpawnedItemsForParty)
-            
-            // TODO: - Make this happen at certain levels only.
-            run(SKAction.sequence([
-                SKAction.wait(forDuration: 5),
-                SKAction.run {
-                    self.gameEngine.despawnPrincessCapture(at: (row: 2, col: 1))
-                }
-            ]))
-            
-
             pauseResetEngine.shouldDisable(false)
         }
     }
@@ -1125,12 +1112,12 @@ extension GameScene: PartyResultsSpriteDelegate {
 // MARK: - ChatEngineDelegate
 
 extension GameScene: ChatEngineDelegate {
-    func illuminatePanel(at panelName: (row: Int, col: Int), useOverlay: Bool) {
-        gameEngine.gameboardSprite.illuminatePanel(at: panelName, useOverlay: useOverlay)
+    func illuminatePanel(at position: K.GameboardPosition, useOverlay: Bool) {
+        gameEngine.gameboardSprite.illuminatePanel(at: position, useOverlay: useOverlay)
     }
     
-    func deIlluminatePanel(at panelName: (row: Int, col: Int), useOverlay: Bool) {
-        gameEngine.gameboardSprite.deIlluminatePanel(at: panelName, useOverlay: useOverlay)
+    func deIlluminatePanel(at position: K.GameboardPosition, useOverlay: Bool) {
+        gameEngine.gameboardSprite.deIlluminatePanel(at: position, useOverlay: useOverlay)
     }
     
     func illuminateDisplayNode(for displayType: DisplaySprite.DisplayStatusName) {
@@ -1151,5 +1138,13 @@ extension GameScene: ChatEngineDelegate {
         case .hammers:  gameEngine.displaySprite.statusHammers.deIlluminateNode()
         case .swords:   gameEngine.displaySprite.statusSwords.deIlluminateNode()
         }
+    }
+    
+    func spawnPrincessCapture(at position: K.GameboardPosition) {
+        gameEngine.gameboardSprite.spawnPrincessCapture(at: position)
+    }
+    
+    func despawnPrincessCapture(at position: K.GameboardPosition, completion: @escaping () -> Void) {
+        gameEngine.gameboardSprite.despawnPrincessCapture(at: position, completion: completion)
     }
 }
