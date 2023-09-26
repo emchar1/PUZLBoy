@@ -242,7 +242,7 @@ class GameboardSprite {
     }
     
     ///Spawns a short animation of the whereabouts of the princess being captured by the villain.
-    func spawnPrincessCapture(at position: K.GameboardPosition) {
+    func spawnPrincessCapture(at position: K.GameboardPosition, completion: @escaping () -> Void) {
         guard let endPanel = endPanel else { return print("Can't spawn, there's no endPanel!") }
 
         for node in sprite.children {
@@ -321,7 +321,7 @@ class GameboardSprite {
                 SKAction.wait(forDuration: 3),
                 SKAction.run { [unowned self] in
                     // FIXME: - Does this create a retain cycle?
-                    despawnItem(at: position) { }
+                    despawnItem(at: position, completion: completion)
                 }
             ]))
         }
