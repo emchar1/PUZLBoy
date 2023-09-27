@@ -379,7 +379,7 @@ class CutsceneIntro: SKScene {
                         bloodSkyNode.run(SKAction.fadeOut(withDuration: 5))
                         bloodOverlayNode.run(SKAction.fadeOut(withDuration: 5))
                     },
-                    SpeechBubbleItem(profile: speechHero, chat: "Hang on princess...| I'm coming to rescue you!!!||||")
+                    SpeechBubbleItem(profile: speechHero, chat: "Hang on princess!| I'm coming to rescue you!!!||||")
                 ]) {
                     UserDefaults.standard.set(true, forKey: K.UserDefaults.shouldSkipIntro)
 
