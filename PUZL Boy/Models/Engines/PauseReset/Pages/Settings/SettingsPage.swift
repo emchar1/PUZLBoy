@@ -21,6 +21,7 @@ class SettingsPage: ParentPage {
     private(set) var tapButtonNotifications: SettingsTapArea!
     private(set) var tapButtonShare: SettingsTapArea!
     private(set) var tapButtonReportBug: SettingsTapArea!
+    private let minimumTimeRequiredBeforeSubmittingAnotherEmail: TimeInterval = 600
     
     private var useMorningSky: Bool
 
@@ -34,7 +35,8 @@ class SettingsPage: ParentPage {
         
         self.nodeName = "settingsPage"
         name = nodeName
-        
+        NotificationCenter.default.addObserver(self, selector: #selector(didSendEmail), name: .didSendEmailFeedback, object: nil)
+
         setupSprites()
     }
     
@@ -115,7 +117,7 @@ class SettingsPage: ParentPage {
     }
     
     
-    // MARK: - Functions
+    // MARK: - Update Functions
     
     func updateColors() {
         tapButtonNotifications.updateColors()
@@ -129,6 +131,20 @@ class SettingsPage: ParentPage {
         radioVibration.setIsOn(!UserDefaults.standard.bool(forKey: K.UserDefaults.disableVibration))
         radioSkipIntro.setIsOn(UserDefaults.standard.bool(forKey: K.UserDefaults.shouldSkipIntro))
     }
+    
+    func checkReportBugAlreadySubmitted() {
+        if let lastSubmit = UserDefaults.standard.object(forKey: K.UserDefaults.feedbackSubmitDate) as? Date {
+            let timeElapsed = Date().timeIntervalSinceNow - lastSubmit.timeIntervalSinceNow
+            
+            tapButtonReportBug.setDisabled(timeElapsed < minimumTimeRequiredBeforeSubmittingAnotherEmail)
+        }
+        else {
+            tapButtonReportBug.setDisabled(false)
+        }
+    }
+    
+    
+    // MARK: - UI Functions
     
     override func touchDown(for touches: Set<UITouch>) {
         super.touchDown(for: touches)
@@ -173,6 +189,13 @@ class SettingsPage: ParentPage {
         tapButtonNotifications.tapButton(in: location)
         tapButtonShare.tapButton(in: location)
         tapButtonReportBug.tapButton(in: location)
+    }
+    
+    
+    // MARK: - Misc Functions
+    
+    @objc private func didSendEmail(_ sender: Any) {
+        tapButtonReportBug.setDisabled(true)
     }
 }
 

@@ -182,6 +182,11 @@ extension GameViewController: GameSceneDelegate {
 
 extension GameViewController: MFMailComposeViewControllerDelegate {
     func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
+        if result == .sent {
+            UserDefaults.standard.set(Date(), forKey: K.UserDefaults.feedbackSubmitDate)
+            NotificationCenter.default.post(name: .didSendEmailFeedback, object: nil)
+        }
+        
         controller.dismiss(animated: true)
     }
     

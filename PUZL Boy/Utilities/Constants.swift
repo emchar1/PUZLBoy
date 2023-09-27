@@ -120,5 +120,6 @@ struct K {
         static let shouldSkipIntro = "ShouldSkipIntro"
         static let reviewStoreCount = "ReviewStoreCount"
         static let savedTime = "SavedTimeForReplenishLives"
+        static let feedbackSubmitDate = "FeedbackSubmitDate"
     }
 }

@@ -40,6 +40,7 @@ class SettingsTapButton: SKNode {
     private var isPressed = true
     private(set) var isDisabled = false
     
+    private var labelNode: SKLabelNode!
     private var tapButton: SKShapeNode!
     
     weak var delegate: SettingsTapButtonDelegate?
@@ -63,11 +64,11 @@ class SettingsTapButton: SKNode {
     }
     
     deinit {
-//        print("SettingsTapButton deinit")
+
     }
     
     private func setupSprites() {
-        let labelNode = SKLabelNode(text: text)
+        labelNode = SKLabelNode(text: text)
         labelNode.position = CGPoint(x: 0, y: 0)
         labelNode.verticalAlignmentMode = .center
         labelNode.horizontalAlignmentMode = .center
@@ -128,12 +129,15 @@ class SettingsTapButton: SKNode {
     }
     
     func updateColors() {
-        tapButton.fillColor = backgroundColor
+        labelNode.fontColor = isDisabled ? .darkGray : UIFont.chatFontColor
+        tapButton.fillColor = isDisabled ? backgroundColor.darkenColor(factor: 6) : backgroundColor
         tapButton.updateShadowColor(backgroundShadowColor)
     }
     
     func setDisabled(_ disabled: Bool) {
         isDisabled = disabled
+        
+        updateColors()
     }
     
     func animateAppear() {

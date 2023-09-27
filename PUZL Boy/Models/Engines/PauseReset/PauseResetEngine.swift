@@ -367,6 +367,7 @@ class PauseResetEngine {
                         
                         settingsPage.updateRadioNodes()
                         settingsPage.updateColors()
+                        settingsPage.checkReportBugAlreadySubmitted()
                     },
                     SKAction.scale(to: GameboardSprite.spriteScale, duration: 0.25),
                     SKAction.run { [unowned self] in
@@ -537,6 +538,7 @@ extension PauseResetEngine: SettingsManagerDelegate {
             removePages()
 
             backgroundSprite.addChild(settingsPage)
+            settingsPage.checkReportBugAlreadySubmitted()
         }
     }
     

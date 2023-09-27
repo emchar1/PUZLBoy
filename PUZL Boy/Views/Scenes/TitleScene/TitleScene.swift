@@ -339,6 +339,8 @@ class TitleScene: SKScene {
                 SKAction.moveTo(y: settingsSize.height / 2 * GameboardSprite.spriteScale + K.ScreenDimensions.bottomMargin, duration: animationDuration),
                 SKAction.fadeAlpha(to: 0.9, duration: 0)
             ]))
+            
+            settingsPage.checkReportBugAlreadySubmitted()
         }
     }
     

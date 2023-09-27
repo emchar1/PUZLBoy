@@ -44,7 +44,7 @@ class SettingsTapArea: SKNode {
     }
     
     deinit {
-//        print("SettingsTapArea deinit")
+
     }
     
     private func setupSprites() {
@@ -83,6 +83,10 @@ class SettingsTapArea: SKNode {
     
     func updateColors() {
         tapButton.updateColors()
+    }
+    
+    func setDisabled(_ disabled: Bool) {
+        tapButton.setDisabled(disabled)
     }
 }
 
