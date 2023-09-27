@@ -21,7 +21,7 @@ class SettingsPage: ParentPage {
     private(set) var tapButtonNotifications: SettingsTapArea!
     private(set) var tapButtonShare: SettingsTapArea!
     private(set) var tapButtonReportBug: SettingsTapArea!
-    private let minimumTimeRequiredBeforeSubmittingAnotherEmail: TimeInterval = 600
+    private let minimumTimeRequiredBeforeSubmittingAnotherEmail: TimeInterval = 2 * 60
     
     private var useMorningSky: Bool
 

@@ -40,8 +40,8 @@ class SettingsTapButton: SKNode {
     private var isPressed = true
     private(set) var isDisabled = false
     
-    private var labelNode: SKLabelNode!
     private var tapButton: SKShapeNode!
+    private var disabledOnlay: SKShapeNode!
     
     weak var delegate: SettingsTapButtonDelegate?
     
@@ -68,7 +68,7 @@ class SettingsTapButton: SKNode {
     }
     
     private func setupSprites() {
-        labelNode = SKLabelNode(text: text)
+        let labelNode = SKLabelNode(text: text)
         labelNode.position = CGPoint(x: 0, y: 0)
         labelNode.verticalAlignmentMode = .center
         labelNode.horizontalAlignmentMode = .center
@@ -86,8 +86,15 @@ class SettingsTapButton: SKNode {
         tapButton.name = nodeName
         tapButton.addDropShadow(rectOf: SettingsTapButton.buttonSize, cornerRadius: 20, shadowOffset: shadowOffset)
         
+        disabledOnlay = SKShapeNode(rectOf: SettingsTapButton.buttonSize, cornerRadius: 20)
+        disabledOnlay.fillColor = .black
+        disabledOnlay.lineWidth = 0
+        disabledOnlay.alpha = 0
+        disabledOnlay.zPosition = 10
+        
         addChild(tapButton)
         tapButton.addChild(labelNode)
+        tapButton.addChild(disabledOnlay)
     }
     
     
@@ -129,15 +136,14 @@ class SettingsTapButton: SKNode {
     }
     
     func updateColors() {
-        labelNode.fontColor = isDisabled ? .darkGray : UIFont.chatFontColor
-        tapButton.fillColor = isDisabled ? backgroundColor.darkenColor(factor: 6) : backgroundColor
+        tapButton.fillColor = backgroundColor
         tapButton.updateShadowColor(backgroundShadowColor)
     }
     
     func setDisabled(_ disabled: Bool) {
         isDisabled = disabled
         
-        updateColors()
+        disabledOnlay.alpha = isDisabled ? 0.35 : 0
     }
     
     func animateAppear() {
