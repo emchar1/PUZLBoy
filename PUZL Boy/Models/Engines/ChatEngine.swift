@@ -374,6 +374,7 @@ extension ChatEngine {
         dialoguePlayed[51] = false
         dialoguePlayed[76] = false
         dialoguePlayed[100] = false
+        dialoguePlayed[112] = false
         dialoguePlayed[131] = false
 
         //Villain capture levels - hand selected. Preferred spawn points are in the comments below.
@@ -398,34 +399,6 @@ extension ChatEngine {
         isChatting = true
 
         switch level {
-        // TODO: - Villain Capture Levels: Come up with better dialogue, different dialogue for each level!
-        case 132, 154, 187:
-            let spawnPoint: K.GameboardPosition
-            
-            switch level {
-            case 132:   spawnPoint = (3, 1)
-            case 154:   spawnPoint = (0, 3)
-            case 187:   spawnPoint = (2, 1)
-            default:    spawnPoint = (1, 1) //should not be reached but, whatevs
-            }
-            
-            // FIXME: - Lots of nested completion calls!!
-            delegate?.spawnPrincessCapture(at: spawnPoint) { [unowned self] in
-                sendChatArray(items: [
-                    ChatItem(profile: .princess, chat: "PRINCESS OLIVIA: Help meeeee PUZL Boy!!! It's scary over here. And this guy's breath is really stinky!"),
-                    ChatItem(profile: .villain, chat: "MASKED VILLAIN: If you want to see your precious princess again, you need to go deeper into the dungeon... MUAHAHAHAHAHAHA!!!!"),
-                    ChatItem(profile: .princess, chat: "Dude, your breath!"),
-                    ChatItem(profile: .hero, chat: "If you touch a hair on her head, it's gonna be the end for you, smelly shadow man!"),
-                    ChatItem(profile: .villain, chat: "MUAHAHAHAHAHHAHAHAAGGGGGHH! *cough* *cough* 😮‍💨"),
-                    ChatItem(profile: .princess, chat: "Oh God.. 🤮")
-                ]) { [unowned self] in
-                    fadeDimOverlay()
-                    
-                    delegate?.despawnPrincessCapture(at: spawnPoint) { [unowned self] in
-                        handleDialogueCompletion(level: level, completion: completion)
-                    }
-                }
-            }
         case Level.partyLevel:
             sendChatArray(items: [
                 ChatItem(profile: .hero, chat: "Yo, I feel funny. I'm seeing colorful flashing lights and the music is bumpin'. I can't stop moving.. and I like it!"),
@@ -445,7 +418,7 @@ extension ChatEngine {
             sendChatArray(items: [
                 ChatItem(profile: .hero, chat: "PUZL BOY: ...then the dragon swooped down and carried her away! So... what's our game plan? Also I didn't catch your name."),
                 ChatItem(profile: .trainer, chat: "MARLIN: I am Marlin. I suspect she is being held captive in the dragon's lair. We must move quickly. I'm going to guide you there, so pay attention."),
-                ChatItem(profile: .hero, chat: "Marlin, like the fish??? How do you know that's where they've taken her?"),
+                ChatItem(profile: .hero, chat: "Marlin, like the fish??? I hate fish by the way. The smell, the texture... So how do you know that's where they've taken her?"),
                 ChatItem(profile: .trainer, chat: "Marlin like the magician. Don't worry about it... OK. The lair is buried miles beneath the Earth's surface, and the only way to reach it is to solve logic puzzles."),
                 ChatItem(profile: .hero, chat: "A marlin is a fish... You're thinking of Merlin the Magician. Is that your name? Merlin?"),
                 ChatItem(profile: .trainer, chat: "I think I know my own name. Listen!! There are 500 levels in total you will have to solve, each with increasing difficulty."),
@@ -515,8 +488,8 @@ extension ChatEngine {
             sendChatArray(items: [
                 ChatItem(profile: .trainer, chat: "Those fun looking things are warps. Stepping on one of them will teleport you to the other one. Weeeeeeeee!"),
                 ChatItem(profile: .hero, chat: "Are those things safe?"),
-                ChatItem(profile: .trainer, chat: "Ummmmmmm yeah, sure! I've tested it myself hundreds of times."),
-                ChatItem(profile: .hero, chat: ".......")
+                ChatItem(profile: .trainer, chat: "Ummmmmmm yeah, sure! I've tested it myself hundreds of times. Just don't stare at them too long or you'll start seeing things."),
+                ChatItem(profile: .hero, chat: "It's making me dizzy 😵‍💫")
             ]) { [unowned self] in
                 delegate?.deIlluminatePanel(at: (0, 1), useOverlay: true)
                 delegate?.deIlluminatePanel(at: (1, 2), useOverlay: true)
@@ -527,10 +500,10 @@ extension ChatEngine {
             delegate?.illuminatePanel(at: (1, 1), useOverlay: true)
             
             sendChatArray(items: [
-                ChatItem(profile: .hero, chat: "THAT'S HIM!!! That's the one who abducted the princess! 😡"),
+                ChatItem(profile: .hero, chat: "THAT'S HIM!!! That's the dragon that abducted the princess! 😡"),
                 ChatItem(profile: .trainer, chat: "Relax... That's one of many dragons you'll encounter on your journey. But don't get too close or it'll cost ya 1 health point."),
                 ChatItem(profile: .hero, chat: "He looks kinda small and underwhelming to me..."),
-                ChatItem(profile: .trainer, chat: "Hey, this is a solo project with 0 budget, whaddya want from me?!\n\nAnyway...", handler: { [unowned self] in
+                ChatItem(profile: .trainer, chat: "Hey, this is a solo project with $0 budget, whaddya want from me?!\n\nAnyway...", handler: { [unowned self] in
                     delegate?.illuminateDisplayNode(for: .health)
                 }),
                 ChatItem(profile: .trainer, chat: "Once your health drops to 0, it's lights out, baby. Your health can be found in the upper left next to the heart. 💖", handler: { [unowned self] in
@@ -541,7 +514,7 @@ extension ChatEngine {
                 ChatItem(profile: .hero, chat: "Lemme guess, I can only use the sword once before it breaks?", handler: { [unowned self] in
                     delegate?.deIlluminateDisplayNode(for: .swords)
                 }),
-                ChatItem(profile: .trainer, chat: "Now you're getting it!")
+                ChatItem(profile: .trainer, chat: "You catch on quickly, PUZL Boy!")
             ]) { [unowned self] in
                 handleDialogueCompletion(level: level, completion: completion)
             }
@@ -576,6 +549,17 @@ extension ChatEngine {
             ]) { [unowned self] in
                 handleDialogueCompletion(level: level, completion: completion)
             }
+        case 112:
+            sendChatArray(items: [
+                ChatItem(profile: .hero, chat: "What's so special about this little girl anyway?"),
+                ChatItem(profile: .trainer, chat: "She's no ordinary little girl. She is the princess of Vaeloria, a mystical realm known for its immense magic."),
+                ChatItem(profile: .trainer, chat: "Dragons are ancient and powerful creatures that inhabit the land of Vaeloria and are deeply connected to its magic."),
+                ChatItem(profile: .trainer, chat: "The sudden emergence of dragons in your world suggests something bigger is at play, and this little girl... er, Princess Olivia is at the center of it all."),
+                ChatItem(profile: .hero, chat: "What do they want with her anyway?"),
+                ChatItem(profile: .trainer, chat: "That is yet to be determined, though I suspect something very dark is at play... Come along. Let's not waste anymore time.")
+            ]) { [unowned self] in
+                handleDialogueCompletion(level: level, completion: completion)
+            }
         case 131:
             sendChatArray(items: [
                 ChatItem(profile: .hero, chat: "You good, old man?? You've been awfully quiet. You're usually chewing my ear off right about now."),
@@ -594,6 +578,25 @@ extension ChatEngine {
                 ChatItem(profile: .hero, chat: "Wow.. 900 years old. I have soooo many questions...")
             ]) { [unowned self] in
                 handleDialogueCompletion(level: level, completion: completion)
+            }
+        case 132:
+            let spawnPoint: K.GameboardPosition = (3, 1)
+            
+            delegate?.spawnPrincessCapture(at: spawnPoint) { [unowned self] in
+                sendChatArray(items: [
+                    ChatItem(profile: .princess, chat: "PRINCESS OLIVIA: Help meeeee PUZL Boy!!! It's dark and scary over here. And this guy's breath is really stinky!"),
+                    ChatItem(profile: .villain, chat: "MASKED VILLAIN: If you want to see your precious princess again, you need to go deeper into the dungeon... MUAHAHAHAHAHAHA!!!!"),
+                    ChatItem(profile: .princess, chat: "Eww, your breath!"),
+                    ChatItem(profile: .hero, chat: "If you touch a hair on her head, it's gonna be the end for you, smelly shadow man!"),
+                    ChatItem(profile: .villain, chat: "MUAHAHAHAHAHHAHAHAAGGGGGHH! *cough* *cough* 😮‍💨"),
+                    ChatItem(profile: .princess, chat: "Uh gross.. 🤮")
+                ]) { [unowned self] in
+                    fadeDimOverlay()
+                    
+                    delegate?.despawnPrincessCapture(at: spawnPoint) { [unowned self] in
+                        handleDialogueCompletion(level: level, completion: completion)
+                    }
+                }
             }
         default:
             isChatting = false
