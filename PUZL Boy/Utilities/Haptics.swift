@@ -22,7 +22,7 @@ class Haptics {
     var engine: CHHapticEngine?
     
     enum Pattern {
-        case enemy, killEnemy, boulder, breakBoulder, marsh, sand, lava, enableVibration
+        case enemy, killEnemy, boulder, breakBoulder, marsh, sand, lava, thunder, enableVibration
     }
     
     
@@ -122,6 +122,14 @@ class Haptics {
         case .lava:
             for index in stride(from: 0.0, to: 1.5, by: 0.05) {
                 let intensity = CHHapticEventParameter(parameterID: .hapticIntensity, value: 0.8)
+                let sharpness = CHHapticEventParameter(parameterID: .hapticSharpness, value: 0.1)
+                let event = CHHapticEvent(eventType: .hapticTransient, parameters: [intensity, sharpness], relativeTime: index)
+                
+                events.append(event)
+            }
+        case .thunder:
+            for index in stride(from: 0.0, to: 6, by: 0.1) {
+                let intensity = CHHapticEventParameter(parameterID: .hapticIntensity, value: 0.5)
                 let sharpness = CHHapticEventParameter(parameterID: .hapticSharpness, value: 0.1)
                 let event = CHHapticEvent(eventType: .hapticTransient, parameters: [intensity, sharpness], relativeTime: index)
                 

@@ -12,8 +12,10 @@ class CutsceneIntro: SKScene {
     // MARK: - Properties
     
     //Positions, Scales
-    private let heroPosition = CGPoint(x: K.ScreenDimensions.size.width / 2, y: K.ScreenDimensions.size.height / 3)
-    private let princessPosition = CGPoint(x: K.ScreenDimensions.size.width - 120, y: K.ScreenDimensions.size.height / 3 - 40)
+    private let heroPositionInitial = CGPoint(x: K.ScreenDimensions.size.width / 2, y: K.ScreenDimensions.size.height / 3)
+    private let heroPositionFinal = CGPoint(x: K.ScreenDimensions.size.width * 1 / 5, y: K.ScreenDimensions.size.height / 3)
+    private let princessPositionInitial = CGPoint(x: K.ScreenDimensions.size.width + 100, y: K.ScreenDimensions.size.height / 3 - 40)
+    private let princessPositionFinal = CGPoint(x: K.ScreenDimensions.size.width * 4 / 5, y: K.ScreenDimensions.size.height / 3 - 40)
     private let playerScale: CGFloat = 0.75
     private let screenSize = K.ScreenDimensions.size
     
@@ -65,12 +67,12 @@ class CutsceneIntro: SKScene {
     
     private func setupScene(xOffsetsArray: [ParallaxSprite.SpriteXPositions]?) {
         hero = Player(type: .hero)
-        hero.sprite.position = heroPosition
+        hero.sprite.position = heroPositionInitial
         hero.sprite.setScale(playerScale)
         hero.sprite.name = LaunchScene.nodeName_playerSprite
         
         princess = Player(type: .princess)
-        princess.sprite.position = CGPoint(x: princessPosition.x + 200, y: princessPosition.y)
+        princess.sprite.position = princessPositionInitial
         princess.sprite.setScale(playerScale * 0.75)
         princess.sprite.xScale = -playerScale * 0.75
         princess.sprite.name = LaunchScene.nodeName_playerSprite
@@ -85,7 +87,7 @@ class CutsceneIntro: SKScene {
         
         dragonSprite = SKSpriteNode(imageNamed: "enemyLarge")
         dragonSprite.position = CGPoint(x: -dragonSprite.size.width, y: K.ScreenDimensions.size.height + dragonSprite.size.height)
-        dragonSprite.zPosition = K.ZPosition.player + 10
+        dragonSprite.zPosition = K.ZPosition.player - 10
         
         flyingDragon = FlyingDragon()
 
@@ -134,8 +136,8 @@ class CutsceneIntro: SKScene {
         
         parallaxManager = ParallaxManager(useSet: .grass, xOffsetsArray: xOffsetsArray, shouldWalk: true)
         
-        speechHero = SpeechBubbleSprite(width: 460, position: heroPosition + CGPoint(x: 200, y: 400))
-        speechPrincess = SpeechBubbleSprite(width: 460, position: princessPosition + CGPoint(x: -200, y: 400), tailOrientation: .bottomRight)
+        speechHero = SpeechBubbleSprite(width: 460, position: heroPositionInitial + CGPoint(x: 200, y: 400))
+        speechPrincess = SpeechBubbleSprite(width: 460, position: princessPositionFinal + CGPoint(x: -200, y: 400), tailOrientation: .bottomRight)
 
         AudioManager.shared.playSound(for: "birdsambience", fadeIn: 5)
     }
@@ -185,7 +187,7 @@ class CutsceneIntro: SKScene {
             SKAction.repeat(heroWalk, count: 13),
             SKAction.sequence([
                 SKAction.wait(forDuration: 6 * walkCycle),
-                SKAction.moveTo(x: 120, duration: 4 * walkCycle),
+                SKAction.moveTo(x: heroPositionFinal.x, duration: 4 * walkCycle),
                 SKAction.wait(forDuration: 3 * walkCycle),
                 SKAction.repeatForever(heroIdle)
             ])
@@ -195,7 +197,7 @@ class CutsceneIntro: SKScene {
         princess.sprite.run(SKAction.sequence([
             SKAction.wait(forDuration: 11 * walkCycle),
             SKAction.group([
-                SKAction.moveTo(x: princessPosition.x, duration: 2 * walkCycle),
+                SKAction.moveTo(x: princessPositionFinal.x, duration: 2 * walkCycle),
                 SKAction.repeatForever(princessIdle)
             ])
         ]))
@@ -215,7 +217,7 @@ class CutsceneIntro: SKScene {
         //Speech - Hero Move
         speechHero.run(SKAction.sequence([
             SKAction.wait(forDuration: 4 * walkCycle),
-            SKAction.moveTo(x: 120 + speechHero.bubbleDimensions.width / 2, duration: 4 * walkCycle)
+            SKAction.moveTo(x: heroPositionFinal.x + speechHero.bubbleDimensions.width / 2, duration: 4 * walkCycle)
         ]))
 
         //Speech Bubbles
@@ -239,7 +241,7 @@ class CutsceneIntro: SKScene {
                             SKAction.wait(forDuration: 2),
                             SKAction.run { [unowned self] in
                                 overlaySpeech.setText(
-                                    text: "The princess went on to explain how dragons had disappeared from the realm of some place called Vaeloria, where she claims she's from,|| and that the balance of magic had been disrupted threatening our very existence.||||||||/She foretold of a prophecy where the sky turns blood red, and that she was the only one who could stop it—||At first, I thought this little girl just had an overactive imagination...|| then the CRAZIEST thing happened!!",
+                                    text: "The princess went on to explain how dragons had disappeared from the realm of some place called Vaeloria, where she claims she's from,|| and that the balance of magic had been disrupted threatening our very existence.||||||||/She spoke about a prophecy where the sky turns to blood, signaling the Age of Ruin, and that she was the only one who could stop it—||At first, I thought this little girl just had an overactive imagination...| then the CRAZIEST thing happened!!",
                                     superScene: self, completion: nil)
                                 
                                 AudioManager.shared.stopSound(for: "birdsambience", fadeDuration: 5)
@@ -270,6 +272,10 @@ class CutsceneIntro: SKScene {
                             SKAction.run {
                                 AudioManager.shared.playSound(for: "thunderrumble")
                                 AudioManager.shared.stopSound(for: "birdsambience", fadeDuration: 3)
+                            },
+                            SKAction.wait(forDuration: 2),
+                            SKAction.run {
+                                Haptics.shared.executeCustomPattern(pattern: .thunder)
                             }
                         ]))
                     },
@@ -278,7 +284,7 @@ class CutsceneIntro: SKScene {
                             SKAction.run { [unowned self] in
                                 dragonSprite.run(SKAction.group([
                                     SKAction.scale(to: 2, duration: 0.5),
-                                    SKAction.move(to: CGPoint(x: princessPosition.x, y: princessPosition.y + princess.sprite.size.height / 2), duration: 0.5)
+                                    SKAction.move(to: CGPoint(x: princessPositionFinal.x, y: princessPositionFinal.y + princess.sprite.size.height / 2), duration: 0.5)
                                 ]))
                                 
                                 AudioManager.shared.playSound(for: "ageofruin")
@@ -304,7 +310,7 @@ class CutsceneIntro: SKScene {
                     SpeechBubbleItem(profile: speechPrincess, speed: 0.01, chat: "AAAAAAAAAAAAAAAAAAAAAAAAAAHHHHHHHHHHHHHH!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!") { [unowned self] in
                         wideShot()
                         
-                        dragonSprite.position = CGPoint(x: princessPosition.x, y: princessPosition.y + princess.sprite.size.height / 2)
+                        dragonSprite.position = CGPoint(x: princessPositionFinal.x, y: princessPositionFinal.y + princess.sprite.size.height / 2)
                         dragonSprite.setScale(2)
                         
                         ParticleEngine.shared.removeParticles(fromNode: dragonSprite)
@@ -320,7 +326,7 @@ class CutsceneIntro: SKScene {
                             SKAction.group([
                                 SKAction.removeFromParent(),
                                 SKAction.run { [unowned self] in
-                                    princess.sprite.position = CGPoint(x: 180, y: -140)
+                                    princess.sprite.position = CGPoint(x: 180, y: -140) //specific position so princess is in dragon's clutches
                                     princess.sprite.xScale = playerScale / 4 * 0.75
                                     princess.sprite.yScale = -playerScale / 4 * 0.75
                                     princess.sprite.zPosition = 1
@@ -413,7 +419,7 @@ class CutsceneIntro: SKScene {
     }
     
     private func closeUpHero() {
-        princess.sprite.position.x = princessPosition.x + 200
+        princess.sprite.position.x = princessPositionInitial.x
         princess.sprite.setScale(playerScale * 0.75)
         princess.sprite.xScale = -playerScale * 0.75
         
@@ -461,19 +467,18 @@ class CutsceneIntro: SKScene {
     }
     
     private func wideShot() {
-        princess.sprite.position.x = princessPosition.x
+        princess.sprite.position.x = princessPositionFinal.x
         princess.sprite.setScale(playerScale * 0.75)
         princess.sprite.xScale = -playerScale * 0.75
         
-        hero.sprite.position.x = 120
+        hero.sprite.position.x = heroPositionFinal.x
         hero.sprite.setScale(playerScale)
 
         parallaxManager.backgroundSprite.setScale(1)
         parallaxManager.backgroundSprite.position = .zero
         
-        speechPrincess.position = princessPosition + CGPoint(x: -200, y: 400)
-        
-        speechHero.position = CGPoint(x: 120 + speechHero.bubbleDimensions.width / 2, y: heroPosition.y + 400)
+        speechPrincess.position = princessPositionFinal + CGPoint(x: -200, y: 400)
+        speechHero.position = CGPoint(x: heroPositionFinal.x + speechHero.bubbleDimensions.width / 2, y: heroPositionInitial.y + 400)
     }
 }
 
