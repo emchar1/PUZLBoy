@@ -260,9 +260,20 @@ class CutsceneIntro: SKScene {
                         
                         overlaySpeech.removeFromParent()
                         
-                        skyNode.run(SKAction.fadeOut(withDuration: 10))
-                        bloodSkyNode.run(SKAction.fadeIn(withDuration: 10))
-                        bloodOverlayNode.run(SKAction.fadeAlpha(to: 0.25, duration: 10))
+                        skyNode.run(SKAction.sequence([
+                            SKAction.wait(forDuration: 4),
+                            SKAction.fadeOut(withDuration: 6)
+                        ]))
+
+                        bloodSkyNode.run(SKAction.sequence([
+                            SKAction.wait(forDuration: 4),
+                            SKAction.fadeIn(withDuration: 6)
+                        ]))
+                        
+                        bloodOverlayNode.run(SKAction.sequence([
+                            SKAction.wait(forDuration: 4),
+                            SKAction.fadeAlpha(to: 0.25, duration: 6)
+                        ]))
 
                         run(SKAction.sequence([
                             SKAction.run {
@@ -374,12 +385,12 @@ class CutsceneIntro: SKScene {
                         hero.sprite.run(SKAction.group([
                             SKAction.repeat(heroRun, count: 2),
                             SKAction.sequence([
-                                SKAction.moveTo(x: screenSize.width / 2, duration: 2 * runCycle),
+                                SKAction.moveTo(x: screenSize.width / 2, duration: 1.5 * runCycle),
                                 SKAction.repeatForever(heroIdle)
                             ])
                         ]))
                         
-                        speechHero.run(SKAction.moveTo(x: speechHero.position.x + screenSize.width / 2 - hero.sprite.position.x, duration: 2 * runCycle))
+                        speechHero.run(SKAction.moveTo(x: speechHero.position.x + screenSize.width / 2 - hero.sprite.position.x, duration: 1.5 * runCycle))
 
                         skyNode.run(SKAction.fadeIn(withDuration: 5))
                         bloodSkyNode.run(SKAction.fadeOut(withDuration: 5))
