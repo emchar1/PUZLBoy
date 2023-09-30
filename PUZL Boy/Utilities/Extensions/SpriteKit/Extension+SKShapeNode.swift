@@ -15,7 +15,7 @@ extension SKShapeNode {
         shadow.fillColor = shadowColor
         shadow.strokeColor = .white
         shadow.lineWidth = 0
-        shadow.zPosition = zPositionOffset
+        shadow.zPosition = -zPositionOffset
         shadow.name = "dropShadow"
         shadow.alpha = 0.75
 
@@ -29,7 +29,7 @@ extension SKShapeNode {
         shadow1.fillColor = shadowColor
         shadow1.strokeColor = .white
         shadow1.lineWidth = 0
-        shadow1.zPosition = zPositionOffset
+        shadow1.zPosition = -zPositionOffset
         shadow1.name = "shadow1"
         shadow1.alpha = 0
 
@@ -38,7 +38,7 @@ extension SKShapeNode {
         shadow2.fillColor = shadowColor
         shadow2.strokeColor = .white
         shadow2.lineWidth = 0
-        shadow2.zPosition = 2 * zPositionOffset
+        shadow2.zPosition = 2 * -zPositionOffset
         shadow2.name = "shadow2"
         shadow2.alpha = 0
 
@@ -47,7 +47,7 @@ extension SKShapeNode {
         shadow3.fillColor = shadowColor
         shadow3.strokeColor = .white
         shadow3.lineWidth = 0
-        shadow3.zPosition = 3 * zPositionOffset
+        shadow3.zPosition = 3 * -zPositionOffset
         shadow3.name = "shadow3"
         shadow3.alpha = 0
         

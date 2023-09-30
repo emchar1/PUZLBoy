@@ -22,17 +22,10 @@ class HowToPlayPage: ParentPage {
         self.nodeName = "howToPlayPage"
         name = nodeName
         
-        setupSprites()
+        tableView = HowToPlayTableView(frame: .zero, style: .grouped)
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-    
-    private func setupSprites() {
-        tableView = HowToPlayTableView(frame: .zero, style: .grouped)
-
-        addChild(contentNode)
-        contentNode.addChild(super.titleLabel)
     }
 }

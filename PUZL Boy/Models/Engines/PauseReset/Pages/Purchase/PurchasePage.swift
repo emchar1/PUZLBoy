@@ -126,8 +126,6 @@ class PurchasePage: ParentPage {
         buy1999Button.delegate = self
 
 
-        addChild(contentNode)
-        contentNode.addChild(super.titleLabel)
         contentNode.addChild(watchAdButton)
         contentNode.addChild(buy099Button)
         contentNode.addChild(buy299Button)

@@ -30,7 +30,7 @@ extension SKSpriteNode {
         shadow.color = .black
         shadow.colorBlendFactor = 1
         shadow.alpha = 0.25
-        shadow.zPosition = -1
+        shadow.zPosition = -zPositionOffset
         shadow.name = "shadowNode"
         
         addChild(shadow)

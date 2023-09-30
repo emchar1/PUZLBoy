@@ -52,6 +52,9 @@ class ParentPage: SKNode {
         titleLabel.fontColor = UIFont.gameFontColor
         titleLabel.addHeavyDropShadow()
         titleLabel.zPosition = 10
+        
+        addChild(contentNode)
+        contentNode.addChild(titleLabel)
     }
     
     

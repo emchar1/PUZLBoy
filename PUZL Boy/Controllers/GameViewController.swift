@@ -140,6 +140,11 @@ extension GameViewController: TitleSceneDelegate {
         }
     }
     
+    // TODO: - LevelSelectEngine
+    func didTapLevelSelect() {
+
+    }
+    
     // TODO: - CreditsScene
     func didTapCredits() {
         let creditsScene = CreditsScene(size: K.ScreenDimensions.size)

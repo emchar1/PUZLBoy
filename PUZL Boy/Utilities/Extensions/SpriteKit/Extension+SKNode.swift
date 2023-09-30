@@ -10,7 +10,9 @@ import SpriteKit
 extension SKNode {
     
     // MARK: - Properties
-    var zPositionOffset: CGFloat { -1 }
+
+    ///A unit of 1, which can be added or subtracted from a zPosition
+    var zPositionOffset: CGFloat { 1 }
     
     var positionInScene: CGPoint? {
         if let scene = scene, let parent = parent {

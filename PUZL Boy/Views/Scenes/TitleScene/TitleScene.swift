@@ -10,6 +10,7 @@ import FirebaseAuth
 
 protocol TitleSceneDelegate: AnyObject {
     func didTapStart()
+    func didTapLevelSelect()
     func didTapCredits()
 }
 
@@ -30,13 +31,14 @@ class TitleScene: SKScene {
     //Menu Properties
     private var menuStart: MenuItemLabel!
     private var menuLevelSelect: MenuItemLabel!
-    private var menuOptions: MenuItemLabel!
+    private var menuSettings: MenuItemLabel!
     private var menuCredits: MenuItemLabel!
     private var menuBackground: SKShapeNode!
     private var menuBackgroundText: SKShapeNode!
     private var settingsBackground: SKShapeNode!
     private var settingsClose: SKSpriteNode!
     private var settingsPage: SettingsPage!
+    private var levelSelectEngine: LevelSelectEngine!
 
     //Misc.
     private var myColors: (title: UIColor, background: UIColor, shadow: UIColor) = (.black, .black, .black)
@@ -95,7 +97,6 @@ class TitleScene: SKScene {
         //Title Setup
         let sizeA: CGFloat = K.ScreenDimensions.size.width / 4
         let sizeB: CGFloat = sizeA * (4 / 5)
-        let zPositionOffset: CGFloat = 5
 
         puzlTitle = SKLabelNode(text: "PUZL")
         puzlTitle.position = CGPoint(x: 0, y: K.ScreenDimensions.size.height - K.ScreenDimensions.topMargin)
@@ -143,15 +144,16 @@ class TitleScene: SKScene {
 
         menuStart = MenuItemLabel(text: "Start Game", ofType: .menuStart, at: CGPoint(x: 0, y: menuSize.height / 2 - 1 * menuGap))
         menuLevelSelect = MenuItemLabel(text: "Select Level", ofType: .menuLevelSelect, at: CGPoint(x: 0, y: menuSize.height / 2 - 2 * menuGap))
-        menuOptions = MenuItemLabel(text: "Settings", ofType: .menuOptions, at: CGPoint(x: 0, y: menuSize.height / 2 - 3 * menuGap))
+        menuSettings = MenuItemLabel(text: "Settings", ofType: .menuSettings, at: CGPoint(x: 0, y: menuSize.height / 2 - 3 * menuGap))
         menuCredits = MenuItemLabel(text: "Credits", ofType: .menuCredits, at: CGPoint(x: 0, y: menuSize.height / 2 - 4 * menuGap))
         
         menuStart.delegate = self
         menuLevelSelect.delegate = self
-        menuOptions.delegate = self
+        menuSettings.delegate = self
         menuCredits.delegate = self
         
-        menuLevelSelect.setIsEnabled(false)
+//        menuLevelSelect.setIsEnabled(false)
+        levelSelectEngine = LevelSelectEngine()
 
         //Settings Setup
         let closeSize: CGFloat = 80
@@ -283,7 +285,7 @@ class TitleScene: SKScene {
         menuBackground.addChild(menuBackgroundText)
         menuBackgroundText.addChild(menuStart)
         menuBackgroundText.addChild(menuLevelSelect)
-        menuBackgroundText.addChild(menuOptions)
+        menuBackgroundText.addChild(menuSettings)
         menuBackgroundText.addChild(menuCredits)
 
         settingsBackground.addChild(settingsPage)
@@ -396,7 +398,7 @@ class TitleScene: SKScene {
     private func touchUpMenuItems() {
         menuStart.touchUp()
         menuLevelSelect.touchUp()
-        menuOptions.touchUp()
+        menuSettings.touchUp()
         menuCredits.touchUp()
     }
     
@@ -425,8 +427,11 @@ extension TitleScene: MenuItemLabelDelegate {
                 titleSceneDelegate?.didTapStart()
             }
         case .menuLevelSelect:
-            print("Level Select not implemented.")
-        case .menuOptions:
+            // TODO: - Level Select Tap Menu Item
+            levelSelectEngine.toggleLevelSelector(to: menuBackgroundText)
+            
+            titleSceneDelegate?.didTapLevelSelect()
+        case .menuSettings:
             showSettings(shouldHide: false)
         case .menuCredits:
             let fadeDuration: TimeInterval = 1.0

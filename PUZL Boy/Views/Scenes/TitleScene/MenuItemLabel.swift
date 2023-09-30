@@ -15,25 +15,17 @@ class MenuItemLabel: SKLabelNode {
     
     // MARK: - Properties
     
-    private var shadowNode: SKLabelNode = SKLabelNode()
     private var isPressed: Bool = false
     private(set) var type: MenuType
     
     private(set) var isEnabled: Bool = true {
         didSet {
-            if isEnabled {
-                alpha = 1
-                shadowNode.alpha = 0.25
-            }
-            else {
-                alpha = 0.25
-                shadowNode.alpha = 0
-            }
+            alpha = isEnabled ? 1 : 0.25
         }
     }
     
     enum MenuType: String {
-        case menuStart, menuLevelSelect, menuOptions, menuCredits
+        case menuStart, menuLevelSelect, menuSettings, menuCredits
     }
     
     weak var delegate: MenuItemLabelDelegate?
@@ -53,7 +45,7 @@ class MenuItemLabel: SKLabelNode {
         fontColor = .white
         horizontalAlignmentMode = .center
         verticalAlignmentMode = .center
-        zPosition = 10
+        zPosition = zPositionOffset
         name = type.rawValue
         addHeavyDropShadow()
     }

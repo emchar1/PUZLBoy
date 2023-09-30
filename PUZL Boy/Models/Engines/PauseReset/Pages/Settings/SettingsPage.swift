@@ -104,13 +104,11 @@ class SettingsPage: ParentPage {
         tapButtonReportBug.zPosition = 10
         tapButtonReportBug.delegate = self
         
-        addChild(contentNode)
-        contentNode.addChild(titleLabel)
+        
         contentNode.addChild(radioMusic)
         contentNode.addChild(radioSoundFX)
         contentNode.addChild(radioVibration)
         contentNode.addChild(radioSkipIntro)
-        
         contentNode.addChild(tapButtonNotifications)
         contentNode.addChild(tapButtonShare)
         contentNode.addChild(tapButtonReportBug)
