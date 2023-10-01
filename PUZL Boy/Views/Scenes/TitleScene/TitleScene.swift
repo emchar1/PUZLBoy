@@ -35,19 +35,26 @@ class TitleScene: SKScene {
     private var menuCredits: MenuItemLabel!
     private var menuBackground: SKShapeNode!
     private var menuBackgroundText: SKShapeNode!
+    private var levelSelectBackground: SKShapeNode!
+    private var levelSelectPage: LevelSelectPage!
     private var settingsBackground: SKShapeNode!
-    private var settingsClose: SKSpriteNode!
     private var settingsPage: SettingsPage!
-    private var levelSelectEngine: LevelSelectEngine!
+    private var closeButton: CloseButtonSprite!
 
     //Misc.
     private var myColors: (title: UIColor, background: UIColor, shadow: UIColor) = (.black, .black, .black)
     private let shadowDepth: CGFloat = 10
     private var disableInput: Bool = false
     private let menuSize = CGSize(width: 650, height: K.ScreenDimensions.size.height / 3)
+    private let levelSelectSize = CGSize(width: 650, height: K.ScreenDimensions.size.height / 5) / GameboardSprite.spriteScale
     private let settingsSize = CGSize(width: K.ScreenDimensions.size.width, height: K.ScreenDimensions.size.width * 5 / 4)
-
+    private var currentMenuSelected: MenuPage = .main
+    
     weak var titleSceneDelegate: TitleSceneDelegate?
+    
+    enum MenuPage {
+        case main, levelSelect, settings
+    }
     
     
     // MARK: - Initializtion
@@ -124,11 +131,12 @@ class TitleScene: SKScene {
         
         //Menu Setup
         let menuPosition = CGPoint(x: K.ScreenDimensions.size.width / 2, y: menuSize.height / 2 + K.ScreenDimensions.bottomMargin)
-        let menuGap: CGFloat = 133
+        let menuSpacing: CGFloat = 133
         let menuCornerRadius: CGFloat = 20
+        let shouldSkipIntro = UserDefaults.standard.bool(forKey: K.UserDefaults.shouldSkipIntro)
 
         menuBackground = SKShapeNode(rectOf: menuSize, cornerRadius: menuCornerRadius)
-        menuBackground.position = menuPosition + CGPoint(x: -3 * shadowDepth, y: -3 * shadowDepth)
+        menuBackground.position = menuPosition - 3 * shadowDepth
         menuBackground.strokeColor = .white
         menuBackground.lineWidth = 0
         menuBackground.alpha = 0
@@ -142,40 +150,49 @@ class TitleScene: SKScene {
         menuBackgroundText.alpha = 0
         menuBackgroundText.zPosition = zPositionOffset
 
-        menuStart = MenuItemLabel(text: "Start Game", ofType: .menuStart, at: CGPoint(x: 0, y: menuSize.height / 2 - 1 * menuGap))
-        menuLevelSelect = MenuItemLabel(text: "Select Level", ofType: .menuLevelSelect, at: CGPoint(x: 0, y: menuSize.height / 2 - 2 * menuGap))
-        menuSettings = MenuItemLabel(text: "Settings", ofType: .menuSettings, at: CGPoint(x: 0, y: menuSize.height / 2 - 3 * menuGap))
-        menuCredits = MenuItemLabel(text: "Credits", ofType: .menuCredits, at: CGPoint(x: 0, y: menuSize.height / 2 - 4 * menuGap))
+        menuStart = MenuItemLabel(text: "Start Game", ofType: .menuStart, at: CGPoint(x: 0, y: menuSize.height / 2 - 1 * menuSpacing))
+        menuLevelSelect = MenuItemLabel(text: "Level Select", ofType: .menuLevelSelect, at: CGPoint(x: 0, y: menuSize.height / 2 - 2 * menuSpacing))
+        menuSettings = MenuItemLabel(text: "Settings", ofType: .menuSettings, at: CGPoint(x: 0, y: menuSize.height / 2 - 3 * menuSpacing))
+        menuCredits = MenuItemLabel(text: "Credits", ofType: .menuCredits, at: CGPoint(x: 0, y: menuSize.height / 2 - 4 * menuSpacing))
         
         menuStart.delegate = self
         menuLevelSelect.delegate = self
         menuSettings.delegate = self
         menuCredits.delegate = self
         
-//        menuLevelSelect.setIsEnabled(false)
-        levelSelectEngine = LevelSelectEngine()
+        
+        //Level Select Setup
+        levelSelectBackground = SKShapeNode(rectOf: levelSelectSize, cornerRadius: menuCornerRadius)
+        levelSelectBackground.position = menuPosition
+        levelSelectBackground.xScale = menuSize.width / levelSelectSize.width
+        levelSelectBackground.yScale = menuSize.height / levelSelectSize.height
+        levelSelectBackground.strokeColor = .white
+        levelSelectBackground.lineWidth = 0
+        levelSelectBackground.alpha = 0
+        levelSelectBackground.zPosition = K.ZPosition.menuBackground
+        levelSelectBackground.addShadow(rectOf: levelSelectSize, cornerRadius: menuCornerRadius)
+        
+        levelSelectPage = LevelSelectPage(contentSize: levelSelectSize, useMorningSky: !shouldSkipIntro)
+        levelSelectPage.zPosition = zPositionOffset
+        levelSelectPage.delegate = self
+
 
         //Settings Setup
-        let closeSize: CGFloat = 80
-        let closeInset: CGFloat = 20
-        
-        settingsClose = SKSpriteNode(imageNamed: "closeButton")
-        settingsClose.scale(to: CGSize(width: closeSize, height: closeSize))
-        settingsClose.position = CGPoint(x: (settingsSize.width - closeSize) / 2 - closeInset, y: (settingsSize.height - closeSize) / 2 - closeInset)
-        settingsClose.zPosition = 10
-        settingsClose.name = "closeSettings"
-        
         settingsBackground = SKShapeNode(rectOf: settingsSize, cornerRadius: menuCornerRadius)
-        settingsBackground.lineWidth = 0
-        settingsBackground.position = CGPoint(x: K.ScreenDimensions.size.width / 2, y: menuSize.height / 2 + K.ScreenDimensions.bottomMargin)
+        settingsBackground.position = menuPosition
         settingsBackground.xScale = menuSize.width / settingsSize.width
         settingsBackground.yScale = menuSize.height / settingsSize.height
+        settingsBackground.strokeColor = .white
+        settingsBackground.lineWidth = 0
         settingsBackground.alpha = 0
         settingsBackground.zPosition = K.ZPosition.pauseScreen
         settingsBackground.addShadow(rectOf: settingsSize, cornerRadius: menuCornerRadius)
 
-        settingsPage = SettingsPage(contentSize: settingsSize, useMorningSky: !UserDefaults.standard.bool(forKey: K.UserDefaults.shouldSkipIntro))
-        settingsPage.zPosition = 10
+        settingsPage = SettingsPage(contentSize: settingsSize, useMorningSky: !shouldSkipIntro)
+        settingsPage.zPosition = zPositionOffset
+        
+        closeButton = CloseButtonSprite()
+        closeButton.delegate = self
     }
     
     private func mixColors() {
@@ -209,12 +226,13 @@ class TitleScene: SKScene {
         menuBackground.fillTexture = SKTexture(image: UIImage.gradientTextureMenu)
         menuBackground.updateShadowColor(myColors.shadow)
         
+        levelSelectBackground.fillColor = myColors.background
+        levelSelectBackground.fillTexture = SKTexture(image: UIImage.gradientTextureMenu)
+        levelSelectBackground.updateShadowColor(myColors.shadow)
+        
         settingsBackground.fillColor = myColors.background
         settingsBackground.fillTexture = SKTexture(image: UIImage.gradientTextureMenu)
         settingsBackground.updateShadowColor(myColors.shadow)
-        
-        settingsClose.color = .black
-        settingsClose.colorBlendFactor = 0
     }
     
     private func animateSprites() {
@@ -278,6 +296,7 @@ class TitleScene: SKScene {
         addChild(puzlTitle)
         addChild(boyTitle)
         addChild(menuBackground)
+        addChild(levelSelectBackground)
         addChild(settingsBackground)
         addChild(fadeSprite)
         addChild(fadeOutSprite)
@@ -287,62 +306,100 @@ class TitleScene: SKScene {
         menuBackgroundText.addChild(menuLevelSelect)
         menuBackgroundText.addChild(menuSettings)
         menuBackgroundText.addChild(menuCredits)
-
+        levelSelectBackground.addChild(levelSelectPage)
         settingsBackground.addChild(settingsPage)
-        settingsBackground.addChild(settingsClose)
     }
     
     
     // MARK: - Helper Functions
     
-    private func showSettings(shouldHide: Bool) {
-        let animationDuration: TimeInterval = 0.25
+    private func showLevelSelect(shouldHide: Bool) {
+        showSecondMenu(secondNode: levelSelectBackground,
+                       secondNodeSize: levelSelectSize,
+                       scale: GameboardSprite.spriteScale,
+                       shouldAnchorBottom: false,
+                       shouldHide: shouldHide,
+                       completion: nil)
         
+        currentMenuSelected = shouldHide ? .main : .levelSelect
+    }
+    
+    private func showSettings(shouldHide: Bool) {
+        showSecondMenu(secondNode: settingsBackground,
+                       secondNodeSize: settingsSize,
+                       scale: GameboardSprite.spriteScale,
+                       shouldAnchorBottom: true,
+                       shouldHide: shouldHide,
+                       completion: settingsPage.checkReportBugAlreadySubmitted)
+
+        currentMenuSelected = shouldHide ? .main : .settings
+    }
+    
+    private func showSecondMenu(secondNode: SKShapeNode, 
+                                secondNodeSize: CGSize,
+                                scale: CGFloat = 1,
+                                shouldAnchorBottom: Bool,
+                                shouldHide: Bool,
+                                completion: (() -> Void)?) {
+        
+        let animationDuration: TimeInterval = 0.25
+        let bottomMargin: CGFloat = K.ScreenDimensions.bottomMargin
+
         disableInput = true
         
         if shouldHide {
-            settingsBackground.hideShadow(completion: nil)
-
-            settingsBackground.run(SKAction.group([
-                SKAction.scaleX(to: menuSize.width / settingsSize.width, duration: animationDuration),
-                SKAction.scaleY(to: menuSize.height / settingsSize.height, duration: animationDuration),
-                SKAction.moveTo(y: menuSize.height / 2 + K.ScreenDimensions.bottomMargin, duration: animationDuration),
+            secondNode.hideShadow(completion: nil)
+            
+            secondNode.run(SKAction.group([
+                SKAction.scaleX(to: menuSize.width / secondNodeSize.width, duration: animationDuration),
+                SKAction.scaleY(to: menuSize.height / secondNodeSize.height, duration: animationDuration),
                 SKAction.fadeOut(withDuration: 0)
             ])) { [unowned self] in
                 menuBackground.showShadow(completion: nil)
+                closeButton.removeFromParent()
                 
                 disableInput = false
             }
-            
+
             menuBackground.run(SKAction.group([
                 SKAction.scaleX(to: 1, duration: animationDuration),
                 SKAction.scaleY(to: 1, duration: animationDuration),
-                SKAction.moveTo(y: menuSize.height / 2 + K.ScreenDimensions.bottomMargin, duration: animationDuration),
                 SKAction.fadeAlpha(to: 0.9, duration: 0)
             ]))
+            
+            if shouldAnchorBottom {
+                secondNode.run(SKAction.moveTo(y: menuSize.height / 2 + bottomMargin, duration: animationDuration))
+                menuBackground.run( SKAction.moveTo(y: menuSize.height / 2 + bottomMargin, duration: animationDuration))
+            }
         }
         else {
             menuBackground.hideShadow(completion: nil)
 
             menuBackground.run(SKAction.group([
-                SKAction.scaleX(to: settingsSize.width / menuSize.width * GameboardSprite.spriteScale, duration: animationDuration),
-                SKAction.scaleY(to: settingsSize.height / menuSize.height * GameboardSprite.spriteScale, duration: animationDuration),
-                SKAction.moveTo(y: settingsSize.height / 2 * GameboardSprite.spriteScale + K.ScreenDimensions.bottomMargin, duration: animationDuration),
+                SKAction.scaleX(to: secondNodeSize.width / menuSize.width * scale, duration: animationDuration),
+                SKAction.scaleY(to: secondNodeSize.height / menuSize.height * scale, duration: animationDuration),
                 SKAction.fadeOut(withDuration: 0)
             ])) { [unowned self] in
-                settingsBackground.showShadow(completion: nil)
-                
+                secondNode.showShadow(completion: nil)
+                secondNode.addChild(closeButton)
+
+                closeButton.setPosition(to: CGPoint(x: secondNodeSize.width / 2, y: secondNodeSize.height / 2))
+
                 disableInput = false
             }
             
-            settingsBackground.run(SKAction.group([
-                SKAction.scaleX(to: GameboardSprite.spriteScale, duration: animationDuration),
-                SKAction.scaleY(to: GameboardSprite.spriteScale, duration: animationDuration),
-                SKAction.moveTo(y: settingsSize.height / 2 * GameboardSprite.spriteScale + K.ScreenDimensions.bottomMargin, duration: animationDuration),
+            secondNode.run(SKAction.group([
+                SKAction.scaleX(to: scale, duration: animationDuration),
+                SKAction.scaleY(to: scale, duration: animationDuration),
                 SKAction.fadeAlpha(to: 0.9, duration: 0)
             ]))
-            
-            settingsPage.checkReportBugAlreadySubmitted()
+
+            if shouldAnchorBottom {
+                menuBackground.run(SKAction.moveTo(y: secondNodeSize.height / 2 * scale + bottomMargin, duration: animationDuration))
+                secondNode.run(SKAction.moveTo(y: secondNodeSize.height / 2 * scale + bottomMargin, duration: animationDuration))
+            }
+
+            completion?()
         }
     }
     
@@ -354,15 +411,19 @@ class TitleScene: SKScene {
         guard !disableInput else { return }
         
         for node in nodes(at: location) {
-            if node.name == "closeSettings", let settingsClose = node as? SKSpriteNode {
-                settingsClose.colorBlendFactor = 0.25
-            }
-            else if let node = node as? MenuItemLabel {
+            if let node = node as? MenuItemLabel {
                 node.touchDown()
             }
             else if let node = node as? SettingsPage {
                 node.superScene = self
                 node.touchDown(for: touches)
+            }
+            else if let node = node as? LevelSelectPage {
+                node.superScene = self
+                node.touchDown(for: touches)
+            }
+            else if let node = node as? CloseButtonSprite {
+                node.touchDown()
             }
         }
     }
@@ -372,14 +433,7 @@ class TitleScene: SKScene {
         guard !disableInput else { return }
         
         for node in nodes(at: location) {
-            if node.name == "closeSettings", let settingsClose = node as? SKSpriteNode, settingsClose.colorBlendFactor == 0.25 {
-                showSettings(shouldHide: true)
-
-                ButtonTap.shared.tap(type: .buttontap6)
-                
-                touchUpButtons()
-            }
-            else if let node = node as? MenuItemLabel {
+            if let node = node as? MenuItemLabel {
                 node.tapButton(toColor: myColors.shadow)
 
                 touchUpButtons()
@@ -387,6 +441,16 @@ class TitleScene: SKScene {
             else if let node = node as? SettingsPage {
                 node.touchNode(for: touches)
 
+                touchUpButtons()
+            }
+            else if let node = node as? LevelSelectPage {
+                node.touchNode(for: touches)
+                
+                touchUpButtons()
+            }
+            else if let node = node as? CloseButtonSprite {
+                node.buttonTapped()
+                
                 touchUpButtons()
             }
             else {
@@ -406,29 +470,58 @@ class TitleScene: SKScene {
         touchUpMenuItems()
         
         settingsPage.touchUp()
-        settingsClose.colorBlendFactor = 0
+        levelSelectPage.touchUp()
+        closeButton.touchUp()
     }
 }
+
+
+// MARK: - LevelSelectPageDelegate
+
+extension TitleScene: LevelSelectPageDelegate {
+    func didTapLevelSelect() {
+        startGame()
+    }
+}
+
+
+// MARK: - CloseButtonSpriteDelegate
+
+extension TitleScene: CloseButtonSpriteDelegate {
+    func didTapButton() {
+        if currentMenuSelected == .settings {
+            showSettings(shouldHide: true)
+        }
+        else if currentMenuSelected == .levelSelect {
+            showLevelSelect(shouldHide: true)
+        }
+    }
+}
+
 
 
 // MARK: - MenuItemLabelDelegate
 
 extension TitleScene: MenuItemLabelDelegate {
+    private func startGame() {
+        let fadeDuration: TimeInterval = 2.0
+        
+        disableInput = true
+        AudioManager.shared.stopSound(for: AudioManager.shared.titleLogo, fadeDuration: fadeDuration)
+
+        fadeSprite.run(SKAction.fadeIn(withDuration: fadeDuration)) { [unowned self] in
+            disableInput = false
+            titleSceneDelegate?.didTapStart()
+        }
+    }
+    
     func buttonWasTapped(_ node: MenuItemLabel) {
         switch node.type {
         case .menuStart:
-            let fadeDuration: TimeInterval = 2.0
-            
-            disableInput = true
-            AudioManager.shared.stopSound(for: AudioManager.shared.titleLogo, fadeDuration: fadeDuration)
-
-            fadeSprite.run(SKAction.fadeIn(withDuration: fadeDuration)) { [unowned self] in
-                disableInput = false
-                titleSceneDelegate?.didTapStart()
-            }
+            startGame()
         case .menuLevelSelect:
             // TODO: - Level Select Tap Menu Item
-            levelSelectEngine.toggleLevelSelector(to: menuBackgroundText)
+            showLevelSelect(shouldHide: false)
             
             titleSceneDelegate?.didTapLevelSelect()
         case .menuSettings:
