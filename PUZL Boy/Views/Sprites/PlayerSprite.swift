@@ -143,7 +143,7 @@ class PlayerSprite {
     ///Fades the player as he's exiting through the gate
     func startPlayerExitAnimation() {
         let runAnimation = SKAction.animate(with: player.textures[Player.Texture.run.rawValue],
-                                             timePerFrame: animationSpeed * PartyModeSprite.shared.speedMultiplier)
+                                            timePerFrame: animationSpeed * PartyModeSprite.shared.speedMultiplier)
         let exitAction = SKAction.group([
             SKAction.repeatForever(runAnimation),
             SKAction.scaleX(to: player.sprite.xScale / 4, y: player.sprite.yScale / 4, duration: 0.5),
@@ -152,9 +152,7 @@ class PlayerSprite {
 
         player.sprite.run(exitAction)
 
-        let exitSound = "movetile\(Int.random(in: 1...3))"
-        AudioManager.shared.playSound(for: exitSound)
-        AudioManager.shared.stopSound(for: exitSound, fadeDuration: 1)
+        AudioManager.shared.playSoundThenStop(for: "movetile\(Int.random(in: 1...3))", playForDuration: 0.2, fadeOut: 0.8)
     }
     
     func startMarshEffectAnimation() {

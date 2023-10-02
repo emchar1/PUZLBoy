@@ -37,6 +37,10 @@ class LevelSelectPage: ParentPage {
         fatalError("init(coder:) has not been implemented")
     }
     
+    deinit {
+        print("LevelSelectPage deinit")
+    }
+    
     private func setupNodes() {
         levelPicker = UIPickerView(frame: .zero)
                       
@@ -60,7 +64,6 @@ class LevelSelectPage: ParentPage {
         guard let location = touches.first?.location(in: superScene) else { return }
 
         // TODO: -
-        print("touchDown in \(location)")
         dismissNode.touchDown(in: location)
         
     }
@@ -69,7 +72,6 @@ class LevelSelectPage: ParentPage {
         super.touchUp()
         
         // TODO: -
-        print("touchUp")
         dismissNode.touchUp()
     }
     
@@ -77,7 +79,6 @@ class LevelSelectPage: ParentPage {
         super.touchesMoved(touches, with: event)
         
         // TODO: -
-        print("touchesMoved")
         dismissNode.touchesMoved(touches, with: event)
     }
     
@@ -88,7 +89,6 @@ class LevelSelectPage: ParentPage {
         guard let location = touches.first?.location(in: superScene) else { return }
         
         // TODO: -
-        print("touchNode in \(location)")
         dismissNode.tapButton(in: location, type: .buttontap3)
     }
 }

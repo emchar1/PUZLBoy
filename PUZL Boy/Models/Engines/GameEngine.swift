@@ -97,7 +97,7 @@ class GameEngine {
     
     ///This function replaces having to keep initializing a new GameEngines in newGame in GameScene, which was causing huge memory spikes and app crashing for lower level devices.
     func newGame(level: Int, shouldSpawn: Bool) {
-        guard LevelBuilder.maxLevel > 0 else {
+        guard LevelBuilder.levelsSize > 0 else {
             fatalError("Firebase records were not loaded!🙀")
         }
         

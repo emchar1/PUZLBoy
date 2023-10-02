@@ -182,6 +182,7 @@ struct Level: CustomStringConvertible {
             r0c3: gameboardSize <= 3 ? "" : gameboard[0][3].terrain.description,
             r0c4: gameboardSize <= 4 ? "" : gameboard[0][4].terrain.description,
             r0c5: gameboardSize <= 5 ? "" : gameboard[0][5].terrain.description,
+            r0c6: gameboardSize <= 6 ? "" : gameboard[0][6].terrain.description,
 
             r1c0: gameboard[1][0].terrain.description,
             r1c1: gameboard[1][1].terrain.description,
@@ -189,6 +190,7 @@ struct Level: CustomStringConvertible {
             r1c3: gameboardSize <= 3 ? "" : gameboard[1][3].terrain.description,
             r1c4: gameboardSize <= 4 ? "" : gameboard[1][4].terrain.description,
             r1c5: gameboardSize <= 5 ? "" : gameboard[1][5].terrain.description,
+            r1c6: gameboardSize <= 6 ? "" : gameboard[1][6].terrain.description,
 
             r2c0: gameboard[2][0].terrain.description,
             r2c1: gameboard[2][1].terrain.description,
@@ -196,6 +198,7 @@ struct Level: CustomStringConvertible {
             r2c3: gameboardSize <= 3 ? "" : gameboard[2][3].terrain.description,
             r2c4: gameboardSize <= 4 ? "" : gameboard[2][4].terrain.description,
             r2c5: gameboardSize <= 5 ? "" : gameboard[2][5].terrain.description,
+            r2c6: gameboardSize <= 6 ? "" : gameboard[2][6].terrain.description,
 
             r3c0: gameboardSize <= 3 ? "" : gameboard[3][0].terrain.description,
             r3c1: gameboardSize <= 3 ? "" : gameboard[3][1].terrain.description,
@@ -203,6 +206,7 @@ struct Level: CustomStringConvertible {
             r3c3: gameboardSize <= 3 ? "" : gameboard[3][3].terrain.description,
             r3c4: gameboardSize <= 4 ? "" : gameboard[3][4].terrain.description,
             r3c5: gameboardSize <= 5 ? "" : gameboard[3][5].terrain.description,
+            r3c6: gameboardSize <= 6 ? "" : gameboard[3][6].terrain.description,
 
             r4c0: gameboardSize <= 4 ? "" : gameboard[4][0].terrain.description,
             r4c1: gameboardSize <= 4 ? "" : gameboard[4][1].terrain.description,
@@ -210,6 +214,7 @@ struct Level: CustomStringConvertible {
             r4c3: gameboardSize <= 4 ? "" : gameboard[4][3].terrain.description,
             r4c4: gameboardSize <= 4 ? "" : gameboard[4][4].terrain.description,
             r4c5: gameboardSize <= 5 ? "" : gameboard[4][5].terrain.description,
+            r4c6: gameboardSize <= 6 ? "" : gameboard[4][6].terrain.description,
 
             r5c0: gameboardSize <= 5 ? "" : gameboard[5][0].terrain.description,
             r5c1: gameboardSize <= 5 ? "" : gameboard[5][1].terrain.description,
@@ -217,6 +222,15 @@ struct Level: CustomStringConvertible {
             r5c3: gameboardSize <= 5 ? "" : gameboard[5][3].terrain.description,
             r5c4: gameboardSize <= 5 ? "" : gameboard[5][4].terrain.description,
             r5c5: gameboardSize <= 5 ? "" : gameboard[5][5].terrain.description,
+            r5c6: gameboardSize <= 6 ? "" : gameboard[5][6].terrain.description,
+
+            r6c0: gameboardSize <= 6 ? "" : gameboard[6][0].terrain.description,
+            r6c1: gameboardSize <= 6 ? "" : gameboard[6][1].terrain.description,
+            r6c2: gameboardSize <= 6 ? "" : gameboard[6][2].terrain.description,
+            r6c3: gameboardSize <= 6 ? "" : gameboard[6][3].terrain.description,
+            r6c4: gameboardSize <= 6 ? "" : gameboard[6][4].terrain.description,
+            r6c5: gameboardSize <= 6 ? "" : gameboard[6][5].terrain.description,
+            r6c6: gameboardSize <= 6 ? "" : gameboard[6][6].terrain.description,
 
             //overlay
             s0d0: gameboard[0][0].overlay.description,
@@ -225,6 +239,7 @@ struct Level: CustomStringConvertible {
             s0d3: gameboardSize <= 3 ? "" : gameboard[0][3].overlay.description,
             s0d4: gameboardSize <= 4 ? "" : gameboard[0][4].overlay.description,
             s0d5: gameboardSize <= 5 ? "" : gameboard[0][5].overlay.description,
+            s0d6: gameboardSize <= 6 ? "" : gameboard[0][6].overlay.description,
 
             s1d0: gameboard[1][0].overlay.description,
             s1d1: gameboard[1][1].overlay.description,
@@ -232,6 +247,7 @@ struct Level: CustomStringConvertible {
             s1d3: gameboardSize <= 3 ? "" : gameboard[1][3].overlay.description,
             s1d4: gameboardSize <= 4 ? "" : gameboard[1][4].overlay.description,
             s1d5: gameboardSize <= 5 ? "" : gameboard[1][5].overlay.description,
+            s1d6: gameboardSize <= 6 ? "" : gameboard[1][6].overlay.description,
 
             s2d0: gameboard[2][0].overlay.description,
             s2d1: gameboard[2][1].overlay.description,
@@ -239,6 +255,7 @@ struct Level: CustomStringConvertible {
             s2d3: gameboardSize <= 3 ? "" : gameboard[2][3].overlay.description,
             s2d4: gameboardSize <= 4 ? "" : gameboard[2][4].overlay.description,
             s2d5: gameboardSize <= 5 ? "" : gameboard[2][5].overlay.description,
+            s2d6: gameboardSize <= 6 ? "" : gameboard[2][6].overlay.description,
 
             s3d0: gameboardSize <= 3 ? "" : gameboard[3][0].overlay.description,
             s3d1: gameboardSize <= 3 ? "" : gameboard[3][1].overlay.description,
@@ -246,6 +263,7 @@ struct Level: CustomStringConvertible {
             s3d3: gameboardSize <= 3 ? "" : gameboard[3][3].overlay.description,
             s3d4: gameboardSize <= 4 ? "" : gameboard[3][4].overlay.description,
             s3d5: gameboardSize <= 5 ? "" : gameboard[3][5].overlay.description,
+            s3d6: gameboardSize <= 6 ? "" : gameboard[3][6].overlay.description,
 
             s4d0: gameboardSize <= 4 ? "" : gameboard[4][0].overlay.description,
             s4d1: gameboardSize <= 4 ? "" : gameboard[4][1].overlay.description,
@@ -253,13 +271,23 @@ struct Level: CustomStringConvertible {
             s4d3: gameboardSize <= 4 ? "" : gameboard[4][3].overlay.description,
             s4d4: gameboardSize <= 4 ? "" : gameboard[4][4].overlay.description,
             s4d5: gameboardSize <= 5 ? "" : gameboard[4][5].overlay.description,
+            s4d6: gameboardSize <= 6 ? "" : gameboard[4][6].overlay.description,
 
             s5d0: gameboardSize <= 5 ? "" : gameboard[5][0].overlay.description,
             s5d1: gameboardSize <= 5 ? "" : gameboard[5][1].overlay.description,
             s5d2: gameboardSize <= 5 ? "" : gameboard[5][2].overlay.description,
             s5d3: gameboardSize <= 5 ? "" : gameboard[5][3].overlay.description,
             s5d4: gameboardSize <= 5 ? "" : gameboard[5][4].overlay.description,
-            s5d5: gameboardSize <= 5 ? "" : gameboard[5][5].overlay.description
+            s5d5: gameboardSize <= 5 ? "" : gameboard[5][5].overlay.description,
+            s5d6: gameboardSize <= 6 ? "" : gameboard[5][6].overlay.description,
+
+            s6d0: gameboardSize <= 6 ? "" : gameboard[6][0].overlay.description,
+            s6d1: gameboardSize <= 6 ? "" : gameboard[6][1].overlay.description,
+            s6d2: gameboardSize <= 6 ? "" : gameboard[6][2].overlay.description,
+            s6d3: gameboardSize <= 6 ? "" : gameboard[6][3].overlay.description,
+            s6d4: gameboardSize <= 6 ? "" : gameboard[6][4].overlay.description,
+            s6d5: gameboardSize <= 6 ? "" : gameboard[6][5].overlay.description,
+            s6d6: gameboardSize <= 6 ? "" : gameboard[5][6].overlay.description
         )
     }
 }

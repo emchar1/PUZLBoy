@@ -282,6 +282,27 @@ class AudioManager {
     }
     
     /**
+     Plays an audio, then stops after a certain playForDuration amounts.
+     - parameters:
+        - audioKey: the key for the audio item to play
+        - currentTime: currentTime to start the playback at; if nil, don't set
+        - fadeIn: ramp up time in TimeInterval before reaching max volume. Default is 0.
+        - playForDuration: The amount to play before beginning the stop audio process.
+        - fadeOut: length of time in seconds for music to fade before stopping.
+        - delay: adds a delay in TimeInterval before playing the sound. Default is nil.
+        - pan: pan value to initialize, defaults to center of player
+        - interruptPlayback: I forgot what this meant, but the default is true 🤷🏻‍♀️
+     */
+    func playSoundThenStop(for audioKey: String, currentTime: TimeInterval? = nil, fadeIn: TimeInterval = 0.0, playForDuration: TimeInterval, fadeOut: TimeInterval = 0.0, delay: TimeInterval? = nil, pan: Float = 0, interruptPlayback: Bool = true ) {
+
+        playSound(for: audioKey, currentTime: currentTime, fadeIn: fadeIn, delay: delay, pan: pan, interruptPlayback: interruptPlayback)
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + playForDuration) { [unowned self] in
+            stopSound(for: audioKey, fadeDuration: fadeOut)
+        }
+    }
+    
+    /**
      Sets the pan of the audioItem.
      - parameters:
         - audioKey: the key for the audio item to set the pan for

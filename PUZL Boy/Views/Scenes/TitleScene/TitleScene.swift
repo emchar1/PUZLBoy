@@ -335,7 +335,7 @@ class TitleScene: SKScene {
         currentMenuSelected = shouldHide ? .main : .settings
     }
     
-    private func showSecondMenu(secondNode: SKShapeNode, 
+    private func showSecondMenu(secondNode: SKShapeNode,
                                 secondNodeSize: CGSize,
                                 scale: CGFloat = 1,
                                 shouldAnchorBottom: Bool,
@@ -381,10 +381,7 @@ class TitleScene: SKScene {
                 SKAction.fadeOut(withDuration: 0)
             ])) { [unowned self] in
                 secondNode.showShadow(completion: nil)
-                secondNode.addChild(closeButton)
-
-                closeButton.setPosition(to: CGPoint(x: secondNodeSize.width / 2, y: secondNodeSize.height / 2))
-
+                
                 disableInput = false
             }
             
@@ -393,6 +390,9 @@ class TitleScene: SKScene {
                 SKAction.scaleY(to: scale, duration: animationDuration),
                 SKAction.fadeAlpha(to: 0.9, duration: 0)
             ]))
+            
+            secondNode.addChild(closeButton)
+            closeButton.setPosition(to: CGPoint(x: secondNodeSize.width / 2, y: secondNodeSize.height / 2))
 
             if shouldAnchorBottom {
                 menuBackground.run(SKAction.moveTo(y: secondNodeSize.height / 2 * scale + bottomMargin, duration: animationDuration))
@@ -508,6 +508,10 @@ extension TitleScene: MenuItemLabelDelegate {
         
         disableInput = true
         AudioManager.shared.stopSound(for: AudioManager.shared.titleLogo, fadeDuration: fadeDuration)
+        
+        //IMPORTANT TO MAKE THESE NIL!! Otherwise you get retain cycle!!!
+        levelSelectPage.superScene = nil
+        settingsPage.superScene = nil
 
         fadeSprite.run(SKAction.fadeIn(withDuration: fadeDuration)) { [unowned self] in
             disableInput = false

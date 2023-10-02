@@ -46,11 +46,11 @@ class GameScene: SKScene {
         didSet {
             guard !Level.isPartyLevel(currentLevel) else { return }
             
-            if currentLevel > LevelBuilder.maxLevel {
+            if currentLevel > LevelBuilder.levelsSize {
                 currentLevel = 1
             }
             else if currentLevel < 1 {
-                currentLevel = LevelBuilder.maxLevel
+                currentLevel = LevelBuilder.levelsSize
             }
         }
     }
@@ -337,7 +337,7 @@ class GameScene: SKScene {
         - levelStatsItem: the current level stats to save to Firebase
      */
     private func saveState(levelStatsItem: LevelStats) {
-        guard let user = FIRManager.user, LevelBuilder.maxLevel > 0 else { return }
+        guard let user = FIRManager.user, LevelBuilder.levelsSize > 0 else { return }
         
         if levelStatsArray.filter({ $0 == levelStatsItem }).first != nil {
             if let indexFound = levelStatsArray.firstIndex(where: { $0 == levelStatsItem }) {

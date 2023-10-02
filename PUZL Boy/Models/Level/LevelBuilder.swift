@@ -14,8 +14,10 @@ struct LevelBuilder {
     
     // MARK: - Properties
     
-    static var maxLevel: Int { return levels.count - 1 }
     static var levels: [Level] = []
+    static var levelsSize: Int { return levels.count - 1 }
+    static let minLevels = 3
+    static let maxLevels = 7
     
     
     // MARK: - Functions
@@ -107,12 +109,33 @@ struct LevelBuilder {
             ])
         }
         
+        if model.r6c0 != "" {
+            //Complete the previous rows first...
+            gameboard[0].append((terrain: LevelType.getLevelType(from: model.r0c6), overlay: LevelType.getLevelType(from: model.s0d6)))
+            gameboard[1].append((terrain: LevelType.getLevelType(from: model.r1c6), overlay: LevelType.getLevelType(from: model.s1d6)))
+            gameboard[2].append((terrain: LevelType.getLevelType(from: model.r2c6), overlay: LevelType.getLevelType(from: model.s2d6)))
+            gameboard[3].append((terrain: LevelType.getLevelType(from: model.r3c6), overlay: LevelType.getLevelType(from: model.s3d6)))
+            gameboard[4].append((terrain: LevelType.getLevelType(from: model.r4c6), overlay: LevelType.getLevelType(from: model.s4d6)))
+            gameboard[5].append((terrain: LevelType.getLevelType(from: model.r4c6), overlay: LevelType.getLevelType(from: model.s4d6)))
+
+            //Then build the last row
+            gameboard.append([
+                (terrain: LevelType.getLevelType(from: model.r6c0), overlay: LevelType.getLevelType(from: model.s6d0)),
+                (terrain: LevelType.getLevelType(from: model.r6c1), overlay: LevelType.getLevelType(from: model.s6d1)),
+                (terrain: LevelType.getLevelType(from: model.r6c2), overlay: LevelType.getLevelType(from: model.s6d2)),
+                (terrain: LevelType.getLevelType(from: model.r6c3), overlay: LevelType.getLevelType(from: model.s6d3)),
+                (terrain: LevelType.getLevelType(from: model.r6c4), overlay: LevelType.getLevelType(from: model.s6d4)),
+                (terrain: LevelType.getLevelType(from: model.r6c5), overlay: LevelType.getLevelType(from: model.s6d5)),
+                (terrain: LevelType.getLevelType(from: model.r6c6), overlay: LevelType.getLevelType(from: model.s6d6))
+            ])
+        }
+        
         return gameboard
     } //end buildGameboard()
     
     ///Builds a party gameboard with all party tiles.
-    static func buildPartyGameboard(ofSize size: Int = 3) -> K.Gameboard {
-        let sizeAdjusted = min(max(size, 3), 6)
+    static func buildPartyGameboard(ofSize size: Int = minLevels) -> K.Gameboard {
+        let sizeAdjusted = min(max(size, minLevels), maxLevels)
         let partyPanel: K.GameboardPanel = (terrain: .partytile, overlay: .boundary)
         var gameboard: K.Gameboard = []
         
@@ -147,7 +170,16 @@ struct LevelBuilder {
 
             gameboard.append([partyPanel, partyPanel, partyPanel, partyPanel, partyPanel, partyPanel])
         }
-        
+
+        //size == 7
+        if sizeAdjusted > 6 {
+            for i in 0..<6 {
+                gameboard[i].append(partyPanel)
+            }
+
+            gameboard.append([partyPanel, partyPanel, partyPanel, partyPanel, partyPanel, partyPanel, partyPanel])
+        }
+
         return gameboard
     }
     
