@@ -116,7 +116,7 @@ struct LevelBuilder {
             gameboard[2].append((terrain: LevelType.getLevelType(from: model.r2c6), overlay: LevelType.getLevelType(from: model.s2d6)))
             gameboard[3].append((terrain: LevelType.getLevelType(from: model.r3c6), overlay: LevelType.getLevelType(from: model.s3d6)))
             gameboard[4].append((terrain: LevelType.getLevelType(from: model.r4c6), overlay: LevelType.getLevelType(from: model.s4d6)))
-            gameboard[5].append((terrain: LevelType.getLevelType(from: model.r4c6), overlay: LevelType.getLevelType(from: model.s4d6)))
+            gameboard[5].append((terrain: LevelType.getLevelType(from: model.r5c6), overlay: LevelType.getLevelType(from: model.s5d6)))
 
             //Then build the last row
             gameboard.append([
