@@ -48,7 +48,7 @@ struct PartyInventory {
         self.panelCount = panelCount
         
         switch panelCount {
-        case 6:
+        case 6, 7:
             spawnDelayDuration = 0.2
             itemWaitDuration = 3
         case 5:
@@ -85,7 +85,7 @@ struct PartyInventory {
         switch panelCount {
         case 4:     bombRange = 800..<825
         case 5:     bombRange = 800..<900
-        case 6:     bombRange = 800..<1000
+        case 6, 7:  bombRange = 800..<1000
         default:    bombRange = 800..<825
         }
         
