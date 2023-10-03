@@ -287,7 +287,7 @@ struct Level: CustomStringConvertible {
             s6d3: gameboardSize <= 6 ? "" : gameboard[6][3].overlay.description,
             s6d4: gameboardSize <= 6 ? "" : gameboard[6][4].overlay.description,
             s6d5: gameboardSize <= 6 ? "" : gameboard[6][5].overlay.description,
-            s6d6: gameboardSize <= 6 ? "" : gameboard[5][6].overlay.description
+            s6d6: gameboardSize <= 6 ? "" : gameboard[6][6].overlay.description
         )
     }
 }

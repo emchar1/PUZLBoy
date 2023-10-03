@@ -388,13 +388,16 @@ class PlayerSprite {
         
     func startKnockbackAnimation(on gameboard: GameboardSprite, at panel: K.GameboardPosition, isAttacked: Bool, direction: Controls, completion: @escaping (() -> Void)) {
         
+        let speedMultiplier: TimeInterval = PartyModeSprite.shared.speedMultiplier
         let newDirection = isAttacked ? direction.getOpposite : direction
         let knockback: CGFloat = 10
         let blinkColor: UIColor = .systemRed
-        var moveAction: SKAction
-        var unmoveAction: SKAction
         
         isAnimating = true
+
+        //Setup Knockback Actions
+        var moveAction: SKAction
+        var unmoveAction: SKAction
         
         switch newDirection {
         case .up:
@@ -414,45 +417,99 @@ class PlayerSprite {
         let knockbackAnimation = SKAction.sequence([
             moveAction,
             SKAction.colorize(with: blinkColor, colorBlendFactor: isAttacked ? 1.0 : 0.0, duration: 0),
-            SKAction.wait(forDuration: 0.2 * PartyModeSprite.shared.speedMultiplier),
+            SKAction.wait(forDuration: 0.2 * speedMultiplier),
             unmoveAction
         ])
         
         let blinkAnimation = SKAction.sequence([
-            SKAction.colorize(withColorBlendFactor: 0.0, duration: 0.12 * PartyModeSprite.shared.speedMultiplier),
+            SKAction.colorize(withColorBlendFactor: 0.0, duration: 0.12 * speedMultiplier),
             SKAction.colorize(with: blinkColor, colorBlendFactor: 1.0, duration: 0),
-            SKAction.colorize(withColorBlendFactor: 0.0, duration: 0.12 * PartyModeSprite.shared.speedMultiplier),
-            SKAction.colorize(with: blinkColor, colorBlendFactor: 0.75, duration: 0),
-            SKAction.colorize(withColorBlendFactor: 0.0, duration: 0.12 * PartyModeSprite.shared.speedMultiplier),
-            SKAction.colorize(with: blinkColor, colorBlendFactor: 0.5, duration: 0),
-            SKAction.colorize(withColorBlendFactor: 0.0, duration: 0.12 * PartyModeSprite.shared.speedMultiplier),
+            SKAction.colorize(withColorBlendFactor: 0.0, duration: 0.12 * speedMultiplier),
+            SKAction.colorize(with: blinkColor, colorBlendFactor: 0.85, duration: 0),
+            SKAction.colorize(withColorBlendFactor: 0.0, duration: 0.12 * speedMultiplier),
+            SKAction.colorize(with: blinkColor, colorBlendFactor: 0.7, duration: 0),
+            SKAction.colorize(withColorBlendFactor: 0.0, duration: 0.12 * speedMultiplier),
+            SKAction.colorize(with: blinkColor, colorBlendFactor: 0.55, duration: 0),
+            SKAction.colorize(withColorBlendFactor: 0.0, duration: 0.12 * speedMultiplier),
+            SKAction.colorize(with: blinkColor, colorBlendFactor: 0.4, duration: 0),
+            SKAction.colorize(withColorBlendFactor: 0.0, duration: 0.12 * speedMultiplier),
             SKAction.colorize(with: blinkColor, colorBlendFactor: 0.25, duration: 0),
-            SKAction.colorize(withColorBlendFactor: 0.0, duration: 0.12 * PartyModeSprite.shared.speedMultiplier),
+            SKAction.colorize(withColorBlendFactor: 0.0, duration: 0.12 * speedMultiplier),
+            SKAction.colorize(with: blinkColor, colorBlendFactor: 0.1, duration: 0),
+            SKAction.colorize(withColorBlendFactor: 0.0, duration: 0.12 * speedMultiplier),
         ])
         
-        AudioManager.shared.playSound(for: "boygrunt\(Int.random(in: 1...2))")
 
+        //Handle two cases:
+        //  1.) isAttacked: attack by an enemy
+        //  2.) !isAttacked: bump into a boulder, for ex.
         if isAttacked {
-            let dragonAttackSprite = SKSpriteNode(imageNamed: "dragonScratch")
-            dragonAttackSprite.position = gameboard.getLocation(at: panel)
-            dragonAttackSprite.zPosition = K.ZPosition.itemsAndEffects
-            dragonAttackSprite.setScale(gameboard.panelSize / dragonAttackSprite.size.width)
+            let rotationDirectionType: GameboardSprite.RotateDirectionType
+            let antiRotationDirection: GameboardSprite.RotateDirectionType
+            let rotationAngle: CGFloat
+            let dragonOffset: K.GameboardPosition
+            var flameOffset = CGPoint(x: gameboard.panelSize, y: gameboard.panelSize)
 
-            gameboard.sprite.addChild(dragonAttackSprite)
-
-            dragonAttackSprite.run(SKAction.sequence([
-                SKAction.scale(to: 1.5, duration: 0.2),
-                SKAction.fadeOut(withDuration: 0.2)
-            ])) {
-                dragonAttackSprite.removeFromParent()
+            switch direction { //direction of dragon in relation to PUZL Boy
+            case .up:
+                dragonOffset = (-1, 0)
+                flameOffset = flameOffset * CGPoint(x: 0.25, y: -0.125)
+                rotationDirectionType = .rotateCounterClockwise
+                antiRotationDirection = .rotateClockwise
+                rotationAngle = -.pi / 2
+            case .down:
+                dragonOffset = (1, 0)
+                flameOffset = flameOffset * CGPoint(x: -0.2, y: 0.125)
+                rotationDirectionType = .rotateClockwise
+                antiRotationDirection = .rotateCounterClockwise
+                rotationAngle = .pi / 2
+            case .left:
+                dragonOffset = (0, -1)
+                flameOffset = flameOffset * CGPoint(x: 0.125, y: 0.25)
+                rotationDirectionType = .none
+                antiRotationDirection = .none
+                rotationAngle = 0
+            case .right:
+                dragonOffset = (0, 1)
+                flameOffset = flameOffset * CGPoint(x: -0.125, y: 0.25)
+                rotationDirectionType = .flipHorizontal
+                antiRotationDirection = .flipHorizontal
+                rotationAngle = 0
             }
             
-            AudioManager.shared.playSound(for: "enemyscratch")
+            let dragonPosition = (panel.row + dragonOffset.row, panel.col + dragonOffset.col)
+            
+            gameboard.rotateOverlay(at: dragonPosition, directionType: rotationDirectionType, duration: 0.2 * speedMultiplier) { [unowned self] in
+                Haptics.shared.executeCustomPattern(pattern: .enemy)
+                AudioManager.shared.playSound(for: "boypain\(Int.random(in: 1...4))")
+                AudioManager.shared.playSound(for: "enemyflame")
+
+                player.sprite.run(SKAction.sequence([knockbackAnimation, blinkAnimation]))
+                
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    gameboard.rotateOverlay(at: dragonPosition, directionType: antiRotationDirection, duration: 0.2 * speedMultiplier) { [unowned self] in
+                        isAnimating = false
+                        completion()
+                    }
+                }
+            }
+            
+            ParticleEngine.shared.animateParticles(type: .dragonFireLite, 
+                                                   toNode: gameboard.sprite,
+                                                   position: gameboard.getLocation(at: dragonPosition) + flameOffset,
+                                                   scale: 3 / CGFloat(gameboard.panelCount),
+                                                   angle: rotationAngle,
+                                                   shouldFlipHorizontally: direction == .right,
+                                                   duration: 2)
         }
-        
-        player.sprite.run(isAttacked ? SKAction.sequence([knockbackAnimation, blinkAnimation]) : knockbackAnimation) { [unowned self] in
-            isAnimating = false
-            completion()
+        else {
+            Haptics.shared.executeCustomPattern(pattern: .boulder)
+            AudioManager.shared.playSound(for: "boygrunt\(Int.random(in: 1...2))")
+            
+            player.sprite.run(knockbackAnimation) { [unowned self] in
+                isAnimating = false
+                completion()
+            }
         }
     }
     

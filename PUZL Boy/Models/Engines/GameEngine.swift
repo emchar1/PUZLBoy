@@ -872,7 +872,6 @@ class GameEngine {
                 
                 GameCenterManager.shared.updateProgress(achievement: .klutz, shouldReportImmediately: false)
                 
-                Haptics.shared.executeCustomPattern(pattern: .boulder)
                 shouldDisableControlInput = true
                 playerSprite.startKnockbackAnimation(on: gameboardSprite, at: level.player, isAttacked: false, direction: direction) { [unowned self] in
                     shouldDisableControlInput = false
@@ -893,7 +892,6 @@ class GameEngine {
                 }
 //                updateMovesRemaining() //removed here...
 
-                Haptics.shared.executeCustomPattern(pattern: .enemy)
                 shouldDisableControlInput = true
                 playerSprite.startKnockbackAnimation(on: gameboardSprite, at: level.player, isAttacked: true, direction: direction) { [unowned self] in
                     // FIXME: - Is this a retain cycle??? (because updateMovesRemaining calls playerSprite.startDeadAnimation())

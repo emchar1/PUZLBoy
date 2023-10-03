@@ -36,6 +36,10 @@ class GameboardSprite {
     private(set) var panelCount: Int
     private(set) var panelSize: CGFloat
     private(set) var sprite: SKSpriteNode
+    
+    enum RotateDirectionType {
+        case none, flipHorizontal, rotateClockwise, rotateCounterClockwise
+    }
 
     
     // MARK: - Initialization
@@ -147,7 +151,7 @@ class GameboardSprite {
             overlayPanel.scale(to: scaleSize)
             overlayPanel.position = getSpritePosition(at: position) + GameboardSprite.padding / 2 + scaleSize.width / 2
             overlayPanel.zPosition = K.ZPosition.overlay
-            overlayPanel.name = "\(position.row)\(GameboardSprite.delimiter)\(position.col)\(GameboardSprite.overlayTag)"
+            overlayPanel.name = GameboardSprite.getNodeName(row: position.row, col: position.col, includeOverlayTag: true)
             
             switch tile.overlay {
             case .warp, .warp2, .warp3, .warp4:
@@ -533,6 +537,35 @@ class GameboardSprite {
     
     
     // MARK: - Other Functions
+    
+    /**
+     Rotates an overlay object if it exists (returns if not) using 4 directional types.
+     - parameters:
+        - position: the gameboard position of the overlay
+        - directionType: no rotation, flipHorizontally, rotateClockwise, or rotateCounterClockwise
+        - duration: duration of the animation
+        - completion: the handler to run after all is said and done.
+     */
+    func rotateOverlay(at position: K.GameboardPosition, directionType: RotateDirectionType, duration: TimeInterval, completion: (() -> Void)? = nil) {
+        guard let overlay = sprite.childNode(withName: GameboardSprite.getNodeName(row: position.row, col: position.col, includeOverlayTag: true)) else { return }
+
+        let action: SKAction
+        
+        switch directionType {
+        case .none:
+            action = SKAction.wait(forDuration: duration)
+        case .flipHorizontal:
+            action = SKAction.scaleX(to: -overlay.xScale, duration: duration)
+        case .rotateClockwise:
+            action = SKAction.rotate(byAngle: .pi / 2, duration: duration)
+        case .rotateCounterClockwise:
+            action = SKAction.rotate(byAngle: -.pi / 2, duration: duration)
+        }
+
+        overlay.run(action) {
+            completion?()
+        }
+    }
     
     private func rotateWarp(node: SKNode, slow: Bool, repeatForever: Bool) {
         let rotationAngle: CGFloat = 2 * .pi
