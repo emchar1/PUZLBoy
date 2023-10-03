@@ -425,18 +425,22 @@ class PlayerSprite {
             SKAction.colorize(withColorBlendFactor: 0.0, duration: 0.12 * speedMultiplier),
             SKAction.colorize(with: blinkColor, colorBlendFactor: 1.0, duration: 0),
             SKAction.colorize(withColorBlendFactor: 0.0, duration: 0.12 * speedMultiplier),
-            SKAction.colorize(with: blinkColor, colorBlendFactor: 0.85, duration: 0),
+            SKAction.colorize(with: blinkColor, colorBlendFactor: 0.9, duration: 0),
+            SKAction.colorize(withColorBlendFactor: 0.0, duration: 0.12 * speedMultiplier),
+            SKAction.colorize(with: blinkColor, colorBlendFactor: 0.8, duration: 0),
             SKAction.colorize(withColorBlendFactor: 0.0, duration: 0.12 * speedMultiplier),
             SKAction.colorize(with: blinkColor, colorBlendFactor: 0.7, duration: 0),
             SKAction.colorize(withColorBlendFactor: 0.0, duration: 0.12 * speedMultiplier),
-            SKAction.colorize(with: blinkColor, colorBlendFactor: 0.55, duration: 0),
+            SKAction.colorize(with: blinkColor, colorBlendFactor: 0.6, duration: 0),
+            SKAction.colorize(withColorBlendFactor: 0.0, duration: 0.12 * speedMultiplier),
+            SKAction.colorize(with: blinkColor, colorBlendFactor: 0.5, duration: 0),
             SKAction.colorize(withColorBlendFactor: 0.0, duration: 0.12 * speedMultiplier),
             SKAction.colorize(with: blinkColor, colorBlendFactor: 0.4, duration: 0),
             SKAction.colorize(withColorBlendFactor: 0.0, duration: 0.12 * speedMultiplier),
-            SKAction.colorize(with: blinkColor, colorBlendFactor: 0.25, duration: 0),
+            SKAction.colorize(with: blinkColor, colorBlendFactor: 0.3, duration: 0),
             SKAction.colorize(withColorBlendFactor: 0.0, duration: 0.12 * speedMultiplier),
-            SKAction.colorize(with: blinkColor, colorBlendFactor: 0.1, duration: 0),
-            SKAction.colorize(withColorBlendFactor: 0.0, duration: 0.12 * speedMultiplier),
+            SKAction.colorize(with: blinkColor, colorBlendFactor: 0.2, duration: 0),
+            SKAction.colorize(withColorBlendFactor: 0.0, duration: 0.12 * speedMultiplier)
         ])
         
 
@@ -483,8 +487,6 @@ class PlayerSprite {
                 Haptics.shared.executeCustomPattern(pattern: .enemy)
                 AudioManager.shared.playSound(for: "boypain\(Int.random(in: 1...4))")
                 AudioManager.shared.playSound(for: "enemyflame")
-
-                player.sprite.run(SKAction.sequence([knockbackAnimation, blinkAnimation]))
                 
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                     gameboard.rotateOverlay(at: dragonPosition, directionType: antiRotationDirection, duration: 0.2 * speedMultiplier) { [unowned self] in
@@ -494,13 +496,17 @@ class PlayerSprite {
                 }
             }
             
-            ParticleEngine.shared.animateParticles(type: .dragonFireLite, 
+            ParticleEngine.shared.animateParticles(type: .dragonFireLite,
                                                    toNode: gameboard.sprite,
                                                    position: gameboard.getLocation(at: dragonPosition) + flameOffset,
                                                    scale: 3 / CGFloat(gameboard.panelCount),
                                                    angle: rotationAngle,
                                                    shouldFlipHorizontally: direction == .right,
                                                    duration: 2)
+            
+            Haptics.shared.executeCustomPattern(pattern: .boulder)
+
+            player.sprite.run(SKAction.sequence([knockbackAnimation, blinkAnimation]))
         }
         else {
             Haptics.shared.executeCustomPattern(pattern: .boulder)
