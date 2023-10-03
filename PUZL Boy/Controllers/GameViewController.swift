@@ -20,7 +20,6 @@ class GameViewController: UIViewController {
     private var levelLoaded = false
     private var hasInternet = false
     private var monitor: NWPathMonitor!
-    private var gameScenePreserved: GameScene?
     private let skView = SKView()
     
     
@@ -128,16 +127,11 @@ class GameViewController: UIViewController {
 
 extension GameViewController: TitleSceneDelegate {
     func didTapStart() {
-        if let gameScenePreserved = gameScenePreserved {
-            skView.presentScene(gameScenePreserved, transition: SKTransition.fade(with: .white, duration: 1.0))
-        }
-        else {
-            let gameScene = GameScene(size: K.ScreenDimensions.size, hasInternet: hasInternet)
-            gameScene.gameSceneDelegate = self
-            
-            skView.presentScene(gameScene, transition: SKTransition.fade(with: .white, duration: 1.0))
-            monitor.cancel()
-        }
+        let gameScene = GameScene(size: K.ScreenDimensions.size, hasInternet: hasInternet)
+        gameScene.gameSceneDelegate = self
+        
+        skView.presentScene(gameScene, transition: SKTransition.fade(with: .white, duration: 1.0))
+        monitor.cancel()
     }
     
     // TODO: - LevelSelectPage - Is this needed?
@@ -177,8 +171,6 @@ extension GameViewController: GameSceneDelegate {
         
         //NEEDS to have a transition, otherwise the state won't save, trust me.
         skView.presentScene(titleScene, transition: SKTransition.fade(with: .white, duration: 0))
-        
-        gameScenePreserved = skView.scene as? GameScene
     }
 }
 

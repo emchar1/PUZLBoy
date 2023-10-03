@@ -44,10 +44,6 @@ class SettingsPage: ParentPage {
         fatalError("init(coder:) has not been implemented")
     }
     
-    deinit {
-        print("SettingsPage deinit")
-    }
-    
     private func setupSprites() {
         let radioSectionHeight: CGFloat = UIDevice.isiPad ? 150 : 100
         let radioSize = CGSize(width: contentSize.width - 2 * SettingsPage.padding, height: SettingsRadioNode.radioNodeSize.height)

@@ -18,12 +18,14 @@ class GameScene: SKScene {
     
     // MARK: - Properties
     
-    //Custom Objects
-    private var gameEngine: GameEngine
-    private var scoringEngine: ScoringEngine
-    private var chatEngine: ChatEngine
-    private var pauseResetEngine: PauseResetEngine
+    //Custom Objects - MUST make these nil upon object release, e.g. when quitting game to return to TitleScene
+    private var gameEngine: GameEngine!
+    private var scoringEngine: ScoringEngine!
+    private var chatEngine: ChatEngine!
+    private var pauseResetEngine: PauseResetEngine!
     private var levelStatsArray: [LevelStats]
+    // FIXME: - Debugging purposes only!!!
+    private var levelSkipEngine: LevelSkipEngine!
 
     //SKNodes
     private var resetConfirmSprite: ConfirmSprite?
@@ -54,9 +56,6 @@ class GameScene: SKScene {
             }
         }
     }
-    
-    // FIXME: - Debugging purposes only!!!
-    private var levelSkipEngine: LevelSkipEngine
     
     weak var gameSceneDelegate: GameSceneDelegate?
     
@@ -967,6 +966,13 @@ extension GameScene: PauseResetEngineDelegate {
         saveState(levelStatsItem: getLevelStatsItem(level: currentLevel, didWin: false))
         
         gameSceneDelegate?.confirmQuitTapped()
+        
+        //IMPORTANT!! Make these nil so GameScene gets deinitialized properly!!!
+        gameEngine = nil
+        scoringEngine = nil
+        chatEngine = nil
+        pauseResetEngine = nil
+        levelSkipEngine = nil
     }
     
     func didTapHowToPlay(_ tableView: HowToPlayTableView) {

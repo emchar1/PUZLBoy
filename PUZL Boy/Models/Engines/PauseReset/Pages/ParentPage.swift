@@ -57,6 +57,10 @@ class ParentPage: SKNode {
         contentNode.addChild(titleLabel)
     }
     
+    deinit {
+        print("ParentPage \(nodeName) deinit")
+    }
+    
     
     // MARK: - Touch Functions
     
