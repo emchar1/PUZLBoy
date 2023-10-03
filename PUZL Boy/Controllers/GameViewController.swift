@@ -131,7 +131,9 @@ extension GameViewController: TitleSceneDelegate {
         gameScene.gameSceneDelegate = self
         
         skView.presentScene(gameScene, transition: SKTransition.fade(with: .white, duration: 1.0))
-        monitor.cancel()
+
+        //Commenting this out 10/3/23. I can keep the monitor active 24/7 right??
+//        monitor.cancel()
     }
     
     // TODO: - LevelSelectPage - Is this needed?
