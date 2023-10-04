@@ -40,7 +40,7 @@ class SkipIntroSprite: SKNode {
     }
     
     deinit {
-        print("SkipIntroSprite deinit")
+        print("deinit SkipIntroSprite")
     }
     
     private func setupNodes() {

@@ -52,7 +52,7 @@ class SettingsRadioNode: SKNode {
     }
     
     deinit {
-//        print("SettingsRadioNode deinit")
+//        print("deinit SettingsRadioNode")
     }
     
     private func setupSprites() {

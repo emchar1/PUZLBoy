@@ -48,7 +48,7 @@ class SpeechOverlaySprite: SKNode {
     deinit {
         dispatchWorkItem.cancel() //MUST DO THIS!! Otherwise app crashes if you skip intro while this is playing. BUGFIX# 230910E01
         
-        print("Deinit SpeechOverlaySprite. DispatchWorkItem has been cancelled as well.")
+        print("deinit SpeechOverlaySprite. Cancelled DispatchWorkItem.")
     }
     
     private func setupNodes() {

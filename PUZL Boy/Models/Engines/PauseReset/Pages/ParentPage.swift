@@ -58,7 +58,7 @@ class ParentPage: SKNode {
     }
     
     deinit {
-        print("ParentPage \(nodeName) deinit")
+        print("deinit ParentPage: \(nodeName)")
     }
     
     

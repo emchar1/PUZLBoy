@@ -44,7 +44,7 @@ class SettingsTapArea: SKNode {
     }
     
     deinit {
-
+//        print("deinit SettingsTapArea")
     }
     
     private func setupSprites() {

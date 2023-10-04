@@ -52,7 +52,7 @@ class ConfirmSprite: SKNode {
     }
     
     deinit {
-        print("ConfirmSprite deinit")
+        print("deinit ConfirmSprite")
     }
     
     private func setupSprites() {

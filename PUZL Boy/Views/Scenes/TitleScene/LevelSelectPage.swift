@@ -38,7 +38,7 @@ class LevelSelectPage: ParentPage {
     }
     
     deinit {
-        print("LevelSelectPage deinit")
+        print("deinit LevelSelectPage")
     }
     
     private func setupNodes() {

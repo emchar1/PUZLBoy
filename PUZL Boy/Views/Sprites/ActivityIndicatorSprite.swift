@@ -33,7 +33,7 @@ class ActivityIndicatorSprite: SKNode {
     }
     
     deinit {
-        print("ActivityIndicatorSprite deinit")
+        print("deinit ActivityIndicatorSprite")
     }
     
     private func setupSprites() {

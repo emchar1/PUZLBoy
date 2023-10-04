@@ -52,7 +52,7 @@ class ContinueSprite: SKNode {
     }
     
     deinit {
-        print("ContinueSprite deinit")
+        print("deinit ContinueSprite")
     }
     
     private func setupSprites() {

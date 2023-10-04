@@ -51,7 +51,7 @@ class ParticleEngine: SKNode {
     }
     
     deinit {
-        print("Deinit ParticleEngine")
+        print("ParticleEngine deinit")
     }
     
     

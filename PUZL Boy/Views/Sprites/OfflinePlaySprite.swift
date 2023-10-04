@@ -31,7 +31,7 @@ class OfflinePlaySprite: SKNode {
     }
     
     deinit {
-        print("OfflinePlaySprite deinit")
+        print("deinit OfflinePlaySprite")
     }
     
     private func setupSprites() {

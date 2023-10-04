@@ -37,6 +37,7 @@ class TitleScene: SKScene {
     private var menuBackgroundText: SKShapeNode!
     private var levelSelectBackground: SKShapeNode!
     private var levelSelectPage: LevelSelectPage!
+    private var levelSelectPicker: LevelSelectPicker!
     private var settingsBackground: SKShapeNode!
     private var settingsPage: SettingsPage!
     private var closeButton: CloseButtonSprite!
@@ -46,7 +47,7 @@ class TitleScene: SKScene {
     private let shadowDepth: CGFloat = 10
     private var disableInput: Bool = false
     private let menuSize = CGSize(width: 650, height: K.ScreenDimensions.size.height / 3)
-    private let levelSelectSize = CGSize(width: 650, height: K.ScreenDimensions.size.height / 5) / GameboardSprite.spriteScale
+    private let levelSelectSize = CGSize(width: 650, height: K.ScreenDimensions.size.height / 4) / GameboardSprite.spriteScale
     private let settingsSize = CGSize(width: K.ScreenDimensions.size.width, height: K.ScreenDimensions.size.width * 5 / 4)
     private var currentMenuSelected: MenuPage = .main
     
@@ -72,7 +73,7 @@ class TitleScene: SKScene {
     }
 
     deinit {
-        print("deinit TitleScene")
+        print("TitleScene deinit")
     }
 
     private func setupSprites() {
@@ -162,6 +163,11 @@ class TitleScene: SKScene {
         
         
         //Level Select Setup
+        let sizeUI = K.ScreenDimensions.sizeUI
+        let ratioSKtoUI = K.ScreenDimensions.ratioSKtoUI
+        let levelSelectPickerSize = UIDevice.isiPad ? CGSize(width: 200, height: 120) : CGSize(width: 160, height: 100)
+        let levelSelectPickerOffset: CGFloat = UIDevice.isiPad ? 20 : 40
+
         levelSelectBackground = SKShapeNode(rectOf: levelSelectSize, cornerRadius: menuCornerRadius)
         levelSelectBackground.position = menuPosition
         levelSelectBackground.xScale = menuSize.width / levelSelectSize.width
@@ -175,8 +181,13 @@ class TitleScene: SKScene {
         levelSelectPage = LevelSelectPage(contentSize: levelSelectSize, useMorningSky: !shouldSkipIntro)
         levelSelectPage.zPosition = zPositionOffset
         levelSelectPage.delegate = self
+                
+        levelSelectPicker = LevelSelectPicker(frame: CGRect(
+            x: (sizeUI.width - levelSelectPickerSize.width) / 2,
+            y: sizeUI.height - levelSelectBackground.position.y / ratioSKtoUI - levelSelectPickerSize.height + levelSelectPickerOffset,
+            width: levelSelectPickerSize.width, height: levelSelectPickerSize.height))
 
-
+        
         //Settings Setup
         settingsBackground = SKShapeNode(rectOf: settingsSize, cornerRadius: menuCornerRadius)
         settingsBackground.position = menuPosition
@@ -494,6 +505,8 @@ extension TitleScene: CloseButtonSpriteDelegate {
         }
         else if currentMenuSelected == .levelSelect {
             showLevelSelect(shouldHide: true)
+            
+            levelSelectPicker.removeFromSuperview()
         }
     }
 }
@@ -508,13 +521,18 @@ extension TitleScene: MenuItemLabelDelegate {
         
         disableInput = true
         AudioManager.shared.stopSound(for: AudioManager.shared.titleLogo, fadeDuration: fadeDuration)
-        
+
+        UIView.animate(withDuration: fadeDuration) { [unowned self] in
+            levelSelectPicker.alpha = 0
+        }
+
         //IMPORTANT TO MAKE THESE NIL!! Otherwise you get retain cycle!!!
         levelSelectPage.superScene = nil
         settingsPage.superScene = nil
 
         fadeSprite.run(SKAction.fadeIn(withDuration: fadeDuration)) { [unowned self] in
             disableInput = false
+            levelSelectPicker.removeFromSuperview()
             titleSceneDelegate?.didTapStart()
         }
     }
@@ -526,6 +544,8 @@ extension TitleScene: MenuItemLabelDelegate {
         case .menuLevelSelect:
             // TODO: - Level Select Tap Menu Item
             showLevelSelect(shouldHide: false)
+            
+            scene?.view?.addSubview(levelSelectPicker)
             
             titleSceneDelegate?.didTapLevelSelect()
         case .menuSettings:

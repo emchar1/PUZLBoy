@@ -109,7 +109,7 @@ class GameScene: SKScene {
     }
     
     deinit {
-        print("deinit GameScene")
+        print("GameScene deinit")
     }
     
     

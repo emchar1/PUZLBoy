@@ -44,7 +44,7 @@ class CreditsScene: SKScene {
     }
     
     deinit {
-        print("deinit CreditsScene")
+        print("CreditsScene deinit")
     }
     
     

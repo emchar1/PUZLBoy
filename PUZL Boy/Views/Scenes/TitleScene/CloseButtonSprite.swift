@@ -35,7 +35,7 @@ class CloseButtonSprite: SKNode {
     }
     
     deinit {
-        
+//        print("deinit CloseButtonSprite")
     }
     
     private func setupNodes() {

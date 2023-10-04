@@ -46,7 +46,7 @@ class LaunchScene: SKScene {
     }
     
     deinit {
-        print("deinit LaunchScene")
+        print("LaunchScene deinit")
     }
     
     private func setupSprites() {

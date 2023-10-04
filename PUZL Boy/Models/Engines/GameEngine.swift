@@ -212,7 +212,7 @@ class GameEngine {
     }
     
     deinit {
-        print("deinit GameEngine")
+        print("GameEngine deinit")
     }
     
     
