@@ -120,9 +120,16 @@ class GameEngine {
         finishInit(shouldSpawn: shouldSpawn)
     }
     
-    ///For when reading from Firestore.
-    init(saveStateModel: SaveStateModel) {
-        if saveStateModel.newLevel == saveStateModel.levelModel.level {
+    /**
+     For when reading from Firestore.
+     - parameters:
+        - saveStateModel: the Firestore record model in a nutshell
+        - levelSelectNewLevel: optional new level which would have come from LevelSelect in the TitleScene.
+     */
+    init(saveStateModel: SaveStateModel, levelSelectNewLevel: Int?) {
+        let newLevel = levelSelectNewLevel ?? saveStateModel.newLevel
+        
+        if newLevel == saveStateModel.levelModel.level {
             //Grab the last level state w/ gameboard, level, moves and health data intact since last session...
             level = Level(level: saveStateModel.levelModel.level,
                           moves: saveStateModel.levelModel.moves,
@@ -142,10 +149,10 @@ class GameEngine {
         }
         else {
             //...unless newLevel doesn't match level #, then create a new level from newLevel.
-            level = Level(level: saveStateModel.newLevel,
-                          moves: LevelBuilder.levels[saveStateModel.newLevel].moves,
-                          health: LevelBuilder.levels[saveStateModel.newLevel].health,
-                          gameboard: LevelBuilder.levels[saveStateModel.newLevel].gameboard)
+            level = Level(level: newLevel,
+                          moves: LevelBuilder.levels[newLevel].moves,
+                          health: LevelBuilder.levels[newLevel].health,
+                          gameboard: LevelBuilder.levels[newLevel].gameboard)
             level.inventory = Inventory(hammers: 0, swords: 0)
             //level.updatePlayer(position: (row: saveStateModel.playerPosition.row, col: saveStateModel.playerPosition.col))
             movesRemaining = level.moves

@@ -126,8 +126,8 @@ class GameViewController: UIViewController {
 // MARK: - TitleSceneDelegate
 
 extension GameViewController: TitleSceneDelegate {
-    func didTapStart() {
-        let gameScene = GameScene(size: K.ScreenDimensions.size, hasInternet: hasInternet)
+    func didTapStart(levelSelectNewLevel: Int?) {
+        let gameScene = GameScene(size: K.ScreenDimensions.size, hasInternet: hasInternet, levelSelectNewLevel: levelSelectNewLevel)
         gameScene.gameSceneDelegate = self
         
         skView.presentScene(gameScene, transition: SKTransition.fade(with: .white, duration: 1.0))

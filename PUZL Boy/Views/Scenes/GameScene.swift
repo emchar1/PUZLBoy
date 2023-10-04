@@ -62,10 +62,10 @@ class GameScene: SKScene {
     
     // MARK: - Initialization
     
-    init(size: CGSize, hasInternet: Bool) {
+    init(size: CGSize, hasInternet: Bool, levelSelectNewLevel: Int?) {
         if let saveStateModel = FIRManager.saveStateModel {
-            currentLevel = saveStateModel.newLevel //ALWAYS go with newLevel, because it takes precedence over levelModel.level
-            gameEngine = GameEngine(saveStateModel: saveStateModel)
+            currentLevel = levelSelectNewLevel ?? saveStateModel.newLevel //ALWAYS go with newLevel, because it takes precedence over levelModel.level
+            gameEngine = GameEngine(saveStateModel: saveStateModel, levelSelectNewLevel: levelSelectNewLevel)
             scoringEngine = ScoringEngine(elapsedTime: saveStateModel.elapsedTime,
                                           score: saveStateModel.score,
                                           totalScore: saveStateModel.totalScore)

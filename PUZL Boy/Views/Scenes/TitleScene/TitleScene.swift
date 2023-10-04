@@ -9,7 +9,7 @@ import SpriteKit
 import FirebaseAuth
 
 protocol TitleSceneDelegate: AnyObject {
-    func didTapStart()
+    func didTapStart(levelSelectNewLevel: Int?)
     func didTapLevelSelect()
     func didTapCredits()
 }
@@ -185,7 +185,7 @@ class TitleScene: SKScene {
         levelSelectPicker = LevelSelectPicker(frame: CGRect(
             x: (sizeUI.width - levelSelectPickerSize.width) / 2,
             y: sizeUI.height - levelSelectBackground.position.y / ratioSKtoUI - levelSelectPickerSize.height + levelSelectPickerOffset,
-            width: levelSelectPickerSize.width, height: levelSelectPickerSize.height))
+            width: levelSelectPickerSize.width, height: levelSelectPickerSize.height), level: FIRManager.saveStateModel?.newLevel)
 
         
         //Settings Setup
@@ -491,7 +491,15 @@ class TitleScene: SKScene {
 
 extension TitleScene: LevelSelectPageDelegate {
     func didTapLevelSelect() {
-        startGame()
+        guard let user = FIRManager.user else {
+            startGame(levelSelectNewLevel: nil)
+            return
+        }
+
+        let newLevel = levelSelectPicker.selectedLevel
+        
+        FIRManager.updateFirestoreRecordNewLevel(user: user, newLevel: newLevel)
+        startGame(levelSelectNewLevel: newLevel)
     }
 }
 
@@ -505,7 +513,8 @@ extension TitleScene: CloseButtonSpriteDelegate {
         }
         else if currentMenuSelected == .levelSelect {
             showLevelSelect(shouldHide: true)
-            
+
+            levelSelectPicker.updatePicker(level: FIRManager.saveStateModel?.newLevel, shouldAnimate: false)
             levelSelectPicker.removeFromSuperview()
         }
     }
@@ -516,7 +525,7 @@ extension TitleScene: CloseButtonSpriteDelegate {
 // MARK: - MenuItemLabelDelegate
 
 extension TitleScene: MenuItemLabelDelegate {
-    private func startGame() {
+    private func startGame(levelSelectNewLevel: Int?) {
         let fadeDuration: TimeInterval = 2.0
         
         disableInput = true
@@ -533,14 +542,14 @@ extension TitleScene: MenuItemLabelDelegate {
         fadeSprite.run(SKAction.fadeIn(withDuration: fadeDuration)) { [unowned self] in
             disableInput = false
             levelSelectPicker.removeFromSuperview()
-            titleSceneDelegate?.didTapStart()
+            titleSceneDelegate?.didTapStart(levelSelectNewLevel: levelSelectNewLevel)
         }
     }
     
     func buttonWasTapped(_ node: MenuItemLabel) {
         switch node.type {
         case .menuStart:
-            startGame()
+            startGame(levelSelectNewLevel: nil)
         case .menuLevelSelect:
             // TODO: - Level Select Tap Menu Item
             showLevelSelect(shouldHide: false)

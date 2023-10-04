@@ -10,16 +10,19 @@ import UIKit
 class LevelSelectPicker: UIPickerView, UIPickerViewDelegate, UIPickerViewDataSource {
     
     // MARK: - Properties
+    
+    var selectedLevel: Int { max(min(selectedLevelUncapped, Level.finalLevel), 1) }
 
-    var selectedLevel: Int {
+    private var selectedLevelUncapped: Int {
         let returnedString = String(selectedRow(inComponent: 0)) + String(selectedRow(inComponent: 1)) + String(selectedRow(inComponent: 2))
 
         return Int(returnedString) ?? 1
-    }
+    }    
     
     
     // MARK: - Initialization
-    override init(frame: CGRect) {
+    
+    init(frame: CGRect, level: Int? = nil) {
         
         super.init(frame: frame)
         
@@ -27,6 +30,8 @@ class LevelSelectPicker: UIPickerView, UIPickerViewDelegate, UIPickerViewDataSou
         
         delegate = self
         dataSource = self
+        
+        updatePicker(level: level, shouldAnimate: false)
     }
     
     required init?(coder: NSCoder) {
@@ -36,6 +41,7 @@ class LevelSelectPicker: UIPickerView, UIPickerViewDelegate, UIPickerViewDataSou
     deinit {
         print("deinit LevelSelectPicker")
     }
+    
     
     // MARK: - Delegate and DataSource Functions
     
@@ -76,11 +82,25 @@ class LevelSelectPicker: UIPickerView, UIPickerViewDelegate, UIPickerViewDataSou
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        if component == 0 {
-            if row == 5 {
-                
-            }
+        //Prevent entering a level higher than maxLevel or lower than 1
+        if selectedLevelUncapped > Level.finalLevel {
+            updatePicker(level: Level.finalLevel, shouldAnimate: true)
         }
-        print("Selected Level: \(selectedLevel)")
+        else if selectedLevelUncapped < 1 {
+            updatePicker(level: 1, shouldAnimate: true)
+        }
+
+        print("Selected Level: \(selectedLevelUncapped)")
+    }
+    
+    
+    // MARK: - Other Functions
+    
+    func updatePicker(level: Int?, shouldAnimate: Bool) {
+        let newLevel = level ?? 1
+        
+        selectRow(newLevel / 100, inComponent: 0, animated: shouldAnimate)
+        selectRow((newLevel % 100) / 10, inComponent: 1, animated: shouldAnimate)
+        selectRow(newLevel % 10, inComponent: 2, animated: shouldAnimate)
     }
 }

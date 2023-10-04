@@ -331,6 +331,24 @@ struct FIRManager {
         print("Writing to Firestore saveState.......")
     }//end writeToFirestoreRecord()
     
+    ///Updates just certain records in the Firestore db
+    static func updateFirestoreRecordFields(user: User?, fields: [AnyHashable : Any]) {
+        guard let user = user else {
+            print("User not signed in. Unable to load Firestore savedState.")
+            return
+        }
+        
+        self.user = user
+                
+        let docRef = Firestore.firestore().collection("savedStates").document(user.uid)
+        docRef.updateData(fields)
+    }
+    
+    ///Convenience method to update just the newLevel field in a record.
+    static func updateFirestoreRecordNewLevel(user: User?, newLevel: Int) {
+        updateFirestoreRecordFields(user: user, fields: ["newLevel" : newLevel])
+    }
+    
     
     // MARK: - Helper Functions
     
