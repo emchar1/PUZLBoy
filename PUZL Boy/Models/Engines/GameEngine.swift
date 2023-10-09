@@ -76,6 +76,7 @@ class GameEngine {
     var canContinue: Bool { return GameEngine.livesRemaining >= 0 }
 
     private var backgroundSprite: SKSpriteNode!
+    private var bloodOverlay: SKSpriteNode!
     private(set) var gameboardSprite: GameboardSprite!
     private(set) var playerSprite: PlayerSprite!
     private(set) var displaySprite: DisplaySprite!
@@ -171,8 +172,12 @@ class GameEngine {
     private func finishInit(shouldSpawn: Bool) {
         backgroundSprite = SKSpriteNode(texture: SKTexture(image: DayTheme.getSkyImage()))
         backgroundSprite.size = K.ScreenDimensions.size
-        backgroundSprite.position = .zero
         backgroundSprite.anchorPoint = .zero
+        
+        bloodOverlay = SKSpriteNode(color: .red, size: K.ScreenDimensions.size)
+        bloodOverlay.anchorPoint = .zero
+        bloodOverlay.alpha = 0.25 * CGFloat(level.level) / CGFloat(Level.finalLevel)
+        bloodOverlay.zPosition = K.ZPosition.bloodOverlay
         
         gameboardSprite = GameboardSprite(level: self.level)
         K.ScreenDimensions.topOfGameboard = GameboardSprite.offsetPosition.y + K.ScreenDimensions.size.width * GameboardSprite.spriteScale
@@ -321,6 +326,7 @@ class GameEngine {
             gemsRemaining -= 1
             gemsCollected += 1
             
+            Haptics.shared.addHapticFeedback(withStyle: .light)
             animateParticles(type: .gemCollect)
             animateParticles(type: .gemSparkle)
 
@@ -336,6 +342,7 @@ class GameEngine {
             setLabelsForDisplaySprite()
             consumeItem()
             
+            Haptics.shared.addHapticFeedback(withStyle: .rigid)
             animateParticles(type: .itemPickup)
             
             playerSprite.startPowerUpAnimation()
@@ -356,6 +363,7 @@ class GameEngine {
             setLabelsForDisplaySprite()
             consumeItem()
 
+            Haptics.shared.addHapticFeedback(withStyle: .rigid)
             animateParticles(type: .itemPickup)
             
             playerSprite.startPowerUpAnimation()
@@ -374,6 +382,7 @@ class GameEngine {
 
             setLabelsForDisplaySprite()
             
+            Haptics.shared.addHapticFeedback(withStyle: .soft)
             animateParticles(type: .hearts)
             
             ScoringEngine.updateStatusIconsAnimation(
@@ -425,6 +434,7 @@ class GameEngine {
                 return
             }
             
+            Haptics.shared.executeCustomPattern(pattern: .warp)
             AudioManager.shared.stopSound(for: "moveglide", fadeDuration: 0.5)
             AudioManager.shared.playSound(for: "warp")
             
@@ -1083,6 +1093,7 @@ class GameEngine {
      */
     func moveSprites(to superScene: SKScene) {
         superScene.addChild(backgroundSprite)
+        superScene.addChild(bloodOverlay)
         superScene.addChild(gameboardSprite.sprite)
         
         if !Level.isPartyLevel(level.level) {
