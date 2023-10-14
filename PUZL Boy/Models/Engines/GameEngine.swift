@@ -177,7 +177,7 @@ class GameEngine {
         bloodOverlay = SKSpriteNode(color: .red, size: K.ScreenDimensions.size)
         bloodOverlay.anchorPoint = .zero
         bloodOverlay.alpha = 0.25 * CGFloat(level.level) / CGFloat(Level.finalLevel)
-        bloodOverlay.zPosition = K.ZPosition.bloodOverlay
+        bloodOverlay.zPosition = K.ZPosition.partyForegroundOverlay
         
         gameboardSprite = GameboardSprite(level: self.level)
         K.ScreenDimensions.topOfGameboard = GameboardSprite.offsetPosition.y + K.ScreenDimensions.size.width * GameboardSprite.spriteScale
