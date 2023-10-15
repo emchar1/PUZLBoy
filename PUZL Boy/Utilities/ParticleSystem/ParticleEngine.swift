@@ -24,6 +24,7 @@ class ParticleEngine: SKNode {
     enum ParticleType: String {
         case boulderCrush = "BoulderCrushParticles"
         case dragonFire = "DragonFire"
+        case dragonFireIdle = "DragonFireIdle"
         case dragonFireLite = "DragonFireLite"
         case gemCollect = "GemCollectParticles"
         case gemSparkle = "GemSparkleParticles"
@@ -57,13 +58,14 @@ class ParticleEngine: SKNode {
     
     // MARK: - Functions
     
-    func animateParticles(type: ParticleType, toNode node: SKNode, position: CGPoint, scale: CGFloat = 1, angle: CGFloat = 0, shouldFlipHorizontally: Bool = false, duration: TimeInterval) {
+    func animateParticles(type: ParticleType, toNode node: SKNode, position: CGPoint, scale: CGFloat = 1, angle: CGFloat = 0, shouldFlipHorizontally: Bool = false, zPosition: CGFloat = K.ZPosition.itemsAndEffects + 10, duration: TimeInterval) {
+        
         guard let particles = SKEmitterNode(fileNamed: type.rawValue) else { return print("Particle file not found: \(type.rawValue).sks")}
         
         particles.position = position
         particles.setScale(scale * (UIDevice.isiPad ? 1.7 : 1))
         particles.xScale *= shouldFlipHorizontally ? -1 : 1
-        particles.zPosition = K.ZPosition.itemsAndEffects + 10
+        particles.zPosition = zPosition
         particles.name = ParticleEngine.nodeName
         
         if angle != 0 {

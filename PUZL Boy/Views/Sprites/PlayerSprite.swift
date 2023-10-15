@@ -454,28 +454,28 @@ class PlayerSprite {
             let dragonOffset: K.GameboardPosition
             var flameOffset = CGPoint(x: gameboard.panelSize, y: gameboard.panelSize)
 
-            switch direction { //direction of dragon in relation to PUZL Boy
+            switch direction { //position of dragon in relation to PUZL Boy
             case .up:
                 dragonOffset = (-1, 0)
-                flameOffset = flameOffset * CGPoint(x: 0.25, y: -0.125)
+                flameOffset = flameOffset * CGPoint(x: 0.2125, y: -0.0)
                 rotationDirectionType = .rotateCounterClockwise
                 antiRotationDirection = .rotateClockwise
                 rotationAngle = -.pi / 2
             case .down:
                 dragonOffset = (1, 0)
-                flameOffset = flameOffset * CGPoint(x: -0.2, y: 0.125)
+                flameOffset = flameOffset * CGPoint(x: -0.1625, y: 0.0625)
                 rotationDirectionType = .rotateClockwise
                 antiRotationDirection = .rotateCounterClockwise
                 rotationAngle = .pi / 2
             case .left:
                 dragonOffset = (0, -1)
-                flameOffset = flameOffset * CGPoint(x: 0.125, y: 0.25)
+                flameOffset = flameOffset * CGPoint(x: 0.0625, y: 0.2125)
                 rotationDirectionType = .none
                 antiRotationDirection = .none
                 rotationAngle = 0
             case .right:
                 dragonOffset = (0, 1)
-                flameOffset = flameOffset * CGPoint(x: -0.125, y: 0.25)
+                flameOffset = flameOffset * CGPoint(x: -0.0, y: 0.2125)
                 rotationDirectionType = .flipHorizontal
                 antiRotationDirection = .flipHorizontal
                 rotationAngle = 0

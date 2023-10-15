@@ -189,6 +189,10 @@ class GameboardSprite {
                 warps3.second = position
             }
         }
+        
+        if tile.overlay == .enemy {
+            animateBreatheFireIdle(position: position)
+        }
     }
     
     
@@ -645,5 +649,22 @@ class GameboardSprite {
                                                position: getLocation(at: position),
                                                scale: 3 / CGFloat(panelCount),
                                                duration: 3)
+    }
+    
+    func animateBreatheFireIdle(position: K.GameboardPosition) {
+        guard let dragonNode = sprite.childNode(withName: GameboardSprite.getNodeName(row: position.row, col: position.col, includeOverlayTag: true)) else { return }
+        
+        dragonNode.run(SKAction.repeatForever(SKAction.sequence([
+            SKAction.wait(forDuration: TimeInterval.random(in: 0...1)),
+            SKAction.run {
+                ParticleEngine.shared.animateParticles(type: .dragonFireIdle,
+                                                       toNode: dragonNode,
+                                                       position: CGPoint(x: 0, y: 35),
+                                                       scale: 0.5,
+                                                       zPosition: 10,
+                                                       duration: 0)
+            },
+            SKAction.wait(forDuration: TimeInterval.random(in: 3...5)),
+        ])))
     }
 }

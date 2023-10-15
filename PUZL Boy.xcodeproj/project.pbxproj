@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		EA01BB5F2A10746800EAB70B /* buttontap6.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA01BB5E2A10746800EAB70B /* buttontap6.mp3 */; };
 		EA01BB612A10746800EAB70B /* ButtonTap.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA01BB602A10746800EAB70B /* ButtonTap.swift */; };
+		EA0CF7CC2ADC408D002785DB /* DragonFireIdle.sks in Resources */ = {isa = PBXBuildFile; fileRef = EA0CF7CB2ADC408D002785DB /* DragonFireIdle.sks */; };
 		EA0F145D292994330013038E /* moverun1.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA0F145C292994330013038E /* moverun1.mp3 */; };
 		EA0F145F292994B00013038E /* movewalk.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA0F145E292994B00013038E /* movewalk.mp3 */; };
 		EA0F146F2929D9C00013038E /* moverun4.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA0F146C2929D9C00013038E /* moverun4.mp3 */; };
@@ -253,6 +254,7 @@
 /* Begin PBXFileReference section */
 		EA01BB5E2A10746800EAB70B /* buttontap6.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = buttontap6.mp3; sourceTree = "<group>"; };
 		EA01BB602A10746800EAB70B /* ButtonTap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonTap.swift; sourceTree = "<group>"; };
+		EA0CF7CB2ADC408D002785DB /* DragonFireIdle.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = DragonFireIdle.sks; sourceTree = "<group>"; };
 		EA0F145C292994330013038E /* moverun1.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = moverun1.mp3; sourceTree = "<group>"; };
 		EA0F145E292994B00013038E /* movewalk.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = movewalk.mp3; sourceTree = "<group>"; };
 		EA0F146C2929D9C00013038E /* moverun4.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = moverun4.mp3; sourceTree = "<group>"; };
@@ -953,6 +955,7 @@
 				EAD19A072A96AA6D00A07A63 /* Assets.xcassets */,
 				EAD199FD2A95E9EE00A07A63 /* BoulderCrushParticles.sks */,
 				EA32AE302AAC198300DFF5CD /* DragonFire.sks */,
+				EA0CF7CB2ADC408D002785DB /* DragonFireIdle.sks */,
 				EABE795E2ACBB83A00689C55 /* DragonFireLite.sks */,
 				EAD19A162A992E3600A07A63 /* HeroRainbowParticles.sks */,
 				EAD199FB2A95A2ED00A07A63 /* GemCollectParticles.sks */,
@@ -1156,6 +1159,7 @@
 				EAFA6A7729DE13EB002287C2 /* boyimpact.mp3 in Resources */,
 				EAF7183929B3D56B00E2ED82 /* lavaappear3.mp3 in Resources */,
 				EA4D025F29B7E33600F0C7B1 /* movemarsh1.mp3 in Resources */,
+				EA0CF7CC2ADC408D002785DB /* DragonFireIdle.sks in Resources */,
 				EA78C36E29767D7600292744 /* GoogleService-Info.plist in Resources */,
 				EAAEA3CC2931F14D00221963 /* winlevel.mp3 in Resources */,
 				EA9F4DE729D37206006F4B2F /* movepoisoned2.mp3 in Resources */,
