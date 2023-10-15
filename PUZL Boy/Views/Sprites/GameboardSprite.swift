@@ -675,16 +675,17 @@ class GameboardSprite {
     func animateHeart(position: K.GameboardPosition) {
         guard let heartNode = sprite.childNode(withName: GameboardSprite.getNodeName(row: position.row, col: position.col, includeOverlayTag: true)) else { return }
         
-        let scaleOffset: CGFloat = 0.125
+        let originalScale: CGFloat = heartNode.xScale
+        let scaleOffsetPercentage: CGFloat = originalScale * 0.125
         let timingExponent: Float = 2
         let beatDuration: TimeInterval = 0.25
         
-        let scaleUp = SKAction.scale(to: 1 + scaleOffset, duration: beatDuration)
+        let scaleUp = SKAction.scale(to: originalScale + scaleOffsetPercentage, duration: beatDuration)
         scaleUp.timingFunction = { time in
             pow(time, timingExponent)
         }
         
-        let scaleDown = SKAction.scale(to: 1 - scaleOffset, duration: beatDuration)
+        let scaleDown = SKAction.scale(to: originalScale - scaleOffsetPercentage, duration: beatDuration)
         scaleDown.timingFunction = { time in
             pow(time, 1 / timingExponent)
         }
@@ -692,7 +693,7 @@ class GameboardSprite {
         heartNode.run(SKAction.repeatForever(SKAction.sequence([
             scaleUp,
             scaleDown,
-            SKAction.scale(to: 1, duration: beatDuration),
+            SKAction.scale(to: originalScale, duration: beatDuration),
             SKAction.wait(forDuration: TimeInterval.random(in: 0.98...1.02))
         ])))
     }
