@@ -536,7 +536,7 @@ class GameboardSprite {
     }
     
     
-    // MARK: - Other Functions
+    // MARK: - Panel Animation Functions
     
     /**
      Rotates an overlay object if it exists (returns if not) using 4 directional types.
@@ -546,7 +546,7 @@ class GameboardSprite {
         - duration: duration of the animation
         - completion: the handler to run after all is said and done.
      */
-    func rotateOverlay(at position: K.GameboardPosition, directionType: RotateDirectionType, duration: TimeInterval, completion: (() -> Void)? = nil) {
+    func rotateEnemy(at position: K.GameboardPosition, directionType: RotateDirectionType, duration: TimeInterval, completion: (() -> Void)? = nil) {
         guard let overlay = sprite.childNode(withName: GameboardSprite.getNodeName(row: position.row, col: position.col, includeOverlayTag: true)) else { return }
 
         let action: SKAction

@@ -483,13 +483,13 @@ class PlayerSprite {
             
             let dragonPosition = (panel.row + dragonOffset.row, panel.col + dragonOffset.col)
             
-            gameboard.rotateOverlay(at: dragonPosition, directionType: rotationDirectionType, duration: 0.2 * speedMultiplier) { [unowned self] in
+            gameboard.rotateEnemy(at: dragonPosition, directionType: rotationDirectionType, duration: 0.2 * speedMultiplier) { [unowned self] in
                 Haptics.shared.executeCustomPattern(pattern: .enemy)
                 AudioManager.shared.playSound(for: "boypain\(Int.random(in: 1...4))")
                 AudioManager.shared.playSound(for: "enemyflame")
                 
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                    gameboard.rotateOverlay(at: dragonPosition, directionType: antiRotationDirection, duration: 0.2 * speedMultiplier) { [unowned self] in
+                    gameboard.rotateEnemy(at: dragonPosition, directionType: antiRotationDirection, duration: 0.2 * speedMultiplier) { [unowned self] in
                         isAnimating = false
                         completion()
                     }
