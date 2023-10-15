@@ -664,7 +664,7 @@ class GameboardSprite {
                 ParticleEngine.shared.animateParticles(type: .dragonFireIdle,
                                                        toNode: dragonNode,
                                                        position: CGPoint(x: 0, y: 35),
-                                                       scale: 0.5,
+                                                       scale: UIDevice.isiPad ? 0.25 : 0.5,
                                                        zPosition: 10,
                                                        duration: 0)
             },
@@ -676,7 +676,7 @@ class GameboardSprite {
         guard let heartNode = sprite.childNode(withName: GameboardSprite.getNodeName(row: position.row, col: position.col, includeOverlayTag: true)) else { return }
         
         let originalScale: CGFloat = heartNode.xScale
-        let scaleOffsetPercentage: CGFloat = originalScale * 0.125
+        let scaleOffsetPercentage: CGFloat = originalScale * 0.1
         let timingExponent: Float = 2
         let beatDuration: TimeInterval = 0.25
         
