@@ -77,6 +77,7 @@ class GameEngine {
 
     private var backgroundSprite: SKSpriteNode!
     private var bloodOverlay: SKSpriteNode!
+    private var bloodOverlayAlpha: CGFloat { 0.25 * CGFloat(level.level) / CGFloat(Level.finalLevel) }
     private(set) var gameboardSprite: GameboardSprite!
     private(set) var playerSprite: PlayerSprite!
     private(set) var displaySprite: DisplaySprite!
@@ -176,7 +177,7 @@ class GameEngine {
         
         bloodOverlay = SKSpriteNode(color: .red, size: K.ScreenDimensions.size)
         bloodOverlay.anchorPoint = .zero
-        bloodOverlay.alpha = 0.25 * CGFloat(level.level) / CGFloat(Level.finalLevel)
+        bloodOverlay.alpha = bloodOverlayAlpha
         bloodOverlay.zPosition = K.ZPosition.partyForegroundOverlay
         
         gameboardSprite = GameboardSprite(level: self.level)
@@ -278,10 +279,14 @@ class GameEngine {
             }
             
             switch panel {
-            case .marsh:                                        soundFXTypeAndMovementSpeed = .marsh
-            case .sand:                                         soundFXTypeAndMovementSpeed = .sand
-            case .partytile, .start, .endClosed, .endOpen:      soundFXTypeAndMovementSpeed = .party
-            default:                                            soundFXTypeAndMovementSpeed = .run
+            case .marsh:                                        
+                soundFXTypeAndMovementSpeed = .marsh
+            case .sand:                                         
+                soundFXTypeAndMovementSpeed = .sand
+            case .partytile, .start, .endClosed, .endOpen:      
+                soundFXTypeAndMovementSpeed = .party
+            default:                                            
+                soundFXTypeAndMovementSpeed = .run
             }
         }
 
@@ -1137,6 +1142,15 @@ class GameEngine {
                                           blendFactor: fadeOut ? 1.0 : 0.0,
                                           animationDuration: fadeOut ? 1.0 : 0.5,
                                           completion: completion)
+    }
+    
+    func fadeBloodOverlay(shouldFadeOut: Bool, duration: TimeInterval) {
+        if shouldFadeOut {
+            bloodOverlay.run(SKAction.fadeOut(withDuration: duration))
+        }
+        else {
+            bloodOverlay.run(SKAction.fadeAlpha(to: bloodOverlayAlpha, duration: duration))
+        }
     }
     
     func removeParticles() {

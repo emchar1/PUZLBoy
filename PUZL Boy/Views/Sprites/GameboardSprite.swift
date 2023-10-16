@@ -195,7 +195,7 @@ class GameboardSprite {
         }
         
         if tile.overlay == .heart {
-            animateHeart(position: position)
+            animateHeartbeat(position: position)
         }
     }
     
@@ -658,8 +658,11 @@ class GameboardSprite {
     func animateBreatheFireIdle(position: K.GameboardPosition) {
         guard let dragonNode = sprite.childNode(withName: GameboardSprite.getNodeName(row: position.row, col: position.col, includeOverlayTag: true)) else { return }
         
+        var wait1: TimeInterval { TimeInterval.random(in: 0...1) }
+        var wait2: TimeInterval { TimeInterval.random(in: 3...5) }
+        
         dragonNode.run(SKAction.repeatForever(SKAction.sequence([
-            SKAction.wait(forDuration: TimeInterval.random(in: 0...1)),
+            SKAction.wait(forDuration: wait1),
             SKAction.run {
                 ParticleEngine.shared.animateParticles(type: .dragonFireIdle,
                                                        toNode: dragonNode,
@@ -668,17 +671,19 @@ class GameboardSprite {
                                                        zPosition: 10,
                                                        duration: 0)
             },
-            SKAction.wait(forDuration: TimeInterval.random(in: 3...5)),
+            SKAction.wait(forDuration: wait2),
         ])))
     }
     
-    func animateHeart(position: K.GameboardPosition) {
+    func animateHeartbeat(position: K.GameboardPosition) {
         guard let heartNode = sprite.childNode(withName: GameboardSprite.getNodeName(row: position.row, col: position.col, includeOverlayTag: true)) else { return }
         
         let originalScale: CGFloat = heartNode.xScale
         let scaleOffsetPercentage: CGFloat = originalScale * 0.1
         let timingExponent: Float = 2
-        let beatDuration: TimeInterval = 0.25
+        let beatDuration: TimeInterval = 0.2
+        let pulseRate: TimeInterval = 60
+        let bpmDuration: TimeInterval = 60 / pulseRate - 3 * beatDuration + TimeInterval.random(in: -0.02...0.02)
         
         let scaleUp = SKAction.scale(to: originalScale + scaleOffsetPercentage, duration: beatDuration)
         scaleUp.timingFunction = { time in
@@ -694,7 +699,7 @@ class GameboardSprite {
             scaleUp,
             scaleDown,
             SKAction.scale(to: originalScale, duration: beatDuration),
-            SKAction.wait(forDuration: TimeInterval.random(in: 0.98...1.02))
+            SKAction.wait(forDuration: bpmDuration)
         ])))
     }
 }

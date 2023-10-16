@@ -431,7 +431,9 @@ class GameScene: SKScene {
     }
     
     private func prepareAd(completion: (() -> Void)?) {
-        AudioManager.shared.lowerVolume(for: AudioManager.shared.currentTheme, fadeDuration: 1.0)
+        let fadeDuration: TimeInterval = 1.0
+        
+        AudioManager.shared.lowerVolume(for: AudioManager.shared.currentTheme, fadeDuration: fadeDuration)
 
         adSprite = SKSpriteNode(color: .clear, size: K.ScreenDimensions.size)
         adSprite!.anchorPoint = .zero
@@ -441,17 +443,22 @@ class GameScene: SKScene {
         scoringEngine.timerManager.pauseTime()
         stopTimer()
         gameEngine.shouldDisableInput(true)
+        gameEngine.fadeBloodOverlay(shouldFadeOut: true, duration: fadeDuration)
 
-        adSprite!.run(SKAction.colorize(with: .black, colorBlendFactor: 1.0, duration: 1.0)) {
+        adSprite!.run(SKAction.colorize(with: .black, colorBlendFactor: 1.0, duration: fadeDuration)) {
             completion?()
         }
     }
     
     private func continueFromAd(completion: (() -> Void)?) {
-        AudioManager.shared.raiseVolume(for: AudioManager.shared.currentTheme, fadeDuration: 1.0)
+        let fadeDuration: TimeInterval = 1.0
+        
+        AudioManager.shared.raiseVolume(for: AudioManager.shared.currentTheme, fadeDuration: fadeDuration)
+        
+        gameEngine.fadeBloodOverlay(shouldFadeOut: false, duration: fadeDuration)
 
         adSprite?.run(SKAction.sequence([
-            SKAction.colorize(with: .clear, colorBlendFactor: 1.0, duration: 1.0),
+            SKAction.colorize(with: .clear, colorBlendFactor: 1.0, duration: fadeDuration),
             SKAction.removeFromParent()
         ])) { [unowned self] in
             scoringEngine.timerManager.resumeTime()
