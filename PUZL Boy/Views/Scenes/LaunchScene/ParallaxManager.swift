@@ -15,36 +15,32 @@ class ParallaxManager: SKNode {
     private(set) var set: ParallaxObject.SetType
     private var parallaxSprites: [ParallaxSprite] = []
     private var xOffsetsArray: [ParallaxSprite.SpriteXPositions]?
-    private var shouldWalk: Bool
+    private var forceSpeed: Speed?
 
     var speedFactor: TimeInterval {
-        let walk: TimeInterval = 3
-        let run: TimeInterval = 1
-        let slowRun: TimeInterval = 1.5
-
-        if !UserDefaults.standard.bool(forKey: K.UserDefaults.shouldSkipIntro) {
-            if shouldWalk {
-                return walk
-            }
-            
-            return run
+        if let forceSpeed = forceSpeed {
+            return forceSpeed.rawValue
         }
                 
         switch DayTheme.currentTheme {
-        case .dawn:         return walk
-        case .morning:      return run
-        case .afternoon:    return slowRun
-        case .night:        return walk
+        case .dawn:         return Speed.walk.rawValue
+        case .morning:      return Speed.run.rawValue
+        case .afternoon:    return Speed.slowRun.rawValue
+        case .night:        return Speed.walk.rawValue
         }
+    }
+    
+    enum Speed: TimeInterval {
+        case walk = 3, run = 1, slowRun = 1.5
     }
         
     
     // MARK: - Initialization
     
-    init(useSet set: ParallaxObject.SetType, xOffsetsArray: [ParallaxSprite.SpriteXPositions]?, shouldWalk: Bool = false) {
+    init(useSet set: ParallaxObject.SetType, xOffsetsArray: [ParallaxSprite.SpriteXPositions]?, forceSpeed: Speed? = nil) {
         self.set = set
         self.xOffsetsArray = xOffsetsArray
-        self.shouldWalk = shouldWalk
+        self.forceSpeed = forceSpeed
 
         super.init()
         

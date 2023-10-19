@@ -19,7 +19,7 @@ struct Player {
     private(set) var textures: [[SKTexture]]
     private var atlas: SKTextureAtlas
     
-    enum PlayerType: String {
+    enum PlayerType: String, CaseIterable {
         case hero = "hero", princess, villain
     }
 

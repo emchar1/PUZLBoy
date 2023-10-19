@@ -89,7 +89,7 @@ class LaunchScene: SKScene {
             moonSprite.alpha = 0
         }
 
-        parallaxManager = ParallaxManager(useSet: .allCases.randomElement() ?? .grass, xOffsetsArray: nil)
+        parallaxManager = ParallaxManager(useSet: .allCases.randomElement() ?? .grass, xOffsetsArray: nil, forceSpeed: UserDefaults.standard.bool(forKey: K.UserDefaults.shouldSkipIntro) ? nil : .run)
     }
     
     private func animateSprites() {

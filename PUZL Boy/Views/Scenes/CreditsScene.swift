@@ -16,27 +16,30 @@ class CreditsScene: SKScene {
     // MARK: - Properties
     
     private var disableInput = false
-    private var goBackLabel: SKLabelNode
+    private var fadeDuration: TimeInterval = 2
+    private var waitDuration: TimeInterval = 3
     
+    private var blackoutNode: SKShapeNode!
+    private var skyNode: SKSpriteNode!
+    private var moonSprite: MoonSprite!
+    private var parallaxManager: ParallaxManager!
+    private var player: Player!
+    private var playerReflection: Player!
+    
+    private var headingLabel: SKLabelNode!
+    private var allRightsLabel: SKLabelNode!
+    private var subheadingLabels: [SKLabelNode] = []
+
     weak var creditsSceneDelegate: CreditsSceneDelegate?
     
     
     // MARK: - Initialization
     
     override init(size: CGSize) {
-        goBackLabel = SKLabelNode(text: "          COMING SOON\n(TAP HERE TO GO BACK)")
-        goBackLabel.position = CGPoint(x: K.ScreenDimensions.size.width / 2, y: K.ScreenDimensions.size.height / 2)
-        goBackLabel.numberOfLines = 0
-        goBackLabel.fontName = UIFont.gameFont
-        goBackLabel.fontSize = UIFont.gameFontSizeLarge
-        goBackLabel.fontColor = .yellow
-        goBackLabel.horizontalAlignmentMode = .center
-        goBackLabel.addDropShadow(shadowOffset: CGPoint(x: -10, y: -10), alpha: 0.25)
-        goBackLabel.name = "goBack"
-        
         super.init(size: size)
         
-        backgroundColor = .blue
+        setupNodes()
+        animateScene()
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -47,11 +50,173 @@ class CreditsScene: SKScene {
         print("CreditsScene deinit")
     }
     
+    private func setupNodes() {
+        blackoutNode = SKShapeNode(rectOf: K.ScreenDimensions.size)
+        blackoutNode.position = CGPoint(x: K.ScreenDimensions.size.width / 2, y: K.ScreenDimensions.size.height / 2)
+        blackoutNode.fillColor = .black
+        blackoutNode.lineWidth = 0
+        blackoutNode.alpha = 0
+        blackoutNode.zPosition = K.ZPosition.bloodOverlay
+        
+        skyNode = SKSpriteNode(texture: SKTexture(image: DayTheme.getSkyImage()))
+        skyNode.size = CGSize(width: K.ScreenDimensions.size.width, height: K.ScreenDimensions.size.height / 2)
+        skyNode.position = CGPoint(x: 0, y: K.ScreenDimensions.size.height)
+        skyNode.anchorPoint = CGPoint(x: 0, y: 1)
+        skyNode.zPosition = K.ZPosition.skyNode
+
+        moonSprite = MoonSprite(position: CGPoint(x: K.ScreenDimensions.size.width, y: K.ScreenDimensions.size.height), scale: 0.7 * 3)
+
+        parallaxManager = ParallaxManager(useSet: ParallaxObject.SetType.allCases.randomElement() ?? .grass, xOffsetsArray: nil, forceSpeed: .walk)
+        parallaxManager.animate()
+
+        let randomPlayer = Player.PlayerType.allCases.randomElement() ?? .hero
+        let scaleMultiplier: CGFloat
+        
+        switch randomPlayer {
+        case .princess:     scaleMultiplier = 0.8
+        case .villain:      scaleMultiplier = 1.5
+        default:            scaleMultiplier = 1
+        }
+        
+        player = Player(type: randomPlayer)
+        player.sprite.setScale(0.75 * scaleMultiplier)
+        player.sprite.position = CGPoint(x: K.ScreenDimensions.size.width / 2, y: K.ScreenDimensions.size.height / 4)
+        player.sprite.anchorPoint = CGPoint(x: 0.5, y: 0)
+        player.sprite.color = DayTheme.spriteColor
+        player.sprite.colorBlendFactor = DayTheme.spriteShade
+        player.sprite.zPosition = K.ZPosition.player
+        
+        playerReflection = Player(type: randomPlayer)
+        playerReflection.sprite.setScale(0.75 * scaleMultiplier)
+        playerReflection.sprite.position = player.sprite.position + CGPoint(x: 0, y: player.sprite.size.height / 4 - 10) //why -10???
+        playerReflection.sprite.anchorPoint = CGPoint(x: 0.5, y: 0)
+        playerReflection.sprite.color = DayTheme.spriteColor
+        playerReflection.sprite.colorBlendFactor = DayTheme.spriteShade
+        playerReflection.sprite.yScale *= -1
+        playerReflection.sprite.alpha = 0.25
+
+        let frameRate: TimeInterval = 0.06
+        let playerAnimate = randomPlayer == .villain ? SKAction.animate(with: player.textures[Player.Texture.idle.rawValue], timePerFrame: frameRate) : SKAction.animate(with: player.textures[Player.Texture.walk.rawValue], timePerFrame: frameRate)
+
+        player.sprite.run(SKAction.repeatForever(playerAnimate))
+        playerReflection.sprite.run(SKAction.repeatForever(playerAnimate))
+        
+        headingLabel = SKLabelNode(text: "Heading Label")
+        headingLabel.position = CGPoint(x: K.ScreenDimensions.size.width / 2, y: K.ScreenDimensions.size.height * 4 / 5)
+        headingLabel.horizontalAlignmentMode = .center
+        headingLabel.verticalAlignmentMode = .bottom
+        headingLabel.numberOfLines = 0
+        headingLabel.fontName = UIFont.chatFont
+        headingLabel.fontSize = UIFont.chatFontSizeLarge
+        headingLabel.fontColor = UIFont.chatFontColor
+        headingLabel.alpha = 0
+        headingLabel.zPosition = K.ZPosition.itemsPoints
+        headingLabel.addDropShadow()
+        
+        allRightsLabel = SKLabelNode(text: "©2023 5Play Apps. All rights reserved.")
+        allRightsLabel.position = CGPoint(x: K.ScreenDimensions.size.width / 2, y: K.ScreenDimensions.size.height * 1 / 9)
+        allRightsLabel.horizontalAlignmentMode = .center
+        allRightsLabel.verticalAlignmentMode = .top
+        allRightsLabel.fontName = UIFont.chatFont
+        allRightsLabel.fontSize = UIFont.chatFontSizeLarge
+        allRightsLabel.fontColor = UIFont.chatFontColor
+        allRightsLabel.alpha = 0
+        allRightsLabel.zPosition = K.ZPosition.itemsPoints
+        allRightsLabel.addDropShadow()
+    }
     
-    // MARK: - Functions
+    
+    // MARK: - Move Functions
     
     override func didMove(to view: SKView) {
-        addChild(goBackLabel)
+        addChild(player.sprite)
+        addChild(skyNode)
+        addChild(moonSprite)
+        addChild(headingLabel)
+        addChild(allRightsLabel)
+        addChild(blackoutNode)
+
+        parallaxManager.addSpritesToParent(scene: self)
+
+        if parallaxManager.set == .marsh {
+            addChild(playerReflection.sprite)
+        }
+    }
+    
+    
+    // MARK: - Text Functions
+    
+    private func setSubheadingLabels(texts: [String]) {
+        for node in children.filter({ $0.name == "subheadingName" }) {
+            node.removeFromParent()
+        }
+        
+        subheadingLabels = []
+        
+        for (i, text) in texts.enumerated() {
+            let labelNode = SKLabelNode(text: text.uppercased())
+            labelNode.position = headingLabel.position - CGPoint(x: 0, y: CGFloat(i) * UIFont.gameFontSizeExtraLarge)
+            labelNode.horizontalAlignmentMode = .center
+            labelNode.verticalAlignmentMode = .top
+            labelNode.numberOfLines = 0
+            labelNode.fontName = UIFont.gameFont
+            labelNode.fontSize = UIFont.gameFontSizeExtraLarge
+            labelNode.fontColor = UIFont.gameFontColor
+            labelNode.alpha = 0
+            labelNode.zPosition = K.ZPosition.itemsPoints
+            labelNode.name = "subheadingName"
+            labelNode.addDropShadow()
+            
+            subheadingLabels.append(labelNode)
+            
+            addChild(labelNode)
+        }
+    }
+    
+    private func setAndAnimateLabels(headingText: String, subheadingTexts: [String], completion: (() -> Void)?) {
+        headingLabel.text = headingText
+        headingLabel.updateShadow()
+        
+        headingLabel.run(animateFadeAndWait()) {
+            completion?()
+        }
+        
+        setSubheadingLabels(texts: subheadingTexts)
+        
+        for subheading in subheadingLabels {
+            subheading.run(animateFadeAndWait())
+        }
+    }
+    
+    private func animateFadeAndWait() -> SKAction {
+        return SKAction.sequence([
+            SKAction.wait(forDuration: waitDuration),
+            SKAction.fadeIn(withDuration: fadeDuration),
+            SKAction.wait(forDuration: waitDuration),
+            SKAction.fadeOut(withDuration: fadeDuration)
+        ])
+    }
+    
+    private func animateScene() {
+        setAndAnimateLabels(headingText: "5Play Apps presents", subheadingTexts: ["PUZL Boy"]) { [unowned self] in
+            setAndAnimateLabels(headingText: "Art Assets", subheadingTexts: ["Freepik", "Icons8", "Flaticon"]) { [unowned self] in
+                setAndAnimateLabels(headingText: "Created by", subheadingTexts: ["Eddie Char"]) { [unowned self] in
+                    setAndAnimateLabels(headingText: "Special Thanks", subheadingTexts: ["Clayton Caldwell", "Michelle Rayfield", "Jackson Rayfield", "Aissa Char", "Michel Char"]) { [unowned self] in
+                        setAndAnimateLabels(headingText: "for", subheadingTexts: ["Olivia", "and Alana"]) { [unowned self] in
+                            allRightsLabel.run(SKAction.fadeIn(withDuration: fadeDuration)) { [unowned self] in
+                                
+                                blackoutNode.run(SKAction.sequence([
+                                    SKAction.wait(forDuration: waitDuration * 2),
+                                    SKAction.fadeIn(withDuration: fadeDuration)
+                                ])) { [unowned self] in
+                                    creditsSceneDelegate?.goBackTapped()
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
     
     
@@ -59,18 +224,13 @@ class CreditsScene: SKScene {
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard !disableInput else { return }
-        guard let location = touches.first?.location(in: self) else { return }
-        guard let _ = nodes(at: location).first(where: { $0.name == "goBack" }) else { return }
         
         disableInput = true
         ButtonTap.shared.tap(type: .buttontap1)
 
-        run(SKAction.fadeOut(withDuration: 1.0)) { [unowned self] in
-            removeAllActions()
-            removeAllChildren()
-            removeFromParent()
-
+        blackoutNode.run(SKAction.fadeIn(withDuration: fadeDuration)) { [unowned self] in
             disableInput = false
+            
             creditsSceneDelegate?.goBackTapped()
         }
     }

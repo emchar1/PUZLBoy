@@ -134,7 +134,7 @@ class CutsceneIntro: SKScene {
         fadeTransitionNode.alpha = 0
         fadeTransitionNode.zPosition = K.ZPosition.fadeTransitionNode
         
-        parallaxManager = ParallaxManager(useSet: .grass, xOffsetsArray: xOffsetsArray, shouldWalk: true)
+        parallaxManager = ParallaxManager(useSet: .grass, xOffsetsArray: xOffsetsArray, forceSpeed: .walk)
         
         speechHero = SpeechBubbleSprite(width: 460, position: heroPositionInitial + CGPoint(x: 200, y: 400))
         speechPrincess = SpeechBubbleSprite(width: 460, position: princessPositionFinal + CGPoint(x: -200, y: 400), tailOrientation: .bottomRight)
