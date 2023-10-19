@@ -19,7 +19,7 @@ class CreditsScene: SKScene {
     private var fadeDuration: TimeInterval = 2
     private var waitDuration: TimeInterval = 3
     
-    private var blackoutNode: SKShapeNode!
+    private var fadeOutNode: SKSpriteNode!
     private var skyNode: SKSpriteNode!
     private var moonSprite: MoonSprite!
     private var parallaxManager: ParallaxManager!
@@ -51,12 +51,10 @@ class CreditsScene: SKScene {
     }
     
     private func setupNodes() {
-        blackoutNode = SKShapeNode(rectOf: K.ScreenDimensions.size)
-        blackoutNode.position = CGPoint(x: K.ScreenDimensions.size.width / 2, y: K.ScreenDimensions.size.height / 2)
-        blackoutNode.fillColor = .black
-        blackoutNode.lineWidth = 0
-        blackoutNode.alpha = 0
-        blackoutNode.zPosition = K.ZPosition.bloodOverlay
+        fadeOutNode = SKSpriteNode(color: .black, size: K.ScreenDimensions.size)
+        fadeOutNode.anchorPoint = .zero
+        fadeOutNode.alpha = 0
+        fadeOutNode.zPosition = K.ZPosition.fadeTransitionNode
         
         skyNode = SKSpriteNode(texture: SKTexture(image: DayTheme.getSkyImage()))
         skyNode.size = CGSize(width: K.ScreenDimensions.size.width, height: K.ScreenDimensions.size.height / 2)
@@ -134,7 +132,7 @@ class CreditsScene: SKScene {
         addChild(moonSprite)
         addChild(headingLabel)
         addChild(allRightsLabel)
-        addChild(blackoutNode)
+        addChild(fadeOutNode)
 
         parallaxManager.addSpritesToParent(scene: self)
 
@@ -204,9 +202,10 @@ class CreditsScene: SKScene {
                     setAndAnimateLabels(headingText: "Special Thanks", subheadingTexts: ["Clayton Caldwell", "Michelle Rayfield", "Jackson Rayfield", "Aissa Char", "Michel Char"]) { [unowned self] in
                         setAndAnimateLabels(headingText: "for", subheadingTexts: ["Olivia", "and Alana"]) { [unowned self] in
                             allRightsLabel.run(SKAction.fadeIn(withDuration: fadeDuration)) { [unowned self] in
+                                disableInput = true
                                 
-                                blackoutNode.run(SKAction.sequence([
-                                    SKAction.wait(forDuration: waitDuration * 2),
+                                fadeOutNode.run(SKAction.sequence([
+                                    SKAction.wait(forDuration: waitDuration),
                                     SKAction.fadeIn(withDuration: fadeDuration)
                                 ])) { [unowned self] in
                                     creditsSceneDelegate?.goBackTapped()
@@ -228,7 +227,7 @@ class CreditsScene: SKScene {
         disableInput = true
         ButtonTap.shared.tap(type: .buttontap1)
 
-        blackoutNode.run(SKAction.fadeIn(withDuration: fadeDuration)) { [unowned self] in
+        fadeOutNode.run(SKAction.fadeIn(withDuration: 1.0)) { [unowned self] in
             disableInput = false
             
             creditsSceneDelegate?.goBackTapped()
