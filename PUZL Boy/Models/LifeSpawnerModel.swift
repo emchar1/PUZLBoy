@@ -12,7 +12,7 @@ class LifeSpawnerModel {
     // MARK: - Properties
     
     static let defaultLives = 5
-    static let durationMoreLives: TimeInterval = 30 * 60
+    static let durationMoreLives: TimeInterval = 60 * 60
     static let durationReminder: TimeInterval = 24 * 60 * 60
     
     static var shared: LifeSpawnerModel {

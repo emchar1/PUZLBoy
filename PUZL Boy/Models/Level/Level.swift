@@ -20,7 +20,7 @@ struct Level: CustomStringConvertible {
     static let partyLevel: Int = -1
     
     // FIXME: - IMPORTANT!! Update to 500 once all levels are in!!!
-    static let finalLevel: Int = 497
+    static let finalLevel: Int = 498
 
     private(set) var level: Int
     private(set) var moves: Int

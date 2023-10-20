@@ -66,7 +66,7 @@ class ContinueSprite: SKNode {
         
         let continueLabel = SKLabelNode(text: "CONTINUE?")
         continueLabel.fontName = UIFont.gameFont
-        continueLabel.fontSize = UIFont.gameFontSizeExtraLarge
+        continueLabel.fontSize = UIFont.gameFontSizeLarge
         continueLabel.fontColor = UIFont.gameFontColor
         continueLabel.verticalAlignmentMode = .top
         continueLabel.position = CGPoint(x: 0, y: backgroundSprite.frame.size.height / (UIDevice.isiPad ? 1.5 : 2) - continueLabel.frame.size.height / 2)

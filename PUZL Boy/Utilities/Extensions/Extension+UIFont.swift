@@ -12,7 +12,7 @@ extension UIFont {
     static let gameFont: String = "LuckiestGuy-Regular"
     static let gameFontColor: UIColor = .white
     static let gameFontColorOutOfTime: UIColor = UIColor(red: 255 / 255, green: 50 / 255, blue: 75 / 255, alpha: 1)
-    static let gameFontSizeExtraLarge: CGFloat = UIDevice.isiPad ? 100 : gameFontSizeMedium
+    static let gameFontSizeExtraLarge: CGFloat = UIDevice.isiPad ? 100 : 75
     static let gameFontSizeLarge: CGFloat = UIDevice.isiPad ? 75 : gameFontSizeMedium
     static let gameFontSizeMedium: CGFloat = 50
     static let gameFontSizeSmall: CGFloat = 40
