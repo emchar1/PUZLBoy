@@ -15,10 +15,12 @@ class CreditsScene: SKScene {
     
     // MARK: - Properties
     
+    private let fadeDuration: TimeInterval = 2
+    private let waitDuration: TimeInterval = 3
+    private let titleScale: CGFloat = 3
+    private let skyColor: (first: UIColor, second: UIColor) = DayTheme.skyColor.bottom.triadic
     private var disableInput = false
-    private var fadeDuration: TimeInterval = 2
-    private var waitDuration: TimeInterval = 3
-    
+
     private var fadeOutNode: SKSpriteNode!
     private var skyNode: SKSpriteNode!
     private var moonSprite: MoonSprite!
@@ -160,7 +162,7 @@ class CreditsScene: SKScene {
         
         for (i, text) in texts.enumerated() {
             let labelNode = SKLabelNode(text: text.uppercased())
-            labelNode.position = headingLabel.position - CGPoint(x: 0, y: CGFloat(i) * UIFont.gameFontSizeExtraLarge)
+            labelNode.position = headingLabel.position + CGPoint(x: 0, y: -CGFloat(i) * UIFont.gameFontSizeExtraLarge)
             labelNode.horizontalAlignmentMode = .center
             labelNode.verticalAlignmentMode = .top
             labelNode.numberOfLines = 0
@@ -170,7 +172,25 @@ class CreditsScene: SKScene {
             labelNode.alpha = 0
             labelNode.zPosition = K.ZPosition.itemsPoints
             labelNode.name = "subheadingName"
-            labelNode.addDropShadow()
+            
+            if text == "PUZL" {
+                labelNode.verticalAlignmentMode = .center
+                labelNode.addTripleShadow(shadow1Color: skyColor.first, shadow2Color: skyColor.first, shadow3Color: skyColor.first)
+                labelNode.showShadow(completion: nil)
+            }
+            else if text == "Boy" {
+                labelNode.position = headingLabel.position + CGPoint(x: UIFont.gameFontSizeExtraLarge,
+                                                                     y: -CGFloat(i) * UIFont.gameFontSizeExtraLarge * 2 / 5)
+                labelNode.fontColor = skyColor.second
+                labelNode.fontSize = UIFont.gameFontSizeExtraLarge * 4 / 5
+                labelNode.zPosition += 5
+                labelNode.addDropShadow()
+                
+                labelNode.run(SKAction.rotate(toAngle: .pi / 12, duration: 0))
+            }
+            else {
+                labelNode.addDropShadow()
+            }
             
             subheadingLabels.append(labelNode)
             
@@ -178,22 +198,22 @@ class CreditsScene: SKScene {
         }
     }
     
-    private func setAndAnimateLabels(headingText: String, subheadingTexts: [String], completion: (() -> Void)?) {
+    private func setAndAnimateLabels(headingText: String, subheadingTexts: [String], subheadingAction: SKAction, completion: (() -> Void)?) {
         headingLabel.text = headingText
         headingLabel.updateShadow()
         
-        headingLabel.run(animateFadeAndWait()) {
+        headingLabel.run(animateFadeAction()) {
             completion?()
         }
         
         setSubheadingLabels(texts: subheadingTexts)
         
         for subheading in subheadingLabels {
-            subheading.run(animateFadeAndWait())
+            subheading.run(subheadingAction)
         }
     }
     
-    private func animateFadeAndWait() -> SKAction {
+    func animateFadeAction() -> SKAction {
         return SKAction.sequence([
             SKAction.wait(forDuration: waitDuration),
             SKAction.fadeIn(withDuration: fadeDuration),
@@ -202,32 +222,47 @@ class CreditsScene: SKScene {
         ])
     }
     
+    func animateZoomAction(scale: CGFloat) -> SKAction {
+        return SKAction.sequence([
+            SKAction.scale(to: 0, duration: 0),
+            SKAction.fadeIn(withDuration: 0),
+            SKAction.wait(forDuration: waitDuration),
+            SKAction.scale(to: scale * 1.1, duration: 0.25),
+            SKAction.scale(to: scale * 0.95, duration: 0.2),
+            SKAction.scale(to: scale, duration: 0.2),
+            SKAction.wait(forDuration: waitDuration),
+            SKAction.fadeOut(withDuration: fadeDuration)
+        ])
+    }
+    
     private func animateScene() {
-        let speechBubbleYOffset: CGFloat = UIDevice.isiPad ? 100 : 50
-
+        let speechBubbleYOffset: CGFloat = UIDevice.isiPad ? 100 : 0
+        
         //Credits
-        setAndAnimateLabels(headingText: "5Play Apps presents", subheadingTexts: ["PUZL Boy"]) { [unowned self] in
-            setAndAnimateLabels(headingText: "Art Assets", subheadingTexts: ["Freepik", "Icons8", "Flaticon"]) { [unowned self] in
-                setAndAnimateLabels(headingText: "Created by", subheadingTexts: ["Eddie Char"]) { [unowned self] in
-
-                    speechBubble.run(SKAction.sequence([
-                        SKAction.wait(forDuration: waitDuration),
-                        SKAction.moveBy(x: 0, y: -speechBubbleYOffset, duration: fadeDuration / 4)
-                    ]))
-                    
-                    setAndAnimateLabels(headingText: "Special Thanks", subheadingTexts: ["Clayton Caldwell", "Michelle Rayfield", "Jackson Rayfield", "Aissa Char", "Michel Char"]) { [unowned self] in
+        setAndAnimateLabels(headingText: "5Play Apps presents", subheadingTexts: [], subheadingAction: animateFadeAction()) { [unowned self] in
+            setAndAnimateLabels(headingText: "", subheadingTexts: ["PUZL", "Boy"], subheadingAction: animateZoomAction(scale: titleScale)) { [unowned self] in
+                setAndAnimateLabels(headingText: "Art Assets", subheadingTexts: ["Freepik", "Icons8", "Flaticon"], subheadingAction: animateFadeAction()) { [unowned self] in
+                    setAndAnimateLabels(headingText: "Created by", subheadingTexts: ["Eddie Char"], subheadingAction: animateFadeAction()) { [unowned self] in
                         
-                        speechBubble.run(SKAction.moveBy(x: 0, y: speechBubbleYOffset, duration: fadeDuration / 4))
-
-                        setAndAnimateLabels(headingText: "for", subheadingTexts: ["Olivia", "and Alana"]) { [unowned self] in
-                            allRightsLabel.run(SKAction.fadeIn(withDuration: fadeDuration)) { [unowned self] in
-                                disableInput = true
-                                
-                                fadeOutNode.run(SKAction.sequence([
-                                    SKAction.wait(forDuration: waitDuration),
-                                    SKAction.fadeIn(withDuration: fadeDuration)
-                                ])) { [unowned self] in
-                                    creditsSceneDelegate?.goBackTapped()
+                        speechBubble.run(SKAction.sequence([
+                            SKAction.wait(forDuration: waitDuration),
+                            SKAction.moveBy(x: 0, y: -speechBubbleYOffset, duration: fadeDuration / 4)
+                        ]))
+                        
+                        setAndAnimateLabels(headingText: "Special Thanks", subheadingTexts: ["Clayton Caldwell", "Michelle Rayfield", "Jackson Rayfield", "Aissa Char", "Michel Char"], subheadingAction: animateFadeAction()) { [unowned self] in
+                            
+                            speechBubble.run(SKAction.moveBy(x: 0, y: speechBubbleYOffset, duration: fadeDuration / 4))
+                            
+                            setAndAnimateLabels(headingText: "for", subheadingTexts: ["Olivia", "and Alana"], subheadingAction: animateFadeAction()) { [unowned self] in
+                                allRightsLabel.run(SKAction.fadeIn(withDuration: fadeDuration)) { [unowned self] in
+                                    disableInput = true
+                                    
+                                    fadeOutNode.run(SKAction.sequence([
+                                        SKAction.wait(forDuration: waitDuration),
+                                        SKAction.fadeIn(withDuration: fadeDuration)
+                                    ])) { [unowned self] in
+                                        creditsSceneDelegate?.goBackTapped()
+                                    }
                                 }
                             }
                         }
@@ -239,12 +274,14 @@ class CreditsScene: SKScene {
         // TODO: - Speech Bubbles
         speechBubble.setText(text: "I can't wait to play this game, I heard great things!", superScene: self) {
             self.speechBubble.setText(text: "Is it fun? Yes. But is it addictive? Also yes.", superScene: self) {
-                self.speechBubble.setText(text: "Of course I finished all my chores! Why would you ask?", superScene: self) {
+                self.speechBubble.setText(text: "Of course I finished all my chores! Why do you ask?", superScene: self) {
                     self.speechBubble.setText(text: "I loaded the dishwasher the way to told me to...", superScene: self) {
                         self.speechBubble.setText(text: "No, I don't know how the cutlery ended up on the top shelf.", superScene: self) {
-                            self.speechBubble.setText(text: "No because you yelled at me about it the last time.", superScene: self) {
+                            self.speechBubble.setText(text: "I didn't because remember you yelled at me about it last time.", superScene: self) {
                                 self.speechBubble.setText(text: "I dunno, maybe the neighbor came over and put them there.", superScene: self) {
-                                    self.speechBubble.setText(text: "I don't mean to call you a liar, but... you's a big fat liar!!!", superScene: self, completion: nil)
+                                    self.speechBubble.setText(text: "No I'm not calling you a liar. But I told you it wasn't me.", superScene: self) {
+                                        self.speechBubble.setText(text: "Oh wait... the phone rang and I got distracted... Yeah, it was me.", superScene: self, completion: nil)
+                                    }
                                 }
                             }
                         }
