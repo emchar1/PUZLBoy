@@ -253,7 +253,7 @@ class CreditsScene: SKScene {
                             
                             speechBubble.run(SKAction.moveBy(x: 0, y: speechBubbleYOffset, duration: fadeDuration / 4))
                             
-                            setAndAnimateLabels(headingText: "for", subheadingTexts: ["Olivia", "and Alana"], subheadingAction: animateFadeAction()) { [unowned self] in
+                            setAndAnimateLabels(headingText: "for", subheadingTexts: ["Olivia🦄", "and Alana"], subheadingAction: animateFadeAction()) { [unowned self] in
                                 allRightsLabel.run(SKAction.fadeIn(withDuration: fadeDuration)) { [unowned self] in
                                     disableInput = true
                                     
@@ -276,11 +276,11 @@ class CreditsScene: SKScene {
             self.speechBubble.setText(text: "Is it fun? Yes. But is it addictive? Also yes.", superScene: self) {
                 self.speechBubble.setText(text: "Of course I finished all my chores! Why do you ask?", superScene: self) {
                     self.speechBubble.setText(text: "I loaded the dishwasher the way to told me to...", superScene: self) {
-                        self.speechBubble.setText(text: "No, I don't know how the cutlery ended up on the top shelf.", superScene: self) {
-                            self.speechBubble.setText(text: "I didn't because remember you yelled at me about it last time.", superScene: self) {
-                                self.speechBubble.setText(text: "I dunno, maybe the neighbor came over and put them there.", superScene: self) {
-                                    self.speechBubble.setText(text: "No I'm not calling you a liar. But I told you it wasn't me.", superScene: self) {
-                                        self.speechBubble.setText(text: "Oh wait... the phone rang and I got distracted... Yeah, it was me.", superScene: self, completion: nil)
+                        self.speechBubble.setText(text: "I don't know how the forks ended up on the top shelf.", superScene: self) {
+                            self.speechBubble.setText(text: "No because remember you yelled at me about it last time.", superScene: self) {
+                                self.speechBubble.setText(text: "I dunno, maybe Becky came over and put them there.", superScene: self) {
+                                    self.speechBubble.setText(text: "There's the phone, you can give her a call yourself.", superScene: self) {
+                                        self.speechBubble.setText(text: "Well, I'm not calling you a liar but... you's a big fat liar!", superScene: self, completion: nil)
                                     }
                                 }
                             }

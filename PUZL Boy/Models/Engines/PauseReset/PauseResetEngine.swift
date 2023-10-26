@@ -15,6 +15,7 @@ protocol PauseResetEngineDelegate: AnyObject {
     
     func confirmQuitTapped()
     func didTapHowToPlay(_ tableView: HowToPlayTableView)
+    func didTapLeaderboards(_ tableView: LeaderboardsTableView)
     func didCompletePurchase(_ currentButton: PurchaseTapButton)
 }
 
@@ -54,6 +55,7 @@ class PauseResetEngine {
     //Custom Objects
     private var settingsManager: SettingsManager!
     private var quitConfirmSprite: ConfirmSprite!
+    private var leaderboardsPage: LeaderboardsPage!
     private var howToPlayPage: HowToPlayPage!
     private var purchasePage: PurchasePage!
     private var settingsPage: SettingsPage!
@@ -127,6 +129,9 @@ class PauseResetEngine {
 
         settingsPage = SettingsPage(contentSize: settingsSize)
         settingsPage.zPosition = 10
+        
+        leaderboardsPage = LeaderboardsPage(contentSize: settingsSize)
+        leaderboardsPage.zPosition = 10
         
         howToPlayPage = HowToPlayPage(contentSize: settingsSize, level: currentLevel)
         howToPlayPage.zPosition = 10
@@ -238,19 +243,29 @@ class PauseResetEngine {
     // MARK: - Table View Functions
     
     func registerHowToPlayTableView() {
-        let topMargin: CGFloat = UIDevice.isiPad ? 80 : 40
-        let bottomMargin: CGFloat = UIDevice.isiPad ? 30 : 50
+        howToPlayPage.tableView.register(HowToPlayTVCell.self, forCellReuseIdentifier: HowToPlayTVCell.reuseID)
+        howToPlayPage.tableView.frame = getTableViewFrame(hasHeaders: false)
+    }
+    
+    func registerLeaderboardsTableView() {
+        leaderboardsPage.tableView.register(LeaderboardsTVCell.self, forCellReuseIdentifier: LeaderboardsTVCell.reuseID)
+        leaderboardsPage.tableView.frame = getTableViewFrame(hasHeaders: true)
+    }
+    
+    private func getTableViewFrame(hasHeaders: Bool) -> CGRect {
+        let hasHeadersOffset: CGFloat = hasHeaders ? 32 : 0
+        let topMargin: CGFloat = (UIDevice.isiPad ? 80 : 40) + hasHeadersOffset
+        let bottomMargin: CGFloat = (UIDevice.isiPad ? 30 : 50) + hasHeadersOffset
+        let leftMargin: CGFloat = K.ScreenDimensions.lrMargin
         let rightMargin: CGFloat = UIDevice.isiPad ? -8 : 8
         
-        howToPlayPage.tableView.register(HowToPlayTVCell.self, forCellReuseIdentifier: HowToPlayTVCell.reuseID)
-        
-        howToPlayPage.tableView.frame = CGRect(
-            origin: CGPoint(x: HowToPlayPage.padding / K.ScreenDimensions.ratioSKtoUI + K.ScreenDimensions.lrMargin,
-                            y: (K.ScreenDimensions.size.height - K.ScreenDimensions.topOfGameboard) / K.ScreenDimensions.ratioSKtoUI + topMargin),
-            size: CGSize(width: settingsSize.width / K.ScreenDimensions.ratioSKtoUI * GameboardSprite.spriteScale - rightMargin,
-                         height: settingsSize.height / K.ScreenDimensions.ratioSKtoUI * GameboardSprite.spriteScale - bottomMargin))
+        return CGRect(
+            origin: CGPoint(x: (ParentPage.padding / K.ScreenDimensions.ratioSKtoUI) + leftMargin,
+                            y: ((K.ScreenDimensions.size.height - K.ScreenDimensions.topOfGameboard) / K.ScreenDimensions.ratioSKtoUI) + topMargin),
+            size: CGSize(width: (settingsSize.width / K.ScreenDimensions.ratioSKtoUI * GameboardSprite.spriteScale) - rightMargin,
+                         height: (settingsSize.height / K.ScreenDimensions.ratioSKtoUI * GameboardSprite.spriteScale) - bottomMargin))
     }
-        
+    
     
     // MARK: - Touch Functions
     
@@ -383,6 +398,9 @@ class PauseResetEngine {
         }
         else {
             howToPlayPage.tableView.removeFromSuperview()
+            leaderboardsPage.tableView.removeFromSuperview()
+            leaderboardsPage.removeHeaderBackgroundNode()
+            NotificationCenter.default.post(name: .shouldCancelLoadingLeaderboards, object: nil)
 
             if !Level.isPartyLevel(currentLevel) {
                 showMinorButtons()
@@ -420,9 +438,9 @@ class PauseResetEngine {
         isPressed = false
         
         settingsManager.button1.touchUp() //title
-        settingsManager.button3.touchUp() //leaderboard
         quitConfirmSprite.touchUp()
         
+        leaderboardsPage.touchUp()
         howToPlayPage.touchUp()
         settingsPage.touchUp()
         purchasePage.touchUp()
@@ -466,6 +484,9 @@ class PauseResetEngine {
                 
                 hintButtonSprite.run(SKAction.colorize(with: .black, colorBlendFactor: 0.25, duration: 0))
                 Haptics.shared.addHapticFeedback(withStyle: .soft)
+            case leaderboardsPage.nodeName:
+                leaderboardsPage.superScene = superScene
+                leaderboardsPage.touchDown(for: touches)
             case howToPlayPage.nodeName:
                 howToPlayPage.superScene = superScene
                 howToPlayPage.touchDown(for: touches)
@@ -500,7 +521,10 @@ extension PauseResetEngine: SettingsManagerDelegate {
             guard let superScene = superScene else { return print("superScene not set up. Unable to show title confirm!") }
             
             howToPlayPage.tableView.removeFromSuperview()
-                        
+            leaderboardsPage.tableView.removeFromSuperview()
+            leaderboardsPage.removeHeaderBackgroundNode()
+            NotificationCenter.default.post(name: .shouldCancelLoadingLeaderboards, object: nil)
+
             quitConfirmSprite.animateShow { }
         
             superScene.addChild(quitConfirmSprite)
@@ -510,20 +534,21 @@ extension PauseResetEngine: SettingsManagerDelegate {
             purchasePage.checkWatchAdButtonIsDisabled()
             backgroundSprite.addChild(purchasePage)
         case .button3: //leaderboard
-            guard let superScene = superScene else { return print("superScene not set up. Unable to show leaderboard!") }
+            removePages()
             
-            let activityIndicator = ActivityIndicatorSprite()
-            activityIndicator.move(toParent: superScene)
+            leaderboardsPage.addLoadingLabel()
+            leaderboardsPage.removeHeaderBackgroundNode()
+            backgroundSprite.addChild(leaderboardsPage)
             
-            howToPlayPage.tableView.removeFromSuperview()
-            
-            GameCenterManager.shared.showLeaderboard(level: currentLevel) { [unowned self] in
-                settingsManager.button3.touchUp()
-                activityIndicator.removeFromParent()
+            GameCenterManager.shared.loadScores(maxLevel: currentLevel) { [unowned self] scores in
+                leaderboardsPage.removeLoadingLabel()
+                leaderboardsPage.addHeaderBackgroundNode()
                 
-                if settingsManager.currentButtonPressed?.type == settingsManager.button4.type {
-                    delegate?.didTapHowToPlay(howToPlayPage.tableView)
-                }
+                leaderboardsPage.tableView.scores = scores
+                leaderboardsPage.tableView.scrollToRow(at: IndexPath(row: currentLevel - 1, section: 0), at: .middle, animated: true)
+                leaderboardsPage.tableView.flashScrollIndicators()
+
+                delegate?.didTapLeaderboards(leaderboardsPage.tableView)
             }
         case .button4: //howToPlay
             removePages()
@@ -543,10 +568,14 @@ extension PauseResetEngine: SettingsManagerDelegate {
     }
     
     private func removePages() {
+        leaderboardsPage.removeFromParent()
         howToPlayPage.removeFromParent()
         purchasePage.removeFromParent()
         settingsPage.removeFromParent()
         howToPlayPage.tableView.removeFromSuperview()
+        leaderboardsPage.tableView.removeFromSuperview()
+        leaderboardsPage.removeHeaderBackgroundNode()
+        NotificationCenter.default.post(name: .shouldCancelLoadingLeaderboards, object: nil)
     }
 }
 
@@ -572,6 +601,9 @@ extension PauseResetEngine: ConfirmSpriteDelegate {
         quitConfirmSprite.animateHide { [unowned self] in
             if settingsManager.currentButtonPressed?.type == settingsManager.button4.type {
                 delegate?.didTapHowToPlay(howToPlayPage.tableView)
+            }
+            else if settingsManager.currentButtonPressed?.type == settingsManager.button3.type {
+                delegate?.didTapLeaderboards(leaderboardsPage.tableView)
             }
         }
     }

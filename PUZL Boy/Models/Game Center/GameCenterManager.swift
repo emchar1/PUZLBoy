@@ -12,7 +12,11 @@ final class GameCenterManager: NSObject {
     
     // MARK: - Properties
     
+    typealias Score = (level: Int, username: String?, score: Int?, isLocalPlayer: Bool?)
     private let leaderboardLevelIDPrefix = "PUZLBoy.HiScoreLV"
+    private var scores: [Score] = []
+    private var isLoadingScores = false
+    var shouldCancelLeaderboards = false
     var viewController: UIViewController?
     
     static let shared: GameCenterManager = {
@@ -71,11 +75,11 @@ final class GameCenterManager: NSObject {
         guard GKLocalPlayer.local.isAuthenticated else { return print("Unable to save score! Player is not authenticated.") }
                 
         if #available(iOS 14.0, *) {
-            //Just giving this a whirl. I believe it's the same as non-iOS 14.0 version...
             GKLeaderboard.submitScore(score, context: 0, player: GKLocalPlayer.local, leaderboardIDs: [getLeaderboardLevelID(level)]) { error in
                 print("Leaderboard: \(self.getLeaderboardLevelID(level)) updated!")
             }
-        } else {
+        }
+        else {
             let scoreReporter = GKScore(leaderboardIdentifier: getLeaderboardLevelID(level))
             scoreReporter.value = Int64(score)
                             
@@ -83,20 +87,113 @@ final class GameCenterManager: NSObject {
         }
     }
     
+    ///Shows the built-in Game Center leaderboard
     func showLeaderboard(level: Int, completion: (() -> Void)?) {
-        let gcvc = GKGameCenterViewController()
-//        gcvc.leaderboardIdentifier = "PUZLBoy.AllLevelsHiScore"
-        gcvc.leaderboardIdentifier = getLeaderboardLevelID(level)
-        gcvc.leaderboardTimeScope = .allTime
+        let gcvc: GKGameCenterViewController
+        
+        if #available(iOS 14.0, *) {
+            gcvc = GKGameCenterViewController(leaderboardID: getLeaderboardLevelID(level), playerScope: .global, timeScope: .allTime)
+        }
+        else {
+            gcvc = GKGameCenterViewController()
+            gcvc.leaderboardIdentifier = getLeaderboardLevelID(level)
+            gcvc.leaderboardTimeScope = .allTime
+        }
+        
         gcvc.gameCenterDelegate = self
  
         viewController?.present(gcvc, animated: true, completion: completion)
+    }
+        
+    ///For use in custom Game Center Table Views. Warning: completion may not get called if something happens while loading the scores array and the full scores.count >= maxLevel is not realized. Is this a bug?
+    func loadScores(maxLevel: Int, completion: @escaping ([Score]) -> Void) {
+        guard GKLocalPlayer.local.isAuthenticated else { return print("Unable to fetch leaderboard! Player is not authenticated!!!") }
+        guard !isLoadingScores else { return print("Scores are currently loading. Returning from loadScores() function.") }
+        
+        scores = []
+        isLoadingScores = true
+        shouldCancelLeaderboards = false
+        
+        if #available(iOS 14.0, *) {
+            GKLeaderboard.loadLeaderboards(IDs: getAllLeaderboardIDs()) { [unowned self] (leaderboards, error) in
+                guard error == nil else { return print("Error fetching leaderboard: \(error!.localizedDescription)") }
+                guard let leaderboards = leaderboards else { return print("Leaderboards are nil!") }
+                
+                for leaderboard in leaderboards {
+                    leaderboard.loadEntries(for: .global, timeScope: .allTime, range: NSRange(1...3)) { [unowned self] (localPlayer, allPlayers, playerCount, error) in
+                        
+                        guard error == nil else { return print("Error loading scores: \(error!.localizedDescription)") }
+                        guard let currentLevel = getLevelFromLeaderboard(leaderboard.baseLeaderboardID), currentLevel <= maxLevel else { return }
+                        guard let allPlayers = allPlayers else { return print("All Players array is nil!") }
+                        
+                        if populateScores(maxLevel: maxLevel,
+                                          level: currentLevel,
+                                          topPlayer: allPlayers.count > 0 ? allPlayers[0].player.displayName : nil,
+                                          playerScore: allPlayers.count > 0 ? allPlayers[0].score : nil) {
+                            isLoadingScores = false
+                            completion(self.scores)
+                        }
+                        
+                    }//end leaderboard.loadEntries()
+                }//end for
+            }//end GKLeaderboard.loadLeaderboards()
+        }//end if #available(iOS 14.0)
+        else {
+            GKLeaderboard.loadLeaderboards { [unowned self] (leaderboards, error) in
+                guard error == nil else { return print("Error fetching leaderboard: \(error!.localizedDescription)") }
+                guard let leaderboards = leaderboards else { return print("Leaderboards are nil!") }
+                
+                for leaderboard in leaderboards {
+                    leaderboard.playerScope = .global
+                    
+                    leaderboard.loadScores { [unowned self] (scores, error) in
+                        guard error == nil else { return print("Error loading scores: \(error!.localizedDescription)") }
+                        guard let currentLevel = getLevelFromLeaderboard(leaderboard.identifier ?? "-1"), currentLevel <= maxLevel else { return }
+                        
+                        if populateScores(maxLevel: maxLevel,
+                                          level: currentLevel,
+                                          topPlayer: scores != nil ? scores![0].player.displayName : nil,
+                                          playerScore: scores != nil ? Int(scores![0].value) : nil) {
+                            isLoadingScores = false
+                            completion(self.scores)
+                        }
+                    }//end leaderboard.loadScores()
+                }//end for
+            }//end GKLeaderboard.loadLeaderboards()
+        }//end else
+    }//end func loadScores()
+    
+    private func populateScores(maxLevel: Int, level: Int, topPlayer: String?, playerScore: Int?) -> Bool {
+        scores.append(Score(level: level, username: topPlayer, score: playerScore, isLocalPlayer: topPlayer == GKLocalPlayer.local.displayName))
+        
+        if scores.count >= maxLevel {
+            scores.sort(by: { $0.level < $1.level })
+            
+            return true
+        }
+        else {
+            return false
+        }
     }
     
     private func getLeaderboardLevelID(_ level: Int) -> String {
         let levelString = String(format: "%04d", level) //4 digit level, with leading zeroes
         
         return leaderboardLevelIDPrefix + levelString
+    }
+    
+    private func getAllLeaderboardIDs() -> [String] {
+        var ids: [String] = []
+
+        for i in 0...Level.finalLevel {
+            ids.append(getLeaderboardLevelID(i))
+        }
+        
+        return ids
+    }
+    
+    private func getLevelFromLeaderboard(_ id: String) -> Int? {
+        return Int(id.suffix(4))
     }
     
     

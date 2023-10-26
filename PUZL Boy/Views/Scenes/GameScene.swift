@@ -102,6 +102,7 @@ class GameScene: SKScene {
         let notificationCenter = NotificationCenter.default
         notificationCenter.addObserver(self, selector: #selector(appMovedToBackground), name: UIApplication.willResignActiveNotification, object: nil)
         notificationCenter.addObserver(self, selector: #selector(appMovedToForeground), name: UIApplication.didBecomeActiveNotification, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(cancelLeaderboardsLoading), name: .shouldCancelLoadingLeaderboards, object: nil)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -418,8 +419,6 @@ class GameScene: SKScene {
         if !didWin {
             AudioManager.shared.stopSound(for: "continueloop")
             AudioManager.shared.playSound(for: AudioManager.shared.currentTheme)
-
-            checkForParty()
         }
         
         //Play interstitial ad
@@ -478,6 +477,7 @@ class GameScene: SKScene {
 
         pauseResetEngine.moveSprites(to: self, level: currentLevel)
         pauseResetEngine.registerHowToPlayTableView()
+        pauseResetEngine.registerLeaderboardsTableView()
         
         if let offlinePlaySprite = offlinePlaySprite {
             offlinePlaySprite.removeAllActions()
@@ -655,26 +655,6 @@ extension GameScene: LevelSkipEngineDelegate {
         scoringEngine.updateLabels()
         newGame(level: currentLevel, didWin: true)
     }
-    
-    func viewAchievementsPressed(_ node: SKSpriteNode) {
-        GameCenterManager.shared.showLeaderboard(level: currentLevel, completion: nil)
-    }
-    
-    func partyModePressed(_ node: SKSpriteNode) {
-        PartyModeSprite.shared.toggleIsPartying()
-        checkForParty()
-    }
-    
-    private func checkForParty() {
-        if PartyModeSprite.shared.isPartying {
-            PartyModeSprite.shared.startParty(to: self, partyBoy: gameEngine.playerSprite,
-                                              hasSword: gameEngine.level.inventory.hasSwords(), hasHammer: gameEngine.level.inventory.hasHammers())
-        }
-        else {
-            PartyModeSprite.shared.stopParty(partyBoy: gameEngine.playerSprite,
-                                             hasSword: gameEngine.level.inventory.hasSwords(), hasHammer: gameEngine.level.inventory.hasHammers())
-        }
-    }
 }
 
 
@@ -810,8 +790,6 @@ extension GameScene: AdMobManagerDelegate {
                 AudioManager.shared.stopSound(for: "continueloop")
                 AudioManager.shared.playSound(for: AudioManager.shared.currentTheme)
                 
-                checkForParty()
-
                 pauseResetEngine.shouldDisable(false)
                 gameEngine.continueGame()
                 gameEngine.showParticles()
@@ -987,6 +965,20 @@ extension GameScene: PauseResetEngineDelegate {
         
         scene?.view?.addSubview(tableView)
         tableView.reloadData()
+    }
+    
+    func didTapLeaderboards(_ tableView: LeaderboardsTableView) {
+        guard !GameCenterManager.shared.shouldCancelLeaderboards else {
+            print("User tapped away from Leaderboards Page. Exiting...")
+            return
+        }
+        
+        scene?.view?.addSubview(tableView)
+        tableView.reloadData()
+    }
+    
+    @objc private func cancelLeaderboardsLoading() {
+        GameCenterManager.shared.shouldCancelLeaderboards = true
     }
     
     func didCompletePurchase(_ currentButton: PurchaseTapButton) {

@@ -95,8 +95,9 @@ class SettingsManager: SKNode {
         button.touchDown()
         button.tapButton(tapQuietly: tapQuietly)
                 
-        if !(button.type == .button1 || button.type == .button3) {
+        if !(button.type == .button1) {
             if button2.type != button.type { button2.touchUp() }
+            if button3.type != button.type { button3.touchUp() }
             if button4.type != button.type { button4.touchUp() }
             if button5.type != button.type { button5.touchUp() }
             

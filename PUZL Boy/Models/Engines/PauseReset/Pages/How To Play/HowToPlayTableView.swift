@@ -67,6 +67,7 @@ class HowToPlayTableView: UITableView, UITableViewDelegate, UITableViewDataSourc
     
     var currentLevel: Int = 1
     
+    
     // MARK: - Initialization
     
     override init(frame: CGRect, style: UITableView.Style) {

@@ -14,4 +14,5 @@ extension Notification.Name {
     static let showMailCompose = Notification.Name(rawValue: "showMailCompose")
     static let didSendEmailFeedback = Notification.Name(rawValue: "didSendEmailFeedback")
     static let shareURL = Notification.Name(rawValue: "shareURL")
+    static let shouldCancelLoadingLeaderboards = Notification.Name(rawValue: "shouldCancelLoadingLeaderboards")
 }
