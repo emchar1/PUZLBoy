@@ -18,11 +18,29 @@ class LeaderboardsPage: ParentPage {
     private var scoreLabel: SKLabelNode!
     private var loadingLabel: SKLabelNode!
     
+    var leaderboardType: LeaderboardType {
+        didSet {
+            updateHeadersForLeaderboardType()
+        }
+    }
+    
+    var currentLevel: Int {
+        didSet {
+            updateHeadersForLeaderboardType()
+        }
+    }
+
+    enum LeaderboardType {
+        case all, level
+    }
     
     // MARK: - Initialization
     
-    init(contentSize: CGSize) {
-        super.init(contentSize: contentSize, titleText: "Leaderboards")
+    init(contentSize: CGSize, leaderboardType: LeaderboardType, currentLevel: Int) {
+        self.leaderboardType = leaderboardType
+        self.currentLevel = currentLevel
+
+        super.init(contentSize: contentSize, titleText: "All Leaderboards")
         
         self.nodeName = "leaderboardsPage"
         name = nodeName
@@ -36,6 +54,8 @@ class LeaderboardsPage: ParentPage {
     
     private func setupViews() {
         tableView = LeaderboardsTableView(frame: .zero, style: .plain)
+        tableView.leaderboardType = leaderboardType
+        tableView.leaderboardsTableViewDelegate = self
         
         headerBackgroundNode = SKShapeNode(rectOf: CGSize(width: contentSize.width, height: UIDevice.isiPad ? 80 : 60))
         headerBackgroundNode.position = CGPoint(x: 0, y: contentSize.height / 2 - 2 * headerBackgroundNode.frame.size.height - ParentPage.padding)
@@ -51,6 +71,7 @@ class LeaderboardsPage: ParentPage {
         levelLabel.fontColor = UIFont.chatFontColor
         levelLabel.horizontalAlignmentMode = .left
         levelLabel.verticalAlignmentMode = .center
+        levelLabel.zPosition = 5
         levelLabel.addDropShadow()
         
         usernameLabel = SKLabelNode(text: "Top Player")
@@ -60,6 +81,7 @@ class LeaderboardsPage: ParentPage {
         usernameLabel.fontColor = UIFont.chatFontColor
         usernameLabel.horizontalAlignmentMode = .left
         usernameLabel.verticalAlignmentMode = .center
+        usernameLabel.zPosition = 5
         usernameLabel.addDropShadow()
         
         scoreLabel = SKLabelNode(text: "Score")
@@ -69,6 +91,7 @@ class LeaderboardsPage: ParentPage {
         scoreLabel.fontColor = UIFont.chatFontColor
         scoreLabel.horizontalAlignmentMode = .right
         scoreLabel.verticalAlignmentMode = .center
+        scoreLabel.zPosition = 5
         scoreLabel.addDropShadow()
         
         loadingLabel = SKLabelNode(text: "LOADING...")
@@ -79,7 +102,14 @@ class LeaderboardsPage: ParentPage {
         loadingLabel.horizontalAlignmentMode = .center
         loadingLabel.verticalAlignmentMode = .center
         loadingLabel.addDropShadow()
-
+        
+        loadingLabel.run(SKAction.repeatForever(SKAction.sequence([
+            SKAction.wait(forDuration: 0.5),
+            SKAction.fadeOut(withDuration: 0.5),
+            SKAction.fadeIn(withDuration: 0.5)
+        ])))
+        
+        updateHeadersForLeaderboardType()
         addLoadingLabel()
         
         headerBackgroundNode.addChild(levelLabel)
@@ -108,5 +138,44 @@ class LeaderboardsPage: ParentPage {
     
     func removeHeaderBackgroundNode() {
         headerBackgroundNode.removeFromParent()
+    }
+    
+    func prepareTableView() {
+        addLoadingLabel()
+        removeHeaderBackgroundNode()
+    }
+    
+    func didLoadTableView() {
+        removeLoadingLabel()
+        addHeaderBackgroundNode()
+    }
+    
+    private func updateHeadersForLeaderboardType() {
+        switch leaderboardType {
+        case .all:
+            updateTitle("All Leaderboards")
+            
+            levelLabel.text = "Lvl"
+            usernameLabel.text = "Top Player"
+        case .level:
+            updateTitle("Lv \(currentLevel) - Leaderboard")
+            
+            levelLabel.text = "Rank"
+            usernameLabel.text = "Player"
+        }
+        
+        levelLabel.updateShadow()
+        usernameLabel.updateShadow()
+    }
+}
+
+
+// MARK: - LeaderboardsTableViewDelegate
+
+extension LeaderboardsPage: LeaderboardsTableViewDelegate {
+    func didTapRow(scoreEntry: GameCenterManager.Score) {
+        // TODO: - Build this out!
+        
+        print("It's about to go down!")
     }
 }

@@ -130,7 +130,7 @@ class PauseResetEngine {
         settingsPage = SettingsPage(contentSize: settingsSize)
         settingsPage.zPosition = 10
         
-        leaderboardsPage = LeaderboardsPage(contentSize: settingsSize)
+        leaderboardsPage = LeaderboardsPage(contentSize: settingsSize, leaderboardType: .level, currentLevel: currentLevel)
         leaderboardsPage.zPosition = 10
         
         howToPlayPage = HowToPlayPage(contentSize: settingsSize, level: currentLevel)
@@ -536,16 +536,29 @@ extension PauseResetEngine: SettingsManagerDelegate {
         case .button3: //leaderboard
             removePages()
             
-            leaderboardsPage.addLoadingLabel()
-            leaderboardsPage.removeHeaderBackgroundNode()
+            
+            
+            // FIXME: - Test
+            if leaderboardsPage.leaderboardType == .all {
+                leaderboardsPage.leaderboardType = .level
+            }
+            else {
+                leaderboardsPage.leaderboardType = .all
+            }
+            
+            
+            
+            leaderboardsPage.currentLevel = currentLevel
+            leaderboardsPage.prepareTableView()
             backgroundSprite.addChild(leaderboardsPage)
             
-            GameCenterManager.shared.loadScores(maxLevel: currentLevel) { [unowned self] scores in
-                leaderboardsPage.removeLoadingLabel()
-                leaderboardsPage.addHeaderBackgroundNode()
-                
+            GameCenterManager.shared.loadScores(leaderboardType: leaderboardsPage.leaderboardType, level: currentLevel) { [unowned self] scores in
+                leaderboardsPage.didLoadTableView()
                 leaderboardsPage.tableView.scores = scores
-                leaderboardsPage.tableView.scrollToRow(at: IndexPath(row: currentLevel - 1, section: 0), at: .middle, animated: true)
+
+                // FIXME: - Should the below go before this completion???
+                leaderboardsPage.tableView.leaderboardType = leaderboardsPage.leaderboardType
+
                 leaderboardsPage.tableView.flashScrollIndicators()
 
                 delegate?.didTapLeaderboards(leaderboardsPage.tableView)

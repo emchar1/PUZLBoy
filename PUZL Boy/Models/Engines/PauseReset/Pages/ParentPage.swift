@@ -79,4 +79,13 @@ class ParentPage: SKNode {
     func touchNode(for touches: Set<UITouch>) {
         //Implement in subclass
     }
+    
+    
+    // MARK: - Functions
+    
+    func updateTitle(_ newText: String) {
+        titleText = newText
+        titleLabel.text = titleText.uppercased()
+        titleLabel.updateShadow()
+    }
 }

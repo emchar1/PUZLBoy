@@ -106,7 +106,7 @@ final class GameCenterManager: NSObject {
     }
         
     ///For use in custom Game Center Table Views. Warning: completion may not get called if something happens while loading the scores array and the full scores.count >= maxLevel is not realized. Is this a bug?
-    func loadScores(maxLevel: Int, completion: @escaping ([Score]) -> Void) {
+    func loadScores(leaderboardType: LeaderboardsPage.LeaderboardType, level: Int, completion: @escaping ([Score]) -> Void) {
         guard GKLocalPlayer.local.isAuthenticated else { return print("Unable to fetch leaderboard! Player is not authenticated!!!") }
         guard !isLoadingScores else { return print("Scores are currently loading. Returning from loadScores() function.") }
         
@@ -115,24 +115,51 @@ final class GameCenterManager: NSObject {
         shouldCancelLeaderboards = false
         
         if #available(iOS 14.0, *) {
-            GKLeaderboard.loadLeaderboards(IDs: getAllLeaderboardIDs()) { [unowned self] (leaderboards, error) in
+            GKLeaderboard.loadLeaderboards(IDs: leaderboardType == .all ? getAllLeaderboardIDs() : [getLeaderboardLevelID(level)]) { [unowned self] (leaderboards, error) in
+                
                 guard error == nil else { return print("Error fetching leaderboard: \(error!.localizedDescription)") }
                 guard let leaderboards = leaderboards else { return print("Leaderboards are nil!") }
                 
                 for leaderboard in leaderboards {
-                    leaderboard.loadEntries(for: .global, timeScope: .allTime, range: NSRange(1...3)) { [unowned self] (localPlayer, allPlayers, playerCount, error) in
+                    leaderboard.loadEntries(for: .global, timeScope: .allTime, range: leaderboardType == .all ? NSRange(1...1) : NSRange(1...100)) { [unowned self] (localPlayer, allPlayers, playerCount, error) in
                         
                         guard error == nil else { return print("Error loading scores: \(error!.localizedDescription)") }
-                        guard let currentLevel = getLevelFromLeaderboard(leaderboard.baseLeaderboardID), currentLevel <= maxLevel else { return }
+                        guard let currentLevel = getLevelFromLeaderboard(leaderboard.baseLeaderboardID) else { return }
                         guard let allPlayers = allPlayers else { return print("All Players array is nil!") }
                         
-                        if populateScores(maxLevel: maxLevel,
-                                          level: currentLevel,
-                                          topPlayer: allPlayers.count > 0 ? allPlayers[0].player.displayName : nil,
-                                          playerScore: allPlayers.count > 0 ? allPlayers[0].score : nil) {
-                            isLoadingScores = false
-                            completion(self.scores)
+                        if leaderboardType == .all {
+                            guard currentLevel <= level else { return }
+                            
+                            if populateScores(maxLevel: level,
+                                              level: currentLevel,
+                                              topPlayer: allPlayers.count > 0 ? allPlayers[0].player.displayName : nil,
+                                              playerScore: allPlayers.count > 0 ? allPlayers[0].score : nil) {
+                                isLoadingScores = false
+                                completion(self.scores)
+                            }
                         }
+                        else { //leaderboardType == .level
+                            guard currentLevel == level else { return }
+                            
+                            if allPlayers.count <= 0 {
+                                isLoadingScores = false
+                                completion(self.scores)
+                                
+                                return
+                            }
+                            
+                            for (index, player) in allPlayers.enumerated() {
+                                self.scores.append(Score(level: index + 1,
+                                                         username: player.player.displayName,
+                                                         score: player.score,
+                                                         isLocalPlayer: false))
+                                
+                                if player == allPlayers.last {
+                                    isLoadingScores = false
+                                    completion(self.scores)
+                                }
+                            }
+                        }//end if leaderboardType == .all
                         
                     }//end leaderboard.loadEntries()
                 }//end for
@@ -148,20 +175,46 @@ final class GameCenterManager: NSObject {
                     
                     leaderboard.loadScores { [unowned self] (scores, error) in
                         guard error == nil else { return print("Error loading scores: \(error!.localizedDescription)") }
-                        guard let currentLevel = getLevelFromLeaderboard(leaderboard.identifier ?? "-1"), currentLevel <= maxLevel else { return }
+                        guard let currentLevel = getLevelFromLeaderboard(leaderboard.identifier ?? "-1") else { return }
                         
-                        if populateScores(maxLevel: maxLevel,
-                                          level: currentLevel,
-                                          topPlayer: scores != nil ? scores![0].player.displayName : nil,
-                                          playerScore: scores != nil ? Int(scores![0].value) : nil) {
-                            isLoadingScores = false
-                            completion(self.scores)
+                        if leaderboardType == .all {
+                            guard currentLevel <= level else { return }
+                            
+                            if populateScores(maxLevel: level,
+                                              level: currentLevel,
+                                              topPlayer: scores != nil ? scores![0].player.displayName : nil,
+                                              playerScore: scores != nil ? Int(scores![0].value) : nil) {
+                                isLoadingScores = false
+                                completion(self.scores)
+                            }
                         }
+                        else {
+                            guard currentLevel == level else { return }
+                            guard let scores = scores, scores.count > 0 else {
+                                isLoadingScores = false
+                                completion(self.scores)
+                                
+                                return print("Scores array is nil!")
+                            }
+                            
+                            for (index, score) in scores.enumerated() {
+                                self.scores.append(Score(level: index + 1,
+                                                         username: score.player.displayName,
+                                                         score: Int(score.value),
+                                                         isLocalPlayer: false))
+                                
+                                if score == scores.last {
+                                    isLoadingScores = false
+                                    completion(self.scores)
+                                }
+                            }
+                        }//end if leaderboardType == .all
+                        
                     }//end leaderboard.loadScores()
                 }//end for
             }//end GKLeaderboard.loadLeaderboards()
         }//end else
-    }//end func loadScores()
+    }//end func loadScoresByLevel()
     
     private func populateScores(maxLevel: Int, level: Int, topPlayer: String?, playerScore: Int?) -> Bool {
         scores.append(Score(level: level, username: topPlayer, score: playerScore, isLocalPlayer: topPlayer == GKLocalPlayer.local.displayName))

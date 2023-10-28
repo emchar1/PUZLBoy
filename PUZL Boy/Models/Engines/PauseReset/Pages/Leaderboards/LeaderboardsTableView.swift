@@ -7,11 +7,18 @@
 
 import UIKit
 
+protocol LeaderboardsTableViewDelegate: AnyObject {
+    func didTapRow(scoreEntry: GameCenterManager.Score)
+}
+
 class LeaderboardsTableView: UITableView, UITableViewDelegate, UITableViewDataSource {
     
     // MARK: - Properties
     
     var scores: [GameCenterManager.Score] = []
+    var leaderboardType: LeaderboardsPage.LeaderboardType!
+    
+    weak var leaderboardsTableViewDelegate: LeaderboardsTableViewDelegate?
     
     
     // MARK: - Initialization
@@ -51,14 +58,25 @@ class LeaderboardsTableView: UITableView, UITableViewDelegate, UITableViewDataSo
                       score: scores[indexPath.row].score,
                       isLocalPlayer: scores[indexPath.row].isLocalPlayer)
 
-        cell.selectionStyle = .none
+        // FIXME: - Testing. Want to only be able to select details from All Leaderboards
+        if leaderboardType == .level {
+            cell.selectionStyle = .none
+        }
+        else {
+            cell.selectionStyle = .default
+        }
 
         return cell
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return UIDevice.isiPad ? 44 : 34
+        return UIDevice.isiPad ? 52 : 38
     }
     
-    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        // TODO: - Only select if All Leaderboards!
+        leaderboardsTableViewDelegate?.didTapRow(scoreEntry: scores[indexPath.row])
+        
+        tableView.deselectRow(at: indexPath, animated: true)
+    }
 }
