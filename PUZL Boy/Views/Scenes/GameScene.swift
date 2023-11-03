@@ -968,13 +968,9 @@ extension GameScene: PauseResetEngineDelegate {
     }
     
     func didTapLeaderboards(_ tableView: LeaderboardsTableView) {
-        guard !GameCenterManager.shared.shouldCancelLeaderboards else {
-            print("User tapped away from Leaderboards Page. Exiting...")
-            return
-        }
+        guard !GameCenterManager.shared.shouldCancelLeaderboards else { return }
         
         scene?.view?.addSubview(tableView)
-        tableView.reloadData()
     }
     
     @objc private func cancelLeaderboardsLoading() {

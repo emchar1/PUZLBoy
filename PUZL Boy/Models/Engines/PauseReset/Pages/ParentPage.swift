@@ -50,9 +50,10 @@ class ParentPage: SKNode {
         titleLabel.fontName = UIFont.gameFont
         titleLabel.fontSize = UIFont.gameFontSizeLarge
         titleLabel.fontColor = UIFont.gameFontColor
-        titleLabel.addHeavyDropShadow()
+        titleLabel.name = "titleLabel"
         titleLabel.zPosition = 10
-        
+        titleLabel.addHeavyDropShadow()
+
         addChild(contentNode)
         contentNode.addChild(titleLabel)
     }
@@ -78,14 +79,5 @@ class ParentPage: SKNode {
     
     func touchNode(for touches: Set<UITouch>) {
         //Implement in subclass
-    }
-    
-    
-    // MARK: - Functions
-    
-    func updateTitle(_ newText: String) {
-        titleText = newText
-        titleLabel.text = titleText.uppercased()
-        titleLabel.updateShadow()
     }
 }

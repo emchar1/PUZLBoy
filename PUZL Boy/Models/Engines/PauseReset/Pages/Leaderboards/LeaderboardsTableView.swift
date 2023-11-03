@@ -58,7 +58,6 @@ class LeaderboardsTableView: UITableView, UITableViewDelegate, UITableViewDataSo
                       score: scores[indexPath.row].score,
                       isLocalPlayer: scores[indexPath.row].isLocalPlayer)
 
-        // FIXME: - Testing. Want to only be able to select details from All Leaderboards
         if leaderboardType == .level {
             cell.selectionStyle = .none
         }
@@ -74,9 +73,9 @@ class LeaderboardsTableView: UITableView, UITableViewDelegate, UITableViewDataSo
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        // TODO: - Only select if All Leaderboards!
-        leaderboardsTableViewDelegate?.didTapRow(scoreEntry: scores[indexPath.row])
+        guard leaderboardType == .all else { return }
         
+        leaderboardsTableViewDelegate?.didTapRow(scoreEntry: scores[indexPath.row])
         tableView.deselectRow(at: indexPath, animated: true)
     }
 }

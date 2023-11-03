@@ -292,6 +292,10 @@ class PauseResetEngine {
             else if nodeTapped is DecisionButtonSprite {
                 quitConfirmSprite.didTapButton(in: location)
             }
+            else if nodeTapped is LeaderboardsPage {
+                leaderboardsPage.superScene = superScene
+                leaderboardsPage.touchNode(for: touches)
+            }
             else if nodeTapped is PurchasePage {
                 purchasePage.superScene = superScene
                 purchasePage.touchNode(for: touches)
@@ -536,31 +540,13 @@ extension PauseResetEngine: SettingsManagerDelegate {
         case .button3: //leaderboard
             removePages()
             
-            
-            
-            // FIXME: - Test
-            if leaderboardsPage.leaderboardType == .all {
-                leaderboardsPage.leaderboardType = .level
-            }
-            else {
-                leaderboardsPage.leaderboardType = .all
-            }
-            
-            
-            
-            leaderboardsPage.currentLevel = currentLevel
+            leaderboardsPage.updateValues(leaderboardType: .level, currentLevel: currentLevel)
             leaderboardsPage.prepareTableView()
             backgroundSprite.addChild(leaderboardsPage)
             
             GameCenterManager.shared.loadScores(leaderboardType: leaderboardsPage.leaderboardType, level: currentLevel) { [unowned self] scores in
-                leaderboardsPage.didLoadTableView()
-                leaderboardsPage.tableView.scores = scores
-
-                // FIXME: - Should the below go before this completion???
-                leaderboardsPage.tableView.leaderboardType = leaderboardsPage.leaderboardType
-
-                leaderboardsPage.tableView.flashScrollIndicators()
-
+                leaderboardsPage.didLoadTableView(scores: scores)
+                
                 delegate?.didTapLeaderboards(leaderboardsPage.tableView)
             }
         case .button4: //howToPlay
