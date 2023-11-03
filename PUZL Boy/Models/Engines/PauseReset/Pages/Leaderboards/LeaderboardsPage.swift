@@ -15,6 +15,7 @@ class LeaderboardsPage: ParentPage {
     private var title2Label: SKLabelNode!
     private var loadingLabel: SKLabelNode!
     private var backButton: SKSpriteNode!
+    private var achievementsButton: SKSpriteNode!
     private var headerBackgroundNode: SKShapeNode!
     private var levelLabel: SKLabelNode!
     private var usernameLabel: SKLabelNode!
@@ -26,6 +27,8 @@ class LeaderboardsPage: ParentPage {
     private var currentLevel: Int
     private var originalCurrentLevel: Int
     private var backButtonPressed = false
+    private var achievementsButtonPressed = false
+    private var tableViewIsLoading = false
     
     enum LeaderboardType {
         case all, level
@@ -65,14 +68,25 @@ class LeaderboardsPage: ParentPage {
         title2Label.zPosition = 10
         title2Label.addHeavyDropShadow()
 
+        let buttonSize: CGFloat = 80
+        
         backButton = SKSpriteNode(imageNamed: "backButton")
         backButton.position = CGPoint(x: ParentPage.padding / 2, y: -ParentPage.padding / 2)
-        backButton.size = CGSize(width: 80, height: 80)
+        backButton.size = CGSize(width: buttonSize, height: buttonSize)
         backButton.anchorPoint = CGPoint(x: 0, y: 1)
         backButton.alpha = 0
         backButton.color = .black
         backButton.name = "backButton"
         backButton.zPosition = 10
+        
+        achievementsButton = SKSpriteNode(imageNamed: "achievementsButton")
+        achievementsButton.position = CGPoint(x: contentSize.width - ParentPage.padding / 2, y: -ParentPage.padding / 2)
+        achievementsButton.size = CGSize(width: buttonSize, height: buttonSize)
+        achievementsButton.anchorPoint = CGPoint(x: 1, y: 1)
+        achievementsButton.alpha = 1
+        achievementsButton.color = .black
+        achievementsButton.name = "achievementsButton"
+        achievementsButton.zPosition = 10
         
         tableView = LeaderboardsTableView(frame: .zero, style: .plain)
         tableView.leaderboardType = leaderboardType
@@ -136,6 +150,7 @@ class LeaderboardsPage: ParentPage {
         
         contentNode.addChild(title2Label)
         contentNode.addChild(backButton)
+        contentNode.addChild(achievementsButton)
         headerBackgroundNode.addChild(levelLabel)
         headerBackgroundNode.addChild(usernameLabel)
         headerBackgroundNode.addChild(scoreLabel)
@@ -182,6 +197,7 @@ class LeaderboardsPage: ParentPage {
         removeHeaderBackgroundNode()
         
         tableView.alpha = 0
+        tableViewIsLoading = true
     }
     
     ///Removes the LOADING label and adds the tableView headers to the view. Also shows the tableView by setting its alpha = 1.
@@ -203,6 +219,7 @@ class LeaderboardsPage: ParentPage {
         }
         
         tableView.alpha = 1
+        tableViewIsLoading = false
     }
     
     ///Switches the leaderboard based on the type, i.e. All Leaderboards or level-specific Leaderboard. Updates the title, table view headers and table view itself.
@@ -277,26 +294,49 @@ class LeaderboardsPage: ParentPage {
     override func touchDown(for touches: Set<UITouch>) {
         super.touchDown(for: touches)
         
+        guard !tableViewIsLoading else { return }
         guard let superScene = superScene else { return }
         guard let tapLocation = touches.first?.location(in: superScene) else { return }
+
         let convertedPoint = superScene.convert(tapLocation, to: contentNode)
-        guard contentNode.nodes(at: convertedPoint).filter({ $0.name == "backButton" }).first != nil else { return }
         
-        backButtonPressed = true
-        backButton.colorBlendFactor = 0.25
+        for node in contentNode.nodes(at: convertedPoint) {
+            switch node.name {
+            case "backButton":
+                backButtonPressed = true
+                backButton.colorBlendFactor = 0.25
+            case "achievementsButton":
+                achievementsButtonPressed = true
+                achievementsButton.colorBlendFactor = 0.25
+            default:
+                break
+            }
+        }
     }
     
     override func touchNode(for touches: Set<UITouch>) {
         super.touchNode(for: touches)
         
-        guard backButtonPressed else { return }
         guard let superScene = superScene else { return }
         guard let tapLocation = touches.first?.location(in: superScene) else { return }
+        
         let convertedPoint = superScene.convert(tapLocation, to: contentNode)
-        guard contentNode.nodes(at: convertedPoint).filter({ $0.name == "backButton" }).first != nil else { return }
+        
+        for node in contentNode.nodes(at: convertedPoint) {
+            switch node.name {
+            case "backButton":
+                guard backButtonPressed else { return }
 
-        ButtonTap.shared.tap(type: .buttontap6)
-        switchLeaderboard(toSecondary: false)
+                ButtonTap.shared.tap(type: .buttontap6)
+                switchLeaderboard(toSecondary: false)
+            case "achievementsButton":
+                guard achievementsButtonPressed else { return }
+                
+                print("Achievements Button tapped.")
+            default:
+                break
+            }
+        }
     }
     
     override func touchUp() {
@@ -304,6 +344,9 @@ class LeaderboardsPage: ParentPage {
         
         backButton.colorBlendFactor = 0
         backButtonPressed = false
+        
+        achievementsButton.colorBlendFactor = 0
+        achievementsButtonPressed = false
     }
 }
 
