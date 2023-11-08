@@ -12,7 +12,8 @@ class LeaderboardsPage: ParentPage {
     // MARK: - Properties
 
     //Nodes
-    private var title2Label: SKLabelNode!
+    private var titleLevelLabel: ParentTitleLabel!
+    private var titleAchievementsLabel: ParentTitleLabel!
     private var loadingLabel: SKLabelNode!
     private var backButton: SKSpriteNode!
     private var achievementsButton: SKSpriteNode!
@@ -24,6 +25,7 @@ class LeaderboardsPage: ParentPage {
     //Misc
     private(set) var tableView: LeaderboardsTableView!
     private(set) var leaderboardType: LeaderboardType
+    private var previousLeaderboardType: LeaderboardType
     private var currentLevel: Int
     private var originalCurrentLevel: Int
     private var backButtonPressed = false
@@ -31,7 +33,7 @@ class LeaderboardsPage: ParentPage {
     private var tableViewIsLoading = false
     
     enum LeaderboardType {
-        case all, level
+        case all, level, achievements
     }
     
     
@@ -39,6 +41,7 @@ class LeaderboardsPage: ParentPage {
     
     init(contentSize: CGSize, leaderboardType: LeaderboardType, currentLevel: Int) {
         self.leaderboardType = leaderboardType
+        self.previousLeaderboardType = leaderboardType
         self.currentLevel = currentLevel
         self.originalCurrentLevel = currentLevel
 
@@ -55,19 +58,14 @@ class LeaderboardsPage: ParentPage {
     }
     
     private func setupViews() {
-        title2Label = SKLabelNode(text: "LV \(currentLevel) - LEADERBOARD")
-        title2Label.position = CGPoint(x: contentSize.width / 2, y: -ParentPage.padding)
-        title2Label.horizontalAlignmentMode = .center
-        title2Label.verticalAlignmentMode = .top
-        title2Label.fontName = UIFont.gameFont
-        title2Label.fontSize = UIFont.gameFontSizeLarge
-        title2Label.fontColor = UIFont.gameFontColor
-        title2Label.yScale = -1
-        title2Label.alpha = 0
-        title2Label.name = "title2Label"
-        title2Label.zPosition = 10
-        title2Label.addHeavyDropShadow()
-
+        titleLevelLabel = ParentTitleLabel(contentSize: contentSize, titleText: "Lv \(currentLevel) - Leaderboard")
+        titleLevelLabel.yScale = -1
+        titleLevelLabel.alpha = 0
+        
+        titleAchievementsLabel = ParentTitleLabel(contentSize: contentSize, titleText: "Achievements")
+        titleAchievementsLabel.yScale = -1
+        titleAchievementsLabel.alpha = 0
+        
         let buttonSize: CGFloat = 80
         
         backButton = SKSpriteNode(imageNamed: "backButton")
@@ -148,7 +146,8 @@ class LeaderboardsPage: ParentPage {
         updateHeadersForLeaderboardType()
         addLoadingLabel()
         
-        contentNode.addChild(title2Label)
+        contentNode.addChild(titleLevelLabel)
+        contentNode.addChild(titleAchievementsLabel)
         contentNode.addChild(backButton)
         contentNode.addChild(achievementsButton)
         headerBackgroundNode.addChild(levelLabel)
@@ -160,10 +159,10 @@ class LeaderboardsPage: ParentPage {
     // MARK: - Functions
     
     ///Updates the leaderboardType, currentLevel and originalCurrentLevel = currentLevel.
-    func updateValues(leaderboardType: LeaderboardType, currentLevel: Int) {
-        self.leaderboardType = leaderboardType
-        self.currentLevel = currentLevel
-        self.originalCurrentLevel = currentLevel
+    func updateValues(type: LeaderboardType, level: Int) {
+        self.leaderboardType = type
+        self.currentLevel = level
+        self.originalCurrentLevel = level
     }
     
     ///Adds the LOADING label to the view.
@@ -214,26 +213,38 @@ class LeaderboardsPage: ParentPage {
         if leaderboardType == .all {
             tableView.scrollToRow(at: IndexPath(row: scores.count - 1, section: 0), at: .bottom, animated: true)
         }
-        else {
-            backButton.alpha = 1
-        }
         
         tableView.alpha = 1
         tableViewIsLoading = false
+        
+        // FIXME: - I don't know if this belongs here...
+        previousLeaderboardType = leaderboardType
     }
     
+    
+    // MARK: - Helper Functions
+    
     ///Switches the leaderboard based on the type, i.e. All Leaderboards or level-specific Leaderboard. Updates the title, table view headers and table view itself.
-    private func switchLeaderboard(toSecondary: Bool) {
-        leaderboardType = toSecondary ? .level : .all
-        
+    private func switchLeaderboard(type: LeaderboardType) {
+        leaderboardType = type
+
         prepareTableView()
 
-        if leaderboardType == .all {
+        if type == .all {
             currentLevel = originalCurrentLevel
         }
-        
-        GameCenterManager.shared.loadScores(leaderboardType: leaderboardType, level: currentLevel) { [unowned self] scores in
-            didLoadTableView(scores: scores)
+
+        if type != .achievements {
+            GameCenterManager.shared.loadScores(leaderboardType: type, level: currentLevel) { [unowned self] scores in
+                didLoadTableView(scores: scores)
+            }
+        }
+        else {
+            // TODO: - Implement Achievements table view
+            updateHeadersForLeaderboardType()
+            removeLoadingLabel()
+
+            tableViewIsLoading = false
         }
     }
     
@@ -243,13 +254,19 @@ class LeaderboardsPage: ParentPage {
         case .all:
             levelLabel.text = "Lvl"
             usernameLabel.text = "Top Player"
+            levelLabel.updateShadow()
+            usernameLabel.updateShadow()
+            addHeaderBackgroundNode()
         case .level:
             levelLabel.text = "Rank"
             usernameLabel.text = "Player"
+            levelLabel.updateShadow()
+            usernameLabel.updateShadow()
+            addHeaderBackgroundNode()
+        case .achievements:
+            // TODO: - Implementation for .achievements
+            removeHeaderBackgroundNode()
         }
-        
-        levelLabel.updateShadow()
-        usernameLabel.updateShadow()
     }
     
     ///Helper function that updates the title based on the leaderboard type, and applies an animation, if indicated.
@@ -257,34 +274,46 @@ class LeaderboardsPage: ParentPage {
         let duration: CGFloat = shouldAnimate ? 0.5 : 0
         let timingMode: SKActionTimingMode = .easeOut
         
-        let rotateUpsideDown = SKAction.group([
+        let flipUpsideDown = SKAction.group([
             SKAction.moveTo(y: -ParentPage.padding - titleLabel.frame.height, duration: duration),
             SKAction.scaleY(to: -1, duration: duration)
         ])
-        let rotateRightsideUp = SKAction.group([
+        let flipRightsideUp = SKAction.group([
             SKAction.moveTo(y: -ParentPage.padding, duration: duration),
             SKAction.scaleY(to: 1, duration: duration)
         ])
         let fadeIn = SKAction.fadeIn(withDuration: duration)
         let fadeOut = SKAction.fadeOut(withDuration: duration)
-        
-        rotateUpsideDown.timingMode = timingMode
-        rotateRightsideUp.timingMode = timingMode
+
+        flipUpsideDown.timingMode = timingMode
+        flipRightsideUp.timingMode = timingMode
         fadeIn.timingMode = timingMode
         fadeOut.timingMode = timingMode
         
         switch leaderboardType {
         case .all:
-            titleLabel.run(SKAction.group([rotateRightsideUp, fadeIn]))
-            title2Label.run(SKAction.group([rotateUpsideDown, fadeOut]))
+            titleLabel.run(SKAction.group([flipRightsideUp, fadeIn]))
+            titleLevelLabel.run(SKAction.group([flipUpsideDown, fadeOut]))
+            titleAchievementsLabel.run(SKAction.group([flipUpsideDown, fadeOut]))
 
             backButton.alpha = 0
+            achievementsButton.alpha = 1
         case .level:
-            title2Label.run(SKAction.group([rotateRightsideUp, fadeIn]))
-            titleLabel.run(SKAction.group([rotateUpsideDown, fadeOut]))
+            titleLevelLabel.run(SKAction.group([flipRightsideUp, fadeIn]))
+            titleAchievementsLabel.run(SKAction.group([flipUpsideDown, fadeOut]))
+            titleLabel.run(SKAction.group([flipUpsideDown, fadeOut]))
+
+            titleLevelLabel.setText("Lv \(currentLevel) - Leaderboard")
             
-            title2Label.text = "LV \(currentLevel) - LEADERBOARD"
-            title2Label.updateShadow()
+            backButton.alpha = 1
+            achievementsButton.alpha = 1
+        case .achievements:
+            titleAchievementsLabel.run(SKAction.group([flipRightsideUp, fadeIn]))
+            titleLabel.run(SKAction.group([flipUpsideDown, fadeOut]))
+            titleLevelLabel.run(SKAction.group([flipUpsideDown, fadeOut]))
+            
+            backButton.alpha = 1
+            achievementsButton.alpha = 0
         }
     }
     
@@ -328,11 +357,12 @@ class LeaderboardsPage: ParentPage {
                 guard backButtonPressed else { return }
 
                 ButtonTap.shared.tap(type: .buttontap6)
-                switchLeaderboard(toSecondary: false)
+                switchLeaderboard(type: leaderboardType == .achievements ? previousLeaderboardType : .all)
             case "achievementsButton":
                 guard achievementsButtonPressed else { return }
                 
-                print("Achievements Button tapped.")
+                ButtonTap.shared.tap(type: .buttontap6)
+                switchLeaderboard(type: .achievements)
             default:
                 break
             }
@@ -358,6 +388,6 @@ extension LeaderboardsPage: LeaderboardsTableViewDelegate {
         ButtonTap.shared.tap(type: .buttontap2)
 
         currentLevel = scoreEntry.level
-        switchLeaderboard(toSecondary: true)
+        switchLeaderboard(type: .level)
     }
 }

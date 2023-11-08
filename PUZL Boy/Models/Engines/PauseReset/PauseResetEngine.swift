@@ -540,7 +540,7 @@ extension PauseResetEngine: SettingsManagerDelegate {
         case .button3: //leaderboard
             removePages()
             
-            leaderboardsPage.updateValues(leaderboardType: .level, currentLevel: currentLevel)
+            leaderboardsPage.updateValues(type: .level, level: currentLevel)
             leaderboardsPage.prepareTableView()
             backgroundSprite.addChild(leaderboardsPage)
             

@@ -235,6 +235,7 @@
 		EAE919492A4CB02900AF67D1 /* gemcollectpartylife.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAE919482A4CB02800AF67D1 /* gemcollectpartylife.mp3 */; };
 		EAE9194B2A4CB04B00AF67D1 /* gemcollectparty2x.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAE9194A2A4CB04B00AF67D1 /* gemcollectparty2x.mp3 */; };
 		EAE9194D2A4CB08C00AF67D1 /* boywin.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAE9194C2A4CB08C00AF67D1 /* boywin.mp3 */; };
+		EAEAA2372AFB199900890FA7 /* ParentTitleLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAEAA2362AFB199900890FA7 /* ParentTitleLabel.swift */; };
 		EAF07C0329E796640034CD1A /* ParallaxSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAF07C0229E796630034CD1A /* ParallaxSprite.swift */; };
 		EAF07C0529E796AE0034CD1A /* TemplateClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAF07C0429E796AE0034CD1A /* TemplateClass.swift */; };
 		EAF07C0929E7A13F0034CD1A /* ParallaxObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAF07C0829E7A13F0034CD1A /* ParallaxObject.swift */; };
@@ -478,6 +479,7 @@
 		EAE919482A4CB02800AF67D1 /* gemcollectpartylife.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = gemcollectpartylife.mp3; sourceTree = "<group>"; };
 		EAE9194A2A4CB04B00AF67D1 /* gemcollectparty2x.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = gemcollectparty2x.mp3; sourceTree = "<group>"; };
 		EAE9194C2A4CB08C00AF67D1 /* boywin.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = boywin.mp3; sourceTree = "<group>"; };
+		EAEAA2362AFB199900890FA7 /* ParentTitleLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParentTitleLabel.swift; sourceTree = "<group>"; };
 		EAF07C0229E796630034CD1A /* ParallaxSprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParallaxSprite.swift; sourceTree = "<group>"; };
 		EAF07C0429E796AE0034CD1A /* TemplateClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemplateClass.swift; sourceTree = "<group>"; };
 		EAF07C0829E7A13F0034CD1A /* ParallaxObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParallaxObject.swift; sourceTree = "<group>"; };
@@ -545,6 +547,7 @@
 			isa = PBXGroup;
 			children = (
 				EA41F8392A0D71EE00DF47EC /* ParentPage.swift */,
+				EAEAA2362AFB199900890FA7 /* ParentTitleLabel.swift */,
 				EA705CDA2A1C5DAC0051519B /* How To Play */,
 				EACCC05D2AE63F7C0099DA44 /* Leaderboards */,
 				EA705CDC2A1C5DBC0051519B /* Purchase */,
@@ -1271,6 +1274,7 @@
 				EA65184328E420E400E535BF /* GameScene.swift in Sources */,
 				EAF07C0B29E9DADC0034CD1A /* ParallaxManager.swift in Sources */,
 				EA95D20C296276670061059C /* AchievementSuperEfficient.swift in Sources */,
+				EAEAA2372AFB199900890FA7 /* ParentTitleLabel.swift in Sources */,
 				EA95D2102962C9260061059C /* AchievementSlowPoke.swift in Sources */,
 				EAD19A002A9688E500A07A63 /* ParticleEngine.swift in Sources */,
 				EAF07C1029EA7B8C0034CD1A /* Extension+CGSize.swift in Sources */,

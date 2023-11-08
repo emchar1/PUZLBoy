@@ -17,7 +17,7 @@ class ParentPage: SKNode {
     var titleText: String
     
     var contentNode: SKSpriteNode!
-    var titleLabel: SKLabelNode!
+    var titleLabel: ParentTitleLabel!
     var superScene: SKScene?
 
     
@@ -43,16 +43,7 @@ class ParentPage: SKNode {
         contentNode.anchorPoint = CGPoint(x: 0, y: 1)
         contentNode.position = CGPoint(x: -contentSize.width / 2, y: contentSize.height / 2)
         
-        titleLabel = SKLabelNode(text: titleText.uppercased())
-        titleLabel.position = CGPoint(x: contentSize.width / 2, y: -ParentPage.padding)
-        titleLabel.horizontalAlignmentMode = .center
-        titleLabel.verticalAlignmentMode = .top
-        titleLabel.fontName = UIFont.gameFont
-        titleLabel.fontSize = UIFont.gameFontSizeLarge
-        titleLabel.fontColor = UIFont.gameFontColor
-        titleLabel.name = "titleLabel"
-        titleLabel.zPosition = 10
-        titleLabel.addHeavyDropShadow()
+        titleLabel = ParentTitleLabel(contentSize: contentSize, titleText: titleText)
 
         addChild(contentNode)
         contentNode.addChild(titleLabel)
