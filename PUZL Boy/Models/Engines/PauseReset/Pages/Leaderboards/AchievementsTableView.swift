@@ -40,18 +40,22 @@ class AchievementsTableView: UITableView, UITableViewDataSource, UITableViewDele
         achievementsCompleted = []
         
         GameCenterManager.shared.loadAchievements { [unowned self] achievements, achievementDescriptions in
-            guard achievements.count == achievementDescriptions.count else { return print("Error populating achievements arrays! Check AchievementsTableView for more details.") }
-            
-            for i in 0..<achievements.count {
-                let achievement = AchievementsModel(identifier: achievements[i].identifier,
+            for i in 0..<achievementDescriptions.count {
+                let achievementFound = achievements.filter { $0.identifier == achievementDescriptions[i].identifier }.first
+                let percentComplete = Int(achievementFound?.percentComplete ?? 0.0)
+                let isCompleted = achievementFound?.isCompleted ?? false
+                let completionDate = achievementFound?.lastReportedDate ?? nil
+                
+                let achievement = AchievementsModel(identifier: achievementDescriptions[i].identifier,
                                                     title: achievementDescriptions[i].title,
                                                     descriptionCompleted: achievementDescriptions[i].achievedDescription,
                                                     descriptionNotCompleted: achievementDescriptions[i].unachievedDescription,
-                                                    percentComplete: Int(achievements[i].percentComplete),
-                                                    isCompleted: achievements[i].isCompleted,
-                                                    completionDate: achievements[i].lastReportedDate)
+                                                    isHidden: achievementDescriptions[i].isHidden,
+                                                    percentComplete: percentComplete,
+                                                    isCompleted: isCompleted,
+                                                    completionDate: completionDate)
                 
-                if achievements[i].isCompleted {
+                if achievementFound != nil && achievementFound!.isCompleted {
                     achievementsCompleted.append(achievement)
                 }
                 else {
@@ -90,9 +94,11 @@ class AchievementsTableView: UITableView, UITableViewDataSource, UITableViewDele
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        let totalAchievements = achievementsInProgress.count + achievementsCompleted.count
+        
         switch section {
-        case sectionInProgress: return "IN PROGRESS"
-        case sectionCompleted: return "COMPLETED"
+        case sectionInProgress: return "IN PROGRESS (\(achievementsInProgress.count)/\(totalAchievements))"
+        case sectionCompleted: return "COMPLETED (\(achievementsCompleted.count)/\(totalAchievements))"
         default: return ""
         }
     }
@@ -123,6 +129,7 @@ class AchievementsTableView: UITableView, UITableViewDataSource, UITableViewDele
                                      title: "N/A",
                                      descriptionCompleted: "N/A",
                                      descriptionNotCompleted: "N/A",
+                                     isHidden: false,
                                      percentComplete: 0,
                                      isCompleted: false,
                                      completionDate: nil)

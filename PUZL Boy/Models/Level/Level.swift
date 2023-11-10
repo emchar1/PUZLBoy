@@ -17,10 +17,8 @@ struct Level: CustomStringConvertible {
     //Party time
     static let partyMinLevelRequired: Int = 100
     static let partyFrequency: Int = 50
-    static let partyLevel: Int = -1
-    
-    // FIXME: - IMPORTANT!! Update to 500 once all levels are in!!!
-    static let finalLevel: Int = 499
+    static let partyLevel: Int = -1    
+    static let finalLevel: Int = 500
 
     private(set) var level: Int
     private(set) var moves: Int

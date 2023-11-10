@@ -141,20 +141,15 @@ class AchievementsTVCell: UITableViewCell {
     // MARK: - Functions
     
     func setViews(achievement: AchievementsModel) {
-        image.image = UIImage(named: achievement.isCompleted ? achievement.imageName : "questionmark")
+        image.image = UIImage(named: achievement.isHidden ? "questionmark" : achievement.imageName)
         titleText.text = achievement.title.uppercased()
         
         if achievement.isCompleted {
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "MM/dd/yyyy"
-            
-            let dateAcquired = dateFormatter.string(from: achievement.completionDate ?? Date())
-            
             descriptionText.text = achievement.descriptionCompleted
-            detailsText.text = "Acquired: \(dateAcquired)"
+            detailsText.text = "Acquired: \(achievement.completionDateString)"
         }
         else {
-            descriptionText.text = achievement.descriptionNotCompleted
+            descriptionText.text = achievement.isHidden ? "This is a hidden achievement. Keep playing to unlock it!" : achievement.descriptionNotCompleted
             detailsText.text = "Progress: \(achievement.percentComplete)%"
         }
     }
