@@ -1,9 +1,0 @@
-{
-  "data" : [
-    {
-      "skipSignatureCheck" : false,
-      "type" : "json",
-      "value" : "https://developer.apple.com/swift/packages/collections/apple.json"
-    }
-  ]
-}
