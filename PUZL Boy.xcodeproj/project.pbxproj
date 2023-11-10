@@ -214,6 +214,9 @@
 		EAD19A1B2A9BD48400A07A63 /* GemSparkleParticles.sks in Resources */ = {isa = PBXBuildFile; fileRef = EAD19A1A2A9BD48400A07A63 /* GemSparkleParticles.sks */; };
 		EAD19A1D2A9C14B500A07A63 /* PoisonBubblesParticles.sks in Resources */ = {isa = PBXBuildFile; fileRef = EAD19A1C2A9C14B500A07A63 /* PoisonBubblesParticles.sks */; };
 		EAD59A542A88200800F86EED /* SpeechBubbleSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD59A532A88200800F86EED /* SpeechBubbleSprite.swift */; };
+		EADE12422AFCB61300474D7F /* AchievementsTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EADE12412AFCB61300474D7F /* AchievementsTableView.swift */; };
+		EADE12442AFCBB3D00474D7F /* AchievementsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EADE12432AFCBB3D00474D7F /* AchievementsModel.swift */; };
+		EADE12462AFCBE8400474D7F /* AchievementsTVCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EADE12452AFCBE8400474D7F /* AchievementsTVCell.swift */; };
 		EADEB3E92931404D00CDB232 /* dooropen.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EADEB3E82931404D00CDB232 /* dooropen.mp3 */; };
 		EADFD95C29F4CE8500C6F9D1 /* SettingsButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = EADFD95B29F4CE8500C6F9D1 /* SettingsButton.swift */; };
 		EADFD96229F90B6A00C6F9D1 /* ConfirmSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = EADFD96129F90B6A00C6F9D1 /* ConfirmSprite.swift */; };
@@ -458,6 +461,9 @@
 		EAD19A1A2A9BD48400A07A63 /* GemSparkleParticles.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GemSparkleParticles.sks; sourceTree = "<group>"; };
 		EAD19A1C2A9C14B500A07A63 /* PoisonBubblesParticles.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = PoisonBubblesParticles.sks; sourceTree = "<group>"; };
 		EAD59A532A88200800F86EED /* SpeechBubbleSprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechBubbleSprite.swift; sourceTree = "<group>"; };
+		EADE12412AFCB61300474D7F /* AchievementsTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementsTableView.swift; sourceTree = "<group>"; };
+		EADE12432AFCBB3D00474D7F /* AchievementsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementsModel.swift; sourceTree = "<group>"; };
+		EADE12452AFCBE8400474D7F /* AchievementsTVCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementsTVCell.swift; sourceTree = "<group>"; };
 		EADEB3E82931404D00CDB232 /* dooropen.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = dooropen.mp3; sourceTree = "<group>"; };
 		EADFD95B29F4CE8500C6F9D1 /* SettingsButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsButton.swift; sourceTree = "<group>"; };
 		EADFD96129F90B6A00C6F9D1 /* ConfirmSprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmSprite.swift; sourceTree = "<group>"; };
@@ -964,6 +970,9 @@
 				EACCC05E2AE63FA40099DA44 /* LeaderboardsPage.swift */,
 				EACCC0602AE63FEE0099DA44 /* LeaderboardsTableView.swift */,
 				EACCC0622AE640EA0099DA44 /* LeaderboardsTVCell.swift */,
+				EADE12412AFCB61300474D7F /* AchievementsTableView.swift */,
+				EADE12452AFCBE8400474D7F /* AchievementsTVCell.swift */,
+				EADE12432AFCBB3D00474D7F /* AchievementsModel.swift */,
 			);
 			path = Leaderboards;
 			sourceTree = "<group>";
@@ -1269,6 +1278,7 @@
 				EA95D1BB2952F0680061059C /* Achievement.swift in Sources */,
 				EAF07C0529E796AE0034CD1A /* TemplateClass.swift in Sources */,
 				EA3467B129A99332002DDA02 /* LoadingSprite.swift in Sources */,
+				EADE12462AFCBE8400474D7F /* AchievementsTVCell.swift in Sources */,
 				EACCC05F2AE63FA40099DA44 /* LeaderboardsPage.swift in Sources */,
 				EA1D5A6E29F217D200677B06 /* Extension+SKLabelNode.swift in Sources */,
 				EA65184328E420E400E535BF /* GameScene.swift in Sources */,
@@ -1311,7 +1321,9 @@
 				EA65189328E973D700E535BF /* LevelBuilder.swift in Sources */,
 				EA41F83A2A0D71EE00DF47EC /* ParentPage.swift in Sources */,
 				EA65189528EA207800E535BF /* Constants.swift in Sources */,
+				EADE12442AFCBB3D00474D7F /* AchievementsModel.swift in Sources */,
 				EA95D206295F86F40061059C /* AchievementItemWielder.swift in Sources */,
+				EADE12422AFCB61300474D7F /* AchievementsTableView.swift in Sources */,
 				EA95D1D729544DBA0061059C /* AchievementPUZLGuru.swift in Sources */,
 				EA49B0692A1923D300E6B96D /* HowToPlayTableView.swift in Sources */,
 				EA826C76297CF9E000F19F81 /* ScoringManager.swift in Sources */,

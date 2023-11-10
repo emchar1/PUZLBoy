@@ -23,7 +23,8 @@ class LeaderboardsPage: ParentPage {
     private var scoreLabel: SKLabelNode!
     
     //Misc
-    private(set) var tableView: LeaderboardsTableView!
+    private(set) var leaderboardsTableView: LeaderboardsTableView!
+    private(set) var achievementsTableView: AchievementsTableView!
     private(set) var leaderboardType: LeaderboardType
     private var previousLeaderboardType: LeaderboardType
     private var currentLevel: Int
@@ -31,6 +32,7 @@ class LeaderboardsPage: ParentPage {
     private var backButtonPressed = false
     private var achievementsButtonPressed = false
     private var tableViewIsLoading = false
+    private var headerBackgroundColor: UIColor { DayTheme.skyColor.top.lightenColor() }
     
     enum LeaderboardType {
         case all, level, achievements
@@ -86,13 +88,15 @@ class LeaderboardsPage: ParentPage {
         achievementsButton.name = "achievementsButton"
         achievementsButton.zPosition = 10
         
-        tableView = LeaderboardsTableView(frame: .zero, style: .plain)
-        tableView.leaderboardType = leaderboardType
-        tableView.leaderboardsTableViewDelegate = self
+        leaderboardsTableView = LeaderboardsTableView(frame: .zero, style: .plain)
+        leaderboardsTableView.leaderboardType = leaderboardType
+        leaderboardsTableView.leaderboardsTableViewDelegate = self
+        
+        achievementsTableView = AchievementsTableView(frame: .zero, style: .grouped)
         
         headerBackgroundNode = SKShapeNode(rectOf: CGSize(width: contentSize.width, height: UIDevice.isiPad ? 80 : 60))
         headerBackgroundNode.position = CGPoint(x: 0, y: contentSize.height / 2 - 2 * headerBackgroundNode.frame.size.height - ParentPage.padding)
-        headerBackgroundNode.fillColor = .gray // FIXME: - Use sky colors??
+        headerBackgroundNode.fillColor = headerBackgroundColor
         headerBackgroundNode.lineWidth = 0
                 
         let labelPadding: CGFloat = UIDevice.isiPad ? 64 : 32
@@ -131,7 +135,7 @@ class LeaderboardsPage: ParentPage {
         loadingLabel.position = .zero
         loadingLabel.fontName = UIFont.gameFont
         loadingLabel.fontSize = UIFont.gameFontSizeLarge
-        loadingLabel.fontColor = UIFont.gameFontColor
+        loadingLabel.fontColor = .yellow
         loadingLabel.horizontalAlignmentMode = .center
         loadingLabel.verticalAlignmentMode = .center
         loadingLabel.addDropShadow()
@@ -180,7 +184,9 @@ class LeaderboardsPage: ParentPage {
     ///Adds the tableView headers to the view.
     func addHeaderBackgroundNode() {
         removeHeaderBackgroundNode()
-        
+
+        headerBackgroundNode.fillColor = headerBackgroundColor
+
         addChild(headerBackgroundNode)
     }
     
@@ -195,30 +201,42 @@ class LeaderboardsPage: ParentPage {
         addLoadingLabel()
         removeHeaderBackgroundNode()
         
-        tableView.alpha = 0
+        leaderboardsTableView.alpha = 0
+        achievementsTableView.alpha = 0
         tableViewIsLoading = true
     }
     
     ///Removes the LOADING label and adds the tableView headers to the view. Also shows the tableView by setting its alpha = 1.
-    func didLoadTableView(scores: [GameCenterManager.Score]) {
+    func didLoadTableView(scores: [GameCenterManager.Score]?) {
+        tableViewIsLoading = false
+
         updateHeadersForLeaderboardType()
         removeLoadingLabel()
-        addHeaderBackgroundNode()
         
-        tableView.scores = scores
-        tableView.leaderboardType = leaderboardType
-        tableView.flashScrollIndicators()
-        tableView.reloadData()
-        
-        if leaderboardType == .all {
-            tableView.scrollToRow(at: IndexPath(row: scores.count - 1, section: 0), at: .bottom, animated: true)
+        if leaderboardType != .achievements {
+            guard let scores = scores else { return }
+
+            // FIXME: - I don't know if this belongs here...
+            previousLeaderboardType = leaderboardType
+
+            addHeaderBackgroundNode()
+
+            leaderboardsTableView.scores = scores
+            leaderboardsTableView.leaderboardType = leaderboardType
+            leaderboardsTableView.alpha = 1
+            leaderboardsTableView.flashScrollIndicators()
+            leaderboardsTableView.reloadData()
+            
+            // FIXME: - For Level Leaderboard, scroll to player's rank, but if it's > 100, need to to have < > for multiple pages???
+            if leaderboardType == .all {
+                leaderboardsTableView.scrollToRow(at: IndexPath(row: scores.count - 1, section: 0), at: .bottom, animated: true)
+            }
         }
-        
-        tableView.alpha = 1
-        tableViewIsLoading = false
-        
-        // FIXME: - I don't know if this belongs here...
-        previousLeaderboardType = leaderboardType
+        else {
+            achievementsTableView.alpha = 1
+            achievementsTableView.flashScrollIndicators()
+            achievementsTableView.reloadData()
+        }
     }
     
     
@@ -240,11 +258,9 @@ class LeaderboardsPage: ParentPage {
             }
         }
         else {
-            // TODO: - Implement Achievements table view
-            updateHeadersForLeaderboardType()
-            removeLoadingLabel()
-
-            tableViewIsLoading = false
+            achievementsTableView.loadAchievements { [unowned self] in
+                didLoadTableView(scores: nil)
+            }
         }
     }
     
@@ -264,7 +280,6 @@ class LeaderboardsPage: ParentPage {
             usernameLabel.updateShadow()
             addHeaderBackgroundNode()
         case .achievements:
-            // TODO: - Implementation for .achievements
             removeHeaderBackgroundNode()
         }
     }
@@ -361,7 +376,8 @@ class LeaderboardsPage: ParentPage {
             case "achievementsButton":
                 guard achievementsButtonPressed else { return }
                 
-                ButtonTap.shared.tap(type: .buttontap6)
+                AudioManager.shared.playSound(for: "pickupitem")
+                Haptics.shared.addHapticFeedback(withStyle: .light)
                 switchLeaderboard(type: .achievements)
             default:
                 break

@@ -252,6 +252,47 @@ final class GameCenterManager: NSObject {
     
     // MARK: - Achievement Functions
     
+    /**
+     Loads all the achievements and achievement descriptions and returns them for further processing.
+     - parameter completion: completion handler that returns all the achievements and achievement descriptions for further processing.
+     */
+    func loadAchievements(completion: (([GKAchievement], [GKAchievementDescription]) -> Void)?) {
+        GKAchievement.loadAchievements { achievements, error in
+            guard error == nil else { return print("Error loading achievements: \(error!.localizedDescription)") }
+            guard let achievements = achievements else { return }
+
+            GKAchievementDescription.loadAchievementDescriptions { achievementDescriptions, error in
+                guard error == nil else { return print("Error loading achievement descriptions: \(error!.localizedDescription)") }
+                guard let achievementDescriptions = achievementDescriptions else { return }
+                
+                completion?(achievements, achievementDescriptions)
+            }
+        }
+    }
+    
+    /**
+     Loads the specified achievement and achievement description from the requested identifier and returns it for further processing.
+     - parameters:
+        - identifier: the achievement identifier in the format 'PUZL.BoyAchievementNAME' where NAME is the specific achievement.
+        - completion: completion handler that returns the specific achievement and achievement description for further processing.
+     */
+    func loadAchievementForIdentifier(_ identifier: String, completion: ((GKAchievement, GKAchievementDescription) -> Void)?) {
+        GKAchievement.loadAchievements { achievements, error in
+            guard error == nil else { return print("Error loading achievements: \(error!.localizedDescription)") }
+            guard let achievements = achievements else { return }
+            guard let achievement = achievements.filter({ $0.identifier == identifier }).first else { return print("Achievement \"\(identifier)\" not found.") }
+            
+            GKAchievementDescription.loadAchievementDescriptions { achievementDescriptions, error in
+                guard error == nil else { return print("Error loading achievement descriptions: \(error!.localizedDescription)") }
+                guard let achievementDescriptions = achievementDescriptions else { return }
+                guard let achievementDescription = achievementDescriptions.filter({ $0.identifier == identifier }).first else { return }
+                
+                completion?(achievement, achievementDescription)
+            }
+        }
+    }
+    
+    ///Loads all the achievements (not achievement descriptions) and runs a percentage update from the Achievements custom class. This function does not return anything, nor does it get a handle on the achievements object, so it's mainly used for setup upon app initialization.
     func loadAchievements() {
         Achievement.initAchievements()
         

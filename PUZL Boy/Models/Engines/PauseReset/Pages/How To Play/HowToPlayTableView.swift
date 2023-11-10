@@ -11,7 +11,10 @@ class HowToPlayTableView: UITableView, UITableViewDelegate, UITableViewDataSourc
     
     // MARK: - Properties
     
-    var terrainItems: [HowToPlayModel] = [
+    private let sectionTerrain = 0
+    private let sectionItems = 1
+    
+    private var terrainItems: [HowToPlayModel] = [
         HowToPlayModel(image: "start", title: "Start", requiredLevel: 0,
                        description: "Your starting point. Tap any available panel adjacent to you to move to it. Diagonal moves are not allowed."),
         HowToPlayModel(image: "endClosed", title: "End", requiredLevel: 0,
@@ -30,7 +33,7 @@ class HowToPlayTableView: UITableView, UITableViewDelegate, UITableViewDataSourc
                        description: "Just like in real life, lava is SUPER hot. Tread here accidentally and it's instant death."),
     ]
     
-    var overlayItems: [HowToPlayModel] = [
+    private var overlayItems: [HowToPlayModel] = [
         HowToPlayModel(image: "gem", title: "Gem", requiredLevel: 1,
                        description: "Collect all the purple gems in each level to open the gate and advance to the next level."),
         HowToPlayModel(image: "boulder", title: "Boulder", requiredLevel: 8,
@@ -65,6 +68,7 @@ class HowToPlayTableView: UITableView, UITableViewDelegate, UITableViewDataSourc
                        description: "As if two warps aren't confusing enough, the Blue Warp takes you to, you guessed it... the other Blue Warp.")
     ]
     
+    //Must be public
     var currentLevel: Int = 1
     
     
@@ -94,7 +98,7 @@ class HowToPlayTableView: UITableView, UITableViewDelegate, UITableViewDataSourc
     func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         let header = view as! UITableViewHeaderFooterView
         header.textLabel?.font = UIFont(name: UIFont.gameFont, size: UIDevice.isiPad ? 36 : 24)
-        header.textLabel?.textColor = UIFont.gameFontColor
+        header.textLabel?.textColor = .cyan
         header.textLabel?.layer.shadowColor = UIColor.black.cgColor
         header.textLabel?.layer.shadowOffset = CGSize(width: -1.5, height: 1.5)
         header.textLabel?.layer.shadowRadius = 0
@@ -104,17 +108,17 @@ class HowToPlayTableView: UITableView, UITableViewDelegate, UITableViewDataSourc
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         switch section {
-        case 0: return "TERRAIN"
-        case 1: return "ITEMS/OBSTACLES"
+        case sectionTerrain: return "TERRAIN"
+        case sectionItems: return "ITEMS/OBSTACLES"
         default: return ""
         }
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch section {
-        case 0: return terrainItems.count
-        case 1: return overlayItems.count
-        default: return 1
+        case sectionTerrain: return terrainItems.count
+        case sectionItems: return overlayItems.count
+        default: return 0
         }
     }
     
@@ -126,8 +130,8 @@ class HowToPlayTableView: UITableView, UITableViewDelegate, UITableViewDataSourc
         var item: HowToPlayModel
         
         switch indexPath.section {
-        case 0: item = terrainItems[indexPath.row]
-        case 1: item = overlayItems[indexPath.row]
+        case sectionTerrain: item = terrainItems[indexPath.row]
+        case sectionItems: item = overlayItems[indexPath.row]
         default: item = HowToPlayModel(image: "grass", title: "Error", requiredLevel: 0, description: "Invalid entry.")
         }
         

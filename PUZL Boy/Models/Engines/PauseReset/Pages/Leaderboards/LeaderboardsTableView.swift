@@ -15,9 +15,9 @@ class LeaderboardsTableView: UITableView, UITableViewDelegate, UITableViewDataSo
     
     // MARK: - Properties
     
+    // Public Properties
     var scores: [GameCenterManager.Score] = []
     var leaderboardType: LeaderboardsPage.LeaderboardType!
-    
     weak var leaderboardsTableViewDelegate: LeaderboardsTableViewDelegate?
     
     
@@ -62,6 +62,10 @@ class LeaderboardsTableView: UITableView, UITableViewDelegate, UITableViewDataSo
             cell.selectionStyle = .none
         }
         else {
+            let selectionBackgroundView = UIView()
+            selectionBackgroundView.backgroundColor = DayTheme.skyColor.top.lightenColor(factor: 6)
+
+            cell.selectedBackgroundView = selectionBackgroundView
             cell.selectionStyle = .default
         }
 

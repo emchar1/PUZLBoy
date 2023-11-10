@@ -16,6 +16,7 @@ protocol PauseResetEngineDelegate: AnyObject {
     func confirmQuitTapped()
     func didTapHowToPlay(_ tableView: HowToPlayTableView)
     func didTapLeaderboards(_ tableView: LeaderboardsTableView)
+    func didTapAchievements(_ tableView: AchievementsTableView)
     func didCompletePurchase(_ currentButton: PurchaseTapButton)
 }
 
@@ -248,8 +249,13 @@ class PauseResetEngine {
     }
     
     func registerLeaderboardsTableView() {
-        leaderboardsPage.tableView.register(LeaderboardsTVCell.self, forCellReuseIdentifier: LeaderboardsTVCell.reuseID)
-        leaderboardsPage.tableView.frame = getTableViewFrame(hasHeaders: true)
+        leaderboardsPage.leaderboardsTableView.register(LeaderboardsTVCell.self, forCellReuseIdentifier: LeaderboardsTVCell.reuseID)
+        leaderboardsPage.leaderboardsTableView.frame = getTableViewFrame(hasHeaders: true)
+    }
+    
+    func registerAchievementsTableView() {
+        leaderboardsPage.achievementsTableView.register(AchievementsTVCell.self, forCellReuseIdentifier: AchievementsTVCell.reuseID)
+        leaderboardsPage.achievementsTableView.frame = getTableViewFrame(hasHeaders: false)
     }
     
     private func getTableViewFrame(hasHeaders: Bool) -> CGRect {
@@ -402,7 +408,8 @@ class PauseResetEngine {
         }
         else {
             howToPlayPage.tableView.removeFromSuperview()
-            leaderboardsPage.tableView.removeFromSuperview()
+            leaderboardsPage.leaderboardsTableView.removeFromSuperview()
+            leaderboardsPage.achievementsTableView.removeFromSuperview()
             leaderboardsPage.removeHeaderBackgroundNode()
             NotificationCenter.default.post(name: .shouldCancelLoadingLeaderboards, object: nil)
 
@@ -525,9 +532,12 @@ extension PauseResetEngine: SettingsManagerDelegate {
             guard let superScene = superScene else { return print("superScene not set up. Unable to show title confirm!") }
             
             howToPlayPage.tableView.removeFromSuperview()
-            leaderboardsPage.tableView.removeFromSuperview()
-            leaderboardsPage.removeHeaderBackgroundNode()
-            NotificationCenter.default.post(name: .shouldCancelLoadingLeaderboards, object: nil)
+            leaderboardsPage.leaderboardsTableView.removeFromSuperview()
+            leaderboardsPage.achievementsTableView.removeFromSuperview()
+            
+            //Don't need these because we're just hiding the table views temporarily; may restore if user taps Cancel.
+//            leaderboardsPage.removeHeaderBackgroundNode()
+//            NotificationCenter.default.post(name: .shouldCancelLoadingLeaderboards, object: nil)
 
             quitConfirmSprite.animateShow { }
         
@@ -547,7 +557,8 @@ extension PauseResetEngine: SettingsManagerDelegate {
             GameCenterManager.shared.loadScores(leaderboardType: leaderboardsPage.leaderboardType, level: currentLevel) { [unowned self] scores in
                 leaderboardsPage.didLoadTableView(scores: scores)
                 
-                delegate?.didTapLeaderboards(leaderboardsPage.tableView)
+                delegate?.didTapLeaderboards(leaderboardsPage.leaderboardsTableView)
+                delegate?.didTapAchievements(leaderboardsPage.achievementsTableView)
             }
         case .button4: //howToPlay
             removePages()
@@ -572,7 +583,8 @@ extension PauseResetEngine: SettingsManagerDelegate {
         purchasePage.removeFromParent()
         settingsPage.removeFromParent()
         howToPlayPage.tableView.removeFromSuperview()
-        leaderboardsPage.tableView.removeFromSuperview()
+        leaderboardsPage.leaderboardsTableView.removeFromSuperview()
+        leaderboardsPage.achievementsTableView.removeFromSuperview()
         leaderboardsPage.removeHeaderBackgroundNode()
         NotificationCenter.default.post(name: .shouldCancelLoadingLeaderboards, object: nil)
     }
@@ -602,7 +614,8 @@ extension PauseResetEngine: ConfirmSpriteDelegate {
                 delegate?.didTapHowToPlay(howToPlayPage.tableView)
             }
             else if settingsManager.currentButtonPressed?.type == settingsManager.button3.type {
-                delegate?.didTapLeaderboards(leaderboardsPage.tableView)
+                delegate?.didTapLeaderboards(leaderboardsPage.leaderboardsTableView)
+                delegate?.didTapAchievements(leaderboardsPage.achievementsTableView)
             }
         }
     }

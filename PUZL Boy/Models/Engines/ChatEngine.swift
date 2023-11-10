@@ -438,13 +438,13 @@ extension ChatEngine {
                 }),
                 ChatItem(profile: .trainer, chat: "If your move count hits 0, it's game over, buddy! Your move count can be found in the upper left corner next to the boot. 👢", handler: { [unowned self] in
                     delegate?.deIlluminateDisplayNode(for: .moves)
-                    delegate?.illuminatePanel(at: (0, 2), useOverlay: true)
+                    delegate?.illuminatePanel(at: (1, 2), useOverlay: true)
                     delegate?.illuminatePanel(at: (2, 2), useOverlay: false)
                 }),
                 ChatItem(profile: .trainer, chat: "See the gate? It's closed. To open it, collect all the gems in the level. Simple, right?"),
                 ChatItem(profile: .hero, chat: "Right. Let's go save the princess!")
             ]) { [unowned self] in
-                delegate?.deIlluminatePanel(at: (0, 2), useOverlay: true)
+                delegate?.deIlluminatePanel(at: (1, 2), useOverlay: true)
                 delegate?.deIlluminatePanel(at: (2, 2), useOverlay: false)
 
                 handleDialogueCompletion(level: level, completion: completion)

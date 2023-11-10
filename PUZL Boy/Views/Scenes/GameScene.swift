@@ -478,6 +478,7 @@ class GameScene: SKScene {
         pauseResetEngine.moveSprites(to: self, level: currentLevel)
         pauseResetEngine.registerHowToPlayTableView()
         pauseResetEngine.registerLeaderboardsTableView()
+        pauseResetEngine.registerAchievementsTableView()
         
         if let offlinePlaySprite = offlinePlaySprite {
             offlinePlaySprite.removeAllActions()
@@ -972,7 +973,13 @@ extension GameScene: PauseResetEngineDelegate {
         
         scene?.view?.addSubview(tableView)
     }
-    
+
+    func didTapAchievements(_ tableView: AchievementsTableView) {
+        guard !GameCenterManager.shared.shouldCancelLeaderboards else { return }
+        
+        scene?.view?.addSubview(tableView)
+    }
+
     @objc private func cancelLeaderboardsLoading() {
         GameCenterManager.shared.shouldCancelLeaderboards = true
     }
