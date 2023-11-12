@@ -48,7 +48,7 @@ class ActivityIndicatorSprite: SKNode {
 
         label = SKLabelNode(text: "PLEASE WAIT...")
         label.fontName = UIFont.gameFont
-        label.fontColor = .yellow
+        label.fontColor = UIFont.gameFontColor
         label.fontSize = UIFont.gameFontSizeSmall
         label.position = CGPoint(x: -label.frame.width / 2, y: -125)
         label.horizontalAlignmentMode = .left

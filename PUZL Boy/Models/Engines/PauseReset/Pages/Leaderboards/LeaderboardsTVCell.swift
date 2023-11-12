@@ -15,10 +15,14 @@ class LeaderboardsTVCell: UITableViewCell {
     class var padding: CGFloat { 8 }
     
     private var hStack: UIStackView!
-    
     private var levelLabel: UILabel!
     private var usernameLabel: UILabel!
     private var scoreLabel: UILabel!
+    
+    private var leftCellConstraint: NSLayoutConstraint!
+    private var rightCellConstraint: NSLayoutConstraint!
+    private let leftConstant: CGFloat = UIDevice.isiPad ? 60 : 40
+    private let rightConstant: CGFloat = UIDevice.isiPad ? 120 : 80
     
     
     // MARK: - Initialization
@@ -80,6 +84,9 @@ class LeaderboardsTVCell: UITableViewCell {
         hStack.addArrangedSubview(levelLabel)
         hStack.addArrangedSubview(usernameLabel)
         hStack.addArrangedSubview(scoreLabel)
+        
+        leftCellConstraint = hStack.arrangedSubviews[0].widthAnchor.constraint(equalToConstant: leftConstant)
+        rightCellConstraint = hStack.arrangedSubviews[2].widthAnchor.constraint(equalToConstant: rightConstant)
 
         
         NSLayoutConstraint.activate([
@@ -88,8 +95,8 @@ class LeaderboardsTVCell: UITableViewCell {
             trailingAnchor.constraint(equalTo: hStack.trailingAnchor, constant: LeaderboardsTVCell.padding),
             bottomAnchor.constraint(equalTo: hStack.bottomAnchor, constant: LeaderboardsTVCell.padding),
 
-            hStack.arrangedSubviews[0].widthAnchor.constraint(equalToConstant: UIDevice.isiPad ? 60 : 40),
-            hStack.arrangedSubviews[2].widthAnchor.constraint(equalToConstant: UIDevice.isiPad ? 120 : 80),
+            leftCellConstraint,
+            rightCellConstraint,
 
             levelLabel.centerYAnchor.constraint(equalTo: hStack.arrangedSubviews[0].centerYAnchor, constant: 0),
             levelLabel.leadingAnchor.constraint(equalTo: hStack.arrangedSubviews[0].leadingAnchor, constant: 0),
@@ -112,8 +119,12 @@ class LeaderboardsTVCell: UITableViewCell {
         let numberFormatter = NumberFormatter()
         numberFormatter.numberStyle = .decimal
 
+        usernameLabel.textAlignment = .left
+        leftCellConstraint.constant = leftConstant
+        rightCellConstraint.constant = rightConstant
+
         levelLabel.text = "\(level)"
-        
+
         if let username = username, let isLocalPlayer = isLocalPlayer {
             usernameLabel.text = (isLocalPlayer ? "🏆 " : "") + username
         }
@@ -127,5 +138,15 @@ class LeaderboardsTVCell: UITableViewCell {
         else {
             scoreLabel.text = "-"
         }
+    }
+    
+    func setViewsNoData() {
+        usernameLabel.textAlignment = .center
+        leftCellConstraint.constant = 0
+        rightCellConstraint.constant = 0
+
+        levelLabel.text = ""
+        usernameLabel.text = "No Data!"
+        scoreLabel.text = ""
     }
 }

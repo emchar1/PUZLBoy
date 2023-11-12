@@ -15,8 +15,8 @@ protocol PauseResetEngineDelegate: AnyObject {
     
     func confirmQuitTapped()
     func didTapHowToPlay(_ tableView: HowToPlayTableView)
-    func didTapLeaderboards(_ tableView: LeaderboardsTableView)
-    func didTapAchievements(_ tableView: AchievementsTableView)
+    func didTapLeaderboards(_ tableView: LeaderboardsTableView, ignoreShouldCancelLoadingLeaderboardsObserver: Bool)
+    func didTapAchievements(_ tableView: AchievementsTableView, ignoreShouldCancelLoadingLeaderboardsObserver: Bool)
     func didCompletePurchase(_ currentButton: PurchaseTapButton)
 }
 
@@ -550,16 +550,29 @@ extension PauseResetEngine: SettingsManagerDelegate {
         case .button3: //leaderboard
             removePages()
             
-            leaderboardsPage.updateValues(type: .level, level: currentLevel)
-            leaderboardsPage.prepareTableView()
-            backgroundSprite.addChild(leaderboardsPage)
-            
-            GameCenterManager.shared.loadScores(leaderboardType: leaderboardsPage.leaderboardType, level: currentLevel) { [unowned self] scores in
-                leaderboardsPage.didLoadTableView(scores: scores)
-                
-                delegate?.didTapLeaderboards(leaderboardsPage.leaderboardsTableView)
-                delegate?.didTapAchievements(leaderboardsPage.achievementsTableView)
+            //Preserve tableViews so they don't load EVERY time.
+            if leaderboardsPage.leaderboardType != .achievements && leaderboardsPage.leaderboardsTableViewHasLoaded && currentLevel == leaderboardsPage.maxLevel {
+
+                leaderboardsPage.addHeaderBackgroundNode()
+                delegate?.didTapLeaderboards(leaderboardsPage.leaderboardsTableView, ignoreShouldCancelLoadingLeaderboardsObserver: true)
             }
+            else if leaderboardsPage.leaderboardType == .achievements && leaderboardsPage.achievementsTableViewHasLoaded && currentLevel == leaderboardsPage.maxLevel {
+
+                delegate?.didTapAchievements(leaderboardsPage.achievementsTableView, ignoreShouldCancelLoadingLeaderboardsObserver: true)
+            }
+            else {
+                leaderboardsPage.updateValues(type: .level, level: currentLevel)
+                leaderboardsPage.prepareTableView()
+                
+                GameCenterManager.shared.loadScores(leaderboardType: leaderboardsPage.leaderboardType, level: currentLevel) { [unowned self] scores in
+                    leaderboardsPage.didLoadTableView(scores: scores)
+                    
+                    delegate?.didTapLeaderboards(leaderboardsPage.leaderboardsTableView, ignoreShouldCancelLoadingLeaderboardsObserver: false)
+                    delegate?.didTapAchievements(leaderboardsPage.achievementsTableView, ignoreShouldCancelLoadingLeaderboardsObserver: false)
+                }
+            }
+            
+            backgroundSprite.addChild(leaderboardsPage)
         case .button4: //howToPlay
             removePages()
 
@@ -614,8 +627,8 @@ extension PauseResetEngine: ConfirmSpriteDelegate {
                 delegate?.didTapHowToPlay(howToPlayPage.tableView)
             }
             else if settingsManager.currentButtonPressed?.type == settingsManager.button3.type {
-                delegate?.didTapLeaderboards(leaderboardsPage.leaderboardsTableView)
-                delegate?.didTapAchievements(leaderboardsPage.achievementsTableView)
+                delegate?.didTapLeaderboards(leaderboardsPage.leaderboardsTableView, ignoreShouldCancelLoadingLeaderboardsObserver: false)
+                delegate?.didTapAchievements(leaderboardsPage.achievementsTableView, ignoreShouldCancelLoadingLeaderboardsObserver: false)
             }
         }
     }

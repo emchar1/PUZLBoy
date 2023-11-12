@@ -52,7 +52,7 @@ class AchievementsTVCell: UITableViewCell {
         image = UIImageView(image: UIImage(named: "grass"))
         image.backgroundColor = .systemYellow.darkenColor(factor: 12)
         image.layer.borderColor = UIColor.white.cgColor
-        image.layer.borderWidth = UIDevice.isiPad ? 4 : 2
+        image.layer.borderWidth = UIDevice.isiPad ? 8 : 4
         image.contentMode = .scaleAspectFit
         image.layer.cornerRadius = AchievementsTVCell.imageSize / 2
         image.clipsToBounds = true
@@ -141,7 +141,7 @@ class AchievementsTVCell: UITableViewCell {
     // MARK: - Functions
     
     func setViews(achievement: AchievementsModel) {
-        image.image = UIImage(named: achievement.isHidden ? "questionmark" : achievement.imageName)
+        image.image = UIImage(named: achievement.isCompleted ? achievement.imageName : "questionmarknoborder")
         titleText.text = achievement.title.uppercased()
         
         if achievement.isCompleted {

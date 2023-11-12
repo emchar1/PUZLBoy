@@ -45,7 +45,7 @@ class LeaderboardsTableView: UITableView, UITableViewDelegate, UITableViewDataSo
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return scores.count
+        return max(scores.count, 1)
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -53,10 +53,15 @@ class LeaderboardsTableView: UITableView, UITableViewDelegate, UITableViewDataSo
             return UITableViewCell()
         }
         
-        cell.setViews(level: scores[indexPath.row].level, 
-                      username: scores[indexPath.row].username,
-                      score: scores[indexPath.row].score,
-                      isLocalPlayer: scores[indexPath.row].isLocalPlayer)
+        if scores.count == 0 {
+            cell.setViewsNoData()
+        }
+        else {
+            cell.setViews(level: scores[indexPath.row].level,
+                          username: scores[indexPath.row].username,
+                          score: scores[indexPath.row].score,
+                          isLocalPlayer: scores[indexPath.row].isLocalPlayer)
+        }
 
         if leaderboardType == .level {
             cell.selectionStyle = .none

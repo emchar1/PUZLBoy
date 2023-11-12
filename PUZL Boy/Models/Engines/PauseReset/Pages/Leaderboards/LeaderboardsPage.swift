@@ -27,8 +27,10 @@ class LeaderboardsPage: ParentPage {
     private(set) var achievementsTableView: AchievementsTableView!
     private(set) var leaderboardType: LeaderboardType
     private var previousLeaderboardType: LeaderboardType
-    private var currentLevel: Int
-    private var originalCurrentLevel: Int
+    private(set) var currentLevel: Int
+    private(set) var maxLevel: Int
+    private(set) var leaderboardsTableViewHasLoaded = false
+    private(set) var achievementsTableViewHasLoaded = false
     private var backButtonPressed = false
     private var achievementsButtonPressed = false
     private var tableViewIsLoading = false
@@ -45,7 +47,7 @@ class LeaderboardsPage: ParentPage {
         self.leaderboardType = leaderboardType
         self.previousLeaderboardType = leaderboardType
         self.currentLevel = currentLevel
-        self.originalCurrentLevel = currentLevel
+        self.maxLevel = currentLevel
 
         super.init(contentSize: contentSize, titleText: "All Leaderboards")
         
@@ -135,7 +137,7 @@ class LeaderboardsPage: ParentPage {
         loadingLabel.position = .zero
         loadingLabel.fontName = UIFont.gameFont
         loadingLabel.fontSize = UIFont.gameFontSizeLarge
-        loadingLabel.fontColor = .yellow
+        loadingLabel.fontColor = .yellow.lightenColor(factor: 12)
         loadingLabel.horizontalAlignmentMode = .center
         loadingLabel.verticalAlignmentMode = .center
         loadingLabel.addDropShadow()
@@ -162,11 +164,11 @@ class LeaderboardsPage: ParentPage {
     
     // MARK: - Functions
     
-    ///Updates the leaderboardType, currentLevel and originalCurrentLevel = currentLevel.
+    ///Updates the leaderboardType, currentLevel and maxLevel = currentLevel.
     func updateValues(type: LeaderboardType, level: Int) {
         self.leaderboardType = type
         self.currentLevel = level
-        self.originalCurrentLevel = level
+        self.maxLevel = level
     }
     
     ///Adds the LOADING label to the view.
@@ -216,8 +218,8 @@ class LeaderboardsPage: ParentPage {
         if leaderboardType != .achievements {
             guard let scores = scores else { return }
 
-            // FIXME: - I don't know if this belongs here...
             previousLeaderboardType = leaderboardType
+            leaderboardsTableViewHasLoaded = true
 
             addHeaderBackgroundNode()
 
@@ -231,11 +233,17 @@ class LeaderboardsPage: ParentPage {
             if leaderboardType == .all {
                 leaderboardsTableView.scrollToRow(at: IndexPath(row: scores.count - 1, section: 0), at: .bottom, animated: true)
             }
+            
+            superScene?.view?.addSubview(leaderboardsTableView)
         }
         else {
+            achievementsTableViewHasLoaded = true
+            
             achievementsTableView.alpha = 1
             achievementsTableView.flashScrollIndicators()
             achievementsTableView.reloadData()
+            
+            superScene?.view?.addSubview(achievementsTableView)
         }
     }
     
@@ -249,7 +257,7 @@ class LeaderboardsPage: ParentPage {
         prepareTableView()
 
         if type == .all {
-            currentLevel = originalCurrentLevel
+            currentLevel = maxLevel
         }
 
         if type != .achievements {

@@ -968,14 +968,14 @@ extension GameScene: PauseResetEngineDelegate {
         tableView.reloadData()
     }
     
-    func didTapLeaderboards(_ tableView: LeaderboardsTableView) {
-        guard !GameCenterManager.shared.shouldCancelLeaderboards else { return }
+    func didTapLeaderboards(_ tableView: LeaderboardsTableView, ignoreShouldCancelLoadingLeaderboardsObserver: Bool) {
+        guard ignoreShouldCancelLoadingLeaderboardsObserver || !GameCenterManager.shared.shouldCancelLeaderboards else { return }
         
         scene?.view?.addSubview(tableView)
     }
 
-    func didTapAchievements(_ tableView: AchievementsTableView) {
-        guard !GameCenterManager.shared.shouldCancelLeaderboards else { return }
+    func didTapAchievements(_ tableView: AchievementsTableView, ignoreShouldCancelLoadingLeaderboardsObserver: Bool) {
+        guard ignoreShouldCancelLoadingLeaderboardsObserver || !GameCenterManager.shared.shouldCancelLeaderboards else { return }
         
         scene?.view?.addSubview(tableView)
     }
