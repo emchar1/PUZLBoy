@@ -627,8 +627,8 @@ extension PauseResetEngine: ConfirmSpriteDelegate {
                 delegate?.didTapHowToPlay(howToPlayPage.tableView)
             }
             else if settingsManager.currentButtonPressed?.type == settingsManager.button3.type {
-                delegate?.didTapLeaderboards(leaderboardsPage.leaderboardsTableView, ignoreShouldCancelLoadingLeaderboardsObserver: false)
-                delegate?.didTapAchievements(leaderboardsPage.achievementsTableView, ignoreShouldCancelLoadingLeaderboardsObserver: false)
+                delegate?.didTapLeaderboards(leaderboardsPage.leaderboardsTableView, ignoreShouldCancelLoadingLeaderboardsObserver: true)
+                delegate?.didTapAchievements(leaderboardsPage.achievementsTableView, ignoreShouldCancelLoadingLeaderboardsObserver: true)
             }
         }
     }
