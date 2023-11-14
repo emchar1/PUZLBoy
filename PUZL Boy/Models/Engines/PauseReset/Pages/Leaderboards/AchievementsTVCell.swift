@@ -84,7 +84,7 @@ class AchievementsTVCell: UITableViewCell {
         
         detailsText = UILabel()
         detailsText.font = UIFont(name: UIFont.chatFont, size: UIDevice.isiPad ? 28 : 16)
-        detailsText.textColor = UIFont.chatFontColor.darkenColor(factor: 6)
+        detailsText.textColor = .yellow.lightenColor(factor: 12)
         detailsText.layer.shadowColor = UIColor.black.cgColor
         detailsText.layer.shadowOffset = CGSize(width: -1, height: 1)
         detailsText.layer.shadowRadius = 0

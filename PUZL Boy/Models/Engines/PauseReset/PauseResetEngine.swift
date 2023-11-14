@@ -67,10 +67,15 @@ class PauseResetEngine {
     private var currentLevel: Int = 1
     
     //Boolean properties
+    private(set) static var pauseResetEngineIsPaused = false        //Used primarily so other classes, i.e. Leaderboard can access isPaused
     private var isPressed: Bool = false
     private var isAnimating: Bool = false
     private var isDisabled: Bool = false
-    private(set) var isPaused: Bool = false
+    private var isPaused: Bool = false {
+        didSet {
+            PauseResetEngine.pauseResetEngineIsPaused = isPaused
+        }
+    }
 
     weak var delegate: PauseResetEngineDelegate?
     
@@ -371,7 +376,6 @@ class PauseResetEngine {
     
     private func openCloseSettings() {
         isPaused.toggle()
-        
         isAnimating = true
         
         if isPaused {
@@ -406,7 +410,7 @@ class PauseResetEngine {
             
             ButtonTap.shared.tap(type: .buttontap7)
         }
-        else {
+        else { // PauseResetEngine closed, resuming game...
             howToPlayPage.tableView.removeFromSuperview()
             leaderboardsPage.leaderboardsTableView.removeFromSuperview()
             leaderboardsPage.achievementsTableView.removeFromSuperview()
@@ -530,6 +534,7 @@ extension PauseResetEngine: SettingsManagerDelegate {
         switch node.type {
         case .button1: //title
             guard let superScene = superScene else { return print("superScene not set up. Unable to show title confirm!") }
+            guard settingsManager.currentButtonPressed?.type != settingsManager.button3.type || !leaderboardsPage.tableViewIsLoading else { return }
             
             howToPlayPage.tableView.removeFromSuperview()
             leaderboardsPage.leaderboardsTableView.removeFromSuperview()
@@ -564,7 +569,9 @@ extension PauseResetEngine: SettingsManagerDelegate {
                 leaderboardsPage.updateValues(type: .level, level: currentLevel)
                 leaderboardsPage.prepareTableView()
                 
-                GameCenterManager.shared.loadScores(leaderboardType: leaderboardsPage.leaderboardType, level: currentLevel) { [unowned self] scores in
+                GameCenterManager.shared.loadScores(leaderboardType: leaderboardsPage.leaderboardType, level: currentLevel) { [weak self] scores in
+                    guard let self = self else { return }
+
                     leaderboardsPage.didLoadTableView(scores: scores)
                     
                     delegate?.didTapLeaderboards(leaderboardsPage.leaderboardsTableView, ignoreShouldCancelLoadingLeaderboardsObserver: false)

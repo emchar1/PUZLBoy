@@ -182,7 +182,7 @@ class GameScene: SKScene {
             }
         }
 
-        guard !pauseResetEngine.isPaused else { return }
+        guard !PauseResetEngine.pauseResetEngineIsPaused else { return }
         
 //        gameEngine.handleControls(in: location)   // This is now called in touchesEnded()!!!
         chatEngine.touchDown(in: location)
@@ -220,7 +220,7 @@ class GameScene: SKScene {
         
         
         //Move handleControls to touchesEnded so you can consider if you want to move there.
-        guard !pauseResetEngine.isPaused else { return }
+        guard !PauseResetEngine.pauseResetEngineIsPaused else { return }
         
         gameEngine.handleControls(in: location)
 
@@ -1057,7 +1057,7 @@ extension GameScene: ConfirmSpriteDelegate {
     
     //Disable shake to reset for now...
 //    func shake() {
-//        guard !pauseResetEngine.isPaused && !Level.isPartyLevel(currentLevel) else { return }
+//        guard !PauseResetEngine.pauseResetEngineIsPaused && !Level.isPartyLevel(currentLevel) else { return }
 //
 //        showConfirmSprite(resetConfirmSprite)
 //    }

@@ -35,11 +35,9 @@ class GameViewController: UIViewController {
         monitor.pathUpdateHandler = { path in
             if path.status == .satisfied {
                 self.hasInternet = true
-                print("Internet connection successful. Is using WiFi: \(!path.isExpensive)")
             }
             else {
                 self.hasInternet = false
-                print("No Internet connection.")
             }
         }
         monitor.start(queue: DispatchQueue(label: "Monitor"))

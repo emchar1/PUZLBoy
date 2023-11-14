@@ -31,9 +31,9 @@ class LeaderboardsPage: ParentPage {
     private(set) var maxLevel: Int
     private(set) var leaderboardsTableViewHasLoaded = false
     private(set) var achievementsTableViewHasLoaded = false
+    private(set) var tableViewIsLoading = false
     private var backButtonPressed = false
     private var achievementsButtonPressed = false
-    private var tableViewIsLoading = false
     private var headerBackgroundColor: UIColor { DayTheme.skyColor.top.lightenColor() }
     
     enum LeaderboardType {
@@ -210,6 +210,8 @@ class LeaderboardsPage: ParentPage {
     
     ///Removes the LOADING label and adds the tableView headers to the view. Also shows the tableView by setting its alpha = 1.
     func didLoadTableView(scores: [GameCenterManager.Score]?) {
+        let tableView: UITableView
+        
         tableViewIsLoading = false
 
         updateHeadersForLeaderboardType()
@@ -234,7 +236,7 @@ class LeaderboardsPage: ParentPage {
                 leaderboardsTableView.scrollToRow(at: IndexPath(row: scores.count - 1, section: 0), at: .bottom, animated: true)
             }
             
-            superScene?.view?.addSubview(leaderboardsTableView)
+            tableView = leaderboardsTableView
         }
         else {
             achievementsTableViewHasLoaded = true
@@ -243,7 +245,11 @@ class LeaderboardsPage: ParentPage {
             achievementsTableView.flashScrollIndicators()
             achievementsTableView.reloadData()
             
-            superScene?.view?.addSubview(achievementsTableView)
+            tableView = achievementsTableView
+        }
+
+        if PauseResetEngine.pauseResetEngineIsPaused {
+            superScene?.view?.addSubview(tableView)
         }
     }
     
@@ -261,12 +267,16 @@ class LeaderboardsPage: ParentPage {
         }
 
         if type != .achievements {
-            GameCenterManager.shared.loadScores(leaderboardType: type, level: currentLevel) { [unowned self] scores in
+            GameCenterManager.shared.loadScores(leaderboardType: type, level: currentLevel) { [weak self] scores in
+                guard let self = self else { return }
+                
                 didLoadTableView(scores: scores)
             }
         }
         else {
-            achievementsTableView.loadAchievements { [unowned self] in
+            achievementsTableView.loadAchievements { [weak self] in
+                guard let self = self else { return }
+                
                 didLoadTableView(scores: nil)
             }
         }
