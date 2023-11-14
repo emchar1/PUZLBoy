@@ -248,7 +248,7 @@ class LeaderboardsPage: ParentPage {
             tableView = achievementsTableView
         }
 
-        if PauseResetEngine.pauseResetEngineIsPaused {
+        if PauseResetEngine.pauseResetEngineIsPaused && PauseResetEngine.currentTab?.rawValue == "Leaderboard" {
             superScene?.view?.addSubview(tableView)
         }
     }

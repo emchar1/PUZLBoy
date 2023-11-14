@@ -67,7 +67,8 @@ class PauseResetEngine {
     private var currentLevel: Int = 1
     
     //Boolean properties
-    private(set) static var pauseResetEngineIsPaused = false        //Used primarily so other classes, i.e. Leaderboard can access isPaused
+    private(set) static var pauseResetEngineIsPaused = false
+    private(set) static var currentTab: SettingsButton.SettingsButtonType? = nil
     private var isPressed: Bool = false
     private var isAnimating: Bool = false
     private var isDisabled: Bool = false
@@ -520,6 +521,7 @@ class PauseResetEngine {
                 }
                 
                 settingsManager.tap(node)
+                PauseResetEngine.currentTab = settingsManager.currentButtonPressed?.type
             }
         } //end for
     } //end func touchDown
