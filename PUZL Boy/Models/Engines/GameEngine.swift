@@ -115,6 +115,9 @@ class GameEngine {
         healthRemaining = 1
         gemsRemaining = self.level.gems
         
+        //BUGFIX# 231114E01 Is it necessary to reset gemsCollected because otherwise it accumulates ad infinitum???
+        gemsCollected = 0
+        
         enemiesKilled = 0
         bouldersBroken = 0
         toolsCollected = 0
@@ -1031,6 +1034,16 @@ class GameEngine {
         
         let allAchievements = Achievement.achievements.map { $0.1 }
         GameCenterManager.shared.report(achievements: allAchievements)
+
+        print("=========================")
+        print("| GameEngine Properties |")
+        print("| gemsCollected: \(gemsCollected)")
+        print("| bouldersBroken: \(bouldersBroken)")
+        print("| enemiesKilled: \(enemiesKilled)")
+        print("| toolsCollected: \(toolsCollected)")
+        print("| toolsRemaining: \(level.inventory.getItemCount())")
+        print("| movesRemaining: \(movesRemaining ?? -9999)")
+        print("=========================")        
     }
         
     
