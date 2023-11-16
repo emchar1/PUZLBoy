@@ -547,6 +547,8 @@ extension ChatEngine {
                 ChatItem(profile: .trainer, chat: "Be warned though, restarting a level will cost you one of your precious lives..."),
                 ChatItem(profile: .hero, chat: "It's all good. My mom can buy me more lives if I need it. 😃")
             ]) { [unowned self] in
+                GameCenterManager.shared.updateProgress(achievement: .avidReader, shouldReportImmediately: true)
+
                 handleDialogueCompletion(level: level, completion: completion)
             }
         case 112:
