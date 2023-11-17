@@ -8,7 +8,7 @@
 import Foundation
 
 class AchievementFatCat: BaseAchievement {
-    let requirement: Double = 50
+    let requirement: Double = 20
     
     override func updatePercentage(increment: Double = 0.99) {
         percentComplete += increment / requirement * 100

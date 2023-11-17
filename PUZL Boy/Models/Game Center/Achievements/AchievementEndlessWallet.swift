@@ -8,7 +8,7 @@
 import Foundation
 
 class AchievementEndlessWallet: BaseAchievement {
-    let requirement: Double = 25
+    let requirement: Double = 10
     
     override func updatePercentage(increment: Double = 0.99) {
         percentComplete += increment / requirement * 100

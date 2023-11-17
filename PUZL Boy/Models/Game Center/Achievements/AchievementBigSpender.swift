@@ -8,7 +8,7 @@
 import Foundation
 
 class AchievementBigSpender: BaseAchievement {
-    let requirement: Double = 10
+    let requirement: Double = 5
     
     override func updatePercentage(increment: Double = 0.99) {
         percentComplete += increment / requirement * 100
