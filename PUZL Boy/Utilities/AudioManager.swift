@@ -153,6 +153,7 @@ class AudioManager {
         addAudioItem("clocktick", category: .soundFXLoop)
         addAudioItem("magicdoomloopOLD", category: .soundFXLoop) //DELETE?
         addAudioItem("magicdoomloop", category: .soundFXLoop) //needs purchase $2
+        addAudioItem("littlegirllaugh", category: .soundFXLoop) //needs purchase $2
         
         
         //No Loop music
@@ -164,6 +165,7 @@ class AudioManager {
         //Background music
         addAudioItem("birdsambience", category: .music, maxVolume: 0.2)
         addAudioItem("continueloop", category: .music)
+        addAudioItem("scarymusicbox", category: .music) //needs purchase $21
         addAudioItem("overworld", category: .music)
         addAudioItem("overworldparty", category: .music)
         

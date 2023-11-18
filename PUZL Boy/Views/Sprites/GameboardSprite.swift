@@ -279,8 +279,10 @@ class GameboardSprite {
         overlayPanel.name = "captureEndOpen"
         sprite.addChild(overlayPanel)
         
-        AudioManager.shared.playSound(for: "magicdoomloop", fadeIn: 0.5, interruptPlayback: false)
-        AudioManager.shared.adjustVolume(to: 0.25, for: AudioManager.shared.currentTheme, fadeDuration: 0.5)
+        AudioManager.shared.playSound(for: "magicdoomloop", fadeIn: 3, interruptPlayback: false)
+        AudioManager.shared.playSound(for: "littlegirllaugh", fadeIn: 3, interruptPlayback: false)
+        AudioManager.shared.playSound(for: "scarymusicbox", fadeIn: 3, interruptPlayback: false)
+        AudioManager.shared.adjustVolume(to: 0, for: AudioManager.shared.currentTheme, fadeDuration: 5)
         
         spawnItem(at: position, with: .warp4) { [unowned self] in
             AudioManager.shared.playSound(for: "magicwarp")
@@ -435,8 +437,10 @@ class GameboardSprite {
                     SKAction.removeFromParent(),
                     SKAction.run {
                         AudioManager.shared.playSound(for: "dooropen")
-                        AudioManager.shared.stopSound(for: "magicdoomloop", fadeDuration: 1)
-                        AudioManager.shared.adjustVolume(to: 1, for: AudioManager.shared.currentTheme, fadeDuration: 1)
+                        AudioManager.shared.stopSound(for: "magicdoomloop", fadeDuration: 5)
+                        AudioManager.shared.stopSound(for: "littlegirllaugh", fadeDuration: 5)
+                        AudioManager.shared.stopSound(for: "scarymusicbox", fadeDuration: 5)
+                        AudioManager.shared.adjustVolume(to: 1, for: AudioManager.shared.currentTheme, fadeDuration: 3)
                     }
                 ]), completion: completion)
             }

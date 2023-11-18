@@ -194,6 +194,8 @@
 		EABE795D2ACBB28C00689C55 /* boypain3.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EABE795A2ACBB28C00689C55 /* boypain3.mp3 */; };
 		EABE795F2ACBB83A00689C55 /* DragonFireLite.sks in Resources */ = {isa = PBXBuildFile; fileRef = EABE795E2ACBB83A00689C55 /* DragonFireLite.sks */; };
 		EABE79612ACBC7E800689C55 /* enemyflame.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EABE79602ACBC7E800689C55 /* enemyflame.mp3 */; };
+		EAC63DCD2B08C58A00472A99 /* littlegirllaugh.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAC63DCC2B08C58A00472A99 /* littlegirllaugh.mp3 */; };
+		EAC63DCF2B08C8BB00472A99 /* scarymusicbox.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAC63DCE2B08C8BB00472A99 /* scarymusicbox.mp3 */; };
 		EACCC05F2AE63FA40099DA44 /* LeaderboardsPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = EACCC05E2AE63FA40099DA44 /* LeaderboardsPage.swift */; };
 		EACCC0612AE63FEE0099DA44 /* LeaderboardsTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EACCC0602AE63FEE0099DA44 /* LeaderboardsTableView.swift */; };
 		EACCC0632AE640EA0099DA44 /* LeaderboardsTVCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EACCC0622AE640EA0099DA44 /* LeaderboardsTVCell.swift */; };
@@ -441,6 +443,8 @@
 		EABE795A2ACBB28C00689C55 /* boypain3.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = boypain3.mp3; sourceTree = "<group>"; };
 		EABE795E2ACBB83A00689C55 /* DragonFireLite.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = DragonFireLite.sks; sourceTree = "<group>"; };
 		EABE79602ACBC7E800689C55 /* enemyflame.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = enemyflame.mp3; sourceTree = "<group>"; };
+		EAC63DCC2B08C58A00472A99 /* littlegirllaugh.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = littlegirllaugh.mp3; sourceTree = "<group>"; };
+		EAC63DCE2B08C8BB00472A99 /* scarymusicbox.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = scarymusicbox.mp3; sourceTree = "<group>"; };
 		EACCC05E2AE63FA40099DA44 /* LeaderboardsPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaderboardsPage.swift; sourceTree = "<group>"; };
 		EACCC0602AE63FEE0099DA44 /* LeaderboardsTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaderboardsTableView.swift; sourceTree = "<group>"; };
 		EACCC0622AE640EA0099DA44 /* LeaderboardsTVCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaderboardsTVCell.swift; sourceTree = "<group>"; };
@@ -802,6 +806,7 @@
 				EAF7182C29B3CC0500E2ED82 /* lavaappear2.mp3 */,
 				EAF7183829B3D56B00E2ED82 /* lavaappear3.mp3 */,
 				EAF7182029B3097300E2ED82 /* lavasizzle.mp3 */,
+				EAC63DCC2B08C58A00472A99 /* littlegirllaugh.mp3 */,
 				EAE2156D2ABF57EB0090735A /* magicblast.mp3 */,
 				EAE215632ABED4420090735A /* magicdoomloopOLD.mp3 */,
 				EAE215672ABF54E70090735A /* magicdoomloop.mp3 */,
@@ -837,6 +842,7 @@
 				EA4583572A4431C400279056 /* punchwhack1.mp3 */,
 				EA4583562A4431C400279056 /* punchwhack2.mp3 */,
 				EA3467A429A8C659002DDA02 /* revive.mp3 */,
+				EAC63DCE2B08C8BB00472A99 /* scarymusicbox.mp3 */,
 				EA95B3082A8C9DA300C5F028 /* speechbubble.mp3 */,
 				EAAEA3C32931D0DA00221963 /* swordslash.mp3 */,
 				EA48EE542AB1B4A800552DAF /* thunderrumble.mp3 */,
@@ -1137,6 +1143,7 @@
 				EA4D026529B90BF800F0C7B1 /* gemcollect.mp3 in Resources */,
 				EAD19A1B2A9BD48400A07A63 /* GemSparkleParticles.sks in Resources */,
 				EA9F4DDD29D2B766006F4B2F /* buttontap2.mp3 in Resources */,
+				EAC63DCD2B08C58A00472A99 /* littlegirllaugh.mp3 in Resources */,
 				EAD199FC2A95A2ED00A07A63 /* GemCollectParticles.sks in Resources */,
 				EA3467AB29A8C6F6002DDA02 /* buttontap1.mp3 in Resources */,
 				EA705CE02A1C64760051519B /* buttontap5.mp3 in Resources */,
@@ -1176,6 +1183,7 @@
 				EAE215122AB920160090735A /* Warp4Particles.sks in Resources */,
 				EA32AE352AAD1BDE00DFF5CD /* ageofruin.mp3 in Resources */,
 				EAD19A0B2A96F52500A07A63 /* LavaAppearParticles.sks in Resources */,
+				EAC63DCF2B08C8BB00472A99 /* scarymusicbox.mp3 in Resources */,
 				EABE79612ACBC7E800689C55 /* enemyflame.mp3 in Resources */,
 				EAE919492A4CB02900AF67D1 /* gemcollectpartylife.mp3 in Resources */,
 				EAE215622ABED4340090735A /* magicteleport.mp3 in Resources */,
