@@ -490,8 +490,8 @@ extension ChatEngine {
                 ChatItem(profile: .hero, chat: "Is it safe?"),
                 ChatItem(profile: .trainer, chat: "I haven't tested it. Theoretically—"),
                 ChatItem(profile: .hero, chat: "MARLIN!!! Is it going to rip me apart or what?"),
-                ChatItem(profile: .trainer, chat: "You'll be fine! Just don't stare at it for too long or you'll bark like a dog at the snap of my fingers.. *SNAP* 🫰🏼"),
-                ChatItem(profile: .hero, chat: "😵‍💫 Woof woof.")
+                ChatItem(profile: .trainer, chat: "I'm sure you'll be fine. Just don't stare at it too long or I'll have you barking like a chicken at the snap of my fingers. ✨SNAP✨ 🫰🏼"),
+                ChatItem(profile: .hero, chat: "Chickens don't bark, you nutty profess— 😵‍💫 Woof woof.")
             ]) { [unowned self] in
                 delegate?.deIlluminatePanel(at: (0, 1), useOverlay: true)
                 delegate?.deIlluminatePanel(at: (1, 2), useOverlay: true)
