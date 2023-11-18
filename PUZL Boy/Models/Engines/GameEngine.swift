@@ -123,6 +123,11 @@ class GameEngine {
         toolsCollected = 0
         
         finishInit(shouldSpawn: shouldSpawn)
+
+        //This must go AFTER finishInit()!
+        if shouldSpawn {
+            displaySprite.statusLives.decrementLives(originalLives: GameEngine.livesRemaining)
+        }
     }
     
     /**

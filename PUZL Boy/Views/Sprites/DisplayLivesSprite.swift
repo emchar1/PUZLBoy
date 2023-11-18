@@ -86,6 +86,9 @@ class DisplayLivesSprite: SKNode {
         imageNode.run(SKAction.sequence([scaleUp, wait, scaleDown]))
     }
     
+    /**
+     Animates the lives text with a quick burst of scaling to 1.25 before returning to scale = 1.
+     */
     func animateLives(originalLives: Int, newLives: Int) {
         let speed: CGFloat = min(0.8 / CGFloat(newLives), 0.05)
         var livesToIncrement = originalLives
@@ -109,6 +112,26 @@ class DisplayLivesSprite: SKNode {
         ]), count: max(newLives, 0))
         
         textNode.run(repeatAction)
+    }
+    
+    /**
+     Animates the lives text with scaling to 1.5, red colorization, before fading down to scale = 1 and original colorization. Used mainly for decrementing lives, i.e. when PUZL Boy dies.
+     */
+    func decrementLives(originalLives: Int) {
+        textNode.run(SKAction.sequence([
+            SKAction.run { [unowned self] in
+                textNode.text = "x\(formattedInt(originalLives))"
+                textNode.updateShadow()
+                adjustImageNodeXPosition()
+            },
+            SKAction.colorize(with: .red, colorBlendFactor: 1, duration: 0),
+            SKAction.scale(to: 1.5, duration: 0),
+            SKAction.wait(forDuration: 0.25),
+            SKAction.group([
+                SKAction.scale(to: 1, duration: 0.5),
+                SKAction.colorize(with: UIFont.gameFontColor, colorBlendFactor: 1, duration: 0.5)
+            ])
+        ]))
     }
     
     func illuminateNode() {
