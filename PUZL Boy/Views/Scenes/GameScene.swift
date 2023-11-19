@@ -617,7 +617,9 @@ extension GameScene: GameEngineDelegate {
         else {
             scoringEngine.scoringManager.resetScore()
             scoringEngine.updateLabels()
+            
             newGame(level: currentLevel, didWin: false)
+            gameEngine.displaySprite.statusLives.decrementLives(originalLives: GameEngine.livesRemaining)
         }
     }
     
