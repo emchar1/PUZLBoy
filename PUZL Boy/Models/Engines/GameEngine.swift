@@ -81,6 +81,9 @@ class GameEngine {
     private(set) var gameboardSprite: GameboardSprite!
     private(set) var playerSprite: PlayerSprite!
     private(set) var displaySprite: DisplaySprite!
+    
+    // FIXME: - SolutionEngine Debug
+    private var solutionEngine: SolutionEngine!
 
     weak var delegate: GameEngineDelegate?
     
@@ -104,7 +107,7 @@ class GameEngine {
         }
         
         if Level.isPartyLevel(level) {
-            self.level = Level(level: Level.partyLevel, moves: 0, health: 0,
+            self.level = Level(level: Level.partyLevel, moves: 0, health: 0, solution: "D,E,F",
                                gameboard: LevelBuilder.buildPartyGameboard(ofSize: self.level.gameboard.count))
         }
         else {
@@ -139,6 +142,7 @@ class GameEngine {
             level = Level(level: saveStateModel.levelModel.level,
                           moves: saveStateModel.levelModel.moves,
                           health: saveStateModel.levelModel.health,
+                          solution: saveStateModel.levelModel.solution,
                           gameboard: LevelBuilder.buildGameboard(levelModel: saveStateModel.levelModel))
             level.inventory = saveStateModel.levelModel.inventory
             level.updatePlayer(position: (row: saveStateModel.levelModel.playerPosition.row, col: saveStateModel.levelModel.playerPosition.col))
@@ -157,6 +161,7 @@ class GameEngine {
             level = Level(level: newLevel,
                           moves: LevelBuilder.levels[newLevel].moves,
                           health: LevelBuilder.levels[newLevel].health,
+                          solution: LevelBuilder.levels[newLevel].solution,
                           gameboard: LevelBuilder.levels[newLevel].gameboard)
             level.inventory = Inventory(hammers: 0, swords: 0)
             //level.updatePlayer(position: (row: saveStateModel.playerPosition.row, col: saveStateModel.playerPosition.col))
@@ -225,6 +230,12 @@ class GameEngine {
         // FIXME: - Theoretically can delete these two lines; shouldn't be a problem once LevelSkipEngine is removed when shipping this game.
         AudioManager.shared.stopSound(for: "magicdoomloop", fadeDuration: 0.5)
         AudioManager.shared.adjustVolume(to: 1, for: AudioManager.shared.currentTheme, fadeDuration: 0.5)
+        
+        // FIXME: - SolutionEngine Debug
+        solutionEngine = SolutionEngine(solution: level.solution, yPos: gameboardSprite.sprite.position.y)
+        if let user = FIRManager.user, user.uid == FIRManager.userEddie {
+            backgroundSprite.addChild(solutionEngine.sprite)
+        }
     }
     
     deinit {
@@ -824,6 +835,9 @@ class GameEngine {
         case .right:
             nextPanel = (row: level.player.row, col: level.player.col + 1)
         }
+
+        // FIXME: - SolutionEngine Debug
+        solutionEngine.appendDirection(direction)
         
         guard checkPanelForPathway(position: nextPanel, direction: direction) else {
 //            gameboardSprite.highlightPanel(color: .red, at: nextPanel)
@@ -874,6 +888,9 @@ class GameEngine {
             else {
                 shouldUpdateRemainingForBoulderIfIcy = true
                 isGliding = true
+                
+                // FIXME: - SolutionEngine Debug
+                solutionEngine.dropLastDirection()
             }
             
             //ENTER RECURSION
@@ -893,6 +910,11 @@ class GameEngine {
                 if shouldUpdateRemainingForBoulderIfIcy {
                     updateMovesRemaining()
                     shouldUpdateRemainingForBoulderIfIcy = false
+                }
+
+                // FIXME: - SolutionEngine Debug
+                else {
+                    solutionEngine.dropLastDirection()
                 }
                 
                 GameCenterManager.shared.updateProgress(achievement: .klutz, shouldReportImmediately: false)
@@ -914,6 +936,11 @@ class GameEngine {
                     if isGameOver {
                         return false
                     }
+                }
+                
+                // FIXME: - SolutionEngine Debug
+                else {
+                    solutionEngine.dropLastDirection()
                 }
 //                updateMovesRemaining() //removed here...
 
@@ -977,6 +1004,9 @@ class GameEngine {
             StoreReviewManager.shared.incrementCount()
 
             print("Win streak: \(GameEngine.winStreak), Level: \(level.level)")
+            
+            // FIXME: - SolutionEngine Debug
+            solutionEngine.checkForMatch()
         }
         else if isGameOver {
             AudioManager.shared.stopSound(for: AudioManager.shared.currentTheme)
@@ -1003,6 +1033,9 @@ class GameEngine {
             playerSprite.startDeadAnimation { [unowned self] in
                 delegate?.gameIsOver(firstTimeCalled: true)
             }
+            
+            // FIXME: - SolutionEngine Debug
+            solutionEngine.clearAttempt()
         }
     }
     

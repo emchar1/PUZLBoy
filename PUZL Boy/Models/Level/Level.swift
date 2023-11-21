@@ -24,6 +24,7 @@ struct Level: CustomStringConvertible {
     private(set) var moves: Int
     private(set) var health: Int
     private(set) var gems: Int
+    private(set) var solution: String
     private(set) var gameboard: K.Gameboard
     var inventory: Inventory
 
@@ -50,7 +51,7 @@ struct Level: CustomStringConvertible {
     
     // MARK: - Initialization
     
-    init(level: Int, moves: Int, health: Int, gameboard: K.Gameboard) {
+    init(level: Int, moves: Int, health: Int, solution: String, gameboard: K.Gameboard) {
         guard gameboard.count == gameboard[0].count else { fatalError("Gameboard must be of equal rows and columns.") }
         
         var startFound = false
@@ -82,6 +83,7 @@ struct Level: CustomStringConvertible {
             self.moves = moves
             self.health = health
             self.gems = gemsCount
+            self.solution = solution
             self.gameboard = gameboard
             self.inventory = Inventory(hammers: 0, swords: 0)
             
@@ -100,6 +102,7 @@ struct Level: CustomStringConvertible {
             self.moves = 999
             self.health = 999
             self.gems = 1 //MUST NOT BE 0!!
+            self.solution = "X,Y,Z"
             self.gameboard = gameboard
             self.inventory = Inventory(hammers: 0, swords: 0)
         }
@@ -168,11 +171,11 @@ struct Level: CustomStringConvertible {
         return gameboard[position.row][position.col].overlay
     }
     
-    func getLevelModel(level: Int, movesRemaining: Int, heathRemaining: Int, gemsCollected: Int, gemsRemaining: Int, playerPosition: PlayerPosition, inventory: Inventory) -> LevelModel {
+    func getLevelModel(level: Int, movesRemaining: Int, heathRemaining: Int, solution: String, gemsCollected: Int, gemsRemaining: Int, playerPosition: PlayerPosition, inventory: Inventory) -> LevelModel {
         let gameboardSize = gameboard[0].count
 
         return LevelModel(
-            level: level, moves: movesRemaining, health: heathRemaining, gemsCollected: gemsCollected, gemsRemaining: gemsRemaining,
+            level: level, moves: movesRemaining, health: heathRemaining, solution: solution, gemsCollected: gemsCollected, gemsRemaining: gemsRemaining,
             playerPosition: playerPosition, inventory: inventory,
 
             //terrain

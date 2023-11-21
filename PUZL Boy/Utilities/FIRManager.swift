@@ -16,6 +16,11 @@ struct FIRManager {
     static var user: User?
     static var saveStateModel: SaveStateModel?
     
+    //Test users
+    static let userEddie = "2bjhz2grYVVOn37qmUipG4CKps62"
+    static let userMichel = "NB9OLr2X8kRLJ7S0G8W3800qo8U2"
+    static let userMom = "jnsBD8RFVDMN9cSN8yDnFDoVJp32"
+    
     ///Only call this once, otherwise App will crash. Also must call it before calling FIRManager.initializeLevelRealtimeRecords().
     static var enableDBPersistence: Void {
         let db = Database.database()
@@ -199,6 +204,7 @@ struct FIRManager {
                 "level": saveStateModel.levelModel.level,
                 "moves": saveStateModel.levelModel.moves,
                 "health": saveStateModel.levelModel.health,
+                "solution": saveStateModel.levelModel.solution,
                 "gemsCollected": saveStateModel.levelModel.gemsCollected,
                 "gemsRemaining": saveStateModel.levelModel.gemsRemaining,
                 "inventory": [
@@ -397,6 +403,7 @@ struct FIRManager {
             level: object["level"] as? Int ?? 1,
             moves: object["moves"] as? Int ?? 4,
             health: object["health"] as? Int ?? 1,
+            solution: object["solution"] as? String ?? "A,B,C",
             gemsCollected: object["gemsCollected"] as? Int ?? 0,
             gemsRemaining: object["gemsRemaining"] as? Int ?? 1,
             playerPosition: PlayerPosition(row: playerPosition?["row"] as? Int ?? 0, col: playerPosition?["col"] as? Int ?? 0),

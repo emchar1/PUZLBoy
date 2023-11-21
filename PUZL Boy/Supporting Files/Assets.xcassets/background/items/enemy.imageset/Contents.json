@@ -1,7 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "enemy@1x.png",
+      "filename" : "enemy.png",
       "idiom" : "universal",
       "scale" : "1x"
     },

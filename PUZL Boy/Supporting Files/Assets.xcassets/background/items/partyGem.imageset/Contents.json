@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "partyGem@1x.png",
+      "filename" : "gemparty.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "partyGem@2x.png",
+      "filename" : "gemparty@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "partyGem@3x.png",
+      "filename" : "gemparty@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

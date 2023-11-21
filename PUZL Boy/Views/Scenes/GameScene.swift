@@ -355,6 +355,7 @@ class GameScene: SKScene {
             level: currentLevel,
             movesRemaining: gameEngine.movesRemaining,
             heathRemaining: gameEngine.healthRemaining,
+            solution: gameEngine.level.solution,
             gemsCollected: gameEngine.gemsCollected,
             gemsRemaining: gameEngine.gemsRemaining,
             playerPosition: PlayerPosition(row: gameEngine.level.player.row, col: gameEngine.level.player.col),
@@ -491,9 +492,9 @@ class GameScene: SKScene {
         // FIXME: - Debugging purposes only!!!
         if let user = FIRManager.user,
            !Level.isPartyLevel(currentLevel),
-            user.uid == "2bjhz2grYVVOn37qmUipG4CKps62" ||   //Eddie
-            user.uid == "NB9OLr2X8kRLJ7S0G8W3800qo8U2" ||   //Michel
-            user.uid == "jnsBD8RFVDMN9cSN8yDnFDoVJp32"      //Mom
+           user.uid == FIRManager.userEddie ||
+            user.uid == FIRManager.userMichel ||
+            user.uid == FIRManager.userMom
         {
             levelSkipEngine.moveSprites(to: self)
         }
