@@ -35981,7 +35981,7 @@
     "s6d4": "",
     "s6d5": "",
     "s6d6": "",
-    "solution": ""
+    "solution": "R,R,L,D,U,D,R,U,R,L,L,U,R,U,D,R,D"
   },
   "346": {
     "level": 346,
@@ -38246,7 +38246,7 @@
     "s3d2": "",
     "s3d3": "",
     "s3d4": "",
-    "s3d5": "",
+    "s3d5": "gem",
     "s3d6": "",
     "s4d0": "",
     "s4d1": "gem",
@@ -41077,7 +41077,7 @@
     "s6d4": "",
     "s6d5": "",
     "s6d6": "",
-    "solution": ""
+    "solution": "D,D,D,D,R,R,R,D,L,L,L,U,U,L,U,L,L,D,D,R,R,D,D,R,D"
   },
   "395": {
     "level": 395,
@@ -41181,7 +41181,7 @@
     "s6d4": "",
     "s6d5": "",
     "s6d6": "",
-    "solution": ""
+    "solution": "D,U,D,D,U,L,D,L,U,D,D,L,D,D,R,R,U,R,U,R,R,D,D,L,R"
   },
   "396": {
     "level": 396,
@@ -41285,7 +41285,7 @@
     "s6d4": "",
     "s6d5": "",
     "s6d6": "",
-    "solution": ""
+    "solution": "U,D,L,L,U,R,U,L,L,D,R,D,D,L,D,D,R,U,D,U,D,R,U,R,R,U"
   },
   "397": {
     "level": 397,
@@ -41389,7 +41389,7 @@
     "s6d4": "",
     "s6d5": "",
     "s6d6": "",
-    "solution": ""
+    "solution": "R,R,R,R,L,R,D,L,R,U,L,L,L,D,R,D,R,L,R,R,R,R"
   },
   "398": {
     "level": 398,
@@ -41493,7 +41493,7 @@
     "s6d4": "",
     "s6d5": "",
     "s6d6": "",
-    "solution": ""
+    "solution": "U,D,R,L,D,D,R,D,R,R,L,R,L,D,U,D, U,L,R,U,U,R,U,D,D,L,R"
   },
   "399": {
     "level": 399,
@@ -41597,7 +41597,7 @@
     "s6d4": "",
     "s6d5": "",
     "s6d6": "",
-    "solution": ""
+    "solution": "U,D,L,D,R,D,R,U,L,U,R,R,R,U,D,D,U,R,R,U,R,R,U,U,R,D,D,L,D,U"
   },
   "400": {
     "level": 400,
@@ -41701,7 +41701,7 @@
     "s6d4": "",
     "s6d5": "",
     "s6d6": "",
-    "solution": ""
+    "solution": "D,R,R,D,R,D,D,L,L,U,L,D,D"
   },
   "401": {
     "level": 401,
