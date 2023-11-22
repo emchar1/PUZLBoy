@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "hintarrow.png",
+      "filename" : "hintborder.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "hintarrow@2x.png",
+      "filename" : "hintborder@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "hintarrow@3x.png",
+      "filename" : "hintborder@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }
