@@ -11,7 +11,7 @@ import FirebaseAuth
 protocol PauseResetEngineDelegate: AnyObject {
     func didTapPause(isPaused: Bool)
     func didTapReset()
-    func didTapHint()
+    func didTapHint(hintButton: SKSpriteNode)
     
     func confirmQuitTapped()
     func didTapHowToPlay(_ tableView: HowToPlayTableView)
@@ -166,7 +166,7 @@ class PauseResetEngine {
         superScene.addChild(backgroundSprite)
         superScene.addChild(pauseButtonSprite)
         superScene.addChild(resetButtonSprite)
-//        superScene.addChild(hintButtonSprite)
+        superScene.addChild(hintButtonSprite)
         
         currentLevel = level
         
@@ -344,7 +344,7 @@ class PauseResetEngine {
                 delegate?.didTapReset()
             case hintName:
                 ButtonTap.shared.tap(type: .buttontap1)
-                delegate?.didTapHint()
+                delegate?.didTapHint(hintButton: hintButtonSprite)
             default:
                 break
             }

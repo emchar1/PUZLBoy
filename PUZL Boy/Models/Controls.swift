@@ -7,8 +7,8 @@
 
 import Foundation
 
-enum Controls {
-    case up, down, left, right
+enum Controls: String {
+    case up = "U", down = "D", left = "L", right = "R", unknown = "X"
     
     var getOpposite: Controls {
         switch self {
@@ -20,6 +20,8 @@ enum Controls {
             return .right
         case .right:
             return .left
+        case .unknown:
+            return .unknown
         }
     }
 }

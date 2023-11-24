@@ -75,6 +75,7 @@ class AudioManager {
         }
         
         //Sound FX
+        addAudioItem("arrowblink", category: .soundFX)
         addAudioItem("bouldersmash", category: .soundFX)
         addAudioItem("boyattack1", category: .soundFX)
         addAudioItem("boyattack2", category: .soundFX)

@@ -25,6 +25,7 @@
 		EA1D5A6E29F217D200677B06 /* Extension+SKLabelNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA1D5A6D29F217D200677B06 /* Extension+SKLabelNode.swift */; };
 		EA1D5A7029F219AA00677B06 /* Extension+SKNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA1D5A6F29F219AA00677B06 /* Extension+SKNode.swift */; };
 		EA1F0E672B0AB0BA00EE0EEE /* SolutionEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA1F0E662B0AB0BA00EE0EEE /* SolutionEngine.swift */; };
+		EA1F0E692B0F5CAC00EE0EEE /* arrowblink.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA1F0E682B0F5CAC00EE0EEE /* arrowblink.mp3 */; };
 		EA26F29129739DE800BF1AC8 /* AdMobManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA26F29029739DE800BF1AC8 /* AdMobManager.swift */; };
 		EA2AF74429B6D06000444E5A /* OfflinePlaySprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA2AF74329B6D06000444E5A /* OfflinePlaySprite.swift */; };
 		EA2AF74829B6EDAC00444E5A /* gemcollectparty.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA2AF74729B6EDAC00444E5A /* gemcollectparty.mp3 */; };
@@ -280,6 +281,7 @@
 		EA1D5A6D29F217D200677B06 /* Extension+SKLabelNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+SKLabelNode.swift"; sourceTree = "<group>"; };
 		EA1D5A6F29F219AA00677B06 /* Extension+SKNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+SKNode.swift"; sourceTree = "<group>"; };
 		EA1F0E662B0AB0BA00EE0EEE /* SolutionEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SolutionEngine.swift; sourceTree = "<group>"; };
+		EA1F0E682B0F5CAC00EE0EEE /* arrowblink.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = arrowblink.mp3; sourceTree = "<group>"; };
 		EA26F29029739DE800BF1AC8 /* AdMobManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdMobManager.swift; sourceTree = "<group>"; };
 		EA2AF74329B6D06000444E5A /* OfflinePlaySprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfflinePlaySprite.swift; sourceTree = "<group>"; };
 		EA2AF74729B6EDAC00444E5A /* gemcollectparty.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = gemcollectparty.mp3; sourceTree = "<group>"; };
@@ -547,7 +549,6 @@
 			isa = PBXGroup;
 			children = (
 				EA95D2112963B4580061059C /* LevelSkipEngine.swift */,
-				EA1F0E662B0AB0BA00EE0EEE /* SolutionEngine.swift */,
 			);
 			path = Debug;
 			sourceTree = "<group>";
@@ -777,6 +778,7 @@
 			isa = PBXGroup;
 			children = (
 				EA32AE332AAD1BDE00DFF5CD /* ageofruin.mp3 */,
+				EA1F0E682B0F5CAC00EE0EEE /* arrowblink.mp3 */,
 				EA32AE382AADAC6400DFF5CD /* birdsambience.mp3 */,
 				EA0F1480292B2F870013038E /* bouldersmash.mp3 */,
 				EA95D196294690B70061059C /* boyattack1.mp3 */,
@@ -956,6 +958,7 @@
 				EAB69E0328F3333000C31DB3 /* GameEngine.swift */,
 				EA3951F02939DE5900D0B14A /* ScoringEngine.swift */,
 				EA95D1DE295674AE0061059C /* ChatEngine.swift */,
+				EA1F0E662B0AB0BA00EE0EEE /* SolutionEngine.swift */,
 				EA1F0E652B0AAFA100EE0EEE /* Debug */,
 				EA6A79F529CC035B00F47A73 /* PauseReset */,
 			);
@@ -1164,6 +1167,7 @@
 				EAF7181F29B1B2BC00E2ED82 /* movesand1.mp3 in Resources */,
 				EA95D200295D83E40061059C /* Boogaloo-Regular.ttf in Resources */,
 				EA4583582A4431C400279056 /* punchwhack2.mp3 in Resources */,
+				EA1F0E692B0F5CAC00EE0EEE /* arrowblink.mp3 in Resources */,
 				EA95D19B294690B70061059C /* boydead.mp3 in Resources */,
 				EA95D19E294690B70061059C /* boyattack2.mp3 in Resources */,
 				EA45834D2A44315900279056 /* buttontap3.mp3 in Resources */,

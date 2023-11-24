@@ -78,12 +78,10 @@ class GameEngine {
     private var backgroundSprite: SKSpriteNode!
     private var bloodOverlay: SKSpriteNode!
     private var bloodOverlayAlpha: CGFloat { 0.25 * CGFloat(level.level) / CGFloat(Level.finalLevel) }
+    private(set) var solutionEngine: SolutionEngine!
     private(set) var gameboardSprite: GameboardSprite!
     private(set) var playerSprite: PlayerSprite!
     private(set) var displaySprite: DisplaySprite!
-    
-    // FIXME: - SolutionEngine Debug
-    private var solutionEngine: SolutionEngine!
 
     weak var delegate: GameEngineDelegate?
     
@@ -801,6 +799,8 @@ class GameEngine {
         case .right:
             leftBound += 1
             rightBound = maxDistance
+        default:
+            print("Unknown direction in GameEngine.inBounds()")
         }
         
         return location.x > GameboardSprite.offsetPosition.x + (CGFloat(leftBound) * panelSize) &&
@@ -834,9 +834,13 @@ class GameEngine {
             nextPanel = (row: level.player.row, col: level.player.col - 1)
         case .right:
             nextPanel = (row: level.player.row, col: level.player.col + 1)
+        default:
+            nextPanel = (row: level.player.row, col: level.player.col)
+            print("Unknown direction in GameEngine.movePlayerHelper()")
         }
 
         // FIXME: - SolutionEngine Debug
+        solutionEngine.removeAnimatingHint(from: gameboardSprite)
         solutionEngine.appendDirection(direction)
         
         guard checkPanelForPathway(position: nextPanel, direction: direction) else {

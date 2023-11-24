@@ -412,6 +412,10 @@ class PlayerSprite {
         case .right:
             moveAction = SKAction.moveBy(x: knockback, y: 0, duration: 0)
             unmoveAction = SKAction.moveBy(x: -knockback, y: 0, duration: 0)
+        default:
+            moveAction = SKAction.moveBy(x: 0, y: 0, duration: 0)
+            unmoveAction = SKAction.moveBy(x: 0, y: 0, duration: 0)
+            print("Unknown direction in PlayerSprite.startKnockbackAnimation()")
         }
         
         let knockbackAnimation = SKAction.sequence([
@@ -479,6 +483,12 @@ class PlayerSprite {
                 rotationDirectionType = .flipHorizontal
                 antiRotationDirection = .flipHorizontal
                 rotationAngle = 0
+            default:
+                dragonOffset = (0, 0)
+                rotationDirectionType = .none
+                antiRotationDirection = .none
+                rotationAngle = 0
+                print("Unknown direction in PlayerSprite.startKnockbackAnimation()")
             }
             
             let dragonPosition = (panel.row + dragonOffset.row, panel.col + dragonOffset.col)

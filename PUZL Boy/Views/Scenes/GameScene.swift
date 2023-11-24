@@ -936,15 +936,16 @@ extension GameScene: PauseResetEngineDelegate {
         showConfirmSprite(resetConfirmSprite!)
     }
     
-    func didTapHint() {
-        hintConfirmSprite = ConfirmSprite(title: "NEED A HINT?",
-                                          message: "The hint feature is not yet available, but will be soon. Maybe in the next version... Stay tuned!",
-                                          confirm: "OK",
-                                          cancel: "OK, but in blue")
-        hintConfirmSprite!.delegate = self
-
-        addChild(hintConfirmSprite!)
-        showConfirmSprite(hintConfirmSprite!)
+    func didTapHint(hintButton: SKSpriteNode) {
+        let gameboardSprite: GameboardSprite = gameEngine.gameboardSprite
+        
+        guard let playerPosition = gameEngine.level.player else { return }
+        
+//        hintButton.isHidden = true
+        
+        gameEngine.solutionEngine.getHint(gameboardSprite: gameboardSprite, playerPosition: playerPosition) {
+//            hintButton.isHidden = false
+        }
     }
     
     func confirmQuitTapped() {
