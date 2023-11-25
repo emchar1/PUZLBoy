@@ -11,35 +11,35 @@ class SolutionEngine {
     
     // MARK: - Properties
     
-    private var solutionArray: [Controls]
-    private var attemptArray: [Controls]
     private let nodeNameArrowHint = "hintarrow"
-    private let solutionLabel: SKLabelNode
-    private var attemptLabel: SKLabelNode
-    let sprite: SKSpriteNode
-
+    private(set) var solutionArray: [Controls] = []
+    private(set) var attemptArray: [Controls] = [] {
+        didSet {
+            attemptLabel.text = arrayToString(attemptArray)
+            attemptLabel.updateShadow()
+        }
+    }
+    
     private var isMatch: Bool {
         for (i, direction) in attemptArray.enumerated() {
-            if direction != solutionArray[i] { 
+            if direction != solutionArray[i] {
                 return false
             }
         }
 
         return true
     }
+    
+    // FIXME: - Temporary...
+    private let solutionLabel: SKLabelNode
+    private var attemptLabel: SKLabelNode
+    let sprite: SKSpriteNode
 
     
     // MARK: - Initialization
     
-    init(solution: String, yPos: CGFloat) {
-        solutionArray = []
-        attemptArray = []
-
-        for direction in solution.components(separatedBy: ",") {
-            solutionArray.append(Controls(rawValue: direction) ?? .unknown)
-        }
-
-        solutionLabel = SKLabelNode(text: "\(solution),")
+    init(solution: String, attempt: String, yPos: CGFloat) {
+        solutionLabel = SKLabelNode(text: solution)
         solutionLabel.position = CGPoint(x: K.ScreenDimensions.lrMargin + 20, y: yPos - 8)
         solutionLabel.horizontalAlignmentMode = .left
         solutionLabel.verticalAlignmentMode = .top
@@ -52,7 +52,7 @@ class SolutionEngine {
         solutionLabel.addDropShadow()
 
         // FIXME: - Debug
-        attemptLabel = SKLabelNode(text: "")
+        attemptLabel = SKLabelNode(text: attempt)
         attemptLabel.position = CGPoint(x: K.ScreenDimensions.lrMargin + 20, y: solutionLabel.position.y - solutionLabel.frame.size.height)
         attemptLabel.horizontalAlignmentMode = .left
         attemptLabel.verticalAlignmentMode = .top
@@ -66,9 +66,12 @@ class SolutionEngine {
         
         sprite = SKSpriteNode(color: .clear, size: K.ScreenDimensions.size)
         sprite.zPosition = 20
-
+                
         sprite.addChild(solutionLabel)
         sprite.addChild(attemptLabel)
+
+        solutionArray = stringToArray(solution)
+        attemptArray = stringToArray(attempt)
     }
     
     
@@ -155,26 +158,19 @@ class SolutionEngine {
         lastArrow.removeAllActions()
         
         lastArrow.run(SKAction.sequence([
-            SKAction.fadeIn(withDuration: 0),
             SKAction.fadeOut(withDuration: 0.5),
             SKAction.removeFromParent()
         ]))
     }
     
     func appendDirection(_ direction: Controls) {
-        attemptLabel.text! += direction.rawValue + ","
-        attemptLabel.updateShadow()
-        
         attemptArray.append(direction)
     }
  
     func dropLastDirection() {
-        attemptLabel.text = String(attemptLabel.text!.dropLast(2))
-        attemptLabel.updateShadow()
-        
-        if !attemptArray.isEmpty {
-            attemptArray.removeLast()
-        }
+        guard !attemptArray.isEmpty else { return }
+
+        attemptArray.removeLast()
     }
     
     func checkForMatch() {
@@ -182,9 +178,31 @@ class SolutionEngine {
     }
     
     func clearAttempt() {
-        attemptLabel.text = ""
-        attemptLabel.updateShadow()
-        
         attemptArray = []
+    }
+    
+    
+    // MARK: - Helper Functions
+    
+    func arrayToString(_ array: [Controls]) -> String {
+        var returnStr: String = ""
+
+        for (i, item) in array.enumerated() {
+            returnStr += item.rawValue + (i >= array.count - 1 ? "" : ",")
+        }
+        
+        return returnStr
+    }
+    
+    func stringToArray(_ input: String) -> [Controls] {
+        var returnArray: [Controls] = []
+        
+        guard input.count > 0 else { return returnArray }
+        
+        for direction in input.components(separatedBy: ",") {
+            returnArray.append(Controls(rawValue: direction) ?? .unknown)
+        }
+        
+        return returnArray
     }
 }

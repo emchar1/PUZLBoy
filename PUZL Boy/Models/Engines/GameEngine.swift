@@ -105,7 +105,7 @@ class GameEngine {
         }
         
         if Level.isPartyLevel(level) {
-            self.level = Level(level: Level.partyLevel, moves: 0, health: 0, solution: "D,E,F",
+            self.level = Level(level: Level.partyLevel, moves: 0, health: 0, solution: "", attempt: "",
                                gameboard: LevelBuilder.buildPartyGameboard(ofSize: self.level.gameboard.count))
         }
         else {
@@ -141,6 +141,7 @@ class GameEngine {
                           moves: saveStateModel.levelModel.moves,
                           health: saveStateModel.levelModel.health,
                           solution: saveStateModel.levelModel.solution,
+                          attempt: saveStateModel.levelModel.attempt,
                           gameboard: LevelBuilder.buildGameboard(levelModel: saveStateModel.levelModel))
             level.inventory = saveStateModel.levelModel.inventory
             level.updatePlayer(position: (row: saveStateModel.levelModel.playerPosition.row, col: saveStateModel.levelModel.playerPosition.col))
@@ -160,6 +161,7 @@ class GameEngine {
                           moves: LevelBuilder.levels[newLevel].moves,
                           health: LevelBuilder.levels[newLevel].health,
                           solution: LevelBuilder.levels[newLevel].solution,
+                          attempt: LevelBuilder.levels[newLevel].attempt,
                           gameboard: LevelBuilder.levels[newLevel].gameboard)
             level.inventory = Inventory(hammers: 0, swords: 0)
             //level.updatePlayer(position: (row: saveStateModel.playerPosition.row, col: saveStateModel.playerPosition.col))
@@ -230,7 +232,7 @@ class GameEngine {
         AudioManager.shared.adjustVolume(to: 1, for: AudioManager.shared.currentTheme, fadeDuration: 0.5)
         
         // FIXME: - SolutionEngine Debug
-        solutionEngine = SolutionEngine(solution: level.solution, yPos: gameboardSprite.sprite.position.y)
+        solutionEngine = SolutionEngine(solution: level.solution, attempt: level.attempt, yPos: gameboardSprite.sprite.position.y)
         if let user = FIRManager.user, user.uid == FIRManager.userEddie {
             backgroundSprite.addChild(solutionEngine.sprite)
         }

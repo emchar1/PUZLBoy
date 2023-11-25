@@ -19,6 +19,7 @@ struct LevelModel: CustomStringConvertible, Codable {
     let moves: Int
     let health: Int
     let solution: String
+    let attempt: String
     let gemsCollected: Int
     let gemsRemaining: Int
     let playerPosition: PlayerPosition

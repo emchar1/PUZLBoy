@@ -205,6 +205,7 @@ struct FIRManager {
                 "moves": saveStateModel.levelModel.moves,
                 "health": saveStateModel.levelModel.health,
                 "solution": saveStateModel.levelModel.solution,
+                "attempt": saveStateModel.levelModel.attempt,
                 "gemsCollected": saveStateModel.levelModel.gemsCollected,
                 "gemsRemaining": saveStateModel.levelModel.gemsRemaining,
                 "inventory": [
@@ -403,7 +404,8 @@ struct FIRManager {
             level: object["level"] as? Int ?? 1,
             moves: object["moves"] as? Int ?? 4,
             health: object["health"] as? Int ?? 1,
-            solution: object["solution"] as? String ?? "A,B,C",
+            solution: object["solution"] as? String ?? "",
+            attempt: object["attempt"] as? String ?? "",
             gemsCollected: object["gemsCollected"] as? Int ?? 0,
             gemsRemaining: object["gemsRemaining"] as? Int ?? 1,
             playerPosition: PlayerPosition(row: playerPosition?["row"] as? Int ?? 0, col: playerPosition?["col"] as? Int ?? 0),

@@ -356,6 +356,7 @@ class GameScene: SKScene {
             movesRemaining: gameEngine.movesRemaining,
             heathRemaining: gameEngine.healthRemaining,
             solution: gameEngine.level.solution,
+            attempt: gameEngine.solutionEngine.arrayToString(gameEngine.solutionEngine.attemptArray),
             gemsCollected: gameEngine.gemsCollected,
             gemsRemaining: gameEngine.gemsRemaining,
             playerPosition: PlayerPosition(row: gameEngine.level.player.row, col: gameEngine.level.player.col),
@@ -945,6 +946,7 @@ extension GameScene: PauseResetEngineDelegate {
         
         gameEngine.solutionEngine.getHint(gameboardSprite: gameboardSprite, playerPosition: playerPosition) {
 //            hintButton.isHidden = false
+            print("Hint arrow is done animating.")
         }
     }
     
