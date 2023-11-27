@@ -29,7 +29,7 @@ struct LevelBuilder {
             for model in levelModels {
                 let gameboard = buildGameboard(levelModel: model)
 
-                levels.append(Level(level: model.level, moves: model.moves, health: model.health, solution: model.solution, attempt: model.attempt, gameboard: gameboard))
+                levels.append(Level(level: model.level, moves: model.moves, health: model.health, hintsAttempt: model.hintsAttempt, hintsBought: model.hintsBought, hintsSolution: model.hintsSolution, gameboard: gameboard))
             } //end for model...
             
             LevelBuilder.levels = levels

@@ -7,11 +7,13 @@
 
 import SpriteKit
 
-class SolutionEngine {
+class HintEngine {
     
     // MARK: - Properties
     
     private let nodeNameArrowHint = "hintarrow"
+    private(set) var didUseHint: Bool = false
+    private(set) var hintAvailable: Bool = FIRManager.saveStateModel?.hintAvailable ?? true
     private(set) var solutionArray: [Controls] = []
     private(set) var attemptArray: [Controls] = [] {
         didSet {
@@ -82,6 +84,11 @@ class SolutionEngine {
     // MARK: - Functions
     
     @discardableResult func getHint(gameboardSprite: GameboardSprite, playerPosition: K.GameboardPosition, completion: (() -> Void)?) -> Controls? {
+        guard hintAvailable else {
+            print("SolutionEngine.getHint(): hintAvailable == false.")
+            return nil
+        }
+        
         guard isMatch else {
             print("SolutionEngine.getHint(): User attempt diverged from solution path.")
             return nil
@@ -103,6 +110,7 @@ class SolutionEngine {
         }
         
         removeAnimatingHint(from: gameboardSprite)
+        didUseHint = true
         
         let positionOffset: K.GameboardPosition
         let rotationAngle: CGFloat
@@ -167,6 +175,17 @@ class SolutionEngine {
         ]))
     }
     
+    
+    // MARK: - Getter/Setter Functions
+    
+    func setHintAvailable(_ hintAvailable: Bool) {
+        self.hintAvailable = hintAvailable
+    }
+    
+    func setDidUseHint(_ didUseHint: Bool) {
+        self.didUseHint = didUseHint
+    }
+    
     func appendDirection(_ direction: Controls) {
         attemptArray.append(direction)
     }
@@ -176,13 +195,13 @@ class SolutionEngine {
 
         attemptArray.removeLast()
     }
+        
+    func clearAttempt() {
+        attemptArray = []
+    }
     
     func checkForMatch() {
         attemptLabel.fontColor = isMatch ? .green : .red
-    }
-    
-    func clearAttempt() {
-        attemptArray = []
     }
     
     

@@ -1,8 +1,9 @@
 {
   "0": {
+    "health": 1,
+    "hintsSolution": "R,R,D,D",
     "level": 0,
     "moves": 4,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -100,13 +101,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,R,D,D"
+    "s6d6": ""
   },
   "1": {
+    "health": 1,
+    "hintsSolution": "R,D",
     "level": 1,
     "moves": 2,
-    "health": 1,
     "r0c0": "grass",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -204,13 +205,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,D"
+    "s6d6": ""
   },
   "2": {
+    "health": 1,
+    "hintsSolution": "R,D,R,D",
     "level": 2,
     "moves": 4,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -308,13 +309,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,D,R,D"
+    "s6d6": ""
   },
   "3": {
+    "health": 1,
+    "hintsSolution": "R,R,D,L,D,R",
     "level": 3,
     "moves": 6,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -412,13 +413,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,R,D,L,D,R"
+    "s6d6": ""
   },
   "4": {
+    "health": 1,
+    "hintsSolution": "R,R,D,L,L,D,R,R",
     "level": 4,
     "moves": 8,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -516,13 +517,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,R,D,L,L,D,R,R"
+    "s6d6": ""
   },
   "5": {
+    "health": 1,
+    "hintsSolution": "D,D,R,U,U,R,D,D",
     "level": 5,
     "moves": 8,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -620,13 +621,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,D,R,U,U,R,D,D"
+    "s6d6": ""
   },
   "6": {
+    "health": 1,
+    "hintsSolution": "D,D,R,R,U,U,L,D",
     "level": 6,
     "moves": 8,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -724,13 +725,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,D,R,R,U,U,L,D"
+    "s6d6": ""
   },
   "7": {
+    "health": 1,
+    "hintsSolution": "D,D,R,U,U,R,D,D",
     "level": 7,
     "moves": 8,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -828,13 +829,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,D,R,U,U,R,D,D"
+    "s6d6": ""
   },
   "8": {
+    "health": 1,
+    "hintsSolution": "D,D,R,R,U,U,D,D",
     "level": 8,
     "moves": 8,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -932,13 +933,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,D,R,R,U,U,D,D"
+    "s6d6": ""
   },
   "9": {
+    "health": 1,
+    "hintsSolution": "R,D,R,D",
     "level": 9,
     "moves": 4,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -1036,13 +1037,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,D,R,D"
+    "s6d6": ""
   },
   "10": {
+    "health": 1,
+    "hintsSolution": "D,D,R,R,U,U,L,R,D,D",
     "level": 10,
     "moves": 10,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -1140,13 +1141,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,D,R,R,U,U,L,R,D,D"
+    "s6d6": ""
   },
   "11": {
+    "health": 1,
+    "hintsSolution": "D,D,R,R,U,U",
     "level": 11,
     "moves": 6,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "endClosed",
@@ -1244,13 +1245,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,D,R,R,U,U"
+    "s6d6": ""
   },
   "12": {
+    "health": 1,
+    "hintsSolution": "R,R,D,D",
     "level": 12,
     "moves": 4,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -1348,13 +1349,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,R,D,D"
+    "s6d6": ""
   },
   "13": {
+    "health": 1,
+    "hintsSolution": "D,D,R,U,R,U,D,D",
     "level": 13,
     "moves": 8,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -1452,13 +1453,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,D,R,U,R,U,D,D"
+    "s6d6": ""
   },
   "14": {
+    "health": 1,
+    "hintsSolution": "D,U,R,D,R,D",
     "level": 14,
     "moves": 6,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -1556,13 +1557,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,U,R,D,R,D"
+    "s6d6": ""
   },
   "15": {
+    "health": 1,
+    "hintsSolution": "D,U,R,R,D,D,L",
     "level": 15,
     "moves": 7,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -1660,13 +1661,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,U,R,R,D,D,L"
+    "s6d6": ""
   },
   "16": {
+    "health": 1,
+    "hintsSolution": "R,R,L,L,D,D,R,R",
     "level": 16,
     "moves": 8,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -1764,13 +1765,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,R,L,L,D,D,R,R"
+    "s6d6": ""
   },
   "17": {
+    "health": 1,
+    "hintsSolution": "D,D,R,R,U,U",
     "level": 17,
     "moves": 6,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "endClosed",
@@ -1868,13 +1869,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,D,R,R,U,U"
+    "s6d6": ""
   },
   "18": {
+    "health": 1,
+    "hintsSolution": "R,U,D,D,L,L,U,U",
     "level": 18,
     "moves": 8,
-    "health": 1,
     "r0c0": "endClosed",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -1972,13 +1973,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,U,D,D,L,L,U,U"
+    "s6d6": ""
   },
   "19": {
+    "health": 1,
+    "hintsSolution": "D,D,U,R,R,U,D,D",
     "level": 19,
     "moves": 8,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "marsh",
     "r0c2": "grass",
@@ -2076,13 +2077,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,D,U,R,R,U,D,D"
+    "s6d6": ""
   },
   "20": {
+    "health": 1,
+    "hintsSolution": "R,D,R,D,L,U",
     "level": 20,
     "moves": 7,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "marsh",
     "r0c2": "marsh",
@@ -2180,13 +2181,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,D,R,D,L,U"
+    "s6d6": ""
   },
   "21": {
+    "health": 1,
+    "hintsSolution": "D,D,R,R,U,U,D,D",
     "level": 21,
     "moves": 10,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "marsh",
     "r0c2": "grass",
@@ -2284,13 +2285,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,D,R,R,U,U,D,D"
+    "s6d6": ""
   },
   "22": {
+    "health": 1,
+    "hintsSolution": "U,U,R,R,D,D,L,R",
     "level": 22,
     "moves": 11,
-    "health": 1,
     "r0c0": "grass",
     "r0c1": "marsh",
     "r0c2": "marsh",
@@ -2388,13 +2389,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "U,U,R,R,D,D,L,R"
+    "s6d6": ""
   },
   "23": {
+    "health": 1,
+    "hintsSolution": "R,R,D,D,L,L,U,R",
     "level": 23,
     "moves": 12,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "marsh",
     "r0c2": "grass",
@@ -2492,13 +2493,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,R,D,D,L,L,U,R"
+    "s6d6": ""
   },
   "24": {
+    "health": 1,
+    "hintsSolution": "R,R,D,D,L,L,R,R",
     "level": 24,
     "moves": 11,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -2596,13 +2597,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,R,D,D,L,L,R,R"
+    "s6d6": ""
   },
   "25": {
+    "health": 1,
+    "hintsSolution": "D,U,R,R,D,D",
     "level": 25,
     "moves": 6,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -2700,13 +2701,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,U,R,R,D,D"
+    "s6d6": ""
   },
   "26": {
+    "health": 1,
+    "hintsSolution": "D,R,R,U,D,D",
     "level": 26,
     "moves": 7,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -2804,13 +2805,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,R,R,U,D,D"
+    "s6d6": ""
   },
   "27": {
+    "health": 1,
+    "hintsSolution": "R,R,L,D,D,L,R,R",
     "level": 27,
     "moves": 10,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "marsh",
     "r0c2": "grass",
@@ -2908,13 +2909,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,R,L,D,D,L,R,R"
+    "s6d6": ""
   },
   "28": {
+    "health": 1,
+    "hintsSolution": "U,D,L,R,R,L,D,R",
     "level": 28,
     "moves": 8,
-    "health": 1,
     "r0c0": "marsh",
     "r0c1": "grass",
     "r0c2": "marsh",
@@ -3012,13 +3013,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "U,D,L,R,R,L,D,R"
+    "s6d6": ""
   },
   "29": {
+    "health": 1,
+    "hintsSolution": "R,L,D,D,R,R,U,D",
     "level": 29,
     "moves": 10,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -3116,13 +3117,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,L,D,D,R,R,U,D"
+    "s6d6": ""
   },
   "30": {
+    "health": 1,
+    "hintsSolution": "R,R,D,D,L,L,U,D,R,R",
     "level": 30,
     "moves": 13,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "marsh",
     "r0c2": "marsh",
@@ -3220,13 +3221,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,R,D,D,L,L,U,D,R,R"
+    "s6d6": ""
   },
   "31": {
+    "health": 1,
+    "hintsSolution": "R,D,D,U,U,R",
     "level": 31,
     "moves": 11,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "marsh",
     "r0c2": "endClosed",
@@ -3324,13 +3325,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,D,D,U,U,R"
+    "s6d6": ""
   },
   "32": {
+    "health": 1,
+    "hintsSolution": "D,D,R,R,U,U,D,D",
     "level": 32,
     "moves": 11,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "marsh",
     "r0c2": "grass",
@@ -3428,13 +3429,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,D,R,R,U,U,D,D"
+    "s6d6": ""
   },
   "33": {
+    "health": 1,
+    "hintsSolution": "D,D,R,R,U,U,L,L,D",
     "level": 33,
     "moves": 11,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "marsh",
     "r0c2": "grass",
@@ -3532,13 +3533,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,D,R,R,U,U,L,L,D"
+    "s6d6": ""
   },
   "34": {
+    "health": 1,
+    "hintsSolution": "R,D,L,L",
     "level": 34,
     "moves": 4,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -3636,13 +3637,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,D,L,L"
+    "s6d6": ""
   },
   "35": {
+    "health": 1,
+    "hintsSolution": "D,D,U,U,R,D",
     "level": 35,
     "moves": 6,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -3740,13 +3741,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,D,U,U,R,D"
+    "s6d6": ""
   },
   "36": {
+    "health": 1,
+    "hintsSolution": "D,D,D,D",
     "level": 36,
     "moves": 4,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -3844,13 +3845,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,D,D,D"
+    "s6d6": ""
   },
   "37": {
+    "health": 1,
+    "hintsSolution": "R,R,D,U,D,D,U,U,R",
     "level": 37,
     "moves": 9,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -3948,13 +3949,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,R,D,U,D,D,U,U,R"
+    "s6d6": ""
   },
   "38": {
+    "health": 1,
+    "hintsSolution": "R,D,U,D,R,D,U,U",
     "level": 38,
     "moves": 8,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "endClosed",
@@ -4052,13 +4053,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,D,U,D,R,D,U,U"
+    "s6d6": ""
   },
   "39": {
+    "health": 1,
+    "hintsSolution": "R,U,D,U,D,D,U,D",
     "level": 39,
     "moves": 8,
-    "health": 1,
     "r0c0": "grass",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -4156,13 +4157,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,U,D,U,D,D,U,D"
+    "s6d6": ""
   },
   "40": {
+    "health": 1,
+    "hintsSolution": "R,D,U,D,D,R",
     "level": 40,
     "moves": 6,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -4260,13 +4261,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,D,U,D,D,R"
+    "s6d6": ""
   },
   "41": {
+    "health": 1,
+    "hintsSolution": "R,D,U,D,L,R",
     "level": 41,
     "moves": 6,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "endClosed",
@@ -4364,13 +4365,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,D,U,D,L,R"
+    "s6d6": ""
   },
   "42": {
+    "health": 1,
+    "hintsSolution": "R,R,D,L,L,L",
     "level": 42,
     "moves": 6,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -4468,13 +4469,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,R,D,L,L,L"
+    "s6d6": ""
   },
   "43": {
+    "health": 1,
+    "hintsSolution": "R,R,L,L,D,D,R",
     "level": 43,
     "moves": 7,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -4572,13 +4573,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,R,L,L,D,D,R"
+    "s6d6": ""
   },
   "44": {
+    "health": 1,
+    "hintsSolution": "D,U,U,U,D,D,U,D",
     "level": 44,
     "moves": 8,
-    "health": 1,
     "r0c0": "grass",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -4676,13 +4677,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,U,U,U,D,D,U,D"
+    "s6d6": ""
   },
   "45": {
+    "health": 1,
+    "hintsSolution": "R,R,D,D,L,R",
     "level": 45,
     "moves": 6,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -4780,13 +4781,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,R,D,D,L,R"
+    "s6d6": ""
   },
   "46": {
+    "health": 1,
+    "hintsSolution": "D,U,D,D,U,D",
     "level": 46,
     "moves": 8,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "marsh",
     "r0c2": "marsh",
@@ -4884,13 +4885,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,U,D,D,U,D"
+    "s6d6": ""
   },
   "47": {
+    "health": 1,
+    "hintsSolution": "D,U,R,R,R,R,U,D",
     "level": 47,
     "moves": 12,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "marsh",
     "r0c2": "grass",
@@ -4988,13 +4989,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,U,R,R,R,R,U,D"
+    "s6d6": ""
   },
   "48": {
+    "health": 1,
+    "hintsSolution": "D,U,D,D,U,D,U,R",
     "level": 48,
     "moves": 11,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "marsh",
     "r0c2": "marsh",
@@ -5092,13 +5093,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,U,D,D,U,D,U,R"
+    "s6d6": ""
   },
   "49": {
+    "health": 1,
+    "hintsSolution": "R,L,D,D,R,D",
     "level": 49,
     "moves": 7,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -5196,13 +5197,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,L,D,D,R,D"
+    "s6d6": ""
   },
   "50": {
+    "health": 1,
+    "hintsSolution": "R,L,R,R,D,D,U,U",
     "level": 50,
     "moves": 11,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "marsh",
     "r0c2": "endClosed",
@@ -5300,13 +5301,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,L,R,R,D,D,U,U"
+    "s6d6": ""
   },
   "51": {
+    "health": 10,
+    "hintsSolution": "D,D,R,R,U,U,L",
     "level": 51,
     "moves": 7,
-    "health": 10,
     "r0c0": "start",
     "r0c1": "endClosed",
     "r0c2": "grass",
@@ -5404,13 +5405,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,D,R,R,U,U,L"
+    "s6d6": ""
   },
   "52": {
+    "health": 1,
+    "hintsSolution": "R,D,D,R,L,U",
     "level": 52,
     "moves": 6,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -5508,13 +5509,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,D,D,R,L,U"
+    "s6d6": ""
   },
   "53": {
+    "health": 1,
+    "hintsSolution": "D,D,R,R,L",
     "level": 53,
     "moves": 5,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -5612,13 +5613,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,D,R,R,L"
+    "s6d6": ""
   },
   "54": {
+    "health": 1,
+    "hintsSolution": "D,R,R,U,D,D,L,R",
     "level": 54,
     "moves": 8,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -5716,13 +5717,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,R,R,U,D,D,L,R"
+    "s6d6": ""
   },
   "55": {
+    "health": 1,
+    "hintsSolution": "D,U,R,R,D,D,L,R",
     "level": 55,
     "moves": 8,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -5820,13 +5821,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,U,R,R,D,D,L,R"
+    "s6d6": ""
   },
   "56": {
+    "health": 1,
+    "hintsSolution": "R,D,R,D,L,L,R,R",
     "level": 56,
     "moves": 9,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -5924,13 +5925,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,D,R,D,L,L,R,R"
+    "s6d6": ""
   },
   "57": {
+    "health": 1,
+    "hintsSolution": "R,R,L,L,D,D,R,R",
     "level": 57,
     "moves": 14,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "marsh",
     "r0c2": "marsh",
@@ -6028,13 +6029,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,R,L,L,D,D,R,R"
+    "s6d6": ""
   },
   "58": {
+    "health": 1,
+    "hintsSolution": "D,D,R,U,R,L,L,D",
     "level": 58,
     "moves": 8,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -6132,13 +6133,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,D,R,U,R,L,L,D"
+    "s6d6": ""
   },
   "59": {
+    "health": 1,
+    "hintsSolution": "D,U,R,D,R,D",
     "level": 59,
     "moves": 6,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -6236,13 +6237,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,U,R,D,R,D"
+    "s6d6": ""
   },
   "60": {
+    "health": 1,
+    "hintsSolution": "R,L,D,D,R,R",
     "level": 60,
     "moves": 6,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -6340,13 +6341,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,L,D,D,R,R"
+    "s6d6": ""
   },
   "61": {
+    "health": 1,
+    "hintsSolution": "R,R,L,D,D,L,R,R",
     "level": 61,
     "moves": 10,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "marsh",
     "r0c2": "grass",
@@ -6444,13 +6445,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,R,L,D,D,L,R,R"
+    "s6d6": ""
   },
   "62": {
+    "health": 1,
+    "hintsSolution": "R,R,U,D,L,L,D,D",
     "level": 62,
     "moves": 8,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -6548,13 +6549,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,R,U,D,L,L,D,D"
+    "s6d6": ""
   },
   "63": {
+    "health": 1,
+    "hintsSolution": "D,U,R,R,R",
     "level": 63,
     "moves": 5,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -6652,13 +6653,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,U,R,R,R"
+    "s6d6": ""
   },
   "64": {
+    "health": 1,
+    "hintsSolution": "R,D,D,L,L,U,U",
     "level": 64,
     "moves": 7,
-    "health": 1,
     "r0c0": "endClosed",
     "r0c1": "start",
     "r0c2": "grass",
@@ -6756,13 +6757,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,D,D,L,L,U,U"
+    "s6d6": ""
   },
   "65": {
+    "health": 1,
+    "hintsSolution": "R,R,L,D,L,L",
     "level": 65,
     "moves": 6,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -6860,13 +6861,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,R,L,D,L,L"
+    "s6d6": ""
   },
   "66": {
+    "health": 1,
+    "hintsSolution": "D,L,R,U,R,R,D",
     "level": 66,
     "moves": 7,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -6964,13 +6965,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,L,R,U,R,R,D"
+    "s6d6": ""
   },
   "67": {
+    "health": 1,
+    "hintsSolution": "R,D,U,D,R,D",
     "level": 67,
     "moves": 6,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -7068,13 +7069,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,D,U,D,R,D"
+    "s6d6": ""
   },
   "68": {
+    "health": 1,
+    "hintsSolution": "R,D,U,D,R,D",
     "level": 68,
     "moves": 6,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -7172,13 +7173,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,D,U,D,R,D"
+    "s6d6": ""
   },
   "69": {
+    "health": 1,
+    "hintsSolution": "D,D,R,R,U,U,D,D",
     "level": 69,
     "moves": 8,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -7276,13 +7277,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,D,R,R,U,U,D,D"
+    "s6d6": ""
   },
   "70": {
+    "health": 1,
+    "hintsSolution": "D,D,R,L,L,U,U,R",
     "level": 70,
     "moves": 8,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "endClosed",
@@ -7380,13 +7381,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,D,R,L,L,U,U,R"
+    "s6d6": ""
   },
   "71": {
+    "health": 1,
+    "hintsSolution": "D,L,L,U,U,D,R,R,U",
     "level": 71,
     "moves": 9,
-    "health": 1,
     "r0c0": "grass",
     "r0c1": "grass",
     "r0c2": "start",
@@ -7484,13 +7485,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,L,L,U,U,D,R,R,U"
+    "s6d6": ""
   },
   "72": {
+    "health": 1,
+    "hintsSolution": "D,R,U,R,D,D",
     "level": 72,
     "moves": 9,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "marsh",
     "r0c2": "grass",
@@ -7588,13 +7589,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,R,U,R,D,D"
+    "s6d6": ""
   },
   "73": {
+    "health": 1,
+    "hintsSolution": "R,U,L,D,L,R,U",
     "level": 73,
     "moves": 12,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "marsh",
     "r0c2": "marsh",
@@ -7692,13 +7693,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,U,L,D,L,R,U"
+    "s6d6": ""
   },
   "74": {
+    "health": 1,
+    "hintsSolution": "R,D,U,D,L,R,D,D",
     "level": 74,
     "moves": 15,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "marsh",
     "r0c2": "marsh",
@@ -7796,13 +7797,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,D,U,D,L,R,D,D"
+    "s6d6": ""
   },
   "75": {
+    "health": 1,
+    "hintsSolution": "D,D,R,R,U,D",
     "level": 75,
     "moves": 10,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "marsh",
     "r0c2": "marsh",
@@ -7900,13 +7901,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,D,R,R,U,D"
+    "s6d6": ""
   },
   "76": {
+    "health": 1,
+    "hintsSolution": "R,D",
     "level": 76,
     "moves": 2,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -8004,13 +8005,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,D"
+    "s6d6": ""
   },
   "77": {
+    "health": 1,
+    "hintsSolution": "R,D,L",
     "level": 77,
     "moves": 3,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -8108,13 +8109,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,D,L"
+    "s6d6": ""
   },
   "78": {
+    "health": 1,
+    "hintsSolution": "D,U,R,D",
     "level": 78,
     "moves": 4,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -8212,13 +8213,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,U,R,D"
+    "s6d6": ""
   },
   "79": {
+    "health": 1,
+    "hintsSolution": "R,D,R,D",
     "level": 79,
     "moves": 4,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -8316,13 +8317,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,D,R,D"
+    "s6d6": ""
   },
   "80": {
+    "health": 1,
+    "hintsSolution": "R,R,D,D,L,R,U",
     "level": 80,
     "moves": 7,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -8420,13 +8421,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,R,D,D,L,R,U"
+    "s6d6": ""
   },
   "81": {
+    "health": 1,
+    "hintsSolution": "D,D,R,U,R,D,L,U,L",
     "level": 81,
     "moves": 10,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "marsh",
@@ -8524,13 +8525,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,D,R,U,R,D,L,U,L"
+    "s6d6": ""
   },
   "82": {
+    "health": 1,
+    "hintsSolution": "R,L,D,R,D",
     "level": 82,
     "moves": 5,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -8628,13 +8629,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,L,D,R,D"
+    "s6d6": ""
   },
   "83": {
+    "health": 2,
+    "hintsSolution": "D,U,R,R,D,D",
     "level": 83,
     "moves": 6,
-    "health": 2,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -8732,13 +8733,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,U,R,R,D,D"
+    "s6d6": ""
   },
   "84": {
+    "health": 1,
+    "hintsSolution": "R,L,D,D,R,L",
     "level": 84,
     "moves": 6,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -8836,13 +8837,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,L,D,D,R,L"
+    "s6d6": ""
   },
   "85": {
+    "health": 1,
+    "hintsSolution": "R,R,U,D,R",
     "level": 85,
     "moves": 7,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "grass",
@@ -8940,13 +8941,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,R,U,D,R"
+    "s6d6": ""
   },
   "86": {
+    "health": 1,
+    "hintsSolution": "D,D,R,R,U,L",
     "level": 86,
     "moves": 6,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "endClosed",
     "r0c2": "ice",
@@ -9044,13 +9045,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,D,R,R,U,L"
+    "s6d6": ""
   },
   "87": {
+    "health": 1,
+    "hintsSolution": "R,L,D,D,R,R",
     "level": 87,
     "moves": 7,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -9148,13 +9149,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,L,D,D,R,R"
+    "s6d6": ""
   },
   "88": {
+    "health": 3,
+    "hintsSolution": "D,R,D,L,U,R,D",
     "level": 88,
     "moves": 7,
-    "health": 3,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "grass",
@@ -9252,13 +9253,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,R,D,L,U,R,D"
+    "s6d6": ""
   },
   "89": {
+    "health": 2,
+    "hintsSolution": "D,R,U,D,R,U,U",
     "level": 89,
     "moves": 7,
-    "health": 2,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "endClosed",
@@ -9356,13 +9357,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,R,U,D,R,U,U"
+    "s6d6": ""
   },
   "90": {
+    "health": 1,
+    "hintsSolution": "D,D,U,R,D,U,L",
     "level": 90,
     "moves": 7,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -9460,13 +9461,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,D,U,R,D,U,L"
+    "s6d6": ""
   },
   "91": {
+    "health": 2,
+    "hintsSolution": "R,D,R,L,U,D,L",
     "level": 91,
     "moves": 7,
-    "health": 2,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "grass",
@@ -9564,13 +9565,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,D,R,L,U,D,L"
+    "s6d6": ""
   },
   "92": {
+    "health": 1,
+    "hintsSolution": "D,D,R,U,L,D",
     "level": 92,
     "moves": 6,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "marsh",
@@ -9668,13 +9669,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,D,R,U,L,D"
+    "s6d6": ""
   },
   "93": {
+    "health": 1,
+    "hintsSolution": "L,D,R,L,U,R,D,R",
     "level": 93,
     "moves": 8,
-    "health": 1,
     "r0c0": "grass",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -9772,13 +9773,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "L,D,R,L,U,R,D,R"
+    "s6d6": ""
   },
   "94": {
+    "health": 1,
+    "hintsSolution": "R,L,D,R,U,D,R",
     "level": 94,
     "moves": 10,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -9876,13 +9877,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,L,D,R,U,D,R"
+    "s6d6": ""
   },
   "95": {
+    "health": 1,
+    "hintsSolution": "D,R,D,L,U,D,R",
     "level": 95,
     "moves": 7,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -9980,13 +9981,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,R,D,L,U,D,R"
+    "s6d6": ""
   },
   "96": {
+    "health": 1,
+    "hintsSolution": "R,L,D,R",
     "level": 96,
     "moves": 4,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -10084,13 +10085,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,L,D,R"
+    "s6d6": ""
   },
   "97": {
+    "health": 1,
+    "hintsSolution": "D,R,U,U,D",
     "level": 97,
     "moves": 5,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -10188,13 +10189,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,R,U,U,D"
+    "s6d6": ""
   },
   "98": {
+    "health": 2,
+    "hintsSolution": "D,R,U,L,R,D",
     "level": 98,
     "moves": 6,
-    "health": 2,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -10292,13 +10293,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,R,U,L,R,D"
+    "s6d6": ""
   },
   "99": {
+    "health": 1,
+    "hintsSolution": "R,U,R,L,R,L,L,U,R,R",
     "level": 99,
     "moves": 10,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -10396,13 +10397,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,U,R,L,R,L,L,U,R,R"
+    "s6d6": ""
   },
   "100": {
+    "health": 3,
+    "hintsSolution": "D,R,U,D,R",
     "level": 100,
     "moves": 5,
-    "health": 3,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -10500,13 +10501,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,R,U,D,R"
+    "s6d6": ""
   },
   "101": {
+    "health": 1,
+    "hintsSolution": "R,D,L,D,R,R,R",
     "level": 101,
     "moves": 7,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -10604,13 +10605,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,D,L,D,R,R,R"
+    "s6d6": ""
   },
   "102": {
+    "health": 1,
+    "hintsSolution": "D,R,R,D,L,U,L,D,R,D,L,R,R,R",
     "level": 102,
     "moves": 14,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -10708,13 +10709,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,R,R,D,L,U,L,D,R,D,L,R,R,R"
+    "s6d6": ""
   },
   "103": {
+    "health": 1,
+    "hintsSolution": "D,R,D,D,L,R,U,U,U,R,R,D",
     "level": 103,
     "moves": 12,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -10812,13 +10813,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,R,D,D,L,R,U,U,U,R,R,D"
+    "s6d6": ""
   },
   "104": {
+    "health": 1,
+    "hintsSolution": "R,L,U,U,D,D,R,R,D,D,U,L",
     "level": 104,
     "moves": 12,
-    "health": 1,
     "r0c0": "grass",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -10916,13 +10917,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,L,U,U,D,D,R,R,D,D,U,L"
+    "s6d6": ""
   },
   "105": {
+    "health": 1,
+    "hintsSolution": "R,R,L,L,D,D,R,R,R,D",
     "level": 105,
     "moves": 10,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -11020,13 +11021,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,R,L,L,D,D,R,R,R,D"
+    "s6d6": ""
   },
   "106": {
+    "health": 1,
+    "hintsSolution": "D,U,R,R,R,L,D,D,R,D",
     "level": 106,
     "moves": 12,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -11124,13 +11125,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,U,R,R,R,L,D,D,R,D"
+    "s6d6": ""
   },
   "107": {
+    "health": 1,
+    "hintsSolution": "R,R,R,D,L,D,L,L,D,R,R,R",
     "level": 107,
     "moves": 15,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "marsh",
     "r0c2": "grass",
@@ -11228,13 +11229,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,R,R,D,L,D,L,L,D,R,R,R"
+    "s6d6": ""
   },
   "108": {
+    "health": 1,
+    "hintsSolution": "D,R,R,R,U,D,D,L,D,L,L,R,R,U,U,L,U",
     "level": 108,
     "moves": 17,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "endClosed",
     "r0c2": "grass",
@@ -11332,13 +11333,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,R,R,R,U,D,D,L,D,L,L,R,R,U,U,L,U"
+    "s6d6": ""
   },
   "109": {
+    "health": 1,
+    "hintsSolution": "R,U,L,U,D",
     "level": 109,
     "moves": 5,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -11436,13 +11437,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,U,L,U,D"
+    "s6d6": ""
   },
   "110": {
+    "health": 1,
+    "hintsSolution": "R,R,R,D,L,U,L,D,R",
     "level": 110,
     "moves": 9,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -11540,13 +11541,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,R,R,D,L,U,L,D,R"
+    "s6d6": ""
   },
   "111": {
+    "health": 1,
+    "hintsSolution": "D,D,D,R,R,U,L,D,D,L,L",
     "level": 111,
     "moves": 12,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -11644,13 +11645,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,D,D,R,R,U,L,D,D,L,L"
+    "s6d6": ""
   },
   "112": {
+    "health": 1,
+    "hintsSolution": "D,D,U,D,D,R,U,U,R,L,L,D",
     "level": 112,
     "moves": 12,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -11748,13 +11749,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,D,U,D,D,R,U,U,R,L,L,D"
+    "s6d6": ""
   },
   "113": {
+    "health": 1,
+    "hintsSolution": "R,R,D,L,D,L,U,R,D",
     "level": 113,
     "moves": 13,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "marsh",
@@ -11852,13 +11853,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,R,D,L,D,L,U,R,D"
+    "s6d6": ""
   },
   "114": {
+    "health": 1,
+    "hintsSolution": "D,U,D,U,R,R,R,L,D,D,D,R",
     "level": 114,
     "moves": 16,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "marsh",
     "r0c2": "grass",
@@ -11956,13 +11957,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,U,D,U,R,R,R,L,D,D,D,R"
+    "s6d6": ""
   },
   "115": {
+    "health": 1,
+    "hintsSolution": "R,D,L,D,L,D,R",
     "level": 115,
     "moves": 7,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -12060,13 +12061,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,D,L,D,L,D,R"
+    "s6d6": ""
   },
   "116": {
+    "health": 1,
+    "hintsSolution": "R,D,R,D,L,R,U,L",
     "level": 116,
     "moves": 8,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "endClosed",
     "r0c2": "ice",
@@ -12164,13 +12165,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,D,R,D,L,R,U,L"
+    "s6d6": ""
   },
   "117": {
+    "health": 1,
+    "hintsSolution": "R,R,D,L,R,D,L,R,D",
     "level": 117,
     "moves": 16,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "marsh",
     "r0c2": "ice",
@@ -12268,13 +12269,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,R,D,L,R,D,L,R,D"
+    "s6d6": ""
   },
   "118": {
+    "health": 1,
+    "hintsSolution": "R,D,R,D,L,U,D,R",
     "level": 118,
     "moves": 8,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -12372,13 +12373,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,D,R,D,L,U,D,R"
+    "s6d6": ""
   },
   "119": {
+    "health": 1,
+    "hintsSolution": "R,D,D,U,L,D,D",
     "level": 119,
     "moves": 7,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -12476,13 +12477,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,D,D,U,L,D,D"
+    "s6d6": ""
   },
   "120": {
+    "health": 1,
+    "hintsSolution": "D,R,R,L,R,D,L,R",
     "level": 120,
     "moves": 8,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -12580,13 +12581,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,R,R,L,R,D,L,R"
+    "s6d6": ""
   },
   "121": {
+    "health": 2,
+    "hintsSolution": "R,D,R,U,D",
     "level": 121,
     "moves": 5,
-    "health": 2,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -12684,13 +12685,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,D,R,U,D"
+    "s6d6": ""
   },
   "122": {
+    "health": 1,
+    "hintsSolution": "D,R,D,U,U,R,U,R,D",
     "level": 122,
     "moves": 9,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -12788,13 +12789,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,R,D,U,U,R,U,R,D"
+    "s6d6": ""
   },
   "123": {
+    "health": 1,
+    "hintsSolution": "R,R,D,L,U,R,D",
     "level": 123,
     "moves": 7,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "ice",
@@ -12892,13 +12893,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,R,D,L,U,R,D"
+    "s6d6": ""
   },
   "124": {
+    "health": 1,
+    "hintsSolution": "D,R,U,D,R",
     "level": 124,
     "moves": 5,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -12996,13 +12997,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,R,U,D,R"
+    "s6d6": ""
   },
   "125": {
+    "health": 1,
+    "hintsSolution": "D,R,U,R,D,L,U,L,D,U,R,D",
     "level": 125,
     "moves": 12,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -13100,13 +13101,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,R,U,R,D,L,U,L,D,U,R,D"
+    "s6d6": ""
   },
   "126": {
+    "health": 1,
+    "hintsSolution": "D,R,U,D,R",
     "level": 126,
     "moves": 6,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -13204,13 +13205,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,R,U,D,R"
+    "s6d6": ""
   },
   "127": {
+    "health": 1,
+    "hintsSolution": "R,D,L,U,L,D,U,R,D",
     "level": 127,
     "moves": 9,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -13308,13 +13309,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,D,L,U,L,D,U,R,D"
+    "s6d6": ""
   },
   "128": {
+    "health": 3,
+    "hintsSolution": "R,D,L,U,R,U,D",
     "level": 128,
     "moves": 7,
-    "health": 3,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -13412,13 +13413,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,D,L,U,R,U,D"
+    "s6d6": ""
   },
   "129": {
+    "health": 1,
+    "hintsSolution": "D,L,R,R,D",
     "level": 129,
     "moves": 5,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -13516,13 +13517,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,L,R,R,D"
+    "s6d6": ""
   },
   "130": {
+    "health": 1,
+    "hintsSolution": "R,D,L,R,D,L,R",
     "level": 130,
     "moves": 7,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -13620,13 +13621,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,D,L,R,D,L,R"
+    "s6d6": ""
   },
   "131": {
+    "health": 1,
+    "hintsSolution": "D,D,D,R,U,R,R,L,D,R",
     "level": 131,
     "moves": 10,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -13724,13 +13725,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,D,D,R,U,R,R,L,D,R"
+    "s6d6": ""
   },
   "132": {
+    "health": 2,
+    "hintsSolution": "D,D,R,D,U,R,L,R,D,L",
     "level": 132,
     "moves": 10,
-    "health": 2,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -13828,13 +13829,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,D,R,D,U,R,L,R,D,L"
+    "s6d6": ""
   },
   "133": {
+    "health": 1,
+    "hintsSolution": "D,D,D,R,R,U,L",
     "level": 133,
     "moves": 11,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "endClosed",
     "r0c2": "ice",
@@ -13932,13 +13933,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,D,D,R,R,U,L"
+    "s6d6": ""
   },
   "134": {
+    "health": 2,
+    "hintsSolution": "R,D,R,U,R",
     "level": 134,
     "moves": 5,
-    "health": 2,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -14036,13 +14037,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,D,R,U,R"
+    "s6d6": ""
   },
   "135": {
+    "health": 1,
+    "hintsSolution": "R,D,L,D,U,R,U,D,R",
     "level": 135,
     "moves": 9,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "ice",
@@ -14140,13 +14141,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,D,L,D,U,R,U,D,R"
+    "s6d6": ""
   },
   "136": {
+    "health": 2,
+    "hintsSolution": "D,R,U,R,U,U,L,L",
     "level": 136,
     "moves": 12,
-    "health": 2,
     "r0c0": "start",
     "r0c1": "endClosed",
     "r0c2": "marsh",
@@ -14244,13 +14245,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,R,U,R,U,U,L,L"
+    "s6d6": ""
   },
   "137": {
+    "health": 1,
+    "hintsSolution": "R,D,U,R,D,L,U,R",
     "level": 137,
     "moves": 8,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "endClosed",
     "r0c2": "ice",
@@ -14348,13 +14349,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,D,U,R,D,L,U,R"
+    "s6d6": ""
   },
   "138": {
+    "health": 1,
+    "hintsSolution": "D,R,L,U,R,R,R,D",
     "level": 138,
     "moves": 8,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -14452,13 +14453,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,R,L,U,R,R,R,D"
+    "s6d6": ""
   },
   "139": {
+    "health": 2,
+    "hintsSolution": "R,D,R,D,L,D",
     "level": 139,
     "moves": 6,
-    "health": 2,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -14556,13 +14557,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,D,R,D,L,D"
+    "s6d6": ""
   },
   "140": {
+    "health": 1,
+    "hintsSolution": "D,D,R,U,U,L,D,U,L",
     "level": 140,
     "moves": 9,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "endClosed",
     "r0c2": "grass",
@@ -14660,13 +14661,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,D,R,U,U,L,D,U,L"
+    "s6d6": ""
   },
   "141": {
+    "health": 2,
+    "hintsSolution": "R,D,L,U,R,U,U,D,D,D",
     "level": 141,
     "moves": 10,
-    "health": 2,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -14764,13 +14765,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,D,L,U,R,U,U,D,D,D"
+    "s6d6": ""
   },
   "142": {
+    "health": 1,
+    "hintsSolution": "D,U,R,D,R,D",
     "level": 142,
     "moves": 7,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -14868,13 +14869,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,U,R,D,R,D"
+    "s6d6": ""
   },
   "143": {
+    "health": 1,
+    "hintsSolution": "D,R,R,D,L,L,U,L,D",
     "level": 143,
     "moves": 11,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "marsh",
@@ -14972,13 +14973,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,R,R,D,L,L,U,L,D"
+    "s6d6": ""
   },
   "144": {
+    "health": 2,
+    "hintsSolution": "D,R,D,R,U,R,D,D",
     "level": 144,
     "moves": 13,
-    "health": 2,
     "r0c0": "start",
     "r0c1": "marsh",
     "r0c2": "ice",
@@ -15076,13 +15077,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,R,D,R,U,R,D,D"
+    "s6d6": ""
   },
   "145": {
+    "health": 1,
+    "hintsSolution": "D,D,R,D,L,D,U,U,L",
     "level": 145,
     "moves": 11,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "endClosed",
     "r0c2": "grass",
@@ -15180,13 +15181,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,D,R,D,L,D,U,U,L"
+    "s6d6": ""
   },
   "146": {
+    "health": 1,
+    "hintsSolution": "D,U,R,D,L,D,R,U,D,R",
     "level": 146,
     "moves": 11,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -15284,13 +15285,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,U,R,D,L,D,R,U,D,R"
+    "s6d6": ""
   },
   "147": {
+    "health": 1,
+    "hintsSolution": "R,R,R,D,L,D,L,D,L,R",
     "level": 147,
     "moves": 14,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "marsh",
     "r0c2": "marsh",
@@ -15388,13 +15389,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,R,R,D,L,D,L,D,L,R"
+    "s6d6": ""
   },
   "148": {
+    "health": 1,
+    "hintsSolution": "U,L,D,U,D,U,U,D,D,D,D,R,R,U",
     "level": 148,
     "moves": 15,
-    "health": 1,
     "r0c0": "grass",
     "r0c1": "marsh",
     "r0c2": "grass",
@@ -15492,13 +15493,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "U,L,D,U,D,U,U,D,D,D,D,R,R,U"
+    "s6d6": ""
   },
   "149": {
+    "health": 2,
+    "hintsSolution": "R,D,D,R,U,D,L",
     "level": 149,
     "moves": 7,
-    "health": 2,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -15596,13 +15597,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,D,D,R,U,D,L"
+    "s6d6": ""
   },
   "150": {
+    "health": 4,
+    "hintsSolution": "R,D,L,U,D,R",
     "level": 150,
     "moves": 6,
-    "health": 4,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -15700,13 +15701,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,D,L,U,D,R"
+    "s6d6": ""
   },
   "151": {
+    "health": 1,
+    "hintsSolution": "D,R,U,L,R,D,L,D,R,R",
     "level": 151,
     "moves": 13,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -15804,13 +15805,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,R,U,L,R,D,L,D,R,R"
+    "s6d6": ""
   },
   "152": {
+    "health": 1,
+    "hintsSolution": "D,R,D,R,U,D",
     "level": 152,
     "moves": 6,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -15908,13 +15909,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,R,D,R,U,D"
+    "s6d6": ""
   },
   "153": {
+    "health": 2,
+    "hintsSolution": "D,R,U,R,U,L,R,D",
     "level": 153,
     "moves": 8,
-    "health": 2,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -16012,13 +16013,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,R,U,R,U,L,R,D"
+    "s6d6": ""
   },
   "154": {
+    "health": 1,
+    "hintsSolution": "D,D,R,D,L,L,U,R",
     "level": 154,
     "moves": 8,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "endClosed",
@@ -16116,13 +16117,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,D,R,D,L,L,U,R"
+    "s6d6": ""
   },
   "155": {
+    "health": 1,
+    "hintsSolution": "D,R,U,D,L,U,R,R,R",
     "level": 155,
     "moves": 9,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -16220,13 +16221,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,R,U,D,L,U,R,R,R"
+    "s6d6": ""
   },
   "156": {
+    "health": 1,
+    "hintsSolution": "R,L,D,R,R,R,U,D,D",
     "level": 156,
     "moves": 9,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -16324,13 +16325,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,L,D,R,R,R,U,D,D"
+    "s6d6": ""
   },
   "157": {
+    "health": 1,
+    "hintsSolution": "R,L,D,R,R,R,U,D,D",
     "level": 157,
     "moves": 10,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -16428,13 +16429,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,L,D,R,R,R,U,D,D"
+    "s6d6": ""
   },
   "158": {
+    "health": 1,
+    "hintsSolution": "R,R,R,L,L,L,D,D,D,U,R",
     "level": 158,
     "moves": 11,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -16532,13 +16533,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,R,R,L,L,L,D,D,D,U,R"
+    "s6d6": ""
   },
   "159": {
+    "health": 1,
+    "hintsSolution": "D,R,D,U,R,L,D,R",
     "level": 159,
     "moves": 8,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -16636,13 +16637,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,R,D,U,R,L,D,R"
+    "s6d6": ""
   },
   "160": {
+    "health": 1,
+    "hintsSolution": "D,U,R,D,R",
     "level": 160,
     "moves": 5,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -16740,13 +16741,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,U,R,D,R"
+    "s6d6": ""
   },
   "161": {
+    "health": 1,
+    "hintsSolution": "D,D,U,R,D,L,R,U,D,D",
     "level": 161,
     "moves": 14,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "marsh",
     "r0c2": "ice",
@@ -16844,13 +16845,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,D,U,R,D,L,R,U,D,D"
+    "s6d6": ""
   },
   "162": {
+    "health": 1,
+    "hintsSolution": "D,U,R,R,R,R,U,D",
     "level": 162,
     "moves": 12,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "marsh",
     "r0c2": "ice",
@@ -16948,13 +16949,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,U,R,R,R,R,U,D"
+    "s6d6": ""
   },
   "163": {
+    "health": 2,
+    "hintsSolution": "D,R,R,U,R,D,D",
     "level": 163,
     "moves": 10,
-    "health": 2,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -17052,13 +17053,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,R,R,U,R,D,D"
+    "s6d6": ""
   },
   "164": {
+    "health": 1,
+    "hintsSolution": "D,R,U,R,D,L,U,D,L,D,L",
     "level": 164,
     "moves": 18,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -17156,13 +17157,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,R,U,R,D,L,U,D,L,D,L"
+    "s6d6": ""
   },
   "165": {
+    "health": 1,
+    "hintsSolution": "D,D,D,R,U,R,U,R,U,D,D,D",
     "level": 165,
     "moves": 13,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "marsh",
     "r0c2": "marsh",
@@ -17260,13 +17261,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,D,D,R,U,R,U,R,U,D,D,D"
+    "s6d6": ""
   },
   "166": {
+    "health": 1,
+    "hintsSolution": "D,U,R,D,R,D,R",
     "level": 166,
     "moves": 7,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -17364,13 +17365,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,U,R,D,R,D,R"
+    "s6d6": ""
   },
   "167": {
+    "health": 1,
+    "hintsSolution": "D,R,D,R,U,L,R,D",
     "level": 167,
     "moves": 9,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -17468,13 +17469,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,R,D,R,U,L,R,D"
+    "s6d6": ""
   },
   "168": {
+    "health": 1,
+    "hintsSolution": "R,R,U,U,R,D,R",
     "level": 168,
     "moves": 7,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -17572,13 +17573,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,R,U,U,R,D,R"
+    "s6d6": ""
   },
   "169": {
+    "health": 1,
+    "hintsSolution": "R,R,U,D,L,D,L,R",
     "level": 169,
     "moves": 8,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -17676,13 +17677,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,R,U,D,L,D,L,R"
+    "s6d6": ""
   },
   "170": {
+    "health": 1,
+    "hintsSolution": "R,D,L,U,D,R",
     "level": 170,
     "moves": 6,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -17780,13 +17781,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,D,L,U,D,R"
+    "s6d6": ""
   },
   "171": {
+    "health": 1,
+    "hintsSolution": "R,D,L,D,L,R,U,R,D,R,D",
     "level": 171,
     "moves": 11,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -17884,13 +17885,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,D,L,D,L,R,U,R,D,R,D"
+    "s6d6": ""
   },
   "172": {
+    "health": 1,
+    "hintsSolution": "R,D,D,L,R,U,L,U,L,D,R,D,D",
     "level": 172,
     "moves": 16,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -17988,13 +17989,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,D,D,L,R,U,L,U,L,D,R,D,D"
+    "s6d6": ""
   },
   "173": {
+    "health": 1,
+    "hintsSolution": "R,U,D,D,D,L,U,L,R,D,R",
     "level": 173,
     "moves": 12,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -18092,13 +18093,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,U,D,D,D,L,U,L,R,D,R"
+    "s6d6": ""
   },
   "174": {
+    "health": 1,
+    "hintsSolution": "D,R,R,D,L,L,L,R,U,D,R,R,U,U",
     "level": 174,
     "moves": 14,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -18196,13 +18197,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,R,R,D,L,L,L,R,U,D,R,R,U,U"
+    "s6d6": ""
   },
   "175": {
+    "health": 1,
+    "hintsSolution": "R,R,U,D,D,D,L,U,L,D,R",
     "level": 175,
     "moves": 11,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "grass",
@@ -18300,13 +18301,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,R,U,D,D,D,L,U,L,D,R"
+    "s6d6": ""
   },
   "176": {
+    "health": 1,
+    "hintsSolution": "D,U,R,R,R,R",
     "level": 176,
     "moves": 9,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -18404,13 +18405,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,U,R,R,R,R"
+    "s6d6": ""
   },
   "177": {
+    "health": 1,
+    "hintsSolution": "D,U,R,R,D,L,L,L,D,R",
     "level": 177,
     "moves": 13,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "marsh",
     "r0c2": "ice",
@@ -18508,13 +18509,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,U,R,R,D,L,L,L,D,R"
+    "s6d6": ""
   },
   "178": {
+    "health": 1,
+    "hintsSolution": "D,R,D,U,R,L,D,R",
     "level": 178,
     "moves": 9,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "marsh",
     "r0c2": "marsh",
@@ -18612,13 +18613,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,R,D,U,R,L,D,R"
+    "s6d6": ""
   },
   "179": {
+    "health": 1,
+    "hintsSolution": "R,U,R,L,D,R,L,L,R,D,L,D,U,U,R,R",
     "level": 179,
     "moves": 16,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -18716,13 +18717,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,U,R,L,D,R,L,L,R,D,L,D,U,U,R,R"
+    "s6d6": ""
   },
   "180": {
+    "health": 1,
+    "hintsSolution": "D,R,D,R,U,U,L,L,U",
     "level": 180,
     "moves": 9,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "endClosed",
     "r0c2": "grass",
@@ -18820,13 +18821,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,R,D,R,U,U,L,L,U"
+    "s6d6": ""
   },
   "181": {
+    "health": 1,
+    "hintsSolution": "R,L,D,R,L,R,U,D,U,R,U,D,D",
     "level": 181,
     "moves": 13,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -18924,13 +18925,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,L,D,R,L,R,U,D,U,R,U,D,D"
+    "s6d6": ""
   },
   "182": {
+    "health": 1,
+    "hintsSolution": "R,D,R,U,D,L,L,D,U,R,D,D,D,R",
     "level": 182,
     "moves": 14,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -19028,13 +19029,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,D,R,U,D,L,L,D,U,R,D,D,D,R"
+    "s6d6": ""
   },
   "183": {
+    "health": 1,
+    "hintsSolution": "U,D,L,D,D,U,R,L,R,U,U,R,R",
     "level": 183,
     "moves": 13,
-    "health": 1,
     "r0c0": "grass",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -19132,13 +19133,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "U,D,L,D,D,U,R,L,R,U,U,R,R"
+    "s6d6": ""
   },
   "184": {
+    "health": 1,
+    "hintsSolution": "L,U,D,R,D,R,U,D,L,D,L,R,R,R,L,U",
     "level": 184,
     "moves": 16,
-    "health": 1,
     "r0c0": "grass",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -19236,13 +19237,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "L,U,D,R,D,R,U,D,L,D,L,R,R,R,L,U"
+    "s6d6": ""
   },
   "185": {
+    "health": 1,
+    "hintsSolution": "D,D,D,U,U,U,R,R,R,D,D,U,R,R,R,D",
     "level": 185,
     "moves": 18,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -19340,13 +19341,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,D,D,U,U,U,R,R,R,D,D,U,R,R,R,D"
+    "s6d6": ""
   },
   "186": {
+    "health": 1,
+    "hintsSolution": "R,L,D,L,D,D,R,L,U,L,L,D,U,R",
     "level": 186,
     "moves": 14,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -19444,13 +19445,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,L,D,L,D,D,R,L,U,L,L,D,U,R"
+    "s6d6": ""
   },
   "187": {
+    "health": 1,
+    "hintsSolution": "D,D,D,R,L,U,U,U,R,D,L",
     "level": 187,
     "moves": 13,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -19548,13 +19549,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,D,D,R,L,U,U,U,R,D,L"
+    "s6d6": ""
   },
   "188": {
+    "health": 1,
+    "hintsSolution": "R,L,D,R,D,D,U",
     "level": 188,
     "moves": 7,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -19652,13 +19653,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,L,D,R,D,D,U"
+    "s6d6": ""
   },
   "189": {
+    "health": 1,
+    "hintsSolution": "D,U,R,R,D,R,L,L,D,D,L",
     "level": 189,
     "moves": 12,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "ice",
@@ -19756,13 +19757,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,U,R,R,D,R,L,L,D,D,L"
+    "s6d6": ""
   },
   "190": {
+    "health": 1,
+    "hintsSolution": "D,R,L,U,R,D,L,U,R,R,D,R",
     "level": 190,
     "moves": 13,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -19860,13 +19861,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,R,L,U,R,D,L,U,R,R,D,R"
+    "s6d6": ""
   },
   "191": {
+    "health": 1,
+    "hintsSolution": "D,D,U,U,R,D,U,R,D,R",
     "level": 191,
     "moves": 11,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -19964,13 +19965,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,D,U,U,R,D,U,R,D,R"
+    "s6d6": ""
   },
   "192": {
+    "health": 1,
+    "hintsSolution": "D,R,U,L,R,D",
     "level": 192,
     "moves": 6,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -20068,13 +20069,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,R,U,L,R,D"
+    "s6d6": ""
   },
   "193": {
+    "health": 1,
+    "hintsSolution": "R,D,L,U,L,R,U,L,R,D",
     "level": 193,
     "moves": 12,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -20172,13 +20173,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,D,L,U,L,R,U,L,R,D"
+    "s6d6": ""
   },
   "194": {
+    "health": 1,
+    "hintsSolution": "R,D,R,D,U,L,D,R,U",
     "level": 194,
     "moves": 9,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -20276,13 +20277,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,D,R,D,U,L,D,R,U"
+    "s6d6": ""
   },
   "195": {
+    "health": 1,
+    "hintsSolution": "R,D,U,L,D,U,R,D,L,D,R",
     "level": 195,
     "moves": 11,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -20380,13 +20381,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,D,U,L,D,U,R,D,L,D,R"
+    "s6d6": ""
   },
   "196": {
+    "health": 1,
+    "hintsSolution": "R,D,R,U,U,R,D,R",
     "level": 196,
     "moves": 12,
-    "health": 1,
     "r0c0": "marsh",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -20484,13 +20485,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,D,R,U,U,R,D,R"
+    "s6d6": ""
   },
   "197": {
+    "health": 1,
+    "hintsSolution": "D,R,U,L,L,R,L,R,D,U,U",
     "level": 197,
     "moves": 11,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "endClosed",
@@ -20588,13 +20589,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,R,U,L,L,R,L,R,D,U,U"
+    "s6d6": ""
   },
   "198": {
+    "health": 1,
+    "hintsSolution": "R,L,R,L,R,R,L,R,D,L,D,L,R",
     "level": 198,
     "moves": 13,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -20692,13 +20693,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,L,R,L,R,R,L,R,D,L,D,L,R"
+    "s6d6": ""
   },
   "199": {
+    "health": 1,
+    "hintsSolution": "R,R,U,D,U,L,D,U,D,L",
     "level": 199,
     "moves": 10,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -20796,13 +20797,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,R,U,D,U,L,D,U,D,L"
+    "s6d6": ""
   },
   "200": {
+    "health": 1,
+    "hintsSolution": "R,D,L,U,R,U,L,D,R",
     "level": 200,
     "moves": 13,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -20900,13 +20901,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,D,L,U,R,U,L,D,R"
+    "s6d6": ""
   },
   "201": {
+    "health": 1,
+    "hintsSolution": "R,R,D,D,L,L,D,D,R,R,R,U,R,D",
     "level": 201,
     "moves": 14,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -21004,13 +21005,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,R,D,D,L,L,D,D,R,R,R,U,R,D"
+    "s6d6": ""
   },
   "202": {
+    "health": 1,
+    "hintsSolution": "D,D,R,R,U,R,R,D,U,L,L,D",
     "level": 202,
     "moves": 19,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "marsh",
@@ -21108,13 +21109,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,D,R,R,U,R,R,D,U,L,L,D"
+    "s6d6": ""
   },
   "203": {
+    "health": 2,
+    "hintsSolution": "D,L,R,R,D,L,L,D,U,L,D,D",
     "level": 203,
     "moves": 14,
-    "health": 2,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "marsh",
@@ -21212,13 +21213,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,L,R,R,D,L,L,D,U,L,D,D"
+    "s6d6": ""
   },
   "204": {
+    "health": 2,
+    "hintsSolution": "D,D,U,U,L,L,R,R,D,D,R,D,R,R",
     "level": 204,
     "moves": 23,
-    "health": 2,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "marsh",
@@ -21316,13 +21317,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,D,U,U,L,L,R,R,D,D,R,D,R,R"
+    "s6d6": ""
   },
   "205": {
+    "health": 1,
+    "hintsSolution": "R,R,U,D,L,L,D,D,D,D,U,R,L,U,U,R,R,R,L,D,U,U,L,R",
     "level": 205,
     "moves": 24,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -21420,13 +21421,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,R,U,D,L,L,D,D,D,D,U,R,L,U,U,R,R,R,L,D,U,U,L,R"
+    "s6d6": ""
   },
   "206": {
+    "health": 2,
+    "hintsSolution": "R,R,R,R,D,D,D,D,U,U,L,U,U,L,L,L,D,D,D,D",
     "level": 206,
     "moves": 23,
-    "health": 2,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "marsh",
@@ -21524,13 +21525,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,R,R,R,D,D,D,D,U,U,L,U,U,L,L,L,D,D,D,D"
+    "s6d6": ""
   },
   "207": {
+    "health": 1,
+    "hintsSolution": "R,R,R,R,L,L,D,L,D,L,D,D,D,R,R,L,D,R",
     "level": 207,
     "moves": 18,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -21628,13 +21629,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,R,R,R,L,L,D,L,D,L,D,D,D,R,R,L,D,R"
+    "s6d6": ""
   },
   "208": {
+    "health": 2,
+    "hintsSolution": "R,D,R,U,L,L,D,U,R,D,R",
     "level": 208,
     "moves": 11,
-    "health": 2,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "ice",
@@ -21732,13 +21733,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,D,R,U,L,L,D,U,R,D,R"
+    "s6d6": ""
   },
   "209": {
+    "health": 1,
+    "hintsSolution": "R,D,L,U,U,L,R,R,D,R,U",
     "level": 209,
     "moves": 16,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -21836,13 +21837,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,D,L,U,U,L,R,R,D,R,U"
+    "s6d6": ""
   },
   "210": {
+    "health": 1,
+    "hintsSolution": "R,R,R,L,D,D,D,D,L,U,D,L,R,D,D,U,U,L,U,U",
     "level": 210,
     "moves": 21,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -21940,13 +21941,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,R,R,L,D,D,D,D,L,U,D,L,R,D,D,U,U,L,U,U"
+    "s6d6": ""
   },
   "211": {
+    "health": 1,
+    "hintsSolution": "D,D,D,R,D,R,R,U,R,U,L,U,R,U,L,L,D,L,U",
     "level": 211,
     "moves": 28,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "endClosed",
     "r0c2": "marsh",
@@ -22044,13 +22045,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,D,D,R,D,R,R,U,R,U,L,U,R,U,L,L,D,L,U"
+    "s6d6": ""
   },
   "212": {
+    "health": 1,
+    "hintsSolution": "D,D,D,R,U,U,R,R,U,D,D,D,D,R,L,U,U,U,L,U",
     "level": 212,
     "moves": 24,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "marsh",
     "r0c2": "endClosed",
@@ -22148,13 +22149,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,D,D,R,U,U,R,R,U,D,D,D,D,R,L,U,U,U,L,U"
+    "s6d6": ""
   },
   "213": {
+    "health": 1,
+    "hintsSolution": "D,D,R,R,U,U,R,D,L,D,D,R,R,D,U,U",
     "level": 213,
     "moves": 19,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "marsh",
     "r0c2": "grass",
@@ -22252,13 +22253,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,D,R,R,U,U,R,D,L,D,D,R,R,D,U,U"
+    "s6d6": ""
   },
   "214": {
+    "health": 1,
+    "hintsSolution": "D,R,R,R,D,D,R,U,L,L,L,L,D,U,U,U,R",
     "level": 214,
     "moves": 21,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "endClosed",
     "r0c2": "grass",
@@ -22356,13 +22357,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,R,R,R,D,D,R,U,L,L,L,L,D,U,U,U,R"
+    "s6d6": ""
   },
   "215": {
+    "health": 1,
+    "hintsSolution": "L,D,D,L,D,U,U,R,R,U,L,D",
     "level": 215,
     "moves": 19,
-    "health": 1,
     "r0c0": "grass",
     "r0c1": "ice",
     "r0c2": "start",
@@ -22460,13 +22461,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "L,D,D,L,D,U,U,R,R,U,L,D"
+    "s6d6": ""
   },
   "216": {
+    "health": 1,
+    "hintsSolution": "D,D,D,D,U,U,R,R,U,R,R,D,D,D,U,U,U,U",
     "level": 216,
     "moves": 20,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "grass",
@@ -22564,13 +22565,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,D,D,D,U,U,R,R,U,R,R,D,D,D,U,U,U,U"
+    "s6d6": ""
   },
   "217": {
+    "health": 1,
+    "hintsSolution": "R,R,R,R,D,D,D,D,L,L,L,L,R,R,R,R,U,U,L",
     "level": 217,
     "moves": 19,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -22668,13 +22669,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,R,R,R,D,D,D,D,L,L,L,L,R,R,R,R,U,U,L"
+    "s6d6": ""
   },
   "218": {
+    "health": 1,
+    "hintsSolution": "D,R,U,L,U,R,D,L,D,U,R,U",
     "level": 218,
     "moves": 12,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "endClosed",
@@ -22772,13 +22773,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,R,U,L,U,R,D,L,D,U,R,U"
+    "s6d6": ""
   },
   "219": {
+    "health": 1,
+    "hintsSolution": "R,R,D,D,D,D,L,L,L,L,U,U,U,U,R,R,D,U,U,D",
     "level": 219,
     "moves": 25,
-    "health": 1,
     "r0c0": "marsh",
     "r0c1": "grass",
     "r0c2": "start",
@@ -22876,13 +22877,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,R,D,D,D,D,L,L,L,L,U,U,U,U,R,R,D,U,U,D"
+    "s6d6": ""
   },
   "220": {
+    "health": 1,
+    "hintsSolution": "U,U,U,R,R,R,D,D,L,D,U",
     "level": 220,
     "moves": 11,
-    "health": 1,
     "r0c0": "grass",
     "r0c1": "grass",
     "r0c2": "ice",
@@ -22980,13 +22981,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "U,U,U,R,R,R,D,D,L,D,U"
+    "s6d6": ""
   },
   "221": {
+    "health": 1,
+    "hintsSolution": "D,D,D,R,R,R,R,L,R",
     "level": 221,
     "moves": 9,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -23084,13 +23085,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,D,D,R,R,R,R,L,R"
+    "s6d6": ""
   },
   "222": {
+    "health": 1,
+    "hintsSolution": "D,R,D,L,D,L,R,U,R,D,L,D,R,D,R,D",
     "level": 222,
     "moves": 16,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -23188,13 +23189,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,R,D,L,D,L,R,U,R,D,L,D,R,D,R,D"
+    "s6d6": ""
   },
   "223": {
+    "health": 1,
+    "hintsSolution": "D,U,R,D,R,L,U,R,U,D",
     "level": 223,
     "moves": 10,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -23292,13 +23293,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,U,R,D,R,L,U,R,U,D"
+    "s6d6": ""
   },
   "224": {
+    "health": 1,
+    "hintsSolution": "R,D,L,U,D,L,U,R,U,D,L,R",
     "level": 224,
     "moves": 12,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -23396,13 +23397,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,D,L,U,D,L,U,R,U,D,L,R"
+    "s6d6": ""
   },
   "225": {
+    "health": 1,
+    "hintsSolution": "D,R,U,L,D,R,U,R,D",
     "level": 225,
     "moves": 9,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -23500,13 +23501,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,R,U,L,D,R,U,R,D"
+    "s6d6": ""
   },
   "226": {
+    "health": 1,
+    "hintsSolution": "D,R,U,R,L,U,R,D,L,D,R",
     "level": 226,
     "moves": 11,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -23604,13 +23605,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,R,U,R,L,U,R,D,L,D,R"
+    "s6d6": ""
   },
   "227": {
+    "health": 1,
+    "hintsSolution": "R,D,R,L,L,D,R",
     "level": 227,
     "moves": 7,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -23708,13 +23709,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,D,R,L,L,D,R"
+    "s6d6": ""
   },
   "228": {
+    "health": 1,
+    "hintsSolution": "D,D,R,U,L,R,L,U,R,U,D,L,D,U,L",
     "level": 228,
     "moves": 16,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "endClosed",
     "r0c2": "ice",
@@ -23812,13 +23813,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,D,R,U,L,R,L,U,R,U,D,L,D,U,L"
+    "s6d6": ""
   },
   "229": {
+    "health": 1,
+    "hintsSolution": "D,R,U,U,D,R,L,L,R,L,R,R,D",
     "level": 229,
     "moves": 13,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -23916,13 +23917,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,R,U,U,D,R,L,L,R,L,R,R,D"
+    "s6d6": ""
   },
   "230": {
+    "health": 1,
+    "hintsSolution": "R,D,L,D,R,L,U,R,D,L",
     "level": 230,
     "moves": 10,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -24020,13 +24021,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,D,L,D,R,L,U,R,D,L"
+    "s6d6": ""
   },
   "231": {
+    "health": 1,
+    "hintsSolution": "D,R,D,U,R,L,D,R,D,R,L,U",
     "level": 231,
     "moves": 12,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -24124,13 +24125,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,R,D,U,R,L,D,R,D,R,L,U"
+    "s6d6": ""
   },
   "232": {
+    "health": 1,
+    "hintsSolution": "D,R,D,L,D,U,R,D,L,U,U,D",
     "level": 232,
     "moves": 12,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -24228,13 +24229,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,R,D,L,D,U,R,D,L,U,U,D"
+    "s6d6": ""
   },
   "233": {
+    "health": 1,
+    "hintsSolution": "R,D,L,L,U,L,U,R,D,L,U,L,R,R,D,U",
     "level": 233,
     "moves": 16,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -24332,13 +24333,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,D,L,L,U,L,U,R,D,L,U,L,R,R,D,U"
+    "s6d6": ""
   },
   "234": {
+    "health": 1,
+    "hintsSolution": "R,D,L,U,R,D,L,R,L,D,R",
     "level": 234,
     "moves": 11,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -24436,13 +24437,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,D,L,U,R,D,L,R,L,D,R"
+    "s6d6": ""
   },
   "235": {
+    "health": 1,
+    "hintsSolution": "R,D,L,U,D,L,R,D,U",
     "level": 235,
     "moves": 10,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -24540,13 +24541,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,D,L,U,D,L,R,D,U"
+    "s6d6": ""
   },
   "236": {
+    "health": 1,
+    "hintsSolution": "R,L,D,D,D,R,R,U,R,D,D,L,U",
     "level": 236,
     "moves": 13,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "ice",
@@ -24644,13 +24645,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,L,D,D,D,R,R,U,R,D,D,L,U"
+    "s6d6": ""
   },
   "237": {
+    "health": 1,
+    "hintsSolution": "D,D,R,U,L,U,R,D,U,U,L,R,D,D",
     "level": 237,
     "moves": 14,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "grass",
@@ -24748,13 +24749,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,D,R,U,L,U,R,D,U,U,L,R,D,D"
+    "s6d6": ""
   },
   "238": {
+    "health": 1,
+    "hintsSolution": "R,D,L,U,L,D,L,U,L,D,R",
     "level": 238,
     "moves": 19,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -24852,13 +24853,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,D,L,U,L,D,L,U,L,D,R"
+    "s6d6": ""
   },
   "239": {
+    "health": 1,
+    "hintsSolution": "D,D,D,U,R,U,U,D,R,D,D,D",
     "level": 239,
     "moves": 23,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "marsh",
@@ -24956,13 +24957,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,D,D,U,R,U,U,D,R,D,D,D"
+    "s6d6": ""
   },
   "240": {
+    "health": 2,
+    "hintsSolution": "R,D,R,U,U,R,D,L,D,R,U,D",
     "level": 240,
     "moves": 12,
-    "health": 2,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "grass",
@@ -25060,13 +25061,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,D,R,U,U,R,D,L,D,R,U,D"
+    "s6d6": ""
   },
   "241": {
+    "health": 2,
+    "hintsSolution": "R,D,L,D,U,R",
     "level": 241,
     "moves": 6,
-    "health": 2,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -25164,13 +25165,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,D,L,D,U,R"
+    "s6d6": ""
   },
   "242": {
+    "health": 1,
+    "hintsSolution": "R,D,R,U,R,U,L,R,D,L,U,L,D,L,R,U,L,D,R,U,R,D",
     "level": 242,
     "moves": 22,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -25268,13 +25269,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,D,R,U,R,U,L,R,D,L,U,L,D,L,R,U,L,D,R,U,R,D"
+    "s6d6": ""
   },
   "243": {
+    "health": 1,
+    "hintsSolution": "D,D,D,D,R,R,R,R,D,D,D,D,U,U,L",
     "level": 243,
     "moves": 15,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -25372,13 +25373,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,D,D,D,R,R,R,R,D,D,D,D,U,U,L"
+    "s6d6": ""
   },
   "244": {
+    "health": 1,
+    "hintsSolution": "D,D,R,L,D,D,R,R,R,R,U,U,L,L",
     "level": 244,
     "moves": 15,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -25476,13 +25477,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,D,R,L,D,D,R,R,R,R,U,U,L,L"
+    "s6d6": ""
   },
   "245": {
+    "health": 1,
+    "hintsSolution": "R,D,D,L,R,U,R,R,R,U,D,L,D,D,D,R,L,L,L,L",
     "level": 245,
     "moves": 20,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -25580,13 +25581,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,D,D,L,R,U,R,R,R,U,D,L,D,D,D,R,L,L,L,L"
+    "s6d6": ""
   },
   "246": {
+    "health": 2,
+    "hintsSolution": "R,D,L,D,U,L,R,U,D",
     "level": 246,
     "moves": 9,
-    "health": 2,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -25684,13 +25685,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,D,L,D,U,L,R,U,D"
+    "s6d6": ""
   },
   "247": {
+    "health": 2,
+    "hintsSolution": "R,D,R,U,U,U,D,D,D,L,L,U,D,R",
     "level": 247,
     "moves": 14,
-    "health": 2,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -25788,13 +25789,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,D,R,U,U,U,D,D,D,L,L,U,D,R"
+    "s6d6": ""
   },
   "248": {
+    "health": 1,
+    "hintsSolution": "D,L,U,U,L,D,R,L,U",
     "level": 248,
     "moves": 12,
-    "health": 1,
     "r0c0": "grass",
     "r0c1": "start",
     "r0c2": "grass",
@@ -25892,13 +25893,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,L,U,U,L,D,R,L,U"
+    "s6d6": ""
   },
   "249": {
+    "health": 1,
+    "hintsSolution": "D,R,U,L,D,R,U",
     "level": 249,
     "moves": 7,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -25996,13 +25997,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,R,U,L,D,R,U"
+    "s6d6": ""
   },
   "250": {
+    "health": 1,
+    "hintsSolution": "D,D,U,U,R,R,R,D,R,L,D,L,D,L,D,R,R,R,U,D",
     "level": 250,
     "moves": 20,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -26100,13 +26101,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,D,U,U,R,R,R,D,R,L,D,L,D,L,D,R,R,R,U,D"
+    "s6d6": ""
   },
   "251": {
+    "health": 1,
+    "hintsSolution": "D,D,U,U,R,R,U,D,L,D,R,D,D",
     "level": 251,
     "moves": 13,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -26204,13 +26205,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,D,U,U,R,R,U,D,L,D,R,D,D"
+    "s6d6": ""
   },
   "252": {
+    "health": 1,
+    "hintsSolution": "R,R,R,R,L,D,R,R,R,L,D,U,L,U,U,R,R",
     "level": 252,
     "moves": 17,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -26308,13 +26309,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,R,R,R,L,D,R,R,R,L,D,U,L,U,U,R,R"
+    "s6d6": ""
   },
   "253": {
+    "health": 1,
+    "hintsSolution": "D,R,R,L,U,D,D,L,R,L,R,U,D,D,D,L,R,R",
     "level": 253,
     "moves": 18,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "marsh",
@@ -26412,13 +26413,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,R,R,L,U,D,D,L,R,L,R,U,D,D,D,L,R,R"
+    "s6d6": ""
   },
   "254": {
+    "health": 1,
+    "hintsSolution": "R,L,D,U,R,D,L,R,L,D,L,R,D,D,R",
     "level": 254,
     "moves": 18,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "marsh",
@@ -26516,13 +26517,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,L,D,U,R,D,L,R,L,D,L,R,D,D,R"
+    "s6d6": ""
   },
   "255": {
+    "health": 1,
+    "hintsSolution": "R,D,R,D,D,L,D,U,L,L,L,R,L,D,U,U,D,R,D,D",
     "level": 255,
     "moves": 23,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -26620,13 +26621,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,D,R,D,D,L,D,U,L,L,L,R,L,D,U,U,D,R,D,D"
+    "s6d6": ""
   },
   "256": {
+    "health": 1,
+    "hintsSolution": "D,U,R,D,L,L,U,D,R,R,U,R,R,R,L,L,D,D,L,R,R,L,D,U",
     "level": 256,
     "moves": 26,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "marsh",
@@ -26724,13 +26725,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,U,R,D,L,L,U,D,R,R,U,R,R,R,L,L,D,D,L,R,R,L,D,U"
+    "s6d6": ""
   },
   "257": {
+    "health": 1,
+    "hintsSolution": "R,D,D,L,D,D,R,R,U,U,R,U,R,U,D,R",
     "level": 257,
     "moves": 26,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "marsh",
@@ -26828,13 +26829,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,D,D,L,D,D,R,R,U,U,R,U,R,U,D,R"
+    "s6d6": ""
   },
   "258": {
+    "health": 1,
+    "hintsSolution": "R,D,L,D,D,R,D,U,R,R,D,R,D,D,L,D,L,D",
     "level": 258,
     "moves": 22,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "marsh",
@@ -26932,13 +26933,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,D,L,D,D,R,D,U,R,R,D,R,D,D,L,D,L,D"
+    "s6d6": ""
   },
   "259": {
+    "health": 1,
+    "hintsSolution": "D,U,U,U,R,R,R,D,U,U,D,R,L,R",
     "level": 259,
     "moves": 17,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -27036,13 +27037,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,U,U,U,R,R,R,D,U,U,D,R,L,R"
+    "s6d6": ""
   },
   "260": {
+    "health": 1,
+    "hintsSolution": "R,R,R,R,L,D,D,R,D,R,D,U,L,L",
     "level": 260,
     "moves": 14,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -27140,13 +27141,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,R,R,R,L,D,D,R,D,R,D,U,L,L"
+    "s6d6": ""
   },
   "261": {
+    "health": 1,
+    "hintsSolution": "R,R,R,L,R,R,L,L,L,L,R,R,D,D,U,U,R,R",
     "level": 261,
     "moves": 21,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -27244,13 +27245,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,R,R,L,R,R,L,L,L,L,R,R,D,D,U,U,R,R"
+    "s6d6": ""
   },
   "262": {
+    "health": 1,
+    "hintsSolution": "D,R,R,D,L,L,L,D,R,U,U,U,U,R,U",
     "level": 262,
     "moves": 21,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "marsh",
     "r0c2": "grass",
@@ -27348,13 +27349,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,R,R,D,L,L,L,D,R,U,U,U,U,R,U"
+    "s6d6": ""
   },
   "263": {
+    "health": 1,
+    "hintsSolution": "L,R,U,R,D,L,L,U,U,L,D,R,R,D,D,L,U,R,R,D,D,R,U,D",
     "level": 263,
     "moves": 24,
-    "health": 1,
     "r0c0": "grass",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -27452,13 +27453,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "L,R,U,R,D,L,L,U,U,L,D,R,R,D,D,L,U,R,R,D,D,R,U,D"
+    "s6d6": ""
   },
   "264": {
+    "health": 1,
+    "hintsSolution": "D,U,R,R,L,D,D,L,R,R,L,U,D,R,D,U,U,D,L,D,L,R,U,R,L,R",
     "level": 264,
     "moves": 31,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "marsh",
@@ -27556,13 +27557,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,U,R,R,L,D,D,L,R,R,L,U,D,R,D,U,U,D,L,D,L,R,U,R,L,R"
+    "s6d6": ""
   },
   "265": {
+    "health": 1,
+    "hintsSolution": "R,R,D,R,U,U,U,U,L,D,L,R,D,L,L,L,R,R,R,U,L,L",
     "level": 265,
     "moves": 24,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -27660,13 +27661,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,R,D,R,U,U,U,U,L,D,L,R,D,L,L,L,R,R,R,U,L,L"
+    "s6d6": ""
   },
   "266": {
+    "health": 1,
+    "hintsSolution": "R,U,R,U,D,L,D,U,R,L,R,U,L,D,R",
     "level": 266,
     "moves": 15,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -27764,13 +27765,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,U,R,U,D,L,D,U,R,L,R,U,L,D,R"
+    "s6d6": ""
   },
   "267": {
+    "health": 1,
+    "hintsSolution": "R,U,L,D,U,L,R,R,R,U,U",
     "level": 267,
     "moves": 11,
-    "health": 1,
     "r0c0": "ice",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -27868,13 +27869,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,U,L,D,U,L,R,R,R,U,U"
+    "s6d6": ""
   },
   "268": {
+    "health": 2,
+    "hintsSolution": "L,U,R,U,D,R,R,L,U,D,U,U,D,D,R,L,D,U,R,U,L,L,R,D",
     "level": 268,
     "moves": 26,
-    "health": 2,
     "r0c0": "ice",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -27972,13 +27973,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "L,U,R,U,D,R,R,L,U,D,U,U,D,D,R,L,D,U,R,U,L,L,R,D"
+    "s6d6": ""
   },
   "269": {
+    "health": 1,
+    "hintsSolution": "D,U,R,D,R,L,L,R,R,L,R,L,R,D,L,R",
     "level": 269,
     "moves": 16,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -28076,13 +28077,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,U,R,D,R,L,L,R,R,L,R,L,R,D,L,R"
+    "s6d6": ""
   },
   "270": {
+    "health": 1,
+    "hintsSolution": "D,R,L,L,D,R,R,L,U,R,L,L,R,D,L",
     "level": 270,
     "moves": 15,
-    "health": 1,
     "r0c0": "ice",
     "r0c1": "ice",
     "r0c2": "start",
@@ -28180,13 +28181,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,R,L,L,D,R,R,L,U,R,L,L,R,D,L"
+    "s6d6": ""
   },
   "271": {
+    "health": 1,
+    "hintsSolution": "R,D,U,D,R,D,R,L,L,R,U,D,L,D,R",
     "level": 271,
     "moves": 16,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -28284,13 +28285,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,D,U,D,R,D,R,L,L,R,U,D,L,D,R"
+    "s6d6": ""
   },
   "272": {
+    "health": 1,
+    "hintsSolution": "L,D,U,D,R,U,D,R,L,U",
     "level": 272,
     "moves": 10,
-    "health": 1,
     "r0c0": "ice",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -28388,13 +28389,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "L,D,U,D,R,U,D,R,L,U"
+    "s6d6": ""
   },
   "273": {
+    "health": 1,
+    "hintsSolution": "U,R,D,L,D,R,R,U,L,D,D",
     "level": 273,
     "moves": 11,
-    "health": 1,
     "r0c0": "ice",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -28492,13 +28493,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "U,R,D,L,D,R,R,U,L,D,D"
+    "s6d6": ""
   },
   "274": {
+    "health": 1,
+    "hintsSolution": "D,U,R,D,R,L,D,R,U,R,L,R,D",
     "level": 274,
     "moves": 13,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -28596,13 +28597,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,U,R,D,R,L,D,R,U,R,L,R,D"
+    "s6d6": ""
   },
   "275": {
+    "health": 1,
+    "hintsSolution": "D,U,R,D,R,D,L,U,U,R,D,L,U",
     "level": 275,
     "moves": 13,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -28700,13 +28701,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,U,R,D,R,D,L,U,U,R,D,L,U"
+    "s6d6": ""
   },
   "276": {
+    "health": 1,
+    "hintsSolution": "R,D,U,L,D,R,U,D,R",
     "level": 276,
     "moves": 9,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -28804,13 +28805,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,D,U,L,D,R,U,D,R"
+    "s6d6": ""
   },
   "277": {
+    "health": 1,
+    "hintsSolution": "D,R,D,U,D,L,U,R,R,L,R,R,D,L,R",
     "level": 277,
     "moves": 22,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -28908,13 +28909,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,R,D,U,D,L,U,R,R,L,R,R,D,L,R"
+    "s6d6": ""
   },
   "278": {
+    "health": 1,
+    "hintsSolution": "D,U,R,U,D,R,D,D,R,D,R",
     "level": 278,
     "moves": 16,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -29012,13 +29013,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,U,R,U,D,R,D,D,R,D,R"
+    "s6d6": ""
   },
   "279": {
+    "health": 1,
+    "hintsSolution": "R,R,D,D,U,R,L,R,U,L,D,U",
     "level": 279,
     "moves": 14,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "marsh",
@@ -29116,13 +29117,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,R,D,D,U,R,L,R,U,L,D,U"
+    "s6d6": ""
   },
   "280": {
+    "health": 1,
+    "hintsSolution": "D,U,R,D,R,U,L,U,R,L",
     "level": 280,
     "moves": 10,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "endClosed",
     "r0c2": "ice",
@@ -29220,13 +29221,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,U,R,D,R,U,L,U,R,L"
+    "s6d6": ""
   },
   "281": {
+    "health": 1,
+    "hintsSolution": "D,U,D,R,D,R,D,U,U,D,U",
     "level": 281,
     "moves": 13,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -29324,13 +29325,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,U,D,R,D,R,D,U,U,D,U"
+    "s6d6": ""
   },
   "282": {
+    "health": 1,
+    "hintsSolution": "R,L,D,R,U,L,R,D,R,R,L,R,U,D,L,D,R",
     "level": 282,
     "moves": 25,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -29428,13 +29429,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,L,D,R,U,L,R,D,R,R,L,R,U,D,L,D,R"
+    "s6d6": ""
   },
   "283": {
+    "health": 1,
+    "hintsSolution": "D,D,D,D,U,U,R,R,U,U,D,D,D,L,D",
     "level": 283,
     "moves": 17,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "marsh",
@@ -29532,13 +29533,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,D,D,D,U,U,R,R,U,U,D,D,D,L,D"
+    "s6d6": ""
   },
   "284": {
+    "health": 1,
+    "hintsSolution": "D,U,D,D,U,L,L,D,D,U",
     "level": 284,
     "moves": 11,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "marsh",
     "r0c2": "marsh",
@@ -29636,13 +29637,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,U,D,D,U,L,L,D,D,U"
+    "s6d6": ""
   },
   "285": {
+    "health": 1,
+    "hintsSolution": "R,D,R,D,L,U,D,L,U,D,L",
     "level": 285,
     "moves": 13,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "grass",
@@ -29740,13 +29741,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,D,R,D,L,U,D,L,U,D,L"
+    "s6d6": ""
   },
   "286": {
+    "health": 1,
+    "hintsSolution": "D,D,D,L,D,D,U,R",
     "level": 286,
     "moves": 9,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "marsh",
     "r0c2": "marsh",
@@ -29844,13 +29845,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,D,D,L,D,D,U,R"
+    "s6d6": ""
   },
   "287": {
+    "health": 1,
+    "hintsSolution": "D,D,D,U,R,U,L,L,D,U,R,U,R,D,R,D",
     "level": 287,
     "moves": 27,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "ice",
@@ -29948,13 +29949,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,D,D,U,R,U,L,L,D,U,R,U,R,D,R,D"
+    "s6d6": ""
   },
   "288": {
+    "health": 1,
+    "hintsSolution": "R,R,R,D,U,L,L,L,D,D,R,D,R,R,L",
     "level": 288,
     "moves": 19,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "ice",
@@ -30052,13 +30053,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,R,R,D,U,L,L,L,D,D,R,D,R,R,L"
+    "s6d6": ""
   },
   "289": {
+    "health": 1,
+    "hintsSolution": "D,R,R,D,U,R,U,L,L,D,D,R,D,R,R,D",
     "level": 289,
     "moves": 25,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "marsh",
     "r0c2": "ice",
@@ -30156,13 +30157,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,R,R,D,U,R,U,L,L,D,D,R,D,R,R,D"
+    "s6d6": ""
   },
   "290": {
+    "health": 1,
+    "hintsSolution": "R,D,R,U,L,D,R,D,R,L,R,R",
     "level": 290,
     "moves": 16,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "marsh",
@@ -30260,13 +30261,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,D,R,U,L,D,R,D,R,L,R,R"
+    "s6d6": ""
   },
   "291": {
+    "health": 2,
+    "hintsSolution": "R,R,R,D,D,L,D,L,U,U,D,R,U,R,R",
     "level": 291,
     "moves": 21,
-    "health": 2,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "ice",
@@ -30364,13 +30365,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,R,R,D,D,L,D,L,U,U,D,R,U,R,R"
+    "s6d6": ""
   },
   "292": {
+    "health": 1,
+    "hintsSolution": "R,R,D,R,U,U,D,R,D,D,D,L,L,U,R,D,L,R,U",
     "level": 292,
     "moves": 25,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -30468,13 +30469,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,R,D,R,U,U,D,R,D,D,D,L,L,U,R,D,L,R,U"
+    "s6d6": ""
   },
   "293": {
+    "health": 1,
+    "hintsSolution": "R,L,L,D,U,R,R,R,U,D,D,D,D,U,U,L,L,L,U,D,R,R,D",
     "level": 293,
     "moves": 23,
-    "health": 1,
     "r0c0": "grass",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -30572,13 +30573,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,L,L,D,U,R,R,R,U,D,D,D,D,U,U,L,L,L,U,D,R,R,D"
+    "s6d6": ""
   },
   "294": {
+    "health": 1,
+    "hintsSolution": "R,L,D,D,R,R,L,L,R,D,U,R,R,R,D,U,L,L",
     "level": 294,
     "moves": 22,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "marsh",
@@ -30676,13 +30677,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,L,D,D,R,R,L,L,R,D,U,R,R,R,D,U,L,L"
+    "s6d6": ""
   },
   "295": {
+    "health": 1,
+    "hintsSolution": "D,D,R,D,R,R,L,L,U,U,U,R,L,D,D,R,R",
     "level": 295,
     "moves": 24,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "marsh",
     "r0c2": "ice",
@@ -30780,13 +30781,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,D,R,D,R,R,L,L,U,U,U,R,L,D,D,R,R"
+    "s6d6": ""
   },
   "296": {
+    "health": 1,
+    "hintsSolution": "R,D,R,R,D,L,L,L,U,D,D,U,R,D,R,R,L",
     "level": 296,
     "moves": 22,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "ice",
@@ -30884,13 +30885,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,D,R,R,D,L,L,L,U,D,D,U,R,D,R,R,L"
+    "s6d6": ""
   },
   "297": {
+    "health": 1,
+    "hintsSolution": "R,L,D,D,D,D,R,U,U,D,L,L,U,D,D,U,L,L,U",
     "level": 297,
     "moves": 22,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -30988,13 +30989,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,L,D,D,D,D,R,U,U,D,L,L,U,D,D,U,L,L,U"
+    "s6d6": ""
   },
   "298": {
+    "health": 1,
+    "hintsSolution": "D,D,R,L,D,U,R,D,D,R,L,U,R,U,R,U,L,R",
     "level": 298,
     "moves": 28,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -31092,13 +31093,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,D,R,L,D,U,R,D,D,R,L,U,R,U,R,U,L,R"
+    "s6d6": ""
   },
   "299": {
+    "health": 1,
+    "hintsSolution": "D,R,D,U,R,R,R,L,D,R,U,D,L,U,D,L,L,R,R,U,D,R",
     "level": 299,
     "moves": 41,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "marsh",
     "r0c2": "marsh",
@@ -31196,13 +31197,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,R,D,U,R,R,R,L,D,R,U,D,L,U,D,L,L,R,R,U,D,R"
+    "s6d6": ""
   },
   "300": {
+    "health": 1,
+    "hintsSolution": "D,D,D,R,D,R,U,U,U,U,R,R,D,U,L,L,D,D,D,D,R,R",
     "level": 300,
     "moves": 43,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "marsh",
     "r0c2": "marsh",
@@ -31300,13 +31301,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,D,D,R,D,R,U,U,U,U,R,R,D,U,L,L,D,D,D,D,R,R"
+    "s6d6": ""
   },
   "301": {
+    "health": 1,
+    "hintsSolution": "R,R,R,R,R,D,D,D,D,L,U,L,U,L,U,L,L,D,D,D,D,R,R,R,R,R",
     "level": 301,
     "moves": 26,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -31404,13 +31405,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,R,R,R,R,D,D,D,D,L,U,L,U,L,U,L,L,D,D,D,D,R,R,R,R,R"
+    "s6d6": ""
   },
   "302": {
+    "health": 1,
+    "hintsSolution": "R,R,R,L,D,L,D,L,D,D,D,U,R,R,D,U,R,L,U,R,U,R,D,U,U,R,U,D,D,D,D,D,L,R",
     "level": 302,
     "moves": 34,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -31508,13 +31509,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,R,R,L,D,L,D,L,D,D,D,U,R,R,D,U,R,L,U,R,U,R,D,U,U,R,U,D,D,D,D,D,L,R"
+    "s6d6": ""
   },
   "303": {
+    "health": 1,
+    "hintsSolution": "D,D,D,U,R,U,R,R,R,D,R,D,L,D,L,L,D,L,R,R,R,U,U,U,U,U,R",
     "level": 303,
     "moves": 28,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -31612,13 +31613,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,D,D,U,R,U,R,R,R,D,R,D,L,D,L,L,D,L,R,R,R,U,U,U,U,U,R"
+    "s6d6": ""
   },
   "304": {
+    "health": 1,
+    "hintsSolution": "D,D,R,D,R,R,R,R,U,D,D,D,U,U,L,L,L,L,D,L,D,U,R,U,R,U,R,U,R,U,R",
     "level": 304,
     "moves": 31,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -31716,13 +31717,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,D,R,D,R,R,R,R,U,D,D,D,U,U,L,L,L,L,D,L,D,U,R,U,R,U,R,U,R,U,R"
+    "s6d6": ""
   },
   "305": {
+    "health": 1,
+    "hintsSolution": "R,D,R,L,L,D,R,L,D,D,D,R,R,R,R,R,U,U,U,U,U,L,D,D,L,D,R,R,D,D",
     "level": 305,
     "moves": 35,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -31820,13 +31821,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,D,R,L,L,D,R,L,D,D,D,R,R,R,R,R,U,U,U,U,U,L,D,D,L,D,R,R,D,D"
+    "s6d6": ""
   },
   "306": {
+    "health": 1,
+    "hintsSolution": "R,D,R,R,R,R,U,L,L,D,L,L,D,L,D,D,D,R,R,U,R,U,R,R,D,D",
     "level": 306,
     "moves": 38,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -31924,13 +31925,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,D,R,R,R,R,U,L,L,D,L,L,D,L,D,D,D,R,R,U,R,U,R,R,D,D"
+    "s6d6": ""
   },
   "307": {
+    "health": 1,
+    "hintsSolution": "R,D,D,L,U,D,R,U,R,D,R,D,D,D,D,L,R,R,D",
     "level": 307,
     "moves": 34,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -32028,13 +32029,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,D,D,L,U,D,R,U,R,D,R,D,D,D,D,L,R,R,D"
+    "s6d6": ""
   },
   "308": {
+    "health": 1,
+    "hintsSolution": "R,D,L,U,R,L,R,U,R,D,U,R,U,R,D,D,R,D",
     "level": 308,
     "moves": 18,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -32132,13 +32133,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,D,L,U,R,L,R,U,R,D,U,R,U,R,D,D,R,D"
+    "s6d6": ""
   },
   "309": {
+    "health": 1,
+    "hintsSolution": "D,D,R,D,L,D,D,U,U,R,R,R,D,D,R,R,U,U,U,U,U,L,L,D,R,R,D,D,D,D",
     "level": 309,
     "moves": 48,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -32236,13 +32237,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,D,R,D,L,D,D,U,U,R,R,R,D,D,R,R,U,U,U,U,U,L,L,D,R,R,D,D,D,D"
+    "s6d6": ""
   },
   "310": {
+    "health": 1,
+    "hintsSolution": "R,L,D,R,D,D,D,D,L,R,R,R,R,U,L,U,U,U,R,U,R,D,L,L,D,D,D,D,R,R",
     "level": 310,
     "moves": 41,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -32340,13 +32341,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,L,D,R,D,D,D,D,L,R,R,R,R,U,L,U,U,U,R,U,R,D,L,L,D,D,D,D,R,R"
+    "s6d6": ""
   },
   "311": {
+    "health": 1,
+    "hintsSolution": "D,R,R,U,D,R,R,D,U,R,U,L,L,U,R,R,D,R,D,U,R,R,D",
     "level": 311,
     "moves": 26,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "marsh",
     "r0c2": "marsh",
@@ -32444,13 +32445,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,R,R,U,D,R,R,D,U,R,U,L,L,U,R,R,D,R,D,U,R,R,D"
+    "s6d6": ""
   },
   "312": {
+    "health": 1,
+    "hintsSolution": "R,D,R,D,R,D,R,R,L,D,D,U,U,L,D,U,R,R,U,U,U,L,L,R,D,R,D,D,L,R,L,D,D,R",
     "level": 312,
     "moves": 45,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -32548,13 +32549,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,D,R,D,R,D,R,R,L,D,D,U,U,L,D,U,R,R,U,U,U,L,L,R,D,R,D,D,L,R,L,D,D,R"
+    "s6d6": ""
   },
   "313": {
+    "health": 1,
+    "hintsSolution": "D,D,D,D,D,R,U,L,U,R,D,U,D,R,L,D,U,D,U,U,R,R,D,L,R,L,D,U,R,U,U,D,D",
     "level": 313,
     "moves": 33,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -32652,13 +32653,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,D,D,D,D,R,U,L,U,R,D,U,D,R,L,D,U,D,U,U,R,R,D,L,R,L,D,U,R,U,U,D,D"
+    "s6d6": ""
   },
   "314": {
+    "health": 1,
+    "hintsSolution": "R,R,R,L,L,L,D,R,L,L,U,U,U,D,L,D,L,U,D,D,U,U,L,D,D,U,U,R",
     "level": 314,
     "moves": 34,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "endClosed",
     "r0c2": "grass",
@@ -32756,13 +32757,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,R,R,L,L,L,D,R,L,L,U,U,U,D,L,D,L,U,D,D,U,U,L,D,D,U,U,R"
+    "s6d6": ""
   },
   "315": {
+    "health": 1,
+    "hintsSolution": "D,R,U,L,D,R,U,U,R,D,L,U,R,U,L,L,U,R,D,R,D,D",
     "level": 315,
     "moves": 24,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "marsh",
@@ -32860,13 +32861,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,R,U,L,D,R,U,U,R,D,L,U,R,U,L,L,U,R,D,R,D,D"
+    "s6d6": ""
   },
   "316": {
+    "health": 1,
+    "hintsSolution": "D,D,D,D,D,U,U,U,U,R,U,R,U,R,U,R,U,D,L,D,L,L,U,U,R,U,R,R,U,D,D,D,D,D",
     "level": 316,
     "moves": 38,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -32964,13 +32965,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,D,D,D,D,U,U,U,U,R,U,R,U,R,U,R,U,D,L,D,L,L,U,U,R,U,R,R,U,D,D,D,D,D"
+    "s6d6": ""
   },
   "317": {
+    "health": 1,
+    "hintsSolution": "D,R,R,L,L,R,U,U,D,D,L,D,D,L,D,L,R,D,D,R,R",
     "level": 317,
     "moves": 22,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "marsh",
@@ -33068,13 +33069,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,R,R,L,L,R,U,U,D,D,L,D,D,L,D,L,R,D,D,R,R"
+    "s6d6": ""
   },
   "318": {
+    "health": 1,
+    "hintsSolution": "R,R,D,R,D,D,L,D,L,L,D,U,R,R,U,R,U,R,R,U,U,D,D,L,L,D,D,D,R,R",
     "level": 318,
     "moves": 38,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -33172,13 +33173,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,R,D,R,D,D,L,D,L,L,D,U,R,R,U,R,U,R,R,U,U,D,D,L,L,D,D,D,R,R"
+    "s6d6": ""
   },
   "319": {
+    "health": 1,
+    "hintsSolution": "R,D,R,R,D,L,R,D,D,L,D,L,R,L,R,D,U,L,U,L,U,D,R,R,R,U,R,R,D,D",
     "level": 319,
     "moves": 33,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -33276,13 +33277,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,D,R,R,D,L,R,D,D,L,D,L,R,L,R,D,U,L,U,L,U,D,R,R,R,U,R,R,D,D"
+    "s6d6": ""
   },
   "320": {
+    "health": 1,
+    "hintsSolution": "R,R,D,R,D,D,D,L,D,L,U,U,U,L,D,R,D,R,R,R,U,R,L,D,D,R,L,U,D,D,L,D,L,L,D,L",
     "level": 320,
     "moves": 36,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -33380,13 +33381,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,R,D,R,D,D,D,L,D,L,U,U,U,L,D,R,D,R,R,R,U,R,L,D,D,R,L,U,D,D,L,D,L,L,D,L"
+    "s6d6": ""
   },
   "321": {
+    "health": 1,
+    "hintsSolution": "D,D,R,U,R,L,D,L,D,R,U,R,U,R,L,D,L,L,U,D,D,R,R",
     "level": 321,
     "moves": 23,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "ice",
@@ -33484,13 +33485,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,D,R,U,R,L,D,L,D,R,U,R,U,R,L,D,L,L,U,D,D,R,R"
+    "s6d6": ""
   },
   "322": {
+    "health": 1,
+    "hintsSolution": "D,D,D,U,U,U,D,R,D,U,L,U,D,D,D,R",
     "level": 322,
     "moves": 16,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "marsh",
     "r0c2": "ice",
@@ -33588,13 +33589,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,D,D,U,U,U,D,R,D,U,L,U,D,D,D,R"
+    "s6d6": ""
   },
   "323": {
+    "health": 1,
+    "hintsSolution": "R,D,R,R,U,L,R,D,L,U,R,D",
     "level": 323,
     "moves": 12,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "ice",
@@ -33692,13 +33693,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,D,R,R,U,L,R,D,L,U,R,D"
+    "s6d6": ""
   },
   "324": {
+    "health": 1,
+    "hintsSolution": "D,R,R,R,D,L,L,U,R,R,U,R,L,U,D",
     "level": 324,
     "moves": 22,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -33796,13 +33797,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,R,R,R,D,L,L,U,R,R,U,R,L,U,D"
+    "s6d6": ""
   },
   "325": {
+    "health": 1,
+    "hintsSolution": "R,D,U,L,D,D,D,D,D,R,R,U,R,D",
     "level": 325,
     "moves": 14,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -33900,13 +33901,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,D,U,L,D,D,D,D,D,R,R,U,R,D"
+    "s6d6": ""
   },
   "326": {
+    "health": 1,
+    "hintsSolution": "D,D,R,R,R,R,U,U,D,L,U,D,L,U,D,L,U,D,L,D,D,D",
     "level": 326,
     "moves": 26,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -34004,13 +34005,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,D,R,R,R,R,U,U,D,L,U,D,L,U,D,L,U,D,L,D,D,D"
+    "s6d6": ""
   },
   "327": {
+    "health": 1,
+    "hintsSolution": "R,D,L,U,R,L,U,R,D,R,D",
     "level": 327,
     "moves": 11,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -34108,13 +34109,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,D,L,U,R,L,U,R,D,R,D"
+    "s6d6": ""
   },
   "328": {
+    "health": 1,
+    "hintsSolution": "D,R,U,L,U,R,L,D,R,U,D,U,R,L,R,U,L,R,U,L,R,D",
     "level": 328,
     "moves": 22,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -34212,13 +34213,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,R,U,L,U,R,L,D,R,U,D,U,R,L,R,U,L,R,U,L,R,D"
+    "s6d6": ""
   },
   "329": {
+    "health": 1,
+    "hintsSolution": "D,R,U,L,D,R,U,L,U,U,R,D,R",
     "level": 329,
     "moves": 19,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "marsh",
@@ -34316,13 +34317,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,R,U,L,D,R,U,L,U,U,R,D,R"
+    "s6d6": ""
   },
   "330": {
+    "health": 1,
+    "hintsSolution": "R,D,R,U,R,R,D",
     "level": 330,
     "moves": 7,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -34420,13 +34421,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,D,R,U,R,R,D"
+    "s6d6": ""
   },
   "331": {
+    "health": 1,
+    "hintsSolution": "R,D,L,D,L,D,U,R,U,R,D,L,U,L,R,U,D,R",
     "level": 331,
     "moves": 18,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -34524,13 +34525,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,D,L,D,L,D,U,R,U,R,D,L,U,L,R,U,D,R"
+    "s6d6": ""
   },
   "332": {
+    "health": 1,
+    "hintsSolution": "R,D,U,L,D,R,L,U,R,D,L,U,U,U,D,D,L,R,U,R,U,D,L,L,U,D,L,R,D,L,U,U,R",
     "level": 332,
     "moves": 33,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -34628,13 +34629,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,D,U,L,D,R,L,U,R,D,L,U,U,U,D,D,L,R,U,R,U,D,L,L,U,D,L,R,D,L,U,U,R"
+    "s6d6": ""
   },
   "333": {
+    "health": 2,
+    "hintsSolution": "D,R,U,R,U,R,D,R,U,U,R,L",
     "level": 333,
     "moves": 12,
-    "health": 2,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -34732,13 +34733,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,R,U,R,U,R,D,R,U,U,R,L"
+    "s6d6": ""
   },
   "334": {
+    "health": 1,
+    "hintsSolution": "U,D,R,L,D,R,D,L,U,L,D,R,U,R,D,L",
     "level": 334,
     "moves": 16,
-    "health": 1,
     "r0c0": "ice",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -34836,13 +34837,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "U,D,R,L,D,R,D,L,U,L,D,R,U,R,D,L"
+    "s6d6": ""
   },
   "335": {
+    "health": 1,
+    "hintsSolution": "R,D,R,D,L,R,L,D,L,D,R,L,D,U,U,L,D,L",
     "level": 335,
     "moves": 21,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -34940,13 +34941,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,D,R,D,L,R,L,D,L,D,R,L,D,U,U,L,D,L"
+    "s6d6": ""
   },
   "336": {
+    "health": 1,
+    "hintsSolution": "R,D,R,U,D,L,U,R,U,L,D,R,D",
     "level": 336,
     "moves": 13,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -35044,13 +35045,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,D,R,U,D,L,U,R,U,L,D,R,D"
+    "s6d6": ""
   },
   "337": {
+    "health": 1,
+    "hintsSolution": "R,D,L,U,D,L,R,L,U,R,R,U,D,D,L,D,R,R,R,L,U,L",
     "level": 337,
     "moves": 22,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -35148,13 +35149,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,D,L,U,D,L,R,L,U,R,R,U,D,D,L,D,R,R,R,L,U,L"
+    "s6d6": ""
   },
   "338": {
+    "health": 1,
+    "hintsSolution": "R,U,D,L,U,R,D,L,U,L,U,R,D,L,R",
     "level": 338,
     "moves": 16,
-    "health": 1,
     "r0c0": "ice",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -35252,13 +35253,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,U,D,L,U,R,D,L,U,L,U,R,D,L,R"
+    "s6d6": ""
   },
   "339": {
+    "health": 1,
+    "hintsSolution": "D,R,U,L,U,R,D,L,R,U,R,D,L,D,L,R,R,R,D,L,U",
     "level": 339,
     "moves": 28,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -35356,13 +35357,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,R,U,L,U,R,D,L,R,U,R,D,L,D,L,R,R,R,D,L,U"
+    "s6d6": ""
   },
   "340": {
+    "health": 1,
+    "hintsSolution": "D,R,U,L,R,U,D,L,U,R,L,U",
     "level": 340,
     "moves": 13,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -35460,13 +35461,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,R,U,L,R,U,D,L,U,R,L,U"
+    "s6d6": ""
   },
   "341": {
+    "health": 1,
+    "hintsSolution": "R,L,D,R,U,U,L,R,D,L,L,R",
     "level": 341,
     "moves": 12,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -35564,13 +35565,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,L,D,R,U,U,L,R,D,L,L,R"
+    "s6d6": ""
   },
   "342": {
+    "health": 1,
+    "hintsSolution": "D,U,R,D,L,U,U,D,L,U,D,L,R,U,L,U,L",
     "level": 342,
     "moves": 23,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -35668,13 +35669,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,U,R,D,L,U,U,D,L,U,D,L,R,U,L,U,L"
+    "s6d6": ""
   },
   "343": {
+    "health": 1,
+    "hintsSolution": "R,U,U,D,L,R,R,L,D,L,D,L,R,R,D,D,U,R,L,L,R",
     "level": 343,
     "moves": 21,
-    "health": 1,
     "r0c0": "ice",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -35772,13 +35773,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,U,U,D,L,R,R,L,D,L,D,L,R,R,D,D,U,R,L,L,R"
+    "s6d6": ""
   },
   "344": {
+    "health": 1,
+    "hintsSolution": "U,R,L,L,R,U,D,R,U,R,R,D,U",
     "level": 344,
     "moves": 14,
-    "health": 1,
     "r0c0": "ice",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -35876,13 +35877,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "U,R,L,L,R,U,D,R,U,R,R,D,U"
+    "s6d6": ""
   },
   "345": {
+    "health": 1,
+    "hintsSolution": "R,R,L,D,U,D,R,U,R,L,L,U,R,U,D,R,D",
     "level": 345,
     "moves": 17,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -35980,13 +35981,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,R,L,D,U,D,R,U,R,L,L,U,R,U,D,R,D"
+    "s6d6": ""
   },
   "346": {
+    "health": 1,
+    "hintsSolution": "R,R,R,L,L,L,D,D,D,R,R,R,U,U,L,D,R,U,R,D,D",
     "level": 346,
     "moves": 21,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "grass",
@@ -36084,13 +36085,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,R,R,L,L,L,D,D,D,R,R,R,U,U,L,D,R,U,R,D,D"
+    "s6d6": ""
   },
   "347": {
+    "health": 1,
+    "hintsSolution": "R,L,D,R,D,L,U,D,L,U,D,L,U,R,D",
     "level": 347,
     "moves": 15,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -36188,13 +36189,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,L,D,R,D,L,U,D,L,U,D,L,U,R,D"
+    "s6d6": ""
   },
   "348": {
+    "health": 1,
+    "hintsSolution": "D,R,D,L,L,U,L,L,D,U,R,U,L,R",
     "level": 348,
     "moves": 17,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -36292,13 +36293,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,R,D,L,L,U,L,L,D,U,R,U,L,R"
+    "s6d6": ""
   },
   "349": {
+    "health": 1,
+    "hintsSolution": "D,R,D,L,L,U,R,D,U,R,L,L,R,D,U,U,L,R",
     "level": 349,
     "moves": 19,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -36396,13 +36397,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,R,D,L,L,U,R,D,U,R,L,L,R,D,U,U,L,R"
+    "s6d6": ""
   },
   "350": {
+    "health": 1,
+    "hintsSolution": "U,R,L,D,U,R,U,L,D,L,D,R,D",
     "level": 350,
     "moves": 13,
-    "health": 1,
     "r0c0": "ice",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -36500,13 +36501,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "U,R,L,D,U,R,U,L,D,L,D,R,D"
+    "s6d6": ""
   },
   "351": {
+    "health": 1,
+    "hintsSolution": "R,R,R,R,R,L,D,L,D,D,D,D,R,R",
     "level": 351,
     "moves": 14,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "sand",
     "r0c2": "sand",
@@ -36604,13 +36605,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,R,R,R,R,L,D,L,D,D,D,D,R,R"
+    "s6d6": ""
   },
   "352": {
+    "health": 1,
+    "hintsSolution": "R,R,R,D,L,L,D,R,D,R,R,D,D,L,L,L,L,U,R",
     "level": 352,
     "moves": 19,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "sand",
     "r0c2": "sand",
@@ -36708,13 +36709,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,R,R,D,L,L,D,R,D,R,R,D,D,L,L,L,L,U,R"
+    "s6d6": ""
   },
   "353": {
+    "health": 1,
+    "hintsSolution": "R,R,D,R,D,L,L,L,U,L,D,D,D,R,R,R,D,L",
     "level": 353,
     "moves": 18,
-    "health": 1,
     "r0c0": "grass",
     "r0c1": "grass",
     "r0c2": "start",
@@ -36812,13 +36813,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,R,D,R,D,L,L,L,U,L,D,D,D,R,R,R,D,L"
+    "s6d6": ""
   },
   "354": {
+    "health": 1,
+    "hintsSolution": "R,R,R,R,R,D,D,L,U,L,L,D,L,L,R,D,D,L,D,R,R,R,R,U,R,D",
     "level": 354,
     "moves": 26,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -36916,13 +36917,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,R,R,R,R,D,D,L,U,L,L,D,L,L,R,D,D,L,D,R,R,R,R,U,R,D"
+    "s6d6": ""
   },
   "355": {
+    "health": 1,
+    "hintsSolution": "R,D,D,R,R,R,U,D,D,L,L,D,L,R,R,R,R,D",
     "level": 355,
     "moves": 18,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -37020,13 +37021,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,D,D,R,R,R,U,D,D,L,L,D,L,R,R,R,R,D"
+    "s6d6": ""
   },
   "356": {
+    "health": 1,
+    "hintsSolution": "R,D,D,D,D,L,D,R,R,U,R,R,R,U,U,L,L,R,R,U,U,L,R",
     "level": 356,
     "moves": 23,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -37124,13 +37125,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,D,D,D,D,L,D,R,R,U,R,R,R,U,U,L,L,R,R,U,U,L,R"
+    "s6d6": ""
   },
   "357": {
+    "health": 1,
+    "hintsSolution": "R,R,R,D,L,L,D,R,R,D,L,L,D,D,R,U,R,D,R,R",
     "level": 357,
     "moves": 20,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "sand",
     "r0c2": "grass",
@@ -37228,13 +37229,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,R,R,D,L,L,D,R,R,D,L,L,D,D,R,U,R,D,R,R"
+    "s6d6": ""
   },
   "358": {
+    "health": 1,
+    "hintsSolution": "D,R,D,D,L,D,D,R,R,R,U,U,U,U,U,R,D,D,D,D,D,R",
     "level": 358,
     "moves": 24,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "sand",
@@ -37332,13 +37333,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,R,D,D,L,D,D,R,R,R,U,U,U,U,U,R,D,D,D,D,D,R"
+    "s6d6": ""
   },
   "359": {
+    "health": 1,
+    "hintsSolution": "D,D,R,D,D,L,D,R,R,U,U,U,U,R,U,R,R,D,L,D,L,D,R,R,D,L,D,R",
     "level": 359,
     "moves": 28,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "sand",
     "r0c2": "sand",
@@ -37436,13 +37437,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,D,R,D,D,L,D,R,R,U,U,U,U,R,U,R,R,D,L,D,L,D,R,R,D,L,D,R"
+    "s6d6": ""
   },
   "360": {
+    "health": 1,
+    "hintsSolution": "D,D,R,U,R,R,U,R,R,D,D,D,L,L,L,L,D,L,D,R,R,R,R,R,U,D",
     "level": 360,
     "moves": 26,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "sand",
     "r0c2": "sand",
@@ -37540,13 +37541,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,D,R,U,R,R,U,R,R,D,D,D,L,L,L,L,D,L,D,R,R,R,R,R,U,D"
+    "s6d6": ""
   },
   "361": {
+    "health": 1,
+    "hintsSolution": "D,U,R,R,R,D,L,D,L,D,L,D,D,R,R,U,R,R,U,U,R,D,D,D",
     "level": 361,
     "moves": 24,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "sand",
     "r0c2": "sand",
@@ -37644,13 +37645,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,U,R,R,R,D,L,D,L,D,L,D,D,R,R,U,R,R,U,U,R,D,D,D"
+    "s6d6": ""
   },
   "362": {
+    "health": 1,
+    "hintsSolution": "R,R,R,R,R,D,D,L,L,L,D,L,L,D,D,R,R,R,R,R,U,L,U,L",
     "level": 362,
     "moves": 24,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "sand",
     "r0c2": "sand",
@@ -37748,13 +37749,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,R,R,R,R,D,D,L,L,L,D,L,L,D,D,R,R,R,R,R,U,L,U,L"
+    "s6d6": ""
   },
   "363": {
+    "health": 1,
+    "hintsSolution": "D,U,R,R,R,R,R,D,L,L,L,D,L,D,L,D,D,R,R,R,U,U,U,R,R,D",
     "level": 363,
     "moves": 26,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "sand",
     "r0c2": "sand",
@@ -37852,13 +37853,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,U,R,R,R,R,R,D,L,L,L,D,L,D,L,D,D,R,R,R,U,U,U,R,R,D"
+    "s6d6": ""
   },
   "364": {
+    "health": 1,
+    "hintsSolution": "R,D,L,D,D,D,D,R,R,U,R,D,R,R,U,L,U,L,U,U,R,R,D,D,D",
     "level": 364,
     "moves": 25,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "sand",
     "r0c2": "sand",
@@ -37956,13 +37957,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,D,L,D,D,D,D,R,R,U,R,D,R,R,U,L,U,L,U,U,R,R,D,D,D"
+    "s6d6": ""
   },
   "365": {
+    "health": 1,
+    "hintsSolution": "D,R,R,D,D,L,D,D,R,U,R,U,L,L,D,R,D",
     "level": 365,
     "moves": 17,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "lava",
     "r0c2": "sand",
@@ -38060,13 +38061,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,R,R,D,D,L,D,D,R,U,R,U,L,L,D,R,D"
+    "s6d6": ""
   },
   "366": {
+    "health": 1,
+    "hintsSolution": "R,D,R,U,R,R,R,U,D,D,U,R,R,U,U,U,R,D,R,R,D,D,L,R",
     "level": 366,
     "moves": 24,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "sand",
     "r0c2": "sand",
@@ -38164,13 +38165,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,D,R,U,R,R,R,U,D,D,U,R,R,U,U,U,R,D,R,R,D,D,L,R"
+    "s6d6": ""
   },
   "367": {
+    "health": 1,
+    "hintsSolution": "D,D,D,D,R,D,R,U,R,U,U,U,L,U,R,L,R,R,L,U,U,U,U,U",
     "level": 367,
     "moves": 24,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "sand",
     "r0c2": "sand",
@@ -38268,13 +38269,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,D,D,D,R,D,R,U,R,U,U,U,L,U,R,L,R,R,L,U,U,U,U,U"
+    "s6d6": ""
   },
   "368": {
+    "health": 1,
+    "hintsSolution": "R,D,D,D,D,L,D,R,R,U,L,L,D,R,R,R,D,R,D",
     "level": 368,
     "moves": 19,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "sand",
     "r0c2": "lava",
@@ -38372,13 +38373,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,D,D,D,D,L,D,R,R,U,L,L,D,R,R,R,D,R,D"
+    "s6d6": ""
   },
   "369": {
+    "health": 1,
+    "hintsSolution": "R,D,L,D,L,D,L,D,D,R,R,R,U,U,L,D,L,R,D,R,U,R,D",
     "level": 369,
     "moves": 23,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "sand",
     "r0c2": "sand",
@@ -38476,13 +38477,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,D,L,D,L,D,L,D,D,R,R,R,U,U,L,D,L,R,D,R,U,R,D"
+    "s6d6": ""
   },
   "370": {
+    "health": 1,
+    "hintsSolution": "D,D,D,D,D,R,U,R,R,U,U,L,L,U,U,L,L,L,L,R,U,D",
     "level": 370,
     "moves": 22,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "sand",
     "r0c2": "sand",
@@ -38580,13 +38581,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,D,D,D,D,R,U,R,R,U,U,L,L,U,U,L,L,L,L,R,U,D"
+    "s6d6": ""
   },
   "371": {
+    "health": 1,
+    "hintsSolution": "R,L,D,D,D,R,D,D,R,U,U,R,U,U,U,D,U,D,D,D,D,D,L,R",
     "level": 371,
     "moves": 24,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "sand",
     "r0c2": "lava",
@@ -38684,13 +38685,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,L,D,D,D,R,D,D,R,U,U,R,U,U,U,D,U,D,D,D,D,D,L,R"
+    "s6d6": ""
   },
   "372": {
+    "health": 1,
+    "hintsSolution": "D,R,R,D,L,L,D,D,R,L,R,D,U,R,L,R,R,R,D,D,D,L,R",
     "level": 372,
     "moves": 23,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "lava",
     "r0c2": "sand",
@@ -38788,13 +38789,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,R,R,D,L,L,D,D,R,L,R,D,U,R,L,R,R,R,D,D,D,L,R"
+    "s6d6": ""
   },
   "373": {
+    "health": 1,
+    "hintsSolution": "D,U,R,D,R,U,U,R,R,D,D,U,D,U,R,R,D,R,U,U,R,D,R",
     "level": 373,
     "moves": 23,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "sand",
     "r0c2": "sand",
@@ -38892,13 +38893,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,U,R,D,R,U,U,R,R,D,D,U,D,U,R,R,D,R,U,U,R,D,R"
+    "s6d6": ""
   },
   "374": {
+    "health": 1,
+    "hintsSolution": "D,U,D,R,D,D,D,D,L,U,U,U,U,R,U,R,D,D,D,D,D,L,L,U,U",
     "level": 374,
     "moves": 25,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "sand",
     "r0c2": "sand",
@@ -38996,13 +38997,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,U,D,R,D,D,D,D,L,U,U,U,U,R,U,R,D,D,D,D,D,L,L,U,U"
+    "s6d6": ""
   },
   "375": {
+    "health": 1,
+    "hintsSolution": "D,R,D,R,U,U,R,D,L,U,R,R,D,R,D,D,R,R",
     "level": 375,
     "moves": 18,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "sand",
     "r0c2": "sand",
@@ -39100,13 +39101,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,R,D,R,U,U,R,D,L,U,R,R,D,R,D,D,R,R"
+    "s6d6": ""
   },
   "376": {
+    "health": 1,
+    "hintsSolution": "D,R,R,R,U,R,D,D,D,D,L,L,L,L,U,U,R,R,R,U,U,U",
     "level": 376,
     "moves": 22,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "sand",
     "r0c2": "sand",
@@ -39204,13 +39205,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,R,R,R,U,R,D,D,D,D,L,L,L,L,U,U,R,R,R,U,U,U"
+    "s6d6": ""
   },
   "377": {
+    "health": 1,
+    "hintsSolution": "R,R,R,R,R,R,L,D,U,U,U,R,R,U,R,D,R,R,D,D",
     "level": 377,
     "moves": 20,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "sand",
     "r0c2": "sand",
@@ -39308,13 +39309,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,R,R,R,R,R,L,D,U,U,U,R,R,U,R,D,R,R,D,D"
+    "s6d6": ""
   },
   "378": {
+    "health": 1,
+    "hintsSolution": "R,D,L,D,R,D,L,D,D,R,R,U,R,U,L,U,R,U,L,U,R,R,R,D,D,D,D,L,U,U,U,U,R,U",
     "level": 378,
     "moves": 34,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "sand",
     "r0c2": "sand",
@@ -39412,13 +39413,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,D,L,D,R,D,L,D,D,R,R,U,R,U,L,U,R,U,L,U,R,R,R,D,D,D,D,L,U,U,U,U,R,U"
+    "s6d6": ""
   },
   "379": {
+    "health": 1,
+    "hintsSolution": "U,U,U,R,R,D,D,D,R,U,U,U,R,R,D,D,D,D,D,L,L,L,L,L,U,U,U",
     "level": 379,
     "moves": 27,
-    "health": 1,
     "r0c0": "sand",
     "r0c1": "sand",
     "r0c2": "sand",
@@ -39516,13 +39517,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "U,U,U,R,R,D,D,D,R,U,U,U,R,R,D,D,D,D,D,L,L,L,L,L,U,U,U"
+    "s6d6": ""
   },
   "380": {
+    "health": 1,
+    "hintsSolution": "D,L,U,U,R,R,D,R,D,L,D,U",
     "level": 380,
     "moves": 12,
-    "health": 1,
     "r0c0": "lava",
     "r0c1": "lava",
     "r0c2": "lava",
@@ -39620,13 +39621,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,L,U,U,R,R,D,R,D,L,D,U"
+    "s6d6": ""
   },
   "381": {
+    "health": 1,
+    "hintsSolution": "R,L,D,D,D,D,D,L,L,L,L,L,L,D,L,U,U,U,U,U,U,L,R",
     "level": 381,
     "moves": 23,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "sand",
     "r0c2": "sand",
@@ -39724,13 +39725,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,L,D,D,D,D,D,L,L,L,L,L,L,D,L,U,U,U,U,U,U,L,R"
+    "s6d6": ""
   },
   "382": {
+    "health": 1,
+    "hintsSolution": "R,U,D,R,U,U,L,L,L,L,R,L,R,R,R,R,R",
     "level": 382,
     "moves": 17,
-    "health": 1,
     "r0c0": "lava",
     "r0c1": "lava",
     "r0c2": "lava",
@@ -39828,13 +39829,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,U,D,R,U,U,L,L,L,L,R,L,R,R,R,R,R"
+    "s6d6": ""
   },
   "383": {
+    "health": 1,
+    "hintsSolution": "L,U,L,D,R,R,R,U,L,D,D,D,R,U,L,L,L,D,R,U,R,R",
     "level": 383,
     "moves": 22,
-    "health": 1,
     "r0c0": "sand",
     "r0c1": "sand",
     "r0c2": "lava",
@@ -39932,13 +39933,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "L,U,L,D,R,R,R,U,L,D,D,D,R,U,L,L,L,D,R,U,R,R"
+    "s6d6": ""
   },
   "384": {
+    "health": 1,
+    "hintsSolution": "R,D,R,U,D,L,L,R,D,U,D,U,R,R,R,R",
     "level": 384,
     "moves": 16,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "sand",
     "r0c2": "lava",
@@ -40036,13 +40037,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,D,R,U,D,L,L,R,D,U,D,U,R,R,R,R"
+    "s6d6": ""
   },
   "385": {
+    "health": 1,
+    "hintsSolution": "L,L,L,U,D,R,L,L,L,D,D,L,L,U,U,U,R,R,R,U,U,U,L,D,L,D,U,L",
     "level": 385,
     "moves": 28,
-    "health": 1,
     "r0c0": "sand",
     "r0c1": "sand",
     "r0c2": "sand",
@@ -40140,13 +40141,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "L,L,L,U,D,R,L,L,L,D,D,L,L,U,U,U,R,R,R,U,U,U,L,D,L,D,U,L"
+    "s6d6": ""
   },
   "386": {
+    "health": 1,
+    "hintsSolution": "D,U,R,R,R,L,R,R,D,D,U,D,L,L,D,L,U,L,D,D,L,L,U,U,R,R",
     "level": 386,
     "moves": 27,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "sand",
     "r0c2": "sand",
@@ -40244,13 +40245,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,U,R,R,R,L,R,R,D,D,U,D,L,L,D,L,U,L,D,D,L,L,U,U,R,R"
+    "s6d6": ""
   },
   "387": {
+    "health": 1,
+    "hintsSolution": "D,U,R,R,D,R,U,L,U,L,D,D,R,R,D,U,D,R,U,L,R,U,R,U,U,U,D",
     "level": 387,
     "moves": 27,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "sand",
     "r0c2": "sand",
@@ -40348,13 +40349,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,U,R,R,D,R,U,L,U,L,D,D,R,R,D,U,D,R,U,L,R,U,R,U,U,U,D"
+    "s6d6": ""
   },
   "388": {
+    "health": 1,
+    "hintsSolution": "D,R,U,R,D,R,R,U,U,L,U,R,U,U,R,U,L,U,L,R,U,R,R,D,R,U,R,R",
     "level": 388,
     "moves": 28,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "sand",
     "r0c2": "sand",
@@ -40452,13 +40453,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,R,U,R,D,R,R,U,U,L,U,R,U,U,R,U,L,U,L,R,U,R,R,D,R,U,R,R"
+    "s6d6": ""
   },
   "389": {
+    "health": 1,
+    "hintsSolution": "R,L,D,D,D,D,D,D,U,R,L,R,D,U,U,U,U,U,L,R",
     "level": 389,
     "moves": 20,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "sand",
     "r0c2": "sand",
@@ -40556,13 +40557,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,L,D,D,D,D,D,D,U,R,L,R,D,U,U,U,U,U,L,R"
+    "s6d6": ""
   },
   "390": {
+    "health": 1,
+    "hintsSolution": "D,U,U,R,D,U,L,L,D,D,R,R,R,R,R,U,U,U,U,U,L,L,L,L,L,D,D,R,L,D",
     "level": 390,
     "moves": 30,
-    "health": 1,
     "r0c0": "ice",
     "r0c1": "sand",
     "r0c2": "sand",
@@ -40660,13 +40661,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,U,U,R,D,U,L,L,D,D,R,R,R,R,R,U,U,U,U,U,L,L,L,L,L,D,D,R,L,D"
+    "s6d6": ""
   },
   "391": {
+    "health": 1,
+    "hintsSolution": "D,R,U,R,R,L,R,R,L,U,R,D,L,D,D,R,D,D,D,U,D,R,U,D",
     "level": 391,
     "moves": 24,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "sand",
     "r0c2": "sand",
@@ -40764,13 +40765,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,R,U,R,R,L,R,R,L,U,R,D,L,D,D,R,D,D,D,U,D,R,U,D"
+    "s6d6": ""
   },
   "392": {
+    "health": 1,
+    "hintsSolution": "R,L,D,D,R,D,L,D,D,L,L,R,R,R,L,U,R,R,U,U,U,L,L,R,R,L,D,R,R",
     "level": 392,
     "moves": 29,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "sand",
     "r0c2": "sand",
@@ -40868,13 +40869,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,L,D,D,R,D,L,D,D,L,L,R,R,R,L,U,R,R,U,U,U,L,L,R,R,L,D,R,R"
+    "s6d6": ""
   },
   "393": {
+    "health": 1,
+    "hintsSolution": "D,D,D,D,L,R,D,D,U,U,R,L,U,R,L,L,L,L,L,L,D,D,R,R,D,R,U,R,R",
     "level": 393,
     "moves": 29,
-    "health": 1,
     "r0c0": "sand",
     "r0c1": "sand",
     "r0c2": "sand",
@@ -40972,13 +40973,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,D,D,D,L,R,D,D,U,U,R,L,U,R,L,L,L,L,L,L,D,D,R,R,D,R,U,R,R"
+    "s6d6": ""
   },
   "394": {
+    "health": 1,
+    "hintsSolution": "D,D,D,D,R,R,R,D,L,L,L,U,U,L,U,L,L,D,D,R,R,D,D,R,D",
     "level": 394,
     "moves": 25,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "sand",
     "r0c2": "sand",
@@ -41076,13 +41077,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,D,D,D,R,R,R,D,L,L,L,U,U,L,U,L,L,D,D,R,R,D,D,R,D"
+    "s6d6": ""
   },
   "395": {
+    "health": 1,
+    "hintsSolution": "D,U,D,D,U,L,D,L,U,D,D,L,D,D,R,R,U,R,U,R,R,D,D,L,R",
     "level": 395,
     "moves": 25,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "sand",
     "r0c2": "lava",
@@ -41180,13 +41181,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,U,D,D,U,L,D,L,U,D,D,L,D,D,R,R,U,R,U,R,R,D,D,L,R"
+    "s6d6": ""
   },
   "396": {
+    "health": 1,
+    "hintsSolution": "U,D,L,L,U,R,U,L,L,D,R,D,D,L,D,D,R,U,D,U,D,R,U,R,R,U",
     "level": 396,
     "moves": 26,
-    "health": 1,
     "r0c0": "sand",
     "r0c1": "sand",
     "r0c2": "sand",
@@ -41284,13 +41285,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "U,D,L,L,U,R,U,L,L,D,R,D,D,L,D,D,R,U,D,U,D,R,U,R,R,U"
+    "s6d6": ""
   },
   "397": {
+    "health": 1,
+    "hintsSolution": "R,R,R,R,L,R,D,L,R,U,L,L,L,D,R,D,R,L,R,R,R,R",
     "level": 397,
     "moves": 22,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "sand",
     "r0c2": "sand",
@@ -41388,13 +41389,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,R,R,R,L,R,D,L,R,U,L,L,L,D,R,D,R,L,R,R,R,R"
+    "s6d6": ""
   },
   "398": {
+    "health": 1,
+    "hintsSolution": "U,D,R,L,D,D,R,D,R,R,L,R,L,D,U,D,U,L,R,U,U,R,U,D,D,L,R",
     "level": 398,
     "moves": 27,
-    "health": 1,
     "r0c0": "sand",
     "r0c1": "lava",
     "r0c2": "lava",
@@ -41492,13 +41493,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "U,D,R,L,D,D,R,D,R,R,L,R,L,D,U,D,U,L,R,U,U,R,U,D,D,L,R"
+    "s6d6": ""
   },
   "399": {
+    "health": 1,
+    "hintsSolution": "U,D,L,D,R,D,R,U,L,U,R,R,R,U,D,D,U,R,R,U,R,R,U,U,R,D,D,L,D,U",
     "level": 399,
     "moves": 30,
-    "health": 1,
     "r0c0": "lava",
     "r0c1": "sand",
     "r0c2": "sand",
@@ -41596,13 +41597,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "U,D,L,D,R,D,R,U,L,U,R,R,R,U,D,D,U,R,R,U,R,R,U,U,R,D,D,L,D,U"
+    "s6d6": ""
   },
   "400": {
+    "health": 1,
+    "hintsSolution": "D,R,R,D,R,D,D,L,L,U,L,D,D",
     "level": 400,
     "moves": 13,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "lava",
     "r0c2": "lava",
@@ -41700,13 +41701,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,R,R,D,R,D,D,L,L,U,L,D,D"
+    "s6d6": ""
   },
   "401": {
+    "health": 1,
+    "hintsSolution": "D,D,R,R,D,L,D,L,D,U,U,L,L,U,R,U,R,R,D,L,D,R,R,D,D",
     "level": 401,
     "moves": 25,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -41804,13 +41805,13 @@
     "s6d3": "",
     "s6d4": "warp",
     "s6d5": "boulder",
-    "s6d6": "",
-    "solution": "D,D,R,R,D,L,D,L,D,U,U,L,L,U,R,U,R,R,D,L,D,R,R,D,D"
+    "s6d6": ""
   },
   "402": {
+    "health": 1,
+    "hintsSolution": "R,D,D,D,D,D,R,R,R,U,L,L,U,R,R,U,L,L,L,U,U,R,D,U,R,U,R,R",
     "level": 402,
     "moves": 28,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -41908,13 +41909,13 @@
     "s6d3": "boulder",
     "s6d4": "boulder",
     "s6d5": "boulder",
-    "s6d6": "",
-    "solution": "R,D,D,D,D,D,R,R,R,U,L,L,U,R,R,U,L,L,L,U,U,R,D,U,R,U,R,R"
+    "s6d6": ""
   },
   "403": {
+    "health": 1,
+    "hintsSolution": "R,D,R,D,R,D,L,U,U,L,U,D,D,D,D,L,U,R,U,U,U,D,R,R,R,R,U,L,D,L,L,L,U,D,R,D,R,R,D,L,D,R",
     "level": 403,
     "moves": 42,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -42012,13 +42013,13 @@
     "s6d3": "boulder",
     "s6d4": "",
     "s6d5": "gem",
-    "s6d6": "",
-    "solution": "R,D,R,D,R,D,L,U,U,L,U,D,D,D,D,L,U,R,U,U,U,D,R,R,R,R,U,L,D,L,L,L,U,D,R,D,R,R,D,L,D,R"
+    "s6d6": ""
   },
   "404": {
+    "health": 1,
+    "hintsSolution": "D,D,U,R,D,L,U,R,L,D,R,U,L,D,L,D,D,R,R,L,U,U,U,R,U,R,R,D,D,U,L,L,U,R,R,U,D,D,L,L,R,R,D,R,U,L",
     "level": 404,
     "moves": 46,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -42116,13 +42117,13 @@
     "s6d3": "boulder",
     "s6d4": "boulder",
     "s6d5": "",
-    "s6d6": "gem",
-    "solution": "D,D,U,R,D,L,U,R,L,D,R,U,L,D,L,D,D,R,R,L,U,U,U,R,U,R,R,D,D,U,L,L,U,R,R,U,D,D,L,L,R,R,D,R,U,L"
+    "s6d6": "gem"
   },
   "405": {
+    "health": 1,
+    "hintsSolution": "D,D,R,U,L,R,D,R,R,R,D,R,L,U,L,L,U,D,U,D,U,L,R,D,D,D,R,D,R,R,R,D",
     "level": 405,
     "moves": 32,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -42220,13 +42221,13 @@
     "s6d3": "boulder",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,D,R,U,L,R,D,R,R,R,D,R,L,U,L,L,U,D,U,D,U,L,R,D,D,D,R,D,R,R,R,D"
+    "s6d6": ""
   },
   "406": {
+    "health": 1,
+    "hintsSolution": "R,D,D,D,U,U,U,L,R,U,D,D,D,U,U,U,D,L,R,U,U,R,D,D,D,D,D,D,R,R,R",
     "level": 406,
     "moves": 31,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -42324,13 +42325,13 @@
     "s6d3": "heart",
     "s6d4": "heart",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,D,D,D,U,U,U,L,R,U,D,D,D,U,U,U,D,L,R,U,U,R,D,D,D,D,D,D,R,R,R"
+    "s6d6": ""
   },
   "407": {
+    "health": 1,
+    "hintsSolution": "R,R,L,U,R,D,L,D,U,L,D,R,L,D,U,L,D,R,U,D,R,D,L,U,U,R,D,D,U,U,U,R,R,R,R,R,R",
     "level": 407,
     "moves": 37,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -42428,13 +42429,13 @@
     "s6d3": "gem",
     "s6d4": "boulder",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,R,L,U,R,D,L,D,U,L,D,R,L,D,U,L,D,R,U,D,R,D,L,U,U,R,D,D,U,U,U,R,R,R,R,R,R"
+    "s6d6": ""
   },
   "408": {
+    "health": 1,
+    "hintsSolution": "D,R,D,U,D,U,D,D,U,U,R,L,R,L,R,R,L,L,R,U,U,U,R,D,L,R,L,L,D,R,R",
     "level": 408,
     "moves": 31,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -42532,13 +42533,13 @@
     "s6d3": "",
     "s6d4": "gem",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,R,D,U,D,U,D,D,U,U,R,L,R,L,R,R,L,L,R,U,U,U,R,D,L,R,L,L,D,R,R"
+    "s6d6": ""
   },
   "409": {
+    "health": 1,
+    "hintsSolution": "R,L,L,L,U,U,U,L,U,D,R,R,U,D,R,L,L,L,D,D,D,L,D,D,D,R,D,R,L,D,L,R,D",
     "level": 409,
     "moves": 33,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -42636,13 +42637,13 @@
     "s6d3": "",
     "s6d4": "warp",
     "s6d5": "boulder",
-    "s6d6": "",
-    "solution": "R,L,L,L,U,U,U,L,U,D,R,R,U,D,R,L,L,L,D,D,D,L,D,D,D,R,D,R,L,D,L,R,D"
+    "s6d6": ""
   },
   "410": {
+    "health": 1,
+    "hintsSolution": "R,L,D,R,R,D,R,D,L,D,R,U,L,U,L,R,R,D,U,R,D,D,R,D,D,U,R,D",
     "level": 410,
     "moves": 28,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -42740,13 +42741,13 @@
     "s6d3": "boulder",
     "s6d4": "boulder",
     "s6d5": "gem",
-    "s6d6": "",
-    "solution": "R,L,D,R,R,D,R,D,L,D,R,U,L,U,L,R,R,D,U,R,D,D,R,D,D,U,R,D"
+    "s6d6": ""
   },
   "411": {
+    "health": 1,
+    "hintsSolution": "R,L,D,D,D,D,D,L,U,D,D,U,R,L,L,R,L,D,U,R,R,U,U,U,R,R,U,D,R,D,L,R,R,D,L,R,R,D,L,R,R,D,L,R",
     "level": 411,
     "moves": 44,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -42844,13 +42845,13 @@
     "s6d3": "boulder",
     "s6d4": "boulder",
     "s6d5": "gem",
-    "s6d6": "",
-    "solution": "R,L,D,D,D,D,D,L,U,D,D,U,R,L,L,R,L,D,U,R,R,U,U,U,R,R,U,D,R,D,L,R,R,D,L,R,R,D,L,R,R,D,L,R"
+    "s6d6": ""
   },
   "412": {
+    "health": 1,
+    "hintsSolution": "D,D,D,R,R,L,D,R,U,U,R,U,D,U,U,D,D,R,L,D,R,D,L,R,D,R",
     "level": 412,
     "moves": 26,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -42948,13 +42949,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "boulder",
-    "s6d6": "",
-    "solution": "D,D,D,R,R,L,D,R,U,U,R,U,D,U,U,D,D,R,L,D,R,D,L,R,D,R"
+    "s6d6": ""
   },
   "413": {
+    "health": 1,
+    "hintsSolution": "R,R,D,U,L,L,D,R,U,D,R,L,D,U,D,L,R,L,R,R,L,R,D,L,R",
     "level": 413,
     "moves": 25,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -43052,13 +43053,13 @@
     "s6d3": "boulder",
     "s6d4": "boulder",
     "s6d5": "gem",
-    "s6d6": "",
-    "solution": "R,R,D,U,L,L,D,R,U,D,R,L,D,U,D,L,R,L,R,R,L,R,D,L,R"
+    "s6d6": ""
   },
   "414": {
+    "health": 1,
+    "hintsSolution": "U,R,U,R,U,D,R,R,U,L,L,R,D,R,U,U,L,R,R,U,R,U",
     "level": 414,
     "moves": 22,
-    "health": 1,
     "r0c0": "grass",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -43156,13 +43157,13 @@
     "s6d3": "boulder",
     "s6d4": "",
     "s6d5": "gem",
-    "s6d6": "warp2",
-    "solution": "U,R,U,R,U,D,R,R,U,L,L,R,D,R,U,U,L,R,R,U,R,U"
+    "s6d6": "warp2"
   },
   "415": {
+    "health": 1,
+    "hintsSolution": "R,U,R,D,L,R,R,L,R,L,R,L,L,L,L,L,L,L,U,R,D,R,R,R,R,R,R,L,R,R,R",
     "level": 415,
     "moves": 31,
-    "health": 1,
     "r0c0": "grass",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -43260,13 +43261,13 @@
     "s6d3": "warp3",
     "s6d4": "hammer",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,U,R,D,L,R,R,L,R,L,R,L,L,L,L,L,L,L,U,R,D,R,R,R,R,R,R,L,R,R,R"
+    "s6d6": ""
   },
   "416": {
+    "health": 1,
+    "hintsSolution": "R,D,R,R,R,L,L,L,L,D,U,R,R,L,L,L,R,R,R,R,U,D,D,L,R",
     "level": 416,
     "moves": 27,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -43364,13 +43365,13 @@
     "s6d3": "boulder",
     "s6d4": "boulder",
     "s6d5": "gem",
-    "s6d6": "",
-    "solution": "R,D,R,R,R,L,L,L,L,D,U,R,R,L,L,L,R,R,R,R,U,D,D,L,R"
+    "s6d6": ""
   },
   "417": {
+    "health": 1,
+    "hintsSolution": "R,L,D,R,U,U,R,D,L,L,D,R,L,L,L,D,L,U,D,D,L,U,R,D",
     "level": 417,
     "moves": 24,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -43468,13 +43469,13 @@
     "s6d3": "boulder",
     "s6d4": "boulder",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,L,D,R,U,U,R,D,L,L,D,R,L,L,L,D,L,U,D,D,L,U,R,D"
+    "s6d6": ""
   },
   "418": {
+    "health": 1,
+    "hintsSolution": "D,R,D,L,D,R,D,L,D,L,L,D,L,D,D,D,D,L,R,U,R,U,U,U,U,R,L,L,R,R,L,D,D,D,D,D",
     "level": 418,
     "moves": 39,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -43572,13 +43573,13 @@
     "s6d3": "boulder",
     "s6d4": "gem",
     "s6d5": "enemy",
-    "s6d6": "",
-    "solution": "D,R,D,L,D,R,D,L,D,L,L,D,L,D,D,D,D,L,R,U,R,U,U,U,U,R,L,L,R,R,L,D,D,D,D,D"
+    "s6d6": ""
   },
   "419": {
+    "health": 1,
+    "hintsSolution": "R,U,L,D,D,R,R,U,R,R,L,R,U,L,L,D,D,R,D,R,D,D,L,R",
     "level": 419,
     "moves": 36,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "marsh",
     "r0c2": "grass",
@@ -43676,13 +43677,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "gem",
-    "s6d6": "",
-    "solution": "R,U,L,D,D,R,R,U,R,R,L,R,U,L,L,D,D,R,D,R,D,D,L,R"
+    "s6d6": ""
   },
   "420": {
+    "health": 1,
+    "hintsSolution": "R,R,R,D,U,L,U,L,U,R,U,D,L,L,L,L,L,D,D,R,R,U,U,R,R,R,R,D,D",
     "level": 420,
     "moves": 41,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -43780,13 +43781,13 @@
     "s6d3": "boulder",
     "s6d4": "boulder",
     "s6d5": "boulder",
-    "s6d6": "",
-    "solution": "R,R,R,D,U,L,U,L,U,R,U,D,L,L,L,L,L,D,D,R,R,U,U,R,R,R,R,D,D"
+    "s6d6": ""
   },
   "421": {
+    "health": 1,
+    "hintsSolution": "D,D,D,D,L,L,L,L,U,R,D,U,L,D,R,R,R,R,L,U,U,L,U,U,R,R,D,D,L,D,D,R",
     "level": 421,
     "moves": 42,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -43884,13 +43885,13 @@
     "s6d3": "warp2",
     "s6d4": "boulder",
     "s6d5": "warp2",
-    "s6d6": "",
-    "solution": "D,D,D,D,L,L,L,L,U,R,D,U,L,D,R,R,R,R,L,U,U,L,U,U,R,R,D,D,L,D,D,R"
+    "s6d6": ""
   },
   "422": {
+    "health": 1,
+    "hintsSolution": "D,D,L,L,L,U,D,L,R,D,D,D,R,L,L,L,U,U,L,L,D,D,R,R,R,D,D,R",
     "level": 422,
     "moves": 37,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -43988,13 +43989,13 @@
     "s6d3": "",
     "s6d4": "warp",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,D,L,L,L,U,D,L,R,D,D,D,R,L,L,L,U,U,L,L,D,D,R,R,R,D,D,R"
+    "s6d6": ""
   },
   "423": {
+    "health": 1,
+    "hintsSolution": "D,R,R,U,U,R,R,L,L,D,D,L,L,D,U,D,U,R,L,D,D,L,D,L,L,D,L,D,R,U,U,R,R,U,R,U,U,R,R",
     "level": 423,
     "moves": 43,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -44092,13 +44093,13 @@
     "s6d3": "boulder",
     "s6d4": "warp",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,R,R,U,U,R,R,L,L,D,D,L,L,D,U,D,U,R,L,D,D,L,D,L,L,D,L,D,R,U,U,R,R,U,R,U,U,R,R"
+    "s6d6": ""
   },
   "424": {
+    "health": 1,
+    "hintsSolution": "D,D,U,D,U,D,U,R,U,R,R,D,U,U,U,U,D,D,U,L,R,U,U,U,U,D,D,D,D",
     "level": 424,
     "moves": 41,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "marsh",
     "r0c2": "grass",
@@ -44196,13 +44197,13 @@
     "s6d3": "warp2",
     "s6d4": "",
     "s6d5": "boulder",
-    "s6d6": "",
-    "solution": "D,D,U,D,U,D,U,R,U,R,R,D,U,U,U,U,D,D,U,L,R,U,U,U,U,D,D,D,D"
+    "s6d6": ""
   },
   "425": {
+    "health": 1,
+    "hintsSolution": "D,R,D,R,D,R,D,R,R,L,D,U,D,U,L,U,L,U,L,U,L,D,R,D,R,D,R,D,D,R,U,L,R,D,R,R",
     "level": 425,
     "moves": 62,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "marsh",
@@ -44300,13 +44301,13 @@
     "s6d3": "gem",
     "s6d4": "",
     "s6d5": "boulder",
-    "s6d6": "",
-    "solution": "D,R,D,R,D,R,D,R,R,L,D,U,D,U,L,U,L,U,L,U,L,D,R,D,R,D,R,D,D,R,U,L,R,D,R,R"
+    "s6d6": ""
   },
   "426": {
+    "health": 1,
+    "hintsSolution": "R,R,D,R,R,L,L,D,L,L,D,D,D,L,L,R,D,D,R,L,L,U,L,U,U,U,R",
     "level": 426,
     "moves": 37,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",
@@ -44404,13 +44405,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "warp3",
-    "s6d6": "",
-    "solution": "R,R,D,R,R,L,L,D,L,L,D,D,D,L,L,R,D,D,R,L,L,U,L,U,U,U,R"
+    "s6d6": ""
   },
   "427": {
+    "health": 1,
+    "hintsSolution": "D,L,R,D,U,U,L,R,D,R,R,R,R,D,R,R,U,D,L,R,R,L,L,L,U,L,L,D,D,D,D,U,D,R,R",
     "level": 427,
     "moves": 41,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "marsh",
     "r0c2": "grass",
@@ -44508,13 +44509,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,L,R,D,U,U,L,R,D,R,R,R,R,D,R,R,U,D,L,R,R,L,L,L,U,L,L,D,D,D,D,U,D,R,R"
+    "s6d6": ""
   },
   "428": {
+    "health": 1,
+    "hintsSolution": "R,R,L,D,D,D,R,D,L,U,R,L,D,L,R,D,U,D,D,R,U,D",
     "level": 428,
     "moves": 42,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "marsh",
     "r0c2": "marsh",
@@ -44612,13 +44613,13 @@
     "s6d3": "enemy",
     "s6d4": "enemy",
     "s6d5": "warp2",
-    "s6d6": "",
-    "solution": "R,R,L,D,D,D,R,D,L,U,R,L,D,L,R,D,U,D,D,R,U,D"
+    "s6d6": ""
   },
   "429": {
+    "health": 1,
+    "hintsSolution": "D,D,D,D,L,L,U,R,D,D,L,U,R,U,U,U,U,U,U,R,L,D,D,D,D,D,D,L,D",
     "level": 429,
     "moves": 56,
-    "health": 1,
     "r0c0": "marsh",
     "r0c1": "marsh",
     "r0c2": "marsh",
@@ -44716,13 +44717,13 @@
     "s6d3": "",
     "s6d4": "enemy",
     "s6d5": "warp2",
-    "s6d6": "warp",
-    "solution": "D,D,D,D,L,L,U,R,D,D,L,U,R,U,U,U,U,U,U,R,L,D,D,D,D,D,D,L,D"
+    "s6d6": "warp"
   },
   "430": {
+    "health": 1,
+    "hintsSolution": "L,U,L,U,D,U,D,R,R,R,R,R,R,L,L,L,L,L,L,U,D,L,D,L,L,U,D,L,U,D,R,U,L,U,R,L,L",
     "level": 430,
     "moves": 73,
-    "health": 1,
     "r0c0": "marsh",
     "r0c1": "marsh",
     "r0c2": "marsh",
@@ -44820,13 +44821,13 @@
     "s6d3": "gem",
     "s6d4": "enemy",
     "s6d5": "enemy",
-    "s6d6": "enemy",
-    "solution": "L,U,L,U,D,U,D,R,R,R,R,R,R,L,L,L,L,L,L,U,D,L,D,L,L,U,D,L,U,D,R,U,L,U,R,L,L"
+    "s6d6": "enemy"
   },
   "431": {
+    "health": 1,
+    "hintsSolution": "R,L,D,D,D,R,R,R,R,D,U,L,R,D,U,R,L,L,L,U,L,L,D,R,R,R,R,R,L,D,U",
     "level": 431,
     "moves": 58,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "marsh",
     "r0c2": "marsh",
@@ -44924,13 +44925,13 @@
     "s6d3": "boulder",
     "s6d4": "warp2",
     "s6d5": "sword",
-    "s6d6": "boulder",
-    "solution": "R,L,D,D,D,R,R,R,R,D,U,L,R,D,U,R,L,L,L,U,L,L,D,R,R,R,R,R,L,D,U"
+    "s6d6": "boulder"
   },
   "432": {
+    "health": 1,
+    "hintsSolution": "R,R,L,L,D,D,D,D,D,D,R,R,U,U,U,U,D,D,R,R,R,U,U,U,L,R,D,D,D,L,L,L,D,D,R,R,R,R",
     "level": 432,
     "moves": 74,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "marsh",
     "r0c2": "marsh",
@@ -45028,13 +45029,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,R,L,L,D,D,D,D,D,D,R,R,U,U,U,U,D,D,R,R,R,U,U,U,L,R,D,D,D,L,L,L,D,D,R,R,R,R"
+    "s6d6": ""
   },
   "433": {
+    "health": 1,
+    "hintsSolution": "R,R,R,R,R,R,L,L,D,L,L,D,R,U,U,D,D,L,L,L,U,D,D,D,D,U,R,U,U,R,L,D,L,D,L,R,R,R,R,R",
     "level": 433,
     "moves": 79,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "marsh",
     "r0c2": "marsh",
@@ -45132,13 +45133,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,R,R,R,R,R,L,L,D,L,L,D,R,U,U,D,D,L,L,L,U,D,D,D,D,U,R,U,U,R,L,D,L,D,L,R,R,R,R,R"
+    "s6d6": ""
   },
   "434": {
+    "health": 1,
+    "hintsSolution": "R,R,R,R,R,D,U,R,L,R,L,L,L,L,L,L,D,U,L,R,U,R,U,R,U,D,U,D,R,L,D,D,D",
     "level": 434,
     "moves": 64,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "marsh",
     "r0c2": "marsh",
@@ -45236,13 +45237,13 @@
     "s6d3": "boulder",
     "s6d4": "warp2",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,R,R,R,R,D,U,R,L,R,L,L,L,L,L,L,D,U,L,R,U,R,U,R,U,D,U,D,R,L,D,D,D"
+    "s6d6": ""
   },
   "435": {
+    "health": 1,
+    "hintsSolution": "R,R,R,R,L,L,L,D,R,D,U,D,U,L,L,D,D,D,U,U,U,R,R,D,L,R,U,L,U,D,R,D,D,R,U,D,D,R,R,D",
     "level": 435,
     "moves": 70,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "marsh",
@@ -45340,13 +45341,13 @@
     "s6d3": "boulder",
     "s6d4": "boulder",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,R,R,R,L,L,L,D,R,D,U,D,U,L,L,D,D,D,U,U,U,R,R,D,L,R,U,L,U,D,R,D,D,R,U,D,D,R,R,D"
+    "s6d6": ""
   },
   "436": {
+    "health": 1,
+    "hintsSolution": "R,R,R,R,D,R,R,U,D,L,L,U,L,L,L,L,D,D,R,R,R,D,R,R,D,D,R,L,L,U,L,L,U,L,L,D,D,D,U,U,U,R,R,D,D,R,R,R,R,D",
     "level": 436,
     "moves": 98,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "marsh",
     "r0c2": "marsh",
@@ -45444,13 +45445,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "enemy",
-    "s6d6": "",
-    "solution": "R,R,R,R,D,R,R,U,D,L,L,U,L,L,L,L,D,D,R,R,R,D,R,R,D,D,R,L,L,U,L,L,U,L,L,D,D,D,U,U,U,R,R,D,D,R,R,R,R,D"
+    "s6d6": ""
   },
   "437": {
+    "health": 1,
+    "hintsSolution": "R,R,R,R,L,L,L,L,D,D,D,D,D,D,R,R,R,R,R,R,U,U,U,L,L,L,U,U,R,D,D,R,R,D,U,U,L,L,L,L,L,L",
     "level": 437,
     "moves": 81,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "marsh",
     "r0c2": "marsh",
@@ -45548,13 +45549,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "warp",
-    "solution": "R,R,R,R,L,L,L,L,D,D,D,D,D,D,R,R,R,R,R,R,U,U,U,L,L,L,U,U,R,D,D,R,R,D,U,U,L,L,L,L,L,L"
+    "s6d6": "warp"
   },
   "438": {
+    "health": 1,
+    "hintsSolution": "R,R,R,D,R,L,D,D,D,L,L,D,R,R,R,R,U,U,D,D,L,L,U,U,U,U,U,R",
     "level": 438,
     "moves": 55,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "marsh",
     "r0c2": "marsh",
@@ -45652,13 +45653,13 @@
     "s6d3": "boulder",
     "s6d4": "boulder",
     "s6d5": "boulder",
-    "s6d6": "boulder",
-    "solution": "R,R,R,D,R,L,D,D,D,L,L,D,R,R,R,R,U,U,D,D,L,L,U,U,U,U,U,R"
+    "s6d6": "boulder"
   },
   "439": {
+    "health": 1,
+    "hintsSolution": "R,R,D,R,R,D,D,R,R,L,R,R,L,L,R,L,L,U,U,L,L,L,U,R,L,R,R,R,R,R,D,D,L,L,U,U,L,L,L,R,L,R,D,R,R,D,D,R,R,L",
     "level": 439,
     "moves": 97,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "marsh",
     "r0c2": "marsh",
@@ -45756,13 +45757,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "warp2",
-    "s6d6": "sword",
-    "solution": "R,R,D,R,R,D,D,R,R,L,R,R,L,L,R,L,L,U,U,L,L,L,U,R,L,R,R,R,R,R,D,D,L,L,U,U,L,L,L,R,L,R,D,R,R,D,D,R,R,L"
+    "s6d6": "sword"
   },
   "440": {
+    "health": 1,
+    "hintsSolution": "D,U,R,D,R,U,R,R,R,R,L,L,L,D,D,L,L,L,D,D,D,D,U,U,U,LR,R,R,D,R,D,R,D,R",
     "level": 440,
     "moves": 66,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "marsh",
     "r0c2": "marsh",
@@ -45860,13 +45861,13 @@
     "s6d3": "enemy",
     "s6d4": "enemy",
     "s6d5": "enemy",
-    "s6d6": "",
-    "solution": "D,U,R,D,R,U,R,R,R,R,L,L,L,D,D,L,L,L,D,D,D,D,U,U,U,LR,R,R,D,R,D,R,D,R"
+    "s6d6": ""
   },
   "441": {
+    "health": 2,
+    "hintsSolution": "D,U,R,D,D,D,U,U,U,L,D,R,R,R,R,U,L,U,L,U,L,U,L,D,D,L,D,R,R,R,R,R,D",
     "level": 441,
     "moves": 62,
-    "health": 2,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -45964,13 +45965,13 @@
     "s6d3": "gem",
     "s6d4": "warp",
     "s6d5": "enemy",
-    "s6d6": "",
-    "solution": "D,U,R,D,D,D,U,U,U,L,D,R,R,R,R,U,L,U,L,U,L,U,L,D,D,L,D,R,R,R,R,R,D"
+    "s6d6": ""
   },
   "442": {
+    "health": 1,
+    "hintsSolution": "D,R,D,R,R,D,R,U,D,D,R,R,D,U,L,L,L,L,L,L,D,U,R,R,R,R,U,U,R,D,R,D,U,D,D,D,D",
     "level": 442,
     "moves": 67,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "marsh",
     "r0c2": "marsh",
@@ -46068,13 +46069,13 @@
     "s6d3": "boulder",
     "s6d4": "",
     "s6d5": "enemy",
-    "s6d6": "",
-    "solution": "D,R,D,R,R,D,R,U,D,D,R,R,D,U,L,L,L,L,L,L,D,U,R,R,R,R,U,U,R,D,R,D,U,D,D,D,D"
+    "s6d6": ""
   },
   "443": {
+    "health": 1,
+    "hintsSolution": "U,U,U,U,R,R,R,R,U,U,L,L,U,U,D,D,D,D,L,D,D,R,U",
     "level": 443,
     "moves": 42,
-    "health": 1,
     "r0c0": "ice",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -46172,13 +46173,13 @@
     "s6d3": "hammer",
     "s6d4": "hammer",
     "s6d5": "hammer",
-    "s6d6": "hammer",
-    "solution": "U,U,U,U,R,R,R,R,U,U,L,L,U,U,D,D,D,D,L,D,D,R,U"
+    "s6d6": "hammer"
   },
   "444": {
+    "health": 1,
+    "hintsSolution": "R,D,L,D,D,L,R,D,U,U,R,R,R,U,R,U,U,U,R,L,D,U,D,U,D,D,D,D",
     "level": 444,
     "moves": 52,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -46276,13 +46277,13 @@
     "s6d3": "",
     "s6d4": "gem",
     "s6d5": "gem",
-    "s6d6": "",
-    "solution": "R,D,L,D,D,L,R,D,U,U,R,R,R,U,R,U,U,U,R,L,D,U,D,U,D,D,D,D"
+    "s6d6": ""
   },
   "445": {
+    "health": 2,
+    "hintsSolution": "R,D,R,R,R,R,D,L,L,L,L,R,U,U,L,U,R,R,L,U,L,U,L,D,R,L,U,R,D,R,R,R,R,R",
     "level": 445,
     "moves": 53,
-    "health": 2,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "marsh",
@@ -46380,13 +46381,13 @@
     "s6d3": "",
     "s6d4": "gem",
     "s6d5": "gem",
-    "s6d6": "",
-    "solution": "R,D,R,R,R,R,D,L,L,L,L,R,U,U,L,U,R,R,L,U,L,U,L,D,R,L,U,R,D,R,R,R,R,R"
+    "s6d6": ""
   },
   "446": {
+    "health": 1,
+    "hintsSolution": "R,D,U,L,D,R,L,D,R,L,D,R,D,L,U,U,R,R",
     "level": 446,
     "moves": 33,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "marsh",
     "r0c2": "marsh",
@@ -46484,13 +46485,13 @@
     "s6d3": "enemy",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "sword",
-    "solution": "R,D,U,L,D,R,L,D,R,L,D,R,D,L,U,U,R,R"
+    "s6d6": "sword"
   },
   "447": {
+    "health": 1,
+    "hintsSolution": "R,L,R,L,R,R,U,R,R,R,L,R,L,L,R,D,D,L,U,L,D,L,U,D",
     "level": 447,
     "moves": 31,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "marsh",
@@ -46588,13 +46589,13 @@
     "s6d3": "enemy",
     "s6d4": "enemy",
     "s6d5": "enemy",
-    "s6d6": "enemy",
-    "solution": "R,L,R,L,R,R,U,R,R,R,L,R,L,L,R,D,D,L,U,L,D,L,U,D"
+    "s6d6": "enemy"
   },
   "448": {
+    "health": 1,
+    "hintsSolution": "R,R,R,R,R,R,D,D,D,D,L,L,U,L,D,U,U,L,R,U,D,D,R,U,U,D,R,D,L,R,D,R",
     "level": 448,
     "moves": 61,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "marsh",
     "r0c2": "marsh",
@@ -46692,13 +46693,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "R,R,R,R,R,R,D,D,D,D,L,L,U,L,D,U,U,L,R,U,D,D,R,U,U,D,R,D,L,R,D,R"
+    "s6d6": ""
   },
   "449": {
+    "health": 1,
+    "hintsSolution": "D,D,D,D,R,U,R,R,L,U,R,R,R,D,L,D,L,R,D,R,U,R",
     "level": 449,
     "moves": 39,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "marsh",
     "r0c2": "ice",
@@ -46796,13 +46797,13 @@
     "s6d3": "gem",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,D,D,D,R,U,R,R,L,U,R,R,R,D,L,D,L,R,D,R,U,R"
+    "s6d6": ""
   },
   "450": {
+    "health": 1,
+    "hintsSolution": "D,R,U,D,L,R,D,R,D,D,R,U,L,D,R,R,D",
     "level": 450,
     "moves": 22,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -46900,13 +46901,13 @@
     "s6d3": "",
     "s6d4": "warp",
     "s6d5": "warp2",
-    "s6d6": "",
-    "solution": "D,R,U,D,L,R,D,R,D,D,R,U,L,D,R,R,D"
+    "s6d6": ""
   },
   "451": {
+    "health": 1,
+    "hintsSolution": "D,L,D,U,D,L,L,R,L,U,L,D,R,U,R",
     "level": 451,
     "moves": 15,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -47004,13 +47005,13 @@
     "s6d3": "",
     "s6d4": "warp3",
     "s6d5": "gem",
-    "s6d6": "boulder",
-    "solution": "D,L,D,U,D,L,L,R,L,U,L,D,R,U,R"
+    "s6d6": "boulder"
   },
   "452": {
+    "health": 1,
+    "hintsSolution": "D,D,R,L,L,R,U,D,D,L,L,R,U,R,R,D",
     "level": 452,
     "moves": 16,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -47108,13 +47109,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "enemy",
-    "solution": "D,D,R,L,L,R,U,D,D,L,L,R,U,R,R,D"
+    "s6d6": "enemy"
   },
   "453": {
+    "health": 1,
+    "hintsSolution": "R,U,L,D,L,D,R,D,L,U,R,R,U,D,U,U,D,U,L,L,U,R,D",
     "level": 453,
     "moves": 23,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -47212,13 +47213,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "boulder",
-    "s6d6": "enemy",
-    "solution": "R,U,L,D,L,D,R,D,L,U,R,R,U,D,U,U,D,U,L,L,U,R,D"
+    "s6d6": "enemy"
   },
   "454": {
+    "health": 1,
+    "hintsSolution": "D,R,U,R,U,D,U,U,D,R,D,R,R,L,R,U,L,D,R",
     "level": 454,
     "moves": 19,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -47316,13 +47317,13 @@
     "s6d3": "",
     "s6d4": "heart",
     "s6d5": "heart",
-    "s6d6": "enemy",
-    "solution": "D,R,U,R,U,D,U,U,D,R,D,R,R,L,R,U,L,D,R"
+    "s6d6": "enemy"
   },
   "455": {
+    "health": 2,
+    "hintsSolution": "R,L,D,R,L,U,L,D,R,U,D,U,L,D,R,L,D,R,D",
     "level": 455,
     "moves": 19,
-    "health": 2,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -47420,13 +47421,13 @@
     "s6d3": "",
     "s6d4": "warp",
     "s6d5": "boulder",
-    "s6d6": "",
-    "solution": "R,L,D,R,L,U,L,D,R,U,D,U,L,D,R,L,D,R,D"
+    "s6d6": ""
   },
   "456": {
+    "health": 1,
+    "hintsSolution": "R,L,D,R,L,R,L,D,R,U,L,L,U,R,D,L",
     "level": 456,
     "moves": 16,
-    "health": 1,
     "r0c0": "ice",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -47524,13 +47525,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "gem",
-    "s6d6": "boulder",
-    "solution": "R,L,D,R,L,R,L,D,R,U,L,L,U,R,D,L"
+    "s6d6": "boulder"
   },
   "457": {
+    "health": 1,
+    "hintsSolution": "L,D,R,R,R,U,D,U,R,R",
     "level": 457,
     "moves": 10,
-    "health": 1,
     "r0c0": "ice",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -47628,13 +47629,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "gem",
-    "s6d6": "warp",
-    "solution": "L,D,R,R,R,U,D,U,R,R"
+    "s6d6": "warp"
   },
   "458": {
+    "health": 1,
+    "hintsSolution": "D,D,L,U,U,D,R,D,L,U,R,L,R,D",
     "level": 458,
     "moves": 14,
-    "health": 1,
     "r0c0": "ice",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -47732,13 +47733,13 @@
     "s6d3": "gem",
     "s6d4": "",
     "s6d5": "gem",
-    "s6d6": "warp2",
-    "solution": "D,D,L,U,U,D,R,D,L,U,R,L,R,D"
+    "s6d6": "warp2"
   },
   "459": {
+    "health": 1,
+    "hintsSolution": "L,R,D,U,R,D,U,L,D,L,U,L,U,L,R,D,L,R,U,D,D",
     "level": 459,
     "moves": 21,
-    "health": 1,
     "r0c0": "ice",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -47836,13 +47837,13 @@
     "s6d3": "boulder",
     "s6d4": "gem",
     "s6d5": "heart",
-    "s6d6": "gem",
-    "solution": "L,R,D,U,R,D,U,L,D,L,U,L,U,L,R,D,L,R,U,D,D"
+    "s6d6": "gem"
   },
   "460": {
+    "health": 1,
+    "hintsSolution": "D,L,D,U,U,D,U,U,U,D,U,L,L,D,R,L",
     "level": 460,
     "moves": 16,
-    "health": 1,
     "r0c0": "ice",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -47940,13 +47941,13 @@
     "s6d3": "boulder",
     "s6d4": "enemy",
     "s6d5": "enemy",
-    "s6d6": "warp",
-    "solution": "D,L,D,U,U,D,U,U,U,D,U,L,L,D,R,L"
+    "s6d6": "warp"
   },
   "461": {
+    "health": 1,
+    "hintsSolution": "U,L,U,R,D,R,D,L,R,D,U,D,L,L,R",
     "level": 461,
     "moves": 16,
-    "health": 1,
     "r0c0": "ice",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -48044,13 +48045,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "warp2",
-    "solution": "U,L,U,R,D,R,D,L,R,D,U,D,L,L,R"
+    "s6d6": "warp2"
   },
   "462": {
+    "health": 1,
+    "hintsSolution": "U,D,U,L,D,R,L,R,U,L,U,R,D,R",
     "level": 462,
     "moves": 16,
-    "health": 1,
     "r0c0": "ice",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -48148,13 +48149,13 @@
     "s6d3": "",
     "s6d4": "gem",
     "s6d5": "gem",
-    "s6d6": "warp3",
-    "solution": "U,D,U,L,D,R,L,R,U,L,U,R,D,R"
+    "s6d6": "warp3"
   },
   "463": {
+    "health": 1,
+    "hintsSolution": "U,L,U,R,D,L,D,U,R,U,L,D,R,R,D,L,D,U,R,D,U,L,R,D,L,D,R,L,U",
     "level": 463,
     "moves": 29,
-    "health": 1,
     "r0c0": "ice",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -48252,13 +48253,13 @@
     "s6d3": "enemy",
     "s6d4": "gem",
     "s6d5": "hammer",
-    "s6d6": "hammer",
-    "solution": "U,L,U,R,D,L,D,U,R,U,L,D,R,R,D,L,D,U,R,D,U,L,R,D,L,D,R,L,U"
+    "s6d6": "hammer"
   },
   "464": {
+    "health": 1,
+    "hintsSolution": "L,U,R,L,D,R,D,R,D,L,D,L,U,D,R,U,R,U,D,U,L,R,D,L,U",
     "level": 464,
     "moves": 25,
-    "health": 1,
     "r0c0": "ice",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -48356,13 +48357,13 @@
     "s6d3": "boulder",
     "s6d4": "boulder",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "L,U,R,L,D,R,D,R,D,L,D,L,U,D,R,U,R,U,D,U,L,R,D,L,U"
+    "s6d6": ""
   },
   "465": {
+    "health": 1,
+    "hintsSolution": "L,D,U,R,U,R,L,D,R,D,R,L,U,R,D,R,L",
     "level": 465,
     "moves": 17,
-    "health": 1,
     "r0c0": "ice",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -48460,13 +48461,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "gem",
-    "s6d6": "hammer",
-    "solution": "L,D,U,R,U,R,L,D,R,D,R,L,U,R,D,R,L"
+    "s6d6": "hammer"
   },
   "466": {
+    "health": 1,
+    "hintsSolution": "L,D,R,L,U,R,U,L,R,D,R,U,D,L,U,L,R,U,D",
     "level": 466,
     "moves": 19,
-    "health": 1,
     "r0c0": "ice",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -48564,13 +48565,13 @@
     "s6d3": "enemy",
     "s6d4": "enemy",
     "s6d5": "heart",
-    "s6d6": "sword",
-    "solution": "L,D,R,L,U,R,U,L,R,D,R,U,D,L,U,L,R,U,D"
+    "s6d6": "sword"
   },
   "467": {
+    "health": 1,
+    "hintsSolution": "L,U,R,L,D,R,U,R,L,D,R,U,R,L,U,D",
     "level": 467,
     "moves": 18,
-    "health": 1,
     "r0c0": "ice",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -48668,13 +48669,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "enemy",
-    "solution": "L,U,R,L,D,R,U,R,L,D,R,U,R,L,U,D"
+    "s6d6": "enemy"
   },
   "468": {
+    "health": 1,
+    "hintsSolution": "U,D,D,L,D,R,U,U,R,L,R,U,D,D,U,R,D,U,L,D,L",
     "level": 468,
     "moves": 22,
-    "health": 1,
     "r0c0": "ice",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -48772,13 +48773,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "enemy",
-    "s6d6": "sword",
-    "solution": "U,D,D,L,D,R,U,U,R,L,R,U,D,D,U,R,D,U,L,D,L"
+    "s6d6": "sword"
   },
   "469": {
+    "health": 1,
+    "hintsSolution": "R,D,L,U,L,R,L,D,R,U,R,L,L,D,L,L,R",
     "level": 469,
     "moves": 18,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -48876,13 +48877,13 @@
     "s6d3": "gem",
     "s6d4": "",
     "s6d5": "warp",
-    "s6d6": "boulder",
-    "solution": "R,D,L,U,L,R,L,D,R,U,R,L,L,D,L,L,R"
+    "s6d6": "boulder"
   },
   "470": {
+    "health": 1,
+    "hintsSolution": "L,U,L,U,D,R,U,D,L,D,D,L,D,L,R,U,U,D,U,R,D,L,D",
     "level": 470,
     "moves": 24,
-    "health": 1,
     "r0c0": "ice",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -48980,13 +48981,13 @@
     "s6d3": "heart",
     "s6d4": "gem",
     "s6d5": "",
-    "s6d6": "hammer",
-    "solution": "L,U,L,U,D,R,U,D,L,D,D,L,D,L,R,U,U,D,U,R,D,L,D"
+    "s6d6": "hammer"
   },
   "471": {
+    "health": 1,
+    "hintsSolution": "D,R,L,U,R,D,L,L,R,D,U,D,U,U,D,U,R,U,D,D,D",
     "level": 471,
     "moves": 23,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -49084,13 +49085,13 @@
     "s6d3": "heart",
     "s6d4": "boulder",
     "s6d5": "",
-    "s6d6": "enemy",
-    "solution": "D,R,L,U,R,D,L,L,R,D,U,D,U,U,D,U,R,U,D,D,D"
+    "s6d6": "enemy"
   },
   "472": {
+    "health": 1,
+    "hintsSolution": "U,L,L,R,D,R,D,R,U,D,L,D,U,R,D,L,L,U,L,D,U,D,R",
     "level": 472,
     "moves": 24,
-    "health": 1,
     "r0c0": "ice",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -49188,13 +49189,13 @@
     "s6d3": "gem",
     "s6d4": "gem",
     "s6d5": "gem",
-    "s6d6": "enemy",
-    "solution": "U,L,L,R,D,R,D,R,U,D,L,D,U,R,D,L,L,U,L,D,U,D,R"
+    "s6d6": "enemy"
   },
   "473": {
+    "health": 3,
+    "hintsSolution": "D,R,D,L,R,U,L,R,U,U,R,D,L,U",
     "level": 473,
     "moves": 16,
-    "health": 3,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "endClosed",
@@ -49292,13 +49293,13 @@
     "s6d3": "gem",
     "s6d4": "gem",
     "s6d5": "",
-    "s6d6": "enemy",
-    "solution": "D,R,D,L,R,U,L,R,U,U,R,D,L,U"
+    "s6d6": "enemy"
   },
   "474": {
+    "health": 1,
+    "hintsSolution": "U,D,L,R,D,R,D,L,U,D,L,U,R,D,L,R,D,D,L,D,U",
     "level": 474,
     "moves": 23,
-    "health": 1,
     "r0c0": "sand",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -49396,13 +49397,13 @@
     "s6d3": "enemy",
     "s6d4": "enemy",
     "s6d5": "gem",
-    "s6d6": "enemy",
-    "solution": "U,D,L,R,D,R,D,L,U,D,L,U,R,D,L,R,D,D,L,D,U"
+    "s6d6": "enemy"
   },
   "475": {
+    "health": 1,
+    "hintsSolution": "D,R,U,R,D,R,R,D,D,L,R,D,D,L,L,D,D,U,D,U,L,R,R,R",
     "level": 475,
     "moves": 24,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -49500,13 +49501,13 @@
     "s6d3": "gem",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,R,U,R,D,R,R,D,D,L,R,D,D,L,L,D,D,U,D,U,L,R,R,R"
+    "s6d6": ""
   },
   "476": {
+    "health": 1,
+    "hintsSolution": "D,D,R,R,U,U,R,R,D,R,R,D,D,D,L,L,D,L,L,L,L,D,R,R,R,R,R,R",
     "level": 476,
     "moves": 28,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "sand",
     "r0c2": "sand",
@@ -49604,13 +49605,13 @@
     "s6d3": "boulder",
     "s6d4": "gem",
     "s6d5": "",
-    "s6d6": "",
-    "solution": "D,D,R,R,U,U,R,R,D,R,R,D,D,D,L,L,D,L,L,L,L,D,R,R,R,R,R,R"
+    "s6d6": ""
   },
   "477": {
+    "health": 1,
+    "hintsSolution": "D,D,R,R,U,U,R,L,L,R,D,L,D,L,D,R,R,U,L,L,D,D,R,R,D,D,L,U,L,D,D,D,R,R",
     "level": 477,
     "moves": 34,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "sand",
     "r0c2": "sand",
@@ -49708,13 +49709,13 @@
     "s6d3": "boulder",
     "s6d4": "gem",
     "s6d5": "",
-    "s6d6": "enemy",
-    "solution": "D,D,R,R,U,U,R,L,L,R,D,L,D,L,D,R,R,U,L,L,D,D,R,R,D,D,L,U,L,D,D,D,R,R"
+    "s6d6": "enemy"
   },
   "478": {
+    "health": 1,
+    "hintsSolution": "D,D,D,L,U,L,L,L,U,U,U,U,L,D,L,U,L,U,U,U,U,U,U,D",
     "level": 478,
     "moves": 24,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "sand",
     "r0c2": "sand",
@@ -49812,13 +49813,13 @@
     "s6d3": "boulder",
     "s6d4": "boulder",
     "s6d5": "hammer",
-    "s6d6": "",
-    "solution": "D,D,D,L,U,L,L,L,U,U,U,U,L,D,L,U,L,U,U,U,U,U,U,D"
+    "s6d6": ""
   },
   "479": {
+    "health": 1,
+    "hintsSolution": "D,U,R,D,R,U,R,U,U,R,R,D,R,R,U,U,U,U,L,U,L,L,R,D,L,D,R,R,R,R,U,R,R,R,L,D",
     "level": 479,
     "moves": 36,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "sand",
     "r0c2": "sand",
@@ -49916,13 +49917,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "boulder",
-    "s6d6": "enemy",
-    "solution": "D,U,R,D,R,U,R,U,U,R,R,D,R,R,U,U,U,U,L,U,L,L,R,D,L,D,R,R,R,R,U,R,R,R,L,D"
+    "s6d6": "enemy"
   },
   "480": {
+    "health": 1,
+    "hintsSolution": "D,D,D,R,U,U,U,R,R,D,D,D,D,D,D,L,L,L,U,L,D,D,R,R,R,R,R,R,D",
     "level": 480,
     "moves": 29,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "sand",
     "r0c2": "sand",
@@ -50020,13 +50021,13 @@
     "s6d3": "gem",
     "s6d4": "",
     "s6d5": "warp3",
-    "s6d6": "enemy",
-    "solution": "D,D,D,R,U,U,U,R,R,D,D,D,D,D,D,L,L,L,U,L,D,D,R,R,R,R,R,R,D"
+    "s6d6": "enemy"
   },
   "481": {
+    "health": 1,
+    "hintsSolution": "D,R,U,R,R,D,L,L,D,D,L,L,L,U,D,D,D,L,D,L,D,R,R,R,L,D,D,D,R,R,R,R,R,R",
     "level": 481,
     "moves": 34,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "sand",
     "r0c2": "sand",
@@ -50124,13 +50125,13 @@
     "s6d3": "",
     "s6d4": "gem",
     "s6d5": "",
-    "s6d6": "enemy",
-    "solution": "D,R,U,R,R,D,L,L,D,D,L,L,L,U,D,D,D,L,D,L,D,R,R,R,L,D,D,D,R,R,R,R,R,R"
+    "s6d6": "enemy"
   },
   "482": {
+    "health": 1,
+    "hintsSolution": "R,D,D,D,D,L,U,R,R,R,R,R,R,D,D,D,L,L,L,L,U,U,U,L,L,D,R",
     "level": 482,
     "moves": 32,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "marsh",
     "r0c2": "marsh",
@@ -50228,13 +50229,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "enemy",
-    "solution": "R,D,D,D,D,L,U,R,R,R,R,R,R,D,D,D,L,L,L,L,U,U,U,L,L,D,R"
+    "s6d6": "enemy"
   },
   "483": {
+    "health": 1,
+    "hintsSolution": "R,U,U,R,R,D,R,D,R,U,R,U,L,U,R,L,D,R,D",
     "level": 483,
     "moves": 21,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -50332,13 +50333,13 @@
     "s6d3": "warp",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "enemy",
-    "solution": "R,U,U,R,R,D,R,D,R,U,R,U,L,U,R,L,D,R,D"
+    "s6d6": "enemy"
   },
   "484": {
+    "health": 1,
+    "hintsSolution": "R,D,L,L,L,L,L,D,R,D,D,D,D,L,U,L,U,R,D,D,L,L,D,R,R,D,L,L,D,D,R,R,U,L",
     "level": 484,
     "moves": 38,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -50436,13 +50437,13 @@
     "s6d3": "enemy",
     "s6d4": "gem",
     "s6d5": "boulder",
-    "s6d6": "gem",
-    "solution": "R,D,L,L,L,L,L,D,R,D,D,D,D,L,U,L,U,R,D,D,L,L,D,R,R,D,L,L,D,D,R,R,U,L"
+    "s6d6": "gem"
   },
   "485": {
+    "health": 1,
+    "hintsSolution": "D,L,D,R,D,D,L,D,D,D,R,R,D,D,R,D,D,L,L,D,R,L,D,D,L,D,L,L",
     "level": 485,
     "moves": 34,
-    "health": 1,
     "r0c0": "sand",
     "r0c1": "marsh",
     "r0c2": "sand",
@@ -50540,13 +50541,13 @@
     "s6d3": "",
     "s6d4": "sword",
     "s6d5": "warp2",
-    "s6d6": "gem",
-    "solution": "D,L,D,R,D,D,L,D,D,D,R,R,D,D,R,D,D,L,L,D,R,L,D,D,L,D,L,L"
+    "s6d6": "gem"
   },
   "486": {
+    "health": 1,
+    "hintsSolution": "L,U,R,L,R,R,D,L,D,D,D,U,D,D,R,R,R,R,U,U,L,U,R,L,U,R,R,D,R,R,R,U",
     "level": 486,
     "moves": 38,
-    "health": 1,
     "r0c0": "sand",
     "r0c1": "sand",
     "r0c2": "sand",
@@ -50644,13 +50645,13 @@
     "s6d3": "enemy",
     "s6d4": "enemy",
     "s6d5": "",
-    "s6d6": "heart",
-    "solution": "L,U,R,L,R,R,D,L,D,D,D,U,D,D,R,R,R,R,U,U,L,U,R,L,U,R,R,D,R,R,R,U"
+    "s6d6": "heart"
   },
   "487": {
+    "health": 1,
+    "hintsSolution": "L,L,U,U,R,D,L,U,R,R,D,R,U,R,R,L,D,R,U,R,L,R,D,R,R,D,D,L,L,L,L",
     "level": 487,
     "moves": 34,
-    "health": 1,
     "r0c0": "sand",
     "r0c1": "sand",
     "r0c2": "marsh",
@@ -50748,13 +50749,13 @@
     "s6d3": "",
     "s6d4": "warp3",
     "s6d5": "",
-    "s6d6": "sword",
-    "solution": "L,L,U,U,R,D,L,U,R,R,D,R,U,R,R,L,D,R,U,R,L,R,D,R,R,D,D,L,L,L,L"
+    "s6d6": "sword"
   },
   "488": {
+    "health": 1,
+    "hintsSolution": "L,L,R,L,U,R,D,L,U,D,U,R,D,L,R,L,D,U,D,D,U,R,L,L,L",
     "level": 488,
     "moves": 25,
-    "health": 1,
     "r0c0": "sand",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -50852,13 +50853,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "",
-    "s6d6": "gem",
-    "solution": "L,L,R,L,U,R,D,L,U,D,U,R,D,L,R,L,D,U,D,D,U,R,L,L,L"
+    "s6d6": "gem"
   },
   "489": {
+    "health": 1,
+    "hintsSolution": "R,R,D,U,L,U,U,U,R,D,D,D,R,D,D,L,L,U,L,D,D,D,R,D",
     "level": 489,
     "moves": 26,
-    "health": 1,
     "r0c0": "sand",
     "r0c1": "sand",
     "r0c2": "sand",
@@ -50956,13 +50957,13 @@
     "s6d3": "",
     "s6d4": "warp",
     "s6d5": "",
-    "s6d6": "gem",
-    "solution": "R,R,D,U,L,U,U,U,R,D,D,D,R,D,D,L,L,U,L,D,D,D,R,D"
+    "s6d6": "gem"
   },
   "490": {
+    "health": 1,
+    "hintsSolution": "R,D,D,R,R,D,L,D,L,D,D,L,L,D,D,L,D,R,D,L,D,L,D,D,L,L,L,L,L,D,D,D,R,L,R,U,U,U,R",
     "level": 490,
     "moves": 39,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "ice",
     "r0c2": "endClosed",
@@ -51060,13 +51061,13 @@
     "s6d3": "boulder",
     "s6d4": "gem",
     "s6d5": "warp3",
-    "s6d6": "hammer",
-    "solution": "R,D,D,R,R,D,L,D,L,D,D,L,L,D,D,L,D,R,D,L,D,L,D,D,L,L,L,L,L,D,D,D,R,L,R,U,U,U,R"
+    "s6d6": "hammer"
   },
   "491": {
+    "health": 1,
+    "hintsSolution": "D,D,L,D,D,D,R,R,D,L,R,D,D,R,D,R,R,R,R,U,U,U,U,R,U,U,R,L,U,L,U,L,R,D,D,D,D,D,L,D,D,L,R",
     "level": 491,
     "moves": 47,
-    "health": 1,
     "r0c0": "sand",
     "r0c1": "grass",
     "r0c2": "lava",
@@ -51164,13 +51165,13 @@
     "s6d3": "gem",
     "s6d4": "",
     "s6d5": "enemy",
-    "s6d6": "hammer",
-    "solution": "D,D,L,D,D,D,R,R,D,L,R,D,D,R,D,R,R,R,R,U,U,U,U,R,U,U,R,L,U,L,U,L,R,D,D,D,D,D,L,D,D,L,R"
+    "s6d6": "hammer"
   },
   "492": {
+    "health": 1,
+    "hintsSolution": "L,U,R,R,R,U,R,R,D,R,L,D,U,D,U,L,D,D,R,D,L,L,L,L,L,U,L,L,U,L,R",
     "level": 492,
     "moves": 31,
-    "health": 1,
     "r0c0": "sand",
     "r0c1": "sand",
     "r0c2": "sand",
@@ -51268,13 +51269,13 @@
     "s6d3": "",
     "s6d4": "sword",
     "s6d5": "sword",
-    "s6d6": "sword",
-    "solution": "L,U,R,R,R,U,R,R,D,R,L,D,U,D,U,L,D,D,R,D,L,L,L,L,L,U,L,L,U,L,R"
+    "s6d6": "sword"
   },
   "493": {
+    "health": 2,
+    "hintsSolution": "D,L,D,D,R,R,R,R,U,U,R,D,U,R,D,L,L,U,R,R,R,D,R,D,D,R,U,D",
     "level": 493,
     "moves": 30,
-    "health": 2,
     "r0c0": "sand",
     "r0c1": "sand",
     "r0c2": "sand",
@@ -51372,13 +51373,13 @@
     "s6d3": "",
     "s6d4": "",
     "s6d5": "gem",
-    "s6d6": "boulder",
-    "solution": "D,L,D,D,R,R,R,R,U,U,R,D,U,R,D,L,L,U,R,R,R,D,R,D,D,R,U,D"
+    "s6d6": "boulder"
   },
   "494": {
+    "health": 1,
+    "hintsSolution": "R,R,L,U,L,D,R,U,R,U,D,L,U,L,D,R,D,D,L,U,U,U,D,L,L",
     "level": 494,
     "moves": 25,
-    "health": 1,
     "r0c0": "sand",
     "r0c1": "sand",
     "r0c2": "sand",
@@ -51476,13 +51477,13 @@
     "s6d3": "enemy",
     "s6d4": "enemy",
     "s6d5": "gem",
-    "s6d6": "hammer",
-    "solution": "R,R,L,U,L,D,R,U,R,U,D,L,U,L,D,R,D,D,L,U,U,U,D,L,L"
+    "s6d6": "hammer"
   },
   "495": {
+    "health": 1,
+    "hintsSolution": "R,L,L,R,D,L,U,U,U,L,U,L,L,L,D,R,R,R,U,R,L,U,R,U,L",
     "level": 495,
     "moves": 27,
-    "health": 1,
     "r0c0": "lava",
     "r0c1": "sand",
     "r0c2": "sand",
@@ -51580,13 +51581,13 @@
     "s6d3": "",
     "s6d4": "heart",
     "s6d5": "warp3",
-    "s6d6": "",
-    "solution": "R,L,L,R,D,L,U,U,U,L,U,L,L,L,D,R,R,R,U,R,L,U,R,U,L"
+    "s6d6": ""
   },
   "496": {
+    "health": 1,
+    "hintsSolution": "R,L,D,D,R,U,L,L,L,L,D,D,L,D,D,D,D,R,D,D,U,U,L,D,L,R",
     "level": 496,
     "moves": 36,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "sand",
     "r0c2": "sand",
@@ -51684,13 +51685,13 @@
     "s6d3": "enemy",
     "s6d4": "boulder",
     "s6d5": "gem",
-    "s6d6": "enemy",
-    "solution": "R,L,D,D,R,U,L,L,L,L,D,D,L,D,D,D,D,R,D,D,U,U,L,D,L,R"
+    "s6d6": "enemy"
   },
   "497": {
+    "health": 1,
+    "hintsSolution": "R,U,R,U,D,D,D,L,L,L,D,L,D,R,R,U,R,D,R,D,R,D,U,U,R,R,U,L",
     "level": 497,
     "moves": 30,
-    "health": 1,
     "r0c0": "endClosed",
     "r0c1": "ice",
     "r0c2": "ice",
@@ -51788,13 +51789,13 @@
     "s6d3": "boulder",
     "s6d4": "hammer",
     "s6d5": "warp2",
-    "s6d6": "warp3",
-    "solution": "R,U,R,U,D,D,D,L,L,L,D,L,D,R,R,U,R,D,R,D,R,D,U,U,R,R,U,L"
+    "s6d6": "warp3"
   },
   "498": {
+    "health": 1,
+    "hintsSolution": "D,U,L,L,D,R,U,U,L,R,U,U,L,U,D,U,D,D,R,R,U,L,D,D,D,U,R,R,R",
     "level": 498,
     "moves": 33,
-    "health": 1,
     "r0c0": "sand",
     "r0c1": "sand",
     "r0c2": "sand",
@@ -51892,13 +51893,13 @@
     "s6d3": "gem",
     "s6d4": "boulder",
     "s6d5": "gem",
-    "s6d6": "warp3",
-    "solution": "D,U,L,L,D,R,U,U,L,R,U,U,L,U,D,U,D,D,R,R,U,L,D,D,D,U,R,R,R"
+    "s6d6": "warp3"
   },
   "499": {
+    "health": 1,
+    "hintsSolution": "R,L,D,D,R,R,U,U,U,L,L,D,D,R,R,U,R,R,U,D,D,D,R,R,U,U,U,D,L,L,R,D,D,R,R,U,D",
     "level": 499,
     "moves": 37,
-    "health": 1,
     "r0c0": "start",
     "r0c1": "sand",
     "r0c2": "sand",
@@ -51996,13 +51997,13 @@
     "s6d3": "",
     "s6d4": "gem",
     "s6d5": "gem",
-    "s6d6": "boulder",
-    "solution": "R,L,D,D,R,R,U,U,U,L,L,D,D,R,R,U,R,R,U,D,D,D,R,R,U,U,U,D,L,L,R,D,D,R,R,U,D"
+    "s6d6": "boulder"
   },
   "500": {
+    "health": 1,
+    "hintsSolution": "R,L,U,U,U,R,R,R,R,L,R,D,U,D,R,R,U,D,D,D,R,R,U,U,U,D,U,R,R,D,D,D,L,R",
     "level": 500,
     "moves": 34,
-    "health": 1,
     "r0c0": "sand",
     "r0c1": "sand",
     "r0c2": "sand",
@@ -52100,7 +52101,6 @@
     "s6d3": "hammer",
     "s6d4": "hammer",
     "s6d5": "",
-    "s6d6": "sword",
-    "solution": "R,L,U,U,U,R,R,R,R,L,R,D,U,D,R,R,U,D,D,D,R,R,U,U,U,D,U,R,R,D,D,D,L,R"
+    "s6d6": "sword"
   }
 }
