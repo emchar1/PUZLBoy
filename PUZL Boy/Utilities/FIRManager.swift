@@ -129,33 +129,35 @@ struct FIRManager {
                 return
             }
             
-            guard let saveDate = data["saveDate"] as? Timestamp,
-                  let elapsedTime = data["elapsedTime"] as? TimeInterval,
+            guard let elapsedTime = data["elapsedTime"] as? TimeInterval,
+                  let hintAvailable = data["hintAvailable"] as? Bool,
+                  let levelModel = data["levelModel"] as? [String : AnyObject],
+                  let levelStatsArray = data["levelStatsArray"] as? [[String : AnyObject]],
                   let livesRemaining = data["livesRemaining"] as? Int,
-                  let usedContinue = data["usedContinue"] as? Bool,
+                  let newLevel = data["newLevel"] as? Int,
+                  let saveDate = data["saveDate"] as? Timestamp,
                   let score = data["score"] as? Int,
                   let totalScore = data["totalScore"] as? Int,
-                  let winStreak = data["winStreak"] as? Int,
-                  let levelStatsArray = data["levelStatsArray"] as? [[String : AnyObject]],
-                  let levelModel = data["levelModel"] as? [String : AnyObject],
-                  let newLevel = data["newLevel"] as? Int,
-                  let uid = data["uid"] as? String else {
+                  let uid = data["uid"] as? String,
+                  let usedContinue = data["usedContinue"] as? Bool,
+                  let winStreak = data["winStreak"] as? Int else {
                 completion?(nil, .saveStateNotFound)
                 return
             }
             
             
-            completion?(SaveStateModel(saveDate: saveDate.dateValue(),
-                                       elapsedTime: elapsedTime,
+            completion?(SaveStateModel(elapsedTime: elapsedTime,
+                                       hintAvailable: hintAvailable,
+                                       levelModel: getLevelModel(from: levelModel),
+                                       levelStatsArray: getLevelStatsArray(from: levelStatsArray),
                                        livesRemaining: livesRemaining,
-                                       usedContinue: usedContinue,
+                                       newLevel: newLevel,
+                                       saveDate: saveDate.dateValue(),
                                        score: score,
                                        totalScore: totalScore,
-                                       winStreak: winStreak,
-                                       levelStatsArray: getLevelStatsArray(from: levelStatsArray),
-                                       levelModel: getLevelModel(from: levelModel),
-                                       newLevel: newLevel,
-                                       uid: uid), nil)
+                                       uid: uid,
+                                       usedContinue: usedContinue,
+                                       winStreak: winStreak), nil)
             
             print("Firestore saveState initialized.......")
         }//end docRef.getDocument...
@@ -192,14 +194,8 @@ struct FIRManager {
         
         let docRef = Firestore.firestore().collection("savedStates").document(user.uid)
         docRef.setData([
-            "saveDate": Timestamp(date: saveStateModel.saveDate),
             "elapsedTime": saveStateModel.elapsedTime,
-            "livesRemaining": saveStateModel.livesRemaining,
-            "usedContinue": saveStateModel.usedContinue,
-            "score": saveStateModel.score,
-            "totalScore": saveStateModel.totalScore,
-            "winStreak": saveStateModel.winStreak,
-            "levelStatsArray": levelStatsArray,
+            "hintAvailable": saveStateModel.hintAvailable,
             "levelModel": [
                 "level": saveStateModel.levelModel.level,
                 "moves": saveStateModel.levelModel.moves,
@@ -331,8 +327,15 @@ struct FIRManager {
                 "s6d5": saveStateModel.levelModel.s6d5,
                 "s6d6": saveStateModel.levelModel.s6d6
             ] as [String : Any],
+            "levelStatsArray": levelStatsArray,
+            "livesRemaining": saveStateModel.livesRemaining,
             "newLevel": saveStateModel.newLevel,
-            "uid": saveStateModel.uid
+            "saveDate": Timestamp(date: saveStateModel.saveDate),
+            "score": saveStateModel.score,
+            "totalScore": saveStateModel.totalScore,
+            "uid": saveStateModel.uid,
+            "usedContinue": saveStateModel.usedContinue,
+            "winStreak": saveStateModel.winStreak
         ])
         
         print("Writing to Firestore saveState.......")

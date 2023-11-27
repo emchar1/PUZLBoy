@@ -81,7 +81,7 @@ class SolutionEngine {
     
     // MARK: - Functions
     
-    func getHint(gameboardSprite: GameboardSprite, playerPosition: K.GameboardPosition, completion: (() -> Void)?) -> Controls? {
+    @discardableResult func getHint(gameboardSprite: GameboardSprite, playerPosition: K.GameboardPosition, completion: (() -> Void)?) -> Controls? {
         guard isMatch else {
             print("SolutionEngine.getHint(): User attempt diverged from solution path.")
             return nil

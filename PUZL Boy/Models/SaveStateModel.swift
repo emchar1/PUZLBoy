@@ -10,15 +10,16 @@ import FirebaseFirestoreSwift
 
 struct SaveStateModel: Identifiable, Codable {
     @DocumentID public var id: String?
-    let saveDate: Date
     let elapsedTime: TimeInterval
+    let hintAvailable: Bool
+    let levelModel: LevelModel
+    let levelStatsArray: [LevelStats]
     let livesRemaining: Int
-    let usedContinue: Bool
+    let newLevel: Int
+    let saveDate: Date
     let score: Int
     let totalScore: Int
-    let winStreak: Int
-    let levelStatsArray: [LevelStats]
-    let levelModel: LevelModel
-    let newLevel: Int
     let uid: String
+    let usedContinue: Bool
+    let winStreak: Int
 }
