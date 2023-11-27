@@ -227,10 +227,6 @@ class GameEngine {
             fadeGameboard(fadeOut: false, completion: nil)
         }
         
-        // FIXME: - Theoretically can delete these two lines; shouldn't be a problem once LevelSkipEngine is removed when shipping this game.
-        AudioManager.shared.stopSound(for: "magicdoomloop", fadeDuration: 0.5)
-        AudioManager.shared.adjustVolume(to: 1, for: AudioManager.shared.currentTheme, fadeDuration: 0.5)
-        
         // FIXME: - SolutionEngine Debug
         solutionEngine = SolutionEngine(solution: level.solution, attempt: level.attempt, yPos: gameboardSprite.sprite.position.y)
         if let user = FIRManager.user, user.uid == FIRManager.userEddie {
