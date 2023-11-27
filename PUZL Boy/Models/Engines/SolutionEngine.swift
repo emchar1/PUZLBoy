@@ -20,7 +20,7 @@ class SolutionEngine {
         }
     }
     
-    private var isMatch: Bool {
+    var isMatch: Bool {
         for (i, direction) in attemptArray.enumerated() {
             if direction != solutionArray[i] {
                 return false
@@ -72,6 +72,10 @@ class SolutionEngine {
 
         solutionArray = stringToArray(solution)
         attemptArray = stringToArray(attempt)
+    }
+    
+    deinit {
+        print("SolutionEngine deinit")
     }
     
     
