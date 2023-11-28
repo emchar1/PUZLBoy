@@ -672,7 +672,7 @@ class GameboardSprite {
                                                        position: CGPoint(x: 0, y: 35),
                                                        scale: UIDevice.isiPad ? 0.25 : 0.5,
                                                        zPosition: 10,
-                                                       duration: 0)
+                                                       duration: 2)
             },
             SKAction.wait(forDuration: wait2),
         ])))
