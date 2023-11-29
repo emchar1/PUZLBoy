@@ -109,7 +109,7 @@ class SettingsButton: SKNode {
     }
     
     func updateColors() {
-        if type == .button1 || type == .button3 {
+        if type == .button1 {
             buttonSprite.fillColor = PauseResetEngine.backgroundColor
         }
         else {
