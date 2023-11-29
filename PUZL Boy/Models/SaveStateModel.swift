@@ -12,6 +12,7 @@ struct SaveStateModel: Identifiable, Codable {
     @DocumentID public var id: String?
     let elapsedTime: TimeInterval
     let hintAvailable: Bool
+    let hintCountRemaining: Int
     let levelModel: LevelModel
     let levelStatsArray: [LevelStats]
     let livesRemaining: Int

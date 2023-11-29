@@ -131,6 +131,7 @@ struct FIRManager {
             
             guard let elapsedTime = data["elapsedTime"] as? TimeInterval,
                   let hintAvailable = data["hintAvailable"] as? Bool,
+                  let hintCountRemaining = data["hintCountRemaining"] as? Int,
                   let levelModel = data["levelModel"] as? [String : AnyObject],
                   let levelStatsArray = data["levelStatsArray"] as? [[String : AnyObject]],
                   let livesRemaining = data["livesRemaining"] as? Int,
@@ -148,6 +149,7 @@ struct FIRManager {
             
             completion?(SaveStateModel(elapsedTime: elapsedTime,
                                        hintAvailable: hintAvailable,
+                                       hintCountRemaining: hintCountRemaining,
                                        levelModel: getLevelModel(from: levelModel),
                                        levelStatsArray: getLevelStatsArray(from: levelStatsArray),
                                        livesRemaining: livesRemaining,
@@ -196,6 +198,7 @@ struct FIRManager {
         docRef.setData([
             "elapsedTime": saveStateModel.elapsedTime,
             "hintAvailable": saveStateModel.hintAvailable,
+            "hintCountRemaining": saveStateModel.hintCountRemaining,
             "levelModel": [
                 "level": saveStateModel.levelModel.level,
                 "moves": saveStateModel.levelModel.moves,
