@@ -1,5 +1,5 @@
 //
-//  SolutionEngine.swift
+//  HintEngine.swift
 //  PUZL Boy
 //
 //  Created by Eddie Char on 11/19/23.
@@ -12,17 +12,15 @@ class HintEngine {
     // MARK: - Properties
     
     private let nodeNameArrowHint = "hintarrow"
-    private(set) var didUseHint: Bool = false
-    private(set) var hintAvailable: Bool = FIRManager.saveStateModel?.hintAvailable ?? true
-    private(set) var solutionArray: [Controls] = []
-    private(set) var attemptArray: [Controls] = [] {
-        didSet {
-            attemptLabel.text = arrayToString(attemptArray)
-            attemptLabel.updateShadow()
-        }
-    }
+    static private(set) var hintCount: Int = FIRManager.saveStateModel?.hintCountRemaining ?? 10
     
-    var isMatch: Bool {
+    //Bools
+    private(set) var hintAvailable: Bool = (FIRManager.saveStateModel?.hintAvailable ?? true) && HintEngine.hintCount > 0
+    private(set) var hintButtonPressed: Bool = false
+    private(set) var canAddToBought: Bool = true
+    private var isMatchSolutionAttempt: Bool {
+        guard solutionArray.count >= attemptArray.count else { return false }
+        
         for (i, direction) in attemptArray.enumerated() {
             if direction != solutionArray[i] {
                 return false
@@ -31,16 +29,74 @@ class HintEngine {
 
         return true
     }
+    private var isMatchAttemptBought: Bool {
+        guard attemptArray.count == boughtArray.count else { return false }
+                
+        for (i, direction) in boughtArray.enumerated() {
+            if direction != attemptArray[i] {
+                return false
+            }
+        }
+        
+        return true
+    }
+    var isAlmostMatchAttemptBought: Bool {
+        guard attemptArray.count < boughtArray.count else { return false }
+
+        for (i, direction) in attemptArray.enumerated() {
+            if direction != boughtArray[i] {
+                return false
+            }
+        }
+        
+        return true
+    }
+
+    //Arrays
+    private(set) var solutionArray: [Controls] = []
+    private(set) var attemptArray: [Controls] = [] {
+        didSet {
+            attemptLabel.text = arrayToString(attemptArray)
+            attemptLabel.updateShadow()
+        }
+    }
+    private(set) var boughtArray: [Controls] = [] {
+        didSet {
+            boughtLabel.text = arrayToString(boughtArray)
+            boughtLabel.updateShadow()
+        }
+    }
     
-    // FIXME: - Temporary...
-    private let solutionLabel: SKLabelNode
-    private var attemptLabel: SKLabelNode
-    let sprite: SKSpriteNode
+    //Nodes
+    private var solutionLabel: SKLabelNode!
+    private var attemptLabel: SKLabelNode!
+    private var boughtLabel: SKLabelNode!
+    private(set) var sprite: SKSpriteNode!
 
     
     // MARK: - Initialization
     
-    init(solution: String, attempt: String, yPos: CGFloat) {
+    init(solution: String, attempt: String, bought: String, yPos: CGFloat) {
+        solutionArray = stringToArray(solution)
+        attemptArray = stringToArray(attempt)
+        boughtArray = stringToArray(bought)
+        
+        
+        
+        // FIXME: - Is this correct now???
+        canAddToBought = isMatchAttemptBought && HintEngine.hintCount > 0  //OLD WAY: boughtArray.isEmpty
+        
+        
+        
+        
+        setupNodes(solution: solution, attempt: attempt, bought: bought, yPos: yPos)
+    }
+    
+    deinit {
+        print("HintEngine deinit")
+    }
+    
+    private func setupNodes(solution: String, attempt: String, bought: String, yPos: CGFloat) {
         solutionLabel = SKLabelNode(text: solution)
         solutionLabel.position = CGPoint(x: K.ScreenDimensions.lrMargin + 20, y: yPos - 8)
         solutionLabel.horizontalAlignmentMode = .left
@@ -53,7 +109,6 @@ class HintEngine {
         solutionLabel.zPosition = 20
         solutionLabel.addDropShadow()
 
-        // FIXME: - Debug
         attemptLabel = SKLabelNode(text: attempt)
         attemptLabel.position = CGPoint(x: K.ScreenDimensions.lrMargin + 20, y: solutionLabel.position.y - solutionLabel.frame.size.height)
         attemptLabel.horizontalAlignmentMode = .left
@@ -66,18 +121,24 @@ class HintEngine {
         attemptLabel.zPosition = 20
         attemptLabel.addDropShadow()
         
+        boughtLabel = SKLabelNode(text: bought)
+        boughtLabel.position = CGPoint(x: K.ScreenDimensions.lrMargin + 20, y: solutionLabel.position.y - 2 * solutionLabel.frame.size.height)
+        boughtLabel.horizontalAlignmentMode = .left
+        boughtLabel.verticalAlignmentMode = .top
+        boughtLabel.numberOfLines = 0
+        boughtLabel.preferredMaxLayoutWidth = K.ScreenDimensions.size.width * GameboardSprite.spriteScale
+        boughtLabel.fontName = UIFont.chatFont
+        boughtLabel.fontSize = UIFont.chatFontSizeSmall
+        boughtLabel.fontColor = UIFont.chatFontColor
+        boughtLabel.zPosition = 20
+        boughtLabel.addDropShadow()
+        
         sprite = SKSpriteNode(color: .clear, size: K.ScreenDimensions.size)
         sprite.zPosition = 20
                 
         sprite.addChild(solutionLabel)
         sprite.addChild(attemptLabel)
-
-        solutionArray = stringToArray(solution)
-        attemptArray = stringToArray(attempt)
-    }
-    
-    deinit {
-        print("SolutionEngine deinit")
+        sprite.addChild(boughtLabel)
     }
     
     
@@ -85,33 +146,37 @@ class HintEngine {
     
     @discardableResult func getHint(gameboardSprite: GameboardSprite, playerPosition: K.GameboardPosition, completion: (() -> Void)?) -> Controls? {
         guard hintAvailable else {
-            print("SolutionEngine.getHint(): hintAvailable == false.")
+            print("HintEngine.getHint(): hintAvailable == false.")
             return nil
         }
         
-        guard isMatch else {
-            print("SolutionEngine.getHint(): User attempt diverged from solution path.")
-            return nil
-        }
-        
-        guard solutionArray.count >= attemptArray.count else {
-            print("SolutionEngine.getHint(): solutionArray is too small.")
+        guard isMatchSolutionAttempt else {
+            print("HintEngine.getHint(): User attempt diverged from solution path.")
             return nil
         }
         
         guard let hint = Array(solutionArray.dropFirst(attemptArray.count)).first else {
-            print("SolutionEngine.getHint: solutionArray is empty.")
+            print("HintEngine.getHint(): solutionArray is empty.")
             return nil
         }
         
         guard gameboardSprite.sprite.childNode(withName: nodeNameArrowHint) == nil else {
-            print("There's already an arrow node. Returning.")
+            print("HintEngine.getHint(): There's already an arrow node. Returning.")
             return nil
         }
         
-        removeAnimatingHint(from: gameboardSprite)
-        didUseHint = true
         
+        //Important logic
+        removeAnimatingHint(from: gameboardSprite)
+        setHintButtonPressed(true)
+        
+        if canAddToBought {
+            boughtArray.append(hint)
+            canAddToBought = false
+        }
+        
+        
+        //Arrow animation
         let positionOffset: K.GameboardPosition
         let rotationAngle: CGFloat
 
@@ -136,7 +201,7 @@ class HintEngine {
         let arrow = SKSpriteNode(imageNamed: nodeNameArrowHint)
         arrow.position = gameboardSprite.getLocation(at: (row: playerPosition.row + positionOffset.row, col: playerPosition.col + positionOffset.col))
         arrow.zPosition = K.ZPosition.itemsAndEffects
-        arrow.setScale(2 * 3 / CGFloat(gameboardSprite.panelCount))
+        arrow.setScale((1 / GameboardSprite.spriteScale) * 2 * 3 / CGFloat(gameboardSprite.panelCount))
         arrow.name = nodeNameArrowHint
         arrow.run(SKAction.rotate(byAngle: rotationAngle, duration: 0))
 
@@ -178,12 +243,36 @@ class HintEngine {
     
     // MARK: - Getter/Setter Functions
     
-    func setHintAvailable(_ hintAvailable: Bool) {
-        self.hintAvailable = hintAvailable
+    func updateBools() {
+        if hintButtonPressed {
+            setHintAvailable(isMatchSolutionAttempt && HintEngine.hintCount > 0)
+            setCanAddToBought(isMatchAttemptBought && HintEngine.hintCount > 0)
+            setHintButtonPressed(false)
+        }
+        else {
+            setHintAvailable(false)
+            setCanAddToBought(false)
+        }
+    }
+
+    func setHintAvailable(_ newValue: Bool) {
+        hintAvailable = newValue
+    }
+
+    func setHintButtonPressed(_ newValue: Bool) {
+        hintButtonPressed = newValue
+    }
+        
+    func setCanAddToBought(_ newValue: Bool) {
+        canAddToBought = newValue
     }
     
-    func setDidUseHint(_ didUseHint: Bool) {
-        self.didUseHint = didUseHint
+    func setHintCount(_ newValue: Int) {
+        HintEngine.hintCount = newValue
+    }
+    
+    func reduceHintCount() {
+        HintEngine.hintCount -= 1
     }
     
     func appendDirection(_ direction: Controls) {
@@ -200,8 +289,8 @@ class HintEngine {
         attemptArray = []
     }
     
-    func checkForMatch() {
-        attemptLabel.fontColor = isMatch ? .green : .red
+    func checkForMatchSolutionAttempt() {
+        attemptLabel.fontColor = isMatchSolutionAttempt ? .green : .red
     }
     
     

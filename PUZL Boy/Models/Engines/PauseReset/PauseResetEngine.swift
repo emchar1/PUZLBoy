@@ -11,7 +11,7 @@ import FirebaseAuth
 protocol PauseResetEngineDelegate: AnyObject {
     func didTapPause(isPaused: Bool)
     func didTapReset()
-    func didTapHint(hintButton: SKSpriteNode)
+    func didTapHint()
     
     func confirmQuitTapped()
     func didTapHowToPlay(_ tableView: HowToPlayTableView)
@@ -50,6 +50,8 @@ class PauseResetEngine {
     private var pauseButtonSprite: SKSpriteNode!
     private var resetButtonSprite: SKSpriteNode!
     private var hintButtonSprite: SKSpriteNode!
+    private var hintBadgeSprite: SKShapeNode!
+    private var hintCountLabel: SKLabelNode!
     private var backgroundSprite: SKShapeNode!
     private var superScene: SKScene?
     
@@ -72,6 +74,7 @@ class PauseResetEngine {
     private var isPressed: Bool = false
     private var isAnimating: Bool = false
     private var isDisabled: Bool = false
+    private var isHintButtonDisabled: Bool = !((FIRManager.saveStateModel?.hintAvailable ?? true) && HintEngine.hintCount > 0)
     private var isPaused: Bool = false {
         didSet {
             PauseResetEngine.pauseResetEngineIsPaused = isPaused
@@ -121,13 +124,24 @@ class PauseResetEngine {
         resetButtonSprite.name = resetName
         resetButtonSprite.zPosition = K.ZPosition.pauseButton - 5
         
-        hintButtonSprite = SKSpriteNode(imageNamed: hintName + niteModifier)
+        hintButtonSprite = SKSpriteNode(imageNamed: getHintButtonImageName())
         hintButtonSprite.position = pauseButtonPosition + CGPoint(x: minorButtonOffset.x, y: minorButtonOffset.y)
         hintButtonSprite.scale(to: CGSize(width: minorButtonSize, height: minorButtonSize))
         hintButtonSprite.anchorPoint = CGPoint(x: 0.5, y: 0)
         hintButtonSprite.name = hintName
         hintButtonSprite.zPosition = K.ZPosition.pauseButton - 5
         
+        hintBadgeSprite = SKShapeNode() //will get properly set up in updateHintBadgeAndCount()
+        
+        hintCountLabel = SKLabelNode(text: "\(HintEngine.hintCount)")
+        hintCountLabel.fontName = "HelveticaNeue-Bold"
+        hintCountLabel.fontColor = UIFont.chatFontColor
+        hintCountLabel.fontSize = UIFont.chatFontSizeSmall
+        hintCountLabel.horizontalAlignmentMode = .center
+        hintCountLabel.verticalAlignmentMode = .center
+        hintCountLabel.zPosition = 10
+        
+        updateHintBadgeAndCount()
         
         //Settings Manager
         settingsManager = SettingsManager(settingsWidth: settingsSize.width, buttonHeight: UIDevice.isiPad ? 160 : 120)
@@ -160,6 +174,7 @@ class PauseResetEngine {
     func moveSprites(to superScene: SKScene, level: Int) {
         self.superScene = superScene
         
+        //Need to remove from parent, otherwise app crashes because it tries to add the node to the parent again.
         settingsManager.removeFromParent()
         
         backgroundSprite.addChild(settingsManager)
@@ -181,7 +196,6 @@ class PauseResetEngine {
             pauseButtonSprite.texture = SKTexture(imageNamed: pauseName + niteModifier)
             pauseButtonSprite.run(SKAction.colorize(with: .black, colorBlendFactor: 0, duration: 0))
             resetButtonSprite.texture = SKTexture(imageNamed: resetName + niteModifier)
-            hintButtonSprite.texture = SKTexture(imageNamed: hintName + niteModifier)
             showMinorButtons()
         }
     }
@@ -206,7 +220,7 @@ class PauseResetEngine {
         else {
             pauseButtonSprite.texture = SKTexture(imageNamed: Level.isPartyLevel(currentLevel) ? discoName : pauseName + niteModifier)
             resetButtonSprite.texture = SKTexture(imageNamed: resetName + niteModifier)
-            hintButtonSprite.texture = SKTexture(imageNamed: hintName + niteModifier)
+            hintButtonSprite.texture = SKTexture(imageNamed: getHintButtonImageName())
             
             pauseButtonSprite.alpha = 1.0
 
@@ -217,6 +231,41 @@ class PauseResetEngine {
         }
     }
     
+    func shouldDisableHintButton(_ disable: Bool) {
+        isHintButtonDisabled = disable
+        
+        hintButtonSprite.texture = SKTexture(imageNamed: getHintButtonImageName())
+    }
+    
+    func updateHintBadgeAndCount() {
+        hintCountLabel.text = HintEngine.hintCount > 99 ? "99+" : "\(HintEngine.hintCount)"
+        
+        hintBadgeSprite.removeFromParent()
+        hintCountLabel.removeFromParent()
+        
+        if HintEngine.hintCount > 99 {
+            hintBadgeSprite = SKShapeNode(rectOf: CGSize(width: 100, height: 60), cornerRadius: 30)
+        }
+        else if HintEngine.hintCount > 9 && HintEngine.hintCount <= 99 {
+            hintBadgeSprite = SKShapeNode(rectOf: CGSize(width: 80, height: 60), cornerRadius: 30)
+        }
+        else {
+            hintBadgeSprite = SKShapeNode(rectOf: CGSize(width: 60, height: 60), cornerRadius: 30)
+        }
+
+        hintBadgeSprite.position = CGPoint(x: hintButtonSprite.frame.width / 2, y: hintButtonSprite.frame.height)
+        hintBadgeSprite.fillColor = .red
+        hintBadgeSprite.lineWidth = 0
+        hintBadgeSprite.zPosition = 10
+
+        hintButtonSprite.addChild(hintBadgeSprite)
+        hintBadgeSprite.addChild(hintCountLabel)
+    }
+    
+    private func getHintButtonImageName() -> String {
+        return hintName + (isHintButtonDisabled ? "Disabled" : niteModifier)
+    }
+        
     ///Feels like a clunky way of returning the bottom y-value of the settings content page. Needs to be halved depending on where the anchor point is set.
     private func getBottomOfSettings() -> CGFloat {
         return K.ScreenDimensions.topOfGameboard - settingsSize.height / 2 * settingsScale + GameboardSprite.padding
@@ -343,8 +392,10 @@ class PauseResetEngine {
                 ButtonTap.shared.tap(type: .buttontap1)
                 delegate?.didTapReset()
             case hintName:
+                guard !isHintButtonDisabled else { break }
+                
                 ButtonTap.shared.tap(type: .buttontap1)
-                delegate?.didTapHint(hintButton: hintButtonSprite)
+                delegate?.didTapHint()
             default:
                 break
             }
@@ -495,6 +546,7 @@ class PauseResetEngine {
                 Haptics.shared.addHapticFeedback(withStyle: .soft)
             case hintName:
                 guard !isAnimating else { break }
+                guard !isHintButtonDisabled else { break }
                 
                 isPressed = true
                 

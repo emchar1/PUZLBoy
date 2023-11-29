@@ -223,7 +223,19 @@ class GameScene: SKScene {
         guard !PauseResetEngine.pauseResetEngineIsPaused else { return }
         
         gameEngine.handleControls(in: location)
+        
+        
+        
+        
+        // FIXME: - Should this be here??
+        pauseResetEngine.shouldDisableHintButton(!gameEngine.hintEngine.hintAvailable)
 
+        
+        
+        
+        
+        
+        
         // FIXME: - Debugging purposes only!!!
         if !chatEngine.isChatting {
             levelSkipEngine.handleControls(in: location)
@@ -355,25 +367,28 @@ class GameScene: SKScene {
             level: currentLevel,
             movesRemaining: gameEngine.movesRemaining,
             heathRemaining: gameEngine.healthRemaining,
-            solution: gameEngine.level.solution,
-            attempt: gameEngine.solutionEngine.arrayToString(gameEngine.solutionEngine.attemptArray),
+            hintsAttempt: gameEngine.hintEngine.arrayToString(gameEngine.hintEngine.attemptArray),
+            hintsBought: gameEngine.hintEngine.arrayToString(gameEngine.hintEngine.boughtArray),
+            hintsSolution: gameEngine.level.hintsSolution,
             gemsCollected: gameEngine.gemsCollected,
             gemsRemaining: gameEngine.gemsRemaining,
             playerPosition: PlayerPosition(row: gameEngine.level.player.row, col: gameEngine.level.player.col),
             inventory: gameEngine.level.inventory)
         
         let saveStateModel = SaveStateModel(
-            saveDate: Date(),
             elapsedTime: scoringEngine.timerManager.elapsedTime,
+            hintAvailable: gameEngine.hintEngine.hintAvailable,
+            hintCountRemaining: HintEngine.hintCount,
+            levelModel: levelModel,
+            levelStatsArray: levelStatsArray,
             livesRemaining: GameEngine.livesRemaining,
-            usedContinue: GameEngine.usedContinue,
+            newLevel: lastCurrentLevel != nil ? lastCurrentLevel! : currentLevel, //prevents saving within a party level, i.e. fast fwd to next level
+            saveDate: Date(),
             score: levelStatsItem.didWin ? 0 : scoringEngine.scoringManager.score,
             totalScore: scoringEngine.scoringManager.totalScore + (levelStatsItem.didWin ? scoringEngine.scoringManager.score : 0),
-            winStreak: GameEngine.winStreak,
-            levelStatsArray: levelStatsArray,
-            levelModel: levelModel,
-            newLevel: lastCurrentLevel != nil ? lastCurrentLevel! : currentLevel, //prevents saving within a party level, i.e. fast fwd to next level
-            uid: user.uid)
+            uid: user.uid,
+            usedContinue: GameEngine.usedContinue,
+            winStreak: GameEngine.winStreak)
         
         FIRManager.writeToFirestoreRecord(user: user, saveStateModel: saveStateModel)
     }
@@ -393,6 +408,21 @@ class GameScene: SKScene {
         }
         
         gameEngine.newGame(level: Level.isPartyLevel(level) ? Level.partyLevel : level, shouldSpawn: !didWin)
+
+
+
+
+
+
+
+        gameEngine.hintEngine.setHintAvailable(HintEngine.hintCount > 0)
+        pauseResetEngine.shouldDisableHintButton(!gameEngine.hintEngine.hintAvailable)
+
+        
+        
+        
+        
+        
         
         if Level.isPartyLevel(level) {
             if !PartyModeSprite.shared.isPartying {
@@ -937,17 +967,17 @@ extension GameScene: PauseResetEngineDelegate {
         showConfirmSprite(resetConfirmSprite!)
     }
     
-    func didTapHint(hintButton: SKSpriteNode) {
-        let gameboardSprite: GameboardSprite = gameEngine.gameboardSprite
-        
+    func didTapHint() {
         guard let playerPosition = gameEngine.level.player else { return }
-        
-//        hintButton.isHidden = true
-        
-        gameEngine.solutionEngine.getHint(gameboardSprite: gameboardSprite, playerPosition: playerPosition) {
-//            hintButton.isHidden = false
-            print("Hint arrow is done animating.")
+                
+        if gameEngine.hintEngine.canAddToBought {
+            gameEngine.hintEngine.reduceHintCount()
+            pauseResetEngine.updateHintBadgeAndCount()
         }
+
+        gameEngine.hintEngine.getHint(gameboardSprite: gameEngine.gameboardSprite, playerPosition: playerPosition) {
+            print("Hint arrow is done animating.")
+        }        
     }
     
     func confirmQuitTapped() {

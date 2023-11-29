@@ -78,7 +78,7 @@ class GameEngine {
     private var backgroundSprite: SKSpriteNode!
     private var bloodOverlay: SKSpriteNode!
     private var bloodOverlayAlpha: CGFloat { 0.25 * CGFloat(level.level) / CGFloat(Level.finalLevel) }
-    private(set) var solutionEngine: SolutionEngine!
+    private(set) var hintEngine: HintEngine!
     private(set) var gameboardSprite: GameboardSprite!
     private(set) var playerSprite: PlayerSprite!
     private(set) var displaySprite: DisplaySprite!
@@ -105,7 +105,7 @@ class GameEngine {
         }
         
         if Level.isPartyLevel(level) {
-            self.level = Level(level: Level.partyLevel, moves: 0, health: 0, solution: "", attempt: "",
+            self.level = Level(level: Level.partyLevel, moves: 0, health: 0, hintsAttempt: "", hintsBought: "", hintsSolution: "", 
                                gameboard: LevelBuilder.buildPartyGameboard(ofSize: self.level.gameboard.count))
         }
         else {
@@ -140,8 +140,9 @@ class GameEngine {
             level = Level(level: saveStateModel.levelModel.level,
                           moves: saveStateModel.levelModel.moves,
                           health: saveStateModel.levelModel.health,
-                          solution: saveStateModel.levelModel.solution,
-                          attempt: saveStateModel.levelModel.attempt,
+                          hintsAttempt: saveStateModel.levelModel.hintsAttempt,
+                          hintsBought: saveStateModel.levelModel.hintsBought,
+                          hintsSolution: saveStateModel.levelModel.hintsSolution,
                           gameboard: LevelBuilder.buildGameboard(levelModel: saveStateModel.levelModel))
             level.inventory = saveStateModel.levelModel.inventory
             level.updatePlayer(position: (row: saveStateModel.levelModel.playerPosition.row, col: saveStateModel.levelModel.playerPosition.col))
@@ -160,8 +161,9 @@ class GameEngine {
             level = Level(level: newLevel,
                           moves: LevelBuilder.levels[newLevel].moves,
                           health: LevelBuilder.levels[newLevel].health,
-                          solution: LevelBuilder.levels[newLevel].solution,
-                          attempt: LevelBuilder.levels[newLevel].attempt,
+                          hintsAttempt: LevelBuilder.levels[newLevel].hintsAttempt,
+                          hintsBought: LevelBuilder.levels[newLevel].hintsBought,
+                          hintsSolution: LevelBuilder.levels[newLevel].hintsSolution,
                           gameboard: LevelBuilder.levels[newLevel].gameboard)
             level.inventory = Inventory(hammers: 0, swords: 0)
             //level.updatePlayer(position: (row: saveStateModel.playerPosition.row, col: saveStateModel.playerPosition.col))
@@ -227,11 +229,25 @@ class GameEngine {
             fadeGameboard(fadeOut: false, completion: nil)
         }
         
-        // FIXME: - SolutionEngine Debug
-        solutionEngine = SolutionEngine(solution: level.solution, attempt: level.attempt, yPos: gameboardSprite.sprite.position.y)
+        
+        
+        
+        
+        
+        // FIXME: - HintEngine Debug
+        hintEngine = HintEngine(solution: level.hintsSolution,
+                                attempt: level.hintsAttempt,
+                                bought: (shouldSpawn && hintEngine != nil) ? hintEngine.arrayToString(hintEngine.boughtArray) : level.hintsBought,
+                                yPos: gameboardSprite.sprite.position.y)
         if let user = FIRManager.user, user.uid == FIRManager.userEddie {
-            backgroundSprite.addChild(solutionEngine.sprite)
+            backgroundSprite.addChild(hintEngine.sprite)
         }
+
+        
+        
+        
+        
+        
     }
     
     deinit {
@@ -718,20 +734,20 @@ class GameEngine {
         
         //NOW you may proceed... if you pass all the above guards.
         if inBounds(location: location, direction: .up) {
-            movePlayerHelper(direction: .up)
+            movePlayerHelper(direction: .up, isFirstTimeCalled: true)
         }
         else if inBounds(location: location, direction: .down) {
-            movePlayerHelper(direction: .down)
+            movePlayerHelper(direction: .down, isFirstTimeCalled: true)
         }
         else if inBounds(location: location, direction: .left) {
             playerSprite.sprite.xScale = -abs(playerSprite.sprite.xScale)
             
-            movePlayerHelper(direction: .left)
+            movePlayerHelper(direction: .left, isFirstTimeCalled: true)
         }
         else if inBounds(location: location, direction: .right) {
             playerSprite.sprite.xScale = abs(playerSprite.sprite.xScale)
             
-            movePlayerHelper(direction: .right)
+            movePlayerHelper(direction: .right, isFirstTimeCalled: true)
         }
 //        else {
 //            guard let tappedPanel = gameboardSprite.getPanel(at: location) else { return }
@@ -811,7 +827,7 @@ class GameEngine {
      Helper function that moves the player.
      - parameter direction: The direction the player is moving
      */
-    private func movePlayerHelper(direction: Controls) {
+    private func movePlayerHelper(direction: Controls, isFirstTimeCalled: Bool) {
         ///Used when moving over certain terrain
         func updateGliding() {
             updateMovesRemaining()
@@ -836,10 +852,6 @@ class GameEngine {
             nextPanel = (row: level.player.row, col: level.player.col)
             print("Unknown direction in GameEngine.movePlayerHelper()")
         }
-
-        // FIXME: - SolutionEngine Debug
-        solutionEngine.removeAnimatingHint(from: gameboardSprite)
-        solutionEngine.appendDirection(direction)
         
         guard checkPanelForPathway(position: nextPanel, direction: direction) else {
 //            gameboardSprite.highlightPanel(color: .red, at: nextPanel)
@@ -850,6 +862,25 @@ class GameEngine {
 //        gameboardSprite.highlightPanel(color: .green, at: nextPanel)
         
         level.updatePlayer(position: nextPanel)
+        
+        
+        
+        
+        
+        
+        
+        if isFirstTimeCalled {
+            // FIXME: - HintEngine Debug
+            hintEngine.removeAnimatingHint(from: gameboardSprite)
+            hintEngine.appendDirection(direction)
+            hintEngine.updateBools()
+        }
+
+        
+        
+        
+        
+        
         
         setPlayerSpritePosition(toLastPanel: level.getLevelType(at: lastPanel), shouldAnimate: true) { [unowned self] in
             if level.getLevelType(at: lastPanel) == .sand {
@@ -890,13 +921,10 @@ class GameEngine {
             else {
                 shouldUpdateRemainingForBoulderIfIcy = true
                 isGliding = true
-                
-                // FIXME: - SolutionEngine Debug
-                solutionEngine.dropLastDirection()
             }
             
             //ENTER RECURSION
-            movePlayerHelper(direction: direction)
+            movePlayerHelper(direction: direction, isFirstTimeCalled: false)
         }
     }
     
@@ -912,11 +940,6 @@ class GameEngine {
                 if shouldUpdateRemainingForBoulderIfIcy {
                     updateMovesRemaining()
                     shouldUpdateRemainingForBoulderIfIcy = false
-                }
-
-                // FIXME: - SolutionEngine Debug
-                else {
-                    solutionEngine.dropLastDirection()
                 }
                 
                 GameCenterManager.shared.updateProgress(achievement: .klutz, shouldReportImmediately: false)
@@ -940,10 +963,6 @@ class GameEngine {
                     }
                 }
                 
-                // FIXME: - SolutionEngine Debug
-                else {
-                    solutionEngine.dropLastDirection()
-                }
 //                updateMovesRemaining() //removed here...
 
                 shouldDisableControlInput = true
@@ -1007,8 +1026,8 @@ class GameEngine {
 
             print("Win streak: \(GameEngine.winStreak), Level: \(level.level)")
             
-            // FIXME: - SolutionEngine Debug
-            solutionEngine.checkForMatch()
+            // FIXME: - HintEngine Debug
+            hintEngine.checkForMatchSolutionAttempt()
         }
         else if isGameOver {
             AudioManager.shared.stopSound(for: AudioManager.shared.currentTheme)
@@ -1036,8 +1055,8 @@ class GameEngine {
                 delegate?.gameIsOver(firstTimeCalled: true)
             }
             
-            // FIXME: - SolutionEngine Debug
-            solutionEngine.clearAttempt()
+            // FIXME: - HintEngine Debug
+            hintEngine.clearAttempt()
         }
     }
     
