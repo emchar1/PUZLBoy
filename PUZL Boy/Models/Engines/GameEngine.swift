@@ -228,26 +228,13 @@ class GameEngine {
         if !shouldSpawn {
             fadeGameboard(fadeOut: false, completion: nil)
         }
-        
-        
-        
-        
-        
-        
-        // FIXME: - HintEngine Debug
+
         hintEngine = HintEngine(solution: level.hintsSolution,
                                 attempt: level.hintsAttempt,
                                 bought: (shouldSpawn && hintEngine != nil) ? hintEngine.arrayToString(hintEngine.boughtArray) : level.hintsBought,
                                 yPos: gameboardSprite.sprite.position.y)
-        if let user = FIRManager.user, user.uid == FIRManager.userEddie {
-            backgroundSprite.addChild(hintEngine.sprite)
-        }
 
-        
-        
-        
-        
-        
+        showBoughtHints()
     }
     
     deinit {
@@ -668,6 +655,44 @@ class GameEngine {
     }
     
     
+    // MARK: - Move Functions
+    
+    /**
+     Adds all the sprites to the superScene, i.e. should be called in a GameScene's moveTo() function.
+     - parameter superScene: The GameScene to add all the children to.
+     */
+    func moveSprites(to superScene: SKScene) {
+        superScene.addChild(backgroundSprite)
+        superScene.addChild(bloodOverlay)
+        superScene.addChild(gameboardSprite.sprite)
+        
+        if !Level.isPartyLevel(level.level) {
+            superScene.addChild(displaySprite.sprite)
+        }
+        
+        if let user = FIRManager.user, user.uid == FIRManager.userEddie {
+            backgroundSprite.addChild(hintEngine.sprite)
+        }
+
+        playerSprite.sprite.removeFromParent() //This is needed, otherwise gameboardSprite keeps adding it, below
+        playerSprite.setScale(panelSize: gameboardSprite.panelSize)
+        gameboardSprite.sprite.addChild(playerSprite.sprite)
+
+        if !isGameOver {
+            let numMovesSprite = NumMovesSprite(
+                numMoves: self.level.moves,
+                position: CGPoint(x: K.ScreenDimensions.size.width / 2, y: GameboardSprite.offsetPosition.y * 3 / 2),
+                isPartyLevel: Level.isPartyLevel(level.level))
+            
+            superScene.addChild(numMovesSprite)
+            
+            numMovesSprite.play {
+                numMovesSprite.removeFromParent()
+            }
+        }
+    }
+    
+    
     // MARK: - Spawn Functions
     
     ///Spawns items in a party level.
@@ -749,12 +774,9 @@ class GameEngine {
             
             movePlayerHelper(direction: .right, isFirstTimeCalled: true)
         }
-//        else {
-//            guard let tappedPanel = gameboardSprite.getPanel(at: location) else { return }
-//            gameboardSprite.highlightPanel(color: .red, at: tappedPanel)
-//
-//            Haptics.shared.addHapticFeedback(withStyle: .rigid)
-//        }
+        else {
+            //handle default cases here...
+        }
     }
     
     func checkControlGuardsIfPassed(includeDisableInputFromOutside: Bool) -> Bool {
@@ -831,8 +853,11 @@ class GameEngine {
         ///Used when moving over certain terrain
         func updateGliding() {
             updateMovesRemaining()
+            showBoughtHints()
+            
             shouldUpdateRemainingForBoulderIfIcy = false
             isGliding = false
+            
             AudioManager.shared.stopSound(for: "moveglide", fadeDuration: 0.5)
         }
         
@@ -854,34 +879,19 @@ class GameEngine {
         }
         
         guard checkPanelForPathway(position: nextPanel, direction: direction) else {
-//            gameboardSprite.highlightPanel(color: .red, at: nextPanel)
+            showBoughtHints()
             AudioManager.shared.stopSound(for: "moveglide", fadeDuration: 0.5)
             return
         }
         
-//        gameboardSprite.highlightPanel(color: .green, at: nextPanel)
-        
         level.updatePlayer(position: nextPanel)
         
-        
-        
-        
-        
-        
-        
         if isFirstTimeCalled {
-            // FIXME: - HintEngine Debug
             hintEngine.removeAnimatingHint(from: gameboardSprite)
             hintEngine.appendDirection(direction)
             hintEngine.updateBools()
         }
 
-        
-        
-        
-        
-        
-        
         setPlayerSpritePosition(toLastPanel: level.getLevelType(at: lastPanel), shouldAnimate: true) { [unowned self] in
             if level.getLevelType(at: lastPanel) == .sand {
                 level.setLevelType(at: lastPanel, with: (terrain: LevelType.lava, overlay: LevelType.boundary))
@@ -1021,13 +1031,11 @@ class GameEngine {
             GameEngine.winStreak += 1
             
             updateAchievements()
-            
+            hintEngine.checkForMatchSolutionAttempt()
+
             StoreReviewManager.shared.incrementCount()
 
             print("Win streak: \(GameEngine.winStreak), Level: \(level.level)")
-            
-            // FIXME: - HintEngine Debug
-            hintEngine.checkForMatchSolutionAttempt()
         }
         else if isGameOver {
             AudioManager.shared.stopSound(for: AudioManager.shared.currentTheme)
@@ -1042,6 +1050,8 @@ class GameEngine {
             GameEngine.livesUsed += 1
             GameEngine.winStreak = 0
             
+            hintEngine.clearAttempt()
+
             GameCenterManager.shared.updateProgress(achievement: .reckless, shouldReportImmediately: true)
 
             //NEW 2/21/23 Don't increment the count if the player is losing. This might make them give a negative review...
@@ -1054,9 +1064,6 @@ class GameEngine {
             playerSprite.startDeadAnimation { [unowned self] in
                 delegate?.gameIsOver(firstTimeCalled: true)
             }
-            
-            // FIXME: - HintEngine Debug
-            hintEngine.clearAttempt()
         }
     }
     
@@ -1158,38 +1165,7 @@ class GameEngine {
     func shouldDisableInput(_ disableInput: Bool) {
         disableInputFromOutside = disableInput
     }
-    
-    /**
-     Adds all the sprites to the superScene, i.e. should be called in a GameScene's moveTo() function.
-     - parameter superScene: The GameScene to add all the children to.
-     */
-    func moveSprites(to superScene: SKScene) {
-        superScene.addChild(backgroundSprite)
-        superScene.addChild(bloodOverlay)
-        superScene.addChild(gameboardSprite.sprite)
         
-        if !Level.isPartyLevel(level.level) {
-            superScene.addChild(displaySprite.sprite)
-        }
-
-        playerSprite.sprite.removeFromParent() //This is needed, otherwise gameboardSprite keeps adding it, below
-        playerSprite.setScale(panelSize: gameboardSprite.panelSize)
-        gameboardSprite.sprite.addChild(playerSprite.sprite)
-
-        if !isGameOver {
-            let numMovesSprite = NumMovesSprite(
-                numMoves: self.level.moves,
-                position: CGPoint(x: K.ScreenDimensions.size.width / 2, y: GameboardSprite.offsetPosition.y * 3 / 2),
-                isPartyLevel: Level.isPartyLevel(level.level))
-            
-            superScene.addChild(numMovesSprite)
-            
-            numMovesSprite.play {
-                numMovesSprite.removeFromParent()
-            }
-        }
-    }
-    
     /**
      Fades the gameboard by calling colorizeGameboard in GameboardSprite, by applying a clear color and using 0 to 1 blendFactor.
      - parameters:
@@ -1230,5 +1206,11 @@ class GameEngine {
     
     func showParticles() {
         ParticleEngine.shared.showParticles(fromNode: gameboardSprite.sprite)
+    }
+    
+    private func showBoughtHints() {
+        guard hintEngine.isAlmostMatchAttemptBought else { return }
+        
+        hintEngine.getHint(gameboardSprite: gameboardSprite, playerPosition: level.player, completion: nil)
     }
 }

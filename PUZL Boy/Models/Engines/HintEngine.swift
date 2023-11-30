@@ -80,15 +80,8 @@ class HintEngine {
         solutionArray = stringToArray(solution)
         attemptArray = stringToArray(attempt)
         boughtArray = stringToArray(bought)
-        
-        
-        
-        // FIXME: - Is this correct now???
-        canAddToBought = isMatchAttemptBought && HintEngine.hintCount > 0  //OLD WAY: boughtArray.isEmpty
-        
-        
-        
-        
+        canAddToBought = isMatchAttemptBought && HintEngine.hintCount > 0
+
         setupNodes(solution: solution, attempt: attempt, bought: bought, yPos: yPos)
     }
     
@@ -200,10 +193,10 @@ class HintEngine {
         
         let arrow = SKSpriteNode(imageNamed: nodeNameArrowHint)
         arrow.position = gameboardSprite.getLocation(at: (row: playerPosition.row + positionOffset.row, col: playerPosition.col + positionOffset.col))
+        arrow.zRotation = rotationAngle
         arrow.zPosition = K.ZPosition.itemsAndEffects
         arrow.setScale((1 / GameboardSprite.spriteScale) * 2 * 3 / CGFloat(gameboardSprite.panelCount))
         arrow.name = nodeNameArrowHint
-        arrow.run(SKAction.rotate(byAngle: rotationAngle, duration: 0))
 
         gameboardSprite.sprite.addChild(arrow)
         
@@ -235,7 +228,8 @@ class HintEngine {
         lastArrow.removeAllActions()
         
         lastArrow.run(SKAction.sequence([
-            SKAction.fadeOut(withDuration: 0.5),
+            //IMPORTANT: Can't be > 0.25s otherwise PUZL Boy may move onto panel faster than arrow can finish animating, so getHint() won't trigger!
+            SKAction.fadeOut(withDuration: 0.25),
             SKAction.removeFromParent()
         ]))
     }

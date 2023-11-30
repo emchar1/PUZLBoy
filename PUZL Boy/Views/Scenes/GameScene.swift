@@ -184,7 +184,6 @@ class GameScene: SKScene {
 
         guard !PauseResetEngine.pauseResetEngineIsPaused else { return }
         
-//        gameEngine.handleControls(in: location)   // This is now called in touchesEnded()!!!
         chatEngine.touchDown(in: location)
         
         if activityIndicator == nil || !activityIndicator!.isShowing {
@@ -223,18 +222,7 @@ class GameScene: SKScene {
         guard !PauseResetEngine.pauseResetEngineIsPaused else { return }
         
         gameEngine.handleControls(in: location)
-        
-        
-        
-        
-        // FIXME: - Should this be here??
         pauseResetEngine.shouldDisableHintButton(!gameEngine.hintEngine.hintAvailable)
-
-        
-        
-        
-        
-        
         
         // FIXME: - Debugging purposes only!!!
         if !chatEngine.isChatting {
@@ -408,21 +396,8 @@ class GameScene: SKScene {
         }
         
         gameEngine.newGame(level: Level.isPartyLevel(level) ? Level.partyLevel : level, shouldSpawn: !didWin)
-
-
-
-
-
-
-
         gameEngine.hintEngine.setHintAvailable(HintEngine.hintCount > 0)
         pauseResetEngine.shouldDisableHintButton(!gameEngine.hintEngine.hintAvailable)
-
-        
-        
-        
-        
-        
         
         if Level.isPartyLevel(level) {
             if !PartyModeSprite.shared.isPartying {

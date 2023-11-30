@@ -69,7 +69,7 @@ class ParticleEngine: SKNode {
         particles.name = ParticleEngine.nodeName
         
         if angle != 0 {
-            particles.run(SKAction.rotate(toAngle: angle, duration: 0))
+            particles.zRotation = angle
         }
         
         node.addChild(particles)

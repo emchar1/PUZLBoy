@@ -183,10 +183,9 @@ class CreditsScene: SKScene {
                                                                      y: -CGFloat(i) * UIFont.gameFontSizeExtraLarge * 2 / 5)
                 labelNode.fontColor = skyColor.second
                 labelNode.fontSize = UIFont.gameFontSizeExtraLarge * 4 / 5
+                labelNode.zRotation = .pi / 12
                 labelNode.zPosition += 5
                 labelNode.addDropShadow()
-                
-                labelNode.run(SKAction.rotate(toAngle: .pi / 12, duration: 0))
             }
             else {
                 labelNode.addDropShadow()

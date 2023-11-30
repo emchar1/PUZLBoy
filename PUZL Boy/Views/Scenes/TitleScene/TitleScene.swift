@@ -123,10 +123,10 @@ class TitleScene: SKScene {
         boyTitle.fontSize = sizeB
         boyTitle.horizontalAlignmentMode = .left
         boyTitle.verticalAlignmentMode = .top
+        boyTitle.zRotation = .pi / 12
         boyTitle.zPosition = K.ZPosition.boyTitle
         boyTitle.setScale(4)
         boyTitle.alpha = 0
-        boyTitle.run(SKAction.rotate(toAngle: .pi / 12, duration: 0))
         boyTitle.addHeavyDropShadow(alpha: 0.1)
         
         

@@ -141,8 +141,6 @@ class PauseResetEngine {
         hintCountLabel.verticalAlignmentMode = .center
         hintCountLabel.zPosition = 10
         
-        updateHintBadgeAndCount()
-        
         //Settings Manager
         settingsManager = SettingsManager(settingsWidth: settingsSize.width, buttonHeight: UIDevice.isiPad ? 160 : 120)
         settingsManager.setInitialPosition(CGPoint(x: -backgroundSprite.position.x, y: -settingsSize.height / 2))
@@ -182,6 +180,7 @@ class PauseResetEngine {
         superScene.addChild(pauseButtonSprite)
         superScene.addChild(resetButtonSprite)
         superScene.addChild(hintButtonSprite)
+        updateHintBadgeAndCount()
         
         currentLevel = level
         
@@ -243,16 +242,7 @@ class PauseResetEngine {
         hintBadgeSprite.removeFromParent()
         hintCountLabel.removeFromParent()
         
-        if HintEngine.hintCount > 99 {
-            hintBadgeSprite = SKShapeNode(rectOf: CGSize(width: 100, height: 60), cornerRadius: 30)
-        }
-        else if HintEngine.hintCount > 9 && HintEngine.hintCount <= 99 {
-            hintBadgeSprite = SKShapeNode(rectOf: CGSize(width: 80, height: 60), cornerRadius: 30)
-        }
-        else {
-            hintBadgeSprite = SKShapeNode(rectOf: CGSize(width: 60, height: 60), cornerRadius: 30)
-        }
-
+        hintBadgeSprite = SKShapeNode(rectOf: CGSize(width: 60 + 20 * (hintCountLabel.text!.count - 1), height: 60), cornerRadius: 30)
         hintBadgeSprite.position = CGPoint(x: hintButtonSprite.frame.width / 2, y: hintButtonSprite.frame.height)
         hintBadgeSprite.fillColor = .red
         hintBadgeSprite.lineWidth = 0
