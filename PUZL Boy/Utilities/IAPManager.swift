@@ -17,19 +17,27 @@ class IAPManager: NSObject {
     
     // MARK: - Properties
     
-    static let moves5 = "com.5playapps.PUZLBoy.5Moves"
-    static let skipLevel = "com.5playapps.PUZLBoy.SkipLevel"
-    static let lives25 = "com.5playapps.PUZLBoy.25Lives"
-    static let lives100 = "com.5playapps.PUZLBoy.100Lives"
-    static let lives1000 = "com.5playapps.PUZLBoy.1000Lives"
+    //Appstore Connect ID's
+    static let idMoves5 = "com.5playapps.PUZLBoy.5Moves"
+    static let idHints10 = "com.5playapps.PUZLBoy.10Hints"
+    static let idSkipLevel = "com.5playapps.PUZLBoy.SkipLevel"
+    static let idLives25 = "com.5playapps.PUZLBoy.25Lives"
+    static let idLives100 = "com.5playapps.PUZLBoy.100Lives"
+    
+    //Reward Amounts
+    static let rewardAmountLivesAd = 1
+    static let rewardAmountMovesBuy5 = 5
+    static let rewardAmountHintsBuy10 = 10
+    static let rewardAmountLivesBuy25 = 25
+    static let rewardAmountLivesBuy100 = 100
         
     static let shared: IAPManager = {
         let iapManager = IAPManager(productIds: [
-            IAPManager.moves5,
-            IAPManager.skipLevel,
-            IAPManager.lives25,
-            IAPManager.lives100,
-            IAPManager.lives1000
+            IAPManager.idMoves5,
+            IAPManager.idHints10,
+            IAPManager.idSkipLevel,
+            IAPManager.idLives25,
+            IAPManager.idLives100
         ])
         
         //Additional setup

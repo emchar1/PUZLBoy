@@ -49,7 +49,7 @@ class PurchaseTapButton: SKNode {
     weak var delegate: PurchaseTapButtonDelegate?
     
     enum TapButtonType {
-        case add5Moves, skipLevel, add1Life, add25Lives, add100Lives, add1000Lives
+        case add1Life, add5Moves, add10Hints, skipLevel, add25Lives, add100Lives
     }
     
     

@@ -234,7 +234,7 @@ class ScoringEngine {
                                         location: CGPoint(x: elapsedTimeLabel.frame.width / 2, y: 0))
     }
 
-    ///Use this womp-womp animation because player skipped the level (but paid $1.99!)
+    ///Use this womp-womp animation because player skipped the level (but paid $2.99!)
     func scaleScoreLabelDidSkipLevel() {
         scoreLabel.run(scaleScoreAnimation(sprite: scoreLabel, fontColor: .red))
     }

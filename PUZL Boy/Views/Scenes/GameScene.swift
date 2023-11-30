@@ -739,7 +739,7 @@ extension GameScene: AdMobManagerDelegate {
     func didDismissRewarded() {
         pendingLivesReplenishmentTimerOffset()
         
-        restartLevel(lives: ContinueSprite.extraLivesAd)
+        restartLevel(lives: IAPManager.rewardAmountLivesAd)
     }
     
     func rewardedFailed() {
@@ -830,8 +830,17 @@ extension GameScene: ContinueSpriteDelegate {
         }
     }
     
+    func didTapBuy5MovesButton() {
+        guard let productToPurchase = IAPManager.shared.allProducts.first(where: { $0.productIdentifier == IAPManager.idMoves5 }) else {
+            print("Unable to find IAP: 5 Moves ($0.99)")
+            return
+        }
+        
+        IAPManager.shared.buyProduct(productToPurchase)
+    }
+    
     func didTapSkipLevel() {
-        guard let productToPurchase = IAPManager.shared.allProducts.first(where: { $0.productIdentifier == IAPManager.skipLevel }) else {
+        guard let productToPurchase = IAPManager.shared.allProducts.first(where: { $0.productIdentifier == IAPManager.idSkipLevel }) else {
             print("Unable to find IAP: Skip Level ($2.99)")
             return
         }
@@ -840,26 +849,8 @@ extension GameScene: ContinueSpriteDelegate {
     }
     
     func didTapBuy25LivesButton() {
-        guard let productToPurchase = IAPManager.shared.allProducts.first(where: { $0.productIdentifier == IAPManager.lives25 }) else {
+        guard let productToPurchase = IAPManager.shared.allProducts.first(where: { $0.productIdentifier == IAPManager.idLives25 }) else {
             print("Unable to find IAP: 25 Lives ($4.99)")
-            return
-        }
-        
-        IAPManager.shared.buyProduct(productToPurchase)
-    }
-    
-    func didTapBuy100LivesButton() {
-        guard let productToPurchase = IAPManager.shared.allProducts.first(where: { $0.productIdentifier == IAPManager.lives100 }) else {
-            print("Unable to find IAP: 100 Lives ($9.99)")
-            return
-        }
-        
-        IAPManager.shared.buyProduct(productToPurchase)
-    }
-    
-    func didTapBuy5MovesButton() {
-        guard let productToPurchase = IAPManager.shared.allProducts.first(where: { $0.productIdentifier == IAPManager.moves5 }) else {
-            print("Unable to find IAP: 5 Moves ($0.99)")
             return
         }
         
@@ -873,11 +864,11 @@ extension GameScene: ContinueSpriteDelegate {
 extension GameScene: IAPManagerDelegate {
     func didCompletePurchase(transaction: SKPaymentTransaction) {
         switch transaction.payment.productIdentifier {
-        case IAPManager.lives25:        restartLevel(lives: ContinueSprite.extraLivesBuy25)
-        case IAPManager.lives100:       restartLevel(lives: ContinueSprite.extraLivesBuy100)
-        case IAPManager.moves5:         continueLevel(moves: ContinueSprite.extraMovesBuy5)
-        case IAPManager.skipLevel:      restartLevel(shouldSkip: true, lives: LifeSpawnerModel.defaultLives)
-        default:                        print("Unknown purchase transaction identifier")
+        case IAPManager.idMoves5:       continueLevel(moves: IAPManager.rewardAmountMovesBuy5)
+        case IAPManager.idSkipLevel:    restartLevel(shouldSkip: true, lives: LifeSpawnerModel.defaultLives)
+        case IAPManager.idLives25:      restartLevel(lives: IAPManager.rewardAmountLivesBuy25)
+        case IAPManager.idLives100:     restartLevel(lives: IAPManager.rewardAmountLivesBuy100) //Not needed? Used in ContinueSprite it seems...
+        default:                        print("Unknown purchase transaction identifier: \(transaction.payment.productIdentifier)")
         }
         
         activityIndicator?.removeFromParent()
@@ -999,14 +990,20 @@ extension GameScene: PauseResetEngineDelegate {
         AudioManager.shared.playSound(for: "revive")
 
         switch currentButton.type {
-        case .add5Moves:
-            gameEngine.animateMoves(originalMoves: gameEngine.movesRemaining, newMoves: ContinueSprite.extraMovesBuy5)
-            gameEngine.incrementMovesRemaining(moves: ContinueSprite.extraMovesBuy5)
+        case .add1Life:
+            gameEngine.animateLives(originalLives: GameEngine.livesRemaining, newLives: IAPManager.rewardAmountLivesAd)
+            gameEngine.incrementLivesRemaining(lives: IAPManager.rewardAmountLivesAd)
             
             saveState(levelStatsItem: getLevelStatsItem(level: currentLevel, didWin: false))
-        case .add1Life:
-            gameEngine.animateLives(originalLives: GameEngine.livesRemaining, newLives: ContinueSprite.extraLivesAd)
-            gameEngine.incrementLivesRemaining(lives: ContinueSprite.extraLivesAd)
+        case .add5Moves:
+            gameEngine.animateMoves(originalMoves: gameEngine.movesRemaining, newMoves: IAPManager.rewardAmountMovesBuy5)
+            gameEngine.incrementMovesRemaining(moves: IAPManager.rewardAmountMovesBuy5)
+            
+            saveState(levelStatsItem: getLevelStatsItem(level: currentLevel, didWin: false))
+        case .add10Hints:
+            // FIXME: - Need better animation to indicate 10 hints were added.
+            gameEngine.hintEngine.setHintCount(HintEngine.hintCount + IAPManager.rewardAmountHintsBuy10)
+            pauseResetEngine.updateHintBadgeAndCount()
             
             saveState(levelStatsItem: getLevelStatsItem(level: currentLevel, didWin: false))
         case .skipLevel:
@@ -1031,18 +1028,13 @@ extension GameScene: PauseResetEngineDelegate {
                 saveState(levelStatsItem: getLevelStatsItem(level: currentLevel, didWin: false))
             }
         case .add25Lives:
-            gameEngine.animateLives(originalLives: GameEngine.livesRemaining, newLives: ContinueSprite.extraLivesBuy25)
-            gameEngine.incrementLivesRemaining(lives: ContinueSprite.extraLivesBuy25)
+            gameEngine.animateLives(originalLives: GameEngine.livesRemaining, newLives: IAPManager.rewardAmountLivesBuy25)
+            gameEngine.incrementLivesRemaining(lives: IAPManager.rewardAmountLivesBuy25)
             
             saveState(levelStatsItem: getLevelStatsItem(level: currentLevel, didWin: false))
         case .add100Lives:
-            gameEngine.animateLives(originalLives: GameEngine.livesRemaining, newLives: ContinueSprite.extraLivesBuy100)
-            gameEngine.incrementLivesRemaining(lives: ContinueSprite.extraLivesBuy100)
-            
-            saveState(levelStatsItem: getLevelStatsItem(level: currentLevel, didWin: false))
-        case .add1000Lives:
-            gameEngine.animateLives(originalLives: GameEngine.livesRemaining, newLives: ContinueSprite.extraLivesBuy1000)
-            gameEngine.incrementLivesRemaining(lives: ContinueSprite.extraLivesBuy1000)
+            gameEngine.animateLives(originalLives: GameEngine.livesRemaining, newLives: IAPManager.rewardAmountLivesBuy100)
+            gameEngine.incrementLivesRemaining(lives: IAPManager.rewardAmountLivesBuy100)
             
             saveState(levelStatsItem: getLevelStatsItem(level: currentLevel, didWin: false))
         }

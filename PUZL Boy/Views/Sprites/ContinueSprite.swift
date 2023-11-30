@@ -9,28 +9,22 @@ import SpriteKit
 
 protocol ContinueSpriteDelegate: AnyObject {
     func didTapWatchAd()
+    func didTapBuy5MovesButton()
     func didTapSkipLevel()
     func didTapBuy25LivesButton()
-    func didTapBuy5MovesButton()
 }
 
 class ContinueSprite: SKNode {
     
     // MARK: - Properties
-    
-    static let extraLivesAd = 1
-    static let extraLivesBuy25 = 25
-    static let extraLivesBuy100 = 100
-    static let extraLivesBuy1000 = 1000
-    static let extraMovesBuy5 = 5
-    
+        
     private var disableControls: Bool = true
     private var livesRefreshLabel: SKLabelNode!
     private(set) var backgroundSprite: SKShapeNode!
     private(set) var watchAdButton: DecisionButtonSprite!
+    private(set) var buy5MovesButton: DecisionButtonSprite!
     private(set) var skipLevelButton: DecisionButtonSprite!
     private(set) var buy25LivesButton: DecisionButtonSprite!
-    private(set) var buy5MovesButton: DecisionButtonSprite!
     
     weak var delegate: ContinueSpriteDelegate?
 
@@ -81,7 +75,7 @@ class ContinueSprite: SKNode {
             y: -backgroundSprite.frame.size.height / 2 + continueLabel.frame.height / (UIDevice.isiPad ? 2 : 0.5))
         skipLevelButton.delegate = self
 
-        buy5MovesButton = DecisionButtonSprite(text: "Buy $0.99:      x\(ContinueSprite.extraMovesBuy5)",
+        buy5MovesButton = DecisionButtonSprite(text: "Buy $0.99:      x\(IAPManager.rewardAmountMovesBuy5)",
                                                color: DecisionButtonSprite.colorBlue,
                                                iconImageName: "iconBoot")
         buy5MovesButton.position = CGPoint(
@@ -89,16 +83,20 @@ class ContinueSprite: SKNode {
             y: skipLevelButton.position.y + skipLevelButton.buttonSize.height + continueLabel.frame.height / 2)
         buy5MovesButton.delegate = self
 
-        watchAdButton = DecisionButtonSprite(text: "Watch Ad:      x\(ContinueSprite.extraLivesAd)",
+        watchAdButton = DecisionButtonSprite(text: "Watch Ad:      x\(IAPManager.rewardAmountLivesAd)",
                                              color: DecisionButtonSprite.colorGreen,
                                              iconImageName: "iconPlayer")
-        watchAdButton.position = CGPoint(x: K.ScreenDimensions.size.width / 4, y: buy5MovesButton.position.y)
+        watchAdButton.position = CGPoint(
+            x: K.ScreenDimensions.size.width / 4,
+            y: buy5MovesButton.position.y)
         watchAdButton.delegate = self
 
-        buy25LivesButton = DecisionButtonSprite(text: "Buy $4.99:      x\(ContinueSprite.extraLivesBuy25)",
+        buy25LivesButton = DecisionButtonSprite(text: "Buy $4.99:      x\(IAPManager.rewardAmountLivesBuy25)",
                                                 color: DecisionButtonSprite.colorGreen,
-                                            iconImageName: "iconPlayer")
-        buy25LivesButton.position = CGPoint(x: K.ScreenDimensions.size.width / 4, y: skipLevelButton.position.y)
+                                                iconImageName: "iconPlayer")
+        buy25LivesButton.position = CGPoint(
+            x: K.ScreenDimensions.size.width / 4,
+            y: skipLevelButton.position.y)
         buy25LivesButton.delegate = self
 
         livesRefreshLabel = SKLabelNode(text: "Or wait for \(LifeSpawnerModel.defaultLives) lives in: 02:00:00")
@@ -183,9 +181,9 @@ class ContinueSprite: SKNode {
         guard !disableControls else { return }
         
         watchAdButton.touchUp()
+        buy5MovesButton.touchUp()
         skipLevelButton.touchUp()
         buy25LivesButton.touchUp()
-        buy5MovesButton.touchUp()
     }
     
     
@@ -212,12 +210,12 @@ extension ContinueSprite: DecisionButtonSpriteDelegate {
         switch node {
         case let decisionSprite where decisionSprite == watchAdButton:
             delegate?.didTapWatchAd()
+        case let decisionSprite where decisionSprite == buy5MovesButton:
+            delegate?.didTapBuy5MovesButton()
         case let decisionSprite where decisionSprite == skipLevelButton:
             delegate?.didTapSkipLevel()
         case let decisionSprite where decisionSprite == buy25LivesButton:
             delegate?.didTapBuy25LivesButton()
-        case let decisionSprite where decisionSprite == buy5MovesButton:
-            delegate?.didTapBuy5MovesButton()
         default:
             print("Invalid button press.")
         }

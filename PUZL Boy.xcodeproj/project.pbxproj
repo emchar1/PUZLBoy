@@ -165,7 +165,6 @@
 		EA95D2142964FF350061059C /* SaveStateModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA95D2132964FF350061059C /* SaveStateModel.swift */; };
 		EA95D2172964FFCF0061059C /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = EA95D2162964FFCF0061059C /* FirebaseFirestore */; };
 		EA95D2192964FFCF0061059C /* FirebaseFirestoreSwift in Frameworks */ = {isa = PBXBuildFile; productRef = EA95D2182964FFCF0061059C /* FirebaseFirestoreSwift */; };
-		EA999F6C2A5805C300B422B2 /* transitionShader.fsh in Resources */ = {isa = PBXBuildFile; fileRef = EA999F6B2A5805C300B422B2 /* transitionShader.fsh */; };
 		EA999F6E2A59148800B422B2 /* SettingsTapButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA999F6D2A59148800B422B2 /* SettingsTapButton.swift */; };
 		EA9DFF0029FE481300D02683 /* SettingsPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA9DFEFF29FE481300D02683 /* SettingsPage.swift */; };
 		EA9DFF022A0084F600D02683 /* SettingsRadioNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA9DFF012A0084F600D02683 /* SettingsRadioNode.swift */; };
@@ -417,7 +416,6 @@
 		EA95D20F2962C9260061059C /* AchievementSlowPoke.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementSlowPoke.swift; sourceTree = "<group>"; };
 		EA95D2112963B4580061059C /* LevelSkipEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelSkipEngine.swift; sourceTree = "<group>"; };
 		EA95D2132964FF350061059C /* SaveStateModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveStateModel.swift; sourceTree = "<group>"; };
-		EA999F6B2A5805C300B422B2 /* transitionShader.fsh */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = transitionShader.fsh; sourceTree = "<group>"; };
 		EA999F6D2A59148800B422B2 /* SettingsTapButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTapButton.swift; sourceTree = "<group>"; };
 		EA9DFEFF29FE481300D02683 /* SettingsPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPage.swift; sourceTree = "<group>"; };
 		EA9DFF012A0084F600D02683 /* SettingsRadioNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsRadioNode.swift; sourceTree = "<group>"; };
@@ -739,7 +737,6 @@
 				EA84645D29D8E5B10075F2A9 /* TitleScene */,
 				EACDF09E2A55E9A100F28A41 /* CreditsScene.swift */,
 				EA65184228E420E400E535BF /* GameScene.swift */,
-				EA999F6B2A5805C300B422B2 /* transitionShader.fsh */,
 			);
 			path = Scenes;
 			sourceTree = "<group>";
@@ -1153,7 +1150,6 @@
 				EA4D025B29B7D61C00F0C7B1 /* movemarsh3.mp3 in Resources */,
 				EA32AE312AAC198300DFF5CD /* DragonFire.sks in Resources */,
 				EA0F1491292CC8D90013038E /* enemydeath.mp3 in Resources */,
-				EA999F6C2A5805C300B422B2 /* transitionShader.fsh in Resources */,
 				EA4D026529B90BF800F0C7B1 /* gemcollect.mp3 in Resources */,
 				EAD19A1B2A9BD48400A07A63 /* GemSparkleParticles.sks in Resources */,
 				EA9F4DDD29D2B766006F4B2F /* buttontap2.mp3 in Resources */,

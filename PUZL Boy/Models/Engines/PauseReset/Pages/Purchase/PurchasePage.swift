@@ -21,12 +21,12 @@ class PurchasePage: ParentPage {
     
     private var isDisabled = false
     
-    private var buy099Button: PurchaseTapButton!
     private var watchAdButton: PurchaseTapButton!
+    private var buy099Button: PurchaseTapButton!
+    private var buy199Button: PurchaseTapButton!
     private var buy299Button: PurchaseTapButton!
     private var buy499Button: PurchaseTapButton!
     private var buy999Button: PurchaseTapButton!
-    private var buy1999Button: PurchaseTapButton!
     private(set) var currentButton: PurchaseTapButton?
     private var activityIndicator: ActivityIndicatorSprite!
 
@@ -67,26 +67,26 @@ class PurchasePage: ParentPage {
         watchAdButton.zPosition = 10
         watchAdButton.delegate = self
         checkWatchAdButtonIsDisabled()
-
-        buy299Button = PurchaseTapButton(price: 2.99,
-                                         text: "Skip Level",
-                                         type: .skipLevel,
+        
+        buy199Button = PurchaseTapButton(price: 1.99,
+                                         text: "+10 Hints",
+                                         type: .add10Hints,
                                          color: DecisionButtonSprite.colorYellow,
-                                         image: "iconPrincess",
-                                         imageScale: imageScale)
-        buy299Button.position = CGPoint(x: PurchasePage.padding, y: watchAdButton.position.y - buttonSize.height - paddingFactor * PurchasePage.padding)
-        buy299Button.zPosition = 10
-        buy299Button.delegate = self
-
-        buy999Button = PurchaseTapButton(price: 9.99,
-                                         text: "+100 Lives",
-                                         type: .add100Lives,
+                                         image: "questionmark",
+                                         imageScale: imageScale / 2)
+        buy199Button.position = CGPoint(x: PurchasePage.padding, y: watchAdButton.position.y - buttonSize.height - paddingFactor * PurchasePage.padding)
+        buy199Button.zPosition = 10
+        buy199Button.delegate = self
+        
+        buy499Button = PurchaseTapButton(price: 4.99,
+                                         text: "+25 Lives",
+                                         type: .add25Lives,
                                          color: DecisionButtonSprite.colorGreen,
                                          image: "iconPlayer",
                                          imageScale: imageScale)
-        buy999Button.position = CGPoint(x: PurchasePage.padding, y: buy299Button.position.y - buttonSize.height - paddingFactor * PurchasePage.padding)
-        buy999Button.zPosition = 10
-        buy999Button.delegate = self
+        buy499Button.position = CGPoint(x: PurchasePage.padding, y: buy199Button.position.y - buttonSize.height - paddingFactor * PurchasePage.padding)
+        buy499Button.zPosition = 10
+        buy499Button.delegate = self
 
         //Right column
         buy099Button = PurchaseTapButton(price: 0.99,
@@ -95,39 +95,39 @@ class PurchasePage: ParentPage {
                                          color: DecisionButtonSprite.colorBlue,
                                          image: "iconBoot",
                                          imageScale: imageScale)
-        buy099Button.position = CGPoint(x: watchAdButton.position.x + PurchaseTapButton.buttonSize.width + PurchasePage.padding, y: -topMargin)
+        buy099Button.position = CGPoint(x: watchAdButton.position.x + buttonSize.width + PurchasePage.padding,
+                                        y: -topMargin)
         buy099Button.zPosition = 10
         buy099Button.delegate = self
         
-        buy499Button = PurchaseTapButton(price: 4.99,
-                                         text: "+25 Lives",
-                                         type: .add25Lives,
+        buy299Button = PurchaseTapButton(price: 2.99,
+                                         text: "Skip Level",
+                                         type: .skipLevel,
                                          color: DecisionButtonSprite.colorYellow,
+                                         image: "iconPrincess",
+                                         imageScale: imageScale)
+        buy299Button.position = CGPoint(x: watchAdButton.position.x + buttonSize.width + PurchasePage.padding,
+                                        y: buy099Button.position.y - buttonSize.height - paddingFactor * PurchasePage.padding)
+        buy299Button.zPosition = 10
+        buy299Button.delegate = self
+        
+        buy999Button = PurchaseTapButton(price: 9.99,
+                                         text: "+100 Lives",
+                                         type: .add100Lives,
+                                         color: DecisionButtonSprite.colorGreen,
                                          image: "iconPlayer",
                                          imageScale: imageScale)
-        buy499Button.position = CGPoint(x: watchAdButton.position.x + buttonSize.width + PurchasePage.padding,
-                                        y: buy099Button.position.y - buttonSize.height - paddingFactor * PurchasePage.padding)
-        buy499Button.zPosition = 10
-        buy499Button.delegate = self
-
-        buy1999Button = PurchaseTapButton(price: 19.99,
-                                          text: "+1,000 Lives",
-                                          type: .add1000Lives,
-                                          color: DecisionButtonSprite.colorGreen,
-                                          image: "iconPlayer",
-                                          imageScale: imageScale)
-        buy1999Button.position = CGPoint(x: watchAdButton.position.x + PurchaseTapButton.buttonSize.width + PurchasePage.padding,
-                                         y: buy499Button.position.y - buttonSize.height - paddingFactor * PurchasePage.padding)
-        buy1999Button.zPosition = 10
-        buy1999Button.delegate = self
-
+        buy999Button.position = CGPoint(x: watchAdButton.position.x + buttonSize.width + PurchasePage.padding,
+                                        y: buy299Button.position.y - buttonSize.height - paddingFactor * PurchasePage.padding)
+        buy999Button.zPosition = 10
+        buy999Button.delegate = self
 
         contentNode.addChild(watchAdButton)
         contentNode.addChild(buy099Button)
+        contentNode.addChild(buy199Button)
         contentNode.addChild(buy299Button)
         contentNode.addChild(buy499Button)
         contentNode.addChild(buy999Button)
-        contentNode.addChild(buy1999Button)
     }
     
     
@@ -142,10 +142,10 @@ class PurchasePage: ParentPage {
 
         watchAdButton.touchDown(in: location)
         buy099Button.touchDown(in: location)
+        buy199Button.touchDown(in: location)
         buy299Button.touchDown(in: location)
         buy499Button.touchDown(in: location)
         buy999Button.touchDown(in: location)
-        buy1999Button.touchDown(in: location)
     }
     
     override func touchUp() {
@@ -155,10 +155,10 @@ class PurchasePage: ParentPage {
 
         watchAdButton.touchUp()
         buy099Button.touchUp()
+        buy199Button.touchUp()
         buy299Button.touchUp()
         buy499Button.touchUp()
         buy999Button.touchUp()
-        buy1999Button.touchUp()
     }
     
     override func touchNode(for touches: Set<UITouch>) {
@@ -170,10 +170,10 @@ class PurchasePage: ParentPage {
         
         watchAdButton.tapButton(in: location)
         buy099Button.tapButton(in: location)
+        buy199Button.tapButton(in: location)
         buy299Button.tapButton(in: location)
         buy499Button.tapButton(in: location)
         buy999Button.tapButton(in: location)
-        buy1999Button.tapButton(in: location)
     }
     
     
@@ -212,18 +212,28 @@ extension PurchasePage: PurchaseTapButtonDelegate {
         case .add5Moves:
             IAPManager.shared.delegate = self
 
-            guard let productToPurchase = IAPManager.shared.allProducts.first(where: { $0.productIdentifier == IAPManager.moves5 }) else {
+            guard let productToPurchase = IAPManager.shared.allProducts.first(where: { $0.productIdentifier == IAPManager.idMoves5 }) else {
                 print("Unable to find IAP: 5 Moves ($0.99)")
                 return
             }
             
             currentButton = buy099Button
             IAPManager.shared.buyProduct(productToPurchase)
+        case .add10Hints:
+            IAPManager.shared.delegate = self
+            
+            guard let productToPurchase = IAPManager.shared.allProducts.first(where: { $0.productIdentifier == IAPManager.idHints10 }) else {
+                print("Unable to find IAP: 10 Hints ($1.99)")
+                return
+            }
+            
+            currentButton = buy199Button
+            IAPManager.shared.buyProduct(productToPurchase)
         case .skipLevel:
             IAPManager.shared.delegate = self
 
-            guard let productToPurchase = IAPManager.shared.allProducts.first(where: { $0.productIdentifier == IAPManager.skipLevel }) else {
-                print("Unable to find IAP: Skip Level ($1.99)")
+            guard let productToPurchase = IAPManager.shared.allProducts.first(where: { $0.productIdentifier == IAPManager.idSkipLevel }) else {
+                print("Unable to find IAP: Skip Level ($2.99)")
                 return
             }
             
@@ -232,7 +242,7 @@ extension PurchasePage: PurchaseTapButtonDelegate {
         case .add25Lives:
             IAPManager.shared.delegate = self
 
-            guard let productToPurchase = IAPManager.shared.allProducts.first(where: { $0.productIdentifier == IAPManager.lives25 }) else {
+            guard let productToPurchase = IAPManager.shared.allProducts.first(where: { $0.productIdentifier == IAPManager.idLives25 }) else {
                 print("Unable to find IAP: 25 Lives ($4.99)")
                 return
             }
@@ -242,22 +252,12 @@ extension PurchasePage: PurchaseTapButtonDelegate {
         case .add100Lives:
             IAPManager.shared.delegate = self
 
-            guard let productToPurchase = IAPManager.shared.allProducts.first(where: { $0.productIdentifier == IAPManager.lives100 }) else {
+            guard let productToPurchase = IAPManager.shared.allProducts.first(where: { $0.productIdentifier == IAPManager.idLives100 }) else {
                 print("Unable to find IAP: 100 Lives ($9.99)")
                 return
             }
             
             currentButton = buy999Button
-            IAPManager.shared.buyProduct(productToPurchase)
-        case .add1000Lives:
-            IAPManager.shared.delegate = self
-
-            guard let productToPurchase = IAPManager.shared.allProducts.first(where: { $0.productIdentifier == IAPManager.lives1000 }) else {
-                print("Unable to find IAP: 1000 Lives ($19.99)")
-                return
-            }
-            
-            currentButton = buy1999Button
             IAPManager.shared.buyProduct(productToPurchase)
         }
         
