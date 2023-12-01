@@ -1002,7 +1002,9 @@ extension GameScene: PauseResetEngineDelegate {
             saveState(levelStatsItem: getLevelStatsItem(level: currentLevel, didWin: false))
         case .add10Hints:
             // FIXME: - Need better animation to indicate 10 hints were added.
-            gameEngine.hintEngine.setHintCount(HintEngine.hintCount + IAPManager.rewardAmountHintsBuy10)
+            gameEngine.hintEngine.addToHintCount(valueToAdd: IAPManager.rewardAmountHintsBuy10)
+            gameEngine.hintEngine.updateBools(didPurchaseHints: true)
+            pauseResetEngine.shouldDisableHintButton(!gameEngine.hintEngine.hintAvailable)
             pauseResetEngine.updateHintBadgeAndCount()
             
             saveState(levelStatsItem: getLevelStatsItem(level: currentLevel, didWin: false))

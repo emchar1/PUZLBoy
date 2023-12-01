@@ -19,7 +19,7 @@ class HintEngine {
     private(set) var hintButtonPressed: Bool = false
     private(set) var canAddToBought: Bool = true
     private var isMatchSolutionAttempt: Bool {
-        guard solutionArray.count >= attemptArray.count else { return false }
+        guard attemptArray.count <= solutionArray.count else { return false }
         
         for (i, direction) in attemptArray.enumerated() {
             if direction != solutionArray[i] {
@@ -32,8 +32,8 @@ class HintEngine {
     private var isMatchAttemptBought: Bool {
         guard attemptArray.count == boughtArray.count else { return false }
                 
-        for (i, direction) in boughtArray.enumerated() {
-            if direction != attemptArray[i] {
+        for (i, direction) in attemptArray.enumerated() {
+            if direction != boughtArray[i] {
                 return false
             }
         }
@@ -237,11 +237,15 @@ class HintEngine {
     
     // MARK: - Getter/Setter Functions
     
-    func updateBools() {
+    func updateBools(didPurchaseHints: Bool = false) {
         if hintButtonPressed {
             setHintAvailable(isMatchSolutionAttempt && HintEngine.hintCount > 0)
             setCanAddToBought(isMatchAttemptBought && HintEngine.hintCount > 0)
             setHintButtonPressed(false)
+        }
+        else if didPurchaseHints && (isAlmostMatchAttemptBought || isMatchAttemptBought) {
+            setHintAvailable(isMatchSolutionAttempt && HintEngine.hintCount > 0)
+            setCanAddToBought(isMatchAttemptBought && HintEngine.hintCount > 0)
         }
         else {
             setHintAvailable(false)
@@ -266,7 +270,11 @@ class HintEngine {
     }
     
     func reduceHintCount() {
-        HintEngine.hintCount -= 1
+        setHintCount(HintEngine.hintCount - 1)
+    }
+    
+    func addToHintCount(valueToAdd addedValue: Int) {
+        setHintCount(HintEngine.hintCount + addedValue)
     }
     
     func appendDirection(_ direction: Controls) {
