@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "questionmark@1x.png",
+      "filename" : "locked.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "questionmark@2x.png",
+      "filename" : "locked@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "questionmark@3x.png",
+      "filename" : "locked@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

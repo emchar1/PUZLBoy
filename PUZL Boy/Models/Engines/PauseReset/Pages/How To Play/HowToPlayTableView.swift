@@ -56,6 +56,8 @@ class HowToPlayTableView: UITableView, UITableViewDelegate, UITableViewDataSourc
                        description: "These kicks make you go fast! Collect more to go even faster, if that were even possible."),
         HowToPlayModel(image: "partySlow", title: "Speed Down", requiredLevel: Level.partyMinLevelRequired + 1,
                        description: "Avoid the blue shoes at all costs... unless you like going really really slow for some reason."),
+        HowToPlayModel(image: "partyHint", title: "Magnifying Glass", requiredLevel: Level.partyMinLevelRequired + 1,
+                       description: "Tapping on the magnifying glass button at the start of a level will point you in the right direction."),
         HowToPlayModel(image: "partyLife", title: "Extra Life", requiredLevel: Level.partyMinLevelRequired + 1,
                        description: "If you're able to nab one of these in time, you'll get an extra life at the end of the Bonus Level!"),
         HowToPlayModel(image: "partyBomb", title: "Rainbow Bomb", requiredLevel: Level.partyMinLevelRequired + 1,

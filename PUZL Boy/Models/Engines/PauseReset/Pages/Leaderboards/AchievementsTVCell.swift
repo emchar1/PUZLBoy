@@ -141,7 +141,7 @@ class AchievementsTVCell: UITableViewCell {
     // MARK: - Functions
     
     func setViews(achievement: AchievementsModel) {
-        image.image = UIImage(named: achievement.isCompleted ? achievement.imageName : "questionmarknoborder")
+        image.image = UIImage(named: achievement.isCompleted ? achievement.imageName : "locked")
         titleText.text = achievement.title.uppercased()
         
         if achievement.isCompleted {

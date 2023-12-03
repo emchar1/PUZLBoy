@@ -123,7 +123,7 @@ class HowToPlayTVCell: UITableViewCell {
     // MARK: - Functions
     
     func setViews(imageName: String, title: String, requiredLevel: Int, currentLevel: Int, description: String) {
-        image.image = UIImage(named: currentLevel >= requiredLevel ? imageName : "questionmark")
+        image.image = UIImage(named: currentLevel >= requiredLevel ? imageName : "locked")
         titleText.text = currentLevel >= requiredLevel ? title.uppercased() : "LOCKED"
         descriptionText.text = currentLevel >= requiredLevel ? description : "Reach level \(requiredLevel) to unlock this tip."
     }

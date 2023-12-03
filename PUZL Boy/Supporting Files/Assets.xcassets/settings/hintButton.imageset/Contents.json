@@ -1,7 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "hintButton@1x.png",
+      "filename" : "hintButton.png",
       "idiom" : "universal",
       "scale" : "1x"
     },

@@ -314,13 +314,14 @@ class GameScene: SKScene {
                 addChild(partyResultsSprite!)
                 
                 partyResultsSprite!.updateAmounts(gems: gameEngine.partyInventory.gems,
-                                                 gemsDouble: gameEngine.partyInventory.gemsDouble,
-                                                 gemsTriple: gameEngine.partyInventory.gemsTriple,
-                                                 lives: gameEngine.partyInventory.lives)
+                                                  gemsDouble: gameEngine.partyInventory.gemsDouble,
+                                                  gemsTriple: gameEngine.partyInventory.gemsTriple,
+                                                  hints: gameEngine.partyInventory.hints,
+                                                  lives: gameEngine.partyInventory.lives)
                 
                 partyResultsSprite!.animateShow(totalGems: gameEngine.partyInventory.getTotalGems(),
-                                               lives: gameEngine.partyInventory.lives,
-                                               totalLives: gameEngine.partyInventory.getTotalLives()) { }
+                                                lives: gameEngine.partyInventory.lives,
+                                                totalLives: gameEngine.partyInventory.getTotalLives()) { }
             }
         }
         
@@ -717,6 +718,14 @@ extension GameScene: AdMobManagerDelegate {
             
             gameEngine.animateLives(originalLives: GameEngine.livesRemaining, newLives: livesEarned)
             gameEngine.incrementLivesRemaining(lives: livesEarned)
+        }
+        
+        // TODO: - Animate hints earned from party
+        if gameEngine.partyInventory.hints > 0 {
+            gameEngine.hintEngine.addToHintCount(valueToAdd: gameEngine.partyInventory.hints)
+            gameEngine.hintEngine.updateBools(didPurchaseHints: true)
+            pauseResetEngine.shouldDisableHintButton(!gameEngine.hintEngine.hintAvailable)
+            pauseResetEngine.updateHintBadgeAndCount()
         }
         
         //Write to Firestore, MUST come after newGame()

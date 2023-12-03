@@ -22,6 +22,7 @@ struct PartyInventory {
     var time: Int
     var speedUp: Int
     var speedDown: Int
+    var hints: Int
     var lives: Int
     
     //Misc properties
@@ -43,6 +44,7 @@ struct PartyInventory {
         time = 0
         speedUp = 0
         speedDown = 0
+        hints = 0
         lives = 0
         
         self.panelCount = panelCount
@@ -98,6 +100,8 @@ struct PartyInventory {
             randomItem = .partyLife
         case 440..<460:
             randomItem = .partyTime
+        case 480..<500:
+            randomItem = panelCount > 3 ? .partyHint : .partyGem //Need at least LV150 before .partyHint appears
         case (panelCount <= 4 ? 520..<580 : 520..<560):
             randomItem = .partyFast
         case (panelCount <= 4 ? 630..<700 : 600..<700):
@@ -112,6 +116,6 @@ struct PartyInventory {
     }
     
     func getStatus() {
-        print("Gems: \(gems), 2x: \(gemsDouble), 3x: \(gemsTriple), Total Gems: \(getTotalGems()) | Time: \(time), Speed+: \(speedUp), Speed-: \(speedDown) | 1-UP: \(lives), Total Lives: \(getTotalLives())")
+        print("Gems: \(gems), 2x: \(gemsDouble), 3x: \(gemsTriple), Total Gems: \(getTotalGems()) | Time: \(time), Speed+: \(speedUp), Speed-: \(speedDown), Hints: \(hints) | 1-UP: \(lives), Total Lives: \(getTotalLives())")
     }
 }

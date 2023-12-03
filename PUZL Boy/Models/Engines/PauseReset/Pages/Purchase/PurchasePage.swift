@@ -72,7 +72,7 @@ class PurchasePage: ParentPage {
                                          text: "+10 Hints",
                                          type: .add10Hints,
                                          color: DecisionButtonSprite.colorYellow,
-                                         image: "questionmark",
+                                         image: "partyHint",
                                          imageScale: imageScale / 2)
         buy199Button.position = CGPoint(x: PurchasePage.padding, y: watchAdButton.position.y - buttonSize.height - paddingFactor * PurchasePage.padding)
         buy199Button.zPosition = 10

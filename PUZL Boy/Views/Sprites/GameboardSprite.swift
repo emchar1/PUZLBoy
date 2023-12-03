@@ -501,10 +501,9 @@ class GameboardSprite {
         panel.zPosition = K.ZPosition.chatDimOverlay + (useOverlay ? K.ZPosition.overlay : K.ZPosition.terrain)
         
         if !useOverlay {
-            let hintborderOffset = CGPoint(x: -49, y: -41) / CGFloat(panelCount) //x: [0] 49---(511)---560 [609]; y: [0] 41---(512)---553 [593]
+//            let hintborderOffset = CGPoint(x: -49, y: -41) / CGFloat(panelCount) //x: [0] 49---(511)---560 [609]; y: [0] 41---(512)---553 [593]
             let hintborder = SKSpriteNode(imageNamed: "hintborder")
             hintborder.anchorPoint = .zero
-            hintborder.position = hintborderOffset
             hintborder.zPosition = 10
             hintborder.name = "hintborder"
             

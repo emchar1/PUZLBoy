@@ -523,6 +523,15 @@ class GameEngine {
                 consumeItem()
                 completion?()
             }
+        case .partyHint:
+            partyInventory.hints += 1
+            
+            Haptics.shared.addHapticFeedback(withStyle: .medium)
+            
+            playerSprite.startItemCollectAnimation(on: gameboardSprite, at: level.player, item: .partyHint, sound: .partyHint) { [unowned self] in
+                consumeItem()
+                completion?()
+            }
         case .partyLife:
             partyInventory.lives += 1
 

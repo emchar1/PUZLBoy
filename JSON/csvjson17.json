@@ -33073,9 +33073,9 @@
   },
   "318": {
     "health": 1,
-    "hintsSolution": "R,R,D,R,D,D,L,D,L,L,D,U,R,R,U,R,U,R,R,U,U,D,D,L,L,D,D,D,R,R",
+    "hintsSolution": "R,R,D,R,D,D,L,D,L,L,D,U,R,R,U,R,U,R,R,U,U,D,D,L,L,D,D,R,D,R",
     "level": 318,
-    "moves": 38,
+    "moves": 37,
     "r0c0": "start",
     "r0c1": "grass",
     "r0c2": "grass",

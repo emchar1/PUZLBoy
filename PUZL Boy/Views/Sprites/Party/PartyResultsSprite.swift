@@ -23,6 +23,7 @@ class PartyResultsSprite: SKNode {
     private var gemsDoubleLineItem: PartyResultsLineItemSprite!
     private var gemsTripleLineItem: PartyResultsLineItemSprite!
     private var gemsTotalLineItem: PartyResultsLineItemSprite!
+    private var hintsLineItem: PartyResultsLineItemSprite!
     private var livesLineItem: PartyResultsLineItemSprite!
     private var livesTotalLineItem: PartyResultsLineItemSprite!
     private var continueButton: SettingsTapButton!
@@ -53,7 +54,7 @@ class PartyResultsSprite: SKNode {
     
     private func setupSprites() {
         let backgroundCorner: CGFloat = 20
-        let topBorder: CGFloat = UIDevice.isiPad ? 200 : 150
+        let topBorder: CGFloat = UIDevice.isiPad ? 160 : 120
         
         backgroundSprite = SKShapeNode(rectOf: backgroundSize, cornerRadius: backgroundCorner)
         backgroundSprite.fillColor = .magenta
@@ -77,10 +78,14 @@ class PartyResultsSprite: SKNode {
         gemsTotalLineItem = PartyResultsLineItemSprite(iconName: nil, iconDescription: "Total Gems", amount: 0)
         gemsTotalLineItem.position = CGPoint(x: -backgroundSize.width / 2,
                                              y: gemsTripleLineItem.position.y - PartyResultsLineItemSprite.lineItemHeight)
-        
+
+        hintsLineItem = PartyResultsLineItemSprite(iconName: "partyHint", iconDescription: "Hints", amount: 0)
+        hintsLineItem.position = CGPoint(x: -backgroundSize.width / 2,
+                                         y: gemsTotalLineItem.position.y - PartyResultsLineItemSprite.lineItemHeight - topBorder / 3)
+
         livesLineItem = PartyResultsLineItemSprite(iconName: "partyLife", iconDescription: "Lives", amount: 0)
         livesLineItem.position = CGPoint(x: -backgroundSize.width / 2,
-                                         y: gemsTotalLineItem.position.y - PartyResultsLineItemSprite.lineItemHeight - topBorder / 2)
+                                         y: hintsLineItem.position.y - PartyResultsLineItemSprite.lineItemHeight)
         
         livesTotalLineItem = PartyResultsLineItemSprite(iconName: nil, iconDescription: "Total Lives", amount: 0)
         livesTotalLineItem.position = CGPoint(x: -backgroundSize.width / 2,
@@ -96,7 +101,7 @@ class PartyResultsSprite: SKNode {
         titleLabel.addHeavyDropShadow()
         
         continueButton = SettingsTapButton(text: "Continue", colors: (DecisionButtonSprite.colorBlue, .cyan))
-        continueButton.position = CGPoint(x: SettingsTapButton.buttonSize.width / 2, y: -backgroundSprite.frame.size.height / 2 + titleLabel.frame.height / (UIDevice.isiPad ? 2 : 0.5))
+        continueButton.position = CGPoint(x: SettingsTapButton.buttonSize.width / 2, y: -backgroundSprite.frame.size.height / 2 + titleLabel.frame.height / (UIDevice.isiPad ? -1 : 1))
         continueButton.zPosition = 10
         continueButton.delegate = self
         continueButton.alpha = 0
@@ -106,6 +111,7 @@ class PartyResultsSprite: SKNode {
         backgroundSprite.addChild(gemsDoubleLineItem)
         backgroundSprite.addChild(gemsTripleLineItem)
         backgroundSprite.addChild(gemsTotalLineItem)
+        backgroundSprite.addChild(hintsLineItem)
         backgroundSprite.addChild(livesLineItem)
         backgroundSprite.addChild(livesTotalLineItem)
         backgroundSprite.addChild(continueButton)
@@ -114,11 +120,12 @@ class PartyResultsSprite: SKNode {
     
     // MARK: - Functions
     
-    func updateAmounts(gems: Int, gemsDouble: Int, gemsTriple: Int, lives: Int) {
+    func updateAmounts(gems: Int, gemsDouble: Int, gemsTriple: Int, hints: Int, lives: Int) {
         gemsLineItem.updateAmount(gems)
         gemsDoubleLineItem.updateAmount(gemsDouble)
         gemsTripleLineItem.updateAmount(gemsTriple)
         gemsTotalLineItem.updateAmount(0)
+        hintsLineItem.updateAmount(hints)
         livesLineItem.updateAmount(lives)
         livesTotalLineItem.updateAmount(lives)
     }
@@ -144,9 +151,11 @@ class PartyResultsSprite: SKNode {
                 gemsDoubleLineItem.animateAppear(xPosition: xPosition) { [unowned self] in
                     gemsTripleLineItem.animateAppear(xPosition: xPosition) { [unowned self] in
                         gemsTotalLineItem.animateAppear(xPosition: xPosition) { [unowned self] in
-                            livesLineItem.animateAppear(xPosition: xPosition) { [unowned self] in
-                                livesTotalLineItem.animateAppear(xPosition: xPosition) { [unowned self] in
-                                    animateHelper(totalGems: totalGems, lives: lives, totalLives: totalLives, completion: completion)
+                            hintsLineItem.animateAppear(xPosition: xPosition) { [unowned self] in
+                                livesLineItem.animateAppear(xPosition: xPosition) { [unowned self] in
+                                    livesTotalLineItem.animateAppear(xPosition: xPosition) { [unowned self] in
+                                        animateHelper(totalGems: totalGems, lives: lives, totalLives: totalLives, completion: completion)
+                                    }
                                 }
                             }
                         }
@@ -225,6 +234,7 @@ class PartyResultsSprite: SKNode {
             gemsDoubleLineItem.animateDisappear()
             gemsTripleLineItem.animateDisappear()
             gemsTotalLineItem.animateDisappear()
+            hintsLineItem.animateDisappear()
             livesLineItem.animateDisappear()
             livesTotalLineItem.animateDisappear()
             continueButton.alpha = 0

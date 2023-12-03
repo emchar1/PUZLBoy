@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "questionmarknoborder.png",
+      "filename" : "partyHint.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "questionmarknoborder@2x.png",
+      "filename" : "partyHint@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "questionmarknoborder@3x.png",
+      "filename" : "partyHint@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }
