@@ -310,11 +310,12 @@ class PauseResetEngine {
         let leftMargin: CGFloat = K.ScreenDimensions.lrMargin
         let rightMargin: CGFloat = UIDevice.isiPad ? -8 : 8
         
-        return CGRect(
-            origin: CGPoint(x: (ParentPage.padding / K.ScreenDimensions.ratioSKtoUI) + leftMargin,
-                            y: ((K.ScreenDimensions.size.height - K.ScreenDimensions.topOfGameboard) / K.ScreenDimensions.ratioSKtoUI) + topMargin),
-            size: CGSize(width: (settingsSize.width / K.ScreenDimensions.ratioSKtoUI * GameboardSprite.spriteScale) - rightMargin,
-                         height: (settingsSize.height / K.ScreenDimensions.ratioSKtoUI * GameboardSprite.spriteScale) - bottomMargin))
+        let originX = (ParentPage.padding / K.ScreenDimensions.ratioSKtoUI) + leftMargin
+        let originY = ((K.ScreenDimensions.size.height - K.ScreenDimensions.topOfGameboard) / K.ScreenDimensions.ratioSKtoUI) + topMargin
+        let sizeWidth = (settingsSize.width / K.ScreenDimensions.ratioSKtoUI * GameboardSprite.spriteScale) - rightMargin
+        let sizeHeight = (settingsSize.height / K.ScreenDimensions.ratioSKtoUI * GameboardSprite.spriteScale) - bottomMargin
+        
+        return CGRect(origin: CGPoint(x: originX, y: originY), size: CGSize(width: sizeWidth, height: sizeHeight))
     }
     
     

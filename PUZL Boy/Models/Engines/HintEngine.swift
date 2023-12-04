@@ -195,7 +195,7 @@ class HintEngine {
         arrow.position = gameboardSprite.getLocation(at: (row: playerPosition.row + positionOffset.row, col: playerPosition.col + positionOffset.col))
         arrow.zRotation = rotationAngle
         arrow.zPosition = K.ZPosition.itemsAndEffects
-        arrow.setScale((1 / GameboardSprite.spriteScale) * (1.8 * 3) / CGFloat(gameboardSprite.panelCount))
+        arrow.setScale(6 / (GameboardSprite.spriteScale * CGFloat(gameboardSprite.panelCount)))
         arrow.name = nodeNameArrowHint
 
         gameboardSprite.sprite.addChild(arrow)
