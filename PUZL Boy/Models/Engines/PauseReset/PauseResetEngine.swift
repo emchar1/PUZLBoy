@@ -316,8 +316,8 @@ class PauseResetEngine {
         )
         
         let tableViewSize = CGSize(
-            width: (settingsSize.width / K.ScreenDimensions.ratioSKtoUI * GameboardSprite.spriteScale) - rightMargin,
-            height: (settingsSize.height / K.ScreenDimensions.ratioSKtoUI * GameboardSprite.spriteScale) - bottomMargin
+            width: (settingsSize.width / K.ScreenDimensions.ratioSKtoUI * settingsScale) - rightMargin,
+            height: (settingsSize.height / K.ScreenDimensions.ratioSKtoUI * settingsScale) - bottomMargin
         )
         
         return CGRect(origin: tableViewOrigin, size: tableViewSize)
@@ -446,7 +446,7 @@ class PauseResetEngine {
                         settingsPage.updateColors()
                         settingsPage.checkReportBugAlreadySubmitted()
                     },
-                    SKAction.scale(to: GameboardSprite.spriteScale, duration: 0.25),
+                    SKAction.scale(to: settingsScale, duration: 0.25),
                     SKAction.run { [unowned self] in
                         // FIXME: - Does this create a retain cycle???
                         backgroundSprite.showShadow(animationDuration: 0.1, completion: nil)
