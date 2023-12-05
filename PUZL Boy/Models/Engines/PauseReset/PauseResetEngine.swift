@@ -290,32 +290,37 @@ class PauseResetEngine {
     
     func registerHowToPlayTableView() {
         howToPlayPage.tableView.register(HowToPlayTVCell.self, forCellReuseIdentifier: HowToPlayTVCell.reuseID)
-        howToPlayPage.tableView.frame = getTableViewFrame(hasHeaders: false)
+        howToPlayPage.tableView.frame = getTableViewFrame(hasTableViewHeaders: false)
     }
     
     func registerLeaderboardsTableView() {
         leaderboardsPage.leaderboardsTableView.register(LeaderboardsTVCell.self, forCellReuseIdentifier: LeaderboardsTVCell.reuseID)
-        leaderboardsPage.leaderboardsTableView.frame = getTableViewFrame(hasHeaders: true)
+        leaderboardsPage.leaderboardsTableView.frame = getTableViewFrame(hasTableViewHeaders: true)
     }
     
     func registerAchievementsTableView() {
         leaderboardsPage.achievementsTableView.register(AchievementsTVCell.self, forCellReuseIdentifier: AchievementsTVCell.reuseID)
-        leaderboardsPage.achievementsTableView.frame = getTableViewFrame(hasHeaders: false)
+        leaderboardsPage.achievementsTableView.frame = getTableViewFrame(hasTableViewHeaders: false)
     }
     
-    private func getTableViewFrame(hasHeaders: Bool) -> CGRect {
-        let hasHeadersOffset: CGFloat = hasHeaders ? 32 : 0
-        let topMargin: CGFloat = (UIDevice.isiPad ? 80 : 40) + hasHeadersOffset
-        let bottomMargin: CGFloat = (UIDevice.isiPad ? 30 : 50) + hasHeadersOffset
+    private func getTableViewFrame(hasTableViewHeaders: Bool) -> CGRect {
+        let hasTableViewHeadersOffset: CGFloat = hasTableViewHeaders ? 32 : 0
+        let topMargin: CGFloat = (UIDevice.isiPad ? 80 : 40) + hasTableViewHeadersOffset
+        let bottomMargin: CGFloat = (UIDevice.isiPad ? 30 : 50) + hasTableViewHeadersOffset
         let leftMargin: CGFloat = K.ScreenDimensions.lrMargin
         let rightMargin: CGFloat = UIDevice.isiPad ? -8 : 8
         
-        let originX = (ParentPage.padding / K.ScreenDimensions.ratioSKtoUI) + leftMargin
-        let originY = ((K.ScreenDimensions.size.height - K.ScreenDimensions.topOfGameboard) / K.ScreenDimensions.ratioSKtoUI) + topMargin
-        let sizeWidth = (settingsSize.width / K.ScreenDimensions.ratioSKtoUI * GameboardSprite.spriteScale) - rightMargin
-        let sizeHeight = (settingsSize.height / K.ScreenDimensions.ratioSKtoUI * GameboardSprite.spriteScale) - bottomMargin
+        let tableViewOrigin = CGPoint(
+            x: (ParentPage.padding / K.ScreenDimensions.ratioSKtoUI) + leftMargin,
+            y: ((K.ScreenDimensions.size.height - K.ScreenDimensions.topOfGameboard) / K.ScreenDimensions.ratioSKtoUI) + topMargin
+        )
         
-        return CGRect(origin: CGPoint(x: originX, y: originY), size: CGSize(width: sizeWidth, height: sizeHeight))
+        let tableViewSize = CGSize(
+            width: (settingsSize.width / K.ScreenDimensions.ratioSKtoUI * GameboardSprite.spriteScale) - rightMargin,
+            height: (settingsSize.height / K.ScreenDimensions.ratioSKtoUI * GameboardSprite.spriteScale) - bottomMargin
+        )
+        
+        return CGRect(origin: tableViewOrigin, size: tableViewSize)
     }
     
     
