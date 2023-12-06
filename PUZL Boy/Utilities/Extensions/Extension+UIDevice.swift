@@ -25,8 +25,12 @@ extension UIDevice {
             let safe: (top: CGFloat, btm: CGFloat) = (20, 40)
             let safeNew: (top: CGFloat, btm: CGFloat) = (200, 100)
 
+            
+            // TODO: - VERY IMPORTANT!!! ADD NEW iOS DEVICES AS THEY COME OUT!!!!!!
             #if os(iOS)
             switch identifier {
+                
+            //iPhones
             case "iPod5,1":                                       return ("iPod touch (5th generation)", 16/9, safe.top, safe.btm)
             case "iPod7,1":                                       return ("iPod touch (6th generation)", 16/9, safe.top, safe.btm)
             case "iPod9,1":                                       return ("iPod touch (7th generation)", 16/9, safe.top, safe.btm)
@@ -62,9 +66,15 @@ extension UIDevice {
             case "iPhone14,8":                                    return ("iPhone 14 Plus", 19.5/9, safeNew.top, safeNew.btm)
             case "iPhone15,2":                                    return ("iPhone 14 Pro", 19.5/9, safeNew.top, safeNew.btm)
             case "iPhone15,3":                                    return ("iPhone 14 Pro Max", 19.5/9, safeNew.top, safeNew.btm)
+            case "iPhone15,4":                                    return ("iPhone 15", 19.5/9, safeNew.top, safeNew.btm)
+            case "iPhone15,5":                                    return ("iPhone 15 Plus", 19.5/9, safeNew.top, safeNew.btm)
+            case "iPhone16,1":                                    return ("iPhone 15 Pro", 19.5/9, safeNew.top, safeNew.btm)
+            case "iPhone16,2":                                    return ("iPhone 15 Pro Max", 19.5/9, safeNew.top, safeNew.btm)
             case "iPhone8,4":                                     return ("iPhone SE", 16/9, safe.top, safe.btm)
             case "iPhone12,8":                                    return ("iPhone SE (2nd generation)", 16/9, safe.top, safe.btm)
             case "iPhone14,6":                                    return ("iPhone SE (3rd generation)", 16/9, safe.top, safe.btm)
+                
+            //iPads
             case "iPad2,1", "iPad2,2", "iPad2,3", "iPad2,4":      return ("iPad 2", 4/3, safe.top, safe.btm)
             case "iPad3,1", "iPad3,2", "iPad3,3":                 return ("iPad (3rd generation)", 4/3, safe.top, safe.btm)
             case "iPad3,4", "iPad3,5", "iPad3,6":                 return ("iPad (4th generation)", 4/3, safe.top, safe.btm)
@@ -97,12 +107,23 @@ extension UIDevice {
             case "iPad8,11", "iPad8,12":                          return ("iPad Pro (12.9-inch) (4th generation)", 4/3, safe.top, safe.btm)
             case "iPad13,8", "iPad13,9", "iPad13,10", "iPad13,11":return ("iPad Pro (12.9-inch) (5th generation)", 4/3, safe.top, safe.btm)
             case "iPad14,5", "iPad14,6":                          return ("iPad Pro (12.9-inch) (6th generation)", 4/3, safe.top, safe.btm)
+                
+            //Misc devices
             case "AppleTV5,3":                                    return ("Apple TV", 16/9, safe.top, safe.btm)
             case "AppleTV6,2":                                    return ("Apple TV 4K", 16/9, safe.top, safe.btm)
             case "AudioAccessory1,1":                             return ("HomePod", 16/9, safe.top, safe.btm)
             case "AudioAccessory5,1":                             return ("HomePod mini", 16/9, safe.top, safe.btm)
-            case "i386", "x86_64", "arm64":                       return mapToDevice(identifier: ProcessInfo().environment["SIMULATOR_MODEL_IDENTIFIER"] ?? "iOS")
-            default:                                              return (identifier, 0, 0, 0)
+            case "i386", "x86_64", "arm64":                       
+                return mapToDevice(identifier: ProcessInfo().environment["SIMULATOR_MODEL_IDENTIFIER"] ?? "iOS")
+              
+            //Default case
+            default:
+                if isiPad {
+                    return (identifier, 4/3, safe.top, safe.btm)
+                }
+                else {
+                    return (identifier, 19.5/9, safeNew.top, safeNew.btm)
+                }
             }
             #elseif os(tvOS)
             switch identifier {

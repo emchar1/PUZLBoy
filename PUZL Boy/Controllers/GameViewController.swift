@@ -100,7 +100,7 @@ class GameViewController: UIViewController {
             }
         }//end GameCenterManager.shared.getUser()
         
-        print("Testing device info: \(UIDevice.modelInfo)")
+        print("Testing device info: \(UIDevice.modelInfo), UI aspect ratio: \(K.ScreenDimensions.sizeUI.height / K.ScreenDimensions.sizeUI.width)")
     }//end viewDidLoad()
     
     private func presentTitleScene() {
