@@ -118,7 +118,7 @@ extension UIDevice {
               
             //Default case
             default:
-                if isiPad {
+                if identifier.contains("iPad") {
                     return (identifier, 4/3, safe.top, safe.btm)
                 }
                 else {
