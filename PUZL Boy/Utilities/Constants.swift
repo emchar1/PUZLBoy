@@ -44,7 +44,7 @@ struct K {
         static var sizeUI: CGSize { UIScreen.main.bounds.size }
         
         ///The ratio of SpriteKit screenSize to UIKit screenSize
-        static var ratioSKtoUI: CGFloat { (size / sizeUI).width }
+        static var ratioSKtoUI: CGFloat { size.width / sizeUI.width }
     }
     
     
