@@ -19,11 +19,26 @@ struct K {
     
     
     struct ScreenDimensions {
+        
+        //--SCREEN SIZE--
+        
         ///Default width of the device in Portrait mode, per RayWenderlich tutorial. Should not be used AT ALL. Use K.ScreenDimensions.screenSize.width!!!
         private static let width: CGFloat = 1536
         
         ///Default height of the device in Portrait mode, per RayWenderlich tutorial. Should not be used directly. Use K.ScreenDimensions.screenSize.height instead!!!
         private static let height: CGFloat = 2048
+        
+        ///The device's screen size.
+        static var size: CGSize { CGSize(width: height / UIDevice.modelInfo.ratio, height: height) }
+        
+        ///The device's screen size in UI terms, which is different than [SpriteKit] screenSize.
+        static var sizeUI: CGSize { UIScreen.main.bounds.size }
+        
+        ///The ratio of SpriteKit screenSize to UIKit screenSize
+        static var ratioSKtoUI: CGFloat { size.width / sizeUI.width }
+        
+        
+        //--MARGINS--
         
         ///Top margin of the device.
         static let topMargin: CGFloat = UIDevice.modelInfo.topSafeArea
@@ -36,15 +51,6 @@ struct K {
         
         ///Top border of the gameboard sprite. Needs to be set in gameboardSprite, otherwise it defaults to topMargin.
         static var topOfGameboard: CGFloat = topMargin
-        
-        ///The device's screen size.
-        static var size: CGSize { CGSize(width: height / UIDevice.modelInfo.ratio, height: height) }
-        
-        ///The device's screen size in UI terms, which is different than [SpriteKit] screenSize.
-        static var sizeUI: CGSize { UIScreen.main.bounds.size }
-        
-        ///The ratio of SpriteKit screenSize to UIKit screenSize
-        static var ratioSKtoUI: CGFloat { size.width / sizeUI.width }
     }
     
     
