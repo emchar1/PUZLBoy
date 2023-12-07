@@ -25,12 +25,6 @@ struct K {
         ///Default height of the device in Portrait mode, per RayWenderlich tutorial. Should not be used directly. Use K.ScreenDimensions.screenSize.height instead!!!
         private static let height: CGFloat = 2048
         
-        ///Width of the device width in question, e.g. iPhone 14; width is 945. Should not be used directly. Use K.ScreenDimensions.screenSize.width instead!!!
-        private static let deviceWidth: CGFloat = height / deviceRatio
-
-        ///Aspect ratio of the device in question, e.g. iPhone 14. Ratio is 19.5/9 = 2.16667
-        private static let deviceRatio: CGFloat = UIDevice.modelInfo.ratio
-
         ///Top margin of the device.
         static let topMargin: CGFloat = UIDevice.modelInfo.topSafeArea
         
@@ -44,7 +38,7 @@ struct K {
         static var topOfGameboard: CGFloat = topMargin
         
         ///The device's screen size.
-        static var size: CGSize { CGSize(width: deviceWidth, height: height) }
+        static var size: CGSize { CGSize(width: height / UIDevice.modelInfo.ratio, height: height) }
         
         ///The device's screen size in UI terms, which is different than [SpriteKit] screenSize.
         static var sizeUI: CGSize { UIScreen.main.bounds.size }
