@@ -17,7 +17,7 @@ class LeaderboardsPage: ParentPage {
     private var loadingLabel: SKLabelNode!
     private var backButton: SKSpriteNode!
     private var achievementsButton: SKSpriteNode!
-    private var headerBackgroundNode: SKShapeNode!
+    private(set) var headerBackgroundNode: SKShapeNode!
     private var levelLabel: SKLabelNode!
     private var usernameLabel: SKLabelNode!
     private var scoreLabel: SKLabelNode!

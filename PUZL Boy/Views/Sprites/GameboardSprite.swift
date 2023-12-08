@@ -18,8 +18,13 @@ class GameboardSprite {
     static let spriteScale: CGFloat = UIDevice.isiPad ? 0.75 : 0.94
     static let padding: CGFloat = 12
     static var offsetPosition: CGPoint {
-        CGPoint(x: (K.ScreenDimensions.size.width * (1 - GameboardSprite.spriteScale)) / 2 - (padding / 2),
-                y: (K.ScreenDimensions.size.height - K.ScreenDimensions.size.width * GameboardSprite.spriteScale - K.ScreenDimensions.topMargin - 283) - (padding / 2))
+        let screen = K.ScreenDimensions.self
+        let displayHeaderHeight: CGFloat = 283
+        
+        return CGPoint(
+            x: screen.size.width * (1 - spriteScale) / 2 - padding / 2,
+            y: screen.size.height - screen.size.width * spriteScale - screen.topMargin - displayHeaderHeight - padding / 2
+        )
     }
 
     //Warp Properties

@@ -304,20 +304,17 @@ class PauseResetEngine {
     }
     
     private func getTableViewFrame(hasTableViewHeaders: Bool) -> CGRect {
-        let hasTableViewHeadersOffset: CGFloat = hasTableViewHeaders ? 32 : 0
-        let topMargin: CGFloat = (UIDevice.isiPad ? 80 : 40) + hasTableViewHeadersOffset
-        let bottomMargin: CGFloat = (UIDevice.isiPad ? 30 : 50) + hasTableViewHeadersOffset
-        let leftMargin: CGFloat = K.ScreenDimensions.lrMargin
-        let rightMargin: CGFloat = UIDevice.isiPad ? -8 : 8
-        
+        let tableViewPadding: CGFloat = UIDevice.isiPad ? 8 : 4
+        let topBottomMargin: CGFloat = (leaderboardsPage.titleLabel.frame.height + (UIDevice.isiPad ? 1 : 2) * ParentPage.padding + (hasTableViewHeaders ? leaderboardsPage.headerBackgroundNode.frame.height : 0)) / K.ScreenDimensions.ratioSKtoUI
+                
         let tableViewOrigin = CGPoint(
-            x: (ParentPage.padding / K.ScreenDimensions.ratioSKtoUI) + leftMargin,
-            y: ((K.ScreenDimensions.size.height - K.ScreenDimensions.topOfGameboard) / K.ScreenDimensions.ratioSKtoUI) + topMargin
+            x: (backgroundSprite.position.x - settingsScale * settingsSize.width / 2) / K.ScreenDimensions.ratioSKtoUI + tableViewPadding,
+            y: (K.ScreenDimensions.size.height - K.ScreenDimensions.topOfGameboard - GameboardSprite.padding) / K.ScreenDimensions.ratioSKtoUI + tableViewPadding + topBottomMargin
         )
         
         let tableViewSize = CGSize(
-            width: (settingsSize.width / K.ScreenDimensions.ratioSKtoUI * settingsScale) - rightMargin,
-            height: (settingsSize.height / K.ScreenDimensions.ratioSKtoUI * settingsScale) - bottomMargin
+            width: (settingsScale * settingsSize.width) / K.ScreenDimensions.ratioSKtoUI - 2 * tableViewPadding,
+            height: (settingsScale * settingsSize.height) / K.ScreenDimensions.ratioSKtoUI - 2 * tableViewPadding - topBottomMargin
         )
         
         return CGRect(origin: tableViewOrigin, size: tableViewSize)
