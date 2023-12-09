@@ -12,10 +12,8 @@ protocol ChatEngineDelegate: AnyObject {
     func deilluminatePanel(at position: K.GameboardPosition, useOverlay: Bool)
     func illuminateDisplayNode(for displayType: DisplaySprite.DisplayStatusName)
     func deilluminateDisplayNode(for displayType: DisplaySprite.DisplayStatusName)
-    func illuminateResetButton()
-    func deilluminateResetButton()
-    func illuminateHintButton()
-    func deilluminateHintButton()
+    func illuminateMinorButton(for button: PauseResetEngine.MinorButton)
+    func deilluminateMinorButton(for button: PauseResetEngine.MinorButton)
     func spawnPrincessCapture(at position: K.GameboardPosition, completion: @escaping () -> Void)
     func despawnPrincessCapture(at position: K.GameboardPosition, completion: @escaping () -> Void)
 }
@@ -551,11 +549,11 @@ extension ChatEngine {
             sendChatArray(items: [
                 ChatItem(profile: .trainer, chat: "Congrats! You made it to level 100. There's a bonus at the end of every 50 levels. Beat this and you're one step closer to indescribable fun!!! 💃🏾🪩🕺🏻"),
                 ChatItem(profile: .hero, chat: "I can hardly contain my excitement.", handler: { [unowned self] in
-                    delegate?.illuminateResetButton()
+                    delegate?.illuminateMinorButton(for: .reset)
                 }),
                 ChatItem(profile: .trainer, chat: "That's the spirit! Now if you ever get stuck, you can tap the Reset button to restart the level."),
                 ChatItem(profile: .trainer, chat: "Be warned though, restarting a level will cost you one of your precious lives...", handler: { [unowned self] in
-                    delegate?.deilluminateResetButton()
+                    delegate?.deilluminateMinorButton(for: .reset)
                 }),
                 ChatItem(profile: .hero, chat: "It's all good. My mom can buy me more lives if I need it. 😃")
             ]) { [unowned self] in
@@ -617,13 +615,13 @@ extension ChatEngine {
         case 150: // TODO: - Rework
             sendChatArray(items: [
                 ChatItem(profile: .hero, chat: "You got something for me?", handler: { [unowned self] in
-                    delegate?.illuminateHintButton()
+                    delegate?.illuminateMinorButton(for: .hint)
                 }),
                 ChatItem(profile: .trainer, chat: "Tap the hint button if you need a hint. Hints work at the start of the level. The number of hints show you how many you have."),
                 ChatItem(profile: .trainer, chat: "You can buy more hints in the Shop menu.", handler: { [unowned self] in
-                    delegate?.deilluminateHintButton()
+                    delegate?.deilluminateMinorButton(for: .hint)
                 }),
-                ChatItem(profile: .hero, chat: "Wunderbar!")
+                ChatItem(profile: .hero, chat: "That is absolutely fantastic!")
             ]) { [unowned self] in
                 handleDialogueCompletion(level: level, completion: completion)
             }

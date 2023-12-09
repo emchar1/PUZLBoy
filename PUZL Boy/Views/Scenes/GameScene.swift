@@ -1164,20 +1164,12 @@ extension GameScene: ChatEngineDelegate {
         }
     }
     
-    func illuminateResetButton() {
-        pauseResetEngine.flashResetButton()
+    func illuminateMinorButton(for button: PauseResetEngine.MinorButton) {
+        pauseResetEngine.flashMinorButton(for: button)
     }
     
-    func deilluminateResetButton() {
-        pauseResetEngine.unflashResetButton()
-    }
-    
-    func illuminateHintButton() {
-        pauseResetEngine.flashHintButton()
-    }
-    
-    func deilluminateHintButton() {
-        pauseResetEngine.unflashHintButton()
+    func deilluminateMinorButton(for button: PauseResetEngine.MinorButton) {
+        pauseResetEngine.unflashMinorButton(for: button)
     }
     
     func spawnPrincessCapture(at position: K.GameboardPosition, completion: @escaping () -> Void) {

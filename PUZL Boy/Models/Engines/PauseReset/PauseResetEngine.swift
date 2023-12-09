@@ -82,6 +82,10 @@ class PauseResetEngine {
             PauseResetEngine.pauseResetEngineIsPaused = isPaused
         }
     }
+    
+    enum MinorButton {
+        case reset, hint
+    }
 
     weak var delegate: PauseResetEngineDelegate?
     
@@ -256,11 +260,23 @@ class PauseResetEngine {
         hintBadgeSprite.addChild(hintCountLabel)
     }
     
-    func flashResetButton() {
-        resetButtonSprite.texture = SKTexture(imageNamed: resetName + niteModifier)
+    func flashMinorButton(for button: MinorButton) {
+        let buttonNode: SKSpriteNode
+        let offsetMultiplier: CGFloat
         
-        resetButtonSprite.run(SKAction.group([
-            SKAction.moveTo(x: pauseButtonPosition.x - minorButtonOffset.x, duration: 0),
+        switch button {
+        case .reset:    
+            buttonNode = resetButtonSprite
+            buttonNode.texture = SKTexture(imageNamed: resetName + niteModifier)
+            offsetMultiplier = -1
+        case .hint:
+            buttonNode = hintButtonSprite
+            buttonNode.texture = SKTexture(imageNamed: hintName + niteModifier)
+            offsetMultiplier = 1
+        }
+        
+        buttonNode.run(SKAction.group([
+            SKAction.moveTo(x: pauseButtonPosition.x + offsetMultiplier * minorButtonOffset.x, duration: 0),
             SKAction.repeatForever(SKAction.sequence([
                 SKAction.fadeIn(withDuration: 0),
                 SKAction.wait(forDuration: 0.5),
@@ -269,36 +285,25 @@ class PauseResetEngine {
         ]))
     }
     
-    func unflashResetButton() {
-        resetButtonSprite.removeAllActions()
+    func unflashMinorButton(for button: MinorButton) {
+        let buttonNode: SKSpriteNode
+        let nodeName: String
         
-        resetButtonSprite.run(SKAction.sequence([
+        switch button {
+        case .reset:        
+            buttonNode = resetButtonSprite
+            nodeName = resetName
+        case .hint:
+            buttonNode = hintButtonSprite
+            nodeName = hintName
+        }
+        
+        buttonNode.removeAllActions()
+        
+        buttonNode.run(SKAction.sequence([
             SKAction.fadeOut(withDuration: 0.25),
             SKAction.moveTo(x: pauseButtonPosition.x, duration: 0),
-            SKAction.setTexture(SKTexture(imageNamed: resetName + "Disabled"))
-        ]))
-    }
-    
-    func flashHintButton() {
-        hintButtonSprite.texture = SKTexture(imageNamed: hintName + niteModifier)
-        
-        hintButtonSprite.run(SKAction.group([
-            SKAction.moveTo(x: pauseButtonPosition.x + minorButtonOffset.x, duration: 0),
-            SKAction.repeatForever(SKAction.sequence([
-                SKAction.fadeIn(withDuration: 0),
-                SKAction.wait(forDuration: 0.5),
-                SKAction.fadeOut(withDuration: 0.5)
-            ]))
-        ]))
-    }
-    
-    func unflashHintButton() {
-        hintButtonSprite.removeAllActions()
-        
-        hintButtonSprite.run(SKAction.sequence([
-            SKAction.fadeOut(withDuration: 0.25),
-            SKAction.moveTo(x: pauseButtonPosition.x, duration: 0),
-            SKAction.setTexture(SKTexture(imageNamed: hintName + "Dissabled"))
+            SKAction.setTexture(SKTexture(imageNamed: nodeName + "Disabled"))
         ]))
     }
     
