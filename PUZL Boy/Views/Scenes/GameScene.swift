@@ -1140,7 +1140,7 @@ extension GameScene: ChatEngineDelegate {
         gameEngine.gameboardSprite.illuminatePanel(at: position, useOverlay: useOverlay)
     }
     
-    func deIlluminatePanel(at position: K.GameboardPosition, useOverlay: Bool) {
+    func deilluminatePanel(at position: K.GameboardPosition, useOverlay: Bool) {
         gameEngine.gameboardSprite.deIlluminatePanel(at: position, useOverlay: useOverlay)
     }
     
@@ -1154,7 +1154,7 @@ extension GameScene: ChatEngineDelegate {
         }
     }
     
-    func deIlluminateDisplayNode(for displayType: DisplaySprite.DisplayStatusName) {
+    func deilluminateDisplayNode(for displayType: DisplaySprite.DisplayStatusName) {
         switch displayType {
         case .lives:    gameEngine.displaySprite.statusLives.deIlluminateNode()
         case .health:   gameEngine.displaySprite.statusHealth.deIlluminateNode()
@@ -1162,6 +1162,22 @@ extension GameScene: ChatEngineDelegate {
         case .hammers:  gameEngine.displaySprite.statusHammers.deIlluminateNode()
         case .swords:   gameEngine.displaySprite.statusSwords.deIlluminateNode()
         }
+    }
+    
+    func illuminateResetButton() {
+        pauseResetEngine.flashResetButton()
+    }
+    
+    func deilluminateResetButton() {
+        pauseResetEngine.unflashResetButton()
+    }
+    
+    func illuminateHintButton() {
+        pauseResetEngine.flashHintButton()
+    }
+    
+    func deilluminateHintButton() {
+        pauseResetEngine.unflashHintButton()
     }
     
     func spawnPrincessCapture(at position: K.GameboardPosition, completion: @escaping () -> Void) {

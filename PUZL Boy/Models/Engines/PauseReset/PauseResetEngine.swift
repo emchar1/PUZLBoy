@@ -67,6 +67,8 @@ class PauseResetEngine {
     static var backgroundColor: UIColor { DayTheme.skyColor.top.analogous.first.darkenColor(factor: 6) }
     static var backgroundShadowColor: UIColor { DayTheme.skyColor.bottom.analogous.first }
     private var currentLevel: Int = 1
+    private let resetButtonUnlock: Int = 100
+    private let hintButtonUnlock: Int = 150
     
     //Boolean properties
     private(set) static var pauseResetEngineIsPaused = false
@@ -121,6 +123,7 @@ class PauseResetEngine {
         resetButtonSprite.position = pauseButtonPosition + CGPoint(x: -minorButtonOffset.x, y: minorButtonOffset.y)
         resetButtonSprite.scale(to: CGSize(width: minorButtonSize, height: minorButtonSize))
         resetButtonSprite.anchorPoint = CGPoint(x: 0.5, y: 0)
+        resetButtonSprite.alpha = currentLevel >= resetButtonUnlock ? 1 : 0
         resetButtonSprite.name = resetName
         resetButtonSprite.zPosition = K.ZPosition.pauseButton - 5
         
@@ -128,6 +131,7 @@ class PauseResetEngine {
         hintButtonSprite.position = pauseButtonPosition + CGPoint(x: minorButtonOffset.x, y: minorButtonOffset.y)
         hintButtonSprite.scale(to: CGSize(width: minorButtonSize, height: minorButtonSize))
         hintButtonSprite.anchorPoint = CGPoint(x: 0.5, y: 0)
+        hintButtonSprite.alpha = currentLevel >= hintButtonUnlock ? 1 : 0
         hintButtonSprite.name = hintName
         hintButtonSprite.zPosition = K.ZPosition.pauseButton - 5
         
@@ -252,6 +256,52 @@ class PauseResetEngine {
         hintBadgeSprite.addChild(hintCountLabel)
     }
     
+    func flashResetButton() {
+        resetButtonSprite.texture = SKTexture(imageNamed: resetName + niteModifier)
+        
+        resetButtonSprite.run(SKAction.group([
+            SKAction.moveTo(x: pauseButtonPosition.x - minorButtonOffset.x, duration: 0),
+            SKAction.repeatForever(SKAction.sequence([
+                SKAction.fadeIn(withDuration: 0),
+                SKAction.wait(forDuration: 0.5),
+                SKAction.fadeOut(withDuration: 0.5)
+            ]))
+        ]))
+    }
+    
+    func unflashResetButton() {
+        resetButtonSprite.removeAllActions()
+        
+        resetButtonSprite.run(SKAction.sequence([
+            SKAction.fadeOut(withDuration: 0.25),
+            SKAction.moveTo(x: pauseButtonPosition.x, duration: 0),
+            SKAction.setTexture(SKTexture(imageNamed: resetName + "Disabled"))
+        ]))
+    }
+    
+    func flashHintButton() {
+        hintButtonSprite.texture = SKTexture(imageNamed: hintName + niteModifier)
+        
+        hintButtonSprite.run(SKAction.group([
+            SKAction.moveTo(x: pauseButtonPosition.x + minorButtonOffset.x, duration: 0),
+            SKAction.repeatForever(SKAction.sequence([
+                SKAction.fadeIn(withDuration: 0),
+                SKAction.wait(forDuration: 0.5),
+                SKAction.fadeOut(withDuration: 0.5)
+            ]))
+        ]))
+    }
+    
+    func unflashHintButton() {
+        hintButtonSprite.removeAllActions()
+        
+        hintButtonSprite.run(SKAction.sequence([
+            SKAction.fadeOut(withDuration: 0.25),
+            SKAction.moveTo(x: pauseButtonPosition.x, duration: 0),
+            SKAction.setTexture(SKTexture(imageNamed: hintName + "Dissabled"))
+        ]))
+    }
+    
     private func getHintButtonImageName() -> String {
         return hintName + (isHintButtonDisabled ? "Disabled" : niteModifier)
     }
@@ -264,12 +314,12 @@ class PauseResetEngine {
     private func showMinorButtons(duration: TimeInterval = 0.25) {
         resetButtonSprite.run(SKAction.group([
             SKAction.moveTo(x: pauseButtonPosition.x - minorButtonOffset.x, duration: duration),
-            SKAction.fadeAlpha(to: 1, duration: duration)
+            SKAction.fadeAlpha(to: currentLevel >= resetButtonUnlock ? 1 : 0, duration: duration)
         ]))
         
         hintButtonSprite.run(SKAction.group([
             SKAction.moveTo(x: pauseButtonPosition.x + minorButtonOffset.x, duration: duration),
-            SKAction.fadeAlpha(to: 1, duration: duration)
+            SKAction.fadeAlpha(to: currentLevel >= hintButtonUnlock ? 1 : 0, duration: duration)
         ]))
     }
     
