@@ -63,7 +63,7 @@ class ParticleEngine: SKNode {
         guard let particles = SKEmitterNode(fileNamed: type.rawValue) else { return print("Particle file not found: \(type.rawValue).sks")}
         
         particles.position = position
-        particles.setScale(scale * (UIDevice.isiPad ? 1.7 : 1))
+        particles.setScale(2 * scale / UIDevice.modelInfo.ratio)
         particles.xScale *= shouldFlipHorizontally ? -1 : 1
         particles.zPosition = zPosition
         particles.name = ParticleEngine.nodeName

@@ -68,14 +68,15 @@ class ConfirmSprite: SKNode {
         titleLabel.fontName = UIFont.gameFont
         titleLabel.fontSize = UIFont.gameFontSizeLarge
         titleLabel.fontColor = UIFont.gameFontColor
-        titleLabel.position = CGPoint(x: 0, y: backgroundSprite.frame.size.height / (UIDevice.isiPad ? 1.5 : 2) - titleLabel.frame.size.height / 2)
+        titleLabel.position = CGPoint(x: 0, y: (backgroundSprite.frame.height - titleLabel.frame.height) / (2 * GameboardSprite.spriteScale))
         titleLabel.verticalAlignmentMode = .top
         titleLabel.zPosition = 10
         titleLabel.addHeavyDropShadow()
         
         confirmButton = DecisionButtonSprite(text: confirm, color: DecisionButtonSprite.colorRed, iconImageName: nil)
-        confirmButton.position = CGPoint(x: -K.ScreenDimensions.size.width / 4,
-                                         y: -backgroundSprite.frame.size.height / 2 + titleLabel.frame.height / (UIDevice.isiPad ? 2 : 0.5))
+        confirmButton.position = CGPoint(
+            x: -K.ScreenDimensions.size.width / 4,
+            y: (-backgroundSprite.frame.height + confirmButton.buttonSize.height + titleLabel.frame.height) / (2 * GameboardSprite.spriteScale))
         confirmButton.name = "confirmButton"
         confirmButton.delegate = self
 

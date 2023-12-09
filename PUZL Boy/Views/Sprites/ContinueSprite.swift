@@ -63,7 +63,9 @@ class ContinueSprite: SKNode {
         continueLabel.fontSize = UIFont.gameFontSizeLarge
         continueLabel.fontColor = UIFont.gameFontColor
         continueLabel.verticalAlignmentMode = .top
-        continueLabel.position = CGPoint(x: 0, y: backgroundSprite.frame.size.height / (UIDevice.isiPad ? 1.5 : 2) - continueLabel.frame.size.height / 2)
+        continueLabel.position = CGPoint(
+            x: 0,
+            y: (backgroundSprite.frame.height - continueLabel.frame.height) / (2 * GameboardSprite.spriteScale))
         continueLabel.zPosition = 10
         continueLabel.addHeavyDropShadow()
         
@@ -72,7 +74,7 @@ class ContinueSprite: SKNode {
                                                iconImageName: nil)
         skipLevelButton.position = CGPoint(
             x: -K.ScreenDimensions.size.width / 4,
-            y: -backgroundSprite.frame.size.height / 2 + continueLabel.frame.height / (UIDevice.isiPad ? 2 : 0.5))
+            y: (-backgroundSprite.frame.height + skipLevelButton.buttonSize.height + continueLabel.frame.height) / (2 * GameboardSprite.spriteScale))
         skipLevelButton.delegate = self
 
         buy5MovesButton = DecisionButtonSprite(text: "Buy $0.99:      x\(IAPManager.rewardAmountMovesBuy5)",

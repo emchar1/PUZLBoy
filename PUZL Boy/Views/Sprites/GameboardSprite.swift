@@ -15,8 +15,22 @@ class GameboardSprite {
     static let gameboardColor: UIColor = UIColor(red: 225/255, green: 225/255, blue: 225/255, alpha: 1.0)
     static let delimiter = ","
     static let overlayTag = "-O"
-    static let spriteScale: CGFloat = UIDevice.isiPad ? 0.75 : 0.94
     static let padding: CGFloat = 12
+    static var spriteScale: CGFloat {
+        let scale: CGFloat
+        
+        switch UIDevice.modelInfo.ratio {
+        case 19.5/9:    scale = 0.94    //2.1666666667 - iPhone 14 Pro
+        case 16/9:      scale = 0.94    //1.777777778 - iPhone SE 3rd gen
+        case 4.6/3:     scale = 0.84    //1.5333333333 - iPad mini 6th gen
+        case 23/16:     scale = 0.8     //1.4375 - iPad 10th gen
+        case 10/7:      scale = 0.79    //1.428571429 - iPad Pro 11" 4th gen
+        case 4/3:       scale = 0.75    //1.333333333 - iPad 12.9" 6th gen
+        default:        scale = 1       //New Device
+        }
+        
+        return scale
+    }
     static var offsetPosition: CGPoint {
         let screen = K.ScreenDimensions.self
         let displayHeaderHeight: CGFloat = 283

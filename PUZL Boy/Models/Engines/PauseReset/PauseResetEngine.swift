@@ -305,7 +305,7 @@ class PauseResetEngine {
     
     private func getTableViewFrame(hasTableViewHeaders: Bool) -> CGRect {
         let tableViewPadding: CGFloat = UIDevice.isiPad ? 8 : 4
-        let topBottomMargin: CGFloat = (leaderboardsPage.titleLabel.frame.height + (UIDevice.isiPad ? 1 : 2) * ParentPage.padding + (hasTableViewHeaders ? leaderboardsPage.headerBackgroundNode.frame.height : 0)) / K.ScreenDimensions.ratioSKtoUI
+        let topBottomMargin: CGFloat = (leaderboardsPage.titleLabel.frame.height + UIDevice.modelInfo.ratio * ParentPage.padding + (hasTableViewHeaders ? leaderboardsPage.headerBackgroundNode.frame.height : 0)) / K.ScreenDimensions.ratioSKtoUI
                 
         let tableViewOrigin = CGPoint(
             x: (backgroundSprite.position.x - settingsScale * settingsSize.width / 2) / K.ScreenDimensions.ratioSKtoUI + tableViewPadding,
