@@ -26,8 +26,14 @@ class PauseResetEngine {
     // MARK: - Properties
 
     //Size Properties
-    private let settingsSize = CGSize(width: K.ScreenDimensions.size.width, height: K.ScreenDimensions.size.width * (UIDevice.isiPad ? 1.17 : 1.25))
     private let settingsScale: CGFloat = GameboardSprite.spriteScale
+    private var settingsManagerButtonHeight: CGFloat { 120 / settingsScale }
+    private var settingsSize: CGSize {
+        let spacing: CGFloat = 60
+        
+        return CGSize(width: K.ScreenDimensions.size.width,
+                      height: ((K.ScreenDimensions.topOfGameboard - pauseButtonPosition.y - pauseButtonSize) / settingsScale) - settingsManagerButtonHeight - spacing)
+    }
 
     //Pause, Reset, Hint Buttons
     private var niteModifier: String { DayTheme.currentTheme == .dawn || DayTheme.currentTheme == .night ? "NITE" : "" }
@@ -38,10 +44,10 @@ class PauseResetEngine {
     private let pauseButtonSize: CGFloat = 180
     private var minorButtonSize: CGFloat { 2 / 3 * pauseButtonSize }
     private var pauseButtonPosition: CGPoint {
-        CGPoint(x: settingsSize.width / 2, y: K.ScreenDimensions.bottomMargin)
+        CGPoint(x: K.ScreenDimensions.size.width / 2, y: K.ScreenDimensions.bottomMargin)
     }
     private var minorButtonOffset: CGPoint {
-        let spacing: CGFloat = UIDevice.isiPad ? 80 : 60
+        let spacing: CGFloat = 60 / settingsScale
         
         return CGPoint(x: 0.5 * (pauseButtonSize + minorButtonSize) + spacing, y: 0.5 * (pauseButtonSize - minorButtonSize))
     }
@@ -150,7 +156,7 @@ class PauseResetEngine {
         hintCountLabel.zPosition = 10
         
         //Settings Manager
-        settingsManager = SettingsManager(settingsWidth: settingsSize.width, buttonHeight: UIDevice.isiPad ? 160 : 120)
+        settingsManager = SettingsManager(settingsWidth: settingsSize.width, buttonHeight: settingsManagerButtonHeight)
         settingsManager.setInitialPosition(CGPoint(x: -backgroundSprite.position.x, y: -settingsSize.height / 2))
         settingsManager.delegate = self
 

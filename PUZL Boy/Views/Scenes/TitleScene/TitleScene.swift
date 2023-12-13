@@ -165,8 +165,8 @@ class TitleScene: SKScene {
         //Level Select Setup
         let sizeUI = K.ScreenDimensions.sizeUI
         let ratioSKtoUI = K.ScreenDimensions.ratioSKtoUI
-        let levelSelectPickerSize = UIDevice.isiPad ? CGSize(width: 200, height: 120) : CGSize(width: 160, height: 100)
-        let levelSelectPickerOffset: CGFloat = UIDevice.isiPad ? 20 : 40
+        let levelSelectPickerSize = CGSize(width: 160, height: 92) / GameboardSprite.spriteScale
+        let levelSelectPickerOffset: CGFloat = 42 * GameboardSprite.spriteScale
 
         levelSelectBackground = SKShapeNode(rectOf: levelSelectSize, cornerRadius: menuCornerRadius)
         levelSelectBackground.position = menuPosition
