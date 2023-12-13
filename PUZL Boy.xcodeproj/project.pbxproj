@@ -21,6 +21,7 @@
 		EA1191532904BC4C009D0E3E /* DisplaySprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA1191522904BC4C009D0E3E /* DisplaySprite.swift */; };
 		EA119155290CCA39009D0E3E /* Inventory.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA119154290CCA39009D0E3E /* Inventory.swift */; };
 		EA11915729121798009D0E3E /* Controls.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA11915629121798009D0E3E /* Controls.swift */; };
+		EA12C5502B271EC2006E9813 /* GoldCoinSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA12C54F2B271EC2006E9813 /* GoldCoinSprite.swift */; };
 		EA1D5A6C29F1019800677B06 /* Extension+SKShapeNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA1D5A6B29F1019800677B06 /* Extension+SKShapeNode.swift */; };
 		EA1D5A6E29F217D200677B06 /* Extension+SKLabelNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA1D5A6D29F217D200677B06 /* Extension+SKLabelNode.swift */; };
 		EA1D5A7029F219AA00677B06 /* Extension+SKNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA1D5A6F29F219AA00677B06 /* Extension+SKNode.swift */; };
@@ -276,6 +277,7 @@
 		EA1191522904BC4C009D0E3E /* DisplaySprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplaySprite.swift; sourceTree = "<group>"; };
 		EA119154290CCA39009D0E3E /* Inventory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Inventory.swift; sourceTree = "<group>"; };
 		EA11915629121798009D0E3E /* Controls.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Controls.swift; sourceTree = "<group>"; };
+		EA12C54F2B271EC2006E9813 /* GoldCoinSprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoldCoinSprite.swift; sourceTree = "<group>"; };
 		EA1D5A6B29F1019800677B06 /* Extension+SKShapeNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+SKShapeNode.swift"; sourceTree = "<group>"; };
 		EA1D5A6D29F217D200677B06 /* Extension+SKLabelNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+SKLabelNode.swift"; sourceTree = "<group>"; };
 		EA1D5A6F29F219AA00677B06 /* Extension+SKNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+SKNode.swift"; sourceTree = "<group>"; };
@@ -681,6 +683,7 @@
 				EA826C9929950D0C00F19F81 /* NumMovesSprite.swift */,
 				EA2AF74329B6D06000444E5A /* OfflinePlaySprite.swift */,
 				EAF2A5A52AA7875F00212825 /* SkipIntroSprite.swift */,
+				EA12C54F2B271EC2006E9813 /* GoldCoinSprite.swift */,
 			);
 			path = Sprites;
 			sourceTree = "<group>";
@@ -1224,6 +1227,7 @@
 				EA2AF74429B6D06000444E5A /* OfflinePlaySprite.swift in Sources */,
 				EAACB4A7296F80E700973EB8 /* AchievementAvidReader.swift in Sources */,
 				EA65189228E973D700E535BF /* Level.swift in Sources */,
+				EA12C5502B271EC2006E9813 /* GoldCoinSprite.swift in Sources */,
 				EA826C8F298F485D00F19F81 /* AchievementBigSpender.swift in Sources */,
 				EA95D1B92952579A0061059C /* AchievementDragonSlayer.swift in Sources */,
 				EAB2DE142AA1AB8F00172478 /* SpeechOverlaySprite.swift in Sources */,
