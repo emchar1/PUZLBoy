@@ -188,7 +188,7 @@ class ScoringEngine {
         - location: Location to place the containerNode
      */
     static func updateStatusIconsAnimation(icon: StatusIcon, amount: Int, originSprite: SKNode, location: CGPoint) {
-        let containerSprite = SKShapeNode(rectOf: UIDevice.isiPad ? CGSize(width: 240, height: 120) : CGSize(width: 160, height: 80))
+        let containerSprite = SKShapeNode(rectOf: CGSize(width: 160, height: 80) / UIDevice.spriteScale)
         containerSprite.fillColor = .clear
         containerSprite.lineWidth = 0
         containerSprite.position = location
@@ -205,8 +205,8 @@ class ScoringEngine {
         amountSprite.addDropShadow()
         
         let iconSprite = SKSpriteNode(imageNamed: icon.rawValue)
-        iconSprite.scale(to: UIDevice.isiPad ? CGSize(width: 120, height: 120) : CGSize(width: 80, height: 80))
-        iconSprite.position = CGPoint(x: UIDevice.isiPad ? 80 : 60, y: 0)
+        iconSprite.scale(to: CGSize(width: 80 / UIDevice.spriteScale, height: 80 / UIDevice.spriteScale))
+        iconSprite.position = CGPoint(x: 60 / UIDevice.spriteScale, y: 0)
         
         originSprite.addChild(containerSprite)
         containerSprite.addChild(amountSprite)

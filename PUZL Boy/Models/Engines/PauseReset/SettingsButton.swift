@@ -15,7 +15,7 @@ class SettingsButton: SKNode {
     
     // MARK: - Properties
     
-    private let iconSize: CGFloat = UIDevice.isiPad ? 80 : 60
+    private let iconSize: CGFloat = 60 / UIDevice.spriteScale
     private let colorFactor: CGFloat = 3
     
     var buttonSize: CGSize

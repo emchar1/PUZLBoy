@@ -236,7 +236,6 @@
 		EAE2156E2ABF57EB0090735A /* magicblast.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAE2156D2ABF57EB0090735A /* magicblast.mp3 */; };
 		EAE565AA29D6E0C700BC43CB /* TitleScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAE565A929D6E0C700BC43CB /* TitleScene.swift */; };
 		EAE6EC342A12D27F001842C6 /* buttontap7.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAE6EC332A12D27F001842C6 /* buttontap7.mp3 */; };
-		EAE6EC362A133B04001842C6 /* HowToPlayNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAE6EC352A133B04001842C6 /* HowToPlayNode.swift */; };
 		EAE919452A4CA4A800AF67D1 /* clocktick.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAE919442A4CA4A800AF67D1 /* clocktick.mp3 */; };
 		EAE919472A4CAFFD00AF67D1 /* gemcollectparty3x.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAE919462A4CAFFD00AF67D1 /* gemcollectparty3x.mp3 */; };
 		EAE919492A4CB02900AF67D1 /* gemcollectpartylife.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAE919482A4CB02800AF67D1 /* gemcollectpartylife.mp3 */; };
@@ -487,7 +486,6 @@
 		EAE2156D2ABF57EB0090735A /* magicblast.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = magicblast.mp3; sourceTree = "<group>"; };
 		EAE565A929D6E0C700BC43CB /* TitleScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleScene.swift; sourceTree = "<group>"; };
 		EAE6EC332A12D27F001842C6 /* buttontap7.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = buttontap7.mp3; sourceTree = "<group>"; };
-		EAE6EC352A133B04001842C6 /* HowToPlayNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HowToPlayNode.swift; sourceTree = "<group>"; };
 		EAE919442A4CA4A800AF67D1 /* clocktick.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = clocktick.mp3; sourceTree = "<group>"; };
 		EAE919462A4CAFFD00AF67D1 /* gemcollectparty3x.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = gemcollectparty3x.mp3; sourceTree = "<group>"; };
 		EAE919482A4CB02800AF67D1 /* gemcollectpartylife.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = gemcollectpartylife.mp3; sourceTree = "<group>"; };
@@ -707,7 +705,6 @@
 				EA49B0682A1923D300E6B96D /* HowToPlayTableView.swift */,
 				EA49B06A2A1953C500E6B96D /* HowToPlayTVCell.swift */,
 				EA49B06C2A19D03000E6B96D /* HowToPlayModel.swift */,
-				EAE6EC352A133B04001842C6 /* HowToPlayNode.swift */,
 			);
 			path = "How To Play";
 			sourceTree = "<group>";
@@ -1248,7 +1245,6 @@
 				EA11915729121798009D0E3E /* Controls.swift in Sources */,
 				EA826C74297CEFC500F19F81 /* TimerManager.swift in Sources */,
 				EA35348B29241FCD00C11FC0 /* LevelType.swift in Sources */,
-				EAE6EC362A133B04001842C6 /* HowToPlayNode.swift in Sources */,
 				EA119155290CCA39009D0E3E /* Inventory.swift in Sources */,
 				EA95D1D129542C720061059C /* AchievementNuclear.swift in Sources */,
 				EA95D1C529541DA50061059C /* AchievementJewelConnoisseur.swift in Sources */,
