@@ -38,7 +38,7 @@ class PartyResultsSprite: SKNode {
 
         setScale(0)
         position = CGPoint(x: K.ScreenDimensions.size.width / 2,
-                           y: K.ScreenDimensions.topOfGameboard - backgroundSize.height / 2 * GameboardSprite.spriteScale + GameboardSprite.padding)
+                           y: K.ScreenDimensions.topOfGameboard - backgroundSize.height / 2 * UIDevice.spriteScale + GameboardSprite.padding)
         zPosition = K.ZPosition.messagePrompt
 
         setupSprites()
@@ -60,7 +60,7 @@ class PartyResultsSprite: SKNode {
         backgroundSprite.fillColor = .magenta
         backgroundSprite.strokeColor = .white
         backgroundSprite.lineWidth = 0
-        backgroundSprite.setScale(GameboardSprite.spriteScale)
+        backgroundSprite.setScale(UIDevice.spriteScale)
         backgroundSprite.addShadow(rectOf: backgroundSize, cornerRadius: backgroundCorner, shadowOffset: 10, shadowColor: .cyan)
 
         gemsLineItem = PartyResultsLineItemSprite(iconName: "partyGem", iconDescription: "Gems", amount: 0)

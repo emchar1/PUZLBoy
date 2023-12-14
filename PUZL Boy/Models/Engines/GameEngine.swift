@@ -191,7 +191,7 @@ class GameEngine {
         bloodOverlay.zPosition = K.ZPosition.partyForegroundOverlay
         
         gameboardSprite = GameboardSprite(level: self.level)
-        K.ScreenDimensions.topOfGameboard = GameboardSprite.offsetPosition.y + K.ScreenDimensions.size.width * GameboardSprite.spriteScale
+        K.ScreenDimensions.topOfGameboard = GameboardSprite.offsetPosition.y + K.ScreenDimensions.size.width * UIDevice.spriteScale
         playerSprite = PlayerSprite(shouldSpawn: true)
         displaySprite = DisplaySprite(topYPosition: K.ScreenDimensions.topOfGameboard, bottomYPosition: GameboardSprite.offsetPosition.y, margin: 40)
         
@@ -811,7 +811,7 @@ class GameEngine {
      */
     private func inBounds(location: CGPoint, direction: Controls) -> Bool {
         let maxDistance = gameboardSprite.panelCount
-        let panelSize = gameboardSprite.panelSize * GameboardSprite.spriteScale
+        let panelSize = gameboardSprite.panelSize * UIDevice.spriteScale
         let gameboardSize = panelSize * CGFloat(maxDistance)
         
         var bottomBound = level.player.row + 1

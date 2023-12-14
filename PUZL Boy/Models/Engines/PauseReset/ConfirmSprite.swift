@@ -62,13 +62,13 @@ class ConfirmSprite: SKNode {
         backgroundSprite.fillTexture = SKTexture(image: UIImage.gradientTextureChat)
         backgroundSprite.lineWidth = 12
         backgroundSprite.strokeColor = .white
-        backgroundSprite.setScale(GameboardSprite.spriteScale)
+        backgroundSprite.setScale(UIDevice.spriteScale)
         
         let titleLabel = SKLabelNode(text: title.uppercased())
         titleLabel.fontName = UIFont.gameFont
         titleLabel.fontSize = UIFont.gameFontSizeLarge
         titleLabel.fontColor = UIFont.gameFontColor
-        titleLabel.position = CGPoint(x: 0, y: (backgroundSprite.frame.height - titleLabel.frame.height) / (2 * GameboardSprite.spriteScale))
+        titleLabel.position = CGPoint(x: 0, y: (backgroundSprite.frame.height - titleLabel.frame.height) / (2 * UIDevice.spriteScale))
         titleLabel.verticalAlignmentMode = .top
         titleLabel.zPosition = 10
         titleLabel.addHeavyDropShadow()
@@ -76,7 +76,7 @@ class ConfirmSprite: SKNode {
         confirmButton = DecisionButtonSprite(text: confirm, color: DecisionButtonSprite.colorRed, iconImageName: nil)
         confirmButton.position = CGPoint(
             x: -K.ScreenDimensions.size.width / 4,
-            y: (-backgroundSprite.frame.height + confirmButton.buttonSize.height + titleLabel.frame.height) / (2 * GameboardSprite.spriteScale))
+            y: (-backgroundSprite.frame.height + confirmButton.buttonSize.height + titleLabel.frame.height) / (2 * UIDevice.spriteScale))
         confirmButton.name = "confirmButton"
         confirmButton.delegate = self
 
@@ -93,7 +93,7 @@ class ConfirmSprite: SKNode {
             x: 0,
             y: ((titleLabel.position.y - titleLabel.frame.size.height) - (confirmButton.position.y + confirmButton.frame.size.height)) / 3
         )
-        messageLabel.preferredMaxLayoutWidth = K.ScreenDimensions.size.width * GameboardSprite.spriteScale
+        messageLabel.preferredMaxLayoutWidth = K.ScreenDimensions.size.width * UIDevice.spriteScale
         messageLabel.verticalAlignmentMode = .top
         messageLabel.numberOfLines = 0
         messageLabel.zPosition = 10

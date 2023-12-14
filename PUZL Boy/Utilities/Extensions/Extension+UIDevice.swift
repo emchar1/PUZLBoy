@@ -12,6 +12,22 @@ extension UIDevice {
         return modelInfo.name.contains("iPad")
     }
     
+    static var spriteScale: CGFloat {
+        let scale: CGFloat
+        
+        switch modelInfo.ratio {
+        case 19.5/9:    scale = 0.94    //2.1666666667 - iPhone 14 Pro
+        case 16/9:      scale = 0.94    //1.777777778 - iPhone SE 3rd gen
+        case 4.6/3:     scale = 0.84    //1.5333333333 - iPad mini 6th gen
+        case 23/16:     scale = 0.8     //1.4375 - iPad 10th gen
+        case 10/7:      scale = 0.79    //1.428571429 - iPad Pro 11" 4th gen
+        case 4/3:       scale = 0.75    //1.333333333 - iPad 12.9" 6th gen
+        default:        scale = 1       //New Device - need to define!!
+        }
+        
+        return scale
+    }
+    
     static let modelInfo: (name: String, ratio: CGFloat, topSafeArea: CGFloat, bottomSafeArea: CGFloat) = {
         var systemInfo = utsname()
         uname(&systemInfo)

@@ -34,7 +34,7 @@ class ChatEngine {
                 y: K.ScreenDimensions.topOfGameboard - backgroundSpriteWidth - ChatEngine.avatarSizeNew - 40)
     }
     private var backgroundSpriteWidth: CGFloat {
-        K.ScreenDimensions.size.width * GameboardSprite.spriteScale
+        K.ScreenDimensions.size.width * UIDevice.spriteScale
     }
     
     //Other properties

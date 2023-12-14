@@ -58,7 +58,7 @@ class PartyModeSprite: SKNode {
     }
     
     private func setupSprites() {
-        let gameboardSize = K.ScreenDimensions.size.width * GameboardSprite.spriteScale
+        let gameboardSize = K.ScreenDimensions.size.width * UIDevice.spriteScale
         
         backgroundSprite = SKSpriteNode(color: .black, size: K.ScreenDimensions.size)
         backgroundSprite.anchorPoint = .zero

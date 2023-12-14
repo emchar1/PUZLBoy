@@ -95,7 +95,7 @@ class HintEngine {
         solutionLabel.horizontalAlignmentMode = .left
         solutionLabel.verticalAlignmentMode = .top
         solutionLabel.numberOfLines = 0
-        solutionLabel.preferredMaxLayoutWidth = K.ScreenDimensions.size.width * GameboardSprite.spriteScale
+        solutionLabel.preferredMaxLayoutWidth = K.ScreenDimensions.size.width * UIDevice.spriteScale
         solutionLabel.fontName = UIFont.chatFont
         solutionLabel.fontSize = UIFont.chatFontSizeSmall
         solutionLabel.fontColor = UIFont.chatFontColor
@@ -107,7 +107,7 @@ class HintEngine {
         attemptLabel.horizontalAlignmentMode = .left
         attemptLabel.verticalAlignmentMode = .top
         attemptLabel.numberOfLines = 0
-        attemptLabel.preferredMaxLayoutWidth = K.ScreenDimensions.size.width * GameboardSprite.spriteScale
+        attemptLabel.preferredMaxLayoutWidth = K.ScreenDimensions.size.width * UIDevice.spriteScale
         attemptLabel.fontName = UIFont.chatFont
         attemptLabel.fontSize = UIFont.chatFontSizeSmall
         attemptLabel.fontColor = UIFont.chatFontColor
@@ -119,7 +119,7 @@ class HintEngine {
         boughtLabel.horizontalAlignmentMode = .left
         boughtLabel.verticalAlignmentMode = .top
         boughtLabel.numberOfLines = 0
-        boughtLabel.preferredMaxLayoutWidth = K.ScreenDimensions.size.width * GameboardSprite.spriteScale
+        boughtLabel.preferredMaxLayoutWidth = K.ScreenDimensions.size.width * UIDevice.spriteScale
         boughtLabel.fontName = UIFont.chatFont
         boughtLabel.fontSize = UIFont.chatFontSizeSmall
         boughtLabel.fontColor = UIFont.chatFontColor
@@ -195,7 +195,7 @@ class HintEngine {
         arrow.position = gameboardSprite.getLocation(at: (row: playerPosition.row + positionOffset.row, col: playerPosition.col + positionOffset.col))
         arrow.zRotation = rotationAngle
         arrow.zPosition = K.ZPosition.itemsAndEffects
-        arrow.setScale(6 / (GameboardSprite.spriteScale * CGFloat(gameboardSprite.panelCount)))
+        arrow.setScale(6 / (UIDevice.spriteScale * CGFloat(gameboardSprite.panelCount)))
         arrow.name = nodeNameArrowHint
 
         gameboardSprite.sprite.addChild(arrow)

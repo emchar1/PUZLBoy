@@ -56,7 +56,7 @@ class ContinueSprite: SKNode {
         backgroundSprite.fillTexture = SKTexture(image: UIImage.gradientTextureChat)
         backgroundSprite.lineWidth = 12
         backgroundSprite.strokeColor = .white
-        backgroundSprite.setScale(GameboardSprite.spriteScale)
+        backgroundSprite.setScale(UIDevice.spriteScale)
         
         let continueLabel = SKLabelNode(text: "CONTINUE?")
         continueLabel.fontName = UIFont.gameFont
@@ -65,7 +65,7 @@ class ContinueSprite: SKNode {
         continueLabel.verticalAlignmentMode = .top
         continueLabel.position = CGPoint(
             x: 0,
-            y: (backgroundSprite.frame.height - continueLabel.frame.height) / (2 * GameboardSprite.spriteScale))
+            y: (backgroundSprite.frame.height - continueLabel.frame.height) / (2 * UIDevice.spriteScale))
         continueLabel.zPosition = 10
         continueLabel.addHeavyDropShadow()
         
@@ -74,7 +74,7 @@ class ContinueSprite: SKNode {
                                                iconImageName: nil)
         skipLevelButton.position = CGPoint(
             x: -K.ScreenDimensions.size.width / 4,
-            y: (-backgroundSprite.frame.height + skipLevelButton.buttonSize.height + continueLabel.frame.height) / (2 * GameboardSprite.spriteScale))
+            y: (-backgroundSprite.frame.height + skipLevelButton.buttonSize.height + continueLabel.frame.height) / (2 * UIDevice.spriteScale))
         skipLevelButton.delegate = self
 
         buy5MovesButton = DecisionButtonSprite(text: "Buy $0.99:      x\(IAPManager.rewardAmountMovesBuy5)",

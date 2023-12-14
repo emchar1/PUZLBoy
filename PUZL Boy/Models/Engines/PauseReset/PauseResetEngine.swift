@@ -26,7 +26,7 @@ class PauseResetEngine {
     // MARK: - Properties
 
     //Size Properties
-    private let settingsScale: CGFloat = GameboardSprite.spriteScale
+    private let settingsScale: CGFloat = UIDevice.spriteScale
     private var settingsManagerButtonHeight: CGFloat { 120 / settingsScale }
     private var settingsSize: CGSize {
         let spacing: CGFloat = 60

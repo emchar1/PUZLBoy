@@ -16,28 +16,13 @@ class GameboardSprite {
     static let delimiter = ","
     static let overlayTag = "-O"
     static let padding: CGFloat = 12
-    static var spriteScale: CGFloat {
-        let scale: CGFloat
-        
-        switch UIDevice.modelInfo.ratio {
-        case 19.5/9:    scale = 0.94    //2.1666666667 - iPhone 14 Pro
-        case 16/9:      scale = 0.94    //1.777777778 - iPhone SE 3rd gen
-        case 4.6/3:     scale = 0.84    //1.5333333333 - iPad mini 6th gen
-        case 23/16:     scale = 0.8     //1.4375 - iPad 10th gen
-        case 10/7:      scale = 0.79    //1.428571429 - iPad Pro 11" 4th gen
-        case 4/3:       scale = 0.75    //1.333333333 - iPad 12.9" 6th gen
-        default:        scale = 1       //New Device
-        }
-        
-        return scale
-    }
     static var offsetPosition: CGPoint {
         let screen = K.ScreenDimensions.self
         let displayHeaderHeight: CGFloat = 283
         
         return CGPoint(
-            x: screen.size.width * (1 - spriteScale) / 2 - padding / 2,
-            y: screen.size.height - screen.size.width * spriteScale - screen.topMargin - displayHeaderHeight - padding / 2
+            x: screen.size.width * (1 - UIDevice.spriteScale) / 2 - padding / 2,
+            y: screen.size.height - screen.size.width * UIDevice.spriteScale - screen.topMargin - displayHeaderHeight - padding / 2
         )
     }
 
@@ -72,7 +57,7 @@ class GameboardSprite {
         sprite.anchorPoint = .zero
         sprite.position = GameboardSprite.offsetPosition
         sprite.zPosition = K.ZPosition.gameboard
-        sprite.setScale(GameboardSprite.spriteScale)
+        sprite.setScale(UIDevice.spriteScale)
 
         for row in 0..<panelCount {
             for col in 0..<panelCount {

@@ -19,8 +19,8 @@ class NumMovesSprite: SKNode {
     // MARK: - Initialization
 
     init(numMoves: Int, position: CGPoint, isPartyLevel: Bool) {
-        sprite = SKShapeNode(rectOf: CGSize(width: K.ScreenDimensions.size.width * GameboardSprite.spriteScale,
-                                            height: K.ScreenDimensions.size.width * GameboardSprite.spriteScale))
+        sprite = SKShapeNode(rectOf: CGSize(width: K.ScreenDimensions.size.width * UIDevice.spriteScale,
+                                            height: K.ScreenDimensions.size.width * UIDevice.spriteScale))
         sprite.lineWidth = 0
         sprite.zPosition = K.ZPosition.messagePrompt
 

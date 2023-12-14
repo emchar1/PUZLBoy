@@ -47,7 +47,7 @@ class TitleScene: SKScene {
     private let shadowDepth: CGFloat = 10
     private var disableInput: Bool = false
     private let menuSize = CGSize(width: 650, height: K.ScreenDimensions.size.height / 3)
-    private let levelSelectSize = CGSize(width: 650, height: K.ScreenDimensions.size.height / 4) / GameboardSprite.spriteScale
+    private let levelSelectSize = CGSize(width: 650, height: K.ScreenDimensions.size.height / 4) / UIDevice.spriteScale
     private let settingsSize = CGSize(width: K.ScreenDimensions.size.width, height: K.ScreenDimensions.size.width * 5 / 4)
     private var currentMenuSelected: MenuPage = .main
     
@@ -165,8 +165,8 @@ class TitleScene: SKScene {
         //Level Select Setup
         let sizeUI = K.ScreenDimensions.sizeUI
         let ratioSKtoUI = K.ScreenDimensions.ratioSKtoUI
-        let levelSelectPickerSize = CGSize(width: 160, height: 92) / GameboardSprite.spriteScale
-        let levelSelectPickerOffset: CGFloat = 42 * GameboardSprite.spriteScale
+        let levelSelectPickerSize = CGSize(width: 160, height: 92) / UIDevice.spriteScale
+        let levelSelectPickerOffset: CGFloat = 42 * UIDevice.spriteScale
 
         levelSelectBackground = SKShapeNode(rectOf: levelSelectSize, cornerRadius: menuCornerRadius)
         levelSelectBackground.position = menuPosition
@@ -327,7 +327,7 @@ class TitleScene: SKScene {
     private func showLevelSelect(shouldHide: Bool) {
         showSecondMenu(secondNode: levelSelectBackground,
                        secondNodeSize: levelSelectSize,
-                       scale: GameboardSprite.spriteScale,
+                       scale: UIDevice.spriteScale,
                        shouldAnchorBottom: false,
                        shouldHide: shouldHide,
                        completion: nil)
@@ -338,7 +338,7 @@ class TitleScene: SKScene {
     private func showSettings(shouldHide: Bool) {
         showSecondMenu(secondNode: settingsBackground,
                        secondNodeSize: settingsSize,
-                       scale: GameboardSprite.spriteScale,
+                       scale: UIDevice.spriteScale,
                        shouldAnchorBottom: true,
                        shouldHide: shouldHide,
                        completion: settingsPage.checkReportBugAlreadySubmitted)
