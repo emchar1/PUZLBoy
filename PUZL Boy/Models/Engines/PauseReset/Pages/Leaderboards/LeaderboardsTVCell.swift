@@ -39,42 +39,30 @@ class LeaderboardsTVCell: UITableViewCell {
     }
     
     private func setupViews() {
+        func makeLabel(textAlignment: NSTextAlignment = .left) -> UILabel {
+            let label = UILabel()
+            label.font = UIFont(name: UIFont.chatFont, size: UIDevice.isiPad ? 30 : 18)
+            label.textColor = UIFont.chatFontColor
+            label.textAlignment = textAlignment
+            label.layer.shadowColor = UIColor.black.cgColor
+            label.layer.shadowOffset = CGSize(width: -1, height: 1)
+            label.layer.shadowRadius = 0
+            label.layer.shadowOpacity = 0.25
+            label.layer.masksToBounds = false
+            label.translatesAutoresizingMaskIntoConstraints = false
+
+            return label
+        }
+        
         hStack = UIStackView()
         hStack.axis = .horizontal
         hStack.distribution = .fill
         hStack.spacing = 4
         hStack.translatesAutoresizingMaskIntoConstraints = false
                 
-        levelLabel = UILabel()
-        levelLabel.font = UIFont(name: UIFont.chatFont, size: UIDevice.isiPad ? 30 : 18)
-        levelLabel.textColor = UIFont.chatFontColor
-        levelLabel.layer.shadowColor = UIColor.black.cgColor
-        levelLabel.layer.shadowOffset = CGSize(width: -1, height: 1)
-        levelLabel.layer.shadowRadius = 0
-        levelLabel.layer.shadowOpacity = 0.25
-        levelLabel.layer.masksToBounds = false
-        levelLabel.translatesAutoresizingMaskIntoConstraints = false
-        
-        usernameLabel = UILabel()
-        usernameLabel.font = UIFont(name: UIFont.chatFont, size: UIDevice.isiPad ? 30 : 18)
-        usernameLabel.textColor = UIFont.chatFontColor
-        usernameLabel.layer.shadowColor = UIColor.black.cgColor
-        usernameLabel.layer.shadowOffset = CGSize(width: -1, height: 1)
-        usernameLabel.layer.shadowRadius = 0
-        usernameLabel.layer.shadowOpacity = 0.25
-        usernameLabel.layer.masksToBounds = false
-        usernameLabel.translatesAutoresizingMaskIntoConstraints = false
-        
-        scoreLabel = UILabel()
-        scoreLabel.font = UIFont(name: UIFont.chatFont, size: UIDevice.isiPad ? 30 : 18)
-        scoreLabel.textColor = UIFont.chatFontColor
-        scoreLabel.textAlignment = .right
-        scoreLabel.layer.shadowColor = UIColor.black.cgColor
-        scoreLabel.layer.shadowOffset = CGSize(width: -1, height: 1)
-        scoreLabel.layer.shadowRadius = 0
-        scoreLabel.layer.shadowOpacity = 0.25
-        scoreLabel.layer.masksToBounds = false
-        scoreLabel.translatesAutoresizingMaskIntoConstraints = false
+        levelLabel = makeLabel()
+        usernameLabel = makeLabel()
+        scoreLabel = makeLabel(textAlignment: .right)
 
         backgroundColor = .clear
     }
