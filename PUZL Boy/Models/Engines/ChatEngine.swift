@@ -375,15 +375,15 @@ extension ChatEngine {
         dialoguePlayed[34] = false
         dialoguePlayed[51] = false
         dialoguePlayed[76] = false
-        dialoguePlayed[100] = false
+        dialoguePlayed[PauseResetEngine.resetButtonUnlock] = false
         dialoguePlayed[112] = false
         dialoguePlayed[131] = false
-        dialoguePlayed[150] = false
+        dialoguePlayed[PauseResetEngine.hintButtonUnlock] = false
 
         //Villain capture levels - hand selected. Preferred spawn points are in the comments below.
         dialoguePlayed[132] = false //(3, 1)
-        dialoguePlayed[154] = false //(0, 3)
-        dialoguePlayed[187] = false //(2, 1)
+        dialoguePlayed[154] = false //(0, 3) //TODO: - WHAT'S SUPPOSED TO HAPPEN HERE??
+        dialoguePlayed[187] = false //(2, 1) //TODO: - WHAT'S SUPPOSED TO HAPPEN HERE??
     }
     
     /**
@@ -545,9 +545,9 @@ extension ChatEngine {
             ]) { [unowned self] in
                 handleDialogueCompletion(level: level, completion: completion)
             }
-        case 100:
+        case PauseResetEngine.resetButtonUnlock:
             sendChatArray(items: [
-                ChatItem(profile: .trainer, chat: "Congrats! You made it to level 100. There's a bonus at the end of every 50 levels. Beat this and you're one step closer to indescribable fun!!! 💃🏾🪩🕺🏻"),
+                ChatItem(profile: .trainer, chat: "Congrats! You made it to level \(PauseResetEngine.resetButtonUnlock). There's a bonus at the end of every 50 levels. Beat this and you're one step closer to indescribable fun!!! 💃🏾🪩🕺🏻"),
                 ChatItem(profile: .hero, chat: "I can hardly contain my excitement.", handler: { [unowned self] in
                     delegate?.illuminateMinorButton(for: .reset)
                 }),
@@ -612,7 +612,7 @@ extension ChatEngine {
                     }
                 }
             }
-        case 150: // TODO: - Rework
+        case PauseResetEngine.hintButtonUnlock: // TODO: - Rework
             sendChatArray(items: [
                 ChatItem(profile: .hero, chat: "You got something for me?", handler: { [unowned self] in
                     delegate?.illuminateMinorButton(for: .hint)

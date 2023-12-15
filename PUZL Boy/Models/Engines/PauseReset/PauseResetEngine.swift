@@ -24,6 +24,10 @@ protocol PauseResetEngineDelegate: AnyObject {
 class PauseResetEngine {
     
     // MARK: - Properties
+    
+    //Unlock Minor Buttons
+    static let resetButtonUnlock: Int = 100
+    static let hintButtonUnlock: Int = 140
 
     //Size Properties
     private let settingsScale: CGFloat = UIDevice.spriteScale
@@ -73,8 +77,6 @@ class PauseResetEngine {
     static var backgroundColor: UIColor { DayTheme.skyColor.top.analogous.first.darkenColor(factor: 6) }
     static var backgroundShadowColor: UIColor { DayTheme.skyColor.bottom.analogous.first }
     private var currentLevel: Int = 1
-    private let resetButtonUnlock: Int = 100
-    private let hintButtonUnlock: Int = 150
     
     //Boolean properties
     private(set) static var pauseResetEngineIsPaused = false
@@ -133,7 +135,7 @@ class PauseResetEngine {
         resetButtonSprite.position = pauseButtonPosition + CGPoint(x: -minorButtonOffset.x, y: minorButtonOffset.y)
         resetButtonSprite.scale(to: CGSize(width: minorButtonSize, height: minorButtonSize))
         resetButtonSprite.anchorPoint = CGPoint(x: 0.5, y: 0)
-        resetButtonSprite.alpha = currentLevel >= resetButtonUnlock ? 1 : 0
+        resetButtonSprite.alpha = currentLevel >= PauseResetEngine.resetButtonUnlock ? 1 : 0
         resetButtonSprite.name = resetName
         resetButtonSprite.zPosition = K.ZPosition.pauseButton - 5
         
@@ -141,7 +143,7 @@ class PauseResetEngine {
         hintButtonSprite.position = pauseButtonPosition + CGPoint(x: minorButtonOffset.x, y: minorButtonOffset.y)
         hintButtonSprite.scale(to: CGSize(width: minorButtonSize, height: minorButtonSize))
         hintButtonSprite.anchorPoint = CGPoint(x: 0.5, y: 0)
-        hintButtonSprite.alpha = currentLevel >= hintButtonUnlock ? 1 : 0
+        hintButtonSprite.alpha = currentLevel >= PauseResetEngine.hintButtonUnlock ? 1 : 0
         hintButtonSprite.name = hintName
         hintButtonSprite.zPosition = K.ZPosition.pauseButton - 5
         
@@ -169,7 +171,7 @@ class PauseResetEngine {
         howToPlayPage = HowToPlayPage(contentSize: settingsSize, level: currentLevel)
         howToPlayPage.zPosition = 10
         
-        purchasePage = PurchasePage(contentSize: settingsSize)
+        purchasePage = PurchasePage(contentSize: settingsSize, currentLevel: currentLevel)
         purchasePage.zPosition = 10
         purchasePage.delegate = self
 
@@ -325,12 +327,12 @@ class PauseResetEngine {
     private func showMinorButtons(duration: TimeInterval = 0.25) {
         resetButtonSprite.run(SKAction.group([
             SKAction.moveTo(x: pauseButtonPosition.x - minorButtonOffset.x, duration: duration),
-            SKAction.fadeAlpha(to: currentLevel >= resetButtonUnlock ? 1 : 0, duration: duration)
+            SKAction.fadeAlpha(to: currentLevel >= PauseResetEngine.resetButtonUnlock ? 1 : 0, duration: duration)
         ]))
         
         hintButtonSprite.run(SKAction.group([
             SKAction.moveTo(x: pauseButtonPosition.x + minorButtonOffset.x, duration: duration),
-            SKAction.fadeAlpha(to: currentLevel >= hintButtonUnlock ? 1 : 0, duration: duration)
+            SKAction.fadeAlpha(to: currentLevel >= PauseResetEngine.hintButtonUnlock ? 1 : 0, duration: duration)
         ]))
     }
     
@@ -659,6 +661,7 @@ extension PauseResetEngine: SettingsManagerDelegate {
             removePages()
             
             purchasePage.checkWatchAdButtonIsDisabled()
+            purchasePage.checkBuyHintsAvailable(level: currentLevel)
             backgroundSprite.addChild(purchasePage)
         case .button3: //leaderboard
             removePages()

@@ -45,6 +45,9 @@ class PurchaseTapButton: SKNode {
     private(set) var tappableAreaNode: SKShapeNode!
     private var sprite: SKShapeNode!
     private var disabledOverlayNode: SKShapeNode!
+    private var priceLabel: SKLabelNode!
+    private var buttonLabelNode: SKLabelNode!
+    private var imageNode: SKSpriteNode!
     
     weak var delegate: PurchaseTapButtonDelegate?
     
@@ -74,8 +77,6 @@ class PurchaseTapButton: SKNode {
     
     private func setupSprites() {
         let cornerRadius: CGFloat = 20
-        let currencyFormatter = NumberFormatter()
-        currencyFormatter.numberStyle = .currency
 
         tappableAreaNode = SKShapeNode(rectOf: PurchaseTapButton.buttonSize, cornerRadius: cornerRadius)
         tappableAreaNode.position = positionOrig
@@ -121,7 +122,7 @@ class PurchaseTapButton: SKNode {
         priceBackground.lineWidth = 0
         priceBackground.zRotation = .pi / 6
         
-        let priceLabel = SKLabelNode(text: price == 0 ? "FREE!" : currencyFormatter.string(from: NSNumber(value: price)))
+        priceLabel = SKLabelNode(text: getPriceString(price))
         priceLabel.verticalAlignmentMode = .center
         priceLabel.horizontalAlignmentMode = .center
         priceLabel.fontName = UIFont.chatFont
@@ -129,11 +130,11 @@ class PurchaseTapButton: SKNode {
         priceLabel.fontColor = UIFont.chatFontColor
         priceLabel.addDropShadow()
 
-        let imageNode = SKSpriteNode(imageNamed: image)
+        imageNode = SKSpriteNode(texture: SKTexture(imageNamed: image))
         imageNode.anchorPoint = CGPoint(x: 0.3, y: 0.5)
         imageNode.setScale(imageScale)
 
-        let buttonLabelNode = SKLabelNode(text: text.uppercased())
+        buttonLabelNode = SKLabelNode(text: text.uppercased())
         buttonLabelNode.position = CGPoint(x: 0, y: -PurchaseTapButton.buttonSize.height / 2 + 20)
         buttonLabelNode.verticalAlignmentMode = .bottom
         buttonLabelNode.horizontalAlignmentMode = .center
@@ -199,5 +200,33 @@ class PurchaseTapButton: SKNode {
 
         ButtonTap.shared.tap(type: .buttontap1, hapticStyle: .heavy)
         delegate?.didTapButton(self)
+    }
+    
+    func setButtonValues(price: Double, text: String, image: String, isDisabled: Bool) {
+        self.price = price
+        self.text = text
+        self.image = image
+        self.isDisabled = isDisabled
+
+        priceLabel.text = getPriceString(price)
+        buttonLabelNode.text = text
+        imageNode.texture = SKTexture(imageNamed: image)
+    }
+    
+    private func getPriceString(_ price: Double) -> String? {
+        let priceString: String?
+        let currencyFormatter = NumberFormatter()
+        currencyFormatter.numberStyle = .currency
+
+        switch price {
+        case 0:
+            priceString = "FREE!"
+        case let priceCheck where priceCheck < 0:
+            priceString = "???"
+        default:
+            priceString = currencyFormatter.string(from: NSNumber(value: price))
+        }
+        
+        return priceString
     }
 }

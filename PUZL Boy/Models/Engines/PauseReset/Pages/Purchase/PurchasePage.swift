@@ -19,6 +19,9 @@ class PurchasePage: ParentPage {
     
     // MARK: - Properties
     
+    private let hintButtonUnlockedPrice: Double = 1.99
+    private let hintButtonUnlockedText: String = "+10 Hints"
+    private let hintButtonUnlockedImage: String = "partyHint"
     private var isDisabled = false
     
     private var watchAdButton: PurchaseTapButton!
@@ -29,13 +32,16 @@ class PurchasePage: ParentPage {
     private var buy999Button: PurchaseTapButton!
     private(set) var currentButton: PurchaseTapButton?
     private var activityIndicator: ActivityIndicatorSprite!
+    private var currentLevel: Int
 
     weak var delegate: PurchasePageDelegate?
     
     
     // MARK: - Initialization
     
-    init(contentSize: CGSize) {
+    init(contentSize: CGSize, currentLevel: Int) {
+        self.currentLevel = currentLevel
+        
         super.init(contentSize: contentSize, titleText: "Shop")
         
         self.nodeName = "purchasePage"
@@ -68,11 +74,11 @@ class PurchasePage: ParentPage {
         watchAdButton.delegate = self
         checkWatchAdButtonIsDisabled()
         
-        buy199Button = PurchaseTapButton(price: 1.99,
-                                         text: "+10 Hints",
+        buy199Button = PurchaseTapButton(price: hintButtonUnlockedPrice,
+                                         text: hintButtonUnlockedText,
                                          type: .add10Hints,
                                          color: DecisionButtonSprite.colorYellow,
-                                         image: "partyHint",
+                                         image: hintButtonUnlockedImage,
                                          imageScale: imageScale / 2)
         buy199Button.position = CGPoint(x: PurchasePage.padding, y: watchAdButton.position.y - buttonSize.height - paddingFactor * PurchasePage.padding)
         buy199Button.zPosition = 10
@@ -187,6 +193,23 @@ class PurchasePage: ParentPage {
         }
         
         print("watchAdButton is\(watchAdButton.isDisabled ? " NOT" : "") available!")
+    }
+    
+    func checkBuyHintsAvailable(level: Int) {
+        currentLevel = level
+        
+        if currentLevel >= PauseResetEngine.hintButtonUnlock {
+            buy199Button.setButtonValues(price: hintButtonUnlockedPrice,
+                                         text: hintButtonUnlockedText,
+                                         image: hintButtonUnlockedImage,
+                                         isDisabled: false)
+        }
+        else {
+            buy199Button.setButtonValues(price: -1, 
+                                         text: "Unlock LV \(PauseResetEngine.hintButtonUnlock)",
+                                         image: "questionmarknoborder",
+                                         isDisabled: true)
+        }
     }
 }
 
