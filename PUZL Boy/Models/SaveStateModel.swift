@@ -23,4 +23,5 @@ struct SaveStateModel: Identifiable, Codable {
     let uid: String
     let usedContinue: Bool
     let winStreak: Int
+    let gameCompleted: Bool
 }

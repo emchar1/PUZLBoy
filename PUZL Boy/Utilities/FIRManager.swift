@@ -141,7 +141,8 @@ struct FIRManager {
                   let totalScore = data["totalScore"] as? Int,
                   let uid = data["uid"] as? String,
                   let usedContinue = data["usedContinue"] as? Bool,
-                  let winStreak = data["winStreak"] as? Int else {
+                  let winStreak = data["winStreak"] as? Int,
+                  let gameCompleted = data["gameCompleted"] as? Bool else {
                 completion?(nil, .saveStateNotFound)
                 return
             }
@@ -159,7 +160,8 @@ struct FIRManager {
                                        totalScore: totalScore,
                                        uid: uid,
                                        usedContinue: usedContinue,
-                                       winStreak: winStreak), nil)
+                                       winStreak: winStreak,
+                                       gameCompleted: gameCompleted), nil)
             
             print("Firestore saveState initialized.......")
         }//end docRef.getDocument...
@@ -339,7 +341,8 @@ struct FIRManager {
             "totalScore": saveStateModel.totalScore,
             "uid": saveStateModel.uid,
             "usedContinue": saveStateModel.usedContinue,
-            "winStreak": saveStateModel.winStreak
+            "winStreak": saveStateModel.winStreak,
+            "gameCompleted": saveStateModel.gameCompleted
         ])
         
         print("Writing to Firestore saveState.......")

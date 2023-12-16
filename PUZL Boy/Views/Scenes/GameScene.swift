@@ -377,7 +377,8 @@ class GameScene: SKScene {
             totalScore: scoringEngine.scoringManager.totalScore + (levelStatsItem.didWin ? scoringEngine.scoringManager.score : 0),
             uid: user.uid,
             usedContinue: GameEngine.usedContinue,
-            winStreak: GameEngine.winStreak)
+            winStreak: GameEngine.winStreak,
+            gameCompleted: GameEngine.gameCompleted)
         
         FIRManager.writeToFirestoreRecord(user: user, saveStateModel: saveStateModel)
     }

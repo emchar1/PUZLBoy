@@ -161,6 +161,8 @@ class TitleScene: SKScene {
         menuSettings.delegate = self
         menuCredits.delegate = self
         
+        menuLevelSelect.setIsEnabled(FIRManager.saveStateModel?.gameCompleted ?? false)
+        
         
         //Level Select Setup
         let sizeUI = K.ScreenDimensions.sizeUI
@@ -551,7 +553,6 @@ extension TitleScene: MenuItemLabelDelegate {
         case .menuStart:
             startGame(levelSelectNewLevel: nil)
         case .menuLevelSelect:
-            // TODO: - Level Select Tap Menu Item
             showLevelSelect(shouldHide: false)
             
             scene?.view?.addSubview(levelSelectPicker)

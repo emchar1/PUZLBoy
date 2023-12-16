@@ -28,6 +28,7 @@ class GameEngine {
     
     private(set) static var livesRemaining: Int = LifeSpawnerModel.defaultLives
     private(set) static var usedContinue: Bool = false
+    private(set) static var gameCompleted: Bool = false
     private(set) static var livesUsed: Int = 0
     private(set) static var winStreak: Int = 0 {
         didSet {
@@ -176,6 +177,7 @@ class GameEngine {
         GameEngine.usedContinue = saveStateModel.usedContinue
         GameEngine.livesUsed = saveStateModel.levelStatsArray.filter({ $0.level == level.level }).first?.livesUsed ?? GameEngine.livesUsed
         GameEngine.winStreak = saveStateModel.winStreak
+        GameEngine.gameCompleted = saveStateModel.gameCompleted
         
         finishInit(shouldSpawn: true)
     }
@@ -1038,6 +1040,11 @@ class GameEngine {
             GameEngine.usedContinue = false
             GameEngine.livesUsed = 0
             GameEngine.winStreak += 1
+            
+            if level.level == Level.finalLevel {
+                GameEngine.gameCompleted = true
+                print("YOU WON THE GAME!!!")
+            }
             
             updateAchievements()
             hintEngine.checkForMatchSolutionAttempt()
