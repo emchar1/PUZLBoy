@@ -27,9 +27,7 @@ class GoldCoinSprite: SKNode {
         }
         
         sprite = SKSpriteNode(texture: textures[0])
-        sprite.anchorPoint = .zero
-        sprite.position = CGPoint(x: 200, y: 200)
-        sprite.zPosition = 1000
+        sprite.scale(to: CGSize(width: 50, height: 50))
     
         super.init()
         

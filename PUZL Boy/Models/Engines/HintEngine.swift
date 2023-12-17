@@ -170,31 +170,25 @@ class HintEngine {
         
         
         //Arrow animation
-        let positionOffset: K.GameboardPosition
         let rotationAngle: CGFloat
 
         switch hint {
         case .up:
-            positionOffset = (row: -1, col: 0)
             rotationAngle = -.pi / 2
         case .down:
-            positionOffset = (row: 1, col: 0)
             rotationAngle = .pi / 2
         case .left:
-            positionOffset = (row: 0, col: -1)
             rotationAngle = 0
         case .right:
-            positionOffset = (row: 0, col: 1)
             rotationAngle = .pi
         default:
-            positionOffset = (row: 0, col: 0)
             rotationAngle = 0
         }
         
         let arrow = SKSpriteNode(imageNamed: nodeNameArrowHint)
-        arrow.position = gameboardSprite.getLocation(at: (row: playerPosition.row + positionOffset.row, col: playerPosition.col + positionOffset.col))
+        arrow.position = gameboardSprite.getLocation(at: playerPosition)
         arrow.zRotation = rotationAngle
-        arrow.zPosition = K.ZPosition.itemsAndEffects
+        arrow.zPosition = K.ZPosition.hintArrow
         arrow.setScale(6 / (UIDevice.spriteScale * CGFloat(gameboardSprite.panelCount)))
         arrow.name = nodeNameArrowHint
 
