@@ -33,7 +33,6 @@ class PurchaseTapButton: SKNode {
     private var text: String
     private(set) var type: TapButtonType
     private var image: String
-    private var imageScale: CGFloat
     private var isAnimating = false
     private var isPressed = true
     var isDisabled = false {
@@ -58,13 +57,12 @@ class PurchaseTapButton: SKNode {
     
     // MARK: - Initialization
     
-    init(price: Double, text: String, type: TapButtonType, color: UIColor, image: String, imageScale: CGFloat = 1) {
+    init(price: Double, text: String, type: TapButtonType, color: UIColor, image: String) {
         self.price = price
         self.text = text
         self.type = type
         self.backgroundColor = color
         self.image = image
-        self.imageScale = imageScale
         
         super.init()
         
@@ -84,7 +82,7 @@ class PurchaseTapButton: SKNode {
         tappableAreaNode.fillTexture = SKTexture(image: UIImage.gradientTexturePurchaseButton)
         tappableAreaNode.strokeColor = .clear
         tappableAreaNode.lineWidth = 0
-        tappableAreaNode.zPosition = 10
+        tappableAreaNode.zPosition = 20
         tappableAreaNode.name = nodeName
 
         sprite = SKShapeNode(rectOf: PurchaseTapButton.buttonSize, cornerRadius: cornerRadius)
@@ -110,10 +108,7 @@ class PurchaseTapButton: SKNode {
 
         let cropNode = SKCropNode()
         cropNode.maskNode = maskNode
-        cropNode.zPosition = 20
-        
-        let cropNodeFade = SKCropNode()
-        cropNodeFade.maskNode = maskNode
+        cropNode.zPosition = 10
         
         let priceBackground = SKShapeNode(rectOf: CGSize(width: PurchaseTapButton.buttonSize.width, height: UIDevice.isiPad ? 120 : 80))
         priceBackground.position = positionOrig * CGPoint(x: -1, y: -1) + CGPoint(x: priceBackground.frame.size.width / 6, y: -priceBackground.frame.size.height * 2 / 3)
@@ -121,6 +116,7 @@ class PurchaseTapButton: SKNode {
         priceBackground.strokeColor = .white
         priceBackground.lineWidth = 0
         priceBackground.zRotation = .pi / 6
+        priceBackground.zPosition = 15
         
         priceLabel = SKLabelNode(text: getPriceString(price))
         priceLabel.verticalAlignmentMode = .center
@@ -131,8 +127,7 @@ class PurchaseTapButton: SKNode {
         priceLabel.addDropShadow()
 
         imageNode = SKSpriteNode(texture: SKTexture(imageNamed: image))
-        imageNode.anchorPoint = CGPoint(x: 0.3, y: 0.5)
-        imageNode.setScale(imageScale)
+        imageNode.scale(to: PurchaseTapButton.buttonSize)
 
         buttonLabelNode = SKLabelNode(text: text.uppercased())
         buttonLabelNode.position = CGPoint(x: 0, y: -PurchaseTapButton.buttonSize.height / 2 + 20)
@@ -147,10 +142,9 @@ class PurchaseTapButton: SKNode {
         addChild(sprite)
         sprite.addChild(disabledOverlayNode)
         sprite.addChild(cropNode)
-        sprite.addChild(cropNodeFade)
-        cropNode.addChild(buttonLabelNode)
+        tappableAreaNode.addChild(buttonLabelNode)
         cropNode.addChild(priceBackground)
-        cropNodeFade.addChild(imageNode)
+        cropNode.addChild(imageNode)
         priceBackground.addChild(priceLabel)
     }
     
@@ -158,13 +152,12 @@ class PurchaseTapButton: SKNode {
     // MARK: - Functions
     
     func touchDown(in location: CGPoint) {
+        guard !isAnimating else { return }
+        guard scene?.nodes(at: location).filter({ $0.name == nodeName }).first != nil else { return }
         guard !isDisabled else {
             ButtonTap.shared.tap(type: .buttontap6)
             return
         }
-        
-        guard !isAnimating else { return }
-        guard scene?.nodes(at: location).filter({ $0.name == nodeName }).first != nil else { return }
 
         isPressed = true
         
@@ -209,8 +202,12 @@ class PurchaseTapButton: SKNode {
         self.isDisabled = isDisabled
 
         priceLabel.text = getPriceString(price)
-        buttonLabelNode.text = text
         imageNode.texture = SKTexture(imageNamed: image)
+
+        buttonLabelNode.text = text
+        buttonLabelNode.updateShadow()
+
+        tappableAreaNode.name = nodeName
     }
     
     private func getPriceString(_ price: Double) -> String? {

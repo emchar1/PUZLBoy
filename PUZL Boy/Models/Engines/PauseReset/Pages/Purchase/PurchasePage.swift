@@ -21,7 +21,6 @@ class PurchasePage: ParentPage {
     
     private let hintButtonUnlockedPrice: Double = 1.99
     private let hintButtonUnlockedText: String = "+10 Hints"
-    private let hintButtonUnlockedImage: String = "partyHint"
     private var isDisabled = false
     
     private var watchAdButton: PurchaseTapButton!
@@ -59,16 +58,13 @@ class PurchasePage: ParentPage {
     private func setupSprites() {
         let topMargin: CGFloat = UIDevice.isiPad ? 280 : 200
         let paddingFactor: CGFloat = UIDevice.isiPad ? 1.5 : 1
-        let buttonSize: CGSize = PurchaseTapButton.buttonSize
-        let imageScale: CGFloat = (UIDevice.isiPad ? 2.0 : 1.25) * 3
 
         //Left column
         watchAdButton = PurchaseTapButton(price: 0,
                                           text: "+1 Life - ▶️ Ad",
                                           type: .add1Life,
                                           color: DecisionButtonSprite.colorBlue,
-                                          image: "iconPlayer",
-                                          imageScale: imageScale)
+                                          image: "buttonAd")
         watchAdButton.position = CGPoint(x: PurchasePage.padding, y: -topMargin)
         watchAdButton.zPosition = 10
         watchAdButton.delegate = self
@@ -78,9 +74,9 @@ class PurchasePage: ParentPage {
                                          text: hintButtonUnlockedText,
                                          type: .add10Hints,
                                          color: DecisionButtonSprite.colorYellow,
-                                         image: hintButtonUnlockedImage,
-                                         imageScale: imageScale / 2)
-        buy199Button.position = CGPoint(x: PurchasePage.padding, y: watchAdButton.position.y - buttonSize.height - paddingFactor * PurchasePage.padding)
+                                         image: "buttonHints")
+        buy199Button.position = CGPoint(x: PurchasePage.padding,
+                                        y: watchAdButton.position.y - PurchaseTapButton.buttonSize.height - paddingFactor * PurchasePage.padding)
         buy199Button.zPosition = 10
         buy199Button.delegate = self
         
@@ -88,9 +84,9 @@ class PurchasePage: ParentPage {
                                          text: "+25 Lives",
                                          type: .add25Lives,
                                          color: DecisionButtonSprite.colorGreen,
-                                         image: "iconPlayer",
-                                         imageScale: imageScale)
-        buy499Button.position = CGPoint(x: PurchasePage.padding, y: buy199Button.position.y - buttonSize.height - paddingFactor * PurchasePage.padding)
+                                         image: "buttonLives25")
+        buy499Button.position = CGPoint(x: PurchasePage.padding,
+                                        y: buy199Button.position.y - PurchaseTapButton.buttonSize.height - paddingFactor * PurchasePage.padding)
         buy499Button.zPosition = 10
         buy499Button.delegate = self
 
@@ -99,9 +95,8 @@ class PurchasePage: ParentPage {
                                          text: "+5 Moves",
                                          type: .add5Moves,
                                          color: DecisionButtonSprite.colorBlue,
-                                         image: "iconBoot",
-                                         imageScale: imageScale)
-        buy099Button.position = CGPoint(x: watchAdButton.position.x + buttonSize.width + PurchasePage.padding,
+                                         image: "buttonMoves")
+        buy099Button.position = CGPoint(x: watchAdButton.position.x + PurchaseTapButton.buttonSize.width + PurchasePage.padding,
                                         y: -topMargin)
         buy099Button.zPosition = 10
         buy099Button.delegate = self
@@ -110,10 +105,9 @@ class PurchasePage: ParentPage {
                                          text: "Skip Level",
                                          type: .skipLevel,
                                          color: DecisionButtonSprite.colorYellow,
-                                         image: "iconPrincess",
-                                         imageScale: imageScale)
-        buy299Button.position = CGPoint(x: watchAdButton.position.x + buttonSize.width + PurchasePage.padding,
-                                        y: buy099Button.position.y - buttonSize.height - paddingFactor * PurchasePage.padding)
+                                         image: "buttonSkip")
+        buy299Button.position = CGPoint(x: watchAdButton.position.x + PurchaseTapButton.buttonSize.width + PurchasePage.padding,
+                                        y: buy099Button.position.y - PurchaseTapButton.buttonSize.height - paddingFactor * PurchasePage.padding)
         buy299Button.zPosition = 10
         buy299Button.delegate = self
         
@@ -121,10 +115,9 @@ class PurchasePage: ParentPage {
                                          text: "+100 Lives",
                                          type: .add100Lives,
                                          color: DecisionButtonSprite.colorGreen,
-                                         image: "iconPlayer",
-                                         imageScale: imageScale)
-        buy999Button.position = CGPoint(x: watchAdButton.position.x + buttonSize.width + PurchasePage.padding,
-                                        y: buy299Button.position.y - buttonSize.height - paddingFactor * PurchasePage.padding)
+                                         image: "buttonLives100")
+        buy999Button.position = CGPoint(x: watchAdButton.position.x + PurchaseTapButton.buttonSize.width + PurchasePage.padding,
+                                        y: buy299Button.position.y - PurchaseTapButton.buttonSize.height - paddingFactor * PurchasePage.padding)
         buy999Button.zPosition = 10
         buy999Button.delegate = self
 
@@ -201,13 +194,13 @@ class PurchasePage: ParentPage {
         if currentLevel >= PauseResetEngine.hintButtonUnlock {
             buy199Button.setButtonValues(price: hintButtonUnlockedPrice,
                                          text: hintButtonUnlockedText,
-                                         image: hintButtonUnlockedImage,
+                                         image: "buttonHints",
                                          isDisabled: false)
         }
         else {
             buy199Button.setButtonValues(price: -1, 
                                          text: "Unlock LV \(PauseResetEngine.hintButtonUnlock)",
-                                         image: "questionmarknoborder",
+                                         image: "buttonHints",
                                          isDisabled: true)
         }
     }
