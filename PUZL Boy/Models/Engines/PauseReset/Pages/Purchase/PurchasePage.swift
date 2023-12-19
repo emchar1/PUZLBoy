@@ -83,7 +83,7 @@ class PurchasePage: ParentPage {
         buy499Button = PurchaseTapButton(price: 4.99,
                                          text: "+25 Lives",
                                          type: .add25Lives,
-                                         color: DecisionButtonSprite.colorGreen,
+                                         color: DecisionButtonSprite.colorViolet,
                                          image: "buttonLives25")
         buy499Button.position = CGPoint(x: PurchasePage.padding,
                                         y: buy199Button.position.y - PurchaseTapButton.buttonSize.height - paddingFactor * PurchasePage.padding)
@@ -114,7 +114,7 @@ class PurchasePage: ParentPage {
         buy999Button = PurchaseTapButton(price: 9.99,
                                          text: "+100 Lives",
                                          type: .add100Lives,
-                                         color: DecisionButtonSprite.colorGreen,
+                                         color: DecisionButtonSprite.colorViolet,
                                          image: "buttonLives100")
         buy999Button.position = CGPoint(x: watchAdButton.position.x + PurchaseTapButton.buttonSize.width + PurchasePage.padding,
                                         y: buy299Button.position.y - PurchaseTapButton.buttonSize.height - paddingFactor * PurchasePage.padding)
