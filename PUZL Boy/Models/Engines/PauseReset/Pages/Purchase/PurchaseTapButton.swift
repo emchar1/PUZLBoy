@@ -197,14 +197,14 @@ class PurchaseTapButton: SKNode {
     
     func setButtonValues(price: Double, text: String, image: String, isDisabled: Bool) {
         self.price = price
-        self.text = text
+        self.text = text.uppercased()
         self.image = image
         self.isDisabled = isDisabled
 
         priceLabel.text = getPriceString(price)
         imageNode.texture = SKTexture(imageNamed: image)
 
-        buttonLabelNode.text = text
+        buttonLabelNode.text = text.uppercased()
         buttonLabelNode.updateShadow()
 
         tappableAreaNode.name = nodeName
