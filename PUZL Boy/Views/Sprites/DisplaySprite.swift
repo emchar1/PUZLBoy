@@ -18,6 +18,7 @@ class DisplaySprite {
     private(set) var statusMoves: DisplayStatusBarSprite
     private(set) var statusHammers: DisplayStatusBarSprite
     private(set) var statusSwords: DisplayStatusBarSprite
+    private(set) var goldCoin: GoldCoinSprite
     
     private var heartsAtlas: SKTextureAtlas
     private var heartsTextures: [SKTexture]
@@ -69,6 +70,10 @@ class DisplaySprite {
         levelLabel.zPosition = 10
         levelLabel.addDropShadow()
         
+        goldCoin = GoldCoinSprite()
+        goldCoin.zPosition = 20
+        goldCoin.animateTextures()
+        
         heartsAtlas = SKTextureAtlas(named: "_heart")
         heartsTextures = []
 
@@ -91,6 +96,9 @@ class DisplaySprite {
         statusHealth.updateAmount(Int(health) ?? 99)
         statusHammers.updateAmount(inventory.hammers)
         statusSwords.updateAmount(inventory.swords)
+        
+        goldCoin.position = CGPoint(x: levelLabel.position.x - levelLabel.frame.size.width - goldCoin.sprite.size.width / 2 - 10,
+                                    y: levelLabel.position.y - levelLabel.frame.size.height / 2)
     }
     
     func animateScores(movesScore: Int, inventoryScore: Int, usedContinue: Bool) {
@@ -125,5 +133,9 @@ class DisplaySprite {
         sprite.addChild(statusMoves)
         sprite.addChild(statusHammers)
         sprite.addChild(statusSwords)
+        
+        if FIRManager.saveStateModel?.gameCompleted ?? false {
+            sprite.addChild(goldCoin)
+        }
     }
 }
