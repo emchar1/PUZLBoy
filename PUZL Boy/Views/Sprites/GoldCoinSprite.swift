@@ -19,15 +19,15 @@ class GoldCoinSprite: SKNode {
     // MARK: - Initialization
     
     override init() {
-        atlas = SKTextureAtlas(named: "goldCoin")
+        atlas = SKTextureAtlas(named: "starCoin")
         textures = []
 
         for i in 0..<17 {
-            textures.append(atlas.textureNamed("goldCoin\(i)"))
+            textures.append(atlas.textureNamed("starCoin\(i)"))
         }
         
         sprite = SKSpriteNode(texture: textures[0])
-        sprite.scale(to: CGSize(width: 50, height: 50))
+        sprite.scale(to: CGSize(width: 54.2, height: 50))
     
         super.init()
         
