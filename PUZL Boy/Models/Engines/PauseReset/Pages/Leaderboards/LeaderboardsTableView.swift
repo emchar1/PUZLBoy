@@ -68,7 +68,7 @@ class LeaderboardsTableView: UITableView, UITableViewDelegate, UITableViewDataSo
         }
         else {
             let selectionBackgroundView = UIView()
-            selectionBackgroundView.backgroundColor = DayTheme.skyColor.top.lightenColor(factor: 6)
+            selectionBackgroundView.backgroundColor = DayTheme.skyColor.bottom.splitComplementary.first.lightenColor(factor: 6)
 
             cell.selectedBackgroundView = selectionBackgroundView
             cell.selectionStyle = .default

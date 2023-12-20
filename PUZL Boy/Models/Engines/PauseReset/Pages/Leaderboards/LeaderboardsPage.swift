@@ -34,7 +34,7 @@ class LeaderboardsPage: ParentPage {
     private(set) var tableViewIsLoading = false
     private var backButtonPressed = false
     private var achievementsButtonPressed = false
-    private var headerBackgroundColor: UIColor { DayTheme.skyColor.top.lightenColor() }
+    private var headerBackgroundColor: UIColor { DayTheme.skyColor.bottom.triadic.first.darkenColor(factor: 3) }
     
     enum LeaderboardType {
         case all, level, achievements
@@ -96,12 +96,12 @@ class LeaderboardsPage: ParentPage {
         
         achievementsTableView = AchievementsTableView(frame: .zero, style: .grouped)
         
-        headerBackgroundNode = SKShapeNode(rectOf: CGSize(width: contentSize.width, height: UIDevice.isiPad ? 80 : 60))
+        headerBackgroundNode = SKShapeNode(rectOf: CGSize(width: contentSize.width, height: 60 / UIDevice.spriteScale))
         headerBackgroundNode.position = CGPoint(x: 0, y: contentSize.height / 2 - 2 * headerBackgroundNode.frame.size.height - ParentPage.padding)
         headerBackgroundNode.fillColor = headerBackgroundColor
         headerBackgroundNode.lineWidth = 0
                 
-        let labelPadding: CGFloat = UIDevice.isiPad ? 64 : 32
+        let labelPadding: CGFloat = 32 / UIDevice.spriteScale
         
         levelLabel = SKLabelNode(text: "Lvl")
         levelLabel.position = CGPoint(x: -contentSize.width / 2 + labelPadding, y: 0)
@@ -114,7 +114,7 @@ class LeaderboardsPage: ParentPage {
         levelLabel.addDropShadow()
         
         usernameLabel = SKLabelNode(text: "Top Player")
-        usernameLabel.position = CGPoint(x: -contentSize.width / 2 + labelPadding + (UIDevice.isiPad ? 140 : 120), y: UIDevice.isiPad ? -8 : -4)
+        usernameLabel.position = CGPoint(x: -contentSize.width / 2 + labelPadding + 112 / UIDevice.spriteScale, y: UIDevice.isiPad ? -8 : -4)
         usernameLabel.fontName = UIFont.chatFont
         usernameLabel.fontSize = UIFont.chatFontSizeLarge
         usernameLabel.fontColor = UIFont.chatFontColor
