@@ -61,9 +61,10 @@ class PurchasePage: ParentPage {
 
         //Left column
         watchAdButton = PurchaseTapButton(price: 0,
-                                          text: "+1 Life - ▶️ Ad",
+                                          text: "+1 Life:  ▶️ Ad",
                                           type: .add1Life,
-                                          color: DecisionButtonSprite.colorBlue,
+                                          buttonColor: DecisionButtonSprite.colorBlue,
+                                          priceColor: .systemGreen,
                                           image: "buttonAd")
         watchAdButton.position = CGPoint(x: PurchasePage.padding, y: -topMargin)
         watchAdButton.zPosition = 10
@@ -73,7 +74,7 @@ class PurchasePage: ParentPage {
         buy199Button = PurchaseTapButton(price: hintButtonUnlockedPrice,
                                          text: hintButtonUnlockedText,
                                          type: .add10Hints,
-                                         color: DecisionButtonSprite.colorYellow,
+                                         buttonColor: DecisionButtonSprite.colorYellow,
                                          image: "buttonHints")
         buy199Button.position = CGPoint(x: PurchasePage.padding,
                                         y: watchAdButton.position.y - PurchaseTapButton.buttonSize.height - paddingFactor * PurchasePage.padding)
@@ -83,7 +84,7 @@ class PurchasePage: ParentPage {
         buy499Button = PurchaseTapButton(price: 4.99,
                                          text: "+25 Lives",
                                          type: .add25Lives,
-                                         color: DecisionButtonSprite.colorViolet,
+                                         buttonColor: DecisionButtonSprite.colorViolet,
                                          image: "buttonLives25")
         buy499Button.position = CGPoint(x: PurchasePage.padding,
                                         y: buy199Button.position.y - PurchaseTapButton.buttonSize.height - paddingFactor * PurchasePage.padding)
@@ -94,7 +95,7 @@ class PurchasePage: ParentPage {
         buy099Button = PurchaseTapButton(price: 0.99,
                                          text: "+5 Moves",
                                          type: .add5Moves,
-                                         color: DecisionButtonSprite.colorBlue,
+                                         buttonColor: DecisionButtonSprite.colorBlue,
                                          image: "buttonMoves")
         buy099Button.position = CGPoint(x: watchAdButton.position.x + PurchaseTapButton.buttonSize.width + PurchasePage.padding,
                                         y: -topMargin)
@@ -104,7 +105,7 @@ class PurchasePage: ParentPage {
         buy299Button = PurchaseTapButton(price: 2.99,
                                          text: "Skip Level",
                                          type: .skipLevel,
-                                         color: DecisionButtonSprite.colorYellow,
+                                         buttonColor: DecisionButtonSprite.colorYellow,
                                          image: "buttonSkip")
         buy299Button.position = CGPoint(x: watchAdButton.position.x + PurchaseTapButton.buttonSize.width + PurchasePage.padding,
                                         y: buy099Button.position.y - PurchaseTapButton.buttonSize.height - paddingFactor * PurchasePage.padding)
@@ -114,7 +115,7 @@ class PurchasePage: ParentPage {
         buy999Button = PurchaseTapButton(price: 9.99,
                                          text: "+100 Lives",
                                          type: .add100Lives,
-                                         color: DecisionButtonSprite.colorViolet,
+                                         buttonColor: DecisionButtonSprite.colorViolet,
                                          image: "buttonLives100")
         buy999Button.position = CGPoint(x: watchAdButton.position.x + PurchaseTapButton.buttonSize.width + PurchasePage.padding,
                                         y: buy299Button.position.y - PurchaseTapButton.buttonSize.height - paddingFactor * PurchasePage.padding)

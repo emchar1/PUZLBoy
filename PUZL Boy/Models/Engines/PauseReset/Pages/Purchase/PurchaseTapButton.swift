@@ -27,6 +27,7 @@ class PurchaseTapButton: SKNode {
 
     private let shadowOffset: CGFloat = 10
     private let backgroundColor: UIColor
+    private let priceColor: UIColor
     private var shadowColor: UIColor { backgroundColor.lightenColor(factor: 6) }
 
     private var price: Double
@@ -57,11 +58,12 @@ class PurchaseTapButton: SKNode {
     
     // MARK: - Initialization
     
-    init(price: Double, text: String, type: TapButtonType, color: UIColor, image: String) {
+    init(price: Double, text: String, type: TapButtonType, buttonColor: UIColor, priceColor: UIColor = .red, image: String) {
         self.price = price
         self.text = text
         self.type = type
-        self.backgroundColor = color
+        self.backgroundColor = buttonColor
+        self.priceColor = priceColor
         self.image = image
         
         super.init()
@@ -112,7 +114,7 @@ class PurchaseTapButton: SKNode {
         
         let priceBackground = SKShapeNode(rectOf: CGSize(width: PurchaseTapButton.buttonSize.width, height: UIDevice.isiPad ? 120 : 80))
         priceBackground.position = positionOrig * CGPoint(x: -1, y: -1) + CGPoint(x: priceBackground.frame.size.width / 6, y: -priceBackground.frame.size.height * 2 / 3)
-        priceBackground.fillColor = .red
+        priceBackground.fillColor = priceColor
         priceBackground.strokeColor = .white
         priceBackground.lineWidth = 0
         priceBackground.zRotation = .pi / 6
