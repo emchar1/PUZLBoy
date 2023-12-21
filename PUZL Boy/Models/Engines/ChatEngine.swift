@@ -382,8 +382,8 @@ extension ChatEngine {
 
         //Villain capture levels - hand selected. Preferred spawn points are in the comments below.
         dialoguePlayed[132] = false //(3, 1)
-        dialoguePlayed[154] = false //(0, 3) //TODO: - WHAT'S SUPPOSED TO HAPPEN HERE??
-        dialoguePlayed[187] = false //(2, 1) //TODO: - WHAT'S SUPPOSED TO HAPPEN HERE??
+        dialoguePlayed[154] = false //(0, 3) // TODO: - WHAT'S SUPPOSED TO HAPPEN HERE??
+        dialoguePlayed[187] = false //(2, 1) // TODO: - WHAT'S SUPPOSED TO HAPPEN HERE??
     }
     
     /**

@@ -63,7 +63,6 @@ class LevelSelectPage: ParentPage {
         guard let superScene = superScene else { return }
         guard let location = touches.first?.location(in: superScene) else { return }
 
-        // TODO: -
         dismissNode.touchDown(in: location)
         
     }
@@ -71,14 +70,12 @@ class LevelSelectPage: ParentPage {
     override func touchUp() {
         super.touchUp()
         
-        // TODO: -
         dismissNode.touchUp()
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesMoved(touches, with: event)
         
-        // TODO: -
         dismissNode.touchesMoved(touches, with: event)
     }
     
@@ -88,7 +85,6 @@ class LevelSelectPage: ParentPage {
         guard let superScene = superScene else { return }
         guard let location = touches.first?.location(in: superScene) else { return }
         
-        // TODO: -
         dismissNode.tapButton(in: location, type: .buttontap3)
     }
 }

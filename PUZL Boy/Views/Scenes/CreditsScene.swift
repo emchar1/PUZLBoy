@@ -270,7 +270,7 @@ class CreditsScene: SKScene {
             }
         }
         
-        // TODO: - Speech Bubbles
+        // TODO: - Speech Bubbles for each Player
         speechBubble.setText(text: "I can't wait to play this game, I heard great things!", superScene: self) {
             self.speechBubble.setText(text: "Is it fun? Yes. But is it addictive? Also yes.", superScene: self) {
                 self.speechBubble.setText(text: "Of course I finished all my chores! Why do you ask?", superScene: self) {

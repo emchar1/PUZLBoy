@@ -24,7 +24,6 @@ class GameScene: SKScene {
     private var chatEngine: ChatEngine!
     private var pauseResetEngine: PauseResetEngine!
     private var levelStatsArray: [LevelStats]
-    // FIXME: - Debugging purposes only!!!
     private var levelSkipEngine: LevelSkipEngine!
 
     //SKNodes
@@ -80,20 +79,16 @@ class GameScene: SKScene {
         //chatEngine MUST be initialized here, and not in properties, otherwise it just refuses to show up! Because K.ScreenDimensions.topOfGameboard is set in the gameEngine(). Is there a better way to do this??
         chatEngine = ChatEngine()
         pauseResetEngine = PauseResetEngine(level: currentLevel)
+        levelSkipEngine = LevelSkipEngine()
 
         // FIXME: - 8/30/23 Added '&& user != nil' here to also show offline play if user is nil, i.e. error connecting to Firebase.
         offlinePlaySprite = (hasInternet && FIRManager.user != nil) ? nil : OfflinePlaySprite()
-                
-        // FIXME: - Debugging purposes only!!!
-        levelSkipEngine = LevelSkipEngine()
         
         super.init(size: size)
         
         gameEngine.delegate = self
         chatEngine.delegate = self
         pauseResetEngine.delegate = self
-        
-        // FIXME: - Debugging purposes only!!!
         levelSkipEngine.delegate = self
                 
         backgroundColor = .systemBlue
@@ -224,7 +219,6 @@ class GameScene: SKScene {
         gameEngine.handleControls(in: location)
         pauseResetEngine.shouldDisableHintButton(!gameEngine.hintEngine.hintAvailable)
         
-        // FIXME: - Debugging purposes only!!!
         if !chatEngine.isChatting {
             levelSkipEngine.handleControls(in: location)
         }
@@ -497,13 +491,13 @@ class GameScene: SKScene {
             offlinePlaySprite.animateSprite()
         }
         
-        // FIXME: - Debugging purposes only!!!
         if let user = FIRManager.user,
            !Level.isPartyLevel(currentLevel),
            user.uid == FIRManager.userEddie ||
             user.uid == FIRManager.userMichel ||
             user.uid == FIRManager.userMom
         {
+            // FIXME: - Uncomment to enable LevelSkipEngine for Eddie, Michel and Mom
             levelSkipEngine.moveSprites(to: self)
         }
     }

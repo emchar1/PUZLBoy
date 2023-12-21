@@ -95,7 +95,6 @@ class TitleScene: SKScene {
         fadeSprite.alpha = 0
         fadeSprite.zPosition = K.ZPosition.fadeTransitionNode
         
-        // TODO: - CreditsScene
         fadeOutSprite = SKSpriteNode(color: .black, size: K.ScreenDimensions.size)
         fadeOutSprite.anchorPoint = .zero
         fadeOutSprite.alpha = 0

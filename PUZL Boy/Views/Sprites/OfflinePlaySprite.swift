@@ -18,7 +18,7 @@ class OfflinePlaySprite: SKNode {
     // MARK: - Initialization
     
     override init() {
-        // FIXME: - Obviously TESTING ONLY!!
+        // FIXME: - Uncomment to test Memory Size
 //        memoryTest = Array(repeating: 0, count: 10000000)
         
         super.init()
