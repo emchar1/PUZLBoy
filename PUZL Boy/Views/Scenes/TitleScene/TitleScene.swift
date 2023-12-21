@@ -46,10 +46,13 @@ class TitleScene: SKScene {
     private var myColors: (title: UIColor, background: UIColor, shadow: UIColor) = (.black, .black, .black)
     private let shadowDepth: CGFloat = 10
     private var disableInput: Bool = false
-    private let menuSize = CGSize(width: 650, height: K.ScreenDimensions.size.height / 3)
+    private let menuSizeShort = CGSize(width: 650, height: K.ScreenDimensions.size.height / 4)
+    private let menuSizeTall = CGSize(width: 650, height: K.ScreenDimensions.size.height / 3)
+    private var menuSize: CGSize { isGameCompleted ? menuSizeTall : menuSizeShort }
     private let levelSelectSize = CGSize(width: 650, height: K.ScreenDimensions.size.height / 4) / UIDevice.spriteScale
     private let settingsSize = CGSize(width: K.ScreenDimensions.size.width, height: K.ScreenDimensions.size.width * 5 / 4)
     private var currentMenuSelected: MenuPage = .main
+    private var isGameCompleted: Bool { FIRManager.saveStateModel?.gameCompleted ?? false }
     
     weak var titleSceneDelegate: TitleSceneDelegate?
     
@@ -130,7 +133,7 @@ class TitleScene: SKScene {
         
         
         //Menu Setup
-        let menuPosition = CGPoint(x: K.ScreenDimensions.size.width / 2, y: menuSize.height / 2 + K.ScreenDimensions.bottomMargin)
+        let menuPosition = CGPoint(x: K.ScreenDimensions.size.width / 2, y: menuSizeTall.height / 2 + K.ScreenDimensions.bottomMargin)
         let menuSpacing: CGFloat = 133
         let menuCornerRadius: CGFloat = 20
         let shouldSkipIntro = UserDefaults.standard.bool(forKey: K.UserDefaults.shouldSkipIntro)
@@ -152,15 +155,15 @@ class TitleScene: SKScene {
 
         menuStart = MenuItemLabel(text: "Start Game", ofType: .menuStart, at: CGPoint(x: 0, y: menuSize.height / 2 - 1 * menuSpacing))
         menuLevelSelect = MenuItemLabel(text: "Level Select", ofType: .menuLevelSelect, at: CGPoint(x: 0, y: menuSize.height / 2 - 2 * menuSpacing))
-        menuSettings = MenuItemLabel(text: "Settings", ofType: .menuSettings, at: CGPoint(x: 0, y: menuSize.height / 2 - 3 * menuSpacing))
-        menuCredits = MenuItemLabel(text: "Credits", ofType: .menuCredits, at: CGPoint(x: 0, y: menuSize.height / 2 - 4 * menuSpacing))
+        menuSettings = MenuItemLabel(text: "Settings", ofType: .menuSettings, at: CGPoint(x: 0, y: menuSize.height / 2 - (isGameCompleted ? 3 : 2) * menuSpacing))
+        menuCredits = MenuItemLabel(text: "Credits", ofType: .menuCredits, at: CGPoint(x: 0, y: menuSize.height / 2 - (isGameCompleted ? 4 : 3) * menuSpacing))
         
         menuStart.delegate = self
         menuLevelSelect.delegate = self
         menuSettings.delegate = self
         menuCredits.delegate = self
         
-        menuLevelSelect.setIsEnabled(FIRManager.saveStateModel?.gameCompleted ?? false)
+        menuLevelSelect.setIsEnabled(isGameCompleted)
         
         
         //Level Select Setup
@@ -315,7 +318,11 @@ class TitleScene: SKScene {
 
         menuBackground.addChild(menuBackgroundText)
         menuBackgroundText.addChild(menuStart)
-        menuBackgroundText.addChild(menuLevelSelect)
+        
+        if isGameCompleted {
+            menuBackgroundText.addChild(menuLevelSelect)
+        }
+        
         menuBackgroundText.addChild(menuSettings)
         menuBackgroundText.addChild(menuCredits)
         levelSelectBackground.addChild(levelSelectPage)
@@ -380,8 +387,8 @@ class TitleScene: SKScene {
             ]))
             
             if shouldAnchorBottom {
-                secondNode.run(SKAction.moveTo(y: menuSize.height / 2 + bottomMargin, duration: animationDuration))
-                menuBackground.run( SKAction.moveTo(y: menuSize.height / 2 + bottomMargin, duration: animationDuration))
+                secondNode.run(SKAction.moveTo(y: menuSizeTall.height / 2 + bottomMargin, duration: animationDuration))
+                menuBackground.run( SKAction.moveTo(y: menuSizeTall.height / 2 + bottomMargin, duration: animationDuration))
             }
         }
         else {
