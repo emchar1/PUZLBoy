@@ -477,6 +477,7 @@ class GameScene: SKScene {
         gameEngine.moveSprites(to: self)
         scoringEngine.moveSprites(to: self, isPartyLevel: Level.isPartyLevel(currentLevel))
         chatEngine.moveSprites(to: self)
+        levelSkipEngine.moveSprites(to: self, level: currentLevel)
 
         pauseResetEngine.moveSprites(to: self, level: currentLevel)
         pauseResetEngine.registerHowToPlayTableView()
@@ -489,17 +490,7 @@ class GameScene: SKScene {
             
             addChild(offlinePlaySprite)
             offlinePlaySprite.animateSprite()
-        }
-        
-        if let user = FIRManager.user,
-           !Level.isPartyLevel(currentLevel),
-           user.uid == FIRManager.userEddie ||
-            user.uid == FIRManager.userMichel ||
-            user.uid == FIRManager.userMom
-        {
-            // FIXME: - Uncomment to enable LevelSkipEngine for Eddie, Michel and Mom
-            levelSkipEngine.moveSprites(to: self)
-        }
+        }        
     }
     
     private func playDialogue() {

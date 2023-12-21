@@ -676,13 +676,10 @@ class GameEngine {
         superScene.addChild(backgroundSprite)
         superScene.addChild(bloodOverlay)
         superScene.addChild(gameboardSprite.sprite)
+        hintEngine.move(toNode: backgroundSprite)
         
         if !Level.isPartyLevel(level.level) {
             superScene.addChild(displaySprite.sprite)
-        }
-        
-        if let user = FIRManager.user, user.uid == FIRManager.userEddie {
-            backgroundSprite.addChild(hintEngine.sprite)
         }
 
         playerSprite.sprite.removeFromParent() //This is needed, otherwise gameboardSprite keeps adding it, below

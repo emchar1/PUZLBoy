@@ -543,14 +543,6 @@
 			path = SpriteKit;
 			sourceTree = "<group>";
 		};
-		EA1F0E652B0AAFA100EE0EEE /* Debug */ = {
-			isa = PBXGroup;
-			children = (
-				EA95D2112963B4580061059C /* LevelSkipEngine.swift */,
-			);
-			path = Debug;
-			sourceTree = "<group>";
-		};
 		EA34678F299AFF62002DDA02 /* Level */ = {
 			isa = PBXGroup;
 			children = (
@@ -956,7 +948,7 @@
 				EA3951F02939DE5900D0B14A /* ScoringEngine.swift */,
 				EA95D1DE295674AE0061059C /* ChatEngine.swift */,
 				EA1F0E662B0AB0BA00EE0EEE /* HintEngine.swift */,
-				EA1F0E652B0AAFA100EE0EEE /* Debug */,
+				EA95D2112963B4580061059C /* LevelSkipEngine.swift */,
 				EA6A79F529CC035B00F47A73 /* PauseReset */,
 			);
 			path = Engines;

@@ -84,9 +84,17 @@ class LevelSkipEngine {
      Adds all the sprites to the superScene, i.e. should be called in a GameScene's moveTo() function.
      - parameter superScene: The GameScene to add all the children to.
      */
-    func moveSprites(to superScene: SKScene) {
+    func moveSprites(to superScene: SKScene, level: Int) {
+        guard let user = FIRManager.user, !Level.isPartyLevel(level),
+            user.uid == FIRManager.userEddie ||
+            user.uid == FIRManager.userMichel ||
+            user.uid == FIRManager.userMom
+        else {
+            return
+        }
+        
+        // FIXME: - Uncomment the below 3 lines to enable level skip debugging.
         self.superScene = superScene
-
         superScene.addChild(forwardSprite)
         superScene.addChild(reverseSprite)
     }
