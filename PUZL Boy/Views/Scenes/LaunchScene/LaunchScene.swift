@@ -162,6 +162,7 @@ class LaunchScene: SKScene {
         var bezierDuration: TimeInterval { moveDuration }
         var maxAnimationDuration: TimeInterval { playerCrouchDuration + jumpDuration + bezierDuration }
         let paddingDuration: TimeInterval = 0.5
+        let impactShakeDuration: TimeInterval = 0.05
         
         func fadeSkyObjectNode(_ node: SKNode) {
             node.run(SKAction.sequence([
@@ -217,6 +218,17 @@ class LaunchScene: SKScene {
                 let scaleAction = SKAction.scale(to: 2, duration: bezierDuration)
                 scaleAction.timingFunction = { time in pow(time, 16) }
                 
+                let impactShakeAction = SKAction.sequence([
+                    SKAction.wait(forDuration: bezierDuration),
+                    SKAction.scale(to: 2.5, duration: impactShakeDuration),
+                    SKAction.scale(to: 1.5, duration: impactShakeDuration),
+                    SKAction.scale(to: 2.25, duration: impactShakeDuration),
+                    SKAction.scale(to: 1.75, duration: impactShakeDuration),
+                    SKAction.scale(to: 2.1, duration: impactShakeDuration),
+                    SKAction.scale(to: 1.9, duration: impactShakeDuration),
+                    SKAction.scale(to: 2, duration: impactShakeDuration)
+                ])
+                
                 //Audio fun
                 AudioManager.shared.playSound(for: "boyattack3", delay: moveDuration / 2)
                 AudioManager.shared.playSound(for: "boyimpact", delay: moveDuration * maxAnimationDuration)
@@ -240,7 +252,8 @@ class LaunchScene: SKScene {
                     SKAction.group([
                         SKAction.setTexture(SKTexture(imageNamed: "Run (5)")),
                         followBezierAction,
-                        scaleAction
+                        scaleAction,
+                        impactShakeAction
                     ])
                 ]))
             default:
@@ -249,7 +262,7 @@ class LaunchScene: SKScene {
             } //end switch node.name
         } //end for node in children
         
-        run(SKAction.wait(forDuration: moveDuration * (maxAnimationDuration + paddingDuration))) {
+        run(SKAction.wait(forDuration: moveDuration * (maxAnimationDuration + paddingDuration) + impactShakeDuration * 7)) {
             completion(nil)
         }
     }

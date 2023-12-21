@@ -94,9 +94,9 @@ class LevelSkipEngine {
         }
         
         // FIXME: - Uncomment the below 3 lines to enable level skip debugging.
-//        self.superScene = superScene
-//        superScene.addChild(forwardSprite)
-//        superScene.addChild(reverseSprite)
+        self.superScene = superScene
+        superScene.addChild(forwardSprite)
+        superScene.addChild(reverseSprite)
     }
     
     
