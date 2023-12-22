@@ -224,8 +224,6 @@ class LaunchScene: SKScene {
                     SKAction.scale(to: 1.5, duration: impactShakeDuration),
                     SKAction.scale(to: 2.25, duration: impactShakeDuration),
                     SKAction.scale(to: 1.75, duration: impactShakeDuration),
-                    SKAction.scale(to: 2.1, duration: impactShakeDuration),
-                    SKAction.scale(to: 1.9, duration: impactShakeDuration),
                     SKAction.scale(to: 2, duration: impactShakeDuration)
                 ])
                 
@@ -262,7 +260,7 @@ class LaunchScene: SKScene {
             } //end switch node.name
         } //end for node in children
         
-        run(SKAction.wait(forDuration: moveDuration * (maxAnimationDuration + paddingDuration) + impactShakeDuration * 7)) {
+        run(SKAction.wait(forDuration: moveDuration * (maxAnimationDuration + paddingDuration) + impactShakeDuration * 5)) {
             completion(nil)
         }
     }

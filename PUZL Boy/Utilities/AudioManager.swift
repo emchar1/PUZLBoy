@@ -169,7 +169,8 @@ class AudioManager {
         addAudioItem("scarymusicbox", category: .music) //needs purchase $21
         addAudioItem("overworld", category: .music)
         addAudioItem("overworldparty", category: .music)
-        
+        addAudioItem("overworld_castle", category: .music)
+
         
         //9/13/23 Call this AFTER adding all the audioItems above!
         updateVolumes()
