@@ -170,6 +170,7 @@ class AudioManager {
         addAudioItem("overworld", category: .music)
         addAudioItem("overworldparty", category: .music)
         addAudioItem("overworld_castle", category: .music)
+        addAudioItem("overworldgrassland", category: .music)
 
         
         //9/13/23 Call this AFTER adding all the audioItems above!

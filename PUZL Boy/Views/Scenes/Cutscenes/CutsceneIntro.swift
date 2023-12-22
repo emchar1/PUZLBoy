@@ -140,7 +140,7 @@ class CutsceneIntro: SKScene {
         speechPrincess = SpeechBubbleSprite(width: 460, position: princessPositionFinal + CGPoint(x: -200, y: 400), tailOrientation: .bottomRight)
 
         AudioManager.shared.playSound(for: "birdsambience", fadeIn: 5)
-        AudioManager.shared.playSound(for: "overworld_castle", fadeIn: 5)
+        AudioManager.shared.playSound(for: "overworldgrassland", fadeIn: 5)
     }
     
     
@@ -246,8 +246,8 @@ class CutsceneIntro: SKScene {
                                     superScene: self, completion: nil)
                                 
                                 AudioManager.shared.stopSound(for: "birdsambience", fadeDuration: 5)
-                                AudioManager.shared.stopSound(for: "overworld_castle", fadeDuration: 5)
-                                AudioManager.shared.playSound(for: "scarymusicbox", fadeIn: 3, delay: 3)
+                                AudioManager.shared.stopSound(for: "overworldgrassland", fadeDuration: 5)
+                                AudioManager.shared.playSound(for: "scarymusicbox", fadeIn: 5, delay: 3)
                             }
                         ]))
                     },
@@ -281,14 +281,14 @@ class CutsceneIntro: SKScene {
                         run(SKAction.sequence([
                             SKAction.run {
                                 AudioManager.shared.playSound(for: "birdsambience", fadeIn: 2)
-                                AudioManager.shared.playSound(for: "overworld_castle", fadeIn: 2)
+                                AudioManager.shared.playSound(for: "overworldgrassland", fadeIn: 2)
                                 AudioManager.shared.stopSound(for: "scarymusicbox", fadeDuration: 3)
                             },
                             SKAction.wait(forDuration: 2),
                             SKAction.run {
                                 AudioManager.shared.playSound(for: "thunderrumble")
-                                AudioManager.shared.stopSound(for: "birdsambience", fadeDuration: 6)
-                                AudioManager.shared.stopSound(for: "overworld_castle", fadeDuration: 6)
+                                AudioManager.shared.stopSound(for: "birdsambience", fadeDuration: 7)
+                                AudioManager.shared.stopSound(for: "overworldgrassland", fadeDuration: 7)
                             },
                             SKAction.wait(forDuration: 2),
                             SKAction.run {
