@@ -87,6 +87,14 @@ class SpeechBubbleSprite: SKNode {
         backgroundSprite.addChild(textSprite)
     }
     
+    func cleanupQuit() {
+        timer.invalidate()
+        dispatchWorkItem.cancel()
+        backgroundSprite.removeAllActions()
+        backgroundSprite.removeFromParent()
+        removeFromParent()
+    }
+    
     
     // MARK: - Tail Orientation Functions
     

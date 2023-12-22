@@ -302,6 +302,10 @@ class CreditsScene: SKScene {
         fadeOutNode.run(SKAction.fadeIn(withDuration: 1.0)) { [unowned self] in
             disableInput = false
             
+            // BUGFIX# 231222E01 MUST call this here!!! Prevents memory leak when rage quitting early.
+            speechBubble.cleanupQuit()
+            speechBubble = nil
+            
             creditsSceneDelegate?.goBackTapped()
         }
     }
