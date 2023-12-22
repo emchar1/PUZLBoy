@@ -115,7 +115,6 @@ class AudioManager {
         addAudioItem("magicblast", category: .soundFX) //needs purchase $1
         addAudioItem("magicteleport", category: .soundFX) //needs purchase $1
         addAudioItem("magicwarp", category: .soundFX)
-        addAudioItem("magicwarpNEW", category: .soundFX) //DELETE?
         addAudioItem("moveglide", category: .soundFX)
         addAudioItem("movemarsh1", category: .soundFX)
         addAudioItem("movemarsh2", category: .soundFX)
@@ -152,7 +151,6 @@ class AudioManager {
         
         //Looped SFX
         addAudioItem("clocktick", category: .soundFXLoop)
-        addAudioItem("magicdoomloopOLD", category: .soundFXLoop) //DELETE?
         addAudioItem("magicdoomloop", category: .soundFXLoop) //needs purchase $2
         addAudioItem("littlegirllaugh", category: .soundFXLoop) //needs purchase $2
         
@@ -169,8 +167,7 @@ class AudioManager {
         addAudioItem("scarymusicbox", category: .music) //needs purchase $21
         addAudioItem("overworld", category: .music)
         addAudioItem("overworldparty", category: .music)
-        addAudioItem("overworld_castle", category: .music)
-        addAudioItem("overworldgrassland", category: .music)
+        addAudioItem("overworldgrassland", category: .music) //needs purchase $20
 
         
         //9/13/23 Call this AFTER adding all the audioItems above!
