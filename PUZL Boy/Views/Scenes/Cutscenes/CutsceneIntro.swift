@@ -287,8 +287,8 @@ class CutsceneIntro: SKScene {
                             SKAction.wait(forDuration: 2),
                             SKAction.run {
                                 AudioManager.shared.playSound(for: "thunderrumble")
-                                AudioManager.shared.stopSound(for: "birdsambience", fadeDuration: 7)
-                                AudioManager.shared.stopSound(for: "overworldgrassland", fadeDuration: 7)
+                                AudioManager.shared.stopSound(for: "birdsambience", fadeDuration: 6)
+                                AudioManager.shared.stopSound(for: "overworldgrassland", fadeDuration: 6)
                             },
                             SKAction.wait(forDuration: 2),
                             SKAction.run {
