@@ -504,19 +504,20 @@ class CutsceneIntro: SKScene {
 
 extension CutsceneIntro: SkipIntroSpriteDelegate {
     func buttonWasTapped() {
-        ButtonTap.shared.tap(type: .buttontap1)
+        let fadeDuration: TimeInterval = 1.0
 
         //MUST stop all sounds if rage quitting early!
-        AudioManager.shared.stopSound(for: "birdsambience", fadeDuration: 1)
-        AudioManager.shared.stopSound(for: "overworldgrassland", fadeDuration: 1)
-        AudioManager.shared.stopSound(for: "scarymusicbox", fadeDuration: 1)
-        AudioManager.shared.stopSound(for: "ageofruin", fadeDuration: 1)
-        AudioManager.shared.stopSound(for: "thunderrumble", fadeDuration: 1)
+        AudioManager.shared.stopSound(for: "birdsambience", fadeDuration: fadeDuration)
+        AudioManager.shared.stopSound(for: "overworldgrassland", fadeDuration: fadeDuration)
+        AudioManager.shared.stopSound(for: "scarymusicbox", fadeDuration: fadeDuration)
+        AudioManager.shared.stopSound(for: "ageofruin", fadeDuration: fadeDuration)
+        AudioManager.shared.stopSound(for: "thunderrumble", fadeDuration: fadeDuration)
 
+        ButtonTap.shared.tap(type: .buttontap1)
         UserDefaults.standard.set(true, forKey: K.UserDefaults.shouldSkipIntro)
 
         fadeTransitionNode.run(SKAction.sequence([
-            SKAction.fadeIn(withDuration: 1),
+            SKAction.fadeIn(withDuration: fadeDuration),
             SKAction.removeFromParent()
         ])) { [unowned self] in
             self.completion?()
