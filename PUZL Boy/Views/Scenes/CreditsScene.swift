@@ -303,7 +303,7 @@ class CreditsScene: SKScene {
             disableInput = false
             
             // BUGFIX# 231222E01 MUST call this here!!! Prevents memory leak when rage quitting early.
-            speechBubble.cleanupQuit()
+            speechBubble.cleanupManually()
             speechBubble = nil
             
             creditsSceneDelegate?.goBackTapped()

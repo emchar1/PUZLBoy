@@ -87,7 +87,8 @@ class SpeechBubbleSprite: SKNode {
         backgroundSprite.addChild(textSprite)
     }
     
-    func cleanupQuit() {
+    ///Invalidates timers and dispatch work items, remove actions, and nodes from parent. Call this when rage quitting CreditsScene, i.e. from a button tap, to prevent memory leaks. BUGFIX# 231222E01.
+    func cleanupManually() {
         timer.invalidate()
         dispatchWorkItem.cancel()
         backgroundSprite.removeAllActions()
