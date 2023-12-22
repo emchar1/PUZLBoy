@@ -64,7 +64,6 @@ class PurchasePage: ParentPage {
                                           text: "+1 Life:  ▶️ Ad",
                                           type: .add1Life,
                                           buttonColor: DecisionButtonSprite.colorBlue,
-                                          priceColor: .systemGreen,
                                           image: "buttonAd")
         watchAdButton.position = CGPoint(x: PurchasePage.padding, y: -topMargin)
         watchAdButton.zPosition = 10
