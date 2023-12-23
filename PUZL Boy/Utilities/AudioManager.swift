@@ -55,6 +55,7 @@ class AudioManager {
     let titleLogo = "titletheme"
     let overworldTheme = "overworld"
     let overworldPartyTheme = "overworldparty"
+    let grasslandTheme = "overworld_castle"
     private(set) var currentTheme: String
     private var audioItems: [String: AudioItem] = [:]
     
@@ -167,7 +168,8 @@ class AudioManager {
         addAudioItem("scarymusicbox", category: .music) //needs purchase $21
         addAudioItem("overworld", category: .music)
         addAudioItem("overworldparty", category: .music)
-        addAudioItem("overworldgrassland", category: .music) //needs purchase $20
+        addAudioItem("overworldgrassland", category: .music) //needs purchase $20 - sounds too hopeful. Need more inquisitive.
+        addAudioItem("overworld_castle", category: .music) //TEST
 
         
         //9/13/23 Call this AFTER adding all the audioItems above!

@@ -119,14 +119,19 @@ class SpeechBubbleSprite: SKNode {
     
     // MARK: - Animation Functions
     
-    func setText(text: String, speed: TimeInterval = SpeechBubbleSprite.animationSpeedOrig, superScene: SKScene, completion: (() -> Void)?) {
+    func setText(text: String, speed: TimeInterval = SpeechBubbleSprite.animationSpeedOrig, superScene: SKScene, parentNode: SKNode? = nil, completion: (() -> Void)?) {
         bubbleText = text
         textSprite.text = ""
         animationSpeed = speed
         animationIndex = 0
         self.completion = completion
 
-        superScene.addChild(self)
+        if let parentNode = parentNode {
+            parentNode.addChild(self)
+        }
+        else {
+            superScene.addChild(self)
+        }
         
         beginAnimation()
     }

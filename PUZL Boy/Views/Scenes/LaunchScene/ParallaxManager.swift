@@ -100,14 +100,21 @@ class ParallaxManager: SKNode {
     
     /**
      Call this method to correctly add all the parallaxSprites children to the parent scene.
-     - parameter scene: The parent scene that calls this class
+     - parameters:
+        - scene: The parent scene that calls this class
+        - node: optional parent node to set the backgroundSprite to. If not nil, use this, otherwise set it to the scene.
      */
-    func addSpritesToParent(scene: SKScene) {
+    func addSpritesToParent(scene: SKScene, node parentNode: SKNode? = nil) {
         for sprite in parallaxSprites {
             backgroundSprite.addChild(sprite)
         }
         
-        scene.addChild(backgroundSprite)
+        if let parentNode = parentNode {
+            parentNode.addChild(backgroundSprite)
+        }
+        else {
+            scene.addChild(backgroundSprite)
+        }
     }
     
         

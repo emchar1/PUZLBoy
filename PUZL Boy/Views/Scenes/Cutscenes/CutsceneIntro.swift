@@ -35,6 +35,7 @@ class CutsceneIntro: SKScene {
     private var skipIntroSprite: SkipIntroSprite!
 
     //Overlays
+    private var backgroundNode: SKShapeNode!
     private var dimOverlayNode: SKShapeNode!
     private var bloodOverlayNode: SKShapeNode!
     private var flashOverlayNode: SKShapeNode!
@@ -90,6 +91,10 @@ class CutsceneIntro: SKScene {
         dragonSprite.zPosition = K.ZPosition.player - 10
         
         flyingDragon = FlyingDragon()
+        
+        backgroundNode = SKShapeNode(rectOf: K.ScreenDimensions.size)
+        backgroundNode.fillColor = .clear
+        backgroundNode.lineWidth = 0
 
         skyNode = SKSpriteNode(texture: SKTexture(image: DayTheme.getSkyImage(useMorningSky: true)))
         skyNode.size = CGSize(width: K.ScreenDimensions.size.width, height: K.ScreenDimensions.size.height / 2)
@@ -140,24 +145,25 @@ class CutsceneIntro: SKScene {
         speechPrincess = SpeechBubbleSprite(width: 460, position: princessPositionFinal + CGPoint(x: -200, y: 400), tailOrientation: .bottomRight)
 
         AudioManager.shared.playSound(for: "birdsambience", fadeIn: 5)
-        AudioManager.shared.playSound(for: "overworldgrassland", fadeIn: 5)
+        AudioManager.shared.playSound(for: AudioManager.shared.grasslandTheme, fadeIn: 5)
     }
     
     
     // MARK: - Move Functions
     
     override func didMove(to view: SKView) {
-        addChild(skyNode)
-        addChild(bloodSkyNode)
-        addChild(dimOverlayNode)
-        addChild(bloodOverlayNode)
-        addChild(flashOverlayNode)
-        addChild(fadeTransitionNode)
-        addChild(hero.sprite)
-        addChild(princess.sprite)
-        addChild(dragonSprite)
+        addChild(backgroundNode)
+        backgroundNode.addChild(skyNode)
+        backgroundNode.addChild(bloodSkyNode)
+        backgroundNode.addChild(dimOverlayNode)
+        backgroundNode.addChild(bloodOverlayNode)
+        backgroundNode.addChild(flashOverlayNode)
+        backgroundNode.addChild(fadeTransitionNode)
+        backgroundNode.addChild(hero.sprite)
+        backgroundNode.addChild(princess.sprite)
+        backgroundNode.addChild(dragonSprite)
         
-        parallaxManager.addSpritesToParent(scene: self)
+        parallaxManager.addSpritesToParent(scene: self, node: backgroundNode)
     }
     
     
@@ -246,7 +252,7 @@ class CutsceneIntro: SKScene {
                                     superScene: self, completion: nil)
                                 
                                 AudioManager.shared.stopSound(for: "birdsambience", fadeDuration: 5)
-                                AudioManager.shared.stopSound(for: "overworldgrassland", fadeDuration: 5)
+                                AudioManager.shared.stopSound(for: AudioManager.shared.grasslandTheme, fadeDuration: 5)
                                 AudioManager.shared.playSound(for: "scarymusicbox", fadeIn: 5, delay: 3)
                             }
                         ]))
@@ -278,17 +284,31 @@ class CutsceneIntro: SKScene {
                             SKAction.fadeAlpha(to: 0.25, duration: 6)
                         ]))
 
+                        
+                        let nudge: CGFloat = 5
+                        let nudgeDuration: TimeInterval = 0.04
+                        
+                        backgroundNode.run(SKAction.sequence([
+                            SKAction.wait(forDuration: 4),
+                            SKAction.repeat(SKAction.sequence([
+                                SKAction.moveBy(x: -nudge, y: nudge, duration: nudgeDuration),
+                                SKAction.moveBy(x: nudge, y: nudge, duration: nudgeDuration),
+                                SKAction.moveBy(x: nudge, y: -nudge, duration: nudgeDuration),
+                                SKAction.moveBy(x: -nudge, y: -nudge, duration: nudgeDuration),
+                            ]), count: Int(6.0 / nudgeDuration))
+                        ]))
+                        
                         run(SKAction.sequence([
                             SKAction.run {
                                 AudioManager.shared.playSound(for: "birdsambience", fadeIn: 2)
-                                AudioManager.shared.playSound(for: "overworldgrassland", fadeIn: 2)
+                                AudioManager.shared.playSound(for: AudioManager.shared.grasslandTheme, fadeIn: 2)
                                 AudioManager.shared.stopSound(for: "scarymusicbox", fadeDuration: 3)
                             },
                             SKAction.wait(forDuration: 2),
                             SKAction.run {
                                 AudioManager.shared.playSound(for: "thunderrumble")
                                 AudioManager.shared.stopSound(for: "birdsambience", fadeDuration: 6)
-                                AudioManager.shared.stopSound(for: "overworldgrassland", fadeDuration: 6)
+                                AudioManager.shared.stopSound(for: AudioManager.shared.grasslandTheme, fadeDuration: 6)
                             },
                             SKAction.wait(forDuration: 2),
                             SKAction.run {
@@ -324,7 +344,7 @@ class CutsceneIntro: SKScene {
                             }
                         ]))
                     },
-                    SpeechBubbleItem(profile: speechPrincess, speed: 0.01, chat: "AAAAAAAAAAAAAAAAAAAAAAAAAAHHHHHHHHHHHHHH!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!") { [unowned self] in
+                    SpeechBubbleItem(profile: speechPrincess, speed: 0.01, chat: "OH, NO! IT'S HAPPENING!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!") { [unowned self] in
                         wideShot()
                         
                         dragonSprite.position = CGPoint(x: princessPositionFinal.x, y: princessPositionFinal.y + princess.sprite.size.height / 2)
@@ -427,7 +447,7 @@ class CutsceneIntro: SKScene {
             return
         }
         
-        items[currentIndex].profile.setText(text: items[currentIndex].chat, speed: items[currentIndex].speed, superScene: self) { [unowned self] in
+        items[currentIndex].profile.setText(text: items[currentIndex].chat, speed: items[currentIndex].speed, superScene: self, parentNode: backgroundNode) { [unowned self] in
             items[currentIndex].handler?()
             
             //Recursion!!
@@ -454,6 +474,11 @@ class CutsceneIntro: SKScene {
         princess.sprite.position.x = screenSize.width / 2
         princess.sprite.setScale(2 * 0.75)
         princess.sprite.xScale = -2 * 0.75
+        
+        princess.sprite.run(SKAction.sequence([
+            SKAction.wait(forDuration: 20),
+            SKAction.scaleX(to: -4 * 0.75, y: 4 * 0.75, duration: 20)
+        ]))
         
         hero.sprite.position.x = -200
         hero.sprite.setScale(playerScale)
@@ -508,7 +533,7 @@ extension CutsceneIntro: SkipIntroSpriteDelegate {
 
         //MUST stop all sounds if rage quitting early!
         AudioManager.shared.stopSound(for: "birdsambience", fadeDuration: fadeDuration)
-        AudioManager.shared.stopSound(for: "overworldgrassland", fadeDuration: fadeDuration)
+        AudioManager.shared.stopSound(for: AudioManager.shared.grasslandTheme, fadeDuration: fadeDuration)
         AudioManager.shared.stopSound(for: "scarymusicbox", fadeDuration: fadeDuration)
         AudioManager.shared.stopSound(for: "ageofruin", fadeDuration: fadeDuration)
         AudioManager.shared.stopSound(for: "thunderrumble", fadeDuration: fadeDuration)
