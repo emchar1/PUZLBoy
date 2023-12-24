@@ -572,8 +572,7 @@ extension ChatEngine {
             ]) { [unowned self] in
                 handleDialogueCompletion(level: level, completion: completion)
             }
-        // FIXME: - This dialogue sucks..
-        case 131:
+        case 131: // FIXME: - This dialogue sucks..
             sendChatArray(items: [
                 ChatItem(profile: .hero, chat: "You good, old man?? You've been awfully quiet. You're usually going on and on about useless info right about now."),
                 ChatItem(profile: .trainer, chat: "Don't make me snap."),
@@ -593,7 +592,7 @@ extension ChatEngine {
             ]) { [unowned self] in
                 handleDialogueCompletion(level: level, completion: completion)
             }
-        case 132:
+        case 132: // TODO: - Rework
             let spawnPoint: K.GameboardPosition = (3, 1)
             
             delegate?.spawnPrincessCapture(at: spawnPoint) { [unowned self] in
