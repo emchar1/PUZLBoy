@@ -121,6 +121,8 @@
 		EA956C6A29257B9C00879AD0 /* AudioManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA956C6929257B9C00879AD0 /* AudioManager.swift */; };
 		EA956C6C29257D9600879AD0 /* Extension+Comparable.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA956C6B29257D9600879AD0 /* Extension+Comparable.swift */; };
 		EA95B3092A8C9DA300C5F028 /* speechbubble.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA95B3082A8C9DA300C5F028 /* speechbubble.mp3 */; };
+		EA95C5C82B37EDA80047B328 /* overworldgrassland2.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA95C5C72B37EDA80047B328 /* overworldgrassland2.mp3 */; };
+		EA95C5CA2B38035D0047B328 /* overworldgrassland3.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA95C5C92B38035C0047B328 /* overworldgrassland3.mp3 */; };
 		EA95D18929459BC80061059C /* moveglide.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA95D18829459BC80061059C /* moveglide.mp3 */; };
 		EA95D18D29459D550061059C /* Extension+UIFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA95D18C29459D550061059C /* Extension+UIFont.swift */; };
 		EA95D18E2945A0200061059C /* LuckiestGuy-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = EA95D18B29459C4A0061059C /* LuckiestGuy-Regular.ttf */; };
@@ -373,6 +375,8 @@
 		EA956C6929257B9C00879AD0 /* AudioManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioManager.swift; sourceTree = "<group>"; };
 		EA956C6B29257D9600879AD0 /* Extension+Comparable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+Comparable.swift"; sourceTree = "<group>"; };
 		EA95B3082A8C9DA300C5F028 /* speechbubble.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = speechbubble.mp3; sourceTree = "<group>"; };
+		EA95C5C72B37EDA80047B328 /* overworldgrassland2.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = overworldgrassland2.mp3; sourceTree = "<group>"; };
+		EA95C5C92B38035C0047B328 /* overworldgrassland3.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = overworldgrassland3.mp3; sourceTree = "<group>"; };
 		EA95D18829459BC80061059C /* moveglide.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = moveglide.mp3; sourceTree = "<group>"; };
 		EA95D18B29459C4A0061059C /* LuckiestGuy-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "LuckiestGuy-Regular.ttf"; sourceTree = "<group>"; };
 		EA95D18C29459D550061059C /* Extension+UIFont.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+UIFont.swift"; sourceTree = "<group>"; };
@@ -834,6 +838,8 @@
 				EAA6A3612B36B51A00E5D77F /* overworld_castle.mp3 */,
 				EA3467AE29A8CB39002DDA02 /* overworld.mp3 */,
 				EAA6A35E2B359ADE00E5D77F /* overworldgrassland.mp3 */,
+				EA95C5C72B37EDA80047B328 /* overworldgrassland2.mp3 */,
+				EA95C5C92B38035C0047B328 /* overworldgrassland3.mp3 */,
 				EA45834E2A44316F00279056 /* overworldparty.mp3 */,
 				EA4583502A44319000279056 /* partyfast.mp3 */,
 				EA4583522A4431A000279056 /* partypill.mp3 */,
@@ -1112,6 +1118,7 @@
 				EA95D19C294690B70061059C /* boyattack1.mp3 in Resources */,
 				EA45834F2A44316F00279056 /* overworldparty.mp3 in Resources */,
 				EA45835B2A4431D300279056 /* titletheme.mp3 in Resources */,
+				EA95C5CA2B38035D0047B328 /* overworldgrassland3.mp3 in Resources */,
 				EAE2156E2ABF57EB0090735A /* magicblast.mp3 in Resources */,
 				EAE215582ABD1DEB0090735A /* MagicParticles.sks in Resources */,
 				EA95D1A3294691820061059C /* boygrunt1.mp3 in Resources */,
@@ -1125,6 +1132,7 @@
 				EA0F145D292994330013038E /* moverun1.mp3 in Resources */,
 				EA4583552A4431B000279056 /* partyslow.mp3 in Resources */,
 				EA95B3092A8C9DA300C5F028 /* speechbubble.mp3 in Resources */,
+				EA95C5C82B37EDA80047B328 /* overworldgrassland2.mp3 in Resources */,
 				EA01BB5F2A10746800EAB70B /* buttontap6.mp3 in Resources */,
 				EAE6EC342A12D27F001842C6 /* buttontap7.mp3 in Resources */,
 				EAAEA3C42931D0DA00221963 /* swordslash.mp3 in Resources */,
