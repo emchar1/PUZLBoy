@@ -243,7 +243,7 @@ class CutsceneIntro: SKScene {
                         closeUpPrincess()
                         
                         dimOverlayNode.run(SKAction.sequence([
-                            SKAction.wait(forDuration: 14),
+                            SKAction.wait(forDuration: 28),
                             SKAction.fadeAlpha(to: 0.8, duration: 1),
                             SKAction.wait(forDuration: 2),
                             SKAction.run { [unowned self] in
@@ -257,7 +257,7 @@ class CutsceneIntro: SKScene {
                             }
                         ]))
                     },
-                    SpeechBubbleItem(profile: speechPrincess, chat: "Oh, umm...|| you sure ask a lot of questions!||||||||/But if you must know,| the reason why I'm here is because—blah blah blah...||||/Blah blah blah, blah blah blah DRAGONS blah, blah blah, blah blah blah, blah.||||||||/VAELORIA blah, blah.| BLAH blah blah blah, blahhhhh blah.| Blah. Blah. Blah. M|A|G|I|C!!||||||||/And furthermore—||blah blah blah,| blah blah blah.| Blah, blah, blah|| .|.|.|A|G|E| O|F| R|U|I|N|.||||||||") { [unowned self] in
+                    SpeechBubbleItem(profile: speechPrincess, chat: "Oh, umm...|| you sure ask a lot of questions!||||||||/But if you must know,| the reason I'm here is because, well.. first of all, Oh—I'm a princess!|||/But not here though. I'm a princess in a very very far away place.|||/You see, I'm not from this place. But I got here because—blah blah blah...||||/Blah blah blah, blah blah blah DRAGONS blah, blah blah, blah blah blah, blah.||||||||/VAELORIA blah, blah.| BLAH blah blah blah, blahhhhh blah.| Blah. Blah. Blah. M|A|G|I|C!!||||||||/And furthermore—||blah blah blah,| blah blah blah.| Blah, blah, blah|| .|.|.|A|G|E| O|F| R|U|I|N|.||||||||") { [unowned self] in
                         wideShot()
                         
                         dimOverlayNode.run(SKAction.fadeOut(withDuration: 1))
@@ -476,7 +476,7 @@ class CutsceneIntro: SKScene {
         princess.sprite.xScale = -2 * 0.75
         
         princess.sprite.run(SKAction.sequence([
-            SKAction.wait(forDuration: 20),
+            SKAction.wait(forDuration: 34),
             SKAction.scaleX(to: -4 * 0.75, y: 4 * 0.75, duration: 20)
         ]))
         
@@ -538,6 +538,7 @@ extension CutsceneIntro: SkipIntroSpriteDelegate {
         AudioManager.shared.stopSound(for: "ageofruin", fadeDuration: fadeDuration)
         AudioManager.shared.stopSound(for: "thunderrumble", fadeDuration: fadeDuration)
 
+        Haptics.shared.stopHapticEngine()
         ButtonTap.shared.tap(type: .buttontap1)
         UserDefaults.standard.set(true, forKey: K.UserDefaults.shouldSkipIntro)
 
