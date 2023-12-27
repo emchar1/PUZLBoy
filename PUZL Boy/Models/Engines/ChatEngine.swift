@@ -377,11 +377,10 @@ extension ChatEngine {
         dialoguePlayed[76] = false
         dialoguePlayed[PauseResetEngine.resetButtonUnlock] = false
         dialoguePlayed[112] = false
-        dialoguePlayed[131] = false
         dialoguePlayed[PauseResetEngine.hintButtonUnlock] = false
 
         //Villain capture levels - hand selected. Preferred spawn points are in the comments below.
-        dialoguePlayed[132] = false //(3, 1)
+        dialoguePlayed[157] = false //(3, 2)
         dialoguePlayed[154] = false //(0, 3) // TODO: - WHAT'S SUPPOSED TO HAPPEN HERE??
         dialoguePlayed[187] = false //(2, 1) // TODO: - WHAT'S SUPPOSED TO HAPPEN HERE??
     }
@@ -426,24 +425,24 @@ extension ChatEngine {
                 ChatItem(profile: .hero, chat: "A marlin is a fish... You're thinking of Merlin the Magician. OH! Is that your name? Merlin?"),
                 ChatItem(profile: .trainer, chat: "I think I know my own name. Listen!! There are 500 levels in total you will have to solve, each with increasing difficulty."),
                 ChatItem(profile: .hero, chat: "500 levels?!! What do I get if I win?"),
-                ChatItem(profile: .trainer, chat: "You save the world!!! Geez! Now where was I... Oh yeah, the goal for each level is to get to the gate in under a certain number of moves.", handler: { [unowned self] in
+                ChatItem(profile: .trainer, chat: "You save the world!!! Geez! Now where was I... Oh yeah, the goal for each level is to get to the gate in under a certain number of moves.") { [unowned self] in
                     delegate?.illuminatePanel(at: (0, 1), useOverlay: false)
                     delegate?.illuminatePanel(at: (1, 0), useOverlay: false)
                     delegate?.illuminatePanel(at: (1, 2), useOverlay: false)
                     delegate?.illuminatePanel(at: (2, 1), useOverlay: false)
-                }),
-                ChatItem(profile: .trainer, chat: "You can move to any available panel on your left, right, above, and below. Simply tap the panel to move there. Diagonal moves are not allowed.", handler: { [unowned self] in
+                },
+                ChatItem(profile: .trainer, chat: "You can move to any available panel on your left, right, above, and below. Simply tap the panel to move there. Diagonal moves are not allowed.") { [unowned self] in
                     delegate?.deilluminatePanel(at: (0, 1), useOverlay: false)
                     delegate?.deilluminatePanel(at: (1, 0), useOverlay: false)
                     delegate?.deilluminatePanel(at: (1, 2), useOverlay: false)
                     delegate?.deilluminatePanel(at: (2, 1), useOverlay: false)
                     delegate?.illuminateDisplayNode(for: .moves)
-                }),
-                ChatItem(profile: .trainer, chat: "If your move count hits 0, it's game over, buddy! Your move count can be found in the upper left corner next to the boot. 👢", handler: { [unowned self] in
+                },
+                ChatItem(profile: .trainer, chat: "If your move count hits 0, it's game over, buddy! Your move count can be found in the upper left corner next to the boot. 👢") { [unowned self] in
                     delegate?.deilluminateDisplayNode(for: .moves)
                     delegate?.illuminatePanel(at: (1, 2), useOverlay: true)
                     delegate?.illuminatePanel(at: (2, 2), useOverlay: false)
-                }),
+                },
                 ChatItem(profile: .trainer, chat: "See the gate? It's closed. To open it, collect all the gems in the level. Simple, right?"),
                 ChatItem(profile: .hero, chat: "Right. Let's go save the princess!")
             ]) { [unowned self] in
@@ -457,13 +456,13 @@ extension ChatEngine {
             delegate?.illuminatePanel(at: (1, 1), useOverlay: true)
             
             sendChatArray(items: [
-                ChatItem(profile: .trainer, chat: "Pretty easy, right?! Levels get progressively harder with various obstacles blocking your path.", handler: { [unowned self] in
+                ChatItem(profile: .trainer, chat: "Pretty easy, right?! Levels get progressively harder with various obstacles blocking your path.") { [unowned self] in
                     delegate?.illuminateDisplayNode(for: .hammers)
-                }),
+                },
                 ChatItem(profile: .trainer, chat: "You need a hammer to break through those boulders. Your inventory count can be found in the upper right. 🔨"),
-                ChatItem(profile: .hero, chat: "Hammers break boulders. Got it.", handler: { [unowned self] in
+                ChatItem(profile: .hero, chat: "Hammers break boulders. Got it.") { [unowned self] in
                     delegate?.deilluminateDisplayNode(for: .hammers)
-                }),
+                },
                 ChatItem(profile: .trainer, chat: "Since there are no hammers in this level, you'll just have to go around them."),
                 ChatItem(profile: .hero, chat: "Ah well, gotta get my steps in."),
                 ChatItem(profile: .trainer, chat: "Oh, and one more thing... hammers can only be used once before breaking, so plan your moves ahead of time.")
@@ -508,17 +507,17 @@ extension ChatEngine {
                 ChatItem(profile: .hero, chat: "THAT'S HIM!!! That's the dragon that abducted the princess! 😡"),
                 ChatItem(profile: .trainer, chat: "Relax... That's one of many dragons you'll encounter on your journey. But don't get too close or it'll cost ya 1 health point."),
                 ChatItem(profile: .hero, chat: "He looks kinda small and underwhelming to me..."),
-                ChatItem(profile: .trainer, chat: "Hey, this is a solo project with $0 budget, whaddya want from me?! As I was saying...", handler: { [unowned self] in
+                ChatItem(profile: .trainer, chat: "Hey, this is a solo project with $0 budget, whaddya want from me?! As I was saying...") { [unowned self] in
                     delegate?.illuminateDisplayNode(for: .health)
-                }),
-                ChatItem(profile: .trainer, chat: "Once your health drops to 0, it's lights out, baby. Your health can be found in the upper left next to the heart. 💖", handler: { [unowned self] in
+                },
+                ChatItem(profile: .trainer, chat: "Once your health drops to 0, it's lights out, baby. Your health can be found in the upper left next to the heart. 💖") { [unowned self] in
                     delegate?.deilluminateDisplayNode(for: .health)
                     delegate?.illuminateDisplayNode(for: .swords)
-                }),
+                },
                 ChatItem(profile: .trainer, chat: "Don't believe me? Go ahead. Try and pet him, I dare you! But you won't be able to defeat him without a sword. 🗡"),
-                ChatItem(profile: .hero, chat: "Yeah, ok old man. Lemme guess, I can only use the sword once before it breaks?", handler: { [unowned self] in
+                ChatItem(profile: .hero, chat: "Yeah, ok old man. Lemme guess, I can only use the sword once before it breaks?") { [unowned self] in
                     delegate?.deilluminateDisplayNode(for: .swords)
-                }),
+                },
                 ChatItem(profile: .trainer, chat: "You got it. Atta boy! 🫰🏼"),
                 ChatItem(profile: .hero, chat: "😵‍💫 Woof woof— Stop that!")
             ]) { [unowned self] in
@@ -534,13 +533,13 @@ extension ChatEngine {
             sendChatArray(items: [
                 ChatItem(profile: .trainer, chat: "Ice, ice, baby! Step on this and you'll slide until you hit either an obstacle or the edge of the level."),
                 ChatItem(profile: .trainer, chat: "The nice thing though is that it'll only cost you 1 move as long as you're sliding continuously."),
-                ChatItem(profile: .hero, chat: "Ok. I think I got it, old man.", handler: { [unowned self] in
+                ChatItem(profile: .hero, chat: "Ok. I think I got it, old man.") { [unowned self] in
                     delegate?.deilluminatePanel(at: (0, 1), useOverlay: false)
                     delegate?.deilluminatePanel(at: (0, 2), useOverlay: false)
                     delegate?.deilluminatePanel(at: (1, 2), useOverlay: false)
                     delegate?.deilluminatePanel(at: (0, 1), useOverlay: true)
                     delegate?.deilluminatePanel(at: (1, 2), useOverlay: true)
-                }),
+                },
                 ChatItem(profile: .trainer, chat: "Well, I'll leave you alone for now. I'll chime in every now and then if I think you need it.")
             ]) { [unowned self] in
                 handleDialogueCompletion(level: level, completion: completion)
@@ -548,13 +547,13 @@ extension ChatEngine {
         case PauseResetEngine.resetButtonUnlock:
             sendChatArray(items: [
                 ChatItem(profile: .trainer, chat: "Congrats! You made it to level \(PauseResetEngine.resetButtonUnlock). There's a bonus at the end of every 50 levels. Beat this and you're one step closer to indescribable fun!!! 💃🏾🪩🕺🏻"),
-                ChatItem(profile: .hero, chat: "I can hardly contain my excitement.", handler: { [unowned self] in
+                ChatItem(profile: .hero, chat: "I can hardly contain my excitement.") { [unowned self] in
                     delegate?.illuminateMinorButton(for: .reset)
-                }),
+                },
                 ChatItem(profile: .trainer, chat: "That's the spirit! Now if you ever get stuck, you can tap the Reset button to restart the level."),
-                ChatItem(profile: .trainer, chat: "Be warned though, restarting a level will cost you one of your precious lives...", handler: { [unowned self] in
+                ChatItem(profile: .trainer, chat: "Be warned though, restarting a level will cost you one of your precious lives...") { [unowned self] in
                     delegate?.deilluminateMinorButton(for: .reset)
-                }),
+                },
                 ChatItem(profile: .hero, chat: "It's all good. My mom can buy me more lives if I need it. 😃")
             ]) { [unowned self] in
                 GameCenterManager.shared.updateProgress(achievement: .avidReader, shouldReportImmediately: true)
@@ -572,28 +571,31 @@ extension ChatEngine {
             ]) { [unowned self] in
                 handleDialogueCompletion(level: level, completion: completion)
             }
-        case 131: // FIXME: - This dialogue sucks..
+        case PauseResetEngine.hintButtonUnlock:
             sendChatArray(items: [
-                ChatItem(profile: .hero, chat: "You good, old man?? You've been awfully quiet. You're usually going on and on about useless info right about now."),
+                ChatItem(profile: .hero, chat: "You good, old man?? You've been awfully quiet. You're usually going on and on and on about useless info right about now."),
                 ChatItem(profile: .trainer, chat: "Don't make me snap."),
-                ChatItem(profile: .hero, chat: "Don't snap!!!"),
-                ChatItem(profile: .hero, chat: "Look, if it's the old man comments, everybody gets old. It's just an inevitability of life. I'm 16 so everyone looks old to me. And you're..."),
-                ChatItem(profile: .trainer, chat: "900."),
+                ChatItem(profile: .hero, chat: "No don't! Look, if it's the old man comments, everybody gets old. It's just an inevitability of life. I'm 16 so everyone looks old to me. You're like what... 58?"),
+                ChatItem(profile: .trainer, chat: "902."),
                 ChatItem(profile: .hero, chat: "NINE HUNDRED??!! What are you, like a wizard or something? \"Marlin the Fish Wizard...\""),
                 ChatItem(profile: .hero, chat: "Wait... ARE YOU REALLY A WIZARD?!?! Because I'm not surprised by anything anymore at this point..."),
-                ChatItem(profile: .trainer, chat: "There's a lot you must learn to prepare for the upcoming battle to save your world and the worlds beyond your world."),
+                ChatItem(profile: .trainer, chat: "Once we've located the princess, I need to cast the gateway spell to open the portal and send her back to Vaeloria."),
                 ChatItem(profile: .hero, chat: "I mean you don't look a day over 800 to be honest..."),
                 ChatItem(profile: .trainer, chat: "PUZL Boy, I need you to be serious! What lies ahead will test your patience. It will make you want to throw your phone out the window. You need to be prepared!"),
-                ChatItem(profile: .hero, chat: "Ok ok. I'll be ready. I already know how to use hammers and swords. Nothing can stop me!"),
-                ChatItem(profile: .trainer, chat: "You reached out to me for my help. I need you to trust me now."),
-                ChatItem(profile: .hero, chat: "Well yeah, after I saw a freakin' dragon swoop down from the sky and snatch a 7 year old girl ...then you appeared almost out of nowhere!"),
-                ChatItem(profile: .trainer, chat: "Good. Then we're in agreement. Now no more silly questions. Let's keep pushing forward."),
-                ChatItem(profile: .hero, chat: "Wow.. 900 years old. I have soooo many questions...")
+                ChatItem(profile: .hero, chat: "Ok ok. I'll be ready. I already know how to use hammers and swords. Nothing can stop me!") { [unowned self] in
+                    delegate?.illuminateMinorButton(for: .hint)
+                },
+                ChatItem(profile: .trainer, chat: "I'm adding another tool to your arsenal. Tap the Hints button at the start of a level to illuminate your next move. Tap again to get the next hint."),
+                ChatItem(profile: .trainer, chat: "Keep tapping for as many hints you need. Hints become disabled once you move past your last hint. The number in red is your available hints."),
+                ChatItem(profile: .trainer, chat: "If you run out of hints, you can buy more in the Shop tab of the Settings menu. Any questions?") { [unowned self] in
+                    delegate?.deilluminateMinorButton(for: .hint)
+                },
+                ChatItem(profile: .hero, chat: "Wow.. you're 900 years old. I have soooo many questions...")
             ]) { [unowned self] in
                 handleDialogueCompletion(level: level, completion: completion)
             }
-        case 132: // TODO: - Rework
-            let spawnPoint: K.GameboardPosition = (3, 1)
+        case 157: // TODO: - Rework
+            let spawnPoint: K.GameboardPosition = (3, 2)
             
             delegate?.spawnPrincessCapture(at: spawnPoint) { [unowned self] in
                 sendChatArray(items: [
@@ -610,19 +612,6 @@ extension ChatEngine {
                         handleDialogueCompletion(level: level, completion: completion)
                     }
                 }
-            }
-        case PauseResetEngine.hintButtonUnlock: // TODO: - Rework
-            sendChatArray(items: [
-                ChatItem(profile: .hero, chat: "You got something for me?", handler: { [unowned self] in
-                    delegate?.illuminateMinorButton(for: .hint)
-                }),
-                ChatItem(profile: .trainer, chat: "Tap the hint button if you need a hint. Hints work at the start of the level. The number of hints show you how many you have."),
-                ChatItem(profile: .trainer, chat: "You can buy more hints in the Shop menu.", handler: { [unowned self] in
-                    delegate?.deilluminateMinorButton(for: .hint)
-                }),
-                ChatItem(profile: .hero, chat: "That is absolutely fantastic!")
-            ]) { [unowned self] in
-                handleDialogueCompletion(level: level, completion: completion)
             }
         default:
             isChatting = false
