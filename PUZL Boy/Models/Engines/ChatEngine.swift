@@ -600,11 +600,11 @@ extension ChatEngine {
             delegate?.spawnPrincessCapture(at: spawnPoint) { [unowned self] in
                 sendChatArray(items: [
                     ChatItem(profile: .princess, chat: "PRINCESS OLIVIA: Help meeeee PUZL Boy!!! It's dark and scary over here. And this guy's breath is really stinky!"),
-                    ChatItem(profile: .villain, chat: "MASKED VILLAIN: If you want to see your precious princess again, you need to go deeper into the dungeon... MUAHAHAHAHAHAHA!!!!"),
+                    ChatItem(profile: .villain, chat: "MASKED VILLAIN: If you want to see your precious princess again, then hand over what I need. MUAHAHAHAHAHAHA!!!!"),
                     ChatItem(profile: .princess, chat: "Eww, your breath!"),
                     ChatItem(profile: .hero, chat: "If you touch a hair on her head, it's gonna be the end for you, smelly shadow man!"),
-                    ChatItem(profile: .villain, chat: "MUAHAHAHAHAHHAHAHAAGGGGGHH! *cough* *cough* 😮‍💨"),
-                    ChatItem(profile: .princess, chat: "Uh gross.. 🤮")
+                    ChatItem(profile: .villain, chat: "MUAHAHAHAHAHHAHAHAAGGGGGHH! *cough* *cough* *HACK* 😮‍💨 ...ugh that one's black."),
+                    ChatItem(profile: .princess, chat: "Ew gross!! 🤮")
                 ]) { [unowned self] in
                     fadeDimOverlay()
                     
