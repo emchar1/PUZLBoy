@@ -398,8 +398,10 @@ class GameScene: SKScene {
         if Level.isPartyLevel(level) {
             if !PartyModeSprite.shared.isPartying {
                 PartyModeSprite.shared.setIsPartying(true)
-                PartyModeSprite.shared.startParty(to: self, partyBoy: gameEngine.playerSprite,
-                                                  hasSword: gameEngine.level.inventory.hasSwords(), hasHammer: gameEngine.level.inventory.hasHammers())
+                PartyModeSprite.shared.startParty(to: self, 
+                                                  partyBoy: gameEngine.playerSprite,
+                                                  hasSword: gameEngine.level.inventory.hasSwords(),
+                                                  hasHammer: gameEngine.level.inventory.hasHammers())
                 scoringEngine.timerManager.setIsParty(true)
             }
         }
@@ -407,7 +409,8 @@ class GameScene: SKScene {
             if PartyModeSprite.shared.isPartying {
                 PartyModeSprite.shared.setIsPartying(false)
                 PartyModeSprite.shared.stopParty(partyBoy: gameEngine.playerSprite,
-                                                 hasSword: gameEngine.level.inventory.hasSwords(), hasHammer: gameEngine.level.inventory.hasHammers())
+                                                 hasSword: gameEngine.level.inventory.hasSwords(), 
+                                                 hasHammer: gameEngine.level.inventory.hasHammers())
                 scoringEngine.timerManager.setIsParty(false)
             }
         }
@@ -424,9 +427,10 @@ class GameScene: SKScene {
             AudioManager.shared.playSound(for: AudioManager.shared.currentTheme)
         }
         
-        //Play interstitial ad
+        //Uncomment to play interstitial ad every X levels
 //        if level % 100 == 0 && level >= 20 && didWin {
 //            prepareAd {
+//                AdMobManager.shared.delegate = self
 //                AdMobManager.shared.presentInterstitial()
 //            }
 //        }
