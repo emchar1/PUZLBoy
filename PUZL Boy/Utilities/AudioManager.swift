@@ -53,9 +53,9 @@ class AudioManager {
     }()
     
     let titleLogo = "titletheme"
-    let overworldTheme = "overworld"
+    let overworldTheme = "overworld_egg"//"overworld"
     let overworldPartyTheme = "overworldparty"
-    let grasslandTheme = "overworldgrassland2"
+    let grasslandTheme = "overworldgrassland"
     private(set) var currentTheme: String
     private var audioItems: [String: AudioItem] = [:]
     
@@ -168,10 +168,8 @@ class AudioManager {
         addAudioItem("scarymusicbox", category: .music) //needs purchase $21
         addAudioItem("overworld", category: .music)
         addAudioItem("overworldparty", category: .music)
-        addAudioItem("overworldgrassland", category: .music) //needs purchase $20 - This would've been perfect if not for the dramatic swell
-        addAudioItem("overworldgrassland2", category: .music) //needs purchase $20 - I'm leaning towards this one
-        addAudioItem("overworldgrassland3", category: .music) //needs purchase $20 - No.
-        addAudioItem("overworld_castle", category: .music) //TEST
+        addAudioItem("overworldgrassland", category: .music) //needs purchase $20
+        addAudioItem("overworld_egg", category: .music) //TEST ONLY
 
         
         //9/13/23 Call this AFTER adding all the audioItems above!

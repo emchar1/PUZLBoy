@@ -162,7 +162,7 @@ class LaunchScene: SKScene {
         var bezierDuration: TimeInterval { moveDuration }
         var maxAnimationDuration: TimeInterval { playerCrouchDuration + jumpDuration + bezierDuration }
         let paddingDuration: TimeInterval = 0.5
-        let impactShakeDuration: TimeInterval = 0.05
+        let impactShakeDuration: TimeInterval = 0.1
         
         func fadeSkyObjectNode(_ node: SKNode) {
             node.run(SKAction.sequence([
@@ -220,10 +220,7 @@ class LaunchScene: SKScene {
                 
                 let impactShakeAction = SKAction.sequence([
                     SKAction.wait(forDuration: bezierDuration),
-                    SKAction.scale(to: 2.5, duration: impactShakeDuration),
-                    SKAction.scale(to: 1.5, duration: impactShakeDuration),
-                    SKAction.scale(to: 2.25, duration: impactShakeDuration),
-                    SKAction.scale(to: 1.75, duration: impactShakeDuration),
+                    SKAction.scale(to: 4, duration: impactShakeDuration),
                     SKAction.scale(to: 2, duration: impactShakeDuration)
                 ])
                 
@@ -260,7 +257,7 @@ class LaunchScene: SKScene {
             } //end switch node.name
         } //end for node in children
         
-        run(SKAction.wait(forDuration: moveDuration * (maxAnimationDuration + paddingDuration) + impactShakeDuration * 5)) {
+        run(SKAction.wait(forDuration: moveDuration * (maxAnimationDuration + paddingDuration) + impactShakeDuration * 2)) {
             completion(nil)
         }
     }
