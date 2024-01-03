@@ -368,6 +368,9 @@ class ChatEngine {
 extension ChatEngine {
     ///Populates the dialoguePlayed array. Need to include all levels where dialogue is to occur, and also add the level case in the playDialogue() function.
     private func populateKeyDialogue() {
+        dialoguePlayed[-250] = false
+        dialoguePlayed[-200] = false
+        dialoguePlayed[-150] = false
         dialoguePlayed[Level.partyLevel] = false
         dialoguePlayed[1] = false
         dialoguePlayed[8] = false
@@ -612,6 +615,39 @@ extension ChatEngine {
                         handleDialogueCompletion(level: level, completion: completion)
                     }
                 }
+            }
+        case -150: // TODO: - Rework Post Party Magmoor Dialogue
+            AudioManager.shared.playSound(for: "scarymusicbox")
+            
+            sendChatArray(items: [
+                ChatItem(profile: .villain, chat: "MASKED VILLAIN: Please come back to meeeee."),
+                ChatItem(profile: .trainer, chat: "You will never have meeeeee."),
+                ChatItem(profile: .villain, chat: "Drat the luck.")
+            ]) { [unowned self] in
+                AudioManager.shared.stopSound(for: "scarymusicbox", fadeDuration: 1)
+                handleDialogueCompletion(level: level, completion: completion)
+            }
+        case -200:
+            AudioManager.shared.playSound(for: "scarymusicbox")
+            
+            sendChatArray(items: [
+                ChatItem(profile: .villain, chat: "C'mon dude! When are you gonna move here?"),
+                ChatItem(profile: .trainer, chat: "Ummm, soon."),
+                ChatItem(profile: .villain, chat: "Get a condo here. Just do it.")
+            ]) { [unowned self] in
+                AudioManager.shared.stopSound(for: "scarymusicbox", fadeDuration: 1)
+                handleDialogueCompletion(level: level, completion: completion)
+            }
+        case -250:
+            AudioManager.shared.playSound(for: "scarymusicbox")
+            
+            sendChatArray(items: [
+                ChatItem(profile: .villain, chat: "You're such a stud."),
+                ChatItem(profile: .trainer, chat: "You're a stud."),
+                ChatItem(profile: .villain, chat: "My wife will kill you if she found out.")
+            ]) { [unowned self] in
+                AudioManager.shared.stopSound(for: "scarymusicbox", fadeDuration: 1)
+                handleDialogueCompletion(level: level, completion: completion)
             }
         default:
             isChatting = false
