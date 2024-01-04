@@ -108,7 +108,7 @@ class PartyModeSprite: SKNode {
         }
     }
     
-    func stopParty(partyBoy: PlayerSprite, hasSword: Bool, hasHammer: Bool) {
+    func stopParty(partyBoy: PlayerSprite, hasSword: Bool, hasHammer: Bool, shouldFadeAndRemovePlayer: Bool) {
         currentMultiplier = 2
         speedMultiplier = speedMultipliers[currentMultiplier]
         
@@ -125,6 +125,13 @@ class PartyModeSprite: SKNode {
         removeAllActions()
 
         partyBoy.stopPartyAnimation(hasSword: hasSword, hasHammer: hasHammer)
+        
+        if shouldFadeAndRemovePlayer {
+            partyBoy.sprite.run(SKAction.sequence([
+                SKAction.fadeOut(withDuration: 1),
+                SKAction.removeFromParent()
+            ]))
+        }
     }
     
     func startParty(to superScene: SKScene, partyBoy: PlayerSprite, hasSword: Bool, hasHammer: Bool) {

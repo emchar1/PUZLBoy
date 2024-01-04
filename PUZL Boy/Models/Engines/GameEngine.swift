@@ -1072,7 +1072,9 @@ class GameEngine {
 
             //Run this BEFORE startDeadAnimation!!
             PartyModeSprite.shared.stopParty(partyBoy: playerSprite,
-                                             hasSword: level.inventory.hasSwords(), hasHammer: level.inventory.hasHammers())
+                                             hasSword: level.inventory.hasSwords(), 
+                                             hasHammer: level.inventory.hasHammers(),
+                                             shouldFadeAndRemovePlayer: false)
             
             playerSprite.startDeadAnimation { [unowned self] in
                 delegate?.gameIsOver(firstTimeCalled: true)

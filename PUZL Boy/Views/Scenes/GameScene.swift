@@ -410,7 +410,8 @@ class GameScene: SKScene {
                 PartyModeSprite.shared.setIsPartying(false)
                 PartyModeSprite.shared.stopParty(partyBoy: gameEngine.playerSprite,
                                                  hasSword: gameEngine.level.inventory.hasSwords(), 
-                                                 hasHammer: gameEngine.level.inventory.hasHammers())
+                                                 hasHammer: gameEngine.level.inventory.hasHammers(),
+                                                 shouldFadeAndRemovePlayer: false)
                 scoringEngine.timerManager.setIsParty(false)
             }
         }
