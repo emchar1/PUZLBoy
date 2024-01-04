@@ -137,32 +137,29 @@ class PartyResultsSprite: SKNode {
         
         backgroundSprite.fillTexture = SKTexture(image: DayTheme.getSkyImage())
         
+        let xPosition = -backgroundSize.width / 2
+        let waitDuration = 0.25
+
         run(SKAction.sequence([
             SKAction.scale(to: 1.1, duration: 0.25),
             SKAction.scale(to: 0.95, duration: 0.2),
             SKAction.scale(to: 1, duration: 0.2),
+            SKAction.run { [unowned self] in backgroundSprite.showShadow(animationDuration: 0.1, completion: nil) },
+            SKAction.run { [unowned self] in gemsLineItem.animateAppear(xPosition: xPosition) },
+            SKAction.wait(forDuration: waitDuration),
+            SKAction.run { [unowned self] in gemsDoubleLineItem.animateAppear(xPosition: xPosition) },
+            SKAction.wait(forDuration: waitDuration),
+            SKAction.run { [unowned self] in gemsTripleLineItem.animateAppear(xPosition: xPosition) },
+            SKAction.wait(forDuration: waitDuration),
+            SKAction.run { [unowned self] in gemsTotalLineItem.animateAppear(xPosition: xPosition) },
+            SKAction.wait(forDuration: waitDuration),
+            SKAction.run { [unowned self] in hintsLineItem.animateAppear(xPosition: xPosition) },
+            SKAction.wait(forDuration: waitDuration),
+            SKAction.run { [unowned self] in livesLineItem.animateAppear(xPosition: xPosition) },
+            SKAction.wait(forDuration: waitDuration),
+            SKAction.run { [unowned self] in livesTotalLineItem.animateAppear(xPosition: xPosition) }
         ])) { [unowned self] in
-            let xPosition = -backgroundSize.width / 2
-            
-            backgroundSprite.showShadow(animationDuration: 0.1, completion: nil)
-            
-            // FIXME: - I hate this nesting of death
-            gemsLineItem.animateAppear(xPosition: xPosition) { [unowned self] in
-                gemsDoubleLineItem.animateAppear(xPosition: xPosition) { [unowned self] in
-                    gemsTripleLineItem.animateAppear(xPosition: xPosition) { [unowned self] in
-                        gemsTotalLineItem.animateAppear(xPosition: xPosition) { [unowned self] in
-                            hintsLineItem.animateAppear(xPosition: xPosition) { [unowned self] in
-                                livesLineItem.animateAppear(xPosition: xPosition) { [unowned self] in
-                                    livesTotalLineItem.animateAppear(xPosition: xPosition) { [unowned self] in
-                                        animateHelper(totalGems: totalGems, lives: lives, totalLives: totalLives, completion: completion)
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            } //end nesting of death
-
+            animateHelper(totalGems: totalGems, lives: lives, totalLives: totalLives, completion: completion)
         }
     }
     

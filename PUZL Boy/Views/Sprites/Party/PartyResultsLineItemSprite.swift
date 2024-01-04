@@ -103,7 +103,7 @@ class PartyResultsLineItemSprite: SKNode {
     }
     
     ///Animates the appearance of the line item sprite in fade/grow animation.
-    func animateAppear(xPosition: CGFloat, completion: @escaping () -> Void) {
+    func animateAppear(xPosition: CGFloat) {
         run(SKAction.group([
             SKAction.fadeIn(withDuration: 0),
             SKAction.sequence([
@@ -116,7 +116,7 @@ class PartyResultsLineItemSprite: SKNode {
                 SKAction.scale(to: 0.95, duration: 0.25),
                 SKAction.scale(to: 1, duration: 0.125)
             ])
-        ]), completion: completion)
+        ]))
     }
     
     ///Fades out, i.e. instantaneous alpha = 0

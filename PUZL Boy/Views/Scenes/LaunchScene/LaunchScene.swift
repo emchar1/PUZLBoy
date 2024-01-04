@@ -220,7 +220,7 @@ class LaunchScene: SKScene {
                 
                 let impactShakeAction = SKAction.sequence([
                     SKAction.wait(forDuration: bezierDuration),
-                    SKAction.scale(to: 4, duration: impactShakeDuration),
+                    SKAction.scale(to: 3, duration: impactShakeDuration),
                     SKAction.scale(to: 2, duration: impactShakeDuration)
                 ])
                 
