@@ -456,24 +456,35 @@ class GameScene: SKScene {
         }
     }
     
-    private func continueFromAd(completion: (() -> Void)?) {
-        let fadeDuration: TimeInterval = 1.0
-        
-        AudioManager.shared.raiseVolume(for: AudioManager.shared.currentTheme, fadeDuration: fadeDuration)
-        
-        gameEngine.fadeBloodOverlay(shouldFadeOut: false, duration: fadeDuration)
-
-        adSprite?.run(SKAction.sequence([
-            SKAction.colorize(with: .clear, colorBlendFactor: 1.0, duration: fadeDuration),
-            SKAction.removeFromParent()
-        ])) { [unowned self] in
-            scoringEngine.timerManager.resumeTime()
+    private func continueFromAd(shouldFade: Bool, completion: (() -> Void)?) {
+        func resetTimer() {
+            scoringEngine.timerManager.resetTime()
             startTimer()
             gameEngine.shouldDisableInput(false)
             
-            adSprite = nil
-
             completion?()
+        }
+        
+        let fadeDuration: TimeInterval = 1.0
+        
+        AudioManager.shared.raiseVolume(for: AudioManager.shared.currentTheme, fadeDuration: fadeDuration)
+        gameEngine.fadeBloodOverlay(shouldFadeOut: false, duration: fadeDuration)
+
+        if shouldFade {
+            adSprite?.run(SKAction.sequence([
+                SKAction.colorize(with: .clear, colorBlendFactor: 1.0, duration: fadeDuration),
+                SKAction.removeFromParent()
+            ])) { [unowned self] in
+                adSprite = nil
+
+                resetTimer()
+            }
+        }
+        else {
+            adSprite?.removeFromParent()
+            adSprite = nil
+            
+            resetTimer()
         }
     }
     
@@ -762,7 +773,7 @@ extension GameScene: AdMobManagerDelegate {
         AudioManager.shared.stopSound(for: "continueloop")
         
         continueSprite?.animateHide { [unowned self] in
-            continueFromAd { [unowned self] in
+            continueFromAd(shouldFade: true) { [unowned self] in
                 AudioManager.shared.playSound(for: "revive")
             
                 scoringEngine.scoringManager.resetScore()
@@ -794,7 +805,7 @@ extension GameScene: AdMobManagerDelegate {
     
     private func continueLevel(moves: Int) {
         continueSprite?.animateHide { [unowned self] in
-            continueFromAd { [unowned self] in
+            continueFromAd(shouldFade: true) { [unowned self] in
                 AudioManager.shared.playSound(for: "revive")
                 AudioManager.shared.stopSound(for: "continueloop")
                 AudioManager.shared.playSound(for: AudioManager.shared.currentTheme)
