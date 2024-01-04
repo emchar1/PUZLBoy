@@ -53,7 +53,7 @@ class AudioManager {
     }()
     
     let titleLogo = "titletheme"
-    let overworldTheme = "overworld_egg"//"overworld"
+    let overworldTheme = "overworld"
     let overworldPartyTheme = "overworldparty"
     let grasslandTheme = "overworldgrassland"
     private(set) var currentTheme: String
@@ -169,7 +169,6 @@ class AudioManager {
         addAudioItem("overworld", category: .music)
         addAudioItem("overworldparty", category: .music)
         addAudioItem("overworldgrassland", category: .music) //needs purchase $20
-        addAudioItem("overworld_egg", category: .music) //TEST ONLY
 
         
         //9/13/23 Call this AFTER adding all the audioItems above!
