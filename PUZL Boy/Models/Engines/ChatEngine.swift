@@ -62,17 +62,23 @@ class ChatEngine {
     
     private struct ChatItem {
         let profile: ChatProfile
+        let imgPos: ImagePosition
         let chat: String
         let handler: (() -> Void)?
         
-        init(profile: ChatProfile, chat: String, handler: (() -> Void)?) {
+        enum ImagePosition {
+            case left, right
+        }
+        
+        init(profile: ChatProfile, imgPos: ImagePosition = .right, chat: String, handler: (() -> Void)?) {
             self.profile = profile
+            self.imgPos = imgPos
             self.chat = chat
             self.handler = handler
         }
         
-        init(profile: ChatProfile, chat: String) {
-            self.init(profile: profile, chat: chat, handler: nil)
+        init(profile: ChatProfile, imgPos: ImagePosition = .right, chat: String) {
+            self.init(profile: profile, imgPos: imgPos, chat: chat, handler: nil)
         }
     }
     
@@ -232,6 +238,7 @@ class ChatEngine {
         }
         else {
             sendChat(profile: items[currentIndex].profile,
+                     imgPos: items[currentIndex].imgPos,
                      startNewChat: currentIndex == 0,
                      endChat: currentIndex == items.count - 1,
                      chat: items[currentIndex].chat) { [unowned self] in
@@ -243,7 +250,7 @@ class ChatEngine {
         }
     }
     
-    private func sendChat(profile: ChatProfile, startNewChat: Bool, endChat: Bool, chat: String, completion: (() -> ())? = nil) {
+    private func sendChat(profile: ChatProfile, imgPos: ChatItem.ImagePosition, startNewChat: Bool, endChat: Bool, chat: String, completion: (() -> ())? = nil) {
         //Only allow a new chat if current chat isn't happening
         guard allowNewChat else { return }
         
@@ -275,11 +282,11 @@ class ChatEngine {
             backgroundSprite.fillColor = .red
         }
         
-        textSprite.position.x = origin.x + (profile != .hero ? padding.x : avatarSprite.size.width)
-        avatarSprite.position.x = origin.x + (profile == .hero ? padding.x : backgroundSpriteWidth - padding.x)
-        backgroundSprite.position.x = profile == .hero ? 0 : K.ScreenDimensions.size.width
+        textSprite.position.x = origin.x + (imgPos == .right ? padding.x : avatarSprite.size.width)
+        avatarSprite.position.x = origin.x + (imgPos == .left ? padding.x : backgroundSpriteWidth - padding.x)
+        backgroundSprite.position.x = imgPos == .left ? 0 : K.ScreenDimensions.size.width
         
-        avatarSprite.xScale = profile == .hero ? abs(avatarSprite.xScale) : -abs(avatarSprite.xScale)
+        avatarSprite.xScale = imgPos == .left ? abs(avatarSprite.xScale) : -abs(avatarSprite.xScale)
         backgroundSprite.setScale(0)
         
         //Animates the chat bubble zoom in for startNewChat
@@ -368,24 +375,27 @@ class ChatEngine {
 extension ChatEngine {
     ///Populates the dialoguePlayed array. Need to include all levels where dialogue is to occur, and also add the level case in the playDialogue() function.
     private func populateKeyDialogue() {
+        //Villain Party Dialogue
         dialoguePlayed[-250] = false
         dialoguePlayed[-200] = false
         dialoguePlayed[-150] = false
-        dialoguePlayed[Level.partyLevel] = false
+        
+        //Main Dialogue
+        dialoguePlayed[Level.partyLevel] = false //Level: -1
         dialoguePlayed[1] = false
         dialoguePlayed[8] = false
         dialoguePlayed[19] = false
         dialoguePlayed[34] = false
         dialoguePlayed[51] = false
         dialoguePlayed[76] = false
-        dialoguePlayed[PauseResetEngine.resetButtonUnlock] = false
+        dialoguePlayed[PauseResetEngine.resetButtonUnlock] = false //Level: 100
         dialoguePlayed[112] = false
-        dialoguePlayed[PauseResetEngine.hintButtonUnlock] = false
+        dialoguePlayed[PauseResetEngine.hintButtonUnlock] = false //Level: 140
 
-        //Villain capture levels - hand selected. Preferred spawn points are in the comments below.
+        //Princess Capture Dialogue
         dialoguePlayed[157] = false //(3, 2)
-        dialoguePlayed[154] = false //(0, 3) // TODO: - WHAT'S SUPPOSED TO HAPPEN HERE??
-        dialoguePlayed[187] = false //(2, 1) // TODO: - WHAT'S SUPPOSED TO HAPPEN HERE??
+//        dialoguePlayed[154] = false //(0, 3) // TODO: - WHAT'S SUPPOSED TO HAPPEN HERE??
+//        dialoguePlayed[187] = false //(2, 1) // TODO: - WHAT'S SUPPOSED TO HAPPEN HERE??
     }
     
     /**
@@ -404,30 +414,73 @@ extension ChatEngine {
         isChatting = true
 
         switch level {
-        case Level.partyLevel:
+        case -150: // TODO: - Rework Villain Party Dialogue
+            AudioManager.shared.playSound(for: "scarymusicbox", fadeIn: 3)
+            AudioManager.shared.playSound(for: "magicdoomloop", fadeIn: 3)
+            
             sendChatArray(items: [
-                ChatItem(profile: .hero, chat: "Yo, I feel funny. I'm seeing colorful flashing lights and the music is bumpin'. I can't stop moving.. and I like it!"),
+                ChatItem(profile: .villain, imgPos: .left, chat: "MASKED VILLAIN: You will never find her... You can keep trying, but it will all be in vain. Give up now..."),
+                ChatItem(profile: .trainer, chat: "Magmoor! So you ARE behind this. I should have known!"),
+                ChatItem(profile: .villain, imgPos: .left, chat: "MAGMOOR: Why are you so surprised??? We're bounded by fate, as the Sibyl revealed to us during the Crusades."),
+                ChatItem(profile: .trainer, chat: "That was over 500 years ago. LET HER GO AND THINGS WON'T GET UGLY!!"),
+                ChatItem(profile: .villain, imgPos: .left, chat: "We would have made a great duo—the strongest wizards in all the realms, but you chose a different path. Why did you leave?"),
+                ChatItem(profile: .trainer, chat: "...I did what I had to do."),
+                ChatItem(profile: .villain, imgPos: .left, chat: "Such a shame. So lost... One day you'll understand.")
+            ]) { [unowned self] in
+                AudioManager.shared.stopSound(for: "scarymusicbox", fadeDuration: 3)
+                AudioManager.shared.stopSound(for: "magicdoomloop", fadeDuration: 3)
+                handleDialogueCompletion(level: level, completion: completion)
+            }
+        case -200:
+            AudioManager.shared.playSound(for: "scarymusicbox", fadeIn: 3)
+            AudioManager.shared.playSound(for: "magicdoomloop", fadeIn: 3)
+
+            sendChatArray(items: [
+                ChatItem(profile: .villain, imgPos: .left, chat: "C'mon dude! When are you gonna move here?"),
+                ChatItem(profile: .trainer, chat: "Ummm, soon."),
+                ChatItem(profile: .villain, imgPos: .left, chat: "Get a condo here. Just do it.")
+            ]) { [unowned self] in
+                AudioManager.shared.stopSound(for: "scarymusicbox", fadeDuration: 3)
+                AudioManager.shared.stopSound(for: "magicdoomloop", fadeDuration: 3)
+                handleDialogueCompletion(level: level, completion: completion)
+            }
+        case -250:
+            AudioManager.shared.playSound(for: "scarymusicbox", fadeIn: 3)
+            AudioManager.shared.playSound(for: "magicdoomloop", fadeIn: 3)
+
+            sendChatArray(items: [
+                ChatItem(profile: .villain, imgPos: .left, chat: "You're such a stud."),
+                ChatItem(profile: .trainer, chat: "You're a stud."),
+                ChatItem(profile: .villain, imgPos: .left, chat: "My wife will kill you if she found out.")
+            ]) { [unowned self] in
+                AudioManager.shared.stopSound(for: "scarymusicbox", fadeDuration: 3)
+                AudioManager.shared.stopSound(for: "magicdoomloop", fadeDuration: 3)
+                handleDialogueCompletion(level: level, completion: completion)
+            }
+        case Level.partyLevel: //Level: -1
+            sendChatArray(items: [
+                ChatItem(profile: .hero, imgPos: .left, chat: "Yo, I feel funny. I'm seeing colorful flashing lights and the music is bumpin'. I can't stop moving.. and I like it!"),
                 ChatItem(profile: .trainer, chat: "Welcome to the DARK REALM! Looks like you ate one of those rainbow colored jelly beans, I see."),
-                ChatItem(profile: .hero, chat: "Jelly beans, right..."),
+                ChatItem(profile: .hero, imgPos: .left, chat: "Jelly beans, right..."),
                 ChatItem(profile: .trainer, chat: "Don't worry, the feeling lasts only a short amount of time, but while you're under its effects you can move to your heart's content."),
                 ChatItem(profile: .trainer, chat: "Run around collecting all the gems and bonuses that pop up in the level. But you gotta be quick before time runs out."),
                 ChatItem(profile: .trainer, chat: "Oh, and the one thing you want to look out for are rainbow bombs."),
                 ChatItem(profile: .trainer, chat: "Like, I know it's all pretty and fun looking, but avoid them at all costs, or it's the end of the bonus round."),
                 ChatItem(profile: .trainer, chat: "Why is it always the pretty things in life that are the most deadly..."),
-                ChatItem(profile: .hero, chat: "Don't step on the bombs. Yeah got it."),
+                ChatItem(profile: .hero, imgPos: .left, chat: "Don't step on the bombs. Yeah got it."),
                 ChatItem(profile: .trainer, chat: "OK. Now if the flashing lights become too much, you can tap the disco ball below to turn them off. 🪩 READY. SET. GO!")
             ]) { [unowned self] in
                 handleDialogueCompletion(level: level, completion: completion)
             }
         case 1:
             sendChatArray(items: [
-                ChatItem(profile: .hero, chat: "PUZL BOY: ...then the dragon swooped down and carried her away! So... what's our game plan? Also I didn't catch your name."),
+                ChatItem(profile: .hero, imgPos: .left, chat: "PUZL BOY: ...then the dragon swooped down and carried her away! So... what's our game plan? Also I didn't catch your name."),
                 ChatItem(profile: .trainer, chat: "MARLIN: I am Marlin. I suspect she is being held captive in the dragon's lair. We must move quickly. I'm going to guide you there, so pay attention."),
-                ChatItem(profile: .hero, chat: "Marlin, like the fish??? I hate fish by the way. The smell, the texture... So how do you know that's where they've taken her?"),
+                ChatItem(profile: .hero, imgPos: .left, chat: "Marlin, like the fish??? I hate fish by the way. The smell, the texture... So how do you know that's where they've taken her?"),
                 ChatItem(profile: .trainer, chat: "Marlin like the magician. Don't worry about it... OK. The lair is buried miles beneath the Earth's surface, and the only way to reach it is to solve logic puzzles."),
-                ChatItem(profile: .hero, chat: "A marlin is a fish... You're thinking of Merlin the Magician. OH! Is that your name? Merlin?"),
+                ChatItem(profile: .hero, imgPos: .left, chat: "A marlin is a fish... You're thinking of Merlin the Magician. OH! Is that your name? Merlin?"),
                 ChatItem(profile: .trainer, chat: "I think I know my own name. Listen!! There are 500 levels in total you will have to solve, each with increasing difficulty."),
-                ChatItem(profile: .hero, chat: "500 levels?!! What do I get if I win?"),
+                ChatItem(profile: .hero, imgPos: .left, chat: "500 levels?!! What do I get if I win?"),
                 ChatItem(profile: .trainer, chat: "You save the world!!! Geez! Now where was I... Oh yeah, the goal for each level is to get to the gate in under a certain number of moves.") { [unowned self] in
                     delegate?.illuminatePanel(at: (0, 1), useOverlay: false)
                     delegate?.illuminatePanel(at: (1, 0), useOverlay: false)
@@ -447,7 +500,7 @@ extension ChatEngine {
                     delegate?.illuminatePanel(at: (2, 2), useOverlay: false)
                 },
                 ChatItem(profile: .trainer, chat: "See the gate? It's closed. To open it, collect all the gems in the level. Simple, right?"),
-                ChatItem(profile: .hero, chat: "Right. Let's go save the princess!")
+                ChatItem(profile: .hero, imgPos: .left, chat: "Right. Let's go save the princess!")
             ]) { [unowned self] in
                 delegate?.deilluminatePanel(at: (1, 2), useOverlay: true)
                 delegate?.deilluminatePanel(at: (2, 2), useOverlay: false)
@@ -463,11 +516,11 @@ extension ChatEngine {
                     delegate?.illuminateDisplayNode(for: .hammers)
                 },
                 ChatItem(profile: .trainer, chat: "You need a hammer to break through those boulders. Your inventory count can be found in the upper right. 🔨"),
-                ChatItem(profile: .hero, chat: "Hammers break boulders. Got it.") { [unowned self] in
+                ChatItem(profile: .hero, imgPos: .left, chat: "Hammers break boulders. Got it.") { [unowned self] in
                     delegate?.deilluminateDisplayNode(for: .hammers)
                 },
                 ChatItem(profile: .trainer, chat: "Since there are no hammers in this level, you'll just have to go around them."),
-                ChatItem(profile: .hero, chat: "Ah well, gotta get my steps in."),
+                ChatItem(profile: .hero, imgPos: .left, chat: "Ah well, gotta get my steps in."),
                 ChatItem(profile: .trainer, chat: "Oh, and one more thing... hammers can only be used once before breaking, so plan your moves ahead of time.")
             ]) { [unowned self] in
                 handleDialogueCompletion(level: level, completion: completion)
@@ -479,7 +532,7 @@ extension ChatEngine {
             sendChatArray(items: [
                 ChatItem(profile: .trainer, chat: "Watch out for poison marsh! Stepping on one of the crimson colored panels will drag you down, costing you 2 moves."),
                 ChatItem(profile: .trainer, chat: "However, sometimes stepping in poison marsh is unavoidable."),
-                ChatItem(profile: .hero, chat: "Man... and I just got these new kicks!")
+                ChatItem(profile: .hero, imgPos: .left, chat: "Man... and I just got these new kicks!")
             ]) { [unowned self] in
                 delegate?.deilluminatePanel(at: (0, 1), useOverlay: false)
                 delegate?.deilluminatePanel(at: (2, 1), useOverlay: false)
@@ -492,11 +545,11 @@ extension ChatEngine {
             
             sendChatArray(items: [
                 ChatItem(profile: .trainer, chat: "Those fun looking things are warps. Stepping on one of them will teleport you to the other one. Weeeeeeeee!"),
-                ChatItem(profile: .hero, chat: "Is it safe?"),
+                ChatItem(profile: .hero, imgPos: .left, chat: "Is it safe?"),
                 ChatItem(profile: .trainer, chat: "I haven't tested it. Theoretically—"),
-                ChatItem(profile: .hero, chat: "MARLIN!!! Is it going to rip me apart or what?"),
+                ChatItem(profile: .hero, imgPos: .left, chat: "MARLIN!!! Is it going to rip me apart or what?"),
                 ChatItem(profile: .trainer, chat: "I'm sure you'll be fine. Just don't stare at it too long or I'll have you barking like a chicken at the snap of my fingers. ✨SNAP✨ 🫰🏼"),
-                ChatItem(profile: .hero, chat: "Chickens don't bark, you nutty profess— 😵‍💫 Woof woof.")
+                ChatItem(profile: .hero, imgPos: .left, chat: "Chickens don't bark, you nutty profess— 😵‍💫 Woof woof.")
             ]) { [unowned self] in
                 delegate?.deilluminatePanel(at: (0, 1), useOverlay: true)
                 delegate?.deilluminatePanel(at: (1, 2), useOverlay: true)
@@ -507,9 +560,9 @@ extension ChatEngine {
             delegate?.illuminatePanel(at: (1, 1), useOverlay: true)
             
             sendChatArray(items: [
-                ChatItem(profile: .hero, chat: "THAT'S HIM!!! That's the dragon that abducted the princess! 😡"),
+                ChatItem(profile: .hero, imgPos: .left, chat: "THAT'S HIM!!! That's the dragon that abducted the princess! 😡"),
                 ChatItem(profile: .trainer, chat: "Relax... That's one of many dragons you'll encounter on your journey. But don't get too close or it'll cost ya 1 health point."),
-                ChatItem(profile: .hero, chat: "He looks kinda small and underwhelming to me..."),
+                ChatItem(profile: .hero, imgPos: .left, chat: "He looks kinda small and underwhelming to me..."),
                 ChatItem(profile: .trainer, chat: "Hey, this is a solo project with $0 budget, whaddya want from me?! As I was saying...") { [unowned self] in
                     delegate?.illuminateDisplayNode(for: .health)
                 },
@@ -518,11 +571,11 @@ extension ChatEngine {
                     delegate?.illuminateDisplayNode(for: .swords)
                 },
                 ChatItem(profile: .trainer, chat: "Don't believe me? Go ahead. Try and pet him, I dare you! But you won't be able to defeat him without a sword. 🗡"),
-                ChatItem(profile: .hero, chat: "Yeah, ok old man. Lemme guess, I can only use the sword once before it breaks?") { [unowned self] in
+                ChatItem(profile: .hero, imgPos: .left, chat: "Yeah, ok old man. Lemme guess, I can only use the sword once before it breaks?") { [unowned self] in
                     delegate?.deilluminateDisplayNode(for: .swords)
                 },
                 ChatItem(profile: .trainer, chat: "You got it. Atta boy! 🫰🏼"),
-                ChatItem(profile: .hero, chat: "😵‍💫 Woof woof— Stop that!")
+                ChatItem(profile: .hero, imgPos: .left, chat: "😵‍💫 Woof woof— Stop that!")
             ]) { [unowned self] in
                 handleDialogueCompletion(level: level, completion: completion)
             }
@@ -536,7 +589,7 @@ extension ChatEngine {
             sendChatArray(items: [
                 ChatItem(profile: .trainer, chat: "Ice, ice, baby! Step on this and you'll slide until you hit either an obstacle or the edge of the level."),
                 ChatItem(profile: .trainer, chat: "The nice thing though is that it'll only cost you 1 move as long as you're sliding continuously."),
-                ChatItem(profile: .hero, chat: "Ok. I think I got it, old man.") { [unowned self] in
+                ChatItem(profile: .hero, imgPos: .left, chat: "Ok. I think I got it, old man.") { [unowned self] in
                     delegate?.deilluminatePanel(at: (0, 1), useOverlay: false)
                     delegate?.deilluminatePanel(at: (0, 2), useOverlay: false)
                     delegate?.deilluminatePanel(at: (1, 2), useOverlay: false)
@@ -547,17 +600,17 @@ extension ChatEngine {
             ]) { [unowned self] in
                 handleDialogueCompletion(level: level, completion: completion)
             }
-        case PauseResetEngine.resetButtonUnlock:
+        case PauseResetEngine.resetButtonUnlock: //Level: 100
             sendChatArray(items: [
                 ChatItem(profile: .trainer, chat: "Congrats! You made it to level \(PauseResetEngine.resetButtonUnlock). There's a bonus at the end of every 50 levels. Beat this and you're one step closer to indescribable fun!!! 💃🏾🪩🕺🏻"),
-                ChatItem(profile: .hero, chat: "I can hardly contain my excitement.") { [unowned self] in
+                ChatItem(profile: .hero, imgPos: .left, chat: "I can hardly contain my excitement.") { [unowned self] in
                     delegate?.illuminateMinorButton(for: .reset)
                 },
                 ChatItem(profile: .trainer, chat: "That's the spirit! Now if you ever get stuck, you can tap the Reset button to restart the level."),
                 ChatItem(profile: .trainer, chat: "Be warned though, restarting a level will cost you one of your precious lives...") { [unowned self] in
                     delegate?.deilluminateMinorButton(for: .reset)
                 },
-                ChatItem(profile: .hero, chat: "It's all good. My mom can buy me more lives if I need it. 😃")
+                ChatItem(profile: .hero, imgPos: .left, chat: "It's all good. My mom can buy me more lives if I need it. 😃")
             ]) { [unowned self] in
                 GameCenterManager.shared.updateProgress(achievement: .avidReader, shouldReportImmediately: true)
 
@@ -565,27 +618,27 @@ extension ChatEngine {
             }
         case 112:
             sendChatArray(items: [
-                ChatItem(profile: .hero, chat: "What's so special about this little girl anyway?"),
+                ChatItem(profile: .hero, imgPos: .left, chat: "What's so special about this little girl anyway?"),
                 ChatItem(profile: .trainer, chat: "She's no ordinary little girl. She is the princess of Vaeloria, a mystical realm known for its immense magic."),
                 ChatItem(profile: .trainer, chat: "Dragons are ancient and powerful creatures that inhabit the land of Vaeloria and are deeply connected to its magic."),
                 ChatItem(profile: .trainer, chat: "The sudden emergence of dragons in your world suggests something bigger is at play, and this little girl... Princess Olivia... is at the center of it all."),
-                ChatItem(profile: .hero, chat: "What do they want with her anyway?"),
+                ChatItem(profile: .hero, imgPos: .left, chat: "What do they want with her anyway?"),
                 ChatItem(profile: .trainer, chat: "That has yet to be determined, though I suspect something very dark is at play... Come along. Let's not waste anymore time.")
             ]) { [unowned self] in
                 handleDialogueCompletion(level: level, completion: completion)
             }
-        case PauseResetEngine.hintButtonUnlock:
+        case PauseResetEngine.hintButtonUnlock: //Level: 140
             sendChatArray(items: [
-                ChatItem(profile: .hero, chat: "You good, old man?? You've been awfully quiet. You're usually going on and on and on about useless info right about now."),
+                ChatItem(profile: .hero, imgPos: .left, chat: "You good, old man?? You've been awfully quiet. You're usually going on and on and on about useless info right about now."),
                 ChatItem(profile: .trainer, chat: "Don't make me snap."),
-                ChatItem(profile: .hero, chat: "No don't! Look, if it's the old man comments, everybody gets old. It's just an inevitability of life. I'm 16 so everyone looks old to me. You're like what... 58?"),
+                ChatItem(profile: .hero, imgPos: .left, chat: "No don't! Look, if it's the old man comments, everybody gets old. It's just an inevitability of life. I'm 16 so everyone looks old to me. You're like what... 58?"),
                 ChatItem(profile: .trainer, chat: "902."),
-                ChatItem(profile: .hero, chat: "NINE HUNDRED??!! What are you, like a wizard or something? \"Marlin the Fish Wizard...\""),
-                ChatItem(profile: .hero, chat: "Wait... ARE YOU REALLY A WIZARD?!?! Because I'm not surprised by anything anymore at this point..."),
+                ChatItem(profile: .hero, imgPos: .left, chat: "NINE HUNDRED??!! What are you, like a wizard or something? \"Marlin the Fish Wizard...\""),
+                ChatItem(profile: .hero, imgPos: .left, chat: "Wait... ARE YOU REALLY A WIZARD?!?! Because I'm not surprised by anything anymore at this point..."),
                 ChatItem(profile: .trainer, chat: "Once we've located the princess, I need to cast the gateway spell to open the portal and send her back to Vaeloria."),
-                ChatItem(profile: .hero, chat: "I mean you don't look a day over 800 to be honest..."),
+                ChatItem(profile: .hero, imgPos: .left, chat: "I mean you don't look a day over 800 to be honest..."),
                 ChatItem(profile: .trainer, chat: "PUZL Boy, I need you to be serious! What lies ahead will test your patience. It will make you want to throw your phone out the window. You need to be prepared!"),
-                ChatItem(profile: .hero, chat: "Ok ok. I'll be ready. I already know how to use hammers and swords. Nothing can stop me!") { [unowned self] in
+                ChatItem(profile: .hero, imgPos: .left, chat: "Ok ok. I'll be ready. I already know how to use hammers and swords. Nothing can stop me!") { [unowned self] in
                     delegate?.illuminateMinorButton(for: .hint)
                 },
                 ChatItem(profile: .trainer, chat: "I'm adding another tool to your arsenal. Tap the Hints button at the start of a level to illuminate your next move. Tap again to get the next hint."),
@@ -593,11 +646,11 @@ extension ChatEngine {
                 ChatItem(profile: .trainer, chat: "If you run out of hints, you can buy more in the Shop tab of the Settings menu. Any questions?") { [unowned self] in
                     delegate?.deilluminateMinorButton(for: .hint)
                 },
-                ChatItem(profile: .hero, chat: "Wow.. you're 900 years old. I have soooo many questions...")
+                ChatItem(profile: .hero, imgPos: .left, chat: "Wow.. you're 900 years old. I have soooo many questions...")
             ]) { [unowned self] in
                 handleDialogueCompletion(level: level, completion: completion)
             }
-        case 157: // TODO: - Rework
+        case 157: // TODO: - Rework Princess Capture Dialogue
             let spawnPoint: K.GameboardPosition = (3, 2)
             
             delegate?.spawnPrincessCapture(at: spawnPoint) { [unowned self] in
@@ -605,7 +658,7 @@ extension ChatEngine {
                     ChatItem(profile: .princess, chat: "PRINCESS OLIVIA: Help meeeee PUZL Boy!!! It's dark and scary over here. And this guy's breath is really stinky!"),
                     ChatItem(profile: .villain, chat: "MASKED VILLAIN: If you want to see your precious princess again, then hand over what I need. MUAHAHAHAHAHAHA!!!!"),
                     ChatItem(profile: .princess, chat: "Eww, your breath!"),
-                    ChatItem(profile: .hero, chat: "If you touch a hair on her head, it's gonna be the end for you, smelly shadow man!"),
+                    ChatItem(profile: .hero, imgPos: .left, chat: "If you touch a hair on her head, it's gonna be the end for you, smelly shadow man!"),
                     ChatItem(profile: .villain, chat: "MUAHAHAHAHAHHAHAHAAGGGGGHH! *cough* *cough* *HACK* 😮‍💨 ...ugh that one's black."),
                     ChatItem(profile: .princess, chat: "Ew gross!! 🤮")
                 ]) { [unowned self] in
@@ -615,39 +668,6 @@ extension ChatEngine {
                         handleDialogueCompletion(level: level, completion: completion)
                     }
                 }
-            }
-        case -150: // TODO: - Rework Post Party Magmoor Dialogue
-            AudioManager.shared.playSound(for: "scarymusicbox")
-            
-            sendChatArray(items: [
-                ChatItem(profile: .villain, chat: "MASKED VILLAIN: Please come back to meeeee."),
-                ChatItem(profile: .trainer, chat: "You will never have meeeeee."),
-                ChatItem(profile: .villain, chat: "Drat the luck.")
-            ]) { [unowned self] in
-                AudioManager.shared.stopSound(for: "scarymusicbox", fadeDuration: 1)
-                handleDialogueCompletion(level: level, completion: completion)
-            }
-        case -200:
-            AudioManager.shared.playSound(for: "scarymusicbox")
-            
-            sendChatArray(items: [
-                ChatItem(profile: .villain, chat: "C'mon dude! When are you gonna move here?"),
-                ChatItem(profile: .trainer, chat: "Ummm, soon."),
-                ChatItem(profile: .villain, chat: "Get a condo here. Just do it.")
-            ]) { [unowned self] in
-                AudioManager.shared.stopSound(for: "scarymusicbox", fadeDuration: 1)
-                handleDialogueCompletion(level: level, completion: completion)
-            }
-        case -250:
-            AudioManager.shared.playSound(for: "scarymusicbox")
-            
-            sendChatArray(items: [
-                ChatItem(profile: .villain, chat: "You're such a stud."),
-                ChatItem(profile: .trainer, chat: "You're a stud."),
-                ChatItem(profile: .villain, chat: "My wife will kill you if she found out.")
-            ]) { [unowned self] in
-                AudioManager.shared.stopSound(for: "scarymusicbox", fadeDuration: 1)
-                handleDialogueCompletion(level: level, completion: completion)
             }
         default:
             isChatting = false

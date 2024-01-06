@@ -113,8 +113,8 @@ class AudioManager {
         addAudioItem("lavaappear2", category: .soundFX)
         addAudioItem("lavaappear3", category: .soundFX)
         addAudioItem("lavasizzle", category: .soundFX)
-        addAudioItem("magicblast", category: .soundFX) //needs purchase $1
-        addAudioItem("magicteleport", category: .soundFX) //needs purchase $1
+        addAudioItem("magicblast", category: .soundFX)
+        addAudioItem("magicteleport", category: .soundFX)
         addAudioItem("magicwarp", category: .soundFX)
         addAudioItem("moveglide", category: .soundFX)
         addAudioItem("movemarsh1", category: .soundFX)
@@ -152,12 +152,13 @@ class AudioManager {
         
         //Looped SFX
         addAudioItem("clocktick", category: .soundFXLoop)
-        addAudioItem("magicdoomloop", category: .soundFXLoop) //needs purchase $2
-        addAudioItem("littlegirllaugh", category: .soundFXLoop) //needs purchase $2
+        addAudioItem("magicdoomloop", category: .soundFXLoop)
+        addAudioItem("littlegirllaugh", category: .soundFXLoop)
         
         
         //No Loop music
-        addAudioItem("ageofruin", category: .musicNoLoop) //needs purchase $20
+        addAudioItem("ageofruin", category: .musicNoLoop)
+        addAudioItem("ageofruin2", category: .musicNoLoop)
         addAudioItem("gameover", category: .musicNoLoop)
         addAudioItem("titletheme", category: .musicNoLoop)
 
@@ -165,10 +166,10 @@ class AudioManager {
         //Background music
         addAudioItem("birdsambience", category: .music, maxVolume: 0.2)
         addAudioItem("continueloop", category: .music)
-        addAudioItem("scarymusicbox", category: .music) //needs purchase $21
+        addAudioItem("scarymusicbox", category: .music)
         addAudioItem("overworld", category: .music)
         addAudioItem("overworldparty", category: .music)
-        addAudioItem("overworldgrassland", category: .music) //needs purchase $20
+        addAudioItem("overworldgrassland", category: .music)
 
         
         //9/13/23 Call this AFTER adding all the audioItems above!
