@@ -17,7 +17,8 @@ class CutsceneIntro: SKScene {
     private let princessPositionInitial = CGPoint(x: K.ScreenDimensions.size.width + 100, y: K.ScreenDimensions.size.height / 3 - 40)
     private let princessPositionFinal = CGPoint(x: K.ScreenDimensions.size.width * 4 / 5, y: K.ScreenDimensions.size.height / 3 - 40)
     private let playerScale: CGFloat = 0.75
-    private let screenSize = K.ScreenDimensions.size
+    private let letterboxHeight: CGFloat = K.ScreenDimensions.size.height / 3
+    private let screenSize: CGSize = K.ScreenDimensions.size
     
     //Main Nodes
     private(set) var parallaxManager: ParallaxManager!
@@ -40,6 +41,8 @@ class CutsceneIntro: SKScene {
     private var bloodOverlayNode: SKShapeNode!
     private var flashOverlayNode: SKShapeNode!
     private var fadeTransitionNode: SKShapeNode!
+    private var letterboxTopNode: SKShapeNode!
+    private var letterboxBottomNode: SKShapeNode!
     
     //Misc.
     private var completion: (() -> Void)?
@@ -139,6 +142,18 @@ class CutsceneIntro: SKScene {
         fadeTransitionNode.alpha = 0
         fadeTransitionNode.zPosition = K.ZPosition.fadeTransitionNode
         
+        letterboxTopNode = SKShapeNode(rectOf: CGSize(width: screenSize.width, height: 1))
+        letterboxTopNode.position = CGPoint(x: screenSize.width / 2, y: screenSize.height)
+        letterboxTopNode.fillColor = .black
+        letterboxTopNode.lineWidth = 0
+        letterboxTopNode.zPosition = K.ZPosition.letterboxOverlay
+        
+        letterboxBottomNode = SKShapeNode(rectOf: CGSize(width: screenSize.width, height: 1))
+        letterboxBottomNode.position = CGPoint(x: screenSize.width / 2, y: 0)
+        letterboxBottomNode.fillColor = .black
+        letterboxBottomNode.lineWidth = 0
+        letterboxBottomNode.zPosition = K.ZPosition.letterboxOverlay
+        
         parallaxManager = ParallaxManager(useSet: .grass, xOffsetsArray: xOffsetsArray, forceSpeed: .walk)
         
         speechHero = SpeechBubbleSprite(width: 460, position: heroPositionInitial + CGPoint(x: 200, y: 400))
@@ -152,6 +167,9 @@ class CutsceneIntro: SKScene {
     // MARK: - Move Functions
     
     override func didMove(to view: SKView) {
+        addChild(letterboxTopNode)
+        addChild(letterboxBottomNode)
+
         addChild(backgroundNode)
         backgroundNode.addChild(skyNode)
         backgroundNode.addChild(bloodSkyNode)
@@ -188,6 +206,9 @@ class CutsceneIntro: SKScene {
         let princessIdle = SKAction.animate(with: princess.textures[Player.Texture.idle.rawValue], timePerFrame: frameRate * 1.5)
         
         self.completion = completion
+        
+        //Letterbox
+        showLetterbox()
         
         //Hero Sprite
         hero.sprite.run(SKAction.group([
@@ -263,7 +284,7 @@ class CutsceneIntro: SKScene {
                         dimOverlayNode.run(SKAction.fadeOut(withDuration: 1))
                                                 
                         flyingDragon.animate(toNode: self,
-                                             from: CGPoint(x: screenSize.width, y: screenSize.height * 7 / 8),
+                                             from: CGPoint(x: screenSize.width, y: screenSize.height * 6 / 8),
                                              to: CGPoint(x: -flyingDragon.sprite.size.width, y: 0),
                                              duration: 10)
                         
@@ -356,7 +377,9 @@ class CutsceneIntro: SKScene {
                         
                         princess.sprite.run(SKAction.sequence([
                             SKAction.group([
-                                SKAction.move(to: CGPoint(x: 0, y: screenSize.height + dragonSprite.size.height), duration: abductionSpeed),
+                                SKAction.move(to: CGPoint(x: -dragonSprite.size.width * 0.25, 
+                                                          y: screenSize.height - letterboxHeight / 2 + dragonSprite.size.height * 0.25),
+                                              duration: abductionSpeed),
                                 SKAction.scaleX(to: -playerScale / 8 * 0.75, duration: abductionSpeed),
                                 SKAction.scaleY(to: playerScale / 8 * 0.75, duration: abductionSpeed)
                             ]),
@@ -366,15 +389,16 @@ class CutsceneIntro: SKScene {
                                     princess.sprite.position = CGPoint(x: 180, y: -140) //specific position so princess is in dragon's clutches
                                     princess.sprite.xScale = playerScale / 4 * 0.75
                                     princess.sprite.yScale = -playerScale / 4 * 0.75
-                                    princess.sprite.zPosition = 1
-                                    
+                                    princess.sprite.zPosition = -1
                                     flyingDragon.sprite.addChild(princess.sprite)
                                 }
                             ])
                         ]))
                         
                         dragonSprite.run(SKAction.group([
-                            SKAction.move(to: CGPoint(x: 0, y: screenSize.height + dragonSprite.size.height), duration: abductionSpeed),
+                            SKAction.move(to: CGPoint(x: -dragonSprite.size.width * 0.25,
+                                                      y: screenSize.height - letterboxHeight / 2 + dragonSprite.size.height * 0.25),
+                                          duration: abductionSpeed),
                             SKAction.scale(to: 0.25, duration: abductionSpeed)
                         ]))
                         
@@ -383,7 +407,7 @@ class CutsceneIntro: SKScene {
                                 SKAction.run { [unowned self] in
                                     speechPrincess.updateTailOrientation(.topLeft)
                                 },
-                                SKAction.move(to: CGPoint(x: speechPrincess.bubbleDimensions.width / 2, y: screenSize.height * 7 / 8 - speechPrincess.bubbleDimensions.height), duration: abductionSpeed),
+                                SKAction.move(to: CGPoint(x: speechPrincess.bubbleDimensions.width / 2, y: screenSize.height * 6 / 8 - speechPrincess.bubbleDimensions.height), duration: abductionSpeed),
                             ]),
                             SKAction.wait(forDuration: 2),
                             SKAction.group([
@@ -398,7 +422,7 @@ class CutsceneIntro: SKScene {
                         ]))
                         
                         flyingDragon.animate(toNode: self,
-                                             from: CGPoint(x: -2 * flyingDragon.sprite.size.width, y: screenSize.height * 7 / 8),
+                                             from: CGPoint(x: -2 * flyingDragon.sprite.size.width, y: screenSize.height * 6 / 8),
                                              to: CGPoint(x: screenSize.width + flyingDragon.sprite.size.width, y: 0),
                                              duration: 10,
                                              reverseDirection: true)
@@ -421,6 +445,7 @@ class CutsceneIntro: SKScene {
                         skyNode.run(SKAction.fadeIn(withDuration: 5))
                         bloodSkyNode.run(SKAction.fadeOut(withDuration: 5))
                         bloodOverlayNode.run(SKAction.fadeOut(withDuration: 5))
+                        hideLetterbox(delay: 2)
                     },
                     SpeechBubbleItem(profile: speechHero, chat: "Hang on princess!| I'm coming to rescue you!!!||||")
                 ]) {
@@ -456,7 +481,7 @@ class CutsceneIntro: SKScene {
     }
     
     private func closeUpHero() {
-        princess.sprite.position.x = princessPositionInitial.x
+        princess.sprite.position = princessPositionInitial
         princess.sprite.setScale(playerScale * 0.75)
         princess.sprite.xScale = -playerScale * 0.75
         
@@ -472,12 +497,16 @@ class CutsceneIntro: SKScene {
     
     private func closeUpPrincess() {
         princess.sprite.position.x = screenSize.width / 2
+        princess.sprite.position.y = princessPositionInitial.y
         princess.sprite.setScale(2 * 0.75)
         princess.sprite.xScale = -2 * 0.75
         
         princess.sprite.run(SKAction.sequence([
             SKAction.wait(forDuration: 34),
-            SKAction.scaleX(to: -4 * 0.75, y: 4 * 0.75, duration: 20)
+            SKAction.group([
+                SKAction.scaleX(to: -4 * 0.75, y: 4 * 0.75, duration: 20),
+                SKAction.moveBy(x: 0, y: 2 * 4 * 0.75 * 20, duration: 20)
+            ])
         ]))
         
         hero.sprite.position.x = -200
@@ -492,6 +521,7 @@ class CutsceneIntro: SKScene {
     
     private func midShotPrincessDragon() {
         princess.sprite.position.x = screenSize.width / 2
+        princess.sprite.position.y = princessPositionFinal.y
         princess.sprite.setScale(0.75)
         princess.sprite.xScale = -0.75
         
@@ -509,7 +539,7 @@ class CutsceneIntro: SKScene {
     }
     
     private func wideShot() {
-        princess.sprite.position.x = princessPositionFinal.x
+        princess.sprite.position = princessPositionFinal
         princess.sprite.setScale(playerScale * 0.75)
         princess.sprite.xScale = -playerScale * 0.75
         
@@ -521,6 +551,23 @@ class CutsceneIntro: SKScene {
         
         speechPrincess.position = princessPositionFinal + CGPoint(x: -200, y: 400)
         speechHero.position = CGPoint(x: heroPositionFinal.x + speechHero.bubbleDimensions.width / 2, y: heroPositionInitial.y + 400)
+    }
+    
+    private func showLetterbox() {
+        letterboxTopNode.run(SKAction.scaleY(to: letterboxHeight, duration: 3))
+        letterboxBottomNode.run(SKAction.scaleY(to: letterboxHeight, duration: 3))
+    }
+    
+    private func hideLetterbox(delay: TimeInterval = 0) {
+        letterboxTopNode.run(SKAction.sequence([
+            SKAction.wait(forDuration: delay),
+            SKAction.scaleY(to: 1, duration: 3)
+        ]))
+        
+        letterboxBottomNode.run(SKAction.sequence([
+            SKAction.wait(forDuration: delay),
+            SKAction.scaleY(to: 1, duration: 3)
+        ]))
     }
 }
 

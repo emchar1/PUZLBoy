@@ -97,7 +97,8 @@ struct K {
         
         //SpeechBubbles
         static let bloodOverlay: CGFloat = 640
-        static let speechBubble: CGFloat = 650
+        static let letterboxOverlay: CGFloat = 650
+        static let speechBubble: CGFloat = 660
         static let hintArrow: CGFloat = 760
 
         //Party Foreground
