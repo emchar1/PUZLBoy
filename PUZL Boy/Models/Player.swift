@@ -20,7 +20,7 @@ struct Player {
     private var atlas: SKTextureAtlas
     
     enum PlayerType: String, CaseIterable {
-        case hero = "hero", princess, villain
+        case hero = "hero", princess, princess2, villain
     }
 
     enum Texture: Int {
@@ -81,6 +81,8 @@ struct Player {
             setupHero()
         case .princess:
             setupPrincess()
+        case .princess2:
+            setupPrincess2()
         case .villain:
             setupVillain()
         }
@@ -135,6 +137,14 @@ struct Player {
         for i in 26...33 {
             textures[Texture.jump.rawValue].append(atlas.textureNamed("PrincessJump (\(i))"))
         }
+    }
+    
+    private mutating func setupPrincess2() {
+        scaleMultiplier = 0.8
+        
+        for i in 1...16 {
+            textures[Texture.idle.rawValue].append(atlas.textureNamed("Princess2Idle (\(i))"))
+        }        
     }
     
     private mutating func setupVillain() {
