@@ -70,8 +70,13 @@ class CreditsScene: SKScene {
         parallaxManager = ParallaxManager(useSet: ParallaxObject.SetType.allCases.randomElement() ?? .grass, xOffsetsArray: nil, forceSpeed: .walk)
         parallaxManager.animate()
 
-        let randomPlayer = Player.PlayerType.allCases.randomElement() ?? .hero
         let scaleMultiplier: CGFloat
+        var randomPlayer: Player.PlayerType
+
+        // TODO: - Princess2 walk doesn't exist. Do this for now...
+        repeat {
+            randomPlayer = Player.PlayerType.allCases.randomElement() ?? .hero
+        } while randomPlayer == .princess2
         
         switch randomPlayer {
         case .princess:     scaleMultiplier = 0.8

@@ -426,6 +426,9 @@ class CutsceneIntro: SKScene {
                         ]))
                         
                         speechHero.run(SKAction.moveTo(x: speechHero.position.x + screenSize.width / 2 - hero.sprite.position.x, duration: 1.5 * runCycle))
+                        
+                        skipIntroSprite.removeAllActions()
+                        skipIntroSprite.removeFromParent()
 
                         skyNode.run(SKAction.fadeIn(withDuration: 5))
                         bloodSkyNode.run(SKAction.fadeOut(withDuration: 5))
@@ -435,6 +438,7 @@ class CutsceneIntro: SKScene {
                     SpeechBubbleItem(profile: speechHero, chat: "Hang on princess!| I'm coming to rescue you!!!||||")
                 ]) {
                     UserDefaults.standard.set(true, forKey: K.UserDefaults.shouldSkipIntro)
+                    AudioManager.shared.stopSound(for: "ageofruin", fadeDuration: 3)
 
                     completion?()
                 }
