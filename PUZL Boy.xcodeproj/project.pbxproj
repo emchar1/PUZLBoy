@@ -242,6 +242,7 @@
 		EAE9194B2A4CB04B00AF67D1 /* gemcollectparty2x.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAE9194A2A4CB04B00AF67D1 /* gemcollectparty2x.mp3 */; };
 		EAE9194D2A4CB08C00AF67D1 /* boywin.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAE9194C2A4CB08C00AF67D1 /* boywin.mp3 */; };
 		EAEAA2372AFB199900890FA7 /* ParentTitleLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAEAA2362AFB199900890FA7 /* ParentTitleLabel.swift */; };
+		EAEF2ECE2B4DCD4800AD8459 /* LetterboxSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAEF2ECD2B4DCD4800AD8459 /* LetterboxSprite.swift */; };
 		EAF07C0329E796640034CD1A /* ParallaxSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAF07C0229E796630034CD1A /* ParallaxSprite.swift */; };
 		EAF07C0529E796AE0034CD1A /* TemplateClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAF07C0429E796AE0034CD1A /* TemplateClass.swift */; };
 		EAF07C0929E7A13F0034CD1A /* ParallaxObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAF07C0829E7A13F0034CD1A /* ParallaxObject.swift */; };
@@ -492,6 +493,7 @@
 		EAE9194A2A4CB04B00AF67D1 /* gemcollectparty2x.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = gemcollectparty2x.mp3; sourceTree = "<group>"; };
 		EAE9194C2A4CB08C00AF67D1 /* boywin.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = boywin.mp3; sourceTree = "<group>"; };
 		EAEAA2362AFB199900890FA7 /* ParentTitleLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParentTitleLabel.swift; sourceTree = "<group>"; };
+		EAEF2ECD2B4DCD4800AD8459 /* LetterboxSprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LetterboxSprite.swift; sourceTree = "<group>"; };
 		EAF07C0229E796630034CD1A /* ParallaxSprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParallaxSprite.swift; sourceTree = "<group>"; };
 		EAF07C0429E796AE0034CD1A /* TemplateClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemplateClass.swift; sourceTree = "<group>"; };
 		EAF07C0829E7A13F0034CD1A /* ParallaxObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParallaxObject.swift; sourceTree = "<group>"; };
@@ -674,6 +676,7 @@
 				EA2AF74329B6D06000444E5A /* OfflinePlaySprite.swift */,
 				EAF2A5A52AA7875F00212825 /* SkipIntroSprite.swift */,
 				EA12C54F2B271EC2006E9813 /* GoldCoinSprite.swift */,
+				EAEF2ECD2B4DCD4800AD8459 /* LetterboxSprite.swift */,
 			);
 			path = Sprites;
 			sourceTree = "<group>";
@@ -1237,6 +1240,7 @@
 				EA11915729121798009D0E3E /* Controls.swift in Sources */,
 				EA826C74297CEFC500F19F81 /* TimerManager.swift in Sources */,
 				EA35348B29241FCD00C11FC0 /* LevelType.swift in Sources */,
+				EAEF2ECE2B4DCD4800AD8459 /* LetterboxSprite.swift in Sources */,
 				EA119155290CCA39009D0E3E /* Inventory.swift in Sources */,
 				EA95D1D129542C720061059C /* AchievementNuclear.swift in Sources */,
 				EA95D1C529541DA50061059C /* AchievementJewelConnoisseur.swift in Sources */,
