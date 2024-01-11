@@ -254,16 +254,16 @@ class CutsceneIntro: SKScene {
                             SKAction.wait(forDuration: 2),
                             SKAction.run { [unowned self] in
                                 overlaySpeech.setText(
-                                    text: "The princess went on to explain how dragons had disappeared from the realm of some place called Vaeloria, where she claims she's from,|| and that the balance of magic had been disrupted threatening our very existence.||||||||/She spoke about a prophecy where the sky turns to blood, signaling the Age of Ruin, and that she was the only one who could stop it—||At first, I thought this little girl just had an overactive imagination...| then the CRAZIEST thing happened!!",
+                                    text: "The princess went on to explain how dragons had disappeared from the realm of some place called Vaeloria, where she claims she's from,|| and that the balance of magic had been disrupted threatening our very existence.||||||||/She spoke about a prophecy where the Earth splits in two and the sky turns to blood, signaling the Age of Ruin, and that she was the only one who could stop it—||At first, I thought she just had an overactive imagination...||||||/  ..........Then the CRAZIEST thing happened!!",
                                     superScene: self, completion: nil)
                                 
                                 AudioManager.shared.stopSound(for: "birdsambience", fadeDuration: 5)
-                                AudioManager.shared.stopSound(for: AudioManager.shared.grasslandTheme, fadeDuration: 5)
+                                AudioManager.shared.stopSound(for: AudioManager.shared.grasslandTheme, fadeDuration: 8)
                                 AudioManager.shared.playSound(for: "scarymusicbox", fadeIn: 5, delay: 3)
                             }
                         ]))
                     },
-                    SpeechBubbleItem(profile: speechPrincess, chat: "Oh, umm...|| you sure ask a lot of questions!||||||||/But if you must know,| the reason I'm here is because, well.. first of all, Oh—I'm a princess!|||/But not here though. I'm a princess in a very very far away place.|||/You see, I'm not from this place. But I got here because—blah blah blah...||||/Blah blah blah, blah blah blah DRAGONS blah, blah blah, blah blah blah, blah.||||||||/VAELORIA blah, blah.| BLAH blah blah blah, blahhhhh blah.| Blah. Blah. Blah. M|A|G|I|C!!||||||||/And furthermore—||blah blah blah,| blah blah blah.| Blah, blah, blah|| .|.|.|A|G|E| O|F| R|U|I|N|.||||||||") { [unowned self] in
+                    SpeechBubbleItem(profile: speechPrincess, chat: "Oh, umm...|| you sure ask a lot of questions!||||||||/But if you must know,| the reason I'm here is because, well.. first of all, Oh—I'm a princess!|||/And, but... oh! Not here though. I'm a princess in a very very far away place.|||/You see, I'm not from this place. But I am from, well—blah blah blah...||||/Blah blah blah, blah blah blah DRAGONS blah, blah blah, blah blah blah, blah.||||||||/VAELORIA blah, blah.| BLAH blah blah blah, blahhhhh blah.| Blah. Blah. Blah. M|A|G|I|C!!||||||||/And then. And THEN!|| blah blah blah,| blah blah blah.| Blah, blah, blah|| .|.|.|A|G|E| O|F| R|U|I|N|.||||||||||||") { [unowned self] in
                         wideShot()
                         
                         dimOverlayNode.run(SKAction.fadeOut(withDuration: 1))
@@ -322,7 +322,7 @@ class CutsceneIntro: SKScene {
                             }
                         ]))
                     },
-                    SpeechBubbleItem(profile: speechHero, chat: "Whew, that is some story!|| Well don't worry, I'll get you to where you need to...|| WHAT THE—") { [unowned self] in
+                    SpeechBubbleItem(profile: speechHero, chat: "What a cute story!|| Well don't worry, I'll get you to where you need to...|| WHAT THE—") { [unowned self] in
                         run(SKAction.sequence([
                             SKAction.run { [unowned self] in
                                 dragonSprite.run(SKAction.group([
@@ -434,6 +434,8 @@ class CutsceneIntro: SKScene {
                         bloodSkyNode.run(SKAction.fadeOut(withDuration: 5))
                         bloodOverlayNode.run(SKAction.fadeOut(withDuration: 5))
                         letterbox.hide(delay: 2)
+
+                        AudioManager.shared.stopSound(for: "thunderrumble", fadeDuration: 5)
                     },
                     SpeechBubbleItem(profile: speechHero, chat: "Hang on princess!| I'm coming to rescue you!!!||||")
                 ]) {
