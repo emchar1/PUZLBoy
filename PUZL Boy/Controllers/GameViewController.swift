@@ -42,8 +42,10 @@ class GameViewController: UIViewController {
         }
         monitor.start(queue: DispatchQueue(label: "Monitor"))
 
+        // FIXME: - DEFINITELY COMMENT THESE OUT BEFORE SHIPPING FINAL PRODUCT!!!
         skView.showsFPS = true
         skView.showsNodeCount = true
+        
         skView.ignoresSiblingOrder = true
         skView.presentScene(launchScene)
         view = skView

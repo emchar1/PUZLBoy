@@ -108,6 +108,8 @@
 		EA826C9A29950D0C00F19F81 /* NumMovesSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA826C9929950D0C00F19F81 /* NumMovesSprite.swift */; };
 		EA84645C29D8E5A50075F2A9 /* MenuItemLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA84645B29D8E5A50075F2A9 /* MenuItemLabel.swift */; };
 		EA84645F29D9230B0075F2A9 /* Extension+UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA84645E29D9230B0075F2A9 /* Extension+UIColor.swift */; };
+		EA8E072F2B4FEC070051DDC3 /* TapPointerEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA8E072E2B4FEC060051DDC3 /* TapPointerEngine.swift */; };
+		EA8E07542B50988B0051DDC3 /* PointerParticles.sks in Resources */ = {isa = PBXBuildFile; fileRef = EA8E07532B50988B0051DDC3 /* PointerParticles.sks */; };
 		EA94E86529BDA536009F2614 /* PartyEffectSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA94E86429BDA536009F2614 /* PartyEffectSprite.swift */; };
 		EA94E86729BE6BCC009F2614 /* PauseResetEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA94E86629BE6BCC009F2614 /* PauseResetEngine.swift */; };
 		EA94E87329C0DE2C009F2614 /* movetile3.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA94E87029C0DE2C009F2614 /* movetile3.mp3 */; };
@@ -361,6 +363,8 @@
 		EA826C9929950D0C00F19F81 /* NumMovesSprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumMovesSprite.swift; sourceTree = "<group>"; };
 		EA84645B29D8E5A50075F2A9 /* MenuItemLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuItemLabel.swift; sourceTree = "<group>"; };
 		EA84645E29D9230B0075F2A9 /* Extension+UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+UIColor.swift"; sourceTree = "<group>"; };
+		EA8E072E2B4FEC060051DDC3 /* TapPointerEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TapPointerEngine.swift; sourceTree = "<group>"; };
+		EA8E07532B50988B0051DDC3 /* PointerParticles.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = PointerParticles.sks; sourceTree = "<group>"; };
 		EA94E86429BDA536009F2614 /* PartyEffectSprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PartyEffectSprite.swift; sourceTree = "<group>"; };
 		EA94E86629BE6BCC009F2614 /* PauseResetEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PauseResetEngine.swift; sourceTree = "<group>"; };
 		EA94E87029C0DE2C009F2614 /* movetile3.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = movetile3.mp3; sourceTree = "<group>"; };
@@ -952,6 +956,7 @@
 				EA95D1DE295674AE0061059C /* ChatEngine.swift */,
 				EA1F0E662B0AB0BA00EE0EEE /* HintEngine.swift */,
 				EA95D2112963B4580061059C /* LevelSkipEngine.swift */,
+				EA8E072E2B4FEC060051DDC3 /* TapPointerEngine.swift */,
 				EA6A79F529CC035B00F47A73 /* PauseReset */,
 			);
 			path = Engines;
@@ -1007,6 +1012,7 @@
 				EAB2DE0F2A9D4BD700172478 /* LavaSizzleParticles.sks */,
 				EAE215572ABD1DEB0090735A /* MagicParticles.sks */,
 				EAD19A032A9698B700A07A63 /* PartyGemParticles.sks */,
+				EA8E07532B50988B0051DDC3 /* PointerParticles.sks */,
 				EAD19A1C2A9C14B500A07A63 /* PoisonBubblesParticles.sks */,
 				EAD19A062A96AA6D00A07A63 /* WarpParticles.sks */,
 				EAE215112AB920160090735A /* Warp4Particles.sks */,
@@ -1158,6 +1164,7 @@
 				EA95D19B294690B70061059C /* boydead.mp3 in Resources */,
 				EA95D19E294690B70061059C /* boyattack2.mp3 in Resources */,
 				EA45834D2A44315900279056 /* buttontap3.mp3 in Resources */,
+				EA8E07542B50988B0051DDC3 /* PointerParticles.sks in Resources */,
 				EA3467A529A8C659002DDA02 /* revive.mp3 in Resources */,
 				EACE2AA32ACBE94C00FE5A11 /* boypain4.mp3 in Resources */,
 				EA9F4DE229D36F02006F4B2F /* movepoisoned3.mp3 in Resources */,
@@ -1261,6 +1268,7 @@
 				EACE2AA52ACCDEA500FE5A11 /* LevelSelectPicker.swift in Sources */,
 				EA1F0E672B0AB0BA00EE0EEE /* HintEngine.swift in Sources */,
 				EA95D1D329544B4E0061059C /* AchievementBraniac.swift in Sources */,
+				EA8E072F2B4FEC070051DDC3 /* TapPointerEngine.swift in Sources */,
 				EA496AAC2A79B25A0096DB35 /* CutsceneIntro.swift in Sources */,
 				EAF2A5A62AA7875F00212825 /* SkipIntroSprite.swift in Sources */,
 				EA95D1DD295523FF0061059C /* AchievementKlutz.swift in Sources */,
@@ -1495,7 +1503,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "PUZL Boy/Supporting Files/PUZL Boy.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 22;
+				CURRENT_PROJECT_VERSION = 24;
 				DEVELOPMENT_TEAM = LZ8V996BTJ;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "PUZL Boy/Supporting Files/Info.plist";
@@ -1527,7 +1535,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "PUZL Boy/Supporting Files/PUZL Boy.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 22;
+				CURRENT_PROJECT_VERSION = 24;
 				DEVELOPMENT_TEAM = LZ8V996BTJ;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "PUZL Boy/Supporting Files/Info.plist";

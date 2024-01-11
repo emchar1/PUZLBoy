@@ -8,6 +8,9 @@
 import UIKit
 
 extension UIColor {
+    
+    // MARK: - Properties
+    
     var complementary: UIColor {
         return withHueOffset(180 / 360)
     }
@@ -34,6 +37,9 @@ extension UIColor {
         
         return (red, green, blue, alpha)
     }
+    
+    
+    // MARK: - Functions
     
     private func withHueOffset(_ offset: CGFloat) -> UIColor {
         var hue: CGFloat = 0

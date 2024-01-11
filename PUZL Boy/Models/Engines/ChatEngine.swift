@@ -419,13 +419,13 @@ extension ChatEngine {
             AudioManager.shared.playSound(for: "magicdoomloop", fadeIn: 3)
             
             sendChatArray(items: [
-                ChatItem(profile: .villain, imgPos: .left, chat: "MASKED VILLAIN: You will never find her... You can keep trying, but it will all be in vain. Give up now..."),
-                ChatItem(profile: .trainer, chat: "Magmoor! So you ARE behind this. I should have known!"),
-                ChatItem(profile: .villain, imgPos: .left, chat: "MAGMOOR: Why are you so surprised??? We're bounded by fate, as the Sibyl revealed to us during the Crusades."),
-                ChatItem(profile: .trainer, chat: "That was over 500 years ago. LET HER GO AND THINGS WON'T GET UGLY!!"),
-                ChatItem(profile: .villain, imgPos: .left, chat: "We would have made a great duo—the strongest wizards in all the realms, but you chose a different path. Why did you leave?"),
-                ChatItem(profile: .trainer, chat: "...I did what I had to do."),
-                ChatItem(profile: .villain, imgPos: .left, chat: "Such a shame. So lost... One day you'll understand.")
+                ChatItem(profile: .villain, imgPos: .left, chat: "MASKED VILLAIN: You will never find her... You can keep trying, but it'll all be in vain. Give up now..."),
+                ChatItem(profile: .trainer, chat: "Magmoor! So you ARE behind this. I should have known! The whole time I'm thinking, \"No way he came crawling back into my life.\" And here we are..."),
+                ChatItem(profile: .villain, imgPos: .left, chat: "MAGMOOR: Surprised much? You need me. You're the yin to my yang. We're bounded by fate, as the Priestess revealed during the Wizard's Trials."),
+                ChatItem(profile: .trainer, chat: "That was over 500 years ago. LET THE PRINCESS GO AND THINGS WON'T GET UGLY!!"),
+                ChatItem(profile: .villain, imgPos: .left, chat: "We would have made a great duo—the strongest wizards in all the realms, but you chose a different path.............. Why did you leave me?"),
+                ChatItem(profile: .trainer, chat: "..............I did what I had to do."),
+                ChatItem(profile: .villain, imgPos: .left, chat: "Such a shame. So lost. One day you'll regret it.")
             ]) { [unowned self] in
                 AudioManager.shared.stopSound(for: "scarymusicbox", fadeDuration: 3)
                 AudioManager.shared.stopSound(for: "magicdoomloop", fadeDuration: 3)
@@ -474,14 +474,15 @@ extension ChatEngine {
             }
         case 1:
             sendChatArray(items: [
-                ChatItem(profile: .hero, imgPos: .left, chat: "PUZL BOY: ...then the dragon swooped down and carried her away! So... what's our game plan? Also I didn't catch your name."),
-                ChatItem(profile: .trainer, chat: "MARLIN: I am Marlin. I suspect she is being held captive in the dragon's lair. We must move quickly. I'm going to guide you there, so pay attention."),
+                ChatItem(profile: .hero, imgPos: .left, chat: "PUZL BOY: ...then the dragon swooped down and carried her away! It. Was. Harrowing. So... what's our game plan? Also who are you again."),
+                ChatItem(profile: .trainer, chat: "MARLIN: I am Marlin. I suspect she is being held captive in the dragon's lair. We must move quickly. I will be your guide every step of the way, so pay attention."),
                 ChatItem(profile: .hero, imgPos: .left, chat: "Marlin, like the fish??? I hate fish by the way. The smell, the texture... So how do you know that's where they've taken her?"),
-                ChatItem(profile: .trainer, chat: "Marlin like the magician. Don't worry about it... OK. The lair is buried miles beneath the Earth's surface, and the only way to reach it is to solve logic puzzles."),
+                ChatItem(profile: .trainer, chat: "Don't worry about it... And no, not like the fish. Marlin like the Magician."),
+                ChatItem(profile: .trainer, chat: "OK. The lair is buried miles beneath the Earth's surface, and the only way to reach it is to solve logic puzzles."),
                 ChatItem(profile: .hero, imgPos: .left, chat: "A marlin is a fish... You're thinking of Merlin the Magician. OH! Is that your name? Merlin?"),
                 ChatItem(profile: .trainer, chat: "I think I know my own name. Listen!! There are 500 levels in total you will have to solve, each with increasing difficulty."),
-                ChatItem(profile: .hero, imgPos: .left, chat: "500 levels?!! What do I get if I win?"),
-                ChatItem(profile: .trainer, chat: "You save the world!!! Geez! Now where was I... Oh yeah, the goal for each level is to get to the gate in under a certain number of moves.") { [unowned self] in
+                ChatItem(profile: .hero, imgPos: .left, chat: "500 levels?!! How long's that gonna take? Well I gotta be home by 7. What do I get if I win?"),
+                ChatItem(profile: .trainer, chat: "You save the world!!! OMG! Now where was I... Oh yeah, the goal for each level is to get to the gate in under a certain number of moves.") { [unowned self] in
                     delegate?.illuminatePanel(at: (0, 1), useOverlay: false)
                     delegate?.illuminatePanel(at: (1, 0), useOverlay: false)
                     delegate?.illuminatePanel(at: (1, 2), useOverlay: false)
@@ -563,10 +564,10 @@ extension ChatEngine {
                 ChatItem(profile: .hero, imgPos: .left, chat: "THAT'S HIM!!! That's the dragon that abducted the princess! 😡"),
                 ChatItem(profile: .trainer, chat: "Relax... That's one of many dragons you'll encounter on your journey. But don't get too close or it'll cost ya 1 health point."),
                 ChatItem(profile: .hero, imgPos: .left, chat: "He looks kinda small and underwhelming to me..."),
-                ChatItem(profile: .trainer, chat: "Hey, this is a solo project with $0 budget, whaddya want from me?! As I was saying...") { [unowned self] in
+                ChatItem(profile: .trainer, chat: "Hey, this is a solo project with zero budget, whaddya want from me?! As I was saying...") { [unowned self] in
                     delegate?.illuminateDisplayNode(for: .health)
                 },
-                ChatItem(profile: .trainer, chat: "Once your health drops to 0, it's lights out, baby. Your health can be found in the upper left next to the heart. 💖") { [unowned self] in
+                ChatItem(profile: .trainer, chat: "Once your health drops to 0, it's lights out! Your health can be found in the upper left next to the heart. 💖") { [unowned self] in
                     delegate?.deilluminateDisplayNode(for: .health)
                     delegate?.illuminateDisplayNode(for: .swords)
                 },
@@ -631,7 +632,7 @@ extension ChatEngine {
             sendChatArray(items: [
                 ChatItem(profile: .hero, imgPos: .left, chat: "You good, old man?? You've been awfully quiet. You're usually going on and on and on about useless info right about now."),
                 ChatItem(profile: .trainer, chat: "Don't make me snap."),
-                ChatItem(profile: .hero, imgPos: .left, chat: "No don't! Look, if it's the old man comments, everybody gets old. It's just an inevitability of life. I'm 16 so everyone looks old to me. You're like what... 58?"),
+                ChatItem(profile: .hero, imgPos: .left, chat: "No don't! Look, if it's the old man comments, everybody gets old. It's just an inevitability of life. I'm 16 so everyone looks old to me. You're like what... 50?"),
                 ChatItem(profile: .trainer, chat: "902."),
                 ChatItem(profile: .hero, imgPos: .left, chat: "NINE HUNDRED??!! What are you, like a wizard or something? \"Marlin the Fish Wizard...\""),
                 ChatItem(profile: .hero, imgPos: .left, chat: "Wait... ARE YOU REALLY A WIZARD?!?! Because I'm not surprised by anything anymore at this point..."),
