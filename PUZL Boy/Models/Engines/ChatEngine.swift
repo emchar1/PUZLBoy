@@ -553,7 +553,7 @@ extension ChatEngine {
             ]) { [unowned self] in
                 delegate?.deilluminatePanel(at: (0, 1), useOverlay: true)
                 delegate?.deilluminatePanel(at: (1, 2), useOverlay: true)
-
+        
                 handleDialogueCompletion(level: level, completion: completion)
             }
         case 51:
@@ -641,7 +641,7 @@ extension ChatEngine {
                 ChatItem(profile: .hero, imgPos: .left, chat: "Ok ok. I'll be ready. I already know how to use hammers and swords. Nothing can stop me!") { [unowned self] in
                     delegate?.illuminateMinorButton(for: .hint)
                 },
-                ChatItem(profile: .trainer, chat: "I'm adding another tool to your arsenal. Tap the Hints button at the start of a level to illuminate your next move. Tap again to get the next hint."),
+                ChatItem(profile: .trainer, chat: "Hilarious. I'm adding another tool to your arsenal. Tap the Hints button at the start of a level to illuminate your next move. Tap again to get the next hint."),
                 ChatItem(profile: .trainer, chat: "Keep tapping for as many hints you need. Hints become disabled once you move past your last hint. The number in red is your available hints."),
                 ChatItem(profile: .trainer, chat: "If you run out of hints, you can buy more in the Shop tab of the Settings menu. Any questions?") { [unowned self] in
                     delegate?.deilluminateMinorButton(for: .hint)

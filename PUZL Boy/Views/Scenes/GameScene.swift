@@ -691,9 +691,19 @@ extension GameScene: AdMobManagerDelegate {
     
     ///Used after the interstial ad plays after a Party Level is completed. Should not be used anywhere else because of the proprietary code!!!
     private func resumeGameFromPartyLevel() {
-        continueFromAd { [unowned self] in
-            handlePartyLevelCleanUp()
-        }
+        // FIXME: - Build out post party dialogue between Marlin & Magmoor. PUZL Boy and party effects should disappear.
+//        let villainChatLevel = (lastCurrentLevel ?? 1) - 1
+//
+//        PartyModeSprite.shared.stopParty(partyBoy: gameEngine.playerSprite,
+//                                         hasSword: gameEngine.level.inventory.hasSwords(),
+//                                         hasHammer: gameEngine.level.inventory.hasHammers(),
+//                                         shouldFadeAndRemovePlayer: true)
+//
+//        chatEngine.playDialogue(level: -villainChatLevel) { [unowned self] in
+            continueFromAd(shouldFade: false) { [unowned self] in
+                handlePartyLevelCleanUp()
+            }
+//        }
     }
     
     ///Helper function used by resumeGameFromPartyLevel()
@@ -1120,7 +1130,26 @@ extension GameScene: PartyResultsSpriteDelegate {
     func didTapConfirm() {
         partyResultsSprite?.animateHide { [unowned self] in
             guard AdMobManager.interstitialAdIsReady else {
-                handlePartyLevelCleanUp() //Run this directly, if interstial ad failed to load...
+
+
+
+
+
+//                PartyModeSprite.shared.stopParty(partyBoy: gameEngine.playerSprite,
+//                                                 hasSword: gameEngine.level.inventory.hasSwords(),
+//                                                 hasHammer: gameEngine.level.inventory.hasHammers(),
+//                                                 shouldFadeAndRemovePlayer: true)
+//                AudioManager.shared.lowerVolume(for: AudioManager.shared.currentTheme, fadeDuration: 1.0)
+//                
+//                chatEngine.playDialogue(level: -2) { [unowned self] in
+//                    AudioManager.shared.raiseVolume(for: AudioManager.shared.currentTheme, fadeDuration: 1.0)
+                    handlePartyLevelCleanUp() //Run this directly, if interstial ad failed to load...
+//                }
+                
+                
+                
+                
+//                handlePartyLevelCleanUp() //Run this directly, if interstial ad failed to load...
                 AdMobManager.shared.createAndLoadInterstitial() //...and try loading the ad again
                 
                 return
