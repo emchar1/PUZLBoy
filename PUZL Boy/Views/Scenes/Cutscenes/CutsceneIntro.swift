@@ -254,7 +254,7 @@ class CutsceneIntro: SKScene {
                             SKAction.wait(forDuration: 2),
                             SKAction.run { [unowned self] in
                                 overlaySpeech.setText(
-                                    text: "The princess went on to explain how dragons had disappeared from the realm of some place called Vaeloria, where she claims she's from,|| and that the balance of magic had been disrupted threatening our very existence.||||||||/She spoke about a prophecy where the Earth splits in two and the sky turns to blood, signaling the Age of Ruin, and that she was the only one who could stop it—||At first, I thought she just had an overactive imagination...||||||/  ..........Then the CRAZIEST thing happened!!",
+                                    text: "The princess went on to explain how dragons had disappeared from the realm of some place called Vaeloria, where she claims she's from,|| and that the balance of magic had been disrupted threatening our very existence.||||||||/She spoke about a prophecy where the Earth splits in two and the sky turns to blood, signaling the Age of Ruin, and that she was the only one who could stop it—||At first, I thought this little girl just had an overactive imagination...||||||/  ..........Then the CRAZIEST thing happened!!",
                                     superScene: self, completion: nil)
                                 
                                 AudioManager.shared.stopSound(for: "birdsambience", fadeDuration: 5)
