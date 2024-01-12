@@ -110,6 +110,7 @@
 		EA84645F29D9230B0075F2A9 /* Extension+UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA84645E29D9230B0075F2A9 /* Extension+UIColor.swift */; };
 		EA8E072F2B4FEC070051DDC3 /* TapPointerEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA8E072E2B4FEC060051DDC3 /* TapPointerEngine.swift */; };
 		EA8E07542B50988B0051DDC3 /* PointerParticles.sks in Resources */ = {isa = PBXBuildFile; fileRef = EA8E07532B50988B0051DDC3 /* PointerParticles.sks */; };
+		EA8E07562B5104170051DDC3 /* PointerRainbowParticles.sks in Resources */ = {isa = PBXBuildFile; fileRef = EA8E07552B5104170051DDC3 /* PointerRainbowParticles.sks */; };
 		EA94E86529BDA536009F2614 /* PartyEffectSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA94E86429BDA536009F2614 /* PartyEffectSprite.swift */; };
 		EA94E86729BE6BCC009F2614 /* PauseResetEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA94E86629BE6BCC009F2614 /* PauseResetEngine.swift */; };
 		EA94E87329C0DE2C009F2614 /* movetile3.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA94E87029C0DE2C009F2614 /* movetile3.mp3 */; };
@@ -365,6 +366,7 @@
 		EA84645E29D9230B0075F2A9 /* Extension+UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+UIColor.swift"; sourceTree = "<group>"; };
 		EA8E072E2B4FEC060051DDC3 /* TapPointerEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TapPointerEngine.swift; sourceTree = "<group>"; };
 		EA8E07532B50988B0051DDC3 /* PointerParticles.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = PointerParticles.sks; sourceTree = "<group>"; };
+		EA8E07552B5104170051DDC3 /* PointerRainbowParticles.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = PointerRainbowParticles.sks; sourceTree = "<group>"; };
 		EA94E86429BDA536009F2614 /* PartyEffectSprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PartyEffectSprite.swift; sourceTree = "<group>"; };
 		EA94E86629BE6BCC009F2614 /* PauseResetEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PauseResetEngine.swift; sourceTree = "<group>"; };
 		EA94E87029C0DE2C009F2614 /* movetile3.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = movetile3.mp3; sourceTree = "<group>"; };
@@ -1013,6 +1015,7 @@
 				EAE215572ABD1DEB0090735A /* MagicParticles.sks */,
 				EAD19A032A9698B700A07A63 /* PartyGemParticles.sks */,
 				EA8E07532B50988B0051DDC3 /* PointerParticles.sks */,
+				EA8E07552B5104170051DDC3 /* PointerRainbowParticles.sks */,
 				EAD19A1C2A9C14B500A07A63 /* PoisonBubblesParticles.sks */,
 				EAD19A062A96AA6D00A07A63 /* WarpParticles.sks */,
 				EAE215112AB920160090735A /* Warp4Particles.sks */,
@@ -1118,6 +1121,7 @@
 				EAE9194B2A4CB04B00AF67D1 /* gemcollectparty2x.mp3 in Resources */,
 				EA95D19C294690B70061059C /* boyattack1.mp3 in Resources */,
 				EA45834F2A44316F00279056 /* overworldparty.mp3 in Resources */,
+				EA8E07562B5104170051DDC3 /* PointerRainbowParticles.sks in Resources */,
 				EA45835B2A4431D300279056 /* titletheme.mp3 in Resources */,
 				EAEF2F042B4F5EED00AD8459 /* hammerswing.mp3 in Resources */,
 				EAE215582ABD1DEB0090735A /* MagicParticles.sks in Resources */,
