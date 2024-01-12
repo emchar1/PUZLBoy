@@ -25,6 +25,7 @@ class GameScene: SKScene {
     private var pauseResetEngine: PauseResetEngine!
     private var levelStatsArray: [LevelStats]
     private var levelSkipEngine: LevelSkipEngine!
+    private var tapPointerEngine: TapPointerEngine!
 
     //SKNodes
     private var resetConfirmSprite: ConfirmSprite?
@@ -80,6 +81,7 @@ class GameScene: SKScene {
         chatEngine = ChatEngine()
         pauseResetEngine = PauseResetEngine(level: currentLevel)
         levelSkipEngine = LevelSkipEngine()
+        tapPointerEngine = TapPointerEngine()
 
         // FIXME: - 8/30/23 Added '&& user != nil' here to also show offline play if user is nil, i.e. error connecting to Firebase.
         offlinePlaySprite = (hasInternet && FIRManager.user != nil) ? nil : OfflinePlaySprite()
@@ -170,7 +172,9 @@ class GameScene: SKScene {
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard let location = touches.first?.location(in: self) else { return }
-        
+
+        tapPointerEngine.move(to: self, at: location)
+
         if gameEngine.checkControlGuardsIfPassed(includeDisableInputFromOutside: false) {
             if !gameEngine.disableInputFromOutside {
                 pauseResetEngine.touchDown(for: touches)
@@ -982,6 +986,7 @@ extension GameScene: PauseResetEngineDelegate {
         chatEngine = nil
         pauseResetEngine = nil
         levelSkipEngine = nil
+        tapPointerEngine = nil
     }
     
     func didTapHowToPlay(_ tableView: HowToPlayTableView) {
@@ -1149,7 +1154,6 @@ extension GameScene: PartyResultsSpriteDelegate {
                 
                 
                 
-//                handlePartyLevelCleanUp() //Run this directly, if interstial ad failed to load...
                 AdMobManager.shared.createAndLoadInterstitial() //...and try loading the ad again
                 
                 return

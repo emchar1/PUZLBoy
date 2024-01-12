@@ -44,6 +44,10 @@ class TapPointerEngine: SKNode {
         ]))
     }
     
+    deinit {
+        print("TapPointerEngine deinit")
+    }
+    
     
     // MARK: - Functions
     
