@@ -694,19 +694,19 @@ extension GameScene: AdMobManagerDelegate {
     
     ///Used after the interstial ad plays after a Party Level is completed. Should not be used anywhere else because of the proprietary code!!!
     private func resumeGameFromPartyLevel() {
-        // FIXME: - Build out post party dialogue between Marlin & Magmoor. PUZL Boy and party effects should disappear.
-//        let villainChatLevel = (lastCurrentLevel ?? 1) - 1
-//
-//        PartyModeSprite.shared.stopParty(partyBoy: gameEngine.playerSprite,
-//                                         hasSword: gameEngine.level.inventory.hasSwords(),
-//                                         hasHammer: gameEngine.level.inventory.hasHammers(),
-//                                         shouldFadeAndRemovePlayer: true)
-//
-//        chatEngine.playDialogue(level: -villainChatLevel) { [unowned self] in
+        // FIXME: - Build out post party dialogue between Marlin & Magmoor.
+        let villainChatLevel = (lastCurrentLevel ?? 1) - 1
+
+        PartyModeSprite.shared.stopParty(partyBoy: gameEngine.playerSprite,
+                                         hasSword: gameEngine.level.inventory.hasSwords(),
+                                         hasHammer: gameEngine.level.inventory.hasHammers(),
+                                         shouldFadeAndRemovePlayer: true)
+
+        chatEngine.playDialogue(level: -villainChatLevel) { [unowned self] in
             continueFromAd(shouldFade: false) { [unowned self] in
                 handlePartyLevelCleanUp()
             }
-//        }
+        }
     }
     
     ///Helper function used by resumeGameFromPartyLevel()
@@ -1138,17 +1138,17 @@ extension GameScene: PartyResultsSpriteDelegate {
 
 
 
-
-//                PartyModeSprite.shared.stopParty(partyBoy: gameEngine.playerSprite,
-//                                                 hasSword: gameEngine.level.inventory.hasSwords(),
-//                                                 hasHammer: gameEngine.level.inventory.hasHammers(),
-//                                                 shouldFadeAndRemovePlayer: true)
-//                AudioManager.shared.lowerVolume(for: AudioManager.shared.currentTheme, fadeDuration: 1.0)
-//                
-//                chatEngine.playDialogue(level: -2) { [unowned self] in
-//                    AudioManager.shared.raiseVolume(for: AudioManager.shared.currentTheme, fadeDuration: 1.0)
+                // FIXME: - Dialogue between Marlin and Magmoor cont'd.
+                PartyModeSprite.shared.stopParty(partyBoy: gameEngine.playerSprite,
+                                                 hasSword: gameEngine.level.inventory.hasSwords(),
+                                                 hasHammer: gameEngine.level.inventory.hasHammers(),
+                                                 shouldFadeAndRemovePlayer: true)
+                AudioManager.shared.lowerVolume(for: AudioManager.shared.currentTheme, fadeDuration: 1.0)
+                
+                chatEngine.playDialogue(level: -2) { [unowned self] in
+                    AudioManager.shared.raiseVolume(for: AudioManager.shared.currentTheme, fadeDuration: 1.0)
                     handlePartyLevelCleanUp() //Run this directly, if interstial ad failed to load...
-//                }
+                }
                 
                 
                 

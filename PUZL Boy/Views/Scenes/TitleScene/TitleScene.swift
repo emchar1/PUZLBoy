@@ -23,6 +23,7 @@ class TitleScene: SKScene {
     private var skyNode: SKSpriteNode!
     private var fadeSprite: SKSpriteNode!
     private var fadeOutSprite: SKSpriteNode!
+    private var tapPointerEngine: TapPointerEngine!
 
     //Title Properties
     private var puzlTitle: SKLabelNode!
@@ -102,6 +103,8 @@ class TitleScene: SKScene {
         fadeOutSprite.anchorPoint = .zero
         fadeOutSprite.alpha = 0
         fadeOutSprite.zPosition = K.ZPosition.fadeTransitionNode
+        
+        tapPointerEngine = TapPointerEngine()
         
         
         //Title Setup
@@ -428,6 +431,8 @@ class TitleScene: SKScene {
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard let location = touches.first?.location(in: self) else { return }
         guard !disableInput else { return }
+
+        tapPointerEngine.move(to: self, at: location, particleType: .pointer)
         
         for node in nodes(at: location) {
             if let node = node as? MenuItemLabel {
@@ -472,7 +477,7 @@ class TitleScene: SKScene {
                 
                 touchUpButtons()
             }
-            else {
+            else if node.name != TapPointerEngine.nodeName {
                 touchUpMenuItems()
             }
         }
@@ -546,6 +551,7 @@ extension TitleScene: MenuItemLabelDelegate {
         //IMPORTANT TO MAKE THESE NIL!! Otherwise you get retain cycle!!!
         levelSelectPage.superScene = nil
         settingsPage.superScene = nil
+        tapPointerEngine = nil
 
         fadeSprite.run(SKAction.fadeIn(withDuration: fadeDuration)) { [unowned self] in
             disableInput = false

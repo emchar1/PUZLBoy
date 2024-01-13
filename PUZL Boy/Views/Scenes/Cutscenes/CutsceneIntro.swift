@@ -27,6 +27,7 @@ class CutsceneIntro: SKScene {
     private var princess: Player!
     private var dragonSprite: SKSpriteNode!
     private var flyingDragon: FlyingDragon!
+    private var tapPointerEngine: TapPointerEngine!
     
     //Speech
     private var speechHero: SpeechBubbleSprite!
@@ -140,6 +141,8 @@ class CutsceneIntro: SKScene {
         fadeTransitionNode.alpha = 0
         fadeTransitionNode.zPosition = K.ZPosition.fadeTransitionNode
         
+        tapPointerEngine = TapPointerEngine()
+        
         letterbox = LetterboxSprite(color: .black, height: screenSize.height / 3)
         parallaxManager = ParallaxManager(useSet: .grass, xOffsetsArray: xOffsetsArray, forceSpeed: .walk)
         
@@ -173,7 +176,10 @@ class CutsceneIntro: SKScene {
     // MARK: - Touch Functions
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        guard let location = touches.first?.location(in: self) else { return }
+        
         skipIntroSprite.touchesBegan(touches, with: event)
+        tapPointerEngine.move(to: self, at: location, particleType: .pointer)
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -263,7 +269,7 @@ class CutsceneIntro: SKScene {
                             }
                         ]))
                     },
-                    SpeechBubbleItem(profile: speechPrincess, chat: "Oh, umm...|| you sure ask a lot of questions!||||||||/But if you must know,| the reason I'm here is because, well.. first of all, Oh—I'm a princess!|||/And, but... oh! Not here though. I'm a princess in a very very far away place.|||/You see, I'm not from this place. But I am from, well—blah blah blah...||||/Blah blah blah, blah blah blah DRAGONS blah, blah blah, blah blah blah, blah.||||||||/VAELORIA blah, blah.| BLAH blah blah blah, blahhhhh blah.| Blah. Blah. Blah. M|A|G|I|C!!||||||||/And then. And THEN!|| blah blah blah,| blah blah blah.| Blah, blah, blah|| .|.|.|A|G|E| O|F| R|U|I|N|.||||||||||||") { [unowned self] in
+                    SpeechBubbleItem(profile: speechPrincess, chat: "Wow.|| You sure ask a lot of questions!||||||||/But if you must know,| the reason I'm here is because, well.. first of all, Oh—I'm a princess!|||/And, but... oh! Not here though. I'm a princess in a very very far away place.|||/You see, I'm not from this place. But I am from, well—blah blah blah...||||/Blah blah blah, blah blah blah DRAGONS blah, blah blah, blah blah blah, blah.||||||||/VAELORIA blah, blah.| BLAH blah blah blah, blahhhhh blah.| Blah. Blah. Blah. M|A|G|I|C!!||||||||/And then. And THEN!|| blah blah blah,| blah blah blah.| Blah, blah, blah|| .|.|.|A|G|E| O|F| R|U|I|N|.||||||||||||") { [unowned self] in
                         wideShot()
                         
                         dimOverlayNode.run(SKAction.fadeOut(withDuration: 1))
@@ -437,12 +443,18 @@ class CutsceneIntro: SKScene {
 
                         AudioManager.shared.stopSound(for: "thunderrumble", fadeDuration: 5)
                     },
-                    SpeechBubbleItem(profile: speechHero, chat: "Hang on princess!| I'm coming to rescue you!!!||||")
-                ]) {
-                    UserDefaults.standard.set(true, forKey: K.UserDefaults.shouldSkipIntro)
+                    SpeechBubbleItem(profile: speechHero, chat: "Hang on princess! I'm coming to rescue you!!!|||")
+                ]) { [unowned self] in
                     AudioManager.shared.stopSound(for: "ageofruin", fadeDuration: 3)
+                    UserDefaults.standard.set(true, forKey: K.UserDefaults.shouldSkipIntro)
+                    tapPointerEngine = nil
 
-                    completion?()
+                    fadeTransitionNode.run(SKAction.sequence([
+                        SKAction.fadeIn(withDuration: 0.5),
+                        SKAction.removeFromParent()
+                    ])) { [unowned self] in
+                        self.completion?()
+                    }
                 }
             }
         ])) //end Speech Bubbles animation
@@ -562,6 +574,7 @@ extension CutsceneIntro: SkipIntroSpriteDelegate {
         Haptics.shared.stopHapticEngine()
         ButtonTap.shared.tap(type: .buttontap1)
         UserDefaults.standard.set(true, forKey: K.UserDefaults.shouldSkipIntro)
+        tapPointerEngine = nil
 
         fadeTransitionNode.run(SKAction.sequence([
             SKAction.fadeIn(withDuration: fadeDuration),

@@ -11,6 +11,8 @@ class TapPointerEngine: SKNode {
     
     // MARK: - Properties
     
+    static let nodeName = ParticleEngine.nodeName
+    
     private let pointerSize = K.ScreenDimensions.size * 0.05
     private var superScene: SKScene?
     private var location: CGPoint?
@@ -52,6 +54,7 @@ class TapPointerEngine: SKNode {
         pointerNode.strokeColor = .white
         pointerNode.lineWidth = 4
         pointerNode.zPosition = K.ZPosition.activityIndicator + 10
+        pointerNode.name = TapPointerEngine.nodeName
         
         pointerNode.run(SKAction.repeatForever(SKAction.rotate(byAngle: -CGFloat.pi, duration: .random(in: 0.5...1))))
         pointerNode.run(SKAction.sequence([
@@ -70,6 +73,7 @@ class TapPointerEngine: SKNode {
         sparkNode.colorBlendFactor = 1
         sparkNode.setScale(2)
         sparkNode.zPosition = K.ZPosition.activityIndicator + 10
+        sparkNode.name = TapPointerEngine.nodeName
         
         sparkNode.run(SKAction.sequence([
             SKAction.fadeOut(withDuration: 0.5),

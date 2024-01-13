@@ -59,7 +59,7 @@ class CreditsScene: SKScene {
         fadeOutNode.alpha = 0
         fadeOutNode.zPosition = K.ZPosition.fadeTransitionNode
         
-        skyNode = SKSpriteNode(texture: SKTexture(image: DayTheme.getSkyImage()))
+        skyNode = SKSpriteNode(texture: SKTexture(image: DayTheme.getSkyImage(useMorningSky: !UserDefaults.standard.bool(forKey: K.UserDefaults.shouldSkipIntro))))
         skyNode.size = CGSize(width: K.ScreenDimensions.size.width, height: K.ScreenDimensions.size.height / 2)
         skyNode.position = CGPoint(x: 0, y: K.ScreenDimensions.size.height)
         skyNode.anchorPoint = CGPoint(x: 0, y: 1)
@@ -67,6 +67,10 @@ class CreditsScene: SKScene {
 
         moonSprite = MoonSprite(position: CGPoint(x: K.ScreenDimensions.size.width, y: K.ScreenDimensions.size.height), scale: 0.7 * 3)
 
+        if !UserDefaults.standard.bool(forKey: K.UserDefaults.shouldSkipIntro) {
+            moonSprite.alpha = 0
+        }
+        
         parallaxManager = ParallaxManager(useSet: ParallaxObject.SetType.allCases.randomElement() ?? .grass, xOffsetsArray: nil, forceSpeed: .walk)
         parallaxManager.animate()
 
@@ -88,9 +92,12 @@ class CreditsScene: SKScene {
         player.sprite.setScale(0.75 * scaleMultiplier)
         player.sprite.position = CGPoint(x: K.ScreenDimensions.size.width / 2, y: K.ScreenDimensions.size.height / 4)
         player.sprite.anchorPoint = CGPoint(x: 0.5, y: 0)
-        player.sprite.color = DayTheme.spriteColor
-        player.sprite.colorBlendFactor = DayTheme.spriteShade
         player.sprite.zPosition = K.ZPosition.player
+        
+        if UserDefaults.standard.bool(forKey: K.UserDefaults.shouldSkipIntro) {
+            player.sprite.color = DayTheme.spriteColor
+            player.sprite.colorBlendFactor = DayTheme.spriteShade
+        }
         
         playerReflection = Player(type: randomPlayer)
         playerReflection.sprite.setScale(0.75 * scaleMultiplier)
