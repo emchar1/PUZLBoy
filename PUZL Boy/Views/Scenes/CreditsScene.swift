@@ -28,6 +28,7 @@ class CreditsScene: SKScene {
     private var player: Player!
     private var playerReflection: Player!
     private var speechBubble: SpeechBubbleSprite!
+    private var tapPointerEngine: TapPointerEngine!
     
     private var headingLabel: SKLabelNode!
     private var allRightsLabel: SKLabelNode!
@@ -73,6 +74,8 @@ class CreditsScene: SKScene {
         
         parallaxManager = ParallaxManager(useSet: ParallaxObject.SetType.allCases.randomElement() ?? .grass, xOffsetsArray: nil, forceSpeed: .walk)
         parallaxManager.animate()
+        
+        tapPointerEngine = TapPointerEngine()
 
         let scaleMultiplier: CGFloat
         var randomPlayer: Player.PlayerType
@@ -306,6 +309,12 @@ class CreditsScene: SKScene {
     // MARK: - Touch Functions
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        guard let location = touches.first?.location(in: self) else { return }
+        
+        tapPointerEngine.move(to: self, at: location, particleType: .pointer)
+    }
+    
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard !disableInput else { return }
         
         disableInput = true
@@ -317,6 +326,7 @@ class CreditsScene: SKScene {
             // BUGFIX# 231222E01 MUST call this here!!! Prevents memory leak when rage quitting early.
             speechBubble.cleanupManually()
             speechBubble = nil
+            tapPointerEngine = nil
             
             creditsSceneDelegate?.goBackTapped()
         }

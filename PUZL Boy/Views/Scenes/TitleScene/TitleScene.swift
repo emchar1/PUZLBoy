@@ -577,9 +577,15 @@ extension TitleScene: MenuItemLabelDelegate {
             
             disableInput = true
             AudioManager.shared.stopSound(for: AudioManager.shared.titleLogo, fadeDuration: fadeDuration)
+            
+            //IMPORTANT TO MAKE THESE NIL!! Otherwise you get retain cycle!!!
+            levelSelectPage.superScene = nil
+            settingsPage.superScene = nil
+            tapPointerEngine = nil
 
             fadeOutSprite.run(SKAction.fadeIn(withDuration: fadeDuration)) { [unowned self] in
                 disableInput = false
+                levelSelectPicker.removeFromSuperview()
                 titleSceneDelegate?.didTapCredits()
             }
         }
