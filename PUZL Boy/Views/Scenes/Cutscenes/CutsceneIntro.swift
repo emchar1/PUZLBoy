@@ -418,7 +418,7 @@ class CutsceneIntro: SKScene {
                                              duration: 10,
                                              reverseDirection: true)
                     },
-                    SpeechBubbleItem(profile: speechPrincess, speed: 0.04, chat: "SAVE ME MAR—|I mean,| PUZL BOYYYYYYY!!!!!!!||||||||/The fate of the world rests in your haaaaands!") { [unowned self] in
+                    SpeechBubbleItem(profile: speechPrincess, speed: 0.04, chat: "SAVE ME MARIO—|I mean,| PUZL BOYYYYYYY!!!!!!!|||||||/The fate of the world rests in your haaaaands!") { [unowned self] in
                         let frameRate: TimeInterval = 0.02
                         let runCycle: TimeInterval = frameRate * 15 //1 cycle at 0.02s x 15 frames = 0.3s
                         let heroRun = SKAction.animate(with: hero.textures[Player.Texture.run.rawValue], timePerFrame: frameRate)
@@ -450,7 +450,7 @@ class CutsceneIntro: SKScene {
                     tapPointerEngine = nil
 
                     fadeTransitionNode.run(SKAction.sequence([
-                        SKAction.fadeIn(withDuration: 0.5),
+                        SKAction.fadeIn(withDuration: 1),
                         SKAction.removeFromParent()
                     ])) { [unowned self] in
                         self.completion?()
