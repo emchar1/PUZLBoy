@@ -149,7 +149,7 @@ class CreditsScene: SKScene {
         headingLabel.zPosition = K.ZPosition.itemsPoints
         headingLabel.addDropShadow()
         
-        allRightsLabel = SKLabelNode(text: "©2023 5Play Apps. All rights reserved.")
+        allRightsLabel = SKLabelNode(text: "©2024 5Play Apps. All rights reserved.")
         allRightsLabel.position = CGPoint(x: K.ScreenDimensions.size.width / 2, y: K.ScreenDimensions.size.height * 1 / 9)
         allRightsLabel.horizontalAlignmentMode = .center
         allRightsLabel.verticalAlignmentMode = .top
@@ -180,7 +180,84 @@ class CreditsScene: SKScene {
     }
     
     
-    // MARK: - Text Functions
+    // MARK: - Touch Functions
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        guard !disableInput else { return }
+        guard let location = touches.first?.location(in: self) else { return }
+        
+        tapPointerEngine.move(to: self, at: location, particleType: .pointer)
+    }
+    
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        guard !disableInput else { return }
+        
+        disableInput = true
+        ButtonTap.shared.tap(type: .buttontap1)
+
+        fadeOutNode.run(SKAction.fadeIn(withDuration: 1.0)) { [unowned self] in
+            disableInput = false
+            
+            cleanupAndGoBack()
+        }
+    }
+    
+    private func cleanupAndGoBack() {
+        // BUGFIX# 231222E01 MUST call this here!!! Prevents memory leak when rage quitting early.
+        speechBubble.cleanupManually()
+        speechBubble = nil
+        tapPointerEngine = nil
+        
+        creditsSceneDelegate?.goBackTapped()
+    }
+    
+    
+    // MARK: - Label/Bubble Speech Functions
+    
+    private func setSpeechBubblesArray(texts: [String], currentIndex: Int = 0, completion: (() -> Void)?) {
+        if currentIndex == texts.count {
+            //Base case
+            completion?()
+        }
+        else {
+            speechBubble.setText(text: texts[currentIndex], superScene: self) { [unowned self] in
+                //Recursion!!
+                setSpeechBubblesArray(texts: texts, currentIndex: currentIndex + 1, completion: completion)
+            }
+        }
+    }
+    
+    private func setLabelsArray(entities: [LabelEntity], currentIndex: Int = 0, completion: (() -> Void)?) {
+        if currentIndex == entities.count {
+            //Base case
+            completion?()
+        }
+        else {
+            setLabels(headingText: entities[currentIndex].headingText,
+                                subheadingTexts: entities[currentIndex].subheadingTexts,
+                                subheadingAction: entities[currentIndex].subheadingAction) { [unowned self] in
+                entities[currentIndex].handler?()
+
+                //Recursion!!
+                setLabelsArray(entities: entities, currentIndex: currentIndex + 1, completion: completion)
+            }
+        }
+    }
+    
+    private func setLabels(headingText: String, subheadingTexts: [String], subheadingAction: SKAction, completion: (() -> Void)?) {
+        headingLabel.text = headingText
+        headingLabel.updateShadow()
+        
+        headingLabel.run(animateFadeAction()) {
+            completion?()
+        }
+        
+        setSubheadingLabels(texts: subheadingTexts)
+        
+        for subheading in subheadingLabels {
+            subheading.run(subheadingAction)
+        }
+    }
     
     private func setSubheadingLabels(texts: [String]) {
         for node in children.filter({ $0.name == "subheadingName" }) {
@@ -226,72 +303,8 @@ class CreditsScene: SKScene {
         }
     }
     
-    private func setAndAnimateLabels(headingText: String, subheadingTexts: [String], subheadingAction: SKAction, completion: (() -> Void)?) {
-        headingLabel.text = headingText
-        headingLabel.updateShadow()
-        
-        headingLabel.run(animateFadeAction()) {
-            completion?()
-        }
-        
-        setSubheadingLabels(texts: subheadingTexts)
-        
-        for subheading in subheadingLabels {
-            subheading.run(subheadingAction)
-        }
-    }
     
-    private func setLabelsArray(entities: [LabelEntity], currentIndex: Int = 0, completion: (() -> Void)?) {
-        if currentIndex == entities.count {
-            //Base case
-            completion?()
-        }
-        else {
-            setAndAnimateLabels(headingText: entities[currentIndex].headingText,
-                                subheadingTexts: entities[currentIndex].subheadingTexts,
-                                subheadingAction: entities[currentIndex].subheadingAction) { [unowned self] in
-                entities[currentIndex].handler?()
-
-                //Recursion!!
-                setLabelsArray(entities: entities, currentIndex: currentIndex + 1, completion: completion)
-            }
-        }
-    }
-    
-    private func setSpeechBubblesArray(texts: [String], currentIndex: Int = 0, completion: (() -> Void)?) {
-        if currentIndex == texts.count {
-            //Base case
-            completion?()
-        }
-        else {
-            speechBubble.setText(text: texts[currentIndex], superScene: self) { [unowned self] in
-                //Recursion!!
-                setSpeechBubblesArray(texts: texts, currentIndex: currentIndex + 1, completion: completion)
-            }
-        }
-    }
-    
-    func animateFadeAction() -> SKAction {
-        return SKAction.sequence([
-            SKAction.wait(forDuration: waitDuration),
-            SKAction.fadeIn(withDuration: fadeDuration),
-            SKAction.wait(forDuration: waitDuration),
-            SKAction.fadeOut(withDuration: fadeDuration)
-        ])
-    }
-    
-    func animateZoomAction(scale: CGFloat) -> SKAction {
-        return SKAction.sequence([
-            SKAction.scale(to: 0, duration: 0),
-            SKAction.fadeIn(withDuration: 0),
-            SKAction.wait(forDuration: waitDuration),
-            SKAction.scale(to: scale * 1.1, duration: 0.25),
-            SKAction.scale(to: scale * 0.95, duration: 0.2),
-            SKAction.scale(to: scale, duration: 0.2),
-            SKAction.wait(forDuration: waitDuration),
-            SKAction.fadeOut(withDuration: fadeDuration)
-        ])
-    }
+    // MARK: - Animation Functions
     
     private func animateScene() {
         let speechBubbleYOffset: CGFloat = UIDevice.isiPad ? 100 : 0
@@ -331,7 +344,7 @@ class CreditsScene: SKScene {
                     SKAction.wait(forDuration: waitDuration),
                     SKAction.fadeIn(withDuration: fadeDuration)
                 ])) { [unowned self] in
-                    creditsSceneDelegate?.goBackTapped()
+                    cleanupAndGoBack()
                 }
             }
         }
@@ -352,31 +365,27 @@ class CreditsScene: SKScene {
         ], completion: nil)
     }
     
-    
-    // MARK: - Touch Functions
-    
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        guard !disableInput else { return }
-        guard let location = touches.first?.location(in: self) else { return }
-        
-        tapPointerEngine.move(to: self, at: location, particleType: .pointer)
+    private func animateFadeAction() -> SKAction {
+        return SKAction.sequence([
+            SKAction.wait(forDuration: waitDuration),
+            SKAction.fadeIn(withDuration: fadeDuration),
+            SKAction.wait(forDuration: waitDuration),
+            SKAction.fadeOut(withDuration: fadeDuration)
+        ])
     }
     
-    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        guard !disableInput else { return }
-        
-        disableInput = true
-        ButtonTap.shared.tap(type: .buttontap1)
-
-        fadeOutNode.run(SKAction.fadeIn(withDuration: 1.0)) { [unowned self] in
-            disableInput = false
-            
-            // BUGFIX# 231222E01 MUST call this here!!! Prevents memory leak when rage quitting early.
-            speechBubble.cleanupManually()
-            speechBubble = nil
-            tapPointerEngine = nil
-            
-            creditsSceneDelegate?.goBackTapped()
-        }
+    private func animateZoomAction(scale: CGFloat) -> SKAction {
+        return SKAction.sequence([
+            SKAction.scale(to: 0, duration: 0),
+            SKAction.fadeIn(withDuration: 0),
+            SKAction.wait(forDuration: waitDuration),
+            SKAction.scale(to: scale * 1.1, duration: 0.25),
+            SKAction.scale(to: scale * 0.95, duration: 0.2),
+            SKAction.scale(to: scale, duration: 0.2),
+            SKAction.wait(forDuration: waitDuration),
+            SKAction.fadeOut(withDuration: fadeDuration)
+        ])
     }
+    
+    
 }
