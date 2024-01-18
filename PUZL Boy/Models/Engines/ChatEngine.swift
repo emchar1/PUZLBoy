@@ -420,10 +420,10 @@ extension ChatEngine {
             
             sendChatArray(items: [
                 ChatItem(profile: .villain, imgPos: .left, chat: "MASKED VILLAIN: You will never find her... You can keep trying, but it'll all be in vain. Give up now..."),
-                ChatItem(profile: .trainer, chat: "Magmoor! So you ARE behind this. I should have known! The whole time I'm thinking, \"No way he came crawling back into my life.\" And here we are..."),
-                ChatItem(profile: .villain, imgPos: .left, chat: "MAGMOOR: Surprised much? You need me. You're the yin to my yang. We're bounded by fate, as the Priestess revealed during the Wizard's Trials."),
+                ChatItem(profile: .trainer, chat: "Magmoor! I should have known! The whole time I'm thinking, \"No way he came crawling back into my life.\" And here you are..."),
+                ChatItem(profile: .villain, imgPos: .left, chat: "MAGMOOR: Surprised much? You need me. You're the yin to my yang. We're bounded by fate, as the Priestess Machinegunkelly revealed during the Trial of Mages."),
                 ChatItem(profile: .trainer, chat: "That was over 500 years ago. LET THE PRINCESS GO AND THINGS WON'T GET UGLY!!"),
-                ChatItem(profile: .villain, imgPos: .left, chat: "We would have made a great duo—the strongest wizards in all the realms, but you chose a different path.............. Why did you leave me?"),
+                ChatItem(profile: .villain, imgPos: .left, chat: "We would have made a great duo—the strongest Mystics in all the realms, but you chose a different path.............. Why did you leave me?"),
                 ChatItem(profile: .trainer, chat: "..............I did what I had to do."),
                 ChatItem(profile: .villain, imgPos: .left, chat: "Such a shame. So lost. You'll soon regret it.")
             ]) { [unowned self] in
@@ -478,7 +478,9 @@ extension ChatEngine {
                 ChatItem(profile: .trainer, chat: "MARLIN: I am Marlin. I suspect she is being held captive in the dragon's lair. We must move quickly. I am going to guide you there, so pay attention."),
                 ChatItem(profile: .hero, imgPos: .left, chat: "Marlin, like the fish??? I hate fish by the way. The smell, the texture... So how do you know that's where they've taken her?"),
                 ChatItem(profile: .trainer, chat: "Don't worry about it... And no, not like the fish. Marlin like the Magician."),
-                ChatItem(profile: .trainer, chat: "OK. The lair is buried miles beneath the Earth's surface, and the only way to reach it is to solve logic puzzles."),
+                ChatItem(profile: .trainer, chat: "As a matter of fact, I come from a long line of legendary and powerful Mystics. Let's see, there's Magnus, Merton, Mirwood, Malana..."),
+                ChatItem(profile: .hero, imgPos: .left, chat: "Mmmkay. Got it 🥱"),
+                ChatItem(profile: .trainer, chat: ".......moving on. The lair is buried miles beneath the Earth's surface, and the only way to reach it is to solve logic puzzles."),
                 ChatItem(profile: .hero, imgPos: .left, chat: "A marlin is a fish... You're thinking of Merlin the Magician. OH! Is that your name? Merlin?"),
                 ChatItem(profile: .trainer, chat: "I think I know my own name. Listen!! There are 500 levels in total you will have to solve, each with increasing difficulty."),
                 ChatItem(profile: .hero, imgPos: .left, chat: "500 levels?!! How long is that gonna take? I gotta be home by 7. What do I get if I win?"),
@@ -561,7 +563,7 @@ extension ChatEngine {
             delegate?.illuminatePanel(at: (1, 1), useOverlay: true)
             
             sendChatArray(items: [
-                ChatItem(profile: .hero, imgPos: .left, chat: "THAT'S HIM!!! That's the dragon that took the princess! 😡"),
+                ChatItem(profile: .hero, imgPos: .left, chat: "Yo! That's the dragon that took the princess! 😡"),
                 ChatItem(profile: .trainer, chat: "Relax... That's one of many dragons you'll encounter on your journey. But don't get too close or it'll cost ya 1 health point."),
                 ChatItem(profile: .hero, imgPos: .left, chat: "He looks kinda small and underwhelming to me..."),
                 ChatItem(profile: .trainer, chat: "Hey, this is a solo project with zero budget, whaddya want from me?! As I was saying...") { [unowned self] in
@@ -624,7 +626,7 @@ extension ChatEngine {
                 ChatItem(profile: .trainer, chat: "Dragons are ancient and powerful creatures that inhabit the land of Vaeloria and are deeply connected to its magic."),
                 ChatItem(profile: .trainer, chat: "The sudden emergence of dragons in your world suggests something bigger is at play, and this little girl... Princess Olivia... is at the center of it all."),
                 ChatItem(profile: .hero, imgPos: .left, chat: "What do they want with her anyway?"),
-                ChatItem(profile: .trainer, chat: "That has yet to be determined, though I suspect something very dark is at play... Come along. Let's not waste anymore time.")
+                ChatItem(profile: .trainer, chat: "That has yet to be determined, though I suspect something very dark is the reason for all of this... Come. Let's not waste anymore time.")
             ]) { [unowned self] in
                 handleDialogueCompletion(level: level, completion: completion)
             }
@@ -657,7 +659,7 @@ extension ChatEngine {
             delegate?.spawnPrincessCapture(at: spawnPoint) { [unowned self] in
                 sendChatArray(items: [
                     ChatItem(profile: .princess, chat: "PRINCESS OLIVIA: Help meeeee PUZL Boy!!! It's dark and scary over here. And this guy's breath is really stinky!"),
-                    ChatItem(profile: .villain, chat: "MASKED VILLAIN: If you want to see your precious princess again, then hand over what I need. MUAHAHAHAHAHAHA!!!!"),
+                    ChatItem(profile: .villain, chat: "If you want to see your precious princess again, then hand over what I need. MUAHAHAHAHAHAHA!!!!"),
                     ChatItem(profile: .princess, chat: "Eww, your breath!"),
                     ChatItem(profile: .hero, imgPos: .left, chat: "If you touch a hair on her head, it's gonna be the end for you, smelly shadow man!"),
                     ChatItem(profile: .villain, chat: "MUAHAHAHAHAHHAHAHAAGGGGGHH! *cough* *cough* *HACK* 😮‍💨 ...ugh that one's black."),
