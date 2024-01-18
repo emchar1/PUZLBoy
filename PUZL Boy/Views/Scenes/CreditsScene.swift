@@ -33,7 +33,21 @@ class CreditsScene: SKScene {
     private var headingLabel: SKLabelNode!
     private var allRightsLabel: SKLabelNode!
     private var subheadingLabels: [SKLabelNode] = []
-
+    
+    private struct LabelEntity {
+        let headingText: String
+        let subheadingTexts: [String]
+        let subheadingAction: SKAction
+        let handler: (() -> Void)?
+        
+        init(headingText: String, subheadingTexts: [String], subheadingAction: SKAction, handler: (() -> Void)? = nil) {
+            self.headingText = headingText
+            self.subheadingTexts = subheadingTexts
+            self.subheadingAction = subheadingAction
+            self.handler = handler
+        }
+    }
+    
     weak var creditsSceneDelegate: CreditsSceneDelegate?
     
     
@@ -227,6 +241,36 @@ class CreditsScene: SKScene {
         }
     }
     
+    private func setLabelsArray(entities: [LabelEntity], currentIndex: Int = 0, completion: (() -> Void)?) {
+        if currentIndex == entities.count {
+            //Base case
+            completion?()
+        }
+        else {
+            setAndAnimateLabels(headingText: entities[currentIndex].headingText,
+                                subheadingTexts: entities[currentIndex].subheadingTexts,
+                                subheadingAction: entities[currentIndex].subheadingAction) { [unowned self] in
+                entities[currentIndex].handler?()
+
+                //Recursion!!
+                setLabelsArray(entities: entities, currentIndex: currentIndex + 1, completion: completion)
+            }
+        }
+    }
+    
+    private func setSpeechBubblesArray(texts: [String], currentIndex: Int = 0, completion: (() -> Void)?) {
+        if currentIndex == texts.count {
+            //Base case
+            completion?()
+        }
+        else {
+            speechBubble.setText(text: texts[currentIndex], superScene: self) { [unowned self] in
+                //Recursion!!
+                setSpeechBubblesArray(texts: texts, currentIndex: currentIndex + 1, completion: completion)
+            }
+        }
+    }
+    
     func animateFadeAction() -> SKAction {
         return SKAction.sequence([
             SKAction.wait(forDuration: waitDuration),
@@ -253,56 +297,59 @@ class CreditsScene: SKScene {
         let speechBubbleYOffset: CGFloat = UIDevice.isiPad ? 100 : 0
         
         //Credits
-        setAndAnimateLabels(headingText: "5Play Apps presents", subheadingTexts: [], subheadingAction: animateFadeAction()) { [unowned self] in
-            setAndAnimateLabels(headingText: "", subheadingTexts: ["PUZL", "Boy"], subheadingAction: animateZoomAction(scale: titleScale)) { [unowned self] in
-                setAndAnimateLabels(headingText: "Art Assets", subheadingTexts: ["Freepik", "Icons8", "Flaticon"], subheadingAction: animateFadeAction()) { [unowned self] in
-                    setAndAnimateLabels(headingText: "Created by", subheadingTexts: ["Eddie Char"], subheadingAction: animateFadeAction()) { [unowned self] in
-                        
-                        speechBubble.run(SKAction.sequence([
-                            SKAction.wait(forDuration: waitDuration),
-                            SKAction.moveBy(x: 0, y: -speechBubbleYOffset, duration: fadeDuration / 4)
-                        ]))
-                        
-                        setAndAnimateLabels(headingText: "Special Thanks", subheadingTexts: ["Clayton Caldwell", "Michelle Rayfield", "Jackson Rayfield", "Aissa Char", "Michel Char"], subheadingAction: animateFadeAction()) { [unowned self] in
-                            
+        setLabelsArray(entities: [
+            LabelEntity(headingText: "5Play Apps presents",
+                        subheadingTexts: [],
+                        subheadingAction: animateFadeAction()),
+            LabelEntity(headingText: "",
+                        subheadingTexts: ["PUZL", "Boy"],
+                        subheadingAction: animateZoomAction(scale: titleScale)),
+            LabelEntity(headingText: "Art Assets",
+                        subheadingTexts: ["Deviant Art", "Flaticon", "Freepik", "Game Art 2D"],
+                        subheadingAction: animateFadeAction()),
+            LabelEntity(headingText: "Created by",
+                        subheadingTexts: ["Eddie Char"],
+                        subheadingAction: animateFadeAction()) { [unowned self] in
+                            speechBubble.run(SKAction.sequence([
+                                SKAction.wait(forDuration: waitDuration),
+                                SKAction.moveBy(x: 0, y: -speechBubbleYOffset, duration: fadeDuration / 4)
+                            ]))
+                        },
+            LabelEntity(headingText: "Special Thanks",
+                        subheadingTexts: ["Clayton Caldwell", "Michelle Rayfield", "Jackson Rayfield", "Aissa Char", "Michel Char"],
+                        subheadingAction: animateFadeAction()) { [unowned self] in
                             speechBubble.run(SKAction.moveBy(x: 0, y: speechBubbleYOffset, duration: fadeDuration / 4))
-                            
-                            setAndAnimateLabels(headingText: "for", subheadingTexts: ["Olivia🦄", "and Alana"], subheadingAction: animateFadeAction()) { [unowned self] in
-                                allRightsLabel.run(SKAction.fadeIn(withDuration: fadeDuration)) { [unowned self] in
-                                    disableInput = true
-                                    
-                                    fadeOutNode.run(SKAction.sequence([
-                                        SKAction.wait(forDuration: waitDuration),
-                                        SKAction.fadeIn(withDuration: fadeDuration)
-                                    ])) { [unowned self] in
-                                        creditsSceneDelegate?.goBackTapped()
-                                    }
-                                }
-                            }
-                        }
-                    }
+                        },
+            LabelEntity(headingText: "for",
+                        subheadingTexts: ["Olivia🦄", "and Alana"],
+                        subheadingAction: animateFadeAction()),
+        ]) { [unowned self] in
+            allRightsLabel.run(SKAction.fadeIn(withDuration: fadeDuration)) { [unowned self] in
+                disableInput = true
+                
+                fadeOutNode.run(SKAction.sequence([
+                    SKAction.wait(forDuration: waitDuration),
+                    SKAction.fadeIn(withDuration: fadeDuration)
+                ])) { [unowned self] in
+                    creditsSceneDelegate?.goBackTapped()
                 }
             }
         }
         
+        
         // TODO: - Speech Bubbles for each Player
-        speechBubble.setText(text: "I can't wait to play this game, I heard great things!", superScene: self) {
-            self.speechBubble.setText(text: "Is it fun? Yes. But is it addictive? Also yes.", superScene: self) {
-                self.speechBubble.setText(text: "Of course I finished all my chores! Why do you ask?", superScene: self) {
-                    self.speechBubble.setText(text: "I loaded the dishwasher the way to told me to...", superScene: self) {
-                        self.speechBubble.setText(text: "I don't know how the forks ended up on the top shelf.", superScene: self) {
-                            self.speechBubble.setText(text: "No because remember you yelled at me about it last time.", superScene: self) {
-                                self.speechBubble.setText(text: "I dunno, maybe Becky came over and put them there.", superScene: self) {
-                                    self.speechBubble.setText(text: "There's the phone, you can give her a call yourself.", superScene: self) {
-                                        self.speechBubble.setText(text: "Well, I'm not calling you a liar but... you's a big fat liar!", superScene: self, completion: nil)
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
+        setSpeechBubblesArray(texts: [
+            "I can't wait to play this game, I heard great things!",
+            "Is it fun? Yes. But is it addictive? Also yes.",
+            "Of course I finished all my chores. Why do you ask?",
+            "I loaded the dishwasher the way to told me to.",
+            "I don't know how the forks ended up on the top shelf.",
+            "No because you yelled at me about it last time.",
+            "Maybe Gina came over and put them there.",
+            "There's the phone, you can give her a call yourself.",
+            "I'm not giving you attitude.",
+            "Well, I'm not calling you a liar but you's a big fat liar!"
+        ], completion: nil)
     }
     
     
