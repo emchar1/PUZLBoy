@@ -356,6 +356,7 @@ class CreditsScene: SKScene {
     // MARK: - Touch Functions
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        guard !disableInput else { return }
         guard let location = touches.first?.location(in: self) else { return }
         
         tapPointerEngine.move(to: self, at: location, particleType: .pointer)
