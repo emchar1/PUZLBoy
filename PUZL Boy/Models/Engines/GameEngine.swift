@@ -117,7 +117,7 @@ class GameEngine {
         healthRemaining = 1
         gemsRemaining = self.level.gems
         
-        //BUGFIX# 231114E01 Is it necessary to reset gemsCollected because otherwise it accumulates ad infinitum???
+        //BUGFIX# 231114E01 Is it necessary to reset gemsCollected because otherwise it accumulates ad infinitum??? YES!!!
         gemsCollected = 0
         
         enemiesKilled = 0
@@ -704,11 +704,16 @@ class GameEngine {
     // MARK: - Spawn Functions
     
     ///Spawns items in a party level.
-    // FIXME: - Party items spawned especially in panel(0,0) seem to disappear instantly, especially with 3x3 size grids. BUGFIX# 230914E01
     func spawnPartyItems(maxItems: Int) {
         guard Level.isPartyLevel(level.level) else { return }
                 
-        var itemPositions: [K.GameboardPosition] = Array(repeating: (row: 0, col: 0), count: maxItems)
+        // FIXME: - Party items spawned especially in panel(0, 0) seem to disappear instantly, especially with 3x3 size grids. BUGFIX# 230914E01. I think by initializing a panel other than (0, 0), it gives the perception that this bug is fixed. Closing the bugfix for now... 1/18/24.
+        let lastPanel = gameboardSprite.panelCount - 1
+        var itemPositions: [K.GameboardPosition] = []
+        
+        for _ in 0..<maxItems {
+            itemPositions.append((row: Int.random(in: 0...lastPanel), col: Int.random(in: 0...lastPanel)))
+        }
 
         partyInventory = PartyInventory(panelCount: level.gameboard.count)
 
