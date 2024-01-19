@@ -136,9 +136,8 @@ extension GameViewController: TitleSceneDelegate {
 //        monitor.cancel()
     }
     
-    // TODO: - LevelSelectPage - Is this needed?
     func didTapLevelSelect() {
-
+        //Implementation NOT needed
     }
     
     // TODO: - CreditsScene
