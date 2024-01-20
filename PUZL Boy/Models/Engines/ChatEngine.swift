@@ -426,7 +426,7 @@ extension ChatEngine {
         switch level {
         case -100: // TODO: - Rework Villain Party Dialogue
             AudioManager.shared.playSound(for: "scarymusicbox", fadeIn: 3)
-            AudioManager.shared.playSound(for: "magicheartbeatloop", fadeIn: 3)
+            AudioManager.shared.playSound(for: "magicheartbeatloop1", fadeIn: 3)
             
             sendChatArray(items: [
                 ChatItem(profile: .villain, imgPos: .left, chat: "MASKED VILLAIN: You'll never find her. You can keep trying, but it will all be in vain. Give up now..."),
@@ -438,12 +438,12 @@ extension ChatEngine {
                 ChatItem(profile: .villain, imgPos: .left, chat: "Your loss. Such a shame. You'll soon regret it.")
             ]) { [unowned self] in
                 AudioManager.shared.stopSound(for: "scarymusicbox", fadeDuration: 3)
-                AudioManager.shared.stopSound(for: "magicheartbeatloop", fadeDuration: 3)
+                AudioManager.shared.stopSound(for: "magicheartbeatloop1", fadeDuration: 3)
                 handleDialogueCompletion(level: level, completion: completion)
             }
 //        case -200:
 //            AudioManager.shared.playSound(for: "scarymusicbox", fadeIn: 3)
-//            AudioManager.shared.playSound(for: "magicheartbeatloop", fadeIn: 3)
+//            AudioManager.shared.playSound(for: "magicheartbeatloop1", fadeIn: 3)
 //
 //            sendChatArray(items: [
 //                ChatItem(profile: .villain, imgPos: .left, chat: "C'mon dude! When are you gonna move here?"),
@@ -451,12 +451,12 @@ extension ChatEngine {
 //                ChatItem(profile: .villain, imgPos: .left, chat: "Get a condo here. Just do it.")
 //            ]) { [unowned self] in
 //                AudioManager.shared.stopSound(for: "scarymusicbox", fadeDuration: 3)
-//                AudioManager.shared.stopSound(for: "magicheartbeatloop", fadeDuration: 3)
+//                AudioManager.shared.stopSound(for: "magicheartbeatloop1", fadeDuration: 3)
 //                handleDialogueCompletion(level: level, completion: completion)
 //            }
 //        case -250:
 //            AudioManager.shared.playSound(for: "scarymusicbox", fadeIn: 3)
-//            AudioManager.shared.playSound(for: "magicheartbeatloop", fadeIn: 3)
+//            AudioManager.shared.playSound(for: "magicheartbeatloop1", fadeIn: 3)
 //
 //            sendChatArray(items: [
 //                ChatItem(profile: .villain, imgPos: .left, chat: "You're such a stud."),
@@ -464,7 +464,7 @@ extension ChatEngine {
 //                ChatItem(profile: .villain, imgPos: .left, chat: "My wife will kill you if she found out.")
 //            ]) { [unowned self] in
 //                AudioManager.shared.stopSound(for: "scarymusicbox", fadeDuration: 3)
-//                AudioManager.shared.stopSound(for: "magicheartbeatloop", fadeDuration: 3)
+//                AudioManager.shared.stopSound(for: "magicheartbeatloop1", fadeDuration: 3)
 //                handleDialogueCompletion(level: level, completion: completion)
 //            }
         case Level.partyLevel: //Level: -1
@@ -484,17 +484,20 @@ extension ChatEngine {
             }
         case 1:
             sendChatArray(items: [
-                ChatItem(profile: .hero, imgPos: .left, chat: "PUZL BOY: ...then the dragon swooped down and carried her away! It. Was. Harrowing. So... what's our game plan? Also who are you again??"),
-                ChatItem(profile: .trainer, chat: "MARLIN: I am Marlin. I suspect she is being held captive in the dragon's lair. We must move quickly. I am going to guide you there, so pay attention."),
+                ChatItem(profile: .hero, imgPos: .left, chat: "PUZL BOY: ...then the dragon swooped down and carried her away! It. Was. Harrowing. So... where are we? And who are you again??"),
+                ChatItem(profile: .trainer, chat: "MARLIN: I am Marlin. I suspect she is being held captive in the dragon's lair. I've transported you to the PUZZLE REALM, which is our gateway to the lair."),
                 ChatItem(profile: .hero, imgPos: .left, chat: "Marlin, like the fish??? I hate fish by the way. The smell, the texture... So how do you know that's where they've taken her?"),
                 ChatItem(profile: .trainer, chat: "Don't worry about it... And no, not like the fish. Marlin like the Magician."),
-                ChatItem(profile: .trainer, chat: "As a matter of fact, I come from a long line of legendary and powerful Mystics. Let's see, there's Magnus, Merton, Mirwood, Malana..."),
+                ChatItem(profile: .trainer, chat: "As a matter of fact, I come from a long line of legendary and powerful Mystics, each with our own unique powers and abilities..."),
+                ChatItem(profile: .trainer, chat: "Some Mystics control the elements: fire-water, earth-air, some are all knowing, while others govern the arts and science. I happen to be a water mage."),
+                ChatItem(profile: .hero, imgPos: .left, chat: "🍿"),
+                ChatItem(profile: .trainer, chat: "Let's see, I'm currently mentoring Maxel, Mywren, and Malana, our Mystics in training so to speak..."),
                 ChatItem(profile: .hero, imgPos: .left, chat: "Mmmkay. Got it 🥱"),
-                ChatItem(profile: .trainer, chat: ".......moving on. The lair is buried miles beneath the Earth's surface, and the only way to reach it is to solve logic puzzles."),
+                ChatItem(profile: .trainer, chat: ".......moving on. The lair is buried deep inside Earth's core, and the only way to reach it is to solve logic puzzles."),
                 ChatItem(profile: .hero, imgPos: .left, chat: "A marlin is a fish... You're thinking of Merlin the Magician. OH! Is that your name? Merlin?"),
-                ChatItem(profile: .trainer, chat: "I think I know my own name. Listen!! There are 500 levels in total you will have to solve, each with increasing difficulty."),
+                ChatItem(profile: .trainer, chat: "Enough with the fish already! Listen!! There are 500 levels in total you will have to solve, each with increasing difficulty."),
                 ChatItem(profile: .hero, imgPos: .left, chat: "500 levels?!! How long is that gonna take? I gotta be home by 7. What do I get if I win?"),
-                ChatItem(profile: .trainer, chat: "You save the world!!! OMG! Now where was I... Oh yeah, the goal for each level is to get to the gate in under a certain number of moves.") { [unowned self] in
+                ChatItem(profile: .trainer, chat: "YOU SAVE THE WORLD!!! OMG! Now where was I... Oh yeah, the goal for each level is to get to the gate in under a certain number of moves.") { [unowned self] in
                     delegate?.illuminatePanel(at: (0, 1), useOverlay: false)
                     delegate?.illuminatePanel(at: (1, 0), useOverlay: false)
                     delegate?.illuminatePanel(at: (1, 2), useOverlay: false)
@@ -680,11 +683,13 @@ extension ChatEngine {
                         fadeDimOverlay()
                         delegate?.despawnPrincessCapture(at: spawnPoint, completion: { })
                     },
-                    ChatItem(profile: .hero, imgPos: .left, pause: 8, startNewChat: true, chat: "Well. That is a lot to unpack. What does Marzipan want with the princess? He's not gonna sacrifice her is he?! 😱 I've seen too many movies...") {
+                    ChatItem(profile: .hero, imgPos: .left, pause: 8, startNewChat: true, chat: "That was creepy. What does Marzipan want with the princess? He's not gonna sacrifice her is he?! 😱 I've seen too many movies...") {
                         //Sheep walking across the level randomly
                     },
-                    ChatItem(profile: .trainer, chat: "Magmoor—one of the most powerful Mystics from my realm. He wasn't always like this. We used to room together. Then he flipped his.. Sheep! in the distance."),
-                    ChatItem(profile: .hero, imgPos: .left, chat: "Room together?? Okayyy ...so what's our next move: PURSUE_HIM | PREPARE_FIRST"),
+                    ChatItem(profile: .trainer, chat: "Magmoor—one of the most powerful Mystics from my realm. He wasn't always like this. We were once good friends. Then he went all Mabritney on everyone."),
+                    ChatItem(profile: .hero, imgPos: .left, chat: "You guys have Britney Spears in your world?"),
+                    ChatItem(profile: .trainer, chat: "Who?? Mabritney is an elemental mage who wields forbidden dark magic."),
+                    ChatItem(profile: .hero, imgPos: .left, chat: "He seems like a great guy ...so what's our next move: PURSUE_HIM | PREPARE_FIRST"),
                     ChatItem(profile: .hero, imgPos: .left, chat: "We should prepare first..."),
                     ChatItem(profile: .trainer, chat: "A wise decision. Let's keep moving."),
                     ChatItem(profile: .hero, imgPos: .left, chat: "BRING ME MAGMOOR!"),
