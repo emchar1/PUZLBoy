@@ -63,6 +63,9 @@ class ChatEngine {
     private struct ChatItem {
         let profile: ChatProfile
         let imgPos: ImagePosition
+        let pause: TimeInterval?
+        let startNewChat: Bool
+        let endChat: Bool
         let chat: String
         let handler: (() -> Void)?
         
@@ -70,15 +73,18 @@ class ChatEngine {
             case left, right
         }
         
-        init(profile: ChatProfile, imgPos: ImagePosition = .right, chat: String, handler: (() -> Void)?) {
+        init(profile: ChatProfile, imgPos: ImagePosition = .right, pause: TimeInterval? = nil, startNewChat: Bool = false, endChat: Bool = false, chat: String, handler: (() -> Void)?) {
             self.profile = profile
             self.imgPos = imgPos
+            self.pause = pause
+            self.startNewChat = startNewChat
+            self.endChat = endChat
             self.chat = chat
             self.handler = handler
         }
         
         init(profile: ChatProfile, imgPos: ImagePosition = .right, chat: String) {
-            self.init(profile: profile, imgPos: imgPos, chat: chat, handler: nil)
+            self.init(profile: profile, imgPos: imgPos, pause: nil, startNewChat: false, endChat: false, chat: chat, handler: nil)
         }
     }
     
@@ -239,8 +245,9 @@ class ChatEngine {
         else {
             sendChat(profile: items[currentIndex].profile,
                      imgPos: items[currentIndex].imgPos,
-                     startNewChat: currentIndex == 0,
-                     endChat: currentIndex == items.count - 1,
+                     pause: items[currentIndex].pause,
+                     startNewChat: items[currentIndex].startNewChat || currentIndex == 0,
+                     endChat: items[currentIndex].endChat || currentIndex == items.count - 1,
                      chat: items[currentIndex].chat) { [unowned self] in
                 items[currentIndex].handler?()
 
@@ -250,7 +257,7 @@ class ChatEngine {
         }
     }
     
-    private func sendChat(profile: ChatProfile, imgPos: ChatItem.ImagePosition, startNewChat: Bool, endChat: Bool, chat: String, completion: (() -> ())? = nil) {
+    private func sendChat(profile: ChatProfile, imgPos: ChatItem.ImagePosition, pause: TimeInterval?, startNewChat: Bool, endChat: Bool, chat: String, completion: (() -> ())? = nil) {
         //Only allow a new chat if current chat isn't happening
         guard allowNewChat else { return }
         
@@ -290,9 +297,12 @@ class ChatEngine {
         backgroundSprite.setScale(0)
         
         //Animates the chat bubble zoom in for startNewChat
-        backgroundSprite.run(SKAction.group([
-            SKAction.moveTo(x: 0, duration: startNewChat ? 0.4 : 0),
-            SKAction.scale(to: 1.0, duration: startNewChat ? 0.4 : 0)
+        backgroundSprite.run(SKAction.sequence([
+            SKAction.wait(forDuration: pause ?? 0),
+            SKAction.group([
+                SKAction.moveTo(x: 0, duration: startNewChat ? 0.4 : 0),
+                SKAction.scale(to: 1.0, duration: startNewChat ? 0.4 : 0)
+            ])
         ])) { [unowned self] in
             if startNewChat {
                 AudioManager.shared.playSound(for: "chatopen")
@@ -378,7 +388,7 @@ extension ChatEngine {
         //Villain Party Dialogue
         dialoguePlayed[-250] = false
         dialoguePlayed[-200] = false
-        dialoguePlayed[-150] = false
+        dialoguePlayed[-100] = false
         
         //Main Dialogue
         dialoguePlayed[Level.partyLevel] = false //Level: -1
@@ -414,26 +424,26 @@ extension ChatEngine {
         isChatting = true
 
         switch level {
-        case -150: // TODO: - Rework Villain Party Dialogue
+        case -100: // TODO: - Rework Villain Party Dialogue
             AudioManager.shared.playSound(for: "scarymusicbox", fadeIn: 3)
-            AudioManager.shared.playSound(for: "magicdoomloop", fadeIn: 3)
+            AudioManager.shared.playSound(for: "magicheartbeatloop", fadeIn: 3)
             
             sendChatArray(items: [
-                ChatItem(profile: .villain, imgPos: .left, chat: "MASKED VILLAIN: You will never find her... You can keep trying, but it'll all be in vain. Give up now..."),
+                ChatItem(profile: .villain, imgPos: .left, chat: "MASKED VILLAIN: You'll never find her. You can keep trying, but it will all be in vain. Give up now..."),
                 ChatItem(profile: .trainer, chat: "Magmoor! I should have known! The whole time I'm thinking, \"No way he came crawling back into my life.\" And here you are..."),
                 ChatItem(profile: .villain, imgPos: .left, chat: "MAGMOOR: Surprised much? You need me. You're the yin to my yang. We're bounded by fate, as the Priestess Machinegunkelly revealed during the Trial of Mages."),
-                ChatItem(profile: .trainer, chat: "That was over 500 years ago. LET THE PRINCESS GO AND THINGS WON'T GET UGLY!!"),
-                ChatItem(profile: .villain, imgPos: .left, chat: "We would have made a great duo—the strongest Mystics in all the realms, but you chose a different path.............. Why did you leave me?"),
+                ChatItem(profile: .trainer, chat: "That was over 500 years ago. Give up the child and leave us!!"),
+                ChatItem(profile: .villain, imgPos: .left, chat: "We would have made a great duo: the strongest Mystics in all the realms. But you chose a different path ..............why did you leave me?"),
                 ChatItem(profile: .trainer, chat: "..............I did what I had to do."),
-                ChatItem(profile: .villain, imgPos: .left, chat: "Such a shame. So lost. You'll soon regret it.")
+                ChatItem(profile: .villain, imgPos: .left, chat: "Your loss. Such a shame. You'll soon regret it.")
             ]) { [unowned self] in
                 AudioManager.shared.stopSound(for: "scarymusicbox", fadeDuration: 3)
-                AudioManager.shared.stopSound(for: "magicdoomloop", fadeDuration: 3)
+                AudioManager.shared.stopSound(for: "magicheartbeatloop", fadeDuration: 3)
                 handleDialogueCompletion(level: level, completion: completion)
             }
 //        case -200:
 //            AudioManager.shared.playSound(for: "scarymusicbox", fadeIn: 3)
-//            AudioManager.shared.playSound(for: "magicdoomloop", fadeIn: 3)
+//            AudioManager.shared.playSound(for: "magicheartbeatloop", fadeIn: 3)
 //
 //            sendChatArray(items: [
 //                ChatItem(profile: .villain, imgPos: .left, chat: "C'mon dude! When are you gonna move here?"),
@@ -441,12 +451,12 @@ extension ChatEngine {
 //                ChatItem(profile: .villain, imgPos: .left, chat: "Get a condo here. Just do it.")
 //            ]) { [unowned self] in
 //                AudioManager.shared.stopSound(for: "scarymusicbox", fadeDuration: 3)
-//                AudioManager.shared.stopSound(for: "magicdoomloop", fadeDuration: 3)
+//                AudioManager.shared.stopSound(for: "magicheartbeatloop", fadeDuration: 3)
 //                handleDialogueCompletion(level: level, completion: completion)
 //            }
 //        case -250:
 //            AudioManager.shared.playSound(for: "scarymusicbox", fadeIn: 3)
-//            AudioManager.shared.playSound(for: "magicdoomloop", fadeIn: 3)
+//            AudioManager.shared.playSound(for: "magicheartbeatloop", fadeIn: 3)
 //
 //            sendChatArray(items: [
 //                ChatItem(profile: .villain, imgPos: .left, chat: "You're such a stud."),
@@ -454,7 +464,7 @@ extension ChatEngine {
 //                ChatItem(profile: .villain, imgPos: .left, chat: "My wife will kill you if she found out.")
 //            ]) { [unowned self] in
 //                AudioManager.shared.stopSound(for: "scarymusicbox", fadeDuration: 3)
-//                AudioManager.shared.stopSound(for: "magicdoomloop", fadeDuration: 3)
+//                AudioManager.shared.stopSound(for: "magicheartbeatloop", fadeDuration: 3)
 //                handleDialogueCompletion(level: level, completion: completion)
 //            }
         case Level.partyLevel: //Level: -1
@@ -653,23 +663,34 @@ extension ChatEngine {
             ]) { [unowned self] in
                 handleDialogueCompletion(level: level, completion: completion)
             }
-        case 157: // TODO: - Rework Princess Capture Dialogue
-            let spawnPoint: K.GameboardPosition = (3, 2)
+        case 157:
+            let spawnPoint: K.GameboardPosition = (0, 2)
             
             delegate?.spawnPrincessCapture(at: spawnPoint) { [unowned self] in
                 sendChatArray(items: [
                     ChatItem(profile: .princess, chat: "PRINCESS OLIVIA: Help meeeee PUZL Boy!!! It's dark and scary over here. And this guy's breath is really stinky!"),
-                    ChatItem(profile: .villain, chat: "If you want to see your precious princess again, then hand over what I need. MUAHAHAHAHAHAHA!!!!"),
-                    ChatItem(profile: .princess, chat: "Eww, your breath!"),
-                    ChatItem(profile: .hero, imgPos: .left, chat: "If you touch a hair on her head, it's gonna be the end for you, smelly shadow man!"),
-                    ChatItem(profile: .villain, chat: "MUAHAHAHAHAHHAHAHAAGGGGGHH! *cough* *cough* *HACK* 😮‍💨 ...ugh that one's black."),
-                    ChatItem(profile: .princess, chat: "Ew gross!! 🤮")
+                    ChatItem(profile: .hero, imgPos: .left, chat: "Holy #@$^! Who the #&*@ are are you?!"),
+                    ChatItem(profile: .villain, chat: "If you want to see your precious princess again, then join powers with me."),
+                    ChatItem(profile: .trainer, imgPos: .left, chat: "No!!! You want absolute power. All Mystics share power evenly; it keeps the realms in balance. You seek to plunge the realms into total darkness."),
+                    ChatItem(profile: .villain, chat: "The world is broken and the realms are already headed towards eternal darkness. It requires a new world order to lead them into the light."),
+                    ChatItem(profile: .trainer, imgPos: .left, chat: "You've lost it Magmoor. LET THE PRINCESS GO AND THINGS WON'T HAVE TO GET UGLY!!"),
+                    ChatItem(profile: .hero, imgPos: .left, chat: "Yeah, if you touch a hair on her head, it's gonna be the end for you, Mantamar!"),
+                    ChatItem(profile: .villain, chat: "Embrace the light and you shall see! MUAHAHAHAHAAGGGHHHH! *cough* *cough* *HACK* 😮‍💨 ...ugh that one's black."),
+                    ChatItem(profile: .princess, endChat: true, chat: "Ew gross!! 🤮") { [unowned self] in
+                        fadeDimOverlay()
+                        delegate?.despawnPrincessCapture(at: spawnPoint, completion: { })
+                    },
+                    ChatItem(profile: .hero, imgPos: .left, pause: 8, startNewChat: true, chat: "Well. That is a lot to unpack. What does Marzipan want with the princess? He's not gonna sacrifice her is he?! 😱 I've seen too many movies...") {
+                        //Sheep walking across the level randomly
+                    },
+                    ChatItem(profile: .trainer, chat: "Magmoor—one of the most powerful Mystics from my realm. He wasn't always like this. We used to room together. Then he flipped his.. Sheep! in the distance."),
+                    ChatItem(profile: .hero, imgPos: .left, chat: "Room together?? Okayyy ...so what's our next move: PURSUE_HIM | PREPARE_FIRST"),
+                    ChatItem(profile: .hero, imgPos: .left, chat: "We should prepare first..."),
+                    ChatItem(profile: .trainer, chat: "A wise decision. Let's keep moving."),
+                    ChatItem(profile: .hero, imgPos: .left, chat: "BRING ME MAGMOOR!"),
+                    ChatItem(profile: .trainer, chat: "Okay but let's be careful.")
                 ]) { [unowned self] in
-                    fadeDimOverlay()
-                    
-                    delegate?.despawnPrincessCapture(at: spawnPoint) { [unowned self] in
-                        handleDialogueCompletion(level: level, completion: completion)
-                    }
+                    handleDialogueCompletion(level: level, completion: completion)
                 }
             }
         default:

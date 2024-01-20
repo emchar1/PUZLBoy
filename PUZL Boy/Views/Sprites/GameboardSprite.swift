@@ -283,7 +283,7 @@ class GameboardSprite {
         overlayPanel.name = "captureEndOpen"
         sprite.addChild(overlayPanel)
         
-        AudioManager.shared.playSound(for: "magicdoomloop", fadeIn: 3, interruptPlayback: false)
+        AudioManager.shared.playSound(for: "magicheartbeatloop", fadeIn: 3, interruptPlayback: false)
         AudioManager.shared.playSound(for: "littlegirllaugh", fadeIn: 3, interruptPlayback: false)
         AudioManager.shared.playSound(for: "scarymusicbox", fadeIn: 3, interruptPlayback: false)
         AudioManager.shared.adjustVolume(to: 0, for: AudioManager.shared.currentTheme, fadeDuration: 5)
@@ -441,7 +441,7 @@ class GameboardSprite {
                     SKAction.removeFromParent(),
                     SKAction.run {
                         AudioManager.shared.playSound(for: "dooropen")
-                        AudioManager.shared.stopSound(for: "magicdoomloop", fadeDuration: 5)
+                        AudioManager.shared.stopSound(for: "magicheartbeatloop", fadeDuration: 5)
                         AudioManager.shared.stopSound(for: "littlegirllaugh", fadeDuration: 5)
                         AudioManager.shared.stopSound(for: "scarymusicbox", fadeDuration: 5)
                         AudioManager.shared.adjustVolume(to: 1, for: AudioManager.shared.currentTheme, fadeDuration: 3)
