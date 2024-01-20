@@ -296,24 +296,42 @@ class ChatEngine {
         avatarSprite.xScale = imgPos == .left ? abs(avatarSprite.xScale) : -abs(avatarSprite.xScale)
         backgroundSprite.setScale(0)
         
-        //Animates the chat bubble zoom in for startNewChat
-        backgroundSprite.run(SKAction.sequence([
-            SKAction.wait(forDuration: pause ?? 0),
-            SKAction.group([
-                SKAction.moveTo(x: 0, duration: startNewChat ? 0.4 : 0),
-                SKAction.scale(to: 1.0, duration: startNewChat ? 0.4 : 0)
-            ])
-        ])) { [unowned self] in
-            if startNewChat {
-                AudioManager.shared.playSound(for: "chatopen")
+
+        let animateBackgroundSprite = SKAction.group([
+            SKAction.moveTo(x: 0, duration: startNewChat ? 0.4 : 0),
+            SKAction.scale(to: 1.0, duration: startNewChat ? 0.4 : 0)
+        ])
+        
+        //Animates the chat bubble zoom in for startNewChat. Need to do 2 cases because even with a wait of 0 seconds, it adds a flicker that could be distracting.
+        if let pause = pause {
+            backgroundSprite.run(SKAction.sequence([
+                SKAction.wait(forDuration: pause),
+                animateBackgroundSprite
+            ])) { [unowned self] in
+                if startNewChat {
+                    AudioManager.shared.playSound(for: "chatopen")
+                }
+                
+                timer = Timer.scheduledTimer(timeInterval: chatSpeed, target: self, selector: #selector(animateText(_:)), userInfo: nil, repeats: true)
             }
-            
-            timer = Timer.scheduledTimer(timeInterval: chatSpeed, target: self, selector: #selector(animateText(_:)), userInfo: nil, repeats: true)
+        }
+        else {
+            //Leave out the wait
+            backgroundSprite.run(animateBackgroundSprite) { [unowned self] in
+                if startNewChat {
+                    AudioManager.shared.playSound(for: "chatopen")
+                }
+                
+                timer = Timer.scheduledTimer(timeInterval: chatSpeed, target: self, selector: #selector(animateText(_:)), userInfo: nil, repeats: true)
+            }
         }
         
-        //Animates overlaySprite
+        //Animates dimOverlaySprite to darken the background.
         if startNewChat {
-            dimOverlaySprite.run(SKAction.fadeAlpha(to: 0.8, duration: 1.0))
+            dimOverlaySprite.run(SKAction.sequence([
+                SKAction.wait(forDuration: pause ?? 0),
+                SKAction.fadeAlpha(to: 0.8, duration: 1.0)
+            ]))
         }
     }
     
@@ -429,9 +447,9 @@ extension ChatEngine {
             AudioManager.shared.playSound(for: "magicheartbeatloop1", fadeIn: 3)
             
             sendChatArray(items: [
-                ChatItem(profile: .villain, imgPos: .left, chat: "MASKED VILLAIN: You'll never find her. You can keep trying, but it will all be in vain. Give up now..."),
-                ChatItem(profile: .trainer, chat: "Magmoor! I should have known! The whole time I'm thinking, \"No way he came crawling back into my life.\" And here you are..."),
-                ChatItem(profile: .villain, imgPos: .left, chat: "MAGMOOR: Surprised much? You need me. You're the yin to my yang. We're bounded by fate, as the Priestess Machinegunkelly revealed during the Trial of Mages."),
+                ChatItem(profile: .villain, imgPos: .left, chat: "MYSTERIOUS MAN: You'll never find her. You can keep trying, but it will all be in vain. Give up now..."),
+                ChatItem(profile: .trainer, chat: "YOU! I should have known! The whole time I'm thinking, \"No way he came crawling back into my life.\" And here you are..."),
+                ChatItem(profile: .villain, imgPos: .left, chat: "Surprised much? You need me. You're the yin to my yang. We're bounded by fate, as the Priestess Machinegunkelly revealed during the Trial of Mages."),
                 ChatItem(profile: .trainer, chat: "That was over 500 years ago. Give up the child and leave us!!"),
                 ChatItem(profile: .villain, imgPos: .left, chat: "We would have made a great duo: the strongest Mystics in all the realms. But you chose a different path ..............why did you leave me?"),
                 ChatItem(profile: .trainer, chat: "..............I did what I had to do."),
@@ -491,10 +509,10 @@ extension ChatEngine {
                 ChatItem(profile: .trainer, chat: "As a matter of fact, I come from a long line of legendary and powerful Mystics, each with our own unique powers and abilities..."),
                 ChatItem(profile: .trainer, chat: "Some Mystics control the elements: fire-water, earth-air, some are all knowing, while others govern the arts and science. I happen to be a water mage."),
                 ChatItem(profile: .hero, imgPos: .left, chat: "🍿"),
-                ChatItem(profile: .trainer, chat: "Let's see, I'm currently mentoring Maxel, Mywren, and Malana, our Mystics in training so to speak..."),
+                ChatItem(profile: .trainer, chat: "Let's see, there's Maxel, Mywren, and Malana, our Mystics in training who I am personally mentoring..."),
                 ChatItem(profile: .hero, imgPos: .left, chat: "Mmmkay. Got it 🥱"),
-                ChatItem(profile: .trainer, chat: ".......moving on. The lair is buried deep inside Earth's core, and the only way to reach it is to solve logic puzzles."),
-                ChatItem(profile: .hero, imgPos: .left, chat: "A marlin is a fish... You're thinking of Merlin the Magician. OH! Is that your name? Merlin?"),
+                ChatItem(profile: .trainer, chat: ".......moving on. The lair is buried deep inside Earth's core, and the only way to reach it is to solve logic puzzles—"),
+                ChatItem(profile: .hero, imgPos: .left, chat: "A marlin is a fish. You're thinking of Merlin the Magician. OH! Is that your name? Merlin ...the Magician?"),
                 ChatItem(profile: .trainer, chat: "Enough with the fish already! Listen!! There are 500 levels in total you will have to solve, each with increasing difficulty."),
                 ChatItem(profile: .hero, imgPos: .left, chat: "500 levels?!! How long is that gonna take? I gotta be home by 7. What do I get if I win?"),
                 ChatItem(profile: .trainer, chat: "YOU SAVE THE WORLD!!! OMG! Now where was I... Oh yeah, the goal for each level is to get to the gate in under a certain number of moves.") { [unowned self] in
@@ -528,7 +546,7 @@ extension ChatEngine {
             delegate?.illuminatePanel(at: (1, 1), useOverlay: true)
             
             sendChatArray(items: [
-                ChatItem(profile: .trainer, chat: "Pretty easy, right?! Levels get progressively harder with various obstacles blocking your path.") { [unowned self] in
+                ChatItem(profile: .trainer, chat: "Pretty easy, right? Levels get progressively harder with various obstacles blocking your path.") { [unowned self] in
                     delegate?.illuminateDisplayNode(for: .hammers)
                 },
                 ChatItem(profile: .trainer, chat: "You need a hammer to break through those boulders. Your inventory count can be found in the upper right. 🔨"),
@@ -651,7 +669,7 @@ extension ChatEngine {
                 ChatItem(profile: .trainer, chat: "902."),
                 ChatItem(profile: .hero, imgPos: .left, chat: "NINE HUNDRED??!! What are you, like a wizard or something? \"Marlin the Fish Wizard...\""),
                 ChatItem(profile: .hero, imgPos: .left, chat: "Wait... ARE YOU REALLY A WIZARD?!?! Because I'm not surprised by anything anymore at this point..."),
-                ChatItem(profile: .trainer, chat: "Once we've located the princess, I need to cast the gateway spell to open the portal and send her back to Vaeloria."),
+                ChatItem(profile: .trainer, chat: "Once we've located the princess, I need to cast the gateway spell to open the portal so she can return to her home in Vaeloria."),
                 ChatItem(profile: .hero, imgPos: .left, chat: "I mean you don't look a day over 800 to be honest..."),
                 ChatItem(profile: .trainer, chat: "PUZL Boy, I need you to be serious! What lies ahead will test your patience. It will make you want to throw your phone out the window. You need to be prepared!"),
                 ChatItem(profile: .hero, imgPos: .left, chat: "Ok ok. I'll be ready. I already know how to use hammers and swords. Nothing can stop me!") { [unowned self] in
@@ -672,11 +690,12 @@ extension ChatEngine {
             delegate?.spawnPrincessCapture(at: spawnPoint) { [unowned self] in
                 sendChatArray(items: [
                     ChatItem(profile: .princess, chat: "PRINCESS OLIVIA: Help meeeee PUZL Boy!!! It's dark and scary over here. And this guy's breath is really stinky!"),
-                    ChatItem(profile: .hero, imgPos: .left, chat: "Holy #@$^! Who the #&*@ are are you?!"),
-                    ChatItem(profile: .villain, chat: "If you want to see your precious princess again, then join powers with me."),
+                    ChatItem(profile: .hero, imgPos: .left, chat: "Gandhi on a gondola! Who the #&*@! are are you?!!"),
+                    ChatItem(profile: .trainer, imgPos: .left, chat: "Magmoor, stop this at once! It's not too late."),
+                    ChatItem(profile: .villain, chat: "MAGMOOR: If you want to see your precious princess again, then let us merge powers."),
                     ChatItem(profile: .trainer, imgPos: .left, chat: "No!!! You want absolute power. All Mystics share power evenly; it keeps the realms in balance. You seek to plunge the realms into total darkness."),
-                    ChatItem(profile: .villain, chat: "The world is broken and the realms are already headed towards eternal darkness. It requires a new world order to lead them into the light."),
-                    ChatItem(profile: .trainer, imgPos: .left, chat: "You've lost it Magmoor. LET THE PRINCESS GO AND THINGS WON'T HAVE TO GET UGLY!!"),
+                    ChatItem(profile: .villain, chat: "The world is broken and the realms are already headed towards eternal darkness. It requires a new order to lead them into the light."),
+                    ChatItem(profile: .trainer, imgPos: .left, chat: "You've completely lost it. LET THE PRINCESS GO AND THINGS WON'T GET UGLY!!"),
                     ChatItem(profile: .hero, imgPos: .left, chat: "Yeah, if you touch a hair on her head, it's gonna be the end for you, Mantamar!"),
                     ChatItem(profile: .villain, chat: "Embrace the light and you shall see! MUAHAHAHAHAAGGGHHHH! *cough* *cough* *HACK* 😮‍💨 ...ugh that one's black."),
                     ChatItem(profile: .princess, endChat: true, chat: "Ew gross!! 🤮") { [unowned self] in
@@ -687,8 +706,8 @@ extension ChatEngine {
                         //Sheep walking across the level randomly
                     },
                     ChatItem(profile: .trainer, chat: "Magmoor—one of the most powerful Mystics from my realm. He wasn't always like this. We were once good friends. Then he went all Mabritney on everyone."),
-                    ChatItem(profile: .hero, imgPos: .left, chat: "You guys have Britney Spears in your world?"),
-                    ChatItem(profile: .trainer, chat: "Who?? Mabritney is an elemental mage who wields forbidden dark magic."),
+                    ChatItem(profile: .hero, imgPos: .left, chat: "You guys have Britney in your world?"),
+                    ChatItem(profile: .trainer, chat: "No—MAbritney. She's an elemental mage who wields forbidden dark magic. She does a Dance of Knives that summons Chaos."),
                     ChatItem(profile: .hero, imgPos: .left, chat: "He seems like a great guy ...so what's our next move: PURSUE_HIM | PREPARE_FIRST"),
                     ChatItem(profile: .hero, imgPos: .left, chat: "We should prepare first..."),
                     ChatItem(profile: .trainer, chat: "A wise decision. Let's keep moving."),
