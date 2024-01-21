@@ -524,16 +524,16 @@ extension ChatEngine {
         case 1:
             sendChatArray(items: [
                 ChatItem(profile: .hero, imgPos: .left, chat: "PUZL BOY: ...then the dragon swooped down and carried her away! It. Was. Harrowing. So... where are we? And who are you again??"),
-                ChatItem(profile: .trainer, chat: "MARLIN: I am Marlin. I suspect she is being held captive in the dragon's lair. I've transported you to the PUZZLE REALM, which is our gateway to the lair."),
-                ChatItem(profile: .hero, imgPos: .left, chat: "Marlin, like the fish??? I hate fish by the way. The smell, the texture... So how do you know that's where they've taken her?"),
+                ChatItem(profile: .trainer, chat: "MARLIN: I am Marlin. I suspect she is being taken to the dragon's lair. I have transported you to the PUZZLE REALM, which is our gateway to the lair."),
+                ChatItem(profile: .hero, imgPos: .left, chat: "Marlin, like the fish??? I hate fish by the way. The smell, the texture... So how do you know that's where they're taking her?"),
                 ChatItem(profile: .trainer, chat: "Don't worry about it... And no, not like the fish. Marlin like the Magician."),
                 ChatItem(profile: .trainer, chat: "As a matter of fact, I come from a long line of legendary and powerful Mystics, each with our own unique powers and abilities..."),
-                ChatItem(profile: .trainer, chat: "Some Mystics control the elements: fire-water, earth-air, some are all knowing, while others govern the arts and science. I happen to be a water mage."),
+                ChatItem(profile: .trainer, chat: "Some Mystics control the elements: fire-water, earth-air, some are all-knowing, while others govern the arts and science. I happen to be a water mage, myself."),
                 ChatItem(profile: .hero, imgPos: .left, chat: "🍿"),
                 ChatItem(profile: .trainer, chat: "Let's see, there's Maxel, Mywren, and Malana, our Mystics in training who I am personally mentoring..."),
                 ChatItem(profile: .hero, imgPos: .left, chat: "Mmmkay. Got it 🥱"),
                 ChatItem(profile: .trainer, chat: ".......moving on. The lair is buried deep inside Earth's core, and the only way to reach it is to solve logic puzzles—"),
-                ChatItem(profile: .hero, imgPos: .left, chat: "A marlin is a fish. You're thinking of Merlin the Magician. OH! Is that your name? Merlin ...the Magician?"),
+                ChatItem(profile: .hero, imgPos: .left, chat: "Water mage... like a fish? A marlin is a fish. You're thinking of Merlin the Magician. OH! Is that your name? Merlin ...the Magician?"),
                 ChatItem(profile: .trainer, chat: "Enough with the fish already! Listen!! There are 500 levels in total you will have to solve, each with increasing difficulty."),
                 ChatItem(profile: .hero, imgPos: .left, chat: "500 levels?!! How long is that gonna take? I gotta be home by 7. What do I get if I win?"),
                 ChatItem(profile: .trainer, chat: "YOU SAVE THE WORLD!!! OMG! Now where was I... Oh yeah, the goal for each level is to get to the gate in under a certain number of moves.") { [unowned self] in
@@ -555,7 +555,7 @@ extension ChatEngine {
                     delegate?.illuminatePanel(at: (2, 2), useOverlay: false)
                 },
                 ChatItem(profile: .trainer, chat: "See the gate? It's closed. To open it, collect all the gems in the level. Simple, right?"),
-                ChatItem(profile: .hero, imgPos: .left, chat: "Right. Let's go save the princess!")
+                ChatItem(profile: .hero, imgPos: .left, chat: "Alright, mister \"Merlin the Magician.\" Let's go save the princess.")
             ]) { [unowned self] in
                 delegate?.deilluminatePanel(at: (1, 2), useOverlay: true)
                 delegate?.deilluminatePanel(at: (2, 2), useOverlay: false)
@@ -678,7 +678,7 @@ extension ChatEngine {
                 ChatItem(profile: .trainer, chat: "Dragons are ancient and powerful creatures that inhabit the land of Vaeloria and are deeply connected to its magic."),
                 ChatItem(profile: .trainer, chat: "The sudden emergence of dragons in your world suggests something bigger is at play, and this little girl... Princess Olivia... is at the center of it all."),
                 ChatItem(profile: .hero, imgPos: .left, chat: "What do they want with her anyway?"),
-                ChatItem(profile: .trainer, chat: "That has yet to be determined, though I suspect something very dark is the reason for all of this... Come. Let's not waste anymore time.")
+                ChatItem(profile: .trainer, chat: "That has yet to be determined, though I suspect something very dark is behind all this... Come. Let's not waste anymore time.")
             ]) { [unowned self] in
                 handleDialogueCompletion(level: level, completion: completion)
             }
@@ -689,9 +689,10 @@ extension ChatEngine {
                 ChatItem(profile: .hero, imgPos: .left, chat: "No don't! Look, if it's the old man comments, everybody gets old. It's just an inevitability of life. I'm 16 so everyone looks old to me. You're like what... 50?"),
                 ChatItem(profile: .trainer, chat: "902."),
                 ChatItem(profile: .hero, imgPos: .left, chat: "NINE HUNDRED??!! What are you, like a wizard or something? \"Marlin the Fish Wizard...\""),
-                ChatItem(profile: .hero, imgPos: .left, chat: "Wait... ARE YOU REALLY A WIZARD?!?! Because I'm not surprised by anything anymore at this point..."),
+                ChatItem(profile: .hero, imgPos: .left, chat: "Wait... So you really ARE a wizard!! Because I'm not surprised by anything anymore at this point..."),
+                ChatItem(profile: .trainer, chat: "MYSTIC, MYSTIC, MYSTIC!!! I told you I'm a Mystic. Yeesh, my blood pressure..."),
                 ChatItem(profile: .trainer, chat: "Once we've located the princess, I need to cast the gateway spell to open the portal so she can return to her home in Vaeloria."),
-                ChatItem(profile: .hero, imgPos: .left, chat: "I mean you don't look a day over 800 to be honest..."),
+                ChatItem(profile: .hero, imgPos: .left, chat: "Yeah... mystic. Which is basically a wizard. Or magician. Well you don't look a day over 800 to be honest..."),
                 ChatItem(profile: .trainer, chat: "PUZL Boy, I need you to be serious! What lies ahead will test your patience. It will make you want to throw your phone out the window. You need to be prepared!"),
                 ChatItem(profile: .hero, imgPos: .left, chat: "Ok ok. I'll be ready. I already know how to use hammers and swords. Nothing can stop me!") { [unowned self] in
                     delegate?.illuminateMinorButton(for: .hint)
