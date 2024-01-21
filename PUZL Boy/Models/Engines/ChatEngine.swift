@@ -446,18 +446,39 @@ extension ChatEngine {
             AudioManager.shared.playSound(for: "scarymusicbox", fadeIn: 3)
             AudioManager.shared.playSound(for: "magicheartbeatloop1", fadeIn: 3)
             
+            let villainRedEyes = SKSpriteNode(imageNamed: "villainRedEyes")
+            villainRedEyes.position = CGPoint(x: K.ScreenDimensions.size.width / 2, y: K.ScreenDimensions.size.height - K.ScreenDimensions.topMargin)
+            villainRedEyes.anchorPoint = CGPoint(x: 0.5, y: 1)
+            villainRedEyes.scale(to: CGSize(width: K.ScreenDimensions.size.width * 1.5, height: K.ScreenDimensions.size.width * 1.5))
+            villainRedEyes.alpha = 0
+            villainRedEyes.zPosition = K.ZPosition.chatDialogue - 1
+            
+            superScene?.addChild(villainRedEyes)
+
             sendChatArray(items: [
-                ChatItem(profile: .villain, imgPos: .left, chat: "MYSTERIOUS MAN: You'll never find her. You can keep trying, but it will all be in vain. Give up now..."),
-                ChatItem(profile: .trainer, chat: "YOU! I should have known! The whole time I'm thinking, \"No way he came crawling back into my life.\" And here you are..."),
-                ChatItem(profile: .villain, imgPos: .left, chat: "Surprised much? You need me. You're the yin to my yang. We're bounded by fate, as the Priestess Machinegunkelly revealed during the Trial of Mages."),
-                ChatItem(profile: .trainer, chat: "That was over 500 years ago. Give up the child and leave us!!"),
+                ChatItem(profile: .villain, imgPos: .left, chat: "MYSTERIOUS MAN: You'll never find her. You can keep trying, but it will all be in vain. Give up now...") {
+                    villainRedEyes.run(SKAction.fadeAlpha(to: 0.3, duration: 1))
+                },
+                ChatItem(profile: .trainer, chat: "YOU! I should have known! The whole time I'm thinking, \"No way he came crawling back into my life.\" And here you are...") {
+                    villainRedEyes.run(SKAction.fadeAlpha(to: 0.4, duration: 1))
+                },
+                ChatItem(profile: .villain, imgPos: .left, chat: "Surprised much? You need me. You're the yin to my yang. We're bounded by fate, as the Priestess Machinegunkelly revealed during the Trial of Mages.") {
+                    villainRedEyes.run(SKAction.fadeAlpha(to: 0.5, duration: 1))
+                },
+                ChatItem(profile: .trainer, chat: "That was over 500 years ago. Give up the child and leave this world!!") {
+                    villainRedEyes.run(SKAction.fadeAlpha(to: 0.6, duration: 1))
+                },
                 ChatItem(profile: .villain, imgPos: .left, chat: "We would have made a great duo: the strongest Mystics in all the realms. But you chose a different path ..............why did you leave me?"),
                 ChatItem(profile: .trainer, chat: "..............I did what I had to do."),
                 ChatItem(profile: .villain, imgPos: .left, chat: "Your loss. Such a shame. You'll soon regret it.")
             ]) { [unowned self] in
                 AudioManager.shared.stopSound(for: "scarymusicbox", fadeDuration: 3)
                 AudioManager.shared.stopSound(for: "magicheartbeatloop1", fadeDuration: 3)
-                handleDialogueCompletion(level: level, completion: completion)
+                
+                handleDialogueCompletion(level: level) {
+                    villainRedEyes.removeFromParent()
+                    completion?()
+                }
             }
 //        case -200:
 //            AudioManager.shared.playSound(for: "scarymusicbox", fadeIn: 3)
@@ -488,7 +509,7 @@ extension ChatEngine {
         case Level.partyLevel: //Level: -1
             sendChatArray(items: [
                 ChatItem(profile: .hero, imgPos: .left, chat: "Yo, I feel funny. I'm seeing colorful flashing lights and the music is bumpin'. I can't stop moving.. and I like it!"),
-                ChatItem(profile: .trainer, chat: "Welcome to the DARK REALM! Looks like you ate one of those rainbow colored jelly beans, I see."),
+                ChatItem(profile: .trainer, chat: "Welcome to the DARK REALM, the hidden realm that exists between PUZZLE REALMS. Looks like you ate one of those rainbow colored jelly beans, I see."),
                 ChatItem(profile: .hero, imgPos: .left, chat: "Jelly beans, right..."),
                 ChatItem(profile: .trainer, chat: "Don't worry, the feeling lasts only a short amount of time, but while you're under its effects you can move to your heart's content."),
                 ChatItem(profile: .trainer, chat: "Run around collecting all the gems and bonuses that pop up in the level. But you gotta be quick before time runs out."),
