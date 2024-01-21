@@ -469,7 +469,7 @@ extension ChatEngine {
                     villainRedEyes.run(SKAction.fadeAlpha(to: 0.6, duration: 1))
                 },
                 ChatItem(profile: .villain, imgPos: .left, chat: "We would have made a great duo: the strongest Mystics in all the realms. But you chose a different path ..............why did you leave me?"),
-                ChatItem(profile: .trainer, chat: "..............I did what I had to do."),
+                ChatItem(profile: .trainer, chat: "..............I did what I had to."),
                 ChatItem(profile: .villain, imgPos: .left, chat: "Your loss. Such a shame. You'll soon regret it.")
             ]) { [unowned self] in
                 AudioManager.shared.stopSound(for: "scarymusicbox", fadeDuration: 3)
@@ -509,7 +509,7 @@ extension ChatEngine {
         case Level.partyLevel: //Level: -1
             sendChatArray(items: [
                 ChatItem(profile: .hero, imgPos: .left, chat: "Yo, I feel funny. I'm seeing colorful flashing lights and the music is bumpin'. I can't stop moving.. and I like it!"),
-                ChatItem(profile: .trainer, chat: "Welcome to the DARK REALM, the hidden realm that exists between PUZZLE REALMS. Looks like you ate one of those rainbow colored jelly beans, I see."),
+                ChatItem(profile: .trainer, chat: "Welcome to the DARK REALM, the hidden realm that exists between PUZZLE REALMS. You ate one of those rainbow colored jelly beans, I see."),
                 ChatItem(profile: .hero, imgPos: .left, chat: "Jelly beans, right..."),
                 ChatItem(profile: .trainer, chat: "Don't worry, the feeling lasts only a short amount of time, but while you're under its effects you can move to your heart's content."),
                 ChatItem(profile: .trainer, chat: "Run around collecting all the gems and bonuses that pop up in the level. But you gotta be quick before time runs out."),
