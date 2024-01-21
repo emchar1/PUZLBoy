@@ -95,7 +95,7 @@ class PartyResultsSprite: SKNode {
         titleLabel.fontName = UIFont.gameFont
         titleLabel.fontSize = UIFont.gameFontSizeLarge
         titleLabel.fontColor = UIFont.gameFontColor
-        titleLabel.position = CGPoint(x: 0, y: backgroundSprite.frame.size.height / (UIDevice.isiPad ? 1.5 : 2) - titleLabel.frame.size.height / 2)
+        titleLabel.position = CGPoint(x: 0, y: (backgroundSprite.frame.height - titleLabel.frame.height) / (2 * UIDevice.spriteScale))
         titleLabel.verticalAlignmentMode = .top
         titleLabel.zPosition = 10
         titleLabel.addHeavyDropShadow()
