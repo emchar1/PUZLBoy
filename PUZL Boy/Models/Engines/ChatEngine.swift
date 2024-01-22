@@ -89,7 +89,7 @@ class ChatEngine {
     }
     
     enum ChatProfile {
-        case hero, trainer, princess, princess2, villain
+        case hero, trainer, princess, princess2, villain, blankvillain, blankprincess
     }
     
     weak var delegate: ChatEngineDelegate?
@@ -287,22 +287,41 @@ class ChatEngine {
         case .villain:
             avatarSprite.texture = SKTexture(imageNamed: "villain")
             backgroundSprite.fillColor = .red
+        case .blankvillain:
+            avatarSprite.texture = nil
+            backgroundSprite.fillColor = .red
+        case .blankprincess:
+            avatarSprite.texture = nil
+            backgroundSprite.fillColor = .magenta
         }
         
-        textSprite.position.x = origin.x + (imgPos == .right ? padding.x : avatarSprite.size.width)
-        avatarSprite.position.x = origin.x + (imgPos == .left ? padding.x : backgroundSpriteWidth - padding.x)
-        backgroundSprite.position.x = imgPos == .left ? 0 : K.ScreenDimensions.size.width
+        if profile == .blankvillain || profile == .blankprincess {
+            avatarSprite.isHidden = true
+            
+            textSprite.position.x = K.ScreenDimensions.size.width / 2
+            textSprite.preferredMaxLayoutWidth = backgroundSpriteWidth
+            textSprite.horizontalAlignmentMode = .center
+        }
+        else {
+            avatarSprite.position.x = origin.x + (imgPos == .left ? padding.x : backgroundSpriteWidth - padding.x)
+            avatarSprite.xScale = imgPos == .left ? abs(avatarSprite.xScale) : -abs(avatarSprite.xScale)
+            avatarSprite.isHidden = false
+            
+            textSprite.position.x = origin.x + (imgPos == .right ? padding.x : avatarSprite.size.width)
+            textSprite.preferredMaxLayoutWidth = backgroundSpriteWidth - ChatEngine.avatarSizeNew
+            textSprite.horizontalAlignmentMode = .left
+        }
         
-        avatarSprite.xScale = imgPos == .left ? abs(avatarSprite.xScale) : -abs(avatarSprite.xScale)
+        backgroundSprite.position.x = imgPos == .left ? 0 : K.ScreenDimensions.size.width
         backgroundSprite.setScale(0)
         
 
+        //Animates the chat bubble zoom in for startNewChat. Need to do 2 cases because even with a wait of 0 seconds, it adds a flicker that could be distracting.
         let animateBackgroundSprite = SKAction.group([
             SKAction.moveTo(x: 0, duration: startNewChat ? 0.4 : 0),
             SKAction.scale(to: 1.0, duration: startNewChat ? 0.4 : 0)
         ])
         
-        //Animates the chat bubble zoom in for startNewChat. Need to do 2 cases because even with a wait of 0 seconds, it adds a flicker that could be distracting.
         if let pause = pause {
             backgroundSprite.run(SKAction.sequence([
                 SKAction.wait(forDuration: pause),
@@ -405,7 +424,7 @@ extension ChatEngine {
     private func populateKeyDialogue() {
         //Villain Party Dialogue
         dialoguePlayed[-250] = false
-        dialoguePlayed[-200] = false
+        dialoguePlayed[-150] = false
         dialoguePlayed[-100] = false
         
         //Main Dialogue
@@ -442,35 +461,72 @@ extension ChatEngine {
         isChatting = true
 
         switch level {
-        case -100: // TODO: - Rework Villain Party Dialogue
+        case -100:
+            AudioManager.shared.playSound(for: "scarymusicbox", fadeIn: 3)
+            AudioManager.shared.playSound(for: "magicheartbeatloop1", fadeIn: 3)
+
+            sendChatArray(items: [
+                ChatItem(profile: .blankvillain, chat: "\n\n...turn back now, before it's too late..."),
+                ChatItem(profile: .trainer, imgPos: .left, chat: "Who's there?"),
+                ChatItem(profile: .blankvillain, chat: "\n\n...all will be revealed soon...") { [unowned self] in
+                    let flashOverlayNode = SKShapeNode(rectOf: K.ScreenDimensions.size)
+                    flashOverlayNode.position = CGPoint(x: K.ScreenDimensions.size.width / 2, y: K.ScreenDimensions.size.height / 2)
+                    flashOverlayNode.fillColor = .yellow
+                    flashOverlayNode.lineWidth = 0
+                    flashOverlayNode.zPosition = K.ZPosition.chatDialogue + 16
+                    
+                    superScene?.addChild(flashOverlayNode)
+                    
+                    flashOverlayNode.run(SKAction.sequence([
+                        SKAction.fadeOut(withDuration: 1),
+                        SKAction.removeFromParent()
+                    ]))
+                    
+                    AudioManager.shared.playSound(for: "pickupitem")
+                },
+                ChatItem(profile: .trainer, imgPos: .left, chat: "⚡️⚡️SHOW YOURSELF!!!⚡️⚡️") {
+                    AudioManager.shared.playSound(for: "littlegirllaugh")
+                    AudioManager.shared.stopSound(for: "littlegirllaugh", fadeDuration: 2)
+                },
+                ChatItem(profile: .blankvillain, chat: "\n\n...heh heh heh heh...")
+            ]) { [unowned self] in
+                AudioManager.shared.stopSound(for: "scarymusicbox", fadeDuration: 3)
+                AudioManager.shared.stopSound(for: "magicheartbeatloop1", fadeDuration: 3)
+
+                handleDialogueCompletion(level: level, completion: completion)
+            }
+        case -150: // TODO: - Rework Villain Party Dialogue
             AudioManager.shared.playSound(for: "scarymusicbox", fadeIn: 3)
             AudioManager.shared.playSound(for: "magicheartbeatloop1", fadeIn: 3)
             
+            let boundingBox = backgroundSprite.path?.boundingBox ?? .zero
             let villainRedEyes = SKSpriteNode(imageNamed: "villainRedEyes")
-            villainRedEyes.position = CGPoint(x: K.ScreenDimensions.size.width / 2, y: K.ScreenDimensions.size.height - K.ScreenDimensions.topMargin)
-            villainRedEyes.anchorPoint = CGPoint(x: 0.5, y: 1)
-            villainRedEyes.scale(to: CGSize(width: K.ScreenDimensions.size.width * 1.5, height: K.ScreenDimensions.size.width * 1.5))
+            villainRedEyes.position = CGPoint(x: K.ScreenDimensions.size.width / 2, y: boundingBox.origin.y + boundingBox.size.height)
+            villainRedEyes.anchorPoint = CGPoint(x: 0.5, y: 0)
+            villainRedEyes.scale(to: CGSize(width: K.ScreenDimensions.size.width, height: K.ScreenDimensions.size.width))
             villainRedEyes.alpha = 0
             villainRedEyes.zPosition = K.ZPosition.chatDialogue - 1
             
             superScene?.addChild(villainRedEyes)
 
             sendChatArray(items: [
-                ChatItem(profile: .villain, imgPos: .left, chat: "MYSTERIOUS MAN: You'll never find her. You can keep trying, but it will all be in vain. Give up now...") {
+                ChatItem(profile: .villain, imgPos: .left, chat: "MYSTERIOUS MAN: you'll never find her. you can keep trying, but it will all be in vain. give up now...") {
+                    villainRedEyes.run(SKAction.fadeAlpha(to: 0.2, duration: 1))
+                },
+                ChatItem(profile: .trainer, chat: "YOU!!! I should have known! The whole time I'm thinking, \"No way he came crawling back into my life.\" And here you are...") {
                     villainRedEyes.run(SKAction.fadeAlpha(to: 0.3, duration: 1))
                 },
-                ChatItem(profile: .trainer, chat: "YOU! I should have known! The whole time I'm thinking, \"No way he came crawling back into my life.\" And here you are...") {
+                ChatItem(profile: .villain, imgPos: .left, chat: "surprised much? you need me. you're the yin to my yang. we're bounded by fate, as the priestess machinegunkelly revealed during the trial of mages.") {
                     villainRedEyes.run(SKAction.fadeAlpha(to: 0.4, duration: 1))
                 },
-                ChatItem(profile: .villain, imgPos: .left, chat: "Surprised much? You need me. You're the yin to my yang. We're bounded by fate, as the Priestess Machinegunkelly revealed during the Trial of Mages.") {
+                ChatItem(profile: .trainer, chat: "That was over 500 years ago. Give up the child and leave this world!!") {
                     villainRedEyes.run(SKAction.fadeAlpha(to: 0.5, duration: 1))
                 },
-                ChatItem(profile: .trainer, chat: "That was over 500 years ago. Give up the child and leave this world!!") {
+                ChatItem(profile: .villain, imgPos: .left, chat: "we would have made a great duo: the strongest mystics in all the realms. but you chose a different path ..............why did you leave me?") {
                     villainRedEyes.run(SKAction.fadeAlpha(to: 0.6, duration: 1))
                 },
-                ChatItem(profile: .villain, imgPos: .left, chat: "We would have made a great duo: the strongest Mystics in all the realms. But you chose a different path ..............why did you leave me?"),
                 ChatItem(profile: .trainer, chat: "..............I did what I had to."),
-                ChatItem(profile: .villain, imgPos: .left, chat: "Your loss. Such a shame. You'll soon regret it.")
+                ChatItem(profile: .villain, imgPos: .left, chat: "your loss.. such a shame.. you'll soon regret it.....")
             ]) { [unowned self] in
                 AudioManager.shared.stopSound(for: "scarymusicbox", fadeDuration: 3)
                 AudioManager.shared.stopSound(for: "magicheartbeatloop1", fadeDuration: 3)
@@ -523,7 +579,23 @@ extension ChatEngine {
             }
         case 1:
             sendChatArray(items: [
-                ChatItem(profile: .hero, imgPos: .left, chat: "PUZL BOY: ...then the dragon swooped down and carried her away! It. Was. Harrowing. So... where are we? And who are you again??"),
+                ChatItem(profile: .hero, imgPos: .left, chat: "PUZL BOY: ...then the dragon swooped down and carried her away! It. Was. Harrowing. So... where are we? And who are you again??") { [unowned self] in
+
+                    
+                    
+                    // FIXME: - Testing out Magic Swirl
+                    if let superScene = superScene {
+                        ParticleEngine.shared.animateParticles(
+                            type: .magicLight,
+                            toNode: superScene,
+                            position: CGPoint(x: K.ScreenDimensions.size.width / 2, y: K.ScreenDimensions.size.height / 2),
+                            duration: 10)
+                    }
+                    
+                    
+                    
+                    
+                },
                 ChatItem(profile: .trainer, chat: "MARLIN: I am Marlin. I suspect she is being taken to the dragon's lair. I have transported you to the PUZZLE REALM, which is our gateway to the lair."),
                 ChatItem(profile: .hero, imgPos: .left, chat: "Marlin, like the fish??? I hate fish by the way. The smell, the texture... So how do you know that's where they're taking her?"),
                 ChatItem(profile: .trainer, chat: "Don't worry about it... And no, not like the fish. Marlin like the Magician."),
@@ -555,7 +627,7 @@ extension ChatEngine {
                     delegate?.illuminatePanel(at: (2, 2), useOverlay: false)
                 },
                 ChatItem(profile: .trainer, chat: "See the gate? It's closed. To open it, collect all the gems in the level. Simple, right?"),
-                ChatItem(profile: .hero, imgPos: .left, chat: "Alright, mister \"Merlin the Magician.\" Let's go save the princess.")
+                ChatItem(profile: .hero, imgPos: .left, chat: "Right. Let's go save the princess!")
             ]) { [unowned self] in
                 delegate?.deilluminatePanel(at: (1, 2), useOverlay: true)
                 delegate?.deilluminatePanel(at: (2, 2), useOverlay: false)
@@ -714,12 +786,12 @@ extension ChatEngine {
                     ChatItem(profile: .princess, chat: "PRINCESS OLIVIA: Help meeeee PUZL Boy!!! It's dark and scary over here. And this guy's breath is really stinky!"),
                     ChatItem(profile: .hero, imgPos: .left, chat: "Gandhi on a gondola! Who the #&*@! are are you?!!"),
                     ChatItem(profile: .trainer, imgPos: .left, chat: "Magmoor, stop this at once! It's not too late."),
-                    ChatItem(profile: .villain, chat: "MAGMOOR: If you want to see your precious princess again, then let us merge powers."),
+                    ChatItem(profile: .villain, chat: "MAGMOOR: if you want to see your precious princess again, then let us merge powers."),
                     ChatItem(profile: .trainer, imgPos: .left, chat: "No!!! You want absolute power. All Mystics share power evenly; it keeps the realms in balance. You seek to plunge the realms into total darkness."),
-                    ChatItem(profile: .villain, chat: "The world is broken and the realms are already headed towards eternal darkness. It requires a new order to lead them into the light."),
+                    ChatItem(profile: .villain, chat: "the world is broken and the realms are already headed towards eternal darkness. it requires cleansing."),
                     ChatItem(profile: .trainer, imgPos: .left, chat: "You've completely lost it. LET THE PRINCESS GO AND THINGS WON'T GET UGLY!!"),
                     ChatItem(profile: .hero, imgPos: .left, chat: "Yeah, if you touch a hair on her head, it's gonna be the end for you, Mantamar!"),
-                    ChatItem(profile: .villain, chat: "Embrace the light and you shall see! MUAHAHAHAHAAGGGHHHH! *cough* *cough* *HACK* 😮‍💨 ...ugh that one's black."),
+                    ChatItem(profile: .villain, chat: "embrace the light and you shall see! MUAHAHAHAHAAGGGHHHH! *cough* *cough* *HACK* 😮‍💨 ...ugh that one's black."),
                     ChatItem(profile: .princess, endChat: true, chat: "Ew gross!! 🤮") { [unowned self] in
                         fadeDimOverlay()
                         delegate?.despawnPrincessCapture(at: spawnPoint, completion: { })
@@ -730,7 +802,7 @@ extension ChatEngine {
                     ChatItem(profile: .trainer, chat: "Magmoor—one of the most powerful Mystics from my realm. He wasn't always like this. We were once good friends. Then he went all Mabritney on everyone."),
                     ChatItem(profile: .hero, imgPos: .left, chat: "You guys have Britney in your world?"),
                     ChatItem(profile: .trainer, chat: "No—MAbritney. She's an elemental mage who wields forbidden dark magic. She does a Dance of Knives that summons Chaos."),
-                    ChatItem(profile: .hero, imgPos: .left, chat: "He seems like a great guy ...so what's our next move: PURSUE_HIM | PREPARE_FIRST"),
+                    ChatItem(profile: .hero, imgPos: .left, chat: "Well he sounds toxic ...so what's our next move: PURSUE_HIM | PREPARE_FIRST"),
                     ChatItem(profile: .hero, imgPos: .left, chat: "We should prepare first..."),
                     ChatItem(profile: .trainer, chat: "A wise decision. Let's keep moving."),
                     ChatItem(profile: .hero, imgPos: .left, chat: "BRING ME MAGMOOR!"),
