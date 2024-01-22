@@ -82,6 +82,7 @@
 		EA705CDE2A1C5DD40051519B /* PurchasePage.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA705CDD2A1C5DD40051519B /* PurchasePage.swift */; };
 		EA705CE02A1C64760051519B /* buttontap5.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA705CDF2A1C64760051519B /* buttontap5.mp3 */; };
 		EA705CE22A1C69BA0051519B /* PurchaseTapButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA705CE12A1C69BA0051519B /* PurchaseTapButton.swift */; };
+		EA7300112B5E00E1005BF98D /* MagicLightParticles.sks in Resources */ = {isa = PBXBuildFile; fileRef = EA7300102B5E00E1005BF98D /* MagicLightParticles.sks */; };
 		EA75F0E1292DDAAF00F09BD7 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = EA75F0E0292DDAAF00F09BD7 /* FirebaseAnalytics */; };
 		EA75F0E3292DDAAF00F09BD7 /* FirebaseAnalyticsSwift in Frameworks */ = {isa = PBXBuildFile; productRef = EA75F0E2292DDAAF00F09BD7 /* FirebaseAnalyticsSwift */; };
 		EA75F0E5292DDAAF00F09BD7 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = EA75F0E4292DDAAF00F09BD7 /* FirebaseAuth */; };
@@ -353,6 +354,7 @@
 		EA705CDD2A1C5DD40051519B /* PurchasePage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchasePage.swift; sourceTree = "<group>"; };
 		EA705CDF2A1C64760051519B /* buttontap5.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = buttontap5.mp3; sourceTree = "<group>"; };
 		EA705CE12A1C69BA0051519B /* PurchaseTapButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseTapButton.swift; sourceTree = "<group>"; };
+		EA7300102B5E00E1005BF98D /* MagicLightParticles.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = MagicLightParticles.sks; sourceTree = "<group>"; };
 		EA75F0EA292DF46200F09BD7 /* FIRManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FIRManager.swift; sourceTree = "<group>"; };
 		EA75F0EC292DF57400F09BD7 /* LevelModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelModel.swift; sourceTree = "<group>"; };
 		EA75F0EE292F55F900F09BD7 /* LaunchScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchScene.swift; sourceTree = "<group>"; };
@@ -1042,6 +1044,7 @@
 				EAD19A0A2A96F52500A07A63 /* LavaAppearParticles.sks */,
 				EAB2DE0F2A9D4BD700172478 /* LavaSizzleParticles.sks */,
 				EAE215572ABD1DEB0090735A /* MagicParticles.sks */,
+				EA7300102B5E00E1005BF98D /* MagicLightParticles.sks */,
 				EAD19A032A9698B700A07A63 /* PartyGemParticles.sks */,
 				EA8E07532B50988B0051DDC3 /* PointerParticles.sks */,
 				EA8E07552B5104170051DDC3 /* PointerRainbowParticles.sks */,
@@ -1168,6 +1171,7 @@
 				EA4583552A4431B000279056 /* partyslow.mp3 in Resources */,
 				EA95B3092A8C9DA300C5F028 /* speechbubble.mp3 in Resources */,
 				EA01BB5F2A10746800EAB70B /* buttontap6.mp3 in Resources */,
+				EA7300112B5E00E1005BF98D /* MagicLightParticles.sks in Resources */,
 				EAE6EC342A12D27F001842C6 /* buttontap7.mp3 in Resources */,
 				EA3467AD29A8C7C7002DDA02 /* continueloop.mp3 in Resources */,
 				EA4D025D29B7E2B400F0C7B1 /* movemarsh2.mp3 in Resources */,
