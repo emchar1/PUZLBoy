@@ -470,6 +470,7 @@ class GameScene: SKScene {
         
         let fadeDuration: TimeInterval = 1.0
         
+        AudioManager.shared.raiseVolume(for: AudioManager.shared.currentTheme, fadeDuration: 3)
         gameEngine.fadeBloodOverlay(shouldFadeOut: false, duration: fadeDuration)
 
         if shouldFade {
