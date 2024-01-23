@@ -462,27 +462,17 @@ extension ChatEngine {
 
         switch level {
         case -100:
-            AudioManager.shared.playSound(for: "scarymusicbox", fadeIn: 3)
             AudioManager.shared.playSound(for: "magicheartbeatloop1", fadeIn: 3)
 
             sendChatArray(items: [
                 ChatItem(profile: .blankvillain, chat: "\n\n...turn back now, before it's too late..."),
-                ChatItem(profile: .trainer, imgPos: .left, chat: "Who's there?"),
+                ChatItem(profile: .trainer, imgPos: .left, chat: "Who are you!"),
                 ChatItem(profile: .blankvillain, chat: "\n\n...all will be revealed soon...") { [unowned self] in
-                    let flashOverlayNode = SKShapeNode(rectOf: K.ScreenDimensions.size)
-                    flashOverlayNode.position = CGPoint(x: K.ScreenDimensions.size.width / 2, y: K.ScreenDimensions.size.height / 2)
-                    flashOverlayNode.fillColor = .yellow
-                    flashOverlayNode.lineWidth = 0
-                    flashOverlayNode.zPosition = K.ZPosition.chatDialogue + 16
+                    let marlinBlast = MarlinBlastSprite()
+                    marlinBlast.zPosition = K.ZPosition.chatDialogue - 1
+                    superScene?.addChild(marlinBlast)
                     
-                    superScene?.addChild(flashOverlayNode)
-                    
-                    flashOverlayNode.run(SKAction.sequence([
-                        SKAction.fadeOut(withDuration: 1),
-                        SKAction.removeFromParent()
-                    ]))
-                    
-                    AudioManager.shared.playSound(for: "pickupitem")
+                    marlinBlast.animateBlast()
                 },
                 ChatItem(profile: .trainer, imgPos: .left, chat: "⚡️⚡️SHOW YOURSELF!!!⚡️⚡️") {
                     AudioManager.shared.playSound(for: "littlegirllaugh")
@@ -490,10 +480,11 @@ extension ChatEngine {
                 },
                 ChatItem(profile: .blankvillain, chat: "\n\n...heh heh heh heh...")
             ]) { [unowned self] in
-                AudioManager.shared.stopSound(for: "scarymusicbox", fadeDuration: 3)
                 AudioManager.shared.stopSound(for: "magicheartbeatloop1", fadeDuration: 3)
-
-                handleDialogueCompletion(level: level, completion: completion)
+                
+                backgroundSprite.run(SKAction.wait(forDuration: 1)) { [unowned self] in
+                    handleDialogueCompletion(level: level, completion: completion)
+                }
             }
         case -150: // TODO: - Rework Villain Party Dialogue
             AudioManager.shared.playSound(for: "scarymusicbox", fadeIn: 3)
@@ -510,7 +501,7 @@ extension ChatEngine {
             superScene?.addChild(villainRedEyes)
 
             sendChatArray(items: [
-                ChatItem(profile: .villain, imgPos: .left, chat: "MYSTERIOUS MAN: you'll never find her. you can keep trying, but it will all be in vain. give up now...") {
+                ChatItem(profile: .villain, imgPos: .left, chat: "MYSTERIOUS FIGURE: you'll never find her. you can keep trying, but it will all be in vain. give up now...") {
                     villainRedEyes.run(SKAction.fadeAlpha(to: 0.2, duration: 1))
                 },
                 ChatItem(profile: .trainer, chat: "YOU!!! I should have known! The whole time I'm thinking, \"No way he came crawling back into my life.\" And here you are...") {
@@ -531,9 +522,11 @@ extension ChatEngine {
                 AudioManager.shared.stopSound(for: "scarymusicbox", fadeDuration: 3)
                 AudioManager.shared.stopSound(for: "magicheartbeatloop1", fadeDuration: 3)
                 
-                handleDialogueCompletion(level: level) {
-                    villainRedEyes.removeFromParent()
-                    completion?()
+                backgroundSprite.run(SKAction.wait(forDuration: 1)) { [unowned self] in
+                    handleDialogueCompletion(level: level) {
+                        villainRedEyes.removeFromParent()
+                        completion?()
+                    }
                 }
             }
 //        case -200:
@@ -581,6 +574,7 @@ extension ChatEngine {
             sendChatArray(items: [
                 ChatItem(profile: .hero, imgPos: .left, chat: "PUZL BOY: ...then the dragon swooped down and carried her away! It. Was. Harrowing. So... where are we? And who are you again??") { [unowned self] in
 
+                    
                     
                     
                     // FIXME: - Testing out Magic Swirl
