@@ -27,6 +27,10 @@ class MarlinBlastSprite: SKNode {
         fatalError("init(coder:) has not been implemented")
     }
     
+    deinit {
+        print("deinit MarlinBlastSprite")
+    }
+    
     private func setupNodes() {
         blastTop = SKSpriteNode(imageNamed: "marlinBlast")
         blastTop.anchorPoint = .zero

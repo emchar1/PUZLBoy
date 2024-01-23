@@ -52,13 +52,18 @@ class ChatEngine {
     private var chatSpeed: TimeInterval
     private let chatSpeedOrig: TimeInterval = 0.08
     
-    //Sprite properties
-    private var dimOverlaySprite: SKShapeNode!
-    private var backgroundSprite: SKShapeNode!
+    //Chat Sprites
+    private var chatBackgroundSprite: SKShapeNode!
     private var avatarSprite: SKSpriteNode!
-    private var fastForwardSprite: SKSpriteNode!
     private var textSprite: SKLabelNode!
+    private var fastForwardSprite: SKSpriteNode!
+
+    //Overlay Sprites
     private var superScene: SKScene?
+    private var dimOverlaySprite: SKShapeNode!
+    private var marlinBlast: MarlinBlastSprite!
+    private var magmoorScary: MagmoorScarySprite!
+    
     
     private struct ChatItem {
         let profile: ChatProfile
@@ -113,25 +118,20 @@ class ChatEngine {
     }
     
     private func setupSprites() {
-        backgroundSprite = SKShapeNode()
-        backgroundSprite.lineWidth = borderLineWidth
-        backgroundSprite.path = UIBezierPath(roundedRect: CGRect(x: origin.x, y: origin.y,
-                                                                 width: backgroundSpriteWidth, height: ChatEngine.avatarSizeNew + borderLineWidth),
-                                             cornerRadius: 20).cgPath
-        backgroundSprite.fillColor = .orange
-        backgroundSprite.strokeColor = .white
-        backgroundSprite.fillTexture = SKTexture(image: UIImage.gradientTextureChat)
-        backgroundSprite.setScale(0)
-        backgroundSprite.name = "backgroundSprite"
-        backgroundSprite.zPosition = K.ZPosition.chatDialogue
-        
-        dimOverlaySprite = SKShapeNode(rectOf: K.ScreenDimensions.size)
-        dimOverlaySprite.position = CGPoint(x: K.ScreenDimensions.size.width / 2, y: K.ScreenDimensions.size.height / 2)
-        dimOverlaySprite.fillColor = .black
-        dimOverlaySprite.lineWidth = 0
-        dimOverlaySprite.alpha = 0
-        dimOverlaySprite.zPosition = K.ZPosition.chatDimOverlay
-        
+        //Chat Sprites setup
+        chatBackgroundSprite = SKShapeNode()
+        chatBackgroundSprite.lineWidth = borderLineWidth
+        chatBackgroundSprite.path = UIBezierPath(roundedRect: CGRect(x: origin.x, y: origin.y,
+                                                                     width: backgroundSpriteWidth,
+                                                                     height: ChatEngine.avatarSizeNew + borderLineWidth),
+                                                 cornerRadius: 20).cgPath
+        chatBackgroundSprite.fillColor = .orange
+        chatBackgroundSprite.strokeColor = .white
+        chatBackgroundSprite.fillTexture = SKTexture(image: UIImage.gradientTextureChat)
+        chatBackgroundSprite.setScale(0)
+        chatBackgroundSprite.name = "backgroundSprite"
+        chatBackgroundSprite.zPosition = K.ZPosition.chatDialogue
+                
         avatarSprite = SKSpriteNode(texture: SKTexture(imageNamed: "puzlboy"))
         avatarSprite.position = CGPoint(x: origin.x, y: origin.y + borderLineWidth / 2)
         avatarSprite.setScale(ChatEngine.avatarSizeNew / ChatEngine.avatarSizeOrig * 3)
@@ -156,12 +156,27 @@ class ChatEngine {
         fastForwardSprite.position = CGPoint(x: origin.x + backgroundSpriteWidth - padding.x, y: origin.y + padding.x)
         fastForwardSprite.alpha = 1
         fastForwardSprite.zPosition = 15
+
+        
+        //Overlay Sprites setup
+        dimOverlaySprite = SKShapeNode(rectOf: K.ScreenDimensions.size)
+        dimOverlaySprite.position = CGPoint(x: K.ScreenDimensions.size.width / 2, y: K.ScreenDimensions.size.height / 2)
+        dimOverlaySprite.fillColor = .black
+        dimOverlaySprite.lineWidth = 0
+        dimOverlaySprite.alpha = 0
+        dimOverlaySprite.zPosition = K.ZPosition.chatDimOverlay
+
+        marlinBlast = MarlinBlastSprite()
+        marlinBlast.zPosition = K.ZPosition.chatDialogue - 1
+        
+        magmoorScary = MagmoorScarySprite(boundingBox: chatBackgroundSprite.path?.boundingBox)
+        magmoorScary.zPosition = K.ZPosition.chatDialogue + 5
         
 
         //Add sprites to background
-        backgroundSprite.addChild(avatarSprite)
-        backgroundSprite.addChild(textSprite)
-        backgroundSprite.addChild(fastForwardSprite)
+        chatBackgroundSprite.addChild(avatarSprite)
+        chatBackgroundSprite.addChild(textSprite)
+        chatBackgroundSprite.addChild(fastForwardSprite)
     }
     
     
@@ -174,8 +189,8 @@ class ChatEngine {
     func moveSprites(to superScene: SKScene) {
         self.superScene = superScene
         
+        superScene.addChild(chatBackgroundSprite)
         superScene.addChild(dimOverlaySprite)
-        superScene.addChild(backgroundSprite)
     }
     
     
@@ -274,25 +289,25 @@ class ChatEngine {
         switch profile {
         case .hero:
             avatarSprite.texture = SKTexture(imageNamed: "puzlboy")
-            backgroundSprite.fillColor = .orange
+            chatBackgroundSprite.fillColor = .orange
         case .trainer:
             avatarSprite.texture = SKTexture(imageNamed: "trainer")
-            backgroundSprite.fillColor = .blue
+            chatBackgroundSprite.fillColor = .blue
         case .princess:
             avatarSprite.texture = SKTexture(imageNamed: "princess")
-            backgroundSprite.fillColor = .magenta
+            chatBackgroundSprite.fillColor = .magenta
         case .princess2:
             avatarSprite.texture = SKTexture(imageNamed: "princess2")
-            backgroundSprite.fillColor = .magenta
+            chatBackgroundSprite.fillColor = .magenta
         case .villain:
             avatarSprite.texture = SKTexture(imageNamed: "villain")
-            backgroundSprite.fillColor = .red
+            chatBackgroundSprite.fillColor = .red
         case .blankvillain:
             avatarSprite.texture = nil
-            backgroundSprite.fillColor = .red
+            chatBackgroundSprite.fillColor = .red
         case .blankprincess:
             avatarSprite.texture = nil
-            backgroundSprite.fillColor = .magenta
+            chatBackgroundSprite.fillColor = .magenta
         }
         
         if profile == .blankvillain || profile == .blankprincess {
@@ -312,8 +327,8 @@ class ChatEngine {
             textSprite.horizontalAlignmentMode = .left
         }
         
-        backgroundSprite.position.x = imgPos == .left ? 0 : K.ScreenDimensions.size.width
-        backgroundSprite.setScale(0)
+        chatBackgroundSprite.position.x = imgPos == .left ? 0 : K.ScreenDimensions.size.width
+        chatBackgroundSprite.setScale(0)
         
 
         //Animates the chat bubble zoom in for startNewChat. Need to do 2 cases because even with a wait of 0 seconds, it adds a flicker that could be distracting.
@@ -323,7 +338,7 @@ class ChatEngine {
         ])
         
         if let pause = pause {
-            backgroundSprite.run(SKAction.sequence([
+            chatBackgroundSprite.run(SKAction.sequence([
                 SKAction.wait(forDuration: pause),
                 animateBackgroundSprite
             ])) { [unowned self] in
@@ -336,7 +351,7 @@ class ChatEngine {
         }
         else {
             //Leave out the wait
-            backgroundSprite.run(animateBackgroundSprite) { [unowned self] in
+            chatBackgroundSprite.run(animateBackgroundSprite) { [unowned self] in
                 if startNewChat {
                     AudioManager.shared.playSound(for: "chatopen")
                 }
@@ -393,7 +408,7 @@ class ChatEngine {
         }
         
         //Animates the chat bubble zoom out for endChat
-        backgroundSprite.run(SKAction.group([
+        chatBackgroundSprite.run(SKAction.group([
             SKAction.moveTo(x: currentProfile != .hero ? backgroundSpriteWidth : 0, duration: duration),
             SKAction.scale(to: 0, duration: duration)
         ])) { [unowned self] in
@@ -423,7 +438,7 @@ extension ChatEngine {
     ///Populates the dialoguePlayed array. Need to include all levels where dialogue is to occur, and also add the level case in the playDialogue() function.
     private func populateKeyDialogue() {
         //Villain Party Dialogue
-        dialoguePlayed[-250] = false
+        dialoguePlayed[-200] = false
         dialoguePlayed[-150] = false
         dialoguePlayed[-100] = false
         
@@ -441,8 +456,6 @@ extension ChatEngine {
 
         //Princess Capture Dialogue
         dialoguePlayed[157] = false //(3, 2)
-//        dialoguePlayed[154] = false //(0, 3) // TODO: - WHAT'S SUPPOSED TO HAPPEN HERE??
-//        dialoguePlayed[187] = false //(2, 1) // TODO: - WHAT'S SUPPOSED TO HAPPEN HERE??
     }
     
     /**
@@ -470,11 +483,11 @@ extension ChatEngine {
                 ChatItem(profile: .blankvillain, chat: "\n\n...the question is, where are we?..."),
                 ChatItem(profile: .trainer, imgPos: .left, chat: "You are in the Dark Realm where evil cannot reach. What business do you have here?!"),
                 ChatItem(profile: .blankvillain, chat: "\n\n...all will be revealed soon...") { [unowned self] in
-                    let marlinBlast = MarlinBlastSprite()
-                    marlinBlast.zPosition = K.ZPosition.chatDialogue - 1
                     superScene?.addChild(marlinBlast)
-                    
+                    superScene?.addChild(magmoorScary)
+
                     marlinBlast.animateBlast()
+                    magmoorScary.flashImage(delay: 0.25)
                 },
                 ChatItem(profile: .trainer, imgPos: .left, chat: "⚡️SHOW YOURSELF!!!⚡️") {
                     AudioManager.shared.playSound(for: "littlegirllaugh")
@@ -484,79 +497,87 @@ extension ChatEngine {
             ]) { [unowned self] in
                 AudioManager.shared.stopSound(for: "magicheartbeatloop1", fadeDuration: 3)
                 
-                backgroundSprite.run(SKAction.wait(forDuration: 1)) { [unowned self] in
+                chatBackgroundSprite.run(SKAction.wait(forDuration: 1)) { [unowned self] in
+                    marlinBlast.removeFromParent()
+                    magmoorScary.removeFromParent()
+                    
                     handleDialogueCompletion(level: level, completion: completion)
                 }
             }
-        case -150: // TODO: - Rework Villain Party Dialogue
+        case -150:
             AudioManager.shared.playSound(for: "scarymusicbox", fadeIn: 3)
             AudioManager.shared.playSound(for: "magicheartbeatloop1", fadeIn: 3)
             
-            let boundingBox = backgroundSprite.path?.boundingBox ?? .zero
-            let villainRedEyes = SKSpriteNode(imageNamed: "villainRedEyes")
-            villainRedEyes.position = CGPoint(x: K.ScreenDimensions.size.width / 2, y: boundingBox.origin.y + boundingBox.size.height)
-            villainRedEyes.anchorPoint = CGPoint(x: 0.5, y: 0)
-            villainRedEyes.scale(to: CGSize(width: K.ScreenDimensions.size.width, height: K.ScreenDimensions.size.width))
-            villainRedEyes.alpha = 0
-            villainRedEyes.zPosition = K.ZPosition.chatDialogue - 1
-            
-            superScene?.addChild(villainRedEyes)
+            superScene?.addChild(magmoorScary)
 
             sendChatArray(items: [
-                ChatItem(profile: .villain, imgPos: .left, chat: "MYSTERIOUS FIGURE: you'll never find her. you can keep trying, but it will all be in vain. give up now...") {
-                    villainRedEyes.run(SKAction.fadeAlpha(to: 0.2, duration: 1))
+                ChatItem(profile: .villain, chat: "MYSTERIOUS FIGURE: you'll never find her. you can keep trying, but it will all be in vain. give up now...") { [unowned self] in
+                    magmoorScary.slowReveal(alpha: 0.1)
                 },
-                ChatItem(profile: .trainer, chat: "YOU!!! I should have known! The whole time I'm thinking, \"No way he came crawling back into my life.\" And here you are...") {
-                    villainRedEyes.run(SKAction.fadeAlpha(to: 0.3, duration: 1))
+                ChatItem(profile: .trainer, imgPos: .left, chat: "YOU!!! I should have known! The whole time I'm thinking, \"No way he came crawling back into my life.\" And here you are...") { [unowned self] in
+                    magmoorScary.slowReveal(alpha: 0.2)
                 },
-                ChatItem(profile: .villain, imgPos: .left, chat: "surprised much? you need me. you're the yin to my yang. we're bounded by fate, as the priestess machinegunkelly revealed during the trial of mages.") {
-                    villainRedEyes.run(SKAction.fadeAlpha(to: 0.4, duration: 1))
+                ChatItem(profile: .villain, chat: "surprised much? you need me. you're the yin to my yang. we're bounded by fate, as the priestess machinegunkelly revealed during the trial of mages.") { [unowned self] in
+                    magmoorScary.slowReveal(alpha: 0.3)
                 },
-                ChatItem(profile: .trainer, chat: "That was over 500 years ago. Give up the child and leave this world!!") {
-                    villainRedEyes.run(SKAction.fadeAlpha(to: 0.5, duration: 1))
+                ChatItem(profile: .trainer, imgPos: .left, chat: "That was over 500 years ago. Give up the child and leave this world!!") { [unowned self] in
+                    magmoorScary.slowReveal(alpha: 0.4)
                 },
-                ChatItem(profile: .villain, imgPos: .left, chat: "we would have made a great duo: the strongest mystics in all the realms. but you chose a different path ..............why did you leave me?") {
-                    villainRedEyes.run(SKAction.fadeAlpha(to: 0.6, duration: 1))
+                ChatItem(profile: .villain, chat: "we would have made a great duo: the strongest mystics in all the realms. but you chose a different path ..............why did you leave me?") { [unowned self] in
+                    magmoorScary.slowReveal(alpha: 0.5)
                 },
-                ChatItem(profile: .trainer, chat: "..............I did what I had to."),
-                ChatItem(profile: .villain, imgPos: .left, chat: "your loss.. such a shame.. you'll soon regret it.....")
+                ChatItem(profile: .trainer, imgPos: .left, chat: "..............I did what I had to."),
+                ChatItem(profile: .villain, chat: "your loss.. such a shame.. you'll soon regret it.....")
             ]) { [unowned self] in
                 AudioManager.shared.stopSound(for: "scarymusicbox", fadeDuration: 3)
                 AudioManager.shared.stopSound(for: "magicheartbeatloop1", fadeDuration: 3)
                 
-                backgroundSprite.run(SKAction.wait(forDuration: 1)) { [unowned self] in
-                    handleDialogueCompletion(level: level) {
-                        villainRedEyes.removeFromParent()
+                chatBackgroundSprite.run(SKAction.wait(forDuration: 1)) { [unowned self] in
+                    handleDialogueCompletion(level: level) { [unowned self] in
+                        magmoorScary.resetAlpha()
+                        magmoorScary.removeFromParent()
+                        
                         completion?()
                     }
                 }
             }
-//        case -200:
-//            AudioManager.shared.playSound(for: "scarymusicbox", fadeIn: 3)
-//            AudioManager.shared.playSound(for: "magicheartbeatloop1", fadeIn: 3)
-//
-//            sendChatArray(items: [
-//                ChatItem(profile: .villain, imgPos: .left, chat: "C'mon dude! When are you gonna move here?"),
-//                ChatItem(profile: .trainer, chat: "Ummm, soon."),
-//                ChatItem(profile: .villain, imgPos: .left, chat: "Get a condo here. Just do it.")
-//            ]) { [unowned self] in
-//                AudioManager.shared.stopSound(for: "scarymusicbox", fadeDuration: 3)
-//                AudioManager.shared.stopSound(for: "magicheartbeatloop1", fadeDuration: 3)
-//                handleDialogueCompletion(level: level, completion: completion)
-//            }
-//        case -250:
-//            AudioManager.shared.playSound(for: "scarymusicbox", fadeIn: 3)
-//            AudioManager.shared.playSound(for: "magicheartbeatloop1", fadeIn: 3)
-//
-//            sendChatArray(items: [
-//                ChatItem(profile: .villain, imgPos: .left, chat: "You're such a stud."),
-//                ChatItem(profile: .trainer, chat: "You're a stud."),
-//                ChatItem(profile: .villain, imgPos: .left, chat: "My wife will kill you if she found out.")
-//            ]) { [unowned self] in
-//                AudioManager.shared.stopSound(for: "scarymusicbox", fadeDuration: 3)
-//                AudioManager.shared.stopSound(for: "magicheartbeatloop1", fadeDuration: 3)
-//                handleDialogueCompletion(level: level, completion: completion)
-//            }
+        case -200: // TODO: - Rework Villain Party Dialogue
+            AudioManager.shared.playSound(for: "scarymusicbox", fadeIn: 3)
+            AudioManager.shared.playSound(for: "magicheartbeatloop1", fadeIn: 3)
+            
+            superScene?.addChild(magmoorScary)
+
+            sendChatArray(items: [
+                ChatItem(profile: .villain, chat: "MYSTERIOUS FIGURE: i'm baaaaaack!") { [unowned self] in
+                    magmoorScary.slowReveal(alpha: 0.1)
+                },
+                ChatItem(profile: .trainer, imgPos: .left, chat: "What else is new...") { [unowned self] in
+                    magmoorScary.slowReveal(alpha: 0.2)
+                },
+                ChatItem(profile: .villain, chat: "i bought a new scooter.") { [unowned self] in
+                    magmoorScary.slowReveal(alpha: 0.3)
+                },
+                ChatItem(profile: .trainer, imgPos: .left, chat: "Thrilling.") { [unowned self] in
+                    magmoorScary.slowReveal(alpha: 0.4)
+                },
+                ChatItem(profile: .villain, chat: "i don't like your attitude.") { [unowned self] in
+                    magmoorScary.slowReveal(alpha: 0.5)
+                },
+                ChatItem(profile: .trainer, imgPos: .left, chat: "Cry me a river. Also stop speaking in all lowercaseit's annoying."),
+                ChatItem(profile: .villain, chat: "eat my shorts!")
+            ]) { [unowned self] in
+                AudioManager.shared.stopSound(for: "scarymusicbox", fadeDuration: 3)
+                AudioManager.shared.stopSound(for: "magicheartbeatloop1", fadeDuration: 3)
+                
+                chatBackgroundSprite.run(SKAction.wait(forDuration: 1)) { [unowned self] in
+                    handleDialogueCompletion(level: level) { [unowned self] in
+                        magmoorScary.resetAlpha()
+                        magmoorScary.removeFromParent()
+                        
+                        completion?()
+                    }
+                }
+            }
         case Level.partyLevel: //Level: -1
             sendChatArray(items: [
                 ChatItem(profile: .hero, imgPos: .left, chat: "Yo, I feel funny. I'm seeing colorful flashing lights and the music is bumpin'. I can't stop moving.. and I like it!"),
@@ -798,7 +819,7 @@ extension ChatEngine {
                     ChatItem(profile: .trainer, chat: "Magmoor—one of the most powerful Mystics from my realm. He wasn't always like this. We were once good friends. Then he went all Mabritney on everyone."),
                     ChatItem(profile: .hero, imgPos: .left, chat: "You guys have Britney in your world?"),
                     ChatItem(profile: .trainer, chat: "No—MAbritney. She's an elemental mage who wields forbidden dark magic. She does a Dance of Knives that summons Chaos."),
-                    ChatItem(profile: .hero, imgPos: .left, chat: "Well he sounds toxic ...so what's our next move: PURSUE_HIM | PREPARE_FIRST"),
+                    ChatItem(profile: .hero, imgPos: .left, chat: "Well he sounds toxic ...so what's our next move:\nPURSUE HIM | PREPARE FIRST"),
                     ChatItem(profile: .hero, imgPos: .left, chat: "We should prepare first..."),
                     ChatItem(profile: .trainer, chat: "A wise decision. Let's keep moving."),
                     ChatItem(profile: .hero, imgPos: .left, chat: "BRING ME MAGMOOR!"),

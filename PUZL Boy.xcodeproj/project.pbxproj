@@ -85,6 +85,7 @@
 		EA7300112B5E00E1005BF98D /* MagicLightParticles.sks in Resources */ = {isa = PBXBuildFile; fileRef = EA7300102B5E00E1005BF98D /* MagicLightParticles.sks */; };
 		EA7300152B5F74B4005BF98D /* MarlinBlastSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA7300142B5F74B4005BF98D /* MarlinBlastSprite.swift */; };
 		EA7300192B5F8B8C005BF98D /* marlinblast.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA7300182B5F8B8C005BF98D /* marlinblast.mp3 */; };
+		EA73001B2B604A13005BF98D /* MagmoorScarySprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA73001A2B604A13005BF98D /* MagmoorScarySprite.swift */; };
 		EA75F0E1292DDAAF00F09BD7 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = EA75F0E0292DDAAF00F09BD7 /* FirebaseAnalytics */; };
 		EA75F0E3292DDAAF00F09BD7 /* FirebaseAnalyticsSwift in Frameworks */ = {isa = PBXBuildFile; productRef = EA75F0E2292DDAAF00F09BD7 /* FirebaseAnalyticsSwift */; };
 		EA75F0E5292DDAAF00F09BD7 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = EA75F0E4292DDAAF00F09BD7 /* FirebaseAuth */; };
@@ -359,6 +360,7 @@
 		EA7300102B5E00E1005BF98D /* MagicLightParticles.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = MagicLightParticles.sks; sourceTree = "<group>"; };
 		EA7300142B5F74B4005BF98D /* MarlinBlastSprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarlinBlastSprite.swift; sourceTree = "<group>"; };
 		EA7300182B5F8B8C005BF98D /* marlinblast.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = marlinblast.mp3; sourceTree = "<group>"; };
+		EA73001A2B604A13005BF98D /* MagmoorScarySprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MagmoorScarySprite.swift; sourceTree = "<group>"; };
 		EA75F0EA292DF46200F09BD7 /* FIRManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FIRManager.swift; sourceTree = "<group>"; };
 		EA75F0EC292DF57400F09BD7 /* LevelModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelModel.swift; sourceTree = "<group>"; };
 		EA75F0EE292F55F900F09BD7 /* LaunchScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchScene.swift; sourceTree = "<group>"; };
@@ -761,6 +763,7 @@
 				EA12C54F2B271EC2006E9813 /* GoldCoinSprite.swift */,
 				EAEF2ECD2B4DCD4800AD8459 /* LetterboxSprite.swift */,
 				EA7300142B5F74B4005BF98D /* MarlinBlastSprite.swift */,
+				EA73001A2B604A13005BF98D /* MagmoorScarySprite.swift */,
 			);
 			path = New;
 			sourceTree = "<group>";
@@ -1376,6 +1379,7 @@
 				EA95D2102962C9260061059C /* AchievementSlowPoke.swift in Sources */,
 				EAD19A002A9688E500A07A63 /* ParticleEngine.swift in Sources */,
 				EAF07C1029EA7B8C0034CD1A /* Extension+CGSize.swift in Sources */,
+				EA73001B2B604A13005BF98D /* MagmoorScarySprite.swift in Sources */,
 				EA94E87729C2DCE0009F2614 /* Extension+CGPoint.swift in Sources */,
 				EA826C81298CF3FF00F19F81 /* IAPManager.swift in Sources */,
 				EA956C6A29257B9C00879AD0 /* AudioManager.swift in Sources */,
