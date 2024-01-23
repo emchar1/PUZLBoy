@@ -315,6 +315,10 @@ class PauseResetEngine {
         ]))
     }
     
+    func hideDiscoball() {
+        pauseButtonSprite.run(SKAction.fadeOut(withDuration: 1))
+    }
+    
     private func getHintButtonImageName() -> String {
         return hintName + (isHintButtonDisabled ? "Disabled" : niteModifier)
     }

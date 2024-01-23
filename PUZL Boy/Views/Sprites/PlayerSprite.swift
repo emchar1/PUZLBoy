@@ -549,6 +549,10 @@ class PlayerSprite {
             completion()
         }
     }
+    
+    func hidePlayer() {
+        player.sprite.run(SKAction.fadeOut(withDuration: 1))
+    }
 
     
     // MARK: - Getters & Setters

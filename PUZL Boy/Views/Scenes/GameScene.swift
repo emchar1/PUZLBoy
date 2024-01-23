@@ -1121,10 +1121,8 @@ extension GameScene: PartyResultsSpriteDelegate {
             }
         }
         
-        gameEngine.playerSprite.sprite.run(SKAction.sequence([
-            SKAction.fadeOut(withDuration: 1),
-            SKAction.removeFromParent()
-        ]))
+        gameEngine.playerSprite.hidePlayer()
+        pauseResetEngine.hideDiscoball()
     }
     
     ///Used after the interstitial ad plays after a Party Level is completed. Should not be used anywhere else because of the proprietary code!!!

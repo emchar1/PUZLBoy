@@ -467,6 +467,8 @@ extension ChatEngine {
             sendChatArray(items: [
                 ChatItem(profile: .blankvillain, chat: "\n\n...turn back now, before it's too late..."),
                 ChatItem(profile: .trainer, imgPos: .left, chat: "Who are you!"),
+                ChatItem(profile: .blankvillain, chat: "\n\n...the question is, where are we?..."),
+                ChatItem(profile: .trainer, imgPos: .left, chat: "You are in the Dark Realm where evil cannot reach. What business do you have here?!"),
                 ChatItem(profile: .blankvillain, chat: "\n\n...all will be revealed soon...") { [unowned self] in
                     let marlinBlast = MarlinBlastSprite()
                     marlinBlast.zPosition = K.ZPosition.chatDialogue - 1
@@ -474,7 +476,7 @@ extension ChatEngine {
                     
                     marlinBlast.animateBlast()
                 },
-                ChatItem(profile: .trainer, imgPos: .left, chat: "⚡️⚡️SHOW YOURSELF!!!⚡️⚡️") {
+                ChatItem(profile: .trainer, imgPos: .left, chat: "⚡️SHOW YOURSELF!!!⚡️") {
                     AudioManager.shared.playSound(for: "littlegirllaugh")
                     AudioManager.shared.stopSound(for: "littlegirllaugh", fadeDuration: 2)
                 },
@@ -756,7 +758,7 @@ extension ChatEngine {
                 ChatItem(profile: .trainer, chat: "902."),
                 ChatItem(profile: .hero, imgPos: .left, chat: "NINE HUNDRED??!! What are you, like a wizard or something? \"Marlin the Fish Wizard...\""),
                 ChatItem(profile: .hero, imgPos: .left, chat: "Wait... So you really ARE a wizard!! Because I'm not surprised by anything anymore at this point..."),
-                ChatItem(profile: .trainer, chat: "MYSTIC, MYSTIC, MYSTIC!!! I told you I'm a Mystic. Yeesh, my blood pressure..."),
+                ChatItem(profile: .trainer, chat: "MYSTIC!!! I told you I'm a Mystic! M.Y.S.T.I.C. Yeesh, my blood pressure..."),
                 ChatItem(profile: .trainer, chat: "Once we've located the princess, I need to cast the gateway spell to open the portal so she can return to her home in Vaeloria."),
                 ChatItem(profile: .hero, imgPos: .left, chat: "Yeah... mystic. Which is basically a wizard. Or magician. Well you don't look a day over 800 to be honest..."),
                 ChatItem(profile: .trainer, chat: "PUZL Boy, I need you to be serious! What lies ahead will test your patience. It will make you want to throw your phone out the window. You need to be prepared!"),
