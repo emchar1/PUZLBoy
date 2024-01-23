@@ -692,28 +692,6 @@ extension GameScene: AdMobManagerDelegate {
         print("Interstitial failed. Now what...")
     }
     
-    ///Used after the interstial ad plays after a Party Level is completed. Should not be used anywhere else because of the proprietary code!!!
-    private func resumeGameFromPartyLevel() {
-        let villainChatLevel = (lastCurrentLevel ?? 1) - 1
-
-        PartyModeSprite.shared.stopParty(partyBoy: gameEngine.playerSprite,
-                                         hasSword: gameEngine.level.inventory.hasSwords(),
-                                         hasHammer: gameEngine.level.inventory.hasHammers())
-
-        chatEngine.playDialogue(level: -villainChatLevel) { [unowned self] in
-            guard AdMobManager.interstitialAdIsReady else {
-                AdMobManager.shared.createAndLoadInterstitial() //...and try loading the ad again for future calls
-                didDismissInterstitial()
-                
-                return
-            }
-            
-            AdMobManager.shared.delegate = self
-            AdMobManager.shared.presentInterstitial()
-        }
-    }
-    
-    ///Helper function used by resumeGameFromPartyLevel()
     private func handlePartyLevelCleanUp() {
         guard let lastCurrentLevel = lastCurrentLevel else { fatalError("lastCurrentLevel is nil, which shouldn't happen after a party level") }
 
@@ -1147,6 +1125,29 @@ extension GameScene: PartyResultsSpriteDelegate {
             SKAction.removeFromParent()
         ]))
     }
+    
+    ///Used after the interstitial ad plays after a Party Level is completed. Should not be used anywhere else because of the proprietary code!!!
+    private func resumeGameFromPartyLevel() {
+        let villainChatLevel = (lastCurrentLevel ?? 1) - 1
+
+        PartyModeSprite.shared.stopParty(partyBoy: gameEngine.playerSprite,
+                                         hasSword: gameEngine.level.inventory.hasSwords(),
+                                         hasHammer: gameEngine.level.inventory.hasHammers())
+
+        chatEngine.playDialogue(level: -villainChatLevel) { [unowned self] in
+            guard AdMobManager.interstitialAdIsReady else {
+                AdMobManager.shared.createAndLoadInterstitial() //...and try loading the ad again for future calls
+                didDismissInterstitial()
+                
+                return
+            }
+            
+            AdMobManager.shared.delegate = self
+            AdMobManager.shared.presentInterstitial()
+        }
+    }
+    
+
 }
 
 
