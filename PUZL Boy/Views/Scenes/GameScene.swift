@@ -413,8 +413,7 @@ class GameScene: SKScene {
                 PartyModeSprite.shared.setIsPartying(false)
                 PartyModeSprite.shared.stopParty(partyBoy: gameEngine.playerSprite,
                                                  hasSword: gameEngine.level.inventory.hasSwords(), 
-                                                 hasHammer: gameEngine.level.inventory.hasHammers(),
-                                                 shouldFadeAndRemovePlayer: false)
+                                                 hasHammer: gameEngine.level.inventory.hasHammers())
                 scoringEngine.timerManager.setIsParty(false)
             }
         }
@@ -471,7 +470,6 @@ class GameScene: SKScene {
         
         let fadeDuration: TimeInterval = 1.0
         
-        AudioManager.shared.raiseVolume(for: AudioManager.shared.currentTheme, fadeDuration: fadeDuration)
         gameEngine.fadeBloodOverlay(shouldFadeOut: false, duration: fadeDuration)
 
         if shouldFade {
@@ -685,7 +683,9 @@ extension GameScene: AdMobManagerDelegate {
     }
     
     func didDismissInterstitial() {
-        resumeGameFromPartyLevel()
+        continueFromAd(shouldFade: false) { [unowned self] in
+            handlePartyLevelCleanUp()
+        }
     }
     
     func interstitialFailed() {
@@ -694,18 +694,22 @@ extension GameScene: AdMobManagerDelegate {
     
     ///Used after the interstial ad plays after a Party Level is completed. Should not be used anywhere else because of the proprietary code!!!
     private func resumeGameFromPartyLevel() {
-        // FIXME: - Build out post party dialogue between Marlin & Magmoor.
         let villainChatLevel = (lastCurrentLevel ?? 1) - 1
 
         PartyModeSprite.shared.stopParty(partyBoy: gameEngine.playerSprite,
                                          hasSword: gameEngine.level.inventory.hasSwords(),
-                                         hasHammer: gameEngine.level.inventory.hasHammers(),
-                                         shouldFadeAndRemovePlayer: true)
+                                         hasHammer: gameEngine.level.inventory.hasHammers())
 
         chatEngine.playDialogue(level: -villainChatLevel) { [unowned self] in
-            continueFromAd(shouldFade: false) { [unowned self] in
-                handlePartyLevelCleanUp()
+            guard AdMobManager.interstitialAdIsReady else {
+                AdMobManager.shared.createAndLoadInterstitial() //...and try loading the ad again for future calls
+                didDismissInterstitial()
+                
+                return
             }
+            
+            AdMobManager.shared.delegate = self
+            AdMobManager.shared.presentInterstitial()
         }
     }
     
@@ -1133,36 +1137,15 @@ extension GameScene: ConfirmSpriteDelegate {
 extension GameScene: PartyResultsSpriteDelegate {
     func didTapConfirm() {
         partyResultsSprite?.animateHide { [unowned self] in
-            guard AdMobManager.interstitialAdIsReady else {
-
-
-
-
-                // FIXME: - Dialogue between Marlin and Magmoor cont'd.
-                PartyModeSprite.shared.stopParty(partyBoy: gameEngine.playerSprite,
-                                                 hasSword: gameEngine.level.inventory.hasSwords(),
-                                                 hasHammer: gameEngine.level.inventory.hasHammers(),
-                                                 shouldFadeAndRemovePlayer: true)
-                AudioManager.shared.lowerVolume(for: AudioManager.shared.currentTheme, fadeDuration: 1.0)
-                
-                chatEngine.playDialogue(level: -2) { [unowned self] in
-                    AudioManager.shared.raiseVolume(for: AudioManager.shared.currentTheme, fadeDuration: 1.0)
-                    handlePartyLevelCleanUp() //Run this directly, if interstial ad failed to load...
-                }
-                
-                
-                
-                
-                AdMobManager.shared.createAndLoadInterstitial() //...and try loading the ad again
-                
-                return
-            }
-            
-            prepareAd {
-                AdMobManager.shared.delegate = self
-                AdMobManager.shared.presentInterstitial()
+            prepareAd { [unowned self] in
+                resumeGameFromPartyLevel()
             }
         }
+        
+        gameEngine.playerSprite.sprite.run(SKAction.sequence([
+            SKAction.fadeOut(withDuration: 1),
+            SKAction.removeFromParent()
+        ]))
     }
 }
 
