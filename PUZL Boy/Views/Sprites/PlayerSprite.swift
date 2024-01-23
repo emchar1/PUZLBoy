@@ -15,8 +15,7 @@ class PlayerSprite {
 
     private(set) var sprite: SKSpriteNode
     private(set) var isAnimating: Bool = false
-    private var explodeBoulderAtlas: SKTextureAtlas
-    private var explodeBoulderTextures: [SKTexture]
+    private var explodeAtlas: SKTextureAtlas
     private var player = Player(type: .hero)
 
     enum AnimationKey: String {
@@ -29,13 +28,7 @@ class PlayerSprite {
     init(shouldSpawn: Bool) {
         sprite = player.sprite
         player.sprite.alpha = shouldSpawn ? 0 : 1
-
-        explodeBoulderAtlas = SKTextureAtlas(named: "explode")
-        explodeBoulderTextures = []
-
-        for i in 1...7 {
-            explodeBoulderTextures.append(explodeBoulderAtlas.textureNamed("explode2 (\(i))"))
-        }
+        explodeAtlas = SKTextureAtlas(named: "explode")
                 
         startIdleAnimation(hasSword: false, hasHammer: false)
 
@@ -229,12 +222,13 @@ class PlayerSprite {
         
         gameboard.sprite.addChild(itemSprite)
         
-        itemSprite.run(SKAction.group([
-            SKAction.scale(by: 2, duration: 0.25),
-            SKAction.fadeOut(withDuration: 0.25)
-        ])) {
-            itemSprite.removeFromParent()
-        }
+        itemSprite.run(SKAction.sequence([
+            SKAction.group([
+                SKAction.scale(by: 2, duration: 0.25),
+                SKAction.fadeOut(withDuration: 0.25)
+            ]),
+            SKAction.removeFromParent()
+        ]))
         
         completion()
         
@@ -280,7 +274,8 @@ class PlayerSprite {
         let animation = SKAction.sequence([
             SKAction.wait(forDuration: 0.25 * PartyModeSprite.shared.speedMultiplier),
             SKAction.rotate(byAngle: -3 * .pi / 2, duration: 0.25 * PartyModeSprite.shared.speedMultiplier),
-            SKAction.fadeAlpha(to: 0, duration: 0.5 * PartyModeSprite.shared.speedMultiplier)
+            SKAction.fadeAlpha(to: 0, duration: 0.5 * PartyModeSprite.shared.speedMultiplier),
+            SKAction.removeFromParent()
         ])
         
         isAnimating = true
@@ -292,8 +287,6 @@ class PlayerSprite {
         gameboard.sprite.addChild(attackSprite)
 
         attackSprite.run(animation) {
-            attackSprite.removeFromParent()
-            
             //Enemy death animation
             let enemyTopSprite = SKSpriteNode(imageNamed: "enemy (1)")
             let enemyBottomSprite = SKSpriteNode(imageNamed: "enemy (2)")
@@ -313,18 +306,21 @@ class PlayerSprite {
             let animationDuration: TimeInterval = 0.3
             let animationMove: CGFloat = 150 / 3 * enemyScale
                         
-            enemyTopSprite.run(SKAction.group([
-                SKAction.moveBy(x: -animationMove, y: animationMove, duration: animationDuration * PartyModeSprite.shared.speedMultiplier),
-                SKAction.fadeOut(withDuration: animationDuration * 2 * PartyModeSprite.shared.speedMultiplier)
-            ])) {
-                enemyTopSprite.removeFromParent()
-            }
+            enemyTopSprite.run(SKAction.sequence([
+                SKAction.group([
+                    SKAction.moveBy(x: -animationMove, y: animationMove, duration: animationDuration * PartyModeSprite.shared.speedMultiplier),
+                    SKAction.fadeOut(withDuration: animationDuration * 2 * PartyModeSprite.shared.speedMultiplier)
+                ]),
+                SKAction.removeFromParent()
+            ]))
 
-            enemyBottomSprite.run(SKAction.group([
-                SKAction.moveBy(x: animationMove, y: -animationMove, duration: animationDuration * PartyModeSprite.shared.speedMultiplier),
-                SKAction.fadeOut(withDuration: animationDuration * 2 * PartyModeSprite.shared.speedMultiplier)
+            enemyBottomSprite.run(SKAction.sequence([
+                SKAction.group([
+                    SKAction.moveBy(x: animationMove, y: -animationMove, duration: animationDuration * PartyModeSprite.shared.speedMultiplier),
+                    SKAction.fadeOut(withDuration: animationDuration * 2 * PartyModeSprite.shared.speedMultiplier)
+                ]),
+                SKAction.removeFromParent()
             ])) { [unowned self] in
-                enemyBottomSprite.removeFromParent()
                 isAnimating = false
             }
             
@@ -361,27 +357,35 @@ class PlayerSprite {
         gameboard.sprite.addChild(attackSprite)
 
         attackSprite.run(animation) { [unowned self] in
-            animateExplosion(on: gameboard, at: panel, scale: scale) { }
+            animateExplosion(on: gameboard, at: panel, scale: scale, textureName: "explode2", textureFrames: 7) { }
             
             completion()
         }
     }
     
-    func animateExplosion(on gameboard: GameboardSprite, at panel: K.GameboardPosition, scale: CGFloat, completion: @escaping () -> Void) {
+    func animateExplosion(on gameboard: GameboardSprite, at panel: K.GameboardPosition, scale: CGFloat, textureName: String, textureFrames: Int, completion: @escaping () -> Void) {
+        var explodeTextures: [SKTexture] = []
+
+        for i in 1...textureFrames {
+            explodeTextures.append(explodeAtlas.textureNamed("\(textureName) (\(i))"))
+        }
+
         let timePerFrame: TimeInterval = 0.06
-        let explodeSprite = SKSpriteNode(texture: explodeBoulderTextures[0])
+        let explodeSprite = SKSpriteNode(texture: explodeTextures[0])
         explodeSprite.position = gameboard.getLocation(at: panel)
         explodeSprite.zPosition = K.ZPosition.itemsAndEffects
         explodeSprite.setScale(scale * (gameboard.panelSize / explodeSprite.size.width))
 
         gameboard.sprite.addChild(explodeSprite)
 
-        explodeSprite.run(SKAction.group([
-            SKAction.animate(with: explodeBoulderTextures, timePerFrame: timePerFrame),
-            SKAction.scale(by: 1.25, duration: timePerFrame * Double(explodeBoulderTextures.count) * 2),
-            SKAction.fadeOut(withDuration: timePerFrame * Double(explodeBoulderTextures.count) * 2)
+        explodeSprite.run(SKAction.sequence([
+            SKAction.group([
+                SKAction.animate(with: explodeTextures, timePerFrame: timePerFrame),
+                SKAction.scale(by: 1.25, duration: timePerFrame * Double(explodeTextures.count) * 2),
+                SKAction.fadeAlpha(to: textureName == "explode2" ? 0 : 1, duration: timePerFrame * Double(explodeTextures.count) * 2)
+            ]),
+            SKAction.removeFromParent()
         ])) { [unowned self] in
-            explodeSprite.removeFromParent()
             isAnimating = false
             
             completion()
