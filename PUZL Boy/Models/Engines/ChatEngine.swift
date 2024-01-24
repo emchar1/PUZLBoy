@@ -343,7 +343,7 @@ class ChatEngine {
                 animateBackgroundSprite
             ])) { [unowned self] in
                 if startNewChat {
-                    AudioManager.shared.playSound(for: "chatopen")
+                    playChatOpenNotification()
                 }
                 
                 timer = Timer.scheduledTimer(timeInterval: chatSpeed, target: self, selector: #selector(animateText(_:)), userInfo: nil, repeats: true)
@@ -353,7 +353,7 @@ class ChatEngine {
             //Leave out the wait
             chatBackgroundSprite.run(animateBackgroundSprite) { [unowned self] in
                 if startNewChat {
-                    AudioManager.shared.playSound(for: "chatopen")
+                    playChatOpenNotification()
                 }
                 
                 timer = Timer.scheduledTimer(timeInterval: chatSpeed, target: self, selector: #selector(animateText(_:)), userInfo: nil, repeats: true)
@@ -394,6 +394,15 @@ class ChatEngine {
             })
             
             DispatchQueue.main.asyncAfter(deadline: .now() + (chatSpeed > 0 ? 5.0 : max(5.0, Double(chatText.count) / 10)), execute: dispatchWorkItem)
+        }
+    }
+    
+    private func playChatOpenNotification() {
+        switch currentProfile {
+        case .hero:                                 AudioManager.shared.playSound(for: "chatopen")
+        case .trainer:                              AudioManager.shared.playSound(for: "chatopentrainer")
+        case .princess, .princess2, .blankprincess: AudioManager.shared.playSound(for: "chatopenprincess")
+        case .villain, .blankvillain:               AudioManager.shared.playSound(for: "chatopenvillain")
         }
     }
     
@@ -481,15 +490,12 @@ extension ChatEngine {
                 ChatItem(profile: .blankvillain, chat: "\n\n...turn back now, before it's too late..."),
                 ChatItem(profile: .trainer, imgPos: .left, chat: "Who are you!"),
                 ChatItem(profile: .blankvillain, chat: "\n\n...the question is, where are we?..."),
-                ChatItem(profile: .trainer, imgPos: .left, chat: "You are in the Dark Realm where evil cannot reach. What business do you have here?!"),
+                ChatItem(profile: .trainer, imgPos: .left, chat: "We are in the Dark Realm where evil cannot reach. What business do you have here?!"),
                 ChatItem(profile: .blankvillain, chat: "\n\n...all will be revealed soon...") { [unowned self] in
                     superScene?.addChild(marlinBlast)
-                    superScene?.addChild(magmoorScary)
-
-                    marlinBlast.animateBlast()
-                    magmoorScary.flashImage(delay: 0.25)
+                    marlinBlast.animateBlast(playSound: true)
                 },
-                ChatItem(profile: .trainer, imgPos: .left, chat: "⚡️SHOW YOURSELF!!!⚡️") {
+                ChatItem(profile: .trainer, imgPos: .left, chat: "⚡️REVEAL YOURSELF!!!⚡️") {
                     AudioManager.shared.playSound(for: "littlegirllaugh")
                     AudioManager.shared.stopSound(for: "littlegirllaugh", fadeDuration: 2)
                 },
@@ -499,12 +505,46 @@ extension ChatEngine {
                 
                 chatBackgroundSprite.run(SKAction.wait(forDuration: 1)) { [unowned self] in
                     marlinBlast.removeFromParent()
-                    magmoorScary.removeFromParent()
                     
                     handleDialogueCompletion(level: level, completion: completion)
                 }
             }
         case -150:
+            AudioManager.shared.playSound(for: "magicheartbeatloop1", fadeIn: 3)
+            
+            sendChatArray(items: [
+                ChatItem(profile: .blankvillain, chat: "\n\n...marlin..."),
+                ChatItem(profile: .trainer, imgPos: .left, chat: "Gah, don't sneak up on me like that!!"),
+                ChatItem(profile: .blankvillain, chat: "\n\n...do not follow. do not proceed..."),
+                ChatItem(profile: .trainer, imgPos: .left, chat: "Do not pass go, do not collect... blah, blah, blah. Do you have the princess?!!"),
+                ChatItem(profile: .blankvillain, chat: "\n\n...she's here now..."),
+                ChatItem(profile: .trainer, imgPos: .left, chat: "Where is she?! Let me see her. Is she safe??"),
+                ChatItem(profile: .blankvillain, chat: "\n\n...see for yourself..."),
+                ChatItem(profile: .blankprincess, chat: "\n\nHELP ME! IT'S SO DARK OVER HEREEEE!!!"),
+                ChatItem(profile: .trainer, imgPos: .left, chat: "Stop with the games! Now tell me exactly who you—") { [unowned self] in
+                    superScene?.addChild(marlinBlast)
+                    superScene?.addChild(magmoorScary)
+
+                    marlinBlast.animateBlast(playSound: false)
+                    magmoorScary.flashImage(delay: 0.25)
+
+                    AudioManager.shared.stopSound(for: "magicheartbeatloop1")
+                    AudioManager.shared.playSound(for: "magicheartbeatloop2")
+                },
+                ChatItem(profile: .trainer, imgPos: .left, chat: "⚡️ARE!!!⚡️"),
+                ChatItem(profile: .villain, chat: "be seeing ya soon."),
+                ChatItem(profile: .trainer, imgPos: .left, chat: "............no. It can't be.")
+            ]) { [unowned self] in
+                AudioManager.shared.stopSound(for: "magicheartbeatloop2", fadeDuration: 3)
+                
+                chatBackgroundSprite.run(SKAction.wait(forDuration: 1)) { [unowned self] in
+                    marlinBlast.removeFromParent()
+                    magmoorScary.removeFromParent()
+                    
+                    handleDialogueCompletion(level: level, completion: completion)
+                }
+            }
+        case -200:
             AudioManager.shared.playSound(for: "scarymusicbox", fadeIn: 3)
             AudioManager.shared.playSound(for: "magicheartbeatloop1", fadeIn: 3)
             
@@ -529,47 +569,10 @@ extension ChatEngine {
                 ChatItem(profile: .trainer, imgPos: .left, chat: "..............I did what I had to."),
                 ChatItem(profile: .villain, chat: "your loss.. such a shame.. you'll soon regret it.....")
             ]) { [unowned self] in
-                AudioManager.shared.stopSound(for: "scarymusicbox", fadeDuration: 3)
-                AudioManager.shared.stopSound(for: "magicheartbeatloop1", fadeDuration: 3)
+                AudioManager.shared.stopSound(for: "scarymusicbox", fadeDuration: 5)
+                AudioManager.shared.stopSound(for: "magicheartbeatloop1", fadeDuration: 5)
                 
-                chatBackgroundSprite.run(SKAction.wait(forDuration: 1)) { [unowned self] in
-                    handleDialogueCompletion(level: level) { [unowned self] in
-                        magmoorScary.resetAlpha()
-                        magmoorScary.removeFromParent()
-                        
-                        completion?()
-                    }
-                }
-            }
-        case -200: // TODO: - Rework Villain Party Dialogue
-            AudioManager.shared.playSound(for: "scarymusicbox", fadeIn: 3)
-            AudioManager.shared.playSound(for: "magicheartbeatloop1", fadeIn: 3)
-            
-            superScene?.addChild(magmoorScary)
-
-            sendChatArray(items: [
-                ChatItem(profile: .villain, chat: "MYSTERIOUS FIGURE: i'm baaaaaack!") { [unowned self] in
-                    magmoorScary.slowReveal(alpha: 0.1)
-                },
-                ChatItem(profile: .trainer, imgPos: .left, chat: "What else is new...") { [unowned self] in
-                    magmoorScary.slowReveal(alpha: 0.2)
-                },
-                ChatItem(profile: .villain, chat: "i bought a new scooter.") { [unowned self] in
-                    magmoorScary.slowReveal(alpha: 0.3)
-                },
-                ChatItem(profile: .trainer, imgPos: .left, chat: "Thrilling.") { [unowned self] in
-                    magmoorScary.slowReveal(alpha: 0.4)
-                },
-                ChatItem(profile: .villain, chat: "i don't like your attitude.") { [unowned self] in
-                    magmoorScary.slowReveal(alpha: 0.5)
-                },
-                ChatItem(profile: .trainer, imgPos: .left, chat: "Cry me a river. Also stop speaking in all lowercaseit's annoying."),
-                ChatItem(profile: .villain, chat: "eat my shorts!")
-            ]) { [unowned self] in
-                AudioManager.shared.stopSound(for: "scarymusicbox", fadeDuration: 3)
-                AudioManager.shared.stopSound(for: "magicheartbeatloop1", fadeDuration: 3)
-                
-                chatBackgroundSprite.run(SKAction.wait(forDuration: 1)) { [unowned self] in
+                chatBackgroundSprite.run(SKAction.wait(forDuration: 3)) { [unowned self] in
                     handleDialogueCompletion(level: level) { [unowned self] in
                         magmoorScary.resetAlpha()
                         magmoorScary.removeFromParent()

@@ -55,6 +55,8 @@ class MagmoorScarySprite: SKNode {
     }
     
     func flashImage(delay: TimeInterval = 0) {
+        AudioManager.shared.playSound(for: "magichorrorimpact")
+
         sprite.run(SKAction.sequence([
             SKAction.wait(forDuration: delay),
             SKAction.fadeIn(withDuration: 0),

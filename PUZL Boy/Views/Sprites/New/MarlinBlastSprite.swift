@@ -55,7 +55,7 @@ class MarlinBlastSprite: SKNode {
         self.alpha = 1
     }
     
-    func animateBlast() {
+    func animateBlast(playSound: Bool) {
         let blastDuration: TimeInterval = 0.25
         let blastContactPoint = CGPoint(x: 0, y: K.ScreenDimensions.size.height / 2)
         let blastTopAction = SKAction.moveTo(y: blastContactPoint.y, duration: blastDuration)
@@ -69,8 +69,10 @@ class MarlinBlastSprite: SKNode {
         
         addChild(flashOverlayNode)
         
-        AudioManager.shared.playSound(for: "marlinblast")
-                
+        if playSound {
+            AudioManager.shared.playSound(for: "marlinblast")
+        }
+            
         flashOverlayNode.run(SKAction.sequence([
             SKAction.wait(forDuration: blastDuration),
             SKAction.fadeIn(withDuration: 0),
