@@ -60,15 +60,23 @@ class ParticleEngine: SKNode {
     
     // MARK: - Functions
     
-    func animateParticles(type: ParticleType, toNode node: SKNode, position: CGPoint, scale: CGFloat = 1, angle: CGFloat = 0, shouldFlipHorizontally: Bool = false, zPosition: CGFloat = K.ZPosition.itemsAndEffects + 10, duration: TimeInterval) {
-        
+    func animateParticles(type: ParticleType,
+                          toNode node: SKNode,
+                          position: CGPoint,
+                          scale: CGFloat = 1,
+                          angle: CGFloat = 0,
+                          shouldFlipHorizontally: Bool = false,
+                          zPosition: CGFloat = K.ZPosition.itemsAndEffects + 10,
+                          nameGameboardPosition: K.GameboardPosition? = nil,
+                          duration: TimeInterval)
+    {
         guard let particles = SKEmitterNode(fileNamed: type.rawValue) else { return print("Particle file not found: \(type.rawValue).sks")}
         
         particles.position = position
         particles.setScale(2 * scale / UIDevice.modelInfo.ratio)
         particles.xScale *= shouldFlipHorizontally ? -1 : 1
         particles.zPosition = zPosition
-        particles.name = ParticleEngine.nodeName
+        particles.name = ParticleEngine.nodeName + getPositionString(nameGameboardPosition)
         
         if angle != 0 {
             particles.zRotation = angle
@@ -90,7 +98,7 @@ class ParticleEngine: SKNode {
     
     func removeParticles(fromNode node: SKNode) {
         for particleNode in node.children {
-            guard particleNode.name == ParticleEngine.nodeName else { continue }
+            guard particleNode.name == ParticleEngine.nodeName + getPositionString(nameGameboardPosition) else { continue }
                     
             particleNode.removeAllActions()
             particleNode.removeFromParent()
@@ -112,4 +120,16 @@ class ParticleEngine: SKNode {
             particleNode.run(SKAction.fadeIn(withDuration: 0.25))
         }
     }
+    
+    private func getPositionString(_ position: K.GameboardPosition?) -> String {
+        if let position = position {
+            return "(\(position.row),\(position.col))"
+        }
+        else {
+            return ""
+        }
+    }
+    
+    
+    
 }

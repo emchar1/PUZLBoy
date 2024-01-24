@@ -160,7 +160,7 @@ struct Level: CustomStringConvertible {
         let check = gameboard[position.row][position.col]
         
         //Only return overlay if there's an item
-        return check.overlay == .boundary ? check.terrain : check.overlay
+        return check.overlay == .boundary ? getTerrainType(at: position) : getOverlayType(at: position)
     }
     
     ///Similar to getLevelType(at:), but returns the terrain, always.
