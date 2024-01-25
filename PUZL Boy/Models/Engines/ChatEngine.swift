@@ -514,14 +514,17 @@ extension ChatEngine {
             
             sendChatArray(items: [
                 ChatItem(profile: .blankvillain, chat: "\n\n...marlin..."),
-                ChatItem(profile: .trainer, imgPos: .left, chat: "Gah, don't sneak up on me like that!!"),
+                ChatItem(profile: .trainer, imgPos: .left, chat: "Gah, would you stop doing that!! It's freaky!"),
                 ChatItem(profile: .blankvillain, chat: "\n\n...do not follow. do not proceed..."),
-                ChatItem(profile: .trainer, imgPos: .left, chat: "Do not pass go, do not collect... blah, blah, blah. Do you have the princess?!!"),
-                ChatItem(profile: .blankvillain, chat: "\n\n...she's here now..."),
-                ChatItem(profile: .trainer, imgPos: .left, chat: "Where is she?! Let me see her. Is she safe??"),
-                ChatItem(profile: .blankvillain, chat: "\n\n...see for yourself..."),
-                ChatItem(profile: .blankprincess, chat: "\n\nHELP ME! IT'S SO DARK OVER HEREEEE!!!"),
-                ChatItem(profile: .trainer, imgPos: .left, chat: "Stop with the games! Now tell me exactly who you—") { [unowned self] in
+                ChatItem(profile: .trainer, imgPos: .left, chat: "Do not pass go, do not collect... blah, blah, blah. Where is the princess!!"),
+                ChatItem(profile: .blankvillain, chat: "\n\n...she is here now..."),
+                ChatItem(profile: .trainer, imgPos: .left, chat: "Where is she?!! Is she unharmed??"),
+                ChatItem(profile: .blankvillain, chat: "\n\n...see for yourself...") {
+                    AudioManager.shared.playSound(for: "littlegirllaugh")
+                    AudioManager.shared.stopSound(for: "littlegirllaugh", fadeDuration: 2)
+                },
+                ChatItem(profile: .blankprincess, chat: "\n\nHELP MEEE! IT'S SO DARK OVER HERE!!!"),
+                ChatItem(profile: .trainer, imgPos: .left, chat: "Stop with the games! Now tell me exactly who you are—") { [unowned self] in
                     superScene?.addChild(marlinBlast)
                     superScene?.addChild(magmoorScary)
 
@@ -531,7 +534,7 @@ extension ChatEngine {
                     AudioManager.shared.stopSound(for: "magicheartbeatloop1")
                     AudioManager.shared.playSound(for: "magicheartbeatloop2")
                 },
-                ChatItem(profile: .trainer, imgPos: .left, chat: "⚡️ARE!!!⚡️"),
+                ChatItem(profile: .trainer, imgPos: .left, chat: "⚡️MAGIC!!!⚡️"),
                 ChatItem(profile: .villain, chat: "be seeing ya soon."),
                 ChatItem(profile: .trainer, imgPos: .left, chat: "............no. It can't be.")
             ]) { [unowned self] in
