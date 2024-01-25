@@ -445,12 +445,13 @@ class CutsceneIntro: SKScene {
                     },
                     SpeechBubbleItem(profile: speechHero, chat: "Hang on princess! I'm coming to rescue you!!!|||")
                 ]) { [unowned self] in
-                    AudioManager.shared.stopSound(for: "ageofruin", fadeDuration: 3)
+                    AudioManager.shared.stopSound(for: "ageofruin", fadeDuration: 4)
                     UserDefaults.standard.set(true, forKey: K.UserDefaults.shouldSkipIntro)
                     tapPointerEngine = nil
 
                     fadeTransitionNode.run(SKAction.sequence([
-                        SKAction.fadeIn(withDuration: 1),
+                        SKAction.fadeIn(withDuration: 2),
+                        SKAction.wait(forDuration: 1),
                         SKAction.removeFromParent()
                     ])) { [unowned self] in
                         self.completion?()
