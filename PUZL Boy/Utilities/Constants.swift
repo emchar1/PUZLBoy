@@ -17,6 +17,10 @@ struct K {
     ///Gameboard i.e. 2D array of LevelType
     typealias Gameboard = [[GameboardPanel]]
     
+    ///The game will either be in a fire state or an ice state. This will determine whether to use sand/lava or snow/water tiles.
+    struct FireIce {
+        static var isFire = true
+    }
     
     struct ScreenDimensions {
         

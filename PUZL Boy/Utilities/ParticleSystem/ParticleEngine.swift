@@ -26,6 +26,8 @@ class ParticleEngine: SKNode {
         case dragonFire = "DragonFire"
         case dragonFireIdle = "DragonFireIdle"
         case dragonFireLite = "DragonFireLite"
+        case dragonIceIdle = "DragonIceIdle"
+        case dragonIceLite = "DragonIceLite"
         case gemCollect = "GemCollectParticles"
         case gemSparkle = "GemSparkleParticles"
         case hearts = "HeartsParticles"
@@ -34,10 +36,12 @@ class ParticleEngine: SKNode {
         case lavaAppear = "LavaAppearParticles"
         case lavaSizzle = "LavaSizzleParticles"
         case magicBlast = "MagicParticles"
+        case magicLight = "MagicLightParticles" // FIXME: - Testing for Marlin Magic
         case partyGem = "PartyGemParticles"
         case poisonBubbles = "PoisonBubblesParticles"
         case pointer = "PointerParticles"
         case pointerRainbow = "PointerRainbowParticles"
+        case snowfall = "SnowfallParticles"
         case warp = "WarpParticles"
         case warp4 = "Warp4Particles"
     }
@@ -94,9 +98,48 @@ class ParticleEngine: SKNode {
             SKAction.fadeOut(withDuration: fadeDuration),
             SKAction.removeFromParent()
         ]))
+        
+        // FIXME: - Testing for Marlin Magic
+        if type == .magicLight {
+            animateCircle(particles: particles, duration: 2)
+        }
+    }
+        
+    // FIXME: - Testing for Marlin Magic
+    private func animateCircle(particles: SKEmitterNode, duration: TimeInterval) {
+        let origin = particles.position
+        let radius: CGFloat = 100
+        let divisions: CGFloat = 8
+
+        particles.position = CGPoint(x: origin.x + radius * cos(0), y: origin.y + radius * sin(0))
+        
+        func animateArc(angle: CGFloat) -> SKAction {
+            let endPoint = CGPoint(x: origin.x + radius * cos(angle), y: origin.y + radius * sin(angle))
+            
+            return SKAction.move(to: endPoint, duration: duration / (2 * divisions))
+        }
+        
+        particles.run(SKAction.repeatForever(SKAction.sequence([
+            animateArc(angle: 0),
+            animateArc(angle: .pi / divisions),
+            animateArc(angle: 2 * .pi / divisions),
+            animateArc(angle: 3 * .pi / divisions),
+            animateArc(angle: 4 * .pi / divisions),
+            animateArc(angle: 5 * .pi / divisions),
+            animateArc(angle: 6 * .pi / divisions),
+            animateArc(angle: 7 * .pi / divisions),
+            animateArc(angle: 8 * .pi / divisions),
+            animateArc(angle: 9 * .pi / divisions),
+            animateArc(angle: 10 * .pi / divisions),
+            animateArc(angle: 11 * .pi / divisions),
+            animateArc(angle: 12 * .pi / divisions),
+            animateArc(angle: 13 * .pi / divisions),
+            animateArc(angle: 14 * .pi / divisions),
+            animateArc(angle: 15 * .pi / divisions),
+        ])))
     }
     
-    func removeParticles(fromNode node: SKNode) {
+    func removeParticles(fromNode node: SKNode, nameGameboardPosition: K.GameboardPosition? = nil) {
         for particleNode in node.children {
             guard particleNode.name == ParticleEngine.nodeName + getPositionString(nameGameboardPosition) else { continue }
                     
