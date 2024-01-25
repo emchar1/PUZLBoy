@@ -86,6 +86,7 @@
 		EA6DCBEB2B61C26F00D5F707 /* DragonIceLite.sks in Resources */ = {isa = PBXBuildFile; fileRef = EA6DCBEA2B61C26F00D5F707 /* DragonIceLite.sks */; };
 		EA6DCBED2B61CBE900D5F707 /* DragonIceIdle.sks in Resources */ = {isa = PBXBuildFile; fileRef = EA6DCBEC2B61CBE900D5F707 /* DragonIceIdle.sks */; };
 		EA6DCBEF2B61D04400D5F707 /* enemyice.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA6DCBEE2B61D04400D5F707 /* enemyice.mp3 */; };
+		EA6DCBF12B6303F900D5F707 /* FireIceTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA6DCBF02B6303F900D5F707 /* FireIceTheme.swift */; };
 		EA705CDE2A1C5DD40051519B /* PurchasePage.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA705CDD2A1C5DD40051519B /* PurchasePage.swift */; };
 		EA705CE02A1C64760051519B /* buttontap5.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA705CDF2A1C64760051519B /* buttontap5.mp3 */; };
 		EA705CE22A1C69BA0051519B /* PurchaseTapButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA705CE12A1C69BA0051519B /* PurchaseTapButton.swift */; };
@@ -368,6 +369,7 @@
 		EA6DCBEA2B61C26F00D5F707 /* DragonIceLite.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = DragonIceLite.sks; sourceTree = "<group>"; };
 		EA6DCBEC2B61CBE900D5F707 /* DragonIceIdle.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = DragonIceIdle.sks; sourceTree = "<group>"; };
 		EA6DCBEE2B61D04400D5F707 /* enemyice.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = enemyice.mp3; sourceTree = "<group>"; };
+		EA6DCBF02B6303F900D5F707 /* FireIceTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FireIceTheme.swift; sourceTree = "<group>"; };
 		EA705CDD2A1C5DD40051519B /* PurchasePage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchasePage.swift; sourceTree = "<group>"; };
 		EA705CDF2A1C64760051519B /* buttontap5.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = buttontap5.mp3; sourceTree = "<group>"; };
 		EA705CE12A1C69BA0051519B /* PurchaseTapButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseTapButton.swift; sourceTree = "<group>"; };
@@ -684,6 +686,7 @@
 				EAB2DE172AA5119E00172478 /* FlyingDragon.swift */,
 				EA119154290CCA39009D0E3E /* Inventory.swift */,
 				EA11915629121798009D0E3E /* Controls.swift */,
+				EA6DCBF02B6303F900D5F707 /* FireIceTheme.swift */,
 				EA0F84062937D4860031DA76 /* DayTheme.swift */,
 			);
 			path = Models;
@@ -1322,6 +1325,7 @@
 				EA65189228E973D700E535BF /* Level.swift in Sources */,
 				EA12C5502B271EC2006E9813 /* GoldCoinSprite.swift in Sources */,
 				EA826C8F298F485D00F19F81 /* AchievementBigSpender.swift in Sources */,
+				EA6DCBF12B6303F900D5F707 /* FireIceTheme.swift in Sources */,
 				EA7300152B5F74B4005BF98D /* MarlinBlastSprite.swift in Sources */,
 				EA95D1B92952579A0061059C /* AchievementDragonSlayer.swift in Sources */,
 				EAB2DE142AA1AB8F00172478 /* SpeechOverlaySprite.swift in Sources */,

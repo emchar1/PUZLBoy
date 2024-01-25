@@ -134,23 +134,12 @@ struct LevelBuilder {
     } //end buildGameboard()
     
     /**
-     Helper function that adds the terrain, based on if SAND or SNOW is selected.
+     Helper function that adds the terrain panel.
      - parameter levelTypeString: the terrain panel read in from the Excel Import file
      - returns: the LevelType terrain panel
      */
     private static func getTerrain(_ levelTypeString: String) -> LevelType {
-        let levelType = LevelType.getLevelType(from: levelTypeString)
-        
-        if K.SandSnow.isSand {
-            return levelType
-        }
-        else {
-            switch levelType {
-            case .sand:         return .snow
-            case .lava:         return .water
-            default:            return levelType
-            }
-        }
+        return getPanel(levelTypeString)
     }
     
     /**
@@ -159,7 +148,7 @@ struct LevelBuilder {
      - returns: the LevelType overlay panel
      */
     private static func getOverlay(_ levelTypeString: String) -> LevelType {
-        return LevelType.getLevelType(from: levelTypeString)
+        return getPanel(levelTypeString)
     }
     
     /**
