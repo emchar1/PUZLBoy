@@ -13,6 +13,9 @@ class HowToPlayTableView: UITableView, UITableViewDelegate, UITableViewDataSourc
     
     private let sectionTerrain = 0
     private let sectionItems = 1
+    private let rowEnemyFireIce = 4
+    private let rowSandSnow = 6
+    private let rowLavaWater = 7
     
     private var terrainItems: [HowToPlayModel] = [
         HowToPlayModel(image: "start", title: "Start", requiredLevel: 0,
@@ -128,6 +131,9 @@ class HowToPlayTableView: UITableView, UITableViewDelegate, UITableViewDataSourc
         guard let cell = tableView.dequeueReusableCell(withIdentifier: HowToPlayTVCell.reuseID, for: indexPath) as? HowToPlayTVCell else {
             return UITableViewCell()
         }
+
+        //Call this first!
+        updateItemsForFireIce()
         
         var item: HowToPlayModel
         
@@ -154,6 +160,46 @@ class HowToPlayTableView: UITableView, UITableViewDelegate, UITableViewDataSourc
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return HowToPlayTVCell.imageSize + 2 * HowToPlayTVCell.padding
     }
+    
+    
+    // MARK: - Helper Functions
+    
+    ///Updates the tableView entries (terrain and/or overlay) depending on value of FireIceTheme.isFire.
+    private func updateItemsForFireIce() {
+        //SandSnow
+        terrainItems[rowSandSnow] = FireIceTheme.isFire ?
+        HowToPlayModel(
+            image: "sand", title: "Sand", requiredLevel: 351,
+            description: "Once you move off of a sand panel, it'll turn into lava, so retracing your steps is a huge no no."
+        ) :
+        HowToPlayModel(
+            image: "snow", title: "Snow", requiredLevel: 351,
+            description: "Once you move off of a snow panel, it'll melt to water, so backtracking is highly discouraged."
+        )
+        
+        //LavaWater
+        terrainItems[rowLavaWater] = FireIceTheme.isFire ?
+        HowToPlayModel(
+            image: "lava", title: "Lava", requiredLevel: 351,
+            description: "Just like in real life, lava is SUPER hot. Tread here accidentally and it's instant death."
+        ) :
+        HowToPlayModel(
+            image: "water", title: "Water", requiredLevel: 351,
+            description: "PUZL Boy never learned how to swim, sadly. Which means stepping in it will cause him to drown."
+        )
+        
+        //EnemyFireIce
+        overlayItems[rowEnemyFireIce] = FireIceTheme.isFire ?
+        HowToPlayModel(
+            image: "enemy", title: "Dragon", requiredLevel: 51,
+            description: "Like boulders, dragons block your path. Unlike boulders, if you touch a dragon, it'll cost you 1 health. 💖"
+        ) :
+        HowToPlayModel(
+            image: "enemyIce", title: "Ice Dragon", requiredLevel: 51,
+            description: "Like boulders, dragons block your path. Unlike boulders, if you touch a dragon, it'll cost you 1 health. 💖"
+        )
+    }
+    
     
     
 }

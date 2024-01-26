@@ -187,12 +187,12 @@ class GameEngine {
         backgroundSprite.size = K.ScreenDimensions.size
         backgroundSprite.anchorPoint = .zero
         
-        bloodOverlay = SKSpriteNode(color: .red, size: K.ScreenDimensions.size)
+        bloodOverlay = SKSpriteNode(color: FireIceTheme.overlayColor, size: K.ScreenDimensions.size)
         bloodOverlay.anchorPoint = .zero
         bloodOverlay.alpha = bloodOverlayAlpha
         bloodOverlay.zPosition = K.ZPosition.partyForegroundOverlay
         
-        gameboardSprite = GameboardSprite(level: self.level)
+        gameboardSprite = GameboardSprite(level: self.level, fadeIn: !shouldSpawn)
         K.ScreenDimensions.topOfGameboard = GameboardSprite.offsetPosition.y + K.ScreenDimensions.size.width * UIDevice.spriteScale
         playerSprite = PlayerSprite(shouldSpawn: true)
         displaySprite = DisplaySprite(topYPosition: K.ScreenDimensions.topOfGameboard, bottomYPosition: GameboardSprite.offsetPosition.y, margin: 40)
@@ -908,14 +908,27 @@ class GameEngine {
         setPlayerSpritePosition(toLastPanel: level.getLevelType(at: lastPanel), shouldAnimate: true) { [unowned self] in
             if level.getLevelType(at: lastPanel) == .sand {
                 level.setLevelType(at: lastPanel, with: (terrain: LevelType.lava, overlay: LevelType.boundary))
-                gameboardSprite.animateDissolveSand(position: lastPanel)
+                
+                if FireIceTheme.isFire {
+                    gameboardSprite.animateDissolveSand(position: lastPanel)
+                }
+                else {
+                    gameboardSprite.animateMeltSnow(position: lastPanel)
+                }
             }
             
             if level.getLevelType(at: nextPanel) == .lava {
-                Haptics.shared.executeCustomPattern(pattern: .lava)
-
-                // FIXME: - Is this a retain cycle???
-                playerSprite.startLavaEffectAnimation()
+                if FireIceTheme.isFire {
+                    Haptics.shared.executeCustomPattern(pattern: .lava)
+                    
+                    // FIXME: - Is this a retain cycle???
+                    playerSprite.startLavaEffectAnimation()
+                }
+                else {
+                    Haptics.shared.executeCustomPattern(pattern: .water)
+                    
+                    playerSprite.startWaterDrownAnimation(on: gameboardSprite, at: level.player)
+                }
                 
                 ScoringEngine.updateStatusIconsAnimation(
                     icon: .health,
@@ -1080,8 +1093,19 @@ class GameEngine {
                                              hasSword: level.inventory.hasSwords(), 
                                              hasHammer: level.inventory.hasHammers())
             
-            playerSprite.startDeadAnimation { [unowned self] in
-                delegate?.gameIsOver(firstTimeCalled: true)
+            if level.getLevelType(at: level.player) == .lava && !FireIceTheme.isFire {
+                //Water drowning sequence
+                AudioManager.shared.playSound(for: "boydead")
+
+                //1.8 seconds is the time it takes for player dead animation
+                playerSprite.sprite.run(SKAction.wait(forDuration: 1.8)) { [unowned self] in
+                    delegate?.gameIsOver(firstTimeCalled: true)
+                }
+            }
+            else {
+                playerSprite.startDeadAnimation { [unowned self] in
+                    delegate?.gameIsOver(firstTimeCalled: true)
+                }
             }
         }
     }
@@ -1192,18 +1216,7 @@ class GameEngine {
         - completion: completion handler called at the end of the animation
      */
     func fadeGameboard(fadeOut: Bool, completion: (() -> ())?) {
-        gameboardSprite.sprite.alpha = fadeOut ? 1.0 : 0.0
-        
-        gameboardSprite.colorizeGameboard(color: fadeOut ? GameboardSprite.gameboardColor : .black,
-                                          blendFactor: fadeOut ? 0.0 : 1.0,
-                                          animationDuration: 0.0) { [weak gameboardSprite] in
-            gameboardSprite?.sprite.alpha = 1.0
-        }
-        
-        gameboardSprite.colorizeGameboard(color: fadeOut ? .black : GameboardSprite.gameboardColor,
-                                          blendFactor: fadeOut ? 1.0 : 0.0,
-                                          animationDuration: fadeOut ? 1.0 : 0.5,
-                                          completion: completion)
+        gameboardSprite.colorizeGameboard(fadeOut: fadeOut, completion: completion)
     }
     
     func fadeBloodOverlay(shouldFadeOut: Bool, duration: TimeInterval) {

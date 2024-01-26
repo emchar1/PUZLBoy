@@ -54,6 +54,7 @@ class AudioManager {
     
     let titleLogo = "titletheme"
     let overworldTheme = "overworld"
+    let overworldIceTheme = "overworldice"
     let overworldPartyTheme = "overworldparty"
     let grasslandTheme = "overworldgrassland"
     private(set) var currentTheme: String
@@ -99,9 +100,13 @@ class AudioManager {
         addAudioItem("buttontap7", category: .soundFX)
         addAudioItem("chatclose", category: .soundFX)
         addAudioItem("chatopen", category: .soundFX)
+        addAudioItem("chatopenprincess", category: .soundFX) //NEEDS PURCHASE $1
+        addAudioItem("chatopentrainer", category: .soundFX) //NEEDS PURCHASE $1
+        addAudioItem("chatopenvillain", category: .soundFX) //NEEDS PURCHASE $1
         addAudioItem("dooropen", category: .soundFX)
         addAudioItem("enemydeath", category: .soundFX)
         addAudioItem("enemyflame", category: .soundFX)
+        addAudioItem("enemyice", category: .soundFX) //NEEDS PURCHASE $1
         addAudioItem("enemyscratch", category: .soundFX)
         addAudioItem("gemcollect", category: .soundFX)
         addAudioItem("gemcollectparty", category: .soundFX)
@@ -114,8 +119,10 @@ class AudioManager {
         addAudioItem("lavaappear3", category: .soundFX)
         addAudioItem("lavasizzle", category: .soundFX)
         addAudioItem("magicblast", category: .soundFX)
+        addAudioItem("magichorrorimpact", category: .soundFX) //NEEDS PURCHASE $1
         addAudioItem("magicteleport", category: .soundFX)
         addAudioItem("magicwarp", category: .soundFX)
+        addAudioItem("marlinblast", category: .soundFX) //NEEDS PURCHASE $1
         addAudioItem("moveglide", category: .soundFX)
         addAudioItem("movemarsh1", category: .soundFX)
         addAudioItem("movemarsh2", category: .soundFX)
@@ -130,6 +137,9 @@ class AudioManager {
         addAudioItem("movesand1", category: .soundFX)
         addAudioItem("movesand2", category: .soundFX)
         addAudioItem("movesand3", category: .soundFX)
+        addAudioItem("movesnow1", category: .soundFX)
+        addAudioItem("movesnow2", category: .soundFX)
+        addAudioItem("movesnow3", category: .soundFX)
         addAudioItem("movetile1", category: .soundFX)
         addAudioItem("movetile2", category: .soundFX)
         addAudioItem("movetile3", category: .soundFX)
@@ -147,6 +157,10 @@ class AudioManager {
         addAudioItem("swordslash", category: .soundFX)
         addAudioItem("thunderrumble", category: .soundFX)
         addAudioItem("warp", category: .soundFX)
+        addAudioItem("waterappear1", category: .soundFX)
+        addAudioItem("waterappear2", category: .soundFX)
+        addAudioItem("waterappear3", category: .soundFX)
+        addAudioItem("waterdrown", category: .soundFX)
         addAudioItem("winlevel", category: .soundFX)
 
         
@@ -167,7 +181,10 @@ class AudioManager {
         addAudioItem("birdsambience", category: .music, maxVolume: 0.2)
         addAudioItem("continueloop", category: .music)
         addAudioItem("scarymusicbox", category: .music)
+        addAudioItem("magicheartbeatloop1", category: .music) //NEEDS PURCHASE $1
+        addAudioItem("magicheartbeatloop2", category: .music) //NEEDS PURCHASE $1
         addAudioItem("overworld", category: .music)
+        addAudioItem("overworldice", category: .music) //NEEDS PURCHASE $15 - do I like this???
         addAudioItem("overworldparty", category: .music)
         addAudioItem("overworldgrassland", category: .music)
 

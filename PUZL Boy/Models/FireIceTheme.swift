@@ -27,4 +27,8 @@ struct FireIceTheme {
 
     
     // MARK: - Functions
+    
+    static func setOnFire(_ isFire: Bool) {
+        self.isFire = isFire
+    }
 }

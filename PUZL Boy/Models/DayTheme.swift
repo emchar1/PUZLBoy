@@ -54,11 +54,11 @@ struct DayTheme {
     static var spriteColor: UIColor {
         switch currentTheme {
         case .dawn:
-            return .blue
+            return .purple
         case .morning:
             return .clear
         case .afternoon:
-            return .red
+            return .orange
         case .night:
             return .blue
         }

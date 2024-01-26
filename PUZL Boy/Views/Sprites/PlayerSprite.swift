@@ -79,6 +79,9 @@ class PlayerSprite {
         AudioManager.shared.stopSound(for: "movesand1", fadeDuration: fadeDuration)
         AudioManager.shared.stopSound(for: "movesand2", fadeDuration: fadeDuration)
         AudioManager.shared.stopSound(for: "movesand3", fadeDuration: fadeDuration)
+        AudioManager.shared.stopSound(for: "movesnow1", fadeDuration: fadeDuration)
+        AudioManager.shared.stopSound(for: "movesnow2", fadeDuration: fadeDuration)
+        AudioManager.shared.stopSound(for: "movesnow3", fadeDuration: fadeDuration)
         AudioManager.shared.stopSound(for: "movetile1", fadeDuration: fadeDuration)
         AudioManager.shared.stopSound(for: "movetile2", fadeDuration: fadeDuration)
         AudioManager.shared.stopSound(for: "movetile3", fadeDuration: fadeDuration)
@@ -120,7 +123,7 @@ class PlayerSprite {
             case .marsh:
                 AudioManager.shared.playSound(for: "movemarsh\(Int.random(in: 1...3))")
             case .sand:
-                AudioManager.shared.playSound(for: "movesand\(Int.random(in: 1...3))")
+                AudioManager.shared.playSound(for: FireIceTheme.soundMovementSandSnow)
             case .party:
                 AudioManager.shared.playSound(for: "movetile\(Int.random(in: 1...3))")
             case .walk:
@@ -170,6 +173,24 @@ class PlayerSprite {
         AudioManager.shared.playSound(for: "lavasizzle")
 
         player.sprite.run(lavaEffect)
+    }
+    
+    func startWaterDrownAnimation(on gameboard: GameboardSprite, at panel: K.GameboardPosition) {
+        AudioManager.shared.playSound(for: "waterdrown")
+        
+        animateExplosion(on: gameboard, at: panel, scale: 1, textureName: "waterSplash", textureFrames: 6) { }
+        
+        player.sprite.run(SKAction.group([
+            SKAction.repeatForever(SKAction.sequence([
+                SKAction.moveBy(x: -4, y: 0, duration: 0.1),
+                SKAction.moveBy(x: 4, y: 0, duration: 0.1)
+            ])),
+            SKAction.sequence([
+                SKAction.moveBy(x: 0, y: -player.scale * player.sprite.size.height / 2, duration: 1.0),
+                SKAction.fadeOut(withDuration: 0.5)
+
+            ])
+        ]))
     }
     
     func startWarpAnimation(shouldReverse: Bool, stopAnimating: Bool, completion: @escaping (() -> Void)) {
@@ -288,8 +309,8 @@ class PlayerSprite {
 
         attackSprite.run(animation) {
             //Enemy death animation
-            let enemyTopSprite = SKSpriteNode(imageNamed: "enemy (1)")
-            let enemyBottomSprite = SKSpriteNode(imageNamed: "enemy (2)")
+            let enemyTopSprite = SKSpriteNode(imageNamed: FireIceTheme.spriteEnemyExplode + " (1)")
+            let enemyBottomSprite = SKSpriteNode(imageNamed: FireIceTheme.spriteEnemyExplode + " (2)")
             let enemyScale = gameboard.panelSize / enemyTopSprite.size.width
 
             enemyTopSprite.position = gameboard.getLocation(at: panel)
@@ -397,7 +418,7 @@ class PlayerSprite {
         let speedMultiplier: TimeInterval = PartyModeSprite.shared.speedMultiplier
         let newDirection = isAttacked ? direction.getOpposite : direction
         let knockback: CGFloat = 10
-        let blinkColor: UIColor = .systemRed
+        let blinkColor: UIColor = FireIceTheme.overlaySystemColor
         
         isAnimating = true
 
@@ -502,7 +523,7 @@ class PlayerSprite {
             gameboard.rotateEnemy(at: dragonPosition, directionType: rotationDirectionType, duration: 0.2 * speedMultiplier) { [unowned self] in
                 Haptics.shared.executeCustomPattern(pattern: .enemy)
                 AudioManager.shared.playSound(for: "boypain\(Int.random(in: 1...4))")
-                AudioManager.shared.playSound(for: "enemyflame")
+                AudioManager.shared.playSound(for: FireIceTheme.soundEnemyAttack)
                 
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                     gameboard.rotateEnemy(at: dragonPosition, directionType: antiRotationDirection, duration: 0.2 * speedMultiplier) { [unowned self] in
@@ -512,7 +533,7 @@ class PlayerSprite {
                 }
             }
             
-            ParticleEngine.shared.animateParticles(type: .dragonFireLite,
+            ParticleEngine.shared.animateParticles(type: FireIceTheme.particleTypeDragonLiteAttack,
                                                    toNode: gameboard.sprite,
                                                    position: gameboard.getLocation(at: dragonPosition) + flameOffset,
                                                    scale: 3 / CGFloat(gameboard.panelCount),

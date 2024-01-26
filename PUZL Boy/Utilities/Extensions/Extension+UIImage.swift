@@ -22,4 +22,5 @@ extension UIImage {
     static let gradientTextureSkyAfternoon = UIImage(named: "gradientSkyAfternoon") ?? UIImage()
     static let gradientTextureSkyNight = UIImage(named: "gradientSkyNight") ?? UIImage()
     static let gradientTextureSkyBlood = UIImage(named: "gradientSkyBlood") ?? UIImage()
+    static let gradientTextureSkyIce = UIImage(named: "gradientSkyIce") ?? UIImage()
 }

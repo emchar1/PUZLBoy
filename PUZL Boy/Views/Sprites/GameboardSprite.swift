@@ -16,6 +16,8 @@ class GameboardSprite {
     static let delimiter = ","
     static let overlayTag = "-O"
     static let padding: CGFloat = 12
+    static var dayThemeSpriteColor: UIColor { DayTheme.spriteColor }
+    static var dayThemeSpriteShade: CGFloat { DayTheme.spriteShade }
     static var offsetPosition: CGPoint {
         let screen = K.ScreenDimensions.self
         let displayHeaderHeight: CGFloat = 283
@@ -48,12 +50,15 @@ class GameboardSprite {
     
     // MARK: - Initialization
     
-    init(level: Level) {
+    init(level: Level, fadeIn: Bool) {
         panelCount = level.gameboard.count
         panelSize = K.ScreenDimensions.size.width / CGFloat(panelCount)
         panels = Array(repeating: Array(repeating: SKSpriteNode(), count: panelCount), count: panelCount)
         
-        sprite = SKSpriteNode(color: GameboardSprite.gameboardColor, size: CGSize.zero + CGFloat(panelCount) * panelSize + GameboardSprite.padding)
+        sprite = SKSpriteNode()
+        sprite.color = fadeIn ? .black : GameboardSprite.gameboardColor
+        sprite.colorBlendFactor = fadeIn ? 1 : 0
+        sprite.size = CGSize.zero + CGFloat(panelCount) * panelSize + GameboardSprite.padding
         sprite.anchorPoint = .zero
         sprite.position = GameboardSprite.offsetPosition
         sprite.zPosition = K.ZPosition.gameboard
@@ -67,7 +72,7 @@ class GameboardSprite {
                     endPanel = (row: row, col: col)
                 }
                 
-                updatePanels(at: (row: row, col: col), with: levelType)
+                updatePanels(at: (row: row, col: col), with: levelType, fadeIn: fadeIn)
             }
         }
     }
@@ -116,19 +121,35 @@ class GameboardSprite {
         return (row: row, col: col)
     }
 
-    func updatePanels(at position: K.GameboardPosition, with tile: K.GameboardPanel) {
-        panels[position.row][position.col] = SKSpriteNode(imageNamed: tile.terrain.description)
-        panels[position.row][position.col].scale(to: scaleSize)
-        panels[position.row][position.col].position = getSpritePosition(at: position) + GameboardSprite.padding / 2
-        panels[position.row][position.col].anchorPoint = .zero
-        panels[position.row][position.col].zPosition = K.ZPosition.terrain
-        panels[position.row][position.col].name = GameboardSprite.getNodeName(row: position.row, col: position.col)
+    func updatePanels(at position: K.GameboardPosition, with tile: K.GameboardPanel, fadeIn: Bool = false) {
+        
+        //Setup Terrain Panel
+        let terrainPanel: SKSpriteNode
+
+        if !FireIceTheme.isFire {
+            switch tile.terrain {
+            case .sand:         terrainPanel = SKSpriteNode(imageNamed: "snow")
+            case .lava:         terrainPanel = SKSpriteNode(imageNamed: "water")
+            default:            terrainPanel = SKSpriteNode(imageNamed: tile.terrain.description)
+            }
+        }
+        else {
+            terrainPanel = SKSpriteNode(imageNamed: tile.terrain.description)
+        }
+        
+        terrainPanel.scale(to: scaleSize)
+        terrainPanel.position = getSpritePosition(at: position) + GameboardSprite.padding / 2
+        terrainPanel.anchorPoint = .zero
+        terrainPanel.color = fadeIn ? .black : GameboardSprite.dayThemeSpriteColor
+        terrainPanel.colorBlendFactor = fadeIn ? 1 : GameboardSprite.dayThemeSpriteShade
+        terrainPanel.zPosition = K.ZPosition.terrain
+        terrainPanel.name = GameboardSprite.getNodeName(row: position.row, col: position.col)
         
         if tile.terrain == .partytile {
             let randomHue = UIColor(hue: CGFloat.random(in: 0.0...1.0), saturation: 1.0, brightness: 1.0, alpha: 1.0)
             let randomDuration = TimeInterval.random(in: 0.75...1.0)
 
-            panels[position.row][position.col].run(SKAction.repeatForever(SKAction.sequence([
+            terrainPanel.run(SKAction.repeatForever(SKAction.sequence([
                 SKAction.colorize(with: GameboardSprite.gameboardColor, colorBlendFactor: 0.0, duration: randomDuration),
                 SKAction.colorize(with: randomHue, colorBlendFactor: 1.0, duration: randomDuration)
             ])))
@@ -140,20 +161,42 @@ class GameboardSprite {
                                                    scale: 3 / CGFloat(panelCount),
                                                    duration: 0)
         }
-        else if tile.terrain == .lava {
+        else if tile.terrain == .lava && FireIceTheme.isFire {
             ParticleEngine.shared.animateParticles(type: .lavaSizzle,
                                                    toNode: sprite,
                                                    position: getLocation(at: position),
                                                    scale: 3 / CGFloat(panelCount),
                                                    duration: 0)
         }
+        else if tile.terrain == .sand && !FireIceTheme.isFire {
+            ParticleEngine.shared.animateParticles(type: .snowfall,
+                                                   toNode: sprite,
+                                                   position: getLocation(at: position),
+                                                   scale: 3 / CGFloat(panelCount),
+                                                   nameGameboardPosition: position,
+                                                   duration: 0)
+        }
 
+        panels[position.row][position.col] = terrainPanel
         sprite.addChild(panels[position.row][position.col])
         
+        
         if tile.overlay != .boundary {
-            let overlayPanel = SKSpriteNode(imageNamed: tile.overlay.description)
+            
+            //Setup Overlay Panel
+            let overlayPanel: SKSpriteNode
+
+            if !FireIceTheme.isFire && tile.overlay == .enemy {
+                overlayPanel = SKSpriteNode(imageNamed: "enemyIce")
+            }
+            else {
+                overlayPanel = SKSpriteNode(imageNamed: tile.overlay.description)
+            }
+            
             overlayPanel.scale(to: scaleSize)
             overlayPanel.position = getSpritePosition(at: position) + GameboardSprite.padding / 2 + scaleSize.width / 2
+            overlayPanel.color = fadeIn ? .black : GameboardSprite.dayThemeSpriteColor
+            overlayPanel.colorBlendFactor = fadeIn ? 1 : GameboardSprite.dayThemeSpriteShade
             overlayPanel.zPosition = K.ZPosition.overlay
             overlayPanel.name = GameboardSprite.getNodeName(row: position.row, col: position.col, includeOverlayTag: true)
             
@@ -456,30 +499,40 @@ class GameboardSprite {
     
     // MARK: - Panel Highlight/Colorization Functions
     
-    func colorizeGameboard(color: UIColor, blendFactor: CGFloat, animationDuration: TimeInterval, completion: (() -> Void)?) {
-        let colorizeAction = SKAction.colorize(with: color, colorBlendFactor: blendFactor, duration: animationDuration)
-
+    func colorizeGameboard(fadeOut: Bool, completion: (() -> Void)?) {
+        let colorizeSpriteAction = SKAction.colorize(with:              fadeOut ? .black : GameboardSprite.gameboardColor,
+                                                     colorBlendFactor:  fadeOut ? 1.0 : 0.0,
+                                                     duration:          fadeOut ? 1.0 : 0.5)
+        
+        let colorizePanelAction = SKAction.colorize(with:               fadeOut ? .black : GameboardSprite.dayThemeSpriteColor,
+                                                    colorBlendFactor:   fadeOut ? 1.0 : GameboardSprite.dayThemeSpriteShade,
+                                                    duration:           fadeOut ? 1.0 : 0.5)
+        
+        //Update Terrain Panels
         for (row, panelRows) in panels.enumerated() {
             for (col, _) in panelRows.enumerated() {
-                panels[row][col].run(colorizeAction)
+                panels[row][col].run(colorizePanelAction)
                 
                 //if lavaPanel exists...
                 for lavaPanel in panels[row][col].children {
-                    lavaPanel.run(colorizeAction)
+                    lavaPanel.run(colorizePanelAction)
                 }
             }
         }
         
-        if completion == nil {
-            sprite.run(colorizeAction)
-        }
-        else {
-            sprite.run(colorizeAction, completion: completion!)
+        //Update Overlay Panels
+        for child in sprite.children {
+            //3/4/23 I removed the completion handler call in this for loop because it was causing writes to Firestore to happen too many times. Would've been an accounting nightmare!
+            guard let overlayNode = child as? SKSpriteNode,
+                  let name = overlayNode.name,
+                  name.contains(GameboardSprite.overlayTag) else { continue }
+            
+            overlayNode.run(colorizePanelAction)
         }
         
-        for overlayObject in sprite.children {
-            //3/4/23 I removed the completion handler call in this for loop because it was causing writes to Firestore to happen too many times. Would've been an accounting nightmare!
-            overlayObject.run(colorizeAction)
+        //Call Completion Handler
+        sprite.run(colorizeSpriteAction) {
+            completion?()
         }
     }
 
@@ -629,10 +682,14 @@ class GameboardSprite {
     
     func animateDissolveSand(position: K.GameboardPosition) {
         let sandNode = SKSpriteNode(imageNamed: "sand")
+        sandNode.color = GameboardSprite.dayThemeSpriteColor
+        sandNode.colorBlendFactor = GameboardSprite.dayThemeSpriteShade
         sandNode.anchorPoint = .zero
         sandNode.zPosition = 10
         
         let lavaNode = SKSpriteNode(imageNamed: "lava")
+        lavaNode.color = GameboardSprite.dayThemeSpriteColor
+        lavaNode.colorBlendFactor = GameboardSprite.dayThemeSpriteShade
         lavaNode.anchorPoint = .zero
         lavaNode.zPosition = 5
         lavaNode.addChild(sandNode)
@@ -663,6 +720,43 @@ class GameboardSprite {
                                                duration: 3)
     }
     
+    func animateMeltSnow(position: K.GameboardPosition) {
+        let snowNode = SKSpriteNode(imageNamed: "snow")
+        snowNode.color = GameboardSprite.dayThemeSpriteColor
+        snowNode.colorBlendFactor = GameboardSprite.dayThemeSpriteShade
+        snowNode.anchorPoint = .zero
+        snowNode.zPosition = 10
+        
+        let waterNode = SKSpriteNode(imageNamed: "water")
+        waterNode.color = GameboardSprite.dayThemeSpriteColor
+        waterNode.colorBlendFactor = GameboardSprite.dayThemeSpriteShade
+        waterNode.anchorPoint = .zero
+        waterNode.zPosition = 5
+        waterNode.addChild(snowNode)
+
+        updatePanels(at: position, with: (terrain: LevelType.water, overlay: LevelType.boundary))
+        panels[position.row][position.col].addChild(waterNode)
+
+        let waterappear = "waterappear\(Int.random(in: 1...3))"
+        AudioManager.shared.playSound(for: waterappear)
+        AudioManager.shared.stopSound(for: waterappear, fadeDuration: 2)
+        Haptics.shared.executeCustomPattern(pattern: .snow)
+        
+        //Animation Stuff
+        let repeatCount = 6
+        let snowAnimationDuration: TimeInterval = 1.0
+        let snowSequence = SKAction.sequence([
+            SKAction.fadeAlpha(to: 0, duration: snowAnimationDuration / TimeInterval(repeatCount * 2)),
+            SKAction.fadeAlpha(to: 1, duration: snowAnimationDuration / TimeInterval(repeatCount * 2))
+        ])
+        
+        panels[position.row][position.col].run(SKAction.repeat(snowSequence, count: repeatCount))
+        snowNode.run(SKAction.fadeOut(withDuration: snowAnimationDuration))
+        waterNode.run(SKAction.fadeIn(withDuration: snowAnimationDuration))
+        
+        ParticleEngine.shared.removeParticles(fromNode: sprite, nameGameboardPosition: position)
+    }
+    
     func animateBreatheFireIdle(position: K.GameboardPosition) {
         guard let dragonNode = sprite.childNode(withName: GameboardSprite.getNodeName(row: position.row, col: position.col, includeOverlayTag: true)) else { return }
         
@@ -672,7 +766,7 @@ class GameboardSprite {
         dragonNode.run(SKAction.repeatForever(SKAction.sequence([
             SKAction.wait(forDuration: wait1),
             SKAction.run {
-                ParticleEngine.shared.animateParticles(type: .dragonFireIdle,
+                ParticleEngine.shared.animateParticles(type: FireIceTheme.particleTypeDragonFireIdle,
                                                        toNode: dragonNode,
                                                        position: CGPoint(x: 0, y: 35),
                                                        scale: UIDevice.isiPad ? 0.25 : 0.5,
