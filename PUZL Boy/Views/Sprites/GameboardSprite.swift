@@ -381,7 +381,7 @@ class GameboardSprite {
             sprite.run(SKAction.sequence([
                 SKAction.wait(forDuration: 3),
                 SKAction.run { [unowned self] in
-                    // FIXME: - Does this create a retain cycle?
+                    // FIXME: - Is this a retain cycle?
                     despawnItem(at: position, completion: completion)
                 }
             ]))

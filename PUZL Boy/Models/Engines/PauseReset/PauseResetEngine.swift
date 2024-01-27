@@ -512,7 +512,7 @@ class PauseResetEngine {
                     },
                     SKAction.scale(to: settingsScale, duration: 0.25),
                     SKAction.run { [unowned self] in
-                        // FIXME: - Does this create a retain cycle???
+                        // FIXME: - Is this a retain cycle???
                         backgroundSprite.showShadow(animationDuration: 0.1, completion: nil)
                     }
                 ])
