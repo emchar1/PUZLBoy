@@ -13,7 +13,7 @@ class ParallaxSprite: SKNode {
     
     typealias SpriteXPositions = (first: CGFloat, second: CGFloat)
 
-    private var parallaxObject: ParallaxObject
+    private(set) var parallaxObject: ParallaxObject
     private var sprites: [SKSpriteNode] = []
     private var xOffsets: SpriteXPositions?
     

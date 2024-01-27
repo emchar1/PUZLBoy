@@ -132,6 +132,9 @@ class ParallaxManager: SKNode {
         }
     }
     
+    
+    // MARK: - xPositions Functions
+    
     func pollxOffsetsArray() -> [ParallaxSprite.SpriteXPositions] {
         var offsetsArray: [ParallaxSprite.SpriteXPositions] = []
         
@@ -148,5 +151,15 @@ class ParallaxManager: SKNode {
         for (i, sprite) in parallaxSprites.enumerated() {
             sprite.setxPositions(xOffsets: xOffsetsArray[i])
         }
+    }
+    
+    // BUGFIX# 240125E01 - Reset sprite xPositions so tree doesn't get in the way when dragon is flying across, for example.
+    ///Resets the requested sprite's' xPositions to the leftmost side.
+    func resetxPositions(index: Int) {
+        guard index < parallaxSprites.count else { return }
+        
+        let xOffsetsReset: ParallaxSprite.SpriteXPositions = (0, parallaxSprites[index].parallaxObject.sizeScaled)
+
+        parallaxSprites[index].setxPositions(xOffsets: xOffsetsReset)
     }
 }

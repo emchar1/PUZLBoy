@@ -270,7 +270,7 @@ class CutsceneIntro: SKScene {
                         ]))
                     },
                     SpeechBubbleItem(profile: speechPrincess, chat: "Wow.|| You sure ask a lot of questions!||||||||/But if you must know,| the reason I'm here is because, well.. first of all, Oh—I'm a princess!|||/And, but... oh! Not here though. I'm a princess in a very very far away place.|||/You see, I'm not from this place. But I am from, well—blah blah blah...||||/Blah blah blah, blah blah blah DRAGONS blah, blah blah, blah blah blah, blah.||||||||/VAELORIA blah, blah.| BLAH blah blah blah, blahhhhh blah.| Blah. Blah. Blah. M|A|G|I|C!!||||||||/And then. And THEN!|| blah blah blah,| blah blah blah.| Blah, blah, blah|| .|.|.|A|G|E| O|F| R|U|I|N|.||||||||||||") { [unowned self] in
-                        wideShot()
+                        wideShot(shouldResetForeground: true)
                         
                         dimOverlayNode.run(SKAction.fadeOut(withDuration: 1))
                                                 
@@ -542,7 +542,7 @@ class CutsceneIntro: SKScene {
         speechPrincess.position = CGPoint(x: screenSize.width - 300, y: screenSize.height) / 2
     }
     
-    private func wideShot() {
+    private func wideShot(shouldResetForeground: Bool = false) {
         princess.sprite.position = princessPositionFinal
         princess.sprite.setScale(playerScale * 0.75)
         princess.sprite.xScale = -playerScale * 0.75
@@ -553,6 +553,10 @@ class CutsceneIntro: SKScene {
         parallaxManager.backgroundSprite.setScale(1)
         parallaxManager.backgroundSprite.position = .zero
         
+        if shouldResetForeground {
+            parallaxManager.resetxPositions(index: 0)
+        }
+            
         speechPrincess.position = princessPositionFinal + CGPoint(x: -200, y: 400)
         speechHero.position = CGPoint(x: heroPositionFinal.x + speechHero.bubbleDimensions.width / 2, y: heroPositionInitial.y + 400)
     }
