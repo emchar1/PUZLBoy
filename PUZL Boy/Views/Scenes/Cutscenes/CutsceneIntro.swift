@@ -44,6 +44,7 @@ class CutsceneIntro: SKScene {
     private var letterbox: LetterboxSprite!
     
     //Misc.
+    private var disableTaps: Bool = false
     private var completion: (() -> Void)?
 
     //Funny Quotes
@@ -175,6 +176,7 @@ class CutsceneIntro: SKScene {
     // MARK: - Touch Functions
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        guard !disableTaps else { return }
         guard let location = touches.first?.location(in: self) else { return }
         
         skipIntroSprite.touchesBegan(touches, with: event)
@@ -182,6 +184,8 @@ class CutsceneIntro: SKScene {
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        guard !disableTaps else { return }
+        
         skipIntroSprite.touchesEnded(touches, with: event)
     }
     
@@ -346,6 +350,7 @@ class CutsceneIntro: SKScene {
                                 
                                 midShotPrincessDragon()
                                 
+                                AudioManager.shared.playSound(for: "enemyroar")
                                 AudioManager.shared.playSound(for: "enemyscratch")
                                 Haptics.shared.executeCustomPattern(pattern: .enemy)
                                 ParticleEngine.shared.animateParticles(type: FireIceTheme.particleTypeDragonFire,
@@ -447,6 +452,7 @@ class CutsceneIntro: SKScene {
                     AudioManager.shared.stopSound(for: "ageofruin", fadeDuration: 4)
                     UserDefaults.standard.set(true, forKey: K.UserDefaults.shouldSkipIntro)
                     tapPointerEngine = nil
+                    disableTaps = true
 
                     fadeTransitionNode.run(SKAction.sequence([
                         SKAction.fadeIn(withDuration: 2),
@@ -566,7 +572,7 @@ class CutsceneIntro: SKScene {
 
 extension CutsceneIntro: SkipIntroSpriteDelegate {
     func buttonWasTapped() {
-        let fadeDuration: TimeInterval = 1.0
+        let fadeDuration: TimeInterval = 2.0
 
         //MUST stop all sounds if rage quitting early!
         AudioManager.shared.stopSound(for: "birdsambience", fadeDuration: fadeDuration)
@@ -579,9 +585,11 @@ extension CutsceneIntro: SkipIntroSpriteDelegate {
         ButtonTap.shared.tap(type: .buttontap1)
         UserDefaults.standard.set(true, forKey: K.UserDefaults.shouldSkipIntro)
         tapPointerEngine = nil
+        disableTaps = true
 
         fadeTransitionNode.run(SKAction.sequence([
             SKAction.fadeIn(withDuration: fadeDuration),
+            SKAction.wait(forDuration: 1),
             SKAction.removeFromParent()
         ])) { [unowned self] in
             self.completion?()

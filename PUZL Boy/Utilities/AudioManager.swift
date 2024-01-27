@@ -107,6 +107,7 @@ class AudioManager {
         addAudioItem("enemydeath", category: .soundFX)
         addAudioItem("enemyflame", category: .soundFX)
         addAudioItem("enemyice", category: .soundFX) //NEEDS PURCHASE $1
+        addAudioItem("enemyroar", category: .soundFX) //NEEDS PURCHASE $1
         addAudioItem("enemyscratch", category: .soundFX)
         addAudioItem("gemcollect", category: .soundFX)
         addAudioItem("gemcollectparty", category: .soundFX)
