@@ -87,7 +87,7 @@ class CutsceneIntro: SKScene {
         skipIntroSprite.zPosition = K.ZPosition.speechBubble
         skipIntroSprite.delegate = self
 
-        dragonSprite = SKSpriteNode(imageNamed: FireIceTheme.spriteEnemyLarge)
+        dragonSprite = SKSpriteNode(imageNamed:  FireIceTheme.spriteEnemyLarge)
         dragonSprite.position = CGPoint(x: -dragonSprite.size.width, y: K.ScreenDimensions.size.height + dragonSprite.size.height)
         dragonSprite.zPosition = K.ZPosition.player - 10
         
