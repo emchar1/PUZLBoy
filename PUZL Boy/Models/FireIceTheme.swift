@@ -15,7 +15,7 @@ struct FireIceTheme {
     
     
     // FIXME: - FIRE/ICE TEST
-    static private(set) var isFire: Bool = (DayTheme.currentTheme == .morning || DayTheme.currentTheme == .afternoon) ? true : false
+    static private(set) var isFire: Bool = DayTheme.currentTheme == .morning || DayTheme.currentTheme == .afternoon
     
     
     
@@ -30,6 +30,7 @@ struct FireIceTheme {
     //Sounds
     static var soundMovementSandSnow: String { isFire ? "movesand\(Int.random(in: 1...3))" : "movesnow\(Int.random(in: 1...3))" }
     static var soundEnemyAttack: String { isFire ? "enemyflame" : "enemyice"}
+    static var musicOverworldTheme: String { isFire ? AudioManager.shared.overworldTheme : AudioManager.shared.overworldIceTheme }
     
     //Sprites, Textures & Images
     static var spriteEnemyExplode: String { isFire ? "enemy" : "enemyIce" }

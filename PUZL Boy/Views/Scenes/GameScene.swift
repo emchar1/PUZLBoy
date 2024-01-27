@@ -246,7 +246,7 @@ class GameScene: SKScene {
         
         
         // FIXME: - FIRE/ICE TEST
-        AudioManager.shared.changeTheme(newTheme: FireIceTheme.isFire ? AudioManager.shared.overworldTheme : AudioManager.shared.overworldIceTheme)
+        AudioManager.shared.changeTheme(newTheme: FireIceTheme.musicOverworldTheme)
         
         
         
@@ -441,7 +441,7 @@ class GameScene: SKScene {
 
 
             // FIXME: - FIRE/ICE TEST
-            AudioManager.shared.changeTheme(newTheme: FireIceTheme.isFire ? AudioManager.shared.overworldTheme : AudioManager.shared.overworldIceTheme)
+            AudioManager.shared.changeTheme(newTheme: FireIceTheme.musicOverworldTheme)
 
 
 
@@ -827,7 +827,7 @@ extension GameScene: AdMobManagerDelegate {
 
                 
                 // FIXME: - FIRE/ICE TEST
-                AudioManager.shared.changeTheme(newTheme: FireIceTheme.isFire ? AudioManager.shared.overworldTheme : AudioManager.shared.overworldIceTheme)
+                AudioManager.shared.changeTheme(newTheme: FireIceTheme.musicOverworldTheme)
 
 
 

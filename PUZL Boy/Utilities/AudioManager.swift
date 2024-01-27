@@ -64,7 +64,7 @@ class AudioManager {
     // MARK: - Setup
     
     private init() {
-        currentTheme = overworldTheme
+        currentTheme = FireIceTheme.isFire ? overworldTheme : overworldIceTheme
 
         do {
             //ambient: Your app’s audio plays even while Music app music or other background audio is playing, and is silenced by the phone’s Silent switch and screen locking.

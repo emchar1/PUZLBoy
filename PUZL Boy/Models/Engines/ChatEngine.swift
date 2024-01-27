@@ -464,7 +464,7 @@ extension ChatEngine {
         dialoguePlayed[PauseResetEngine.hintButtonUnlock] = false //Level: 140
 
         //Princess Capture Dialogue
-        dialoguePlayed[157] = false //(3, 2)
+        dialoguePlayed[208] = false //(3, 2)
     }
     
     /**
@@ -490,20 +490,20 @@ extension ChatEngine {
                 ChatItem(profile: .blankvillain, chat: "\n\n...turn back now, before it's too late..."),
                 ChatItem(profile: .trainer, imgPos: .left, chat: "Who are you!"),
                 ChatItem(profile: .blankvillain, chat: "\n\n...the question is, where are we?..."),
-                ChatItem(profile: .trainer, imgPos: .left, chat: "We are in the Dark Realm where evil cannot reach. What business do you have here?!"),
+                ChatItem(profile: .trainer, imgPos: .left, chat: "We are in the DARK REALM where evil cannot reach. What business do you have here?!"),
                 ChatItem(profile: .blankvillain, chat: "\n\n...all will be revealed soon...") { [unowned self] in
                     superScene?.addChild(marlinBlast)
                     marlinBlast.animateBlast(playSound: true)
                 },
                 ChatItem(profile: .trainer, imgPos: .left, chat: "⚡️REVEAL YOURSELF!!!⚡️") {
                     AudioManager.shared.playSound(for: "littlegirllaugh")
-                    AudioManager.shared.stopSound(for: "littlegirllaugh", fadeDuration: 2)
                 },
                 ChatItem(profile: .blankvillain, chat: "\n\n...heh heh heh heh...")
             ]) { [unowned self] in
-                AudioManager.shared.stopSound(for: "magicheartbeatloop1", fadeDuration: 3)
-                
-                chatBackgroundSprite.run(SKAction.wait(forDuration: 1)) { [unowned self] in
+                AudioManager.shared.stopSound(for: "magicheartbeatloop1", fadeDuration: 5)
+                AudioManager.shared.stopSound(for: "littlegirllaugh", fadeDuration: 5)
+
+                chatBackgroundSprite.run(SKAction.wait(forDuration: 3)) { [unowned self] in
                     marlinBlast.removeFromParent()
                     
                     handleDialogueCompletion(level: level, completion: completion)
@@ -513,18 +513,19 @@ extension ChatEngine {
             AudioManager.shared.playSound(for: "magicheartbeatloop1", fadeIn: 3)
             
             sendChatArray(items: [
-                ChatItem(profile: .blankvillain, chat: "\n\n...marlin..."),
-                ChatItem(profile: .trainer, imgPos: .left, chat: "Gah, would you stop doing that!! It's freaky!"),
-                ChatItem(profile: .blankvillain, chat: "\n\n...do not follow. do not proceed..."),
+                ChatItem(profile: .blankvillain, chat: "\n\n...Marlin..."),
+                ChatItem(profile: .trainer, imgPos: .left, chat: "Geez, would you stop doing that!! It's freaky!"),
+                ChatItem(profile: .blankvillain, chat: "\n\n...do not follow. Do not proceed..."),
                 ChatItem(profile: .trainer, imgPos: .left, chat: "Do not pass go, do not collect... blah, blah, blah. Where is the princess!!"),
-                ChatItem(profile: .blankvillain, chat: "\n\n...she is here now..."),
+                ChatItem(profile: .blankvillain, chat: "\n\n...she is home now..."),
                 ChatItem(profile: .trainer, imgPos: .left, chat: "Where is she?!! Is she unharmed??"),
                 ChatItem(profile: .blankvillain, chat: "\n\n...see for yourself...") {
                     AudioManager.shared.playSound(for: "littlegirllaugh")
                     AudioManager.shared.stopSound(for: "littlegirllaugh", fadeDuration: 2)
                 },
                 ChatItem(profile: .blankprincess, chat: "\n\nHELP MEEE! IT'S SO DARK OVER HERE!!!"),
-                ChatItem(profile: .trainer, imgPos: .left, chat: "Stop with the games! Now tell me exactly who you are—") { [unowned self] in
+                ChatItem(profile: .blankvillain, chat: "\n\n...see, she's perfectly fine..."),
+                ChatItem(profile: .trainer, imgPos: .left, chat: "Stop with the games and show me your—") { [unowned self] in
                     superScene?.addChild(marlinBlast)
                     superScene?.addChild(magmoorScary)
 
@@ -534,13 +535,13 @@ extension ChatEngine {
                     AudioManager.shared.stopSound(for: "magicheartbeatloop1")
                     AudioManager.shared.playSound(for: "magicheartbeatloop2")
                 },
-                ChatItem(profile: .trainer, imgPos: .left, chat: "⚡️MAGIC!!!⚡️"),
-                ChatItem(profile: .villain, chat: "be seeing ya soon."),
+                ChatItem(profile: .trainer, imgPos: .left, chat: "⚡️FACE!!!⚡️"),
+                ChatItem(profile: .villain, chat: "MYSTERIOUS FIGURE: I'll be seeing ya shortly."),
                 ChatItem(profile: .trainer, imgPos: .left, chat: "............no. It can't be.")
             ]) { [unowned self] in
-                AudioManager.shared.stopSound(for: "magicheartbeatloop2", fadeDuration: 3)
+                AudioManager.shared.stopSound(for: "magicheartbeatloop2", fadeDuration: 5)
                 
-                chatBackgroundSprite.run(SKAction.wait(forDuration: 1)) { [unowned self] in
+                chatBackgroundSprite.run(SKAction.wait(forDuration: 3)) { [unowned self] in
                     marlinBlast.removeFromParent()
                     magmoorScary.removeFromParent()
                     
@@ -554,23 +555,23 @@ extension ChatEngine {
             superScene?.addChild(magmoorScary)
 
             sendChatArray(items: [
-                ChatItem(profile: .villain, chat: "MYSTERIOUS FIGURE: you'll never find her. you can keep trying, but it will all be in vain. give up now...") { [unowned self] in
+                ChatItem(profile: .villain, chat: "MYSTERIOUS FIGURE: You'll never find her. You can keep trying, but it will all be in vain. Give up now...") { [unowned self] in
                     magmoorScary.slowReveal(alpha: 0.1)
                 },
                 ChatItem(profile: .trainer, imgPos: .left, chat: "YOU!!! I should have known! The whole time I'm thinking, \"No way he came crawling back into my life.\" And here you are...") { [unowned self] in
                     magmoorScary.slowReveal(alpha: 0.2)
                 },
-                ChatItem(profile: .villain, chat: "surprised much? you need me. you're the yin to my yang. we're bounded by fate, as the priestess machinegunkelly revealed during the trial of mages.") { [unowned self] in
+                ChatItem(profile: .villain, chat: "Surprised much? You need me. You're the yin to my yang. We're bounded by fate, as the Priestess Machinegunkelly revealed during the Trial of Mages.") { [unowned self] in
                     magmoorScary.slowReveal(alpha: 0.3)
                 },
-                ChatItem(profile: .trainer, imgPos: .left, chat: "That was over 500 years ago. Give up the child and leave this world!!") { [unowned self] in
+                ChatItem(profile: .trainer, imgPos: .left, chat: "That was over 500 years ago. Give us the child and leave this world!!") { [unowned self] in
                     magmoorScary.slowReveal(alpha: 0.4)
                 },
-                ChatItem(profile: .villain, chat: "we would have made a great duo: the strongest mystics in all the realms. but you chose a different path ..............why did you leave me?") { [unowned self] in
+                ChatItem(profile: .villain, chat: "We would have made a great duo: the strongest Mystics in all the realms. But you chose a different path ..............why did you leave me?") { [unowned self] in
                     magmoorScary.slowReveal(alpha: 0.5)
                 },
                 ChatItem(profile: .trainer, imgPos: .left, chat: "..............I did what I had to."),
-                ChatItem(profile: .villain, chat: "your loss.. such a shame.. you'll soon regret it.....")
+                ChatItem(profile: .villain, chat: "Your loss.. such a shame.. you'll soon regret it.....")
             ]) { [unowned self] in
                 AudioManager.shared.stopSound(for: "scarymusicbox", fadeDuration: 5)
                 AudioManager.shared.stopSound(for: "magicheartbeatloop1", fadeDuration: 5)
@@ -752,7 +753,7 @@ extension ChatEngine {
             }
         case PauseResetEngine.resetButtonUnlock: //Level: 100
             sendChatArray(items: [
-                ChatItem(profile: .trainer, chat: "Congrats! You made it to level \(PauseResetEngine.resetButtonUnlock). There's a bonus at the end of every 50 levels. Beat this and you're one step closer to indescribable fun!!! 💃🏾🪩🕺🏻"),
+                ChatItem(profile: .trainer, chat: "Congrats! You made it to level \(PauseResetEngine.resetButtonUnlock). There's a little surprise waiting for you at the end. Beat this and you're one step closer to indescribable fun!!! 💃🏾🪩🕺🏻"),
                 ChatItem(profile: .hero, imgPos: .left, chat: "I can hardly contain my excitement.") { [unowned self] in
                     delegate?.illuminateMinorButton(for: .reset)
                 },
@@ -760,7 +761,7 @@ extension ChatEngine {
                 ChatItem(profile: .trainer, chat: "Be warned though, restarting a level will cost you one of your precious lives...") { [unowned self] in
                     delegate?.deilluminateMinorButton(for: .reset)
                 },
-                ChatItem(profile: .hero, imgPos: .left, chat: "It's all good. My mom can buy me more lives if I need it. 😃")
+                ChatItem(profile: .hero, imgPos: .left, chat: "It's all good. I've got my mom's credit card if I need to buy more. 😃")
             ]) { [unowned self] in
                 GameCenterManager.shared.updateProgress(achievement: .avidReader, shouldReportImmediately: true)
 
@@ -793,7 +794,7 @@ extension ChatEngine {
                     delegate?.illuminateMinorButton(for: .hint)
                 },
                 ChatItem(profile: .trainer, chat: "Hilarious. I'm adding another tool to your arsenal. Tap the Hints button at the start of a level to illuminate your next move. Tap again to get the next hint."),
-                ChatItem(profile: .trainer, chat: "Keep tapping for as many hints you need. Hints become disabled once you move past your last hint. The number in red is your available hints."),
+                ChatItem(profile: .trainer, chat: "Keep tapping for as many hints as you need. Hints become disabled once you move past your last hint. The number in red is your available hints."),
                 ChatItem(profile: .trainer, chat: "If you run out of hints, you can buy more in the Shop tab of the Settings menu. Any questions?") { [unowned self] in
                     delegate?.deilluminateMinorButton(for: .hint)
                 },
@@ -801,20 +802,20 @@ extension ChatEngine {
             ]) { [unowned self] in
                 handleDialogueCompletion(level: level, completion: completion)
             }
-        case 157:
+        case 208:
             let spawnPoint: K.GameboardPosition = (0, 2)
             
             delegate?.spawnPrincessCapture(at: spawnPoint) { [unowned self] in
                 sendChatArray(items: [
                     ChatItem(profile: .princess, chat: "PRINCESS OLIVIA: Help meeeee PUZL Boy!!! It's dark and scary over here. And this guy's breath is really stinky!"),
-                    ChatItem(profile: .hero, imgPos: .left, chat: "Gandhi on a gondola! Who the #&*@! are are you?!!"),
+                    ChatItem(profile: .hero, imgPos: .left, chat: "Holy sheep! Who the #&*@! are are you?!!"),
                     ChatItem(profile: .trainer, imgPos: .left, chat: "Magmoor, stop this at once! It's not too late."),
-                    ChatItem(profile: .villain, chat: "MAGMOOR: if you want to see your precious princess again, then let us merge powers."),
+                    ChatItem(profile: .villain, chat: "MAGMOOR: If you want to see your precious princess again, then let us merge powers."),
                     ChatItem(profile: .trainer, imgPos: .left, chat: "No!!! You want absolute power. All Mystics share power evenly; it keeps the realms in balance. You seek to plunge the realms into total darkness."),
-                    ChatItem(profile: .villain, chat: "the world is broken and the realms are already headed towards eternal darkness. it requires cleansing."),
+                    ChatItem(profile: .villain, chat: "The world is broken and the realms are already headed towards eternal darkness. It requires cleansing."),
                     ChatItem(profile: .trainer, imgPos: .left, chat: "You've completely lost it. LET THE PRINCESS GO AND THINGS WON'T GET UGLY!!"),
                     ChatItem(profile: .hero, imgPos: .left, chat: "Yeah, if you touch a hair on her head, it's gonna be the end for you, Mantamar!"),
-                    ChatItem(profile: .villain, chat: "embrace the light and you shall see! MUAHAHAHAHAAGGGHHHH! *cough* *cough* *HACK* 😮‍💨 ...ugh that one's black."),
+                    ChatItem(profile: .villain, chat: "Embrace the light and you shall see! MUAHAHAHAHAAGGGHHHH! *cough* *cough* *HACK* 😮‍💨 ...ugh that one's black."),
                     ChatItem(profile: .princess, endChat: true, chat: "Ew gross!! 🤮") { [unowned self] in
                         fadeDimOverlay()
                         delegate?.despawnPrincessCapture(at: spawnPoint, completion: { })
@@ -824,8 +825,8 @@ extension ChatEngine {
                     },
                     ChatItem(profile: .trainer, chat: "Magmoor—one of the most powerful Mystics from my realm. He wasn't always like this. We were once good friends. Then he went all Mabritney on everyone."),
                     ChatItem(profile: .hero, imgPos: .left, chat: "You guys have Britney in your world?"),
-                    ChatItem(profile: .trainer, chat: "No—MAbritney. She's an elemental mage who wields forbidden dark magic. She does a Dance of Knives that summons Chaos."),
-                    ChatItem(profile: .hero, imgPos: .left, chat: "Well he sounds toxic ...so what's our next move:\nPURSUE HIM | PREPARE FIRST"),
+                    ChatItem(profile: .trainer, chat: "No— MAbritney. She's an elemental mage who wields forbidden dark magic. She does a Dance of Knives that summons Chaos."),
+                    ChatItem(profile: .hero, imgPos: .left, chat: "She sounds toxic ...so what's our next move:\n\nPURSUE HIM | PREPARE FIRST"),
                     ChatItem(profile: .hero, imgPos: .left, chat: "We should prepare first..."),
                     ChatItem(profile: .trainer, chat: "A wise decision. Let's keep moving."),
                     ChatItem(profile: .hero, imgPos: .left, chat: "BRING ME MAGMOOR!"),
