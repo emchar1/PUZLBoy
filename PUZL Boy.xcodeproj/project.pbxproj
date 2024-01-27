@@ -243,6 +243,7 @@
 		EAD19A172A992E3600A07A63 /* HeroRainbowParticles.sks in Resources */ = {isa = PBXBuildFile; fileRef = EAD19A162A992E3600A07A63 /* HeroRainbowParticles.sks */; };
 		EAD19A1B2A9BD48400A07A63 /* GemSparkleParticles.sks in Resources */ = {isa = PBXBuildFile; fileRef = EAD19A1A2A9BD48400A07A63 /* GemSparkleParticles.sks */; };
 		EAD19A1D2A9C14B500A07A63 /* PoisonBubblesParticles.sks in Resources */ = {isa = PBXBuildFile; fileRef = EAD19A1C2A9C14B500A07A63 /* PoisonBubblesParticles.sks */; };
+		EAD459062B64A49700148720 /* DragonIce.sks in Resources */ = {isa = PBXBuildFile; fileRef = EAD459052B64A49700148720 /* DragonIce.sks */; };
 		EAD59A542A88200800F86EED /* SpeechBubbleSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD59A532A88200800F86EED /* SpeechBubbleSprite.swift */; };
 		EADE12422AFCB61300474D7F /* AchievementsTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EADE12412AFCB61300474D7F /* AchievementsTableView.swift */; };
 		EADE12442AFCBB3D00474D7F /* AchievementsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EADE12432AFCBB3D00474D7F /* AchievementsModel.swift */; };
@@ -520,6 +521,7 @@
 		EAD19A162A992E3600A07A63 /* HeroRainbowParticles.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = HeroRainbowParticles.sks; sourceTree = "<group>"; };
 		EAD19A1A2A9BD48400A07A63 /* GemSparkleParticles.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GemSparkleParticles.sks; sourceTree = "<group>"; };
 		EAD19A1C2A9C14B500A07A63 /* PoisonBubblesParticles.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = PoisonBubblesParticles.sks; sourceTree = "<group>"; };
+		EAD459052B64A49700148720 /* DragonIce.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = DragonIce.sks; sourceTree = "<group>"; };
 		EAD59A532A88200800F86EED /* SpeechBubbleSprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechBubbleSprite.swift; sourceTree = "<group>"; };
 		EADE12412AFCB61300474D7F /* AchievementsTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementsTableView.swift; sourceTree = "<group>"; };
 		EADE12432AFCBB3D00474D7F /* AchievementsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementsModel.swift; sourceTree = "<group>"; };
@@ -1078,6 +1080,7 @@
 				EA32AE302AAC198300DFF5CD /* DragonFire.sks */,
 				EA0CF7CB2ADC408D002785DB /* DragonFireIdle.sks */,
 				EABE795E2ACBB83A00689C55 /* DragonFireLite.sks */,
+				EAD459052B64A49700148720 /* DragonIce.sks */,
 				EA6DCBEC2B61CBE900D5F707 /* DragonIceIdle.sks */,
 				EA6DCBEA2B61C26F00D5F707 /* DragonIceLite.sks */,
 				EAD19A162A992E3600A07A63 /* HeroRainbowParticles.sks */,
@@ -1199,6 +1202,7 @@
 				EAEF2F062B4F679900AD8459 /* buttontap4.mp3 in Resources */,
 				EAE9194B2A4CB04B00AF67D1 /* gemcollectparty2x.mp3 in Resources */,
 				EA7605642B5A859C001BC268 /* movesnow2.mp3 in Resources */,
+				EAD459062B64A49700148720 /* DragonIce.sks in Resources */,
 				EA6DCBE32B60FF5E00D5F707 /* chatopenvillain.mp3 in Resources */,
 				EA95D19C294690B70061059C /* boyattack1.mp3 in Resources */,
 				EA45834F2A44316F00279056 /* overworldparty.mp3 in Resources */,

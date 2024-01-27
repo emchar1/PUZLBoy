@@ -30,7 +30,7 @@ struct FlyingDragon {
         textures = []
 
         for i in 1...6 {
-            textures.append(atlas.textureNamed("flyingDragon (\(i))"))
+            textures.append(atlas.textureNamed("\(FireIceTheme.textureFlyingDragon) (\(i))"))
         }
         
         sprite = SKSpriteNode(texture: textures[0])

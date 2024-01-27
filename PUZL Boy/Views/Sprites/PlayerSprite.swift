@@ -533,7 +533,7 @@ class PlayerSprite {
                 }
             }
             
-            ParticleEngine.shared.animateParticles(type: FireIceTheme.particleTypeDragonLiteAttack,
+            ParticleEngine.shared.animateParticles(type: FireIceTheme.particleTypeDragonFireLite,
                                                    toNode: gameboard.sprite,
                                                    position: gameboard.getLocation(at: dragonPosition) + flameOffset,
                                                    scale: 3 / CGFloat(gameboard.panelCount),

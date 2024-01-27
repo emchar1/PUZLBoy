@@ -26,6 +26,7 @@ class ParticleEngine: SKNode {
         case dragonFire = "DragonFire"
         case dragonFireIdle = "DragonFireIdle"
         case dragonFireLite = "DragonFireLite"
+        case dragonIce = "DragonIce"
         case dragonIceIdle = "DragonIceIdle"
         case dragonIceLite = "DragonIceLite"
         case gemCollect = "GemCollectParticles"

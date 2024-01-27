@@ -20,16 +20,30 @@ struct FireIceTheme {
     
     
     
-    //Computed properties
+    
+    // MARK: - Computed Properties
+    
+    //Colors
     static var overlayColor: UIColor { isFire ? .red : .blue }
     static var overlaySystemColor: UIColor { isFire ? .systemRed : .systemBlue }
+    
+    //Sounds
     static var soundMovementSandSnow: String { isFire ? "movesand\(Int.random(in: 1...3))" : "movesnow\(Int.random(in: 1...3))" }
     static var soundEnemyAttack: String { isFire ? "enemyflame" : "enemyice"}
+    
+    //Sprites, Textures & Images
     static var spriteEnemyExplode: String { isFire ? "enemy" : "enemyIce" }
-    static var skyNodeOverlay: UIImage { isFire ? UIImage.gradientTextureSkyBlood : UIImage.gradientTextureSkyIce }
-    static var skyColorDescription: String { isFire ? "blood" : "ice" }
-    static var particleTypeDragonLiteAttack: ParticleEngine.ParticleType { isFire ? .dragonFireLite : .dragonIceLite }
+    static var spriteEnemyLarge: String { isFire ? "enemyLarge" : "enemyIceLarge" }
+    static var imageSkyNodeOverlay: UIImage { isFire ? UIImage.gradientTextureSkyBlood : UIImage.gradientTextureSkyIce }
+    static var textureFlyingDragon: String { isFire ? "flyingDragon" : "flyingDragonIce" }
+
+    //Effects
+    static var particleTypeDragonFire: ParticleEngine.ParticleType { isFire ? .dragonFire : .dragonIce }
     static var particleTypeDragonFireIdle: ParticleEngine.ParticleType { isFire ? .dragonFireIdle : .dragonIceIdle }
+    static var particleTypeDragonFireLite: ParticleEngine.ParticleType { isFire ? .dragonFireLite : .dragonIceLite }
+
+    //Strings
+    static var skyColorDescription: String { isFire ? "blood" : "ice" }
 
     
     // MARK: - Functions
@@ -37,4 +51,6 @@ struct FireIceTheme {
     static func setOnFire(_ isFire: Bool) {
         self.isFire = isFire
     }
+    
+    
 }
