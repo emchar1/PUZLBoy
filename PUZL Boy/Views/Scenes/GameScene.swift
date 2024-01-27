@@ -447,6 +447,19 @@ class GameScene: SKScene {
 
             AudioManager.shared.playSound(for: AudioManager.shared.currentTheme)
         }
+        else {
+            
+            
+            
+            // FIXME: - FIRE/ICE TEST
+            if AudioManager.shared.currentTheme != FireIceTheme.musicOverworldTheme {
+                AudioManager.shared.changeTheme(newTheme: FireIceTheme.musicOverworldTheme)
+                AudioManager.shared.playSound(for: AudioManager.shared.currentTheme)
+            }
+            
+            
+            
+        }
         
         //Uncomment to play interstitial ad every X levels
 //        if level % 100 == 0 && level >= 20 && didWin {

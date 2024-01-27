@@ -1053,7 +1053,17 @@ class GameEngine {
         
         if isSolved {
             playerSprite.startPlayerExitAnimation()
+
             
+            
+            // MARK: - FIRE/ICE TEST
+            
+            if AudioManager.shared.currentTheme != FireIceTheme.musicOverworldTheme {
+                AudioManager.shared.stopSound(for: AudioManager.shared.currentTheme)
+            }
+
+
+
             AudioManager.shared.playSound(for: "winlevel")
             delegate?.gameIsSolved(movesRemaining: movesRemaining,
                                    itemsFound: level.inventory.getItemCount(),
