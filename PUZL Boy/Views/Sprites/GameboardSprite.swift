@@ -17,7 +17,7 @@ class GameboardSprite {
     static let overlayTag = "-O"
     static let padding: CGFloat = 12
     static var dayThemeSpriteColor: UIColor { DayTheme.spriteColor }
-    static var dayThemeSpriteShade: CGFloat { DayTheme.spriteShade }
+    static var dayThemeSpriteShade: CGFloat { DayTheme.spriteShade / 2 }
     static var offsetPosition: CGPoint {
         let screen = K.ScreenDimensions.self
         let displayHeaderHeight: CGFloat = 283
