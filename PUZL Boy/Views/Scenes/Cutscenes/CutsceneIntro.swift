@@ -588,5 +588,4 @@ extension CutsceneIntro: SkipIntroSpriteDelegate {
         }
     }
     
-    
 }
