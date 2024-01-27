@@ -87,7 +87,7 @@ class CutsceneIntro: SKScene {
         skipIntroSprite.zPosition = K.ZPosition.speechBubble
         skipIntroSprite.delegate = self
 
-        dragonSprite = SKSpriteNode(imageNamed:FireIceTheme.spriteEnemyLarge)
+        dragonSprite = SKSpriteNode(imageNamed: FireIceTheme.spriteEnemyLarge)
         dragonSprite.position = CGPoint(x: -dragonSprite.size.width, y: K.ScreenDimensions.size.height + dragonSprite.size.height)
         dragonSprite.zPosition = K.ZPosition.player - 10
         
@@ -104,7 +104,7 @@ class CutsceneIntro: SKScene {
         skyNode.zPosition = K.ZPosition.skyNode
         skyNode.name = LaunchScene.nodeName_skyNode
         
-        bloodSkyNode = SKSpriteNode(texture: SKTexture(image:FireIceTheme.imageSkyNodeOverlay))
+        bloodSkyNode = SKSpriteNode(texture: SKTexture(image: FireIceTheme.imageSkyNodeOverlay))
         bloodSkyNode.size = CGSize(width: K.ScreenDimensions.size.width, height: K.ScreenDimensions.size.height / 2)
         bloodSkyNode.position = CGPoint(x: 0, y: K.ScreenDimensions.size.height)
         bloodSkyNode.anchorPoint = CGPoint(x: 0, y: 1)
@@ -348,7 +348,7 @@ class CutsceneIntro: SKScene {
                                 
                                 AudioManager.shared.playSound(for: "enemyscratch")
                                 Haptics.shared.executeCustomPattern(pattern: .enemy)
-                                ParticleEngine.shared.animateParticles(type:FireIceTheme.particleTypeDragonFire,
+                                ParticleEngine.shared.animateParticles(type: FireIceTheme.particleTypeDragonFire,
                                                                        toNode: dragonSprite,
                                                                        position: CGPoint(x: 10, y: 80),
                                                                        duration: 5)
