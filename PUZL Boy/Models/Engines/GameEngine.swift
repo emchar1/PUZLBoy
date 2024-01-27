@@ -183,6 +183,14 @@ class GameEngine {
     }
     
     private func finishInit(shouldSpawn: Bool) {
+        
+        
+        
+        // FIXME: - FIRE/ICE TEST
+        FireIceTheme.setOnFire(DayTheme.currentTheme == .morning || DayTheme.currentTheme == .afternoon)
+
+        
+        
         backgroundSprite = SKSpriteNode(texture: SKTexture(image: DayTheme.getSkyImage()))
         backgroundSprite.size = K.ScreenDimensions.size
         backgroundSprite.anchorPoint = .zero

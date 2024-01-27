@@ -12,7 +12,13 @@ struct FireIceTheme {
     
     // MARK: - Properties
     
-    static var isFire: Bool = true
+    
+    
+    // FIXME: - FIRE/ICE TEST
+    static private(set) var isFire: Bool = (DayTheme.currentTheme == .morning || DayTheme.currentTheme == .afternoon) ? true : false
+    
+    
+    
     
     //Computed properties
     static var overlayColor: UIColor { isFire ? .red : .blue }

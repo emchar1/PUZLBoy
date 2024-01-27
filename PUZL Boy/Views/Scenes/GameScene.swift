@@ -242,6 +242,14 @@ class GameScene: SKScene {
         playDialogue()
         
         AudioManager.shared.stopSound(for: "continueloop")
+        
+        
+        
+        // FIXME: - FIRE/ICE TEST
+        AudioManager.shared.changeTheme(newTheme: FireIceTheme.isFire ? AudioManager.shared.overworldTheme : AudioManager.shared.overworldIceTheme)
+        
+        
+        
         AudioManager.shared.playSound(for: AudioManager.shared.currentTheme)
 
         gameEngine.checkIfGameOverOnStartup()
@@ -429,6 +437,14 @@ class GameScene: SKScene {
         
         if !didWin {
             AudioManager.shared.stopSound(for: "continueloop")
+
+
+
+            // FIXME: - FIRE/ICE TEST
+            AudioManager.shared.changeTheme(newTheme: FireIceTheme.isFire ? AudioManager.shared.overworldTheme : AudioManager.shared.overworldIceTheme)
+
+
+
             AudioManager.shared.playSound(for: AudioManager.shared.currentTheme)
         }
         
@@ -807,6 +823,14 @@ extension GameScene: AdMobManagerDelegate {
             continueFromAd(shouldFade: true) { [unowned self] in
                 AudioManager.shared.playSound(for: "revive")
                 AudioManager.shared.stopSound(for: "continueloop")
+
+
+                
+                // FIXME: - FIRE/ICE TEST
+                AudioManager.shared.changeTheme(newTheme: FireIceTheme.isFire ? AudioManager.shared.overworldTheme : AudioManager.shared.overworldIceTheme)
+
+
+
                 AudioManager.shared.playSound(for: AudioManager.shared.currentTheme)
                 
                 pauseResetEngine.shouldDisable(false)

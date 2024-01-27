@@ -27,7 +27,14 @@ class PartyModeSprite: SKNode {
                 AudioManager.shared.changeTheme(newTheme: AudioManager.shared.overworldPartyTheme)
             }
             else {
-                AudioManager.shared.changeTheme(newTheme: AudioManager.shared.overworldTheme)
+
+                
+
+                // FIXME: - FIRE/ICE TEST
+                AudioManager.shared.changeTheme(newTheme: FireIceTheme.isFire ? AudioManager.shared.overworldTheme : AudioManager.shared.overworldIceTheme)
+                
+
+                
             }
         }
     }
