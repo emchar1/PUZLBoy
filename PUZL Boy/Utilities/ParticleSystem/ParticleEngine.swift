@@ -150,15 +150,15 @@ class ParticleEngine: SKNode {
     
     func hideParticles(fromNode node: SKNode) {
         for particleNode in node.children {
-            guard particleNode.name == ParticleEngine.nodeName else { continue }
-                    
+            guard let name = particleNode.name, name.contains(ParticleEngine.nodeName) else { continue }
+
             particleNode.run(SKAction.fadeOut(withDuration: 0.25))
         }
     }
     
     func showParticles(fromNode node: SKNode) {
         for particleNode in node.children {
-            guard particleNode.name == ParticleEngine.nodeName else { continue }
+            guard let name = particleNode.name, name.contains(ParticleEngine.nodeName) else { continue }
                     
             particleNode.run(SKAction.fadeIn(withDuration: 0.25))
         }
