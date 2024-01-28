@@ -1056,8 +1056,7 @@ class GameEngine {
 
             
             
-            // MARK: - FIRE/ICE TEST
-            
+            // FIXME: - FIRE/ICE TEST
             if AudioManager.shared.currentTheme != FireIceTheme.musicOverworldTheme {
                 AudioManager.shared.stopSound(for: AudioManager.shared.currentTheme)
             }

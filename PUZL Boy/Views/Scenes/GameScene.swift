@@ -451,8 +451,8 @@ class GameScene: SKScene {
             
             
             
-            // FIXME: - FIRE/ICE TEST
-            if AudioManager.shared.currentTheme != FireIceTheme.musicOverworldTheme {
+            // FIXME: - FIRE/ICE TEST - I hate that I have to check if it's a party level again...
+            if AudioManager.shared.currentTheme != FireIceTheme.musicOverworldTheme && !Level.isPartyLevel(level) {
                 AudioManager.shared.changeTheme(newTheme: FireIceTheme.musicOverworldTheme)
                 AudioManager.shared.playSound(for: AudioManager.shared.currentTheme)
             }
