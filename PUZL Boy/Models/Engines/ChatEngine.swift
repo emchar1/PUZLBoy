@@ -601,24 +601,7 @@ extension ChatEngine {
             }
         case 1:
             sendChatArray(items: [
-                ChatItem(profile: .hero, imgPos: .left, chat: "PUZL BOY: ...then the dragon swooped down and carried her away! It. Was. Harrowing. So... where are we? And who are you again??") { [unowned self] in
-
-                    
-                    
-                    
-                    // FIXME: - Testing out Magic Swirl
-                    if let superScene = superScene {
-                        ParticleEngine.shared.animateParticles(
-                            type: .magicLight,
-                            toNode: superScene,
-                            position: CGPoint(x: K.ScreenDimensions.size.width / 2, y: K.ScreenDimensions.size.height / 2),
-                            duration: 10)
-                    }
-                    
-                    
-                    
-                    
-                },
+                ChatItem(profile: .hero, imgPos: .left, chat: "PUZL BOY: ...then the dragon swooped down and carried her away! It. Was. Harrowing. So... where are we? And who are you again??"),
                 ChatItem(profile: .trainer, chat: "MARLIN: I am Marlin. I suspect she is being taken to the dragon's lair. I have transported you to the PUZZLE REALM, which is our gateway to the lair."),
                 ChatItem(profile: .hero, imgPos: .left, chat: "Marlin, like the fish??? I hate fish by the way. The smell, the texture... So how do you know that's where they're taking her?"),
                 ChatItem(profile: .trainer, chat: "Don't worry about it... And no, not like the fish. Marlin like the Magician."),
