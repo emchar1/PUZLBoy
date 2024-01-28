@@ -520,8 +520,7 @@ extension ChatEngine {
                 ChatItem(profile: .blankvillain, chat: "\n\n...she is home now..."),
                 ChatItem(profile: .trainer, imgPos: .left, chat: "Where is she?!! Is she unharmed??"),
                 ChatItem(profile: .blankvillain, chat: "\n\n...see for yourself...") {
-                    AudioManager.shared.playSound(for: "littlegirllaugh")
-                    AudioManager.shared.stopSound(for: "littlegirllaugh", fadeDuration: 2)
+                    AudioManager.shared.playSoundThenStop(for: "littlegirllaugh", playForDuration: 1, fadeOut: 2)
                 },
                 ChatItem(profile: .blankprincess, chat: "\n\nHELP MEEE! IT'S SO DARK OVER HERE!!!"),
                 ChatItem(profile: .blankvillain, chat: "\n\n...see, she's perfectly fine..."),

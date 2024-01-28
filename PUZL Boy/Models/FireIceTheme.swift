@@ -29,7 +29,9 @@ struct FireIceTheme {
     
     //Sounds
     static var soundMovementSandSnow: String { isFire ? "movesand\(Int.random(in: 1...3))" : "movesnow\(Int.random(in: 1...3))" }
-    static var soundEnemyAttack: String { isFire ? "enemyflame" : "enemyice"}
+    static var soundEnemyAttack: String { isFire ? "enemyflame" : "enemyice" }
+    static var soundWinLevel: String { isFire ? "winlevel" : "winlevelice" }
+    static var musicGameOver: String { isFire ? "gameover" : "gameoverice" }
     static var musicOverworldTheme: String { isFire ? AudioManager.shared.overworldTheme : AudioManager.shared.overworldIceTheme }
     
     //Sprites, Textures & Images

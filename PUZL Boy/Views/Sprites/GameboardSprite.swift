@@ -737,9 +737,7 @@ class GameboardSprite {
         updatePanels(at: position, with: (terrain: LevelType.water, overlay: LevelType.boundary))
         panels[position.row][position.col].addChild(waterNode)
 
-        let waterappear = "waterappear\(Int.random(in: 1...3))"
-        AudioManager.shared.playSound(for: waterappear)
-        AudioManager.shared.stopSound(for: waterappear, fadeDuration: 2)
+        AudioManager.shared.playSoundThenStop(for: "waterappear\(Int.random(in: 1...3))", playForDuration: 1, fadeOut: 2)
         Haptics.shared.executeCustomPattern(pattern: .snow)
         
         //Animation Stuff

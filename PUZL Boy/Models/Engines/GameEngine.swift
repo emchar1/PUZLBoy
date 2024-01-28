@@ -1063,7 +1063,7 @@ class GameEngine {
 
 
 
-            AudioManager.shared.playSound(for: "winlevel")
+            AudioManager.shared.playSound(for: FireIceTheme.soundWinLevel)
             delegate?.gameIsSolved(movesRemaining: movesRemaining,
                                    itemsFound: level.inventory.getItemCount(),
                                    enemiesKilled: enemiesKilled,
@@ -1087,7 +1087,7 @@ class GameEngine {
         }
         else if isGameOver {
             AudioManager.shared.stopSound(for: AudioManager.shared.currentTheme)
-            AudioManager.shared.playSound(for: "gameover")
+            AudioManager.shared.playSound(for: FireIceTheme.musicGameOver)
 
             if healthRemaining <= 0 {
                 displaySprite.drainHealth()

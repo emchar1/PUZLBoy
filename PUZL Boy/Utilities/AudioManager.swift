@@ -163,6 +163,7 @@ class AudioManager {
         addAudioItem("waterappear3", category: .soundFX)
         addAudioItem("waterdrown", category: .soundFX)
         addAudioItem("winlevel", category: .soundFX)
+        addAudioItem("winlevelice", category: .soundFX) //NEEDS PURCHASE $1
 
         
         //Looped SFX
@@ -175,6 +176,7 @@ class AudioManager {
         addAudioItem("ageofruin", category: .musicNoLoop)
         addAudioItem("ageofruin2", category: .musicNoLoop)
         addAudioItem("gameover", category: .musicNoLoop)
+        addAudioItem("gameoverice", category: .musicNoLoop) //NEEDS PURCHASE $1
         addAudioItem("titletheme", category: .musicNoLoop)
 
         
