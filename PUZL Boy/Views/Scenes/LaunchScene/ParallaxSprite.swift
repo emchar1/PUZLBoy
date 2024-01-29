@@ -16,13 +16,15 @@ class ParallaxSprite: SKNode {
     private(set) var parallaxObject: ParallaxObject
     private var sprites: [SKSpriteNode] = []
     private var xOffsets: SpriteXPositions?
+    private var animateForCutscene: Bool
     
     
     // MARK: - Initialization
     
-    init(object: ParallaxObject, xOffsets: SpriteXPositions?) {
+    init(object: ParallaxObject, xOffsets: SpriteXPositions?, animateForCutscene: Bool) {
         self.parallaxObject = object
         self.xOffsets = xOffsets
+        self.animateForCutscene = animateForCutscene
         
         super.init()
 
@@ -48,7 +50,7 @@ class ParallaxSprite: SKNode {
                 sprite.position = CGPoint(x: CGFloat(i) * parallaxObject.sizeScaled, y: 0)
             }
                 
-            if UserDefaults.standard.bool(forKey: K.UserDefaults.shouldSkipIntro) {
+            if !animateForCutscene {
                 sprite.color = DayTheme.spriteColor
                 sprite.colorBlendFactor = DayTheme.spriteShade
             }

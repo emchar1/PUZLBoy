@@ -16,6 +16,7 @@ class ParallaxManager: SKNode {
     private var parallaxSprites: [ParallaxSprite] = []
     private var xOffsetsArray: [ParallaxSprite.SpriteXPositions]?
     private var forceSpeed: Speed?
+    private var animateForCutscene: Bool
 
     var speedFactor: TimeInterval {
         if let forceSpeed = forceSpeed {
@@ -37,14 +38,15 @@ class ParallaxManager: SKNode {
     
     // MARK: - Initialization
     
-    init(useSet set: ParallaxObject.SetType, xOffsetsArray: [ParallaxSprite.SpriteXPositions]?, forceSpeed: Speed? = nil) {
+    init(useSet set: ParallaxObject.SetType, xOffsetsArray: [ParallaxSprite.SpriteXPositions]?, forceSpeed: Speed? = nil, animateForCutscene: Bool) {
         self.set = set
         self.xOffsetsArray = xOffsetsArray
         self.forceSpeed = forceSpeed
+        self.animateForCutscene = animateForCutscene
 
         super.init()
         
-        if !UserDefaults.standard.bool(forKey: K.UserDefaults.shouldSkipIntro) {
+        if animateForCutscene {
             self.set = .grass
         }
                 
@@ -90,7 +92,7 @@ class ParallaxManager: SKNode {
             let size: CGSize = size
             let zPosition: CGFloat = K.ZPosition.parallaxLayer0 - 5 * CGFloat(i)
             let object = ParallaxObject(set: set, layer: i, type: type, speed: speed * speedFactor, size: size, zPosition: zPosition)
-            let sprite = ParallaxSprite(object: object, xOffsets: xOffsetsArray?[i])
+            let sprite = ParallaxSprite(object: object, xOffsets: xOffsetsArray?[i], animateForCutscene: animateForCutscene)
             
             sprites.append(sprite)
         }

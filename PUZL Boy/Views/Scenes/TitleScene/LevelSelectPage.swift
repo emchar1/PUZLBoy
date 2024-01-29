@@ -18,16 +18,13 @@ class LevelSelectPage: ParentPage {
     
     private var levelPicker: UIPickerView!
     private var dismissNode: SettingsTapButton!
-    private var useMorningSky: Bool
     
     weak var delegate: LevelSelectPageDelegate?
     
     
     // MARK: - Initialization
     
-    init(contentSize: CGSize, useMorningSky: Bool) {
-        self.useMorningSky = useMorningSky
-        
+    init(contentSize: CGSize) {
         super.init(contentSize: contentSize, titleText: "Level Select")
         
         setupNodes()
@@ -44,7 +41,7 @@ class LevelSelectPage: ParentPage {
     private func setupNodes() {
         levelPicker = UIPickerView(frame: .zero)
                       
-        dismissNode = SettingsTapButton(text: "Start Game", useMorningSky: useMorningSky)
+        dismissNode = SettingsTapButton(text: "Start Game")
         dismissNode.position = CGPoint(x: (contentSize.width + SettingsTapButton.buttonSize.width) / 2,
                                        y: -contentSize.height + SettingsTapButton.buttonSize.height / 2)
         dismissNode.zPosition = dismissNode.zPositionOffset

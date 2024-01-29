@@ -18,7 +18,6 @@ class SettingsTapArea: SKNode {
     private var labelText: String
     private var buttonText: String
     private var settingsSize: CGSize
-    private var useMorningSky: Bool
     
     private var tapButton: SettingsTapButton!
     
@@ -27,11 +26,10 @@ class SettingsTapArea: SKNode {
     
     // MARK: - Initialization
     
-    init(labelText: String, buttonText: String, settingsSize: CGSize, useMorningSky: Bool) {
+    init(labelText: String, buttonText: String, settingsSize: CGSize) {
         self.labelText = labelText
         self.buttonText = buttonText
         self.settingsSize = settingsSize
-        self.useMorningSky = useMorningSky
         
         super.init()
         
@@ -58,7 +56,7 @@ class SettingsTapArea: SKNode {
         labelNode.zPosition = 10
         labelNode.addDropShadow()
         
-        tapButton = SettingsTapButton(text: buttonText, useMorningSky: useMorningSky)
+        tapButton = SettingsTapButton(text: buttonText)
         tapButton.position.x = settingsSize.width
         tapButton.delegate = self
         

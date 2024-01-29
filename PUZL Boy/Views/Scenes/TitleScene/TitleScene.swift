@@ -88,7 +88,7 @@ class TitleScene: SKScene {
         player.sprite.texture = SKTexture(imageNamed: "Run (5)")
         player.sprite.name = "playerSprite"
         
-        skyNode = SKSpriteNode(texture: SKTexture(image: DayTheme.getSkyImage(useMorningSky: !UserDefaults.standard.bool(forKey: K.UserDefaults.shouldSkipIntro))))
+        skyNode = SKSpriteNode(texture: SKTexture(image: DayTheme.getSkyImage()))
         skyNode.size = K.ScreenDimensions.size
         skyNode.anchorPoint = .zero
         skyNode.zPosition = K.ZPosition.skyNode
@@ -139,7 +139,6 @@ class TitleScene: SKScene {
         let menuPosition = CGPoint(x: K.ScreenDimensions.size.width / 2, y: menuSizeTall.height / 2 + K.ScreenDimensions.bottomMargin)
         let menuSpacing: CGFloat = 133
         let menuCornerRadius: CGFloat = 20
-        let shouldSkipIntro = UserDefaults.standard.bool(forKey: K.UserDefaults.shouldSkipIntro)
 
         menuBackground = SKShapeNode(rectOf: menuSize, cornerRadius: menuCornerRadius)
         menuBackground.position = menuPosition - 3 * shadowDepth
@@ -185,7 +184,7 @@ class TitleScene: SKScene {
         levelSelectBackground.zPosition = K.ZPosition.menuBackground
         levelSelectBackground.addShadow(rectOf: levelSelectSize, cornerRadius: menuCornerRadius)
         
-        levelSelectPage = LevelSelectPage(contentSize: levelSelectSize, useMorningSky: !shouldSkipIntro)
+        levelSelectPage = LevelSelectPage(contentSize: levelSelectSize)
         levelSelectPage.zPosition = zPositionOffset
         levelSelectPage.delegate = self
                 
@@ -206,7 +205,7 @@ class TitleScene: SKScene {
         settingsBackground.zPosition = K.ZPosition.pauseScreen
         settingsBackground.addShadow(rectOf: settingsSize, cornerRadius: menuCornerRadius)
 
-        settingsPage = SettingsPage(contentSize: settingsSize, useMorningSky: !shouldSkipIntro)
+        settingsPage = SettingsPage(contentSize: settingsSize)
         settingsPage.zPosition = zPositionOffset
         
         closeButton = CloseButtonSprite()
@@ -214,7 +213,7 @@ class TitleScene: SKScene {
     }
     
     private func mixColors() {
-        let skyColor: DayTheme.SkyColors = !UserDefaults.standard.bool(forKey: K.UserDefaults.shouldSkipIntro) ? DayTheme.morningSky : DayTheme.skyColor
+        let skyColor: DayTheme.SkyColors = DayTheme.skyColor
         
         switch Int.random(in: 0...3) {
         case 0:

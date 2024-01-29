@@ -21,21 +21,16 @@ class SettingsTapButton: SKNode {
     private let shadowOffset: CGFloat = 6
     private var colors: (background: UIColor?, shadow: UIColor?)
     private var backgroundColor: UIColor {
-        let skyColor: DayTheme.SkyColors = useMorningSky ? DayTheme.morningSky : DayTheme.skyColor
-        
-        return colors.background != nil ? colors.background! : skyColor.bottom.triadic.first.darkenColor(factor: 3)
+        return colors.background != nil ? colors.background! : DayTheme.skyColor.bottom.triadic.first.darkenColor(factor: 3)
     }
     private var backgroundShadowColor: UIColor {
-        let skyColor: DayTheme.SkyColors = useMorningSky ? DayTheme.morningSky : DayTheme.skyColor
-        
-        return colors.shadow != nil ? colors.shadow! : skyColor.bottom.splitComplementary.first.lightenColor(factor: 6)
+        return colors.shadow != nil ? colors.shadow! : DayTheme.skyColor.bottom.splitComplementary.first.lightenColor(factor: 6)
     }
     private var positionOrig: CGPoint {
         CGPoint(x: -SettingsTapButton.buttonSize.width / 2 - shadowOffset, y: SettingsTapButton.buttonSize.height / 2 - shadowOffset)
     }
 
     private var text: String
-    private var useMorningSky: Bool
     private var isAnimating = false
     private var isPressed = true
     private(set) var isDisabled = false
@@ -48,9 +43,8 @@ class SettingsTapButton: SKNode {
     
     // MARK: - Initialization
     
-    init(text: String, useMorningSky: Bool = false, colors: (background: UIColor?, shadow: UIColor?) = (nil, nil)) {
+    init(text: String, colors: (background: UIColor?, shadow: UIColor?) = (nil, nil)) {
         self.text = text
-        self.useMorningSky = useMorningSky
         self.colors = colors
         
         super.init()

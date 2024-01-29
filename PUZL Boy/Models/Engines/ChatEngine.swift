@@ -548,7 +548,6 @@ extension ChatEngine {
                 }
             }
         case -200:
-            AudioManager.shared.playSound(for: "scarymusicbox", fadeIn: 3)
             AudioManager.shared.playSound(for: "magicheartbeatloop1", fadeIn: 3)
             
             superScene?.addChild(magmoorScary)
@@ -558,9 +557,12 @@ extension ChatEngine {
                     magmoorScary.slowReveal(alpha: 0.1)
                 },
                 ChatItem(profile: .trainer, imgPos: .left, chat: "YOU!!! I should have known! The whole time I'm thinking, \"No way he came crawling back into my life.\" And here you are...") { [unowned self] in
+                    AudioManager.shared.playSound(for: "scarymusicbox", fadeIn: 3)
+
                     magmoorScary.slowReveal(alpha: 0.2)
                 },
-                ChatItem(profile: .villain, chat: "Surprised much? You need me. You're the yin to my yang. We're bounded by fate, as the Priestess Machinegunkelly revealed during the Trial of Mages.") { [unowned self] in
+                ChatItem(profile: .villain, chat: "Surprised much? You need me. You're the yin to my yang."),
+                ChatItem(profile: .villain, chat: "We're bounded by fate as elder Mystic, Machinegunkelly revealed during the Trial of Mages.") { [unowned self] in
                     magmoorScary.slowReveal(alpha: 0.3)
                 },
                 ChatItem(profile: .trainer, imgPos: .left, chat: "That was over 500 years ago. Give us the child and leave this world!!") { [unowned self] in
@@ -794,13 +796,13 @@ extension ChatEngine {
                     ChatItem(profile: .trainer, imgPos: .left, chat: "Magmoor, stop this at once! It's not too late."),
                     ChatItem(profile: .villain, chat: "MAGMOOR: If you want to see your precious princess again, then let us merge powers."),
                     ChatItem(profile: .trainer, imgPos: .left, chat: "No!!! You want absolute power. All Mystics share power evenly; it keeps the realms in balance. You seek to plunge the realms into total darkness."),
-                    ChatItem(profile: .villain, chat: "The world is broken and the realms are already headed towards eternal darkness. It requires cleansing."),
+                    ChatItem(profile: .villain, chat: "The world is broken and the realms are already heading towards eternal darkness. It requires cleansing."),
                     ChatItem(profile: .trainer, imgPos: .left, chat: "You've completely lost it. LET THE PRINCESS GO AND THINGS WON'T GET UGLY!!"),
                     ChatItem(profile: .hero, imgPos: .left, chat: "Yeah, if you touch a hair on her head, it's gonna be the end for you, Mantamar!"),
                     ChatItem(profile: .villain, chat: "Embrace the light and you shall see! MUAHAHAHAHAAGGGHHHH! *cough* *cough* *HACK* 😮‍💨 ...ugh that one's black."),
                     ChatItem(profile: .princess, endChat: true, chat: "Ew gross!! 🤮") { [unowned self] in
                         fadeDimOverlay()
-                        delegate?.despawnPrincessCapture(at: spawnPoint, completion: { })
+                        delegate?.despawnPrincessCapture(at: spawnPoint, completion: {})
                     },
                     ChatItem(profile: .hero, imgPos: .left, pause: 8, startNewChat: true, chat: "That was creepy. What does Marzipan want with the princess? He's not gonna sacrifice her is he?! 😱 I've seen too many movies...") {
                         //Sheep walking across the level randomly

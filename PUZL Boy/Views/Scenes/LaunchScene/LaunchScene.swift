@@ -89,7 +89,10 @@ class LaunchScene: SKScene {
             moonSprite.alpha = 0
         }
 
-        parallaxManager = ParallaxManager(useSet: .allCases.randomElement() ?? .grass, xOffsetsArray: nil, forceSpeed: UserDefaults.standard.bool(forKey: K.UserDefaults.shouldSkipIntro) ? nil : .run)
+        parallaxManager = ParallaxManager(useSet: .allCases.randomElement() ?? .grass,
+                                          xOffsetsArray: nil,
+                                          forceSpeed: UserDefaults.standard.bool(forKey: K.UserDefaults.shouldSkipIntro) ? nil : .run,
+                                          animateForCutscene: !UserDefaults.standard.bool(forKey: K.UserDefaults.shouldSkipIntro))
     }
     
     private func animateSprites() {
@@ -264,8 +267,6 @@ class LaunchScene: SKScene {
     
     ///Boy continues running. Forever.
     private func transitionRunning(completion: @escaping ([ParallaxSprite.SpriteXPositions]?) -> Void) {
-        // TODO: - Needs implementation
-        
         let duration: TimeInterval = 1.0
         var xOffsetsArray: [ParallaxSprite.SpriteXPositions] = []
         

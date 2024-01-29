@@ -144,7 +144,10 @@ class CutsceneIntro: SKScene {
         tapPointerEngine = TapPointerEngine()
         
         letterbox = LetterboxSprite(color: .black, height: screenSize.height / 3)
-        parallaxManager = ParallaxManager(useSet: .grass, xOffsetsArray: xOffsetsArray, forceSpeed: .walk)
+        parallaxManager = ParallaxManager(useSet: .grass,
+                                          xOffsetsArray: xOffsetsArray,
+                                          forceSpeed: .walk,
+                                          animateForCutscene: true)
         
         speechHero = SpeechBubbleSprite(width: 460, position: heroPositionInitial + CGPoint(x: 200, y: 400))
         speechPrincess = SpeechBubbleSprite(width: 460, position: princessPositionFinal + CGPoint(x: -200, y: 400), tailOrientation: .bottomRight)
@@ -261,15 +264,18 @@ class CutsceneIntro: SKScene {
                             SKAction.wait(forDuration: 28),
                             SKAction.fadeAlpha(to: 0.8, duration: 1),
                             SKAction.wait(forDuration: 2),
-                            SKAction.run { [unowned self] in
-                                overlaySpeech.setText(
-                                    text: "The princess went on to explain how dragons had disappeared from the realm of some place called Vaeloria, where she claims she's from,|| and that the balance of magic had been disrupted threatening our very existence.||||||||/She spoke about a prophecy where the Earth splits in two and the sky turns to \(FireIceTheme.skyColorDescription), signaling the Age of Ruin, and that she was the only one who could stop it—||At first, I thought this little girl just had an overactive imagination...||||||/  ..........Then the CRAZIEST thing happened!!",
-                                    superScene: self, completion: nil)
-                                
-                                AudioManager.shared.stopSound(for: "birdsambience", fadeDuration: 5)
-                                AudioManager.shared.stopSound(for: AudioManager.shared.grasslandTheme, fadeDuration: 8)
-                                AudioManager.shared.playSound(for: "scarymusicbox", fadeIn: 5, delay: 3)
-                            }
+                            SKAction.group([
+                                SKAction.fadeIn(withDuration: 23), //34 total seconds, to coincide with closeUpPrincess() animation sequence
+                                SKAction.run { [unowned self] in
+                                    overlaySpeech.setText(
+                                        text: "The princess went on to explain how dragons had disappeared from the realm of some place called Vaeloria, where she claims she's from,|| and that the balance of magic had been disrupted threatening our very existence.||||||||/She spoke about a prophecy where the Earth splits open and the sky darkens, signaling the Age of Ruin, and that she was the only one who could stop it—||At first, I thought this little girl just had an overactive imagination...||||||/  ..........Then the CRAZIEST thing happened!!",
+                                        superScene: self, completion: nil)
+                                    
+                                    AudioManager.shared.stopSound(for: "birdsambience", fadeDuration: 5)
+                                    AudioManager.shared.stopSound(for: AudioManager.shared.grasslandTheme, fadeDuration: 8)
+                                    AudioManager.shared.playSound(for: "scarymusicbox", fadeIn: 5, delay: 3)
+                                }
+                            ])
                         ]))
                     },
                     SpeechBubbleItem(profile: speechPrincess, chat: "Wow.|| You sure ask a lot of questions!||||||||/But if you must know,| the reason I'm here is because, well.. first of all, Oh—I'm a princess!|||/And, but... oh! Not here though. I'm a princess in a very very far away place.|||/You see, I'm not from this place. But I am from, well—blah blah blah...||||/Blah blah blah, blah blah blah DRAGONS blah, blah blah, blah blah blah, blah.||||||||/VAELORIA blah, blah.| BLAH blah blah blah, blahhhhh blah.| Blah. Blah. Blah. M|A|G|I|C!!||||||||/And then. And THEN!|| blah blah blah,| blah blah blah.| Blah, blah, blah|| .|.|.|A|G|E| O|F| R|U|I|N|.||||||||||||") { [unowned self] in
@@ -447,7 +453,7 @@ class CutsceneIntro: SKScene {
 
                         AudioManager.shared.stopSound(for: "thunderrumble", fadeDuration: 5)
                     },
-                    SpeechBubbleItem(profile: speechHero, chat: "Hang on princess! I'm coming to rescue you!!!|||")
+                    SpeechBubbleItem(profile: speechHero, chat: "Hang on princess! I'm coming to get you!!!|||")
                 ]) { [unowned self] in
                     AudioManager.shared.stopSound(for: "ageofruin", fadeDuration: 4)
                     UserDefaults.standard.set(true, forKey: K.UserDefaults.shouldSkipIntro)
@@ -572,7 +578,7 @@ class CutsceneIntro: SKScene {
 
 extension CutsceneIntro: SkipIntroSpriteDelegate {
     func buttonWasTapped() {
-        let fadeDuration: TimeInterval = 2.0
+        let fadeDuration: TimeInterval = 1.0
 
         //MUST stop all sounds if rage quitting early!
         AudioManager.shared.stopSound(for: "birdsambience", fadeDuration: fadeDuration)
