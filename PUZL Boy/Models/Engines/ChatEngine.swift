@@ -514,9 +514,9 @@ extension ChatEngine {
             
             sendChatArray(items: [
                 ChatItem(profile: .blankvillain, chat: "\n\n...Marlin..."),
-                ChatItem(profile: .trainer, imgPos: .left, chat: "Geez, would you stop doing that!! It's freaky!"),
+                ChatItem(profile: .trainer, imgPos: .left, chat: "Geez! Would you stop doing that?? It's freaky!"),
                 ChatItem(profile: .blankvillain, chat: "\n\n...do not follow. Do not proceed..."),
-                ChatItem(profile: .trainer, imgPos: .left, chat: "Do not pass go, do not collect... blah, blah, blah. Where is the princess!!"),
+                ChatItem(profile: .trainer, imgPos: .left, chat: "Do not pass go, do not collect... yada, yada. Where is the princess!!"),
                 ChatItem(profile: .blankvillain, chat: "\n\n...she is home now..."),
                 ChatItem(profile: .trainer, imgPos: .left, chat: "Where is she?!! Is she unharmed??"),
                 ChatItem(profile: .blankvillain, chat: "\n\n...see for yourself...") {
@@ -524,7 +524,7 @@ extension ChatEngine {
                 },
                 ChatItem(profile: .blankprincess, chat: "\n\nHELP MEEE! IT'S SO DARK OVER HERE!!!"),
                 ChatItem(profile: .blankvillain, chat: "\n\n...see, she's perfectly fine..."),
-                ChatItem(profile: .trainer, imgPos: .left, chat: "Stop with the games and show me your—") { [unowned self] in
+                ChatItem(profile: .trainer, imgPos: .left, chat: "Enough with the games! Show me who you are!!") { [unowned self] in
                     superScene?.addChild(marlinBlast)
                     superScene?.addChild(magmoorScary)
 
@@ -534,7 +534,7 @@ extension ChatEngine {
                     AudioManager.shared.stopSound(for: "magicheartbeatloop1")
                     AudioManager.shared.playSound(for: "magicheartbeatloop2")
                 },
-                ChatItem(profile: .trainer, imgPos: .left, chat: "⚡️FACE!!!⚡️"),
+                ChatItem(profile: .trainer, imgPos: .left, chat: "⚡️MAGIC SPELL!!!⚡️"),
                 ChatItem(profile: .villain, chat: "MYSTERIOUS FIGURE: I'll be seeing ya shortly."),
                 ChatItem(profile: .trainer, imgPos: .left, chat: "............no. It can't be.")
             ]) { [unowned self] in
@@ -792,21 +792,20 @@ extension ChatEngine {
             delegate?.spawnPrincessCapture(at: spawnPoint) { [unowned self] in
                 sendChatArray(items: [
                     ChatItem(profile: .princess, chat: "PRINCESS OLIVIA: Help meeeee PUZL Boy!!! It's dark and scary over here. And this guy's breath is really stinky!"),
-                    ChatItem(profile: .hero, imgPos: .left, chat: "Holy sheep! Who the #&*@! are are you?!!"),
+                    ChatItem(profile: .hero, imgPos: .left, chat: "Whoa! Who the @&$#! are you?!!"),
                     ChatItem(profile: .trainer, imgPos: .left, chat: "Magmoor, stop this at once! It's not too late."),
                     ChatItem(profile: .villain, chat: "MAGMOOR: If you want to see your precious princess again, then let us merge powers."),
                     ChatItem(profile: .trainer, imgPos: .left, chat: "No!!! You want absolute power. All Mystics share power evenly; it keeps the realms in balance. You seek to plunge the realms into total darkness."),
-                    ChatItem(profile: .villain, chat: "The world is broken and the realms are already heading towards eternal darkness. It requires cleansing."),
+                    ChatItem(profile: .villain, chat: "The world is broken and the realms are already headed towards eternal darkness. It requires..... cleansing."),
+                    ChatItem(profile: .princess, chat: "Your breath requires cleansing!"),
                     ChatItem(profile: .trainer, imgPos: .left, chat: "You've completely lost it. LET THE PRINCESS GO AND THINGS WON'T GET UGLY!!"),
                     ChatItem(profile: .hero, imgPos: .left, chat: "Yeah, if you touch a hair on her head, it's gonna be the end for you, Mantamar!"),
-                    ChatItem(profile: .villain, chat: "Embrace the light and you shall see! MUAHAHAHAHAAGGGHHHH! *cough* *cough* *HACK* 😮‍💨 ...ugh that one's black."),
-                    ChatItem(profile: .princess, endChat: true, chat: "Ew gross!! 🤮") { [unowned self] in
+                    ChatItem(profile: .villain, chat: "Do not be blinded by the teachings of the Faith. Join me in the purification. We can rule the realms together."),
+                    ChatItem(profile: .princess, endChat: true, chat: "Heeeeeeelp! Don't let him take meeeeeee!") { [unowned self] in
                         fadeDimOverlay()
                         delegate?.despawnPrincessCapture(at: spawnPoint, completion: {})
                     },
-                    ChatItem(profile: .hero, imgPos: .left, pause: 8, startNewChat: true, chat: "That was creepy. What does Marzipan want with the princess? He's not gonna sacrifice her is he?! 😱 I've seen too many movies...") {
-                        //Sheep walking across the level randomly
-                    },
+                    ChatItem(profile: .hero, imgPos: .left, pause: 8, startNewChat: true, chat: "That was creepy. What does Marzipan want with the princess? He's not gonna sacrifice her is he?!", handler: nil),
                     ChatItem(profile: .trainer, chat: "Magmoor—one of the most powerful Mystics from my realm. He wasn't always like this. We were once good friends. Then he went all Mabritney on everyone."),
                     ChatItem(profile: .hero, imgPos: .left, chat: "You guys have Britney in your world?"),
                     ChatItem(profile: .trainer, chat: "No— MAbritney. She's an elemental mage who wields forbidden dark magic. She does a Dance of Knives that summons Chaos."),
@@ -816,6 +815,8 @@ extension ChatEngine {
                     ChatItem(profile: .hero, imgPos: .left, chat: "BRING ME MAGMOOR!"),
                     ChatItem(profile: .trainer, chat: "Okay but let's be careful.")
                 ]) { [unowned self] in
+                    AudioManager.shared.adjustVolume(to: 1, for: AudioManager.shared.currentTheme, fadeDuration: 3)
+
                     handleDialogueCompletion(level: level, completion: completion)
                 }
             }

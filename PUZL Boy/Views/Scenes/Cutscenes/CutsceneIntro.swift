@@ -88,7 +88,7 @@ class CutsceneIntro: SKScene {
         skipIntroSprite.zPosition = K.ZPosition.speechBubble
         skipIntroSprite.delegate = self
 
-        dragonSprite = SKSpriteNode(imageNamed: FireIceTheme.spriteEnemyLarge)
+        dragonSprite = SKSpriteNode(imageNamed: "enemyLarge")
         dragonSprite.position = CGPoint(x: -dragonSprite.size.width, y: K.ScreenDimensions.size.height + dragonSprite.size.height)
         dragonSprite.zPosition = K.ZPosition.player - 10
         
@@ -105,7 +105,7 @@ class CutsceneIntro: SKScene {
         skyNode.zPosition = K.ZPosition.skyNode
         skyNode.name = LaunchScene.nodeName_skyNode
         
-        bloodSkyNode = SKSpriteNode(texture: SKTexture(image: FireIceTheme.imageSkyNodeOverlay))
+        bloodSkyNode = SKSpriteNode(texture: SKTexture(image: UIImage.gradientSkyBlood))
         bloodSkyNode.size = CGSize(width: K.ScreenDimensions.size.width, height: K.ScreenDimensions.size.height / 2)
         bloodSkyNode.position = CGPoint(x: 0, y: K.ScreenDimensions.size.height)
         bloodSkyNode.anchorPoint = CGPoint(x: 0, y: 1)
@@ -122,7 +122,7 @@ class CutsceneIntro: SKScene {
         
         bloodOverlayNode = SKShapeNode(rectOf: screenSize)
         bloodOverlayNode.position = CGPoint(x: screenSize.width / 2, y: screenSize.height / 2)
-        bloodOverlayNode.fillColor = FireIceTheme.overlayColor
+        bloodOverlayNode.fillColor = .red
         bloodOverlayNode.lineWidth = 0
         bloodOverlayNode.alpha = 0
         bloodOverlayNode.zPosition = K.ZPosition.bloodOverlay
@@ -359,14 +359,14 @@ class CutsceneIntro: SKScene {
                                 AudioManager.shared.playSound(for: "enemyroar")
                                 AudioManager.shared.playSound(for: "enemyscratch")
                                 Haptics.shared.executeCustomPattern(pattern: .enemy)
-                                ParticleEngine.shared.animateParticles(type: FireIceTheme.particleTypeDragonFire,
+                                ParticleEngine.shared.animateParticles(type: .dragonFire,
                                                                        toNode: dragonSprite,
                                                                        position: CGPoint(x: 10, y: 80),
                                                                        duration: 5)
                             }
                         ]))
                     },
-                    SpeechBubbleItem(profile: speechPrincess, speed: 0.01, chat: "OH, NO! IT'S HAPPENING!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!") { [unowned self] in
+                    SpeechBubbleItem(profile: speechPrincess, speed: 0.01, chat: "AAAAAAAHHHHH! IT'S HAPPENING!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!") { [unowned self] in
                         wideShot()
                         
                         dragonSprite.position = CGPoint(x: princessPositionFinal.x, y: princessPositionFinal.y + princess.sprite.size.height / 2)
@@ -453,7 +453,7 @@ class CutsceneIntro: SKScene {
 
                         AudioManager.shared.stopSound(for: "thunderrumble", fadeDuration: 5)
                     },
-                    SpeechBubbleItem(profile: speechHero, chat: "Hang on princess! I'm coming to get you!!!|||")
+                    SpeechBubbleItem(profile: speechHero, chat: "Hang on princess! I'm coming to rescue you!!!|||")
                 ]) { [unowned self] in
                     AudioManager.shared.stopSound(for: "ageofruin", fadeDuration: 4)
                     UserDefaults.standard.set(true, forKey: K.UserDefaults.shouldSkipIntro)

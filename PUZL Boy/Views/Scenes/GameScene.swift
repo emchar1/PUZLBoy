@@ -175,10 +175,11 @@ class GameScene: SKScene {
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard let location = touches.first?.location(in: self) else { return }
 
+        tapPointerEngine.move(to: self, at: location, particleType: currentLevel == Level.partyLevel ? .pointerRainbow : .pointer)
+
         if gameEngine.checkControlGuardsIfPassed(includeDisableInputFromOutside: false) {
             if !gameEngine.disableInputFromOutside {
                 pauseResetEngine.touchDown(for: touches)
-                tapPointerEngine.move(to: self, at: location, particleType: currentLevel == Level.partyLevel ? .pointerRainbow : .pointer)
             }
         }
 

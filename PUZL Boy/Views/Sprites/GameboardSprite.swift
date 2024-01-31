@@ -326,13 +326,14 @@ class GameboardSprite {
         overlayPanel.name = "captureEndOpen"
         sprite.addChild(overlayPanel)
         
-        AudioManager.shared.playSound(for: "magicheartbeatloop1", fadeIn: 3, interruptPlayback: false)
-        AudioManager.shared.playSound(for: "littlegirllaugh", fadeIn: 3, interruptPlayback: false)
-        AudioManager.shared.playSound(for: "scarymusicbox", fadeIn: 3, interruptPlayback: false)
-        AudioManager.shared.adjustVolume(to: 0, for: AudioManager.shared.currentTheme, fadeDuration: 5)
-        
+        AudioManager.shared.playSound(for: "magicwarp")
+
         spawnItem(at: position, with: .warp4) { [unowned self] in
-            AudioManager.shared.playSound(for: "magicwarp")
+            AudioManager.shared.playSound(for: "magicheartbeatloop1", fadeIn: 3, interruptPlayback: false)
+            AudioManager.shared.playSound(for: "littlegirllaugh", fadeIn: 3, interruptPlayback: false)
+            AudioManager.shared.playSound(for: "scarymusicbox", fadeIn: 3, interruptPlayback: false)
+            AudioManager.shared.adjustVolume(to: 0, for: AudioManager.shared.currentTheme, fadeDuration: 5)
+
             ParticleEngine.shared.animateParticles(type: .warp4,
                                                    toNode: sprite,
                                                    position: getLocation(at: position),
@@ -489,7 +490,6 @@ class GameboardSprite {
                         AudioManager.shared.stopSound(for: "magicheartbeatloop2", fadeDuration: 5)
                         AudioManager.shared.stopSound(for: "littlegirllaugh", fadeDuration: 5)
                         AudioManager.shared.stopSound(for: "scarymusicbox", fadeDuration: 5)
-                        AudioManager.shared.adjustVolume(to: 1, for: AudioManager.shared.currentTheme, fadeDuration: 3)
                     }
                 ]), completion: completion)
             }
