@@ -234,14 +234,7 @@ class GameScene: SKScene {
     // MARK: - Required Functions
     
     override func didMove(to view: SKView) {
-        moveSprites()
-        
-        //These alway need to go in THIS order!
-        scoringEngine.timerManager.resumeTime()
-        startTimer()
-        
-        playDialogue()
-        
+        //First, set the audio...
         AudioManager.shared.stopSound(for: "continueloop")
         
         
@@ -253,6 +246,15 @@ class GameScene: SKScene {
         
         AudioManager.shared.playSound(for: AudioManager.shared.currentTheme)
 
+        
+        //...then call the remaining functions.
+        moveSprites()
+        
+        //These alway need to go in THIS order!
+        scoringEngine.timerManager.resumeTime()
+        startTimer()
+        
+        playDialogue()
         gameEngine.checkIfGameOverOnStartup()
     }
     
