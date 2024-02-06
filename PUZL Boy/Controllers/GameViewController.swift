@@ -173,6 +173,19 @@ extension GameViewController: GameSceneDelegate {
         //NEEDS to have a transition, otherwise the state won't save, trust me.
         skView.presentScene(titleScene, transition: SKTransition.fade(with: .white, duration: 0))
     }
+    
+    func chatDialogueCutscene(level: Int, completion: (() -> Void)?) {
+        print("Cutscene for level: \(level)")
+        
+        var cutscene: CutsceneOldFriends? = CutsceneOldFriends(size: K.ScreenDimensions.size)
+        cutscene?.animateScene() {
+            print("Returning to game....")
+            cutscene = nil
+            completion?()
+        }
+        
+        skView.presentScene(cutscene)
+    }
 }
 
 

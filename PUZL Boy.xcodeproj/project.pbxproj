@@ -112,6 +112,7 @@
 		EA7605722B5B5322001BC268 /* SnowfallParticles.sks in Resources */ = {isa = PBXBuildFile; fileRef = EA7605712B5B5322001BC268 /* SnowfallParticles.sks */; };
 		EA7605742B5B7531001BC268 /* magicheartbeatloop1.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA7605732B5B7531001BC268 /* magicheartbeatloop1.mp3 */; };
 		EA76057A2B5BED71001BC268 /* magicheartbeatloop2.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA7605792B5BED71001BC268 /* magicheartbeatloop2.mp3 */; };
+		EA77D3F82B72BF1600B77C42 /* CutsceneOldFriends.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA77D3F72B72BF1600B77C42 /* CutsceneOldFriends.swift */; };
 		EA78C36C29763B1C00292744 /* AchievementAdMobster.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA78C36B29763B1C00292744 /* AchievementAdMobster.swift */; };
 		EA78C36E29767D7600292744 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = EA78C36D29767D7600292744 /* GoogleService-Info.plist */; };
 		EA826C74297CEFC500F19F81 /* TimerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA826C73297CEFC500F19F81 /* TimerManager.swift */; };
@@ -395,6 +396,7 @@
 		EA7605712B5B5322001BC268 /* SnowfallParticles.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = SnowfallParticles.sks; sourceTree = "<group>"; };
 		EA7605732B5B7531001BC268 /* magicheartbeatloop1.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = magicheartbeatloop1.mp3; sourceTree = "<group>"; };
 		EA7605792B5BED71001BC268 /* magicheartbeatloop2.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = magicheartbeatloop2.mp3; sourceTree = "<group>"; };
+		EA77D3F72B72BF1600B77C42 /* CutsceneOldFriends.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CutsceneOldFriends.swift; sourceTree = "<group>"; };
 		EA78C36B29763B1C00292744 /* AchievementAdMobster.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementAdMobster.swift; sourceTree = "<group>"; };
 		EA78C36D29767D7600292744 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		EA826C73297CEFC500F19F81 /* TimerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerManager.swift; sourceTree = "<group>"; };
@@ -649,6 +651,7 @@
 				EAD59A532A88200800F86EED /* SpeechBubbleSprite.swift */,
 				EAB2DE132AA1AB8F00172478 /* SpeechOverlaySprite.swift */,
 				EA496AAB2A79B25A0096DB35 /* CutsceneIntro.swift */,
+				EA77D3F72B72BF1600B77C42 /* CutsceneOldFriends.swift */,
 			);
 			path = Cutscenes;
 			sourceTree = "<group>";
@@ -1357,6 +1360,7 @@
 				EAF07C0329E796640034CD1A /* ParallaxSprite.swift in Sources */,
 				EADFD96229F90B6A00C6F9D1 /* ConfirmSprite.swift in Sources */,
 				EA705CDE2A1C5DD40051519B /* PurchasePage.swift in Sources */,
+				EA77D3F82B72BF1600B77C42 /* CutsceneOldFriends.swift in Sources */,
 				EACCC0632AE640EA0099DA44 /* LeaderboardsTVCell.swift in Sources */,
 				EA3951ED2938165A00D0B14A /* Extension+UIImage.swift in Sources */,
 				EA826C95298F880B00F19F81 /* AchievementPUZLMaster.swift in Sources */,

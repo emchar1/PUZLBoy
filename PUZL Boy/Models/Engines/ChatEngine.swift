@@ -214,7 +214,7 @@ class ChatEngine {
     }
     
     
-    // MARK: - Misc Functions
+    // MARK: - Helper Functions
 
     func shouldPauseGame(level: Int) -> Bool {
         return dialoguePlayed[level] != nil
@@ -246,6 +246,24 @@ class ChatEngine {
             SKAction.wait(forDuration: 0.5),
             SKAction.fadeAlpha(to: 1, duration: 0.75)
         ])))
+    }
+    
+    private func fadeDimOverlay() {
+        dimOverlaySprite.run(SKAction.fadeAlpha(to: 0.0, duration: 1.0))
+    }
+    
+    ///Helper function to wrap up a chat dialogue and call the completion handler.
+    private func handleDialogueCompletion(level: Int, completion: (() -> Void)?) {
+        dialoguePlayed[level] = true
+        isChatting = false
+        fadeDimOverlay()
+        completion?()
+    }
+    
+    private func handleDialogueCompletionWithCutscene(level: Int, completion: (() -> Void)?) {
+        //do stuff
+
+        completion?()
     }
     
     
@@ -426,18 +444,6 @@ class ChatEngine {
             self.completion?()
         }
     }
-    
-    private func fadeDimOverlay() {
-        dimOverlaySprite.run(SKAction.fadeAlpha(to: 0.0, duration: 1.0))
-    }
-    
-    ///Helper function to wrap up a chat dialogue and call the completion handler.
-    private func handleDialogueCompletion(level: Int, completion: (() -> Void)?) {
-        dialoguePlayed[level] = true
-        isChatting = false
-        fadeDimOverlay()
-        completion?()
-    }
 }
 
 
@@ -472,7 +478,8 @@ extension ChatEngine {
         dialoguePlayed[190] = false
 
         //Chapter 2 - A Mysterious Stranger Among Us
-        dialoguePlayed[208] = false //(3, 2)
+        dialoguePlayed[201] = false
+        dialoguePlayed[208] = false //spawn at (0, 2)
     }
     
     /**
@@ -824,6 +831,17 @@ extension ChatEngine {
                 ChatItem(profile: .trainer, chat: "She can't hear us. I can't sense her presence. Whatever has a hold of her is keeping her in between realms. We must keep moving if we are to find her."),
                 ChatItem(profile: .hero, imgPos: .left, chat: "Who is the shadowy guy she was talking about?"),
                 ChatItem(profile: .trainer, chat: "I... I don't know for sure. But I have a sinking feeling...")
+            ]) { [unowned self] in
+                handleDialogueCompletion(level: level, completion: completion)
+            }
+        case 201:
+            sendChatArray(items: [
+                ChatItem(profile: .hero, imgPos: .left, chat: "What took you so long? I was talking to myself before I realized you were still in the DARK REALM..."),
+                ChatItem(profile: .trainer, chat: "PUZL Boy, I—"),
+                ChatItem(profile: .hero, imgPos: .left, chat: "As I was saying, I used to have regular milk with my cereal, then I discovered oat milk and what a game changer!"),
+                ChatItem(profile: .trainer, chat: "PUZL Boy, we need to find the princess and send her back to Vaeloria right away. Time is of the essence."),
+                ChatItem(profile: .hero, imgPos: .left, chat: "Yeah, we're headed to the core right now. Why the rush all of a sudden?"),
+                ChatItem(profile: .trainer, chat: "It all started when...")
             ]) { [unowned self] in
                 handleDialogueCompletion(level: level, completion: completion)
             }

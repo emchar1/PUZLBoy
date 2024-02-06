@@ -11,13 +11,15 @@ class CutsceneIntro: SKScene {
     
     // MARK: - Properties
     
-    //Positions, Scales
-    private let heroPositionInitial = CGPoint(x: K.ScreenDimensions.size.width / 2, y: K.ScreenDimensions.size.height / 3)
-    private let heroPositionFinal = CGPoint(x: K.ScreenDimensions.size.width * 1 / 5, y: K.ScreenDimensions.size.height / 3)
-    private let princessPositionInitial = CGPoint(x: K.ScreenDimensions.size.width + 100, y: K.ScreenDimensions.size.height / 3 - 40)
-    private let princessPositionFinal = CGPoint(x: K.ScreenDimensions.size.width * 4 / 5, y: K.ScreenDimensions.size.height / 3 - 40)
+    //General
     private let playerScale: CGFloat = 0.75
-    private let screenSize: CGSize = K.ScreenDimensions.size
+    private var screenSize: CGSize
+    private var disableTaps: Bool = false
+    private var completion: (() -> Void)?
+    private var heroPositionInitial: CGPoint { CGPoint(x: screenSize.width / 2, y: screenSize.height / 3) }
+    private var heroPositionFinal: CGPoint { CGPoint(x: screenSize.width * 1 / 5, y: screenSize.height / 3) }
+    private var princessPositionInitial: CGPoint { CGPoint(x: screenSize.width + 100, y: screenSize.height / 3 - 40) }
+    private var princessPositionFinal: CGPoint { CGPoint(x: screenSize.width * 4 / 5, y: screenSize.height / 3 - 40) }
     
     //Main Nodes
     private(set) var parallaxManager: ParallaxManager!
@@ -29,13 +31,13 @@ class CutsceneIntro: SKScene {
     private var flyingDragon: FlyingDragon!
     private var tapPointerEngine: TapPointerEngine!
     
-    //Speech
+    //Speech Nodes
     private var speechHero: SpeechBubbleSprite!
     private var speechPrincess: SpeechBubbleSprite!
     private var overlaySpeech: SpeechOverlaySprite!
     private var skipIntroSprite: SkipIntroSprite!
 
-    //Overlays
+    //Overlay Nodes
     private var backgroundNode: SKShapeNode!
     private var dimOverlayNode: SKShapeNode!
     private var bloodOverlayNode: SKShapeNode!
@@ -43,10 +45,6 @@ class CutsceneIntro: SKScene {
     private var fadeTransitionNode: SKShapeNode!
     private var letterbox: LetterboxSprite!
     
-    //Misc.
-    private var disableTaps: Bool = false
-    private var completion: (() -> Void)?
-
     //Funny Quotes
     static var funnyQuotes: [String] = [
         "I'm a Barbie girl,| in a Barbie world.|| Life in plastic,| it's fantastic! You can brush my hair",
@@ -56,6 +54,8 @@ class CutsceneIntro: SKScene {
     // MARK: - Initialization
     
     init(size: CGSize, xOffsetsArray: [ParallaxSprite.SpriteXPositions]?) {
+        screenSize = size
+        
         super.init(size: size)
         
         setupScene(xOffsetsArray: xOffsetsArray)
@@ -89,25 +89,25 @@ class CutsceneIntro: SKScene {
         skipIntroSprite.delegate = self
 
         dragonSprite = SKSpriteNode(imageNamed: "enemyLarge")
-        dragonSprite.position = CGPoint(x: -dragonSprite.size.width, y: K.ScreenDimensions.size.height + dragonSprite.size.height)
+        dragonSprite.position = CGPoint(x: -dragonSprite.size.width, y: screenSize.height + dragonSprite.size.height)
         dragonSprite.zPosition = K.ZPosition.player - 10
         
         flyingDragon = FlyingDragon()
         
-        backgroundNode = SKShapeNode(rectOf: K.ScreenDimensions.size)
+        backgroundNode = SKShapeNode(rectOf: screenSize)
         backgroundNode.fillColor = .clear
         backgroundNode.lineWidth = 0
 
         skyNode = SKSpriteNode(texture: SKTexture(image: DayTheme.getSkyImage(useMorningSky: true)))
-        skyNode.size = CGSize(width: K.ScreenDimensions.size.width, height: K.ScreenDimensions.size.height / 2)
-        skyNode.position = CGPoint(x: 0, y: K.ScreenDimensions.size.height)
+        skyNode.size = CGSize(width: screenSize.width, height: screenSize.height / 2)
+        skyNode.position = CGPoint(x: 0, y: screenSize.height)
         skyNode.anchorPoint = CGPoint(x: 0, y: 1)
         skyNode.zPosition = K.ZPosition.skyNode
         skyNode.name = LaunchScene.nodeName_skyNode
         
         bloodSkyNode = SKSpriteNode(texture: SKTexture(image: UIImage.gradientSkyBlood))
-        bloodSkyNode.size = CGSize(width: K.ScreenDimensions.size.width, height: K.ScreenDimensions.size.height / 2)
-        bloodSkyNode.position = CGPoint(x: 0, y: K.ScreenDimensions.size.height)
+        bloodSkyNode.size = CGSize(width: screenSize.width, height: screenSize.height / 2)
+        bloodSkyNode.position = CGPoint(x: 0, y: screenSize.height)
         bloodSkyNode.anchorPoint = CGPoint(x: 0, y: 1)
         bloodSkyNode.zPosition = K.ZPosition.skyNode
         bloodSkyNode.name = LaunchScene.nodeName_skyNode
