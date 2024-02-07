@@ -21,42 +21,49 @@ protocol ChatEngineDelegate: AnyObject {
 class ChatEngine {
     
     // MARK: - Properties
-    
-    //avatarSizeNew and Orig should be static so other classes can access w/o creating an instance
-    static let avatarSizeNew: CGFloat = 300
-    static let avatarSizeOrig: CGFloat = 512
-    
-    //Size and position properties
+        
+    //Size & Position Properties
+    private let avatarSizeNew: CGFloat = 300
+    private let avatarSizeOrig: CGFloat = 512
     private let padding: CGPoint = CGPoint(x: 20, y: 8)
     private let borderLineWidth: CGFloat = 6
     private var origin: CGPoint {
         CGPoint(x: GameboardSprite.offsetPosition.x + borderLineWidth / 2,
-                y: K.ScreenDimensions.topOfGameboard - backgroundSpriteWidth - ChatEngine.avatarSizeNew - 40)
+                y: K.ScreenDimensions.topOfGameboard - backgroundSpriteWidth - avatarSizeNew - 40)
     }
     private var backgroundSpriteWidth: CGFloat {
         K.ScreenDimensions.size.width * UIDevice.spriteScale
     }
+
     
-    //Other properties
-    private(set) var isChatting: Bool = false
-    private var isAnimating: Bool = false
+    //Utilities
     private var timer: Timer
-    private var dispatchWorkItem: DispatchWorkItem //Used to closeChat() and cancel any scheduled closeChat() calls. It works!!!
-    private var chatText: String = ""
-    private var chatIndex = 0
-    private var allowNewChat = true
-    private var shouldClose = true
-    private var completion: (() -> ())?
+    private var dispatchWorkItem: DispatchWorkItem          //Used to closeChat() and cancel any scheduled closeChat() calls. It works!!!
+
+
+    //Important Properties
     private var currentProfile: ChatProfile = .hero
     private var dialoguePlayed: [Int: Bool] = [:]           //Only play certain instructions once
-    private var chatSpeed: TimeInterval
+    private var dialogueWithCutscene: [Int: Bool] = [:]     //Levels with dialogue that have a cutscene
+    private var completion: (() -> ())?
+
     private let chatSpeedOrig: TimeInterval = 0.08
+    private var chatSpeed: TimeInterval
+    private var chatText: String = ""
+    private var chatIndex: Int = 0
+
+    private(set) var isChatting: Bool = false
+    private var isAnimating: Bool = false
+    private var allowNewChat: Bool = true
+    private var shouldClose: Bool = true
     
+
     //Chat Sprites
     private var chatBackgroundSprite: SKShapeNode!
     private var avatarSprite: SKSpriteNode!
     private var textSprite: SKLabelNode!
     private var fastForwardSprite: SKSpriteNode!
+
 
     //Overlay Sprites
     private var superScene: SKScene?
@@ -65,6 +72,7 @@ class ChatEngine {
     private var magmoorScary: MagmoorScarySprite!
     
     
+    //Misc Data Structures
     private struct ChatItem {
         let profile: ChatProfile
         let imgPos: ImagePosition
@@ -122,8 +130,7 @@ class ChatEngine {
         chatBackgroundSprite = SKShapeNode()
         chatBackgroundSprite.lineWidth = borderLineWidth
         chatBackgroundSprite.path = UIBezierPath(roundedRect: CGRect(x: origin.x, y: origin.y,
-                                                                     width: backgroundSpriteWidth,
-                                                                     height: ChatEngine.avatarSizeNew + borderLineWidth),
+                                                                     width: backgroundSpriteWidth, height: avatarSizeNew + borderLineWidth),
                                                  cornerRadius: 20).cgPath
         chatBackgroundSprite.fillColor = .orange
         chatBackgroundSprite.strokeColor = .white
@@ -134,14 +141,14 @@ class ChatEngine {
                 
         avatarSprite = SKSpriteNode(texture: SKTexture(imageNamed: "puzlboy"))
         avatarSprite.position = CGPoint(x: origin.x, y: origin.y + borderLineWidth / 2)
-        avatarSprite.setScale(ChatEngine.avatarSizeNew / ChatEngine.avatarSizeOrig * 3)
+        avatarSprite.setScale(avatarSizeNew / avatarSizeOrig * 3)
         avatarSprite.anchorPoint = .zero
         avatarSprite.color = .magenta
         
         textSprite = SKLabelNode(text: "PUZL Boy is the newest puzzle game out there on the App Store. It's so popular, it's going to have over a million downloads, gamers are going to love it - casual gamers, hardcore gamers, and everyone in-between! So download your copy today!!")
-        textSprite.position = CGPoint(x: origin.x, y: origin.y + ChatEngine.avatarSizeNew - padding.y)
+        textSprite.position = CGPoint(x: origin.x, y: origin.y + avatarSizeNew - padding.y)
         textSprite.numberOfLines = 0
-        textSprite.preferredMaxLayoutWidth = backgroundSpriteWidth - ChatEngine.avatarSizeNew
+        textSprite.preferredMaxLayoutWidth = backgroundSpriteWidth - avatarSizeNew
         textSprite.horizontalAlignmentMode = .left
         textSprite.verticalAlignmentMode = .top
         textSprite.fontName = UIFont.chatFont
@@ -261,8 +268,10 @@ class ChatEngine {
     }
     
     private func handleDialogueCompletionWithCutscene(level: Int, completion: (() -> Void)?) {
-        //do stuff
-
+        //DO NOT SET THIS: dialoguePlayed[level] = true
+        
+        isChatting = false
+        fadeDimOverlay()
         completion?()
     }
     
@@ -341,7 +350,7 @@ class ChatEngine {
             avatarSprite.isHidden = false
             
             textSprite.position.x = origin.x + (imgPos == .right ? padding.x : avatarSprite.size.width)
-            textSprite.preferredMaxLayoutWidth = backgroundSpriteWidth - ChatEngine.avatarSizeNew
+            textSprite.preferredMaxLayoutWidth = backgroundSpriteWidth - avatarSizeNew
             textSprite.horizontalAlignmentMode = .left
         }
         
@@ -450,6 +459,16 @@ class ChatEngine {
 // MARK: - Dialogue Functions
 
 extension ChatEngine {
+    func setDialoguePlayed(level: Int, to newValue: Bool) {
+        guard dialoguePlayed[level] != nil else { return }
+        
+        dialoguePlayed[level] = newValue
+    }
+    
+    func canPlayCutscene(level: Int) -> Bool {
+        return (dialogueWithCutscene[level] ?? false) && !(dialoguePlayed[level] ?? false)
+    }
+        
     ///Populates the dialoguePlayed array. Need to include all levels where dialogue is to occur, and also add the level case in the playDialogue() function.
     private func populateKeyDialogue() {
 
@@ -480,6 +499,11 @@ extension ChatEngine {
         //Chapter 2 - A Mysterious Stranger Among Us
         dialoguePlayed[201] = false
         dialoguePlayed[208] = false //spawn at (0, 2)
+        
+        
+        
+        //Dialogue with CUTSCENES (always set to true)
+        dialogueWithCutscene[201] = true
     }
     
     /**
@@ -838,12 +862,14 @@ extension ChatEngine {
             sendChatArray(items: [
                 ChatItem(profile: .hero, imgPos: .left, chat: "What took you so long? I was talking to myself before I realized you were still in the DARK REALM..."),
                 ChatItem(profile: .trainer, chat: "PUZL Boy, I—"),
-                ChatItem(profile: .hero, imgPos: .left, chat: "As I was saying, I used to have regular milk with my cereal, then I discovered oat milk and what a game changer!"),
+                ChatItem(profile: .hero, imgPos: .left, chat: "As I was saying, I used to have regular milk with my cereal, then I discovered oat milk and dude, it slaps!"),
+                ChatItem(profile: .trainer, chat: "...slaps??? 🤔 I need a translator when I talk to you."),
+                ChatItem(profile: .hero, imgPos: .left, chat: "Means it's yummy! 😋"),
                 ChatItem(profile: .trainer, chat: "PUZL Boy, we need to find the princess and send her back to Vaeloria right away. Time is of the essence."),
                 ChatItem(profile: .hero, imgPos: .left, chat: "Yeah, we're headed to the core right now. Why the rush all of a sudden?"),
                 ChatItem(profile: .trainer, chat: "It all started when...")
             ]) { [unowned self] in
-                handleDialogueCompletion(level: level, completion: completion)
+                handleDialogueCompletionWithCutscene(level: level, completion: completion)
             }
         case 208:
             let spawnPoint: K.GameboardPosition = (0, 2)

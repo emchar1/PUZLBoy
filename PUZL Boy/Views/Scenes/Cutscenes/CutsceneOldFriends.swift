@@ -33,6 +33,10 @@ class CutsceneOldFriends: SKScene {
         fatalError("init(coder:) has not been implemented")
     }
     
+    deinit {
+        print("CutsceneOldFriends deinit")
+    }
+    
     private func setupNodes() {
         playerMagmoor = Player(type: .villain)
         playerMagmoor.sprite.position = CGPoint(x: screenSize.width / 2, y: screenSize.height / 3)
@@ -43,6 +47,7 @@ class CutsceneOldFriends: SKScene {
                                           xOffsetsArray: nil,
                                           forceSpeed: .walk,
                                           animateForCutscene: false)
+        parallaxManager.animate()
         
         skyNode = SKSpriteNode(texture: SKTexture(image: DayTheme.getSkyImage()))
         skyNode.size = CGSize(width: screenSize.width, height: screenSize.height / 2)
@@ -72,6 +77,6 @@ class CutsceneOldFriends: SKScene {
 
         playerMagmoor.sprite.run(SKAction.repeatForever(playerAnimate))
         
-        speechMagmoor.setText(text: "This is a test of the Vaelorian broadcast system (VBS)", superScene: self, parentNode: nil, completion: completion)
+        speechMagmoor.setText(text: "This is a cutscene.", superScene: self, parentNode: nil, completion: completion)
     }
 }

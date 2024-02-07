@@ -11,6 +11,7 @@ import StoreKit
 
 protocol GameSceneDelegate: AnyObject {
     func confirmQuitTapped()
+    func showChatDialogueCutscene(level: Int)
 }
 
 
@@ -21,7 +22,7 @@ class GameScene: SKScene {
     //Custom Objects - MUST make these nil upon object release, e.g. when quitting game to return to TitleScene
     private var gameEngine: GameEngine!
     private var scoringEngine: ScoringEngine!
-    private var chatEngine: ChatEngine!
+    private(set) var chatEngine: ChatEngine!
     private var pauseResetEngine: PauseResetEngine!
     private var levelStatsArray: [LevelStats]
     private var levelSkipEngine: LevelSkipEngine!
@@ -563,13 +564,37 @@ class GameScene: SKScene {
         pauseResetEngine.shouldDisable(true)
 
         chatEngine.playDialogue(level: currentLevel) { [unowned self] in
-            scoringEngine.timerManager.resumeTime()
-            startTimer()
-            gameEngine.shouldDisableInput(false)
-            gameEngine.spawnPartyItems(maxItems: maxSpawnedItemsForParty)
-            pauseResetEngine.shouldDisable(false)
+            if chatEngine.canPlayCutscene(level: currentLevel) {
+                cleanupScene()
+                gameSceneDelegate?.showChatDialogueCutscene(level: currentLevel)
+            }
+            else {
+                scoringEngine.timerManager.resumeTime()
+                startTimer()
+                gameEngine.shouldDisableInput(false)
+                gameEngine.spawnPartyItems(maxItems: maxSpawnedItemsForParty)
+                pauseResetEngine.shouldDisable(false)
+            }
         }
     }
+    
+    ///Prepares the GameScene for exit transition.
+    private func cleanupScene() {
+        removeAllActions()
+        removeAllChildren()
+        removeFromParent()
+        
+        saveState(levelStatsItem: getLevelStatsItem(level: currentLevel, didWin: false))
+        
+        //IMPORTANT!! Make these nil so GameScene gets deinitialized properly!!!
+        gameEngine = nil
+        scoringEngine = nil
+        chatEngine = nil
+        pauseResetEngine = nil
+        levelSkipEngine = nil
+        tapPointerEngine = nil
+    }
+    
 }
 
 
@@ -996,21 +1021,9 @@ extension GameScene: PauseResetEngineDelegate {
     }
     
     func confirmQuitTapped() {
-        removeAllActions()
-        removeAllChildren()
-        removeFromParent()
-        
-        saveState(levelStatsItem: getLevelStatsItem(level: currentLevel, didWin: false))
+        cleanupScene()
         
         gameSceneDelegate?.confirmQuitTapped()
-        
-        //IMPORTANT!! Make these nil so GameScene gets deinitialized properly!!!
-        gameEngine = nil
-        scoringEngine = nil
-        chatEngine = nil
-        pauseResetEngine = nil
-        levelSkipEngine = nil
-        tapPointerEngine = nil
     }
     
     func didTapHowToPlay(_ tableView: HowToPlayTableView) {

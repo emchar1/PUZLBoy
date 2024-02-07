@@ -174,17 +174,16 @@ extension GameViewController: GameSceneDelegate {
         skView.presentScene(titleScene, transition: SKTransition.fade(with: .white, duration: 0))
     }
     
-    func chatDialogueCutscene(level: Int, completion: (() -> Void)?) {
-        print("Cutscene for level: \(level)")
-        
-        var cutscene: CutsceneOldFriends? = CutsceneOldFriends(size: K.ScreenDimensions.size)
-        cutscene?.animateScene() {
-            print("Returning to game....")
-            cutscene = nil
-            completion?()
+    func showChatDialogueCutscene(level: Int) {
+        let gameScene = GameScene(size: K.ScreenDimensions.size, hasInternet: hasInternet, levelSelectNewLevel: level)
+        gameScene.gameSceneDelegate = self
+        gameScene.chatEngine.setDialoguePlayed(level: level, to: true) //IMPORTANT: MUST do this for levels with a chat dialogue cutscene!
+
+        let cutscene = CutsceneOldFriends(size: K.ScreenDimensions.size)
+        skView.presentScene(cutscene, transition: SKTransition.fade(with: .white, duration: 1.0))
+        cutscene.animateScene() { [unowned self] in
+            skView.presentScene(gameScene, transition: SKTransition.fade(with: .white, duration: 1.0))
         }
-        
-        skView.presentScene(cutscene)
     }
 }
 
