@@ -11,7 +11,7 @@ import StoreKit
 
 protocol GameSceneDelegate: AnyObject {
     func confirmQuitTapped()
-    func showChatDialogueCutscene(level: Int)
+    func presentChatDialogueCutscene(level: Int)
 }
 
 
@@ -96,7 +96,7 @@ class GameScene: SKScene {
         pauseResetEngine.delegate = self
         levelSkipEngine.delegate = self
                 
-        backgroundColor = .systemBlue
+        backgroundColor = .white
         scaleMode = .aspectFill
         
         let notificationCenter = NotificationCenter.default
@@ -565,8 +565,19 @@ class GameScene: SKScene {
 
         chatEngine.playDialogue(level: currentLevel) { [unowned self] in
             if chatEngine.canPlayCutscene(level: currentLevel) {
-                cleanupScene()
-                gameSceneDelegate?.showChatDialogueCutscene(level: currentLevel)
+                let fadeDuration: TimeInterval = 1.0
+                let fadeNode = SKSpriteNode(color: .white, size: K.ScreenDimensions.size)
+                fadeNode.anchorPoint = .zero
+                fadeNode.alpha = 0
+                fadeNode.zPosition = K.ZPosition.messagePrompt
+                addChild(fadeNode)
+                
+                AudioManager.shared.stopSound(for: AudioManager.shared.currentTheme, fadeDuration: fadeDuration)
+                
+                fadeNode.run(SKAction.fadeIn(withDuration: fadeDuration)) { [unowned self] in
+                    cleanupScene(shouldSaveState: false)
+                    gameSceneDelegate?.presentChatDialogueCutscene(level: currentLevel)
+                }
             }
             else {
                 scoringEngine.timerManager.resumeTime()
@@ -578,13 +589,18 @@ class GameScene: SKScene {
         }
     }
     
-    ///Prepares the GameScene for exit transition.
-    private func cleanupScene() {
+    /**
+     Prepares the GameScene for exit transition.
+     - parameter shouldSaveState: saves the game state, if true.
+     */
+    private func cleanupScene(shouldSaveState: Bool) {
         removeAllActions()
         removeAllChildren()
         removeFromParent()
         
-        saveState(levelStatsItem: getLevelStatsItem(level: currentLevel, didWin: false))
+        if shouldSaveState {
+            saveState(levelStatsItem: getLevelStatsItem(level: currentLevel, didWin: false))
+        }
         
         //IMPORTANT!! Make these nil so GameScene gets deinitialized properly!!!
         gameEngine = nil
@@ -1021,8 +1037,7 @@ extension GameScene: PauseResetEngineDelegate {
     }
     
     func confirmQuitTapped() {
-        cleanupScene()
-        
+        cleanupScene(shouldSaveState: true)
         gameSceneDelegate?.confirmQuitTapped()
     }
     

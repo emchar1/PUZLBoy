@@ -466,7 +466,7 @@ extension ChatEngine {
     }
     
     func canPlayCutscene(level: Int) -> Bool {
-        return (dialogueWithCutscene[level] ?? false) && !(dialoguePlayed[level] ?? false)
+        return (dialogueWithCutscene[level] ?? false) && !(dialoguePlayed[level] ?? true)
     }
         
     ///Populates the dialoguePlayed array. Need to include all levels where dialogue is to occur, and also add the level case in the playDialogue() function.
@@ -847,14 +847,16 @@ extension ChatEngine {
             sendChatArray(items: [
                 ChatItem(profile: .blankprincess, chat: "\nHello? Is anyone there? Can anyone hear me? Hellooo? HELLO!!!!!!"),
                 ChatItem(profile: .hero, imgPos: .left, chat: "Princess?! We can hear you! Can you hear us??"),
-                ChatItem(profile: .blankprincess, chat: "Help me PLEASE!!! I don't know where I am but it's smoky and it smells like burning trees and this shadowy guy captured me! (Uh oh. He's coming back...)"),
+                ChatItem(profile: .blankprincess, chat: "\nHelp me please, PUZL Boy!!! I don't know where I am!"),
+                ChatItem(profile: .blankprincess, chat: "\nIt's very smoky in here and it smells like burning trees!"),
+                ChatItem(profile: .blankprincess, chat: "\nOh! And this shadowy guy has me! (Uh oh, he's coming back...)"),
                 ChatItem(profile: .hero, imgPos: .left, chat: "Where are you!!! Can you hear me! OLIVIA!!! Marlin we gotta do something!") {
                     AudioManager.shared.adjustVolume(to: 1, for: AudioManager.shared.currentTheme, fadeDuration: 5)
                     AudioManager.shared.stopSound(for: "littlegirllaugh", fadeDuration: 5)
                 },
                 ChatItem(profile: .trainer, chat: "She can't hear us. I can't sense her presence. Whatever has a hold of her is keeping her in between realms. We must keep moving if we are to find her."),
                 ChatItem(profile: .hero, imgPos: .left, chat: "Who is the shadowy guy she was talking about?"),
-                ChatItem(profile: .trainer, chat: "I... I don't know for sure. But I have a sinking feeling...")
+                ChatItem(profile: .trainer, chat: "I... I can't say for sure. But I have a sinking feeling...")
             ]) { [unowned self] in
                 handleDialogueCompletion(level: level, completion: completion)
             }
@@ -865,7 +867,7 @@ extension ChatEngine {
                 ChatItem(profile: .hero, imgPos: .left, chat: "As I was saying, I used to have regular milk with my cereal, then I discovered oat milk and dude, it slaps!"),
                 ChatItem(profile: .trainer, chat: "...slaps??? 🤔 I need a translator when I talk to you."),
                 ChatItem(profile: .hero, imgPos: .left, chat: "Means it's yummy! 😋"),
-                ChatItem(profile: .trainer, chat: "PUZL Boy, we need to find the princess and send her back to Vaeloria right away. Time is of the essence."),
+                ChatItem(profile: .trainer, chat: "We need to find the princess and send her back to Vaeloria right away. Time is of the essence."),
                 ChatItem(profile: .hero, imgPos: .left, chat: "Yeah, we're headed to the core right now. Why the rush all of a sudden?"),
                 ChatItem(profile: .trainer, chat: "It all started when...")
             ]) { [unowned self] in

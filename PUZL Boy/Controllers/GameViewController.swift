@@ -170,17 +170,17 @@ extension GameViewController: GameSceneDelegate {
         let titleScene = TitleScene(size: K.ScreenDimensions.size)
         titleScene.titleSceneDelegate = self
         
-        //NEEDS to have a transition, otherwise the state won't save, trust me.
+        //NEEDS to have a transition, otherwise the state won't save, trust me. 2/7/24 Tried it w/o the transition and it still works??? Must have to do with the cleanupScene() function I wrote in GameScene.swift
         skView.presentScene(titleScene, transition: SKTransition.fade(with: .white, duration: 0))
     }
     
-    func showChatDialogueCutscene(level: Int) {
+    func presentChatDialogueCutscene(level: Int) {
         let gameScene = GameScene(size: K.ScreenDimensions.size, hasInternet: hasInternet, levelSelectNewLevel: level)
         gameScene.gameSceneDelegate = self
         gameScene.chatEngine.setDialoguePlayed(level: level, to: true) //IMPORTANT: MUST do this for levels with a chat dialogue cutscene!
 
         let cutscene = CutsceneOldFriends(size: K.ScreenDimensions.size)
-        skView.presentScene(cutscene, transition: SKTransition.fade(with: .white, duration: 1.0))
+        skView.presentScene(cutscene, transition: SKTransition.fade(with: .white, duration: 2.0))
         cutscene.animateScene() { [unowned self] in
             skView.presentScene(gameScene, transition: SKTransition.fade(with: .white, duration: 1.0))
         }
