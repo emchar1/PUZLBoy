@@ -114,17 +114,15 @@ class LifeSpawnerModel {
     
     /**
      Returns the remaining time left in the UserDefaults savedTime key.
-        - parameter finishTime: the targeted time left on the timer in question
         - returns: the remaining time left on the timer in question
      */
-    func getTimeToFinish(finishTime: TimeInterval) throws -> TimeInterval {
-        let checkTime = Date(timeIntervalSinceNow: -finishTime)
-        let savedTime = UserDefaults.standard.object(forKey: K.UserDefaults.savedTime) as? Date
-        
-        guard let savedTime = savedTime else {
+    func getTimeToFinishUntilMoreLives() throws -> TimeInterval {
+        guard let savedTime = UserDefaults.standard.object(forKey: K.UserDefaults.savedTime) as? Date else {
             throw NotificationTimerError.timerNotSaved
         }
-        
+
+        let checkTime = Date(timeIntervalSinceNow: -LifeSpawnerModel.durationMoreLives)
+
         return savedTime.timeIntervalSinceReferenceDate - checkTime.timeIntervalSinceReferenceDate
     }
     

@@ -158,7 +158,7 @@ class GameScene: SKScene {
         let wait = SKAction.wait(forDuration: 1.0)
         let block = SKAction.run { [unowned self] in
             do {
-                let timeToReplenishLives = try LifeSpawnerModel.shared.getTimeToFinish(finishTime: LifeSpawnerModel.durationMoreLives)
+                let timeToReplenishLives = try LifeSpawnerModel.shared.getTimeToFinishUntilMoreLives()
                 
                 if timeToReplenishLives <= 0 {
                     removeAction(forKey: keyRunReplenishLivesTimerAction)
