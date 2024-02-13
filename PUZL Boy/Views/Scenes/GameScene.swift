@@ -116,7 +116,9 @@ class GameScene: SKScene {
     
     // MARK: - Notification Center Functions
     
-    //Save Level/Gameboard state
+    /**
+     Gets called in the NotificationCenter observer when the app moves to the background, i.e. UIApplication.willResignActiveNotification.
+     */
     @objc private func appMovedToBackground() {
         if action(forKey: keyRunGameTimerAction) != nil {
             //Only pause/resume time if there's an active timer going, i.e. timer is started!
@@ -131,6 +133,9 @@ class GameScene: SKScene {
         saveState(levelStatsItem: getLevelStatsItem(level: currentLevel, didWin: false))
     }
     
+    /**
+     Gets called in the NotificationCenter observer when the app moves to the foreground, i.e. UIApplication.didBecomeActiveNotification.
+     */
     @objc private func appMovedToForeground() {
         if action(forKey: keyRunGameTimerAction) != nil {
             scoringEngine.timerManager.resumeTime()
@@ -141,6 +146,9 @@ class GameScene: SKScene {
         }
     }
     
+    /**
+     Initializes the lives replenishment timer and updates the timer every second, like a clock.
+     */
     private func runReplenishLivesTimer() {
         guard action(forKey: keyRunReplenishLivesTimerAction) == nil else {
             print("keyRunReplenishLivesTimerAction already active! Returning...")
