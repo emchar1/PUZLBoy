@@ -398,8 +398,8 @@ class GameboardSprite {
             node.removeAction(forKey: "writhe")
             node.run(SKAction.sequence([
                 SKAction.repeat(SKAction.sequence([
-                    SKAction.moveBy(x: -10, y: -5, duration: 0.0625),
-                    SKAction.moveBy(x: 10, y: 5, duration: 0.0625)
+                    SKAction.moveBy(x: -8, y: -4, duration: 0.0625),
+                    SKAction.moveBy(x: 8, y: 4, duration: 0.0625)
                 ]), count: 24),
                 SKAction.colorize(with: UIColor(red: 255 / 255, green: 128 / 255, blue: 255 / 255, alpha: 1), colorBlendFactor: 1, duration: 0),
                 SKAction.wait(forDuration: 1),
