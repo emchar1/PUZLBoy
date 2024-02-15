@@ -344,15 +344,15 @@ class GameboardSprite {
             princess.sprite.position = startPoint
             princess.sprite.setScale(0)
             princess.sprite.zPosition = K.ZPosition.itemsAndEffects + 30
-            princess.sprite.run(SKAction.repeatForever(SKAction.animate(with: princess.textures[Player.Texture.jump.rawValue], timePerFrame: 0.02)))
             princess.sprite.name = "capturePrincess"
+            princess.sprite.run(SKAction.repeatForever(SKAction.animate(with: princess.textures[Player.Texture.jump.rawValue], timePerFrame: 0.02)), withKey: "writhe")
             
             let villain = Player(type: .villain)
             villain.sprite.position = startPoint + villainOffset
             villain.sprite.setScale(0)
             villain.sprite.zPosition = K.ZPosition.itemsAndEffects + 20
-            villain.sprite.run(SKAction.repeatForever(SKAction.animate(with: villain.textures[Player.Texture.idle.rawValue], timePerFrame: 0.1)))
             villain.sprite.name = "captureVillain"
+            villain.sprite.run(SKAction.repeatForever(SKAction.animate(with: villain.textures[Player.Texture.idle.rawValue], timePerFrame: 0.1)))
                         
             
             let waitDuration: TimeInterval = 1
@@ -386,6 +386,41 @@ class GameboardSprite {
                     despawnItem(at: position, completion: completion)
                 }
             ]))
+        }
+    }
+    
+    func flashPrincess(at position: K.GameboardPosition, completion: @escaping () -> Void) {
+        for node in sprite.children {
+            guard let node = node as? SKSpriteNode, node.name == "capturePrincess" else { continue }
+            
+            let princess = Player(type: .princess)
+
+            node.removeAction(forKey: "writhe")
+            node.run(SKAction.sequence([
+                SKAction.repeat(SKAction.sequence([
+                    SKAction.moveBy(x: -10, y: -5, duration: 0.0625),
+                    SKAction.moveBy(x: 10, y: 5, duration: 0.0625)
+                ]), count: 24),
+                SKAction.colorize(with: UIColor(red: 255 / 255, green: 128 / 255, blue: 255 / 255, alpha: 1), colorBlendFactor: 1, duration: 0),
+                SKAction.wait(forDuration: 1),
+                SKAction.colorize(withColorBlendFactor: 0, duration: 0.5),
+                SKAction.repeatForever(SKAction.animate(with: princess.textures[Player.Texture.jump.rawValue], timePerFrame: 0.02))
+            ]), completion: completion)
+            
+            sprite.run(SKAction.sequence([
+                SKAction.wait(forDuration: 3),
+                SKAction.run {
+                    AudioManager.shared.playSound(for: "winlevelice")
+                    
+                    ParticleEngine.shared.animateParticles(type: .gemSparkle,
+                                                           toNode: node,
+                                                           position: .zero,
+                                                           scale: 2,
+                                                           duration: 2)
+                }
+            ]))
+
+            return
         }
     }
     

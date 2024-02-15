@@ -1274,4 +1274,8 @@ extension GameScene: ChatEngineDelegate {
     func despawnPrincessCapture(at position: K.GameboardPosition, completion: @escaping () -> Void) {
         gameEngine.gameboardSprite.despawnPrincessCapture(at: position, completion: completion)
     }
+    
+    func flashPrincess(at position: K.GameboardPosition, completion: @escaping () -> Void) {
+        gameEngine.gameboardSprite.flashPrincess(at: position, completion: completion)
+    }
 }
