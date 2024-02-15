@@ -421,7 +421,7 @@ class GameboardSprite {
                     ParticleEngine.shared.animateParticles(type: .gemSparkle,
                                                            toNode: node,
                                                            position: .zero,
-                                                           scale: 2,
+                                                           scale: UIDevice.spriteScale * 3,
                                                            duration: 2)
                 }
             ]))
@@ -510,7 +510,7 @@ class GameboardSprite {
                             }
                         ]), count: blinkDivision)
                     ]),
-                    SKAction.run {
+                    SKAction.run { [unowned self] in
                         let angleOfAttack: CGFloat = SpriteMath.Trigonometry.getAngles(startPoint: startPoint + playerOffset + villainOffset, endPoint: endPoint + playerOffset + villainOffset).beta * (endPoint.y < startPoint.y ? 1 : -1)
                         
                         AudioManager.shared.playSound(for: "magicblast")
@@ -518,6 +518,7 @@ class GameboardSprite {
                         ParticleEngine.shared.animateParticles(type: .magicBlast,
                                                                toNode: node,
                                                                position: CGPoint(x: 160, y: 100),
+                                                               scale: UIDevice.spriteScale * CGFloat(panelCount) / 4,
                                                                angle: angleOfAttack,
                                                                duration: actionDuration * 3.5)
                     },
