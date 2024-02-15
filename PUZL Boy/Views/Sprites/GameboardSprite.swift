@@ -302,13 +302,19 @@ class GameboardSprite {
     
     ///Spawns a short animation of the whereabouts of the princess being captured by the villain.
     func spawnPrincessCapture(at position: K.GameboardPosition, completion: @escaping () -> Void) {
-        guard let endPanel = endPanel else { return print("Can't spawn, there's no endPanel!") }
+        guard let endPanel = endPanel else {
+            print("Unable to execute GameboardSprite.spawnPrincessCapture(); there's no endPanel!")
+            completion()
+            return
+        }
 
         for node in sprite.children {
             if let nodeName = node.name,
                nodeName.contains(GameboardSprite.getNodeName(row: position.row, col: position.col, includeOverlayTag: true)) {
                 //Exit function if there's an overlay item, like a gem or dragon
-                return print("Can't spawn here, there's an overlay!")
+                print("Unable to execute GameboardSprite.spawnPrincessCapture(); there's an overlay!")
+                completion()
+                return
             }
         }
         
@@ -426,7 +432,11 @@ class GameboardSprite {
     
     ///Despawns the princess being captured by the villain, as he escapes through the back door.
     func despawnPrincessCapture(at position: K.GameboardPosition, completion: @escaping () -> Void) {
-        guard let endPanel = endPanel else { return print("Can't despawn here, there's no endPanel!")}
+        guard let endPanel = endPanel else {
+            print("Unable to execute GameboardSprite.despawnPrincessCapture(); there's no endPanel!")
+            completion()
+            return
+        }
         
         let playerOffset = CGPoint(x: panelSize / 4, y: 0)
         let villainOffset = CGPoint(x: 0, y: 20)
@@ -439,6 +449,14 @@ class GameboardSprite {
         let exitDoorScale: CGFloat = 0.25
         
         for node in sprite.children {
+            if let nodeName = node.name,
+               nodeName.contains(GameboardSprite.getNodeName(row: position.row, col: position.col, includeOverlayTag: true)) {
+                //Exit function if there's an overlay item, like a gem or dragon
+                print("Unable to execute GameboardSprite.despawnPrincessCapture(); there's an overlay!")
+                completion()
+                return
+            }
+            
             guard let node = node as? SKSpriteNode else { continue }
             
             if node.name == "capturePrincess" {
