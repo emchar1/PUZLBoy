@@ -71,9 +71,9 @@ extension UIColor {
     }
 
     func adjustColor(_ adjusted: UIColor) -> UIColor {
-        return UIColor(red: min(255, max(0, components.red + adjusted.components.red)),
-                       green: min(255, max(0, components.green + adjusted.components.green)),
-                       blue: min(255, max(0, components.blue + adjusted.components.blue)),
-                       alpha: min(255, max(0, components.alpha + adjusted.components.alpha)))
+        return UIColor(red: (components.red + adjusted.components.red).clamp(min: 0, max: 255),
+                       green: (components.green + adjusted.components.green).clamp(min: 0, max: 255),
+                       blue: (components.blue + adjusted.components.blue).clamp(min: 0, max: 255),
+                       alpha: (components.alpha + adjusted.components.alpha).clamp(min: 0, max: 255))
     }
 }

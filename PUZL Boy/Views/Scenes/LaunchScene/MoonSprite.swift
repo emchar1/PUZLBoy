@@ -14,7 +14,7 @@ class MoonSprite: SKNode {
     init(position: CGPoint, scale: CGFloat, moonPhase: Int? = nil) {
         super.init()
         
-        let moonPhaseAdjusted: Int = moonPhase == nil ? Int.random(in: 0...8) : max(0, min(8, moonPhase!))
+        let moonPhaseAdjusted: Int = moonPhase == nil ? Int.random(in: 0...8) : moonPhase!.clamp(min: 0, max: 8)
         var moonAlpha: CGFloat = 1
         var moonColor: UIColor = .clear
         var moonColorBlendFactor: CGFloat = 0

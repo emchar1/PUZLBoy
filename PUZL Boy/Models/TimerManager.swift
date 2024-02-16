@@ -18,7 +18,8 @@ class TimerManager {
     var milliseconds: Int { Int(elapsedTime * 10) % 10 }
 
     var elapsedTime: TimeInterval {
-        TimeInterval(timeFinal.timeIntervalSinceNow - timeInitial.timeIntervalSinceNow)
+        //BUGFIX# 240216E01 - By adding max(0... to the elapsed time, it prevents elapsedTime from being a negative value!
+        max(0, TimeInterval(timeFinal.timeIntervalSinceNow - timeInitial.timeIntervalSinceNow))
     }
     
     var formattedText: String {

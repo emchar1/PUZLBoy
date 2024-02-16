@@ -162,7 +162,7 @@ struct LevelBuilder {
     
     ///Builds a party gameboard with all party tiles.
     static func buildPartyGameboard(ofSize size: Int = minLevels) -> K.Gameboard {
-        let sizeAdjusted = min(max(size, minLevels), maxLevels)
+        let sizeAdjusted = size.clamp(min: minLevels, max: maxLevels)
         let partyPanel: K.GameboardPanel = (terrain: .partytile, overlay: .boundary)
         var gameboard: K.Gameboard = []
         

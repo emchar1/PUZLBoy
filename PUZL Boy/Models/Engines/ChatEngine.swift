@@ -573,24 +573,24 @@ extension ChatEngine {
             
             sendChatArray(items: [
                 ChatItem(profile: .blankvillain, chat: "\n\n...Marlin..."),
-                ChatItem(profile: .trainer, imgPos: .left, chat: "Geez! Would you stop doing that?? It's freaky!"),
-                ChatItem(profile: .blankvillain, chat: "\n\n...do not follow, do not proceed..."),
-                ChatItem(profile: .trainer, imgPos: .left, chat: "Do not pass go, do not collect... yada, yada. Where is the princess!!"),
+                ChatItem(profile: .trainer, imgPos: .left, chat: "Geez! Would you stop doing that?? It's most unsettling!"),
+                ChatItem(profile: .blankvillain, chat: "\n\n...you're going to regret your decision..."),
+                ChatItem(profile: .trainer, imgPos: .left, chat: "You will be the one to regret it if you don't tell me where the princess is!!"),
                 ChatItem(profile: .blankvillain, chat: "\n\n...she is home now..."),
                 ChatItem(profile: .trainer, imgPos: .left, chat: "Where is she?!! Is she unharmed??"),
                 ChatItem(profile: .blankvillain, chat: "\n\n...see for yourself...") {
-                    AudioManager.shared.playSoundThenStop(for: "littlegirllaugh", playForDuration: 1, fadeOut: 2)
+                    AudioManager.shared.playSoundThenStop(for: "littlegirllaugh", playForDuration: 1, fadeOut: 3)
+                    AudioManager.shared.stopSound(for: "magicheartbeatloop1", fadeDuration: 4)
                 },
-                ChatItem(profile: .blankprincess, chat: "\n\nHELP MEEE! IT'S SO DARK IN HERE!!!"),
+                ChatItem(profile: .blankprincess, chat: "\n\nI'm fine. Don't worry about me. Now leave us."),
                 ChatItem(profile: .blankvillain, chat: "\n\n...see, she's perfectly fine..."),
-                ChatItem(profile: .trainer, imgPos: .left, chat: "Enough with the games! Show me who you are!!") { [unowned self] in
+                ChatItem(profile: .trainer, imgPos: .left, chat: "Listen!! I don't think you know who you're dealing with but enough with the games! Now, show me who you are!!") { [unowned self] in
                     superScene?.addChild(marlinBlast)
                     superScene?.addChild(magmoorScary)
 
                     marlinBlast.animateBlast(playSound: false)
                     magmoorScary.flashImage(delay: 0.25)
 
-                    AudioManager.shared.stopSound(for: "magicheartbeatloop1")
                     AudioManager.shared.playSound(for: "magicheartbeatloop2")
                 },
                 ChatItem(profile: .trainer, imgPos: .left, chat: "⚡️MAGIC SPELL!!!⚡️"),
@@ -925,8 +925,8 @@ extension ChatEngine {
                     ChatItem(profile: .princess, chat: "I said let go of me!!!"),
                     ChatItem(profile: .hero, imgPos: .left, chat: "HEY! Leave her alone, Mylar!"),
                     ChatItem(profile: .trainer, imgPos: .left, chat: "Magmoor, let her go! You will have to answer to the kingdom of Vaeloria for your actions!"),
-                    ChatItem(profile: .villain, chat: "Actions?? What did I do? I'm merely keeping her until the time comes."),
-                    ChatItem(profile: .hero, imgPos: .left, chat: "You won't harm her will you?!!"),
+                    ChatItem(profile: .villain, chat: "Actions?? For what? I'm merely keeping her until the time comes..."),
+                    ChatItem(profile: .hero, imgPos: .left, chat: "Until the time comes for what?? You won't harm her will you?!!"),
                     ChatItem(profile: .villain, chat: "Sacrifice her? Oh heavens, no! I'm not that cruel..."),
                     ChatItem(profile: .hero, imgPos: .left, chat: "I didn't say sacrifice—"),
                     ChatItem(profile: .villain, chat: "Tell you what. Marlin, you lend me your powers and I'll use the girl as a conduit to complete the spell."),
@@ -947,7 +947,7 @@ extension ChatEngine {
             
             delegate?.spawnPrincessCapture(at: spawnPoint) { [unowned self] in
                 sendChatArray(items: [
-                    ChatItem(profile: .villain, chat: "Have you made your decision?"),
+                    ChatItem(profile: .villain, chat: "Come to your senses yet?"),
                     ChatItem(profile: .hero, imgPos: .left, chat: "You again?! Dude, just take the L."),
                     ChatItem(profile: .villain, chat: "L?! Take what L? Where do I take it?? What is this strange language you speak?"),
                     ChatItem(profile: .trainer, imgPos: .left, chat: "🤦🏻‍♂️ Don't encourage the boy..."),
@@ -960,9 +960,9 @@ extension ChatEngine {
                         
                         delegate?.flashPrincess(at: spawnPoint, completion: {})
                     },
-                    ChatItem(profile: .princess, pause: 6, startNewChat: true, chat: "I can't! I'm not strong enough uncle Marlin!", handler: nil),
-                    ChatItem(profile: .trainer, imgPos: .left, chat: "Yes you can, princess! You've got to keep trying. Don't give up!"),
-                    ChatItem(profile: .villain, chat: "Cute. I hate to cut short whatever this is, but if you won't give me an answer, we will be on our way."),
+                    ChatItem(profile: .princess, pause: 6, startNewChat: true, chat: "I can't! I'm not strong enough, uncle Marlin!", handler: nil),
+                    ChatItem(profile: .trainer, imgPos: .left, chat: "Yes you can, princess! You have got to keep trying. Do not give up!"),
+                    ChatItem(profile: .villain, chat: "Cute. I hate to cut the reunion short, but if you won't agree to my demands, we'll be on our way."),
                     ChatItem(profile: .trainer, imgPos: .left, chat: "Do not be afraid! You are braver than you think."),
                     ChatItem(profile: .princess, chat: "It's ok. I'm getting used to it."),
                     ChatItem(profile: .princess, chat: "Anyway this part's fun..... Weeeeeee!")

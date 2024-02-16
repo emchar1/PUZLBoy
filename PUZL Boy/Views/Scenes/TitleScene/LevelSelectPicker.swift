@@ -11,7 +11,7 @@ class LevelSelectPicker: UIPickerView, UIPickerViewDelegate, UIPickerViewDataSou
     
     // MARK: - Properties
     
-    var selectedLevel: Int { max(min(selectedLevelUncapped, Level.finalLevel), 1) }
+    var selectedLevel: Int { selectedLevelUncapped.clamp(min: 1, max: Level.finalLevel) }
 
     private var selectedLevelUncapped: Int {
         let returnedString = String(selectedRow(inComponent: 0)) + String(selectedRow(inComponent: 1)) + String(selectedRow(inComponent: 2))

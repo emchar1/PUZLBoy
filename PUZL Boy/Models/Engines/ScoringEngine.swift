@@ -36,7 +36,7 @@ class ScoringEngine {
     // MARK: - Initialization
     
     init(elapsedTime: TimeInterval = 0, score: Int = 0, totalScore: Int = 0) {
-        self.elapsedTime = elapsedTime
+        self.elapsedTime = max(0, elapsedTime) //BUGFIX# 240216E01
         self.score = score
         self.totalScore = totalScore
         
@@ -129,7 +129,7 @@ class ScoringEngine {
 
     private func getTimeScore() -> Int {
         //Penalizes user if they change system time manually to try and get a higher score.
-        guard timerManager.elapsedTime >= 0 else { return 0 }
+        guard timerManager.elapsedTime > 0 else { return 0 }
 
         return max(minTimeScore, maxTimeScore + Int(timerManager.elapsedTime) * reductionPerSecondScore)
     }
