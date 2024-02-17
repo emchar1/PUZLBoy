@@ -795,8 +795,6 @@ extension GameScene: AdMobManagerDelegate {
         currentLevel = lastCurrentLevel
         self.lastCurrentLevel = nil
         
-        newGame(level: currentLevel, didWin: true)
-
         scoringEngine.timerManager.resetTime()
         scoringEngine.fadeInTimeAnimation()
         startTimer()
@@ -804,6 +802,9 @@ extension GameScene: AdMobManagerDelegate {
         gameEngine.shouldDisableInput(false)
         pauseResetEngine.shouldDisable(false)
         
+        //This should come AFTER calling the above functions, otherwise the game won't pause if there's a dialogue right after a party level!
+        newGame(level: currentLevel, didWin: true)
+
         //Animate lives earned from party
         let livesEarned = gameEngine.partyInventory.getTotalLives()
         
