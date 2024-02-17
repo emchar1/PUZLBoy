@@ -613,22 +613,22 @@ extension ChatEngine {
 
             sendChatArray(items: [
                 ChatItem(profile: .villain, chat: "MYSTERIOUS FIGURE: You'll never find her. You can keep trying, but it will all be in vain. Give up now...") { [unowned self] in
-                    magmoorScary.slowReveal(alpha: 0.1)
+                    magmoorScary.slowReveal(baseAlpha: 0.1)
                 },
                 ChatItem(profile: .trainer, imgPos: .left, chat: "YOU!!! I should have known! The whole time I'm thinking, \"No way he came crawling back into my life.\" And here you are...") { [unowned self] in
                     AudioManager.shared.playSound(for: "scarymusicbox", fadeIn: 10)
 
-                    magmoorScary.slowReveal(alpha: 0.2)
+                    magmoorScary.slowReveal(baseAlpha: 0.2)
                 },
                 ChatItem(profile: .villain, chat: "Surprised much? You need me. You're the yin to my yang."),
                 ChatItem(profile: .villain, chat: "We're bounded by fate as elder Mystic, Machinegunkelly revealed during the Trial of Mages.") { [unowned self] in
-                    magmoorScary.slowReveal(alpha: 0.3)
+                    magmoorScary.slowReveal(baseAlpha: 0.3)
                 },
                 ChatItem(profile: .trainer, imgPos: .left, chat: "That was over 500 years ago. Give us the child and leave this world!!") { [unowned self] in
-                    magmoorScary.slowReveal(alpha: 0.4)
+                    magmoorScary.slowReveal(baseAlpha: 0.4)
                 },
                 ChatItem(profile: .villain, chat: "We would have made a great duo: the strongest Mystics in all the realms. But you chose a different path ..............why did you leave me?") { [unowned self] in
-                    magmoorScary.slowReveal(alpha: 0.5)
+                    magmoorScary.slowReveal(baseAlpha: 0.5)
                 },
                 ChatItem(profile: .trainer, imgPos: .left, chat: "..............I did what I had to."),
                 ChatItem(profile: .villain, chat: "Your loss.. such a shame.. you'll soon regret it.....")

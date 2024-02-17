@@ -50,9 +50,11 @@ class MagmoorScarySprite: SKNode {
         sprite.alpha = 0
     }
     
-    func slowReveal(alpha: CGFloat) {
+    func slowReveal(baseAlpha: CGFloat) {
+        let adjustedBrightness = 2 - UIScreen.main.brightness
+        
         sprite.texture = SKTexture(imageNamed: "villainRedEyes")
-        sprite.run(SKAction.fadeAlpha(to: alpha, duration: 1))
+        sprite.run(SKAction.fadeAlpha(to: baseAlpha * adjustedBrightness, duration: 1))
     }
     
     func flashImage(delay: TimeInterval = 0) {

@@ -11,7 +11,7 @@ import StoreKit
 
 protocol GameSceneDelegate: AnyObject {
     func confirmQuitTapped()
-    func presentChatDialogueCutscene(level: Int)
+    func presentChatDialogueCutscene(level: Int, completion: (() -> Void)?)
 }
 
 
@@ -595,8 +595,9 @@ class GameScene: SKScene {
                 AudioManager.shared.stopSound(for: AudioManager.shared.currentTheme, fadeDuration: fadeDuration)
                 
                 fadeNode.run(SKAction.fadeIn(withDuration: fadeDuration)) { [unowned self] in
-                    cleanupScene(shouldSaveState: false)
-                    gameSceneDelegate?.presentChatDialogueCutscene(level: currentLevel)
+                    gameSceneDelegate?.presentChatDialogueCutscene(level: currentLevel) { [unowned self] in
+                        cleanupScene(shouldSaveState: false)
+                    }
                 }
             }
             else {
@@ -1215,7 +1216,7 @@ extension GameScene: PartyResultsSpriteDelegate {
         pauseResetEngine.hideDiscoball()
     }
     
-    ///Used after the interstitial ad plays after a Party Level is completed. Should not be used anywhere else because of the proprietary code!!!
+    ///Used before the interstitial ad plays after a Party Level is completed. Should not be used anywhere else because of the proprietary code!!!
     private func resumeGameFromPartyLevel() {
         let villainChatLevel = (lastCurrentLevel ?? 1) - 1
 
