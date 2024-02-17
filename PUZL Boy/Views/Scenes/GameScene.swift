@@ -65,19 +65,31 @@ class GameScene: SKScene {
     
     init(size: CGSize, hasInternet: Bool, levelSelectNewLevel: Int?) {
         if let saveStateModel = FIRManager.saveStateModel {
-            //ALWAYS go with newLevel, because it takes precedence over levelModel.level
-            currentLevel = levelSelectNewLevel ?? saveStateModel.newLevel
+            //BUGFIX# 240216E02 - Fixed!
+            let newLevel = levelSelectNewLevel ?? saveStateModel.newLevel
             
-            gameEngine = GameEngine(saveStateModel: saveStateModel, levelSelectNewLevel: levelSelectNewLevel)
-            scoringEngine = ScoringEngine(elapsedTime: saveStateModel.elapsedTime,
-                                          score: saveStateModel.score,
-                                          totalScore: saveStateModel.totalScore)
+            currentLevel = saveStateModel.newLevel
             levelStatsArray = saveStateModel.levelStatsArray
+            gameEngine = GameEngine(saveStateModel: saveStateModel, levelSelectNewLevel: levelSelectNewLevel)
+            
+            if currentLevel == newLevel {
+                //If currentLevel and newLevel match, carry over elapsed time and score...
+                scoringEngine = ScoringEngine(elapsedTime: saveStateModel.elapsedTime,
+                                              score: saveStateModel.score,
+                                              totalScore: saveStateModel.totalScore)
+            }
+            else {
+                //...otherwise, reset elapsed time and score, and set currentLevel to newLevel.
+                currentLevel = newLevel
+                scoringEngine = ScoringEngine(elapsedTime: 0,
+                                              score: 0,
+                                              totalScore: saveStateModel.totalScore)
+            }
         }
         else {
+            levelStatsArray = []
             gameEngine = GameEngine(level: currentLevel, shouldSpawn: true)
             scoringEngine = ScoringEngine()
-            levelStatsArray = []
         }
         
         //chatEngine MUST be initialized here, and not in properties, otherwise it just refuses to show up! Because K.ScreenDimensions.topOfGameboard is set in the gameEngine(). Is there a better way to do this??

@@ -343,9 +343,7 @@ class AudioManager {
             return
         }
         
-        let panAdusted = pan.clamp(min: -1.0, max: 1.0)
-        
-        item.player.pan = panAdusted
+        item.player.pan = pan.clamp(min: -1.0, max: 1.0)
     }
     
     /**

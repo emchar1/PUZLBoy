@@ -199,7 +199,7 @@ class CreditsScene: SKScene {
     }
     
     private func cleanupAndGoBack() {
-        // BUGFIX# 231222E01 MUST call this here!!! Prevents memory leak when rage quitting early.
+        //BUGFIX# 231222E01 MUST call this here!!! Prevents memory leak when rage quitting early.
         speechBubble.cleanupManually()
         speechBubble = nil
         tapPointerEngine = nil

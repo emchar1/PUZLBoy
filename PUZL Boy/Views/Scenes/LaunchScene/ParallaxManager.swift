@@ -155,7 +155,7 @@ class ParallaxManager: SKNode {
         }
     }
     
-    // BUGFIX# 240125E01 - Reset sprite xPositions so tree doesn't get in the way when dragon is flying across, for example.
+    //BUGFIX# 240125E01 - Reset sprite xPositions so tree doesn't get in the way when dragon is flying across, for example.
     ///Resets the requested sprite's' xPositions to the leftmost side.
     func resetxPositions(index: Int) {
         guard index < parallaxSprites.count else { return }
