@@ -816,19 +816,21 @@ extension ChatEngine {
                 ChatItem(profile: .trainer, chat: "902."),
                 ChatItem(profile: .hero, imgPos: .left, chat: "NINE HUNDRED??!! What are you, like a wizard or something? \"Marlin the Fish Wizard...\""),
                 ChatItem(profile: .hero, imgPos: .left, chat: "Wait... So you really ARE a wizard!! Because I'm not surprised by anything anymore at this point..."),
-                ChatItem(profile: .trainer, chat: "MYSTIC!!! I told you I'm a Mystic! M.Y.S.T.I.C. Yeesh, my blood pressure..."),
+                ChatItem(profile: .trainer, chat: "I told you I am NOT a wizard, I am a Mystic! MYSTIC!! Yeesh, my blood pressure..."),
                 ChatItem(profile: .trainer, chat: "Once we've located the princess, I need to cast the gateway spell to open the portal so she can return to her home in Vaeloria."),
-                ChatItem(profile: .hero, imgPos: .left, chat: "Yeah... mystic. Which is basically a wizard. Or magician. Well you don't look a day over 800 to be honest..."),
+                ChatItem(profile: .hero, imgPos: .left, chat: "Wizard, mystic, magician... what's the difference??! They're all the same thing."),
+                ChatItem(profile: .trainer, chat: "A wizard possesses magical abilities. A magician is gifted in the art of magic. And a Mystic can harness the power of magic."),
+                ChatItem(profile: .hero, imgPos: .left, chat: "Thanks, thesaurus. Well you don't look a day over 800 to be honest..."),
                 ChatItem(profile: .trainer, chat: "PUZL Boy, I need you to be serious! What lies ahead will test your patience. It will make you want to throw your phone out the window. You need to be prepared!"),
                 ChatItem(profile: .hero, imgPos: .left, chat: "Ok ok. I'll be ready. I already know how to use hammers and swords. Nothing can stop me!") { [unowned self] in
                     delegate?.illuminateMinorButton(for: .hint)
                 },
                 ChatItem(profile: .trainer, chat: "Hilarious. I'm adding another tool to your arsenal. Tap the Hints button at the start of a level to illuminate your next move. Tap again to get the next hint."),
                 ChatItem(profile: .trainer, chat: "Keep tapping for as many hints as you need. Hints become disabled once you move past your last hint. The number in red is your available hints."),
-                ChatItem(profile: .trainer, chat: "If you run out of hints, you can buy more in the Shop tab of the Settings menu. Any questions?") { [unowned self] in
+                ChatItem(profile: .trainer, chat: "If you run out of hints, you can buy more in the Shop tab of the Settings menu. Questions?") { [unowned self] in
                     delegate?.deilluminateMinorButton(for: .hint)
                 },
-                ChatItem(profile: .hero, imgPos: .left, chat: "Wow.. you're 900 years old. I have soooo many questions...")
+                ChatItem(profile: .hero, imgPos: .left, chat: "Wow.. you're 900 years old. What's that in human years?")
             ]) { [unowned self] in
                 handleDialogueCompletion(level: level, completion: completion)
             }
@@ -898,13 +900,13 @@ extension ChatEngine {
                         fadeDimOverlay()
                         delegate?.despawnPrincessCapture(at: spawnPoint, completion: {})
                     },
-                    ChatItem(profile: .hero, imgPos: .left, pause: 8, startNewChat: true, chat: "That was creepy. Dude, I did NOT sign up for this.......", handler: nil),
+                    ChatItem(profile: .hero, imgPos: .left, pause: 8, startNewChat: true, chat: "That was creepy. Marlin, I did NOT sign up for this.......", handler: nil),
                     ChatItem(profile: .trainer, chat: "PUZL Boy this is now your reality. Take responsibility for your future. YOU have the power to change it!"),
                     ChatItem(profile: .hero, imgPos: .left, chat: "I know, I know. My mom always says, \"The power is yours!\" Ok... so what does Marzipan want with the princess?"),
                     ChatItem(profile: .trainer, chat: "Magmoor—one of the most powerful Mystics from my realm. I do not know what he intends to do with the princess, although we should assume the worst."),
                     ChatItem(profile: .hero, imgPos: .left, chat: "He's not gonna sacrifice her is he?!?! Because that's just not cool."),
-                    ChatItem(profile: .trainer, chat: "He wasn't always like this. We were once good friends—what we Mystics call, \"Twin Flames.\" Then he went all Mabritney on everyone."),
-                    ChatItem(profile: .hero, imgPos: .left, chat: "You guys have Britney in your world?"),
+                    ChatItem(profile: .trainer, chat: "He wasn't always like this. We were once good friends—what we Mystics call, Twin Flames. Then he went all Mabritney on everyone."),
+                    ChatItem(profile: .hero, imgPos: .left, chat: "No way! You guys have Britney in your world?"),
                     ChatItem(profile: .trainer, chat: "No— MAbritney. She's an elemental mage who wields forbidden dark magic. She does a Dance of Knives that summons Chaos."),
                     ChatItem(profile: .hero, imgPos: .left, chat: "She sounds toxic. So what's our next move:\n\nPURSUE HIM | PREPARE FIRST"),
                     ChatItem(profile: .hero, imgPos: .left, chat: "We should prepare first..."),
@@ -930,8 +932,8 @@ extension ChatEngine {
                     ChatItem(profile: .villain, chat: "Sacrifice her? Oh heavens, no! I'm not that cruel..."),
                     ChatItem(profile: .hero, imgPos: .left, chat: "I didn't say sacrifice—"),
                     ChatItem(profile: .villain, chat: "Tell you what. Marlin, you lend me your powers and I'll use the girl as a conduit to complete the spell."),
-                    ChatItem(profile: .trainer, imgPos: .left, chat: "No. Wow. You are terrible at negotiations! You let the princess go and I— I'll return home to Mearth with you......."),
-                    ChatItem(profile: .hero, imgPos: .left, chat: "\"Mearth?\" That's just lazy writing."), // FIXME: - Bad dialogue
+                    ChatItem(profile: .trainer, imgPos: .left, chat: "No. Wow. You are terrible at negotiations! You let the princess go and I— I'll return home to M'Earth with you......."),
+                    ChatItem(profile: .hero, imgPos: .left, chat: "\"M'Earth?\" Well that's just lazy writing."), // FIXME: - Bad dialogue
                     ChatItem(profile: .villain, chat: "..................No deal.")
                 ]) { [unowned self] in
                     fadeDimOverlay()
