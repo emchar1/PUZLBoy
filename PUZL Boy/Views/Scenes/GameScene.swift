@@ -11,7 +11,7 @@ import StoreKit
 
 protocol GameSceneDelegate: AnyObject {
     func confirmQuitTapped()
-    func presentChatDialogueCutscene(level: Int, completion: (() -> Void)?)
+    func presentChatDialogueCutscene(level: Int)
 }
 
 
@@ -595,9 +595,8 @@ class GameScene: SKScene {
                 AudioManager.shared.stopSound(for: AudioManager.shared.currentTheme, fadeDuration: fadeDuration)
                 
                 fadeNode.run(SKAction.fadeIn(withDuration: fadeDuration)) { [unowned self] in
-                    gameSceneDelegate?.presentChatDialogueCutscene(level: currentLevel) { [unowned self] in
-                        cleanupScene(shouldSaveState: false)
-                    }
+                    cleanupScene(shouldSaveState: false)
+                    gameSceneDelegate?.presentChatDialogueCutscene(level: currentLevel)
                 }
             }
             else {

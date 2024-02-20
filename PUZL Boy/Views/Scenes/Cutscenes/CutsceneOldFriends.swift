@@ -38,8 +38,6 @@ class CutsceneOldFriends: Cutscene {
         let magmoorAnimate = SKAction.animate(with: playerLeft.textures[Player.Texture.walk.rawValue], timePerFrame: frameRate)
         let marlinAnimate = SKAction.animate(with: playerRight.textures[Player.Texture.walk.rawValue], timePerFrame: frameRate)
         
-        self.completion = completion
-        
         parallaxManager.animate()
         
         letterbox.show { [unowned self] in
@@ -51,9 +49,11 @@ class CutsceneOldFriends: Cutscene {
         playerRight.sprite.run(SKAction.repeatForever(marlinAnimate))
         
         setTextArray(items: [
-            SpeechBubbleItem(profile: speechPlayerLeft, chat: "Marlin, you gotta keep trying. Trials are tomorrow!"),
-            SpeechBubbleItem(profile: speechPlayerRight, chat: "I have been at it for hours! I'm just not as talented as you!")
-        ], completion: completion)
+            SpeechBubbleItem(profile: speechPlayerLeft, chat: "Beep."),
+            SpeechBubbleItem(profile: speechPlayerRight, chat: "Boop.")
+        ]) { [unowned self] in
+            cleanupScene(buttonTap: nil, fadeDuration: nil)
+        }
         
     }
     
@@ -64,7 +64,8 @@ class CutsceneOldFriends: Cutscene {
 
 extension CutsceneOldFriends: SkipSceneSpriteDelegate {
     func buttonWasTapped() {
-        super.skipSceneHelper(fadeDuration: 1)
+        //No fade duration because the protocol function does it's own .white fade transition.
+        cleanupScene(buttonTap: .buttontap1, fadeDuration: nil)
     }
     
 }

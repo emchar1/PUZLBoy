@@ -145,8 +145,14 @@ class Cutscene: SKScene {
     
     // MARK: - Animation Functions
     
+    /**
+     Custom animation function that sets the completion handler. Needs implementation in the inheriting child class.
+        - parameter completion: completion handler to execute, ideally at the end of all animations (dependent on how the inheriting class implements this function.)
+     */
     func animateScene(completion: (() -> Void)?) {
-        //Your implementation goes here.
+        self.completion = completion
+        
+        //Add'l implementation goes here.
     }
     
     /**
@@ -173,24 +179,37 @@ class Cutscene: SKScene {
     }
     
     
-    // MARK: - Skip Scene Helper Function
+    // MARK: - Cleanup Scene
     
-    ///Call this inside the SkipSceneSpriteDelegate didTapButton() function.
-    func skipSceneHelper(fadeDuration: TimeInterval) {
+    /**
+     Initiates a button tap and cleans up the scene as it transitions out.
+     - parameters:
+        - fadeDuration: the duration of thue fadeTransitionNode as it fades in.
+        - buttonTap: the type of button tap to play, if non-nil.
+     */
+    func cleanupScene(buttonTap: ButtonTap.ButtonType?, fadeDuration: TimeInterval?) {
         Haptics.shared.stopHapticEngine()
-        ButtonTap.shared.tap(type: .buttontap1)
+        
+        if let buttonTap = buttonTap {
+            ButtonTap.shared.tap(type: buttonTap)
+        }
+
         tapPointerEngine = nil
         disableTaps = true
         
-        fadeTransitionNode.run(SKAction.sequence([
-            SKAction.fadeIn(withDuration: fadeDuration),
-            SKAction.wait(forDuration: 1),
-            SKAction.removeFromParent()
-        ])) { [unowned self] in
-            self.completion?()
+        if let fadeDuration = fadeDuration {
+            fadeTransitionNode.run(SKAction.sequence([
+                SKAction.fadeIn(withDuration: fadeDuration),
+                SKAction.wait(forDuration: 1),
+                SKAction.removeFromParent()
+            ])) { [unowned self] in
+                completion?()
+            }
+        }
+        else {
+            completion?()
         }
     }
-    
-    
+
     
 }

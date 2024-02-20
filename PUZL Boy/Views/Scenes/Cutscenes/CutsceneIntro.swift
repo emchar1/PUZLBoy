@@ -129,8 +129,6 @@ class CutsceneIntro: Cutscene {
         let heroIdle = SKAction.animate(with: playerLeft.textures[Player.Texture.idle.rawValue], timePerFrame: frameRate)
         let princessIdle = SKAction.animate(with: playerRight.textures[Player.Texture.idle.rawValue], timePerFrame: frameRate * 1.5)
         
-        self.completion = completion
-        
         //Letterbox
         letterbox.show()
         
@@ -195,7 +193,7 @@ class CutsceneIntro: Cutscene {
                                 SKAction.fadeIn(withDuration: 23), //34 total seconds, to coincide with closeUpPrincess() animation sequence
                                 SKAction.run { [unowned self] in
                                     speechNarrator.setText(
-                                        text: "The princess went on to explain how dragons had disappeared from the realm of some place called Vaeloria, where she claims she's from,|| and that the balance of magic had been disrupted threatening our very existence.||||||||/She spoke about a prophecy where the Earth splits open and the sky darkens, signaling the Age of Ruin, and that she was the only one who could stop it—||At first, I thought this little girl just had an overactive imagination...||||||/  ..........Then the CRAZIEST thing happened!!",
+                                        text: "PUZL Boy: The princess went on to explain how dragons had disappeared from the realm of some place called Vaeloria, where she claims she's from,|| and that the balance of magic had been disrupted threatening our very existence.||||||||/She spoke about a prophecy where the Earth splits open and the sky darkens, signaling the Age of Ruin, and that she was the only one who could stop it—||At first, I thought this little girl just had an overactive imagination...||||||/  ..........Then the CRAZIEST thing happened!!",
                                         superScene: self, completion: nil)
                                     
                                     AudioManager.shared.stopSound(for: "birdsambience", fadeDuration: 5)
@@ -386,16 +384,7 @@ class CutsceneIntro: Cutscene {
                 ]) { [unowned self] in
                     AudioManager.shared.stopSound(for: "ageofruin", fadeDuration: 4)
                     UserDefaults.standard.set(true, forKey: K.UserDefaults.shouldSkipIntro)
-                    tapPointerEngine = nil
-                    disableTaps = true
-
-                    fadeTransitionNode.run(SKAction.sequence([
-                        SKAction.fadeIn(withDuration: 2),
-                        SKAction.wait(forDuration: 1),
-                        SKAction.removeFromParent()
-                    ])) { [unowned self] in
-                        self.completion?()
-                    }
+                    cleanupScene(buttonTap: nil, fadeDuration: 2)
                 }
             }
         ])) //end Speech Bubbles animation
@@ -488,9 +477,7 @@ class CutsceneIntro: Cutscene {
 
 extension CutsceneIntro: SkipSceneSpriteDelegate {
     func buttonWasTapped() {
-        let fadeDuration: TimeInterval = 1.0
-
-        super.skipSceneHelper(fadeDuration: fadeDuration)
+        let fadeDuration: TimeInterval = 1
         
         //MUST stop all sounds if rage quitting early!
         AudioManager.shared.stopSound(for: "birdsambience", fadeDuration: fadeDuration)
@@ -500,6 +487,7 @@ extension CutsceneIntro: SkipSceneSpriteDelegate {
         AudioManager.shared.stopSound(for: "thunderrumble", fadeDuration: fadeDuration)
         
         UserDefaults.standard.set(true, forKey: K.UserDefaults.shouldSkipIntro)
+        cleanupScene(buttonTap: .buttontap1, fadeDuration: fadeDuration)
     }
     
 }
