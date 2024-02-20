@@ -158,8 +158,10 @@ struct Player {
     
     // MARK: - Functions
     
-    mutating func setScale(_ scale: CGFloat) {
+    mutating func setPlayerScale(_ scale: CGFloat) {
         self.scale = scale * scaleMultiplier
+        
+        sprite.setScale(self.scale)
     }
     
     static func getStandardScale(panelSize: CGFloat) -> CGFloat {

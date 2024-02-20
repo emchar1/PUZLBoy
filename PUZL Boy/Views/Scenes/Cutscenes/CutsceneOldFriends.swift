@@ -7,76 +7,64 @@
 
 import SpriteKit
 
-class CutsceneOldFriends: SKScene {
+class CutsceneOldFriends: Cutscene {
     
     // MARK: - Properties
     
-    private var screenSize: CGSize
-    
-    private var playerMagmoor: Player!
-    private var speechMagmoor: SpeechBubbleSprite!
-    private var parallaxManager: ParallaxManager!
-    private var skyNode: SKSpriteNode!
+    //Custom properties go here.
     
     
     // MARK: - Initialization
     
-    override init(size: CGSize) {
-        screenSize = size
+    override func setupScene() {
+        super.setupScene()
         
-        super.init(size: size)
+        playerLeft.setPlayerScale(1.5)
+        playerRight.setPlayerScale(1.5)
         
-        setupNodes()
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    deinit {
-        print("CutsceneOldFriends deinit")
-    }
-    
-    private func setupNodes() {
-        playerMagmoor = Player(type: .villain)
-        playerMagmoor.sprite.position = CGPoint(x: screenSize.width / 2, y: screenSize.height / 3)
-        
-        speechMagmoor = SpeechBubbleSprite(width: 460, position: playerMagmoor.sprite.position + CGPoint(x: 200, y: 400))
-        
-        parallaxManager = ParallaxManager(useSet: ParallaxObject.SetType.allCases.randomElement() ?? .grass,
-                                          xOffsetsArray: nil,
-                                          forceSpeed: .walk,
-                                          animateForCutscene: false)
-        parallaxManager.animate()
-        
-        skyNode = SKSpriteNode(texture: SKTexture(image: DayTheme.getSkyImage()))
-        skyNode.size = CGSize(width: screenSize.width, height: screenSize.height / 2)
-        skyNode.position = CGPoint(x: 0, y: screenSize.height)
-        skyNode.anchorPoint = CGPoint(x: 0, y: 1)
-        skyNode.zPosition = K.ZPosition.skyNode
-        skyNode.name = LaunchScene.nodeName_skyNode
+        speechPlayerLeft.position += playerLeft.sprite.position
+        speechPlayerRight.position += playerRight.sprite.position
 
-    }
-    
-    
-    // MARK: - Move Functions
-    
-    override func didMove(to view: SKView) {
-        addChild(playerMagmoor.sprite)
-        addChild(skyNode)
-        
-        parallaxManager.addSpritesToParent(scene: self)
+//        skipIntroSprite.delegate = self
     }
     
     
     // MARK: - Animate Functions
     
-    func animateScene(completion: (() -> Void)?) {
-        let frameRate: TimeInterval = 0.06
-        let playerAnimate = SKAction.animate(with: playerMagmoor.textures[Player.Texture.idle.rawValue], timePerFrame: frameRate)
-
-        playerMagmoor.sprite.run(SKAction.repeatForever(playerAnimate))
+    override func animateScene(completion: (() -> Void)?) {
+        super.animateScene(completion: completion)
         
-        speechMagmoor.setText(text: "This is a cutscene.", superScene: self, parentNode: nil, completion: completion)
+        let frameRate: TimeInterval = 0.06
+        let magmoorAnimate = SKAction.animate(with: playerLeft.textures[Player.Texture.walk.rawValue], timePerFrame: frameRate)
+        let marlinAnimate = SKAction.animate(with: playerRight.textures[Player.Texture.walk.rawValue], timePerFrame: frameRate)
+        
+        self.completion = completion
+        
+        parallaxManager.animate()
+        
+        letterbox.show()// { [unowned self] in
+//            addChild(skipIntroSprite)
+//            skipIntroSprite.animateSprite()
+//        }
+        
+        playerLeft.sprite.run(SKAction.repeatForever(magmoorAnimate))
+        playerRight.sprite.run(SKAction.repeatForever(marlinAnimate))
+        
+        setTextArray(items: [
+            SpeechBubbleItem(profile: speechPlayerLeft, chat: "Marlin, you gotta keep trying. Trials are tomorrow!"),
+            SpeechBubbleItem(profile: speechPlayerRight, chat: "I have been at it for hours! I'm just not as talented as you!")
+        ], completion: completion)
+        
     }
+    
+}
+
+
+// MARK: - SkipIntroSprite Delegate
+
+extension CutsceneOldFriends: SkipIntroSpriteDelegate {
+    func buttonWasTapped() {
+        super.skipIntroHelper(fadeDuration: 1)
+    }
+    
 }

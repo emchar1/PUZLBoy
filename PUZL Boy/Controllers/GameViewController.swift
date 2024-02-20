@@ -72,7 +72,10 @@ class GameViewController: UIViewController {
                     
                     DispatchQueue.main.asyncAfter(deadline: .now() + LoadingSprite.loadingDuration) {
                         if !UserDefaults.standard.bool(forKey: K.UserDefaults.shouldSkipIntro) {
-                            cutsceneIntro = CutsceneIntro(size: K.ScreenDimensions.size, xOffsetsArray: nil)
+                            cutsceneIntro = CutsceneIntro(size: K.ScreenDimensions.size,
+                                                          playerLeftType: .hero,
+                                                          playerRightType: .princess,
+                                                          xOffsetsArray: nil)
 
                             launchScene?.animateTransition(animationSequence: .running) { xOffsetsArray in
                                 guard let xOffsetsArray = xOffsetsArray else { return }
@@ -179,7 +182,7 @@ extension GameViewController: GameSceneDelegate {
         gameScene.gameSceneDelegate = self
         gameScene.chatEngine.setDialoguePlayed(level: level, to: true) //IMPORTANT: MUST do this for levels with a chat dialogue cutscene!
 
-        let cutscene = CutsceneOldFriends(size: K.ScreenDimensions.size)
+        let cutscene = CutsceneOldFriends(size: K.ScreenDimensions.size, playerLeftType: .hero, playerRightType: .hero, xOffsetsArray: nil)
         skView.presentScene(cutscene, transition: SKTransition.fade(with: .white, duration: 2.0))
         cutscene.animateScene() { [unowned self] in
             skView.presentScene(gameScene, transition: SKTransition.fade(with: .white, duration: 1.0))

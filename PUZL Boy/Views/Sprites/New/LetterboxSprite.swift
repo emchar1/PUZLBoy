@@ -52,11 +52,13 @@ class LetterboxSprite: SKNode {
     
     // MARK: - Functions
     
-    func show(duration: TimeInterval = 3, delay: TimeInterval = 0) {
+    func show(duration: TimeInterval = 3, delay: TimeInterval = 0, completion: (() -> Void)? = nil) {
         topNode.run(SKAction.sequence([
             SKAction.wait(forDuration: delay),
             SKAction.scaleY(to: height, duration: duration)
-        ]))
+        ])) {
+            completion?()
+        }
         
         bottomNode.run(SKAction.sequence([
             SKAction.wait(forDuration: delay),
@@ -64,11 +66,13 @@ class LetterboxSprite: SKNode {
         ]))
     }
     
-    func hide(duration: TimeInterval = 3, delay: TimeInterval = 0) {
+    func hide(duration: TimeInterval = 3, delay: TimeInterval = 0, completion: (() -> Void)? = nil) {
         topNode.run(SKAction.sequence([
             SKAction.wait(forDuration: delay),
             SKAction.scaleY(to: 1, duration: duration)
-        ]))
+        ])) {
+            completion?()
+        }
         
         bottomNode.run(SKAction.sequence([
             SKAction.wait(forDuration: delay),

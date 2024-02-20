@@ -249,6 +249,7 @@
 		EAD19A1D2A9C14B500A07A63 /* PoisonBubblesParticles.sks in Resources */ = {isa = PBXBuildFile; fileRef = EAD19A1C2A9C14B500A07A63 /* PoisonBubblesParticles.sks */; };
 		EAD459062B64A49700148720 /* DragonIce.sks in Resources */ = {isa = PBXBuildFile; fileRef = EAD459052B64A49700148720 /* DragonIce.sks */; };
 		EAD59A542A88200800F86EED /* SpeechBubbleSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAD59A532A88200800F86EED /* SpeechBubbleSprite.swift */; };
+		EADAC6062B835C2A005EA008 /* Cutscene.swift in Sources */ = {isa = PBXBuildFile; fileRef = EADAC6052B835C2A005EA008 /* Cutscene.swift */; };
 		EADE12422AFCB61300474D7F /* AchievementsTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EADE12412AFCB61300474D7F /* AchievementsTableView.swift */; };
 		EADE12442AFCBB3D00474D7F /* AchievementsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EADE12432AFCBB3D00474D7F /* AchievementsModel.swift */; };
 		EADE12462AFCBE8400474D7F /* AchievementsTVCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EADE12452AFCBE8400474D7F /* AchievementsTVCell.swift */; };
@@ -531,6 +532,7 @@
 		EAD19A1C2A9C14B500A07A63 /* PoisonBubblesParticles.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = PoisonBubblesParticles.sks; sourceTree = "<group>"; };
 		EAD459052B64A49700148720 /* DragonIce.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = DragonIce.sks; sourceTree = "<group>"; };
 		EAD59A532A88200800F86EED /* SpeechBubbleSprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechBubbleSprite.swift; sourceTree = "<group>"; };
+		EADAC6052B835C2A005EA008 /* Cutscene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cutscene.swift; sourceTree = "<group>"; };
 		EADE12412AFCB61300474D7F /* AchievementsTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementsTableView.swift; sourceTree = "<group>"; };
 		EADE12432AFCBB3D00474D7F /* AchievementsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementsModel.swift; sourceTree = "<group>"; };
 		EADE12452AFCBE8400474D7F /* AchievementsTVCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementsTVCell.swift; sourceTree = "<group>"; };
@@ -647,9 +649,8 @@
 		EA496AAA2A79B22E0096DB35 /* Cutscenes */ = {
 			isa = PBXGroup;
 			children = (
-				EAB2DE112AA0415D00172478 /* SpeechBubbleItem.swift */,
-				EAD59A532A88200800F86EED /* SpeechBubbleSprite.swift */,
-				EAB2DE132AA1AB8F00172478 /* SpeechOverlaySprite.swift */,
+				EADAC6072B835C38005EA008 /* Speech */,
+				EADAC6052B835C2A005EA008 /* Cutscene.swift */,
 				EA496AAB2A79B25A0096DB35 /* CutsceneIntro.swift */,
 				EA77D3F72B72BF1600B77C42 /* CutsceneOldFriends.swift */,
 			);
@@ -1115,6 +1116,16 @@
 			path = ParticleSystem;
 			sourceTree = "<group>";
 		};
+		EADAC6072B835C38005EA008 /* Speech */ = {
+			isa = PBXGroup;
+			children = (
+				EAB2DE112AA0415D00172478 /* SpeechBubbleItem.swift */,
+				EAD59A532A88200800F86EED /* SpeechBubbleSprite.swift */,
+				EAB2DE132AA1AB8F00172478 /* SpeechOverlaySprite.swift */,
+			);
+			path = Speech;
+			sourceTree = "<group>";
+		};
 		EAFA6A7929E1CD8D002287C2 /* LaunchScene */ = {
 			isa = PBXGroup;
 			children = (
@@ -1397,6 +1408,7 @@
 				EA95D1DD295523FF0061059C /* AchievementKlutz.swift in Sources */,
 				EA1191532904BC4C009D0E3E /* DisplaySprite.swift in Sources */,
 				EA95D20A29602F540061059C /* AchievementReckless.swift in Sources */,
+				EADAC6062B835C2A005EA008 /* Cutscene.swift in Sources */,
 				EA84645F29D9230B0075F2A9 /* Extension+UIColor.swift in Sources */,
 				EA826C7A298492BA00F19F81 /* DecisionButtonSprite.swift in Sources */,
 				EA95D1BD2952F14C0061059C /* AchievementBoulderBreaker.swift in Sources */,

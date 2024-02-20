@@ -19,6 +19,7 @@ class SkipIntroSprite: SKNode {
     private let nodeName = "SkipIntroSprite"
     private var isPressed = false
     private var shouldDisable: Bool!
+    private var text: String
     
     private var backgroundNode: SKShapeNode!
     private var labelNode: SKLabelNode!
@@ -29,7 +30,9 @@ class SkipIntroSprite: SKNode {
     
     // MARK: - Initialization
     
-    override init() {
+    init(text: String) {
+        self.text = text
+        
         super.init()
         
         setupNodes()
@@ -46,7 +49,7 @@ class SkipIntroSprite: SKNode {
     private func setupNodes() {
         shouldDisable = false
         
-        labelNode = SKLabelNode(text: "SKIP INTRO")
+        labelNode = SKLabelNode(text: text.uppercased())
         labelNode.horizontalAlignmentMode = .center
         labelNode.verticalAlignmentMode = .center
         labelNode.fontName = UIFont.gameFont
@@ -95,6 +98,12 @@ class SkipIntroSprite: SKNode {
     func deanimateSprite() {
         removeAllActions()
         removeFromParent()
+    }
+    
+    func setText(text: String) {
+        self.text = text
+        
+        labelNode.text = text.uppercased()
     }
     
     

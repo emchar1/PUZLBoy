@@ -58,4 +58,9 @@ extension CGPoint {
     static func /(lhs: CGPoint, rhs: CGFloat) -> CGPoint {
         return CGPoint(x: lhs.x / rhs, y: lhs.y / rhs)
     }
+    
+    //Special
+    static func +=(lhs: inout CGPoint, rhs: CGPoint) {
+        lhs = lhs + rhs
+    }
 }
