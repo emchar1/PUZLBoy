@@ -53,8 +53,8 @@ class CutsceneIntro: Cutscene {
         playerRight.setPlayerScale(playerScale * 0.75)
         playerRight.sprite.xScale *= -1
         
-        skipIntroSprite.setText(text: "SKIP INTRO")
-        skipIntroSprite.delegate = self
+        skipSceneSprite.setText(text: "SKIP INTRO")
+        skipSceneSprite.delegate = self
 
         dragonSprite = SKSpriteNode(imageNamed: "enemyLarge")
         dragonSprite.position = CGPoint(x: -dragonSprite.size.width, y: screenSize.height + dragonSprite.size.height)
@@ -178,8 +178,8 @@ class CutsceneIntro: Cutscene {
             SKAction.run { [unowned self] in
                 setTextArray(items: [
                     SpeechBubbleItem(profile: speechPlayerLeft, chat: "🎵 \(CutsceneIntro.funnyQuotes.randomElement() ?? "Error0")—/Oh.....|| hello.| Didn't see you there... 😬|||| I'm PUZL Boy.") { [unowned self] in
-                        addChild(skipIntroSprite)
-                        skipIntroSprite.animateSprite()
+                        addChild(skipSceneSprite)
+                        skipSceneSprite.animateSprite()
                     },
                     SpeechBubbleItem(profile: speechPlayerRight, chat: "Hi! 👋🏽| I'm Princess Olivia and I'm 7 years old.|| I'm late for a V|E|R|Y| important appointment.") { [unowned self] in
                         closeUpHero()
@@ -372,8 +372,8 @@ class CutsceneIntro: Cutscene {
                         speechPlayerLeft.run(SKAction.moveTo(x: speechPlayerLeft.position.x + screenSize.width / 2 - playerLeft.sprite.position.x,
                                                              duration: 1.5 * runCycle))
                         
-                        skipIntroSprite.removeAllActions()
-                        skipIntroSprite.removeFromParent()
+                        skipSceneSprite.removeAllActions()
+                        skipSceneSprite.removeFromParent()
 
                         skyNode.run(SKAction.fadeIn(withDuration: 5))
                         bloodSkyNode.run(SKAction.fadeOut(withDuration: 5))
@@ -484,13 +484,13 @@ class CutsceneIntro: Cutscene {
 }
 
 
-// MARK: - SkipIntroSpriteDelegate
+// MARK: - SkipSceneSpriteDelegate
 
-extension CutsceneIntro: SkipIntroSpriteDelegate {
+extension CutsceneIntro: SkipSceneSpriteDelegate {
     func buttonWasTapped() {
         let fadeDuration: TimeInterval = 1.0
 
-        super.skipIntroHelper(fadeDuration: fadeDuration)
+        super.skipSceneHelper(fadeDuration: fadeDuration)
         
         //MUST stop all sounds if rage quitting early!
         AudioManager.shared.stopSound(for: "birdsambience", fadeDuration: fadeDuration)

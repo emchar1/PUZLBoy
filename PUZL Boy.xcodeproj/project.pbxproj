@@ -282,7 +282,7 @@
 		EAF07C0E29EA736F0034CD1A /* MoonSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAF07C0D29EA736F0034CD1A /* MoonSprite.swift */; };
 		EAF07C1029EA7B8C0034CD1A /* Extension+CGSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAF07C0F29EA7B8C0034CD1A /* Extension+CGSize.swift */; };
 		EAF07C1229EAB5D30034CD1A /* Extension+SKSpriteNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAF07C1129EAB5D30034CD1A /* Extension+SKSpriteNode.swift */; };
-		EAF2A5A62AA7875F00212825 /* SkipIntroSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAF2A5A52AA7875F00212825 /* SkipIntroSprite.swift */; };
+		EAF2A5A62AA7875F00212825 /* SkipSceneSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAF2A5A52AA7875F00212825 /* SkipSceneSprite.swift */; };
 		EAF7181F29B1B2BC00E2ED82 /* movesand1.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAF7181E29B1B2BC00E2ED82 /* movesand1.mp3 */; };
 		EAF7182129B3097300E2ED82 /* lavasizzle.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAF7182029B3097300E2ED82 /* lavasizzle.mp3 */; };
 		EAF7182929B31BE800E2ED82 /* lavaappear1.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAF7182829B31BE800E2ED82 /* lavaappear1.mp3 */; };
@@ -565,7 +565,7 @@
 		EAF07C0D29EA736F0034CD1A /* MoonSprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoonSprite.swift; sourceTree = "<group>"; };
 		EAF07C0F29EA7B8C0034CD1A /* Extension+CGSize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+CGSize.swift"; sourceTree = "<group>"; };
 		EAF07C1129EAB5D30034CD1A /* Extension+SKSpriteNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+SKSpriteNode.swift"; sourceTree = "<group>"; };
-		EAF2A5A52AA7875F00212825 /* SkipIntroSprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkipIntroSprite.swift; sourceTree = "<group>"; };
+		EAF2A5A52AA7875F00212825 /* SkipSceneSprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkipSceneSprite.swift; sourceTree = "<group>"; };
 		EAF7181E29B1B2BC00E2ED82 /* movesand1.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = movesand1.mp3; sourceTree = "<group>"; };
 		EAF7182029B3097300E2ED82 /* lavasizzle.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = lavasizzle.mp3; sourceTree = "<group>"; };
 		EAF7182829B31BE800E2ED82 /* lavaappear1.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = lavaappear1.mp3; sourceTree = "<group>"; };
@@ -740,7 +740,7 @@
 				EA826C84298DD6C600F19F81 /* ActivityIndicatorSprite.swift */,
 				EA826C9929950D0C00F19F81 /* NumMovesSprite.swift */,
 				EA2AF74329B6D06000444E5A /* OfflinePlaySprite.swift */,
-				EAF2A5A52AA7875F00212825 /* SkipIntroSprite.swift */,
+				EAF2A5A52AA7875F00212825 /* SkipSceneSprite.swift */,
 			);
 			path = Sprites;
 			sourceTree = "<group>";
@@ -1404,7 +1404,7 @@
 				EA95D1D329544B4E0061059C /* AchievementBraniac.swift in Sources */,
 				EA8E072F2B4FEC070051DDC3 /* TapPointerEngine.swift in Sources */,
 				EA496AAC2A79B25A0096DB35 /* CutsceneIntro.swift in Sources */,
-				EAF2A5A62AA7875F00212825 /* SkipIntroSprite.swift in Sources */,
+				EAF2A5A62AA7875F00212825 /* SkipSceneSprite.swift in Sources */,
 				EA95D1DD295523FF0061059C /* AchievementKlutz.swift in Sources */,
 				EA1191532904BC4C009D0E3E /* DisplaySprite.swift in Sources */,
 				EA95D20A29602F540061059C /* AchievementReckless.swift in Sources */,

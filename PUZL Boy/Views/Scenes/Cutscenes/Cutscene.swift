@@ -31,7 +31,7 @@ class Cutscene: SKScene {
     var speechPlayerLeft: SpeechBubbleSprite!
     var speechPlayerRight: SpeechBubbleSprite!
     var speechNarrator: SpeechOverlaySprite!
-    var skipIntroSprite: SkipIntroSprite!
+    var skipSceneSprite: SkipSceneSprite!
     
     //Overlay Nodes
     var backgroundNode: SKShapeNode!
@@ -70,9 +70,9 @@ class Cutscene: SKScene {
         playerRight.sprite.position = CGPoint(x: 3 * screenSize.width / 4, y: (screenSize.height - playerScale * playerRight.sprite.size.height) / 2)
         playerRight.setPlayerScale(playerScale)
         
-        skipIntroSprite = SkipIntroSprite(text: "SKIP SCENE")
-        skipIntroSprite.position = CGPoint(x: screenSize.width / 2, y: screenSize.height / 9)
-        skipIntroSprite.zPosition = K.ZPosition.speechBubble
+        skipSceneSprite = SkipSceneSprite(text: "SKIP SCENE")
+        skipSceneSprite.position = CGPoint(x: screenSize.width / 2, y: screenSize.height / 9)
+        skipSceneSprite.zPosition = K.ZPosition.speechBubble
         
         backgroundNode = SKShapeNode(rectOf: screenSize)
         backgroundNode.lineWidth = 0
@@ -132,14 +132,14 @@ class Cutscene: SKScene {
         guard !disableTaps else { return }
         guard let location = touches.first?.location(in: self) else { return }
         
-        skipIntroSprite.touchesBegan(touches, with: event)
+        skipSceneSprite.touchesBegan(touches, with: event)
         tapPointerEngine.move(to: self, at: location, particleType: .pointer)
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard !disableTaps else { return }
         
-        skipIntroSprite.touchesEnded(touches, with: event)
+        skipSceneSprite.touchesEnded(touches, with: event)
     }
     
     
@@ -173,10 +173,10 @@ class Cutscene: SKScene {
     }
     
     
-    // MARK: - Skip Intro Helper Function
+    // MARK: - Skip Scene Helper Function
     
-    ///Call this inside the SkipIntroSpriteDelegate didTapButton() function.
-    func skipIntroHelper(fadeDuration: TimeInterval) {
+    ///Call this inside the SkipSceneSpriteDelegate didTapButton() function.
+    func skipSceneHelper(fadeDuration: TimeInterval) {
         Haptics.shared.stopHapticEngine()
         ButtonTap.shared.tap(type: .buttontap1)
         tapPointerEngine = nil

@@ -619,6 +619,12 @@ class GameScene: SKScene {
         removeAllChildren()
         removeFromParent()
         
+        //DON'T FORGET TO REMOVE THESE OBSERVERS!!!
+        let notificationCenter = NotificationCenter.default
+        notificationCenter.removeObserver(self, name: UIApplication.willResignActiveNotification, object: nil)
+        notificationCenter.removeObserver(self, name: UIApplication.didBecomeActiveNotification, object: nil)
+        notificationCenter.removeObserver(self, name: .shouldCancelLoadingLeaderboards, object: nil)
+
         if shouldSaveState {
             saveState(levelStatsItem: getLevelStatsItem(level: currentLevel, didWin: false))
         }

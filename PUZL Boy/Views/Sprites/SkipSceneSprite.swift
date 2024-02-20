@@ -1,5 +1,5 @@
 //
-//  SkipIntroSprite.swift
+//  SkipSceneSprite.swift
 //  PUZL Boy
 //
 //  Created by Eddie Char on 9/5/23.
@@ -7,16 +7,16 @@
 
 import SpriteKit
 
-protocol SkipIntroSpriteDelegate: AnyObject {
+protocol SkipSceneSpriteDelegate: AnyObject {
     func buttonWasTapped()
 }
 
 
-class SkipIntroSprite: SKNode {
+class SkipSceneSprite: SKNode {
 
     // MARK: - Properties
     
-    private let nodeName = "SkipIntroSprite"
+    private let nodeName = "SkipSceneSprite"
     private var isPressed = false
     private var shouldDisable: Bool!
     private var text: String
@@ -25,7 +25,7 @@ class SkipIntroSprite: SKNode {
     private var labelNode: SKLabelNode!
     private var ffButtonNode: SKSpriteNode!
     
-    weak var delegate: SkipIntroSpriteDelegate?
+    weak var delegate: SkipSceneSpriteDelegate?
 
     
     // MARK: - Initialization
@@ -43,7 +43,7 @@ class SkipIntroSprite: SKNode {
     }
     
     deinit {
-        print("deinit SkipIntroSprite")
+        print("deinit SkipSceneSprite")
     }
     
     private func setupNodes() {

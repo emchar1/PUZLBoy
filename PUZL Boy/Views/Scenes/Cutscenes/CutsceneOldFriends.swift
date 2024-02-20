@@ -25,7 +25,7 @@ class CutsceneOldFriends: Cutscene {
         speechPlayerLeft.position += playerLeft.sprite.position
         speechPlayerRight.position += playerRight.sprite.position
 
-//        skipIntroSprite.delegate = self
+        skipSceneSprite.delegate = self
     }
     
     
@@ -42,10 +42,10 @@ class CutsceneOldFriends: Cutscene {
         
         parallaxManager.animate()
         
-        letterbox.show()// { [unowned self] in
-//            addChild(skipIntroSprite)
-//            skipIntroSprite.animateSprite()
-//        }
+        letterbox.show { [unowned self] in
+            addChild(skipSceneSprite)
+            skipSceneSprite.animateSprite()
+        }
         
         playerLeft.sprite.run(SKAction.repeatForever(magmoorAnimate))
         playerRight.sprite.run(SKAction.repeatForever(marlinAnimate))
@@ -60,11 +60,11 @@ class CutsceneOldFriends: Cutscene {
 }
 
 
-// MARK: - SkipIntroSprite Delegate
+// MARK: - SkipSceneSprite Delegate
 
-extension CutsceneOldFriends: SkipIntroSpriteDelegate {
+extension CutsceneOldFriends: SkipSceneSpriteDelegate {
     func buttonWasTapped() {
-        super.skipIntroHelper(fadeDuration: 1)
+        super.skipSceneHelper(fadeDuration: 1)
     }
     
 }
