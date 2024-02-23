@@ -46,12 +46,13 @@ class TitleScene: SKScene {
     //Misc.
     private var myColors: (title: UIColor, background: UIColor, shadow: UIColor) = (.black, .black, .black)
     private let shadowDepth: CGFloat = 10
+    private var screenSize: CGSize
     private var disableInput: Bool = false
-    private let menuSizeShort = CGSize(width: 650, height: K.ScreenDimensions.size.height / 4)
-    private let menuSizeTall = CGSize(width: 650, height: K.ScreenDimensions.size.height / 3)
+    private var menuSizeShort: CGSize { CGSize(width: 650, height: screenSize.height / 4) }
+    private var menuSizeTall: CGSize { CGSize(width: 650, height: screenSize.height / 3) }
     private var menuSize: CGSize { isGameCompleted ? menuSizeTall : menuSizeShort }
-    private let levelSelectSize = CGSize(width: 650, height: K.ScreenDimensions.size.height / 4) / UIDevice.spriteScale
-    private let settingsSize = CGSize(width: K.ScreenDimensions.size.width, height: K.ScreenDimensions.size.width * 5 / 4)
+    private var levelSelectSize: CGSize { CGSize(width: 650, height: screenSize.height / 4) / UIDevice.spriteScale }
+    private var settingsSize: CGSize { CGSize(width: screenSize.width, height: screenSize.width * 5 / 4) }
     private var currentMenuSelected: MenuPage = .main
     private var isGameCompleted: Bool { FIRManager.saveStateModel?.gameCompleted ?? false }
     
@@ -65,6 +66,8 @@ class TitleScene: SKScene {
     // MARK: - Initializtion
     
     override init(size: CGSize) {
+        self.screenSize = size
+        
         super.init(size: size)
         
         setupSprites()
@@ -83,23 +86,23 @@ class TitleScene: SKScene {
     private func setupSprites() {
         //Sprites Setup
         player = Player(type: .hero)
-        player.sprite.position = CGPoint(x: K.ScreenDimensions.size.width / 2, y: K.ScreenDimensions.size.height / 2)
+        player.sprite.position = CGPoint(x: screenSize.width / 2, y: screenSize.height / 2)
         player.sprite.setScale(2)
         player.sprite.texture = SKTexture(imageNamed: "Run (5)")
         player.sprite.name = "playerSprite"
         
         skyNode = SKSpriteNode(texture: SKTexture(image: DayTheme.getSkyImage()))
-        skyNode.size = K.ScreenDimensions.size
+        skyNode.size = screenSize
         skyNode.anchorPoint = .zero
         skyNode.zPosition = K.ZPosition.skyNode
         skyNode.name = "skyNode"
         
-        fadeSprite = SKSpriteNode(color: .white, size: K.ScreenDimensions.size)
+        fadeSprite = SKSpriteNode(color: .white, size: screenSize)
         fadeSprite.anchorPoint = .zero
         fadeSprite.alpha = 0
         fadeSprite.zPosition = K.ZPosition.fadeTransitionNode
         
-        fadeOutSprite = SKSpriteNode(color: .black, size: K.ScreenDimensions.size)
+        fadeOutSprite = SKSpriteNode(color: .black, size: screenSize)
         fadeOutSprite.anchorPoint = .zero
         fadeOutSprite.alpha = 0
         fadeOutSprite.zPosition = K.ZPosition.fadeTransitionNode
@@ -108,11 +111,11 @@ class TitleScene: SKScene {
         
         
         //Title Setup
-        let sizeA: CGFloat = K.ScreenDimensions.size.width / 4
+        let sizeA: CGFloat = screenSize.width / 4
         let sizeB: CGFloat = sizeA * (4 / 5)
 
         puzlTitle = SKLabelNode(text: "PUZL")
-        puzlTitle.position = CGPoint(x: 0, y: K.ScreenDimensions.size.height - K.ScreenDimensions.topMargin)
+        puzlTitle.position = CGPoint(x: 0, y: screenSize.height - K.ScreenDimensions.topMargin)
         puzlTitle.fontName = UIFont.gameFont
         puzlTitle.fontSize = sizeA
         puzlTitle.horizontalAlignmentMode = .left
@@ -123,7 +126,7 @@ class TitleScene: SKScene {
         puzlTitle.addTripleShadow(shadowOffset: -shadowDepth)
 
         boyTitle = SKLabelNode(text: "Boy")
-        boyTitle.position = CGPoint(x: sizeA, y: K.ScreenDimensions.size.height - K.ScreenDimensions.topMargin - sizeB)
+        boyTitle.position = CGPoint(x: sizeA, y: screenSize.height - K.ScreenDimensions.topMargin - sizeB)
         boyTitle.fontName = UIFont.gameFont
         boyTitle.fontSize = sizeB
         boyTitle.horizontalAlignmentMode = .left
@@ -136,7 +139,7 @@ class TitleScene: SKScene {
         
         
         //Menu Setup
-        let menuPosition = CGPoint(x: K.ScreenDimensions.size.width / 2, y: menuSizeTall.height / 2 + K.ScreenDimensions.bottomMargin)
+        let menuPosition = CGPoint(x: screenSize.width / 2, y: menuSizeTall.height / 2 + K.ScreenDimensions.bottomMargin)
         let menuSpacing: CGFloat = 133
         let menuCornerRadius: CGFloat = 20
 

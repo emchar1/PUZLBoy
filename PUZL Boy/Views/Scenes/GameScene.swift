@@ -38,6 +38,7 @@ class GameScene: SKScene {
     private var adSprite: SKSpriteNode?
     
     //Misc Properties
+    private var screenSize: CGSize
     private var replenishLivesTimerOffset: Date?
     private let keyRunGameTimerAction = "runGameTimerAction"
     private let keyRunReplenishLivesTimerAction = "runReplenishLivesTimerAction"
@@ -64,6 +65,8 @@ class GameScene: SKScene {
     // MARK: - Initialization
     
     init(size: CGSize, hasInternet: Bool, levelSelectNewLevel: Int?) {
+        self.screenSize = size
+        
         if let saveStateModel = FIRManager.saveStateModel {
             //BUGFIX# 240216E02 - Fixed!
             let newLevel = levelSelectNewLevel ?? saveStateModel.newLevel
@@ -499,7 +502,7 @@ class GameScene: SKScene {
         
         AudioManager.shared.lowerVolume(for: AudioManager.shared.currentTheme, fadeDuration: fadeDuration)
 
-        adSprite = SKSpriteNode(color: .clear, size: K.ScreenDimensions.size)
+        adSprite = SKSpriteNode(color: .clear, size: screenSize)
         adSprite!.anchorPoint = .zero
         adSprite!.zPosition = K.ZPosition.adSceneBlackout
         addChild(adSprite!)
@@ -586,7 +589,7 @@ class GameScene: SKScene {
         chatEngine.playDialogue(level: currentLevel) { [unowned self] in
             if chatEngine.canPlayCutscene(level: currentLevel) {
                 let fadeDuration: TimeInterval = 1.0
-                let fadeNode = SKSpriteNode(color: .white, size: K.ScreenDimensions.size)
+                let fadeNode = SKSpriteNode(color: .white, size: screenSize)
                 fadeNode.anchorPoint = .zero
                 fadeNode.alpha = 0
                 fadeNode.zPosition = K.ZPosition.messagePrompt

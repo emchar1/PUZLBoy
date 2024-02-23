@@ -1,0 +1,23 @@
+{
+  "images" : [
+    {
+      "filename" : "YoungMagmoorIdle (1).png",
+      "idiom" : "universal",
+      "scale" : "1x"
+    },
+    {
+      "filename" : "YoungMagmoorIdle (1)@2x.png",
+      "idiom" : "universal",
+      "scale" : "2x"
+    },
+    {
+      "filename" : "YoungMagmoorIdle (1)@3x.png",
+      "idiom" : "universal",
+      "scale" : "3x"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

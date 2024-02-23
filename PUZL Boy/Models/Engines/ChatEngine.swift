@@ -867,13 +867,13 @@ extension ChatEngine {
             }
         case 201:
             sendChatArray(items: [
-                ChatItem(profile: .hero, imgPos: .left, chat: "What took you so long? I was talking to myself before I realized you were still in the DARK REALM..."),
-                ChatItem(profile: .trainer, chat: "PUZL Boy, I—"),
-                ChatItem(profile: .hero, imgPos: .left, chat: "As I was saying, I used to have regular milk with my cereal, then I discovered oat milk and dude, it slaps!"),
-                ChatItem(profile: .trainer, chat: "\"...slaps???\" 🤔 I need a translator when I talk to you."),
-                ChatItem(profile: .hero, imgPos: .left, chat: "Means it's yummy! 😋"),
-                ChatItem(profile: .trainer, chat: "We need to find the princess and send her back to Vaeloria right away. Time is of the essence."),
-                ChatItem(profile: .hero, imgPos: .left, chat: "Yeah, we're headed to the core right now. Why the rush all of a sudden?"),
+//                ChatItem(profile: .hero, imgPos: .left, chat: "What took you so long? I was talking to myself before I realized you were still in the DARK REALM..."),
+//                ChatItem(profile: .trainer, chat: "PUZL Boy, I—"),
+//                ChatItem(profile: .hero, imgPos: .left, chat: "As I was saying, I used to have regular milk with my cereal, then I discovered oat milk and dude, it slaps!"),
+//                ChatItem(profile: .trainer, chat: "\"...slaps???\" 🤔 I need a translator when I talk to you."),
+//                ChatItem(profile: .hero, imgPos: .left, chat: "Means it's yummy! 😋"),
+//                ChatItem(profile: .trainer, chat: "We need to find the princess and send her back to Vaeloria right away. Time is of the essence."),
+//                ChatItem(profile: .hero, imgPos: .left, chat: "Yeah, we're headed to the core right now. Why the rush all of a sudden?"),
                 ChatItem(profile: .trainer, chat: "It all started when...")
             ]) { [unowned self] in
                 handleDialogueCompletionWithCutscene(level: level, completion: completion)

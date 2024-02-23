@@ -20,6 +20,7 @@ class CreditsScene: SKScene {
     private let titleScale: CGFloat = 3
     private let skyColor: (first: UIColor, second: UIColor) = DayTheme.skyColor.bottom.triadic
     private var disableInput = false
+    private var screenSize: CGSize
 
     private var fadeOutNode: SKSpriteNode!
     private var skyNode: SKSpriteNode!
@@ -54,6 +55,8 @@ class CreditsScene: SKScene {
     // MARK: - Initialization
     
     override init(size: CGSize) {
+        self.screenSize = size
+        
         super.init(size: size)
         
         setupNodes()
@@ -69,18 +72,18 @@ class CreditsScene: SKScene {
     }
     
     private func setupNodes() {
-        fadeOutNode = SKSpriteNode(color: .black, size: K.ScreenDimensions.size)
+        fadeOutNode = SKSpriteNode(color: .black, size: screenSize)
         fadeOutNode.anchorPoint = .zero
         fadeOutNode.alpha = 0
         fadeOutNode.zPosition = K.ZPosition.fadeTransitionNode
         
         skyNode = SKSpriteNode(texture: SKTexture(image: DayTheme.getSkyImage()))
-        skyNode.size = CGSize(width: K.ScreenDimensions.size.width, height: K.ScreenDimensions.size.height / 2)
-        skyNode.position = CGPoint(x: 0, y: K.ScreenDimensions.size.height)
+        skyNode.size = CGSize(width: screenSize.width, height: screenSize.height / 2)
+        skyNode.position = CGPoint(x: 0, y: screenSize.height)
         skyNode.anchorPoint = CGPoint(x: 0, y: 1)
         skyNode.zPosition = K.ZPosition.skyNode
 
-        moonSprite = MoonSprite(position: CGPoint(x: K.ScreenDimensions.size.width, y: K.ScreenDimensions.size.height), scale: 0.7 * 3)
+        moonSprite = MoonSprite(position: CGPoint(x: screenSize.width, y: screenSize.height), scale: 0.7 * 3)
         
         parallaxManager = ParallaxManager(useSet: ParallaxObject.SetType.allCases.randomElement() ?? .grass,
                                           xOffsetsArray: nil,
@@ -106,7 +109,7 @@ class CreditsScene: SKScene {
         
         player = Player(type: randomPlayer)
         player.sprite.setScale(0.75 * scaleMultiplier)
-        player.sprite.position = CGPoint(x: K.ScreenDimensions.size.width / 2, y: K.ScreenDimensions.size.height / 4)
+        player.sprite.position = CGPoint(x: screenSize.width / 2, y: screenSize.height / 4)
         player.sprite.color = DayTheme.spriteColor
         player.sprite.colorBlendFactor = DayTheme.spriteShade
         player.sprite.anchorPoint = CGPoint(x: 0.5, y: 0)
@@ -134,7 +137,7 @@ class CreditsScene: SKScene {
                                           tailOrientation: .bottomLeft)
         
         headingLabel = SKLabelNode(text: "Heading Label")
-        headingLabel.position = CGPoint(x: K.ScreenDimensions.size.width / 2, y: K.ScreenDimensions.size.height * 4 / 5)
+        headingLabel.position = CGPoint(x: screenSize.width / 2, y: screenSize.height * 4 / 5)
         headingLabel.horizontalAlignmentMode = .center
         headingLabel.verticalAlignmentMode = .bottom
         headingLabel.numberOfLines = 0
@@ -146,7 +149,7 @@ class CreditsScene: SKScene {
         headingLabel.addDropShadow()
         
         allRightsLabel = SKLabelNode(text: "©2024 5Play Apps. All rights reserved.")
-        allRightsLabel.position = CGPoint(x: K.ScreenDimensions.size.width / 2, y: K.ScreenDimensions.size.height * 1 / 9)
+        allRightsLabel.position = CGPoint(x: screenSize.width / 2, y: screenSize.height * 1 / 9)
         allRightsLabel.horizontalAlignmentMode = .center
         allRightsLabel.verticalAlignmentMode = .top
         allRightsLabel.fontName = UIFont.chatFont

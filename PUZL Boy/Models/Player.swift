@@ -20,7 +20,7 @@ struct Player {
     private var atlas: SKTextureAtlas
     
     enum PlayerType: String, CaseIterable {
-        case hero = "hero", princess, princess2, villain
+        case hero = "hero", princess, princess2, villain, youngTrainer, youngVillain
     }
 
     enum Texture: Int {
@@ -85,12 +85,15 @@ struct Player {
             setupPrincess2()
         case .villain:
             setupVillain()
+        case .youngTrainer:
+            setupYoungTrainer()
+        case .youngVillain:
+            setupYoungVillain()
         }
         
         sprite = SKSpriteNode(texture: textures[Texture.idle.rawValue][0])
         sprite.size = Player.size
         sprite.setScale(scale * scaleMultiplier)
-        sprite.position = .zero
         sprite.zPosition = K.ZPosition.player
     }
     
@@ -123,7 +126,7 @@ struct Player {
     }
     
     private mutating func setupPrincess() {
-        scaleMultiplier = 0.8
+        scaleMultiplier = 0.75
         
         for i in 1...16 {
             textures[Texture.idle.rawValue].append(atlas.textureNamed("PrincessIdle (\(i))"))
@@ -140,7 +143,7 @@ struct Player {
     }
     
     private mutating func setupPrincess2() {
-        scaleMultiplier = 0.8
+        scaleMultiplier = 0.75
         
         for i in 1...16 {
             textures[Texture.idle.rawValue].append(atlas.textureNamed("Princess2Idle (\(i))"))
@@ -152,6 +155,42 @@ struct Player {
         
         for i in 1...15 {
             textures[Texture.idle.rawValue].append(atlas.textureNamed("VillainIdle (\(i))"))
+        }
+    }
+    
+    // TODO: - young trainer setup
+    private mutating func setupYoungTrainer() {
+        scaleMultiplier = 1
+        
+        //Stagger the starting animation frame
+        for i in 3...15 {
+            textures[Texture.idle.rawValue].append(atlas.textureNamed("YoungMarlinIdle (\(i))"))
+            textures[Texture.run.rawValue].append(atlas.textureNamed("YoungMarlinRun (\(i))"))
+            textures[Texture.walk.rawValue].append(atlas.textureNamed("YoungMarlinWalk (\(i))"))
+        }
+        
+        for i in 1...2 {
+            textures[Texture.idle.rawValue].append(atlas.textureNamed("YoungMarlinIdle (\(i))"))
+            textures[Texture.run.rawValue].append(atlas.textureNamed("YoungMarlinRun (\(i))"))
+            textures[Texture.walk.rawValue].append(atlas.textureNamed("YoungMarlinWalk (\(i))"))
+        }
+    }
+    
+    // TODO: - young villain setup
+    private mutating func setupYoungVillain() {
+        scaleMultiplier = 1
+        
+        //Stagger the starting animation frame
+        for i in 8...15 {
+            textures[Texture.idle.rawValue].append(atlas.textureNamed("YoungMagmoorIdle (\(i))"))
+            textures[Texture.run.rawValue].append(atlas.textureNamed("YoungMagmoorRun (\(i))"))
+            textures[Texture.walk.rawValue].append(atlas.textureNamed("YoungMagmoorWalk (\(i))"))
+        }
+        
+        for i in 1...7 {
+            textures[Texture.idle.rawValue].append(atlas.textureNamed("YoungMagmoorIdle (\(i))"))
+            textures[Texture.run.rawValue].append(atlas.textureNamed("YoungMagmoorRun (\(i))"))
+            textures[Texture.walk.rawValue].append(atlas.textureNamed("YoungMagmoorWalk (\(i))"))
         }
     }
     
