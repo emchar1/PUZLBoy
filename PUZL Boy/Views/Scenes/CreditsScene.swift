@@ -94,13 +94,7 @@ class CreditsScene: SKScene {
         tapPointerEngine = TapPointerEngine()
 
 
-
-        var randomPlayer: Player.PlayerType
-
-        // FIXME: - princess2 walk textures don't exist off the top of my head. Need to write this special case, which is obviously buggy!
-        repeat {
-            randomPlayer = Player.PlayerType.allCases.randomElement() ?? .hero
-        } while randomPlayer == .princess2
+        let randomPlayer: Player.PlayerType = .allCases.randomElement() ?? .hero
         
         player = Player(type: randomPlayer)
         player.sprite.setScale(Player.cutsceneScale * player.scaleMultiplier)
@@ -120,7 +114,7 @@ class CreditsScene: SKScene {
         playerReflection.sprite.alpha = 0.25
 
         let frameRate: TimeInterval = 0.06
-        let playerAnimate = randomPlayer == .villain ? SKAction.animate(with: player.textures[Player.Texture.idle.rawValue], timePerFrame: frameRate) : SKAction.animate(with: player.textures[Player.Texture.walk.rawValue], timePerFrame: frameRate)
+        let playerAnimate = SKAction.animate(with: player.textures[Player.Texture.walk.rawValue], timePerFrame: frameRate)
 
         player.sprite.run(SKAction.repeatForever(playerAnimate))
         playerReflection.sprite.run(SKAction.repeatForever(playerAnimate))

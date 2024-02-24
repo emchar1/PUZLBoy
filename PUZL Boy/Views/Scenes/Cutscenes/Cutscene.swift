@@ -13,19 +13,15 @@ class Cutscene: SKScene {
     
     //General
     var screenSize: CGSize
-    var playerLeftScale: CGFloat
-    var playerRightScale: CGFloat
-    var playerLeftType: Player.PlayerType
-    var playerRightType: Player.PlayerType
     var xOffsetsArray: [ParallaxSprite.SpriteXPositions]?
     var disableTaps: Bool = false
     var completion: (() -> Void)?
     
     //Main Nodes
+    var playerLeft: Player
+    var playerRight: Player
     var parallaxManager: ParallaxManager!
     var skyNode: SKSpriteNode!
-    var playerLeft: Player!
-    var playerRight: Player!
     var tapPointerEngine: TapPointerEngine!
     
     //Speech Nodes
@@ -43,12 +39,10 @@ class Cutscene: SKScene {
     
     // MARK: - Initialization
     
-    init(size: CGSize, playerLeftType: Player.PlayerType, playerLeftScale: CGFloat, playerRightType: Player.PlayerType, playerRightScale: CGFloat, xOffsetsArray: [ParallaxSprite.SpriteXPositions]?) {
+    init(size: CGSize, playerLeft: Player.PlayerType, playerRight: Player.PlayerType, xOffsetsArray: [ParallaxSprite.SpriteXPositions]?) {
         self.screenSize = size
-        self.playerLeftType = playerLeftType
-        self.playerLeftScale = playerLeftScale
-        self.playerRightType = playerRightType
-        self.playerRightScale = playerRightScale
+        self.playerLeft = Player(type: playerLeft)
+        self.playerRight = Player(type: playerRight)
         self.xOffsetsArray = xOffsetsArray
         
         super.init(size: size)
@@ -65,13 +59,13 @@ class Cutscene: SKScene {
     }
     
     func setupScene() {
-        playerLeft = Player(type: playerLeftType)
-        playerLeft.sprite.position = CGPoint(x: screenSize.width * 1 / 4, y: screenSize.height / 3 + (playerLeftScale - Player.cutsceneScale) / 2)
-        playerLeft.sprite.setScale(playerLeftScale)
+        playerLeft.sprite.setScale(playerLeft.scaleMultiplier * Player.cutsceneScale)
+        playerLeft.sprite.position = CGPoint(x: screenSize.width * 1 / 4,
+                                             y: screenSize.height / 3 + Player.getNormalizedAdjustedHeight(player: playerLeft))
 
-        playerRight = Player(type: playerRightType)
-        playerRight.sprite.position = CGPoint(x: screenSize.width * 3 / 4, y: screenSize.height / 3 + (playerRightScale - Player.cutsceneScale) / 2)
-        playerRight.sprite.setScale(playerRightScale)
+        playerRight.sprite.setScale(playerRight.scaleMultiplier * Player.cutsceneScale)
+        playerRight.sprite.position = CGPoint(x: screenSize.width * 3 / 4,
+                                              y: screenSize.height / 3 + Player.getNormalizedAdjustedHeight(player: playerRight))
 
         skipSceneSprite = SkipSceneSprite(text: "SKIP SCENE")
         skipSceneSprite.position = CGPoint(x: screenSize.width / 2, y: screenSize.height / 9)

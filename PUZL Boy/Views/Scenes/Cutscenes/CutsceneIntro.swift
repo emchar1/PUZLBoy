@@ -14,8 +14,10 @@ class CutsceneIntro: Cutscene {
     //General
     private var heroPositionInitial: CGPoint { CGPoint(x: screenSize.width / 2, y: screenSize.height / 3) }
     private var heroPositionFinal: CGPoint { CGPoint(x: screenSize.width * 1 / 5, y: screenSize.height / 3) }
-    private var princessPositionInitial: CGPoint { CGPoint(x: screenSize.width + 100, y: screenSize.height / 3 - 40) }
-    private var princessPositionFinal: CGPoint { CGPoint(x: screenSize.width * 4 / 5, y: screenSize.height / 3 - 40) }
+    private var princessPositionInitial: CGPoint { CGPoint(x: screenSize.width + 100,
+                                                           y: screenSize.height / 3 + Player.getNormalizedAdjustedHeight(player: playerRight)) }
+    private var princessPositionFinal: CGPoint { CGPoint(x: screenSize.width * 4 / 5, 
+                                                         y: screenSize.height / 3 + Player.getNormalizedAdjustedHeight(player: playerRight)) }
     
     //Main Nodes
     private var bloodSkyNode: SKSpriteNode!
@@ -34,8 +36,8 @@ class CutsceneIntro: Cutscene {
 
     // MARK: - Initialization
     
-    override init(size: CGSize, playerLeftType: Player.PlayerType, playerLeftScale: CGFloat, playerRightType: Player.PlayerType, playerRightScale: CGFloat, xOffsetsArray: [ParallaxSprite.SpriteXPositions]?) {
-        super.init(size: size, playerLeftType: playerLeftType, playerLeftScale: playerLeftScale, playerRightType: playerRightType, playerRightScale: playerRightScale, xOffsetsArray: xOffsetsArray)
+    override init(size: CGSize, playerLeft: Player.PlayerType, playerRight: Player.PlayerType, xOffsetsArray: [ParallaxSprite.SpriteXPositions]?) {
+        super.init(size: size, playerLeft: playerLeft, playerRight: playerRight, xOffsetsArray: xOffsetsArray)
         
         //Custom implementation here, if needed.
     }
@@ -48,10 +50,8 @@ class CutsceneIntro: Cutscene {
         super.setupScene()
         
         playerLeft.sprite.position = heroPositionInitial
-        playerLeft.sprite.setScale(playerLeftScale)
         
         playerRight.sprite.position = princessPositionInitial
-        playerRight.sprite.setScale(playerRightScale)
         playerRight.sprite.xScale *= -1
         
         skipSceneSprite.setText(text: "SKIP INTRO")
@@ -308,15 +308,15 @@ class CutsceneIntro: Cutscene {
                                 SKAction.move(to: CGPoint(x: -dragonSprite.size.width * 0.25, 
                                                           y: screenSize.height - letterbox.height / 2 + dragonSprite.size.height * 0.25),
                                               duration: abductionSpeed),
-                                SKAction.scaleX(to: -playerRightScale / 8, duration: abductionSpeed),
-                                SKAction.scaleY(to: playerRightScale / 8, duration: abductionSpeed)
+                                SKAction.scaleX(to: -playerRight.scaleMultiplier * Player.cutsceneScale / 8, duration: abductionSpeed),
+                                SKAction.scaleY(to: playerRight.scaleMultiplier * Player.cutsceneScale / 8, duration: abductionSpeed)
                             ]),
                             SKAction.group([
                                 SKAction.removeFromParent(),
                                 SKAction.run { [unowned self] in
                                     playerRight.sprite.position = CGPoint(x: 180, y: -140) //specific position so princess is in dragon's clutches
-                                    playerRight.sprite.xScale = playerRightScale / 4
-                                    playerRight.sprite.yScale = -playerRightScale / 4
+                                    playerRight.sprite.setScale(playerRight.scaleMultiplier * Player.cutsceneScale / 4)
+                                    playerRight.sprite.yScale *= -1
                                     playerRight.sprite.zPosition = -1
                                     flyingDragon.sprite.addChild(playerRight.sprite)
                                 }
@@ -396,7 +396,7 @@ class CutsceneIntro: Cutscene {
     
     private func closeUpHero() {
         playerRight.sprite.position = princessPositionInitial
-        playerRight.sprite.setScale(playerRightScale)
+        playerRight.sprite.setScale(playerRight.scaleMultiplier * Player.cutsceneScale)
         playerRight.sprite.xScale *= -1
         
         playerLeft.sprite.position.x = screenSize.width / 2
@@ -412,7 +412,7 @@ class CutsceneIntro: Cutscene {
     private func closeUpPrincess() {
         playerRight.sprite.position.x = screenSize.width / 2
         playerRight.sprite.position.y = princessPositionInitial.y
-        playerRight.sprite.setScale(2 * playerRightScale / playerLeftScale)
+        playerRight.sprite.setScale(2 * playerRight.scaleMultiplier / playerLeft.scaleMultiplier)
         playerRight.sprite.xScale *= -1
         
         playerRight.sprite.run(SKAction.sequence([
@@ -424,7 +424,7 @@ class CutsceneIntro: Cutscene {
         ]))
         
         playerLeft.sprite.position.x = -200
-        playerLeft.sprite.setScale(playerLeftScale)
+        playerLeft.sprite.setScale(playerLeft.scaleMultiplier * Player.cutsceneScale)
 
         parallaxManager.backgroundSprite.setScale(2)
         parallaxManager.backgroundSprite.position.y = -screenSize.height / 2 + 400
@@ -436,14 +436,14 @@ class CutsceneIntro: Cutscene {
     private func midShotPrincessDragon() {
         playerRight.sprite.position.x = screenSize.width / 2
         playerRight.sprite.position.y = princessPositionFinal.y
-        playerRight.sprite.setScale(playerRightScale)
+        playerRight.sprite.setScale(playerRight.scaleMultiplier * Player.cutsceneScale)
         playerRight.sprite.xScale *= -1
         
         playerRight.sprite.run(SKAction.repeatForever(SKAction.animate(with: playerRight.textures[Player.Texture.jump.rawValue],
                                                                        timePerFrame: 0.02)), withKey: "writhe")
         
         playerLeft.sprite.position.x = -200
-        playerLeft.sprite.setScale(playerLeftScale)
+        playerLeft.sprite.setScale(playerLeft.scaleMultiplier * Player.cutsceneScale)
         
         dragonSprite.position = CGPoint(x: screenSize.width / 2, y: screenSize.height / 2)
         dragonSprite.setScale(4)
@@ -457,11 +457,11 @@ class CutsceneIntro: Cutscene {
     
     private func wideShot(shouldResetForeground: Bool = false) {
         playerRight.sprite.position = princessPositionFinal
-        playerRight.sprite.setScale(playerRightScale)
+        playerRight.sprite.setScale(playerRight.scaleMultiplier * Player.cutsceneScale)
         playerRight.sprite.xScale *= -1
         
         playerLeft.sprite.position.x = heroPositionFinal.x
-        playerLeft.sprite.setScale(playerLeftScale)
+        playerLeft.sprite.setScale(playerLeft.scaleMultiplier * Player.cutsceneScale)
 
         parallaxManager.backgroundSprite.setScale(1)
         parallaxManager.backgroundSprite.position = .zero

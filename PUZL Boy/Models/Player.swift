@@ -151,7 +151,8 @@ struct Player {
         
         for i in 1...16 {
             textures[Texture.idle.rawValue].append(atlas.textureNamed("Princess2Idle (\(i))"))
-        }        
+            textures[Texture.walk.rawValue].append(atlas.textureNamed("Princess2Idle (\(i))")) // FIXME: - temporary
+        }
     }
     
     private mutating func setupVillain() {
@@ -159,6 +160,8 @@ struct Player {
         
         for i in 1...15 {
             textures[Texture.idle.rawValue].append(atlas.textureNamed("VillainIdle (\(i))"))
+            textures[Texture.walk.rawValue].append(atlas.textureNamed("VillainIdle (\(i))"))
+            textures[Texture.run.rawValue].append(atlas.textureNamed("VillainIdle (\(i))"))
         }
     }
     
@@ -203,6 +206,10 @@ struct Player {
     
     mutating func setPlayerScale(_ scale: CGFloat) {
         self.scale = scale * scaleMultiplier
+    }
+    
+    static func getNormalizedAdjustedHeight(player: Player) -> CGFloat {
+        return size.height / 2 * cutsceneScale * (player.scaleMultiplier - 1)
     }
     
     static func getGameboardScale(panelSize: CGFloat) -> CGFloat {
