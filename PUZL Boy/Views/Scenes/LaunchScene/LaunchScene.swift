@@ -54,11 +54,10 @@ class LaunchScene: SKScene {
     
     private func setupSprites() {
         let playerPosition = CGPoint(x: screenSize.width / 2, y: screenSize.height / 3)
-        let playerScale: CGFloat = 0.75
         
         player = Player(type: .hero)
         player.sprite.position = playerPosition
-        player.sprite.setScale(playerScale)
+        player.sprite.setScale(Player.cutsceneScale * player.scaleMultiplier)
         player.sprite.name = LaunchScene.nodeName_playerSprite
 
         if UserDefaults.standard.bool(forKey: K.UserDefaults.shouldSkipIntro) {
@@ -68,7 +67,7 @@ class LaunchScene: SKScene {
         
         playerReflection = Player(type: .hero)
         playerReflection.sprite.position = playerPosition - CGPoint(x: 0, y: Player.size.height / 2 + 50) //why +50???
-        playerReflection.sprite.setScale(playerScale)
+        playerReflection.sprite.setScale(Player.cutsceneScale * playerReflection.scaleMultiplier)
         playerReflection.sprite.color = DayTheme.spriteColor
         playerReflection.sprite.colorBlendFactor = DayTheme.spriteShade
         playerReflection.sprite.name = LaunchScene.nodeName_playerReflection

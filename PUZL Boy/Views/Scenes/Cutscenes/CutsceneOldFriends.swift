@@ -19,9 +19,6 @@ class CutsceneOldFriends: Cutscene {
     override func setupScene() {
         super.setupScene()
         
-        playerLeft.setPlayerScale(1.5)
-        playerRight.setPlayerScale(1.5)
-        
         speechPlayerLeft.position += playerLeft.sprite.position
         speechPlayerRight.position += playerRight.sprite.position
 
@@ -36,7 +33,7 @@ class CutsceneOldFriends: Cutscene {
         
         let frameRate: TimeInterval = 0.06
         let magmoorAnimate = SKAction.animate(with: playerLeft.textures[Player.Texture.walk.rawValue], timePerFrame: frameRate)
-        let marlinAnimate = SKAction.animate(with: playerRight.textures[Player.Texture.walk.rawValue], timePerFrame: frameRate)
+        let marlinAnimate = SKAction.animate(with: playerRight.textures[Player.Texture.walk.rawValue], timePerFrame: frameRate * 0.8)
         
         parallaxManager.animate()
         

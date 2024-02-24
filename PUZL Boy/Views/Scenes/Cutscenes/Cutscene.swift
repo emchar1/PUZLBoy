@@ -12,8 +12,9 @@ class Cutscene: SKScene {
     // MARK: - Properties
     
     //General
-    let playerScale: CGFloat = 0.75
     var screenSize: CGSize
+    var playerLeftScale: CGFloat
+    var playerRightScale: CGFloat
     var playerLeftType: Player.PlayerType
     var playerRightType: Player.PlayerType
     var xOffsetsArray: [ParallaxSprite.SpriteXPositions]?
@@ -42,10 +43,12 @@ class Cutscene: SKScene {
     
     // MARK: - Initialization
     
-    init(size: CGSize, playerLeftType: Player.PlayerType, playerRightType: Player.PlayerType, xOffsetsArray: [ParallaxSprite.SpriteXPositions]?) {
+    init(size: CGSize, playerLeftType: Player.PlayerType, playerLeftScale: CGFloat, playerRightType: Player.PlayerType, playerRightScale: CGFloat, xOffsetsArray: [ParallaxSprite.SpriteXPositions]?) {
         self.screenSize = size
         self.playerLeftType = playerLeftType
+        self.playerLeftScale = playerLeftScale
         self.playerRightType = playerRightType
+        self.playerRightScale = playerRightScale
         self.xOffsetsArray = xOffsetsArray
         
         super.init(size: size)
@@ -63,13 +66,13 @@ class Cutscene: SKScene {
     
     func setupScene() {
         playerLeft = Player(type: playerLeftType)
-        playerLeft.sprite.position = CGPoint(x: screenSize.width / 4, y: (screenSize.height - playerScale * playerLeft.sprite.size.height) / 2)
-        playerLeft.setPlayerScale(playerScale)
-        
+        playerLeft.sprite.position = CGPoint(x: screenSize.width * 1 / 4, y: screenSize.height / 3 + (playerLeftScale - Player.cutsceneScale) / 2)
+        playerLeft.sprite.setScale(playerLeftScale)
+
         playerRight = Player(type: playerRightType)
-        playerRight.sprite.position = CGPoint(x: 3 * screenSize.width / 4, y: (screenSize.height - playerScale * playerRight.sprite.size.height) / 2)
-        playerRight.setPlayerScale(playerScale)
-        
+        playerRight.sprite.position = CGPoint(x: screenSize.width * 3 / 4, y: screenSize.height / 3 + (playerRightScale - Player.cutsceneScale) / 2)
+        playerRight.sprite.setScale(playerRightScale)
+
         skipSceneSprite = SkipSceneSprite(text: "SKIP SCENE")
         skipSceneSprite.position = CGPoint(x: screenSize.width / 2, y: screenSize.height / 9)
         skipSceneSprite.zPosition = K.ZPosition.speechBubble

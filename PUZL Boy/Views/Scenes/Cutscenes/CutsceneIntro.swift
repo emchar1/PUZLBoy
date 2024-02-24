@@ -34,8 +34,8 @@ class CutsceneIntro: Cutscene {
 
     // MARK: - Initialization
     
-    override init(size: CGSize, playerLeftType: Player.PlayerType, playerRightType: Player.PlayerType, xOffsetsArray: [ParallaxSprite.SpriteXPositions]?) {
-        super.init(size: size, playerLeftType: playerLeftType, playerRightType: playerRightType, xOffsetsArray: xOffsetsArray)
+    override init(size: CGSize, playerLeftType: Player.PlayerType, playerLeftScale: CGFloat, playerRightType: Player.PlayerType, playerRightScale: CGFloat, xOffsetsArray: [ParallaxSprite.SpriteXPositions]?) {
+        super.init(size: size, playerLeftType: playerLeftType, playerLeftScale: playerLeftScale, playerRightType: playerRightType, playerRightScale: playerRightScale, xOffsetsArray: xOffsetsArray)
         
         //Custom implementation here, if needed.
     }
@@ -48,9 +48,10 @@ class CutsceneIntro: Cutscene {
         super.setupScene()
         
         playerLeft.sprite.position = heroPositionInitial
+        playerLeft.sprite.setScale(playerLeftScale)
         
         playerRight.sprite.position = princessPositionInitial
-        playerRight.setPlayerScale(playerScale * 0.75)
+        playerRight.sprite.setScale(playerRightScale)
         playerRight.sprite.xScale *= -1
         
         skipSceneSprite.setText(text: "SKIP INTRO")
@@ -307,15 +308,15 @@ class CutsceneIntro: Cutscene {
                                 SKAction.move(to: CGPoint(x: -dragonSprite.size.width * 0.25, 
                                                           y: screenSize.height - letterbox.height / 2 + dragonSprite.size.height * 0.25),
                                               duration: abductionSpeed),
-                                SKAction.scaleX(to: -playerScale / 8 * 0.75, duration: abductionSpeed),
-                                SKAction.scaleY(to: playerScale / 8 * 0.75, duration: abductionSpeed)
+                                SKAction.scaleX(to: -playerRightScale / 8, duration: abductionSpeed),
+                                SKAction.scaleY(to: playerRightScale / 8, duration: abductionSpeed)
                             ]),
                             SKAction.group([
                                 SKAction.removeFromParent(),
                                 SKAction.run { [unowned self] in
                                     playerRight.sprite.position = CGPoint(x: 180, y: -140) //specific position so princess is in dragon's clutches
-                                    playerRight.sprite.xScale = playerScale / 4 * 0.75
-                                    playerRight.sprite.yScale = -playerScale / 4 * 0.75
+                                    playerRight.sprite.xScale = playerRightScale / 4
+                                    playerRight.sprite.yScale = -playerRightScale / 4
                                     playerRight.sprite.zPosition = -1
                                     flyingDragon.sprite.addChild(playerRight.sprite)
                                 }
@@ -395,8 +396,8 @@ class CutsceneIntro: Cutscene {
     
     private func closeUpHero() {
         playerRight.sprite.position = princessPositionInitial
-        playerRight.sprite.setScale(playerScale * 0.75)
-        playerRight.sprite.xScale = -playerScale * 0.75
+        playerRight.sprite.setScale(playerRightScale)
+        playerRight.sprite.xScale *= -1
         
         playerLeft.sprite.position.x = screenSize.width / 2
         playerLeft.sprite.setScale(2)
@@ -411,8 +412,8 @@ class CutsceneIntro: Cutscene {
     private func closeUpPrincess() {
         playerRight.sprite.position.x = screenSize.width / 2
         playerRight.sprite.position.y = princessPositionInitial.y
-        playerRight.sprite.setScale(2 * 0.75)
-        playerRight.sprite.xScale = -2 * 0.75
+        playerRight.sprite.setScale(2 * playerRightScale / playerLeftScale)
+        playerRight.sprite.xScale *= -1
         
         playerRight.sprite.run(SKAction.sequence([
             SKAction.wait(forDuration: 34),
@@ -423,7 +424,7 @@ class CutsceneIntro: Cutscene {
         ]))
         
         playerLeft.sprite.position.x = -200
-        playerLeft.sprite.setScale(playerScale)
+        playerLeft.sprite.setScale(playerLeftScale)
 
         parallaxManager.backgroundSprite.setScale(2)
         parallaxManager.backgroundSprite.position.y = -screenSize.height / 2 + 400
@@ -435,11 +436,14 @@ class CutsceneIntro: Cutscene {
     private func midShotPrincessDragon() {
         playerRight.sprite.position.x = screenSize.width / 2
         playerRight.sprite.position.y = princessPositionFinal.y
-        playerRight.sprite.setScale(0.75)
-        playerRight.sprite.xScale = -0.75
+        playerRight.sprite.setScale(playerRightScale)
+        playerRight.sprite.xScale *= -1
+        
+        playerRight.sprite.run(SKAction.repeatForever(SKAction.animate(with: playerRight.textures[Player.Texture.jump.rawValue],
+                                                                       timePerFrame: 0.02)), withKey: "writhe")
         
         playerLeft.sprite.position.x = -200
-        playerLeft.sprite.setScale(playerScale)
+        playerLeft.sprite.setScale(playerLeftScale)
         
         dragonSprite.position = CGPoint(x: screenSize.width / 2, y: screenSize.height / 2)
         dragonSprite.setScale(4)
@@ -453,11 +457,11 @@ class CutsceneIntro: Cutscene {
     
     private func wideShot(shouldResetForeground: Bool = false) {
         playerRight.sprite.position = princessPositionFinal
-        playerRight.sprite.setScale(playerScale * 0.75)
-        playerRight.sprite.xScale = -playerScale * 0.75
+        playerRight.sprite.setScale(playerRightScale)
+        playerRight.sprite.xScale *= -1
         
         playerLeft.sprite.position.x = heroPositionFinal.x
-        playerLeft.sprite.setScale(playerScale)
+        playerLeft.sprite.setScale(playerLeftScale)
 
         parallaxManager.backgroundSprite.setScale(1)
         parallaxManager.backgroundSprite.position = .zero

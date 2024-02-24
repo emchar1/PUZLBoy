@@ -72,9 +72,14 @@ class GameViewController: UIViewController {
                     
                     DispatchQueue.main.asyncAfter(deadline: .now() + LoadingSprite.loadingDuration) {
                         if !UserDefaults.standard.bool(forKey: K.UserDefaults.shouldSkipIntro) {
+                            let playerLeft = Player(type: .hero)
+                            let playerRight = Player(type: .princess)
+                            
                             cutsceneIntro = CutsceneIntro(size: K.ScreenDimensions.size,
-                                                          playerLeftType: .hero,
-                                                          playerRightType: .princess,
+                                                          playerLeftType: playerLeft.type,
+                                                          playerLeftScale: Player.cutsceneScale * playerLeft.scaleMultiplier,
+                                                          playerRightType: playerRight.type,
+                                                          playerRightScale: Player.cutsceneScale * playerRight.scaleMultiplier,
                                                           xOffsetsArray: nil)
 
                             launchScene?.animateTransition(animationSequence: .running) { xOffsetsArray in
@@ -182,8 +187,17 @@ extension GameViewController: GameSceneDelegate {
         gameScene.gameSceneDelegate = self
         gameScene.chatEngine.setDialoguePlayed(level: level, to: true) //IMPORTANT: MUST do this for levels with a chat dialogue cutscene!
 
-        let cutscene = CutsceneOldFriends(size: K.ScreenDimensions.size, playerLeftType: .hero, playerRightType: .hero, xOffsetsArray: nil)
+        let playerLeft = Player(type: .youngVillain)
+        let playerRight = Player(type: .youngTrainer)
+        let cutscene = CutsceneOldFriends(size: K.ScreenDimensions.size,
+                                          playerLeftType: playerLeft.type,
+                                          playerLeftScale: Player.cutsceneScale * playerLeft.scaleMultiplier,
+                                          playerRightType: playerRight.type,
+                                          playerRightScale: Player.cutsceneScale * playerRight.scaleMultiplier,
+                                          xOffsetsArray: nil)
+        
         skView.presentScene(cutscene, transition: SKTransition.fade(with: .white, duration: 2.0))
+        
         cutscene.animateScene() { [unowned self] in
             skView.presentScene(gameScene, transition: SKTransition.fade(with: .white, duration: 1.0))
         }

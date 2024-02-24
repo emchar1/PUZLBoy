@@ -367,8 +367,8 @@ class GameboardSprite {
             princess.sprite.run(SKAction.sequence([
                 SKAction.wait(forDuration: waitDuration),
                 SKAction.group([
-                    SKAction.scaleX(to: facingMultiplier * Player.getStandardScale(panelSize: panelSize) * princess.scaleMultiplier, duration: appearDuration),
-                    SKAction.scaleY(to: Player.getStandardScale(panelSize: panelSize) * princess.scaleMultiplier, duration: appearDuration),
+                    SKAction.scaleX(to: facingMultiplier * Player.getGameboardScale(panelSize: panelSize) * princess.scaleMultiplier, duration: appearDuration),
+                    SKAction.scaleY(to: Player.getGameboardScale(panelSize: panelSize) * princess.scaleMultiplier, duration: appearDuration),
                     SKAction.moveBy(x: facingMultiplier * playerOffset.x, y: playerOffset.y, duration: appearDuration)
                 ])
             ]))
@@ -376,8 +376,8 @@ class GameboardSprite {
             villain.sprite.run(SKAction.sequence([
                 SKAction.wait(forDuration: waitDuration),
                 SKAction.group([
-                    SKAction.scaleX(to: facingMultiplier * Player.getStandardScale(panelSize: panelSize) * villain.scaleMultiplier, duration: appearDuration),
-                    SKAction.scaleY(to: Player.getStandardScale(panelSize: panelSize) * villain.scaleMultiplier, duration: appearDuration),
+                    SKAction.scaleX(to: facingMultiplier * Player.getGameboardScale(panelSize: panelSize) * villain.scaleMultiplier, duration: appearDuration),
+                    SKAction.scaleY(to: Player.getGameboardScale(panelSize: panelSize) * villain.scaleMultiplier, duration: appearDuration),
                     SKAction.moveBy(x: -facingMultiplier * playerOffset.x, y: playerOffset.y, duration: appearDuration)
                 ])
             ]))
@@ -489,8 +489,8 @@ class GameboardSprite {
                             SKAction.run { [unowned self] in
                                 let illusionSprite = SKSpriteNode(imageNamed: node.texture?.getFilename() ?? "VillainIdle (1)")
                                 illusionSprite.size = Player.size
-                                illusionSprite.xScale = facingMultiplier * Player.getStandardScale(panelSize: panelSize) * villainScaleMultiplier
-                                illusionSprite.yScale = Player.getStandardScale(panelSize: panelSize) * villainScaleMultiplier
+                                illusionSprite.xScale = facingMultiplier * Player.getGameboardScale(panelSize: panelSize) * villainScaleMultiplier
+                                illusionSprite.yScale = Player.getGameboardScale(panelSize: panelSize) * villainScaleMultiplier
                                 illusionSprite.position = SpriteMath.Trigonometry.getMidpoint(startPoint: startPoint - facingMultiplier * playerOffset + villainOffset, endPoint: endPoint - facingMultiplier * playerOffset + villainOffset, step: illusionStep, totalSteps: blinkDivision)
                                 illusionSprite.zPosition = K.ZPosition.itemsAndEffects + 20 - CGFloat(blinkDivision - illusionStep)
                                 illusionSprite.name = "escapeVillain\(illusionStep)"

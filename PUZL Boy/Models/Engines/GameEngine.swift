@@ -691,7 +691,7 @@ class GameEngine {
         }
 
         playerSprite.sprite.removeFromParent() //This is needed, otherwise gameboardSprite keeps adding it, below
-        playerSprite.setScale(panelSize: gameboardSprite.panelSize)
+        playerSprite.setPlayerSpriteScale(panelSize: gameboardSprite.panelSize)
         gameboardSprite.sprite.addChild(playerSprite.sprite)
 
         if !isGameOver {

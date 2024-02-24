@@ -12,8 +12,10 @@ struct Player {
     // MARK: - Properties
     
     static let size = CGSize(width: 946, height: 564)
+    static let cutsceneScale: CGFloat = 0.75 //to be used in cutscenes
     private(set) var scale = 0.5
     private(set) var scaleMultiplier: CGFloat = 1
+    private(set) var type: PlayerType
 
     private(set) var sprite: SKSpriteNode!
     private(set) var textures: [[SKTexture]]
@@ -56,6 +58,8 @@ struct Player {
     // MARK: - Initialization
     
     init(type: PlayerType) {
+        self.type = type
+        
         atlas = SKTextureAtlas(named: type.rawValue)
         
         textures = []
@@ -160,7 +164,7 @@ struct Player {
     
     // TODO: - young trainer setup
     private mutating func setupYoungTrainer() {
-        scaleMultiplier = 1
+        scaleMultiplier = 1.5 * 0.8
         
         //Stagger the starting animation frame
         for i in 3...15 {
@@ -178,7 +182,7 @@ struct Player {
     
     // TODO: - young villain setup
     private mutating func setupYoungVillain() {
-        scaleMultiplier = 1
+        scaleMultiplier = 1.5
         
         //Stagger the starting animation frame
         for i in 8...15 {
@@ -199,14 +203,13 @@ struct Player {
     
     mutating func setPlayerScale(_ scale: CGFloat) {
         self.scale = scale * scaleMultiplier
-        
-        sprite.setScale(self.scale)
     }
     
-    static func getStandardScale(panelSize: CGFloat) -> CGFloat {
+    static func getGameboardScale(panelSize: CGFloat) -> CGFloat {
         //Changed scale from 0.5 to 1 to 1.5 due to new hero width size from 313 to original 614 to new 946
         let scale: CGFloat = 1.5
 
+        //GameboardSprite.panelSize = K.ScreenDimensions.size / panelCount. For example, on iPhone 15 Pro, K.ScreenDimensions.size = Player.size.width = 945, therefore function returns 1.5 / panelCount
         return scale * panelSize / Player.size.width
     }
 }

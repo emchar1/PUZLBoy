@@ -578,8 +578,8 @@ class PlayerSprite {
     
     // MARK: - Getters & Setters
 
-    func setScale(panelSize: CGFloat) {
-        player.setPlayerScale(abs(player.sprite.xScale))
-        player.sprite.setScale(Player.getStandardScale(panelSize: panelSize))
+    func setPlayerSpriteScale(panelSize: CGFloat) {
+        player.sprite.setScale(Player.getGameboardScale(panelSize: panelSize)) // 1.5 / panelCount
+        player.setPlayerScale(abs(player.sprite.xScale)) // Always seems to be 0.5
     }
 }

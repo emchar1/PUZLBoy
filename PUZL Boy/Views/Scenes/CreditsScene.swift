@@ -93,22 +93,17 @@ class CreditsScene: SKScene {
         
         tapPointerEngine = TapPointerEngine()
 
-        let scaleMultiplier: CGFloat
+
+
         var randomPlayer: Player.PlayerType
 
-        // TODO: - Princess2 walk doesn't exist. Do this for now...
+        // FIXME: - princess2 walk textures don't exist off the top of my head. Need to write this special case, which is obviously buggy!
         repeat {
             randomPlayer = Player.PlayerType.allCases.randomElement() ?? .hero
         } while randomPlayer == .princess2
         
-        switch randomPlayer {
-        case .princess:     scaleMultiplier = 0.8
-        case .villain:      scaleMultiplier = 1.5
-        default:            scaleMultiplier = 1
-        }
-        
         player = Player(type: randomPlayer)
-        player.sprite.setScale(0.75 * scaleMultiplier)
+        player.sprite.setScale(Player.cutsceneScale * player.scaleMultiplier)
         player.sprite.position = CGPoint(x: screenSize.width / 2, y: screenSize.height / 4)
         player.sprite.color = DayTheme.spriteColor
         player.sprite.colorBlendFactor = DayTheme.spriteShade
@@ -116,7 +111,7 @@ class CreditsScene: SKScene {
         player.sprite.zPosition = K.ZPosition.player
         
         playerReflection = Player(type: randomPlayer)
-        playerReflection.sprite.setScale(0.75 * scaleMultiplier)
+        playerReflection.sprite.setScale(Player.cutsceneScale * playerReflection.scaleMultiplier)
         playerReflection.sprite.position = player.sprite.position + CGPoint(x: 0, y: player.sprite.size.height / 4 - 10) //why -10???
         playerReflection.sprite.anchorPoint = CGPoint(x: 0.5, y: 0)
         playerReflection.sprite.color = DayTheme.spriteColor
