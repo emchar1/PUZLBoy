@@ -167,7 +167,7 @@ struct Player {
     
     // TODO: - young trainer setup
     private mutating func setupYoungTrainer() {
-        scaleMultiplier = 1.5 * 0.8
+        scaleMultiplier = 1.5 * 0.95
         
         //Stagger the starting animation frame
         for i in 3...15 {

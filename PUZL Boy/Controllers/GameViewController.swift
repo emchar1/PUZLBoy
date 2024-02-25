@@ -72,6 +72,8 @@ class GameViewController: UIViewController {
                     
                     DispatchQueue.main.asyncAfter(deadline: .now() + LoadingSprite.loadingDuration) {
                         if !UserDefaults.standard.bool(forKey: K.UserDefaults.shouldSkipIntro) {
+                            
+                            //Initialize cutsceneIntro here to give it time to load everything before launchScene finishes animating the transition!
                             cutsceneIntro = CutsceneIntro(size: K.ScreenDimensions.size,
                                                           playerLeft: .hero,
                                                           playerRight: .princess,

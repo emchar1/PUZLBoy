@@ -32,8 +32,9 @@ class CutsceneOldFriends: Cutscene {
         super.animateScene(completion: completion)
         
         let frameRate: TimeInterval = 0.06
-        let magmoorAnimate = SKAction.animate(with: playerLeft.textures[Player.Texture.walk.rawValue], timePerFrame: frameRate)
-        let marlinAnimate = SKAction.animate(with: playerRight.textures[Player.Texture.walk.rawValue], timePerFrame: frameRate * 0.8)
+        let playerLeftSpeed: TimeInterval = playerLeft.scaleMultiplier / playerRight.scaleMultiplier
+        let magmoorAnimate = SKAction.animate(with: playerLeft.textures[Player.Texture.walk.rawValue], timePerFrame: frameRate * playerLeftSpeed)
+        let marlinAnimate = SKAction.animate(with: playerRight.textures[Player.Texture.walk.rawValue], timePerFrame: frameRate)
         
         parallaxManager.animate()
         
