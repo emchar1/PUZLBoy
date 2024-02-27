@@ -59,6 +59,7 @@ class Cutscene: SKScene {
     }
     
     func setupScene() {
+        playerLeft.sprite.zPosition += 5
         playerLeft.sprite.setScale(playerLeft.scaleMultiplier * Player.cutsceneScale)
         playerLeft.sprite.position = CGPoint(x: screenSize.width * 1 / 4,
                                              y: screenSize.height / 3 + Player.getNormalizedAdjustedHeight(player: playerLeft))
