@@ -50,16 +50,18 @@ class ParallaxManager: SKNode {
             self.set = .grass
         }
                 
-        setupSprites()
+        backgroundSprite = SKSpriteNode(color: .clear, size: K.ScreenDimensions.size)
+        backgroundSprite.name = LaunchScene.nodeName_backgroundNode
+
+        changeSet(set: set)
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func setupSprites() {
-        backgroundSprite = SKSpriteNode(color: .clear, size: K.ScreenDimensions.size)
-        backgroundSprite.name = LaunchScene.nodeName_backgroundNode
+    func changeSet(set: ParallaxObject.SetType) {
+        self.set = set
         
         switch set {
         case .grass:
@@ -100,17 +102,27 @@ class ParallaxManager: SKNode {
         return sprites
     }
     
+    
+    // MARK: - Move Functions
+    
     /**
-     Call this method to correctly add all the parallaxSprites children to the parent scene.
+     Adds the parallaxSprites to the backgroundSprite, then to the parentNode or scene (if parentNode is nil).
      - parameters:
         - scene: The parent scene that calls this class
         - node: optional parent node to set the backgroundSprite to. If not nil, use this, otherwise set it to the scene.
      */
     func addSpritesToParent(scene: SKScene, node parentNode: SKNode? = nil) {
+        //Prevents app crashing if backgroundSprite was previously added to a parentNode or scene.
+        backgroundSprite.removeFromParent()
+        backgroundSprite.removeAllActions()
+        backgroundSprite.removeAllChildren()
+        
+        //Adds the individual sprite scene components
         for sprite in parallaxSprites {
             backgroundSprite.addChild(sprite)
         }
         
+        //Adds the backgroundSprite to the parentNode or scene, if parentNode is nil.
         if let parentNode = parentNode {
             parentNode.addChild(backgroundSprite)
         }
