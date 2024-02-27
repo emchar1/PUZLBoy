@@ -80,6 +80,9 @@ class SpeechOverlaySprite: SKNode {
         speechNode.text = ""
         animationIndex = 0
         self.completion = completion
+        
+        //Always make sure to remove from superScene, just in case there's already a parent!
+        self.removeFromParent()
 
         superScene.addChild(self)
         

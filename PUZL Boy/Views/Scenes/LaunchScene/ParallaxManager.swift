@@ -53,7 +53,7 @@ class ParallaxManager: SKNode {
         backgroundSprite = SKSpriteNode(color: .clear, size: K.ScreenDimensions.size)
         backgroundSprite.name = LaunchScene.nodeName_backgroundNode
 
-        changeSet(set: set)
+        changeSet(set: self.set)
     }
     
     required init?(coder aDecoder: NSCoder) {
