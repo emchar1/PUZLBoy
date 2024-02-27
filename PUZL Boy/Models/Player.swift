@@ -208,6 +208,11 @@ struct Player {
         self.scale = scale * scaleMultiplier
     }
     
+    /**
+     Helper function to ensure two players on the same scene are of the same height, i.e. with player = .hero as the base case.
+        - parameter player: the comparing player (to player .hero).
+        - returns: the normalized height adjusted to player = .hero
+     */
     static func getNormalizedAdjustedHeight(player: Player) -> CGFloat {
         return size.height / 2 * cutsceneScale * (player.scaleMultiplier - 1)
     }
