@@ -228,7 +228,7 @@ class CutsceneOldFriends: Cutscene {
         }
             
         parallaxManager.backgroundSprite.setScale(scale)
-        parallaxManager.backgroundSprite.position.y = -screenSize.height / 2 + 400
+        parallaxManager.backgroundSprite.position = CGPoint(x: -screenSize.width / 2, y: -screenSize.height / 2 + 400)
 
         parallaxManager.backgroundSprite.run(SKAction.scale(to: scale * scaleIncrease, duration: animationDuration))
     }
@@ -345,7 +345,7 @@ class CutsceneOldFriends: Cutscene {
             SKAction.wait(forDuration: fadeDuration * 11 + 2 + 3),
             SKAction.group([
                 SKAction.scale(to: 1, duration: zoomDuration),
-                SKAction.moveTo(y: 0, duration: zoomDuration)
+                SKAction.move(to: .zero, duration: zoomDuration)
             ])
         ]))
 
