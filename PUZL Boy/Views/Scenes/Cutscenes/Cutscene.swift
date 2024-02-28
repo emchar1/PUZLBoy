@@ -160,7 +160,7 @@ class Cutscene: SKScene {
      - currentIndex: keeps track of the array index, which is handled recursively
      - completion: process any handlers between text animations.
      */
-    func setTextArray(items: [SpeechBubbleItem], currentIndex: Int = 0, completion: (() -> Void)?) {
+    final func setTextArray(items: [SpeechBubbleItem], currentIndex: Int = 0, completion: (() -> Void)?) {
         guard currentIndex < items.count else {
             //Base case
             completion?()

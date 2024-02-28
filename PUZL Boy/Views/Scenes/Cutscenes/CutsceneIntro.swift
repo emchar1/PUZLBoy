@@ -90,6 +90,12 @@ class CutsceneIntro: Cutscene {
         AudioManager.shared.playSound(for: "birdsambience", fadeIn: 5)
         AudioManager.shared.playSound(for: AudioManager.shared.grasslandTheme, fadeIn: 5)
     }
+        
+    override func cleanupScene(buttonTap: ButtonTap.ButtonType?, fadeDuration: TimeInterval?) {
+        super.cleanupScene(buttonTap: buttonTap, fadeDuration: fadeDuration)
+        
+        //Custom implementation here, if needed.
+    }
     
     
     // MARK: - Move Functions
