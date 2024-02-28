@@ -50,7 +50,7 @@ class CutsceneOldFriends: Cutscene {
             skipSceneSprite.animateSprite()
         }
         
-        dimOverlayNode.run(SKAction.fadeAlpha(to: 0.5, duration: 1))
+        dimOverlayNode.run(SKAction.fadeAlpha(to: 0.5, duration: 3))
          
         run(SKAction.sequence([
             SKAction.run { [unowned self] in
@@ -218,8 +218,8 @@ class CutsceneOldFriends: Cutscene {
      - parameter set: changes the set to the inputted value, or doesn't if set is nil.
      */
     private func animateParallax(changeSet set: ParallaxObject.SetType?) {
-        let scale: CGFloat = 1
-        let scaleIncrease: CGFloat = 1.25
+        let scale: CGFloat = 2
+        let scaleIncrease: CGFloat = 1.1
         let animationDuration: TimeInterval = 12
         
         if let set = set {
@@ -228,6 +228,8 @@ class CutsceneOldFriends: Cutscene {
         }
             
         parallaxManager.backgroundSprite.setScale(scale)
+        parallaxManager.backgroundSprite.position.y = -screenSize.height / 2 + 400
+
         parallaxManager.backgroundSprite.run(SKAction.scale(to: scale * scaleIncrease, duration: animationDuration))
     }
     
@@ -292,7 +294,7 @@ class CutsceneOldFriends: Cutscene {
     
     private func playScene3() {
         animateParallax(changeSet: .lava)
-
+        parallaxManager.backgroundSprite.removeAllActions()
         
         //Setup sprites
         let initialScale: CGFloat = 2
@@ -316,6 +318,8 @@ class CutsceneOldFriends: Cutscene {
         //Animate Magmoor transformation
         let textureDuration: TimeInterval = 0.06 * 2
         let fadeDuration: TimeInterval = 0.1
+        let zoomScale: CGFloat = 0.5
+        let zoomDuration: TimeInterval = 0.25
         
         playerLeft.sprite.run(animatePlayerWithTextures(player: playerLeft, textureType: .idle, timePerFrame: textureDuration))
         playerMagmoor.sprite.run(animatePlayerWithTextures(player: playerMagmoor, textureType: .idle, timePerFrame: textureDuration))
@@ -335,6 +339,22 @@ class CutsceneOldFriends: Cutscene {
             SKAction.run { [unowned self] in
                 playerMagmoor.sprite.run(SKAction.fadeIn(withDuration: fadeDuration))
             }
+        ]))
+
+        parallaxManager.backgroundSprite.run(SKAction.sequence([
+            SKAction.wait(forDuration: fadeDuration * 11 + 2 + 3),
+            SKAction.group([
+                SKAction.scale(to: 1, duration: zoomDuration),
+                SKAction.moveTo(y: 0, duration: zoomDuration)
+            ])
+        ]))
+
+        playerMagmoor.sprite.run(SKAction.sequence([
+            SKAction.wait(forDuration: fadeDuration * 11 + 2 + 3),
+            SKAction.group([
+                SKAction.scale(to: zoomScale, duration: zoomDuration),
+                SKAction.moveTo(y: screenSize.height / 3, duration: zoomDuration)
+            ])
         ]))
     }
 }
