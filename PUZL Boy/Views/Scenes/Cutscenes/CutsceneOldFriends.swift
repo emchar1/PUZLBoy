@@ -23,8 +23,10 @@ class CutsceneOldFriends: Cutscene {
         playerMagmoor.sprite.alpha = 0
         playerMagmoor.sprite.zPosition = playerLeft.sprite.zPosition + 5
 
-        speechPlayerLeft.position += playerLeft.sprite.position
-        speechPlayerRight.position += playerRight.sprite.position
+        speechPlayerLeft.position = CGPoint(x: speechPlayerLeft.bubbleDimensions.width / 2 + 30, y: screenSize.height * 2 / 3 + 50)
+        speechPlayerRight.position = CGPoint(x: screenSize.width - speechPlayerRight.bubbleDimensions.width / 2 - 30, y: screenSize.height * 2 / 3)
+        speechPlayerLeft.updateTailOrientation(.topLeft)
+        speechPlayerRight.updateTailOrientation(.topRight)
         
         fadeTransitionNode.fillColor = .white
 
@@ -52,33 +54,34 @@ class CutsceneOldFriends: Cutscene {
         
         dimOverlayNode.run(SKAction.fadeAlpha(to: 0.5, duration: 3))
          
+        run(SKAction.run { [unowned self] in
+            animateParallax(changeSet: nil)
+            
+            animatePlayer(player: &playerLeft,
+                          position: CGPoint(x: screenSize.width * 1 / 5, y: screenSize.height / 2),
+                          scale: 2,
+                          shouldFlipHorizontally: false,
+                          shouldRotateClockwise: true)
+            
+            animatePlayer(player: &playerRight,
+                          position: CGPoint(x: screenSize.width * 4 / 5, y: screenSize.height / 2),
+                          scale: 2 * playerRight.scaleMultiplier / playerLeft.scaleMultiplier,
+                          shouldFlipHorizontally: true,
+                          shouldRotateClockwise: false)
+        })
+        
         run(SKAction.sequence([
-            SKAction.run { [unowned self] in
-                animateParallax(changeSet: nil)
-
-                animatePlayer(player: &playerLeft,
-                              position: CGPoint(x: screenSize.width * 1 / 5, y: screenSize.height / 2),
-                              scale: 2,
-                              shouldFlipHorizontally: false,
-                              shouldRotateClockwise: true)
-                
-                animatePlayer(player: &playerRight,
-                              position: CGPoint(x: screenSize.width * 4 / 5, y: screenSize.height / 2),
-                              scale: 2 * playerRight.scaleMultiplier / playerLeft.scaleMultiplier,
-                              shouldFlipHorizontally: true,
-                              shouldRotateClockwise: false)
-            },
             SKAction.wait(forDuration: 3 * fadeDuration),
             SKAction.run { [unowned self] in
                 animateFlash(fadeDuration: fadeDuration) { [unowned self] in
-                    speechNarrator.setText(text: "We weren't always at each other's throat. There was a time when we were quite good friends. We went to school together. Studied magic together. So it was only natural we became close.", superScene: self, completion: nil)
+                    speechNarrator.setText(text: "We weren't always at each other's throats. There was a time when we were quite good friends. We went to school together. Studied magic together. So it was only natural we became close.", superScene: self, completion: nil)
                     playScene1()
                 }
             }
         ]))
         
         run(SKAction.sequence([
-            SKAction.wait(forDuration: 9 * fadeDuration),
+            SKAction.wait(forDuration: 21 * fadeDuration),
             SKAction.run { [unowned self] in
                 animateFlash(fadeDuration: fadeDuration) { [unowned self] in
                     speechNarrator.setText(text: "Then war broke out. The division among the Mystics had been deepening. Magmoor and I led one faction. We defeated those who opposed us. He reveled in his glory..... to grave consequences.", superScene: self, completion: nil)
@@ -88,64 +91,18 @@ class CutsceneOldFriends: Cutscene {
         ]))
         
         run(SKAction.sequence([
-            SKAction.wait(forDuration: 15 * fadeDuration),
+            SKAction.wait(forDuration: 33 * fadeDuration),
             SKAction.run { [unowned self] in
                 animateFlash(fadeDuration: fadeDuration) { [unowned self] in
-                    speechNarrator.setText(text: "I did what I had to do: I banished him to the Realm of Limbo. Peace eventually returned, but it took hundreds of years to mend the damage he caused.", superScene: self, completion: nil)
+                    speechNarrator.setText(text: "I did what I had to do: I banished him to the Realm of Limbo—|||||||||||||||||||| Peace eventually returned, but it will take years to repair the damage he caused.", superScene: self, completion: nil)
                     playScene3()
                 }
             }
         ]))
         
-        run(SKAction.wait(forDuration: 24 * fadeDuration)) { [unowned self] in
+        run(SKAction.wait(forDuration: 50 * fadeDuration)) { [unowned self] in
             cleanupScene(buttonTap: nil, fadeDuration: nil)
         }
-        
-//        let frameRate: TimeInterval = 0.06
-//        let playerLeftSpeed: TimeInterval = playerLeft.scaleMultiplier / playerRight.scaleMultiplier
-//        let magmoorAnimate = SKAction.animate(with: playerLeft.textures[Player.Texture.walk.rawValue], timePerFrame: frameRate * playerLeftSpeed)
-//        let marlinAnimate = SKAction.animate(with: playerRight.textures[Player.Texture.walk.rawValue], timePerFrame: frameRate)
-//        
-//        parallaxManager.animate()
-//        
-//        //Queue this up for the next subscene to prevent brief pause... it works apparently!
-//        parallaxManager.changeSet(set: .ice)
-//        parallaxManager.animate()
-//        
-//        letterbox.show { [unowned self] in
-//            addChild(skipSceneSprite)
-//            skipSceneSprite.animateSprite()
-//        }
-//        
-//        playerLeft.sprite.run(SKAction.repeatForever(magmoorAnimate))
-//        playerRight.sprite.run(SKAction.repeatForever(marlinAnimate))
-//        
-//        setTextArray(items: [
-//            SpeechBubbleItem(profile: speechPlayerLeft, chat: "Beep."),
-//            SpeechBubbleItem(profile: speechPlayerRight, chat: "Boop.")
-//        ]) { [unowned self] in
-//            let fadeDuration: TimeInterval = 3
-//            
-//            flashScene(fadeDuration: fadeDuration) { [unowned self] in
-//                parallaxManager.addSpritesToParent(scene: self, node: backgroundNode)
-//                parallaxManager.changeSet(set: .lava)
-//                parallaxManager.animate()
-//            }
-//            
-//            run(SKAction.sequence([
-//                SKAction.wait(forDuration: fadeDuration),
-//                SKAction.run { [unowned self] in
-//                    setTextArray(items: [
-//                        SpeechBubbleItem(profile: speechPlayerLeft, chat: "Everything you see here you can touch") { [unowned self] in
-//                            parallaxManager.addSpritesToParent(scene: self, node: backgroundNode)
-//                        },
-//                        SpeechBubbleItem(profile: speechPlayerRight, chat: "You can look but you cannot touch!")
-//                    ]) { [unowned self] in
-//                        cleanupScene(buttonTap: nil, fadeDuration: nil)
-//                    }
-//                }
-//            ]))
-//        }
     }
     
     /**
@@ -274,6 +231,19 @@ class CutsceneOldFriends: Cutscene {
                       scale: 2 * playerRight.scaleMultiplier / playerLeft.scaleMultiplier,
                       shouldFlipHorizontally: true,
                       shouldRotateClockwise: false)
+
+        run(SKAction.sequence([
+            SKAction.wait(forDuration: 8),
+            SKAction.run { [unowned self] in
+                setTextArray(items: [
+                    SpeechBubbleItem(profile: speechPlayerLeft, chat: "Wait. Why do we all look the same?"),
+                    SpeechBubbleItem(profile: speechPlayerRight, chat: "I told you! Budget."),
+                    SpeechBubbleItem(profile: speechPlayerLeft, chat: "Yeah, but... it really detracts from the immersion."),
+                    SpeechBubbleItem(profile: speechPlayerRight, chat: "...kinda like what you're doing right now??"),
+                    SpeechBubbleItem(profile: speechPlayerLeft, chat: "Fair.")
+                ], completion: nil)
+            }
+        ]))
     }
     
     private func playScene2() {
@@ -290,6 +260,16 @@ class CutsceneOldFriends: Cutscene {
                       scale: 2 * playerRight.scaleMultiplier / playerLeft.scaleMultiplier,
                       shouldFlipHorizontally: true,
                       shouldRotateClockwise: false)
+        
+        run(SKAction.sequence([
+            SKAction.wait(forDuration: 10),
+            SKAction.run { [unowned self] in
+                setTextArray(items: [
+                    SpeechBubbleItem(profile: speechPlayerLeft, chat: "You couldn't find other images to use?"),
+                    SpeechBubbleItem(profile: speechPlayerRight, chat: "Shh!! Pay attention! I'm not going to repeat myself."),
+                ], completion: nil)
+            }
+        ]))
     }
     
     private func playScene3() {
@@ -316,6 +296,7 @@ class CutsceneOldFriends: Cutscene {
 
         
         //Animate Magmoor transformation
+        let waitBeforeTransformation: TimeInterval = 22
         let textureDuration: TimeInterval = 0.06 * 2
         let fadeDuration: TimeInterval = 0.1
         let zoomScale: CGFloat = 0.5
@@ -325,7 +306,7 @@ class CutsceneOldFriends: Cutscene {
         playerMagmoor.sprite.run(animatePlayerWithTextures(player: playerMagmoor, textureType: .idle, timePerFrame: textureDuration))
         
         run(SKAction.sequence([
-            SKAction.wait(forDuration: 2),
+            SKAction.wait(forDuration: waitBeforeTransformation),
             animatePulseMagmoor(alpha: 0.1, duration: fadeDuration),
             animatePulseMagmoor(alpha: 0.2, duration: fadeDuration),
             animatePulseMagmoor(alpha: 0.3, duration: fadeDuration),
@@ -342,7 +323,7 @@ class CutsceneOldFriends: Cutscene {
         ]))
 
         parallaxManager.backgroundSprite.run(SKAction.sequence([
-            SKAction.wait(forDuration: fadeDuration * 11 + 2 + 3),
+            SKAction.wait(forDuration: waitBeforeTransformation + fadeDuration * 11 + 3),
             SKAction.group([
                 SKAction.scale(to: 1, duration: zoomDuration),
                 SKAction.move(to: .zero, duration: zoomDuration)
@@ -350,11 +331,37 @@ class CutsceneOldFriends: Cutscene {
         ]))
 
         playerMagmoor.sprite.run(SKAction.sequence([
-            SKAction.wait(forDuration: fadeDuration * 11 + 2 + 3),
+            SKAction.wait(forDuration: waitBeforeTransformation + fadeDuration * 11 + 3),
             SKAction.group([
                 SKAction.scale(to: zoomScale, duration: zoomDuration),
                 SKAction.moveTo(y: screenSize.height / 3, duration: zoomDuration)
             ])
+        ]))
+        
+        //Animate magicExplosion particle engine
+        run(SKAction.sequence([
+            SKAction.wait(forDuration: waitBeforeTransformation + fadeDuration * 11 + 3 + zoomDuration),
+            SKAction.run { [unowned self] in
+                ParticleEngine.shared.animateParticles(type: .magicExplosion,
+                                                       toNode: backgroundNode,
+                                                       position: playerMagmoor.sprite.position,
+                                                       scale: 1,
+                                                       zPosition: playerMagmoor.sprite.zPosition - 5,
+                                                       duration: 0)
+            }
+        ]))
+        
+        
+        //Side convo
+        run(SKAction.sequence([
+            SKAction.wait(forDuration: 2),
+            SKAction.run { [unowned self] in
+                setTextArray(items: [
+                    SpeechBubbleItem(profile: speechPlayerLeft, chat: "We're all just lazy palette swaps, ya know."),
+                    SpeechBubbleItem(profile: speechPlayerRight, chat: "Do you want to tell this story??!"),
+                    SpeechBubbleItem(profile: speechPlayerLeft, chat: "No. Continue.")
+                ], completion: nil)
+            }
         ]))
     }
 }

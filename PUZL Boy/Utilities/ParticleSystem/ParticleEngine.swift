@@ -37,6 +37,7 @@ class ParticleEngine: SKNode {
         case lavaAppear = "LavaAppearParticles"
         case lavaSizzle = "LavaSizzleParticles"
         case magicBlast = "MagicParticles"
+        case magicExplosion = "MagicExplosionParticles"
         case magicLight = "MagicLightParticles" // FIXME: - Testing for Marlin Magic
         case partyGem = "PartyGemParticles"
         case poisonBubbles = "PoisonBubblesParticles"
