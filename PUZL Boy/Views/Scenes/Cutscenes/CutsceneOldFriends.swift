@@ -46,6 +46,7 @@ class CutsceneOldFriends: Cutscene {
         super.animateScene(completion: completion)
         
         let fadeDuration: TimeInterval = 2
+        let initialPause: TimeInterval = 3 * fadeDuration
         
         letterbox.show { [unowned self] in
             addChild(skipSceneSprite)
@@ -55,23 +56,25 @@ class CutsceneOldFriends: Cutscene {
         dimOverlayNode.run(SKAction.fadeAlpha(to: 0.5, duration: 3))
          
         run(SKAction.run { [unowned self] in
-            animateParallax(changeSet: nil)
+            animateParallax(changeSet: nil, duration: initialPause)
             
             animatePlayer(player: &playerLeft,
                           position: CGPoint(x: screenSize.width * 1 / 5, y: screenSize.height / 2),
                           scale: 2,
                           shouldFlipHorizontally: false,
-                          shouldRotateClockwise: true)
+                          shouldRotateClockwise: true,
+                          duration: initialPause)
             
             animatePlayer(player: &playerRight,
                           position: CGPoint(x: screenSize.width * 4 / 5, y: screenSize.height / 2),
                           scale: 2 * playerRight.scaleMultiplier / playerLeft.scaleMultiplier,
                           shouldFlipHorizontally: true,
-                          shouldRotateClockwise: false)
+                          shouldRotateClockwise: false,
+                          duration: initialPause)
         })
         
         run(SKAction.sequence([
-            SKAction.wait(forDuration: 3 * fadeDuration),
+            SKAction.wait(forDuration: initialPause),
             SKAction.run { [unowned self] in
                 animateFlash(fadeDuration: fadeDuration) { [unowned self] in
                     speechNarrator.setText(text: "We weren't always at each other's throats. There was a time when we were quite good friends. We went to school together. Studied magic together. So it was only natural we became close.", superScene: self, completion: nil)
@@ -114,13 +117,13 @@ class CutsceneOldFriends: Cutscene {
         - shouldFlipHorizontally: true if player should be facing left.
         - shouldRotateClockwise: true if player is to slowly rotate clockwise.
      */
-    private func animatePlayer(player: inout Player, position: CGPoint, scale: CGFloat, shouldFlipHorizontally: Bool, shouldRotateClockwise: Bool) {
+    private func animatePlayer(player: inout Player, position: CGPoint, scale: CGFloat, shouldFlipHorizontally: Bool, shouldRotateClockwise: Bool, duration: TimeInterval) {
         let rotationRange: CGFloat = .pi / 8
         let randomRotation: CGFloat = CGFloat.random(in: -rotationRange...rotationRange)
         let scaleIncrease: CGFloat = 1.25
         let flipHorizontally: CGFloat = shouldFlipHorizontally ? -1 : 1
         let rotateClockwise: CGFloat = shouldRotateClockwise ? -1 : 1
-        let animationDuration: TimeInterval = 12
+        let timePerFrame: TimeInterval = 0.06 * 2
 
         player.sprite.position = position
         player.sprite.setScale(scale)
@@ -130,9 +133,9 @@ class CutsceneOldFriends: Cutscene {
         player.sprite.removeAllActions()
         
         player.sprite.run(SKAction.group([
-            animatePlayerWithTextures(player: player, textureType: .idle, timePerFrame: 0.06 * 2),
-            SKAction.rotate(toAngle: rotateClockwise * rotationRange + randomRotation, duration: animationDuration),
-            SKAction.scaleX(to: flipHorizontally * scale * scaleIncrease, y: scale * scaleIncrease, duration: animationDuration)
+            animatePlayerWithTextures(player: player, textureType: .idle, timePerFrame: timePerFrame),
+            SKAction.rotate(toAngle: rotateClockwise * rotationRange + randomRotation, duration: duration),
+            SKAction.scaleX(to: flipHorizontally * scale * scaleIncrease, y: scale * scaleIncrease, duration: duration)
         ]))
     }
     
@@ -174,10 +177,9 @@ class CutsceneOldFriends: Cutscene {
      Animates the parallaxManager scene with a slight scaling increase, and changes the set if needed.
      - parameter set: changes the set to the inputted value, or doesn't if set is nil.
      */
-    private func animateParallax(changeSet set: ParallaxObject.SetType?) {
+    private func animateParallax(changeSet set: ParallaxObject.SetType?, duration: TimeInterval) {
         let scale: CGFloat = 2
         let scaleIncrease: CGFloat = 1.1
-        let animationDuration: TimeInterval = 12
         
         if let set = set {
             parallaxManager.changeSet(set: set)
@@ -187,7 +189,7 @@ class CutsceneOldFriends: Cutscene {
         parallaxManager.backgroundSprite.setScale(scale)
         parallaxManager.backgroundSprite.position = CGPoint(x: -screenSize.width / 2, y: -screenSize.height / 2 + 400)
 
-        parallaxManager.backgroundSprite.run(SKAction.scale(to: scale * scaleIncrease, duration: animationDuration))
+        parallaxManager.backgroundSprite.run(SKAction.scale(to: scale * scaleIncrease, duration: duration))
     }
     
     /**
@@ -218,22 +220,26 @@ class CutsceneOldFriends: Cutscene {
     // MARK: - Animation Scene Helper Functions
     
     private func playScene1() {
-        animateParallax(changeSet: .marsh)
+        let pauseDuration: TimeInterval = 8
+        
+        animateParallax(changeSet: .marsh, duration: pauseDuration)
 
         animatePlayer(player: &playerLeft,
                       position: CGPoint(x: screenSize.width * 1 / 5, y: screenSize.height / 2),
                       scale: 2,
                       shouldFlipHorizontally: false,
-                      shouldRotateClockwise: true)
+                      shouldRotateClockwise: true,
+                      duration: pauseDuration)
         
         animatePlayer(player: &playerRight, 
                       position: CGPoint(x: screenSize.width * 4 / 5, y: screenSize.height / 2),
                       scale: 2 * playerRight.scaleMultiplier / playerLeft.scaleMultiplier,
                       shouldFlipHorizontally: true,
-                      shouldRotateClockwise: false)
+                      shouldRotateClockwise: false,
+                      duration: pauseDuration)
 
         run(SKAction.sequence([
-            SKAction.wait(forDuration: 8),
+            SKAction.wait(forDuration: pauseDuration),
             SKAction.run { [unowned self] in
                 setTextArray(items: [
                     SpeechBubbleItem(profile: speechPlayerLeft, chat: "Wait. Why do we all look the same?"),
@@ -247,22 +253,26 @@ class CutsceneOldFriends: Cutscene {
     }
     
     private func playScene2() {
-        animateParallax(changeSet: .ice)
+        let pauseDuration: TimeInterval = 10
+
+        animateParallax(changeSet: .ice, duration: pauseDuration)
 
         animatePlayer(player: &playerLeft,
                       position: CGPoint(x: screenSize.width * 1 / 5, y: screenSize.height / 2),
                       scale: 2,
                       shouldFlipHorizontally: false,
-                      shouldRotateClockwise: true)
+                      shouldRotateClockwise: true,
+                      duration: pauseDuration)
         
         animatePlayer(player: &playerRight,
                       position: CGPoint(x: screenSize.width * 4 / 5, y: screenSize.height / 2),
                       scale: 2 * playerRight.scaleMultiplier / playerLeft.scaleMultiplier,
                       shouldFlipHorizontally: true,
-                      shouldRotateClockwise: false)
+                      shouldRotateClockwise: false,
+                      duration: pauseDuration)
         
         run(SKAction.sequence([
-            SKAction.wait(forDuration: 10),
+            SKAction.wait(forDuration: pauseDuration),
             SKAction.run { [unowned self] in
                 setTextArray(items: [
                     SpeechBubbleItem(profile: speechPlayerLeft, chat: "You couldn't find other images to use?"),
@@ -273,7 +283,9 @@ class CutsceneOldFriends: Cutscene {
     }
     
     private func playScene3() {
-        animateParallax(changeSet: .lava)
+        let pauseDuration: TimeInterval = 12
+        
+        animateParallax(changeSet: .lava, duration: pauseDuration)
         parallaxManager.backgroundSprite.removeAllActions()
         
         //Setup sprites
@@ -297,13 +309,13 @@ class CutsceneOldFriends: Cutscene {
         
         //Animate Magmoor transformation
         let waitBeforeTransformation: TimeInterval = 22
-        let textureDuration: TimeInterval = 0.06 * 2
         let fadeDuration: TimeInterval = 0.1
         let zoomScale: CGFloat = 0.5
         let zoomDuration: TimeInterval = 0.25
-        
-        playerLeft.sprite.run(animatePlayerWithTextures(player: playerLeft, textureType: .idle, timePerFrame: textureDuration))
-        playerMagmoor.sprite.run(animatePlayerWithTextures(player: playerMagmoor, textureType: .idle, timePerFrame: textureDuration))
+        let timePerFrame: TimeInterval = 0.06 * 2
+
+        playerLeft.sprite.run(animatePlayerWithTextures(player: playerLeft, textureType: .idle, timePerFrame: timePerFrame))
+        playerMagmoor.sprite.run(animatePlayerWithTextures(player: playerMagmoor, textureType: .idle, timePerFrame: timePerFrame))
         
         run(SKAction.sequence([
             SKAction.wait(forDuration: waitBeforeTransformation),
