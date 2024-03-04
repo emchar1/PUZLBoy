@@ -45,15 +45,12 @@ class CutsceneOldFriends: Cutscene {
     override func animateScene(completion: (() -> Void)?) {
         super.animateScene(completion: completion)
         
-        let fadeDuration: TimeInterval = 2
-        let initialPause: TimeInterval = 3 * fadeDuration
+        let initialPause: TimeInterval = 6
         
         letterbox.show { [unowned self] in
             addChild(skipSceneSprite)
             skipSceneSprite.animateSprite()
         }
-        
-        dimOverlayNode.run(SKAction.fadeAlpha(to: 0.5, duration: 3))
          
         run(SKAction.run { [unowned self] in
             animateParallax(changeSet: nil, duration: initialPause)
@@ -76,34 +73,25 @@ class CutsceneOldFriends: Cutscene {
         run(SKAction.sequence([
             SKAction.wait(forDuration: initialPause),
             SKAction.run { [unowned self] in
-                animateFlash(fadeDuration: fadeDuration) { [unowned self] in
-                    speechNarrator.setText(text: "We weren't always at each other's throats. There was a time when we were quite good friends. We went to school together. Studied magic together. So it was only natural we became close.", superScene: self, completion: nil)
-                    playScene1()
-                }
+                animateScene(narrateText: "We weren't always at odds with each other. There was a time when we were quite good friends. We went to school together. Studied magic together. So it was only natural we became close.", playScene: playScene1)
             }
         ]))
         
         run(SKAction.sequence([
-            SKAction.wait(forDuration: 21 * fadeDuration),
+            SKAction.wait(forDuration: 42),
             SKAction.run { [unowned self] in
-                animateFlash(fadeDuration: fadeDuration) { [unowned self] in
-                    speechNarrator.setText(text: "Then war broke out. The division among the Mystics had been deepening. Magmoor and I led one faction. We defeated those who opposed us. He reveled in his glory..... to grave consequences.", superScene: self, completion: nil)
-                    playScene2()
-                }
+                animateScene(narrateText: "Then war broke out. The division among the Mystics had been deepening. Magmoor and I led one faction. We defeated those who opposed us. He reveled in his glory..... to grave consequences.", playScene: playScene2)
             }
         ]))
         
         run(SKAction.sequence([
-            SKAction.wait(forDuration: 33 * fadeDuration),
+            SKAction.wait(forDuration: 66),
             SKAction.run { [unowned self] in
-                animateFlash(fadeDuration: fadeDuration) { [unowned self] in
-                    speechNarrator.setText(text: "I did what I had to do: I banished him to the Realm of Limbo—|||||||||||||||||||| Peace eventually returned, but it will take years to repair the damage he caused.", superScene: self, completion: nil)
-                    playScene3()
-                }
+                animateScene(narrateText: "I did what I had to do: I banished him to the Realm of Limbo—|||||||||||||||||||| Peace eventually returned, but it will take years to repair the damage he caused.", playScene: playScene3)
             }
         ]))
         
-        run(SKAction.wait(forDuration: 51 * fadeDuration)) { [unowned self] in
+        run(SKAction.wait(forDuration: 102)) { [unowned self] in
             cleanupScene(buttonTap: nil, fadeDuration: nil)
         }
     }
@@ -193,12 +181,12 @@ class CutsceneOldFriends: Cutscene {
     }
     
     /**
-     Animates a quick white flash, used to separate scenes within the Cutscene.
+     Animates a quick white flash used to separate scenes within the Cutscene, then plays a narration text overlay along with an accompanying scene.
      - parameters:
-        - fadeDuration: the length of time of the animation duration.
-        - completion: a completion handler to return when the flash is completed (almost complete; actually calls it when it's fully opaque)
+        - narrateText: the narrated text to play.
+        - playScene: a completion handler that plays an accompanying scene.
      */
-    private func animateFlash(fadeDuration: TimeInterval, completion: (() -> Void)?) {
+    private func animateScene(narrateText: String, playScene: @escaping (() -> Void)) {
         //fadeTransitionNode is initially added to backgroundNode, so remove it first to prevent app crashing due to it already having a parent node.
         fadeTransitionNode.removeAllActions()
         fadeTransitionNode.removeFromParent()
@@ -206,12 +194,13 @@ class CutsceneOldFriends: Cutscene {
         backgroundNode.addChild(fadeTransitionNode)
         
         fadeTransitionNode.run(SKAction.sequence([
-            SKAction.fadeIn(withDuration: fadeDuration / 3),
-            SKAction.run {
-                completion?()
+            SKAction.fadeIn(withDuration: 1),
+            SKAction.run { [unowned self] in
+                speechNarrator.setText(text: narrateText, superScene: self, completion: nil)
+                playScene()
             },
-            SKAction.wait(forDuration: fadeDuration / 3),
-            SKAction.fadeOut(withDuration: fadeDuration / 3),
+            SKAction.wait(forDuration: 0.5),
+            SKAction.fadeOut(withDuration: 1),
             SKAction.removeFromParent()
         ]))
     }
@@ -255,7 +244,7 @@ class CutsceneOldFriends: Cutscene {
     private func playScene2() {
         let pauseDuration: TimeInterval = 10
 
-        animateParallax(changeSet: .ice, duration: pauseDuration)
+        animateParallax(changeSet: .sand, duration: pauseDuration)
 
         animatePlayer(player: &playerLeft,
                       position: CGPoint(x: screenSize.width * 1 / 5, y: screenSize.height / 2),
