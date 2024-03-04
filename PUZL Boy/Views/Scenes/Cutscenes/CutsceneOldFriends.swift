@@ -103,7 +103,7 @@ class CutsceneOldFriends: Cutscene {
             }
         ]))
         
-        run(SKAction.wait(forDuration: 50 * fadeDuration)) { [unowned self] in
+        run(SKAction.wait(forDuration: 51 * fadeDuration)) { [unowned self] in
             cleanupScene(buttonTap: nil, fadeDuration: nil)
         }
     }
@@ -350,9 +350,14 @@ class CutsceneOldFriends: Cutscene {
             ])
         ]))
         
+        backgroundNode.run(SKAction.sequence([
+            SKAction.wait(forDuration: waitBeforeTransformation + fadeDuration * 11 + 3 + zoomDuration),
+            shakeBackground(duration: 2)
+        ]))
+        
         //Animate magicExplosion particle engine
         run(SKAction.sequence([
-            SKAction.wait(forDuration: waitBeforeTransformation + fadeDuration * 11 + 3 + zoomDuration),
+            SKAction.wait(forDuration: waitBeforeTransformation + fadeDuration * 11 + 3 + zoomDuration + 3),
             SKAction.run { [unowned self] in
                 ParticleEngine.shared.animateParticles(type: .magicExplosion,
                                                        toNode: backgroundNode,

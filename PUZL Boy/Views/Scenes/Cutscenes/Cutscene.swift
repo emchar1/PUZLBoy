@@ -154,6 +154,23 @@ class Cutscene: SKScene {
     }
     
     /**
+     Simulates the background shaking due to an earthquake or some other life shattering event.
+     - parameter duration: the length of time of the shake, which gets multiplied by 4, e.g. duration of 6 -> 6 x 4 =  24 seconds of actual shaking.
+     - returns: SKAction of the shake event.
+     */
+    func shakeBackground(duration: TimeInterval) -> SKAction {
+        let nudge: CGFloat = 5
+        let nudgeDuration: TimeInterval = 0.04
+        
+        return SKAction.repeat(SKAction.sequence([
+            SKAction.moveBy(x: -nudge, y: nudge, duration: nudgeDuration),
+            SKAction.moveBy(x: nudge, y: nudge, duration: nudgeDuration),
+            SKAction.moveBy(x: nudge, y: -nudge, duration: nudgeDuration),
+            SKAction.moveBy(x: -nudge, y: -nudge, duration: nudgeDuration),
+        ]), count: Int(duration / nudgeDuration))
+    }
+    
+    /**
      Helper to SpeechBubbleSprite.setText(). Takes in an array of SpeechBubbleItems and process them recursively, with nesting completion handlers.
      - parameters:
      - items: array of SpeechBubbleItems to process

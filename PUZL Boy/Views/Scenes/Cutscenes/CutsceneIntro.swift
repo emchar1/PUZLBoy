@@ -237,18 +237,9 @@ class CutsceneIntro: Cutscene {
                             SKAction.fadeAlpha(to: 0.25, duration: 6)
                         ]))
 
-                        
-                        let nudge: CGFloat = 5
-                        let nudgeDuration: TimeInterval = 0.04
-                        
                         backgroundNode.run(SKAction.sequence([
                             SKAction.wait(forDuration: 4),
-                            SKAction.repeat(SKAction.sequence([
-                                SKAction.moveBy(x: -nudge, y: nudge, duration: nudgeDuration),
-                                SKAction.moveBy(x: nudge, y: nudge, duration: nudgeDuration),
-                                SKAction.moveBy(x: nudge, y: -nudge, duration: nudgeDuration),
-                                SKAction.moveBy(x: -nudge, y: -nudge, duration: nudgeDuration),
-                            ]), count: Int(6.0 / nudgeDuration))
+                            shakeBackground(duration: 6)
                         ]))
                         
                         run(SKAction.sequence([
