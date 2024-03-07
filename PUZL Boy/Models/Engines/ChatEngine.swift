@@ -35,6 +35,9 @@ class ChatEngine {
     private var backgroundSpriteWidth: CGFloat {
         K.ScreenDimensions.size.width * UIDevice.spriteScale
     }
+    private var buttonSize: CGSize {
+        CGSize(width: backgroundSpriteWidth / 3.5, height: avatarSizeNew / 3.5)
+    }
 
     
     //Utilities
@@ -54,6 +57,7 @@ class ChatEngine {
     private var chatIndex: Int = 0
 
     private(set) var isChatting: Bool = false
+    private var isPressed: Bool = false
     private var isAnimating: Bool = false
     private var allowNewChat: Bool = true
     private var shouldClose: Bool = true
@@ -64,6 +68,8 @@ class ChatEngine {
     private var avatarSprite: SKSpriteNode!
     private var textSprite: SKLabelNode!
     private var fastForwardSprite: SKSpriteNode!
+    private var leftDecisionButton: ChatDecisionSprite!
+    private var rightDecisionButton: ChatDecisionSprite!
 
 
     //Overlay Sprites
@@ -159,11 +165,24 @@ class ChatEngine {
         textSprite.addDropShadow()
         
         fastForwardSprite = SKSpriteNode(imageNamed: "forwardButton")
-        fastForwardSprite.setScale(0.35 * 3)
+        fastForwardSprite.setScale(0.45 * 3)
         fastForwardSprite.anchorPoint = CGPoint(x: 1, y: 0)
         fastForwardSprite.position = CGPoint(x: origin.x + backgroundSpriteWidth - padding.x, y: origin.y + padding.x)
         fastForwardSprite.alpha = 1
         fastForwardSprite.zPosition = 15
+        fastForwardSprite.name = "fastForward"
+        
+        leftDecisionButton = ChatDecisionSprite(text: "Left Button", buttonSize: buttonSize)
+        leftDecisionButton.position = CGPoint(x: origin.x + buttonSize.width / 2 + avatarSizeNew + 40, y: origin.y + buttonSize.height / 2 + 20)
+        leftDecisionButton.zPosition = 20
+        leftDecisionButton.name = "leftButton"
+        leftDecisionButton.delegate = self
+        
+        rightDecisionButton = ChatDecisionSprite(text: "Right Button", buttonSize: buttonSize)
+        rightDecisionButton.position = CGPoint(x: leftDecisionButton.position.x + buttonSize.width + 20, y: leftDecisionButton.position.y)
+        rightDecisionButton.zPosition = 20
+        rightDecisionButton.name = "rightButton"
+        rightDecisionButton.delegate = self
 
         
         //Overlay Sprites setup
@@ -209,16 +228,54 @@ class ChatEngine {
         guard superScene.nodes(at: location).filter({ $0.name == "backgroundSprite" }).first != nil else { return }
         guard !isAnimating else { return }
         
+        
+        let ffPadding: CGFloat = 10
+        let ffRegionTapped = location.x + ffPadding > fastForwardSprite.position.x - fastForwardSprite.size.width
+
+        isPressed = true
         isAnimating = true
         
-        fastForwardSprite.removeAllActions()
-        fastForwardSprite.alpha = 1
-        
-        fastForward()
+        //Prevents spamming of the chat while FF tapping. Adds a 0.5s delay; MUST be 0.5s and no shorter to prevent crashing. BUGFIX# 230921E01
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            self.isAnimating = false
+        }
+
+        for node in superScene.nodes(at: location) {
+            if node.name == "backgroundSprite" && ffRegionTapped {
+                animateFFButton()
+                fastForward()
+            }
+            else if node.name == "leftButton" {
+                leftDecisionButton.touchDown(in: location)
+            }
+            else if node.name == "rightButton" {
+                rightDecisionButton.touchDown(in: location)
+            }
+        }
     }
     
     func touchUp() {
-        animateFFButton()
+        isPressed = false
+
+        leftDecisionButton.touchUp()
+        rightDecisionButton.touchUp()
+    }
+    
+    func didTapButton(in location: CGPoint) {
+        guard let superScene = superScene else { return }
+        guard superScene.nodes(at: location).filter({ $0.name == "backgroundSprite" }).first != nil else { return }
+        guard isPressed else { return }
+        
+        for node in superScene.nodes(at: location) {
+            switch node.name {
+            case "leftButton":
+                leftDecisionButton.tapButton(in: location)
+            case "rightButton":
+                rightDecisionButton.tapButton(in: location)
+            default:
+                continue
+            }
+        }
     }
     
     
@@ -228,9 +285,7 @@ class ChatEngine {
         return dialoguePlayed[level] != nil
     }
 
-    func fastForward() {
-        guard isAnimating else { return }
-        
+    private func fastForward() {
         if chatSpeed > 0 && chatIndex < chatText.count {
             chatSpeed = 0
         }
@@ -239,20 +294,16 @@ class ChatEngine {
             closeChat()
         }
         
-        //Prevents spamming of the chat while FF tapping. Adds a 0.5s delay; MUST be 0.5s and no shorter to prevent crashing. BUGFIX# 230921E01
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-            self.isAnimating = false
-        }
     }
     
     private func animateFFButton() {
         fastForwardSprite.removeAllActions()
         
+        fastForwardSprite.run(SKAction.fadeIn(withDuration: 0))
         fastForwardSprite.run(SKAction.repeatForever(SKAction.sequence([
             SKAction.wait(forDuration: 0.5),
-            SKAction.fadeAlpha(to: 0, duration: 0.75),
-            SKAction.wait(forDuration: 0.5),
-            SKAction.fadeAlpha(to: 1, duration: 0.75)
+            SKAction.fadeAlpha(to: 0, duration: 0.5),
+            SKAction.fadeAlpha(to: 1, duration: 0.5)
         ])))
     }
     
@@ -453,6 +504,16 @@ class ChatEngine {
             chatSpeed = chatSpeedOrig
             self.completion?()
         }
+    }
+}
+
+
+// MARK: - ChatDecisionSprite Delegate
+
+extension ChatEngine: ChatDecisionSpriteDelegate {
+    func buttonWasTapped(_ node: ChatDecisionSprite) {
+        leftDecisionButton.animateDisappear(didGetTapped: node.name == "leftButton")
+        rightDecisionButton.animateDisappear(didGetTapped: node.name == "rightButton")
     }
 }
 
@@ -907,6 +968,8 @@ extension ChatEngine {
                     ChatItem(profile: .hero, imgPos: .left, chat: "He's not gonna sacrifice her is he?!?! Because that's just not cool."),
                     ChatItem(profile: .trainer, chat: "He wasn't always like this. We were once good friends—what we Mystics call, Twin Flames. Then he went all Mabritney on everyone."),
                     ChatItem(profile: .hero, imgPos: .left, chat: "No way! You guys have Britney in your world?"),
+                    ChatItem(profile: .trainer, chat: "No— MAbritney. She's an elemental mage who wields forbidden dark magic. She does a Dance of Knives that summons Chaos."),
+                    ChatItem(profile: .hero, imgPos: .left, chat: "She sounds toxic. So what's our next move:") { [unowned self] in
                     ChatItem(profile: .trainer, chat: "No— MAbritney. She's an elemental mage who wields forbidden dark magic. She does a Dance of Knives that summons Chaos."),
                     ChatItem(profile: .hero, imgPos: .left, chat: "She sounds toxic. So what's our next move:\n\nPURSUE HIM | PREPARE FIRST"),
                     ChatItem(profile: .hero, imgPos: .left, chat: "We should prepare first..."),

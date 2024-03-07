@@ -1,56 +1,42 @@
 //
-//  DecisionButtonSprite.swift
+//  ChatDecisionSprite.swift
 //  PUZL Boy
 //
-//  Created by Eddie Char on 1/27/23.
+//  Created by Eddie Char on 3/5/24.
 //
 
 import SpriteKit
 
-protocol DecisionButtonSpriteDelegate: AnyObject {
-    func buttonWasTapped(_ node: DecisionButtonSprite)
+protocol ChatDecisionSpriteDelegate: AnyObject {
+    func buttonWasTapped(_ node: ChatDecisionSprite)
 }
 
-class DecisionButtonSprite: SKNode {
+class ChatDecisionSprite: SKNode {
     
     // MARK: - Properties
     
-    static let tappableAreaName = "DecisionButtonSpriteTappableArea"
-    static let colorBlue = UIColor(red: 9 / 255, green: 132 / 255, blue: 227 / 255, alpha: 1.0)
-    static let colorYellow = UIColor(red: 227 / 255, green: 148 / 255, blue: 9 / 255, alpha: 1.0)
-    static let colorRed = UIColor(red: 227 / 255, green: 32 / 255, blue: 9 / 255, alpha: 1.0)
-    static let colorGreen = UIColor(red: 0 / 255, green: 168 / 255, blue: 86 / 255, alpha: 1.0)
-    static let colorViolet = UIColor(red: 114 / 255, green: 26 / 255, blue: 159 / 255, alpha: 1.0)
+    static let tappableAreaName = "ChatDecisionSpriteTappableArea"
 
-    let buttonSize = CGSize(width: K.ScreenDimensions.size.width * (4 / 9), height: K.ScreenDimensions.size.width / 8)
     let shadowOffset = CGPoint(x: -8, y: -8)
-    let iconScale: CGFloat = UIDevice.isiPad ? 120 : 90
-
-    var isDisabled: Bool = false {
-        didSet {
-            sprite.alpha = isDisabled ? 0.25 : 1
-        }
-    }
     
     private var isPressed: Bool = false
+    private var isDisabled: Bool = false
     private var text: String
-    private var color: UIColor
-    private var iconImageName: String?
-    
+    private var buttonSize: CGSize
+
     private(set) var tappableAreaNode: SKShapeNode!
     private var sprite: SKShapeNode!
     private var topSprite: SKShapeNode!
     private var textNode: SKLabelNode!
 
-    weak var delegate: DecisionButtonSpriteDelegate?
+    weak var delegate: ChatDecisionSpriteDelegate?
     
     
     // MARK: - Initialization
     
-    init(text: String, color: UIColor, iconImageName: String?) {
+    init(text: String, buttonSize: CGSize) {
         self.text = text
-        self.color = color
-        self.iconImageName = iconImageName
+        self.buttonSize = buttonSize
         
         super.init()
         
@@ -62,7 +48,7 @@ class DecisionButtonSprite: SKNode {
     }
     
     deinit {
-        print("deinit DecisionButtonSprite: \(name ?? "")")
+        print("deinit ChatDecisionSprite: \(name ?? "")")
     }
     
     private func setupSprites() {
@@ -73,14 +59,14 @@ class DecisionButtonSprite: SKNode {
         tappableAreaNode.strokeColor = .white
         tappableAreaNode.lineWidth = 4
         tappableAreaNode.zPosition = 10
-        tappableAreaNode.name = DecisionButtonSprite.tappableAreaName
+        tappableAreaNode.name = ChatDecisionSprite.tappableAreaName
 
         sprite = SKShapeNode(rectOf: buttonSize, cornerRadius: cornerRadius)
         sprite.fillColor = .clear
         sprite.lineWidth = 0
         
         topSprite = SKShapeNode(rectOf: buttonSize, cornerRadius: cornerRadius)
-        topSprite.fillColor = color
+        topSprite.fillColor = .cyan
         topSprite.fillTexture = SKTexture(image: UIImage.gradientTextureChat)
         topSprite.strokeColor = .white
         topSprite.lineWidth = 4
@@ -99,14 +85,6 @@ class DecisionButtonSprite: SKNode {
         shadowSprite.lineWidth = 0
         shadowSprite.alpha = 0.05
                 
-        if let iconImageName = iconImageName {
-            let iconNode = SKSpriteNode(imageNamed: iconImageName)
-            iconNode.scale(to: CGSize(width: iconScale, height: iconScale))
-            iconNode.position = CGPoint(x: UIDevice.isiPad ? 120 : 78, y: 0)
-        
-            topSprite.addChild(iconNode)
-        }
-                
         addChild(tappableAreaNode)
         addChild(sprite)
         sprite.addChild(shadowSprite)
@@ -118,20 +96,15 @@ class DecisionButtonSprite: SKNode {
     // MARK: - Touch Functions
     
     func touchDown(in location: CGPoint) {
-        guard !isDisabled else {
-            ButtonTap.shared.tap(type: .buttontap6)
-            return
-        }
-
+        guard !isDisabled else { return }
+        
         isPressed = true
-                
+        
         topSprite.position = shadowOffset
         tappableAreaNode.position = shadowOffset
     }
     
     func touchUp() {
-        guard !isDisabled else { return }
-
         isPressed = false
 
         topSprite.run(SKAction.move(to: .zero, duration: 0.1))
@@ -148,13 +121,8 @@ class DecisionButtonSprite: SKNode {
     
     
     // MARK: - Helper Functions
-
-    func setText(_ text: String) {
-        textNode.text = text
-        textNode.updateShadow()
-    }
     
-    func animateAppear() {
+    func animateAppear(toNode node: SKNode) {
         alpha = 1.0
         
         run(SKAction.sequence([
@@ -162,7 +130,32 @@ class DecisionButtonSprite: SKNode {
             SKAction.scale(to: 0.95, duration: 0.2),
             SKAction.scale(to: 1.0, duration: 0.2),
         ]))
+        
+        //Just in case it already has a parent, prevents crashing.
+        removeAllActions()
+        removeFromParent()
+        
+        node.addChild(self)
     }
     
-    
+    func animateDisappear(didGetTapped: Bool) {
+        let duration: TimeInterval = 2
+        let scaleAction = SKAction.scale(to: didGetTapped ? 1.15 : 0.85, duration: duration)
+        let fadeAction = didGetTapped ? SKAction.sequence([
+            SKAction.wait(forDuration: duration * 0.9),
+            SKAction.fadeOut(withDuration: duration * 0.1)
+        ]) : SKAction.fadeOut(withDuration: duration)
+        
+        scaleAction.timingMode = .easeOut
+        fadeAction.timingMode = .easeOut
+        
+        run(SKAction.sequence([
+            SKAction.group([scaleAction, fadeAction]),
+            SKAction.removeFromParent()
+        ])) { [unowned self] in
+            isDisabled = false
+        }
+        
+        isDisabled = true
+    }
 }

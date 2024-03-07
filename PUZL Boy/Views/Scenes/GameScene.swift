@@ -209,13 +209,12 @@ class GameScene: SKScene {
 
         guard !PauseResetEngine.pauseResetEngineIsPaused else { return }
         
-        chatEngine.touchDown(in: location)
-        
         if activityIndicator == nil || !activityIndicator!.isShowing {
             continueSprite?.touchDown(in: location)
             resetConfirmSprite?.touchDown(in: location)
             hintConfirmSprite?.touchDown(in: location)
             partyResultsSprite?.touchDown(in: location)
+            chatEngine.touchDown(in: location)
         }
     }
         
@@ -231,6 +230,7 @@ class GameScene: SKScene {
             hintConfirmSprite?.touchUp()
             partyResultsSprite?.didTapButton(in: location)
             partyResultsSprite?.touchUp()
+            chatEngine.didTapButton(in: location)
             chatEngine.touchUp()
         }
 

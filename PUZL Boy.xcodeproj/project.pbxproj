@@ -69,6 +69,7 @@
 		EA4D026329B7F3AF00F0C7B1 /* PartyModeSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA4D026229B7F3AF00F0C7B1 /* PartyModeSprite.swift */; };
 		EA4D026529B90BF800F0C7B1 /* gemcollect.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA4D026429B90BF700F0C7B1 /* gemcollect.mp3 */; };
 		EA4D026B29BC6ACE00F0C7B1 /* Extension+UIDevice.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA4D026A29BC6ACE00F0C7B1 /* Extension+UIDevice.swift */; };
+		EA57DEA92B983C5400CE3E2A /* ChatDecisionSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA57DEA82B983C5400CE3E2A /* ChatDecisionSprite.swift */; };
 		EA5F60582B9063480089EFC3 /* MagicExplosionParticles.sks in Resources */ = {isa = PBXBuildFile; fileRef = EA5F60572B9063480089EFC3 /* MagicExplosionParticles.sks */; };
 		EA65182B28E4199E00E535BF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA65182A28E4199E00E535BF /* AppDelegate.swift */; };
 		EA65182D28E4199E00E535BF /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA65182C28E4199E00E535BF /* SceneDelegate.swift */; };
@@ -360,6 +361,7 @@
 		EA4D026229B7F3AF00F0C7B1 /* PartyModeSprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PartyModeSprite.swift; sourceTree = "<group>"; };
 		EA4D026429B90BF700F0C7B1 /* gemcollect.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = gemcollect.mp3; sourceTree = "<group>"; };
 		EA4D026A29BC6ACE00F0C7B1 /* Extension+UIDevice.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+UIDevice.swift"; sourceTree = "<group>"; };
+		EA57DEA82B983C5400CE3E2A /* ChatDecisionSprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatDecisionSprite.swift; sourceTree = "<group>"; };
 		EA5F60572B9063480089EFC3 /* MagicExplosionParticles.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = MagicExplosionParticles.sks; sourceTree = "<group>"; };
 		EA65182728E4199E00E535BF /* PUZL Boy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "PUZL Boy.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		EA65182A28E4199E00E535BF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -745,6 +747,7 @@
 				EA95D1F9295BEC160061059C /* DisplayLivesSprite.swift */,
 				EA826C7B29858EBE00F19F81 /* ContinueSprite.swift */,
 				EA826C79298492BA00F19F81 /* DecisionButtonSprite.swift */,
+				EA57DEA82B983C5400CE3E2A /* ChatDecisionSprite.swift */,
 				EA826C84298DD6C600F19F81 /* ActivityIndicatorSprite.swift */,
 				EA826C9929950D0C00F19F81 /* NumMovesSprite.swift */,
 				EA2AF74329B6D06000444E5A /* OfflinePlaySprite.swift */,
@@ -1472,6 +1475,7 @@
 				EA3951F12939DE5900D0B14A /* ScoringEngine.swift in Sources */,
 				EA65182D28E4199E00E535BF /* SceneDelegate.swift in Sources */,
 				EAF07C0929E7A13F0034CD1A /* ParallaxObject.swift in Sources */,
+				EA57DEA92B983C5400CE3E2A /* ChatDecisionSprite.swift in Sources */,
 				EA826C9A29950D0C00F19F81 /* NumMovesSprite.swift in Sources */,
 				EAE565AA29D6E0C700BC43CB /* TitleScene.swift in Sources */,
 				EA826C93298F60C000F19F81 /* AchievementFatCat.swift in Sources */,
