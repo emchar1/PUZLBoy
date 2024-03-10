@@ -15,6 +15,7 @@ struct FIRManager {
     
     static var user: User?
     static var saveStateModel: SaveStateModel?
+    static var decisions: [String?] = [nil, nil, nil, nil]
     
     //Test users
     static let userEddie = "2bjhz2grYVVOn37qmUipG4CKps62"
@@ -130,6 +131,7 @@ struct FIRManager {
             }
             
             guard let elapsedTime = data["elapsedTime"] as? TimeInterval,
+                  let gameCompleted = data["gameCompleted"] as? Bool,
                   let hintAvailable = data["hintAvailable"] as? Bool,
                   let hintCountRemaining = data["hintCountRemaining"] as? Int,
                   let levelModel = data["levelModel"] as? [String : AnyObject],
@@ -141,14 +143,21 @@ struct FIRManager {
                   let totalScore = data["totalScore"] as? Int,
                   let uid = data["uid"] as? String,
                   let usedContinue = data["usedContinue"] as? Bool,
-                  let winStreak = data["winStreak"] as? Int,
-                  let gameCompleted = data["gameCompleted"] as? Bool else {
+                  let winStreak = data["winStreak"] as? Int else {
                 completion?(nil, .saveStateNotFound)
                 return
             }
             
+            for i in 0...3 {
+                decisions[i] = data["decision\(i)"] as? String
+            }
             
-            completion?(SaveStateModel(elapsedTime: elapsedTime,
+            completion?(SaveStateModel(decision0: decisions[0],
+                                       decision1: decisions[1],
+                                       decision2: decisions[2],
+                                       decision3: decisions[3],
+                                       elapsedTime: elapsedTime,
+                                       gameCompleted: gameCompleted,
                                        hintAvailable: hintAvailable,
                                        hintCountRemaining: hintCountRemaining,
                                        levelModel: getLevelModel(from: levelModel),
@@ -160,8 +169,7 @@ struct FIRManager {
                                        totalScore: totalScore,
                                        uid: uid,
                                        usedContinue: usedContinue,
-                                       winStreak: winStreak,
-                                       gameCompleted: gameCompleted), nil)
+                                       winStreak: winStreak), nil)
             
             print("Firestore saveState initialized.......")
         }//end docRef.getDocument...
@@ -198,7 +206,12 @@ struct FIRManager {
         
         let docRef = Firestore.firestore().collection("savedStates").document(user.uid)
         docRef.setData([
+            "decision0": decisions[0] as Any, //use the static property, instead of saveStateModel (which will give you the old one)
+            "decision1": decisions[1] as Any, //use the static property, instead of saveStateModel (which will give you the old one)
+            "decision2": decisions[2] as Any, //use the static property, instead of saveStateModel (which will give you the old one)
+            "decision3": decisions[3] as Any, //use the static property, instead of saveStateModel (which will give you the old one)
             "elapsedTime": saveStateModel.elapsedTime,
+            "gameCompleted": saveStateModel.gameCompleted,
             "hintAvailable": saveStateModel.hintAvailable,
             "hintCountRemaining": saveStateModel.hintCountRemaining,
             "levelModel": [
@@ -341,8 +354,7 @@ struct FIRManager {
             "totalScore": saveStateModel.totalScore,
             "uid": saveStateModel.uid,
             "usedContinue": saveStateModel.usedContinue,
-            "winStreak": saveStateModel.winStreak,
-            "gameCompleted": saveStateModel.gameCompleted
+            "winStreak": saveStateModel.winStreak
         ])
         
         print("Writing to Firestore saveState.......")
@@ -359,6 +371,19 @@ struct FIRManager {
                 
         let docRef = Firestore.firestore().collection("savedStates").document(user.uid)
         docRef.updateData(fields)
+        
+        print("Writing to Firestore: \(fields)")
+    }
+    
+    ///Convenience method to update the decision field in a record and the static decisions array property.
+    static func updateFirestoreRecordDecision(user: User?, index: Int, buttonOrder: ChatDecisionEngine.ButtonOrder) {
+        let indexAdjusted = index.clamp(min: 0, max: 3)
+        let FIRfield = "decision\(indexAdjusted)"
+        let FIRvalue = "\(buttonOrder == .left ? "left" : "right")Button\(indexAdjusted)"
+
+        decisions[indexAdjusted] = FIRvalue
+
+        updateFirestoreRecordFields(user: user, fields: [FIRfield : FIRvalue])
     }
     
     ///Convenience method to update just the newLevel field in a record.

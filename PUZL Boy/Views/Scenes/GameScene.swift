@@ -399,7 +399,12 @@ class GameScene: SKScene {
             inventory: gameEngine.level.inventory)
         
         let saveStateModel = SaveStateModel(
+            decision0: "Doesn't matter what",
+            decision1: "you put here;",
+            decision2: "it'll get overwritten",
+            decision3: "by the static properties.",
             elapsedTime: scoringEngine.timerManager.elapsedTime,
+            gameCompleted: GameEngine.gameCompleted,
             hintAvailable: gameEngine.hintEngine.hintAvailable,
             hintCountRemaining: HintEngine.hintCount,
             levelModel: levelModel,
@@ -411,8 +416,7 @@ class GameScene: SKScene {
             totalScore: scoringEngine.scoringManager.totalScore + (levelStatsItem.didWin ? scoringEngine.scoringManager.score : 0),
             uid: user.uid,
             usedContinue: GameEngine.usedContinue,
-            winStreak: GameEngine.winStreak,
-            gameCompleted: GameEngine.gameCompleted)
+            winStreak: GameEngine.winStreak)
         
         FIRManager.writeToFirestoreRecord(user: user, saveStateModel: saveStateModel)
     }

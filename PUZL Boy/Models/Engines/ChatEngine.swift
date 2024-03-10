@@ -35,9 +35,6 @@ class ChatEngine {
     private var backgroundSpriteWidth: CGFloat {
         K.ScreenDimensions.size.width * UIDevice.spriteScale
     }
-    private var buttonSize: CGSize {
-        CGSize(width: backgroundSpriteWidth / 3.5, height: avatarSizeNew / 3.5)
-    }
 
     
     //Utilities
@@ -57,7 +54,6 @@ class ChatEngine {
     private var chatIndex: Int = 0
 
     private(set) var isChatting: Bool = false
-    private var isPressed: Bool = false
     private var isAnimating: Bool = false
     private var allowNewChat: Bool = true
     private var shouldClose: Bool = true
@@ -68,8 +64,7 @@ class ChatEngine {
     private var avatarSprite: SKSpriteNode!
     private var textSprite: SKLabelNode!
     private var fastForwardSprite: SKSpriteNode!
-    private var leftDecisionButton: ChatDecisionSprite!
-    private var rightDecisionButton: ChatDecisionSprite!
+    private var chatDecisionEngine: ChatDecisionEngine!
 
 
     //Overlay Sprites
@@ -172,17 +167,16 @@ class ChatEngine {
         fastForwardSprite.zPosition = 15
         fastForwardSprite.name = "fastForward"
         
-        leftDecisionButton = ChatDecisionSprite(text: "Left Button", buttonSize: buttonSize)
-        leftDecisionButton.position = CGPoint(x: origin.x + buttonSize.width / 2 + avatarSizeNew + 40, y: origin.y + buttonSize.height / 2 + 20)
-        leftDecisionButton.zPosition = 20
-        leftDecisionButton.name = "leftButton"
-        leftDecisionButton.delegate = self
+        let buttonSize = CGSize(width: backgroundSpriteWidth / 3.5, height: avatarSizeNew / 3.5)
         
-        rightDecisionButton = ChatDecisionSprite(text: "Right Button", buttonSize: buttonSize)
-        rightDecisionButton.position = CGPoint(x: leftDecisionButton.position.x + buttonSize.width + 20, y: leftDecisionButton.position.y)
-        rightDecisionButton.zPosition = 20
-        rightDecisionButton.name = "rightButton"
-        rightDecisionButton.delegate = self
+        chatDecisionEngine = ChatDecisionEngine(
+            buttonSize: buttonSize,
+            position: CGPoint(x: origin.x + buttonSize.width / 2 + avatarSizeNew + 40, y: origin.y + buttonSize.height / 2 + 20),
+            decision0: ("Prepare First", "Pursue Him"),
+            decision1: ("Vans", "Nike"),
+            decision2: ("Magmoor", "Marlin"),
+            decision3: ("Left", "Right"))
+        chatDecisionEngine.delegate = self
 
         
         //Overlay Sprites setup
@@ -232,7 +226,6 @@ class ChatEngine {
         let ffPadding: CGFloat = 10
         let ffRegionTapped = location.x + ffPadding > fastForwardSprite.position.x - fastForwardSprite.size.width
 
-        isPressed = true
         isAnimating = true
         
         //Prevents spamming of the chat while FF tapping. Adds a 0.5s delay; MUST be 0.5s and no shorter to prevent crashing. BUGFIX# 230921E01
@@ -241,39 +234,27 @@ class ChatEngine {
         }
 
         for node in superScene.nodes(at: location) {
-            if node.name == "backgroundSprite" && ffRegionTapped {
+            if node.name == "backgroundSprite" && ffRegionTapped && !chatDecisionEngine.isActive {
                 animateFFButton()
                 fastForward()
             }
-            else if node.name == "leftButton" {
-                leftDecisionButton.touchDown(in: location)
-            }
-            else if node.name == "rightButton" {
-                rightDecisionButton.touchDown(in: location)
+            else if let selectedButton = node as? ChatDecisionSprite {
+                chatDecisionEngine.touchDown(location: location, selectedButton: selectedButton)
             }
         }
     }
     
     func touchUp() {
-        isPressed = false
-
-        leftDecisionButton.touchUp()
-        rightDecisionButton.touchUp()
+        chatDecisionEngine.touchUp()
     }
     
     func didTapButton(in location: CGPoint) {
         guard let superScene = superScene else { return }
         guard superScene.nodes(at: location).filter({ $0.name == "backgroundSprite" }).first != nil else { return }
-        guard isPressed else { return }
         
         for node in superScene.nodes(at: location) {
-            switch node.name {
-            case "leftButton":
-                leftDecisionButton.tapButton(in: location)
-            case "rightButton":
-                rightDecisionButton.tapButton(in: location)
-            default:
-                continue
+            if let selectedButton = node as? ChatDecisionSprite {
+                chatDecisionEngine.didTapButton(location: location, selectedButton: selectedButton)
             }
         }
     }
@@ -486,6 +467,8 @@ class ChatEngine {
     }
     
     private func closeChat() {
+        guard !chatDecisionEngine.isActive else { return }
+        
         let duration: TimeInterval = shouldClose ? 0.2 : 0
         
         if shouldClose {
@@ -508,12 +491,26 @@ class ChatEngine {
 }
 
 
-// MARK: - ChatDecisionSprite Delegate
+// MARK: - ChatDecisionEngine Delegate
 
-extension ChatEngine: ChatDecisionSpriteDelegate {
-    func buttonWasTapped(_ node: ChatDecisionSprite) {
-        leftDecisionButton.animateDisappear(didGetTapped: node.name == "leftButton")
-        rightDecisionButton.animateDisappear(didGetTapped: node.name == "rightButton")
+extension ChatEngine: ChatDecisionEngineDelegate {
+    func decisionWasMade(index: Int, order: ChatDecisionEngine.ButtonOrder) {
+        guard let user = FIRManager.user else { return }
+        
+        FIRManager.updateFirestoreRecordDecision(user: user, index: index, buttonOrder: order)
+    }
+    
+    func decisionHasAppeared(node: ChatDecisionSprite) {
+        fastForwardSprite.removeAllActions()
+        fastForwardSprite.alpha = 0
+    }
+    
+    func decisionHasDisappeared(node: ChatDecisionSprite, didGetTapped: Bool) {
+        // BUGFIX #240308E01 - This guard prevents fastForward() being called more than once, which invokes closeChat() twice (two buttons), which results in the stuttering bug!
+        guard didGetTapped else { return }
+        
+        animateFFButton()
+        fastForward()
     }
 }
 
