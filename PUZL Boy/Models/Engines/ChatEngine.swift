@@ -965,18 +965,19 @@ extension ChatEngine {
                     ChatItem(profile: .hero, imgPos: .left, chat: "He's not gonna sacrifice her is he?!?! Because that's just not cool."),
                     ChatItem(profile: .trainer, chat: "He wasn't always like this. We were once good friends—what we Mystics call, Twin Flames. Then he went all Mabritney on everyone."),
                     ChatItem(profile: .hero, imgPos: .left, chat: "No way! You guys have Britney in your world?"),
-                    ChatItem(profile: .trainer, chat: "No— MAbritney. She's an elemental mage who wields forbidden dark magic. She does a Dance of Knives that summons Chaos."),
-                    ChatItem(profile: .hero, imgPos: .left, chat: "She sounds toxic. So what's our next move:") { [unowned self] in
-                    ChatItem(profile: .trainer, chat: "No— MAbritney. She's an elemental mage who wields forbidden dark magic. She does a Dance of Knives that summons Chaos."),
-                    ChatItem(profile: .hero, imgPos: .left, chat: "She sounds toxic. So what's our next move:\n\nPURSUE HIM | PREPARE FIRST"),
-                    ChatItem(profile: .hero, imgPos: .left, chat: "We should prepare first..."),
-                    ChatItem(profile: .trainer, chat: "A wise decision. Let's keep moving."),
-                    ChatItem(profile: .hero, imgPos: .left, chat: "BRING ME MAGMOOR!"),
-                    ChatItem(profile: .trainer, chat: "Okay but let's be careful.")
+                    ChatItem(profile: .trainer, chat: "No— MAbritney. She's an elemental mage who wields forbidden dark magic. She does a Dance of Knives that summons Chaos.") { [unowned self] in
+                        chatDecisionEngine.showDecisions(index: 0, toNode: chatBackgroundSprite)
+                    },
+                    ChatItem(profile: .hero, imgPos: .left, chat: "She sounds toxic. So what's our next move:")
                 ]) { [unowned self] in
-                    AudioManager.shared.adjustVolume(to: 1, for: AudioManager.shared.currentTheme, fadeDuration: 3)
-
-                    handleDialogueCompletion(level: level, completion: completion)
+                    sendChatArray(items: [
+                        ChatItem(profile: .hero, imgPos: .left, chat: "\(FIRManager.decisions[0].isLeftButton() ? "We should prepare first." : "BRING ME MAGMOOR!!!")"),
+                        ChatItem(profile: .trainer, chat: "\(FIRManager.decisions[0].isLeftButton() ? "A wise decision. Let's keep moving..." : "Okay but let's be careful")"),
+                    ]) { [unowned self] in
+                        AudioManager.shared.adjustVolume(to: 1, for: AudioManager.shared.currentTheme, fadeDuration: 3)
+                        
+                        handleDialogueCompletion(level: level, completion: completion)
+                    }
                 }
             }
         case 240:
