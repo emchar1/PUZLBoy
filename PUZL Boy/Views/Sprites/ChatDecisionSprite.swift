@@ -22,7 +22,8 @@ class ChatDecisionSprite: SKNode {
     private(set) var isVisible: Bool = false
     private var isPressed: Bool = false
     private var isDisabled: Bool = false
-    private var text: String
+    
+    private(set) var text: String
     private var buttonSize: CGSize
     private var topSpriteColor: UIColor
 

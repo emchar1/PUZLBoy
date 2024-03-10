@@ -19,7 +19,8 @@ class ChatDecisionEngine: ChatDecisionSpriteDelegate {
     // MARK: - Properties
     
     typealias ChatDecisionType = (left: ChatDecisionSprite, right: ChatDecisionSprite, selected: ButtonOrder?)
-    private var decisionButtons: [ChatDecisionType] = []
+    
+    private(set) var decisionButtons: [ChatDecisionType] = []
     private var buttonSize: CGSize
     private var position: CGPoint
     
