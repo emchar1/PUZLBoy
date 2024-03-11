@@ -161,10 +161,13 @@ class ChatDecisionSprite: SKNode {
 
         run(SKAction.sequence([
             SKAction.scale(to: 1.1, duration: 0.25),
+            SKAction.scale(to: 0.92, duration: 0.2),
             SKAction.scale(to: 0.95, duration: 0.2),
-            SKAction.scale(to: 1.0, duration: 0.2),
             SKAction.wait(forDuration: 1),
-            SKAction.fadeIn(withDuration: 1)
+            SKAction.group([
+                SKAction.scale(to: 1, duration: 1),
+                SKAction.fadeIn(withDuration: 1)
+            ])
         ])) { [unowned self] in
             isDisabled = false
         }
