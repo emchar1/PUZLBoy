@@ -35,9 +35,6 @@ class ChatEngine {
     private var backgroundSpriteWidth: CGFloat {
         K.ScreenDimensions.size.width * UIDevice.spriteScale
     }
-    private var fastForwardSpriteEdge: CGFloat {
-        fastForwardSprite.position.x - fastForwardSprite.size.width - 10
-    }
 
     
     //Utilities
@@ -82,8 +79,8 @@ class ChatEngine {
         let profile: ChatProfile
         let imgPos: ImagePosition
         let pause: TimeInterval?
-        let startNewChat: Bool
-        let endChat: Bool
+        let startNewChat: Bool?
+        let endChat: Bool?
         let chat: String
         let handler: (() -> Void)?
         
@@ -91,7 +88,7 @@ class ChatEngine {
             case left, right
         }
         
-        init(profile: ChatProfile, imgPos: ImagePosition = .right, pause: TimeInterval? = nil, startNewChat: Bool = false, endChat: Bool = false, chat: String, handler: (() -> Void)?) {
+        init(profile: ChatProfile, imgPos: ImagePosition = .right, pause: TimeInterval? = nil, startNewChat: Bool? = nil, endChat: Bool? = nil, chat: String, handler: (() -> Void)?) {
             self.profile = profile
             self.imgPos = imgPos
             self.pause = pause
@@ -102,7 +99,7 @@ class ChatEngine {
         }
         
         init(profile: ChatProfile, imgPos: ImagePosition = .right, chat: String) {
-            self.init(profile: profile, imgPos: imgPos, pause: nil, startNewChat: false, endChat: false, chat: chat, handler: nil)
+            self.init(profile: profile, imgPos: imgPos, pause: nil, startNewChat: nil, endChat: nil, chat: chat, handler: nil)
         }
     }
     
@@ -233,7 +230,7 @@ class ChatEngine {
         }
 
         for node in superScene.nodes(at: location) {
-            if node.name == "backgroundSprite" && (location.x > fastForwardSpriteEdge) && !chatDecisionEngine.isActive {
+            if node.name == "backgroundSprite" && !chatDecisionEngine.isActive {
                 animateFFButton()
                 fastForward()
             }
@@ -320,8 +317,8 @@ class ChatEngine {
             sendChat(profile: items[currentIndex].profile,
                      imgPos: items[currentIndex].imgPos,
                      pause: items[currentIndex].pause,
-                     startNewChat: items[currentIndex].startNewChat || currentIndex == 0,
-                     endChat: items[currentIndex].endChat || currentIndex == items.count - 1,
+                     startNewChat: items[currentIndex].startNewChat == nil ? (currentIndex == 0) : items[currentIndex].startNewChat!,
+                     endChat: items[currentIndex].endChat == nil ? (currentIndex == items.count - 1) : items[currentIndex].endChat!,
                      chat: items[currentIndex].chat) { [unowned self] in
                 items[currentIndex].handler?()
 
@@ -945,6 +942,7 @@ extension ChatEngine {
             }
         case 208:
             let spawnPoint: K.GameboardPosition = (0, 2)
+            let decisionIndex = 0
             
             delegate?.spawnPrincessCapture(at: spawnPoint) { [unowned self] in
                 sendChatArray(items: [
@@ -973,14 +971,14 @@ extension ChatEngine {
                     ChatItem(profile: .trainer, chat: "He wasn't always like this. We were once good friends—what we Mystics call, Twin Flames. Then he went all Mabritney on everyone."),
                     ChatItem(profile: .hero, imgPos: .left, chat: "No way! You guys have Britney in your world?"),
                     ChatItem(profile: .trainer, chat: "No— MAbritney. She's an elemental mage who wields forbidden dark magic. She does a Dance of Knives that summons Chaos.") { [unowned self] in
-                        chatDecisionEngine.showDecisions(index: 0, toNode: chatBackgroundSprite)
+                        chatDecisionEngine.showDecisions(index: decisionIndex, toNode: chatBackgroundSprite)
                     },
-                    ChatItem(profile: .hero, imgPos: .left, chat: "She sounds toxic. So what's our next move:")
+                    ChatItem(profile: .hero, imgPos: .left, endChat: false, chat: "She sounds toxic. So what's our next move:", handler: nil)
                 ]) { [unowned self] in
                     // FIXME: - I don't like this nested sendChatArray()...
                     sendChatArray(items: [
-                        ChatItem(profile: .hero, imgPos: .left, chat: "\(FIRManager.decisions[0].isLeftButton() ? "We should prepare first." : "BRING ME MAGMOOR!!!")"),
-                        ChatItem(profile: .trainer, chat: "\(FIRManager.decisions[0].isLeftButton() ? "A wise decision. Let's keep moving..." : "Okay but let's be careful")"),
+                        ChatItem(profile: .hero, imgPos: .left, startNewChat: false, chat: "\(FIRManager.decisions[decisionIndex].isLeftButton() ? "We should prepare first." : "BRING ME MAGMOOR!!!")", handler: nil),
+                        ChatItem(profile: .trainer, chat: "\(FIRManager.decisions[decisionIndex].isLeftButton() ? "A wise decision. Let's keep moving..." : "Okay but let's be careful.")"),
                     ]) { [unowned self] in
                         AudioManager.shared.adjustVolume(to: 1, for: AudioManager.shared.currentTheme, fadeDuration: 3)
                         
@@ -994,69 +992,69 @@ extension ChatEngine {
             
         // FIXME: - Testing only
         case 210:
-            let index = 0
+            let decisionIndex = 0
             
             sendChatArray(items: [
                 ChatItem(profile: .trainer, chat: "What's it gonna be, PUZL Boy?") { [unowned self] in
-                    chatDecisionEngine.showDecisions(index: index, toNode: chatBackgroundSprite)
+                    chatDecisionEngine.showDecisions(index: decisionIndex, toNode: chatBackgroundSprite)
                 },
-                ChatItem(profile: .hero, imgPos: .left, chat: "Hmmm, let me think about it...")
+                ChatItem(profile: .hero, imgPos: .left, endChat: false, chat: "Hmmm, let me think about it...", handler: nil)
             ]) { [unowned self] in
-                let decision = FIRManager.decisions[index].isLeftButton() ? chatDecisionEngine.decisionButtons[index].left.text : chatDecisionEngine.decisionButtons[index].right.text
+                let decision = FIRManager.decisions[decisionIndex].isLeftButton() ? chatDecisionEngine.decisionButtons[decisionIndex].left.text : chatDecisionEngine.decisionButtons[decisionIndex].right.text
                 
                 sendChatArray(items: [
-                    ChatItem(profile: .trainer, chat: "Good choice! I also like \(decision)")
+                    ChatItem(profile: .trainer, startNewChat: false, chat: "Good choice! I also like \(decision).", handler: nil)
                 ]) { [unowned self] in
                     handleDialogueCompletion(level: level, completion: completion)
                 }
             }
         case 211:
-            let index = 1
+            let decisionIndex = 1
             
             sendChatArray(items: [
                 ChatItem(profile: .trainer, chat: "What's it gonna be, PUZL Boy?") { [unowned self] in
-                    chatDecisionEngine.showDecisions(index: index, toNode: chatBackgroundSprite)
+                    chatDecisionEngine.showDecisions(index: decisionIndex, toNode: chatBackgroundSprite)
                 },
-                ChatItem(profile: .hero, imgPos: .left,  chat: "Hmmm, let me think about it...")
+                ChatItem(profile: .hero, imgPos: .left, endChat: false, chat: "Hmmm, let me think about it...", handler: nil)
             ]) { [unowned self] in
-                let decision = FIRManager.decisions[index].isLeftButton() ? chatDecisionEngine.decisionButtons[index].left.text : chatDecisionEngine.decisionButtons[index].right.text
+                let decision = FIRManager.decisions[decisionIndex].isLeftButton() ? chatDecisionEngine.decisionButtons[decisionIndex].left.text : chatDecisionEngine.decisionButtons[decisionIndex].right.text
                 
                 sendChatArray(items: [
-                    ChatItem(profile: .trainer, chat: "Good choice! I also like \(decision)")
+                    ChatItem(profile: .trainer, startNewChat: false, chat: "Good choice! I also like \(decision).", handler: nil)
                 ]) { [unowned self] in
                     handleDialogueCompletion(level: level, completion: completion)
                 }
             }
         case 212:
-            let index = 2
+            let decisionIndex = 2
             
             sendChatArray(items: [
                 ChatItem(profile: .trainer, chat: "What's it gonna be, PUZL Boy?") { [unowned self] in
-                    chatDecisionEngine.showDecisions(index: index, toNode: chatBackgroundSprite)
+                    chatDecisionEngine.showDecisions(index: decisionIndex, toNode: chatBackgroundSprite)
                 },
-                ChatItem(profile: .hero, imgPos: .left,  chat: "Hmmm, let me think about it...")
+                ChatItem(profile: .hero, imgPos: .left, endChat: false, chat: "Hmmm, let me think about it...", handler: nil)
             ]) { [unowned self] in
-                let decision = FIRManager.decisions[index].isLeftButton() ? chatDecisionEngine.decisionButtons[index].left.text : chatDecisionEngine.decisionButtons[index].right.text
+                let decision = FIRManager.decisions[decisionIndex].isLeftButton() ? chatDecisionEngine.decisionButtons[decisionIndex].left.text : chatDecisionEngine.decisionButtons[decisionIndex].right.text
                 
                 sendChatArray(items: [
-                    ChatItem(profile: .trainer, chat: "Good choice! I also like \(decision)")
+                    ChatItem(profile: .trainer, startNewChat: false, chat: "Good choice! I also like \(decision).", handler: nil)
                 ]) { [unowned self] in
                     handleDialogueCompletion(level: level, completion: completion)
                 }
             }
         case 213:
-            let index = 3
+            let decisionIndex = 3
             
             sendChatArray(items: [
                 ChatItem(profile: .trainer, chat: "What's it gonna be, PUZL Boy?") { [unowned self] in
-                    chatDecisionEngine.showDecisions(index: index, toNode: chatBackgroundSprite)
+                    chatDecisionEngine.showDecisions(index: decisionIndex, toNode: chatBackgroundSprite)
                 },
-                ChatItem(profile: .hero, imgPos: .left,  chat: "Hmmm, let me think about it...")
+                ChatItem(profile: .hero, imgPos: .left, endChat: false, chat: "Hmmm, let me think about it...", handler: nil)
             ]) { [unowned self] in
-                let decision = FIRManager.decisions[index].isLeftButton() ? chatDecisionEngine.decisionButtons[index].left.text : chatDecisionEngine.decisionButtons[index].right.text
+                let decision = FIRManager.decisions[decisionIndex].isLeftButton() ? chatDecisionEngine.decisionButtons[decisionIndex].left.text : chatDecisionEngine.decisionButtons[decisionIndex].right.text
                 
                 sendChatArray(items: [
-                    ChatItem(profile: .trainer, chat: "Good choice! I also like \(decision)")
+                    ChatItem(profile: .trainer, startNewChat: false, chat: "Good choice! I also like \(decision).", handler: nil)
                 ]) { [unowned self] in
                     handleDialogueCompletion(level: level, completion: completion)
                 }
