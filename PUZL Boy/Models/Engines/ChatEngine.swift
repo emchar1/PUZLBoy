@@ -270,7 +270,6 @@ class ChatEngine {
             dispatchWorkItem.cancel()
             closeChat()
         }
-        
     }
     
     private func animateFFButton() {
@@ -471,6 +470,13 @@ class ChatEngine {
             AudioManager.shared.playSound(for: "chatclose")
         }
         else {
+            let bounceOffset: CGFloat = 20
+            
+            chatBackgroundSprite.run(SKAction.sequence([
+                SKAction.moveBy(x: 0, y: -bounceOffset, duration: 0),
+                SKAction.moveBy(x: 0, y: bounceOffset, duration: 0.25)
+            ]))
+            
             ButtonTap.shared.tap(type: .buttontap2)
         }
         
