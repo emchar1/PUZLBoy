@@ -179,12 +179,9 @@ class ChatDecisionSprite: SKNode {
             SKAction.scale(to: 0.98, duration: duration * 0.15),
             
             SKAction.scale(to: 1.0, duration: duration * 0.175)
-        ]) : SKAction.scale(to: 0.85, duration: duration)
+        ]) : SKAction.wait(forDuration: duration)
         
-        let fadeAction = didGetTapped ? SKAction.sequence([
-            SKAction.wait(forDuration: duration * 0.95),
-            SKAction.fadeOut(withDuration: duration * 0.05)
-        ]) : SKAction.fadeOut(withDuration: duration)
+        let fadeAction = didGetTapped ? SKAction.wait(forDuration: duration) : SKAction.fadeOut(withDuration: duration)
         
         scaleAction.timingMode = .easeOut
         fadeAction.timingMode = .easeOut
