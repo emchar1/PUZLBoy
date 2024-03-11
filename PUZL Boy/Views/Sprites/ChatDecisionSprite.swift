@@ -148,8 +148,9 @@ class ChatDecisionSprite: SKNode {
     }
     
     func animateAppear(toNode node: SKNode) {
-        alpha = 1.0
+        alpha = 0.5
         isVisible = true
+        isDisabled = true
         delegate?.buttonHasAppeared(self)
         
         //Just in case it already has a parent, prevents crashing.
@@ -162,7 +163,11 @@ class ChatDecisionSprite: SKNode {
             SKAction.scale(to: 1.1, duration: 0.25),
             SKAction.scale(to: 0.95, duration: 0.2),
             SKAction.scale(to: 1.0, duration: 0.2),
-        ]))
+            SKAction.wait(forDuration: 1),
+            SKAction.fadeIn(withDuration: 1)
+        ])) { [unowned self] in
+            isDisabled = false
+        }
     }
     
     func animateDisappear(didGetTapped: Bool) {
@@ -181,7 +186,10 @@ class ChatDecisionSprite: SKNode {
             SKAction.scale(to: 1.0, duration: duration * 0.175)
         ]) : SKAction.wait(forDuration: duration)
         
-        let fadeAction = didGetTapped ? SKAction.wait(forDuration: duration) : SKAction.fadeOut(withDuration: duration)
+        let fadeAction = didGetTapped ? SKAction.wait(forDuration: duration) : SKAction.sequence([
+            SKAction.fadeOut(withDuration: duration * 0.25),
+            SKAction.wait(forDuration: duration * 0.75)
+        ])
         
         scaleAction.timingMode = .easeOut
         fadeAction.timingMode = .easeOut

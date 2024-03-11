@@ -35,6 +35,9 @@ class ChatEngine {
     private var backgroundSpriteWidth: CGFloat {
         K.ScreenDimensions.size.width * UIDevice.spriteScale
     }
+    private var fastForwardSpriteEdge: CGFloat {
+        fastForwardSprite.position.x - fastForwardSprite.size.width - 10
+    }
 
     
     //Utilities
@@ -167,11 +170,11 @@ class ChatEngine {
         fastForwardSprite.zPosition = 15
         fastForwardSprite.name = "fastForward"
         
-        let buttonSize = CGSize(width: backgroundSpriteWidth / 3.5, height: avatarSizeNew / 3.5)
+        let buttonSize = CGSize(width: (backgroundSpriteWidth - avatarSizeNew) / 2 - 20, height: avatarSizeNew / 3)
         
         chatDecisionEngine = ChatDecisionEngine(
             buttonSize: buttonSize,
-            position: CGPoint(x: origin.x + buttonSize.width / 2 + avatarSizeNew + 40, y: origin.y + buttonSize.height / 2 + 20),
+            position: CGPoint(x: origin.x + buttonSize.width / 2 + avatarSizeNew, y: origin.y + buttonSize.height / 2 + 20),
             decision0: ("Prepare First", "Pursue Him"),
             decision1: ("Vans", "Nike"),
             decision2: ("Magmoor", "Marlin"),
@@ -222,10 +225,6 @@ class ChatEngine {
         guard superScene.nodes(at: location).filter({ $0.name == "backgroundSprite" }).first != nil else { return }
         guard !isAnimating else { return }
         
-        
-        let ffPadding: CGFloat = 10
-        let ffRegionTapped = location.x + ffPadding > fastForwardSprite.position.x - fastForwardSprite.size.width
-
         isAnimating = true
         
         //Prevents spamming of the chat while FF tapping. Adds a 0.5s delay; MUST be 0.5s and no shorter to prevent crashing. BUGFIX# 230921E01
@@ -234,7 +233,7 @@ class ChatEngine {
         }
 
         for node in superScene.nodes(at: location) {
-            if node.name == "backgroundSprite" && ffRegionTapped && !chatDecisionEngine.isActive {
+            if node.name == "backgroundSprite" && (location.x > fastForwardSpriteEdge) && !chatDecisionEngine.isActive {
                 animateFFButton()
                 fastForward()
             }
