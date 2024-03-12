@@ -104,7 +104,7 @@ class ChatEngine {
     }
     
     enum ChatProfile {
-        case hero, trainer, princess, princess2, villain, blankvillain, blankprincess
+        case hero, trainer, princess, princessCursed, princess2, villain, blankvillain, blankprincess
     }
     
     weak var delegate: ChatEngineDelegate?
@@ -351,6 +351,9 @@ class ChatEngine {
         case .princess:
             avatarSprite.texture = SKTexture(imageNamed: "princess")
             chatBackgroundSprite.fillColor = .magenta
+        case .princessCursed:
+            avatarSprite.texture = SKTexture(imageNamed: "princessCursed")
+            chatBackgroundSprite.fillColor = .magenta
         case .princess2:
             avatarSprite.texture = SKTexture(imageNamed: "princess2")
             chatBackgroundSprite.fillColor = .magenta
@@ -454,10 +457,14 @@ class ChatEngine {
     
     private func playChatOpenNotification() {
         switch currentProfile {
-        case .hero:                                 AudioManager.shared.playSound(for: "chatopen")
-        case .trainer:                              AudioManager.shared.playSound(for: "chatopentrainer")
-        case .princess, .princess2, .blankprincess: AudioManager.shared.playSound(for: "chatopenprincess")
-        case .villain, .blankvillain:               AudioManager.shared.playSound(for: "chatopenvillain")
+        case .hero:                                 
+            AudioManager.shared.playSound(for: "chatopen")
+        case .trainer:
+            AudioManager.shared.playSound(for: "chatopentrainer")
+        case .princess, .princessCursed, .princess2, .blankprincess:
+            AudioManager.shared.playSound(for: "chatopenprincess")
+        case .villain, .blankvillain:               
+            AudioManager.shared.playSound(for: "chatopenvillain")
         }
     }
     
@@ -650,7 +657,7 @@ extension ChatEngine {
                     AudioManager.shared.playSoundThenStop(for: "littlegirllaugh", playForDuration: 1, fadeOut: 3)
                     AudioManager.shared.stopSound(for: "magicheartbeatloop1", fadeDuration: 4)
                 },
-                ChatItem(profile: .blankprincess, chat: "\n\nI'm fine. Don't worry about me. Now leave us."),
+                ChatItem(profile: .princessCursed, chat: "i'm fine. don't worry about me. now leave us."),
                 ChatItem(profile: .blankvillain, chat: "\n\n...see, she's perfectly fine..."),
                 ChatItem(profile: .trainer, imgPos: .left, chat: "Listen!! I don't think you know who you're dealing with but enough with the games! Now, show me who you are!!") { [unowned self] in
                     superScene?.addChild(marlinBlast)
