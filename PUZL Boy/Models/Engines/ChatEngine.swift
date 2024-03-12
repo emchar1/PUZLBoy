@@ -684,6 +684,15 @@ extension ChatEngine {
         case -200:
             AudioManager.shared.playSound(for: "magicheartbeatloop1", fadeIn: 3)
             
+            let originalBrightness: CGFloat = UIScreen.main.brightness
+            
+            if originalBrightness < 0.25 {
+                UIScreen.main.brightness = 0.25
+            }
+            else if originalBrightness < 0.5 {
+                UIScreen.main.brightness = 0.5
+            }
+            
             superScene?.addChild(magmoorScary)
 
             sendChatArray(items: [
@@ -715,6 +724,8 @@ extension ChatEngine {
                     handleDialogueCompletion(level: level) { [unowned self] in
                         magmoorScary.resetAlpha()
                         magmoorScary.removeFromParent()
+                        
+                        UIScreen.main.brightness = originalBrightness
                         
                         completion?()
                     }
