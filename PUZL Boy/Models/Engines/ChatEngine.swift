@@ -699,7 +699,7 @@ extension ChatEngine {
                 ChatItem(profile: .villain, chat: "MYSTERIOUS FIGURE: You'll never find her. You can keep trying, but it will all be in vain. Give up now...") { [unowned self] in
                     magmoorScary.slowReveal(baseAlpha: 0.1)
                 },
-                ChatItem(profile: .trainer, imgPos: .left, chat: "YOU!!! I should have known! The whole time I'm thinking, \"No way he came crawling back into my life.\" And here you are...") { [unowned self] in
+                ChatItem(profile: .trainer, imgPos: .left, chat: "YOU!!! I should have known! The whole time I'm thinking, \"No way he came crawling back into my life.\" And here you are... lurking in the shadows.") { [unowned self] in
                     AudioManager.shared.playSound(for: "scarymusicbox", fadeIn: 10)
 
                     magmoorScary.slowReveal(baseAlpha: 0.2)
@@ -941,7 +941,7 @@ extension ChatEngine {
                 ChatItem(profile: .blankprincess, chat: "\nHelp me please, PUZL Boy!!! I don't know where I am!"),
                 ChatItem(profile: .blankprincess, chat: "\nIt's very smoky in here and it smells like burning trees!"),
                 ChatItem(profile: .blankprincess, chat: "\nOh! And this shadowy guy has me! (Uh oh, he's coming back...)"),
-                ChatItem(profile: .hero, imgPos: .left, chat: "Where are you!!! Can you hear me! OLIVIA!!! Marlin we gotta do something!") {
+                ChatItem(profile: .hero, imgPos: .left, chat: "Where are you!!! Can you hear me! OLIVIA!!! Burning trees... Marlin we gotta do something!") {
                     AudioManager.shared.adjustVolume(to: 1, for: AudioManager.shared.currentTheme, fadeDuration: 5)
                     AudioManager.shared.stopSound(for: "littlegirllaugh", fadeDuration: 5)
                 },
