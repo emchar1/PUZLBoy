@@ -33,6 +33,7 @@ class ParticleEngine: SKNode {
         case gemSparkle = "GemSparkleParticles"
         case hearts = "HeartsParticles"
         case heroRainbow = "HeroRainbowParticles"
+        case inbetween = "InBetweenParticles"
         case itemPickup = "ItemPickupParticles"
         case lavaAppear = "LavaAppearParticles"
         case lavaSizzle = "LavaSizzleParticles"
@@ -72,6 +73,7 @@ class ParticleEngine: SKNode {
                           scale: CGFloat = 1,
                           angle: CGFloat = 0,
                           shouldFlipHorizontally: Bool = false,
+                          alpha: CGFloat = 1,
                           zPosition: CGFloat = K.ZPosition.itemsAndEffects + 10,
                           nameGameboardPosition: K.GameboardPosition? = nil,
                           duration: TimeInterval)
@@ -81,6 +83,7 @@ class ParticleEngine: SKNode {
         particles.position = position
         particles.setScale(2 * scale / UIDevice.modelInfo.ratio)
         particles.xScale *= shouldFlipHorizontally ? -1 : 1
+        particles.alpha = alpha
         particles.zPosition = zPosition
         particles.name = ParticleEngine.nodeName + getPositionString(nameGameboardPosition)
         
@@ -150,19 +153,19 @@ class ParticleEngine: SKNode {
         }
     }
     
-    func hideParticles(fromNode node: SKNode) {
+    func hideParticles(fromNode node: SKNode, fadeDuration: TimeInterval = 0.25) {
         for particleNode in node.children {
             guard let name = particleNode.name, name.contains(ParticleEngine.nodeName) else { continue }
 
-            particleNode.run(SKAction.fadeOut(withDuration: 0.25))
+            particleNode.run(SKAction.fadeOut(withDuration: fadeDuration))
         }
     }
     
-    func showParticles(fromNode node: SKNode) {
+    func showParticles(fromNode node: SKNode, fadeDuration: TimeInterval = 0.25) {
         for particleNode in node.children {
             guard let name = particleNode.name, name.contains(ParticleEngine.nodeName) else { continue }
                     
-            particleNode.run(SKAction.fadeIn(withDuration: 0.25))
+            particleNode.run(SKAction.fadeIn(withDuration: fadeDuration))
         }
     }
     

@@ -333,6 +333,12 @@ class GameboardSprite {
         sprite.addChild(overlayPanel)
         
         AudioManager.shared.playSound(for: "magicwarp")
+        ParticleEngine.shared.animateParticles(type: .inbetween,
+                                               toNode: sprite,
+                                               position: .zero,
+                                               alpha: 0.75,
+                                               zPosition: K.ZPosition.overlay + 10,
+                                               duration: 0)
 
         spawnItem(at: position, with: .warp4) { [unowned self] in
             AudioManager.shared.playSound(for: "magicheartbeatloop1", fadeIn: 3, interruptPlayback: false)
@@ -448,11 +454,16 @@ class GameboardSprite {
         let blinkDivision: Int = 10
         let exitDoorScale: CGFloat = 0.25
         
+        ParticleEngine.shared.hideParticles(fromNode: sprite, fadeDuration: 5)
+        
         for node in sprite.children {
             if let nodeName = node.name,
                nodeName.contains(GameboardSprite.getNodeName(row: position.row, col: position.col, includeOverlayTag: true)) {
                 //Exit function if there's an overlay item, like a gem or dragon
                 print("Unable to execute GameboardSprite.despawnPrincessCapture(); there's an overlay!")
+
+                ParticleEngine.shared.removeParticles(fromNode: sprite)
+
                 completion()
                 return
             }
@@ -545,7 +556,12 @@ class GameboardSprite {
                         AudioManager.shared.stopSound(for: "littlegirllaugh", fadeDuration: 5)
                         AudioManager.shared.stopSound(for: "scarymusicbox", fadeDuration: 5)
                     }
-                ]), completion: completion)
+                ])) { [unowned self] in
+                    //Final completion handler...
+                    ParticleEngine.shared.removeParticles(fromNode: sprite)
+                    
+                    completion()
+                }
             }
         }
     }

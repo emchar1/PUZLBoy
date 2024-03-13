@@ -98,6 +98,7 @@
 		EA7300152B5F74B4005BF98D /* MarlinBlastSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA7300142B5F74B4005BF98D /* MarlinBlastSprite.swift */; };
 		EA7300192B5F8B8C005BF98D /* marlinblast.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA7300182B5F8B8C005BF98D /* marlinblast.mp3 */; };
 		EA73001B2B604A13005BF98D /* MagmoorScarySprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA73001A2B604A13005BF98D /* MagmoorScarySprite.swift */; };
+		EA74F9D02BA17BDE002CE6B2 /* InBetweenParticles.sks in Resources */ = {isa = PBXBuildFile; fileRef = EA74F9CF2BA17BDE002CE6B2 /* InBetweenParticles.sks */; };
 		EA75F0E1292DDAAF00F09BD7 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = EA75F0E0292DDAAF00F09BD7 /* FirebaseAnalytics */; };
 		EA75F0E3292DDAAF00F09BD7 /* FirebaseAnalyticsSwift in Frameworks */ = {isa = PBXBuildFile; productRef = EA75F0E2292DDAAF00F09BD7 /* FirebaseAnalyticsSwift */; };
 		EA75F0E5292DDAAF00F09BD7 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = EA75F0E4292DDAAF00F09BD7 /* FirebaseAuth */; };
@@ -394,6 +395,7 @@
 		EA7300142B5F74B4005BF98D /* MarlinBlastSprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarlinBlastSprite.swift; sourceTree = "<group>"; };
 		EA7300182B5F8B8C005BF98D /* marlinblast.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = marlinblast.mp3; sourceTree = "<group>"; };
 		EA73001A2B604A13005BF98D /* MagmoorScarySprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MagmoorScarySprite.swift; sourceTree = "<group>"; };
+		EA74F9CF2BA17BDE002CE6B2 /* InBetweenParticles.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = InBetweenParticles.sks; sourceTree = "<group>"; };
 		EA75F0EA292DF46200F09BD7 /* FIRManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FIRManager.swift; sourceTree = "<group>"; };
 		EA75F0EC292DF57400F09BD7 /* LevelModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelModel.swift; sourceTree = "<group>"; };
 		EA75F0EE292F55F900F09BD7 /* LaunchScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchScene.swift; sourceTree = "<group>"; };
@@ -1117,6 +1119,7 @@
 				EAD199FB2A95A2ED00A07A63 /* GemCollectParticles.sks */,
 				EAD19A1A2A9BD48400A07A63 /* GemSparkleParticles.sks */,
 				EAD19A0E2A97E73400A07A63 /* HeartsParticles.sks */,
+				EA74F9CF2BA17BDE002CE6B2 /* InBetweenParticles.sks */,
 				EAD19A102A98177400A07A63 /* ItemPickupParticles.sks */,
 				EAD19A0A2A96F52500A07A63 /* LavaAppearParticles.sks */,
 				EAB2DE0F2A9D4BD700172478 /* LavaSizzleParticles.sks */,
@@ -1336,6 +1339,7 @@
 				EA6DCBDD2B60FB4700D5F707 /* chatopenprincess.mp3 in Resources */,
 				EAF7183329B3D26F00E2ED82 /* movesand2.mp3 in Resources */,
 				EA94E87329C0DE2C009F2614 /* movetile3.mp3 in Resources */,
+				EA74F9D02BA17BDE002CE6B2 /* InBetweenParticles.sks in Resources */,
 				EAD19A1D2A9C14B500A07A63 /* PoisonBubblesParticles.sks in Resources */,
 				EA9D6A642B48ED0F0004187B /* ageofruin.mp3 in Resources */,
 				EA3467A929A8C6CA002DDA02 /* chatopen.mp3 in Resources */,
