@@ -99,6 +99,7 @@
 		EA7300192B5F8B8C005BF98D /* marlinblast.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA7300182B5F8B8C005BF98D /* marlinblast.mp3 */; };
 		EA73001B2B604A13005BF98D /* MagmoorScarySprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA73001A2B604A13005BF98D /* MagmoorScarySprite.swift */; };
 		EA74F9D02BA17BDE002CE6B2 /* InBetweenParticles.sks in Resources */ = {isa = PBXBuildFile; fileRef = EA74F9CF2BA17BDE002CE6B2 /* InBetweenParticles.sks */; };
+		EA74F9D22BA290E8002CE6B2 /* Extension+SKWarpGeometryGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA74F9D12BA290E8002CE6B2 /* Extension+SKWarpGeometryGrid.swift */; };
 		EA75F0E1292DDAAF00F09BD7 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = EA75F0E0292DDAAF00F09BD7 /* FirebaseAnalytics */; };
 		EA75F0E3292DDAAF00F09BD7 /* FirebaseAnalyticsSwift in Frameworks */ = {isa = PBXBuildFile; productRef = EA75F0E2292DDAAF00F09BD7 /* FirebaseAnalyticsSwift */; };
 		EA75F0E5292DDAAF00F09BD7 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = EA75F0E4292DDAAF00F09BD7 /* FirebaseAuth */; };
@@ -290,6 +291,7 @@
 		EAF07C1029EA7B8C0034CD1A /* Extension+CGSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAF07C0F29EA7B8C0034CD1A /* Extension+CGSize.swift */; };
 		EAF07C1229EAB5D30034CD1A /* Extension+SKSpriteNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAF07C1129EAB5D30034CD1A /* Extension+SKSpriteNode.swift */; };
 		EAF2A5A62AA7875F00212825 /* SkipSceneSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAF2A5A52AA7875F00212825 /* SkipSceneSprite.swift */; };
+		EAF4B6662BA8157F00D96699 /* Circle.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAF4B6652BA8157F00D96699 /* Circle.swift */; };
 		EAF7181F29B1B2BC00E2ED82 /* movesand1.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAF7181E29B1B2BC00E2ED82 /* movesand1.mp3 */; };
 		EAF7182129B3097300E2ED82 /* lavasizzle.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAF7182029B3097300E2ED82 /* lavasizzle.mp3 */; };
 		EAF7182929B31BE800E2ED82 /* lavaappear1.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAF7182829B31BE800E2ED82 /* lavaappear1.mp3 */; };
@@ -396,6 +398,7 @@
 		EA7300182B5F8B8C005BF98D /* marlinblast.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = marlinblast.mp3; sourceTree = "<group>"; };
 		EA73001A2B604A13005BF98D /* MagmoorScarySprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MagmoorScarySprite.swift; sourceTree = "<group>"; };
 		EA74F9CF2BA17BDE002CE6B2 /* InBetweenParticles.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = InBetweenParticles.sks; sourceTree = "<group>"; };
+		EA74F9D12BA290E8002CE6B2 /* Extension+SKWarpGeometryGrid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+SKWarpGeometryGrid.swift"; sourceTree = "<group>"; };
 		EA75F0EA292DF46200F09BD7 /* FIRManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FIRManager.swift; sourceTree = "<group>"; };
 		EA75F0EC292DF57400F09BD7 /* LevelModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelModel.swift; sourceTree = "<group>"; };
 		EA75F0EE292F55F900F09BD7 /* LaunchScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchScene.swift; sourceTree = "<group>"; };
@@ -580,6 +583,7 @@
 		EAF07C0F29EA7B8C0034CD1A /* Extension+CGSize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+CGSize.swift"; sourceTree = "<group>"; };
 		EAF07C1129EAB5D30034CD1A /* Extension+SKSpriteNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+SKSpriteNode.swift"; sourceTree = "<group>"; };
 		EAF2A5A52AA7875F00212825 /* SkipSceneSprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SkipSceneSprite.swift; sourceTree = "<group>"; };
+		EAF4B6652BA8157F00D96699 /* Circle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Circle.swift; sourceTree = "<group>"; };
 		EAF7181E29B1B2BC00E2ED82 /* movesand1.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = movesand1.mp3; sourceTree = "<group>"; };
 		EAF7182029B3097300E2ED82 /* lavasizzle.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = lavasizzle.mp3; sourceTree = "<group>"; };
 		EAF7182829B31BE800E2ED82 /* lavaappear1.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = lavaappear1.mp3; sourceTree = "<group>"; };
@@ -619,6 +623,7 @@
 				EAF07C1129EAB5D30034CD1A /* Extension+SKSpriteNode.swift */,
 				EA1D5A6B29F1019800677B06 /* Extension+SKShapeNode.swift */,
 				EA1D5A6D29F217D200677B06 /* Extension+SKLabelNode.swift */,
+				EA74F9D12BA290E8002CE6B2 /* Extension+SKWarpGeometryGrid.swift */,
 			);
 			path = SpriteKit;
 			sourceTree = "<group>";
@@ -718,6 +723,7 @@
 				EA11915629121798009D0E3E /* Controls.swift */,
 				EA6DCBF02B6303F900D5F707 /* FireIceTheme.swift */,
 				EA0F84062937D4860031DA76 /* DayTheme.swift */,
+				EAF4B6652BA8157F00D96699 /* Circle.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -1415,6 +1421,7 @@
 				EA95D1B0294FBE4E0061059C /* GameCenterManager.swift in Sources */,
 				EA95D1C32953AC0F0061059C /* AchievementExterminator.swift in Sources */,
 				EA95D1CF29542C4C0061059C /* AchievementOnFire.swift in Sources */,
+				EA74F9D22BA290E8002CE6B2 /* Extension+SKWarpGeometryGrid.swift in Sources */,
 				EA75F0EB292DF46200F09BD7 /* FIRManager.swift in Sources */,
 				EA95D1C12953AB4B0061059C /* AchievementBeastMaster.swift in Sources */,
 				EA84645C29D8E5A50075F2A9 /* MenuItemLabel.swift in Sources */,
@@ -1441,6 +1448,7 @@
 				EA75F0EF292F55F900F09BD7 /* LaunchScene.swift in Sources */,
 				EA94E86729BE6BCC009F2614 /* PauseResetEngine.swift in Sources */,
 				EA26F29129739DE800BF1AC8 /* AdMobManager.swift in Sources */,
+				EAF4B6662BA8157F00D96699 /* Circle.swift in Sources */,
 				EA0F84072937D4860031DA76 /* DayTheme.swift in Sources */,
 				EA65182F28E4199E00E535BF /* GameViewController.swift in Sources */,
 				EA95D1C929541F360061059C /* AchievementStoneCutter.swift in Sources */,

@@ -903,7 +903,7 @@ extension ChatEngine {
                 ChatItem(profile: .hero, imgPos: .left, chat: "NINE HUNDRED??!! What are you, like a wizard or something? \"Marlin the Fish Wizard...\""),
                 ChatItem(profile: .hero, imgPos: .left, chat: "Wait... So you really ARE a wizard!! Because I'm not surprised by anything anymore at this point..."),
                 ChatItem(profile: .trainer, chat: "I told you I am NOT a wizard, I am a Mystic! MYSTIC!! Yeesh, my blood pressure..."),
-                ChatItem(profile: .trainer, chat: "Once we've located the princess, I need to cast the gateway spell to open the portal so she can return to her home in Vaeloria."),
+                ChatItem(profile: .trainer, chat: "It is of the uttermost importance we locate the princess. Securing her safe return to Vaeloria is critical to the preservation of the realms."),
                 ChatItem(profile: .hero, imgPos: .left, chat: "Wizard, mystic, magician... what's the difference??! They're all the same thing."),
                 ChatItem(profile: .trainer, chat: "A wizard possesses magical abilities. A magician is gifted in the art of magic. And a Mystic can harness the power of magic."),
                 ChatItem(profile: .hero, imgPos: .left, chat: "Thanks, thesaurus. Well you don't look a day over 800 to be honest..."),

@@ -77,6 +77,7 @@ class GameEngine {
     var canContinue: Bool { return GameEngine.livesRemaining >= 0 }
 
     private var backgroundSprite: SKSpriteNode!
+    private var inbetweenNode: SKSpriteNode!
     private var bloodOverlay: SKSpriteNode!
     private var bloodOverlayAlpha: CGFloat { 0.25 * CGFloat(level.level) / CGFloat(Level.finalLevel) }
     private(set) var hintEngine: HintEngine!
@@ -194,6 +195,34 @@ class GameEngine {
         backgroundSprite = SKSpriteNode(texture: SKTexture(image: DayTheme.getSkyImage()))
         backgroundSprite.size = K.ScreenDimensions.size
         backgroundSprite.anchorPoint = .zero
+        
+        
+        
+        
+        
+        // TODO: - The In-Between Node
+        inbetweenNode = SKSpriteNode(texture: SKTexture(image: UIImage.gradientTextureSkyBlood))
+        inbetweenNode.size = K.ScreenDimensions.size
+        inbetweenNode.anchorPoint = .zero
+        inbetweenNode.alpha = 0.75
+        inbetweenNode.zPosition = 5
+
+        inbetweenNode.run(SKAction.sequence([
+            SKAction.wait(forDuration: 32),
+            SKAction.fadeOut(withDuration: 2),
+            SKAction.removeFromParent()
+        ]))
+        
+        ParticleEngine.shared.animateParticles(type: .inbetween,
+                                               toNode: inbetweenNode,
+                                               position: .zero,
+                                               alpha: 0.75,
+                                               zPosition: K.ZPosition.chatDimOverlay - 10, //Leave this as K.ZPosition.chatDimOverlay - 10!!!
+                                               duration: 0)
+        
+        
+        
+        
         
         bloodOverlay = SKSpriteNode(color: FireIceTheme.overlayColor, size: K.ScreenDimensions.size)
         bloodOverlay.anchorPoint = .zero
@@ -682,6 +711,7 @@ class GameEngine {
      */
     func moveSprites(to superScene: SKScene) {
         superScene.addChild(backgroundSprite)
+        superScene.addChild(inbetweenNode)
         superScene.addChild(bloodOverlay)
         superScene.addChild(gameboardSprite.sprite)
         hintEngine.move(toNode: backgroundSprite)

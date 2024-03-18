@@ -39,6 +39,7 @@ class GameboardSprite {
     private var scaleSize: CGSize { CGSize.zero + panelSize - panelSpacing }
     private var panels: [[SKSpriteNode]]
     private var endPanel: K.GameboardPosition?
+    private var circle: Circle
     private(set) var panelCount: Int
     private(set) var panelSize: CGFloat
     private(set) var sprite: SKSpriteNode
@@ -63,7 +64,19 @@ class GameboardSprite {
         sprite.position = GameboardSprite.offsetPosition
         sprite.zPosition = K.ZPosition.gameboard
         sprite.setScale(UIDevice.spriteScale)
+        
 
+
+        
+        // TODO: - Test
+        circle = Circle(side: sprite.size.width / 2, initialAngle: .pi / 4,
+                        center: sprite.position + CGPoint(x: sprite.size.width, y: sprite.size.height) / 2)
+
+        flipGameboard(waitDuration: 32, flipDuration: 2)
+
+        
+        
+        
         for row in 0..<panelCount {
             for col in 0..<panelCount {
                 let levelType: K.GameboardPanel = level.gameboard[row][col]
@@ -76,6 +89,87 @@ class GameboardSprite {
             }
         }
     }
+    
+    
+    
+    
+    
+    // TODO: - Change between IN-BETWEEN and PUZZLE REALMS in a cool way.
+    private func flipGameboard(waitDuration: TimeInterval, flipDuration: TimeInterval) {
+        //ver. 1: flip
+        //        sprite.run(SKAction.sequence([
+        //            SKAction.group([
+        //                SKAction.scaleY(to: -sprite.yScale, duration: 0),
+        //                SKAction.moveBy(x: 0, y: sprite.size.height, duration: 0)
+        //            ]),
+        //            SKAction.wait(forDuration: waitDuration),
+        //            SKAction.group([
+        //                SKAction.scaleY(to: sprite.yScale, duration: flipDuration),
+        //                SKAction.moveBy(x: 0, y: -sprite.size.height, duration: flipDuration)
+        //            ])
+        //        ]))
+        
+        
+        //ver. 2: rotate
+        //        sprite.run(SKAction.sequence([
+        //            SKAction.group([
+        //                SKAction.rotate(toAngle: .pi, duration: 0),
+        //                SKAction.moveBy(x: sprite.size.width, y: sprite.size.height, duration: 0)
+        //            ]),
+        //            SKAction.wait(forDuration: waitDuration),
+        //            SKAction.group([
+        //                SKAction.rotate(toAngle: 0, duration: flipDuration),
+        //                SKAction.sequence([
+        //                    SKAction.moveBy(x: 0, y: -sprite.size.height, duration: flipDuration / 2),
+        //                    SKAction.moveBy(x: -sprite.size.width, y: 0, duration: flipDuration / 2),
+        //                ])
+        //            ])
+        //        ]))
+        
+        
+        //ver. 3: rotate (circle)
+        let division: CGFloat = 16
+        
+        sprite.run(SKAction.sequence([
+            SKAction.group([
+                SKAction.rotate(toAngle: .pi, duration: 0),
+                SKAction.moveBy(x: sprite.size.width, y: sprite.size.height, duration: 0)
+            ]),
+            SKAction.wait(forDuration: waitDuration),
+            SKAction.sequence([
+                rotateAction(i: 1, angles: division, duration: flipDuration),
+                rotateAction(i: 2, angles: division, duration: flipDuration),
+                rotateAction(i: 3, angles: division, duration: flipDuration),
+                rotateAction(i: 4, angles: division, duration: flipDuration),
+                rotateAction(i: 5, angles: division, duration: flipDuration),
+                rotateAction(i: 6, angles: division, duration: flipDuration),
+                rotateAction(i: 7, angles: division, duration: flipDuration),
+                rotateAction(i: 8, angles: division, duration: flipDuration),
+                rotateAction(i: 9, angles: division, duration: flipDuration),
+                rotateAction(i: 10, angles: division, duration: flipDuration),
+                rotateAction(i: 11, angles: division, duration: flipDuration),
+                rotateAction(i: 12, angles: division, duration: flipDuration),
+                rotateAction(i: 13, angles: division, duration: flipDuration),
+                rotateAction(i: 14, angles: division, duration: flipDuration),
+                rotateAction(i: 15, angles: division, duration: flipDuration),
+                rotateAction(i: 16, angles: division, duration: flipDuration)
+            ])
+        ]))
+    }
+
+    private func rotateAction(i: CGFloat, angles: CGFloat, duration: TimeInterval) -> SKAction {
+        let duration: TimeInterval = duration / angles
+        
+        return SKAction.group([
+            SKAction.rotate(byAngle: -.pi / angles, duration: duration),
+            SKAction.move(to: circle.getPointOnCircle(angleDeg: -i * 180 / angles), duration: duration)
+        ])
+    }
+    
+    
+    
+    
+    
     
     
     // MARK: - Getter/Setter Functions
@@ -333,12 +427,6 @@ class GameboardSprite {
         sprite.addChild(overlayPanel)
         
         AudioManager.shared.playSound(for: "magicwarp")
-        ParticleEngine.shared.animateParticles(type: .inbetween,
-                                               toNode: sprite,
-                                               position: .zero,
-                                               alpha: 0.75,
-                                               zPosition: K.ZPosition.overlay + 10,
-                                               duration: 0)
 
         spawnItem(at: position, with: .warp4) { [unowned self] in
             AudioManager.shared.playSound(for: "magicheartbeatloop1", fadeIn: 3, interruptPlayback: false)
