@@ -99,7 +99,6 @@
 		EA7300192B5F8B8C005BF98D /* marlinblast.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA7300182B5F8B8C005BF98D /* marlinblast.mp3 */; };
 		EA73001B2B604A13005BF98D /* MagmoorScarySprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA73001A2B604A13005BF98D /* MagmoorScarySprite.swift */; };
 		EA74F9D02BA17BDE002CE6B2 /* InBetweenParticles.sks in Resources */ = {isa = PBXBuildFile; fileRef = EA74F9CF2BA17BDE002CE6B2 /* InBetweenParticles.sks */; };
-		EA74F9D22BA290E8002CE6B2 /* Extension+SKWarpGeometryGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA74F9D12BA290E8002CE6B2 /* Extension+SKWarpGeometryGrid.swift */; };
 		EA75F0E1292DDAAF00F09BD7 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = EA75F0E0292DDAAF00F09BD7 /* FirebaseAnalytics */; };
 		EA75F0E3292DDAAF00F09BD7 /* FirebaseAnalyticsSwift in Frameworks */ = {isa = PBXBuildFile; productRef = EA75F0E2292DDAAF00F09BD7 /* FirebaseAnalyticsSwift */; };
 		EA75F0E5292DDAAF00F09BD7 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = EA75F0E4292DDAAF00F09BD7 /* FirebaseAuth */; };
@@ -398,7 +397,6 @@
 		EA7300182B5F8B8C005BF98D /* marlinblast.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = marlinblast.mp3; sourceTree = "<group>"; };
 		EA73001A2B604A13005BF98D /* MagmoorScarySprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MagmoorScarySprite.swift; sourceTree = "<group>"; };
 		EA74F9CF2BA17BDE002CE6B2 /* InBetweenParticles.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = InBetweenParticles.sks; sourceTree = "<group>"; };
-		EA74F9D12BA290E8002CE6B2 /* Extension+SKWarpGeometryGrid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+SKWarpGeometryGrid.swift"; sourceTree = "<group>"; };
 		EA75F0EA292DF46200F09BD7 /* FIRManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FIRManager.swift; sourceTree = "<group>"; };
 		EA75F0EC292DF57400F09BD7 /* LevelModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelModel.swift; sourceTree = "<group>"; };
 		EA75F0EE292F55F900F09BD7 /* LaunchScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchScene.swift; sourceTree = "<group>"; };
@@ -623,7 +621,6 @@
 				EAF07C1129EAB5D30034CD1A /* Extension+SKSpriteNode.swift */,
 				EA1D5A6B29F1019800677B06 /* Extension+SKShapeNode.swift */,
 				EA1D5A6D29F217D200677B06 /* Extension+SKLabelNode.swift */,
-				EA74F9D12BA290E8002CE6B2 /* Extension+SKWarpGeometryGrid.swift */,
 			);
 			path = SpriteKit;
 			sourceTree = "<group>";
@@ -1421,7 +1418,6 @@
 				EA95D1B0294FBE4E0061059C /* GameCenterManager.swift in Sources */,
 				EA95D1C32953AC0F0061059C /* AchievementExterminator.swift in Sources */,
 				EA95D1CF29542C4C0061059C /* AchievementOnFire.swift in Sources */,
-				EA74F9D22BA290E8002CE6B2 /* Extension+SKWarpGeometryGrid.swift in Sources */,
 				EA75F0EB292DF46200F09BD7 /* FIRManager.swift in Sources */,
 				EA95D1C12953AB4B0061059C /* AchievementBeastMaster.swift in Sources */,
 				EA84645C29D8E5A50075F2A9 /* MenuItemLabel.swift in Sources */,

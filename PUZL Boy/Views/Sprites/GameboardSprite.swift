@@ -72,7 +72,7 @@ class GameboardSprite {
         circle = Circle(side: sprite.size.width / 2, initialAngle: .pi / 4,
                         center: sprite.position + CGPoint(x: sprite.size.width, y: sprite.size.height) / 2)
 
-        flipGameboard(waitDuration: 32, flipDuration: 2)
+        flipGameboard(waitDuration: 8, flipDuration: 2)
 
         
         
@@ -96,39 +96,7 @@ class GameboardSprite {
     
     // TODO: - Change between IN-BETWEEN and PUZZLE REALMS in a cool way.
     private func flipGameboard(waitDuration: TimeInterval, flipDuration: TimeInterval) {
-        //ver. 1: flip
-        //        sprite.run(SKAction.sequence([
-        //            SKAction.group([
-        //                SKAction.scaleY(to: -sprite.yScale, duration: 0),
-        //                SKAction.moveBy(x: 0, y: sprite.size.height, duration: 0)
-        //            ]),
-        //            SKAction.wait(forDuration: waitDuration),
-        //            SKAction.group([
-        //                SKAction.scaleY(to: sprite.yScale, duration: flipDuration),
-        //                SKAction.moveBy(x: 0, y: -sprite.size.height, duration: flipDuration)
-        //            ])
-        //        ]))
-        
-        
-        //ver. 2: rotate
-        //        sprite.run(SKAction.sequence([
-        //            SKAction.group([
-        //                SKAction.rotate(toAngle: .pi, duration: 0),
-        //                SKAction.moveBy(x: sprite.size.width, y: sprite.size.height, duration: 0)
-        //            ]),
-        //            SKAction.wait(forDuration: waitDuration),
-        //            SKAction.group([
-        //                SKAction.rotate(toAngle: 0, duration: flipDuration),
-        //                SKAction.sequence([
-        //                    SKAction.moveBy(x: 0, y: -sprite.size.height, duration: flipDuration / 2),
-        //                    SKAction.moveBy(x: -sprite.size.width, y: 0, duration: flipDuration / 2),
-        //                ])
-        //            ])
-        //        ]))
-        
-        
-        //ver. 3: rotate (circle)
-        let division: CGFloat = 16
+        let division: CGFloat = 16 //DON'T CHANGE THIS!!!
         
         sprite.run(SKAction.sequence([
             SKAction.group([
@@ -158,11 +126,14 @@ class GameboardSprite {
     }
 
     private func rotateAction(i: CGFloat, angles: CGFloat, duration: TimeInterval) -> SKAction {
-        let duration: TimeInterval = duration / angles
+        let division: TimeInterval = i / TimeInterval(angles)
+        let halvsies: TimeInterval = duration / (angles / 2 + 0.5)
+        let formulaBezier: TimeInterval = (division * division * (3 - 2 * division)) * halvsies
+        let finalDuration: TimeInterval = formulaBezier
         
         return SKAction.group([
-            SKAction.rotate(byAngle: -.pi / angles, duration: duration),
-            SKAction.move(to: circle.getPointOnCircle(angleDeg: -i * 180 / angles), duration: duration)
+            SKAction.rotate(byAngle: -.pi / angles, duration: finalDuration),
+            SKAction.move(to: circle.getPointOnCircle(angleDeg: -i * 180 / angles), duration: finalDuration)
         ])
     }
     

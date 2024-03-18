@@ -204,11 +204,10 @@ class GameEngine {
         inbetweenNode = SKSpriteNode(texture: SKTexture(image: UIImage.gradientTextureSkyBlood))
         inbetweenNode.size = K.ScreenDimensions.size
         inbetweenNode.anchorPoint = .zero
-        inbetweenNode.alpha = 0.75
         inbetweenNode.zPosition = 5
 
         inbetweenNode.run(SKAction.sequence([
-            SKAction.wait(forDuration: 32),
+            SKAction.wait(forDuration: 8),
             SKAction.fadeOut(withDuration: 2),
             SKAction.removeFromParent()
         ]))
