@@ -68,7 +68,7 @@ class GameboardSprite {
 
 
         
-        // TODO: - Test
+        // TODO: - Test for Flipping of Gameboard
         circle = Circle(side: sprite.size.width / 2, initialAngle: .pi / 4,
                         center: sprite.position + CGPoint(x: sprite.size.width, y: sprite.size.height) / 2)
 

@@ -203,6 +203,7 @@ class GameEngine {
         // TODO: - The In-Between Node
         inbetweenNode = SKSpriteNode(texture: SKTexture(image: UIImage.gradientTextureSkyBlood))
         inbetweenNode.size = K.ScreenDimensions.size
+        inbetweenNode.alpha = 0.8
         inbetweenNode.anchorPoint = .zero
         inbetweenNode.zPosition = 5
 
