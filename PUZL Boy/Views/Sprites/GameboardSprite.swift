@@ -69,10 +69,10 @@ class GameboardSprite {
 
         
         // TODO: - Test for Flipping of Gameboard
-        circle = Circle(side: sprite.size.width / 2, initialAngle: .pi / 4,
+        circle = Circle(side: sprite.size.width / 2, initialAngle: -3 * .pi / 4,
                         center: sprite.position + CGPoint(x: sprite.size.width, y: sprite.size.height) / 2)
 
-        flipGameboard(waitDuration: 8, flipDuration: 2)
+        flipGameboard(waitDuration: 8, flipDuration: 3)
 
         
         
@@ -96,32 +96,79 @@ class GameboardSprite {
     
     // TODO: - Change between IN-BETWEEN and PUZZLE REALMS in a cool way.
     private func flipGameboard(waitDuration: TimeInterval, flipDuration: TimeInterval) {
-        let division: CGFloat = 16 //DON'T CHANGE THIS!!!
-        
+        let division: CGFloat = 64 //DON'T CHANGE THIS!!!
+                
         sprite.run(SKAction.sequence([
-            SKAction.group([
-                SKAction.rotate(toAngle: .pi, duration: 0),
-                SKAction.moveBy(x: sprite.size.width, y: sprite.size.height, duration: 0)
-            ]),
             SKAction.wait(forDuration: waitDuration),
-            SKAction.sequence([
-                rotateAction(i: 1, angles: division, duration: flipDuration),
-                rotateAction(i: 2, angles: division, duration: flipDuration),
-                rotateAction(i: 3, angles: division, duration: flipDuration),
-                rotateAction(i: 4, angles: division, duration: flipDuration),
-                rotateAction(i: 5, angles: division, duration: flipDuration),
-                rotateAction(i: 6, angles: division, duration: flipDuration),
-                rotateAction(i: 7, angles: division, duration: flipDuration),
-                rotateAction(i: 8, angles: division, duration: flipDuration),
-                rotateAction(i: 9, angles: division, duration: flipDuration),
-                rotateAction(i: 10, angles: division, duration: flipDuration),
-                rotateAction(i: 11, angles: division, duration: flipDuration),
-                rotateAction(i: 12, angles: division, duration: flipDuration),
-                rotateAction(i: 13, angles: division, duration: flipDuration),
-                rotateAction(i: 14, angles: division, duration: flipDuration),
-                rotateAction(i: 15, angles: division, duration: flipDuration),
-                rotateAction(i: 16, angles: division, duration: flipDuration)
-            ])
+            SKAction.run {
+                AudioManager.shared.playSound(for: "warp")
+            },
+            
+            //Is there a way to do this in a loop???
+            rotateAction(i: 1, angles: division, duration: flipDuration),
+            rotateAction(i: 2, angles: division, duration: flipDuration),
+            rotateAction(i: 3, angles: division, duration: flipDuration),
+            rotateAction(i: 4, angles: division, duration: flipDuration),
+            rotateAction(i: 5, angles: division, duration: flipDuration),
+            rotateAction(i: 6, angles: division, duration: flipDuration),
+            rotateAction(i: 7, angles: division, duration: flipDuration),
+            rotateAction(i: 8, angles: division, duration: flipDuration),
+            rotateAction(i: 9, angles: division, duration: flipDuration),
+            rotateAction(i: 10, angles: division, duration: flipDuration),
+            rotateAction(i: 11, angles: division, duration: flipDuration),
+            rotateAction(i: 12, angles: division, duration: flipDuration),
+            rotateAction(i: 13, angles: division, duration: flipDuration),
+            rotateAction(i: 14, angles: division, duration: flipDuration),
+            rotateAction(i: 15, angles: division, duration: flipDuration),
+            rotateAction(i: 16, angles: division, duration: flipDuration),
+            rotateAction(i: 17, angles: division, duration: flipDuration),
+            rotateAction(i: 18, angles: division, duration: flipDuration),
+            rotateAction(i: 19, angles: division, duration: flipDuration),
+            rotateAction(i: 20, angles: division, duration: flipDuration),
+            rotateAction(i: 21, angles: division, duration: flipDuration),
+            rotateAction(i: 22, angles: division, duration: flipDuration),
+            rotateAction(i: 23, angles: division, duration: flipDuration),
+            rotateAction(i: 24, angles: division, duration: flipDuration),
+            rotateAction(i: 25, angles: division, duration: flipDuration),
+            rotateAction(i: 26, angles: division, duration: flipDuration),
+            rotateAction(i: 27, angles: division, duration: flipDuration),
+            rotateAction(i: 28, angles: division, duration: flipDuration),
+            rotateAction(i: 29, angles: division, duration: flipDuration),
+            rotateAction(i: 30, angles: division, duration: flipDuration),
+            rotateAction(i: 31, angles: division, duration: flipDuration),
+            rotateAction(i: 32, angles: division, duration: flipDuration),
+            rotateAction(i: 33, angles: division, duration: flipDuration),
+            rotateAction(i: 34, angles: division, duration: flipDuration),
+            rotateAction(i: 35, angles: division, duration: flipDuration),
+            rotateAction(i: 36, angles: division, duration: flipDuration),
+            rotateAction(i: 37, angles: division, duration: flipDuration),
+            rotateAction(i: 38, angles: division, duration: flipDuration),
+            rotateAction(i: 39, angles: division, duration: flipDuration),
+            rotateAction(i: 40, angles: division, duration: flipDuration),
+            rotateAction(i: 41, angles: division, duration: flipDuration),
+            rotateAction(i: 42, angles: division, duration: flipDuration),
+            rotateAction(i: 43, angles: division, duration: flipDuration),
+            rotateAction(i: 44, angles: division, duration: flipDuration),
+            rotateAction(i: 45, angles: division, duration: flipDuration),
+            rotateAction(i: 46, angles: division, duration: flipDuration),
+            rotateAction(i: 47, angles: division, duration: flipDuration),
+            rotateAction(i: 48, angles: division, duration: flipDuration),
+            rotateAction(i: 49, angles: division, duration: flipDuration),
+            rotateAction(i: 50, angles: division, duration: flipDuration),
+            rotateAction(i: 51, angles: division, duration: flipDuration),
+            rotateAction(i: 52, angles: division, duration: flipDuration),
+            rotateAction(i: 53, angles: division, duration: flipDuration),
+            rotateAction(i: 54, angles: division, duration: flipDuration),
+            rotateAction(i: 55, angles: division, duration: flipDuration),
+            rotateAction(i: 56, angles: division, duration: flipDuration),
+            rotateAction(i: 57, angles: division, duration: flipDuration),
+            rotateAction(i: 58, angles: division, duration: flipDuration),
+            rotateAction(i: 59, angles: division, duration: flipDuration),
+            rotateAction(i: 60, angles: division, duration: flipDuration),
+            rotateAction(i: 61, angles: division, duration: flipDuration),
+            rotateAction(i: 62, angles: division, duration: flipDuration),
+            rotateAction(i: 63, angles: division, duration: flipDuration),
+            rotateAction(i: 64, angles: division, duration: flipDuration)
         ]))
     }
 
@@ -130,10 +177,11 @@ class GameboardSprite {
         let halvsies: TimeInterval = duration / (angles / 2 + 0.5)
         let formulaBezier: TimeInterval = (division * division * (3 - 2 * division)) * halvsies
         let finalDuration: TimeInterval = formulaBezier
+        let angleToRotate: CGFloat = -2 * .pi / angles
         
         return SKAction.group([
-            SKAction.rotate(byAngle: -.pi / angles, duration: finalDuration),
-            SKAction.move(to: circle.getPointOnCircle(angleDeg: -i * 180 / angles), duration: finalDuration)
+            SKAction.rotate(byAngle: angleToRotate, duration: finalDuration),
+            SKAction.move(to: circle.getPointOnCircle(angleRad: i * angleToRotate), duration: finalDuration)
         ])
     }
     

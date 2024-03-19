@@ -209,7 +209,7 @@ class GameEngine {
 
         inbetweenNode.run(SKAction.sequence([
             SKAction.wait(forDuration: 8),
-            SKAction.fadeOut(withDuration: 2),
+            SKAction.fadeOut(withDuration: 3),
             SKAction.removeFromParent()
         ]))
         

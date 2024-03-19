@@ -26,7 +26,7 @@ struct Circle {
     
     // MARK: - Initialization
     
-    init(side: CGFloat, initialAngle: CGFloat = .pi / 4, center: CGPoint) {
+    init(side: CGFloat, initialAngle: CGFloat = -3 * .pi / 4, center: CGPoint) {
         self.side = side
         self.initialAngle = initialAngle
         self.center = center
@@ -44,15 +44,6 @@ struct Circle {
      */
     func getPointOnCircle(angleRad: CGFloat) -> CGPoint {
         return CGPoint(x: center.x + cos(initialAngle + angleRad) * radius, y: center.y + sin(initialAngle + angleRad) * radius)
-    }
-    
-    /**
-     Convenience method that gets a point on the circumference of a circle given an angle, in degrees, and adding the initialAngle to it.
-     - parameter angleRad: the angle, in degrees used to compute the point on the circle,
-     - returns: the point on the circle
-     */
-    func getPointOnCircle(angleDeg: CGFloat) -> CGPoint {
-        return getPointOnCircle(angleRad: angleDeg.toRadians())
     }
 
 }
