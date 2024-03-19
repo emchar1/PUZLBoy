@@ -34,6 +34,7 @@ class ParticleEngine: SKNode {
         case hearts = "HeartsParticles"
         case heroRainbow = "HeroRainbowParticles"
         case inbetween = "InBetweenParticles"
+        case inbetweenSmoke = "InBetweenSmokeParticles"
         case itemPickup = "ItemPickupParticles"
         case lavaAppear = "LavaAppearParticles"
         case lavaSizzle = "LavaSizzleParticles"

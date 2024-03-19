@@ -208,8 +208,8 @@ class GameEngine {
         inbetweenNode.zPosition = 5
 
         inbetweenNode.run(SKAction.sequence([
-            SKAction.wait(forDuration: 8),
-            SKAction.fadeOut(withDuration: 3),
+            SKAction.wait(forDuration: 18),
+            SKAction.fadeOut(withDuration: 2),
             SKAction.removeFromParent()
         ]))
         
@@ -219,6 +219,14 @@ class GameEngine {
                                                alpha: 0.75,
                                                zPosition: K.ZPosition.chatDimOverlay - 10, //Leave this as K.ZPosition.chatDimOverlay - 10!!!
                                                duration: 0)
+        
+        ParticleEngine.shared.animateParticles(type: .inbetweenSmoke,
+                                               toNode: inbetweenNode,
+                                               position: .zero,
+                                               alpha: 0.25,
+                                               zPosition: K.ZPosition.chatDimOverlay - 9,
+                                               duration: 0)
+        
         
         
         

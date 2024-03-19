@@ -72,7 +72,7 @@ class GameboardSprite {
         circle = Circle(side: sprite.size.width / 2, initialAngle: -3 * .pi / 4,
                         center: sprite.position + CGPoint(x: sprite.size.width, y: sprite.size.height) / 2)
 
-        flipGameboard(waitDuration: 8, flipDuration: 3)
+        flipGameboard(waitDuration: 18, flipDuration: 2)
 
         
         
@@ -101,7 +101,7 @@ class GameboardSprite {
         sprite.run(SKAction.sequence([
             SKAction.wait(forDuration: waitDuration),
             SKAction.run {
-                AudioManager.shared.playSound(for: "warp")
+                AudioManager.shared.playSound(for: "realmtransition")
             },
             
             //Is there a way to do this in a loop???

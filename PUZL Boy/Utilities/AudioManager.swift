@@ -153,6 +153,7 @@ class AudioManager {
         addAudioItem("pickuptime", category: .soundFX)
         addAudioItem("punchwhack1", category: .soundFX)
         addAudioItem("punchwhack2", category: .soundFX)
+        addAudioItem("realmtransition", category: .soundFX)
         addAudioItem("revive", category: .soundFX)
         addAudioItem("speechbubble", category: .soundFX)
         addAudioItem("swordslash", category: .soundFX)
