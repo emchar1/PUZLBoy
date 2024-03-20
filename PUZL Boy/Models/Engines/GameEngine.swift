@@ -196,6 +196,18 @@ class GameEngine {
         backgroundSprite.size = K.ScreenDimensions.size
         backgroundSprite.anchorPoint = .zero
         
+        bloodOverlay = SKSpriteNode(color: FireIceTheme.overlayColor, size: K.ScreenDimensions.size)
+        bloodOverlay.anchorPoint = .zero
+        bloodOverlay.alpha = 0.35 // TODO: - This was originally set to bloodOverlayAlpha
+        bloodOverlay.zPosition = K.ZPosition.partyForegroundOverlay
+        
+        gameboardSprite = GameboardSprite(level: self.level, fadeIn: !shouldSpawn)
+        K.ScreenDimensions.topOfGameboard = GameboardSprite.offsetPosition.y + K.ScreenDimensions.size.width * UIDevice.spriteScale
+        playerSprite = PlayerSprite(shouldSpawn: true)
+        displaySprite = DisplaySprite(topYPosition: K.ScreenDimensions.topOfGameboard, bottomYPosition: GameboardSprite.offsetPosition.y, margin: 40)
+        
+        
+        
         
         
         
@@ -211,6 +223,11 @@ class GameEngine {
             SKAction.wait(forDuration: 18),
             SKAction.fadeOut(withDuration: 2),
             SKAction.removeFromParent()
+        ]))
+        
+        bloodOverlay.run(SKAction.sequence([
+            SKAction.wait(forDuration: 18),
+            SKAction.fadeAlpha(to: bloodOverlayAlpha, duration: 2)
         ]))
         
         ParticleEngine.shared.animateParticles(type: .inbetween,
@@ -232,15 +249,6 @@ class GameEngine {
         
         
         
-        bloodOverlay = SKSpriteNode(color: FireIceTheme.overlayColor, size: K.ScreenDimensions.size)
-        bloodOverlay.anchorPoint = .zero
-        bloodOverlay.alpha = bloodOverlayAlpha
-        bloodOverlay.zPosition = K.ZPosition.partyForegroundOverlay
-        
-        gameboardSprite = GameboardSprite(level: self.level, fadeIn: !shouldSpawn)
-        K.ScreenDimensions.topOfGameboard = GameboardSprite.offsetPosition.y + K.ScreenDimensions.size.width * UIDevice.spriteScale
-        playerSprite = PlayerSprite(shouldSpawn: true)
-        displaySprite = DisplaySprite(topYPosition: K.ScreenDimensions.topOfGameboard, bottomYPosition: GameboardSprite.offsetPosition.y, margin: 40)
         
         //Explicitly add additional hearts from the princess, at the start of the level if healthRemaining > 1
         if level.health > 1 {
