@@ -228,7 +228,13 @@ class GameEngine {
         bloodOverlay.run(SKAction.sequence([
             SKAction.wait(forDuration: 18),
             SKAction.fadeAlpha(to: bloodOverlayAlpha, duration: 2)
-        ]))
+        ])) {
+            AudioManager.shared.stopSound(for: "magicdoomloop", fadeDuration: 3)
+            AudioManager.shared.adjustVolume(to: 1, for: AudioManager.shared.currentTheme, fadeDuration: 3)
+        }
+        
+        AudioManager.shared.adjustVolume(to: 0.2, for: AudioManager.shared.currentTheme)
+        AudioManager.shared.playSound(for: "magicdoomloop")
         
         ParticleEngine.shared.animateParticles(type: .inbetween,
                                                toNode: inbetweenNode,
