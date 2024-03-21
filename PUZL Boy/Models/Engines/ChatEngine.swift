@@ -17,6 +17,8 @@ protocol ChatEngineDelegate: AnyObject {
     func spawnPrincessCapture(at position: K.GameboardPosition, completion: @escaping () -> Void)
     func despawnPrincessCapture(at position: K.GameboardPosition, completion: @escaping () -> Void)
     func flashPrincess(at position: K.GameboardPosition, completion: @escaping () -> Void)
+    func inbetweenRealmEnter()
+    func inbetweenRealmExit(completion: @escaping () -> Void)
 }
 
 class ChatEngine {
@@ -307,7 +309,7 @@ class ChatEngine {
     // MARK: - Chat Functions
     
     ///Helper function that handles the nesting of chats via recursion
-    private func sendChatArray(items: [ChatItem], currentIndex: Int = 0, completion: (() -> Void)?) {
+    private func sendChatArray(shouldSkipDim: Bool = false, items: [ChatItem], currentIndex: Int = 0, completion: (() -> Void)?) {
         if currentIndex == items.count {
             //Base case
             completion?()
@@ -318,6 +320,7 @@ class ChatEngine {
                      pause: items[currentIndex].pause,
                      startNewChat: items[currentIndex].startNewChat == nil ? (currentIndex == 0) : items[currentIndex].startNewChat!,
                      endChat: items[currentIndex].endChat == nil ? (currentIndex == items.count - 1) : items[currentIndex].endChat!,
+                     shouldSkipDim: shouldSkipDim,
                      chat: items[currentIndex].chat) { [unowned self] in
                 items[currentIndex].handler?()
 
@@ -327,7 +330,7 @@ class ChatEngine {
         }
     }
     
-    private func sendChat(profile: ChatProfile, imgPos: ChatItem.ImagePosition, pause: TimeInterval?, startNewChat: Bool, endChat: Bool, chat: String, completion: (() -> ())? = nil) {
+    private func sendChat(profile: ChatProfile, imgPos: ChatItem.ImagePosition, pause: TimeInterval?, startNewChat: Bool, endChat: Bool, shouldSkipDim: Bool, chat: String, completion: (() -> ())? = nil) {
         //Only allow a new chat if current chat isn't happening
         guard allowNewChat else { return }
         
@@ -419,7 +422,7 @@ class ChatEngine {
         }
         
         //Animates dimOverlaySprite to darken the background.
-        if startNewChat {
+        if startNewChat && !shouldSkipDim {
             dimOverlaySprite.run(SKAction.sequence([
                 SKAction.wait(forDuration: pause ?? 0),
                 SKAction.fadeAlpha(to: 0.8, duration: 1.0)
@@ -582,6 +585,7 @@ extension ChatEngine {
         dialoguePlayed[211] = false
         dialoguePlayed[212] = false
         dialoguePlayed[213] = false
+        dialoguePlayed[214] = false
     }
     
     /**
@@ -968,7 +972,13 @@ extension ChatEngine {
             let spawnPoint: K.GameboardPosition = (0, 2)
             let decisionIndex = 0
             
-            delegate?.spawnPrincessCapture(at: spawnPoint) { [unowned self] in
+            guard let delegate = delegate else {
+                //This allows the game to move forward in case the delegate is not set, for some reason!
+                handleDialogueCompletion(level: level, completion: completion)
+                return
+            }
+            
+            delegate.spawnPrincessCapture(at: spawnPoint) { [unowned self] in
                 sendChatArray(items: [
                     ChatItem(profile: .princess, chat: "PRINCESS OLIVIA: Help meeeee PUZL Boy!!! It's dark and scary in there. And this guy's breath is really stinky!"),
                     ChatItem(profile: .hero, imgPos: .left, chat: "Whoa! It's you!!"),
@@ -985,7 +995,7 @@ extension ChatEngine {
                     ChatItem(profile: .villain, chat: "Pity. Then suffer the consequences."),
                     ChatItem(profile: .princess, endChat: true, chat: "Noooooo! Don't let him take meeeeeee!!!!") { [unowned self] in
                         fadeDimOverlay()
-                        delegate?.despawnPrincessCapture(at: spawnPoint, completion: {})
+                        delegate.despawnPrincessCapture(at: spawnPoint, completion: {})
                     },
                     ChatItem(profile: .hero, imgPos: .left, pause: 8, startNewChat: true, chat: "That was creepy. Marlin, I did NOT sign up for this.......", handler: nil),
                     ChatItem(profile: .trainer, chat: "PUZL Boy this is now your reality. Take responsibility for your future. YOU have the power to change it!"),
@@ -1083,6 +1093,25 @@ extension ChatEngine {
                     handleDialogueCompletion(level: level, completion: completion)
                 }
             }
+        case 214:
+            delegate?.inbetweenRealmEnter()
+            
+            sendChatArray(shouldSkipDim: true, items: [
+                ChatItem(profile: .villain, chat: "So... you're a princess."),
+                ChatItem(profile: .princess, imgPos: .left, chat: "You got that right, mister! When my mom and dad find out what you've done, you'll be sorry!"),
+                ChatItem(profile: .villain, chat: "Ohh? Do tell what they'll do."),
+                ChatItem(profile: .princess, imgPos: .left, chat: "They'll.. THEY'LL.. They'll give you a good yelling!")
+            ]) { [unowned self] in
+                guard let delegate = delegate else {
+                    //Just in case delegate is false, which it shouldn't be!!!
+                    handleDialogueCompletion(level: level, completion: completion)
+                    return
+                }
+                
+                delegate.inbetweenRealmExit { [unowned self] in
+                    handleDialogueCompletion(level: level, completion: completion)
+                }
+            }
 
             
             
@@ -1090,7 +1119,13 @@ extension ChatEngine {
         case 240:
             let spawnPoint: K.GameboardPosition = (0, 1)
             
-            delegate?.spawnPrincessCapture(at: spawnPoint) { [unowned self] in
+            guard let delegate = delegate else {
+                //This allows the game to move forward in case the delegate is not set, for some reason!
+                handleDialogueCompletion(level: level, completion: completion)
+                return
+            }
+            
+            delegate.spawnPrincessCapture(at: spawnPoint) { [unowned self] in
                 sendChatArray(items: [
                     ChatItem(profile: .princess, chat: "I said let go of me!!!"),
                     ChatItem(profile: .hero, imgPos: .left, chat: "HEY! Leave her alone, Mylar!"),
@@ -1106,7 +1141,7 @@ extension ChatEngine {
                 ]) { [unowned self] in
                     fadeDimOverlay()
                     
-                    delegate?.despawnPrincessCapture(at: spawnPoint) { [unowned self] in
+                    delegate.despawnPrincessCapture(at: spawnPoint) { [unowned self] in
                         AudioManager.shared.adjustVolume(to: 1, for: AudioManager.shared.currentTheme, fadeDuration: 3)
                         handleDialogueCompletion(level: level, completion: completion)
                     }
@@ -1115,7 +1150,13 @@ extension ChatEngine {
         case 262:
             let spawnPoint: K.GameboardPosition = (0, 1)
             
-            delegate?.spawnPrincessCapture(at: spawnPoint) { [unowned self] in
+            guard let delegate = delegate else {
+                //This allows the game to move forward in case the delegate is not set, for some reason!
+                handleDialogueCompletion(level: level, completion: completion)
+                return
+            }
+            
+            delegate.spawnPrincessCapture(at: spawnPoint) { [unowned self] in
                 sendChatArray(items: [
                     ChatItem(profile: .villain, chat: "Come to your senses yet?"),
                     ChatItem(profile: .hero, imgPos: .left, chat: "You again?! Dude, just take the L."),
@@ -1128,7 +1169,7 @@ extension ChatEngine {
                     ChatItem(profile: .princess, endChat: true, chat: "Ok I'll try...") { [unowned self] in
                         fadeDimOverlay()
                         
-                        delegate?.flashPrincess(at: spawnPoint, completion: {})
+                        delegate.flashPrincess(at: spawnPoint, completion: {})
                     },
                     ChatItem(profile: .princess, pause: 6, startNewChat: true, chat: "I can't! I'm not strong enough, uncle Marlin!", handler: nil),
                     ChatItem(profile: .trainer, imgPos: .left, chat: "Yes you can, princess! You have got to keep trying. Do not give up!"),
@@ -1139,7 +1180,7 @@ extension ChatEngine {
                 ]) { [unowned self] in
                     fadeDimOverlay()
 
-                    delegate?.despawnPrincessCapture(at: spawnPoint) { [unowned self] in
+                    delegate.despawnPrincessCapture(at: spawnPoint) { [unowned self] in
                         AudioManager.shared.adjustVolume(to: 1, for: AudioManager.shared.currentTheme, fadeDuration: 3)
                         handleDialogueCompletion(level: level, completion: completion)
                     }

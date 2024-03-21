@@ -1304,4 +1304,13 @@ extension GameScene: ChatEngineDelegate {
     func flashPrincess(at position: K.GameboardPosition, completion: @escaping () -> Void) {
         gameEngine.gameboardSprite.flashPrincess(at: position, completion: completion)
     }
+    
+    func inbetweenRealmEnter() {
+        gameEngine.inbetweenRealmEnter(to: self)
+    }
+    
+    func inbetweenRealmExit(completion: @escaping () -> Void) {
+        gameEngine.inbetweenRealmExit(completion: completion)
+        gameEngine.gameboardSprite.flipGameboard()
+    }
 }

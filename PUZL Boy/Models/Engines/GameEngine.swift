@@ -198,63 +198,19 @@ class GameEngine {
         
         bloodOverlay = SKSpriteNode(color: FireIceTheme.overlayColor, size: K.ScreenDimensions.size)
         bloodOverlay.anchorPoint = .zero
-        bloodOverlay.alpha = 0.35 // TODO: - This was originally set to bloodOverlayAlpha
+        bloodOverlay.alpha = bloodOverlayAlpha
         bloodOverlay.zPosition = K.ZPosition.partyForegroundOverlay
+        
+        inbetweenNode = SKSpriteNode(texture: SKTexture(image: UIImage.gradientTextureSkyBlood))
+        inbetweenNode.size = K.ScreenDimensions.size
+        inbetweenNode.alpha = 0
+        inbetweenNode.anchorPoint = .zero
+        inbetweenNode.zPosition = 5
         
         gameboardSprite = GameboardSprite(level: self.level, fadeIn: !shouldSpawn)
         K.ScreenDimensions.topOfGameboard = GameboardSprite.offsetPosition.y + K.ScreenDimensions.size.width * UIDevice.spriteScale
         playerSprite = PlayerSprite(shouldSpawn: true)
         displaySprite = DisplaySprite(topYPosition: K.ScreenDimensions.topOfGameboard, bottomYPosition: GameboardSprite.offsetPosition.y, margin: 40)
-        
-        
-        
-        
-        
-        
-        
-        // TODO: - The In-Between Node
-        inbetweenNode = SKSpriteNode(texture: SKTexture(image: UIImage.gradientTextureSkyBlood))
-        inbetweenNode.size = K.ScreenDimensions.size
-        inbetweenNode.alpha = 0.8
-        inbetweenNode.anchorPoint = .zero
-        inbetweenNode.zPosition = 5
-
-        inbetweenNode.run(SKAction.sequence([
-            SKAction.wait(forDuration: 18),
-            SKAction.fadeOut(withDuration: 2),
-            SKAction.removeFromParent()
-        ]))
-        
-        bloodOverlay.run(SKAction.sequence([
-            SKAction.wait(forDuration: 18),
-            SKAction.fadeAlpha(to: bloodOverlayAlpha, duration: 2)
-        ])) {
-            AudioManager.shared.stopSound(for: "magicdoomloop", fadeDuration: 3)
-            AudioManager.shared.adjustVolume(to: 1, for: AudioManager.shared.currentTheme, fadeDuration: 3)
-        }
-        
-        AudioManager.shared.adjustVolume(to: 0.2, for: AudioManager.shared.currentTheme)
-        AudioManager.shared.playSound(for: "magicdoomloop")
-        
-        ParticleEngine.shared.animateParticles(type: .inbetween,
-                                               toNode: inbetweenNode,
-                                               position: .zero,
-                                               alpha: 0.75,
-                                               zPosition: K.ZPosition.chatDimOverlay - 10, //Leave this as K.ZPosition.chatDimOverlay - 10!!!
-                                               duration: 0)
-        
-        ParticleEngine.shared.animateParticles(type: .inbetweenSmoke,
-                                               toNode: inbetweenNode,
-                                               position: .zero,
-                                               alpha: 0.25,
-                                               zPosition: K.ZPosition.chatDimOverlay - 9,
-                                               duration: 0)
-        
-        
-        
-        
-        
-        
         
         //Explicitly add additional hearts from the princess, at the start of the level if healthRemaining > 1
         if level.health > 1 {
@@ -733,7 +689,6 @@ class GameEngine {
      */
     func moveSprites(to superScene: SKScene) {
         superScene.addChild(backgroundSprite)
-        superScene.addChild(inbetweenNode)
         superScene.addChild(bloodOverlay)
         superScene.addChild(gameboardSprite.sprite)
         hintEngine.move(toNode: backgroundSprite)
@@ -1217,6 +1172,51 @@ class GameEngine {
         print("| toolsRemaining: \(level.inventory.getItemCount())")
         print("| movesRemaining: \(movesRemaining ?? -9999)")
         print("=========================")        
+    }
+    
+    
+    // MARK: - InBetween Realm Functions
+    
+    func inbetweenRealmEnter(to superScene: SKScene) {
+        inbetweenNode.alpha = 0.8
+        bloodOverlay.alpha = 0.35
+        
+        inbetweenNode.removeAllChildren()
+        inbetweenNode.removeFromParent()
+        superScene.addChild(inbetweenNode)
+        
+        AudioManager.shared.adjustVolume(to: 0.25, for: AudioManager.shared.currentTheme)
+        AudioManager.shared.playSound(for: "magicdoomloop")
+        
+        ParticleEngine.shared.animateParticles(type: .inbetween,
+                                               toNode: inbetweenNode,
+                                               position: .zero,
+                                               alpha: 0.75,
+                                               zPosition: K.ZPosition.chatDimOverlay - 10, //Leave this as K.ZPosition.chatDimOverlay - 10!!!
+                                               duration: 0)
+        
+        ParticleEngine.shared.animateParticles(type: .inbetweenSmoke,
+                                               toNode: inbetweenNode,
+                                               position: .zero,
+                                               alpha: 0.25,
+                                               zPosition: K.ZPosition.chatDimOverlay - 9,
+                                               duration: 0)
+    }
+    
+    func inbetweenRealmExit(completion: @escaping () -> Void) {
+        let fadeDuration: TimeInterval = 2
+        
+        AudioManager.shared.stopSound(for: "magicdoomloop", fadeDuration: 2)
+        AudioManager.shared.adjustVolume(to: 1, for: AudioManager.shared.currentTheme, fadeDuration: 2)
+
+        inbetweenNode.run(SKAction.sequence([
+            SKAction.fadeOut(withDuration: fadeDuration),
+            SKAction.removeFromParent()
+        ]))
+        
+        bloodOverlay.run(SKAction.sequence([
+            SKAction.fadeAlpha(to: bloodOverlayAlpha, duration: fadeDuration)
+        ]), completion: completion)
     }
         
     

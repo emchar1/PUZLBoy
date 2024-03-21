@@ -65,17 +65,9 @@ class GameboardSprite {
         sprite.zPosition = K.ZPosition.gameboard
         sprite.setScale(UIDevice.spriteScale)
         
-
-
-        
-        // TODO: - Test for Flipping of Gameboard
-        circle = Circle(side: sprite.size.width / 2, initialAngle: -3 * .pi / 4,
+        circle = Circle(side: sprite.size.width / 2, 
+                        initialAngle: -3 * .pi / 4,
                         center: sprite.position + CGPoint(x: sprite.size.width, y: sprite.size.height) / 2)
-
-        flipGameboard(waitDuration: 18, flipDuration: 2)
-
-        
-        
         
         for row in 0..<panelCount {
             for col in 0..<panelCount {
@@ -89,106 +81,6 @@ class GameboardSprite {
             }
         }
     }
-    
-    
-    
-    
-    
-    // TODO: - Change between IN-BETWEEN and PUZZLE REALMS in a cool way.
-    private func flipGameboard(waitDuration: TimeInterval, flipDuration: TimeInterval) {
-        let division: CGFloat = 64 //DON'T CHANGE THIS!!!
-                
-        sprite.run(SKAction.sequence([
-            SKAction.wait(forDuration: waitDuration),
-            SKAction.run {
-                AudioManager.shared.playSound(for: "realmtransition")
-            },
-            
-            //Is there a way to do this in a loop???
-            rotateAction(i: 1, angles: division, duration: flipDuration),
-            rotateAction(i: 2, angles: division, duration: flipDuration),
-            rotateAction(i: 3, angles: division, duration: flipDuration),
-            rotateAction(i: 4, angles: division, duration: flipDuration),
-            rotateAction(i: 5, angles: division, duration: flipDuration),
-            rotateAction(i: 6, angles: division, duration: flipDuration),
-            rotateAction(i: 7, angles: division, duration: flipDuration),
-            rotateAction(i: 8, angles: division, duration: flipDuration),
-            rotateAction(i: 9, angles: division, duration: flipDuration),
-            rotateAction(i: 10, angles: division, duration: flipDuration),
-            rotateAction(i: 11, angles: division, duration: flipDuration),
-            rotateAction(i: 12, angles: division, duration: flipDuration),
-            rotateAction(i: 13, angles: division, duration: flipDuration),
-            rotateAction(i: 14, angles: division, duration: flipDuration),
-            rotateAction(i: 15, angles: division, duration: flipDuration),
-            rotateAction(i: 16, angles: division, duration: flipDuration),
-            rotateAction(i: 17, angles: division, duration: flipDuration),
-            rotateAction(i: 18, angles: division, duration: flipDuration),
-            rotateAction(i: 19, angles: division, duration: flipDuration),
-            rotateAction(i: 20, angles: division, duration: flipDuration),
-            rotateAction(i: 21, angles: division, duration: flipDuration),
-            rotateAction(i: 22, angles: division, duration: flipDuration),
-            rotateAction(i: 23, angles: division, duration: flipDuration),
-            rotateAction(i: 24, angles: division, duration: flipDuration),
-            rotateAction(i: 25, angles: division, duration: flipDuration),
-            rotateAction(i: 26, angles: division, duration: flipDuration),
-            rotateAction(i: 27, angles: division, duration: flipDuration),
-            rotateAction(i: 28, angles: division, duration: flipDuration),
-            rotateAction(i: 29, angles: division, duration: flipDuration),
-            rotateAction(i: 30, angles: division, duration: flipDuration),
-            rotateAction(i: 31, angles: division, duration: flipDuration),
-            rotateAction(i: 32, angles: division, duration: flipDuration),
-            rotateAction(i: 33, angles: division, duration: flipDuration),
-            rotateAction(i: 34, angles: division, duration: flipDuration),
-            rotateAction(i: 35, angles: division, duration: flipDuration),
-            rotateAction(i: 36, angles: division, duration: flipDuration),
-            rotateAction(i: 37, angles: division, duration: flipDuration),
-            rotateAction(i: 38, angles: division, duration: flipDuration),
-            rotateAction(i: 39, angles: division, duration: flipDuration),
-            rotateAction(i: 40, angles: division, duration: flipDuration),
-            rotateAction(i: 41, angles: division, duration: flipDuration),
-            rotateAction(i: 42, angles: division, duration: flipDuration),
-            rotateAction(i: 43, angles: division, duration: flipDuration),
-            rotateAction(i: 44, angles: division, duration: flipDuration),
-            rotateAction(i: 45, angles: division, duration: flipDuration),
-            rotateAction(i: 46, angles: division, duration: flipDuration),
-            rotateAction(i: 47, angles: division, duration: flipDuration),
-            rotateAction(i: 48, angles: division, duration: flipDuration),
-            rotateAction(i: 49, angles: division, duration: flipDuration),
-            rotateAction(i: 50, angles: division, duration: flipDuration),
-            rotateAction(i: 51, angles: division, duration: flipDuration),
-            rotateAction(i: 52, angles: division, duration: flipDuration),
-            rotateAction(i: 53, angles: division, duration: flipDuration),
-            rotateAction(i: 54, angles: division, duration: flipDuration),
-            rotateAction(i: 55, angles: division, duration: flipDuration),
-            rotateAction(i: 56, angles: division, duration: flipDuration),
-            rotateAction(i: 57, angles: division, duration: flipDuration),
-            rotateAction(i: 58, angles: division, duration: flipDuration),
-            rotateAction(i: 59, angles: division, duration: flipDuration),
-            rotateAction(i: 60, angles: division, duration: flipDuration),
-            rotateAction(i: 61, angles: division, duration: flipDuration),
-            rotateAction(i: 62, angles: division, duration: flipDuration),
-            rotateAction(i: 63, angles: division, duration: flipDuration),
-            rotateAction(i: 64, angles: division, duration: flipDuration)
-        ]))
-    }
-
-    private func rotateAction(i: CGFloat, angles: CGFloat, duration: TimeInterval) -> SKAction {
-        let division: TimeInterval = i / TimeInterval(angles)
-        let halvsies: TimeInterval = duration / (angles / 2 + 0.5)
-        let formulaBezier: TimeInterval = (division * division * (3 - 2 * division)) * halvsies
-        let finalDuration: TimeInterval = formulaBezier
-        let angleToRotate: CGFloat = -2 * .pi / angles
-        
-        return SKAction.group([
-            SKAction.rotate(byAngle: angleToRotate, duration: finalDuration),
-            SKAction.move(to: circle.getPointOnCircle(angleRad: i * angleToRotate), duration: finalDuration)
-        ])
-    }
-    
-    
-    
-    
-    
     
     
     // MARK: - Getter/Setter Functions
@@ -673,6 +565,106 @@ class GameboardSprite {
         }
     }
     
+    ///Flips the gameboard when transitioning from in-between realm back to puzzle realm.
+    func flipGameboard() {
+        let anglesCount: CGFloat = 64 //Needs to match count of rotateAction() calls, below!!
+        let flipDuration: TimeInterval = 2
+        
+        sprite.run(SKAction.sequence([
+            SKAction.run {
+                AudioManager.shared.playSound(for: "realmtransition")
+            },
+            
+            // FIXME: - Is there a way to do this in a loop, both for readability and scalability?
+            rotateAction(i: 1, angles: anglesCount, duration: flipDuration),
+            rotateAction(i: 2, angles: anglesCount, duration: flipDuration),
+            rotateAction(i: 3, angles: anglesCount, duration: flipDuration),
+            rotateAction(i: 4, angles: anglesCount, duration: flipDuration),
+            rotateAction(i: 5, angles: anglesCount, duration: flipDuration),
+            rotateAction(i: 6, angles: anglesCount, duration: flipDuration),
+            rotateAction(i: 7, angles: anglesCount, duration: flipDuration),
+            rotateAction(i: 8, angles: anglesCount, duration: flipDuration),
+            rotateAction(i: 9, angles: anglesCount, duration: flipDuration),
+            rotateAction(i: 10, angles: anglesCount, duration: flipDuration),
+            rotateAction(i: 11, angles: anglesCount, duration: flipDuration),
+            rotateAction(i: 12, angles: anglesCount, duration: flipDuration),
+            rotateAction(i: 13, angles: anglesCount, duration: flipDuration),
+            rotateAction(i: 14, angles: anglesCount, duration: flipDuration),
+            rotateAction(i: 15, angles: anglesCount, duration: flipDuration),
+            rotateAction(i: 16, angles: anglesCount, duration: flipDuration),
+            rotateAction(i: 17, angles: anglesCount, duration: flipDuration),
+            rotateAction(i: 18, angles: anglesCount, duration: flipDuration),
+            rotateAction(i: 19, angles: anglesCount, duration: flipDuration),
+            rotateAction(i: 20, angles: anglesCount, duration: flipDuration),
+            rotateAction(i: 21, angles: anglesCount, duration: flipDuration),
+            rotateAction(i: 22, angles: anglesCount, duration: flipDuration),
+            rotateAction(i: 23, angles: anglesCount, duration: flipDuration),
+            rotateAction(i: 24, angles: anglesCount, duration: flipDuration),
+            rotateAction(i: 25, angles: anglesCount, duration: flipDuration),
+            rotateAction(i: 26, angles: anglesCount, duration: flipDuration),
+            rotateAction(i: 27, angles: anglesCount, duration: flipDuration),
+            rotateAction(i: 28, angles: anglesCount, duration: flipDuration),
+            rotateAction(i: 29, angles: anglesCount, duration: flipDuration),
+            rotateAction(i: 30, angles: anglesCount, duration: flipDuration),
+            rotateAction(i: 31, angles: anglesCount, duration: flipDuration),
+            rotateAction(i: 32, angles: anglesCount, duration: flipDuration),
+            rotateAction(i: 33, angles: anglesCount, duration: flipDuration),
+            rotateAction(i: 34, angles: anglesCount, duration: flipDuration),
+            rotateAction(i: 35, angles: anglesCount, duration: flipDuration),
+            rotateAction(i: 36, angles: anglesCount, duration: flipDuration),
+            rotateAction(i: 37, angles: anglesCount, duration: flipDuration),
+            rotateAction(i: 38, angles: anglesCount, duration: flipDuration),
+            rotateAction(i: 39, angles: anglesCount, duration: flipDuration),
+            rotateAction(i: 40, angles: anglesCount, duration: flipDuration),
+            rotateAction(i: 41, angles: anglesCount, duration: flipDuration),
+            rotateAction(i: 42, angles: anglesCount, duration: flipDuration),
+            rotateAction(i: 43, angles: anglesCount, duration: flipDuration),
+            rotateAction(i: 44, angles: anglesCount, duration: flipDuration),
+            rotateAction(i: 45, angles: anglesCount, duration: flipDuration),
+            rotateAction(i: 46, angles: anglesCount, duration: flipDuration),
+            rotateAction(i: 47, angles: anglesCount, duration: flipDuration),
+            rotateAction(i: 48, angles: anglesCount, duration: flipDuration),
+            rotateAction(i: 49, angles: anglesCount, duration: flipDuration),
+            rotateAction(i: 50, angles: anglesCount, duration: flipDuration),
+            rotateAction(i: 51, angles: anglesCount, duration: flipDuration),
+            rotateAction(i: 52, angles: anglesCount, duration: flipDuration),
+            rotateAction(i: 53, angles: anglesCount, duration: flipDuration),
+            rotateAction(i: 54, angles: anglesCount, duration: flipDuration),
+            rotateAction(i: 55, angles: anglesCount, duration: flipDuration),
+            rotateAction(i: 56, angles: anglesCount, duration: flipDuration),
+            rotateAction(i: 57, angles: anglesCount, duration: flipDuration),
+            rotateAction(i: 58, angles: anglesCount, duration: flipDuration),
+            rotateAction(i: 59, angles: anglesCount, duration: flipDuration),
+            rotateAction(i: 60, angles: anglesCount, duration: flipDuration),
+            rotateAction(i: 61, angles: anglesCount, duration: flipDuration),
+            rotateAction(i: 62, angles: anglesCount, duration: flipDuration),
+            rotateAction(i: 63, angles: anglesCount, duration: flipDuration),
+            rotateAction(i: 64, angles: anglesCount, duration: flipDuration)
+        ]))
+    }
+
+    /**
+     Helper function for flipGameboard()
+     - parameters:
+        - i: the index to iterate on
+        - angles: total count of angles in the entire rotation
+        - duration: the duration of the entire rotation
+     - returns: an SKAction containing the rotation action
+     */
+    private func rotateAction(i: CGFloat, angles: CGFloat, duration: TimeInterval) -> SKAction {
+        let angleToRotate: CGFloat = -2 * .pi / angles
+        
+        //properties related to duration
+        let division: TimeInterval = i / TimeInterval(angles)
+        let halvsies: TimeInterval = duration / (angles / 2 + 0.5)
+        let durationBezier: TimeInterval = (division * division * (3 - 2 * division)) * halvsies
+        
+        return SKAction.group([
+            SKAction.rotate(byAngle: angleToRotate, duration: durationBezier),
+            SKAction.move(to: circle.getPointOnCircle(angleRad: i * angleToRotate), duration: durationBezier)
+        ])
+    }
+
     
     // MARK: - Panel Highlight/Colorization Functions
     
