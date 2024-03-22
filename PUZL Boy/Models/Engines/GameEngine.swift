@@ -1201,14 +1201,16 @@ class GameEngine {
                                                alpha: 0.25,
                                                zPosition: K.ZPosition.chatDimOverlay - 9,
                                                duration: 0)
+        
+        displaySprite.hideSprite()
     }
     
     func inbetweenRealmExit(completion: @escaping () -> Void) {
         let fadeDuration: TimeInterval = 2
         
-        AudioManager.shared.stopSound(for: "magicdoomloop", fadeDuration: 2)
-        AudioManager.shared.adjustVolume(to: 1, for: AudioManager.shared.currentTheme, fadeDuration: 2)
-
+        AudioManager.shared.stopSound(for: "magicdoomloop", fadeDuration: fadeDuration)
+        AudioManager.shared.adjustVolume(to: 1, for: AudioManager.shared.currentTheme, fadeDuration: fadeDuration)
+        
         inbetweenNode.run(SKAction.sequence([
             SKAction.fadeOut(withDuration: fadeDuration),
             SKAction.removeFromParent()
@@ -1216,7 +1218,11 @@ class GameEngine {
         
         bloodOverlay.run(SKAction.sequence([
             SKAction.fadeAlpha(to: bloodOverlayAlpha, duration: fadeDuration)
-        ]), completion: completion)
+        ])) { [unowned self] in
+            displaySprite.showSprite(fadeDuration: 1)
+            completion()
+        }
+        
     }
         
     

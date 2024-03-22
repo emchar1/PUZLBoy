@@ -138,4 +138,15 @@ class DisplaySprite {
             sprite.addChild(goldCoin)
         }
     }
+    
+    
+    // MARK: - Hide/Show Sprite Functions
+    
+    func showSprite(fadeDuration: TimeInterval = 0) {
+        sprite.run(SKAction.fadeIn(withDuration: fadeDuration))
+    }
+    
+    func hideSprite(fadeDuration: TimeInterval = 0) {
+        sprite.run(SKAction.fadeOut(withDuration: fadeDuration))
+    }
 }

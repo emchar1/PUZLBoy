@@ -1308,6 +1308,7 @@ extension GameScene: ChatEngineDelegate {
     func inbetweenRealmEnter() {
         gameEngine.inbetweenRealmEnter(to: self)
         gameEngine.playerSprite.resetRespawnAnimation()
+        scoringEngine.hideSprite()
     }
     
     func inbetweenRealmExit(completion: @escaping () -> Void) {
@@ -1315,7 +1316,8 @@ extension GameScene: ChatEngineDelegate {
 
         gameEngine.inbetweenRealmExit { [unowned self] in
             gameEngine.playerSprite.startRespawnAnimation()
+            scoringEngine.showSprite(fadeDuration: 1)
             completion()
-        }        
+        }
     }
 }

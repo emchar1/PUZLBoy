@@ -24,6 +24,7 @@ class ScoringEngine {
     
     private(set) var timerManager: TimerManager!
     private(set) var scoringManager: ScoringManager!
+    private(set) var sprite: SKSpriteNode!
     private var totalScoreLabel: SKLabelNode!
     private var scoreLabel: SKLabelNode!
     private var elapsedTimeLabel: SKLabelNode!
@@ -54,6 +55,9 @@ class ScoringEngine {
         timerManager = TimerManager(elapsedTime: elapsedTime)
         scoringManager = ScoringManager(score: score, totalScore: totalScore)
 
+        sprite = SKSpriteNode()
+        sprite.zPosition = K.ZPosition.display
+
         totalScoreLabel = SKLabelNode()
         totalScoreLabel.fontName = UIFont.gameFont
         totalScoreLabel.fontSize = UIFont.gameFontSizeSmall
@@ -61,7 +65,6 @@ class ScoringEngine {
         totalScoreLabel.position = CGPoint(x: K.ScreenDimensions.lrMargin + padding, y: K.ScreenDimensions.size.height - K.ScreenDimensions.topMargin)
         totalScoreLabel.horizontalAlignmentMode = .left
         totalScoreLabel.verticalAlignmentMode = .top
-        totalScoreLabel.zPosition = K.ZPosition.display
         totalScoreLabel.addDropShadow()
 
         scoreLabel = SKLabelNode()
@@ -71,7 +74,6 @@ class ScoringEngine {
         scoreLabel.position = CGPoint(x: K.ScreenDimensions.lrMargin + padding, y: K.ScreenDimensions.size.height - K.ScreenDimensions.topMargin - 59)
         scoreLabel.horizontalAlignmentMode = .left
         scoreLabel.verticalAlignmentMode = .top
-        scoreLabel.zPosition = K.ZPosition.display
         scoreLabel.addDropShadow()
 
         elapsedTimeLabel = SKLabelNode(text: "00:00")
@@ -82,7 +84,6 @@ class ScoringEngine {
                                             y: K.ScreenDimensions.topOfGameboard + 32)
         elapsedTimeLabel.horizontalAlignmentMode = .left
         elapsedTimeLabel.verticalAlignmentMode = .bottom
-        elapsedTimeLabel.zPosition = K.ZPosition.display
         elapsedTimeLabel.addDropShadow()
     }
     
@@ -382,9 +383,16 @@ class ScoringEngine {
             textSprite.removeFromParent()
         }
     }
+        
+    func showSprite(fadeDuration: TimeInterval = 0) {
+        sprite.run(SKAction.fadeIn(withDuration: fadeDuration))
+    }
+    
+    func hideSprite(fadeDuration: TimeInterval = 0) {
+        sprite.run(SKAction.fadeOut(withDuration: fadeDuration))
+    }
     
     
-
     // MARK: - Move Functions
 
     /**
@@ -392,12 +400,17 @@ class ScoringEngine {
      - parameter superScene: The GameScene to add all the children to.
      */
     func moveSprites(to superScene: SKScene, isPartyLevel: Bool) {
-        if !isPartyLevel {
-            superScene.addChild(totalScoreLabel)
-            superScene.addChild(scoreLabel)
-        }
+        //Ensure node doesn't get added more than once.
+        sprite.removeAllChildren()
+        sprite.removeFromParent()
         
-        superScene.addChild(elapsedTimeLabel)
+        superScene.addChild(sprite)
+        sprite.addChild(elapsedTimeLabel)
+        
+        if !isPartyLevel {
+            sprite.addChild(totalScoreLabel)
+            sprite.addChild(scoreLabel)
+        }
     }
 
 }
