@@ -88,7 +88,7 @@ struct K {
 
         //ChatEngine
         static let chatDimOverlay: CGFloat = 500
-        static let chatDialogue: CGFloat = 510
+        static let chatDialogue: CGFloat = 800 //510 <-- original zPosition but changed to 800 to be on top of bloodOverlay 3/21/24
 
         //Player
         static let player: CGFloat = 600

@@ -1307,10 +1307,15 @@ extension GameScene: ChatEngineDelegate {
     
     func inbetweenRealmEnter() {
         gameEngine.inbetweenRealmEnter(to: self)
+        gameEngine.playerSprite.resetRespawnAnimation()
     }
     
     func inbetweenRealmExit(completion: @escaping () -> Void) {
-        gameEngine.inbetweenRealmExit(completion: completion)
         gameEngine.gameboardSprite.flipGameboard()
+
+        gameEngine.inbetweenRealmExit { [unowned self] in
+            gameEngine.playerSprite.startRespawnAnimation()
+            completion()
+        }        
     }
 }

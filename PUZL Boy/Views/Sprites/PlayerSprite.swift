@@ -40,9 +40,16 @@ class PlayerSprite {
     
     // MARK: - Animation Functions
     
-    private func startRespawnAnimation() {
+    //Made this public because inbetweenRealm functions in ChatEngineDelegate now need access 3/21/24
+    func startRespawnAnimation() {
         player.sprite.run(SKAction.fadeAlpha(to: 1.0, duration: 0.75 * PartyModeSprite.shared.speedMultiplier),
                           withKey: AnimationKey.playerRespawn.rawValue)
+    }
+    
+    //Added this function on 3/21/24 for inbetweenRealm functions
+    func resetRespawnAnimation() {
+        player.sprite.removeAction(forKey: AnimationKey.playerRespawn.rawValue)
+        player.sprite.alpha = 0
     }
     
     ///Helper function to go with startIdleAnimation()
