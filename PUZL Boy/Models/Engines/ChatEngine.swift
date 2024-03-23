@@ -17,7 +17,7 @@ protocol ChatEngineDelegate: AnyObject {
     func spawnPrincessCapture(at position: K.GameboardPosition, completion: @escaping () -> Void)
     func despawnPrincessCapture(at position: K.GameboardPosition, completion: @escaping () -> Void)
     func flashPrincess(at position: K.GameboardPosition, completion: @escaping () -> Void)
-    func inbetweenRealmEnter()
+    func inbetweenRealmEnter(levelInt: Int)
     func inbetweenRealmExit(completion: @escaping () -> Void)
 }
 
@@ -1094,7 +1094,7 @@ extension ChatEngine {
                 }
             }
         case 214:
-            delegate?.inbetweenRealmEnter()
+            delegate?.inbetweenRealmEnter(levelInt: level)
             
             sendChatArray(shouldSkipDim: true, items: [
                 ChatItem(profile: .villain, chat: "So... you're a princess."),

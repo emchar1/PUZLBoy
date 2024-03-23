@@ -565,6 +565,57 @@ class GameboardSprite {
         }
     }
     
+    
+    // MARK: - Inbetween Realm Functions
+    
+    func spawnInbetweenPrincess(level: Level) {
+        let playerOffset = CGPoint(x: panelSize / 4, y: 0)
+        let villainOffset = CGPoint(x: 0, y: 20)
+        let fadeDuration: TimeInterval = 1
+
+        let princess = Player(type: .princess)
+        princess.sprite.position = getLocation(at: level.start) + playerOffset
+        princess.sprite.setScale(Player.getGameboardScale(panelSize: panelSize) * princess.scaleMultiplier)
+        princess.sprite.alpha = 0
+        princess.sprite.zPosition = K.ZPosition.itemsAndEffects + 30
+        princess.sprite.name = "inbetweenPrincess"
+        princess.sprite.run(SKAction.repeatForever(SKAction.animate(with: princess.textures[Player.Texture.idle.rawValue], timePerFrame: 0.08)))
+            
+        let villain = Player(type: .villain)
+        villain.sprite.position = getLocation(at: level.start) + CGPoint(x: -playerOffset.x, y: villainOffset.y)
+        villain.sprite.setScale(Player.getGameboardScale(panelSize: panelSize) * villain.scaleMultiplier)
+        villain.sprite.alpha = 0
+        villain.sprite.zPosition = K.ZPosition.itemsAndEffects + 20
+        villain.sprite.name = "inbetweenVillain"
+        villain.sprite.run(SKAction.repeatForever(SKAction.animate(with: villain.textures[Player.Texture.idle.rawValue], timePerFrame: 0.1)))
+                        
+        princess.sprite.run(SKAction.fadeIn(withDuration: fadeDuration))
+        villain.sprite.run(SKAction.fadeIn(withDuration: fadeDuration))
+            
+        sprite.addChild(princess.sprite)
+        sprite.addChild(villain.sprite)
+    }
+    
+    func despawnInbetweenPrincess() {
+        let fadeDuration: TimeInterval = 1
+        
+        for node in sprite.children {
+            if node.name == "inbetweenPrincess" {
+                node.run(SKAction.sequence([
+                    SKAction.fadeOut(withDuration: fadeDuration),
+                    SKAction.removeFromParent()
+                ]))
+            }
+            else if node.name == "inbetweenVillain" {
+                node.run(SKAction.sequence([
+                    SKAction.fadeOut(withDuration: fadeDuration),
+                    SKAction.removeFromParent()
+                ]))
+            }
+        }
+        
+    }
+    
     ///Flips the gameboard when transitioning from in-between realm back to puzzle realm.
     func flipGameboard() {
         let anglesCount: CGFloat = 64 //Needs to match count of rotateAction() calls, below!!
