@@ -1306,16 +1306,14 @@ extension GameScene: ChatEngineDelegate {
     }
     
     func inbetweenRealmEnter(levelInt: Int) {
+        scoringEngine.hideSprite()
+        gameEngine.playerSprite.resetRespawnAnimation()
         gameEngine.inbetweenRealmEnter(to: self)
         gameEngine.gameboardSprite.spawnInbetweenPrincess(level: LevelBuilder.levels[levelInt])
-        gameEngine.playerSprite.resetRespawnAnimation()
-        scoringEngine.hideSprite()
     }
     
     func inbetweenRealmExit(completion: @escaping () -> Void) {
-        gameEngine.gameboardSprite.flipGameboard()
         gameEngine.gameboardSprite.despawnInbetweenPrincess()
-
         gameEngine.inbetweenRealmExit { [unowned self] in
             gameEngine.playerSprite.startRespawnAnimation()
             scoringEngine.showSprite(fadeDuration: 1)

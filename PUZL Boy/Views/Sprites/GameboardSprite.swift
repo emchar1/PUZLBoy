@@ -252,7 +252,7 @@ class GameboardSprite {
     }
     
     
-    // MARK: - Spawn Functions
+    // MARK: - Spawn Item Functions
     
     /**
      Spawns an item in a panel with a little growth animation.
@@ -304,6 +304,9 @@ class GameboardSprite {
             ]), completion: completion)
         }
     }
+    
+    
+    // MARK: - Spawn Princess Functions
     
     ///Spawns a short animation of the whereabouts of the princess being captured by the villain.
     func spawnPrincessCapture(at position: K.GameboardPosition, completion: @escaping () -> Void) {
@@ -393,7 +396,6 @@ class GameboardSprite {
             sprite.run(SKAction.sequence([
                 SKAction.wait(forDuration: 3),
                 SKAction.run { [unowned self] in
-                    // FIXME: - Is this a retain cycle?
                     despawnItem(at: position, completion: completion)
                 }
             ]))
@@ -568,6 +570,7 @@ class GameboardSprite {
     
     // MARK: - Inbetween Realm Functions
     
+    ///Spawns princess and Magmoor in the Inbetween Realm.
     func spawnInbetweenPrincess(level: Level) {
         let playerOffset = CGPoint(x: panelSize / 4, y: 0)
         let villainOffset = CGPoint(x: 0, y: 20)
@@ -596,8 +599,11 @@ class GameboardSprite {
         sprite.addChild(villain.sprite)
     }
     
+    ///Despawns princess and Magmoor from the Inbetween Realm, in preparation for Puzzle Realm transition.
     func despawnInbetweenPrincess() {
         let fadeDuration: TimeInterval = 1
+        
+        flipGameboard()
         
         for node in sprite.children {
             if node.name == "inbetweenPrincess" {
@@ -617,7 +623,7 @@ class GameboardSprite {
     }
     
     ///Flips the gameboard when transitioning from in-between realm back to puzzle realm.
-    func flipGameboard() {
+    private func flipGameboard() {
         let anglesCount: CGFloat = 64 //Needs to match count of rotateAction() calls, below!!
         let flipDuration: TimeInterval = 2
         
@@ -626,7 +632,7 @@ class GameboardSprite {
                 AudioManager.shared.playSound(for: "realmtransition")
             },
             
-            // FIXME: - Is there a way to do this in a loop, both for readability and scalability?
+            //Is there a way to do this in a loop, both for readability and scalability?
             rotateAction(i: 1, angles: anglesCount, duration: flipDuration),
             rotateAction(i: 2, angles: anglesCount, duration: flipDuration),
             rotateAction(i: 3, angles: anglesCount, duration: flipDuration),
