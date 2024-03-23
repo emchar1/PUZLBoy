@@ -1185,6 +1185,9 @@ class GameEngine {
         inbetweenNode.removeFromParent()
         superScene.addChild(inbetweenNode)
         
+        //If the hint was bought, it will show in the inbetween realm, so cancel it temporarily and show it again at inbetweenRealmExit().
+        hintEngine.removeAnimatingHint(from: gameboardSprite)
+        
         AudioManager.shared.adjustVolume(to: 0.25, for: AudioManager.shared.currentTheme)
         AudioManager.shared.playSound(for: "magicdoomloop")
         
@@ -1220,6 +1223,7 @@ class GameEngine {
             SKAction.fadeAlpha(to: bloodOverlayAlpha, duration: fadeDuration)
         ])) { [unowned self] in
             displaySprite.showSprite(fadeDuration: 1)
+            showBoughtHints()
             completion()
         }
         

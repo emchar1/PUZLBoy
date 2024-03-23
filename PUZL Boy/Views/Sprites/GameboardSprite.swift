@@ -575,16 +575,34 @@ class GameboardSprite {
         let playerOffset = CGPoint(x: panelSize / 4, y: 0)
         let villainOffset = CGPoint(x: 0, y: 20)
         let fadeDuration: TimeInterval = 1
-
         let princess = Player(type: .princess)
+        let villain = Player(type: .villain)
+        let princessIdleAction = SKAction.repeatForever(SKAction.animate(with: princess.textures[Player.Texture.idle.rawValue], timePerFrame: 0.08))
+        
+        func princessMoveAction(nextPosition: K.GameboardPosition) -> SKAction {
+            let walkTextures: [SKTexture] = princess.textures[Player.Texture.walk.rawValue]
+            let walkTimePerFrame: TimeInterval = 0.08
+            let moveDuration: TimeInterval = 1
+            let walkCount: Int = Int(ceil(moveDuration / Double(walkTextures.count) / walkTimePerFrame))
+            
+            print("princessMoveAction(nextPosition: \(nextPosition))")
+            
+            return SKAction.sequence([
+                SKAction.group([
+                    SKAction.repeat(SKAction.animate(with: walkTextures, timePerFrame: walkTimePerFrame), count: walkCount),
+                    SKAction.move(to: getLocation(at: nextPosition), duration: moveDuration)
+                ]),
+                princessIdleAction
+            ])
+        }
+        
         princess.sprite.position = getLocation(at: level.start) + playerOffset
         princess.sprite.setScale(Player.getGameboardScale(panelSize: panelSize) * princess.scaleMultiplier)
         princess.sprite.alpha = 0
         princess.sprite.zPosition = K.ZPosition.itemsAndEffects + 30
         princess.sprite.name = "inbetweenPrincess"
-        princess.sprite.run(SKAction.repeatForever(SKAction.animate(with: princess.textures[Player.Texture.idle.rawValue], timePerFrame: 0.08)))
+        princess.sprite.run(princessIdleAction)
             
-        let villain = Player(type: .villain)
         villain.sprite.position = getLocation(at: level.start) + CGPoint(x: -playerOffset.x, y: villainOffset.y)
         villain.sprite.setScale(Player.getGameboardScale(panelSize: panelSize) * villain.scaleMultiplier)
         villain.sprite.alpha = 0
@@ -597,6 +615,16 @@ class GameboardSprite {
             
         sprite.addChild(princess.sprite)
         sprite.addChild(villain.sprite)
+        
+        
+        //Now, movement...
+        princess.sprite.run(SKAction.sequence([
+            SKAction.wait(forDuration: 2),
+            princessMoveAction(nextPosition: (level.start.row, level.start.col + 1)),
+            SKAction.wait(forDuration: 8),
+            princessMoveAction(nextPosition: (level.start.row, level.start.col + 2)),
+            SKAction.wait(forDuration: 3),
+        ]))
     }
     
     ///Despawns princess and Magmoor from the Inbetween Realm, in preparation for Puzzle Realm transition.
