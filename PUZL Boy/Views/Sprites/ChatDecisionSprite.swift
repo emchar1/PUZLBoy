@@ -149,6 +149,7 @@ class ChatDecisionSprite: SKNode {
     
     func animateAppear(toNode node: SKNode) {
         alpha = 0.5
+        setScale(0.9)
         isVisible = true
         isDisabled = true
         delegate?.buttonHasAppeared(self)
@@ -160,14 +161,14 @@ class ChatDecisionSprite: SKNode {
         node.addChild(self)
 
         run(SKAction.sequence([
-            SKAction.scale(to: 1.1, duration: 0.25),
-            SKAction.scale(to: 0.92, duration: 0.2),
-            SKAction.scale(to: 0.95, duration: 0.2),
             SKAction.wait(forDuration: 1),
             SKAction.group([
                 SKAction.scale(to: 1, duration: 1),
                 SKAction.fadeIn(withDuration: 1)
-            ])
+            ]),
+            SKAction.scale(to: 1.1, duration: 0.25),
+            SKAction.scale(to: 0.95, duration: 0.2),
+            SKAction.scale(to: 1, duration: 0.2)
         ])) { [unowned self] in
             isDisabled = false
         }
@@ -176,17 +177,21 @@ class ChatDecisionSprite: SKNode {
     func animateDisappear(didGetTapped: Bool) {
         let duration: TimeInterval = 2
         
-        let scaleAction = didGetTapped ? SKAction.sequence([
-            SKAction.scale(to: 1.1, duration: duration * 0.125),
-            SKAction.scale(to: 0.95, duration: duration * 0.1),
-            
-            SKAction.scale(to: 1.05, duration: duration * 0.15),
-            SKAction.scale(to: 0.96, duration: duration * 0.125),
-            
-            SKAction.scale(to: 1.025, duration: duration * 0.175),
-            SKAction.scale(to: 0.98, duration: duration * 0.15),
-            
-            SKAction.scale(to: 1.0, duration: duration * 0.175)
+        let shakeAction = didGetTapped ? SKAction.sequence([
+            SKAction.rotate(toAngle: .pi / 32, duration: 0.1),
+            SKAction.rotate(toAngle: -.pi / 32, duration: 0.1),
+
+            SKAction.rotate(toAngle: .pi / 40, duration: 0.1),
+            SKAction.rotate(toAngle: -.pi / 40, duration: 0.1),
+
+            SKAction.rotate(toAngle: .pi / 48, duration: 0.1),
+            SKAction.rotate(toAngle: -.pi / 48, duration: 0.1),
+
+            SKAction.rotate(toAngle: .pi / 56, duration: 0.1),
+            SKAction.rotate(toAngle: -.pi / 56, duration: 0.1),
+
+            SKAction.rotate(toAngle: .pi / 64, duration: 0.1),
+            SKAction.rotate(toAngle: 0, duration: 0.1),
         ]) : SKAction.wait(forDuration: duration)
         
         let fadeAction = didGetTapped ? SKAction.wait(forDuration: duration) : SKAction.sequence([
@@ -194,11 +199,11 @@ class ChatDecisionSprite: SKNode {
             SKAction.wait(forDuration: duration * 0.75)
         ])
         
-        scaleAction.timingMode = .easeOut
+        shakeAction.timingMode = .easeOut
         fadeAction.timingMode = .easeOut
         
         run(SKAction.sequence([
-            SKAction.group([scaleAction, fadeAction]),
+            SKAction.group([shakeAction, fadeAction]),
             SKAction.removeFromParent()
         ])) { [unowned self] in
             isDisabled = false
