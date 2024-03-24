@@ -636,7 +636,7 @@ class GameboardSprite {
             princessMoveAction(nextPosition: (2, 2)),
             princessMoveAction(nextPosition: (2, 1)),
             princessMoveAction(nextPosition: (2, 2)),
-            princessMoveAction(nextPosition: (2, 1)),
+            princessMoveAction(nextPosition: (2, 1))
         ]))
     }
     

@@ -20,7 +20,7 @@ class DecisionButtonSprite: SKNode {
     static let colorYellow = UIColor(red: 227 / 255, green: 148 / 255, blue: 9 / 255, alpha: 1.0)
     static let colorRed = UIColor(red: 227 / 255, green: 32 / 255, blue: 9 / 255, alpha: 1.0)
     static let colorGreen = UIColor(red: 0 / 255, green: 168 / 255, blue: 86 / 255, alpha: 1.0)
-    static let colorViolet = UIColor(red: 114 / 255, green: 26 / 255, blue: 159 / 255, alpha: 1.0)
+    static let colorViolet = UIColor(red: 164 / 255, green: 26 / 255, blue: 159 / 255, alpha: 1.0)
 
     let buttonSize = CGSize(width: K.ScreenDimensions.size.width * (4 / 9), height: K.ScreenDimensions.size.width / 8)
     let shadowOffset = CGPoint(x: -8, y: -8)
