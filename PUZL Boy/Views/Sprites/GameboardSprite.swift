@@ -574,26 +574,30 @@ class GameboardSprite {
     func spawnInbetweenPrincess(level: Level) {
         let playerOffset = CGPoint(x: panelSize / 4, y: 0)
         let villainOffset = CGPoint(x: 0, y: 20)
+        
         let fadeDuration: TimeInterval = 1
+        let princessTimePerFrame: TimeInterval = 0.08
+        
         let princess = Player(type: .princess)
         let villain = Player(type: .villain)
-        let princessIdleAction = SKAction.repeatForever(SKAction.animate(with: princess.textures[Player.Texture.idle.rawValue], timePerFrame: 0.08))
+        
+        var lastPosition: K.GameboardPosition = level.start
         
         func princessMoveAction(nextPosition: K.GameboardPosition) -> SKAction {
-            let walkTextures: [SKTexture] = princess.textures[Player.Texture.walk.rawValue]
-            let walkTimePerFrame: TimeInterval = 0.08
-            let moveDuration: TimeInterval = 1
-            let walkCount: Int = Int(ceil(moveDuration / Double(walkTextures.count) / walkTimePerFrame))
+            let moveDuration: TimeInterval = Double(princess.textures[Player.Texture.walk.rawValue].count) * princessTimePerFrame
             
-            print("princessMoveAction(nextPosition: \(nextPosition))")
-            
-            return SKAction.sequence([
+            let moveAction = SKAction.sequence([
                 SKAction.group([
-                    SKAction.repeat(SKAction.animate(with: walkTextures, timePerFrame: walkTimePerFrame), count: walkCount),
-                    SKAction.move(to: getLocation(at: nextPosition), duration: moveDuration)
+                    SKAction.animate(with: princess.textures[Player.Texture.walk.rawValue], timePerFrame: princessTimePerFrame),
+                    SKAction.move(to: getLocation(at: nextPosition), duration: moveDuration),
+                    SKAction.scaleX(to: (lastPosition.col > nextPosition.col ? -1 : 1) * princess.sprite.xScale, duration: 0.25)
                 ]),
-                princessIdleAction
+                SKAction.wait(forDuration: TimeInterval.random(in: 0...3))
             ])
+            
+            lastPosition = nextPosition
+            
+            return moveAction
         }
         
         princess.sprite.position = getLocation(at: level.start) + playerOffset
@@ -601,8 +605,8 @@ class GameboardSprite {
         princess.sprite.alpha = 0
         princess.sprite.zPosition = K.ZPosition.itemsAndEffects + 30
         princess.sprite.name = "inbetweenPrincess"
-        princess.sprite.run(princessIdleAction)
-            
+        princess.sprite.run(SKAction.repeatForever(SKAction.animate(with: princess.textures[Player.Texture.idle.rawValue], timePerFrame: princessTimePerFrame)))
+                    
         villain.sprite.position = getLocation(at: level.start) + CGPoint(x: -playerOffset.x, y: villainOffset.y)
         villain.sprite.setScale(Player.getGameboardScale(panelSize: panelSize) * villain.scaleMultiplier)
         villain.sprite.alpha = 0
@@ -617,13 +621,22 @@ class GameboardSprite {
         sprite.addChild(villain.sprite)
         
         
-        //Now, movement...
+        //Princess Movement
         princess.sprite.run(SKAction.sequence([
             SKAction.wait(forDuration: 2),
-            princessMoveAction(nextPosition: (level.start.row, level.start.col + 1)),
-            SKAction.wait(forDuration: 8),
-            princessMoveAction(nextPosition: (level.start.row, level.start.col + 2)),
-            SKAction.wait(forDuration: 3),
+            princessMoveAction(nextPosition: (0, 1)),
+            princessMoveAction(nextPosition: (0, 2)),
+            princessMoveAction(nextPosition: (1, 2)),
+            princessMoveAction(nextPosition: (2, 2)),
+            princessMoveAction(nextPosition: (1, 2)),
+            princessMoveAction(nextPosition: (2, 2)),
+            princessMoveAction(nextPosition: (1, 2)),
+            princessMoveAction(nextPosition: (2, 2)),
+            princessMoveAction(nextPosition: (2, 1)),
+            princessMoveAction(nextPosition: (2, 2)),
+            princessMoveAction(nextPosition: (2, 1)),
+            princessMoveAction(nextPosition: (2, 2)),
+            princessMoveAction(nextPosition: (2, 1)),
         ]))
     }
     
