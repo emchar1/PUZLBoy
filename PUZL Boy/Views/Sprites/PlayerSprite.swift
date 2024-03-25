@@ -37,6 +37,10 @@ class PlayerSprite {
         }
     }
     
+    deinit {
+        print("deinit PlayerSprite")
+    }
+    
     
     // MARK: - Animation Functions
     
@@ -526,17 +530,18 @@ class PlayerSprite {
             }
             
             let dragonPosition = (panel.row + dragonOffset.row, panel.col + dragonOffset.col)
+            let rotateDuration: TimeInterval = 0.2 * speedMultiplier
             
-            gameboard.rotateEnemy(at: dragonPosition, directionType: rotationDirectionType, duration: 0.2 * speedMultiplier) { [unowned self] in
+            gameboard.rotateEnemy(at: dragonPosition, directionType: rotationDirectionType, duration: rotateDuration) {
                 Haptics.shared.executeCustomPattern(pattern: .enemy)
                 AudioManager.shared.playSound(for: "boypain\(Int.random(in: 1...4))")
                 AudioManager.shared.playSound(for: FireIceTheme.soundEnemyAttack)
-                
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                    gameboard.rotateEnemy(at: dragonPosition, directionType: antiRotationDirection, duration: 0.2 * speedMultiplier) { [unowned self] in
-                        isAnimating = false
-                        completion()
-                    }
+            }
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + rotateDuration + 0.5) {
+                gameboard.rotateEnemy(at: dragonPosition, directionType: antiRotationDirection, duration: rotateDuration) { [unowned self] in
+                    isAnimating = false
+                    completion()
                 }
             }
             
