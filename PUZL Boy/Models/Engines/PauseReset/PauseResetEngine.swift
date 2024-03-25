@@ -513,7 +513,7 @@ class PauseResetEngine {
                     SKAction.scale(to: settingsScale, duration: 0.25),
                     SKAction.run { [unowned self] in
                         // FIXME: - Is this a retain cycle???
-                        backgroundSprite.showShadow(animationDuration: 0.1, completion: nil)
+                        backgroundSprite.showShadow(animationDuration: 0.1)
                     }
                 ])
             ])) { [unowned self] in
@@ -533,7 +533,7 @@ class PauseResetEngine {
                 showMinorButtons()
             }
 
-            backgroundSprite.hideShadow(animationDuration: 0.05, completion: nil)
+            backgroundSprite.hideShadow(animationDuration: 0.05)
             
             backgroundSprite.run(SKAction.group([
                 SKAction.moveTo(y: pauseButtonPosition.y, duration: 0.25),

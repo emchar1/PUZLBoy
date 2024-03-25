@@ -327,8 +327,8 @@ class AudioManager {
 
         playSound(for: audioKey, currentTime: currentTime, fadeIn: fadeIn, delay: delay, pan: pan, interruptPlayback: interruptPlayback)
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + playForDuration) { [unowned self] in
-            stopSound(for: audioKey, fadeDuration: fadeOut)
+        DispatchQueue.main.asyncAfter(deadline: .now() + playForDuration) {
+            self.stopSound(for: audioKey, fadeDuration: fadeOut)
         }
     }
     

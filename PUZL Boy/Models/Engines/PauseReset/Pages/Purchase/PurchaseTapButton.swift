@@ -150,6 +150,10 @@ class PurchaseTapButton: SKNode {
         priceBackground.addChild(priceLabel)
     }
     
+    deinit {
+        print("PurchaseTapButton \(text) deinit")
+    }
+    
     
     // MARK: - Functions
     
@@ -161,30 +165,26 @@ class PurchaseTapButton: SKNode {
             return
         }
 
+        let duration: TimeInterval = 0
+
         isPressed = true
         
-        tappableAreaNode.run(SKAction.move(to: tappableAreaNode.position + CGPoint(x: -shadowOffset, y: -shadowOffset), duration: 0))
-        sprite.run(SKAction.group([
-            SKAction.move(to: sprite.position + CGPoint(x: -shadowOffset, y: -shadowOffset), duration: 0),
-            SKAction.run { [unowned self] in
-                sprite.hideShadow(animationDuration: 0, completion: nil)
-            }
-        ]))
+        tappableAreaNode.run(SKAction.move(to: tappableAreaNode.position + CGPoint(x: -shadowOffset, y: -shadowOffset), duration: duration))
+        sprite.hideShadow(animationDuration: duration)
+        sprite.run(SKAction.move(to: sprite.position + CGPoint(x: -shadowOffset, y: -shadowOffset), duration: duration))
     }
     
     func touchUp() {
         guard isPressed else { return }
         
+        let duration: TimeInterval = 0.2
+        
         isAnimating = true
         isPressed = false
         
-        tappableAreaNode.run(SKAction.move(to: positionOrig, duration: 0.2))
-        sprite.run(SKAction.group([
-            SKAction.move(to: positionOrig, duration: 0.2),
-            SKAction.run { [unowned self] in
-                sprite.showShadow(shadowOffset: shadowOffset, animationDuration: 0.2, completion: nil)
-            }
-        ])) { [unowned self] in
+        tappableAreaNode.run(SKAction.move(to: positionOrig, duration: duration))
+        sprite.showShadow(shadowOffset: shadowOffset, animationDuration: duration)
+        sprite.run(SKAction.move(to: positionOrig, duration: duration)) { [unowned self] in
             isAnimating = false
         }
     }

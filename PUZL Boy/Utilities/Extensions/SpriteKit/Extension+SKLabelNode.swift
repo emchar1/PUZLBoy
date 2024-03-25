@@ -90,7 +90,7 @@ extension SKLabelNode {
     
     // MARK: - Animation
     
-    func showShadow(shadowOffset: CGFloat = -3, animationDuration: TimeInterval = 0.1, completion: (() -> Void)?) {
+    func showShadow(shadowOffset: CGFloat = -3, animationDuration: TimeInterval = 0.1) {
         for node in children {
             switch node.name {
             case "shadow1":
@@ -107,9 +107,7 @@ extension SKLabelNode {
                 node.run(SKAction.sequence([
                     SKAction.wait(forDuration: 3 * animationDuration),
                     SKAction.fadeAlpha(to: 0.25, duration: 3 * animationDuration)
-                ])) {
-                    completion?()
-                }
+                ]))
             case "dropShadow":
                 node.run(SKAction.move(to: CGPoint(x: shadowOffset, y: shadowOffset), duration: animationDuration))
             default:
@@ -118,16 +116,14 @@ extension SKLabelNode {
         }
     }
     
-    func hideShadow(animationDuration: TimeInterval = 0.05, completion: (() -> Void)?) {
+    func hideShadow(animationDuration: TimeInterval = 0.05) {
         for node in children {
             switch node.name {
             case "shadow1":
                 node.run(SKAction.sequence([
                     SKAction.wait(forDuration: 2 * animationDuration),
                     SKAction.fadeAlpha(to: 0, duration: animationDuration)
-                ])) {
-                    completion?()
-                }
+                ]))
             case "shadow2":
                 node.run(SKAction.sequence([
                     SKAction.wait(forDuration: 1 * animationDuration),

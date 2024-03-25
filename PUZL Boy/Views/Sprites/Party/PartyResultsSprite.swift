@@ -144,7 +144,7 @@ class PartyResultsSprite: SKNode {
             SKAction.scale(to: 1.1, duration: 0.25),
             SKAction.scale(to: 0.95, duration: 0.2),
             SKAction.scale(to: 1, duration: 0.2),
-            SKAction.run { [unowned self] in backgroundSprite.showShadow(animationDuration: 0.1, completion: nil) },
+            SKAction.run { [unowned self] in backgroundSprite.showShadow(animationDuration: 0.1) },
             SKAction.run { [unowned self] in gemsLineItem.animateAppear(xPosition: xPosition) },
             SKAction.wait(forDuration: waitDuration),
             SKAction.run { [unowned self] in gemsDoubleLineItem.animateAppear(xPosition: xPosition) },
@@ -215,7 +215,7 @@ class PartyResultsSprite: SKNode {
     func animateHide(completion: @escaping (() -> Void)) {
         disableControls = true
         
-        backgroundSprite.hideShadow(animationDuration: 0.05, completion: nil)
+        backgroundSprite.hideShadow(animationDuration: 0.05)
         
         let fadeBackground = SKSpriteNode(color: .white, size: K.ScreenDimensions.size)
         fadeBackground.alpha = 0

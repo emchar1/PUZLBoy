@@ -272,7 +272,7 @@ class TitleScene: SKScene {
         ])
         
         puzlTitle.run(stampAction)
-        puzlTitle.showShadow(shadowOffset: -shadowDepth, animationDuration: animationDuration, completion: nil)
+        puzlTitle.showShadow(shadowOffset: -shadowDepth, animationDuration: animationDuration)
         
         boyTitle.run(SKAction.sequence([
             SKAction.wait(forDuration: animationDuration),
@@ -290,7 +290,7 @@ class TitleScene: SKScene {
                 SKAction.fadeAlpha(to: 0.9, duration: 3 * animationDuration),
                 SKAction.repeat(SKAction.moveBy(x: shadowDepth, y: shadowDepth, duration: animationDuration), count: 3),
                 SKAction.run { [unowned self] in
-                    menuBackground.showShadow(shadowOffset: -shadowDepth, animationDuration: animationDuration, completion: nil)
+                    menuBackground.showShadow(shadowOffset: -shadowDepth, animationDuration: animationDuration)
                 }
             ])
         ]))
@@ -372,14 +372,14 @@ class TitleScene: SKScene {
         disableInput = true
         
         if shouldHide {
-            secondNode.hideShadow(completion: nil)
+            secondNode.hideShadow()
             
             secondNode.run(SKAction.group([
                 SKAction.scaleX(to: menuSize.width / secondNodeSize.width, duration: animationDuration),
                 SKAction.scaleY(to: menuSize.height / secondNodeSize.height, duration: animationDuration),
                 SKAction.fadeOut(withDuration: 0)
             ])) { [unowned self] in
-                menuBackground.showShadow(completion: nil)
+                menuBackground.showShadow()
                 closeButton.removeFromParent()
                 
                 disableInput = false
@@ -397,14 +397,14 @@ class TitleScene: SKScene {
             }
         }
         else {
-            menuBackground.hideShadow(completion: nil)
+            menuBackground.hideShadow()
 
             menuBackground.run(SKAction.group([
                 SKAction.scaleX(to: secondNodeSize.width / menuSize.width * scale, duration: animationDuration),
                 SKAction.scaleY(to: secondNodeSize.height / menuSize.height * scale, duration: animationDuration),
                 SKAction.fadeOut(withDuration: 0)
             ])) { [unowned self] in
-                secondNode.showShadow(completion: nil)
+                secondNode.showShadow()
                 
                 disableInput = false
             }

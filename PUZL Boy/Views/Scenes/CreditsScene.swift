@@ -270,7 +270,7 @@ class CreditsScene: SKScene {
             if text == "PUZL" {
                 labelNode.verticalAlignmentMode = .center
                 labelNode.addTripleShadow(shadow1Color: skyColor.first, shadow2Color: skyColor.first, shadow3Color: skyColor.first)
-                labelNode.showShadow(completion: nil)
+                labelNode.showShadow()
             }
             else if text == "Boy" {
                 labelNode.position = headingLabel.position + CGPoint(x: UIFont.gameFontSizeExtraLarge,

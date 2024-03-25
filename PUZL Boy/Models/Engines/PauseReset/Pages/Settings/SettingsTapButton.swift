@@ -105,7 +105,7 @@ class SettingsTapButton: SKNode {
         isPressed = true
         
         tapButton.run(SKAction.move(to: tapButton.position + CGPoint(x: -shadowOffset, y: -shadowOffset), duration: 0))
-        tapButton.hideShadow(animationDuration: 0, completion: nil)
+        tapButton.hideShadow(animationDuration: 0)
     }
     
     func touchUp() {
@@ -118,7 +118,7 @@ class SettingsTapButton: SKNode {
             isAnimating = false
         }
         
-        tapButton.showShadow(shadowOffset: shadowOffset, animationDuration: 0.2, completion: nil)
+        tapButton.showShadow(shadowOffset: shadowOffset, animationDuration: 0.2)
     }
     
     func tapButton(in location: CGPoint, type: ButtonTap.ButtonType) {
