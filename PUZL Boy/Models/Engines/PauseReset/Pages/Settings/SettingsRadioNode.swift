@@ -52,7 +52,7 @@ class SettingsRadioNode: SKNode {
     }
     
     deinit {
-//        print("deinit SettingsRadioNode")
+        print("SettingsRadioNode \(text) deinit")
     }
     
     private func setupSprites() {
@@ -111,17 +111,21 @@ class SettingsRadioNode: SKNode {
         isOn.toggle()
         
         if isOn {
-            radioOff.run(SKAction.moveTo(x: SettingsRadioNode.radioStatus.on, duration: 0.2)) { [unowned self] in
-                radioOff.removeFromParent()
-                radioOff.position.x = SettingsRadioNode.radioStatus.off
+            radioOff.run(SKAction.sequence([
+                SKAction.moveTo(x: SettingsRadioNode.radioStatus.on, duration: 0.2),
+                SKAction.removeFromParent(),
+                SKAction.moveTo(x: SettingsRadioNode.radioStatus.off, duration: 0)
+            ])) { [unowned self] in
                 radioButton.addChild(radioOn)
                 isAnimating = false
             }
         }
         else {
-            radioOn.run(SKAction.moveTo(x: SettingsRadioNode.radioStatus.off, duration: 0.2)) { [unowned self] in
-                radioOn.removeFromParent()
-                radioOn.position.x = SettingsRadioNode.radioStatus.on
+            radioOn.run(SKAction.sequence([
+                SKAction.moveTo(x: SettingsRadioNode.radioStatus.off, duration: 0.2),
+                SKAction.removeFromParent(),
+                SKAction.moveTo(x: SettingsRadioNode.radioStatus.on, duration: 0)
+            ])) { [unowned self] in
                 radioButton.addChild(radioOff)
                 isAnimating = false
             }
