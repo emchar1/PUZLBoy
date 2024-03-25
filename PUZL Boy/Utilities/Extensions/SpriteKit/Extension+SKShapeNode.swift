@@ -76,26 +76,29 @@ extension SKShapeNode {
         return shadowNodes
     }
     
-    func showShadow(shadowOffset: CGFloat = 10, animationDuration: TimeInterval = 0.1) {
+    func showShadow(shadowOffset: CGFloat = 10, animationDuration: TimeInterval = 0.1, delay: TimeInterval = 0) {
         for node in children {
             switch node.name {
             case "shadow1":
                 node.run(SKAction.sequence([
-                    SKAction.wait(forDuration: 0 * animationDuration),
+                    SKAction.wait(forDuration: 0 * animationDuration + delay),
                     SKAction.fadeAlpha(to: 0.75, duration: animationDuration)
                 ]))
             case "shadow2":
                 node.run(SKAction.sequence([
-                    SKAction.wait(forDuration: 1 * animationDuration),
+                    SKAction.wait(forDuration: 1 * animationDuration + delay),
                     SKAction.fadeAlpha(to: 0.5, duration: animationDuration)
                 ]))
             case "shadow3":
                 node.run(SKAction.sequence([
-                    SKAction.wait(forDuration: 2 * animationDuration),
+                    SKAction.wait(forDuration: 2 * animationDuration + delay),
                     SKAction.fadeAlpha(to: 0.25, duration: animationDuration)
                 ]))
             case "dropShadow":
-                node.run(SKAction.move(to: CGPoint(x: -shadowOffset, y: -shadowOffset), duration: animationDuration))
+                node.run(SKAction.sequence([
+                    SKAction.wait(forDuration: delay),
+                    SKAction.move(to: CGPoint(x: -shadowOffset, y: -shadowOffset), duration: animationDuration)
+                ]))
             default:
                 break
             }

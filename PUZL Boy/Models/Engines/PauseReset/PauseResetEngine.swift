@@ -487,6 +487,8 @@ class PauseResetEngine {
     }
     
     private func openCloseSettings() {
+        let duration: TimeInterval = 0.25
+
         isPaused.toggle()
         isAnimating = true
         
@@ -496,10 +498,12 @@ class PauseResetEngine {
             //These need to be here due to time of day feature.
             backgroundSprite.fillColor = PauseResetEngine.backgroundColor
             backgroundSprite.fillTexture = SKTexture(image: DayTheme.getSkyImage())
+            
             backgroundSprite.updateShadowColor(PauseResetEngine.backgroundShadowColor)
+            backgroundSprite.showShadow(animationDuration: 0.1, delay: duration)
 
             backgroundSprite.run(SKAction.group([
-                SKAction.moveTo(y: getBottomOfSettings(), duration: 0.25),
+                SKAction.moveTo(y: getBottomOfSettings(), duration: duration),
                 SKAction.sequence([
                     SKAction.run { [unowned self] in
                         //Makes it easier if you tap here each time, trust me.
@@ -510,11 +514,7 @@ class PauseResetEngine {
                         settingsPage.updateColors()
                         settingsPage.checkReportBugAlreadySubmitted()
                     },
-                    SKAction.scale(to: settingsScale, duration: 0.25),
-                    SKAction.run { [unowned self] in
-                        // FIXME: - Is this a retain cycle???
-                        backgroundSprite.showShadow(animationDuration: 0.1)
-                    }
+                    SKAction.scale(to: settingsScale, duration: duration)
                 ])
             ])) { [unowned self] in
                 isAnimating = false
@@ -536,8 +536,8 @@ class PauseResetEngine {
             backgroundSprite.hideShadow(animationDuration: 0.05)
             
             backgroundSprite.run(SKAction.group([
-                SKAction.moveTo(y: pauseButtonPosition.y, duration: 0.25),
-                SKAction.scale(to: 0, duration: 0.25)
+                SKAction.moveTo(y: pauseButtonPosition.y, duration: duration),
+                SKAction.scale(to: 0, duration: duration)
             ])) { [unowned self] in
                 isAnimating = false
             }

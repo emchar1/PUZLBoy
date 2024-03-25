@@ -324,7 +324,7 @@ class ChatEngine {
                      chat: items[currentIndex].chat) { [unowned self] in
                 items[currentIndex].handler?()
 
-                //Recursion!!
+                //Recursion!! Also the [unowned self] prevents a retain cycle here...
                 sendChatArray(items: items, currentIndex: currentIndex + 1, completion: completion)
             }
         }

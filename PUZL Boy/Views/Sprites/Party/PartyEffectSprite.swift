@@ -51,9 +51,9 @@ class PartyEffectSprite: SKNode {
         sprite.run(SKAction.sequence([
             SKAction.fadeAlpha(to: randomAlpha, duration: fadeDuration),
             SKAction.wait(forDuration: waitDuration),
-            SKAction.fadeAlpha(to: 0, duration: fadeDuration)
+            SKAction.fadeAlpha(to: 0, duration: fadeDuration),
+            SKAction.removeFromParent()
         ])) { [unowned self] in
-            sprite.removeFromParent()
             removeFromParent()
         }
     }
