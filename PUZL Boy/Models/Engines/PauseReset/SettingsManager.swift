@@ -89,17 +89,20 @@ class SettingsManager: SKNode {
         button5.updateColors()
     }
     
-    func tap(_ button: SettingsButton, tapQuietly: Bool = false) {
-        guard currentButtonPressed?.type != button.type else { return }
+    func tap(_ button: SettingsButton, tapQuietly: Bool = false, completion: (() -> Void)?) {
+        guard currentButtonPressed?.type != button.type else {
+            completion?()
+            return
+        }
 
         button.touchDown()
         button.tapButton(tapQuietly: tapQuietly)
                 
         if !(button.type == .button1) {
-            if button2.type != button.type { button2.touchUp() }
-            if button3.type != button.type { button3.touchUp() }
-            if button4.type != button.type { button4.touchUp() }
-            if button5.type != button.type { button5.touchUp() }
+            if button2.type != button.type { button2.touchUp(completion: completion) }
+            if button3.type != button.type { button3.touchUp(completion: completion) }
+            if button4.type != button.type { button4.touchUp(completion: completion) }
+            if button5.type != button.type { button5.touchUp(completion: completion) }
             
             currentButtonPressed = button
         }

@@ -504,21 +504,16 @@ class PauseResetEngine {
 
             backgroundSprite.run(SKAction.group([
                 SKAction.moveTo(y: getBottomOfSettings(), duration: duration),
-                SKAction.sequence([
-                    SKAction.run { [unowned self] in
-                        //Makes it easier if you tap here each time, trust me.
-                        settingsManager.tap(settingsManager.button5, tapQuietly: true)
-                        settingsManager.updateColors()
-                        
-                        settingsPage.updateRadioNodes()
-                        settingsPage.updateColors()
-                        settingsPage.checkReportBugAlreadySubmitted()
-                    },
-                    SKAction.scale(to: settingsScale, duration: duration)
-                ])
+                SKAction.scale(to: settingsScale, duration: duration)
             ])) { [unowned self] in
                 isAnimating = false
             }
+            
+            settingsManager.tap(settingsManager.button5, tapQuietly: true, completion: nil)
+            settingsManager.updateColors()
+            settingsPage.updateRadioNodes()
+            settingsPage.updateColors()
+            settingsPage.checkReportBugAlreadySubmitted()
             
             ButtonTap.shared.tap(type: .buttontap7)
         }
@@ -564,7 +559,7 @@ class PauseResetEngine {
         
         isPressed = false
         
-        settingsManager.button1.touchUp() //title
+        settingsManager.button1.touchUp(completion: nil) //title
         quitConfirmSprite.touchUp()
         
         leaderboardsPage.touchUp()
@@ -581,6 +576,7 @@ class PauseResetEngine {
      */
     func touchDown(for touches: Set<UITouch>) {
         guard !isDisabled else { return }
+        guard !isAnimating else { return }
         guard let superScene = superScene else { return print("superScene not set in PauseResetEngine!") }
         guard let location = touches.first?.location(in: superScene) else { return }
         guard quitConfirmSprite.parent == nil else {
@@ -591,21 +587,16 @@ class PauseResetEngine {
         for nodeTapped in superScene.nodes(at: location) {
             switch nodeTapped.name {
             case pauseName:
-                guard !isAnimating else { break }
-                
                 isPressed = true
 
                 pauseButtonSprite.run(SKAction.colorize(with: .black, colorBlendFactor: 0.25, duration: 0))
                 Haptics.shared.addHapticFeedback(withStyle: .soft)
             case resetName:
-                guard !isAnimating else { break }
-                
                 isPressed = true
                 
                 resetButtonSprite.run(SKAction.colorize(with: .black, colorBlendFactor: 0.25, duration: 0))
                 Haptics.shared.addHapticFeedback(withStyle: .soft)
             case hintName:
-                guard !isAnimating else { break }
                 guard !isHintButtonDisabled else { break }
                 
                 isPressed = true
@@ -625,14 +616,18 @@ class PauseResetEngine {
                 settingsPage.superScene = superScene
                 settingsPage.touchDown(for: touches)
             default:
-                guard !isAnimating else { break }
                 guard let node = nodeTapped as? SettingsButton else { break }
                 guard !Level.isPartyLevel(currentLevel) || (node.type != .button1 && node.type != .button2 && node.type != .button3 && node.type != .button4) else {
                     ButtonTap.shared.tap(type: .buttontap6)
                     return
                 }
                 
-                settingsManager.tap(node)
+                isAnimating = true
+                
+                settingsManager.tap(node) { [unowned self] in
+                    isAnimating = false
+                }
+                
                 PauseResetEngine.currentTab = settingsManager.currentButtonPressed?.type
             }
         } //end for
@@ -658,7 +653,9 @@ extension PauseResetEngine: SettingsManagerDelegate {
 //            leaderboardsPage.removeHeaderBackgroundNode()
 //            NotificationCenter.default.post(name: .shouldCancelLoadingLeaderboards, object: nil)
 
-            quitConfirmSprite.animateShow { }
+            quitConfirmSprite.animateShow { [unowned self] in
+                isAnimating = false
+            }
         
             superScene.addChild(quitConfirmSprite)
         case .button2: //purchase

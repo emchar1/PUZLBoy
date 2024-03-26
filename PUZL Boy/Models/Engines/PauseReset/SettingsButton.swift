@@ -87,14 +87,16 @@ class SettingsButton: SKNode {
         shadowSprite.run(SKAction.move(to: .zero, duration: 0))
     }
     
-    func touchUp() {
+    func touchUp(completion: (() -> Void)?) {
         isPressed = false
         
         let animationDuration: CGFloat = 0.2
         
         iconSprite.color = PauseResetEngine.backgroundShadowColor.lightenColor(factor: colorFactor)
         buttonSprite.fillColor = PauseResetEngine.backgroundColor
-        buttonSprite.run(SKAction.move(to: .zero, duration: animationDuration))
+        buttonSprite.run(SKAction.move(to: .zero, duration: animationDuration)) {
+            completion?()
+        }
         shadowSprite.run(SKAction.move(to: shadowSize, duration: animationDuration))
     }
     
