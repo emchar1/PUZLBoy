@@ -643,7 +643,10 @@ extension PauseResetEngine: SettingsManagerDelegate {
         switch node.type {
         case .button1: //title
             guard let superScene = superScene else { return print("superScene not set up. Unable to show title confirm!") }
-            guard settingsManager.currentButtonPressed?.type != settingsManager.button3.type || !leaderboardsPage.tableViewIsLoading else { return }
+            guard settingsManager.currentButtonPressed?.type != settingsManager.button3.type || !leaderboardsPage.tableViewIsLoading else { 
+                isAnimating = false //NEED THIS HERE OR PAUSE SCREEN CAN HANG IF LEADERBOARD IS LOADING AND HOME BUTTON IS PRESSED!
+                return
+            }
             
             howToPlayPage.tableView.removeFromSuperview()
             leaderboardsPage.leaderboardsTableView.removeFromSuperview()
