@@ -52,23 +52,21 @@ class CutsceneOldFriends: Cutscene {
             skipSceneSprite.animateSprite()
         }
          
-        run(SKAction.run { [unowned self] in
-            animateParallax(changeSet: nil, duration: initialPause)
-            
-            animatePlayer(player: &playerLeft,
-                          position: CGPoint(x: screenSize.width * 1 / 5, y: screenSize.height / 2),
-                          scale: 2,
-                          shouldFlipHorizontally: false,
-                          shouldRotateClockwise: true,
-                          duration: initialPause)
-            
-            animatePlayer(player: &playerRight,
-                          position: CGPoint(x: screenSize.width * 4 / 5, y: screenSize.height / 2),
-                          scale: 2 * playerRight.scaleMultiplier / playerLeft.scaleMultiplier,
-                          shouldFlipHorizontally: true,
-                          shouldRotateClockwise: false,
-                          duration: initialPause)
-        })
+        animateParallax(changeSet: nil, duration: initialPause)
+        
+        animatePlayer(player: &playerLeft,
+                      position: CGPoint(x: screenSize.width * 1 / 5, y: screenSize.height / 2),
+                      scale: 2,
+                      shouldFlipHorizontally: false,
+                      shouldRotateClockwise: true,
+                      duration: initialPause)
+        
+        animatePlayer(player: &playerRight,
+                      position: CGPoint(x: screenSize.width * 4 / 5, y: screenSize.height / 2),
+                      scale: 2 * playerRight.scaleMultiplier / playerLeft.scaleMultiplier,
+                      shouldFlipHorizontally: true,
+                      shouldRotateClockwise: false,
+                      duration: initialPause)
         
         run(SKAction.sequence([
             SKAction.wait(forDuration: initialPause),

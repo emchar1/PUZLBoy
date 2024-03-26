@@ -284,14 +284,12 @@ class TitleScene: SKScene {
         //Menu Animation
         let delayMenu: TimeInterval = 3 * animationDuration
         
+        menuBackground.showShadow(shadowOffset: -shadowDepth, animationDuration: animationDuration, delay: delayMenu)
         menuBackground.run(SKAction.sequence([
             SKAction.wait(forDuration: delayMenu),
             SKAction.group([
                 SKAction.fadeAlpha(to: 0.9, duration: 3 * animationDuration),
-                SKAction.repeat(SKAction.moveBy(x: shadowDepth, y: shadowDepth, duration: animationDuration), count: 3),
-                SKAction.run { [unowned self] in
-                    menuBackground.showShadow(shadowOffset: -shadowDepth, animationDuration: animationDuration)
-                }
+                SKAction.repeat(SKAction.moveBy(x: shadowDepth, y: shadowDepth, duration: animationDuration), count: 3)
             ])
         ]))
 

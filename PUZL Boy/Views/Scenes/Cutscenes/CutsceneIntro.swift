@@ -16,14 +16,14 @@ class CutsceneIntro: Cutscene {
     private var heroPositionFinal: CGPoint { CGPoint(x: screenSize.width * 1 / 5, y: screenSize.height / 3) }
     private var princessPositionInitial: CGPoint { CGPoint(x: screenSize.width + 100,
                                                            y: screenSize.height / 3 + Player.getNormalizedAdjustedHeight(player: playerRight)) }
-    private var princessPositionFinal: CGPoint { CGPoint(x: screenSize.width * 4 / 5, 
+    private var princessPositionFinal: CGPoint { CGPoint(x: screenSize.width * 4 / 5,
                                                          y: screenSize.height / 3 + Player.getNormalizedAdjustedHeight(player: playerRight)) }
     
     //Main Nodes
     private var bloodSkyNode: SKSpriteNode!
     private var dragonSprite: SKSpriteNode!
     private var flyingDragon: FlyingDragon!
-
+    
     //Overlay Nodes
     private var bloodOverlayNode: SKShapeNode!
     private var flashOverlayNode: SKShapeNode!
@@ -32,8 +32,8 @@ class CutsceneIntro: Cutscene {
     static var funnyQuotes: [String] = [
         "I'm a Barbie girl,| in a Barbie world.|| Life in plastic,| it's fantastic! You can brush my hair",
     ]
-
-
+    
+    
     // MARK: - Initialization
     
     override init(size: CGSize, playerLeft: Player.PlayerType, playerRight: Player.PlayerType, xOffsetsArray: [ParallaxSprite.SpriteXPositions]?) {
@@ -56,13 +56,13 @@ class CutsceneIntro: Cutscene {
         
         skipSceneSprite.setText(text: "SKIP INTRO")
         skipSceneSprite.delegate = self
-
+        
         dragonSprite = SKSpriteNode(imageNamed: "enemyLarge")
         dragonSprite.position = CGPoint(x: -dragonSprite.size.width, y: screenSize.height + dragonSprite.size.height)
         dragonSprite.zPosition = K.ZPosition.player - 10
         
         flyingDragon = FlyingDragon()
-                
+        
         bloodSkyNode = SKSpriteNode(texture: SKTexture(image: UIImage.gradientSkyBlood))
         bloodSkyNode.size = CGSize(width: screenSize.width, height: screenSize.height / 2)
         bloodSkyNode.position = CGPoint(x: 0, y: screenSize.height)
@@ -90,7 +90,7 @@ class CutsceneIntro: Cutscene {
         AudioManager.shared.playSound(for: "birdsambience", fadeIn: 5)
         AudioManager.shared.playSound(for: AudioManager.shared.grasslandTheme, fadeIn: 5)
     }
-        
+    
     override func cleanupScene(buttonTap: ButtonTap.ButtonType?, fadeDuration: TimeInterval?) {
         super.cleanupScene(buttonTap: buttonTap, fadeDuration: fadeDuration)
         
@@ -114,13 +114,13 @@ class CutsceneIntro: Cutscene {
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesBegan(touches, with: event)
-
+        
         //Custom implementation here, if needed.
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesEnded(touches, with: event)
-
+        
         //Custom implementation here, if needed.
     }
     
@@ -158,12 +158,10 @@ class CutsceneIntro: Cutscene {
                 SKAction.repeatForever(princessIdle)
             ])
         ]))
-                        
+        
         //Parallax Manager
+        parallaxManager.animate()
         run(SKAction.sequence([
-            SKAction.run { [unowned self] in
-                parallaxManager.animate()
-            },
             SKAction.wait(forDuration: 13 * walkCycle),
             SKAction.run { [unowned self] in
                 parallaxManager.stopAnimation()
@@ -176,7 +174,7 @@ class CutsceneIntro: Cutscene {
             SKAction.wait(forDuration: 4 * walkCycle),
             SKAction.moveTo(x: heroPositionFinal.x + speechPlayerLeft.bubbleDimensions.width / 2, duration: 4 * walkCycle)
         ]))
-
+        
         //Speech Bubbles
         run(SKAction.sequence([
             SKAction.wait(forDuration: 2 * walkCycle),
@@ -214,7 +212,7 @@ class CutsceneIntro: Cutscene {
                         wideShot(shouldResetForeground: true)
                         
                         dimOverlayNode.run(SKAction.fadeOut(withDuration: 1))
-                                                
+                        
                         flyingDragon.animate(toNode: self,
                                              from: CGPoint(x: screenSize.width, y: screenSize.height * 6 / 8),
                                              to: CGPoint(x: -flyingDragon.sprite.size.width, y: 0),
@@ -226,7 +224,7 @@ class CutsceneIntro: Cutscene {
                             SKAction.wait(forDuration: 4),
                             SKAction.fadeOut(withDuration: 6)
                         ]))
-
+                        
                         bloodSkyNode.run(SKAction.sequence([
                             SKAction.wait(forDuration: 4),
                             SKAction.fadeIn(withDuration: 6)
@@ -236,7 +234,7 @@ class CutsceneIntro: Cutscene {
                             SKAction.wait(forDuration: 4),
                             SKAction.fadeAlpha(to: 0.25, duration: 6)
                         ]))
-
+                        
                         backgroundNode.run(SKAction.sequence([
                             SKAction.wait(forDuration: 4),
                             shakeBackground(duration: 6)
@@ -302,23 +300,23 @@ class CutsceneIntro: Cutscene {
                         
                         playerRight.sprite.run(SKAction.sequence([
                             SKAction.group([
-                                SKAction.move(to: CGPoint(x: -dragonSprite.size.width * 0.25, 
+                                SKAction.move(to: CGPoint(x: -dragonSprite.size.width * 0.25,
                                                           y: screenSize.height - letterbox.height / 2 + dragonSprite.size.height * 0.25),
                                               duration: abductionSpeed),
                                 SKAction.scaleX(to: -playerRight.scaleMultiplier * Player.cutsceneScale / 8, duration: abductionSpeed),
                                 SKAction.scaleY(to: playerRight.scaleMultiplier * Player.cutsceneScale / 8, duration: abductionSpeed)
                             ]),
-                            SKAction.group([
-                                SKAction.removeFromParent(),
-                                SKAction.run { [unowned self] in
-                                    playerRight.sprite.position = CGPoint(x: 180, y: -140) //specific position so princess is in dragon's clutches
-                                    playerRight.sprite.setScale(playerRight.scaleMultiplier * Player.cutsceneScale / 4)
-                                    playerRight.sprite.yScale *= -1
-                                    playerRight.sprite.zPosition = -1
-                                    flyingDragon.sprite.addChild(playerRight.sprite)
-                                }
-                            ])
-                        ]))
+                            SKAction.removeFromParent()
+                        ])) { [unowned self] in
+                            playerRight.sprite.position = CGPoint(x: 180, y: -140) //specific position so princess is in dragon's clutches
+                            playerRight.sprite.setScale(playerRight.scaleMultiplier * Player.cutsceneScale / 4)
+                            playerRight.sprite.yScale *= -1
+                            playerRight.sprite.zPosition = -1
+                            
+                            //Just in case sprite's removeFromParent() went out of sync and still has a parent...
+                            playerRight.sprite.removeFromParent()
+                            flyingDragon.sprite.addChild(playerRight.sprite)
+                        }
                         
                         dragonSprite.run(SKAction.group([
                             SKAction.move(to: CGPoint(x: -dragonSprite.size.width * 0.25,
@@ -327,13 +325,11 @@ class CutsceneIntro: Cutscene {
                             SKAction.scale(to: 0.25, duration: abductionSpeed)
                         ]))
                         
+                        speechPlayerRight.updateTailOrientation(.topLeft)
                         speechPlayerRight.run(SKAction.sequence([
-                            SKAction.group([
-                                SKAction.run { [unowned self] in
-                                    speechPlayerRight.updateTailOrientation(.topLeft)
-                                },
-                                SKAction.move(to: CGPoint(x: speechPlayerRight.bubbleDimensions.width / 2, y: screenSize.height * 6 / 8 - speechPlayerRight.bubbleDimensions.height), duration: abductionSpeed),
-                            ]),
+                            SKAction.move(to: CGPoint(x: speechPlayerRight.bubbleDimensions.width / 2,
+                                                      y: screenSize.height * 6 / 8 - speechPlayerRight.bubbleDimensions.height),
+                                          duration: abductionSpeed),
                             SKAction.wait(forDuration: 2),
                             SKAction.group([
                                 SKAction.moveTo(x: screenSize.width - speechPlayerRight.bubbleDimensions.width / 2, duration: 6),
@@ -370,12 +366,12 @@ class CutsceneIntro: Cutscene {
                         
                         skipSceneSprite.removeAllActions()
                         skipSceneSprite.removeFromParent()
-
+                        
                         skyNode.run(SKAction.fadeIn(withDuration: 5))
                         bloodSkyNode.run(SKAction.fadeOut(withDuration: 5))
                         bloodOverlayNode.run(SKAction.fadeOut(withDuration: 5))
                         letterbox.hide(delay: 2)
-
+                        
                         AudioManager.shared.stopSound(for: "thunderrumble", fadeDuration: 5)
                     },
                     SpeechBubbleItem(profile: speechPlayerLeft, chat: "Hang on princess! I'm coming to rescue you!!!|||")
@@ -383,10 +379,10 @@ class CutsceneIntro: Cutscene {
                     AudioManager.shared.stopSound(for: "ageofruin", fadeDuration: 4)
                     UserDefaults.standard.set(true, forKey: K.UserDefaults.shouldSkipIntro)
                     cleanupScene(buttonTap: nil, fadeDuration: 2)
-                }
-            }
-        ])) //end Speech Bubbles animation
-    }
+                } //end setTextArray()
+            } //end SKAction.run { [unowned self]...
+        ])) //end run(SKAction.sequence[(...
+    } //end animateScene()
     
     
     // MARK: - Animation Helper Functions
@@ -418,11 +414,11 @@ class CutsceneIntro: Cutscene {
                 SKAction.scaleX(to: -4 * 0.75, y: 4 * 0.75, duration: 20),
                 SKAction.moveBy(x: 0, y: 2 * 4 * 0.75 * 20, duration: 20)
             ])
-        ]))
+        ]), withKey: "princessCloseUpAction")
         
         playerLeft.sprite.position.x = -200
         playerLeft.sprite.setScale(playerLeft.scaleMultiplier * Player.cutsceneScale)
-
+        
         parallaxManager.backgroundSprite.setScale(2)
         parallaxManager.backgroundSprite.position.y = -screenSize.height / 2 + 400
         parallaxManager.backgroundSprite.position.x = -screenSize.width / 2
@@ -444,7 +440,7 @@ class CutsceneIntro: Cutscene {
         
         dragonSprite.position = CGPoint(x: screenSize.width / 2, y: screenSize.height / 2)
         dragonSprite.setScale(4)
-
+        
         parallaxManager.backgroundSprite.setScale(1 / 0.75)
         parallaxManager.backgroundSprite.position.y = -screenSize.height / 2 + 750
         parallaxManager.backgroundSprite.position.x = -screenSize.width / 2
@@ -453,20 +449,21 @@ class CutsceneIntro: Cutscene {
     }
     
     private func wideShot(shouldResetForeground: Bool = false) {
+        playerRight.sprite.removeAction(forKey: "princessCloseUpAction")
         playerRight.sprite.position = princessPositionFinal
         playerRight.sprite.setScale(playerRight.scaleMultiplier * Player.cutsceneScale)
         playerRight.sprite.xScale *= -1
         
         playerLeft.sprite.position.x = heroPositionFinal.x
         playerLeft.sprite.setScale(playerLeft.scaleMultiplier * Player.cutsceneScale)
-
+        
         parallaxManager.backgroundSprite.setScale(1)
         parallaxManager.backgroundSprite.position = .zero
         
         if shouldResetForeground {
             parallaxManager.resetxPositions(index: 0)
         }
-            
+        
         speechPlayerRight.position = princessPositionFinal + CGPoint(x: -200, y: 400)
         speechPlayerLeft.position = CGPoint(x: heroPositionFinal.x + speechPlayerLeft.bubbleDimensions.width / 2, y: heroPositionInitial.y + 400)
     }
