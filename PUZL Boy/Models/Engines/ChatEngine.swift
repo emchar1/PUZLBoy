@@ -232,7 +232,7 @@ class ChatEngine {
         }
 
         for node in superScene.nodes(at: location) {
-            if node.name == "backgroundSprite" && !chatDecisionEngine.isActive {
+            if node.name == "backgroundSprite" && !chatDecisionEngine.isActive && fastForwardSprite.parent != nil {
                 animateFFButton()
                 fastForward()
             }
@@ -544,6 +544,7 @@ extension ChatEngine {
     private func populateKeyDialogue() {
 
         //DARK REALM Dialogue
+        dialoguePlayed[-250] = false
         dialoguePlayed[-200] = false
         dialoguePlayed[-150] = false
         dialoguePlayed[-100] = false
@@ -569,14 +570,13 @@ extension ChatEngine {
 
         //Chapter 2 - A Mysterious Stranger Among Us
         dialoguePlayed[201] = false
+        dialogueWithCutscene[201] = true //Dialogue with CUTSCENES (always set to true)
         dialoguePlayed[208] = false //spawn at (0, 2)
         dialoguePlayed[240] = false //spawn at (0, 1)
         dialoguePlayed[262] = false //spawn at (0, 1)
 
         
         
-        //Dialogue with CUTSCENES (always set to true)
-        dialogueWithCutscene[201] = true
         
         
         
@@ -686,6 +686,23 @@ extension ChatEngine {
                 }
             }
         case -200:
+            sendChatArray(items: [
+                ChatItem(profile: .trainer, imgPos: .left, chat: "Hello..........? Are you there??"),
+                //Needs like a 5 second pause here.
+                ChatItem(profile: .trainer, imgPos: .left, chat: "................................") { [unowned self] in
+                    //Disable fastForwardSprite for dramatic effect.
+                    fastForwardSprite.removeFromParent()
+                },
+                ChatItem(profile: .trainer, imgPos: .left, chat: "Hmmm..")
+            ]) { [unowned self] in
+                //Need to add this back to parent, because you removed it above.
+                chatBackgroundSprite.addChild(fastForwardSprite)
+                
+                chatBackgroundSprite.run(SKAction.wait(forDuration: 3)) { [unowned self] in
+                    handleDialogueCompletion(level: level, completion: completion)
+                }
+            }
+        case -250:
             AudioManager.shared.playSound(for: "magicheartbeatloop1", fadeIn: 3)
             
             let originalBrightness: CGFloat = UIScreen.main.brightness
@@ -719,7 +736,8 @@ extension ChatEngine {
                     magmoorScary.slowReveal(baseAlpha: 0.5)
                 },
                 ChatItem(profile: .trainer, imgPos: .left, chat: "..............I did what I had to."),
-                ChatItem(profile: .villain, chat: "Your loss.. such a shame.. you'll soon regret it.....")
+                ChatItem(profile: .villain, chat: "Ah, yes. The self-serving \"Marlin the Magnificent.\" Always thinking he's right. Hmpf! Your loss.. such a shame.. you'll soon regret it....."),
+                ChatItem(profile: .trainer, imgPos: .left, chat: "It's my loss.....")
             ]) { [unowned self] in
                 AudioManager.shared.stopSound(for: "scarymusicbox", fadeDuration: 5)
                 AudioManager.shared.stopSound(for: "magicheartbeatloop1", fadeDuration: 5)
@@ -739,20 +757,11 @@ extension ChatEngine {
         //PUZZLE REALM
         case 1:
             sendChatArray(items: [
-                ChatItem(profile: .hero, imgPos: .left, chat: "PUZL BOY: ...then the dragon swooped down and carried her away! It. Was. Harrowing. So... where are we? And who are you again??"),
-                ChatItem(profile: .trainer, chat: "MARLIN: I am Marlin. I suspect she is being taken to the dragon's lair. I have transported you to the PUZZLE REALM, which is our gateway to the lair."),
-                ChatItem(profile: .hero, imgPos: .left, chat: "Marlin, like the fish??? I hate fish by the way. The smell, the texture... So how do you know that's where they're taking her?"),
-                ChatItem(profile: .trainer, chat: "Don't worry about it... And no, not like the fish. Marlin like the Magician."),
-                ChatItem(profile: .trainer, chat: "As a matter of fact, I come from a long line of legendary and powerful Mystics, each with our own unique powers and abilities..."),
-                ChatItem(profile: .trainer, chat: "Some Mystics control the elements: fire-water, earth-air, some are all-knowing, while others govern the arts and science. I happen to be a water mage, myself."),
-                ChatItem(profile: .hero, imgPos: .left, chat: "🍿"),
-                ChatItem(profile: .trainer, chat: "Let's see, there's Maxel, Mywren, and Malana, our Mystics in training who I am personally mentoring..."),
-                ChatItem(profile: .hero, imgPos: .left, chat: "Mmmkay. Got it 🥱"),
-                ChatItem(profile: .trainer, chat: ".......moving on. The lair is buried deep inside Earth's core, and the only way to reach it is to solve logic puzzles—"),
-                ChatItem(profile: .hero, imgPos: .left, chat: "Water mage... like a fish? A marlin is a fish. You're thinking of Merlin the Magician. OH! Is that your name? Merlin ...the Magician?"),
-                ChatItem(profile: .trainer, chat: "Enough with the fish already! Listen!! There are 500 levels in total you will have to solve, each with increasing difficulty."),
-                ChatItem(profile: .hero, imgPos: .left, chat: "500 levels?!! How long is that gonna take? I gotta be home by 7. What do I get if I win?"),
-                ChatItem(profile: .trainer, chat: "YOU SAVE THE WORLD!!! OMG! Now where was I... Oh yeah, the goal for each level is to get to the gate in under a certain number of moves.") { [unowned self] in
+                ChatItem(profile: .hero, imgPos: .left, chat: "PUZL BOY: ...then the dragon swooped down and carried her away! It. Was. Harrowing. So... where are we? And who are you??"),
+                ChatItem(profile: .trainer, chat: "MARLIN: I am your guide... Marlin. I suspect she is being taken to the dragon's lair. You have been transported to the PUZZLE REALM, our gateway to the lair."),
+                ChatItem(profile: .trainer, chat: "The dragon's lair is buried deep inside Earth's core, and the only way to reach it is by solving logic puzzles."),
+                ChatItem(profile: .trainer, chat: "There are 500 levels in total you will have to complete, each with increasing difficulty."),
+                ChatItem(profile: .trainer, chat: "The goal for each level is to get to the gate in under a certain number of moves.") { [unowned self] in
                     delegate?.illuminatePanel(at: (0, 1), useOverlay: false)
                     delegate?.illuminatePanel(at: (1, 0), useOverlay: false)
                     delegate?.illuminatePanel(at: (1, 2), useOverlay: false)
@@ -765,13 +774,13 @@ extension ChatEngine {
                     delegate?.deilluminatePanel(at: (2, 1), useOverlay: false)
                     delegate?.illuminateDisplayNode(for: .moves)
                 },
-                ChatItem(profile: .trainer, chat: "If your move count hits 0, it's game over, buddy! Your move count can be found in the upper left corner next to the boot. 👢") { [unowned self] in
+                ChatItem(profile: .trainer, chat: "If your move count hits 0, the game is over. Your move count can be found in the upper left corner next to the boot. 👢") { [unowned self] in
                     delegate?.deilluminateDisplayNode(for: .moves)
                     delegate?.illuminatePanel(at: (1, 2), useOverlay: true)
                     delegate?.illuminatePanel(at: (2, 2), useOverlay: false)
                 },
                 ChatItem(profile: .trainer, chat: "See the gate? It's closed. To open it, collect all the gems in the level. Simple, right?"),
-                ChatItem(profile: .hero, imgPos: .left, chat: "Bet. Let's go save the princess!")
+                ChatItem(profile: .hero, imgPos: .left, chat: "Right. Let's go save the princess!")
             ]) { [unowned self] in
                 delegate?.deilluminatePanel(at: (1, 2), useOverlay: true)
                 delegate?.deilluminatePanel(at: (2, 2), useOverlay: false)

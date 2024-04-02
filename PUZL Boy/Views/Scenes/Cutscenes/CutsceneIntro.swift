@@ -198,7 +198,7 @@ class CutsceneIntro: Cutscene {
                                 SKAction.fadeIn(withDuration: 23), //34 total seconds, to coincide with closeUpPrincess() animation sequence
                                 SKAction.run { [unowned self] in
                                     speechNarrator.setText(
-                                        text: "PUZL Boy: The princess went on to explain how dragons had disappeared from the realm of some place called Vaeloria, where she claims she's from,|| and that the balance of magic had been disrupted threatening our very existence.||||||||/She spoke about a prophecy where the Earth splits open and the sky darkens, signaling the Age of Ruin, and that she was the only one who could stop it—||At first, I thought this little girl just had an overactive imagination...||||||/  ..........Then the CRAZIEST thing happened!!",
+                                        text: "PUZL Boy: The princess went on to explain how dragons had disappeared from the realm of some place called Vaeloria, where she claims she's from,|| and that the balance of magic had been disrupted threatening our very existence.||||||||/She spoke about a prophecy where the Earth splits open and the sky turns to ash, signaling the Age of Ruin, and that she was the only one who could stop it—||At first, I thought this little girl just had an overactive imagination...||||||/  ..........Then the CRAZIEST thing happened!!",
                                         superScene: self, completion: nil)
                                     
                                     AudioManager.shared.stopSound(for: "birdsambience", fadeDuration: 5)
@@ -208,15 +208,19 @@ class CutsceneIntro: Cutscene {
                             ])
                         ]))
                     },
-                    SpeechBubbleItem(profile: speechPlayerRight, chat: "Wow.|| You sure ask a lot of questions!||||||||/But if you must know,| the reason I'm here is because, well.. first of all, Oh—I'm a princess!|||/And, but... oh! Not here though. I'm a princess in a very very far away place.|||/You see, I'm not from this place. But I am from, well—blah blah blah...||||/Blah blah blah, blah blah blah DRAGONS blah, blah blah, blah blah blah, blah.||||||||/VAELORIA blah, blah.| BLAH blah blah blah, blahhhhh blah.| Blah. Blah. Blah. M|A|G|I|C!!||||||||/And then. And THEN!|| blah blah blah,| blah blah blah.| Blah, blah, blah|| .|.|.|A|G|E| O|F| R|U|I|N|.||||||||||||") { [unowned self] in
+                    SpeechBubbleItem(profile: speechPlayerRight, chat: "Wow.|| You sure ask a lot of questions!||||||||/But if you must know, the reason I'm here is because, well.. first of all, Oh—I'm a princess!|||/And, but... oh! Not here though. I'm a princess in a very very far away place.|||/You see, I'm not from this place. But I am from, umm, wait...| Let me start over.||||/Blah blah blah, blah blah blah DRAGONS blah, blah blah, blah blah blah, blah.||||||||/VAELORIA blah, blah.| BLAH blah blah blah, blahhhhh blah.| Blah. Blah. Blah. M|A|G|I|C!!||||||||/And then. And THEN!|| blah blah blah,| blah blah blah.| Blah, blah, blah|| .|.|.|A|G|E| O|F| R|U|I|N|.||||||||||||") { [unowned self] in
+                        
+                        //Properties for dragon spawn sequence, below. The hard coded values seem a bit random, but they are indeed all intentional and thus should not be changed under any circumstances! (Unless they change in their physical assets...)
+                        let parallaxLayer = parallaxManager.getSpriteFor(set: ParallaxObject.SetType.grass.rawValue, layer: 1) ?? SKNode()
+                        let parallaxLayerZPosition = K.ZPosition.parallaxLayer0 - 5 * CGFloat(1) + 3 + 1
+                        let particleHalfHeight: CGFloat = CGFloat(877) / 2
+                        let particleStart: CGPoint = CGPoint(x: 580, y: 300)
+                        let particleScale: CGFloat = CGFloat(2048) / CGFloat(1550)
+                        
+                        
                         wideShot(shouldResetForeground: true)
                         
                         dimOverlayNode.run(SKAction.fadeOut(withDuration: 1))
-                        
-                        flyingDragon.animate(toNode: self,
-                                             from: CGPoint(x: screenSize.width, y: screenSize.height * 6 / 8),
-                                             to: CGPoint(x: -flyingDragon.sprite.size.width, y: 0),
-                                             duration: 10)
                         
                         speechNarrator.removeFromParent()
                         
@@ -255,6 +259,57 @@ class CutsceneIntro: Cutscene {
                             SKAction.wait(forDuration: 2),
                             SKAction.run {
                                 Haptics.shared.executeCustomPattern(pattern: .thunder)
+                                
+                                ParticleEngine.shared.animateParticles(
+                                    type: .groundSplit,
+                                    toNode: parallaxLayer,
+                                    position: CGPoint(x: particleStart.x * particleScale, y: particleHalfHeight + particleStart.y * particleScale),
+                                    scale: UIDevice.modelInfo.ratio / 2,
+                                    zPosition: parallaxLayerZPosition,
+                                    duration: 0)
+                            },
+                            SKAction.wait(forDuration: 3.5),
+                            SKAction.run { [unowned self] in
+                                AudioManager.shared.playSoundThenStop(for: "lavaappear2", playForDuration: 2, fadeOut: 2)
+                                
+                                parallaxManager.addSplitGroundSprite(animationDuration: 0.1) { [unowned self] in
+                                    let parallaxSplitLayer = parallaxManager.getSpriteFor(set: ParallaxObject.SetType.grass.rawValue, layer: 13) ?? SKNode()
+                                    
+                                    for i in 0..<175 {
+                                        let dragonSpawn = FlyingDragon(scale: CGFloat.random(in: 0.35...0.5))
+                                        let spawnRange = CGFloat.random(in: -250...250)
+                                        let posStart = CGPoint(x: particleStart.x + FlyingDragon.size.width / 2,
+                                                               y: particleStart.y + FlyingDragon.size.height / 2)
+                                        
+                                        dragonSpawn.sprite.zRotation = -.pi / 2
+                                        dragonSpawn.sprite.zPosition = parallaxLayerZPosition
+                                        
+                                        if spawnRange > 0 {
+                                            dragonSpawn.sprite.yScale = -dragonSpawn.sprite.yScale
+                                        }
+                                        
+                                        run(SKAction.sequence([
+                                            SKAction.wait(forDuration: TimeInterval(i) * 0.1),
+                                            SKAction.run {
+                                                dragonSpawn.animate(toNode: parallaxSplitLayer,
+                                                                    from: posStart,
+                                                                    to: CGPoint(x: posStart.x + spawnRange, y: K.ScreenDimensions.size.height),
+                                                                    duration: TimeInterval.random(in: 1...2))
+                                            }
+                                        ]))
+                                    }
+                                    
+                                    ParticleEngine.shared.animateParticles(
+                                        type: .groundExplode,
+                                        toNode: parallaxSplitLayer,
+                                        position: CGPoint(x: particleStart.x * particleScale, 
+                                                          y: particleHalfHeight + particleStart.y * particleScale),
+                                        scale: UIDevice.modelInfo.ratio / 2,
+                                        zPosition: parallaxLayerZPosition,
+                                        duration: 0)
+                                    
+                                    ParticleEngine.shared.removeParticles(fromNode: parallaxLayer)
+                                }
                             }
                         ]))
                     },
@@ -279,7 +334,6 @@ class CutsceneIntro: Cutscene {
                                 midShotPrincessDragon()
                                 
                                 AudioManager.shared.playSound(for: "enemyroar")
-                                AudioManager.shared.playSound(for: "enemyscratch")
                                 Haptics.shared.executeCustomPattern(pattern: .enemy)
                                 ParticleEngine.shared.animateParticles(type: .dragonFire,
                                                                        toNode: dragonSprite,
@@ -342,11 +396,11 @@ class CutsceneIntro: Cutscene {
                             ])
                         ]))
                         
+                        flyingDragon.sprite.xScale = -flyingDragon.sprite.xScale
                         flyingDragon.animate(toNode: self,
                                              from: CGPoint(x: -2 * flyingDragon.sprite.size.width, y: screenSize.height * 6 / 8),
                                              to: CGPoint(x: screenSize.width + flyingDragon.sprite.size.width, y: 0),
-                                             duration: 10,
-                                             reverseDirection: true)
+                                             duration: 10)
                     },
                     SpeechBubbleItem(profile: speechPlayerRight, speed: 0.04, chat: "SAVE ME MARIO—|I mean,| PUZL BOYYYYYYY!!!!!!!|||||||/The fate of the world rests in your haaaaands!") { [unowned self] in
                         let frameRate: TimeInterval = 0.02
@@ -462,6 +516,7 @@ class CutsceneIntro: Cutscene {
         
         if shouldResetForeground {
             parallaxManager.resetxPositions(index: 0)
+            parallaxManager.resetxPositions(index: 1)
         }
         
         speechPlayerRight.position = princessPositionFinal + CGPoint(x: -200, y: 400)

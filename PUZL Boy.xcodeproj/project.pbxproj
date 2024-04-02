@@ -65,6 +65,9 @@
 		EA49B0692A1923D300E6B96D /* HowToPlayTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA49B0682A1923D300E6B96D /* HowToPlayTableView.swift */; };
 		EA49B06B2A1953C500E6B96D /* HowToPlayTVCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA49B06A2A1953C500E6B96D /* HowToPlayTVCell.swift */; };
 		EA49B06D2A19D03000E6B96D /* HowToPlayModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA49B06C2A19D03000E6B96D /* HowToPlayModel.swift */; };
+		EA49F2822BB9036700C7D54E /* GroundSplitParticles.sks in Resources */ = {isa = PBXBuildFile; fileRef = EA49F2812BB9036700C7D54E /* GroundSplitParticles.sks */; };
+		EA49F2842BB90A3000C7D54E /* GroundExplodeParticles.sks in Resources */ = {isa = PBXBuildFile; fileRef = EA49F2832BB90A3000C7D54E /* GroundExplodeParticles.sks */; };
+		EA49F2862BBCAA5800C7D54E /* enemyroar.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA49F2852BBCAA5800C7D54E /* enemyroar.mp3 */; };
 		EA4D025B29B7D61C00F0C7B1 /* movemarsh3.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA4D025A29B7D61C00F0C7B1 /* movemarsh3.mp3 */; };
 		EA4D025D29B7E2B400F0C7B1 /* movemarsh2.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA4D025C29B7E2B400F0C7B1 /* movemarsh2.mp3 */; };
 		EA4D025F29B7E33600F0C7B1 /* movemarsh1.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA4D025E29B7E33600F0C7B1 /* movemarsh1.mp3 */; };
@@ -217,7 +220,6 @@
 		EAAEA3C62931F08300221963 /* gameover.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAAEA3C52931F08300221963 /* gameover.mp3 */; };
 		EAAEA3CA2931F12B00221963 /* pickupitem.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAAEA3C92931F12B00221963 /* pickupitem.mp3 */; };
 		EAAEA3CC2931F14D00221963 /* winlevel.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAAEA3CB2931F14D00221963 /* winlevel.mp3 */; };
-		EAAECFD52B64EA810011D5C5 /* enemyroar.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAAECFD42B64EA810011D5C5 /* enemyroar.mp3 */; };
 		EAAECFD92B6645D40011D5C5 /* gameoverice.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAAECFD82B6645D40011D5C5 /* gameoverice.mp3 */; };
 		EAAECFDB2B6647B40011D5C5 /* winlevelice.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAAECFDA2B6647B40011D5C5 /* winlevelice.mp3 */; };
 		EAAECFDD2B664B700011D5C5 /* chatopentrainer.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAAECFDC2B664B700011D5C5 /* chatopentrainer.mp3 */; };
@@ -267,7 +269,7 @@
 		EADFD96229F90B6A00C6F9D1 /* ConfirmSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = EADFD96129F90B6A00C6F9D1 /* ConfirmSprite.swift */; };
 		EAE215122AB920160090735A /* Warp4Particles.sks in Resources */ = {isa = PBXBuildFile; fileRef = EAE215112AB920160090735A /* Warp4Particles.sks */; };
 		EAE215142ABB88DF0090735A /* Extension+SKTexture.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAE215132ABB88DF0090735A /* Extension+SKTexture.swift */; };
-		EAE215582ABD1DEB0090735A /* MagicParticles.sks in Resources */ = {isa = PBXBuildFile; fileRef = EAE215572ABD1DEB0090735A /* MagicParticles.sks */; };
+		EAE215582ABD1DEB0090735A /* MagicBlastParticles.sks in Resources */ = {isa = PBXBuildFile; fileRef = EAE215572ABD1DEB0090735A /* MagicBlastParticles.sks */; };
 		EAE2155A2ABE23370090735A /* SpriteMath.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAE215592ABE23370090735A /* SpriteMath.swift */; };
 		EAE2155C2ABE38FC0090735A /* Extension+CGFloat.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAE2155B2ABE38FC0090735A /* Extension+CGFloat.swift */; };
 		EAE565AA29D6E0C700BC43CB /* TitleScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAE565A929D6E0C700BC43CB /* TitleScene.swift */; };
@@ -363,6 +365,9 @@
 		EA49B0682A1923D300E6B96D /* HowToPlayTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HowToPlayTableView.swift; sourceTree = "<group>"; };
 		EA49B06A2A1953C500E6B96D /* HowToPlayTVCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HowToPlayTVCell.swift; sourceTree = "<group>"; };
 		EA49B06C2A19D03000E6B96D /* HowToPlayModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HowToPlayModel.swift; sourceTree = "<group>"; };
+		EA49F2812BB9036700C7D54E /* GroundSplitParticles.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GroundSplitParticles.sks; sourceTree = "<group>"; };
+		EA49F2832BB90A3000C7D54E /* GroundExplodeParticles.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GroundExplodeParticles.sks; sourceTree = "<group>"; };
+		EA49F2852BBCAA5800C7D54E /* enemyroar.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = enemyroar.mp3; sourceTree = "<group>"; };
 		EA4D025A29B7D61C00F0C7B1 /* movemarsh3.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = movemarsh3.mp3; sourceTree = "<group>"; };
 		EA4D025C29B7E2B400F0C7B1 /* movemarsh2.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = movemarsh2.mp3; sourceTree = "<group>"; };
 		EA4D025E29B7E33600F0C7B1 /* movemarsh1.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = movemarsh1.mp3; sourceTree = "<group>"; };
@@ -510,7 +515,6 @@
 		EAAEA3C52931F08300221963 /* gameover.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = gameover.mp3; sourceTree = "<group>"; };
 		EAAEA3C92931F12B00221963 /* pickupitem.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = pickupitem.mp3; sourceTree = "<group>"; };
 		EAAEA3CB2931F14D00221963 /* winlevel.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = winlevel.mp3; sourceTree = "<group>"; };
-		EAAECFD42B64EA810011D5C5 /* enemyroar.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = enemyroar.mp3; sourceTree = "<group>"; };
 		EAAECFD82B6645D40011D5C5 /* gameoverice.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = gameoverice.mp3; sourceTree = "<group>"; };
 		EAAECFDA2B6647B40011D5C5 /* winlevelice.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = winlevelice.mp3; sourceTree = "<group>"; };
 		EAAECFDC2B664B700011D5C5 /* chatopentrainer.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = chatopentrainer.mp3; sourceTree = "<group>"; };
@@ -560,7 +564,7 @@
 		EADFD96129F90B6A00C6F9D1 /* ConfirmSprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmSprite.swift; sourceTree = "<group>"; };
 		EAE215112AB920160090735A /* Warp4Particles.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Warp4Particles.sks; sourceTree = "<group>"; };
 		EAE215132ABB88DF0090735A /* Extension+SKTexture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+SKTexture.swift"; sourceTree = "<group>"; };
-		EAE215572ABD1DEB0090735A /* MagicParticles.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = MagicParticles.sks; sourceTree = "<group>"; };
+		EAE215572ABD1DEB0090735A /* MagicBlastParticles.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = MagicBlastParticles.sks; sourceTree = "<group>"; };
 		EAE215592ABE23370090735A /* SpriteMath.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpriteMath.swift; sourceTree = "<group>"; };
 		EAE2155B2ABE38FC0090735A /* Extension+CGFloat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+CGFloat.swift"; sourceTree = "<group>"; };
 		EAE565A929D6E0C700BC43CB /* TitleScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleScene.swift; sourceTree = "<group>"; };
@@ -904,7 +908,7 @@
 				EA0F1490292CC8D90013038E /* enemydeath.mp3 */,
 				EABE79602ACBC7E800689C55 /* enemyflame.mp3 */,
 				EA6DCBEE2B61D04400D5F707 /* enemyice.mp3 */,
-				EAAECFD42B64EA810011D5C5 /* enemyroar.mp3 */,
+				EA49F2852BBCAA5800C7D54E /* enemyroar.mp3 */,
 				EACDF09C2A54B7D400F28A41 /* enemyscratch.mp3 */,
 				EAAEA3C52931F08300221963 /* gameover.mp3 */,
 				EAAECFD82B6645D40011D5C5 /* gameoverice.mp3 */,
@@ -1123,18 +1127,20 @@
 				EAD459052B64A49700148720 /* DragonIce.sks */,
 				EA6DCBEC2B61CBE900D5F707 /* DragonIceIdle.sks */,
 				EA6DCBEA2B61C26F00D5F707 /* DragonIceLite.sks */,
-				EAD19A162A992E3600A07A63 /* HeroRainbowParticles.sks */,
 				EAD199FB2A95A2ED00A07A63 /* GemCollectParticles.sks */,
 				EAD19A1A2A9BD48400A07A63 /* GemSparkleParticles.sks */,
+				EA49F2832BB90A3000C7D54E /* GroundExplodeParticles.sks */,
+				EA49F2812BB9036700C7D54E /* GroundSplitParticles.sks */,
 				EAD19A0E2A97E73400A07A63 /* HeartsParticles.sks */,
+				EAD19A162A992E3600A07A63 /* HeroRainbowParticles.sks */,
 				EA74F9CF2BA17BDE002CE6B2 /* InBetweenParticles.sks */,
 				EA0FCE3F2BAA336900AC8AEA /* InBetweenSmokeParticles.sks */,
 				EAD19A102A98177400A07A63 /* ItemPickupParticles.sks */,
 				EAD19A0A2A96F52500A07A63 /* LavaAppearParticles.sks */,
 				EAB2DE0F2A9D4BD700172478 /* LavaSizzleParticles.sks */,
-				EAE215572ABD1DEB0090735A /* MagicParticles.sks */,
-				EA7300102B5E00E1005BF98D /* MagicLightParticles.sks */,
+				EAE215572ABD1DEB0090735A /* MagicBlastParticles.sks */,
 				EA5F60572B9063480089EFC3 /* MagicExplosionParticles.sks */,
+				EA7300102B5E00E1005BF98D /* MagicLightParticles.sks */,
 				EAD19A032A9698B700A07A63 /* PartyGemParticles.sks */,
 				EA8E07532B50988B0051DDC3 /* PointerParticles.sks */,
 				EA8E07552B5104170051DDC3 /* PointerRainbowParticles.sks */,
@@ -1258,19 +1264,20 @@
 				EAD459062B64A49700148720 /* DragonIce.sks in Resources */,
 				EA6DCBE32B60FF5E00D5F707 /* chatopenvillain.mp3 in Resources */,
 				EA95D19C294690B70061059C /* boyattack1.mp3 in Resources */,
-				EAAECFD52B64EA810011D5C5 /* enemyroar.mp3 in Resources */,
 				EA45834F2A44316F00279056 /* overworldparty.mp3 in Resources */,
 				EA8E07562B5104170051DDC3 /* PointerRainbowParticles.sks in Resources */,
 				EA45835B2A4431D300279056 /* titletheme.mp3 in Resources */,
 				EAEF2F042B4F5EED00AD8459 /* hammerswing.mp3 in Resources */,
-				EAE215582ABD1DEB0090735A /* MagicParticles.sks in Resources */,
+				EAE215582ABD1DEB0090735A /* MagicBlastParticles.sks in Resources */,
 				EA5F60582B9063480089EFC3 /* MagicExplosionParticles.sks in Resources */,
 				EA95D1A3294691820061059C /* boygrunt1.mp3 in Resources */,
 				EA0FCE402BAA336900AC8AEA /* InBetweenSmokeParticles.sks in Resources */,
 				EA94E87529C0DE2C009F2614 /* movetile1.mp3 in Resources */,
+				EA49F2822BB9036700C7D54E /* GroundSplitParticles.sks in Resources */,
 				EAAECFDB2B6647B40011D5C5 /* winlevelice.mp3 in Resources */,
 				EA7605632B5A859C001BC268 /* movesnow3.mp3 in Resources */,
 				EAD19A092A96AA6D00A07A63 /* Assets.xcassets in Resources */,
+				EA49F2842BB90A3000C7D54E /* GroundExplodeParticles.sks in Resources */,
 				EAAECFD92B6645D40011D5C5 /* gameoverice.mp3 in Resources */,
 				EA6DCBEF2B61D04400D5F707 /* enemyice.mp3 in Resources */,
 				EAE919452A4CA4A800AF67D1 /* clocktick.mp3 in Resources */,
@@ -1283,6 +1290,7 @@
 				EA01BB5F2A10746800EAB70B /* buttontap6.mp3 in Resources */,
 				EA7300112B5E00E1005BF98D /* MagicLightParticles.sks in Resources */,
 				EAE6EC342A12D27F001842C6 /* buttontap7.mp3 in Resources */,
+				EA49F2862BBCAA5800C7D54E /* enemyroar.mp3 in Resources */,
 				EA3467AD29A8C7C7002DDA02 /* continueloop.mp3 in Resources */,
 				EA4D025D29B7E2B400F0C7B1 /* movemarsh2.mp3 in Resources */,
 				EA7605742B5B7531001BC268 /* magicheartbeatloop1.mp3 in Resources */,

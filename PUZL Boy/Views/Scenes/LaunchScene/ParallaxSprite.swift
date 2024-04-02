@@ -27,11 +27,11 @@ class ParallaxSprite: SKNode {
         self.animateForCutscene = animateForCutscene
         
         super.init()
-
-        setupSprites()
         
         // IMPORTANT!! Put node name here, not in individual sprites so LaunchScene can iterate through node names correctly
-        name = parallaxObject.nodeName
+        name = parallaxObject.nodeName + (parallaxObject.type == .ground ? getSetAndLayer() : "")
+
+        setupSprites()
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -66,6 +66,16 @@ class ParallaxSprite: SKNode {
     
     
     // MARK: - Functions
+    
+    ///Returns a string of the specified set and layer values.
+    static func getSetAndLayer(set: Int, layer: Int) -> String {
+        return "\(set)_\(layer)"
+    }
+
+    ///Returns a string of the current object's set's rawValue and layer.
+    func getSetAndLayer() -> String {
+        return ParallaxSprite.getSetAndLayer(set: parallaxObject.set.rawValue, layer: parallaxObject.layer)
+    }
     
     func animate() {
         let moveAction = SKAction.moveBy(x: -parallaxObject.sizeScaled, y: 0, duration: parallaxObject.speed)

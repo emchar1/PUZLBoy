@@ -167,6 +167,51 @@ class ParallaxManager: SKNode {
         }
     }
     
+    func addSplitGroundSprite(animationDuration: TimeInterval = 0.25, completion: @escaping () -> Void) {
+        guard let grassLayer1 = getSpriteFor(set: ParallaxObject.SetType.grass.rawValue, layer: 1) else {
+            completion()
+            return
+        }
+
+        grassLayer1.run(SKAction.sequence([
+            SKAction.fadeOut(withDuration: animationDuration),
+            SKAction.removeFromParent()
+        ]))
+
+        for i in 0...3 {
+            let size = CGSize(width: 1840, height: 1550)
+            let zPosition: CGFloat = K.ZPosition.parallaxLayer0 - 5 * CGFloat(1) + CGFloat(i)
+            let object = ParallaxObject(set: .grass, layer: 10 + i, type: .ground, speed: 0, size: size, zPosition: zPosition)
+            let sprite = ParallaxSprite(object: object, xOffsets: nil, animateForCutscene: true)
+
+            sprite.alpha = 0
+            
+            if i < 3 {
+                sprite.run(SKAction.sequence([
+                    SKAction.wait(forDuration: TimeInterval(i) * animationDuration),
+                    SKAction.fadeIn(withDuration: 0),
+                    SKAction.wait(forDuration: animationDuration),
+                    SKAction.fadeOut(withDuration: animationDuration),
+                    SKAction.removeFromParent()
+                ]))
+            }
+            else {
+                sprite.run(SKAction.sequence([
+                    SKAction.wait(forDuration: TimeInterval(i) * animationDuration),
+                    SKAction.fadeIn(withDuration: 0)
+                ]), completion: completion)
+            }
+            
+            backgroundSprite.addChild(sprite)
+        }
+    }
+    
+    func getSpriteFor(set: Int, layer: Int) -> SKNode? {
+        let spriteTag = ParallaxSprite.getSetAndLayer(set: set, layer: layer)
+        
+        return backgroundSprite.childNode(withName: LaunchScene.nodeName_groundObjectNode + spriteTag)
+    }
+    
     //BUGFIX# 240125E01 - Reset sprite xPositions so tree doesn't get in the way when dragon is flying across, for example.
     ///Resets the requested sprite's' xPositions to the leftmost side.
     func resetxPositions(index: Int) {

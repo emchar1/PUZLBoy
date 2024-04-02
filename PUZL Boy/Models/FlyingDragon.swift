@@ -11,16 +11,18 @@ struct FlyingDragon {
     // MARK: - Properties
     
     static let size = CGSize(width: 328, height: 248)
-    private(set) var scale: CGFloat = 0.5
+    private var scale: CGFloat
 
     private(set) var sprite: SKSpriteNode!
-    private(set) var textures: [SKTexture]!
+    private var textures: [SKTexture]!
     private var atlas: SKTextureAtlas!
     
     
     // MARK: - Initialization
     
-    init() {
+    init(scale: CGFloat = 0.65) {
+        self.scale = scale
+        
         setupSprite()
     }
     
@@ -38,7 +40,7 @@ struct FlyingDragon {
         sprite.setScale(scale)
         sprite.position = .zero
         sprite.anchorPoint = CGPoint(x: 0, y: 0.5)
-        sprite.zPosition = K.ZPosition.parallaxLayer0 - 1
+        sprite.zPosition = K.ZPosition.player
     }
     
     
@@ -48,26 +50,32 @@ struct FlyingDragon {
         self.scale = scale
     }
     
-    func animate(toNode node: SKNode, from positionOrig: CGPoint, to positionNew: CGPoint, duration: TimeInterval, reverseDirection: Bool = false) {
+    func animate(toNode node: SKNode, from positionOrig: CGPoint, to positionNew: CGPoint, duration: TimeInterval) {
         let animation = SKAction.animate(with: textures, timePerFrame: 0.2)
         
         sprite.position = positionOrig
-        sprite.xScale = reverseDirection ? -scale : scale
         
         sprite.run(SKAction.group([
             SKAction.repeatForever(animation),
             SKAction.repeatForever(SKAction.sequence([
                 SKAction.moveBy(x: 0, y: -10, duration: 0.85),
                 SKAction.moveBy(x: 0, y: 20, duration: 0.35),
-            ])),
-            SKAction.sequence([
-                SKAction.moveTo(x: positionNew.x, duration: duration),
-                SKAction.run {
-                    sprite.removeAllActions()
-                },
-                SKAction.removeFromParent()
-            ])
+            ]))
         ]))
+        
+        //There are two ways the flying dragon can move, based on if positionNew.y == 0 or not. I hate writing it this way...
+        if positionNew.y == 0 {
+            sprite.run(SKAction.sequence([
+                SKAction.moveTo(x: positionNew.x, duration: duration),
+                SKAction.removeFromParent()
+            ]))
+        }
+        else {
+            sprite.run(SKAction.sequence([
+                SKAction.move(to: positionNew, duration: duration),
+                SKAction.removeFromParent()
+            ]))
+        }
         
         node.addChild(sprite)
     }

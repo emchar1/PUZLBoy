@@ -190,7 +190,7 @@ class LaunchScene: SKScene {
             case LaunchScene.nodeName_backgroundNode:
                 for backgroundNode in node.children {
                     switch backgroundNode.name {
-                    case LaunchScene.nodeName_groundObjectNode:
+                    case let nodeName where nodeName?.contains(LaunchScene.nodeName_groundObjectNode) ?? false:
                         backgroundNode.run(SKAction.sequence([
                             SKAction.wait(forDuration: playerCrouchDuration),
                             SKAction.moveBy(x: 0, y: -screenSize.height * 2, duration: moveDuration),
@@ -278,7 +278,7 @@ class LaunchScene: SKScene {
                 node.run(SKAction.fadeOut(withDuration: duration))
             case LaunchScene.nodeName_backgroundNode:
                 for backgroundNode in node.children {
-                    if backgroundNode.name == LaunchScene.nodeName_groundObjectNode {
+                    if backgroundNode.name?.contains(LaunchScene.nodeName_groundObjectNode) ?? false {
                         backgroundNode.run(SKAction.sequence([
                             SKAction.wait(forDuration: duration),
                             SKAction.removeFromParent()

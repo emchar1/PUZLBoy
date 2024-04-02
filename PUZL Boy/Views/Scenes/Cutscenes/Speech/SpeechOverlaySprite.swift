@@ -59,7 +59,7 @@ class SpeechOverlaySprite: SKNode {
         speechNode = SKLabelNode(text: text)
         speechNode.fontName = UIFont.chatFont
         speechNode.fontSize = UIFont.chatFontSizeLarge
-        speechNode.fontColor = .white
+        speechNode.fontColor = .yellow.lightenColor(factor: 12)
         speechNode.position = .zero
         speechNode.numberOfLines = 0
         speechNode.preferredMaxLayoutWidth = backgroundNode.frame.size.width
