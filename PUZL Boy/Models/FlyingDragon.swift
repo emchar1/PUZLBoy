@@ -38,6 +38,7 @@ struct FlyingDragon {
         sprite = SKSpriteNode(texture: textures[0])
         sprite.size = FlyingDragon.size
         sprite.setScale(scale)
+        sprite.xScale *= -1
         sprite.position = .zero
         sprite.anchorPoint = CGPoint(x: 0, y: 0.5)
         sprite.zPosition = K.ZPosition.player
