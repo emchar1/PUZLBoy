@@ -20,7 +20,7 @@ struct FlyingDragon {
     
     // MARK: - Initialization
     
-    init(scale: CGFloat = 0.65) {
+    init(scale: CGFloat = 0.75) {
         self.scale = scale
         
         setupSprite()

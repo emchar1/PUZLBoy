@@ -320,16 +320,19 @@ class CutsceneIntro: Cutscene {
                             SKAction.run { [unowned self] in
 
                                 //Fly, my dragons!
-                                for i in 0..<20 {
-                                    let flyingDragons = FlyingDragon(scale: CGFloat.random(in: 0.15...0.35))
+                                for i in 0..<60 {
+                                    let randomY = CGFloat.random(in: 5.5...7)
+                                    let randomScale: CGFloat = (0.8 * randomY - 4.1) / 3 //y = mx + b for points (5.5, 0.1) and (7, 0.5)
+                                    
+                                    let flyingDragons = FlyingDragon(scale: randomScale)
                                     flyingDragons.sprite.zPosition = parallaxLayerZPosition - 2
                                     
                                     run(SKAction.sequence([
-                                        SKAction.wait(forDuration: TimeInterval(i) * TimeInterval.random(in: 1...3)),
+                                        SKAction.wait(forDuration: TimeInterval(i) * TimeInterval.random(in: 0.5...2)),
                                         SKAction.run { [unowned self] in
                                             flyingDragons.animate(toNode: self,
                                                                   from: CGPoint(x: -FlyingDragon.size.width,
-                                                                                y: screenSize.height * CGFloat.random(in: 5...7) / 8),
+                                                                                y: screenSize.height * randomY / 8),
                                                                   to: CGPoint(x: screenSize.width + FlyingDragon.size.width, y: 0),
                                                                   duration: TimeInterval.random(in: 8...10))
                                         }
