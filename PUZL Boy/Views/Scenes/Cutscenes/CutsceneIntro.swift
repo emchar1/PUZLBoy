@@ -296,10 +296,19 @@ class CutsceneIntro: Cutscene {
                                     ParticleEngine.shared.animateParticles(
                                         type: .groundExplode,
                                         toNode: parallaxSplitLayer,
-                                        position: CGPoint(x: particleStart.x * particleScale, 
+                                        position: CGPoint(x: particleStart.x * particleScale,
                                                           y: particleHalfHeight + particleStart.y * particleScale),
                                         scale: UIDevice.modelInfo.ratio / 2,
                                         zPosition: parallaxLayerZPosition,
+                                        duration: 0)
+                                    
+                                    ParticleEngine.shared.animateParticles(
+                                        type: .groundWarp,
+                                        toNode: parallaxSplitLayer,
+                                        position: CGPoint(x: particleStart.x * particleScale,
+                                                          y: particleHalfHeight + particleStart.y * particleScale),
+                                        scale: UIDevice.modelInfo.ratio / 2,
+                                        zPosition: parallaxLayerZPosition - 1,
                                         duration: 0)
                                     
                                     ParticleEngine.shared.removeParticles(fromNode: parallaxLayer)

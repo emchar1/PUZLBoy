@@ -33,6 +33,7 @@ class ParticleEngine: SKNode {
         case gemSparkle = "GemSparkleParticles"
         case groundExplode = "GroundExplodeParticles"
         case groundSplit = "GroundSplitParticles"
+        case groundWarp = "GroundWarpParticles"
         case hearts = "HeartsParticles"
         case heroRainbow = "HeroRainbowParticles"
         case inbetween = "InBetweenParticles"
