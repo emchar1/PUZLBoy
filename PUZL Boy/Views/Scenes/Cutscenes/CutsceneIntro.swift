@@ -272,7 +272,7 @@ class CutsceneIntro: Cutscene {
                                 parallaxManager.addSplitGroundSprite(animationDuration: 0.1) { [unowned self] in
                                     let parallaxSplitLayer = parallaxManager.getSpriteFor(set: ParallaxObject.SetType.grass.rawValue, layer: 13) ?? SKNode()
                                     
-                                    for i in 0..<75 {
+                                    for i in 0..<65 {
                                         let dragonSpawn = FlyingDragon(scale: CGFloat.random(in: 0.35...0.5))
                                         let spawnRange = CGFloat.random(in: -250...250)
                                         let posStart = CGPoint(x: particleStart.x + FlyingDragon.size.width / 2,
