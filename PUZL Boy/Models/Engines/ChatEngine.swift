@@ -563,6 +563,7 @@ extension ChatEngine {
         dialoguePlayed[PauseResetEngine.resetButtonUnlock] = false //Level: 100
 
         //Chapter 1 - In Search of the Princess
+        dialoguePlayed[101] = false
         dialoguePlayed[112] = false
         dialoguePlayed[PauseResetEngine.hintButtonUnlock] = false //Level: 140
         dialoguePlayed[160] = false
@@ -608,7 +609,7 @@ extension ChatEngine {
         //DARK REALM
         case Level.partyLevel: //Level: -1
             sendChatArray(items: [
-                ChatItem(profile: .hero, imgPos: .left, chat: "Yo, I feel funny. I'm seeing colorful flashing lights and the music is bumpin'. I can't stop moving.. and I like it!"),
+                ChatItem(profile: .hero, imgPos: .left, chat: "Dude, I feel funny. I'm seeing colorful flashing lights and the music is bumpin'. I can't stop moving!"),
                 ChatItem(profile: .trainer, chat: "Welcome to the DARK REALM, the hidden realm that exists between PUZZLE REALMS. You ate one of those rainbow colored jelly beans, I see."),
                 ChatItem(profile: .hero, imgPos: .left, chat: "Jelly beans, right..."),
                 ChatItem(profile: .trainer, chat: "Don't worry, the feeling lasts only a short amount of time, but while you're under its effects you can move to your heart's content."),
@@ -757,11 +758,11 @@ extension ChatEngine {
         //PUZZLE REALM
         case 1:
             sendChatArray(items: [
-                ChatItem(profile: .hero, imgPos: .left, chat: "PUZL BOY: ...then the dragon swooped down and carried her away! It. Was. Harrowing. So... where are we? And who are you??"),
-                ChatItem(profile: .trainer, chat: "MARLIN: I am your guide... Marlin. I suspect she is being taken to the dragon's lair. You have been transported to the PUZZLE REALM, our gateway to the lair."),
+                ChatItem(profile: .hero, imgPos: .left, chat: "PUZL BOY: ...then one of the dragon swooped down and carried her away! It. Was. Harrowing. So... where are we? And who are you??"),
+                ChatItem(profile: .trainer, chat: "MARLIN: I am your guide, Marlin. I suspect she is being taken to the dragon's lair. You have been transported to the PUZZLE REALM, our gateway to the lair."),
                 ChatItem(profile: .trainer, chat: "The dragon's lair is buried deep inside Earth's core, and the only way to reach it is by solving logic puzzles."),
                 ChatItem(profile: .trainer, chat: "There are 500 levels in total you will have to complete, each with increasing difficulty."),
-                ChatItem(profile: .trainer, chat: "The goal for each level is to get to the gate in under a certain number of moves.") { [unowned self] in
+                ChatItem(profile: .trainer, chat: "The goal for each level is to make it through the gate in under a certain number of moves.") { [unowned self] in
                     delegate?.illuminatePanel(at: (0, 1), useOverlay: false)
                     delegate?.illuminatePanel(at: (1, 0), useOverlay: false)
                     delegate?.illuminatePanel(at: (1, 2), useOverlay: false)
@@ -779,7 +780,7 @@ extension ChatEngine {
                     delegate?.illuminatePanel(at: (1, 2), useOverlay: true)
                     delegate?.illuminatePanel(at: (2, 2), useOverlay: false)
                 },
-                ChatItem(profile: .trainer, chat: "See the gate? It's closed. To open it, collect all the gems in the level. Simple, right?"),
+                ChatItem(profile: .trainer, chat: "See the gate? It's sealed. To open it, collect all the gems in the level. Simple, right?"),
                 ChatItem(profile: .hero, imgPos: .left, chat: "Right. Let's go save the princess!")
             ]) { [unowned self] in
                 delegate?.deilluminatePanel(at: (1, 2), useOverlay: true)
@@ -795,13 +796,13 @@ extension ChatEngine {
                 ChatItem(profile: .trainer, chat: "Pretty easy, right? Levels get progressively harder with various obstacles blocking your path.") { [unowned self] in
                     delegate?.illuminateDisplayNode(for: .hammers)
                 },
-                ChatItem(profile: .trainer, chat: "You need a hammer to break through those boulders. Your inventory count can be found in the upper right. 🔨"),
+                ChatItem(profile: .trainer, chat: "You need a hammer to break through those boulders. Your inventory can be found in the upper right. 🔨"),
                 ChatItem(profile: .hero, imgPos: .left, chat: "Hammers break boulders. Makes sense.") { [unowned self] in
                     delegate?.deilluminateDisplayNode(for: .hammers)
                 },
                 ChatItem(profile: .trainer, chat: "Since there are no hammers in this level, you'll just have to go around them."),
                 ChatItem(profile: .hero, imgPos: .left, chat: "Ah well, gotta get my steps in."),
-                ChatItem(profile: .trainer, chat: "Oh, and one more thing... hammers can only be used once before breaking, so plan your moves ahead of time.")
+                ChatItem(profile: .trainer, chat: "Oh, and one more thing... hammers can only be used once before breaking, so plan your moves accordingly.")
             ]) { [unowned self] in
                 handleDialogueCompletion(level: level, completion: completion)
             }
@@ -810,8 +811,8 @@ extension ChatEngine {
             delegate?.illuminatePanel(at: (2, 1), useOverlay: false)
             
             sendChatArray(items: [
-                ChatItem(profile: .trainer, chat: "Watch out for poison marsh! Stepping on one of the crimson colored panels will drag you down, costing you 2 moves."),
-                ChatItem(profile: .trainer, chat: "However, sometimes stepping in poison marsh is unavoidable."),
+                ChatItem(profile: .trainer, chat: "Watch out for poisonous marsh! Stepping on one of the crimson colored panels will drag you down, costing you 2 moves."),
+                ChatItem(profile: .trainer, chat: "However, sometimes stepping in poisonous marsh is unavoidable."),
                 ChatItem(profile: .hero, imgPos: .left, chat: "Man... and I just got these new kicks!")
             ]) { [unowned self] in
                 delegate?.deilluminatePanel(at: (0, 1), useOverlay: false)
@@ -824,10 +825,10 @@ extension ChatEngine {
             delegate?.illuminatePanel(at: (1, 2), useOverlay: true)
             
             sendChatArray(items: [
-                ChatItem(profile: .trainer, chat: "Those fun looking things are warps. Stepping on one of them will teleport you to the other one. Weeeeeeeee!"),
-                ChatItem(profile: .hero, imgPos: .left, chat: "Is it safe?"),
+                ChatItem(profile: .trainer, chat: "Those fun looking things are warps. Falling into one of them will teleport you to the other one. Weeeeeeeee!"),
+                ChatItem(profile: .hero, imgPos: .left, chat: "Uhhh, is it safe?"),
                 ChatItem(profile: .trainer, chat: "I haven't tested it. Theoretically—"),
-                ChatItem(profile: .hero, imgPos: .left, chat: "MARLIN!!! Is it going to rip me apart or what?"),
+                ChatItem(profile: .hero, imgPos: .left, chat: "MERLIN!! Is it going to rip me apart or what?"),
                 ChatItem(profile: .trainer, chat: "I'm sure you'll be fine. Just don't stare at it too long or I'll have you barking like a chicken at the snap of my fingers. ✨SNAP✨ 🫰🏼"),
                 ChatItem(profile: .hero, imgPos: .left, chat: "Chickens don't bark, you nutty profess— 😵‍💫 Woof woof.")
             ]) { [unowned self] in
@@ -840,8 +841,8 @@ extension ChatEngine {
             delegate?.illuminatePanel(at: (1, 1), useOverlay: true)
             
             sendChatArray(items: [
-                ChatItem(profile: .hero, imgPos: .left, chat: "Yo! That's the dragon that took the princess! 😡"),
-                ChatItem(profile: .trainer, chat: "Relax... That's one of many dragons you'll encounter on your journey. But don't get too close or it'll cost ya 1 health point."),
+                ChatItem(profile: .hero, imgPos: .left, chat: "That's him! That's the dragon that took the princess! 😡"),
+                ChatItem(profile: .trainer, chat: "Relax... That's one of many dragons you'll encounter on your journey. But don't get too close or he'll attack, costing you 1 health point."),
                 ChatItem(profile: .hero, imgPos: .left, chat: "He looks kinda small and underwhelming to me..."),
                 ChatItem(profile: .trainer, chat: "Hey, this is a solo project with zero budget, whaddya want from me?! As I was saying...") { [unowned self] in
                     delegate?.illuminateDisplayNode(for: .health)
@@ -869,7 +870,7 @@ extension ChatEngine {
             sendChatArray(items: [
                 ChatItem(profile: .trainer, chat: "Ice, ice, baby! Step on this and you'll slide until you hit either an obstacle or the edge of the level."),
                 ChatItem(profile: .trainer, chat: "The nice thing though is that it'll only cost you 1 move as long as you're sliding continuously."),
-                ChatItem(profile: .hero, imgPos: .left, chat: "Ok. I think I got it, old man.") { [unowned self] in
+                ChatItem(profile: .hero, imgPos: .left, chat: "The cold never bothered me anyway.") { [unowned self] in
                     delegate?.deilluminatePanel(at: (0, 1), useOverlay: false)
                     delegate?.deilluminatePanel(at: (0, 2), useOverlay: false)
                     delegate?.deilluminatePanel(at: (1, 2), useOverlay: false)
@@ -894,6 +895,24 @@ extension ChatEngine {
             ]) { [unowned self] in
                 GameCenterManager.shared.updateProgress(achievement: .avidReader, shouldReportImmediately: true)
 
+                handleDialogueCompletion(level: level, completion: completion)
+            }
+        case 101:
+            sendChatArray(items: [
+                ChatItem(profile: .hero, imgPos: .left, chat: "Merlin! C'mon, we gotta go."),
+                ChatItem(profile: .trainer, chat: "My name is Marlin. Marlin the Magnificent! Not Merlin. Not dude. Not old man!"),
+                ChatItem(profile: .hero, imgPos: .left, chat: "Oh! Marlin like the fish??? I hate fish by the way. The smell, the texture..."),
+                ChatItem(profile: .trainer, chat: "No. Not like the fish. Marlin like... the Magician. You see, in my world I am what is known as a Mystic."),
+                ChatItem(profile: .trainer, chat: "As a matter of fact, I come from a long line of legendary and powerful Mystics, each with our own unique powers and abilities..."),
+                ChatItem(profile: .trainer, chat: "Some Mystics control the elements: fire, water, air.. Some are all-knowing, while others govern the arts and science. I happen to be a water mage."),
+                ChatItem(profile: .trainer, chat: "Let's see, there's Maxel, Mywren, and Malana, our Mystics in training who I am personally mentoring..."),
+                ChatItem(profile: .hero, imgPos: .left, chat: "Mmmkay. Got it 🥱"),
+                ChatItem(profile: .trainer, chat: "Moving on. I received a visitor while I was in the Dark Realm. He didn't say who he was, but I think he might be connected to the disappearance."),
+                ChatItem(profile: .hero, imgPos: .left, chat: "Water mage... like a fish? A marlin is a fish. You're thinking of Merlin the Magician."),
+                ChatItem(profile: .trainer, chat: "Enough with the fish already! We need to be on the lookout for the mysterious figure. Likely he holds the key to this mystery."),
+                ChatItem(profile: .hero, imgPos: .left, chat: "What's he look like?"),
+                ChatItem(profile: .trainer, chat: "If you run into someone that looks mysterious, It's probably him.")
+            ]) { [unowned self] in
                 handleDialogueCompletion(level: level, completion: completion)
             }
         case 112:
