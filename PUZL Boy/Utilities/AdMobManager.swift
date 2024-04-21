@@ -44,7 +44,7 @@ class AdMobManager: NSObject {
     static let rewardedID = "ca-app-pub-3940256099942544/1712485313"
 
     
-    static let eddiesiPhoneTestingDeviceID = "3f4aed5e3dafdbe6435ec3679a8e07fa"//I don't know what this is: "00008110-000808E61E6A801E"
+    static let eddiesiPhoneTestingDeviceID = "3f4aed5e3dafdbe6435ec3679a8e07fa" //Eddie's iPhone 14 Pro
     static let momsiPhoneTestingDeviceID = "6582222a25a290e89ca6a1c4f29924d6"
     static let testingSimulatorID = GADSimulatorID
     

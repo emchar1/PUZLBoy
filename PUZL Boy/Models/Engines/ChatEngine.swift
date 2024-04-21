@@ -758,7 +758,7 @@ extension ChatEngine {
         //PUZZLE REALM
         case 1:
             sendChatArray(items: [
-                ChatItem(profile: .hero, imgPos: .left, chat: "PUZL BOY: ...then one of the dragon swooped down and carried her away! It. Was. Harrowing. So... where are we? And who are you??"),
+                ChatItem(profile: .hero, imgPos: .left, chat: "PUZL BOY: ...then one of the dragons swooped down and carried her away! It. Was. Harrowing. So... where are we? And who are you??"),
                 ChatItem(profile: .trainer, chat: "MARLIN: I am your guide, Marlin. I suspect she is being taken to the dragon's lair. You have been transported to the PUZZLE REALM, our gateway to the lair."),
                 ChatItem(profile: .trainer, chat: "The dragon's lair is buried deep inside Earth's core, and the only way to reach it is by solving logic puzzles."),
                 ChatItem(profile: .trainer, chat: "There are 500 levels in total you will have to complete, each with increasing difficulty."),
@@ -900,7 +900,7 @@ extension ChatEngine {
         case 101:
             sendChatArray(items: [
                 ChatItem(profile: .hero, imgPos: .left, chat: "Merlin! C'mon, we gotta go."),
-                ChatItem(profile: .trainer, chat: "My name is Marlin. Marlin the Magnificent! Not Merlin. Not dude. Not old man!"),
+                ChatItem(profile: .trainer, chat: "The name's Marlin. Marlin the Magnificent! Not Merlin. Not dude. Not old man!"),
                 ChatItem(profile: .hero, imgPos: .left, chat: "Oh! Marlin like the fish??? I hate fish by the way. The smell, the texture..."),
                 ChatItem(profile: .trainer, chat: "No. Not like the fish. Marlin like... the Magician. You see, in my world I am what is known as a Mystic."),
                 ChatItem(profile: .trainer, chat: "As a matter of fact, I come from a long line of legendary and powerful Mystics, each with our own unique powers and abilities..."),
