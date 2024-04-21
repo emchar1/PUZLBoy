@@ -7,6 +7,8 @@
 
 import SpriteKit
 
+// TODO: - Cutscene Old Friends
+
 class CutsceneOldFriends: Cutscene {
     
     // MARK: - Properties
