@@ -192,8 +192,16 @@ class LaunchScene: SKScene {
                     switch backgroundNode.name {
                     case let nodeName where nodeName?.contains(LaunchScene.nodeName_groundObjectNode) ?? false:
                         backgroundNode.run(SKAction.sequence([
-                            SKAction.wait(forDuration: playerCrouchDuration),
-                            SKAction.moveBy(x: 0, y: -screenSize.height * 2, duration: moveDuration),
+                            SKAction.group([
+                                SKAction.scale(to: 2, duration: playerTimePerFrame),
+                                SKAction.moveTo(y: -screenSize.height / 2, duration: playerTimePerFrame)
+                            ]),
+                            SKAction.wait(forDuration: playerCrouchDuration - 2 * playerTimePerFrame),
+                            SKAction.group([
+                                SKAction.scale(to: 1, duration: playerTimePerFrame),
+                                SKAction.moveTo(y: 0, duration: playerTimePerFrame)
+                            ]),
+                            SKAction.moveBy(x: -screenSize.width, y: -screenSize.height * 2, duration: moveDuration),
                             SKAction.removeFromParent()
                         ]))
                     case LaunchScene.nodeName_skyObjectNode:
@@ -208,6 +216,9 @@ class LaunchScene: SKScene {
                 node.removeAllActions()
                 
                 //Player Action properties
+                let reflectionScaleY: CGFloat = node.name == LaunchScene.nodeName_playerReflection ? -1 : 1
+                let reflectionMoveY: CGFloat = node.name == LaunchScene.nodeName_playerReflection ? -Player.size.height : 0
+                
                 let reflectionMultiplier: CGFloat = node.name == LaunchScene.nodeName_playerReflection ? -4 : 1
                 let jumpStartPoint = CGPoint(x: screenSize.width / 3, y: screenSize.height / 3 * reflectionMultiplier)
                 let jumpEndPoint = CGPoint(x: screenSize.width / 2, y: screenSize.height / 2 * reflectionMultiplier)
@@ -240,7 +251,15 @@ class LaunchScene: SKScene {
                         SKAction.moveTo(x: screenSize.width / 4, duration: playerCrouchDuration * parallaxManager.speedFactor),
                         SKAction.animate(with: player.textures[Player.Texture.jump.rawValue], timePerFrame: playerTimePerFrame),
                         SKAction.sequence([
-                            SKAction.wait(forDuration: playerCrouchDuration),
+                            SKAction.group([
+                                SKAction.scaleX(to: 2, y: 2 * reflectionScaleY, duration: playerTimePerFrame),
+                                SKAction.moveBy(x: 0, y: reflectionMoveY, duration: playerTimePerFrame)
+                            ]),
+                            SKAction.wait(forDuration: playerCrouchDuration - 2 * playerTimePerFrame),
+                            SKAction.group([
+                                SKAction.scaleX(to: Player.cutsceneScale, y: Player.cutsceneScale * reflectionScaleY, duration: playerTimePerFrame),
+                                SKAction.moveBy(x: 0, y: -reflectionMoveY, duration: playerTimePerFrame)
+                            ]),
                             SKAction.group([
                                 SKAction.colorize(withColorBlendFactor: 0, duration: jumpDuration),
                                 SKAction.scale(to: 0.1, duration: jumpDuration),
