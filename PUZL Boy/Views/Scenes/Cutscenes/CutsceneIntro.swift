@@ -312,6 +312,8 @@ class CutsceneIntro: Cutscene {
                                         duration: 0)
                                     
                                     ParticleEngine.shared.removeParticles(fromNode: parallaxLayer)
+                                    
+                                    closeUpSplitGround(particleStart: particleStart * particleScale)
                                 }
                             }
                         ]))
@@ -319,6 +321,8 @@ class CutsceneIntro: Cutscene {
                     SpeechBubbleItem(profile: speechPlayerLeft, chat: "What a cute story!|| Well don't worry, I'll get you to where you need to...|| WHAT THE—") { [unowned self] in
                         run(SKAction.sequence([
                             SKAction.run { [unowned self] in
+                                wideShot()
+
                                 dragonSprite.run(SKAction.group([
                                     SKAction.scale(to: 2, duration: 0.5),
                                     SKAction.move(to: CGPoint(x: princessPositionFinal.x,
@@ -473,6 +477,8 @@ class CutsceneIntro: Cutscene {
         playerLeft.sprite.position.x = screenSize.width / 2
         playerLeft.sprite.setScale(2)
         
+        skyNode.setScale(1)
+
         parallaxManager.backgroundSprite.setScale(2)
         parallaxManager.backgroundSprite.position.y = -screenSize.height / 2 + 400
         parallaxManager.backgroundSprite.position.x = screenSize.width / 2
@@ -497,11 +503,27 @@ class CutsceneIntro: Cutscene {
         playerLeft.sprite.position.x = -200
         playerLeft.sprite.setScale(playerLeft.scaleMultiplier * Player.cutsceneScale)
         
+        skyNode.setScale(1)
+
         parallaxManager.backgroundSprite.setScale(2)
         parallaxManager.backgroundSprite.position.y = -screenSize.height / 2 + 400
         parallaxManager.backgroundSprite.position.x = -screenSize.width / 2
         
         speechPlayerRight.position = CGPoint(x: screenSize.width - 300, y: screenSize.height + 400) / 2
+    }
+    
+    private func closeUpSplitGround(particleStart: CGPoint) {
+        playerRight.sprite.position.y = -screenSize.height
+        playerLeft.sprite.position.y = -screenSize.height
+        
+        skyNode.setScale(2)
+
+        parallaxManager.backgroundSprite.setScale(2)
+        parallaxManager.backgroundSprite.position.y = -screenSize.height * 2 / 3
+        parallaxManager.backgroundSprite.position.x = -2 * particleStart.x + screenSize.width / 2
+        
+        speechPlayerRight.position = CGPoint(x: -speechPlayerRight.bubbleDimensions.width / 2, y: princessPositionFinal.y)
+        speechPlayerLeft.position = CGPoint(x: speechPlayerLeft.bubbleDimensions.width / 2, y: heroPositionFinal.y)
     }
     
     private func midShotPrincessDragon() {
@@ -519,6 +541,8 @@ class CutsceneIntro: Cutscene {
         dragonSprite.position = CGPoint(x: screenSize.width / 2, y: screenSize.height / 2)
         dragonSprite.setScale(4)
         
+        skyNode.setScale(1)
+        
         parallaxManager.backgroundSprite.setScale(1 / 0.75)
         parallaxManager.backgroundSprite.position.y = -screenSize.height / 2 + 750
         parallaxManager.backgroundSprite.position.x = -screenSize.width / 2
@@ -532,9 +556,11 @@ class CutsceneIntro: Cutscene {
         playerRight.sprite.setScale(playerRight.scaleMultiplier * Player.cutsceneScale)
         playerRight.sprite.xScale *= -1
         
-        playerLeft.sprite.position.x = heroPositionFinal.x
+        playerLeft.sprite.position = heroPositionFinal
         playerLeft.sprite.setScale(playerLeft.scaleMultiplier * Player.cutsceneScale)
         
+        skyNode.setScale(1)
+
         parallaxManager.backgroundSprite.setScale(1)
         parallaxManager.backgroundSprite.position = .zero
         
