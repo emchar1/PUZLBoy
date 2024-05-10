@@ -1,7 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "5PlayApps.png",
+      "filename" : "5PlayAppsSM.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
@@ -12,12 +12,12 @@
           "value" : "dark"
         }
       ],
-      "filename" : "5PlayAppsDARK.png",
+      "filename" : "5PlayAppsSM_dark.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "5PlayApps@2x.png",
+      "filename" : "5PlayAppsSM@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
@@ -28,12 +28,12 @@
           "value" : "dark"
         }
       ],
-      "filename" : "5PlayAppsDARK@2x.png",
+      "filename" : "5PlayAppsSM_dark@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "5PlayApps@3x.png",
+      "filename" : "5PlayAppsSM@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     },
@@ -44,7 +44,7 @@
           "value" : "dark"
         }
       ],
-      "filename" : "5PlayAppsDARK@3x.png",
+      "filename" : "5PlayAppsSM_dark@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

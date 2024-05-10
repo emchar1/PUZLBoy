@@ -570,7 +570,7 @@ extension ChatEngine {
         dialoguePlayed[190] = false
 
         //Chapter 2 - A Mysterious Stranger Among Us
-        dialoguePlayed[201] = false
+//        dialoguePlayed[201] = false
         dialogueWithCutscene[201] = true //Dialogue with CUTSCENES (always set to true)
         dialoguePlayed[208] = false //spawn at (0, 2)
         dialoguePlayed[240] = false //spawn at (0, 1)
@@ -983,8 +983,8 @@ extension ChatEngine {
             ]) { [unowned self] in
                 handleDialogueCompletion(level: level, completion: completion)
             }
-        case 201: // TODO: - Build out this cutscene!
-            sendChatArray(items: [
+//        case 201: // TODO: - Build out this cutscene!
+//            sendChatArray(items: [
 //                ChatItem(profile: .hero, imgPos: .left, chat: "What took you so long? I was talking to myself before I realized you were still in the DARK REALM..."),
 //                ChatItem(profile: .trainer, chat: "PUZL Boy, I—"),
 //                ChatItem(profile: .hero, imgPos: .left, chat: "As I was saying, I used to have regular milk with my cereal, then I discovered oat milk and dude, it slaps!"),
@@ -992,10 +992,10 @@ extension ChatEngine {
 //                ChatItem(profile: .hero, imgPos: .left, chat: "Means it's yummy! 😋"),
 //                ChatItem(profile: .trainer, chat: "We need to find the princess and send her back to Vaeloria right away. Time is of the essence."),
 //                ChatItem(profile: .hero, imgPos: .left, chat: "Yeah, we're headed to the core right now. Why the rush all of a sudden?"),
-                ChatItem(profile: .trainer, chat: "It all started when...")
-            ]) { [unowned self] in
-                handleDialogueCompletionWithCutscene(level: level, completion: completion)
-            }
+//                ChatItem(profile: .trainer, chat: "It all started when...")
+//            ]) { [unowned self] in
+//                handleDialogueCompletionWithCutscene(level: level, completion: completion)
+//            }
         case 208:
             let spawnPoint: K.GameboardPosition = (0, 2)
             let decisionIndex = 0
@@ -1054,93 +1054,93 @@ extension ChatEngine {
             
         // TODO: - Chat Decisions
         
-        case 210:
-            let decisionIndex = 0
-            
-            sendChatArray(items: [
-                ChatItem(profile: .trainer, chat: "What's it gonna be, PUZL Boy?") { [unowned self] in
-                    chatDecisionEngine.showDecisions(index: decisionIndex, toNode: chatBackgroundSprite)
-                },
-                ChatItem(profile: .hero, imgPos: .left, endChat: false, chat: "Hmmm, let me think about it...", handler: nil)
-            ]) { [unowned self] in
-                let decision = FIRManager.decisions[decisionIndex].isLeftButton() ? chatDecisionEngine.decisionButtons[decisionIndex].left.text : chatDecisionEngine.decisionButtons[decisionIndex].right.text
-                
-                sendChatArray(items: [
-                    ChatItem(profile: .trainer, startNewChat: false, chat: "Good choice! I also like \(decision).", handler: nil)
-                ]) { [unowned self] in
-                    handleDialogueCompletion(level: level, completion: completion)
-                }
-            }
-        case 211:
-            let decisionIndex = 1
-            
-            sendChatArray(items: [
-                ChatItem(profile: .trainer, chat: "What's it gonna be, PUZL Boy?") { [unowned self] in
-                    chatDecisionEngine.showDecisions(index: decisionIndex, toNode: chatBackgroundSprite)
-                },
-                ChatItem(profile: .hero, imgPos: .left, endChat: false, chat: "Hmmm, let me think about it...", handler: nil)
-            ]) { [unowned self] in
-                let decision = FIRManager.decisions[decisionIndex].isLeftButton() ? chatDecisionEngine.decisionButtons[decisionIndex].left.text : chatDecisionEngine.decisionButtons[decisionIndex].right.text
-                
-                sendChatArray(items: [
-                    ChatItem(profile: .trainer, startNewChat: false, chat: "Good choice! I also like \(decision).", handler: nil)
-                ]) { [unowned self] in
-                    handleDialogueCompletion(level: level, completion: completion)
-                }
-            }
-        case 212:
-            let decisionIndex = 2
-            
-            sendChatArray(items: [
-                ChatItem(profile: .trainer, chat: "What's it gonna be, PUZL Boy?") { [unowned self] in
-                    chatDecisionEngine.showDecisions(index: decisionIndex, toNode: chatBackgroundSprite)
-                },
-                ChatItem(profile: .hero, imgPos: .left, endChat: false, chat: "Hmmm, let me think about it...", handler: nil)
-            ]) { [unowned self] in
-                let decision = FIRManager.decisions[decisionIndex].isLeftButton() ? chatDecisionEngine.decisionButtons[decisionIndex].left.text : chatDecisionEngine.decisionButtons[decisionIndex].right.text
-                
-                sendChatArray(items: [
-                    ChatItem(profile: .trainer, startNewChat: false, chat: "Good choice! I also like \(decision).", handler: nil)
-                ]) { [unowned self] in
-                    handleDialogueCompletion(level: level, completion: completion)
-                }
-            }
-        case 213:
-            let decisionIndex = 3
-            
-            sendChatArray(items: [
-                ChatItem(profile: .trainer, chat: "What's it gonna be, PUZL Boy?") { [unowned self] in
-                    chatDecisionEngine.showDecisions(index: decisionIndex, toNode: chatBackgroundSprite)
-                },
-                ChatItem(profile: .hero, imgPos: .left, endChat: false, chat: "Hmmm, let me think about it...", handler: nil)
-            ]) { [unowned self] in
-                let decision = FIRManager.decisions[decisionIndex].isLeftButton() ? chatDecisionEngine.decisionButtons[decisionIndex].left.text : chatDecisionEngine.decisionButtons[decisionIndex].right.text
-                
-                sendChatArray(items: [
-                    ChatItem(profile: .trainer, startNewChat: false, chat: "Good choice! I also like \(decision).", handler: nil)
-                ]) { [unowned self] in
-                    handleDialogueCompletion(level: level, completion: completion)
-                }
-            }
-        case 214:
-            delegate?.inbetweenRealmEnter(levelInt: level)
-            
-            sendChatArray(shouldSkipDim: true, items: [
-                ChatItem(profile: .villain, chat: "So... you're a princess."),
-                ChatItem(profile: .princess, imgPos: .left, chat: "You got that right, mister! When my mom and dad find out what you've done, you'll be sorry!"),
-                ChatItem(profile: .villain, chat: "Ohh? Do tell what they'll do."),
-                ChatItem(profile: .princess, imgPos: .left, chat: "They'll.. THEY'LL.. They'll give you a good yelling!")
-            ]) { [unowned self] in
-                guard let delegate = delegate else {
-                    //Just in case delegate is false, which it shouldn't be!!!
-                    handleDialogueCompletion(level: level, completion: completion)
-                    return
-                }
-                
-                delegate.inbetweenRealmExit { [unowned self] in
-                    handleDialogueCompletion(level: level, completion: completion)
-                }
-            }
+//        case 210:
+//            let decisionIndex = 0
+//            
+//            sendChatArray(items: [
+//                ChatItem(profile: .trainer, chat: "What's it gonna be, PUZL Boy?") { [unowned self] in
+//                    chatDecisionEngine.showDecisions(index: decisionIndex, toNode: chatBackgroundSprite)
+//                },
+//                ChatItem(profile: .hero, imgPos: .left, endChat: false, chat: "Hmmm, let me think about it...", handler: nil)
+//            ]) { [unowned self] in
+//                let decision = FIRManager.decisions[decisionIndex].isLeftButton() ? chatDecisionEngine.decisionButtons[decisionIndex].left.text : chatDecisionEngine.decisionButtons[decisionIndex].right.text
+//                
+//                sendChatArray(items: [
+//                    ChatItem(profile: .trainer, startNewChat: false, chat: "Good choice! I also like \(decision).", handler: nil)
+//                ]) { [unowned self] in
+//                    handleDialogueCompletion(level: level, completion: completion)
+//                }
+//            }
+//        case 211:
+//            let decisionIndex = 1
+//            
+//            sendChatArray(items: [
+//                ChatItem(profile: .trainer, chat: "What's it gonna be, PUZL Boy?") { [unowned self] in
+//                    chatDecisionEngine.showDecisions(index: decisionIndex, toNode: chatBackgroundSprite)
+//                },
+//                ChatItem(profile: .hero, imgPos: .left, endChat: false, chat: "Hmmm, let me think about it...", handler: nil)
+//            ]) { [unowned self] in
+//                let decision = FIRManager.decisions[decisionIndex].isLeftButton() ? chatDecisionEngine.decisionButtons[decisionIndex].left.text : chatDecisionEngine.decisionButtons[decisionIndex].right.text
+//                
+//                sendChatArray(items: [
+//                    ChatItem(profile: .trainer, startNewChat: false, chat: "Good choice! I also like \(decision).", handler: nil)
+//                ]) { [unowned self] in
+//                    handleDialogueCompletion(level: level, completion: completion)
+//                }
+//            }
+//        case 212:
+//            let decisionIndex = 2
+//            
+//            sendChatArray(items: [
+//                ChatItem(profile: .trainer, chat: "What's it gonna be, PUZL Boy?") { [unowned self] in
+//                    chatDecisionEngine.showDecisions(index: decisionIndex, toNode: chatBackgroundSprite)
+//                },
+//                ChatItem(profile: .hero, imgPos: .left, endChat: false, chat: "Hmmm, let me think about it...", handler: nil)
+//            ]) { [unowned self] in
+//                let decision = FIRManager.decisions[decisionIndex].isLeftButton() ? chatDecisionEngine.decisionButtons[decisionIndex].left.text : chatDecisionEngine.decisionButtons[decisionIndex].right.text
+//                
+//                sendChatArray(items: [
+//                    ChatItem(profile: .trainer, startNewChat: false, chat: "Good choice! I also like \(decision).", handler: nil)
+//                ]) { [unowned self] in
+//                    handleDialogueCompletion(level: level, completion: completion)
+//                }
+//            }
+//        case 213:
+//            let decisionIndex = 3
+//            
+//            sendChatArray(items: [
+//                ChatItem(profile: .trainer, chat: "What's it gonna be, PUZL Boy?") { [unowned self] in
+//                    chatDecisionEngine.showDecisions(index: decisionIndex, toNode: chatBackgroundSprite)
+//                },
+//                ChatItem(profile: .hero, imgPos: .left, endChat: false, chat: "Hmmm, let me think about it...", handler: nil)
+//            ]) { [unowned self] in
+//                let decision = FIRManager.decisions[decisionIndex].isLeftButton() ? chatDecisionEngine.decisionButtons[decisionIndex].left.text : chatDecisionEngine.decisionButtons[decisionIndex].right.text
+//                
+//                sendChatArray(items: [
+//                    ChatItem(profile: .trainer, startNewChat: false, chat: "Good choice! I also like \(decision).", handler: nil)
+//                ]) { [unowned self] in
+//                    handleDialogueCompletion(level: level, completion: completion)
+//                }
+//            }
+//        case 214:
+//            delegate?.inbetweenRealmEnter(levelInt: level)
+//            
+//            sendChatArray(shouldSkipDim: true, items: [
+//                ChatItem(profile: .villain, chat: "So... you're a princess."),
+//                ChatItem(profile: .princess, imgPos: .left, chat: "You got that right, mister! When my mom and dad find out what you've done, you'll be sorry!"),
+//                ChatItem(profile: .villain, chat: "Ohh? Do tell what they'll do."),
+//                ChatItem(profile: .princess, imgPos: .left, chat: "They'll.. THEY'LL.. They'll give you a good yelling!")
+//            ]) { [unowned self] in
+//                guard let delegate = delegate else {
+//                    //Just in case delegate is false, which it shouldn't be!!!
+//                    handleDialogueCompletion(level: level, completion: completion)
+//                    return
+//                }
+//                
+//                delegate.inbetweenRealmExit { [unowned self] in
+//                    handleDialogueCompletion(level: level, completion: completion)
+//                }
+//            }
 
             
             
@@ -1165,7 +1165,6 @@ extension ChatEngine {
                     ChatItem(profile: .hero, imgPos: .left, chat: "I didn't say sacrifice—"),
                     ChatItem(profile: .villain, chat: "Tell you what. Marlin, you lend me your powers and I'll use the girl as a conduit to complete the spell."),
                     ChatItem(profile: .trainer, imgPos: .left, chat: "No. Wow. You are terrible at negotiations! You let the princess go and I— I'll return home to M'Earth with you......."),
-                    ChatItem(profile: .hero, imgPos: .left, chat: "\"M'Earth?\" Well that's just lazy writing."), // FIXME: - Bad dialogue
                     ChatItem(profile: .villain, chat: "..................No deal.")
                 ]) { [unowned self] in
                     fadeDimOverlay()
