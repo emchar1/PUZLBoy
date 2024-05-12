@@ -116,6 +116,7 @@ struct K {
     
     struct UserDefaults {
         //UserDefault Keys
+        static let firebaseUID = "FirebaseUID"
         static let muteMusic = "MuteMusic"
         static let muteSoundFX = "MuteSoundFX"
         static let disableVibration = "DisableVibration"

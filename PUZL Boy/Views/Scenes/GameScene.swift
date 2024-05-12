@@ -101,7 +101,7 @@ class GameScene: SKScene {
         levelSkipEngine = LevelSkipEngine()
         tapPointerEngine = TapPointerEngine()
 
-        // FIXME: - 8/30/23 Added '&& user != nil' here to also show offline play if user is nil, i.e. error connecting to Firebase.
+        // FIXME: - Uncomment to test/debug.
         offlinePlaySprite = (hasInternet && FIRManager.user != nil) ? nil : OfflinePlaySprite()
         
         super.init(size: size)
@@ -372,7 +372,7 @@ class GameScene: SKScene {
         - levelStatsItem: the current level stats to save to Firebase
      */
     private func saveState(levelStatsItem: LevelStats) {
-        guard let user = FIRManager.user, LevelBuilder.levelsSize > 0 else { return }
+        guard LevelBuilder.levelsSize > 0 else { return print("GameScene.saveState(): levelSize less than 0") }
         
         if levelStatsArray.filter({ $0 == levelStatsItem }).first != nil {
             if let indexFound = levelStatsArray.firstIndex(where: { $0 == levelStatsItem }) {
@@ -414,11 +414,11 @@ class GameScene: SKScene {
             saveDate: Date(),
             score: levelStatsItem.didWin ? 0 : scoringEngine.scoringManager.score,
             totalScore: scoringEngine.scoringManager.totalScore + (levelStatsItem.didWin ? scoringEngine.scoringManager.score : 0),
-            uid: user.uid,
+            uid: FIRManager.uid ?? "placeholderUIDValueThatShouldNotBeUsed",
             usedContinue: GameEngine.usedContinue,
             winStreak: GameEngine.winStreak)
         
-        FIRManager.writeToFirestoreRecord(user: user, saveStateModel: saveStateModel)
+        FIRManager.writeToFirestoreRecord(saveStateModel: saveStateModel)
     }
     
     ///Creates and returns a Level Stat object, used in the saveState method.
@@ -492,7 +492,7 @@ class GameScene: SKScene {
             
         }
         
-        //Uncomment to play interstitial ad every X levels
+        // FIXME: - Uncomment to play interstitial ad every X levels
 //        if level % 100 == 0 && level >= 20 && didWin {
 //            prepareAd {
 //                AdMobManager.shared.delegate = self

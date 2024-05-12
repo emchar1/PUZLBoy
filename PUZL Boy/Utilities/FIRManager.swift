@@ -27,9 +27,14 @@ struct FIRManager {
         let db = Database.database()
         db.isPersistenceEnabled = true
     }
-    
+
+    ///Returns the Firestore user's UID, first by checking Firestore (server), then UserDefaults (local), and finally nil if neither exists
+    static var uid: String? {
+        return user?.uid ?? UserDefaults.standard.string(forKey: K.UserDefaults.firebaseUID)
+    }
+
     enum FirestoreError: Error {
-        case userNotSignedIn, saveStateNotFound, funnyQuotesNotFound
+        case isNewUser, saveStateNotFound, funnyQuotesNotFound
     }
     
     
@@ -58,16 +63,8 @@ struct FIRManager {
     }//end initializeLevelRealtimeRecords()
     
     ///Convenience initializer for Firestore that loads all the collections, and returns them. How about that?!
-    static func initializeFirestore(user: User?, completion: ((SaveStateModel?, FirestoreError?) -> Void)?) {
-        guard let user = user else {
-            print("Error initializing Firestore: User not signed in.")
-            completion?(nil, .userNotSignedIn)
-            return
-        }
-        
-        self.user = user
-        
-        initializeSaveStateFirestoreRecords(user: user) { saveStateModel, saveStateError in
+    static func initializeFirestore(completion: ((SaveStateModel?, FirestoreError?) -> Void)?) {
+        initializeSaveStateFirestoreRecords() { saveStateModel, saveStateError in
             guard saveStateError == nil, let saveStateModel = saveStateModel else {
                 print("Error finding saveState: \(saveStateError!)")
                 completion?(nil, .saveStateNotFound)
@@ -116,14 +113,14 @@ struct FIRManager {
         }
     }
     
-    ///Initializes the Firestore database and obtains the documentID that matches the user's UID. Returns nil if document is not found.
-    private static func initializeSaveStateFirestoreRecords(user: User?, completion: ((SaveStateModel?, FirestoreError?) -> Void)?) {
-        guard let user = user else {
-            completion?(nil, .userNotSignedIn)
+    ///Initializes the Firestore database and obtains the documentID that matches the user's UID.
+    private static func initializeSaveStateFirestoreRecords(completion: ((SaveStateModel?, FirestoreError?) -> Void)?) {
+        guard let uid = uid else {
+            completion?(nil, .isNewUser)
             return
         }
         
-        let docRef = Firestore.firestore().collection("savedStates").document(user.uid)
+        let docRef = Firestore.firestore().collection("savedStates").document(uid)
         docRef.getDocument { snapshot, error in
             guard let snapshot = snapshot, let data = snapshot.data() else {
                 completion?(nil, .saveStateNotFound)
@@ -176,13 +173,17 @@ struct FIRManager {
     }//end initializeSaveStateFirestoreRecords()
     
     ///Writes to the Firestore Record a.) if it exists, simply overwrite values, b.) if not, create and save the new record.
-    static func writeToFirestoreRecord(user: User?, saveStateModel: SaveStateModel?) {
-        guard let user = user, let saveStateModel = saveStateModel else {
-            print("User not signed in. Unable to load Firestore savedState.")
+    static func writeToFirestoreRecord(saveStateModel: SaveStateModel?) {
+        guard let uid = uid else {
+            print("New Firestore user.")
             return
         }
         
-        self.user = user
+        guard let saveStateModel = saveStateModel else {
+            print("Unable to load Firestore savedState.")
+            return
+        }
+        
         self.saveStateModel = saveStateModel
         
         var levelStatsArray: [Any] = []
@@ -204,7 +205,7 @@ struct FIRManager {
             ] as [String : Any])
         }
         
-        let docRef = Firestore.firestore().collection("savedStates").document(user.uid)
+        let docRef = Firestore.firestore().collection("savedStates").document(uid)
         docRef.setData([
             "decision0": decisions[0] as Any, //use the static property, instead of saveStateModel (which will give you the old one)
             "decision1": decisions[1] as Any, //use the static property, instead of saveStateModel (which will give you the old one)
@@ -361,34 +362,32 @@ struct FIRManager {
     }//end writeToFirestoreRecord()
     
     ///Updates just certain records in the Firestore db
-    static func updateFirestoreRecordFields(user: User?, fields: [AnyHashable : Any]) {
-        guard let user = user else {
-            print("User not signed in. Unable to load Firestore savedState.")
+    static func updateFirestoreRecordFields(fields: [AnyHashable : Any]) {
+        guard let uid = uid else {
+            print("New Firestore user.")
             return
         }
         
-        self.user = user
-                
-        let docRef = Firestore.firestore().collection("savedStates").document(user.uid)
+        let docRef = Firestore.firestore().collection("savedStates").document(uid)
         docRef.updateData(fields)
         
         print("Writing to Firestore: \(fields)")
     }
     
     ///Convenience method to update the decision field in a record and the static decisions array property.
-    static func updateFirestoreRecordDecision(user: User?, index: Int, buttonOrder: ChatDecisionEngine.ButtonOrder) {
+    static func updateFirestoreRecordDecision(index: Int, buttonOrder: ChatDecisionEngine.ButtonOrder) {
         let indexAdjusted = index.clamp(min: 0, max: 3)
         let FIRfield = "decision\(indexAdjusted)"
         let FIRvalue = "\(buttonOrder == .left ? "left" : "right")Button\(indexAdjusted)"
 
         decisions[indexAdjusted] = FIRvalue
 
-        updateFirestoreRecordFields(user: user, fields: [FIRfield : FIRvalue])
+        updateFirestoreRecordFields(fields: [FIRfield : FIRvalue])
     }
     
     ///Convenience method to update just the newLevel field in a record.
-    static func updateFirestoreRecordNewLevel(user: User?, newLevel: Int) {
-        updateFirestoreRecordFields(user: user, fields: ["newLevel" : newLevel])
+    static func updateFirestoreRecordNewLevel(newLevel: Int) {
+        updateFirestoreRecordFields(fields: ["newLevel" : newLevel])
     }
     
     

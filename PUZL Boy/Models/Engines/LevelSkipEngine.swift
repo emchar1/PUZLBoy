@@ -85,10 +85,11 @@ class LevelSkipEngine {
      - parameter superScene: The GameScene to add all the children to.
      */
     func moveSprites(to superScene: SKScene, level: Int) {
-        guard let user = FIRManager.user, !Level.isPartyLevel(level),
-            user.uid == FIRManager.userEddie ||
-            user.uid == FIRManager.userMichel ||
-            user.uid == FIRManager.userMom
+        guard !Level.isPartyLevel(level) else { return }
+        guard let uid = FIRManager.uid,
+            uid == FIRManager.userEddie ||
+            uid == FIRManager.userMichel ||
+            uid == FIRManager.userMom
         else {
             return
         }

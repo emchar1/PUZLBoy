@@ -134,6 +134,8 @@ class DisplaySprite {
         sprite.addChild(statusHammers)
         sprite.addChild(statusSwords)
         
+        
+        // FIXME: - How to represent the game is already completed?
         if FIRManager.saveStateModel?.gameCompleted ?? false {
             sprite.addChild(goldCoin)
         }

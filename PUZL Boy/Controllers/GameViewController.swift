@@ -57,6 +57,8 @@ class GameViewController: UIViewController {
         //Call this once, before calling LevelBuilder.getLevels().
         FIRManager.enableDBPersistence
         
+        print("UserDefaults.standard.firebaseUID: \(UserDefaults.standard.string(forKey: K.UserDefaults.firebaseUID) ?? "N/A")")
+        
         NotificationCenter.default.addObserver(self, selector: #selector(sendEmail), name: .showMailCompose, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(shareURL), name: .shareURL, object: nil)
 
@@ -65,9 +67,19 @@ class GameViewController: UIViewController {
             //Ensures everything below the guard statement only gets called ONCE!
             guard !self.levelLoaded else { return }
             
+            //MUST set this here before initializing Firestore db!!!
+            FIRManager.user = user
+            
+            //Set UserDefaults.standard.firebaseUID if it hasn't been set yet, or if for some reason it differs from its current value.
+            if let uid = FIRManager.uid, uid != UserDefaults.standard.string(forKey: K.UserDefaults.firebaseUID) {
+                UserDefaults.standard.set(uid, forKey: K.UserDefaults.firebaseUID)
+
+                print("UserDefaults.standard.firebaseUID set! UID: \(uid)")
+            }
+            
             //Should call LevelBuilder.getLevels BEFORE calling FIRManager.initializeSaveStateFirestoreRecords
             LevelBuilder.getLevels {
-                FIRManager.initializeFirestore(user: user) { saveStateModel, error in
+                FIRManager.initializeFirestore() { saveStateModel, error in
                     //No error handling...
                     
                     DispatchQueue.main.asyncAfter(deadline: .now() + LoadingSprite.loadingDuration) {
@@ -220,7 +232,7 @@ extension GameViewController: MFMailComposeViewControllerDelegate {
         deviceStats += "Device: \(UIDevice.modelInfo.name)<br>"
         deviceStats += "OS version: \(os.majorVersion).\(os.minorVersion).\(os.patchVersion)<br>"
         deviceStats += "Language: \(Locale.current.languageCode ?? "N/A")<br>"
-        deviceStats += "UID: \(FIRManager.user?.uid ?? "N/A")"
+        deviceStats += "UID: \(FIRManager.uid ?? "N/A")"
 
         let mail = MFMailComposeViewController()
         mail.mailComposeDelegate = self

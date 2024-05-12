@@ -507,9 +507,7 @@ class ChatEngine {
 
 extension ChatEngine: ChatDecisionEngineDelegate {
     func decisionWasMade(index: Int, order: ChatDecisionEngine.ButtonOrder) {
-        guard let user = FIRManager.user else { return }
-        
-        FIRManager.updateFirestoreRecordDecision(user: user, index: index, buttonOrder: order)
+        FIRManager.updateFirestoreRecordDecision(index: index, buttonOrder: order)
     }
     
     func decisionHasAppeared(node: ChatDecisionSprite) {

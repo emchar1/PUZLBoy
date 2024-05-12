@@ -504,14 +504,9 @@ class TitleScene: SKScene {
 
 extension TitleScene: LevelSelectPageDelegate {
     func didTapLevelSelect() {
-        guard let user = FIRManager.user else {
-            startGame(levelSelectNewLevel: nil)
-            return
-        }
-
         let newLevel = levelSelectPicker.selectedLevel
         
-        FIRManager.updateFirestoreRecordNewLevel(user: user, newLevel: newLevel)
+        FIRManager.updateFirestoreRecordNewLevel(newLevel: newLevel)
         startGame(levelSelectNewLevel: newLevel)
     }
 }
