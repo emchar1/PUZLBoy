@@ -39,6 +39,8 @@ class GameViewController: UIViewController {
             else {
                 self.hasInternet = false
             }
+            
+            print("Monitor update - hasInternet: \(self.hasInternet)")
         }
         monitor.start(queue: DispatchQueue(label: "Monitor"))
 
@@ -236,7 +238,7 @@ extension GameViewController: MFMailComposeViewControllerDelegate {
 
         let mail = MFMailComposeViewController()
         mail.mailComposeDelegate = self
-        mail.setToRecipients(["puzlboygame@gmail.com"])
+        mail.setToRecipients(["puzlboy@5playapps.com"])
         mail.setSubject("In-Game Feedback")
         mail.setMessageBody("<br><br><br><br>\(deviceStats)", isHTML: true)
         
@@ -249,8 +251,8 @@ extension GameViewController: MFMailComposeViewControllerDelegate {
 
 extension GameViewController {
     @objc private func shareURL(_ sender: Any) {
-        let productURL = "https://www.puzlboy.com"
-        let activityViewController = UIActivityViewController(activityItems: [productURL], applicationActivities: nil)
+        let textMessage = "Hey! Have you checked this game out yet? PUZL Boy - it's super fun! https://5playapps.com"
+        let activityViewController = UIActivityViewController(activityItems: [textMessage], applicationActivities: nil)
         
         present(activityViewController, animated: true)
         
