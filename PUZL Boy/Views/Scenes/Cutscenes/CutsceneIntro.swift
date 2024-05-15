@@ -312,8 +312,6 @@ class CutsceneIntro: Cutscene {
                                         duration: 0)
                                     
                                     ParticleEngine.shared.removeParticles(fromNode: parallaxLayer)
-                                    
-                                    closeUpSplitGround(particleStart: particleStart * particleScale)
                                 }
                             }
                         ]))
@@ -321,8 +319,6 @@ class CutsceneIntro: Cutscene {
                     SpeechBubbleItem(profile: speechPlayerLeft, chat: "What a cute story!|| Well don't worry, I'll get you to where you need to...|| WHAT THE—") { [unowned self] in
                         run(SKAction.sequence([
                             SKAction.run { [unowned self] in
-                                wideShot()
-
                                 dragonSprite.run(SKAction.group([
                                     SKAction.scale(to: 2, duration: 0.5),
                                     SKAction.move(to: CGPoint(x: princessPositionFinal.x,
@@ -467,7 +463,7 @@ class CutsceneIntro: Cutscene {
     } //end animateScene()
     
     
-    // MARK: - Animation Helper Functions
+    // MARK: - Camera Shots
     
     private func closeUpHero() {
         playerRight.sprite.position = princessPositionInitial
