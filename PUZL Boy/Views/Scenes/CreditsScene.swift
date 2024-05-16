@@ -343,7 +343,7 @@ class CreditsScene: SKScene {
             "I can't wait to play this game, I heard great things!",
             "Is it fun? Yes. But is it addictive? Also yes.",
             "Of course I finished all my chores. Why do you ask?",
-            "I loaded the dishwasher the way to told me to.",
+            "I loaded the dishwasher the way you told me to.",
             "I don't know how the forks ended up on the top shelf.",
             "No because you yelled at me about it last time.",
             "Maybe Gina came over and put them there.",

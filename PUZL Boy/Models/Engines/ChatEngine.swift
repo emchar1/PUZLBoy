@@ -773,7 +773,7 @@ extension ChatEngine {
                     delegate?.deilluminatePanel(at: (2, 1), useOverlay: false)
                     delegate?.illuminateDisplayNode(for: .moves)
                 },
-                ChatItem(profile: .trainer, chat: "If your move count hits 0, the game is over. Your move count can be found in the upper left corner next to the boot. 👢") { [unowned self] in
+                ChatItem(profile: .trainer, chat: "If your move count hits 0, it's game over buddy! Your move count can be found in the upper left corner next to the boot. 👢") { [unowned self] in
                     delegate?.deilluminateDisplayNode(for: .moves)
                     delegate?.illuminatePanel(at: (1, 2), useOverlay: true)
                     delegate?.illuminatePanel(at: (2, 2), useOverlay: false)
@@ -898,7 +898,7 @@ extension ChatEngine {
         case 101:
             sendChatArray(items: [
                 ChatItem(profile: .hero, imgPos: .left, chat: "Merlin! C'mon, we gotta go."),
-                ChatItem(profile: .trainer, chat: "The name's Marlin. Marlin the Magnificent! Not Merlin. Not dude. Not old man!"),
+                ChatItem(profile: .trainer, chat: "The name's Marlin. ~MARLIN THE MAGNIFICENT!~ Not Merlin. Not dude. Not stuffy old man!"),
                 ChatItem(profile: .hero, imgPos: .left, chat: "Oh! Marlin like the fish??? I hate fish by the way. The smell, the texture..."),
                 ChatItem(profile: .trainer, chat: "No. Not like the fish. Marlin like... the Magician. You see, in my world I am what is known as a Mystic."),
                 ChatItem(profile: .trainer, chat: "As a matter of fact, I come from a long line of legendary and powerful Mystics, each with our own unique powers and abilities..."),
@@ -919,24 +919,24 @@ extension ChatEngine {
                 ChatItem(profile: .trainer, chat: "She's no ordinary little girl. She is the princess of Vaeloria, a mystical realm known for its immense magic."),
                 ChatItem(profile: .trainer, chat: "Dragons are ancient and powerful creatures that inhabit the land of Vaeloria and are deeply connected to its magic."),
                 ChatItem(profile: .trainer, chat: "The sudden emergence of dragons in your world suggests something bigger is at play, and this little girl... Princess Olivia... is at the center of it all."),
-                ChatItem(profile: .hero, imgPos: .left, chat: "What do they want with her anyway?"),
+                ChatItem(profile: .hero, imgPos: .left, chat: "What do they want with her?"),
                 ChatItem(profile: .trainer, chat: "That has yet to be determined, though I suspect something very dark is behind all this... Come. Let's not waste anymore time.")
             ]) { [unowned self] in
                 handleDialogueCompletion(level: level, completion: completion)
             }
         case PauseResetEngine.hintButtonUnlock: //Level: 140
             sendChatArray(items: [
-                ChatItem(profile: .hero, imgPos: .left, chat: "You good, old man?? You've been awfully quiet. You're usually going on and on and on about useless info right about now."),
+                ChatItem(profile: .hero, imgPos: .left, chat: "You good old man— er, Marlin?? You been awfully quiet. You're usually going on and on and on about useless info right about now."),
                 ChatItem(profile: .trainer, chat: "Don't make me snap."),
                 ChatItem(profile: .hero, imgPos: .left, chat: "No don't! Look, if it's the old man comments, everybody gets old. It's just an inevitability of life. I'm 16 so everyone looks old to me. You're like what... 50?"),
                 ChatItem(profile: .trainer, chat: "902."),
                 ChatItem(profile: .hero, imgPos: .left, chat: "NINE HUNDRED??!! What are you, like a wizard or something? \"Marlin the Fish Wizard...\""),
-                ChatItem(profile: .hero, imgPos: .left, chat: "Wait... So you really ARE a wizard!! Because I'm not surprised by anything anymore at this point..."),
                 ChatItem(profile: .trainer, chat: "I told you I am NOT a wizard, I am a Mystic! MYSTIC!! Yeesh, my blood pressure..."),
-                ChatItem(profile: .trainer, chat: "It is of the uttermost importance we locate the princess. Securing her safe return to Vaeloria is critical to the preservation of the realms."),
-                ChatItem(profile: .hero, imgPos: .left, chat: "Wizard, mystic, magician... what's the difference??! They're all the same thing."),
-                ChatItem(profile: .trainer, chat: "A wizard possesses magical abilities. A magician is gifted in the art of magic. And a Mystic can harness the power of magic."),
-                ChatItem(profile: .hero, imgPos: .left, chat: "Thanks, thesaurus. Well you don't look a day over 800 to be honest..."),
+                ChatItem(profile: .hero, imgPos: .left, chat: "Yikes, calm down. You don't look a day over 800 to be honest."),
+//                ChatItem(profile: .trainer, chat: "It is of the uttermost importance we locate the princess. Securing her safe return to Vaeloria is critical to the preservation of the realms."),
+//                ChatItem(profile: .hero, imgPos: .left, chat: "Wizard, mystic, magician... what's the difference??! They're all the same thing."),
+//                ChatItem(profile: .trainer, chat: "A wizard possesses magical abilities. A magician is gifted in the art of magic. And a Mystic can harness the power of magic."),
+//                ChatItem(profile: .hero, imgPos: .left, chat: "Thanks, thesaurus. Well you don't look a day over 800 to be honest..."),
                 ChatItem(profile: .trainer, chat: "PUZL Boy, I need you to be serious! What lies ahead will test your patience. It will make you want to throw your phone out the window. You need to be prepared!"),
                 ChatItem(profile: .hero, imgPos: .left, chat: "Ok ok. I'll be ready. I already know how to use hammers and swords. Nothing can stop me!") { [unowned self] in
                     delegate?.illuminateMinorButton(for: .hint)
@@ -1120,25 +1120,25 @@ extension ChatEngine {
 //                    handleDialogueCompletion(level: level, completion: completion)
 //                }
 //            }
-//        case 214:
-//            delegate?.inbetweenRealmEnter(levelInt: level)
-//            
-//            sendChatArray(shouldSkipDim: true, items: [
-//                ChatItem(profile: .villain, chat: "So... you're a princess."),
-//                ChatItem(profile: .princess, imgPos: .left, chat: "You got that right, mister! When my mom and dad find out what you've done, you'll be sorry!"),
-//                ChatItem(profile: .villain, chat: "Ohh? Do tell what they'll do."),
-//                ChatItem(profile: .princess, imgPos: .left, chat: "They'll.. THEY'LL.. They'll give you a good yelling!")
-//            ]) { [unowned self] in
-//                guard let delegate = delegate else {
-//                    //Just in case delegate is false, which it shouldn't be!!!
-//                    handleDialogueCompletion(level: level, completion: completion)
-//                    return
-//                }
-//                
-//                delegate.inbetweenRealmExit { [unowned self] in
-//                    handleDialogueCompletion(level: level, completion: completion)
-//                }
-//            }
+        case 214:
+            delegate?.inbetweenRealmEnter(levelInt: level)
+            
+            sendChatArray(shouldSkipDim: true, items: [
+                ChatItem(profile: .villain, chat: "So... you're a princess."),
+                ChatItem(profile: .princess, imgPos: .left, chat: "You got that right, mister! When my mom and dad find out what you've done, you'll be sorry!"),
+                ChatItem(profile: .villain, chat: "Ohh? Do tell what they'll do."),
+                ChatItem(profile: .princess, imgPos: .left, chat: "They'll.. THEY'LL.. They'll give you a good yelling!")
+            ]) { [unowned self] in
+                guard let delegate = delegate else {
+                    //Just in case delegate is false, which it shouldn't be!!!
+                    handleDialogueCompletion(level: level, completion: completion)
+                    return
+                }
+                
+                delegate.inbetweenRealmExit { [unowned self] in
+                    handleDialogueCompletion(level: level, completion: completion)
+                }
+            }
 
             
             
