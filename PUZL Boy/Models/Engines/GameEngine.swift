@@ -196,7 +196,7 @@ class GameEngine {
         backgroundSprite.size = K.ScreenDimensions.size
         backgroundSprite.anchorPoint = .zero
         
-        bloodOverlay = SKSpriteNode(color: FireIceTheme.overlayColor, size: K.ScreenDimensions.size)
+        bloodOverlay = SKSpriteNode(color: .red, size: K.ScreenDimensions.size)
         bloodOverlay.anchorPoint = .zero
         bloodOverlay.alpha = bloodOverlayAlpha
         bloodOverlay.zPosition = K.ZPosition.partyForegroundOverlay
@@ -1198,13 +1198,6 @@ class GameEngine {
                                                zPosition: K.ZPosition.chatDimOverlay - 10, //Leave this as K.ZPosition.chatDimOverlay - 10!!!
                                                duration: 0)
         
-        ParticleEngine.shared.animateParticles(type: .inbetweenSmoke,
-                                               toNode: inbetweenNode,
-                                               position: .zero,
-                                               alpha: 0.25,
-                                               zPosition: K.ZPosition.chatDimOverlay - 9,
-                                               duration: 0)
-        
         displaySprite.hideSprite()
     }
     
@@ -1295,7 +1288,7 @@ class GameEngine {
         - completion: completion handler called at the end of the animation
      */
     func fadeGameboard(fadeOut: Bool, completion: (() -> ())?) {
-        gameboardSprite.colorizeGameboard(fadeOut: fadeOut, completion: completion)
+        gameboardSprite.colorizeGameboard(fadeOut: fadeOut, isInbetween: false, completion: completion)
     }
     
     func fadeBloodOverlay(shouldFadeOut: Bool, duration: TimeInterval) {

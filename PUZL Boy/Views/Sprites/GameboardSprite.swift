@@ -601,6 +601,8 @@ class GameboardSprite {
             return moveAction
         }
         
+        colorizeGameboard(fadeOut: false, isInbetween: true, completion: nil)
+        
         princess.sprite.position = getLocation(at: level.start) + playerOffset
         princess.sprite.setScale(Player.getGameboardScale(panelSize: panelSize) * princess.scaleMultiplier)
         princess.sprite.alpha = 0
@@ -646,6 +648,7 @@ class GameboardSprite {
         let fadeDuration: TimeInterval = 1
         
         flipGameboard()
+        colorizeGameboard(fadeOut: false, fadeOutDuration: 2, isInbetween: false, completion: nil)
         
         for node in sprite.children {
             if node.name == "inbetweenPrincess" {
@@ -767,23 +770,32 @@ class GameboardSprite {
     
     // MARK: - Panel Highlight/Colorization Functions
     
-    func colorizeGameboard(fadeOut: Bool, completion: (() -> Void)?) {
-        let colorizeSpriteAction = SKAction.colorize(with:              fadeOut ? .black : GameboardSprite.gameboardColor,
-                                                     colorBlendFactor:  fadeOut ? 1.0 : 0.0,
-                                                     duration:          fadeOut ? 1.0 : 0.5)
+    func colorizeGameboard(fadeOut: Bool, fadeOutDuration: TimeInterval = 0.5, isInbetween: Bool, completion: (() -> Void)?) {
+        let colorizeKey = "colorizeGameboard"
+        let inbetweenSpriteColor: UIColor = .red
+        let inbetweenSpriteShade: CGFloat = 0.75
+
+        let colorizeSpriteAction = SKAction.colorize(
+            with:              fadeOut ? .black : GameboardSprite.gameboardColor,
+            colorBlendFactor:  fadeOut ? 1.0 : 0.0,
+            duration:          fadeOut ? 1.0 : fadeOutDuration)
         
-        let colorizePanelAction = SKAction.colorize(with:               fadeOut ? .black : GameboardSprite.dayThemeSpriteColor,
-                                                    colorBlendFactor:   fadeOut ? 1.0 : GameboardSprite.dayThemeSpriteShade,
-                                                    duration:           fadeOut ? 1.0 : 0.5)
+        let colorizePanelAction = SKAction.colorize(
+            with:               fadeOut ? .black : (isInbetween ? inbetweenSpriteColor : GameboardSprite.dayThemeSpriteColor),
+            colorBlendFactor:   fadeOut ? 1.0 : (isInbetween ? inbetweenSpriteShade : GameboardSprite.dayThemeSpriteShade),
+            duration:           fadeOut ? 1.0 : fadeOutDuration)
         
         //Update Terrain Panels
         for (row, panelRows) in panels.enumerated() {
             for (col, _) in panelRows.enumerated() {
-                panels[row][col].run(colorizePanelAction)
+                //First remove any existing actions on key, colorizeKey, before setting the new one!
+                panels[row][col].removeAction(forKey: colorizeKey)
+                panels[row][col].run(colorizePanelAction, withKey: colorizeKey)
                 
                 //if lavaPanel exists...
                 for lavaPanel in panels[row][col].children {
-                    lavaPanel.run(colorizePanelAction)
+                    lavaPanel.removeAction(forKey: colorizeKey)
+                    lavaPanel.run(colorizePanelAction, withKey: colorizeKey)
                 }
             }
         }
@@ -795,7 +807,8 @@ class GameboardSprite {
                   let name = overlayNode.name,
                   name.contains(GameboardSprite.overlayTag) else { continue }
             
-            overlayNode.run(colorizePanelAction)
+            overlayNode.removeAction(forKey: colorizeKey)
+            overlayNode.run(colorizePanelAction, withKey: colorizeKey)
         }
         
         //Call Completion Handler

@@ -17,7 +17,6 @@
 		EA0F14712929D9C00013038E /* moverun2.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA0F146E2929D9C00013038E /* moverun2.mp3 */; };
 		EA0F1491292CC8D90013038E /* enemydeath.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA0F1490292CC8D90013038E /* enemydeath.mp3 */; };
 		EA0F84072937D4860031DA76 /* DayTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA0F84062937D4860031DA76 /* DayTheme.swift */; };
-		EA0FCE402BAA336900AC8AEA /* InBetweenSmokeParticles.sks in Resources */ = {isa = PBXBuildFile; fileRef = EA0FCE3F2BAA336900AC8AEA /* InBetweenSmokeParticles.sks */; };
 		EA0FCE422BAA3E5A00AC8AEA /* realmtransition.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA0FCE412BAA3E5900AC8AEA /* realmtransition.mp3 */; };
 		EA1191532904BC4C009D0E3E /* DisplaySprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA1191522904BC4C009D0E3E /* DisplaySprite.swift */; };
 		EA119155290CCA39009D0E3E /* Inventory.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA119154290CCA39009D0E3E /* Inventory.swift */; };
@@ -318,7 +317,6 @@
 		EA0F146E2929D9C00013038E /* moverun2.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = moverun2.mp3; sourceTree = "<group>"; };
 		EA0F1490292CC8D90013038E /* enemydeath.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = enemydeath.mp3; sourceTree = "<group>"; };
 		EA0F84062937D4860031DA76 /* DayTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayTheme.swift; sourceTree = "<group>"; };
-		EA0FCE3F2BAA336900AC8AEA /* InBetweenSmokeParticles.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = InBetweenSmokeParticles.sks; sourceTree = "<group>"; };
 		EA0FCE412BAA3E5900AC8AEA /* realmtransition.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = realmtransition.mp3; sourceTree = "<group>"; };
 		EA1191522904BC4C009D0E3E /* DisplaySprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplaySprite.swift; sourceTree = "<group>"; };
 		EA119154290CCA39009D0E3E /* Inventory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Inventory.swift; sourceTree = "<group>"; };
@@ -1137,7 +1135,6 @@
 				EAD19A0E2A97E73400A07A63 /* HeartsParticles.sks */,
 				EAD19A162A992E3600A07A63 /* HeroRainbowParticles.sks */,
 				EA74F9CF2BA17BDE002CE6B2 /* InBetweenParticles.sks */,
-				EA0FCE3F2BAA336900AC8AEA /* InBetweenSmokeParticles.sks */,
 				EAD19A102A98177400A07A63 /* ItemPickupParticles.sks */,
 				EAD19A0A2A96F52500A07A63 /* LavaAppearParticles.sks */,
 				EAB2DE0F2A9D4BD700172478 /* LavaSizzleParticles.sks */,
@@ -1274,7 +1271,6 @@
 				EAE215582ABD1DEB0090735A /* MagicBlastParticles.sks in Resources */,
 				EA5F60582B9063480089EFC3 /* MagicExplosionParticles.sks in Resources */,
 				EA95D1A3294691820061059C /* boygrunt1.mp3 in Resources */,
-				EA0FCE402BAA336900AC8AEA /* InBetweenSmokeParticles.sks in Resources */,
 				EA94E87529C0DE2C009F2614 /* movetile1.mp3 in Resources */,
 				EA49F2822BB9036700C7D54E /* GroundSplitParticles.sks in Resources */,
 				EAAECFDB2B6647B40011D5C5 /* winlevelice.mp3 in Resources */,
