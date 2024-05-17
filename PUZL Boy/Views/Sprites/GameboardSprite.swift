@@ -591,7 +591,7 @@ class GameboardSprite {
                 SKAction.group([
                     SKAction.animate(with: princess.textures[Player.Texture.walk.rawValue], timePerFrame: princessTimePerFrame),
                     SKAction.move(to: getLocation(at: nextPosition), duration: moveDuration),
-                    SKAction.scaleX(to: (lastPosition.col > nextPosition.col ? -1 : 1) * princess.sprite.xScale, duration: 0.25)
+                    SKAction.scaleX(to: (lastPosition.col > nextPosition.col ? -1 : 1) * princess.sprite.xScale, duration: 0.0)
                 ]),
                 SKAction.wait(forDuration: TimeInterval.random(in: 0...3))
             ])

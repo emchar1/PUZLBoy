@@ -1127,7 +1127,14 @@ extension ChatEngine {
                 ChatItem(profile: .villain, chat: "So... you're a princess."),
                 ChatItem(profile: .princess, imgPos: .left, chat: "You got that right, mister! When my mom and dad find out what you've done, you'll be sorry!"),
                 ChatItem(profile: .villain, chat: "Ohh? Do tell what they'll do."),
-                ChatItem(profile: .princess, imgPos: .left, chat: "They'll.. THEY'LL.. They'll give you a good yelling!")
+                ChatItem(profile: .princess, imgPos: .left, chat: "They'll.. THEY'LL.. They'll give you a good yelling!"),
+                ChatItem(profile: .villain, chat: "Well I can yell back. I have an award for being the yellingest yeller in Yellowstone, WY."),
+                ChatItem(profile: .princess, imgPos: .left, chat: "What.. is that supposed to scare me or something?"),
+                ChatItem(profile: .villain, chat: "You tell me, young princess. Does it scare you? Does it make you cower in your britches?"),
+                ChatItem(profile: .princess, imgPos: .left, chat: "Who you callin' a britch?! First of all, I'm not afraid of you. Second, I can yell louder than you can! AAAAAHHHHH!!!"),
+                ChatItem(profile: .villain, chat: "Shriek. I'm shaking in my Louboutin boots."),
+                ChatItem(profile: .princess, imgPos: .left, chat: "You better be scared. For when I get free, I'm gonna pound you into the ground!"),
+                ChatItem(profile: .villain, chat: "Slaaaaaay! 💅🏼✨")
             ]) { [unowned self] in
                 guard let delegate = delegate else {
                     //Just in case delegate is false, which it shouldn't be!!!

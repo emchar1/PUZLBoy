@@ -793,12 +793,12 @@ class GameEngine {
             movePlayerHelper(direction: .down, isFirstTimeCalled: true)
         }
         else if inBounds(location: location, direction: .left) {
-            playerSprite.sprite.run(SKAction.scaleX(to: -abs(playerSprite.sprite.xScale), duration: 0.25))
+            playerSprite.sprite.run(SKAction.scaleX(to: -abs(playerSprite.sprite.xScale), duration: 0.0))
             
             movePlayerHelper(direction: .left, isFirstTimeCalled: true)
         }
         else if inBounds(location: location, direction: .right) {
-            playerSprite.sprite.run(SKAction.scaleX(to: abs(playerSprite.sprite.xScale), duration: 0.25))
+            playerSprite.sprite.run(SKAction.scaleX(to: abs(playerSprite.sprite.xScale), duration: 0.0))
             
             movePlayerHelper(direction: .right, isFirstTimeCalled: true)
         }
