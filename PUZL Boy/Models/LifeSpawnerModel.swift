@@ -14,6 +14,7 @@ class LifeSpawnerModel {
     static let defaultLives = 5
     static let durationMoreLives: TimeInterval = 30 * 60
     static let durationReminder: TimeInterval = 24 * 60 * 60
+    static let playPUZLBoy = "Play PUZL Boy now!"
     
     static var shared: LifeSpawnerModel {
         let model = LifeSpawnerModel()
@@ -24,11 +25,12 @@ class LifeSpawnerModel {
     }
 
     static var funnyQuotes: [String] = [
-        "These puzzles aren't going to solve themselves.",
-        "Need a break?",
-        "Expand your cranium.",
-        "Flex that brain.",
-        "Take a 10 minute break from your day."
+        "These puzzles aren't going to solve themselves. " + playPUZLBoy,
+        "Need a break? " + playPUZLBoy,
+        "Expand your cranium. " + playPUZLBoy,
+        "Flex that brain. " + playPUZLBoy,
+        "Take a 10 minute break from your day. " + playPUZLBoy,
+        "Visit 5playapps.com and download our other exciting mobile apps!"
     ]
     
     enum NotificationTimerError: Error {
@@ -64,7 +66,7 @@ class LifeSpawnerModel {
         let content = UNMutableNotificationContent()
         let funnyQuote = LifeSpawnerModel.funnyQuotes.randomElement()
         content.title = title
-        content.body = (funnyQuote == nil ? "" : funnyQuote! + " ") + "Play PUZL Boy now!"
+        content.body = funnyQuote ?? LifeSpawnerModel.playPUZLBoy
         content.categoryIdentifier = "alert"
         content.sound = .none
         content.badge = 1
