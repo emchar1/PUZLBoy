@@ -213,6 +213,7 @@
 		EA9F4DDD29D2B766006F4B2F /* buttontap2.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA9F4DDC29D2B766006F4B2F /* buttontap2.mp3 */; };
 		EA9F4DE229D36F02006F4B2F /* movepoisoned3.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA9F4DDF29D36F01006F4B2F /* movepoisoned3.mp3 */; };
 		EA9F4DE729D37206006F4B2F /* movepoisoned2.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA9F4DE629D37206006F4B2F /* movepoisoned2.mp3 */; };
+		EAA921D82C011362009E99E7 /* NotificationsRequestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAA921D72C011361009E99E7 /* NotificationsRequestView.swift */; };
 		EAACB4A7296F80E700973EB8 /* AchievementAvidReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAACB4A6296F80E700973EB8 /* AchievementAvidReader.swift */; };
 		EAACB4B92971E08A00973EB8 /* chatclose.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAACB4B82971E08A00973EB8 /* chatclose.mp3 */; };
 		EAACB4BE297255FC00973EB8 /* GoogleMobileAds in Frameworks */ = {isa = PBXBuildFile; productRef = EAACB4BD297255FC00973EB8 /* GoogleMobileAds */; };
@@ -509,6 +510,7 @@
 		EA9F4DDC29D2B766006F4B2F /* buttontap2.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = buttontap2.mp3; sourceTree = "<group>"; };
 		EA9F4DDF29D36F01006F4B2F /* movepoisoned3.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = movepoisoned3.mp3; sourceTree = "<group>"; };
 		EA9F4DE629D37206006F4B2F /* movepoisoned2.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = movepoisoned2.mp3; sourceTree = "<group>"; };
+		EAA921D72C011361009E99E7 /* NotificationsRequestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsRequestView.swift; sourceTree = "<group>"; };
 		EAACB4A6296F80E700973EB8 /* AchievementAvidReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementAvidReader.swift; sourceTree = "<group>"; };
 		EAACB4B82971E08A00973EB8 /* chatclose.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = chatclose.mp3; sourceTree = "<group>"; };
 		EAAEA3BD2931A31200221963 /* movepoisoned1.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = movepoisoned1.mp3; sourceTree = "<group>"; };
@@ -736,6 +738,7 @@
 		EA65183F28E419BB00E535BF /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				EAA921D62C011332009E99E7 /* Onboarding */,
 				EA65189628EAB1A600E535BF /* Sprites */,
 				EA75F0F0292F560300F09BD7 /* Scenes */,
 				EA65183528E419A000E535BF /* LaunchScreen.storyboard */,
@@ -1102,6 +1105,14 @@
 			path = Utilities;
 			sourceTree = "<group>";
 		};
+		EAA921D62C011332009E99E7 /* Onboarding */ = {
+			isa = PBXGroup;
+			children = (
+				EAA921D72C011361009E99E7 /* NotificationsRequestView.swift */,
+			);
+			path = Onboarding;
+			sourceTree = "<group>";
+		};
 		EACCC05D2AE63F7C0099DA44 /* Leaderboards */ = {
 			isa = PBXGroup;
 			children = (
@@ -1405,6 +1416,7 @@
 				EA7300152B5F74B4005BF98D /* MarlinBlastSprite.swift in Sources */,
 				EA95D1B92952579A0061059C /* AchievementDragonSlayer.swift in Sources */,
 				EAB2DE142AA1AB8F00172478 /* SpeechOverlaySprite.swift in Sources */,
+				EAA921D82C011362009E99E7 /* NotificationsRequestView.swift in Sources */,
 				EA49B06B2A1953C500E6B96D /* HowToPlayTVCell.swift in Sources */,
 				EA95D1DF295674AE0061059C /* ChatEngine.swift in Sources */,
 				EA65184528E5750C00E535BF /* GameboardSprite.swift in Sources */,

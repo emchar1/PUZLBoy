@@ -7,6 +7,7 @@
 
 import Foundation
 import GoogleMobileAds
+import AppTrackingTransparency
 
 
 protocol AdMobManagerDelegate: AnyObject {
@@ -66,6 +67,38 @@ class AdMobManager: NSObject {
     override init() {
         super.init()
 
+    }
+    
+    
+    // MARK: - Request Functions
+    
+    @available(iOS 14, *)
+    func requestIDFAPermission() {
+        guard checkForIDFAPermission() == .notDetermined else { return print("   AdMobManager.requestIDFAPermission() status: !(.notDetermined), exiting...") }
+        
+        ATTrackingManager.requestTrackingAuthorization { _ in
+            print("   AdMobManager.requestIDFAPermission() status: .notDetermined, requesting access...")
+        }
+    }
+    
+    @available(iOS 14, *)
+    @discardableResult private func checkForIDFAPermission() -> ATTrackingManager.AuthorizationStatus {
+        let status = ATTrackingManager.trackingAuthorizationStatus
+        
+        switch status {
+        case .authorized:
+            print("AdMobManager.checkForIDFAPermission() status: .authorized")
+        case .denied:
+            print("AdMobManager.checkForIDFAPermission() status: .denied")
+        case .restricted:
+            print("AdMobManager.checkForIDFAPermission() status: .restricted")
+        case .notDetermined:
+            print("AdMobManager.checkForIDFAPermission() status: .notDetermined")
+        @unknown default:
+            print("AdMobManager.checkForIDFAPermission() status: @unknown")
+        }
+        
+        return status
     }
     
     

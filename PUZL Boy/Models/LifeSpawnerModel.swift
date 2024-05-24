@@ -19,8 +19,6 @@ class LifeSpawnerModel {
     static var shared: LifeSpawnerModel {
         let model = LifeSpawnerModel()
         
-        //add'l setup, if needed
-        
         return model
     }
 
@@ -41,6 +39,16 @@ class LifeSpawnerModel {
     // MARK: - Initialization
     
     init() {
+        //Additional setup here
+    }
+    
+    
+    // MARK: - Notification Functions
+
+    /**
+     Requests notification authorization for first time users.
+     */
+    func requestNotifications() {
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { (granted, error) in
             if granted {
                 //Granted
@@ -49,11 +57,7 @@ class LifeSpawnerModel {
                 print("Notifications have been denied :(")
             }
         }
-        
     }
-    
-    
-    // MARK: - Notification Functions
     
     /**
      Triggers a Notification message to the device after a certain amount of time has elapsed, i.e. to keep playing.
