@@ -41,7 +41,6 @@ class LaunchScene: SKScene {
         super.init(size: size)
 
         setupSprites()
-        animateSprites()
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -96,32 +95,6 @@ class LaunchScene: SKScene {
                                           forceSpeed: UserDefaults.standard.bool(forKey: K.UserDefaults.shouldSkipIntro) ? nil : .run,
                                           animateForCutscene: !UserDefaults.standard.bool(forKey: K.UserDefaults.shouldSkipIntro))
     }
-    
-    private func animateSprites() {
-        var playerSpeed: TimeInterval
-        
-        switch DayTheme.currentTheme {
-        case .dawn: playerSpeed = 0.06
-        case .morning: playerSpeed = 0.05
-        case .afternoon: playerSpeed = 0.06
-        case .night: playerSpeed = 0.06
-        }
-        
-        if !UserDefaults.standard.bool(forKey: K.UserDefaults.shouldSkipIntro) {
-            playerSpeed = 0.05
-        }
-        
-        let playerAnimation = SKAction.animate(
-            with: (DayTheme.currentTheme == .night || DayTheme.currentTheme == .dawn) && UserDefaults.standard.bool(forKey: K.UserDefaults.shouldSkipIntro) ? player.textures[Player.Texture.walk.rawValue] : player.textures[Player.Texture.run.rawValue],
-            timePerFrame: playerSpeed
-        )
-        
-        player.sprite.run(SKAction.repeatForever(playerAnimation))
-        playerReflection.sprite.run(SKAction.repeatForever(playerAnimation))
-
-        loadingSprite.animate()
-        parallaxManager.animate()
-    }
         
     
     // MARK: - Overriden Functions
@@ -148,6 +121,32 @@ class LaunchScene: SKScene {
     
     
     // MARK: - Animation Functions
+    
+    func animateSprites() {
+        var playerSpeed: TimeInterval
+        
+        switch DayTheme.currentTheme {
+        case .dawn: playerSpeed = 0.06
+        case .morning: playerSpeed = 0.05
+        case .afternoon: playerSpeed = 0.06
+        case .night: playerSpeed = 0.06
+        }
+        
+        if !UserDefaults.standard.bool(forKey: K.UserDefaults.shouldSkipIntro) {
+            playerSpeed = 0.05
+        }
+        
+        let playerAnimation = SKAction.animate(
+            with: (DayTheme.currentTheme == .night || DayTheme.currentTheme == .dawn) && UserDefaults.standard.bool(forKey: K.UserDefaults.shouldSkipIntro) ? player.textures[Player.Texture.walk.rawValue] : player.textures[Player.Texture.run.rawValue],
+            timePerFrame: playerSpeed
+        )
+        
+        player.sprite.run(SKAction.repeatForever(playerAnimation))
+        playerReflection.sprite.run(SKAction.repeatForever(playerAnimation))
+
+        loadingSprite.animate()
+        parallaxManager.animate()
+    }
     
     func animateTransition(animationSequence: AnimationSequence, completion: @escaping ([ParallaxSprite.SpriteXPositions]?) -> Void) {
         switch animationSequence {

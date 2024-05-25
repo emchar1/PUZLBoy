@@ -20,23 +20,27 @@ class ConfirmSprite: SKNode {
     private var title: String
     private var message: String
     private var confirm: String
-    private var cancel: String
+    private var cancel: String?
+    private var customHeight: CGFloat?
+    private var customColor: UIColor?
     
     private var messageLabel: SKLabelNode!
     private var backgroundSprite: SKShapeNode!
     private var confirmButton: DecisionButtonSprite!
-    private var cancelButton: DecisionButtonSprite!
+    private var cancelButton: DecisionButtonSprite?
     
     weak var delegate: ConfirmSpriteDelegate?
 
     
     // MARK: - Initialization
     
-    init(title: String, message: String, confirm: String, cancel: String) {
+    init(title: String, message: String, confirm: String, cancel: String?, customHeight: CGFloat? = nil, customColor: UIColor? = nil) {
         self.title = title
         self.message = message
         self.confirm = confirm
         self.cancel = cancel
+        self.customHeight = customHeight
+        self.customColor = customColor
         
         super.init()
         
@@ -56,9 +60,10 @@ class ConfirmSprite: SKNode {
     }
     
     private func setupSprites() {
-        backgroundSprite = SKShapeNode(rectOf: CGSize(width: K.ScreenDimensions.size.width, height: K.ScreenDimensions.size.width / 2),
+        backgroundSprite = SKShapeNode(rectOf: CGSize(width: K.ScreenDimensions.size.width, 
+                                                      height: customHeight == nil ? K.ScreenDimensions.size.width / 2 : customHeight!),
                                        cornerRadius: 20)
-        backgroundSprite.fillColor = .gray
+        backgroundSprite.fillColor = customColor == nil ? .gray : customColor!
         backgroundSprite.fillTexture = SKTexture(image: UIImage.gradientTextureChat)
         backgroundSprite.lineWidth = 12
         backgroundSprite.strokeColor = .white
@@ -73,17 +78,21 @@ class ConfirmSprite: SKNode {
         titleLabel.zPosition = 10
         titleLabel.addHeavyDropShadow()
         
-        confirmButton = DecisionButtonSprite(text: confirm, color: DecisionButtonSprite.colorRed, iconImageName: nil)
+        confirmButton = DecisionButtonSprite(text: confirm,
+                                             color: cancel == nil ? DecisionButtonSprite.colorBlue : DecisionButtonSprite.colorRed,
+                                             iconImageName: nil)
         confirmButton.position = CGPoint(
-            x: -K.ScreenDimensions.size.width / 4,
+            x: cancel == nil ? 0 : -K.ScreenDimensions.size.width / 4,
             y: (-backgroundSprite.frame.height + confirmButton.buttonSize.height + titleLabel.frame.height) / (2 * UIDevice.spriteScale))
         confirmButton.name = "confirmButton"
         confirmButton.delegate = self
 
-        cancelButton = DecisionButtonSprite(text: cancel, color: DecisionButtonSprite.colorBlue, iconImageName: nil)
-        cancelButton.position = CGPoint(x: K.ScreenDimensions.size.width / 4, y: confirmButton.position.y)
-        cancelButton.name = "cancelButton"
-        cancelButton.delegate = self
+        if let cancel = cancel {
+            cancelButton = DecisionButtonSprite(text: cancel, color: DecisionButtonSprite.colorBlue, iconImageName: nil)
+            cancelButton!.position = CGPoint(x: K.ScreenDimensions.size.width / 4, y: confirmButton.position.y)
+            cancelButton!.name = "cancelButton"
+            cancelButton!.delegate = self
+        }
 
         messageLabel = SKLabelNode(text: message)
         messageLabel.fontName = UIFont.chatFont
@@ -103,7 +112,10 @@ class ConfirmSprite: SKNode {
         backgroundSprite.addChild(titleLabel)
         backgroundSprite.addChild(messageLabel)
         backgroundSprite.addChild(confirmButton)
-        backgroundSprite.addChild(cancelButton)
+        
+        if let cancelButton = cancelButton {
+            backgroundSprite.addChild(cancelButton)
+        }
     }
     
     
@@ -153,7 +165,7 @@ class ConfirmSprite: SKNode {
     
     func touchUp() {
         confirmButton.touchUp()
-        cancelButton.touchUp()
+        cancelButton?.touchUp()
     }
     
     

@@ -28,8 +28,9 @@ class GameViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        var launchScene: LaunchScene? = LaunchScene(size: K.ScreenDimensions.size)
-        var cutsceneIntro: CutsceneIntro?
+        let notificationsRequestScene = AuthorizationRequestScene(size: K.ScreenDimensions.size,
+                                                                  isDarkMode: traitCollection.userInterfaceStyle == .dark)
+        notificationsRequestScene.sceneDelegate = self
         
         monitor = NWPathMonitor()
         monitor.pathUpdateHandler = { path in
@@ -44,13 +45,51 @@ class GameViewController: UIViewController {
         }
         monitor.start(queue: DispatchQueue(label: "Monitor"))
 
+        
+        
+        
         // FIXME: - DEFINITELY COMMENT THESE OUT BEFORE SHIPPING FINAL PRODUCT!!!
         skView.showsFPS = true
         skView.showsNodeCount = true
         
+        
+        
+        
         skView.ignoresSiblingOrder = true
-        skView.presentScene(launchScene)
+        skView.presentScene(notificationsRequestScene)
         view = skView
+
+        print("Testing device info: \(UIDevice.modelInfo), UI aspect ratio: \(K.ScreenDimensions.sizeUI.height / K.ScreenDimensions.sizeUI.width)")
+    }
+}
+
+
+// MARK: - AuthorizationRequestSceneDelegate
+
+extension GameViewController: AuthorizationRequestSceneDelegate {
+    func didAuthorizeRequests(shouldFadeIn: Bool) {
+        var launchScene: LaunchScene? = LaunchScene(size: K.ScreenDimensions.size)
+        var cutsceneIntro: CutsceneIntro?
+
+        if shouldFadeIn {
+            let blackoutSprite = SKSpriteNode(color: .black, size: K.ScreenDimensions.size)
+            blackoutSprite.anchorPoint = .zero
+            blackoutSprite.zPosition = K.ZPosition.messagePrompt
+            
+            blackoutSprite.run(SKAction.sequence([
+                SKAction.fadeOut(withDuration: 2),
+                SKAction.removeFromParent()
+            ])) {
+                launchScene?.animateSprites()
+            }
+            
+            launchScene?.addChild(blackoutSprite)
+        }
+        else {
+            launchScene?.animateSprites()
+        }
+            
+        skView.presentScene(launchScene)
 
         AdMobManager.shared.superVC = self
         AdMobManager.shared.createAndLoadInterstitial()
@@ -120,9 +159,7 @@ class GameViewController: UIViewController {
                 }
             }
         }//end GameCenterManager.shared.getUser()
-        
-        print("Testing device info: \(UIDevice.modelInfo), UI aspect ratio: \(K.ScreenDimensions.sizeUI.height / K.ScreenDimensions.sizeUI.width)")
-    }//end viewDidLoad()
+    }
     
     private func presentTitleScene() {
         let titleScene = TitleScene(size: K.ScreenDimensions.size)
@@ -130,15 +167,6 @@ class GameViewController: UIViewController {
         
         skView.presentScene(titleScene)
     }
-    
-    //Disable shake to reset for now...
-//    override func motionEnded(_ motion: UIEvent.EventSubtype, with event: UIEvent?) {
-//        if motion == .motionShake {
-//            guard let skView = view as? SKView, let scene = skView.scene as? GameScene else { return }
-//            
-//            scene.shake()
-//        }
-//    }
 }
 
 
