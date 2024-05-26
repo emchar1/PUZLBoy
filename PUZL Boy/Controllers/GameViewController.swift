@@ -70,26 +70,11 @@ extension GameViewController: AuthorizationRequestSceneDelegate {
     func didAuthorizeRequests(shouldFadeIn: Bool) {
         var launchScene: LaunchScene? = LaunchScene(size: K.ScreenDimensions.size)
         var cutsceneIntro: CutsceneIntro?
-
-        if shouldFadeIn {
-            let blackoutSprite = SKSpriteNode(color: .black, size: K.ScreenDimensions.size)
-            blackoutSprite.anchorPoint = .zero
-            blackoutSprite.zPosition = K.ZPosition.messagePrompt
-            
-            blackoutSprite.run(SKAction.sequence([
-                SKAction.fadeOut(withDuration: 2),
-                SKAction.removeFromParent()
-            ])) {
-                launchScene?.animateSprites()
-            }
-            
-            launchScene?.addChild(blackoutSprite)
+                        
+        if let launchScene = launchScene {
+            launchScene.animateSprites()
+            skView.presentScene(launchScene, transition: .crossFade(withDuration: shouldFadeIn ? 2 : 0.5))
         }
-        else {
-            launchScene?.animateSprites()
-        }
-            
-        skView.presentScene(launchScene)
 
         AdMobManager.shared.superVC = self
         AdMobManager.shared.createAndLoadInterstitial()
