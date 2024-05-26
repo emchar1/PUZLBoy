@@ -16,7 +16,7 @@ class AuthorizationSprite: ConfirmSprite {
                    message: message,
                    confirm: "OK",
                    cancel: nil,
-                   customHeight: UIDevice.isiPad ? K.ScreenDimensions.size.height / 3 : K.ScreenDimensions.size.height / 4,
+                   customHeight: UIDevice.isiPad ? K.ScreenDimensions.size.height / 3 + 80 : K.ScreenDimensions.size.height / 4 + 40,
                    customColor: .orange)
         
     }

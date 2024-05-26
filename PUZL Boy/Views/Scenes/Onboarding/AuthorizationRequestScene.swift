@@ -16,8 +16,10 @@ protocol AuthorizationRequestSceneDelegate: AnyObject {
 class AuthorizationRequestScene: SKScene {
 
     // MARK: - Properties
-
-    private var isDarkMode: Bool
+    
+    private let edgeConstraintConstant: CGFloat = (UIDevice.isiPad ? 160 : 40) * K.ScreenDimensions.size.height / K.ScreenDimensions.sizeUI.height
+    private var userInterfaceStyle: UIUserInterfaceStyle
+    private var logoSprite: SKSpriteNode?
     
     private var notificationsMessage: AuthorizationSprite?
     private var idfaMessage: AuthorizationSprite?
@@ -28,8 +30,8 @@ class AuthorizationRequestScene: SKScene {
 
     // MARK: - Initialization
     
-    init(size: CGSize, isDarkMode: Bool) {
-        self.isDarkMode = isDarkMode
+    init(size: CGSize, userInterfaceStyle: UIUserInterfaceStyle) {
+        self.userInterfaceStyle = userInterfaceStyle
 
         super.init(size: size)
         
@@ -41,8 +43,21 @@ class AuthorizationRequestScene: SKScene {
     }
     
     private func setupSprites() {
-        backgroundColor = isDarkMode ? .black : .white
+        backgroundColor = userInterfaceStyle == .dark ? .black : .white
         
+        let logoWidth = K.ScreenDimensions.size.width - 2 * edgeConstraintConstant
+        
+        if let image = UIImage(named: UIDevice.isiPad ? "5PlayApps" : "5PlayAppsSM",
+                               in: nil,
+                               compatibleWith: UITraitCollection(userInterfaceStyle: userInterfaceStyle)) {
+            
+            logoSprite = SKSpriteNode(texture: SKTexture(image: image))
+            logoSprite!.position = CGPoint(x: K.ScreenDimensions.size.width / 2, y: K.ScreenDimensions.size.height / 2)
+            logoSprite!.size = CGSize(width: logoWidth, height: logoWidth * 1024 / 4096)
+            
+            addChild(logoSprite!)
+        }
+
         UNUserNotificationCenter.current().getNotificationSettings { [unowned self] settings in
             if settings.authorizationStatus == .notDetermined {
                 notificationsMessage = AuthorizationSprite(
@@ -56,7 +71,7 @@ class AuthorizationRequestScene: SKScene {
                 if ATTrackingManager.trackingAuthorizationStatus == .notDetermined {
                     idfaMessage = AuthorizationSprite(
                         title: "Personalized Ads",
-                        message: "This app can also deliver personalized ads to you. To enable this feature tap OK, then Allow on the next window.")
+                        message: "This app can deliver personalized ads to you. To enable this feature tap OK, then Allow on the next window.")
                     
                     idfaMessage!.delegate = self
                 }
@@ -66,10 +81,11 @@ class AuthorizationRequestScene: SKScene {
             
             if notificationsMessage != nil || idfaMessage != nil {
                 backgroundColor = .black
+                logoSprite?.removeFromParent()
                 
                 thanksMessage = AuthorizationSprite(
                     title: "Enjoy!",
-                    message: "Thank you for your responses! Now please enjoy PUZL Boy, brought to you by 5Play Apps.")
+                    message: "Thank you for your responses! Now please enjoy PUZL Boy. And don't forget to rate and review 😊")
                 
                 thanksMessage!.delegate = self
 

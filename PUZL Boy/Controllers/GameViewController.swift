@@ -28,9 +28,9 @@ class GameViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let notificationsRequestScene = AuthorizationRequestScene(size: K.ScreenDimensions.size,
-                                                                  isDarkMode: traitCollection.userInterfaceStyle == .dark)
-        notificationsRequestScene.sceneDelegate = self
+        let authorizationRequestScene = AuthorizationRequestScene(size: K.ScreenDimensions.size,
+                                                                  userInterfaceStyle: traitCollection.userInterfaceStyle)
+        authorizationRequestScene.sceneDelegate = self
         
         monitor = NWPathMonitor()
         monitor.pathUpdateHandler = { path in
@@ -56,7 +56,7 @@ class GameViewController: UIViewController {
         
         
         skView.ignoresSiblingOrder = true
-        skView.presentScene(notificationsRequestScene)
+        skView.presentScene(authorizationRequestScene)
         view = skView
 
         print("Testing device info: \(UIDevice.modelInfo), UI aspect ratio: \(K.ScreenDimensions.sizeUI.height / K.ScreenDimensions.sizeUI.width)")
