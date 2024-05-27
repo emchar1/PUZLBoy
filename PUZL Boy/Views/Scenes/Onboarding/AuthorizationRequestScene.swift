@@ -167,11 +167,11 @@ extension AuthorizationRequestScene: ConfirmSpriteDelegate {
             authorizationSprite.animateHide { [unowned self] in
                 if #available(iOS 14, *) {
                     AdMobManager.shared.requestIDFAPermission()
-                    
-                    thanksMessage?.animateShow { }
                 } else {
                     // Fallback on earlier versions
                 }
+                
+                thanksMessage?.animateShow { }
             }
         case let authorizationSprite where authorizationSprite == thanksMessage:
             authorizationSprite.animateHide { [unowned self] in
