@@ -100,14 +100,14 @@ class AudioManager {
         addAudioItem("buttontap7", category: .soundFX)
         addAudioItem("chatclose", category: .soundFX)
         addAudioItem("chatopen", category: .soundFX)
-        addAudioItem("chatopenprincess", category: .soundFX) //NEEDS PURCHASE $1
-        addAudioItem("chatopentrainer", category: .soundFX) //NEEDS PURCHASE $1
-        addAudioItem("chatopenvillain", category: .soundFX) //NEEDS PURCHASE $1
+        addAudioItem("chatopenprincess", category: .soundFX)
+        addAudioItem("chatopentrainer", category: .soundFX)
+        addAudioItem("chatopenvillain", category: .soundFX)
         addAudioItem("dooropen", category: .soundFX)
         addAudioItem("enemydeath", category: .soundFX)
         addAudioItem("enemyflame", category: .soundFX)
-        addAudioItem("enemyice", category: .soundFX) //NEEDS PURCHASE $1
-        addAudioItem("enemyroar", category: .soundFX) //NEEDS PURCHASE $1
+        addAudioItem("enemyice", category: .soundFX)
+        addAudioItem("enemyroar", category: .soundFX)
         addAudioItem("enemyscratch", category: .soundFX)
         addAudioItem("gemcollect", category: .soundFX)
         addAudioItem("gemcollectparty", category: .soundFX)
@@ -120,10 +120,10 @@ class AudioManager {
         addAudioItem("lavaappear3", category: .soundFX)
         addAudioItem("lavasizzle", category: .soundFX)
         addAudioItem("magicblast", category: .soundFX)
-        addAudioItem("magichorrorimpact", category: .soundFX) //NEEDS PURCHASE $1
+        addAudioItem("magichorrorimpact", category: .soundFX)
         addAudioItem("magicteleport", category: .soundFX)
         addAudioItem("magicwarp", category: .soundFX)
-        addAudioItem("marlinblast", category: .soundFX) //NEEDS PURCHASE $1
+        addAudioItem("marlinblast", category: .soundFX)
         addAudioItem("moveglide", category: .soundFX)
         addAudioItem("movemarsh1", category: .soundFX)
         addAudioItem("movemarsh2", category: .soundFX)
@@ -164,7 +164,7 @@ class AudioManager {
         addAudioItem("waterappear3", category: .soundFX)
         addAudioItem("waterdrown", category: .soundFX)
         addAudioItem("winlevel", category: .soundFX)
-        addAudioItem("winlevelice", category: .soundFX) //NEEDS PURCHASE $1
+        addAudioItem("winlevelice", category: .soundFX)
 
         
         //Looped SFX
@@ -177,7 +177,7 @@ class AudioManager {
         addAudioItem("ageofruin", category: .musicNoLoop)
         addAudioItem("ageofruin2", category: .musicNoLoop)
         addAudioItem("gameover", category: .musicNoLoop)
-        addAudioItem("gameoverice", category: .musicNoLoop) //NEEDS PURCHASE $1
+        addAudioItem("gameoverice", category: .musicNoLoop)
         addAudioItem("titletheme", category: .musicNoLoop)
 
         
@@ -185,10 +185,10 @@ class AudioManager {
         addAudioItem("birdsambience", category: .music, maxVolume: 0.2)
         addAudioItem("continueloop", category: .music)
         addAudioItem("scarymusicbox", category: .music)
-        addAudioItem("magicheartbeatloop1", category: .music) //NEEDS PURCHASE $1
-        addAudioItem("magicheartbeatloop2", category: .music) //NEEDS PURCHASE $1
+        addAudioItem("magicheartbeatloop1", category: .music)
+        addAudioItem("magicheartbeatloop2", category: .music)
         addAudioItem("overworld", category: .music)
-        addAudioItem("overworldice", category: .music) //NEEDS PURCHASE $15 - do I like this???
+        addAudioItem("overworldice", category: .music)
         addAudioItem("overworldparty", category: .music)
         addAudioItem("overworldgrassland", category: .music)
 

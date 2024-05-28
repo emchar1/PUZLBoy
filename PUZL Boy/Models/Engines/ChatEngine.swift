@@ -542,16 +542,17 @@ extension ChatEngine {
     private func populateKeyDialogue() {
 
         //DARK REALM Dialogue
-        dialoguePlayed[-250] = false
-        dialoguePlayed[-200] = false
-        dialoguePlayed[-150] = false
+        dialoguePlayed[Level.partyLevel] = false //Level: -1
         dialoguePlayed[-100] = false
+        dialoguePlayed[-150] = false
+        dialoguePlayed[-200] = false
+        dialoguePlayed[-250] = false
+        dialoguePlayed[-300] = false
 
         
         //PUZZLE REALM Dialogue
         
         //Chapter 0 - The Tutorial
-        dialoguePlayed[Level.partyLevel] = false //Level: -1
         dialoguePlayed[1] = false
         dialoguePlayed[8] = false
         dialoguePlayed[19] = false
@@ -575,7 +576,7 @@ extension ChatEngine {
 
         //Chapter 3 - You're on your own, kid!
         dialoguePlayed[301] = false
-//        dialogueWithCutscene[301] = true //Dialogue with CUTSCENES (always set to true)
+        dialogueWithCutscene[301] = true //Dialogue with CUTSCENES (always set to true)
         dialoguePlayed[314] = false
 
         
@@ -754,13 +755,26 @@ extension ChatEngine {
                     }
                 }
             }
+        case -300:
+            sendChatArray(items: [
+                ChatItem(profile: .trainer, imgPos: .left, chat: "This is all my fault. I never should have brought him here."),
+                ChatItem(profile: .trainer, imgPos: .left, chat: "I need to tell him."),
+                ChatItem(profile: .villain, chat: "Ok but make it quick. I— we have a realm to rule."),
+                ChatItem(profile: .trainer, imgPos: .left, chat: "Just don't harm the girl and I'll do as you say."),
+                ChatItem(profile: .villain, chat: "Yes, but remember.. you belong to me now."),
+                ChatItem(profile: .trainer, imgPos: .left, chat: "I hope he'll forgive me for this...")
+            ]) { [unowned self] in
+                chatBackgroundSprite.run(SKAction.wait(forDuration: 3)) { [unowned self] in
+                    handleDialogueCompletion(level: level, completion: completion)
+                }
+            }
             
         //PUZZLE REALM
         case 1:
             sendChatArray(items: [
                 ChatItem(profile: .hero, imgPos: .left, chat: "PUZL BOY: ...then one of the dragons swooped down and carried her away! It. Was. Harrowing. So... where are we? And who are you??"),
-                ChatItem(profile: .trainer, chat: "MARLIN: I am your guide, Marlin. I suspect she is being taken to the dragon's lair. You have been transported to the PUZZLE REALM, our gateway to the lair."),
-                ChatItem(profile: .trainer, chat: "The dragon's lair is buried deep inside Earth's core, and the only way to reach it is by solving logic puzzles."),
+                ChatItem(profile: .trainer, chat: "MARLIN: We must hurry. I suspect she is being taken to the dragon's lair. I have transported you to the PUZZLE REALM, our gateway to the lair."),
+                ChatItem(profile: .trainer, chat: "The dragon's lair is buried deep inside Earth's core, and the only way to reach it is by solving puzzles. But fret not for I shall be your guide."),
                 ChatItem(profile: .trainer, chat: "There are 500 levels in total you will have to complete, each with increasing difficulty."),
                 ChatItem(profile: .trainer, chat: "The goal for each level is to make it through the gate in under a certain number of moves.") { [unowned self] in
                     delegate?.illuminatePanel(at: (0, 1), useOverlay: false)
@@ -1187,12 +1201,15 @@ extension ChatEngine {
                     }
                 }
             }
-//        case 301:
-//            sendChatArray(items: [
-//                ChatItem(profile: .trainer, chat: "~Deep breath~ It all started when...")
-//            ]) { [unowned self] in
-//                handleDialogueCompletionWithCutscene(level: level, completion: completion)
-//            }
+        case 301:
+            sendChatArray(items: [
+                ChatItem(profile: .hero, imgPos: .left, chat: "Dude. There's no way we can defeat this guy. He's too powerful!"),
+                ChatItem(profile: .trainer, chat: "PUZL Boy, there's something I need to tell you."),
+                ChatItem(profile: .hero, imgPos: .left, chat: "Uh oh, what now."),
+                ChatItem(profile: .trainer, chat: "~Deep breath~ It all started when...")
+            ]) { [unowned self] in
+                handleDialogueCompletionWithCutscene(level: level, completion: completion)
+            }
 //        case 314:
 //            delegate?.inbetweenRealmEnter(levelInt: level)
 //            
