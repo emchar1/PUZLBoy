@@ -119,6 +119,8 @@ class AudioManager {
         addAudioItem("lavaappear2", category: .soundFX)
         addAudioItem("lavaappear3", category: .soundFX)
         addAudioItem("lavasizzle", category: .soundFX)
+        addAudioItem("lightsoff", category: .soundFX)
+        addAudioItem("lightson", category: .soundFX)
         addAudioItem("magicblast", category: .soundFX)
         addAudioItem("magichorrorimpact", category: .soundFX)
         addAudioItem("magicteleport", category: .soundFX)

@@ -198,13 +198,6 @@ extension SettingsPage: SettingsRadioNodeDelegate {
         case let radioNode where radioNode == radioMusic:
             UserDefaults.standard.set(!radioNode.isOn, forKey: K.UserDefaults.muteMusic)
             AudioManager.shared.updateVolumes()
-            
-            if radioNode.isOn {
-                PartyModeSprite.shared.addLights(duration: 0.5)
-            }
-            else {
-                PartyModeSprite.shared.removeLights(duration: 0.5)
-            }
         case let radioNode where radioNode == radioSoundFX:
             UserDefaults.standard.set(!radioNode.isOn, forKey: K.UserDefaults.muteSoundFX)
             AudioManager.shared.updateVolumes()

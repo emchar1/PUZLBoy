@@ -203,7 +203,7 @@ class PauseResetEngine {
         if Level.isPartyLevel(currentLevel) {
             pauseButtonSprite.texture = SKTexture(imageNamed: discoName)
             pauseButtonSprite.run(SKAction.colorize(with: .black,
-                                                    colorBlendFactor: !UserDefaults.standard.bool(forKey: K.UserDefaults.muteMusic) ? 0 : 0.52,
+                                                    colorBlendFactor: !UserDefaults.standard.bool(forKey: K.UserDefaults.disableLights) ? 0 : 0.52,
                                                     duration: 0))
             hideMinorButtons()
         }
@@ -467,23 +467,22 @@ class PauseResetEngine {
         
         isPressed = false
         
-        let partyLightsOn = !UserDefaults.standard.bool(forKey: K.UserDefaults.muteMusic)
+        let partyLightsOn = !UserDefaults.standard.bool(forKey: K.UserDefaults.disableLights)
                 
-        UserDefaults.standard.set(partyLightsOn, forKey: K.UserDefaults.muteMusic)
-
-        settingsPage.radioMusic.setIsOn(!partyLightsOn)
+        UserDefaults.standard.set(partyLightsOn, forKey: K.UserDefaults.disableLights)
 
         if partyLightsOn {
             PartyModeSprite.shared.removeLights(duration: 0.5)
+            ButtonTap.shared.tap(type: .lightsoff)
             pauseButtonSprite.run(SKAction.colorize(with: .black, colorBlendFactor: 0.52, duration: 0))
         }
         else {
             PartyModeSprite.shared.addLights(duration: 0.5)
+            ButtonTap.shared.tap(type: .lightson)
             pauseButtonSprite.run(SKAction.colorize(with: .black, colorBlendFactor: 0, duration: 0))
         }
 
         AudioManager.shared.updateVolumes()
-        ButtonTap.shared.tap(type: .buttontap1)
     }
     
     private func openCloseSettings() {
@@ -549,7 +548,7 @@ class PauseResetEngine {
     func touchUp() {
         guard !isDisabled else { return }
         
-        pauseButtonSprite.run(SKAction.colorize(withColorBlendFactor: Level.isPartyLevel(currentLevel) ? (!UserDefaults.standard.bool(forKey: K.UserDefaults.muteMusic) ? 0 : 0.52) : 0, duration: 0))
+        pauseButtonSprite.run(SKAction.colorize(withColorBlendFactor: Level.isPartyLevel(currentLevel) ? (!UserDefaults.standard.bool(forKey: K.UserDefaults.disableLights) ? 0 : 0.52) : 0, duration: 0))
         resetButtonSprite.run(SKAction.colorize(withColorBlendFactor: 0, duration: 0))
         hintButtonSprite.run(SKAction.colorize(withColorBlendFactor: 0, duration: 0))
         

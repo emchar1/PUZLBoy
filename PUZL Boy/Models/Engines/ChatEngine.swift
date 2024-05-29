@@ -659,12 +659,18 @@ extension ChatEngine {
                 ChatItem(profile: .trainer, imgPos: .left, chat: "You will be the one to regret it if you don't tell me where the princess is!!"),
                 ChatItem(profile: .blankvillain, chat: "\n\n...she is home now..."),
                 ChatItem(profile: .trainer, imgPos: .left, chat: "Where is she?!! Is she unharmed??"),
-                ChatItem(profile: .blankvillain, chat: "\n\n...see for yourself...") {
+                ChatItem(profile: .blankvillain, chat: "\n\n...see for yourself...") { [unowned self] in
                     AudioManager.shared.playSoundThenStop(for: "littlegirllaugh", playForDuration: 1, fadeOut: 3)
                     AudioManager.shared.stopSound(for: "magicheartbeatloop1", fadeDuration: 4)
+
+                    //Disable fastForwardSprite for dramatic effect.
+                    fastForwardSprite.removeFromParent()
                 },
-                ChatItem(profile: .princessCursed, chat: "i'm fine. don't worry about me. now leave us."),
-                ChatItem(profile: .blankvillain, chat: "\n\n...see, she's perfectly fine..."),
+                ChatItem(profile: .princessCursed, chat: "i am fine. don't worry about me. now leave us.") { [unowned self] in
+                    //Need to add this back to parent, because you removed it above.
+                    chatBackgroundSprite.addChild(fastForwardSprite)
+                },
+                ChatItem(profile: .blankvillain, chat: "\n\n...see??? she's perfectly fine..."),
                 ChatItem(profile: .trainer, imgPos: .left, chat: "Listen!! I don't think you know who you're dealing with but enough with the games! Now, show me who you are!!") { [unowned self] in
                     superScene?.addChild(marlinBlast)
                     superScene?.addChild(magmoorScary)
@@ -676,7 +682,7 @@ extension ChatEngine {
                 },
                 ChatItem(profile: .trainer, imgPos: .left, chat: "⚡️MAGIC SPELL!!!⚡️"),
                 ChatItem(profile: .villain, chat: "MYSTERIOUS FIGURE: I'll be seeing ya shortly."),
-                ChatItem(profile: .trainer, imgPos: .left, chat: "............no. It can't be.")
+                ChatItem(profile: .trainer, imgPos: .left, chat: "Is that?? ............no. It can't be.")
             ]) { [unowned self] in
                 AudioManager.shared.stopSound(for: "magicheartbeatloop2", fadeDuration: 5)
                 
@@ -967,7 +973,7 @@ extension ChatEngine {
             sendChatArray(items: [
                 ChatItem(profile: .trainer, chat: "I was once a teacher for Princess Olivia. We didn't get very far in her training, but I could see she had a natural ability to harness magic."),
                 ChatItem(profile: .hero, imgPos: .left, chat: "For real? Why did you stop training her?"),
-                ChatItem(profile: .trainer, chat: "I had, uh... to return home for business."),
+                ChatItem(profile: .trainer, chat: "I had to... return home for important Mystic duties."),
                 ChatItem(profile: .trainer, chat: "But before I left the princess, I placed a sigil on her hand. A protection spell. 🪬"),
                 ChatItem(profile: .hero, imgPos: .left, chat: "Oh, good. So she should be safe then? Protection from what, evil or something?"),
                 ChatItem(profile: .trainer, chat: "Something like that.")
@@ -1197,7 +1203,7 @@ extension ChatEngine {
                 ChatItem(profile: .hero, imgPos: .left, chat: "Dude. There's no way we can defeat this guy. He's too powerful!"),
                 ChatItem(profile: .trainer, chat: "PUZL Boy, there's something I need to tell you."),
                 ChatItem(profile: .hero, imgPos: .left, chat: "Uh oh, what now."),
-                ChatItem(profile: .trainer, chat: "~Deep breath~ It all started when...")
+                ChatItem(profile: .trainer, chat: "*Deep breath* It all started when...")
             ]) { [unowned self] in
                 handleDialogueCompletionWithCutscene(level: level, completion: completion)
             }
