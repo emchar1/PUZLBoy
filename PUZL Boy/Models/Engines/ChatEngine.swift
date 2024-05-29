@@ -569,10 +569,10 @@ extension ChatEngine {
         dialoguePlayed[180] = false
 
         //Chapter 2 - A Mysterious Stranger Among Us
+        dialoguePlayed[221] = false
         dialoguePlayed[251] = false
         dialoguePlayed[262] = false //spawn at (0, 1)
         dialoguePlayed[282] = false //spawn at (0, 1)
-        dialoguePlayed[295] = false //spawn at (0, 1)
 
         //Chapter 3 - You're on your own, kid!
         dialoguePlayed[301] = false
@@ -914,15 +914,16 @@ extension ChatEngine {
         case 101:
             sendChatArray(items: [
                 ChatItem(profile: .hero, imgPos: .left, chat: "Merlin! C'mon, we gotta go."),
-                ChatItem(profile: .trainer, chat: "The name's Marlin. ~MARLIN THE MAGNIFICENT!~ Not Merlin. Not dude. Not stuffy old man!"),
+                ChatItem(profile: .trainer, chat: "The name's Marlin. MARLIN THE MAGNIFICENT! Not Merlin. Not dude. Not stuffy old man!"),
                 ChatItem(profile: .hero, imgPos: .left, chat: "Oh! Marlin like the fish??? I hate fish by the way. The smell, the texture..."),
                 ChatItem(profile: .trainer, chat: "No. Not like the fish. Marlin like... the Magician. You see, in my world I am what is known as a Mystic."),
                 ChatItem(profile: .trainer, chat: "As a matter of fact, I come from a long line of legendary and powerful Mystics, each with our own unique powers and abilities..."),
+                ChatItem(profile: .hero, imgPos: .left, chat: "Oh, wait. You're thinking of Merlin the Magician."),
                 ChatItem(profile: .trainer, chat: "Some Mystics control the elements: fire, water, air.. Some are all-knowing, while others govern the arts and science. I happen to be a water mage."),
                 ChatItem(profile: .trainer, chat: "Let's see, there's Maxel, Mywren, and Malana, our Mystics in training who I am personally mentoring..."),
                 ChatItem(profile: .hero, imgPos: .left, chat: "Mmmkay. Got it 🥱"),
                 ChatItem(profile: .trainer, chat: "Moving on. I received a visitor while I was in the Dark Realm. He didn't say who he was, but I think he might be connected to the disappearance."),
-                ChatItem(profile: .hero, imgPos: .left, chat: "Water mage... like a fish? A marlin is a fish. You're thinking of Merlin the Magician."),
+                ChatItem(profile: .hero, imgPos: .left, chat: "Water mage... like a fish? A marlin is a fish."),
                 ChatItem(profile: .trainer, chat: "Enough with the fish already! We need to be on the lookout for the mysterious figure. Likely he holds the key to this mystery."),
                 ChatItem(profile: .hero, imgPos: .left, chat: "What's he look like?"),
                 ChatItem(profile: .trainer, chat: "Hmm. If you run into someone that looks mysterious, It's probably him.")
@@ -978,6 +979,26 @@ extension ChatEngine {
             AudioManager.shared.playSound(for: "littlegirllaugh", fadeIn: 3)
             
             sendChatArray(items: [
+                ChatItem(profile: .blankprincess, chat: "\n\nIs... is anybody there???"),
+                ChatItem(profile: .blankprincess, chat: "\n\nHello?????"),
+                ChatItem(profile: .blankprincess, chat: "\n\nWon't anyone help me!!!"),
+                ChatItem(profile: .hero, imgPos: .left, chat: "Princess, is that you??? Hang on! We're coming to get you!!!") {
+                    AudioManager.shared.playSound(for: "chatopenvillain")
+                },
+                ChatItem(profile: .blankvillain, chat: "\n\n...heh heh heh heh heh... ") {
+                    AudioManager.shared.adjustVolume(to: 1, for: AudioManager.shared.currentTheme, fadeDuration: 5)
+                    AudioManager.shared.stopSound(for: "littlegirllaugh", fadeDuration: 5)
+                },
+                ChatItem(profile: .hero, imgPos: .left, chat: "Wh—what the... who's there?!! You heard that too, right??"),
+                ChatItem(profile: .trainer, chat: "Hmm. Seems they've disappeared into the aether. We shall get to the bottom of this soon enough. Let's move.")
+            ]) { [unowned self] in
+                handleDialogueCompletion(level: level, completion: completion)
+            }
+        case 221:
+            AudioManager.shared.adjustVolume(to: 0.2, for: AudioManager.shared.currentTheme, fadeDuration: 3)
+            AudioManager.shared.playSound(for: "littlegirllaugh", fadeIn: 3)
+            
+            sendChatArray(items: [
                 ChatItem(profile: .blankprincess, chat: "\nHello? Is anyone there? Can anyone hear me? Hellooo? HELLO!!!!!!"),
                 ChatItem(profile: .hero, imgPos: .left, chat: "Princess?! We can hear you! Can you hear us??"),
                 ChatItem(profile: .blankprincess, chat: "\nHelp me please, PUZL Boy!!! I don't know where I am!"),
@@ -988,8 +1009,8 @@ extension ChatEngine {
                     AudioManager.shared.stopSound(for: "littlegirllaugh", fadeDuration: 5)
                 },
                 ChatItem(profile: .trainer, chat: "She can't hear us. I can't sense her presence. Whatever has a hold of her is keeping her in between realms. We must keep moving if we are to find her."),
-                ChatItem(profile: .hero, imgPos: .left, chat: "Who is the shadowy guy she was talking about?"),
-                ChatItem(profile: .trainer, chat: "I... I can't say for sure. But I have a sinking feeling...")
+                ChatItem(profile: .hero, imgPos: .left, chat: "Who is this mysterious shadowy guy she was talking about?"),
+                ChatItem(profile: .trainer, chat: "I... I can't say for sure. But I have a troubling feeling...")
             ]) { [unowned self] in
                 handleDialogueCompletion(level: level, completion: completion)
             }
@@ -1002,7 +1023,7 @@ extension ChatEngine {
                 ChatItem(profile: .hero, imgPos: .left, chat: "Yeah, we're headed to Earth's core, are we not?? Why the rush all of a sudden?"),
                 ChatItem(profile: .trainer, chat: "That man... I know him."),
                 ChatItem(profile: .hero, imgPos: .left, chat: "Ok. So let's go find him, beat him, and get the princess back."),
-                ChatItem(profile: .trainer, chat: "We can't. We just... can't.")
+                ChatItem(profile: .trainer, chat: "It's not going to be easy.")
             ]) { [unowned self] in
                 handleDialogueCompletion(level: level, completion: completion)
             }
@@ -1040,12 +1061,10 @@ extension ChatEngine {
                     ChatItem(profile: .hero, imgPos: .left, chat: "I know, I know. My mom always says, \"The power is yours!\" Ok... so what does Marzipan want with the princess?"),
                     ChatItem(profile: .trainer, chat: "Magmoor—one of the most powerful Mystics from my realm. I do not know what he intends to do with the princess, although we should assume the worst."),
                     ChatItem(profile: .hero, imgPos: .left, chat: "He's not gonna sacrifice her is he?!?! Because that's just not cool."),
-                    ChatItem(profile: .trainer, chat: "He wasn't always like this. We were once good friends—what we Mystics call, Twin Flames. Then he went all Mabritney on everyone."),
-                    ChatItem(profile: .hero, imgPos: .left, chat: "No way! You guys have Britney in your world?"),
-                    ChatItem(profile: .trainer, chat: "No— MAbritney. She's an elemental mage who wields forbidden dark magic. She does a Dance of Knives that summons Chaos.") { [unowned self] in
+                    ChatItem(profile: .trainer, chat: "He wasn't always like this. He... I... we... never mind.") { [unowned self] in
                         chatDecisionEngine.showDecisions(index: decisionIndex, toNode: chatBackgroundSprite)
                     },
-                    ChatItem(profile: .hero, imgPos: .left, endChat: false, chat: "She sounds toxic. So what's our next move:", handler: nil)
+                    ChatItem(profile: .hero, imgPos: .left, endChat: false, chat: "Ok, so what's our next move:", handler: nil)
                 ]) { [unowned self] in
                     // FIXME: - I don't like this nested sendChatArray()...
                     sendChatArray(items: [
@@ -1143,43 +1162,15 @@ extension ChatEngine {
             
             delegate.spawnPrincessCapture(at: spawnPoint) { [unowned self] in
                 sendChatArray(items: [
-                    ChatItem(profile: .princess, chat: "I said let go of me!!!"),
+                    ChatItem(profile: .villain, chat: "Come to your senses yet?"),
                     ChatItem(profile: .hero, imgPos: .left, chat: "HEY! Leave her alone, Mylar!"),
                     ChatItem(profile: .trainer, imgPos: .left, chat: "Magmoor, let her go! You will have to answer to the kingdom of Vaeloria for your actions!"),
                     ChatItem(profile: .villain, chat: "Actions?? For what? I'm merely keeping her until the time comes..."),
                     ChatItem(profile: .hero, imgPos: .left, chat: "Until the time comes for what?? You won't harm her will you?!!"),
                     ChatItem(profile: .villain, chat: "Sacrifice her? Oh heavens, no! I'm not that cruel..."),
                     ChatItem(profile: .hero, imgPos: .left, chat: "I didn't say sacrifice—"),
-                    ChatItem(profile: .villain, chat: "Tell you what. Marlin, you lend me your powers and I'll use the girl as a conduit to complete the spell."),
-                    ChatItem(profile: .trainer, imgPos: .left, chat: "No. Wow. You are terrible at negotiations! You let the princess go and I— I'll return home to M'Earth with you......."),
-                    ChatItem(profile: .villain, chat: "..................No deal.")
-                ]) { [unowned self] in
-                    fadeDimOverlay()
-                    
-                    delegate.despawnPrincessCapture(at: spawnPoint) { [unowned self] in
-                        AudioManager.shared.adjustVolume(to: 1, for: AudioManager.shared.currentTheme, fadeDuration: 3)
-                        handleDialogueCompletion(level: level, completion: completion)
-                    }
-                }
-            }
-        case 295:
-            let spawnPoint: K.GameboardPosition = (0, 1)
-            
-            guard let delegate = delegate else {
-                //This allows the game to move forward in case the delegate is not set, for some reason!
-                handleDialogueCompletion(level: level, completion: completion)
-                return
-            }
-            
-            delegate.spawnPrincessCapture(at: spawnPoint) { [unowned self] in
-                sendChatArray(items: [
-                    ChatItem(profile: .villain, chat: "Come to your senses yet?"),
-                    ChatItem(profile: .hero, imgPos: .left, chat: "You again?! Dude, just take the L."),
-                    ChatItem(profile: .villain, chat: "L?! Take what L? Where do I take it?? What is this strange language you speak?"),
-                    ChatItem(profile: .trainer, imgPos: .left, chat: "🤦🏻‍♂️ Don't encourage the boy..."),
-                    ChatItem(profile: .hero, imgPos: .left, chat: "It means go home tall, dark and creepy."),
                     ChatItem(profile: .trainer, imgPos: .left, chat: "Princess Olivia, are you ok?"),
-                    ChatItem(profile: .princess, chat: "It's not so bad in there. They have Cocomelon."), // FIXME: - Bad dialogue
+                    ChatItem(profile: .princess, chat: "It's not so bad in there. They have Netflix."),
                     ChatItem(profile: .trainer, imgPos: .left, chat: "Remember what I taught you."),
                     ChatItem(profile: .princess, endChat: true, chat: "Ok I'll try...") { [unowned self] in
                         fadeDimOverlay()
@@ -1188,7 +1179,7 @@ extension ChatEngine {
                     },
                     ChatItem(profile: .princess, pause: 6, startNewChat: true, chat: "I can't! I'm not strong enough, uncle Marlin!", handler: nil),
                     ChatItem(profile: .trainer, imgPos: .left, chat: "Yes you can, princess! You have got to keep trying. Do not give up!"),
-                    ChatItem(profile: .villain, chat: "Cute. I hate to cut the reunion short, but if you won't agree to my demands, we'll be on our way."),
+                    ChatItem(profile: .villain, chat: "Cute. I hate to cut the reunion short, but if you won't merge with me, we'll be on our way."),
                     ChatItem(profile: .trainer, imgPos: .left, chat: "Do not be afraid! You are braver than you think."),
                     ChatItem(profile: .princess, chat: "It's ok. I'm getting used to it."),
                     ChatItem(profile: .princess, chat: "Anyway this part's fun..... Weeeeeee!")

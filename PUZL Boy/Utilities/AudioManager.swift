@@ -162,7 +162,7 @@ class AudioManager {
         addAudioItem("waterappear1", category: .soundFX)
         addAudioItem("waterappear2", category: .soundFX)
         addAudioItem("waterappear3", category: .soundFX)
-        addAudioItem("waterdrown", category: .soundFX)
+        addAudioItem("waterdrown", category: .soundFX) //Needs purchase $1
         addAudioItem("winlevel", category: .soundFX)
         addAudioItem("winlevelice", category: .soundFX)
 
