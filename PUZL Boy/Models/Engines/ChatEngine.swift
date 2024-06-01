@@ -59,6 +59,7 @@ class ChatEngine {
     private var isAnimating: Bool = false
     private var allowNewChat: Bool = true
     private var shouldClose: Bool = true
+    private var closeChatIsRunning: Bool = false
     
 
     //Chat Sprites
@@ -473,9 +474,12 @@ class ChatEngine {
     
     private func closeChat() {
         guard !chatDecisionEngine.isActive else { return }
+        guard !closeChatIsRunning else { return } //BUGFIX #240531E01 - prevents closeChat() simultaneous run for FF button vs timer end chat.
         
         let duration: TimeInterval = shouldClose ? 0.2 : 0
         
+        closeChatIsRunning = true
+
         if shouldClose {
             AudioManager.shared.playSound(for: "chatclose")
         }
@@ -496,7 +500,9 @@ class ChatEngine {
             SKAction.scale(to: 0, duration: duration)
         ])) { [unowned self] in
             allowNewChat = true
+            closeChatIsRunning = false
             chatSpeed = chatSpeedOrig
+            
             self.completion?()
         }
     }
@@ -554,7 +560,7 @@ extension ChatEngine {
         
         //Chapter 0 - The Tutorial
         dialoguePlayed[1] = false
-        dialoguePlayed[8] = false
+        dialoguePlayed[13] = false
         dialoguePlayed[19] = false
         dialoguePlayed[34] = false
         dialoguePlayed[51] = false
@@ -619,7 +625,7 @@ extension ChatEngine {
                 ChatItem(profile: .trainer, chat: "Like, I know they're all pretty and fun looking, but avoid them at all costs, or it's the end of the bonus round."),
                 ChatItem(profile: .trainer, chat: "Why is it always the pretty things in life that are the most deadly..."),
                 ChatItem(profile: .hero, imgPos: .left, chat: "Don't step on the bombs. Got it."),
-                ChatItem(profile: .trainer, chat: "OK. Now if the flashing light becomes too much, you can tap the disco ball below to turn it off. 🪩 READY. SET. GO!")
+                ChatItem(profile: .trainer, chat: "OK. Now if the flashing lights become too much, you can tap the disco ball below to turn them off. 🪩 READY. SET. GO!")
             ]) { [unowned self] in
                 handleDialogueCompletion(level: level, completion: completion)
             }
@@ -788,8 +794,8 @@ extension ChatEngine {
         case 1:
             sendChatArray(items: [
                 ChatItem(profile: .hero, imgPos: .left, chat: "PUZL BOY: ...then one of the dragons swooped down and carried her away! It. Was. Harrowing. So... where are we? And who are you??"),
-                ChatItem(profile: .trainer, chat: "MARLIN: We must hurry. I suspect she is being taken to the dragon's lair. I have transported you to the PUZZLE REALM, our gateway to the lair."),
-                ChatItem(profile: .trainer, chat: "The dragon's lair is buried deep inside Earth's core, and the only way to reach it is by solving puzzles. But fret not for I shall be your guide."),
+                ChatItem(profile: .trainer, chat: "MARLIN: We must hurry! I suspect she is being taken to the dragon's lair. I have transported you to the PUZZLE REALM, our gateway to the lair."),
+                ChatItem(profile: .trainer, chat: "The dragon's lair is buried deep inside Earth's core, and the only way to reach it is by solving puzzles."),
                 ChatItem(profile: .trainer, chat: "There are 500 levels in total you will have to complete, each with increasing difficulty."),
                 ChatItem(profile: .trainer, chat: "The goal for each level is to make it through the gate in under a certain number of moves.") { [unowned self] in
                     delegate?.illuminatePanel(at: (0, 1), useOverlay: false)
@@ -809,7 +815,7 @@ extension ChatEngine {
                     delegate?.illuminatePanel(at: (1, 2), useOverlay: true)
                     delegate?.illuminatePanel(at: (2, 2), useOverlay: false)
                 },
-                ChatItem(profile: .trainer, chat: "See the gate? It's sealed. To open it, collect all the gems in the level. Simple, right?"),
+                ChatItem(profile: .trainer, chat: "See the gate? It's sealed shut. To open it, collect all the gems in the level. Simple, right?"),
                 ChatItem(profile: .hero, imgPos: .left, chat: "Right. Let's go save the princess!")
             ]) { [unowned self] in
                 delegate?.deilluminatePanel(at: (1, 2), useOverlay: true)
@@ -817,21 +823,27 @@ extension ChatEngine {
 
                 handleDialogueCompletion(level: level, completion: completion)
             }
-        case 8:
+        case 13:
             delegate?.illuminatePanel(at: (0, 1), useOverlay: true)
-            delegate?.illuminatePanel(at: (1, 1), useOverlay: true)
+            delegate?.illuminatePanel(at: (1, 2), useOverlay: true)
             
             sendChatArray(items: [
-                ChatItem(profile: .trainer, chat: "Pretty easy, right? Levels get progressively harder with various obstacles blocking your path.") { [unowned self] in
+                ChatItem(profile: .trainer, chat: "Looks like that gem is trapped between those boulders.") { [unowned self] in
+                    delegate?.illuminatePanel(at: (2, 1), useOverlay: true)
+                },
+                ChatItem(profile: .trainer, chat: "Not to worry! See that hammer over there? Use it to break through."),
+                ChatItem(profile: .hero, imgPos: .left, chat: "Yeah I put 2+2 together."),
+                ChatItem(profile: .trainer, chat: "Well. Not everyone's as bright as you, PUZL Boy."),
+                ChatItem(profile: .trainer, chat: "Collect hammers as you go. They'll break after one use so be mindful of that.") { [unowned self] in
                     delegate?.illuminateDisplayNode(for: .hammers)
                 },
-                ChatItem(profile: .trainer, chat: "You need a hammer to break through those boulders. Your inventory can be found in the upper right. 🔨"),
-                ChatItem(profile: .hero, imgPos: .left, chat: "Hammers break boulders. Makes sense.") { [unowned self] in
+                ChatItem(profile: .trainer, chat: "Your inventory count can be found in the upper right."),
+                ChatItem(profile: .hero, imgPos: .left, chat: "I got this, dude!") { [unowned self] in
                     delegate?.deilluminateDisplayNode(for: .hammers)
-                },
-                ChatItem(profile: .trainer, chat: "Since there are no hammers in this level, you'll just have to go around them."),
-                ChatItem(profile: .hero, imgPos: .left, chat: "Ah well, gotta get my steps in."),
-                ChatItem(profile: .trainer, chat: "Oh, and one more thing... hammers can only be used once before breaking, so plan your moves accordingly.")
+                    delegate?.deilluminatePanel(at: (0, 1), useOverlay: true)
+                    delegate?.deilluminatePanel(at: (1, 2), useOverlay: true)
+                    delegate?.deilluminatePanel(at: (2, 1), useOverlay: true)
+                }
             ]) { [unowned self] in
                 handleDialogueCompletion(level: level, completion: completion)
             }
@@ -897,16 +909,16 @@ extension ChatEngine {
             delegate?.illuminatePanel(at: (1, 2), useOverlay: true)
             
             sendChatArray(items: [
-                ChatItem(profile: .trainer, chat: "Ice, ice, baby! Step on this and you'll slide until you hit either an obstacle or the edge of the level."),
+                ChatItem(profile: .trainer, chat: "Ice, ice, baby! Step on this and you'll slide until you hit an obstacle."),
                 ChatItem(profile: .trainer, chat: "The nice thing though is that it'll only cost you 1 move as long as you're sliding continuously."),
-                ChatItem(profile: .hero, imgPos: .left, chat: "The cold never bothered me anyway.") { [unowned self] in
+                ChatItem(profile: .hero, imgPos: .left, chat: "The cold never bothered me anyway."),
+                ChatItem(profile: .trainer, chat: "Let it go, dude.") { [unowned self] in
                     delegate?.deilluminatePanel(at: (0, 1), useOverlay: false)
                     delegate?.deilluminatePanel(at: (0, 2), useOverlay: false)
                     delegate?.deilluminatePanel(at: (1, 2), useOverlay: false)
                     delegate?.deilluminatePanel(at: (0, 1), useOverlay: true)
                     delegate?.deilluminatePanel(at: (1, 2), useOverlay: true)
                 },
-                ChatItem(profile: .trainer, chat: "Well, I'll leave you alone for now. I'll chime in every now and then if I think you need it.")
             ]) { [unowned self] in
                 handleDialogueCompletion(level: level, completion: completion)
             }
@@ -929,7 +941,7 @@ extension ChatEngine {
         case 101: //NEEDS CUTSCENE
             sendChatArray(items: [
                 ChatItem(profile: .hero, imgPos: .left, chat: "Merlin! C'mon, we gotta go."),
-                ChatItem(profile: .trainer, chat: "The name's Marlin. MARLIN THE MAGNIFICENT! Not Merlin. Not dude. Not stuffy old man!"),
+                ChatItem(profile: .trainer, chat: "The name's Marlin. MARLIN THE MAGNIFICENT! Not Merlin. Not dude. Not crusty old man!"),
                 ChatItem(profile: .hero, imgPos: .left, chat: "Oh! Marlin like the fish??? I hate fish by the way. The smell, the texture..."),
                 ChatItem(profile: .trainer, chat: "No. Not like the fish. Marlin like... the Magician. You see, in my world I am what is known as a Mystic."),
                 ChatItem(profile: .trainer, chat: "As a matter of fact, I come from a long line of legendary and powerful Mystics, each with our own unique powers and abilities..."),
@@ -939,7 +951,7 @@ extension ChatEngine {
                 ChatItem(profile: .hero, imgPos: .left, chat: "Mmmkay. Got it 🥱"),
                 ChatItem(profile: .trainer, chat: "Moving on. I received a visitor while I was in the Dark Realm. He didn't say who he was, but I think he might be connected to the disappearance."),
                 ChatItem(profile: .hero, imgPos: .left, chat: "Water mage... like a fish? A marlin is a fish."),
-                ChatItem(profile: .trainer, chat: "Enough with the fish already! We need to be on the lookout for the mysterious figure. Likely he holds the key to this mystery."),
+                ChatItem(profile: .trainer, chat: "Enough with the fish! We need to be on the lookout for the mysterious figure. Likely he holds the key to this mystery."),
                 ChatItem(profile: .hero, imgPos: .left, chat: "What's he look like?"),
                 ChatItem(profile: .trainer, chat: "Hmm. If you run into someone who looks mysterious, It's probably him.")
             ]) { [unowned self] in
@@ -1005,7 +1017,8 @@ extension ChatEngine {
                     AudioManager.shared.stopSound(for: "littlegirllaugh", fadeDuration: 5)
                 },
                 ChatItem(profile: .hero, imgPos: .left, chat: "Wh—what the... who's there?!! You heard that too, right??"),
-                ChatItem(profile: .trainer, chat: "Hmm. Seems they've disappeared into the aether. We shall get to the bottom of this soon enough. Let's move.")
+                ChatItem(profile: .trainer, chat: "Oh sweet child! Don't worry, we're coming to get you!!"),
+                ChatItem(profile: .trainer, chat: "Wait..... They're gone. Never mind. Let's go!")
             ]) { [unowned self] in
                 handleDialogueCompletion(level: level, completion: completion)
             }
@@ -1025,7 +1038,7 @@ extension ChatEngine {
                 },
                 ChatItem(profile: .trainer, chat: "She can't hear us. I can't sense her presence. Whatever has a hold of her is keeping her in between realms. We must keep moving if we are to find her."),
                 ChatItem(profile: .hero, imgPos: .left, chat: "Who is this mysterious man you guys are talking about?"),
-                ChatItem(profile: .trainer, chat: "I... I can't say for sure. But I have a troubling feeling...")
+                ChatItem(profile: .trainer, chat: "I... I can't say for sure. But I have a sinking feeling...")
             ]) { [unowned self] in
                 handleDialogueCompletion(level: level, completion: completion)
             }
