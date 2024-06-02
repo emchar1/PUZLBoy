@@ -578,6 +578,7 @@ extension ChatEngine {
         dialoguePlayed[221] = false
         dialoguePlayed[251] = false
         dialoguePlayed[262] = false //spawn at (0, 1)
+        dialogueWithCutscene[262] = true //Dialogue with CUTSCENES (always set to true)
         dialoguePlayed[282] = false //spawn at (0, 1)
 
         //Chapter 3 - You're on your own, kid!
@@ -1056,7 +1057,7 @@ extension ChatEngine {
             ]) { [unowned self] in
                 handleDialogueCompletion(level: level, completion: completion)
             }
-        case 262: //NEEDS CUTSCENE?
+        case 262: //NEEDS CUTSCENE
             let spawnPoint: K.GameboardPosition = (0, 1)
             let decisionIndex = 0
             
@@ -1072,11 +1073,14 @@ extension ChatEngine {
                     ChatItem(profile: .hero, imgPos: .left, chat: "Gasp! It's the mysterious man!!!!!"),
                     ChatItem(profile: .trainer, imgPos: .left, chat: "Magmoor, stop this at once! It's not too late."),
                     ChatItem(profile: .villain, chat: "MAGMOOR: If you want to see your precious princess again, then let us merge powers."),
-                    ChatItem(profile: .trainer, imgPos: .left, chat: "NO! You want absolute power. We Mystics share power equally; it keeps the realms in balance. Your actions will surely plunge the realms into total darkness."),
-                    ChatItem(profile: .villain, chat: "I have been floating around in the LIMBO REALM for centuries. All because the council didn't like what I was destined to become. Is that MY fault?"),
-                    ChatItem(profile: .villain, chat: "It's evident the system is broken and the realms are already headed towards eternal darkness. So it requires a new world order. It needs..... cleansing."),
+                    ChatItem(profile: .trainer, imgPos: .left, chat: "NO! You want absolute power. We Mystics share power equally; it keeps the realms in balance. Your actions will surely plunge the realms into total darkness. *Transition*"),
+                    ChatItem(profile: .villain, chat: "I have been floating around in the LIMBO REALM for CENTURIES. Why?? Because the council didn't like what I was destined to become?!"),
+                    ChatItem(profile: .trainer, imgPos: .left, chat: "You tried to lead an army into battle. Against the Elders|| They shut you out. Rightfully so.|| And now you just want revenge. Don't let this consume you Magmoor!!"),
+                    ChatItem(profile: .villain, chat: "I'm beyond revenge, my dear. I just want justice. The scales are tipped in their favor. I merely seek to balance it once again."),
+                    ChatItem(profile: .trainer, imgPos: .left, chat: "You want an all out war. Life treated you unfairly and now you think the universe owes you!"),
+                    ChatItem(profile: .villain, chat: "It's clear the system is broken as the realms are already headed towards eternal darkness. Therefore it requires a new world order. It needs..... cleansing."),
                     ChatItem(profile: .princess, chat: "Your teeth need cleansing!"),
-                    ChatItem(profile: .trainer, imgPos: .left, chat: "Listen to yourself! You've completely lost it. LET THE PRINCESS GO AND THINGS WON'T GET UGLY!!"),
+                    ChatItem(profile: .trainer, imgPos: .left, chat: "MAGMOOR LISTEN TO YOURSELF!!! You've completely lost it. Give up this delusion and let the princess go!!!"),
                     ChatItem(profile: .hero, imgPos: .left, chat: "Yeah, if you touch a hair on her head, it's gonna be the end for you, Mantamar!"),
                     ChatItem(profile: .villain, chat: "Open your eyes and see! Join me in the purification. We can rule the realms... together."),
                     ChatItem(profile: .trainer, imgPos: .left, chat: "We shall not join in your madness. We will fight you till the end to protect the realms!"),
@@ -1098,11 +1102,12 @@ extension ChatEngine {
                     // FIXME: - I don't like this nested sendChatArray()...
                     sendChatArray(items: [
                         ChatItem(profile: .hero, imgPos: .left, startNewChat: false, chat: "\(FIRManager.decisions[decisionIndex].isLeftButton() ? "We should prepare first." : "BRING ME MAGMOOR!!!")", handler: nil),
-                        ChatItem(profile: .trainer, chat: "\(FIRManager.decisions[decisionIndex].isLeftButton() ? "A wise decision. Let's keep moving..." : "Okay but let's be careful.")"),
+                        ChatItem(profile: .trainer, chat: "\(FIRManager.decisions[decisionIndex].isLeftButton() ? "A wise decision. Let's keep moving..." : "Okay but we need to be EXTRA cautious.")"),
                     ]) { [unowned self] in
                         AudioManager.shared.adjustVolume(to: 1, for: AudioManager.shared.currentTheme, fadeDuration: 3)
                         
-                        handleDialogueCompletion(level: level, completion: completion)
+//                        handleDialogueCompletion(level: level, completion: completion)
+                        handleDialogueCompletionWithCutscene(level: level, completion: completion)
                     }
                 }
             }

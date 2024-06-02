@@ -203,6 +203,7 @@
 		EA95D2142964FF350061059C /* SaveStateModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA95D2132964FF350061059C /* SaveStateModel.swift */; };
 		EA95D2172964FFCF0061059C /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = EA95D2162964FFCF0061059C /* FirebaseFirestore */; };
 		EA95D2192964FFCF0061059C /* FirebaseFirestoreSwift in Frameworks */ = {isa = PBXBuildFile; productRef = EA95D2182964FFCF0061059C /* FirebaseFirestoreSwift */; };
+		EA9970722C0C494200BBAC96 /* CutsceneMagmoor.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA9970712C0C494200BBAC96 /* CutsceneMagmoor.swift */; };
 		EA999F6E2A59148800B422B2 /* SettingsTapButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA999F6D2A59148800B422B2 /* SettingsTapButton.swift */; };
 		EA9D6A542B48E3B40004187B /* magicteleport.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA9D6A532B48E3B40004187B /* magicteleport.mp3 */; };
 		EA9D6A582B48E46F0004187B /* magicdoomloop.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA9D6A572B48E46F0004187B /* magicdoomloop.mp3 */; };
@@ -503,6 +504,7 @@
 		EA95D20F2962C9260061059C /* AchievementSlowPoke.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementSlowPoke.swift; sourceTree = "<group>"; };
 		EA95D2112963B4580061059C /* LevelSkipEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelSkipEngine.swift; sourceTree = "<group>"; };
 		EA95D2132964FF350061059C /* SaveStateModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveStateModel.swift; sourceTree = "<group>"; };
+		EA9970712C0C494200BBAC96 /* CutsceneMagmoor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CutsceneMagmoor.swift; sourceTree = "<group>"; };
 		EA999F6D2A59148800B422B2 /* SettingsTapButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTapButton.swift; sourceTree = "<group>"; };
 		EA9D6A532B48E3B40004187B /* magicteleport.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = magicteleport.mp3; sourceTree = "<group>"; };
 		EA9D6A572B48E46F0004187B /* magicdoomloop.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = magicdoomloop.mp3; sourceTree = "<group>"; };
@@ -684,6 +686,7 @@
 				EADAC6072B835C38005EA008 /* Speech */,
 				EADAC6052B835C2A005EA008 /* Cutscene.swift */,
 				EA496AAB2A79B25A0096DB35 /* CutsceneIntro.swift */,
+				EA9970712C0C494200BBAC96 /* CutsceneMagmoor.swift */,
 				EA77D3F72B72BF1600B77C42 /* CutsceneOldFriends.swift */,
 				EACD61C22B96E7990017F040 /* CutsceneImprisoned.swift */,
 				EACD61C42B96E8140017F040 /* CutsceneTransformation.swift */,
@@ -1470,6 +1473,7 @@
 				EA8E072F2B4FEC070051DDC3 /* TapPointerEngine.swift in Sources */,
 				EA496AAC2A79B25A0096DB35 /* CutsceneIntro.swift in Sources */,
 				EAF2A5A62AA7875F00212825 /* SkipSceneSprite.swift in Sources */,
+				EA9970722C0C494200BBAC96 /* CutsceneMagmoor.swift in Sources */,
 				EA95D1DD295523FF0061059C /* AchievementKlutz.swift in Sources */,
 				EA1191532904BC4C009D0E3E /* DisplaySprite.swift in Sources */,
 				EA95D20A29602F540061059C /* AchievementReckless.swift in Sources */,
