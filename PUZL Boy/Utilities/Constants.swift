@@ -121,6 +121,7 @@ struct K {
         static let muteSoundFX = "MuteSoundFX"
         static let disableVibration = "DisableVibration"
         static let disableLights = "DisableLights"
+        static let hasPlayedBefore = "HasPlayedBefore"
         static let shouldSkipIntro = "ShouldSkipIntro"
         static let reviewStoreCount = "ReviewStoreCount"
         static let savedTime = "SavedTimeForReplenishLives"

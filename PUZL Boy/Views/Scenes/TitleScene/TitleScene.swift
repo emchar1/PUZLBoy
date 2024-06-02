@@ -50,7 +50,14 @@ class TitleScene: SKScene {
     private var disableInput: Bool = false
     private var menuSizeShort: CGSize { CGSize(width: 650, height: screenSize.height / 4) }
     private var menuSizeTall: CGSize { CGSize(width: 650, height: screenSize.height / 3) }
-    private var menuSize: CGSize { isGameCompleted ? menuSizeTall : menuSizeShort }
+    private var menuSize: CGSize {
+        if UserDefaults.standard.bool(forKey: K.UserDefaults.hasPlayedBefore) {
+            return isGameCompleted ? menuSizeTall : menuSizeShort
+        }
+        else {
+            return menuSizeShort
+        }
+    }
     private var levelSelectSize: CGSize { CGSize(width: 650, height: screenSize.height / 4) / UIDevice.spriteScale }
     private var settingsSize: CGSize { CGSize(width: screenSize.width, height: screenSize.width * 5 / 4) }
     private var currentMenuSelected: MenuPage = .main
@@ -321,13 +328,16 @@ class TitleScene: SKScene {
 
         menuBackground.addChild(menuBackgroundText)
         menuBackgroundText.addChild(menuStart)
-        
-        if isGameCompleted {
-            menuBackgroundText.addChild(menuLevelSelect)
+
+        if UserDefaults.standard.bool(forKey: K.UserDefaults.hasPlayedBefore) {
+            if isGameCompleted {
+                menuBackgroundText.addChild(menuLevelSelect)
+            }
+            
+            menuBackgroundText.addChild(menuSettings)
+            menuBackgroundText.addChild(menuCredits)
         }
         
-        menuBackgroundText.addChild(menuSettings)
-        menuBackgroundText.addChild(menuCredits)
         levelSelectBackground.addChild(levelSelectPage)
         settingsBackground.addChild(settingsPage)
     }

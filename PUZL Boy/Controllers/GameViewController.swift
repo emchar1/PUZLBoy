@@ -166,6 +166,8 @@ extension GameViewController: TitleSceneDelegate {
 
         //Commenting this out 10/3/23. I can keep the monitor active 24/7 right??
 //        monitor.cancel()
+        
+        UserDefaults.standard.set(true, forKey: K.UserDefaults.hasPlayedBefore)
     }
     
     func didTapLevelSelect() {
