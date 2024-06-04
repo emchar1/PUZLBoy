@@ -11,7 +11,7 @@ import StoreKit
 
 protocol GameSceneDelegate: AnyObject {
     func confirmQuitTapped()
-    func presentChatDialogueCutscene(level: Int)
+    func presentChatDialogueCutscene(level: Int, cutscene: Cutscene)
 }
 
 
@@ -590,8 +590,8 @@ class GameScene: SKScene {
         gameEngine.shouldDisableInput(true)
         pauseResetEngine.shouldDisable(true)
 
-        chatEngine.playDialogue(level: currentLevel) { [unowned self] in
-            if chatEngine.canPlayCutscene(level: currentLevel) {
+        chatEngine.playDialogue(level: currentLevel) { [unowned self] cutscene in
+            if let cutscene = cutscene {
                 let fadeDuration: TimeInterval = 1.0
                 let fadeNode = SKSpriteNode(color: .white, size: screenSize)
                 fadeNode.anchorPoint = .zero
@@ -603,7 +603,7 @@ class GameScene: SKScene {
                 
                 fadeNode.run(SKAction.fadeIn(withDuration: fadeDuration)) { [unowned self] in
                     cleanupScene(shouldSaveState: false)
-                    gameSceneDelegate?.presentChatDialogueCutscene(level: currentLevel)
+                    gameSceneDelegate?.presentChatDialogueCutscene(level: currentLevel, cutscene: cutscene)
                 }
             }
             else {
@@ -1237,7 +1237,7 @@ extension GameScene: PartyResultsSpriteDelegate {
                                          hasSword: gameEngine.level.inventory.hasSwords(),
                                          hasHammer: gameEngine.level.inventory.hasHammers())
 
-        chatEngine.playDialogue(level: -villainChatLevel) { [unowned self] in
+        chatEngine.playDialogue(level: -villainChatLevel) { [unowned self] _ in
             guard AdMobManager.interstitialAdIsReady else {
                 AdMobManager.shared.createAndLoadInterstitial() //...and try loading the ad again for future calls
                 didDismissInterstitial()

@@ -290,20 +290,21 @@ class ChatEngine {
         dimOverlaySprite.run(SKAction.fadeAlpha(to: 0.0, duration: 1.0))
     }
     
-    ///Helper function to wrap up a chat dialogue and call the completion handler.
-    private func handleDialogueCompletion(level: Int, completion: (() -> Void)?) {
-        dialoguePlayed[level] = true
-        isChatting = false
-        fadeDimOverlay()
-        completion?()
-    }
-    
-    private func handleDialogueCompletionWithCutscene(level: Int, completion: (() -> Void)?) {
-        //DO NOT SET THIS: dialoguePlayed[level] = true
+    /**
+     Helper function to wrap up a chat dialogue and call the completion handler.
+     - parameters:
+        - level: the current game level
+        - cutscene: the cutscene to play upon completion, if any
+        - completion: completion that allows for handling code, but also passes through the cutscene argument for further processing
+     */
+    private func handleDialogueCompletion(level: Int, cutscene: Cutscene? = nil, completion: ((Cutscene?) -> Void)?) {
+        if cutscene == nil { //Do not set dialoguePlayed[level] = true if there's a cutscene (is this still relevant??? 6/3/24)
+            dialoguePlayed[level] = true
+        }
         
         isChatting = false
         fadeDimOverlay()
-        completion?()
+        completion?(cutscene)
     }
     
     
@@ -540,10 +541,6 @@ extension ChatEngine {
         dialoguePlayed[level] = newValue
     }
     
-    func canPlayCutscene(level: Int) -> Bool {
-        return (dialogueWithCutscene[level] ?? false) && !(dialoguePlayed[level] ?? true)
-    }
-        
     ///Populates the dialoguePlayed array. Need to include all levels where dialogue is to occur, and also add the level case in the playDialogue() function.
     private func populateKeyDialogue() {
 
@@ -603,10 +600,10 @@ extension ChatEngine {
         - level: the level # for the chat dialogue to play
         - completion: completion handler to execute at the end of the dialogue
      */
-    func playDialogue(level: Int, completion: (() -> Void)?) {
+    func playDialogue(level: Int, completion: ((Cutscene?) -> Void)?) {
         guard let dialoguePlayedCheck = dialoguePlayed[level], !dialoguePlayedCheck else {
             isChatting = false
-            completion?()
+            completion?(nil)
             return
         }
 
@@ -758,13 +755,13 @@ extension ChatEngine {
                 AudioManager.shared.stopSound(for: "magicheartbeatloop1", fadeDuration: 5)
                 
                 chatBackgroundSprite.run(SKAction.wait(forDuration: 3)) { [unowned self] in
-                    handleDialogueCompletion(level: level) { [unowned self] in
+                    handleDialogueCompletion(level: level) { [unowned self] _ in
                         magmoorScary.resetAlpha()
                         magmoorScary.removeFromParent()
                         
                         UIScreen.main.brightness = originalBrightness
                         
-                        completion?()
+                        completion?(nil)
                     }
                 }
             }
@@ -826,10 +823,11 @@ extension ChatEngine {
             }
         case 13:
             delegate?.illuminatePanel(at: (0, 1), useOverlay: true)
+            delegate?.illuminatePanel(at: (0, 2), useOverlay: true)
             delegate?.illuminatePanel(at: (1, 2), useOverlay: true)
             
             sendChatArray(items: [
-                ChatItem(profile: .trainer, chat: "Looks like that gem is trapped between those boulders.") { [unowned self] in
+                ChatItem(profile: .trainer, chat: "Easy right? Levels get progressively harder the farther you go. Looks like that gem is trapped between those boulders.") { [unowned self] in
                     delegate?.illuminatePanel(at: (2, 1), useOverlay: true)
                 },
                 ChatItem(profile: .trainer, chat: "Not to worry! See that hammer over there? Use it to break through."),
@@ -842,6 +840,7 @@ extension ChatEngine {
                 ChatItem(profile: .hero, imgPos: .left, chat: "I got this, dude!") { [unowned self] in
                     delegate?.deilluminateDisplayNode(for: .hammers)
                     delegate?.deilluminatePanel(at: (0, 1), useOverlay: true)
+                    delegate?.deilluminatePanel(at: (0, 2), useOverlay: true)
                     delegate?.deilluminatePanel(at: (1, 2), useOverlay: true)
                     delegate?.deilluminatePanel(at: (2, 1), useOverlay: true)
                 }
@@ -1060,6 +1059,7 @@ extension ChatEngine {
         case 262: //NEEDS CUTSCENE
             let spawnPoint: K.GameboardPosition = (0, 1)
             let decisionIndex = 0
+            let cutscene = CutsceneMagmoor(size: K.ScreenDimensions.size, playerLeft: .villain, playerRight: .youngVillain, xOffsetsArray: nil)
             
             guard let delegate = delegate else {
                 //This allows the game to move forward in case the delegate is not set, for some reason!
@@ -1073,15 +1073,15 @@ extension ChatEngine {
                     ChatItem(profile: .hero, imgPos: .left, chat: "Gasp! It's the mysterious man!!!!!"),
                     ChatItem(profile: .trainer, imgPos: .left, chat: "Magmoor, stop this at once! It's not too late."),
                     ChatItem(profile: .villain, chat: "MAGMOOR: If you want to see your precious princess again, then let us merge powers."),
-                    ChatItem(profile: .trainer, imgPos: .left, chat: "NO! You want absolute power. We Mystics share power equally; it keeps the realms in balance. Your actions will surely plunge the realms into total darkness. *Transition*"),
-                    ChatItem(profile: .villain, chat: "I have been floating around in the LIMBO REALM for CENTURIES. Why?? Because the council didn't like what I was destined to become?!"),
-                    ChatItem(profile: .trainer, imgPos: .left, chat: "You tried to lead an army into battle. Against the Elders|| They shut you out. Rightfully so.|| And now you just want revenge. Don't let this consume you Magmoor!!"),
+                    ChatItem(profile: .trainer, imgPos: .left, chat: "NO! You want absolute power. We Mystics share power equally; it keeps the realms in balance. Your actions will surely plunge the realms into total darkness."),
+                    ChatItem(profile: .villain, chat: "I have been floating around in the LIMBO REALM for centuries. Why?? Because the council didn't like what I was destined to become?!"),
+                    ChatItem(profile: .trainer, imgPos: .left, chat: "You led an army into battle against the Elders! They shut you out. Rightfully so! And now you want only revenge. Don't let this consume you Magmoor!!"),
                     ChatItem(profile: .villain, chat: "I'm beyond revenge, my dear. I just want justice. The scales are tipped in their favor. I merely seek to balance it once again."),
-                    ChatItem(profile: .trainer, imgPos: .left, chat: "You want an all out war. Life treated you unfairly and now you think the universe owes you!"),
+                    ChatItem(profile: .trainer, imgPos: .left, chat: "You want all out war. Life treated you unfairly and now you think the universe owes you!"),
                     ChatItem(profile: .villain, chat: "It's clear the system is broken as the realms are already headed towards eternal darkness. Therefore it requires a new world order. It needs..... cleansing."),
                     ChatItem(profile: .princess, chat: "Your teeth need cleansing!"),
                     ChatItem(profile: .trainer, imgPos: .left, chat: "MAGMOOR LISTEN TO YOURSELF!!! You've completely lost it. Give up this delusion and let the princess go!!!"),
-                    ChatItem(profile: .hero, imgPos: .left, chat: "Yeah, if you touch a hair on her head, it's gonna be the end for you, Mantamar!"),
+                    ChatItem(profile: .hero, imgPos: .left, chat: "If you touch a hair on her head, it's gonna be the end for you, Mantamar!"),
                     ChatItem(profile: .villain, chat: "Open your eyes and see! Join me in the purification. We can rule the realms... together."),
                     ChatItem(profile: .trainer, imgPos: .left, chat: "We shall not join in your madness. We will fight you till the end to protect the realms!"),
                     ChatItem(profile: .villain, chat: "Pity. Then suffer the consequences."),
@@ -1106,8 +1106,7 @@ extension ChatEngine {
                     ]) { [unowned self] in
                         AudioManager.shared.adjustVolume(to: 1, for: AudioManager.shared.currentTheme, fadeDuration: 3)
                         
-//                        handleDialogueCompletion(level: level, completion: completion)
-                        handleDialogueCompletionWithCutscene(level: level, completion: completion)
+                        handleDialogueCompletion(level: level, cutscene: cutscene, completion: completion)
                     }
                 }
             }
@@ -1227,6 +1226,8 @@ extension ChatEngine {
                 }
             }
         case 301:
+            let cutscene = CutsceneOldFriends(size: K.ScreenDimensions.size, playerLeft: .youngTrainer, playerRight: .youngVillain, xOffsetsArray: nil)
+
             sendChatArray(items: [
                 ChatItem(profile: .hero, imgPos: .left, chat: "I've got a plan."),
                 ChatItem(profile: .trainer, chat: "PUZL Boy, there's something I need to tell you—"),
@@ -1240,7 +1241,7 @@ extension ChatEngine {
                 ChatItem(profile: .hero, imgPos: .left, chat: "Why should we trust him?!! He's obviously the bad guy!!!"),
                 ChatItem(profile: .trainer, chat: "*Deep breath* He wasn't always the bad guy...")
             ]) { [unowned self] in
-                handleDialogueCompletionWithCutscene(level: level, completion: completion)
+                handleDialogueCompletion(level: level, cutscene: cutscene, completion: completion)
             }
 //        case 314:
 //            delegate?.inbetweenRealmEnter(levelInt: level)
@@ -1270,7 +1271,7 @@ extension ChatEngine {
 //            }
         default:
             isChatting = false
-            completion?()
+            completion?(nil)
         }
     }
 }

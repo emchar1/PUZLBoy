@@ -208,15 +208,10 @@ extension GameViewController: GameSceneDelegate {
         skView.presentScene(titleScene, transition: SKTransition.fade(with: .white, duration: 0))
     }
     
-    func presentChatDialogueCutscene(level: Int) {
+    func presentChatDialogueCutscene(level: Int, cutscene: Cutscene) {
         let gameScene = GameScene(size: K.ScreenDimensions.size, hasInternet: hasInternet, levelSelectNewLevel: level)
         gameScene.gameSceneDelegate = self
         gameScene.chatEngine.setDialoguePlayed(level: level, to: true) //IMPORTANT: MUST do this for levels with a chat dialogue cutscene!
-
-        let cutscene = CutsceneOldFriends(size: K.ScreenDimensions.size,
-                                          playerLeft: .youngVillain,
-                                          playerRight: .youngTrainer,
-                                          xOffsetsArray: nil)
         
         skView.presentScene(cutscene, transition: SKTransition.fade(with: .white, duration: 2.0))
         
