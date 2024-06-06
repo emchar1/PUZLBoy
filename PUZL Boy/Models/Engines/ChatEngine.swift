@@ -535,10 +535,10 @@ extension ChatEngine: ChatDecisionEngineDelegate {
 // MARK: - Dialogue Functions
 
 extension ChatEngine {
-    func setDialoguePlayed(level: Int, to newValue: Bool) {
-        guard dialoguePlayed[level] != nil else { return }
+    func setDialogueWithCutscene(level: Int, to newValue: Bool) {
+        guard dialogueWithCutscene[level] != nil else { return }
         
-        dialoguePlayed[level] = newValue
+        dialogueWithCutscene[level] = newValue
     }
     
     ///Populates the dialoguePlayed array. Need to include all levels where dialogue is to occur, and also add the level case in the playDialogue() function.
@@ -575,12 +575,12 @@ extension ChatEngine {
         dialoguePlayed[221] = false
         dialoguePlayed[251] = false
         dialoguePlayed[262] = false //spawn at (0, 1)
-        dialogueWithCutscene[262] = true //Dialogue with CUTSCENES (always set to true)
+        dialogueWithCutscene[262] = false
         dialoguePlayed[282] = false //spawn at (0, 1)
 
         //Chapter 3 - You're on your own, kid!
         dialoguePlayed[301] = false
-        dialogueWithCutscene[301] = true //Dialogue with CUTSCENES (always set to true)
+        dialogueWithCutscene[301] = false
         dialoguePlayed[314] = false
 
         
@@ -1106,7 +1106,7 @@ extension ChatEngine {
                     ]) { [unowned self] in
                         AudioManager.shared.adjustVolume(to: 1, for: AudioManager.shared.currentTheme, fadeDuration: 3)
                         
-                        handleDialogueCompletion(level: level, cutscene: cutscene, completion: completion)
+                        handleDialogueCompletion(level: level, completion: completion)
                     }
                 }
             }
@@ -1226,22 +1226,32 @@ extension ChatEngine {
                 }
             }
         case 301:
-            let cutscene = CutsceneOldFriends(size: K.ScreenDimensions.size, playerLeft: .youngTrainer, playerRight: .youngVillain, xOffsetsArray: nil)
-
-            sendChatArray(items: [
-                ChatItem(profile: .hero, imgPos: .left, chat: "I've got a plan."),
-                ChatItem(profile: .trainer, chat: "PUZL Boy, there's something I need to tell you—"),
-                ChatItem(profile: .hero, imgPos: .left, chat: "I'll distract him with that sword over there. Then when he's not looking, you blast away with magic."),
-                ChatItem(profile: .trainer, chat: "I'm leaving."),
-                ChatItem(profile: .hero, imgPos: .left, chat: "THEN while he's weakened, I'll use said sword to deliver the final blow and—"),
-                ChatItem(profile: .hero, imgPos: .left, chat: ".....wait, what do you mean you're leaving?! Where are we going?? 🥺"),
-                ChatItem(profile: .trainer, chat: "He agreed to set the princess free. In return, I am going to merge with him."),
-                ChatItem(profile: .hero, imgPos: .left, chat: "Ok but can we please stop calling it that?"),
-                ChatItem(profile: .trainer, chat: "Merging of powers is completely natural for our kind. We do it anywhere. All the time. At home, in public. We do it without shame or regret. So, no."),
-                ChatItem(profile: .hero, imgPos: .left, chat: "Why should we trust him?!! He's obviously the bad guy!!!"),
-                ChatItem(profile: .trainer, chat: "*Deep breath* He wasn't always the bad guy...")
-            ]) { [unowned self] in
-                handleDialogueCompletion(level: level, cutscene: cutscene, completion: completion)
+            if !dialogueWithCutscene[level]! { //PART 1
+                let cutscene = CutsceneOldFriends(size: K.ScreenDimensions.size, playerLeft: .youngTrainer, playerRight: .youngVillain, xOffsetsArray: nil)
+                                
+                sendChatArray(items: [
+                    ChatItem(profile: .hero, imgPos: .left, chat: "I've got a plan."),
+                    ChatItem(profile: .trainer, chat: "PUZL Boy, there's something I need to tell you—"),
+                    ChatItem(profile: .hero, imgPos: .left, chat: "I'll distract him with this sword. Then when he's not looking, you blast away with magic."),
+                    ChatItem(profile: .trainer, chat: "I'm leaving."),
+                    ChatItem(profile: .hero, imgPos: .left, chat: "THEN while he's weakened, I'll use said sword to deliver the final blow and—"),
+                    ChatItem(profile: .hero, imgPos: .left, chat: ".....wait, what do you mean you're leaving?! Where are we going?? 🥺"),
+                    ChatItem(profile: .trainer, chat: "He agreed to set the princess free. In return, I am going to merge with him."),
+                    ChatItem(profile: .hero, imgPos: .left, chat: "Ok but can we please stop calling it that?"),
+                    ChatItem(profile: .trainer, chat: "Merging of powers is completely natural for our kind. We do it anywhere. All the time. At home, in public. We do it without shame or regret. So, no."),
+                    ChatItem(profile: .hero, imgPos: .left, chat: "Why should we trust him?!! He's obviously the bad guy!!!"),
+                    ChatItem(profile: .trainer, chat: "*Deep breath* He wasn't always the bad guy...")
+                ]) { [unowned self] in
+                    handleDialogueCompletion(level: level, cutscene: cutscene, completion: completion)
+                }
+            }
+            else { //PART 2
+                sendChatArray(items: [
+                    ChatItem(profile: .hero, imgPos: .left, chat: "Ok i'm done."),
+                    ChatItem(profile: .trainer, chat: "Buenissimo!")
+                ]) { [unowned self] in
+                    handleDialogueCompletion(level: level, completion: completion)
+                }
             }
 //        case 314:
 //            delegate?.inbetweenRealmEnter(levelInt: level)
