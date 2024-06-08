@@ -14,7 +14,7 @@ protocol ChatEngineDelegate: AnyObject {
     func deilluminateDisplayNode(for displayType: DisplaySprite.DisplayStatusName)
     func illuminateMinorButton(for button: PauseResetEngine.MinorButton)
     func deilluminateMinorButton(for button: PauseResetEngine.MinorButton)
-    func spawnPrincessCapture(at position: K.GameboardPosition, completion: @escaping () -> Void)
+    func spawnPrincessCapture(at position: K.GameboardPosition, shouldAnimateWarp: Bool, completion: @escaping () -> Void)
     func despawnPrincessCapture(at position: K.GameboardPosition, completion: @escaping () -> Void)
     func flashPrincess(at position: K.GameboardPosition, completion: @escaping () -> Void)
     func inbetweenRealmEnter(levelInt: Int)
@@ -1056,62 +1056,80 @@ extension ChatEngine {
             ]) { [unowned self] in
                 handleDialogueCompletion(level: level, completion: completion)
             }
-        case 262: //NEEDS CUTSCENE
-            let spawnPoint: K.GameboardPosition = (0, 1)
-            let decisionIndex = 0
-            let cutscene = CutsceneMagmoor(size: K.ScreenDimensions.size, playerLeft: .villain, playerRight: .youngVillain, xOffsetsArray: nil)
-            
+        case 262:
             guard let delegate = delegate else {
                 //This allows the game to move forward in case the delegate is not set, for some reason!
                 handleDialogueCompletion(level: level, completion: completion)
                 return
             }
             
-            delegate.spawnPrincessCapture(at: spawnPoint) { [unowned self] in
-                sendChatArray(items: [
-                    ChatItem(profile: .princess, chat: "PRINCESS OLIVIA: Help meeeee PUZL Boy!!! It's dark and scary in there. And this guy's breath is really stinky!"),
-                    ChatItem(profile: .hero, imgPos: .left, chat: "Gasp! It's the mysterious man!!!!!"),
-                    ChatItem(profile: .trainer, imgPos: .left, chat: "Magmoor, stop this at once! It's not too late."),
-                    ChatItem(profile: .villain, chat: "MAGMOOR: If you want to see your precious princess again, then let us merge powers."),
-                    ChatItem(profile: .trainer, imgPos: .left, chat: "NO! You want absolute power. We Mystics share power equally; it keeps the realms in balance. Your actions will surely plunge the realms into total darkness."),
-                    ChatItem(profile: .villain, chat: "I have been floating around in the LIMBO REALM for centuries. Why?? Because the council didn't like what I was destined to become?!"),
-                    ChatItem(profile: .trainer, imgPos: .left, chat: "You led an army into battle against the Elders! They shut you out. Rightfully so! And now you want only revenge. Don't let this consume you Magmoor!!"),
-                    ChatItem(profile: .villain, chat: "I'm beyond revenge, my dear. I just want justice. The scales are tipped in their favor. I merely seek to balance it once again."),
-                    ChatItem(profile: .trainer, imgPos: .left, chat: "You want all out war. Life treated you unfairly and now you think the universe owes you!"),
-                    ChatItem(profile: .villain, chat: "It's clear the system is broken as the realms are already headed towards eternal darkness. Therefore it requires a new world order. It needs..... cleansing."),
-                    ChatItem(profile: .princess, chat: "Your teeth need cleansing!"),
-                    ChatItem(profile: .trainer, imgPos: .left, chat: "MAGMOOR LISTEN TO YOURSELF!!! You've completely lost it. Give up this delusion and let the princess go!!!"),
-                    ChatItem(profile: .hero, imgPos: .left, chat: "If you touch a hair on her head, it's gonna be the end for you, Mantamar!"),
-                    ChatItem(profile: .villain, chat: "Open your eyes and see! Join me in the purification. We can rule the realms... together."),
-                    ChatItem(profile: .trainer, imgPos: .left, chat: "We shall not join in your madness. We will fight you till the end to protect the realms!"),
-                    ChatItem(profile: .villain, chat: "Pity. Then suffer the consequences."),
-                    ChatItem(profile: .princess, endChat: true, chat: "Noooooo! Don't let him take meeeeeee!!!!") { [unowned self] in
-                        fadeDimOverlay()
-                        delegate.despawnPrincessCapture(at: spawnPoint, completion: {})
-                    },
-                    ChatItem(profile: .hero, imgPos: .left, pause: 8, startNewChat: true, chat: "That was creepy. Marlin, I did NOT sign up for this.......", handler: nil),
-                    ChatItem(profile: .trainer, chat: "PUZL Boy this is now your reality. Take responsibility for your future. YOU have the power to change it!"),
-                    ChatItem(profile: .hero, imgPos: .left, chat: "I know, I know. My mom always says, \"The power is yours!\" Ok... so what does Marzipan want with the princess?"),
-                    ChatItem(profile: .trainer, chat: "Magmoor—one of the most powerful Mystics from my realm. I do not know what he intends to do with the princess, although we should assume the worst."),
-                    ChatItem(profile: .hero, imgPos: .left, chat: "He's not gonna sacrifice her is he?!?! Because that's just not cool."),
-                    ChatItem(profile: .trainer, chat: "I almost did not recognize him in that grotesque form. He used to be so handsome.") { [unowned self] in
-                        chatDecisionEngine.showDecisions(index: decisionIndex, toNode: chatBackgroundSprite)
-                    },
-                    ChatItem(profile: .hero, imgPos: .left, endChat: false, chat: "Ok, so what's our next move:", handler: nil)
-                ]) { [unowned self] in
-                    // FIXME: - I don't like this nested sendChatArray()...
+            let spawnPoint: K.GameboardPosition = (0, 1)
+            
+            if !dialogueWithCutscene[level]! {
+                let cutscene = CutsceneMagmoor(size: K.ScreenDimensions.size, playerLeft: .villain, playerRight: .youngVillain, xOffsetsArray: nil)
+                
+                delegate.spawnPrincessCapture(at: spawnPoint, shouldAnimateWarp: true) { [unowned self] in
                     sendChatArray(items: [
-                        ChatItem(profile: .hero, imgPos: .left, startNewChat: false, chat: "\(FIRManager.decisions[decisionIndex].isLeftButton() ? "We should prepare first." : "BRING ME MAGMOOR!!!")", handler: nil),
-                        ChatItem(profile: .trainer, chat: "\(FIRManager.decisions[decisionIndex].isLeftButton() ? "A wise decision. Let's keep moving..." : "Okay but we need to be EXTRA cautious.")"),
+                        ChatItem(profile: .princess, chat: "PRINCESS OLIVIA: Help meeeee PUZL Boy!!! It's dark and scary in there. And this guy's breath is really stinky!"),
+                        ChatItem(profile: .hero, imgPos: .left, chat: "Gasp! It's the mysterious man!!!!!"),
+                        ChatItem(profile: .trainer, imgPos: .left, chat: "Magmoor, stop this at once! It's not too late."),
+                        ChatItem(profile: .villain, chat: "MAGMOOR: If you want to see your precious princess again, then let us merge powers."),
+                        ChatItem(profile: .trainer, imgPos: .left, chat: "NO! You want absolute power. We Mystics share power equally; it keeps the realms in balance. Your actions will surely plunge the realms into total darkness.")
                     ]) { [unowned self] in
-                        AudioManager.shared.adjustVolume(to: 1, for: AudioManager.shared.currentTheme, fadeDuration: 3)
-                        
-                        handleDialogueCompletion(level: level, completion: completion)
+
+                        // FIXME: - I don't like how I need to set this here.
+                        AudioManager.shared.stopSound(for: "magicheartbeatloop1", fadeDuration: 2)
+                        AudioManager.shared.stopSound(for: "littlegirllaugh", fadeDuration: 2)
+                        AudioManager.shared.stopSound(for: "scarymusicbox", fadeDuration: 2)
+
+                        handleDialogueCompletion(level: level, cutscene: cutscene, completion: completion)
                     }
-                }
+                } //end delegate.spawnPrincessCapture()
             }
-            
-            
+            else {
+                let decisionIndex = 0
+                
+                delegate.spawnPrincessCapture(at: spawnPoint, shouldAnimateWarp: false) { [unowned self] in
+                    sendChatArray(items: [
+                        ChatItem(profile: .villain, chat: "I have been floating around in the LIMBO REALM for centuries. Why?? Because the council saw me as the biggest threat to their 1,000 year rule."),
+                        ChatItem(profile: .trainer, imgPos: .left, chat: "You led an army of fallen Mystics to overthrow the Elders——what did you expect?!?!?! And you're surprised they shut you out??"),
+                        ChatItem(profile: .villain, chat: "Fallen Mystics, really?!! You of all people, Marlin should understand. Always so holier than thou. Why don't you stand up for yourself for a change!"),
+                        ChatItem(profile: .trainer, imgPos: .left, chat: "You are so lost! You seek only revenge because you didn't have it your way. Don't let this consume you Magmoor!!"),
+                        ChatItem(profile: .villain, chat: "I'm beyond revenge, my dear. I just want justice. The scales are tipped to one side. I merely seek to balance it once again."),
+                        ChatItem(profile: .trainer, imgPos: .left, chat: "You want all out war. Life treated you unfairly and now you think the universe owes you!"),
+                        ChatItem(profile: .villain, chat: "The system is broken and the realms are headed towards eternal darkness. It requires a new world order. It needs..... cleansing."),
+                        ChatItem(profile: .princess, chat: "Your teeth need cleansing!"),
+                        ChatItem(profile: .trainer, imgPos: .left, chat: "MAGMOOR LISTEN TO YOURSELF!!! You've completely lost it. Give up this delusion and let the princess go!!!"),
+                        ChatItem(profile: .hero, imgPos: .left, chat: "If you touch a hair on her head, it's gonna be the end for you, Mantamar!"),
+                        ChatItem(profile: .villain, chat: "Open your eyes and see! Join me in the purification. We can rule the realms... together."),
+                        ChatItem(profile: .trainer, imgPos: .left, chat: "We shall not join in your madness. We will fight you till the end to protect the realms!"),
+                        ChatItem(profile: .villain, chat: "Pity. Then suffer the consequences."),
+                        ChatItem(profile: .princess, endChat: true, chat: "Noooooo! Don't let him take meeeeeee!!!!") { [unowned self] in
+                            fadeDimOverlay()
+                            delegate.despawnPrincessCapture(at: spawnPoint, completion: {})
+                        },
+                        ChatItem(profile: .hero, imgPos: .left, pause: 8, startNewChat: true, chat: "That was creepy. Marlin, I did NOT sign up for this.......", handler: nil),
+                        ChatItem(profile: .trainer, chat: "PUZL Boy this is now your reality. Take responsibility for your future. YOU have the power to change it!"),
+                        ChatItem(profile: .hero, imgPos: .left, chat: "I know, I know. My mom always says, \"The power is yours!\" Ok... so what does Marzipan want with the princess?"),
+                        ChatItem(profile: .trainer, chat: "Magmoor—one of the most powerful Mystics from my realm. I do not know what he intends to do with the princess, although we should assume the worst."),
+                        ChatItem(profile: .hero, imgPos: .left, chat: "He's not gonna sacrifice her is he?!?! Because that's just not cool."),
+                        ChatItem(profile: .trainer, chat: "I almost did not recognize him in that grotesque form. He used to be so handsome.") { [unowned self] in
+                            chatDecisionEngine.showDecisions(index: decisionIndex, toNode: chatBackgroundSprite)
+                        },
+                        ChatItem(profile: .hero, imgPos: .left, endChat: false, chat: "Ok, so what's our next move:", handler: nil)
+                    ]) { [unowned self] in
+                        // FIXME: - I don't like this nested sendChatArray()...
+                        sendChatArray(items: [
+                            ChatItem(profile: .hero, imgPos: .left, startNewChat: false, chat: "\(FIRManager.decisions[decisionIndex].isLeftButton() ? "We should prepare first." : "BRING ME MAGMOOR!!!")", handler: nil),
+                            ChatItem(profile: .trainer, chat: "\(FIRManager.decisions[decisionIndex].isLeftButton() ? "A wise decision. Let's keep moving..." : "Okay but we need to be EXTRA cautious.")"),
+                        ]) { [unowned self] in
+                            AudioManager.shared.adjustVolume(to: 1, for: AudioManager.shared.currentTheme, fadeDuration: 3)
+                            
+                            handleDialogueCompletion(level: level, completion: completion)
+                        }
+                    }
+                } //end delegate.spawnPrincessCapture() no warp animation
+            } //end else
             
             
         // TODO: - Chat Decisions
@@ -1193,7 +1211,7 @@ extension ChatEngine {
                 return
             }
             
-            delegate.spawnPrincessCapture(at: spawnPoint) { [unowned self] in
+            delegate.spawnPrincessCapture(at: spawnPoint, shouldAnimateWarp: true) { [unowned self] in
                 sendChatArray(items: [
                     ChatItem(profile: .villain, chat: "Come to your senses yet?"),
                     ChatItem(profile: .hero, imgPos: .left, chat: "HEY! Leave her alone, Mylar!"),
@@ -1210,7 +1228,7 @@ extension ChatEngine {
                         
                         delegate.flashPrincess(at: spawnPoint, completion: {})
                     },
-                    ChatItem(profile: .princess, pause: 6, startNewChat: true, chat: "I can't! I'm not strong enough, uncle Marlin!", handler: nil),
+                    ChatItem(profile: .princess, pause: 6, startNewChat: true, chat: "I'm not strong enough... I can't do it, uncle Marlin!", handler: nil),
                     ChatItem(profile: .trainer, imgPos: .left, chat: "Yes you can, princess! You have got to keep trying. Do not give up!"),
                     ChatItem(profile: .villain, chat: "Cute. I hate to cut the reunion short, but if you won't merge with me, we'll be on our way."),
                     ChatItem(profile: .trainer, imgPos: .left, chat: "Do not be afraid! You are braver than you think."),

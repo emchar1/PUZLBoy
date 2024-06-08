@@ -309,7 +309,7 @@ class GameboardSprite {
     // MARK: - Spawn Princess Functions
     
     ///Spawns a short animation of the whereabouts of the princess being captured by the villain.
-    func spawnPrincessCapture(at position: K.GameboardPosition, completion: @escaping () -> Void) {
+    func spawnPrincessCapture(at position: K.GameboardPosition, shouldAnimateWarp: Bool, completion: @escaping () -> Void) {
         guard let endPanel = endPanel else {
             print("Unable to execute GameboardSprite.spawnPrincessCapture(); there's no endPanel!")
             completion()
@@ -326,12 +326,6 @@ class GameboardSprite {
             }
         }
         
-        let playerOffset = CGPoint(x: panelSize / 4, y: 0)
-        let villainOffset = CGPoint(x: 0, y: 20)
-        let startPoint = getLocation(at: position)
-        let endPoint = getLocation(at: endPanel)
-        let facingMultiplier: CGFloat = endPoint.x > startPoint.x ? -1 : 1
-
         let overlayPanel = SKSpriteNode(imageNamed: LevelType.endOpen.description)
         overlayPanel.scale(to: scaleSize)
         overlayPanel.position = getSpritePosition(at: endPanel) + GameboardSprite.padding / 2
@@ -340,66 +334,84 @@ class GameboardSprite {
         overlayPanel.name = "captureEndOpen"
         sprite.addChild(overlayPanel)
         
-        AudioManager.shared.playSound(for: "magicwarp")
+        let waitDuration: TimeInterval = shouldAnimateWarp ? 1 : 0
+        let appearDuration: TimeInterval = shouldAnimateWarp ? 0.5 : 0
+        let currentThemeFade: TimeInterval = shouldAnimateWarp ? 5 : 0
 
-        spawnItem(at: position, with: .warp4) { [unowned self] in
-            AudioManager.shared.playSound(for: "magicheartbeatloop1", fadeIn: 3, interruptPlayback: false)
-            AudioManager.shared.playSound(for: "littlegirllaugh", fadeIn: 3, interruptPlayback: false)
-            AudioManager.shared.playSound(for: "scarymusicbox", fadeIn: 3, interruptPlayback: false)
-            AudioManager.shared.adjustVolume(to: 0, for: AudioManager.shared.currentTheme, fadeDuration: 5)
+        AudioManager.shared.playSound(for: "magicheartbeatloop1", fadeIn: 3, delay: waitDuration, interruptPlayback: false)
+        AudioManager.shared.playSound(for: "littlegirllaugh", fadeIn: 3, delay: waitDuration, interruptPlayback: false)
+        AudioManager.shared.playSound(for: "scarymusicbox", fadeIn: 3, delay: waitDuration, interruptPlayback: false)
+        AudioManager.shared.adjustVolume(to: 0, for: AudioManager.shared.currentTheme, fadeDuration: currentThemeFade)
 
-            ParticleEngine.shared.animateParticles(type: .warp4,
-                                                   toNode: sprite,
-                                                   position: getLocation(at: position),
-                                                   scale: 3 / CGFloat(panelCount),
-                                                   duration: 0)
-
-            let princess = Player(type: .princess)
-            princess.sprite.position = startPoint
-            princess.sprite.setScale(0)
-            princess.sprite.zPosition = K.ZPosition.itemsAndEffects + 30
-            princess.sprite.name = "capturePrincess"
-            princess.sprite.run(SKAction.repeatForever(SKAction.animate(with: princess.textures[Player.Texture.jump.rawValue], timePerFrame: 0.02)), withKey: "writhe")
+        if shouldAnimateWarp {
+            AudioManager.shared.playSound(for: "magicwarp")
             
-            let villain = Player(type: .villain)
-            villain.sprite.position = startPoint + villainOffset
-            villain.sprite.setScale(0)
-            villain.sprite.zPosition = K.ZPosition.itemsAndEffects + 20
-            villain.sprite.name = "captureVillain"
-            villain.sprite.run(SKAction.repeatForever(SKAction.animate(with: villain.textures[Player.Texture.idle.rawValue], timePerFrame: 0.1)))
-                        
-            
-            let waitDuration: TimeInterval = 1
-            let appearDuration: TimeInterval = 0.5
-
-            princess.sprite.run(SKAction.sequence([
-                SKAction.wait(forDuration: waitDuration),
-                SKAction.group([
-                    SKAction.scaleX(to: facingMultiplier * Player.getGameboardScale(panelSize: panelSize) * princess.scaleMultiplier, duration: appearDuration),
-                    SKAction.scaleY(to: Player.getGameboardScale(panelSize: panelSize) * princess.scaleMultiplier, duration: appearDuration),
-                    SKAction.moveBy(x: facingMultiplier * playerOffset.x, y: playerOffset.y, duration: appearDuration)
-                ])
-            ]))
-            
-            villain.sprite.run(SKAction.sequence([
-                SKAction.wait(forDuration: waitDuration),
-                SKAction.group([
-                    SKAction.scaleX(to: facingMultiplier * Player.getGameboardScale(panelSize: panelSize) * villain.scaleMultiplier, duration: appearDuration),
-                    SKAction.scaleY(to: Player.getGameboardScale(panelSize: panelSize) * villain.scaleMultiplier, duration: appearDuration),
-                    SKAction.moveBy(x: -facingMultiplier * playerOffset.x, y: playerOffset.y, duration: appearDuration)
-                ])
-            ]))
-            
-            sprite.addChild(princess.sprite)
-            sprite.addChild(villain.sprite)
-            
-            sprite.run(SKAction.sequence([
-                SKAction.wait(forDuration: 3),
-                SKAction.run { [unowned self] in
-                    despawnItem(at: position, completion: completion)
-                }
-            ]))
+            spawnItem(at: position, with: .warp4) { [unowned self] in
+                ParticleEngine.shared.animateParticles(type: .warp4,
+                                                       toNode: sprite,
+                                                       position: getLocation(at: position),
+                                                       scale: 3 / CGFloat(panelCount),
+                                                       duration: 0)
+                
+                handleSpawnPrincessVillain(position: position, endPanel: endPanel, waitDuration: waitDuration, appearDuration: appearDuration)
+                
+                sprite.run(SKAction.sequence([
+                    SKAction.wait(forDuration: 3),
+                    SKAction.run { [unowned self] in
+                        despawnItem(at: position, completion: completion)
+                    }
+                ]))
+            }
         }
+        else {
+            handleSpawnPrincessVillain(position: position, endPanel: endPanel, waitDuration: waitDuration, appearDuration: appearDuration)
+            completion()
+        }
+    }
+    
+    ///Helper function to spawnPrincessCapture() that animates the appearance of princess and villain.
+    private func handleSpawnPrincessVillain(position: K.GameboardPosition, endPanel: K.GameboardPosition, waitDuration: TimeInterval, appearDuration: TimeInterval) {
+        
+        let playerOffset = CGPoint(x: panelSize / 4, y: 0)
+        let villainOffset = CGPoint(x: 0, y: 20)
+        let startPoint = getLocation(at: position)
+        let endPoint = getLocation(at: endPanel)
+        let facingMultiplier: CGFloat = endPoint.x > startPoint.x ? -1 : 1
+
+        let princess = Player(type: .princess)
+        princess.sprite.position = startPoint
+        princess.sprite.setScale(0)
+        princess.sprite.zPosition = K.ZPosition.itemsAndEffects + 30
+        princess.sprite.name = "capturePrincess"
+        princess.sprite.run(SKAction.repeatForever(SKAction.animate(with: princess.textures[Player.Texture.jump.rawValue], timePerFrame: 0.02)), withKey: "writhe")
+        
+        let villain = Player(type: .villain)
+        villain.sprite.position = startPoint + villainOffset
+        villain.sprite.setScale(0)
+        villain.sprite.zPosition = K.ZPosition.itemsAndEffects + 20
+        villain.sprite.name = "captureVillain"
+        villain.sprite.run(SKAction.repeatForever(SKAction.animate(with: villain.textures[Player.Texture.idle.rawValue], timePerFrame: 0.1)))
+                    
+        princess.sprite.run(SKAction.sequence([
+            SKAction.wait(forDuration: waitDuration),
+            SKAction.group([
+                SKAction.scaleX(to: facingMultiplier * Player.getGameboardScale(panelSize: panelSize) * princess.scaleMultiplier, duration: appearDuration),
+                SKAction.scaleY(to: Player.getGameboardScale(panelSize: panelSize) * princess.scaleMultiplier, duration: appearDuration),
+                SKAction.moveBy(x: facingMultiplier * playerOffset.x, y: playerOffset.y, duration: appearDuration)
+            ])
+        ]))
+        
+        villain.sprite.run(SKAction.sequence([
+            SKAction.wait(forDuration: waitDuration),
+            SKAction.group([
+                SKAction.scaleX(to: facingMultiplier * Player.getGameboardScale(panelSize: panelSize) * villain.scaleMultiplier, duration: appearDuration),
+                SKAction.scaleY(to: Player.getGameboardScale(panelSize: panelSize) * villain.scaleMultiplier, duration: appearDuration),
+                SKAction.moveBy(x: -facingMultiplier * playerOffset.x, y: playerOffset.y, duration: appearDuration)
+            ])
+        ]))
+        
+        sprite.addChild(princess.sprite)
+        sprite.addChild(villain.sprite)
     }
     
     func flashPrincess(at position: K.GameboardPosition, completion: @escaping () -> Void) {

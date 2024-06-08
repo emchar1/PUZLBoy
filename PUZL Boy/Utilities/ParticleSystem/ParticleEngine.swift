@@ -35,11 +35,12 @@ class ParticleEngine: SKNode {
         case groundSplit = "GroundSplitParticles"
         case groundWarp = "GroundWarpParticles"
         case hearts = "HeartsParticles"
-        case heroRainbow = "HeroRainbowParticles"
+        case heroRainbow = "HeroRainbowParticles" // FIXME: - Just for test and giggles
         case inbetween = "InBetweenParticles"
         case itemPickup = "ItemPickupParticles"
         case lavaAppear = "LavaAppearParticles"
         case lavaSizzle = "LavaSizzleParticles"
+        case limbo = "LimboParticles"
         case magicBlast = "MagicBlastParticles"
         case magicExplosion = "MagicExplosionParticles"
         case magicLight = "MagicLightParticles" // FIXME: - Testing for Marlin Magic

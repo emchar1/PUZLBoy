@@ -1293,8 +1293,8 @@ extension GameScene: ChatEngineDelegate {
         pauseResetEngine.unflashMinorButton(for: button)
     }
     
-    func spawnPrincessCapture(at position: K.GameboardPosition, completion: @escaping () -> Void) {
-        gameEngine.gameboardSprite.spawnPrincessCapture(at: position, completion: completion)
+    func spawnPrincessCapture(at position: K.GameboardPosition, shouldAnimateWarp: Bool, completion: @escaping () -> Void) {
+        gameEngine.gameboardSprite.spawnPrincessCapture(at: position, shouldAnimateWarp: shouldAnimateWarp, completion: completion)
     }
     
     func despawnPrincessCapture(at position: K.GameboardPosition, completion: @escaping () -> Void) {
