@@ -7,7 +7,7 @@
 	<key>NSUserTrackingUsageDescription</key>
 	<string>This ensures the app remains free and the ads you see are personalized.</string>
 	<key>GADApplicationIdentifier</key>
-	<string>ca-app-pub-3047242308312153~8487486800</string>
+	<string>ca-app-pub-1641067119960437~9399336427</string>
 	<key>SKAdNetworkItems</key>
 	<array>
 		<dict>

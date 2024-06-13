@@ -37,11 +37,11 @@ class AdMobManager: NSObject {
     static let puzlBoyAppID = "ca-app-pub-3047242308312153~8487486800"
     
     // FIXME: - IMPORTANT!!!!! USE THESE WHEN SHIPPING AD!!!
-//    static let myFirstInterstitialID = "ca-app-pub-3047242308312153/9074783932"
-//    static let rewardedID = "ca-app-pub-3047242308312153/7555829885"
+//    static let interstitialID = "ca-app-pub-1641067119960437/2621727977"
+//    static let rewardedID = "ca-app-pub-1641067119960437/4832958344"
 
     // FIXME: - ...AND DELETE THESE TEST ONES!!!
-    static let myFirstInterstitialID = "ca-app-pub-3940256099942544/5135589807"
+    static let interstitialID = "ca-app-pub-3940256099942544/5135589807"
     static let rewardedID = "ca-app-pub-3940256099942544/1712485313"
 
     
@@ -108,7 +108,7 @@ class AdMobManager: NSObject {
     func createAndLoadInterstitial() {
         let request = GADRequest()
         
-        GADInterstitialAd.load(withAdUnitID: AdMobManager.myFirstInterstitialID, request: request) { interstitialAd, error in
+        GADInterstitialAd.load(withAdUnitID: AdMobManager.interstitialID, request: request) { interstitialAd, error in
             guard error == nil else {
                 AdMobManager.interstitialAdIsReady = false
                 print("Error loading the interstitial: \(error!.localizedDescription)")

@@ -212,6 +212,11 @@ class CutsceneMagmoor: Cutscene {
         let pauseDuration: TimeInterval = 8
         
         animateParallax(changeSet: .marsh, duration: pauseDuration)
+        parallaxManager.backgroundSprite.removeAllActions()
+        parallaxManager.backgroundSprite.run(SKAction.group([
+            SKAction.scale(to: 1, duration: 0),
+            SKAction.move(to: .zero, duration: 0)
+        ]))
 
         animatePlayer(player: &playerLeft,
                       position: CGPoint(x: screenSize.width * 1 / 5, y: screenSize.height / 2),

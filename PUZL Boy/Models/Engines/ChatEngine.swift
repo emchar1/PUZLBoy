@@ -832,7 +832,7 @@ extension ChatEngine {
                 },
                 ChatItem(profile: .trainer, chat: "Not to worry! See that hammer over there? Use it to break through."),
                 ChatItem(profile: .hero, imgPos: .left, chat: "Yeah I put 2+2 together."),
-                ChatItem(profile: .trainer, chat: "Well. Not everyone's as bright as you, PUZL Boy."),
+                ChatItem(profile: .trainer, chat: "Well. Not everyone is as bright as you, PUZL Boy."),
                 ChatItem(profile: .trainer, chat: "Collect hammers as you go. They'll break after one use so be mindful of that.") { [unowned self] in
                     delegate?.illuminateDisplayNode(for: .hammers)
                 },
@@ -1066,7 +1066,7 @@ extension ChatEngine {
             let spawnPoint: K.GameboardPosition = (0, 1)
             
             if !dialogueWithCutscene[level]! {
-                let cutscene = CutsceneMagmoor(size: K.ScreenDimensions.size, playerLeft: .villain, playerRight: .youngVillain, xOffsetsArray: nil)
+                let cutscene = CutsceneMagmoor(size: K.ScreenDimensions.size, playerLeft: .princess, playerRight: .youngVillain, xOffsetsArray: nil)
                 
                 delegate.spawnPrincessCapture(at: spawnPoint, shouldAnimateWarp: true) { [unowned self] in
                     sendChatArray(items: [
@@ -1074,7 +1074,8 @@ extension ChatEngine {
                         ChatItem(profile: .hero, imgPos: .left, chat: "Gasp! It's the mysterious man!!!!!"),
                         ChatItem(profile: .trainer, imgPos: .left, chat: "Magmoor, stop this at once! It's not too late."),
                         ChatItem(profile: .villain, chat: "MAGMOOR: If you want to see your precious princess again, then let us merge powers."),
-                        ChatItem(profile: .trainer, imgPos: .left, chat: "NO! You want absolute power. We Mystics share power equally; it keeps the realms in balance. Your actions will surely plunge the realms into total darkness.")
+                        ChatItem(profile: .trainer, imgPos: .left, chat: "NO! You want absolute power. We Mystics share power equally; it keeps the realms in balance. Your actions will surely plunge the realms into total darkness."),
+                        ChatItem(profile: .villain, chat: "I have been floating around in the LIMBO REALM for centuries. Why?? Because the council saw me as the biggest threat to the Order.")
                     ]) { [unowned self] in
 
                         // FIXME: - I don't like how I need to set this here.
@@ -1091,7 +1092,6 @@ extension ChatEngine {
                 
                 delegate.spawnPrincessCapture(at: spawnPoint, shouldAnimateWarp: false) { [unowned self] in
                     sendChatArray(items: [
-                        ChatItem(profile: .villain, chat: "I have been floating around in the LIMBO REALM for centuries. Why?? Because the council saw me as the biggest threat to their 1,000 year rule."),
                         ChatItem(profile: .trainer, imgPos: .left, chat: "You led an army of fallen Mystics to overthrow the Elders——what did you expect?!?!?! And you're surprised they shut you out??"),
                         ChatItem(profile: .villain, chat: "Fallen Mystics, really?!! You of all people, Marlin should understand. Always so holier than thou. Why don't you stand up for yourself for a change!"),
                         ChatItem(profile: .trainer, imgPos: .left, chat: "You are so lost! You seek only revenge because you didn't have it your way. Don't let this consume you Magmoor!!"),
