@@ -665,6 +665,7 @@ extension ChatEngine {
                 ChatItem(profile: .trainer, imgPos: .left, chat: "Where is she?!! Is she unharmed??"),
                 ChatItem(profile: .blankvillain, chat: "\n\n...see for yourself...") { [unowned self] in
                     AudioManager.shared.playSoundThenStop(for: "littlegirllaugh", playForDuration: 1, fadeOut: 3)
+                    AudioManager.shared.playSoundThenStop(for: "movetile1", fadeIn: 1, playForDuration: 0.77, fadeOut: 2, delay: 1)
                     AudioManager.shared.stopSound(for: "magicheartbeatloop1", fadeDuration: 4)
 
                     //Disable fastForwardSprite for dramatic effect.
@@ -1066,7 +1067,7 @@ extension ChatEngine {
             let spawnPoint: K.GameboardPosition = (0, 1)
             
             if !dialogueWithCutscene[level]! {
-                let cutscene = CutsceneMagmoor(size: K.ScreenDimensions.size, playerLeft: .princess, playerRight: .youngVillain, xOffsetsArray: nil)
+                let cutscene = CutsceneMagmoor(size: K.ScreenDimensions.size, playerLeft: .youngTrainer, playerRight: .youngVillain, xOffsetsArray: nil)
                 
                 delegate.spawnPrincessCapture(at: spawnPoint, shouldAnimateWarp: true) { [unowned self] in
                     sendChatArray(items: [
