@@ -1067,7 +1067,7 @@ extension ChatEngine {
             let spawnPoint: K.GameboardPosition = (0, 1)
             
             if !dialogueWithCutscene[level]! {
-                let cutscene = CutsceneMagmoor(size: K.ScreenDimensions.size, playerLeft: .youngTrainer, playerRight: .youngVillain, xOffsetsArray: nil)
+                let cutscene = CutsceneMagmoor(size: K.ScreenDimensions.size, playerLeft: .elder0, playerRight: .villain, xOffsetsArray: nil)
                 
                 delegate.spawnPrincessCapture(at: spawnPoint, shouldAnimateWarp: true) { [unowned self] in
                     sendChatArray(items: [

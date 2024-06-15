@@ -23,6 +23,8 @@ class Cutscene: SKScene {
     var parallaxManager: ParallaxManager!
     var skyNode: SKSpriteNode!
     var tapPointerEngine: TapPointerEngine!
+    let playerLeftNodeName = "PlayerLeftNode"
+    let playerRightNodeName = "PlayerRightNode"
     
     //Speech Nodes
     var speechPlayerLeft: SpeechBubbleSprite!
@@ -63,10 +65,12 @@ class Cutscene: SKScene {
         playerLeft.sprite.setScale(playerLeft.scaleMultiplier * Player.cutsceneScale)
         playerLeft.sprite.position = CGPoint(x: screenSize.width * 1 / 4,
                                              y: screenSize.height / 3 + Player.getNormalizedAdjustedHeight(player: playerLeft))
+        playerLeft.sprite.name = playerLeftNodeName
 
         playerRight.sprite.setScale(playerRight.scaleMultiplier * Player.cutsceneScale)
         playerRight.sprite.position = CGPoint(x: screenSize.width * 3 / 4,
                                               y: screenSize.height / 3 + Player.getNormalizedAdjustedHeight(player: playerRight))
+        playerRight.sprite.name = playerRightNodeName
 
         skipSceneSprite = SkipSceneSprite(text: "SKIP SCENE")
         skipSceneSprite.position = CGPoint(x: screenSize.width / 2, y: screenSize.height / 9)

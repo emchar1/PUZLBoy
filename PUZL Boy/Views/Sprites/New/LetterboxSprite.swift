@@ -52,6 +52,14 @@ class LetterboxSprite: SKNode {
     
     // MARK: - Functions
     
+    func setColor(_ color: UIColor) {
+        self.color = color
+    }
+    
+    func setHeight(_ height: CGFloat) {
+        self.height = height
+    }
+    
     func show(duration: TimeInterval = 3, delay: TimeInterval = 0, completion: (() -> Void)? = nil) {
         topNode.run(SKAction.sequence([
             SKAction.wait(forDuration: delay),

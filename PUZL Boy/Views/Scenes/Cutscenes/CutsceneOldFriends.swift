@@ -73,21 +73,21 @@ class CutsceneOldFriends: Cutscene {
         run(SKAction.sequence([
             SKAction.wait(forDuration: initialPause),
             SKAction.run { [unowned self] in
-                animateScene(narrateText: "We weren't always at odds with each other. There was a time when we were quite good friends. We went to school together. Studied magic together. So it was only natural we became close.", playScene: playScene1)
+                transitionScene(narrateText: "We weren't always at odds with each other. There was a time when we were quite good friends. We went to school together. Studied magic together. So it was only natural we became close.", playScene: playScene1)
             }
         ]))
         
         run(SKAction.sequence([
             SKAction.wait(forDuration: 42),
             SKAction.run { [unowned self] in
-                animateScene(narrateText: "Then war broke out. The division among the Mystics had been deepening. Magmoor and I led one faction. We defeated those who opposed us. He reveled in his glory..... to grave consequences.", playScene: playScene2)
+                transitionScene(narrateText: "Then war broke out. The division among the Mystics had been deepening. Magmoor and I led one faction. We defeated those who opposed us. He reveled in his glory..... to grave consequences.", playScene: playScene2)
             }
         ]))
         
         run(SKAction.sequence([
             SKAction.wait(forDuration: 66),
             SKAction.run { [unowned self] in
-                animateScene(narrateText: "I did what I had to do: I banished him to the Realm of Limbo—|||||||||||||||||||| Peace eventually returned, but it will take years to repair the damage he caused.", playScene: playScene3)
+                transitionScene(narrateText: "I did what I had to do: I banished him to the Realm of Limbo—|||||||||||||||||||| Peace eventually returned, but it will take years to repair the damage he caused.", playScene: playScene3)
             }
         ]))
         
@@ -186,7 +186,7 @@ class CutsceneOldFriends: Cutscene {
         - narrateText: the narrated text to play.
         - playScene: a completion handler that plays an accompanying scene.
      */
-    private func animateScene(narrateText: String, playScene: @escaping (() -> Void)) {
+    private func transitionScene(narrateText: String, playScene: @escaping (() -> Void)) {
         //fadeTransitionNode is initially added to backgroundNode, so remove it first to prevent app crashing due to it already having a parent node.
         fadeTransitionNode.removeAllActions()
         fadeTransitionNode.removeFromParent()

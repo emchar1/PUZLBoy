@@ -13,7 +13,13 @@ class CutsceneMagmoor: Cutscene {
     
     // MARK: - Properties
     
-    private var playerMagmoor: Player!
+    //General
+    private var leftPlayerPositionInitial: CGPoint { CGPoint(x: screenSize.width * 2/5,
+                                                             y: screenSize.height * 1/3 + playerLeft.sprite.size.height / 2) }
+    private var leftPlayerPositionFinal: CGPoint { CGPoint(x: screenSize.width * 2/5 * 0.5, 
+                                                           y: screenSize.height * (1/4 + (1/3 * 0.5)) + playerLeft.sprite.size.height / 4) }
+    private var rightPlayerPositionInitial: CGPoint { CGPoint(x: screenSize.width * 1/2, y: screenSize.height * 2/3) }
+    private var rightPlayerPositionFinal: CGPoint { CGPoint(x: screenSize.width * 1/2, y: screenSize.height * 2/3) }
     
     
     // MARK: - Initialization
@@ -21,14 +27,13 @@ class CutsceneMagmoor: Cutscene {
     override func setupScene() {
         super.setupScene()
         
-        playerMagmoor = Player(type: .villain)
-        playerMagmoor.sprite.alpha = 0
-        playerMagmoor.sprite.zPosition = playerLeft.sprite.zPosition + 5
-
-        speechPlayerLeft.position = CGPoint(x: speechPlayerLeft.bubbleDimensions.width / 2 + 30, y: screenSize.height * 2 / 3 + 50)
-        speechPlayerRight.position = CGPoint(x: screenSize.width - speechPlayerRight.bubbleDimensions.width / 2 - 30, y: screenSize.height * 2 / 3)
-        speechPlayerLeft.updateTailOrientation(.topLeft)
-        speechPlayerRight.updateTailOrientation(.topRight)
+        letterbox.setHeight(screenSize.height / 2)
+        
+        playerLeft.sprite.position = leftPlayerPositionInitial
+        playerRight.sprite.position = rightPlayerPositionInitial
+        
+        speechPlayerLeft.position += leftPlayerPositionInitial
+        speechPlayerRight.position += rightPlayerPositionFinal
         
         fadeTransitionNode.fillColor = .white
 
@@ -47,84 +52,37 @@ class CutsceneMagmoor: Cutscene {
     override func animateScene(completion: (() -> Void)?) {
         super.animateScene(completion: completion)
         
-        let initialPause: TimeInterval = 6
-        
         letterbox.show { [unowned self] in
             addChild(skipSceneSprite)
             skipSceneSprite.animateSprite()
         }
-         
-        animateParallax(changeSet: nil, duration: initialPause)
         
-        animatePlayer(player: &playerLeft,
-                      position: CGPoint(x: screenSize.width * 1 / 5, y: screenSize.height / 2),
-                      scale: 2,
-                      shouldFlipHorizontally: false,
-                      shouldRotateClockwise: true,
-                      duration: initialPause)
-        
-        animatePlayer(player: &playerRight,
-                      position: CGPoint(x: screenSize.width * 4 / 5, y: screenSize.height / 2),
-                      scale: 2 * playerRight.scaleMultiplier / playerLeft.scaleMultiplier,
-                      shouldFlipHorizontally: true,
-                      shouldRotateClockwise: false,
-                      duration: initialPause)
+        playScene1()
+//        transitionScene(narrateText: "MARLIN: You tried to overthrow the Elders!! What did you expect was going to happen?!?! Are you insane, Magmoor?!!", playScene: playScene1)
+//        run(SKAction.sequence([
+//            SKAction.wait(forDuration: initialPause + 18),
+//            SKAction.run { [unowned self] in
+//                transitionScene(narrateText: "We weren't always at odds with each other. There was a time when we were quite good friends. We went to school together. Studied magic together. So it was only natural we became close.", playScene: playScene1)
+//            }
+//        ]))
         
         run(SKAction.sequence([
-            SKAction.wait(forDuration: initialPause),
+            SKAction.wait(forDuration: 22 + 18),
             SKAction.run { [unowned self] in
-                animateScene(narrateText: "We weren't always at odds with each other. There was a time when we were quite good friends. We went to school together. Studied magic together. So it was only natural we became close.", playScene: playScene1)
+                transitionScene(narrateText: "Then war broke out. The division among the Mystics had been deepening. Magmoor and I led one faction. We defeated those who opposed us. He reveled in his glory..... to grave consequences.", playScene: playScene2)
             }
         ]))
         
         run(SKAction.sequence([
-            SKAction.wait(forDuration: 42),
+            SKAction.wait(forDuration: 46 + 18),
             SKAction.run { [unowned self] in
-                animateScene(narrateText: "Then war broke out. The division among the Mystics had been deepening. Magmoor and I led one faction. We defeated those who opposed us. He reveled in his glory..... to grave consequences.", playScene: playScene2)
+                transitionScene(narrateText: "I did what I had to do: I banished him to the Realm of Limbo. Peace eventually returned, but it will take years to repair the damage he caused.", playScene: playScene3)
             }
         ]))
         
-        run(SKAction.sequence([
-            SKAction.wait(forDuration: 66),
-            SKAction.run { [unowned self] in
-                animateScene(narrateText: "I did what I had to do: I banished him to the Realm of Limbo—|||||||||||||||||||| Peace eventually returned, but it will take years to repair the damage he caused.", playScene: playScene3)
-            }
-        ]))
-        
-        run(SKAction.wait(forDuration: 102)) { [unowned self] in
+        run(SKAction.wait(forDuration: 82 + 18)) { [unowned self] in
             cleanupScene(buttonTap: nil, fadeDuration: nil)
         }
-    }
-    
-    /**
-     Helper function that animates a player by settingh up positions, rotations, scaling and adds the appropriate animations.
-     - parameters:
-        - player: the Player object which gets changed due to the inout modifier.
-        - position: initial position of the Player object.
-        - scale: initial scale of the player object.
-        - shouldFlipHorizontally: true if player should be facing left.
-        - shouldRotateClockwise: true if player is to slowly rotate clockwise.
-     */
-    private func animatePlayer(player: inout Player, position: CGPoint, scale: CGFloat, shouldFlipHorizontally: Bool, shouldRotateClockwise: Bool, duration: TimeInterval) {
-        let rotationRange: CGFloat = .pi / 8
-        let randomRotation: CGFloat = CGFloat.random(in: -rotationRange...rotationRange)
-        let scaleIncrease: CGFloat = 1.25
-        let flipHorizontally: CGFloat = shouldFlipHorizontally ? -1 : 1
-        let rotateClockwise: CGFloat = shouldRotateClockwise ? -1 : 1
-        let timePerFrame: TimeInterval = 0.06 * 2
-
-        player.sprite.position = position
-        player.sprite.setScale(scale)
-        player.sprite.xScale *= flipHorizontally
-        player.sprite.zRotation = randomRotation
-        
-        player.sprite.removeAllActions()
-        
-        player.sprite.run(SKAction.group([
-            animatePlayerWithTextures(player: player, textureType: .idle, timePerFrame: timePerFrame),
-            SKAction.rotate(toAngle: rotateClockwise * rotationRange + randomRotation, duration: duration),
-            SKAction.scaleX(to: flipHorizontally * scale * scaleIncrease, y: scale * scaleIncrease, duration: duration)
-        ]))
     }
     
     /**
@@ -137,28 +95,6 @@ class CutsceneMagmoor: Cutscene {
      */
     private func animatePlayerWithTextures(player: Player, textureType: Player.Texture, timePerFrame: TimeInterval) -> SKAction {
         return SKAction.repeatForever(SKAction.animate(with: player.textures[textureType.rawValue], timePerFrame: timePerFrame))
-    }
-    
-    /**
-     Animates Magmoor's transformation from youngMagmoor to the villain we all know today.
-     - parameters:
-        - alpha: the opacity with which to pulse today's Magmoor; youngMagmoor is pulsed at 1 - alpha.
-        - duration: the time duration with which to execute these animations.
-     - returns: an SKAction of the resulting animation.
-     */
-    private func animatePulseMagmoor(alpha: CGFloat, duration: TimeInterval) -> SKAction {
-        return SKAction.sequence([
-            SKAction.run { [unowned self] in
-                playerLeft.sprite.run(SKAction.fadeOut(withDuration: duration))
-                playerMagmoor.sprite.run(SKAction.fadeAlpha(to: alpha, duration: duration))
-            },
-            SKAction.wait(forDuration: duration),
-            SKAction.run { [unowned self] in
-                playerLeft.sprite.run(SKAction.fadeAlpha(to: 1 - alpha, duration: duration))
-                playerMagmoor.sprite.run(SKAction.fadeOut(withDuration: duration))
-            },
-            SKAction.wait(forDuration: duration)
-        ])
     }
     
     /**
@@ -186,7 +122,7 @@ class CutsceneMagmoor: Cutscene {
         - narrateText: the narrated text to play.
         - playScene: a completion handler that plays an accompanying scene.
      */
-    private func animateScene(narrateText: String, playScene: @escaping (() -> Void)) {
+    private func transitionScene(narrateText: String, playScene: @escaping (() -> Void)) {
         //fadeTransitionNode is initially added to backgroundNode, so remove it first to prevent app crashing due to it already having a parent node.
         fadeTransitionNode.removeAllActions()
         fadeTransitionNode.removeFromParent()
@@ -209,71 +145,110 @@ class CutsceneMagmoor: Cutscene {
     // MARK: - Animation Scene Helper Functions
     
     private func playScene1() {
-        let pauseDuration: TimeInterval = 8
-        
-        animateParallax(changeSet: .marsh, duration: pauseDuration)
-        parallaxManager.backgroundSprite.removeAllActions()
-        parallaxManager.backgroundSprite.run(SKAction.group([
-            SKAction.scale(to: 1, duration: 0),
-            SKAction.move(to: .zero, duration: 0)
+//        let initialPause: TimeInterval = 6
+//        let floatActionKey = "floatAction"
+//        let floatAction = SKAction.repeatForever(SKAction.sequence([
+//            SKAction.moveBy(x: 0, y: 25, duration: 0.75),
+//            SKAction.moveBy(x: 0, y: -25, duration: 0.75)
+//        ]))
+//        let descendAction = SKAction.moveTo(y: leftPlayerPositionFinal.y, duration: 4)
+//        descendAction.timingMode = .easeOut
+        parallaxManager.changeSet(set: .sand)
+        parallaxManager.addSpritesToParent(scene: self, node: backgroundNode)
+
+        parallaxManager.backgroundSprite.run(SKAction.sequence([
+            SKAction.wait(forDuration: 3),
+            SKAction.group([
+                SKAction.scale(to: 0.5, duration: 0),
+                SKAction.moveTo(x: 0, duration: 0),
+                SKAction.moveTo(y: screenSize.height * 1/4, duration: 0)
+            ])
         ]))
 
-        animatePlayer(player: &playerLeft,
-                      position: CGPoint(x: screenSize.width * 1 / 5, y: screenSize.height / 2),
-                      scale: 2,
-                      shouldFlipHorizontally: false,
-                      shouldRotateClockwise: true,
-                      duration: pauseDuration)
+//        playerLeft.sprite.run(animatePlayerWithTextures(player: playerLeft, textureType: .idle, timePerFrame: 0.12))
+//        playerLeft.sprite.run(floatAction, withKey: floatActionKey)
+//        playerLeft.sprite.run(SKAction.sequence([
+//            SKAction.wait(forDuration: initialPause),
+//            SKAction.moveTo(x: leftPlayerPositionFinal.x, duration: 5),
+//            SKAction.wait(forDuration: 1),
+//            descendAction
+//        ])) { [unowned self] in
+//            playerLeft.sprite.removeAction(forKey: floatActionKey)
+//        }
         
-        animatePlayer(player: &playerRight, 
-                      position: CGPoint(x: screenSize.width * 4 / 5, y: screenSize.height / 2),
-                      scale: 2 * playerRight.scaleMultiplier / playerLeft.scaleMultiplier,
-                      shouldFlipHorizontally: true,
-                      shouldRotateClockwise: false,
-                      duration: pauseDuration)
-
-        run(SKAction.sequence([
-            SKAction.wait(forDuration: pauseDuration),
-            SKAction.run { [unowned self] in
-                setTextArray(items: [
-                    SpeechBubbleItem(profile: speechPlayerLeft, chat: "Wait. Why do we all look the same?"),
-                    SpeechBubbleItem(profile: speechPlayerRight, chat: "I told you! Budget."),
-                    SpeechBubbleItem(profile: speechPlayerLeft, chat: "Yeah, but... it really detracts from the immersion."),
-                    SpeechBubbleItem(profile: speechPlayerRight, chat: "...kinda like what you're doing right now??"),
-                    SpeechBubbleItem(profile: speechPlayerLeft, chat: "Fair.")
-                ], completion: nil)
-            }
+        
+        
+        
+        
+        
+        
+        // TODO: - Magmoor illusion trail
+//        var illusionStep = 1
+//
+//        playerLeft.sprite.run(SKAction.sequence([
+//            SKAction.repeat(SKAction.sequence([
+//                SKAction.run { [unowned self] in
+//                    let illusionSprite = SKSpriteNode(imageNamed: "VillainIdle (1)")
+//                    illusionSprite.size = Player.size
+//                    illusionSprite.position = CGPoint(x: 0, y: leftPlayerPositionFinal.y - leftPlayerPositionInitial.y)
+//                    illusionSprite.zPosition = -1
+//                    illusionSprite.name = playerLeftNodeName + "illusionStep\(illusionStep)"
+//                    
+//                    playerLeft.sprite.addChild(illusionSprite)
+//                },
+//                SKAction.wait(forDuration: 0.1),
+//                SKAction.run { [unowned self] in
+//                    if let illusionSprite = playerLeft.sprite.childNode(withName: playerLeftNodeName + "illusionStep\(illusionStep)") {
+//                        illusionSprite.run(SKAction.sequence([
+//                            SKAction.fadeOut(withDuration: 0.5),
+//                            SKAction.removeFromParent()
+//                        ]))
+//                    }
+//                    
+//                    illusionStep += 1
+//                }
+//            ]), count: 10)
+//        ]))
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        playerLeft.sprite.run(animatePlayerWithTextures(player: playerLeft, textureType: .idle, timePerFrame: 0.12))
+        playerLeft.sprite.run(SKAction.sequence([
+            SKAction.wait(forDuration: 3),
+            SKAction.group([
+                SKAction.scale(to: 0.5, duration: 0),
+                SKAction.move(to: leftPlayerPositionFinal, duration: 0)
+            ])
         ]))
+        
+        playerRight.sprite.run(animatePlayerWithTextures(player: playerRight, textureType: .idle, timePerFrame: 0.12))
+        playerRight.sprite.setScale(0.5)
+        playerRight.sprite.xScale *= -1
+        
+//        playerRight.sprite.run(SKAction.sequence([
+//            SKAction.wait(forDuration: initialPause + 5),
+//            SKAction.moveTo(x: rightPlayerPositionFinal.x, duration: 5)
+//        ]))
+        
+//        parallaxManager.animate()
+//        run(SKAction.sequence([
+//            SKAction.wait(forDuration: initialPause + 10),
+//            SKAction.run { [unowned self] in
+//                parallaxManager.stopAnimation()
+//            }
+//        ]))
     }
     
     private func playScene2() {
         let pauseDuration: TimeInterval = 10
 
         animateParallax(changeSet: .sand, duration: pauseDuration)
-
-        animatePlayer(player: &playerLeft,
-                      position: CGPoint(x: screenSize.width * 1 / 5, y: screenSize.height / 2),
-                      scale: 2,
-                      shouldFlipHorizontally: false,
-                      shouldRotateClockwise: true,
-                      duration: pauseDuration)
-        
-        animatePlayer(player: &playerRight,
-                      position: CGPoint(x: screenSize.width * 4 / 5, y: screenSize.height / 2),
-                      scale: 2 * playerRight.scaleMultiplier / playerLeft.scaleMultiplier,
-                      shouldFlipHorizontally: true,
-                      shouldRotateClockwise: false,
-                      duration: pauseDuration)
-        
-        run(SKAction.sequence([
-            SKAction.wait(forDuration: pauseDuration),
-            SKAction.run { [unowned self] in
-                setTextArray(items: [
-                    SpeechBubbleItem(profile: speechPlayerLeft, chat: "You couldn't find other images to use?"),
-                    SpeechBubbleItem(profile: speechPlayerRight, chat: "Shh!! Pay attention! I'm not going to repeat myself."),
-                ], completion: nil)
-            }
-        ]))
     }
     
     private func playScene3() {
@@ -293,40 +268,15 @@ class CutsceneMagmoor: Cutscene {
         
         playerRight.sprite.alpha = 0
 
-        playerMagmoor.sprite.setScale(initialScale)
-        playerMagmoor.sprite.position = initialPosition
-
-        playerMagmoor.sprite.removeAllActions()
-        playerMagmoor.sprite.removeFromParent()
-        backgroundNode.addChild(playerMagmoor.sprite)
-
         
         //Animate Magmoor transformation
         let waitBeforeTransformation: TimeInterval = 22
         let fadeDuration: TimeInterval = 0.1
-        let zoomScale: CGFloat = 0.5
+//        let zoomScale: CGFloat = 0.5
         let zoomDuration: TimeInterval = 0.25
         let timePerFrame: TimeInterval = 0.06 * 2
 
         playerLeft.sprite.run(animatePlayerWithTextures(player: playerLeft, textureType: .idle, timePerFrame: timePerFrame))
-        playerMagmoor.sprite.run(animatePlayerWithTextures(player: playerMagmoor, textureType: .idle, timePerFrame: timePerFrame))
-        
-        run(SKAction.sequence([
-            SKAction.wait(forDuration: waitBeforeTransformation),
-            animatePulseMagmoor(alpha: 0.1, duration: fadeDuration),
-            animatePulseMagmoor(alpha: 0.2, duration: fadeDuration),
-            animatePulseMagmoor(alpha: 0.3, duration: fadeDuration),
-            animatePulseMagmoor(alpha: 0.4, duration: fadeDuration),
-            animatePulseMagmoor(alpha: 0.5, duration: fadeDuration),
-            animatePulseMagmoor(alpha: 0.6, duration: fadeDuration),
-            animatePulseMagmoor(alpha: 0.7, duration: fadeDuration),
-            animatePulseMagmoor(alpha: 0.8, duration: fadeDuration),
-            animatePulseMagmoor(alpha: 0.9, duration: fadeDuration),
-            animatePulseMagmoor(alpha: 1.0, duration: fadeDuration),
-            SKAction.run { [unowned self] in
-                playerMagmoor.sprite.run(SKAction.fadeIn(withDuration: fadeDuration))
-            }
-        ]))
 
         parallaxManager.backgroundSprite.run(SKAction.sequence([
             SKAction.wait(forDuration: waitBeforeTransformation + fadeDuration * 11 + 3),
@@ -335,44 +285,10 @@ class CutsceneMagmoor: Cutscene {
                 SKAction.move(to: .zero, duration: zoomDuration)
             ])
         ]))
-
-        playerMagmoor.sprite.run(SKAction.sequence([
-            SKAction.wait(forDuration: waitBeforeTransformation + fadeDuration * 11 + 3),
-            SKAction.group([
-                SKAction.scale(to: zoomScale, duration: zoomDuration),
-                SKAction.moveTo(y: screenSize.height / 3, duration: zoomDuration)
-            ])
-        ]))
         
         backgroundNode.run(SKAction.sequence([
             SKAction.wait(forDuration: waitBeforeTransformation + fadeDuration * 11 + 3 + zoomDuration),
             shakeBackground(duration: 2)
-        ]))
-        
-        //Animate magicExplosion particle engine
-        run(SKAction.sequence([
-            SKAction.wait(forDuration: waitBeforeTransformation + fadeDuration * 11 + 3 + zoomDuration + 3),
-            SKAction.run { [unowned self] in
-                ParticleEngine.shared.animateParticles(type: .magicExplosion,
-                                                       toNode: backgroundNode,
-                                                       position: playerMagmoor.sprite.position,
-                                                       scale: 1,
-                                                       zPosition: playerMagmoor.sprite.zPosition - 5,
-                                                       duration: 0)
-            }
-        ]))
-        
-        
-        //Side convo
-        run(SKAction.sequence([
-            SKAction.wait(forDuration: 2),
-            SKAction.run { [unowned self] in
-                setTextArray(items: [
-                    SpeechBubbleItem(profile: speechPlayerLeft, chat: "We're all just lazy palette swaps, ya know."),
-                    SpeechBubbleItem(profile: speechPlayerRight, chat: "Do you want to tell this story??!"),
-                    SpeechBubbleItem(profile: speechPlayerLeft, chat: "No. Continue.")
-                ], completion: nil)
-            }
         ]))
     }
 }

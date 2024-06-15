@@ -22,7 +22,7 @@ struct Player {
     private var atlas: SKTextureAtlas
     
     enum PlayerType: String, CaseIterable {
-        case hero = "hero", princess, princess2, villain, youngTrainer, youngVillain
+        case hero = "hero", princess, princess2, villain, youngTrainer, youngVillain, elder0, elder1, elder2
     }
 
     enum Texture: Int {
@@ -93,6 +93,12 @@ struct Player {
             setupYoungTrainer()
         case .youngVillain:
             setupYoungVillain()
+        case .elder0:
+            setupElder(rank: 0)
+        case .elder1:
+            setupElder(rank: 1)
+        case .elder2:
+            setupElder(rank: 2)
         }
         
         sprite = SKSpriteNode(texture: textures[Texture.idle.rawValue][0])
@@ -198,6 +204,24 @@ struct Player {
             textures[Texture.idle.rawValue].append(atlas.textureNamed("YoungMagmoorIdle (\(i))"))
             textures[Texture.run.rawValue].append(atlas.textureNamed("YoungMagmoorRun (\(i))"))
             textures[Texture.walk.rawValue].append(atlas.textureNamed("YoungMagmoorWalk (\(i))"))
+        }
+    }
+    
+    private mutating func setupElder(rank: Int) {
+        let rankMultiplier = 4
+        
+        scaleMultiplier = 1.5 * 0.9
+        
+        for i in (rank * rankMultiplier)...11 {
+            let indexLeadingZeroes = String(format: "%03d", i)
+            
+            textures[Texture.idle.rawValue].append(atlas.textureNamed("Elder\(rank)Idle_\(indexLeadingZeroes)"))
+        }
+
+        for i in 0..<(rank * rankMultiplier) {
+            let indexLeadingZeroes = String(format: "%03d", i)
+            
+            textures[Texture.idle.rawValue].append(atlas.textureNamed("Elder\(rank)Idle_\(indexLeadingZeroes)"))
         }
     }
     
