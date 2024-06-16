@@ -48,14 +48,17 @@ class TitleScene: SKScene {
     private let shadowDepth: CGFloat = 10
     private var screenSize: CGSize
     private var disableInput: Bool = false
-    private var menuSizeShort: CGSize { CGSize(width: 650, height: screenSize.height / 4) }
-    private var menuSizeTall: CGSize { CGSize(width: 650, height: screenSize.height / 3) }
+    private var menuSizeShort: CGSize { CGSize(width: 650, height: 540) }
+    private var menuSizeTall: CGSize { CGSize(width: 650, height: 680) }
+    private var menuSizeStartOnly: CGSize { CGSize(width: 650, height: 275) }
     private var menuSize: CGSize {
-        if UserDefaults.standard.bool(forKey: K.UserDefaults.hasPlayedBefore) {
+        let saveStateModelNewLevel = FIRManager.saveStateModel?.newLevel ?? 0
+        
+        if UserDefaults.standard.bool(forKey: K.UserDefaults.hasPlayedBefore) || saveStateModelNewLevel > 0 {
             return isGameCompleted ? menuSizeTall : menuSizeShort
         }
         else {
-            return menuSizeShort
+            return menuSizeStartOnly
         }
     }
     private var levelSelectSize: CGSize { CGSize(width: 650, height: screenSize.height / 4) / UIDevice.spriteScale }
@@ -329,7 +332,9 @@ class TitleScene: SKScene {
         menuBackground.addChild(menuBackgroundText)
         menuBackgroundText.addChild(menuStart)
 
-        if UserDefaults.standard.bool(forKey: K.UserDefaults.hasPlayedBefore) {
+        let saveStateModelNewLevel = FIRManager.saveStateModel?.newLevel ?? 0
+
+        if UserDefaults.standard.bool(forKey: K.UserDefaults.hasPlayedBefore) || saveStateModelNewLevel > 0 {
             if isGameCompleted {
                 menuBackgroundText.addChild(menuLevelSelect)
             }

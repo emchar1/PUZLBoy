@@ -13,13 +13,22 @@ class CutsceneMagmoor: Cutscene {
     
     // MARK: - Properties
     
-    //General
-    private var leftPlayerPositionInitial: CGPoint { CGPoint(x: screenSize.width * 2/5,
-                                                             y: screenSize.height * 1/3 + playerLeft.sprite.size.height / 2) }
-    private var leftPlayerPositionFinal: CGPoint { CGPoint(x: screenSize.width * 2/5 * 0.5, 
-                                                           y: screenSize.height * (1/4 + (1/3 * 0.5)) + playerLeft.sprite.size.height / 4) }
-    private var rightPlayerPositionInitial: CGPoint { CGPoint(x: screenSize.width * 1/2, y: screenSize.height * 2/3) }
-    private var rightPlayerPositionFinal: CGPoint { CGPoint(x: screenSize.width * 1/2, y: screenSize.height * 2/3) }
+    private var leftPlayerPositionInitial: CGPoint {
+        CGPoint(x: screenSize.width * 2/5,
+                y: screenSize.height * 1/3 + playerLeft.sprite.size.height * 1/2)
+    }
+    private var leftPlayerPositionFinal: CGPoint {
+        CGPoint(x: screenSize.width * 1.5/5,
+                y: screenSize.height * (1/4 + (1/3 * 0.5)) + playerLeft.sprite.size.height * 1/2 * 0.5)
+    }
+    private var rightPlayerPositionInitial: CGPoint {
+        CGPoint(x: screenSize.width * 1/2, 
+                y: screenSize.height * 2/3)
+    }
+    private var rightPlayerPositionFinal: CGPoint {
+        CGPoint(x: screenSize.width * 4/5,
+                y: screenSize.height * (1/4 + (1/3 * 0.5)) + playerLeft.sprite.size.height * 1/2 * 0.5)
+    }
     
     
     // MARK: - Initialization
@@ -58,13 +67,6 @@ class CutsceneMagmoor: Cutscene {
         }
         
         playScene1()
-//        transitionScene(narrateText: "MARLIN: You tried to overthrow the Elders!! What did you expect was going to happen?!?! Are you insane, Magmoor?!!", playScene: playScene1)
-//        run(SKAction.sequence([
-//            SKAction.wait(forDuration: initialPause + 18),
-//            SKAction.run { [unowned self] in
-//                transitionScene(narrateText: "We weren't always at odds with each other. There was a time when we were quite good friends. We went to school together. Studied magic together. So it was only natural we became close.", playScene: playScene1)
-//            }
-//        ]))
         
         run(SKAction.sequence([
             SKAction.wait(forDuration: 22 + 18),
@@ -145,17 +147,10 @@ class CutsceneMagmoor: Cutscene {
     // MARK: - Animation Scene Helper Functions
     
     private func playScene1() {
-//        let initialPause: TimeInterval = 6
-//        let floatActionKey = "floatAction"
-//        let floatAction = SKAction.repeatForever(SKAction.sequence([
-//            SKAction.moveBy(x: 0, y: 25, duration: 0.75),
-//            SKAction.moveBy(x: 0, y: -25, duration: 0.75)
-//        ]))
-//        let descendAction = SKAction.moveTo(y: leftPlayerPositionFinal.y, duration: 4)
-//        descendAction.timingMode = .easeOut
+
+        //Parallax
         parallaxManager.changeSet(set: .sand)
         parallaxManager.addSpritesToParent(scene: self, node: backgroundNode)
-
         parallaxManager.backgroundSprite.run(SKAction.sequence([
             SKAction.wait(forDuration: 3),
             SKAction.group([
@@ -165,60 +160,8 @@ class CutsceneMagmoor: Cutscene {
             ])
         ]))
 
-//        playerLeft.sprite.run(animatePlayerWithTextures(player: playerLeft, textureType: .idle, timePerFrame: 0.12))
-//        playerLeft.sprite.run(floatAction, withKey: floatActionKey)
-//        playerLeft.sprite.run(SKAction.sequence([
-//            SKAction.wait(forDuration: initialPause),
-//            SKAction.moveTo(x: leftPlayerPositionFinal.x, duration: 5),
-//            SKAction.wait(forDuration: 1),
-//            descendAction
-//        ])) { [unowned self] in
-//            playerLeft.sprite.removeAction(forKey: floatActionKey)
-//        }
-        
-        
-        
-        
-        
-        
-        
-        // TODO: - Magmoor illusion trail
-//        var illusionStep = 1
-//
-//        playerLeft.sprite.run(SKAction.sequence([
-//            SKAction.repeat(SKAction.sequence([
-//                SKAction.run { [unowned self] in
-//                    let illusionSprite = SKSpriteNode(imageNamed: "VillainIdle (1)")
-//                    illusionSprite.size = Player.size
-//                    illusionSprite.position = CGPoint(x: 0, y: leftPlayerPositionFinal.y - leftPlayerPositionInitial.y)
-//                    illusionSprite.zPosition = -1
-//                    illusionSprite.name = playerLeftNodeName + "illusionStep\(illusionStep)"
-//                    
-//                    playerLeft.sprite.addChild(illusionSprite)
-//                },
-//                SKAction.wait(forDuration: 0.1),
-//                SKAction.run { [unowned self] in
-//                    if let illusionSprite = playerLeft.sprite.childNode(withName: playerLeftNodeName + "illusionStep\(illusionStep)") {
-//                        illusionSprite.run(SKAction.sequence([
-//                            SKAction.fadeOut(withDuration: 0.5),
-//                            SKAction.removeFromParent()
-//                        ]))
-//                    }
-//                    
-//                    illusionStep += 1
-//                }
-//            ]), count: 10)
-//        ]))
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        playerLeft.sprite.run(animatePlayerWithTextures(player: playerLeft, textureType: .idle, timePerFrame: 0.12))
+        //Elders
+        playerLeft.sprite.run(animatePlayerWithTextures(player: playerLeft, textureType: .idle, timePerFrame: 0.1))
         playerLeft.sprite.run(SKAction.sequence([
             SKAction.wait(forDuration: 3),
             SKAction.group([
@@ -227,22 +170,95 @@ class CutsceneMagmoor: Cutscene {
             ])
         ]))
         
+        let elder1 = Player(type: .elder1)
+        elder1.sprite.position = leftPlayerPositionInitial + CGPoint(x: -250, y: 50)
+        elder1.sprite.setScale(elder1.scaleMultiplier * Player.cutsceneScale * 0.9)
+        elder1.sprite.zPosition += 4
+        elder1.sprite.run(animatePlayerWithTextures(player: elder1, textureType: .idle, timePerFrame: 0.09))
+        elder1.sprite.run(SKAction.sequence([
+            SKAction.wait(forDuration: 3),
+            SKAction.group([
+                SKAction.scale(to: 0.5 * 0.9, duration: 0),
+                SKAction.move(to: leftPlayerPositionFinal + CGPoint(x: -125, y: 25), duration: 0)
+            ])
+        ]))
+        
+        backgroundNode.addChild(elder1.sprite)
+        
+        let elder2 = Player(type: .elder2)
+        elder2.sprite.position = leftPlayerPositionInitial + CGPoint(x: -350, y: -100)
+        elder2.sprite.setScale(elder2.scaleMultiplier * Player.cutsceneScale)
+        elder2.sprite.zPosition += 6
+        elder2.sprite.run(animatePlayerWithTextures(player: elder2, textureType: .idle, timePerFrame: 0.08))
+        elder2.sprite.run(SKAction.sequence([
+            SKAction.wait(forDuration: 3),
+            SKAction.group([
+                SKAction.scale(to: 0.5, duration: 0),
+                SKAction.move(to: leftPlayerPositionFinal + CGPoint(x: -175, y: -50), duration: 0)
+            ])
+        ]))
+        
+        backgroundNode.addChild(elder2.sprite)
+
+        
+        //Magmoor
         playerRight.sprite.run(animatePlayerWithTextures(player: playerRight, textureType: .idle, timePerFrame: 0.12))
-        playerRight.sprite.setScale(0.5)
-        playerRight.sprite.xScale *= -1
+        playerRight.sprite.setScale(0)
+        playerRight.sprite.run(SKAction.sequence([
+            SKAction.wait(forDuration: 4.5),
+            SKAction.group([
+                SKAction.scaleX(to: -0.2, duration: 0.5),
+                SKAction.scaleY(to: 0.2, duration: 0.5)
+            ]),
+            SKAction.wait(forDuration: 3),
+            SKAction.sequence([
+                SKAction.fadeAlpha(to: 0, duration: 0.1),
+                SKAction.fadeAlpha(to: 0.8, duration: 0.1),
+                SKAction.fadeAlpha(to: 0, duration: 0.1),
+                SKAction.fadeAlpha(to: 0.6, duration: 0.1),
+                SKAction.fadeAlpha(to: 0, duration: 0.1),
+                SKAction.fadeAlpha(to: 0.4, duration: 0.1),
+                SKAction.fadeAlpha(to: 0, duration: 0.1),
+                SKAction.fadeAlpha(to: 0.2, duration: 0.1),
+                SKAction.fadeAlpha(to: 0, duration: 0.1)
+            ]),
+            SKAction.group([
+                SKAction.scaleX(to: -0.5, duration: 0),
+                SKAction.scaleY(to: 0.5, duration: 0),
+                SKAction.move(to: rightPlayerPositionFinal, duration: 0)
+            ]),
+            SKAction.sequence([
+                SKAction.fadeAlpha(to: 0.2, duration: 0.1),
+                SKAction.fadeAlpha(to: 0, duration: 0.1),
+                SKAction.fadeAlpha(to: 0.4, duration: 0.1),
+                SKAction.fadeAlpha(to: 0, duration: 0.1),
+                SKAction.fadeAlpha(to: 0.6, duration: 0.1),
+                SKAction.fadeAlpha(to: 0, duration: 0.1),
+                SKAction.fadeAlpha(to: 0.8, duration: 0.1),
+                SKAction.fadeAlpha(to: 0, duration: 0.1),
+                SKAction.fadeAlpha(to: 1, duration: 0.1)
+            ])
+        ]))
         
-//        playerRight.sprite.run(SKAction.sequence([
-//            SKAction.wait(forDuration: initialPause + 5),
-//            SKAction.moveTo(x: rightPlayerPositionFinal.x, duration: 5)
-//        ]))
+        let redWarp = SKSpriteNode(imageNamed: "warp4")
+        redWarp.scale(to: .zero)
+        redWarp.position = rightPlayerPositionInitial
+        redWarp.zPosition = playerRight.sprite.zPosition - 5
+        redWarp.run(SKAction.sequence([
+            SKAction.wait(forDuration: 4),
+            SKAction.scale(to: 1, duration: 0.5),
+            SKAction.group([
+                SKAction.rotate(toAngle: .pi, duration: 3),
+                SKAction.sequence([
+                    SKAction.wait(forDuration: 2.5),
+                    SKAction.scale(to: 1.25, duration: 0.25),
+                    SKAction.scale(to: 0, duration: 0.25)
+
+                ])
+            ])
+        ]))
         
-//        parallaxManager.animate()
-//        run(SKAction.sequence([
-//            SKAction.wait(forDuration: initialPause + 10),
-//            SKAction.run { [unowned self] in
-//                parallaxManager.stopAnimation()
-//            }
-//        ]))
+        backgroundNode.addChild(redWarp)
     }
     
     private func playScene2() {

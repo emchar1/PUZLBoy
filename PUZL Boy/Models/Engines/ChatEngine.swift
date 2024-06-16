@@ -793,7 +793,9 @@ extension ChatEngine {
         case 1:
             sendChatArray(items: [
                 ChatItem(profile: .hero, imgPos: .left, chat: "PUZL BOY: ...then one of the dragons swooped down and carried her away! It. Was. Harrowing. So... where are we? And who are you??"),
-                ChatItem(profile: .trainer, chat: "MARLIN: We must hurry! I suspect she is being taken to the dragon's lair. I have transported you to the PUZZLE REALM, our gateway to the lair."),
+                ChatItem(profile: .trainer, chat: "OLD MAN: We must hurry! I suspect she is being taken to the dragon's lair. I have transported you to the PUZZLE REALM, our gateway to the lair."),
+                ChatItem(profile: .hero, imgPos:.left, chat: "Cool. I'm PUZL Boy. But you can call me...... PUZL Boy!"),
+                ChatItem(profile: .trainer, chat: "MARLIN: Right.. I'm Marlin, your guide. Now listen up!"),
                 ChatItem(profile: .trainer, chat: "The dragon's lair is buried deep inside Earth's core, and the only way to reach it is by solving puzzles."),
                 ChatItem(profile: .trainer, chat: "There are 500 levels in total you will have to complete, each with increasing difficulty."),
                 ChatItem(profile: .trainer, chat: "The goal for each level is to make it through the gate in under a certain number of moves.") { [unowned self] in

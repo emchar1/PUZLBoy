@@ -208,7 +208,7 @@ class CutsceneIntro: Cutscene {
                                     
                                     AudioManager.shared.stopSound(for: "birdsambience", fadeDuration: 5)
                                     AudioManager.shared.stopSound(for: AudioManager.shared.grasslandTheme, fadeDuration: 8)
-                                    AudioManager.shared.playSound(for: "scarymusicbox", fadeIn: 5, delay: 3)
+                                    AudioManager.shared.playSound(for: "scarymusicbox", fadeIn: 8)
                                 }
                             ])
                         ]))
@@ -578,15 +578,17 @@ extension CutsceneIntro: SkipSceneSpriteDelegate {
     func buttonWasTapped() {
         let fadeDuration: TimeInterval = 1
         
-        //MUST stop all sounds if rage quitting early!
+        stopAllMusic(fadeDuration: fadeDuration)
+        UserDefaults.standard.set(true, forKey: K.UserDefaults.shouldSkipIntro)
+        cleanupScene(buttonTap: .buttontap1, fadeDuration: fadeDuration)
+    }
+    
+    ///Helper function that stops all music, preventing bug# 240616E01
+    func stopAllMusic(fadeDuration: TimeInterval) {
         AudioManager.shared.stopSound(for: "birdsambience", fadeDuration: fadeDuration)
         AudioManager.shared.stopSound(for: AudioManager.shared.grasslandTheme, fadeDuration: fadeDuration)
         AudioManager.shared.stopSound(for: "scarymusicbox", fadeDuration: fadeDuration)
         AudioManager.shared.stopSound(for: "ageofruin", fadeDuration: fadeDuration)
         AudioManager.shared.stopSound(for: "thunderrumble", fadeDuration: fadeDuration)
-        
-        UserDefaults.standard.set(true, forKey: K.UserDefaults.shouldSkipIntro)
-        cleanupScene(buttonTap: .buttontap1, fadeDuration: fadeDuration)
     }
-    
 }

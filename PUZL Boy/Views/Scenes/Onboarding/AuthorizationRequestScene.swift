@@ -85,7 +85,7 @@ class AuthorizationRequestScene: SKScene {
                 
                 thanksMessage = AuthorizationSprite(
                     title: "Enjoy!",
-                    message: "Thank you for your responses! Now please enjoy PUZL Boy. And don't forget to rate and review 😊")
+                    message: "Thank you for your responses! Enjoy playing PUZL Boy. And please don't forget to rate and review 😊")
                 
                 thanksMessage!.delegate = self
 

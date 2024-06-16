@@ -126,7 +126,10 @@ extension GameViewController: AuthorizationRequestSceneDelegate {
                                 
                                 cutsceneIntro?.animateScene() {
                                     self.presentTitleScene()
-                                    
+                                                                        
+                                    //BUGFIX# 240616E01 scarymusicbox may sometimes play if you skip intro at the moment it's just about to play.
+                                    cutsceneIntro?.stopAllMusic(fadeDuration: 1)
+
                                     cutsceneIntro = nil
                                 }
                             }
