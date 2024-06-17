@@ -410,7 +410,7 @@ class GameScene: SKScene {
             levelModel: levelModel,
             levelStatsArray: levelStatsArray,
             livesRemaining: GameEngine.livesRemaining,
-            newLevel: lastCurrentLevel != nil ? lastCurrentLevel! : currentLevel, //prevents saving within a party level, i.e. fast fwd to next level
+            newLevel: lastCurrentLevel ?? currentLevel, //prevents saving within a party level, i.e. fast fwd to next level
             saveDate: Date(),
             score: levelStatsItem.didWin ? 0 : scoringEngine.scoringManager.score,
             totalScore: scoringEngine.scoringManager.totalScore + (levelStatsItem.didWin ? scoringEngine.scoringManager.score : 0),

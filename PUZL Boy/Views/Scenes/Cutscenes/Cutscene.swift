@@ -22,6 +22,7 @@ class Cutscene: SKScene {
     var playerRight: Player
     var parallaxManager: ParallaxManager!
     var skyNode: SKSpriteNode!
+    var bloodSkyNode: SKSpriteNode!
     var tapPointerEngine: TapPointerEngine!
     let playerLeftNodeName = "PlayerLeftNode"
     let playerRightNodeName = "PlayerRightNode"
@@ -35,6 +36,7 @@ class Cutscene: SKScene {
     //Overlay Nodes
     var backgroundNode: SKShapeNode!
     var dimOverlayNode: SKShapeNode!
+    var bloodOverlayNode: SKShapeNode!
     var fadeTransitionNode: SKShapeNode!
     var letterbox: LetterboxSprite!
     
@@ -91,6 +93,20 @@ class Cutscene: SKScene {
         dimOverlayNode.lineWidth = 0
         dimOverlayNode.alpha = 0
         dimOverlayNode.zPosition = K.ZPosition.chatDimOverlay
+
+        bloodSkyNode = SKSpriteNode(texture: SKTexture(image: UIImage.gradientSkyBlood))
+        bloodSkyNode.size = CGSize(width: screenSize.width, height: screenSize.height / 2)
+        bloodSkyNode.position = CGPoint(x: 0, y: screenSize.height)
+        bloodSkyNode.anchorPoint = CGPoint(x: 0, y: 1)
+        bloodSkyNode.zPosition = K.ZPosition.skyNode
+        bloodSkyNode.alpha = 0
+        
+        bloodOverlayNode = SKShapeNode(rectOf: screenSize)
+        bloodOverlayNode.position = CGPoint(x: screenSize.width / 2, y: screenSize.height / 2)
+        bloodOverlayNode.fillColor = .red
+        bloodOverlayNode.lineWidth = 0
+        bloodOverlayNode.alpha = 0
+        bloodOverlayNode.zPosition = K.ZPosition.bloodOverlay
         
         fadeTransitionNode = SKShapeNode(rectOf: screenSize)
         fadeTransitionNode.position = CGPoint(x: screenSize.width / 2, y: screenSize.height / 2)
@@ -118,8 +134,11 @@ class Cutscene: SKScene {
     override func didMove(to view: SKView) {
         addChild(letterbox)
         addChild(backgroundNode)
+
         backgroundNode.addChild(skyNode)
         backgroundNode.addChild(dimOverlayNode)
+        backgroundNode.addChild(bloodSkyNode)
+        backgroundNode.addChild(bloodOverlayNode)
         backgroundNode.addChild(fadeTransitionNode)
         backgroundNode.addChild(playerLeft.sprite)
         backgroundNode.addChild(playerRight.sprite)
@@ -172,6 +191,39 @@ class Cutscene: SKScene {
             SKAction.moveBy(x: nudge, y: -nudge, duration: nudgeDuration),
             SKAction.moveBy(x: -nudge, y: -nudge, duration: nudgeDuration),
         ]), count: Int(duration / nudgeDuration))
+    }
+    
+    /**
+     Dims the sky to a blood-soaked color. To be used when apocalyptic events occur.
+     - parameters:
+        - fadeDuration: the speed at which the sky darkens
+        - delay: add a delay, if desired
+     */
+    func showBloodSky(fadeDuration: TimeInterval, delay: TimeInterval? = nil) {
+        skyNode.run(SKAction.sequence([
+            SKAction.wait(forDuration: delay ?? 0),
+            SKAction.fadeOut(withDuration: fadeDuration)
+        ]))
+
+        bloodSkyNode.run(SKAction.sequence([
+            SKAction.wait(forDuration: delay ?? 0),
+            SKAction.fadeIn(withDuration: fadeDuration)
+        ]))
+        
+        bloodOverlayNode.run(SKAction.sequence([
+            SKAction.wait(forDuration: delay ?? 0),
+            SKAction.fadeAlpha(to: 0.25, duration: fadeDuration)
+        ]))
+    }
+    
+    /**
+     Returns the sky to its original color.
+     - parameter fadeDuration: the speed at which the sky returns to normal
+     */
+    func hideBloodSky(fadeDuration: TimeInterval) {
+        skyNode.run(SKAction.fadeIn(withDuration: fadeDuration))
+        bloodSkyNode.run(SKAction.fadeOut(withDuration: fadeDuration))
+        bloodOverlayNode.run(SKAction.fadeOut(withDuration: fadeDuration))
     }
     
     /**

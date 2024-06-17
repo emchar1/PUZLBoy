@@ -21,10 +21,10 @@ class SettingsTapButton: SKNode {
     private let shadowOffset: CGFloat = 6
     private var colors: (background: UIColor?, shadow: UIColor?)
     private var backgroundColor: UIColor {
-        return colors.background != nil ? colors.background! : DayTheme.skyColor.bottom.triadic.first.darkenColor(factor: 3)
+        return colors.background ?? DayTheme.skyColor.bottom.triadic.first.darkenColor(factor: 3)
     }
     private var backgroundShadowColor: UIColor {
-        return colors.shadow != nil ? colors.shadow! : DayTheme.skyColor.bottom.splitComplementary.first.lightenColor(factor: 6)
+        return colors.shadow ?? DayTheme.skyColor.bottom.splitComplementary.first.lightenColor(factor: 6)
     }
     private var positionOrig: CGPoint {
         CGPoint(x: -SettingsTapButton.buttonSize.width / 2 - shadowOffset, y: SettingsTapButton.buttonSize.height / 2 - shadowOffset)

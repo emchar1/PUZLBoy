@@ -20,11 +20,9 @@ class CutsceneIntro: Cutscene {
                                                          y: screenSize.height / 3 + Player.getNormalizedAdjustedHeight(player: playerRight)) }
     
     //Main Nodes
-    private var bloodSkyNode: SKSpriteNode!
     private var dragonSprite: SKSpriteNode!
     
     //Overlay Nodes
-    private var bloodOverlayNode: SKShapeNode!
     private var flashOverlayNode: SKShapeNode!
     
     //Funny Quotes
@@ -60,20 +58,6 @@ class CutsceneIntro: Cutscene {
         dragonSprite.position = CGPoint(x: -dragonSprite.size.width, y: screenSize.height + dragonSprite.size.height)
         dragonSprite.zPosition = K.ZPosition.player - 10
         
-        bloodSkyNode = SKSpriteNode(texture: SKTexture(image: UIImage.gradientSkyBlood))
-        bloodSkyNode.size = CGSize(width: screenSize.width, height: screenSize.height / 2)
-        bloodSkyNode.position = CGPoint(x: 0, y: screenSize.height)
-        bloodSkyNode.anchorPoint = CGPoint(x: 0, y: 1)
-        bloodSkyNode.zPosition = K.ZPosition.skyNode
-        bloodSkyNode.alpha = 0
-        
-        bloodOverlayNode = SKShapeNode(rectOf: screenSize)
-        bloodOverlayNode.position = CGPoint(x: screenSize.width / 2, y: screenSize.height / 2)
-        bloodOverlayNode.fillColor = .red
-        bloodOverlayNode.lineWidth = 0
-        bloodOverlayNode.alpha = 0
-        bloodOverlayNode.zPosition = K.ZPosition.bloodOverlay
-        
         flashOverlayNode = SKShapeNode(rectOf: screenSize)
         flashOverlayNode.position = CGPoint(x: screenSize.width / 2, y: screenSize.height / 2)
         flashOverlayNode.fillColor = .yellow
@@ -100,8 +84,6 @@ class CutsceneIntro: Cutscene {
     override func didMove(to view: SKView) {
         super.didMove(to: view)
         
-        backgroundNode.addChild(bloodSkyNode)
-        backgroundNode.addChild(bloodOverlayNode)
         backgroundNode.addChild(flashOverlayNode)
         backgroundNode.addChild(dragonSprite)
     }
@@ -214,26 +196,11 @@ class CutsceneIntro: Cutscene {
                         ]))
                     },
                     SpeechBubbleItem(profile: speechPlayerRight, chat: "Wow.|| You sure ask a lot of questions!||||||||/But if you must know, the reason I'm here is because, well.. first of all, Oh—I'm a princess!|||/And, but... oh! Not here though. I'm a princess in a very very far away place.|||/You see, I'm not from this place. But I am from, umm, wait...| Let me start over.||||/Blah blah blah, blah blah blah DRAGONS blah, blah blah, blah blah blah, blah.||||||||/VAELORIA blah, blah.| BLAH blah blah blah, blahhhhh blah.| Blah. Blah. Blah. M|A|G|I|C!!||||||||/And then. And THEN!|| blah blah blah,| blah blah blah.| Blah, blah, blah|| .|.|.|A|G|E| O|F| R|U|I|N|.||||||||||||") { [unowned self] in
+                        
                         wideShot(shouldResetForeground: true)
-                        
                         dimOverlayNode.run(SKAction.fadeOut(withDuration: 1))
-                        
                         speechNarrator.removeFromParent()
-                        
-                        skyNode.run(SKAction.sequence([
-                            SKAction.wait(forDuration: 4),
-                            SKAction.fadeOut(withDuration: 6)
-                        ]))
-                        
-                        bloodSkyNode.run(SKAction.sequence([
-                            SKAction.wait(forDuration: 4),
-                            SKAction.fadeIn(withDuration: 6)
-                        ]))
-                        
-                        bloodOverlayNode.run(SKAction.sequence([
-                            SKAction.wait(forDuration: 4),
-                            SKAction.fadeAlpha(to: 0.25, duration: 6)
-                        ]))
+                        showBloodSky(fadeDuration: 6, delay: 4)
                         
                         backgroundNode.run(SKAction.sequence([
                             SKAction.wait(forDuration: 4),
@@ -445,9 +412,7 @@ class CutsceneIntro: Cutscene {
                         skipSceneSprite.removeAllActions()
                         skipSceneSprite.removeFromParent()
                         
-                        skyNode.run(SKAction.fadeIn(withDuration: 5))
-                        bloodSkyNode.run(SKAction.fadeOut(withDuration: 5))
-                        bloodOverlayNode.run(SKAction.fadeOut(withDuration: 5))
+                        hideBloodSky(fadeDuration: 5)
                         letterbox.hide(delay: 2)
                         
                         AudioManager.shared.stopSound(for: "thunderrumble", fadeDuration: 5)

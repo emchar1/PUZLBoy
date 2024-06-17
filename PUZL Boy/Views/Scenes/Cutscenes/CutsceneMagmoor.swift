@@ -253,12 +253,13 @@ class CutsceneMagmoor: Cutscene {
                     SKAction.wait(forDuration: 2.5),
                     SKAction.scale(to: 1.25, duration: 0.25),
                     SKAction.scale(to: 0, duration: 0.25)
-
                 ])
             ])
         ]))
         
         backgroundNode.addChild(redWarp)
+        
+        showBloodSky(fadeDuration: 6, delay: 4)
     }
     
     private func playScene2() {

@@ -277,7 +277,7 @@ class AudioManager {
             audioItems[item.fileName]!.player.currentTime = currentTime!
         }
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + (delay == nil ? 0 : delay!)) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + (delay ?? 0)) {
             //No need to make completions inside DispatchQueue.main.asyncAfter weak!
             let audioItem = self.audioItems[item.fileName]!
             
@@ -329,7 +329,7 @@ class AudioManager {
 
         playSound(for: audioKey, currentTime: currentTime, fadeIn: fadeIn, delay: delay, pan: pan, interruptPlayback: interruptPlayback)
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + playForDuration + (delay == nil ? 0 : delay!)) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + playForDuration + (delay ?? 0)) {
             self.stopSound(for: audioKey, fadeDuration: fadeOut)
         }
     }

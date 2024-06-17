@@ -270,7 +270,7 @@ class GameEngine {
      */
     private func setPlayerSpritePosition(toLastPanel lastPanel: LevelType? = nil, shouldAnimate animate: Bool, completion: (() -> ())?) {
         let playerLastPosition = gameboardSprite.getLocation(at: level.player)
-        let panel = lastPanel == nil ? level.getLevelType(at: level.player) : lastPanel!
+        let panel = lastPanel ?? level.getLevelType(at: level.player)
         var animationType: Player.Texture
         var soundFXTypeAndMovementSpeed: Player.Texture
         

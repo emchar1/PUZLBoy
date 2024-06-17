@@ -60,10 +60,10 @@ class ConfirmSprite: SKNode {
     }
     
     private func setupSprites() {
-        backgroundSprite = SKShapeNode(rectOf: CGSize(width: K.ScreenDimensions.size.width, 
-                                                      height: customHeight == nil ? K.ScreenDimensions.size.width / 2 : customHeight!),
+        backgroundSprite = SKShapeNode(rectOf: CGSize(width: K.ScreenDimensions.size.width,
+                                                      height: customHeight ?? K.ScreenDimensions.size.width / 2),
                                        cornerRadius: 20)
-        backgroundSprite.fillColor = customColor == nil ? .gray : customColor!
+        backgroundSprite.fillColor = customColor ?? .gray
         backgroundSprite.fillTexture = SKTexture(image: UIImage.gradientTextureChat)
         backgroundSprite.lineWidth = 12
         backgroundSprite.strokeColor = .white

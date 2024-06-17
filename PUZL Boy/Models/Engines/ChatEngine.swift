@@ -320,8 +320,8 @@ class ChatEngine {
             sendChat(profile: items[currentIndex].profile,
                      imgPos: items[currentIndex].imgPos,
                      pause: items[currentIndex].pause,
-                     startNewChat: items[currentIndex].startNewChat == nil ? (currentIndex == 0) : items[currentIndex].startNewChat!,
-                     endChat: items[currentIndex].endChat == nil ? (currentIndex == items.count - 1) : items[currentIndex].endChat!,
+                     startNewChat: items[currentIndex].startNewChat ?? (currentIndex == 0),
+                     endChat: items[currentIndex].endChat ?? (currentIndex == items.count - 1),
                      shouldSkipDim: shouldSkipDim,
                      chat: items[currentIndex].chat) { [unowned self] in
                 items[currentIndex].handler?()
