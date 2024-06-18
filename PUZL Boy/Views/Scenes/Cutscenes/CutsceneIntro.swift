@@ -200,7 +200,7 @@ class CutsceneIntro: Cutscene {
                         wideShot(shouldResetForeground: true)
                         dimOverlayNode.run(SKAction.fadeOut(withDuration: 1))
                         speechNarrator.removeFromParent()
-                        showBloodSky(fadeDuration: 6, delay: 4)
+                        showBloodSky(bloodOverlayAlpha: 0.25, fadeDuration: 6, delay: 4)
                         
                         backgroundNode.run(SKAction.sequence([
                             SKAction.wait(forDuration: 4),

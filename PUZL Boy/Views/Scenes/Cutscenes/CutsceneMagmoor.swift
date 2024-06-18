@@ -14,7 +14,7 @@ class CutsceneMagmoor: Cutscene {
     // MARK: - Properties
     
     private var leftPlayerPositionInitial: CGPoint {
-        CGPoint(x: screenSize.width * 2/5,
+        CGPoint(x: screenSize.width * 1/2 + 175,
                 y: screenSize.height * 1/3 + playerLeft.sprite.size.height * 1/2)
     }
     private var leftPlayerPositionFinal: CGPoint {
@@ -22,7 +22,7 @@ class CutsceneMagmoor: Cutscene {
                 y: screenSize.height * (1/4 + (1/3 * 0.5)) + playerLeft.sprite.size.height * 1/2 * 0.5)
     }
     private var rightPlayerPositionInitial: CGPoint {
-        CGPoint(x: screenSize.width * 1/2, 
+        CGPoint(x: screenSize.width * 1/2,
                 y: screenSize.height * 2/3)
     }
     private var rightPlayerPositionFinal: CGPoint {
@@ -45,16 +45,16 @@ class CutsceneMagmoor: Cutscene {
         speechPlayerRight.position += rightPlayerPositionFinal
         
         fadeTransitionNode.fillColor = .white
-
+        
         skipSceneSprite.delegate = self
     }
     
     override func cleanupScene(buttonTap: ButtonTap.ButtonType?, fadeDuration: TimeInterval?) {
         super.cleanupScene(buttonTap: buttonTap, fadeDuration: fadeDuration)
-
+        
         //Custom implementation here, if needed.
     }
-
+    
     
     // MARK: - Animate Functions
     
@@ -111,10 +111,10 @@ class CutsceneMagmoor: Cutscene {
             parallaxManager.changeSet(set: set)
             parallaxManager.addSpritesToParent(scene: self, node: backgroundNode)
         }
-            
+        
         parallaxManager.backgroundSprite.setScale(scale)
         parallaxManager.backgroundSprite.position = CGPoint(x: -screenSize.width / 2, y: -screenSize.height / 2 + 400)
-
+        
         parallaxManager.backgroundSprite.run(SKAction.scale(to: scale * scaleIncrease, duration: duration))
     }
     
@@ -128,7 +128,7 @@ class CutsceneMagmoor: Cutscene {
         //fadeTransitionNode is initially added to backgroundNode, so remove it first to prevent app crashing due to it already having a parent node.
         fadeTransitionNode.removeAllActions()
         fadeTransitionNode.removeFromParent()
-
+        
         backgroundNode.addChild(fadeTransitionNode)
         
         fadeTransitionNode.run(SKAction.sequence([
@@ -147,7 +147,7 @@ class CutsceneMagmoor: Cutscene {
     // MARK: - Animation Scene Helper Functions
     
     private func playScene1() {
-
+        
         //Parallax
         parallaxManager.changeSet(set: .sand)
         parallaxManager.addSpritesToParent(scene: self, node: backgroundNode)
@@ -159,7 +159,7 @@ class CutsceneMagmoor: Cutscene {
                 SKAction.moveTo(y: screenSize.height * 1/4, duration: 0)
             ])
         ]))
-
+        
         //Elders
         playerLeft.sprite.run(animatePlayerWithTextures(player: playerLeft, textureType: .idle, timePerFrame: 0.1))
         playerLeft.sprite.run(SKAction.sequence([
@@ -199,11 +199,19 @@ class CutsceneMagmoor: Cutscene {
         ]))
         
         backgroundNode.addChild(elder2.sprite)
-
+        
         
         //Magmoor
-        playerRight.sprite.run(animatePlayerWithTextures(player: playerRight, textureType: .idle, timePerFrame: 0.12))
+        playerRight.sprite.run(SKAction.group([
+            animatePlayerWithTextures(player: playerRight, textureType: .idle, timePerFrame: 0.12),
+            SKAction.repeatForever(SKAction.sequence([
+                SKAction.moveBy(x: 0, y: 10, duration: 1 + TimeInterval.random(in: 0...1)),
+                SKAction.moveBy(x: 0, y: -10, duration: 1 + TimeInterval.random(in: 0...1))
+            ]))
+        ]))
+        
         playerRight.sprite.setScale(0)
+
         playerRight.sprite.run(SKAction.sequence([
             SKAction.wait(forDuration: 4.5),
             SKAction.group([
@@ -237,7 +245,38 @@ class CutsceneMagmoor: Cutscene {
                 SKAction.fadeAlpha(to: 0.8, duration: 0.1),
                 SKAction.fadeAlpha(to: 0, duration: 0.1),
                 SKAction.fadeAlpha(to: 1, duration: 0.1)
-            ])
+            ]),
+            SKAction.run { [unowned self] in
+                let initialPosition = rightPlayerPositionFinal
+                
+                //should sort by increasing order of offsetPosition.y value!!!
+                duplicateMagmoor(from: initialPosition, to: CGPoint(x: 100, y: -110), index: 1)
+                duplicateMagmoor(from: initialPosition, to: CGPoint(x: -100, y: -100), index: 2)
+                duplicateMagmoor(from: initialPosition, to: CGPoint(x: 210, y: -60), index: 3)
+                duplicateMagmoor(from: initialPosition, to: CGPoint(x: -185, y: -30), index: 4)
+                duplicateMagmoor(from: initialPosition, to: CGPoint(x: 150, y: 20), index: 5)
+                duplicateMagmoor(from: initialPosition, to: CGPoint(x: -80, y: 40), index: 6)
+                duplicateMagmoor(from: initialPosition, to: CGPoint(x: 80, y: 70), index: 7)
+                duplicateMagmoor(from: initialPosition, to: CGPoint(x: 220, y: 80), index: 8)
+                duplicateMagmoor(from: initialPosition, to: CGPoint(x: -150, y: 100), index: 9)
+                duplicateMagmoor(from: initialPosition, to: CGPoint(x: 140, y: 120), index: 10)
+                duplicateMagmoor(from: initialPosition, to: CGPoint(x: -10, y: 150), index: 11)
+                duplicateMagmoor(from: initialPosition, to: CGPoint(x: 235, y: 160), index: 12)
+                duplicateMagmoor(from: initialPosition, to: CGPoint(x: 105, y: 185), index: 13)
+                duplicateMagmoor(from: initialPosition, to: CGPoint(x: -100, y: 190), index: 14)
+                duplicateMagmoor(from: initialPosition, to: CGPoint(x: -40, y: 220), index: 15)
+                duplicateMagmoor(from: initialPosition, to: CGPoint(x: 50, y: 225), index: 16)
+                duplicateMagmoor(from: initialPosition, to: CGPoint(x: 145, y: 245), index: 17)
+                duplicateMagmoor(from: initialPosition, to: CGPoint(x: -160, y: 250), index: 18)
+                duplicateMagmoor(from: initialPosition, to: CGPoint(x: 240, y: 260), index: 19)
+                duplicateMagmoor(from: initialPosition, to: CGPoint(x: 20, y: 270), index: 20)
+                duplicateMagmoor(from: initialPosition, to: CGPoint(x: -25, y: 290), index: 21)
+                duplicateMagmoor(from: initialPosition, to: CGPoint(x: 110, y: 300), index: 22)
+                duplicateMagmoor(from: initialPosition, to: CGPoint(x: -100, y: 305), index: 23)
+                duplicateMagmoor(from: initialPosition, to: CGPoint(x: 70, y: 310), index: 24)
+                duplicateMagmoor(from: initialPosition, to: CGPoint(x: 190, y: 310), index: 25)
+                duplicateMagmoor(from: initialPosition, to: CGPoint(x: 130, y: 330), index: 26)
+            }
         ]))
         
         let redWarp = SKSpriteNode(imageNamed: "warp4")
@@ -259,12 +298,12 @@ class CutsceneMagmoor: Cutscene {
         
         backgroundNode.addChild(redWarp)
         
-        showBloodSky(fadeDuration: 6, delay: 4)
+        showBloodSky(bloodOverlayAlpha: 0.25, fadeDuration: 6, delay: 4)
     }
     
     private func playScene2() {
         let pauseDuration: TimeInterval = 10
-
+        
         animateParallax(changeSet: .sand, duration: pauseDuration)
     }
     
@@ -277,14 +316,14 @@ class CutsceneMagmoor: Cutscene {
         //Setup sprites
         let initialScale: CGFloat = 2
         let initialPosition: CGPoint = CGPoint(x: screenSize.width / 2, y: screenSize.height / 2)
-
+        
         playerLeft.sprite.setScale(initialScale)
         playerLeft.sprite.position = initialPosition
         playerLeft.sprite.zRotation = 0
         playerLeft.sprite.removeAllActions()
         
         playerRight.sprite.alpha = 0
-
+        
         
         //Animate Magmoor transformation
         let waitBeforeTransformation: TimeInterval = 22
@@ -292,9 +331,9 @@ class CutsceneMagmoor: Cutscene {
 //        let zoomScale: CGFloat = 0.5
         let zoomDuration: TimeInterval = 0.25
         let timePerFrame: TimeInterval = 0.06 * 2
-
+        
         playerLeft.sprite.run(animatePlayerWithTextures(player: playerLeft, textureType: .idle, timePerFrame: timePerFrame))
-
+        
         parallaxManager.backgroundSprite.run(SKAction.sequence([
             SKAction.wait(forDuration: waitBeforeTransformation + fadeDuration * 11 + 3),
             SKAction.group([
@@ -307,6 +346,41 @@ class CutsceneMagmoor: Cutscene {
             SKAction.wait(forDuration: waitBeforeTransformation + fadeDuration * 11 + 3 + zoomDuration),
             shakeBackground(duration: 2)
         ]))
+    }
+    
+    
+    // MARK: - Misc. Helper Functions
+    
+    private func duplicateMagmoor(from startPoint: CGPoint, to offsetPoint: CGPoint, delay: TimeInterval? = nil, index: CGFloat = 1) {
+        let initialScale: CGFloat = 0.5
+        let finalScale: CGFloat = initialScale - offsetPoint.y * 0.001
+        let indexLeadingZeroes = String(format: "%02d", index)
+        let moveDuration: TimeInterval = 0.25
+
+        let duplicate = Player(type: .villain)
+        duplicate.sprite.position = startPoint
+        duplicate.sprite.setScale(initialScale)
+        duplicate.sprite.xScale *= -1
+        duplicate.sprite.anchorPoint.y = 0.25 //WHY is it 0.25?!?!
+        duplicate.sprite.zPosition = playerRight.sprite.zPosition - index
+        duplicate.sprite.name = "MagmoorDuplicate\(indexLeadingZeroes)"
+        
+        duplicate.sprite.run(SKAction.sequence([
+            SKAction.group([
+                SKAction.move(to: startPoint + offsetPoint, duration: moveDuration),
+                SKAction.scaleX(to: -1 * finalScale, duration: moveDuration),
+                SKAction.scaleY(to: finalScale, duration: moveDuration)
+            ]),
+            SKAction.group([
+                animatePlayerWithTextures(player: duplicate, textureType: .idle, timePerFrame: 0.12 + TimeInterval.random(in: -0.05...0)),
+                SKAction.repeatForever(SKAction.sequence([
+                    SKAction.moveBy(x: 0, y: 10, duration: 1 + TimeInterval.random(in: 0...1)),
+                    SKAction.moveBy(x: 0, y: -10, duration: 1 + TimeInterval.random(in: 0...1))
+                ]))
+            ])
+        ]))
+        
+        backgroundNode.addChild(duplicate.sprite)
     }
 }
 

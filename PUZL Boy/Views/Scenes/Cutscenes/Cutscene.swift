@@ -199,7 +199,7 @@ class Cutscene: SKScene {
         - fadeDuration: the speed at which the sky darkens
         - delay: add a delay, if desired
      */
-    func showBloodSky(fadeDuration: TimeInterval, delay: TimeInterval? = nil) {
+    func showBloodSky(bloodOverlayAlpha: CGFloat, fadeDuration: TimeInterval, delay: TimeInterval? = nil) {
         skyNode.run(SKAction.sequence([
             SKAction.wait(forDuration: delay ?? 0),
             SKAction.fadeOut(withDuration: fadeDuration)
@@ -212,7 +212,7 @@ class Cutscene: SKScene {
         
         bloodOverlayNode.run(SKAction.sequence([
             SKAction.wait(forDuration: delay ?? 0),
-            SKAction.fadeAlpha(to: 0.25, duration: fadeDuration)
+            SKAction.fadeAlpha(to: bloodOverlayAlpha, duration: fadeDuration)
         ]))
     }
     
