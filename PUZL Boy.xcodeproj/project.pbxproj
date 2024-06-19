@@ -115,7 +115,7 @@
 		EA7605722B5B5322001BC268 /* SnowfallParticles.sks in Resources */ = {isa = PBXBuildFile; fileRef = EA7605712B5B5322001BC268 /* SnowfallParticles.sks */; };
 		EA77D3F82B72BF1600B77C42 /* CutsceneOldFriends.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA77D3F72B72BF1600B77C42 /* CutsceneOldFriends.swift */; };
 		EA78C36C29763B1C00292744 /* AchievementAdMobster.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA78C36B29763B1C00292744 /* AchievementAdMobster.swift */; };
-		EA78C36E29767D7600292744 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = EA78C36D29767D7600292744 /* GoogleService-Info.plist */; };
+		EA7E75352C23959B00BE2781 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = EA7E75342C23959B00BE2781 /* GoogleService-Info.plist */; };
 		EA826C74297CEFC500F19F81 /* TimerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA826C73297CEFC500F19F81 /* TimerManager.swift */; };
 		EA826C76297CF9E000F19F81 /* ScoringManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA826C75297CF9E000F19F81 /* ScoringManager.swift */; };
 		EA826C7A298492BA00F19F81 /* DecisionButtonSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA826C79298492BA00F19F81 /* DecisionButtonSprite.swift */; };
@@ -308,6 +308,9 @@
 		EAF7183329B3D26F00E2ED82 /* movesand2.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAF7183229B3D26F00E2ED82 /* movesand2.mp3 */; };
 		EAF7183729B3D3FD00E2ED82 /* movesand3.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAF7183629B3D3FD00E2ED82 /* movesand3.mp3 */; };
 		EAF7183929B3D56B00E2ED82 /* lavaappear3.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAF7183829B3D56B00E2ED82 /* lavaappear3.mp3 */; };
+		EAF8CA0F2C220DE900C6E92B /* MagicBlastLiteParticles.sks in Resources */ = {isa = PBXBuildFile; fileRef = EAF8CA0E2C220DE900C6E92B /* MagicBlastLiteParticles.sks */; };
+		EAF8CA132C22921F00C6E92B /* forcefield.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAF8CA122C22921F00C6E92B /* forcefield.mp3 */; };
+		EAF8CA152C22929400C6E92B /* forcefield2.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAF8CA142C22929400C6E92B /* forcefield2.mp3 */; };
 		EAFA6A7729DE13EB002287C2 /* boyimpact.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAFA6A7529DE13EB002287C2 /* boyimpact.mp3 */; };
 		EAFC9A5529FCD44C002792F2 /* SettingsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAFC9A5429FCD44C002792F2 /* SettingsManager.swift */; };
 /* End PBXBuildFile section */
@@ -418,7 +421,7 @@
 		EA7605712B5B5322001BC268 /* SnowfallParticles.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = SnowfallParticles.sks; sourceTree = "<group>"; };
 		EA77D3F72B72BF1600B77C42 /* CutsceneOldFriends.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CutsceneOldFriends.swift; sourceTree = "<group>"; };
 		EA78C36B29763B1C00292744 /* AchievementAdMobster.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementAdMobster.swift; sourceTree = "<group>"; };
-		EA78C36D29767D7600292744 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		EA7E75342C23959B00BE2781 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		EA826C73297CEFC500F19F81 /* TimerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerManager.swift; sourceTree = "<group>"; };
 		EA826C75297CF9E000F19F81 /* ScoringManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoringManager.swift; sourceTree = "<group>"; };
 		EA826C79298492BA00F19F81 /* DecisionButtonSprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecisionButtonSprite.swift; sourceTree = "<group>"; };
@@ -609,6 +612,9 @@
 		EAF7183229B3D26F00E2ED82 /* movesand2.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = movesand2.mp3; sourceTree = "<group>"; };
 		EAF7183629B3D3FD00E2ED82 /* movesand3.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = movesand3.mp3; sourceTree = "<group>"; };
 		EAF7183829B3D56B00E2ED82 /* lavaappear3.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = lavaappear3.mp3; sourceTree = "<group>"; };
+		EAF8CA0E2C220DE900C6E92B /* MagicBlastLiteParticles.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = MagicBlastLiteParticles.sks; sourceTree = "<group>"; };
+		EAF8CA122C22921F00C6E92B /* forcefield.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = forcefield.mp3; sourceTree = "<group>"; };
+		EAF8CA142C22929400C6E92B /* forcefield2.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = forcefield2.mp3; sourceTree = "<group>"; };
 		EAFA6A7529DE13EB002287C2 /* boyimpact.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = boyimpact.mp3; sourceTree = "<group>"; };
 		EAFC9A5429FCD44C002792F2 /* SettingsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -924,6 +930,8 @@
 				EA8C605E2C068E0700DED3C7 /* enemyice.mp3 */,
 				EA8C60632C068E0700DED3C7 /* enemyroar.mp3 */,
 				EACDF09C2A54B7D400F28A41 /* enemyscratch.mp3 */,
+				EAF8CA122C22921F00C6E92B /* forcefield.mp3 */,
+				EAF8CA142C22929400C6E92B /* forcefield2.mp3 */,
 				EAAEA3C52931F08300221963 /* gameover.mp3 */,
 				EA8C60682C068E0800DED3C7 /* gameoverice.mp3 */,
 				EA4D026429B90BF700F0C7B1 /* gemcollect.mp3 */,
@@ -1004,7 +1012,7 @@
 				EA95D18A29459C390061059C /* Fonts */,
 				EA956C6D292586F800879AD0 /* Sounds */,
 				EA95D1AE294FBDD60061059C /* PUZL Boy.entitlements */,
-				EA78C36D29767D7600292744 /* GoogleService-Info.plist */,
+				EA7E75342C23959B00BE2781 /* GoogleService-Info.plist */,
 				EA65183828E419A000E535BF /* Info.plist */,
 				EA65183328E419A000E535BF /* Assets.xcassets */,
 			);
@@ -1165,6 +1173,7 @@
 				EAB2DE0F2A9D4BD700172478 /* LavaSizzleParticles.sks */,
 				EA473BDA2C13A561003CEC1E /* LimboParticles.sks */,
 				EAE215572ABD1DEB0090735A /* MagicBlastParticles.sks */,
+				EAF8CA0E2C220DE900C6E92B /* MagicBlastLiteParticles.sks */,
 				EA5F60572B9063480089EFC3 /* MagicExplosionParticles.sks */,
 				EA7300102B5E00E1005BF98D /* MagicLightParticles.sks */,
 				EAD19A032A9698B700A07A63 /* PartyGemParticles.sks */,
@@ -1304,6 +1313,7 @@
 				EA49F2822BB9036700C7D54E /* GroundSplitParticles.sks in Resources */,
 				EA473BDD2C13D608003CEC1E /* waterdrown.mp3 in Resources */,
 				EA7605632B5A859C001BC268 /* movesnow3.mp3 in Resources */,
+				EAF8CA132C22921F00C6E92B /* forcefield.mp3 in Resources */,
 				EAD19A092A96AA6D00A07A63 /* Assets.xcassets in Resources */,
 				EA49F2842BB90A3000C7D54E /* GroundExplodeParticles.sks in Resources */,
 				EAE919452A4CA4A800AF67D1 /* clocktick.mp3 in Resources */,
@@ -1334,6 +1344,7 @@
 				EA0F1491292CC8D90013038E /* enemydeath.mp3 in Resources */,
 				EA4D026529B90BF800F0C7B1 /* gemcollect.mp3 in Resources */,
 				EA8C60742C068E0800DED3C7 /* chatopenvillain.mp3 in Resources */,
+				EA7E75352C23959B00BE2781 /* GoogleService-Info.plist in Resources */,
 				EAD19A1B2A9BD48400A07A63 /* GemSparkleParticles.sks in Resources */,
 				EA9F4DDD29D2B766006F4B2F /* buttontap2.mp3 in Resources */,
 				EAD199FC2A95A2ED00A07A63 /* GemCollectParticles.sks in Resources */,
@@ -1359,6 +1370,8 @@
 				EA3467A529A8C659002DDA02 /* revive.mp3 in Resources */,
 				EACE2AA32ACBE94C00FE5A11 /* boypain4.mp3 in Resources */,
 				EA9F4DE229D36F02006F4B2F /* movepoisoned3.mp3 in Resources */,
+				EAF8CA152C22929400C6E92B /* forcefield2.mp3 in Resources */,
+				EAF8CA0F2C220DE900C6E92B /* MagicBlastLiteParticles.sks in Resources */,
 				EA2AF74829B6EDAC00444E5A /* gemcollectparty.mp3 in Resources */,
 				EA9D6A632B48ED0F0004187B /* ageofruin2.mp3 in Resources */,
 				EA4583512A44319000279056 /* partyfast.mp3 in Resources */,
@@ -1411,7 +1424,6 @@
 				EAF7183929B3D56B00E2ED82 /* lavaappear3.mp3 in Resources */,
 				EA4D025F29B7E33600F0C7B1 /* movemarsh1.mp3 in Resources */,
 				EA0CF7CC2ADC408D002785DB /* DragonFireIdle.sks in Resources */,
-				EA78C36E29767D7600292744 /* GoogleService-Info.plist in Resources */,
 				EA8C606B2C068E0800DED3C7 /* enemyice.mp3 in Resources */,
 				EAAEA3CC2931F14D00221963 /* winlevel.mp3 in Resources */,
 				EA9F4DE729D37206006F4B2F /* movepoisoned2.mp3 in Resources */,

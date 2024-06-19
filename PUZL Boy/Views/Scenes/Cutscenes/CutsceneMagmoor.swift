@@ -147,23 +147,28 @@ class CutsceneMagmoor: Cutscene {
     // MARK: - Animation Scene Helper Functions
     
     private func playScene1() {
-        
+        let cutTime: TimeInterval = 10
+        let warpTime: TimeInterval = cutTime + 3
+        let attackTime: TimeInterval = 10
+        let magmoorWait: TimeInterval = 6
+        let forcefieldSpawnTime: TimeInterval = warpTime + magmoorWait + 3.5 + attackTime //3.5 from 1s after warp time + 0.5s + 2s for phasing
+
         //Parallax
         parallaxManager.changeSet(set: .sand)
         parallaxManager.addSpritesToParent(scene: self, node: backgroundNode)
         parallaxManager.backgroundSprite.run(SKAction.sequence([
-            SKAction.wait(forDuration: 3),
+            SKAction.wait(forDuration: cutTime),
             SKAction.group([
-                SKAction.scale(to: 0.5, duration: 0),
-                SKAction.moveTo(x: 0, duration: 0),
-                SKAction.moveTo(y: screenSize.height * 1/4, duration: 0)
+                SKAction.scale(to: 2, duration: 0),
+                SKAction.move(to: CGPoint(x: 0, y: -screenSize.height / 2 + 400), duration: 0)
+//                SKAction.move(to: CGPoint(x: 0, y: screenSize.height * 1/4), duration: 0) //OLD - Zoom out
             ])
         ]))
         
         //Elders
         playerLeft.sprite.run(animatePlayerWithTextures(player: playerLeft, textureType: .idle, timePerFrame: 0.1))
         playerLeft.sprite.run(SKAction.sequence([
-            SKAction.wait(forDuration: 3),
+            SKAction.wait(forDuration: cutTime),
             SKAction.group([
                 SKAction.scale(to: 0.5, duration: 0),
                 SKAction.move(to: leftPlayerPositionFinal, duration: 0)
@@ -176,7 +181,7 @@ class CutsceneMagmoor: Cutscene {
         elder1.sprite.zPosition += 4
         elder1.sprite.run(animatePlayerWithTextures(player: elder1, textureType: .idle, timePerFrame: 0.09))
         elder1.sprite.run(SKAction.sequence([
-            SKAction.wait(forDuration: 3),
+            SKAction.wait(forDuration: cutTime),
             SKAction.group([
                 SKAction.scale(to: 0.5 * 0.9, duration: 0),
                 SKAction.move(to: leftPlayerPositionFinal + CGPoint(x: -125, y: 25), duration: 0)
@@ -191,7 +196,7 @@ class CutsceneMagmoor: Cutscene {
         elder2.sprite.zPosition += 6
         elder2.sprite.run(animatePlayerWithTextures(player: elder2, textureType: .idle, timePerFrame: 0.08))
         elder2.sprite.run(SKAction.sequence([
-            SKAction.wait(forDuration: 3),
+            SKAction.wait(forDuration: cutTime),
             SKAction.group([
                 SKAction.scale(to: 0.5, duration: 0),
                 SKAction.move(to: leftPlayerPositionFinal + CGPoint(x: -175, y: -50), duration: 0)
@@ -200,26 +205,72 @@ class CutsceneMagmoor: Cutscene {
         
         backgroundNode.addChild(elder2.sprite)
         
+        let forcefieldSprite = SKSpriteNode(imageNamed: "forcefield")
+        forcefieldSprite.position = leftPlayerPositionFinal - CGPoint(x: 125, y: 0)
+        forcefieldSprite.setScale(0)
+        forcefieldSprite.alpha = 0
+        forcefieldSprite.zPosition = K.ZPosition.player + 10
+        
+        forcefieldSprite.run(SKAction.sequence([
+            SKAction.wait(forDuration: forcefieldSpawnTime),
+            SKAction.group([
+                SKAction.repeatForever(SKAction.rotate(byAngle: .pi / 4, duration: 2)),
+                SKAction.sequence([
+                    SKAction.scale(to: 3.2, duration: 0.25),
+                    SKAction.repeatForever(SKAction.sequence([
+                        SKAction.scale(to: 2.9, duration: 1),
+                        SKAction.scale(to: 3.1, duration: 1)
+                    ]))
+                ]),
+                SKAction.sequence([
+                    SKAction.fadeIn(withDuration: 0.25),
+                    SKAction.repeatForever(SKAction.sequence([
+                        SKAction.fadeAlpha(to: 0.5, duration: 0.5),
+                        SKAction.fadeAlpha(to: 1.0, duration: 0.5),
+                        SKAction.wait(forDuration: 1)
+                    ]))
+                ]),
+                SKAction.run {
+                    AudioManager.shared.playSound(for: "forcefield")
+                    AudioManager.shared.playSound(for: "forcefield2")
+                }
+            ])
+        ]))
+        
+        forcefieldSprite.run(SKAction.sequence([
+            SKAction.wait(forDuration: forcefieldSpawnTime + 6),
+            SKAction.run {
+                AudioManager.shared.stopSound(for: "forcefield", fadeDuration: 1)
+                AudioManager.shared.stopSound(for: "forcefield2", fadeDuration: 1)
+            },
+            SKAction.scale(to: 3.2, duration: 0.5),
+            SKAction.scale(to: 0, duration: 0.25),
+            SKAction.removeFromParent()
+        ]))
+        
+        backgroundNode.addChild(forcefieldSprite)
+        
         
         //Magmoor
         playerRight.sprite.run(SKAction.group([
             animatePlayerWithTextures(player: playerRight, textureType: .idle, timePerFrame: 0.12),
             SKAction.repeatForever(SKAction.sequence([
-                SKAction.moveBy(x: 0, y: 10, duration: 1 + TimeInterval.random(in: 0...1)),
-                SKAction.moveBy(x: 0, y: -10, duration: 1 + TimeInterval.random(in: 0...1))
+                SKAction.moveBy(x: 0, y: 15, duration: 1 + TimeInterval.random(in: 0...1)),
+                SKAction.moveBy(x: 0, y: -15, duration: 1 + TimeInterval.random(in: 0...1))
             ]))
         ]))
         
         playerRight.sprite.setScale(0)
 
         playerRight.sprite.run(SKAction.sequence([
-            SKAction.wait(forDuration: 4.5),
+            SKAction.wait(forDuration: warpTime + 1),
             SKAction.group([
                 SKAction.scaleX(to: -0.2, duration: 0.5),
                 SKAction.scaleY(to: 0.2, duration: 0.5)
             ]),
-            SKAction.wait(forDuration: 3),
+            SKAction.wait(forDuration: magmoorWait),
             SKAction.sequence([
+                SKAction.fadeAlpha(to: 1.0, duration: 0.1),
                 SKAction.fadeAlpha(to: 0, duration: 0.1),
                 SKAction.fadeAlpha(to: 0.8, duration: 0.1),
                 SKAction.fadeAlpha(to: 0, duration: 0.1),
@@ -236,6 +287,7 @@ class CutsceneMagmoor: Cutscene {
                 SKAction.move(to: rightPlayerPositionFinal, duration: 0)
             ]),
             SKAction.sequence([
+                SKAction.fadeAlpha(to: 0, duration: 0.1),
                 SKAction.fadeAlpha(to: 0.2, duration: 0.1),
                 SKAction.fadeAlpha(to: 0, duration: 0.1),
                 SKAction.fadeAlpha(to: 0.4, duration: 0.1),
@@ -244,38 +296,39 @@ class CutsceneMagmoor: Cutscene {
                 SKAction.fadeAlpha(to: 0, duration: 0.1),
                 SKAction.fadeAlpha(to: 0.8, duration: 0.1),
                 SKAction.fadeAlpha(to: 0, duration: 0.1),
-                SKAction.fadeAlpha(to: 1, duration: 0.1)
+                SKAction.fadeAlpha(to: 1.0, duration: 0.1)
             ]),
             SKAction.run { [unowned self] in
                 let initialPosition = rightPlayerPositionFinal
+                let delayAttack: TimeInterval = attackTime
                 
-                //should sort by increasing order of offsetPosition.y value!!!
-                duplicateMagmoor(from: initialPosition, to: CGPoint(x: 100, y: -110), index: 1)
-                duplicateMagmoor(from: initialPosition, to: CGPoint(x: -100, y: -100), index: 2)
-                duplicateMagmoor(from: initialPosition, to: CGPoint(x: 210, y: -60), index: 3)
-                duplicateMagmoor(from: initialPosition, to: CGPoint(x: -185, y: -30), index: 4)
-                duplicateMagmoor(from: initialPosition, to: CGPoint(x: 150, y: 20), index: 5)
-                duplicateMagmoor(from: initialPosition, to: CGPoint(x: -80, y: 40), index: 6)
-                duplicateMagmoor(from: initialPosition, to: CGPoint(x: 80, y: 70), index: 7)
-                duplicateMagmoor(from: initialPosition, to: CGPoint(x: 220, y: 80), index: 8)
-                duplicateMagmoor(from: initialPosition, to: CGPoint(x: -150, y: 100), index: 9)
-                duplicateMagmoor(from: initialPosition, to: CGPoint(x: 140, y: 120), index: 10)
-                duplicateMagmoor(from: initialPosition, to: CGPoint(x: -10, y: 150), index: 11)
-                duplicateMagmoor(from: initialPosition, to: CGPoint(x: 235, y: 160), index: 12)
-                duplicateMagmoor(from: initialPosition, to: CGPoint(x: 105, y: 185), index: 13)
-                duplicateMagmoor(from: initialPosition, to: CGPoint(x: -100, y: 190), index: 14)
-                duplicateMagmoor(from: initialPosition, to: CGPoint(x: -40, y: 220), index: 15)
-                duplicateMagmoor(from: initialPosition, to: CGPoint(x: 50, y: 225), index: 16)
-                duplicateMagmoor(from: initialPosition, to: CGPoint(x: 145, y: 245), index: 17)
-                duplicateMagmoor(from: initialPosition, to: CGPoint(x: -160, y: 250), index: 18)
-                duplicateMagmoor(from: initialPosition, to: CGPoint(x: 240, y: 260), index: 19)
-                duplicateMagmoor(from: initialPosition, to: CGPoint(x: 20, y: 270), index: 20)
-                duplicateMagmoor(from: initialPosition, to: CGPoint(x: -25, y: 290), index: 21)
-                duplicateMagmoor(from: initialPosition, to: CGPoint(x: 110, y: 300), index: 22)
-                duplicateMagmoor(from: initialPosition, to: CGPoint(x: -100, y: 305), index: 23)
-                duplicateMagmoor(from: initialPosition, to: CGPoint(x: 70, y: 310), index: 24)
-                duplicateMagmoor(from: initialPosition, to: CGPoint(x: 190, y: 310), index: 25)
-                duplicateMagmoor(from: initialPosition, to: CGPoint(x: 130, y: 330), index: 26)
+                //should sort by increasing order of offsetPosition.y value!!! I hate how this is manual...
+                duplicateMagmoor(from: initialPosition, to: CGPoint(x: 100, y: -110), delayAttack: delayAttack, index: 1)
+                duplicateMagmoor(from: initialPosition, to: CGPoint(x: -100, y: -100), delayAttack: delayAttack, index: 2)
+                duplicateMagmoor(from: initialPosition, to: CGPoint(x: 210, y: -60), delayAttack: delayAttack, index: 3)
+                duplicateMagmoor(from: initialPosition, to: CGPoint(x: -185, y: -30), delayAttack: delayAttack, index: 4)
+                duplicateMagmoor(from: initialPosition, to: CGPoint(x: 150, y: 20), delayAttack: delayAttack, index: 5)
+                duplicateMagmoor(from: initialPosition, to: CGPoint(x: -80, y: 40), delayAttack: delayAttack, index: 6)
+                duplicateMagmoor(from: initialPosition, to: CGPoint(x: 80, y: 70), delayAttack: delayAttack, index: 7)
+                duplicateMagmoor(from: initialPosition, to: CGPoint(x: 220, y: 80), delayAttack: delayAttack, index: 8)
+                duplicateMagmoor(from: initialPosition, to: CGPoint(x: -150, y: 100), delayAttack: delayAttack, index: 9)
+                duplicateMagmoor(from: initialPosition, to: CGPoint(x: 140, y: 120), delayAttack: delayAttack, index: 10)
+                duplicateMagmoor(from: initialPosition, to: CGPoint(x: -10, y: 150), delayAttack: delayAttack, index: 11)
+                duplicateMagmoor(from: initialPosition, to: CGPoint(x: 235, y: 160), delayAttack: delayAttack, index: 12)
+                duplicateMagmoor(from: initialPosition, to: CGPoint(x: 105, y: 185), delayAttack: delayAttack, index: 13)
+                duplicateMagmoor(from: initialPosition, to: CGPoint(x: -100, y: 190), delayAttack: delayAttack, index: 14)
+                duplicateMagmoor(from: initialPosition, to: CGPoint(x: -40, y: 220), delayAttack: delayAttack, index: 15)
+                duplicateMagmoor(from: initialPosition, to: CGPoint(x: 50, y: 225), delayAttack: delayAttack, index: 16)
+                duplicateMagmoor(from: initialPosition, to: CGPoint(x: 145, y: 245), delayAttack: delayAttack, index: 17)
+                duplicateMagmoor(from: initialPosition, to: CGPoint(x: -160, y: 250), delayAttack: delayAttack, index: 18)
+                duplicateMagmoor(from: initialPosition, to: CGPoint(x: 240, y: 260), delayAttack: delayAttack, index: 19)
+                duplicateMagmoor(from: initialPosition, to: CGPoint(x: 20, y: 270), delayAttack: delayAttack, index: 20)
+                duplicateMagmoor(from: initialPosition, to: CGPoint(x: -25, y: 290), delayAttack: delayAttack, index: 21)
+                duplicateMagmoor(from: initialPosition, to: CGPoint(x: 110, y: 300), delayAttack: delayAttack, index: 22)
+                duplicateMagmoor(from: initialPosition, to: CGPoint(x: -100, y: 305), delayAttack: delayAttack, index: 23)
+                duplicateMagmoor(from: initialPosition, to: CGPoint(x: 70, y: 310), delayAttack: delayAttack, index: 24)
+                duplicateMagmoor(from: initialPosition, to: CGPoint(x: 190, y: 310), delayAttack: delayAttack, index: 25)
+                duplicateMagmoor(from: initialPosition, to: CGPoint(x: 130, y: 330), delayAttack: delayAttack, index: 26)
             }
         ]))
         
@@ -284,12 +337,12 @@ class CutsceneMagmoor: Cutscene {
         redWarp.position = rightPlayerPositionInitial
         redWarp.zPosition = playerRight.sprite.zPosition - 5
         redWarp.run(SKAction.sequence([
-            SKAction.wait(forDuration: 4),
+            SKAction.wait(forDuration: warpTime),
             SKAction.scale(to: 1, duration: 0.5),
             SKAction.group([
-                SKAction.rotate(toAngle: .pi, duration: 3),
+                SKAction.rotate(toAngle: .pi, duration: 5),
                 SKAction.sequence([
-                    SKAction.wait(forDuration: 2.5),
+                    SKAction.wait(forDuration: 4.5),
                     SKAction.scale(to: 1.25, duration: 0.25),
                     SKAction.scale(to: 0, duration: 0.25)
                 ])
@@ -298,7 +351,7 @@ class CutsceneMagmoor: Cutscene {
         
         backgroundNode.addChild(redWarp)
         
-        showBloodSky(bloodOverlayAlpha: 0.25, fadeDuration: 6, delay: 4)
+        showBloodSky(bloodOverlayAlpha: 0.25, fadeDuration: 6, delay: warpTime)
     }
     
     private func playScene2() {
@@ -351,7 +404,7 @@ class CutsceneMagmoor: Cutscene {
     
     // MARK: - Misc. Helper Functions
     
-    private func duplicateMagmoor(from startPoint: CGPoint, to offsetPoint: CGPoint, delay: TimeInterval? = nil, index: CGFloat = 1) {
+    private func duplicateMagmoor(from startPoint: CGPoint, to offsetPoint: CGPoint, delayAttack: TimeInterval? = nil, index: CGFloat = 1) {
         let initialScale: CGFloat = 0.5
         let finalScale: CGFloat = initialScale - offsetPoint.y * 0.001
         let indexLeadingZeroes = String(format: "%02d", index)
@@ -374,13 +427,31 @@ class CutsceneMagmoor: Cutscene {
             SKAction.group([
                 animatePlayerWithTextures(player: duplicate, textureType: .idle, timePerFrame: 0.12 + TimeInterval.random(in: -0.05...0)),
                 SKAction.repeatForever(SKAction.sequence([
-                    SKAction.moveBy(x: 0, y: 10, duration: 1 + TimeInterval.random(in: 0...1)),
-                    SKAction.moveBy(x: 0, y: -10, duration: 1 + TimeInterval.random(in: 0...1))
+                    SKAction.moveBy(x: 0, y: 15, duration: 1 + TimeInterval.random(in: 0...1)),
+                    SKAction.moveBy(x: 0, y: -15, duration: 1 + TimeInterval.random(in: 0...1))
                 ]))
             ])
         ]))
         
         backgroundNode.addChild(duplicate.sprite)
+        
+        
+        //Magic blast lite attack
+        run(SKAction.sequence([
+            SKAction.wait(forDuration: delayAttack ?? 0),
+            SKAction.run { [unowned self] in
+                let angleOfAttack: CGFloat = SpriteMath.Trigonometry.getAngles(startPoint: startPoint, endPoint: leftPlayerPositionFinal).beta * (leftPlayerPositionFinal.y < startPoint.y ? 1 : -1)
+                
+                AudioManager.shared.playSound(for: "magicblast")
+                
+                ParticleEngine.shared.animateParticles(type: .magicBlastLite,
+                                                       toNode: duplicate.sprite,
+                                                       position: CGPoint(x: 190, y: 220),
+                                                       scale: 2,
+                                                       angle: angleOfAttack,
+                                                       duration: 0)
+            }
+        ]))
     }
 }
 

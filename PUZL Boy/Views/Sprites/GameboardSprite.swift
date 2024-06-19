@@ -390,7 +390,13 @@ class GameboardSprite {
         villain.sprite.setScale(0)
         villain.sprite.zPosition = K.ZPosition.itemsAndEffects + 20
         villain.sprite.name = "captureVillain"
-        villain.sprite.run(SKAction.repeatForever(SKAction.animate(with: villain.textures[Player.Texture.idle.rawValue], timePerFrame: 0.1)))
+        villain.sprite.run(SKAction.repeatForever(SKAction.group([
+            SKAction.animate(with: villain.textures[Player.Texture.idle.rawValue], timePerFrame: 0.1),
+            SKAction.sequence([
+                SKAction.moveBy(x: 0, y: 20, duration: 1 + TimeInterval.random(in: 0...1)),
+                SKAction.moveBy(x: 0, y: -20, duration: 1 + TimeInterval.random(in: 0...1))
+            ])
+        ])))
                     
         princess.sprite.run(SKAction.sequence([
             SKAction.wait(forDuration: waitDuration),
