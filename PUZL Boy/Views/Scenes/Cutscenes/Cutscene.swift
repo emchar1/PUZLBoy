@@ -40,6 +40,25 @@ class Cutscene: SKScene {
     var fadeTransitionNode: SKShapeNode!
     var letterbox: LetterboxSprite!
     
+    //Misc Data Structures
+    struct NarrationItem {
+        let text: String
+        let fontColor: UIColor
+        let animationSpeed: TimeInterval
+        let handler: (() -> Void)?
+                
+        init(text: String, fontColor: UIColor, animationSpeed: TimeInterval, handler: (() -> Void)?) {
+            self.text = text
+            self.fontColor = fontColor
+            self.animationSpeed = animationSpeed
+            self.handler = handler
+        }
+        
+        init(text: String) {
+            self.init(text: text, fontColor: SpeechOverlaySprite.fontColorOrig, animationSpeed: SpeechOverlaySprite.animationSpeedOrig, handler: nil)
+        }
+    }
+    
     
     // MARK: - Initialization
     
@@ -226,6 +245,9 @@ class Cutscene: SKScene {
         bloodOverlayNode.run(SKAction.fadeOut(withDuration: fadeDuration))
     }
     
+    
+    // MARK: - Text Functions
+    
     /**
      Helper to SpeechBubbleSprite.setText(). Takes in an array of SpeechBubbleItems and process them recursively, with nesting completion handlers.
      - parameters:
@@ -246,6 +268,32 @@ class Cutscene: SKScene {
             
             //Recursion!!
             setTextArray(items: items, currentIndex: currentIndex + 1, completion: completion)
+        }
+    }
+    
+    /**
+     Adds an array of narration text, similar to the ChatArray() function in ChatEngine.
+     - parameters:
+        - items: the array of NarrationItems
+        - currentIndex: don't set this explicitly! Let the recursive function set it
+        - completion: handler to execute at the end of the recursion function
+     */
+    func narrateArray(items: [NarrationItem], currentIndex: Int = 0, completion: (() -> Void)?) {
+        if currentIndex == items.count {
+            //Base case
+            speechNarrator.resetValues()
+            completion?()
+        }
+        else {
+            let item = items[currentIndex]
+
+            speechNarrator.setValues(color: item.fontColor, animationSpeed: item.animationSpeed)
+            speechNarrator.setText(text: item.text, superScene: self) { [unowned self] in
+                item.handler?()
+                
+                //Recursion!! Also the [unowned self] prevents a retain cycle here...
+                narrateArray(items: items, currentIndex: currentIndex + 1, completion: completion)
+            }
         }
     }
     

@@ -11,27 +11,32 @@ class SpeechOverlaySprite: SKNode {
 
     // MARK: - Properties
     
+    //Main Properties
     private let padding: CGFloat = 20
     private let nodeHeight: CGFloat = 200
+    private var backgroundNode: SKShapeNode!
+    private var speechNode: SKLabelNode!
+
+    //Text Properties
+    static let fontColorOrig: UIColor = .yellow.lightenColor(factor: 6)
+    private var fontColor: UIColor
     private var text: String
     
     //Animation Properties
-    private let animationSpeedOrig: TimeInterval = 0.04
+    static let animationSpeedOrig: TimeInterval = 0.04
     private var animationSpeed: TimeInterval
     private var animationIndex = 0
     private var timer = Timer()
     private var dispatchWorkItem = DispatchWorkItem(block: {})
     private var completion: (() -> Void)?
     
-    private var backgroundNode: SKShapeNode!
-    private var speechNode: SKLabelNode!
-    
     
     // MARK: - Initialization
 
     override init() {
         self.text = ""
-        self.animationSpeed = animationSpeedOrig
+        self.fontColor = SpeechOverlaySprite.fontColorOrig
+        self.animationSpeed = SpeechOverlaySprite.animationSpeedOrig
 
         super.init()
         
@@ -59,7 +64,7 @@ class SpeechOverlaySprite: SKNode {
         speechNode = SKLabelNode(text: text)
         speechNode.fontName = UIFont.chatFont
         speechNode.fontSize = UIFont.chatFontSizeLarge
-        speechNode.fontColor = .yellow.lightenColor(factor: 12)
+        speechNode.fontColor = SpeechOverlaySprite.fontColorOrig
         speechNode.position = .zero
         speechNode.numberOfLines = 0
         speechNode.preferredMaxLayoutWidth = backgroundNode.frame.size.width
@@ -75,9 +80,25 @@ class SpeechOverlaySprite: SKNode {
     
     // MARK: - Animation Functions
     
+    func setValues(color: UIColor? = nil, animationSpeed: TimeInterval? = nil) {
+        if let color = color {
+            self.fontColor = color
+        }
+        
+        if let animationSpeed = animationSpeed {
+            self.animationSpeed = animationSpeed
+        }
+    }
+    
+    func resetValues() {
+        self.fontColor = SpeechOverlaySprite.fontColorOrig
+        self.animationSpeed = SpeechOverlaySprite.animationSpeedOrig
+    }
+    
     func setText(text: String, superScene: SKScene, completion: (() -> Void)?) {
         self.text = text
         speechNode.text = ""
+        speechNode.fontColor = fontColor
         animationIndex = 0
         self.completion = completion
         
@@ -86,10 +107,6 @@ class SpeechOverlaySprite: SKNode {
 
         superScene.addChild(self)
         
-        beginAnimation()
-    }
-    
-    private func beginAnimation() {
         animateText()
     }
         

@@ -184,9 +184,9 @@ class CutsceneIntro: Cutscene {
                             SKAction.group([
                                 SKAction.fadeIn(withDuration: 23), //34 total seconds, to coincide with closeUpPrincess() animation sequence
                                 SKAction.run { [unowned self] in
-                                    speechNarrator.setText(
-                                        text: "PUZL Boy: The princess went on to explain how dragons had disappeared from the realm of some place called Vaeloria, where she claims she's from,|| and that the balance of magic had been disrupted threatening our very existence.||||||||/She spoke about a prophecy where the Earth splits open and the sky turns to ash, signaling the Age of Ruin, and that she was the only one who could stop it—||At first, I thought this little girl just had an overactive imagination...||||||/  ..........Then the CRAZIEST thing happened!!",
-                                        superScene: self, completion: nil)
+                                    narrateArray(items: [
+                                        NarrationItem(text: "PUZL Boy: The princess went on to explain how dragons had disappeared from the realm of some place called Vaeloria, where she claims she's from,|| and that the balance of magic had been disrupted threatening our very existence.||||||||/She spoke about a prophecy where the Earth splits open and the sky turns to ash, signaling the Age of Ruin, and that she was the only one who could stop it—||At first, I thought this little girl just had an overactive imagination...||||||/..........Then the CRAZIEST thing happened!!")
+                                    ], completion: nil)
                                     
                                     AudioManager.shared.stopSound(for: "birdsambience", fadeDuration: 5)
                                     AudioManager.shared.stopSound(for: AudioManager.shared.grasslandTheme, fadeDuration: 8)

@@ -64,6 +64,11 @@ class CutsceneMagmoor: Cutscene {
         letterbox.show { [unowned self] in
             addChild(skipSceneSprite)
             skipSceneSprite.animateSprite()
+            
+            narrateArray(items: [
+                NarrationItem(text: "MARLIN: You commanded an army to overthrow the council—what did you expect was going to happen?!?!?!||||", fontColor: .cyan.lightenColor(factor: 6), animationSpeed: 0.05, handler: nil),
+                NarrationItem(text: "MAGMOOR: The council saw me as the biggest threat to the realm. They saw my power and didn't like it.", fontColor: .red.lightenColor(factor: 6), animationSpeed: 0.1, handler: nil)
+            ], completion: nil)
         }
         
         playScene1()
