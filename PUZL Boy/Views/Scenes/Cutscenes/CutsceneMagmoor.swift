@@ -74,7 +74,10 @@ class CutsceneMagmoor: Cutscene {
     override func cleanupScene(buttonTap: ButtonTap.ButtonType?, fadeDuration: TimeInterval?) {
         super.cleanupScene(buttonTap: buttonTap, fadeDuration: fadeDuration)
         
-        //Custom implementation here, if needed.
+        let fadeDuration: TimeInterval = 2
+        
+        AudioManager.shared.stopSound(for: "ageofruin2", fadeDuration: fadeDuration)
+        AudioManager.shared.stopSound(for: "forcefield", fadeDuration: fadeDuration)
     }
     
     

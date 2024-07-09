@@ -28,8 +28,7 @@ class GameViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let authorizationRequestScene = AuthorizationRequestScene(size: K.ScreenDimensions.size,
-                                                                  userInterfaceStyle: traitCollection.userInterfaceStyle)
+        let authorizationRequestScene = AuthorizationRequestScene(size: K.ScreenDimensions.size, userInterfaceStyle: traitCollection.userInterfaceStyle)
         authorizationRequestScene.sceneDelegate = self
         
         monitor = NWPathMonitor()
@@ -48,19 +47,17 @@ class GameViewController: UIViewController {
         
         
         
-        // FIXME: - DEFINITELY COMMENT THESE OUT BEFORE SHIPPING FINAL PRODUCT!!!
-        skView.showsFPS = true
-        skView.showsNodeCount = true
-        
-        
-        
-        
-        // DEBUG: - CutsceneMagmoor - delete immediately!
+//        // FIXME: - DEFINITELY COMMENT THESE OUT BEFORE SHIPPING FINAL PRODUCT!!!
+//        skView.showsFPS = true
+//        skView.showsNodeCount = true
+//        
+//        // FIXME: - Go straight to CutsceneMagmoor. DELETE BEFORE SHIPPING!
 //        let cutsceneMagmoor = CutsceneMagmoor(size: K.ScreenDimensions.size, playerLeft: .elder0, playerRight: .villain, xOffsetsArray: nil)
 //        cutsceneMagmoor.animateScene(completion: nil)
 //        skView.ignoresSiblingOrder = true
 //        skView.presentScene(cutsceneMagmoor)
 //        view = skView
+        
         
         
         

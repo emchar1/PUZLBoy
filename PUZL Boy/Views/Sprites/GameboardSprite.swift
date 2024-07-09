@@ -513,32 +513,13 @@ class GameboardSprite {
                         SKAction.run {
                             AudioManager.shared.stopSound(for: "magicheartbeatloop1")
                             AudioManager.shared.playSound(for: "magicheartbeatloop2")
-                            AudioManager.shared.playSound(for: "magicteleport")
                         },
-                        SKAction.repeat(SKAction.sequence([
-                            SKAction.run { [unowned self] in
-                                let illusionSprite = SKSpriteNode(imageNamed: node.texture?.getFilename() ?? "VillainIdle (1)")
-                                illusionSprite.size = Player.size
-                                illusionSprite.xScale = facingMultiplier * Player.getGameboardScale(panelSize: panelSize) * villainScaleMultiplier
-                                illusionSprite.yScale = Player.getGameboardScale(panelSize: panelSize) * villainScaleMultiplier
-                                illusionSprite.position = SpriteMath.Trigonometry.getMidpoint(startPoint: startPoint - facingMultiplier * playerOffset + villainOffset, endPoint: endPoint - facingMultiplier * playerOffset + villainOffset, step: illusionStep, totalSteps: blinkDivision)
-                                illusionSprite.zPosition = K.ZPosition.itemsAndEffects + 20 - CGFloat(blinkDivision - illusionStep)
-                                illusionSprite.name = "escapeVillain\(illusionStep)"
-                                
-                                sprite.addChild(illusionSprite)
-                            },
-                            SKAction.wait(forDuration: actionDuration / TimeInterval(blinkDivision)),
-                            SKAction.run { [unowned self] in
-                                if let illusionSprite = sprite.childNode(withName: "escapeVillain\(illusionStep)") {
-                                    illusionSprite.run(SKAction.sequence([
-                                        SKAction.fadeOut(withDuration: actionDuration / 2),
-                                        SKAction.removeFromParent()
-                                    ]))
-                                }
-                                
-                                illusionStep += 1
-                            }
-                        ]), count: blinkDivision)
+                        Player.moveWithIllusions(
+                            magmoorNode: node,
+                            backgroundNode: sprite,
+                            startPoint: startPoint - facingMultiplier * playerOffset + villainOffset,
+                            endPoint: endPoint - facingMultiplier * playerOffset + villainOffset,
+                            startScale: facingMultiplier * Player.getGameboardScale(panelSize: panelSize) * villainScaleMultiplier),
                     ]),
                     SKAction.run { [unowned self] in
                         let angleOfAttack: CGFloat = SpriteMath.Trigonometry.getAngles(startPoint: startPoint + playerOffset + villainOffset, endPoint: endPoint + playerOffset + villainOffset).beta * (endPoint.y < startPoint.y ? 1 : -1)

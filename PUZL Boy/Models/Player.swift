@@ -264,8 +264,7 @@ struct Player {
                                   startPoint: CGPoint, endPoint: CGPoint,
                                   startScale: CGFloat, endScale: CGFloat? = nil) -> SKAction {
 
-        let actionDuration: TimeInterval = 1
-        let blinkDivision: Int = 40
+        let blinkDivision: Int = 20
         var illusionStep: Int = 1
         
         return SKAction.repeat(SKAction.sequence([
@@ -281,7 +280,7 @@ struct Player {
                                                                               endPoint: endPoint,
                                                                               step: illusionStep,
                                                                               totalSteps: blinkDivision)
-                illusionSprite.zPosition = K.ZPosition.itemsAndEffects + 20 - CGFloat(blinkDivision - illusionStep)
+                illusionSprite.zPosition = magmoorNode.zPosition + CGFloat(illusionStep)
                 illusionSprite.name = "escapeVillain\(illusionStep)"
                 
                 backgroundNode.addChild(illusionSprite)
@@ -290,11 +289,11 @@ struct Player {
                     AudioManager.shared.playSound(for: "magicteleport")
                 }
             },
-            SKAction.wait(forDuration: actionDuration / TimeInterval(blinkDivision)),
+            SKAction.wait(forDuration: 1 / TimeInterval(blinkDivision)),
             SKAction.run {
                 if let illusionSprite = backgroundNode.childNode(withName: "escapeVillain\(illusionStep)") {
                     illusionSprite.run(SKAction.sequence([
-                        SKAction.fadeOut(withDuration: actionDuration / 2),
+                        SKAction.fadeOut(withDuration: 0.5),
                         SKAction.removeFromParent()
                     ]))
                 }
