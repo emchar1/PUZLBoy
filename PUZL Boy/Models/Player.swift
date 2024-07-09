@@ -234,7 +234,7 @@ struct Player {
     
     /**
      Helper function to ensure two players on the same scene are of the same height, i.e. with player = .hero as the base case.
-        - parameter player: the comparing player (to player .hero).
+        - parameter player: the comparing player (to player .hero)
         - returns: the normalized height adjusted to player = .hero
      */
     static func getNormalizedAdjustedHeight(player: Player) -> CGFloat {
@@ -248,4 +248,61 @@ struct Player {
         //GameboardSprite.panelSize = K.ScreenDimensions.size / panelCount. For example, on iPhone 15 Pro, K.ScreenDimensions.size = Player.size.width = 945, therefore function returns 1.5 / panelCount
         return scale * panelSize / Player.size.width
     }
+    
+    /**
+     Class function that moves a Player, i.e. Magmoor, from a starting point to an ending point and animating "illusions" along the way.
+     - parameters:
+        - magmoorNode: the parent Player node, i.e. Magmoor
+        - backgroundNode: the node to add the child illusions to
+        - startPoint: the Player's starting point
+        - endPoint: the Player's ending point
+        - startScale: the Player's starting scale
+        - endScale: the Player's ending scale
+     - returns: an SKAction of the illusions animation
+     */
+    static func moveWithIllusions(magmoorNode: SKSpriteNode, backgroundNode: SKNode,
+                                  startPoint: CGPoint, endPoint: CGPoint,
+                                  startScale: CGFloat, endScale: CGFloat? = nil) -> SKAction {
+
+        let actionDuration: TimeInterval = 1
+        let blinkDivision: Int = 40
+        var illusionStep: Int = 1
+        
+        return SKAction.repeat(SKAction.sequence([
+            SKAction.run {
+                let scaleDiff: CGFloat = (endScale ?? startScale) - startScale
+                let incrementScale: CGFloat = scaleDiff * CGFloat(illusionStep) / CGFloat(blinkDivision)
+
+                let illusionSprite = SKSpriteNode(imageNamed: magmoorNode.texture?.getFilename() ?? "VillainIdle (1)")
+                illusionSprite.size = Player.size
+                illusionSprite.xScale = magmoorNode.xScale + incrementScale * (magmoorNode.xScale < 0 ? -1 : 1)
+                illusionSprite.yScale = magmoorNode.yScale + incrementScale
+                illusionSprite.position = SpriteMath.Trigonometry.getMidpoint(startPoint: startPoint,
+                                                                              endPoint: endPoint,
+                                                                              step: illusionStep,
+                                                                              totalSteps: blinkDivision)
+                illusionSprite.zPosition = K.ZPosition.itemsAndEffects + 20 - CGFloat(blinkDivision - illusionStep)
+                illusionSprite.name = "escapeVillain\(illusionStep)"
+                
+                backgroundNode.addChild(illusionSprite)
+                
+                if illusionStep == 1 {
+                    AudioManager.shared.playSound(for: "magicteleport")
+                }
+            },
+            SKAction.wait(forDuration: actionDuration / TimeInterval(blinkDivision)),
+            SKAction.run {
+                if let illusionSprite = backgroundNode.childNode(withName: "escapeVillain\(illusionStep)") {
+                    illusionSprite.run(SKAction.sequence([
+                        SKAction.fadeOut(withDuration: actionDuration / 2),
+                        SKAction.removeFromParent()
+                    ]))
+                }
+                
+                illusionStep += 1
+            }
+        ]), count: blinkDivision)
+    }
+    
+    
 }

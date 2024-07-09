@@ -15,12 +15,12 @@ class CutsceneMagmoor: Cutscene {
     
     private var leftPlayerPositionInitial: CGPoint {
         CGPoint(x: screenSize.width * 1/2 + 200,
-                y: screenSize.height * 1/3 + playerLeft.sprite.size.height * 1/2)
+                y: screenSize.height * 1/3 + 856 * 1/2) //856 instead of playerLeft.sprite.size.height
     }
     
     private var leftPlayerPositionFinal: CGPoint {
         CGPoint(x: screenSize.width * 1.5/5,
-                y: screenSize.height * (1/4 + (1/3 * 0.5)) + playerLeft.sprite.size.height * 1/2 * 0.5)
+                y: screenSize.height * (1/4 + (1/3 * 0.5)) + 282 * 1/2 * 0.5) //282 instead of playerLeft.sprite.size.height
     }
     
     private var rightPlayerPositionInitial: CGPoint {
@@ -30,40 +30,45 @@ class CutsceneMagmoor: Cutscene {
     
     private var rightPlayerPositionFinal: CGPoint {
         CGPoint(x: screenSize.width * 4/5,
-                y: screenSize.height * (1/4 + (1/3 * 0.5)) + playerLeft.sprite.size.height * 1/2 * 0.5)
+                y: screenSize.height * (1/4 + (1/3 * 0.5)) + 282 * 1/2 * 0.5) //282 instead of playerLeft.sprite.size.height
     }
     
     private var elder1: Player!
     private var elder2: Player!
+    private var redWarp: SKSpriteNode!
     
     
     // MARK: - Initialization
     
     override func setupScene() {
         super.setupScene()
-        
+                
         letterbox.setHeight(screenSize.height / 2)
-        
-        playerLeft.sprite.position = leftPlayerPositionInitial
-        playerRight.sprite.position = rightPlayerPositionInitial
-        playerRight.sprite.setScale(0)
-        
         speechPlayerLeft.position += leftPlayerPositionInitial
         speechPlayerRight.position += rightPlayerPositionFinal
-        
+        fadeTransitionNode.fillColor = .white
+
+        skipSceneSprite.delegate = self
+
+        playerRight.sprite.position = rightPlayerPositionInitial
+        playerRight.sprite.setScale(playerRight.scaleMultiplier * Player.cutsceneScale)
+        playerRight.sprite.xScale *= -1
+        playerRight.sprite.alpha = 0
+                
         elder1 = Player(type: .elder1)
-        elder1.sprite.position = leftPlayerPositionInitial + CGPoint(x: -400, y: -100)
-        elder1.sprite.setScale(elder1.scaleMultiplier * Player.cutsceneScale)
-        elder1.sprite.zPosition += 6
+        elder1.sprite.zPosition += 4
         
         elder2 = Player(type: .elder2)
-        elder2.sprite.position = leftPlayerPositionInitial + CGPoint(x: -200, y: 75)
-        elder2.sprite.setScale(elder2.scaleMultiplier * Player.cutsceneScale * 0.9)
-        elder2.sprite.zPosition += 4
+        elder2.sprite.zPosition += 6
         
-        fadeTransitionNode.fillColor = .white
+        redWarp = SKSpriteNode(imageNamed: "warp4")
+        redWarp.scale(to: .zero)
+        redWarp.zPosition = playerRight.sprite.zPosition - 5
         
-        skipSceneSprite.delegate = self
+        //Add new sprite nodes to background
+        backgroundNode.addChild(elder1.sprite)
+        backgroundNode.addChild(elder2.sprite)
+        backgroundNode.addChild(redWarp)
     }
     
     override func cleanupScene(buttonTap: ButtonTap.ButtonType?, fadeDuration: TimeInterval?) {
@@ -74,37 +79,6 @@ class CutsceneMagmoor: Cutscene {
     
     
     // MARK: - Animate Functions
-    
-//    /**
-//     Helper function that animates a player by settingh up positions, rotations, scaling and adds the appropriate animations.
-//     - parameters:
-//        - player: the Player object which gets changed due to the inout modifier.
-//        - position: initial position of the Player object.
-//        - scale: initial scale of the player object.
-//        - shouldFlipHorizontally: true if player should be facing left.
-//        - shouldRotateClockwise: true if player is to slowly rotate clockwise.
-//     */
-//    private func animatePlayer(player: inout Player, position: CGPoint, scale: CGFloat, shouldFlipHorizontally: Bool, shouldRotateClockwise: Bool, duration: TimeInterval) {
-//        let rotationRange: CGFloat = .pi / 8
-//        let randomRotation: CGFloat = CGFloat.random(in: -rotationRange...rotationRange)
-//        let scaleIncrease: CGFloat = 1.25
-//        let flipHorizontally: CGFloat = shouldFlipHorizontally ? -1 : 1
-//        let rotateClockwise: CGFloat = shouldRotateClockwise ? -1 : 1
-//        let timePerFrame: TimeInterval = 0.06 * 2
-//
-//        player.sprite.position = position
-//        player.sprite.setScale(scale)
-//        player.sprite.xScale *= flipHorizontally
-//        player.sprite.zRotation = randomRotation
-//        
-//        player.sprite.removeAllActions()
-//        
-//        player.sprite.run(SKAction.group([
-//            animatePlayerWithTextures(player: player, textureType: .idle, timePerFrame: timePerFrame),
-//            SKAction.rotate(toAngle: rotateClockwise * rotationRange + randomRotation, duration: duration),
-//            SKAction.scaleX(to: flipHorizontally * scale * scaleIncrease, y: scale * scaleIncrease, duration: duration)
-//        ]))
-//    }
     
     /**
      Helper function that returns an SKAction of an animation of a player object's texture array, repeated forever.
@@ -118,25 +92,6 @@ class CutsceneMagmoor: Cutscene {
         return SKAction.repeatForever(SKAction.animate(with: player.textures[textureType.rawValue], timePerFrame: timePerFrame))
     }
     
-//    /**
-//     Animates the parallaxManager scene with a slight scaling increase, and changes the set if needed.
-//     - parameter set: changes the set to the inputted value, or doesn't if set is nil.
-//     */
-//    private func animateParallax(changeSet set: ParallaxObject.SetType? = nil, duration: TimeInterval) {
-//        let scale: CGFloat = 2
-//        let scaleIncrease: CGFloat = 1.1
-//        
-//        if let set = set {
-//            parallaxManager.changeSet(set: set)
-//            parallaxManager.addSpritesToParent(scene: self, node: backgroundNode)
-//        }
-//        
-//        parallaxManager.backgroundSprite.setScale(scale)
-//        parallaxManager.backgroundSprite.position = CGPoint(x: -screenSize.width / 2, y: -screenSize.height / 2 + 400)
-//        
-//        parallaxManager.backgroundSprite.run(SKAction.scale(to: scale * scaleIncrease, duration: duration))
-//    }
-    
     /**
      Animates a quick white flash used to separate scenes within the Cutscene, then plays a narration text overlay along with an accompanying scene.
      - parameters:
@@ -144,10 +99,9 @@ class CutsceneMagmoor: Cutscene {
         - playScene: a completion handler that plays an accompanying scene.
      */
     private func transitionScene(narrateText: String, playScene: @escaping (() -> Void)) {
-        //fadeTransitionNode is initially added to backgroundNode, so remove it first to prevent app crashing due to it already having a parent node.
+        //fadeTransitionNode is initially added to backgroundNode, so remove it FIRST to prevent app crashing from already having a parent node.
         fadeTransitionNode.removeAllActions()
         fadeTransitionNode.removeFromParent()
-        
         backgroundNode.addChild(fadeTransitionNode)
         
         fadeTransitionNode.run(SKAction.sequence([
@@ -165,38 +119,36 @@ class CutsceneMagmoor: Cutscene {
     override func animateScene(completion: (() -> Void)?) {
         super.animateScene(completion: completion)
         
+        let sceneEndLength: TimeInterval = 75 //Length until end of song on "Aaaaaahhh!"
+        let scene1Length: TimeInterval = 15
+        let scene2Length: TimeInterval = sceneEndLength - scene1Length
+        let scene3Length: TimeInterval = 25
+        
         letterbox.show { [unowned self] in
             addChild(skipSceneSprite)
             skipSceneSprite.animateSprite()
             
             speechNarrator.setValues(color: .cyan.lightenColor(factor: 6), animationSpeed: 0.05)
-            speechNarrator.setText(text: "MARLIN: The Elders are Mystics of the highest order. Ancient and wise, they created the laws that govern our home realm.", superScene: self, completion: nil)
-            
-//            narrateArray(items: [ //Order of elders' origin story.
-//                NarrationItem(text: "MARLIN: The Elders are Mystics of the highest order. Ancient and wise, they created the laws that govern our home realm.||||||||", fontColor: .cyan.lightenColor(factor: 6), animationSpeed: 0.05, handler: nil),
-//                NarrationItem(text: "By drawing them into the desert, you thought you could ambush them and cut them off at the knees. Your miscalculation cost you dearly.||||||||", fontColor: .cyan.lightenColor(factor: 6), animationSpeed: 0.05, handler: nil),
-//                NarrationItem(text: "MAGMOOR: The council saw me as the biggest threat to their rule. They do not want to expand their power but to crush those who challenge them.||||||||", fontColor: .red.lightenColor(factor: 6), animationSpeed: 0.1, handler: nil),
-//                NarrationItem(text: "You do not want to challenge them. You seek to replace them.", fontColor: .cyan.lightenColor(factor: 6), animationSpeed: 0.05, handler: nil)
-//            ], completion: nil)
+            speechNarrator.setText(text: "MARLIN: The Elders are very powerful Mystics. Ancient and wise, they created the laws that govern our home realm.", superScene: self, completion: nil)
         }
         
-        playScene1()
+        playScene1(sceneLength: scene1Length)
         
         run(SKAction.sequence([
-            SKAction.wait(forDuration: 15),
+            SKAction.wait(forDuration: scene1Length),
             SKAction.run { [unowned self] in
                 transitionScene(narrateText: "By drawing them into the Ararian Desert, you thought you could ambush them and cut them off at the knees. But your miscalculation cost you dearly.", playScene: playScene2)
             }
         ]))
         
         run(SKAction.sequence([
-            SKAction.wait(forDuration: 15 + 30),
+            SKAction.wait(forDuration: scene1Length + scene2Length),
             SKAction.run { [unowned self] in
                 transitionScene(narrateText: "This is Magmoor floating around endlessly in the Limbo Realm (planet background???)", playScene: playScene3)
             }
         ]))
         
-        run(SKAction.wait(forDuration: 45 + 25)) { [unowned self] in
+        run(SKAction.wait(forDuration: scene1Length + scene2Length + scene3Length)) { [unowned self] in
             cleanupScene(buttonTap: nil, fadeDuration: nil)
             print("Cleanup done.")
         }
@@ -205,118 +157,154 @@ class CutsceneMagmoor: Cutscene {
     
     // MARK: - Animation Scene Helper Functions
     
-    private func playScene1() {
-        let scaleDuration: TimeInterval = 15
+    private func playScene1(sceneLength: TimeInterval) {
         let scaleRate: CGFloat = 1.5
         
         //Parallax
         parallaxManager.changeSet(set: .ice)
         parallaxManager.addSpritesToParent(scene: self, node: backgroundNode)
         parallaxManager.backgroundSprite.run(SKAction.group([
-            SKAction.moveBy(x: -80, y: -80, duration: scaleDuration),
-            SKAction.scale(by: scaleRate, duration: scaleDuration)
+            SKAction.moveBy(x: -80, y: -80, duration: sceneLength),
+            SKAction.scale(by: scaleRate, duration: sceneLength)
         ]))
         
         //Elders
+        closeupElders()
+        
         playerLeft.sprite.run(animatePlayerWithTextures(player: playerLeft, textureType: .idle, timePerFrame: 0.1))
-        playerLeft.sprite.run(SKAction.scale(by: scaleRate, duration: scaleDuration))
+        playerLeft.sprite.run(SKAction.scale(by: scaleRate, duration: sceneLength))
         
         elder1.sprite.run(animatePlayerWithTextures(player: elder1, textureType: .idle, timePerFrame: 0.09))
-        elder1.sprite.run(SKAction.scale(by: scaleRate, duration: scaleDuration))
+        elder1.sprite.run(SKAction.scale(by: scaleRate * 0.9, duration: sceneLength))
                 
         elder2.sprite.run(animatePlayerWithTextures(player: elder2, textureType: .idle, timePerFrame: 0.05))
-        elder2.sprite.run(SKAction.scale(by: scaleRate * 0.9, duration: scaleDuration))
-        
-        backgroundNode.addChild(elder1.sprite)
-        backgroundNode.addChild(elder2.sprite)
+        elder2.sprite.run(SKAction.scale(by: scaleRate, duration: sceneLength))
+                
+        AudioManager.shared.playSound(for: "ageofruin2")
     }
     
     
     // TODO: - This needs to be a long scene. Need to add close up of elders attacking Magmoor, close up of Magmoor with spawns, then wide shot with spawns dissolving (spin and explode?) and finally Magmoor warping out.
     private func playScene2() {
-        let warpTime: TimeInterval = 3
-        let attackTime: TimeInterval = 3
-        let magmoorWait: TimeInterval = 6
-        let forcefieldSpawnTime: TimeInterval = warpTime + magmoorWait + 3.5 + attackTime //3.5s = 1s after warpTime + 0.5s + 2s for teleporting
-        let forcefieldDuration: TimeInterval = 6
-
         
-        //Wide Shot Setup
+        //Shared Properties
+        let warpTime: TimeInterval = 3
+        let zoomInPause: TimeInterval = 2
+        let holdPause: TimeInterval = 6
+        let thirdPause: TimeInterval = 3
+        let attackTime: TimeInterval = 3
+        
+        
+        //Parallax
         parallaxManager.changeSet(set: .sand)
         parallaxManager.addSpritesToParent(scene: self, node: backgroundNode)
-        parallaxManager.backgroundSprite.setScale(2)
         parallaxManager.backgroundSprite.position = CGPoint(x: 0, y: -screenSize.height / 2 + 400)
-
-        playerLeft.sprite.setScale(0.5)
-        playerLeft.sprite.position = leftPlayerPositionFinal
+        parallaxManager.backgroundSprite.setScale(2)
         
-        elder1.sprite.setScale(0.5)
-        elder1.sprite.position = leftPlayerPositionFinal + CGPoint(x: -175, y: -50)
         
-        elder2.sprite.setScale(0.5 * 0.9)
-        elder2.sprite.position = leftPlayerPositionFinal + CGPoint(x: -90, y: 25)
+        //Elders
+        wideShotWithRedWarp()
         
-
-        //Magmoor Red Warp
-        let redWarp = SKSpriteNode(imageNamed: "warp4")
-        redWarp.scale(to: .zero)
-        redWarp.position = rightPlayerPositionInitial
-        redWarp.zPosition = playerRight.sprite.zPosition - 5
+        func elderAnimation(finalPosition: CGPoint, elderScale: CGFloat) -> SKAction {
+            return SKAction.sequence([
+                SKAction.wait(forDuration: warpTime + zoomInPause),
+                SKAction.group([
+                    SKAction.move(to: CGPoint(x: -screenSize.width / 2, y: -screenSize.height / 2), duration: 0.25),
+                    SKAction.scale(to: elderScale * 8, duration: 0.25),
+                    SKAction.fadeOut(withDuration: 0.25)
+                ]),
+                SKAction.wait(forDuration: holdPause),
+                SKAction.group([
+                    SKAction.move(to: finalPosition, duration: 0),
+                    SKAction.scale(to: elderScale, duration: 0),
+                    SKAction.fadeIn(withDuration: 0)
+                ])
+            ])
+        }
+        
+        playerLeft.sprite.run(elderAnimation(finalPosition: leftPlayerPositionFinal, elderScale: 0.5))
+        elder1.sprite.run(elderAnimation(finalPosition: leftPlayerPositionFinal + CGPoint(x: -125, y: 25), elderScale: 0.5 * 0.9))
+        elder2.sprite.run(elderAnimation(finalPosition: leftPlayerPositionFinal + CGPoint(x: -175, y: -50), elderScale: 0.5))
+        
+        
+        //Red Warp
+        redWarp.run(SKAction.sequence([
+            SKAction.repeat(SKAction.rotate(byAngle: .pi / 16, duration: 0.25), count: Int(warpTime + zoomInPause) * 4),
+            SKAction.repeat(SKAction.rotate(byAngle: .pi / 16, duration: 1), count: Int(holdPause) + 1),
+            SKAction.repeatForever(SKAction.rotate(byAngle: .pi / 16, duration: 0.25))
+        ]))
+        
+        redWarp.run(SKAction.sequence([
+            SKAction.wait(forDuration: warpTime + zoomInPause + 0.25),
+            SKAction.run { [unowned self] in
+                AudioManager.shared.playSound(for: "magicwarp")
+                
+                ParticleEngine.shared.animateParticles(type: .warp4Slow,
+                                                       toNode: backgroundNode,
+                                                       position: CGPoint(x: screenSize.width / 2, y: screenSize.height / 2),
+                                                       scale: 2,
+                                                       zPosition: playerRight.sprite.zPosition - 2,
+                                                       duration: holdPause - 1)
+            }
+        ]))
         
         redWarp.run(SKAction.sequence([
             SKAction.wait(forDuration: warpTime),
             SKAction.scale(to: 1, duration: 0.5),
+            SKAction.wait(forDuration: zoomInPause - 0.5),
             SKAction.group([
-                SKAction.rotate(toAngle: .pi, duration: 5),
-                SKAction.sequence([
-                    SKAction.wait(forDuration: 4.5),
-                    SKAction.scale(to: 1.25, duration: 0.25),
-                    SKAction.scale(to: 0, duration: 0.25)
-                ])
-            ])
+                SKAction.moveTo(y: screenSize.height / 2, duration: 0.25),
+                SKAction.scale(to: 8, duration: 0.25)
+            ]),
+            SKAction.wait(forDuration: holdPause - 1.5),
+            SKAction.scale(to: 8.25, duration: 0.25),
+            SKAction.scale(to: 0, duration: 0.25)
         ]))
         
-        backgroundNode.addChild(redWarp)
-        
-        showBloodSky(bloodOverlayAlpha: 0.25, fadeDuration: magmoorWait, delay: warpTime)
+        showBloodSky(bloodOverlayAlpha: 0.25, fadeDuration: holdPause, delay: warpTime)
         
         
         //Magmoor Animation
-        let magmoorWarpInAction: SKAction = SKAction.group([
-            SKAction.scaleX(to: -0.2, duration: 0.5),
-            SKAction.scaleY(to: 0.2, duration: 0.5)
-        ])
+        let farMagmoorScale: CGFloat = 0.2
+        let nearMagmoorScale: CGFloat = 0.5
         
-        let magmoorFadeOutAction: SKAction = SKAction.sequence([
-            SKAction.fadeAlpha(to: 1.0, duration: 0.1),
-            SKAction.fadeAlpha(to: 0, duration: 0.1),
-            SKAction.fadeAlpha(to: 0.8, duration: 0.1),
-            SKAction.fadeAlpha(to: 0, duration: 0.1),
-            SKAction.fadeAlpha(to: 0.6, duration: 0.1),
-            SKAction.fadeAlpha(to: 0, duration: 0.1),
-            SKAction.fadeAlpha(to: 0.4, duration: 0.1),
-            SKAction.fadeAlpha(to: 0, duration: 0.1),
-            SKAction.fadeAlpha(to: 0.2, duration: 0.1),
-            SKAction.fadeAlpha(to: 0, duration: 0.1)
-        ])
+        func magmoorTeleport(endPoint: CGPoint) -> SKAction {
+            let faceDirection: CGFloat = Bool.random() ? 1 : -1
+            let randomScale = CGFloat.random(in: 0.2...1)
+
+            return SKAction.group([
+                SKAction.fadeOut(withDuration: 0),
+                SKAction.move(to: endPoint, duration: 0),
+                SKAction.scaleX(to: faceDirection * randomScale, duration: 0),
+                SKAction.scaleY(to: randomScale, duration: 0),
+                SKAction.fadeAlpha(to: CGFloat.random(in: 0.2...0.8), duration: 0.2)
+            ])
+        }
         
-        let magmoorTeleportRightAction: SKAction = SKAction.group([
-            SKAction.scaleX(to: -0.5, duration: 0),
-            SKAction.scaleY(to: 0.5, duration: 0),
-            SKAction.move(to: rightPlayerPositionFinal, duration: 0)
-        ])
+        let magmoorTeleportAction: SKAction = Player.moveWithIllusions(magmoorNode: playerRight.sprite, 
+                                                                       backgroundNode: backgroundNode,
+                                                                       startPoint: playerRight.sprite.position, 
+                                                                       endPoint: rightPlayerPositionFinal,
+                                                                       startScale: farMagmoorScale,
+                                                                       endScale: nearMagmoorScale)
         
         let magmoorFadeInAction: SKAction = SKAction.sequence([
-            SKAction.fadeAlpha(to: 0, duration: 0.1),
-            SKAction.fadeAlpha(to: 0.2, duration: 0.1),
+            SKAction.fadeAlpha(to: 0, duration: 0.05),
+            SKAction.fadeAlpha(to: 0.1, duration: 0.05),
+            SKAction.fadeAlpha(to: 0, duration: 0.05),
+            SKAction.fadeAlpha(to: 0.2, duration: 0.05),
+            SKAction.fadeAlpha(to: 0, duration: 0.05),
+            SKAction.fadeAlpha(to: 0.3, duration: 0.05),
             SKAction.fadeAlpha(to: 0, duration: 0.1),
             SKAction.fadeAlpha(to: 0.4, duration: 0.1),
             SKAction.fadeAlpha(to: 0, duration: 0.1),
-            SKAction.fadeAlpha(to: 0.6, duration: 0.1),
-            SKAction.fadeAlpha(to: 0, duration: 0.1),
-            SKAction.fadeAlpha(to: 0.8, duration: 0.1),
-            SKAction.fadeAlpha(to: 0, duration: 0.1),
-            SKAction.fadeAlpha(to: 1.0, duration: 0.1)
+            SKAction.fadeAlpha(to: 0.5, duration: 0.2),
+            SKAction.fadeAlpha(to: 0, duration: 0.2),
+            SKAction.fadeAlpha(to: 0.6, duration: 0.25),
+            SKAction.fadeAlpha(to: 0, duration: 0.25),
+            SKAction.fadeAlpha(to: 0.8, duration: 0.25),
+            SKAction.fadeAlpha(to: 0, duration: 0.25),
+            SKAction.fadeAlpha(to: 1, duration: 0.5)
         ])
         
         playerRight.sprite.run(SKAction.group([
@@ -328,12 +316,28 @@ class CutsceneMagmoor: Cutscene {
         ]))
         
         playerRight.sprite.run(SKAction.sequence([
-            SKAction.wait(forDuration: warpTime + 1),
-            magmoorWarpInAction,
-            SKAction.wait(forDuration: magmoorWait),
-            magmoorFadeOutAction,
-            magmoorTeleportRightAction,
-            magmoorFadeInAction,
+            SKAction.wait(forDuration: warpTime + zoomInPause + 1),
+            SKAction.moveTo(y: screenSize.height / 2, duration: 0),
+            SKAction.group([
+                SKAction.scaleX(to: -playerRight.scaleMultiplier * Player.cutsceneScale * 1.75, duration: 2.5),
+                SKAction.scaleY(to: playerRight.scaleMultiplier * Player.cutsceneScale * 1.75, duration: 2.5),
+                magmoorFadeInAction
+            ]),
+            SKAction.wait(forDuration: holdPause - 2.5 - 0.75), //why the extra 0.75???
+            SKAction.group([
+                SKAction.moveTo(y: rightPlayerPositionInitial.y, duration: 0),
+                SKAction.scaleX(to: -farMagmoorScale, duration: 0),
+                SKAction.scaleY(to: farMagmoorScale, duration: 0)
+            ]),
+            SKAction.wait(forDuration: thirdPause),
+            SKAction.fadeOut(withDuration: 0.1),
+            magmoorTeleportAction,
+            SKAction.group([
+                SKAction.scaleX(to: -nearMagmoorScale, duration: 0),
+                SKAction.scaleY(to: nearMagmoorScale, duration: 0),
+                SKAction.move(to: rightPlayerPositionFinal, duration: 0),
+                SKAction.fadeIn(withDuration: 0)
+            ]),
             SKAction.run { [unowned self] in
                 let initialPosition = rightPlayerPositionFinal
                 let delaySpawn: TimeInterval = 1
@@ -377,39 +381,41 @@ class CutsceneMagmoor: Cutscene {
         
         
         //Forcefield Animation
+        let forcefieldSpawnTime: TimeInterval = warpTime + attackTime + zoomInPause + holdPause + thirdPause + 2.5 //Why 2.5???
+        let forcefieldDuration: TimeInterval = 6
+        
         let forcefieldSprite = SKSpriteNode(imageNamed: "forcefield")
         forcefieldSprite.position = leftPlayerPositionFinal - CGPoint(x: 125, y: 0)
         forcefieldSprite.setScale(0)
         forcefieldSprite.alpha = 0
         forcefieldSprite.zPosition = K.ZPosition.player + 10
         
+        let forcefieldAppearAction: SKAction = SKAction.group([
+            SKAction.scale(to: 3.2, duration: 0.25),
+            SKAction.fadeIn(withDuration: 0.25)
+        ])
+        
         let forcefieldRotateAction: SKAction = SKAction.repeatForever(SKAction.rotate(byAngle: .pi / 4, duration: 2))
         
-        let forcefieldPulseAction: SKAction = SKAction.sequence([
-            SKAction.scale(to: 3.2, duration: 0.25),
-            SKAction.repeatForever(SKAction.sequence([
-                SKAction.scale(to: 2.9, duration: 1),
-                SKAction.scale(to: 3.1, duration: 1)
-            ]))
-        ])
+        let forcefieldPulseAction: SKAction = SKAction.repeatForever(SKAction.sequence([
+            SKAction.scale(to: 2.9, duration: 1),
+            SKAction.scale(to: 3.1, duration: 1)
+        ]))
         
-        let forcefieldFadeAction: SKAction = SKAction.sequence([
-            SKAction.fadeIn(withDuration: 0.25),
-            SKAction.repeatForever(SKAction.sequence([
-                SKAction.fadeAlpha(to: 0.5, duration: 0.5),
-                SKAction.fadeAlpha(to: 1.0, duration: 0.5),
-                SKAction.wait(forDuration: 1)
-            ]))
-        ])
+        let forcefieldFadeAction: SKAction = SKAction.repeatForever(SKAction.sequence([
+            SKAction.fadeAlpha(to: 0.5, duration: 0.5),
+            SKAction.fadeAlpha(to: 1.0, duration: 0.5),
+            SKAction.wait(forDuration: 1)
+        ]))
         
         let forcefieldPlaySoundAction: SKAction = SKAction.run {
             AudioManager.shared.playSound(for: "forcefield")
-            AudioManager.shared.playSound(for: "forcefield2")
         }
         
         forcefieldSprite.run(SKAction.sequence([
             SKAction.wait(forDuration: forcefieldSpawnTime),
             SKAction.group([
+                forcefieldAppearAction,
                 forcefieldRotateAction,
                 forcefieldPulseAction,
                 forcefieldFadeAction,
@@ -421,7 +427,6 @@ class CutsceneMagmoor: Cutscene {
             SKAction.wait(forDuration: forcefieldSpawnTime + forcefieldDuration),
             SKAction.run {
                 AudioManager.shared.stopSound(for: "forcefield", fadeDuration: 1)
-                AudioManager.shared.stopSound(for: "forcefield2", fadeDuration: 1)
             },
             SKAction.scale(to: 3.2, duration: 0.5),
             SKAction.scale(to: 0, duration: 0.25),
@@ -455,10 +460,44 @@ class CutsceneMagmoor: Cutscene {
         elder2.sprite.removeFromParent()
 
         removeMagmoorDuplicates()
+        
+        AudioManager.shared.playSound(for: "wompwomp", delay: 1)
     }
     
     
     // MARK: - Misc. Helper Functions
+    
+    private func closeupElders() {
+        playerLeft.sprite.position = leftPlayerPositionInitial
+        playerLeft.sprite.setScale(playerLeft.scaleMultiplier * Player.cutsceneScale)
+
+        elder1.sprite.position = leftPlayerPositionInitial + CGPoint(x: -250, y: 50)
+        elder1.sprite.setScale(elder1.scaleMultiplier * Player.cutsceneScale * 0.9)
+
+        elder2.sprite.position = leftPlayerPositionInitial + CGPoint(x: -350, y: -100)
+        elder2.sprite.setScale(elder2.scaleMultiplier * Player.cutsceneScale)
+        
+        playerRight.sprite.position = CGPoint(x: screenSize.width + 800, y: 0)
+
+        redWarp.position = CGPoint(x: screenSize.width + 800, y: 0)
+    }
+    
+    private func wideShotWithRedWarp() {
+        let elderScale: CGFloat = 0.5
+        
+        playerLeft.sprite.position = leftPlayerPositionFinal
+        playerLeft.sprite.setScale(elderScale)
+
+        elder1.sprite.position = leftPlayerPositionFinal + CGPoint(x: -125, y: 25)
+        elder1.sprite.setScale(elderScale * 0.9)
+
+        elder2.sprite.position = leftPlayerPositionFinal + CGPoint(x: -175, y: -50)
+        elder2.sprite.setScale(elderScale)
+        
+        playerRight.sprite.position = rightPlayerPositionInitial
+        
+        redWarp.position = rightPlayerPositionInitial
+    }
     
     private func duplicateMagmoor(from startPoint: CGPoint, to offsetPoint: CGPoint, delaySpawn: TimeInterval? = nil, delayAttack: TimeInterval? = nil, index: CGFloat = 1) {
         let initialScale: CGFloat = 0.5
@@ -475,6 +514,14 @@ class CutsceneMagmoor: Cutscene {
         duplicate.sprite.zPosition = playerRight.sprite.zPosition - index
         duplicate.sprite.name = "MagmoorDuplicate\(indexLeadingZeroes)"
         
+        duplicate.sprite.run(SKAction.group([
+            animatePlayerWithTextures(player: duplicate, textureType: .idle, timePerFrame: 0.12 + TimeInterval.random(in: -0.05...0)),
+            SKAction.repeatForever(SKAction.sequence([
+                SKAction.moveBy(x: 0, y: 15, duration: 1 + TimeInterval.random(in: 0...1)),
+                SKAction.moveBy(x: 0, y: -15, duration: 1 + TimeInterval.random(in: 0...1))
+            ]))
+        ]))
+        
         duplicate.sprite.run(SKAction.sequence([
             SKAction.wait(forDuration: delaySpawn ?? 0),
             SKAction.group([
@@ -482,13 +529,6 @@ class CutsceneMagmoor: Cutscene {
                 SKAction.move(to: startPoint + offsetPoint, duration: moveDuration),
                 SKAction.scaleX(to: -1 * finalScale, duration: moveDuration),
                 SKAction.scaleY(to: finalScale, duration: moveDuration)
-            ]),
-            SKAction.group([
-                animatePlayerWithTextures(player: duplicate, textureType: .idle, timePerFrame: 0.12 + TimeInterval.random(in: -0.05...0)),
-                SKAction.repeatForever(SKAction.sequence([
-                    SKAction.moveBy(x: 0, y: 15, duration: 1 + TimeInterval.random(in: 0...1)),
-                    SKAction.moveBy(x: 0, y: -15, duration: 1 + TimeInterval.random(in: 0...1))
-                ]))
             ])
         ]))
         
@@ -497,7 +537,7 @@ class CutsceneMagmoor: Cutscene {
         
         //Magic blast lite attack
         run(SKAction.sequence([
-            SKAction.wait(forDuration: delayAttack ?? 0),
+            SKAction.wait(forDuration: (delaySpawn ?? 0) + (delayAttack ?? 0)),
             SKAction.run { [unowned self] in
                 let angleOfAttack: CGFloat = SpriteMath.Trigonometry.getAngles(startPoint: startPoint, endPoint: leftPlayerPositionFinal).beta * (leftPlayerPositionFinal.y < startPoint.y ? 1 : -1)
                 

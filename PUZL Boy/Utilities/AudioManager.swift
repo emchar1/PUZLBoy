@@ -169,6 +169,7 @@ class AudioManager {
         addAudioItem("waterdrown", category: .soundFX)
         addAudioItem("winlevel", category: .soundFX)
         addAudioItem("winlevelice", category: .soundFX)
+        addAudioItem("wompwomp", category: .soundFX) //Test. Delete i'm sure because it's $5!
 
         
         //Looped SFX

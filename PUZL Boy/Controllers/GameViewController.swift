@@ -58,8 +58,9 @@ class GameViewController: UIViewController {
         // DEBUG: - CutsceneMagmoor - delete immediately!
 //        let cutsceneMagmoor = CutsceneMagmoor(size: K.ScreenDimensions.size, playerLeft: .elder0, playerRight: .villain, xOffsetsArray: nil)
 //        cutsceneMagmoor.animateScene(completion: nil)
+//        skView.ignoresSiblingOrder = true
 //        skView.presentScene(cutsceneMagmoor)
-        
+//        view = skView
         
         
         

@@ -52,6 +52,7 @@ class ParticleEngine: SKNode {
         case snowfall = "SnowfallParticles"
         case warp = "WarpParticles"
         case warp4 = "Warp4Particles"
+        case warp4Slow = "Warp4SlowParticles"
     }
     
     
