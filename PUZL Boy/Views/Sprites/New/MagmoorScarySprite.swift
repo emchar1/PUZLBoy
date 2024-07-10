@@ -12,6 +12,7 @@ class MagmoorScarySprite: SKNode {
     // MARK: - Properties
     
     private var boundingBox: CGRect
+    private var backgroundNode: SKShapeNode!
     private var sprite: SKSpriteNode!
     
     
@@ -34,12 +35,18 @@ class MagmoorScarySprite: SKNode {
     }
     
     private func setupNodes() {
+        backgroundNode = SKShapeNode(rect: CGRect(origin: .zero, size: K.ScreenDimensions.size))
+        backgroundNode.lineWidth = 0
+        backgroundNode.alpha = 0
+        backgroundNode.zPosition = -1
+
         sprite = SKSpriteNode(texture: SKTexture(imageNamed: "villainRedEyes"))
         sprite.position = CGPoint(x: K.ScreenDimensions.size.width / 2, y: boundingBox.origin.y + boundingBox.size.height + 6)
         sprite.anchorPoint = CGPoint(x: 0.5, y: 0)
         sprite.scale(to: CGSize(width: K.ScreenDimensions.size.width, height: K.ScreenDimensions.size.width))
         sprite.alpha = 0
 
+        addChild(backgroundNode)
         addChild(sprite)
     }
     
@@ -68,4 +75,25 @@ class MagmoorScarySprite: SKNode {
             SKAction.fadeOut(withDuration: 0)
         ]))
     }
+    
+    func pulseImage(backgroundColor: UIColor? = nil, delay: TimeInterval = 0) {
+        let pulseAction: SKAction = SKAction.sequence([
+            SKAction.wait(forDuration: delay),
+            SKAction.repeat(SKAction.sequence([
+                SKAction.fadeIn(withDuration: 0),
+                SKAction.wait(forDuration: 0.1),
+                SKAction.fadeOut(withDuration: 0),
+                SKAction.wait(forDuration: 0.05)
+            ]), count: 3)
+        ])
+        
+        if let backgroundColor = backgroundColor {
+            backgroundNode.fillColor = backgroundColor
+            backgroundNode.run(pulseAction)
+        }
+        
+        sprite.texture = SKTexture(imageNamed: "villainRedEyesFlash")
+        sprite.run(pulseAction)
+    }
+    
 }

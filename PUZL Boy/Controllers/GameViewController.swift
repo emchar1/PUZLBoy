@@ -47,10 +47,10 @@ class GameViewController: UIViewController {
         
         
         
-//        // FIXME: - DEFINITELY COMMENT THESE OUT BEFORE SHIPPING FINAL PRODUCT!!!
-//        skView.showsFPS = true
-//        skView.showsNodeCount = true
-//        
+        // FIXME: - DEFINITELY COMMENT THESE OUT BEFORE SHIPPING FINAL PRODUCT!!!
+        skView.showsFPS = true
+        skView.showsNodeCount = true
+        
 //        // FIXME: - Go straight to CutsceneMagmoor. DELETE BEFORE SHIPPING!
 //        let cutsceneMagmoor = CutsceneMagmoor(size: K.ScreenDimensions.size, playerLeft: .elder0, playerRight: .villain, xOffsetsArray: nil)
 //        cutsceneMagmoor.animateScene(completion: nil)
