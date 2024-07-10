@@ -28,6 +28,9 @@ struct Player {
     enum Texture: Int {
         case idle = 0, run, walk, dead, glide, jump, idleHammer, idleSword, idleHammerSword, runHammer, runSword, runHammerSword, glideHammer, glideSword, glideHammerSword,
 
+             //Elders only (for now 7/9/24)
+             elderAttack,
+             
              //IMPORTANT: marsh, sand, party MUST come last! They're not part of textures[[]] so their Int.rawValue will throw off the indexing
              marsh, sand, party
         
@@ -78,6 +81,7 @@ struct Player {
         textures.append([]) //glideHammer
         textures.append([]) //glideSword
         textures.append([]) //glideHammerSword
+        textures.append([]) //elderAttack
 
         //This must come BEFORE setting up the sprite below!!
         switch type {
@@ -208,21 +212,21 @@ struct Player {
     }
     
     private mutating func setupElder(rank: Int) {
-        let rankMultiplier = 4
-        
-        scaleMultiplier = 1.5 * 0.9
-        
-        for i in (rank * rankMultiplier)...11 {
-            let indexLeadingZeroes = String(format: "%03d", i)
-            
-            textures[Texture.idle.rawValue].append(atlas.textureNamed("Elder\(rank)Idle_\(indexLeadingZeroes)"))
+        func setupElderTextures(indexLast: Int, textureType: Texture.RawValue, elderRank: Int, filenameTextureType: String) {
+            for i in 0...indexLast {
+                let indexLeadingZeroes = String(format: "%03d", i)
+                
+                textures[textureType].append(atlas.textureNamed("Elder\(elderRank)\(filenameTextureType)_\(indexLeadingZeroes)"))
+            }
         }
 
-        for i in 0..<(rank * rankMultiplier) {
-            let indexLeadingZeroes = String(format: "%03d", i)
-            
-            textures[Texture.idle.rawValue].append(atlas.textureNamed("Elder\(rank)Idle_\(indexLeadingZeroes)"))
-        }
+        scaleMultiplier = 1.5 * 0.9
+        
+        //Idle frames
+        setupElderTextures(indexLast: 11, textureType: Texture.idle.rawValue, elderRank: rank, filenameTextureType: "Idle")
+        
+        //Attack frames
+        setupElderTextures(indexLast: 7, textureType: Texture.elderAttack.rawValue, elderRank: rank, filenameTextureType: "Attack")
     }
     
     

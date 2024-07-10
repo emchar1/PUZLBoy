@@ -393,7 +393,7 @@ class CutsceneIntro: Cutscene {
                                              to: CGPoint(x: screenSize.width + FlyingDragon.size.width, y: 0),
                                              duration: 10)
                     },
-                    SpeechBubbleItem(profile: speechPlayerRight, speed: 0.04, chat: "SAVE ME MARIO—|I mean,| PUZL BOYYY!!!!||||/The fate of the world rests in your hands!!") { [unowned self] in
+                    SpeechBubbleItem(profile: speechPlayerRight, speed: 0.04, chat: "SAVE ME MAR—|I mean,| PUZL BOYYY!!!!||||/The fate of the world rests in your hands!!") { [unowned self] in
                         let frameRate: TimeInterval = 0.02
                         let runCycle: TimeInterval = frameRate * 15 //1 cycle at 0.02s x 15 frames = 0.3s
                         let heroRun = SKAction.animate(with: playerLeft.textures[Player.Texture.run.rawValue], timePerFrame: frameRate)

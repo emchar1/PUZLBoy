@@ -1078,7 +1078,7 @@ extension ChatEngine {
                         ChatItem(profile: .trainer, imgPos: .left, chat: "Magmoor, stop this at once! It's not too late."),
                         ChatItem(profile: .villain, chat: "MAGMOOR: If you want to see your precious princess again, then let us merge powers."),
                         ChatItem(profile: .trainer, imgPos: .left, chat: "NO! You want absolute power. We Mystics share power equally; it keeps the realms in balance. Your actions will surely plunge the realms into total darkness."),
-                        ChatItem(profile: .villain, chat: "I have been floating around in the LIMBO REALM for centuries. Why?? Because the council saw me as the biggest threat to the Order.")
+                        ChatItem(profile: .villain, chat: "I have been floating around in the LIMBO REALM for centuries. Why?? Because the Council saw me as the biggest threat to their rule.")
                     ]) { [unowned self] in
 
                         // FIXME: - I don't like how I need to set this here.
@@ -1095,8 +1095,7 @@ extension ChatEngine {
                 
                 delegate.spawnPrincessCapture(at: spawnPoint, shouldAnimateWarp: false) { [unowned self] in
                     sendChatArray(items: [
-                        ChatItem(profile: .trainer, imgPos: .left, chat: "You led an army of fallen Mystics to overthrow the Elders——what did you expect?!?!?! And you're surprised they shut you out??"),
-                        ChatItem(profile: .villain, chat: "Fallen Mystics, really?!! You of all people, Marlin should understand. Always so holier than thou. Why don't you stand up for yourself for a change!"),
+                        ChatItem(profile: .villain, chat: ".......yet I escaped! My time in the Limbo Realm helped me to find my way. It gave me new meaning and purpose. I was meant to have it! All of it."),
                         ChatItem(profile: .trainer, imgPos: .left, chat: "You are so lost! You seek only revenge because you didn't have it your way. Don't let this consume you Magmoor!!"),
                         ChatItem(profile: .villain, chat: "I'm beyond revenge, my dear. I just want justice. The scales are tipped to one side. I merely seek to balance it once again."),
                         ChatItem(profile: .trainer, imgPos: .left, chat: "You want all out war. Life treated you unfairly and now you think the universe owes you!"),
@@ -1105,7 +1104,7 @@ extension ChatEngine {
                         ChatItem(profile: .trainer, imgPos: .left, chat: "MAGMOOR LISTEN TO YOURSELF!!! You've completely lost it. Give up this delusion and let the princess go!!!"),
                         ChatItem(profile: .hero, imgPos: .left, chat: "If you touch a hair on her head, it's gonna be the end for you, Mantamar!"),
                         ChatItem(profile: .villain, chat: "Open your eyes and see! Join me in the purification. We can rule the realms... together."),
-                        ChatItem(profile: .trainer, imgPos: .left, chat: "We shall not join in your madness. We will fight you till the end to protect the realms!"),
+                        ChatItem(profile: .trainer, imgPos: .left, chat: "We shall not join in your madness. We will fight to protect the realms!"),
                         ChatItem(profile: .villain, chat: "Pity. Then suffer the consequences."),
                         ChatItem(profile: .princess, endChat: true, chat: "Noooooo! Don't let him take meeeeeee!!!!") { [unowned self] in
                             fadeDimOverlay()

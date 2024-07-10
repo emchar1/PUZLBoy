@@ -470,7 +470,6 @@ class GameboardSprite {
         let facingMultiplier: CGFloat = endPoint.x > startPoint.x ? -1 : 1
 
         let actionDuration: TimeInterval = 1
-        let blinkDivision: Int = 10
         let exitDoorScale: CGFloat = 0.25
         
         ParticleEngine.shared.hideParticles(fromNode: sprite, fadeDuration: 5)
@@ -505,7 +504,6 @@ class GameboardSprite {
             }
             else if node.name == "captureVillain" {
                 let villainScaleMultiplier: CGFloat = 1.5
-                var illusionStep = 1
                 
                 node.run(SKAction.sequence([
                     SKAction.group([
