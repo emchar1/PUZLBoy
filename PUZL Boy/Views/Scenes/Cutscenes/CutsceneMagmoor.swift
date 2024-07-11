@@ -220,61 +220,21 @@ class CutsceneMagmoor: Cutscene {
         //Parallax
         parallaxManager.changeSet(set: .sand)
         parallaxManager.addSpritesToParent(scene: self, node: backgroundNode)
-        parallaxManager.backgroundSprite.position = CGPoint(x: 0, y: -screenSize.height / 2 + 400)
-        parallaxManager.backgroundSprite.setScale(2)
-        
-        
-        //Forcefield
-        let forcefieldSprite = SKSpriteNode(imageNamed: "forcefield")
-        forcefieldSprite.position = leftPlayerPositionFinal - CGPoint(x: 125, y: 0)
-        forcefieldSprite.setScale(0)
-        forcefieldSprite.alpha = 0
-        forcefieldSprite.zPosition = K.ZPosition.player + 10
-        
-        let forcefieldAppearAction: SKAction = SKAction.group([
-            SKAction.scale(to: 3.2, duration: 0.25),
-            SKAction.fadeIn(withDuration: 0.25)
-        ])
-        
-        let forcefieldRotateAction: SKAction = SKAction.repeatForever(SKAction.rotate(byAngle: .pi / 4, duration: 2))
-        
-        let forcefieldPulseAction: SKAction = SKAction.repeatForever(SKAction.sequence([
-            SKAction.scale(to: 2.9, duration: 1),
-            SKAction.scale(to: 3.1, duration: 1)
-        ]))
-        
-        let forcefieldFadeAction: SKAction = SKAction.repeatForever(SKAction.sequence([
-            SKAction.fadeAlpha(to: 0.5, duration: 0.5),
-            SKAction.fadeAlpha(to: 1.0, duration: 0.5),
-            SKAction.wait(forDuration: 1)
-        ]))
-        
-        let forcefieldPlaySoundAction: SKAction = SKAction.run {
-            AudioManager.shared.playSound(for: "forcefield")
-        }
-        
-        forcefieldSprite.run(SKAction.sequence([
-            SKAction.wait(forDuration: forcefieldSpawnPause),
+        parallaxManager.backgroundSprite.run(SKAction.sequence([
+            SKAction.wait(forDuration: warpPause + zoomInPause),
             SKAction.group([
-                forcefieldAppearAction,
-                forcefieldRotateAction,
-                forcefieldPulseAction,
-                forcefieldFadeAction,
-                forcefieldPlaySoundAction
-            ])
+                SKAction.moveTo(x: -screenSize.width, duration: 0.25),
+                SKAction.moveTo(y: -screenSize.height, duration: 0.25),
+                SKAction.scale(to: 2, duration: 0.25)
+            ]),
+            SKAction.wait(forDuration: holdPause),
+            SKAction.group([
+                SKAction.move(to: .zero, duration: 0),
+                SKAction.scale(to: 1, duration: 0)
+            ]),
+            SKAction.wait(forDuration: thirdPause + 2 + elderDialoguePause),
+            SKAction.moveBy(x: -screenSize.width, y: 0, duration: 0.35), //another hard coded number?! oye!
         ]))
-        
-        forcefieldSprite.run(SKAction.sequence([
-            SKAction.wait(forDuration: forcefieldSpawnPause + forcefieldDuration),
-            SKAction.run {
-                AudioManager.shared.stopSound(for: "forcefield", fadeDuration: 1)
-            },
-            SKAction.scale(to: 3.2, duration: 0.5),
-            SKAction.scale(to: 0, duration: 0.25),
-            SKAction.removeFromParent()
-        ]))
-        
-        backgroundNode.addChild(forcefieldSprite)
         
         
         //Speech Dialogue & Cuts
@@ -384,6 +344,59 @@ class CutsceneMagmoor: Cutscene {
         elder2.sprite.run(animateElderHelper(positionOffset: CGPoint(x: -175, y: -50))) { [unowned self] in
             animatePlayerWithTextures(player: &elder2, textureType: .elderAttack, timePerFrame: 0.06, repeatCount: 1)
         }
+        
+        
+        //Forcefield
+        let forcefieldSprite = SKSpriteNode(imageNamed: "forcefield")
+        forcefieldSprite.position = leftPlayerPositionFinal - CGPoint(x: 125, y: 0)
+        forcefieldSprite.setScale(0)
+        forcefieldSprite.alpha = 0
+        forcefieldSprite.zPosition = K.ZPosition.player + 10
+        
+        let forcefieldAppearAction: SKAction = SKAction.group([
+            SKAction.scale(to: 3.2, duration: 0.25),
+            SKAction.fadeIn(withDuration: 0.25)
+        ])
+        
+        let forcefieldRotateAction: SKAction = SKAction.repeatForever(SKAction.rotate(byAngle: .pi / 4, duration: 2))
+        
+        let forcefieldPulseAction: SKAction = SKAction.repeatForever(SKAction.sequence([
+            SKAction.scale(to: 2.9, duration: 1),
+            SKAction.scale(to: 3.1, duration: 1)
+        ]))
+        
+        let forcefieldFadeAction: SKAction = SKAction.repeatForever(SKAction.sequence([
+            SKAction.fadeAlpha(to: 0.5, duration: 0.5),
+            SKAction.fadeAlpha(to: 1.0, duration: 0.5),
+            SKAction.wait(forDuration: 1)
+        ]))
+        
+        let forcefieldPlaySoundAction: SKAction = SKAction.run {
+            AudioManager.shared.playSound(for: "forcefield")
+        }
+        
+        forcefieldSprite.run(SKAction.sequence([
+            SKAction.wait(forDuration: forcefieldSpawnPause),
+            SKAction.group([
+                forcefieldAppearAction,
+                forcefieldRotateAction,
+                forcefieldPulseAction,
+                forcefieldFadeAction,
+                forcefieldPlaySoundAction
+            ])
+        ]))
+        
+        forcefieldSprite.run(SKAction.sequence([
+            SKAction.wait(forDuration: forcefieldSpawnPause + forcefieldDuration),
+            SKAction.run {
+                AudioManager.shared.stopSound(for: "forcefield", fadeDuration: 1)
+            },
+            SKAction.scale(to: 3.2, duration: 0.5),
+            SKAction.scale(to: 0, duration: 0.25),
+            SKAction.removeFromParent()
+        ]))
+        
+        backgroundNode.addChild(forcefieldSprite)
         
         
         //Red Warp
@@ -555,14 +568,20 @@ class CutsceneMagmoor: Cutscene {
     
     // TODO: - Magmoor floating sadly, endlessly in the Limbo Realm for "eternity."
     private func playScene3() {
-        parallaxManager.changeSet(set: .lava)
-        parallaxManager.addSpritesToParent(scene: self, node: backgroundNode)
-                
-        //Setup Sprites
         let initialScale: CGFloat = 1.5
         let initialPosition: CGPoint = CGPoint(x: screenSize.width / 2, y: screenSize.height / 2)
         let limboDuration: TimeInterval = 2
+
+        parallaxManager.changeSet(set: .lava)
+        parallaxManager.addSpritesToParent(scene: self, node: backgroundNode)
+
+        setParallaxPositionAndScale(scale: 2)
         
+        parallaxManager.backgroundSprite.run(SKAction.group([
+            SKAction.repeatForever(SKAction.moveBy(x: 0, y: 20, duration: limboDuration)),
+            SKAction.repeatForever(SKAction.scale(by: 0.95, duration: limboDuration))
+        ]))
+                
         playerRight.sprite.setScale(initialScale)
         playerRight.sprite.position = initialPosition
         playerRight.sprite.zRotation = 0
@@ -584,7 +603,23 @@ class CutsceneMagmoor: Cutscene {
     
     // MARK: - Misc. Helper Functions
     
+    private func setParallaxPositionAndScale(scale: Int) {
+        switch scale {
+        case 1:
+            parallaxManager.backgroundSprite.position = CGPoint(x: 0, y: 0)
+            parallaxManager.backgroundSprite.setScale(1)
+        case 2:
+            parallaxManager.backgroundSprite.position = CGPoint(x: 0, y: -screenSize.height / 2 + 400)
+            parallaxManager.backgroundSprite.setScale(2)
+        default:
+            parallaxManager.backgroundSprite.position = CGPoint(x: 0, y: -screenSize.height / 2 + 400)
+            parallaxManager.backgroundSprite.setScale(2)
+        }
+    }
+    
     private func closeupElders() {
+        setParallaxPositionAndScale(scale: 2)
+
         playerLeft.sprite.position = leftPlayerPositionInitial
         playerLeft.sprite.setScale(playerLeft.scaleMultiplier * Player.cutsceneScale)
 
@@ -604,6 +639,8 @@ class CutsceneMagmoor: Cutscene {
     }
     
     private func closeupMainElder() {
+        setParallaxPositionAndScale(scale: 2)
+
         playerLeft.sprite.position = CGPoint(x: screenSize.width / 2, y: leftPlayerPositionInitial.y)
         playerLeft.sprite.setScale(playerLeft.scaleMultiplier * Player.cutsceneScale)
 
@@ -626,11 +663,13 @@ class CutsceneMagmoor: Cutscene {
         animatePlayerWithTextures(player: &elder1, textureType: .idle, timePerFrame: 0.09)
         animatePlayerWithTextures(player: &elder2, textureType: .idle, timePerFrame: 0.05)
 
-        elder1.sprite.run(SKAction.fadeOut(withDuration: 2))
-        elder2.sprite.run(SKAction.fadeOut(withDuration: 2))
+        elder1.sprite.run(SKAction.fadeOut(withDuration: 0.5))
+        elder2.sprite.run(SKAction.fadeOut(withDuration: 0.5))
     }
     
     private func closeupMagmoor() {
+        setParallaxPositionAndScale(scale: 2)
+
         playerLeft.sprite.position = CGPoint(x: -800, y: 0)
         playerLeft.sprite.setScale(playerLeft.scaleMultiplier * Player.cutsceneScale)
 
@@ -651,7 +690,9 @@ class CutsceneMagmoor: Cutscene {
     
     private func wideShotWithRedWarp(magmoorPosition: CGPoint) {
         let elderScale: CGFloat = 0.5
-        
+
+        setParallaxPositionAndScale(scale: 1)
+
         playerLeft.sprite.position = leftPlayerPositionFinal
         playerLeft.sprite.setScale(elderScale)
 
