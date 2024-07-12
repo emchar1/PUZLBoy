@@ -83,6 +83,12 @@ class LaunchScene: SKScene {
         skyNode.anchorPoint = CGPoint(x: 0, y: 1)
         skyNode.zPosition = K.ZPosition.skyNode
         skyNode.name = LaunchScene.nodeName_skyNode
+        
+        let skyNodeReverse = skyNode.copy() as! SKSpriteNode
+        skyNodeReverse.position.y = 0
+        skyNodeReverse.anchorPoint.y = -1
+        skyNodeReverse.yScale *= -1
+        skyNode.addChild(skyNodeReverse)
 
         moonSprite = MoonSprite(position: CGPoint(x: screenSize.width, y: screenSize.height), scale: 0.7 * 3, moonPhase: nil)
         

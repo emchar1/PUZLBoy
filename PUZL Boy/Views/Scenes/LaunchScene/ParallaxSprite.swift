@@ -13,6 +13,7 @@ class ParallaxSprite: SKNode {
     
     typealias SpriteXPositions = (first: CGFloat, second: CGFloat)
 
+    private let overlap: CGFloat = 6
     private(set) var parallaxObject: ParallaxObject
     private var sprites: [SKSpriteNode] = []
     private var xOffsets: SpriteXPositions?
@@ -48,6 +49,11 @@ class ParallaxSprite: SKNode {
             }
             else {
                 sprite.position = CGPoint(x: CGFloat(i) * parallaxObject.sizeScaled, y: 0)
+                
+                //BUGFIX# 240711E01 - Add an overlap to the 2nd image to prevent the gap!
+                if i == 1 {
+                    sprite.position.x -= overlap
+                }
             }
                 
             if !animateForCutscene {
@@ -78,8 +84,9 @@ class ParallaxSprite: SKNode {
     }
     
     func animate() {
-        let moveAction = SKAction.moveBy(x: -parallaxObject.sizeScaled, y: 0, duration: parallaxObject.speed)
-        let resetAction = SKAction.moveTo(x: parallaxObject.sizeScaled, duration: 0)
+        //BUGFIX# 240711E01 - Preserve the game in both images to prevent the gap!
+        let moveAction = SKAction.moveBy(x: -parallaxObject.sizeScaled + overlap, y: 0, duration: parallaxObject.speed)
+        let resetAction = SKAction.moveTo(x: parallaxObject.sizeScaled - overlap, duration: 0)
         
         sprites[0].run(SKAction.repeatForever(SKAction.sequence([moveAction, resetAction, moveAction])))
         sprites[1].run(SKAction.repeatForever(SKAction.sequence([moveAction, moveAction, resetAction])))

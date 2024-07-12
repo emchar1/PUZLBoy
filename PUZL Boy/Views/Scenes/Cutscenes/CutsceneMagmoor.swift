@@ -138,7 +138,7 @@ class CutsceneMagmoor: Cutscene {
         let sceneEndLength: TimeInterval = 74 //Length until end of song on "Aaaaaahhh!". Keep at 74, it works when viewing from whole game!
         let scene1Length: TimeInterval = 15
         let scene2Length: TimeInterval = sceneEndLength - scene1Length
-        let scene3Length: TimeInterval = 10
+        let scene3Length: TimeInterval = 20
         
         letterbox.show { [unowned self] in
             addChild(skipSceneSprite)
@@ -373,6 +373,7 @@ class CutsceneMagmoor: Cutscene {
         
         let forcefieldPlaySoundAction: SKAction = SKAction.run {
             AudioManager.shared.playSound(for: "forcefield")
+            AudioManager.shared.playSound(for: "forcefield2")
         }
         
         forcefieldSprite.run(SKAction.sequence([
@@ -390,6 +391,7 @@ class CutsceneMagmoor: Cutscene {
             SKAction.wait(forDuration: forcefieldSpawnPause + forcefieldDuration),
             SKAction.run {
                 AudioManager.shared.stopSound(for: "forcefield", fadeDuration: 1)
+                AudioManager.shared.stopSound(for: "forcefield2", fadeDuration: 1)
             },
             SKAction.scale(to: 3.2, duration: 0.5),
             SKAction.scale(to: 0, duration: 0.25),
@@ -571,14 +573,16 @@ class CutsceneMagmoor: Cutscene {
         let initialScale: CGFloat = 1.5
         let initialPosition: CGPoint = CGPoint(x: screenSize.width / 2, y: screenSize.height / 2)
         let limboDuration: TimeInterval = 2
+        
+        hideBloodSky(fadeDuration: 0)
 
-        parallaxManager.changeSet(set: .lava)
+        parallaxManager.changeSet(set: .planet)
         parallaxManager.addSpritesToParent(scene: self, node: backgroundNode)
 
-        setParallaxPositionAndScale(scale: 2)
+        setParallaxPositionAndScale(scale: 1.01)
         
         parallaxManager.backgroundSprite.run(SKAction.group([
-            SKAction.repeatForever(SKAction.moveBy(x: 0, y: 20, duration: limboDuration)),
+            SKAction.repeatForever(SKAction.moveBy(x: 45, y: 45, duration: limboDuration)),
             SKAction.repeatForever(SKAction.scale(by: 0.95, duration: limboDuration))
         ]))
                 
@@ -603,17 +607,18 @@ class CutsceneMagmoor: Cutscene {
     
     // MARK: - Misc. Helper Functions
     
-    private func setParallaxPositionAndScale(scale: Int) {
+    private func setParallaxPositionAndScale(scale: CGFloat) {
+        parallaxManager.backgroundSprite.setScale(scale)
+
         switch scale {
         case 1:
             parallaxManager.backgroundSprite.position = CGPoint(x: 0, y: 0)
-            parallaxManager.backgroundSprite.setScale(1)
         case 2:
             parallaxManager.backgroundSprite.position = CGPoint(x: 0, y: -screenSize.height / 2 + 400)
-            parallaxManager.backgroundSprite.setScale(2)
+        case 0.5:
+            parallaxManager.backgroundSprite.position = CGPoint(x: -screenSize.width, y: letterbox.height / 2)
         default:
-            parallaxManager.backgroundSprite.position = CGPoint(x: 0, y: -screenSize.height / 2 + 400)
-            parallaxManager.backgroundSprite.setScale(2)
+            parallaxManager.backgroundSprite.position = CGPoint(x: -screenSize.width, y: 0)
         }
     }
     

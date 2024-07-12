@@ -74,6 +74,8 @@ class ParallaxManager: SKNode {
             parallaxSprites = makeSprite(layers: 5, size: CGSize(width: 8192, height: 1824), skyObjectNodes: [1, 4])
         case .lava:
             parallaxSprites = makeSprite(layers: 4, size: CGSize(width: 8192, height: 1824), skyObjectNodes: [2, 3])
+        case .planet:
+            parallaxSprites = makeSprite(layers: 4, size: CGSize(width: 8192, height: 1824), skyObjectNodes: [2, 3])
         }
     }
     

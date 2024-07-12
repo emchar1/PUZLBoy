@@ -105,7 +105,13 @@ class Cutscene: SKScene {
         skyNode.position = CGPoint(x: 0, y: screenSize.height)
         skyNode.anchorPoint = CGPoint(x: 0, y: 1)
         skyNode.zPosition = K.ZPosition.skyNode
-        
+
+        let skyNodeReverse = skyNode.copy() as! SKSpriteNode
+        skyNodeReverse.position.y = 0
+        skyNodeReverse.anchorPoint.y = -1
+        skyNodeReverse.yScale *= -1
+        skyNode.addChild(skyNodeReverse)
+
         dimOverlayNode = SKShapeNode(rectOf: screenSize)
         dimOverlayNode.position = CGPoint(x: screenSize.width / 2, y: screenSize.height / 2)
         dimOverlayNode.fillColor = .black
@@ -114,7 +120,7 @@ class Cutscene: SKScene {
         dimOverlayNode.zPosition = K.ZPosition.chatDimOverlay
 
         bloodSkyNode = SKSpriteNode(texture: SKTexture(image: UIImage.gradientSkyBlood))
-        bloodSkyNode.size = CGSize(width: screenSize.width, height: screenSize.height / 2)
+        bloodSkyNode.size = CGSize(width: screenSize.width, height: screenSize.height)
         bloodSkyNode.position = CGPoint(x: 0, y: screenSize.height)
         bloodSkyNode.anchorPoint = CGPoint(x: 0, y: 1)
         bloodSkyNode.zPosition = K.ZPosition.skyNode

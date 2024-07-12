@@ -83,6 +83,12 @@ class CreditsScene: SKScene {
         skyNode.anchorPoint = CGPoint(x: 0, y: 1)
         skyNode.zPosition = K.ZPosition.skyNode
 
+        let skyNodeReverse = skyNode.copy() as! SKSpriteNode
+        skyNodeReverse.position.y = 0
+        skyNodeReverse.anchorPoint.y = -1
+        skyNodeReverse.yScale *= -1
+        skyNode.addChild(skyNodeReverse)
+
         moonSprite = MoonSprite(position: CGPoint(x: screenSize.width, y: screenSize.height), scale: 0.7 * 3)
         
         parallaxManager = ParallaxManager(useSet: ParallaxObject.SetType.allCases.randomElement() ?? .grass,
@@ -94,7 +100,12 @@ class CreditsScene: SKScene {
         tapPointerEngine = TapPointerEngine()
 
 
-        let randomPlayer: Player.PlayerType = .allCases.randomElement() ?? .hero
+        var randomPlayer: Player.PlayerType = .allCases.randomElement() ?? .hero
+        
+        //Elders cannot walk the Credits at the moment (there's no walk animation for them)
+        while randomPlayer != .hero && randomPlayer != .princess && randomPlayer != .villain {
+            randomPlayer = .allCases.randomElement() ?? .hero
+        }
         
         player = Player(type: randomPlayer)
         player.sprite.setScale(Player.cutsceneScale * player.scaleMultiplier)

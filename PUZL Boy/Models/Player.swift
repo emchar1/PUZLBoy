@@ -291,6 +291,7 @@ struct Player {
                 
                 if illusionStep == 1 {
                     AudioManager.shared.playSound(for: "magicteleport")
+                    AudioManager.shared.playSound(for: "magicteleport2")
                 }
             },
             SKAction.wait(forDuration: 1 / TimeInterval(blinkDivision)),

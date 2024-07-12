@@ -475,7 +475,7 @@ class ChatEngine {
     
     private func closeChat() {
         guard !chatDecisionEngine.isActive else { return }
-        guard !closeChatIsRunning else { return } //BUGFIX #240531E01 - prevents closeChat() simultaneous run for FF button vs timer end chat.
+        guard !closeChatIsRunning else { return } //BUGFIX# 240531E01 - prevents closeChat() simultaneous run for FF button vs timer end chat.
         
         let duration: TimeInterval = shouldClose ? 0.2 : 0
         
@@ -523,7 +523,7 @@ extension ChatEngine: ChatDecisionEngineDelegate {
     }
     
     func decisionHasDisappeared(node: ChatDecisionSprite, didGetTapped: Bool) {
-        // BUGFIX #240308E01 - This guard prevents fastForward() being called more than once, which invokes closeChat() twice (two buttons), which results in the stuttering bug!
+        // BUGFIX# 240308E01 - This guard prevents fastForward() being called more than once, which invokes closeChat() twice (two buttons), which results in the stuttering bug!
         guard didGetTapped else { return }
         
         animateFFButton()

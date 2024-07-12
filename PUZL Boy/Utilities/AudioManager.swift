@@ -110,7 +110,7 @@ class AudioManager {
         addAudioItem("enemyroar", category: .soundFX)
         addAudioItem("enemyscratch", category: .soundFX)
         addAudioItem("forcefield", category: .soundFX) //needs purchase $1
-        addAudioItem("forcefield2", category: .soundFX) //needs purchase $2
+        addAudioItem("forcefield2", category: .soundFX) //needs purchase $2 - Do I really want this??
         addAudioItem("gemcollect", category: .soundFX)
         addAudioItem("gemcollectparty", category: .soundFX)
         addAudioItem("gemcollectparty2x", category: .soundFX)
@@ -126,6 +126,7 @@ class AudioManager {
         addAudioItem("magicblast", category: .soundFX)
         addAudioItem("magichorrorimpact", category: .soundFX)
         addAudioItem("magicteleport", category: .soundFX)
+        addAudioItem("magicteleport2", category: .soundFX)
         addAudioItem("magicwarp", category: .soundFX)
         addAudioItem("marlinblast", category: .soundFX)
         addAudioItem("moveglide", category: .soundFX)

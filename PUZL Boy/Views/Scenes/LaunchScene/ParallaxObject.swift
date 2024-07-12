@@ -28,7 +28,7 @@ struct ParallaxObject {
     }
     
     enum SetType: Int, CaseIterable {
-        case grass = 0, marsh, ice, sand, lava
+        case grass = 0, marsh, ice, sand, lava, planet
     }
 
     enum ObjectType {
