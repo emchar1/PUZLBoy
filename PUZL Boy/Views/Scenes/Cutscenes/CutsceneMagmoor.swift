@@ -78,6 +78,7 @@ class CutsceneMagmoor: Cutscene {
         
         AudioManager.shared.stopSound(for: "ageofruin2", fadeDuration: fadeDuration)
         AudioManager.shared.stopSound(for: "forcefield", fadeDuration: fadeDuration)
+        AudioManager.shared.stopSound(for: "forcefield2", fadeDuration: fadeDuration)
     }
     
     
@@ -308,7 +309,7 @@ class CutsceneMagmoor: Cutscene {
             },
             SKAction.wait(forDuration: 4), //random pause value, need to tweak
             SKAction.run { [unowned self] in
-                closeupMagmoor()
+                closeupMagmoorBanish()
             }
         ]))
 
@@ -414,6 +415,7 @@ class CutsceneMagmoor: Cutscene {
             SKAction.wait(forDuration: warpPause + zoomInPause + 0.25),
             SKAction.run { [unowned self] in
                 AudioManager.shared.playSound(for: "magicwarp")
+                AudioManager.shared.playSound(for: "magicwarp2")
                 
                 ParticleEngine.shared.animateParticles(type: .warp4Slow,
                                                        toNode: backgroundNode,
@@ -590,6 +592,7 @@ class CutsceneMagmoor: Cutscene {
                 
         playerRight.sprite.setScale(initialScale)
         playerRight.sprite.position = initialPosition
+        playerRight.sprite.alpha = 1
         playerRight.sprite.zRotation = 0
         
         playerRight.sprite.run(SKAction.group([
@@ -701,21 +704,27 @@ class CutsceneMagmoor: Cutscene {
             SKAction.moveTo(x: screenSize.width + 800, duration: 0.25)
         ]))
         
+        //Magic Elder Explosion
         run(SKAction.sequence([
             SKAction.wait(forDuration: 2.4),
             SKAction.run { [unowned self] in
+                AudioManager.shared.playSound(for: "magicelderexplosion")
+                
                 ParticleEngine.shared.animateParticles(type: .magicElderExplosion,
                                                        toNode: backgroundNode,
                                                        position: CGPoint(x: screenSize.width / 2, y: screenSize.height / 2),
                                                        scale: 1,
                                                        angle: 0,
-                                                       zPosition: 0,
+                                                       zPosition: K.ZPosition.itemsAndEffects,
                                                        duration: 6)
             }
         ]))
     }
     
-    private func closeupMagmoor() {
+    private func closeupMagmoorBanish() {
+        let playerRightScale = playerRight.scaleMultiplier * Player.cutsceneScale
+        let banishDuration: TimeInterval = 3
+        
         setParallaxPositionAndScale(scale: 2)
 
         playerLeft.sprite.position = CGPoint(x: -800, y: 0)
@@ -728,10 +737,34 @@ class CutsceneMagmoor: Cutscene {
         elder2.sprite.setScale(elder2.scaleMultiplier * Player.cutsceneScale)
         
         playerRight.sprite.position = CGPoint(x: screenSize.width / 2, y: leftPlayerPositionInitial.y)
-        playerRight.sprite.setScale(playerRight.scaleMultiplier * Player.cutsceneScale)
+        playerRight.sprite.setScale(playerRightScale)
         playerRight.sprite.xScale *= -1
+        playerRight.sprite.zPosition = K.ZPosition.itemsAndEffects + 5
+        
+        playerRight.sprite.run(SKAction.sequence([
+            SKAction.wait(forDuration: 1),
+            SKAction.group([
+                SKAction.repeat(SKAction.sequence([
+                    SKAction.moveBy(x: 20, y: 0, duration: 0.05),
+                    SKAction.moveBy(x: -20, y: 0, duration: 0.05)
+                ]), count: Int(banishDuration / 0.1)),
+                SKAction.scaleX(to: -playerRightScale * 0.1, duration: banishDuration),
+                SKAction.scaleY(to: playerRightScale * 2, duration: banishDuration),
+                SKAction.fadeAlpha(by: 0.5, duration: banishDuration)
+            ])
+        ]))
 
         redWarp.position = CGPoint(x: screenSize.width + 800, y: 0)
+        
+        ParticleEngine.shared.removeParticles(fromNode: backgroundNode)
+        ParticleEngine.shared.animateParticles(type: .magicElderExplosion,
+                                               toNode: backgroundNode,
+                                               position: CGPoint(x: screenSize.width / 2, y: screenSize.height / 2),
+                                               scale: 1.5,
+                                               angle: 0,
+                                               zPosition: K.ZPosition.itemsAndEffects,
+                                               duration: 4)
+
         
         hideMagmoorDuplicates()
     }
@@ -797,7 +830,7 @@ class CutsceneMagmoor: Cutscene {
         }
             
         //Magic reduce attack
-        AudioManager.shared.playSound(for: "magicblast")
+        AudioManager.shared.playSound(for: shouldBanish ? "magicelderbanish" : "magicelderreduce")
         ParticleEngine.shared.animateParticles(type: .magicElder,
                                                toNode: player.sprite,
                                                position: CGPoint(x: 140, y: -120),

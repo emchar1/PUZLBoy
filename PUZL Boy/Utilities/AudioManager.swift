@@ -110,7 +110,7 @@ class AudioManager {
         addAudioItem("enemyroar", category: .soundFX)
         addAudioItem("enemyscratch", category: .soundFX)
         addAudioItem("forcefield", category: .soundFX) //needs purchase $1
-        addAudioItem("forcefield2", category: .soundFX) //needs purchase $2 - Do I really want this??
+        addAudioItem("forcefield2", category: .soundFX) //needs purchase $2
         addAudioItem("gemcollect", category: .soundFX)
         addAudioItem("gemcollectparty", category: .soundFX)
         addAudioItem("gemcollectparty2x", category: .soundFX)
@@ -124,12 +124,15 @@ class AudioManager {
         addAudioItem("lightsoff", category: .soundFX)
         addAudioItem("lightson", category: .soundFX)
         addAudioItem("magicblast", category: .soundFX)
-        addAudioItem("magicdisappear", category: .soundFX) //needs purchase
-        addAudioItem("magicduplicate", category: .soundFX) //needs purchase
+        addAudioItem("magicdisappear", category: .soundFX) //needs purchase $1
+        addAudioItem("magicelderbanish", category: .soundFX) //needs purchase $1
+        addAudioItem("magicelderexplosion", category: .soundFX) //needs purchase $1
+        addAudioItem("magicelderreduce", category: .soundFX) //needs purchase $1
         addAudioItem("magichorrorimpact", category: .soundFX)
         addAudioItem("magicteleport", category: .soundFX)
         addAudioItem("magicteleport2", category: .soundFX)
         addAudioItem("magicwarp", category: .soundFX)
+        addAudioItem("magicwarp2", category: .soundFX) //needs purchase $1
         addAudioItem("marlinblast", category: .soundFX)
         addAudioItem("moveglide", category: .soundFX)
         addAudioItem("movemarsh1", category: .soundFX)

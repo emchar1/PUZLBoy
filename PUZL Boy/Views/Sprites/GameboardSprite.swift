@@ -345,7 +345,8 @@ class GameboardSprite {
 
         if shouldAnimateWarp {
             AudioManager.shared.playSound(for: "magicwarp")
-            
+            AudioManager.shared.playSound(for: "magicwarp2")
+
             spawnItem(at: position, with: .warp4) { [unowned self] in
                 ParticleEngine.shared.animateParticles(type: .warp4,
                                                        toNode: sprite,
