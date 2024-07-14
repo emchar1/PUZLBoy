@@ -117,6 +117,10 @@
 		EA78C36C29763B1C00292744 /* AchievementAdMobster.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA78C36B29763B1C00292744 /* AchievementAdMobster.swift */; };
 		EA7E75352C23959B00BE2781 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = EA7E75342C23959B00BE2781 /* GoogleService-Info.plist */; };
 		EA7E75392C3B0DA200BE2781 /* Warp4SlowParticles.sks in Resources */ = {isa = PBXBuildFile; fileRef = EA7E75382C3B0DA200BE2781 /* Warp4SlowParticles.sks */; };
+		EA81968A2C41AC590002D551 /* MagicElderParticles.sks in Resources */ = {isa = PBXBuildFile; fileRef = EA8196892C41AC590002D551 /* MagicElderParticles.sks */; };
+		EA81968C2C426B900002D551 /* magicduplicate.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA81968B2C426B900002D551 /* magicduplicate.mp3 */; };
+		EA81968E2C426BA10002D551 /* magicdisappear.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA81968D2C426BA10002D551 /* magicdisappear.mp3 */; };
+		EA8196902C437AD90002D551 /* MagicElderExplosionParticles.sks in Resources */ = {isa = PBXBuildFile; fileRef = EA81968F2C437AD90002D551 /* MagicElderExplosionParticles.sks */; };
 		EA826C74297CEFC500F19F81 /* TimerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA826C73297CEFC500F19F81 /* TimerManager.swift */; };
 		EA826C76297CF9E000F19F81 /* ScoringManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA826C75297CF9E000F19F81 /* ScoringManager.swift */; };
 		EA826C7A298492BA00F19F81 /* DecisionButtonSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA826C79298492BA00F19F81 /* DecisionButtonSprite.swift */; };
@@ -426,6 +430,10 @@
 		EA78C36B29763B1C00292744 /* AchievementAdMobster.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementAdMobster.swift; sourceTree = "<group>"; };
 		EA7E75342C23959B00BE2781 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		EA7E75382C3B0DA200BE2781 /* Warp4SlowParticles.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Warp4SlowParticles.sks; sourceTree = "<group>"; };
+		EA8196892C41AC590002D551 /* MagicElderParticles.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = MagicElderParticles.sks; sourceTree = "<group>"; };
+		EA81968B2C426B900002D551 /* magicduplicate.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = magicduplicate.mp3; sourceTree = "<group>"; };
+		EA81968D2C426BA10002D551 /* magicdisappear.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = magicdisappear.mp3; sourceTree = "<group>"; };
+		EA81968F2C437AD90002D551 /* MagicElderExplosionParticles.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = MagicElderExplosionParticles.sks; sourceTree = "<group>"; };
 		EA826C73297CEFC500F19F81 /* TimerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerManager.swift; sourceTree = "<group>"; };
 		EA826C75297CF9E000F19F81 /* ScoringManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoringManager.swift; sourceTree = "<group>"; };
 		EA826C79298492BA00F19F81 /* DecisionButtonSprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DecisionButtonSprite.swift; sourceTree = "<group>"; };
@@ -954,7 +962,9 @@
 				EA8C60792C07CB1C00DED3C7 /* lightson.mp3 */,
 				EA9D6A5F2B48E73D0004187B /* littlegirllaugh.mp3 */,
 				EA9D6A5B2B48E4F00004187B /* magicblast.mp3 */,
+				EA81968D2C426BA10002D551 /* magicdisappear.mp3 */,
 				EA9D6A572B48E46F0004187B /* magicdoomloop.mp3 */,
+				EA81968B2C426B900002D551 /* magicduplicate.mp3 */,
 				EA8C60612C068E0700DED3C7 /* magicheartbeatloop1.mp3 */,
 				EA8C60662C068E0800DED3C7 /* magicheartbeatloop2.mp3 */,
 				EA8C60652C068E0800DED3C7 /* magichorrorimpact.mp3 */,
@@ -1182,6 +1192,8 @@
 				EA473BDA2C13A561003CEC1E /* LimboParticles.sks */,
 				EAE215572ABD1DEB0090735A /* MagicBlastParticles.sks */,
 				EAF8CA0E2C220DE900C6E92B /* MagicBlastLiteParticles.sks */,
+				EA81968F2C437AD90002D551 /* MagicElderExplosionParticles.sks */,
+				EA8196892C41AC590002D551 /* MagicElderParticles.sks */,
 				EA5F60572B9063480089EFC3 /* MagicExplosionParticles.sks */,
 				EA7300102B5E00E1005BF98D /* MagicLightParticles.sks */,
 				EAD19A032A9698B700A07A63 /* PartyGemParticles.sks */,
@@ -1330,6 +1342,7 @@
 				EA0F145F292994B00013038E /* movewalk.mp3 in Resources */,
 				EAF7182129B3097300E2ED82 /* lavasizzle.mp3 in Resources */,
 				EA0F145D292994330013038E /* moverun1.mp3 in Resources */,
+				EA81968E2C426BA10002D551 /* magicdisappear.mp3 in Resources */,
 				EA8C60692C068E0800DED3C7 /* marlinblast.mp3 in Resources */,
 				EA9D6A602B48E73D0004187B /* littlegirllaugh.mp3 in Resources */,
 				EA4583552A4431B000279056 /* partyslow.mp3 in Resources */,
@@ -1377,6 +1390,7 @@
 				EA76056C2B5B1CDD001BC268 /* waterappear3.mp3 in Resources */,
 				EA95D19E294690B70061059C /* boyattack2.mp3 in Resources */,
 				EA45834D2A44315900279056 /* buttontap3.mp3 in Resources */,
+				EA81968A2C41AC590002D551 /* MagicElderParticles.sks in Resources */,
 				EA8E07542B50988B0051DDC3 /* PointerParticles.sks in Resources */,
 				EA3467A529A8C659002DDA02 /* revive.mp3 in Resources */,
 				EACE2AA32ACBE94C00FE5A11 /* boypain4.mp3 in Resources */,
@@ -1393,6 +1407,7 @@
 				EA8C607B2C07CB1D00DED3C7 /* lightson.mp3 in Resources */,
 				EABE795D2ACBB28C00689C55 /* boypain3.mp3 in Resources */,
 				EA0F14702929D9C00013038E /* moverun3.mp3 in Resources */,
+				EA8196902C437AD90002D551 /* MagicElderExplosionParticles.sks in Resources */,
 				EA95D19F294690B70061059C /* boyattack3.mp3 in Resources */,
 				EAEF2F022B4F5C3100AD8459 /* thunderrumble.mp3 in Resources */,
 				EABE795F2ACBB83A00689C55 /* DragonFireLite.sks in Resources */,
@@ -1402,6 +1417,7 @@
 				EA8C606D2C068E0800DED3C7 /* realmtransition.mp3 in Resources */,
 				EA95D1A4294691820061059C /* boygrunt2.mp3 in Resources */,
 				EA65183428E419A000E535BF /* Assets.xcassets in Resources */,
+				EA81968C2C426B900002D551 /* magicduplicate.mp3 in Resources */,
 				EAD19A082A96AA6D00A07A63 /* WarpParticles.sks in Resources */,
 				EAF7182929B31BE800E2ED82 /* lavaappear1.mp3 in Resources */,
 				EAF7183329B3D26F00E2ED82 /* movesand2.mp3 in Resources */,

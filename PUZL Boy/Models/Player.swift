@@ -227,6 +227,9 @@ struct Player {
         
         //Attack frames
         setupElderTextures(indexLast: 7, textureType: Texture.elderAttack.rawValue, elderRank: rank, filenameTextureType: "Attack")
+        
+        //Run frames
+        setupElderTextures(indexLast: 7, textureType: Texture.run.rawValue, elderRank: rank, filenameTextureType: "Run")
     }
     
     

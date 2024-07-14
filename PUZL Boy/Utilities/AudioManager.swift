@@ -124,6 +124,8 @@ class AudioManager {
         addAudioItem("lightsoff", category: .soundFX)
         addAudioItem("lightson", category: .soundFX)
         addAudioItem("magicblast", category: .soundFX)
+        addAudioItem("magicdisappear", category: .soundFX) //needs purchase
+        addAudioItem("magicduplicate", category: .soundFX) //needs purchase
         addAudioItem("magichorrorimpact", category: .soundFX)
         addAudioItem("magicteleport", category: .soundFX)
         addAudioItem("magicteleport2", category: .soundFX)

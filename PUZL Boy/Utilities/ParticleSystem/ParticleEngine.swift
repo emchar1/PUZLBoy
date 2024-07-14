@@ -43,6 +43,8 @@ class ParticleEngine: SKNode {
         case limbo = "LimboParticles"
         case magicBlast = "MagicBlastParticles"
         case magicBlastLite = "MagicBlastLiteParticles"
+        case magicElderExplosion = "MagicElderExplosionParticles"
+        case magicElder = "MagicElderParticles"
         case magicExplosion = "MagicExplosionParticles"
         case magicLight = "MagicLightParticles" // FIXME: - Testing for Marlin Magic
         case partyGem = "PartyGemParticles"
@@ -80,6 +82,8 @@ class ParticleEngine: SKNode {
                           angle: CGFloat = 0,
                           shouldFlipHorizontally: Bool = false,
                           alpha: CGFloat = 1,
+                          colorSequence: SKKeyframeSequence? = nil,
+                          alphaSequence: SKKeyframeSequence? = nil,
                           zPosition: CGFloat = K.ZPosition.itemsAndEffects + 10,
                           nameGameboardPosition: K.GameboardPosition? = nil,
                           duration: TimeInterval)
@@ -95,6 +99,14 @@ class ParticleEngine: SKNode {
         
         if angle != 0 {
             particles.zRotation = angle
+        }
+        
+        if let colorSequence = colorSequence {
+            particles.particleColorSequence = colorSequence
+        }
+        
+        if let alphaSequence = alphaSequence {
+            particles.particleAlphaSequence = alphaSequence
         }
         
         node.addChild(particles)
