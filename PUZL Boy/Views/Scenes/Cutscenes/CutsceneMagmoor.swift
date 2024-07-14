@@ -139,7 +139,7 @@ class CutsceneMagmoor: Cutscene {
         let sceneEndLength: TimeInterval = 74 //Length until end of song on "Aaaaaahhh!". Keep at 74, it works when viewing from whole game!
         let scene1Length: TimeInterval = 15
         let scene2Length: TimeInterval = sceneEndLength - scene1Length
-        let scene3Length: TimeInterval = 20
+        let scene3Length: TimeInterval = 12
         
         letterbox.show { [unowned self] in
             addChild(skipSceneSprite)
@@ -723,7 +723,7 @@ class CutsceneMagmoor: Cutscene {
     
     private func closeupMagmoorBanish() {
         let playerRightScale = playerRight.scaleMultiplier * Player.cutsceneScale
-        let banishDuration: TimeInterval = 3
+        let banishDuration: TimeInterval = 4
         
         setParallaxPositionAndScale(scale: 2)
 
@@ -750,7 +750,7 @@ class CutsceneMagmoor: Cutscene {
                 ]), count: Int(banishDuration / 0.1)),
                 SKAction.scaleX(to: -playerRightScale * 0.1, duration: banishDuration),
                 SKAction.scaleY(to: playerRightScale * 2, duration: banishDuration),
-                SKAction.fadeAlpha(by: 0.5, duration: banishDuration)
+                SKAction.fadeAlpha(to: 0.5, duration: banishDuration)
             ])
         ]))
 
@@ -763,7 +763,7 @@ class CutsceneMagmoor: Cutscene {
                                                scale: 1.5,
                                                angle: 0,
                                                zPosition: K.ZPosition.itemsAndEffects,
-                                               duration: 4)
+                                               duration: 5)
 
         
         hideMagmoorDuplicates()
