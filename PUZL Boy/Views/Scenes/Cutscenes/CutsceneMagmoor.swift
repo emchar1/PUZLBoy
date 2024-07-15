@@ -742,6 +742,14 @@ class CutsceneMagmoor: Cutscene {
                                                        angle: 0,
                                                        zPosition: K.ZPosition.itemsAndEffects,
                                                        duration: 6)
+
+                ParticleEngine.shared.animateParticles(type: .magicElderExplosionStars,
+                                                       toNode: backgroundNode,
+                                                       position: CGPoint(x: screenSize.width / 2, y: screenSize.height / 2),
+                                                       scale: 0.8,
+                                                       angle: 0,
+                                                       zPosition: K.ZPosition.itemsAndEffects + 2,
+                                                       duration: 6)
             }
         ]))
     }
@@ -783,6 +791,7 @@ class CutsceneMagmoor: Cutscene {
         redWarp.position = CGPoint(x: screenSize.width + 800, y: 0)
         
         ParticleEngine.shared.removeParticles(fromNode: backgroundNode)
+        
         ParticleEngine.shared.animateParticles(type: .magicElderExplosion,
                                                toNode: backgroundNode,
                                                position: CGPoint(x: screenSize.width / 2, y: screenSize.height / 2),
@@ -791,6 +800,13 @@ class CutsceneMagmoor: Cutscene {
                                                zPosition: K.ZPosition.itemsAndEffects,
                                                duration: 5)
 
+        ParticleEngine.shared.animateParticles(type: .magicElderExplosionStars,
+                                               toNode: backgroundNode,
+                                               position: CGPoint(x: screenSize.width / 2, y: screenSize.height / 2),
+                                               scale: 1.5,
+                                               angle: 0,
+                                               zPosition: K.ZPosition.itemsAndEffects + 2,
+                                               duration: 5)
         
         hideMagmoorDuplicates()
     }
