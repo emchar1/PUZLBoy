@@ -766,6 +766,7 @@ class CutsceneMagmoor: Cutscene {
                 ]), count: Int(banishDuration / 0.1)),
                 SKAction.scaleX(to: -playerRightScale * 0.1, duration: banishDuration),
                 SKAction.scaleY(to: playerRightScale * 2, duration: banishDuration),
+                SKAction.rotate(toAngle: .pi / 6, duration: banishDuration),
                 SKAction.fadeAlpha(to: 0.5, duration: banishDuration)
             ])
         ]))
@@ -842,10 +843,6 @@ class CutsceneMagmoor: Cutscene {
                 startPoint: elder2Position ?? .zero,
                 endPoint: CGPoint(x: screenSize.width / 2, y: screenSize.height / 2)
             ).beta
-            
-            if elder2Position != nil {
-                print("elder2BanishAngle: \(elder2BanishAngle)")
-            }
             
             angle = shouldBanish ? elder2BanishAngle : -reduceAngle
 
