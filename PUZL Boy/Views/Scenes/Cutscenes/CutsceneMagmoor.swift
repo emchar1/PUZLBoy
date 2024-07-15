@@ -191,10 +191,16 @@ class CutsceneMagmoor: Cutscene {
         playerLeft.sprite.run(SKAction.scale(by: scaleRate, duration: sceneLength))
         
         animatePlayerWithTextures(player: &elder1, textureType: .idle, timePerFrame: 0.09)
-        elder1.sprite.run(SKAction.scale(by: scaleRate * 0.9, duration: sceneLength))
+        elder1.sprite.run(SKAction.group([
+            SKAction.moveBy(x: -75, y: 0, duration: sceneLength),
+            SKAction.scale(by: scaleRate * 0.9, duration: sceneLength)
+        ]))
                 
         animatePlayerWithTextures(player: &elder2, textureType: .idle, timePerFrame: 0.05)
-        elder2.sprite.run(SKAction.scale(by: scaleRate, duration: sceneLength))
+        elder2.sprite.run(SKAction.group([
+            SKAction.moveBy(x: -150, y: 0, duration: sceneLength),
+            SKAction.scale(by: scaleRate, duration: sceneLength)
+        ]))
                 
         AudioManager.shared.playSound(for: "ageofruin2")
     }
@@ -252,8 +258,8 @@ class CutsceneMagmoor: Cutscene {
             SKAction.wait(forDuration: elderPauses),
             SKAction.run { [unowned self] in
                 setTextArray(items: [
-                    SpeechBubbleItem(profile: speechPlayerLeft, speed: 0.05, chat: "Stop this, Magmoor! You are outnumbered 3 to 1.||||"),
-                    SpeechBubbleItem(profile: speechPlayerRight, chat: "\"Outnumbered\" you say?!! How about—||||/100 to 3!"),
+                    SpeechBubbleItem(profile: speechPlayerLeft, speed: 0.05, chat: "Stop this, Magmoor!! We outnumber you 3 to 1.||||"),
+                    SpeechBubbleItem(profile: speechPlayerRight, chat: "\"Outnumber,\" you say?!! Then let's try—||||/100 to 3!"),
                     SpeechBubbleItem(profile: speechPlayerLeft, speed: 0.01, chat: "SHIELD!!")
                 ], completion: nil)
                 
@@ -301,6 +307,10 @@ class CutsceneMagmoor: Cutscene {
             },
             SKAction.wait(forDuration: 3), //random pause value, need to tweak
             SKAction.run { [unowned self] in
+                speechPlayerLeft.updateTailOrientation(.bottomRight)
+                speechPlayerLeft.position.x = screenSize.width * 5/6 - 200
+                speechPlayerLeft.position.y -= 200
+                
                 setTextArray(items: [
                     SpeechBubbleItem(profile: speechPlayerLeft, speed: 0.01, chat: "BANISH!!")
                 ], completion: nil)
@@ -589,12 +599,16 @@ class CutsceneMagmoor: Cutscene {
             SKAction.repeatForever(SKAction.moveBy(x: 45, y: 45, duration: limboDuration)),
             SKAction.repeatForever(SKAction.scale(by: 0.95, duration: limboDuration))
         ]))
-                
+        
+        playerRight.sprite.removeAllActions()
+
         playerRight.sprite.setScale(initialScale)
         playerRight.sprite.position = initialPosition
         playerRight.sprite.alpha = 1
         playerRight.sprite.zRotation = 0
         
+        animatePlayerWithTextures(player: &playerRight, textureType: .idle, timePerFrame: 0.12)
+
         playerRight.sprite.run(SKAction.group([
             SKAction.repeatForever(SKAction.rotate(byAngle: .pi / 12, duration: limboDuration)),
             SKAction.repeatForever(SKAction.scale(by: 0.95, duration: limboDuration))
@@ -657,6 +671,7 @@ class CutsceneMagmoor: Cutscene {
         //Setup positions
         let elderPositionInitial: CGFloat = screenSize.width * 5/6
         let elderPositionFinal: CGFloat = screenSize.width * 1/6
+        let elder2FinalPosition = CGPoint(x: elderPositionFinal + 100, y: leftPlayerPositionFinal.y - 200)
 
         parallaxManager.backgroundSprite.run(SKAction.moveTo(x: 0, duration: 0.25))
         
@@ -690,13 +705,14 @@ class CutsceneMagmoor: Cutscene {
             SKAction.moveTo(x: elderPositionInitial - 175, duration: 0.25),
             SKAction.scaleX(to: -elder2.sprite.xScale, duration: 0),
             SKAction.group([
-                SKAction.moveTo(x: elderPositionFinal - 50, duration: 1),
-                SKAction.moveBy(x: 0, y: -100, duration: 1)
+                SKAction.move(to: elder2FinalPosition, duration: 1),
+                SKAction.scaleX(to: -elder2.sprite.xScale * 1.2, duration: 1),
+                SKAction.scaleY(to: elder2.sprite.yScale * 1.2, duration: 1)
             ]),
-            SKAction.scaleX(to: elder2.sprite.xScale, duration: 0),
+            SKAction.scaleX(to: elder2.sprite.xScale * 1.2, duration: 0),
             SKAction.run { [unowned self] in
                 animatePlayerWithTextures(player: &elder2, textureType: .elderAttack, timePerFrame: 0.1, repeatCount: 1)
-                elderAttack(player: &elder2, elderRank: 2, shouldBanish: true)
+                elderAttack(player: &elder2, elderRank: 2, shouldBanish: true, elder2Position: elder2FinalPosition + CGPoint(x: 100, y: 0))
             }
         ]))
 
@@ -713,7 +729,7 @@ class CutsceneMagmoor: Cutscene {
                 ParticleEngine.shared.animateParticles(type: .magicElderExplosion,
                                                        toNode: backgroundNode,
                                                        position: CGPoint(x: screenSize.width / 2, y: screenSize.height / 2),
-                                                       scale: 1,
+                                                       scale: 0.8,
                                                        angle: 0,
                                                        zPosition: K.ZPosition.itemsAndEffects,
                                                        duration: 6)
@@ -793,9 +809,11 @@ class CutsceneMagmoor: Cutscene {
         showMagmoorDuplicates()
     }
     
-    private func elderAttack(player: inout Player, elderRank: Int, shouldBanish: Bool = false) {
+    private func elderAttack(player: inout Player, elderRank: Int, shouldBanish: Bool = false, elder2Position: CGPoint? = nil) {
         let angle: CGFloat
+        let reduceAngle: CGFloat = .pi / 9
         let colorSequence: SKKeyframeSequence
+        let colorSequenceTimes: [NSNumber] = [0.1, 0.2, 0.4]
         var alphaSequence: SKKeyframeSequence?
         
         if shouldBanish {
@@ -810,23 +828,32 @@ class CutsceneMagmoor: Cutscene {
                 UIColor(red: 0/255, green: 48/255, blue: 128/255, alpha: 1),
                 UIColor(red: 44/255, green: 193/255, blue: 255/255, alpha: 1),
                 UIColor(red: 212/255, green: 212/255, blue: 255/255, alpha: 1)
-            ], times: [0.1, 0.2, 0.4])
+            ], times: colorSequenceTimes)
         case 1: //Fire
-            angle = shouldBanish ? .pi / 8 : .pi / 8
+            angle = shouldBanish ? .pi / 8 : reduceAngle
 
             colorSequence = SKKeyframeSequence(keyframeValues: [
                 UIColor(red: 64/255, green: 32/255, blue: 0/255, alpha: 1),
                 UIColor(red: 255/255, green: 128/255, blue: 0/255, alpha: 1),
                 UIColor(red: 255/255, green: 0/255, blue: 100/255, alpha: 1)
-            ], times: [0.1, 0.2, 0.4])
+            ], times: colorSequenceTimes)
         default: //Elder #2: Earth
-            angle = shouldBanish ? .pi / 4 : -.pi / 8
+            let elder2BanishAngle: CGFloat = SpriteMath.Trigonometry.getAngles(
+                startPoint: elder2Position ?? .zero,
+                endPoint: CGPoint(x: screenSize.width / 2, y: screenSize.height / 2)
+            ).beta
+            
+            if elder2Position != nil {
+                print("elder2BanishAngle: \(elder2BanishAngle)")
+            }
+            
+            angle = shouldBanish ? elder2BanishAngle : -reduceAngle
 
             colorSequence = SKKeyframeSequence(keyframeValues: [
                 UIColor(red: 0/255, green: 48/255, blue: 0/255, alpha: 1),
                 UIColor(red: 128/255, green: 192/255, blue: 64/255, alpha: 1),
                 UIColor(red: 255/255, green: 169/255, blue: 255/255, alpha: 1)
-            ], times: [0.1, 0.2, 0.4])
+            ], times: colorSequenceTimes)
         }
             
         //Magic reduce attack
@@ -892,6 +919,7 @@ class CutsceneMagmoor: Cutscene {
                                                        position: CGPoint(x: 190, y: 220),
                                                        scale: 2,
                                                        angle: angleOfAttack,
+                                                       zPosition: 50,
                                                        duration: 0)
             }
         ]))
