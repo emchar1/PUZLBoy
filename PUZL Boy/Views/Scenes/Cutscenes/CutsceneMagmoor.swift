@@ -299,18 +299,18 @@ class CutsceneMagmoor: Cutscene {
             },
             SKAction.wait(forDuration: 3), //random pause value, need to tweak
             SKAction.run { [unowned self] in
-                speechPlayerLeft.updateTailOrientation(.bottomLeft)
                 speechPlayerLeft.position.x += 150
+                speechPlayerLeft.updateTailOrientation(.bottomLeft)
 
                 wideShotWithRedWarp(magmoorPosition: rightPlayerPositionFinal)
                 explodeMagmoorDuplicates(delay: 0.5)
             },
             SKAction.wait(forDuration: 3), //random pause value, need to tweak
             SKAction.run { [unowned self] in
-                speechPlayerLeft.updateTailOrientation(.bottomRight)
                 speechPlayerLeft.position.x = screenSize.width * 5/6 - 200
                 speechPlayerLeft.position.y -= 200
-                
+                speechPlayerLeft.updateTailOrientation(.bottomRight)
+
                 setTextArray(items: [
                     SpeechBubbleItem(profile: speechPlayerLeft, speed: 0.01, chat: "BANISH!!")
                 ], completion: nil)
@@ -319,6 +319,13 @@ class CutsceneMagmoor: Cutscene {
             },
             SKAction.wait(forDuration: 4), //random pause value, need to tweak
             SKAction.run { [unowned self] in
+                speechPlayerRight.position.x = screenSize.width / 2 - 150
+                speechPlayerRight.position.y = leftPlayerPositionInitial.y + 250
+                
+                setTextArray(items: [
+                    SpeechBubbleItem(profile: speechPlayerRight, chat: "NOOOOO!!!!!")
+                ], completion: nil)
+                
                 closeupMagmoorBanish()
             }
         ]))
@@ -621,6 +628,7 @@ class CutsceneMagmoor: Cutscene {
         removeMagmoorDuplicates()
         
         AudioManager.shared.playSound(for: "wompwomp", delay: 1)
+        Haptics.shared.stopHapticEngine()
     }
     
     
@@ -725,6 +733,7 @@ class CutsceneMagmoor: Cutscene {
             SKAction.wait(forDuration: 2.4),
             SKAction.run { [unowned self] in
                 AudioManager.shared.playSound(for: "magicelderexplosion")
+                Haptics.shared.executeCustomPattern(pattern: .thunder)
                 
                 ParticleEngine.shared.animateParticles(type: .magicElderExplosion,
                                                        toNode: backgroundNode,
@@ -959,6 +968,7 @@ class CutsceneMagmoor: Cutscene {
         }
 
         AudioManager.shared.playSound(for: "magicdisappear", delay: delay)
+        Haptics.shared.executeCustomPattern(pattern: .sand)
     }
     
     private func processMagmoorDuplicates(handler: (SKNode) -> Void) {

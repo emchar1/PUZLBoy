@@ -574,9 +574,9 @@ extension ChatEngine {
         //Chapter 2 - A Mysterious Stranger Among Us
         dialoguePlayed[221] = false
         dialoguePlayed[251] = false
-        dialoguePlayed[262] = false //spawn at (0, 1)
-        dialogueWithCutscene[262] = false
-        dialoguePlayed[282] = false //spawn at (0, 1)
+        dialoguePlayed[276] = false //spawn at (0, 1)
+        dialogueWithCutscene[276] = false
+        dialoguePlayed[298] = false //spawn at (0, 1)
 
         //Chapter 3 - You're on your own, kid!
         dialoguePlayed[301] = false
@@ -941,7 +941,7 @@ extension ChatEngine {
 
                 handleDialogueCompletion(level: level, completion: completion)
             }
-        case 101: //NEEDS CUTSCENE
+        case 101: //NEEDS CUTSCENE chance for a funny, short cutscene introducing the mystics then a record scratch when PUZL Boy is bored.
             sendChatArray(items: [
                 ChatItem(profile: .hero, imgPos: .left, chat: "Merlin! C'mon, we gotta go."),
                 ChatItem(profile: .trainer, chat: "The name's Marlin. MARLIN THE MAGNIFICENT! Not Merlin. Not dude. Not crusty old man!"),
@@ -1059,7 +1059,7 @@ extension ChatEngine {
             ]) { [unowned self] in
                 handleDialogueCompletion(level: level, completion: completion)
             }
-        case 262:
+        case 276:
             guard let delegate = delegate else {
                 //This allows the game to move forward in case the delegate is not set, for some reason!
                 handleDialogueCompletion(level: level, completion: completion)
@@ -1204,7 +1204,7 @@ extension ChatEngine {
 //                    handleDialogueCompletion(level: level, completion: completion)
 //                }
 //            }
-        case 282:
+        case 298:
             let spawnPoint: K.GameboardPosition = (0, 1)
             
             guard let delegate = delegate else {

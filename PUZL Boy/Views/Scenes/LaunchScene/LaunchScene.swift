@@ -89,14 +89,13 @@ class LaunchScene: SKScene {
         skyNodeReverse.anchorPoint.y = -1
         skyNodeReverse.yScale *= -1
         skyNode.addChild(skyNodeReverse)
-
-        moonSprite = MoonSprite(position: CGPoint(x: screenSize.width, y: screenSize.height), scale: 0.7 * 3, moonPhase: nil)
         
-        if !UserDefaults.standard.bool(forKey: K.UserDefaults.shouldSkipIntro) {
-            moonSprite.alpha = 0
-        }
+        let parallaxSet: ParallaxObject.SetType = .allCases.randomElement() ?? .grass
 
-        parallaxManager = ParallaxManager(useSet: .allCases.randomElement() ?? .grass,
+        moonSprite = MoonSprite(position: CGPoint(x: screenSize.width, y: screenSize.height), scale: 0.7 * 3, moonPhase: nil,
+                                alwaysHideMoon: parallaxSet == .planet || !UserDefaults.standard.bool(forKey: K.UserDefaults.shouldSkipIntro))
+
+        parallaxManager = ParallaxManager(useSet: parallaxSet,
                                           xOffsetsArray: nil,
                                           forceSpeed: UserDefaults.standard.bool(forKey: K.UserDefaults.shouldSkipIntro) ? nil : .run,
                                           animateForCutscene: !UserDefaults.standard.bool(forKey: K.UserDefaults.shouldSkipIntro))

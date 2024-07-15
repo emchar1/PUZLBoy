@@ -11,7 +11,7 @@ class MoonSprite: SKNode {
     
     let spriteSize = CGSize(width: 500, height: 500)
     
-    init(position: CGPoint, scale: CGFloat, moonPhase: Int? = nil) {
+    init(position: CGPoint, scale: CGFloat, moonPhase: Int? = nil, alwaysHideMoon: Bool = false) {
         super.init()
         
         let moonPhaseAdjusted: Int = moonPhase == nil ? Int.random(in: 0...8) : moonPhase!.clamp(min: 0, max: 8)
@@ -46,7 +46,7 @@ class MoonSprite: SKNode {
         sprite.anchorPoint = .zero
         sprite.position = position - CGPoint(x: spriteSize.width, y: spriteSize.height)
         sprite.setScale(scale)
-        sprite.alpha = moonAlpha
+        sprite.alpha = alwaysHideMoon ? 0 : moonAlpha
         sprite.color = moonColor
         sprite.colorBlendFactor = moonColorBlendFactor
         sprite.zPosition = K.ZPosition.backgroundObjectMoon

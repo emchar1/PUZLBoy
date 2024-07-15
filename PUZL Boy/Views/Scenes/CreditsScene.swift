@@ -88,13 +88,13 @@ class CreditsScene: SKScene {
         skyNodeReverse.anchorPoint.y = -1
         skyNodeReverse.yScale *= -1
         skyNode.addChild(skyNodeReverse)
-
-        moonSprite = MoonSprite(position: CGPoint(x: screenSize.width, y: screenSize.height), scale: 0.7 * 3)
         
-        parallaxManager = ParallaxManager(useSet: ParallaxObject.SetType.allCases.randomElement() ?? .grass,
-                                          xOffsetsArray: nil,
-                                          forceSpeed: .walk,
-                                          animateForCutscene: false)
+        let parallaxSet: ParallaxObject.SetType = .planet//.allCases.randomElement() ?? .grass
+        
+        moonSprite = MoonSprite(position: CGPoint(x: screenSize.width, y: screenSize.height), scale: 0.7 * 3,
+                                alwaysHideMoon: parallaxSet == .planet)
+        
+        parallaxManager = ParallaxManager(useSet: parallaxSet, xOffsetsArray: nil, forceSpeed: .walk, animateForCutscene: false)
         parallaxManager.animate()
         
         tapPointerEngine = TapPointerEngine()
