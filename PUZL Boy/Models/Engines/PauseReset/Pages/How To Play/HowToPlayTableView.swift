@@ -201,5 +201,4 @@ class HowToPlayTableView: UITableView, UITableViewDelegate, UITableViewDataSourc
     }
     
     
-    
 }

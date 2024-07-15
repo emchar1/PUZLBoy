@@ -589,7 +589,6 @@ class CutsceneMagmoor: Cutscene {
         ]))
     }
     
-    // TODO: - Magmoor floating sadly, endlessly in the Limbo Realm for "eternity."
     private func playScene3() {
         let initialScale: CGFloat = 1.5
         let initialPosition: CGPoint = CGPoint(x: screenSize.width / 2, y: screenSize.height / 2)
@@ -632,22 +631,7 @@ class CutsceneMagmoor: Cutscene {
     }
     
     
-    // MARK: - Misc. Helper Functions
-    
-    private func setParallaxPositionAndScale(scale: CGFloat) {
-        parallaxManager.backgroundSprite.setScale(scale)
-
-        switch scale {
-        case 1:
-            parallaxManager.backgroundSprite.position = CGPoint(x: 0, y: 0)
-        case 2:
-            parallaxManager.backgroundSprite.position = CGPoint(x: 0, y: -screenSize.height / 2 + 400)
-        case 0.5:
-            parallaxManager.backgroundSprite.position = CGPoint(x: -screenSize.width, y: letterbox.height / 2)
-        default:
-            parallaxManager.backgroundSprite.position = CGPoint(x: -screenSize.width, y: 0)
-        }
-    }
+    // MARK: - Cutscene Helper Functions
     
     private func closeupElders() {
         setParallaxPositionAndScale(scale: 2)
@@ -833,6 +817,24 @@ class CutsceneMagmoor: Cutscene {
         redWarp.position = rightPlayerPositionInitial
         
         showMagmoorDuplicates()
+    }
+
+    
+    // MARK: - Misc. Helper Functions
+    
+    private func setParallaxPositionAndScale(scale: CGFloat) {
+        parallaxManager.backgroundSprite.setScale(scale)
+
+        switch scale {
+        case 1:
+            parallaxManager.backgroundSprite.position = CGPoint(x: 0, y: 0)
+        case 2:
+            parallaxManager.backgroundSprite.position = CGPoint(x: 0, y: -screenSize.height / 2 + 400)
+        case 0.5:
+            parallaxManager.backgroundSprite.position = CGPoint(x: -screenSize.width, y: letterbox.height / 2)
+        default:
+            parallaxManager.backgroundSprite.position = CGPoint(x: -screenSize.width, y: 0)
+        }
     }
     
     private func elderAttack(player: inout Player, elderRank: Int, shouldBanish: Bool = false, elder2Position: CGPoint? = nil) {

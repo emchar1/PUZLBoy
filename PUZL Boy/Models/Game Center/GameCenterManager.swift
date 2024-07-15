@@ -361,7 +361,7 @@ final class GameCenterManager: NSObject {
 }
 
 
-// MARK: GKLocalPlayerListener
+// MARK: - GKLocalPlayerListener
 
 extension GameCenterManager: GKLocalPlayerListener {
     /**
@@ -392,7 +392,7 @@ extension GameCenterManager: GKLocalPlayerListener {
 }
 
 
-// MARK: GKGameCenterControllerDelegate
+// MARK: - GKGameCenterControllerDelegate
 
 extension GameCenterManager: GKGameCenterControllerDelegate {
     func gameCenterViewControllerDidFinish(_ gameCenterViewController: GKGameCenterViewController) {

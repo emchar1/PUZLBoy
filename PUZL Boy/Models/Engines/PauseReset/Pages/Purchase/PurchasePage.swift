@@ -342,7 +342,7 @@ extension PurchasePage: AdMobManagerDelegate {
     }
     
     
-    // MARK: - Rewarded ads
+    // MARK: - Rewarded Ads
     
     func willPresentRewarded() {
         AudioManager.shared.lowerVolume(for: AudioManager.shared.currentTheme, fadeDuration: 1.0)

@@ -107,7 +107,6 @@ extension IAPManager: SKProductsRequestDelegate {
         clearRequestAndHandler()
         
         for product in products {
-//            print("Found product: \(product.productIdentifier) \(product.localizedTitle) \(product.price.floatValue)")
             allProducts.append(product)
         }
     }

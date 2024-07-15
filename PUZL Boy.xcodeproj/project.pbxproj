@@ -305,7 +305,6 @@
 		EAEF2F042B4F5EED00AD8459 /* hammerswing.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAEF2F032B4F5EED00AD8459 /* hammerswing.mp3 */; };
 		EAEF2F062B4F679900AD8459 /* buttontap4.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAEF2F052B4F679900AD8459 /* buttontap4.mp3 */; };
 		EAF07C0329E796640034CD1A /* ParallaxSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAF07C0229E796630034CD1A /* ParallaxSprite.swift */; };
-		EAF07C0529E796AE0034CD1A /* TemplateClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAF07C0429E796AE0034CD1A /* TemplateClass.swift */; };
 		EAF07C0929E7A13F0034CD1A /* ParallaxObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAF07C0829E7A13F0034CD1A /* ParallaxObject.swift */; };
 		EAF07C0B29E9DADC0034CD1A /* ParallaxManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAF07C0A29E9DADC0034CD1A /* ParallaxManager.swift */; };
 		EAF07C0E29EA736F0034CD1A /* MoonSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAF07C0D29EA736F0034CD1A /* MoonSprite.swift */; };
@@ -620,7 +619,6 @@
 		EAEF2F032B4F5EED00AD8459 /* hammerswing.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = hammerswing.mp3; sourceTree = "<group>"; };
 		EAEF2F052B4F679900AD8459 /* buttontap4.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = buttontap4.mp3; sourceTree = "<group>"; };
 		EAF07C0229E796630034CD1A /* ParallaxSprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParallaxSprite.swift; sourceTree = "<group>"; };
-		EAF07C0429E796AE0034CD1A /* TemplateClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemplateClass.swift; sourceTree = "<group>"; };
 		EAF07C0829E7A13F0034CD1A /* ParallaxObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParallaxObject.swift; sourceTree = "<group>"; };
 		EAF07C0A29E9DADC0034CD1A /* ParallaxManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParallaxManager.swift; sourceTree = "<group>"; };
 		EAF07C0D29EA736F0034CD1A /* MoonSprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoonSprite.swift; sourceTree = "<group>"; };
@@ -1150,7 +1148,6 @@
 				EA826C80298CF3FF00F19F81 /* IAPManager.swift */,
 				EA75F0EA292DF46200F09BD7 /* FIRManager.swift */,
 				EA826C9629938CBB00F19F81 /* StoreReviewManager.swift */,
-				EAF07C0429E796AE0034CD1A /* TemplateClass.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -1567,7 +1564,6 @@
 				EA95D1FA295BEC160061059C /* DisplayLivesSprite.swift in Sources */,
 				EAF07C0E29EA736F0034CD1A /* MoonSprite.swift in Sources */,
 				EA95D1BB2952F0680061059C /* Achievement.swift in Sources */,
-				EAF07C0529E796AE0034CD1A /* TemplateClass.swift in Sources */,
 				EA3467B129A99332002DDA02 /* LoadingSprite.swift in Sources */,
 				EADE12462AFCBE8400474D7F /* AchievementsTVCell.swift in Sources */,
 				EACCC05F2AE63FA40099DA44 /* LeaderboardsPage.swift in Sources */,

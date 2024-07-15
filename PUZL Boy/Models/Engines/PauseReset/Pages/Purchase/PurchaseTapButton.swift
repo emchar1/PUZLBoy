@@ -113,7 +113,8 @@ class PurchaseTapButton: SKNode {
         cropNode.zPosition = 10
         
         let priceBackground = SKShapeNode(rectOf: CGSize(width: PurchaseTapButton.buttonSize.width, height: UIDevice.isiPad ? 120 : 80))
-        priceBackground.position = positionOrig * CGPoint(x: -1, y: -1) + CGPoint(x: priceBackground.frame.size.width / 6, y: -priceBackground.frame.size.height * 2 / 3)
+        priceBackground.position = positionOrig * CGPoint(x: -1, y: -1) + CGPoint(x: priceBackground.frame.size.width / 6,
+                                                                                  y: -priceBackground.frame.size.height * 2 / 3)
         priceBackground.fillColor = priceColor
         priceBackground.strokeColor = .white
         priceBackground.lineWidth = 0
