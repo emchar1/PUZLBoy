@@ -189,19 +189,20 @@ class AudioManager {
         addAudioItem("ageofruin2", category: .musicNoLoop)
         addAudioItem("gameover", category: .musicNoLoop)
         addAudioItem("gameoverice", category: .musicNoLoop)
+        addAudioItem("titlechapter", category: .musicNoLoop) //needs purchase $9
         addAudioItem("titletheme", category: .musicNoLoop)
 
         
         //Background music
         addAudioItem("birdsambience", category: .music, maxVolume: 0.2)
         addAudioItem("continueloop", category: .music)
-        addAudioItem("scarymusicbox", category: .music)
         addAudioItem("magicheartbeatloop1", category: .music)
         addAudioItem("magicheartbeatloop2", category: .music)
         addAudioItem("overworld", category: .music)
+        addAudioItem("overworldgrassland", category: .music)
         addAudioItem("overworldice", category: .music)
         addAudioItem("overworldparty", category: .music)
-        addAudioItem("overworldgrassland", category: .music)
+        addAudioItem("scarymusicbox", category: .music)
 
         
         //9/13/23 Call this AFTER adding all the audioItems above!

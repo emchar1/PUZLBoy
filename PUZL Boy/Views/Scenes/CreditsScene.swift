@@ -89,7 +89,7 @@ class CreditsScene: SKScene {
         skyNodeReverse.yScale *= -1
         skyNode.addChild(skyNodeReverse)
         
-        let parallaxSet: ParallaxObject.SetType = .planet//.allCases.randomElement() ?? .grass
+        let parallaxSet: ParallaxObject.SetType = .allCases.randomElement() ?? .grass
         
         moonSprite = MoonSprite(position: CGPoint(x: screenSize.width, y: screenSize.height), scale: 0.7 * 3,
                                 alwaysHideMoon: parallaxSet == .planet)

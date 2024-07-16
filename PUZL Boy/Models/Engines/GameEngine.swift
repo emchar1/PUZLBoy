@@ -700,19 +700,6 @@ class GameEngine {
         playerSprite.sprite.removeFromParent() //This is needed, otherwise gameboardSprite keeps adding it, below
         playerSprite.setPlayerSpriteScale(panelSize: gameboardSprite.panelSize)
         gameboardSprite.sprite.addChild(playerSprite.sprite)
-
-        if !isGameOver {
-            let numMovesSprite = NumMovesSprite(
-                numMoves: self.level.moves,
-                position: CGPoint(x: K.ScreenDimensions.size.width / 2, y: GameboardSprite.offsetPosition.y * 3 / 2),
-                isPartyLevel: Level.isPartyLevel(level.level))
-            
-            superScene.addChild(numMovesSprite)
-            
-            numMovesSprite.play {
-                numMovesSprite.removeFromParent()
-            }
-        }
     }
     
     

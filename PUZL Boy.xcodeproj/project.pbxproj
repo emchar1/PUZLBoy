@@ -34,6 +34,8 @@
 		EA2F440B2C4452DA00B62CC3 /* magicelderreduce.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA2F440A2C4452DA00B62CC3 /* magicelderreduce.mp3 */; };
 		EA2F440F2C445BA000B62CC3 /* magicdisappear.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA2F440E2C445BA000B62CC3 /* magicdisappear.mp3 */; };
 		EA2F44112C45810E00B62CC3 /* MagicElderStarsParticles.sks in Resources */ = {isa = PBXBuildFile; fileRef = EA2F44102C45810E00B62CC3 /* MagicElderStarsParticles.sks */; };
+		EA2F44132C4645DA00B62CC3 /* ChapterTitleSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA2F44122C4645DA00B62CC3 /* ChapterTitleSprite.swift */; };
+		EA2F44152C464A8C00B62CC3 /* titlechapter.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA2F44142C464A8C00B62CC3 /* titlechapter.mp3 */; };
 		EA32AE312AAC198300DFF5CD /* DragonFire.sks in Resources */ = {isa = PBXBuildFile; fileRef = EA32AE302AAC198300DFF5CD /* DragonFire.sks */; };
 		EA32AE392AADAC6400DFF5CD /* birdsambience.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA32AE382AADAC6400DFF5CD /* birdsambience.mp3 */; };
 		EA34678E2998ED50002DDA02 /* LifeSpawnerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA34678D2998ED50002DDA02 /* LifeSpawnerModel.swift */; };
@@ -353,6 +355,8 @@
 		EA2F440A2C4452DA00B62CC3 /* magicelderreduce.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = magicelderreduce.mp3; sourceTree = "<group>"; };
 		EA2F440E2C445BA000B62CC3 /* magicdisappear.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = magicdisappear.mp3; sourceTree = "<group>"; };
 		EA2F44102C45810E00B62CC3 /* MagicElderStarsParticles.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = MagicElderStarsParticles.sks; sourceTree = "<group>"; };
+		EA2F44122C4645DA00B62CC3 /* ChapterTitleSprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChapterTitleSprite.swift; sourceTree = "<group>"; };
+		EA2F44142C464A8C00B62CC3 /* titlechapter.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = titlechapter.mp3; sourceTree = "<group>"; };
 		EA32AE302AAC198300DFF5CD /* DragonFire.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = DragonFire.sks; sourceTree = "<group>"; };
 		EA32AE382AADAC6400DFF5CD /* birdsambience.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = birdsambience.mp3; sourceTree = "<group>"; };
 		EA34678D2998ED50002DDA02 /* LifeSpawnerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LifeSpawnerModel.swift; sourceTree = "<group>"; };
@@ -796,17 +800,18 @@
 			children = (
 				EA7300132B5F7497005BF98D /* New */,
 				EA4583662A460E2400279056 /* Party */,
-				EAB69DFF28EFCF5B00C31DB3 /* PlayerSprite.swift */,
-				EA65184428E5750C00E535BF /* GameboardSprite.swift */,
-				EA1191522904BC4C009D0E3E /* DisplaySprite.swift */,
-				EA3534882920612300C11FC0 /* DisplayStatusBarSprite.swift */,
-				EA95D1F9295BEC160061059C /* DisplayLivesSprite.swift */,
+				EA826C84298DD6C600F19F81 /* ActivityIndicatorSprite.swift */,
+				EA2F44122C4645DA00B62CC3 /* ChapterTitleSprite.swift */,
+				EA57DEA82B983C5400CE3E2A /* ChatDecisionSprite.swift */,
 				EA826C7B29858EBE00F19F81 /* ContinueSprite.swift */,
 				EA826C79298492BA00F19F81 /* DecisionButtonSprite.swift */,
-				EA57DEA82B983C5400CE3E2A /* ChatDecisionSprite.swift */,
-				EA826C84298DD6C600F19F81 /* ActivityIndicatorSprite.swift */,
+				EA95D1F9295BEC160061059C /* DisplayLivesSprite.swift */,
+				EA1191522904BC4C009D0E3E /* DisplaySprite.swift */,
+				EA3534882920612300C11FC0 /* DisplayStatusBarSprite.swift */,
+				EA65184428E5750C00E535BF /* GameboardSprite.swift */,
 				EA826C9929950D0C00F19F81 /* NumMovesSprite.swift */,
 				EA2AF74329B6D06000444E5A /* OfflinePlaySprite.swift */,
+				EAB69DFF28EFCF5B00C31DB3 /* PlayerSprite.swift */,
 				EAF2A5A52AA7875F00212825 /* SkipSceneSprite.swift */,
 			);
 			path = Sprites;
@@ -1020,6 +1025,7 @@
 				EA95B3082A8C9DA300C5F028 /* speechbubble.mp3 */,
 				EAEF2EFD2B4F5B7E00AD8459 /* swordslash.mp3 */,
 				EAEF2F012B4F5C3100AD8459 /* thunderrumble.mp3 */,
+				EA2F44142C464A8C00B62CC3 /* titlechapter.mp3 */,
 				EA45835A2A4431D300279056 /* titletheme.mp3 */,
 				EA95D193294690890061059C /* warp.mp3 */,
 				EA76056F2B5B1F53001BC268 /* waterappear1.mp3 */,
@@ -1388,6 +1394,7 @@
 				EAD683D72C4060580074E1B5 /* magicteleport2.mp3 in Resources */,
 				EA9D6A5C2B48E4F00004187B /* magicblast.mp3 in Resources */,
 				EA7605622B5A859C001BC268 /* movesnow1.mp3 in Resources */,
+				EA2F44152C464A8C00B62CC3 /* titlechapter.mp3 in Resources */,
 				EA8C606C2C068E0800DED3C7 /* winlevelice.mp3 in Resources */,
 				EAE919472A4CAFFD00AF67D1 /* gemcollectparty3x.mp3 in Resources */,
 				EAACB4B92971E08A00973EB8 /* chatclose.mp3 in Resources */,
@@ -1569,6 +1576,7 @@
 				EACCC05F2AE63FA40099DA44 /* LeaderboardsPage.swift in Sources */,
 				EA1D5A6E29F217D200677B06 /* Extension+SKLabelNode.swift in Sources */,
 				EA65184328E420E400E535BF /* GameScene.swift in Sources */,
+				EA2F44132C4645DA00B62CC3 /* ChapterTitleSprite.swift in Sources */,
 				EAF07C0B29E9DADC0034CD1A /* ParallaxManager.swift in Sources */,
 				EA57DEAB2B9AED6900CE3E2A /* ChatDecisionEngine.swift in Sources */,
 				EA95D20C296276670061059C /* AchievementSuperEfficient.swift in Sources */,

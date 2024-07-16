@@ -7,8 +7,6 @@
 
 import SpriteKit
 
-// TODO: - Cutscene Magmoor
-
 class CutsceneMagmoor: Cutscene {
     
     // MARK: - Properties

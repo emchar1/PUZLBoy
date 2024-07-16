@@ -75,6 +75,7 @@ class ChatEngine {
     private var dimOverlaySprite: SKShapeNode!
     private var marlinBlast: MarlinBlastSprite!
     private var magmoorScary: MagmoorScarySprite!
+    private var chapterTitleSprite: ChapterTitleSprite!
     
     
     //Misc Data Structures
@@ -196,6 +197,8 @@ class ChatEngine {
         magmoorScary = MagmoorScarySprite(boundingBox: chatBackgroundSprite.path?.boundingBox)
         magmoorScary.zPosition = K.ZPosition.chatDialogue + 5
         
+        chapterTitleSprite = ChapterTitleSprite(chapter: 1)
+        
 
         //Add sprites to background
         chatBackgroundSprite.addChild(avatarSprite)
@@ -215,6 +218,7 @@ class ChatEngine {
         
         superScene.addChild(chatBackgroundSprite)
         superScene.addChild(dimOverlaySprite)
+        superScene.addChild(chapterTitleSprite)
     }
     
     
@@ -571,17 +575,21 @@ extension ChatEngine {
         dialoguePlayed[152] = false
         dialoguePlayed[180] = false
 
-        //Chapter 2 - A Mysterious Stranger Among Us
+        //Chapter 2 - A Mysterious Stranger
+        dialoguePlayed[201] = false
         dialoguePlayed[221] = false
         dialoguePlayed[251] = false
         dialoguePlayed[276] = false //spawn at (0, 1)
         dialogueWithCutscene[276] = false
         dialoguePlayed[298] = false //spawn at (0, 1)
 
-        //Chapter 3 - You're on your own, kid!
+        //Chapter 3 - You're on Your Own, Kid!
         dialoguePlayed[301] = false
         dialogueWithCutscene[301] = false
         dialoguePlayed[314] = false
+        
+        //Chapter 4 - Redemption
+        dialoguePlayed[401] = false
 
         
         
@@ -942,23 +950,26 @@ extension ChatEngine {
                 handleDialogueCompletion(level: level, completion: completion)
             }
         case 101: //NEEDS CUTSCENE chance for a funny, short cutscene introducing the mystics then a record scratch when PUZL Boy is bored.
-            sendChatArray(items: [
-                ChatItem(profile: .hero, imgPos: .left, chat: "Merlin! C'mon, we gotta go."),
-                ChatItem(profile: .trainer, chat: "The name's Marlin. MARLIN THE MAGNIFICENT! Not Merlin. Not dude. Not crusty old man!"),
-                ChatItem(profile: .hero, imgPos: .left, chat: "Oh! Marlin like the fish??? I hate fish by the way. The smell, the texture..."),
-                ChatItem(profile: .trainer, chat: "No. Not like the fish. Marlin like... the Magician. You see, in my world I am what is known as a Mystic."),
-                ChatItem(profile: .trainer, chat: "As a matter of fact, I come from a long line of legendary and powerful Mystics, each with our own unique powers and abilities..."),
-                ChatItem(profile: .hero, imgPos: .left, chat: "Oh, wait. You're thinking of Merlin the Magician."),
-                ChatItem(profile: .trainer, chat: "Some Mystics control the elements: fire, water, air.. Some are all-knowing, while others govern the arts and science. I happen to be a water mage."),
-                ChatItem(profile: .trainer, chat: "Let's see, there's Maxel, Mywren, and Malana, our Mystics in training who I am personally mentoring..."),
-                ChatItem(profile: .hero, imgPos: .left, chat: "Mmmkay. Got it 🥱"),
-                ChatItem(profile: .trainer, chat: "Moving on. I received a visitor while I was in the Dark Realm. He didn't say who he was, but I think he might be connected to the disappearance."),
-                ChatItem(profile: .hero, imgPos: .left, chat: "Water mage... like a fish? A marlin is a fish."),
-                ChatItem(profile: .trainer, chat: "Enough with the fish! We need to be on the lookout for the mysterious figure. Likely he holds the key to this mystery."),
-                ChatItem(profile: .hero, imgPos: .left, chat: "What's he look like?"),
-                ChatItem(profile: .trainer, chat: "Hmm. If you run into someone who looks mysterious, It's probably him.")
-            ]) { [unowned self] in
-                handleDialogueCompletion(level: level, completion: completion)
+            chapterTitleSprite.setChapter(1)
+            chapterTitleSprite.showTitle { [unowned self] in
+                sendChatArray(items: [
+                    ChatItem(profile: .hero, imgPos: .left, chat: "Merlin! C'mon, we gotta go."),
+                    ChatItem(profile: .trainer, chat: "The name's Marlin. MARLIN THE MAGNIFICENT! Not Merlin. Not dude. Not crusty old man!"),
+                    ChatItem(profile: .hero, imgPos: .left, chat: "Oh! Marlin like the fish??? I hate fish by the way. The smell, the texture..."),
+                    ChatItem(profile: .trainer, chat: "No. Not like the fish. Marlin like... the Magician. You see, in my world I am what is known as a Mystic."),
+                    ChatItem(profile: .trainer, chat: "As a matter of fact, I come from a long line of legendary and powerful Mystics, each with our own unique powers and abilities..."),
+                    ChatItem(profile: .hero, imgPos: .left, chat: "Oh, wait. You're thinking of Merlin the Magician."),
+                    ChatItem(profile: .trainer, chat: "Some Mystics control the elements: fire, water, air.. Some are all-knowing, while others govern the arts and science. I happen to be a water mage."),
+                    ChatItem(profile: .trainer, chat: "Let's see, there's Maxel, Mywren, and Malana, our Mystics in training who I am personally mentoring..."),
+                    ChatItem(profile: .hero, imgPos: .left, chat: "Mmmkay. Got it 🥱"),
+                    ChatItem(profile: .trainer, chat: "Moving on. I received a visitor while I was in the Dark Realm. He didn't say who he was, but I think he might be connected to the disappearance."),
+                    ChatItem(profile: .hero, imgPos: .left, chat: "Water mage... like a fish? A marlin is a fish."),
+                    ChatItem(profile: .trainer, chat: "Enough with the fish! We need to be on the lookout for the mysterious figure. Likely he holds the key to this mystery."),
+                    ChatItem(profile: .hero, imgPos: .left, chat: "What's he look like?"),
+                    ChatItem(profile: .trainer, chat: "Hmm. If you run into someone who looks mysterious, It's probably him.")
+                ]) { [unowned self] in
+                    handleDialogueCompletion(level: level, completion: completion)
+                }
             }
         case 112:
             sendChatArray(items: [
@@ -1023,6 +1034,11 @@ extension ChatEngine {
                 ChatItem(profile: .trainer, chat: "Oh sweet child! Don't worry, we're coming to get you!!"),
                 ChatItem(profile: .trainer, chat: "Wait..... They're gone. Never mind. Let's go!")
             ]) { [unowned self] in
+                handleDialogueCompletion(level: level, completion: completion)
+            }
+        case 201:
+            chapterTitleSprite.setChapter(2)
+            chapterTitleSprite.showTitle { [unowned self] in
                 handleDialogueCompletion(level: level, completion: completion)
             }
         case 221:
@@ -1266,11 +1282,14 @@ extension ChatEngine {
                 }
             }
             else { //PART 2
-                sendChatArray(items: [
-                    ChatItem(profile: .hero, imgPos: .left, chat: "Ok i'm done."),
-                    ChatItem(profile: .trainer, chat: "Buenissimo!")
-                ]) { [unowned self] in
-                    handleDialogueCompletion(level: level, completion: completion)
+                chapterTitleSprite.setChapter(3)
+                chapterTitleSprite.showTitle { [unowned self] in
+                    sendChatArray(items: [
+                        ChatItem(profile: .hero, imgPos: .left, chat: "Ok i'm done."),
+                        ChatItem(profile: .trainer, chat: "Buenissimo!")
+                    ]) { [unowned self] in
+                        handleDialogueCompletion(level: level, completion: completion)
+                    }
                 }
             }
 //        case 314:
@@ -1299,6 +1318,11 @@ extension ChatEngine {
 //                    handleDialogueCompletion(level: level, completion: completion)
 //                }
 //            }
+        case 401:
+            chapterTitleSprite.setChapter(4)
+            chapterTitleSprite.showTitle { [unowned self] in
+                handleDialogueCompletion(level: level, completion: completion)
+            }
         default:
             isChatting = false
             completion?(nil)

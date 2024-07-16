@@ -578,11 +578,21 @@ class GameScene: SKScene {
         // FIXME: - Party Levels is 998 items enough??? Don't want to run out of spawning items...
         let maxSpawnedItemsForParty = 998
         
+        let numMovesSprite = NumMovesSprite(numMoves: gameEngine.level.moves,
+                                            position: CGPoint(x: K.ScreenDimensions.size.width / 2, y: GameboardSprite.offsetPosition.y * 3 / 2),
+                                            isPartyLevel: Level.isPartyLevel(currentLevel))
+        
         guard !Level.isPartyLevel(currentLevel) || (lastCurrentLevel != nil && lastCurrentLevel! <= (Level.partyMinLevelRequired + 1)) else {
             gameEngine.spawnPartyItems(maxItems: maxSpawnedItemsForParty)
+            numMovesSprite.play(superScene: self, completion: nil)
+
             return
         }
-        guard chatEngine.shouldPauseGame(level: currentLevel) else { return }
+        guard chatEngine.shouldPauseGame(level: currentLevel) else {
+            numMovesSprite.play(superScene: self, completion: nil)
+
+            return
+        }
         guard gameEngine.canContinue else { return }
 
         scoringEngine.timerManager.pauseTime()
@@ -612,6 +622,7 @@ class GameScene: SKScene {
                 gameEngine.shouldDisableInput(false)
                 gameEngine.spawnPartyItems(maxItems: maxSpawnedItemsForParty)
                 pauseResetEngine.shouldDisable(false)
+                numMovesSprite.play(superScene: self, completion: nil)
             }
         }
     }

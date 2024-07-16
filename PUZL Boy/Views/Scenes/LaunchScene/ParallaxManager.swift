@@ -67,7 +67,7 @@ class ParallaxManager: SKNode {
         case .grass:
             parallaxSprites = makeSprite(layers: 6, size: CGSize(width: 8192, height: 1550), skyObjectNodes: [2, 4])
         case .marsh:
-            parallaxSprites = makeSprite(layers: 5, size: CGSize(width: 8192, height: 1847), skyObjectNodes: [3, 4])
+            parallaxSprites = makeSprite(layers: 5, size: CGSize(width: 8192, height: 1823), skyObjectNodes: [3, 4])
         case .ice:
             parallaxSprites = makeSprite(layers: 5, size: CGSize(width: 8192, height: 1824), skyObjectNodes: [3, 4])
         case .sand:

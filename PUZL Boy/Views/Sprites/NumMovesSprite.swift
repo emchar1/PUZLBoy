@@ -62,7 +62,7 @@ class NumMovesSprite: SKNode {
     
     // MARK: - Functions
     
-    func play(completion: @escaping (() -> Void)) {
+    func play(superScene: SKScene, completion: (() -> Void)?) {
         let animationGroup = SKAction.group([
             SKAction.move(to: CGPoint(x: position.x, y: position.y + 250), duration: 1),
             SKAction.fadeAlpha(to: 0, duration: 1)
@@ -70,9 +70,14 @@ class NumMovesSprite: SKNode {
         
         let animationSequence = SKAction.sequence([
             SKAction.wait(forDuration: 0.5),
-            animationGroup
+            animationGroup,
+            SKAction.removeFromParent()
         ])
         
-        run(animationSequence, completion: completion)
+        superScene.addChild(self)
+        
+        run(animationSequence) {
+            completion?()
+        }
     }
 }
