@@ -85,6 +85,7 @@ class ParticleEngine: SKNode {
                           alpha: CGFloat = 1,
                           colorSequence: SKKeyframeSequence? = nil,
                           alphaSequence: SKKeyframeSequence? = nil,
+                          emissionAngleRangeDegrees: CGFloat? = nil,
                           zPosition: CGFloat = K.ZPosition.itemsAndEffects + 10,
                           nameGameboardPosition: K.GameboardPosition? = nil,
                           duration: TimeInterval)
@@ -108,6 +109,10 @@ class ParticleEngine: SKNode {
         
         if let alphaSequence = alphaSequence {
             particles.particleAlphaSequence = alphaSequence
+        }
+        
+        if let emissionAngleRangeDegrees = emissionAngleRangeDegrees {
+            particles.emissionAngleRange = emissionAngleRangeDegrees.toRadians()
         }
         
         node.addChild(particles)

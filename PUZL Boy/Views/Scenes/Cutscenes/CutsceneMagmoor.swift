@@ -217,8 +217,7 @@ class CutsceneMagmoor: Cutscene {
         let elderMagmoorPanPause: TimeInterval = 1.1
         let magmoorDialoguePause: TimeInterval = 5.3
         
-        let forcefieldExtraPause: TimeInterval = 0.4
-        let forcefieldSpawnPause: TimeInterval = warpPause + zoomInPause + holdPause + thirdPause + attackPause + elderDialoguePause + elderMagmoorPanPause + magmoorDialoguePause + forcefieldExtraPause //6 + 2 + 6 + 3 + 3 + 6.2 + 1.1 + 5.3 + 0.4 = 33.0s
+        let forcefieldSpawnPause: TimeInterval = warpPause + zoomInPause + holdPause + thirdPause + attackPause + elderDialoguePause + elderMagmoorPanPause + magmoorDialoguePause //6 + 2 + 6 + 3 + 3 + 6.2 + 1.1 + 5.3 = 32.6s
         let forcefieldDuration: TimeInterval = 8
         
         
@@ -283,7 +282,7 @@ class CutsceneMagmoor: Cutscene {
                 
                 wideShotWithRedWarp(magmoorPosition: rightPlayerPositionFinal)
             },
-            SKAction.wait(forDuration: attackPause + forcefieldDuration + forcefieldExtraPause),
+            SKAction.wait(forDuration: attackPause + forcefieldDuration),
             SKAction.run { [unowned self] in
                 speechPlayerLeft.updateTailOrientation(.bottomRight)
                 speechPlayerLeft.position.x = leftPlayerPositionInitial.x - 150
@@ -347,7 +346,7 @@ class CutsceneMagmoor: Cutscene {
                 SKAction.wait(forDuration: thirdPause + 2 + elderDialoguePause),
                 SKAction.moveBy(x: -screenSize.width, y: 0, duration: 0.25),
                 SKAction.wait(forDuration: magmoorDialoguePause),
-                SKAction.wait(forDuration: attackPause + forcefieldDuration + forcefieldExtraPause)
+                SKAction.wait(forDuration: attackPause + forcefieldDuration)
             ])
         }
 
@@ -887,6 +886,7 @@ class CutsceneMagmoor: Cutscene {
                                                angle: angle,
                                                colorSequence: colorSequence,
                                                alphaSequence: alphaSequence,
+                                               emissionAngleRangeDegrees: shouldBanish ? 8 : nil,
                                                zPosition: 0,
                                                duration: 0)
 
