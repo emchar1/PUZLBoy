@@ -109,8 +109,8 @@ class AudioManager {
         addAudioItem("enemyice", category: .soundFX)
         addAudioItem("enemyroar", category: .soundFX)
         addAudioItem("enemyscratch", category: .soundFX)
-        addAudioItem("forcefield", category: .soundFX) //needs purchase $1
-        addAudioItem("forcefield2", category: .soundFX) //needs purchase $2
+        addAudioItem("forcefield", category: .soundFX)
+        addAudioItem("forcefield2", category: .soundFX)
         addAudioItem("gemcollect", category: .soundFX)
         addAudioItem("gemcollectparty", category: .soundFX)
         addAudioItem("gemcollectparty2x", category: .soundFX)
@@ -124,15 +124,15 @@ class AudioManager {
         addAudioItem("lightsoff", category: .soundFX)
         addAudioItem("lightson", category: .soundFX)
         addAudioItem("magicblast", category: .soundFX)
-        addAudioItem("magicdisappear", category: .soundFX) //needs purchase $1
-        addAudioItem("magicelderbanish", category: .soundFX) //needs purchase $1
-        addAudioItem("magicelderexplosion", category: .soundFX) //needs purchase $1
-        addAudioItem("magicelderreduce", category: .soundFX) //needs purchase $1
+        addAudioItem("magicdisappear", category: .soundFX)
+        addAudioItem("magicelderbanish", category: .soundFX)
+        addAudioItem("magicelderexplosion", category: .soundFX)
+        addAudioItem("magicelderreduce", category: .soundFX)
         addAudioItem("magichorrorimpact", category: .soundFX)
         addAudioItem("magicteleport", category: .soundFX)
         addAudioItem("magicteleport2", category: .soundFX)
         addAudioItem("magicwarp", category: .soundFX)
-        addAudioItem("magicwarp2", category: .soundFX) //needs purchase $1
+        addAudioItem("magicwarp2", category: .soundFX)
         addAudioItem("marlinblast", category: .soundFX)
         addAudioItem("moveglide", category: .soundFX)
         addAudioItem("movemarsh1", category: .soundFX)
@@ -175,6 +175,7 @@ class AudioManager {
         addAudioItem("waterdrown", category: .soundFX)
         addAudioItem("winlevel", category: .soundFX)
         addAudioItem("winlevelice", category: .soundFX)
+        addAudioItem("winlevel3stars", category: .soundFX)
         addAudioItem("wompwomp", category: .soundFX) //Test. Delete i'm sure because it's $5!
 
         
@@ -189,7 +190,7 @@ class AudioManager {
         addAudioItem("ageofruin2", category: .musicNoLoop)
         addAudioItem("gameover", category: .musicNoLoop)
         addAudioItem("gameoverice", category: .musicNoLoop)
-        addAudioItem("titlechapter", category: .musicNoLoop) //needs purchase $9
+        addAudioItem("titlechapter", category: .musicNoLoop)
         addAudioItem("titletheme", category: .musicNoLoop)
 
         
