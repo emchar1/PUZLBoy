@@ -148,7 +148,7 @@ class CreditsScene: SKScene {
         headingLabel.zPosition = K.ZPosition.itemsPoints
         headingLabel.addDropShadow()
         
-        allRightsLabel = SKLabelNode(text: "©2024 5Play Apps, LLC. All rights reserved.")
+        allRightsLabel = SKLabelNode(text: "© 2024 5Play Apps, LLC. All rights reserved.")
         allRightsLabel.position = CGPoint(x: screenSize.width / 2, y: screenSize.height * 1 / 9)
         allRightsLabel.horizontalAlignmentMode = .center
         allRightsLabel.verticalAlignmentMode = .top

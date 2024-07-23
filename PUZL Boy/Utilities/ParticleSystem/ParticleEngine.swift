@@ -40,11 +40,12 @@ class ParticleEngine: SKNode {
         case itemPickup = "ItemPickupParticles"
         case lavaAppear = "LavaAppearParticles"
         case lavaSizzle = "LavaSizzleParticles"
-        case limbo = "LimboParticles"
         case magicBlast = "MagicBlastParticles"
         case magicBlastLite = "MagicBlastLiteParticles"
         case magicElderExplosion = "MagicElderExplosionParticles"
         case magicElderExplosionStars = "MagicElderStarsParticles"
+        case magicElderIce = "MagicElderIceParticles"
+        case magicElderEarth = "MagicElderEarthParticles"
         case magicElder = "MagicElderParticles"
         case magicExplosion = "MagicExplosionParticles"
         case magicLight = "MagicLightParticles" // FIXME: - Testing for Marlin Magic
