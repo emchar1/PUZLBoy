@@ -960,7 +960,7 @@ extension ChatEngine {
                     ChatItem(profile: .trainer, chat: "As a matter of fact, I come from a long line of legendary and powerful Mystics, each with our own unique powers and abilities..."),
                     ChatItem(profile: .hero, imgPos: .left, chat: "Oh, wait. You're thinking of Merlin the Magician."),
                     ChatItem(profile: .trainer, chat: "Some Mystics control the elements: fire, water, air.. Some are all-knowing, while others govern the arts and science. I happen to be a water mage."),
-                    ChatItem(profile: .trainer, chat: "Let's see, there's Maxel, Mywren, and Malana, our Mystics in training who I am personally mentoring..."),
+                    ChatItem(profile: .trainer, chat: "Let's see, there's Maxel, Mawren, and Malana, our Mystics in training who I am personally mentoring..."),
                     ChatItem(profile: .hero, imgPos: .left, chat: "Mmmkay. Got it 🥱"),
                     ChatItem(profile: .trainer, chat: "Moving on. I received a visitor while I was in the Dark Realm. He didn't say who he was, but I think he might be connected to the disappearance."),
                     ChatItem(profile: .hero, imgPos: .left, chat: "Water mage... like a fish? A marlin is a fish."),
