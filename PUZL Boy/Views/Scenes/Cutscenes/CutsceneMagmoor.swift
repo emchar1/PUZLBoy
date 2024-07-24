@@ -30,7 +30,12 @@ class CutsceneMagmoor: Cutscene {
         CGPoint(x: screenSize.width * 4/5,
                 y: screenSize.height * (1/4 + (1/3 * 0.5)) + 282 * 1/2 * 0.5) //282 instead of playerLeft.sprite.size.height
     }
-    
+
+    private var subtitlePosition: CGPoint {
+        CGPoint(x: screenSize.width * 1/2,
+                y: screenSize.height * 1/2 - 300)
+    }
+
     private var elder1: Player!
     private var elder2: Player!
     private var redWarp: SKSpriteNode!
@@ -230,7 +235,7 @@ class CutsceneMagmoor: Cutscene {
                 
         setupRealm(sprite: &forestRealmSprite, scaleMultiplier: 0.5, zPosition: 15)
         setupRealm(sprite: &lavaRealmSprite, scaleMultiplier: 0.5, zPosition: 10)
-        setupRealm(sprite: &iceRealmSprite, scaleMultiplier: 1, zPosition: 5)
+        setupRealm(sprite: &iceRealmSprite, scaleMultiplier: 0.5, zPosition: 5)
 
         backgroundNode.addChild(whiteBackgroundNode)
 
@@ -265,8 +270,8 @@ class CutsceneMagmoor: Cutscene {
         //Timing Properties
         let warpPause: TimeInterval = 6
         let zoomInPause: TimeInterval = 3
-        let holdPause: TimeInterval = 6
-        let thirdPause: TimeInterval = 3
+        let holdPause: TimeInterval = 7
+        let thirdPause: TimeInterval = 2
         let attackPause: TimeInterval = 3
         let elderPauses: TimeInterval = warpPause + zoomInPause + holdPause + thirdPause + 2 //why extra 2s??? cannot be anything else!
 
@@ -275,7 +280,7 @@ class CutsceneMagmoor: Cutscene {
         let magmoorDialoguePause: TimeInterval = 5.3
         
         let forcefieldOffsetDuration: TimeInterval = 1.5
-        let forcefieldSpawnPause: TimeInterval = warpPause + zoomInPause + holdPause + thirdPause + attackPause + elderDialoguePause + elderMagmoorPanPause + magmoorDialoguePause + forcefieldOffsetDuration//6 + 2 + 6 + 3 + 3 + 6.2 + 1.1 + 5.3 + 1.5 = 34.1s
+        let forcefieldSpawnPause: TimeInterval = warpPause + zoomInPause + holdPause + thirdPause + attackPause + elderDialoguePause + elderMagmoorPanPause + magmoorDialoguePause + forcefieldOffsetDuration//6 + 3 + 7 + 2 + 3 + 6.2 + 1.1 + 5.3 + 1.5 = 35.1s
         let forcefieldDuration: TimeInterval = 8
 
         //IMPORTANT: any animatePlayerWithTextures() should always be called FIRST, before any other SKActions!!
@@ -385,6 +390,7 @@ class CutsceneMagmoor: Cutscene {
             SKAction.wait(forDuration: 0.25),
             SKAction.run { [unowned self] in
                 wideShotElderBanish2()
+                hideBloodSky(fadeDuration: 3.5)
             },
             SKAction.wait(forDuration: 3.5), //random pause value #3
             SKAction.run { [unowned self] in
@@ -531,6 +537,8 @@ class CutsceneMagmoor: Cutscene {
         //Magmoor
         let farMagmoorScale: CGFloat = 0.1
         let nearMagmoorScale: CGFloat = 0.8
+        let magmoorFadeInDuration: TimeInterval = 2.5
+        let subtitleMagmoor = CutsceneSubtitle(text: "Magmoor", color: .red, position: subtitlePosition)
         
         func magmoorTeleport(endPoint: CGPoint) -> SKAction {
             let faceDirection: CGFloat = Bool.random() ? 1 : -1
@@ -557,7 +565,7 @@ class CutsceneMagmoor: Cutscene {
             }
         ])
         
-        let magmoorFadeInAction: SKAction = SKAction.sequence([
+        let magmoorFadeInAction: SKAction = SKAction.sequence([ //2.5s in total
             SKAction.fadeAlpha(to: 0, duration: 0.05),
             SKAction.fadeAlpha(to: 0.1, duration: 0.05),
             SKAction.fadeAlpha(to: 0, duration: 0.05),
@@ -576,6 +584,11 @@ class CutsceneMagmoor: Cutscene {
             SKAction.fadeAlpha(to: 1, duration: 0.5)
         ])
         
+        subtitleMagmoor.showSubtitle(to: backgroundNode,
+                                     waitDuration: holdPause - magmoorFadeInDuration - 0.75 - 1,
+                                     fadeDuration: 1,
+                                     delay: warpPause + zoomInPause + magmoorFadeInDuration)
+        
         playerRight.sprite.run(SKAction.repeatForever(SKAction.sequence([
             SKAction.moveBy(x: 0, y: 15, duration: 1 + TimeInterval.random(in: 0...1)),
             SKAction.moveBy(x: 0, y: -15, duration: 1 + TimeInterval.random(in: 0...1))
@@ -585,11 +598,11 @@ class CutsceneMagmoor: Cutscene {
             SKAction.wait(forDuration: warpPause + zoomInPause + 1),
             SKAction.moveTo(y: screenSize.height / 2, duration: 0),
             SKAction.group([
-                SKAction.scaleX(to: -playerRight.scaleMultiplier * Player.cutsceneScale * 1.75, duration: 2.5),
-                SKAction.scaleY(to: playerRight.scaleMultiplier * Player.cutsceneScale * 1.75, duration: 2.5),
+                SKAction.scaleX(to: -playerRight.scaleMultiplier * Player.cutsceneScale * 1.75, duration: magmoorFadeInDuration),
+                SKAction.scaleY(to: playerRight.scaleMultiplier * Player.cutsceneScale * 1.75, duration: magmoorFadeInDuration),
                 magmoorFadeInAction
             ]),
-            SKAction.wait(forDuration: holdPause - 2.5 - 0.75), //why the extra 0.75???
+            SKAction.wait(forDuration: holdPause - magmoorFadeInDuration - 0.75), //why the extra 0.75???
             SKAction.group([
                 SKAction.moveTo(y: rightPlayerPositionInitial.y, duration: 0),
                 SKAction.scaleX(to: -farMagmoorScale, duration: 0),
@@ -659,8 +672,6 @@ class CutsceneMagmoor: Cutscene {
     private func playScene3() {
         let scaleDuration: TimeInterval = 8
         
-        hideBloodSky(fadeDuration: 0)
-
         parallaxManager.backgroundSprite.removeAllActions()
         setParallaxPositionAndScale(scale: 1)
 
@@ -670,7 +681,7 @@ class CutsceneMagmoor: Cutscene {
         parallaxManager.backgroundSprite.position.x = -screenSize.width
         
         parallaxManager.backgroundSprite.run(SKAction.group([
-            SKAction.move(to: CGPoint(x: -screenSize.width / 2, y: screenSize.height / 4), duration: scaleDuration),
+            SKAction.move(to: CGPoint(x: -screenSize.width / 4, y: screenSize.height / 4), duration: scaleDuration),
             SKAction.scale(to: 0.5, duration: scaleDuration)
         ]))
         
@@ -701,14 +712,17 @@ class CutsceneMagmoor: Cutscene {
     // MARK: - Scene #1 Helper Functions
     
     private func setupElders() {
-        playerLeft.sprite.position = CGPoint(x: screenSize.width / 2, y: screenSize.height / 2 - 100)
+        playerLeft.sprite.position = CGPoint(x: screenSize.width / 2 - 200, y: screenSize.height / 2 - 350)
         playerLeft.sprite.setScale(0.5)
+        playerLeft.sprite.zRotation = 3/4 * .pi
         playerLeft.sprite.color = .systemBlue
         playerLeft.sprite.colorBlendFactor = 1
         playerLeft.sprite.alpha = 0
 
         elder1.sprite.position = CGPoint(x: screenSize.width / 2, y: screenSize.height / 2 + 50)
         elder1.sprite.setScale(0.5)
+        elder1.sprite.color = .orange
+        elder1.sprite.colorBlendFactor = 1
         elder1.sprite.alpha = 0
 
         elder2.sprite.position = CGPoint(x: 536 + 25, y: screenSize.height / 4 + elder2.sprite.size.height / 2 * 0.5 + 512 + 100)
@@ -719,13 +733,25 @@ class CutsceneMagmoor: Cutscene {
     }
     
     private func animateElders(letterboxDuration: TimeInterval, cutsceneDuration: TimeInterval, fadeDuration: TimeInterval) {
+
+        //Ice Elder
+        let shakeDuration: TimeInterval = 0.01
+        let totalShakeDuration: TimeInterval = 1
+        let rotateDuration: TimeInterval = 0.3
+        
+        let subtitleIceMystic = CutsceneSubtitle(text: "Melchior", color: .cyan, position: subtitlePosition)
+        subtitleIceMystic.showSubtitle(to: backgroundNode,
+                                       waitDuration: cutsceneDuration - 2 * fadeDuration - totalShakeDuration,
+                                       fadeDuration: fadeDuration,
+                                       delay: letterboxDuration + 2 * cutsceneDuration + fadeDuration + totalShakeDuration)
+        
         playerLeft.sprite.run(SKAction.sequence([
             SKAction.wait(forDuration: letterboxDuration + 2 * cutsceneDuration),
             SKAction.fadeIn(withDuration: fadeDuration),
             SKAction.repeat(SKAction.sequence([
-                SKAction.moveBy(x: -10, y: 0, duration: 0.01),
-                SKAction.moveBy(x: 10, y: 0, duration: 0.01),
-            ]), count: Int(1 / 0.02)),
+                SKAction.moveBy(x: -10, y: 0, duration: shakeDuration),
+                SKAction.moveBy(x: 10, y: 0, duration: shakeDuration),
+            ]), count: Int(totalShakeDuration / (2 * shakeDuration))),
             SKAction.run { [unowned self] in
                 animatePlayerWithTextures(player: &playerLeft, textureType: .idle, timePerFrame: 0.1, shouldRemovePreviousActions: false)
                 AudioManager.shared.playSound(for: "enemyice")
@@ -734,29 +760,71 @@ class CutsceneMagmoor: Cutscene {
                                                        position: .zero,
                                                        scale: 2,
                                                        zPosition: 1,
-                                                       duration: 1)
+                                                       duration: 0)
             },
-            SKAction.colorize(withColorBlendFactor: 0, duration: 1),
-            SKAction.wait(forDuration: cutsceneDuration - fadeDuration - 2),
+            SKAction.group([
+                SKAction.sequence([
+                    SKAction.moveTo(y: screenSize.height / 2 + 100, duration: 2/3 * rotateDuration),
+                    SKAction.moveTo(y: screenSize.height / 2 + 50, duration: 1/3 * rotateDuration)
+                ]),
+                SKAction.moveTo(x: screenSize.width / 2, duration: rotateDuration),
+                SKAction.rotate(toAngle: 0, duration: rotateDuration),
+                SKAction.colorize(withColorBlendFactor: 0, duration: fadeDuration),
+            ]),
+            SKAction.wait(forDuration: cutsceneDuration - 2 * fadeDuration - totalShakeDuration),
             SKAction.fadeOut(withDuration: fadeDuration)
         ]))
+
         
-        animatePlayerWithTextures(player: &elder1, textureType: .idle, timePerFrame: 0.09)
+        //Fire Elder
+        let subtitleFireMystic = CutsceneSubtitle(text: "Magmus", color: .orange, position: subtitlePosition)
+        subtitleFireMystic.showSubtitle(to: backgroundNode,
+                                        waitDuration: cutsceneDuration - 2 * fadeDuration,
+                                        fadeDuration: fadeDuration,
+                                        delay: letterboxDuration + cutsceneDuration + fadeDuration)
+        
         elder1.sprite.run(SKAction.sequence([
-            SKAction.wait(forDuration: letterboxDuration + cutsceneDuration + fadeDuration),
-            SKAction.fadeIn(withDuration: fadeDuration),
-            SKAction.wait(forDuration: cutsceneDuration - fadeDuration * 2),
+            SKAction.wait(forDuration: letterboxDuration + cutsceneDuration),
+            SKAction.run { [unowned self] in
+                animatePlayerWithTextures(player: &elder1, textureType: .idle, timePerFrame: 0.09, shouldRemovePreviousActions: false)
+                ParticleEngine.shared.animateParticles(type: .magicElderFire,
+                                                       toNode: backgroundNode,
+                                                       position: elder1.sprite.position + CGPoint(x: -400, y: 200),
+                                                       scale: 2,
+                                                       zPosition: K.ZPosition.itemsAndEffects,
+                                                       duration: 0)
+            },
+            SKAction.wait(forDuration: fadeDuration),
+            SKAction.run { [unowned self] in
+                AudioManager.shared.playSound(for: "enemyflame")
+                ParticleEngine.shared.animateParticles(type: .magicElderFire2,
+                                                       toNode: backgroundNode,
+                                                       position: elder1.sprite.position + CGPoint(x: 0, y: -50),
+                                                       scale: 1,
+                                                       zPosition: K.ZPosition.itemsAndEffects + 2,
+                                                       duration: 0)
+            },
+            SKAction.fadeIn(withDuration: fadeDuration / 2),
+            SKAction.colorize(withColorBlendFactor: 0, duration: fadeDuration / 2),
+            SKAction.wait(forDuration: cutsceneDuration - 2 * fadeDuration),
             SKAction.fadeOut(withDuration: fadeDuration)
         ]))
-                
+
+        
+        //Earth Elder
+        let moveDuration: TimeInterval = 0.25
+        
+        let subtitleEarthMystic = CutsceneSubtitle(text: "Merton", color: .systemPink.lightenColor(factor: 10), position: subtitlePosition)
+        subtitleEarthMystic.showSubtitle(to: backgroundNode,
+                                         waitDuration: cutsceneDuration - 2 * fadeDuration - 2 * moveDuration,
+                                         fadeDuration: fadeDuration,
+                                         delay: letterboxDuration + fadeDuration + 2 * moveDuration)
+        
         elder2.sprite.run(SKAction.sequence([
             SKAction.wait(forDuration: letterboxDuration),
             SKAction.fadeIn(withDuration: fadeDuration),
-            SKAction.moveBy(x: 50, y: 0, duration: 0.25),
-            SKAction.group([
-                SKAction.moveBy(x: 0, y: -100, duration: 0.25),
-                SKAction.colorize(withColorBlendFactor: 0, duration: 0.25)
-            ]),
+            SKAction.moveBy(x: 50, y: 0, duration: moveDuration),
+            SKAction.moveBy(x: 0, y: -100, duration: moveDuration),
             SKAction.run { [unowned self] in
                 animatePlayerWithTextures(player: &elder2, textureType: .idle, timePerFrame: 0.05, shouldRemovePreviousActions: false)
                 AudioManager.shared.playSound(for: "boyimpact")
@@ -767,7 +835,8 @@ class CutsceneMagmoor: Cutscene {
                                                        zPosition: 1,
                                                        duration: 0)
             },
-            SKAction.wait(forDuration: cutsceneDuration - fadeDuration - 0.5),
+            SKAction.colorize(withColorBlendFactor: 0, duration: fadeDuration),
+            SKAction.wait(forDuration: cutsceneDuration - 2 * fadeDuration - 2 * moveDuration),
             SKAction.fadeOut(withDuration: fadeDuration)
         ]))
     }
