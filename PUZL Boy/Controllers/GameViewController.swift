@@ -52,7 +52,7 @@ class GameViewController: UIViewController {
         skView.showsNodeCount = true
         
 //        // FIXME: - Go straight to CutsceneMagmoor. DELETE BEFORE SHIPPING!
-//        let cutsceneMagmoor = CutsceneMagmoor(size: K.ScreenDimensions.size, playerLeft: .elder0, playerRight: .villain, xOffsetsArray: nil)
+//        let cutsceneMagmoor = CutsceneMagmoor()
 //        cutsceneMagmoor.animateScene(completion: nil)
 //        skView.ignoresSiblingOrder = true
 //        skView.presentScene(cutsceneMagmoor)
@@ -118,10 +118,7 @@ extension GameViewController: AuthorizationRequestSceneDelegate {
                         if !UserDefaults.standard.bool(forKey: K.UserDefaults.shouldSkipIntro) {
                             
                             //Initialize cutsceneIntro here to give it time to load everything before launchScene finishes animating the transition!
-                            cutsceneIntro = CutsceneIntro(size: K.ScreenDimensions.size,
-                                                          playerLeft: .hero,
-                                                          playerRight: .princess,
-                                                          xOffsetsArray: nil)
+                            cutsceneIntro = CutsceneIntro()
 
                             launchScene?.animateTransition(animationSequence: .running) { xOffsetsArray in
                                 guard let xOffsetsArray = xOffsetsArray else { return }

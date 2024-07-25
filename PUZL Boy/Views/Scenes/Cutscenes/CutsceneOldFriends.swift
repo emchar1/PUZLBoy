@@ -18,6 +18,16 @@ class CutsceneOldFriends: Cutscene {
     
     // MARK: - Initialization
     
+    init() {
+        super.init(size: K.ScreenDimensions.size, playerLeft: .youngTrainer, playerRight: .youngVillain, xOffsetsArray: nil)
+        
+        //Custom implementation here, if needed.
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func setupScene() {
         super.setupScene()
         

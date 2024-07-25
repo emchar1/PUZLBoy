@@ -33,8 +33,8 @@ class CutsceneIntro: Cutscene {
     
     // MARK: - Initialization
     
-    override init(size: CGSize, playerLeft: Player.PlayerType, playerRight: Player.PlayerType, xOffsetsArray: [ParallaxSprite.SpriteXPositions]?) {
-        super.init(size: size, playerLeft: playerLeft, playerRight: playerRight, xOffsetsArray: xOffsetsArray)
+    init() {
+        super.init(size: K.ScreenDimensions.size, playerLeft: .hero, playerRight: .princess, xOffsetsArray: nil)
         
         //Custom implementation here, if needed.
     }

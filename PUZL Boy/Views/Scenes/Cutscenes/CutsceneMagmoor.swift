@@ -44,6 +44,16 @@ class CutsceneMagmoor: Cutscene {
     
     // MARK: - Initialization
     
+    init() {
+        super.init(size: K.ScreenDimensions.size, playerLeft: .elder0, playerRight: .villain, xOffsetsArray: nil)
+        
+        //Custom implementation here, if needed.
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func setupScene() {
         super.setupScene()
                 
@@ -159,7 +169,7 @@ class CutsceneMagmoor: Cutscene {
         
         speechNarrator.setValues(color: .cyan.lightenColor(factor: 6), animationSpeed: 0.05)
         speechNarrator.setText(
-            text: "MARLIN: The Council consists of our forefathers, the Elders. Benevolent and wise, they created the laws that govern our Home Realm.",
+            text: "MARLIN: The Council consists of our forefathers, the Elders. Benevolent and wise, they created the laws that govern our HOME REALM.",
             superScene: self,
             completion: nil)
         
@@ -169,7 +179,7 @@ class CutsceneMagmoor: Cutscene {
             SKAction.wait(forDuration: scene1Length),
             SKAction.run { [unowned self] in
                 transitionScene(
-                    narrateText: "By summoning the Elders to the Ararian Desert, you sought to ambush them and usurp their power. But your miscalculation would cost you dearly!",
+                    narrateText: "By summoning the Elders to the Ararian Desert, Magmoor plotted to ambush them and usurp their power. But his miscalculation would cost him dearly!",
                     playScene: playScene2)
             }
         ]))
@@ -178,7 +188,7 @@ class CutsceneMagmoor: Cutscene {
             SKAction.wait(forDuration: scene1Length + scene2Length),
             SKAction.run { [unowned self] in
                 transitionScene(
-                    narrateText: "For your act of treason, they exiled you to the Limbo Realm for all eternity.........",
+                    narrateText: "For his unconscionable acts, the Elders banished Magmoor to the LIMBO REALM for all eternity.........",
                     playScene: playScene3)
             }
         ]))
@@ -325,7 +335,7 @@ class CutsceneMagmoor: Cutscene {
             SKAction.run { [unowned self] in
                 setTextArray(items: [
                     SpeechBubbleItem(profile: speechPlayerLeft, speed: 0.05, chat: "Stop this, Magmoor!! We outnumber you 3 to 1.||||"),
-                    SpeechBubbleItem(profile: speechPlayerRight, chat: "\"Outnumber,\" you say?!! Then let's try—||||/100 to 3!"),
+                    SpeechBubbleItem(profile: speechPlayerRight, chat: "\"Outnumber,\" you say?!! Then let's try—||||/3 to 100!"),
                     SpeechBubbleItem(profile: speechPlayerLeft, speed: 0.01, chat: "SHIELD!!")
                 ], completion: nil)
                 
