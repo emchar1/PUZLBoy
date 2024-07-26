@@ -202,6 +202,26 @@ class Cutscene: SKScene {
     }
     
     /**
+     Removes the previous texture animation and runs a new texture animation on the Player inout argument.
+     - parameters:
+        - player: the player object to animate.
+        - textureType: the type of animation texture to play.
+        - timePerFrame: the duration of each frame of the animation.
+        - repeatCount: number of times to play the animation, or -1 to repeat forever.
+     */
+    func animatePlayerWithTextures(player: inout Player,
+                                           textureType: Player.Texture,
+                                           timePerFrame: TimeInterval,
+                                           repeatCount: Int = -1) {
+        let key = "animatePlayerWithTexturesKey"
+        let animateAction = SKAction.animate(with: player.textures[textureType.rawValue], timePerFrame: timePerFrame)
+        let repeatAction = repeatCount == -1 ? SKAction.repeatForever(animateAction) : SKAction.repeat(animateAction, count: repeatCount)
+        
+        player.sprite.removeAction(forKey: key)
+        player.sprite.run(repeatAction, withKey: key)
+    }
+    
+    /**
      Simulates the background shaking due to an earthquake or some other life shattering event.
      - parameter duration: the length of time of the shake, which gets multiplied by 4, e.g. duration of 6 -> 6 x 4 =  24 seconds of actual shaking.
      - returns: SKAction of the shake event.

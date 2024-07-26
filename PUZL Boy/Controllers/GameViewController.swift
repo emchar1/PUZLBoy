@@ -51,11 +51,11 @@ class GameViewController: UIViewController {
         skView.showsFPS = true
         skView.showsNodeCount = true
         
-//        // FIXME: - Go straight to CutsceneMagmoor. DELETE BEFORE SHIPPING!
-//        let cutsceneMagmoor = CutsceneMagmoor()
-//        cutsceneMagmoor.animateScene(completion: nil)
+//        // FIXME: - Go straight to Cutscene. DELETE BEFORE SHIPPING!
+//        let cutsceneTest = CutsceneFlashback()
+//        cutsceneTest.animateScene(completion: nil)
 //        skView.ignoresSiblingOrder = true
-//        skView.presentScene(cutsceneMagmoor)
+//        skView.presentScene(cutsceneTest)
 //        view = skView
         
         

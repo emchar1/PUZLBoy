@@ -44,6 +44,7 @@
 		EA3467B129A99332002DDA02 /* LoadingSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA3467B029A99332002DDA02 /* LoadingSprite.swift */; };
 		EA3534892920612300C11FC0 /* DisplayStatusBarSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA3534882920612300C11FC0 /* DisplayStatusBarSprite.swift */; };
 		EA35348B29241FCD00C11FC0 /* LevelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA35348A29241FCD00C11FC0 /* LevelType.swift */; };
+		EA36F9F82C52B6730031DB9A /* CutsceneFlashback.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA36F9F72C52B6730031DB9A /* CutsceneFlashback.swift */; };
 		EA3951ED2938165A00D0B14A /* Extension+UIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA3951EC2938165A00D0B14A /* Extension+UIImage.swift */; };
 		EA3951F12939DE5900D0B14A /* ScoringEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA3951F02939DE5900D0B14A /* ScoringEngine.swift */; };
 		EA41F8352A0C7D8000DF47EC /* HowToPlayPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA41F8342A0C7D8000DF47EC /* HowToPlayPage.swift */; };
@@ -297,7 +298,7 @@
 		EAE43DA52C4B397100E6DB3C /* MagicElderEarthParticles.sks in Resources */ = {isa = PBXBuildFile; fileRef = EAE43DA42C4B397100E6DB3C /* MagicElderEarthParticles.sks */; };
 		EAE43DA72C4F585800E6DB3C /* MagicElderFireParticles.sks in Resources */ = {isa = PBXBuildFile; fileRef = EAE43DA62C4F585800E6DB3C /* MagicElderFireParticles.sks */; };
 		EAE43DA92C4F69EF00E6DB3C /* MagicElderFire2Particles.sks in Resources */ = {isa = PBXBuildFile; fileRef = EAE43DA82C4F69EF00E6DB3C /* MagicElderFire2Particles.sks */; };
-		EAE43DAB2C508F4300E6DB3C /* CutsceneSubtitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAE43DAA2C508F4300E6DB3C /* CutsceneSubtitle.swift */; };
+		EAE43DAB2C508F4300E6DB3C /* SubtitleLabelNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAE43DAA2C508F4300E6DB3C /* SubtitleLabelNode.swift */; };
 		EAE565AA29D6E0C700BC43CB /* TitleScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAE565A929D6E0C700BC43CB /* TitleScene.swift */; };
 		EAE6EC342A12D27F001842C6 /* buttontap7.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAE6EC332A12D27F001842C6 /* buttontap7.mp3 */; };
 		EAE919452A4CA4A800AF67D1 /* clocktick.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAE919442A4CA4A800AF67D1 /* clocktick.mp3 */; };
@@ -370,6 +371,7 @@
 		EA3467B029A99332002DDA02 /* LoadingSprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingSprite.swift; sourceTree = "<group>"; };
 		EA3534882920612300C11FC0 /* DisplayStatusBarSprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayStatusBarSprite.swift; sourceTree = "<group>"; };
 		EA35348A29241FCD00C11FC0 /* LevelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelType.swift; sourceTree = "<group>"; };
+		EA36F9F72C52B6730031DB9A /* CutsceneFlashback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CutsceneFlashback.swift; sourceTree = "<group>"; };
 		EA3951EC2938165A00D0B14A /* Extension+UIImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+UIImage.swift"; sourceTree = "<group>"; };
 		EA3951F02939DE5900D0B14A /* ScoringEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoringEngine.swift; sourceTree = "<group>"; };
 		EA41F8342A0C7D8000DF47EC /* HowToPlayPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HowToPlayPage.swift; sourceTree = "<group>"; };
@@ -618,7 +620,7 @@
 		EAE43DA42C4B397100E6DB3C /* MagicElderEarthParticles.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = MagicElderEarthParticles.sks; sourceTree = "<group>"; };
 		EAE43DA62C4F585800E6DB3C /* MagicElderFireParticles.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = MagicElderFireParticles.sks; sourceTree = "<group>"; };
 		EAE43DA82C4F69EF00E6DB3C /* MagicElderFire2Particles.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = MagicElderFire2Particles.sks; sourceTree = "<group>"; };
-		EAE43DAA2C508F4300E6DB3C /* CutsceneSubtitle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CutsceneSubtitle.swift; sourceTree = "<group>"; };
+		EAE43DAA2C508F4300E6DB3C /* SubtitleLabelNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubtitleLabelNode.swift; sourceTree = "<group>"; };
 		EAE565A929D6E0C700BC43CB /* TitleScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleScene.swift; sourceTree = "<group>"; };
 		EAE6EC332A12D27F001842C6 /* buttontap7.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = buttontap7.mp3; sourceTree = "<group>"; };
 		EAE919442A4CA4A800AF67D1 /* clocktick.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = clocktick.mp3; sourceTree = "<group>"; };
@@ -727,8 +729,8 @@
 			children = (
 				EADAC6072B835C38005EA008 /* Speech */,
 				EADAC6052B835C2A005EA008 /* Cutscene.swift */,
-				EAE43DAA2C508F4300E6DB3C /* CutsceneSubtitle.swift */,
 				EA496AAB2A79B25A0096DB35 /* CutsceneIntro.swift */,
+				EA36F9F72C52B6730031DB9A /* CutsceneFlashback.swift */,
 				EA9970712C0C494200BBAC96 /* CutsceneMagmoor.swift */,
 				EA77D3F72B72BF1600B77C42 /* CutsceneOldFriends.swift */,
 				EACD61C22B96E7990017F040 /* CutsceneImprisoned.swift */,
@@ -1244,6 +1246,7 @@
 				EAB2DE112AA0415D00172478 /* SpeechBubbleItem.swift */,
 				EAD59A532A88200800F86EED /* SpeechBubbleSprite.swift */,
 				EAB2DE132AA1AB8F00172478 /* SpeechOverlaySprite.swift */,
+				EAE43DAA2C508F4300E6DB3C /* SubtitleLabelNode.swift */,
 			);
 			path = Speech;
 			sourceTree = "<group>";
@@ -1604,7 +1607,7 @@
 				EAD19A002A9688E500A07A63 /* ParticleEngine.swift in Sources */,
 				EAF07C1029EA7B8C0034CD1A /* Extension+CGSize.swift in Sources */,
 				EA73001B2B604A13005BF98D /* MagmoorScarySprite.swift in Sources */,
-				EAE43DAB2C508F4300E6DB3C /* CutsceneSubtitle.swift in Sources */,
+				EAE43DAB2C508F4300E6DB3C /* SubtitleLabelNode.swift in Sources */,
 				EA94E87729C2DCE0009F2614 /* Extension+CGPoint.swift in Sources */,
 				EA826C81298CF3FF00F19F81 /* IAPManager.swift in Sources */,
 				EA956C6A29257B9C00879AD0 /* AudioManager.swift in Sources */,
@@ -1651,6 +1654,7 @@
 				EAB2DE182AA5119E00172478 /* FlyingDragon.swift in Sources */,
 				EA1D5A7029F219AA00677B06 /* Extension+SKNode.swift in Sources */,
 				EA95D1CB29541F7F0061059C /* AchievementRockNRoller.swift in Sources */,
+				EA36F9F82C52B6730031DB9A /* CutsceneFlashback.swift in Sources */,
 				EA95D208295F87120061059C /* AchievementHoarder.swift in Sources */,
 				EA826C87298E23A500F19F81 /* Player.swift in Sources */,
 				EA826C7C29858EBE00F19F81 /* ContinueSprite.swift in Sources */,

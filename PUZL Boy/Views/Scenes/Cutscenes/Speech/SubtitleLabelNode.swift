@@ -1,5 +1,5 @@
 //
-//  CutsceneSubtitle.swift
+//  SubtitleLabelNode.swift
 //  PUZL Boy
 //
 //  Created by Eddie Char on 7/23/24.
@@ -7,7 +7,7 @@
 
 import SpriteKit
 
-class CutsceneSubtitle: SKLabelNode {
+class SubtitleLabelNode: SKLabelNode {
     
     // MARK: - Properties
 

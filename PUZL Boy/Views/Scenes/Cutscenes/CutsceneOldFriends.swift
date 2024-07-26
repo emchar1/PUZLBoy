@@ -19,7 +19,7 @@ class CutsceneOldFriends: Cutscene {
     // MARK: - Initialization
     
     init() {
-        super.init(size: K.ScreenDimensions.size, playerLeft: .youngTrainer, playerRight: .youngVillain, xOffsetsArray: nil)
+        super.init(size: K.ScreenDimensions.size, playerLeft: .youngVillain, playerRight: .youngTrainer, xOffsetsArray: nil)
         
         //Custom implementation here, if needed.
     }
@@ -131,22 +131,10 @@ class CutsceneOldFriends: Cutscene {
         player.sprite.removeAllActions()
         
         player.sprite.run(SKAction.group([
-            animatePlayerWithTextures(player: player, textureType: .idle, timePerFrame: timePerFrame),
+            SKAction.repeatForever(SKAction.animate(with: player.textures[Player.Texture.idle.rawValue], timePerFrame: timePerFrame)),
             SKAction.rotate(toAngle: rotateClockwise * rotationRange + randomRotation, duration: duration),
             SKAction.scaleX(to: flipHorizontally * scale * scaleIncrease, y: scale * scaleIncrease, duration: duration)
         ]))
-    }
-    
-    /**
-     Helper function that returns an SKAction of an animation of a player object's texture array, repeated forever.
-     - parameters:
-        - player: the player object to animate.
-        - textureType: the type of animation texture to play.
-        - timePerFrame: the duration of each frame of the animation.
-     - returns: an SKAction of the animation.
-     */
-    private func animatePlayerWithTextures(player: Player, textureType: Player.Texture, timePerFrame: TimeInterval) -> SKAction {
-        return SKAction.repeatForever(SKAction.animate(with: player.textures[textureType.rawValue], timePerFrame: timePerFrame))
     }
     
     /**
@@ -313,8 +301,8 @@ class CutsceneOldFriends: Cutscene {
         let zoomDuration: TimeInterval = 0.25
         let timePerFrame: TimeInterval = 0.06 * 2
 
-        playerLeft.sprite.run(animatePlayerWithTextures(player: playerLeft, textureType: .idle, timePerFrame: timePerFrame))
-        playerMagmoor.sprite.run(animatePlayerWithTextures(player: playerMagmoor, textureType: .idle, timePerFrame: timePerFrame))
+        animatePlayerWithTextures(player: &playerLeft, textureType: .idle, timePerFrame: timePerFrame)
+        animatePlayerWithTextures(player: &playerMagmoor, textureType: .idle, timePerFrame: timePerFrame)
         
         run(SKAction.sequence([
             SKAction.wait(forDuration: waitBeforeTransformation),

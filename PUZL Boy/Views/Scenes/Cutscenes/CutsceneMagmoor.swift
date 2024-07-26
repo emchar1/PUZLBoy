@@ -98,34 +98,6 @@ class CutsceneMagmoor: Cutscene {
     // MARK: - Animate Functions
     
     /**
-     Helper function that removes all existing actions and runs an animation on the Player inout argument. Important to call this FIRST, before any other calls to SKAction because it removes any previous SKActions!!
-     - parameters:
-        - player: the player object to animate.
-        - textureType: the type of animation texture to play.
-        - timePerFrame: the duration of each frame of the animation.
-        - repeatCount: number of times to play the animation, or -1 to repeat forever.
-        - completion: handler to execute after the end of the animation. Note: if repeat forever, completion will never be called.
-     */
-    private func animatePlayerWithTextures(player: inout Player,
-                                           textureType: Player.Texture,
-                                           timePerFrame: TimeInterval,
-                                           repeatCount: Int = -1,
-                                           shouldRemovePreviousActions: Bool = true,
-                                           completion: (() -> Void)? = nil) {
-        
-        let animateAction = SKAction.animate(with: player.textures[textureType.rawValue], timePerFrame: timePerFrame)
-        let repeatAction = repeatCount == -1 ? SKAction.repeatForever(animateAction) : SKAction.repeat(animateAction, count: repeatCount)
-        
-        if shouldRemovePreviousActions {
-            player.sprite.removeAllActions()
-        }
-            
-        player.sprite.run(repeatAction) {
-            completion?()
-        }
-    }
-    
-    /**
      Animates a quick white flash used to separate scenes within the Cutscene, then plays a narration text overlay along with an accompanying scene.
      - parameters:
         - narrateText: the narrated text to play.
@@ -385,7 +357,7 @@ class CutsceneMagmoor: Cutscene {
             SKAction.run { [unowned self] in
                 wideShotElderBanish()
             },
-            SKAction.wait(forDuration: 1.25),
+            SKAction.wait(forDuration: 1.26),
             SKAction.run { [unowned self] in
                 setTextArray(items: [
                     SpeechBubbleItem(profile: speechPlayerLeft, speed: 0.01, chat: "BANISH!!")
@@ -552,7 +524,7 @@ class CutsceneMagmoor: Cutscene {
         let farMagmoorScale: CGFloat = 0.1
         let nearMagmoorScale: CGFloat = 0.8
         let magmoorFadeInDuration: TimeInterval = 2.5
-        let subtitleMagmoor = CutsceneSubtitle(text: "Magmoor", color: .red, position: subtitlePosition)
+        let subtitleMagmoor = SubtitleLabelNode(text: "Magmoor", color: .red, position: subtitlePosition)
         
         func magmoorTeleport(endPoint: CGPoint) -> SKAction {
             let faceDirection: CGFloat = Bool.random() ? 1 : -1
@@ -753,7 +725,7 @@ class CutsceneMagmoor: Cutscene {
         let totalShakeDuration: TimeInterval = 1
         let rotateDuration: TimeInterval = 0.3
         
-        let subtitleIceMystic = CutsceneSubtitle(text: "Melchior", color: .cyan, position: subtitlePosition)
+        let subtitleIceMystic = SubtitleLabelNode(text: "Melchior", color: .cyan, position: subtitlePosition)
         subtitleIceMystic.showSubtitle(to: backgroundNode,
                                        waitDuration: cutsceneDuration - 2 * fadeDuration - totalShakeDuration,
                                        fadeDuration: fadeDuration,
@@ -767,7 +739,7 @@ class CutsceneMagmoor: Cutscene {
                 SKAction.moveBy(x: 10, y: 0, duration: shakeDuration),
             ]), count: Int(totalShakeDuration / (2 * shakeDuration))),
             SKAction.run { [unowned self] in
-                animatePlayerWithTextures(player: &playerLeft, textureType: .idle, timePerFrame: 0.1, shouldRemovePreviousActions: false)
+                animatePlayerWithTextures(player: &playerLeft, textureType: .idle, timePerFrame: 0.1)
                 AudioManager.shared.playSound(for: "enemyice")
                 ParticleEngine.shared.animateParticles(type: .magicElderIce,
                                                        toNode: playerLeft.sprite,
@@ -793,7 +765,7 @@ class CutsceneMagmoor: Cutscene {
         //Fire Elder
         let pauseDuration: TimeInterval = 1
         
-        let subtitleFireMystic = CutsceneSubtitle(text: "Magmus", color: .orange.darkenColor(factor: 4), position: subtitlePosition)
+        let subtitleFireMystic = SubtitleLabelNode(text: "Magmus", color: .orange.darkenColor(factor: 4), position: subtitlePosition)
         subtitleFireMystic.showSubtitle(to: backgroundNode,
                                         waitDuration: cutsceneDuration - 2 * fadeDuration - pauseDuration,
                                         fadeDuration: fadeDuration,
@@ -802,7 +774,7 @@ class CutsceneMagmoor: Cutscene {
         elder1.sprite.run(SKAction.sequence([
             SKAction.wait(forDuration: letterboxDuration + cutsceneDuration + pauseDuration),
             SKAction.run { [unowned self] in
-                animatePlayerWithTextures(player: &elder1, textureType: .idle, timePerFrame: 0.09, shouldRemovePreviousActions: false)
+                animatePlayerWithTextures(player: &elder1, textureType: .idle, timePerFrame: 0.09)
                 ParticleEngine.shared.animateParticles(type: .magicElderFire,
                                                        toNode: backgroundNode,
                                                        position: elder1.sprite.position + CGPoint(x: -550, y: 350),
@@ -830,7 +802,7 @@ class CutsceneMagmoor: Cutscene {
         //Earth Elder
         let moveDuration: TimeInterval = 0.25
         
-        let subtitleEarthMystic = CutsceneSubtitle(text: "Merton", color: .systemGreen, position: subtitlePosition)
+        let subtitleEarthMystic = SubtitleLabelNode(text: "Merton", color: .systemGreen, position: subtitlePosition)
         subtitleEarthMystic.showSubtitle(to: backgroundNode,
                                          waitDuration: cutsceneDuration - 2 * fadeDuration - 2 * moveDuration,
                                          fadeDuration: fadeDuration,
@@ -842,7 +814,7 @@ class CutsceneMagmoor: Cutscene {
             SKAction.moveBy(x: 50, y: 0, duration: moveDuration),
             SKAction.moveBy(x: 0, y: -100, duration: moveDuration),
             SKAction.run { [unowned self] in
-                animatePlayerWithTextures(player: &elder2, textureType: .idle, timePerFrame: 0.05, shouldRemovePreviousActions: false)
+                animatePlayerWithTextures(player: &elder2, textureType: .idle, timePerFrame: 0.05)
                 AudioManager.shared.playSound(for: "boyimpact")
                 ParticleEngine.shared.animateParticles(type: .magicElderEarth,
                                                        toNode: elder2.sprite,
