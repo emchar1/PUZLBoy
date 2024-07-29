@@ -725,7 +725,7 @@ class CutsceneMagmoor: Cutscene {
         let totalShakeDuration: TimeInterval = 1
         let rotateDuration: TimeInterval = 0.3
         
-        let subtitleIceMystic = SubtitleLabelNode(text: "Melchior", color: .cyan, position: subtitlePosition)
+        let subtitleIceMystic = SubtitleLabelNode(text: "Melchior", color: .cyan.darkenColor(factor: 4), position: subtitlePosition)
         subtitleIceMystic.showSubtitle(to: backgroundNode,
                                        waitDuration: cutsceneDuration - 2 * fadeDuration - totalShakeDuration,
                                        fadeDuration: fadeDuration,
@@ -802,7 +802,7 @@ class CutsceneMagmoor: Cutscene {
         //Earth Elder
         let moveDuration: TimeInterval = 0.25
         
-        let subtitleEarthMystic = SubtitleLabelNode(text: "Merton", color: .systemGreen, position: subtitlePosition)
+        let subtitleEarthMystic = SubtitleLabelNode(text: "Merton", color: .systemGreen.darkenColor(factor: 4), position: subtitlePosition)
         subtitleEarthMystic.showSubtitle(to: backgroundNode,
                                          waitDuration: cutsceneDuration - 2 * fadeDuration - 2 * moveDuration,
                                          fadeDuration: fadeDuration,
