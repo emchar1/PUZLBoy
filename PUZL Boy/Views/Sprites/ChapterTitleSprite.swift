@@ -56,13 +56,16 @@ class ChapterTitleSprite: SKNode {
     
     // MARK: - Functions
     
-    func showTitle(completion: (() -> Void)?) {
+    func showTitle(shouldLowerVolumeForCurrentTheme: Bool = true, completion: (() -> Void)?) {
         let songDuration: TimeInterval = 7
         let animationDuration: TimeInterval = 3
         let fadeDuration: TimeInterval = 1
         var waitDuration: TimeInterval { songDuration - animationDuration - fadeDuration }
 
-        AudioManager.shared.lowerVolume(for: AudioManager.shared.currentTheme)
+        if shouldLowerVolumeForCurrentTheme {
+            AudioManager.shared.lowerVolume(for: AudioManager.shared.currentTheme)
+        }
+        
         AudioManager.shared.playSound(for: "titlechapter")
         
         sprite.run(SKAction.group([
@@ -74,7 +77,9 @@ class ChapterTitleSprite: SKNode {
                 SKAction.fadeOut(withDuration: fadeDuration)
             ])
         ])) {
-            AudioManager.shared.raiseVolume(for: AudioManager.shared.currentTheme, fadeDuration: 1)
+            if shouldLowerVolumeForCurrentTheme {
+                AudioManager.shared.raiseVolume(for: AudioManager.shared.currentTheme, fadeDuration: 1)
+            }
             
             completion?()
         }
