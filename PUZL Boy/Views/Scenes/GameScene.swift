@@ -627,6 +627,16 @@ class GameScene: SKScene {
         }
     }
     
+    private func playDialogueForStatueTapped() {
+        gameEngine.shouldDisableInput(true)
+        pauseResetEngine.shouldDisable(true)
+        
+        chatEngine.playDialogue(level: currentLevel, statueTapped: true) { [unowned self] _ in
+            gameEngine.shouldDisableInput(false)
+            pauseResetEngine.shouldDisable(false)
+        }
+    }
+    
     /**
      Prepares the GameScene for exit transition.
      - parameter shouldSaveState: saves the game state, if true.
@@ -766,6 +776,10 @@ extension GameScene: GameEngineDelegate {
     
     func didGetPartyBomb() {
         scoringEngine.timerManager.killTime()
+    }
+    
+    func didTouchStatue() {
+        playDialogueForStatueTapped()
     }
 }
 

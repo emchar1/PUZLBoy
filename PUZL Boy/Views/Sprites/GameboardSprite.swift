@@ -113,8 +113,8 @@ class GameboardSprite {
         return getLocation(rowf: CGFloat(position.row), colf: CGFloat(position.col))
     }
 
-    ///Returns the panel at the location provided, offset by the offsetPosition.
-    func getPanel(at location: CGPoint) -> K.GameboardPosition? {
+    ///Returns the K.GameboardPosition at the location provided, offset by the offsetPosition.
+    func getGameboardPosition(at location: CGPoint) -> K.GameboardPosition? {
         guard let node = sprite.nodes(at: location - GameboardSprite.offsetPosition).first else { return nil }
         guard let nodeName = node.name?.replacingOccurrences(of: GameboardSprite.overlayTag, with: "") else { return nil }
         guard let range = nodeName.range(of: GameboardSprite.delimiter) else { return nil }
@@ -124,6 +124,17 @@ class GameboardSprite {
         
         //Finally!
         return (row: row, col: col)
+    }
+    
+    ///Returns the K.GameboardPanel's SKSpriteNodes (terrain and overlay) at the given K.GameboardPosition.
+    func getPanel(at position: K.GameboardPosition) -> (terrain: SKSpriteNode?, overlay: SKSpriteNode?) {
+        let terrainName = GameboardSprite.getNodeName(row: position.row, col: position.col)
+        let overlayName = GameboardSprite.getNodeName(row: position.row, col: position.col, includeOverlayTag: true)
+
+        let terrainNode = sprite.childNode(withName: terrainName) as? SKSpriteNode
+        let overlayNode = sprite.childNode(withName: overlayName) as? SKSpriteNode
+        
+        return (terrainNode, overlayNode)
     }
 
     func updatePanels(at position: K.GameboardPosition, with tile: K.GameboardPanel, fadeIn: Bool = false) {

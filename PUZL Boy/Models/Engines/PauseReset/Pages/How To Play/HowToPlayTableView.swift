@@ -69,6 +69,8 @@ class HowToPlayTableView: UITableView, UITableViewDelegate, UITableViewDataSourc
                        description: "Hearts increase your health, protecting against dragon attacks. If your health hits 0 it's game over."),
         HowToPlayModel(image: "warp2", title: "Green Warp", requiredLevel: 251,
                        description: "Just like the Yellow Warp, the Green Warp will teleport you to the next Green Warp. Color coding, yeah!"),
+        HowToPlayModel(image: "statue0", title: "Tiki Statue", requiredLevel: 319,
+                       description: "These ancient relics carry useful (and not so useful) information. They love to chat your ear off!"),
         HowToPlayModel(image: "warp3", title: "Blue Warp", requiredLevel: 401,
                        description: "As if two warps aren't confusing enough, the Blue Warp takes you to, you guessed it... the other Blue Warp.")
     ]

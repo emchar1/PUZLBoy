@@ -45,7 +45,7 @@ class ChatEngine {
 
 
     //Important Properties
-    private var currentProfile: ChatProfile = .hero
+    private var currentProfile: ChatItem.ChatProfile = .hero
     private var dialoguePlayed: [Int: Bool] = [:]           //Only play certain instructions once
     private var dialogueWithCutscene: [Int: Bool] = [:]     //Levels with dialogue that have a cutscene
     private var completion: (() -> ())?
@@ -69,6 +69,13 @@ class ChatEngine {
     private var fastForwardSprite: SKSpriteNode!
     private var chatDecisionEngine: ChatDecisionEngine!
 
+    
+    //Statue Dialogue
+    private var dialogueStatue0: StatueDialogue!
+    private var dialogueStatue1: StatueDialogue!
+    private var dialogueStatue2: StatueDialogue!
+    private var dialogueStatue3: StatueDialogue!
+
 
     //Overlay Sprites
     private var superScene: SKScene?
@@ -77,39 +84,6 @@ class ChatEngine {
     private var magmoorScary: MagmoorScarySprite!
     private var chapterTitleSprite: ChapterTitleSprite!
     
-    
-    //Misc Data Structures
-    private struct ChatItem {
-        let profile: ChatProfile
-        let imgPos: ImagePosition
-        let pause: TimeInterval?
-        let startNewChat: Bool?
-        let endChat: Bool?
-        let chat: String
-        let handler: (() -> Void)?
-        
-        enum ImagePosition {
-            case left, right
-        }
-        
-        init(profile: ChatProfile, imgPos: ImagePosition = .right, pause: TimeInterval? = nil, startNewChat: Bool? = nil, endChat: Bool? = nil, chat: String, handler: (() -> Void)?) {
-            self.profile = profile
-            self.imgPos = imgPos
-            self.pause = pause
-            self.startNewChat = startNewChat
-            self.endChat = endChat
-            self.chat = chat
-            self.handler = handler
-        }
-        
-        init(profile: ChatProfile, imgPos: ImagePosition = .right, chat: String) {
-            self.init(profile: profile, imgPos: imgPos, pause: nil, startNewChat: nil, endChat: nil, chat: chat, handler: nil)
-        }
-    }
-    
-    enum ChatProfile {
-        case hero, trainer, princess, princessCursed, princess2, villain, blankvillain, blankprincess, blanktrainer
-    }
     
     weak var delegate: ChatEngineDelegate?
     
@@ -336,7 +310,7 @@ class ChatEngine {
         }
     }
     
-    private func sendChat(profile: ChatProfile, imgPos: ChatItem.ImagePosition, pause: TimeInterval?, startNewChat: Bool, endChat: Bool, shouldSkipDim: Bool, chat: String, completion: (() -> ())? = nil) {
+    private func sendChat(profile: ChatItem.ChatProfile, imgPos: ChatItem.ImagePosition, pause: TimeInterval?, startNewChat: Bool, endChat: Bool, shouldSkipDim: Bool, chat: String, completion: (() -> ())? = nil) {
         //Only allow a new chat if current chat isn't happening
         guard allowNewChat else { return }
         
@@ -378,6 +352,18 @@ class ChatEngine {
         case .blanktrainer:
             avatarSprite.texture = nil
             chatBackgroundSprite.fillColor = .blue
+        case .statue0:
+            avatarSprite.texture = SKTexture(imageNamed: "statue0")
+            chatBackgroundSprite.fillColor = .systemGreen
+        case .statue1:
+            avatarSprite.texture = SKTexture(imageNamed: "statue1")
+            chatBackgroundSprite.fillColor = .systemGreen
+        case .statue2:
+            avatarSprite.texture = SKTexture(imageNamed: "statue2")
+            chatBackgroundSprite.fillColor = .systemGreen
+        case .statue3:
+            avatarSprite.texture = SKTexture(imageNamed: "statue3")
+            chatBackgroundSprite.fillColor = .systemGreen
         }
         
         if profile == .blankvillain || profile == .blankprincess || profile == .blanktrainer {
@@ -477,6 +463,8 @@ class ChatEngine {
             AudioManager.shared.playSound(for: "chatopenprincess")
         case .villain, .blankvillain:               
             AudioManager.shared.playSound(for: "chatopenvillain")
+        case .statue0, .statue1, .statue2, .statue3:
+            AudioManager.shared.playSound(for: "chatopenstatue")
         }
     }
     
@@ -590,9 +578,10 @@ extension ChatEngine {
         //Chapter 3 - You're on Your Own, Kid!
         dialoguePlayed[301] = false
         dialogueWithCutscene[301] = false
-        dialoguePlayed[314] = false
+        dialoguePlayed[319] = false
+        dialoguePlayed[351] = false
         
-        //Chapter 4 - Redemption
+        //Chapter 4 - The Home Stretch
         dialoguePlayed[401] = false
 
         
@@ -604,6 +593,51 @@ extension ChatEngine {
         dialoguePlayed[211] = false
         dialoguePlayed[212] = false
         dialoguePlayed[213] = false
+        
+        
+        
+        
+        
+        // STATUES DIALOGUE
+        
+        dialogueStatue0 = StatueDialogue(dialogue: [ //Lv. 319
+            ChatItem(profile: .hero, imgPos: .left, chat: "What the heck is this??"),
+            ChatItem(profile: .statue0, chat: "We are ancient relics known as Tikis. Think of us as friendly guides to help you along the way."),
+            ChatItem(profile: .hero, imgPos: .left, chat: "It talks!"),
+            ChatItem(profile: .statue0, chat: "Some of us may ask you an important question that can alter the course of your journey, so be sure to answer truthfully and honestly."),
+            ChatItem(profile: .hero, imgPos: .left, chat: "There's more of you??"),
+            ChatItem(profile: .statue0, chat: "Yes! We're scattered throughout the PUZZLE REALM. Ask us anything!"),
+            
+            ChatItem(profile: .hero, imgPos: .left, chat: "Where is Marlin and when is he coming back?"),
+            ChatItem(profile: .statue0, chat: "The answer to that question is............ a difficult one to predict!"),
+            
+            ChatItem(profile: .hero, imgPos: .left, chat: "Is Princess Olivia safe? Where is Magmoor keeping her?"),
+            ChatItem(profile: .statue0, chat: "Let me look into that for you............ I don't know!"),
+            ChatItem(profile: .hero, imgPos: .left, chat: "You're not very helpful."),
+
+            //Single responses
+            ChatItem(profile: .statue0, chat: "Here's something helpful: don't forget to Rate and Review this game on the AppStore!"),
+            ChatItem(profile: .statue0, chat: "Stuck? Take a break. Come back when your mind is refreshed 💆🏻‍♂️"),
+            ChatItem(profile: .statue0, chat: "Princess Olivia.. I heard she possesses very powerful magic. Though it's just a rumor."),
+            ChatItem(profile: .statue0, chat: "You won't find her standing around here. Get moving!"),
+            ChatItem(profile: .statue0, chat: "Tick tock. Time's a wasting!"),
+        ], indices: [6, 2, 3, 1, 1, 1, 1, 1], shouldSkipFirstQuestion: false)
+        
+        dialogueStatue1 = StatueDialogue(dialogue: [ //Lv. 351
+            //story branching decision question
+            ChatItem(profile: .statue1, chat: "I've got a question for you. What kind of shoes do you prefer?") { [unowned self] in
+                chatDecisionEngine.showDecisions(index: 1, toNode: chatBackgroundSprite)
+            },
+            ChatItem(profile: .hero, imgPos: .left, chat: "Hmmm, what shoes do I prefer..."),
+            ChatItem(profile: .statue1, chat: "Interesting. I'll make note of it!"),
+            
+            //second question
+            ChatItem(profile: .hero, imgPos: .left, chat: "What is \(FireIceTheme.isFire ? "sand" : "snow")?"),
+            ChatItem(profile: .statue1, chat: "Ah yes, \(FireIceTheme.isFire ? "sand" : "snow")."),
+            ChatItem(profile: .hero, imgPos: .left, chat: "Thanks for nothing."),
+            
+            ChatItem(profile: .statue1, chat: "Taylor Swift is the greatest songwriter of all time.")
+        ], indices: [3, 3, 1], shouldSkipFirstQuestion: FIRManager.decisions[1] != nil) //If story branching decision question has already been answered, skip it!
     }
     
     /**
@@ -612,8 +646,8 @@ extension ChatEngine {
         - level: the level # for the chat dialogue to play
         - completion: completion handler to execute at the end of the dialogue
      */
-    func playDialogue(level: Int, completion: ((Cutscene?) -> Void)?) {
-        guard let dialoguePlayedCheck = dialoguePlayed[level], !dialoguePlayedCheck else {
+    func playDialogue(level: Int, statueTapped: Bool = false, completion: ((Cutscene?) -> Void)?) {
+        guard let dialoguePlayedCheck = dialoguePlayed[level], !dialoguePlayedCheck || statueTapped else {
             isChatting = false
             completion?(nil)
             return
@@ -1215,7 +1249,7 @@ extension ChatEngine {
                 let cutscene = CutsceneMagmoor()
                 
                 sendChatArray(items: [
-                    ChatItem(profile: .hero, imgPos: .left, chat: "They couldn't have gone too far. Let's find this dude and kick him where the sun don't shine!"),
+                    ChatItem(profile: .hero, imgPos: .left, chat: "They couldn't have gone far. Let's find this dude and kick him where the sun don't shine!"),
                     ChatItem(profile: .trainer, chat: "It's not going to be that simple, PUZL Boy. Magmoor grows powerful by the minute. The Elders could not keep him contained."),
                     ChatItem(profile: .hero, imgPos: .left, chat: "The Elders...?")
                 ]) { [unowned self] in
@@ -1224,7 +1258,7 @@ extension ChatEngine {
             }
             else {
                 sendChatArray(items: [
-                    ChatItem(profile: .hero, imgPos: .left, chat: "Seems rather harsh. Ok... so how do we get the genie back in the bottle?"),
+                    ChatItem(profile: .hero, imgPos: .left, chat: "Ok... so how do we get the genie back in the bottle?"),
                     ChatItem(profile: .trainer, chat: "There is yet a way. I just need more time."),
                     ChatItem(profile: .hero, imgPos: .left, chat: "We haven't got any time! Princess needs us now!"),
                     ChatItem(profile: .trainer, chat: "YES! YES!! Just let me think for one second—")
@@ -1307,6 +1341,33 @@ extension ChatEngine {
                     }
                 }
             }
+        case 319:
+            if statueTapped {
+                sendChatArray(shouldSkipDim: true, items: dialogueStatue0.getDialogue()) { [unowned self] in
+                    handleDialogueCompletion(level: level, completion: completion)
+                }
+            }
+            else {
+                sendChatArray(items: [
+                    ChatItem(profile: .hero, imgPos: .left, chat: "🎵 Lonely. I am so lonely... 🎶")
+                ]) { [unowned self] in
+                    handleDialogueCompletion(level: level, completion: completion)
+                }
+            }
+        case 351:
+            if statueTapped {
+                sendChatArray(shouldSkipDim: true, items: dialogueStatue1.getDialogue()) { [unowned self] in
+                    handleDialogueCompletion(level: level, completion: completion)
+                }
+            }
+            else {
+                sendChatArray(items: [
+                    ChatItem(profile: .hero, imgPos: .left, chat: "\(FireIceTheme.isFire ? "Sand?? What the heck is sand?!?" : "Snow?? What the heck is snow?!?") Ahhh, I'm FREAKING OUT!!!"),
+                    ChatItem(profile: .hero, imgPos: .left, chat: "Maybe that statue can help me...")
+                ]) { [unowned self] in
+                    handleDialogueCompletion(level: level, completion: completion)
+                }
+            }
 //        case 314:
 //            delegate?.inbetweenRealmEnter(levelInt: level)
 //            
@@ -1342,5 +1403,5 @@ extension ChatEngine {
             isChatting = false
             completion?(nil)
         }
-    }
-}
+    }//end playDialogue(level:statueTapped:completion:)
+}//end ChatEngine

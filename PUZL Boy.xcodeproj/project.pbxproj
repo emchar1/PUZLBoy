@@ -45,6 +45,10 @@
 		EA3534892920612300C11FC0 /* DisplayStatusBarSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA3534882920612300C11FC0 /* DisplayStatusBarSprite.swift */; };
 		EA35348B29241FCD00C11FC0 /* LevelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA35348A29241FCD00C11FC0 /* LevelType.swift */; };
 		EA36F9F82C52B6730031DB9A /* CutsceneFlashback.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA36F9F72C52B6730031DB9A /* CutsceneFlashback.swift */; };
+		EA36F9FB2C5ACCAB0031DB9A /* ChatItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA36F9FA2C5ACCAB0031DB9A /* ChatItem.swift */; };
+		EA36F9FD2C5ACEFE0031DB9A /* StatueDialogue.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA36F9FC2C5ACEFE0031DB9A /* StatueDialogue.swift */; };
+		EA36FA032C5B5C620031DB9A /* chatopenstatue.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA36FA022C5B5C620031DB9A /* chatopenstatue.mp3 */; };
+		EA36FA072C5C00610031DB9A /* touchstatue.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA36FA062C5C00610031DB9A /* touchstatue.mp3 */; };
 		EA3951ED2938165A00D0B14A /* Extension+UIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA3951EC2938165A00D0B14A /* Extension+UIImage.swift */; };
 		EA3951F12939DE5900D0B14A /* ScoringEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA3951F02939DE5900D0B14A /* ScoringEngine.swift */; };
 		EA41F8352A0C7D8000DF47EC /* HowToPlayPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA41F8342A0C7D8000DF47EC /* HowToPlayPage.swift */; };
@@ -372,6 +376,10 @@
 		EA3534882920612300C11FC0 /* DisplayStatusBarSprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayStatusBarSprite.swift; sourceTree = "<group>"; };
 		EA35348A29241FCD00C11FC0 /* LevelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelType.swift; sourceTree = "<group>"; };
 		EA36F9F72C52B6730031DB9A /* CutsceneFlashback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CutsceneFlashback.swift; sourceTree = "<group>"; };
+		EA36F9FA2C5ACCAB0031DB9A /* ChatItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatItem.swift; sourceTree = "<group>"; };
+		EA36F9FC2C5ACEFE0031DB9A /* StatueDialogue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatueDialogue.swift; sourceTree = "<group>"; };
+		EA36FA022C5B5C620031DB9A /* chatopenstatue.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = chatopenstatue.mp3; sourceTree = "<group>"; };
+		EA36FA062C5C00610031DB9A /* touchstatue.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = touchstatue.mp3; sourceTree = "<group>"; };
 		EA3951EC2938165A00D0B14A /* Extension+UIImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+UIImage.swift"; sourceTree = "<group>"; };
 		EA3951F02939DE5900D0B14A /* ScoringEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoringEngine.swift; sourceTree = "<group>"; };
 		EA41F8342A0C7D8000DF47EC /* HowToPlayPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HowToPlayPage.swift; sourceTree = "<group>"; };
@@ -699,6 +707,17 @@
 			path = Level;
 			sourceTree = "<group>";
 		};
+		EA36F9F92C5ACC740031DB9A /* ChatEngine */ = {
+			isa = PBXGroup;
+			children = (
+				EA95D1DE295674AE0061059C /* ChatEngine.swift */,
+				EA57DEAA2B9AED6900CE3E2A /* ChatDecisionEngine.swift */,
+				EA36F9FA2C5ACCAB0031DB9A /* ChatItem.swift */,
+				EA36F9FC2C5ACEFE0031DB9A /* StatueDialogue.swift */,
+			);
+			path = ChatEngine;
+			sourceTree = "<group>";
+		};
 		EA41F8382A0D71B300DF47EC /* Pages */ = {
 			isa = PBXGroup;
 			children = (
@@ -958,6 +977,7 @@
 				EAACB4B82971E08A00973EB8 /* chatclose.mp3 */,
 				EA3467A829A8C6CA002DDA02 /* chatopen.mp3 */,
 				EA8C60622C068E0700DED3C7 /* chatopenprincess.mp3 */,
+				EA36FA022C5B5C620031DB9A /* chatopenstatue.mp3 */,
 				EA8C605D2C068E0700DED3C7 /* chatopentrainer.mp3 */,
 				EA8C60672C068E0800DED3C7 /* chatopenvillain.mp3 */,
 				EAE919442A4CA4A800AF67D1 /* clocktick.mp3 */,
@@ -1037,6 +1057,7 @@
 				EA9D6A592B48E4B20004187B /* scarymusicbox.mp3 */,
 				EA95B3082A8C9DA300C5F028 /* speechbubble.mp3 */,
 				EAEF2EFD2B4F5B7E00AD8459 /* swordslash.mp3 */,
+				EA36FA062C5C00610031DB9A /* touchstatue.mp3 */,
 				EAEF2F012B4F5C3100AD8459 /* thunderrumble.mp3 */,
 				EAE43D922C48A76F00E6DB3C /* titlechapter.mp3 */,
 				EA45835A2A4431D300279056 /* titletheme.mp3 */,
@@ -1143,10 +1164,9 @@
 			isa = PBXGroup;
 			children = (
 				EA6A79F529CC035B00F47A73 /* PauseReset */,
+				EA36F9F92C5ACC740031DB9A /* ChatEngine */,
 				EAB69E0328F3333000C31DB3 /* GameEngine.swift */,
 				EA3951F02939DE5900D0B14A /* ScoringEngine.swift */,
-				EA95D1DE295674AE0061059C /* ChatEngine.swift */,
-				EA57DEAA2B9AED6900CE3E2A /* ChatDecisionEngine.swift */,
 				EA1F0E662B0AB0BA00EE0EEE /* HintEngine.swift */,
 				EA95D2112963B4580061059C /* LevelSkipEngine.swift */,
 				EA8E072E2B4FEC060051DDC3 /* TapPointerEngine.swift */,
@@ -1338,6 +1358,7 @@
 			files = (
 				EAAEA3CA2931F12B00221963 /* pickupitem.mp3 in Resources */,
 				EA8C607A2C07CB1D00DED3C7 /* lightsoff.mp3 in Resources */,
+				EA36FA032C5B5C620031DB9A /* chatopenstatue.mp3 in Resources */,
 				EA32AE392AADAC6400DFF5CD /* birdsambience.mp3 in Resources */,
 				EAD199FE2A95E9EE00A07A63 /* BoulderCrushParticles.sks in Resources */,
 				EAD19A0F2A97E73400A07A63 /* HeartsParticles.sks in Resources */,
@@ -1351,6 +1372,7 @@
 				EAEF2F062B4F679900AD8459 /* buttontap4.mp3 in Resources */,
 				EAE9194B2A4CB04B00AF67D1 /* gemcollectparty2x.mp3 in Resources */,
 				EAE43D932C48A76F00E6DB3C /* titlechapter.mp3 in Resources */,
+				EA36FA072C5C00610031DB9A /* touchstatue.mp3 in Resources */,
 				EA7605642B5A859C001BC268 /* movesnow2.mp3 in Resources */,
 				EAE43D9F2C48AA6A00E6DB3C /* magicelderbanish.mp3 in Resources */,
 				EAD459062B64A49700148720 /* DragonIce.sks in Resources */,
@@ -1567,8 +1589,10 @@
 				EADAC6062B835C2A005EA008 /* Cutscene.swift in Sources */,
 				EA84645F29D9230B0075F2A9 /* Extension+UIColor.swift in Sources */,
 				EA826C7A298492BA00F19F81 /* DecisionButtonSprite.swift in Sources */,
+				EA36F9FB2C5ACCAB0031DB9A /* ChatItem.swift in Sources */,
 				EA95D1BD2952F14C0061059C /* AchievementBoulderBreaker.swift in Sources */,
 				EA95D204295F86B30061059C /* AchievementScavenger.swift in Sources */,
+				EA36F9FD2C5ACEFE0031DB9A /* StatueDialogue.swift in Sources */,
 				EA95D1B2294FBF2A0061059C /* Extension+Notification.Name.swift in Sources */,
 				EA75F0EF292F55F900F09BD7 /* LaunchScene.swift in Sources */,
 				EA94E86729BE6BCC009F2614 /* PauseResetEngine.swift in Sources */,

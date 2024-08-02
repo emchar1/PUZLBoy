@@ -802,7 +802,7 @@ class CutsceneMagmoor: Cutscene {
         //Earth Elder
         let moveDuration: TimeInterval = 0.25
         
-        let subtitleEarthMystic = SubtitleLabelNode(text: "Merton", color: .green.darkenColor(factor: 4), position: subtitlePosition)
+        let subtitleEarthMystic = SubtitleLabelNode(text: "Merton", color: .systemGreen.darkenColor(factor: 2), position: subtitlePosition)
         subtitleEarthMystic.showSubtitle(to: backgroundNode,
                                          waitDuration: cutsceneDuration - 2 * fadeDuration - 2 * moveDuration,
                                          fadeDuration: fadeDuration,

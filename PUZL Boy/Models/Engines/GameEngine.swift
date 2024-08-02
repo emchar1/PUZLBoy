@@ -17,6 +17,9 @@ protocol GameEngineDelegate: AnyObject {
     func didTakePartyPill()
     func didGetPartyTime(_ seconds: TimeInterval)
     func didGetPartyBomb()
+    
+    //NEW 7/30/24
+    func didTouchStatue()
 }
 
 /**
@@ -1018,6 +1021,20 @@ class GameEngine {
                                 
                 return false
             }
+        case .statue0, .statue1, .statue2, .statue3:
+            if shouldUpdateRemainingForBoulderIfIcy {
+                updateMovesRemaining()
+                shouldUpdateRemainingForBoulderIfIcy = false
+            }
+            
+            let tikistatue = gameboardSprite.getPanel(at: position)
+            tikistatue.overlay?.animateStatue()
+            
+            AudioManager.shared.playSound(for: "touchstatue")
+            Haptics.shared.executeCustomPattern(pattern: .statue)
+            delegate?.didTouchStatue()
+            
+            return false
         case .boundary:
             if shouldUpdateRemainingForBoulderIfIcy {
                 updateMovesRemaining()
