@@ -70,4 +70,9 @@ struct StatueDialogue {
         
         return items
     }
+    
+    ///Updates shouldSkipFirstQuestion property, i.e. once the decision question has been answered, need to update the object so it doesn't ask it again!
+    mutating func setShouldSkipFirstQuestion(_ shouldSkipFirstQuestion: Bool) {
+        self.shouldSkipFirstQuestion = shouldSkipFirstQuestion
+    }
 }

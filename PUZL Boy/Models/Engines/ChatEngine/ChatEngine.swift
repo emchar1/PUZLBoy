@@ -149,7 +149,8 @@ class ChatEngine {
         
         chatDecisionEngine = ChatDecisionEngine(
             buttonSize: buttonSize,
-            position: CGPoint(x: origin.x + buttonSize.width / 2 + avatarSizeNew, y: origin.y + buttonSize.height / 2 + 20),
+            leftButtonPositionLeft: CGPoint(x: origin.x + buttonSize.width / 2 + 20, y: origin.y + buttonSize.height / 2 + 20),
+            leftButtonPositionRightXOffset: avatarSizeNew - 20,
             decision0: ("Prepare First", "Pursue Him"),
             decision1: ("Vans", "Nike"),
             decision2: ("Magmoor", "Marlin"),
@@ -510,6 +511,17 @@ class ChatEngine {
 extension ChatEngine: ChatDecisionEngineDelegate {
     func decisionWasMade(index: Int, order: ChatDecisionEngine.ButtonOrder) {
         FIRManager.updateFirestoreRecordDecision(index: index, buttonOrder: order)
+        
+        //Don't forget to update the StatueDialogue object!! (Otherwise it will ask the question again in the same line of questioning).
+        switch index {
+        case 0:     dialogueStatue0.setShouldSkipFirstQuestion(true)
+        case 1:     dialogueStatue1.setShouldSkipFirstQuestion(true)
+        case 2:     dialogueStatue2.setShouldSkipFirstQuestion(true)
+        case 3:     dialogueStatue3.setShouldSkipFirstQuestion(true)
+        default:    
+            print("Unknown Decision Question, index: \(index)")
+            break
+        }
     }
     
     func decisionHasAppeared(node: ChatDecisionSprite) {
@@ -579,6 +591,7 @@ extension ChatEngine {
         dialoguePlayed[301] = false
         dialogueWithCutscene[301] = false
         dialoguePlayed[319] = false
+        dialoguePlayed[339] = false
         dialoguePlayed[351] = false
         
         //Chapter 4 - The Home Stretch
@@ -623,21 +636,33 @@ extension ChatEngine {
             ChatItem(profile: .statue0, chat: "Tick tock. Time's a wasting!"),
         ], indices: [6, 2, 3, 1, 1, 1, 1, 1], shouldSkipFirstQuestion: false)
         
-        dialogueStatue1 = StatueDialogue(dialogue: [ //Lv. 351
-            //story branching decision question
-            ChatItem(profile: .statue1, chat: "I've got a question for you. What kind of shoes do you prefer?") { [unowned self] in
-                chatDecisionEngine.showDecisions(index: 1, toNode: chatBackgroundSprite)
+        dialogueStatue1 = StatueDialogue(dialogue: [
+            //Story branching decision question
+            ChatItem(profile: .statue1, chat: "I've got an important question for you to answer.") { [unowned self] in
+                chatDecisionEngine.showDecisions(index: 1, toNode: chatBackgroundSprite, displayOnLeft: true)
             },
-            ChatItem(profile: .hero, imgPos: .left, chat: "Hmmm, what shoes do I prefer..."),
-            ChatItem(profile: .statue1, chat: "Interesting. I'll make note of it!"),
+            ChatItem(profile: .statue1, chat: "Which shoes do you prefer?"),
+            ChatItem(profile: .hero, imgPos: .left, chat: "It's a no brainer!"),
             
-            //second question
+            ChatItem(profile: .statue1, chat: "There are things in this world you don't know the half of!"),
+            ChatItem(profile: .statue1, chat: "People are happier when they are in love."),
+            ChatItem(profile: .statue1, chat: "Don't tempt me with a good time!"),
+        ], indices: [3, 1, 1, 1], shouldSkipFirstQuestion: FIRManager.decisions[1] != nil)
+        
+        dialogueStatue2 = StatueDialogue(dialogue: [ //Lv. 351
+            //Story branching decision question
+            ChatItem(profile: .statue2, chat: "I've got a question for you. Who's gonna with this war?") { [unowned self] in
+                chatDecisionEngine.showDecisions(index: 2, toNode: chatBackgroundSprite)
+            },
+            ChatItem(profile: .hero, imgPos: .left, chat: "Duh, it's so obvious."),
+            ChatItem(profile: .statue2, chat: "Interesting. I'll make note of it!"),
+            
             ChatItem(profile: .hero, imgPos: .left, chat: "What is \(FireIceTheme.isFire ? "sand" : "snow")?"),
-            ChatItem(profile: .statue1, chat: "Ah yes, \(FireIceTheme.isFire ? "sand" : "snow")."),
+            ChatItem(profile: .statue2, chat: "Ah yes, \(FireIceTheme.isFire ? "sand" : "snow")."),
             ChatItem(profile: .hero, imgPos: .left, chat: "Thanks for nothing."),
             
-            ChatItem(profile: .statue1, chat: "Taylor Swift is the greatest songwriter of all time.")
-        ], indices: [3, 3, 1], shouldSkipFirstQuestion: FIRManager.decisions[1] != nil) //If story branching decision question has already been answered, skip it!
+            ChatItem(profile: .statue2, chat: "Taylor Swift is the greatest songwriter of all time.")
+        ], indices: [3, 3, 1], shouldSkipFirstQuestion: FIRManager.decisions[2] != nil)
     }
     
     /**
@@ -1354,9 +1379,18 @@ extension ChatEngine {
                     handleDialogueCompletion(level: level, completion: completion)
                 }
             }
-        case 351:
+        case 339:
             if statueTapped {
                 sendChatArray(shouldSkipDim: true, items: dialogueStatue1.getDialogue()) { [unowned self] in
+                    handleDialogueCompletion(level: level, completion: completion)
+                }
+            }
+            else {
+                handleDialogueCompletion(level: level, completion: completion)
+            }
+        case 351:
+            if statueTapped {
+                sendChatArray(shouldSkipDim: true, items: dialogueStatue2.getDialogue()) { [unowned self] in
                     handleDialogueCompletion(level: level, completion: completion)
                 }
             }

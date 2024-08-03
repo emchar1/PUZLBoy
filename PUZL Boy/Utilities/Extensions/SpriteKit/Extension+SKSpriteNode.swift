@@ -55,12 +55,21 @@ extension SKSpriteNode {
             SIMD2(0, -0.25),    SIMD2(0.5, 0),      SIMD2(1, 0.25)
         ]
         
+        let squash: [SIMD2<Float>] = [
+            SIMD2(-0.25, 0.75), SIMD2(0.5, 0.75),   SIMD2(1.25, 0.75),
+            SIMD2(-0.25, 0.5),  SIMD2(0.5, 0.5),    SIMD2(1.25, 0.5),
+            SIMD2(-0.25, 0.25), SIMD2(0.5, 0.25),   SIMD2(1.25, 0.25)
+        ]
+
         let warpGeometryGridSkewLeft = SKWarpGeometryGrid(columns: 2, rows: 2,
                                                           sourcePositions: noWarp, destinationPositions: skewLeft)
         
         let warpGeometryGridSkewRight = SKWarpGeometryGrid(columns: 2, rows: 2,
                                                            sourcePositions: noWarp, destinationPositions: skewRight)
         
+        let warpGeometryGridSquash = SKWarpGeometryGrid(columns: 2, rows: 2,
+                                                        sourcePositions: noWarp, destinationPositions: squash)
+
         let warpGeometryGridNoWarp = SKWarpGeometryGrid(columns: 2, rows: 2,
                                                         sourcePositions: noWarp, destinationPositions: noWarp)
 
@@ -69,7 +78,7 @@ extension SKSpriteNode {
             SKAction.wait(forDuration: 0.2),
             SKAction.warp(to: warpGeometryGridSkewRight, duration: 0)!,
             SKAction.wait(forDuration: 0.2),
-            SKAction.warp(to: warpGeometryGridSkewLeft, duration: 0)!,
+            SKAction.warp(to: warpGeometryGridSquash, duration: 0)!,
             SKAction.wait(forDuration: 0.2),
             SKAction.warp(to: warpGeometryGridNoWarp, duration: 0)!,
             SKAction.rotate(byAngle: 2 * .pi, duration: 0.2)

@@ -22,7 +22,8 @@ class ChatDecisionEngine: ChatDecisionSpriteDelegate {
     
     private(set) var decisionButtons: [ChatDecisionType] = []
     private var buttonSize: CGSize
-    private var position: CGPoint
+    private var leftButtonPositionLeft: CGPoint
+    private var leftButtonPositionRight: CGPoint
     
     var isActive: Bool {
         for i in 0..<decisionButtons.count {
@@ -44,14 +45,22 @@ class ChatDecisionEngine: ChatDecisionSpriteDelegate {
     
     // MARK: - Initialization
     
-    init(buttonSize: CGSize, position: CGPoint,
+    /**
+     Initializes the ChatDecisionEngine.
+     - parameters:
+        - buttonSize: size of the decision buttons.
+        - positionLeft: position of the left button in the leftmost position, i.e. if the avatar is on the right.
+        - positionRightOffset: position of the left button in the rightmost position, i.e. if the avatar is on the left. positionRightOffset should just be the width of the avatar in this case.
+     */
+    init(buttonSize: CGSize, leftButtonPositionLeft: CGPoint, leftButtonPositionRightXOffset: CGFloat,
          decision0: (left: String, right: String),
          decision1: (left: String, right: String),
          decision2: (left: String, right: String),
          decision3: (left: String, right: String)) {
         
         self.buttonSize = buttonSize
-        self.position = position
+        self.leftButtonPositionLeft = leftButtonPositionLeft
+        self.leftButtonPositionRight = CGPoint(x: leftButtonPositionLeft.x + leftButtonPositionRightXOffset, y: leftButtonPositionLeft.y)
         
         decisionButtons.append((getButton(text: decision0.left, order: .left, index: 0), getButton(text: decision0.right, order: .right, index: 0), nil))
         decisionButtons.append((getButton(text: decision1.left, order: .left, index: 1), getButton(text: decision1.right, order: .right, index: 1), nil))
@@ -59,17 +68,33 @@ class ChatDecisionEngine: ChatDecisionSpriteDelegate {
         decisionButtons.append((getButton(text: decision3.left, order: .left, index: 3), getButton(text: decision3.right, order: .right, index: 3), nil))
     }
     
+    /**
+     Sets up the button with the assumption that the avatar is on the left hand side.
+     - parameters:
+        - text: the button label
+        - order: either left or right
+        - index: decision buttons 0 - 4
+     - returns: ChatDecisionSprite
+     */
     private func getButton(text: String, order: ButtonOrder, index: Int) -> ChatDecisionSprite {
-        let positionRight: CGPoint = CGPoint(x: position.x + buttonSize.width + 20, y: position.y)
         let buttonColor = order == .left ? DecisionButtonSprite.colorViolet : DecisionButtonSprite.colorBlue
 
         let selectedButton = ChatDecisionSprite(text: text, buttonSize: buttonSize, color: buttonColor)
-        selectedButton.position = order == .left ? position : positionRight
+        selectedButton.position = order == .left ? leftButtonPositionRight : getRightButtonPosition(leftButtonPosition: leftButtonPositionRight)
         selectedButton.zPosition = 20
         selectedButton.name = "\(order == .left ? "leftButton" : "rightButton")\(index)"
         selectedButton.delegate = self
         
         return selectedButton
+    }
+    
+    /**
+     Gets the position of the right button in relation to the left.
+     - parameter position: the position of the left button.
+     - returns: the position of the right button.
+     */
+    private func getRightButtonPosition(leftButtonPosition: CGPoint) -> CGPoint {
+        return CGPoint(x: leftButtonPosition.x + buttonSize.width + 20, y: leftButtonPosition.y)
     }
     
     
@@ -139,9 +164,12 @@ class ChatDecisionEngine: ChatDecisionSpriteDelegate {
     
     // MARK: - Show Functions
     
-    func showDecisions(index: Int, toNode node: SKNode) {
+    func showDecisions(index: Int, toNode node: SKNode, displayOnLeft: Bool = false) {
         decisionButtons[index].left.animateAppear(toNode: node)
         decisionButtons[index].right.animateAppear(toNode: node)
+        
+        decisionButtons[index].left.position = displayOnLeft ? leftButtonPositionLeft : leftButtonPositionRight
+        decisionButtons[index].right.position = getRightButtonPosition(leftButtonPosition: displayOnLeft ? leftButtonPositionLeft : leftButtonPositionRight)
     }
 }
 
