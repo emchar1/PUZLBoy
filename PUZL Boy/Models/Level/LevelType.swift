@@ -16,7 +16,7 @@ enum LevelType: Int, CaseIterable {
     case hammer, sword, heart //inventory panels
     case boulder, enemy, enemyIce, warp, warp2, warp3, warp4 //special panels
     case partyPill, partyGem, partyGemDouble, partyGemTriple, partyHint, partyLife, partyTime, partyFast, partySlow, partyBomb, partyBoom //party items
-    case statue0, statue1, statue2, statue3 //NEW add 7/30/24
+    case statue0, statue1, statue2, statue3 //tiki statues
     
     var description: String {
         //Should boundary default to ""?

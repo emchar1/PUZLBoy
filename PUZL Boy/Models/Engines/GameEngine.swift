@@ -18,7 +18,7 @@ protocol GameEngineDelegate: AnyObject {
     func didGetPartyTime(_ seconds: TimeInterval)
     func didGetPartyBomb()
     
-    //NEW 7/30/24
+    //NEW 7/30/24 - Tiki Statues
     func didTouchStatue()
 }
 

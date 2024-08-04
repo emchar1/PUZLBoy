@@ -315,6 +315,8 @@ class ChatEngine {
         //Only allow a new chat if current chat isn't happening
         guard allowNewChat else { return }
         
+        let statueFillColor = UIColor.systemGreen.darkenColor(factor: 4)
+        
         textSprite.text = ""
         textSprite.updateShadow()
         timer.invalidate()
@@ -354,17 +356,17 @@ class ChatEngine {
             avatarSprite.texture = nil
             chatBackgroundSprite.fillColor = .blue
         case .statue0:
-            avatarSprite.texture = SKTexture(imageNamed: "statue0")
-            chatBackgroundSprite.fillColor = .systemGreen
+            avatarSprite.texture = SKTexture(imageNamed: "chatStatue0")
+            chatBackgroundSprite.fillColor = statueFillColor
         case .statue1:
-            avatarSprite.texture = SKTexture(imageNamed: "statue1")
-            chatBackgroundSprite.fillColor = .systemGreen
+            avatarSprite.texture = SKTexture(imageNamed: "chatStatue1")
+            chatBackgroundSprite.fillColor = statueFillColor
         case .statue2:
-            avatarSprite.texture = SKTexture(imageNamed: "statue2")
-            chatBackgroundSprite.fillColor = .systemGreen
+            avatarSprite.texture = SKTexture(imageNamed: "chatStatue2")
+            chatBackgroundSprite.fillColor = statueFillColor
         case .statue3:
-            avatarSprite.texture = SKTexture(imageNamed: "statue3")
-            chatBackgroundSprite.fillColor = .systemGreen
+            avatarSprite.texture = SKTexture(imageNamed: "chatStatue3")
+            chatBackgroundSprite.fillColor = statueFillColor
         }
         
         if profile == .blankvillain || profile == .blankprincess || profile == .blanktrainer {
@@ -593,7 +595,8 @@ extension ChatEngine {
         dialoguePlayed[319] = false
         dialoguePlayed[339] = false
         dialoguePlayed[351] = false
-        
+        dialoguePlayed[376] = false
+
         //Chapter 4 - The Home Stretch
         dialoguePlayed[401] = false
 
@@ -663,6 +666,19 @@ extension ChatEngine {
             
             ChatItem(profile: .statue2, chat: "Taylor Swift is the greatest songwriter of all time.")
         ], indices: [3, 3, 1], shouldSkipFirstQuestion: FIRManager.decisions[2] != nil)
+
+        dialogueStatue3 = StatueDialogue(dialogue: [ //Lv. 376
+            //Story branching decision question
+            ChatItem(profile: .statue3, chat: "I've got a question for you. Left or Right?") { [unowned self] in
+                chatDecisionEngine.showDecisions(index: 3, toNode: chatBackgroundSprite, displayOnLeft: true)
+            },
+            ChatItem(profile: .statue3, chat: "Left or Right?"),
+            ChatItem(profile: .hero, imgPos: .left, chat: "Duh, it's so obvious."),
+            
+            ChatItem(profile: .statue3, chat: "Don't listen to the last guy. He's full of it!"),
+            ChatItem(profile: .statue3, chat: "I, on the other hand, tell the absolute truth!"),
+            ChatItem(profile: .statue3, chat: "AMA... ask me anything!"),
+        ], indices: [3, 1, 1, 1], shouldSkipFirstQuestion: FIRManager.decisions[3] != nil)
     }
     
     /**
@@ -1401,6 +1417,15 @@ extension ChatEngine {
                 ]) { [unowned self] in
                     handleDialogueCompletion(level: level, completion: completion)
                 }
+            }
+        case 376:
+            if statueTapped {
+                sendChatArray(shouldSkipDim: true, items: dialogueStatue3.getDialogue()) { [unowned self] in
+                    handleDialogueCompletion(level: level, completion: completion)
+                }
+            }
+            else {
+                handleDialogueCompletion(level: level, completion: completion)
             }
 //        case 314:
 //            delegate?.inbetweenRealmEnter(levelInt: level)
