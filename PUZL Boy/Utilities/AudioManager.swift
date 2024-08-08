@@ -101,7 +101,7 @@ class AudioManager {
         addAudioItem("chatclose", category: .soundFX)
         addAudioItem("chatopen", category: .soundFX)
         addAudioItem("chatopenprincess", category: .soundFX)
-        addAudioItem("chatopenstatue", category: .soundFX)
+        addAudioItem("chatopenstatue", category: .soundFX) //needs purchase $1
         addAudioItem("chatopentrainer", category: .soundFX)
         addAudioItem("chatopenvillain", category: .soundFX)
         addAudioItem("dooropen", category: .soundFX)
@@ -168,7 +168,7 @@ class AudioManager {
         addAudioItem("revive", category: .soundFX)
         addAudioItem("speechbubble", category: .soundFX)
         addAudioItem("swordslash", category: .soundFX)
-        addAudioItem("touchstatue", category: .soundFX)
+        addAudioItem("touchstatue", category: .soundFX) //needs purchase $1
         addAudioItem("thunderrumble", category: .soundFX)
         addAudioItem("warp", category: .soundFX)
         addAudioItem("waterappear1", category: .soundFX)
@@ -178,7 +178,6 @@ class AudioManager {
         addAudioItem("winlevel", category: .soundFX)
         addAudioItem("winlevelice", category: .soundFX)
         addAudioItem("winlevel3stars", category: .soundFX)
-        addAudioItem("wompwomp", category: .soundFX) //Test. Delete i'm sure because it's $5!
 
         
         //Looped SFX

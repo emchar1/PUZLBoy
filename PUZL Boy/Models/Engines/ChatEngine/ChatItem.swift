@@ -16,13 +16,13 @@ struct ChatItem {
     let pause: TimeInterval?
     let startNewChat: Bool?
     let endChat: Bool?
-    let chat: String
+    private(set) var chat: String
     let handler: (() -> Void)?
     
     enum ChatProfile {
         case hero, trainer, princess, princessCursed, princess2, villain,
-             blankvillain, blankprincess, blanktrainer,
-             statue0, statue1, statue2, statue3
+             blankvillain, blankprincess, blanktrainer, blankhero,
+             statue0, statue1, statue2, statue3, statue4, statue5
     }
 
     enum ImagePosition {
@@ -51,5 +51,12 @@ struct ChatItem {
     
     init(profile: ChatProfile, imgPos: ImagePosition = .right, chat: String) {
         self.init(profile: profile, imgPos: imgPos, pause: nil, startNewChat: nil, endChat: nil, chat: chat, handler: nil)
+    }
+    
+    
+    // MARK: - Functions
+    
+    mutating func updateChat(_ newChat: String) {
+        self.chat = newChat
     }
 }

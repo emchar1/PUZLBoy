@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SpriteKit
 
 struct K {
     ///Position, row, col, on the gameboard.
@@ -13,6 +14,9 @@ struct K {
     
     ///Gameboard piece, i.e. one panel
     typealias GameboardPanel = (terrain: LevelType, overlay: LevelType)
+    
+    ///Gameboard piece in SKSpriteNode? form
+    typealias GameboardPanelSprite = (terrain: SKSpriteNode?, overlay: SKSpriteNode?)
     
     ///Gameboard i.e. 2D array of LevelType
     typealias Gameboard = [[GameboardPanel]]

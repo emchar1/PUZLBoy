@@ -75,6 +75,8 @@ class ChatEngine {
     private var dialogueStatue1: StatueDialogue!
     private var dialogueStatue2: StatueDialogue!
     private var dialogueStatue3: StatueDialogue!
+    private var dialogueStatue4: StatueDialogue!
+    private var dialogueStatue5: StatueDialogue!
 
 
     //Overlay Sprites
@@ -97,6 +99,7 @@ class ChatEngine {
         chatSpeed = chatSpeedOrig
 
         populateKeyDialogue()
+        setupStatueDialogue()
         setupSprites()
         animateFFButton()
     }
@@ -151,10 +154,10 @@ class ChatEngine {
             buttonSize: buttonSize,
             leftButtonPositionLeft: CGPoint(x: origin.x + buttonSize.width / 2 + 20, y: origin.y + buttonSize.height / 2 + 20),
             leftButtonPositionRightXOffset: avatarSizeNew - 20,
-            decision0: ("Prepare First", "Pursue Him"),
-            decision1: ("Vans", "Nike"),
-            decision2: ("Magmoor", "Marlin"),
-            decision3: ("Left", "Right"))
+            decision0: ("Pursue Him", "Prepare First"),
+            decision1: ("Fire", "Ice"),
+            decision2: ("Give It Away", "Keep It"),
+            decision3: ("Defeat Him", "Let Him Go"))
         chatDecisionEngine.delegate = self
 
         
@@ -286,6 +289,47 @@ class ChatEngine {
         completion?(cutscene)
     }
     
+    ///Animates the Magic Feather of Protection falling from the sky
+    private func animateFeather() {
+        func featherDescendAction(moveByX: CGFloat, shouldFade: Bool = false) -> SKAction {
+            let descendDuration: TimeInterval = 0.95
+
+            let fadeAction = SKAction.sequence([
+                SKAction.wait(forDuration: descendDuration * 0.5),
+                SKAction.fadeOut(withDuration: descendDuration * 0.5)
+            ])
+
+            let descendAction = SKAction.group([
+                SKAction.moveBy(x: moveByX, y: -200, duration: descendDuration),
+                SKAction.rotate(byAngle: .pi / 4, duration: descendDuration)
+            ])
+            
+            let descendAndFadeAction = SKAction.group([
+                descendAction,
+                fadeAction
+            ])
+            
+            return shouldFade ? descendAndFadeAction : descendAction
+        }
+        
+        let featherSprite = SKSpriteNode(imageNamed: "magicFeather")
+        featherSprite.position = CGPoint(x: K.ScreenDimensions.size.width / 2, y: K.ScreenDimensions.size.height - 512 / 2)
+        featherSprite.size = CGSize(width: 512, height: 512)
+        featherSprite.zPosition = 10
+        
+        chatBackgroundSprite.addChild(featherSprite)
+        
+        featherSprite.run(SKAction.sequence([
+            featherDescendAction(moveByX: -25),
+            featherDescendAction(moveByX: 50),
+            featherDescendAction(moveByX: -50),
+            featherDescendAction(moveByX: 50, shouldFade: true),
+            SKAction.removeFromParent()
+        ]))
+        
+        AudioManager.shared.playSound(for: "pickupitem")
+    }
+    
     
     // MARK: - Chat Functions
     
@@ -315,7 +359,7 @@ class ChatEngine {
         //Only allow a new chat if current chat isn't happening
         guard allowNewChat else { return }
         
-        let statueFillColor = UIColor.systemGreen.darkenColor(factor: 4)
+        let statueFillColor = UIColor.systemGreen.darkenColor(factor: 3)
         
         textSprite.text = ""
         textSprite.updateShadow()
@@ -355,6 +399,9 @@ class ChatEngine {
         case .blanktrainer:
             avatarSprite.texture = nil
             chatBackgroundSprite.fillColor = .blue
+        case .blankhero:
+            avatarSprite.texture = nil
+            chatBackgroundSprite.fillColor = .orange
         case .statue0:
             avatarSprite.texture = SKTexture(imageNamed: "chatStatue0")
             chatBackgroundSprite.fillColor = statueFillColor
@@ -367,9 +414,15 @@ class ChatEngine {
         case .statue3:
             avatarSprite.texture = SKTexture(imageNamed: "chatStatue3")
             chatBackgroundSprite.fillColor = statueFillColor
+        case .statue4:
+            avatarSprite.texture = SKTexture(imageNamed: "chatStatue4")
+            chatBackgroundSprite.fillColor = statueFillColor
+        case .statue5:
+            avatarSprite.texture = SKTexture(imageNamed: "chatStatue5")
+            chatBackgroundSprite.fillColor = statueFillColor
         }
         
-        if profile == .blankvillain || profile == .blankprincess || profile == .blanktrainer {
+        if profile == .blankvillain || profile == .blankprincess || profile == .blanktrainer || profile == .blankhero {
             avatarSprite.isHidden = true
             
             textSprite.position.x = K.ScreenDimensions.size.width / 2
@@ -458,7 +511,7 @@ class ChatEngine {
     
     private func playChatOpenNotification() {
         switch currentProfile {
-        case .hero:                                 
+        case .hero, .blankhero:
             AudioManager.shared.playSound(for: "chatopen")
         case .trainer, .blanktrainer:
             AudioManager.shared.playSound(for: "chatopentrainer")
@@ -466,7 +519,7 @@ class ChatEngine {
             AudioManager.shared.playSound(for: "chatopenprincess")
         case .villain, .blankvillain:               
             AudioManager.shared.playSound(for: "chatopenvillain")
-        case .statue0, .statue1, .statue2, .statue3:
+        case .statue0, .statue1, .statue2, .statue3, .statue4, .statue5:
             AudioManager.shared.playSound(for: "chatopenstatue")
         }
     }
@@ -516,11 +569,16 @@ extension ChatEngine: ChatDecisionEngineDelegate {
         
         //Don't forget to update the StatueDialogue object!! (Otherwise it will ask the question again in the same line of questioning).
         switch index {
-        case 0:     dialogueStatue0.setShouldSkipFirstQuestion(true)
-        case 1:     dialogueStatue1.setShouldSkipFirstQuestion(true)
-        case 2:     dialogueStatue2.setShouldSkipFirstQuestion(true)
-        case 3:     dialogueStatue3.setShouldSkipFirstQuestion(true)
-        default:    
+        case 0:     
+            break
+        case 1:    
+            dialogueStatue1.setShouldSkipFirstQuestion(true)
+        case 2:     
+            dialogueStatue3.setShouldSkipFirstQuestion(true)
+            dialogueStatue3.updateDialogue(index: dialogueStatue3.indices[0], newDialogue: FIRManager.decisions[index].isLeftButton() ? "Ahhhh, this is exquisite!! You won't regret it." : "Fine. Keep your silly feather. I didn't want it anyway!")
+        case 3:
+            break
+        default:
             print("Unknown Decision Question, index: \(index)")
             break
         }
@@ -552,7 +610,7 @@ extension ChatEngine {
     
     ///Populates the dialoguePlayed array. Need to include all levels where dialogue is to occur, and also add the level case in the playDialogue() function.
     private func populateKeyDialogue() {
-
+        
         //DARK REALM Dialogue
         dialoguePlayed[Level.partyLevel] = false //Level: -1
         dialoguePlayed[-100] = false
@@ -560,7 +618,7 @@ extension ChatEngine {
         dialoguePlayed[-200] = false
         dialoguePlayed[-250] = false
         dialoguePlayed[-300] = false
-
+        
         
         //PUZZLE REALM Dialogue
         
@@ -572,14 +630,14 @@ extension ChatEngine {
         dialoguePlayed[51] = false
         dialoguePlayed[76] = false
         dialoguePlayed[PauseResetEngine.resetButtonUnlock] = false //Level: 100
-
+        
         //Chapter 1 - In Search of the Princess
         dialoguePlayed[101] = false
         dialoguePlayed[112] = false
         dialoguePlayed[PauseResetEngine.hintButtonUnlock] = false //Level: 140
         dialoguePlayed[152] = false
         dialoguePlayed[180] = false
-
+        
         //Chapter 2 - A Mysterious Stranger
         dialoguePlayed[201] = false
         dialoguePlayed[221] = false
@@ -588,7 +646,7 @@ extension ChatEngine {
         dialoguePlayed[282] = false
         dialogueWithCutscene[282] = false
         dialoguePlayed[298] = false //spawn at (0, 1)
-
+        
         //Chapter 3 - You're on Your Own, Kid!
         dialoguePlayed[301] = false
         dialogueWithCutscene[301] = false
@@ -596,89 +654,209 @@ extension ChatEngine {
         dialoguePlayed[339] = false
         dialoguePlayed[351] = false
         dialoguePlayed[376] = false
-
+        // TODO: - 396??? - was gonna put something here but I forgot!
+        
         //Chapter 4 - The Home Stretch
         dialoguePlayed[401] = false
-
+        // TODO: - 425??? - Magmoor and Olivia in the in-between realm "cutscene"
+        dialoguePlayed[451] = false
+    }
+    
+    ///Sets up the dialogue for the Tiki statues. Call this from init().
+    private func setupStatueDialogue() {
+        
+        //For use by Trudee the Truth-telling Tiki
+        let currentSky: String
+        
+        switch DayTheme.currentTheme {
+        case .morning:      currentSky = "blue"
+        case .afternoon:    currentSky = "orange"
+        case .night:        currentSky = "black"
+        case .dawn:         currentSky = "purple"
+        }
         
         
-        
-        
-        // FIXME: - Test only
-        dialoguePlayed[210] = false
-        dialoguePlayed[211] = false
-        dialoguePlayed[212] = false
-        dialoguePlayed[213] = false
-        
-        
-        
-        
-        
-        // STATUES DIALOGUE
-        
-        dialogueStatue0 = StatueDialogue(dialogue: [ //Lv. 319
+        //Lv 319 - Ingrid the Introducer
+        dialogueStatue0 = StatueDialogue(dialogue: [
+            //0: 6
             ChatItem(profile: .hero, imgPos: .left, chat: "What the heck is this??"),
             ChatItem(profile: .statue0, chat: "We are ancient relics known as Tikis. Think of us as friendly guides to help you along the way."),
             ChatItem(profile: .hero, imgPos: .left, chat: "It talks!"),
-            ChatItem(profile: .statue0, chat: "Some of us may ask you an important question that can alter the course of your journey, so be sure to answer truthfully and honestly."),
+            ChatItem(profile: .statue0, chat: "Some of us may ask you an important question that can alter the course of your journey, so make sure you answer carefully and truthfully."),
             ChatItem(profile: .hero, imgPos: .left, chat: "There's more of you??"),
-            ChatItem(profile: .statue0, chat: "Yes! We're scattered throughout the PUZZLE REALM. Ask us anything!"),
+            ChatItem(profile: .statue0, chat: "There are! We are scattered throughout the PUZZLE REALM. Tell us your deepest desires!"),
             
+            //1: 3
             ChatItem(profile: .hero, imgPos: .left, chat: "Where is Marlin and when is he coming back?"),
-            ChatItem(profile: .statue0, chat: "The answer to that question is............ a difficult one to predict!"),
+            ChatItem(profile: .statue0, chat: "The answer to that question is............"),
+            ChatItem(profile: .statue0, chat: "...a difficult one to predict!"),
             
+            //2: 4
             ChatItem(profile: .hero, imgPos: .left, chat: "Is Princess Olivia safe? Where is Magmoor keeping her?"),
-            ChatItem(profile: .statue0, chat: "Let me look into that for you............ I don't know!"),
+            ChatItem(profile: .statue0, chat: "Let me look into that for you............"),
+            ChatItem(profile: .statue0, chat: "...I don't know!"),
             ChatItem(profile: .hero, imgPos: .left, chat: "You're not very helpful."),
 
-            //Single responses
-            ChatItem(profile: .statue0, chat: "Here's something helpful: don't forget to Rate and Review this game on the AppStore!"),
-            ChatItem(profile: .statue0, chat: "Stuck? Take a break. Come back when your mind is refreshed 💆🏻‍♂️"),
-            ChatItem(profile: .statue0, chat: "Princess Olivia.. I heard she possesses very powerful magic. Though it's just a rumor."),
+            //Single dialogue
+            ChatItem(profile: .statue0, chat: "Here's something helpful: don't forget to Rate and Review this game on the App Store!"),
+            ChatItem(profile: .statue0, chat: "Stuck? Take a break. Come back when your mind is clear 💆🏻‍♂️"),
+            ChatItem(profile: .statue0, chat: "Princess Olivia.. I heard she possesses very powerful magic. Though it's just a rumor..."),
             ChatItem(profile: .statue0, chat: "You won't find her standing around here. Get moving!"),
             ChatItem(profile: .statue0, chat: "Tick tock. Time's a wasting!"),
-        ], indices: [6, 2, 3, 1, 1, 1, 1, 1], shouldSkipFirstQuestion: false)
+        ], indices: [6, 3, 4, 1, 1, 1, 1, 1], shouldSkipFirstQuestion: false, shouldRepeatLastDialogueOnEnd: false)
         
+        
+        //Lv 339 - Penne the Poet
         dialogueStatue1 = StatueDialogue(dialogue: [
-            //Story branching decision question
-            ChatItem(profile: .statue1, chat: "I've got an important question for you to answer.") { [unowned self] in
+            //0: 7 - Story branching decision question
+            ChatItem(profile: .statue1, chat: "Some say the world will end in fire,\nSome say in ice.\nFrom what I've tasted of desire\nI hold with those who favor fire."),
+            ChatItem(profile: .statue1, chat: "But if it had to perish twice,\nI think I know enough of hate\nTo say that for destruction ice\nIs also great\nAnd would suffice."),
+            ChatItem(profile: .hero, imgPos: .left, chat: "Robert Frost!") { [unowned self] in
                 chatDecisionEngine.showDecisions(index: 1, toNode: chatBackgroundSprite, displayOnLeft: true)
             },
-            ChatItem(profile: .statue1, chat: "Which shoes do you prefer?"),
-            ChatItem(profile: .hero, imgPos: .left, chat: "It's a no brainer!"),
+            ChatItem(profile: .statue1, chat: "How do you think the world will end?"),
+            ChatItem(profile: .statue1, chat: "Your fate has been sealed!!"),
+            ChatItem(profile: .hero, imgPos: .left, chat: "Wait, what?? No! I didn't—"),
+            ChatItem(profile: .statue1, chat: "Actions have consequences! Please remember that for next time, PUZL Boy."),
             
-            ChatItem(profile: .statue1, chat: "There are things in this world you don't know the half of!"),
-            ChatItem(profile: .statue1, chat: "People are happier when they are in love."),
-            ChatItem(profile: .statue1, chat: "Don't tempt me with a good time!"),
-        ], indices: [3, 1, 1, 1], shouldSkipFirstQuestion: FIRManager.decisions[1] != nil)
+            //1: 4
+            ChatItem(profile: .hero, imgPos: .left, chat: "Is the world going to end??!!"),
+            ChatItem(profile: .statue1, chat: "Not necessarily. You and I won't be here forever, but the world will keep on spinning."),
+            ChatItem(profile: .statue1, chat: "Well.. you won't be here. I will."),
+            ChatItem(profile: .hero, imgPos: .left, chat: "😳"),
+            
+            //2: 2
+            ChatItem(profile: .hero, imgPos: .left, chat: "Tell me how to find the princess."),
+            ChatItem(profile: .statue1, chat: "When she is ready, she will come to you."),
+
+            //3: 2
+            ChatItem(profile: .hero, imgPos: .left, chat: "Please! Help me!!"),
+            ChatItem(profile: .statue1, chat: "Trust your instincts, kid. You've made it this far. Don't give up!"),
+        ], indices: [7, 4, 2, 2], shouldSkipFirstQuestion: FIRManager.decisions[1] != nil, shouldRepeatLastDialogueOnEnd: false)
         
-        dialogueStatue2 = StatueDialogue(dialogue: [ //Lv. 351
-            //Story branching decision question
-            ChatItem(profile: .statue2, chat: "I've got a question for you. Who's gonna with this war?") { [unowned self] in
+        
+        //Lv 351 - Lars the Liar
+        dialogueStatue2 = StatueDialogue(dialogue: [
+            //0: 4
+            ChatItem(profile: .statue2, chat: "Whaddup, bro! You want to know about all this \(FireIceTheme.isFire ? "sand" : "snow"), amirite?"),
+            ChatItem(profile: .statue2, chat: "Look, it's real simple, bro. Whatever you do, don't backtrack or you'll be in a lotta trouble, get what I'm sayin', bro?"),
+            ChatItem(profile: .hero, imgPos: .left, chat: "No, I don't. Bro."),
+            ChatItem(profile: .statue2, chat: "Broooo! Just keep moving forward. Ya feel me?"),
+            
+            //1: 8
+            ChatItem(profile: .hero, imgPos: .left, chat: "Yeah. Can you tell me where the princess is?"),
+            ChatItem(profile: .statue2, chat: "Ok look, bro. I may not know about allat, but what I do know is you can get to her with a special key."),
+            ChatItem(profile: .hero, imgPos: .left, chat: "Special key???"),
+            ChatItem(profile: .statue2, chat: "Yeah, bro! The Special Key is buried somewhere in Level 405. Or was it 450? 504???? No, it was 405. 405!!"),
+            ChatItem(profile: .hero, imgPos: .left, chat: "Are you sure???"),
+            ChatItem(profile: .statue2, chat: "Fo sho, bro! It's next to the Golden Dragon. But.. you can only beat him with the Golden Sword."),
+            ChatItem(profile: .hero, imgPos: .left, chat: "Golden dragon. Golden sword. Special key. Level 405."),
+            ChatItem(profile: .statue2, chat: "That's it bro!!! Wait.. or was it 417? Hum.. better check 'em all."),
+            
+            //2: 6
+            ChatItem(profile: .statue2, chat: "You hear about the legend of Marlin and Magmoor?"),
+            ChatItem(profile: .hero, imgPos: .left, chat: "They were friends at one point, from what I gather."),
+            ChatItem(profile: .statue2, chat: "Yeah bro, that's one way of putting it."),
+            ChatItem(profile: .hero, imgPos: .left, chat: "Care to elaborate?"),
+            ChatItem(profile: .statue2, chat: "Nah, bro. Not really my business, know what I'm sayin'?"),
+            ChatItem(profile: .hero, imgPos: .left, chat: "Then why did you bring it up?!"),
+
+            //3: 4
+            ChatItem(profile: .statue2, chat: "Oh heyy! I found this Magic Feather of Protection. It wards off the 6-eyed, purple-horned monster."),
+            ChatItem(profile: .hero, imgPos: .left, chat: "Uhh.. ok, thanks I guess... Does it really work?"),
+            ChatItem(profile: .statue2, chat: "Do ya see any 6-eyed, purple-horn monsters around here???") { [unowned self] in
+                animateFeather()
+                fastForwardSprite.removeFromParent()
+                chatSpeed = 0
+            },
+            ChatItem(profile: .blankhero, chat: "\n\nPUZL Boy received Magic Feather of Protection") { [unowned self] in
+                chatBackgroundSprite.addChild(fastForwardSprite)
+                chatSpeed = chatSpeedOrig
+            },
+            
+            //4: 4
+            ChatItem(profile: .statue2, chat: "Oh! Also you might need this password later on: 1123581321345589144"),
+            ChatItem(profile: .hero, imgPos: .left, chat: "Whoa, whoa. Slow down! What do I do with that??"),
+            ChatItem(profile: .statue2, chat: "I dunno, bro! All I know is it's very important."),
+            ChatItem(profile: .statue2, chat: "Hope ya writin' all this down cuz I ain't repeating myself."),
+
+            //5: 3
+            ChatItem(profile: .hero, imgPos: .left, chat: "Can you tell me that password one more time?"),
+            ChatItem(profile: .statue2, chat: "Yeah sure! It's.......... Huh, weird. I forgot it already!"),
+            ChatItem(profile: .hero, imgPos: .left, chat: "You've got to be kidding me.."),
+            
+            //6: 2
+            ChatItem(profile: .hero, imgPos: .left, chat: "Sigh. Anything else you can tell me?"),
+            ChatItem(profile: .statue2, chat: "Nope.")
+        ], indices: [4, 8, 6, 4, 4, 3, 2], shouldSkipFirstQuestion: false, shouldRepeatLastDialogueOnEnd: true)
+        
+        //Lv 376 - Trudee the Truth-telling Tiki
+        dialogueStatue3 = StatueDialogue(dialogue: [
+            //0: 10 - Story branching decision question
+            ChatItem(profile: .hero, imgPos: .left, chat: "Hey! The last Tiki gave me a bunch of info and I forgot it all now. Do you know anything about a password?"),
+            ChatItem(profile: .statue3, chat: "What?!! You spoke to Lars the Liar? He lies like no other!"),
+            ChatItem(profile: .hero, imgPos: .left, chat: "...........What."),
+            ChatItem(profile: .statue3, chat: "Yeah! Do you really think 6-eyed, purple-horn monsters and golden dragons exist??"),
+            ChatItem(profile: .hero, imgPos: .left, chat: "I dunno!! He sounded so convincing. So then there's no special key or password? What about this stupid feather?"),
+            ChatItem(profile: .statue3, chat: "Utterly useless! Here, I'll take it off your hands. No use carrying it around."),
+            ChatItem(profile: .hero, imgPos: .left, chat: "Wait, I didn't mention the 6-eyed, purple-horn monster or the dragon? How do I know YOU'RE not the liar?!"),
+            ChatItem(profile: .statue3, chat: "Because I'm Trudee the Truth-telling Tiki. Hence, I tell the truth. Now.. gimme!") { [unowned self] in
                 chatDecisionEngine.showDecisions(index: 2, toNode: chatBackgroundSprite)
             },
-            ChatItem(profile: .hero, imgPos: .left, chat: "Duh, it's so obvious."),
-            ChatItem(profile: .statue2, chat: "Interesting. I'll make note of it!"),
-            
-            ChatItem(profile: .hero, imgPos: .left, chat: "What is \(FireIceTheme.isFire ? "sand" : "snow")?"),
-            ChatItem(profile: .statue2, chat: "Ah yes, \(FireIceTheme.isFire ? "sand" : "snow")."),
-            ChatItem(profile: .hero, imgPos: .left, chat: "Thanks for nothing."),
-            
-            ChatItem(profile: .statue2, chat: "Taylor Swift is the greatest songwriter of all time.")
-        ], indices: [3, 3, 1], shouldSkipFirstQuestion: FIRManager.decisions[2] != nil)
-
-        dialogueStatue3 = StatueDialogue(dialogue: [ //Lv. 376
-            //Story branching decision question
-            ChatItem(profile: .statue3, chat: "I've got a question for you. Left or Right?") { [unowned self] in
-                chatDecisionEngine.showDecisions(index: 3, toNode: chatBackgroundSprite, displayOnLeft: true)
+            ChatItem(profile: .hero, imgPos: .left, chat: "Hmmm.......") { [unowned self] in
+                animateFeather()
+                fastForwardSprite.removeFromParent()
             },
-            ChatItem(profile: .statue3, chat: "Left or Right?"),
-            ChatItem(profile: .hero, imgPos: .left, chat: "Duh, it's so obvious."),
+            ChatItem(profile: .hero, imgPos: .left, chat: "You really want this feather, don't you?!?!") { [unowned self] in
+                chatBackgroundSprite.addChild(fastForwardSprite)
+            },
+
+            //1: 1
+            ChatItem(profile: .statue3, chat: "Hello! I'm Trudee the Truth-telling Tiki. I tell the absolute truth!"),
             
-            ChatItem(profile: .statue3, chat: "Don't listen to the last guy. He's full of it!"),
-            ChatItem(profile: .statue3, chat: "I, on the other hand, tell the absolute truth!"),
-            ChatItem(profile: .statue3, chat: "AMA... ask me anything!"),
-        ], indices: [3, 1, 1, 1], shouldSkipFirstQuestion: FIRManager.decisions[3] != nil)
+            //2: 4
+            ChatItem(profile: .hero, imgPos: .left, chat: "Ok, \"Truth-teller.\" Where are Marlin, Magmoor and the princess?"),
+            ChatItem(profile: .statue3, chat: "Right under your feet!"),
+            ChatItem(profile: .hero, imgPos: .left, chat: "You're not lying to me, are you?!"),
+            ChatItem(profile: .statue3, chat: "I always tell the truth!"),
+            
+            //Single dialogue
+            ChatItem(profile: .statue3, chat: "The sky is \(currentSky)!"),
+            ChatItem(profile: .statue3, chat: "You might encounter a hidden scene in the Credits... there's a 0.5% chance!"),
+            ChatItem(profile: .statue3, chat: "Play through the game twice for a delightful surprise!")
+        ], indices: [10, 1, 4, 1, 1, 1], shouldSkipFirstQuestion: FIRManager.decisions[2] != nil /*|| // TODO: - didNotGetFeatherFromLarsTheLiar*/, shouldRepeatLastDialogueOnEnd: false)
+
+        
+        //Lv 401 - Mimi the Tiki
+        dialogueStatue4 = StatueDialogue(dialogue: [
+            //0: 4
+            ChatItem(profile: .hero, imgPos: .left, chat: "Are you a liar? Or do you tell the absolute truth?"),
+            ChatItem(profile: .statue4, chat: "I don't know what any of that means."),
+            ChatItem(profile: .statue4, chat: "BUT! Before you step onto the blue warp, you should know that it will transport you to the other blue warp! The warps are color coded!"),
+            ChatItem(profile: .hero, imgPos: .left, chat: "That's pretty obvious."),
+            
+            //1: 2
+            ChatItem(profile: .statue4, chat: "There's a \(FireIceTheme.isFire ? "red" : "blue") haze that lingers in the air. It gets heavier the deeper you go. Makes it hard to breathe sometimes."),
+            ChatItem(profile: .hero, imgPos: .left, chat: "Yeah! I did notice it's harder to breathe down here. Figured it was just my anxiety."),
+            
+            //2: 1
+            ChatItem(profile: .statue4, chat: "It never used to be this way... until he arrived. Just saying!"),
+            
+            //3: 3
+            ChatItem(profile: .hero, imgPos: .left, chat: "Please just tell me where to find him."),
+            ChatItem(profile: .statue4, chat: "'Course. He's right under your feet!"),
+            ChatItem(profile: .hero, imgPos: .left, chat: "GAAAAAHHHHHH!!!!!! I'M DONE WITH YOU PEOPLE!!!"),
+            
+            //4: 1
+            ChatItem(profile: .statue4, chat: "Silly boy. We're not people, we're Tikis!")
+        ], indices: [4, 2, 1, 3, 1], shouldSkipFirstQuestion: false, shouldRepeatLastDialogueOnEnd: false)
+        
+        
+        //Lv 451 - Daemon the Destroyer
+        dialogueStatue5 = StatueDialogue(dialogue: [
+            //0: 1
+            ChatItem(profile: .statue5, chat: "Welcome to your doom!")
+        ], indices: [1], shouldSkipFirstQuestion: false, shouldRepeatLastDialogueOnEnd: false)
     }
     
     /**
@@ -725,9 +903,15 @@ extension ChatEngine {
                 ChatItem(profile: .blankvillain, chat: "\n\n...all will be revealed soon...") { [unowned self] in
                     superScene?.addChild(marlinBlast)
                     marlinBlast.animateBlast(playSound: true)
+
+                    fastForwardSprite.removeFromParent()
+                    chatSpeed = 0
                 },
-                ChatItem(profile: .trainer, imgPos: .left, chat: "⚡️REVEAL YOURSELF!!!⚡️") {
+                ChatItem(profile: .trainer, imgPos: .left, chat: "⚡️REVEAL YOURSELF!!!⚡️") { [unowned self] in
                     AudioManager.shared.playSound(for: "littlegirllaugh")
+                    
+                    chatBackgroundSprite.addChild(fastForwardSprite)
+                    chatSpeed = chatSpeedOrig
                 },
                 ChatItem(profile: .blankvillain, chat: "\n\n...heh heh heh heh...")
             ]) { [unowned self] in
@@ -771,10 +955,16 @@ extension ChatEngine {
                     magmoorScary.flashImage(delay: 0.25)
 
                     AudioManager.shared.playSound(for: "magicheartbeatloop2")
+                    
+                    fastForwardSprite.removeFromParent()
+                    chatSpeed = 0
                 },
-                ChatItem(profile: .trainer, imgPos: .left, chat: "⚡️MAGIC SPELL!!!⚡️"),
+                ChatItem(profile: .trainer, imgPos: .left, chat: "⚡️MAGIC SPELL!!!⚡️") { [unowned self] in
+                    chatBackgroundSprite.addChild(fastForwardSprite)
+                    chatSpeed = chatSpeedOrig
+                },
                 ChatItem(profile: .villain, chat: "MYSTERIOUS FIGURE: I'll be seeing ya shortly."),
-                ChatItem(profile: .trainer, imgPos: .left, chat: "Was that?? ............no. It can't be.")
+                ChatItem(profile: .trainer, imgPos: .left, chat: "Was that?? ..........no. It can't be.")
             ]) { [unowned self] in
                 AudioManager.shared.stopSound(for: "magicheartbeatloop2", fadeDuration: 5)
                 
@@ -1198,14 +1388,14 @@ extension ChatEngine {
                     ChatItem(profile: .trainer, chat: "Magmoor—one of the most powerful Mystics from my realm. I do not know what he intends to do with the princess, although we should assume the worst."),
                     ChatItem(profile: .hero, imgPos: .left, chat: "He's not gonna sacrifice her is he?!?! Because that's just not cool."),
                     ChatItem(profile: .trainer, chat: "I almost did not recognize him in that grotesque form. He used to be so handsome.") { [unowned self] in
-                        chatDecisionEngine.showDecisions(index: decisionIndex, toNode: chatBackgroundSprite)
+                        chatDecisionEngine.showDecisions(index: decisionIndex, toNode: chatBackgroundSprite, displayOnLeft: true)
                     },
-                    ChatItem(profile: .hero, imgPos: .left, endChat: false, chat: "Ok, so what's our next move:", handler: nil)
+                    ChatItem(profile: .trainer, endChat: false, chat: "PUZL Boy, how would you like to proceed?", handler: nil)
                 ]) { [unowned self] in
                     // FIXME: - I don't like this nested sendChatArray()...
                     sendChatArray(items: [
-                        ChatItem(profile: .hero, imgPos: .left, startNewChat: false, chat: "\(FIRManager.decisions[decisionIndex].isLeftButton() ? "We should prepare first." : "BRING ME MAGMOOR!!!")", handler: nil),
-                        ChatItem(profile: .trainer, chat: "\(FIRManager.decisions[decisionIndex].isLeftButton() ? "A wise decision. Let's keep moving..." : "Okay but we need to be EXTRA cautious.")"),
+                        ChatItem(profile: .hero, imgPos: .left, startNewChat: false, chat: "\(FIRManager.decisions[decisionIndex].isLeftButton() ? "BRING ME MAGMOOR!!!" : "Hmm. We should prepare first.")", handler: nil),
+                        ChatItem(profile: .trainer, chat: "\(FIRManager.decisions[decisionIndex].isLeftButton() ? "Alright, but we need to be EXTRA cautious." : "A wise decision. Let's keep moving...")"),
                     ]) { [unowned self] in
                         AudioManager.shared.adjustVolume(to: 1, for: AudioManager.shared.currentTheme, fadeDuration: 3)
                         
@@ -1213,78 +1403,6 @@ extension ChatEngine {
                     }
                 }
             } //end delegate.spawnPrincessCapture() no warp animation
-            
-            
-        // TODO: - Chat Decisions
-        
-//        case 210:
-//            let decisionIndex = 0
-//            
-//            sendChatArray(items: [
-//                ChatItem(profile: .trainer, chat: "What's it gonna be, PUZL Boy?") { [unowned self] in
-//                    chatDecisionEngine.showDecisions(index: decisionIndex, toNode: chatBackgroundSprite)
-//                },
-//                ChatItem(profile: .hero, imgPos: .left, endChat: false, chat: "Hmmm, let me think about it...", handler: nil)
-//            ]) { [unowned self] in
-//                let decision = FIRManager.decisions[decisionIndex].isLeftButton() ? chatDecisionEngine.decisionButtons[decisionIndex].left.text : chatDecisionEngine.decisionButtons[decisionIndex].right.text
-//                
-//                sendChatArray(items: [
-//                    ChatItem(profile: .trainer, startNewChat: false, chat: "Good choice! I also like \(decision).", handler: nil)
-//                ]) { [unowned self] in
-//                    handleDialogueCompletion(level: level, completion: completion)
-//                }
-//            }
-//        case 211:
-//            let decisionIndex = 1
-//            
-//            sendChatArray(items: [
-//                ChatItem(profile: .trainer, chat: "What's it gonna be, PUZL Boy?") { [unowned self] in
-//                    chatDecisionEngine.showDecisions(index: decisionIndex, toNode: chatBackgroundSprite)
-//                },
-//                ChatItem(profile: .hero, imgPos: .left, endChat: false, chat: "Hmmm, let me think about it...", handler: nil)
-//            ]) { [unowned self] in
-//                let decision = FIRManager.decisions[decisionIndex].isLeftButton() ? chatDecisionEngine.decisionButtons[decisionIndex].left.text : chatDecisionEngine.decisionButtons[decisionIndex].right.text
-//                
-//                sendChatArray(items: [
-//                    ChatItem(profile: .trainer, startNewChat: false, chat: "Good choice! I also like \(decision).", handler: nil)
-//                ]) { [unowned self] in
-//                    handleDialogueCompletion(level: level, completion: completion)
-//                }
-//            }
-//        case 212:
-//            let decisionIndex = 2
-//            
-//            sendChatArray(items: [
-//                ChatItem(profile: .trainer, chat: "What's it gonna be, PUZL Boy?") { [unowned self] in
-//                    chatDecisionEngine.showDecisions(index: decisionIndex, toNode: chatBackgroundSprite)
-//                },
-//                ChatItem(profile: .hero, imgPos: .left, endChat: false, chat: "Hmmm, let me think about it...", handler: nil)
-//            ]) { [unowned self] in
-//                let decision = FIRManager.decisions[decisionIndex].isLeftButton() ? chatDecisionEngine.decisionButtons[decisionIndex].left.text : chatDecisionEngine.decisionButtons[decisionIndex].right.text
-//                
-//                sendChatArray(items: [
-//                    ChatItem(profile: .trainer, startNewChat: false, chat: "Good choice! I also like \(decision).", handler: nil)
-//                ]) { [unowned self] in
-//                    handleDialogueCompletion(level: level, completion: completion)
-//                }
-//            }
-//        case 213:
-//            let decisionIndex = 3
-//            
-//            sendChatArray(items: [
-//                ChatItem(profile: .trainer, chat: "What's it gonna be, PUZL Boy?") { [unowned self] in
-//                    chatDecisionEngine.showDecisions(index: decisionIndex, toNode: chatBackgroundSprite)
-//                },
-//                ChatItem(profile: .hero, imgPos: .left, endChat: false, chat: "Hmmm, let me think about it...", handler: nil)
-//            ]) { [unowned self] in
-//                let decision = FIRManager.decisions[decisionIndex].isLeftButton() ? chatDecisionEngine.decisionButtons[decisionIndex].left.text : chatDecisionEngine.decisionButtons[decisionIndex].right.text
-//                
-//                sendChatArray(items: [
-//                    ChatItem(profile: .trainer, startNewChat: false, chat: "Good choice! I also like \(decision).", handler: nil)
-//                ]) { [unowned self] in
-//                    handleDialogueCompletion(level: level, completion: completion)
-//                }
-//            }
         case 282:
             if !dialogueWithCutscene[level]! {
                 let cutscene = CutsceneMagmoor()
@@ -1299,10 +1417,10 @@ extension ChatEngine {
             }
             else {
                 sendChatArray(items: [
-                    ChatItem(profile: .hero, imgPos: .left, chat: "Ok... so how do we get the genie back in the bottle?"),
-                    ChatItem(profile: .trainer, chat: "There is yet a way. I just need more time."),
+                    ChatItem(profile: .hero, imgPos: .left, chat: "What a drag. Ok... so how do we get the genie back in the bottle?"),
+                    ChatItem(profile: .trainer, chat: "There is a way. I just need more time."),
                     ChatItem(profile: .hero, imgPos: .left, chat: "We haven't got any time! Princess needs us now!"),
-                    ChatItem(profile: .trainer, chat: "YES! YES!! Just let me think for one second—")
+                    ChatItem(profile: .trainer, chat: "YES!! Just.. let me think for one second—")
                 ]) { [unowned self] in
                     handleDialogueCompletion(level: level, completion: completion)
                 }
@@ -1390,7 +1508,7 @@ extension ChatEngine {
             }
             else {
                 sendChatArray(items: [
-                    ChatItem(profile: .hero, imgPos: .left, chat: "🎵 Lonely. I am so lonely... 🎶")
+                    ChatItem(profile: .hero, imgPos: .left, chat: "🎵 Lonely. I'm Mister Lonely... 🎶")
                 ]) { [unowned self] in
                     handleDialogueCompletion(level: level, completion: completion)
                 }
@@ -1412,8 +1530,7 @@ extension ChatEngine {
             }
             else {
                 sendChatArray(items: [
-                    ChatItem(profile: .hero, imgPos: .left, chat: "\(FireIceTheme.isFire ? "Sand?? What the heck is sand?!?" : "Snow?? What the heck is snow?!?") Ahhh, I'm FREAKING OUT!!!"),
-                    ChatItem(profile: .hero, imgPos: .left, chat: "Maybe that statue can help me...")
+                    ChatItem(profile: .hero, imgPos: .left, chat: "Whoa.. \(FireIceTheme.isFire ? "sand" : "snow")! This is new. Maybe that Tiki knows something...")
                 ]) { [unowned self] in
                     handleDialogueCompletion(level: level, completion: completion)
                 }
@@ -1427,7 +1544,23 @@ extension ChatEngine {
             else {
                 handleDialogueCompletion(level: level, completion: completion)
             }
-//        case 314:
+        case 401:
+            if statueTapped {
+                sendChatArray(shouldSkipDim: true, items: dialogueStatue4.getDialogue()) { [unowned self] in
+                    handleDialogueCompletion(level: level, completion: completion)
+                }
+            }
+            else {
+                chapterTitleSprite.setChapter(4)
+                chapterTitleSprite.showTitle { [unowned self] in
+                    sendChatArray(items: [
+                        ChatItem(profile: .hero, imgPos: .left, chat: "Marlin, where are you?")
+                    ]) { [unowned self] in
+                        handleDialogueCompletion(level: level, completion: completion)
+                    }
+                }
+            }
+//        case 425:
 //            delegate?.inbetweenRealmEnter(levelInt: level)
 //            
 //            sendChatArray(shouldSkipDim: true, items: [
@@ -1453,9 +1586,13 @@ extension ChatEngine {
 //                    handleDialogueCompletion(level: level, completion: completion)
 //                }
 //            }
-        case 401:
-            chapterTitleSprite.setChapter(4)
-            chapterTitleSprite.showTitle { [unowned self] in
+        case 451:
+            if statueTapped {
+                sendChatArray(shouldSkipDim: true, items: dialogueStatue5.getDialogue()) { [unowned self] in
+                    handleDialogueCompletion(level: level, completion: completion)
+                }
+            }
+            else {
                 handleDialogueCompletion(level: level, completion: completion)
             }
         default:
@@ -1463,4 +1600,7 @@ extension ChatEngine {
             completion?(nil)
         }
     }//end playDialogue(level:statueTapped:completion:)
+    
+    
+    
 }//end ChatEngine

@@ -11,14 +11,23 @@ struct StatueDialogue {
     
     // MARK: - Properties
     
-    private let dialogue: [ChatItem]
-    private var indices: [Int]
+    private(set) var dialogue: [ChatItem]
+    private(set) var indices: [Int]
     private var shouldSkipFirstQuestion: Bool
+    private var shouldRepeatLastDialogueOnEnd: Bool
     
     private var dialogueIndex: Int = 0 {
         didSet {
             if dialogueIndex >= dialogue.count {
-                dialogueIndex = shouldSkipFirstQuestion ? secondQuestion.indexDialogue : 0
+                if shouldRepeatLastDialogueOnEnd {
+                    dialogueIndex = lastDialogue.indexDialogue
+                }
+                else if shouldSkipFirstQuestion {
+                    dialogueIndex = secondDialogue.indexDialogue
+                }
+                else {
+                    dialogueIndex = 0
+                }
             }
         }
     }
@@ -26,27 +35,43 @@ struct StatueDialogue {
     private var indicesIndex: Int = 0 {
         didSet {
             if indicesIndex >= indices.count {
-                indicesIndex = shouldSkipFirstQuestion ? secondQuestion.indexIndices : 0
+                if shouldRepeatLastDialogueOnEnd {
+                    indicesIndex = lastDialogue.indexIndices
+                }
+                else if shouldSkipFirstQuestion {
+                    indicesIndex = secondDialogue.indexIndices
+                }
+                else {
+                    indicesIndex = 0
+                }
             }
         }
     }
     
-    ///Skip the first question and go to the second question, because the first question could be an intro, or a story branching decision question, i.e. don't want to be able to overwrite previous response.
-    private var secondQuestion: (indexDialogue: Int, indexIndices: Int) {
+    ///Returns the second set of dialogue, because the first set could be an intro, or a story branching decision question, i.e. don't want to repeat or be able to overwrite a previous response.
+    private var secondDialogue: (indexDialogue: Int, indexIndices: Int) {
         return (indices[0], 1)
+    }
+    
+    ///Returns the last set of dialogue, i.e. just keep repeating it once you go through all the line of dialogue.
+    private var lastDialogue: (indexDialogue: Int, indexIndices: Int) {
+        let lastIndex = indices.count - 1
+        
+        return (indices.reduce(0, +) - indices[lastIndex], lastIndex)
     }
 
     
     // MARK: - Initialization
     
-    init(dialogue: [ChatItem], indices: [Int], shouldSkipFirstQuestion: Bool) {
+    init(dialogue: [ChatItem], indices: [Int], shouldSkipFirstQuestion: Bool, shouldRepeatLastDialogueOnEnd: Bool) {
         self.dialogue = dialogue
         self.indices = indices
         self.shouldSkipFirstQuestion = shouldSkipFirstQuestion
+        self.shouldRepeatLastDialogueOnEnd = shouldRepeatLastDialogueOnEnd
         
         if shouldSkipFirstQuestion {
-            dialogueIndex = secondQuestion.indexDialogue
-            indicesIndex = secondQuestion.indexIndices
+            dialogueIndex = secondDialogue.indexDialogue
+            indicesIndex = secondDialogue.indexIndices
         }
     }
     
@@ -69,6 +94,13 @@ struct StatueDialogue {
         indicesIndex += 1
         
         return items
+    }
+    
+    mutating func updateDialogue(index: Int, newDialogue: String) {
+        var updatedChatItem = dialogue[index]
+        updatedChatItem.updateChat(newDialogue)
+        
+        dialogue[index] = updatedChatItem
     }
     
     ///Updates shouldSkipFirstQuestion property, i.e. once the decision question has been answered, need to update the object so it doesn't ask it again!

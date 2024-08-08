@@ -127,7 +127,7 @@ class GameboardSprite {
     }
     
     ///Returns the K.GameboardPanel's SKSpriteNodes (terrain and overlay) at the given K.GameboardPosition.
-    func getPanel(at position: K.GameboardPosition) -> (terrain: SKSpriteNode?, overlay: SKSpriteNode?) {
+    func getPanel(at position: K.GameboardPosition) -> K.GameboardPanelSprite {
         let terrainName = GameboardSprite.getNodeName(row: position.row, col: position.col)
         let overlayName = GameboardSprite.getNodeName(row: position.row, col: position.col, includeOverlayTag: true)
 

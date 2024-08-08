@@ -1021,17 +1021,39 @@ class GameEngine {
                                 
                 return false
             }
-        case .statue0, .statue1, .statue2, .statue3:
+        case .statue0, .statue1, .statue2, .statue3, .statue4:
             if shouldUpdateRemainingForBoulderIfIcy {
                 updateMovesRemaining()
                 shouldUpdateRemainingForBoulderIfIcy = false
             }
             
-            let tikistatue = gameboardSprite.getPanel(at: position)
+            let tikistatue: K.GameboardPanelSprite = gameboardSprite.getPanel(at: position)
             tikistatue.overlay?.animateStatue()
             
             AudioManager.shared.playSound(for: "touchstatue")
             Haptics.shared.executeCustomPattern(pattern: .statue)
+            delegate?.didTouchStatue()
+            
+            return false
+        // TODO: - Interaction for Tiki #5 aka Daemon the Destroyer
+        case .statue5:
+            if shouldUpdateRemainingForBoulderIfIcy {
+                updateMovesRemaining()
+                shouldUpdateRemainingForBoulderIfIcy = false
+            }
+            
+            let tikistatue: K.GameboardPanelSprite = gameboardSprite.getPanel(at: position)
+            let shakeDuration: TimeInterval = 0.06
+            let tikiAction = SKAction.sequence([
+                SKAction.repeat(SKAction.sequence([
+                    SKAction.rotate(toAngle: .pi / 12, duration: shakeDuration),
+                    SKAction.rotate(toAngle: -.pi / 12, duration: shakeDuration),
+                ]), count: 10),
+                SKAction.rotate(toAngle: 0, duration: shakeDuration)
+            ])
+            
+            tikistatue.overlay?.run(tikiAction)
+            
             delegate?.didTouchStatue()
             
             return false
