@@ -8,10 +8,8 @@
 import Foundation
 
 class AchievementHoarder: BaseAchievement {
-    let requirement: Double = 40
-
     override func updatePercentage(increment: Double = 1) {
-        percentComplete += increment / requirement * 100
+        percentComplete = 100
         print("Percent complete for Hoarder: \(percentComplete)")
     }
 }

@@ -73,6 +73,11 @@ struct StatueDialogue {
             dialogueIndex = secondDialogue.indexDialogue
             indicesIndex = secondDialogue.indexIndices
         }
+        
+        if shouldRepeatLastDialogueOnEnd {
+            dialogueIndex = lastDialogue.indexDialogue
+            indicesIndex = lastDialogue.indexIndices
+        }
     }
     
     
@@ -106,5 +111,19 @@ struct StatueDialogue {
     ///Updates shouldSkipFirstQuestion property, i.e. once the decision question has been answered, need to update the object so it doesn't ask it again!
     mutating func setShouldSkipFirstQuestion(_ shouldSkipFirstQuestion: Bool) {
         self.shouldSkipFirstQuestion = shouldSkipFirstQuestion
+        
+        //Careful with resetting to 0! Might not necessarily want to, but I haven't encountered a scenario where I don't want it to be 0. 8/9/24
+        dialogueIndex = shouldSkipFirstQuestion ? secondDialogue.indexDialogue : 0
+        indicesIndex = shouldSkipFirstQuestion ? secondDialogue.indexIndices : 0
+    }
+    
+    ///Updates shouldRepeatLastDialogueOnEnd property
+    mutating func setShouldRepeatLastDialogueOnEnd(_ shouldRepeatLastDialogueOnEnd: Bool) {
+        self.shouldRepeatLastDialogueOnEnd = shouldRepeatLastDialogueOnEnd
+        
+        if shouldRepeatLastDialogueOnEnd {
+            dialogueIndex = lastDialogue.indexDialogue
+            indicesIndex = lastDialogue.indexIndices
+        }
     }
 }

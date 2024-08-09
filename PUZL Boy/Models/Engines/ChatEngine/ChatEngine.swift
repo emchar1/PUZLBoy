@@ -583,13 +583,19 @@ extension ChatEngine: ChatDecisionEngineDelegate {
         
         //Don't forget to update the StatueDialogue object!! (Otherwise it will ask the question again in the same line of questioning).
         switch index {
-        case 0:     
+        case 0:
             break
-        case 1:    
+        case 1:
             dialogueStatue1.setShouldSkipFirstQuestion(true)
         case 2:
+            let gaveAwayFeather = FIRManager.decisions[index].isLeftButton()
+            
             dialogueStatue3.setShouldSkipFirstQuestion(true)
-            dialogueStatue3.updateDialogue(index: dialogueStatue3.indices[0], newDialogue: FIRManager.decisions[index].isLeftButton() ? "Ahhhh, this is exquisite!! You won't regret it." : "Fine. Keep your silly feather. I didn't want it anyway!")
+            dialogueStatue3.updateDialogue(index: dialogueStatue3.indices[0], newDialogue: gaveAwayFeather ? "Ahhhh, this is exquisite!! You won't regret it." : "Fine. Keep your silly feather. I didn't want it anyway!")
+            
+            if gaveAwayFeather {
+                FIRManager.updateFirestoreRecordHasFeather(false)
+            }
         case 3:
             break
         default:
@@ -787,6 +793,9 @@ extension ChatEngine {
                 animateFeather()
                 fastForwardSprite.removeFromParent()
                 chatSpeed = 0
+                
+                FIRManager.updateFirestoreRecordHasFeather(true)
+                dialogueStatue3.setShouldSkipFirstQuestion(false) //set it for Trudee
             },
             ChatItem(profile: .blankhero, chat: "\n\nPUZL Boy received Magic Feather of Protection") { [unowned self] in
                 chatBackgroundSprite.addChild(fastForwardSprite)
@@ -806,8 +815,10 @@ extension ChatEngine {
             
             //6: 2
             ChatItem(profile: .hero, imgPos: .left, chat: "Sigh. Anything else you can tell me?"),
-            ChatItem(profile: .statue2, chat: "Nope.")
-        ], indices: [4, 8, 6, 4, 4, 3, 2], shouldSkipFirstQuestion: false, shouldRepeatLastDialogueOnEnd: true)
+            ChatItem(profile: .statue2, chat: "Nope.") { [unowned self] in
+                dialogueStatue2.setShouldRepeatLastDialogueOnEnd(true)
+            }
+        ], indices: [4, 8, 6, 4, 4, 3, 2], shouldSkipFirstQuestion: false, shouldRepeatLastDialogueOnEnd: FIRManager.hasFeather != nil)
         
         //Lv 376 - Trudee the Truth-telling Tiki
         dialogueStatue3 = StatueDialogue(dialogue: [
@@ -843,7 +854,7 @@ extension ChatEngine {
             ChatItem(profile: .statue3, chat: "The sky is \(currentSky)!"),
             ChatItem(profile: .statue3, chat: "You might encounter a hidden scene in the Credits... there's a 0.5% chance!"),
             ChatItem(profile: .statue3, chat: "Play through the game twice for a delightful surprise!")
-        ], indices: [10, 1, 4, 1, 1, 1], shouldSkipFirstQuestion: FIRManager.decisions[2] != nil /*|| // TODO: - didNotGetFeatherFromLarsTheLiar*/, shouldRepeatLastDialogueOnEnd: false)
+        ], indices: [10, 1, 4, 1, 1, 1], shouldSkipFirstQuestion: FIRManager.hasFeather == nil || !FIRManager.hasFeather!, shouldRepeatLastDialogueOnEnd: false)
 
         
         //Lv 401 - Mimi the Tiki

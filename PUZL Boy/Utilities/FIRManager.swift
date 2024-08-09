@@ -16,6 +16,7 @@ struct FIRManager {
     static var user: User?
     static var saveStateModel: SaveStateModel?
     static var decisions: [String?] = [nil, nil, nil, nil]
+    static var hasFeather: Bool?
     
     //Test users
     static let userEddie = "2bjhz2grYVVOn37qmUipG4CKps62"
@@ -149,12 +150,15 @@ struct FIRManager {
                 decisions[i] = data["decision\(i)"] as? String
             }
             
+            hasFeather = data["hasFeather"] as? Bool
+            
             completion?(SaveStateModel(decision0: decisions[0],
                                        decision1: decisions[1],
                                        decision2: decisions[2],
                                        decision3: decisions[3],
                                        elapsedTime: elapsedTime,
                                        gameCompleted: gameCompleted,
+                                       hasFeather: hasFeather,
                                        hintAvailable: hintAvailable,
                                        hintCountRemaining: hintCountRemaining,
                                        levelModel: getLevelModel(from: levelModel),
@@ -213,6 +217,7 @@ struct FIRManager {
             "decision3": decisions[3] as Any, //use the static property, instead of saveStateModel (which will give you the old one)
             "elapsedTime": saveStateModel.elapsedTime,
             "gameCompleted": saveStateModel.gameCompleted,
+            "hasFeather": hasFeather as Any, //use the static property, instead of saveStateModel (which will give you the old one)
             "hintAvailable": saveStateModel.hintAvailable,
             "hintCountRemaining": saveStateModel.hintCountRemaining,
             "levelModel": [
@@ -383,6 +388,12 @@ struct FIRManager {
         decisions[indexAdjusted] = FIRvalue
 
         updateFirestoreRecordFields(fields: [FIRfield : FIRvalue])
+    }
+    
+    ///Convenience method to update the hasFeather field in a record and the static property.
+    static func updateFirestoreRecordHasFeather(_ hasFeather: Bool?) {
+        self.hasFeather = hasFeather
+        updateFirestoreRecordFields(fields: ["hasFeather" : hasFeather ?? NSNull()])
     }
     
     ///Convenience method to update just the newLevel field in a record.

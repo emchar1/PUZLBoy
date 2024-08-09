@@ -1095,6 +1095,19 @@ class GameEngine {
             
             if level.level == Level.finalLevel {
                 GameEngine.gameCompleted = true
+
+                if let hasFeather = FIRManager.hasFeather {
+                    if hasFeather {
+                        GameCenterManager.shared.updateProgress(achievement: .hoarder, shouldReportImmediately: true)
+                    }
+                        
+                    //Start the game over with no feather.
+                    FIRManager.updateFirestoreRecordHasFeather(nil)
+                }
+                
+                // TODO: - Need to reset decision branching questions!!!
+                
+
                 print("YOU WON THE GAME!!!")
             }
             
@@ -1162,7 +1175,6 @@ class GameEngine {
 
         GameCenterManager.shared.updateProgress(achievement: .scavenger, increment: Double(toolsCollected))
         GameCenterManager.shared.updateProgress(achievement: .itemWielder, increment: Double(toolsCollected))
-        GameCenterManager.shared.updateProgress(achievement: .hoarder, increment: Double(level.inventory.getItemCount()))
         
         GameCenterManager.shared.updateProgress(achievement: .superEfficient, increment: Double(movesRemaining))
 

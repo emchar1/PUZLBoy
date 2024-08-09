@@ -397,6 +397,7 @@ class GameScene: SKScene {
             decision3: "by the static properties.",
             elapsedTime: scoringEngine.timerManager.elapsedTime,
             gameCompleted: GameEngine.gameCompleted,
+            hasFeather: true, //Doesn't matter what goes here, it'll also get overwritten by the static property in FIRManager
             hintAvailable: gameEngine.hintEngine.hintAvailable,
             hintCountRemaining: HintEngine.hintCount,
             levelModel: levelModel,

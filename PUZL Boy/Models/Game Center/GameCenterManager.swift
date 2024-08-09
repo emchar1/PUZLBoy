@@ -356,6 +356,7 @@ final class GameCenterManager: NSObject {
             guard error == nil else { return print("Error resetting achievements: \(error!.localizedDescription)") }
             
             self.loadAchievements()
+            print("GameCenterManager.resetAchivements()...... DONE!")
         }
     }
 }

@@ -20,6 +20,9 @@ class DisplaySprite {
     private(set) var statusSwords: DisplayStatusBarSprite
     private(set) var goldCoin: GoldCoinSprite
     
+    // TODO: - Magic Feather icon
+//    private(set) var magicFeather: MagicFeather
+    
     private var heartsAtlas: SKTextureAtlas
     private var heartsTextures: [SKTexture]
     
