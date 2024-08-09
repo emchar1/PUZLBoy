@@ -260,16 +260,8 @@ class GameScene: SKScene {
     override func didMove(to view: SKView) {
         //First, set the audio...
         AudioManager.shared.stopSound(for: "continueloop")
-        
-        
-        
-        // FIXME: - FIRE/ICE TEST
         AudioManager.shared.changeTheme(newTheme: FireIceTheme.musicOverworldTheme)
-        
-        
-        
         AudioManager.shared.playSound(for: AudioManager.shared.currentTheme)
-
         
         //...then call the remaining functions.
         moveSprites()
@@ -458,38 +450,15 @@ class GameScene: SKScene {
                 scoringEngine.timerManager.setIsParty(false)
             }
         }
-        
-        //DO NOT CREATE NEW INSTANCES EVERY TIME!!! THIS CAUSES MEMORY LEAKS! 3/30/23
-//        gameEngine = GameEngine(level: level, shouldSpawn: !didWin)
-//        gameEngine.delegate = self
-        
+                
         moveSprites()
         playDialogue()
         
-        if !didWin {
-            AudioManager.shared.stopSound(for: "continueloop")
-
-
-
-            // FIXME: - FIRE/ICE TEST
+        AudioManager.shared.stopSound(for: "continueloop")
+        
+        if !didWin || (AudioManager.shared.currentTheme != FireIceTheme.musicOverworldTheme && !Level.isPartyLevel(level)) {
             AudioManager.shared.changeTheme(newTheme: FireIceTheme.musicOverworldTheme)
-
-
-
             AudioManager.shared.playSound(for: AudioManager.shared.currentTheme)
-        }
-        else {
-            
-            
-            
-            // FIXME: - FIRE/ICE TEST - I hate that I have to check if it's a party level again...
-            if AudioManager.shared.currentTheme != FireIceTheme.musicOverworldTheme && !Level.isPartyLevel(level) {
-                AudioManager.shared.changeTheme(newTheme: FireIceTheme.musicOverworldTheme)
-                AudioManager.shared.playSound(for: AudioManager.shared.currentTheme)
-            }
-            
-            
-            
         }
         
         // FIXME: - Uncomment to play interstitial ad every X levels
@@ -499,6 +468,11 @@ class GameScene: SKScene {
 //                AdMobManager.shared.presentInterstitial()
 //            }
 //        }
+        
+        
+        //DO NOT CREATE NEW INSTANCES EVERY TIME!!! THIS CAUSES MEMORY LEAKS! 3/30/23
+//        gameEngine = GameEngine(level: level, shouldSpawn: !didWin)
+//        gameEngine.delegate = self
     }
     
     private func prepareAd(completion: (() -> Void)?) {
@@ -635,6 +609,39 @@ class GameScene: SKScene {
             gameEngine.shouldDisableInput(false)
             pauseResetEngine.shouldDisable(false)
         }
+    }
+    
+    ///Shakes the screen. Use effect for certain cataclysmic event
+    func shakeScreen(completion: (() -> Void)?) {
+        let shakeMagnitude: CGFloat = 12
+        let shakeDuration: TimeInterval = 0.06
+        let totalDuration: TimeInterval = 5
+        let overworldVolumeDim: Float = 0.1
+        
+        let shakeAction = SKAction.repeat(SKAction.sequence([
+            SKAction.moveBy(x: shakeMagnitude, y: shakeMagnitude, duration: shakeDuration),
+            SKAction.moveBy(x: -shakeMagnitude, y: -shakeMagnitude, duration: shakeDuration)
+        ]), count: Int(totalDuration / (shakeDuration * 2)))
+        
+        scoringEngine.sprite.run(shakeAction)
+        gameEngine.displaySprite.sprite.run(shakeAction)
+        gameEngine.gameboardSprite.sprite.run(shakeAction) {
+            if AudioManager.shared.currentTheme != FireIceTheme.musicOverworldTheme {
+                AudioManager.shared.changeTheme(newTheme: FireIceTheme.musicOverworldTheme)
+            }
+
+            AudioManager.shared.raiseVolume(for: AudioManager.shared.currentTheme, fadeDuration: 5)
+            
+            Haptics.shared.stopHapticEngine()
+            Haptics.shared.startHapticEngine(shouldInitialize: false)
+
+            completion?()
+        }
+
+        AudioManager.shared.adjustVolume(to: overworldVolumeDim, for: AudioManager.shared.currentTheme, fadeDuration: 1)
+        AudioManager.shared.playSound(for: "magicelderexplosion")
+        AudioManager.shared.playSoundThenStop(for: "thunderrumble", currentTime: 5, playForDuration: totalDuration + 1, fadeOut: 4)
+        Haptics.shared.executeCustomPattern(pattern: .thunder)
     }
     
     /**
@@ -939,14 +946,7 @@ extension GameScene: AdMobManagerDelegate {
             continueFromAd(shouldFade: true) { [unowned self] in
                 AudioManager.shared.playSound(for: "revive")
                 AudioManager.shared.stopSound(for: "continueloop")
-
-
-                
-                // FIXME: - FIRE/ICE TEST
                 AudioManager.shared.changeTheme(newTheme: FireIceTheme.musicOverworldTheme)
-
-
-
                 AudioManager.shared.playSound(for: AudioManager.shared.currentTheme)
                 
                 pauseResetEngine.shouldDisable(false)

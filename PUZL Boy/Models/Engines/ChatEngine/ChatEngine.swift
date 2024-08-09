@@ -330,6 +330,20 @@ class ChatEngine {
         AudioManager.shared.playSound(for: "pickupitem")
     }
     
+    ///Animates the screen shaking
+    private func animateFateSealed() {
+        guard let superScene = superScene, let gameScene = superScene as? GameScene else { return }
+        
+        dimOverlaySprite.fillColor = FIRManager.decisions[1].isLeftButton() ? .red : .blue
+        dimOverlaySprite.run(SKAction.fadeAlpha(to: 0.35, duration: 1))
+
+        gameScene.shakeScreen { [unowned self] in
+            dimOverlaySprite.run(SKAction.fadeOut(withDuration: 5)) { [unowned self] in
+                dimOverlaySprite.fillColor = .black
+            }
+        }
+    }
+    
     
     // MARK: - Chat Functions
     
@@ -573,7 +587,7 @@ extension ChatEngine: ChatDecisionEngineDelegate {
             break
         case 1:    
             dialogueStatue1.setShouldSkipFirstQuestion(true)
-        case 2:     
+        case 2:
             dialogueStatue3.setShouldSkipFirstQuestion(true)
             dialogueStatue3.updateDialogue(index: dialogueStatue3.indices[0], newDialogue: FIRManager.decisions[index].isLeftButton() ? "Ahhhh, this is exquisite!! You won't regret it." : "Fine. Keep your silly feather. I didn't want it anyway!")
         case 3:
@@ -714,10 +728,15 @@ extension ChatEngine {
             ChatItem(profile: .hero, imgPos: .left, chat: "Robert Frost!") { [unowned self] in
                 chatDecisionEngine.showDecisions(index: 1, toNode: chatBackgroundSprite, displayOnLeft: true)
             },
-            ChatItem(profile: .statue1, chat: "How do you think the world will end?"),
-            ChatItem(profile: .statue1, chat: "Your fate has been sealed!!"),
+            ChatItem(profile: .statue1, chat: "How do you want the world to end?") { [unowned self] in
+                animateFateSealed()
+                fastForwardSprite.removeFromParent()
+            },
+            ChatItem(profile: .statue1, chat: "Your fate has been sealed!!") { [unowned self] in
+                chatBackgroundSprite.addChild(fastForwardSprite)
+            },
             ChatItem(profile: .hero, imgPos: .left, chat: "Wait, what?? No! I didn't—"),
-            ChatItem(profile: .statue1, chat: "Actions have consequences! Please remember that for next time, PUZL Boy."),
+            ChatItem(profile: .statue1, chat: "With every choice comes a consequence! Remember that for next time, PUZL Boy."),
             
             //1: 4
             ChatItem(profile: .hero, imgPos: .left, chat: "Is the world going to end??!!"),
@@ -731,20 +750,20 @@ extension ChatEngine {
 
             //3: 2
             ChatItem(profile: .hero, imgPos: .left, chat: "Please! Help me!!"),
-            ChatItem(profile: .statue1, chat: "Trust your instincts, kid. You've made it this far. Don't give up!"),
+            ChatItem(profile: .statue1, chat: "Trust your instincts, kid. You've made it this far. Do not give up!"),
         ], indices: [7, 4, 2, 2], shouldSkipFirstQuestion: FIRManager.decisions[1] != nil, shouldRepeatLastDialogueOnEnd: false)
         
         
         //Lv 351 - Lars the Liar
         dialogueStatue2 = StatueDialogue(dialogue: [
             //0: 4
-            ChatItem(profile: .statue2, chat: "Whaddup, bro! You want to know about all this \(FireIceTheme.isFire ? "sand" : "snow"), amirite?"),
+            ChatItem(profile: .statue2, chat: "Whaddup, bro! You want to know all about the new terrain, amirite?"),
             ChatItem(profile: .statue2, chat: "Look, it's real simple, bro. Whatever you do, don't backtrack or you'll be in a lotta trouble, get what I'm sayin', bro?"),
             ChatItem(profile: .hero, imgPos: .left, chat: "No, I don't. Bro."),
             ChatItem(profile: .statue2, chat: "Broooo! Just keep moving forward. Ya feel me?"),
             
             //1: 8
-            ChatItem(profile: .hero, imgPos: .left, chat: "Yeah. Can you tell me where the princess is?"),
+            ChatItem(profile: .hero, imgPos: .left, chat: "Can you tell me where the princess is?"),
             ChatItem(profile: .statue2, chat: "Ok look, bro. I may not know about allat, but what I do know is you can get to her with a special key."),
             ChatItem(profile: .hero, imgPos: .left, chat: "Special key???"),
             ChatItem(profile: .statue2, chat: "Yeah, bro! The Special Key is buried somewhere in Level 405. Or was it 450? 504???? No, it was 405. 405!!"),
@@ -836,7 +855,7 @@ extension ChatEngine {
             ChatItem(profile: .hero, imgPos: .left, chat: "That's pretty obvious."),
             
             //1: 2
-            ChatItem(profile: .statue4, chat: "There's a \(FireIceTheme.isFire ? "red" : "blue") haze that lingers in the air. It gets heavier the deeper you go. Makes it hard to breathe sometimes."),
+            ChatItem(profile: .statue4, chat: "There's a reddish haze that lingers in the air. It gets heavier the deeper you go. Makes it hard to breathe sometimes."),
             ChatItem(profile: .hero, imgPos: .left, chat: "Yeah! I did notice it's harder to breathe down here. Figured it was just my anxiety."),
             
             //2: 1
@@ -1586,6 +1605,7 @@ extension ChatEngine {
 //                    handleDialogueCompletion(level: level, completion: completion)
 //                }
 //            }
+        // TODO: - Marlin's return and defeat of Magmoor's minion
         case 451:
             if statueTapped {
                 sendChatArray(shouldSkipDim: true, items: dialogueStatue5.getDialogue()) { [unowned self] in

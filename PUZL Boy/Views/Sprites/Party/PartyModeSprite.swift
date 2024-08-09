@@ -23,19 +23,7 @@ class PartyModeSprite: SKNode {
 
     private(set) var isPartying: Bool = false {
         didSet {
-            if isPartying {
-                AudioManager.shared.changeTheme(newTheme: AudioManager.shared.overworldPartyTheme)
-            }
-            else {
-
-                
-
-                // FIXME: - FIRE/ICE TEST
-                AudioManager.shared.changeTheme(newTheme: FireIceTheme.musicOverworldTheme)
-                
-
-                
-            }
+            AudioManager.shared.changeTheme(newTheme: isPartying ? AudioManager.shared.overworldPartyTheme : FireIceTheme.musicOverworldTheme)
         }
     }
     

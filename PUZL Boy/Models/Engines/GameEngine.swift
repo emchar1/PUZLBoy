@@ -187,14 +187,6 @@ class GameEngine {
     }
     
     private func finishInit(shouldSpawn: Bool) {
-        
-        
-        
-        // FIXME: - FIRE/ICE TEST
-        FireIceTheme.setOnFire(DayTheme.currentTheme == .morning || DayTheme.currentTheme == .afternoon)
-
-        
-        
         backgroundSprite = SKSpriteNode(texture: SKTexture(image: DayTheme.getSkyImage()))
         backgroundSprite.size = K.ScreenDimensions.size
         backgroundSprite.anchorPoint = .zero
@@ -1087,14 +1079,9 @@ class GameEngine {
         if isSolved {
             playerSprite.startPlayerExitAnimation()
 
-            
-            
-            // FIXME: - FIRE/ICE TEST
             if AudioManager.shared.currentTheme != FireIceTheme.musicOverworldTheme {
                 AudioManager.shared.stopSound(for: AudioManager.shared.currentTheme)
             }
-
-
 
             AudioManager.shared.playSound(for: FireIceTheme.soundWinLevel)
             delegate?.gameIsSolved(movesRemaining: movesRemaining,

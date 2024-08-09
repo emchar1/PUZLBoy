@@ -12,16 +12,9 @@ struct FireIceTheme {
     
     // MARK: - Properties
     
-    
-    
-    // FIXME: - FIRE/ICE TEST
-    static private(set) var isFire: Bool = DayTheme.currentTheme == .morning || DayTheme.currentTheme == .afternoon
-    
-    
-    
-    
-    
-    // MARK: - Computed Properties
+    //Main
+    static var isFire: Bool { FIRManager.decisions[1] == nil || FIRManager.decisions[1].isLeftButton() }
+    static var isDay: Bool { DayTheme.currentTheme == .morning || DayTheme.currentTheme == .afternoon }
     
     //Colors
     static var overlayColor: UIColor { isFire ? .red : .blue }
@@ -30,30 +23,14 @@ struct FireIceTheme {
     //Sounds
     static var soundMovementSandSnow: String { isFire ? "movesand\(Int.random(in: 1...3))" : "movesnow\(Int.random(in: 1...3))" }
     static var soundEnemyAttack: String { isFire ? "enemyflame" : "enemyice" }
-    static var soundWinLevel: String { isFire ? "winlevel" : "winlevelice" }
-    static var musicGameOver: String { isFire ? "gameover" : "gameoverice" }
-    static var musicOverworldTheme: String { isFire ? AudioManager.shared.overworldTheme : AudioManager.shared.overworldIceTheme }
+    static var soundWinLevel: String { isFire || isDay ? "winlevel" : "winlevelice" }
+    static var musicGameOver: String { isFire || isDay ? "gameover" : "gameoverice" }
+    static var musicOverworldTheme: String { isFire || isDay ? AudioManager.shared.overworldTheme : AudioManager.shared.overworldIceTheme }
     
     //Sprites, Textures & Images
     static var spriteEnemyExplode: String { isFire ? "enemy" : "enemyIce" }
-//    static var spriteEnemyLarge: String { isFire ? "enemyLarge" : "enemyIceLarge" }
-//    static var imageSkyNodeOverlay: UIImage { isFire ? UIImage.gradientTextureSkyBlood : UIImage.gradientTextureSkyIce }
-//    static var textureFlyingDragon: String { isFire ? "flyingDragon" : "flyingDragonIce" }
 
     //Effects
-//    static var particleTypeDragonFire: ParticleEngine.ParticleType { isFire ? .dragonFire : .dragonIce }
     static var particleTypeDragonFireIdle: ParticleEngine.ParticleType { isFire ? .dragonFireIdle : .dragonIceIdle }
     static var particleTypeDragonFireLite: ParticleEngine.ParticleType { isFire ? .dragonFireLite : .dragonIceLite }
-
-    //Strings
-//    static var skyColorDescription: String { isFire ? "blood" : "ice" }
-
-    
-    // MARK: - Functions
-    
-    static func setOnFire(_ isFire: Bool) {
-        self.isFire = isFire
-    }
-    
-    
 }
