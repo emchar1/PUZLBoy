@@ -380,14 +380,21 @@ struct FIRManager {
     }
     
     ///Convenience method to update the decision field in a record and the static decisions array property.
-    static func updateFirestoreRecordDecision(index: Int, buttonOrder: ChatDecisionEngine.ButtonOrder) {
+    static func updateFirestoreRecordDecision(index: Int, buttonOrder: ChatDecisionEngine.ButtonOrder?) {
         let indexAdjusted = index.clamp(min: 0, max: 3)
         let FIRfield = "decision\(indexAdjusted)"
-        let FIRvalue = "\(buttonOrder == .left ? "left" : "right")Button\(indexAdjusted)"
+        let FIRvalue: String?
+        
+        if let buttonOrder = buttonOrder {
+            FIRvalue = "\(buttonOrder == .left ? "left" : "right")Button\(indexAdjusted)"
+        }
+        else {
+            FIRvalue = nil
+        }
 
         decisions[indexAdjusted] = FIRvalue
 
-        updateFirestoreRecordFields(fields: [FIRfield : FIRvalue])
+        updateFirestoreRecordFields(fields: [FIRfield : FIRvalue ?? NSNull()])
     }
     
     ///Convenience method to update the hasFeather field in a record and the static property.

@@ -1104,9 +1104,11 @@ class GameEngine {
                     //Start the game over with no feather.
                     FIRManager.updateFirestoreRecordHasFeather(nil)
                 }
-                
-                // TODO: - Need to reset decision branching questions!!!
-                
+
+                //Reset decision questions as well!
+                for i in 0...3 {
+                    FIRManager.updateFirestoreRecordDecision(index: i, buttonOrder: nil)
+                }
 
                 print("YOU WON THE GAME!!!")
             }
