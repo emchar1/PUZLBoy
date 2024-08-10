@@ -335,7 +335,7 @@ class ChatEngine {
         guard let superScene = superScene, let gameScene = superScene as? GameScene else { return }
         
         dimOverlaySprite.fillColor = FIRManager.decisions[1].isLeftButton() ? .red : .blue
-        dimOverlaySprite.run(SKAction.fadeAlpha(to: 0.35, duration: 1))
+        dimOverlaySprite.run(SKAction.fadeAlpha(to: 0.4, duration: 1))
 
         gameScene.shakeScreen { [unowned self] in
             dimOverlaySprite.run(SKAction.fadeOut(withDuration: 5)) { [unowned self] in
@@ -816,7 +816,7 @@ extension ChatEngine {
             //6: 2
             ChatItem(profile: .hero, imgPos: .left, chat: "Sigh. Anything else you can tell me?"),
             ChatItem(profile: .statue2, chat: "Nope.") { [unowned self] in
-                dialogueStatue2.setShouldRepeatLastDialogueOnEnd(true)
+                dialogueStatue2.setShouldRepeatLastDialogueOnEnd(true) //need this here otherwise it'll loop back to dialogue at index 0.
             }
         ], indices: [4, 8, 6, 4, 4, 3, 2], shouldSkipFirstQuestion: false, shouldRepeatLastDialogueOnEnd: FIRManager.hasFeather != nil)
         
@@ -1422,10 +1422,11 @@ extension ChatEngine {
                     },
                     ChatItem(profile: .trainer, endChat: false, chat: "PUZL Boy, how would you like to proceed?", handler: nil)
                 ]) { [unowned self] in
-                    // FIXME: - I don't like this nested sendChatArray()...
+                    let choseLeft = FIRManager.decisions[decisionIndex].isLeftButton()
+                    
                     sendChatArray(items: [
-                        ChatItem(profile: .hero, imgPos: .left, startNewChat: false, chat: "\(FIRManager.decisions[decisionIndex].isLeftButton() ? "BRING ME MAGMOOR!!!" : "Hmm. We should prepare first.")", handler: nil),
-                        ChatItem(profile: .trainer, chat: "\(FIRManager.decisions[decisionIndex].isLeftButton() ? "Alright, but we need to be EXTRA cautious." : "A wise decision. Let's keep moving...")"),
+                        ChatItem(profile: .hero, imgPos: .left, startNewChat: false, chat: "\(choseLeft ? "BRING ME MAGMOOR!!!" : "Hmm. We should prepare first.")", handler: nil),
+                        ChatItem(profile: .trainer, chat: "\(choseLeft ? "Alright, but we need to be EXTRA cautious." : "A wise decision. Let's keep moving...")"),
                     ]) { [unowned self] in
                         AudioManager.shared.adjustVolume(to: 1, for: AudioManager.shared.currentTheme, fadeDuration: 3)
                         

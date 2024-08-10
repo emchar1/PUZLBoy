@@ -1023,7 +1023,8 @@ class GameEngine {
             tikistatue.overlay?.animateStatue()
             
             AudioManager.shared.playSound(for: "touchstatue")
-            Haptics.shared.executeCustomPattern(pattern: .statue)
+            //Disable haptic for tapping the statue. It just doesn't feel right.
+//            Haptics.shared.executeCustomPattern(pattern: .statue)
             delegate?.didTouchStatue()
             
             return false
