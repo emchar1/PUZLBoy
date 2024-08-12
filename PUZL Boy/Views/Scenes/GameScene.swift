@@ -613,10 +613,9 @@ class GameScene: SKScene {
     }
     
     ///Shakes the screen. Use effect for certain cataclysmic event
-    func shakeScreen(completion: (() -> Void)?) {
+    func shakeScreen(duration totalDuration: TimeInterval, shouldChangeOverworld: Bool = true, completion: (() -> Void)?) {
         let shakeMagnitude: CGFloat = 12
         let shakeDuration: TimeInterval = 0.06
-        let totalDuration: TimeInterval = 5
         let overworldVolumeDim: Float = 0.1
         
         let shakeAction = SKAction.repeat(SKAction.sequence([
@@ -627,20 +626,32 @@ class GameScene: SKScene {
         scoringEngine.sprite.run(shakeAction)
         gameEngine.displaySprite.sprite.run(shakeAction)
         gameEngine.gameboardSprite.sprite.run(shakeAction) {
-            if AudioManager.shared.currentTheme != FireIceTheme.musicOverworldTheme {
-                AudioManager.shared.changeTheme(newTheme: FireIceTheme.musicOverworldTheme)
+            if shouldChangeOverworld {
+                let originalTheme = AudioManager.shared.currentTheme
+                let newTheme = FireIceTheme.musicOverworldTheme
+                
+                if originalTheme != newTheme {
+                    AudioManager.shared.changeTheme(newTheme: newTheme)
+                    
+                    //Make sure to raise back the volume for the original theme!!!
+                    AudioManager.shared.raiseVolume(for: originalTheme)
+                    AudioManager.shared.adjustVolume(to: overworldVolumeDim, for: newTheme)
+                }
+                
+                AudioManager.shared.raiseVolume(for: newTheme, fadeDuration: 5)
             }
-
-            AudioManager.shared.raiseVolume(for: AudioManager.shared.currentTheme, fadeDuration: 5)
-            
+                
             Haptics.shared.stopHapticEngine()
             Haptics.shared.startHapticEngine(shouldInitialize: false)
 
             completion?()
         }
 
-        AudioManager.shared.adjustVolume(to: overworldVolumeDim, for: AudioManager.shared.currentTheme, fadeDuration: 1)
-        AudioManager.shared.playSound(for: "magicelderexplosion")
+        if shouldChangeOverworld {
+            AudioManager.shared.adjustVolume(to: overworldVolumeDim, for: AudioManager.shared.currentTheme, fadeDuration: 1)
+            AudioManager.shared.playSound(for: "magicelderexplosion")
+        }
+
         AudioManager.shared.playSoundThenStop(for: "thunderrumble", currentTime: 5, playForDuration: totalDuration + 1, fadeOut: 4)
         Haptics.shared.executeCustomPattern(pattern: .thunder)
     }
