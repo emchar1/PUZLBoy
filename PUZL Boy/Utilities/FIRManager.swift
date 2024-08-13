@@ -15,8 +15,21 @@ struct FIRManager {
     
     static var user: User?
     static var saveStateModel: SaveStateModel?
-    static var decisions: [String?] = [nil, nil, nil, nil]
+    static var decisionsLeftButton: [Bool?] = [nil, nil, nil, nil]
     static var hasFeather: Bool?
+    
+    ///Shows what's in the SaveStateModel's ageOfRuin property.
+    static var isAgeOfRuin: Bool {
+        saveStateModel?.ageOfRuin ?? false
+    }
+    
+    ///Checks to see if conditions are met for Age of Ruin to be activated.
+    static var ageOfRuinConditionsMet: Bool {
+        //Age of Peace if Prepare First, Give (feather) Away, and Let (Magmoor) Go are chosen.
+        let ageOfPeace = !(decisionsLeftButton[0] ?? true) && (decisionsLeftButton[2] ?? false) && !(decisionsLeftButton[3] ?? true)
+        
+        return !ageOfPeace
+    }
     
     //Test users
     static let userEddie = "2bjhz2grYVVOn37qmUipG4CKps62"
@@ -128,7 +141,8 @@ struct FIRManager {
                 return
             }
             
-            guard let elapsedTime = data["elapsedTime"] as? TimeInterval,
+            guard let ageOfRuin = data["ageOfRuin"] as? Bool,
+                  let elapsedTime = data["elapsedTime"] as? TimeInterval,
                   let gameCompleted = data["gameCompleted"] as? Bool,
                   let hintAvailable = data["hintAvailable"] as? Bool,
                   let hintCountRemaining = data["hintCountRemaining"] as? Int,
@@ -147,15 +161,16 @@ struct FIRManager {
             }
             
             for i in 0...3 {
-                decisions[i] = data["decision\(i)"] as? String
+                decisionsLeftButton[i] = data["decisionLeftButton\(i)"] as? Bool
             }
             
             hasFeather = data["hasFeather"] as? Bool
             
-            completion?(SaveStateModel(decision0: decisions[0],
-                                       decision1: decisions[1],
-                                       decision2: decisions[2],
-                                       decision3: decisions[3],
+            completion?(SaveStateModel(ageOfRuin: ageOfRuin,
+                                       decisionLeftButton0: decisionsLeftButton[0],
+                                       decisionLeftButton1: decisionsLeftButton[1],
+                                       decisionLeftButton2: decisionsLeftButton[2],
+                                       decisionLeftButton3: decisionsLeftButton[3],
                                        elapsedTime: elapsedTime,
                                        gameCompleted: gameCompleted,
                                        hasFeather: hasFeather,
@@ -211,10 +226,11 @@ struct FIRManager {
         
         let docRef = Firestore.firestore().collection("savedStates").document(uid)
         docRef.setData([
-            "decision0": decisions[0] as Any, //use the static property, instead of saveStateModel (which will give you the old one)
-            "decision1": decisions[1] as Any, //use the static property, instead of saveStateModel (which will give you the old one)
-            "decision2": decisions[2] as Any, //use the static property, instead of saveStateModel (which will give you the old one)
-            "decision3": decisions[3] as Any, //use the static property, instead of saveStateModel (which will give you the old one)
+            "ageOfRuin": saveStateModel.ageOfRuin,
+            "decisionLeftButton0": decisionsLeftButton[0] as Any, //use static property, instead of saveStateModel
+            "decisionLeftButton1": decisionsLeftButton[1] as Any, //use static property, instead of saveStateModel
+            "decisionLeftButton2": decisionsLeftButton[2] as Any, //use static property, instead of saveStateModel
+            "decisionLeftButton3": decisionsLeftButton[3] as Any, //use static property, instead of saveStateModel
             "elapsedTime": saveStateModel.elapsedTime,
             "gameCompleted": saveStateModel.gameCompleted,
             "hasFeather": hasFeather as Any, //use the static property, instead of saveStateModel (which will give you the old one)
@@ -382,17 +398,17 @@ struct FIRManager {
     ///Convenience method to update the decision field in a record and the static decisions array property.
     static func updateFirestoreRecordDecision(index: Int, buttonOrder: ChatDecisionEngine.ButtonOrder?) {
         let indexAdjusted = index.clamp(min: 0, max: 3)
-        let FIRfield = "decision\(indexAdjusted)"
-        let FIRvalue: String?
+        let FIRfield = "decisionLeftButton\(indexAdjusted)"
+        let FIRvalue: Bool?
         
         if let buttonOrder = buttonOrder {
-            FIRvalue = "\(buttonOrder == .left ? "left" : "right")Button\(indexAdjusted)"
+            FIRvalue = buttonOrder == .left
         }
         else {
             FIRvalue = nil
         }
 
-        decisions[indexAdjusted] = FIRvalue
+        decisionsLeftButton[indexAdjusted] = FIRvalue
 
         updateFirestoreRecordFields(fields: [FIRfield : FIRvalue ?? NSNull()])
     }

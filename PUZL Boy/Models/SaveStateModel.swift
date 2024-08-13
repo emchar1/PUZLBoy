@@ -10,10 +10,11 @@ import FirebaseFirestoreSwift
 
 struct SaveStateModel: Identifiable, Codable {
     @DocumentID public var id: String?
-    let decision0: String?
-    let decision1: String?
-    let decision2: String?
-    let decision3: String?
+    let ageOfRuin: Bool
+    let decisionLeftButton0: Bool?
+    let decisionLeftButton1: Bool?
+    let decisionLeftButton2: Bool?
+    let decisionLeftButton3: Bool?
     let elapsedTime: TimeInterval
     let gameCompleted: Bool
     let hasFeather: Bool?

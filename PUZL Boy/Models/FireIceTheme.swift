@@ -13,19 +13,15 @@ struct FireIceTheme {
     // MARK: - Properties
     
     //Main
-    static var isFire: Bool { FIRManager.decisions[1] == nil || FIRManager.decisions[1].isLeftButton() }
-    static var isDay: Bool { DayTheme.currentTheme == .morning || DayTheme.currentTheme == .afternoon }
+    static var isFire: Bool { FIRManager.decisionsLeftButton[1] == nil || FIRManager.decisionsLeftButton[1]! }
     
-    //Colors
+    //Colors - I don't think these are in use??? 8/12/24
     static var overlayColor: UIColor { isFire ? .red : .blue }
     static var overlaySystemColor: UIColor { isFire ? .systemRed : .systemBlue }
     
     //Sounds
     static var soundMovementSandSnow: String { isFire ? "movesand\(Int.random(in: 1...3))" : "movesnow\(Int.random(in: 1...3))" }
     static var soundEnemyAttack: String { isFire ? "enemyflame" : "enemyice" }
-    static var soundWinLevel: String { isFire || isDay ? "winlevel" : "winlevelice" }
-    static var musicGameOver: String { isFire || isDay ? "gameover" : "gameoverice" }
-    static var musicOverworldTheme: String { isFire || isDay ? AudioManager.shared.overworldTheme : AudioManager.shared.overworldIceTheme }
     
     //Sprites, Textures & Images
     static var spriteEnemyExplode: String { isFire ? "enemy" : "enemyIce" }

@@ -32,6 +32,7 @@ class GameEngine {
     private(set) static var livesRemaining: Int = LifeSpawnerModel.defaultLives
     private(set) static var usedContinue: Bool = false
     private(set) static var gameCompleted: Bool = false
+    private(set) static var ageOfRuin: Bool = false
     private(set) static var livesUsed: Int = 0
     private(set) static var winStreak: Int = 0 {
         didSet {
@@ -182,6 +183,7 @@ class GameEngine {
         GameEngine.livesUsed = saveStateModel.levelStatsArray.filter({ $0.level == level.level }).first?.livesUsed ?? GameEngine.livesUsed
         GameEngine.winStreak = saveStateModel.winStreak
         GameEngine.gameCompleted = saveStateModel.gameCompleted
+        GameEngine.ageOfRuin = saveStateModel.ageOfRuin
         
         finishInit(shouldSpawn: true)
     }
@@ -1080,22 +1082,30 @@ class GameEngine {
         if isSolved {
             playerSprite.startPlayerExitAnimation()
 
-            if AudioManager.shared.currentTheme != FireIceTheme.musicOverworldTheme {
-                AudioManager.shared.stopSound(for: AudioManager.shared.currentTheme)
-            }
-
-            AudioManager.shared.playSound(for: FireIceTheme.soundWinLevel)
+            AudioManager.shared.playSound(for: AudioManager.shared.currentTheme.win)
+            
             delegate?.gameIsSolved(movesRemaining: movesRemaining,
                                    itemsFound: level.inventory.getItemCount(),
                                    enemiesKilled: enemiesKilled,
                                    usedContinue: GameEngine.usedContinue)
-            
+
+            //Call these AFTER delegate?.gameIsSolved() is called.
             GameEngine.usedContinue = false
             GameEngine.livesUsed = 0
             GameEngine.winStreak += 1
             
+            updateAchievements()
+            hintEngine.checkForMatchSolutionAttempt()
+
+            StoreReviewManager.shared.incrementCount()
+
+            print("Win streak: \(GameEngine.winStreak), Level: \(level.level)")
+
+            //Check for if beat the game.
             if level.level == Level.finalLevel {
                 GameEngine.gameCompleted = true
+                GameEngine.ageOfRuin = FIRManager.ageOfRuinConditionsMet
+                AudioManager.shared.changeTheme(newTheme: GameEngine.ageOfRuin ? AudioManager.shared.ageOfRuinTheme : AudioManager.shared.ageOfPeaceTheme)
 
                 if let hasFeather = FIRManager.hasFeather {
                     if hasFeather {
@@ -1105,25 +1115,18 @@ class GameEngine {
                     //Start the game over with no feather.
                     FIRManager.updateFirestoreRecordHasFeather(nil)
                 }
-
-                //Reset decision questions as well!
+                
+                //And don't forget to reset decision questions!
                 for i in 0...3 {
                     FIRManager.updateFirestoreRecordDecision(index: i, buttonOrder: nil)
                 }
 
                 print("YOU WON THE GAME!!!")
             }
-            
-            updateAchievements()
-            hintEngine.checkForMatchSolutionAttempt()
-
-            StoreReviewManager.shared.incrementCount()
-
-            print("Win streak: \(GameEngine.winStreak), Level: \(level.level)")
         }
         else if isGameOver {
-            AudioManager.shared.stopSound(for: AudioManager.shared.currentTheme)
-            AudioManager.shared.playSound(for: FireIceTheme.musicGameOver)
+            AudioManager.shared.stopSound(for: AudioManager.shared.currentTheme.overworld)
+            AudioManager.shared.playSound(for: AudioManager.shared.currentTheme.gameover)
 
             if healthRemaining <= 0 {
                 displaySprite.drainHealth()
@@ -1216,7 +1219,7 @@ class GameEngine {
         //If the hint was bought, it will show in the inbetween realm, so cancel it temporarily and show it again at inbetweenRealmExit().
         hintEngine.removeAnimatingHint(from: gameboardSprite)
         
-        AudioManager.shared.adjustVolume(to: 0.25, for: AudioManager.shared.currentTheme)
+        AudioManager.shared.adjustVolume(to: 0.25, for: AudioManager.shared.currentTheme.overworld)
         AudioManager.shared.playSound(for: "magicdoomloop")
         
         ParticleEngine.shared.animateParticles(type: .inbetween,
@@ -1233,7 +1236,7 @@ class GameEngine {
         let fadeDuration: TimeInterval = 2
         
         AudioManager.shared.stopSound(for: "magicdoomloop", fadeDuration: fadeDuration)
-        AudioManager.shared.adjustVolume(to: 1, for: AudioManager.shared.currentTheme, fadeDuration: fadeDuration)
+        AudioManager.shared.adjustVolume(to: 1, for: AudioManager.shared.currentTheme.overworld, fadeDuration: fadeDuration)
         
         inbetweenNode.run(SKAction.sequence([
             SKAction.fadeOut(withDuration: fadeDuration),
@@ -1294,7 +1297,7 @@ class GameEngine {
     func checkIfGameOverOnStartup() {
         if !canContinue || isGameOver {
             print("Can't continue from GameEngine.shouldPlayAdOnStartup()... running delegate?.gameIsOver()...")
-            AudioManager.shared.stopSound(for: AudioManager.shared.currentTheme)
+            AudioManager.shared.stopSound(for: AudioManager.shared.currentTheme.overworld)
             delegate?.gameIsOver(firstTimeCalled: false)
         }
     }

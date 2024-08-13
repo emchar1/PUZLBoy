@@ -9,7 +9,7 @@ import Foundation
 
 extension String? {
     /**
-     Searches for if the optional string contains "left" and returns true if so.
+     Searches for if the optional string contains "left" and returns true if so. NO LONGER USED 8/13/24.
      - returns: true if "left" is found.
      */
     func isLeftButton() -> Bool {

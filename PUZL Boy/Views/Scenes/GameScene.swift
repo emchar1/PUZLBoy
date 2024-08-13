@@ -260,8 +260,7 @@ class GameScene: SKScene {
     override func didMove(to view: SKView) {
         //First, set the audio...
         AudioManager.shared.stopSound(for: "continueloop")
-        AudioManager.shared.changeTheme(newTheme: FireIceTheme.musicOverworldTheme)
-        AudioManager.shared.playSound(for: AudioManager.shared.currentTheme)
+        AudioManager.shared.playSound(for: AudioManager.shared.currentTheme.overworld)
         
         //...then call the remaining functions.
         moveSprites()
@@ -275,7 +274,7 @@ class GameScene: SKScene {
     }
     
     override func willMove(from view: SKView) {
-        AudioManager.shared.stopSound(for: AudioManager.shared.currentTheme)
+        AudioManager.shared.stopSound(for: AudioManager.shared.currentTheme.overworld)
     }
     
     override func update(_ currentTime: TimeInterval) {
@@ -391,10 +390,11 @@ class GameScene: SKScene {
             inventory: gameEngine.level.inventory)
         
         let saveStateModel = SaveStateModel(
-            decision0: "Doesn't matter what",
-            decision1: "you put here;",
-            decision2: "it'll get overwritten",
-            decision3: "by the static properties.",
+            ageOfRuin: GameEngine.ageOfRuin,
+            decisionLeftButton0: true, //Doesn't matter what goes here, it'll also get overwritten by the static property in FIRManager
+            decisionLeftButton1: true, //Doesn't matter what goes here, it'll also get overwritten by the static property in FIRManager
+            decisionLeftButton2: true, //Doesn't matter what goes here, it'll also get overwritten by the static property in FIRManager
+            decisionLeftButton3: true, //Doesn't matter what goes here, it'll also get overwritten by the static property in FIRManager
             elapsedTime: scoringEngine.timerManager.elapsedTime,
             gameCompleted: GameEngine.gameCompleted,
             hasFeather: true, //Doesn't matter what goes here, it'll also get overwritten by the static property in FIRManager
@@ -457,9 +457,8 @@ class GameScene: SKScene {
         
         AudioManager.shared.stopSound(for: "continueloop")
         
-        if !didWin || (AudioManager.shared.currentTheme != FireIceTheme.musicOverworldTheme && !Level.isPartyLevel(level)) {
-            AudioManager.shared.changeTheme(newTheme: FireIceTheme.musicOverworldTheme)
-            AudioManager.shared.playSound(for: AudioManager.shared.currentTheme)
+        if !didWin {
+            AudioManager.shared.playSound(for: AudioManager.shared.currentTheme.overworld)
         }
         
         // FIXME: - Uncomment to play interstitial ad every X levels
@@ -479,7 +478,7 @@ class GameScene: SKScene {
     private func prepareAd(completion: (() -> Void)?) {
         let fadeDuration: TimeInterval = 1.0
         
-        AudioManager.shared.lowerVolume(for: AudioManager.shared.currentTheme, fadeDuration: fadeDuration)
+        AudioManager.shared.lowerVolume(for: AudioManager.shared.currentTheme.overworld, fadeDuration: fadeDuration)
 
         adSprite = SKSpriteNode(color: .clear, size: screenSize)
         adSprite!.anchorPoint = .zero
@@ -507,7 +506,7 @@ class GameScene: SKScene {
         
         let fadeDuration: TimeInterval = 1.0
         
-        AudioManager.shared.raiseVolume(for: AudioManager.shared.currentTheme, fadeDuration: 3)
+        AudioManager.shared.raiseVolume(for: AudioManager.shared.currentTheme.overworld, fadeDuration: 3)
         gameEngine.fadeBloodOverlay(shouldFadeOut: false, duration: fadeDuration)
 
         if shouldFade {
@@ -584,7 +583,7 @@ class GameScene: SKScene {
                 fadeNode.zPosition = K.ZPosition.messagePrompt
                 addChild(fadeNode)
                 
-                AudioManager.shared.stopSound(for: AudioManager.shared.currentTheme, fadeDuration: fadeDuration)
+                AudioManager.shared.stopSound(for: AudioManager.shared.currentTheme.overworld, fadeDuration: fadeDuration)
                 
                 fadeNode.run(SKAction.fadeIn(withDuration: fadeDuration)) { [unowned self] in
                     cleanupScene(shouldSaveState: false)
@@ -613,10 +612,9 @@ class GameScene: SKScene {
     }
     
     ///Shakes the screen. Use effect for certain cataclysmic event
-    func shakeScreen(duration totalDuration: TimeInterval, shouldChangeOverworld: Bool = true, completion: (() -> Void)?) {
+    func shakeScreen(duration totalDuration: TimeInterval, shouldPlaySFX: Bool, completion: (() -> Void)?) {
         let shakeMagnitude: CGFloat = 12
         let shakeDuration: TimeInterval = 0.06
-        let overworldVolumeDim: Float = 0.1
         
         let shakeAction = SKAction.repeat(SKAction.sequence([
             SKAction.moveBy(x: shakeMagnitude, y: shakeMagnitude, duration: shakeDuration),
@@ -626,32 +624,18 @@ class GameScene: SKScene {
         scoringEngine.sprite.run(shakeAction)
         gameEngine.displaySprite.sprite.run(shakeAction)
         gameEngine.gameboardSprite.sprite.run(shakeAction) {
-            if shouldChangeOverworld {
-                let originalTheme = AudioManager.shared.currentTheme
-                let newTheme = FireIceTheme.musicOverworldTheme
-                
-                if originalTheme != newTheme {
-                    AudioManager.shared.changeTheme(newTheme: newTheme)
-                    
-                    //Make sure to raise back the volume for the original theme!!!
-                    AudioManager.shared.raiseVolume(for: originalTheme)
-                    AudioManager.shared.adjustVolume(to: overworldVolumeDim, for: newTheme)
-                }
-                
-                AudioManager.shared.raiseVolume(for: newTheme, fadeDuration: 5)
-            }
-                
+            AudioManager.shared.raiseVolume(for: AudioManager.shared.currentTheme.overworld, fadeDuration: 5)
             Haptics.shared.stopHapticEngine()
             Haptics.shared.startHapticEngine(shouldInitialize: false)
 
             completion?()
         }
 
-        if shouldChangeOverworld {
-            AudioManager.shared.adjustVolume(to: overworldVolumeDim, for: AudioManager.shared.currentTheme, fadeDuration: 1)
+        if shouldPlaySFX {
             AudioManager.shared.playSound(for: "magicelderexplosion")
         }
 
+        AudioManager.shared.adjustVolume(to: 0.1, for: AudioManager.shared.currentTheme.overworld, fadeDuration: 1)
         AudioManager.shared.playSoundThenStop(for: "thunderrumble", currentTime: 5, playForDuration: totalDuration + 1, fadeOut: 4)
         Haptics.shared.executeCustomPattern(pattern: .thunder)
     }
@@ -958,8 +942,7 @@ extension GameScene: AdMobManagerDelegate {
             continueFromAd(shouldFade: true) { [unowned self] in
                 AudioManager.shared.playSound(for: "revive")
                 AudioManager.shared.stopSound(for: "continueloop")
-                AudioManager.shared.changeTheme(newTheme: FireIceTheme.musicOverworldTheme)
-                AudioManager.shared.playSound(for: AudioManager.shared.currentTheme)
+                AudioManager.shared.playSound(for: AudioManager.shared.currentTheme.overworld)
                 
                 pauseResetEngine.shouldDisable(false)
                 gameEngine.continueGame()

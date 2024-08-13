@@ -63,7 +63,7 @@ class ChapterTitleSprite: SKNode {
         var waitDuration: TimeInterval { songDuration - animationDuration - fadeDuration }
 
         if shouldLowerVolumeForCurrentTheme {
-            AudioManager.shared.lowerVolume(for: AudioManager.shared.currentTheme)
+            AudioManager.shared.lowerVolume(for: AudioManager.shared.currentTheme.overworld)
         }
         
         AudioManager.shared.playSound(for: "titlechapter")
@@ -78,7 +78,7 @@ class ChapterTitleSprite: SKNode {
             ])
         ])) {
             if shouldLowerVolumeForCurrentTheme {
-                AudioManager.shared.raiseVolume(for: AudioManager.shared.currentTheme, fadeDuration: 1)
+                AudioManager.shared.raiseVolume(for: AudioManager.shared.currentTheme.overworld, fadeDuration: 1)
             }
             
             completion?()

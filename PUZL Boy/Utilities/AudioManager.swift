@@ -52,19 +52,27 @@ class AudioManager {
         return instance
     }()
     
+    typealias AudioTheme = (overworld: String, win: String, gameover: String)
+    
     let titleLogo = "titletheme"
-    let overworldTheme = "overworld"
-    let overworldIceTheme = "overworldice"
-    let overworldPartyTheme = "overworldparty"
     let grasslandTheme = "overworldgrassland"
-    private(set) var currentTheme: String
+    let ageOfPeaceTheme: AudioTheme = ("overworld", "winlevel", "gameover")
+    let ageOfRuinTheme: AudioTheme = ("overworldageofruin", "winlevelageofruin", "gameoverageofruin")
+    let partyTheme: AudioTheme = ("overworldparty", "winlevel", "gameover")
+    
+    private(set) var currentTheme: AudioTheme
     private var audioItems: [String: AudioItem] = [:]
+    
+    //Ugh, this is needed for PartyModeSprite
+    var getAgeOfTheme: AudioTheme {
+        FIRManager.isAgeOfRuin ? ageOfRuinTheme : ageOfPeaceTheme
+    }
     
 
     // MARK: - Setup
     
     private init() {
-        currentTheme = FireIceTheme.isFire ? overworldTheme : overworldIceTheme
+        currentTheme = FIRManager.isAgeOfRuin ? ageOfRuinTheme : ageOfPeaceTheme
 
         do {
             //ambient: Your app’s audio plays even while Music app music or other background audio is playing, and is silenced by the phone’s Silent switch and screen locking.
@@ -176,7 +184,7 @@ class AudioManager {
         addAudioItem("waterappear3", category: .soundFX)
         addAudioItem("waterdrown", category: .soundFX)
         addAudioItem("winlevel", category: .soundFX)
-        addAudioItem("winlevelice", category: .soundFX)
+        addAudioItem("winlevelageofruin", category: .soundFX)
         addAudioItem("winlevel3stars", category: .soundFX)
 
         
@@ -190,7 +198,7 @@ class AudioManager {
         addAudioItem("ageofruin", category: .musicNoLoop)
         addAudioItem("ageofruin2", category: .musicNoLoop)
         addAudioItem("gameover", category: .musicNoLoop)
-        addAudioItem("gameoverice", category: .musicNoLoop)
+        addAudioItem("gameoverageofruin", category: .musicNoLoop)
         addAudioItem("titlechapter", category: .musicNoLoop)
         addAudioItem("titletheme", category: .musicNoLoop)
 
@@ -202,7 +210,7 @@ class AudioManager {
         addAudioItem("magicheartbeatloop2", category: .music)
         addAudioItem("overworld", category: .music)
         addAudioItem("overworldgrassland", category: .music)
-        addAudioItem("overworldice", category: .music)
+        addAudioItem("overworldageofruin", category: .music)
         addAudioItem("overworldparty", category: .music)
         addAudioItem("scarymusicbox", category: .music)
 
@@ -400,9 +408,9 @@ class AudioManager {
         audioItems[audioKey]!.player.setVolume(volumeToSet, fadeDuration: fadeDuration)
     }
     
-    func changeTheme(newTheme theme: String) {
-        stopSound(for: currentTheme)
-        playSound(for: theme)
+    func changeTheme(newTheme theme: AudioTheme) {
+        stopSound(for: currentTheme.overworld)
+        playSound(for: theme.overworld)
 
         currentTheme = theme
     }

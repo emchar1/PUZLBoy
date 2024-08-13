@@ -334,10 +334,10 @@ class ChatEngine {
     private func animateFateSealed() {
         guard let superScene = superScene, let gameScene = superScene as? GameScene else { return }
         
-        dimOverlaySprite.fillColor = FIRManager.decisions[1].isLeftButton() ? .red : .blue
+        dimOverlaySprite.fillColor = FIRManager.decisionsLeftButton[1] ?? true ? .red : .blue
         dimOverlaySprite.run(SKAction.fadeAlpha(to: 0.4, duration: 1))
 
-        gameScene.shakeScreen(duration: 5) { [unowned self] in
+        gameScene.shakeScreen(duration: 5, shouldPlaySFX: true) { [unowned self] in
             dimOverlaySprite.run(SKAction.fadeOut(withDuration: 5)) { [unowned self] in
                 dimOverlaySprite.fillColor = .black
             }
@@ -588,7 +588,7 @@ extension ChatEngine: ChatDecisionEngineDelegate {
         case 1:
             dialogueStatue1.setShouldSkipFirstQuestion(true)
         case 2:
-            let gaveAwayFeather = FIRManager.decisions[index].isLeftButton()
+            let gaveAwayFeather = FIRManager.decisionsLeftButton[index] ?? false
             
             dialogueStatue3.setShouldSkipFirstQuestion(true)
             dialogueStatue3.updateDialogue(index: dialogueStatue3.indices[0], newDialogue: gaveAwayFeather ? "Ahhhh, this is exquisite!! You won't regret it." : "Fine. Keep your silly feather. I didn't want it anyway!")
@@ -689,11 +689,16 @@ extension ChatEngine {
         //For use by Trudee the Truth-telling Tiki
         let currentSky: String
         
-        switch DayTheme.currentTheme {
-        case .morning:      currentSky = "blue"
-        case .afternoon:    currentSky = "orange"
-        case .night:        currentSky = "black"
-        case .dawn:         currentSky = "purple"
+        if FIRManager.isAgeOfRuin {
+            currentSky = "... gone. Just, gone. WHAT DID YOU DO?!?!"
+        }
+        else {
+            switch DayTheme.currentTheme {
+            case .morning:      currentSky = " a bright blue."
+            case .afternoon:    currentSky = " a pinkish orange."
+            case .night:        currentSky = " a deep sapphire."
+            case .dawn:         currentSky = " a lavender haze."
+            }
         }
         
         
@@ -701,7 +706,7 @@ extension ChatEngine {
         dialogueStatue0 = StatueDialogue(dialogue: [
             //0: 6
             ChatItem(profile: .hero, imgPos: .left, chat: "What the heck is this??"),
-            ChatItem(profile: .statue0, chat: "We are ancient relics known as Tikis. Think of us as friendly guides to help you along the way."),
+            ChatItem(profile: .statue0, chat: "We are ancient relics of the forest known as \"Tikis.\" Think of us as friendly guides to help you along the way."),
             ChatItem(profile: .hero, imgPos: .left, chat: "It talks!"),
             ChatItem(profile: .statue0, chat: "Some of us may ask you an important question that can alter the course of your journey, so make sure you answer carefully and truthfully."),
             ChatItem(profile: .hero, imgPos: .left, chat: "There's more of you??"),
@@ -758,7 +763,7 @@ extension ChatEngine {
             //3: 2
             ChatItem(profile: .hero, imgPos: .left, chat: "Please! Help me!!"),
             ChatItem(profile: .statue1, chat: "Trust your instincts, kid. You've made it this far. Do not give up!"),
-        ], indices: [7, 4, 2, 2], shouldSkipFirstQuestion: FIRManager.decisions[1] != nil, shouldRepeatLastDialogueOnEnd: false)
+        ], indices: [7, 4, 2, 2], shouldSkipFirstQuestion: FIRManager.decisionsLeftButton[1] != nil, shouldRepeatLastDialogueOnEnd: false)
         
         
         //Lv 351 - Lars the Liar
@@ -852,9 +857,9 @@ extension ChatEngine {
             ChatItem(profile: .statue3, chat: "I always tell the truth!"),
             
             //Single dialogue
-            ChatItem(profile: .statue3, chat: "The sky is \(currentSky)!"),
+            ChatItem(profile: .statue3, chat: "The sky is\(currentSky)"),
             ChatItem(profile: .statue3, chat: "You might encounter a hidden scene in the Credits... there's a 0.5% chance!"),
-            ChatItem(profile: .statue3, chat: "Play through the game twice for a delightful surprise!")
+            ChatItem(profile: .statue3, chat: "Don't like the outcome? Start a new game. Try and get a different ending!")
         ], indices: [10, 1, 4, 1, 1, 1], shouldSkipFirstQuestion: FIRManager.hasFeather == nil || !FIRManager.hasFeather!, shouldRepeatLastDialogueOnEnd: false)
 
         
@@ -938,7 +943,7 @@ extension ChatEngine {
                     fastForwardSprite.removeFromParent()
                     chatSpeed = 0
                 },
-                ChatItem(profile: .trainer, imgPos: .left, chat: "⚡️REVEAL YOURSELF!!!⚡️") { [unowned self] in
+                ChatItem(profile: .blanktrainer, chat: "⚡️REVEAL YOURSELF!!!⚡️") { [unowned self] in
                     AudioManager.shared.playSound(for: "littlegirllaugh")
                     
                     chatBackgroundSprite.addChild(fastForwardSprite)
@@ -967,7 +972,6 @@ extension ChatEngine {
                 ChatItem(profile: .trainer, imgPos: .left, chat: "Where is she?!! Is she unharmed??"),
                 ChatItem(profile: .blankvillain, chat: "\n\n...see for yourself...") { [unowned self] in
                     AudioManager.shared.playSoundThenStop(for: "littlegirllaugh", playForDuration: 1, fadeOut: 3)
-                    AudioManager.shared.playSoundThenStop(for: "movetile1", fadeIn: 1, playForDuration: 0.77, fadeOut: 2, delay: 1)
                     AudioManager.shared.stopSound(for: "magicheartbeatloop1", fadeDuration: 4)
 
                     //Disable fastForwardSprite for dramatic effect.
@@ -990,7 +994,7 @@ extension ChatEngine {
                     fastForwardSprite.removeFromParent()
                     chatSpeed = 0
                 },
-                ChatItem(profile: .trainer, imgPos: .left, chat: "⚡️MAGIC SPELL!!!⚡️") { [unowned self] in
+                ChatItem(profile: .blanktrainer, chat: "\n\n⚡️MAGIC SPELL!!!⚡️") { [unowned self] in
                     chatBackgroundSprite.addChild(fastForwardSprite)
                     chatSpeed = chatSpeedOrig
                 },
@@ -1102,8 +1106,8 @@ extension ChatEngine {
             sendChatArray(items: [
                 ChatItem(profile: .hero, imgPos: .left, chat: "PUZL BOY: ...then one of the dragons swooped down and carried her away! It. Was. Harrowing. So... where are we? And who are you??"),
                 ChatItem(profile: .trainer, chat: "OLD MAN: We must hurry! I suspect she is being taken to the dragon's lair. I have transported you to the PUZZLE REALM, our gateway to the lair."),
-                ChatItem(profile: .hero, imgPos:.left, chat: "Cool. I'm PUZL Boy. But you can call me...... PUZL Boy!"),
-                ChatItem(profile: .trainer, chat: "MARLIN: Right.. I'm Marlin, your guide. Now listen up!"),
+                ChatItem(profile: .hero, imgPos:.left, chat: "Cool. I like puzzles. You can call me...... PUZL Boy!"),
+                ChatItem(profile: .trainer, chat: "MARLIN: Right.. I am your guide. You can call me Marlin. Now listen up!"),
                 ChatItem(profile: .trainer, chat: "The dragon's lair is buried deep inside Earth's core, and the only way to reach it is by solving puzzles."),
                 ChatItem(profile: .trainer, chat: "There are 500 levels in total you will have to complete, each with increasing difficulty."),
                 ChatItem(profile: .trainer, chat: "The goal for each level is to make it through the gate in under a certain number of moves.") { [unowned self] in
@@ -1316,7 +1320,7 @@ extension ChatEngine {
                 handleDialogueCompletion(level: level, completion: completion)
             }
         case 180:
-            AudioManager.shared.adjustVolume(to: 0.2, for: AudioManager.shared.currentTheme, fadeDuration: 3)
+            AudioManager.shared.adjustVolume(to: 0.2, for: AudioManager.shared.currentTheme.overworld, fadeDuration: 3)
             AudioManager.shared.playSound(for: "littlegirllaugh", fadeIn: 3)
             
             sendChatArray(items: [
@@ -1327,7 +1331,7 @@ extension ChatEngine {
                     AudioManager.shared.playSound(for: "chatopenvillain")
                 },
                 ChatItem(profile: .blankvillain, chat: "\n\n...heh heh heh heh heh... ") {
-                    AudioManager.shared.adjustVolume(to: 1, for: AudioManager.shared.currentTheme, fadeDuration: 5)
+                    AudioManager.shared.adjustVolume(to: 1, for: AudioManager.shared.currentTheme.overworld, fadeDuration: 5)
                     AudioManager.shared.stopSound(for: "littlegirllaugh", fadeDuration: 5)
                 },
                 ChatItem(profile: .hero, imgPos: .left, chat: "Wh—what the... who's there?!! You heard that too, right??"),
@@ -1342,7 +1346,7 @@ extension ChatEngine {
                 handleDialogueCompletion(level: level, completion: completion)
             }
         case 221:
-            AudioManager.shared.adjustVolume(to: 0.2, for: AudioManager.shared.currentTheme, fadeDuration: 3)
+            AudioManager.shared.adjustVolume(to: 0.2, for: AudioManager.shared.currentTheme.overworld, fadeDuration: 3)
             AudioManager.shared.playSound(for: "littlegirllaugh", fadeIn: 3)
             
             sendChatArray(items: [
@@ -1352,7 +1356,7 @@ extension ChatEngine {
                 ChatItem(profile: .blankprincess, chat: "\nIt's very smoky in here and it smells like burning trees!"),
                 ChatItem(profile: .blankprincess, chat: "\nOh! And this mysterious man has me! (Uh oh, he's coming back...)"),
                 ChatItem(profile: .hero, imgPos: .left, chat: "Where are you!!! Can you hear me! OLIVIA!!! Burning trees... Marlin we gotta do something!") {
-                    AudioManager.shared.adjustVolume(to: 1, for: AudioManager.shared.currentTheme, fadeDuration: 5)
+                    AudioManager.shared.adjustVolume(to: 1, for: AudioManager.shared.currentTheme.overworld, fadeDuration: 5)
                     AudioManager.shared.stopSound(for: "littlegirllaugh", fadeDuration: 5)
                 },
                 ChatItem(profile: .trainer, chat: "She can't hear us. I can't sense her presence. Whatever has a hold of her is keeping her in between realms. We must keep moving if we are to find her."),
@@ -1421,15 +1425,15 @@ extension ChatEngine {
                     ChatItem(profile: .trainer, chat: "I almost did not recognize him in that grotesque form. He used to be so handsome.") { [unowned self] in
                         chatDecisionEngine.showDecisions(index: decisionIndex, toNode: chatBackgroundSprite, displayOnLeft: true)
                     },
-                    ChatItem(profile: .trainer, endChat: false, chat: "PUZL Boy, how would you like to proceed?", handler: nil)
+                    ChatItem(profile: .trainer, endChat: false, chat: "How would you like to proceed?", handler: nil)
                 ]) { [unowned self] in
-                    let choseLeft = FIRManager.decisions[decisionIndex].isLeftButton()
+                    let choseLeft = FIRManager.decisionsLeftButton[decisionIndex] ?? false
                     
                     sendChatArray(items: [
                         ChatItem(profile: .hero, imgPos: .left, startNewChat: false, chat: "\(choseLeft ? "BRING ME MAGMOOR!!!" : "Hmm. We should prepare first.")", handler: nil),
                         ChatItem(profile: .trainer, chat: "\(choseLeft ? "Alright, but we need to be EXTRA cautious." : "A wise decision. Let's keep moving...")"),
                     ]) { [unowned self] in
-                        AudioManager.shared.adjustVolume(to: 1, for: AudioManager.shared.currentTheme, fadeDuration: 3)
+                        AudioManager.shared.adjustVolume(to: 1, for: AudioManager.shared.currentTheme.overworld, fadeDuration: 3)
                         
                         handleDialogueCompletion(level: level, completion: completion)
                     }
@@ -1493,7 +1497,7 @@ extension ChatEngine {
                     fadeDimOverlay()
 
                     delegate.despawnPrincessCapture(at: spawnPoint) { [unowned self] in
-                        AudioManager.shared.adjustVolume(to: 1, for: AudioManager.shared.currentTheme, fadeDuration: 3)
+                        AudioManager.shared.adjustVolume(to: 1, for: AudioManager.shared.currentTheme.overworld, fadeDuration: 3)
                         handleDialogueCompletion(level: level, completion: completion)
                     }
                 }
@@ -1508,7 +1512,7 @@ extension ChatEngine {
                 ChatItem(profile: .trainer, chat: "I'm leaving."),
                 ChatItem(profile: .hero, imgPos: .left, chat: "THEN while he's weakened, I'll use said sword to deliver the final blow and—"),
                 ChatItem(profile: .hero, imgPos: .left, chat: ".....wait, what do you mean you're leaving?! Where are we going??") {
-                    AudioManager.shared.lowerVolume(for: AudioManager.shared.currentTheme, fadeDuration: musicFadeDuration)
+                    AudioManager.shared.lowerVolume(for: AudioManager.shared.currentTheme.overworld, fadeDuration: musicFadeDuration)
                 },
                 ChatItem(profile: .trainer, chat: "He agreed to set the princess free. In return, I am going to merge with him."),
                 ChatItem(profile: .hero, imgPos: .left, chat: "Ok but can we please stop calling it that?"),
@@ -1526,7 +1530,7 @@ extension ChatEngine {
                     sendChatArray(items: [
                         ChatItem(profile: .blanktrainer, startNewChat: false, chat: "\n\nMarlin has left the party.", handler: nil)
                     ]) { [unowned self] in
-                        AudioManager.shared.raiseVolume(for: AudioManager.shared.currentTheme, fadeDuration: musicFadeDuration)
+                        AudioManager.shared.raiseVolume(for: AudioManager.shared.currentTheme.overworld, fadeDuration: musicFadeDuration)
 
                         handleDialogueCompletion(level: level, completion: completion)
                     }
@@ -1606,7 +1610,7 @@ extension ChatEngine {
                 ChatItem(profile: .princess, imgPos: .left, chat: "Who you callin' a britch?! First of all, I'm not afraid of you. Second, I can yell louder than you can! AAAAAHHHHH!!!") { [unowned self] in
                     guard let gameScene = superScene as? GameScene else { return }
                     
-                    gameScene.shakeScreen(duration: 3, shouldChangeOverworld: false, completion: nil)
+                    gameScene.shakeScreen(duration: 3, shouldPlaySFX: false, completion: nil)
                 },
                 ChatItem(profile: .villain, chat: "Shriek. I'm shaking in my Louboutin boots."),
                 ChatItem(profile: .princess, imgPos: .left, chat: "You better be scared. For when I get free, I'm gonna pound you into the ground!"),
