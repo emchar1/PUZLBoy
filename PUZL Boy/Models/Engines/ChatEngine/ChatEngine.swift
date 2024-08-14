@@ -689,16 +689,12 @@ extension ChatEngine {
         //For use by Trudee the Truth-telling Tiki
         let currentSky: String
         
-        if FIRManager.isAgeOfRuin {
-            currentSky = "... gone. Just, gone. WHAT DID YOU DO?!?!"
-        }
-        else {
-            switch DayTheme.currentTheme {
-            case .morning:      currentSky = " a bright blue."
-            case .afternoon:    currentSky = " a pinkish orange."
-            case .night:        currentSky = " a deep sapphire."
-            case .dawn:         currentSky = " a lavender haze."
-            }
+        switch DayTheme.currentTheme {
+        case .morning:      currentSky = " a bright blue."
+        case .afternoon:    currentSky = " a pinkish orange."
+        case .night:        currentSky = " a deep sapphire."
+        case .dawn:         currentSky = " a lavender haze."
+        case .blood:        currentSky = "... gone. Just, gone. WHAT DID YOU DO?!?!"
         }
         
         
@@ -803,7 +799,7 @@ extension ChatEngine {
                 FIRManager.updateFirestoreRecordHasFeather(true)
                 dialogueStatue3.setShouldSkipFirstQuestion(false) //set it for Trudee
             },
-            ChatItem(profile: .blankhero, chat: "\n\nPUZL Boy received Magic Feather of Protection") { [unowned self] in
+            ChatItem(profile: .blankhero, chat: "\n\nReceived Magic Feather of Protection.") { [unowned self] in
                 chatBackgroundSprite.addChild(fastForwardSprite)
                 chatSpeed = chatSpeedOrig
             },
@@ -859,7 +855,7 @@ extension ChatEngine {
             //Single dialogue
             ChatItem(profile: .statue3, chat: "The sky is\(currentSky)"),
             ChatItem(profile: .statue3, chat: "You might encounter a hidden scene in the Credits... there's a 0.5% chance!"),
-            ChatItem(profile: .statue3, chat: "Don't like the outcome? Start a new game. Try and get a different ending!")
+            ChatItem(profile: .statue3, chat: FIRManager.isAgeOfRuin ? "Didn't like the outcome? Start a new game. Try for a better ending!" : "This game has multiple endings. See if you can unlock them!")
         ], indices: [10, 1, 4, 1, 1, 1], shouldSkipFirstQuestion: FIRManager.hasFeather == nil || !FIRManager.hasFeather!, shouldRepeatLastDialogueOnEnd: false)
 
         
@@ -943,7 +939,7 @@ extension ChatEngine {
                     fastForwardSprite.removeFromParent()
                     chatSpeed = 0
                 },
-                ChatItem(profile: .blanktrainer, chat: "⚡️REVEAL YOURSELF!!!⚡️") { [unowned self] in
+                ChatItem(profile: .trainer, imgPos: .left, chat: "\n\n⚡️REVEAL YOURSELF!!!⚡️") { [unowned self] in
                     AudioManager.shared.playSound(for: "littlegirllaugh")
                     
                     chatBackgroundSprite.addChild(fastForwardSprite)
@@ -994,7 +990,7 @@ extension ChatEngine {
                     fastForwardSprite.removeFromParent()
                     chatSpeed = 0
                 },
-                ChatItem(profile: .blanktrainer, chat: "\n\n⚡️MAGIC SPELL!!!⚡️") { [unowned self] in
+                ChatItem(profile: .trainer, imgPos: .left, chat: "\n\n⚡️MAGIC SPELL!!!⚡️") { [unowned self] in
                     chatBackgroundSprite.addChild(fastForwardSprite)
                     chatSpeed = chatSpeedOrig
                 },

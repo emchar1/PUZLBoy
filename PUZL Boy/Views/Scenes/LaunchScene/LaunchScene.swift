@@ -16,6 +16,7 @@ class LaunchScene: SKScene {
     static let nodeName_playerReflection = "playerReflection"
     static let nodeName_loadingSprite = "loadingSprite"
     static let nodeName_skyNode = "skyNode"
+    static let nodeName_skyNodePossibleBlood = "skyNodePossibleBlood"
     static let nodeName_skyObjectNode = "skyObjectNode"
     static let nodeName_groundObjectNode = "groundObjectNode"
     static let nodeName_backgroundNode = "backgroundNode"
@@ -25,6 +26,7 @@ class LaunchScene: SKScene {
     private var playerReflection: Player!
     private var loadingSprite: LoadingSprite!
     private var skyNode: SKSpriteNode!
+    private var skyNodePossibleBlood: SKSpriteNode!
     private var moonSprite: MoonSprite!
     private var parallaxManager: ParallaxManager!
 
@@ -84,6 +86,13 @@ class LaunchScene: SKScene {
         skyNode.zPosition = K.ZPosition.skyNode
         skyNode.name = LaunchScene.nodeName_skyNode
         
+        skyNodePossibleBlood = SKSpriteNode(texture: SKTexture(image: DayTheme.getSkyImage(useMorningSky: !UserDefaults.standard.bool(forKey: K.UserDefaults.shouldSkipIntro))))
+        skyNodePossibleBlood.size = CGSize(width: screenSize.width, height: screenSize.height / 2)
+        skyNodePossibleBlood.position = CGPoint(x: 0, y: screenSize.height)
+        skyNodePossibleBlood.anchorPoint = CGPoint(x: 0, y: 1)
+        skyNodePossibleBlood.zPosition = K.ZPosition.skyNode - 1
+        skyNodePossibleBlood.name = LaunchScene.nodeName_skyNodePossibleBlood
+        
         let skyNodeReverse = skyNode.copy() as! SKSpriteNode
         skyNodeReverse.position.y = 0
         skyNodeReverse.anchorPoint.y = -1
@@ -108,6 +117,7 @@ class LaunchScene: SKScene {
     
     override func didMove(to view: SKView) {
         addChild(skyNode)
+        addChild(skyNodePossibleBlood)
         addChild(player.sprite)
         addChild(moonSprite)
         addChild(loadingSprite)
@@ -137,6 +147,7 @@ class LaunchScene: SKScene {
         case .morning: playerSpeed = 0.05
         case .afternoon: playerSpeed = 0.06
         case .night: playerSpeed = 0.06
+        case .blood: playerSpeed = 0.06
         }
         
         if !UserDefaults.standard.bool(forKey: K.UserDefaults.shouldSkipIntro) {
@@ -190,6 +201,17 @@ class LaunchScene: SKScene {
                 fadeSkyObjectNode(node)
             case LaunchScene.nodeName_skyNode:
                 node.run(SKAction.sequence([
+                    SKAction.wait(forDuration: playerCrouchDuration),
+                    SKAction.scaleY(to: 2, duration: moveDuration / 4),
+                    SKAction.fadeOut(withDuration: moveDuration * 2)
+                ]))
+            case LaunchScene.nodeName_skyNodePossibleBlood:
+                guard let bloodNode = node as? SKSpriteNode else { break }
+                
+                //Need to re-establish for if/when FIRManager gets initialized
+                bloodNode.texture = SKTexture(image: DayTheme.getSkyImage(useMorningSky: !UserDefaults.standard.bool(forKey: K.UserDefaults.shouldSkipIntro)))
+                
+                bloodNode.run(SKAction.sequence([
                     SKAction.wait(forDuration: playerCrouchDuration),
                     SKAction.scaleY(to: 2, duration: moveDuration / 4)
                 ]))
@@ -287,6 +309,7 @@ class LaunchScene: SKScene {
             } //end switch node.name
         } //end for node in children
         
+        //Total = 1 * (2.5 + 0.5) + 0.1 * 2 = 3.2
         run(SKAction.wait(forDuration: moveDuration * (maxAnimationDuration + paddingDuration) + impactShakeDuration * 2)) {
             completion(nil)
         }

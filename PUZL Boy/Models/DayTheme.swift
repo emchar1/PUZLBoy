@@ -16,11 +16,12 @@ struct DayTheme {
     static let morningSky: SkyColors = (UIColor(red: 32 / 255, green: 99 / 255, blue: 207 / 255, alpha: 1.0),
                                         UIColor(red: 174 / 255, green: 232 / 255, blue: 246 / 255, alpha: 1.0))
     
-    //Is this being used? 1/25/24
-//    static let bloodSky: SkyColors = (UIColor(red: 69 / 255, green: 22 / 255, blue: 22 / 255, alpha: 1.0),
-//                                      UIColor(red: 202 / 255, green: 0 / 255, blue: 0 / 255, alpha: 1.0))
+    static let bloodSky: SkyColors = (UIColor(red: 69 / 255, green: 22 / 255, blue: 22 / 255, alpha: 1.0),
+                                      UIColor(red: 122 / 255, green: 69 / 255, blue: 69 / 255, alpha: 1.0))
     
     static var currentTheme: Theme {
+        guard !FIRManager.isAgeOfRuin else { return .blood }
+        
         let currentHour = Calendar.current.component(.hour, from: Date())
         
         switch currentHour {
@@ -48,6 +49,8 @@ struct DayTheme {
         case .night:
             return (UIColor(red: 1 / 255, green: 5 / 255, blue: 20 / 255, alpha: 1.0),
                     UIColor(red: 22 / 255, green: 50 / 255, blue: 129 / 255, alpha: 1.0))
+        case .blood:
+            return bloodSky
         }
     }
     
@@ -61,6 +64,8 @@ struct DayTheme {
             return .orange
         case .night:
             return .blue
+        case .blood:
+            return .red
         }
     }
 
@@ -74,11 +79,13 @@ struct DayTheme {
             return 0.25
         case .night:
             return 0.5
+        case .blood:
+            return 0.5
         }
     }
         
     enum Theme {
-        case dawn, morning, afternoon, night
+        case dawn, morning, afternoon, night, blood
     }
     
     
@@ -98,9 +105,11 @@ struct DayTheme {
             skyImage = UIImage.gradientTextureSkyAfternoon
         case .night:
             skyImage = UIImage.gradientTextureSkyNight
+        case .blood:
+            skyImage = UIImage.gradientSkyBlood
         }
         
-        return FIRManager.isAgeOfRuin ? UIImage.gradientSkyBloodNEW : skyImage
+        return skyImage
     }
     
     

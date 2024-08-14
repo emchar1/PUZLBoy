@@ -28,6 +28,7 @@ class ParallaxManager: SKNode {
         case .morning:      return Speed.run.rawValue
         case .afternoon:    return Speed.slowRun.rawValue
         case .night:        return Speed.walk.rawValue
+        case .blood:        return Speed.slowRun.rawValue
         }
     }
     

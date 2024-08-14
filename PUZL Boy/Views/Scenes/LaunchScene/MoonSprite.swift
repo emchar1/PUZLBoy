@@ -22,7 +22,7 @@ class MoonSprite: SKNode {
         switch DayTheme.currentTheme {
         case .dawn:
             moonAlpha = 0.5
-        case .morning:
+        case .morning, .blood:
             moonAlpha = 0
         case .afternoon:
             moonAlpha = 0.1
