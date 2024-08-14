@@ -50,8 +50,8 @@ class GameScene: SKScene {
         didSet {
             guard !Level.isPartyLevel(currentLevel) else { return }
             
-            if currentLevel > LevelBuilder.levelsSize {
-                currentLevel = 1
+            if currentLevel > LevelBuilder.levelsSize { //Should this be Level.finalLevel???
+                currentLevel = 101
             }
             else if currentLevel < 1 {
                 currentLevel = LevelBuilder.levelsSize
@@ -692,7 +692,7 @@ extension GameScene: GameEngineDelegate {
         scoringEngine.updateLabels()
     }
     
-    func gameIsSolved(movesRemaining: Int, itemsFound: Int, enemiesKilled: Int, usedContinue: Bool) {
+    func gameIsSolved(movesRemaining: Int, itemsFound: Int, enemiesKilled: Int, usedContinue: Bool, didCompleteGame: Bool) {
         let score = scoringEngine.calculateScore(movesRemaining: movesRemaining,
                                                  itemsFound: itemsFound,
                                                  enemiesKilled: enemiesKilled,
@@ -720,12 +720,25 @@ extension GameScene: GameEngineDelegate {
         gameEngine.fadeGameboard(fadeOut: true) { [unowned self] in
             scoringEngine.timerManager.resetTime()
             startTimer()
-            newGame(level: currentLevel, didWin: true)
             
-            //Write to Firestore, MUST come after newGame()
-            if !Level.isPartyLevel(currentLevel) {
+            if didCompleteGame {
+                // TODO: - Add end game level, cutscene, credits, title+
+
+                //IMPORTANT: Write to Firestore, MUST come first, if completing the game
                 saveState(levelStatsItem: levelStatsItem)
+                
+                cleanupScene(shouldSaveState: false)
+                gameSceneDelegate?.confirmQuitTapped()
             }
+            else {
+                newGame(level: currentLevel, didWin: true)
+
+                //IMPORTANT: In this case, write to Firestore, MUST come last, after calling newGame()
+                if !Level.isPartyLevel(currentLevel) {
+                    saveState(levelStatsItem: levelStatsItem)
+                }
+            }
+            
         }
     }
     

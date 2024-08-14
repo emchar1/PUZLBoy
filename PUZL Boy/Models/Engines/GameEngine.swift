@@ -8,7 +8,7 @@
 import SpriteKit
 
 protocol GameEngineDelegate: AnyObject {
-    func gameIsSolved(movesRemaining: Int, itemsFound: Int, enemiesKilled: Int, usedContinue: Bool)
+    func gameIsSolved(movesRemaining: Int, itemsFound: Int, enemiesKilled: Int, usedContinue: Bool, didCompleteGame: Bool)
     func gameIsOver(firstTimeCalled: Bool)
     func enemyIsKilled()
     func gameIsPaused(isPaused: Bool)
@@ -1080,6 +1080,8 @@ class GameEngine {
         setLabelsForDisplaySprite()
         
         if isSolved {
+            let didCompleteGame: Bool = level.level == Level.finalLevel
+            
             playerSprite.startPlayerExitAnimation()
 
             AudioManager.shared.playSound(for: AudioManager.shared.currentTheme.win)
@@ -1087,7 +1089,8 @@ class GameEngine {
             delegate?.gameIsSolved(movesRemaining: movesRemaining,
                                    itemsFound: level.inventory.getItemCount(),
                                    enemiesKilled: enemiesKilled,
-                                   usedContinue: GameEngine.usedContinue)
+                                   usedContinue: GameEngine.usedContinue,
+                                   didCompleteGame: didCompleteGame)
 
             //Call these AFTER delegate?.gameIsSolved() is called.
             GameEngine.usedContinue = false
@@ -1102,10 +1105,10 @@ class GameEngine {
             print("Win streak: \(GameEngine.winStreak), Level: \(level.level)")
 
             //Check for if beat the game.
-            if level.level == Level.finalLevel {
+            if didCompleteGame {
                 GameEngine.gameCompleted = true
                 GameEngine.ageOfRuin = FIRManager.ageOfRuinConditionsMet
-                AudioManager.shared.changeTheme(newTheme: GameEngine.ageOfRuin ? AudioManager.shared.ageOfRuinTheme : AudioManager.shared.ageOfPeaceTheme)
+                AudioManager.shared.changeTheme(newTheme: GameEngine.ageOfRuin ? AudioManager.shared.ageOfRuinTheme : AudioManager.shared.ageOfPeaceTheme, shouldPlayNewTheme: false)
 
                 if let hasFeather = FIRManager.hasFeather {
                     if hasFeather {

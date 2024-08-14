@@ -100,7 +100,7 @@ struct DayTheme {
             skyImage = UIImage.gradientTextureSkyNight
         }
         
-        return skyImage
+        return FIRManager.isAgeOfRuin ? UIImage.gradientSkyBloodNEW : skyImage
     }
     
     

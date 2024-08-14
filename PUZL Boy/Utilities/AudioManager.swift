@@ -408,10 +408,13 @@ class AudioManager {
         audioItems[audioKey]!.player.setVolume(volumeToSet, fadeDuration: fadeDuration)
     }
     
-    func changeTheme(newTheme theme: AudioTheme) {
+    func changeTheme(newTheme theme: AudioTheme, shouldPlayNewTheme: Bool) {
         stopSound(for: currentTheme.overworld)
-        playSound(for: theme.overworld)
 
+        if shouldPlayNewTheme {
+            playSound(for: theme.overworld)
+        }
+            
         currentTheme = theme
     }
     

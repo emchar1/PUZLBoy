@@ -982,7 +982,7 @@ extension ChatEngine {
                     chatBackgroundSprite.addChild(fastForwardSprite)
                 },
                 ChatItem(profile: .blankvillain, chat: "\n\n...see??? she's perfectly fine..."),
-                ChatItem(profile: .trainer, imgPos: .left, chat: "Listen!! I don't think you know who you're dealing with but enough with the games! Now, show me who you are!!") { [unowned self] in
+                ChatItem(profile: .trainer, imgPos: .left, chat: "Listen!! You have no idea who you're dealing with so enough with the games! Now, show me who you are!!") { [unowned self] in
                     superScene?.addChild(marlinBlast)
                     superScene?.addChild(magmoorScary)
 
@@ -999,7 +999,7 @@ extension ChatEngine {
                     chatSpeed = chatSpeedOrig
                 },
                 ChatItem(profile: .villain, chat: "MYSTERIOUS FIGURE: I'll be seeing ya shortly."),
-                ChatItem(profile: .trainer, imgPos: .left, chat: "Was that?? ..........no. It can't be.")
+                ChatItem(profile: .trainer, imgPos: .left, chat: "..........no. It can't be..")
             ]) { [unowned self] in
                 AudioManager.shared.stopSound(for: "magicheartbeatloop2", fadeDuration: 5)
                 

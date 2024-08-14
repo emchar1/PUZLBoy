@@ -710,6 +710,7 @@
 			children = (
 				EA95D1DE295674AE0061059C /* ChatEngine.swift */,
 				EA57DEAA2B9AED6900CE3E2A /* ChatDecisionEngine.swift */,
+				EA57DEA82B983C5400CE3E2A /* ChatDecisionSprite.swift */,
 				EA36F9FA2C5ACCAB0031DB9A /* ChatItem.swift */,
 				EA36F9FC2C5ACEFE0031DB9A /* StatueDialogue.swift */,
 			);
@@ -832,7 +833,6 @@
 				EA4583662A460E2400279056 /* Party */,
 				EA826C84298DD6C600F19F81 /* ActivityIndicatorSprite.swift */,
 				EA2F44122C4645DA00B62CC3 /* ChapterTitleSprite.swift */,
-				EA57DEA82B983C5400CE3E2A /* ChatDecisionSprite.swift */,
 				EA826C7B29858EBE00F19F81 /* ContinueSprite.swift */,
 				EA826C79298492BA00F19F81 /* DecisionButtonSprite.swift */,
 				EA95D1F9295BEC160061059C /* DisplayLivesSprite.swift */,
