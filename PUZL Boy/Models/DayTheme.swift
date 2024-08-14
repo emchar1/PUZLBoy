@@ -106,7 +106,7 @@ struct DayTheme {
         case .night:
             skyImage = UIImage.gradientTextureSkyNight
         case .blood:
-            skyImage = UIImage.gradientSkyBlood
+            skyImage = UIImage.gradientTextureSkyBlood
         }
         
         return skyImage

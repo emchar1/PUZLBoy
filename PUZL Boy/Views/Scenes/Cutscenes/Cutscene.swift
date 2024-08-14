@@ -119,7 +119,7 @@ class Cutscene: SKScene {
         dimOverlayNode.alpha = 0
         dimOverlayNode.zPosition = K.ZPosition.chatDimOverlay
 
-        bloodSkyNode = SKSpriteNode(texture: SKTexture(image: UIImage.gradientSkyBlood))
+        bloodSkyNode = SKSpriteNode(texture: SKTexture(image: UIImage.gradientTextureSkyBlood))
         bloodSkyNode.size = CGSize(width: screenSize.width, height: screenSize.height)
         bloodSkyNode.position = CGPoint(x: 0, y: screenSize.height)
         bloodSkyNode.anchorPoint = CGPoint(x: 0, y: 1)
