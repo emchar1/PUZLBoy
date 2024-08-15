@@ -17,18 +17,17 @@ protocol GameSceneDelegate: AnyObject {
 
 class GameScene: SKScene {
     
-    // MARK: - Properties
+    // MARK: - Properties: Engines
     
-    //Custom Objects - MUST make these nil upon object release, e.g. when quitting game to return to TitleScene
     private var gameEngine: GameEngine!
     private var scoringEngine: ScoringEngine!
     private(set) var chatEngine: ChatEngine!
     private var pauseResetEngine: PauseResetEngine!
-    private var levelStatsArray: [LevelStats]
     private var levelSkipEngine: LevelSkipEngine!
     private var tapPointerEngine: TapPointerEngine!
 
-    //SKNodes
+    // MARK: - Properties: Sprites
+    
     private var resetConfirmSprite: ConfirmSprite?
     private var hintConfirmSprite: ConfirmSprite?
     private var partyResultsSprite: PartyResultsSprite?
@@ -37,14 +36,16 @@ class GameScene: SKScene {
     private var offlinePlaySprite: OfflinePlaySprite?
     private var adSprite: SKSpriteNode?
     
-    //Misc Properties
+    // MARK: - Properties: Game Logic
+    
     private var screenSize: CGSize
     private var replenishLivesTimerOffset: Date?
     private let keyRunGameTimerAction = "runGameTimerAction"
     private let keyRunReplenishLivesTimerAction = "runReplenishLivesTimerAction"
-    
-    //Level Properties
+
+    private var levelStatsArray: [LevelStats]
     private var lastCurrentLevel: Int?
+
     private var currentLevel: Int = 1 {
         // FIXME: - Debugging purposes only!!!
         didSet {
@@ -58,6 +59,8 @@ class GameScene: SKScene {
             }
         }
     }
+    
+    // MARK: - Properties: Class Delegate
     
     weak var gameSceneDelegate: GameSceneDelegate?
     

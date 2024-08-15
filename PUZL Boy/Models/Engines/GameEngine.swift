@@ -27,7 +27,7 @@ protocol GameEngineDelegate: AnyObject {
  */
 class GameEngine {
     
-    // MARK: - Properties
+    // MARK: - Properties: Static vars
     
     private(set) static var livesRemaining: Int = LifeSpawnerModel.defaultLives
     private(set) static var usedContinue: Bool = false
@@ -44,32 +44,8 @@ class GameEngine {
             }
         }
     }
-
-    private(set) var level: Level!
-    private(set) var levelStatsArray: [LevelStats] = []
-    private(set) var gemsRemaining: Int!
-    private(set) var gemsCollected: Int = 0
-    private(set) var partyInventory: PartyInventory = PartyInventory()
-    private(set) var healthRemaining: Int = 1 {
-        didSet {
-            healthRemaining = max(0, healthRemaining)
-        }
-    }
-    private(set) var movesRemaining: Int! {
-        didSet {
-            movesRemaining = max(0, movesRemaining)
-        }
-    }
     
-    private(set) var disableInputFromOutside = false
-    private var shouldDisableControlInput = false
-    private var justStartedDisableWarp = true
-    private var shouldUpdateRemainingForBoulderIfIcy = false
-    private var isGliding = false
-    
-    private(set) var enemiesKilled: Int = 0
-    private(set) var bouldersBroken: Int = 0
-    private var toolsCollected: Int = 0
+    // MARK: - Properties: Computed vars
     
     var isExitAvailable: Bool { gemsRemaining == 0 }
     var isSolved: Bool { isExitAvailable && level.player == level.end }
@@ -78,7 +54,41 @@ class GameEngine {
     var isGameOver: Bool { movesRemaining <= 0 || healthRemaining <= 0 }
     
     ///Returns true if there are 0 lives remaining.
-    var canContinue: Bool { return GameEngine.livesRemaining >= 0 }
+    var canContinue: Bool { GameEngine.livesRemaining >= 0 }
+    
+    // MARK: - Properties: Bool Checks
+    
+    private(set) var disableInputFromOutside = false
+    private var shouldDisableControlInput = false
+    private var justStartedDisableWarp = true
+    private var shouldUpdateRemainingForBoulderIfIcy = false
+    private var isGliding = false
+    
+    // MARK: - Properties: Gameboard
+
+    private(set) var level: Level!
+    private(set) var levelStatsArray: [LevelStats] = []
+    private(set) var partyInventory: PartyInventory = PartyInventory()
+
+    private(set) var healthRemaining: Int = 1 {
+        didSet {
+            healthRemaining = max(0, healthRemaining)
+        }
+    }
+
+    private(set) var movesRemaining: Int! {
+        didSet {
+            movesRemaining = max(0, movesRemaining)
+        }
+    }
+
+    private(set) var gemsRemaining: Int!
+    private(set) var gemsCollected: Int = 0
+    private(set) var enemiesKilled: Int = 0
+    private(set) var bouldersBroken: Int = 0
+    private var toolsCollected: Int = 0
+
+    // MARK: - Properties: Sprites
 
     private var backgroundSprite: SKSpriteNode!
     private var inbetweenNode: SKSpriteNode!
@@ -88,6 +98,8 @@ class GameEngine {
     private(set) var gameboardSprite: GameboardSprite!
     private(set) var playerSprite: PlayerSprite!
     private(set) var displaySprite: DisplaySprite!
+    
+    // MARK: - Class Delegate
 
     weak var delegate: GameEngineDelegate?
     
