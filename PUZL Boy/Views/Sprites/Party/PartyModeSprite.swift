@@ -351,7 +351,6 @@ class PartyModeSprite: SKNode {
             sequence += fullBeat(color: .green, noteLength: noteLength)
             sequence += fullBeat(color: .blue, noteLength: noteLength)
             sequence += fullBeat(color: .purple, noteLength: noteLength)
-            sequence += fullBeat(color: .systemPink, noteLength: noteLength)
         }
         
         return sequence
