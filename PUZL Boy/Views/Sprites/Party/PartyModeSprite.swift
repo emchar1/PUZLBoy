@@ -19,7 +19,7 @@ class PartyModeSprite: SKNode {
         return party
     }()
     
-    let quarterNote: TimeInterval = AgeOfRuin.isActive ? 1.75 : 0.48 //DON'T CHANGE THESE UNDER ANY CIRCUMSTANCES!!!
+    let quarterNote: TimeInterval = AgeOfRuin.isActive ? 1.743 : 0.48 //DON'T CHANGE THESE UNDER ANY CIRCUMSTANCES!!!
 
     private(set) var isPartying: Bool = false {
         didSet {

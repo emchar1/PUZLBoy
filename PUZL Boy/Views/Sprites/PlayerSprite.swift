@@ -309,8 +309,8 @@ class PlayerSprite {
 
         attackSprite.run(animation) {
             //Enemy death animation
-            let enemyTopSprite = SKSpriteNode(imageNamed: FireIceTheme.spriteEnemyExplode + " (1)")
-            let enemyBottomSprite = SKSpriteNode(imageNamed: FireIceTheme.spriteEnemyExplode + " (2)")
+            let enemyTopSprite = SKSpriteNode(imageNamed: FireIceTheme.spriteEnemyExplode + AgeOfRuin.ruinSuffix + " (1)")
+            let enemyBottomSprite = SKSpriteNode(imageNamed: FireIceTheme.spriteEnemyExplode + AgeOfRuin.ruinSuffix + " (2)")
             let enemyScale = gameboard.panelSize / enemyTopSprite.size.width
 
             enemyTopSprite.position = gameboard.getLocation(at: panel)
@@ -388,7 +388,7 @@ class PlayerSprite {
         var explodeTextures: [SKTexture] = []
 
         for i in 1...textureFrames {
-            explodeTextures.append(explodeAtlas.textureNamed("\(textureName) (\(i))"))
+            explodeTextures.append(explodeAtlas.textureNamed("\(textureName + AgeOfRuin.ruinSuffix) (\(i))"))
         }
 
         let timePerFrame: TimeInterval = 0.06

@@ -20,6 +20,7 @@ class TitleScene: SKScene {
 
     //Sprites
     private var player: Player!
+    private var playerPossibleRuin: Player!
     private var skyNode: SKSpriteNode!
     private var fadeSprite: SKSpriteNode!
     private var fadeOutSprite: SKSpriteNode!
@@ -98,9 +99,16 @@ class TitleScene: SKScene {
         player = Player(type: .hero)
         player.sprite.position = CGPoint(x: screenSize.width / 2, y: screenSize.height / 2)
         player.sprite.setScale(2)
-        player.sprite.texture = SKTexture(imageNamed: "Run (5)")
+        player.sprite.texture = player.textures[Player.Texture.run.rawValue][4]
         player.sprite.name = "playerSprite"
-        
+
+        playerPossibleRuin = Player(type: AgeOfRuin.isActive ? .youngTrainer : .hero)
+        playerPossibleRuin.sprite.position = CGPoint(x: screenSize.width / 2, y: screenSize.height / 2)
+        playerPossibleRuin.sprite.setScale(2)
+        playerPossibleRuin.sprite.texture = playerPossibleRuin.textures[Player.Texture.run.rawValue][4]
+        playerPossibleRuin.sprite.zPosition -= 1
+        playerPossibleRuin.sprite.name = "playerSpritePossibleRuin"
+
         skyNode = SKSpriteNode(texture: SKTexture(image: DayTheme.getSkyImage()))
         skyNode.size = screenSize
         skyNode.anchorPoint = .zero
@@ -266,6 +274,10 @@ class TitleScene: SKScene {
     }
     
     private func animateSprites() {
+
+        //Player Animation
+        player.sprite.run(SKAction.fadeOut(withDuration: 2.5))
+        
         
         //Title Animation
         let animationDuration: TimeInterval = 0.15
@@ -321,6 +333,7 @@ class TitleScene: SKScene {
     override func didMove(to view: SKView) {
         addChild(skyNode)
         addChild(player.sprite)
+        addChild(playerPossibleRuin.sprite)
         addChild(puzlTitle)
         addChild(boyTitle)
         addChild(menuBackground)
