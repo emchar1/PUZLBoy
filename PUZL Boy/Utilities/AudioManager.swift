@@ -65,14 +65,14 @@ class AudioManager {
     
     //Ugh, this is needed for PartyModeSprite
     var getAgeOfTheme: AudioTheme {
-        FIRManager.isAgeOfRuin ? ageOfRuinTheme : ageOfPeaceTheme
+        AgeOfRuin.isActive ? ageOfRuinTheme : ageOfPeaceTheme
     }
     
 
     // MARK: - Setup
     
     private init() {
-        currentTheme = FIRManager.isAgeOfRuin ? ageOfRuinTheme : ageOfPeaceTheme
+        currentTheme = AgeOfRuin.isActive ? ageOfRuinTheme : ageOfPeaceTheme
 
         do {
             //ambient: Your app’s audio plays even while Music app music or other background audio is playing, and is silenced by the phone’s Silent switch and screen locking.
@@ -174,6 +174,7 @@ class AudioManager {
         addAudioItem("punchwhack2", category: .soundFX)
         addAudioItem("realmtransition", category: .soundFX)
         addAudioItem("revive", category: .soundFX)
+        addAudioItem("scarylaugh", category: .soundFX) //needs purchase $1
         addAudioItem("speechbubble", category: .soundFX)
         addAudioItem("swordslash", category: .soundFX)
         addAudioItem("touchstatue", category: .soundFX) //needs purchase $1

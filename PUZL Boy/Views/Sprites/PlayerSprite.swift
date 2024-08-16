@@ -16,7 +16,7 @@ class PlayerSprite {
     private(set) var sprite: SKSpriteNode
     private(set) var isAnimating: Bool = false
     private var explodeAtlas: SKTextureAtlas
-    private var player = Player(type: .hero)
+    private var player = Player(type: AgeOfRuin.isActive ? .youngTrainer : .hero)
 
     enum AnimationKey: String {
         case playerRespawn, playerIdle, playerMove, playerGlide, playerMarsh, playerPowerUp, playerParty
@@ -58,18 +58,7 @@ class PlayerSprite {
     
     ///Helper function to go with startIdleAnimation()
     func restartIdleAnimation(hasSword: Bool, hasHammer: Bool, isPartying: Bool) {
-        var idleTexture: Player.Texture = Player.Texture.idle
-        
-        if hasSword && hasHammer {
-            idleTexture = Player.Texture.idleHammerSword
-        }
-        else if hasSword {
-            idleTexture = Player.Texture.idleSword
-        }
-        else if hasHammer {
-            idleTexture = Player.Texture.idleHammer
-        }
-        
+        let idleTexture: Player.Texture = Player.Texture.idle
         let animation = SKAction.animate(with: player.textures[idleTexture.rawValue],
                                          timePerFrame: isPartying ? PartyModeSprite.shared.quarterNote / TimeInterval(player.textures[Player.Texture.idle.rawValue].count) : animationSpeed * 1.5)
 
@@ -119,7 +108,7 @@ class PlayerSprite {
         
         isAnimating = true
 
-        if animationType == .glide || animationType == .glideSword || animationType == .glideHammer || animationType == .glideHammerSword {
+        if animationType == .glide {
             AudioManager.shared.playSound(for: "moveglide", interruptPlayback: false)
 
             player.sprite.run(SKAction.sequence([
@@ -247,7 +236,7 @@ class PlayerSprite {
     }
     
     func startItemCollectAnimation(on gameboard: GameboardSprite, at panel: K.GameboardPosition, item: LevelType, sound: LevelType = .gem, completion: @escaping (() -> Void)) {
-        let itemSprite = SKSpriteNode(imageNamed: item.description)
+        let itemSprite = SKSpriteNode(imageNamed: item.description + AgeOfRuin.ruinSuffix)
         itemSprite.position = gameboard.getLocation(at: panel) + GameboardSprite.padding / 2
         itemSprite.zPosition = K.ZPosition.itemsAndEffects + 10
         itemSprite.setScale(gameboard.panelSize / itemSprite.size.width)

@@ -855,7 +855,7 @@ extension ChatEngine {
             //Single dialogue
             ChatItem(profile: .statue3, chat: "The sky is\(currentSky)"),
             ChatItem(profile: .statue3, chat: "You might encounter a hidden scene in the Credits... there's a 0.5% chance!"),
-            ChatItem(profile: .statue3, chat: FIRManager.isAgeOfRuin ? "Didn't like the outcome? Start a new game. Try for a better ending!" : "This game has multiple endings. See if you can unlock them!")
+            ChatItem(profile: .statue3, chat: AgeOfRuin.isActive ? "Didn't like the outcome? Start a new game. Try for a better ending!" : "This game has multiple endings. See if you can unlock them!")
         ], indices: [10, 1, 4, 1, 1, 1], shouldSkipFirstQuestion: FIRManager.hasFeather == nil || !FIRManager.hasFeather!, shouldRepeatLastDialogueOnEnd: false)
 
         
@@ -970,13 +970,10 @@ extension ChatEngine {
                     AudioManager.shared.playSoundThenStop(for: "littlegirllaugh", playForDuration: 1, fadeOut: 3)
                     AudioManager.shared.stopSound(for: "magicheartbeatloop1", fadeDuration: 4)
 
-                    //Disable fastForwardSprite for dramatic effect.
+                    //Disable fastForwardSprite for dramatic effect...
                     fastForwardSprite.removeFromParent()
                 },
-                ChatItem(profile: .princessCursed, chat: "i am fine. don't worry about me. now leave us.") { [unowned self] in
-                    //Need to add this back to parent, because you removed it above.
-                    chatBackgroundSprite.addChild(fastForwardSprite)
-                },
+                ChatItem(profile: .princessCursed, chat: "i am fine. don't worry about me. now leave us."),
                 ChatItem(profile: .blankvillain, chat: "\n\n...see??? she's perfectly fine..."),
                 ChatItem(profile: .trainer, imgPos: .left, chat: "Listen!! You have no idea who you're dealing with so enough with the games! Now, show me who you are!!") { [unowned self] in
                     superScene?.addChild(marlinBlast)
@@ -986,12 +983,14 @@ extension ChatEngine {
                     magmoorScary.flashImage(delay: 0.25)
 
                     AudioManager.shared.playSound(for: "magicheartbeatloop2")
-                    
-                    fastForwardSprite.removeFromParent()
+                    AudioManager.shared.playSoundThenStop(for: "scarylaugh", playForDuration: 5, fadeOut: 2, delay: 4)
+
                     chatSpeed = 0
                 },
                 ChatItem(profile: .trainer, imgPos: .left, chat: "\n\n⚡️MAGIC SPELL!!!⚡️") { [unowned self] in
+                    //...but don't forget to add fastForwardSprite back to chatBackgroundSprite!!
                     chatBackgroundSprite.addChild(fastForwardSprite)
+                    
                     chatSpeed = chatSpeedOrig
                 },
                 ChatItem(profile: .villain, chat: "MYSTERIOUS FIGURE: I'll be seeing ya shortly."),
@@ -1449,7 +1448,7 @@ extension ChatEngine {
             }
             else {
                 sendChatArray(items: [
-                    ChatItem(profile: .hero, imgPos: .left, chat: "What a drag. Ok... so how do we get the genie back in the bottle?"),
+                    ChatItem(profile: .hero, imgPos: .left, chat: "Bummer. Ok... so how do we get the genie back in the bottle?"),
                     ChatItem(profile: .trainer, chat: "There is a way. I just need more time."),
                     ChatItem(profile: .hero, imgPos: .left, chat: "We haven't got any time! Princess needs us now!"),
                     ChatItem(profile: .trainer, chat: "YES!! Just.. let me think for one second—")

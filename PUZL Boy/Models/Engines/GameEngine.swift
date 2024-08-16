@@ -284,19 +284,7 @@ class GameEngine {
         var soundFXTypeAndMovementSpeed: Player.Texture
         
         if isGliding {
-            if level.inventory.hasSwords() && level.inventory.hasHammers() {
-                animationType = .glideHammerSword
-            }
-            else if level.inventory.hasSwords() {
-                animationType = .glideSword
-            }
-            else if level.inventory.hasHammers() {
-                animationType = .glideHammer
-            }
-            else {
-                animationType = .glide
-            }
-            
+            animationType = .glide
             soundFXTypeAndMovementSpeed = .glide
         }
         else if isSolved {
@@ -304,18 +292,7 @@ class GameEngine {
             soundFXTypeAndMovementSpeed = .walk
         }
         else {
-            if level.inventory.hasSwords() && level.inventory.hasHammers() {
-                animationType = .runHammerSword
-            }
-            else if level.inventory.hasSwords() {
-                animationType = .runSword
-            }
-            else if level.inventory.hasHammers() {
-                animationType = .runHammer
-            }
-            else {
-                animationType = .run
-            }
+            animationType = .run
             
             switch panel {
             case .marsh:                                        
@@ -1119,7 +1096,7 @@ class GameEngine {
             //Check for if beat the game.
             if didCompleteGame {
                 GameEngine.gameCompleted = true
-                GameEngine.ageOfRuin = FIRManager.ageOfRuinConditionsMet
+                GameEngine.ageOfRuin = AgeOfRuin.conditionsMet
                 AudioManager.shared.changeTheme(newTheme: GameEngine.ageOfRuin ? AudioManager.shared.ageOfRuinTheme : AudioManager.shared.ageOfPeaceTheme, shouldPlayNewTheme: false)
 
                 if let hasFeather = FIRManager.hasFeather {

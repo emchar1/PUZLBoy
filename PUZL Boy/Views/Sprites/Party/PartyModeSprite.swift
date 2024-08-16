@@ -19,12 +19,13 @@ class PartyModeSprite: SKNode {
         return party
     }()
     
-    let quarterNote: TimeInterval = 0.48 //DON'T CHANGE THIS!!! 0.48 works perfectly with party music
+    let quarterNote: TimeInterval = AgeOfRuin.isActive ? 1.75 : 0.48 //DON'T CHANGE THESE UNDER ANY CIRCUMSTANCES!!!
 
     private(set) var isPartying: Bool = false {
         didSet {
-            AudioManager.shared.changeTheme(newTheme: isPartying ? AudioManager.shared.partyTheme : AudioManager.shared.getAgeOfTheme,
-                                            shouldPlayNewTheme: true)
+            guard !AgeOfRuin.isActive else { return }
+            
+            AudioManager.shared.changeTheme(newTheme: isPartying ? AudioManager.shared.partyTheme : AudioManager.shared.getAgeOfTheme, shouldPlayNewTheme: true)
         }
     }
     
@@ -129,12 +130,17 @@ class PartyModeSprite: SKNode {
         
         var foregroundSequence: [SKAction] = []
         
-        foregroundSequence += verseSection()
-        foregroundSequence += chorusSection()
-        foregroundSequence += breakSection()
-        foregroundSequence += chorusSection()
+        if AgeOfRuin.isActive {
+            foregroundSequence += droneAgeOfRuin(noteLength: 2/8)
+        }
+        else {
+            foregroundSequence += verseSection()
+            foregroundSequence += chorusSection()
+            foregroundSequence += breakSection()
+            foregroundSequence += chorusSection()
+        }
 
-        backgroundLights.run(SKAction.repeatForever(SKAction.sequence(mainBeatSection())))
+        backgroundLights.run(SKAction.repeatForever(SKAction.sequence(AgeOfRuin.isActive ? droneAgeOfRuin() : mainBeatSection())))
         foregroundLights.run(SKAction.repeatForever(SKAction.sequence(foregroundSequence)))
         
         startLights()
@@ -224,6 +230,9 @@ class PartyModeSprite: SKNode {
         
         return sequence
     }
+    
+    
+    // MARK: - Age of Peace (Party Music!!)
     
     private func verseSection() -> [SKAction] {
         var sequence: [SKAction] = []
@@ -326,6 +335,25 @@ class PartyModeSprite: SKNode {
             }
         }
 
+        return sequence
+    }
+    
+    
+    // MARK: - Age of Ruin (Winter's Dream)
+    
+    private func droneAgeOfRuin(noteLength: TimeInterval = 6/8) -> [SKAction] {
+        var sequence: [SKAction] = []
+        
+        for _ in 0..<4 {
+            sequence += fullBeat(color: .red, noteLength: noteLength)
+            sequence += fullBeat(color: .orange, noteLength: noteLength)
+            sequence += fullBeat(color: .yellow, noteLength: noteLength)
+            sequence += fullBeat(color: .green, noteLength: noteLength)
+            sequence += fullBeat(color: .blue, noteLength: noteLength)
+            sequence += fullBeat(color: .purple, noteLength: noteLength)
+            sequence += fullBeat(color: .systemPink, noteLength: noteLength)
+        }
+        
         return sequence
     }
 }

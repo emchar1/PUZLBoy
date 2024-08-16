@@ -9,9 +9,8 @@ import SpriteKit
 
 class GameboardSprite {
     
-    // MARK: - Properties
-    
-    //Static Properties
+    // MARK: - Properties: Static
+
     static let gameboardColor: UIColor = UIColor(red: 225/255, green: 225/255, blue: 225/255, alpha: 1.0)
     static let delimiter = ","
     static let overlayTag = "-O"
@@ -28,13 +27,15 @@ class GameboardSprite {
         )
     }
 
-    //Warp Properties
+    // MARK: - Properties: Warps
+    
     typealias WarpTuple = (first: K.GameboardPosition?, second: K.GameboardPosition?)
     private(set) var warps: WarpTuple = (nil, nil)
     private(set) var warps2: WarpTuple = (nil, nil)
     private(set) var warps3: WarpTuple = (nil, nil)
 
-    //Misc Properties
+    // MARK: - Properties: Misc
+    
     private let panelSpacing: CGFloat = 4
     private var scaleSize: CGSize { CGSize.zero + panelSize - panelSpacing }
     private var panels: [[SKSpriteNode]]
@@ -144,13 +145,13 @@ class GameboardSprite {
 
         if !FireIceTheme.isFire {
             switch tile.terrain {
-            case .sand:         terrainPanel = SKSpriteNode(imageNamed: "snow")
-            case .lava:         terrainPanel = SKSpriteNode(imageNamed: "water")
-            default:            terrainPanel = SKSpriteNode(imageNamed: tile.terrain.description)
+            case .sand:         terrainPanel = SKSpriteNode(imageNamed: "snow" + AgeOfRuin.ruinSuffix)
+            case .lava:         terrainPanel = SKSpriteNode(imageNamed: "water" + AgeOfRuin.ruinSuffix)
+            default:            terrainPanel = SKSpriteNode(imageNamed: tile.terrain.description + AgeOfRuin.ruinSuffix)
             }
         }
         else {
-            terrainPanel = SKSpriteNode(imageNamed: tile.terrain.description)
+            terrainPanel = SKSpriteNode(imageNamed: tile.terrain.description + AgeOfRuin.ruinSuffix)
         }
         
         terrainPanel.scale(to: scaleSize)
@@ -203,10 +204,10 @@ class GameboardSprite {
             let overlayPanel: SKSpriteNode
 
             if !FireIceTheme.isFire && tile.overlay == .enemy {
-                overlayPanel = SKSpriteNode(imageNamed: "enemyIce")
+                overlayPanel = SKSpriteNode(imageNamed: "enemyIce" + AgeOfRuin.ruinSuffix)
             }
             else {
-                overlayPanel = SKSpriteNode(imageNamed: tile.overlay.description)
+                overlayPanel = SKSpriteNode(imageNamed: tile.overlay.description + AgeOfRuin.ruinSuffix)
             }
             
             overlayPanel.scale(to: scaleSize)
@@ -275,7 +276,7 @@ class GameboardSprite {
         let duration: TimeInterval = 0.25
         let bounceFactor: CGFloat = scaleSize.width * 0.25
         
-        let overlayPanel = SKSpriteNode(imageNamed: itemOverlay.description)
+        let overlayPanel = SKSpriteNode(imageNamed: itemOverlay.description + AgeOfRuin.ruinSuffix)
         overlayPanel.scale(to: .zero)
         overlayPanel.position = getSpritePosition(at: position) + GameboardSprite.padding / 2 + scaleSize.width / 2
         overlayPanel.zPosition = itemOverlay == .warp4 ? K.ZPosition.itemsAndEffects - 10 : K.ZPosition.overlay
@@ -337,7 +338,7 @@ class GameboardSprite {
             }
         }
         
-        let overlayPanel = SKSpriteNode(imageNamed: LevelType.endOpen.description)
+        let overlayPanel = SKSpriteNode(imageNamed: LevelType.endOpen.description + AgeOfRuin.ruinSuffix)
         overlayPanel.scale(to: scaleSize)
         overlayPanel.position = getSpritePosition(at: endPanel) + GameboardSprite.padding / 2
         overlayPanel.anchorPoint = .zero
@@ -971,13 +972,13 @@ class GameboardSprite {
     }
     
     func animateDissolveSand(position: K.GameboardPosition) {
-        let sandNode = SKSpriteNode(imageNamed: "sand")
+        let sandNode = SKSpriteNode(imageNamed: "sand" + AgeOfRuin.ruinSuffix)
         sandNode.color = GameboardSprite.dayThemeSpriteColor
         sandNode.colorBlendFactor = GameboardSprite.dayThemeSpriteShade
         sandNode.anchorPoint = .zero
         sandNode.zPosition = 10
         
-        let lavaNode = SKSpriteNode(imageNamed: "lava")
+        let lavaNode = SKSpriteNode(imageNamed: "lava" + AgeOfRuin.ruinSuffix)
         lavaNode.color = GameboardSprite.dayThemeSpriteColor
         lavaNode.colorBlendFactor = GameboardSprite.dayThemeSpriteShade
         lavaNode.anchorPoint = .zero
@@ -1011,13 +1012,13 @@ class GameboardSprite {
     }
     
     func animateMeltSnow(position: K.GameboardPosition) {
-        let snowNode = SKSpriteNode(imageNamed: "snow")
+        let snowNode = SKSpriteNode(imageNamed: "snow" + AgeOfRuin.ruinSuffix)
         snowNode.color = GameboardSprite.dayThemeSpriteColor
         snowNode.colorBlendFactor = GameboardSprite.dayThemeSpriteShade
         snowNode.anchorPoint = .zero
         snowNode.zPosition = 10
         
-        let waterNode = SKSpriteNode(imageNamed: "water")
+        let waterNode = SKSpriteNode(imageNamed: "water" + AgeOfRuin.ruinSuffix)
         waterNode.color = GameboardSprite.dayThemeSpriteColor
         waterNode.colorBlendFactor = GameboardSprite.dayThemeSpriteShade
         waterNode.anchorPoint = .zero

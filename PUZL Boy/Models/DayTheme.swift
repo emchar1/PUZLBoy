@@ -20,7 +20,7 @@ struct DayTheme {
                                       UIColor(red: 122 / 255, green: 69 / 255, blue: 69 / 255, alpha: 1.0))
     
     static var currentTheme: Theme {
-        guard !FIRManager.isAgeOfRuin else { return .blood }
+        guard !AgeOfRuin.isActive else { return .blood }
         
         let currentHour = Calendar.current.component(.hour, from: Date())
         

@@ -26,7 +26,7 @@ struct Player {
     }
 
     enum Texture: Int {
-        case idle = 0, run, walk, dead, glide, jump, idleHammer, idleSword, idleHammerSword, runHammer, runSword, runHammerSword, glideHammer, glideSword, glideHammerSword,
+        case idle = 0, run, walk, dead, glide, jump,
 
              //Elders only (for now 7/9/24)
              elderAttack,
@@ -39,14 +39,8 @@ struct Player {
             
             switch self {
             case .run:              speed = 0.5
-            case .runHammer:        speed = 0.5
-            case .runSword:         speed = 0.5
-            case .runHammerSword:   speed = 0.5
             case .walk:             speed = 0.75
             case .glide:            speed = 0.5
-            case .glideHammer:      speed = 0.5
-            case .glideSword:       speed = 0.5
-            case .glideHammerSword: speed = 0.5
             case .marsh:            speed = 1.0
             case .sand:             speed = 0.5
             case .party:            speed = 0.5
@@ -72,21 +66,12 @@ struct Player {
         textures.append([]) //dead
         textures.append([]) //glide
         textures.append([]) //jump
-        textures.append([]) //idleHammer
-        textures.append([]) //idleSword
-        textures.append([]) //idleHammerSword
-        textures.append([]) //runHammer
-        textures.append([]) //runSword
-        textures.append([]) //runHammerSword
-        textures.append([]) //glideHammer
-        textures.append([]) //glideSword
-        textures.append([]) //glideHammerSword
         textures.append([]) //elderAttack
 
         //This must come BEFORE setting up the sprite below!!
         switch type {
         case .hero:
-            setupHero()
+            setupHero(prefix: nil)
         case .princess:
             setupPrincess()
         case .princess2:
@@ -94,7 +79,7 @@ struct Player {
         case .villain:
             setupVillain()
         case .youngTrainer:
-            setupYoungTrainer()
+            setupHero(prefix: "YoungMarlin")
         case .youngVillain:
             setupYoungVillain()
         case .elder0:
@@ -111,30 +96,23 @@ struct Player {
         sprite.zPosition = K.ZPosition.player
     }
     
-    private mutating func setupHero() {
+    private mutating func setupHero(prefix: String?) {
+        let prefixAdjusted = prefix ?? ""
+        
         scaleMultiplier = 1
         
         for i in 1...15 {
-            textures[Texture.idle.rawValue].append(atlas.textureNamed("Idle (\(i))"))
-            textures[Texture.run.rawValue].append(atlas.textureNamed("Run (\(i))"))
-            textures[Texture.walk.rawValue].append(atlas.textureNamed("Walk (\(i))"))
-            textures[Texture.dead.rawValue].append(atlas.textureNamed("Dead (\(i))"))
-            textures[Texture.idleHammer.rawValue].append(atlas.textureNamed("IdleHammer (\(i))"))
-            textures[Texture.idleSword.rawValue].append(atlas.textureNamed("IdleSword (\(i))"))
-            textures[Texture.idleHammerSword.rawValue].append(atlas.textureNamed("IdleHammerSword (\(i))"))
-            textures[Texture.runHammer.rawValue].append(atlas.textureNamed("RunHammer (\(i))"))
-            textures[Texture.runSword.rawValue].append(atlas.textureNamed("RunSword (\(i))"))
-            textures[Texture.runHammerSword.rawValue].append(atlas.textureNamed("RunHammerSword (\(i))"))
+            textures[Texture.idle.rawValue].append(atlas.textureNamed("\(prefixAdjusted)Idle (\(i))"))
+            textures[Texture.run.rawValue].append(atlas.textureNamed("\(prefixAdjusted)Run (\(i))"))
+            textures[Texture.walk.rawValue].append(atlas.textureNamed("\(prefixAdjusted)Walk (\(i))"))
+            textures[Texture.dead.rawValue].append(atlas.textureNamed("\(prefixAdjusted)Dead (\(i))"))
 
             if i <= 12 {
-                textures[Texture.jump.rawValue].append(atlas.textureNamed("Jump (\(i))"))
+                textures[Texture.jump.rawValue].append(atlas.textureNamed("\(prefixAdjusted)Jump (\(i))"))
             }
 
             if i == 5 {
-                textures[Texture.glide.rawValue].append(atlas.textureNamed("Run (\(i))"))
-                textures[Texture.glideHammer.rawValue].append(atlas.textureNamed("RunHammer (\(i))"))
-                textures[Texture.glideSword.rawValue].append(atlas.textureNamed("RunSword (\(i))"))
-                textures[Texture.glideHammerSword.rawValue].append(atlas.textureNamed("RunHammerSword (\(i))"))
+                textures[Texture.glide.rawValue].append(atlas.textureNamed("\(prefixAdjusted)Run (\(i))"))
             }
         }
     }
@@ -172,24 +150,6 @@ struct Player {
             textures[Texture.idle.rawValue].append(atlas.textureNamed("VillainIdle (\(i))"))
             textures[Texture.walk.rawValue].append(atlas.textureNamed("VillainIdle (\(i))"))
             textures[Texture.run.rawValue].append(atlas.textureNamed("VillainIdle (\(i))"))
-        }
-    }
-    
-    // TODO: - young trainer setup
-    private mutating func setupYoungTrainer() {
-        scaleMultiplier = 1.5 * 0.95
-        
-        //Stagger the starting animation frame
-        for i in 3...15 {
-            textures[Texture.idle.rawValue].append(atlas.textureNamed("YoungMarlinIdle (\(i))"))
-            textures[Texture.run.rawValue].append(atlas.textureNamed("YoungMarlinRun (\(i))"))
-            textures[Texture.walk.rawValue].append(atlas.textureNamed("YoungMarlinWalk (\(i))"))
-        }
-        
-        for i in 1...2 {
-            textures[Texture.idle.rawValue].append(atlas.textureNamed("YoungMarlinIdle (\(i))"))
-            textures[Texture.run.rawValue].append(atlas.textureNamed("YoungMarlinRun (\(i))"))
-            textures[Texture.walk.rawValue].append(atlas.textureNamed("YoungMarlinWalk (\(i))"))
         }
     }
     

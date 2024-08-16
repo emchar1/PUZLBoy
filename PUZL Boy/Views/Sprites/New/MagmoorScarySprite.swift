@@ -71,7 +71,7 @@ class MagmoorScarySprite: SKNode {
         sprite.run(SKAction.sequence([
             SKAction.wait(forDuration: delay),
             SKAction.fadeIn(withDuration: 0),
-            SKAction.wait(forDuration: 0.25),
+            SKAction.wait(forDuration: 0.35),
             SKAction.fadeOut(withDuration: 0)
         ]))
     }
@@ -84,7 +84,7 @@ class MagmoorScarySprite: SKNode {
                 SKAction.wait(forDuration: 0.1),
                 SKAction.fadeOut(withDuration: 0),
                 SKAction.wait(forDuration: 0.05)
-            ]), count: 3)
+            ]), count: 4)
         ])
         
         if let backgroundColor = backgroundColor {

@@ -18,19 +18,6 @@ struct FIRManager {
     static var decisionsLeftButton: [Bool?] = [nil, nil, nil, nil]
     static var hasFeather: Bool?
     
-    ///Shows what's in the SaveStateModel's ageOfRuin property.
-    static var isAgeOfRuin: Bool {
-        saveStateModel?.ageOfRuin ?? false
-    }
-    
-    ///Checks to see if conditions are met for Age of Ruin to be activated.
-    static var ageOfRuinConditionsMet: Bool {
-        //Age of Peace if Prepare First, Give (feather) Away, and Let (Magmoor) Go are chosen.
-        let ageOfPeace = !(decisionsLeftButton[0] ?? true) && (decisionsLeftButton[2] ?? false) && !(decisionsLeftButton[3] ?? true)
-        
-        return !ageOfPeace
-    }
-    
     //Test users
     static let userEddie = "2bjhz2grYVVOn37qmUipG4CKps62"
     static let userMichel = "NB9OLr2X8kRLJ7S0G8W3800qo8U2"
