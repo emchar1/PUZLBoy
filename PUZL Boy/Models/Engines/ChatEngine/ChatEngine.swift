@@ -983,7 +983,7 @@ extension ChatEngine {
                     magmoorScary.flashImage(delay: 0.25)
 
                     AudioManager.shared.playSound(for: "magicheartbeatloop2")
-                    AudioManager.shared.playSoundThenStop(for: "scarylaugh", playForDuration: 5, fadeOut: 2, delay: 4)
+                    AudioManager.shared.playSoundThenStop(for: "scarylaugh", playForDuration: 3, fadeOut: 2, delay: 4.5)
 
                     chatSpeed = 0
                 },

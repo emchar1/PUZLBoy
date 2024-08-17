@@ -174,7 +174,7 @@ class AudioManager {
         addAudioItem("punchwhack2", category: .soundFX)
         addAudioItem("realmtransition", category: .soundFX)
         addAudioItem("revive", category: .soundFX)
-        addAudioItem("scarylaugh", category: .soundFX) //needs purchase $1
+        addAudioItem("scarylaugh", category: .soundFX) //needs purchase $3
         addAudioItem("speechbubble", category: .soundFX)
         addAudioItem("swordslash", category: .soundFX)
         addAudioItem("touchstatue", category: .soundFX) //needs purchase $1
