@@ -48,6 +48,7 @@ class TitleScene: SKScene {
     private var myColors: (title: UIColor, background: UIColor, shadow: UIColor) = (.black, .black, .black)
     private let shadowDepth: CGFloat = 10
     private var screenSize: CGSize
+    private var shouldInitializeAsHero: Bool
     private var disableInput: Bool = false
     private var menuSizeShort: CGSize { CGSize(width: 650, height: 540) }
     private var menuSizeTall: CGSize { CGSize(width: 650, height: 680) }
@@ -76,8 +77,9 @@ class TitleScene: SKScene {
     
     // MARK: - Initializtion
     
-    override init(size: CGSize) {
+    init(size: CGSize, shouldInitializeAsHero: Bool) {
         self.screenSize = size
+        self.shouldInitializeAsHero = shouldInitializeAsHero
         
         super.init(size: size)
         
@@ -96,7 +98,13 @@ class TitleScene: SKScene {
 
     private func setupSprites() {
         //Sprites Setup
-        player = Player(type: .hero)
+        if shouldInitializeAsHero {
+            player = Player(type: .hero)
+        }
+        else {
+            player = Player(type: AgeOfRuin.isActive ? .youngTrainer : .hero)
+        }
+        
         player.sprite.position = CGPoint(x: screenSize.width / 2, y: screenSize.height / 2)
         player.sprite.setScale(2)
         player.sprite.texture = player.textures[Player.Texture.run.rawValue][4]

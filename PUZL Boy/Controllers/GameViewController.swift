@@ -128,7 +128,7 @@ extension GameViewController: AuthorizationRequestSceneDelegate {
                                 launchScene = nil
                                 
                                 cutsceneIntro?.animateScene() {
-                                    self.presentTitleScene()
+                                    self.presentTitleScene(shouldInitializeAsHero: false)
                                                                         
                                     //BUGFIX# 240616E01 scarymusicbox may sometimes play if you skip intro at the moment it's just about to play.
                                     cutsceneIntro?.stopAllMusic(fadeDuration: 1)
@@ -139,7 +139,7 @@ extension GameViewController: AuthorizationRequestSceneDelegate {
                         }
                         else {
                             launchScene?.animateTransition(animationSequence: .jump) { _ in
-                                self.presentTitleScene()
+                                self.presentTitleScene(shouldInitializeAsHero: true)
                                 
                                 launchScene = nil
                             }
@@ -152,8 +152,8 @@ extension GameViewController: AuthorizationRequestSceneDelegate {
         }//end GameCenterManager.shared.getUser()
     }
     
-    private func presentTitleScene() {
-        let titleScene = TitleScene(size: K.ScreenDimensions.size)
+    private func presentTitleScene(shouldInitializeAsHero: Bool) {
+        let titleScene = TitleScene(size: K.ScreenDimensions.size, shouldInitializeAsHero: shouldInitializeAsHero)
         titleScene.titleSceneDelegate = self
         
         skView.presentScene(titleScene)
@@ -194,7 +194,7 @@ extension GameViewController: TitleSceneDelegate {
 
 extension GameViewController: CreditsSceneDelegate {
     func goBackTapped() {
-        let titleScene = TitleScene(size: K.ScreenDimensions.size)
+        let titleScene = TitleScene(size: K.ScreenDimensions.size, shouldInitializeAsHero: false)
         titleScene.titleSceneDelegate = self
         
         //NEEDS to have a transition, otherwise the state won't save, trust me.
@@ -207,7 +207,7 @@ extension GameViewController: CreditsSceneDelegate {
 
 extension GameViewController: GameSceneDelegate {
     func confirmQuitTapped() {
-        let titleScene = TitleScene(size: K.ScreenDimensions.size)
+        let titleScene = TitleScene(size: K.ScreenDimensions.size, shouldInitializeAsHero: false)
         titleScene.titleSceneDelegate = self
         
         //NEEDS to have a transition, otherwise the state won't save, trust me. 2/7/24 Tried it w/o the transition and it still works??? Must have to do with the cleanupScene() function I wrote in GameScene.swift
