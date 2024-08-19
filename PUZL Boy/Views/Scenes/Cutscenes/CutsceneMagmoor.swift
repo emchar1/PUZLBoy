@@ -357,7 +357,7 @@ class CutsceneMagmoor: Cutscene {
             SKAction.run { [unowned self] in
                 wideShotElderBanish()
             },
-            SKAction.wait(forDuration: 1.26),
+            SKAction.wait(forDuration: 1.3),
             SKAction.run { [unowned self] in
                 setTextArray(items: [
                     SpeechBubbleItem(profile: speechPlayerLeft, speed: 0.01, chat: "BANISH!!")
