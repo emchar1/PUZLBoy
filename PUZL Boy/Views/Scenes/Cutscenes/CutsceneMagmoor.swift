@@ -232,9 +232,11 @@ class CutsceneMagmoor: Cutscene {
             SKAction.removeFromParent()
         ]))
         
+        let delayDuration: TimeInterval = 1
+        
         forestRealmSprite.run(animateRealm(sceneOrder: 1))
         forestRealmSprite.run(SKAction.sequence([
-            SKAction.wait(forDuration: 4.5),
+            SKAction.wait(forDuration: 4.5 + delayDuration),
             SKAction.repeat(SKAction.sequence([
                 SKAction.moveBy(x: 0, y: 20, duration: 0.05),
                 SKAction.moveBy(x: 0, y: -20, duration: 0.05),
@@ -801,6 +803,7 @@ class CutsceneMagmoor: Cutscene {
         
         //Earth Elder
         let moveDuration: TimeInterval = 0.25
+        let delayDuration: TimeInterval = 1
         
         let subtitleEarthMystic = SubtitleLabelNode(text: "Merton", color: .systemGreen.darkenColor(factor: 2), position: subtitlePosition)
         subtitleEarthMystic.showSubtitle(to: backgroundNode,
@@ -811,6 +814,7 @@ class CutsceneMagmoor: Cutscene {
         elder2.sprite.run(SKAction.sequence([
             SKAction.wait(forDuration: letterboxDuration),
             SKAction.fadeIn(withDuration: fadeDuration),
+            SKAction.wait(forDuration: delayDuration),
             SKAction.moveBy(x: 50, y: 0, duration: moveDuration),
             SKAction.moveBy(x: 0, y: -100, duration: moveDuration),
             SKAction.run { [unowned self] in
@@ -824,7 +828,7 @@ class CutsceneMagmoor: Cutscene {
                                                        duration: 0)
             },
             SKAction.colorize(withColorBlendFactor: 0, duration: fadeDuration),
-            SKAction.wait(forDuration: cutsceneDuration - 2 * fadeDuration - 2 * moveDuration),
+            SKAction.wait(forDuration: cutsceneDuration - 2 * fadeDuration - 2 * moveDuration - delayDuration),
             SKAction.fadeOut(withDuration: fadeDuration)
         ]))
     }
