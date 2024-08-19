@@ -54,25 +54,28 @@ class AudioManager {
     
     typealias AudioTheme = (overworld: String, win: String, gameover: String)
     
-    let titleLogo = "titletheme"
-    let grasslandTheme = "overworldgrassland"
-    let ageOfPeaceTheme: AudioTheme = ("overworld", "winlevel", "gameover")
-    let ageOfRuinTheme: AudioTheme = ("overworldageofruin", "winlevelageofruin", "gameoverageofruin")
-    let partyTheme: AudioTheme = ("overworldparty", "winlevel", "gameover")
+    static let grasslandTheme = "overworldgrassland" //Used in CutsceneIntro only, as far as I'm aware
     
+    static let ageOfPeaceThemes: AudioTheme = ("overworld", "winlevel", "gameover")
+    static let ageOfRuinThemes: AudioTheme = ("overworldageofruin", "winlevelageofruin", "gameoverageofruin")
+    static let partyThemes: AudioTheme = ("overworldparty", "winlevel", "gameover")
+
+    static var mainThemes: AudioTheme {
+        AgeOfRuin.isActive ? ageOfRuinThemes : ageOfPeaceThemes
+    }
+    
+    static var titleLogo: String {
+        "titletheme" + (AgeOfRuin.isActive ? "ageofruin" : "")
+    }
+
     private(set) var currentTheme: AudioTheme
     private var audioItems: [String: AudioItem] = [:]
-    
-    //Ugh, this is needed for PartyModeSprite
-    var getAgeOfTheme: AudioTheme {
-        AgeOfRuin.isActive ? ageOfRuinTheme : ageOfPeaceTheme
-    }
     
 
     // MARK: - Setup
     
     private init() {
-        currentTheme = AgeOfRuin.isActive ? ageOfRuinTheme : ageOfPeaceTheme
+        currentTheme = AgeOfRuin.isActive ? AudioManager.ageOfRuinThemes : AudioManager.ageOfPeaceThemes
 
         do {
             //ambient: Your app’s audio plays even while Music app music or other background audio is playing, and is silenced by the phone’s Silent switch and screen locking.
@@ -202,6 +205,7 @@ class AudioManager {
         addAudioItem("gameoverageofruin", category: .musicNoLoop)
         addAudioItem("titlechapter", category: .musicNoLoop)
         addAudioItem("titletheme", category: .musicNoLoop)
+        addAudioItem("titlethemeageofruin", category: .musicNoLoop)
 
         
         //Background music

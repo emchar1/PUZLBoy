@@ -332,7 +332,7 @@ class TitleScene: SKScene {
         //Audio
         AudioManager.shared.playSound(for: "punchwhack1")
         AudioManager.shared.playSound(for: "punchwhack2", delay: animationDuration)
-        AudioManager.shared.playSound(for: AudioManager.shared.titleLogo, delay: delayMenu)
+        AudioManager.shared.playSound(for: AudioManager.titleLogo, delay: delayMenu)
     }
     
     
@@ -573,7 +573,7 @@ extension TitleScene: MenuItemLabelDelegate {
         let fadeDuration: TimeInterval = 2.0
         
         disableInput = true
-        AudioManager.shared.stopSound(for: AudioManager.shared.titleLogo, fadeDuration: fadeDuration)
+        AudioManager.shared.stopSound(for: AudioManager.titleLogo, fadeDuration: fadeDuration)
 
         UIView.animate(withDuration: fadeDuration) { [unowned self] in
             levelSelectPicker.alpha = 0
@@ -607,7 +607,7 @@ extension TitleScene: MenuItemLabelDelegate {
             let fadeDuration: TimeInterval = 1.0
             
             disableInput = true
-            AudioManager.shared.stopSound(for: AudioManager.shared.titleLogo, fadeDuration: fadeDuration)
+            AudioManager.shared.stopSound(for: AudioManager.titleLogo, fadeDuration: fadeDuration)
             
             //IMPORTANT TO MAKE THESE NIL!! Otherwise you get retain cycle!!!
             levelSelectPage.superScene = nil

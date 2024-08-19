@@ -24,7 +24,7 @@ struct AgeOfRuin {
         (FIRManager.decisionsLeftButton[2] ?? false) && //2. Give (feather) Away
         !(FIRManager.decisionsLeftButton[3] ?? true)    //3. Let (Magmoor) Go
         
-        return !ageOfPeace
+        return !ageOfPeace                              //i.e. return Age of Ruin
     }
     
     static var ruinSuffix: String {

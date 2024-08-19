@@ -69,7 +69,7 @@ class CutsceneIntro: Cutscene {
         speechPlayerRight.position += princessPositionFinal
         
         AudioManager.shared.playSound(for: "birdsambience", fadeIn: 5)
-        AudioManager.shared.playSound(for: AudioManager.shared.grasslandTheme, fadeIn: 5)
+        AudioManager.shared.playSound(for: AudioManager.grasslandTheme, fadeIn: 5)
     }
     
     override func cleanupScene(buttonTap: ButtonTap.ButtonType?, fadeDuration: TimeInterval?) {
@@ -189,7 +189,7 @@ class CutsceneIntro: Cutscene {
                                     ], completion: nil)
                                     
                                     AudioManager.shared.stopSound(for: "birdsambience", fadeDuration: 5)
-                                    AudioManager.shared.stopSound(for: AudioManager.shared.grasslandTheme, fadeDuration: 8)
+                                    AudioManager.shared.stopSound(for: AudioManager.grasslandTheme, fadeDuration: 8)
                                     AudioManager.shared.playSound(for: "scarymusicbox", fadeIn: 8)
                                 }
                             ])
@@ -210,14 +210,14 @@ class CutsceneIntro: Cutscene {
                         run(SKAction.sequence([
                             SKAction.run {
                                 AudioManager.shared.playSound(for: "birdsambience", fadeIn: 2)
-                                AudioManager.shared.playSound(for: AudioManager.shared.grasslandTheme, fadeIn: 2)
+                                AudioManager.shared.playSound(for: AudioManager.grasslandTheme, fadeIn: 2)
                                 AudioManager.shared.stopSound(for: "scarymusicbox", fadeDuration: 3)
                             },
                             SKAction.wait(forDuration: 2),
                             SKAction.run {
                                 AudioManager.shared.playSound(for: "thunderrumble")
                                 AudioManager.shared.stopSound(for: "birdsambience", fadeDuration: 6)
-                                AudioManager.shared.stopSound(for: AudioManager.shared.grasslandTheme, fadeDuration: 6)
+                                AudioManager.shared.stopSound(for: AudioManager.grasslandTheme, fadeDuration: 6)
                             },
                             SKAction.wait(forDuration: 2),
                             SKAction.run {
@@ -551,7 +551,7 @@ extension CutsceneIntro: SkipSceneSpriteDelegate {
     ///Helper function that stops all music, preventing bug# 240616E01
     func stopAllMusic(fadeDuration: TimeInterval) {
         AudioManager.shared.stopSound(for: "birdsambience", fadeDuration: fadeDuration)
-        AudioManager.shared.stopSound(for: AudioManager.shared.grasslandTheme, fadeDuration: fadeDuration)
+        AudioManager.shared.stopSound(for: AudioManager.grasslandTheme, fadeDuration: fadeDuration)
         AudioManager.shared.stopSound(for: "scarymusicbox", fadeDuration: fadeDuration)
         AudioManager.shared.stopSound(for: "ageofruin", fadeDuration: fadeDuration)
         AudioManager.shared.stopSound(for: "thunderrumble", fadeDuration: fadeDuration)
