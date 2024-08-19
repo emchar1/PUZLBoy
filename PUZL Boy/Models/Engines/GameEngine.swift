@@ -1010,13 +1010,23 @@ class GameEngine {
                 shouldUpdateRemainingForBoulderIfIcy = false
             }
             
-            let tikistatue: K.GameboardPanelSprite = gameboardSprite.getPanel(at: position)
-            tikistatue.overlay?.animateStatue()
-            
-            AudioManager.shared.playSound(for: "touchstatue")
-            //Disable haptic for tapping the statue. It just doesn't feel right.
-//            Haptics.shared.executeCustomPattern(pattern: .statue)
-            delegate?.didTouchStatue()
+            shouldDisableControlInput = true
+
+            if AgeOfRuin.isActive {
+                AudioManager.shared.playSound(for: "chatopenstatue")
+                
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    self.shouldDisableControlInput = false
+                }
+            }
+            else {
+                let tikistatue: K.GameboardPanelSprite = gameboardSprite.getPanel(at: position)
+                tikistatue.overlay?.animateStatue()
+                
+                AudioManager.shared.playSound(for: "touchstatue")
+                shouldDisableControlInput = false
+                delegate?.didTouchStatue()
+            }
             
             return false
         // TODO: - Interaction for Tiki #5 aka Daemon the Destroyer

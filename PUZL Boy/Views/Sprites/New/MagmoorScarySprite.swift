@@ -79,6 +79,9 @@ class MagmoorScarySprite: SKNode {
     func pulseImage(backgroundColor: UIColor? = nil, delay: TimeInterval = 0) {
         let pulseAction: SKAction = SKAction.sequence([
             SKAction.wait(forDuration: delay),
+            SKAction.run {
+                AudioManager.shared.playSound(for: "scarylaugh", currentTime: 0.25)
+            },
             SKAction.repeat(SKAction.sequence([
                 SKAction.fadeIn(withDuration: 0),
                 SKAction.wait(forDuration: 0.1),
