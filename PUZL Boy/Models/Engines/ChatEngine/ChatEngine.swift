@@ -642,15 +642,17 @@ extension ChatEngine {
         
         //PUZZLE REALM Dialogue
         
-        //Chapter 0 - The Tutorial
-        dialoguePlayed[1] = false
-        dialoguePlayed[13] = false
-        dialoguePlayed[19] = false
-        dialoguePlayed[34] = false
-        dialoguePlayed[51] = false
-        dialoguePlayed[76] = false
-        dialoguePlayed[PauseResetEngine.resetButtonUnlock] = false //Level: 100
-        
+        if !AgeOfRuin.isActive {
+            //Chapter 0 - The Tutorial
+            dialoguePlayed[1] = false
+            dialoguePlayed[13] = false
+            dialoguePlayed[19] = false
+            dialoguePlayed[34] = false
+            dialoguePlayed[51] = false
+            dialoguePlayed[76] = false
+            dialoguePlayed[PauseResetEngine.resetButtonUnlock] = false //Level: 100
+        }
+            
         //Chapter 1 - In Search of the Princess
         dialoguePlayed[101] = false
         dialoguePlayed[112] = false
@@ -910,6 +912,11 @@ extension ChatEngine {
             
         //DARK REALM
         case Level.partyLevel: //Level: -1
+            guard !AgeOfRuin.isActive else {
+                handleDialogueCompletion(level: level, completion: completion)
+                return
+            }
+            
             sendChatArray(items: [
                 ChatItem(profile: .hero, imgPos: .left, chat: "Dude, I feel funny. I'm seeing colorful flashing lights and the music is bumpin'. I can't stop moving!"),
                 ChatItem(profile: .trainer, chat: "Welcome to the DARK REALM, the hidden realm that exists between PUZZLE REALMS. You ate one of those rainbow colored jelly beans, I see."),
@@ -931,18 +938,19 @@ extension ChatEngine {
                 ChatItem(profile: .blankvillain, chat: "\n\n...turn back now, before it's too late..."),
                 ChatItem(profile: .trainer, imgPos: .left, chat: "Who are you!"),
                 ChatItem(profile: .blankvillain, chat: "\n\n...the question is, where are we?..."),
-                ChatItem(profile: .trainer, imgPos: .left, chat: "We are in the DARK REALM where evil cannot reach. What business do you have here?!"),
+                ChatItem(profile: .trainer, imgPos: .left, chat: "We are in the DARK REALM where evil cannot reach. What business do you have here?!") { [unowned self] in
+                    
+                    fastForwardSprite.removeFromParent()
+                },
                 ChatItem(profile: .blankvillain, chat: "\n\n...all will be revealed soon...") { [unowned self] in
                     superScene?.addChild(marlinBlast)
                     marlinBlast.animateBlast(playSound: true)
 
-                    fastForwardSprite.removeFromParent()
                     chatSpeed = 0
                 },
-                ChatItem(profile: .trainer, imgPos: .left, chat: "\n\n⚡️REVEAL YOURSELF!!!⚡️") { [unowned self] in
+                ChatItem(profile: .trainer, imgPos: .left, chat: "⚡️REVEAL YOURSELF!!!⚡️") { [unowned self] in
                     AudioManager.shared.playSound(for: "littlegirllaugh")
                     
-                    chatBackgroundSprite.addChild(fastForwardSprite)
                     chatSpeed = chatSpeedOrig
                 },
                 ChatItem(profile: .blankvillain, chat: "\n\n...heh heh heh heh...")
@@ -950,6 +958,7 @@ extension ChatEngine {
                 AudioManager.shared.stopSound(for: "magicheartbeatloop1", fadeDuration: 5)
                 AudioManager.shared.stopSound(for: "littlegirllaugh", fadeDuration: 5)
 
+                chatBackgroundSprite.addChild(fastForwardSprite)
                 chatBackgroundSprite.run(SKAction.wait(forDuration: 3)) { [unowned self] in
                     marlinBlast.removeFromParent()
                     
@@ -975,7 +984,7 @@ extension ChatEngine {
                 },
                 ChatItem(profile: .princessCursed, chat: "i am fine. don't worry about me. now leave us."),
                 ChatItem(profile: .blankvillain, chat: "\n\n...see??? she's perfectly fine..."),
-                ChatItem(profile: .trainer, imgPos: .left, chat: "Listen!! You have no idea who you're dealing with so enough with the games! Now, show me who you are!!") { [unowned self] in
+                ChatItem(profile: .trainer, imgPos: .left, chat: "Listen!! You have no idea who you're dealing with, so enough with the games! Now, show me who you are!!") { [unowned self] in
                     superScene?.addChild(marlinBlast)
                     superScene?.addChild(magmoorScary)
 
@@ -987,7 +996,7 @@ extension ChatEngine {
 
                     chatSpeed = 0
                 },
-                ChatItem(profile: .trainer, imgPos: .left, chat: "\n\n⚡️MAGIC SPELL!!!⚡️") { [unowned self] in
+                ChatItem(profile: .trainer, imgPos: .left, chat: "⚡️MAGIC SPELL!!!⚡️") { [unowned self] in
                     //...but don't forget to add fastForwardSprite back to chatBackgroundSprite!!
                     chatBackgroundSprite.addChild(fastForwardSprite)
                     
