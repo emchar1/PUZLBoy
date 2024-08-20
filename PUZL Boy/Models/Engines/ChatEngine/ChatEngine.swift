@@ -631,18 +631,30 @@ extension ChatEngine {
     ///Populates the dialoguePlayed array. Need to include all levels where dialogue is to occur, and also add the level case in the playDialogue() function.
     private func populateKeyDialogue() {
         
-        //DARK REALM Dialogue
-        dialoguePlayed[Level.partyLevel] = false //Level: -1
-        dialoguePlayed[-100] = false
-        dialoguePlayed[-150] = false
-        dialoguePlayed[-200] = false
-        dialoguePlayed[-250] = false
-        dialoguePlayed[-300] = false
+        dialoguePlayed[Level.partyLevel] = false //Level: -1. IMPORTANT: MUST be called in both, Age of Peace and Age of Ruin!!!
         
-        
-        //PUZZLE REALM Dialogue
-        
-        if !AgeOfRuin.isActive {
+        if AgeOfRuin.isActive {
+            // TODO: - Chat Dialogue for Age of Ruin
+
+            //AGE OF RUIN - DARK REALM Dialogue
+            //enter dialogue here...
+            
+
+            //AGE OF RUIN - PUZZLE REALM Dialogue
+            //enter dialogue here...
+        }
+        else {
+            //AGE OF PEACE - DARK REALM Dialogue
+
+            dialoguePlayed[-100] = false
+            dialoguePlayed[-150] = false
+            dialoguePlayed[-200] = false
+            dialoguePlayed[-250] = false
+            dialoguePlayed[-300] = false
+            
+            
+            //AGE OF PEACE - PUZZLE REALM Dialogue
+            
             //Chapter 0 - The Tutorial
             dialoguePlayed[1] = false
             dialoguePlayed[13] = false
@@ -651,38 +663,38 @@ extension ChatEngine {
             dialoguePlayed[51] = false
             dialoguePlayed[76] = false
             dialoguePlayed[PauseResetEngine.resetButtonUnlock] = false //Level: 100
-        }
             
-        //Chapter 1 - In Search of the Princess
-        dialoguePlayed[101] = false
-        dialoguePlayed[112] = false
-        dialoguePlayed[PauseResetEngine.hintButtonUnlock] = false //Level: 140
-        dialoguePlayed[152] = false
-        dialoguePlayed[180] = false
-        
-        //Chapter 2 - A Mysterious Stranger
-        dialoguePlayed[201] = false
-        dialoguePlayed[221] = false
-        dialoguePlayed[251] = false
-        dialoguePlayed[276] = false //spawn at (0, 1)
-        dialoguePlayed[282] = false
-        dialogueWithCutscene[282] = false
-        dialoguePlayed[298] = false //spawn at (0, 1)
-        
-        //Chapter 3 - You're on Your Own, Kid!
-        dialoguePlayed[301] = false
-        dialogueWithCutscene[301] = false
-        dialoguePlayed[319] = false
-        dialoguePlayed[339] = false
-        dialoguePlayed[351] = false
-        dialoguePlayed[376] = false
-        // TODO: - 396??? - was gonna put something here but I forgot!
-        
-        //Chapter 4 - The Home Stretch
-        dialoguePlayed[401] = false
-        // TODO: - 425??? - Magmoor and Olivia in the in-between realm "cutscene"
-        dialoguePlayed[425] = false
-        dialoguePlayed[451] = false
+            //Chapter 1 - In Search of the Princess
+            dialoguePlayed[101] = false
+            dialoguePlayed[112] = false
+            dialoguePlayed[PauseResetEngine.hintButtonUnlock] = false //Level: 140
+            dialoguePlayed[152] = false
+            dialoguePlayed[180] = false
+            
+            //Chapter 2 - A Mysterious Stranger
+            dialoguePlayed[201] = false
+            dialoguePlayed[221] = false
+            dialoguePlayed[251] = false
+            dialoguePlayed[276] = false //spawn at (0, 1)
+            dialoguePlayed[282] = false
+            dialogueWithCutscene[282] = false
+            dialoguePlayed[298] = false //spawn at (0, 1)
+            
+            //Chapter 3 - You're on Your Own, Kid!
+            dialoguePlayed[301] = false
+            dialogueWithCutscene[301] = false
+            dialoguePlayed[319] = false
+            dialoguePlayed[339] = false
+            dialoguePlayed[351] = false
+            dialoguePlayed[376] = false
+            // TODO: - 396??? - was gonna put something here but I forgot!
+            
+            //Chapter 4 - The Home Stretch
+            dialoguePlayed[401] = false
+            // TODO: - 425??? - Magmoor and Olivia in the in-between realm "cutscene"
+            dialoguePlayed[425] = false
+            dialoguePlayed[451] = false
+        }
     }
     
     ///Sets up the dialogue for the Tiki statues. Call this from init().
