@@ -44,7 +44,13 @@ struct AudioItem {
 
 class AudioManager {
     
-    // MARK: - Properties
+    // MARK: - Important Properties
+    
+    typealias AudioTheme = (overworld: String, win: String, gameover: String)
+    private(set) var currentTheme: AudioTheme
+    private var audioItems: [String: AudioItem] = [:]
+
+    // MARK: - Static Properties
     
     static let shared: AudioManager = {
         let instance = AudioManager()
@@ -52,14 +58,11 @@ class AudioManager {
         return instance
     }()
     
-    typealias AudioTheme = (overworld: String, win: String, gameover: String)
-    
-    static let grasslandTheme = "overworldgrassland" //Used in CutsceneIntro only, as far as I'm aware
-    
     static let ageOfPeaceThemes: AudioTheme = ("overworld", "winlevel", "gameover")
     static let ageOfRuinThemes: AudioTheme = ("overworldageofruin", "winlevelageofruin", "gameoverageofruin")
     static let partyThemes: AudioTheme = ("overworldparty", "winlevel", "gameover")
 
+    ///The reason why all these properties had to be static is so that currentTheme can set itself to mainThemes in init(). It can't do it as a non-static function!!!
     static var mainThemes: AudioTheme {
         AgeOfRuin.isActive ? ageOfRuinThemes : ageOfPeaceThemes
     }
@@ -67,15 +70,12 @@ class AudioManager {
     static var titleLogo: String {
         "titletheme" + (AgeOfRuin.isActive ? "ageofruin" : "")
     }
-
-    private(set) var currentTheme: AudioTheme
-    private var audioItems: [String: AudioItem] = [:]
     
 
-    // MARK: - Setup
+    // MARK: - Initialization
     
     private init() {
-        currentTheme = AgeOfRuin.isActive ? AudioManager.ageOfRuinThemes : AudioManager.ageOfPeaceThemes
+        currentTheme = AudioManager.mainThemes
 
         do {
             //ambient: Your app’s audio plays even while Music app music or other background audio is playing, and is silenced by the phone’s Silent switch and screen locking.
@@ -223,6 +223,9 @@ class AudioManager {
         //9/13/23 Call this AFTER adding all the audioItems above!
         updateVolumes()
     }
+    
+    
+    // MARK: - Setup Functions
 
     /**
      Adds a sound file to the AudioItems dictionary.
@@ -270,7 +273,7 @@ class AudioManager {
     }
     
     
-    // MARK: - Playback
+    // MARK: - Playback Functions
     
     /**
      Plays a sound for a given key that exists in the audioItems dictionary.
@@ -360,6 +363,25 @@ class AudioManager {
     }
     
     /**
+     Stops the current overworld theme and changes the current theme to a new theme.
+     - parameters:
+        - newTheme: the new theme to change to.
+        - shouldPlayNewTheme: plays the new theme's overworld, if true.
+     */
+    func changeTheme(newTheme theme: AudioTheme, shouldPlayNewTheme: Bool) {
+        stopSound(for: currentTheme.overworld)
+
+        if shouldPlayNewTheme {
+            playSound(for: theme.overworld)
+        }
+            
+        currentTheme = theme
+    }
+    
+    
+    // MARK: - Sound Customization Functions
+    
+    /**
      Sets the pan of the audioItem.
      - parameters:
         - audioKey: the key for the audio item to set the pan for
@@ -413,16 +435,6 @@ class AudioManager {
         audioItems[audioKey]!.player.setVolume(volumeToSet, fadeDuration: fadeDuration)
     }
     
-    func changeTheme(newTheme theme: AudioTheme, shouldPlayNewTheme: Bool) {
-        stopSound(for: currentTheme.overworld)
-
-        if shouldPlayNewTheme {
-            playSound(for: theme.overworld)
-        }
-            
-        currentTheme = theme
-    }
-    
     /**
      Updates the volume across all audio players. Sets it to 0 (off) or maxVolume (on) based on if the app is muted or not.
      */
@@ -442,4 +454,7 @@ class AudioManager {
             }
         }
     }
+    
+    
+    
 }

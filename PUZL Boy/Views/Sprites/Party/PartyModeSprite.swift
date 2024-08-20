@@ -20,7 +20,8 @@ class PartyModeSprite: SKNode {
     }()
     
     var quarterNote: TimeInterval {
-        AgeOfRuin.isActive ? 1.743 : 0.48 //DON'T CHANGE THESE UNDER ANY CIRCUMSTANCES!!!
+        //DON'T CHANGE THESE VALUES UNDER ANY CIRCUMSTANCES!!! AgeOfRuin overworld theme is in 6/8 meter.
+        AgeOfRuin.isActive ? 1.743 * (6/8) : 0.48
     }
 
     private(set) var isPartying: Bool = false {
@@ -133,7 +134,7 @@ class PartyModeSprite: SKNode {
         var foregroundSequence: [SKAction] = []
         
         if AgeOfRuin.isActive {
-            foregroundSequence += droneAgeOfRuin(noteLength: 2/8)
+            foregroundSequence += droneAgeOfRuin(noteLength: 1/3)
         }
         else {
             foregroundSequence += verseSection()
@@ -343,7 +344,7 @@ class PartyModeSprite: SKNode {
     
     // MARK: - Age of Ruin (Winter's Dream)
     
-    private func droneAgeOfRuin(noteLength: TimeInterval = 6/8) -> [SKAction] {
+    private func droneAgeOfRuin(noteLength: TimeInterval = 1) -> [SKAction] {
         var sequence: [SKAction] = []
         
         for _ in 0..<4 {
