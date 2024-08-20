@@ -232,7 +232,6 @@
 		EA9F4DE729D37206006F4B2F /* movepoisoned2.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA9F4DE629D37206006F4B2F /* movepoisoned2.mp3 */; };
 		EAA5A5B12C7277BC009F81D9 /* scarylaugh.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAA5A5B02C7277BC009F81D9 /* scarylaugh.mp3 */; };
 		EAA5A5B32C73FB04009F81D9 /* titlethemeageofruin.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAA5A5B22C73FB04009F81D9 /* titlethemeageofruin.mp3 */; };
-		EAA5A5B52C73FFB0009F81D9 /* titlethemeageofruinOLDER.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAA5A5B42C73FFB0009F81D9 /* titlethemeageofruinOLDER.mp3 */; };
 		EAA921D82C011362009E99E7 /* AuthorizationRequestScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAA921D72C011361009E99E7 /* AuthorizationRequestScene.swift */; };
 		EAA921DA2C014C83009E99E7 /* AuthorizationSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAA921D92C014C83009E99E7 /* AuthorizationSprite.swift */; };
 		EAACB4A7296F80E700973EB8 /* AchievementAvidReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAACB4A6296F80E700973EB8 /* AchievementAvidReader.swift */; };
@@ -562,7 +561,6 @@
 		EA9F4DE629D37206006F4B2F /* movepoisoned2.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = movepoisoned2.mp3; sourceTree = "<group>"; };
 		EAA5A5B02C7277BC009F81D9 /* scarylaugh.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = scarylaugh.mp3; sourceTree = "<group>"; };
 		EAA5A5B22C73FB04009F81D9 /* titlethemeageofruin.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = titlethemeageofruin.mp3; sourceTree = "<group>"; };
-		EAA5A5B42C73FFB0009F81D9 /* titlethemeageofruinOLDER.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = titlethemeageofruinOLDER.mp3; sourceTree = "<group>"; };
 		EAA921D72C011361009E99E7 /* AuthorizationRequestScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorizationRequestScene.swift; sourceTree = "<group>"; };
 		EAA921D92C014C83009E99E7 /* AuthorizationSprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorizationSprite.swift; sourceTree = "<group>"; };
 		EAACB4A6296F80E700973EB8 /* AchievementAvidReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementAvidReader.swift; sourceTree = "<group>"; };
@@ -1069,7 +1067,6 @@
 				EAEF2F012B4F5C3100AD8459 /* thunderrumble.mp3 */,
 				EAE43D922C48A76F00E6DB3C /* titlechapter.mp3 */,
 				EA45835A2A4431D300279056 /* titletheme.mp3 */,
-				EAA5A5B42C73FFB0009F81D9 /* titlethemeageofruinOLDER.mp3 */,
 				EAA5A5B22C73FB04009F81D9 /* titlethemeageofruin.mp3 */,
 				EA95D193294690890061059C /* warp.mp3 */,
 				EA76056F2B5B1F53001BC268 /* waterappear1.mp3 */,
@@ -1383,7 +1380,6 @@
 				EAE43D932C48A76F00E6DB3C /* titlechapter.mp3 in Resources */,
 				EA36FA072C5C00610031DB9A /* touchstatue.mp3 in Resources */,
 				EA7605642B5A859C001BC268 /* movesnow2.mp3 in Resources */,
-				EAA5A5B52C73FFB0009F81D9 /* titlethemeageofruinOLDER.mp3 in Resources */,
 				EAE43D9F2C48AA6A00E6DB3C /* magicelderbanish.mp3 in Resources */,
 				EAD459062B64A49700148720 /* DragonIce.sks in Resources */,
 				EA95D19C294690B70061059C /* boyattack1.mp3 in Resources */,

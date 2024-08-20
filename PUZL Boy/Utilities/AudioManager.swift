@@ -177,7 +177,7 @@ class AudioManager {
         addAudioItem("punchwhack2", category: .soundFX)
         addAudioItem("realmtransition", category: .soundFX)
         addAudioItem("revive", category: .soundFX)
-        addAudioItem("scarylaugh", category: .soundFX) //needs purchase $3
+        addAudioItem("scarylaugh", category: .soundFX) //needs purchase $1
         addAudioItem("speechbubble", category: .soundFX)
         addAudioItem("swordslash", category: .soundFX)
         addAudioItem("touchstatue", category: .soundFX) //needs purchase $1
@@ -205,7 +205,7 @@ class AudioManager {
         addAudioItem("gameoverageofruin", category: .musicNoLoop)
         addAudioItem("titlechapter", category: .musicNoLoop)
         addAudioItem("titletheme", category: .musicNoLoop)
-        addAudioItem("titlethemeageofruin", category: .musicNoLoop)
+        addAudioItem("titlethemeageofruin", category: .musicNoLoop) //needs purchase $6
 
         
         //Background music
