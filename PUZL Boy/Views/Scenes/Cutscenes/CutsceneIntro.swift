@@ -196,7 +196,7 @@ class CutsceneIntro: Cutscene {
                             ])
                         ]))
                     },
-                    SpeechBubbleItem(profile: speechPlayerRight, chat: "Wow.|| You sure ask a lot of questions!||||||||/But if you must know, the reason I'm here is because, well.. first of all, Oh—I'm a princess!|||/And, but... oh! Not here though. I'm a princess in a very very far away place.|||/You see, I'm not from this place. But I am from, umm, wait...| Let me start over.||||/Blah blah blah, blah blah blah DRAGONS blah, blah blah, blah blah blah, blah.||||||||/VAELORIA blah, blah.| BLAH blah blah blah, blahhhhh blah.| Blah. Blah. Blah. M|A|G|I|C!!||||||||/And then. And THEN!|| blah blah blah,| blah blah blah.| Blah, blah, blah|| .|.|.|A|G|E| O|F| R|U|I|N|.||||||||||||") { [unowned self] in
+                    SpeechBubbleItem(profile: speechPlayerRight, chat: "Wow.|| You sure ask a lot of questions!||||||||/But if you must know, the reason I'm here is because, well.. first of all, Oh—I'm a princess!||/And, but I'm not a princess here though I'm a princess in a very very far away place.|/You see, I'm not from this place but I am from, umm, wait...| Let me start over. Okay so.....|/Blah blah blah, blah blah blah DRAGONS blah, blah blah, blah blah blah, blah.||||||||/VAELORIA blah, blah.| Blah, blah blah blah, blah blah. Blah. Blah. Blah.| M|A|G|I|C!!||||||||/Blah blah, blah blah!|| blah blah blah,| blah blah blah.| Blah, blah, blah|| .|.|.|A|G|E| O|F| R|U|I|N|.||||||||||||") { [unowned self] in
                         
                         wideShot(shouldResetForeground: true)
                         dimOverlayNode.run(SKAction.fadeOut(withDuration: 1))

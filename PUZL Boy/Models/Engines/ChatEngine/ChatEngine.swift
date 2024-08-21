@@ -1656,7 +1656,7 @@ extension ChatEngine {
                     handleDialogueCompletion(level: level, completion: completion)
                 }
             }
-        // TODO: - Marlin's return and defeat of Magmoor's minion
+        // TODO: - 3 Elders's arrival and defeat of Magmoor's minion
         case 451:
             if statueTapped {
                 sendChatArray(shouldSkipDim: true, items: dialogueStatue5.getDialogue()) { [unowned self] in
