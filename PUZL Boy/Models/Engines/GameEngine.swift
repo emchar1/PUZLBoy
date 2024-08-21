@@ -1109,7 +1109,7 @@ class GameEngine {
                 GameEngine.ageOfRuin = AgeOfRuin.conditionsMet
                 
                 //Here, you cannot set the new theme to AudioManager.mainThemes because FIRManager won't be updated until AFTER this function completes, so you fake it and check against AgeOfRuin.conditionsMet.
-                AudioManager.shared.changeTheme(newTheme: GameEngine.ageOfRuin ? AudioManager.ageOfRuinThemes : AudioManager.ageOfPeaceThemes, shouldPlayNewTheme: false)
+                AudioManager.shared.changeTheme(newTheme: GameEngine.ageOfRuin ? AudioManager.ageOfRuinThemes : AudioManager.ageOfBalanceThemes, shouldPlayNewTheme: false)
 
                 if let hasFeather = FIRManager.hasFeather {
                     if hasFeather {

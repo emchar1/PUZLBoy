@@ -18,13 +18,13 @@ struct AgeOfRuin {
     
     ///Checks to see if conditions are met for Age of Ruin to be activated.
     static var conditionsMet: Bool {
-        //Age of Peace if player makes these choices:
-        let ageOfPeace: Bool =
+        //Age of Balance if player makes these choices:
+        let ageOfBalance: Bool =
         !(FIRManager.decisionsLeftButton[0] ?? true) && //1. Prepare First
         (FIRManager.decisionsLeftButton[2] ?? false) && //2. Give (feather) Away
         !(FIRManager.decisionsLeftButton[3] ?? true)    //3. Let (Magmoor) Go
         
-        return !ageOfPeace                              //i.e. return Age of Ruin
+        return !ageOfBalance                              //i.e. return Age of Ruin
     }
     
     static var ruinSuffix: String {

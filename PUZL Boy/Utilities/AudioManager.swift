@@ -58,13 +58,13 @@ class AudioManager {
         return instance
     }()
     
-    static let ageOfPeaceThemes: AudioTheme = ("overworld", "winlevel", "gameover")
+    static let ageOfBalanceThemes: AudioTheme = ("overworld", "winlevel", "gameover")
     static let ageOfRuinThemes: AudioTheme = ("overworldageofruin", "winlevelageofruin", "gameoverageofruin")
     static let partyThemes: AudioTheme = ("overworldparty", "winlevel", "gameover")
 
     ///The reason why all these properties had to be static is so that currentTheme can set itself to mainThemes in init(). It can't do it as a non-static function!!!
     static var mainThemes: AudioTheme {
-        AgeOfRuin.isActive ? ageOfRuinThemes : ageOfPeaceThemes
+        AgeOfRuin.isActive ? ageOfRuinThemes : ageOfBalanceThemes
     }
     
     static var titleLogo: String {

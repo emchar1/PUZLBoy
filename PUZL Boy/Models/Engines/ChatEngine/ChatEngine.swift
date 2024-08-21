@@ -631,7 +631,7 @@ extension ChatEngine {
     ///Populates the dialoguePlayed array. Need to include all levels where dialogue is to occur, and also add the level case in the playDialogue() function.
     private func populateKeyDialogue() {
         
-        dialoguePlayed[Level.partyLevel] = false //Level: -1. IMPORTANT: MUST be called in both, Age of Peace and Age of Ruin!!!
+        dialoguePlayed[Level.partyLevel] = false //Level: -1. IMPORTANT: MUST be called in both, Age of Balance and Age of Ruin!!!
         
         if AgeOfRuin.isActive {
             // TODO: - Chat Dialogue for Age of Ruin
@@ -641,10 +641,11 @@ extension ChatEngine {
             
 
             //AGE OF RUIN - PUZZLE REALM Dialogue
-            //enter dialogue here...
+
+            dialoguePlayed[201] = false
         }
         else {
-            //AGE OF PEACE - DARK REALM Dialogue
+            //AGE OF BALANCE - DARK REALM Dialogue
 
             dialoguePlayed[-100] = false
             dialoguePlayed[-150] = false
@@ -653,7 +654,7 @@ extension ChatEngine {
             dialoguePlayed[-300] = false
             
             
-            //AGE OF PEACE - PUZZLE REALM Dialogue
+            //AGE OF BALANCE - PUZZLE REALM Dialogue
             
             //Chapter 0 - The Tutorial
             dialoguePlayed[1] = false
@@ -920,15 +921,20 @@ extension ChatEngine {
 
         isChatting = true
 
+        if AgeOfRuin.isActive {
+            playDialogueAgeOfRuin(level: level, completion: completion)
+        }
+        else {
+            playDialogueAgeOfBalance(level: level, statueTapped: statueTapped, completion: completion)
+        }
+    }//end playDialogue(level:statueTapped:completion:)
+    
+    ///Sets up and plays dialogue for Age of Balance setting.
+    private func playDialogueAgeOfBalance(level: Int, statueTapped: Bool, completion: ((Cutscene?) -> Void)?) {
         switch level {
             
         //DARK REALM
-        case Level.partyLevel: //Level: -1
-            guard !AgeOfRuin.isActive else {
-                handleDialogueCompletion(level: level, completion: completion)
-                return
-            }
-            
+        case Level.partyLevel: //IMPORTANT: This case, Level.partyLevel must ALWAYS be here!!!
             sendChatArray(items: [
                 ChatItem(profile: .hero, imgPos: .left, chat: "Dude, I feel funny. I'm seeing colorful flashing lights and the music is bumpin'. I can't stop moving!"),
                 ChatItem(profile: .trainer, chat: "Welcome to the DARK REALM, the hidden realm that exists between PUZZLE REALMS. You ate one of those rainbow colored jelly beans, I see."),
@@ -1656,8 +1662,28 @@ extension ChatEngine {
             isChatting = false
             completion?(nil)
         }
-    }//end playDialogue(level:statueTapped:completion:)
-    
+    }//end playDialogueAgeOfBalance()
+
+    ///Sets up and plays dialogue for Age of Ruin setting.
+    private func playDialogueAgeOfRuin(level: Int, completion: ((Cutscene?) -> Void)?) {
+        switch level {
+            
+        case Level.partyLevel: //IMPORTANT: This case, Level.partyLevel must ALWAYS be here!!!
+            handleDialogueCompletion(level: level, completion: completion)
+        case 201:
+            sendChatArray(items: [
+                ChatItem(profile: .trainer, imgPos: .left, chat: "I do not know what you intend to do with such a little girl. Leave her be!"),
+                ChatItem(profile: .villain, chat: "Just a little bit farther. We're almost there."),
+                ChatItem(profile: .princess, chat: "You better hurry. I'm missing my show!"),
+                ChatItem(profile: .trainer, imgPos: .left, chat: "Princess be a bit more patient."),
+            ]) { [unowned self] in
+                handleDialogueCompletion(level: level, completion: completion)
+            }
+        default:
+            isChatting = false
+            completion?(nil)
+        }
+    }//end playDialogueAgeOfRuin()
     
     
 }//end ChatEngine

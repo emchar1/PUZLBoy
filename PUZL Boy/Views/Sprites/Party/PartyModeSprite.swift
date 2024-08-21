@@ -235,7 +235,7 @@ class PartyModeSprite: SKNode {
     }
     
     
-    // MARK: - Age of Peace (Party Music!!)
+    // MARK: - Age of Balance (Party Music!!)
     
     private func verseSection() -> [SKAction] {
         var sequence: [SKAction] = []
