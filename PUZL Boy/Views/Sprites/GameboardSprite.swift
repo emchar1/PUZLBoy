@@ -584,7 +584,7 @@ class GameboardSprite {
     // TODO: - Inbetween Realm
     
     ///Spawns princess and Magmoor in the Inbetween Realm.
-    func spawnInbetweenPrincess(level: Level) {
+    func spawnInbetweenPrincess(level: Level, moves: [K.GameboardPosition]) {
         let playerOffset = CGPoint(x: panelSize / 4, y: 0)
         let villainOffset = CGPoint(x: 0, y: 20)
         
@@ -594,23 +594,27 @@ class GameboardSprite {
         let princess = Player(type: .princess)
         let villain = Player(type: .villain)
         
-        var lastPosition: K.GameboardPosition = level.start
-        
-        func princessMoveAction(nextPosition: K.GameboardPosition) -> SKAction {
+        func princessMoveActions(positions: [K.GameboardPosition]) -> [SKAction] {
             let moveDuration: TimeInterval = Double(princess.textures[Player.Texture.walk.rawValue].count) * princessTimePerFrame
+            var lastPosition: K.GameboardPosition = level.start
+            var actions: [SKAction] = []
             
-            let moveAction = SKAction.sequence([
-                SKAction.group([
-                    SKAction.animate(with: princess.textures[Player.Texture.walk.rawValue], timePerFrame: princessTimePerFrame),
-                    SKAction.move(to: getLocation(at: nextPosition), duration: moveDuration),
-                    SKAction.scaleX(to: (lastPosition.col > nextPosition.col ? -1 : 1) * princess.sprite.xScale, duration: 0.0)
-                ]),
-                SKAction.wait(forDuration: TimeInterval.random(in: 0...3))
-            ])
+            for nextPosition in positions {
+                let moveAction = SKAction.sequence([
+                    SKAction.group([
+                        SKAction.animate(with: princess.textures[Player.Texture.walk.rawValue], timePerFrame: princessTimePerFrame),
+                        SKAction.move(to: getLocation(at: nextPosition), duration: moveDuration),
+                        SKAction.scaleX(to: (lastPosition.col > nextPosition.col ? -1 : 1) * princess.sprite.xScale, duration: 0.0)
+                    ]),
+                    SKAction.wait(forDuration: TimeInterval.random(in: 0...3))
+                ])
+                
+                lastPosition = nextPosition
+                
+                actions.append(moveAction)
+            }
             
-            lastPosition = nextPosition
-            
-            return moveAction
+            return actions
         }
         
         colorizeGameboard(fadeOut: false, isInbetween: true, completion: nil)
@@ -639,19 +643,7 @@ class GameboardSprite {
         //Princess Movement
         princess.sprite.run(SKAction.sequence([
             SKAction.wait(forDuration: 2),
-            princessMoveAction(nextPosition: (0, 1)),
-            princessMoveAction(nextPosition: (0, 2)),
-            princessMoveAction(nextPosition: (1, 2)),
-            princessMoveAction(nextPosition: (2, 2)),
-            princessMoveAction(nextPosition: (1, 2)),
-            princessMoveAction(nextPosition: (2, 2)),
-            princessMoveAction(nextPosition: (1, 2)),
-            princessMoveAction(nextPosition: (2, 2)),
-            princessMoveAction(nextPosition: (2, 1)),
-            princessMoveAction(nextPosition: (2, 2)),
-            princessMoveAction(nextPosition: (2, 1)),
-            princessMoveAction(nextPosition: (2, 2)),
-            princessMoveAction(nextPosition: (2, 1))
+            SKAction.sequence(princessMoveActions(positions: moves))
         ]))
     }
     

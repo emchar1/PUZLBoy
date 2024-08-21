@@ -17,7 +17,7 @@ protocol ChatEngineDelegate: AnyObject {
     func spawnPrincessCapture(at position: K.GameboardPosition, shouldAnimateWarp: Bool, completion: @escaping () -> Void)
     func despawnPrincessCapture(at position: K.GameboardPosition, completion: @escaping () -> Void)
     func flashPrincess(at position: K.GameboardPosition, completion: @escaping () -> Void)
-    func inbetweenRealmEnter(levelInt: Int)
+    func inbetweenRealmEnter(levelInt: Int, moves: [K.GameboardPosition])
     func inbetweenRealmExit(completion: @escaping () -> Void)
 }
 
@@ -692,8 +692,8 @@ extension ChatEngine {
             
             //Chapter 4 - The Home Stretch
             dialoguePlayed[401] = false
-            // TODO: - 425??? - Magmoor and Olivia in the in-between realm "cutscene"
-            dialoguePlayed[425] = false
+            // TODO: - 426??? - Magmoor and Olivia in the in-between realm "cutscene"
+            dialoguePlayed[426] = false
             dialoguePlayed[451] = false
         }
     }
@@ -1618,8 +1618,16 @@ extension ChatEngine {
                     }
                 }
             }
-        case 425:
-            delegate?.inbetweenRealmEnter(levelInt: level)
+        case 426:
+            delegate?.inbetweenRealmEnter(levelInt: level, moves: [(0, 1), (0, 2), (0, 3), (1, 3),
+                                                                   (2, 3), (1, 3), (2, 3), (3, 3),
+                                                                   (3, 2), (3, 1), (4, 1), (4, 2),
+                                                                   (5, 2), (5, 3), (5, 4), (5, 3),
+                                                                   (5, 4), (6, 4), (6, 3), (5, 3),
+                                                                   (5, 4), (6, 4), (6, 3), (5, 3),
+                                                                   (5, 4), (6, 4), (6, 3), (5, 3),
+                                                                   (5, 4), (6, 4), (6, 3), (5, 3),
+                                                                   (5, 4), (6, 4), (6, 3), (5, 3)])
             
             sendChatArray(shouldSkipDim: true, items: [
                 ChatItem(profile: .villain, chat: "So... you're a princess."),
