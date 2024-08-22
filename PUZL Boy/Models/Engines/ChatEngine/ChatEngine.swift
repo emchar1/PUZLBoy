@@ -1633,13 +1633,13 @@ extension ChatEngine {
             sendChatArray(shouldSkipDim: true, items: [
                 ChatItem(profile: .princess, imgPos: .left, chat: "Are you going to let me go now or what?"),
                 ChatItem(profile: .villain, chat: "Once the merge is complete........ then I shall let you go."),
-                ChatItem(profile: .princess, imgPos: .left, chat: "When is that gonna be?"),
-                ChatItem(profile: .villain, chat: "A few hours... days... weeks..."),
+                ChatItem(profile: .princess, imgPos: .left, chat: "When is that going to be?"),
+                ChatItem(profile: .villain, chat: "Who can say? A few hours... days... weeks..."),
                 ChatItem(profile: .princess, imgPos: .left, chat: "Well, which one is it!"),
                 ChatItem(profile: .villain, chat: "Patience, child. Relentless little one, aren't you?! Just like your mother."),
                 ChatItem(profile: .trainer, imgPos: .left, chat: "Magmoor, you promised to let her go. Don't let me down again!"),
-                ChatItem(profile: .villain, chat: "Don't you worry, dear Marlin. I always keep my promise..."),
-                ChatItem(profile: .blankhero, chat: "Guys!! I'm right here!!!")
+                ChatItem(profile: .villain, chat: "Isn't this nice?? You and I, reunited once again. Don't you worry, dear Marlin. I always keep my promise..."),
+                ChatItem(profile: .blankhero, chat: "\n\nGuys!! I'm right here!!!")
             ]) { [unowned self] in
                 guard let delegate = delegate else {
                     //Just in case delegate is false, which it shouldn't be!!!
@@ -1651,6 +1651,7 @@ extension ChatEngine {
                 
                 delegate.inbetweenRealmExit { [unowned self] in
                     sendChatArray(items: [
+                        ChatItem(profile: .hero, imgPos: .left, chat: "Guys!! I'm right here!!!"),
                         ChatItem(profile: .hero, imgPos: .left, chat: "Marlin!! Princess!! Can you guys hear me?!?! HEEEY!!!! Helloooo!!!"),
                         ChatItem(profile: .hero, imgPos: .left, chat: "(Where are you guys???)")
                     ]) { [unowned self] in
