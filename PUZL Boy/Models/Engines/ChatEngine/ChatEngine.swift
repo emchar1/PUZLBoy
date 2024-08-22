@@ -692,8 +692,7 @@ extension ChatEngine {
             
             //Chapter 4 - The Home Stretch
             dialoguePlayed[401] = false
-            // TODO: - 426??? - Magmoor and Olivia in the in-between realm "cutscene"
-            dialoguePlayed[426] = false
+            dialoguePlayed[412] = false
             dialoguePlayed[451] = false
         }
     }
@@ -1113,7 +1112,7 @@ extension ChatEngine {
                 ChatItem(profile: .villain, chat: "Fine. But make it quick. I have a universe to rule."),
                 ChatItem(profile: .trainer, imgPos: .left, chat: "Just do not harm the girl. Promise me."),
                 ChatItem(profile: .villain, chat: "Yes, but remember.. you belong to me now."),
-                ChatItem(profile: .trainer, imgPos: .left, chat: "(I hope he'll forgive me for this...)")
+                ChatItem(profile: .trainer, imgPos: .left, chat: "I hope he'll forgive me for this...")
             ]) { [unowned self] in
                 AudioManager.shared.stopSound(for: "scarymusicbox", fadeDuration: 5)
                 AudioManager.shared.stopSound(for: "magicheartbeatloop1", fadeDuration: 5)
@@ -1542,7 +1541,9 @@ extension ChatEngine {
                 ChatItem(profile: .hero, imgPos: .left, chat: "Why should we trust him?!! He's obviously the bad guy!!!"),
                 ChatItem(profile: .trainer, chat: "With the princess free, we stand a better chance at defeating Magmoor once and for all."),
                 ChatItem(profile: .trainer, chat: "Just keep solving puzzles like you're doing and you will be just fine."),
-                ChatItem(profile: .hero, imgPos: .left, chat: "But, but... I can't do this without you!! 🥺"),
+                ChatItem(profile: .hero, imgPos: .left, chat: "But, but... I can't do this without you!! 🥺") {
+                    AudioManager.shared.playSound(for: "sadaccent")
+                },
                 ChatItem(profile: .trainer, chat: "Trust your instincts, PUZL Boy. I have equipped you with all the knowledge you need to succeed."),
                 ChatItem(profile: .hero, imgPos: .left, chat: "Marlin!!!"),
                 ChatItem(profile: .trainer, chat: "Goodbye. For now...")
@@ -1612,39 +1613,33 @@ extension ChatEngine {
                 chapterTitleSprite.setChapter(4)
                 chapterTitleSprite.showTitle { [unowned self] in
                     sendChatArray(items: [
-                        ChatItem(profile: .hero, imgPos: .left, chat: "Marlin, where are you?")
+                        ChatItem(profile: .hero, imgPos: .left, chat: "(Marlin, where are you?)")
                     ]) { [unowned self] in
                         handleDialogueCompletion(level: level, completion: completion)
                     }
                 }
             }
-        case 426:
-            delegate?.inbetweenRealmEnter(levelInt: level, moves: [(0, 1), (0, 2), (0, 3), (1, 3),
-                                                                   (2, 3), (1, 3), (2, 3), (3, 3),
-                                                                   (3, 2), (3, 1), (4, 1), (4, 2),
-                                                                   (5, 2), (5, 3), (5, 4), (5, 3),
-                                                                   (5, 4), (6, 4), (6, 3), (5, 3),
-                                                                   (5, 4), (6, 4), (6, 3), (5, 3),
-                                                                   (5, 4), (6, 4), (6, 3), (5, 3),
-                                                                   (5, 4), (6, 4), (6, 3), (5, 3),
-                                                                   (5, 4), (6, 4), (6, 3), (5, 3)])
+        case 412:
+            delegate?.inbetweenRealmEnter(levelInt: level, moves: [(0, 1), (0, 2), (1, 2), (1, 3),
+                                                                   (1, 2), (1, 1), (1, 0), (2, 0),
+                                                                   (2, 1), (3, 1), (2, 1), (2, 0),
+                                                                   (1, 0), (1, 1), (1, 2), (1, 3),
+                                                                   (1, 2), (1, 1), (2, 1), (2, 0),
+                                                                   (1, 0), (1, 1), (2, 1), (2, 0),
+                                                                   (1, 0), (1, 1), (2, 1), (2, 0),
+                                                                   (1, 0), (1, 1), (2, 1), (2, 0),
+                                                                   (1, 0), (1, 1), (2, 1), (2, 0)])
             
             sendChatArray(shouldSkipDim: true, items: [
-                ChatItem(profile: .villain, chat: "So... you're a princess."),
-                ChatItem(profile: .princess, imgPos: .left, chat: "You got that right, mister! When my mom and dad find out what you've done, you'll be sorry!"),
-                ChatItem(profile: .villain, chat: "Ohh? Do tell what they'll do."),
-                ChatItem(profile: .princess, imgPos: .left, chat: "They'll.. THEY'LL.. They'll give you a good yelling!"),
-                ChatItem(profile: .villain, chat: "Well I can yell back. I have an award for being the yellingest yeller in Yellowstone, WY."),
-                ChatItem(profile: .princess, imgPos: .left, chat: "What.. is that supposed to scare me or something?"),
-                ChatItem(profile: .villain, chat: "You tell me, young princess. Does it scare you? Does it make you cower in your britches?"),
-                ChatItem(profile: .princess, imgPos: .left, chat: "Who you callin' a britch?! First of all, I'm not afraid of you. Second, I can yell louder than you can! AAAAAHHHHH!!!") { [unowned self] in
-                    guard let gameScene = superScene as? GameScene else { return }
-                    
-                    gameScene.shakeScreen(duration: 3, shouldPlaySFX: false, completion: nil)
-                },
-                ChatItem(profile: .villain, chat: "Shriek. I'm shaking in my Louboutin boots."),
-                ChatItem(profile: .princess, imgPos: .left, chat: "You better be scared. For when I get free, I'm gonna pound you into the ground!"),
-                ChatItem(profile: .villain, chat: "Slaaaaaay! 💅🏼✨")
+                ChatItem(profile: .princess, imgPos: .left, chat: "Are you going to let me go now or what?"),
+                ChatItem(profile: .villain, chat: "Once the merge is complete........ then I shall let you go."),
+                ChatItem(profile: .princess, imgPos: .left, chat: "When is that gonna be?"),
+                ChatItem(profile: .villain, chat: "A few hours... days... weeks..."),
+                ChatItem(profile: .princess, imgPos: .left, chat: "Well, which one is it!"),
+                ChatItem(profile: .villain, chat: "Patience, child. Relentless little one, aren't you?! Just like your mother."),
+                ChatItem(profile: .trainer, imgPos: .left, chat: "Magmoor, you promised to let her go. Don't let me down again!"),
+                ChatItem(profile: .villain, chat: "Don't you worry, dear Marlin. I always keep my promise..."),
+                ChatItem(profile: .blankhero, chat: "Guys!! I'm right here!!!")
             ]) { [unowned self] in
                 guard let delegate = delegate else {
                     //Just in case delegate is false, which it shouldn't be!!!
@@ -1652,8 +1647,15 @@ extension ChatEngine {
                     return
                 }
                 
+                AudioManager.shared.playSound(for: "scarylaugh")
+                
                 delegate.inbetweenRealmExit { [unowned self] in
-                    handleDialogueCompletion(level: level, completion: completion)
+                    sendChatArray(items: [
+                        ChatItem(profile: .hero, imgPos: .left, chat: "Marlin!! Princess!! Can you guys hear me?!?! HEEEY!!!! Helloooo!!!"),
+                        ChatItem(profile: .hero, imgPos: .left, chat: "(Where are you guys???)")
+                    ]) { [unowned self] in
+                        handleDialogueCompletion(level: level, completion: completion)
+                    }
                 }
             }
         // TODO: - 3 Elders's arrival and defeat of Magmoor's minion

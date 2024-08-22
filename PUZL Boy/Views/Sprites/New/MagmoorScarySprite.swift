@@ -80,7 +80,7 @@ class MagmoorScarySprite: SKNode {
         let pulseAction: SKAction = SKAction.sequence([
             SKAction.wait(forDuration: delay),
             SKAction.run {
-                AudioManager.shared.playSound(for: "scarylaugh", currentTime: 0.25)
+                AudioManager.shared.playSound(for: "scarylaugh")
             },
             SKAction.repeat(SKAction.sequence([
                 SKAction.fadeIn(withDuration: 0),

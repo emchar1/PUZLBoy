@@ -121,6 +121,8 @@
 		EA7605722B5B5322001BC268 /* SnowfallParticles.sks in Resources */ = {isa = PBXBuildFile; fileRef = EA7605712B5B5322001BC268 /* SnowfallParticles.sks */; };
 		EA77D3F82B72BF1600B77C42 /* CutsceneOldFriends.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA77D3F72B72BF1600B77C42 /* CutsceneOldFriends.swift */; };
 		EA78C36C29763B1C00292744 /* AchievementAdMobster.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA78C36B29763B1C00292744 /* AchievementAdMobster.swift */; };
+		EA7A78DC2C76C47500594349 /* scarylaugh.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA7A78DB2C76C47500594349 /* scarylaugh.mp3 */; };
+		EA7A78E42C7700F000594349 /* sadaccent.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA7A78E32C7700F000594349 /* sadaccent.mp3 */; };
 		EA7E75352C23959B00BE2781 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = EA7E75342C23959B00BE2781 /* GoogleService-Info.plist */; };
 		EA7E75392C3B0DA200BE2781 /* Warp4SlowParticles.sks in Resources */ = {isa = PBXBuildFile; fileRef = EA7E75382C3B0DA200BE2781 /* Warp4SlowParticles.sks */; };
 		EA7FB7382C6EE6F20098F1EB /* AgeOfRuin.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA7FB7372C6EE6F20098F1EB /* AgeOfRuin.swift */; };
@@ -230,7 +232,6 @@
 		EA9F4DDD29D2B766006F4B2F /* buttontap2.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA9F4DDC29D2B766006F4B2F /* buttontap2.mp3 */; };
 		EA9F4DE229D36F02006F4B2F /* movepoisoned3.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA9F4DDF29D36F01006F4B2F /* movepoisoned3.mp3 */; };
 		EA9F4DE729D37206006F4B2F /* movepoisoned2.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA9F4DE629D37206006F4B2F /* movepoisoned2.mp3 */; };
-		EAA5A5B12C7277BC009F81D9 /* scarylaugh.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAA5A5B02C7277BC009F81D9 /* scarylaugh.mp3 */; };
 		EAA5A5B32C73FB04009F81D9 /* titlethemeageofruin.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAA5A5B22C73FB04009F81D9 /* titlethemeageofruin.mp3 */; };
 		EAA921D82C011362009E99E7 /* AuthorizationRequestScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAA921D72C011361009E99E7 /* AuthorizationRequestScene.swift */; };
 		EAA921DA2C014C83009E99E7 /* AuthorizationSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAA921D92C014C83009E99E7 /* AuthorizationSprite.swift */; };
@@ -451,6 +452,8 @@
 		EA7605712B5B5322001BC268 /* SnowfallParticles.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = SnowfallParticles.sks; sourceTree = "<group>"; };
 		EA77D3F72B72BF1600B77C42 /* CutsceneOldFriends.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CutsceneOldFriends.swift; sourceTree = "<group>"; };
 		EA78C36B29763B1C00292744 /* AchievementAdMobster.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementAdMobster.swift; sourceTree = "<group>"; };
+		EA7A78DB2C76C47500594349 /* scarylaugh.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = scarylaugh.mp3; sourceTree = "<group>"; };
+		EA7A78E32C7700F000594349 /* sadaccent.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = sadaccent.mp3; sourceTree = "<group>"; };
 		EA7E75342C23959B00BE2781 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		EA7E75382C3B0DA200BE2781 /* Warp4SlowParticles.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Warp4SlowParticles.sks; sourceTree = "<group>"; };
 		EA7FB7372C6EE6F20098F1EB /* AgeOfRuin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgeOfRuin.swift; sourceTree = "<group>"; };
@@ -559,7 +562,6 @@
 		EA9F4DDC29D2B766006F4B2F /* buttontap2.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = buttontap2.mp3; sourceTree = "<group>"; };
 		EA9F4DDF29D36F01006F4B2F /* movepoisoned3.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = movepoisoned3.mp3; sourceTree = "<group>"; };
 		EA9F4DE629D37206006F4B2F /* movepoisoned2.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = movepoisoned2.mp3; sourceTree = "<group>"; };
-		EAA5A5B02C7277BC009F81D9 /* scarylaugh.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = scarylaugh.mp3; sourceTree = "<group>"; };
 		EAA5A5B22C73FB04009F81D9 /* titlethemeageofruin.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = titlethemeageofruin.mp3; sourceTree = "<group>"; };
 		EAA921D72C011361009E99E7 /* AuthorizationRequestScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorizationRequestScene.swift; sourceTree = "<group>"; };
 		EAA921D92C014C83009E99E7 /* AuthorizationSprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorizationSprite.swift; sourceTree = "<group>"; };
@@ -1059,7 +1061,8 @@
 				EA4583562A4431C400279056 /* punchwhack2.mp3 */,
 				EA8C60602C068E0700DED3C7 /* realmtransition.mp3 */,
 				EA3467A429A8C659002DDA02 /* revive.mp3 */,
-				EAA5A5B02C7277BC009F81D9 /* scarylaugh.mp3 */,
+				EA7A78E32C7700F000594349 /* sadaccent.mp3 */,
+				EA7A78DB2C76C47500594349 /* scarylaugh.mp3 */,
 				EA9D6A592B48E4B20004187B /* scarymusicbox.mp3 */,
 				EA95B3082A8C9DA300C5F028 /* speechbubble.mp3 */,
 				EAEF2EFD2B4F5B7E00AD8459 /* swordslash.mp3 */,
@@ -1395,12 +1398,12 @@
 				EA7E75392C3B0DA200BE2781 /* Warp4SlowParticles.sks in Resources */,
 				EA95D1A3294691820061059C /* boygrunt1.mp3 in Resources */,
 				EA94E87529C0DE2C009F2614 /* movetile1.mp3 in Resources */,
-				EAA5A5B12C7277BC009F81D9 /* scarylaugh.mp3 in Resources */,
 				EA8C606A2C068E0800DED3C7 /* chatopentrainer.mp3 in Resources */,
 				EA49F2822BB9036700C7D54E /* GroundSplitParticles.sks in Resources */,
 				EA473BDD2C13D608003CEC1E /* waterdrown.mp3 in Resources */,
 				EA7605632B5A859C001BC268 /* movesnow3.mp3 in Resources */,
 				EAD19A092A96AA6D00A07A63 /* Assets.xcassets in Resources */,
+				EA7A78E42C7700F000594349 /* sadaccent.mp3 in Resources */,
 				EA49F2842BB90A3000C7D54E /* GroundExplodeParticles.sks in Resources */,
 				EAE919452A4CA4A800AF67D1 /* clocktick.mp3 in Resources */,
 				EA0F145F292994B00013038E /* movewalk.mp3 in Resources */,
@@ -1461,6 +1464,7 @@
 				EA95D19E294690B70061059C /* boyattack2.mp3 in Resources */,
 				EA45834D2A44315900279056 /* buttontap3.mp3 in Resources */,
 				EA81968A2C41AC590002D551 /* MagicElderParticles.sks in Resources */,
+				EA7A78DC2C76C47500594349 /* scarylaugh.mp3 in Resources */,
 				EA8E07542B50988B0051DDC3 /* PointerParticles.sks in Resources */,
 				EA3467A529A8C659002DDA02 /* revive.mp3 in Resources */,
 				EAE43D952C48A79500E6DB3C /* magicwarp2.mp3 in Resources */,
