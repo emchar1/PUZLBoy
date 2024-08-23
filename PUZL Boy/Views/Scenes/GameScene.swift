@@ -627,7 +627,10 @@ class GameScene: SKScene {
         scoringEngine.sprite.run(shakeAction)
         gameEngine.displaySprite.sprite.run(shakeAction)
         gameEngine.gameboardSprite.sprite.run(shakeAction) {
-            AudioManager.shared.raiseVolume(for: AudioManager.shared.currentTheme.overworld, fadeDuration: 5)
+            if shouldPlaySFX {
+                AudioManager.shared.raiseVolume(for: AudioManager.shared.currentTheme.overworld, fadeDuration: 5)
+            }
+            
             Haptics.shared.stopHapticEngine()
             Haptics.shared.startHapticEngine(shouldInitialize: false)
 
@@ -636,9 +639,9 @@ class GameScene: SKScene {
 
         if shouldPlaySFX {
             AudioManager.shared.playSound(for: "magicelderexplosion")
+            AudioManager.shared.adjustVolume(to: 0.1, for: AudioManager.shared.currentTheme.overworld, fadeDuration: 1)
         }
 
-        AudioManager.shared.adjustVolume(to: 0.1, for: AudioManager.shared.currentTheme.overworld, fadeDuration: 1)
         AudioManager.shared.playSoundThenStop(for: "thunderrumble", currentTime: 5, playForDuration: totalDuration + 1, fadeOut: 4)
         Haptics.shared.executeCustomPattern(pattern: .thunder)
     }

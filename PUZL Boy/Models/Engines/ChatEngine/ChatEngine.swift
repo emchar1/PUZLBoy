@@ -257,6 +257,30 @@ class ChatEngine {
         }
     }
     
+    /**
+     Hides the fast forward button, and optionally, show text immediately for dramatic effect.
+     - parameter showImmediately: if true, show text immediately. text returns to chatSpeedOrig  upon showing FF button.
+     */
+    private func hideFFButton(showChatImmediately: Bool = false) {
+        fastForwardSprite.removeFromParent()
+        
+        if showChatImmediately {
+            chatSpeed = 0
+        }
+    }
+    
+    /**
+     Shows the fast forward button (and return chatSpeed to normal, if it was set to 0 previously).
+     */
+    private func showFFButton() {
+        fastForwardSprite.removeFromParent() //just in case...
+        chatBackgroundSprite.addChild(fastForwardSprite)
+        
+        if chatSpeed == 0 {
+            chatSpeed = chatSpeedOrig
+        }
+    }
+    
     private func animateFFButton() {
         fastForwardSprite.removeAllActions()
         
@@ -693,6 +717,7 @@ extension ChatEngine {
             //Chapter 4 - The Home Stretch
             dialoguePlayed[401] = false
             dialoguePlayed[412] = false
+            dialoguePlayed[426] = false
             dialoguePlayed[451] = false
         }
     }
@@ -752,10 +777,10 @@ extension ChatEngine {
             },
             ChatItem(profile: .statue1, chat: "How do you want the world to end?") { [unowned self] in
                 animateFateSealed()
-                fastForwardSprite.removeFromParent()
+                hideFFButton()
             },
             ChatItem(profile: .statue1, chat: "Your fate has been sealed!!") { [unowned self] in
-                chatBackgroundSprite.addChild(fastForwardSprite)
+                showFFButton()
             },
             ChatItem(profile: .hero, imgPos: .left, chat: "Wait, what?? No! I didn't—"),
             ChatItem(profile: .statue1, chat: "With every choice comes a consequence! Remember that for next time, PUZL Boy."),
@@ -807,15 +832,13 @@ extension ChatEngine {
             ChatItem(profile: .hero, imgPos: .left, chat: "Uhh.. ok, thanks I guess... Does it really work?"),
             ChatItem(profile: .statue2, chat: "Do ya see any 6-eyed, purple-horn monsters around here???") { [unowned self] in
                 animateFeather()
-                fastForwardSprite.removeFromParent()
-                chatSpeed = 0
+                hideFFButton(showChatImmediately: true)
                 
                 FIRManager.updateFirestoreRecordHasFeather(true)
                 dialogueStatue3.setShouldSkipFirstQuestion(false) //set it for Trudee
             },
             ChatItem(profile: .blankhero, chat: "\n\nReceived Magic Feather of Protection.") { [unowned self] in
-                chatBackgroundSprite.addChild(fastForwardSprite)
-                chatSpeed = chatSpeedOrig
+                showFFButton()
             },
             
             //4: 4
@@ -851,10 +874,10 @@ extension ChatEngine {
             },
             ChatItem(profile: .hero, imgPos: .left, chat: "Hmmm.......") { [unowned self] in
                 animateFeather()
-                fastForwardSprite.removeFromParent()
+                hideFFButton()
             },
             ChatItem(profile: .hero, imgPos: .left, chat: "You really want this feather, don't you?!?!") { [unowned self] in
-                chatBackgroundSprite.addChild(fastForwardSprite)
+                showFFButton()
             },
 
             //1: 1
@@ -957,7 +980,7 @@ extension ChatEngine {
                 ChatItem(profile: .blankvillain, chat: "\n\n...the question is, where are we?..."),
                 ChatItem(profile: .trainer, imgPos: .left, chat: "We are in the DARK REALM where evil cannot reach. What business do you have here?!") { [unowned self] in
                     
-                    fastForwardSprite.removeFromParent()
+                    hideFFButton()
                 },
                 ChatItem(profile: .blankvillain, chat: "\n\n...all will be revealed soon...") { [unowned self] in
                     superScene?.addChild(marlinBlast)
@@ -975,7 +998,7 @@ extension ChatEngine {
                 AudioManager.shared.stopSound(for: "magicheartbeatloop1", fadeDuration: 5)
                 AudioManager.shared.stopSound(for: "littlegirllaugh", fadeDuration: 5)
 
-                chatBackgroundSprite.addChild(fastForwardSprite)
+                showFFButton()
                 chatBackgroundSprite.run(SKAction.wait(forDuration: 3)) { [unowned self] in
                     marlinBlast.removeFromParent()
                     
@@ -996,8 +1019,7 @@ extension ChatEngine {
                     AudioManager.shared.playSoundThenStop(for: "littlegirllaugh", playForDuration: 1, fadeOut: 3)
                     AudioManager.shared.stopSound(for: "magicheartbeatloop1", fadeDuration: 4)
 
-                    //Disable fastForwardSprite for dramatic effect...
-                    fastForwardSprite.removeFromParent()
+                    hideFFButton()
                 },
                 ChatItem(profile: .princessCursed, chat: "i am fine. don't worry about me. now leave us."),
                 ChatItem(profile: .blankvillain, chat: "\n\n...see??? she's perfectly fine..."),
@@ -1015,9 +1037,7 @@ extension ChatEngine {
                 },
                 ChatItem(profile: .trainer, imgPos: .left, chat: "⚡️MAGIC SPELL!!!⚡️") { [unowned self] in
                     //...but don't forget to add fastForwardSprite back to chatBackgroundSprite!!
-                    chatBackgroundSprite.addChild(fastForwardSprite)
-                    
-                    chatSpeed = chatSpeedOrig
+                    showFFButton()
                 },
                 ChatItem(profile: .villain, chat: "MYSTERIOUS FIGURE: I'll be seeing ya shortly."),
                 ChatItem(profile: .trainer, imgPos: .left, chat: "..........no. It can't be..")
@@ -1036,13 +1056,11 @@ extension ChatEngine {
                 ChatItem(profile: .trainer, imgPos: .left, chat: "Hello..........? Are you there??"),
                 //Needs like a 5 second pause here.
                 ChatItem(profile: .trainer, imgPos: .left, chat: "................................") { [unowned self] in
-                    //Disable fastForwardSprite for dramatic effect.
-                    fastForwardSprite.removeFromParent()
+                    hideFFButton()
                 },
                 ChatItem(profile: .trainer, imgPos: .left, chat: "Hmmm..")
             ]) { [unowned self] in
-                //Need to add this back to parent, because you removed it above.
-                chatBackgroundSprite.addChild(fastForwardSprite)
+                showFFButton()
                 
                 chatBackgroundSprite.run(SKAction.wait(forDuration: 3)) { [unowned self] in
                     handleDialogueCompletion(level: level, completion: completion)
@@ -1639,7 +1657,9 @@ extension ChatEngine {
                 ChatItem(profile: .villain, chat: "Patience, child. Relentless little one, aren't you?! Just like your mother."),
                 ChatItem(profile: .trainer, imgPos: .left, chat: "Magmoor, you promised to let her go. Don't let me down again!"),
                 ChatItem(profile: .villain, chat: "Isn't this nice?? You and I, reunited once again. Don't you worry, dear Marlin. I always keep my promise..."),
-                ChatItem(profile: .blankhero, chat: "\n\nGuys!! I'm right here!!!")
+                ChatItem(profile: .blankhero, chat: "\n\nGuys!! I'm right here!!!"),
+                ChatItem(profile: .princess, imgPos: .left, chat: "Who said that?!"),
+                ChatItem(profile: .villain, chat: "Nobody, child. Must be the wind.")
             ]) { [unowned self] in
                 guard let delegate = delegate else {
                     //Just in case delegate is false, which it shouldn't be!!!
@@ -1654,6 +1674,54 @@ extension ChatEngine {
                         ChatItem(profile: .hero, imgPos: .left, chat: "Guys!! I'm right here!!!"),
                         ChatItem(profile: .hero, imgPos: .left, chat: "Marlin!! Princess!! Can you guys hear me?!?! HEEEY!!!! Helloooo!!!"),
                         ChatItem(profile: .hero, imgPos: .left, chat: "(Where are you guys???)")
+                    ]) { [unowned self] in
+                        handleDialogueCompletion(level: level, completion: completion)
+                    }
+                }
+            }
+        case 426:
+            delegate?.inbetweenRealmEnter(levelInt: level, moves: [(0, 1), (0, 2), (0, 3), (1, 3),
+                                                                   (2, 3), (1, 3), (2, 3), (3, 3),
+                                                                   (3, 2), (3, 1), (4, 1), (4, 2),
+                                                                   (5, 2), (5, 3), (5, 4), (5, 3),
+                                                                   (5, 4), (6, 4), (6, 3), (5, 3),
+                                                                   (5, 4), (6, 4), (6, 3), (5, 3),
+                                                                   (5, 4), (6, 4), (6, 3), (5, 3),
+                                                                   (5, 4), (6, 4), (6, 3), (5, 3),
+                                                                   (5, 4), (6, 4), (6, 3), (5, 3)])
+            
+            sendChatArray(shouldSkipDim: true, items: [
+                ChatItem(profile: .trainer, chat: "Wait! *Gasping* I need to stop for a second."),
+                ChatItem(profile: .princess, imgPos: .left, chat: "Uncle Marlin, are you ok?"),
+                ChatItem(profile: .trainer, chat: "I'm.. fine, princess.. Everything is.. going to be.. ok....."),
+                ChatItem(profile: .princess, imgPos: .left, chat: "He's hurting! Let him go!"),
+                ChatItem(profile: .villain, chat: "Just a little bit longer. We're almost done."),
+                ChatItem(profile: .princess, imgPos: .left, chat: "I want to go home now!"),
+                ChatItem(profile: .villain, chat: "No. We're not done yet. You'll have to wait.") { [unowned self] in
+                    guard let gameScene = superScene as? GameScene else { return }
+                    
+                    gameScene.shakeScreen(duration: 6, shouldPlaySFX: false, completion: nil)
+                    hideFFButton(showChatImmediately: true)
+                },
+                ChatItem(profile: .princess, imgPos: .left, chat: "I SAID NOOOOOW!!!!") { [unowned self] in
+                    showFFButton()
+                },
+                ChatItem(profile: .villain, chat: "Remarkable! But I better put this on you just in... case!"),
+                ChatItem(profile: .princess, imgPos: .left, chat: "Ahhhhh, noooo!"),
+                ChatItem(profile: .blankhero, chat: "\nMarlin! Princess! Can you hear me! MAGPIE, SHOW YOURSELF!!"),
+                ChatItem(profile: .princess, imgPos: .left, chat: "PUZL Boy?? Is that you?!? Help us, please!!!"),
+                ChatItem(profile: .villain, chat: "Oh for goodness' sake. It's MAGMOOR!")
+            ]) { [unowned self] in
+                guard let delegate = delegate else {
+                    //Just in case delegate is false, which it shouldn't be!!!
+                    handleDialogueCompletion(level: level, completion: completion)
+                    return
+                }
+                
+                delegate.inbetweenRealmExit { [unowned self] in
+                    sendChatArray(items: [
+                        ChatItem(profile: .hero, imgPos: .left, chat: "Princess! You can hear me! I'm coming, you guys!!"),
+                        ChatItem(profile: .hero, imgPos: .left, chat: "Tiki was right. Sounds like they're right under my feet. Gotta keep moving!")
                     ]) { [unowned self] in
                         handleDialogueCompletion(level: level, completion: completion)
                     }
