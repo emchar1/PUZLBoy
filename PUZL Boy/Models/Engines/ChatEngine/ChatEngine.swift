@@ -51,6 +51,7 @@ class ChatEngine {
     private var completion: (() -> ())?
 
     private let chatSpeedOrig: TimeInterval = 0.08
+    private let chatSpeedImmediate: TimeInterval = 0
     private var chatSpeed: TimeInterval
     private var chatText: String = ""
     private var chatIndex: Int = 0
@@ -248,8 +249,8 @@ class ChatEngine {
     }
 
     private func fastForward() {
-        if chatSpeed > 0 && chatIndex < chatText.count {
-            chatSpeed = 0
+        if chatSpeed > chatSpeedImmediate && chatIndex < chatText.count {
+            chatSpeed = chatSpeedImmediate
         }
         else {
             dispatchWorkItem.cancel()
@@ -265,7 +266,7 @@ class ChatEngine {
         fastForwardSprite.removeFromParent()
         
         if showChatImmediately {
-            chatSpeed = 0
+            chatSpeed = chatSpeedImmediate
         }
     }
     
@@ -276,7 +277,7 @@ class ChatEngine {
         fastForwardSprite.removeFromParent() //just in case...
         chatBackgroundSprite.addChild(fastForwardSprite)
         
-        if chatSpeed == 0 {
+        if chatSpeed <= chatSpeedImmediate {
             chatSpeed = chatSpeedOrig
         }
     }
@@ -521,7 +522,7 @@ class ChatEngine {
     
     ///This contains the magic of animating the characters of the string like a typewriter, until it gets to the end of the chat.
     @objc private func animateText(_ sender: Timer) {
-        if chatSpeed > 0 && chatIndex < chatText.count {
+        if chatSpeed > chatSpeedImmediate && chatIndex < chatText.count {
             let chatChar = chatText[chatText.index(chatText.startIndex, offsetBy: chatIndex)]
             
             textSprite.text! += "\(chatChar)"
@@ -529,7 +530,7 @@ class ChatEngine {
             
             chatIndex += 1
         }
-        else if chatSpeed <= 0 && chatIndex < chatText.count {
+        else if chatSpeed <= chatSpeedImmediate && chatIndex < chatText.count {
             textSprite.text = chatText
             textSprite.updateShadow()
             
@@ -543,7 +544,7 @@ class ChatEngine {
                 closeChat()
             })
             
-            DispatchQueue.main.asyncAfter(deadline: .now() + (chatSpeed > 0 ? 5.0 : max(5.0, Double(chatText.count) / 10)), execute: dispatchWorkItem)
+            DispatchQueue.main.asyncAfter(deadline: .now() + (chatSpeed > chatSpeedImmediate ? 5.0 : max(5.0, Double(chatText.count) / 10)), execute: dispatchWorkItem)
         }
     }
     
@@ -986,7 +987,7 @@ extension ChatEngine {
                     superScene?.addChild(marlinBlast)
                     marlinBlast.animateBlast(playSound: true)
 
-                    chatSpeed = 0
+                    chatSpeed = chatSpeedImmediate
                 },
                 ChatItem(profile: .trainer, imgPos: .left, chat: "⚡️REVEAL YOURSELF!!!⚡️") { [unowned self] in
                     AudioManager.shared.playSound(for: "littlegirllaugh")
@@ -1033,7 +1034,7 @@ extension ChatEngine {
                     AudioManager.shared.playSound(for: "magicheartbeatloop2")
                     AudioManager.shared.playSoundThenStop(for: "scarylaugh", playForDuration: 2, fadeOut: 2, delay: 4.5)
 
-                    chatSpeed = 0
+                    chatSpeed = chatSpeedImmediate
                 },
                 ChatItem(profile: .trainer, imgPos: .left, chat: "⚡️MAGIC SPELL!!!⚡️") { [unowned self] in
                     //...but don't forget to add fastForwardSprite back to chatBackgroundSprite!!
