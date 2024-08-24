@@ -141,7 +141,7 @@ class CutsceneMagmoor: Cutscene {
         
         speechNarrator.setValues(color: .cyan.lightenColor(factor: 6), animationSpeed: 0.05)
         speechNarrator.setText(
-            text: "MARLIN: The Council consists of our forefathers, the Elders. Benevolent and wise, they created the laws that govern our HOME REALM.",
+            text: "MARLIN: The Council consists of our forebearers, the Elders. All-powerful and wise, they created the laws that govern our HOME REALM.",
             superScene: self,
             completion: nil)
         
@@ -151,7 +151,7 @@ class CutsceneMagmoor: Cutscene {
             SKAction.wait(forDuration: scene1Length),
             SKAction.run { [unowned self] in
                 transitionScene(
-                    narrateText: "By summoning the Elders to the Ararian Desert, Magmoor plotted to ambush them and usurp their power. But his miscalculation would cost him dearly!",
+                    narrateText: "By summoning the Elders to the Sands of Solitude, Magmoor plotted to ambush them and siphon their power. But his miscalculation would cost him dearly!",
                     playScene: playScene2)
             }
         ]))
@@ -160,7 +160,7 @@ class CutsceneMagmoor: Cutscene {
             SKAction.wait(forDuration: scene1Length + scene2Length),
             SKAction.run { [unowned self] in
                 transitionScene(
-                    narrateText: "For his unconscionable acts, the Elders banished Magmoor to the LIMBO REALM for all eternity.........",
+                    narrateText: "For his treasonous act, the Elders banished Magmoor to the LIMBO REALM for all eternity.........",
                     playScene: playScene3)
             }
         ]))

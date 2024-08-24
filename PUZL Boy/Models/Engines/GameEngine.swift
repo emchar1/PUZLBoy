@@ -1223,7 +1223,7 @@ class GameEngine {
         //If the hint was bought, it will show in the inbetween realm, so cancel it temporarily and show it again at inbetweenRealmExit().
         hintEngine.removeAnimatingHint(from: gameboardSprite)
         
-        AudioManager.shared.adjustVolume(to: 0.25, for: AudioManager.shared.currentTheme.overworld)
+        AudioManager.shared.adjustVolume(to: 0.15, for: AudioManager.shared.currentTheme.overworld)
         AudioManager.shared.playSound(for: "magicdoomloop")
         
         ParticleEngine.shared.animateParticles(type: .inbetween,
