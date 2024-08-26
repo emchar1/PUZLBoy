@@ -141,7 +141,7 @@ class CutsceneMagmoor: Cutscene {
         
         speechNarrator.setValues(color: .cyan.lightenColor(factor: 6), animationSpeed: 0.05)
         speechNarrator.setText(
-            text: "MARLIN: The Council consists of our forebearers, the Elders. All-powerful and wise, they created the laws that govern our HOME REALM.",
+            text: "MARLIN: The Council consists of the Elders: our oldest and most powerful Mystics. They govern and rule over our home realm, Mystaria.",
             superScene: self,
             completion: nil)
         
@@ -151,7 +151,7 @@ class CutsceneMagmoor: Cutscene {
             SKAction.wait(forDuration: scene1Length),
             SKAction.run { [unowned self] in
                 transitionScene(
-                    narrateText: "By summoning the Elders to the Sands of Solitude, Magmoor plotted to ambush them and siphon their power. But his miscalculation would cost him dearly!",
+                    narrateText: "By ambushing the Elders in the Sands of Solitude, Magmoor attempted to siphon their power and become the most powerful Mystic to ever exist. But his miscalculation would cost him dearly!",
                     playScene: playScene2)
             }
         ]))
