@@ -398,10 +398,11 @@ class ChatEngine {
         //Only allow a new chat if current chat isn't happening
         guard allowNewChat else { return }
         
-        let statueFillColor = UIColor.systemGreen.darkenColor(factor: 3)
-        
+
         textSprite.text = ""
         textSprite.updateShadow()
+        avatarSprite.texture = ChatItem.getChatProfileTexture(profile: profile)
+        chatBackgroundSprite.fillColor = ChatItem.getChatColor(profile: profile)
         timer.invalidate()
         chatText = chat
         chatIndex = 0
@@ -409,66 +410,6 @@ class ChatEngine {
         shouldClose = endChat
         currentProfile = profile
         self.completion = completion
-        
-        switch profile {
-        case .hero:
-            avatarSprite.texture = SKTexture(imageNamed: "puzlboy")
-            chatBackgroundSprite.fillColor = .orange
-        case .trainer:
-            avatarSprite.texture = SKTexture(imageNamed: "trainer")
-            chatBackgroundSprite.fillColor = .blue
-        case .princess:
-            avatarSprite.texture = SKTexture(imageNamed: "princess")
-            chatBackgroundSprite.fillColor = .magenta
-        case .princessCursed:
-            avatarSprite.texture = SKTexture(imageNamed: "princessCursed")
-            chatBackgroundSprite.fillColor = .magenta
-        case .princess2:
-            avatarSprite.texture = SKTexture(imageNamed: "princess2")
-            chatBackgroundSprite.fillColor = .magenta
-        case .villain:
-            avatarSprite.texture = SKTexture(imageNamed: "villain")
-            chatBackgroundSprite.fillColor = .red
-        case .blankvillain:
-            avatarSprite.texture = nil
-            chatBackgroundSprite.fillColor = .red
-        case .blankprincess:
-            avatarSprite.texture = nil
-            chatBackgroundSprite.fillColor = .magenta
-        case .blanktrainer:
-            avatarSprite.texture = nil
-            chatBackgroundSprite.fillColor = .blue
-        case .blankhero:
-            avatarSprite.texture = nil
-            chatBackgroundSprite.fillColor = .orange
-        case .merton:
-            avatarSprite.texture = SKTexture(imageNamed: "melchior")
-            chatBackgroundSprite.fillColor = .purple
-        case .magmus:
-            avatarSprite.texture = SKTexture(imageNamed: "melchior")
-            chatBackgroundSprite.fillColor = .purple
-        case .melchior:
-            avatarSprite.texture = SKTexture(imageNamed: "melchior")
-            chatBackgroundSprite.fillColor = .purple
-        case .statue0:
-            avatarSprite.texture = SKTexture(imageNamed: "chatStatue0")
-            chatBackgroundSprite.fillColor = statueFillColor
-        case .statue1:
-            avatarSprite.texture = SKTexture(imageNamed: "chatStatue1")
-            chatBackgroundSprite.fillColor = statueFillColor
-        case .statue2:
-            avatarSprite.texture = SKTexture(imageNamed: "chatStatue2")
-            chatBackgroundSprite.fillColor = statueFillColor
-        case .statue3:
-            avatarSprite.texture = SKTexture(imageNamed: "chatStatue3")
-            chatBackgroundSprite.fillColor = statueFillColor
-        case .statue4:
-            avatarSprite.texture = SKTexture(imageNamed: "chatStatue4")
-            chatBackgroundSprite.fillColor = statueFillColor
-        case .statue5:
-            avatarSprite.texture = SKTexture(imageNamed: "chatStatue5")
-            chatBackgroundSprite.fillColor = statueFillColor
-        }
         
         if profile == .blankvillain || profile == .blankprincess || profile == .blanktrainer || profile == .blankhero {
             avatarSprite.isHidden = true
@@ -558,20 +499,7 @@ class ChatEngine {
     }
     
     private func playChatOpenNotification() {
-        switch currentProfile {
-        case .hero, .blankhero:
-            AudioManager.shared.playSound(for: "chatopen")
-        case .trainer, .blanktrainer:
-            AudioManager.shared.playSound(for: "chatopentrainer")
-        case .princess, .princessCursed, .princess2, .blankprincess:
-            AudioManager.shared.playSound(for: "chatopenprincess")
-        case .villain, .blankvillain:
-            AudioManager.shared.playSound(for: "chatopenvillain")
-        case .merton, .magmus, .melchior:
-            AudioManager.shared.playSound(for: "marlinblast")
-        case .statue0, .statue1, .statue2, .statue3, .statue4, .statue5:
-            AudioManager.shared.playSound(for: "chatopenstatue")
-        }
+        ChatItem.playChatNotification(profile: currentProfile)
     }
     
     private func closeChat() {
