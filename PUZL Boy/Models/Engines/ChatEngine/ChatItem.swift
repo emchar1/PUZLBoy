@@ -22,6 +22,7 @@ struct ChatItem {
     enum ChatProfile {
         case hero, trainer, princess, princessCursed, princess2, villain,
              blankvillain, blankprincess, blanktrainer, blankhero,
+             merton, magmus, melchior,
              statue0, statue1, statue2, statue3, statue4, statue5
     }
 

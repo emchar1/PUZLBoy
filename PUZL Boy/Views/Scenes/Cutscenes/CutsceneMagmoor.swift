@@ -151,7 +151,7 @@ class CutsceneMagmoor: Cutscene {
             SKAction.wait(forDuration: scene1Length),
             SKAction.run { [unowned self] in
                 transitionScene(
-                    narrateText: "By ambushing the Elders in the Sands of Solitude, Magmoor attempted to siphon their power and become the most powerful Mystic to ever exist. But his miscalculation would cost him dearly!",
+                    narrateText: "By ambushing the Elders in the Sands of Solitude, Magmoor attempted to steal their power and become the most powerful Mystic to ever exist. But his miscalculation would cost him dearly!",
                     playScene: playScene2)
             }
         ]))

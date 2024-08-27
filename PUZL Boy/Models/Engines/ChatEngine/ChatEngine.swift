@@ -441,6 +441,15 @@ class ChatEngine {
         case .blankhero:
             avatarSprite.texture = nil
             chatBackgroundSprite.fillColor = .orange
+        case .merton:
+            avatarSprite.texture = SKTexture(imageNamed: "melchior")
+            chatBackgroundSprite.fillColor = .purple
+        case .magmus:
+            avatarSprite.texture = SKTexture(imageNamed: "melchior")
+            chatBackgroundSprite.fillColor = .purple
+        case .melchior:
+            avatarSprite.texture = SKTexture(imageNamed: "melchior")
+            chatBackgroundSprite.fillColor = .purple
         case .statue0:
             avatarSprite.texture = SKTexture(imageNamed: "chatStatue0")
             chatBackgroundSprite.fillColor = statueFillColor
@@ -556,8 +565,10 @@ class ChatEngine {
             AudioManager.shared.playSound(for: "chatopentrainer")
         case .princess, .princessCursed, .princess2, .blankprincess:
             AudioManager.shared.playSound(for: "chatopenprincess")
-        case .villain, .blankvillain:               
+        case .villain, .blankvillain:
             AudioManager.shared.playSound(for: "chatopenvillain")
+        case .merton, .magmus, .melchior:
+            AudioManager.shared.playSound(for: "marlinblast")
         case .statue0, .statue1, .statue2, .statue3, .statue4, .statue5:
             AudioManager.shared.playSound(for: "chatopenstatue")
         }
@@ -1740,7 +1751,12 @@ extension ChatEngine {
                 }
             }
             else {
-                handleDialogueCompletion(level: level, completion: completion)
+                sendChatArray(items: [
+                    ChatItem(profile: .melchior, imgPos: .left, chat: "MELCHIOR: ⚡️MAGMOOR! STOP THIS AT ONCE!!⚡️"),
+                    ChatItem(profile: .hero, imgPos: .left, chat: "No stay away!!! AAAAHHHHH!!")
+                ]) { [unowned self] in
+                    handleDialogueCompletion(level: level, completion: completion)
+                }
             }
         default:
             isChatting = false
