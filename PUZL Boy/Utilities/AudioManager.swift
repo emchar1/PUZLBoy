@@ -61,6 +61,7 @@ class AudioManager {
     static let ageOfBalanceThemes: AudioTheme = ("overworld", "winlevel", "gameover")
     static let ageOfRuinThemes: AudioTheme = ("overworldageofruin", "winlevelageofruin", "gameoverageofruin")
     static let partyThemes: AudioTheme = ("overworldparty", "winlevel", "gameover")
+    static let tikiThemes: AudioTheme = ("overworldmarimba", "winlevel", "gameover")
 
     ///The reason why all these properties had to be static is so that currentTheme can set itself to mainThemes in init(). It can't do it as a non-static function!!!
     static var mainThemes: AudioTheme {
@@ -112,7 +113,7 @@ class AudioManager {
         addAudioItem("chatclose", category: .soundFX)
         addAudioItem("chatopen", category: .soundFX)
         addAudioItem("chatopenprincess", category: .soundFX)
-        addAudioItem("chatopenstatue", category: .soundFX) //needs purchase $1
+        addAudioItem("chatopenstatue", category: .soundFX)
         addAudioItem("chatopentrainer", category: .soundFX)
         addAudioItem("chatopenvillain", category: .soundFX)
         addAudioItem("dooropen", category: .soundFX)
@@ -177,11 +178,11 @@ class AudioManager {
         addAudioItem("punchwhack2", category: .soundFX)
         addAudioItem("realmtransition", category: .soundFX)
         addAudioItem("revive", category: .soundFX)
-        addAudioItem("sadaccent", category: .soundFX) //needs purchase $2
-        addAudioItem("scarylaugh", category: .soundFX) //needs purchase $1
+        addAudioItem("sadaccent", category: .soundFX)
+        addAudioItem("scarylaugh", category: .soundFX)
         addAudioItem("speechbubble", category: .soundFX)
         addAudioItem("swordslash", category: .soundFX)
-        addAudioItem("touchstatue", category: .soundFX) //needs purchase $1
+        addAudioItem("touchstatue", category: .soundFX)
         addAudioItem("thunderrumble", category: .soundFX)
         addAudioItem("warp", category: .soundFX)
         addAudioItem("waterappear1", category: .soundFX)
@@ -206,7 +207,7 @@ class AudioManager {
         addAudioItem("gameoverageofruin", category: .musicNoLoop)
         addAudioItem("titlechapter", category: .musicNoLoop)
         addAudioItem("titletheme", category: .musicNoLoop)
-        addAudioItem("titlethemeageofruin", category: .musicNoLoop) //needs purchase $6
+        addAudioItem("titlethemeageofruin", category: .musicNoLoop)
 
         
         //Background music
@@ -215,8 +216,9 @@ class AudioManager {
         addAudioItem("magicheartbeatloop1", category: .music)
         addAudioItem("magicheartbeatloop2", category: .music)
         addAudioItem("overworld", category: .music)
-        addAudioItem("overworldgrassland", category: .music)
         addAudioItem("overworldageofruin", category: .music)
+        addAudioItem("overworldgrassland", category: .music)
+        addAudioItem("overworldmarimba", category: .music)
         addAudioItem("overworldparty", category: .music)
         addAudioItem("scarymusicbox", category: .music)
 
@@ -340,6 +342,17 @@ class AudioManager {
         DispatchQueue.main.asyncAfter(deadline: .now() + fadeDuration) {
             item.player.stop()
         }
+    }
+    
+    /**
+     Checks if the current sound or music is playing, returns true if so.
+     - parameter audioKey: the string value of the sound or music
+     - returns: true if it is playing
+     */
+    func isPlaying(audioKey: String) -> Bool {
+        guard let item = audioItems[audioKey] else { return false }
+        
+        return item.player.isPlaying
     }
     
     /**

@@ -207,9 +207,13 @@ class GameboardSprite {
                 overlayPanel = SKSpriteNode(imageNamed: "enemyIce" + AgeOfRuin.ruinSuffix)
             }
             else {
-                let checkStatue = AgeOfRuin.isActive && (tile.overlay == .statue0 || tile.overlay == .statue1 || tile.overlay == .statue2 || tile.overlay == .statue3 || tile.overlay == .statue4 || tile.overlay == .statue5)
+                let overlayIsStatue = tile.overlay == .statue0 || tile.overlay == .statue1 || tile.overlay == .statue2 || tile.overlay == .statue3 || tile.overlay == .statue4 || tile.overlay == .statue5
                 
-                overlayPanel = SKSpriteNode(imageNamed: tile.overlay.description + (checkStatue ? "Disabled" : "") + AgeOfRuin.ruinSuffix)
+                overlayPanel = SKSpriteNode(imageNamed: tile.overlay.description + (AgeOfRuin.isActive && overlayIsStatue ? "Disabled" : "") + AgeOfRuin.ruinSuffix)
+                
+                if !AgeOfRuin.isActive && overlayIsStatue {
+                    overlayPanel.danceStatue()
+                }
             }
             
             overlayPanel.scale(to: scaleSize)

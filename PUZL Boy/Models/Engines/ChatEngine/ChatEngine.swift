@@ -247,6 +247,10 @@ class ChatEngine {
     func shouldPauseGame(level: Int) -> Bool {
         return dialoguePlayed[level] != nil
     }
+    
+    static func isTikiLevel(level: Int) -> Bool {
+        return level == 319 || level == 339 || level == 351 || level == 376 || level == 401 || level == 451
+    }
 
     private func fastForward() {
         if chatSpeed > chatSpeedImmediate && chatIndex < chatText.count {
@@ -679,14 +683,15 @@ extension ChatEngine {
         
         //Lv 319 - Ingrid the Introducer
         dialogueStatue0 = StatueDialogue(dialogue: [
-            //0: 6
+            //0: 7
             ChatItem(profile: .hero, imgPos: .left, chat: "What the heck is this??"),
-            ChatItem(profile: .statue0, chat: "We are ancient relics of the forest known as \"Tikis.\" Think of us as friendly guides to help you along the way."),
+            ChatItem(profile: .statue0, chat: "🎵 Hello! We are ancient relics of the forest known as \"Tikis.\" Think of us as friendly guides to help you on your way."),
             ChatItem(profile: .hero, imgPos: .left, chat: "It talks!"),
             ChatItem(profile: .statue0, chat: "Some of us may ask you an important question that can alter the course of your journey, so make sure you answer carefully and truthfully."),
             ChatItem(profile: .hero, imgPos: .left, chat: "There's more of you??"),
-            ChatItem(profile: .statue0, chat: "There are! We are scattered throughout the PUZZLE REALM. Tell us your deepest desires!"),
-            
+            ChatItem(profile: .statue0, chat: "There are! We are scattered throughout the PUZZLE REALM. Dance with us! 🎶"),
+            ChatItem(profile: .hero, imgPos: .left, chat: ".....I'm good."),
+
             //1: 3
             ChatItem(profile: .hero, imgPos: .left, chat: "Where is Marlin and when is he coming back?"),
             ChatItem(profile: .statue0, chat: "The answer to that question is............"),
@@ -696,7 +701,7 @@ extension ChatEngine {
             ChatItem(profile: .hero, imgPos: .left, chat: "Is Princess Olivia safe? Where is Magmoor keeping her?"),
             ChatItem(profile: .statue0, chat: "Let me look into that for you............"),
             ChatItem(profile: .statue0, chat: "...I don't know!"),
-            ChatItem(profile: .hero, imgPos: .left, chat: "You're not very helpful."),
+            ChatItem(profile: .hero, imgPos: .left, chat: "You're not very helpful. 😒"),
 
             //Single dialogue
             ChatItem(profile: .statue0, chat: "Here's something helpful: don't forget to Rate and Review this game on the App Store!"),
@@ -704,7 +709,7 @@ extension ChatEngine {
             ChatItem(profile: .statue0, chat: "Princess Olivia.. I heard she possesses very powerful magic. Though it's just a rumor..."),
             ChatItem(profile: .statue0, chat: "You won't find her standing around here. Get moving!"),
             ChatItem(profile: .statue0, chat: "Tick tock. Time's a wasting!"),
-        ], indices: [6, 3, 4, 1, 1, 1, 1, 1], shouldSkipFirstQuestion: false, shouldRepeatLastDialogueOnEnd: false)
+        ], indices: [7, 3, 4, 1, 1, 1, 1, 1], shouldSkipFirstQuestion: false, shouldRepeatLastDialogueOnEnd: false)
         
         
         //Lv 339 - Penne the Poet
@@ -790,7 +795,7 @@ extension ChatEngine {
             //5: 3
             ChatItem(profile: .hero, imgPos: .left, chat: "Can you tell me that password one more time?"),
             ChatItem(profile: .statue2, chat: "Yeah sure! It's.......... Huh, weird. I forgot it already!"),
-            ChatItem(profile: .hero, imgPos: .left, chat: "You've got to be kidding me.."),
+            ChatItem(profile: .hero, imgPos: .left, chat: "You've got to be kidding me.. 🙄"),
             
             //6: 2
             ChatItem(profile: .hero, imgPos: .left, chat: "Sigh. Anything else you can tell me?"),
@@ -804,7 +809,7 @@ extension ChatEngine {
             //0: 10 - Story branching decision question
             ChatItem(profile: .hero, imgPos: .left, chat: "Hey! The last Tiki gave me a bunch of info and I forgot it all now. Do you know anything about a password or a golden dragon?"),
             ChatItem(profile: .statue3, chat: "What?!! You spoke to Lars the Liar? He lies like no other! No wonder you're a mess!"),
-            ChatItem(profile: .hero, imgPos: .left, chat: "...........What."),
+            ChatItem(profile: .hero, imgPos: .left, chat: "...........What. 🤨"),
             ChatItem(profile: .statue3, chat: "Yeah! Do you really think 6-eyed, purple-horn monsters and golden dragons exist??"),
             ChatItem(profile: .hero, imgPos: .left, chat: "I dunno!! I assumed you all are here to help me! So then there's no special key or password? What about this stupid feather?"),
             ChatItem(profile: .statue3, chat: "Utterly useless! Here, I'll take the stupid feather off your hands. No use carrying it around."),
@@ -854,7 +859,7 @@ extension ChatEngine {
             //3: 3
             ChatItem(profile: .hero, imgPos: .left, chat: "Please just tell me where to find him."),
             ChatItem(profile: .statue4, chat: "'Course. He's right under your feet!"),
-            ChatItem(profile: .hero, imgPos: .left, chat: "GAAAAAHHHHHH!!!!!! I'M DONE WITH YOU PEOPLE!!! USELESS! ALL OF YOU!!!!"),
+            ChatItem(profile: .hero, imgPos: .left, chat: "GAAAAAHHHHHH!!!!!! I'M DONE WITH YOU PEOPLE!!! USELESS! ALL OF YOU!!!! 🤬"),
             
             //4: 1
             ChatItem(profile: .statue4, chat: "We're not people, silly boy. We're Tikis!")
@@ -1432,7 +1437,7 @@ extension ChatEngine {
             }
             else {
                 sendChatArray(items: [
-                    ChatItem(profile: .hero, imgPos: .left, chat: "Bummer. Ok... so how do we get the genie back in the bottle?"),
+                    ChatItem(profile: .hero, imgPos: .left, chat: "What a drag. So how do we get the genie back in the bottle?"),
                     ChatItem(profile: .trainer, chat: "This—this is bad. This is all very, very bad!! But..... there is a way. I just need more time..."),
                     ChatItem(profile: .hero, imgPos: .left, chat: "We're outta time! Princess needs us now!"),
                     ChatItem(profile: .trainer, chat: "YES!! Just.. let me think for one second—")
@@ -1528,7 +1533,7 @@ extension ChatEngine {
             }
             else {
                 sendChatArray(items: [
-                    ChatItem(profile: .hero, imgPos: .left, chat: "🎵 Lonely. I'm Mister Lonely... 🎶")
+                    ChatItem(profile: .hero, imgPos: .left, chat: "Whoa. There a party going on here??")
                 ]) { [unowned self] in
                     handleDialogueCompletion(level: level, completion: completion)
                 }

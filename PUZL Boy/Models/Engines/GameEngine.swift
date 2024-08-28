@@ -261,6 +261,17 @@ class GameEngine {
                                 yPos: gameboardSprite.sprite.position.y)
 
         showBoughtHints()
+
+        //Change to tiki music for tiki statue levels
+        if ChatEngine.isTikiLevel(level: level.level) {
+            AudioManager.shared.changeTheme(newTheme: AudioManager.tikiThemes, shouldPlayNewTheme: true)
+        }
+        else {
+            //Revert back only if it was recently a tiki theme!
+            if AudioManager.shared.currentTheme == AudioManager.tikiThemes {
+                AudioManager.shared.changeTheme(newTheme: AudioManager.mainThemes, shouldPlayNewTheme: true)
+            }
+        }
     }
     
     deinit {
@@ -1013,8 +1024,6 @@ class GameEngine {
             shouldDisableControlInput = true
 
             if AgeOfRuin.isActive {
-                AudioManager.shared.playSound(for: "chatopenstatue")
-                
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                     self.shouldDisableControlInput = false
                 }
@@ -1046,7 +1055,8 @@ class GameEngine {
                 SKAction.rotate(toAngle: 0, duration: shakeDuration)
             ])
             
-            tikistatue.overlay?.run(tikiAction)
+//            tikistatue.overlay?.run(tikiAction)
+            tikistatue.overlay?.animateStatue5(newTexture: SKTexture(imageNamed: "statue5b"))
             
             delegate?.didTouchStatue()
             

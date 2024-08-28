@@ -123,7 +123,7 @@ struct ChatItem {
         case .merton, .magmus, .melchior:
             AudioManager.shared.playSound(for: "marlinblast")
         case .statue0, .statue1, .statue2, .statue3, .statue4, .statue5:
-            AudioManager.shared.playSound(for: "chatopenstatue")
+            AudioManager.shared.playSound(for: "chatopenstatue", delay: 0.03)
         }
     }
     

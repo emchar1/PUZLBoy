@@ -431,14 +431,10 @@ class GameScene: SKScene {
             }
         }
         
-        gameEngine.newGame(level: Level.isPartyLevel(level) ? Level.partyLevel : level, shouldSpawn: !didWin)
-        gameEngine.hintEngine.setHintAvailable(HintEngine.hintCount > 0)
-        pauseResetEngine.shouldDisableHintButton(!gameEngine.hintEngine.hintAvailable)
-        
         if Level.isPartyLevel(level) {
             if !PartyModeSprite.shared.isPartying {
                 PartyModeSprite.shared.setIsPartying(true)
-                PartyModeSprite.shared.startParty(to: self, 
+                PartyModeSprite.shared.startParty(to: self,
                                                   partyBoy: gameEngine.playerSprite,
                                                   hasSword: gameEngine.level.inventory.hasSwords(),
                                                   hasHammer: gameEngine.level.inventory.hasHammers())
@@ -449,11 +445,15 @@ class GameScene: SKScene {
             if PartyModeSprite.shared.isPartying {
                 PartyModeSprite.shared.setIsPartying(false)
                 PartyModeSprite.shared.stopParty(partyBoy: gameEngine.playerSprite,
-                                                 hasSword: gameEngine.level.inventory.hasSwords(), 
+                                                 hasSword: gameEngine.level.inventory.hasSwords(),
                                                  hasHammer: gameEngine.level.inventory.hasHammers())
                 scoringEngine.timerManager.setIsParty(false)
             }
         }
+        
+        gameEngine.newGame(level: Level.isPartyLevel(level) ? Level.partyLevel : level, shouldSpawn: !didWin)
+        gameEngine.hintEngine.setHintAvailable(HintEngine.hintCount > 0)
+        pauseResetEngine.shouldDisableHintButton(!gameEngine.hintEngine.hintAvailable)
                 
         moveSprites()
         playDialogue()
