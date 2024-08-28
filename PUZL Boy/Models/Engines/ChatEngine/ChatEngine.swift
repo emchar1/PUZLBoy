@@ -690,7 +690,7 @@ extension ChatEngine {
             ChatItem(profile: .statue0, chat: "Some of us may ask you an important question that can alter the course of your journey, so make sure you answer carefully and truthfully."),
             ChatItem(profile: .hero, imgPos: .left, chat: "There's more of you??"),
             ChatItem(profile: .statue0, chat: "There are! We are scattered throughout the PUZZLE REALM. Dance with us! 🎶"),
-            ChatItem(profile: .hero, imgPos: .left, chat: ".....I'm good."),
+            ChatItem(profile: .hero, imgPos: .left, chat: "I'm good."),
 
             //1: 3
             ChatItem(profile: .hero, imgPos: .left, chat: "Where is Marlin and when is he coming back?"),
@@ -1533,7 +1533,7 @@ extension ChatEngine {
             }
             else {
                 sendChatArray(items: [
-                    ChatItem(profile: .hero, imgPos: .left, chat: "Whoa. There a party going on here??")
+                    ChatItem(profile: .hero, imgPos: .left, chat: "Whoa. They havin' a party down here??")
                 ]) { [unowned self] in
                     handleDialogueCompletion(level: level, completion: completion)
                 }
