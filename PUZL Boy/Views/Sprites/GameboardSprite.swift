@@ -391,8 +391,8 @@ class GameboardSprite {
     ///Helper function to spawnPrincessCapture() that animates the appearance of princess and villain.
     private func handleSpawnPrincessVillain(position: K.GameboardPosition, endPanel: K.GameboardPosition, waitDuration: TimeInterval, appearDuration: TimeInterval) {
         
-        let playerOffset = CGPoint(x: panelSize / 4, y: 0)
-        let villainOffset = CGPoint(x: 0, y: 20)
+        let playerOffset = CGPoint(x: panelSize / 4, y: panelSize / 4)
+        let villainOffset = CGPoint(x: -panelSize / 4, y: 20)
         let startPoint = getLocation(at: position)
         let endPoint = getLocation(at: endPanel)
         let facingMultiplier: CGFloat = endPoint.x > startPoint.x ? -1 : 1
@@ -405,17 +405,11 @@ class GameboardSprite {
         princess.sprite.run(SKAction.repeatForever(SKAction.animate(with: princess.textures[Player.Texture.jump.rawValue], timePerFrame: 0.02)), withKey: "writhe")
         
         let villain = Player(type: .villain)
-        villain.sprite.position = startPoint + villainOffset
+        villain.sprite.position = startPoint
         villain.sprite.setScale(0)
         villain.sprite.zPosition = K.ZPosition.itemsAndEffects + 20
         villain.sprite.name = "captureVillain"
-        villain.sprite.run(SKAction.repeatForever(SKAction.group([
-            SKAction.animate(with: villain.textures[Player.Texture.idle.rawValue], timePerFrame: 0.1),
-            SKAction.sequence([
-                SKAction.moveBy(x: 0, y: 20, duration: 1 + TimeInterval.random(in: 0...1)),
-                SKAction.moveBy(x: 0, y: -20, duration: 1 + TimeInterval.random(in: 0...1))
-            ])
-        ])))
+        villain.sprite.run(getMagmoorIdleAction(), withKey: "magmoorIdle")
                     
         princess.sprite.run(SKAction.sequence([
             SKAction.wait(forDuration: waitDuration),
@@ -431,12 +425,24 @@ class GameboardSprite {
             SKAction.group([
                 SKAction.scaleX(to: facingMultiplier * Player.getGameboardScale(panelSize: panelSize) * villain.scaleMultiplier, duration: appearDuration),
                 SKAction.scaleY(to: Player.getGameboardScale(panelSize: panelSize) * villain.scaleMultiplier, duration: appearDuration),
-                SKAction.moveBy(x: -facingMultiplier * playerOffset.x, y: playerOffset.y, duration: appearDuration)
+                SKAction.moveBy(x: facingMultiplier * villainOffset.x, y: villainOffset.y, duration: appearDuration)
             ])
         ]))
         
         sprite.addChild(princess.sprite)
         sprite.addChild(villain.sprite)
+    }
+    
+    private func getMagmoorIdleAction() -> SKAction {
+        let villain = Player(type: .villain)
+        
+        return SKAction.repeatForever(SKAction.group([
+            SKAction.animate(with: villain.textures[Player.Texture.idle.rawValue], timePerFrame: 0.1),
+            SKAction.sequence([
+                SKAction.moveBy(x: 0, y: 20, duration: 1 + TimeInterval.random(in: 0...1)),
+                SKAction.moveBy(x: 0, y: -20, duration: 1 + TimeInterval.random(in: 0...1))
+            ])
+        ]))
     }
     
     func flashPrincess(at position: K.GameboardPosition, completion: @escaping () -> Void) {
@@ -522,7 +528,20 @@ class GameboardSprite {
                 ]))
             }
             else if node.name == "captureVillain" {
-                let villainScaleMultiplier: CGFloat = 1.5
+                let villain = Player(type: .villain)
+                let moveWithIllusionsDuration: TimeInterval = 1
+                
+                node.run(SKAction.sequence([
+                    SKAction.wait(forDuration: moveWithIllusionsDuration),
+                    SKAction.run {
+                        node.removeAction(forKey: "magmoorIdle")
+                    },
+                    SKAction.group([
+                        SKAction.animate(with: villain.textures[Player.Texture.attack.rawValue], timePerFrame: 0.06),
+                        SKAction.wait(forDuration: actionDuration * 3.5 - 1)
+                    ]),
+                    getMagmoorIdleAction()
+                ]), withKey: "attackAnimation")
                 
                 node.run(SKAction.sequence([
                     SKAction.group([
@@ -536,7 +555,7 @@ class GameboardSprite {
                             backgroundNode: sprite,
                             startPoint: startPoint - facingMultiplier * playerOffset + villainOffset,
                             endPoint: endPoint - facingMultiplier * playerOffset + villainOffset,
-                            startScale: facingMultiplier * Player.getGameboardScale(panelSize: panelSize) * villainScaleMultiplier),
+                            startScale: facingMultiplier * Player.getGameboardScale(panelSize: panelSize) * villain.scaleMultiplier),
                     ]),
                     SKAction.run { [unowned self] in
                         let angleOfAttack: CGFloat = SpriteMath.Trigonometry.getAngles(startPoint: startPoint + playerOffset + villainOffset, endPoint: endPoint + playerOffset + villainOffset).beta * (endPoint.y < startPoint.y ? 1 : -1)
@@ -545,7 +564,7 @@ class GameboardSprite {
                         
                         ParticleEngine.shared.animateParticles(type: .magicBlast,
                                                                toNode: node,
-                                                               position: CGPoint(x: 160, y: 100),
+                                                               position: CGPoint(x: 200, y: -120),
                                                                scale: UIDevice.spriteScale * CGFloat(panelCount) / 4,
                                                                angle: angleOfAttack,
                                                                duration: actionDuration * 3.5)
@@ -556,12 +575,12 @@ class GameboardSprite {
                     SKAction.sequence([
                         SKAction.group([
                             SKAction.scaleX(to: node.xScale * exitDoorScale, y: node.yScale * exitDoorScale, duration: actionDuration / 2),
-                            SKAction.moveBy(x: facingMultiplier * playerOffset.x / 2, y: 0, duration: actionDuration / 2)
+                            SKAction.moveBy(x: facingMultiplier * playerOffset.x / 2, y: -villainOffset.y, duration: actionDuration / 2)
                         ]),
                         SKAction.fadeOut(withDuration: actionDuration / 2)
                     ]),
                     SKAction.removeFromParent()
-                ]))
+                ]), withKey: "movementAnimation")
             }
             else if node.name == "captureEndOpen" {
                 node.run(SKAction.sequence([

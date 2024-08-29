@@ -28,8 +28,8 @@ struct Player {
     enum Texture: Int {
         case idle = 0, run, walk, dead, glide, jump,
 
-             //Elders only (for now 7/9/24)
-             elderAttack,
+             //Elders only (for now 7/9/24) + Magmoor
+             attack,
              
              //IMPORTANT: marsh, sand, party MUST come last! They're not part of textures[[]] so their Int.rawValue will throw off the indexing
              marsh, sand, party
@@ -146,7 +146,11 @@ struct Player {
     private mutating func setupVillain() {
         scaleMultiplier = 1.5
         
-        for i in 1...15 {
+        for i in 1...7 {
+            textures[Texture.attack.rawValue].append(atlas.textureNamed("VillainAttack (\(i))"))
+        }
+        
+        for i in 1...12 {
             textures[Texture.idle.rawValue].append(atlas.textureNamed("VillainIdle (\(i))"))
             textures[Texture.walk.rawValue].append(atlas.textureNamed("VillainIdle (\(i))"))
             textures[Texture.run.rawValue].append(atlas.textureNamed("VillainIdle (\(i))"))
@@ -186,7 +190,7 @@ struct Player {
         setupElderTextures(indexLast: 11, textureType: Texture.idle.rawValue, elderRank: rank, filenameTextureType: "Idle")
         
         //Attack frames
-        setupElderTextures(indexLast: 7, textureType: Texture.elderAttack.rawValue, elderRank: rank, filenameTextureType: "Attack")
+        setupElderTextures(indexLast: 7, textureType: Texture.attack.rawValue, elderRank: rank, filenameTextureType: "Attack")
         
         //Run frames
         setupElderTextures(indexLast: 7, textureType: Texture.run.rawValue, elderRank: rank, filenameTextureType: "Run")

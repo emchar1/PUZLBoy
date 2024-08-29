@@ -967,13 +967,8 @@ class CutsceneMagmoor: Cutscene {
             shakeBackground(duration: 1.8)
         ]))
 
-        animatePlayerWithTextures(player: &playerLeft, textureType: .elderAttack, timePerFrame: 0.1, repeatCount: 1)
         elderAttack(player: &playerLeft, elderRank: 0, shouldBanish: true)
-        
-        animatePlayerWithTextures(player: &elder1, textureType: .elderAttack, timePerFrame: 0.1, repeatCount: 1)
         elderAttack(player: &elder1, elderRank: 1, shouldBanish: true)
-        
-        animatePlayerWithTextures(player: &elder2, textureType: .elderAttack, timePerFrame: 0.1, repeatCount: 1)
         elderAttack(player: &elder2, elderRank: 2, shouldBanish: true, elder2Position: elder2Position + CGPoint(x: 100, y: 0))
 
         //Stretchy stretchy! Put this AFTER animatePlayerWithTextures()
@@ -1208,16 +1203,17 @@ class CutsceneMagmoor: Cutscene {
                                                zPosition: 0,
                                                duration: 0)
 
-        animatePlayerWithTextures(player: &player, textureType: .elderAttack, timePerFrame: 0.06, repeatCount: 1)
+        animatePlayerWithTextures(player: &player, textureType: .attack, timePerFrame: 0.06, repeatCount: 1)
     }
     
     private func duplicateMagmoor(from startPoint: CGPoint, to offsetPoint: CGPoint, delaySpawn: TimeInterval? = nil, delayAttack: TimeInterval? = nil, index: CGFloat = 1) {
         let initialScale: CGFloat = 0.5
-        let finalScale: CGFloat = initialScale - offsetPoint.y * 0.001
+        let finalScale: CGFloat = initialScale - offsetPoint.y * 0.0005
         let indexLeadingZeroes = String(format: "%02d", index)
         let moveDuration: TimeInterval = 0.25
+        let animationTimePerFrame = 0.12 - TimeInterval.random(in: 0...0.06)
 
-        var duplicate = Player(type: .villain)
+        let duplicate = Player(type: .villain)
         duplicate.sprite.position = startPoint
         duplicate.sprite.setScale(initialScale)
         duplicate.sprite.xScale *= -1
@@ -1226,13 +1222,22 @@ class CutsceneMagmoor: Cutscene {
         duplicate.sprite.zPosition = playerRight.sprite.zPosition - index
         duplicate.sprite.name = "MagmoorDuplicate\(indexLeadingZeroes)"
         
-        animatePlayerWithTextures(player: &duplicate, textureType: .idle, timePerFrame: 0.12 + TimeInterval.random(in: -0.05...0))
-
+        
+        //Float animation
         duplicate.sprite.run(SKAction.repeatForever(SKAction.sequence([
             SKAction.moveBy(x: 0, y: 15, duration: 1 + TimeInterval.random(in: 0...1)),
             SKAction.moveBy(x: 0, y: -15, duration: 1 + TimeInterval.random(in: 0...1))
         ])))
         
+        //Attack animation
+        duplicate.sprite.run(SKAction.sequence([
+            SKAction.wait(forDuration: (delaySpawn ?? 0) + (delayAttack ?? 0)),
+            SKAction.animate(with: duplicate.textures[Player.Texture.attack.rawValue], timePerFrame: animationTimePerFrame),
+            SKAction.wait(forDuration: 7),
+            SKAction.repeatForever(SKAction.animate(with: duplicate.textures[Player.Texture.idle.rawValue], timePerFrame: animationTimePerFrame))
+        ]))
+        
+        //Movement animation
         duplicate.sprite.run(SKAction.sequence([
             SKAction.wait(forDuration: delaySpawn ?? 0),
             SKAction.group([
@@ -1256,10 +1261,10 @@ class CutsceneMagmoor: Cutscene {
                 
                 ParticleEngine.shared.animateParticles(type: .magicBlastLite,
                                                        toNode: duplicate.sprite,
-                                                       position: CGPoint(x: 190, y: 220),
+                                                       position: CGPoint(x: 190, y: 0),
                                                        scale: 2,
                                                        angle: angleOfAttack,
-                                                       zPosition: 50,
+                                                       zPosition: 25,
                                                        duration: 0)
             }
         ]))

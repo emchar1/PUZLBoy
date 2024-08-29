@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "VillainIdle (13).png",
+      "filename" : "VillainAttack (3).png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "VillainIdle (13)@2x.png",
+      "filename" : "VillainAttack (3)@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "VillainIdle (13)@3x.png",
+      "filename" : "VillainAttack (3)@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }
