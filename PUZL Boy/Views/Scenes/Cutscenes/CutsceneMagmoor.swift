@@ -577,6 +577,12 @@ class CutsceneMagmoor: Cutscene {
                                      fadeDuration: 1,
                                      delay: warpPause + zoomInPause + magmoorFadeInDuration)
         
+        ParticleEngine.shared.animateParticles(type: .magmoorSmoke,
+                                               toNode: playerRight.sprite,
+                                               position: .zero,
+                                               zPosition: 1,
+                                               duration: 0)
+        
         playerRight.sprite.run(SKAction.repeatForever(SKAction.sequence([
             SKAction.moveBy(x: 0, y: 15, duration: 1 + TimeInterval.random(in: 0...1)),
             SKAction.moveBy(x: 0, y: -15, duration: 1 + TimeInterval.random(in: 0...1))
@@ -693,6 +699,7 @@ class CutsceneMagmoor: Cutscene {
 
         removeMagmoorDuplicates()
         
+        ParticleEngine.shared.removeParticles(fromNode: playerRight.sprite)
         Haptics.shared.stopHapticEngine()
     }
     
@@ -1248,6 +1255,12 @@ class CutsceneMagmoor: Cutscene {
             ])
         ]))
         
+        ParticleEngine.shared.animateParticles(type: .magmoorSmoke,
+                                               toNode: duplicate.sprite,
+                                               position: .zero,
+                                               zPosition: 1,
+                                               duration: 0)
+
         backgroundNode.addChild(duplicate.sprite)
         
         
@@ -1272,6 +1285,8 @@ class CutsceneMagmoor: Cutscene {
     
     private func removeMagmoorDuplicates() {
         processMagmoorDuplicates { node in
+            ParticleEngine.shared.removeParticles(fromNode: node)
+
             node.removeAllActions()
             node.removeFromParent()
         }
@@ -1301,7 +1316,10 @@ class CutsceneMagmoor: Cutscene {
                     SKAction.moveBy(x: 0, y: CGFloat.random(in: 50...100), duration: 0.25),
                     SKAction.fadeOut(withDuration: 0.25)
                 ]),
-                SKAction.removeFromParent()
+                SKAction.run {
+                    ParticleEngine.shared.removeParticles(fromNode: node)
+                },
+                SKAction.removeFromParent(),
             ]))
             
         }

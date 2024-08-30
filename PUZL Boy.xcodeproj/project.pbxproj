@@ -125,6 +125,7 @@
 		EA7A79272C7F015D00594349 /* scarylaugh.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA7A79262C7F015D00594349 /* scarylaugh.mp3 */; };
 		EA7A79312C7F067F00594349 /* overworldmarimba.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA7A79302C7F067F00594349 /* overworldmarimba.mp3 */; };
 		EA7A79332C7F087B00594349 /* touchstatue.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA7A79322C7F087A00594349 /* touchstatue.mp3 */; };
+		EA7A79372C8234E200594349 /* MagmoorSmokeParticles.sks in Resources */ = {isa = PBXBuildFile; fileRef = EA7A79362C8234E200594349 /* MagmoorSmokeParticles.sks */; };
 		EA7E75352C23959B00BE2781 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = EA7E75342C23959B00BE2781 /* GoogleService-Info.plist */; };
 		EA7E75392C3B0DA200BE2781 /* Warp4SlowParticles.sks in Resources */ = {isa = PBXBuildFile; fileRef = EA7E75382C3B0DA200BE2781 /* Warp4SlowParticles.sks */; };
 		EA7FB7382C6EE6F20098F1EB /* AgeOfRuin.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA7FB7372C6EE6F20098F1EB /* AgeOfRuin.swift */; };
@@ -457,6 +458,7 @@
 		EA7A79262C7F015D00594349 /* scarylaugh.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = scarylaugh.mp3; sourceTree = "<group>"; };
 		EA7A79302C7F067F00594349 /* overworldmarimba.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = overworldmarimba.mp3; sourceTree = "<group>"; };
 		EA7A79322C7F087A00594349 /* touchstatue.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = touchstatue.mp3; sourceTree = "<group>"; };
+		EA7A79362C8234E200594349 /* MagmoorSmokeParticles.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = MagmoorSmokeParticles.sks; sourceTree = "<group>"; };
 		EA7E75342C23959B00BE2781 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		EA7E75382C3B0DA200BE2781 /* Warp4SlowParticles.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Warp4SlowParticles.sks; sourceTree = "<group>"; };
 		EA7FB7372C6EE6F20098F1EB /* AgeOfRuin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgeOfRuin.swift; sourceTree = "<group>"; };
@@ -1260,6 +1262,7 @@
 				EA8196892C41AC590002D551 /* MagicElderParticles.sks */,
 				EA5F60572B9063480089EFC3 /* MagicExplosionParticles.sks */,
 				EA7300102B5E00E1005BF98D /* MagicLightParticles.sks */,
+				EA7A79362C8234E200594349 /* MagmoorSmokeParticles.sks */,
 				EAD19A032A9698B700A07A63 /* PartyGemParticles.sks */,
 				EA8E07532B50988B0051DDC3 /* PointerParticles.sks */,
 				EA8E07552B5104170051DDC3 /* PointerRainbowParticles.sks */,
@@ -1380,6 +1383,7 @@
 				EAAEA3BE2931A31200221963 /* movepoisoned1.mp3 in Resources */,
 				EA7A791D2C7EFF0F00594349 /* titlethemeageofruin.mp3 in Resources */,
 				EA6DCBEB2B61C26F00D5F707 /* DragonIceLite.sks in Resources */,
+				EA7A79372C8234E200594349 /* MagmoorSmokeParticles.sks in Resources */,
 				EA95D194294690890061059C /* warp.mp3 in Resources */,
 				EA6DCBED2B61CBE900D5F707 /* DragonIceIdle.sks in Resources */,
 				EAEF2F062B4F679900AD8459 /* buttontap4.mp3 in Resources */,

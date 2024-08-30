@@ -107,7 +107,7 @@ class AudioManager {
         addAudioItem("buttontap2", category: .soundFX)
         addAudioItem("buttontap3", category: .soundFX)
         addAudioItem("buttontap4", category: .soundFX)
-        addAudioItem("buttontap5", category: .soundFX)
+        addAudioItem("buttontap5", category: .soundFX) //not purchased $5
         addAudioItem("buttontap6", category: .soundFX)
         addAudioItem("buttontap7", category: .soundFX)
         addAudioItem("chatclose", category: .soundFX)
@@ -121,7 +121,7 @@ class AudioManager {
         addAudioItem("enemyflame", category: .soundFX)
         addAudioItem("enemyice", category: .soundFX)
         addAudioItem("enemyroar", category: .soundFX)
-        addAudioItem("enemyscratch", category: .soundFX)
+        addAudioItem("enemyscratch", category: .soundFX) //not purchased $3
         addAudioItem("forcefield", category: .soundFX)
         addAudioItem("forcefield2", category: .soundFX)
         addAudioItem("gemcollect", category: .soundFX)
@@ -130,10 +130,10 @@ class AudioManager {
         addAudioItem("gemcollectparty3x", category: .soundFX)
         addAudioItem("gemcollectpartylife", category: .soundFX)
         addAudioItem("hammerswing", category: .soundFX)
-        addAudioItem("lavaappear1", category: .soundFX)
-        addAudioItem("lavaappear2", category: .soundFX)
-        addAudioItem("lavaappear3", category: .soundFX)
-        addAudioItem("lavasizzle", category: .soundFX)
+        addAudioItem("lavaappear1", category: .soundFX) //not purchased $2
+        addAudioItem("lavaappear2", category: .soundFX) //not purchased $3
+        addAudioItem("lavaappear3", category: .soundFX) //not purchased $4
+        addAudioItem("lavasizzle", category: .soundFX) //not purchased $10
         addAudioItem("lightsoff", category: .soundFX)
         addAudioItem("lightson", category: .soundFX)
         addAudioItem("magicblast", category: .soundFX)
@@ -144,7 +144,7 @@ class AudioManager {
         addAudioItem("magichorrorimpact", category: .soundFX)
         addAudioItem("magicteleport", category: .soundFX)
         addAudioItem("magicteleport2", category: .soundFX)
-        addAudioItem("magicwarp", category: .soundFX)
+        addAudioItem("magicwarp", category: .soundFX) //not purchased $2
         addAudioItem("magicwarp2", category: .soundFX)
         addAudioItem("marlinblast", category: .soundFX)
         addAudioItem("moveglide", category: .soundFX)
@@ -160,14 +160,14 @@ class AudioManager {
         addAudioItem("moverun4", category: .soundFX)
         addAudioItem("movesand1", category: .soundFX)
         addAudioItem("movesand2", category: .soundFX)
-        addAudioItem("movesand3", category: .soundFX)
-        addAudioItem("movesnow1", category: .soundFX)
+        addAudioItem("movesand3", category: .soundFX) //not purchased $5
+        addAudioItem("movesnow1", category: .soundFX) //not purchased $1
         addAudioItem("movesnow2", category: .soundFX)
         addAudioItem("movesnow3", category: .soundFX)
         addAudioItem("movetile1", category: .soundFX)
         addAudioItem("movetile2", category: .soundFX)
         addAudioItem("movetile3", category: .soundFX)
-        addAudioItem("movewalk", category: .soundFX)
+        addAudioItem("movewalk", category: .soundFX) //not purchased $3
         addAudioItem("partypill", category: .soundFX)
         addAudioItem("partyfast", category: .soundFX)
         addAudioItem("partyslow", category: .soundFX)
@@ -180,12 +180,12 @@ class AudioManager {
         addAudioItem("revive", category: .soundFX)
         addAudioItem("sadaccent", category: .soundFX)
         addAudioItem("scarylaugh", category: .soundFX)
-        addAudioItem("speechbubble", category: .soundFX)
+        addAudioItem("speechbubble", category: .soundFX) //not purchased $2
         addAudioItem("swordslash", category: .soundFX)
         addAudioItem("touchstatue", category: .soundFX)
         addAudioItem("thunderrumble", category: .soundFX)
         addAudioItem("warp", category: .soundFX)
-        addAudioItem("waterappear1", category: .soundFX)
+        addAudioItem("waterappear1", category: .soundFX) //not purchased $3
         addAudioItem("waterappear2", category: .soundFX)
         addAudioItem("waterappear3", category: .soundFX)
         addAudioItem("waterdrown", category: .soundFX)

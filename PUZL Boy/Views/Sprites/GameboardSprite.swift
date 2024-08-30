@@ -429,6 +429,12 @@ class GameboardSprite {
             ])
         ]))
         
+        ParticleEngine.shared.animateParticles(type: .magmoorSmoke,
+                                               toNode: villain.sprite,
+                                               position: .zero,
+                                               zPosition: 11,
+                                               duration: 0)
+        
         sprite.addChild(princess.sprite)
         sprite.addChild(villain.sprite)
     }
@@ -572,6 +578,9 @@ class GameboardSprite {
                     SKAction.move(to: endPoint - facingMultiplier * playerOffset + villainOffset, duration: 0),
                     SKAction.fadeIn(withDuration: 0),
                     SKAction.wait(forDuration: actionDuration * 3.5),
+                    SKAction.run {
+                        ParticleEngine.shared.hideParticles(fromNode: node, fadeDuration: actionDuration / 2)
+                    },
                     SKAction.sequence([
                         SKAction.group([
                             SKAction.scaleX(to: node.xScale * exitDoorScale, y: node.yScale * exitDoorScale, duration: actionDuration / 2),
@@ -658,7 +667,13 @@ class GameboardSprite {
                         
         princess.sprite.run(SKAction.fadeIn(withDuration: fadeDuration))
         villain.sprite.run(SKAction.fadeIn(withDuration: fadeDuration))
-            
+
+        ParticleEngine.shared.animateParticles(type: .magmoorSmoke,
+                                               toNode: villain.sprite,
+                                               position: .zero,
+                                               zPosition: 11,
+                                               duration: 0)
+
         sprite.addChild(princess.sprite)
         sprite.addChild(villain.sprite)
         
@@ -685,6 +700,8 @@ class GameboardSprite {
                 ]))
             }
             else if node.name == "inbetweenVillain" {
+                ParticleEngine.shared.removeParticles(fromNode: node)
+                
                 node.run(SKAction.sequence([
                     SKAction.fadeOut(withDuration: fadeDuration),
                     SKAction.removeFromParent()

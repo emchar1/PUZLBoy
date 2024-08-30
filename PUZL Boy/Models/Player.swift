@@ -74,7 +74,7 @@ struct Player {
             setupPlayer(framesRange: [1...15, 1...15, 1...15, 1...15, 5...5, 1...12, nil],
                         framesCommand: [nil, nil, nil, nil, "Run", nil, nil])
         case .trainer:
-            //Need tyo add
+            //Need to add
             break
         case .princess:
             setupPlayer(framesRange: [1...16, nil, 1...20, nil, nil, 26...33, nil])
