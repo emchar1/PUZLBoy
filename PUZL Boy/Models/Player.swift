@@ -22,14 +22,12 @@ struct Player {
     private var atlas: SKTextureAtlas
     
     enum PlayerType: String, CaseIterable {
-        case hero = "hero", princess, princess2, villain, youngTrainer, youngVillain, elder0, elder1, elder2
+        case hero = "hero", trainer, princess, princess2, villain, youngTrainer, youngVillain, elder0, elder1, elder2
     }
 
-    enum Texture: Int {
-        case idle = 0, run, walk, dead, glide, jump,
-
-             //Elders only (for now 7/9/24) + Magmoor
-             attack,
+    enum Texture: Int, CaseIterable {
+        //IMPORTANT: DO NOT CHANGE THIS ORDER!! 8/29/24
+        case idle = 0, run, walk, dead, glide, jump, attack,
              
              //IMPORTANT: marsh, sand, party MUST come last! They're not part of textures[[]] so their Int.rawValue will throw off the indexing
              marsh, sand, party
@@ -66,28 +64,32 @@ struct Player {
         textures.append([]) //dead
         textures.append([]) //glide
         textures.append([]) //jump
-        textures.append([]) //elderAttack
+        textures.append([]) //attack
 
         //This must come BEFORE setting up the sprite below!!
         switch type {
+            
+        // idle = 0, run, walk, dead, glide, jump, attack,
         case .hero:
-            setupHero(prefix: nil)
+            setupPlayer(framesRange: [1...15, 1...15, 1...15, 1...15, 5...5, 1...12, nil],
+                        framesCommand: [nil, nil, nil, nil, "Run", nil, nil])
+        case .trainer:
+            //Need tyo add
+            break
         case .princess:
-            setupPrincess()
+            setupPlayer(framesRange: [1...16, nil, 1...20, nil, nil, 26...33, nil])
         case .princess2:
-            setupPrincess2()
+            setupPlayer(framesRange: [1...12, 1...8, 1...8, nil, nil, 1...4, 1...8],
+                        framesCommand: [nil, nil, "Run", nil, nil, nil, nil])
         case .villain:
-            setupVillain()
+            setupPlayer(framesRange: [1...12, 1...12, 1...12, 1...12, nil, 1...4, 1...7],
+                        framesCommand: [nil, "Idle", "Idle", nil, nil, nil, nil])
         case .youngTrainer:
-            setupHero(prefix: "YoungMarlin")
+            setupPlayer(framesRange: [1...15, 1...15, 1...15, 1...15, 5...5, nil, nil])
         case .youngVillain:
-            setupYoungVillain()
-        case .elder0:
-            setupElder(rank: 0)
-        case .elder1:
-            setupElder(rank: 1)
-        case .elder2:
-            setupElder(rank: 2)
+            setupPlayer(framesRange: [1...15, nil, 1...15, nil, nil, nil, nil])
+        case .elder0, .elder1, .elder2:
+            setupPlayer(framesRange: [1...12, 1...8, nil, nil, nil, nil, 1...8])
         }
         
         sprite = SKSpriteNode(texture: textures[Texture.idle.rawValue][0])
@@ -96,104 +98,62 @@ struct Player {
         sprite.zPosition = K.ZPosition.player
     }
     
-    private mutating func setupHero(prefix: String?) {
-        let prefixAdjusted = prefix ?? ""
+    private mutating func setupPlayer(framesRange: [ClosedRange<Int>?], framesCommand: [String?]? = nil) {
+        guard framesRange.count == Texture.allCases.count - 3 else { return print("Player.setupPlayer() out of range for: \(self.type)") }
         
-        scaleMultiplier = 1
+        let prefix: String
+        let multiplier: CGFloat
         
-        for i in 1...15 {
-            textures[Texture.idle.rawValue].append(atlas.textureNamed("\(prefixAdjusted)Idle (\(i))"))
-            textures[Texture.run.rawValue].append(atlas.textureNamed("\(prefixAdjusted)Run (\(i))"))
-            textures[Texture.walk.rawValue].append(atlas.textureNamed("\(prefixAdjusted)Walk (\(i))"))
-            textures[Texture.dead.rawValue].append(atlas.textureNamed("\(prefixAdjusted)Dead (\(i))"))
-
-            if i <= 12 {
-                textures[Texture.jump.rawValue].append(atlas.textureNamed("\(prefixAdjusted)Jump (\(i))"))
-            }
-
-            if i == 5 {
-                textures[Texture.glide.rawValue].append(atlas.textureNamed("\(prefixAdjusted)Run (\(i))"))
-            }
-        }
-    }
-    
-    private mutating func setupPrincess() {
-        scaleMultiplier = 0.75
-        
-        for i in 1...16 {
-            textures[Texture.idle.rawValue].append(atlas.textureNamed("PrincessIdle (\(i))"))
-            textures[Texture.walk.rawValue].append(atlas.textureNamed("PrincessWalk (\(i))"))
-        }
-        
-        for i in 17...20 {
-            textures[Texture.walk.rawValue].append(atlas.textureNamed("PrincessWalk (\(i))"))
-        }
-        
-        for i in 26...33 {
-            textures[Texture.jump.rawValue].append(atlas.textureNamed("PrincessJump (\(i))"))
-        }
-    }
-    
-    private mutating func setupPrincess2() {
-        scaleMultiplier = 0.75
-        
-        for i in 1...16 {
-            textures[Texture.idle.rawValue].append(atlas.textureNamed("Princess2Idle (\(i))"))
-            textures[Texture.walk.rawValue].append(atlas.textureNamed("Princess2Idle (\(i))")) // FIXME: - temporary
-        }
-    }
-    
-    private mutating func setupVillain() {
-        scaleMultiplier = 1.5
-        
-        for i in 1...7 {
-            textures[Texture.attack.rawValue].append(atlas.textureNamed("VillainAttack (\(i))"))
+        switch self.type {
+        case .hero:
+            prefix = ""
+            multiplier = 1
+        case .trainer:
+            prefix = "Trainer"
+            multiplier = 1.5
+        case .princess:
+            prefix = "Princess"
+            multiplier = 0.75
+        case .princess2:
+            prefix = "Princess2"
+            multiplier = 0.75
+        case .villain:
+            prefix = "Villain"
+            multiplier = 1.5
+        case .youngTrainer:
+            prefix = "YoungMarlin"
+            multiplier = 1
+        case .youngVillain:
+            prefix = "YoungMagmoor"
+            multiplier = 1
+        case .elder0:
+            prefix = "Elder0"
+            multiplier = 1.5 * 0.9
+        case .elder1:
+            prefix = "Elder1"
+            multiplier = 1.5 * 0.9
+        case .elder2:
+            prefix = "Elder2"
+            multiplier = 1.5 * 0.9
         }
         
-        for i in 1...12 {
-            textures[Texture.idle.rawValue].append(atlas.textureNamed("VillainIdle (\(i))"))
-            textures[Texture.walk.rawValue].append(atlas.textureNamed("VillainIdle (\(i))"))
-            textures[Texture.run.rawValue].append(atlas.textureNamed("VillainIdle (\(i))"))
-        }
-    }
-    
-    // TODO: - young villain setup
-    private mutating func setupYoungVillain() {
-        scaleMultiplier = 1.5
+        self.scaleMultiplier = multiplier
         
-        //Stagger the starting animation frame
-        for i in 8...15 {
-            textures[Texture.idle.rawValue].append(atlas.textureNamed("YoungMagmoorIdle (\(i))"))
-            textures[Texture.run.rawValue].append(atlas.textureNamed("YoungMagmoorRun (\(i))"))
-            textures[Texture.walk.rawValue].append(atlas.textureNamed("YoungMagmoorWalk (\(i))"))
-        }
-        
-        for i in 1...7 {
-            textures[Texture.idle.rawValue].append(atlas.textureNamed("YoungMagmoorIdle (\(i))"))
-            textures[Texture.run.rawValue].append(atlas.textureNamed("YoungMagmoorRun (\(i))"))
-            textures[Texture.walk.rawValue].append(atlas.textureNamed("YoungMagmoorWalk (\(i))"))
-        }
-    }
-    
-    private mutating func setupElder(rank: Int) {
-        func setupElderTextures(indexLast: Int, textureType: Texture.RawValue, elderRank: Int, filenameTextureType: String) {
-            for i in 0...indexLast {
-                let indexLeadingZeroes = String(format: "%03d", i)
-                
-                textures[textureType].append(atlas.textureNamed("Elder\(elderRank)\(filenameTextureType)_\(indexLeadingZeroes)"))
+        func populateTextures(textureIndex: Int, frames: ClosedRange<Int>?, command: String) {
+            if let frames = frames {
+                for i in frames {
+                    textures[textureIndex].append(atlas.textureNamed("\(prefix)\(command) (\(i))"))
+                }
             }
         }
-
-        scaleMultiplier = 1.5 * 0.9
         
-        //Idle frames
-        setupElderTextures(indexLast: 11, textureType: Texture.idle.rawValue, elderRank: rank, filenameTextureType: "Idle")
-        
-        //Attack frames
-        setupElderTextures(indexLast: 7, textureType: Texture.attack.rawValue, elderRank: rank, filenameTextureType: "Attack")
-        
-        //Run frames
-        setupElderTextures(indexLast: 7, textureType: Texture.run.rawValue, elderRank: rank, filenameTextureType: "Run")
+        populateTextures(textureIndex: 0, frames: framesRange[0], command: framesCommand?[0] ?? "Idle")
+        populateTextures(textureIndex: 1, frames: framesRange[1], command: framesCommand?[1] ?? "Run")
+        populateTextures(textureIndex: 2, frames: framesRange[2], command: framesCommand?[2] ?? "Walk")
+        populateTextures(textureIndex: 3, frames: framesRange[3], command: framesCommand?[3] ?? "Dead")
+        populateTextures(textureIndex: 4, frames: framesRange[4], command: framesCommand?[4] ?? "Glide")
+        populateTextures(textureIndex: 5, frames: framesRange[5], command: framesCommand?[5] ?? "Jump")
+        populateTextures(textureIndex: 6, frames: framesRange[6], command: framesCommand?[6] ?? "Attack")
     }
     
     
@@ -251,6 +211,8 @@ struct Player {
                                                                               endPoint: endPoint,
                                                                               step: illusionStep,
                                                                               totalSteps: blinkDivision)
+                illusionSprite.color = .black
+                illusionSprite.colorBlendFactor = 1
                 illusionSprite.zPosition = magmoorNode.zPosition + CGFloat(illusionStep)
                 illusionSprite.name = "escapeVillain\(illusionStep)"
                 
