@@ -1332,6 +1332,22 @@ extension GameScene: ChatEngineDelegate {
         pauseResetEngine.unflashMinorButton(for: button)
     }
     
+    func spawnTrainer(at position: K.GameboardPosition, to direction: Controls) {
+        gameEngine.gameboardSprite.spawnTrainer(at: position, to: direction)
+    }
+    
+    func despawnTrainer(to position: K.GameboardPosition) {
+        gameEngine.gameboardSprite.despawnTrainer(to: position)
+    }
+    
+    func spawnTrainerWithExit(at position: K.GameboardPosition, to direction: Controls) {
+        gameEngine.gameboardSprite.spawnTrainerWithExit(at: position, to: direction)
+    }
+    
+    func despawnTrainerWithExit(moves: [K.GameboardPosition]) {
+        gameEngine.gameboardSprite.despawnTrainerWithExit(moves: moves)
+    }
+    
     func spawnPrincessCapture(at position: K.GameboardPosition, shouldAnimateWarp: Bool, completion: @escaping () -> Void) {
         gameEngine.gameboardSprite.spawnPrincessCapture(at: position, shouldAnimateWarp: shouldAnimateWarp, completion: completion)
     }

@@ -74,7 +74,8 @@ struct Player {
             setupPlayer(framesRange: [1...15, 1...15, 1...15, 1...15, 5...5, 1...12, nil],
                         framesCommand: [nil, nil, nil, nil, "Run", nil, nil])
         case .trainer:
-            setupPlayer(framesRange: [1...6, 1...6, nil, nil, nil, nil, 1...6])
+            setupPlayer(framesRange: [1...6, 1...6, 1...6, nil, nil, nil, 1...6],
+                        framesCommand: [nil, nil, "Run", nil, nil, nil, nil])
         case .princess:
             setupPlayer(framesRange: [1...16, nil, 1...20, nil, nil, 26...33, nil])
         case .princess2:
@@ -97,6 +98,12 @@ struct Player {
         sprite.zPosition = K.ZPosition.player
     }
     
+    /**
+     Sets up the player's textures based on the type. When inputting the arguments, make sure it matches the Texture enum cases, minus the last 3 cases (marsh, sand, party).
+     - parameters:
+        - framesRange: array of closed ranges representing the frames for that texture.
+        - framesCommand: array of command Strings, where, if not nil, will use that string, otherwise, use the "default" string, e.g. "Idle"
+     */
     private mutating func setupPlayer(framesRange: [ClosedRange<Int>?], framesCommand: [String?]? = nil) {
         guard framesRange.count == Texture.allCases.count - 3 else { return print("Player.setupPlayer() out of range for: \(self.type)") }
         
@@ -109,7 +116,7 @@ struct Player {
             multiplier = 1
         case .trainer:
             prefix = "Trainer"
-            multiplier = 1.5
+            multiplier = 1.25
         case .princess:
             prefix = "Princess"
             multiplier = 0.75

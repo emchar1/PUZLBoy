@@ -324,6 +324,146 @@ class GameboardSprite {
     }
     
     
+    // MARK: - Spawn Trainer Functions
+    
+    /**
+     Spawns the trainer at the specified position, and moves him one spot in the direction indicated.
+     - parameters:
+        - position: Initial position to spawn
+        - direction: the direction in which to move when spawning
+     */
+    func spawnTrainer(at position: K.GameboardPosition, to direction: Controls = .right) {
+        let directionToAdd: K.GameboardPosition
+        
+        switch direction {
+        case .left:     directionToAdd = (0, -1)
+        case .right:    directionToAdd = (0, 1)
+        case .up:       directionToAdd = (-1, 0)
+        case .down:     directionToAdd = (1, 0)
+        case .unknown:  directionToAdd = (0, 0)
+        }
+        
+        let directionFacing: CGFloat = (direction == .left || direction == .unknown) ? 1 : -1
+        let startPoint = getLocation(at: position)
+        let endPoint = getLocation(at: (position.row + directionToAdd.row, position.col + directionToAdd.col))
+        let moveDuration: TimeInterval = 0.5
+        
+        let trainer = Player(type: .trainer)
+        let trainerScale = Player.getGameboardScale(panelSize: panelSize) * trainer.scaleMultiplier
+        trainer.sprite.position = startPoint
+        trainer.sprite.setScale(trainerScale)
+        trainer.sprite.xScale *= directionFacing
+        trainer.sprite.alpha = 0
+        trainer.sprite.name = "marlinSprite"
+
+        // FIXME: - I don't like how this is set. If direction is .unknown, place Marlin above MagmoorScary (in Bonus Levels). It looked weird when MagmoorScary was above Marlin. I'll need to remember to only use the .unknown case in Bonus Levels, otherwise Marlin will appear above the blood overlay. 8/31/24
+        trainer.sprite.zPosition = direction == .unknown ? K.ZPosition.chatDialogue + 10 : K.ZPosition.player - 1
+
+        trainer.sprite.run(SKAction.repeatForever(SKAction.animate(with: trainer.textures[Player.Texture.idle.rawValue], timePerFrame: 0.16)))
+        trainer.sprite.run(SKAction.group([
+            SKAction.fadeIn(withDuration: moveDuration),
+            SKAction.move(to: endPoint, duration: moveDuration)
+        ]))
+        
+        sprite.addChild(trainer.sprite)
+    }
+    
+    /**
+     Despawns the trainer at the specified position.
+     - parameter position: final position to despawn
+     */
+    func despawnTrainer(to position: K.GameboardPosition) {
+        guard let trainerSprite = sprite.childNode(withName: "marlinSprite") else { return print("Marlin not found!") }
+        
+        let endPoint = getLocation(at: position)
+        let moveDuration: TimeInterval = 0.5
+        
+        trainerSprite.run(SKAction.sequence([
+            SKAction.group([
+                SKAction.move(to: endPoint, duration: moveDuration),
+                SKAction.fadeOut(withDuration: moveDuration),
+            ]),
+            SKAction.removeFromParent()
+        ]))
+    }
+    
+    /**
+     Spawns the trainer at the specified position, and moves him one spot in the direction indicated. Also opens the end panel temporarily for a hasty escape!
+     - parameters:
+        - position: Initial position to spawn
+        - direction: the direction in which to move when spawning
+     */
+    func spawnTrainerWithExit(at position: K.GameboardPosition, to direction: Controls) {
+        guard let endPanel = endPanel else {
+            print("Unable to execute GameboardSprite.spawnTrainerWithExit(); there's no endPanel!")
+            return
+        }
+        
+        let overlayPanel = SKSpriteNode(imageNamed: LevelType.endOpen.description + AgeOfRuin.ruinSuffix)
+        overlayPanel.scale(to: scaleSize)
+        overlayPanel.position = getSpritePosition(at: endPanel) + GameboardSprite.padding / 2
+        overlayPanel.anchorPoint = .zero
+        overlayPanel.zPosition = K.ZPosition.overlay
+        overlayPanel.name = "captureEndOpen"
+        sprite.addChild(overlayPanel)
+        
+        spawnTrainer(at: position, to: direction)
+    }
+    
+    /**
+     Despawns the trainer with a specified move set. The first move in the moves array should be the initial position, i.e. where trainer originally spawned.
+     - parameter moves: an array of moves/path for trainer to follow, with the initial element being the initial spawn spot.
+     */
+    func despawnTrainerWithExit(moves: [K.GameboardPosition]) {
+        guard let trainerSprite = sprite.childNode(withName: "marlinSprite") else { return print("Marlin not found!") } //NO
+        
+        var remainingMoves = moves
+        let firstMove = remainingMoves.removeFirst()
+        let trainer = Player(type: .trainer)
+
+        func trainerMoveActions(positions: [K.GameboardPosition]) -> (actions: [SKAction], waitDuration: TimeInterval) {
+            let moveDuration: TimeInterval = 0.4
+            var waitDuration: TimeInterval = 0
+            var lastPosition: K.GameboardPosition = firstMove
+            var actions: [SKAction] = []
+
+            for nextPosition in positions {
+                let moveAction = SKAction.group([
+                    SKAction.move(to: getLocation(at: nextPosition), duration: moveDuration),
+                    SKAction.scaleX(to: (lastPosition.col > nextPosition.col ? 1 : -1) * trainerSprite.xScale, duration: 0.0)
+                ])
+                
+                lastPosition = nextPosition
+                waitDuration += moveDuration
+                
+                actions.append(moveAction)
+            }
+            
+            return (actions, waitDuration)
+        }
+        
+        let trainerMoves = trainerMoveActions(positions: remainingMoves)
+        
+        trainerSprite.run(SKAction.repeatForever(SKAction.animate(with: trainer.textures[Player.Texture.walk.rawValue], timePerFrame: 0.12)))
+        trainerSprite.run(SKAction.sequence([
+            SKAction.sequence(trainerMoves.actions),
+            SKAction.group([
+                SKAction.scale(to: 0, duration: 0.5),
+                SKAction.fadeOut(withDuration: 0.5)
+            ])
+        ]))
+        
+        if let endOpen = sprite.childNode(withName: "captureEndOpen") {
+            endOpen.run(SKAction.sequence([
+                SKAction.wait(forDuration: trainerMoves.waitDuration + 0.5),
+                SKAction.removeFromParent()
+            ])) {
+                AudioManager.shared.playSound(for: "dooropen")
+            }
+        }
+    }
+    
+    
     // MARK: - Spawn Princess Functions
     
     ///Spawns a short animation of the whereabouts of the princess being captured by the villain.
@@ -470,17 +610,15 @@ class GameboardSprite {
             ]), completion: completion)
             
             sprite.run(SKAction.sequence([
-                SKAction.wait(forDuration: 3),
-                SKAction.run {
-                    AudioManager.shared.playSound(for: "winlevelageofruin")
-                    
-                    ParticleEngine.shared.animateParticles(type: .gemSparkle,
-                                                           toNode: node,
-                                                           position: .zero,
-                                                           scale: UIDevice.spriteScale * 3,
-                                                           duration: 2)
-                }
-            ]))
+                SKAction.wait(forDuration: 3)
+            ])) {
+                AudioManager.shared.playSound(for: "winlevelageofruin")
+                ParticleEngine.shared.animateParticles(type: .gemSparkle,
+                                                       toNode: node,
+                                                       position: .zero,
+                                                       scale: UIDevice.spriteScale * 3,
+                                                       duration: 2)
+            }
 
             return
         }
@@ -594,17 +732,15 @@ class GameboardSprite {
             else if node.name == "captureEndOpen" {
                 node.run(SKAction.sequence([
                     SKAction.wait(forDuration: 5.5 * actionDuration),
-                    SKAction.removeFromParent(),
-                    SKAction.run {
-                        AudioManager.shared.playSound(for: "dooropen")
-                        AudioManager.shared.stopSound(for: "magicheartbeatloop2", fadeDuration: 5)
-                        AudioManager.shared.stopSound(for: "littlegirllaugh", fadeDuration: 5)
-                        AudioManager.shared.stopSound(for: "scarymusicbox", fadeDuration: 5)
-                    }
+                    SKAction.removeFromParent()
                 ])) { [unowned self] in
                     //Final completion handler...
                     ParticleEngine.shared.removeParticles(fromNode: sprite)
-                    
+                    AudioManager.shared.playSound(for: "dooropen")
+                    AudioManager.shared.stopSound(for: "magicheartbeatloop2", fadeDuration: 5)
+                    AudioManager.shared.stopSound(for: "littlegirllaugh", fadeDuration: 5)
+                    AudioManager.shared.stopSound(for: "scarymusicbox", fadeDuration: 5)
+
                     completion()
                 }
             }
