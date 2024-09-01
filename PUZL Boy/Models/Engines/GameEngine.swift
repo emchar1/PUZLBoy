@@ -1047,15 +1047,7 @@ class GameEngine {
             
             let tikistatue: K.GameboardPanelSprite = gameboardSprite.getPanel(at: position)
             let shakeDuration: TimeInterval = 0.06
-            let tikiAction = SKAction.sequence([
-                SKAction.repeat(SKAction.sequence([
-                    SKAction.rotate(toAngle: .pi / 12, duration: shakeDuration),
-                    SKAction.rotate(toAngle: -.pi / 12, duration: shakeDuration),
-                ]), count: 10),
-                SKAction.rotate(toAngle: 0, duration: shakeDuration)
-            ])
             
-//            tikistatue.overlay?.run(tikiAction)
             tikistatue.overlay?.animateStatue5(newTexture: SKTexture(imageNamed: "statue5b"))
             
             delegate?.didTouchStatue()

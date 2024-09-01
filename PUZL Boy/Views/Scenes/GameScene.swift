@@ -47,7 +47,7 @@ class GameScene: SKScene {
     private var lastCurrentLevel: Int?
 
     private var currentLevel: Int = 1 {
-        // FIXME: - Debugging purposes only!!!
+        // FIXME: - DEBUG: Debugging purposes only!!!
         didSet {
             guard !Level.isPartyLevel(currentLevel) else { return }
             
@@ -104,7 +104,7 @@ class GameScene: SKScene {
         levelSkipEngine = LevelSkipEngine()
         tapPointerEngine = TapPointerEngine()
 
-        // FIXME: - Uncomment to test/debug.
+        // FIXME: - DEBUG: Uncomment to test/debug.
         offlinePlaySprite = (hasInternet && FIRManager.user != nil) ? nil : OfflinePlaySprite()
         
         super.init(size: size)

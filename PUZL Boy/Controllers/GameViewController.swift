@@ -47,11 +47,11 @@ class GameViewController: UIViewController {
         
         
         
-        // FIXME: - DEFINITELY COMMENT THESE OUT BEFORE SHIPPING FINAL PRODUCT!!!
+        // FIXME: - DEBUG: DEFINITELY COMMENT THESE OUT BEFORE SHIPPING FINAL PRODUCT!!!
         skView.showsFPS = true
         skView.showsNodeCount = true
         
-//        // FIXME: - Go straight to Cutscene. DELETE BEFORE SHIPPING!
+//        // FIXME: - DEBUG: Go straight to Cutscene. DELETE BEFORE SHIPPING!
 //        let cutsceneTest = CutsceneFlashback()
 //        cutsceneTest.animateScene(completion: nil)
 //        skView.ignoresSiblingOrder = true

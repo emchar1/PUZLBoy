@@ -140,7 +140,7 @@ class HintEngine {
     func move(toNode parentNode: SKNode) {
         guard let uid = FIRManager.uid, uid == FIRManager.userEddie else { return }
 
-        // FIXME: - Uncomment the below to enable hints debugging.
+        // FIXME: - DEBUG: Uncomment the below to enable hints debugging.
         parentNode.addChild(sprite)
     }
     

@@ -37,11 +37,11 @@ class AdMobManager: NSObject {
 //    static let puzlBoyAppID = "ca-app-pub-3047242308312153~8487486800" //AdMob account for emchar1@gmail.com - DOESN'T WORK ANYMORE!
     static let puzlBoyAppID = "ca-app-pub-9970112736079022~3898881122" //AdMob account for eddie@5playapps.com - USE THIS ONE!!!!!
     
-    // FIXME: - IMPORTANT!!!!! USE THESE WHEN SHIPPING APP!!!
+    // FIXME: - DEBUG: IMPORTANT!!!!! USE THESE WHEN SHIPPING APP!!!
 //    static let interstitialID = "ca-app-pub-9970112736079022/6969280486"
 //    static let rewardedID = "ca-app-pub-9970112736079022/9450590704"
 
-    // FIXME: - ...AND DELETE THESE TEST ONES!!!
+    // FIXME: - DEBUG: ...AND DELETE THESE TEST ONES!!!
     static let interstitialID = "ca-app-pub-3940256099942544/5135589807"
     static let rewardedID = "ca-app-pub-3940256099942544/1712485313"
 
