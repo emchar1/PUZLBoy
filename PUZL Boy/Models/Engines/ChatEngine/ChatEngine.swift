@@ -693,8 +693,8 @@ extension ChatEngine {
         //Lv 319 - Ingrid the Introducer
         dialogueStatue0 = StatueDialogue(dialogue: [
             //0: 7
-            ChatItem(profile: .hero, imgPos: .left, chat: "What the heck is this??"),
-            ChatItem(profile: .statue0, chat: "🎵 Hello! We are ancient relics of the forest known as \"Tikis.\" Think of us as friendly guides to help you on your way."),
+            ChatItem(profile: .hero, imgPos: .left, chat: "What the heck is this.....?"),
+            ChatItem(profile: .statue0, chat: "🎵 ALOHA! We are ancient relics of the forest known as \"Tikis.\" Think of us as friendly guides to help you on your way."),
             ChatItem(profile: .hero, imgPos: .left, chat: "It talks!"),
             ChatItem(profile: .statue0, chat: "Some of us may ask you an important question that can alter the course of your journey, so make sure you answer carefully and truthfully."),
             ChatItem(profile: .hero, imgPos: .left, chat: "There's more of you??"),
@@ -1152,7 +1152,7 @@ extension ChatEngine {
                     delegate?.illuminatePanel(at: (2, 1), useOverlay: true)
                 },
                 ChatItem(profile: .trainer, chat: "Not to worry! See that hammer over there? Use it to break through."),
-                ChatItem(profile: .hero, imgPos: .left, chat: "Yeah I put 2+2 together."),
+                ChatItem(profile: .hero, imgPos: .left, chat: "Yeah I put 2 and 2 together."),
                 ChatItem(profile: .trainer, chat: "Well. Not everyone is as bright as you, PUZL Boy."),
                 ChatItem(profile: .trainer, chat: "Collect hammers as you go. They'll break after one use so be mindful of that.") { [unowned self] in
                     delegate?.illuminateDisplayNode(for: .hammers)
@@ -1232,10 +1232,11 @@ extension ChatEngine {
             delegate?.illuminatePanel(at: (1, 2), useOverlay: true)
             
             sendChatArray(items: [
-                ChatItem(profile: .trainer, chat: "Ice, ice, baby! Step on this and you'll slide until you hit an obstacle."),
+                ChatItem(profile: .trainer, chat: "You'll encounter frozen ground from time to time. Step on this and you'll slide until you hit an obstacle."),
+                ChatItem(profile: .hero, imgPos: .left, chat: "Ice, ice, baby!"),
                 ChatItem(profile: .trainer, chat: "The nice thing though is that it'll only cost you 1 move as long as you're sliding continuously."),
                 ChatItem(profile: .hero, imgPos: .left, chat: "The cold never bothered me anyway."),
-                ChatItem(profile: .trainer, chat: "Let it go, dude.") { [unowned self] in
+                ChatItem(profile: .trainer, chat: "I don't know what that is in reference to so just... let it go!") { [unowned self] in
                     delegate?.deilluminatePanel(at: (0, 1), useOverlay: false)
                     delegate?.deilluminatePanel(at: (0, 2), useOverlay: false)
                     delegate?.deilluminatePanel(at: (1, 2), useOverlay: false)
@@ -1550,15 +1551,15 @@ extension ChatEngine {
                 ChatItem(profile: .hero, imgPos: .left, chat: "I'll distract him with this sword. Then when he's not looking, you blast him with magic."),
                 ChatItem(profile: .trainer, chat: "I'm leaving."),
                 ChatItem(profile: .hero, imgPos: .left, chat: "THEN while he's stunned, I'll use said sword to deliver the final blow and—"),
-                ChatItem(profile: .hero, imgPos: .left, chat: ".....wait, what do you mean you're leaving?! Where are we going??") {
-                    AudioManager.shared.lowerVolume(for: AudioManager.shared.currentTheme.overworld, fadeDuration: musicFadeDuration)
-                },
+                ChatItem(profile: .hero, imgPos: .left, chat: ".....wait, what do you mean you're leaving?! Where are we going??"),
                 ChatItem(profile: .trainer, chat: "He agreed to set the princess free. In return, I am going to merge with him."),
                 ChatItem(profile: .hero, imgPos: .left, chat: "Ok but can we please stop calling it that?"),
                 ChatItem(profile: .trainer, chat: "Merging of powers is completely natural for our kind. We do it everywhere. All the time. At home, in public. We do it without shame or regret. So, no."),
                 ChatItem(profile: .hero, imgPos: .left, chat: "Why should we trust him?!! He's obviously the bad guy!!!"),
                 ChatItem(profile: .trainer, chat: "With the princess free, we stand a better chance at defeating Magmoor once and for all."),
-                ChatItem(profile: .trainer, chat: "Just keep solving puzzles like you're doing and you will be just fine."),
+                ChatItem(profile: .trainer, chat: "Just keep solving puzzles like you're doing and you will be just fine.") {
+                    AudioManager.shared.lowerVolume(for: AudioManager.shared.currentTheme.overworld, fadeDuration: musicFadeDuration)
+                },
                 ChatItem(profile: .hero, imgPos: .left, chat: "But, but... I can't do this without you!! 🥺"),
                 ChatItem(profile: .trainer, chat: "Trust your instincts, PUZL Boy. I have equipped you with all the knowledge you need to succeed."),
                 ChatItem(profile: .trainer, chat: "Goodbye. For now...") { [unowned self] in
@@ -1590,7 +1591,7 @@ extension ChatEngine {
             }
             else {
                 sendChatArray(items: [
-                    ChatItem(profile: .hero, imgPos: .left, chat: "Whoa. They havin' a party down here??")
+                    ChatItem(profile: .hero, imgPos: .left, chat: "They having a party down here??")
                 ]) { [unowned self] in
                     handleDialogueCompletion(level: level, completion: completion)
                 }
