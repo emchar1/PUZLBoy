@@ -1359,8 +1359,7 @@ extension ChatEngine {
                     AudioManager.shared.stopSound(for: "littlegirllaugh", fadeDuration: 5)
                 },
                 ChatItem(profile: .hero, imgPos: .left, chat: "Wh—what the... who's there?!! You heard that too, right??"),
-                ChatItem(profile: .trainer, chat: "Oh sweet child! Don't worry, we're coming to get you!!"),
-                ChatItem(profile: .trainer, chat: "Wait..... They're gone. Never mind. Let's go!")
+                ChatItem(profile: .trainer, chat: "Oh sweet child! Do not worry, we're coming to get you!!")
             ]) { [unowned self] in
                 handleDialogueCompletion(level: level, completion: completion)
             }
@@ -1397,15 +1396,13 @@ extension ChatEngine {
                 ChatItem(profile: .trainer, chat: "PUZL Boy, I—"),
                 ChatItem(profile: .hero, imgPos: .left, chat: "As I was saying, I used to have regular milk with my cereal, then I discovered oat milk and dude, it slaps!"),
                 ChatItem(profile: .trainer, chat: "We need to get to the princess and send her back to Vaeloria right away. Time is of the essence."),
-                ChatItem(profile: .hero, imgPos: .left, chat: "Yeah, we're headed there. Why the rush all of a sudden?"),
-                ChatItem(profile: .trainer, chat: "That man... I know him."),
-                ChatItem(profile: .hero, imgPos: .left, chat: "Ok. So let's go find him, beat him up, and get our princess back."),
+                ChatItem(profile: .hero, imgPos: .left, chat: "Ok, so let's find this \"man of mystery,\" beat him up, and get our princess back!"),
                 ChatItem(profile: .trainer, chat: "Oh, sweet summer child. If it were only that simple. Keep your head down and follow closely. You have no idea what we're up against."),
                 ChatItem(profile: .hero, imgPos: .left, chat: "\"Sweet summer child??\"") { [unowned self] in
                     delegate?.illuminatePanel(at: (0, 4), useOverlay: true)
                     delegate?.illuminatePanel(at: (3, 2), useOverlay: true)
                 },
-                ChatItem(profile: .trainer, chat: "And one more thing... you'll notice there are green colored warps on the board. Stepping on a green warp will transport you to the other one.") { [unowned self] in
+                ChatItem(profile: .trainer, chat: "And one more thing... you'll notice there are green colored warps on the field. Stepping on a green warp will transport you to the other one.") { [unowned self] in
                     delegate?.deilluminatePanel(at: (0, 4), useOverlay: true)
                     delegate?.deilluminatePanel(at: (3, 2), useOverlay: true)
                 },
@@ -1479,8 +1476,10 @@ extension ChatEngine {
                 
                 sendChatArray(items: [
                     ChatItem(profile: .hero, imgPos: .left, chat: "They couldn't have gone far. Let's find this dude and kick him where the sun don't shine!"),
-                    ChatItem(profile: .trainer, chat: "It's not going to be that simple, PUZL Boy. Magmoor grows powerful by the minute. The Elders could not keep him contained."),
-                    ChatItem(profile: .hero, imgPos: .left, chat: "The Elders...?")
+                    ChatItem(profile: .trainer, chat: "It's not going to be that simple, PUZL Boy. Magmoor grows powerful by the minute."),
+                    ChatItem(profile: .hero, imgPos: .left, chat: "Why didn't you tell me you knew this creeper?"),
+                    ChatItem(profile: .trainer, chat: "Some things are better left unsaid.. Apparently, even the Elders could not keep him contained."),
+                    ChatItem(profile: .hero, imgPos: .left, chat: "The Elders??")
                 ]) { [unowned self] in
                     handleDialogueCompletion(level: level, cutscene: cutscene, completion: completion)
                 }

@@ -519,7 +519,7 @@ class CutsceneMagmoor: Cutscene {
             SKAction.scale(to: 0, duration: 0.25)
         ]))
         
-        showBloodSky(bloodOverlayAlpha: 0.25, fadeDuration: holdPause, delay: warpPause)
+        showBloodSky(fadeDuration: holdPause, delay: warpPause)
         
         
         //Magmoor
