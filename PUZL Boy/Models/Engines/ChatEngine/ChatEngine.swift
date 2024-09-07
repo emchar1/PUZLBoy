@@ -28,6 +28,10 @@ protocol ChatEngineDelegate: AnyObject {
     func flashPrincess(at position: K.GameboardPosition, completion: @escaping () -> Void)
     func inbetweenRealmEnter(levelInt: Int, moves: [K.GameboardPosition])
     func inbetweenRealmExit(completion: @escaping () -> Void)
+    
+    //Tiki
+    func spawnMagmoorMinion(at position: K.GameboardPosition, chatDelay: TimeInterval)
+    func despawnMagmoorMinion(at position: K.GameboardPosition)
 }
 
 class ChatEngine {
@@ -258,7 +262,7 @@ class ChatEngine {
     }
     
     static func isTikiLevel(level: Int) -> Bool {
-        return level == 319 || level == 339 || level == 351 || level == 376 || level == 401 || level == 451
+        return level == 319 || level == 339 || level == 351 || level == 376 || level == 401
     }
 
     private func fastForward() {
@@ -402,7 +406,8 @@ class ChatEngine {
                 items[currentIndex].handler?()
 
                 //Recursion!! Also the [unowned self] prevents a retain cycle here...
-                sendChatArray(items: items, currentIndex: currentIndex + 1, completion: completion)
+                //Added shouldSkipDim argument here to propagate it through, recursively. It wasn't added before 9/5/24
+                sendChatArray(shouldSkipDim: shouldSkipDim, items: items, currentIndex: currentIndex + 1, completion: completion)
             }
         }
     }
@@ -873,13 +878,6 @@ extension ChatEngine {
             //4: 1
             ChatItem(profile: .statue4, chat: "We're not people, silly boy. We're Tikis!")
         ], indices: [4, 2, 1, 3, 1], shouldSkipFirstQuestion: false, shouldRepeatLastDialogueOnEnd: false)
-        
-        
-        //Lv 451 - Daemon the Destroyer
-        dialogueStatue5 = StatueDialogue(dialogue: [
-            //0: 1
-            ChatItem(profile: .statue5, chat: "Welcome to your doom!")
-        ], indices: [1], shouldSkipFirstQuestion: false, shouldRepeatLastDialogueOnEnd: false)
     }
     
     /**
@@ -1735,19 +1733,41 @@ extension ChatEngine {
             }
         // TODO: - 3 Elders's arrival and defeat of Magmoor's minion
         case 451:
-            if statueTapped {
-                sendChatArray(shouldSkipDim: true, items: dialogueStatue5.getDialogue()) { [unowned self] in
-                    handleDialogueCompletion(level: level, completion: completion)
-                }
+            let spawnPoint: K.GameboardPosition = (3, 3)
+            let chatDelay: TimeInterval = 13
+            
+            AudioManager.shared.lowerVolume(for: AudioManager.mainThemes.overworld, fadeDuration: 8)
+            hideFFButton()
+            delegate?.spawnMagmoorMinion(at: spawnPoint, chatDelay: chatDelay)
+
+            sendChatArray(shouldSkipDim: true, items: [
+                ChatItem(profile: .statue5, endChat: true, chat: "Welcome to your doom!") { [unowned self] in
+                    let gameScene = superScene as? GameScene
+                    gameScene?.shakeScreen(duration: 9, shouldPlaySFX: false, completion: nil)
+
+                    showFFButton()
+                },
+                ChatItem(profile: .hero, imgPos: .left, pause: chatDelay, startNewChat: true, chat: "No, stay away!!! AAAAHHHHH!!!!!!", handler: nil),
+                ChatItem(profile: .hero, imgPos: .left, chat: "What are you?!?! What do you want from me?! I don't know anything!! Marlin, HEEEEEEELP!!!!!!")
+                { [unowned self] in
+                    superScene?.addChild(marlinBlast)
+                    marlinBlast.animateBlast(playSound: true)
+                    
+                    chatSpeed = chatSpeedImmediate
+                    hideFFButton()
+                },
+                ChatItem(profile: .melchior, chat: "⚡️STOP THIS AT ONCE, MAGMOOR!!!⚡️") { [unowned self] in
+                    chatSpeed = chatSpeedOrig
+                    showFFButton()
+                    delegate?.despawnMagmoorMinion(at: spawnPoint)
+                },
+                ChatItem(profile: .hero, imgPos: .left, chat: "Zaddy!!")
+            ]) { [unowned self] in
+                AudioManager.shared.raiseVolume(for: AudioManager.mainThemes.overworld, fadeDuration: 2)
+                marlinBlast.removeFromParent()
+                handleDialogueCompletion(level: level, completion: completion)
             }
-            else {
-                sendChatArray(items: [
-                    ChatItem(profile: .melchior, imgPos: .left, chat: "MELCHIOR: ⚡️MAGMOOR! STOP THIS AT ONCE!!⚡️"),
-                    ChatItem(profile: .hero, imgPos: .left, chat: "No stay away!!! AAAAHHHHH!!")
-                ]) { [unowned self] in
-                    handleDialogueCompletion(level: level, completion: completion)
-                }
-            }
+
         default:
             isChatting = false
             completion?(nil)

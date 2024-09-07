@@ -1376,5 +1376,13 @@ extension GameScene: ChatEngineDelegate {
         }
     }
     
+    func spawnMagmoorMinion(at position: K.GameboardPosition, chatDelay: TimeInterval) {
+        gameEngine.gameboardSprite.spawnMagmoorMinion(at: position)
+        gameEngine.magmoorSpawnEnter(to: self, delay: chatDelay)
+    }
     
+    func despawnMagmoorMinion(at position: K.GameboardPosition) {
+        gameEngine.gameboardSprite.despawnMagmoorMinion(at: position)
+        gameEngine.magmoorSpawnExit()
+    }
 }

@@ -1220,7 +1220,7 @@ class CutsceneMagmoor: Cutscene {
         let moveDuration: TimeInterval = 0.25
         let animationTimePerFrame = 0.12 - TimeInterval.random(in: 0...0.06)
 
-        let duplicate = Player(type: .villain)
+        let duplicate = Player(type: .minion)
         duplicate.sprite.position = startPoint
         duplicate.sprite.setScale(initialScale)
         duplicate.sprite.xScale *= -1
@@ -1254,12 +1254,6 @@ class CutsceneMagmoor: Cutscene {
                 SKAction.scaleY(to: finalScale, duration: moveDuration)
             ])
         ]))
-        
-        ParticleEngine.shared.animateParticles(type: .magmoorSmoke,
-                                               toNode: duplicate.sprite,
-                                               position: .zero,
-                                               zPosition: 1,
-                                               duration: 0)
 
         backgroundNode.addChild(duplicate.sprite)
         

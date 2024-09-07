@@ -196,9 +196,10 @@ class AudioManager {
         
         //Looped SFX
         addAudioItem("clocktick", category: .soundFXLoop)
-        addAudioItem("magicdoomloop", category: .soundFXLoop)
         addAudioItem("littlegirllaugh", category: .soundFXLoop)
-        
+        addAudioItem("magicdoomloop", category: .soundFXLoop)
+        addAudioItem("magmoorcreepystrings", category: .soundFXLoop) //$3
+
         
         //No Loop music
         addAudioItem("ageofruin", category: .musicNoLoop)
@@ -215,6 +216,7 @@ class AudioManager {
         addAudioItem("continueloop", category: .music)
         addAudioItem("magicheartbeatloop1", category: .music)
         addAudioItem("magicheartbeatloop2", category: .music)
+        addAudioItem("magmoorcreepypulse", category: .music) //$3
         addAudioItem("overworld", category: .music)
         addAudioItem("overworldageofruin", category: .music)
         addAudioItem("overworldgrassland", category: .music)

@@ -22,7 +22,7 @@ struct Player {
     private var atlas: SKTextureAtlas
     
     enum PlayerType: String, CaseIterable {
-        case hero = "hero", trainer, princess, princess2, villain, youngTrainer, youngVillain, elder0, elder1, elder2
+        case hero = "hero", trainer, princess, princess2, villain, minion, youngTrainer, youngVillain, elder0, elder1, elder2
     }
 
     enum Texture: Int, CaseIterable {
@@ -84,8 +84,12 @@ struct Player {
         case .villain:
             setupPlayer(framesRange: [1...12, 1...12, 1...12, 1...12, nil, 1...4, 1...7],
                         framesCommand: [nil, "Idle", "Idle", nil, nil, nil, nil])
+        case .minion:
+            setupPlayer(framesRange: [1...12, 1...12, 1...12, nil, nil, nil, 1...7],
+                        framesCommand: [nil, "Idle", "Idle", nil, nil, nil, nil])
         case .youngTrainer:
-            setupPlayer(framesRange: [1...15, 1...15, 1...15, 1...15, 5...5, nil, nil])
+            setupPlayer(framesRange: [1...15, 1...15, 1...15, 1...15, 5...5, nil, nil],
+                        framesCommand: [nil, nil, nil, nil, "Run", nil, nil])
         case .youngVillain:
             setupPlayer(framesRange: [1...15, nil, 1...15, nil, nil, nil, nil])
         case .elder0, .elder1, .elder2:
@@ -126,6 +130,9 @@ struct Player {
         case .villain:
             prefix = "Villain"
             multiplier = 1.5
+        case .minion:
+            prefix = "Minion"
+            multiplier = 1.25
         case .youngTrainer:
             prefix = "YoungMarlin"
             multiplier = 1
@@ -134,13 +141,13 @@ struct Player {
             multiplier = 1
         case .elder0:
             prefix = "Elder0"
-            multiplier = 1.5 * 0.9
+            multiplier = 1.35
         case .elder1:
             prefix = "Elder1"
-            multiplier = 1.5 * 0.9
+            multiplier = 1.35
         case .elder2:
             prefix = "Elder2"
-            multiplier = 1.5 * 0.9
+            multiplier = 1.35
         }
         
         self.scaleMultiplier = multiplier

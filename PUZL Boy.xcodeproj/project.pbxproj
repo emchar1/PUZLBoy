@@ -235,6 +235,9 @@
 		EA9F4DDD29D2B766006F4B2F /* buttontap2.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA9F4DDC29D2B766006F4B2F /* buttontap2.mp3 */; };
 		EA9F4DE229D36F02006F4B2F /* movepoisoned3.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA9F4DDF29D36F01006F4B2F /* movepoisoned3.mp3 */; };
 		EA9F4DE729D37206006F4B2F /* movepoisoned2.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA9F4DE629D37206006F4B2F /* movepoisoned2.mp3 */; };
+		EAA3BD5C2C8A0E5400EDE298 /* MagmoorCreepyMinion.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAA3BD5B2C8A0E5400EDE298 /* MagmoorCreepyMinion.swift */; };
+		EAA3BD5E2C8B9CA400EDE298 /* magmoorcreepystrings.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAA3BD5D2C8B9CA400EDE298 /* magmoorcreepystrings.mp3 */; };
+		EAA3BD602C8B9CC300EDE298 /* magmoorcreepypulse.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAA3BD5F2C8B9CC300EDE298 /* magmoorcreepypulse.mp3 */; };
 		EAA921D82C011362009E99E7 /* AuthorizationRequestScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAA921D72C011361009E99E7 /* AuthorizationRequestScene.swift */; };
 		EAA921DA2C014C83009E99E7 /* AuthorizationSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAA921D92C014C83009E99E7 /* AuthorizationSprite.swift */; };
 		EAACB4A7296F80E700973EB8 /* AchievementAvidReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAACB4A6296F80E700973EB8 /* AchievementAvidReader.swift */; };
@@ -567,6 +570,9 @@
 		EA9F4DDC29D2B766006F4B2F /* buttontap2.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = buttontap2.mp3; sourceTree = "<group>"; };
 		EA9F4DDF29D36F01006F4B2F /* movepoisoned3.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = movepoisoned3.mp3; sourceTree = "<group>"; };
 		EA9F4DE629D37206006F4B2F /* movepoisoned2.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = movepoisoned2.mp3; sourceTree = "<group>"; };
+		EAA3BD5B2C8A0E5400EDE298 /* MagmoorCreepyMinion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MagmoorCreepyMinion.swift; sourceTree = "<group>"; };
+		EAA3BD5D2C8B9CA400EDE298 /* magmoorcreepystrings.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = magmoorcreepystrings.mp3; sourceTree = "<group>"; };
+		EAA3BD5F2C8B9CC300EDE298 /* magmoorcreepypulse.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = magmoorcreepypulse.mp3; sourceTree = "<group>"; };
 		EAA921D72C011361009E99E7 /* AuthorizationRequestScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorizationRequestScene.swift; sourceTree = "<group>"; };
 		EAA921D92C014C83009E99E7 /* AuthorizationSprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorizationSprite.swift; sourceTree = "<group>"; };
 		EAACB4A6296F80E700973EB8 /* AchievementAvidReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementAvidReader.swift; sourceTree = "<group>"; };
@@ -910,6 +916,7 @@
 				EAEF2ECD2B4DCD4800AD8459 /* LetterboxSprite.swift */,
 				EA7300142B5F74B4005BF98D /* MarlinBlastSprite.swift */,
 				EA73001A2B604A13005BF98D /* MagmoorScarySprite.swift */,
+				EAA3BD5B2C8A0E5400EDE298 /* MagmoorCreepyMinion.swift */,
 			);
 			path = New;
 			sourceTree = "<group>";
@@ -1029,6 +1036,8 @@
 				EAE43D962C48A93E00E6DB3C /* magicteleport2.mp3 */,
 				EAAECFDE2B698E6B0011D5C5 /* magicwarp.mp3 */,
 				EAE43D942C48A79500E6DB3C /* magicwarp2.mp3 */,
+				EAA3BD5F2C8B9CC300EDE298 /* magmoorcreepypulse.mp3 */,
+				EAA3BD5D2C8B9CA400EDE298 /* magmoorcreepystrings.mp3 */,
 				EA8C605C2C068E0700DED3C7 /* marlinblast.mp3 */,
 				EA95D18829459BC80061059C /* moveglide.mp3 */,
 				EA4D025E29B7E33600F0C7B1 /* movemarsh1.mp3 */,
@@ -1420,6 +1429,7 @@
 				EA4583552A4431B000279056 /* partyslow.mp3 in Resources */,
 				EA95B3092A8C9DA300C5F028 /* speechbubble.mp3 in Resources */,
 				EA01BB5F2A10746800EAB70B /* buttontap6.mp3 in Resources */,
+				EAA3BD602C8B9CC300EDE298 /* magmoorcreepypulse.mp3 in Resources */,
 				EA7300112B5E00E1005BF98D /* MagicLightParticles.sks in Resources */,
 				EAE6EC342A12D27F001842C6 /* buttontap7.mp3 in Resources */,
 				EA3467AD29A8C7C7002DDA02 /* continueloop.mp3 in Resources */,
@@ -1527,6 +1537,7 @@
 				EABE795B2ACBB28C00689C55 /* boypain2.mp3 in Resources */,
 				EAE43D9B2C48AA2100E6DB3C /* forcefield2.mp3 in Resources */,
 				EAE9194D2A4CB08C00AF67D1 /* boywin.mp3 in Resources */,
+				EAA3BD5E2C8B9CA400EDE298 /* magmoorcreepystrings.mp3 in Resources */,
 				EABE795C2ACBB28C00689C55 /* boypain1.mp3 in Resources */,
 				EA8C60702C068E0800DED3C7 /* enemyroar.mp3 in Resources */,
 				EA0F14712929D9C00013038E /* moverun2.mp3 in Resources */,
@@ -1668,6 +1679,7 @@
 				EA57DEA92B983C5400CE3E2A /* ChatDecisionSprite.swift in Sources */,
 				EA826C9A29950D0C00F19F81 /* NumMovesSprite.swift in Sources */,
 				EAE565AA29D6E0C700BC43CB /* TitleScene.swift in Sources */,
+				EAA3BD5C2C8A0E5400EDE298 /* MagmoorCreepyMinion.swift in Sources */,
 				EA826C93298F60C000F19F81 /* AchievementFatCat.swift in Sources */,
 				EA346791299B535F002DDA02 /* LevelStats.swift in Sources */,
 				EA999F6E2A59148800B422B2 /* SettingsTapButton.swift in Sources */,

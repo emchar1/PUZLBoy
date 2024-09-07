@@ -84,7 +84,7 @@ struct StatueDialogue {
     // MARK: - Functions
     
     /**
-     This just loops through the conversation in and endless loop, returning the dialogue in the queuefor processing.
+     This just loops through the conversation in and endless loop, returning the dialogue in the queue for processing.
      - returns: dialogue in the queue to be processed
      */
     mutating func getDialogue() -> [ChatItem] {

@@ -207,7 +207,7 @@ class GameboardSprite {
                 overlayPanel = SKSpriteNode(imageNamed: "enemyIce" + AgeOfRuin.ruinSuffix)
             }
             else {
-                let overlayIsStatue = tile.overlay == .statue0 || tile.overlay == .statue1 || tile.overlay == .statue2 || tile.overlay == .statue3 || tile.overlay == .statue4 || tile.overlay == .statue5
+                let overlayIsStatue = tile.overlay == .statue0 || tile.overlay == .statue1 || tile.overlay == .statue2 || tile.overlay == .statue3 || tile.overlay == .statue4
                 
                 overlayPanel = SKSpriteNode(imageNamed: tile.overlay.description + (AgeOfRuin.isActive && overlayIsStatue ? "Disabled" : "") + AgeOfRuin.ruinSuffix)
                 
@@ -945,6 +945,117 @@ class GameboardSprite {
             SKAction.rotate(byAngle: angleToRotate, duration: durationBezier),
             SKAction.move(to: circle.getPointOnCircle(angleRad: i * angleToRotate), duration: durationBezier)
         ])
+    }
+    
+    
+    // MARK: - Tiki/Magmoor Minion
+    
+    /**
+     Spawns Magmoor's creepy minion at the designated position.
+     - parameter position: row and column center where creepy will spawn
+     */
+    func spawnMagmoorMinion(at position: K.GameboardPosition) {
+        let spritePosition: CGPoint = getSpritePosition(at: position) + GameboardSprite.padding / 2 + scaleSize.width / 2
+        let panelCount: Int = 9
+        let chatDelay: TimeInterval = 8
+        let statue5bAnimateDuration: TimeInterval = 5
+        let terrainAppearDuration: TimeInterval = 0.25
+        let fadeDuration: TimeInterval = 1
+        let panelDuration: TimeInterval = terrainAppearDuration * TimeInterval(panelCount)
+        let totalDelay: TimeInterval = chatDelay + statue5bAnimateDuration + fadeDuration + panelDuration
+
+        
+        //Daemon the Destroyer
+        let statue5 = SKSpriteNode(imageNamed: "statue5")
+        statue5.scale(to: scaleSize)
+        statue5.position = spritePosition
+        statue5.zPosition = K.ZPosition.overlay
+        statue5.name = GameboardSprite.getNodeName(row: position.row, col: position.col, includeOverlayTag: true)
+        
+        sprite.addChild(statue5)
+        
+        statue5.animateStatue5(newTexture: SKTexture(imageNamed: "statue5b"), delay: chatDelay)
+        statue5.run(SKAction.sequence([
+            SKAction.wait(forDuration: chatDelay + statue5bAnimateDuration),
+            SKAction.fadeOut(withDuration: fadeDuration),
+            SKAction.removeFromParent()
+        ]))
+
+
+        //Panels
+        let panels = getSurroundingPanels(at: position)
+        
+        for (i, panel) in panels.enumerated() {
+            panel.terrain?.run(SKAction.sequence([
+                SKAction.wait(forDuration: chatDelay + statue5bAnimateDuration),
+                SKAction.wait(forDuration: TimeInterval(i) * terrainAppearDuration),
+                SKAction.colorize(with: .red, colorBlendFactor: 1, duration: fadeDuration),
+            ]))
+        }
+        
+        
+        //Magmoor Creepy
+        let magmoorCreepyMinion = MagmoorCreepyMinion(scale: 3.5, gameboardScaleSize: scaleSize, spawnPosition: spritePosition)
+        magmoorCreepyMinion.name = "MagmoorMinion"
+
+        magmoorCreepyMinion.addToParent(sprite)
+        magmoorCreepyMinion.beginAnimation(delay: totalDelay)
+        
+        
+        //AudioManager
+        AudioManager.shared.playSound(for: "magichorrorimpact", delay: totalDelay + 0.5)
+        AudioManager.shared.playSound(for: "littlegirllaugh", delay: totalDelay)
+        AudioManager.shared.playSound(for: "magmoorcreepypulse", delay: totalDelay)
+        AudioManager.shared.playSound(for: "magmoorcreepystrings", delay: totalDelay + 0.5)
+    }
+    
+    /**
+     Depawns Magmoor's creepy minion at the designated position.
+     - parameter position: position should match spawnMagmoorMinion() position.
+     */
+    func despawnMagmoorMinion(at position: K.GameboardPosition) {
+        guard let magmoorCreepyMinion = sprite.childNode(withName: "MagmoorMinion") as? MagmoorCreepyMinion else { return }
+        
+        let fadeDuration: TimeInterval = 2
+        
+        //Panels
+        let panels = getSurroundingPanels(at: position)
+        
+        for panel in panels {
+            panel.terrain?.run(SKAction.colorize(with: GameboardSprite.dayThemeSpriteColor,
+                                                 colorBlendFactor: GameboardSprite.dayThemeSpriteShade,
+                                                 duration: fadeDuration))
+        }
+
+        
+        //Magmoor Creepy
+        magmoorCreepyMinion.endAnimation(delay: 0)
+
+        
+        //AudioManager
+        AudioManager.shared.playSound(for: "scarylaugh")
+        AudioManager.shared.stopSound(for: "littlegirllaugh", fadeDuration: fadeDuration)
+        AudioManager.shared.stopSound(for: "magmoorcreepypulse", fadeDuration: fadeDuration)
+        AudioManager.shared.stopSound(for: "magmoorcreepystrings", fadeDuration: fadeDuration)
+    }
+    
+    /**
+     Gets a 9 grid of panels from which to spawn, with the postion being the center point.
+     - parameter position: center point of the 9 box panel where to spawn
+     */
+    private func getSurroundingPanels(at position: K.GameboardPosition) -> [K.GameboardPanelSprite] {
+        var panels: [K.GameboardPanelSprite] = []
+        panels.append(getPanel(at: position))
+        panels.append(getPanel(at: (row: position.row, col: position.col - 1)))
+        panels.append(getPanel(at: (row: position.row - 1, col: position.col - 1)))
+        panels.append(getPanel(at: (row: position.row - 1, col: position.col)))
+        panels.append(getPanel(at: (row: position.row - 1, col: position.col + 1)))
+        panels.append(getPanel(at: (row: position.row, col: position.col + 1)))
+        panels.append(getPanel(at: (row: position.row + 1, col: position.col + 1)))
+        panels.append(getPanel(at: (row: position.row + 1, col: position.col)))
+        panels.append(getPanel(at: (row: position.row + 1, col: position.col - 1)))
+        
+        return panels
     }
 
     

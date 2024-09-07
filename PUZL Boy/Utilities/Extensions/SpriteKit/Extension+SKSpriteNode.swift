@@ -36,6 +36,9 @@ extension SKSpriteNode {
         addChild(shadow)
     }
     
+    
+    // MARK: - Tiki Statue Animations
+    
     func animateStatue() {
         let noWarp: [SIMD2<Float>] = [
             SIMD2(0, 1),        SIMD2(0.5, 1),      SIMD2(1, 1),
@@ -80,11 +83,8 @@ extension SKSpriteNode {
         self.run(warpAction, withKey: "animateStatue")
     }
     
-    
-    // TODO: - Animate Statue 5 aka Daemon the Destroyer
-    func animateStatue5(newTexture: SKTexture) {
+    func animateStatue5(newTexture: SKTexture, delay: TimeInterval? = nil) {
         let scaryStatue = SKSpriteNode(texture: newTexture)
-        scaryStatue.zRotation = .pi
         scaryStatue.zPosition = 1
         scaryStatue.alpha = 0
         scaryStatue.name = "scaryStatue"
@@ -98,25 +98,26 @@ extension SKSpriteNode {
         addChild(scaryStatue)
         
         let shakeDuration: TimeInterval = 0.06
+        let shakeCount = 30
 
         let tikiAction = SKAction.sequence([
+            SKAction.wait(forDuration: delay ?? 0),
             SKAction.repeat(SKAction.sequence([
                 SKAction.rotate(toAngle: .pi / 12, duration: shakeDuration),
                 SKAction.rotate(toAngle: -.pi / 12, duration: shakeDuration),
-            ]), count: 10),
-            SKAction.rotate(toAngle: .pi, duration: shakeDuration),
-//            SKAction.fadeOut(withDuration: shakeDuration)
+            ]), count: shakeCount),
+            SKAction.rotate(toAngle: 0, duration: shakeDuration)
         ])
         
         let scaryTikiAction = SKAction.sequence([
-            SKAction.wait(forDuration: shakeDuration * 2 * 10),
-            SKAction.fadeIn(withDuration: shakeDuration)
+            SKAction.wait(forDuration: delay ?? 0),
+            SKAction.wait(forDuration: shakeDuration * 2 * TimeInterval(shakeCount / 2)),
+            SKAction.fadeIn(withDuration: shakeDuration * 2 * TimeInterval(shakeCount / 2))
         ])
         
         self.run(tikiAction)
         scaryStatue.run(scaryTikiAction)
     }
-    
     
     func danceStatue() {
         let tempo: TimeInterval = 0.25
@@ -208,4 +209,6 @@ extension SKSpriteNode {
         
         self.run(SKAction.repeatForever(selectedSequence), withKey: "danceStatue")
     }
+    
+    
 }

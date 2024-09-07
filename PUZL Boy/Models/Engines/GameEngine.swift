@@ -262,8 +262,8 @@ class GameEngine {
 
         showBoughtHints()
 
-        //Change to tiki music for tiki statue levels
-        if ChatEngine.isTikiLevel(level: level.level) {
+        //Change to tiki music for tiki statue levels only during Age of Peace
+        if ChatEngine.isTikiLevel(level: level.level) && !AgeOfRuin.isActive {
             AudioManager.shared.changeTheme(newTheme: AudioManager.tikiThemes, shouldPlayNewTheme: true)
         }
         else {
@@ -1038,21 +1038,6 @@ class GameEngine {
             }
             
             return false
-        // TODO: - Interaction for Tiki #5 aka Daemon the Destroyer
-        case .statue5:
-            if shouldUpdateRemainingForBoulderIfIcy {
-                updateMovesRemaining()
-                shouldUpdateRemainingForBoulderIfIcy = false
-            }
-            
-            let tikistatue: K.GameboardPanelSprite = gameboardSprite.getPanel(at: position)
-            let shakeDuration: TimeInterval = 0.06
-            
-            tikistatue.overlay?.animateStatue5(newTexture: SKTexture(imageNamed: "statue5b"))
-            
-            delegate?.didTouchStatue()
-            
-            return false
         case .boundary:
             if shouldUpdateRemainingForBoulderIfIcy {
                 updateMovesRemaining()
@@ -1249,14 +1234,41 @@ class GameEngine {
             SKAction.removeFromParent()
         ]))
         
-        bloodOverlay.run(SKAction.sequence([
-            SKAction.fadeAlpha(to: bloodOverlayAlpha, duration: fadeDuration)
-        ])) { [unowned self] in
+        bloodOverlay.run(SKAction.fadeAlpha(to: bloodOverlayAlpha, duration: fadeDuration)) { [unowned self] in
             displaySprite.showSprite(fadeDuration: 1)
             showBoughtHints()
             completion()
         }
         
+    }
+    
+    func magmoorSpawnEnter(to superScene: SKScene, delay: TimeInterval) {
+        let fadeDuration: TimeInterval = 3
+        
+        inbetweenNode.removeAllChildren()
+        inbetweenNode.removeFromParent()
+        superScene.addChild(inbetweenNode)
+        
+        inbetweenNode.run(SKAction.sequence([
+            SKAction.wait(forDuration: delay),
+            SKAction.fadeAlpha(to: 0.8, duration: fadeDuration)
+        ]))
+        
+        bloodOverlay.run(SKAction.sequence([
+            SKAction.wait(forDuration: delay),
+            SKAction.fadeAlpha(to: 0.35, duration: fadeDuration)
+        ]))
+    }
+    
+    func magmoorSpawnExit() {
+        let fadeDuration: TimeInterval = 2
+        
+        inbetweenNode.run(SKAction.sequence([
+            SKAction.fadeOut(withDuration: fadeDuration),
+            SKAction.removeFromParent()
+        ]))
+        
+        bloodOverlay.run(SKAction.fadeAlpha(to: bloodOverlayAlpha, duration: fadeDuration))
     }
         
     
