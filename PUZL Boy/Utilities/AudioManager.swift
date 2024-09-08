@@ -112,6 +112,7 @@ class AudioManager {
         addAudioItem("buttontap7", category: .soundFX)
         addAudioItem("chatclose", category: .soundFX)
         addAudioItem("chatopen", category: .soundFX)
+        addAudioItem("chatopenelder", category: .soundFX) //$2
         addAudioItem("chatopenprincess", category: .soundFX)
         addAudioItem("chatopenstatue", category: .soundFX)
         addAudioItem("chatopentrainer", category: .soundFX)

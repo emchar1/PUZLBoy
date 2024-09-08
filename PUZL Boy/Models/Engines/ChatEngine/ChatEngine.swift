@@ -90,7 +90,6 @@ class ChatEngine {
     private var dialogueStatue2: StatueDialogue!
     private var dialogueStatue3: StatueDialogue!
     private var dialogueStatue4: StatueDialogue!
-    private var dialogueStatue5: StatueDialogue!
 
 
     //Overlay Sprites
@@ -429,7 +428,7 @@ class ChatEngine {
         currentProfile = profile
         self.completion = completion
         
-        if profile == .blankvillain || profile == .blankprincess || profile == .blanktrainer || profile == .blankhero {
+        if profile == .blankhero || profile == .blanktrainer || profile == .blankvillain || profile == .blankprincess || profile == .blankelders {
             avatarSprite.isHidden = true
             
             textSprite.position.x = K.ScreenDimensions.size.width / 2
@@ -1736,7 +1735,7 @@ extension ChatEngine {
             let spawnPoint: K.GameboardPosition = (3, 3)
             let chatDelay: TimeInterval = 13
             
-            AudioManager.shared.lowerVolume(for: AudioManager.mainThemes.overworld, fadeDuration: 8)
+            AudioManager.shared.lowerVolume(for: AudioManager.mainThemes.overworld, fadeDuration: 5)
             hideFFButton()
             delegate?.spawnMagmoorMinion(at: spawnPoint, chatDelay: chatDelay)
 
@@ -1747,21 +1746,31 @@ extension ChatEngine {
 
                     showFFButton()
                 },
-                ChatItem(profile: .hero, imgPos: .left, pause: chatDelay, startNewChat: true, chat: "No, stay away!!! AAAAHHHHH!!!!!!", handler: nil),
-                ChatItem(profile: .hero, imgPos: .left, chat: "What are you?!?! What do you want from me?! I don't know anything!! Marlin, HEEEEEEELP!!!!!!")
+                ChatItem(profile: .hero, imgPos: .left, pause: chatDelay, startNewChat: true, chat: "No, stay away!!! AAAAHHHHH!!!!", handler: nil),
+                ChatItem(profile: .hero, imgPos: .left, endChat: true, chat: "What even are you?!?! What do you want with me?! I don't have anything!! MARLIN, HEEEEELP!!!!")
                 { [unowned self] in
                     superScene?.addChild(marlinBlast)
-                    marlinBlast.animateBlast(playSound: true)
+
+                    marlinBlast.animateBlast(playSound: false, color: .yellow, delay: 5.4) { [unowned self] in
+                        delegate?.despawnMagmoorMinion(at: spawnPoint)
+                    }
                     
+                    AudioManager.shared.playSound(for: "scarylaugh")
                     chatSpeed = chatSpeedImmediate
                     hideFFButton()
                 },
-                ChatItem(profile: .melchior, chat: "⚡️STOP THIS AT ONCE, MAGMOOR!!!⚡️") { [unowned self] in
+                ChatItem(profile: .melchior, pause: 5, startNewChat: true, chat: "⚡️BE GONE, DEMON!!!⚡️") { [unowned self] in
                     chatSpeed = chatSpeedOrig
                     showFFButton()
-                    delegate?.despawnMagmoorMinion(at: spawnPoint)
                 },
-                ChatItem(profile: .hero, imgPos: .left, chat: "Zaddy!!")
+                ChatItem(profile: .hero, imgPos: .left, chat: "OMG Melchior and the Elders!! You guys are stuff of legends! 🤯"),
+                ChatItem(profile: .melchior, chat: "Fear not, PUZL Boy. You are safe now."),
+                ChatItem(profile: .hero, imgPos: .left, chat: "What the heck was that thing?! Looks like my sleep paralysis demon."),
+                ChatItem(profile: .melchior, chat: "Magmoor feeds on your innermost fears and desires. Give in and it will consume you. We fear it has already consumed Marlin."),
+                ChatItem(profile: .hero, imgPos: .left, chat: "Is it going to come back??!"),
+                ChatItem(profile: .melchior, chat: "No. You have our protection. We are joining you in the fight to save the realms."),
+                ChatItem(profile: .blankelders, endChat: true, chat: "\n\nThe Elders have joined your party.", handler: nil),
+                ChatItem(profile: .hero, imgPos: .left, startNewChat: true, chat: "Ah, yeah!!", handler: nil)
             ]) { [unowned self] in
                 AudioManager.shared.raiseVolume(for: AudioManager.mainThemes.overworld, fadeDuration: 2)
                 marlinBlast.removeFromParent()

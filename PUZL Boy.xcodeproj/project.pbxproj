@@ -238,6 +238,7 @@
 		EAA3BD5C2C8A0E5400EDE298 /* MagmoorCreepyMinion.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAA3BD5B2C8A0E5400EDE298 /* MagmoorCreepyMinion.swift */; };
 		EAA3BD5E2C8B9CA400EDE298 /* magmoorcreepystrings.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAA3BD5D2C8B9CA400EDE298 /* magmoorcreepystrings.mp3 */; };
 		EAA3BD602C8B9CC300EDE298 /* magmoorcreepypulse.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAA3BD5F2C8B9CC300EDE298 /* magmoorcreepypulse.mp3 */; };
+		EAA3BD642C8CBDF700EDE298 /* chatopenelder.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAA3BD632C8CBDF700EDE298 /* chatopenelder.mp3 */; };
 		EAA921D82C011362009E99E7 /* AuthorizationRequestScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAA921D72C011361009E99E7 /* AuthorizationRequestScene.swift */; };
 		EAA921DA2C014C83009E99E7 /* AuthorizationSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAA921D92C014C83009E99E7 /* AuthorizationSprite.swift */; };
 		EAACB4A7296F80E700973EB8 /* AchievementAvidReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAACB4A6296F80E700973EB8 /* AchievementAvidReader.swift */; };
@@ -573,6 +574,7 @@
 		EAA3BD5B2C8A0E5400EDE298 /* MagmoorCreepyMinion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MagmoorCreepyMinion.swift; sourceTree = "<group>"; };
 		EAA3BD5D2C8B9CA400EDE298 /* magmoorcreepystrings.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = magmoorcreepystrings.mp3; sourceTree = "<group>"; };
 		EAA3BD5F2C8B9CC300EDE298 /* magmoorcreepypulse.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = magmoorcreepypulse.mp3; sourceTree = "<group>"; };
+		EAA3BD632C8CBDF700EDE298 /* chatopenelder.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = chatopenelder.mp3; sourceTree = "<group>"; };
 		EAA921D72C011361009E99E7 /* AuthorizationRequestScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorizationRequestScene.swift; sourceTree = "<group>"; };
 		EAA921D92C014C83009E99E7 /* AuthorizationSprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorizationSprite.swift; sourceTree = "<group>"; };
 		EAACB4A6296F80E700973EB8 /* AchievementAvidReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementAvidReader.swift; sourceTree = "<group>"; };
@@ -994,6 +996,7 @@
 				EAE6EC332A12D27F001842C6 /* buttontap7.mp3 */,
 				EAACB4B82971E08A00973EB8 /* chatclose.mp3 */,
 				EA3467A829A8C6CA002DDA02 /* chatopen.mp3 */,
+				EAA3BD632C8CBDF700EDE298 /* chatopenelder.mp3 */,
 				EA8C60622C068E0700DED3C7 /* chatopenprincess.mp3 */,
 				EA7A791E2C7EFF8100594349 /* chatopenstatue.mp3 */,
 				EA8C605D2C068E0700DED3C7 /* chatopentrainer.mp3 */,
@@ -1540,6 +1543,7 @@
 				EAA3BD5E2C8B9CA400EDE298 /* magmoorcreepystrings.mp3 in Resources */,
 				EABE795C2ACBB28C00689C55 /* boypain1.mp3 in Resources */,
 				EA8C60702C068E0800DED3C7 /* enemyroar.mp3 in Resources */,
+				EAA3BD642C8CBDF700EDE298 /* chatopenelder.mp3 in Resources */,
 				EA0F14712929D9C00013038E /* moverun2.mp3 in Resources */,
 				EA9D6A5E2B48E51C0004187B /* overworldgrassland.mp3 in Resources */,
 				EAFA6A7729DE13EB002287C2 /* boyimpact.mp3 in Resources */,

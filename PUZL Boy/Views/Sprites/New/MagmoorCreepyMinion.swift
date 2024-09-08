@@ -110,8 +110,8 @@ class MagmoorCreepyMinion: SKNode {
         //Appear animation
         animateAppearNode(node: leftHand, delay: delay + 0.5)
         animateAppearNode(node: leftArm, delay: delay + 0.5)
-        animateAppearNode(node: rightHand, delay: delay + 0.5)
-        animateAppearNode(node: rightArm, delay: delay + 0.5)
+        animateAppearNode(node: rightHand, delay: delay + 0.3)
+        animateAppearNode(node: rightArm, delay: delay + 0.3)
         animateAppearNode(node: face1, delay: delay + 0.4)
         animateAppearNode(node: face2, delay: delay + 0.3)
         animateAppearNode(node: face3, delay: delay)
@@ -181,17 +181,27 @@ class MagmoorCreepyMinion: SKNode {
      - parameter: delay: time delay before the hiding animation occurs.
      */
     func endAnimation(delay: TimeInterval) {
-        animateRemoveNode(node: leftHand, delay: delay)
-        animateRemoveNode(node: leftArm, delay: delay)
-        animateRemoveNode(node: rightHand, delay: delay)
-        animateRemoveNode(node: rightArm, delay: delay)
-        animateRemoveNode(node: face1, delay: delay + 0.1)
-        animateRemoveNode(node: face2, delay: delay + 0.2)
+        let moveLeftArmHand: SKAction = SKAction.sequence([
+            SKAction.wait(forDuration: delay + 0.1),
+            SKAction.moveBy(x: 0, y: -40, duration: 0),
+            SKAction.wait(forDuration: 0.1),
+            SKAction.moveBy(x: 0, y: -40, duration: 0)
+        ])
+        
+        leftArm.run(moveLeftArmHand)
+        leftHand.run(moveLeftArmHand)
+        
+        animateRemoveNode(node: leftHand, delay: delay + 0.3)
+        animateRemoveNode(node: leftArm, delay: delay + 0.3)
+        animateRemoveNode(node: rightHand, delay: delay + 0.1)
+        animateRemoveNode(node: rightArm, delay: delay + 0.1)
+        animateRemoveNode(node: face1, delay: delay + 0.3)
+        animateRemoveNode(node: face2, delay: delay + 0.4)
         animateRemoveNode(node: face3, delay: delay + 3.0)
-        animateRemoveNode(node: body1, delay: delay + 0.2)
-        animateRemoveNode(node: body2, delay: delay + 0.3)
-        animateRemoveNode(node: body3, delay: delay + 0.4)
-        animateRemoveNode(node: body4, delay: delay + 0.5)
+        animateRemoveNode(node: body1, delay: delay + 0.1)
+        animateRemoveNode(node: body2, delay: delay + 0.2)
+        animateRemoveNode(node: body3, delay: delay + 0.3)
+        animateRemoveNode(node: body4, delay: delay + 0.4)
     }
     
     /**

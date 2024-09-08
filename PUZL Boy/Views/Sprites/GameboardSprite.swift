@@ -1004,9 +1004,8 @@ class GameboardSprite {
         
         //AudioManager
         AudioManager.shared.playSound(for: "magichorrorimpact", delay: totalDelay + 0.5)
-        AudioManager.shared.playSound(for: "littlegirllaugh", delay: totalDelay)
-        AudioManager.shared.playSound(for: "magmoorcreepypulse", delay: totalDelay)
         AudioManager.shared.playSound(for: "magmoorcreepystrings", delay: totalDelay + 0.5)
+        AudioManager.shared.playSound(for: "magmoorcreepypulse", delay: totalDelay + 0.5)
     }
     
     /**
@@ -1033,10 +1032,8 @@ class GameboardSprite {
 
         
         //AudioManager
-        AudioManager.shared.playSound(for: "scarylaugh")
-        AudioManager.shared.stopSound(for: "littlegirllaugh", fadeDuration: fadeDuration)
-        AudioManager.shared.stopSound(for: "magmoorcreepypulse", fadeDuration: fadeDuration)
         AudioManager.shared.stopSound(for: "magmoorcreepystrings", fadeDuration: fadeDuration)
+        AudioManager.shared.stopSound(for: "magmoorcreepypulse", fadeDuration: fadeDuration)
     }
     
     /**

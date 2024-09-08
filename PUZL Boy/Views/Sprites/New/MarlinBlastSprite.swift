@@ -40,7 +40,7 @@ class MarlinBlastSprite: SKNode {
         blastBottom = blastTop.copy() as? SKSpriteNode
         blastBottom.position.y = 0
         blastBottom.yScale = -1
-
+        
         addChild(blastTop)
         addChild(blastBottom)
     }
@@ -55,11 +55,15 @@ class MarlinBlastSprite: SKNode {
         self.alpha = 1
     }
     
-    func animateBlast(playSound: Bool) {
+    func animateBlast(playSound: Bool, color: UIColor = .cyan, delay: TimeInterval? = nil, completion: (() -> Void)? = nil) {
         let blastDuration: TimeInterval = 0.25
         let blastContactPoint = CGPoint(x: 0, y: K.ScreenDimensions.size.height / 2)
-        let blastTopAction = SKAction.moveTo(y: blastContactPoint.y, duration: blastDuration)
-        let blastBottomAction = SKAction.moveTo(y: blastContactPoint.y, duration: blastDuration)
+        
+        let blastAction = SKAction.sequence([
+            SKAction.wait(forDuration: delay ?? 0),
+            SKAction.colorize(with: color, colorBlendFactor: 1, duration: 0),
+            SKAction.moveTo(y: blastContactPoint.y, duration: blastDuration)
+        ])
         
         let flashOverlayNode = SKShapeNode(rectOf: K.ScreenDimensions.size)
         flashOverlayNode.position = CGPoint(x: K.ScreenDimensions.size.width / 2, y: K.ScreenDimensions.size.height / 2)
@@ -70,11 +74,11 @@ class MarlinBlastSprite: SKNode {
         addChild(flashOverlayNode)
         
         if playSound {
-            AudioManager.shared.playSound(for: "marlinblast")
+            AudioManager.shared.playSound(for: "marlinblast", delay: delay ?? 0)
         }
-            
+        
         flashOverlayNode.run(SKAction.sequence([
-            SKAction.wait(forDuration: blastDuration),
+            SKAction.wait(forDuration: (delay ?? 0) + blastDuration),
             SKAction.fadeIn(withDuration: 0),
             SKAction.fadeOut(withDuration: blastDuration * 0.25),
             SKAction.fadeIn(withDuration: 0),
@@ -85,16 +89,18 @@ class MarlinBlastSprite: SKNode {
             SKAction.fadeOut(withDuration: blastDuration * 0.75),
             SKAction.removeFromParent()
         ]))
-
-        blastTop.run(blastTopAction)
-        blastBottom.run(blastBottomAction)
-
+        
+        blastTop.run(blastAction)
+        blastBottom.run(blastAction)
+        
         run(SKAction.sequence([
-            SKAction.wait(forDuration: blastDuration),
+            SKAction.wait(forDuration: (delay ?? 0) + blastDuration),
             SKAction.fadeOut(withDuration: blastDuration * 2)
         ])) { [unowned self] in
             resetBlast()
+            completion?()
         }
-        
     }
+    
+    
 }
