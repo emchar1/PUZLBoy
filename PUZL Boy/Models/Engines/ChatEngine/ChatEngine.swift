@@ -32,6 +32,8 @@ protocol ChatEngineDelegate: AnyObject {
     //Tiki
     func spawnMagmoorMinion(at position: K.GameboardPosition, chatDelay: TimeInterval)
     func despawnMagmoorMinion(at position: K.GameboardPosition)
+    func spawnElder(positions: [K.GameboardPosition], delay: TimeInterval, completion: @escaping () -> Void)
+    func despawnElders(completion: @escaping () -> Void)
 }
 
 class ChatEngine {
@@ -1730,14 +1732,13 @@ extension ChatEngine {
                     }
                 }
             }
-        // TODO: - 3 Elders's arrival and defeat of Magmoor's minion
         case 451:
-            let spawnPoint: K.GameboardPosition = (3, 3)
+            let spawnPointMinion: K.GameboardPosition = (3, 3)
             let chatDelay: TimeInterval = 13
             
             AudioManager.shared.lowerVolume(for: AudioManager.mainThemes.overworld, fadeDuration: 5)
             hideFFButton()
-            delegate?.spawnMagmoorMinion(at: spawnPoint, chatDelay: chatDelay)
+            delegate?.spawnMagmoorMinion(at: spawnPointMinion, chatDelay: chatDelay)
 
             sendChatArray(shouldSkipDim: true, items: [
                 ChatItem(profile: .statue5, endChat: true, chat: "Welcome to your doom!") { [unowned self] in
@@ -1747,36 +1748,46 @@ extension ChatEngine {
                     showFFButton()
                 },
                 ChatItem(profile: .hero, imgPos: .left, pause: chatDelay, startNewChat: true, chat: "No, stay away!!! AAAAHHHHH!!!!", handler: nil),
-                ChatItem(profile: .hero, imgPos: .left, endChat: true, chat: "What even are you?!?! What do you want with me?! I don't have anything!! MARLIN, HEEEEELP!!!!")
-                { [unowned self] in
-                    superScene?.addChild(marlinBlast)
+                ChatItem(profile: .hero, imgPos: .left, endChat: true, chat: "What even are you?!?! What do you want with me?! I don't have anything!! MARLIN, HEEEEELP!!!!", handler: nil)
+            ]) { [unowned self] in
+                superScene?.addChild(marlinBlast)
+                
+                chatSpeed = chatSpeedImmediate
+                hideFFButton()
 
-                    marlinBlast.animateBlast(playSound: false, color: .yellow, delay: 5.4) { [unowned self] in
-                        delegate?.despawnMagmoorMinion(at: spawnPoint)
+                //This nesting is REALLY ugly!!
+                delegate?.spawnElder(positions: [(3, 1), (2, 5), (5, 3)], delay: 6) { [unowned self] in
+                    marlinBlast.animateBlast(playSound: true, color: .yellow) { [unowned self] in
+                        delegate?.despawnMagmoorMinion(at: spawnPointMinion)
                     }
                     
-                    AudioManager.shared.playSound(for: "scarylaugh")
-                    chatSpeed = chatSpeedImmediate
-                    hideFFButton()
-                },
-                ChatItem(profile: .melchior, pause: 5, startNewChat: true, chat: "⚡️BE GONE, DEMON!!!⚡️") { [unowned self] in
-                    chatSpeed = chatSpeedOrig
-                    showFFButton()
-                },
-                ChatItem(profile: .hero, imgPos: .left, chat: "OMG Melchior and the Elders!! You guys are stuff of legends! 🤯"),
-                ChatItem(profile: .melchior, chat: "Fear not, PUZL Boy. You are safe now."),
-                ChatItem(profile: .hero, imgPos: .left, chat: "What the heck was that thing?! Looks like my sleep paralysis demon."),
-                ChatItem(profile: .melchior, chat: "Magmoor feeds on your innermost fears and desires. Give in and it will consume you. We fear it has already consumed Marlin."),
-                ChatItem(profile: .hero, imgPos: .left, chat: "Is it going to come back??!"),
-                ChatItem(profile: .melchior, chat: "No. You have our protection. We are joining you in the fight to save the realms."),
-                ChatItem(profile: .blankelders, endChat: true, chat: "\n\nThe Elders have joined your party.", handler: nil),
-                ChatItem(profile: .hero, imgPos: .left, startNewChat: true, chat: "Ah, yeah!!", handler: nil)
-            ]) { [unowned self] in
-                AudioManager.shared.raiseVolume(for: AudioManager.mainThemes.overworld, fadeDuration: 2)
-                marlinBlast.removeFromParent()
-                handleDialogueCompletion(level: level, completion: completion)
-            }
-
+                    sendChatArray(shouldSkipDim: true, items: [
+                        ChatItem(profile: .melchior, startNewChat: true, chat: "⚡️BE GONE, DEMON!!!⚡️") { [unowned self] in
+                            chatSpeed = chatSpeedOrig
+                            showFFButton()
+                        },
+                        ChatItem(profile: .hero, imgPos: .left, chat: "OMG Melchior and the Elders!! You guys are stuff of legends! 🤯"),
+                        ChatItem(profile: .melchior, chat: "MELCHIOR: Fear not, boy. You are safe now."),
+                        ChatItem(profile: .hero, imgPos: .left, chat: "What the heck was that thing?!"),
+                        ChatItem(profile: .melchior, chat: "Magmoor feeds on your innermost fears and desires. Give in and it will consume you. We fear it has already consumed Marlin."),
+                        ChatItem(profile: .hero, imgPos: .left, chat: "Looks like my sleep paralysis demon. Is it gonna come back for me??!"),
+                        ChatItem(profile: .melchior, chat: "Perhaps. But you have our protection. We will join you in the fight to save the realms.") { [unowned self] in
+                            delegate?.despawnElders(completion: {})
+                            hideFFButton()
+                            AudioManager.shared.playSound(for: "titlechapter")
+                        },
+                        ChatItem(profile: .blankelders, chat: "\n\nThe Elders have joined the party.") { [unowned self] in
+                            AudioManager.shared.raiseVolume(for: AudioManager.mainThemes.overworld, fadeDuration: 3)
+                            showFFButton()
+                        },
+                        ChatItem(profile: .hero, imgPos: .left, chat: "Ah, yeah!!")
+                    ]) { [unowned self] in
+                        marlinBlast.removeFromParent()
+                        
+                        handleDialogueCompletion(level: level, completion: completion)
+                    }
+                } //end delegate?.spawnElder()
+            } //end sendChatArray()
         default:
             isChatting = false
             completion?(nil)

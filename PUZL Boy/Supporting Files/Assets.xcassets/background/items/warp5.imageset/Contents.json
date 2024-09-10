@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "warp.png",
+      "filename" : "warp5.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "warp@2x.png",
+      "filename" : "warp5@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "warp@3x.png",
+      "filename" : "warp5@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

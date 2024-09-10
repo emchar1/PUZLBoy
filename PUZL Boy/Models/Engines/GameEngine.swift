@@ -1366,4 +1366,8 @@ class GameEngine {
         
         hintEngine.getHint(gameboardSprite: gameboardSprite, playerPosition: level.player, completion: nil)
     }
+    
+    func playerIsOnStartPosition() -> Bool {
+        return level.player == level.start
+    }
 }

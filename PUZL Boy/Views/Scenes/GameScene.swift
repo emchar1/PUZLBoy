@@ -571,6 +571,7 @@ class GameScene: SKScene {
             return
         }
         guard gameEngine.canContinue else { return }
+        guard gameEngine.playerIsOnStartPosition() else { return }
 
         scoringEngine.timerManager.pauseTime()
         stopTimer()
@@ -1384,5 +1385,13 @@ extension GameScene: ChatEngineDelegate {
     func despawnMagmoorMinion(at position: K.GameboardPosition) {
         gameEngine.gameboardSprite.despawnMagmoorMinion(at: position)
         gameEngine.magmoorSpawnExit()
+    }
+    
+    func spawnElder(positions: [K.GameboardPosition], delay: TimeInterval, completion: @escaping () -> Void) {
+        gameEngine.gameboardSprite.spawnElder(positions: positions, delay: delay, completion: completion)
+    }
+    
+    func despawnElders(completion: @escaping () -> Void) {
+        gameEngine.gameboardSprite.despawnElders(to: gameEngine.playerSprite.sprite.position, completion: completion)
     }
 }

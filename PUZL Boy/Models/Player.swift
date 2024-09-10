@@ -194,17 +194,21 @@ struct Player {
     }
     
     /**
-     Class function that moves a Player, i.e. Magmoor, from a starting point to an ending point and animating "illusions" along the way.
+     Class function that moves a Player, e.g. Magmoor, from a starting point to an ending point and animating "illusions" along the way.
      - parameters:
-        - magmoorNode: the parent Player node, i.e. Magmoor
+        - playerNode: the parent Player node, i.e. Magmoor
         - backgroundNode: the node to add the child illusions to
+        - tag: an optional tag to differentiate the parent node, if there are multiple
+        - color: the color of the illusions
+        - playSound: if true, plays a snake-like rattling sound (used by Magmoor primarily)
         - startPoint: the Player's starting point
         - endPoint: the Player's ending point
         - startScale: the Player's starting scale
         - endScale: the Player's ending scale
      - returns: an SKAction of the illusions animation
      */
-    static func moveWithIllusions(magmoorNode: SKSpriteNode, backgroundNode: SKNode,
+    static func moveWithIllusions(playerNode: SKSpriteNode, backgroundNode: SKNode, tag: String = "",
+                                  color: UIColor, playSound: Bool,
                                   startPoint: CGPoint, endPoint: CGPoint,
                                   startScale: CGFloat, endScale: CGFloat? = nil) -> SKAction {
 
@@ -216,29 +220,29 @@ struct Player {
                 let scaleDiff: CGFloat = (endScale ?? startScale) - startScale
                 let incrementScale: CGFloat = scaleDiff * CGFloat(illusionStep) / CGFloat(blinkDivision)
 
-                let illusionSprite = SKSpriteNode(imageNamed: magmoorNode.texture?.getFilename() ?? "VillainIdle (1)")
+                let illusionSprite = SKSpriteNode(imageNamed: playerNode.texture?.getFilename() ?? "VillainIdle (1)")
                 illusionSprite.size = Player.size
-                illusionSprite.xScale = magmoorNode.xScale + incrementScale * (magmoorNode.xScale < 0 ? -1 : 1)
-                illusionSprite.yScale = magmoorNode.yScale + incrementScale
+                illusionSprite.xScale = playerNode.xScale + incrementScale * (playerNode.xScale < 0 ? -1 : 1)
+                illusionSprite.yScale = playerNode.yScale + incrementScale
                 illusionSprite.position = SpriteMath.Trigonometry.getMidpoint(startPoint: startPoint,
                                                                               endPoint: endPoint,
                                                                               step: illusionStep,
                                                                               totalSteps: blinkDivision)
-                illusionSprite.color = .black
+                illusionSprite.color = color
                 illusionSprite.colorBlendFactor = 1
-                illusionSprite.zPosition = magmoorNode.zPosition + CGFloat(illusionStep)
-                illusionSprite.name = "escapeVillain\(illusionStep)"
+                illusionSprite.zPosition = playerNode.zPosition + CGFloat(illusionStep)
+                illusionSprite.name = "escapePlayer\(tag)\(illusionStep)"
                 
                 backgroundNode.addChild(illusionSprite)
                 
-                if illusionStep == 1 {
+                if illusionStep == 1 && playSound {
                     AudioManager.shared.playSound(for: "magicteleport")
                     AudioManager.shared.playSound(for: "magicteleport2")
                 }
             },
             SKAction.wait(forDuration: 1 / TimeInterval(blinkDivision)),
             SKAction.run {
-                if let illusionSprite = backgroundNode.childNode(withName: "escapeVillain\(illusionStep)") {
+                if let illusionSprite = backgroundNode.childNode(withName: "escapePlayer\(tag)\(illusionStep)") {
                     illusionSprite.run(SKAction.sequence([
                         SKAction.fadeOut(withDuration: 0.5),
                         SKAction.removeFromParent()

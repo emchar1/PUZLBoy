@@ -542,8 +542,10 @@ class CutsceneMagmoor: Cutscene {
         }
         
         let magmoorTeleportAction: SKAction = SKAction.group([
-            Player.moveWithIllusions(magmoorNode: playerRight.sprite,
+            Player.moveWithIllusions(playerNode: playerRight.sprite,
                                      backgroundNode: backgroundNode,
+                                     color: .black,
+                                     playSound: true,
                                      startPoint: playerRight.sprite.position,
                                      endPoint: rightPlayerPositionFinal,
                                      startScale: farMagmoorScale,
