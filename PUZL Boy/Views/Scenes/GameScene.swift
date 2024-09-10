@@ -1391,7 +1391,7 @@ extension GameScene: ChatEngineDelegate {
         gameEngine.gameboardSprite.spawnElder(positions: positions, delay: delay, completion: completion)
     }
     
-    func despawnElders(completion: @escaping () -> Void) {
-        gameEngine.gameboardSprite.despawnElders(to: gameEngine.playerSprite.sprite.position, completion: completion)
+    func despawnElders(to position: K.GameboardPosition, completion: @escaping () -> Void) {
+        gameEngine.gameboardSprite.despawnElders(to: position, completion: completion)
     }
 }

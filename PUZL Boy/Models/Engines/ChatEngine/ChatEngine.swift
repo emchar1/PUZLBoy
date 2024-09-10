@@ -33,7 +33,7 @@ protocol ChatEngineDelegate: AnyObject {
     func spawnMagmoorMinion(at position: K.GameboardPosition, chatDelay: TimeInterval)
     func despawnMagmoorMinion(at position: K.GameboardPosition)
     func spawnElder(positions: [K.GameboardPosition], delay: TimeInterval, completion: @escaping () -> Void)
-    func despawnElders(completion: @escaping () -> Void)
+    func despawnElders(to position: K.GameboardPosition, completion: @escaping () -> Void)
 }
 
 class ChatEngine {
@@ -1757,7 +1757,7 @@ extension ChatEngine {
 
                 //This nesting is REALLY ugly!!
                 delegate?.spawnElder(positions: [(3, 1), (2, 5), (5, 3)], delay: 6) { [unowned self] in
-                    marlinBlast.animateBlast(playSound: true, color: .yellow) { [unowned self] in
+                    marlinBlast.animateBlast(playSound: true, color: .yellow.lightenColor(factor: 6)) { [unowned self] in
                         delegate?.despawnMagmoorMinion(at: spawnPointMinion)
                     }
                     
@@ -1772,7 +1772,7 @@ extension ChatEngine {
                         ChatItem(profile: .melchior, chat: "Magmoor feeds on your innermost fears and desires. Give in and it will consume you. We fear it has already consumed Marlin."),
                         ChatItem(profile: .hero, imgPos: .left, chat: "Looks like my sleep paralysis demon. Is it gonna come back for me??!"),
                         ChatItem(profile: .melchior, chat: "Perhaps. But you have our protection. We will join you in the fight to save the realms.") { [unowned self] in
-                            delegate?.despawnElders(completion: {})
+                            delegate?.despawnElders(to: (0, 0), completion: {})
                             hideFFButton()
                             AudioManager.shared.playSound(for: "titlechapter")
                         },

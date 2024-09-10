@@ -580,20 +580,22 @@ class GameboardSprite {
         } //end spawnItem()
     }
     
-    func despawnElders(to endPoint: CGPoint, completion: @escaping () -> Void) {
+    func despawnElders(to position: K.GameboardPosition, completion: @escaping () -> Void) {
+        let endPoint = getLocation(at: position)
+
         func getDespawnAction(elder: Player) -> SKAction {
             let despawnDuration: TimeInterval = 2
+            let fadeDuration: TimeInterval = 0.5
             
-            return SKAction.sequence([
-                SKAction.scaleX(to: (elder.sprite.position.x < endPoint.x ? -1 : 1) * elder.sprite.xScale, duration: 0),
-                SKAction.group([
-                    SKAction.move(to: endPoint, duration: despawnDuration),
-                    SKAction.sequence([
-                        SKAction.wait(forDuration: despawnDuration - 0.5),
-                        SKAction.fadeOut(withDuration: 0.5)
-                    ])
+            let despawnAction = SKAction.group([
+                SKAction.move(to: endPoint, duration: despawnDuration),
+                SKAction.sequence([
+                    SKAction.wait(forDuration: despawnDuration - fadeDuration),
+                    SKAction.fadeOut(withDuration: fadeDuration)
                 ])
             ])
+            
+            return despawnAction
         }
 
         elder0.sprite.run(SKAction.repeatForever(SKAction.animate(with: elder0.textures[Player.Texture.run.rawValue], timePerFrame: 0.1)))
