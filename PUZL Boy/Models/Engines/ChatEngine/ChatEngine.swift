@@ -1769,7 +1769,7 @@ extension ChatEngine {
                         ChatItem(profile: .hero, imgPos: .left, chat: "OMG Melchior and the Elders!! You guys are stuff of legends! 🤯"),
                         ChatItem(profile: .melchior, chat: "MELCHIOR: Fear not, boy. You are safe now."),
                         ChatItem(profile: .hero, imgPos: .left, chat: "What the heck was that thing?!"),
-                        ChatItem(profile: .melchior, chat: "Magmoor feeds on your innermost fears and desires. Give in and it will consume you. We fear it has already consumed Marlin."),
+                        ChatItem(profile: .melchior, chat: "Magmoor's minion feeds on your deepest fears and desires. Give in and it will consume you. We fear it has already consumed Marlin."),
                         ChatItem(profile: .hero, imgPos: .left, chat: "Looks like my sleep paralysis demon. Is it gonna come back for me??!"),
                         ChatItem(profile: .melchior, chat: "Perhaps. But you have our protection. We will join you in the fight to save the realms.") { [unowned self] in
                             delegate?.despawnElders(to: (0, 0), completion: {})
