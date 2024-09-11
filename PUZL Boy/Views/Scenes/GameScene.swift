@@ -1394,4 +1394,8 @@ extension GameScene: ChatEngineDelegate {
     func despawnElders(to position: K.GameboardPosition, completion: @escaping () -> Void) {
         gameEngine.gameboardSprite.despawnElders(to: position, completion: completion)
     }
+    
+    func peekMinion(at position: K.GameboardPosition, duration: TimeInterval, completion: @escaping () -> Void) {
+        gameEngine.gameboardSprite.peekMagmoorMinion(at: position, duration: duration, completion: completion)
+    }
 }

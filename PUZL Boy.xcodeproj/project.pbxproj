@@ -239,6 +239,7 @@
 		EAA3BD5E2C8B9CA400EDE298 /* magmoorcreepystrings.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAA3BD5D2C8B9CA400EDE298 /* magmoorcreepystrings.mp3 */; };
 		EAA3BD602C8B9CC300EDE298 /* magmoorcreepypulse.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAA3BD5F2C8B9CC300EDE298 /* magmoorcreepypulse.mp3 */; };
 		EAA3BD642C8CBDF700EDE298 /* chatopenelder.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAA3BD632C8CBDF700EDE298 /* chatopenelder.mp3 */; };
+		EAA3BD662C92238E00EDE298 /* MagicElderEarth2Particles.sks in Resources */ = {isa = PBXBuildFile; fileRef = EAA3BD652C92238D00EDE298 /* MagicElderEarth2Particles.sks */; };
 		EAA921D82C011362009E99E7 /* AuthorizationRequestScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAA921D72C011361009E99E7 /* AuthorizationRequestScene.swift */; };
 		EAA921DA2C014C83009E99E7 /* AuthorizationSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAA921D92C014C83009E99E7 /* AuthorizationSprite.swift */; };
 		EAACB4A7296F80E700973EB8 /* AchievementAvidReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAACB4A6296F80E700973EB8 /* AchievementAvidReader.swift */; };
@@ -575,6 +576,7 @@
 		EAA3BD5D2C8B9CA400EDE298 /* magmoorcreepystrings.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = magmoorcreepystrings.mp3; sourceTree = "<group>"; };
 		EAA3BD5F2C8B9CC300EDE298 /* magmoorcreepypulse.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = magmoorcreepypulse.mp3; sourceTree = "<group>"; };
 		EAA3BD632C8CBDF700EDE298 /* chatopenelder.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = chatopenelder.mp3; sourceTree = "<group>"; };
+		EAA3BD652C92238D00EDE298 /* MagicElderEarth2Particles.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = MagicElderEarth2Particles.sks; sourceTree = "<group>"; };
 		EAA921D72C011361009E99E7 /* AuthorizationRequestScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorizationRequestScene.swift; sourceTree = "<group>"; };
 		EAA921D92C014C83009E99E7 /* AuthorizationSprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorizationSprite.swift; sourceTree = "<group>"; };
 		EAACB4A6296F80E700973EB8 /* AchievementAvidReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementAvidReader.swift; sourceTree = "<group>"; };
@@ -1269,6 +1271,7 @@
 				EA2F44102C45810E00B62CC3 /* MagicElderStarsParticles.sks */,
 				EAE43DA22C4B1B1B00E6DB3C /* MagicElderIceParticles.sks */,
 				EAE43DA42C4B397100E6DB3C /* MagicElderEarthParticles.sks */,
+				EAA3BD652C92238D00EDE298 /* MagicElderEarth2Particles.sks */,
 				EAE43DA62C4F585800E6DB3C /* MagicElderFireParticles.sks */,
 				EAE43DA82C4F69EF00E6DB3C /* MagicElderFire2Particles.sks */,
 				EA8196892C41AC590002D551 /* MagicElderParticles.sks */,
@@ -1549,6 +1552,7 @@
 				EAFA6A7729DE13EB002287C2 /* boyimpact.mp3 in Resources */,
 				EAF7183929B3D56B00E2ED82 /* lavaappear3.mp3 in Resources */,
 				EA4D025F29B7E33600F0C7B1 /* movemarsh1.mp3 in Resources */,
+				EAA3BD662C92238E00EDE298 /* MagicElderEarth2Particles.sks in Resources */,
 				EA0CF7CC2ADC408D002785DB /* DragonFireIdle.sks in Resources */,
 				EA8C606B2C068E0800DED3C7 /* enemyice.mp3 in Resources */,
 				EAAEA3CC2931F14D00221963 /* winlevel.mp3 in Resources */,

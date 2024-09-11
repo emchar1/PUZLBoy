@@ -15,7 +15,7 @@ class MagmoorCreepyMinion: SKNode {
     private let creepyLengthMax: CGFloat = 1679
     private var scale: CGFloat
     private var gameboardScaleSize: CGSize
-    private var spawnPosition: CGPoint
+    private var spawnPoint: CGPoint
     
     private var leftHand: SKSpriteNode!
     private var leftArm: SKSpriteNode!
@@ -32,10 +32,10 @@ class MagmoorCreepyMinion: SKNode {
     
     // MARK: - Initialization
     
-    init(scale: CGFloat = 3.5, gameboardScaleSize: CGSize, spawnPosition: CGPoint) {
+    init(scale: CGFloat = 3.5, gameboardScaleSize: CGSize, spawnPoint: CGPoint) {
         self.scale = scale
         self.gameboardScaleSize = gameboardScaleSize
-        self.spawnPosition = spawnPosition
+        self.spawnPoint = spawnPoint
         
         super.init()
         
@@ -51,12 +51,12 @@ class MagmoorCreepyMinion: SKNode {
     }
     
     private func setupNodes() {
-        leftHand = setupCreepy("LeftHand", creepySize: 1116, positionMultiplierOffset: CGPoint(x: -0.9, y: 1), zOffset: 110)
+        leftHand = setupCreepy("LeftHand", creepySize: 1116, positionMultiplierOffset: CGPoint(x: -0.8, y: 1), zOffset: 110)
         leftHand.anchorPoint = CGPoint(x: 0.95, y: 0.95)
         
-        leftArm = setupCreepy("LeftArm", creepySize: 812, positionMultiplierOffset: CGPoint(x: -1.2, y: 0.4), zOffset: 109)
-        rightHand = setupCreepy("RightHand", creepySize: 1291, positionMultiplierOffset: CGPoint(x: 0, y: -1.5), zOffset: 108)
-        rightArm = setupCreepy("RightArm", creepySize: 569, positionMultiplierOffset: CGPoint(x: 0.5, y: -1), zOffset: 107)
+        leftArm = setupCreepy("LeftArm", creepySize: 812, positionMultiplierOffset: CGPoint(x: -1.1, y: 0.4), zOffset: 109)
+        rightHand = setupCreepy("RightHand", creepySize: 1291, positionMultiplierOffset: CGPoint(x: -0.1, y: -1.5), zOffset: 108)
+        rightArm = setupCreepy("RightArm", creepySize: 569, positionMultiplierOffset: CGPoint(x: 0.4, y: -1), zOffset: 107)
         face1 = setupCreepy("Face1", creepySize: 1278, positionMultiplierOffset: CGPoint(x: -1.2, y: -1.2), zOffset: 106)
         face2 = setupCreepy("Face2", zOffset: 105)
         face3 = setupCreepy("Face3", zOffset: 104)
@@ -67,20 +67,31 @@ class MagmoorCreepyMinion: SKNode {
     }
     
     private func setupCreepy(_ suffix: String, creepySize: CGFloat? = nil, positionMultiplierOffset: CGPoint? = nil, zOffset: CGFloat) -> SKSpriteNode {
-        let gameboardPosition = CGPoint(x: gameboardScaleSize.width, y: gameboardScaleSize.height)
         let magmoorCreepy = "MagmoorCreepy"
         
         let node = SKSpriteNode(imageNamed: magmoorCreepy + suffix)
         node.scale(to: scale * gameboardScaleSize * (creepySize ?? creepyLengthMax) / creepyLengthMax)
-        
-        //This formula was funky to figure out. The "(scale - 3) / 2" and later, "scale / 3" seemed arbitrary, but they work!
-        node.position = spawnPosition + gameboardPosition * (scale - 3) / 2 + (positionMultiplierOffset ?? .zero) * gameboardPosition * scale / 3
-        
+        node.position = getPosition(positionMultiplierOffset: positionMultiplierOffset)
         node.alpha = 0
         node.zPosition = K.ZPosition.overlay + zOffset
         node.name = magmoorCreepy + suffix
         
         return node
+    }
+    
+    /**
+     Gets the position of the spawned items in relation to the gameboard panel from where the spawn point originates.
+     - parameters:
+        - positionMultiplierOffset: explicit offset from the original spawn point
+        - onSpawnPoint: so the actual spawn point occurs at (-1, 1) from the origin spawn point, but onSpawnPoint makes this offset (0, 0).
+     - returns: the point of spawning
+     */
+    private func getPosition(positionMultiplierOffset: CGPoint? = nil, onSpawnPoint: Bool = false) -> CGPoint {
+        let gameboardPosition: CGPoint = CGPoint(x: gameboardScaleSize.width, y: gameboardScaleSize.height)
+        let scaleOffset: CGFloat = onSpawnPoint ? 0 : -2
+        
+        //This formula was funky to figure out. The "(scale + scaleOffset) / 2" and later, "scale / 3" seemed arbitrary, but they work (for scale = 3.5)!
+        return spawnPoint + gameboardPosition * (scale + scaleOffset) / 2 + (positionMultiplierOffset ?? .zero) * gameboardPosition * scale / 3 + GameboardSprite.padding / 2
     }
     
     
@@ -100,6 +111,29 @@ class MagmoorCreepyMinion: SKNode {
         addChild(body4)
         
         parentNode.addChild(self)
+    }
+    
+    /**
+     Magmoor's minion peeks its head from a tile, with optional delay.
+     - parameters:
+        - delay: delay before peeking
+        - duration: time before retreating again
+        - completion: completion handler
+     */
+    func peekAnimation(delay: TimeInterval? = nil, duration: TimeInterval, completion: @escaping () -> Void) {
+        face3.position = getPosition(positionMultiplierOffset: nil, onSpawnPoint: true)
+        
+        face3.run(SKAction.sequence([
+            SKAction.wait(forDuration: delay ?? 0),
+            SKAction.fadeIn(withDuration: 0),
+            SKAction.wait(forDuration: duration),
+            SKAction.fadeOut(withDuration: 0.25),
+            SKAction.removeFromParent()
+        ]), completion: completion)
+        
+        AudioManager.shared.playSoundThenStop(for: "littlegirllaugh",
+                                              currentTime: TimeInterval.random(in: 0...8),
+                                              playForDuration: duration, fadeOut: 1, delay: delay ?? 0)
     }
     
     /**
@@ -197,7 +231,7 @@ class MagmoorCreepyMinion: SKNode {
         animateRemoveNode(node: rightArm, delay: delay + 0.1)
         animateRemoveNode(node: face1, delay: delay + 0.3)
         animateRemoveNode(node: face2, delay: delay + 0.4)
-        animateRemoveNode(node: face3, delay: delay + 3.0)
+        animateRemoveNode(node: face3, delay: delay + 3.0, fadeOut: 0.25)
         animateRemoveNode(node: body1, delay: delay + 0.1)
         animateRemoveNode(node: body2, delay: delay + 0.2)
         animateRemoveNode(node: body3, delay: delay + 0.3)
@@ -224,4 +258,6 @@ class MagmoorCreepyMinion: SKNode {
             SKAction.removeFromParent()
         ]))
     }
+    
+    
 }

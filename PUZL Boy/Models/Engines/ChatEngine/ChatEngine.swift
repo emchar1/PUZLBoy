@@ -34,6 +34,9 @@ protocol ChatEngineDelegate: AnyObject {
     func despawnMagmoorMinion(at position: K.GameboardPosition)
     func spawnElder(positions: [K.GameboardPosition], delay: TimeInterval, completion: @escaping () -> Void)
     func despawnElders(to position: K.GameboardPosition, completion: @escaping () -> Void)
+    
+    //Creepy Minion Peek
+    func peekMinion(at position: K.GameboardPosition, duration: TimeInterval, completion: @escaping () -> Void)
 }
 
 class ChatEngine {
@@ -92,6 +95,7 @@ class ChatEngine {
     private var dialogueStatue2: StatueDialogue!
     private var dialogueStatue3: StatueDialogue!
     private var dialogueStatue4: StatueDialogue!
+    private var dialogueStatue3b: StatueDialogue!
 
 
     //Overlay Sprites
@@ -263,7 +267,7 @@ class ChatEngine {
     }
     
     static func isTikiLevel(level: Int) -> Bool {
-        return level == 319 || level == 339 || level == 351 || level == 376 || level == 401
+        return level == 319 || level == 339 || level == 351 || level == 376 || level == 401 || level == 475
     }
 
     private func fastForward() {
@@ -676,8 +680,11 @@ extension ChatEngine {
             //Chapter 4 - The Home Stretch
             dialoguePlayed[401] = false
             dialoguePlayed[412] = false
+            dialoguePlayed[417] = false
             dialoguePlayed[426] = false
+            dialoguePlayed[441] = false
             dialoguePlayed[451] = false
+            dialoguePlayed[475] = false
         }
     }
     
@@ -686,6 +693,9 @@ extension ChatEngine {
         
         //For use by Trudee the Truth-telling Tiki
         let currentSky: String
+        var didGiveAwayFeather: Bool {
+            FIRManager.decisionsLeftButton[2] != nil && FIRManager.decisionsLeftButton[2]!
+        }
         
         switch DayTheme.currentTheme {
         case .morning:      currentSky = " a bright blue."
@@ -829,7 +839,7 @@ extension ChatEngine {
             ChatItem(profile: .hero, imgPos: .left, chat: "I dunno!! I assumed you all are here to help me! So then there's no special key or password? What about this stupid feather?"),
             ChatItem(profile: .statue3, chat: "Utterly useless! Here, I'll take the stupid feather off your hands. No use carrying it around."),
             ChatItem(profile: .hero, imgPos: .left, chat: "Wait, I didn't mention the 6-eyed, purple-horn monster. How do I know you're not a liar??"),
-            ChatItem(profile: .statue3, chat: "Because I'm Trudee the Truth-telling Tiki. Hence, I tell the truth. Now.. gimme!") { [unowned self] in
+            ChatItem(profile: .statue3, chat: "Because I'm Trudee the truth-telling Tiki. Hence, I tell the truth. Now.. gimme!") { [unowned self] in
                 chatDecisionEngine.showDecisions(index: 2, toNode: chatBackgroundSprite)
             },
             ChatItem(profile: .hero, imgPos: .left, chat: "Hmmm.......") { [unowned self] in
@@ -841,7 +851,7 @@ extension ChatEngine {
             },
 
             //1: 1
-            ChatItem(profile: .statue3, chat: "Hello! I'm Trudee the Truth-telling Tiki. I tell the absolute truth!"),
+            ChatItem(profile: .statue3, chat: "Hello! I'm Trudee the truth-telling Tiki. I tell the absolute truth!"),
             
             //2: 4
             ChatItem(profile: .hero, imgPos: .left, chat: "Ok, \"Truth-teller.\" Where are Marlin, Magmoor and the princess?"),
@@ -879,6 +889,28 @@ extension ChatEngine {
             //4: 1
             ChatItem(profile: .statue4, chat: "We're not people, silly boy. We're Tikis!")
         ], indices: [4, 2, 1, 3, 1], shouldSkipFirstQuestion: false, shouldRepeatLastDialogueOnEnd: false)
+        
+        
+        //Lv 475 - Trudee, again
+        dialogueStatue3b = StatueDialogue(dialogue: [
+            //0: 6
+            ChatItem(profile: .statue3b, chat: "Welcome to your doom!"),
+            ChatItem(profile: .statue3b, chat: "Just kidding! I won't do that. Look, they weren't one of us. Must've been a decoy Magmoor set up to scare you."),
+            ChatItem(profile: .hero, imgPos: .left, chat: "Well, it worked!!"),
+            ChatItem(profile: .statue3b, chat: "You've been so nice to us, answering our questions, giving me this luxurious feather. Please take this as a token of our gratitude.") { [unowned self] in
+                hideFFButton()
+            },
+            ChatItem(profile: .blankhero, chat: "\n\nPUZL Boy received 25 lives.") { [unowned self] in
+                showFFButton()
+            },
+            ChatItem(profile: .hero, imgPos: .left, chat: "Sweet! Thank you!! And that feather looks good on you!"),
+            
+            //1: 2
+            ChatItem(profile: .hero, imgPos: .left, chat: didGiveAwayFeather ? "Thanks for everything, Trudee!" : "What are you doing here?"),
+            ChatItem(profile: didGiveAwayFeather ? .statue3b : .statue3, chat: didGiveAwayFeather ? "Farewell, PUZL Boy. Good luck to you!" : "Just hanging out. Nothing to see here. Wish I had that feather...") { [unowned self] in
+                dialogueStatue3b.setShouldRepeatLastDialogueOnEnd(true) //need this here otherwise it'll loop back to dialogue at index 0.
+            }
+        ], indices: [6, 2], shouldSkipFirstQuestion: !didGiveAwayFeather, shouldRepeatLastDialogueOnEnd: false)
     }
     
     /**
@@ -1683,6 +1715,18 @@ extension ChatEngine {
                     }
                 }
             }
+        case 417:
+            AudioManager.shared.adjustVolume(to: 0.2, for: AudioManager.shared.currentTheme.overworld, fadeDuration: 0.5)
+            
+            delegate?.peekMinion(at: (3, 3), duration: 4) { [unowned self] in
+                AudioManager.shared.raiseVolume(for: AudioManager.shared.currentTheme.overworld, fadeDuration: 0.5)
+
+                sendChatArray(items: [
+                    ChatItem(profile: .hero, imgPos: .left, chat: "What the.........?")
+                ]) { [unowned self] in
+                    handleDialogueCompletion(level: level, completion: completion)
+                }
+            }
         case 426:
             delegate?.inbetweenRealmEnter(levelInt: level, moves: [(0, 1), (0, 2), (0, 3), (1, 3),
                                                                    (2, 3), (1, 3), (2, 3), (3, 3),
@@ -1732,6 +1776,18 @@ extension ChatEngine {
                     }
                 }
             }
+        case 441:
+            AudioManager.shared.adjustVolume(to: 0.2, for: AudioManager.shared.currentTheme.overworld, fadeDuration: 0.5)
+            
+            delegate?.peekMinion(at: (3, 3), duration: 4) { [unowned self] in
+                AudioManager.shared.raiseVolume(for: AudioManager.shared.currentTheme.overworld, fadeDuration: 0.5)
+
+                sendChatArray(items: [
+                    ChatItem(profile: .hero, imgPos: .left, chat: "Uh.. no, thank you!")
+                ]) { [unowned self] in
+                    handleDialogueCompletion(level: level, completion: completion)
+                }
+            }
         case 451:
             let spawnPointMinion: K.GameboardPosition = (3, 3)
             let chatDelay: TimeInterval = 13
@@ -1747,8 +1803,8 @@ extension ChatEngine {
 
                     showFFButton()
                 },
-                ChatItem(profile: .hero, imgPos: .left, pause: chatDelay, startNewChat: true, chat: "No, stay away!!! AAAAHHHHH!!!!", handler: nil),
-                ChatItem(profile: .hero, imgPos: .left, endChat: true, chat: "What even are you?!?! What do you want with me?! I don't have anything!! MARLIN, HEEEEELP!!!!", handler: nil)
+                ChatItem(profile: .hero, imgPos: .left, pause: chatDelay, startNewChat: true, chat: "Nope! Nope! Nope! NOOOPE!!!", handler: nil),
+                ChatItem(profile: .hero, imgPos: .left, endChat: true, chat: "What even are you?!?! Get away from me! I don't have anything!! MARLIN, HEEEEELP!!!!", handler: nil)
             ]) { [unowned self] in
                 superScene?.addChild(marlinBlast)
                 
@@ -1761,15 +1817,15 @@ extension ChatEngine {
                         delegate?.despawnMagmoorMinion(at: spawnPointMinion)
                     }
                     
-                    sendChatArray(shouldSkipDim: true, items: [
+                    sendChatArray(shouldSkipDim: false, items: [
                         ChatItem(profile: .melchior, startNewChat: true, chat: "⚡️BE GONE, DEMON!!!⚡️") { [unowned self] in
                             chatSpeed = chatSpeedOrig
                             showFFButton()
                         },
-                        ChatItem(profile: .hero, imgPos: .left, chat: "OMG Melchior and the Elders!! You guys are stuff of legends! 🤯"),
+                        ChatItem(profile: .hero, imgPos: .left, chat: "Melchior and the Elders!! You guys are stuff of legends! 🤯"),
                         ChatItem(profile: .melchior, chat: "MELCHIOR: Fear not, boy. You are safe now."),
                         ChatItem(profile: .hero, imgPos: .left, chat: "What the heck was that thing?!"),
-                        ChatItem(profile: .melchior, chat: "Magmoor's minion feeds on your deepest fears and desires. Give in and it will consume you. We fear it has already consumed Marlin."),
+                        ChatItem(profile: .melchior, chat: "Magmoor's minion feeds on your deepest fears and desires. Give in and it will destroy you. We fear it has already taken hold of Marlin."),
                         ChatItem(profile: .hero, imgPos: .left, chat: "Looks like my sleep paralysis demon. Is it gonna come back for me??!"),
                         ChatItem(profile: .melchior, chat: "Perhaps. But you have our protection. We will join you in the fight to save the realms.") { [unowned self] in
                             delegate?.despawnElders(to: (0, 0), completion: {})
@@ -1788,6 +1844,24 @@ extension ChatEngine {
                     }
                 } //end delegate?.spawnElder()
             } //end sendChatArray()
+        case 475:
+            var didGiveAwayFeather: Bool {
+                FIRManager.decisionsLeftButton[2] != nil && FIRManager.decisionsLeftButton[2]!
+            }
+            
+            if statueTapped {
+                sendChatArray(shouldSkipDim: true, items: dialogueStatue3b.getDialogue()) { [unowned self] in
+                    handleDialogueCompletion(level: level, completion: completion)
+                }
+            }
+            else {
+                sendChatArray(items: [
+                    ChatItem(profile: .hero, imgPos: .left, chat: "Oh no. No no no no no! I'm not talking to you guys again!"),
+                    ChatItem(profile: didGiveAwayFeather ? .statue3b : .statue3, chat: "Oh, come on. Don't do me like that! It's me, Trudee, the truth-telling Tiki. Come over and say hi!")
+                ]) { [unowned self] in
+                    handleDialogueCompletion(level: level, completion: completion)
+                }
+            }
         default:
             isChatting = false
             completion?(nil)

@@ -503,24 +503,29 @@ class GameboardSprite {
         let rotateSpeed: TimeInterval = 1
         let idleSpeed: TimeInterval
         let particleType: ParticleEngine.ParticleType
+        let particleScale: CGFloat
         let nameSuffix: String
 
         switch elder.type {
         case .elder0:
             nameSuffix = "0"
             particleType = .magicElderIce
+            particleScale = 3 / CGFloat(panelCount)
             idleSpeed = 0.1
         case .elder1:
             nameSuffix = "1"
             particleType = .magicElderFire2
+            particleScale = 3 / CGFloat(panelCount) / 2
             idleSpeed = 0.09
         case .elder2:
             nameSuffix = "2"
-            particleType = .magicElderEarth
+            particleType = .magicElderEarth2
+            particleScale = 3 / CGFloat(panelCount)
             idleSpeed = 0.05
         default:
             nameSuffix = ""
             particleType = .warp
+            particleScale = 3 / CGFloat(panelCount)
             idleSpeed = 0.1
         }
         
@@ -574,7 +579,7 @@ class GameboardSprite {
             ParticleEngine.shared.animateParticles(type: particleType,
                                                    toNode: sprite,
                                                    position: getLocation(at: positions[0]),
-                                                   scale: 3 / CGFloat(panelCount),
+                                                   scale: particleScale,
                                                    duration: 0)
 
         } //end spawnItem()
@@ -1093,13 +1098,36 @@ class GameboardSprite {
     
     
     // MARK: - Tiki/Magmoor Minion
+
+    /**
+     Magmoor's minion just peeks out briefly from behind one of the tiles and hides again.
+      - parameters:
+        - position: the location of the tile from which to peek
+        - duration: time before minion goes into hiding
+        - completion: completion handler
+     */
+    func peekMagmoorMinion(at position: K.GameboardPosition, duration: TimeInterval, completion: @escaping () -> Void) {
+        let fadeDuration: TimeInterval = 1
+
+        let peekPanel = getPanel(at: position)
+        peekPanel.terrain?.run(SKAction.sequence([
+            SKAction.colorize(with: .red, colorBlendFactor: 1, duration: fadeDuration),
+            SKAction.wait(forDuration: duration),
+            SKAction.colorize(with: GameboardSprite.dayThemeSpriteColor,
+                              colorBlendFactor: GameboardSprite.dayThemeSpriteShade,
+                              duration: fadeDuration)
+        ]))
+        
+        let magmoorCreepyMinion = MagmoorCreepyMinion(scale: 3.5, gameboardScaleSize: scaleSize, spawnPoint: getSpritePosition(at: position))
+        magmoorCreepyMinion.addToParent(sprite)
+        magmoorCreepyMinion.peekAnimation(delay: fadeDuration, duration: duration, completion: completion)
+    }
     
     /**
      Spawns Magmoor's creepy minion at the designated position.
      - parameter position: row and column center where creepy will spawn
      */
     func spawnMagmoorMinion(at position: K.GameboardPosition) {
-        let spritePosition: CGPoint = getSpritePosition(at: position) + GameboardSprite.padding / 2 + scaleSize.width / 2
         let panelCount: Int = 9
         let chatDelay: TimeInterval = 8
         let statue5bAnimateDuration: TimeInterval = 5
@@ -1112,7 +1140,7 @@ class GameboardSprite {
         //Daemon the Destroyer
         let statue5 = SKSpriteNode(imageNamed: "statue5")
         statue5.scale(to: scaleSize)
-        statue5.position = spritePosition
+        statue5.position = getSpritePosition(at: position) + GameboardSprite.padding / 2 + scaleSize.width / 2
         statue5.zPosition = K.ZPosition.overlay
         statue5.name = GameboardSprite.getNodeName(row: position.row, col: position.col, includeOverlayTag: true)
         
@@ -1139,9 +1167,8 @@ class GameboardSprite {
         
         
         //Magmoor Creepy
-        let magmoorCreepyMinion = MagmoorCreepyMinion(scale: 3.5, gameboardScaleSize: scaleSize, spawnPosition: spritePosition)
+        let magmoorCreepyMinion = MagmoorCreepyMinion(scale: 3.5, gameboardScaleSize: scaleSize, spawnPoint: getSpritePosition(at: position))
         magmoorCreepyMinion.name = "MagmoorMinion"
-
         magmoorCreepyMinion.addToParent(sprite)
         magmoorCreepyMinion.beginAnimation(delay: totalDelay)
         
