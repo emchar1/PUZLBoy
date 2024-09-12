@@ -18,6 +18,7 @@ struct SaveStateModel: Identifiable, Codable {
     let elapsedTime: TimeInterval
     let gameCompleted: Bool
     let hasFeather: Bool?
+    let gotGift: Bool?
     let hintAvailable: Bool
     let hintCountRemaining: Int
     let levelModel: LevelModel

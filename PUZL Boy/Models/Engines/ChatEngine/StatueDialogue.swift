@@ -11,6 +11,7 @@ struct StatueDialogue {
     
     // MARK: - Properties
     
+    static let giftOfLives: Int = 25
     private(set) var dialogue: [ChatItem]
     private(set) var indices: [Int]
     private var shouldSkipFirstQuestion: Bool

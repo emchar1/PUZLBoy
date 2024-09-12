@@ -83,7 +83,7 @@ extension SKSpriteNode {
         self.run(warpAction, withKey: "animateStatue")
     }
     
-    func animateStatue5(newTexture: SKTexture, delay: TimeInterval? = nil) {
+    func animateDaemon(newTexture: SKTexture, delay: TimeInterval? = nil) {
         let scaryStatue = SKSpriteNode(texture: newTexture)
         scaryStatue.zPosition = 1
         scaryStatue.alpha = 0

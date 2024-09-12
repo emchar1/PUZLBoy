@@ -1124,6 +1124,21 @@ class GameboardSprite {
     }
     
     /**
+     Spawns Daemon the Destroyer. MUST call this before spawnMagmoorMinion!
+     - parameter position: row and column center where Daemon spawns.
+     */
+    func spawnDaemon(at position: K.GameboardPosition) {
+        //Daemon the Destroyer
+        let statue5 = SKSpriteNode(imageNamed: "statue5")
+        statue5.scale(to: scaleSize)
+        statue5.position = getSpritePosition(at: position) + GameboardSprite.padding / 2 + scaleSize.width / 2
+        statue5.zPosition = K.ZPosition.overlay
+        statue5.name = "DaemonTheDestroyer"
+        
+        sprite.addChild(statue5)
+    }
+    
+    /**
      Spawns Magmoor's creepy minion at the designated position.
      - parameter position: row and column center where creepy will spawn
      */
@@ -1137,17 +1152,10 @@ class GameboardSprite {
         let totalDelay: TimeInterval = chatDelay + statue5bAnimateDuration + fadeDuration + panelDuration
 
         
-        //Daemon the Destroyer
-        let statue5 = SKSpriteNode(imageNamed: "statue5")
-        statue5.scale(to: scaleSize)
-        statue5.position = getSpritePosition(at: position) + GameboardSprite.padding / 2 + scaleSize.width / 2
-        statue5.zPosition = K.ZPosition.overlay
-        statue5.name = GameboardSprite.getNodeName(row: position.row, col: position.col, includeOverlayTag: true)
-        
-        sprite.addChild(statue5)
-        
-        statue5.animateStatue5(newTexture: SKTexture(imageNamed: "statue5b"), delay: chatDelay)
-        statue5.run(SKAction.sequence([
+        //Daemon the Destroyer... WILL NOT SHOW UP IF HE WASN'T SPAWNED FIRST!!
+        let statue5 = sprite.childNode(withName: "DaemonTheDestroyer") as? SKSpriteNode
+        statue5?.animateDaemon(newTexture: SKTexture(imageNamed: "statue5b"), delay: chatDelay)
+        statue5?.run(SKAction.sequence([
             SKAction.wait(forDuration: chatDelay + statue5bAnimateDuration),
             SKAction.fadeOut(withDuration: fadeDuration),
             SKAction.removeFromParent()

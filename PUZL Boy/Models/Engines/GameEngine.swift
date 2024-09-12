@@ -1106,6 +1106,11 @@ class GameEngine {
                     //Start the game over with no feather.
                     FIRManager.updateFirestoreRecordHasFeather(nil)
                 }
+
+                //Do I want to reset the gotGift so you can get the gift every game playthrough?
+                if FIRManager.didReceiveGiftFromTiki {
+                    FIRManager.updateFirestoreRecordGotGift(nil)
+                }
                 
                 //And don't forget to reset decision questions!
                 for i in 0...3 {

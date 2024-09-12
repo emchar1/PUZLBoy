@@ -401,6 +401,7 @@ class GameScene: SKScene {
             elapsedTime: scoringEngine.timerManager.elapsedTime,
             gameCompleted: GameEngine.gameCompleted,
             hasFeather: true, //Doesn't matter what goes here, it'll also get overwritten by the static property in FIRManager
+            gotGift: true, //Doesn't matter what goes here, it'll also get overwritten by the static property in FIRManager
             hintAvailable: gameEngine.hintEngine.hintAvailable,
             hintCountRemaining: HintEngine.hintCount,
             levelModel: levelModel,
@@ -1297,6 +1298,9 @@ extension GameScene: PartyResultsSpriteDelegate {
 // MARK: - ChatEngineDelegate
 
 extension GameScene: ChatEngineDelegate {
+    
+    // MARK: - Tutorial
+    
     func illuminatePanel(at position: K.GameboardPosition, useOverlay: Bool) {
         gameEngine.gameboardSprite.illuminatePanel(at: position, useOverlay: useOverlay)
     }
@@ -1333,6 +1337,9 @@ extension GameScene: ChatEngineDelegate {
         pauseResetEngine.unflashMinorButton(for: button)
     }
     
+    
+    // MARK: - Trainer
+    
     func spawnTrainer(at position: K.GameboardPosition, to direction: Controls) {
         gameEngine.gameboardSprite.spawnTrainer(at: position, to: direction)
     }
@@ -1348,6 +1355,9 @@ extension GameScene: ChatEngineDelegate {
     func despawnTrainerWithExit(moves: [K.GameboardPosition]) {
         gameEngine.gameboardSprite.despawnTrainerWithExit(moves: moves)
     }
+    
+    
+    // MARK: - Magmoor/Princess Capture
     
     func spawnPrincessCapture(at position: K.GameboardPosition, shouldAnimateWarp: Bool, completion: @escaping () -> Void) {
         gameEngine.gameboardSprite.spawnPrincessCapture(at: position, shouldAnimateWarp: shouldAnimateWarp, completion: completion)
@@ -1377,6 +1387,17 @@ extension GameScene: ChatEngineDelegate {
         }
     }
     
+
+    // MARK: - Daemon the Destroyer
+    
+    func peekMinion(at position: K.GameboardPosition, duration: TimeInterval, completion: @escaping () -> Void) {
+        gameEngine.gameboardSprite.peekMagmoorMinion(at: position, duration: duration, completion: completion)
+    }
+
+    func spawnDaemon(at position: K.GameboardPosition) {
+        gameEngine.gameboardSprite.spawnDaemon(at: position)
+    }
+    
     func spawnMagmoorMinion(at position: K.GameboardPosition, chatDelay: TimeInterval) {
         gameEngine.gameboardSprite.spawnMagmoorMinion(at: position)
         gameEngine.magmoorSpawnEnter(to: self, delay: chatDelay)
@@ -1395,7 +1416,18 @@ extension GameScene: ChatEngineDelegate {
         gameEngine.gameboardSprite.despawnElders(to: position, completion: completion)
     }
     
-    func peekMinion(at position: K.GameboardPosition, duration: TimeInterval, completion: @escaping () -> Void) {
-        gameEngine.gameboardSprite.peekMagmoorMinion(at: position, duration: duration, completion: completion)
+    
+    // MARK: - Gift
+    
+    ///Update livesRemaining with Trudee's gift - in Firestore and in the GameEngine UI.
+    func getGift(lives: Int) {
+        gameEngine.animateLives(originalLives: GameEngine.livesRemaining, newLives: lives)
+        gameEngine.incrementLivesRemaining(lives: lives)
+
+        //MUST come after call to gameEngine.incrementLivesRemaining()!!
+        FIRManager.updateFirestoreRecordLivesRemaining(lives: GameEngine.livesRemaining)
+        AudioManager.shared.playSound(for: "revive")
     }
+    
+    
 }

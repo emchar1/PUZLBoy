@@ -17,6 +17,13 @@ struct FIRManager {
     static var saveStateModel: SaveStateModel?
     static var decisionsLeftButton: [Bool?] = [nil, nil, nil, nil]
     static var hasFeather: Bool?
+    static var gotGift: Bool?
+    static var didGiveAwayFeather: Bool {
+        decisionsLeftButton[2] != nil && decisionsLeftButton[2]!
+    }
+    static var didReceiveGiftFromTiki: Bool {
+        gotGift ?? false
+    }
     
     //Test users
     static let userEddie = "2bjhz2grYVVOn37qmUipG4CKps62"
@@ -152,6 +159,7 @@ struct FIRManager {
             }
             
             hasFeather = data["hasFeather"] as? Bool
+            gotGift = data["gotGift"] as? Bool
             
             completion?(SaveStateModel(ageOfRuin: ageOfRuin,
                                        decisionLeftButton0: decisionsLeftButton[0],
@@ -161,6 +169,7 @@ struct FIRManager {
                                        elapsedTime: elapsedTime,
                                        gameCompleted: gameCompleted,
                                        hasFeather: hasFeather,
+                                       gotGift: gotGift,
                                        hintAvailable: hintAvailable,
                                        hintCountRemaining: hintCountRemaining,
                                        levelModel: getLevelModel(from: levelModel),
@@ -221,6 +230,7 @@ struct FIRManager {
             "elapsedTime": saveStateModel.elapsedTime,
             "gameCompleted": saveStateModel.gameCompleted,
             "hasFeather": hasFeather as Any, //use the static property, instead of saveStateModel (which will give you the old one)
+            "gotGift": gotGift as Any, //use the static property, instead of saveStateModel
             "hintAvailable": saveStateModel.hintAvailable,
             "hintCountRemaining": saveStateModel.hintCountRemaining,
             "levelModel": [
@@ -406,9 +416,20 @@ struct FIRManager {
         updateFirestoreRecordFields(fields: ["hasFeather" : hasFeather ?? NSNull()])
     }
     
+    ///Convenience method to update the gotGift field in a record and the static property.
+    static func updateFirestoreRecordGotGift(_ gotGift: Bool?) {
+        self.gotGift = gotGift
+        updateFirestoreRecordFields(fields: ["gotGift" : gotGift ?? NSNull()])
+    }
+    
     ///Convenience method to update just the newLevel field in a record.
     static func updateFirestoreRecordNewLevel(newLevel: Int) {
         updateFirestoreRecordFields(fields: ["newLevel" : newLevel])
+    }
+    
+    ///Convenience method to update livesRemaining field in a record.
+    static func updateFirestoreRecordLivesRemaining(lives: Int) {
+        updateFirestoreRecordFields(fields: ["livesRemaining" : lives])
     }
     
     
