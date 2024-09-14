@@ -28,6 +28,7 @@ protocol ChatEngineDelegate: AnyObject {
     func flashPrincess(at position: K.GameboardPosition, completion: @escaping () -> Void)
     func inbetweenRealmEnter(levelInt: Int, moves: [K.GameboardPosition])
     func inbetweenRealmExit(completion: @escaping () -> Void)
+    func encagePrincess()
     
     //Daemon the Destroyer
     func peekMinion(at position: K.GameboardPosition, duration: TimeInterval, completion: @escaping () -> Void)
@@ -1748,7 +1749,7 @@ extension ChatEngine {
                 ChatItem(profile: .trainer, chat: "Wait! *Gasping* I need to.. stop for a second....."),
                 ChatItem(profile: .princess, imgPos: .left, chat: "Uncle Marlin, are you ok?"),
                 ChatItem(profile: .trainer, chat: "I'm.. fine, princess.. Everything is going.. to be ok....."),
-                ChatItem(profile: .princess, imgPos: .left, chat: "He's hurting! Let him go!"),
+                ChatItem(profile: .princess, imgPos: .left, chat: "You're hurting him! Let him go!"),
                 ChatItem(profile: .villain, chat: "Just a little bit longer. We're almost done."),
                 ChatItem(profile: .princess, imgPos: .left, chat: "I want to go home now!"),
                 ChatItem(profile: .villain, chat: "No. We're not done yet. You'll have to wait.") { [unowned self] in
@@ -1760,12 +1761,13 @@ extension ChatEngine {
                 ChatItem(profile: .princess, imgPos: .left, chat: "NO. I SAID NOW!!!!") { [unowned self] in
                     showFFButton()
                 },
-                ChatItem(profile: .villain, chat: "Remarkable! But I cannot have you interrupting the ritual."),
-                ChatItem(profile: .villain, chat: "Better put this on just in... case!"),
-                ChatItem(profile: .princess, imgPos: .left, chat: "Eeeaarrgghhh, nooo!!"),
+                ChatItem(profile: .villain, chat: "Remarkable!"),
                 ChatItem(profile: .blankhero, chat: "\nMarlin! Princess! Can you hear me! MAGPIE, SHOW YOURSELF!!"),
-                ChatItem(profile: .princess, imgPos: .left, chat: "PUZL Boy?? Is that you?!? Help us, please!!!"),
-                ChatItem(profile: .villain, chat: "I'm putting an end to this. Time to say bye bye!")
+                ChatItem(profile: .princess, imgPos: .left, chat: "PUZL Boy?? Is that you?!? Help us, please!!!") { [unowned self] in
+                    delegate?.encagePrincess()
+                },
+                ChatItem(profile: .villain, chat: "I'm putting an end to this. Time to say bye bye!"),
+                ChatItem(profile: .princess, imgPos: .left, chat: "Noooo, not again!!!")
             ]) { [unowned self] in
                 guard let delegate = delegate else {
                     //Just in case delegate is false, which it shouldn't be!!!

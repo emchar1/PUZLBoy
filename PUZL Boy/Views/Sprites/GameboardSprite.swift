@@ -996,6 +996,17 @@ class GameboardSprite {
         
     }
     
+    ///Initiates the princess encagement action sequence.
+    func encagePrincess() {
+        guard let princessNode = sprite.childNode(withName: "inbetweenPrincess") as? SKSpriteNode else {
+            print("GameboardSprite.encagePrincess(): No princess node available.")
+            return
+        }
+        
+        let princessCage = PrincessCageSprite(princessNode: princessNode)
+        princessCage.encagePrincess()
+    }
+    
     ///Flips the gameboard when transitioning from in-between realm back to puzzle realm.
     private func flipGameboard() {
         let anglesCount: CGFloat = 64 //Needs to match count of rotateAction() calls, below!!

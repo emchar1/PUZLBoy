@@ -1387,6 +1387,10 @@ extension GameScene: ChatEngineDelegate {
         }
     }
     
+    func encagePrincess() {
+        gameEngine.gameboardSprite.encagePrincess()
+    }
+    
 
     // MARK: - Daemon the Destroyer
     

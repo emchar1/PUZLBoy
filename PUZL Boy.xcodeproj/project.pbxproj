@@ -240,6 +240,7 @@
 		EAA3BD602C8B9CC300EDE298 /* magmoorcreepypulse.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAA3BD5F2C8B9CC300EDE298 /* magmoorcreepypulse.mp3 */; };
 		EAA3BD642C8CBDF700EDE298 /* chatopenelder.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAA3BD632C8CBDF700EDE298 /* chatopenelder.mp3 */; };
 		EAA3BD662C92238E00EDE298 /* MagicElderEarth2Particles.sks in Resources */ = {isa = PBXBuildFile; fileRef = EAA3BD652C92238D00EDE298 /* MagicElderEarth2Particles.sks */; };
+		EAA3BD682C94CE0A00EDE298 /* PrincessCageSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAA3BD672C94CE0A00EDE298 /* PrincessCageSprite.swift */; };
 		EAA921D82C011362009E99E7 /* AuthorizationRequestScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAA921D72C011361009E99E7 /* AuthorizationRequestScene.swift */; };
 		EAA921DA2C014C83009E99E7 /* AuthorizationSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAA921D92C014C83009E99E7 /* AuthorizationSprite.swift */; };
 		EAACB4A7296F80E700973EB8 /* AchievementAvidReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAACB4A6296F80E700973EB8 /* AchievementAvidReader.swift */; };
@@ -577,6 +578,7 @@
 		EAA3BD5F2C8B9CC300EDE298 /* magmoorcreepypulse.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = magmoorcreepypulse.mp3; sourceTree = "<group>"; };
 		EAA3BD632C8CBDF700EDE298 /* chatopenelder.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = chatopenelder.mp3; sourceTree = "<group>"; };
 		EAA3BD652C92238D00EDE298 /* MagicElderEarth2Particles.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = MagicElderEarth2Particles.sks; sourceTree = "<group>"; };
+		EAA3BD672C94CE0A00EDE298 /* PrincessCageSprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrincessCageSprite.swift; sourceTree = "<group>"; };
 		EAA921D72C011361009E99E7 /* AuthorizationRequestScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorizationRequestScene.swift; sourceTree = "<group>"; };
 		EAA921D92C014C83009E99E7 /* AuthorizationSprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorizationSprite.swift; sourceTree = "<group>"; };
 		EAACB4A6296F80E700973EB8 /* AchievementAvidReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementAvidReader.swift; sourceTree = "<group>"; };
@@ -921,6 +923,7 @@
 				EA7300142B5F74B4005BF98D /* MarlinBlastSprite.swift */,
 				EA73001A2B604A13005BF98D /* MagmoorScarySprite.swift */,
 				EAA3BD5B2C8A0E5400EDE298 /* MagmoorCreepyMinion.swift */,
+				EAA3BD672C94CE0A00EDE298 /* PrincessCageSprite.swift */,
 			);
 			path = New;
 			sourceTree = "<group>";
@@ -1600,6 +1603,7 @@
 				EA95D1D129542C720061059C /* AchievementNuclear.swift in Sources */,
 				EA95D1C529541DA50061059C /* AchievementJewelConnoisseur.swift in Sources */,
 				EA3534892920612300C11FC0 /* DisplayStatusBarSprite.swift in Sources */,
+				EAA3BD682C94CE0A00EDE298 /* PrincessCageSprite.swift in Sources */,
 				EAF07C1229EAB5D30034CD1A /* Extension+SKSpriteNode.swift in Sources */,
 				EA826C85298DD6C600F19F81 /* ActivityIndicatorSprite.swift in Sources */,
 				EA95D1B729524F0F0061059C /* BaseAchievement.swift in Sources */,
