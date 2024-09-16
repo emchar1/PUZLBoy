@@ -166,7 +166,7 @@ class ChatDecisionSprite: SKNode {
                 SKAction.scale(to: 1, duration: 1),
                 SKAction.fadeIn(withDuration: 1)
             ]),
-            SKAction.scale(to: 1.1, duration: 0.25),
+            SKAction.scale(to: 1.05, duration: 0.25),
             SKAction.scale(to: 0.95, duration: 0.2),
             SKAction.scale(to: 1, duration: 0.2)
         ])) { [unowned self] in

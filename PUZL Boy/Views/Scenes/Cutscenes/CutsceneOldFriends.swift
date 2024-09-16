@@ -97,7 +97,7 @@ class CutsceneOldFriends: Cutscene {
         run(SKAction.sequence([
             SKAction.wait(forDuration: 66),
             SKAction.run { [unowned self] in
-                transitionScene(narrateText: "I did what I had to do: I banished him to the Realm of Limbo—|||||||||||||||||||| Peace eventually returned, but it will take years to repair the damage he caused.", playScene: playScene3)
+                transitionScene(narrateText: "I did what I had to do: I banished him to the NETHER REALM—|||||||||||||||||||| Peace eventually returned, but it will take years to repair the damage he caused.", playScene: playScene3)
             }
         ]))
         

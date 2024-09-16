@@ -160,7 +160,7 @@ class CutsceneMagmoor: Cutscene {
             SKAction.wait(forDuration: scene1Length + scene2Length),
             SKAction.run { [unowned self] in
                 transitionScene(
-                    narrateText: "For his treasonous act, the Elders banished Magmoor to the LIMBO REALM for all eternity.........",
+                    narrateText: "For his treasonous act, the Elders banished Magmoor to the NETHER REALM for all eternity.........",
                     playScene: playScene3)
             }
         ]))
