@@ -1387,6 +1387,12 @@ extension GameScene: ChatEngineDelegate {
         }
     }
     
+    func empowerPrincess() {
+        gameEngine.gameboardSprite.empowerPrincess()
+        shakeScreen(duration: 6, shouldPlaySFX: false, completion: nil)
+
+    }
+    
     func encagePrincess() {
         gameEngine.gameboardSprite.encagePrincess()
     }

@@ -28,6 +28,7 @@ protocol ChatEngineDelegate: AnyObject {
     func flashPrincess(at position: K.GameboardPosition, completion: @escaping () -> Void)
     func inbetweenRealmEnter(levelInt: Int, moves: [K.GameboardPosition])
     func inbetweenRealmExit(completion: @escaping () -> Void)
+    func empowerPrincess()
     func encagePrincess()
     
     //Daemon the Destroyer
@@ -1753,10 +1754,8 @@ extension ChatEngine {
                 ChatItem(profile: .villain, chat: "Just a little bit longer. We're almost done."),
                 ChatItem(profile: .princess, imgPos: .left, chat: "I want to go home now!"),
                 ChatItem(profile: .villain, chat: "No. We're not done yet. You'll have to wait.") { [unowned self] in
-                    guard let gameScene = superScene as? GameScene else { return }
-                    
-                    gameScene.shakeScreen(duration: 6, shouldPlaySFX: false, completion: nil)
                     hideFFButton(showChatImmediately: true)
+                    delegate?.empowerPrincess()
                 },
                 ChatItem(profile: .princess, imgPos: .left, chat: "NO. I SAID NOW!!!!") { [unowned self] in
                     showFFButton()

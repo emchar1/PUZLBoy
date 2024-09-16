@@ -967,7 +967,7 @@ class GameboardSprite {
         princess.sprite.run(SKAction.sequence([
             SKAction.wait(forDuration: 2),
             SKAction.sequence(princessMoveActions(positions: moves))
-        ]))
+        ]), withKey: "princessMoves")
     }
     
     ///Despawns princess and Magmoor from the Inbetween Realm, in preparation for Puzzle Realm transition.
@@ -996,15 +996,34 @@ class GameboardSprite {
         
     }
     
+    ///Princess makes a second attempt at displaying her latent powers. Magmoor is impressed, and a little intimidated, so he encases her in a prison cage to prevent her from thwarting his plans.
+    func empowerPrincess() {
+        guard let princessNode = sprite.childNode(withName: "inbetweenPrincess") as? SKSpriteNode else { return print("GameboardSprite.empowerPrinces() failed.") }
+        
+        princessNode.removeAction(forKey: "princessMoves")
+        
+        ParticleEngine.shared.animateParticles(type: .magicPrincessExplode,
+                                               toNode: princessNode,
+                                               position: .zero,
+                                               duration: 0)
+        ParticleEngine.shared.animateParticles(type: .magicPrincess,
+                                               toNode: princessNode,
+                                               position: .zero,
+                                               duration: 0)
+    }
+    
     ///Initiates the princess encagement action sequence.
     func encagePrincess() {
-        guard let princessNode = sprite.childNode(withName: "inbetweenPrincess") as? SKSpriteNode else {
-            print("GameboardSprite.encagePrincess(): No princess node available.")
+        guard let villainNode = sprite.childNode(withName: "inbetweenVillain") as? SKSpriteNode,
+              let princessNode = sprite.childNode(withName: "inbetweenPrincess") as? SKSpriteNode else {
+            print("GameboardSprite.encagePrincess(): No villain and/or princess nodes available.")
             return
         }
         
-        let princessCage = PrincessCageSprite(princessNode: princessNode)
+        let princessCage = PrincessCageSprite(villainNode: villainNode, princessNode: princessNode)
         princessCage.encagePrincess()
+        
+        ParticleEngine.shared.hideParticles(fromNode: princessNode, fadeDuration: 1)
     }
     
     ///Flips the gameboard when transitioning from in-between realm back to puzzle realm.
