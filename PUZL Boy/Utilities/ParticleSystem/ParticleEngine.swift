@@ -52,6 +52,7 @@ class ParticleEngine: SKNode {
         case magicElder = "MagicElderParticles"
         case magicExplosion = "MagicExplosionParticles"
         case magicLight = "MagicLightParticles" // FIXME: - Testing for Marlin Magic
+        case magicMerge = "MagicMergeParticles"
         case magicPrincessExplode = "MagicPrincessExplodeParticles"
         case magicPrincess = "MagicPrincessParticles"
         case magmoorSmoke = "MagmoorSmokeParticles"
@@ -136,9 +137,9 @@ class ParticleEngine: SKNode {
         ]))
         
         // FIXME: - Testing for Marlin Magic
-        if type == .magicLight {
-            animateCircle(particles: particles, duration: 2)
-        }
+//        if type == .magicLight {
+//            animateCircle(particles: particles, duration: 2)
+//        }
     }
         
     // FIXME: - Testing for Marlin Magic

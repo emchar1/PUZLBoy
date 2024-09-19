@@ -26,9 +26,10 @@ protocol ChatEngineDelegate: AnyObject {
     func spawnPrincessCapture(at position: K.GameboardPosition, shouldAnimateWarp: Bool, completion: @escaping () -> Void)
     func despawnPrincessCapture(at position: K.GameboardPosition, completion: @escaping () -> Void)
     func flashPrincess(at position: K.GameboardPosition, completion: @escaping () -> Void)
-    func inbetweenRealmEnter(levelInt: Int, moves: [K.GameboardPosition])
-    func inbetweenRealmExit(completion: @escaping () -> Void)
-    func empowerPrincess()
+    func inbetweenRealmEnter(levelInt: Int, mergeHalfway: Bool, moves: [K.GameboardPosition])
+    func inbetweenRealmExit(persistPresence: Bool, completion: @escaping () -> Void)
+    func inbetweenPlayerPeek(player: Player, levelInt: Int, persistPresence: Bool)
+    func empowerPrincess(powerDisplayDuration: TimeInterval)
     func encagePrincess()
     
     //Daemon the Destroyer
@@ -1138,7 +1139,7 @@ extension ChatEngine {
                 ChatItem(profile: .villain, chat: "...within reason. So what will it be, dear Marlin? Do you accept these terms, so we can begin the merging ritual?"),
                 ChatItem(profile: .trainer, imgPos: .left, chat: "..........I accept. *Sigh* This is all my fault. I never should have brought him here. I'll go with you, but first let me tell him."),
                 ChatItem(profile: .villain, chat: "Fine. But make it quick. I've got a universe to rule."),
-                ChatItem(profile: .trainer, imgPos: .left, chat: "Just do no harm to the girl. Promise me."),
+                ChatItem(profile: .trainer, imgPos: .left, chat: "Just do not harm the girl. Promise me."),
                 ChatItem(profile: .villain, chat: "Yeah sure, but remember.. you belong to me now."),
                 ChatItem(profile: .trainer, imgPos: .left, chat: "I hope he'll forgive me for this... 😞")
             ]) { [unowned self] in
@@ -1696,15 +1697,14 @@ extension ChatEngine {
                 }
             }
         case 412:
-            delegate?.inbetweenRealmEnter(levelInt: level, moves: [(0, 1), (0, 2), (1, 2), (1, 3),
-                                                                   (1, 2), (1, 1), (1, 0), (2, 0),
-                                                                   (2, 1), (3, 1), (2, 1), (2, 0),
-                                                                   (1, 0), (1, 1), (1, 2), (1, 3),
-                                                                   (1, 2), (1, 1), (2, 1), (2, 0),
-                                                                   (1, 0), (1, 1), (2, 1), (2, 0),
-                                                                   (1, 0), (1, 1), (2, 1), (2, 0),
-                                                                   (1, 0), (1, 1), (2, 1), (2, 0),
-                                                                   (1, 0), (1, 1), (2, 1), (2, 0)])
+            delegate?.inbetweenRealmEnter(levelInt: level, mergeHalfway: false, moves: [(1, 2), (1, 1), (1, 0), (2, 0),
+                                                                                        (2, 1), (3, 1), (2, 1), (2, 0),
+                                                                                        (1, 0), (1, 1), (1, 2), (1, 3),
+                                                                                        (1, 2), (1, 1), (2, 1), (2, 0),
+                                                                                        (1, 0), (1, 1), (2, 1), (2, 0),
+                                                                                        (1, 0), (1, 1), (2, 1), (2, 0),
+                                                                                        (1, 0), (1, 1), (2, 1), (2, 0),
+                                                                                        (1, 0), (1, 1), (2, 1), (2, 0)])
             
             sendChatArray(shouldSkipDim: true, items: [
                 ChatItem(profile: .princess, imgPos: .left, chat: "Are you going to let me go now or what?"),
@@ -1714,8 +1714,10 @@ extension ChatEngine {
                 ChatItem(profile: .princess, imgPos: .left, chat: "Well, which one is it!"),
                 ChatItem(profile: .villain, chat: "Patience, child. Relentless little one, aren't you?! Just like your mother."),
                 ChatItem(profile: .trainer, imgPos: .left, chat: "Magmoor, you promised to do her no harm! Please. Honor this one request for me."),
-                ChatItem(profile: .villain, chat: "Isn't this nice?? You and I, reunited once again. Don't you worry, dear Marlin. I always keep my promise..."),
-                ChatItem(profile: .blankhero, chat: "\n\nGuys!! I'm right here!!!"),
+                ChatItem(profile: .villain, chat: "Isn't this nice?? Magmoor and Marlin, reunited once again. Don't you worry, dear Marlin. I always keep my promise...") { [unowned self] in
+                    delegate?.inbetweenPlayerPeek(player: Player(type: .hero), levelInt: level, persistPresence: false)
+                },
+                ChatItem(profile: .blankhero, chat: "\n\nGuys!! I— right here—"),
                 ChatItem(profile: .princess, imgPos: .left, chat: "Who said that?! It sounded like—"),
                 ChatItem(profile: .villain, chat: "It was nobody, child. Must be the wind.")
             ]) { [unowned self] in
@@ -1727,8 +1729,8 @@ extension ChatEngine {
                 
                 AudioManager.shared.playSound(for: "scarylaugh")
                 
-                delegate.inbetweenRealmExit { [unowned self] in
-                    sendChatArray(items: [
+                delegate.inbetweenRealmExit(persistPresence: false) { [unowned self] in
+                    sendChatArray(shouldSkipDim: true, items: [
                         ChatItem(profile: .hero, imgPos: .left, chat: "Guys!! I'm right here!!!"),
                         ChatItem(profile: .hero, imgPos: .left, chat: "Marlin!! Princess!! Can you guys hear me?!?! HEEEY!!!! Helloooo!!!"),
                         ChatItem(profile: .hero, imgPos: .left, chat: "(Where are you guys???)")
@@ -1750,38 +1752,42 @@ extension ChatEngine {
                 }
             }
         case 426:
-            delegate?.inbetweenRealmEnter(levelInt: level, moves: [(0, 1), (0, 2), (0, 3), (1, 3),
-                                                                   (2, 3), (1, 3), (2, 3), (3, 3),
-                                                                   (3, 2), (3, 1), (4, 1), (4, 2),
-                                                                   (5, 2), (5, 3), (5, 4), (5, 3),
-                                                                   (5, 4), (6, 4), (6, 3), (5, 3),
-                                                                   (5, 4), (6, 4), (6, 3), (5, 3),
-                                                                   (5, 4), (6, 4), (6, 3), (5, 3),
-                                                                   (5, 4), (6, 4), (6, 3), (5, 3),
-                                                                   (5, 4), (6, 4), (6, 3), (5, 3)])
+            delegate?.inbetweenRealmEnter(levelInt: level, mergeHalfway: true, moves: [(2, 1), (2, 2), (2, 3), (1, 3),
+                                                                                       (2, 3), (1, 3), (2, 3), (3, 3),
+                                                                                       (3, 2), (3, 1), (4, 1), (4, 2),
+                                                                                       (5, 2), (5, 3), (5, 4), (5, 3),
+                                                                                       (5, 4), (6, 4), (6, 3), (5, 3),
+                                                                                       (5, 4), (6, 4), (6, 3), (5, 3),
+                                                                                       (5, 4), (6, 4), (6, 3), (5, 3),
+                                                                                       (5, 4), (6, 4), (6, 3), (5, 3),
+                                                                                       (5, 4), (6, 4), (6, 3), (5, 3)])
             
             sendChatArray(shouldSkipDim: true, items: [
-                ChatItem(profile: .trainer, chat: "Wait! *WHEEZE* I need to.. stop for a second....."),
-                ChatItem(profile: .princess, imgPos: .left, chat: "Uncle Marlin, are you ok?"),
-                ChatItem(profile: .trainer, chat: "I'm.. fine, princess.. Everything is going.. to be ok....."),
+                ChatItem(profile: .trainer, imgPos: .left, chat: "Wait! *WHEEZE* I need to.. pause for a second....."),
+                ChatItem(profile: .princess, imgPos: .left, chat: "Uncle Marlin, you don't look so good."),
+                ChatItem(profile: .trainer, imgPos: .left, chat: "I'm.. fine, princess.. Everything is going.. to be ok....."),
                 ChatItem(profile: .princess, imgPos: .left, chat: "You're hurting him! Let him go!"),
-                ChatItem(profile: .villain, chat: "Just a little bit longer. We're almost done."),
+                ChatItem(profile: .villain, chat: "Just a little bit longer. We're halfway done."),
                 ChatItem(profile: .princess, imgPos: .left, chat: "I want to go home now!"),
                 ChatItem(profile: .villain, chat: "No. We're not done yet. You'll have to wait.") { [unowned self] in
                     hideFFButton(showChatImmediately: true)
-                    delegate?.empowerPrincess()
+                    delegate?.empowerPrincess(powerDisplayDuration: 5)
                 },
                 ChatItem(profile: .princess, imgPos: .left, chat: "NO. I SAID NOW!!!!") { [unowned self] in
                     showFFButton()
                 },
                 ChatItem(profile: .villain, chat: "How did you do that?!!"),
-                ChatItem(profile: .princess, imgPos: .left, chat: "I dunno. Ever since he put this thingie on my hand I've been able to do this. 🪬"),
+                ChatItem(profile: .princess, imgPos: .left, chat: "I dunno. It has something to do with this mark on my hand. 🪬"),
+                ChatItem(profile: .villain, chat: "A protection spell?! Diabolical, Marlin!"),
+                ChatItem(profile: .trainer, imgPos: .left, chat: "C'mon... I've always been... steps ahead...") { [unowned self] in
+                    delegate?.inbetweenPlayerPeek(player: Player(type: .hero), levelInt: level, persistPresence: true)
+                },
                 ChatItem(profile: .blankhero, chat: "\n\nMAGPIE, SHOW YOURSELF!!"),
                 ChatItem(profile: .princess, imgPos: .left, chat: "PUZL Boy?? Is that you?!? Help us, please!!!") { [unowned self] in
                     delegate?.encagePrincess()
                 },
-                ChatItem(profile: .villain, chat: "I'm putting an end to this. Bye bye!"),
-                ChatItem(profile: .princess, imgPos: .left, chat: "Noooo, not again!!!")
+                ChatItem(profile: .villain, chat: "I'm putting an end to this. Send in the demon!"),
+                ChatItem(profile: .trainer, imgPos: .left, chat: "Magmoor... *WHEEZE* *HACK* *PHLEGM* Do not...")
             ]) { [unowned self] in
                 guard let delegate = delegate else {
                     //Just in case delegate is false, which it shouldn't be!!!
@@ -1789,8 +1795,8 @@ extension ChatEngine {
                     return
                 }
                 
-                delegate.inbetweenRealmExit { [unowned self] in
-                    sendChatArray(items: [
+                delegate.inbetweenRealmExit(persistPresence: true) { [unowned self] in
+                    sendChatArray(shouldSkipDim: true, items: [
                         ChatItem(profile: .hero, imgPos: .left, chat: "Princess! You can hear me! I'm coming, you guys!!"),
                         ChatItem(profile: .hero, imgPos: .left, chat: "Tiki was right. Sounds like they're right under my feet. Gotta keep moving!")
                     ]) { [unowned self] in
@@ -1848,7 +1854,7 @@ extension ChatEngine {
                         ChatItem(profile: .hero, imgPos: .left, chat: "Melchior and the Elders!! You guys are stuff of legends! 🤯"),
                         ChatItem(profile: .melchior, chat: "MELCHIOR: Fear not, boy. You are safe now."),
                         ChatItem(profile: .hero, imgPos: .left, chat: "What the heck was that thing?!"),
-                        ChatItem(profile: .melchior, chat: "Magmoor's minion feeds on your deepest fears and desires. Give in and it will destroy you. We fear it has already taken hold of Marlin."),
+                        ChatItem(profile: .melchior, chat: "Daemon the Destroyer feeds on your deepest fears and desires. Give in and it will consume you. We fear it has already taken hold of Marlin."),
                         ChatItem(profile: .hero, imgPos: .left, chat: "Looks like my sleep paralysis demon. Is it gonna come back for me??!"),
                         ChatItem(profile: .melchior, chat: "Perhaps. But you have our protection. We will join you in the fight to save the realms.") { [unowned self] in
                             delegate?.despawnElders(to: (0, 0), completion: {})

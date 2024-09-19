@@ -61,7 +61,7 @@ class PrincessCageSprite: SKNode {
     // MARK: - Functions
     
     func encagePrincess() {
-        // FIXME; - Fling cage not working!!
+        // FIXME: - Fling cage not working!!
         print("princessPosition: \(princessNode.positionInScene), villainNode: \(villainNode.positionInScene), cageNode: \(flingNode.positionInScene), villain - princess: \(villainNode.position - princessNode.position), v - p inScene: \((villainNode.positionInScene ?? .zero) - (princessNode.positionInScene ?? .zero))")
         
         let flingDuration: TimeInterval = 2
@@ -90,7 +90,7 @@ class PrincessCageSprite: SKNode {
         ]))
         
         let encageAction = SKAction.group([
-            SKAction.fadeIn(withDuration: fadeDuration),
+            SKAction.fadeIn(withDuration: fadeDuration / 3),
             SKAction.sequence([
                 SKAction.scale(to: scaleSize * 0.5, duration: fadeDuration / 6),
                 SKAction.scale(to: scaleSize * 2, duration: fadeDuration / 6),

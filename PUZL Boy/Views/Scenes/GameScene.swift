@@ -1371,15 +1371,19 @@ extension GameScene: ChatEngineDelegate {
         gameEngine.gameboardSprite.flashPrincess(at: position, completion: completion)
     }
     
-    func inbetweenRealmEnter(levelInt: Int, moves: [K.GameboardPosition]) {
+    func inbetweenRealmEnter(levelInt: Int, mergeHalfway: Bool, moves: [K.GameboardPosition]) {
         scoringEngine.hideSprite()
         gameEngine.playerSprite.resetRespawnAnimation()
         gameEngine.inbetweenRealmEnter(to: self)
-        gameEngine.gameboardSprite.spawnInbetweenPrincess(level: LevelBuilder.levels[levelInt], moves: moves)
+        gameEngine.gameboardSprite.spawnInbetween(level: LevelBuilder.levels[levelInt], mergeHalfway: mergeHalfway, moves: moves)
     }
     
-    func inbetweenRealmExit(completion: @escaping () -> Void) {
-        gameEngine.gameboardSprite.despawnInbetweenPrincess()
+    func inbetweenPlayerPeek(player: Player, levelInt: Int, persistPresence: Bool) {
+        gameEngine.gameboardSprite.inbetweenFlashPlayer(player: player, level: LevelBuilder.levels[levelInt], persistPresence: persistPresence)
+    }
+    
+    func inbetweenRealmExit(persistPresence: Bool, completion: @escaping () -> Void) {
+        gameEngine.gameboardSprite.despawnInbetween(persistPresence: persistPresence)
         gameEngine.inbetweenRealmExit { [unowned self] in
             gameEngine.playerSprite.startRespawnAnimation()
             scoringEngine.showSprite(fadeDuration: 1)
@@ -1387,9 +1391,9 @@ extension GameScene: ChatEngineDelegate {
         }
     }
     
-    func empowerPrincess() {
-        gameEngine.gameboardSprite.empowerPrincess()
-        shakeScreen(duration: 6, shouldPlaySFX: false, completion: nil)
+    func empowerPrincess(powerDisplayDuration: TimeInterval) {
+        gameEngine.gameboardSprite.empowerPrincess(duration: powerDisplayDuration - 1)
+        shakeScreen(duration: powerDisplayDuration, shouldPlaySFX: false, completion: nil)
 
     }
     

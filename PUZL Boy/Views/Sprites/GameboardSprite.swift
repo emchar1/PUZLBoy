@@ -898,18 +898,18 @@ class GameboardSprite {
     
     
     // MARK: - Inbetween Realm Functions
-    // TODO: - Inbetween Realm
     
     ///Spawns princess and Magmoor in the Inbetween Realm.
-    func spawnInbetweenPrincess(level: Level, moves: [K.GameboardPosition]) {
-        let playerOffset = CGPoint(x: panelSize / 4, y: 0)
-        let villainOffset = CGPoint(x: 0, y: 20)
-        
-        let fadeDuration: TimeInterval = 1
-        let princessTimePerFrame: TimeInterval = 0.08
-        
+    func spawnInbetween(level: Level, mergeHalfway: Bool, moves: [K.GameboardPosition]) {
         let princess = Player(type: .princess)
         let villain = Player(type: .villain)
+        let trainer = Player(type: .trainer)
+
+        let playerOffset = CGPoint(x: 0, y: 20)
+        let trainerMergeType: [SKTexture] = trainer.textures[mergeHalfway ? Player.Texture.glide.rawValue : Player.Texture.idle.rawValue]
+
+        let fadeDuration: TimeInterval = 1
+        let princessTimePerFrame: TimeInterval = 0.08
         
         func princessMoveActions(positions: [K.GameboardPosition]) -> [SKAction] {
             let moveDuration: TimeInterval = Double(princess.textures[Player.Texture.walk.rawValue].count) * princessTimePerFrame
@@ -936,31 +936,55 @@ class GameboardSprite {
         
         colorizeGameboard(fadeOut: false, isInbetween: true, completion: nil)
         
-        princess.sprite.position = getLocation(at: level.start) + playerOffset
+        princess.sprite.position = getLocation(at: (level.start.row + 1, level.start.col + 1))
         princess.sprite.setScale(Player.getGameboardScale(panelSize: panelSize) * princess.scaleMultiplier)
         princess.sprite.alpha = 0
         princess.sprite.zPosition = K.ZPosition.itemsAndEffects + 30
         princess.sprite.name = "inbetweenPrincess"
         princess.sprite.run(SKAction.repeatForever(SKAction.animate(with: princess.textures[Player.Texture.idle.rawValue], timePerFrame: princessTimePerFrame)))
                     
-        villain.sprite.position = getLocation(at: level.start) + CGPoint(x: -playerOffset.x, y: villainOffset.y)
+        villain.sprite.position = getLocation(at: (level.start.row, level.start.col + 3)) + playerOffset
         villain.sprite.setScale(Player.getGameboardScale(panelSize: panelSize) * villain.scaleMultiplier)
+        villain.sprite.xScale *= -1
         villain.sprite.alpha = 0
         villain.sprite.zPosition = K.ZPosition.itemsAndEffects + 20
         villain.sprite.name = "inbetweenVillain"
         villain.sprite.run(SKAction.repeatForever(SKAction.animate(with: villain.textures[Player.Texture.idle.rawValue], timePerFrame: 0.1)))
+        
+        trainer.sprite.position = getLocation(at: (level.start.row, level.start.col + 1)) + playerOffset
+        trainer.sprite.setScale(Player.getGameboardScale(panelSize: panelSize) * trainer.scaleMultiplier)
+        trainer.sprite.alpha = 0
+        trainer.sprite.zPosition = K.ZPosition.itemsAndEffects + 20
+        trainer.sprite.name = "inbetweenTrainer"
+        trainer.sprite.run(SKAction.repeatForever(SKAction.animate(with: trainerMergeType, timePerFrame: 0.1)))
+        trainer.sprite.run(SKAction.repeatForever(SKAction.sequence([
+            SKAction.moveBy(x: 0, y: 20, duration: 1),
+            SKAction.moveBy(x: 0, y: 5, duration: 1),
+            SKAction.moveBy(x: 0, y: -20, duration: 1),
+            SKAction.moveBy(x: 0, y: -5, duration: 1)
+        ])))
+
                         
         princess.sprite.run(SKAction.fadeIn(withDuration: fadeDuration))
         villain.sprite.run(SKAction.fadeIn(withDuration: fadeDuration))
+        trainer.sprite.run(SKAction.fadeIn(withDuration: fadeDuration))
 
         ParticleEngine.shared.animateParticles(type: .magmoorSmoke,
                                                toNode: villain.sprite,
                                                position: .zero,
-                                               zPosition: 11,
+                                               zPosition: 5,
+                                               duration: 0)
+        
+        ParticleEngine.shared.animateParticles(type: .magicMerge,
+                                               toNode: trainer.sprite,
+                                               position: .zero,
+                                               scale: 3,
+                                               zPosition: -5,
                                                duration: 0)
 
         sprite.addChild(princess.sprite)
         sprite.addChild(villain.sprite)
+        sprite.addChild(trainer.sprite)
         
         
         //Princess Movement
@@ -970,34 +994,107 @@ class GameboardSprite {
         ]), withKey: "princessMoves")
     }
     
+    ///Flashes a player in the in-between realm.
+    func inbetweenFlashPlayer(player: Player, level: Level, persistPresence: Bool) {
+        player.sprite.position = getLocation(at: level.start)
+        player.sprite.setScale(Player.getGameboardScale(panelSize: panelSize) * player.scaleMultiplier)
+        player.sprite.alpha = 0
+        player.sprite.zPosition = K.ZPosition.itemsAndEffects + 20
+        player.sprite.name = "inbetweenPlayer"
+        player.sprite.run(SKAction.repeatForever(SKAction.animate(with: player.textures[Player.Texture.idle.rawValue], timePerFrame: 0.1)))
+
+        let flashDuration: TimeInterval = 0.08
+        let fadeDuration: TimeInterval = 2
+
+
+        func flashAction(fromAlpha: CGFloat, toAlpha: CGFloat = 0, flashDuration: TimeInterval) -> SKAction {
+            return SKAction.sequence([
+                SKAction.fadeAlpha(to: fromAlpha, duration: 0),
+                SKAction.wait(forDuration: flashDuration),
+                SKAction.fadeAlpha(to: toAlpha, duration: 0),
+                SKAction.wait(forDuration: flashDuration)
+            ])
+        }
+        
+        let flashSeriesAction = SKAction.sequence([
+            flashAction(fromAlpha: 0.5, flashDuration: flashDuration),
+            flashAction(fromAlpha: 0.6, flashDuration: flashDuration),
+            flashAction(fromAlpha: 0.7, flashDuration: flashDuration),
+            flashAction(fromAlpha: 0.8, flashDuration: flashDuration),
+            flashAction(fromAlpha: 0.9, flashDuration: flashDuration)
+        ])
+
+        if persistPresence {
+            player.sprite.run(SKAction.sequence([
+                flashSeriesAction,
+                SKAction.repeatForever(flashAction(fromAlpha: 0.5, toAlpha: 0.4, flashDuration: flashDuration))
+            ]), withKey: "playerFlash")
+        }
+        else {
+            player.sprite.run(SKAction.sequence([
+                flashSeriesAction,
+                SKAction.repeat(flashAction(fromAlpha: 0.5, toAlpha: 0.4, flashDuration: flashDuration),
+                                count: Int(fadeDuration / flashDuration / 2)),
+                SKAction.fadeOut(withDuration: fadeDuration)
+            ]), withKey: "playerFlash")
+        }
+        
+        sprite.addChild(player.sprite)
+        
+        if let princessNode = sprite.childNode(withName: "inbetweenPrincess") {
+            princessNode.removeAction(forKey: "princessMoves")
+            princessNode.xScale *= -1
+        }
+    }
+    
     ///Despawns princess and Magmoor from the Inbetween Realm, in preparation for Puzzle Realm transition.
-    func despawnInbetweenPrincess() {
+    func despawnInbetween(persistPresence: Bool) {
         let fadeDuration: TimeInterval = 1
-        
-        flipGameboard()
-        colorizeGameboard(fadeOut: false, fadeOutDuration: 2, isInbetween: false, completion: nil)
-        
+
+        let fadeActionPersist = SKAction.sequence([
+            SKAction.fadeAlpha(to: 0.5, duration: fadeDuration),
+            SKAction.wait(forDuration: fadeDuration * 3),
+            SKAction.fadeOut(withDuration: fadeDuration * 3),
+            SKAction.removeFromParent()
+        ])
+
+        let fadeActionNonPersist = SKAction.sequence([
+            SKAction.fadeOut(withDuration: fadeDuration),
+            SKAction.removeFromParent()
+        ])
+                        
         for node in sprite.children {
             if node.name == "inbetweenPrincess" {
-                node.run(SKAction.sequence([
-                    SKAction.fadeOut(withDuration: fadeDuration),
-                    SKAction.removeFromParent()
-                ]))
+                node.run(persistPresence ? fadeActionPersist : fadeActionNonPersist) {
+                    ParticleEngine.shared.removeParticles(fromNode: node)
+                }
             }
             else if node.name == "inbetweenVillain" {
-                ParticleEngine.shared.removeParticles(fromNode: node)
-                
-                node.run(SKAction.sequence([
-                    SKAction.fadeOut(withDuration: fadeDuration),
-                    SKAction.removeFromParent()
-                ]))
+                node.run(persistPresence ? fadeActionPersist : fadeActionNonPersist) {
+                    ParticleEngine.shared.removeParticles(fromNode: node)
+                }
+            }
+            else if node.name == "inbetweenTrainer" {
+                node.run(persistPresence ? fadeActionPersist : fadeActionNonPersist) {
+                    ParticleEngine.shared.removeParticles(fromNode: node)
+                }
+            }
+            else if node.name == "inbetweenHero" {
+                node.run(fadeActionNonPersist) {
+                    ParticleEngine.shared.removeParticles(fromNode: node)
+                }
+            }
+            else if node.name == "inbetweenPlayer" {
+                node.removeAction(forKey: "playerFlash")
             }
         }
         
+        flipGameboard()
+        colorizeGameboard(fadeOut: false, fadeOutDuration: 2, isInbetween: false, completion: nil)
     }
     
     ///Princess makes a second attempt at displaying her latent powers. Magmoor is impressed, and a little intimidated, so he encases her in a prison cage to prevent her from thwarting his plans.
-    func empowerPrincess() {
+    func empowerPrincess(duration: TimeInterval) {
         guard let princessNode = sprite.childNode(withName: "inbetweenPrincess") as? SKSpriteNode else { return print("GameboardSprite.empowerPrinces() failed.") }
         
         princessNode.removeAction(forKey: "princessMoves")
@@ -1006,10 +1103,25 @@ class GameboardSprite {
                                                toNode: princessNode,
                                                position: .zero,
                                                duration: 0)
+        ParticleEngine.shared.animateParticles(type: .magicLight,
+                                               toNode: princessNode,
+                                               position: .zero,
+                                               scale: 4,
+                                               zPosition: -1,
+                                               duration: 0)
         ParticleEngine.shared.animateParticles(type: .magicPrincess,
                                                toNode: princessNode,
                                                position: .zero,
                                                duration: 0)
+        
+        AudioManager.shared.playSound(for: "magicelderexplosion")
+        
+        princessNode.run(SKAction.sequence([
+            SKAction.wait(forDuration: duration),
+            SKAction.run {
+                ParticleEngine.shared.hideParticles(fromNode: princessNode, fadeDuration: 2)
+            }
+        ]))
     }
     
     ///Initiates the princess encagement action sequence.

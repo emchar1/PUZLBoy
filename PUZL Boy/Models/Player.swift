@@ -74,8 +74,8 @@ struct Player {
             setupPlayer(framesRange: [1...15, 1...15, 1...15, 1...15, 5...5, 1...12, nil],
                         framesCommand: [nil, nil, nil, nil, "Run", nil, nil])
         case .trainer:
-            setupPlayer(framesRange: [1...6, 1...6, 1...6, nil, nil, nil, 1...6],
-                        framesCommand: [nil, nil, "Run", nil, nil, nil, nil])
+            setupPlayer(framesRange: [1...6, 1...6, 1...6, 1...7, 2...2, nil, 1...6],
+                        framesCommand: [nil, nil, "Run", nil, "RuinDead", nil, nil])
         case .princess:
             setupPlayer(framesRange: [1...16, nil, 1...20, nil, nil, 26...33, nil])
         case .princess2:
