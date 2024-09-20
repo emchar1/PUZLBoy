@@ -1378,8 +1378,8 @@ extension GameScene: ChatEngineDelegate {
         gameEngine.gameboardSprite.spawnInbetween(level: LevelBuilder.levels[levelInt], mergeHalfway: mergeHalfway, moves: moves)
     }
     
-    func inbetweenPlayerPeek(player: Player, levelInt: Int, persistPresence: Bool) {
-        gameEngine.gameboardSprite.inbetweenFlashPlayer(player: player, level: LevelBuilder.levels[levelInt], persistPresence: persistPresence)
+    func inbetweenFlashPlayer(playerType: Player.PlayerType, position: K.GameboardPosition, persistPresence: Bool) {
+        gameEngine.gameboardSprite.inbetweenFlashPlayer(playerType: playerType, position: position, persistPresence: persistPresence)
     }
     
     func inbetweenRealmExit(persistPresence: Bool, completion: @escaping () -> Void) {

@@ -995,8 +995,9 @@ class GameboardSprite {
     }
     
     ///Flashes a player in the in-between realm.
-    func inbetweenFlashPlayer(player: Player, level: Level, persistPresence: Bool) {
-        player.sprite.position = getLocation(at: level.start)
+    func inbetweenFlashPlayer(playerType: Player.PlayerType, position: K.GameboardPosition, persistPresence: Bool) {
+        let player = Player(type: playerType)
+        player.sprite.position = getLocation(at: position)
         player.sprite.setScale(Player.getGameboardScale(panelSize: panelSize) * player.scaleMultiplier)
         player.sprite.alpha = 0
         player.sprite.zPosition = K.ZPosition.itemsAndEffects + 20
@@ -1064,28 +1065,19 @@ class GameboardSprite {
         ])
                         
         for node in sprite.children {
-            if node.name == "inbetweenPrincess" {
+            switch node.name {
+            case "inbetweenPrincess", "inbetweenVillain", "inbetweenTrainer":
                 node.run(persistPresence ? fadeActionPersist : fadeActionNonPersist) {
                     ParticleEngine.shared.removeParticles(fromNode: node)
                 }
-            }
-            else if node.name == "inbetweenVillain" {
-                node.run(persistPresence ? fadeActionPersist : fadeActionNonPersist) {
-                    ParticleEngine.shared.removeParticles(fromNode: node)
-                }
-            }
-            else if node.name == "inbetweenTrainer" {
-                node.run(persistPresence ? fadeActionPersist : fadeActionNonPersist) {
-                    ParticleEngine.shared.removeParticles(fromNode: node)
-                }
-            }
-            else if node.name == "inbetweenHero" {
+            case "inbetweenPlayer":
+                node.removeAction(forKey: "playerFlash")
+                
                 node.run(fadeActionNonPersist) {
                     ParticleEngine.shared.removeParticles(fromNode: node)
                 }
-            }
-            else if node.name == "inbetweenPlayer" {
-                node.removeAction(forKey: "playerFlash")
+            default:
+                continue
             }
         }
         

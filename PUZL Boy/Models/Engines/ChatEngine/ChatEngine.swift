@@ -28,7 +28,7 @@ protocol ChatEngineDelegate: AnyObject {
     func flashPrincess(at position: K.GameboardPosition, completion: @escaping () -> Void)
     func inbetweenRealmEnter(levelInt: Int, mergeHalfway: Bool, moves: [K.GameboardPosition])
     func inbetweenRealmExit(persistPresence: Bool, completion: @escaping () -> Void)
-    func inbetweenPlayerPeek(player: Player, levelInt: Int, persistPresence: Bool)
+    func inbetweenFlashPlayer(playerType: Player.PlayerType, position: K.GameboardPosition, persistPresence: Bool)
     func empowerPrincess(powerDisplayDuration: TimeInterval)
     func encagePrincess()
     
@@ -1715,7 +1715,7 @@ extension ChatEngine {
                 ChatItem(profile: .villain, chat: "Patience, child. Relentless little one, aren't you?! Just like your mother."),
                 ChatItem(profile: .trainer, imgPos: .left, chat: "Magmoor, you promised to do her no harm! Please. Honor this one request for me."),
                 ChatItem(profile: .villain, chat: "Isn't this nice?? Magmoor and Marlin, reunited once again. Don't you worry, dear Marlin. I always keep my promise...") { [unowned self] in
-                    delegate?.inbetweenPlayerPeek(player: Player(type: .hero), levelInt: level, persistPresence: false)
+                    delegate?.inbetweenFlashPlayer(playerType: .hero, position: (0, 0), persistPresence: false)
                 },
                 ChatItem(profile: .blankhero, chat: "\n\nGuys!! I— right here—"),
                 ChatItem(profile: .princess, imgPos: .left, chat: "Who said that?! It sounded like—"),
@@ -1780,7 +1780,7 @@ extension ChatEngine {
                 ChatItem(profile: .princess, imgPos: .left, chat: "I dunno. It has something to do with this mark on my hand. 🪬"),
                 ChatItem(profile: .villain, chat: "A protection spell?! Diabolical, Marlin!"),
                 ChatItem(profile: .trainer, imgPos: .left, chat: "C'mon... I've always been... steps ahead...") { [unowned self] in
-                    delegate?.inbetweenPlayerPeek(player: Player(type: .hero), levelInt: level, persistPresence: true)
+                    delegate?.inbetweenFlashPlayer(playerType: .hero, position: (0, 0), persistPresence: true)
                 },
                 ChatItem(profile: .blankhero, chat: "\n\nMAGPIE, SHOW YOURSELF!!"),
                 ChatItem(profile: .princess, imgPos: .left, chat: "PUZL Boy?? Is that you?!? Help us, please!!!") { [unowned self] in
