@@ -231,7 +231,7 @@ class LeaderboardsPage: ParentPage {
             leaderboardsTableView.flashScrollIndicators()
             leaderboardsTableView.reloadData()
             
-            // FIXME: - For Level Leaderboard, scroll to player's rank, but if it's > 100, need to to have < > for multiple pages???
+            // TODO: - For Level Leaderboard, scroll to player's rank, but if it's > 100, need to to have < > for multiple pages???
             if leaderboardType == .all {
                 leaderboardsTableView.scrollToRow(at: IndexPath(row: scores.count - 1, section: 0), at: .bottom, animated: true)
             }

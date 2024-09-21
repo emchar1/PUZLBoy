@@ -45,6 +45,7 @@ class GameScene: SKScene {
 
     private var levelStatsArray: [LevelStats]
     private var lastCurrentLevel: Int?
+    private var levelStatsItemGlobal: LevelStats?
 
     private var currentLevel: Int = 1 {
         // FIXME: - DEBUG: Debugging purposes only!!!
@@ -711,7 +712,7 @@ extension GameScene: GameEngineDelegate {
         stopTimer()
         
         //Need to preserve game states before restarting the level but after setting score, so it can save them to Firestore down below.
-        let levelStatsItem = getLevelStatsItem(level: currentLevel, didWin: true)
+        self.levelStatsItemGlobal = getLevelStatsItem(level: currentLevel, didWin: true)
 
         GameCenterManager.shared.postScoreToLeaderboard(score: score, level: currentLevel)
         
@@ -726,27 +727,52 @@ extension GameScene: GameEngineDelegate {
         currentLevel += 1
         
         gameEngine.fadeGameboard(fadeOut: true) { [unowned self] in
-            scoringEngine.timerManager.resetTime()
-            startTimer()
-            
+            //Increment or reset interstitial counter
             if didCompleteGame {
-                // TODO: - Add end game level, cutscene, credits, title+
-
-                //IMPORTANT: Write to Firestore, MUST come first, if completing the game
-                saveState(levelStatsItem: levelStatsItem)
-                
-                cleanupScene(shouldSaveState: false)
-                gameSceneDelegate?.confirmQuitTapped()
+                AdMobManager.shared.resetInterstitialCounter()
             }
             else {
-                newGame(level: currentLevel, didWin: true)
-
-                //IMPORTANT: In this case, write to Firestore, MUST come last, after calling newGame()
-                if !Level.isPartyLevel(currentLevel) {
-                    saveState(levelStatsItem: levelStatsItem)
-                }
+                AdMobManager.shared.incrementInterstitialCounter()
             }
+
+            //Check if interstitial ad count met
+            if AdMobManager.shared.checkInterstitialMet() {
+                prepareAd {
+                    AdMobManager.shared.delegate = self
+                    AdMobManager.shared.presentInterstitial()
+                }
+                
+                //handleWinLevel() will be called upon dismissing the interstitial ad!
+            }
+            else {
+                handleWinLevel(levelStatsItem: self.levelStatsItemGlobal, didCompleteGame: didCompleteGame)
+            }
+        }
+    }
+    
+    ///Helper function to finish cleanup upon beating a level
+    private func handleWinLevel(levelStatsItem: LevelStats?, didCompleteGame: Bool) {
+        guard let levelStatsItem = levelStatsItem else { fatalError("GameScene.handleWinLevel() levelStatsItem was nil. Time to debug!!") }
+        
+        scoringEngine.timerManager.resetTime()
+        startTimer()
+        
+        if didCompleteGame {
+            // TODO: - Add end game level, cutscene, credits, title+
             
+            //IMPORTANT: Write to Firestore, MUST come first, if completing the game
+            saveState(levelStatsItem: levelStatsItem)
+            
+            cleanupScene(shouldSaveState: false)
+            gameSceneDelegate?.confirmQuitTapped()
+        }
+        else {
+            newGame(level: currentLevel, didWin: true)
+            
+            //IMPORTANT: In this case, write to Firestore, MUST come last, after calling newGame()
+            if !Level.isPartyLevel(currentLevel) {
+                saveState(levelStatsItem: levelStatsItem)
+            }
         }
     }
     
@@ -842,7 +868,12 @@ extension GameScene: AdMobManagerDelegate {
     
     func didDismissInterstitial() {
         continueFromAd(shouldFade: false) { [unowned self] in
-            handlePartyLevelCleanUp()
+            if Level.isPartyLevel(currentLevel) {
+                handlePartyLevelCleanUp()
+            }
+            else {
+                handleWinLevel(levelStatsItem: self.levelStatsItemGlobal, didCompleteGame: false)
+            }
         }
     }
     

@@ -40,7 +40,7 @@ class GameViewController: UIViewController {
                 self.hasInternet = false
             }
             
-            print("Monitor update - hasInternet: \(self.hasInternet)")
+//            print("Monitor update - hasInternet: \(self.hasInternet)")
         }
         monitor.start(queue: DispatchQueue(label: "Monitor"))
 

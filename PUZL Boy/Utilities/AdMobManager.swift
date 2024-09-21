@@ -62,6 +62,22 @@ class AdMobManager: NSObject {
     private(set) var interstitialAd: GADInterstitialAd?
     private(set) var rewardedAd: GADRewardedAd?
     
+    //Interstitial Ad Counter
+    private let interstitialCounterLimit = 10
+    private var interstitialCounterLimitMet = false
+    private var interstitialCounter = 0 {
+        didSet {
+            let checkLimit = interstitialCounter > interstitialCounterLimit
+            
+            if checkLimit {
+                resetInterstitialCounter()
+            }
+            
+            //This comes last!!!
+            interstitialCounterLimitMet = checkLimit
+        }
+    }
+
         
     // MARK: - Initialization
     
@@ -165,6 +181,27 @@ class AdMobManager: NSObject {
 
             completion?(rewardedAd.adReward)
         }
+    }
+    
+    
+    // MARK: - Interstitial Counter Functions
+    
+    func incrementInterstitialCounter() {
+        interstitialCounter += 1
+        
+        print("AdMobManager.incrementInterstitialCounter(): interstitialCounter = \(interstitialCounter)")
+    }
+    
+    func resetInterstitialCounter() {
+        interstitialCounter = 0
+
+        print("AdMobManager.resetInterstitialCounter(): interstitialCounter = \(interstitialCounter)")
+    }
+    
+    func checkInterstitialMet() -> Bool {
+        print("AdMobManager.checkInterstitialMet(): interstitialCounterLimitMet????? \(interstitialCounterLimitMet)")
+        
+        return interstitialCounterLimitMet
     }
 }
 

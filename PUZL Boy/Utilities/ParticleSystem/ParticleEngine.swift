@@ -51,7 +51,7 @@ class ParticleEngine: SKNode {
         case magicElderFire2 = "MagicElderFire2Particles"
         case magicElder = "MagicElderParticles"
         case magicExplosion = "MagicExplosionParticles"
-        case magicLight = "MagicLightParticles" // FIXME: - Testing for Marlin Magic
+        case magicLight = "MagicLightParticles"
         case magicMerge = "MagicMergeParticles"
         case magicPrincessExplode = "MagicPrincessExplodeParticles"
         case magicPrincess = "MagicPrincessParticles"
