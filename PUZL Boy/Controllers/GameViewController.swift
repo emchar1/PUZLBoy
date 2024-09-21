@@ -180,7 +180,6 @@ extension GameViewController: TitleSceneDelegate {
         //Implementation NOT needed
     }
     
-    // TODO: - CreditsScene
     func didTapCredits() {
         let creditsScene = CreditsScene(size: K.ScreenDimensions.size)
         creditsScene.creditsSceneDelegate = self

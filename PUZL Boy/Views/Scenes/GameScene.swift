@@ -325,8 +325,7 @@ class GameScene: SKScene {
         scoringEngine.updateLabels()
     }
     
-    ///Used in startTimer() block
-    // FIXME: - Can this be reused? I see other parts of the code that is similar
+    ///Used in startTimer() block. (Can this be reused? I see other parts of the code that is similar.)
     private func stopParty() {
         removeAction(forKey: keyRunGameTimerAction)
         
@@ -465,14 +464,6 @@ class GameScene: SKScene {
         if !didWin {
             AudioManager.shared.playSound(for: AudioManager.shared.currentTheme.overworld)
         }
-        
-        // FIXME: - Uncomment to play interstitial ad every X levels
-//        if level % 100 == 0 && level >= 20 && didWin {
-//            prepareAd {
-//                AdMobManager.shared.delegate = self
-//                AdMobManager.shared.presentInterstitial()
-//            }
-//        }
         
         
         //DO NOT CREATE NEW INSTANCES EVERY TIME!!! THIS CAUSES MEMORY LEAKS! 3/30/23

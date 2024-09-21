@@ -680,7 +680,6 @@ extension ChatEngine {
             dialoguePlayed[339] = false
             dialoguePlayed[351] = false
             dialoguePlayed[376] = false
-            // TODO: - 396??? - was gonna put something here but I forgot!
             
             //Chapter 4 - The Home Stretch
             dialoguePlayed[401] = false

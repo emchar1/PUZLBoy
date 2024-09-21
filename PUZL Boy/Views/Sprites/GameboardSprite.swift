@@ -363,7 +363,7 @@ class GameboardSprite {
         trainer.sprite.alpha = 0
         trainer.sprite.name = "marlinSprite"
 
-        // FIXME: - I don't like how this is set. If direction is .unknown, place Marlin above MagmoorScary (in Bonus Levels). It looked weird when MagmoorScary was above Marlin. I'll need to remember to only use the .unknown case in Bonus Levels, otherwise Marlin will appear above the blood overlay. 8/31/24
+        //I don't like how this is set. If direction is .unknown, place Marlin above MagmoorScary (in Bonus Levels). It looked weird when MagmoorScary was above Marlin. I'll need to remember to only use the .unknown case in Bonus Levels, otherwise Marlin will appear above the blood overlay. 8/31/24
         trainer.sprite.zPosition = direction == .unknown ? K.ZPosition.chatDialogue + 10 : K.ZPosition.player - 1
 
         trainer.sprite.run(SKAction.repeatForever(SKAction.animate(with: trainer.textures[Player.Texture.idle.rawValue], timePerFrame: 0.16)))
