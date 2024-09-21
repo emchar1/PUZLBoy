@@ -188,19 +188,13 @@ class AdMobManager: NSObject {
     
     func incrementInterstitialCounter() {
         interstitialCounter += 1
-        
-        print("AdMobManager.incrementInterstitialCounter(): interstitialCounter = \(interstitialCounter)")
     }
     
     func resetInterstitialCounter() {
         interstitialCounter = 0
-
-        print("AdMobManager.resetInterstitialCounter(): interstitialCounter = \(interstitialCounter)")
     }
     
     func checkInterstitialMet() -> Bool {
-        print("AdMobManager.checkInterstitialMet(): interstitialCounterLimitMet????? \(interstitialCounterLimitMet)")
-        
         return interstitialCounterLimitMet
     }
 }
