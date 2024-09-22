@@ -471,148 +471,6 @@ class GameboardSprite {
     }
     
     
-    // MARK: - Spawn Elder Functions
-    
-    func spawnElder(positions: [K.GameboardPosition], delay: TimeInterval, completion: @escaping () -> Void) {
-        guard positions.count == 3 else {
-            fatalError("GameboardSprite.spawnElder() incorrect number of array elements for positions.")
-        }
-
-        for node in sprite.children {
-            if let nodeName = node.name,
-               nodeName.contains(GameboardSprite.getNodeName(row: positions[0].row, col: positions[0].col, includeOverlayTag: true)) || nodeName.contains(GameboardSprite.getNodeName(row: positions[1].row, col: positions[1].col, includeOverlayTag: true)) || nodeName.contains(GameboardSprite.getNodeName(row: positions[2].row, col: positions[2].col, includeOverlayTag: true)) {
-                //Exit function if there's an overlay item, like a gem or dragon
-                print("Unable to execute GameboardSprite.spawnElder(); there's an overlay!")
-                completion()
-
-                return
-            }
-        }
-        
-        spawnElderHelper(elder: elder0, positions: [positions[0], positions[2], positions[1]], delay: delay, completion: completion)
-        spawnElderHelper(elder: elder1, positions: [positions[2], positions[1], positions[0]], delay: delay, completion: {})
-        spawnElderHelper(elder: elder2, positions: [positions[1], positions[0], positions[2]], delay: delay, completion: {})
-        
-        AudioManager.shared.playSound(for: "magicelderreduce", delay: delay)
-        AudioManager.shared.playSound(for: "magicelderexplosion", delay: delay)
-    }
-    
-    private func spawnElderHelper(elder: Player, positions: [K.GameboardPosition], delay: TimeInterval, completion: @escaping () -> Void) {
-        let elderOffset = CGPoint(x: panelSize / 8, y: panelSize / 8)
-        let appearDuration: TimeInterval = 1
-        let rotateSpeed: TimeInterval = 1
-        let idleSpeed: TimeInterval
-        let particleType: ParticleEngine.ParticleType
-        let particleScale: CGFloat
-        let nameSuffix: String
-
-        switch elder.type {
-        case .elder0:
-            nameSuffix = "0"
-            particleType = .magicElderIce
-            particleScale = 3 / CGFloat(panelCount)
-            idleSpeed = 0.1
-        case .elder1:
-            nameSuffix = "1"
-            particleType = .magicElderFire2
-            particleScale = 3 / CGFloat(panelCount) / 2
-            idleSpeed = 0.09
-        case .elder2:
-            nameSuffix = "2"
-            particleType = .magicElderEarth2
-            particleScale = 3 / CGFloat(panelCount)
-            idleSpeed = 0.05
-        default:
-            nameSuffix = ""
-            particleType = .warp
-            particleScale = 3 / CGFloat(panelCount)
-            idleSpeed = 0.1
-        }
-        
-        elder.sprite.position = getLocation(at: positions[0])
-        elder.sprite.setScale(0)
-        elder.sprite.zPosition = K.ZPosition.itemsAndEffects + 20
-        elder.sprite.name = "spawnElder\(nameSuffix)"
-        elder.sprite.run(SKAction.repeatForever(SKAction.animate(with: elder.textures[Player.Texture.idle.rawValue], timePerFrame: idleSpeed)))
-                
-        sprite.addChild(elder.sprite)
-
-        spawnItem(at: positions[0], with: .warp5, delay: delay) { [unowned self] in
-            elder.sprite.run(SKAction.sequence([
-                SKAction.group([
-                    SKAction.scaleX(to: -Player.getGameboardScale(panelSize: panelSize) * elder.scaleMultiplier, duration: appearDuration),
-                    SKAction.scaleY(to: Player.getGameboardScale(panelSize: panelSize) * elder.scaleMultiplier, duration: appearDuration),
-                    SKAction.moveBy(x: elderOffset.x, y: elderOffset.y, duration: appearDuration)
-                ]),
-                SKAction.sequence([
-                    SKAction.group([
-                        SKAction.move(to: getLocation(at: positions[1]) + elderOffset, duration: rotateSpeed),
-                        Player.moveWithIllusions(
-                            playerNode: elder.sprite, backgroundNode: sprite, tag: nameSuffix, color: .white, playSound: false,
-                            startPoint: getLocation(at: positions[0]) + elderOffset, endPoint: getLocation(at: positions[1]) + elderOffset,
-                            startScale: -Player.getGameboardScale(panelSize: panelSize) * elder.scaleMultiplier)
-                    ]),
-                    SKAction.group([
-                        SKAction.move(to: getLocation(at: positions[2]) + elderOffset, duration: rotateSpeed),
-                        Player.moveWithIllusions(
-                            playerNode: elder.sprite, backgroundNode: sprite, tag: nameSuffix, color: .white, playSound: false,
-                            startPoint: getLocation(at: positions[1]) + elderOffset, endPoint: getLocation(at: positions[2]) + elderOffset,
-                            startScale: -Player.getGameboardScale(panelSize: panelSize) * elder.scaleMultiplier)
-                    ]),
-                    SKAction.group([
-                        SKAction.move(to: getLocation(at: positions[0]) + elderOffset, duration: rotateSpeed),
-                        Player.moveWithIllusions(
-                            playerNode: elder.sprite, backgroundNode: sprite, tag: nameSuffix, color: .white, playSound: false,
-                            startPoint: getLocation(at: positions[2]) + elderOffset, endPoint: getLocation(at: positions[0]) + elderOffset,
-                            startScale: -Player.getGameboardScale(panelSize: panelSize) * elder.scaleMultiplier)
-                    ])
-                ])
-            ]), completion: completion)
-            
-            sprite.run(SKAction.sequence([
-                SKAction.wait(forDuration: 2),
-                SKAction.run { [unowned self] in
-                    despawnItem(at: positions[0], completion: {})
-                }
-            ]))
-            
-            ParticleEngine.shared.animateParticles(type: particleType,
-                                                   toNode: sprite,
-                                                   position: getLocation(at: positions[0]),
-                                                   scale: particleScale,
-                                                   duration: 0)
-
-        } //end spawnItem()
-    }
-    
-    func despawnElders(to position: K.GameboardPosition, completion: @escaping () -> Void) {
-        let endPoint = getLocation(at: position)
-
-        func getDespawnAction(elder: Player) -> SKAction {
-            let despawnDuration: TimeInterval = 2
-            let fadeDuration: TimeInterval = 0.5
-            
-            let despawnAction = SKAction.group([
-                SKAction.move(to: endPoint, duration: despawnDuration),
-                SKAction.sequence([
-                    SKAction.wait(forDuration: despawnDuration - fadeDuration),
-                    SKAction.fadeOut(withDuration: fadeDuration)
-                ])
-            ])
-            
-            return despawnAction
-        }
-
-        elder0.sprite.run(SKAction.repeatForever(SKAction.animate(with: elder0.textures[Player.Texture.run.rawValue], timePerFrame: 0.1)))
-        elder1.sprite.run(SKAction.repeatForever(SKAction.animate(with: elder1.textures[Player.Texture.run.rawValue], timePerFrame: 0.05)))
-        elder2.sprite.run(SKAction.repeatForever(SKAction.animate(with: elder2.textures[Player.Texture.run.rawValue], timePerFrame: 0.05)))
-
-        elder0.sprite.run(getDespawnAction(elder: elder0), completion: completion)
-        elder1.sprite.run(getDespawnAction(elder: elder1))
-        elder2.sprite.run(getDespawnAction(elder: elder2))
-    }
-    
-    
     // MARK: - Spawn Princess Functions
     
     ///Spawns a short animation of the whereabouts of the princess being captured by the villain.
@@ -1366,6 +1224,148 @@ class GameboardSprite {
         panels.append(getPanel(at: (row: position.row + 1, col: position.col - 1)))
         
         return panels
+    }
+    
+    
+    // MARK: - Spawn Elder Functions
+    
+    func spawnElder(positions: [K.GameboardPosition], delay: TimeInterval, completion: @escaping () -> Void) {
+        guard positions.count == 3 else {
+            fatalError("GameboardSprite.spawnElder() incorrect number of array elements for positions.")
+        }
+
+        for node in sprite.children {
+            if let nodeName = node.name,
+               nodeName.contains(GameboardSprite.getNodeName(row: positions[0].row, col: positions[0].col, includeOverlayTag: true)) || nodeName.contains(GameboardSprite.getNodeName(row: positions[1].row, col: positions[1].col, includeOverlayTag: true)) || nodeName.contains(GameboardSprite.getNodeName(row: positions[2].row, col: positions[2].col, includeOverlayTag: true)) {
+                //Exit function if there's an overlay item, like a gem or dragon
+                print("Unable to execute GameboardSprite.spawnElder(); there's an overlay!")
+                completion()
+
+                return
+            }
+        }
+        
+        spawnElderHelper(elder: elder0, positions: [positions[0], positions[2], positions[1]], delay: delay, completion: completion)
+        spawnElderHelper(elder: elder1, positions: [positions[2], positions[1], positions[0]], delay: delay, completion: {})
+        spawnElderHelper(elder: elder2, positions: [positions[1], positions[0], positions[2]], delay: delay, completion: {})
+        
+        AudioManager.shared.playSound(for: "magicelderreduce", delay: delay)
+        AudioManager.shared.playSound(for: "magicelderexplosion", delay: delay)
+    }
+    
+    private func spawnElderHelper(elder: Player, positions: [K.GameboardPosition], delay: TimeInterval, completion: @escaping () -> Void) {
+        let elderOffset = CGPoint(x: panelSize / 8, y: panelSize / 8)
+        let appearDuration: TimeInterval = 1
+        let rotateSpeed: TimeInterval = 1
+        let idleSpeed: TimeInterval
+        let particleType: ParticleEngine.ParticleType
+        let particleScale: CGFloat
+        let nameSuffix: String
+
+        switch elder.type {
+        case .elder0:
+            nameSuffix = "0"
+            particleType = .magicElderIce
+            particleScale = 3 / CGFloat(panelCount)
+            idleSpeed = 0.1
+        case .elder1:
+            nameSuffix = "1"
+            particleType = .magicElderFire2
+            particleScale = 3 / CGFloat(panelCount) / 2
+            idleSpeed = 0.09
+        case .elder2:
+            nameSuffix = "2"
+            particleType = .magicElderEarth2
+            particleScale = 3 / CGFloat(panelCount)
+            idleSpeed = 0.05
+        default:
+            nameSuffix = ""
+            particleType = .warp
+            particleScale = 3 / CGFloat(panelCount)
+            idleSpeed = 0.1
+        }
+        
+        elder.sprite.position = getLocation(at: positions[0])
+        elder.sprite.setScale(0)
+        elder.sprite.zPosition = K.ZPosition.itemsAndEffects + 20
+        elder.sprite.name = "spawnElder\(nameSuffix)"
+        elder.sprite.run(SKAction.repeatForever(SKAction.animate(with: elder.textures[Player.Texture.idle.rawValue], timePerFrame: idleSpeed)))
+                
+        sprite.addChild(elder.sprite)
+
+        spawnItem(at: positions[0], with: .warp5, delay: delay) { [unowned self] in
+            elder.sprite.run(SKAction.sequence([
+                SKAction.group([
+                    SKAction.scaleX(to: -Player.getGameboardScale(panelSize: panelSize) * elder.scaleMultiplier, duration: appearDuration),
+                    SKAction.scaleY(to: Player.getGameboardScale(panelSize: panelSize) * elder.scaleMultiplier, duration: appearDuration),
+                    SKAction.moveBy(x: elderOffset.x, y: elderOffset.y, duration: appearDuration)
+                ]),
+                SKAction.sequence([
+                    SKAction.group([
+                        SKAction.move(to: getLocation(at: positions[1]) + elderOffset, duration: rotateSpeed),
+                        Player.moveWithIllusions(
+                            playerNode: elder.sprite, backgroundNode: sprite, tag: nameSuffix, color: .white, playSound: false,
+                            startPoint: getLocation(at: positions[0]) + elderOffset, endPoint: getLocation(at: positions[1]) + elderOffset,
+                            startScale: -Player.getGameboardScale(panelSize: panelSize) * elder.scaleMultiplier)
+                    ]),
+                    SKAction.group([
+                        SKAction.move(to: getLocation(at: positions[2]) + elderOffset, duration: rotateSpeed),
+                        Player.moveWithIllusions(
+                            playerNode: elder.sprite, backgroundNode: sprite, tag: nameSuffix, color: .white, playSound: false,
+                            startPoint: getLocation(at: positions[1]) + elderOffset, endPoint: getLocation(at: positions[2]) + elderOffset,
+                            startScale: -Player.getGameboardScale(panelSize: panelSize) * elder.scaleMultiplier)
+                    ]),
+                    SKAction.group([
+                        SKAction.move(to: getLocation(at: positions[0]) + elderOffset, duration: rotateSpeed),
+                        Player.moveWithIllusions(
+                            playerNode: elder.sprite, backgroundNode: sprite, tag: nameSuffix, color: .white, playSound: false,
+                            startPoint: getLocation(at: positions[2]) + elderOffset, endPoint: getLocation(at: positions[0]) + elderOffset,
+                            startScale: -Player.getGameboardScale(panelSize: panelSize) * elder.scaleMultiplier)
+                    ])
+                ])
+            ]), completion: completion)
+            
+            sprite.run(SKAction.sequence([
+                SKAction.wait(forDuration: 2),
+                SKAction.run { [unowned self] in
+                    despawnItem(at: positions[0], completion: {})
+                }
+            ]))
+            
+            ParticleEngine.shared.animateParticles(type: particleType,
+                                                   toNode: sprite,
+                                                   position: getLocation(at: positions[0]),
+                                                   scale: particleScale,
+                                                   duration: 0)
+
+        } //end spawnItem()
+    }
+    
+    func despawnElders(to position: K.GameboardPosition, completion: @escaping () -> Void) {
+        let endPoint = getLocation(at: position)
+
+        func getDespawnAction(elder: Player) -> SKAction {
+            let despawnDuration: TimeInterval = 2
+            let fadeDuration: TimeInterval = 0.5
+            
+            let despawnAction = SKAction.group([
+                SKAction.move(to: endPoint, duration: despawnDuration),
+                SKAction.sequence([
+                    SKAction.wait(forDuration: despawnDuration - fadeDuration),
+                    SKAction.fadeOut(withDuration: fadeDuration)
+                ])
+            ])
+            
+            return despawnAction
+        }
+
+        elder0.sprite.run(SKAction.repeatForever(SKAction.animate(with: elder0.textures[Player.Texture.run.rawValue], timePerFrame: 0.1)))
+        elder1.sprite.run(SKAction.repeatForever(SKAction.animate(with: elder1.textures[Player.Texture.run.rawValue], timePerFrame: 0.05)))
+        elder2.sprite.run(SKAction.repeatForever(SKAction.animate(with: elder2.textures[Player.Texture.run.rawValue], timePerFrame: 0.05)))
+
+        elder0.sprite.run(getDespawnAction(elder: elder0), completion: completion)
+        elder1.sprite.run(getDespawnAction(elder: elder1))
+        elder2.sprite.run(getDespawnAction(elder: elder2))
     }
 
     

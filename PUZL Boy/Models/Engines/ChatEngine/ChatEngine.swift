@@ -903,7 +903,7 @@ extension ChatEngine {
             //0: 6
             ChatItem(profile: .statue3b, chat: "WELCOME TO YOUR DOOM!"),
             ChatItem(profile: .hero, imgPos: .left, chat: "NOOOOOOO!!!"),
-            ChatItem(profile: .statue3b, chat: "Kidding! I wouldn't do that to you. Look, he's not one of us, okay? Daemon the Destroyer was sent by Magmoor to traumatize you."),
+            ChatItem(profile: .statue3b, chat: "Kidding! I wouldn't do that to you. Look, that Tiki was not one of us, okay? Daemon the Destroyer was sent by Magmoor to traumatize you."),
             ChatItem(profile: .hero, imgPos: .left, chat: "Well, it worked!!"),
             ChatItem(profile: .statue3b, chat: "And you've been such a doll through all this. Answering our questions. And giving me this most luxurious feather. Please accept this little gift from all of us.") { [unowned self] in
                 hideFFButton()
@@ -1328,9 +1328,9 @@ extension ChatEngine {
                     ChatItem(profile: .hero, imgPos: .left, chat: "Mmmkay. Got it 🥱"),
                     ChatItem(profile: .trainer, chat: "Moving on. I received a visitor while I was in the DARK REALM. He didn't say who he was, but I think he might be connected to the disappearance."),
                     ChatItem(profile: .hero, imgPos: .left, chat: "Water mage... like a fish? A marlin is a fish."),
-                    ChatItem(profile: .trainer, chat: "Enough with the fish! We need to be on the lookout for the mysterious figure. Likely he holds the key to this mystery."),
+                    ChatItem(profile: .trainer, chat: "Enough with the fish! We need to be on the lookout for the mysterious figure. He likely holds the key to solving this mystery."),
                     ChatItem(profile: .hero, imgPos: .left, chat: "What's he look like?"),
-                    ChatItem(profile: .trainer, chat: "Hmm. If you run into someone who looks mysterious, It's probably him.")
+                    ChatItem(profile: .trainer, chat: "Hmm. If you run into someone who looks mysterious, it's probably him.")
                 ]) { [unowned self] in
                     delegate?.despawnTrainer(to: (0, 0))
                     handleDialogueCompletion(level: level, completion: completion)
@@ -1712,6 +1712,7 @@ extension ChatEngine {
                 ChatItem(profile: .villain, chat: "Who can say? A few hours... days... weeks..."),
                 ChatItem(profile: .princess, imgPos: .left, chat: "Well, which one is it!"),
                 ChatItem(profile: .villain, chat: "Tsk tsk! Patience, child. Relentless little one, aren't you?! Just like your mother."),
+                ChatItem(profile: .princess, imgPos: .left, chat: "Watch your mouth!! My mother is the Queen of Vaeloria. She'll have you depowered!"),
                 ChatItem(profile: .trainer, imgPos: .left, chat: "Magmoor, you promised to let her go!"),
                 ChatItem(profile: .villain, chat: "Isn't this nice?? Magmoor and Marlin, reunited once again. Don't you worry, dear Marlin. I always keep my promise...") { [unowned self] in
                     delegate?.inbetweenFlashPlayer(playerType: .hero, position: (0, 0), persistPresence: false)
@@ -1855,15 +1856,18 @@ extension ChatEngine {
                     }
                     
                     sendChatArray(shouldSkipDim: false, items: [
-                        ChatItem(profile: .melchior, startNewChat: true, chat: "⚡️BE GONE, DEMON!!!⚡️") { [unowned self] in
+                        ChatItem(profile: .melchior, startNewChat: true, chat: "⚡️BEGONE, CREATURE!!!⚡️") { [unowned self] in
                             showFFButton()
                         },
                         ChatItem(profile: .hero, imgPos: .left, chat: "Melchior and the Elders!! You guys are stuff of legends! 🤯"),
-                        ChatItem(profile: .melchior, chat: "MELCHIOR: Fear not, boy. You are safe now."),
+                        ChatItem(profile: .melchior, chat: "MELCHIOR: Fear not, boy. We are here now."),
                         ChatItem(profile: .hero, imgPos: .left, chat: "What the heck was that thing?!"),
-                        ChatItem(profile: .melchior, chat: "Daemon the Destroyer feeds on your deepest fears and desires. Give in and it will consume you. We fear it has already taken hold of Marlin."),
+                        ChatItem(profile: .magmus, chat: "MAGMUS: Magmoor's minion feeds on your deepest fears and desires. Give in and it will blacken your soul. Shatter your spirit. Destroy your entire being."),
+                        ChatItem(profile: .hero, imgPos: .left, chat: "Ok, I get it!"),
+                        ChatItem(profile: .merton, chat: "MERTON: 'Tis a thought fraught with fright! Marlin, we fear has fallen victim to this abomination."),
                         ChatItem(profile: .hero, imgPos: .left, chat: "Looks like my sleep paralysis demon. Is it gonna come back for me??!"),
-                        ChatItem(profile: .melchior, chat: "Perhaps. But you have our protection. We will join you in the fight to save the realms.") { [unowned self] in
+                        ChatItem(profile: .melchior, chat: "Perhaps. But you have our protection. We will join you in the fight to destroy Magmoor once and for all!!"),
+                        ChatItem(profile: .merton, chat: "And save the realms, not to mention.") { [unowned self] in
                             delegate?.despawnElders(to: (0, 0), completion: {})
                             hideFFButton()
                             AudioManager.shared.playSound(for: "titlechapter")

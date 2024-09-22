@@ -308,9 +308,9 @@ class CutsceneMagmoor: Cutscene {
             SKAction.wait(forDuration: elderPauses),
             SKAction.run { [unowned self] in
                 setTextArray(items: [
-                    SpeechBubbleItem(profile: speechPlayerLeft, speed: 0.05, chat: "Stop this, Magmoor!! We outnumber you 3 to 1.||||"),
-                    SpeechBubbleItem(profile: speechPlayerRight, chat: "\"Outnumber,\" you say?!! Then let's try—||||/3 to 100!"),
-                    SpeechBubbleItem(profile: speechPlayerLeft, speed: 0.01, chat: "SHIELD!!")
+                    SpeechBubbleItem(profile: speechPlayerLeft, speed: 0.05, chat: "Stop this, Magmoor!! You are outnumbered 3 to 1.||||"),
+                    SpeechBubbleItem(profile: speechPlayerRight, chat: "\"Outnumbered,\" you say?!! Then let's try—||||/3 to 100!"),
+                    SpeechBubbleItem(profile: speechPlayerLeft, speed: 0.01, chat: "⚡️SHIELD!!!⚡️")
                 ], completion: nil)
                 
                 closeupElders()
@@ -342,7 +342,7 @@ class CutsceneMagmoor: Cutscene {
                 speechPlayerLeft.position.y = leftPlayerPositionInitial.y + 250
 
                 setTextArray(items: [
-                    SpeechBubbleItem(profile: speechPlayerLeft, speed: 0.01, chat: "REDUCE!!")
+                    SpeechBubbleItem(profile: speechPlayerLeft, speed: 0.01, chat: "⚡️MINIMIZE!!!⚡️")
                 ], completion: nil)
                 
                 closeupElders()
@@ -362,7 +362,7 @@ class CutsceneMagmoor: Cutscene {
             SKAction.wait(forDuration: 1.3),
             SKAction.run { [unowned self] in
                 setTextArray(items: [
-                    SpeechBubbleItem(profile: speechPlayerLeft, speed: 0.01, chat: "BANISH!!")
+                    SpeechBubbleItem(profile: speechPlayerLeft, speed: 0.01, chat: "⚡️BANISH!!!⚡️")
                 ], completion: nil)
 
                 closeupElder0()
