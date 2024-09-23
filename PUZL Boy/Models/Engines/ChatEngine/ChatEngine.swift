@@ -1867,7 +1867,8 @@ extension ChatEngine {
                         ChatItem(profile: .merton, chat: "MERTON: 'Tis a thought fraught with fright! Marlin, we fear has fallen victim to this abomination."),
                         ChatItem(profile: .hero, imgPos: .left, chat: "Looks like my sleep paralysis demon. Is it gonna come back for me??!"),
                         ChatItem(profile: .melchior, chat: "Perhaps. But you have our protection. We will join you in the fight to destroy Magmoor once and for all!!"),
-                        ChatItem(profile: .merton, chat: "And save the realms, not to mention.") { [unowned self] in
+                        ChatItem(profile: .magmus, chat: "And save the realms from total annihilation."),
+                        ChatItem(profile: .merton, chat: "Huzzah!") { [unowned self] in
                             delegate?.despawnElders(to: (0, 0), completion: {})
                             hideFFButton()
                             AudioManager.shared.playSound(for: "titlechapter")

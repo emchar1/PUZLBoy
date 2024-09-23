@@ -1253,6 +1253,16 @@ class GameboardSprite {
         let particleType: ParticleEngine.ParticleType
         let particleScale: CGFloat
         let nameSuffix: String
+        
+        func moveWithIllusions(startIndex: Int, endIndex: Int) -> SKAction {
+            return SKAction.group([
+                SKAction.move(to: getLocation(at: positions[endIndex]) + elderOffset, duration: rotateSpeed),
+                Player.moveWithIllusions(
+                    playerNode: elder.sprite, backgroundNode: sprite, tag: nameSuffix, color: .white, playSound: false,
+                    startPoint: getLocation(at: positions[startIndex]) + elderOffset, endPoint: getLocation(at: positions[endIndex]) + elderOffset,
+                    startScale: -Player.getGameboardScale(panelSize: panelSize) * elder.scaleMultiplier)
+            ])
+        }
 
         switch elder.type {
         case .elder0:
@@ -1293,27 +1303,9 @@ class GameboardSprite {
                     SKAction.moveBy(x: elderOffset.x, y: elderOffset.y, duration: appearDuration)
                 ]),
                 SKAction.sequence([
-                    SKAction.group([
-                        SKAction.move(to: getLocation(at: positions[1]) + elderOffset, duration: rotateSpeed),
-                        Player.moveWithIllusions(
-                            playerNode: elder.sprite, backgroundNode: sprite, tag: nameSuffix, color: .white, playSound: false,
-                            startPoint: getLocation(at: positions[0]) + elderOffset, endPoint: getLocation(at: positions[1]) + elderOffset,
-                            startScale: -Player.getGameboardScale(panelSize: panelSize) * elder.scaleMultiplier)
-                    ]),
-                    SKAction.group([
-                        SKAction.move(to: getLocation(at: positions[2]) + elderOffset, duration: rotateSpeed),
-                        Player.moveWithIllusions(
-                            playerNode: elder.sprite, backgroundNode: sprite, tag: nameSuffix, color: .white, playSound: false,
-                            startPoint: getLocation(at: positions[1]) + elderOffset, endPoint: getLocation(at: positions[2]) + elderOffset,
-                            startScale: -Player.getGameboardScale(panelSize: panelSize) * elder.scaleMultiplier)
-                    ]),
-                    SKAction.group([
-                        SKAction.move(to: getLocation(at: positions[0]) + elderOffset, duration: rotateSpeed),
-                        Player.moveWithIllusions(
-                            playerNode: elder.sprite, backgroundNode: sprite, tag: nameSuffix, color: .white, playSound: false,
-                            startPoint: getLocation(at: positions[2]) + elderOffset, endPoint: getLocation(at: positions[0]) + elderOffset,
-                            startScale: -Player.getGameboardScale(panelSize: panelSize) * elder.scaleMultiplier)
-                    ])
+                    moveWithIllusions(startIndex: 0, endIndex: 1),
+                    moveWithIllusions(startIndex: 1, endIndex: 2),
+                    moveWithIllusions(startIndex: 2, endIndex: 0)
                 ])
             ]), completion: completion)
             
