@@ -993,11 +993,23 @@ class GameboardSprite {
         let anglesCount: CGFloat = 64 //Needs to match count of rotateAction() calls, below!!
         let flipDuration: TimeInterval = 2
         
-        sprite.run(SKAction.sequence([
-            SKAction.run {
-                AudioManager.shared.playSound(for: "realmtransition")
-            },
+        func rotateAction(i: CGFloat, angles: CGFloat, duration: TimeInterval) -> SKAction {
+            let angleToRotate: CGFloat = -2 * .pi / angles
             
+            //properties related to duration
+            let division: TimeInterval = i / TimeInterval(angles)
+            let halvsies: TimeInterval = duration / (angles / 2 + 0.5)
+            let durationBezier: TimeInterval = (division * division * (3 - 2 * division)) * halvsies
+            
+            return SKAction.group([
+                SKAction.rotate(byAngle: angleToRotate, duration: durationBezier),
+                SKAction.move(to: circle.getPointOnCircle(angleRad: i * angleToRotate), duration: durationBezier)
+            ])
+        }
+        
+        AudioManager.shared.playSound(for: "realmtransition")
+        
+        sprite.run(SKAction.sequence([
             //Is there a way to do this in a loop, both for readability and scalability?
             rotateAction(i: 1, angles: anglesCount, duration: flipDuration),
             rotateAction(i: 2, angles: anglesCount, duration: flipDuration),
@@ -1064,28 +1076,6 @@ class GameboardSprite {
             rotateAction(i: 63, angles: anglesCount, duration: flipDuration),
             rotateAction(i: 64, angles: anglesCount, duration: flipDuration)
         ]))
-    }
-
-    /**
-     Helper function for flipGameboard()
-     - parameters:
-        - i: the index to iterate on
-        - angles: total count of angles in the entire rotation
-        - duration: the duration of the entire rotation
-     - returns: an SKAction containing the rotation action
-     */
-    private func rotateAction(i: CGFloat, angles: CGFloat, duration: TimeInterval) -> SKAction {
-        let angleToRotate: CGFloat = -2 * .pi / angles
-        
-        //properties related to duration
-        let division: TimeInterval = i / TimeInterval(angles)
-        let halvsies: TimeInterval = duration / (angles / 2 + 0.5)
-        let durationBezier: TimeInterval = (division * division * (3 - 2 * division)) * halvsies
-        
-        return SKAction.group([
-            SKAction.rotate(byAngle: angleToRotate, duration: durationBezier),
-            SKAction.move(to: circle.getPointOnCircle(angleRad: i * angleToRotate), duration: durationBezier)
-        ])
     }
     
     
