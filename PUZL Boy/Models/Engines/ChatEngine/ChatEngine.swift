@@ -1856,7 +1856,7 @@ extension ChatEngine {
                     }
                     
                     sendChatArray(shouldSkipDim: false, items: [
-                        ChatItem(profile: .melchior, startNewChat: true, chat: "⚡️BEGONE, CREATURE!!!⚡️") { [unowned self] in
+                        ChatItem(profile: .allelders, startNewChat: true, chat: "⚡️BEGONE, CREATURE!!!⚡️") { [unowned self] in
                             showFFButton()
                         },
                         ChatItem(profile: .hero, imgPos: .left, chat: "Melchior and the Elders!! You guys are stuff of legends! 🤯"),

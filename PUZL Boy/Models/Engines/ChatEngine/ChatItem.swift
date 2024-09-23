@@ -23,7 +23,7 @@ struct ChatItem {
     enum ChatProfile {
         case hero, trainer, villain, princess, princessCursed, princess2,
              blankhero, blanktrainer, blankvillain, blankprincess, blankelders,
-             merton, magmus, melchior,
+             allelders, merton, magmus, melchior,
              statue0, statue1, statue2, statue3, statue3b, statue4, statue5
     }
 
@@ -74,8 +74,9 @@ struct ChatItem {
         case .blankvillain:     texture = nil
         case .blankprincess:    texture = nil
         case .blankelders:      texture = nil
-        case .merton:           texture = SKTexture(imageNamed: "melchior")
-        case .magmus:           texture = SKTexture(imageNamed: "melchior")
+        case .allelders:           texture = SKTexture(imageNamed: "allElders")
+        case .merton:           texture = SKTexture(imageNamed: "merton")
+        case .magmus:           texture = SKTexture(imageNamed: "magmus")
         case .melchior:         texture = SKTexture(imageNamed: "melchior")
         case .statue0:          texture = SKTexture(imageNamed: "chatStatue0")
         case .statue1:          texture = SKTexture(imageNamed: "chatStatue1")
@@ -102,7 +103,7 @@ struct ChatItem {
             chatColor = .red
         case .princess, .princess2, .princessCursed, .blankprincess:
             chatColor = .magenta
-        case .merton, .magmus, .melchior, .blankelders:
+        case .allelders, .merton, .magmus, .melchior, .blankelders:
             chatColor = .purple
         case .statue0, .statue1, .statue2, .statue3, .statue3b, .statue4, .statue5:
             chatColor = .systemGreen.darkenColor(factor: 3)
@@ -122,7 +123,7 @@ struct ChatItem {
             AudioManager.shared.playSound(for: "chatopenvillain")
         case .princess, .princess2, .princessCursed, .blankprincess:
             AudioManager.shared.playSound(for: "chatopenprincess")
-        case .merton, .magmus, .melchior, .blankelders:
+        case .allelders, .merton, .magmus, .melchior, .blankelders:
             AudioManager.shared.playSound(for: "chatopenelder")
         case .statue0, .statue1, .statue2, .statue3, .statue3b, .statue4, .statue5:
             AudioManager.shared.playSound(for: "chatopenstatue", delay: 0.03)
