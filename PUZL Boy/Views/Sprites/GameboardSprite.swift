@@ -495,6 +495,8 @@ class GameboardSprite {
         overlayPanel.scale(to: scaleSize)
         overlayPanel.position = getSpritePosition(at: endPanel) + GameboardSprite.padding / 2
         overlayPanel.anchorPoint = .zero
+        overlayPanel.color = GameboardSprite.dayThemeSpriteColor
+        overlayPanel.colorBlendFactor = GameboardSprite.dayThemeSpriteShade
         overlayPanel.zPosition = K.ZPosition.overlay
         overlayPanel.name = "captureEndOpen"
         sprite.addChild(overlayPanel)

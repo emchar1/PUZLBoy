@@ -79,9 +79,6 @@ class MagmoorScarySprite: SKNode {
     func pulseImage(backgroundColor: UIColor? = nil, delay: TimeInterval = 0) {
         let pulseAction: SKAction = SKAction.sequence([
             SKAction.wait(forDuration: delay),
-            SKAction.run {
-                AudioManager.shared.playSound(for: "scarylaugh")
-            },
             SKAction.repeat(SKAction.sequence([
                 SKAction.fadeIn(withDuration: 0),
                 SKAction.wait(forDuration: 0.1),
@@ -94,6 +91,8 @@ class MagmoorScarySprite: SKNode {
             backgroundNode.fillColor = backgroundColor
             backgroundNode.run(pulseAction)
         }
+        
+        AudioManager.shared.playSound(for: "scarylaugh", delay: delay)
         
         sprite.texture = SKTexture(imageNamed: "villainRedEyesFlash")
         sprite.run(pulseAction)
