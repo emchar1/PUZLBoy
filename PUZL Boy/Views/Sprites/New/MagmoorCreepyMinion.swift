@@ -254,7 +254,6 @@ class MagmoorCreepyMinion: SKNode {
      Helper function for when minion attacks.
      */
     private func minionAttack() {
-        guard Bool.random() else { return } // 50% chance of getting attacked.. ingenious!
         guard let parentSprite = parentNode as? SKSpriteNode else { return }
 
         let scratchOffset: CGFloat = 50

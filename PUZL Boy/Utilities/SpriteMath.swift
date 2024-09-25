@@ -84,8 +84,28 @@ struct SpriteMath {
             let sinAngle = asin((CGFloat(positions[0].col) - center.y) / radius)
             let cosAngle = acos((CGFloat(positions[0].row) - center.x) / radius)
 
-            // FIXME: - This seems hokey! FIGURE THIS PART OUT!!
-            let startAngle = CGFloat(positions[0].row) > center.x ? sinAngle : cosAngle
+            // FIXME: - In cases where (x, y) is undefined compared to center, it crashes, e.g. [(3, 1), (1, 3), (5, 3)]
+            let startAngle: CGFloat
+            if CGFloat(positions[0].row) >= center.x && CGFloat(positions[0].col) >= center.y {
+                print("\(positions[0]): x >= center.x, y >= center.y")
+                startAngle = sinAngle //good
+            }
+            else if CGFloat(positions[0].row) >= center.x && CGFloat(positions[0].col) <= center.y {
+                print("\(positions[0]): x >= center.x, y <= center.y")
+                startAngle = sinAngle //good
+            }
+            else if CGFloat(positions[0].row) <= center.x && CGFloat(positions[0].col) <= center.y {
+                print("\(positions[0]): x <= center.x, y <= center.y")
+                startAngle = -cosAngle //good
+            }
+            else if CGFloat(positions[0].row) <= center.x && CGFloat(positions[0].col) >= center.y {
+                print("\(positions[0]): x <= center.x, y >= center.y")
+                startAngle = cosAngle //good
+            }
+            else {
+                print("\(positions[0]): undefined")
+                startAngle = cosAngle
+            }
             
             for angle in stride(from: startAngle, through: 4 * CGFloat.pi + startAngle, by: 2 * CGFloat.pi / divisionsOf2Pi) {
                 let nextPosition: K.GameboardPositionCGFloat = (center.x + radius * cos(angle), center.y + radius * sin(angle))
@@ -107,9 +127,12 @@ struct SpriteMath {
             case 2:
                 center = CGPoint(x: CGFloat(positions[0].row + positions[1].row) / 2, y: CGFloat(positions[0].col + positions[1].col) / 2)
             case 3:
+                //Prevents division by zero in the A property below by swapping positions 1 and 2.
+                let divByZeroCheck = positions[2].col == positions[0].col
+                
                 let p0 = CGPoint(x: positions[0].row, y: positions[0].col)
-                let p1 = CGPoint(x: positions[1].row, y: positions[1].col)
-                let p2 = CGPoint(x: positions[2].row, y: positions[2].col)
+                let p1 = divByZeroCheck ? CGPoint(x: positions[2].row, y: positions[2].col) : CGPoint(x: positions[1].row, y: positions[1].col)
+                let p2 = divByZeroCheck ? CGPoint(x: positions[1].row, y: positions[1].col) : CGPoint(x: positions[2].row, y: positions[2].col)
                 
                 guard let isCollinear = checkCollinear(positions: positions), !isCollinear else {
                     print("Oops! Points on circle are collinear")

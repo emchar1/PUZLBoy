@@ -1324,6 +1324,11 @@ class GameboardSprite {
                     SKAction.scaleY(to: Player.getGameboardScale(panelSize: panelSize) * elder.scaleMultiplier, duration: appearDuration),
                     SKAction.moveBy(x: elderOffset.x, y: elderOffset.y, duration: appearDuration)
                 ]),
+//                SKAction.sequence([
+//                    moveWithIllusionsTriangular(startIndex: 0, endIndex: 1),
+//                    moveWithIllusionsTriangular(startIndex: 1, endIndex: 2),
+//                    moveWithIllusionsTriangular(startIndex: 2, endIndex: 0)
+//                ]),
                 SKAction.sequence(moveWithIllusionsCircular(positions: positions)),
             ]), completion: completion)
             
