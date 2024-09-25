@@ -1249,12 +1249,15 @@ class GameboardSprite {
         let elderOffset = CGPoint(x: panelSize / 8, y: panelSize / 8)
         let appearDuration: TimeInterval = 1
         let rotateSpeed: TimeInterval = 1
+        let rotateSpeedCircular: TimeInterval = 0.0625
+        let divisionsOf2Pi: CGFloat = 32
         let idleSpeed: TimeInterval
         let particleType: ParticleEngine.ParticleType
         let particleScale: CGFloat
         let nameSuffix: String
         
-        func moveWithIllusions(startIndex: Int, endIndex: Int) -> SKAction {
+        //Defunct as of 9/24/24.
+        func moveWithIllusionsTriangular(startIndex: Int, endIndex: Int) -> SKAction {
             return SKAction.group([
                 SKAction.move(to: getLocation(at: positions[endIndex]) + elderOffset, duration: rotateSpeed),
                 Player.moveWithIllusions(
@@ -1262,6 +1265,25 @@ class GameboardSprite {
                     startPoint: getLocation(at: positions[startIndex]) + elderOffset, endPoint: getLocation(at: positions[endIndex]) + elderOffset,
                     startScale: -Player.getGameboardScale(panelSize: panelSize) * elder.scaleMultiplier)
             ])
+        }
+        
+        func moveWithIllusionsCircular(positions: [K.GameboardPosition]) -> [SKAction] {
+            let trailColor: UIColor = .yellow
+            let allPositions = SpriteMath.Circle.getPositions(positions: positions, divisionsOf2Pi: divisionsOf2Pi)
+            var circularActions: [SKAction] = []
+            
+            for position in allPositions {
+                let movePoint = getLocation(rowf: position.row, colf: position.col) + elderOffset
+                
+                circularActions.append(SKAction.group([
+                    SKAction.move(to: movePoint, duration: rotateSpeedCircular),
+                    SKAction.run { [unowned self] in
+                        elder.moveWithIllusions2(backgroundNode: sprite, trailColor: trailColor, trailLength: 20, trailTightness: 0.03)
+                    }
+                ]))
+            }
+            
+            return circularActions
         }
 
         switch elder.type {
@@ -1302,11 +1324,7 @@ class GameboardSprite {
                     SKAction.scaleY(to: Player.getGameboardScale(panelSize: panelSize) * elder.scaleMultiplier, duration: appearDuration),
                     SKAction.moveBy(x: elderOffset.x, y: elderOffset.y, duration: appearDuration)
                 ]),
-                SKAction.sequence([
-                    moveWithIllusions(startIndex: 0, endIndex: 1),
-                    moveWithIllusions(startIndex: 1, endIndex: 2),
-                    moveWithIllusions(startIndex: 2, endIndex: 0)
-                ])
+                SKAction.sequence(moveWithIllusionsCircular(positions: positions)),
             ]), completion: completion)
             
             sprite.run(SKAction.sequence([

@@ -7,19 +7,30 @@
 
 import SpriteKit
 
-struct Player {
+class Player {
     
-    // MARK: - Properties
+    // MARK: - Properties: General
     
     static let size = CGSize(width: 946, height: 564)
     static let cutsceneScale: CGFloat = 0.75 //to be used in cutscenes
     private(set) var scale = 0.5
     private(set) var scaleMultiplier: CGFloat = 1
     private(set) var type: PlayerType
-
+    
+    
+    // MARK: - Properties: NEW 9/24/24
+    
+    private var isAnimatingIllusions2: Bool = false
+    
+    
+    // MARK: - Properties: Sprites
+    
     private(set) var sprite: SKSpriteNode!
     private(set) var textures: [[SKTexture]]
     private var atlas: SKTextureAtlas
+    
+    
+    // MARK: - Properties: Enums
     
     enum PlayerType: String, CaseIterable {
         case hero = "hero", trainer, princess, princess2, villain, minion, youngTrainer, youngVillain, elder0, elder1, elder2
@@ -107,8 +118,10 @@ struct Player {
      - parameters:
         - framesRange: array of closed ranges representing the frames for that texture.
         - framesCommand: array of command Strings, where, if not nil, will use that string, otherwise, use the "default" string, e.g. "Idle"
+     > Warning: This is how you use the Warning keyword.
+     - note: Initially a mutating function when Player was a struct prior to 9/24/24.
      */
-    private mutating func setupPlayer(framesRange: [ClosedRange<Int>?], framesCommand: [String?]? = nil) {
+    private func setupPlayer(framesRange: [ClosedRange<Int>?], framesCommand: [String?]? = nil) {
         guard framesRange.count == Texture.allCases.count - 3 else { return print("Player.setupPlayer() out of range for: \(self.type)") }
         
         let prefix: String
@@ -172,14 +185,18 @@ struct Player {
     
     // MARK: - Functions
     
-    mutating func setPlayerScale(_ scale: CGFloat) {
+    /**
+     Sets the player's scale.
+     - note: Initially a mutating function when Player was a struct prior to 9/24/24.
+     */
+    func setPlayerScale(_ scale: CGFloat) {
         self.scale = scale * scaleMultiplier
     }
     
     /**
      Helper function to ensure two players on the same scene are of the same height, i.e. with player = .hero as the base case.
-        - parameter player: the comparing player (to player .hero)
-        - returns: the normalized height adjusted to player = .hero
+     - parameter player: the comparing player (to player .hero)
+     - returns: the normalized height adjusted to player = .hero
      */
     static func getNormalizedAdjustedHeight(player: Player) -> CGFloat {
         return size.height / 2 * cutsceneScale * (player.scaleMultiplier - 1)
@@ -211,7 +228,7 @@ struct Player {
                                   color: UIColor, playSound: Bool,
                                   startPoint: CGPoint, endPoint: CGPoint,
                                   startScale: CGFloat, endScale: CGFloat? = nil) -> SKAction {
-
+        
         let blinkDivision: Int = 20
         var illusionStep: Int = 1
         
@@ -219,7 +236,7 @@ struct Player {
             SKAction.run {
                 let scaleDiff: CGFloat = (endScale ?? startScale) - startScale
                 let incrementScale: CGFloat = scaleDiff * CGFloat(illusionStep) / CGFloat(blinkDivision)
-
+                
                 let illusionSprite = SKSpriteNode(imageNamed: playerNode.texture?.getFilename() ?? "VillainIdle (1)")
                 illusionSprite.size = Player.size
                 illusionSprite.xScale = playerNode.xScale + incrementScale * (playerNode.xScale < 0 ? -1 : 1)
@@ -252,6 +269,53 @@ struct Player {
                 illusionStep += 1
             }
         ]), count: blinkDivision)
+    }
+    
+    /**
+     NEW Object function that moves a Player with illusions.
+     > Warning: This is an object function, not a class function. This is a new type of animation that is not static, so call it from your Player object. Added 9/24/24.
+     - parameters:
+        - backgroundNode: the gameboard sprite to add the duplicate child to.
+        - trailLength: number of repeats of duplicates to create before resetting the isAnimatingIllusions2 guard property.
+        - trailTightness: "closeness" of the duplicates.
+     */
+    func moveWithIllusions2(backgroundNode: SKNode, trailColor: UIColor?, trailLength: Int, trailTightness: TimeInterval) {
+        guard !isAnimatingIllusions2 else { return }
+        
+        var zPositionOffset: CGFloat = 1
+
+        isAnimatingIllusions2 = true
+
+        func leaveTrail(fadeDuration: TimeInterval) {
+            let duplicate = Player(type: self.type)
+            duplicate.sprite.xScale = self.sprite.xScale
+            duplicate.sprite.yScale = self.sprite.yScale
+            duplicate.sprite.position = self.sprite.position
+            duplicate.sprite.zPosition = self.sprite.zPosition - CGFloat(trailLength + 1) + zPositionOffset
+             
+            if let color = trailColor {
+                duplicate.sprite.color = color
+                duplicate.sprite.colorBlendFactor = 1
+            }
+            
+            backgroundNode.addChild(duplicate.sprite)
+            
+            duplicate.sprite.run(SKAction.repeatForever(SKAction.animate(with: duplicate.textures[Player.Texture.idle.rawValue], timePerFrame: 0.1)))
+            duplicate.sprite.run(SKAction.sequence([
+                SKAction.fadeOut(withDuration: fadeDuration),
+                SKAction.removeFromParent()
+            ]))
+        }
+        
+        sprite.run(SKAction.repeat(SKAction.sequence([
+            SKAction.run {
+                leaveTrail(fadeDuration: 0.5)
+                zPositionOffset += 1
+            },
+            SKAction.wait(forDuration: trailTightness)
+        ]), count: trailLength)) { [unowned self] in
+            isAnimatingIllusions2 = false
+        }
     }
     
     

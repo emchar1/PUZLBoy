@@ -63,4 +63,130 @@ struct SpriteMath {
             return (sideX, sideY, hypotenuse)
         }
     }
+    
+    ///Specific to circles.
+    struct Circle {
+        /**
+         Returns the (x, y) positions coordinates of a circle given 3 positions on the GameBoard.
+         - parameters:
+            - positions: 3 points on the GameBoard
+            - step: Number of divisions, the more, the smoother the circle.
+         - returns: (x, y0) top and (x, y1) bottom halves of the circle.
+         */
+        static func getPositions(positions: [K.GameboardPosition], divisionsOf2Pi: CGFloat) -> [K.GameboardPositionCGFloat] {
+            var allPositions: [K.GameboardPositionCGFloat] = []
+
+            //Guard checks
+            guard positions.count == 3 else { return allPositions }
+            guard let center = getCenter(positions: positions) else { return allPositions }
+            guard let radius = getRadius(positions: positions) else { return allPositions }
+            
+            let sinAngle = asin((CGFloat(positions[0].col) - center.y) / radius)
+            let cosAngle = acos((CGFloat(positions[0].row) - center.x) / radius)
+
+            // FIXME: - This seems hokey! FIGURE THIS PART OUT!!
+            let startAngle = CGFloat(positions[0].row) > center.x ? sinAngle : cosAngle
+            
+            for angle in stride(from: startAngle, through: 4 * CGFloat.pi + startAngle, by: 2 * CGFloat.pi / divisionsOf2Pi) {
+                let nextPosition: K.GameboardPositionCGFloat = (center.x + radius * cos(angle), center.y + radius * sin(angle))
+                
+                allPositions.append(nextPosition)
+            }
+            
+//            print("SpriteMath.Circle.getPositions: \(allPositions)")
+            return allPositions
+        }
+        
+        /**
+         Returns the center of a circle, given 2 or 3 (non-collinear) positions on a K.GameboardSprite.
+         */
+        static func getCenter(positions: [K.GameboardPosition]) -> CGPoint? {
+            let center: CGPoint?
+            
+            switch positions.count {
+            case 2:
+                center = CGPoint(x: CGFloat(positions[0].row + positions[1].row) / 2, y: CGFloat(positions[0].col + positions[1].col) / 2)
+            case 3:
+                let p0 = CGPoint(x: positions[0].row, y: positions[0].col)
+                let p1 = CGPoint(x: positions[1].row, y: positions[1].col)
+                let p2 = CGPoint(x: positions[2].row, y: positions[2].col)
+                
+                guard let isCollinear = checkCollinear(positions: positions), !isCollinear else {
+                    print("Oops! Points on circle are collinear")
+                    center = nil
+                    break
+                }
+                
+                let A: CGFloat = (p1.y - p0.y) / (p2.y - p0.y)
+                let B: CGFloat = pow(p1.x, 2) + pow(p1.y, 2) - pow(p0.x, 2) - pow(p0.y, 2) - A * (pow(p2.x, 2) + pow(p2.y, 2) - pow(p0.x, 2) - pow(p0.y, 2))
+                
+                let h = -B / (2 * A * (p2.x - p0.x) - 2 * (p1.x - p0.x))
+                let k = (pow(p2.x, 2) + pow(p2.y, 2) - pow(p0.x, 2) - pow(p0.y, 2) - 2 * h * (p2.x - p0.x)) / (2 * (p2.y - p0.y))
+                
+                center = CGPoint(x: h, y: k)
+            default:
+                center = nil
+            }
+            
+//            print("SpriteMath.Circle.getCenter: \(center)")
+            return center
+        }
+        
+        /**
+         Returns the radius of a circle, given 2 or 3 (non-collinear) positions on a K.GameboardSprite.
+         */
+        static func getRadius(positions: [K.GameboardPosition]) -> CGFloat? {
+            guard let center = getCenter(positions: positions) else { return nil }
+            
+            let radius: CGFloat?
+            
+            switch positions.count {
+            case 2, 3:
+                radius = sqrt(pow(CGFloat(positions[0].row) - center.x, 2) + pow(CGFloat(positions[0].col) - center.y, 2))
+            default:
+                radius = nil
+            }
+            
+//            print("SpriteMath.Circle.getRadius: \(radius)")
+            return radius
+        }
+        
+        /**
+         Checks if 3 points are collinear, return true if so.
+         */
+        static func checkCollinear(positions: [K.GameboardPosition]) -> Bool? {
+            guard positions.count == 3 else { return nil }
+            
+            func slope(p0: K.GameboardPosition, p1: K.GameboardPosition) -> CGFloat {
+                return CGFloat(p1.col - p0.col) / CGFloat(p1.row - p0.row)
+            }
+            
+            let m0_1 = slope(p0: positions[0], p1: positions[1])
+            let m0_2 = slope(p0: positions[0], p1: positions[2])
+            let m1_2 = slope(p0: positions[1], p1: positions[2])
+            
+            let isCollinear = (m0_1 == m0_2 && (m0_1 == m1_2 || m0_2 == m1_2))
+            
+//            print("SpriteMath.Circle.checkCollinear: \(isCollinear)")
+            return isCollinear
+        }
+        
+        /**
+         Returns the domain (lowerRange...upperRange) of x-values, given 3 points.
+         */
+        static func getDomain(positions: [K.GameboardPosition]) -> ClosedRange<CGFloat>? {
+            guard positions.count == 3 else { return nil }
+            guard let center = getCenter(positions: positions) else { return nil }
+            guard let radius = getRadius(positions: positions) else { return nil }
+            
+            let lowerRange = center.x - radius
+            let upperRange = center.x + radius
+
+//            print("SpriteMath.Circle.getDomain: \(lowerRange...upperRange)")
+            return lowerRange...upperRange
+        }
+        
+    } //end struct Circle
+    
+    
 }

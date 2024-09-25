@@ -11,7 +11,8 @@ import SpriteKit
 struct K {
     ///Position, row, col, on the gameboard.
     typealias GameboardPosition = (row: Int, col: Int)
-    
+    typealias GameboardPositionCGFloat = (row: CGFloat, col: CGFloat)
+
     ///Gameboard piece, i.e. one panel
     typealias GameboardPanel = (terrain: LevelType, overlay: LevelType)
     

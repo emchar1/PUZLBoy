@@ -16,6 +16,7 @@ class MagmoorCreepyMinion: SKNode {
     private var scale: CGFloat
     private var gameboardScaleSize: CGSize
     private var spawnPoint: CGPoint
+    private var parentNode: SKNode?
     
     private var leftHand: SKSpriteNode!
     private var leftArm: SKSpriteNode!
@@ -110,7 +111,8 @@ class MagmoorCreepyMinion: SKNode {
         addChild(body3)
         addChild(body4)
         
-        parentNode.addChild(self)
+        self.parentNode = parentNode
+        self.parentNode!.addChild(self)
     }
     
     /**
@@ -129,7 +131,10 @@ class MagmoorCreepyMinion: SKNode {
             SKAction.wait(forDuration: duration),
             SKAction.fadeOut(withDuration: 0.25),
             SKAction.removeFromParent()
-        ]), completion: completion)
+        ])) { [unowned self] in
+            removeFromParent()
+            completion()
+        }
         
         AudioManager.shared.playSoundThenStop(for: "littlegirllaugh",
                                               currentTime: TimeInterval.random(in: 0...8),
@@ -197,6 +202,9 @@ class MagmoorCreepyMinion: SKNode {
                 SKAction.rotate(byAngle: -.pi / 10, duration: 0),
                 SKAction.wait(forDuration: randomTimeHand),
                 SKAction.rotate(byAngle: -.pi / 10, duration: 0),
+                SKAction.run { [unowned self] in
+                    minionAttack()
+                },
                 SKAction.wait(forDuration: randomTimeHand),
                 SKAction.rotate(byAngle: .pi / 10, duration: 0),
                 SKAction.wait(forDuration: randomTimeHand),
@@ -205,7 +213,7 @@ class MagmoorCreepyMinion: SKNode {
                 SKAction.rotate(byAngle: .pi / 10, duration: 0),
                 SKAction.wait(forDuration: randomTimeHand),
                 SKAction.rotate(byAngle: .pi / 10, duration: 0),
-                SKAction.wait(forDuration: randomTimeHand)
+                SKAction.wait(forDuration: randomTimeHand),
             ]))
         ]))
     }
@@ -229,13 +237,50 @@ class MagmoorCreepyMinion: SKNode {
         animateRemoveNode(node: leftArm, delay: delay + 0.3)
         animateRemoveNode(node: rightHand, delay: delay + 0.1)
         animateRemoveNode(node: rightArm, delay: delay + 0.1)
-        animateRemoveNode(node: face1, delay: delay + 0.3)
-        animateRemoveNode(node: face2, delay: delay + 0.4)
-        animateRemoveNode(node: face3, delay: delay + 3.0, fadeOut: 0.25)
         animateRemoveNode(node: body1, delay: delay + 0.1)
         animateRemoveNode(node: body2, delay: delay + 0.2)
         animateRemoveNode(node: body3, delay: delay + 0.3)
         animateRemoveNode(node: body4, delay: delay + 0.4)
+        animateRemoveNode(node: face1, delay: delay + 0.3)
+        animateRemoveNode(node: face2, delay: delay + 0.4)
+
+        //Longest animation sequence. Use for completion handling.
+        animateRemoveNode(node: face3, delay: delay + 3.0, fadeOut: 0.25) { [unowned self] in
+            removeFromParent()
+        }
+    }
+    
+    /**
+     Helper function for when minion attacks.
+     */
+    private func minionAttack() {
+        guard Bool.random() else { return } // 50% chance of getting attacked.. ingenious!
+        guard let parentSprite = parentNode as? SKSpriteNode else { return }
+
+        let scratchOffset: CGFloat = 50
+        let scratchDuration: TimeInterval = 0.5
+        
+        let scratchScreen = SKSpriteNode(imageNamed: "enemyScratch")
+        scratchScreen.size = parentSprite.size
+        scratchScreen.position.y += scratchOffset
+        scratchScreen.anchorPoint = .zero
+        scratchScreen.zRotation = CGFloat.random(in: (-.pi / 12)...(.pi / 12))
+        scratchScreen.zPosition = leftHand.zPosition + 1
+        
+        parentSprite.addChild(scratchScreen)
+        
+        scratchScreen.run(SKAction.sequence([
+            SKAction.group([
+                SKAction.moveTo(y: -scratchOffset, duration: scratchDuration),
+                SKAction.scale(by: 0.90, duration: scratchDuration),
+                SKAction.fadeOut(withDuration: scratchDuration)
+            ]),
+            SKAction.removeFromParent()
+        ]))
+        
+        AudioManager.shared.playSound(for: "enemyscratch")
+        AudioManager.shared.playSound(for: "boypain\(Int.random(in: 1...4))")
+        Haptics.shared.executeCustomPattern(pattern: .enemy)
     }
     
     /**
@@ -251,12 +296,14 @@ class MagmoorCreepyMinion: SKNode {
     /**
      Helper function to facilitate with hiding the minion nodes.
      */
-    private func animateRemoveNode(node: SKNode, delay: TimeInterval, fadeOut: TimeInterval? = nil) {
+    private func animateRemoveNode(node: SKNode, delay: TimeInterval, fadeOut: TimeInterval? = nil, completion: (() -> Void)? = nil) {
         node.run(SKAction.sequence([
             SKAction.wait(forDuration: delay),
             SKAction.fadeOut(withDuration: fadeOut ?? 0),
             SKAction.removeFromParent()
-        ]))
+        ])) {
+            completion?()
+        }
     }
     
     
