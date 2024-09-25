@@ -1851,7 +1851,7 @@ extension ChatEngine {
                 hideFFButton(showChatImmediately: true)
 
                 //This nesting is REALLY ugly!!
-                delegate?.spawnElder(positions: [(2, 1), (2, 5), (5, 3)], delay: 6) { [unowned self] in
+                delegate?.spawnElder(positions: [(0, 3), (4, 0), (4, 6)], delay: 6) { [unowned self] in
                     marlinBlast.animateBlast(playSound: true, color: .yellow.lightenColor(factor: 6)) { [unowned self] in
                         delegate?.despawnMagmoorMinion(at: spawnPointMinion)
                     }

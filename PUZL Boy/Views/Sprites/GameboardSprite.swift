@@ -1237,9 +1237,9 @@ class GameboardSprite {
             }
         }
         
-        spawnElderHelper(elder: elder0, positions: [positions[0], positions[2], positions[1]], delay: delay, completion: completion)
-        spawnElderHelper(elder: elder1, positions: [positions[2], positions[1], positions[0]], delay: delay, completion: {})
-        spawnElderHelper(elder: elder2, positions: [positions[1], positions[0], positions[2]], delay: delay, completion: {})
+        spawnElderHelper(elder: elder0, positions: [positions[0], positions[1], positions[2]], delay: delay, completion: completion)
+        spawnElderHelper(elder: elder1, positions: [positions[1], positions[2], positions[0]], delay: delay, completion: {})
+        spawnElderHelper(elder: elder2, positions: [positions[2], positions[0], positions[1]], delay: delay, completion: {})
         
         AudioManager.shared.playSound(for: "magicelderreduce", delay: delay)
         AudioManager.shared.playSound(for: "magicelderexplosion", delay: delay)
