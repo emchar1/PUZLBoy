@@ -1329,7 +1329,18 @@ class GameboardSprite {
 //                    moveWithIllusionsTriangular(startIndex: 1, endIndex: 2),
 //                    moveWithIllusionsTriangular(startIndex: 2, endIndex: 0)
 //                ]),
+                SKAction.run {
+                    ParticleEngine.shared.animateParticles(type: .magicLight,
+                                                           toNode: elder.sprite,
+                                                           position: .zero,
+                                                           scale: 4,
+                                                           zPosition: -1,
+                                                           duration: 0)
+                },
                 SKAction.sequence(moveWithIllusionsCircular(positions: positions)),
+                SKAction.run {
+                    ParticleEngine.shared.hideParticles(fromNode: elder.sprite, fadeDuration: 3)
+                }
             ]), completion: completion)
             
             sprite.run(SKAction.sequence([

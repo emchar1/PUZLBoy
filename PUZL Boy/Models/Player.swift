@@ -305,6 +305,13 @@ class Player {
                 SKAction.fadeOut(withDuration: fadeDuration),
                 SKAction.removeFromParent()
             ]))
+            
+            ParticleEngine.shared.animateParticles(type: .magicLight,
+                                                   toNode: duplicate.sprite,
+                                                   position: .zero,
+                                                   scale: 4,
+                                                   zPosition: -1,
+                                                   duration: 0)
         }
         
         sprite.run(SKAction.repeat(SKAction.sequence([
