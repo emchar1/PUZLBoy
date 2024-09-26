@@ -971,7 +971,7 @@ class GameboardSprite {
         princessNode.run(SKAction.sequence([
             SKAction.wait(forDuration: duration),
             SKAction.run {
-                ParticleEngine.shared.hideParticles(fromNode: princessNode, fadeDuration: 2)
+                ParticleEngine.shared.hideParticles(fromNode: princessNode, fadeDuration: 3)
             }
         ]))
     }
@@ -1290,7 +1290,7 @@ class GameboardSprite {
         case .elder0:
             nameSuffix = "0"
             particleType = .magicElderIce
-            particleScale = 3 / CGFloat(panelCount)
+            particleScale = 2 / CGFloat(panelCount)
             idleSpeed = 0.1
         case .elder1:
             nameSuffix = "1"

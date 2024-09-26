@@ -1414,7 +1414,7 @@ extension GameScene: ChatEngineDelegate {
     }
     
     func empowerPrincess(powerDisplayDuration: TimeInterval) {
-        gameEngine.gameboardSprite.empowerPrincess(duration: powerDisplayDuration - 1)
+        gameEngine.gameboardSprite.empowerPrincess(duration: powerDisplayDuration)
         shakeScreen(duration: powerDisplayDuration, shouldPlaySFX: false, completion: nil)
 
     }

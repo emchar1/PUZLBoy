@@ -828,6 +828,12 @@ class CutsceneMagmoor: Cutscene {
                                                        scale: 2,
                                                        zPosition: 1,
                                                        duration: 0)
+                ParticleEngine.shared.animateParticles(type: .magicElderEarth2,
+                                                       toNode: elder2.sprite,
+                                                       position: CGPoint(x: 0, y: -elder2.sprite.size.height / 2),
+                                                       scale: 2,
+                                                       zPosition: -1,
+                                                       duration: 0)
             },
             SKAction.colorize(withColorBlendFactor: 0, duration: fadeDuration),
             SKAction.wait(forDuration: cutsceneDuration - 2 * fadeDuration - 2 * moveDuration - delayDuration),
