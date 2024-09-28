@@ -87,23 +87,18 @@ struct SpriteMath {
             // FIXME: - In cases where (x, y) is undefined compared to center, it crashes, e.g. [(3, 1), (1, 3), (5, 3)]
             let startAngle: CGFloat
             if CGFloat(positions[0].row) >= center.x && CGFloat(positions[0].col) >= center.y {
-                print("\(positions[0]): x >= center.x, y >= center.y")
-                startAngle = sinAngle //good
+                startAngle = sinAngle
             }
             else if CGFloat(positions[0].row) >= center.x && CGFloat(positions[0].col) <= center.y {
-                print("\(positions[0]): x >= center.x, y <= center.y")
-                startAngle = sinAngle //good
+                startAngle = sinAngle
             }
             else if CGFloat(positions[0].row) <= center.x && CGFloat(positions[0].col) <= center.y {
-                print("\(positions[0]): x <= center.x, y <= center.y")
-                startAngle = -cosAngle //good
+                startAngle = -cosAngle
             }
             else if CGFloat(positions[0].row) <= center.x && CGFloat(positions[0].col) >= center.y {
-                print("\(positions[0]): x <= center.x, y >= center.y")
-                startAngle = cosAngle //good
+                startAngle = cosAngle
             }
             else {
-                print("\(positions[0]): undefined")
                 startAngle = cosAngle
             }
             

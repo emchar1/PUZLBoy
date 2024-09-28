@@ -1375,4 +1375,10 @@ class GameEngine {
     func playerIsOnStartPosition() -> Bool {
         return level.player == level.start
     }
+    
+    func handleMagmoorCreepyMinionTouches(scene: SKScene, touches: Set<UITouch>) {
+        gameboardSprite.magmoorCreepyMinion?.touchHandler(scene: scene, for: touches)
+    }
+    
+    
 }

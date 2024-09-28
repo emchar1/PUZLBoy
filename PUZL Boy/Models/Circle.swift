@@ -6,7 +6,7 @@
 //
 
 import Foundation
-
+// TODO: - Merge this with SpriteMath.Circle
 struct Circle {
     
     // MARK: - Properties

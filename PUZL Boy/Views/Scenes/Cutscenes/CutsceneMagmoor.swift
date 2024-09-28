@@ -1014,6 +1014,10 @@ class CutsceneMagmoor: Cutscene {
     private func closeupMagmoorBanish() {
         let playerRightScale = playerRight.scaleMultiplier * Player.cutsceneScale
         let banishDuration: TimeInterval = 4.5
+        let zoomAction = SKAction.sequence([
+            SKAction.wait(forDuration: 1),
+            SKAction.scale(by: 4, duration: banishDuration)
+        ])
         
         parallaxManager.backgroundSprite.removeAllActions()
         setParallaxPositionAndScale(scale: 2)
@@ -1044,7 +1048,7 @@ class CutsceneMagmoor: Cutscene {
                 SKAction.scaleX(to: -playerRightScale * 0.1, duration: banishDuration),
                 SKAction.scaleY(to: playerRightScale * 2, duration: banishDuration),
                 SKAction.rotate(toAngle: .pi / 6, duration: banishDuration),
-                SKAction.fadeAlpha(to: 0.5, duration: banishDuration)
+                SKAction.fadeAlpha(to: 0.8, duration: banishDuration)
             ])
         ]))
 
@@ -1067,7 +1071,9 @@ class CutsceneMagmoor: Cutscene {
                                                angle: 0,
                                                zPosition: K.ZPosition.itemsAndEffects + 2,
                                                duration: banishDuration)
-        
+
+        ParticleEngine.shared.animateExistingParticles(fromNode: backgroundNode, action: zoomAction)
+
         hideMagmoorDuplicates()
     }
     

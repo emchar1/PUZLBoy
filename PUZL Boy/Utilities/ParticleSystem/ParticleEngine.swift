@@ -201,6 +201,14 @@ class ParticleEngine: SKNode {
         }
     }
     
+    func animateExistingParticles(fromNode node: SKNode, action: SKAction, nameGameboardPosition: K.GameboardPosition? = nil) {
+        for particleNode in node.children {
+            guard particleNode.name == ParticleEngine.nodeName + getPositionString(nameGameboardPosition) else { continue }
+            
+            particleNode.run(action)
+        }
+    }
+    
     private func getPositionString(_ position: K.GameboardPosition?) -> String {
         if let position = position {
             return "(\(position.row),\(position.col))"

@@ -246,6 +246,8 @@
 		EAA921D82C011362009E99E7 /* AuthorizationRequestScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAA921D72C011361009E99E7 /* AuthorizationRequestScene.swift */; };
 		EAA921DA2C014C83009E99E7 /* AuthorizationSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAA921D92C014C83009E99E7 /* AuthorizationSprite.swift */; };
 		EAAB5A1D2C99E9A5007E463B /* MagicMergeParticles.sks in Resources */ = {isa = PBXBuildFile; fileRef = EAAB5A1C2C99E9A5007E463B /* MagicMergeParticles.sks */; };
+		EAAB5A1F2CA63B3B007E463B /* Counter.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAAB5A1E2CA63B3B007E463B /* Counter.swift */; };
+		EAAB5A212CA6A7E0007E463B /* StatusBarSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAAB5A202CA6A7E0007E463B /* StatusBarSprite.swift */; };
 		EAACB4A7296F80E700973EB8 /* AchievementAvidReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAACB4A6296F80E700973EB8 /* AchievementAvidReader.swift */; };
 		EAACB4B92971E08A00973EB8 /* chatclose.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAACB4B82971E08A00973EB8 /* chatclose.mp3 */; };
 		EAACB4BE297255FC00973EB8 /* GoogleMobileAds in Frameworks */ = {isa = PBXBuildFile; productRef = EAACB4BD297255FC00973EB8 /* GoogleMobileAds */; };
@@ -587,6 +589,8 @@
 		EAA921D72C011361009E99E7 /* AuthorizationRequestScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorizationRequestScene.swift; sourceTree = "<group>"; };
 		EAA921D92C014C83009E99E7 /* AuthorizationSprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorizationSprite.swift; sourceTree = "<group>"; };
 		EAAB5A1C2C99E9A5007E463B /* MagicMergeParticles.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = MagicMergeParticles.sks; sourceTree = "<group>"; };
+		EAAB5A1E2CA63B3B007E463B /* Counter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Counter.swift; sourceTree = "<group>"; };
+		EAAB5A202CA6A7E0007E463B /* StatusBarSprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusBarSprite.swift; sourceTree = "<group>"; };
 		EAACB4A6296F80E700973EB8 /* AchievementAvidReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementAvidReader.swift; sourceTree = "<group>"; };
 		EAACB4B82971E08A00973EB8 /* chatclose.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = chatclose.mp3; sourceTree = "<group>"; };
 		EAAEA3BD2931A31200221963 /* movepoisoned1.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = movepoisoned1.mp3; sourceTree = "<group>"; };
@@ -929,6 +933,7 @@
 				EA7300142B5F74B4005BF98D /* MarlinBlastSprite.swift */,
 				EA73001A2B604A13005BF98D /* MagmoorScarySprite.swift */,
 				EAA3BD5B2C8A0E5400EDE298 /* MagmoorCreepyMinion.swift */,
+				EAAB5A202CA6A7E0007E463B /* StatusBarSprite.swift */,
 				EAA3BD672C94CE0A00EDE298 /* PrincessCageSprite.swift */,
 			);
 			path = New;
@@ -1225,6 +1230,7 @@
 				EA826C80298CF3FF00F19F81 /* IAPManager.swift */,
 				EA75F0EA292DF46200F09BD7 /* FIRManager.swift */,
 				EA826C9629938CBB00F19F81 /* StoreReviewManager.swift */,
+				EAAB5A1E2CA63B3B007E463B /* Counter.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -1622,6 +1628,7 @@
 				EA95D1B0294FBE4E0061059C /* GameCenterManager.swift in Sources */,
 				EA95D1C32953AC0F0061059C /* AchievementExterminator.swift in Sources */,
 				EA95D1CF29542C4C0061059C /* AchievementOnFire.swift in Sources */,
+				EAAB5A1F2CA63B3B007E463B /* Counter.swift in Sources */,
 				EA75F0EB292DF46200F09BD7 /* FIRManager.swift in Sources */,
 				EA95D1C12953AB4B0061059C /* AchievementBeastMaster.swift in Sources */,
 				EA84645C29D8E5A50075F2A9 /* MenuItemLabel.swift in Sources */,
@@ -1716,6 +1723,7 @@
 				EAD59A542A88200800F86EED /* SpeechBubbleSprite.swift in Sources */,
 				EA95D2122963B4580061059C /* LevelSkipEngine.swift in Sources */,
 				EACD61C32B96E7990017F040 /* CutsceneImprisoned.swift in Sources */,
+				EAAB5A212CA6A7E0007E463B /* StatusBarSprite.swift in Sources */,
 				EADFD95C29F4CE8500C6F9D1 /* SettingsButton.swift in Sources */,
 				EA95D18D29459D550061059C /* Extension+UIFont.swift in Sources */,
 				EA1D5A6C29F1019800677B06 /* Extension+SKShapeNode.swift in Sources */,

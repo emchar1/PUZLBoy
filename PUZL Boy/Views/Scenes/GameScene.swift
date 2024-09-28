@@ -204,6 +204,7 @@ class GameScene: SKScene {
         guard let location = touches.first?.location(in: self) else { return }
 
         tapPointerEngine.move(to: self, at: location, particleType: currentLevel == Level.partyLevel ? .pointerRainbow : .pointer)
+        gameEngine.handleMagmoorCreepyMinionTouches(scene: self, touches: touches)
 
         if gameEngine.checkControlGuardsIfPassed(includeDisableInputFromOutside: false) {
             if !gameEngine.disableInputFromOutside {
@@ -1442,6 +1443,10 @@ extension GameScene: ChatEngineDelegate {
     func despawnMagmoorMinion(at position: K.GameboardPosition) {
         gameEngine.gameboardSprite.despawnMagmoorMinion(at: position)
         gameEngine.magmoorSpawnExit()
+    }
+    
+    func minionAttack(duration: TimeInterval) {
+        gameEngine.gameboardSprite.minionAttackSeries(duration: duration)
     }
     
     func spawnElder(positions: [K.GameboardPosition], delay: TimeInterval, completion: @escaping () -> Void) {

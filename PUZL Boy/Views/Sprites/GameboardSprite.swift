@@ -39,6 +39,7 @@ class GameboardSprite {
     private var elder0 = Player(type: .elder0)
     private var elder1 = Player(type: .elder1)
     private var elder2 = Player(type: .elder2)
+    private(set) var magmoorCreepyMinion: MagmoorCreepyMinion?
 
     // MARK: - Properties: Misc
     
@@ -1102,9 +1103,12 @@ class GameboardSprite {
                               duration: fadeDuration)
         ]))
         
-        let magmoorCreepyMinion = MagmoorCreepyMinion(scale: 3.5, gameboardScaleSize: scaleSize, spawnPoint: getSpritePosition(at: position))
-        magmoorCreepyMinion.addToParent(sprite)
-        magmoorCreepyMinion.peekAnimation(delay: fadeDuration, duration: duration, completion: completion)
+        magmoorCreepyMinion = MagmoorCreepyMinion(scale: 3.5, gameboardScaleSize: scaleSize, spawnPoint: getSpritePosition(at: position))
+        magmoorCreepyMinion!.addToParent(sprite)
+        magmoorCreepyMinion!.peekAnimation(delay: fadeDuration, duration: duration) { [unowned self] in
+            magmoorCreepyMinion = nil
+            completion()
+        }
     }
     
     /**
@@ -1159,10 +1163,9 @@ class GameboardSprite {
         
         
         //Magmoor Creepy
-        let magmoorCreepyMinion = MagmoorCreepyMinion(scale: 3.5, gameboardScaleSize: scaleSize, spawnPoint: getSpritePosition(at: position))
-        magmoorCreepyMinion.name = "MagmoorMinion"
-        magmoorCreepyMinion.addToParent(sprite)
-        magmoorCreepyMinion.beginAnimation(delay: totalDelay)
+        magmoorCreepyMinion = MagmoorCreepyMinion(scale: 3.5, gameboardScaleSize: scaleSize, spawnPoint: getSpritePosition(at: position))
+        magmoorCreepyMinion!.addToParent(sprite)
+        magmoorCreepyMinion!.beginAnimation(delay: totalDelay)
         
         
         //AudioManager
@@ -1176,7 +1179,7 @@ class GameboardSprite {
      - parameter position: position should match spawnMagmoorMinion() position.
      */
     func despawnMagmoorMinion(at position: K.GameboardPosition) {
-        guard let magmoorCreepyMinion = sprite.childNode(withName: "MagmoorMinion") as? MagmoorCreepyMinion else { return }
+        guard let magmoorCreepyMinion = magmoorCreepyMinion else { return }
         
         let fadeDuration: TimeInterval = 2
         
@@ -1189,16 +1192,25 @@ class GameboardSprite {
                                                  duration: fadeDuration))
         }
 
-        
         //Magmoor Creepy
-        magmoorCreepyMinion.endAnimation(delay: 0)
-
+        magmoorCreepyMinion.endAnimation(delay: 0) { [unowned self] in
+            self.magmoorCreepyMinion = nil
+        }
         
         //AudioManager
         AudioManager.shared.stopSound(for: "magmoorcreepystrings", fadeDuration: fadeDuration)
         AudioManager.shared.stopSound(for: "magmoorcreepypulse", fadeDuration: fadeDuration)
     }
     
+    /**
+     Calls on Magmoor's Minion to bring the pain, i.e. issue a series of attacks lasting for the prescribed duration.
+     */
+    func minionAttackSeries(duration: TimeInterval) {
+        guard let magmoorCreepyMinion = magmoorCreepyMinion else { return }
+        
+        magmoorCreepyMinion.minionAttackSeries(duration: duration)
+    }
+
     /**
      Gets a 9 grid of panels from which to spawn, with the postion being the center point.
      - parameter position: center point of the 9 box panel where to spawn

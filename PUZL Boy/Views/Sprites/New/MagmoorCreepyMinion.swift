@@ -11,13 +11,21 @@ class MagmoorCreepyMinion: SKNode {
     
     // MARK: - Properties
     
+    static let creepyName = "MagmoorCreepy"
+    
     ///Max length (or width) of the creepy .png image
-    private let creepyLengthMax: CGFloat = 1679
+    private let maxLength: CGFloat = 1679
     private var scale: CGFloat
     private var gameboardScaleSize: CGSize
     private var spawnPoint: CGPoint
-    private var parentNode: SKNode?
+
+    private var braveryBar: StatusBarSprite!
+    private var braveryCounter: Counter!
+    private var punchCounter: Counter!
+    private var isDisabled = true
+    private var isAnimating = false
     
+    private var parentNode: SKNode?
     private var leftHand: SKSpriteNode!
     private var leftArm: SKSpriteNode!
     private var rightHand: SKSpriteNode!
@@ -52,13 +60,25 @@ class MagmoorCreepyMinion: SKNode {
     }
     
     private func setupNodes() {
-        leftHand = setupCreepy("LeftHand", creepySize: 1116, positionMultiplierOffset: CGPoint(x: -0.8, y: 1), zOffset: 110)
-        leftHand.anchorPoint = CGPoint(x: 0.95, y: 0.95)
+        //Setup Misc
+        braveryBar = StatusBarSprite(label: "Bravery", shouldHide: true,
+                                     position: CGPoint(x: K.ScreenDimensions.size.width / 2, y: 40),
+                                     size: CGSize(width: K.ScreenDimensions.size.width / 2, height: 44))
+        braveryBar.zPosition = K.ZPosition.overlay + 120
+
+        braveryCounter = Counter(maxCount: 100, shouldLoop: false)
+        braveryCounter.setCount(to: braveryCounter.maxCount)
+
+        punchCounter = Counter(maxCount: 2)
         
-        leftArm = setupCreepy("LeftArm", creepySize: 812, positionMultiplierOffset: CGPoint(x: -1.1, y: 0.4), zOffset: 109)
-        rightHand = setupCreepy("RightHand", creepySize: 1291, positionMultiplierOffset: CGPoint(x: -0.1, y: -1.5), zOffset: 108)
-        rightArm = setupCreepy("RightArm", creepySize: 569, positionMultiplierOffset: CGPoint(x: 0.4, y: -1), zOffset: 107)
-        face1 = setupCreepy("Face1", creepySize: 1278, positionMultiplierOffset: CGPoint(x: -1.2, y: -1.2), zOffset: 106)
+        //Setup actual nodes
+        leftHand = setupCreepy("LeftHand", size: 1116, offsetMultiplier: CGPoint(x: -0.8, y: 1), zOffset: 110)
+        leftHand.anchorPoint = CGPoint(x: 0.95, y: 0.95)
+                               
+        leftArm = setupCreepy("LeftArm", size: 812, offsetMultiplier: CGPoint(x: -1.1, y: 0.4), zOffset: 109)
+        rightHand = setupCreepy("RightHand", size: 1291, offsetMultiplier: CGPoint(x: -0.1, y: -1.5), zOffset: 108)
+        rightArm = setupCreepy("RightArm", size: 569, offsetMultiplier: CGPoint(x: 0.4, y: -1), zOffset: 107)
+        face1 = setupCreepy("Face1", size: 1278, offsetMultiplier: CGPoint(x: -1.2, y: -1.2), zOffset: 106)
         face2 = setupCreepy("Face2", zOffset: 105)
         face3 = setupCreepy("Face3", zOffset: 104)
         body1 = setupCreepy("Body1", zOffset: 103)
@@ -67,15 +87,13 @@ class MagmoorCreepyMinion: SKNode {
         body4 = setupCreepy("Body4", zOffset: 100)
     }
     
-    private func setupCreepy(_ suffix: String, creepySize: CGFloat? = nil, positionMultiplierOffset: CGPoint? = nil, zOffset: CGFloat) -> SKSpriteNode {
-        let magmoorCreepy = "MagmoorCreepy"
-        
-        let node = SKSpriteNode(imageNamed: magmoorCreepy + suffix)
-        node.scale(to: scale * gameboardScaleSize * (creepySize ?? creepyLengthMax) / creepyLengthMax)
-        node.position = getPosition(positionMultiplierOffset: positionMultiplierOffset)
+    private func setupCreepy(_ suffix: String, size: CGFloat? = nil, offsetMultiplier: CGPoint? = nil, zOffset: CGFloat) -> SKSpriteNode {
+        let node = SKSpriteNode(imageNamed: MagmoorCreepyMinion.creepyName + suffix)
+        node.scale(to: scale * gameboardScaleSize * (size ?? maxLength) / maxLength)
+        node.position = getPosition(positionMultiplierOffset: offsetMultiplier)
         node.alpha = 0
         node.zPosition = K.ZPosition.overlay + zOffset
-        node.name = magmoorCreepy + suffix
+        node.name = MagmoorCreepyMinion.creepyName + suffix
         
         return node
     }
@@ -96,7 +114,7 @@ class MagmoorCreepyMinion: SKNode {
     }
     
     
-    // MARK: - Functions
+    // MARK: - Common Functions
     
     func addToParent(_ parentNode: SKNode) {
         addChild(leftHand)
@@ -110,10 +128,49 @@ class MagmoorCreepyMinion: SKNode {
         addChild(body2)
         addChild(body3)
         addChild(body4)
+        braveryBar.addToParent(parentNode)
         
         self.parentNode = parentNode
         self.parentNode!.addChild(self)
     }
+    
+    func touchHandler(scene: SKScene, for touches: Set<UITouch>) {
+        guard !isDisabled else { return }
+        guard let location = touches.first?.location(in: scene) else { return }
+        
+        var landedHit = false
+        
+        //On screen Flash
+        let flash = SKSpriteNode(color: .white, size: scene.size)
+        flash.anchorPoint = .zero
+        flash.alpha = 0
+        flash.zPosition = K.ZPosition.gameboard + K.ZPosition.bloodOverlay
+        scene.addChild(flash)
+        
+        let flashSequence = SKAction.sequence([
+            SKAction.fadeAlpha(by: 0.5, duration: 0),
+            SKAction.fadeOut(withDuration: 0.1),
+            SKAction.removeFromParent()
+        ])
+
+        for node in scene.nodes(at: location) {
+            guard let name = node.name, name.contains(MagmoorCreepyMinion.creepyName) else { continue }
+            
+            landedHit = true
+            hitMinion()
+            break
+        }
+
+        if !landedHit {
+            AudioManager.shared.playSound(for: "chatclose")
+            punchCounter.reset()
+
+            flash.run(flashSequence)
+        }
+    }
+    
+    
+    // MARK: - Animation Functions
     
     /**
      Magmoor's minion peeks its head from a tile, with optional delay.
@@ -147,7 +204,9 @@ class MagmoorCreepyMinion: SKNode {
      */
     func beginAnimation(delay: TimeInterval) {
         //Appear animation
-        animateAppearNode(node: leftHand, delay: delay + 0.5)
+        animateAppearNode(node: leftHand, delay: delay + 0.5) { [unowned self] in
+            braveryBar.showStatus()
+        }
         animateAppearNode(node: leftArm, delay: delay + 0.5)
         animateAppearNode(node: rightHand, delay: delay + 0.3)
         animateAppearNode(node: rightArm, delay: delay + 0.3)
@@ -161,7 +220,6 @@ class MagmoorCreepyMinion: SKNode {
 
         //Jitter
         var randomTimeFace: TimeInterval { TimeInterval.random(in: 0...3) }
-        var randomTimeHand: TimeInterval { TimeInterval.random(in: 0...1) }
         let jitterAction: SKAction = SKAction.repeatForever(SKAction.sequence([
             SKAction.rotate(byAngle: -.pi / 64, duration: 0.05),
             SKAction.rotate(byAngle: .pi / 64, duration: 0.05)
@@ -190,40 +248,17 @@ class MagmoorCreepyMinion: SKNode {
                 SKAction.wait(forDuration: randomTimeFace)
             ]))
         ]))
-        
-        //Rake hand
-        leftHand.run(SKAction.sequence([
-            SKAction.wait(forDuration: delay + 0.5),
-            SKAction.repeatForever(SKAction.sequence([
-                SKAction.rotate(byAngle: -.pi / 10, duration: 0),
-                SKAction.wait(forDuration: randomTimeHand),
-                SKAction.rotate(byAngle: -.pi / 10, duration: 0),
-                SKAction.wait(forDuration: randomTimeHand),
-                SKAction.rotate(byAngle: -.pi / 10, duration: 0),
-                SKAction.wait(forDuration: randomTimeHand),
-                SKAction.rotate(byAngle: -.pi / 10, duration: 0),
-                SKAction.run { [unowned self] in
-                    minionAttack()
-                },
-                SKAction.wait(forDuration: randomTimeHand),
-                SKAction.rotate(byAngle: .pi / 10, duration: 0),
-                SKAction.wait(forDuration: randomTimeHand),
-                SKAction.rotate(byAngle: .pi / 10, duration: 0),
-                SKAction.wait(forDuration: randomTimeHand),
-                SKAction.rotate(byAngle: .pi / 10, duration: 0),
-                SKAction.wait(forDuration: randomTimeHand),
-                SKAction.rotate(byAngle: .pi / 10, duration: 0),
-                SKAction.wait(forDuration: randomTimeHand),
-            ]))
-        ]))
     }
     
     /**
      Executes the reverse of beginAnimation(), i.e. the creepy minion retreats to the underworld.
-     - parameter: delay: time delay before the hiding animation occurs.
+     - parameters:
+        - delay: time delay before the hiding animation occurs.
+        - completion: completion handler to clean up after function ends, for example.
      */
-    func endAnimation(delay: TimeInterval) {
+    func endAnimation(delay: TimeInterval, completion: (() -> Void)?) {
         let moveLeftArmHand: SKAction = SKAction.sequence([
+            SKAction.rotate(toAngle: 0, duration: 0),
             SKAction.wait(forDuration: delay + 0.1),
             SKAction.moveBy(x: 0, y: -40, duration: 0),
             SKAction.wait(forDuration: 0.1),
@@ -247,17 +282,102 @@ class MagmoorCreepyMinion: SKNode {
         //Longest animation sequence. Use for completion handling.
         animateRemoveNode(node: face3, delay: delay + 3.0, fadeOut: 0.25) { [unowned self] in
             removeFromParent()
+            completion?()
         }
     }
     
     /**
-     Helper function for when minion attacks.
+     Helper function to facilitate with showing the minion nodes.
      */
-    private func minionAttack() {
-        guard let parentSprite = parentNode as? SKSpriteNode else { return }
+    private func animateAppearNode(node: SKNode, delay: TimeInterval, completion: (() -> Void)? = nil) {
+        node.run(SKAction.sequence([
+            SKAction.wait(forDuration: delay),
+            SKAction.fadeIn(withDuration: 0)
+        ])) {
+            completion?()
+        }
+    }
+    
+    /**
+     Helper function to facilitatew with hiding the minion nodes.
+     */
+    private func animateHideNode(node: SKNode, delay: TimeInterval, completion: (() -> Void)? = nil) {
+        node.run(SKAction.sequence([
+            SKAction.wait(forDuration: delay),
+            SKAction.fadeOut(withDuration: 0)
+        ])) {
+            completion?()
+        }
+    }
+    
+    /**
+     Helper function to facilitate with hiding and removing the minion nodes.
+     */
+    private func animateRemoveNode(node: SKNode, delay: TimeInterval, fadeOut: TimeInterval? = nil, completion: (() -> Void)? = nil) {
+        node.run(SKAction.sequence([
+            SKAction.wait(forDuration: delay),
+            SKAction.fadeOut(withDuration: fadeOut ?? 0),
+            SKAction.removeFromParent()
+        ])) {
+            completion?()
+        }
+    }
+    
+    /**
+     Issues a series of minion attacks for the prescribed duration.
+     */
+    func minionAttackSeries(duration: TimeInterval) {
+        let attackSpeed: TimeInterval = 1 //the lower the number, the harder he is to get an attack in
+        let attackPoint: CGFloat = 10
+        let drainPoint: CGFloat = 1
+        let key = "minionAttackSeries"
+        let key2 = "braveryReduction"
+        
+        isDisabled = false
+        
+        //Minion swipes at PUZL Boy, lowering Bravery.
+        run(SKAction.repeatForever(SKAction.sequence([
+            SKAction.run { [unowned self] in
+                minionAttack(attackPoint: attackPoint)
+            },
+            SKAction.wait(forDuration: attackSpeed)
+        ])), withKey: key)
+        
+        //Constant drain of bravery just for merely being in its presence.
+        run(SKAction.repeatForever(SKAction.sequence([
+            SKAction.wait(forDuration: 0.25),
+            SKAction.run { [unowned self] in
+                braveryCounter.decrement(by: drainPoint)
+                braveryBar.animateAndUpdate(percentage: braveryCounter.getCount() / 100)
+            }
+        ])), withKey: key2)
 
+        //Final completion with cleanup.
+        run(SKAction.wait(forDuration: duration)) { [unowned self] in
+            removeAction(forKey: key)
+            removeAction(forKey: key2)
+            braveryBar.hideStatus()
+            isDisabled = true
+        }
+    }
+    
+    /**
+     Executes a Minion attack with attackPoint input. Animates the Minion being attacked and updates the bravery counter.
+     */
+    private func minionAttack(attackPoint: CGFloat) {
+        guard !isAnimating else { return }
+        guard let parentSprite = parentNode as? SKSpriteNode else { return }
+        
+        
+        //Update states
+        isAnimating = true
+        braveryCounter.decrement(by: attackPoint)
+        braveryBar.animateAndUpdate(percentage: braveryCounter.getCount() / 100)
+
+        
+        //Scratch Marks
         let scratchOffset: CGFloat = 50
-        let scratchDuration: TimeInterval = 0.5
+        let cooloffDuration: TimeInterval = 2
         
         let scratchScreen = SKSpriteNode(imageNamed: "enemyScratch")
         scratchScreen.size = parentSprite.size
@@ -270,39 +390,109 @@ class MagmoorCreepyMinion: SKNode {
         
         scratchScreen.run(SKAction.sequence([
             SKAction.group([
-                SKAction.moveTo(y: -scratchOffset, duration: scratchDuration),
-                SKAction.scale(by: 0.90, duration: scratchDuration),
-                SKAction.fadeOut(withDuration: scratchDuration)
+                SKAction.moveTo(y: -scratchOffset, duration: cooloffDuration),
+                SKAction.scale(by: 0.90, duration: cooloffDuration),
+                SKAction.fadeOut(withDuration: cooloffDuration)
             ]),
             SKAction.removeFromParent()
-        ]))
+        ])) { [unowned self] in
+            isAnimating = false
+        }
         
         AudioManager.shared.playSound(for: "enemyscratch")
         AudioManager.shared.playSound(for: "boypain\(Int.random(in: 1...4))")
         Haptics.shared.executeCustomPattern(pattern: .enemy)
-    }
-    
-    /**
-     Helper function to facilitate with showing the minion nodes.
-     */
-    private func animateAppearNode(node: SKNode, delay: TimeInterval) {
-        node.run(SKAction.sequence([
-            SKAction.wait(forDuration: delay),
-            SKAction.fadeIn(withDuration: 0)
+        
+        
+        //Swipe attack
+        let resetAngle: CGFloat = 3/5 * .pi
+        let rotations: CGFloat = 4
+        let swipeSpeed: TimeInterval = 0.12
+
+        leftHand.run(SKAction.sequence([
+            SKAction.rotate(toAngle: -resetAngle, duration: 0),
+            SKAction.rotate(byAngle: resetAngle, duration: swipeSpeed),
+            SKAction.repeat(SKAction.sequence([
+                SKAction.wait(forDuration: (cooloffDuration - swipeSpeed) / rotations),
+                SKAction.rotate(byAngle: -resetAngle / rotations, duration: 0)
+            ]), count: Int(rotations))
         ]))
     }
     
-    /**
-     Helper function to facilitate with hiding the minion nodes.
-     */
-    private func animateRemoveNode(node: SKNode, delay: TimeInterval, fadeOut: TimeInterval? = nil, completion: (() -> Void)? = nil) {
-        node.run(SKAction.sequence([
-            SKAction.wait(forDuration: delay),
-            SKAction.fadeOut(withDuration: fadeOut ?? 0),
-            SKAction.removeFromParent()
-        ])) {
-            completion?()
+    func hitMinion() {
+        guard !isAnimating else { return }
+
+        let braveryPoint: CGFloat = 5
+        let hitArmsOffset: CGFloat = 40
+        let cooloffDuration: TimeInterval = 0.2
+        let hitAction = SKAction.sequence([
+            SKAction.colorize(with: .red, colorBlendFactor: 1, duration: 0),
+            SKAction.colorize(with: .white, colorBlendFactor: 0, duration: cooloffDuration)
+        ])
+
+        
+        //Update states
+        isAnimating = true
+        punchCounter.increment()
+        braveryCounter.increment(by: braveryPoint)
+        braveryBar.animateAndUpdate(percentage: braveryCounter.getCount() / 100)
+        
+        
+        //Minion hit animation
+        executeActionOnNodes(hitAction)
+        
+        animateHideNode(node: body1, delay: 0)
+        animateHideNode(node: face1, delay: 0) { [unowned self] in
+            animateAppearNode(node: face1, delay: cooloffDuration)
+            animateAppearNode(node: body1, delay: cooloffDuration) { [unowned self] in
+                //The final completion...
+                isAnimating = false
+                
+                rightArm.run(SKAction.moveBy(x: hitArmsOffset, y: 0, duration: 0))
+                rightHand.run(SKAction.moveBy(x: hitArmsOffset, y: 0, duration: 0))
+                leftArm.run(SKAction.moveBy(x: 0, y: hitArmsOffset, duration: 0))
+                leftHand.run(SKAction.moveBy(x: 0, y: hitArmsOffset, duration: 0))
+            }
         }
+        
+        //This moves the arms and hands in slightly so there's no gap between them and the body.
+        rightArm.run(SKAction.moveBy(x: -hitArmsOffset, y: 0, duration: 0))
+        rightHand.run(SKAction.moveBy(x: -hitArmsOffset, y: 0, duration: 0))
+        leftArm.run(SKAction.moveBy(x: 0, y: -hitArmsOffset, duration: 0))
+        leftHand.run(SKAction.group([
+            SKAction.rotate(toAngle: 0, duration: 0),
+            SKAction.moveBy(x: 0, y: -hitArmsOffset, duration: 0)
+        ]))
+        
+        
+        //Sound effects
+        switch punchCounter.getCount() {
+        case let num where num.truncatingRemainder(dividingBy: 2) == 0:
+            AudioManager.shared.playSound(for: "punchwhack1")
+        case let num where num.truncatingRemainder(dividingBy: 2) != 0:
+            AudioManager.shared.playSound(for: "punchwhack2")
+        default:
+            break
+        }
+
+        Haptics.shared.addHapticFeedback(withStyle: .heavy)
+    }
+    
+    /**
+     Helper function to run an SKAction across all body parts (nodes).
+     */
+    private func executeActionOnNodes(_ action: SKAction) {
+        leftHand.run(action)
+        leftArm.run(action)
+        rightHand.run(action)
+        rightArm.run(action)
+        face1.run(action)
+        face2.run(action)
+        face3.run(action)
+        body1.run(action)
+        body2.run(action)
+        body3.run(action)
+        body4.run(action)
     }
     
     
