@@ -1205,10 +1205,10 @@ class GameboardSprite {
     /**
      Calls on Magmoor's Minion to bring the pain, i.e. issue a series of attacks lasting for the prescribed duration.
      */
-    func minionAttackSeries(duration: TimeInterval) {
+    func minionAttackSeries(duration: TimeInterval, completion: (() -> Void)?) {
         guard let magmoorCreepyMinion = magmoorCreepyMinion else { return }
         
-        magmoorCreepyMinion.minionAttackSeries(duration: duration)
+        magmoorCreepyMinion.minionAttackSeries(duration: duration, completion: completion)
     }
 
     /**

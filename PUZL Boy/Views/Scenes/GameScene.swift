@@ -1445,8 +1445,8 @@ extension GameScene: ChatEngineDelegate {
         gameEngine.magmoorSpawnExit()
     }
     
-    func minionAttack(duration: TimeInterval) {
-        gameEngine.gameboardSprite.minionAttackSeries(duration: duration)
+    func minionAttack(duration: TimeInterval, completion: @escaping () -> Void) {
+        gameEngine.gameboardSprite.minionAttackSeries(duration: duration, completion: completion)
     }
     
     func spawnElder(positions: [K.GameboardPosition], delay: TimeInterval, completion: @escaping () -> Void) {

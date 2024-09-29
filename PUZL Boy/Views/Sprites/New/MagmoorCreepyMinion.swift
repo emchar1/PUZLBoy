@@ -24,6 +24,7 @@ class MagmoorCreepyMinion: SKNode {
     private var punchCounter: Counter!
     private var isDisabled = true
     private var isAnimating = false
+    private var braveryReachedZero = false
     
     private var parentNode: SKNode?
     private var leftHand: SKSpriteNode!
@@ -60,16 +61,19 @@ class MagmoorCreepyMinion: SKNode {
     }
     
     private func setupNodes() {
-        //Setup Misc
-        braveryBar = StatusBarSprite(label: "Bravery", shouldHide: true,
-                                     position: CGPoint(x: K.ScreenDimensions.size.width / 2, y: 40),
-                                     size: CGSize(width: K.ScreenDimensions.size.width / 2, height: 44))
-        braveryBar.zPosition = K.ZPosition.overlay + 120
-
-        braveryCounter = Counter(maxCount: 100, shouldLoop: false)
-        braveryCounter.setCount(to: braveryCounter.maxCount)
-
+        //Setup Bravery
+        let braveryBarSpacing: CGFloat = 10
+        let braveryBarHeight: CGFloat = 44
+        
         punchCounter = Counter(maxCount: 2)
+        braveryCounter = Counter(maxCount: 1, step: 0.01, shouldLoop: false)
+        braveryCounter.setCount(to: 0.5)
+
+        braveryBar = StatusBarSprite(label: "Bravery", shouldHide: true, percentage: braveryCounter.getCount(),
+                                     position: CGPoint(x: 5/6 * K.ScreenDimensions.size.width - braveryBarSpacing,
+                                                       y: K.ScreenDimensions.size.width - 2 * braveryBarHeight - braveryBarSpacing),
+                                     size: CGSize(width: 1/3 * K.ScreenDimensions.size.width, height: braveryBarHeight))
+        braveryBar.zPosition = K.ZPosition.overlay + 120
         
         //Setup actual nodes
         leftHand = setupCreepy("LeftHand", size: 1116, offsetMultiplier: CGPoint(x: -0.8, y: 1), zOffset: 110)
@@ -161,7 +165,7 @@ class MagmoorCreepyMinion: SKNode {
             break
         }
 
-        if !landedHit {
+        if !landedHit && !isAnimating {
             AudioManager.shared.playSound(for: "chatclose")
             punchCounter.reset()
 
@@ -326,14 +330,28 @@ class MagmoorCreepyMinion: SKNode {
     /**
      Issues a series of minion attacks for the prescribed duration.
      */
-    func minionAttackSeries(duration: TimeInterval) {
-        let attackSpeed: TimeInterval = 1 //the lower the number, the harder he is to get an attack in
-        let attackPoint: CGFloat = 10
-        let drainPoint: CGFloat = 1
+    func minionAttackSeries(duration: TimeInterval, completion: (() -> Void)?) {
+        let attackSpeed: TimeInterval = 0.8 //the lower the number, the harder he is to get an attack in
+        let attackPoint: CGFloat = 0.12
+        let drainPoint: CGFloat = 0.01
+        
+        //VERY IMPORTANT to assign keys to the below actions, AND remove them when exiting the completion!! 9/29/24
         let key = "minionAttackSeries"
         let key2 = "braveryReduction"
+        let key3 = "finalCompletion"
         
         isDisabled = false
+        
+        func cleanupCompletion() {
+            //IMPORTANT to stop all actions!!
+            removeAction(forKey: key)
+            removeAction(forKey: key2)
+            removeAction(forKey: key3)
+            
+            braveryBar.removeStatus()
+            isDisabled = true
+            completion?()
+        }
         
         //Minion swipes at PUZL Boy, lowering Bravery.
         run(SKAction.repeatForever(SKAction.sequence([
@@ -347,18 +365,29 @@ class MagmoorCreepyMinion: SKNode {
         run(SKAction.repeatForever(SKAction.sequence([
             SKAction.wait(forDuration: 0.25),
             SKAction.run { [unowned self] in
+                guard braveryCounter.getCount() < 1 else {
+                    cleanupCompletion()
+                    return
+                }
+                
+                if braveryCounter.getCount() <= 0 && !braveryReachedZero {
+                    braveryReachedZero = true
+                    AudioManager.shared.playSound(for: "scarylaugh")
+                }
+                
                 braveryCounter.decrement(by: drainPoint)
-                braveryBar.animateAndUpdate(percentage: braveryCounter.getCount() / 100)
+                braveryBar.animateAndUpdate(percentage: braveryCounter.getCount())
             }
         ])), withKey: key2)
 
         //Final completion with cleanup.
-        run(SKAction.wait(forDuration: duration)) { [unowned self] in
-            removeAction(forKey: key)
-            removeAction(forKey: key2)
-            braveryBar.hideStatus()
-            isDisabled = true
-        }
+        run(SKAction.sequence([
+            SKAction.wait(forDuration: duration),
+            SKAction.run {
+                cleanupCompletion()
+                return
+            }
+        ]), withKey: key3)
     }
     
     /**
@@ -372,7 +401,7 @@ class MagmoorCreepyMinion: SKNode {
         //Update states
         isAnimating = true
         braveryCounter.decrement(by: attackPoint)
-        braveryBar.animateAndUpdate(percentage: braveryCounter.getCount() / 100)
+        braveryBar.animateAndUpdate(percentage: braveryCounter.getCount())
 
         
         //Scratch Marks
@@ -401,6 +430,9 @@ class MagmoorCreepyMinion: SKNode {
         
         AudioManager.shared.playSound(for: "enemyscratch")
         AudioManager.shared.playSound(for: "boypain\(Int.random(in: 1...4))")
+        AudioManager.shared.playSoundThenStop(for: "littlegirllaugh",
+                                              currentTime: TimeInterval.random(in: 0...8),
+                                              playForDuration: cooloffDuration, fadeOut: 1)
         Haptics.shared.executeCustomPattern(pattern: .enemy)
         
         
@@ -422,9 +454,9 @@ class MagmoorCreepyMinion: SKNode {
     func hitMinion() {
         guard !isAnimating else { return }
 
-        let braveryPoint: CGFloat = 5
+        let braveryPoint: CGFloat = 0.04
         let hitArmsOffset: CGFloat = 40
-        let cooloffDuration: TimeInterval = 0.2
+        let cooloffDuration: TimeInterval = 0.1
         let hitAction = SKAction.sequence([
             SKAction.colorize(with: .red, colorBlendFactor: 1, duration: 0),
             SKAction.colorize(with: .white, colorBlendFactor: 0, duration: cooloffDuration)
@@ -435,7 +467,7 @@ class MagmoorCreepyMinion: SKNode {
         isAnimating = true
         punchCounter.increment()
         braveryCounter.increment(by: braveryPoint)
-        braveryBar.animateAndUpdate(percentage: braveryCounter.getCount() / 100)
+        braveryBar.animateAndUpdate(percentage: braveryCounter.getCount())
         
         
         //Minion hit animation

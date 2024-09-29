@@ -17,7 +17,7 @@ class StatusBarSprite: SKNode {
     private let barSize: CGSize
     private let statusString: String
     private let backgroundPosition: CGPoint
-    private var currentPercentage: CGFloat = 1
+    private var currentPercentage: CGFloat
 
     //SKNode
     private var backgroundNode: SKShapeNode!
@@ -29,10 +29,11 @@ class StatusBarSprite: SKNode {
     
     // MARK: - Initialization
     
-    init(label: String, shouldHide: Bool, position: CGPoint = .zero, size: CGSize = CGSize(width: K.ScreenDimensions.size.width / 2, height: 44)) {
+    init(label: String, shouldHide: Bool, percentage: CGFloat = 1, position: CGPoint = .zero, size: CGSize = CGSize(width: K.ScreenDimensions.size.width / 2, height: 44)) {
         self.statusString = label
         self.backgroundPosition = position
         self.barSize = size
+        self.currentPercentage = percentage.clamp(min: 0, max: 1)
         
         super.init()
         
@@ -51,30 +52,40 @@ class StatusBarSprite: SKNode {
     }
     
     private func setupNodes() {
-        backgroundNode = SKShapeNode(rectOf: CGSize(width: barSize.width, height: barSize.height + 140))
-        backgroundNode.position = backgroundPosition
-        backgroundNode.lineWidth = 0
+        let padding: CGFloat = 20
         
-        containerNode = SKShapeNode(rectOf: CGSize(width: barSize.width, height: barSize.height), cornerRadius: cornerRadius)
+        backgroundNode = SKShapeNode(rectOf: CGSize(width: barSize.width + 2 * padding, 
+                                                    height: barSize.height + UIFont.gameFontSizeMedium + 3 * padding),
+                                     cornerRadius: cornerRadius)
+        backgroundNode.position = backgroundPosition + CGPoint(x: 0, y: UIFont.gameFontSizeMedium / 2)
+        backgroundNode.fillColor = .black
+        backgroundNode.lineWidth = 0
+        backgroundNode.alpha = 0.75
+
+        containerNode = SKShapeNode(rectOf: barSize, cornerRadius: cornerRadius)
+        containerNode.position = backgroundPosition
         containerNode.fillColor = .darkGray
         containerNode.fillTexture = SKTexture(image: UIImage.gradientTextureLoadingContainer)
         containerNode.lineWidth = 0
         containerNode.zPosition = 1
         
-        containerFrameNode = SKShapeNode(rectOf: CGSize(width: barSize.width, height: barSize.height), cornerRadius: cornerRadius)
+        containerFrameNode = SKShapeNode(rectOf: barSize, cornerRadius: cornerRadius)
+        containerFrameNode.position = backgroundPosition
         containerFrameNode.fillColor = .clear
         containerFrameNode.lineWidth = containerLineWidth
         containerFrameNode.strokeColor = .white
         containerFrameNode.zPosition = 3
         
         statusNode = SKSpriteNode(texture: SKTexture(image: UIImage.gradientLoadingBar))
+        statusNode.position = CGPoint(x: backgroundPosition.x - barSize.width * (1 - currentPercentage) / 2, y: backgroundPosition.y)
         statusNode.size = CGSize(width: barSize.width, height: barSize.height - containerLineWidth)
-        statusNode.color = .green
+        statusNode.xScale = currentPercentage
+        statusNode.color = getColor(from: currentPercentage)
         statusNode.colorBlendFactor = 1
         statusNode.zPosition = 2
         
         statusLabel = SKLabelNode(text: statusString.uppercased())
-        statusLabel.position = CGPoint(x: -barSize.width / 2 + 10, y: barSize.height)
+        statusLabel.position = backgroundPosition + CGPoint(x: -barSize.width / 2, y: barSize.height / 2 + padding)
         statusLabel.fontName = UIFont.gameFont
         statusLabel.fontSize = UIFont.gameFontSizeMedium
         statusLabel.fontColor = .yellow
@@ -90,12 +101,11 @@ class StatusBarSprite: SKNode {
      Adds the whole node and children to the parent node.
      */
     func addToParent(_ parentNode: SKNode) {
-        backgroundNode.addChild(containerNode)
-        backgroundNode.addChild(containerFrameNode)
-        backgroundNode.addChild(statusNode)
-        backgroundNode.addChild(statusLabel)
-
         addChild(backgroundNode)
+        addChild(containerNode)
+        addChild(containerFrameNode)
+        addChild(statusNode)
+        addChild(statusLabel)
         
         parentNode.addChild(self)
     }
@@ -132,15 +142,20 @@ class StatusBarSprite: SKNode {
         let animationDuration: TimeInterval = 0.25
         let animationGroup = SKAction.group([
             SKAction.scaleX(to: percentage, duration: animationDuration),
-            SKAction.moveTo(x: -barSize.width * (1 - percentage) / 2, duration: animationDuration),
-            SKAction.colorize(with: UIColor(red: percentage > 0.5 ? 2 * (1 - percentage) : 1,
-                                            green: percentage < 0.5 ? 2 * percentage : 1,
-                                            blue: 0, alpha: 1), colorBlendFactor: 1, duration: animationDuration)
+            SKAction.moveTo(x: backgroundPosition.x - barSize.width * (1 - percentage) / 2, duration: animationDuration),
+            SKAction.colorize(with: getColor(from: percentage), colorBlendFactor: 1, duration: animationDuration)
         ])
         
         statusNode.run(animationGroup)
         
         updatePercentage(percentage)
+    }
+    
+    /**
+     Gets the bar color based on the percentage.
+     */
+    private func getColor(from percentage: CGFloat) -> UIColor {
+        return UIColor(red: percentage > 0.5 ? 2 * (1 - percentage) : 1, green: percentage < 0.5 ? 2 * percentage : 1, blue: 0, alpha: 1)
     }
     
     /**
