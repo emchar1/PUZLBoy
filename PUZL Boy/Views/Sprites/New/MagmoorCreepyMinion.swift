@@ -330,7 +330,7 @@ class MagmoorCreepyMinion: SKNode {
     /**
      Issues a series of minion attacks for the prescribed duration.
      */
-    func minionAttackSeries(duration: TimeInterval, completion: (() -> Void)?) {
+    func minionAttackSeries(duration: TimeInterval, completion: @escaping () -> Void) {
         let attackSpeed: TimeInterval = 0.8 //the lower the number, the harder he is to get an attack in
         let attackPoint: CGFloat = 0.12
         let drainPoint: CGFloat = 0.01
@@ -342,15 +342,14 @@ class MagmoorCreepyMinion: SKNode {
         
         isDisabled = false
         
-        func cleanupCompletion() {
+        func cleanupCompletion(flashMax: Bool) {
             //IMPORTANT to stop all actions!!
             removeAction(forKey: key)
             removeAction(forKey: key2)
             removeAction(forKey: key3)
             
-            braveryBar.removeStatus()
             isDisabled = true
-            completion?()
+            braveryBar.removeStatus(flashMax: flashMax, completion: completion)
         }
         
         //Minion swipes at PUZL Boy, lowering Bravery.
@@ -365,18 +364,18 @@ class MagmoorCreepyMinion: SKNode {
         run(SKAction.repeatForever(SKAction.sequence([
             SKAction.wait(forDuration: 0.25),
             SKAction.run { [unowned self] in
-                guard braveryCounter.getCount() < 1 else {
-                    cleanupCompletion()
+                if braveryCounter.getCount() >= 1 {
+                    cleanupCompletion(flashMax: true)
                     return
                 }
-                
-                if braveryCounter.getCount() <= 0 && !braveryReachedZero {
+                else if braveryCounter.getCount() <= 0 && !braveryReachedZero {
                     braveryReachedZero = true
                     AudioManager.shared.playSound(for: "scarylaugh")
                 }
-                
-                braveryCounter.decrement(by: drainPoint)
-                braveryBar.animateAndUpdate(percentage: braveryCounter.getCount())
+                else {
+                    braveryCounter.decrement(by: drainPoint)
+                    braveryBar.animateAndUpdate(percentage: braveryCounter.getCount())
+                }
             }
         ])), withKey: key2)
 
@@ -384,7 +383,7 @@ class MagmoorCreepyMinion: SKNode {
         run(SKAction.sequence([
             SKAction.wait(forDuration: duration),
             SKAction.run {
-                cleanupCompletion()
+                cleanupCompletion(flashMax: false)
                 return
             }
         ]), withKey: key3)

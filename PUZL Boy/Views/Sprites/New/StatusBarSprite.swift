@@ -128,11 +128,26 @@ class StatusBarSprite: SKNode {
     /**
      Animates to alpha = 0, and removes from the parentNode, the entire status bar.
      */
-    func removeStatus() {
+    func removeStatus(flashMax: Bool, completion: @escaping () -> Void) {
+        let blinkCount: Int = 4
+        let blinkDuration: TimeInterval = 0.25
+        let waitDuration: TimeInterval = flashMax ? CGFloat(blinkCount) * blinkDuration : 0
+        
+        if flashMax {
+            statusNode.run(SKAction.repeat(SKAction.sequence([
+                SKAction.colorize(with: .systemPink, colorBlendFactor: 1, duration: 0),
+                SKAction.colorize(with: .cyan, colorBlendFactor: 1, duration: blinkDuration)
+            ]), count: blinkCount))
+            
+            AudioManager.shared.playSound(for: "gemcollectpartylife")
+            AudioManager.shared.playSound(for: "boywin")
+        }
+        
         run(SKAction.sequence([
+            SKAction.wait(forDuration: waitDuration),
             SKAction.fadeOut(withDuration: 1),
             SKAction.removeFromParent()
-        ]))
+        ]), completion: completion)
     }
     
     /**

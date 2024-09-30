@@ -1872,7 +1872,7 @@ extension ChatEngine {
                                 ChatItem(profile: .hero, imgPos: .left, chat: "What was that thing?!!"),
                                 ChatItem(profile: .magmus, chat: "MAGMUS: Magmoor's minion feeds on your deepest fears and desires. Give in and it will weaken your spirit.. corrupt your soul.. shatter your entire being!"),
                                 ChatItem(profile: .hero, imgPos: .left, chat: "Ok, I get it!"),
-                                ChatItem(profile: .merton, chat: "MERTON: 'Tis a thought fraught with fright! Marlin, we fear has fallen prey to this twisted manifestation."),
+                                ChatItem(profile: .merton, chat: "MERTON: 'Tis a thought fraught with fright! Marlin, we fear has fallen victim to this twisted manifestation."),
                                 ChatItem(profile: .hero, imgPos: .left, chat: "Looks like my sleep paralysis demon. Is it gonna come back for me??!"),
                                 ChatItem(profile: .melchior, chat: "Perhaps. But lucky for you, you have our protection. We shall join you in the fight to destroy Magmoor once and for all!!"),
                                 ChatItem(profile: .magmus, chat: "Fear never truly goes away, inexperienced one. Over time, you learn to cope with it."),
