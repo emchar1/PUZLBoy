@@ -1208,6 +1208,44 @@ class GameboardSprite {
     func minionAttackSeries(duration: TimeInterval, completion: (() -> Void)?) {
         guard let magmoorCreepyMinion = magmoorCreepyMinion else { return }
         
+        let labelColor: UIColor = .white
+        
+        let taptap = SKSpriteNode(texture: SKTexture(imageNamed: "taptaptap"))
+        taptap.position = CGPoint(x: sprite.position.x + sprite.size.width / 2, y: 200)
+        taptap.size = CGSize(width: 200, height: 200)
+        taptap.color = labelColor
+        taptap.colorBlendFactor = 1
+        taptap.alpha = 0
+        taptap.zPosition = K.ZPosition.messagePrompt
+        
+        let tapLabel = SKLabelNode(text: "Tap to Defend")
+        tapLabel.position = CGPoint(x: sprite.position.x + sprite.size.width / 2, y: 0)
+        tapLabel.fontName = UIFont.chatFont
+        tapLabel.fontSize = UIFont.chatFontSizeLarge
+        tapLabel.fontColor = labelColor
+        tapLabel.alpha = 0
+        tapLabel.zPosition = K.ZPosition.messagePrompt
+        
+        let tapAction = SKAction.sequence([
+            SKAction.fadeIn(withDuration: 0.25),
+            SKAction.wait(forDuration: 6),
+            SKAction.fadeOut(withDuration: 0.25),
+            SKAction.removeFromParent()
+        ])
+        
+        sprite.addChild(taptap)
+        sprite.addChild(tapLabel)
+        
+        taptap.run(SKAction.group([
+            SKAction.repeatForever(SKAction.sequence([
+                SKAction.scale(to: 0.8, duration: 0),
+                SKAction.scale(to: 1, duration: 0.1)
+            ])),
+            tapAction
+        ]))
+        
+        tapLabel.run(tapAction)
+        
         magmoorCreepyMinion.minionAttackSeries(duration: duration, completion: completion)
     }
 

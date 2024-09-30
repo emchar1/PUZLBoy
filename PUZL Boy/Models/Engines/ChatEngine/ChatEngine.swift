@@ -1833,7 +1833,7 @@ extension ChatEngine {
             delegate?.spawnDaemon(at: spawnPointMinion)
             
             sendChatArray(shouldSkipDim: true, items: [
-                ChatItem(profile: .hero, imgPos: .left, chat: "Oh. It's you again. Alright, whaddya got?") { [unowned self] in
+                ChatItem(profile: .hero, imgPos: .left, chat: "Oh.. you again. Alright, whaddya got?") { [unowned self] in
                     AudioManager.shared.lowerVolume(for: AudioManager.mainThemes.overworld, fadeDuration: 5)
                     hideFFButton()
                     delegate?.spawnMagmoorMinion(at: spawnPointMinion, chatDelay: chatDelay)
