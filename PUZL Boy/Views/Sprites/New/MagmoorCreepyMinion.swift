@@ -144,19 +144,6 @@ class MagmoorCreepyMinion: SKNode {
         
         var landedHit = false
         
-        //On screen Flash
-        let flash = SKSpriteNode(color: .white, size: scene.size)
-        flash.anchorPoint = .zero
-        flash.alpha = 0
-        flash.zPosition = K.ZPosition.gameboard + K.ZPosition.bloodOverlay
-        scene.addChild(flash)
-        
-        let flashSequence = SKAction.sequence([
-            SKAction.fadeAlpha(by: 0.5, duration: 0),
-            SKAction.fadeOut(withDuration: 0.1),
-            SKAction.removeFromParent()
-        ])
-
         for node in scene.nodes(at: location) {
             guard let name = node.name, name.contains(MagmoorCreepyMinion.creepyName) else { continue }
             
@@ -168,8 +155,7 @@ class MagmoorCreepyMinion: SKNode {
         if !landedHit && !isAnimating {
             AudioManager.shared.playSound(for: "chatclose")
             punchCounter.reset()
-
-            flash.run(flashSequence)
+            animateMiss(scene: scene, location: location)
         }
     }
     
@@ -524,6 +510,47 @@ class MagmoorCreepyMinion: SKNode {
         body2.run(action)
         body3.run(action)
         body4.run(action)
+    }
+    
+    /**
+     Helper function that shows a Miss and a flash scren.
+     */
+    private func animateMiss(scene: SKScene, location: CGPoint) {
+        //"Miss!" textuality
+        let pointsSprite = SKLabelNode(text: "Miss!")
+        pointsSprite.fontName = UIFont.chatFont
+        pointsSprite.fontSize = UIFont.chatFontSizeLarge
+        pointsSprite.fontColor = UIFont.chatFontColor
+        pointsSprite.position = location + CGPoint(x: 0, y: 50)
+        pointsSprite.zPosition = K.ZPosition.itemsPoints
+        pointsSprite.addDropShadow()
+
+        let moveUpAction = SKAction.move(by: CGVector(dx: 0, dy: 100), duration: 1.0)
+        let fadeOutAction = SKAction.sequence([
+            SKAction.wait(forDuration: 0.75),
+            SKAction.fadeOut(withDuration: 0.25)
+        ])
+        
+        pointsSprite.run(SKAction.sequence([
+            SKAction.group([moveUpAction, fadeOutAction]),
+            SKAction.removeFromParent()
+        ]))
+        
+        //On-screen Flash
+        let flash = SKSpriteNode(color: .white, size: scene.size)
+        flash.anchorPoint = .zero
+        flash.alpha = 0
+        flash.zPosition = K.ZPosition.gameboard + K.ZPosition.bloodOverlay
+        
+        flash.run(SKAction.sequence([
+            SKAction.fadeAlpha(by: 0.5, duration: 0),
+            SKAction.fadeOut(withDuration: 0.1),
+            SKAction.removeFromParent()
+        ]))
+        
+        //Don't forget to add to scene!
+        scene.addChild(pointsSprite)
+        scene.addChild(flash)
     }
     
     

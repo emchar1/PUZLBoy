@@ -175,9 +175,10 @@ class ScoringEngine {
         let moveUp = SKAction.move(by: CGVector(dx: 0, dy: 100), duration: 1.0)
         let fadeOut = SKAction.sequence([SKAction.wait(forDuration: 0.75), SKAction.fadeOut(withDuration: 0.25)])
         
-        pointsSprite.run(SKAction.group([moveUp, fadeOut])) {
-            pointsSprite.removeFromParent()
-        }
+        pointsSprite.run(SKAction.sequence([
+            SKAction.group([moveUp, fadeOut]),
+            SKAction.removeFromParent()
+        ]))
     }
     
     /**
