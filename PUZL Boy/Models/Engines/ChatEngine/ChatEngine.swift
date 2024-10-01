@@ -86,6 +86,9 @@ class ChatEngine {
     private var shouldClose: Bool = true
     private var closeChatIsRunning: Bool = false
     
+    //For fun
+    static var hero251Quote: String = "I used to have regular milk with my cereal, then I discovered oat milk and dude. It. Slaps. And it's vegan!"
+    
 
     //Chat Sprites
     private var chatBackgroundSprite: SKShapeNode!
@@ -1449,8 +1452,8 @@ extension ChatEngine {
             sendChatArray(items: [
                 ChatItem(profile: .hero, imgPos: .left, chat: "What took you so long? I was talking to myself before I realized you were still in the DARK REALM..."),
                 ChatItem(profile: .trainer, chat: "PUZL Boy, I—"),
-                ChatItem(profile: .hero, imgPos: .left, chat: "As I was saying, I used to have regular milk with my cereal, then I discovered oat milk and dude. It. Slaps."),
-                ChatItem(profile: .trainer, chat: "We need to get to the princess and send her back to Vaeloria right away. Time is of the essence."),
+                ChatItem(profile: .hero, imgPos: .left, chat: "As I was saying, \(ChatEngine.hero251Quote)"),
+                ChatItem(profile: .trainer, chat: "Hmm, interesting. We need to get to the princess and send her back to Vaeloria right away. Time is of the essence."),
                 ChatItem(profile: .hero, imgPos: .left, chat: "Ok, so let's find this \"man of mystery,\" beat him up, and get our princess back!"),
                 ChatItem(profile: .trainer, chat: "Oh, sweet summer child. If it were only that simple. Keep your head down and follow closely. You have no idea what we're up against."),
                 ChatItem(profile: .hero, imgPos: .left, chat: "\"Sweet summer child??\"") { [unowned self] in
@@ -1870,13 +1873,13 @@ extension ChatEngine {
                                 ChatItem(profile: .hero, imgPos: .left, startNewChat: true, chat: "Melchior and the Elders!! Holey moley, you guys are stuff of legends! 🤯", handler: nil),
                                 ChatItem(profile: .melchior, chat: "MELCHIOR: Fear not, boy. The Elders have arrived."),
                                 ChatItem(profile: .hero, imgPos: .left, chat: "What was that thing?!!"),
-                                ChatItem(profile: .magmus, chat: "MAGMUS: Magmoor's minion feeds on your deepest fears and desires. Give in and it will weaken your spirit.. corrupt your soul.. shatter your entire being!"),
-                                ChatItem(profile: .hero, imgPos: .left, chat: "Ok, I get it!"),
-                                ChatItem(profile: .merton, chat: "MERTON: 'Tis a thought fraught with fright! Marlin, we fear has fallen victim to this twisted manifestation."),
+                                ChatItem(profile: .magmus, chat: "MAGMUS: Magmoor's minion feeds on your deepest fears and desires. Give in and it will weaken your spirit.. corrupt your soul.. shatter your psyche!"),
+                                ChatItem(profile: .hero, imgPos: .left, chat: "Ok, I get it!!"),
+                                ChatItem(profile: .merton, chat: "MERTON: 'Tis a thought fraught with fright, earth friend! Marlin, we fear has fallen victim to this twisted manifestation."),
                                 ChatItem(profile: .hero, imgPos: .left, chat: "Looks like my sleep paralysis demon. Is it gonna come back for me??!"),
                                 ChatItem(profile: .melchior, chat: "Perhaps. But lucky for you, you have our protection. We shall join you in the fight to destroy Magmoor once and for all!!"),
                                 ChatItem(profile: .magmus, chat: "Fear never truly goes away, inexperienced one. Over time, you learn to cope with it."),
-                                ChatItem(profile: .merton, chat: "And not a moment too soon! Quickly, let us make haste to Earth's core!") { [unowned self] in
+                                ChatItem(profile: .merton, chat: "And not a moment too soon! Quickly, let us make haste to the planet's core!") { [unowned self] in
                                     delegate?.despawnElders(to: (0, 0), completion: {})
                                     hideFFButton()
                                     AudioManager.shared.playSound(for: "titlechapter")
