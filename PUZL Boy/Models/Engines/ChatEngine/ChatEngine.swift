@@ -1830,6 +1830,12 @@ extension ChatEngine {
                 }
             }
         case 451:
+            guard FIRManager.bravery == nil else {
+                //Short circuit Minion fight if you've already fought him and bravery was recorded!
+                handleDialogueCompletion(level: level, completion: completion)
+                return
+            }
+            
             let spawnPointMinion: K.GameboardPosition = (3, 3)
             let chatDelay: TimeInterval = 13
             

@@ -195,7 +195,7 @@ class GameEngine {
         GameEngine.livesUsed = saveStateModel.levelStatsArray.filter({ $0.level == level.level }).first?.livesUsed ?? GameEngine.livesUsed
         GameEngine.winStreak = saveStateModel.winStreak
         GameEngine.gameCompleted = saveStateModel.gameCompleted
-        GameEngine.ageOfRuin = saveStateModel.ageOfRuin
+        GameEngine.ageOfRuin = saveStateModel.aorAgeOfRuin
         
         finishInit(shouldSpawn: true)
     }

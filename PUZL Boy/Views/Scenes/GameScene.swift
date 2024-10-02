@@ -394,15 +394,16 @@ class GameScene: SKScene {
             inventory: gameEngine.level.inventory)
         
         let saveStateModel = SaveStateModel(
-            ageOfRuin: GameEngine.ageOfRuin,
-            decisionLeftButton0: true, //Doesn't matter what goes here, it'll also get overwritten by the static property in FIRManager
-            decisionLeftButton1: true, //Doesn't matter what goes here, it'll also get overwritten by the static property in FIRManager
-            decisionLeftButton2: true, //Doesn't matter what goes here, it'll also get overwritten by the static property in FIRManager
-            decisionLeftButton3: true, //Doesn't matter what goes here, it'll also get overwritten by the static property in FIRManager
+            aorAgeOfRuin: GameEngine.ageOfRuin,
+            aorBravery: 0, //Doesn't matter what goes here, it'll also get overwritten by the static property in FIRManager
+            aorDecisionLeftButton0: true, //Doesn't matter what goes here, it'll also get overwritten by the static property in FIRManager
+            aorDecisionLeftButton1: true, //Doesn't matter what goes here, it'll also get overwritten by the static property in FIRManager
+            aorDecisionLeftButton2: true, //Doesn't matter what goes here, it'll also get overwritten by the static property in FIRManager
+            aorDecisionLeftButton3: true, //Doesn't matter what goes here, it'll also get overwritten by the static property in FIRManager
+            aorHasFeather: true, //Doesn't matter what goes here, it'll also get overwritten by the static property in FIRManager
+            aorGotGift: true, //Doesn't matter what goes here, it'll also get overwritten by the static property in FIRManager
             elapsedTime: scoringEngine.timerManager.elapsedTime,
             gameCompleted: GameEngine.gameCompleted,
-            hasFeather: true, //Doesn't matter what goes here, it'll also get overwritten by the static property in FIRManager
-            gotGift: true, //Doesn't matter what goes here, it'll also get overwritten by the static property in FIRManager
             hintAvailable: gameEngine.hintEngine.hintAvailable,
             hintCountRemaining: HintEngine.hintCount,
             levelModel: levelModel,

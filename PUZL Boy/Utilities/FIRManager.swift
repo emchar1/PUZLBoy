@@ -15,12 +15,17 @@ struct FIRManager {
     
     static var user: User?
     static var saveStateModel: SaveStateModel?
+
+    //Age of Ruin Properties
+    static var bravery: Int?
     static var decisionsLeftButton: [Bool?] = [nil, nil, nil, nil]
     static var hasFeather: Bool?
     static var gotGift: Bool?
+    
     static var didGiveAwayFeather: Bool {
         decisionsLeftButton[2] != nil && decisionsLeftButton[2]!
     }
+    
     static var didReceiveGiftFromTiki: Bool {
         gotGift ?? false
     }
@@ -146,7 +151,7 @@ struct FIRManager {
                 return
             }
             
-            guard let ageOfRuin = data["ageOfRuin"] as? Bool,
+            guard let ageOfRuin = data["aorAgeOfRuin"] as? Bool,
                   let elapsedTime = data["elapsedTime"] as? TimeInterval,
                   let gameCompleted = data["gameCompleted"] as? Bool,
                   let hintAvailable = data["hintAvailable"] as? Bool,
@@ -166,21 +171,23 @@ struct FIRManager {
             }
             
             for i in 0...3 {
-                decisionsLeftButton[i] = data["decisionLeftButton\(i)"] as? Bool
+                decisionsLeftButton[i] = data["aorDecisionLeftButton\(i)"] as? Bool
             }
             
-            hasFeather = data["hasFeather"] as? Bool
-            gotGift = data["gotGift"] as? Bool
+            bravery = data["aorBravery"] as? Int
+            hasFeather = data["aorHasFeather"] as? Bool
+            gotGift = data["aorGotGift"] as? Bool
             
-            completion?(SaveStateModel(ageOfRuin: ageOfRuin,
-                                       decisionLeftButton0: decisionsLeftButton[0],
-                                       decisionLeftButton1: decisionsLeftButton[1],
-                                       decisionLeftButton2: decisionsLeftButton[2],
-                                       decisionLeftButton3: decisionsLeftButton[3],
+            completion?(SaveStateModel(aorAgeOfRuin: ageOfRuin,
+                                       aorBravery: bravery,
+                                       aorDecisionLeftButton0: decisionsLeftButton[0],
+                                       aorDecisionLeftButton1: decisionsLeftButton[1],
+                                       aorDecisionLeftButton2: decisionsLeftButton[2],
+                                       aorDecisionLeftButton3: decisionsLeftButton[3],
+                                       aorHasFeather: hasFeather,
+                                       aorGotGift: gotGift,
                                        elapsedTime: elapsedTime,
                                        gameCompleted: gameCompleted,
-                                       hasFeather: hasFeather,
-                                       gotGift: gotGift,
                                        hintAvailable: hintAvailable,
                                        hintCountRemaining: hintCountRemaining,
                                        levelModel: getLevelModel(from: levelModel),
@@ -233,15 +240,16 @@ struct FIRManager {
         
         let docRef = Firestore.firestore().collection("savedStates").document(uid)
         docRef.setData([
-            "ageOfRuin": saveStateModel.ageOfRuin,
-            "decisionLeftButton0": decisionsLeftButton[0] as Any, //use static property, instead of saveStateModel
-            "decisionLeftButton1": decisionsLeftButton[1] as Any, //use static property, instead of saveStateModel
-            "decisionLeftButton2": decisionsLeftButton[2] as Any, //use static property, instead of saveStateModel
-            "decisionLeftButton3": decisionsLeftButton[3] as Any, //use static property, instead of saveStateModel
+            "aorAgeOfRuin": saveStateModel.aorAgeOfRuin,
+            "aorBravery": bravery as Any, //use static property, instead of saveStateModel
+            "aorDecisionLeftButton0": decisionsLeftButton[0] as Any, //use static property, instead of saveStateModel
+            "aorDecisionLeftButton1": decisionsLeftButton[1] as Any, //use static property, instead of saveStateModel
+            "aorDecisionLeftButton2": decisionsLeftButton[2] as Any, //use static property, instead of saveStateModel
+            "aorDecisionLeftButton3": decisionsLeftButton[3] as Any, //use static property, instead of saveStateModel
+            "aorHasFeather": hasFeather as Any, //use the static property, instead of saveStateModel (which will give you the old one)
+            "aorGotGift": gotGift as Any, //use the static property, instead of saveStateModel
             "elapsedTime": saveStateModel.elapsedTime,
             "gameCompleted": saveStateModel.gameCompleted,
-            "hasFeather": hasFeather as Any, //use the static property, instead of saveStateModel (which will give you the old one)
-            "gotGift": gotGift as Any, //use the static property, instead of saveStateModel
             "hintAvailable": saveStateModel.hintAvailable,
             "hintCountRemaining": saveStateModel.hintCountRemaining,
             "levelModel": [
@@ -406,7 +414,7 @@ struct FIRManager {
     ///Convenience method to update the decision field in a record and the static decisions array property.
     static func updateFirestoreRecordDecision(index: Int, buttonOrder: ChatDecisionEngine.ButtonOrder?) {
         let indexAdjusted = index.clamp(min: 0, max: 3)
-        let FIRfield = "decisionLeftButton\(indexAdjusted)"
+        let FIRfield = "aorDecisionLeftButton\(indexAdjusted)"
         let FIRvalue: Bool?
         
         if let buttonOrder = buttonOrder {
@@ -420,17 +428,23 @@ struct FIRManager {
 
         updateFirestoreRecordFields(fields: [FIRfield : FIRvalue ?? NSNull()])
     }
-    
+
+    ///Convenience method to update the bravery field in a record and the static property.
+    static func updateFirestoreRecordBravery(_ bravery: Int?) {
+        self.bravery = bravery
+        updateFirestoreRecordFields(fields: ["aorBravery" : bravery ?? NSNull()])
+    }
+
     ///Convenience method to update the hasFeather field in a record and the static property.
     static func updateFirestoreRecordHasFeather(_ hasFeather: Bool?) {
         self.hasFeather = hasFeather
-        updateFirestoreRecordFields(fields: ["hasFeather" : hasFeather ?? NSNull()])
+        updateFirestoreRecordFields(fields: ["aorHasFeather" : hasFeather ?? NSNull()])
     }
     
     ///Convenience method to update the gotGift field in a record and the static property.
     static func updateFirestoreRecordGotGift(_ gotGift: Bool?) {
         self.gotGift = gotGift
-        updateFirestoreRecordFields(fields: ["gotGift" : gotGift ?? NSNull()])
+        updateFirestoreRecordFields(fields: ["aorGotGift" : gotGift ?? NSNull()])
     }
     
     ///Convenience method to update just the newLevel field in a record.

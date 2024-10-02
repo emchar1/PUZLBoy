@@ -1219,7 +1219,7 @@ class GameboardSprite {
         taptap.zPosition = K.ZPosition.messagePrompt
         
         let tapLabel = SKLabelNode(text: "Tap to Defend")
-        tapLabel.position = CGPoint(x: sprite.position.x + sprite.size.width / 2, y: 0)
+        tapLabel.position = CGPoint(x: sprite.position.x + sprite.size.width / 2, y: 20)
         tapLabel.fontName = UIFont.chatFont
         tapLabel.fontSize = UIFont.chatFontSizeLarge
         tapLabel.fontColor = labelColor
