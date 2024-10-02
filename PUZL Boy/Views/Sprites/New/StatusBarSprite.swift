@@ -141,6 +141,7 @@ class StatusBarSprite: SKNode {
             
             AudioManager.shared.playSound(for: "gemcollectpartylife")
             AudioManager.shared.playSound(for: "boywin")
+            Haptics.shared.addHapticFeedback(withStyle: .heavy)
         }
         
         run(SKAction.sequence([

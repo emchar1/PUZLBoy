@@ -1838,6 +1838,7 @@ extension ChatEngine {
             
             let spawnPointMinion: K.GameboardPosition = (3, 3)
             let chatDelay: TimeInterval = 13
+            let attackDuration: TimeInterval = 60
             
             delegate?.spawnDaemon(at: spawnPointMinion)
             
@@ -1856,8 +1857,6 @@ extension ChatEngine {
                 ChatItem(profile: .hero, imgPos: .left, pause: chatDelay, startNewChat: true, chat: "Nope! Nope! Nope! NOOOPE!!!", handler: nil),
                 ChatItem(profile: .hero, imgPos: .left, endChat: true, chat: "What even are you?!?! Get away from me! I don't know anything!! MARLIN, HEEEEELP!!!!", handler: nil)
             ]) { [unowned self] in
-                let attackDuration: TimeInterval = 60
-                
                 superScene?.addChild(marlinBlast)
                 hideFFButton(showChatImmediately: true)
 

@@ -1232,10 +1232,7 @@ class GameboardSprite {
         
         let tapAction = SKAction.sequence([
             SKAction.fadeIn(withDuration: 0.25),
-            SKAction.repeat(SKAction.sequence([
-                SKAction.fadeAlpha(to: 0.5, duration: 0.25),
-                SKAction.fadeIn(withDuration: 0.25)
-            ]), count: 6 * 2),
+            SKAction.wait(forDuration: 6),
             SKAction.fadeOut(withDuration: 0.25),
             SKAction.removeFromParent()
         ])
@@ -1251,7 +1248,13 @@ class GameboardSprite {
             tapAction
         ]))
         
-        tapLabel.run(tapAction)
+        tapLabel.run(SKAction.group([
+            SKAction.repeatForever(SKAction.sequence([
+                SKAction.fadeAlpha(to: 0.5, duration: 0.25),
+                SKAction.fadeIn(withDuration: 0.25)
+            ])),
+            tapAction
+        ]))
         
         magmoorCreepyMinion.minionAttackSeries(duration: duration, completion: completion)
     }
