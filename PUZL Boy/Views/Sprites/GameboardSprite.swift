@@ -1120,7 +1120,7 @@ class GameboardSprite {
         let statue5 = SKSpriteNode(imageNamed: "statue5")
         statue5.scale(to: scaleSize)
         statue5.position = getSpritePosition(at: position) + GameboardSprite.padding / 2 + scaleSize.width / 2
-        statue5.zPosition = K.ZPosition.overlay
+        statue5.zPosition = K.ZPosition.overlay + 200
         statue5.name = "DaemonTheDestroyer"
         
         sprite.addChild(statue5)
@@ -1132,6 +1132,7 @@ class GameboardSprite {
      */
     func spawnMagmoorMinion(at position: K.GameboardPosition) {
         let panelCount: Int = 9
+        let positionFinal = getSpritePosition(at: (row: position.row + 1, col: position.col - 1)) + GameboardSprite.padding / 2 + scaleSize.width / 2
         let chatDelay: TimeInterval = 8
         let statue5bAnimateDuration: TimeInterval = 5
         let terrainAppearDuration: TimeInterval = 0.25
@@ -1144,7 +1145,9 @@ class GameboardSprite {
         let statue5 = sprite.childNode(withName: "DaemonTheDestroyer") as? SKSpriteNode
         statue5?.animateDaemon(newTexture: SKTexture(imageNamed: "statue5b"), delay: chatDelay)
         statue5?.run(SKAction.sequence([
-            SKAction.wait(forDuration: chatDelay + statue5bAnimateDuration),
+            SKAction.wait(forDuration: chatDelay),
+            SKAction.move(to: positionFinal, duration: statue5bAnimateDuration),
+            SKAction.wait(forDuration: panelDuration + fadeDuration),
             SKAction.fadeOut(withDuration: fadeDuration),
             SKAction.removeFromParent()
         ]))
@@ -1225,10 +1228,14 @@ class GameboardSprite {
         tapLabel.fontColor = labelColor
         tapLabel.alpha = 0
         tapLabel.zPosition = K.ZPosition.messagePrompt
+        tapLabel.addDropShadow()
         
         let tapAction = SKAction.sequence([
             SKAction.fadeIn(withDuration: 0.25),
-            SKAction.wait(forDuration: 6),
+            SKAction.repeat(SKAction.sequence([
+                SKAction.fadeAlpha(to: 0.5, duration: 0.25),
+                SKAction.fadeIn(withDuration: 0.25)
+            ]), count: 6 * 2),
             SKAction.fadeOut(withDuration: 0.25),
             SKAction.removeFromParent()
         ])

@@ -98,7 +98,7 @@ extension SKSpriteNode {
         addChild(scaryStatue)
         
         let shakeDuration: TimeInterval = 0.06
-        let shakeCount = 36
+        let shakeCount = 48
 
         let tikiAction = SKAction.sequence([
             SKAction.wait(forDuration: delay ?? 0),
