@@ -368,14 +368,14 @@ class MagmoorCreepyMinion: SKNode {
         
         isDisabled = false
         
-        func cleanupCompletion(flashMax: Bool) {
+        func cleanupCompletion(flashMaxBravery: Bool) {
             //IMPORTANT to stop all actions!!
             removeAction(forKey: keyMinionAttack)
             removeAction(forKey: keyBraveryDrain)
             removeAction(forKey: keyFinalCompletion)
             
             isDisabled = true
-            braveryBar.removeStatus(flashMax: flashMax, completion: completion)
+            braveryBar.removeStatus(flashMaxBravery: flashMaxBravery, completion: completion)
 
             //Write to Firestore
             let braveryConverted = Int(braveryCounter.getCount() * 100)
@@ -399,7 +399,7 @@ class MagmoorCreepyMinion: SKNode {
                 //Determine when to call completion based on current bravery
                 switch braveryCounter.getCount() {
                 case let num where num >= 1:
-                    cleanupCompletion(flashMax: true)
+                    cleanupCompletion(flashMaxBravery: true)
                 case let num where num <= 0:
                     guard !braveryReachedZero else { return }
 
@@ -416,7 +416,7 @@ class MagmoorCreepyMinion: SKNode {
         run(SKAction.sequence([
             SKAction.wait(forDuration: duration),
             SKAction.run {
-                cleanupCompletion(flashMax: false)
+                cleanupCompletion(flashMaxBravery: false)
             }
         ]), withKey: keyFinalCompletion)
     }
@@ -486,6 +486,9 @@ class MagmoorCreepyMinion: SKNode {
 
         let hitArmsOffset: CGFloat = 40
         let heroCooloffDuration: TimeInterval = 0.1
+        
+        
+        // MARK: - This is not working; creepy sprite body parts are not tinting...
         let hitAction = SKAction.sequence([
             SKAction.colorize(with: .red, colorBlendFactor: 1, duration: 0),
             SKAction.colorize(with: .white, colorBlendFactor: 0, duration: heroCooloffDuration)

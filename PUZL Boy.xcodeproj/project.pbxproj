@@ -248,6 +248,7 @@
 		EAAB5A1D2C99E9A5007E463B /* MagicMergeParticles.sks in Resources */ = {isa = PBXBuildFile; fileRef = EAAB5A1C2C99E9A5007E463B /* MagicMergeParticles.sks */; };
 		EAAB5A1F2CA63B3B007E463B /* Counter.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAAB5A1E2CA63B3B007E463B /* Counter.swift */; };
 		EAAB5A212CA6A7E0007E463B /* StatusBarSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAAB5A202CA6A7E0007E463B /* StatusBarSprite.swift */; };
+		EAAB5A232CAE3042007E463B /* InstructionalSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAAB5A222CAE3042007E463B /* InstructionalSprite.swift */; };
 		EAACB4A7296F80E700973EB8 /* AchievementAvidReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAACB4A6296F80E700973EB8 /* AchievementAvidReader.swift */; };
 		EAACB4B92971E08A00973EB8 /* chatclose.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAACB4B82971E08A00973EB8 /* chatclose.mp3 */; };
 		EAACB4BE297255FC00973EB8 /* GoogleMobileAds in Frameworks */ = {isa = PBXBuildFile; productRef = EAACB4BD297255FC00973EB8 /* GoogleMobileAds */; };
@@ -591,6 +592,7 @@
 		EAAB5A1C2C99E9A5007E463B /* MagicMergeParticles.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = MagicMergeParticles.sks; sourceTree = "<group>"; };
 		EAAB5A1E2CA63B3B007E463B /* Counter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Counter.swift; sourceTree = "<group>"; };
 		EAAB5A202CA6A7E0007E463B /* StatusBarSprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusBarSprite.swift; sourceTree = "<group>"; };
+		EAAB5A222CAE3042007E463B /* InstructionalSprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstructionalSprite.swift; sourceTree = "<group>"; };
 		EAACB4A6296F80E700973EB8 /* AchievementAvidReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementAvidReader.swift; sourceTree = "<group>"; };
 		EAACB4B82971E08A00973EB8 /* chatclose.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = chatclose.mp3; sourceTree = "<group>"; };
 		EAAEA3BD2931A31200221963 /* movepoisoned1.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = movepoisoned1.mp3; sourceTree = "<group>"; };
@@ -929,6 +931,7 @@
 			isa = PBXGroup;
 			children = (
 				EA12C54F2B271EC2006E9813 /* GoldCoinSprite.swift */,
+				EAAB5A222CAE3042007E463B /* InstructionalSprite.swift */,
 				EAEF2ECD2B4DCD4800AD8459 /* LetterboxSprite.swift */,
 				EA7300142B5F74B4005BF98D /* MarlinBlastSprite.swift */,
 				EA73001A2B604A13005BF98D /* MagmoorScarySprite.swift */,
@@ -1616,6 +1619,7 @@
 				EA11915729121798009D0E3E /* Controls.swift in Sources */,
 				EA826C74297CEFC500F19F81 /* TimerManager.swift in Sources */,
 				EA35348B29241FCD00C11FC0 /* LevelType.swift in Sources */,
+				EAAB5A232CAE3042007E463B /* InstructionalSprite.swift in Sources */,
 				EAEF2ECE2B4DCD4800AD8459 /* LetterboxSprite.swift in Sources */,
 				EA119155290CCA39009D0E3E /* Inventory.swift in Sources */,
 				EA95D1D129542C720061059C /* AchievementNuclear.swift in Sources */,
