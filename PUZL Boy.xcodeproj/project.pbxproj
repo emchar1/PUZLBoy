@@ -245,6 +245,7 @@
 		EAA3BD6C2C97E8DC00EDE298 /* MagicPrincessExplodeParticles.sks in Resources */ = {isa = PBXBuildFile; fileRef = EAA3BD6B2C97E8DC00EDE298 /* MagicPrincessExplodeParticles.sks */; };
 		EAA921D82C011362009E99E7 /* AuthorizationRequestScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAA921D72C011361009E99E7 /* AuthorizationRequestScene.swift */; };
 		EAA921DA2C014C83009E99E7 /* AuthorizationSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAA921D92C014C83009E99E7 /* AuthorizationSprite.swift */; };
+		EAAB41642CB06A5D00BBFA75 /* MagicPrincessExplode0Particles.sks in Resources */ = {isa = PBXBuildFile; fileRef = EAAB41632CB06A5D00BBFA75 /* MagicPrincessExplode0Particles.sks */; };
 		EAAB5A1D2C99E9A5007E463B /* MagicMergeParticles.sks in Resources */ = {isa = PBXBuildFile; fileRef = EAAB5A1C2C99E9A5007E463B /* MagicMergeParticles.sks */; };
 		EAAB5A1F2CA63B3B007E463B /* Counter.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAAB5A1E2CA63B3B007E463B /* Counter.swift */; };
 		EAAB5A212CA6A7E0007E463B /* StatusBarSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAAB5A202CA6A7E0007E463B /* StatusBarSprite.swift */; };
@@ -589,6 +590,7 @@
 		EAA3BD6B2C97E8DC00EDE298 /* MagicPrincessExplodeParticles.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = MagicPrincessExplodeParticles.sks; sourceTree = "<group>"; };
 		EAA921D72C011361009E99E7 /* AuthorizationRequestScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorizationRequestScene.swift; sourceTree = "<group>"; };
 		EAA921D92C014C83009E99E7 /* AuthorizationSprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorizationSprite.swift; sourceTree = "<group>"; };
+		EAAB41632CB06A5D00BBFA75 /* MagicPrincessExplode0Particles.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = MagicPrincessExplode0Particles.sks; sourceTree = "<group>"; };
 		EAAB5A1C2C99E9A5007E463B /* MagicMergeParticles.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = MagicMergeParticles.sks; sourceTree = "<group>"; };
 		EAAB5A1E2CA63B3B007E463B /* Counter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Counter.swift; sourceTree = "<group>"; };
 		EAAB5A202CA6A7E0007E463B /* StatusBarSprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusBarSprite.swift; sourceTree = "<group>"; };
@@ -1297,6 +1299,7 @@
 				EA7300102B5E00E1005BF98D /* MagicLightParticles.sks */,
 				EAAB5A1C2C99E9A5007E463B /* MagicMergeParticles.sks */,
 				EAA3BD6B2C97E8DC00EDE298 /* MagicPrincessExplodeParticles.sks */,
+				EAAB41632CB06A5D00BBFA75 /* MagicPrincessExplode0Particles.sks */,
 				EAA3BD692C97D1ED00EDE298 /* MagicPrincessParticles.sks */,
 				EA7A79362C8234E200594349 /* MagmoorSmokeParticles.sks */,
 				EAD19A032A9698B700A07A63 /* PartyGemParticles.sks */,
@@ -1484,6 +1487,7 @@
 				EAE43DA52C4B397100E6DB3C /* MagicElderEarthParticles.sks in Resources */,
 				EAE43D8F2C48A72200E6DB3C /* magicdisappear.mp3 in Resources */,
 				EA7E75352C23959B00BE2781 /* GoogleService-Info.plist in Resources */,
+				EAAB41642CB06A5D00BBFA75 /* MagicPrincessExplode0Particles.sks in Resources */,
 				EAD19A1B2A9BD48400A07A63 /* GemSparkleParticles.sks in Resources */,
 				EA9F4DDD29D2B766006F4B2F /* buttontap2.mp3 in Resources */,
 				EAD199FC2A95A2ED00A07A63 /* GemCollectParticles.sks in Resources */,

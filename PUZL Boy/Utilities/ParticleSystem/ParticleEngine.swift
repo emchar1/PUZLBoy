@@ -54,6 +54,7 @@ class ParticleEngine: SKNode {
         case magicLight = "MagicLightParticles"
         case magicMerge = "MagicMergeParticles"
         case magicPrincessExplode = "MagicPrincessExplodeParticles"
+        case magicPrincessExplode0 = "MagicPrincessExplode0Particles"
         case magicPrincess = "MagicPrincessParticles"
         case magmoorSmoke = "MagmoorSmokeParticles"
         case partyGem = "PartyGemParticles"

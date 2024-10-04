@@ -1839,7 +1839,8 @@ extension ChatEngine {
             let spawnPointMinion: K.GameboardPosition = (3, 3)
             let chatDelay: TimeInterval = 13
             let attackDuration: TimeInterval = 60
-            
+            let gameScene = superScene as? GameScene
+
             delegate?.spawnDaemon(at: spawnPointMinion)
             
             sendChatArray(shouldSkipDim: true, items: [
@@ -1849,7 +1850,6 @@ extension ChatEngine {
                     delegate?.spawnMagmoorMinion(at: spawnPointMinion, chatDelay: chatDelay)
                 },
                 ChatItem(profile: .statue5, endChat: true, chat: "WELCOME TO YOUR DOOM!") { [unowned self] in
-                    let gameScene = superScene as? GameScene
                     gameScene?.shakeScreen(duration: 9, shouldPlaySFX: false, completion: nil)
 
                     showFFButton()
@@ -1862,6 +1862,7 @@ extension ChatEngine {
                 //Yet again another nesting!!
                 delegate?.minionAttack(duration: attackDuration) { [unowned self] in
                     //This nesting is REALLY ugly!!
+                    gameScene?.shakeScreen(duration: 8, shouldPlaySFX: false, completion: nil)
                     delegate?.spawnElder(minionPosition: spawnPointMinion, positions: [(0, 3), (4, 0), (4, 6)]) { [unowned self] in
                         delegate?.despawnMagmoorMinion(at: spawnPointMinion, fadeDuration: 3)
                         
