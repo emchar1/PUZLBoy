@@ -354,7 +354,7 @@ class MagmoorCreepyMinion: SKNode {
             SKAction.wait(forDuration: delay),
             SKAction.group([
                 SKAction.scale(to: 0, duration: fadeOut),
-                SKAction.move(to: CGPoint(x: parentNode.size.width / 2, y: parentNode.size.height / 2), duration: fadeOut),
+                SKAction.move(to: CGPoint(x: parentNode.size.width / 2, y: parentNode.size.height / 2) / parentNode.xScale, duration: fadeOut),
             ]),
             SKAction.removeFromParent()
         ])) {
