@@ -1266,7 +1266,7 @@ class GameEngine {
     }
     
     func elderSpawnEnter() {
-        let fadeDuration: TimeInterval = 3
+        let fadeDuration: TimeInterval = 2
 
         inbetweenNode.run(SKAction.group([
             SKAction.colorize(with: .black, colorBlendFactor: 1, duration: fadeDuration),
