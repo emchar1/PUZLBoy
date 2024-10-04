@@ -176,12 +176,14 @@ class ParticleEngine: SKNode {
         ])))
     }
     
-    func removeParticles(fromNode node: SKNode, nameGameboardPosition: K.GameboardPosition? = nil) {
+    func removeParticles(fromNode node: SKNode, nameGameboardPosition: K.GameboardPosition? = nil, fadeDuration: TimeInterval = 0) {
         for particleNode in node.children {
             guard particleNode.name == ParticleEngine.nodeName + getPositionString(nameGameboardPosition) else { continue }
-                    
-            particleNode.removeAllActions()
-            particleNode.removeFromParent()
+            
+            particleNode.run(SKAction.sequence([
+                SKAction.fadeOut(withDuration: fadeDuration),
+                SKAction.removeFromParent()
+            ]))
         }
     }
     

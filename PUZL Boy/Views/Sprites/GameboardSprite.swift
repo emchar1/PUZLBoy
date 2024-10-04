@@ -1181,10 +1181,8 @@ class GameboardSprite {
      Depawns Magmoor's creepy minion at the designated position.
      - parameter position: position should match spawnMagmoorMinion() position.
      */
-    func despawnMagmoorMinion(at position: K.GameboardPosition) {
+    func despawnMagmoorMinion(at position: K.GameboardPosition, fadeDuration: TimeInterval) {
         guard let magmoorCreepyMinion = magmoorCreepyMinion else { return }
-        
-        let fadeDuration: TimeInterval = 2
         
         //Panels
         let panels = getSurroundingPanels(at: position)
@@ -1199,6 +1197,8 @@ class GameboardSprite {
         magmoorCreepyMinion.endAnimation(delay: 0) { [unowned self] in
             self.magmoorCreepyMinion = nil
         }
+        
+        despawnPartyTilesForElders(fadeDuration: fadeDuration)
         
         //AudioManager
         AudioManager.shared.stopSound(for: "magmoorcreepystrings", fadeDuration: fadeDuration)
@@ -1243,7 +1243,7 @@ class GameboardSprite {
     
     // MARK: - Spawn Elder Functions
     
-    func spawnElder(positions: [K.GameboardPosition], delay: TimeInterval, completion: @escaping () -> Void) {
+    func spawnElder(minionPosition: K.GameboardPosition, positions: [K.GameboardPosition], completion: @escaping () -> Void) {
         guard positions.count == 3 else {
             fatalError("GameboardSprite.spawnElder() incorrect number of array elements for positions.")
         }
@@ -1259,15 +1259,57 @@ class GameboardSprite {
             }
         }
         
-        spawnElderHelper(elder: elder0, positions: [positions[0], positions[1], positions[2]], delay: delay, completion: completion)
-        spawnElderHelper(elder: elder1, positions: [positions[1], positions[2], positions[0]], delay: delay, completion: {})
-        spawnElderHelper(elder: elder2, positions: [positions[2], positions[0], positions[1]], delay: delay, completion: {})
+        spawnPartyTilesForElders(minionPosition: minionPosition)
         
-        AudioManager.shared.playSound(for: "magicelderreduce", delay: delay)
-        AudioManager.shared.playSound(for: "magicelderexplosion", delay: delay)
+        spawnElderHelper(elder: elder0, positions: [positions[0], positions[1], positions[2]], completion: completion)
+        spawnElderHelper(elder: elder1, positions: [positions[1], positions[2], positions[0]], completion: {})
+        spawnElderHelper(elder: elder2, positions: [positions[2], positions[0], positions[1]], completion: {})
+        
+        AudioManager.shared.playSound(for: "magicelderreduce")
+        AudioManager.shared.playSound(for: "magicelderexplosion")
     }
     
-    private func spawnElderHelper(elder: Player, positions: [K.GameboardPosition], delay: TimeInterval, completion: @escaping () -> Void) {
+    private func spawnPartyTilesForElders(minionPosition: K.GameboardPosition) {
+        let panelsToIgnore = getSurroundingPanels(at: minionPosition)
+        let fadeDuration: TimeInterval = 2
+        
+        for row in 0..<panelCount {
+            for col in 0..<panelCount {
+                let nodeName = GameboardSprite.getNodeName(row: row, col: col)
+                var isPanelToIgnore = false
+                
+                //Skip the center 9 squares where minion resides
+                for panel in panelsToIgnore {
+                    if panel.terrain?.name == nodeName {
+                        isPanelToIgnore = true
+                        break
+                    }
+                }
+                
+                guard !isPanelToIgnore else { continue }
+                
+                let terrainPanel = SKSpriteNode(imageNamed: "partytile" + AgeOfRuin.ruinSuffix)
+                terrainPanel.anchorPoint = .zero
+                terrainPanel.alpha = 0
+                terrainPanel.zPosition = 20
+                terrainPanel.name = GameboardSprite.getNodeName(row: row, col: col) + "partytile"
+                
+                let randomHue = UIColor(hue: CGFloat.random(in: 0.0...1.0), saturation: 1.0, brightness: 1.0, alpha: 1.0)
+                let randomDuration = TimeInterval.random(in: 0.75...1.0)
+                
+                terrainPanel.run(SKAction.fadeIn(withDuration: fadeDuration))
+                terrainPanel.run(SKAction.repeatForever(SKAction.sequence([
+                    SKAction.colorize(with: GameboardSprite.gameboardColor, colorBlendFactor: 0.0, duration: randomDuration),
+                    SKAction.colorize(with: randomHue, colorBlendFactor: 1.0, duration: randomDuration)
+                ])))
+                
+                sprite.childNode(withName: nodeName)?.addChild(terrainPanel)
+            }
+        }
+        
+    }
+    
+    private func spawnElderHelper(elder: Player, positions: [K.GameboardPosition], completion: @escaping () -> Void) {
         let elderOffset = CGPoint(x: panelSize / 8, y: panelSize / 8)
         let appearDuration: TimeInterval = 1
         let rotateSpeed: TimeInterval = 1
@@ -1339,7 +1381,7 @@ class GameboardSprite {
                 
         sprite.addChild(elder.sprite)
 
-        spawnItem(at: positions[0], with: .warp5, delay: delay) { [unowned self] in
+        spawnItem(at: positions[0], with: .warp5) { [unowned self] in
             elder.sprite.run(SKAction.sequence([
                 SKAction.group([
                     SKAction.scaleX(to: -Player.getGameboardScale(panelSize: panelSize) * elder.scaleMultiplier, duration: appearDuration),
@@ -1406,6 +1448,20 @@ class GameboardSprite {
         elder0.sprite.run(getDespawnAction(elder: elder0), completion: completion)
         elder1.sprite.run(getDespawnAction(elder: elder1))
         elder2.sprite.run(getDespawnAction(elder: elder2))
+    }
+    
+    private func despawnPartyTilesForElders(fadeDuration: TimeInterval) {
+        // FIXME: - There's got to be a less nesty way to do this.
+        for node in sprite.children {
+            for partyNode in node.children {
+                if let nodeName = partyNode.name, nodeName.contains("partytile") {
+                    partyNode.run(SKAction.sequence([
+                        SKAction.fadeOut(withDuration: fadeDuration),
+                        SKAction.removeFromParent()
+                    ]))
+                }
+            }
+        }
     }
 
     

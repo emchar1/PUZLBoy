@@ -286,6 +286,8 @@ class MagmoorCreepyMinion: SKNode {
         - completion: completion handler to clean up after function ends, for example.
      */
     func endAnimation(delay: TimeInterval, completion: (() -> Void)?) {
+        let fadeDuration: TimeInterval = 1
+        
         let moveLeftArmHand: SKAction = SKAction.sequence([
             SKAction.rotate(toAngle: 0, duration: 0),
             SKAction.wait(forDuration: delay + 0.1),
@@ -297,20 +299,7 @@ class MagmoorCreepyMinion: SKNode {
         leftArm.run(moveLeftArmHand)
         leftHand.run(moveLeftArmHand)
         
-        animateRemoveNode(node: leftHand, delay: delay + 0.3)
-        animateRemoveNode(node: leftArm, delay: delay + 0.3)
-        animateRemoveNode(node: rightHand, delay: delay + 0.1)
-        animateRemoveNode(node: rightArm, delay: delay + 0.1)
-        animateRemoveNode(node: body1, delay: delay + 0.1)
-        animateRemoveNode(node: body2, delay: delay + 0.2)
-        animateRemoveNode(node: body3, delay: delay + 0.3)
-        animateRemoveNode(node: body4, delay: delay + 0.4)
-        animateRemoveNode(node: face1, delay: delay + 0.3)
-        animateRemoveNode(node: face2, delay: delay + 0.4)
-
-        //Longest animation sequence. Use for completion handling.
-        animateRemoveNode(node: face3, delay: delay + 3.0, fadeOut: 0.25) { [unowned self] in
-            removeFromParent()
+        animateRemoveMinion(delay: delay, fadeOut: fadeDuration) {
             completion?()
         }
     }
@@ -340,12 +329,33 @@ class MagmoorCreepyMinion: SKNode {
     }
     
     /**
-     Helper function to facilitate with hiding and removing the minion nodes.
+     Helper function to facilitate with hiding and removing the minion nodes. DEFUNCT 10/3/24
      */
     private func animateRemoveNode(node: SKNode, delay: TimeInterval, fadeOut: TimeInterval? = nil, completion: (() -> Void)? = nil) {
         node.run(SKAction.sequence([
             SKAction.wait(forDuration: delay),
             SKAction.fadeOut(withDuration: fadeOut ?? 0),
+            SKAction.removeFromParent()
+        ])) {
+            completion?()
+        }
+    }
+    
+    /**
+     New Helper function to remove the minion sprite.
+     */
+    private func animateRemoveMinion(delay: TimeInterval, fadeOut: TimeInterval, completion: (() -> Void)? = nil) {
+        guard let parentNode = parentNode as? SKSpriteNode else {
+            completion?()
+            return
+        }
+
+        run(SKAction.sequence([
+            SKAction.wait(forDuration: delay),
+            SKAction.group([
+                SKAction.scale(to: 0, duration: fadeOut),
+                SKAction.move(to: CGPoint(x: parentNode.size.width / 2, y: parentNode.size.height / 2), duration: fadeOut),
+            ]),
             SKAction.removeFromParent()
         ])) {
             completion?()

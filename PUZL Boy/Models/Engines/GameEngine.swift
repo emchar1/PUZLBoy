@@ -1265,15 +1265,43 @@ class GameEngine {
         ]))
     }
     
-    func magmoorSpawnExit() {
+    func elderSpawnEnter() {
         let fadeDuration: TimeInterval = 2
+
+        inbetweenNode.run(SKAction.group([
+            SKAction.colorize(with: .black, colorBlendFactor: 1, duration: fadeDuration),
+            SKAction.fadeIn(withDuration: fadeDuration)
+        ])) { [unowned self] in
+            ParticleEngine.shared.animateParticles(type: .magicElderExplosionStars,
+                                                   toNode: gameboardSprite.sprite,
+                                                   position: CGPoint(x: gameboardSprite.sprite.size.width / 2,
+                                                                     y: gameboardSprite.sprite.size.height / 2),
+                                                   scale: 1,
+                                                   zPosition: K.ZPosition.overlay + 30,
+                                                   duration: 0)
+
+            ParticleEngine.shared.animateParticles(type: .magicElderExplosion,
+                                                   toNode: gameboardSprite.sprite,
+                                                   position: CGPoint(x: gameboardSprite.sprite.size.width / 2,
+                                                                     y: gameboardSprite.sprite.size.height / 2),
+                                                   scale: 1,
+                                                   zPosition: K.ZPosition.overlay + 25,
+                                                   duration: 0)
+        }
         
+        bloodOverlay.run(SKAction.fadeOut(withDuration: fadeDuration))
+    }
+    
+    func magmoorSpawnExit(fadeDuration: TimeInterval) {
         inbetweenNode.run(SKAction.sequence([
             SKAction.fadeOut(withDuration: fadeDuration),
+            SKAction.colorize(withColorBlendFactor: 0, duration: fadeDuration),
             SKAction.removeFromParent()
         ]))
         
         bloodOverlay.run(SKAction.fadeAlpha(to: bloodOverlayAlpha, duration: fadeDuration))
+        
+        ParticleEngine.shared.removeParticles(fromNode: gameboardSprite.sprite, fadeDuration: fadeDuration)
     }
         
     

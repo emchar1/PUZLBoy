@@ -1441,17 +1441,18 @@ extension GameScene: ChatEngineDelegate {
         gameEngine.magmoorSpawnEnter(to: self, delay: chatDelay)
     }
     
-    func despawnMagmoorMinion(at position: K.GameboardPosition) {
-        gameEngine.gameboardSprite.despawnMagmoorMinion(at: position)
-        gameEngine.magmoorSpawnExit()
+    func despawnMagmoorMinion(at position: K.GameboardPosition, fadeDuration: TimeInterval) {
+        gameEngine.gameboardSprite.despawnMagmoorMinion(at: position, fadeDuration: fadeDuration)
+        gameEngine.magmoorSpawnExit(fadeDuration: fadeDuration)
     }
     
     func minionAttack(duration: TimeInterval, completion: @escaping () -> Void) {
         gameEngine.gameboardSprite.minionAttackSeries(duration: duration, completion: completion)
     }
     
-    func spawnElder(positions: [K.GameboardPosition], delay: TimeInterval, completion: @escaping () -> Void) {
-        gameEngine.gameboardSprite.spawnElder(positions: positions, delay: delay, completion: completion)
+    func spawnElder(minionPosition: K.GameboardPosition, positions: [K.GameboardPosition], completion: @escaping () -> Void) {
+        gameEngine.gameboardSprite.spawnElder(minionPosition: minionPosition, positions: positions, completion: completion)
+        gameEngine.elderSpawnEnter()
     }
     
     func despawnElders(to position: K.GameboardPosition, completion: @escaping () -> Void) {
