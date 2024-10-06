@@ -384,15 +384,14 @@ class MagmoorCreepyMinion: SKNode {
             removeAction(forKey: keyBraveryDrain)
             removeAction(forKey: keyFinalCompletion)
             
-            //Write to Firestore
             let maxBravery = 100
             let braveryConverted = Int(braveryCounter.getCount() * CGFloat(maxBravery))
             let braveryDeduction = braveryReachedZero ? 1 : 0
             let finalBravery = max(braveryConverted - braveryDeduction, 0)
-            FIRManager.updateFirestoreRecordBravery(finalBravery)
 
             isDisabled = true
             braveryBar.removeStatus(flashMaxBravery: finalBravery >= maxBravery ? flashMaxBravery : false, completion: completion)
+            FIRManager.updateFirestoreRecordBravery(finalBravery)
         }
         
         //Minion swipes at PUZL Boy, lowering bravery.
