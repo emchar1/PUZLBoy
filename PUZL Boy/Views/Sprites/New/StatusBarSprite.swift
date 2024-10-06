@@ -135,7 +135,7 @@ class StatusBarSprite: SKNode {
         
         if flashMaxBravery {
             statusNode.run(SKAction.repeat(SKAction.sequence([
-                SKAction.colorize(with: .systemPink, colorBlendFactor: 1, duration: 0),
+                SKAction.colorize(with: .yellow, colorBlendFactor: 1, duration: 0),
                 SKAction.colorize(with: .cyan, colorBlendFactor: 1, duration: blinkDuration)
             ]), count: blinkCount))
             
