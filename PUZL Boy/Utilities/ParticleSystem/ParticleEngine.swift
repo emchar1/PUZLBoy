@@ -55,6 +55,9 @@ class ParticleEngine: SKNode {
         case magicMerge = "MagicMergeParticles"
         case magicPrincessExplode = "MagicPrincessExplodeParticles"
         case magicPrincessExplode0 = "MagicPrincessExplode0Particles"
+        case magicPrincessExplode1 = "MagicPrincessExplode1Particles"
+        case magicPrincessExplode2 = "MagicPrincessExplode2Particles"
+        case magicPrincessExplode3 = "MagicPrincessExplode3Particles"
         case magicPrincess = "MagicPrincessParticles"
         case magmoorSmoke = "MagmoorSmokeParticles"
         case partyGem = "PartyGemParticles"
@@ -210,6 +213,39 @@ class ParticleEngine: SKNode {
             
             particleNode.run(action)
         }
+    }
+    
+    /**
+     Used during Princess Olivia's final transformation power display.
+     */
+    func animatePrincessExplosion(toNode node: SKNode, position: CGPoint = .zero, scale: CGFloat = 1, zPosition: CGFloat = 0) {
+        ParticleEngine.shared.animateParticles(type: .magicPrincessExplode0,
+                                               toNode: node,
+                                               position: position,
+                                               scale: scale,
+                                               zPosition: zPosition - 4,
+                                               duration: 0)
+        
+        ParticleEngine.shared.animateParticles(type: .magicPrincessExplode1,
+                                               toNode: node,
+                                               position: position,
+                                               scale: scale,
+                                               zPosition: zPosition - 3,
+                                               duration: 0)
+        
+        ParticleEngine.shared.animateParticles(type: .magicPrincessExplode2,
+                                               toNode: node,
+                                               position: position,
+                                               scale: scale,
+                                               zPosition: zPosition - 2,
+                                               duration: 0)
+        
+        ParticleEngine.shared.animateParticles(type: .magicPrincessExplode3,
+                                               toNode: node,
+                                               position: position,
+                                               scale: scale,
+                                               zPosition: zPosition - 1,
+                                               duration: 0)
     }
     
     private func getPositionString(_ position: K.GameboardPosition?) -> String {

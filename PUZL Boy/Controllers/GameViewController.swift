@@ -52,7 +52,7 @@ class GameViewController: UIViewController {
         skView.showsNodeCount = true
         
 //        // FIXME: - DEBUG: Go straight to Cutscene. DELETE BEFORE SHIPPING!
-//        let cutsceneTest = CutsceneFlashback()
+//        let cutsceneTest = CutsceneOldFriends()
 //        cutsceneTest.animateScene(completion: nil)
 //        skView.ignoresSiblingOrder = true
 //        skView.presentScene(cutsceneTest)

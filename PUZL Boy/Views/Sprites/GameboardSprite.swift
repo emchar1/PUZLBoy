@@ -956,12 +956,14 @@ class GameboardSprite {
                                                toNode: princessNode,
                                                position: .zero,
                                                duration: 0)
+        
         ParticleEngine.shared.animateParticles(type: .magicLight,
                                                toNode: princessNode,
                                                position: .zero,
                                                scale: 4,
                                                zPosition: -1,
                                                duration: 0)
+        
         ParticleEngine.shared.animateParticles(type: .magicPrincess,
                                                toNode: princessNode,
                                                position: .zero,
@@ -972,7 +974,7 @@ class GameboardSprite {
         princessNode.run(SKAction.sequence([
             SKAction.wait(forDuration: duration),
             SKAction.run {
-                ParticleEngine.shared.hideParticles(fromNode: princessNode, fadeDuration: 3)
+                ParticleEngine.shared.removeParticles(fromNode: princessNode, fadeDuration: 3)
             }
         ]))
     }
@@ -987,8 +989,6 @@ class GameboardSprite {
         
         let princessCage = PrincessCageSprite(villainNode: villainNode, princessNode: princessNode)
         princessCage.encagePrincess()
-        
-        ParticleEngine.shared.hideParticles(fromNode: princessNode, fadeDuration: 1)
     }
     
     ///Flips the gameboard when transitioning from in-between realm back to puzzle realm.
@@ -1403,7 +1403,7 @@ class GameboardSprite {
                 },
                 SKAction.sequence(moveWithIllusionsCircular(positions: positions)),
                 SKAction.run {
-                    ParticleEngine.shared.hideParticles(fromNode: elder.sprite, fadeDuration: 3)
+                    ParticleEngine.shared.removeParticles(fromNode: elder.sprite, fadeDuration: 3)
                 }
             ]), completion: completion)
             
