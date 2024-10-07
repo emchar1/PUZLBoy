@@ -905,7 +905,7 @@ class GameboardSprite {
         
         if let princessNode = sprite.childNode(withName: "inbetweenPrincess") {
             princessNode.removeAction(forKey: "princessMoves")
-            princessNode.xScale *= -1
+            princessNode.xScale *= princessNode.xScale > 0 ? -1 : 1
         }
     }
     
@@ -972,7 +972,7 @@ class GameboardSprite {
                                                duration: 0)
         
         AudioManager.shared.playSound(for: "magicelderexplosion")
-        colorizeGameboard(fadeOut: false, isInbetween: false, completion: nil)
+        colorizeGameboard(fadeOut: false, fadeOutDuration: 1, isInbetween: false, completion: nil)
         
         princessNode.run(SKAction.sequence([
             SKAction.colorize(with: .systemPink, colorBlendFactor: 1, duration: 0),

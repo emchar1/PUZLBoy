@@ -1717,7 +1717,7 @@ extension ChatEngine {
                 ChatItem(profile: .princess, imgPos: .left, chat: "Well, which one is it!"),
                 ChatItem(profile: .villain, chat: "Tsk tsk! Patience, child. Relentless little one, aren't you?! Just like your mother."),
                 ChatItem(profile: .princess, imgPos: .left, chat: "Watch what you say!! My mother is the Queen of Vaeloria. She'll have you stripped of your powers!"),
-                ChatItem(profile: .villain, chat: "You are cute like a button."),
+                ChatItem(profile: .villain, chat: "You are cute as a button."),
                 ChatItem(profile: .trainer, imgPos: .left, chat: "Magmoor, you promised to let her go!"),
                 ChatItem(profile: .villain, chat: "Isn't this nice?? Magmoor and Marlin, reunited once again. Don't you worry, dear Marlin. I always keep my promise...") { [unowned self] in
                     delegate?.inbetweenFlashPlayer(playerType: .hero, position: (0, 0), persistPresence: false)
@@ -1773,12 +1773,12 @@ extension ChatEngine {
             delegate?.inbetweenRealmEnter(levelInt: level, mergeHalfway: true, moves: [(2, 1), (2, 2), (2, 3), (1, 3),
                                                                                        (2, 3), (1, 3), (2, 3), (3, 3),
                                                                                        (3, 2), (3, 1), (4, 1), (4, 2),
-                                                                                       (5, 2), (5, 3), (5, 4), (5, 3),
-                                                                                       (5, 4), (6, 4), (6, 3), (5, 3),
-                                                                                       (5, 4), (6, 4), (6, 3), (5, 3),
-                                                                                       (5, 4), (6, 4), (6, 3), (5, 3),
-                                                                                       (5, 4), (6, 4), (6, 3), (5, 3),
-                                                                                       (5, 4), (6, 4), (6, 3), (5, 3)])
+                                                                                       (4, 3), (4, 4), (4, 5), (4, 4),
+                                                                                       (4, 3), (4, 2), (4, 1), (3, 1),
+                                                                                       (2, 1), (1, 1), (1, 2), (1, 3),
+                                                                                       (1, 4), (2, 4), (2, 3), (2, 2),
+                                                                                       (2, 1), (3, 1), (3, 2), (3, 3),
+                                                                                       (3, 4), (4, 4), (4, 3), (5, 3)])
             
             sendChatArray(shouldSkipDim: true, items: [
                 ChatItem(profile: .trainer, imgPos: .left, chat: "Wait! *WHEEZE* I need.. pause for a second....."),
