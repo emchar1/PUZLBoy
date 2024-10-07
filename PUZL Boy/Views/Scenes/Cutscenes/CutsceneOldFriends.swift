@@ -31,7 +31,7 @@ class CutsceneOldFriends: Cutscene {
     override func setupScene() {
         super.setupScene()
         
-        playerMagmoor = Player(type: .villain)
+        playerMagmoor = Player(type: .princess2)
         playerMagmoor.sprite.alpha = 0
         playerMagmoor.sprite.zPosition = playerLeft.sprite.zPosition + 5
 
@@ -80,28 +80,28 @@ class CutsceneOldFriends: Cutscene {
                       shouldRotateClockwise: false,
                       duration: initialPause)
         
-        run(SKAction.sequence([
-            SKAction.wait(forDuration: initialPause),
-            SKAction.run { [unowned self] in
-                transitionScene(narrateText: "We weren't always at odds with each other. There was a time when we were quite good friends. We went to school together. Studied magic together. So it was only natural we became close.", playScene: playScene1)
-            }
-        ]))
+//        run(SKAction.sequence([
+//            SKAction.wait(forDuration: initialPause),
+//            SKAction.run { [unowned self] in
+//                transitionScene(narrateText: "We weren't always at odds with each other. There was a time when we were quite good friends. We went to school together. Studied magic together. So it was only natural we became close.", playScene: playScene1)
+//            }
+//        ]))
+//        
+//        run(SKAction.sequence([
+//            SKAction.wait(forDuration: 42),
+//            SKAction.run { [unowned self] in
+//                transitionScene(narrateText: "Then war broke out. The division among the Mystics had been deepening. Magmoor and I led one faction. We defeated those who opposed us. He reveled in his glory..... to grave consequences.", playScene: playScene2)
+//            }
+//        ]))
         
         run(SKAction.sequence([
-            SKAction.wait(forDuration: 42),
-            SKAction.run { [unowned self] in
-                transitionScene(narrateText: "Then war broke out. The division among the Mystics had been deepening. Magmoor and I led one faction. We defeated those who opposed us. He reveled in his glory..... to grave consequences.", playScene: playScene2)
-            }
-        ]))
-        
-        run(SKAction.sequence([
-            SKAction.wait(forDuration: 66),
+            SKAction.wait(forDuration: 66 - 66),
             SKAction.run { [unowned self] in
                 transitionScene(narrateText: "I did what I had to do: I banished him to the NETHER REALM—|||||||||||||||||||| Peace eventually returned, but it will take years to repair the damage he caused.", playScene: playScene3)
             }
         ]))
         
-        run(SKAction.wait(forDuration: 102)) { [unowned self] in
+        run(SKAction.wait(forDuration: 102 - 66)) { [unowned self] in
             cleanupScene(buttonTap: nil, fadeDuration: nil)
         }
     }
@@ -272,7 +272,7 @@ class CutsceneOldFriends: Cutscene {
     private func playScene3() {
         let pauseDuration: TimeInterval = 12
         
-        animateParallax(changeSet: .lava, duration: pauseDuration)
+        animateParallax(changeSet: .grass, duration: pauseDuration)
         parallaxManager.backgroundSprite.removeAllActions()
         
         //Setup sprites
@@ -295,7 +295,7 @@ class CutsceneOldFriends: Cutscene {
 
         
         //Animate Magmoor transformation
-        let waitBeforeTransformation: TimeInterval = 22
+        let waitBeforeTransformation: TimeInterval = 22 - 22
         let fadeDuration: TimeInterval = 0.1
         let zoomScale: CGFloat = 0.5
         let zoomDuration: TimeInterval = 0.25
@@ -346,27 +346,32 @@ class CutsceneOldFriends: Cutscene {
         run(SKAction.sequence([
             SKAction.wait(forDuration: waitBeforeTransformation + fadeDuration * 11 + 3 + zoomDuration + 3),
             SKAction.run { [unowned self] in
-                ParticleEngine.shared.animateParticles(type: .magicExplosion,
-                                                       toNode: backgroundNode,
-                                                       position: playerMagmoor.sprite.position,
-                                                       scale: 1,
-                                                       zPosition: playerMagmoor.sprite.zPosition - 5,
-                                                       duration: 0)
+//                ParticleEngine.shared.animateParticles(type: .magicExplosion,
+//                                                       toNode: backgroundNode,
+//                                                       position: playerMagmoor.sprite.position,
+//                                                       scale: 1,
+//                                                       zPosition: playerMagmoor.sprite.zPosition - 5,
+//                                                       duration: 0)
+                
+                ParticleEngine.shared.animatePrincessExplosion(toNode: backgroundNode,
+                                                               position: playerMagmoor.sprite.position,
+                                                               scale: 1,
+                                                               zPosition: playerMagmoor.sprite.zPosition)
             }
         ]))
         
         
-        //Side convo
-        run(SKAction.sequence([
-            SKAction.wait(forDuration: 2),
-            SKAction.run { [unowned self] in
-                setTextArray(items: [
-                    SpeechBubbleItem(profile: speechPlayerLeft, chat: "We're all just lazy palette swaps, ya know."),
-                    SpeechBubbleItem(profile: speechPlayerRight, chat: "Do you want to tell this story??!"),
-                    SpeechBubbleItem(profile: speechPlayerLeft, chat: "No. Continue.")
-                ], completion: nil)
-            }
-        ]))
+//        //Side convo
+//        run(SKAction.sequence([
+//            SKAction.wait(forDuration: 2),
+//            SKAction.run { [unowned self] in
+//                setTextArray(items: [
+//                    SpeechBubbleItem(profile: speechPlayerLeft, chat: "We're all just lazy palette swaps, ya know."),
+//                    SpeechBubbleItem(profile: speechPlayerRight, chat: "Do you want to tell this story??!"),
+//                    SpeechBubbleItem(profile: speechPlayerLeft, chat: "No. Continue.")
+//                ], completion: nil)
+//            }
+//        ]))
     }
 }
 

@@ -955,8 +955,15 @@ class GameboardSprite {
         ParticleEngine.shared.animateParticles(type: .magicPrincessExplode,
                                                toNode: princessNode,
                                                position: .zero,
+                                               zPosition: -3,
                                                duration: 0)
         
+        ParticleEngine.shared.animateParticles(type: .magicPrincess,
+                                               toNode: princessNode,
+                                               position: .zero,
+                                               zPosition: -2,
+                                               duration: 0)
+
         ParticleEngine.shared.animateParticles(type: .magicLight,
                                                toNode: princessNode,
                                                position: .zero,
@@ -964,18 +971,17 @@ class GameboardSprite {
                                                zPosition: -1,
                                                duration: 0)
         
-        ParticleEngine.shared.animateParticles(type: .magicPrincess,
-                                               toNode: princessNode,
-                                               position: .zero,
-                                               duration: 0)
-        
         AudioManager.shared.playSound(for: "magicelderexplosion")
+        colorizeGameboard(fadeOut: false, isInbetween: false, completion: nil)
         
         princessNode.run(SKAction.sequence([
+            SKAction.colorize(with: .systemPink, colorBlendFactor: 1, duration: 0),
             SKAction.wait(forDuration: duration),
-            SKAction.run {
+            SKAction.run { [unowned self] in
                 ParticleEngine.shared.removeParticles(fromNode: princessNode, fadeDuration: 3)
-            }
+                colorizeGameboard(fadeOut: false, fadeOutDuration: 3, isInbetween: true, completion: nil)
+            },
+            SKAction.colorize(withColorBlendFactor: 0, duration: 3)
         ]))
     }
     
