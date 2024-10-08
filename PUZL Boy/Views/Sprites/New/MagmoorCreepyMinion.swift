@@ -26,6 +26,14 @@ class MagmoorCreepyMinion: SKNode {
     private var isAnimating = false
     private var braveryReachedZero = false
     
+    static let maxBravery = 100
+    private var finalBravery: Int {
+        let braveryConverted = Int(braveryCounter.getCount() * CGFloat(MagmoorCreepyMinion.maxBravery))
+        let braveryDeduction = braveryReachedZero ? 1 : 0
+
+        return max(braveryConverted - braveryDeduction, 0)
+    }
+    
     private var parentNode: SKNode?
     private var leftHand: SKSpriteNode!
     private var leftArm: SKSpriteNode!
@@ -384,13 +392,8 @@ class MagmoorCreepyMinion: SKNode {
             removeAction(forKey: keyBraveryDrain)
             removeAction(forKey: keyFinalCompletion)
             
-            let maxBravery = 100
-            let braveryConverted = Int(braveryCounter.getCount() * CGFloat(maxBravery))
-            let braveryDeduction = braveryReachedZero ? 1 : 0
-            let finalBravery = max(braveryConverted - braveryDeduction, 0)
-
             isDisabled = true
-            braveryBar.removeStatus(flashMaxBravery: finalBravery >= maxBravery ? flashMaxBravery : false, completion: completion)
+            braveryBar.removeStatus(flashMaxBravery: finalBravery >= MagmoorCreepyMinion.maxBravery ? flashMaxBravery : false, completion: completion)
             FIRManager.updateFirestoreRecordBravery(finalBravery)
         }
         

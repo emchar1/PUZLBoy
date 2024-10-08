@@ -751,11 +751,10 @@ extension GameScene: GameEngineDelegate {
         startTimer()
         
         if didCompleteGame {
-            // TODO: - Add end game level, cutscene, credits, title+
-            
             //IMPORTANT: Write to Firestore, MUST come first, if completing the game
             saveState(levelStatsItem: levelStatsItem)
             
+            // TODO: - 10/7/24 Add end game level, cutscene, credits, title+
             cleanupScene(shouldSaveState: false)
             gameSceneDelegate?.confirmQuitTapped()
         }

@@ -1116,6 +1116,9 @@ class GameEngine {
                 for i in 0...3 {
                     FIRManager.updateFirestoreRecordDecision(index: i, buttonOrder: nil)
                 }
+                
+                //As well as bravery points!
+                FIRManager.updateFirestoreRecordBravery(nil)
 
                 print("YOU WON THE GAME!!!")
             }
