@@ -199,12 +199,13 @@ class AudioManager {
         addAudioItem("clocktick", category: .soundFXLoop)
         addAudioItem("littlegirllaugh", category: .soundFXLoop)
         addAudioItem("magicdoomloop", category: .soundFXLoop)
-        addAudioItem("magmoorcreepystrings", category: .soundFXLoop) //$3
+        addAudioItem("magmoorcreepystrings", category: .soundFXLoop) //$3 NEEDS PURCHASE
 
         
         //No Loop music
         addAudioItem("ageofruin", category: .musicNoLoop)
         addAudioItem("ageofruin2", category: .musicNoLoop)
+        addAudioItem("bossbattle1", category: .musicNoLoop) //$16 NEEDS PURCHASE
         addAudioItem("gameover", category: .musicNoLoop)
         addAudioItem("gameoverageofruin", category: .musicNoLoop)
         addAudioItem("titlechapter", category: .musicNoLoop)
@@ -214,10 +215,12 @@ class AudioManager {
         
         //Background music
         addAudioItem("birdsambience", category: .music, maxVolume: 0.2)
+        addAudioItem("bossbattle2", category: .music) //$16 NEEDS PURCHASE
+        addAudioItem("bossbattle3", category: .music) //$16 NEEDS PURCHASE
         addAudioItem("continueloop", category: .music)
         addAudioItem("magicheartbeatloop1", category: .music)
         addAudioItem("magicheartbeatloop2", category: .music)
-        addAudioItem("magmoorcreepypulse", category: .music) //$3
+        addAudioItem("magmoorcreepypulse", category: .music) //$3 NEEDS PURCHASE
         addAudioItem("overworld", category: .music)
         addAudioItem("overworldageofruin", category: .music)
         addAudioItem("overworldgrassland", category: .music)
