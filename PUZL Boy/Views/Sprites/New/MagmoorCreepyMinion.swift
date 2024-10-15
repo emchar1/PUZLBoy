@@ -15,6 +15,7 @@ class MagmoorCreepyMinion: SKNode {
     
     ///Max length (or width) of the creepy .png image
     private let maxLength: CGFloat = 1679
+    private let keyMinionAttack = "keyMinionAttack"
     private var scale: CGFloat
     private var gameboardScaleSize: CGSize
     private var spawnPoint: CGPoint
@@ -49,6 +50,14 @@ class MagmoorCreepyMinion: SKNode {
     
     
     // MARK: - Damage Properties
+    
+    ///Minion's attack speed. The lower the number, the faster his attacks are.
+    private var minionAttackSpeed: TimeInterval {
+        switch braveryCounter.getCount() {
+        case let num where num > 0.75:  0.3
+        default:                        0.4
+        }
+    }
     
     ///Attack damage to bravery imparted by Minion
     private var minionAttackDamage: CGFloat {
@@ -377,10 +386,7 @@ class MagmoorCreepyMinion: SKNode {
      Issues a series of minion attacks for the prescribed duration.
      */
     func minionAttackSeries(duration: TimeInterval, completion: @escaping () -> Void) {
-        let minionAttackSpeed: TimeInterval = 0.8 //the lower the number, the harder he is to get an attack in
-
         //VERY IMPORTANT to assign keys to the below actions, AND remove them when exiting the completion!! 9/29/24
-        let keyMinionAttack = "keyMinionAttack"
         let keyBraveryDrain = "keyBraveryDrain"
         let keyFinalCompletion = "keyFinalCompletion"
         
@@ -398,12 +404,7 @@ class MagmoorCreepyMinion: SKNode {
         }
         
         //Minion swipes at PUZL Boy, lowering bravery.
-        run(SKAction.repeatForever(SKAction.sequence([
-            SKAction.run { [unowned self] in
-                minionAttack()
-            },
-            SKAction.wait(forDuration: minionAttackSpeed)
-        ])), withKey: keyMinionAttack)
+        restartMinionAttack()
         
         //Constant drain of bravery just for merely being in its presence.
         run(SKAction.repeatForever(SKAction.sequence([
@@ -434,6 +435,17 @@ class MagmoorCreepyMinion: SKNode {
         ]), withKey: keyFinalCompletion)
     }
     
+    private func restartMinionAttack() {
+        removeAction(forKey: keyMinionAttack)
+        
+        run(SKAction.repeatForever(SKAction.sequence([
+            SKAction.wait(forDuration: minionAttackSpeed),
+            SKAction.run { [unowned self] in
+                minionAttack()
+            }
+        ])), withKey: keyMinionAttack)
+    }
+    
     /**
      Executes a Minion attack with attackPoint input. Animates the Minion being attacked and updates the bravery counter.
      */
@@ -446,6 +458,7 @@ class MagmoorCreepyMinion: SKNode {
         isAnimating = true
         braveryCounter.decrement(by: minionAttackDamage)
         braveryBar.animateAndUpdate(percentage: braveryCounter.getCount())
+        restartMinionAttack()
 
         
         //Scratch Marks
@@ -513,7 +526,8 @@ class MagmoorCreepyMinion: SKNode {
         punchCounter.increment()
         braveryCounter.increment(by: heroBraveryGain)
         braveryBar.animateAndUpdate(percentage: braveryCounter.getCount())
-        
+        restartMinionAttack()
+
         
         //Minion hit animation
         executeActionOnNodes(hitAction)
