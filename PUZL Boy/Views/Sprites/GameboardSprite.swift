@@ -170,13 +170,7 @@ class GameboardSprite {
         terrainPanel.name = GameboardSprite.getNodeName(row: position.row, col: position.col)
         
         if tile.terrain == .partytile {
-            let randomHue = UIColor(hue: CGFloat.random(in: 0.0...1.0), saturation: 1.0, brightness: 1.0, alpha: 1.0)
-            let randomDuration = TimeInterval.random(in: 0.75...1.0)
-
-            terrainPanel.run(SKAction.repeatForever(SKAction.sequence([
-                SKAction.colorize(with: GameboardSprite.gameboardColor, colorBlendFactor: 0.0, duration: randomDuration),
-                SKAction.colorize(with: randomHue, colorBlendFactor: 1.0, duration: randomDuration)
-            ])))
+            terrainPanel.animatePartyTileShimmer(gameboardColor: GameboardSprite.gameboardColor)
         }
         else if tile.terrain == .marsh {
             ParticleEngine.shared.animateParticles(type: .poisonBubbles,
@@ -1300,14 +1294,8 @@ class GameboardSprite {
                 terrainPanel.zPosition = 20
                 terrainPanel.name = GameboardSprite.getNodeName(row: row, col: col) + "partytile"
                 
-                let randomHue = UIColor(hue: CGFloat.random(in: 0.0...1.0), saturation: 1.0, brightness: 1.0, alpha: 1.0)
-                let randomDuration = TimeInterval.random(in: 0.75...1.0)
-                
                 terrainPanel.run(SKAction.fadeIn(withDuration: fadeDuration))
-                terrainPanel.run(SKAction.repeatForever(SKAction.sequence([
-                    SKAction.colorize(with: GameboardSprite.gameboardColor, colorBlendFactor: 0.0, duration: randomDuration),
-                    SKAction.colorize(with: randomHue, colorBlendFactor: 1.0, duration: randomDuration)
-                ])))
+                terrainPanel.animatePartyTileShimmer(gameboardColor: GameboardSprite.gameboardColor)
                 
                 sprite.childNode(withName: nodeName)?.addChild(terrainPanel)
             }

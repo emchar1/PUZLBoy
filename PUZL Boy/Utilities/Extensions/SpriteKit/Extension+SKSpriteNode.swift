@@ -37,6 +37,19 @@ extension SKSpriteNode {
     }
     
     
+    // MARK: - Party Tiles Animation
+    
+    func animatePartyTileShimmer(gameboardColor: UIColor) {
+        let randomHue = UIColor(hue: CGFloat.random(in: 0.0...1.0), saturation: 1.0, brightness: 1.0, alpha: 1.0)
+        let randomDuration = TimeInterval.random(in: 0.75...1.0)
+
+        self.run(SKAction.repeatForever(SKAction.sequence([
+            SKAction.colorize(with: gameboardColor, colorBlendFactor: 0.0, duration: randomDuration),
+            SKAction.colorize(with: randomHue, colorBlendFactor: 1.0, duration: randomDuration)
+        ])))
+    }
+    
+    
     // MARK: - Tiki Statue Animations
     
     func animateStatue() {
