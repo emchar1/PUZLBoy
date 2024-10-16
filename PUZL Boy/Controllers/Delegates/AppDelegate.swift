@@ -21,7 +21,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         // FIXME: - GoogleMobileAds is responsible for 20 MEMORY LEAKS in Instruments!!
         GADMobileAds.sharedInstance().requestConfiguration.testDeviceIdentifiers = [
-            AdMobManager.testingSimulatorID,
             AdMobManager.eddiesiPhoneTestingDeviceID,
             AdMobManager.momsiPhoneTestingDeviceID
         ]

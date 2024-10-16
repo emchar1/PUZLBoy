@@ -62,7 +62,6 @@ class PrincessCageSprite: SKNode {
     
     func encagePrincess() {
         // FIXME: - Fling cage not working!!
-        print("princessPosition: \(princessNode.positionInScene), villainNode: \(villainNode.positionInScene), cageNode: \(flingNode.positionInScene), villain - princess: \(villainNode.position - princessNode.position), v - p inScene: \((villainNode.positionInScene ?? .zero) - (princessNode.positionInScene ?? .zero))")
         
         let flingDuration: TimeInterval = 2
         let pulseDuration: TimeInterval = 1.8

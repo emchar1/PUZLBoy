@@ -95,6 +95,8 @@ extension GameViewController: AuthorizationRequestSceneDelegate {
         NotificationCenter.default.addObserver(self, selector: #selector(shareURL), name: .shareURL, object: nil)
 
         GameCenterManager.shared.viewController = self
+
+        //BUGFIX #241015E01 - If not logged into game center and story intro is enabled, when asking for login info, the game crashes when attempting to add the LetterboxSprite to parent, which I think Letterbox is added during the login prompt, then added again(???) causing the multiple parent node bug. I noticed this when updating to Xcode 16, but not sure if it always existed in prior Xcode version 15.2. Maybe try calling this in the onboarding screen instead of after onboarding screen.
         GameCenterManager.shared.getUser { user in
             //Ensures everything below the guard statement only gets called ONCE!
             guard !self.levelLoaded else { return }

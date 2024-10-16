@@ -48,7 +48,6 @@ class AdMobManager: NSObject {
     
     static let eddiesiPhoneTestingDeviceID = "3f4aed5e3dafdbe6435ec3679a8e07fa" //Eddie's iPhone 14 Pro
     static let momsiPhoneTestingDeviceID = "6582222a25a290e89ca6a1c4f29924d6"
-    static let testingSimulatorID = GADSimulatorID
     
     //Checks for Ad Readiness
     static var interstitialAdIsReady = false
