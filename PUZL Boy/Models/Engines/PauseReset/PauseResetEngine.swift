@@ -464,22 +464,29 @@ class PauseResetEngine {
     
     private func tapDiscoBall() {
         guard isPressed else { return }
+        guard !isAnimating else { return }
         
         isPressed = false
+        isAnimating = true
         
         let partyLightsOn = !UserDefaults.standard.bool(forKey: K.UserDefaults.disableLights)
+        let buttonAnimation: TimeInterval = 0.5
                 
         UserDefaults.standard.set(partyLightsOn, forKey: K.UserDefaults.disableLights)
 
         if partyLightsOn {
-            PartyModeSprite.shared.removeLights(duration: 0.5)
+            PartyModeSprite.shared.removeLights(duration: buttonAnimation)
             ButtonTap.shared.tap(type: .lightsoff)
-            pauseButtonSprite.run(SKAction.colorize(with: .black, colorBlendFactor: 0.52, duration: 0))
+            pauseButtonSprite.run(SKAction.colorize(with: .black, colorBlendFactor: 0.52, duration: buttonAnimation)) { [unowned self] in
+                isAnimating = false
+            }
         }
         else {
-            PartyModeSprite.shared.addLights(duration: 0.5)
+            PartyModeSprite.shared.addLights(duration: buttonAnimation)
             ButtonTap.shared.tap(type: .lightson)
-            pauseButtonSprite.run(SKAction.colorize(with: .black, colorBlendFactor: 0, duration: 0))
+            pauseButtonSprite.run(SKAction.colorize(with: .black, colorBlendFactor: 0, duration: buttonAnimation)) { [unowned self] in
+                isAnimating = false
+            }
         }
 
         AudioManager.shared.updateVolumes()
