@@ -253,7 +253,7 @@
 		EAAB416D2CB5F55400BBFA75 /* bossbattle1.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAAB416B2CB5F55300BBFA75 /* bossbattle1.mp3 */; };
 		EAAB416E2CB5F55400BBFA75 /* bossbattle2.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAAB416C2CB5F55300BBFA75 /* bossbattle2.mp3 */; };
 		EAAB41702CB5F97700BBFA75 /* bossbattle3.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAAB416F2CB5F97600BBFA75 /* bossbattle3.mp3 */; };
-		EAAB41732CB6378E00BBFA75 /* FinalGameboardScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAAB41722CB6378E00BBFA75 /* FinalGameboardScene.swift */; };
+		EAAB41732CB6378E00BBFA75 /* CatwalkScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAAB41722CB6378E00BBFA75 /* CatwalkScene.swift */; };
 		EAAB5A1D2C99E9A5007E463B /* MagicMergeParticles.sks in Resources */ = {isa = PBXBuildFile; fileRef = EAAB5A1C2C99E9A5007E463B /* MagicMergeParticles.sks */; };
 		EAAB5A1F2CA63B3B007E463B /* Counter.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAAB5A1E2CA63B3B007E463B /* Counter.swift */; };
 		EAAB5A212CA6A7E0007E463B /* StatusBarSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAAB5A202CA6A7E0007E463B /* StatusBarSprite.swift */; };
@@ -605,7 +605,7 @@
 		EAAB416B2CB5F55300BBFA75 /* bossbattle1.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = bossbattle1.mp3; sourceTree = "<group>"; };
 		EAAB416C2CB5F55300BBFA75 /* bossbattle2.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = bossbattle2.mp3; sourceTree = "<group>"; };
 		EAAB416F2CB5F97600BBFA75 /* bossbattle3.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = bossbattle3.mp3; sourceTree = "<group>"; };
-		EAAB41722CB6378E00BBFA75 /* FinalGameboardScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinalGameboardScene.swift; sourceTree = "<group>"; };
+		EAAB41722CB6378E00BBFA75 /* CatwalkScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatwalkScene.swift; sourceTree = "<group>"; };
 		EAAB5A1C2C99E9A5007E463B /* MagicMergeParticles.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = MagicMergeParticles.sks; sourceTree = "<group>"; };
 		EAAB5A1E2CA63B3B007E463B /* Counter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Counter.swift; sourceTree = "<group>"; };
 		EAAB5A202CA6A7E0007E463B /* StatusBarSprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusBarSprite.swift; sourceTree = "<group>"; };
@@ -1272,7 +1272,7 @@
 		EAAB41712CB616A700BBFA75 /* Final Battle */ = {
 			isa = PBXGroup;
 			children = (
-				EAAB41722CB6378E00BBFA75 /* FinalGameboardScene.swift */,
+				EAAB41722CB6378E00BBFA75 /* CatwalkScene.swift */,
 			);
 			path = "Final Battle";
 			sourceTree = "<group>";
@@ -1638,7 +1638,7 @@
 				EAACB4A7296F80E700973EB8 /* AchievementAvidReader.swift in Sources */,
 				EA65189228E973D700E535BF /* Level.swift in Sources */,
 				EA12C5502B271EC2006E9813 /* GoldCoinSprite.swift in Sources */,
-				EAAB41732CB6378E00BBFA75 /* FinalGameboardScene.swift in Sources */,
+				EAAB41732CB6378E00BBFA75 /* CatwalkScene.swift in Sources */,
 				EA826C8F298F485D00F19F81 /* AchievementBigSpender.swift in Sources */,
 				EA6DCBF12B6303F900D5F707 /* FireIceTheme.swift in Sources */,
 				EA7300152B5F74B4005BF98D /* MarlinBlastSprite.swift in Sources */,

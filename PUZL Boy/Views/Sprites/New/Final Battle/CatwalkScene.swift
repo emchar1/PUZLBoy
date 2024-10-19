@@ -1,5 +1,5 @@
 //
-//  FinalGameboardScene.swift
+//  CatwalkScene.swift
 //  PUZL Boy
 //
 //  Created by Eddie Char on 10/8/24.
@@ -7,7 +7,7 @@
 
 import SpriteKit
 
-class FinalGameboardScene: SKScene {
+class CatwalkScene: SKScene {
     
     // MARK: - Properties
     
@@ -16,20 +16,16 @@ class FinalGameboardScene: SKScene {
     private let panelSpacing: CGFloat = 4
     private var panelSize: CGFloat { size.width / CGFloat(panelCount) }
     private var scaleSize: CGSize { CGSize.zero + panelSize - panelSpacing }
-
+    
     private let catwalkPanelDelimiter: Character = "_"
     private var catwalkPanelNamePrefix: String { "catwalkPanel\(catwalkPanelDelimiter)" }
     private var currentPanel: Int = 0
     private var isMoving: Bool = false
     
-    private var catwalkNode: SKShapeNode!
-    private var gameboardNode: SKShapeNode!
-    private var terrainPanels: [[SKSpriteNode]] = []
-    private var overlayPanels: [[SKSpriteNode]] = []
-    private var catwalkPanels: [SKSpriteNode] = []
-    
     private var hero: Player!
-    private var villain: Player!
+    private var backgroundNode: SKSpriteNode!
+    private var catwalkNode: SKShapeNode!
+    private var catwalkPanels: [SKSpriteNode] = []
     
     
     // MARK: - Initialization
@@ -51,41 +47,39 @@ class FinalGameboardScene: SKScene {
     private func setupNodes() {
         backgroundColor = .black
         
-        //Setup Players
-        
-        hero = Player(type: .hero)
-        hero.sprite.position = CGPoint(x: scaleSize.width / 2, y: 0)
-        hero.sprite.setScale(Player.getGameboardScale(panelSize: panelSize))
-        hero.sprite.zPosition = K.ZPosition.player + 1
-        hero.sprite.run(animatePlayer(player: hero, type: .idle))
-        
-        villain = Player(type: .villain)
-        villain.sprite.position = CGPoint(x: size.width / 2, y: size.height / 2)
-        villain.sprite.setScale(Player.getGameboardScale(panelSize: panelSize) * 1.25)
-        villain.sprite.xScale *= -1
-        villain.sprite.zPosition = K.ZPosition.player
-        villain.sprite.run(animatePlayer(player: villain, type: .idle))
+        backgroundNode = SKSpriteNode(texture: SKTexture(image: DayTheme.getSkyImage()))
+        backgroundNode.size = size
+        backgroundNode.anchorPoint = .zero
         
         
-        //Setup Catwalk
-        
-        catwalkNode = SKShapeNode(rectOf: CGSize(width: CGFloat(catwalkLength + 1) * panelSize + panelSpacing * CGFloat(catwalkLength),
+        catwalkNode = SKShapeNode(rectOf: CGSize(width: CGFloat(catwalkLength + 1) * panelSize + panelSpacing,
                                                  height: panelSize + 2 * panelSpacing))
-        catwalkNode.position = CGPoint(x: 0, y: size.height / 2)
+        catwalkNode.position = CGPoint(x: catwalkNode.frame.size.width / 2, y: size.height / 2)
         catwalkNode.fillColor = GameboardSprite.gameboardColor
         catwalkNode.lineWidth = 0
         catwalkNode.zPosition = 5
         
+        hero = Player(type: .hero)
+        hero.sprite.position = CGPoint(x: -catwalkNode.frame.size.width / 2 + scaleSize.width / 2, y: 0)
+        hero.sprite.setScale(Player.getGameboardScale(panelSize: panelSize))
+        hero.sprite.zPosition = K.ZPosition.player + 1
+        hero.sprite.run(animatePlayer(player: hero, type: .idle))
+        
         for i in 0...catwalkLength {
-            let image: String = i == 0 ? "start" : (FireIceTheme.isFire ? "sand" : "snow")
+            let image: String = i == 0 ? "start" : (i == catwalkLength ? "endOpen" : "partytile")
             
             let catwalkPanel = SKSpriteNode(imageNamed: image)
             catwalkPanel.scale(to: scaleSize)
-            catwalkPanel.position = CGPoint(x: catwalkPanel.size.width * CGFloat(i) + panelSpacing * CGFloat(i + 1),
-                                            y: -catwalkPanel.size.height / 2)
+            catwalkPanel.position = CGPoint(
+                x: -catwalkNode.frame.size.width / 2 + catwalkPanel.size.width * CGFloat(i) + panelSpacing * CGFloat(i + 1),
+                y: -catwalkPanel.size.height / 2)
             catwalkPanel.anchorPoint = .zero
             catwalkPanel.zPosition = K.ZPosition.terrain
             catwalkPanel.name = catwalkPanelNamePrefix + "\(i)"
+            
+            if i > 0 && i < catwalkLength {
+                catwalkPanel.animatePartyTileShimmer(gameboardColor: GameboardSprite.gameboardColor)
+            }
             
             catwalkPanels.append(catwalkPanel)
         }
@@ -97,9 +91,9 @@ class FinalGameboardScene: SKScene {
     override func didMove(to view: SKView) {
         super.didMove(to: view)
         
+        addChild(backgroundNode)
         addChild(catwalkNode)
         catwalkNode.addChild(hero.sprite)
-//        addChild(villain.sprite)
         
         for catwalkPanel in catwalkPanels {
             catwalkNode.addChild(catwalkPanel)
@@ -124,23 +118,29 @@ class FinalGameboardScene: SKScene {
     
     private func moveHero(to panelName: String) {
         guard !isMoving else { return }
-        guard let panelIndex = getPanelIndex(for: panelName), panelIndex > currentPanel else { return }
+        guard let panelIndex = getPanelIndex(for: panelName), currentPanel != panelIndex else { return }
         
         let moveDuration: TimeInterval = 1
-        let runSound = currentPanel == 0 ? "movetile\(Int.random(in: 1...3))" : FireIceTheme.soundMovementSandSnow
-        currentPanel += 1
+        let moveFactor: CGFloat = panelIndex > currentPanel ? 1 : -1
+        let moveDistance: CGFloat = moveFactor * (scaleSize.width + panelSpacing)
+        let runSound = "movetile\(Int.random(in: 1...3))"
+        
+        currentPanel += Int(moveFactor)
         isMoving = true
         
         hero.sprite.run(animatePlayer(player: hero, type: .run))
-        hero.sprite.run(SKAction.moveBy(x: scaleSize.width + panelSpacing, y: 0, duration: moveDuration)) { [unowned self] in
+        hero.sprite.xScale = moveFactor * abs(hero.sprite.xScale)
+        hero.sprite.run(SKAction.moveBy(x: moveDistance, y: 0, duration: moveDuration)) { [unowned self] in
             hero.sprite.run(animatePlayer(player: hero, type: .idle))
             isMoving = false
             AudioManager.shared.stopSound(for: runSound, fadeDuration: 0.25)
         }
         
-        if currentPanel > 2 {
-            catwalkNode.run(SKAction.moveBy(x: -scaleSize.width - panelSpacing, y: 0, duration: moveDuration))
+        if (moveFactor > 0 && (currentPanel > 2 && currentPanel <= catwalkLength - 2)) || (moveFactor < 0 && (currentPanel >= 2 && currentPanel < catwalkLength - 2)) {
+            catwalkNode.run(SKAction.moveBy(x: -moveDistance, y: 0, duration: moveDuration))
         }
+        
+        backgroundNode.run(SKAction.fadeAlpha(to: 1 - CGFloat(currentPanel) / CGFloat(catwalkLength), duration: moveDuration + 0.25))
         
         AudioManager.shared.playSound(for: runSound)
     }

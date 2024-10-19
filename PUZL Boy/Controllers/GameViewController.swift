@@ -59,9 +59,9 @@ class GameViewController: UIViewController {
 //        view = skView
         
 //        // FIXME: - DEBUG: Final Cutscene TEST
-//        let finalGameboardScene = FinalGameboardScene(size: K.ScreenDimensions.size)
+//        let catwalkScene = CatwalkScene(size: K.ScreenDimensions.size)
 //        skView.ignoresSiblingOrder = true
-//        skView.presentScene(finalGameboardScene)
+//        skView.presentScene(catwalkScene)
 //        view = skView
         
         
