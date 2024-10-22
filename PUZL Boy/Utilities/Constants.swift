@@ -54,8 +54,10 @@ struct K {
         ///Adds an additional margin size to the left and right sides of the screen, if it's an iPad (due to the 4/3 aspect ratio).
         static var lrMargin: CGFloat { UIDevice.isiPad ? 80 : 0 }
         
-        ///Top border of the gameboard sprite. Needs to be set in gameboardSprite, otherwise it defaults to topMargin.
-        static var topOfGameboard: CGFloat = topMargin
+//        ///Top border of the gameboard sprite. Needs to be set in gameboardSprite, otherwise it defaults to topMargin.
+//        static var topOfGameboard: CGFloat = topMargin
+        ///Top border of the gameboard sprite. Changed to a computed property 10/22/24.
+        static var topOfGameboard: CGFloat { GameboardSprite.offsetPosition.y + size.width * UIDevice.spriteScale }
     }
     
     

@@ -27,6 +27,8 @@ class CatwalkScene: SKScene {
     private var catwalkNode: SKShapeNode!
     private var catwalkPanels: [SKSpriteNode] = []
     
+    private var chatEngine: ChatEngine!
+    
     
     // MARK: - Initialization
     
@@ -83,6 +85,9 @@ class CatwalkScene: SKScene {
             
             catwalkPanels.append(catwalkPanel)
         }
+        
+        chatEngine = ChatEngine()
+        chatEngine.delegate = self
     }
     
     
@@ -98,6 +103,14 @@ class CatwalkScene: SKScene {
         for catwalkPanel in catwalkPanels {
             catwalkNode.addChild(catwalkPanel)
         }
+        
+        chatEngine.moveSprites(to: self)
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        guard let location = touches.first?.location(in: self) else { return }
+        
+        chatEngine.touchDown(in: location)
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -110,7 +123,8 @@ class CatwalkScene: SKScene {
             print("panel: \(name), index: \(getPanelIndex(for: name) ?? -1), currentPanel: \(currentPanel)")
         }
         
-        
+        chatEngine.didTapButton(in: location)
+        chatEngine.touchUp()
     }
     
     
@@ -127,6 +141,14 @@ class CatwalkScene: SKScene {
         
         currentPanel += Int(moveFactor)
         isMoving = true
+        
+        
+        
+        // TODO: - ChatEngine
+        playDialogue(panelIndex: currentPanel)
+        
+        
+        
         
         hero.sprite.run(animatePlayer(player: hero, type: .run))
         hero.sprite.xScale = moveFactor * abs(hero.sprite.xScale)
@@ -146,6 +168,8 @@ class CatwalkScene: SKScene {
     }
     
     private func getPanelIndex(for panelName: String) -> Int? {
+        guard panelName.contains(catwalkPanelDelimiter) else { return nil }
+        
         return Int(String(panelName.suffix(from: panelName.firstIndex(of: catwalkPanelDelimiter)!).dropFirst()))
     }
     
@@ -163,6 +187,124 @@ class CatwalkScene: SKScene {
         return SKAction.repeatForever(SKAction.animate(with: player.textures[type.rawValue], timePerFrame: timePerFrame))
     }
     
+    private func playDialogue(panelIndex: Int) {
+        let dialogueNumber = -1000 - panelIndex
+        
+        chatEngine.playDialogue(level: dialogueNumber) { _ in
+            print("Dialogue for \(dialogueNumber) played.")
+        }
+    }
+    
+}
+
+
+// MARK: - ChatEngineDelegate
+
+// TODO: - ChatEngine Delegate - I hate that I don't use any of these functions, but I gotta include them...
+extension CatwalkScene: ChatEngineDelegate {
+    func illuminatePanel(at position: K.GameboardPosition, useOverlay: Bool) {
+        //needs implementation?
+    }
+    
+    func deilluminatePanel(at position: K.GameboardPosition, useOverlay: Bool) {
+        //needs implementation?
+    }
+    
+    func illuminateDisplayNode(for displayType: DisplaySprite.DisplayStatusName) {
+        //needs implementation?
+    }
+    
+    func deilluminateDisplayNode(for displayType: DisplaySprite.DisplayStatusName) {
+        //needs implementation?
+    }
+    
+    func illuminateMinorButton(for button: PauseResetEngine.MinorButton) {
+        //needs implementation?
+    }
+    
+    func deilluminateMinorButton(for button: PauseResetEngine.MinorButton) {
+        //needs implementation?
+    }
+    
+    func spawnTrainer(at position: K.GameboardPosition, to direction: Controls) {
+        //needs implementation?
+    }
+    
+    func despawnTrainer(to position: K.GameboardPosition) {
+        //needs implementation?
+    }
+    
+    func spawnTrainerWithExit(at position: K.GameboardPosition, to direction: Controls) {
+        //needs implementation?
+    }
+    
+    func despawnTrainerWithExit(moves: [K.GameboardPosition]) {
+        //needs implementation?
+    }
+    
+    func spawnPrincessCapture(at position: K.GameboardPosition, shouldAnimateWarp: Bool, completion: @escaping () -> Void) {
+        //needs implementation?
+    }
+    
+    func despawnPrincessCapture(at position: K.GameboardPosition, completion: @escaping () -> Void) {
+        //needs implementation?
+    }
+    
+    func flashPrincess(at position: K.GameboardPosition, completion: @escaping () -> Void) {
+        //needs implementation?
+    }
+    
+    func inbetweenRealmEnter(levelInt: Int, mergeHalfway: Bool, moves: [K.GameboardPosition]) {
+        //needs implementation?
+    }
+    
+    func inbetweenRealmExit(persistPresence: Bool, completion: @escaping () -> Void) {
+        //needs implementation?
+    }
+    
+    func inbetweenFlashPlayer(playerType: Player.PlayerType, position: K.GameboardPosition, persistPresence: Bool) {
+        //needs implementation?
+    }
+    
+    func empowerPrincess(powerDisplayDuration: TimeInterval) {
+        //needs implementation?
+    }
+    
+    func encagePrincess() {
+        //needs implementation?
+    }
+    
+    func peekMinion(at position: K.GameboardPosition, duration: TimeInterval, completion: @escaping () -> Void) {
+        //needs implementation?
+    }
+    
+    func spawnDaemon(at position: K.GameboardPosition) {
+        //needs implementation?
+    }
+    
+    func spawnMagmoorMinion(at position: K.GameboardPosition, chatDelay: TimeInterval) {
+        //needs implementation?
+    }
+    
+    func despawnMagmoorMinion(at position: K.GameboardPosition, fadeDuration: TimeInterval) {
+        //needs implementation?
+    }
+    
+    func minionAttack(duration: TimeInterval, completion: @escaping () -> Void) {
+        //needs implementation?
+    }
+    
+    func spawnElder(minionPosition: K.GameboardPosition, positions: [K.GameboardPosition], completion: @escaping () -> Void) {
+        //needs implementation?
+    }
+    
+    func despawnElders(to position: K.GameboardPosition, completion: @escaping () -> Void) {
+        //needs implementation?
+    }
+    
+    func getGift(lives: Int) {
+        //needs implementation?
+    }
     
     
 }

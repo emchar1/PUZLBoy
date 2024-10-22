@@ -641,6 +641,13 @@ extension ChatEngine {
             dialoguePlayed[201] = false
         }
         else {
+            // TODO: - AGE OF BALANCE - CATWALK Dialogue
+            
+            dialoguePlayed[-1005] = false
+            dialoguePlayed[-1006] = false
+            dialoguePlayed[-1010] = false
+            
+            
             //AGE OF BALANCE - DARK REALM Dialogue
 
             dialoguePlayed[-100] = false
@@ -957,6 +964,27 @@ extension ChatEngine {
     ///Sets up and plays dialogue for Age of Balance setting.
     private func playDialogueAgeOfBalance(level: Int, statueTapped: Bool, completion: ((Cutscene?) -> Void)?) {
         switch level {
+            
+        // TODO: - CATWALK Dialogue TEST for now
+        case -1005:
+            sendChatArray(shouldSkipDim: false, items: [
+                ChatItem(profile: .melchior, chat: "This is a test message.")
+            ]) { [unowned self] in
+                handleDialogueCompletion(level: level, completion: completion)
+            }
+        case -1006:
+            sendChatArray(shouldSkipDim: true, items: [
+                ChatItem(profile: .magmus, chat: "This is another test message.")
+            ]) { [unowned self] in
+                handleDialogueCompletion(level: level, completion: completion)
+            }
+        case -1010:
+            sendChatArray(shouldSkipDim: true, items: [
+                ChatItem(profile: .merton, chat: "They just keep on coming!")
+            ]) { [unowned self] in
+                handleDialogueCompletion(level: level, completion: completion)
+            }
+
             
         //DARK REALM
         case Level.partyLevel: //IMPORTANT: This case, Level.partyLevel must ALWAYS be here!!!

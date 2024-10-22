@@ -217,7 +217,10 @@ class GameEngine {
         inbetweenNode.zPosition = 5
         
         gameboardSprite = GameboardSprite(level: self.level, fadeIn: !shouldSpawn)
-        K.ScreenDimensions.topOfGameboard = GameboardSprite.offsetPosition.y + K.ScreenDimensions.size.width * UIDevice.spriteScale
+        
+        // FIXME: - K.ScreenDimensions.topOfGameboard is now a computed property, set in Constants. Let's see how it goes... 10/22/24
+//        K.ScreenDimensions.topOfGameboard = GameboardSprite.offsetPosition.y + K.ScreenDimensions.size.width * UIDevice.spriteScale
+        
         playerSprite = PlayerSprite(shouldSpawn: true)
         displaySprite = DisplaySprite(topYPosition: K.ScreenDimensions.topOfGameboard, bottomYPosition: GameboardSprite.offsetPosition.y, margin: 40)
         

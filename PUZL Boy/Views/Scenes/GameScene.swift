@@ -100,6 +100,7 @@ class GameScene: SKScene {
         }
         
         //chatEngine MUST be initialized here, and not in properties, otherwise it just refuses to show up! Because K.ScreenDimensions.topOfGameboard is set in the gameEngine(). Is there a better way to do this??
+        //As of 10/22/24, K.ScreenDimensions.topOfGameboard is now a computed property, so setting ChatEngine() anywhere shoud be fine? Let's see.
         chatEngine = ChatEngine()
         pauseResetEngine = PauseResetEngine(level: currentLevel)
         levelSkipEngine = LevelSkipEngine()
