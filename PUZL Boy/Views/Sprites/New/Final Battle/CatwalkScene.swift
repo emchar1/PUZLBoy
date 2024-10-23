@@ -21,6 +21,7 @@ class CatwalkScene: SKScene {
     private var catwalkPanelNamePrefix: String { "catwalkPanel\(catwalkPanelDelimiter)" }
     private var currentPanel: Int = 0
     private var isMoving: Bool = false
+    private var shouldDisableInput: Bool = false
     
     private var hero: Player!
     private var backgroundNode: SKSpriteNode!
@@ -132,6 +133,7 @@ class CatwalkScene: SKScene {
     
     private func moveHero(to panelName: String) {
         guard !isMoving else { return }
+        guard !shouldDisableInput else { return }
         guard let panelIndex = getPanelIndex(for: panelName), currentPanel != panelIndex else { return }
         
         let moveDuration: TimeInterval = 1
@@ -190,8 +192,10 @@ class CatwalkScene: SKScene {
     private func playDialogue(panelIndex: Int) {
         let dialogueNumber = -1000 - panelIndex
         
-        chatEngine.playDialogue(level: dialogueNumber) { _ in
-            print("Dialogue for \(dialogueNumber) played.")
+        shouldDisableInput = true
+        
+        chatEngine.playDialogue(level: dialogueNumber) { [unowned self] _ in
+            shouldDisableInput = false
         }
     }
     

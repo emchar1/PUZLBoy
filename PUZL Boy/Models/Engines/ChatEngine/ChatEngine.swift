@@ -967,7 +967,7 @@ extension ChatEngine {
             
         // TODO: - CATWALK Dialogue TEST for now
         case -1005:
-            sendChatArray(shouldSkipDim: false, items: [
+            sendChatArray(shouldSkipDim: true, items: [
                 ChatItem(profile: .melchior, chat: "This is a test message.")
             ]) { [unowned self] in
                 handleDialogueCompletion(level: level, completion: completion)
