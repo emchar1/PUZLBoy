@@ -17,9 +17,9 @@ class CatwalkScene: SKScene {
     private var panelSize: CGFloat { size.width / CGFloat(panelCount) }
     private var scaleSize: CGSize { CGSize.zero + panelSize - panelSpacing }
     
-    private let catwalkPanelDelimiter: Character = "_"
-    private var catwalkPanelNamePrefix: String { "catwalkPanel\(catwalkPanelDelimiter)" }
-    private var currentPanel: Int = 0
+    private let catwalkPanelNameDelimiter: Character = "_"
+    private var catwalkPanelNamePrefix: String { "catwalkPanel\(catwalkPanelNameDelimiter)" }
+    private var currentPanelIndex: Int = 0
     private var isMoving: Bool = false
     private var shouldDisableInput: Bool = false
     
@@ -121,7 +121,6 @@ class CatwalkScene: SKScene {
             guard let name = node.name else { return }
                         
             moveHero(to: name)
-            print("panel: \(name), index: \(getPanelIndex(for: name) ?? -1), currentPanel: \(currentPanel)")
         }
         
         chatEngine.didTapButton(in: location)
@@ -134,20 +133,20 @@ class CatwalkScene: SKScene {
     private func moveHero(to panelName: String) {
         guard !isMoving else { return }
         guard !shouldDisableInput else { return }
-        guard let panelIndex = getPanelIndex(for: panelName), currentPanel != panelIndex else { return }
+        guard let panelIndex = getPanelIndex(for: panelName), currentPanelIndex != panelIndex else { return }
         
         let moveDuration: TimeInterval = 1
-        let moveFactor: CGFloat = panelIndex > currentPanel ? 1 : -1
+        let moveFactor: CGFloat = panelIndex > currentPanelIndex ? 1 : -1
         let moveDistance: CGFloat = moveFactor * (scaleSize.width + panelSpacing)
         let runSound = "movetile\(Int.random(in: 1...3))"
         
-        currentPanel += Int(moveFactor)
+        currentPanelIndex += Int(moveFactor)
         isMoving = true
         
         
         
         // TODO: - ChatEngine
-        playDialogue(panelIndex: currentPanel)
+        playDialogue(panelIndex: currentPanelIndex)
         
         
         
@@ -160,19 +159,20 @@ class CatwalkScene: SKScene {
             AudioManager.shared.stopSound(for: runSound, fadeDuration: 0.25)
         }
         
-        if (moveFactor > 0 && (currentPanel > 2 && currentPanel <= catwalkLength - 2)) || (moveFactor < 0 && (currentPanel >= 2 && currentPanel < catwalkLength - 2)) {
+        if (moveFactor > 0 && (currentPanelIndex > 2 && currentPanelIndex <= catwalkLength - 2)) ||
+            (moveFactor < 0 && (currentPanelIndex >= 2 && currentPanelIndex < catwalkLength - 2)) {
             catwalkNode.run(SKAction.moveBy(x: -moveDistance, y: 0, duration: moveDuration))
         }
         
-        backgroundNode.run(SKAction.fadeAlpha(to: 1 - CGFloat(currentPanel) / CGFloat(catwalkLength), duration: moveDuration + 0.25))
+        backgroundNode.run(SKAction.fadeAlpha(to: 1 - CGFloat(currentPanelIndex) / CGFloat(catwalkLength), duration: moveDuration + 0.25))
         
         AudioManager.shared.playSound(for: runSound)
     }
     
     private func getPanelIndex(for panelName: String) -> Int? {
-        guard panelName.contains(catwalkPanelDelimiter) else { return nil }
+        guard panelName.contains(catwalkPanelNameDelimiter) else { return nil }
         
-        return Int(String(panelName.suffix(from: panelName.firstIndex(of: catwalkPanelDelimiter)!).dropFirst()))
+        return Int(String(panelName.suffix(from: panelName.firstIndex(of: catwalkPanelNameDelimiter)!).dropFirst()))
     }
     
     private func animatePlayer(player: Player, type: Player.Texture) -> SKAction {
