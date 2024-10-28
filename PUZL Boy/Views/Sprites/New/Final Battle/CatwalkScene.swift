@@ -22,8 +22,10 @@ class CatwalkScene: SKScene {
     private var currentPanelIndex: Int = 0
     private var isMoving: Bool = false
     private var shouldDisableInput: Bool = false
+    private var isRedShift: Bool = false
     
     private var hero: Player!
+    private var magmoorSprite: SKSpriteNode!
     private var backgroundNode: SKSpriteNode!
     private var catwalkNode: SKShapeNode!
     private var catwalkPanels: [SKSpriteNode] = []
@@ -47,13 +49,28 @@ class CatwalkScene: SKScene {
         print("FinalGameboard deinit")
     }
     
+    func cleanupScene() {
+        currentPanelIndex = 0
+        isMoving = false
+        shouldDisableInput = false
+        isRedShift = false
+
+        catwalkPanels.forEach { $0.removeFromParent() }
+        hero.sprite.removeFromParent()
+        magmoorSprite.removeFromParent()
+        catwalkNode.removeFromParent()
+        backgroundNode.removeFromParent()
+        removeFromParent()
+        
+        chatEngine = nil
+    }
+    
     private func setupNodes() {
         backgroundColor = .black
         
         backgroundNode = SKSpriteNode(texture: SKTexture(image: DayTheme.getSkyImage()))
         backgroundNode.size = size
         backgroundNode.anchorPoint = .zero
-        
         
         catwalkNode = SKShapeNode(rectOf: CGSize(width: CGFloat(catwalkLength + 1) * panelSize + panelSpacing,
                                                  height: panelSize + 2 * panelSpacing))
@@ -68,6 +85,13 @@ class CatwalkScene: SKScene {
         hero.sprite.zPosition = K.ZPosition.player + 1
         hero.sprite.run(animatePlayer(player: hero, type: .idle))
         
+        magmoorSprite = SKSpriteNode(imageNamed: "villainRedEyes")
+        magmoorSprite.size = CGSize(width: size.width, height: size.width)
+        magmoorSprite.setScale(2)
+        magmoorSprite.position = CGPoint(x: size.width / 2, y: size.height * 3/5)
+        magmoorSprite.alpha = 0
+        magmoorSprite.zPosition = 2
+        
         for i in 0...catwalkLength {
             let image: String = i == 0 ? "start" : (i == catwalkLength ? "endOpen" : "partytile")
             
@@ -80,13 +104,10 @@ class CatwalkScene: SKScene {
             catwalkPanel.zPosition = K.ZPosition.terrain
             catwalkPanel.name = catwalkPanelNamePrefix + "\(i)"
             
-            if i > 0 && i < catwalkLength {
-                catwalkPanel.animatePartyTileShimmer(gameboardColor: GameboardSprite.gameboardColor)
-            }
-            
             catwalkPanels.append(catwalkPanel)
         }
         
+        shimmerPartyTiles()
         chatEngine = ChatEngine()
         chatEngine.delegate = self
     }
@@ -98,6 +119,7 @@ class CatwalkScene: SKScene {
         super.didMove(to: view)
         
         addChild(backgroundNode)
+        addChild(magmoorSprite)
         addChild(catwalkNode)
         catwalkNode.addChild(hero.sprite)
         
@@ -106,6 +128,7 @@ class CatwalkScene: SKScene {
         }
         
         chatEngine.moveSprites(to: self)
+        playDialogue(panelIndex: currentPanelIndex)
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -117,14 +140,14 @@ class CatwalkScene: SKScene {
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard let location = touches.first?.location(in: self) else { return }
         
+        chatEngine.didTapButton(in: location)
+        chatEngine.touchUp()
+
         nodes(at: location).forEach { node in
             guard let name = node.name else { return }
                         
             moveHero(to: name)
         }
-        
-        chatEngine.didTapButton(in: location)
-        chatEngine.touchUp()
     }
     
     
@@ -135,21 +158,14 @@ class CatwalkScene: SKScene {
         guard !shouldDisableInput else { return }
         guard let panelIndex = getPanelIndex(for: panelName), currentPanelIndex != panelIndex else { return }
         
-        let moveDuration: TimeInterval = 1
+        let moveDuration: TimeInterval = isRedShift ? 2 : 1
         let moveFactor: CGFloat = panelIndex > currentPanelIndex ? 1 : -1
         let moveDistance: CGFloat = moveFactor * (scaleSize.width + panelSpacing)
         let runSound = "movetile\(Int.random(in: 1...3))"
         
         currentPanelIndex += Int(moveFactor)
         isMoving = true
-        
-        
-        
-        // TODO: - ChatEngine
         playDialogue(panelIndex: currentPanelIndex)
-        
-        
-        
         
         hero.sprite.run(animatePlayer(player: hero, type: .run))
         hero.sprite.xScale = moveFactor * abs(hero.sprite.xScale)
@@ -164,9 +180,25 @@ class CatwalkScene: SKScene {
             catwalkNode.run(SKAction.moveBy(x: -moveDistance, y: 0, duration: moveDuration))
         }
         
-        backgroundNode.run(SKAction.fadeAlpha(to: 1 - CGFloat(currentPanelIndex) / CGFloat(catwalkLength), duration: moveDuration + 0.25))
         
-        AudioManager.shared.playSound(for: runSound)
+        
+        
+        // FIXME: - Testing of Red Shift Feature
+        if currentPanelIndex == 4 {
+            shiftRed(shouldShift: true, fadeDuration: moveDuration)
+        }
+        else if currentPanelIndex == 8 {
+            shiftRed(shouldShift: false, fadeDuration: moveDuration)
+        }
+        
+        
+        
+        
+        //MUST put this at the end!
+        if !isRedShift {
+            updateBackgroundNode(fadeDuration: moveDuration, completion: nil)
+            AudioManager.shared.playSound(for: runSound)
+        }
     }
     
     private func getPanelIndex(for panelName: String) -> Int? {
@@ -185,6 +217,7 @@ class CatwalkScene: SKScene {
         }
         
         timePerFrame = player.type == .villain ? timePerFrame * 4/3 : timePerFrame
+        timePerFrame *= isRedShift ? 2 : 1
         
         return SKAction.repeatForever(SKAction.animate(with: player.textures[type.rawValue], timePerFrame: timePerFrame))
     }
@@ -199,116 +232,92 @@ class CatwalkScene: SKScene {
         }
     }
     
+    private func updateBackgroundNode(fadeDuration: TimeInterval, completion: (() -> Void)?) {
+        backgroundNode.run(SKAction.fadeAlpha(to: 1 - CGFloat(currentPanelIndex) / CGFloat(catwalkLength), duration: fadeDuration + 0.25)) {
+            completion?()
+        }
+    }
+
+    private func shimmerPartyTiles() {
+        for (i, catwalkPanel) in catwalkPanels.enumerated() {
+            guard i > 0 && i < catwalkLength else { continue }
+            
+            catwalkPanel.animatePartyTileShimmer(gameboardColor: GameboardSprite.gameboardColor)
+        }
+    }
+    
+    private func shiftRed(shouldShift: Bool, fadeDuration: TimeInterval) {
+        if shouldShift {
+            let colorizeRed = SKAction.colorize(with: .red, colorBlendFactor: 1, duration: fadeDuration)
+            isRedShift = true
+            
+            backgroundNode.run(SKAction.fadeOut(withDuration: fadeDuration))
+            magmoorSprite.run(SKAction.sequence([
+                SKAction.wait(forDuration: fadeDuration),
+                SKAction.fadeIn(withDuration: fadeDuration)
+            ]))
+            hero.sprite.run(colorizeRed)
+            
+            for catwalkPanel in catwalkPanels {
+                catwalkPanel.removeAllActions()
+                catwalkPanel.run(colorizeRed)
+            }
+            
+            if !AudioManager.shared.isPlaying(audioKey: "magicheartbeatloop1") {
+                AudioManager.shared.playSound(for: "magicheartbeatloop1")
+            }
+        }
+        else {
+            let colorizeNone = SKAction.colorize(withColorBlendFactor: 0, duration: fadeDuration)
+            
+            magmoorSprite.run(SKAction.fadeOut(withDuration: fadeDuration)) { [unowned self] in
+                updateBackgroundNode(fadeDuration: fadeDuration) { [unowned self] in
+                    isRedShift = false
+                }
+            }
+            hero.sprite.run(colorizeNone)
+            
+            for catwalkPanel in catwalkPanels {
+                catwalkPanel.removeAllActions()
+                catwalkPanel.run(colorizeNone)
+            }
+
+            shimmerPartyTiles()
+            AudioManager.shared.stopSound(for: "magicheartbeatloop1", fadeDuration: fadeDuration)
+        }
+    }
+    
+    
 }
 
 
-// MARK: - ChatEngineDelegate
+// MARK: - ChatEngineDelegate UNUSED
 
-// TODO: - ChatEngine Delegate - I hate that I don't use any of these functions, but I gotta include them...
 extension CatwalkScene: ChatEngineDelegate {
-    func illuminatePanel(at position: K.GameboardPosition, useOverlay: Bool) {
-        //needs implementation?
-    }
-    
-    func deilluminatePanel(at position: K.GameboardPosition, useOverlay: Bool) {
-        //needs implementation?
-    }
-    
-    func illuminateDisplayNode(for displayType: DisplaySprite.DisplayStatusName) {
-        //needs implementation?
-    }
-    
-    func deilluminateDisplayNode(for displayType: DisplaySprite.DisplayStatusName) {
-        //needs implementation?
-    }
-    
-    func illuminateMinorButton(for button: PauseResetEngine.MinorButton) {
-        //needs implementation?
-    }
-    
-    func deilluminateMinorButton(for button: PauseResetEngine.MinorButton) {
-        //needs implementation?
-    }
-    
-    func spawnTrainer(at position: K.GameboardPosition, to direction: Controls) {
-        //needs implementation?
-    }
-    
-    func despawnTrainer(to position: K.GameboardPosition) {
-        //needs implementation?
-    }
-    
-    func spawnTrainerWithExit(at position: K.GameboardPosition, to direction: Controls) {
-        //needs implementation?
-    }
-    
-    func despawnTrainerWithExit(moves: [K.GameboardPosition]) {
-        //needs implementation?
-    }
-    
-    func spawnPrincessCapture(at position: K.GameboardPosition, shouldAnimateWarp: Bool, completion: @escaping () -> Void) {
-        //needs implementation?
-    }
-    
-    func despawnPrincessCapture(at position: K.GameboardPosition, completion: @escaping () -> Void) {
-        //needs implementation?
-    }
-    
-    func flashPrincess(at position: K.GameboardPosition, completion: @escaping () -> Void) {
-        //needs implementation?
-    }
-    
-    func inbetweenRealmEnter(levelInt: Int, mergeHalfway: Bool, moves: [K.GameboardPosition]) {
-        //needs implementation?
-    }
-    
-    func inbetweenRealmExit(persistPresence: Bool, completion: @escaping () -> Void) {
-        //needs implementation?
-    }
-    
-    func inbetweenFlashPlayer(playerType: Player.PlayerType, position: K.GameboardPosition, persistPresence: Bool) {
-        //needs implementation?
-    }
-    
-    func empowerPrincess(powerDisplayDuration: TimeInterval) {
-        //needs implementation?
-    }
-    
-    func encagePrincess() {
-        //needs implementation?
-    }
-    
-    func peekMinion(at position: K.GameboardPosition, duration: TimeInterval, completion: @escaping () -> Void) {
-        //needs implementation?
-    }
-    
-    func spawnDaemon(at position: K.GameboardPosition) {
-        //needs implementation?
-    }
-    
-    func spawnMagmoorMinion(at position: K.GameboardPosition, chatDelay: TimeInterval) {
-        //needs implementation?
-    }
-    
-    func despawnMagmoorMinion(at position: K.GameboardPosition, fadeDuration: TimeInterval) {
-        //needs implementation?
-    }
-    
-    func minionAttack(duration: TimeInterval, completion: @escaping () -> Void) {
-        //needs implementation?
-    }
-    
-    func spawnElder(minionPosition: K.GameboardPosition, positions: [K.GameboardPosition], completion: @escaping () -> Void) {
-        //needs implementation?
-    }
-    
-    func despawnElders(to position: K.GameboardPosition, completion: @escaping () -> Void) {
-        //needs implementation?
-    }
-    
-    func getGift(lives: Int) {
-        //needs implementation?
-    }
-    
-    
+    func illuminatePanel(at position: K.GameboardPosition, useOverlay: Bool) {}
+    func deilluminatePanel(at position: K.GameboardPosition, useOverlay: Bool) {}
+    func illuminateDisplayNode(for displayType: DisplaySprite.DisplayStatusName) {}
+    func deilluminateDisplayNode(for displayType: DisplaySprite.DisplayStatusName) {}
+    func illuminateMinorButton(for button: PauseResetEngine.MinorButton) {}
+    func deilluminateMinorButton(for button: PauseResetEngine.MinorButton) {}
+    func spawnTrainer(at position: K.GameboardPosition, to direction: Controls) {}
+    func despawnTrainer(to position: K.GameboardPosition) {}
+    func spawnTrainerWithExit(at position: K.GameboardPosition, to direction: Controls) {}
+    func despawnTrainerWithExit(moves: [K.GameboardPosition]) {}
+    func spawnPrincessCapture(at position: K.GameboardPosition, shouldAnimateWarp: Bool, completion: @escaping () -> Void) {}
+    func despawnPrincessCapture(at position: K.GameboardPosition, completion: @escaping () -> Void) {}
+    func flashPrincess(at position: K.GameboardPosition, completion: @escaping () -> Void) {}
+    func inbetweenRealmEnter(levelInt: Int, mergeHalfway: Bool, moves: [K.GameboardPosition]) {}
+    func inbetweenRealmExit(persistPresence: Bool, completion: @escaping () -> Void) {}
+    func inbetweenFlashPlayer(playerType: Player.PlayerType, position: K.GameboardPosition, persistPresence: Bool) {}
+    func empowerPrincess(powerDisplayDuration: TimeInterval) {}
+    func encagePrincess() {}
+    func peekMinion(at position: K.GameboardPosition, duration: TimeInterval, completion: @escaping () -> Void) {}
+    func spawnDaemon(at position: K.GameboardPosition) {}
+    func spawnMagmoorMinion(at position: K.GameboardPosition, chatDelay: TimeInterval) {}
+    func despawnMagmoorMinion(at position: K.GameboardPosition, fadeDuration: TimeInterval) {}
+    func minionAttack(duration: TimeInterval, completion: @escaping () -> Void) {}
+    func spawnElder(minionPosition: K.GameboardPosition, positions: [K.GameboardPosition], completion: @escaping () -> Void) {}
+    func despawnElders(to position: K.GameboardPosition, completion: @escaping () -> Void) {}
+    func getGift(lives: Int) {}
 }

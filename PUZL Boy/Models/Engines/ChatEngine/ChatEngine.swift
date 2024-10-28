@@ -643,6 +643,7 @@ extension ChatEngine {
         else {
             // TODO: - AGE OF BALANCE - CATWALK Dialogue
             
+            dialoguePlayed[-1000] = false
             dialoguePlayed[-1005] = false
             dialoguePlayed[-1006] = false
             dialoguePlayed[-1010] = false
@@ -966,6 +967,16 @@ extension ChatEngine {
         switch level {
             
         // TODO: - CATWALK Dialogue TEST for now
+        case -1000:
+            let leftButton0 = FIRManager.decisionsLeftButton[0] ?? false
+            
+            sendChatArray(items: [
+                ChatItem(profile: .melchior, chat: "We are about to embark on a treacherous path. There is no turning back. Are you ready to face the darkness?"),
+                ChatItem(profile: .hero, imgPos: .left, chat: "\(leftButton0 ? "Let's go, I'm ready!!" : "No time like the present! What have we got to lose, right?")"),
+                ChatItem(profile: .merton, chat: "\(leftButton0 ? "Proceed with caution, don't be afraid. Are yo uafred ?I'm not afraid. Yushuld be afraid." : "Don't worry. We will be right by your side every step of the way.")")
+            ]) { [unowned self] in
+                handleDialogueCompletion(level: level, completion: completion)
+            }
         case -1005:
             sendChatArray(shouldSkipDim: true, items: [
                 ChatItem(profile: .melchior, chat: "This is a test message.")

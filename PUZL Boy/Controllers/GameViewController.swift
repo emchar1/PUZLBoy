@@ -59,10 +59,12 @@ class GameViewController: UIViewController {
 //        view = skView
         
 //        // FIXME: - DEBUG: Final Cutscene TEST
-//        let catwalkScene = CatwalkScene(size: K.ScreenDimensions.size)
-//        skView.ignoresSiblingOrder = true
-//        skView.presentScene(catwalkScene)
-//        view = skView
+//        FIRManager.initializeFirestore() { [unowned self] saveStateMode, error in
+//            let catwalkScene = CatwalkScene(size: K.ScreenDimensions.size)
+//            skView.ignoresSiblingOrder = true
+//            skView.presentScene(catwalkScene)
+//            view = skView
+//        }
         
         
         
