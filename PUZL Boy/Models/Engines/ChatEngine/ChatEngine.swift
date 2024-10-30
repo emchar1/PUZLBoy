@@ -1972,7 +1972,10 @@ extension ChatEngine {
                 if FIRManager.gotGift == nil {
                     sendChatArray(items: [
                         ChatItem(profile: .hero, imgPos: .left, chat: "Oh no. No no no no no! I'm not talking to you guys ever again!"),
-                        ChatItem(profile: FIRManager.didGiveAwayFeather ? .statue3b : .statue3, chat: "Oh, come on. Don't do me like that! It's me, Trudee, the truth-telling Tiki. Come over and say hi!")
+                        ChatItem(profile: FIRManager.didGiveAwayFeather ? .statue3b : .statue3, chat: "Oh, come on. Don't do me like that! It's me, Trudee, the truth-telling Tiki. Come over and say hi!"),
+                        ChatItem(profile: .magmus, chat: "It's okay. Go and say hi, boy. What's the worst that can happen?"),
+                        ChatItem(profile: .hero, imgPos: .left, chat: "Uhh, evil scary monster?!?!"),
+                        ChatItem(profile: .merton, chat: "C'mon, it'll be good for you. Builds character, indeed.")
                     ]) { [weak self] in
                         self?.handleDialogueCompletion(level: level, completion: completion)
                     }
