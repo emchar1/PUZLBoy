@@ -186,13 +186,13 @@ class Haptics {
         }
         
 //        // The engine stopped; print out why
-//        engine?.stoppedHandler = { [unowned self] reason in
-//            startHapticEngine(shouldInitialize: false)
+//        engine?.stoppedHandler = { [weak self] reason in
+//            self?.startHapticEngine(shouldInitialize: false)
 //        }
 //
 //        // If something goes wrong, attempt to restart the engine immediately
-//        engine?.resetHandler = { [unowned self] in
-//            startHapticEngine(shouldInitialize: false)
+//        engine?.resetHandler = { [weak self] in
+//            self?.startHapticEngine(shouldInitialize: false)
 //        }
     }
 }

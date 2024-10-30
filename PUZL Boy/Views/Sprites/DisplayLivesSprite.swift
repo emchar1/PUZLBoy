@@ -93,7 +93,9 @@ class DisplayLivesSprite: SKNode {
         let speed: CGFloat = min(0.8 / CGFloat(newLives), 0.05)
         var livesToIncrement = originalLives
         
-        let incrementAction = SKAction.run { [unowned self] in
+        let incrementAction = SKAction.run { [weak self] in
+            guard let self = self else { return }
+            
             livesToIncrement += 1
             textNode.text = "x\(formattedInt(livesToIncrement))"
             textNode.updateShadow()

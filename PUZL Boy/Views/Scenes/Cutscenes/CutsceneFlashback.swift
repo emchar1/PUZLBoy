@@ -64,7 +64,9 @@ class CutsceneFlashback: Cutscene {
         //Speech Bubbles
         run(SKAction.sequence([
             SKAction.wait(forDuration: 4),
-            SKAction.run { [unowned self] in
+            SKAction.run { [weak self] in
+                guard let self = self else { return }
+                
                 setTextArray(items: [
                     SpeechBubbleItem(profile: speechPlayerRight, chat: "What's wrong??"),
                     SpeechBubbleItem(profile: speechPlayerLeft, chat: "This doesn't feel right.")

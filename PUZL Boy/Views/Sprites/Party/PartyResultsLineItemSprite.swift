@@ -138,8 +138,8 @@ class PartyResultsLineItemSprite: SKNode {
         //NEW METHOD
 //        let speed: CGFloat = min(0.8 / CGFloat(newAmount), 0.125)
 //        
-//        let incrementAction = SKAction.run { [unowned self] in
-//            updateAmount(newAmount)
+//        let incrementAction = SKAction.run { [weak self] in
+//            self?.updateAmount(newAmount)
 //        }
 //        
 //        let groupAction = SKAction.group([

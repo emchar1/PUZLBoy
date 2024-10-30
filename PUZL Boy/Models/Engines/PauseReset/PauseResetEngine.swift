@@ -477,15 +477,15 @@ class PauseResetEngine {
         if partyLightsOn {
             PartyModeSprite.shared.removeLights(duration: buttonAnimation)
             ButtonTap.shared.tap(type: .lightsoff)
-            pauseButtonSprite.run(SKAction.colorize(with: .black, colorBlendFactor: 0.52, duration: buttonAnimation)) { [unowned self] in
-                isAnimating = false
+            pauseButtonSprite.run(SKAction.colorize(with: .black, colorBlendFactor: 0.52, duration: buttonAnimation)) { [weak self] in
+                self?.isAnimating = false
             }
         }
         else {
             PartyModeSprite.shared.addLights(duration: buttonAnimation)
             ButtonTap.shared.tap(type: .lightson)
-            pauseButtonSprite.run(SKAction.colorize(with: .black, colorBlendFactor: 0, duration: buttonAnimation)) { [unowned self] in
-                isAnimating = false
+            pauseButtonSprite.run(SKAction.colorize(with: .black, colorBlendFactor: 0, duration: buttonAnimation)) { [weak self] in
+                self?.isAnimating = false
             }
         }
 
@@ -511,8 +511,8 @@ class PauseResetEngine {
             backgroundSprite.run(SKAction.group([
                 SKAction.moveTo(y: getBottomOfSettings(), duration: duration),
                 SKAction.scale(to: settingsScale, duration: duration)
-            ])) { [unowned self] in
-                isAnimating = false
+            ])) { [weak self] in
+                self?.isAnimating = false
             }
             
             settingsManager.tap(settingsManager.button5, tapQuietly: true, completion: nil)
@@ -539,8 +539,8 @@ class PauseResetEngine {
             backgroundSprite.run(SKAction.group([
                 SKAction.moveTo(y: pauseButtonPosition.y, duration: duration),
                 SKAction.scale(to: 0, duration: duration)
-            ])) { [unowned self] in
-                isAnimating = false
+            ])) { [weak self] in
+                self?.isAnimating = false
             }
             
             AudioManager.shared.playSound(for: "chatclose")
@@ -630,8 +630,8 @@ class PauseResetEngine {
                 
                 isAnimating = true
                 
-                settingsManager.tap(node) { [unowned self] in
-                    isAnimating = false
+                settingsManager.tap(node) { [weak self] in
+                    self?.isAnimating = false
                 }
                 
                 PauseResetEngine.currentTab = settingsManager.currentButtonPressed?.type
@@ -662,8 +662,8 @@ extension PauseResetEngine: SettingsManagerDelegate {
 //            leaderboardsPage.removeHeaderBackgroundNode()
 //            NotificationCenter.default.post(name: .shouldCancelLoadingLeaderboards, object: nil)
 
-            quitConfirmSprite.animateShow { [unowned self] in
-                isAnimating = false
+            quitConfirmSprite.animateShow { [weak self] in
+                self?.isAnimating = false
             }
         
             superScene.addChild(quitConfirmSprite)
@@ -736,7 +736,9 @@ extension PauseResetEngine: SettingsManagerDelegate {
 
 extension PauseResetEngine: ConfirmSpriteDelegate {
     func didTapConfirm(_ confirmSprite: ConfirmSprite) {
-        quitConfirmSprite.animateHide { [unowned self] in
+        quitConfirmSprite.animateHide { [weak self] in
+            guard let self = self else { return }
+            
             showMinorButtons(duration: 0)
             
             isPaused = false
@@ -750,7 +752,9 @@ extension PauseResetEngine: ConfirmSpriteDelegate {
     }
     
     func didTapCancel(_ confirmSprite: ConfirmSprite) {
-        quitConfirmSprite.animateHide { [unowned self] in
+        quitConfirmSprite.animateHide { [weak self] in
+            guard let self = self else { return }
+            
             if settingsManager.currentButtonPressed?.type == settingsManager.button4.type {
                 delegate?.didTapHowToPlay(howToPlayPage.tableView)
             }

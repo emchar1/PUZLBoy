@@ -173,7 +173,9 @@ class PartyModeSprite: SKNode {
     }
     
     private func startPartyBubbles() {
-        let bubbleFun = SKAction.run { [unowned self] in
+        let bubbleFun = SKAction.run { [weak self] in
+            guard let self = self else { return }
+            
             let partyBubble = PartyEffectSprite()
             partyBubble.animateEffect(to: backgroundLights) //adds partyBubble child nodes to backgroundLights
         }

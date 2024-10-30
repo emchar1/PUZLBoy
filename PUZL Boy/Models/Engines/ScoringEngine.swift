@@ -293,14 +293,16 @@ class ScoringEngine {
         let multiplier: Int = Int(max(savedScore / 1000, 1))
         let wait = SKAction.wait(forDuration: CGFloat(multiplier) * 1 / savedScore)
         
-        let incrementAction = SKAction.run { [unowned self] in
-            scoringManager.balanceScores(step: multiplier)
-            updateScoreLabels()
+        let incrementAction = SKAction.run { [weak self] in
+            self?.scoringManager.balanceScores(step: multiplier)
+            self?.updateScoreLabels()
         }
         
         let incrementRepeat = SKAction.repeat(SKAction.sequence([wait, incrementAction]), count: Int(savedScore / CGFloat(multiplier)))
         
-        let incrementRemainder = SKAction.run { [unowned self] in
+        let incrementRemainder = SKAction.run { [weak self] in
+            guard let self = self else { return }
+            
             scoringManager.balanceScores(step: scoringManager.score)
             updateScoreLabels()
         }

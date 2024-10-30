@@ -185,8 +185,8 @@ class PurchaseTapButton: SKNode {
         
         tappableAreaNode.run(SKAction.move(to: positionOrig, duration: duration))
         sprite.showShadow(shadowOffset: shadowOffset, animationDuration: duration)
-        sprite.run(SKAction.move(to: positionOrig, duration: duration)) { [unowned self] in
-            isAnimating = false
+        sprite.run(SKAction.move(to: positionOrig, duration: duration)) { [weak self] in
+            self?.isAnimating = false
         }
     }
     

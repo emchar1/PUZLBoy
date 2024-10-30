@@ -169,7 +169,9 @@ class CatwalkScene: SKScene {
         
         hero.sprite.run(animatePlayer(player: hero, type: .run))
         hero.sprite.xScale = moveFactor * abs(hero.sprite.xScale)
-        hero.sprite.run(SKAction.moveBy(x: moveDistance, y: 0, duration: moveDuration)) { [unowned self] in
+        hero.sprite.run(SKAction.moveBy(x: moveDistance, y: 0, duration: moveDuration)) { [weak self] in
+            guard let self = self else { return }
+            
             hero.sprite.run(animatePlayer(player: hero, type: .idle))
             isMoving = false
             AudioManager.shared.stopSound(for: runSound, fadeDuration: 0.25)
@@ -227,8 +229,8 @@ class CatwalkScene: SKScene {
         
         shouldDisableInput = true
         
-        chatEngine.playDialogue(level: dialogueNumber) { [unowned self] _ in
-            shouldDisableInput = false
+        chatEngine.playDialogue(level: dialogueNumber) { [weak self] _ in
+            self?.shouldDisableInput = false
         }
     }
     
@@ -270,9 +272,9 @@ class CatwalkScene: SKScene {
         else {
             let colorizeNone = SKAction.colorize(withColorBlendFactor: 0, duration: fadeDuration)
             
-            magmoorSprite.run(SKAction.fadeOut(withDuration: fadeDuration)) { [unowned self] in
-                updateBackgroundNode(fadeDuration: fadeDuration) { [unowned self] in
-                    isRedShift = false
+            magmoorSprite.run(SKAction.fadeOut(withDuration: fadeDuration)) { [weak self] in
+                self?.updateBackgroundNode(fadeDuration: fadeDuration) {
+                    self?.isRedShift = false
                 }
             }
             hero.sprite.run(colorizeNone)

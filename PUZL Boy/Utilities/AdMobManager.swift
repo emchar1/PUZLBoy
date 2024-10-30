@@ -175,8 +175,8 @@ class AdMobManager: NSObject {
     func presentRewarded(completion: ((GADAdReward) -> Void)?) {
         guard let superVC = superVC else { return }
         
-        rewardedAd?.present(fromRootViewController: superVC) { [unowned self] in
-            guard let rewardedAd = rewardedAd else { return }
+        rewardedAd?.present(fromRootViewController: superVC) { [weak self] in
+            guard let rewardedAd = self?.rewardedAd else { return }
 
             completion?(rewardedAd.adReward)
         }

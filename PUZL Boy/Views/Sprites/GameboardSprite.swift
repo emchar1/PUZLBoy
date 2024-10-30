@@ -509,7 +509,9 @@ class GameboardSprite {
             AudioManager.shared.playSound(for: "magicwarp")
             AudioManager.shared.playSound(for: "magicwarp2")
 
-            spawnItem(at: position, with: .warp4) { [unowned self] in
+            spawnItem(at: position, with: .warp4) { [weak self] in
+                guard let self = self else { return }
+                
                 ParticleEngine.shared.animateParticles(type: .warp4,
                                                        toNode: sprite,
                                                        position: getLocation(at: position),
@@ -520,8 +522,8 @@ class GameboardSprite {
                 
                 sprite.run(SKAction.sequence([
                     SKAction.wait(forDuration: 3),
-                    SKAction.run { [unowned self] in
-                        despawnItem(at: position, completion: completion)
+                    SKAction.run {
+                        self.despawnItem(at: position, completion: completion)
                     }
                 ]))
             }
@@ -705,7 +707,9 @@ class GameboardSprite {
                             endPoint: endPoint - facingMultiplier * playerOffset + villainOffset,
                             startScale: facingMultiplier * Player.getGameboardScale(panelSize: panelSize) * villain.scaleMultiplier),
                     ]),
-                    SKAction.run { [unowned self] in
+                    SKAction.run { [weak self] in
+                        guard let self = self else { return }
+                        
                         let angleOfAttack: CGFloat = SpriteMath.Trigonometry.getAngles(startPoint: startPoint + playerOffset + villainOffset, endPoint: endPoint + playerOffset + villainOffset).beta * (endPoint.y < startPoint.y ? 1 : -1)
                         
                         AudioManager.shared.playSound(for: "magicblast")
@@ -737,7 +741,9 @@ class GameboardSprite {
                 node.run(SKAction.sequence([
                     SKAction.wait(forDuration: 5.5 * actionDuration),
                     SKAction.removeFromParent()
-                ])) { [unowned self] in
+                ])) { [weak self] in
+                    guard let self = self else { return }
+                    
                     //Final completion handler...
                     ParticleEngine.shared.removeParticles(fromNode: sprite)
                     AudioManager.shared.playSound(for: "dooropen")
@@ -971,9 +977,9 @@ class GameboardSprite {
         princessNode.run(SKAction.sequence([
             SKAction.colorize(with: .systemPink, colorBlendFactor: 1, duration: 0),
             SKAction.wait(forDuration: duration),
-            SKAction.run { [unowned self] in
+            SKAction.run { [weak self] in
                 ParticleEngine.shared.removeParticles(fromNode: princessNode, fadeDuration: 3)
-                colorizeGameboard(fadeOut: false, fadeOutDuration: 3, isInbetween: true, completion: nil)
+                self?.colorizeGameboard(fadeOut: false, fadeOutDuration: 3, isInbetween: true, completion: nil)
             },
             SKAction.colorize(withColorBlendFactor: 0, duration: 3)
         ]))
@@ -1105,8 +1111,8 @@ class GameboardSprite {
         
         magmoorCreepyMinion = MagmoorCreepyMinion(scale: 3.5, gameboardScaleSize: scaleSize, spawnPoint: getSpritePosition(at: position))
         magmoorCreepyMinion!.addToParent(sprite)
-        magmoorCreepyMinion!.peekAnimation(delay: fadeDuration, duration: duration) { [unowned self] in
-            magmoorCreepyMinion = nil
+        magmoorCreepyMinion!.peekAnimation(delay: fadeDuration, duration: duration) { [weak self] in
+            self?.magmoorCreepyMinion = nil
             completion()
         }
     }
@@ -1194,8 +1200,8 @@ class GameboardSprite {
         }
 
         //Magmoor Creepy
-        magmoorCreepyMinion.endAnimation(delay: 0) { [unowned self] in
-            self.magmoorCreepyMinion = nil
+        magmoorCreepyMinion.endAnimation(delay: 0) { [weak self] in
+            self?.magmoorCreepyMinion = nil
         }
         
         despawnPartyTilesForElders(fadeDuration: fadeDuration)
@@ -1335,7 +1341,9 @@ class GameboardSprite {
                 
                 circularActions.append(SKAction.group([
                     SKAction.move(to: movePoint, duration: rotateSpeedCircular),
-                    SKAction.run { [unowned self] in
+                    SKAction.run { [weak self] in
+                        guard let self = self else { return }
+                        
                         elder.moveWithIllusions2(backgroundNode: sprite, trailColor: trailColor, trailLength: 20, trailTightness: 0.03)
                     }
                 ]))
@@ -1375,7 +1383,9 @@ class GameboardSprite {
                 
         sprite.addChild(elder.sprite)
 
-        spawnItem(at: positions[0], with: .warp5) { [unowned self] in
+        spawnItem(at: positions[0], with: .warp5) { [weak self] in
+            guard let self = self else { return }
+            
             elder.sprite.run(SKAction.sequence([
                 SKAction.group([
                     SKAction.scaleX(to: -Player.getGameboardScale(panelSize: panelSize) * elder.scaleMultiplier, duration: appearDuration),
@@ -1403,8 +1413,8 @@ class GameboardSprite {
             
             sprite.run(SKAction.sequence([
                 SKAction.wait(forDuration: 2),
-                SKAction.run { [unowned self] in
-                    despawnItem(at: positions[0], completion: {})
+                SKAction.run {
+                    self.despawnItem(at: positions[0], completion: {})
                 }
             ]))
             

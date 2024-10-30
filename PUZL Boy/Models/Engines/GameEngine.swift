@@ -227,8 +227,9 @@ class GameEngine {
         //Explicitly add additional hearts from the princess, at the start of the level if healthRemaining > 1
         if level.health > 1 {
             displaySprite.sprite.run(SKAction.repeat(SKAction.sequence([
-                SKAction.run { [unowned self] in
-                    // FIXME: - Is this a retain cycle???
+                SKAction.run { [weak self] in
+                    guard let self = self else { return }
+                    
                     displaySprite.statusHealth.pulseImage()
                     
                     //Level 51 is the dragon level, and it's annoying to hear pickupheart 10 times...
@@ -327,11 +328,12 @@ class GameEngine {
 
             playerSprite.startMoveAnimation(animationType: animationType, soundFXType: soundFXTypeAndMovementSpeed)
             
-            playerSprite.sprite.run(playerMove) { [unowned self] in
-                // FIXME: - Is this a retain cycle???
+            playerSprite.sprite.run(playerMove) { [weak self] in
+                guard let self = self else { return }
+                
                 playerSprite.startIdleAnimation(hasSword: !isSolved && level.inventory.hasSwords(), hasHammer: !isSolved && level.inventory.hasHammers())
-                checkSpecialPanel { [unowned self] in
-                    shouldDisableControlInput = false
+                checkSpecialPanel {
+                    self.shouldDisableControlInput = false
                     completion?()
                 }
             }
@@ -365,8 +367,8 @@ class GameEngine {
             animateParticles(type: .gemCollect)
             animateParticles(type: .gemSparkle)
 
-            playerSprite.startItemCollectAnimation(on: gameboardSprite, at: level.player, item: .gem) { [unowned self] in
-                consumeItem()
+            playerSprite.startItemCollectAnimation(on: gameboardSprite, at: level.player, item: .gem) { [weak self] in
+                self?.consumeItem()
                 completion?()
             }
         case .hammer:
@@ -426,8 +428,8 @@ class GameEngine {
                 originSprite: gameboardSprite.sprite,
                 location: CGPoint(x: playerSprite.sprite.position.x, y: playerSprite.sprite.position.y + 20))
 
-            playerSprite.startItemCollectAnimation(on: gameboardSprite, at: level.player, item: .heart, sound: .heart) { [unowned self] in
-                consumeItem()
+            playerSprite.startItemCollectAnimation(on: gameboardSprite, at: level.player, item: .heart, sound: .heart) { [weak self] in
+                self?.consumeItem()
                 completion?()
             }
         case .boulder:
@@ -437,11 +439,11 @@ class GameEngine {
             bouldersBroken += 1
             level.inventory.hammers -= 1
             
-            playerSprite.startHammerAnimation(on: gameboardSprite, at: level.player) { [unowned self] in
+            playerSprite.startHammerAnimation(on: gameboardSprite, at: level.player) { [weak self] in
                 animateParticles(type: .boulderCrush, duration: 5)
                 
-                setLabelsForDisplaySprite()
-                consumeItem()
+                self?.setLabelsForDisplaySprite()
+                self?.consumeItem()
                 
                 completion?()
             }
@@ -454,10 +456,10 @@ class GameEngine {
             enemiesKilled += 1
             level.inventory.swords -= 1
             
-            playerSprite.startSwordAnimation(on: gameboardSprite, at: level.player) { [unowned self] in
-                setLabelsForDisplaySprite()
-                consumeItem()
-                delegate?.enemyIsKilled()
+            playerSprite.startSwordAnimation(on: gameboardSprite, at: level.player) { [weak self] in
+                self?.setLabelsForDisplaySprite()
+                self?.consumeItem()
+                self?.delegate?.enemyIsKilled()
                 
                 completion?()
             }
@@ -482,21 +484,23 @@ class GameEngine {
             
             animateParticles(type: .warp)
             
-            playerSprite.startWarpAnimation(shouldReverse: false, stopAnimating: false) { [unowned self] in
+            playerSprite.startWarpAnimation(shouldReverse: false, stopAnimating: false) { [weak self] in
+                guard let self = self else { return }
+                
                 level.updatePlayer(position: newWarpLocation)
                 
                 // FIXME: - Is this a retain cycle???
                 playerSprite.sprite.position = gameboardSprite.getLocation(at: newWarpLocation)
-                playerSprite.startWarpAnimation(shouldReverse: true, stopAnimating: true) { [unowned self] in
+                playerSprite.startWarpAnimation(shouldReverse: true, stopAnimating: true) {
                     
                     //But, also do marsh animation if end warp has marsh, but not initial warp; it's one or the other, not both.. clunky!
-                    if level.getTerrainType(at: initialWarpLocation) != .marsh && level.getTerrainType(at: newWarpLocation) == .marsh {
-                        handleMarsh()
+                    if self.level.getTerrainType(at: initialWarpLocation) != .marsh && self.level.getTerrainType(at: newWarpLocation) == .marsh {
+                        self.handleMarsh()
                     }
 
                     //Deduct an additional move due to marsh
-                    if level.getTerrainType(at: initialWarpLocation) == .marsh || level.getTerrainType(at: newWarpLocation) == .marsh {
-                        movesRemaining -= 1
+                    if self.level.getTerrainType(at: initialWarpLocation) == .marsh || self.level.getTerrainType(at: newWarpLocation) == .marsh {
+                        self.movesRemaining -= 1
                     }
 
                     completion?()
@@ -514,8 +518,8 @@ class GameEngine {
             animateParticles(type: .partyGem)
             animateParticles(type: .gemSparkle)
 
-            playerSprite.startItemCollectAnimation(on: gameboardSprite, at: level.player, item: .partyGem, sound: .partyGem) { [unowned self] in
-                consumeItem()
+            playerSprite.startItemCollectAnimation(on: gameboardSprite, at: level.player, item: .partyGem, sound: .partyGem) { [weak self] in
+                self?.consumeItem()
                 completion?()
             }
         case .partyGemDouble:
@@ -525,8 +529,8 @@ class GameEngine {
             animateParticles(type: .partyGem)
             animateParticles(type: .gemSparkle)
 
-            playerSprite.startItemCollectAnimation(on: gameboardSprite, at: level.player, item: .partyGemDouble, sound: .partyGemDouble) { [unowned self] in
-                consumeItem()
+            playerSprite.startItemCollectAnimation(on: gameboardSprite, at: level.player, item: .partyGemDouble, sound: .partyGemDouble) { [weak self] in
+                self?.consumeItem()
                 completion?()
             }
         case .partyGemTriple:
@@ -536,8 +540,8 @@ class GameEngine {
             animateParticles(type: .partyGem)
             animateParticles(type: .gemSparkle)
 
-            playerSprite.startItemCollectAnimation(on: gameboardSprite, at: level.player, item: .partyGemTriple, sound: .partyGemTriple) { [unowned self] in
-                consumeItem()
+            playerSprite.startItemCollectAnimation(on: gameboardSprite, at: level.player, item: .partyGemTriple, sound: .partyGemTriple) { [weak self] in
+                self?.consumeItem()
                 completion?()
             }
         case .partyHint:
@@ -545,8 +549,8 @@ class GameEngine {
             
             Haptics.shared.addHapticFeedback(withStyle: .medium)
             
-            playerSprite.startItemCollectAnimation(on: gameboardSprite, at: level.player, item: .partyHint, sound: .partyHint) { [unowned self] in
-                consumeItem()
+            playerSprite.startItemCollectAnimation(on: gameboardSprite, at: level.player, item: .partyHint, sound: .partyHint) { [weak self] in
+                self?.consumeItem()
                 completion?()
             }
         case .partyLife:
@@ -556,8 +560,8 @@ class GameEngine {
 
             ScoringEngine.addTextAnimation(text: "1-UP", textColor: .yellow, originSprite: gameboardSprite.sprite, location: gameboardSprite.getLocation(at: level.player))
 
-            playerSprite.startItemCollectAnimation(on: gameboardSprite, at: level.player, item: .partyLife, sound: .partyLife) { [unowned self] in
-                consumeItem()
+            playerSprite.startItemCollectAnimation(on: gameboardSprite, at: level.player, item: .partyLife, sound: .partyLife) { [weak self] in
+                self?.consumeItem()
                 completion?()
             }
         case .partyTime:
@@ -567,8 +571,8 @@ class GameEngine {
 
             delegate?.didGetPartyTime(PartyInventory.timeIncrement)
             
-            playerSprite.startItemCollectAnimation(on: gameboardSprite, at: level.player, item: .partyTime, sound: .partyTime) { [unowned self] in
-                consumeItem()
+            playerSprite.startItemCollectAnimation(on: gameboardSprite, at: level.player, item: .partyTime, sound: .partyTime) { [weak self] in
+                self?.consumeItem()
                 completion?()
             }
         case .partyFast:
@@ -583,8 +587,8 @@ class GameEngine {
                 ScoringEngine.addTextAnimation(text: "SPEED+", textColor: .cyan, originSprite: gameboardSprite.sprite, location: gameboardSprite.getLocation(at: level.player))
             }
 
-            playerSprite.startItemCollectAnimation(on: gameboardSprite, at: level.player, item: .partyFast, sound: maxReached ? .boundary : .partyFast) { [unowned self] in
-                consumeItem()
+            playerSprite.startItemCollectAnimation(on: gameboardSprite, at: level.player, item: .partyFast, sound: maxReached ? .boundary : .partyFast) { [weak self] in
+                self?.consumeItem()
                 completion?()
             }
         case .partySlow:
@@ -599,8 +603,8 @@ class GameEngine {
                 ScoringEngine.addTextAnimation(text: "SPEED-", textColor: .magenta, originSprite: gameboardSprite.sprite, location: gameboardSprite.getLocation(at: level.player))
             }
                 
-            playerSprite.startItemCollectAnimation(on: gameboardSprite, at: level.player, item: .partySlow, sound: minReached ? .boundary : .partySlow) { [unowned self] in
-                consumeItem()
+            playerSprite.startItemCollectAnimation(on: gameboardSprite, at: level.player, item: .partySlow, sound: minReached ? .boundary : .partySlow) { [weak self] in
+                self?.consumeItem()
                 completion?()
             }
         case .partyBomb:
@@ -610,11 +614,11 @@ class GameEngine {
             
             playerSprite.animateExplosion(on: gameboardSprite, at: level.player, scale: 2, textureName: "explode2", textureFrames: 7) { }
             
-            playerSprite.startItemCollectAnimation(on: gameboardSprite, at: level.player, item: .partyBoom, sound: .partyBomb) { [unowned self] in
-                consumeItem()
+            playerSprite.startItemCollectAnimation(on: gameboardSprite, at: level.player, item: .partyBoom, sound: .partyBomb) { [weak self] in
+                self?.consumeItem()
                 completion?()
 
-                delegate?.didGetPartyBomb()
+                self?.delegate?.didGetPartyBomb()
             }
         default:
             completion?()
@@ -720,7 +724,9 @@ class GameEngine {
         partyInventory = PartyInventory(panelCount: level.gameboard.count)
 
         for i in 0..<maxItems {
-            let spawnAction = SKAction.run { [unowned self] in
+            let spawnAction = SKAction.run { [weak self] in
+                guard let self = self else { return }
+                
                 let randomItem: LevelType = partyInventory.getRandomItem()
                 var counterCheck = 0
 
@@ -741,9 +747,9 @@ class GameEngine {
                 level.setLevelType(at: itemPositions[i], with: (terrain: .partytile, overlay: randomItem))
             }
             
-            let despawnAction = SKAction.run { [unowned self] in
-                gameboardSprite.despawnItem(at: itemPositions[i]) { [unowned self] in
-                    level.setLevelType(at: itemPositions[i], with: (terrain: .partytile, overlay: .boundary))
+            let despawnAction = SKAction.run { [weak self] in
+                self?.gameboardSprite.despawnItem(at: itemPositions[i]) {
+                    self?.level.setLevelType(at: itemPositions[i], with: (terrain: .partytile, overlay: .boundary))
                 }
             }
             
@@ -907,7 +913,9 @@ class GameEngine {
             hintEngine.updateBools()
         }
 
-        setPlayerSpritePosition(toLastPanel: level.getLevelType(at: lastPanel), shouldAnimate: true) { [unowned self] in
+        setPlayerSpritePosition(toLastPanel: level.getLevelType(at: lastPanel), shouldAnimate: true) { [weak self] in
+            guard let self = self else { return }
+            
             if level.getLevelType(at: lastPanel) == .sand {
                 level.setLevelType(at: lastPanel, with: (terrain: LevelType.lava, overlay: LevelType.boundary))
                 
@@ -983,8 +991,8 @@ class GameEngine {
                 GameCenterManager.shared.updateProgress(achievement: .klutz, shouldReportImmediately: false)
                 
                 shouldDisableControlInput = true
-                playerSprite.startKnockbackAnimation(on: gameboardSprite, at: level.player, isAttacked: false, direction: direction) { [unowned self] in
-                    shouldDisableControlInput = false
+                playerSprite.startKnockbackAnimation(on: gameboardSprite, at: level.player, isAttacked: false, direction: direction) { [weak self] in
+                    self?.shouldDisableControlInput = false
                 }
 
                 return false
@@ -1004,10 +1012,9 @@ class GameEngine {
 //                updateMovesRemaining() //removed here...
 
                 shouldDisableControlInput = true
-                playerSprite.startKnockbackAnimation(on: gameboardSprite, at: level.player, isAttacked: true, direction: direction) { [unowned self] in
-                    // FIXME: - Is this a retain cycle??? (because updateMovesRemaining calls playerSprite.startDeadAnimation())
-                    updateMovesRemaining(enemyAttacked: true) //...added here
-                    shouldDisableControlInput = false
+                playerSprite.startKnockbackAnimation(on: gameboardSprite, at: level.player, isAttacked: true, direction: direction) { [weak self] in
+                    self?.updateMovesRemaining(enemyAttacked: true) //...added here
+                    self?.shouldDisableControlInput = false
                 }
                 
                 ScoringEngine.updateStatusIconsAnimation(
@@ -1156,13 +1163,13 @@ class GameEngine {
                 AudioManager.shared.playSound(for: "boydead")
 
                 //1.8 seconds is the time it takes for player dead animation
-                playerSprite.sprite.run(SKAction.wait(forDuration: 1.8)) { [unowned self] in
-                    delegate?.gameIsOver(firstTimeCalled: true)
+                playerSprite.sprite.run(SKAction.wait(forDuration: 1.8)) { [weak self] in
+                    self?.delegate?.gameIsOver(firstTimeCalled: true)
                 }
             }
             else {
-                playerSprite.startDeadAnimation { [unowned self] in
-                    delegate?.gameIsOver(firstTimeCalled: true)
+                playerSprite.startDeadAnimation { [weak self] in
+                    self?.delegate?.gameIsOver(firstTimeCalled: true)
                 }
             }
         }
@@ -1245,9 +1252,9 @@ class GameEngine {
             SKAction.removeFromParent()
         ]))
         
-        bloodOverlay.run(SKAction.fadeAlpha(to: bloodOverlayAlpha, duration: fadeDuration)) { [unowned self] in
-            displaySprite.showSprite(fadeDuration: 1)
-            showBoughtHints()
+        bloodOverlay.run(SKAction.fadeAlpha(to: bloodOverlayAlpha, duration: fadeDuration)) { [weak self] in
+            self?.displaySprite.showSprite(fadeDuration: 1)
+            self?.showBoughtHints()
             completion()
         }
         
@@ -1277,7 +1284,9 @@ class GameEngine {
         inbetweenNode.run(SKAction.group([
             SKAction.colorize(with: .black, colorBlendFactor: 1, duration: fadeDuration),
             SKAction.fadeIn(withDuration: fadeDuration)
-        ])) { [unowned self] in
+        ])) { [weak self] in
+            guard let self = self else { return }
+            
             let particlePosition: CGPoint = CGPoint(x: gameboardSprite.sprite.size.width / 2, y: gameboardSprite.sprite.size.height / 2) / gameboardSprite.sprite.xScale
             
             ParticleEngine.shared.animateParticles(

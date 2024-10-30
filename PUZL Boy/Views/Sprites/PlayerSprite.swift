@@ -201,8 +201,8 @@ class PlayerSprite {
             SKAction.scale(to: shouldReverse ? player.scale : 0, duration: 1.0 * PartyModeSprite.shared.speedMultiplier)
         ])
         
-        player.sprite.run(warpEffect) { [unowned self] in
-            isAnimating = !stopAnimating
+        player.sprite.run(warpEffect) { [weak self] in
+            self?.isAnimating = !stopAnimating
             completion()
         }
     }
@@ -341,8 +341,8 @@ class PlayerSprite {
                     SKAction.fadeOut(withDuration: animationDuration * 2 * PartyModeSprite.shared.speedMultiplier)
                 ]),
                 SKAction.removeFromParent()
-            ])) { [unowned self] in
-                isAnimating = false
+            ])) { [weak self] in
+                self?.isAnimating = false
             }
             
             //Points animation
@@ -377,8 +377,8 @@ class PlayerSprite {
 
         gameboard.sprite.addChild(attackSprite)
 
-        attackSprite.run(animation) { [unowned self] in
-            animateExplosion(on: gameboard, at: panel, scale: scale, textureName: "explode2", textureFrames: 7) { }
+        attackSprite.run(animation) { [weak self] in
+            self?.animateExplosion(on: gameboard, at: panel, scale: scale, textureName: "explode2", textureFrames: 7) { }
             
             completion()
         }
@@ -406,8 +406,8 @@ class PlayerSprite {
                 SKAction.fadeAlpha(to: textureName == "explode2" ? 0 : 1, duration: timePerFrame * Double(explodeTextures.count) * 2)
             ]),
             SKAction.removeFromParent()
-        ])) { [unowned self] in
-            isAnimating = false
+        ])) { [weak self] in
+            self?.isAnimating = false
             
             completion()
         }
@@ -528,8 +528,8 @@ class PlayerSprite {
             }
             
             DispatchQueue.main.asyncAfter(deadline: .now() + rotateDuration + 0.5) {
-                gameboard.rotateEnemy(at: dragonPosition, directionType: antiRotationDirection, duration: rotateDuration) { [unowned self] in
-                    isAnimating = false
+                gameboard.rotateEnemy(at: dragonPosition, directionType: antiRotationDirection, duration: rotateDuration) { [weak self] in
+                    self?.isAnimating = false
                     completion()
                 }
             }
@@ -550,8 +550,8 @@ class PlayerSprite {
             Haptics.shared.executeCustomPattern(pattern: .boulder)
             AudioManager.shared.playSound(for: "boygrunt\(Int.random(in: 1...2))")
             
-            player.sprite.run(knockbackAnimation) { [unowned self] in
-                isAnimating = false
+            player.sprite.run(knockbackAnimation) { [weak self] in
+                self?.isAnimating = false
                 completion()
             }
         }
@@ -566,8 +566,8 @@ class PlayerSprite {
         
         player.sprite.removeAction(forKey: AnimationKey.playerIdle.rawValue)
         player.sprite.removeAction(forKey: AnimationKey.playerMove.rawValue)
-        player.sprite.run(SKAction.sequence([SKAction.repeat(animation, count: 1), SKAction.wait(forDuration: 1.5)])) { [unowned self] in
-            isAnimating = false
+        player.sprite.run(SKAction.sequence([SKAction.repeat(animation, count: 1), SKAction.wait(forDuration: 1.5)])) { [weak self] in
+            self?.isAnimating = false
             completion()
         }
     }

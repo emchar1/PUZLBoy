@@ -176,7 +176,9 @@ class GameScene: SKScene {
         }
         
         let wait = SKAction.wait(forDuration: 1.0)
-        let block = SKAction.run { [unowned self] in
+        let block = SKAction.run { [weak self] in
+            guard let self = self else { return }
+            
             do {
                 let timeToReplenishLives = try LifeSpawnerModel.shared.getTimeToFinishUntilMoreLives()
                 
@@ -294,7 +296,9 @@ class GameScene: SKScene {
     private func startTimer() {
         //The 0.1 seconds for Party Levels is important for rounding so that the seconds rounds to 00 instead of some weird non-zero number.
         let wait = SKAction.wait(forDuration: Level.isPartyLevel(currentLevel) ? 0.1 : 1.0)
-        let block = SKAction.run { [unowned self] in
+        let block = SKAction.run { [weak self] in
+            guard let self = self else { return }
+            
             scoringEngine.timerManager.pollTime()
             scoringEngine.updateLabels()
             
@@ -336,22 +340,24 @@ class GameScene: SKScene {
         gameEngine.shouldDisableInput(true)
         pauseResetEngine.shouldDisable(true)
         
-        let fadeGameboardAction = SKAction.run { [unowned self] in
-            gameEngine.fadeGameboard(fadeOut: true) { [unowned self] in
-                partyResultsSprite = PartyResultsSprite()
-                partyResultsSprite!.delegate = self
+        let fadeGameboardAction = SKAction.run { [weak self] in
+            guard let self = self else { return }
+            
+            gameEngine.fadeGameboard(fadeOut: true) {
+                self.partyResultsSprite = PartyResultsSprite()
+                self.partyResultsSprite!.delegate = self
 
-                addChild(partyResultsSprite!)
+                self.addChild(self.partyResultsSprite!)
                 
-                partyResultsSprite!.updateAmounts(gems: gameEngine.partyInventory.gems,
-                                                  gemsDouble: gameEngine.partyInventory.gemsDouble,
-                                                  gemsTriple: gameEngine.partyInventory.gemsTriple,
-                                                  hints: gameEngine.partyInventory.hints,
-                                                  lives: gameEngine.partyInventory.lives)
+                self.partyResultsSprite!.updateAmounts(gems: self.gameEngine.partyInventory.gems,
+                                                       gemsDouble: self.gameEngine.partyInventory.gemsDouble,
+                                                       gemsTriple: self.gameEngine.partyInventory.gemsTriple,
+                                                       hints: self.gameEngine.partyInventory.hints,
+                                                       lives: self.gameEngine.partyInventory.lives)
                 
-                partyResultsSprite!.animateShow(totalGems: gameEngine.partyInventory.getTotalGems(),
-                                                lives: gameEngine.partyInventory.lives,
-                                                totalLives: gameEngine.partyInventory.getTotalLives()) { }
+                self.partyResultsSprite!.animateShow(totalGems: self.gameEngine.partyInventory.getTotalGems(),
+                                                     lives: self.gameEngine.partyInventory.lives,
+                                                     totalLives: self.gameEngine.partyInventory.getTotalLives()) { }
             }
         }
         
@@ -512,8 +518,8 @@ class GameScene: SKScene {
             adSprite?.run(SKAction.sequence([
                 SKAction.colorize(with: .clear, colorBlendFactor: 1.0, duration: fadeDuration),
                 SKAction.removeFromParent()
-            ])) { [unowned self] in
-                adSprite = nil
+            ])) { [weak self] in
+                self?.adSprite = nil
 
                 resetTimer()
             }
@@ -574,7 +580,9 @@ class GameScene: SKScene {
         gameEngine.shouldDisableInput(true)
         pauseResetEngine.shouldDisable(true)
 
-        chatEngine.playDialogue(level: currentLevel) { [unowned self] cutscene in
+        chatEngine.playDialogue(level: currentLevel) { [weak self] cutscene in
+            guard let self = self else { return }
+            
             if let cutscene = cutscene {
                 let fadeDuration: TimeInterval = 1.0
                 let fadeNode = SKSpriteNode(color: .white, size: screenSize)
@@ -585,9 +593,9 @@ class GameScene: SKScene {
                 
                 AudioManager.shared.stopSound(for: AudioManager.shared.currentTheme.overworld, fadeDuration: fadeDuration)
                 
-                fadeNode.run(SKAction.fadeIn(withDuration: fadeDuration)) { [unowned self] in
-                    cleanupScene(shouldSaveState: false)
-                    gameSceneDelegate?.presentChatDialogueCutscene(level: currentLevel, cutscene: cutscene)
+                fadeNode.run(SKAction.fadeIn(withDuration: fadeDuration)) {
+                    self.cleanupScene(shouldSaveState: false)
+                    self.gameSceneDelegate?.presentChatDialogueCutscene(level: self.currentLevel, cutscene: cutscene)
                 }
             }
             else {
@@ -605,9 +613,9 @@ class GameScene: SKScene {
         gameEngine.shouldDisableInput(true)
         pauseResetEngine.shouldDisable(true)
         
-        chatEngine.playDialogue(level: currentLevel, statueTapped: true) { [unowned self] _ in
-            gameEngine.shouldDisableInput(false)
-            pauseResetEngine.shouldDisable(false)
+        chatEngine.playDialogue(level: currentLevel, statueTapped: true) { [weak self] _ in
+            self?.gameEngine.shouldDisableInput(false)
+            self?.pauseResetEngine.shouldDisable(false)
         }
     }
     
@@ -720,7 +728,9 @@ extension GameScene: GameEngineDelegate {
         
         currentLevel += 1
         
-        gameEngine.fadeGameboard(fadeOut: true) { [unowned self] in
+        gameEngine.fadeGameboard(fadeOut: true) { [weak self] in
+            guard let self = self else { return }
+            
             //Increment or reset interstitial counter
             if didCompleteGame {
                 AdMobManager.shared.resetInterstitialCounter()
@@ -774,7 +784,9 @@ extension GameScene: GameEngineDelegate {
             continueSprite = ContinueSprite()
             continueSprite!.delegate = self
             
-            prepareAd { [unowned self] in
+            prepareAd { [weak self] in
+                guard let self = self else { return }
+                
                 pauseResetEngine.shouldDisable(true)
                 gameEngine.hideParticles()
 
@@ -860,7 +872,9 @@ extension GameScene: AdMobManagerDelegate {
     }
     
     func didDismissInterstitial() {
-        continueFromAd(shouldFade: false) { [unowned self] in
+        continueFromAd(shouldFade: false) { [weak self] in
+            guard let self = self else { return }
+            
             if Level.isPartyLevel(currentLevel) {
                 handlePartyLevelCleanUp()
             }
@@ -951,25 +965,27 @@ extension GameScene: AdMobManagerDelegate {
         
         AudioManager.shared.stopSound(for: "continueloop")
         
-        continueSprite?.animateHide { [unowned self] in
-            continueFromAd(shouldFade: true) { [unowned self] in
+        continueSprite?.animateHide { [weak self] in
+            guard let self = self else { return }
+            
+            continueFromAd(shouldFade: true) {
                 AudioManager.shared.playSound(for: "revive")
             
-                scoringEngine.scoringManager.resetScore()
-                scoringEngine.updateLabels()
+                self.scoringEngine.scoringManager.resetScore()
+                self.scoringEngine.updateLabels()
                 
-                pauseResetEngine.shouldDisable(false)
+                self.pauseResetEngine.shouldDisable(false)
                 
                 //Make sure to save current state, and increment currentLevel if skipping ahead
                 if shouldSkipLevel {
-                    saveState(levelStatsItem: getLevelStatsItem(level: currentLevel, didWin: false))
+                    self.saveState(levelStatsItem: self.getLevelStatsItem(level: self.currentLevel, didWin: false))
 
-                    currentLevel += 1
+                    self.currentLevel += 1
                     
-                    scoringEngine.scaleScoreLabelDidSkipLevel()
-                    scoringEngine.timerManager.resetTime()
+                    self.scoringEngine.scaleScoreLabelDidSkipLevel()
+                    self.scoringEngine.timerManager.resetTime()
                     
-                    gameEngine.fadeGameboard(fadeOut: true) {
+                    self.gameEngine.fadeGameboard(fadeOut: true) {
                         restartHelper()
                     }
                 }
@@ -977,32 +993,34 @@ extension GameScene: AdMobManagerDelegate {
                     restartHelper()
                 }
 
-                continueSprite = nil
+                self.continueSprite = nil
             }
         }
     }
     
     private func continueLevel(moves: Int) {
-        continueSprite?.animateHide { [unowned self] in
-            continueFromAd(shouldFade: true) { [unowned self] in
+        continueSprite?.animateHide { [weak self] in
+            guard let self = self else { return }
+            
+            continueFromAd(shouldFade: true) {
                 AudioManager.shared.playSound(for: "revive")
                 AudioManager.shared.stopSound(for: "continueloop")
                 AudioManager.shared.playSound(for: AudioManager.shared.currentTheme.overworld)
                 
-                pauseResetEngine.shouldDisable(false)
-                gameEngine.continueGame()
-                gameEngine.showParticles()
+                self.pauseResetEngine.shouldDisable(false)
+                self.gameEngine.continueGame()
+                self.gameEngine.showParticles()
 
-                gameEngine.animateMoves(originalMoves: gameEngine.movesRemaining, newMoves: moves)
-                gameEngine.incrementMovesRemaining(moves: moves)
-                gameEngine.setLivesRemaining(lives: 0)
+                self.gameEngine.animateMoves(originalMoves: self.gameEngine.movesRemaining, newMoves: moves)
+                self.gameEngine.incrementMovesRemaining(moves: moves)
+                self.gameEngine.setLivesRemaining(lives: 0)
                 
-                saveState(levelStatsItem: getLevelStatsItem(level: currentLevel, didWin: false))
+                self.saveState(levelStatsItem: self.getLevelStatsItem(level: self.currentLevel, didWin: false))
                 
                 LifeSpawnerModel.shared.removeTimer()
                 LifeSpawnerModel.shared.removeAllNotifications()
 
-                continueSprite = nil
+                self.continueSprite = nil
             }
         }
     }
@@ -1194,7 +1212,9 @@ extension GameScene: PauseResetEngineDelegate {
             scoringEngine.scaleScoreLabelDidSkipLevel()
             scoringEngine.timerManager.resetTime()
 
-            gameEngine.fadeGameboard(fadeOut: true) { [unowned self] in
+            gameEngine.fadeGameboard(fadeOut: true) { [weak self] in
+                guard let self = self else { return }
+                
                 newGame(level: currentLevel, didWin: true)
                 
                 if GameEngine.livesRemaining < LifeSpawnerModel.defaultLives {
@@ -1263,17 +1283,17 @@ extension GameScene: ConfirmSpriteDelegate {
     }
     
     private func hideConfirmSprite(_ confirmSprite: ConfirmSprite) {
-        confirmSprite.animateHide { [unowned self] in
-            scoringEngine.timerManager.resumeTime()
-            startTimer()
-            gameEngine.shouldDisableInput(false)
+        confirmSprite.animateHide { [weak self] in
+            self?.scoringEngine.timerManager.resumeTime()
+            self?.startTimer()
+            self?.gameEngine.shouldDisableInput(false)
             
             //VERY IMPORTANT to release memory!!!
-            if confirmSprite == resetConfirmSprite {
-                resetConfirmSprite = nil
+            if confirmSprite == self?.resetConfirmSprite {
+                self?.resetConfirmSprite = nil
             }
-            else if confirmSprite == hintConfirmSprite {
-                hintConfirmSprite = nil
+            else if confirmSprite == self?.hintConfirmSprite {
+                self?.hintConfirmSprite = nil
             }
         }
     }
@@ -1284,9 +1304,9 @@ extension GameScene: ConfirmSpriteDelegate {
 
 extension GameScene: PartyResultsSpriteDelegate {
     func didTapConfirm() {
-        partyResultsSprite?.animateHide { [unowned self] in
-            prepareAd { [unowned self] in
-                resumeGameFromPartyLevel()
+        partyResultsSprite?.animateHide { [weak self] in
+            self?.prepareAd {
+                self?.resumeGameFromPartyLevel()
             }
         }
         
@@ -1302,10 +1322,10 @@ extension GameScene: PartyResultsSpriteDelegate {
                                          hasSword: gameEngine.level.inventory.hasSwords(),
                                          hasHammer: gameEngine.level.inventory.hasHammers())
 
-        chatEngine.playDialogue(level: -villainChatLevel) { [unowned self] _ in
+        chatEngine.playDialogue(level: -villainChatLevel) { [weak self] _ in
             guard AdMobManager.interstitialAdIsReady else {
                 AdMobManager.shared.createAndLoadInterstitial() //...and try loading the ad again for future calls
-                didDismissInterstitial()
+                self?.didDismissInterstitial()
                 
                 return
             }
@@ -1408,9 +1428,9 @@ extension GameScene: ChatEngineDelegate {
     
     func inbetweenRealmExit(persistPresence: Bool, completion: @escaping () -> Void) {
         gameEngine.gameboardSprite.despawnInbetween(persistPresence: persistPresence)
-        gameEngine.inbetweenRealmExit { [unowned self] in
-            gameEngine.playerSprite.startRespawnAnimation()
-            scoringEngine.showSprite(fadeDuration: 1)
+        gameEngine.inbetweenRealmExit { [weak self] in
+            self?.gameEngine.playerSprite.startRespawnAnimation()
+            self?.scoringEngine.showSprite(fadeDuration: 1)
             completion()
         }
     }

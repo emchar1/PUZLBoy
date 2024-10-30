@@ -234,8 +234,8 @@ class MagmoorCreepyMinion: SKNode {
             SKAction.wait(forDuration: duration),
             SKAction.fadeOut(withDuration: 0.25),
             SKAction.removeFromParent()
-        ])) { [unowned self] in
-            removeFromParent()
+        ])) { [weak self] in
+            self?.removeFromParent()
             completion()
         }
         
@@ -250,8 +250,8 @@ class MagmoorCreepyMinion: SKNode {
      */
     func beginAnimation(delay: TimeInterval) {
         //Appear animation
-        animateAppearNode(node: leftHand, delay: delay + 0.5) { [unowned self] in
-            braveryBar.showStatus()
+        animateAppearNode(node: leftHand, delay: delay + 0.5) { [weak self] in
+            self?.braveryBar.showStatus()
         }
         animateAppearNode(node: leftArm, delay: delay + 0.5)
         animateAppearNode(node: rightHand, delay: delay + 0.3)
@@ -409,7 +409,9 @@ class MagmoorCreepyMinion: SKNode {
         //Constant drain of bravery just for merely being in its presence.
         run(SKAction.repeatForever(SKAction.sequence([
             SKAction.wait(forDuration: 0.25),
-            SKAction.run { [unowned self] in
+            SKAction.run { [weak self] in
+                guard let self = self else { return }
+                
                 //Determine when to call completion based on current bravery
                 switch braveryCounter.getCount() {
                 case let num where num >= 1:
@@ -440,8 +442,8 @@ class MagmoorCreepyMinion: SKNode {
         
         run(SKAction.repeatForever(SKAction.sequence([
             SKAction.wait(forDuration: minionAttackSpeed),
-            SKAction.run { [unowned self] in
-                minionAttack()
+            SKAction.run { [weak self] in
+                self?.minionAttack()
             }
         ])), withKey: keyMinionAttack)
     }
@@ -480,8 +482,8 @@ class MagmoorCreepyMinion: SKNode {
                 SKAction.fadeOut(withDuration: minionCooloffDuration)
             ]),
             SKAction.removeFromParent()
-        ])) { [unowned self] in
-            isAnimating = false
+        ])) { [weak self] in
+            self?.isAnimating = false
         }
         
         AudioManager.shared.playSound(for: "enemyscratch")
@@ -533,16 +535,18 @@ class MagmoorCreepyMinion: SKNode {
         executeActionOnNodes(hitAction)
         
         animateHideNode(node: body1, delay: 0)
-        animateHideNode(node: face1, delay: 0) { [unowned self] in
+        animateHideNode(node: face1, delay: 0) { [weak self] in
+            guard let self = self else { return }
+            
             animateAppearNode(node: face1, delay: heroCooloffDuration)
-            animateAppearNode(node: body1, delay: heroCooloffDuration) { [unowned self] in
+            animateAppearNode(node: body1, delay: heroCooloffDuration) {
                 //The final completion...
-                isAnimating = false
+                self.isAnimating = false
                 
-                rightArm.run(SKAction.moveBy(x: hitArmsOffset, y: 0, duration: 0))
-                rightHand.run(SKAction.moveBy(x: hitArmsOffset, y: 0, duration: 0))
-                leftArm.run(SKAction.moveBy(x: 0, y: hitArmsOffset, duration: 0))
-                leftHand.run(SKAction.moveBy(x: 0, y: hitArmsOffset, duration: 0))
+                self.rightArm.run(SKAction.moveBy(x: hitArmsOffset, y: 0, duration: 0))
+                self.rightHand.run(SKAction.moveBy(x: hitArmsOffset, y: 0, duration: 0))
+                self.leftArm.run(SKAction.moveBy(x: 0, y: hitArmsOffset, duration: 0))
+                self.leftHand.run(SKAction.moveBy(x: 0, y: hitArmsOffset, duration: 0))
             }
         }
         

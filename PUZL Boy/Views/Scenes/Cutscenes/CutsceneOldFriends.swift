@@ -59,7 +59,9 @@ class CutsceneOldFriends: Cutscene {
         
         let initialPause: TimeInterval = 6
         
-        letterbox.show { [unowned self] in
+        letterbox.show { [weak self] in
+            guard let self = self else { return }
+            
             addChild(skipSceneSprite)
             skipSceneSprite.animateSprite()
         }
@@ -82,27 +84,33 @@ class CutsceneOldFriends: Cutscene {
         
 //        run(SKAction.sequence([
 //            SKAction.wait(forDuration: initialPause),
-//            SKAction.run { [unowned self] in
+//            SKAction.run { [weak self] in
+//                guard let self = self else { return }
+//
 //                transitionScene(narrateText: "We weren't always at odds with each other. There was a time when we were quite good friends. We went to school together. Studied magic together. So it was only natural we became close.", playScene: playScene1)
 //            }
 //        ]))
 //        
 //        run(SKAction.sequence([
 //            SKAction.wait(forDuration: 42),
-//            SKAction.run { [unowned self] in
+//            SKAction.run { [weak self] in
+//                guard let self = self else { return }
+//
 //                transitionScene(narrateText: "Then war broke out. The division among the Mystics had been deepening. Magmoor and I led one faction. We defeated those who opposed us. He reveled in his glory..... to grave consequences.", playScene: playScene2)
 //            }
 //        ]))
         
         run(SKAction.sequence([
             SKAction.wait(forDuration: 66 - 66),
-            SKAction.run { [unowned self] in
+            SKAction.run { [weak self] in
+                guard let self = self else { return }
+                
                 transitionScene(narrateText: "I did what I had to do: I banished him to the NETHER REALM—|||||||||||||||||||| Peace eventually returned, but it will take years to repair the damage he caused.", playScene: playScene3)
             }
         ]))
         
-        run(SKAction.wait(forDuration: 102 - 66)) { [unowned self] in
-            cleanupScene(buttonTap: nil, fadeDuration: nil)
+        run(SKAction.wait(forDuration: 102 - 66)) { [weak self] in
+            self?.cleanupScene(buttonTap: nil, fadeDuration: nil)
         }
     }
     
@@ -146,14 +154,14 @@ class CutsceneOldFriends: Cutscene {
      */
     private func animatePulseMagmoor(alpha: CGFloat, duration: TimeInterval) -> SKAction {
         return SKAction.sequence([
-            SKAction.run { [unowned self] in
-                playerLeft.sprite.run(SKAction.fadeOut(withDuration: duration))
-                playerMagmoor.sprite.run(SKAction.fadeAlpha(to: alpha, duration: duration))
+            SKAction.run { [weak self] in
+                self?.playerLeft.sprite.run(SKAction.fadeOut(withDuration: duration))
+                self?.playerMagmoor.sprite.run(SKAction.fadeAlpha(to: alpha, duration: duration))
             },
             SKAction.wait(forDuration: duration),
-            SKAction.run { [unowned self] in
-                playerLeft.sprite.run(SKAction.fadeAlpha(to: 1 - alpha, duration: duration))
-                playerMagmoor.sprite.run(SKAction.fadeOut(withDuration: duration))
+            SKAction.run { [weak self] in
+                self?.playerLeft.sprite.run(SKAction.fadeAlpha(to: 1 - alpha, duration: duration))
+                self?.playerMagmoor.sprite.run(SKAction.fadeOut(withDuration: duration))
             },
             SKAction.wait(forDuration: duration)
         ])
@@ -193,7 +201,9 @@ class CutsceneOldFriends: Cutscene {
         
         fadeTransitionNode.run(SKAction.sequence([
             SKAction.fadeIn(withDuration: 1),
-            SKAction.run { [unowned self] in
+            SKAction.run { [weak self] in
+                guard let self = self else { return }
+                
                 speechNarrator.setText(text: narrateText, superScene: self, completion: nil)
                 playScene()
             },
@@ -227,7 +237,9 @@ class CutsceneOldFriends: Cutscene {
 
         run(SKAction.sequence([
             SKAction.wait(forDuration: pauseDuration),
-            SKAction.run { [unowned self] in
+            SKAction.run { [weak self] in
+                guard let self = self else { return }
+                
                 setTextArray(items: [
                     SpeechBubbleItem(profile: speechPlayerLeft, chat: "Wait. Why do we all look the same?"),
                     SpeechBubbleItem(profile: speechPlayerRight, chat: "I told you! Budget."),
@@ -260,7 +272,9 @@ class CutsceneOldFriends: Cutscene {
         
         run(SKAction.sequence([
             SKAction.wait(forDuration: pauseDuration),
-            SKAction.run { [unowned self] in
+            SKAction.run { [weak self] in
+                guard let self = self else { return }
+                
                 setTextArray(items: [
                     SpeechBubbleItem(profile: speechPlayerLeft, chat: "You couldn't find other images to use?"),
                     SpeechBubbleItem(profile: speechPlayerRight, chat: "Shh!! Pay attention! I'm not going to repeat myself."),
@@ -316,8 +330,8 @@ class CutsceneOldFriends: Cutscene {
             animatePulseMagmoor(alpha: 0.8, duration: fadeDuration),
             animatePulseMagmoor(alpha: 0.9, duration: fadeDuration),
             animatePulseMagmoor(alpha: 1.0, duration: fadeDuration),
-            SKAction.run { [unowned self] in
-                playerMagmoor.sprite.run(SKAction.fadeIn(withDuration: fadeDuration))
+            SKAction.run { [weak self] in
+                self?.playerMagmoor.sprite.run(SKAction.fadeIn(withDuration: fadeDuration))
             }
         ]))
 
@@ -345,7 +359,9 @@ class CutsceneOldFriends: Cutscene {
         //Animate magicExplosion particle engine
         run(SKAction.sequence([
             SKAction.wait(forDuration: waitBeforeTransformation + fadeDuration * 11 + 3 + zoomDuration + 3),
-            SKAction.run { [unowned self] in
+            SKAction.run { [weak self] in
+                guard let self = self else { return }
+                
 //                ParticleEngine.shared.animateParticles(type: .magicExplosion,
 //                                                       toNode: backgroundNode,
 //                                                       position: playerMagmoor.sprite.position,
@@ -364,7 +380,9 @@ class CutsceneOldFriends: Cutscene {
 //        //Side convo
 //        run(SKAction.sequence([
 //            SKAction.wait(forDuration: 2),
-//            SKAction.run { [unowned self] in
+//            SKAction.run { [weak self] in
+//                guard let self = self else { return }
+//        
 //                setTextArray(items: [
 //                    SpeechBubbleItem(profile: speechPlayerLeft, chat: "We're all just lazy palette swaps, ya know."),
 //                    SpeechBubbleItem(profile: speechPlayerRight, chat: "Do you want to tell this story??!"),

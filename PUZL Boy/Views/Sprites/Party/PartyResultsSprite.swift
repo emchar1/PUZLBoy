@@ -144,22 +144,22 @@ class PartyResultsSprite: SKNode {
             SKAction.scale(to: 1.1, duration: 0.25),
             SKAction.scale(to: 0.95, duration: 0.2),
             SKAction.scale(to: 1, duration: 0.2),
-            SKAction.run { [unowned self] in backgroundSprite.showShadow(animationDuration: 0.1) },
-            SKAction.run { [unowned self] in gemsLineItem.animateAppear(xPosition: xPosition) },
+            SKAction.run { [weak self] in self?.backgroundSprite.showShadow(animationDuration: 0.1) },
+            SKAction.run { [weak self] in self?.gemsLineItem.animateAppear(xPosition: xPosition) },
             SKAction.wait(forDuration: waitDuration),
-            SKAction.run { [unowned self] in gemsDoubleLineItem.animateAppear(xPosition: xPosition) },
+            SKAction.run { [weak self] in self?.gemsDoubleLineItem.animateAppear(xPosition: xPosition) },
             SKAction.wait(forDuration: waitDuration),
-            SKAction.run { [unowned self] in gemsTripleLineItem.animateAppear(xPosition: xPosition) },
+            SKAction.run { [weak self] in self?.gemsTripleLineItem.animateAppear(xPosition: xPosition) },
             SKAction.wait(forDuration: waitDuration),
-            SKAction.run { [unowned self] in gemsTotalLineItem.animateAppear(xPosition: xPosition) },
+            SKAction.run { [weak self] in self?.gemsTotalLineItem.animateAppear(xPosition: xPosition) },
             SKAction.wait(forDuration: waitDuration),
-            SKAction.run { [unowned self] in hintsLineItem.animateAppear(xPosition: xPosition) },
+            SKAction.run { [weak self] in self?.hintsLineItem.animateAppear(xPosition: xPosition) },
             SKAction.wait(forDuration: waitDuration),
-            SKAction.run { [unowned self] in livesLineItem.animateAppear(xPosition: xPosition) },
+            SKAction.run { [weak self] in self?.livesLineItem.animateAppear(xPosition: xPosition) },
             SKAction.wait(forDuration: waitDuration),
-            SKAction.run { [unowned self] in livesTotalLineItem.animateAppear(xPosition: xPosition) }
-        ])) { [unowned self] in
-            animateHelper(totalGems: totalGems, lives: lives, totalLives: totalLives, completion: completion)
+            SKAction.run { [weak self] in self?.livesTotalLineItem.animateAppear(xPosition: xPosition) }
+        ])) { [weak self] in
+            self?.animateHelper(totalGems: totalGems, lives: lives, totalLives: totalLives, completion: completion)
         }
     }
     
@@ -172,8 +172,8 @@ class PartyResultsSprite: SKNode {
         var lifeCounter: Int = 0
         var livesToIncrement: Int = lives
         
-        let incrementAction = SKAction.run { [unowned self] in
-            gemsTotalLineItem.animateAmount(counter) { }
+        let incrementAction = SKAction.run { [weak self] in
+            self?.gemsTotalLineItem.animateAmount(counter) { }
                                                     
             counter += multiplier
             lifeCounter += multiplier
@@ -182,8 +182,8 @@ class PartyResultsSprite: SKNode {
                 livesToIncrement += 1
                 lifeCounter = 0
                 
-                gemsTotalLineItem.addTextAnimation("1-UP")
-                livesTotalLineItem.animateAmount(livesToIncrement) { }
+                self?.gemsTotalLineItem.addTextAnimation("1-UP")
+                self?.livesTotalLineItem.animateAmount(livesToIncrement) { }
                 
                 AudioManager.shared.playSound(for: "gemcollectpartylife")
             }
@@ -194,20 +194,20 @@ class PartyResultsSprite: SKNode {
             incrementAction
         ]), count: Int(CGFloat(totalGems) / CGFloat(multiplier)))
     
-        run(incrementRepeat) { [unowned self] in
+        run(incrementRepeat) { [weak self] in
             if totalGems > 0 {
-                gemsTotalLineItem.animateAmount(totalGems) { }
+                self?.gemsTotalLineItem.animateAmount(totalGems) { }
             }
                 
             if livesToIncrement != totalLives {
-                livesTotalLineItem.animateAmount(totalLives) { }
+                self?.livesTotalLineItem.animateAmount(totalLives) { }
                 
                 AudioManager.shared.playSound(for: "gemcollectpartylife")
             }
             
-            continueButton.animateAppear()
+            self?.continueButton.animateAppear()
 
-            disableControls = false
+            self?.disableControls = false
             completion()
         }
     }
@@ -226,17 +226,17 @@ class PartyResultsSprite: SKNode {
         fadeBackground.run(SKAction.sequence([
             SKAction.fadeIn(withDuration: 1.0),
             SKAction.removeFromParent()
-        ])) { [unowned self] in
-            gemsLineItem.animateDisappear()
-            gemsDoubleLineItem.animateDisappear()
-            gemsTripleLineItem.animateDisappear()
-            gemsTotalLineItem.animateDisappear()
-            hintsLineItem.animateDisappear()
-            livesLineItem.animateDisappear()
-            livesTotalLineItem.animateDisappear()
-            continueButton.alpha = 0
+        ])) { [weak self] in
+            self?.gemsLineItem.animateDisappear()
+            self?.gemsDoubleLineItem.animateDisappear()
+            self?.gemsTripleLineItem.animateDisappear()
+            self?.gemsTotalLineItem.animateDisappear()
+            self?.hintsLineItem.animateDisappear()
+            self?.livesLineItem.animateDisappear()
+            self?.livesTotalLineItem.animateDisappear()
+            self?.continueButton.alpha = 0
 
-            backgroundSprite.removeFromParent()
+            self?.backgroundSprite.removeFromParent()
             completion()
         }
     }

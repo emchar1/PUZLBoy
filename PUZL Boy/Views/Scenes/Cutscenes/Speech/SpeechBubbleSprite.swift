@@ -143,8 +143,8 @@ class SpeechBubbleSprite: SKNode {
             SKAction.scale(to: 1.25, duration: 0.25),
             SKAction.scale(to: 0.85, duration: 0.2),
             SKAction.scale(to: 1, duration: 0.2)
-        ])) { [unowned self] in
-            animateText()
+        ])) { [weak self] in
+            self?.animateText()
         }
     }
         
@@ -175,8 +175,8 @@ class SpeechBubbleSprite: SKNode {
         if speechBubbleChar == delimiterPause {
             timer.invalidate()
             
-            dispatchWorkItem = DispatchWorkItem(block: { [unowned self] in
-                animateText()
+            dispatchWorkItem = DispatchWorkItem(block: { [weak self] in
+                self?.animateText()
             })
             
             //Adds a little pause when it comes across the delimiterPause character.
@@ -197,10 +197,9 @@ class SpeechBubbleSprite: SKNode {
             SKAction.wait(forDuration: 2),
             SKAction.scale(to: 1.1, duration: 0.2),
             SKAction.scale(to: 0, duration: 0.2)
-        ])) { [unowned self] in
-            removeFromParent()
-            
-            completion?()
+        ])) { [weak self] in
+            self?.removeFromParent()
+            self?.completion?()
         }
     }
 

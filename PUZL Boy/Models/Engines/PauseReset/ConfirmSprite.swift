@@ -131,8 +131,8 @@ class ConfirmSprite: SKNode {
             SKAction.scale(to: 1.1, duration: 0.25),
             SKAction.scale(to: 0.95, duration: 0.2),
             SKAction.scale(to: 1, duration: 0.2),
-        ])) { [unowned self] in
-            disableControls = false
+        ])) { [weak self] in
+            self?.disableControls = false
             completion()
         }
     }

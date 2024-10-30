@@ -143,8 +143,8 @@ class CutsceneIntro: Cutscene {
         parallaxManager.animate()
         run(SKAction.sequence([
             SKAction.wait(forDuration: 13 * walkCycle),
-            SKAction.run { [unowned self] in
-                parallaxManager.stopAnimation()
+            SKAction.run { [weak self] in
+                self?.parallaxManager.stopAnimation()
                 Haptics.shared.addHapticFeedback(withStyle: .heavy)
             }
         ]))
@@ -158,67 +158,69 @@ class CutsceneIntro: Cutscene {
         //Speech Bubbles
         run(SKAction.sequence([
             SKAction.wait(forDuration: 2 * walkCycle),
-            SKAction.run { [unowned self] in
+            SKAction.run { [weak self] in
+                guard let self = self else { return }
+                
                 //Properties for dragon spawn sequence, below. The hard coded values seem a bit random, but they are indeed all intentional and thus should not be changed under any circumstances! (Unless they change in their physical assets...)
                 let parallaxLayer = parallaxManager.getSpriteFor(set: ParallaxObject.SetType.grass.rawValue, layer: 1) ?? SKNode()
                 let parallaxLayerZPosition = K.ZPosition.parallaxLayer0 - 5 * CGFloat(1) + 3 + 1
                 let particleHalfHeight: CGFloat = CGFloat(877) / 2
                 let particleStart: CGPoint = CGPoint(x: 580, y: 300)
                 let particleScale: CGFloat = CGFloat(2048) / CGFloat(1550)
-                                
+                
                 
                 setTextArray(items: [
-                    SpeechBubbleItem(profile: speechPlayerLeft, chat: "🎵 \(CutsceneIntro.funnyQuotes.randomElement() ?? "Error0")—/Oh.....|| hello.| Didn't see you there... 😬|||| I'm PUZL Boy.") { [unowned self] in
-                        addChild(skipSceneSprite)
-                        skipSceneSprite.animateSprite()
+                    SpeechBubbleItem(profile: speechPlayerLeft, chat: "🎵 \(CutsceneIntro.funnyQuotes.randomElement() ?? "Error0")—/Oh.....|| hello.| Didn't see you there... 😬|||| I'm PUZL Boy.") {
+                        self.addChild(self.skipSceneSprite)
+                        self.skipSceneSprite.animateSprite()
                     },
-                    SpeechBubbleItem(profile: speechPlayerRight, chat: "Hi! 👋🏽| I'm Princess Olivia and I'm 7 years old.|| I'm late for a V|E|R|Y| important appointment.") { [unowned self] in
-                        closeUpHero()
+                    SpeechBubbleItem(profile: speechPlayerRight, chat: "Hi! 👋🏽| I'm Princess Olivia and I'm 7 years old.|| I'm late for a V|E|R|Y| important appointment.") {
+                        self.closeUpHero()
                     },
-                    SpeechBubbleItem(profile: speechPlayerLeft, chat: "Awww...|| wait, like an actual princess, or is that what mommy and daddy call you?||||||||/And what kind of important meeting does a 7 year old need to attend?||||||||/Speaking of which, where are your parents?| Are you here by yourself???") { [unowned self] in
-                        closeUpPrincess()
+                    SpeechBubbleItem(profile: speechPlayerLeft, chat: "Awww...|| wait, like an actual princess, or is that what mommy and daddy call you?||||||||/And what kind of important meeting does a 7 year old need to attend?||||||||/Speaking of which, where are your parents?| Are you here by yourself???") {
+                        self.closeUpPrincess()
                         
-                        dimOverlayNode.run(SKAction.sequence([
+                        self.dimOverlayNode.run(SKAction.sequence([
                             SKAction.wait(forDuration: 28),
                             SKAction.fadeAlpha(to: 0.8, duration: 1),
                             SKAction.wait(forDuration: 2),
                             SKAction.group([
                                 SKAction.fadeIn(withDuration: 23), //34 total seconds, to coincide with closeUpPrincess() animation sequence
-                                SKAction.run { [unowned self] in
-                                    narrateArray(items: [
+                                SKAction.run {
+                                    self.narrateArray(items: [
                                         NarrationItem(text: "PUZL Boy: The princess went on to explain how dragons had disappeared from the realm of some place called Vaeloria, where she claims she's from,|| and that the balance of magic had been disrupted threatening our very existence.||||||||/She spoke about a prophecy where the Earth splits open and the sky turns to ash, signaling the Age of Ruin, and that she was the only one who could stop it—||At first, I thought this little girl just had an overactive imagination...||||||/..........Then the CRAZIEST thing happened!!")
                                     ], completion: nil)
                                     
                                     AudioManager.shared.stopSound(for: "birdsambience", fadeDuration: 5)
-                                    AudioManager.shared.stopSound(for: grasslandOverworld, fadeDuration: 8)
+                                    AudioManager.shared.stopSound(for: self.grasslandOverworld, fadeDuration: 8)
                                     AudioManager.shared.playSound(for: "scarymusicbox", fadeIn: 8)
                                 }
                             ])
                         ]))
                     },
-                    SpeechBubbleItem(profile: speechPlayerRight, chat: "Wow.|| You sure ask a lot of questions!||||||||/But if you must know, the reason I'm here is because, well.. first of all, Oh—I'm a princess!||/And, but I'm not a princess here though I'm a princess in a very very far away place.|/You see, I'm not from this place but I am from, umm, wait... Let me start over.| Okay so.....|/Blah blah blah, blah blah blah DRAGONS blah, blah blah, blah blah blah, blah.||||||||/VAELORIA blah, blah.| Blah, blah blah blah, blah blah. Blah. Blah. Blah.| M|A|G|I|C!!||||||||/Blah blah, blah blah!|| blah blah blah,| blah blah blah.| Blah, blah, blah|| .|.|.|A|G|E| O|F| R|U|I|N|.||||||||||||") { [unowned self] in
+                    SpeechBubbleItem(profile: speechPlayerRight, chat: "Wow.|| You sure ask a lot of questions!||||||||/But if you must know, the reason I'm here is because, well.. first of all, Oh—I'm a princess!||/And, but I'm not a princess here though I'm a princess in a very very far away place.|/You see, I'm not from this place but I am from, umm, wait... Let me start over.| Okay so.....|/Blah blah blah, blah blah blah DRAGONS blah, blah blah, blah blah blah, blah.||||||||/VAELORIA blah, blah.| Blah, blah blah blah, blah blah. Blah. Blah. Blah.| M|A|G|I|C!!||||||||/Blah blah, blah blah!|| blah blah blah,| blah blah blah.| Blah, blah, blah|| .|.|.|A|G|E| O|F| R|U|I|N|.||||||||||||") {
                         
-                        wideShot(shouldResetForeground: true)
-                        dimOverlayNode.run(SKAction.fadeOut(withDuration: 1))
-                        speechNarrator.removeFromParent()
-                        showBloodSky(fadeDuration: 6, delay: 4)
+                        self.wideShot(shouldResetForeground: true)
+                        self.dimOverlayNode.run(SKAction.fadeOut(withDuration: 1))
+                        self.speechNarrator.removeFromParent()
+                        self.showBloodSky(fadeDuration: 6, delay: 4)
                         
-                        backgroundNode.run(SKAction.sequence([
+                        self.backgroundNode.run(SKAction.sequence([
                             SKAction.wait(forDuration: 4),
-                            shakeBackground(duration: 6)
+                            self.shakeBackground(duration: 6)
                         ]))
                         
-                        run(SKAction.sequence([
-                            SKAction.run { [unowned self] in
+                        self.run(SKAction.sequence([
+                            SKAction.run {
                                 AudioManager.shared.playSound(for: "birdsambience", fadeIn: 2)
-                                AudioManager.shared.playSound(for: grasslandOverworld, fadeIn: 2)
+                                AudioManager.shared.playSound(for: self.grasslandOverworld, fadeIn: 2)
                                 AudioManager.shared.stopSound(for: "scarymusicbox", fadeDuration: 3)
                             },
                             SKAction.wait(forDuration: 2),
-                            SKAction.run { [unowned self] in
+                            SKAction.run {
                                 AudioManager.shared.playSound(for: "thunderrumble")
                                 AudioManager.shared.stopSound(for: "birdsambience", fadeDuration: 6)
-                                AudioManager.shared.stopSound(for: grasslandOverworld, fadeDuration: 6)
+                                AudioManager.shared.stopSound(for: self.grasslandOverworld, fadeDuration: 6)
                             },
                             SKAction.wait(forDuration: 2),
                             SKAction.run {
@@ -233,12 +235,12 @@ class CutsceneIntro: Cutscene {
                                     duration: 0)
                             },
                             SKAction.wait(forDuration: 4),
-                            SKAction.run { [unowned self] in
+                            SKAction.run {
                                 AudioManager.shared.playSoundThenStop(for: "lavaappear2", playForDuration: 2, fadeOut: 2)
                                 AudioManager.shared.playSound(for: "ageofruin")
                                 
-                                parallaxManager.addSplitGroundSprite(animationDuration: 0.1) { [unowned self] in
-                                    let parallaxSplitLayer = parallaxManager.getSpriteFor(set: ParallaxObject.SetType.grass.rawValue, layer: 13) ?? SKNode()
+                                self.parallaxManager.addSplitGroundSprite(animationDuration: 0.1) {
+                                    let parallaxSplitLayer = self.parallaxManager.getSpriteFor(set: ParallaxObject.SetType.grass.rawValue, layer: 13) ?? SKNode()
                                     
                                     for i in 0..<65 {
                                         let dragonSpawn = FlyingDragon(scale: CGFloat.random(in: 0.35...0.5))
@@ -250,7 +252,7 @@ class CutsceneIntro: Cutscene {
                                         dragonSpawn.sprite.yScale *= spawnRange < 0 ? -1 : 1
                                         dragonSpawn.sprite.zPosition = parallaxLayerZPosition
                                         
-                                        run(SKAction.sequence([
+                                        self.run(SKAction.sequence([
                                             SKAction.wait(forDuration: TimeInterval(i) * 0.2),
                                             SKAction.run {
                                                 dragonSpawn.animate(toNode: parallaxSplitLayer,
@@ -284,18 +286,18 @@ class CutsceneIntro: Cutscene {
                             }
                         ]))
                     },
-                    SpeechBubbleItem(profile: speechPlayerLeft, chat: "What a cute story!|| Well don't worry, I'll get you to where you need to...|| WHAT THE—") { [unowned self] in
-                        run(SKAction.sequence([
-                            SKAction.run { [unowned self] in
-                                dragonSprite.run(SKAction.group([
+                    SpeechBubbleItem(profile: speechPlayerLeft, chat: "What a cute story!|| Well don't worry, I'll get you to where you need to...|| WHAT THE—") {
+                        self.run(SKAction.sequence([
+                            SKAction.run {
+                                self.dragonSprite.run(SKAction.group([
                                     SKAction.scale(to: 2, duration: 0.5),
-                                    SKAction.move(to: CGPoint(x: princessPositionFinal.x,
-                                                              y: princessPositionFinal.y + playerRight.sprite.size.height / 2), duration: 0.5)
+                                    SKAction.move(to: CGPoint(x: self.princessPositionFinal.x,
+                                                              y: self.princessPositionFinal.y + self.playerRight.sprite.size.height / 2), duration: 0.5)
                                 ]))
                             },
                             SKAction.wait(forDuration: 0.6),
-                            SKAction.run { [unowned self] in
-
+                            SKAction.run {
+                                
                                 //Fly, my dragons!
                                 for i in 0..<60 {
                                     let randomY = CGFloat.random(in: 5.5...7)
@@ -304,127 +306,126 @@ class CutsceneIntro: Cutscene {
                                     let flyingDragons = FlyingDragon(scale: randomScale)
                                     flyingDragons.sprite.zPosition = parallaxLayerZPosition - 2
                                     
-                                    run(SKAction.sequence([
+                                    self.run(SKAction.sequence([
                                         SKAction.wait(forDuration: TimeInterval(i) * TimeInterval.random(in: 0.5...2)),
-                                        SKAction.run { [unowned self] in
+                                        SKAction.run {
                                             flyingDragons.animate(toNode: self,
                                                                   from: CGPoint(x: -FlyingDragon.size.width,
-                                                                                y: screenSize.height * randomY / 8),
-                                                                  to: CGPoint(x: screenSize.width + FlyingDragon.size.width, y: 0),
+                                                                                y: self.screenSize.height * randomY / 8),
+                                                                  to: CGPoint(x: self.screenSize.width + FlyingDragon.size.width, y: 0),
                                                                   duration: TimeInterval.random(in: 8...10))
                                         }
                                     ]))
                                 }
                                 
-                                flashOverlayNode.run(SKAction.sequence([
+                                self.flashOverlayNode.run(SKAction.sequence([
                                     SKAction.fadeIn(withDuration: 0),
                                     SKAction.fadeOut(withDuration: 0.25)
                                 ]))
                                 
-                                midShotPrincessDragon()
+                                self.midShotPrincessDragon()
                                 
                                 AudioManager.shared.playSound(for: "enemyroar")
                                 Haptics.shared.executeCustomPattern(pattern: .enemy)
                                 ParticleEngine.shared.animateParticles(type: .dragonFire,
-                                                                       toNode: dragonSprite,
+                                                                       toNode: self.dragonSprite,
                                                                        position: CGPoint(x: 10, y: 80),
                                                                        duration: 5)
                             }
                         ]))
                     },
-                    SpeechBubbleItem(profile: speechPlayerRight, speed: 0.01, chat: "AAAAAAAHHHHH! IT'S HAPPENING!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!") { [unowned self] in
+                    SpeechBubbleItem(profile: speechPlayerRight, speed: 0.01, chat: "AAAAAAAHHHHH! IT'S HAPPENING!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!") {
                         let flyingDragon = FlyingDragon()
-
-                        wideShot()
                         
-                        dragonSprite.position = CGPoint(x: princessPositionFinal.x, 
-                                                        y: princessPositionFinal.y + playerRight.sprite.size.height / 2)
-                        dragonSprite.setScale(2)
+                        self.wideShot()
                         
-                        ParticleEngine.shared.removeParticles(fromNode: dragonSprite)
+                        self.dragonSprite.position = CGPoint(x: self.princessPositionFinal.x,
+                                                             y: self.princessPositionFinal.y + self.playerRight.sprite.size.height / 2)
+                        self.dragonSprite.setScale(2)
+                        
+                        ParticleEngine.shared.removeParticles(fromNode: self.dragonSprite)
                         
                         let abductionSpeed: TimeInterval = 1
                         
-                        playerRight.sprite.run(SKAction.sequence([
+                        self.playerRight.sprite.run(SKAction.sequence([
                             SKAction.group([
-                                SKAction.move(to: CGPoint(x: -dragonSprite.size.width * 0.25,
-                                                          y: screenSize.height - letterbox.height / 2 + dragonSprite.size.height * 0.25),
+                                SKAction.move(to: CGPoint(x: -self.dragonSprite.size.width * 0.25,
+                                                          y: self.screenSize.height - self.letterbox.height / 2 + self.dragonSprite.size.height * 0.25),
                                               duration: abductionSpeed),
-                                SKAction.scaleX(to: -playerRight.scaleMultiplier * Player.cutsceneScale / 8, duration: abductionSpeed),
-                                SKAction.scaleY(to: playerRight.scaleMultiplier * Player.cutsceneScale / 8, duration: abductionSpeed)
+                                SKAction.scaleX(to: -self.playerRight.scaleMultiplier * Player.cutsceneScale / 8, duration: abductionSpeed),
+                                SKAction.scaleY(to: self.playerRight.scaleMultiplier * Player.cutsceneScale / 8, duration: abductionSpeed)
                             ]),
                             SKAction.removeFromParent()
-                        ])) { [unowned self] in
-                            playerRight.sprite.position = CGPoint(x: 180, y: -140) //specific position so princess is in dragon's clutches
-                            playerRight.sprite.setScale(playerRight.scaleMultiplier * Player.cutsceneScale / 4)
-                            playerRight.sprite.yScale *= -1
-                            playerRight.sprite.zPosition = -1
+                        ])) {
+                            self.playerRight.sprite.position = CGPoint(x: 180, y: -140) //specific position so princess is in dragon's clutches
+                            self.playerRight.sprite.setScale(self.playerRight.scaleMultiplier * Player.cutsceneScale / 4)
+                            self.playerRight.sprite.yScale *= -1
+                            self.playerRight.sprite.zPosition = -1
                             
                             //Just in case sprite's removeFromParent() went out of sync and still has a parent...
-                            playerRight.sprite.removeFromParent()
-                            flyingDragon.sprite.addChild(playerRight.sprite)
+                            self.playerRight.sprite.removeFromParent()
+                            flyingDragon.sprite.addChild(self.playerRight.sprite)
                         }
                         
-                        dragonSprite.run(SKAction.group([
-                            SKAction.move(to: CGPoint(x: -dragonSprite.size.width * 0.25,
-                                                      y: screenSize.height - letterbox.height / 2 + dragonSprite.size.height * 0.25),
+                        self.dragonSprite.run(SKAction.group([
+                            SKAction.move(to: CGPoint(x: -self.dragonSprite.size.width * 0.25,
+                                                      y: self.screenSize.height - self.letterbox.height / 2 + self.dragonSprite.size.height * 0.25),
                                           duration: abductionSpeed),
                             SKAction.scale(to: 0.25, duration: abductionSpeed)
                         ]))
                         
-                        speechPlayerRight.updateTailOrientation(.topLeft)
-                        speechPlayerRight.run(SKAction.sequence([
-                            SKAction.move(to: CGPoint(x: speechPlayerRight.bubbleDimensions.width / 2,
-                                                      y: screenSize.height * 6 / 8 - speechPlayerRight.bubbleDimensions.height),
+                        self.speechPlayerRight.updateTailOrientation(.topLeft)
+                        self.speechPlayerRight.run(SKAction.sequence([
+                            SKAction.move(to: CGPoint(x: self.speechPlayerRight.bubbleDimensions.width / 2,
+                                                      y: self.screenSize.height * 6 / 8 - self.speechPlayerRight.bubbleDimensions.height),
                                           duration: abductionSpeed),
                             SKAction.wait(forDuration: 2),
                             SKAction.group([
-                                SKAction.moveTo(x: screenSize.width - speechPlayerRight.bubbleDimensions.width / 2, duration: 6),
+                                SKAction.moveTo(x: self.screenSize.width - self.speechPlayerRight.bubbleDimensions.width / 2, duration: 6),
                                 SKAction.sequence([
                                     SKAction.wait(forDuration: 3),
-                                    SKAction.run { [unowned self] in
-                                        speechPlayerRight.updateTailOrientation(.topRight)
+                                    SKAction.run {
+                                        self.speechPlayerRight.updateTailOrientation(.topRight)
                                     }
                                 ])
                             ])
                         ]))
                         
                         flyingDragon.animate(toNode: self,
-                                             from: CGPoint(x: -FlyingDragon.size.width, y: screenSize.height * 6 / 8),
-                                             to: CGPoint(x: screenSize.width + FlyingDragon.size.width, y: 0),
+                                             from: CGPoint(x: -FlyingDragon.size.width, y: self.screenSize.height * 6 / 8),
+                                             to: CGPoint(x: self.screenSize.width + FlyingDragon.size.width, y: 0),
                                              duration: 10)
                     },
-                    SpeechBubbleItem(profile: speechPlayerRight, speed: 0.04, chat: "SAVE ME MAR—|I mean,| PUZL BOYYY!!!!||||/The fate of the world rests in your hands!!") { [unowned self] in
+                    SpeechBubbleItem(profile: speechPlayerRight, speed: 0.04, chat: "SAVE ME MAR—|I mean,| PUZL BOYYY!!!!||||/The fate of the world rests in your hands!!") {
                         let frameRate: TimeInterval = 0.02
                         let runCycle: TimeInterval = frameRate * 15 //1 cycle at 0.02s x 15 frames = 0.3s
-                        let heroRun = SKAction.animate(with: playerLeft.textures[Player.Texture.run.rawValue], timePerFrame: frameRate)
+                        let heroRun = SKAction.animate(with: self.playerLeft.textures[Player.Texture.run.rawValue], timePerFrame: frameRate)
                         
-                        playerLeft.sprite.run(SKAction.group([
+                        self.playerLeft.sprite.run(SKAction.group([
                             SKAction.repeat(heroRun, count: 2),
                             SKAction.sequence([
-                                SKAction.moveTo(x: screenSize.width / 2, duration: 1.5 * runCycle),
+                                SKAction.moveTo(x: self.screenSize.width / 2, duration: 1.5 * runCycle),
                                 SKAction.repeatForever(heroIdle)
                             ])
                         ]))
                         
-                        speechPlayerLeft.run(SKAction.moveTo(x: speechPlayerLeft.position.x + screenSize.width / 2 - playerLeft.sprite.position.x,
-                                                             duration: 1.5 * runCycle))
+                        self.speechPlayerLeft.run(SKAction.moveTo(x: self.speechPlayerLeft.position.x + self.screenSize.width / 2 - self.playerLeft.sprite.position.x, duration: 1.5 * runCycle))
                         
-                        skipSceneSprite.removeAllActions()
-                        skipSceneSprite.removeFromParent()
+                        self.skipSceneSprite.removeAllActions()
+                        self.skipSceneSprite.removeFromParent()
                         
-                        hideBloodSky(fadeDuration: 5)
-                        letterbox.hide(delay: 2)
+                        self.hideBloodSky(fadeDuration: 5)
+                        self.letterbox.hide(delay: 2)
                         
                         AudioManager.shared.stopSound(for: "thunderrumble", fadeDuration: 5)
                     },
                     SpeechBubbleItem(profile: speechPlayerLeft, chat: "Hang on princess! I'm coming to rescue you!!!")
-                ]) { [unowned self] in
+                ]) {
                     AudioManager.shared.stopSound(for: "ageofruin", fadeDuration: 4)
                     UserDefaults.standard.set(true, forKey: K.UserDefaults.shouldSkipIntro)
-                    cleanupScene(buttonTap: nil, fadeDuration: 2)
+                    self.cleanupScene(buttonTap: nil, fadeDuration: 2)
                 } //end setTextArray()
-            } //end SKAction.run { [unowned self]...
+            } //end SKAction.run { [weak self]...
         ])) //end run(SKAction.sequence[(...
     } //end animateScene()
     

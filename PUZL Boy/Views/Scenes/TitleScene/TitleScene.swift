@@ -412,11 +412,11 @@ class TitleScene: SKScene {
                 SKAction.scaleX(to: menuSize.width / secondNodeSize.width, duration: animationDuration),
                 SKAction.scaleY(to: menuSize.height / secondNodeSize.height, duration: animationDuration),
                 SKAction.fadeOut(withDuration: 0)
-            ])) { [unowned self] in
-                menuBackground.showShadow()
-                closeButton.removeFromParent()
+            ])) { [weak self] in
+                self?.menuBackground.showShadow()
+                self?.closeButton.removeFromParent()
                 
-                disableInput = false
+                self?.disableInput = false
             }
 
             menuBackground.run(SKAction.group([
@@ -437,10 +437,10 @@ class TitleScene: SKScene {
                 SKAction.scaleX(to: secondNodeSize.width / menuSize.width * scale, duration: animationDuration),
                 SKAction.scaleY(to: secondNodeSize.height / menuSize.height * scale, duration: animationDuration),
                 SKAction.fadeOut(withDuration: 0)
-            ])) { [unowned self] in
+            ])) { [weak self] in
                 secondNode.showShadow()
                 
-                disableInput = false
+                self?.disableInput = false
             }
             
             secondNode.run(SKAction.group([
@@ -575,8 +575,8 @@ extension TitleScene: MenuItemLabelDelegate {
         disableInput = true
         AudioManager.shared.stopSound(for: AudioManager.titleLogo, fadeDuration: fadeDuration)
 
-        UIView.animate(withDuration: fadeDuration) { [unowned self] in
-            levelSelectPicker.alpha = 0
+        UIView.animate(withDuration: fadeDuration) { [weak self] in
+            self?.levelSelectPicker.alpha = 0
         }
 
         //IMPORTANT TO MAKE THESE NIL!! Otherwise you get retain cycle!!!
@@ -584,10 +584,10 @@ extension TitleScene: MenuItemLabelDelegate {
         settingsPage.superScene = nil
         tapPointerEngine = nil
 
-        fadeSprite.run(SKAction.fadeIn(withDuration: fadeDuration)) { [unowned self] in
-            disableInput = false
-            levelSelectPicker.removeFromSuperview()
-            titleSceneDelegate?.didTapStart(levelSelectNewLevel: levelSelectNewLevel)
+        fadeSprite.run(SKAction.fadeIn(withDuration: fadeDuration)) { [weak self] in
+            self?.disableInput = false
+            self?.levelSelectPicker.removeFromSuperview()
+            self?.titleSceneDelegate?.didTapStart(levelSelectNewLevel: levelSelectNewLevel)
         }
     }
     
@@ -614,10 +614,10 @@ extension TitleScene: MenuItemLabelDelegate {
             settingsPage.superScene = nil
             tapPointerEngine = nil
 
-            fadeOutSprite.run(SKAction.fadeIn(withDuration: fadeDuration)) { [unowned self] in
-                disableInput = false
-                levelSelectPicker.removeFromSuperview()
-                titleSceneDelegate?.didTapCredits()
+            fadeOutSprite.run(SKAction.fadeIn(withDuration: fadeDuration)) { [weak self] in
+                self?.disableInput = false
+                self?.levelSelectPicker.removeFromSuperview()
+                self?.titleSceneDelegate?.didTapCredits()
             }
         }
     }

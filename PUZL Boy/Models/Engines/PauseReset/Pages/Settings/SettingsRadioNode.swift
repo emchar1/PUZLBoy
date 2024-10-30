@@ -115,7 +115,9 @@ class SettingsRadioNode: SKNode {
                 SKAction.moveTo(x: SettingsRadioNode.radioStatus.on, duration: 0.2),
                 SKAction.removeFromParent(),
                 SKAction.moveTo(x: SettingsRadioNode.radioStatus.off, duration: 0)
-            ])) { [unowned self] in
+            ])) { [weak self] in
+                guard let self = self else { return }
+                
                 radioButton.addChild(radioOn)
                 isAnimating = false
             }
@@ -125,7 +127,9 @@ class SettingsRadioNode: SKNode {
                 SKAction.moveTo(x: SettingsRadioNode.radioStatus.off, duration: 0.2),
                 SKAction.removeFromParent(),
                 SKAction.moveTo(x: SettingsRadioNode.radioStatus.on, duration: 0)
-            ])) { [unowned self] in
+            ])) { [weak self] in
+                guard let self = self else { return }
+                
                 radioButton.addChild(radioOff)
                 isAnimating = false
             }

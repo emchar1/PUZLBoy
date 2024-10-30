@@ -87,10 +87,10 @@ class DisplayStatusBarSprite: SKNode {
         let speed: CGFloat = min(0.8 / CGFloat(newMoves), 0.05)
         var movesToIncrement = originalMoves
         
-        let incrementAction = SKAction.run { [unowned self] in
+        let incrementAction = SKAction.run { [weak self] in
             movesToIncrement += 1
-            textNode.text = "\(movesToIncrement)"
-            textNode.updateShadow()
+            self?.textNode.text = "\(movesToIncrement)"
+            self?.textNode.updateShadow()
         }
         
         let animationGroup = SKAction.group([

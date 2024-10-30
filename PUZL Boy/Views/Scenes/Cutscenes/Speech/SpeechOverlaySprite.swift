@@ -137,8 +137,8 @@ class SpeechOverlaySprite: SKNode {
         if speechBubbleChar == delimiterPause {
             timer.invalidate()
             
-            dispatchWorkItem = DispatchWorkItem(block: { [unowned self] in
-                animateText()
+            dispatchWorkItem = DispatchWorkItem(block: { [weak self] in
+                self?.animateText()
             })
             
             //Adds a little pause when it comes across the delimiterPause character.

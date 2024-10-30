@@ -115,13 +115,17 @@ class CutsceneMagmoor: Cutscene {
         fadeTransitionNode.run(SKAction.sequence([
             SKAction.fadeIn(withDuration: 1),
             SKAction.wait(forDuration: 0.5),
-            SKAction.run { [unowned self] in
+            SKAction.run { [weak self] in
+                guard let self = self else { return }
+                
                 speechNarrator.setText(text: narrateText, superScene: self, completion: nil)
                 playScene()
             },
             SKAction.fadeOut(withDuration: 1),
             SKAction.removeFromParent()
-        ])) { [unowned self] in
+        ])) { [weak self] in
+            guard let self = self else { return }
+            
             addChild(skipSceneSprite)
         }
     }
@@ -134,7 +138,9 @@ class CutsceneMagmoor: Cutscene {
         let scene2Length: TimeInterval = sceneEndLength - scene1Length
         let scene3Length: TimeInterval = 14
         
-        letterbox.show { [unowned self] in
+        letterbox.show { [weak self] in
+            guard let self = self else { return }
+            
             addChild(skipSceneSprite)
             skipSceneSprite.animateSprite()
         }
@@ -149,7 +155,9 @@ class CutsceneMagmoor: Cutscene {
         
         run(SKAction.sequence([
             SKAction.wait(forDuration: scene1Length),
-            SKAction.run { [unowned self] in
+            SKAction.run { [weak self] in
+                guard let self = self else { return }
+                
                 transitionScene(
                     narrateText: "By ambushing the Elders in the Sands of Solitude, Magmoor attempted to steal their power and become the most powerful Mystic to ever exist. But his miscalculation would cost him dearly!",
                     playScene: playScene2)
@@ -158,15 +166,17 @@ class CutsceneMagmoor: Cutscene {
         
         run(SKAction.sequence([
             SKAction.wait(forDuration: scene1Length + scene2Length),
-            SKAction.run { [unowned self] in
+            SKAction.run { [weak self] in
+                guard let self = self else { return }
+                
                 transitionScene(
                     narrateText: "For his treasonous act, the Elders banished Magmoor to the NETHER REALM for all eternity.........",
                     playScene: playScene3)
             }
         ]))
         
-        run(SKAction.wait(forDuration: scene1Length + scene2Length + scene3Length)) { [unowned self] in
-            cleanupScene(buttonTap: nil, fadeDuration: nil)
+        run(SKAction.wait(forDuration: scene1Length + scene2Length + scene3Length)) { [weak self] in
+            self?.cleanupScene(buttonTap: nil, fadeDuration: nil)
         }
     }
     
@@ -306,7 +316,9 @@ class CutsceneMagmoor: Cutscene {
         
         run(SKAction.sequence([
             SKAction.wait(forDuration: elderPauses),
-            SKAction.run { [unowned self] in
+            SKAction.run { [weak self] in
+                guard let self = self else { return }
+                
                 setTextArray(items: [
                     SpeechBubbleItem(profile: speechPlayerLeft, speed: 0.05, chat: "Stop this, Magmoor!! You are outnumbered 3 to 1.||||"),
                     SpeechBubbleItem(profile: speechPlayerRight, chat: "\"Outnumbered,\" you say?!! Then let's try—||||/3 to 100!"),
@@ -316,11 +328,15 @@ class CutsceneMagmoor: Cutscene {
                 closeupElders()
             },
             SKAction.wait(forDuration: 0.25 + elderDialoguePause),
-            SKAction.run { [unowned self] in
+            SKAction.run { [weak self] in
+                guard let self = self else { return }
+                
                 speechPlayerLeft.run(SKAction.moveBy(x: -screenSize.width, y: 0, duration: 0.25))
             },
             SKAction.wait(forDuration: 0.25 + magmoorDialoguePause),
-            SKAction.run { [unowned self] in
+            SKAction.run { [weak self] in
+                guard let self = self else { return }
+                
                 speechPlayerRight.run(SKAction.group([
                     SKAction.moveTo(x: rightPlayerPositionFinal.x - 150, duration: 0.35),
                     SKAction.moveTo(y: rightPlayerPositionFinal.y + playerRight.sprite.size.height * 0.5 - 50, duration: 0.35)
@@ -336,7 +352,9 @@ class CutsceneMagmoor: Cutscene {
                 panToWideShot(magmoorPosition: rightPlayerPositionFinal, moveScaleDuration: 0.35)
             },
             SKAction.wait(forDuration: attackPause + forcefieldDuration),
-            SKAction.run { [unowned self] in
+            SKAction.run { [weak self] in
+                guard let self = self else { return }
+                
                 speechPlayerLeft.updateTailOrientation(.bottomRight)
                 speechPlayerLeft.position.x = leftPlayerPositionInitial.x - 150
                 speechPlayerLeft.position.y = leftPlayerPositionInitial.y + 250
@@ -348,7 +366,9 @@ class CutsceneMagmoor: Cutscene {
                 closeupElders()
             },
             SKAction.wait(forDuration: 3), //random pause value #1
-            SKAction.run { [unowned self] in
+            SKAction.run { [weak self] in
+                guard let self = self else { return }
+                
                 speechPlayerLeft.position.x += 150
                 speechPlayerLeft.updateTailOrientation(.bottomLeft)
 
@@ -356,11 +376,13 @@ class CutsceneMagmoor: Cutscene {
                 explodeMagmoorDuplicates(delay: 0.5)
             },
             SKAction.wait(forDuration: 2), //random pause value #2
-            SKAction.run { [unowned self] in
-                wideShotElderBanish()
+            SKAction.run { [weak self] in
+                self?.wideShotElderBanish()
             },
             SKAction.wait(forDuration: 1.3),
-            SKAction.run { [unowned self] in
+            SKAction.run { [weak self] in
+                guard let self = self else { return }
+                
                 setTextArray(items: [
                     SpeechBubbleItem(profile: speechPlayerLeft, speed: 0.01, chat: "⚡️BANISH!!!⚡️")
                 ], completion: nil)
@@ -368,20 +390,22 @@ class CutsceneMagmoor: Cutscene {
                 closeupElder0()
             },
             SKAction.wait(forDuration: 0.25),
-            SKAction.run { [unowned self] in
-                closeupElder1()
+            SKAction.run { [weak self] in
+                self?.closeupElder1()
             },
             SKAction.wait(forDuration: 0.25),
-            SKAction.run { [unowned self] in
-                closeupElder2()
+            SKAction.run { [weak self] in
+                self?.closeupElder2()
             },
             SKAction.wait(forDuration: 0.25),
-            SKAction.run { [unowned self] in
-                wideShotElderBanish2()
-                hideBloodSky(fadeDuration: 3.5)
+            SKAction.run { [weak self] in
+                self?.wideShotElderBanish2()
+                self?.hideBloodSky(fadeDuration: 3.5)
             },
             SKAction.wait(forDuration: 3.5), //random pause value #3
-            SKAction.run { [unowned self] in
+            SKAction.run { [weak self] in
+                guard let self = self else { return }
+                
                 speechPlayerRight.position.x = screenSize.width / 2 - 150
                 speechPlayerRight.position.y = leftPlayerPositionInitial.y + 250
                 
@@ -416,15 +440,21 @@ class CutsceneMagmoor: Cutscene {
             ])
         }
 
-        playerLeft.sprite.run(animateElderHelper()) { [unowned self] in
+        playerLeft.sprite.run(animateElderHelper()) { [weak self] in
+            guard let self = self else { return }
+            
             elderAttack(player: &playerLeft, elderRank: 0)
         }
         
-        elder1.sprite.run(animateElderHelper(positionOffset: CGPoint(x: -125, y: 25), scaleMultiplier: 0.9)) { [unowned self] in
+        elder1.sprite.run(animateElderHelper(positionOffset: CGPoint(x: -125, y: 25), scaleMultiplier: 0.9)) { [weak self] in
+            guard let self = self else { return }
+            
             elderAttack(player: &elder1, elderRank: 1)
         }
         
-        elder2.sprite.run(animateElderHelper(positionOffset: CGPoint(x: -175, y: -50))) { [unowned self] in
+        elder2.sprite.run(animateElderHelper(positionOffset: CGPoint(x: -175, y: -50))) { [weak self] in
+            guard let self = self else { return }
+            
             elderAttack(player: &elder2, elderRank: 2)
         }
         
@@ -493,7 +523,9 @@ class CutsceneMagmoor: Cutscene {
         
         redWarp.run(SKAction.sequence([
             SKAction.wait(forDuration: warpPause + zoomInPause + 0.25),
-            SKAction.run { [unowned self] in
+            SKAction.run { [weak self] in
+                guard let self = self else { return }
+                
                 AudioManager.shared.playSound(for: "magicwarp")
                 AudioManager.shared.playSound(for: "magicwarp2")
                 
@@ -550,8 +582,8 @@ class CutsceneMagmoor: Cutscene {
                                      endPoint: rightPlayerPositionFinal,
                                      startScale: farMagmoorScale,
                                      endScale: nearMagmoorScale),
-            SKAction.run { [unowned self] in
-                magmoorScarySprite.pulseImage(backgroundColor: .black, delay: 0.25)
+            SKAction.run { [weak self] in
+                self?.magmoorScarySprite.pulseImage(backgroundColor: .black, delay: 0.25)
             }
         ])
         
@@ -617,7 +649,9 @@ class CutsceneMagmoor: Cutscene {
                 SKAction.moveTo(x: screenSize.width / 2, duration: 0.25),
             ]),
             SKAction.wait(forDuration: magmoorDialoguePause),
-            SKAction.run { [unowned self] in
+            SKAction.run { [weak self] in
+                guard let self = self else { return }
+                
                 let initialPosition = rightPlayerPositionFinal
                 let delaySpawn: TimeInterval = 1
                 let delayAttack: TimeInterval = attackPause
@@ -742,7 +776,9 @@ class CutsceneMagmoor: Cutscene {
                 SKAction.moveBy(x: -10, y: 0, duration: shakeDuration),
                 SKAction.moveBy(x: 10, y: 0, duration: shakeDuration),
             ]), count: Int(totalShakeDuration / (2 * shakeDuration))),
-            SKAction.run { [unowned self] in
+            SKAction.run { [weak self] in
+                guard let self = self else { return }
+                
                 animatePlayerWithTextures(player: &playerLeft, textureType: .idle, timePerFrame: 0.1)
                 AudioManager.shared.playSound(for: "enemyice")
                 ParticleEngine.shared.animateParticles(type: .magicElderIce,
@@ -777,7 +813,9 @@ class CutsceneMagmoor: Cutscene {
         
         elder1.sprite.run(SKAction.sequence([
             SKAction.wait(forDuration: letterboxDuration + cutsceneDuration + pauseDuration),
-            SKAction.run { [unowned self] in
+            SKAction.run { [weak self] in
+                guard let self = self else { return }
+                
                 animatePlayerWithTextures(player: &elder1, textureType: .idle, timePerFrame: 0.09)
                 ParticleEngine.shared.animateParticles(type: .magicElderFire,
                                                        toNode: backgroundNode,
@@ -787,7 +825,9 @@ class CutsceneMagmoor: Cutscene {
                                                        duration: 0)
             },
             SKAction.wait(forDuration: fadeDuration),
-            SKAction.run { [unowned self] in
+            SKAction.run { [weak self] in
+                guard let self = self else { return }
+                
                 AudioManager.shared.playSound(for: "enemyflame")
                 ParticleEngine.shared.animateParticles(type: .magicElderFire2,
                                                        toNode: backgroundNode,
@@ -819,7 +859,9 @@ class CutsceneMagmoor: Cutscene {
             SKAction.wait(forDuration: delayDuration),
             SKAction.moveBy(x: 50, y: 0, duration: moveDuration),
             SKAction.moveBy(x: 0, y: -100, duration: moveDuration),
-            SKAction.run { [unowned self] in
+            SKAction.run { [weak self] in
+                guard let self = self else { return }
+                
                 animatePlayerWithTextures(player: &elder2, textureType: .idle, timePerFrame: 0.05)
                 AudioManager.shared.playSound(for: "boyimpact")
                 ParticleEngine.shared.animateParticles(type: .magicElderEarth,
@@ -988,7 +1030,9 @@ class CutsceneMagmoor: Cutscene {
         //Magic Elder Explosion
         run(SKAction.sequence([
             SKAction.wait(forDuration: elderExplosionDelay),
-            SKAction.run { [unowned self] in
+            SKAction.run { [weak self] in
+                guard let self = self else { return }
+                
                 AudioManager.shared.playSound(for: "magicelderexplosion")
                 Haptics.shared.executeCustomPattern(pattern: .thunder)
                 
@@ -1268,7 +1312,9 @@ class CutsceneMagmoor: Cutscene {
         //Magic blast lite attack
         run(SKAction.sequence([
             SKAction.wait(forDuration: (delaySpawn ?? 0) + (delayAttack ?? 0)),
-            SKAction.run { [unowned self] in
+            SKAction.run { [weak self] in
+                guard let self = self else { return }
+                
                 let angleOfAttack: CGFloat = SpriteMath.Trigonometry.getAngles(startPoint: startPoint, endPoint: leftPlayerPositionFinal).beta * (leftPlayerPositionFinal.y < startPoint.y ? 1 : -1)
                 
                 AudioManager.shared.playSound(for: "magicblast")

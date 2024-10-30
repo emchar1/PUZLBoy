@@ -39,7 +39,7 @@ class AchievementsTableView: UITableView, UITableViewDataSource, UITableViewDele
         achievementsInProgress = []
         achievementsCompleted = []
         
-        GameCenterManager.shared.loadAchievements { [unowned self] achievements, achievementDescriptions in
+        GameCenterManager.shared.loadAchievements { [weak self] achievements, achievementDescriptions in
             for i in 0..<achievementDescriptions.count {
                 let achievementFound = achievements.filter { $0.identifier == achievementDescriptions[i].identifier }.first
                 let percentComplete = Int(achievementFound?.percentComplete ?? 0.0)
@@ -56,10 +56,10 @@ class AchievementsTableView: UITableView, UITableViewDataSource, UITableViewDele
                                                     completionDate: completionDate)
                 
                 if achievementFound != nil && achievementFound!.isCompleted {
-                    achievementsCompleted.append(achievement)
+                    self?.achievementsCompleted.append(achievement)
                 }
                 else {
-                    achievementsInProgress.append(achievement)
+                    self?.achievementsInProgress.append(achievement)
                 }
             }
             

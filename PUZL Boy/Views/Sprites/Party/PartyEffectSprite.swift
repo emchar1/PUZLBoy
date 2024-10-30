@@ -53,8 +53,8 @@ class PartyEffectSprite: SKNode {
             SKAction.wait(forDuration: waitDuration),
             SKAction.fadeAlpha(to: 0, duration: fadeDuration),
             SKAction.removeFromParent()
-        ])) { [unowned self] in
-            removeFromParent()
+        ])) { [weak self] in
+            self?.removeFromParent()
         }
     }
     

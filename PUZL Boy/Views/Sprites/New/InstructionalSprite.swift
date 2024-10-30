@@ -93,9 +93,9 @@ class InstructionalSprite: SKNode {
         iconNode?.run(tapAction)
         
         textNode.run(animateNodeType(.text), withKey: "textKey")
-        textNode.run(tapAction) { [unowned self] in
-            removeAction(forKey: "iconKey")
-            removeAction(forKey: "textKey")
+        textNode.run(tapAction) { [weak self] in
+            self?.removeAction(forKey: "iconKey")
+            self?.removeAction(forKey: "textKey")
             completion()
         }
     }

@@ -320,8 +320,8 @@ class Player {
                 zPositionOffset += 1
             },
             SKAction.wait(forDuration: trailTightness)
-        ]), count: trailLength)) { [unowned self] in
-            isAnimatingIllusions2 = false
+        ]), count: trailLength)) { [weak self] in
+            self?.isAnimatingIllusions2 = false
         }
     }
     

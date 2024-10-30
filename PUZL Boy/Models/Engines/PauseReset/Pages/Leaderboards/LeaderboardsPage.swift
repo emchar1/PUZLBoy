@@ -268,16 +268,12 @@ class LeaderboardsPage: ParentPage {
 
         if type != .achievements {
             GameCenterManager.shared.loadScores(leaderboardType: type, level: currentLevel) { [weak self] scores in
-                guard let self = self else { return }
-                
-                didLoadTableView(scores: scores)
+                self?.didLoadTableView(scores: scores)
             }
         }
         else {
             achievementsTableView.loadAchievements { [weak self] in
-                guard let self = self else { return }
-                
-                didLoadTableView(scores: nil)
+                self?.didLoadTableView(scores: nil)
             }
         }
     }

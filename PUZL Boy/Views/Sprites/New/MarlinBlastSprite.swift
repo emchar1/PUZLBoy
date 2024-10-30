@@ -96,8 +96,8 @@ class MarlinBlastSprite: SKNode {
         run(SKAction.sequence([
             SKAction.wait(forDuration: (delay ?? 0) + blastDuration),
             SKAction.fadeOut(withDuration: blastDuration * 2)
-        ])) { [unowned self] in
-            resetBlast()
+        ])) { [weak self] in
+            self?.resetBlast()
             completion?()
         }
     }

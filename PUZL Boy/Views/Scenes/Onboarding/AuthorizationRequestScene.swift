@@ -58,7 +58,9 @@ class AuthorizationRequestScene: SKScene {
             addChild(logoSprite!)
         }
 
-        UNUserNotificationCenter.current().getNotificationSettings { [unowned self] settings in
+        UNUserNotificationCenter.current().getNotificationSettings { [weak self] settings in
+            guard let self = self else { return }
+            
             if settings.authorizationStatus == .notDetermined {
                 notificationsMessage = AuthorizationSprite(
                     title: "Notifications",
@@ -153,29 +155,29 @@ extension AuthorizationRequestScene: ConfirmSpriteDelegate {
     func didTapConfirm(_ confirmSprite: ConfirmSprite) {
         switch confirmSprite {
         case let authorizationSprite where authorizationSprite == notificationsMessage:
-            authorizationSprite.animateHide { [unowned self] in
+            authorizationSprite.animateHide { [weak self] in
                 LifeSpawnerModel.shared.requestNotifications()
                 
-                if let idfaMessage = idfaMessage {
+                if let idfaMessage = self?.idfaMessage {
                     idfaMessage.animateShow { }
                 }
                 else {
-                    thanksMessage?.animateShow { }
+                    self?.thanksMessage?.animateShow { }
                 }
             }
         case let authorizationSprite where authorizationSprite == idfaMessage:
-            authorizationSprite.animateHide { [unowned self] in
+            authorizationSprite.animateHide { [weak self] in
                 if #available(iOS 14, *) {
                     AdMobManager.shared.requestIDFAPermission()
                 } else {
                     // Fallback on earlier versions
                 }
                 
-                thanksMessage?.animateShow { }
+                self?.thanksMessage?.animateShow { }
             }
         case let authorizationSprite where authorizationSprite == thanksMessage:
-            authorizationSprite.animateHide { [unowned self] in
-                sceneDelegate?.didAuthorizeRequests(shouldFadeIn: true)
+            authorizationSprite.animateHide { [weak self] in
+                self?.sceneDelegate?.didAuthorizeRequests(shouldFadeIn: true)
             }
         default:
             break

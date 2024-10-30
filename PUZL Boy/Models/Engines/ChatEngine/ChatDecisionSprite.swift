@@ -169,8 +169,8 @@ class ChatDecisionSprite: SKNode {
             SKAction.scale(to: 1.05, duration: 0.25),
             SKAction.scale(to: 0.95, duration: 0.2),
             SKAction.scale(to: 1, duration: 0.2)
-        ])) { [unowned self] in
-            isDisabled = false
+        ])) { [weak self] in
+            self?.isDisabled = false
         }
     }
     
@@ -205,7 +205,9 @@ class ChatDecisionSprite: SKNode {
         run(SKAction.sequence([
             SKAction.group([shakeAction, fadeAction]),
             SKAction.removeFromParent()
-        ])) { [unowned self] in
+        ])) { [weak self] in
+            guard let self = self else { return }
+            
             isDisabled = false
             isVisible = false
             delegate?.buttonHasDisappeared(self, didGetTapped: didGetTapped)

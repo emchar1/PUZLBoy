@@ -59,11 +59,11 @@ class GameViewController: UIViewController {
 //        view = skView
         
 //        // FIXME: - DEBUG: Final Cutscene TEST
-//        FIRManager.initializeFirestore() { [unowned self] saveStateMode, error in
+//        FIRManager.initializeFirestore() { [weak self] saveStateMode, error in
 //            let catwalkScene = CatwalkScene(size: K.ScreenDimensions.size)
-//            skView.ignoresSiblingOrder = true
-//            skView.presentScene(catwalkScene)
-//            view = skView
+//            self?.skView.ignoresSiblingOrder = true
+//            self?.skView.presentScene(catwalkScene)
+//            self?.view = self?.skView
 //        }
         
         
@@ -229,8 +229,8 @@ extension GameViewController: GameSceneDelegate {
         
         skView.presentScene(cutscene, transition: SKTransition.fade(with: .white, duration: 2.0))
         
-        cutscene.animateScene() { [unowned self] in
-            skView.presentScene(gameScene, transition: SKTransition.fade(with: .white, duration: 1.0))
+        cutscene.animateScene() { [weak self] in
+            self?.skView.presentScene(gameScene, transition: SKTransition.fade(with: .white, duration: 1.0))
         }
     }
 }

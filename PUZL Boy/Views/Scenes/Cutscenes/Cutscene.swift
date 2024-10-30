@@ -289,11 +289,11 @@ class Cutscene: SKScene {
             return
         }
         
-        items[currentIndex].profile.setText(text: items[currentIndex].chat, speed: items[currentIndex].speed, superScene: self, parentNode: backgroundNode) { [unowned self] in
+        items[currentIndex].profile.setText(text: items[currentIndex].chat, speed: items[currentIndex].speed, superScene: self, parentNode: backgroundNode) { [weak self] in
             items[currentIndex].handler?()
             
             //Recursion!!
-            setTextArray(items: items, currentIndex: currentIndex + 1, completion: completion)
+            self?.setTextArray(items: items, currentIndex: currentIndex + 1, completion: completion)
         }
     }
     
@@ -314,11 +314,11 @@ class Cutscene: SKScene {
             let item = items[currentIndex]
 
             speechNarrator.setValues(color: item.fontColor, animationSpeed: item.animationSpeed)
-            speechNarrator.setText(text: item.text, superScene: self) { [unowned self] in
+            speechNarrator.setText(text: item.text, superScene: self) { [weak self] in
                 item.handler?()
                 
-                //Recursion!! Also the [unowned self] prevents a retain cycle here...
-                narrateArray(items: items, currentIndex: currentIndex + 1, completion: completion)
+                //Recursion!! Also the [weak self] prevents a retain cycle here...
+                self?.narrateArray(items: items, currentIndex: currentIndex + 1, completion: completion)
             }
         }
     }
@@ -347,8 +347,8 @@ class Cutscene: SKScene {
                 SKAction.fadeIn(withDuration: fadeDuration),
                 SKAction.wait(forDuration: 1),
                 SKAction.removeFromParent()
-            ])) { [unowned self] in
-                completion?()
+            ])) { [weak self] in
+                self?.completion?()
             }
         }
         else {

@@ -114,8 +114,8 @@ class SettingsTapButton: SKNode {
         isAnimating = true
         isPressed = false
         
-        tapButton.run(SKAction.move(to: positionOrig, duration: 0.2)) { [unowned self] in
-            isAnimating = false
+        tapButton.run(SKAction.move(to: positionOrig, duration: 0.2)) { [weak self] in
+            self?.isAnimating = false
         }
         
         tapButton.showShadow(shadowOffset: shadowOffset, animationDuration: 0.2)

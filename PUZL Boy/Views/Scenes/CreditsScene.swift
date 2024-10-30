@@ -193,10 +193,10 @@ class CreditsScene: SKScene {
         disableInput = true
         ButtonTap.shared.tap(type: .buttontap1)
 
-        fadeOutNode.run(SKAction.fadeIn(withDuration: 1.0)) { [unowned self] in
-            disableInput = false
+        fadeOutNode.run(SKAction.fadeIn(withDuration: 1.0)) { [weak self] in
+            self?.disableInput = false
             
-            cleanupAndGoBack()
+            self?.cleanupAndGoBack()
         }
     }
     
@@ -218,9 +218,9 @@ class CreditsScene: SKScene {
             completion?()
         }
         else {
-            speechBubble.setText(text: texts[currentIndex], superScene: self) { [unowned self] in
+            speechBubble.setText(text: texts[currentIndex], superScene: self) { [weak self] in
                 //Recursion!!
-                setSpeechBubblesArray(texts: texts, currentIndex: currentIndex + 1, completion: completion)
+                self?.setSpeechBubblesArray(texts: texts, currentIndex: currentIndex + 1, completion: completion)
             }
         }
     }
@@ -233,11 +233,11 @@ class CreditsScene: SKScene {
         else {
             setLabels(headingText: entities[currentIndex].headingText,
                                 subheadingTexts: entities[currentIndex].subheadingTexts,
-                                subheadingAction: entities[currentIndex].subheadingAction) { [unowned self] in
+                                subheadingAction: entities[currentIndex].subheadingAction) { [weak self] in
                 entities[currentIndex].handler?()
 
                 //Recursion!!
-                setLabelsArray(entities: entities, currentIndex: currentIndex + 1, completion: completion)
+                self?.setLabelsArray(entities: entities, currentIndex: currentIndex + 1, completion: completion)
             }
         }
     }
@@ -320,29 +320,35 @@ class CreditsScene: SKScene {
                         subheadingAction: animateFadeAction()),
             LabelEntity(headingText: "Created by",
                         subheadingTexts: ["Eddie Char"],
-                        subheadingAction: animateFadeAction()) { [unowned self] in
+                        subheadingAction: animateFadeAction()) { [weak self] in
+                            guard let self = self else { return }
+                            
                             speechBubble.run(SKAction.sequence([
                                 SKAction.wait(forDuration: waitDuration),
                                 SKAction.moveBy(x: 0, y: -speechBubbleYOffset, duration: fadeDuration / 4)
                             ]))
                         },
             LabelEntity(headingText: "Special Thanks",
-                        subheadingTexts: ["Clayton Caldwell", "Michelle Rayfield", "Jackson Rayfield", "Aissa Char", "Michel Char"],
-                        subheadingAction: animateFadeAction()) { [unowned self] in
+                        subheadingTexts: ["Clayton Caldwell", "Michelle Rayfield", "Jackson Rayfield", "Aissa Char", "Virat Char", "Michel Char"],
+                        subheadingAction: animateFadeAction()) { [weak self] in
+                            guard let self = self else { return }
+                            
                             speechBubble.run(SKAction.moveBy(x: 0, y: speechBubbleYOffset, duration: fadeDuration / 4))
                         },
             LabelEntity(headingText: "for",
                         subheadingTexts: ["Olivia🦄", "and Alana"],
                         subheadingAction: animateFadeAction()),
-        ]) { [unowned self] in
-            allRightsLabel.run(SKAction.fadeIn(withDuration: fadeDuration)) { [unowned self] in
-                disableInput = true
+        ]) { [weak self] in
+            guard let self = self else { return }
+            
+            allRightsLabel.run(SKAction.fadeIn(withDuration: fadeDuration)) {
+                self.disableInput = true
                 
-                fadeOutNode.run(SKAction.sequence([
-                    SKAction.wait(forDuration: waitDuration),
-                    SKAction.fadeIn(withDuration: fadeDuration)
-                ])) { [unowned self] in
-                    cleanupAndGoBack()
+                self.fadeOutNode.run(SKAction.sequence([
+                    SKAction.wait(forDuration: self.waitDuration),
+                    SKAction.fadeIn(withDuration: self.fadeDuration)
+                ])) {
+                    self.cleanupAndGoBack()
                 }
             }
         }

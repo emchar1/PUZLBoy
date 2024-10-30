@@ -115,15 +115,16 @@ final class GameCenterManager: NSObject {
         shouldCancelLeaderboards = false
         
         if #available(iOS 14.0, *) {
-            GKLeaderboard.loadLeaderboards(IDs: leaderboardType == .all ? getAllLeaderboardIDs() : [getLeaderboardLevelID(level)]) { [unowned self] (leaderboards, error) in
+            GKLeaderboard.loadLeaderboards(IDs: leaderboardType == .all ? getAllLeaderboardIDs() : [getLeaderboardLevelID(level)]) { (leaderboards, error) in
                 
                 guard error == nil else { return print("Error fetching leaderboard: \(error!.localizedDescription)") }
                 guard let leaderboards = leaderboards else { return print("Leaderboards are nil!") }
                 
                 for leaderboard in leaderboards {
-                    leaderboard.loadEntries(for: .global, timeScope: .allTime, range: leaderboardType == .all ? NSRange(1...1) : NSRange(1...100)) { [unowned self] (localPlayer, allPlayers, playerCount, error) in
+                    leaderboard.loadEntries(for: .global, timeScope: .allTime, range: leaderboardType == .all ? NSRange(1...1) : NSRange(1...100)) { [weak self] (localPlayer, allPlayers, playerCount, error) in
                         
                         guard error == nil else { return print("Error loading scores: \(error!.localizedDescription)") }
+                        guard let self = self else { return }
                         guard let currentLevel = getLevelFromLeaderboard(leaderboard.baseLeaderboardID) else { return }
                         guard let allPlayers = allPlayers else { return print("All Players array is nil!") }
                         
@@ -166,15 +167,16 @@ final class GameCenterManager: NSObject {
             }//end GKLeaderboard.loadLeaderboards()
         }//end if #available(iOS 14.0)
         else {
-            GKLeaderboard.loadLeaderboards { [unowned self] (leaderboards, error) in
+            GKLeaderboard.loadLeaderboards { (leaderboards, error) in
                 guard error == nil else { return print("Error fetching leaderboard: \(error!.localizedDescription)") }
                 guard let leaderboards = leaderboards else { return print("Leaderboards are nil!") }
                 
                 for leaderboard in leaderboards {
                     leaderboard.playerScope = .global
                     
-                    leaderboard.loadScores { [unowned self] (scores, error) in
+                    leaderboard.loadScores { [weak self] (scores, error) in
                         guard error == nil else { return print("Error loading scores: \(error!.localizedDescription)") }
+                        guard let self = self else { return }
                         guard let currentLevel = getLevelFromLeaderboard(leaderboard.identifier ?? "-1") else { return }
                         
                         if leaderboardType == .all {

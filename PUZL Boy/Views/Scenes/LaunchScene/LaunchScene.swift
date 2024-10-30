@@ -340,7 +340,9 @@ class LaunchScene: SKScene {
         
         run(SKAction.sequence([
             SKAction.wait(forDuration: duration),
-            SKAction.run { [unowned self] in
+            SKAction.run { [weak self] in
+                guard let self = self else { return }
+                
                 xOffsetsArray = parallaxManager.pollxOffsetsArray()
             }
         ])) {
