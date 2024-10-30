@@ -87,7 +87,7 @@ class CatwalkScene: SKScene {
         
         magmoorSprite = SKSpriteNode(imageNamed: "villainRedEyes")
         magmoorSprite.size = CGSize(width: size.width, height: size.width)
-        magmoorSprite.setScale(2)
+//        magmoorSprite.setScale(2)
         magmoorSprite.position = CGPoint(x: size.width / 2, y: size.height * 3/5)
         magmoorSprite.alpha = 0
         magmoorSprite.zPosition = 2
@@ -256,7 +256,10 @@ class CatwalkScene: SKScene {
             backgroundNode.run(SKAction.fadeOut(withDuration: fadeDuration))
             magmoorSprite.run(SKAction.sequence([
                 SKAction.wait(forDuration: fadeDuration),
-                SKAction.fadeIn(withDuration: fadeDuration)
+                SKAction.group([
+                    SKAction.fadeIn(withDuration: fadeDuration),
+                    SKAction.scale(to: 2, duration: fadeDuration * 20)
+                ])
             ]))
             hero.sprite.run(colorizeRed)
             
@@ -303,7 +306,7 @@ extension CatwalkScene: ChatEngineDelegate {
     func illuminateMinorButton(for button: PauseResetEngine.MinorButton) {}
     func deilluminateMinorButton(for button: PauseResetEngine.MinorButton) {}
     func spawnTrainer(at position: K.GameboardPosition, to direction: Controls) {}
-    func despawnTrainer(to position: K.GameboardPosition) {}
+    func despawnTrainer(to position: K.GameboardPosition?) {}
     func spawnTrainerWithExit(at position: K.GameboardPosition, to direction: Controls) {}
     func despawnTrainerWithExit(moves: [K.GameboardPosition]) {}
     func spawnPrincessCapture(at position: K.GameboardPosition, shouldAnimateWarp: Bool, completion: @escaping () -> Void) {}

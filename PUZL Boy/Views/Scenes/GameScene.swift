@@ -1388,7 +1388,7 @@ extension GameScene: ChatEngineDelegate {
         gameEngine.gameboardSprite.spawnTrainer(at: position, to: direction)
     }
     
-    func despawnTrainer(to position: K.GameboardPosition) {
+    func despawnTrainer(to position: K.GameboardPosition?) {
         gameEngine.gameboardSprite.despawnTrainer(to: position)
     }
     

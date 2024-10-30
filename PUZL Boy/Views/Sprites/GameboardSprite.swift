@@ -374,15 +374,15 @@ class GameboardSprite {
      Despawns the trainer at the specified position.
      - parameter position: final position to despawn
      */
-    func despawnTrainer(to position: K.GameboardPosition) {
+    func despawnTrainer(to position: K.GameboardPosition?) {
         guard let trainerSprite = sprite.childNode(withName: "marlinSprite") else { return print("Marlin not found!") }
         
-        let endPoint = getLocation(at: position)
+        let endPoint = position == nil ? nil : getLocation(at: position!)
         let moveDuration: TimeInterval = 0.5
         
         trainerSprite.run(SKAction.sequence([
             SKAction.group([
-                SKAction.move(to: endPoint, duration: moveDuration),
+                SKAction.move(to: endPoint ?? trainerSprite.position, duration: moveDuration),
                 SKAction.fadeOut(withDuration: moveDuration),
             ]),
             SKAction.removeFromParent()

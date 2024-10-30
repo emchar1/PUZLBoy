@@ -18,7 +18,7 @@ protocol ChatEngineDelegate: AnyObject {
 
     //Trainer
     func spawnTrainer(at position: K.GameboardPosition, to direction: Controls)
-    func despawnTrainer(to position: K.GameboardPosition)
+    func despawnTrainer(to position: K.GameboardPosition?)
     func spawnTrainerWithExit(at position: K.GameboardPosition, to direction: Controls)
     func despawnTrainerWithExit(moves: [K.GameboardPosition])
 
@@ -1172,11 +1172,11 @@ extension ChatEngine {
                 ChatItem(profile: .villain, chat: "Ah, yes. The self-serving \"Marlin the Magnificent.\" Always thinking he's right. Hmpf! Your loss.. such a shame.. we could've had it all....."),
                 ChatItem(profile: .trainer, imgPos: .left, chat: "It's my loss.....")
             ]) { [weak self] in
+                self?.delegate?.despawnTrainer(to: nil)
                 AudioManager.shared.stopSound(for: "scarymusicbox", fadeDuration: 5)
                 AudioManager.shared.stopSound(for: "magicheartbeatloop1", fadeDuration: 5)
                 
                 self?.chatBackgroundSprite.run(SKAction.wait(forDuration: 3)) {
-                    self?.delegate?.despawnTrainer(to: (0, 0))
                     self?.handleDialogueCompletion(level: level) { _ in
                         self?.magmoorScary.resetAlpha()
                         self?.magmoorScary.removeFromParent()
