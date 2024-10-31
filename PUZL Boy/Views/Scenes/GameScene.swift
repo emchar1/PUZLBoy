@@ -1400,6 +1400,9 @@ extension GameScene: ChatEngineDelegate {
         gameEngine.gameboardSprite.despawnTrainerWithExit(moves: moves)
     }
     
+    func spawnElders() {}
+    func despawnElders() {}
+    
     
     // MARK: - Magmoor/Princess Capture
     

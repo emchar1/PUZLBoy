@@ -25,6 +25,9 @@ class CatwalkScene: SKScene {
     private var isRedShift: Bool = false
     
     private var hero: Player!
+    private var elder0: Player!
+    private var elder1: Player!
+    private var elder2: Player!
     private var magmoorSprite: SKSpriteNode!
     private var backgroundNode: SKSpriteNode!
     private var catwalkNode: SKShapeNode!
@@ -85,9 +88,17 @@ class CatwalkScene: SKScene {
         hero.sprite.zPosition = K.ZPosition.player + 1
         hero.sprite.run(animatePlayer(player: hero, type: .idle))
         
+        elder0 = Player(type: .elder0)
+        elder0.sprite.zPosition = K.ZPosition.player + 4
+        
+        elder1 = Player(type: .elder1)
+        elder1.sprite.zPosition = K.ZPosition.player + 3
+        
+        elder2 = Player(type: .elder2)
+        elder2.sprite.zPosition = K.ZPosition.player + 2
+        
         magmoorSprite = SKSpriteNode(imageNamed: "villainRedEyes")
         magmoorSprite.size = CGSize(width: size.width, height: size.width)
-//        magmoorSprite.setScale(2)
         magmoorSprite.position = CGPoint(x: size.width / 2, y: size.height * 3/5)
         magmoorSprite.alpha = 0
         magmoorSprite.zPosition = 2
@@ -122,6 +133,9 @@ class CatwalkScene: SKScene {
         addChild(magmoorSprite)
         addChild(catwalkNode)
         catwalkNode.addChild(hero.sprite)
+        catwalkNode.addChild(elder0.sprite)
+        catwalkNode.addChild(elder1.sprite)
+        catwalkNode.addChild(elder2.sprite)
         
         for catwalkPanel in catwalkPanels {
             catwalkNode.addChild(catwalkPanel)
@@ -165,7 +179,6 @@ class CatwalkScene: SKScene {
         
         currentPanelIndex += Int(moveFactor)
         isMoving = true
-        playDialogue(panelIndex: currentPanelIndex)
         
         hero.sprite.run(animatePlayer(player: hero, type: .run))
         hero.sprite.xScale = moveFactor * abs(hero.sprite.xScale)
@@ -174,6 +187,8 @@ class CatwalkScene: SKScene {
             
             hero.sprite.run(animatePlayer(player: hero, type: .idle))
             isMoving = false
+
+            playDialogue(panelIndex: currentPanelIndex)
             AudioManager.shared.stopSound(for: runSound, fadeDuration: 0.25)
         }
         
@@ -213,12 +228,19 @@ class CatwalkScene: SKScene {
         var timePerFrame: TimeInterval
         
         switch type {
-        case .idle:     timePerFrame = 0.06
-        case .run:      timePerFrame = 0.04
-        default:        timePerFrame = 0.04
+        case .idle:
+            switch player.type {
+            case .elder0:   timePerFrame = 0.1
+            case .elder1:   timePerFrame = 0.09
+            case .elder2:   timePerFrame = 0.05
+            default:        timePerFrame = 0.06
+            }
+        case .run:
+            timePerFrame = 0.04
+        default:
+            timePerFrame = 0.04
         }
         
-        timePerFrame = player.type == .villain ? timePerFrame * 4/3 : timePerFrame
         timePerFrame *= isRedShift ? 2 : 1
         
         return SKAction.repeatForever(SKAction.animate(with: player.textures[type.rawValue], timePerFrame: timePerFrame))
@@ -325,4 +347,47 @@ extension CatwalkScene: ChatEngineDelegate {
     func spawnElder(minionPosition: K.GameboardPosition, positions: [K.GameboardPosition], completion: @escaping () -> Void) {}
     func despawnElders(to position: K.GameboardPosition, completion: @escaping () -> Void) {}
     func getGift(lives: Int) {}
+    
+    func spawnElders() {
+        hero.sprite.xScale = abs(hero.sprite.xScale)
+        
+        spawnElderHelper(elder: elder0, offset: CGPoint(x: 200, y: 0))
+        spawnElderHelper(elder: elder1, offset: CGPoint(x: 350, y: 100))
+        spawnElderHelper(elder: elder2, offset: CGPoint(x: 350, y: -100))
+    }
+    
+    func despawnElders() {
+        despawnElderHelper(elder: elder0)
+        despawnElderHelper(elder: elder1)
+        despawnElderHelper(elder: elder2)
+    }
+    
+    private func spawnElderHelper(elder: Player, offset: CGPoint) {
+        let appearDuration: TimeInterval = 0.5
+        let elderScale: CGFloat = Player.getGameboardScale(panelSize: panelSize) * elder.scaleMultiplier
+        
+        //Preliminarty setup, first...
+        elder.sprite.position = hero.sprite.position + CGPoint(x: 0, y: 20)
+        elder.sprite.setScale(0)
+        elder.sprite.run(animatePlayer(player: elder, type: .idle))
+
+        elder.sprite.run(SKAction.group([
+            SKAction.scale(to: elderScale, duration: appearDuration),
+            SKAction.scaleX(to: -elderScale, duration: appearDuration),
+            SKAction.rotate(byAngle: -2 * .pi, duration: appearDuration),
+            SKAction.moveBy(x: offset.x, y: offset.y, duration: appearDuration)
+        ]))
+    }
+    
+    private func despawnElderHelper(elder: Player) {
+        let disappearDuration: TimeInterval = 0.5
+        
+        elder.sprite.run(SKAction.group([
+            SKAction.scale(to: 0, duration: disappearDuration),
+            SKAction.rotate(byAngle: 2 * .pi, duration: disappearDuration),
+            SKAction.move(to: hero.sprite.position, duration: disappearDuration)
+        ]))
+    }
+    
+    
 }

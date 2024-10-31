@@ -21,6 +21,8 @@ protocol ChatEngineDelegate: AnyObject {
     func despawnTrainer(to position: K.GameboardPosition?)
     func spawnTrainerWithExit(at position: K.GameboardPosition, to direction: Controls)
     func despawnTrainerWithExit(moves: [K.GameboardPosition])
+    func spawnElders() //Used in CatwalkScene() only
+    func despawnElders() //Used in CatwalkScene() only
 
     //Princess/Magmoor Capture
     func spawnPrincessCapture(at position: K.GameboardPosition, shouldAnimateWarp: Bool, completion: @escaping () -> Void)
@@ -980,11 +982,14 @@ extension ChatEngine {
         case -1000:
             let leftButton0 = FIRManager.decisionsLeftButton[0] ?? false
             
+            delegate?.spawnElders()
+            
             sendChatArray(items: [
                 ChatItem(profile: .melchior, chat: "We are about to embark on a treacherous path. There is no turning back. Are you ready to face the darkness?"),
                 ChatItem(profile: .hero, imgPos: .left, chat: "\(leftButton0 ? "Let's go, I'm ready!!" : "No time like the present! What have we got to lose, right?")"),
                 ChatItem(profile: .merton, chat: "\(leftButton0 ? "Proceed with caution, don't be afraid. Are yo uafred ?I'm not afraid. Yushuld be afraid." : "Don't worry. We will be right by your side every step of the way.")")
             ]) { [weak self] in
+                self?.delegate?.despawnElders()
                 self?.handleDialogueCompletion(level: level, completion: completion)
             }
         case -1005:
@@ -1975,7 +1980,11 @@ extension ChatEngine {
                         ChatItem(profile: FIRManager.didGiveAwayFeather ? .statue3b : .statue3, chat: "Oh, come on. Don't do me like that! It's me, Trudee, the truth-telling Tiki. Come over and say hi!"),
                         ChatItem(profile: .magmus, chat: "It's okay. Go and say hi, boy. What's the worst that can happen?"),
                         ChatItem(profile: .hero, imgPos: .left, chat: "Uhh, evil scary monster?!?!"),
-                        ChatItem(profile: .merton, chat: "C'mon, it'll be good for you. Builds character, indeed.")
+                        ChatItem(profile: .magmus, chat: "C'mon, it'll be good for you. Builds character, indeed."),
+                        ChatItem(profile: .melchior, chat: "He's harmless.."),
+                        ChatItem(profile: .merton, chat: "Right! You've already defeated him once. Don't let his grotesque visage intimidate you."),
+                        ChatItem(profile: .melchior, chat: "I meant the boy!"),
+                        ChatItem(profile: .merton, chat: "Oh..")
                     ]) { [weak self] in
                         self?.handleDialogueCompletion(level: level, completion: completion)
                     }
