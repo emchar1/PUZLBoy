@@ -101,8 +101,8 @@ class CutsceneMagmoor: Cutscene {
         setupDuplicateMagmoor(offset: CGPoint(x: -185, y: -30), shouldBlast: true)
         setupDuplicateMagmoor(offset: CGPoint(x: 210, y: -60))
         setupDuplicateMagmoor(offset: CGPoint(x: -100, y: -100), shouldBlast: true)
-        setupDuplicateMagmoor(offset: CGPoint(x: 100, y: -110))
-        setupDuplicateMagmoor(offset: CGPoint(x: 150, y: -120))
+        setupDuplicateMagmoor(offset: CGPoint(x: 150, y: -110))
+        setupDuplicateMagmoor(offset: CGPoint(x: 90, y: -180))
         setupDuplicateMagmoor(offset: CGPoint(x: -80, y: -225), shouldBlast: true)
         setupDuplicateMagmoor(offset: CGPoint(x: 210, y: -260))
         setupDuplicateMagmoor(offset: CGPoint(x: -185, y: -330), shouldBlast: true)
@@ -359,7 +359,7 @@ class CutsceneMagmoor: Cutscene {
                 guard let self = self else { return }
                 
                 setTextArray(items: [
-                    SpeechBubbleItem(profile: speechPlayerLeft, speed: 0.05, chat: "Stop this, Magmoor!! You are outnumbered 3 to 1.||||"),
+                    SpeechBubbleItem(profile: speechPlayerLeft, speed: 0.05, chat: "Stop this, Magmoor!! We have you outnumbered 3 to 1.||||"),
                     SpeechBubbleItem(profile: speechPlayerRight, chat: "\"Outnumbered,\" you say?!! Then let's try—||||/3 to 100!"),
                     SpeechBubbleItem(profile: speechPlayerLeft, speed: 0.01, chat: "⚡️SHIELD!!!⚡️")
                 ], completion: nil)
