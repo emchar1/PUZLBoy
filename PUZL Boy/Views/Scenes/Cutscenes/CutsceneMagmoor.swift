@@ -38,6 +38,7 @@ class CutsceneMagmoor: Cutscene {
 
     private var elder1: Player!
     private var elder2: Player!
+    private var duplicateMagmoors: [(duplicate: Player, offsetPoint: CGPoint, shouldBlast: Bool)] = []
     private var redWarp: SKSpriteNode!
     private var magmoorScarySprite: MagmoorScarySprite!
     
@@ -70,6 +71,8 @@ class CutsceneMagmoor: Cutscene {
         elder2 = Player(type: .elder2)
         elder2.sprite.zPosition += 6
         
+        setupMagmoorDuplicates()
+        
         redWarp = SKSpriteNode(imageNamed: "warp4")
         redWarp.scale(to: .zero)
         redWarp.zPosition = playerRight.sprite.zPosition - 5
@@ -92,6 +95,42 @@ class CutsceneMagmoor: Cutscene {
         AudioManager.shared.stopSound(for: "ageofruin2", fadeDuration: fadeDuration)
         AudioManager.shared.stopSound(for: "forcefield", fadeDuration: fadeDuration)
         AudioManager.shared.stopSound(for: "forcefield2", fadeDuration: fadeDuration)
+    }
+    
+    private func setupMagmoorDuplicates() {
+        setupDuplicateMagmoor(offset: CGPoint(x: -185, y: -30), shouldBlast: true)
+        setupDuplicateMagmoor(offset: CGPoint(x: 210, y: -60))
+        setupDuplicateMagmoor(offset: CGPoint(x: -100, y: -100), shouldBlast: true)
+        setupDuplicateMagmoor(offset: CGPoint(x: 100, y: -110))
+        setupDuplicateMagmoor(offset: CGPoint(x: 150, y: -120))
+        setupDuplicateMagmoor(offset: CGPoint(x: -80, y: -225), shouldBlast: true)
+        setupDuplicateMagmoor(offset: CGPoint(x: 210, y: -260))
+        setupDuplicateMagmoor(offset: CGPoint(x: -185, y: -330), shouldBlast: true)
+        setupDuplicateMagmoor(offset: CGPoint(x: -60, y: -380))
+        setupDuplicateMagmoor(offset: CGPoint(x: 100, y: -420))
+
+        setupDuplicateMagmoor(offset: CGPoint(x: 150, y: 20))
+        setupDuplicateMagmoor(offset: CGPoint(x: -80, y: 40), shouldBlast: true)
+        setupDuplicateMagmoor(offset: CGPoint(x: 80, y: 70))
+        setupDuplicateMagmoor(offset: CGPoint(x: 220, y: 80))
+        setupDuplicateMagmoor(offset: CGPoint(x: -150, y: 100), shouldBlast: true)
+        setupDuplicateMagmoor(offset: CGPoint(x: 140, y: 120))
+        setupDuplicateMagmoor(offset: CGPoint(x: -10, y: 150))
+        setupDuplicateMagmoor(offset: CGPoint(x: 235, y: 160))
+        setupDuplicateMagmoor(offset: CGPoint(x: 105, y: 185))
+        setupDuplicateMagmoor(offset: CGPoint(x: -100, y: 190), shouldBlast: true)
+        setupDuplicateMagmoor(offset: CGPoint(x: -40, y: 220))
+        setupDuplicateMagmoor(offset: CGPoint(x: 50, y: 225))
+        setupDuplicateMagmoor(offset: CGPoint(x: 145, y: 245))
+        setupDuplicateMagmoor(offset: CGPoint(x: -160, y: 250), shouldBlast: true)
+        setupDuplicateMagmoor(offset: CGPoint(x: 240, y: 260))
+        setupDuplicateMagmoor(offset: CGPoint(x: 20, y: 270))
+        setupDuplicateMagmoor(offset: CGPoint(x: -25, y: 290))
+        setupDuplicateMagmoor(offset: CGPoint(x: 110, y: 300))
+        setupDuplicateMagmoor(offset: CGPoint(x: -100, y: 305), shouldBlast: true)
+        setupDuplicateMagmoor(offset: CGPoint(x: 70, y: 310))
+        setupDuplicateMagmoor(offset: CGPoint(x: 190, y: 310))
+        setupDuplicateMagmoor(offset: CGPoint(x: 130, y: 330))
     }
     
     
@@ -364,6 +403,7 @@ class CutsceneMagmoor: Cutscene {
                 ], completion: nil)
                 
                 closeupElders()
+                hideMagmoorDuplicates()
             },
             SKAction.wait(forDuration: 3), //random pause value #1
             SKAction.run { [weak self] in
@@ -373,6 +413,7 @@ class CutsceneMagmoor: Cutscene {
                 speechPlayerLeft.updateTailOrientation(.bottomLeft)
 
                 wideShotWithRedWarp(magmoorPosition: rightPlayerPositionFinal, shouldTransportElders: false)
+                showMagmoorDuplicates()
                 explodeMagmoorDuplicates(delay: 0.5)
             },
             SKAction.wait(forDuration: 2), //random pause value #2
@@ -651,44 +692,8 @@ class CutsceneMagmoor: Cutscene {
             SKAction.wait(forDuration: magmoorDialoguePause),
             SKAction.run { [weak self] in
                 guard let self = self else { return }
-                
-                let initialPosition = rightPlayerPositionFinal
-                let delaySpawn: TimeInterval = 1
-                let delayAttack: TimeInterval = attackPause
-                
-                //should sort by increasing order of offsetPosition.y value!!! I hate how this is manual...
-                duplicateMagmoor(from: initialPosition, to: CGPoint(x: 100, y: -420), delaySpawn: delaySpawn, delayAttack: delayAttack, index: 1)
-                duplicateMagmoor(from: initialPosition, to: CGPoint(x: -60, y: -380), delaySpawn: delaySpawn, delayAttack: delayAttack, index: 2)
-                duplicateMagmoor(from: initialPosition, to: CGPoint(x: -185, y: -330), delaySpawn: delaySpawn, delayAttack: delayAttack, index: 3)
-                duplicateMagmoor(from: initialPosition, to: CGPoint(x: 210, y: -260), delaySpawn: delaySpawn, delayAttack: delayAttack, index: 4)
-                duplicateMagmoor(from: initialPosition, to: CGPoint(x: -80, y: -225), delaySpawn: delaySpawn, delayAttack: delayAttack, index: 5)
-                duplicateMagmoor(from: initialPosition, to: CGPoint(x: 150, y: -120), delaySpawn: delaySpawn, delayAttack: delayAttack, index: 6)
-                duplicateMagmoor(from: initialPosition, to: CGPoint(x: 100, y: -110), delaySpawn: delaySpawn, delayAttack: delayAttack, index: 7)
-                duplicateMagmoor(from: initialPosition, to: CGPoint(x: -100, y: -100), delaySpawn: delaySpawn, delayAttack: delayAttack, index: 8)
-                duplicateMagmoor(from: initialPosition, to: CGPoint(x: 210, y: -60), delaySpawn: delaySpawn, delayAttack: delayAttack, index: 9)
-                duplicateMagmoor(from: initialPosition, to: CGPoint(x: -185, y: -30), delaySpawn: delaySpawn, delayAttack: delayAttack, index: 10)
-                duplicateMagmoor(from: initialPosition, to: CGPoint(x: 150, y: 20), delaySpawn: delaySpawn, delayAttack: delayAttack, index: 11)
-                duplicateMagmoor(from: initialPosition, to: CGPoint(x: -80, y: 40), delaySpawn: delaySpawn, delayAttack: delayAttack, index: 12)
-                duplicateMagmoor(from: initialPosition, to: CGPoint(x: 80, y: 70), delaySpawn: delaySpawn, delayAttack: delayAttack, index: 13)
-                duplicateMagmoor(from: initialPosition, to: CGPoint(x: 220, y: 80), delaySpawn: delaySpawn, delayAttack: delayAttack, index: 14)
-                duplicateMagmoor(from: initialPosition, to: CGPoint(x: -150, y: 100), delaySpawn: delaySpawn, delayAttack: delayAttack, index: 15)
-                duplicateMagmoor(from: initialPosition, to: CGPoint(x: 140, y: 120), delaySpawn: delaySpawn, delayAttack: delayAttack, index: 16)
-                duplicateMagmoor(from: initialPosition, to: CGPoint(x: -10, y: 150), delaySpawn: delaySpawn, delayAttack: delayAttack, index: 17)
-                duplicateMagmoor(from: initialPosition, to: CGPoint(x: 235, y: 160), delaySpawn: delaySpawn, delayAttack: delayAttack, index: 18)
-                duplicateMagmoor(from: initialPosition, to: CGPoint(x: 105, y: 185), delaySpawn: delaySpawn, delayAttack: delayAttack, index: 19)
-                duplicateMagmoor(from: initialPosition, to: CGPoint(x: -100, y: 190), delaySpawn: delaySpawn, delayAttack: delayAttack, index: 20)
-                duplicateMagmoor(from: initialPosition, to: CGPoint(x: -40, y: 220), delaySpawn: delaySpawn, delayAttack: delayAttack, index: 21)
-                duplicateMagmoor(from: initialPosition, to: CGPoint(x: 50, y: 225), delaySpawn: delaySpawn, delayAttack: delayAttack, index: 22)
-                duplicateMagmoor(from: initialPosition, to: CGPoint(x: 145, y: 245), delaySpawn: delaySpawn, delayAttack: delayAttack, index: 23)
-                duplicateMagmoor(from: initialPosition, to: CGPoint(x: -160, y: 250), delaySpawn: delaySpawn, delayAttack: delayAttack, index: 24)
-                duplicateMagmoor(from: initialPosition, to: CGPoint(x: 240, y: 260), delaySpawn: delaySpawn, delayAttack: delayAttack, index: 25)
-                duplicateMagmoor(from: initialPosition, to: CGPoint(x: 20, y: 270), delaySpawn: delaySpawn, delayAttack: delayAttack, index: 26)
-                duplicateMagmoor(from: initialPosition, to: CGPoint(x: -25, y: 290), delaySpawn: delaySpawn, delayAttack: delayAttack, index: 27)
-                duplicateMagmoor(from: initialPosition, to: CGPoint(x: 110, y: 300), delaySpawn: delaySpawn, delayAttack: delayAttack, index: 28)
-                duplicateMagmoor(from: initialPosition, to: CGPoint(x: -100, y: 305), delaySpawn: delaySpawn, delayAttack: delayAttack, index: 29)
-                duplicateMagmoor(from: initialPosition, to: CGPoint(x: 70, y: 310), delaySpawn: delaySpawn, delayAttack: delayAttack, index: 30)
-                duplicateMagmoor(from: initialPosition, to: CGPoint(x: 190, y: 310), delaySpawn: delaySpawn, delayAttack: delayAttack, index: 31)
-                duplicateMagmoor(from: initialPosition, to: CGPoint(x: 130, y: 330), delaySpawn: delaySpawn, delayAttack: delayAttack, index: 32)
+
+                animateDuplicates(delaySpawn: 1, delayAttack: attackPause)
             }
         ]))
     }
@@ -903,8 +908,6 @@ class CutsceneMagmoor: Cutscene {
         playerRight.sprite.xScale *= -1
 
         redWarp.position = CGPoint(x: screenSize.width + 800, y: 0)
-        
-        hideMagmoorDuplicates()
     }
     
     private func closeupElder0() {
@@ -1117,8 +1120,6 @@ class CutsceneMagmoor: Cutscene {
                                                duration: banishDuration)
 
         ParticleEngine.shared.animateExistingParticles(fromNode: backgroundNode, action: zoomAction)
-
-        hideMagmoorDuplicates()
     }
     
     private func wideShotWithRedWarp(magmoorPosition: CGPoint, shouldTransportElders: Bool) {
@@ -1151,8 +1152,6 @@ class CutsceneMagmoor: Cutscene {
             elder1.sprite.run(fadeInElder)
             elder2.sprite.run(fadeInElder)
         }
-        
-        showMagmoorDuplicates()
     }
     
     private func panToWideShot(magmoorPosition: CGPoint, moveScaleDuration: TimeInterval) {
@@ -1183,8 +1182,6 @@ class CutsceneMagmoor: Cutscene {
             SKAction.scaleX(to: -elderScale, duration: moveScaleDuration),
             SKAction.scaleY(to: elderScale, duration: moveScaleDuration)
         ]))
-        
-        showMagmoorDuplicates()
     }
 
     
@@ -1258,102 +1255,106 @@ class CutsceneMagmoor: Cutscene {
                                                colorSequence: colorSequence,
                                                alphaSequence: alphaSequence,
                                                emissionAngleRangeDegrees: shouldBanish ? 8 : nil,
-                                               zPosition: 0,
+                                               zPosition: player.type == .elder1 ? 0 : 10,
                                                duration: 0)
 
         animatePlayerWithTextures(player: &player, textureType: .attack, timePerFrame: 0.06, repeatCount: 1)
     }
     
-    private func duplicateMagmoor(from startPoint: CGPoint, to offsetPoint: CGPoint, delaySpawn: TimeInterval? = nil, delayAttack: TimeInterval? = nil, index: CGFloat = 1) {
-        let initialScale: CGFloat = 0.5
-        let finalScale: CGFloat = initialScale - offsetPoint.y * 0.0005
-        let indexLeadingZeroes = String(format: "%02d", index)
-        let moveDuration: TimeInterval = 0.25
-        let animationTimePerFrame = 0.12 - TimeInterval.random(in: 0...0.06)
-
+    private func setupDuplicateMagmoor(offset: CGPoint, shouldBlast: Bool = false) {
         let duplicate = Player(type: .villain)
-        duplicate.sprite.position = startPoint
-        duplicate.sprite.setScale(initialScale)
+        duplicate.sprite.position = rightPlayerPositionFinal
+        duplicate.sprite.setScale(0.5)
         duplicate.sprite.xScale *= -1
         duplicate.sprite.alpha = 0
         duplicate.sprite.anchorPoint.y = 0.25 //WHY is it 0.25?!?!
-        duplicate.sprite.zPosition = playerRight.sprite.zPosition - index
-        duplicate.sprite.name = "MagmoorDuplicate\(indexLeadingZeroes)"
-        
-        
+
+        duplicateMagmoors.append((duplicate, offset, shouldBlast))
+
+        duplicate.sprite.zPosition = playerRight.sprite.zPosition + CGFloat(duplicateMagmoors.count) * (offset.y < 0 ? 1 : -1)
+        backgroundNode.addChild(duplicate.sprite)
+
         //Float animation
         duplicate.sprite.run(SKAction.repeatForever(SKAction.sequence([
             SKAction.moveBy(x: 0, y: 15, duration: 1 + TimeInterval.random(in: 0...1)),
             SKAction.moveBy(x: 0, y: -15, duration: 1 + TimeInterval.random(in: 0...1))
         ])))
-        
-        //Attack animation
-        duplicate.sprite.run(SKAction.sequence([
-            SKAction.wait(forDuration: (delaySpawn ?? 0) + (delayAttack ?? 0)),
-            SKAction.animate(with: duplicate.textures[Player.Texture.attack.rawValue], timePerFrame: animationTimePerFrame),
-            SKAction.wait(forDuration: 7),
-            SKAction.repeatForever(SKAction.animate(with: duplicate.textures[Player.Texture.idle.rawValue], timePerFrame: animationTimePerFrame))
-        ]))
-        
-        //Movement animation
-        duplicate.sprite.run(SKAction.sequence([
-            SKAction.wait(forDuration: delaySpawn ?? 0),
-            SKAction.group([
-                SKAction.fadeIn(withDuration: moveDuration),
-                SKAction.move(to: startPoint + offsetPoint, duration: moveDuration),
-                SKAction.scaleX(to: -1 * finalScale, duration: moveDuration),
-                SKAction.scaleY(to: finalScale, duration: moveDuration)
-            ])
-        ]))
-
-        backgroundNode.addChild(duplicate.sprite)
-        
-        
-        //Magic blast lite attack
-        run(SKAction.sequence([
-            SKAction.wait(forDuration: (delaySpawn ?? 0) + (delayAttack ?? 0)),
-            SKAction.run { [weak self] in
-                guard let self = self else { return }
-                
-                let angleOfAttack: CGFloat = SpriteMath.Trigonometry.getAngles(startPoint: startPoint, endPoint: leftPlayerPositionFinal).beta * (leftPlayerPositionFinal.y < startPoint.y ? 1 : -1)
-                
-                AudioManager.shared.playSound(for: "magicblast")
-                
-                ParticleEngine.shared.animateParticles(type: .magicBlastLite,
-                                                       toNode: duplicate.sprite,
-                                                       position: CGPoint(x: 190, y: 0),
-                                                       scale: 2,
-                                                       angle: angleOfAttack,
-                                                       zPosition: 25,
-                                                       duration: 0)
-            }
-        ]))
     }
     
+    private func animateDuplicates(delaySpawn: TimeInterval? = nil, delayAttack: TimeInterval? = nil) {
+        for duplicateTuple in duplicateMagmoors {
+            let finalScale: CGFloat = 0.5 - duplicateTuple.offsetPoint.y * 0.0005
+            let moveDuration: TimeInterval = 0.25
+            let animationTimePerFrame = 0.12 - TimeInterval.random(in: 0...0.06)
+
+            
+            //Attack animation
+            duplicateTuple.duplicate.sprite.run(SKAction.sequence([
+                SKAction.wait(forDuration: (delaySpawn ?? 0) + (delayAttack ?? 0)),
+                SKAction.animate(with: duplicateTuple.duplicate.textures[Player.Texture.attack.rawValue], timePerFrame: animationTimePerFrame),
+                SKAction.wait(forDuration: 7),
+                SKAction.repeatForever(SKAction.animate(with: duplicateTuple.duplicate.textures[Player.Texture.idle.rawValue], timePerFrame: animationTimePerFrame))
+            ]))
+            
+            //Movement animation
+            duplicateTuple.duplicate.sprite.run(SKAction.sequence([
+                SKAction.wait(forDuration: delaySpawn ?? 0),
+                SKAction.group([
+                    SKAction.fadeIn(withDuration: moveDuration),
+                    SKAction.move(to: rightPlayerPositionFinal + duplicateTuple.offsetPoint, duration: moveDuration),
+                    SKAction.scaleX(to: -1 * finalScale, duration: moveDuration),
+                    SKAction.scaleY(to: finalScale, duration: moveDuration)
+                ])
+            ]))
+            
+            //Magic blast lite attack
+            if duplicateTuple.shouldBlast {
+                run(SKAction.sequence([
+                    SKAction.wait(forDuration: (delaySpawn ?? 0) + (delayAttack ?? 0)),
+                    SKAction.run { [weak self] in
+                        guard let self = self else { return }
+                        
+                        let angleOfAttack: CGFloat = SpriteMath.Trigonometry.getAngles(startPoint: rightPlayerPositionFinal, endPoint: leftPlayerPositionFinal).beta * (leftPlayerPositionFinal.y < rightPlayerPositionFinal.y ? 1 : -1)
+                        
+                        AudioManager.shared.playSound(for: "magicblast")
+                        
+                        ParticleEngine.shared.animateParticles(type: .magicBlastLite,
+                                                               toNode: duplicateTuple.duplicate.sprite,
+                                                               position: CGPoint(x: 190, y: 0),
+                                                               scale: 2,
+                                                               angle: angleOfAttack,
+                                                               zPosition: 25,
+                                                               duration: 0)
+                    }
+                ]))
+            } //end if duplicateTuple.shouldBlast
+        } //end for
+    } //end animateDuplicates()
+    
     private func removeMagmoorDuplicates() {
-        processMagmoorDuplicates { node in
-            node.removeAllActions()
-            node.removeFromParent()
+        for duplicateTuple in duplicateMagmoors {
+            duplicateTuple.duplicate.sprite.removeAllActions()
+            duplicateTuple.duplicate.sprite.removeFromParent()
         }
     }
     
     private func hideMagmoorDuplicates() {
-        processMagmoorDuplicates { node in
-            node.alpha = 0
+        for duplicateTuple in duplicateMagmoors {
+            duplicateTuple.duplicate.sprite.alpha = 0
         }
     }
     
     private func showMagmoorDuplicates() {
-        processMagmoorDuplicates { node in
-            node.alpha = 1
+        for duplicateTuple in duplicateMagmoors {
+            duplicateTuple.duplicate.sprite.alpha = 1
         }
     }
     
     private func explodeMagmoorDuplicates(delay: TimeInterval = 0) {
-        processMagmoorDuplicates { node in
+        for duplicateTuple in duplicateMagmoors {
             let randomDelay: TimeInterval = TimeInterval.random(in: 0...0.5)
             
-            node.run(SKAction.sequence([
+            duplicateTuple.duplicate.sprite.run(SKAction.sequence([
                 SKAction.wait(forDuration: delay + randomDelay),
                 SKAction.group([
                     SKAction.scaleX(to: -0.2, duration: 0.25),
@@ -1368,16 +1369,6 @@ class CutsceneMagmoor: Cutscene {
 
         AudioManager.shared.playSound(for: "magicdisappear", delay: delay)
         Haptics.shared.executeCustomPattern(pattern: .sand)
-    }
-    
-    private func processMagmoorDuplicates(handler: (SKNode) -> Void) {
-        for node in backgroundNode.children {
-            guard let name = node.name else { continue }
-            
-            if name.contains("MagmoorDuplicate") {
-                handler(node)
-            }
-        }
     }
     
 }

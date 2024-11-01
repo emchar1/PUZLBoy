@@ -1945,7 +1945,7 @@ extension ChatEngine {
                                 ChatItem(profile: .hero, imgPos: .left, chat: "Ok, I get it!!"),
                                 ChatItem(profile: .merton, chat: "MERTON: 'Tis a thought fraught with fright, earth friend! Marlin, we fear has fallen victim to this twisted manifestation."),
                                 ChatItem(profile: .hero, imgPos: .left, chat: "Looks like my sleep paralysis demon. Is it gonna come back for me??!"),
-                                ChatItem(profile: .melchior, chat: "Most likely, yes. But lucky for you, you have our protection. We shall join you in the fight to destroy Magmoor once and for all!"),
+                                ChatItem(profile: .melchior, chat: "Most likely, yes. But lucky for you, you have our protection. We shall join you in the fight to destroy Magmoor the Fallen once and for all!"),
                                 ChatItem(profile: .magmus, chat: "Fear never truly goes away, inexperienced one. Over time, you learn to cope with it."),
                                 ChatItem(profile: .merton, chat: "And not a moment too soon. Quickly, let us make haste to the planet's core!!") {
                                     self?.delegate?.despawnElders(to: (0, 0), completion: {})
@@ -1973,6 +1973,8 @@ extension ChatEngine {
                 }
             }
             else {
+                let leftButton0 = FIRManager.decisionsLeftButton[0] ?? false
+                
                 //Only show this dialogue the first time, i.e. PUZL Boy has or hasn't received the gift.
                 if FIRManager.gotGift == nil {
                     sendChatArray(items: [
@@ -1984,7 +1986,9 @@ extension ChatEngine {
                         ChatItem(profile: .melchior, chat: "He's harmless.."),
                         ChatItem(profile: .merton, chat: "Right! You've already defeated him once. Don't let his grotesque visage intimidate you."),
                         ChatItem(profile: .melchior, chat: "I meant the boy!"),
-                        ChatItem(profile: .merton, chat: "Oh..")
+                        ChatItem(profile: .merton, chat: "Oh....."),
+                        ChatItem(profile: .melchior, chat: "Look, you defeated the creature once already.. with our help, of course. Despite his trickery and deception, Magmoor does not stand a chance against us!"),
+                        ChatItem(profile: .hero, imgPos: .left, chat: "\(leftButton0 ? "You're right! Thanks for the pep talk." : "Welp... what have I got to lose?")")
                     ]) { [weak self] in
                         self?.handleDialogueCompletion(level: level, completion: completion)
                     }
