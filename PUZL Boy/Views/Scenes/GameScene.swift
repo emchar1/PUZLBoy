@@ -1400,9 +1400,6 @@ extension GameScene: ChatEngineDelegate {
         gameEngine.gameboardSprite.despawnTrainerWithExit(moves: moves)
     }
     
-    func spawnElders() {}
-    func despawnElders() {}
-    
     
     // MARK: - Magmoor/Princess Capture
     
@@ -1494,6 +1491,20 @@ extension GameScene: ChatEngineDelegate {
         FIRManager.updateFirestoreRecordLivesRemaining(lives: GameEngine.livesRemaining)
         AudioManager.shared.playSound(for: "revive")
     }
+    
+    
+    // MARK: - Catwalk UNUSED
+    
+    func spawnEldersCatwalk() {}
+    func despawnEldersCatwalk() {}
+    func spawnPrincessCatwalk() {}
+    func despawnPrincessCatwalk() {}
+    func spawnMarlinCatwalk() {}
+    func despawnMarlinCatwalk() {}
+    func spawnMagmoorCatwalk() {}
+    func despawnMagmoorCatwalk() {}
+    func flashRedCatwalk(message: String, completion: @escaping () -> Void) {}
+    func shiftRedCatwalk(shouldShift: Bool, showMagmoorScary: Bool, completion: @escaping () -> Void) {}
     
     
 }

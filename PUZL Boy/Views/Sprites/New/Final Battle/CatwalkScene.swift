@@ -12,7 +12,7 @@ class CatwalkScene: SKScene {
     // MARK: - Properties
     
     private let panelCount: Int = 5
-    private let catwalkLength: Int = 20
+    private let catwalkLength: Int = 36
     private let panelSpacing: CGFloat = 4
     private var panelSize: CGFloat { size.width / CGFloat(panelCount) }
     private var scaleSize: CGSize { CGSize.zero + panelSize - panelSpacing }
@@ -28,6 +28,9 @@ class CatwalkScene: SKScene {
     private var elder0: Player!
     private var elder1: Player!
     private var elder2: Player!
+    private var princess: Player!
+    private var trainer: Player!
+    private var villain: Player!
     private var magmoorSprite: SKSpriteNode!
     private var backgroundNode: SKSpriteNode!
     private var catwalkNode: SKShapeNode!
@@ -89,13 +92,25 @@ class CatwalkScene: SKScene {
         hero.sprite.run(animatePlayer(player: hero, type: .idle))
         
         elder0 = Player(type: .elder0)
+        elder0.sprite.alpha = 0
         elder0.sprite.zPosition = K.ZPosition.player + 4
         
         elder1 = Player(type: .elder1)
+        elder1.sprite.alpha = 0
         elder1.sprite.zPosition = K.ZPosition.player + 3
         
         elder2 = Player(type: .elder2)
+        elder2.sprite.alpha = 0
         elder2.sprite.zPosition = K.ZPosition.player + 2
+        
+        princess = Player(type: .princess)
+        princess.sprite.alpha = 0
+        
+        trainer = Player(type: .trainer)
+        trainer.sprite.alpha = 0
+        
+        villain = Player(type: .villain)
+        villain.sprite.alpha = 0
         
         magmoorSprite = SKSpriteNode(imageNamed: "villainRedEyes")
         magmoorSprite.size = CGSize(width: size.width, height: size.width)
@@ -136,6 +151,9 @@ class CatwalkScene: SKScene {
         catwalkNode.addChild(elder0.sprite)
         catwalkNode.addChild(elder1.sprite)
         catwalkNode.addChild(elder2.sprite)
+        catwalkNode.addChild(princess.sprite)
+        catwalkNode.addChild(trainer.sprite)
+        catwalkNode.addChild(villain.sprite)
         
         for catwalkPanel in catwalkPanels {
             catwalkNode.addChild(catwalkPanel)
@@ -197,20 +215,6 @@ class CatwalkScene: SKScene {
             catwalkNode.run(SKAction.moveBy(x: -moveDistance, y: 0, duration: moveDuration))
         }
         
-        
-        
-        
-        // FIXME: - Testing of Red Shift Feature
-        if currentPanelIndex == 4 {
-            shiftRed(shouldShift: true, fadeDuration: moveDuration)
-        }
-        else if currentPanelIndex == 8 {
-            shiftRed(shouldShift: false, fadeDuration: moveDuration)
-        }
-        
-        
-        
-        
         //MUST put this at the end!
         if !isRedShift {
             updateBackgroundNode(fadeDuration: moveDuration, completion: nil)
@@ -233,6 +237,8 @@ class CatwalkScene: SKScene {
             case .elder0:   timePerFrame = 0.1
             case .elder1:   timePerFrame = 0.09
             case .elder2:   timePerFrame = 0.05
+            case .princess: timePerFrame = 0.09
+            case .villain:  timePerFrame = 0.12
             default:        timePerFrame = 0.06
             }
         case .run:
@@ -241,7 +247,9 @@ class CatwalkScene: SKScene {
             timePerFrame = 0.04
         }
         
-        timePerFrame *= isRedShift ? 2 : 1
+        if player.type == .hero {
+            timePerFrame *= isRedShift ? 2 : 1
+        }
         
         return SKAction.repeatForever(SKAction.animate(with: player.textures[type.rawValue], timePerFrame: timePerFrame))
     }
@@ -270,55 +278,11 @@ class CatwalkScene: SKScene {
         }
     }
     
-    private func shiftRed(shouldShift: Bool, fadeDuration: TimeInterval) {
-        if shouldShift {
-            let colorizeRed = SKAction.colorize(with: .red, colorBlendFactor: 1, duration: fadeDuration)
-            isRedShift = true
-            
-            backgroundNode.run(SKAction.fadeOut(withDuration: fadeDuration))
-            magmoorSprite.run(SKAction.sequence([
-                SKAction.wait(forDuration: fadeDuration),
-                SKAction.group([
-                    SKAction.fadeIn(withDuration: fadeDuration),
-                    SKAction.scale(to: 2, duration: fadeDuration * 20)
-                ])
-            ]))
-            hero.sprite.run(colorizeRed)
-            
-            for catwalkPanel in catwalkPanels {
-                catwalkPanel.removeAllActions()
-                catwalkPanel.run(colorizeRed)
-            }
-            
-            if !AudioManager.shared.isPlaying(audioKey: "magicheartbeatloop1") {
-                AudioManager.shared.playSound(for: "magicheartbeatloop1")
-            }
-        }
-        else {
-            let colorizeNone = SKAction.colorize(withColorBlendFactor: 0, duration: fadeDuration)
-            
-            magmoorSprite.run(SKAction.fadeOut(withDuration: fadeDuration)) { [weak self] in
-                self?.updateBackgroundNode(fadeDuration: fadeDuration) {
-                    self?.isRedShift = false
-                }
-            }
-            hero.sprite.run(colorizeNone)
-            
-            for catwalkPanel in catwalkPanels {
-                catwalkPanel.removeAllActions()
-                catwalkPanel.run(colorizeNone)
-            }
-
-            shimmerPartyTiles()
-            AudioManager.shared.stopSound(for: "magicheartbeatloop1", fadeDuration: fadeDuration)
-        }
-    }
-    
     
 }
 
 
-// MARK: - ChatEngineDelegate UNUSED
+// MARK: - ChatEngineDelegate
 
 extension CatwalkScene: ChatEngineDelegate {
     func illuminatePanel(at position: K.GameboardPosition, useOverlay: Bool) {}
@@ -348,7 +312,10 @@ extension CatwalkScene: ChatEngineDelegate {
     func despawnElders(to position: K.GameboardPosition, completion: @escaping () -> Void) {}
     func getGift(lives: Int) {}
     
-    func spawnElders() {
+    
+    // MARK: - Catwalk Protocol Functions
+    
+    func spawnEldersCatwalk() {
         hero.sprite.xScale = abs(hero.sprite.xScale)
         
         spawnElderHelper(elder: elder0, offset: CGPoint(x: 200, y: 0))
@@ -356,10 +323,83 @@ extension CatwalkScene: ChatEngineDelegate {
         spawnElderHelper(elder: elder2, offset: CGPoint(x: 350, y: -100))
     }
     
-    func despawnElders() {
+    func despawnEldersCatwalk() {
         despawnElderHelper(elder: elder0)
         despawnElderHelper(elder: elder1)
         despawnElderHelper(elder: elder2)
+    }
+    
+    func spawnPrincessCatwalk() {
+        princess.sprite.position = getHeroPosition(xPanelOffset: 1, yOffset: -15)
+        princess.sprite.setScale(Player.getGameboardScale(panelSize: panelSize) * princess.scaleMultiplier)
+        princess.sprite.xScale *= -1
+        princess.sprite.alpha = 0
+        
+        princess.sprite.run(animatePlayer(player: princess, type: .idle))
+        princess.sprite.run(SKAction.fadeAlpha(to: 0.5, duration: 2))
+    }
+    
+    func despawnPrincessCatwalk() {
+        princess.sprite.run(SKAction.fadeOut(withDuration: 2))
+        AudioManager.shared.playSoundThenStop(for: "littlegirllaugh", playForDuration: 1.8)
+    }
+    
+    func spawnMarlinCatwalk() {
+        trainer.sprite.position = getHeroPosition(xPanelOffset: 1, yOffset: 40)
+        trainer.sprite.setScale(Player.getGameboardScale(panelSize: panelSize) * trainer.scaleMultiplier)
+        trainer.sprite.xScale *= -1
+        trainer.sprite.alpha = 0
+        
+        trainer.sprite.run(animatePlayer(player: trainer, type: .glide))
+        trainer.sprite.run(SKAction.fadeAlpha(to: 0.5, duration: 2))
+        
+        trainer.sprite.run(SKAction.repeatForever(SKAction.sequence([
+            SKAction.moveBy(x: 0, y: 20, duration: 1),
+            SKAction.moveBy(x: 0, y: 5, duration: 1),
+            SKAction.moveBy(x: 0, y: -20, duration: 1),
+            SKAction.moveBy(x: 0, y: -5, duration: 1)
+        ])))
+        
+        ParticleEngine.shared.animateParticles(type: .magicMerge,
+                                               toNode: trainer.sprite,
+                                               position: .zero,
+                                               scale: 3,
+                                               alpha: 0.5,
+                                               zPosition: -5,
+                                               duration: 0)
+    }
+    
+    func despawnMarlinCatwalk() {
+        trainer.sprite.run(SKAction.fadeOut(withDuration: 2))
+    }
+    
+    func spawnMagmoorCatwalk() {
+        villain.sprite.position = getHeroPosition(xPanelOffset: 1, yOffset: 20)
+        villain.sprite.setScale(Player.getGameboardScale(panelSize: panelSize) * villain.scaleMultiplier)
+        villain.sprite.xScale *= -1
+        villain.sprite.alpha = 0
+        
+        villain.sprite.run(animatePlayer(player: villain, type: .idle))
+        villain.sprite.run(SKAction.fadeAlpha(to: 1, duration: 2))
+    }
+    
+    func despawnMagmoorCatwalk() {
+        despawnMagmoorHelper()
+    }
+    
+    func flashRedCatwalk(message: String, completion: @escaping () -> Void) {
+        flashRedHelper(message: message, completion: completion)
+    }
+    
+    func shiftRedCatwalk(shouldShift: Bool, showMagmoorScary: Bool, completion: @escaping () -> Void) {
+        shiftRedHelper(shouldShift: shouldShift, showMagmoorScary: showMagmoorScary, fadeDuration: 1, completion: completion)
+    }
+    
+    
+    // MARK: - Catwalk Helper Functions
+    
+    private func getHeroPosition(xPanelOffset: Int, yOffset: CGFloat) -> CGPoint {
+        return hero.sprite.position + CGPoint(x: catwalkPanels[0].size.width * CGFloat(xPanelOffset), y: yOffset)
     }
     
     private func spawnElderHelper(elder: Player, offset: CGPoint) {
@@ -367,7 +407,7 @@ extension CatwalkScene: ChatEngineDelegate {
         let elderScale: CGFloat = Player.getGameboardScale(panelSize: panelSize) * elder.scaleMultiplier
         
         //Preliminarty setup, first...
-        elder.sprite.position = hero.sprite.position + CGPoint(x: 0, y: 20)
+        elder.sprite.position = getHeroPosition(xPanelOffset: 0, yOffset: 20)
         elder.sprite.setScale(0)
         elder.sprite.run(animatePlayer(player: elder, type: .idle))
 
@@ -387,6 +427,144 @@ extension CatwalkScene: ChatEngineDelegate {
             SKAction.rotate(byAngle: 2 * .pi, duration: disappearDuration),
             SKAction.move(to: hero.sprite.position, duration: disappearDuration)
         ]))
+    }
+    
+    private func despawnMagmoorHelper() {
+        let scale: CGFloat = 0.9
+        let attackSprite = SKSpriteNode(texture: SKTexture(imageNamed: "iconSword"))
+        attackSprite.position = getHeroPosition(xPanelOffset: 1, yOffset: 0)
+        attackSprite.zPosition = K.ZPosition.itemsAndEffects
+        attackSprite.setScale(scale * (panelSize / attackSprite.size.width))
+
+        let animation = SKAction.sequence([
+            SKAction.wait(forDuration: 0.25),
+            SKAction.rotate(byAngle: -3 * .pi / 2, duration: 0.25),
+            SKAction.fadeAlpha(to: 0, duration: 0.5),
+            SKAction.removeFromParent()
+        ])
+        
+        AudioManager.shared.playSound(for: "boyattack\(Int.random(in: 1...3))")
+        AudioManager.shared.playSound(for: "swordslash")
+        AudioManager.shared.playSound(for: "scarylaugh")
+
+        catwalkNode.addChild(attackSprite)
+
+        attackSprite.run(animation)
+        villain.sprite.run(SKAction.fadeOut(withDuration: 2))
+    }
+    
+    private func flashRedHelper(message: String, completion: @escaping () -> Void) {
+        guard !isRedShift else { return }
+        
+        let fadeDuration: TimeInterval = 1
+        let colorizeRed = SKAction.colorize(with: .red, colorBlendFactor: 1, duration: 0)
+        let colorizeNone = SKAction.colorize(withColorBlendFactor: 0, duration: fadeDuration)
+        let colorizeSequence = SKAction.sequence([colorizeRed, colorizeNone])
+        
+        backgroundNode.run(SKAction.fadeOut(withDuration: 0))
+        updateBackgroundNode(fadeDuration: fadeDuration, completion: nil)
+        
+        hero.sprite.run(colorizeSequence)
+        
+        for (i, catwalkPanel) in catwalkPanels.enumerated() {
+            catwalkPanel.removeAllActions()
+            catwalkPanel.run(colorizeSequence) { [weak self] in
+                guard let self = self else { return }
+                
+                if i >= catwalkPanels.count - 1 {
+                    shimmerPartyTiles()
+                }
+            }
+        }
+        
+        let messageNode = SKLabelNode(text: message)
+        messageNode.position = CGPoint(x: CGFloat.random(in: (size.width * 1/3)...(size.width * 2/3)),
+                                       y: CGFloat.random(in: (size.height * 2/3)...(size.height * 3/4)))
+        messageNode.fontName = UIFont.chatFont
+        messageNode.fontColor = .red.lightenColor(factor: 6)
+        messageNode.fontSize = UIFont.chatFontSizeLarge
+        messageNode.addDropShadow()
+        messageNode.zPosition = 5
+        
+        let messageSecondNode = SKLabelNode(text: message)
+        messageSecondNode.position = messageNode.position
+        messageSecondNode.setScale(2)
+        messageSecondNode.fontName = messageNode.fontName
+        messageSecondNode.fontColor = UIFont.chatFontColor
+        messageSecondNode.fontSize = messageNode.fontSize
+        messageSecondNode.alpha = 0.08
+        messageSecondNode.zPosition = messageNode.zPosition - 1
+        
+        addChild(messageNode)
+        addChild(messageSecondNode)
+                
+        messageNode.run(SKAction.wait(forDuration: fadeDuration), completion: completion)
+        messageNode.run(SKAction.sequence([
+            SKAction.group([
+                SKAction.moveBy(x: 0, y: 20, duration: fadeDuration * 2),
+                SKAction.fadeOut(withDuration: fadeDuration * 2)
+            ]),
+            SKAction.removeFromParent()
+        ]))
+        
+        messageSecondNode.run(SKAction.sequence([
+            SKAction.group([
+                SKAction.scale(by: 1.25, duration: fadeDuration * 3),
+                SKAction.fadeOut(withDuration: fadeDuration * 3)
+            ]),
+            SKAction.removeFromParent()
+        ]))
+        
+        AudioManager.shared.playSoundThenStop(for: "magicheartbeatloop1", playForDuration: fadeDuration)
+    }
+    
+    private func shiftRedHelper(shouldShift: Bool, showMagmoorScary: Bool, fadeDuration: TimeInterval, completion: @escaping () -> Void) {
+        if shouldShift {
+            let colorizeRed = SKAction.colorize(with: .red, colorBlendFactor: 1, duration: fadeDuration)
+            isRedShift = true
+            
+            backgroundNode.run(SKAction.fadeOut(withDuration: fadeDuration), completion: completion)
+            hero.sprite.run(colorizeRed)
+            
+            if showMagmoorScary {
+                magmoorSprite.run(SKAction.sequence([
+                    SKAction.wait(forDuration: fadeDuration),
+                    SKAction.group([
+                        SKAction.fadeIn(withDuration: fadeDuration),
+                        SKAction.scale(to: 2, duration: fadeDuration * 20)
+                    ])
+                ]))
+            }
+            
+            for catwalkPanel in catwalkPanels {
+                catwalkPanel.removeAllActions()
+                catwalkPanel.run(colorizeRed)
+            }
+            
+            if !AudioManager.shared.isPlaying(audioKey: "magicheartbeatloop1") {
+                AudioManager.shared.playSound(for: "magicheartbeatloop1")
+            }
+        }
+        else {
+            let colorizeNone = SKAction.colorize(withColorBlendFactor: 0, duration: fadeDuration)
+            
+            hero.sprite.run(colorizeNone)
+
+            magmoorSprite.run(SKAction.fadeOut(withDuration: fadeDuration)) { [weak self] in
+                self?.updateBackgroundNode(fadeDuration: fadeDuration) {
+                    self?.isRedShift = false
+                    completion()
+                }
+            }
+            
+            for catwalkPanel in catwalkPanels {
+                catwalkPanel.removeAllActions()
+                catwalkPanel.run(colorizeNone)
+            }
+
+            shimmerPartyTiles()
+            AudioManager.shared.stopSound(for: "magicheartbeatloop1", fadeDuration: fadeDuration)
+        }
     }
     
     

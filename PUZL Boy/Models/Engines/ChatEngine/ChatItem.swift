@@ -119,9 +119,9 @@ struct ChatItem {
             AudioManager.shared.playSound(for: "chatopen")
         case .trainer, .blanktrainer:
             AudioManager.shared.playSound(for: "chatopentrainer")
-        case .villain, .blankvillain:
+        case .villain, .blankvillain, .princessCursed:
             AudioManager.shared.playSound(for: "chatopenvillain")
-        case .princess, .princess2, .princessCursed, .blankprincess:
+        case .princess, .princess2, .blankprincess:
             AudioManager.shared.playSound(for: "chatopenprincess")
         case .allelders, .merton, .magmus, .melchior, .blankelders:
             AudioManager.shared.playSound(for: "chatopenelder")

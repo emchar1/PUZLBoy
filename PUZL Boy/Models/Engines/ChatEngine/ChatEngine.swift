@@ -21,8 +21,18 @@ protocol ChatEngineDelegate: AnyObject {
     func despawnTrainer(to position: K.GameboardPosition?)
     func spawnTrainerWithExit(at position: K.GameboardPosition, to direction: Controls)
     func despawnTrainerWithExit(moves: [K.GameboardPosition])
-    func spawnElders() //Used in CatwalkScene() only
-    func despawnElders() //Used in CatwalkScene() only
+    
+    //Catwalk
+    func spawnEldersCatwalk()
+    func despawnEldersCatwalk()
+    func spawnPrincessCatwalk()
+    func despawnPrincessCatwalk()
+    func spawnMarlinCatwalk()
+    func despawnMarlinCatwalk()
+    func spawnMagmoorCatwalk()
+    func despawnMagmoorCatwalk()
+    func flashRedCatwalk(message: String, completion: @escaping () -> Void)
+    func shiftRedCatwalk(shouldShift: Bool, showMagmoorScary: Bool, completion: @escaping () -> Void)
 
     //Princess/Magmoor Capture
     func spawnPrincessCapture(at position: K.GameboardPosition, shouldAnimateWarp: Bool, completion: @escaping () -> Void)
@@ -652,9 +662,14 @@ extension ChatEngine {
             // TODO: - AGE OF BALANCE - CATWALK Dialogue
             
             dialoguePlayed[-1000] = false
-            dialoguePlayed[-1005] = false
             dialoguePlayed[-1006] = false
             dialoguePlayed[-1010] = false
+            dialoguePlayed[-1016] = false
+            dialoguePlayed[-1019] = false
+            dialoguePlayed[-1025] = false
+            dialoguePlayed[-1027] = false
+            dialoguePlayed[-1033] = false
+            dialoguePlayed[-1034] = false
             
             
             //AGE OF BALANCE - DARK REALM Dialogue
@@ -982,35 +997,84 @@ extension ChatEngine {
         case -1000:
             let leftButton0 = FIRManager.decisionsLeftButton[0] ?? false
             
-            delegate?.spawnElders()
+            delegate?.spawnEldersCatwalk()
             
             sendChatArray(items: [
-                ChatItem(profile: .melchior, chat: "We are about to embark on a treacherous path. There is no turning back. Are you ready to face the darkness?"),
-                ChatItem(profile: .hero, imgPos: .left, chat: "\(leftButton0 ? "Let's go, I'm ready!!" : "No time like the present! What have we got to lose, right?")"),
-                ChatItem(profile: .merton, chat: "\(leftButton0 ? "Proceed with caution, don't be afraid. Are yo uafred ?I'm not afraid. Yushuld be afraid." : "Don't worry. We will be right by your side every step of the way.")")
+                ChatItem(profile: .melchior, chat: "The road ahead is dangerous. There is no turning back. Are you ready to face the darkness?"),
+                ChatItem(profile: .hero, imgPos: .left, chat: "\(leftButton0 ? "I'm ready, let's go!!" : "No time like the present! What have we got to lose, right?")"),
+                ChatItem(profile: .magmus, chat: "Be warned: Magmoor seeks to destroy everything and everyone in his path, especially the ones who banished him to the NETHER REALM hundreds of years ago."),
+                ChatItem(profile: .hero, imgPos: .left, chat: "\(leftButton0 ? "So... technically this is your fight. Can I just sit and watch from the sidelines, or..." : "I've made it this far, I'm not backing down now!")"),
+                ChatItem(profile: .magmus, chat: "Do not underestimate our adversary. He has the ability to wipe out all life from existence! It will take our combined strength to vanquish him."),
+                ChatItem(profile: .melchior, chat: "Though he may seem beyond powerful, he has his weaknesses. We did, of course, teach him everything he knows."),
+                ChatItem(profile: .hero, imgPos: .left, chat: "\(leftButton0 ? "Like I said, I'mma sit here and wait while you guys do your thang." : "He has my friends—Marlin and the princess. I won't go down without a fight!")"),
+                ChatItem(profile: .merton, chat: "Remember, he is most malevolent from the merger with our dear Marlin's magic."),
+                ChatItem(profile: .merton, chat: "As you proceed, you may witness illusions of despair. But despair not! For all they are are illusions, after all."),
+                ChatItem(profile: .melchior, chat: "Let's move forward. And do not believe anything you see or hear.")
             ]) { [weak self] in
-                self?.delegate?.despawnElders()
-                self?.handleDialogueCompletion(level: level, completion: completion)
-            }
-        case -1005:
-            sendChatArray(shouldSkipDim: true, items: [
-                ChatItem(profile: .melchior, chat: "This is a test message.")
-            ]) { [weak self] in
+                self?.delegate?.despawnEldersCatwalk()
                 self?.handleDialogueCompletion(level: level, completion: completion)
             }
         case -1006:
-            sendChatArray(shouldSkipDim: true, items: [
-                ChatItem(profile: .magmus, chat: "This is another test message.")
-            ]) { [weak self] in
+            delegate?.flashRedCatwalk(message: "Turn back now...") { [weak self] in
                 self?.handleDialogueCompletion(level: level, completion: completion)
             }
         case -1010:
+            delegate?.flashRedCatwalk(message: "You're going to regret it...") { [weak self] in
+                self?.sendChatArray(shouldSkipDim: true, items: [
+                    ChatItem(profile: .merton, chat: "Ignore him! Do not let him get in your head.")
+                ]) {
+                    self?.handleDialogueCompletion(level: level, completion: completion)
+                }
+            }
+        case -1016:
+            delegate?.shiftRedCatwalk(shouldShift: true, showMagmoorScary: false, completion: {})
+            handleDialogueCompletion(level: level, completion: completion)
+        case -1019:
+            delegate?.spawnPrincessCatwalk()
+            
             sendChatArray(shouldSkipDim: true, items: [
-                ChatItem(profile: .merton, chat: "They just keep on coming!")
+                ChatItem(profile: .princessCursed, chat: "you let me down, puzl boy! gaze upon your failures."),
+                ChatItem(profile: .hero, imgPos: .left, chat: "No! We're coming to rescue you, princess! Just hang tight for a bit!"),
+                ChatItem(profile: .magmus, chat: "Dear boy, that is not the princess. It is but a construct of Magmoor's machinations. We must keep pressing forward!")
+            ]) { [weak self] in
+                self?.delegate?.despawnPrincessCatwalk()
+                self?.delegate?.shiftRedCatwalk(shouldShift: false, showMagmoorScary: false) {
+                    self?.handleDialogueCompletion(level: level, completion: completion)
+                }
+            }
+        case -1025:
+            delegate?.shiftRedCatwalk(shouldShift: true, showMagmoorScary: false, completion: {})
+            handleDialogueCompletion(level: level, completion: completion)
+        case -1027:
+            delegate?.spawnMarlinCatwalk()
+            
+            sendChatArray(shouldSkipDim: true, items: [
+                ChatItem(profile: .blanktrainer, chat: "\nyou've doomed us all, puzl boy! the day of reckoning is at hand."),
+                ChatItem(profile: .hero, imgPos: .left, chat: "I didn't do it! I'm just a kid. It's not my fault!!"),
+                ChatItem(profile: .merton, chat: "Ignore this false imagery, child! You must not succumb to his deception. Clarity is needed in the battle ahead.")
+            ]) { [weak self] in
+                self?.delegate?.despawnMarlinCatwalk()
+                self?.delegate?.shiftRedCatwalk(shouldShift: false, showMagmoorScary: false) {
+                    self?.handleDialogueCompletion(level: level, completion: completion)
+                }
+            }
+        case -1033:
+            delegate?.shiftRedCatwalk(shouldShift: true, showMagmoorScary: true, completion: {})
+            delegate?.spawnMagmoorCatwalk()
+            
+            sendChatArray(shouldSkipDim: true, items: [
+                ChatItem(profile: .villain, chat: "You are too late, earth traveler. The end has begun."),
+                ChatItem(profile: .melchior, imgPos: .left, chat: "You will regret ever entering this realm, Magmoor! Your reign of terror ends here!"),
+                ChatItem(profile: .hero, imgPos: .left, chat: "I matter! I am enough!!!")
             ]) { [weak self] in
                 self?.handleDialogueCompletion(level: level, completion: completion)
             }
-
+        case -1034:
+            delegate?.despawnMagmoorCatwalk()
+            delegate?.shiftRedCatwalk(shouldShift: false, showMagmoorScary: true) { [weak self] in
+                self?.handleDialogueCompletion(level: level, completion: completion)
+            }
+            
             
         //DARK REALM
         case Level.partyLevel: //IMPORTANT: This case, Level.partyLevel must ALWAYS be here!!!
