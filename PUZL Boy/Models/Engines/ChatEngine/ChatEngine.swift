@@ -30,9 +30,9 @@ protocol ChatEngineDelegate: AnyObject {
     func spawnMarlinCatwalk()
     func despawnMarlinCatwalk()
     func spawnMagmoorCatwalk()
-    func despawnMagmoorCatwalk()
+    func despawnMagmoorCatwalk(completion: @escaping () -> Void)
     func flashRedCatwalk(message: String, completion: @escaping () -> Void)
-    func shiftRedCatwalk(shouldShift: Bool, showMagmoorScary: Bool, completion: @escaping () -> Void)
+    func shiftRedCatwalk(shouldShift: Bool, showMagmoorScary: Bool)
 
     //Princess/Magmoor Capture
     func spawnPrincessCapture(at position: K.GameboardPosition, shouldAnimateWarp: Bool, completion: @escaping () -> Void)
@@ -661,6 +661,7 @@ extension ChatEngine {
         else {
             // TODO: - AGE OF BALANCE - CATWALK Dialogue
             
+            dialoguePlayed[-999] = false
             dialoguePlayed[-1000] = false
             dialoguePlayed[-1006] = false
             dialoguePlayed[-1010] = false
@@ -994,6 +995,13 @@ extension ChatEngine {
         switch level {
             
         // TODO: - CATWALK Dialogue TEST for now
+            
+        case -999:
+            sendChatArray(items: [
+                ChatItem(profile: .melchior, chat: "Where are you going, PUZL Boy? The only way out is through!")
+            ]) { [weak self] in
+                self?.handleDialogueCompletion(level: level, completion: completion)
+            }
         case -1000:
             let leftButton0 = FIRManager.decisionsLeftButton[0] ?? false
             
@@ -1021,57 +1029,55 @@ extension ChatEngine {
         case -1010:
             delegate?.flashRedCatwalk(message: "You're going to regret it...") { [weak self] in
                 self?.sendChatArray(shouldSkipDim: true, items: [
-                    ChatItem(profile: .merton, chat: "Ignore him! Do not let him get in your head.")
+                    ChatItem(profile: .magmus, chat: "Ignore him! Do not let him get inside your head.")
                 ]) {
                     self?.handleDialogueCompletion(level: level, completion: completion)
                 }
             }
         case -1016:
-            delegate?.shiftRedCatwalk(shouldShift: true, showMagmoorScary: false, completion: {})
+            delegate?.shiftRedCatwalk(shouldShift: true, showMagmoorScary: false)
             handleDialogueCompletion(level: level, completion: completion)
         case -1019:
             delegate?.spawnPrincessCatwalk()
             
             sendChatArray(shouldSkipDim: true, items: [
                 ChatItem(profile: .princessCursed, chat: "you let me down, puzl boy! gaze upon your failures."),
-                ChatItem(profile: .hero, imgPos: .left, chat: "No! We're coming to rescue you, princess! Just hang tight for a bit!"),
-                ChatItem(profile: .magmus, chat: "Dear boy, that is not the princess. It is but a construct of Magmoor's machinations. We must keep pressing forward!")
+                ChatItem(profile: .hero, imgPos: .left, chat: "No! We're coming to rescue you, princess! Just hang tight for a sec!"),
+                ChatItem(profile: .merton, chat: "Dear boy, that is NOT the princess. It is but a phantasmagoria of Magmoor's machinations. We must keep moving!")
             ]) { [weak self] in
                 self?.delegate?.despawnPrincessCatwalk()
-                self?.delegate?.shiftRedCatwalk(shouldShift: false, showMagmoorScary: false) {
-                    self?.handleDialogueCompletion(level: level, completion: completion)
-                }
+                self?.delegate?.shiftRedCatwalk(shouldShift: false, showMagmoorScary: false)
+                self?.handleDialogueCompletion(level: level, completion: completion)
             }
         case -1025:
-            delegate?.shiftRedCatwalk(shouldShift: true, showMagmoorScary: false, completion: {})
+            delegate?.shiftRedCatwalk(shouldShift: true, showMagmoorScary: false)
             handleDialogueCompletion(level: level, completion: completion)
         case -1027:
             delegate?.spawnMarlinCatwalk()
             
             sendChatArray(shouldSkipDim: true, items: [
-                ChatItem(profile: .blanktrainer, chat: "\nyou've doomed us all, puzl boy! the day of reckoning is at hand."),
+                ChatItem(profile: .trainer, chat: "you have doomed us all, puzl boy! the day of reckoning is at hand."),
                 ChatItem(profile: .hero, imgPos: .left, chat: "I didn't do it! I'm just a kid. It's not my fault!!"),
-                ChatItem(profile: .merton, chat: "Ignore this false imagery, child! You must not succumb to his deception. Clarity is needed in the battle ahead.")
+                ChatItem(profile: .magmus, chat: "Disregard this false imagery, child! You must not succumb to his deception. Clarity is needed in the challenge ahead.")
             ]) { [weak self] in
                 self?.delegate?.despawnMarlinCatwalk()
-                self?.delegate?.shiftRedCatwalk(shouldShift: false, showMagmoorScary: false) {
-                    self?.handleDialogueCompletion(level: level, completion: completion)
-                }
+                self?.delegate?.shiftRedCatwalk(shouldShift: false, showMagmoorScary: false)
+                self?.handleDialogueCompletion(level: level, completion: completion)
             }
         case -1033:
-            delegate?.shiftRedCatwalk(shouldShift: true, showMagmoorScary: true, completion: {})
+            delegate?.shiftRedCatwalk(shouldShift: true, showMagmoorScary: true)
             delegate?.spawnMagmoorCatwalk()
             
             sendChatArray(shouldSkipDim: true, items: [
-                ChatItem(profile: .villain, chat: "You are too late, earth traveler. The end has begun."),
-                ChatItem(profile: .melchior, imgPos: .left, chat: "You will regret ever entering this realm, Magmoor! Your reign of terror ends here!"),
+                ChatItem(profile: .villain, chat: "You are too late, Earth traveler. The end has begun."),
+                ChatItem(profile: .melchior, imgPos: .left, chat: "You will regret ever entering this realm, Magmoor! Your reign of terror ends here!!"),
                 ChatItem(profile: .hero, imgPos: .left, chat: "I matter! I am enough!!!")
             ]) { [weak self] in
                 self?.handleDialogueCompletion(level: level, completion: completion)
             }
         case -1034:
-            delegate?.despawnMagmoorCatwalk()
-            delegate?.shiftRedCatwalk(shouldShift: false, showMagmoorScary: true) { [weak self] in
+            delegate?.despawnMagmoorCatwalk() { [weak self] in
+                self?.delegate?.shiftRedCatwalk(shouldShift: false, showMagmoorScary: true)
                 self?.handleDialogueCompletion(level: level, completion: completion)
             }
             

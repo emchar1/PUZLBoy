@@ -12,7 +12,7 @@ class CatwalkScene: SKScene {
     // MARK: - Properties
     
     private let panelCount: Int = 5
-    private let catwalkLength: Int = 36
+    private let catwalkLength: Int = 37
     private let panelSpacing: CGFloat = 4
     private var panelSize: CGFloat { size.width / CGFloat(panelCount) }
     private var scaleSize: CGSize { CGSize.zero + panelSize - panelSpacing }
@@ -189,17 +189,20 @@ class CatwalkScene: SKScene {
         guard !isMoving else { return }
         guard !shouldDisableInput else { return }
         guard let panelIndex = getPanelIndex(for: panelName), currentPanelIndex != panelIndex else { return }
+        guard panelIndex > currentPanelIndex else {
+            hero.sprite.xScale *= -1
+            playDialogue(panelIndex: -1)
+            return
+        }
         
         let moveDuration: TimeInterval = isRedShift ? 2 : 1
-        let moveFactor: CGFloat = panelIndex > currentPanelIndex ? 1 : -1
-        let moveDistance: CGFloat = moveFactor * (scaleSize.width + panelSpacing)
+        let moveDistance: CGFloat = scaleSize.width + panelSpacing
         let runSound = "movetile\(Int.random(in: 1...3))"
         
-        currentPanelIndex += Int(moveFactor)
+        currentPanelIndex += 1
         isMoving = true
         
         hero.sprite.run(animatePlayer(player: hero, type: .run))
-        hero.sprite.xScale = moveFactor * abs(hero.sprite.xScale)
         hero.sprite.run(SKAction.moveBy(x: moveDistance, y: 0, duration: moveDuration)) { [weak self] in
             guard let self = self else { return }
             
@@ -210,8 +213,7 @@ class CatwalkScene: SKScene {
             AudioManager.shared.stopSound(for: runSound, fadeDuration: 0.25)
         }
         
-        if (moveFactor > 0 && (currentPanelIndex > 2 && currentPanelIndex <= catwalkLength - 2)) ||
-            (moveFactor < 0 && (currentPanelIndex >= 2 && currentPanelIndex < catwalkLength - 2)) {
+        if currentPanelIndex > 2 && currentPanelIndex < catwalkLength - 2 {
             catwalkNode.run(SKAction.moveBy(x: -moveDistance, y: 0, duration: moveDuration))
         }
         
@@ -260,7 +262,10 @@ class CatwalkScene: SKScene {
         shouldDisableInput = true
         
         chatEngine.playDialogue(level: dialogueNumber) { [weak self] _ in
-            self?.shouldDisableInput = false
+            guard let self = self else { return }
+            
+            shouldDisableInput = false
+            hero.sprite.xScale = abs(hero.sprite.xScale)
         }
     }
     
@@ -374,25 +379,27 @@ extension CatwalkScene: ChatEngineDelegate {
     }
     
     func spawnMagmoorCatwalk() {
-        villain.sprite.position = getHeroPosition(xPanelOffset: 1, yOffset: 20)
+        villain.sprite.position = getHeroPosition(xPanelOffset: 2, yOffset: 20)
         villain.sprite.setScale(Player.getGameboardScale(panelSize: panelSize) * villain.scaleMultiplier)
         villain.sprite.xScale *= -1
         villain.sprite.alpha = 0
         
         villain.sprite.run(animatePlayer(player: villain, type: .idle))
         villain.sprite.run(SKAction.fadeAlpha(to: 1, duration: 2))
+
+        catwalkNode.run(SKAction.moveBy(x: -(scaleSize.width + panelSpacing), y: 0, duration: 2))
     }
     
-    func despawnMagmoorCatwalk() {
-        despawnMagmoorHelper()
+    func despawnMagmoorCatwalk(completion: @escaping () -> Void) {
+        despawnMagmoorHelper(completion: completion)
     }
     
     func flashRedCatwalk(message: String, completion: @escaping () -> Void) {
         flashRedHelper(message: message, completion: completion)
     }
     
-    func shiftRedCatwalk(shouldShift: Bool, showMagmoorScary: Bool, completion: @escaping () -> Void) {
-        shiftRedHelper(shouldShift: shouldShift, showMagmoorScary: showMagmoorScary, fadeDuration: 1, completion: completion)
+    func shiftRedCatwalk(shouldShift: Bool, showMagmoorScary: Bool) {
+        shiftRedHelper(shouldShift: shouldShift, showMagmoorScary: showMagmoorScary, fadeDuration: 1)
     }
     
     
@@ -429,7 +436,7 @@ extension CatwalkScene: ChatEngineDelegate {
         ]))
     }
     
-    private func despawnMagmoorHelper() {
+    private func despawnMagmoorHelper(completion: @escaping () -> Void) {
         let scale: CGFloat = 0.9
         let attackSprite = SKSpriteNode(texture: SKTexture(imageNamed: "iconSword"))
         attackSprite.position = getHeroPosition(xPanelOffset: 1, yOffset: 0)
@@ -445,12 +452,17 @@ extension CatwalkScene: ChatEngineDelegate {
         
         AudioManager.shared.playSound(for: "boyattack\(Int.random(in: 1...3))")
         AudioManager.shared.playSound(for: "swordslash")
-        AudioManager.shared.playSound(for: "scarylaugh")
 
         catwalkNode.addChild(attackSprite)
 
         attackSprite.run(animation)
-        villain.sprite.run(SKAction.fadeOut(withDuration: 2))
+        villain.sprite.run(SKAction.group([
+            SKAction.scale(by: 1.25, duration: 2),
+            SKAction.fadeOut(withDuration: 2)
+        ])) {
+            AudioManager.shared.playSound(for: "scarylaugh")
+            completion()
+        }
     }
     
     private func flashRedHelper(message: String, completion: @escaping () -> Void) {
@@ -518,20 +530,20 @@ extension CatwalkScene: ChatEngineDelegate {
         AudioManager.shared.playSoundThenStop(for: "magicheartbeatloop1", playForDuration: fadeDuration)
     }
     
-    private func shiftRedHelper(shouldShift: Bool, showMagmoorScary: Bool, fadeDuration: TimeInterval, completion: @escaping () -> Void) {
+    private func shiftRedHelper(shouldShift: Bool, showMagmoorScary: Bool, fadeDuration: TimeInterval) {
         if shouldShift {
             let colorizeRed = SKAction.colorize(with: .red, colorBlendFactor: 1, duration: fadeDuration)
             isRedShift = true
             
-            backgroundNode.run(SKAction.fadeOut(withDuration: fadeDuration), completion: completion)
+            backgroundNode.run(SKAction.fadeOut(withDuration: fadeDuration))
             hero.sprite.run(colorizeRed)
             
             if showMagmoorScary {
                 magmoorSprite.run(SKAction.sequence([
                     SKAction.wait(forDuration: fadeDuration),
                     SKAction.group([
-                        SKAction.fadeIn(withDuration: fadeDuration),
-                        SKAction.scale(to: 2, duration: fadeDuration * 20)
+                        SKAction.fadeIn(withDuration: fadeDuration * 10),
+                        SKAction.scale(to: 1.25, duration: fadeDuration * 20)
                     ])
                 ]))
             }
@@ -553,7 +565,6 @@ extension CatwalkScene: ChatEngineDelegate {
             magmoorSprite.run(SKAction.fadeOut(withDuration: fadeDuration)) { [weak self] in
                 self?.updateBackgroundNode(fadeDuration: fadeDuration) {
                     self?.isRedShift = false
-                    completion()
                 }
             }
             

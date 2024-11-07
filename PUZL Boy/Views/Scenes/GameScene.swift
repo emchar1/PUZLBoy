@@ -1502,9 +1502,9 @@ extension GameScene: ChatEngineDelegate {
     func spawnMarlinCatwalk() {}
     func despawnMarlinCatwalk() {}
     func spawnMagmoorCatwalk() {}
-    func despawnMagmoorCatwalk() {}
+    func despawnMagmoorCatwalk(completion: @escaping () -> Void) {}
     func flashRedCatwalk(message: String, completion: @escaping () -> Void) {}
-    func shiftRedCatwalk(shouldShift: Bool, showMagmoorScary: Bool, completion: @escaping () -> Void) {}
+    func shiftRedCatwalk(shouldShift: Bool, showMagmoorScary: Bool) {}
     
     
 }
