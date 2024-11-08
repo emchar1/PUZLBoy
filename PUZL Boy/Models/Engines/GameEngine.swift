@@ -331,7 +331,7 @@ class GameEngine {
             playerSprite.sprite.run(playerMove) { [weak self] in
                 guard let self = self else { return }
                 
-                playerSprite.startIdleAnimation(hasSword: !isSolved && level.inventory.hasSwords(), hasHammer: !isSolved && level.inventory.hasHammers())
+                playerSprite.startIdleAnimation()
                 checkSpecialPanel {
                     self.shouldDisableControlInput = false
                     completion?()
@@ -383,7 +383,7 @@ class GameEngine {
             animateParticles(type: .itemPickup)
             
             playerSprite.startPowerUpAnimation()
-            playerSprite.startIdleAnimation(hasSword: level.inventory.hasSwords(), hasHammer: level.inventory.hasHammers())
+            playerSprite.startIdleAnimation()
             
             ScoringEngine.updateStatusIconsAnimation(
                 icon: .hammer,
@@ -404,7 +404,7 @@ class GameEngine {
             animateParticles(type: .itemPickup)
             
             playerSprite.startPowerUpAnimation()
-            playerSprite.startIdleAnimation(hasSword: level.inventory.hasSwords(), hasHammer: level.inventory.hasHammers())
+            playerSprite.startIdleAnimation()
             
             ScoringEngine.updateStatusIconsAnimation(
                 icon: .sword,
@@ -448,7 +448,7 @@ class GameEngine {
                 completion?()
             }
 
-            playerSprite.startIdleAnimation(hasSword: level.inventory.hasSwords(), hasHammer: level.inventory.hasHammers())
+            playerSprite.startIdleAnimation()
         case .enemy:
             guard level.inventory.swords > 0 else { return }
             
@@ -464,7 +464,7 @@ class GameEngine {
                 completion?()
             }
             
-            playerSprite.startIdleAnimation(hasSword: level.inventory.hasSwords(), hasHammer: level.inventory.hasHammers())
+            playerSprite.startIdleAnimation()
         case .warp, .warp2, .warp3:
             guard !justStartedDisableWarp, let newWarpLocation = gameboardSprite.warpTo(warpType: level.getLevelType(at: level.player), initialPosition: level.player) else {
                 completion?()
@@ -1154,9 +1154,7 @@ class GameEngine {
 //            StoreReviewManager.shared.incrementCount()
 
             //Run this BEFORE startDeadAnimation!!
-            PartyModeSprite.shared.stopParty(partyBoy: playerSprite,
-                                             hasSword: level.inventory.hasSwords(), 
-                                             hasHammer: level.inventory.hasHammers())
+            PartyModeSprite.shared.stopParty(partyBoy: playerSprite)
             
             if level.getLevelType(at: level.player) == .lava && !FireIceTheme.isFire {
                 //Water drowning sequence
@@ -1326,7 +1324,7 @@ class GameEngine {
     
     ///Use this when resuming from 0 moves, for example.
     func continueGame() {
-        playerSprite.startIdleAnimation(hasSword: level.inventory.hasSwords(), hasHammer: level.inventory.hasHammers())
+        playerSprite.startIdleAnimation()
     }
     
     ///Resets the level and reduces one life.

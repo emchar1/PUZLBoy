@@ -444,19 +444,14 @@ class GameScene: SKScene {
         if Level.isPartyLevel(level) {
             if !PartyModeSprite.shared.isPartying {
                 PartyModeSprite.shared.setIsPartying(true)
-                PartyModeSprite.shared.startParty(to: self,
-                                                  partyBoy: gameEngine.playerSprite,
-                                                  hasSword: gameEngine.level.inventory.hasSwords(),
-                                                  hasHammer: gameEngine.level.inventory.hasHammers())
+                PartyModeSprite.shared.startParty(to: self, partyBoy: gameEngine.playerSprite)
                 scoringEngine.timerManager.setIsParty(true)
             }
         }
         else {
             if PartyModeSprite.shared.isPartying {
                 PartyModeSprite.shared.setIsPartying(false)
-                PartyModeSprite.shared.stopParty(partyBoy: gameEngine.playerSprite,
-                                                 hasSword: gameEngine.level.inventory.hasSwords(),
-                                                 hasHammer: gameEngine.level.inventory.hasHammers())
+                PartyModeSprite.shared.stopParty(partyBoy: gameEngine.playerSprite)
                 scoringEngine.timerManager.setIsParty(false)
             }
         }
@@ -1318,9 +1313,7 @@ extension GameScene: PartyResultsSpriteDelegate {
     private func resumeGameFromPartyLevel() {
         let villainChatLevel = (lastCurrentLevel ?? 1) - 1
 
-        PartyModeSprite.shared.stopParty(partyBoy: gameEngine.playerSprite,
-                                         hasSword: gameEngine.level.inventory.hasSwords(),
-                                         hasHammer: gameEngine.level.inventory.hasHammers())
+        PartyModeSprite.shared.stopParty(partyBoy: gameEngine.playerSprite)
 
         chatEngine.playDialogue(level: -villainChatLevel) { [weak self] _ in
             guard AdMobManager.interstitialAdIsReady else {

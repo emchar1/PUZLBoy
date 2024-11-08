@@ -108,7 +108,7 @@ class PartyModeSprite: SKNode {
         }
     }
     
-    func stopParty(partyBoy: PlayerSprite, hasSword: Bool, hasHammer: Bool) {
+    func stopParty(partyBoy: PlayerSprite) {
         currentMultiplier = 2
         speedMultiplier = speedMultipliers[currentMultiplier]
         
@@ -124,10 +124,10 @@ class PartyModeSprite: SKNode {
         removeFromParent()
         removeAllActions()
 
-        partyBoy.stopPartyAnimation(hasSword: hasSword, hasHammer: hasHammer)
+        partyBoy.stopPartyAnimation()
     }
     
-    func startParty(to superScene: SKScene, partyBoy: PlayerSprite, hasSword: Bool, hasHammer: Bool) {
+    func startParty(to superScene: SKScene, partyBoy: PlayerSprite) {
         currentMultiplier = 2
         speedMultiplier = speedMultipliers[currentMultiplier]
         
@@ -158,7 +158,7 @@ class PartyModeSprite: SKNode {
         superScene.addChild(self)
         addChild(backgroundSprite)
         backgroundSprite.addChild(lightsSprite)
-        partyBoy.startPartyAnimation(hasSword: hasSword, hasHammer: hasHammer)
+        partyBoy.startPartyAnimation()
         
         print("Starting the party... partySpeedMultiplier: \(speedMultiplier)")
     }
