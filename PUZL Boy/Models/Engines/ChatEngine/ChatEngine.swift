@@ -29,12 +29,15 @@ protocol ChatEngineDelegate: AnyObject {
     func despawnPrincessCatwalk()
     func spawnMarlinCatwalk()
     func despawnMarlinCatwalk()
+    func spawnSwordCatwalk()
+    func despawnSwordCatwalk()
     func spawnMagmoorCatwalk()
     func despawnMagmoorCatwalk(completion: @escaping () -> Void)
     func playMusicCatwalk(music: String, startingVolume: Float, fadeIn: TimeInterval)
     func stopMusicCatwalk(music: String, fadeOut: TimeInterval)
     func flashRedCatwalk(message: String, completion: @escaping () -> Void)
     func shiftRedCatwalk(shouldShift: Bool, showMagmoorScary: Bool)
+    func exitCatwalk(completion: @escaping () -> Void)
 
     //Princess/Magmoor Capture
     func spawnPrincessCapture(at position: K.GameboardPosition, shouldAnimateWarp: Bool, completion: @escaping () -> Void)
@@ -673,8 +676,11 @@ extension ChatEngine {
             dialoguePlayed[-1025] = false
             dialoguePlayed[-1027] = false
             dialoguePlayed[-1028] = false
+            dialoguePlayed[-1031] = false
             dialoguePlayed[-1033] = false
-            dialoguePlayed[-1034] = false
+            dialoguePlayed[-1035] = false
+            dialoguePlayed[-1036] = false
+            dialoguePlayed[-1040] = false
             
             
             //AGE OF BALANCE - DARK REALM Dialogue
@@ -1074,7 +1080,13 @@ extension ChatEngine {
         case -1028:
             delegate?.stopMusicCatwalk(music: "overworld", fadeOut: 3)
             handleDialogueCompletion(level: level, completion: completion)
+        case -1031:
+            delegate?.spawnSwordCatwalk()
+            handleDialogueCompletion(level: level, completion: completion)
         case -1033:
+            delegate?.despawnSwordCatwalk()
+            handleDialogueCompletion(level: level, completion: completion)
+        case -1035:
             delegate?.shiftRedCatwalk(shouldShift: true, showMagmoorScary: true)
             delegate?.spawnMagmoorCatwalk()
             
@@ -1085,9 +1097,13 @@ extension ChatEngine {
             ]) { [weak self] in
                 self?.handleDialogueCompletion(level: level, completion: completion)
             }
-        case -1034:
+        case -1036:
             delegate?.despawnMagmoorCatwalk() { [weak self] in
                 self?.delegate?.shiftRedCatwalk(shouldShift: false, showMagmoorScary: true)
+                self?.handleDialogueCompletion(level: level, completion: completion)
+            }
+        case -1040:
+            delegate?.exitCatwalk { [weak self] in
                 self?.handleDialogueCompletion(level: level, completion: completion)
             }
             

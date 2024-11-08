@@ -12,7 +12,7 @@ class CatwalkScene: SKScene {
     // MARK: - Properties
     
     private let panelCount: Int = 5
-    private let catwalkLength: Int = 37
+    private let catwalkLength: Int = 40
     private let panelSpacing: CGFloat = 4
     private var panelSize: CGFloat { size.width / CGFloat(panelCount) }
     private var scaleSize: CGSize { CGSize.zero + panelSize - panelSpacing }
@@ -52,7 +52,7 @@ class CatwalkScene: SKScene {
     }
     
     deinit {
-        print("FinalGameboard deinit")
+        print("CatwalkScene deinit")
     }
     
     func cleanupScene() {
@@ -61,11 +61,28 @@ class CatwalkScene: SKScene {
         shouldDisableInput = false
         isRedShift = false
 
-        catwalkPanels.forEach { $0.removeFromParent() }
+        hero.sprite.removeAllActions()
+        elder0.sprite.removeAllActions()
+        elder1.sprite.removeAllActions()
+        elder2.sprite.removeAllActions()
+        princess.sprite.removeAllActions()
+        trainer.sprite.removeAllActions()
+        villain.sprite.removeAllActions()
+        magmoorSprite.removeAllActions()
+        catwalkNode.removeAllActions()
+        backgroundNode.removeAllActions()
+
         hero.sprite.removeFromParent()
+        elder0.sprite.removeFromParent()
+        elder1.sprite.removeFromParent()
+        elder2.sprite.removeFromParent()
+        princess.sprite.removeFromParent()
+        trainer.sprite.removeFromParent()
+        villain.sprite.removeFromParent()
         magmoorSprite.removeFromParent()
         catwalkNode.removeFromParent()
         backgroundNode.removeFromParent()
+
         removeFromParent()
         
         chatEngine = nil
@@ -208,14 +225,15 @@ class CatwalkScene: SKScene {
             return
         }
         
-        let moveDuration: TimeInterval = isRedShift ? 2 : 1
+        let didReachExit = currentPanelIndex >= catwalkLength - 1
+        let moveDuration: TimeInterval = isRedShift ? 2 : (didReachExit ? 1.5 : 1)
         let moveDistance: CGFloat = scaleSize.width + panelSpacing
-        let runSound = "movetile\(Int.random(in: 1...3))"
+        let runSound = didReachExit ? "movewalk" : "movetile\(Int.random(in: 1...3))"
         
         currentPanelIndex += 1
         isMoving = true
         
-        hero.sprite.run(animatePlayer(player: hero, type: .run))
+        hero.sprite.run(animatePlayer(player: hero, type: didReachExit ? .walk : .run))
         hero.sprite.run(SKAction.moveBy(x: moveDistance, y: 0, duration: moveDuration)) { [weak self] in
             guard let self = self else { return }
             
@@ -439,6 +457,49 @@ extension CatwalkScene: ChatEngineDelegate {
         trainer.sprite.run(SKAction.fadeOut(withDuration: 2))
     }
     
+    func spawnSwordCatwalk() {
+        let duration: TimeInterval = 0.25
+        let bounceFactor: CGFloat = scaleSize.width * 0.25
+        
+        let swordSprite = SKSpriteNode(imageNamed: "sword")
+        swordSprite.scale(to: .zero)
+        swordSprite.position = getHeroPosition(xPanelOffset: 2, yOffset: 0)
+        swordSprite.zPosition = K.ZPosition.overlay
+        swordSprite.name = "sword"
+        
+        swordSprite.run(SKAction.sequence([
+            SKAction.scale(to: scaleSize + bounceFactor, duration: duration),
+            SKAction.scale(to: scaleSize, duration: duration),
+        ]))
+
+        catwalkNode.addChild(swordSprite)
+    }
+    
+    func despawnSwordCatwalk() {
+        guard let swordSprite = catwalkNode.childNode(withName: "sword") else { return }
+        
+        swordSprite.run(SKAction.sequence([
+            SKAction.group([
+                SKAction.scale(by: 2, duration: 0.25),
+                SKAction.fadeOut(withDuration: 0.25)
+            ]),
+            SKAction.removeFromParent()
+        ]))
+        
+        AudioManager.shared.playSound(for: "pickupitem")
+        Haptics.shared.addHapticFeedback(withStyle: .rigid)
+        
+        ParticleEngine.shared.animateParticles(type: .itemPickup,
+                                               toNode: catwalkNode,
+                                               position: getHeroPosition(xPanelOffset: 0, yOffset: 0),
+                                               duration: 2)
+        
+        ScoringEngine.updateStatusIconsAnimation(icon: .sword,
+                                                 amount: 1,
+                                                 originSprite: catwalkNode,
+                                                 location: getHeroPosition(xPanelOffset: 0, yOffset: 0))
+    }
+    
     func spawnMagmoorCatwalk() {
         villain.sprite.position = getHeroPosition(xPanelOffset: 2, yOffset: 20)
         villain.sprite.setScale(Player.getGameboardScale(panelSize: panelSize) * villain.scaleMultiplier)
@@ -470,6 +531,28 @@ extension CatwalkScene: ChatEngineDelegate {
     
     func shiftRedCatwalk(shouldShift: Bool, showMagmoorScary: Bool) {
         shiftRedHelper(shouldShift: shouldShift, showMagmoorScary: showMagmoorScary, fadeDuration: 1)
+    }
+    
+    // TODO: - Build out exitCatwalk()
+    func exitCatwalk(completion: @escaping () -> Void) {
+        let exitDuration: TimeInterval = 0.5
+        let exitAction = SKAction.group([
+            animatePlayer(player: hero, type: .run),
+            SKAction.scaleX(to: hero.sprite.xScale / 4, y: hero.sprite.yScale / 4, duration: exitDuration),
+            SKAction.fadeOut(withDuration: exitDuration)
+        ])
+
+        hero.sprite.run(exitAction)
+        
+        run(SKAction.sequence([
+            SKAction.wait(forDuration: exitDuration),
+            SKAction.fadeOut(withDuration: 2)
+        ])) { [weak self] in
+            self?.cleanupScene()
+            completion()
+        }
+
+        AudioManager.shared.playSoundThenStop(for: "movetile\(Int.random(in: 1...3))", playForDuration: 0.2, fadeOut: 0.8)
     }
     
     
