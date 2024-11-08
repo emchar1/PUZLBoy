@@ -190,8 +190,21 @@ class CatwalkScene: SKScene {
         guard !shouldDisableInput else { return }
         guard let panelIndex = getPanelIndex(for: panelName), currentPanelIndex != panelIndex else { return }
         guard panelIndex > currentPanelIndex else {
+            isMoving = true
+            
             hero.sprite.xScale *= -1
-            playDialogue(panelIndex: -1)
+            hero.sprite.run(SKAction.sequence([
+                SKAction.moveBy(x: -10, y: 0, duration: 0),
+                SKAction.wait(forDuration: 0.25),
+                SKAction.moveBy(x: 10, y: 0, duration: 0)
+            ])) { [weak self] in
+                self?.isMoving = false
+                self?.playDialogue(panelIndex: -1)
+            }
+            
+            Haptics.shared.executeCustomPattern(pattern: .boulder)
+            AudioManager.shared.playSound(for: "boygrunt\(Int.random(in: 1...2))")
+            
             return
         }
         
@@ -335,16 +348,64 @@ extension CatwalkScene: ChatEngineDelegate {
     }
     
     func spawnPrincessCatwalk() {
+        let originalScale: CGFloat = Player.getGameboardScale(panelSize: panelSize) * princess.scaleMultiplier
+        let alphaPersistence: CGFloat = 0.5
+        let blinkAction = SKAction.sequence([
+            SKAction.fadeOut(withDuration: 0),
+            SKAction.wait(forDuration: 0.04),
+            SKAction.fadeAlpha(to: alphaPersistence, duration: 0)
+        ])
+        
         princess.sprite.position = getHeroPosition(xPanelOffset: 1, yOffset: -15)
-        princess.sprite.setScale(Player.getGameboardScale(panelSize: panelSize) * princess.scaleMultiplier)
+        princess.sprite.setScale(originalScale)
         princess.sprite.xScale *= -1
         princess.sprite.alpha = 0
         
         princess.sprite.run(animatePlayer(player: princess, type: .idle))
-        princess.sprite.run(SKAction.fadeAlpha(to: 0.5, duration: 2))
+        princess.sprite.run(SKAction.fadeAlpha(to: alphaPersistence, duration: 2))
+        
+        princess.sprite.run(SKAction.repeatForever(SKAction.sequence([
+            SKAction.wait(forDuration: 2),
+            SKAction.repeat(SKAction.sequence([blinkAction, SKAction.wait(forDuration: 0.1)]), count: 3),
+            SKAction.wait(forDuration: 0.5),
+            SKAction.repeat(SKAction.sequence([blinkAction, SKAction.wait(forDuration: 0.06)]), count: 5),
+            SKAction.wait(forDuration: 1),
+            SKAction.repeat(SKAction.sequence([blinkAction, SKAction.wait(forDuration: 0.08)]), count: 2),
+            SKAction.wait(forDuration: 0.8),
+            blinkAction
+        ])))
+        
+        princess.sprite.run(SKAction.repeatForever(SKAction.sequence([
+            SKAction.wait(forDuration: 2),
+            SKAction.moveBy(x: -20, y: 10, duration: 0),
+            SKAction.scale(by: 1.25, duration: 0),
+            
+            SKAction.wait(forDuration: 2),
+            SKAction.moveBy(x: 20, y: -30, duration: 0),
+            SKAction.scale(to: originalScale, duration: 0),
+            SKAction.scaleY(to: originalScale * 1.5, duration: 0),
+            
+            SKAction.wait(forDuration: 0.5),
+            SKAction.moveBy(x: 0, y: 20, duration: 0),
+            SKAction.scaleY(to: originalScale, duration: 0),
+            SKAction.scale(by: 2, duration: 0),
+            
+            SKAction.wait(forDuration: 1.2),
+            SKAction.moveBy(x: 60, y: 40, duration: 0),
+            SKAction.scale(to: originalScale * 0.75, duration: 0),
+            SKAction.scaleX(to: -originalScale, duration: 0),
+            SKAction.rotate(byAngle: .pi / 2, duration: 0),
+            
+            SKAction.wait(forDuration: 2),
+            SKAction.moveBy(x: -60, y: -40, duration: 0),
+            SKAction.scale(to: originalScale, duration: 0),
+            SKAction.scaleX(to: -originalScale, duration: 0),
+            SKAction.rotate(byAngle: -.pi / 2, duration: 0)
+        ])))
     }
     
     func despawnPrincessCatwalk() {
+        princess.sprite.removeAllActions()
         princess.sprite.run(SKAction.fadeOut(withDuration: 2))
         AudioManager.shared.playSoundThenStop(for: "littlegirllaugh", playForDuration: 1.8)
     }
@@ -392,6 +453,15 @@ extension CatwalkScene: ChatEngineDelegate {
     
     func despawnMagmoorCatwalk(completion: @escaping () -> Void) {
         despawnMagmoorHelper(completion: completion)
+    }
+    
+    func playMusicCatwalk(music: String, startingVolume: Float, fadeIn: TimeInterval) {
+        AudioManager.shared.adjustVolume(to: startingVolume, for: music)
+        AudioManager.shared.playSound(for: music, fadeIn: fadeIn)
+    }
+    
+    func stopMusicCatwalk(music: String, fadeOut: TimeInterval) {
+        AudioManager.shared.stopSound(for: music, fadeDuration: fadeOut)
     }
     
     func flashRedCatwalk(message: String, completion: @escaping () -> Void) {
@@ -445,17 +515,17 @@ extension CatwalkScene: ChatEngineDelegate {
 
         let animation = SKAction.sequence([
             SKAction.wait(forDuration: 0.25),
+            SKAction.run {
+                AudioManager.shared.playSound(for: "chatclose")
+            },
             SKAction.rotate(byAngle: -3 * .pi / 2, duration: 0.25),
             SKAction.fadeAlpha(to: 0, duration: 0.5),
             SKAction.removeFromParent()
         ])
         
-        AudioManager.shared.playSound(for: "boyattack\(Int.random(in: 1...3))")
-        AudioManager.shared.playSound(for: "swordslash")
-
         catwalkNode.addChild(attackSprite)
-
         attackSprite.run(animation)
+        
         villain.sprite.run(SKAction.group([
             SKAction.scale(by: 1.25, duration: 2),
             SKAction.fadeOut(withDuration: 2)
@@ -474,7 +544,7 @@ extension CatwalkScene: ChatEngineDelegate {
         let colorizeSequence = SKAction.sequence([colorizeRed, colorizeNone])
         
         backgroundNode.run(SKAction.fadeOut(withDuration: 0))
-        updateBackgroundNode(fadeDuration: fadeDuration, completion: nil)
+        updateBackgroundNode(fadeDuration: fadeDuration * 2, completion: nil)
         
         hero.sprite.run(colorizeSequence)
         
@@ -513,7 +583,7 @@ extension CatwalkScene: ChatEngineDelegate {
         messageNode.run(SKAction.wait(forDuration: fadeDuration), completion: completion)
         messageNode.run(SKAction.sequence([
             SKAction.group([
-                SKAction.moveBy(x: 0, y: 20, duration: fadeDuration * 2),
+                SKAction.moveBy(x: 0, y: 40, duration: fadeDuration * 2),
                 SKAction.fadeOut(withDuration: fadeDuration * 2)
             ]),
             SKAction.removeFromParent()
@@ -531,6 +601,8 @@ extension CatwalkScene: ChatEngineDelegate {
     }
     
     private func shiftRedHelper(shouldShift: Bool, showMagmoorScary: Bool, fadeDuration: TimeInterval) {
+        let heartbeatIndex: Int = showMagmoorScary ? 2 : 1
+        
         if shouldShift {
             let colorizeRed = SKAction.colorize(with: .red, colorBlendFactor: 1, duration: fadeDuration)
             isRedShift = true
@@ -553,8 +625,8 @@ extension CatwalkScene: ChatEngineDelegate {
                 catwalkPanel.run(colorizeRed)
             }
             
-            if !AudioManager.shared.isPlaying(audioKey: "magicheartbeatloop1") {
-                AudioManager.shared.playSound(for: "magicheartbeatloop1")
+            if !AudioManager.shared.isPlaying(audioKey: "magicheartbeatloop\(heartbeatIndex)") {
+                AudioManager.shared.playSound(for: "magicheartbeatloop\(heartbeatIndex)")
             }
         }
         else {
@@ -562,6 +634,7 @@ extension CatwalkScene: ChatEngineDelegate {
             
             hero.sprite.run(colorizeNone)
 
+            magmoorSprite.removeAllActions()
             magmoorSprite.run(SKAction.fadeOut(withDuration: fadeDuration)) { [weak self] in
                 self?.updateBackgroundNode(fadeDuration: fadeDuration) {
                     self?.isRedShift = false
@@ -575,6 +648,7 @@ extension CatwalkScene: ChatEngineDelegate {
 
             shimmerPartyTiles()
             AudioManager.shared.stopSound(for: "magicheartbeatloop1", fadeDuration: fadeDuration)
+            AudioManager.shared.stopSound(for: "magicheartbeatloop2", fadeDuration: fadeDuration)
         }
     }
     

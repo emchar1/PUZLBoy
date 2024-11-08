@@ -31,6 +31,8 @@ protocol ChatEngineDelegate: AnyObject {
     func despawnMarlinCatwalk()
     func spawnMagmoorCatwalk()
     func despawnMagmoorCatwalk(completion: @escaping () -> Void)
+    func playMusicCatwalk(music: String, startingVolume: Float, fadeIn: TimeInterval)
+    func stopMusicCatwalk(music: String, fadeOut: TimeInterval)
     func flashRedCatwalk(message: String, completion: @escaping () -> Void)
     func shiftRedCatwalk(shouldShift: Bool, showMagmoorScary: Bool)
 
@@ -667,8 +669,10 @@ extension ChatEngine {
             dialoguePlayed[-1010] = false
             dialoguePlayed[-1016] = false
             dialoguePlayed[-1019] = false
+            dialoguePlayed[-1022] = false
             dialoguePlayed[-1025] = false
             dialoguePlayed[-1027] = false
+            dialoguePlayed[-1028] = false
             dialoguePlayed[-1033] = false
             dialoguePlayed[-1034] = false
             
@@ -998,7 +1002,7 @@ extension ChatEngine {
             
         case -999:
             sendChatArray(items: [
-                ChatItem(profile: .melchior, chat: "Where are you going, PUZL Boy? The only way out is through!")
+                ChatItem(profile: .melchior, chat: "Where do you think you're going, PUZL Boy? The only way out is through!")
             ]) { [weak self] in
                 self?.handleDialogueCompletion(level: level, completion: completion)
             }
@@ -1049,6 +1053,9 @@ extension ChatEngine {
                 self?.delegate?.shiftRedCatwalk(shouldShift: false, showMagmoorScary: false)
                 self?.handleDialogueCompletion(level: level, completion: completion)
             }
+        case -1022:
+            delegate?.playMusicCatwalk(music: "overworld", startingVolume: 0.1, fadeIn: 2)
+            handleDialogueCompletion(level: level, completion: completion)
         case -1025:
             delegate?.shiftRedCatwalk(shouldShift: true, showMagmoorScary: false)
             handleDialogueCompletion(level: level, completion: completion)
@@ -1064,6 +1071,9 @@ extension ChatEngine {
                 self?.delegate?.shiftRedCatwalk(shouldShift: false, showMagmoorScary: false)
                 self?.handleDialogueCompletion(level: level, completion: completion)
             }
+        case -1028:
+            delegate?.stopMusicCatwalk(music: "overworld", fadeOut: 3)
+            handleDialogueCompletion(level: level, completion: completion)
         case -1033:
             delegate?.shiftRedCatwalk(shouldShift: true, showMagmoorScary: true)
             delegate?.spawnMagmoorCatwalk()
