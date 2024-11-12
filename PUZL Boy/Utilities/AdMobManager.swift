@@ -34,21 +34,32 @@ class AdMobManager: NSObject {
     }()
     
     //UID properties
-//    static let puzlBoyAppID = "ca-app-pub-3047242308312153~8487486800" //AdMob account for emchar1@gmail.com - DOESN'T WORK ANYMORE!
-    static let puzlBoyAppID = "ca-app-pub-9970112736079022~3898881122" //AdMob account for eddie@5playapps.com - USE THIS ONE!!!!!
-    
-    // FIXME: - DEBUG: IMPORTANT!!!!! USE THESE WHEN SHIPPING APP!!!
+    static let puzlBoyAppID = "ca-app-pub-9970112736079022~3898881122" //AdMob account for eddie@5playapps.com - Main Account
+//    static let puzlBoyAppID = "ca-app-pub-3047242308312153~8487486800" //AdMob account for emchar1@gmail.com - Alternate Account
+
+
+//    // FIXME: - DEBUG: IMPORTANT!!!!! USE THESE WHEN SHIPPING APP!!!
+//    //eddie@5playapps.com account:
 //    static let interstitialID = "ca-app-pub-9970112736079022/6969280486"
 //    static let rewardedID = "ca-app-pub-9970112736079022/9450590704"
+//
+//    //OR emchar1@gmail.com account:
+//    static let interstitialID = "ca-app-pub-3047242308312153/9074783932"
+//    static let rewardedID = "ca-app-pub-3047242308312153/7555829885"
 
+    
     // FIXME: - DEBUG: ...AND DELETE THESE TEST ONES!!!
     static let interstitialID = "ca-app-pub-3940256099942544/5135589807"
     static let rewardedID = "ca-app-pub-3940256099942544/1712485313"
 
     
-    static let eddiesiPhoneTestingDeviceID = "3f4aed5e3dafdbe6435ec3679a8e07fa" //Eddie's iPhone 14 Pro
-    static let momsiPhoneTestingDeviceID = "6582222a25a290e89ca6a1c4f29924d6"
-    
+    // AdMob Test Device ID's
+    static let eddiesiPhoneTestingDeviceID = "3f4aed5e3dafdbe6435ec3679a8e07fa"
+    static let momsiPhoneTestingDeviceID = "" //Need implementation
+    static let dadsiPhoneTestingDeviceID = "" //Need implementation
+    static let momsiPadTestingDeviceID = "" //Need implementation
+    static let dadsiPadTestingDeviceID = "" //Need implementation
+
     //Checks for Ad Readiness
     static var interstitialAdIsReady = false
     static var rewardedAdIsReady = false
