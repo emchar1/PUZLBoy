@@ -222,6 +222,12 @@ extension GameViewController: GameSceneDelegate {
         skView.presentScene(titleScene, transition: SKTransition.fade(with: .white, duration: 0))
     }
     
+    func presentCatwalkScene() {
+        let catwalkScene = CatwalkScene(size: K.ScreenDimensions.size)
+        
+        skView.presentScene(catwalkScene, transition: SKTransition.fade(with: .black, duration: 0))
+    }
+    
     func presentChatDialogueCutscene(level: Int, cutscene: Cutscene) {
         let gameScene = GameScene(size: K.ScreenDimensions.size, hasInternet: hasInternet, levelSelectNewLevel: level)
         gameScene.gameSceneDelegate = self

@@ -11,6 +11,7 @@ import StoreKit
 
 protocol GameSceneDelegate: AnyObject {
     func confirmQuitTapped()
+    func presentCatwalkScene()
     func presentChatDialogueCutscene(level: Int, cutscene: Cutscene)
 }
 
@@ -648,30 +649,59 @@ class GameScene: SKScene {
     
     /**
      Prepares the GameScene for exit transition.
-     - parameter shouldSaveState: saves the game state, if true.
+     - parameters:
+        - shouldSaveState: saves the game state, if true.
+        - fadeColor: the color of the fadeNode, defaults to .white.
+        - completion: optional completion handler. If set, run the cleanup() code after fading out, otherwise run cleanup() directly.
      */
-    private func cleanupScene(shouldSaveState: Bool) {
-        removeAllActions()
-        removeAllChildren()
-        removeFromParent()
-        
-        //DON'T FORGET TO REMOVE THESE OBSERVERS!!!
-        let notificationCenter = NotificationCenter.default
-        notificationCenter.removeObserver(self, name: UIApplication.willResignActiveNotification, object: nil)
-        notificationCenter.removeObserver(self, name: UIApplication.didBecomeActiveNotification, object: nil)
-        notificationCenter.removeObserver(self, name: .shouldCancelLoadingLeaderboards, object: nil)
-
-        if shouldSaveState {
-            saveState(levelStatsItem: getLevelStatsItem(level: currentLevel, didWin: false))
+    private func cleanupScene(shouldSaveState: Bool, fadeColor: UIColor = .white, completion: (() -> Void)? = nil) {
+        func cleanup() {
+            removeAllActions()
+            removeAllChildren()
+            removeFromParent()
+            
+            //DON'T FORGET TO REMOVE THESE OBSERVERS!!!
+            let notificationCenter = NotificationCenter.default
+            notificationCenter.removeObserver(self, name: UIApplication.willResignActiveNotification, object: nil)
+            notificationCenter.removeObserver(self, name: UIApplication.didBecomeActiveNotification, object: nil)
+            notificationCenter.removeObserver(self, name: .shouldCancelLoadingLeaderboards, object: nil)
+            
+            if shouldSaveState {
+                saveState(levelStatsItem: getLevelStatsItem(level: currentLevel, didWin: false))
+            }
+            
+            //IMPORTANT!! Make these nil so GameScene gets deinitialized properly!!!
+            gameEngine = nil
+            scoringEngine = nil
+            chatEngine = nil
+            pauseResetEngine = nil
+            levelSkipEngine = nil
+            tapPointerEngine = nil
         }
         
-        //IMPORTANT!! Make these nil so GameScene gets deinitialized properly!!!
-        gameEngine = nil
-        scoringEngine = nil
-        chatEngine = nil
-        pauseResetEngine = nil
-        levelSkipEngine = nil
-        tapPointerEngine = nil
+        let fadeNode = SKShapeNode(rectOf: screenSize)
+        fadeNode.position = CGPoint(x: screenSize.width / 2, y: screenSize.height / 2)
+        fadeNode.fillColor = fadeColor
+        fadeNode.lineWidth = 0
+        fadeNode.alpha = 0
+        fadeNode.zPosition = K.ZPosition.messagePrompt
+        
+        addChild(fadeNode)
+        
+        if let completion = completion {
+            backgroundColor = fadeColor
+            
+            fadeNode.run(SKAction.sequence([
+                SKAction.fadeIn(withDuration: 2),
+                SKAction.removeFromParent()
+            ])) {
+                cleanup()
+                completion()
+            }
+        }
+        else {
+            cleanup()
+        }
     }
     
 }
@@ -761,8 +791,9 @@ extension GameScene: GameEngineDelegate {
             saveState(levelStatsItem: levelStatsItem)
             
             // TODO: - 10/7/24 Add end game level, cutscene, credits, title+
-            cleanupScene(shouldSaveState: false)
-            gameSceneDelegate?.confirmQuitTapped()
+            cleanupScene(shouldSaveState: false, fadeColor: .black) { [weak self] in
+                self?.gameSceneDelegate?.presentCatwalkScene()
+            }
         }
         else {
             newGame(level: currentLevel, didWin: true)

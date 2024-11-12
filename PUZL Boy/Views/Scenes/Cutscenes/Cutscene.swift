@@ -329,7 +329,7 @@ class Cutscene: SKScene {
     /**
      Initiates a button tap and cleans up the scene as it transitions out.
      - parameters:
-        - fadeDuration: the duration of thue fadeTransitionNode as it fades in.
+        - fadeDuration: the duration of the fadeTransitionNode as it fades in.
         - buttonTap: the type of button tap to play, if non-nil.
      */
     func cleanupScene(buttonTap: ButtonTap.ButtonType?, fadeDuration: TimeInterval?) {

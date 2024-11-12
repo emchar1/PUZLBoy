@@ -33,6 +33,7 @@ class CatwalkScene: SKScene {
     private var villain: Player!
     private var magmoorSprite: SKSpriteNode!
     private var backgroundNode: SKSpriteNode!
+    private var fadeNode: SKShapeNode!
     private var catwalkNode: SKShapeNode!
     private var catwalkPanels: [SKSpriteNode] = []
     
@@ -60,29 +61,9 @@ class CatwalkScene: SKScene {
         isMoving = false
         shouldDisableInput = false
         isRedShift = false
-
-        hero.sprite.removeAllActions()
-        elder0.sprite.removeAllActions()
-        elder1.sprite.removeAllActions()
-        elder2.sprite.removeAllActions()
-        princess.sprite.removeAllActions()
-        trainer.sprite.removeAllActions()
-        villain.sprite.removeAllActions()
-        magmoorSprite.removeAllActions()
-        catwalkNode.removeAllActions()
-        backgroundNode.removeAllActions()
-
-        hero.sprite.removeFromParent()
-        elder0.sprite.removeFromParent()
-        elder1.sprite.removeFromParent()
-        elder2.sprite.removeFromParent()
-        princess.sprite.removeFromParent()
-        trainer.sprite.removeFromParent()
-        villain.sprite.removeFromParent()
-        magmoorSprite.removeFromParent()
-        catwalkNode.removeFromParent()
-        backgroundNode.removeFromParent()
-
+        
+        removeAllActions()
+        removeAllChildren()
         removeFromParent()
         
         chatEngine = nil
@@ -94,6 +75,12 @@ class CatwalkScene: SKScene {
         backgroundNode = SKSpriteNode(texture: SKTexture(image: DayTheme.getSkyImage()))
         backgroundNode.size = size
         backgroundNode.anchorPoint = .zero
+        
+        fadeNode = SKShapeNode(rectOf: size)
+        fadeNode.position = CGPoint(x: size.width / 2, y: size.height / 2)
+        fadeNode.fillColor = .black
+        fadeNode.lineWidth = 0
+        fadeNode.zPosition = K.ZPosition.fadeTransitionNode
         
         catwalkNode = SKShapeNode(rectOf: CGSize(width: CGFloat(catwalkLength + 1) * panelSize + panelSpacing,
                                                  height: panelSize + 2 * panelSpacing))
@@ -162,6 +149,7 @@ class CatwalkScene: SKScene {
         super.didMove(to: view)
         
         addChild(backgroundNode)
+        addChild(fadeNode)
         addChild(magmoorSprite)
         addChild(catwalkNode)
         catwalkNode.addChild(hero.sprite)
@@ -177,7 +165,12 @@ class CatwalkScene: SKScene {
         }
         
         chatEngine.moveSprites(to: self)
-        playDialogue(panelIndex: currentPanelIndex)
+        
+        fadeNode.run(SKAction.fadeOut(withDuration: 2)) { [weak self] in
+            guard let self = self else { return }
+            
+            playDialogue(panelIndex: currentPanelIndex)
+        }
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -305,7 +298,7 @@ class CatwalkScene: SKScene {
             completion?()
         }
     }
-
+    
     private func shimmerPartyTiles() {
         for (i, catwalkPanel) in catwalkPanels.enumerated() {
             guard i > 0 && i < catwalkLength else { continue }
@@ -471,7 +464,7 @@ extension CatwalkScene: ChatEngineDelegate {
             SKAction.scale(to: scaleSize + bounceFactor, duration: duration),
             SKAction.scale(to: scaleSize, duration: duration),
         ]))
-
+        
         catwalkNode.addChild(swordSprite)
     }
     
@@ -508,7 +501,7 @@ extension CatwalkScene: ChatEngineDelegate {
         
         villain.sprite.run(animatePlayer(player: villain, type: .idle))
         villain.sprite.run(SKAction.fadeAlpha(to: 1, duration: 2))
-
+        
         catwalkNode.run(SKAction.moveBy(x: -(scaleSize.width + panelSpacing), y: 0, duration: 2))
     }
     
@@ -541,17 +534,17 @@ extension CatwalkScene: ChatEngineDelegate {
             SKAction.scaleX(to: hero.sprite.xScale / 4, y: hero.sprite.yScale / 4, duration: exitDuration),
             SKAction.fadeOut(withDuration: exitDuration)
         ])
-
+        
         hero.sprite.run(exitAction)
         
-        run(SKAction.sequence([
+        fadeNode.run(SKAction.sequence([
             SKAction.wait(forDuration: exitDuration),
-            SKAction.fadeOut(withDuration: 2)
+            SKAction.fadeIn(withDuration: 2)
         ])) { [weak self] in
             self?.cleanupScene()
             completion()
         }
-
+        
         AudioManager.shared.playSoundThenStop(for: "movetile\(Int.random(in: 1...3))", playForDuration: 0.2, fadeOut: 0.8)
     }
     
@@ -569,8 +562,9 @@ extension CatwalkScene: ChatEngineDelegate {
         //Preliminarty setup, first...
         elder.sprite.position = getHeroPosition(xPanelOffset: 0, yOffset: 20)
         elder.sprite.setScale(0)
+        elder.sprite.alpha = 1
         elder.sprite.run(animatePlayer(player: elder, type: .idle))
-
+        
         elder.sprite.run(SKAction.group([
             SKAction.scale(to: elderScale, duration: appearDuration),
             SKAction.scaleX(to: -elderScale, duration: appearDuration),
@@ -582,10 +576,13 @@ extension CatwalkScene: ChatEngineDelegate {
     private func despawnElderHelper(elder: Player) {
         let disappearDuration: TimeInterval = 0.5
         
-        elder.sprite.run(SKAction.group([
-            SKAction.scale(to: 0, duration: disappearDuration),
-            SKAction.rotate(byAngle: 2 * .pi, duration: disappearDuration),
-            SKAction.move(to: hero.sprite.position, duration: disappearDuration)
+        elder.sprite.run(SKAction.sequence([
+            SKAction.group([
+                SKAction.scale(to: 0, duration: disappearDuration),
+                SKAction.rotate(byAngle: 2 * .pi, duration: disappearDuration),
+                SKAction.move(to: hero.sprite.position, duration: disappearDuration)
+            ]),
+            SKAction.fadeOut(withDuration: 0)
         ]))
     }
     
@@ -595,7 +592,7 @@ extension CatwalkScene: ChatEngineDelegate {
         attackSprite.position = getHeroPosition(xPanelOffset: 1, yOffset: 0)
         attackSprite.zPosition = K.ZPosition.itemsAndEffects
         attackSprite.setScale(scale * (panelSize / attackSprite.size.width))
-
+        
         let animation = SKAction.sequence([
             SKAction.wait(forDuration: 0.25),
             SKAction.run {
@@ -662,7 +659,7 @@ extension CatwalkScene: ChatEngineDelegate {
         
         addChild(messageNode)
         addChild(messageSecondNode)
-                
+        
         messageNode.run(SKAction.wait(forDuration: fadeDuration), completion: completion)
         messageNode.run(SKAction.sequence([
             SKAction.group([
@@ -681,6 +678,7 @@ extension CatwalkScene: ChatEngineDelegate {
         ]))
         
         AudioManager.shared.playSoundThenStop(for: "magicheartbeatloop1", playForDuration: fadeDuration)
+        Haptics.shared.executeCustomPattern(pattern: .heartbeat)
     }
     
     private func shiftRedHelper(shouldShift: Bool, showMagmoorScary: Bool, fadeDuration: TimeInterval) {
@@ -716,7 +714,7 @@ extension CatwalkScene: ChatEngineDelegate {
             let colorizeNone = SKAction.colorize(withColorBlendFactor: 0, duration: fadeDuration)
             
             hero.sprite.run(colorizeNone)
-
+            
             magmoorSprite.removeAllActions()
             magmoorSprite.run(SKAction.fadeOut(withDuration: fadeDuration)) { [weak self] in
                 self?.updateBackgroundNode(fadeDuration: fadeDuration) {
@@ -728,7 +726,7 @@ extension CatwalkScene: ChatEngineDelegate {
                 catwalkPanel.removeAllActions()
                 catwalkPanel.run(colorizeNone)
             }
-
+            
             shimmerPartyTiles()
             AudioManager.shared.stopSound(for: "magicheartbeatloop1", fadeDuration: fadeDuration)
             AudioManager.shared.stopSound(for: "magicheartbeatloop2", fadeDuration: fadeDuration)

@@ -22,7 +22,7 @@ class Haptics {
     var engine: CHHapticEngine?
     
     enum Pattern {
-        case enemy, killEnemy, boulder, breakBoulder, marsh, sand, snow, lava, water, warp, thunder, enableVibration, statue
+        case enemy, killEnemy, boulder, breakBoulder, marsh, sand, snow, lava, water, warp, thunder, enableVibration, statue, heartbeat
     }
     
     
@@ -171,6 +171,18 @@ class Haptics {
                 
                 events.append(event)
             }
+        case .heartbeat:
+            let beat1 = CHHapticEvent(eventType: .hapticTransient,
+                                      parameters: [CHHapticEventParameter(parameterID: .hapticIntensity, value: 1),
+                                                   CHHapticEventParameter(parameterID: .hapticSharpness, value: 0.1)],
+                                      relativeTime: 0)
+            let beat2 = CHHapticEvent(eventType: .hapticTransient,
+                                      parameters: [CHHapticEventParameter(parameterID: .hapticIntensity, value: 0.8),
+                                                   CHHapticEventParameter(parameterID: .hapticSharpness, value: 0.3)],
+                                      relativeTime: 0.4)
+            
+            events.append(beat1)
+            events.append(beat2)
         }
         
         do {
