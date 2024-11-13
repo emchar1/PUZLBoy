@@ -690,12 +690,14 @@ class GameScene: SKScene {
         
         if let completion = completion {
             backgroundColor = fadeColor
+            AudioManager.shared.stopSound(for: AudioManager.shared.currentTheme.overworld, fadeDuration: 4)
             
             fadeNode.run(SKAction.sequence([
                 SKAction.fadeIn(withDuration: 2),
+                SKAction.wait(forDuration: 4),
                 SKAction.removeFromParent()
             ])) {
-                cleanup()
+                cleanup() //transition to endingMessage
                 completion()
             }
         }
@@ -1521,6 +1523,7 @@ extension GameScene: ChatEngineDelegate {
     
     func spawnEldersCatwalk() {}
     func despawnEldersCatwalk() {}
+    func spawnSingleElderCatwalk() {}
     func spawnPrincessCatwalk() {}
     func despawnPrincessCatwalk() {}
     func spawnMarlinCatwalk() {}

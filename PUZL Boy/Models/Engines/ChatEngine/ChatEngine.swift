@@ -25,6 +25,7 @@ protocol ChatEngineDelegate: AnyObject {
     //Catwalk
     func spawnEldersCatwalk()
     func despawnEldersCatwalk()
+    func spawnSingleElderCatwalk()
     func spawnPrincessCatwalk()
     func despawnPrincessCatwalk()
     func spawnMarlinCatwalk()
@@ -664,9 +665,9 @@ extension ChatEngine {
             dialoguePlayed[201] = false
         }
         else {
-            // TODO: - AGE OF BALANCE - CATWALK Dialogue
+            //AGE OF BALANCE - CATWALK Dialogue
             
-            dialoguePlayed[-999] = false
+            dialoguePlayed[-999] = false //Called if PUZL Boy tries to backtrack.
             dialoguePlayed[-1000] = false
             dialoguePlayed[-1006] = false
             dialoguePlayed[-1010] = false
@@ -1020,7 +1021,7 @@ extension ChatEngine {
             sendChatArray(items: [
                 ChatItem(profile: .melchior, chat: "The road ahead is dangerous. There is no turning back. Are you ready to face the darkness?"),
                 ChatItem(profile: .hero, imgPos: .left, chat: "\(leftButton0 ? "I'm ready, let's go!!" : "No time like the present! What have we got to lose, right?")"),
-                ChatItem(profile: .magmus, chat: "Be warned: Magmoor seeks to destroy everything and everyone in his path, especially the ones who banished him to the NETHER REALM hundreds of years ago."),
+                ChatItem(profile: .magmus, chat: "Be warned: Magmoor seeks to destroy everything and everyone in his path, especially us for banishing him to the NETHER REALM some hundred years ago."),
                 ChatItem(profile: .hero, imgPos: .left, chat: "\(leftButton0 ? "So... technically this is your fight. Can I just sit and watch from the sidelines, or..." : "I've made it this far, I'm not backing down now!")"),
                 ChatItem(profile: .magmus, chat: "Do not underestimate our adversary. He has the ability to wipe out all life from existence! It will take our combined strength to vanquish him."),
                 ChatItem(profile: .melchior, chat: "Though he may seem beyond powerful, he has his weaknesses. We did, of course, teach him everything he knows."),
@@ -1070,7 +1071,7 @@ extension ChatEngine {
             
             sendChatArray(shouldSkipDim: true, items: [
                 ChatItem(profile: .trainer, chat: "you have doomed us all, puzl boy! the day of reckoning is at hand."),
-                ChatItem(profile: .hero, imgPos: .left, chat: "I didn't do it! I'm just a kid. It's not my fault!!"),
+                ChatItem(profile: .hero, imgPos: .left, chat: "I didn't do anything wrong! I'm just a kid. It's not my fault!!"),
                 ChatItem(profile: .magmus, chat: "Disregard this false imagery, child! You must not succumb to his deception. Clarity is needed in the challenge ahead.")
             ]) { [weak self] in
                 self?.delegate?.despawnMarlinCatwalk()
@@ -1091,10 +1092,13 @@ extension ChatEngine {
             delegate?.spawnMagmoorCatwalk()
             
             sendChatArray(shouldSkipDim: true, items: [
-                ChatItem(profile: .villain, chat: "You are too late, Earth traveler. The end has begun."),
+                ChatItem(profile: .villain, chat: "You encroach upon my territory, Earth traveler! Yet you are too late. The end has begun!!") { [weak self] in
+                    self?.delegate?.spawnSingleElderCatwalk()
+                },
                 ChatItem(profile: .melchior, imgPos: .left, chat: "You will regret ever entering this realm, Magmoor! Your reign of terror ends here!!"),
                 ChatItem(profile: .hero, imgPos: .left, chat: "I matter! I am enough!!!")
             ]) { [weak self] in
+                self?.delegate?.despawnEldersCatwalk()
                 self?.handleDialogueCompletion(level: level, completion: completion)
             }
         case -1036:
