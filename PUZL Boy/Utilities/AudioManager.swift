@@ -475,6 +475,13 @@ class AudioManager {
         }
     }
     
-    
+    /**
+     Gets the AudioItem for the given filename.
+     - parameter filename: String name of the file in question.
+     - returns: an AudioItem, for which to manipulate.
+     */
+    func getAudioItem(filename: String) -> AudioItem? {
+        return audioItems[filename]
+    }
     
 }

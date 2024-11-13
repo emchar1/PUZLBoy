@@ -1099,7 +1099,6 @@ extension ChatEngine {
             }
         case -1036:
             delegate?.despawnMagmoorCatwalk() { [weak self] in
-                self?.delegate?.shiftRedCatwalk(shouldShift: false, showMagmoorScary: true)
                 self?.handleDialogueCompletion(level: level, completion: completion)
             }
         case -1040:
@@ -1206,7 +1205,6 @@ extension ChatEngine {
                 ChatItem(profile: .villain, chat: "MYSTERIOUS FIGURE: I'll be seeing ya shortly."),
                 ChatItem(profile: .trainer, imgPos: .left, chat: "..........no. It can't be..")
             ]) { [weak self] in
-                
                 AudioManager.shared.stopSound(for: "magicheartbeatloop2", fadeDuration: 5)
                 
                 self?.chatBackgroundSprite.run(SKAction.wait(forDuration: 3)) {

@@ -11,6 +11,7 @@ class CatwalkScene: SKScene {
     
     // MARK: - Properties
     
+    private let catwalkOverworld = "magicdoomloop"
     private let panelCount: Int = 5
     private let catwalkLength: Int = 40
     private let panelSpacing: CGFloat = 4
@@ -21,7 +22,7 @@ class CatwalkScene: SKScene {
     private var catwalkPanelNamePrefix: String { "catwalkPanel\(catwalkPanelNameDelimiter)" }
     private var currentPanelIndex: Int = 0
     private var isMoving: Bool = false
-    private var shouldDisableInput: Bool = false
+    private var shouldDisableInput: Bool = true
     private var isRedShift: Bool = false
     
     private var hero: Player!
@@ -59,7 +60,7 @@ class CatwalkScene: SKScene {
     func cleanupScene() {
         currentPanelIndex = 0
         isMoving = false
-        shouldDisableInput = false
+        shouldDisableInput = true
         isRedShift = false
         
         removeAllActions()
@@ -171,6 +172,8 @@ class CatwalkScene: SKScene {
             
             playDialogue(panelIndex: currentPanelIndex)
         }
+        
+        AudioManager.shared.playSound(for: catwalkOverworld, fadeIn: 4.5)
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -219,7 +222,7 @@ class CatwalkScene: SKScene {
         }
         
         let didReachExit = currentPanelIndex >= catwalkLength - 1
-        let moveDuration: TimeInterval = isRedShift ? 2 : (didReachExit ? 1.5 : 1)
+        let moveDuration: TimeInterval = isRedShift ? 2 : 1
         let moveDistance: CGFloat = scaleSize.width + panelSpacing
         let runSound = didReachExit ? "movewalk" : "movetile\(Int.random(in: 1...3))"
         
@@ -528,7 +531,12 @@ extension CatwalkScene: ChatEngineDelegate {
     
     // TODO: - Build out exitCatwalk()
     func exitCatwalk(completion: @escaping () -> Void) {
+        let audioItem = AudioManager.shared.getAudioItem(filename: "magicheartbeatloop2")
+        let audioItemTimeRemaining: TimeInterval = audioItem != nil ? audioItem!.player.duration - audioItem!.player.currentTime : 0
+        let audioItemEnd: TimeInterval = (audioItem != nil ? audioItem!.player.duration : 0) + audioItemTimeRemaining - 0.1
+        
         let exitDuration: TimeInterval = 0.5
+        let fadeDuration: TimeInterval = 2
         let exitAction = SKAction.group([
             animatePlayer(player: hero, type: .run),
             SKAction.scaleX(to: hero.sprite.xScale / 4, y: hero.sprite.yScale / 4, duration: exitDuration),
@@ -539,13 +547,20 @@ extension CatwalkScene: ChatEngineDelegate {
         
         fadeNode.run(SKAction.sequence([
             SKAction.wait(forDuration: exitDuration),
-            SKAction.fadeIn(withDuration: 2)
-        ])) { [weak self] in
+            SKAction.fadeIn(withDuration: fadeDuration)
+        ]))
+        
+        run(SKAction.wait(forDuration: audioItemEnd)) { [weak self] in
+            audioItem?.player.stop()
+
             self?.cleanupScene()
             completion()
         }
         
         AudioManager.shared.playSoundThenStop(for: "movetile\(Int.random(in: 1...3))", playForDuration: 0.2, fadeOut: 0.8)
+        AudioManager.shared.stopSound(for: catwalkOverworld, fadeDuration: fadeDuration * 2)
+        AudioManager.shared.stopSound(for: "magmoorcreepypulse", fadeDuration: fadeDuration * 2)
+        AudioManager.shared.stopSound(for: "magmoorcreepystrings", fadeDuration: fadeDuration * 2)
     }
     
     
@@ -604,14 +619,19 @@ extension CatwalkScene: ChatEngineDelegate {
         ])
         
         catwalkNode.addChild(attackSprite)
-        attackSprite.run(animation)
         
-        villain.sprite.run(SKAction.group([
-            SKAction.scale(by: 1.25, duration: 2),
-            SKAction.fadeOut(withDuration: 2)
-        ])) {
+        attackSprite.run(animation) { [weak self] in
             AudioManager.shared.playSound(for: "scarylaugh")
-            completion()
+
+            self?.villain.sprite.run(SKAction.group([
+                SKAction.scale(by: 1.25, duration: 2),
+                SKAction.fadeOut(withDuration: 2)
+            ])) {
+                AudioManager.shared.playSound(for: "magmoorcreepypulse")
+                AudioManager.shared.playSound(for: "magmoorcreepystrings")
+
+                completion()
+            }
         }
     }
     
@@ -674,9 +694,15 @@ extension CatwalkScene: ChatEngineDelegate {
                 SKAction.scale(by: 1.25, duration: fadeDuration * 3),
                 SKAction.fadeOut(withDuration: fadeDuration * 3)
             ]),
-            SKAction.removeFromParent()
+            SKAction.removeFromParent(),
+            SKAction.run { [weak self] in
+                guard let self = self else { return }
+                
+                AudioManager.shared.adjustVolume(to: 1, for: catwalkOverworld, fadeDuration: fadeDuration * 2.5)
+            }
         ]))
         
+        AudioManager.shared.adjustVolume(to: 0.1, for: catwalkOverworld)
         AudioManager.shared.playSoundThenStop(for: "magicheartbeatloop1", playForDuration: fadeDuration)
         Haptics.shared.executeCustomPattern(pattern: .heartbeat)
     }
@@ -696,7 +722,7 @@ extension CatwalkScene: ChatEngineDelegate {
                     SKAction.wait(forDuration: fadeDuration),
                     SKAction.group([
                         SKAction.fadeIn(withDuration: fadeDuration * 10),
-                        SKAction.scale(to: 1.25, duration: fadeDuration * 20)
+                        SKAction.scale(to: 1.5, duration: fadeDuration * 30)
                     ])
                 ]))
             }
@@ -708,6 +734,7 @@ extension CatwalkScene: ChatEngineDelegate {
             
             if !AudioManager.shared.isPlaying(audioKey: "magicheartbeatloop\(heartbeatIndex)") {
                 AudioManager.shared.playSound(for: "magicheartbeatloop\(heartbeatIndex)")
+                AudioManager.shared.adjustVolume(to: 0.1, for: catwalkOverworld)
             }
         }
         else {
@@ -717,9 +744,13 @@ extension CatwalkScene: ChatEngineDelegate {
             
             magmoorSprite.removeAllActions()
             magmoorSprite.run(SKAction.fadeOut(withDuration: fadeDuration)) { [weak self] in
-                self?.updateBackgroundNode(fadeDuration: fadeDuration) {
-                    self?.isRedShift = false
+                guard let self = self else { return }
+                
+                updateBackgroundNode(fadeDuration: fadeDuration) {
+                    self.isRedShift = false
                 }
+                
+                AudioManager.shared.adjustVolume(to: 1, for: catwalkOverworld, fadeDuration: fadeDuration * 2.5)
             }
             
             for catwalkPanel in catwalkPanels {

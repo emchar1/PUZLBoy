@@ -19,20 +19,20 @@
 	<key>STORAGE_BUCKET</key>
 	<string>puzl-boy.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
-	<false></false>
+	<false/>
 	<key>IS_ANALYTICS_ENABLED</key>
-	<false></false>
+	<false/>
 	<key>IS_APPINVITE_ENABLED</key>
-	<true></true>
+	<true/>
 	<key>IS_GCM_ENABLED</key>
-	<true></true>
+	<true/>
 	<key>IS_SIGNIN_ENABLED</key>
-	<true></true>
+	<true/>
 	<key>GOOGLE_APP_ID</key>
 	<string>1:162402967412:ios:4168137c4479a05f10d621</string>
 	<key>DATABASE_URL</key>
 	<string>https://puzl-boy-default-rtdb.firebaseio.com</string>
 	<key>ADMOB_APP_ID</key>
-	<string>ca-app-pub-9970112736079022~3898881122</string>
+	<string>ca-app-pub-3047242308312153~8487486800</string>
 </dict>
 </plist>

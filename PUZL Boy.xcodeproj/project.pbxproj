@@ -157,7 +157,6 @@
 		EA8C60702C068E0800DED3C7 /* enemyroar.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA8C60632C068E0700DED3C7 /* enemyroar.mp3 */; };
 		EA8C60712C068E0800DED3C7 /* overworldageofruin.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA8C60642C068E0800DED3C7 /* overworldageofruin.mp3 */; };
 		EA8C60722C068E0800DED3C7 /* magichorrorimpact.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA8C60652C068E0800DED3C7 /* magichorrorimpact.mp3 */; };
-		EA8C60732C068E0800DED3C7 /* magicheartbeatloop2.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA8C60662C068E0800DED3C7 /* magicheartbeatloop2.mp3 */; };
 		EA8C60742C068E0800DED3C7 /* chatopenvillain.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA8C60672C068E0800DED3C7 /* chatopenvillain.mp3 */; };
 		EA8C60752C068E0800DED3C7 /* gameoverageofruin.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA8C60682C068E0800DED3C7 /* gameoverageofruin.mp3 */; };
 		EA8C607A2C07CB1D00DED3C7 /* lightsoff.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA8C60782C07CB1C00DED3C7 /* lightsoff.mp3 */; };
@@ -361,6 +360,8 @@
 		EAF8CA0F2C220DE900C6E92B /* MagicBlastLiteParticles.sks in Resources */ = {isa = PBXBuildFile; fileRef = EAF8CA0E2C220DE900C6E92B /* MagicBlastLiteParticles.sks */; };
 		EAFA6A7729DE13EB002287C2 /* boyimpact.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAFA6A7529DE13EB002287C2 /* boyimpact.mp3 */; };
 		EAFC9A5529FCD44C002792F2 /* SettingsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAFC9A5429FCD44C002792F2 /* SettingsManager.swift */; };
+		EAFE35942CE44DA000289ADF /* EndingFakeScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAFE35932CE44DA000289ADF /* EndingFakeScene.swift */; };
+		EAFE35962CE48BB600289ADF /* magicheartbeatloop2.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAFE35952CE48BB600289ADF /* magicheartbeatloop2.mp3 */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -511,7 +512,6 @@
 		EA8C60632C068E0700DED3C7 /* enemyroar.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = enemyroar.mp3; sourceTree = "<group>"; };
 		EA8C60642C068E0800DED3C7 /* overworldageofruin.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = overworldageofruin.mp3; sourceTree = "<group>"; };
 		EA8C60652C068E0800DED3C7 /* magichorrorimpact.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = magichorrorimpact.mp3; sourceTree = "<group>"; };
-		EA8C60662C068E0800DED3C7 /* magicheartbeatloop2.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = magicheartbeatloop2.mp3; sourceTree = "<group>"; };
 		EA8C60672C068E0800DED3C7 /* chatopenvillain.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = chatopenvillain.mp3; sourceTree = "<group>"; };
 		EA8C60682C068E0800DED3C7 /* gameoverageofruin.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = gameoverageofruin.mp3; sourceTree = "<group>"; };
 		EA8C60782C07CB1C00DED3C7 /* lightsoff.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = lightsoff.mp3; sourceTree = "<group>"; };
@@ -712,6 +712,8 @@
 		EAF8CA0E2C220DE900C6E92B /* MagicBlastLiteParticles.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = MagicBlastLiteParticles.sks; sourceTree = "<group>"; };
 		EAFA6A7529DE13EB002287C2 /* boyimpact.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = boyimpact.mp3; sourceTree = "<group>"; };
 		EAFC9A5429FCD44C002792F2 /* SettingsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsManager.swift; sourceTree = "<group>"; };
+		EAFE35932CE44DA000289ADF /* EndingFakeScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EndingFakeScene.swift; sourceTree = "<group>"; };
+		EAFE35952CE48BB600289ADF /* magicheartbeatloop2.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = magicheartbeatloop2.mp3; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1074,7 +1076,7 @@
 				EAE43D9C2C48AA4700E6DB3C /* magicelderexplosion.mp3 */,
 				EAE43DA02C48AA8900E6DB3C /* magicelderreduce.mp3 */,
 				EA8C60612C068E0700DED3C7 /* magicheartbeatloop1.mp3 */,
-				EA8C60662C068E0800DED3C7 /* magicheartbeatloop2.mp3 */,
+				EAFE35952CE48BB600289ADF /* magicheartbeatloop2.mp3 */,
 				EA8C60652C068E0800DED3C7 /* magichorrorimpact.mp3 */,
 				EA9D6A532B48E3B40004187B /* magicteleport.mp3 */,
 				EAE43D962C48A93E00E6DB3C /* magicteleport2.mp3 */,
@@ -1273,6 +1275,7 @@
 			isa = PBXGroup;
 			children = (
 				EAAB41722CB6378E00BBFA75 /* CatwalkScene.swift */,
+				EAFE35932CE44DA000289ADF /* EndingFakeScene.swift */,
 			);
 			path = "Final Battle";
 			sourceTree = "<group>";
@@ -1577,7 +1580,6 @@
 				EAEF2F022B4F5C3100AD8459 /* thunderrumble.mp3 in Resources */,
 				EAAB416A2CB2314200BBFA75 /* MagicPrincessExplode3Particles.sks in Resources */,
 				EABE795F2ACBB83A00689C55 /* DragonFireLite.sks in Resources */,
-				EA8C60732C068E0800DED3C7 /* magicheartbeatloop2.mp3 in Resources */,
 				EA95D18E2945A0200061059C /* LuckiestGuy-Regular.ttf in Resources */,
 				EA8C606D2C068E0800DED3C7 /* realmtransition.mp3 in Resources */,
 				EA95D1A4294691820061059C /* boygrunt2.mp3 in Resources */,
@@ -1591,6 +1593,7 @@
 				EA8C606F2C068E0800DED3C7 /* chatopenprincess.mp3 in Resources */,
 				EA94E87329C0DE2C009F2614 /* movetile3.mp3 in Resources */,
 				EA74F9D02BA17BDE002CE6B2 /* InBetweenParticles.sks in Resources */,
+				EAFE35962CE48BB600289ADF /* magicheartbeatloop2.mp3 in Resources */,
 				EAD19A1D2A9C14B500A07A63 /* PoisonBubblesParticles.sks in Resources */,
 				EA9D6A642B48ED0F0004187B /* ageofruin.mp3 in Resources */,
 				EA3467A929A8C6CA002DDA02 /* chatopen.mp3 in Resources */,
@@ -1716,6 +1719,7 @@
 				EA95D20E2962C8AD0061059C /* AchievementSpeedDemon.swift in Sources */,
 				EA01BB612A10746800EAB70B /* ButtonTap.swift in Sources */,
 				EA9DFF0029FE481300D02683 /* SettingsPage.swift in Sources */,
+				EAFE35942CE44DA000289ADF /* EndingFakeScene.swift in Sources */,
 				EA9DFF022A0084F600D02683 /* SettingsRadioNode.swift in Sources */,
 				EABE79572AC9F55C00689C55 /* CloseButtonSprite.swift in Sources */,
 				EAE2155C2ABE38FC0090735A /* Extension+CGFloat.swift in Sources */,
