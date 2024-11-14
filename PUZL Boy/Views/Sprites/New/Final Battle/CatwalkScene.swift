@@ -146,9 +146,9 @@ class CatwalkScene: SKScene {
         magmoorSprite.zPosition = 2
         
         for i in 0...catwalkLength {
-            let image: String = i == 0 ? "start" : (i == catwalkLength ? "endOpen" : "partytile")
+            let image: String = i == 0 ? "start" : (i == catwalkLength ? "endClosed" : "partytile")
             
-            let catwalkPanel = SKSpriteNode(imageNamed: image)
+            let catwalkPanel = SKSpriteNode(texture: SKTexture(imageNamed: image))
             catwalkPanel.scale(to: scaleSize)
             catwalkPanel.position = CGPoint(
                 x: -catwalkNode.frame.size.width / 2 + catwalkPanel.size.width * CGFloat(i) + panelSpacing * CGFloat(i + 1),
@@ -191,7 +191,7 @@ class CatwalkScene: SKScene {
         
         chatEngine.moveSprites(to: self)
         
-        fadeNode.run(SKAction.fadeOut(withDuration: 2)) { [weak self] in
+        fadeNode.run(SKAction.fadeOut(withDuration: 4.5)) { [weak self] in
             guard let self = self else { return }
             
             playDialogue(panelIndex: currentPanelIndex)
@@ -372,12 +372,12 @@ extension CatwalkScene: ChatEngineDelegate {
     
     // MARK: - Catwalk Protocol Functions
     
-    func spawnEldersCatwalk() {
+    func spawnEldersCatwalk(faceLeft: Bool) {
         hero.sprite.xScale = abs(hero.sprite.xScale)
         
-        spawnElderHelper(elder: elder0, offset: CGPoint(x: 200, y: 0))
-        spawnElderHelper(elder: elder1, offset: CGPoint(x: 350, y: 100))
-        spawnElderHelper(elder: elder2, offset: CGPoint(x: 350, y: -100))
+        spawnElderHelper(elder: elder0, faceLeft: faceLeft, offset: faceLeft ? CGPoint(x: 200, y: 0) : CGPoint(x: 175, y: 0))
+        spawnElderHelper(elder: elder1, faceLeft: faceLeft, offset: faceLeft ? CGPoint(x: 350, y: 100) : CGPoint(x: 90, y: 125))
+        spawnElderHelper(elder: elder2, faceLeft: faceLeft, offset: faceLeft ? CGPoint(x: 350, y: -100) : CGPoint(x: 90, y: -125))
     }
     
     func despawnEldersCatwalk() {
@@ -385,11 +385,7 @@ extension CatwalkScene: ChatEngineDelegate {
         despawnElderHelper(elder: elder1)
         despawnElderHelper(elder: elder2)
     }
-    
-    func spawnSingleElderCatwalk() {
-        spawnElderHelper(elder: elder0, faceLeft: false, offset: CGPoint(x: 200, y: 0))
-    }
-    
+        
     func spawnPrincessCatwalk() {
         let originalScale: CGFloat = Player.getGameboardScale(panelSize: panelSize) * princess.scaleMultiplier
         let alphaPersistence: CGFloat = 0.5
@@ -588,6 +584,8 @@ extension CatwalkScene: ChatEngineDelegate {
         
         AudioManager.shared.playSoundThenStop(for: "movetile\(Int.random(in: 1...3))", playForDuration: 0.2, fadeOut: 0.8)
         AudioManager.shared.stopSound(for: catwalkOverworld, fadeDuration: fadeDuration * 2)
+        AudioManager.shared.stopSound(for: "magmoorcreepypulse", fadeDuration: fadeDuration * 2)
+        AudioManager.shared.stopSound(for: "magmoorcreepystrings", fadeDuration: fadeDuration * 2)
     }
     
     
@@ -649,11 +647,22 @@ extension CatwalkScene: ChatEngineDelegate {
         
         attackSprite.run(animation) { [weak self] in
             AudioManager.shared.playSound(for: "scarylaugh")
-
+            
             self?.villain.sprite.run(SKAction.group([
                 SKAction.scale(by: 1.25, duration: 2),
                 SKAction.fadeOut(withDuration: 2)
-            ]), completion: completion)
+            ])) { [weak self] in
+                if let endClosed = self?.catwalkPanels.last as? SKSpriteNode {
+                    endClosed.run(SKAction.setTexture(SKTexture(imageNamed: "endOpen")))
+                    
+                    AudioManager.shared.playSound(for: "dooropen")
+                }
+                
+                AudioManager.shared.playSound(for: "magmoorcreepypulse")
+                AudioManager.shared.playSound(for: "magmoorcreepystrings")
+
+                completion()
+            }
         }
     }
     

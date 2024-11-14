@@ -694,7 +694,7 @@ class GameScene: SKScene {
             
             fadeNode.run(SKAction.sequence([
                 SKAction.fadeIn(withDuration: 2),
-                SKAction.wait(forDuration: 4),
+                SKAction.wait(forDuration: 2),
                 SKAction.removeFromParent()
             ])) {
                 cleanup() //transition to endingMessage
@@ -793,7 +793,7 @@ extension GameScene: GameEngineDelegate {
             saveState(levelStatsItem: levelStatsItem)
             
             // TODO: - 10/7/24 Add end game level, cutscene, credits, title+
-            cleanupScene(shouldSaveState: false, fadeColor: .black) { [weak self] in
+            cleanupScene(shouldSaveState: false) { [weak self] in
                 self?.gameSceneDelegate?.presentCatwalkScene()
             }
         }
@@ -1521,9 +1521,8 @@ extension GameScene: ChatEngineDelegate {
     
     // MARK: - Catwalk UNUSED
     
-    func spawnEldersCatwalk() {}
+    func spawnEldersCatwalk(faceLeft: Bool) {}
     func despawnEldersCatwalk() {}
-    func spawnSingleElderCatwalk() {}
     func spawnPrincessCatwalk() {}
     func despawnPrincessCatwalk() {}
     func spawnMarlinCatwalk() {}

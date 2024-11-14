@@ -60,10 +60,15 @@ class GameViewController: UIViewController {
         
 //        // FIXME: - DEBUG: Final Cutscene TEST
 //        FIRManager.initializeFirestore() { [weak self] saveStateMode, error in
-//            let catwalkScene = CatwalkScene(size: K.ScreenDimensions.size)
+//            let endingFake = EndingFakeScene(size: K.ScreenDimensions.size)
 //            self?.skView.ignoresSiblingOrder = true
-//            self?.skView.presentScene(catwalkScene)
+//            self?.skView.presentScene(endingFake)
 //            self?.view = self?.skView
+//            
+//            endingFake.animateScene {
+//                let catwalk = CatwalkScene(size: K.ScreenDimensions.size)
+//                self?.skView.presentScene(catwalk)
+//            }
 //        }
         
         
@@ -223,9 +228,13 @@ extension GameViewController: GameSceneDelegate {
     }
     
     func presentCatwalkScene() {
-        let catwalkScene = CatwalkScene(size: K.ScreenDimensions.size)
+        let endingFakeScene = EndingFakeScene(size: K.ScreenDimensions.size)
+        skView.presentScene(endingFakeScene, transition: SKTransition.fade(with: .white, duration: 0))
         
-        skView.presentScene(catwalkScene, transition: SKTransition.fade(with: .black, duration: 0))
+        endingFakeScene.animateScene { [weak self] in
+            let catwalkScene = CatwalkScene(size: K.ScreenDimensions.size)
+            self?.skView.presentScene(catwalkScene, transition: SKTransition.fade(with: .black, duration: 0))
+        }
     }
     
     func presentChatDialogueCutscene(level: Int, cutscene: Cutscene) {
