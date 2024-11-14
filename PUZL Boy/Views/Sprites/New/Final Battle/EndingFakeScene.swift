@@ -105,6 +105,6 @@ class EndingFakeScene: SKScene {
             SKAction.fadeIn(withDuration: fadeDuration * 2)
         ]))
         
-        letterbox.show(duration: fadeDuration * 4, delay: fadeDuration * 8, completion: completion)
+        letterbox.show(duration: fadeDuration * 2, delay: fadeDuration * 10, completion: completion)
     }
 }

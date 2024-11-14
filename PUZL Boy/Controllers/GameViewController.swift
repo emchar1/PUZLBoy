@@ -61,14 +61,15 @@ class GameViewController: UIViewController {
 //        // FIXME: - DEBUG: Final Cutscene TEST
 //        FIRManager.initializeFirestore() { [weak self] saveStateMode, error in
 //            let endingFake = EndingFakeScene(size: K.ScreenDimensions.size)
-//            self?.skView.ignoresSiblingOrder = true
 //            self?.skView.presentScene(endingFake)
-//            self?.view = self?.skView
-//            
+//
 //            endingFake.animateScene {
 //                let catwalk = CatwalkScene(size: K.ScreenDimensions.size)
 //                self?.skView.presentScene(catwalk)
 //            }
+//
+//            self?.skView.ignoresSiblingOrder = true
+//            self?.view = self?.skView
 //        }
         
         

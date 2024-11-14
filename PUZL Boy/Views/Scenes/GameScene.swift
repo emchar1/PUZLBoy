@@ -1528,12 +1528,14 @@ extension GameScene: ChatEngineDelegate {
     func spawnMarlinCatwalk() {}
     func despawnMarlinCatwalk() {}
     func spawnSwordCatwalk() {}
+    func spawnTikiCatwalk(statue: ChatItem.ChatProfile, fadeIn: TimeInterval) {}
+    func despawnTikiCatwalk(fadeOut: TimeInterval) {}
     func despawnSwordCatwalk() {}
     func spawnMagmoorCatwalk() {}
     func despawnMagmoorCatwalk(completion: @escaping () -> Void) {}
     func playMusicCatwalk(music: String, startingVolume: Float, fadeIn: TimeInterval) {}
     func stopMusicCatwalk(music: String, fadeOut: TimeInterval) {}
-    func flashRedCatwalk(message: String, completion: @escaping () -> Void) {}
+    func flashRedCatwalk(message: String, secondaryMessages: [String], completion: @escaping () -> Void) {}
     func shiftRedCatwalk(shouldShift: Bool, showMagmoorScary: Bool) {}
     func exitCatwalk(completion: @escaping () -> Void) {}
     

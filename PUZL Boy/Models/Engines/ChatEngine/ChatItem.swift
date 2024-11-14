@@ -74,7 +74,7 @@ struct ChatItem {
         case .blankvillain:     texture = nil
         case .blankprincess:    texture = nil
         case .blankelders:      texture = nil
-        case .allelders:           texture = SKTexture(imageNamed: "allElders")
+        case .allelders:        texture = SKTexture(imageNamed: "allElders")
         case .merton:           texture = SKTexture(imageNamed: "merton")
         case .magmus:           texture = SKTexture(imageNamed: "magmus")
         case .melchior:         texture = SKTexture(imageNamed: "melchior")
@@ -82,7 +82,7 @@ struct ChatItem {
         case .statue1:          texture = SKTexture(imageNamed: "chatStatue1")
         case .statue2:          texture = SKTexture(imageNamed: "chatStatue2")
         case .statue3:          texture = SKTexture(imageNamed: "chatStatue3")
-        case .statue3b:          texture = SKTexture(imageNamed: "chatStatue3b")
+        case .statue3b:         texture = SKTexture(imageNamed: "chatStatue3b")
         case .statue4:          texture = SKTexture(imageNamed: "chatStatue4")
         case .statue5:          texture = SKTexture(imageNamed: "chatStatue5")
         }
