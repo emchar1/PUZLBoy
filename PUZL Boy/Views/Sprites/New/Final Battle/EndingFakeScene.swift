@@ -35,7 +35,7 @@ class EndingFakeScene: SKScene {
         
         fadeNode = SKShapeNode(rectOf: size)
         fadeNode.position = CGPoint(x: size.width / 2, y: size.height / 2)
-        fadeNode.fillColor = .black.lightenColor(factor: 2)
+        fadeNode.fillColor = .black.lightenColor(factor: 3)
         fadeNode.lineWidth = 0
         fadeNode.alpha = 0
         fadeNode.zPosition = K.ZPosition.fadeTransitionNode

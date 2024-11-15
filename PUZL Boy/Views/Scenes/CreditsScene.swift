@@ -142,7 +142,7 @@ class CreditsScene: SKScene {
         headingLabel.numberOfLines = 0
         headingLabel.fontName = UIFont.chatFont
         headingLabel.fontSize = UIFont.chatFontSizeLarge
-        headingLabel.fontColor = UIFont.chatFontColor
+        headingLabel.fontColor = .cyan
         headingLabel.alpha = 0
         headingLabel.zPosition = K.ZPosition.itemsPoints
         headingLabel.addDropShadow()
@@ -232,8 +232,8 @@ class CreditsScene: SKScene {
         }
         else {
             setLabels(headingText: entities[currentIndex].headingText,
-                                subheadingTexts: entities[currentIndex].subheadingTexts,
-                                subheadingAction: entities[currentIndex].subheadingAction) { [weak self] in
+                      subheadingTexts: entities[currentIndex].subheadingTexts,
+                      subheadingAction: entities[currentIndex].subheadingAction) { [weak self] in
                 entities[currentIndex].handler?()
 
                 //Recursion!!
@@ -281,23 +281,31 @@ class CreditsScene: SKScene {
                 labelNode.verticalAlignmentMode = .center
                 labelNode.addTripleShadow(shadow1Color: skyColor.first, shadow2Color: skyColor.first, shadow3Color: skyColor.first)
                 labelNode.showShadow()
+                labelNode.name = "puzlLabel"
+                
+                addChild(labelNode)
+                
+                subheadingLabels.append(labelNode)
             }
             else if text == "Boy" {
-                labelNode.position = headingLabel.position + CGPoint(x: UIFont.gameFontSizeExtraLarge,
-                                                                     y: -CGFloat(i) * UIFont.gameFontSizeExtraLarge * 2 / 5)
+                labelNode.position = CGPoint(x: UIFont.gameFontSizeExtraLarge * 0.57, y: -4)
                 labelNode.fontColor = skyColor.second
-                labelNode.fontSize = UIFont.gameFontSizeExtraLarge * 4 / 5
+                labelNode.fontSize = UIFont.gameFontSizeExtraLarge * 4/5
+                labelNode.alpha = 1
                 labelNode.zRotation = .pi / 12
                 labelNode.zPosition += 5
                 labelNode.addDropShadow()
+                
+                if let puzlNode = self.childNode(withName: "puzlLabel") {
+                    puzlNode.addChild(labelNode)
+                }
             }
             else {
                 labelNode.addDropShadow()
+
+                addChild(labelNode)
+                subheadingLabels.append(labelNode)
             }
-            
-            subheadingLabels.append(labelNode)
-            
-            addChild(labelNode)
         }
     }
     

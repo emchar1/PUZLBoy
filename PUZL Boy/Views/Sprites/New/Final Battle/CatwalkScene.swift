@@ -782,7 +782,6 @@ extension CatwalkScene: ChatEngineDelegate {
         let animation = SKAction.sequence([
             SKAction.wait(forDuration: 0.25),
             SKAction.run {
-                AudioManager.shared.playSound(for: "boyattack\(Int.random(in: 1...3))")
                 AudioManager.shared.playSound(for: "chatclose")
             },
             SKAction.rotate(byAngle: -3 * .pi / 2, duration: 0.25),
@@ -813,6 +812,7 @@ extension CatwalkScene: ChatEngineDelegate {
         }
         
         shiftCatwalkNode(panels: 1, moveDuration: fadeDuration / 8)
+        AudioManager.shared.playSound(for: "boyattack\(Int.random(in: 1...3))")
     }
     
     private func flashRedHelper(message: String, secondaryMessages: [String], completion: @escaping () -> Void) {
