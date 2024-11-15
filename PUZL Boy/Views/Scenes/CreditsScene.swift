@@ -142,7 +142,7 @@ class CreditsScene: SKScene {
         headingLabel.numberOfLines = 0
         headingLabel.fontName = UIFont.chatFont
         headingLabel.fontSize = UIFont.chatFontSizeLarge
-        headingLabel.fontColor = .cyan
+        headingLabel.fontColor = .cyan.lightenColor(factor: 2)
         headingLabel.alpha = 0
         headingLabel.zPosition = K.ZPosition.itemsPoints
         headingLabel.addDropShadow()
@@ -400,13 +400,13 @@ class CreditsScene: SKScene {
     }
     
     private func animateSpinZoomAction(scale: CGFloat) -> SKAction {
-        let spinDuration: TimeInterval = 0.5
+        let spinDuration: TimeInterval = 1
         
         return SKAction.sequence([
             SKAction.scale(to: 0, duration: 0),
-            SKAction.fadeIn(withDuration: 0),
             SKAction.wait(forDuration: waitDuration),
             SKAction.group([
+                SKAction.fadeIn(withDuration: spinDuration),
                 SKAction.scale(to: scale, duration: spinDuration),
                 SKAction.rotate(byAngle: -8 * .pi, duration: spinDuration)
             ]),

@@ -680,9 +680,9 @@ extension ChatEngine {
             dialoguePlayed[-1026] = false
             dialoguePlayed[-1030] = false
             dialoguePlayed[-1031] = false
-            dialoguePlayed[-1035] = false
-            dialoguePlayed[-1037] = false
-            dialoguePlayed[-1040] = false
+            dialoguePlayed[-1036] = false
+            dialoguePlayed[-1038] = false
+            dialoguePlayed[-1041] = false
             
             
             //AGE OF BALANCE - DARK REALM Dialogue
@@ -1113,7 +1113,7 @@ extension ChatEngine {
             delegate?.despawnTikiCatwalk(fadeOut: fadeOut)
             delegate?.despawnSwordCatwalk()
             handleDialogueCompletion(level: level, completion: completion)
-        case -1035:
+        case -1036:
             delegate?.shiftRedCatwalk(shouldShift: true, showMagmoorScary: true)
             delegate?.spawnMagmoorCatwalk()
             delegate?.spawnEldersCatwalk(faceLeft: false)
@@ -1124,16 +1124,16 @@ extension ChatEngine {
             ]) { [weak self] in
                 self?.handleDialogueCompletion(level: level, completion: completion)
             }
-        case -1037:
+        case -1038:
             delegate?.despawnMagmoorCatwalk() { [weak self] in
                 self?.sendChatArray(shouldSkipDim: true, items: [
                     ChatItem(profile: .merton, chat: "Quickly, boy! Through the gate! We mustn't waste anymore time!")
-                ], completion: {
+                ]) {
                     self?.delegate?.despawnEldersCatwalk()
                     self?.handleDialogueCompletion(level: level, completion: completion)
-                })
+                }
             }
-        case -1040:
+        case -1041:
             delegate?.exitCatwalk { [weak self] in
                 self?.handleDialogueCompletion(level: level, completion: completion)
             }

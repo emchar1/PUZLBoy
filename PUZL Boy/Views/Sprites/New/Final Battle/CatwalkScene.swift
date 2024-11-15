@@ -13,7 +13,7 @@ class CatwalkScene: SKScene {
     
     private let catwalkOverworld = "magicdoomloop"
     private let panelCount: Int = 5
-    private let catwalkLength: Int = 40
+    private let catwalkLength: Int = 41
     private let panelSpacing: CGFloat = 4
     private var panelSize: CGFloat { size.width / CGFloat(panelCount) }
     private var scaleSize: CGSize { CGSize.zero + panelSize - panelSpacing }
@@ -95,7 +95,7 @@ class CatwalkScene: SKScene {
         ParticleEngine.shared.animateParticles(type: .inbetween,
                                                toNode: inbetweenNode,
                                                position: .zero,
-                                               alpha: 0.46,
+                                               alpha: 0.33,
                                                zPosition: K.ZPosition.fadeTransitionNode - 15,
                                                duration: 0)
         
@@ -320,7 +320,7 @@ class CatwalkScene: SKScene {
     }
     
     private func updateBackgroundNode(fadeDuration: TimeInterval, completion: (() -> Void)?) {
-        inbetweenNode.run(SKAction.fadeAlpha(to: 0.56, duration: fadeDuration))
+        inbetweenNode.run(SKAction.fadeAlpha(to: 0.666, duration: fadeDuration))
         bloodOverlay.run(SKAction.fadeAlpha(to: 0.2, duration: fadeDuration))
         backgroundNode.run(SKAction.fadeAlpha(to: 1, duration: fadeDuration)) {
             completion?()
@@ -347,6 +347,14 @@ class CatwalkScene: SKScene {
         catwalkNode.run(SKAction.moveBy(x: moveDistance, y: 0, duration: moveDuration))
 
         leftmostPanelIndex += panels
+    }
+    
+    private func openCloseGate(shouldOpen: Bool) {
+        guard let gatePanel = catwalkPanels.last else { return }
+        
+        gatePanel.run(SKAction.setTexture(SKTexture(imageNamed: shouldOpen ? "endOpen" : "endClosed")))
+        
+        AudioManager.shared.playSound(for: "dooropen")
     }
     
     
@@ -670,6 +678,9 @@ extension CatwalkScene: ChatEngineDelegate {
         
         fadeNode.run(SKAction.sequence([
             SKAction.wait(forDuration: exitDuration),
+            SKAction.run { [weak self] in
+                self?.openCloseGate(shouldOpen: false)
+            },
             SKAction.fadeIn(withDuration: fadeDuration)
         ]))
         
@@ -798,11 +809,7 @@ extension CatwalkScene: ChatEngineDelegate {
                 SKAction.scale(by: 1.25, duration: fadeDuration),
                 SKAction.fadeOut(withDuration: fadeDuration)
             ])) { [weak self] in
-                if let endClosed = self?.catwalkPanels.last as? SKSpriteNode {
-                    endClosed.run(SKAction.setTexture(SKTexture(imageNamed: "endOpen")))
-                    
-                    AudioManager.shared.playSound(for: "dooropen")
-                }
+                self?.openCloseGate(shouldOpen: true)
                 
                 AudioManager.shared.playSound(for: "magmoorcreepypulse")
                 AudioManager.shared.playSound(for: "magmoorcreepystrings")

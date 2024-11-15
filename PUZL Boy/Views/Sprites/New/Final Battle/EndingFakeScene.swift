@@ -30,6 +30,10 @@ class EndingFakeScene: SKScene {
         fatalError("init(coder:) has not been implemented")
     }
     
+    deinit {
+        print("EndingFakeScene deinit")
+    }
+    
     private func setupNodes() {
         backgroundColor = .white
         
@@ -62,7 +66,7 @@ class EndingFakeScene: SKScene {
         messageLabel.alpha = 0
         messageLabel.addDropShadow()
         messageLabel.updateShadowColor(.lightGray)
-                
+        
         //Yes. | YES!!!!!
         //Be prepared!
 
@@ -82,9 +86,12 @@ class EndingFakeScene: SKScene {
         addChild(messageLabel)
     }
     
-    func animateScene(completion: (() -> Void)?) {
+    func animateScene(music: String, completion: (() -> Void)?) {
         let fadeDuration: TimeInterval = 2
-        
+        let readMessageDuration: TimeInterval = fadeDuration * 10
+        let musicDuration: TimeInterval = readMessageDuration + fadeDuration * 4
+        let musicStart: TimeInterval = max((AudioManager.shared.getAudioItem(filename: music)?.player.duration ?? 0) - musicDuration, 0)
+
         fadeNode.run(SKAction.sequence([
             SKAction.fadeIn(withDuration: fadeDuration),
             SKAction.run { [weak self] in
@@ -105,6 +112,18 @@ class EndingFakeScene: SKScene {
             SKAction.fadeIn(withDuration: fadeDuration * 2)
         ]))
         
-        letterbox.show(duration: fadeDuration * 2, delay: fadeDuration * 10, completion: completion)
+        letterbox.show(duration: fadeDuration * 2, delay: readMessageDuration, completion: nil)
+        
+        AudioManager.shared.playSoundThenStop(
+            for: music,
+            currentTime: musicStart,
+            fadeIn: fadeDuration * 4,
+            playForDuration: min(musicDuration, (AudioManager.shared.getAudioItem(filename: music)?.player.duration ?? 0)))
+
+        run(SKAction.wait(forDuration: musicDuration)) {
+            completion?()
+        }
     }
+    
+    
 }

@@ -63,7 +63,7 @@ class GameViewController: UIViewController {
 //            let endingFake = EndingFakeScene(size: K.ScreenDimensions.size)
 //            self?.skView.presentScene(endingFake)
 //
-//            endingFake.animateScene {
+//            endingFake.animateScene(music: "bossbattle2") {
 //                let catwalk = CatwalkScene(size: K.ScreenDimensions.size)
 //                self?.skView.presentScene(catwalk)
 //            }
@@ -232,7 +232,7 @@ extension GameViewController: GameSceneDelegate {
         let endingFakeScene = EndingFakeScene(size: K.ScreenDimensions.size)
         skView.presentScene(endingFakeScene, transition: SKTransition.fade(with: .white, duration: 0))
         
-        endingFakeScene.animateScene { [weak self] in
+        endingFakeScene.animateScene(music: "bossbattle2") { [weak self] in
             let catwalkScene = CatwalkScene(size: K.ScreenDimensions.size)
             self?.skView.presentScene(catwalkScene, transition: SKTransition.fade(with: .black, duration: 0))
         }
