@@ -1035,11 +1035,11 @@ extension ChatEngine {
                 self?.handleDialogueCompletion(level: level, completion: completion)
             }
         case -1006:
-            delegate?.flashRedCatwalk(message: "Turn back now...", secondaryMessages: ["Turn back!", "Turn back!", "Turn back!", "Go away!", "Leave!", "Get out!", "Be gone!", "Not welcome here.", "Trespasser!"]) { [weak self] in
+            delegate?.flashRedCatwalk(message: "Turn back now...", secondaryMessages: ["Turn back!", "Turn back!", "Turn back!", "Go away!", "Leave!", "Get out!", "Be gone!", "Not welcome here.", "Trespasser!", "Turn back!", "Turn back!", "Turn back!", "Go away!", "Leave!", "Get out!", "Be gone!", "Not welcome here.", "Trespasser!"]) { [weak self] in
                 self?.handleDialogueCompletion(level: level, completion: completion)
             }
         case -1010:
-            delegate?.flashRedCatwalk(message: "You're going to regret it...", secondaryMessages: ["Regret...", "Failure!", "Disappointment.", "You'll regret...", "Loser.", "Game Over!", "You lose.", "Disgrace!", "Shame!", "Guilt.", "Dishonor.", "Lose.", "Ignominy."]) { [weak self] in
+            delegate?.flashRedCatwalk(message: "You're going to regret it...", secondaryMessages: ["Regret...", "Failure!", "Disappointment.", "You'll regret...", "Loser.", "Game Over!", "You lose.", "Disgrace!", "Shame!", "Guilt.", "Dishonor.", "Lose.", "Ignominy.", "Regret...", "Failure!", "Disappointment.", "You'll regret...", "Loser.", "Game Over!", "You lose.", "Disgrace!", "Shame!", "Guilt.", "Dishonor.", "Lose.", "Ignominy."]) { [weak self] in
                 self?.sendChatArray(shouldSkipDim: true, items: [
                     ChatItem(profile: .melchior, chat: "Ignore him! Do not let him get inside your head.")
                 ]) {

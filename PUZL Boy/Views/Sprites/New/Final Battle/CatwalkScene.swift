@@ -83,19 +83,19 @@ class CatwalkScene: SKScene {
         
         inbetweenNode = SKSpriteNode(texture: SKTexture(image: UIImage.gradientTextureSkyBlood))
         inbetweenNode.size = size
-        inbetweenNode.alpha = 0.81
         inbetweenNode.anchorPoint = .zero
         inbetweenNode.zPosition = 5
         
         bloodOverlay = SKSpriteNode(color: .red, size: size)
         bloodOverlay.anchorPoint = .zero
-        bloodOverlay.alpha = 0.26
         bloodOverlay.zPosition = K.ZPosition.fadeTransitionNode - 5
+        
+        updateBackgroundNode(fadeDuration: 0, completion: nil)
         
         ParticleEngine.shared.animateParticles(type: .inbetween,
                                                toNode: inbetweenNode,
                                                position: .zero,
-                                               alpha: 0.76,
+                                               alpha: 0.46,
                                                zPosition: K.ZPosition.fadeTransitionNode - 15,
                                                duration: 0)
         
@@ -108,9 +108,9 @@ class CatwalkScene: SKScene {
         catwalkNode = SKShapeNode(rectOf: CGSize(width: CGFloat(catwalkLength + 1) * panelSize + panelSpacing,
                                                  height: panelSize + 2 * panelSpacing))
         catwalkNode.position = CGPoint(x: catwalkNode.frame.size.width / 2, y: size.height / 2)
-        catwalkNode.zRotation = -CGFloat(0.666).toRadians()
         catwalkNode.fillColor = GameboardSprite.gameboardColor
         catwalkNode.lineWidth = 0
+        catwalkNode.zRotation = -CGFloat(0.666).toRadians()
         catwalkNode.zPosition = 5
         
         hero = Player(type: .hero)
@@ -121,15 +121,15 @@ class CatwalkScene: SKScene {
         
         elder0 = Player(type: .elder0)
         elder0.sprite.alpha = 0
-        elder0.sprite.zPosition = K.ZPosition.player - 1
+        elder0.sprite.zPosition = K.ZPosition.player - 2
         
         elder1 = Player(type: .elder1)
         elder1.sprite.alpha = 0
-        elder1.sprite.zPosition = K.ZPosition.player + 1
+        elder1.sprite.zPosition = K.ZPosition.player - 5
         
         elder2 = Player(type: .elder2)
         elder2.sprite.alpha = 0
-        elder2.sprite.zPosition = K.ZPosition.player + 2
+        elder2.sprite.zPosition = K.ZPosition.player + 5
         
         princess = Player(type: .princess)
         princess.sprite.alpha = 0
@@ -270,9 +270,6 @@ class CatwalkScene: SKScene {
         
         //MUST put this at the end!
         if !isRedShift {
-            updateBackgroundNode(fadeDuration: moveDuration, completion: nil)
-            inbetweenNode.run(SKAction.fadeAlpha(to: 0.81 * fadeAlphaMultiplier, duration: moveDuration))
-            bloodOverlay.run(SKAction.fadeAlpha(to: 0.26 * fadeAlphaMultiplier, duration: moveDuration))
             AudioManager.shared.playSound(for: runSound)
         }
     }
@@ -323,7 +320,9 @@ class CatwalkScene: SKScene {
     }
     
     private func updateBackgroundNode(fadeDuration: TimeInterval, completion: (() -> Void)?) {
-        backgroundNode.run(SKAction.fadeAlpha(to: 1 - CGFloat(currentPanelIndex) / CGFloat(catwalkLength), duration: fadeDuration + 0.25)) {
+        inbetweenNode.run(SKAction.fadeAlpha(to: 0.56, duration: fadeDuration))
+        bloodOverlay.run(SKAction.fadeAlpha(to: 0.2, duration: fadeDuration))
+        backgroundNode.run(SKAction.fadeAlpha(to: 1, duration: fadeDuration)) {
             completion?()
         }
     }
@@ -390,9 +389,18 @@ extension CatwalkScene: ChatEngineDelegate {
     func spawnEldersCatwalk(faceLeft: Bool) {
         hero.sprite.xScale = abs(hero.sprite.xScale)
         
-        spawnElderHelper(elder: elder0, faceLeft: faceLeft, offset: faceLeft ? CGPoint(x: 200, y: 0) : CGPoint(x: 300, y: 0))
-        spawnElderHelper(elder: elder1, faceLeft: faceLeft, offset: faceLeft ? CGPoint(x: 350, y: 100) : CGPoint(x: 200, y: 125))
-        spawnElderHelper(elder: elder2, faceLeft: faceLeft, offset: faceLeft ? CGPoint(x: 350, y: -100) : CGPoint(x: 200, y: -125))
+        spawnElderHelper(
+            elder: elder0,
+            faceLeft: faceLeft,
+            offset: faceLeft ? CGPoint(x: scaleSize.width, y: scaleSize.height * 0.4) : CGPoint(x: scaleSize.width * 1.5, y:scaleSize.height * 0.4))
+        spawnElderHelper(
+            elder: elder1,
+            faceLeft: faceLeft,
+            offset: faceLeft ? CGPoint(x: scaleSize.width * 1.75, y: scaleSize.height * 0.8) : CGPoint(x: scaleSize.width * 0.8, y: scaleSize.height * 0.8))
+        spawnElderHelper(
+            elder: elder2,
+            faceLeft: faceLeft,
+            offset: faceLeft ? CGPoint(x: scaleSize.width * 1.5, y: -scaleSize.height * 0.1) : CGPoint(x: scaleSize.width * 0.65, y: -scaleSize.height * 0.1))
     }
     
     func despawnEldersCatwalk() {
@@ -411,7 +419,7 @@ extension CatwalkScene: ChatEngineDelegate {
             SKAction.fadeAlpha(to: alphaPersistence, duration: 0)
         ])
         
-        princess.sprite.position = getHeroPosition(xPanelOffset: 1, yOffset: -15)
+        princess.sprite.position = getHeroPosition(xPanelOffset: 1, yOffset: -scaleSize.height * 0.1)
         princess.sprite.setScale(originalScale)
         princess.sprite.xScale *= -1
         princess.sprite.alpha = 0
@@ -470,7 +478,7 @@ extension CatwalkScene: ChatEngineDelegate {
     func spawnMarlinCatwalk() {
         let fadeDuration: TimeInterval = 2
         
-        trainer.sprite.position = getHeroPosition(xPanelOffset: 1, yOffset: 40)
+        trainer.sprite.position = getHeroPosition(xPanelOffset: 1, yOffset: scaleSize.height * 0.3)
         trainer.sprite.setScale(Player.getGameboardScale(panelSize: panelSize) * trainer.scaleMultiplier)
         trainer.sprite.xScale *= -1
         trainer.sprite.alpha = 0
@@ -508,7 +516,7 @@ extension CatwalkScene: ChatEngineDelegate {
         tiki.position = getHeroPosition(xPanelOffset: 2, yOffset: 0)
         tiki.scale(to: scaleSize * 3/4)
         tiki.alpha = 0
-        tiki.zPosition = K.ZPosition.player - 4
+        tiki.zPosition = K.ZPosition.player - 3
         tiki.name = "tikiStatueNode"
         tiki.danceStatue()
         
@@ -517,7 +525,7 @@ extension CatwalkScene: ChatEngineDelegate {
         tiki.run(SKAction.fadeIn(withDuration: fadeIn))
         
         bloodOverlay.run(SKAction.group([
-            SKAction.fadeAlpha(to: overlayAlpha, duration: fadeIn),
+            SKAction.fadeAlpha(to: overlayAlpha, duration: 2),
             SKAction.repeatForever(SKAction.sequence([
                 SKAction.colorize(with: .yellow, colorBlendFactor: 1, duration: 0),
                 SKAction.fadeOut(withDuration: marimbaWait),
@@ -553,13 +561,9 @@ extension CatwalkScene: ChatEngineDelegate {
         ]))
                 
         bloodOverlay.removeAllActions()
-        bloodOverlay.run(SKAction.group([
-            SKAction.colorize(with: .red, colorBlendFactor: 1, duration: fadeOut),
-            SKAction.fadeAlpha(to: 0.26 * fadeAlphaMultiplier, duration: fadeOut)
-        ]))
+        bloodOverlay.run(SKAction.colorize(with: .red, colorBlendFactor: 1, duration: fadeOut))
         
         updateBackgroundNode(fadeDuration: fadeOut, completion: nil)
-        inbetweenNode.run(SKAction.fadeAlpha(to: 0.81 * fadeAlphaMultiplier, duration: fadeOut))
         AudioManager.shared.adjustVolume(to: 1, for: catwalkOverworld, fadeDuration: fadeOut)
     }
     
@@ -609,13 +613,21 @@ extension CatwalkScene: ChatEngineDelegate {
     func spawnMagmoorCatwalk() {
         let fadeDuration: TimeInterval = 2
         
-        villain.sprite.position = getHeroPosition(xPanelOffset: 3, yOffset: 20)
+        villain.sprite.position = getHeroPosition(xPanelOffset: 3, yOffset: scaleSize.height * 0.4)
         villain.sprite.setScale(Player.getGameboardScale(panelSize: panelSize) * villain.scaleMultiplier)
         villain.sprite.xScale *= -1
         villain.sprite.alpha = 0
         
         villain.sprite.run(animatePlayer(player: villain, type: .idle))
         villain.sprite.run(SKAction.fadeAlpha(to: 1, duration: fadeDuration))
+        
+        villain.sprite.run(SKAction.repeatForever(SKAction.group([
+            SKAction.animate(with: villain.textures[Player.Texture.idle.rawValue], timePerFrame: 0.1),
+            SKAction.sequence([
+                SKAction.moveBy(x: 0, y: 20, duration: 1 + TimeInterval.random(in: 0...1)),
+                SKAction.moveBy(x: 0, y: -20, duration: 1 + TimeInterval.random(in: 0...1))
+            ])
+        ])))
         
         shiftCatwalkNode(panels: 2, moveDuration: fadeDuration * 1.5)
     }
@@ -684,22 +696,24 @@ extension CatwalkScene: ChatEngineDelegate {
     
     private func spawnElderHelper(elder: Player, faceLeft: Bool = true, offset: CGPoint) {
         let appearDuration: TimeInterval = 0.5
+        let particleWait: TimeInterval = elder.type == .elder2 ? 0 : appearDuration
         let elderScale: CGFloat = Player.getGameboardScale(panelSize: panelSize) * elder.scaleMultiplier
         
         //Preliminarty setup, first...
-        elder.sprite.position = getHeroPosition(xPanelOffset: 0, yOffset: 20)
+        elder.sprite.position = getHeroPosition(xPanelOffset: 0, yOffset: scaleSize.height * 0.1)
         elder.sprite.setScale(0)
         elder.sprite.alpha = 1
         elder.sprite.run(animatePlayer(player: elder, type: .idle))
         
-        elder.sprite.run(SKAction.group([
-            SKAction.scale(to: elderScale, duration: appearDuration),
-            SKAction.scaleX(to: faceLeft ? -elderScale : elderScale, duration: appearDuration),
-            SKAction.rotate(byAngle: -2 * .pi, duration: appearDuration),
-            SKAction.moveBy(x: offset.x, y: offset.y, duration: appearDuration)
-        ]))
-        
-        if !faceLeft {
+        if faceLeft {
+            elder.sprite.run(SKAction.group([
+                SKAction.scale(to: elderScale, duration: appearDuration),
+                SKAction.scaleX(to: faceLeft ? -elderScale : elderScale, duration: appearDuration),
+                SKAction.rotate(byAngle: -2 * .pi, duration: appearDuration),
+                SKAction.moveBy(x: offset.x, y: offset.y, duration: appearDuration)
+            ]))
+        }
+        else {
             let particleType: ParticleEngine.ParticleType
             let particleSFX: String?
             
@@ -712,24 +726,33 @@ extension CatwalkScene: ChatEngineDelegate {
                 particleSFX = "enemyflame"
             case .elder2:
                 particleType = .magicElderEarth2
-                particleSFX = nil
+                particleSFX = "boyimpact"
             default:
                 particleType = .magicElderIce
                 particleSFX = nil
             }
             
+            elder.sprite.run(SKAction.group([
+                SKAction.moveBy(x: offset.x, y: offset.y, duration: 0),
+                SKAction.scale(to: elderScale, duration: appearDuration * 2),
+                SKAction.scaleX(to: faceLeft ? -elderScale : elderScale, duration: appearDuration * 2),
+                SKAction.rotate(byAngle: -4 * .pi, duration: appearDuration * 2)
+            ]))
+            
             elder.sprite.run(SKAction.sequence([
-                SKAction.wait(forDuration: appearDuration),
+                SKAction.wait(forDuration: particleWait),
                 SKAction.run {
-                    ParticleEngine.shared.animateParticles(type: particleType,
-                                                           toNode: elder.sprite,
-                                                           position: .zero,
-                                                           zPosition: -5,
-                                                           duration: 0)
+                    ParticleEngine.shared.animateParticles(
+                        type: particleType,
+                        toNode: elder.sprite,
+                        position: .zero + CGPoint(x: 0, y: elder.type == .elder1 ? -elder.sprite.size.height / 2 : 0),
+                        zPosition: -5,
+                        duration: 0)
                     if let particleSFX = particleSFX {
                         AudioManager.shared.playSound(for: particleSFX)
                     }
                 },
+                SKAction.wait(forDuration: 1),
                 SKAction.colorize(withColorBlendFactor: 0, duration: 1)
             ]))
         }
@@ -752,13 +775,14 @@ extension CatwalkScene: ChatEngineDelegate {
         let scale: CGFloat = 0.9
         let fadeDuration: TimeInterval = 2
         let attackSprite = SKSpriteNode(texture: SKTexture(imageNamed: "iconSword"))
-        attackSprite.position = getHeroPosition(xPanelOffset: 1, yOffset: 0)
+        attackSprite.position = getHeroPosition(xPanelOffset: 1, yOffset: scaleSize.height * 0.4)
         attackSprite.zPosition = K.ZPosition.itemsAndEffects
         attackSprite.setScale(scale * (panelSize / attackSprite.size.width))
         
         let animation = SKAction.sequence([
             SKAction.wait(forDuration: 0.25),
             SKAction.run {
+                AudioManager.shared.playSound(for: "boyattack\(Int.random(in: 1...3))")
                 AudioManager.shared.playSound(for: "chatclose")
             },
             SKAction.rotate(byAngle: -3 * .pi / 2, duration: 0.25),
@@ -788,7 +812,7 @@ extension CatwalkScene: ChatEngineDelegate {
             }
         }
         
-        shiftCatwalkNode(panels: 1, moveDuration: fadeDuration / 2)
+        shiftCatwalkNode(panels: 1, moveDuration: fadeDuration / 8)
     }
     
     private func flashRedHelper(message: String, secondaryMessages: [String], completion: @escaping () -> Void) {
@@ -797,17 +821,16 @@ extension CatwalkScene: ChatEngineDelegate {
         let fadeDuration: TimeInterval = 1
         let colorizeRed = SKAction.colorize(with: .red, colorBlendFactor: 1, duration: 0)
         let colorizeNone = SKAction.colorize(withColorBlendFactor: 0, duration: fadeDuration)
-        let colorizeSequence = SKAction.sequence([colorizeRed, colorizeNone])
+        let colorizeSequence = SKAction.sequence([colorizeRed, SKAction.wait(forDuration: fadeDuration), colorizeNone])
         
-        backgroundNode.run(SKAction.fadeOut(withDuration: 0))
-        updateBackgroundNode(fadeDuration: fadeDuration * 2, completion: nil)
-        inbetweenNode.run(SKAction.sequence([
+        inbetweenNode.run(SKAction.fadeOut(withDuration: 0))
+        bloodOverlay.run(SKAction.fadeOut(withDuration: 0))
+        backgroundNode.run(SKAction.sequence([
             SKAction.fadeOut(withDuration: 0),
-            SKAction.fadeAlpha(to: 0.81 * fadeAlphaMultiplier, duration: fadeDuration * 2)
-        ]))
-        bloodOverlay.run(SKAction.sequence([
-            SKAction.fadeOut(withDuration: 0),
-            SKAction.fadeAlpha(to: 0.26 * fadeAlphaMultiplier, duration: fadeDuration * 2)
+            SKAction.wait(forDuration: fadeDuration),
+            SKAction.run { [weak self] in
+                self?.updateBackgroundNode(fadeDuration: fadeDuration, completion: nil)
+            }
         ]))
         
         hero.sprite.run(colorizeSequence)
@@ -829,15 +852,16 @@ extension CatwalkScene: ChatEngineDelegate {
         messageNode.fontName = UIFont.chatFont
         messageNode.fontColor = .red.lightenColor(factor: 6)
         messageNode.fontSize = UIFont.chatFontSizeLarge
+        messageNode.setScale(1.5)
         messageNode.addDropShadow()
         messageNode.zPosition = 5
         
         let messageSecondNode = SKLabelNode(text: message)
         messageSecondNode.position = messageNode.position
-        messageSecondNode.setScale(2)
         messageSecondNode.fontName = messageNode.fontName
         messageSecondNode.fontColor = UIFont.chatFontColor
         messageSecondNode.fontSize = messageNode.fontSize
+        messageSecondNode.setScale(2)
         messageSecondNode.alpha = 0.08
         messageSecondNode.zPosition = messageNode.zPosition - 1
         
@@ -877,13 +901,13 @@ extension CatwalkScene: ChatEngineDelegate {
             CGPoint(x: CGFloat.random(in: (size.width * 1/4)...(size.width * 3/4)),
                     y: CGFloat.random(in: (size.height * 1/8)...(size.height * 7/8)))
             
-            messageTertiaryNode.setScale(CGFloat.random(in: 1...4))
-            messageTertiaryNode.xScale *= Int.random(in: 0...4) == 0 ? -1 : 1
-            messageTertiaryNode.zRotation = rotation
             messageTertiaryNode.fontName = messageNode.fontName
             messageTertiaryNode.fontColor = UIFont.chatFontColor
             messageTertiaryNode.fontSize = messageNode.fontSize
-            messageTertiaryNode.alpha = CGFloat.random(in: 0.08...0.1)
+            messageTertiaryNode.setScale(CGFloat.random(in: 1...4))
+            messageTertiaryNode.xScale *= Int.random(in: 0...4) == 0 ? -1 : 1
+            messageTertiaryNode.alpha = CGFloat.random(in: 0.04...0.06)
+            messageTertiaryNode.zRotation = rotation
             messageTertiaryNode.zPosition = messageNode.zPosition - 2
             
             addChild(messageTertiaryNode)
@@ -952,9 +976,7 @@ extension CatwalkScene: ChatEngineDelegate {
                 updateBackgroundNode(fadeDuration: fadeDuration) {
                     self.isRedShift = false
                 }
-                inbetweenNode.run(SKAction.fadeAlpha(to: 0.81 * fadeAlphaMultiplier, duration: fadeDuration))
-                bloodOverlay.run(SKAction.fadeAlpha(to: 0.26 * fadeAlphaMultiplier, duration: fadeDuration))
-                
+
                 AudioManager.shared.adjustVolume(to: 1, for: catwalkOverworld, fadeDuration: fadeDuration * 2.5)
             }
             
