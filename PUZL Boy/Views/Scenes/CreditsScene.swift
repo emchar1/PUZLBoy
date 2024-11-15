@@ -322,7 +322,7 @@ class CreditsScene: SKScene {
                         subheadingAction: animateFadeAction()),
             LabelEntity(headingText: "",
                         subheadingTexts: ["PUZL", "Boy"],
-                        subheadingAction: animateZoomAction(scale: titleScale)),
+                        subheadingAction: animateSpinZoomAction(scale: titleScale)),
             LabelEntity(headingText: "Art Assets",
                         subheadingTexts: ["Deviant Art", "Flaticon", "Freepik", "Game Art 2D"],
                         subheadingAction: animateFadeAction()),
@@ -394,6 +394,22 @@ class CreditsScene: SKScene {
             SKAction.scale(to: scale * 1.1, duration: 0.25),
             SKAction.scale(to: scale * 0.95, duration: 0.2),
             SKAction.scale(to: scale, duration: 0.2),
+            SKAction.wait(forDuration: waitDuration),
+            SKAction.fadeOut(withDuration: fadeDuration)
+        ])
+    }
+    
+    private func animateSpinZoomAction(scale: CGFloat) -> SKAction {
+        let spinDuration: TimeInterval = 0.5
+        
+        return SKAction.sequence([
+            SKAction.scale(to: 0, duration: 0),
+            SKAction.fadeIn(withDuration: 0),
+            SKAction.wait(forDuration: waitDuration),
+            SKAction.group([
+                SKAction.scale(to: scale, duration: spinDuration),
+                SKAction.rotate(byAngle: -8 * .pi, duration: spinDuration)
+            ]),
             SKAction.wait(forDuration: waitDuration),
             SKAction.fadeOut(withDuration: fadeDuration)
         ])
