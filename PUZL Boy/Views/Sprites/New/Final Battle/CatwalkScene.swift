@@ -13,7 +13,7 @@ class CatwalkScene: SKScene {
     
     private let catwalkOverworld = "magicdoomloop"
     private let panelCount: Int = 5
-    private let catwalkLength: Int = 41
+    private let catwalkLength: Int = 46
     private let panelSpacing: CGFloat = 4
     private var panelSize: CGFloat { size.width / CGFloat(panelCount) }
     private var scaleSize: CGSize { CGSize.zero + panelSize - panelSpacing }
@@ -110,7 +110,6 @@ class CatwalkScene: SKScene {
         catwalkNode.position = CGPoint(x: catwalkNode.frame.size.width / 2, y: size.height / 2)
         catwalkNode.fillColor = GameboardSprite.gameboardColor
         catwalkNode.lineWidth = 0
-        catwalkNode.zRotation = -CGFloat(0.666).toRadians()
         catwalkNode.zPosition = 5
         
         hero = Player(type: .hero)
@@ -347,6 +346,10 @@ class CatwalkScene: SKScene {
         catwalkNode.run(SKAction.moveBy(x: moveDistance, y: 0, duration: moveDuration))
 
         leftmostPanelIndex += panels
+        
+        if leftmostPanelIndex % 4 == 0 {
+            catwalkNode.run(SKAction.rotate(byAngle: -CGFloat(0.2).toRadians(), duration: moveDuration))
+        }
     }
     
     private func openCloseGate(shouldOpen: Bool) {

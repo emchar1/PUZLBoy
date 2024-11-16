@@ -55,7 +55,7 @@ class EndingFakeScene: SKScene {
         titleLabel.addHeavyDropShadow()
         titleLabel.updateShadowColor(.lightGray)
         
-        messageLabel = SKLabelNode(text: "You have successfully completed 500 levels of mind-bending puzzles. But the game isn't over yet...\n\nAs PUZL Boy and the Elders make their way to Earth's core, they must confront Magmoor in a final showdown to rescue their friends, Marlin and Princess Olivia, and prevent the Mad Mystic from unleashing the Age of Ruin.\n\nAre you ready to face the ultimate challenge and save the universe from total destruction?")
+        messageLabel = SKLabelNode(text: "You have successfully completed 500 levels of mind-bending puzzles. But the game isn't over yet...\n\nAs PUZL Boy and the Elders make their way to Earth's core, they must confront Magmoor in a final showdown to rescue their friends, Marlin and Princess Olivia, and prevent the Mad Mystic from unleashing the Age of Ruin.\n\nAre you ready to face the ultimate challenge and save the universe from complete annihilation?")
         messageLabel.position = CGPoint(x: size.width / 2, y: titleLabel.position.y - UIFont.gameFontSizeExtraLarge)
         messageLabel.fontName = UIFont.chatFont
         messageLabel.fontSize = UIFont.chatFontSizeLarge
@@ -89,8 +89,8 @@ class EndingFakeScene: SKScene {
     func animateScene(music: String, completion: (() -> Void)?) {
         let fadeDuration: TimeInterval = 2
         let readMessageDuration: TimeInterval = fadeDuration * 10
-        let musicDuration: TimeInterval = readMessageDuration + fadeDuration * 4
-        let musicStart: TimeInterval = max((AudioManager.shared.getAudioItem(filename: music)?.player.duration ?? 0) - musicDuration, 0)
+        let musicDuration: TimeInterval = readMessageDuration + fadeDuration * 2
+        let musicStart: TimeInterval = max((AudioManager.shared.getAudioItem(filename: music)?.player.duration ?? 0) - musicDuration - 1, 0)
 
         fadeNode.run(SKAction.sequence([
             SKAction.fadeIn(withDuration: fadeDuration),
@@ -113,14 +113,10 @@ class EndingFakeScene: SKScene {
         ]))
         
         letterbox.show(duration: fadeDuration * 2, delay: readMessageDuration, completion: nil)
-        
-        AudioManager.shared.playSoundThenStop(
-            for: music,
-            currentTime: musicStart,
-            fadeIn: fadeDuration * 4,
-            playForDuration: min(musicDuration, (AudioManager.shared.getAudioItem(filename: music)?.player.duration ?? 0)))
+                
+        AudioManager.shared.playSound(for: music, currentTime: musicStart, fadeIn: fadeDuration * 4, shouldLoop: false)
 
-        run(SKAction.wait(forDuration: musicDuration)) {
+        run(SKAction.wait(forDuration: musicDuration + fadeDuration)) {
             completion?()
         }
     }

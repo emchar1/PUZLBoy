@@ -262,15 +262,13 @@ class AudioManager {
         }
         
         do {
-            let shouldLoop = audioItem.category == .music || audioItem.category == .soundFXLoop
-
             var audioPlayer = audioItem.player
             
             // Memory leak here, according to instruments, but only on Simulator. Device is fine!
             audioPlayer = try AVAudioPlayer(contentsOf: URL(fileURLWithPath: audioURL))
             
             audioPlayer.volume = audioItem.currentVolume
-            audioPlayer.numberOfLoops = shouldLoop ? -1 : 0
+            audioPlayer.numberOfLoops = getNumberOfLoops(audioItemCategory: audioItem.category)
             
             return audioPlayer
         }
@@ -279,6 +277,12 @@ class AudioManager {
         }
         
         return nil
+    }
+    
+    private func getNumberOfLoops(audioItemCategory: AudioCategory) -> Int {
+        let shouldLoop = audioItemCategory == .music || audioItemCategory == .soundFXLoop
+        
+        return shouldLoop ? -1 : 0
     }
     
     
@@ -293,9 +297,10 @@ class AudioManager {
         - delay: adds a delay in TimeInterval before playing the sound. Default is nil.
         - pan: pan value to initialize, defaults to center of player
         - interruptPlayback: I forgot what this meant, but the default is true 🤷🏻‍♀️
+        - shouldLoop: if non-nil, override the audio item's category property, to determine whether to loop playback or not
      - returns: True if the player can play. False, otherwise.
      */
-    @discardableResult func playSound(for audioKey: String, currentTime: TimeInterval? = nil, fadeIn: TimeInterval = 0.0, delay: TimeInterval? = nil, pan: Float = 0, interruptPlayback: Bool = true) -> Bool? {
+    @discardableResult func playSound(for audioKey: String, currentTime: TimeInterval? = nil, fadeIn: TimeInterval = 0.0, delay: TimeInterval? = nil, pan: Float = 0, interruptPlayback: Bool = true, shouldLoop: Bool? = nil) -> Bool? {
         guard let item = audioItems[audioKey], let player = configureAudioPlayer(for: item) else {
             print("Unable to find \(audioKey) in AudioManager.audioItems[]")
             return false
@@ -312,6 +317,13 @@ class AudioManager {
 
         if currentTime != nil {
             audioItems[item.fileName]!.player.currentTime = currentTime!
+        }
+        
+        if let shouldLoop = shouldLoop {
+            audioItems[item.fileName]!.player.numberOfLoops = shouldLoop ? -1 : 0
+        }
+        else {
+            audioItems[item.fileName]!.player.numberOfLoops = getNumberOfLoops(audioItemCategory: audioItems[item.fileName]!.category)
         }
         
         DispatchQueue.main.asyncAfter(deadline: .now() + (delay ?? 0)) {
@@ -372,10 +384,11 @@ class AudioManager {
         - delay: adds a delay in TimeInterval before playing the sound. Default is nil.
         - pan: pan value to initialize, defaults to center of player
         - interruptPlayback: I forgot what this meant, but the default is true 🤷🏻‍♀️
+        - shouldLoop: if non-nil, override the audio item's category property, to determine whether to loop playback or not
      */
-    func playSoundThenStop(for audioKey: String, currentTime: TimeInterval? = nil, fadeIn: TimeInterval = 0.0, playForDuration: TimeInterval, fadeOut: TimeInterval = 0.0, delay: TimeInterval? = nil, pan: Float = 0, interruptPlayback: Bool = true ) {
+    func playSoundThenStop(for audioKey: String, currentTime: TimeInterval? = nil, fadeIn: TimeInterval = 0.0, playForDuration: TimeInterval, fadeOut: TimeInterval = 0.0, delay: TimeInterval? = nil, pan: Float = 0, interruptPlayback: Bool = true, shouldLoop: Bool? = nil) {
 
-        playSound(for: audioKey, currentTime: currentTime, fadeIn: fadeIn, delay: delay, pan: pan, interruptPlayback: interruptPlayback)
+        playSound(for: audioKey, currentTime: currentTime, fadeIn: fadeIn, delay: delay, pan: pan, interruptPlayback: interruptPlayback, shouldLoop: shouldLoop)
         
         DispatchQueue.main.asyncAfter(deadline: .now() + playForDuration + (delay ?? 0)) {
             self.stopSound(for: audioKey, fadeDuration: fadeOut)
