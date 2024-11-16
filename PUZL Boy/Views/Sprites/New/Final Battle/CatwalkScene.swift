@@ -812,25 +812,25 @@ extension CatwalkScene: ChatEngineDelegate {
 
             ParticleEngine.shared.animateParticles(type: .magmoorBamf,
                                                    toNode: catwalkNode,
-                                                   position: villain.sprite.position - CGPoint(x: 0, y: villain.sprite.size.height / 2),
+                                                   position: villain.sprite.position,
                                                    scale: 1,
                                                    zPosition: villain.sprite.zPosition + 50,
                                                    duration: 4)
 
             villain.sprite.run(SKAction.sequence([
                 SKAction.group([
-                    SKAction.scale(by: 1.25, duration: fadeDuration),
+                    SKAction.moveBy(x: 0, y: scaleSize.height, duration: fadeDuration),
                     SKAction.fadeOut(withDuration: fadeDuration)
                 ]),
                 SKAction.run {
                     self.openCloseGate(shouldOpen: true)
                 },
-                Player.moveWithIllusions(
-                    playerNode: villain.sprite, backgroundNode: catwalkNode,
-                    color: .red.darkenColor(factor: 20), playSound: true,
-                    startPoint: getHeroPosition(xPanelOffset: 1, yOffset: scaleSize.height * 2),
-                    endPoint: getHeroPosition(xPanelOffset: 3, yOffset: 0),
-                    startScale: Player.getGameboardScale(panelSize: panelSize) * villain.scaleMultiplier * 0.5)
+                Player.moveWithIllusions(playerNode: villain.sprite, backgroundNode: catwalkNode,
+                                         color: .red.darkenColor(factor: 12), playSound: true,
+                                         startPoint: getHeroPosition(xPanelOffset: 1, yOffset: scaleSize.height * 2),
+                                         endPoint: getHeroPosition(xPanelOffset: 3, yOffset: 0),
+                                         startScale: Player.getGameboardScale(panelSize: panelSize) * villain.scaleMultiplier,
+                                         endScale: Player.getGameboardScale(panelSize: panelSize) * villain.scaleMultiplier * 0.5)
             ])) {
                 AudioManager.shared.playSound(for: "magmoorcreepypulse")
                 AudioManager.shared.playSound(for: "magmoorcreepystrings")
@@ -890,7 +890,7 @@ extension CatwalkScene: ChatEngineDelegate {
         messageSecondNode.fontColor = UIFont.chatFontColor
         messageSecondNode.fontSize = messageNode.fontSize
         messageSecondNode.setScale(2)
-        messageSecondNode.alpha = 0.08
+        messageSecondNode.alpha = 0.1
         messageSecondNode.zPosition = messageNode.zPosition - 1
         
         addChild(messageNode)
@@ -934,7 +934,7 @@ extension CatwalkScene: ChatEngineDelegate {
             messageTertiaryNode.fontSize = messageNode.fontSize
             messageTertiaryNode.setScale(CGFloat.random(in: 1...4))
             messageTertiaryNode.xScale *= Int.random(in: 0...4) == 0 ? -1 : 1
-            messageTertiaryNode.alpha = CGFloat.random(in: 0.04...0.06)
+            messageTertiaryNode.alpha = CGFloat.random(in: 0.06...0.08)
             messageTertiaryNode.zRotation = rotation
             messageTertiaryNode.zPosition = messageNode.zPosition - 2
             
