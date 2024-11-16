@@ -362,6 +362,7 @@
 		EAFC9A5529FCD44C002792F2 /* SettingsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAFC9A5429FCD44C002792F2 /* SettingsManager.swift */; };
 		EAFE35942CE44DA000289ADF /* EndingFakeScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAFE35932CE44DA000289ADF /* EndingFakeScene.swift */; };
 		EAFE35962CE48BB600289ADF /* magicheartbeatloop2.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAFE35952CE48BB600289ADF /* magicheartbeatloop2.mp3 */; };
+		EAFE35982CE89A4600289ADF /* MagmoorBamfParticles.sks in Resources */ = {isa = PBXBuildFile; fileRef = EAFE35972CE89A4600289ADF /* MagmoorBamfParticles.sks */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -714,6 +715,7 @@
 		EAFC9A5429FCD44C002792F2 /* SettingsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsManager.swift; sourceTree = "<group>"; };
 		EAFE35932CE44DA000289ADF /* EndingFakeScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EndingFakeScene.swift; sourceTree = "<group>"; };
 		EAFE35952CE48BB600289ADF /* magicheartbeatloop2.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = magicheartbeatloop2.mp3; sourceTree = "<group>"; };
+		EAFE35972CE89A4600289ADF /* MagmoorBamfParticles.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = MagmoorBamfParticles.sks; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1335,6 +1337,7 @@
 				EAAB41672CB1CBFE00BBFA75 /* MagicPrincessExplode2Particles.sks */,
 				EAAB41692CB2314200BBFA75 /* MagicPrincessExplode3Particles.sks */,
 				EAA3BD692C97D1ED00EDE298 /* MagicPrincessParticles.sks */,
+				EAFE35972CE89A4600289ADF /* MagmoorBamfParticles.sks */,
 				EA7A79362C8234E200594349 /* MagmoorSmokeParticles.sks */,
 				EAD19A032A9698B700A07A63 /* PartyGemParticles.sks */,
 				EA8E07532B50988B0051DDC3 /* PointerParticles.sks */,
@@ -1456,6 +1459,7 @@
 				EAAEA3C62931F08300221963 /* gameover.mp3 in Resources */,
 				EAF7183729B3D3FD00E2ED82 /* movesand3.mp3 in Resources */,
 				EAAEA3BE2931A31200221963 /* movepoisoned1.mp3 in Resources */,
+				EAFE35982CE89A4600289ADF /* MagmoorBamfParticles.sks in Resources */,
 				EA7A791D2C7EFF0F00594349 /* titlethemeageofruin.mp3 in Resources */,
 				EA6DCBEB2B61C26F00D5F707 /* DragonIceLite.sks in Resources */,
 				EA7A79372C8234E200594349 /* MagmoorSmokeParticles.sks in Resources */,

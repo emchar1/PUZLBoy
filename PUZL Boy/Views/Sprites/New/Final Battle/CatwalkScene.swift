@@ -806,14 +806,32 @@ extension CatwalkScene: ChatEngineDelegate {
         catwalkNode.addChild(attackSprite)
         
         attackSprite.run(animation) { [weak self] in
-            AudioManager.shared.playSound(for: "scarylaugh")
+            guard let self = self else { return }
             
-            self?.villain.sprite.run(SKAction.group([
-                SKAction.scale(by: 1.25, duration: fadeDuration),
-                SKAction.fadeOut(withDuration: fadeDuration)
-            ])) { [weak self] in
-                self?.openCloseGate(shouldOpen: true)
-                
+            AudioManager.shared.playSound(for: "scarylaugh")
+
+            ParticleEngine.shared.animateParticles(type: .magmoorBamf,
+                                                   toNode: catwalkNode,
+                                                   position: villain.sprite.position - CGPoint(x: 0, y: villain.sprite.size.height / 2),
+                                                   scale: 1,
+                                                   zPosition: villain.sprite.zPosition + 50,
+                                                   duration: 4)
+
+            villain.sprite.run(SKAction.sequence([
+                SKAction.group([
+                    SKAction.scale(by: 1.25, duration: fadeDuration),
+                    SKAction.fadeOut(withDuration: fadeDuration)
+                ]),
+                SKAction.run {
+                    self.openCloseGate(shouldOpen: true)
+                },
+                Player.moveWithIllusions(
+                    playerNode: villain.sprite, backgroundNode: catwalkNode,
+                    color: .red.darkenColor(factor: 20), playSound: true,
+                    startPoint: getHeroPosition(xPanelOffset: 1, yOffset: scaleSize.height * 2),
+                    endPoint: getHeroPosition(xPanelOffset: 3, yOffset: 0),
+                    startScale: Player.getGameboardScale(panelSize: panelSize) * villain.scaleMultiplier * 0.5)
+            ])) {
                 AudioManager.shared.playSound(for: "magmoorcreepypulse")
                 AudioManager.shared.playSound(for: "magmoorcreepystrings")
 
@@ -955,8 +973,8 @@ extension CatwalkScene: ChatEngineDelegate {
                 magmoorSprite.run(SKAction.sequence([
                     SKAction.wait(forDuration: fadeDuration),
                     SKAction.group([
-                        SKAction.fadeIn(withDuration: fadeDuration * 10),
-                        SKAction.scale(to: 1.5, duration: fadeDuration * 30)
+                        SKAction.fadeIn(withDuration: fadeDuration * 20),
+                        SKAction.scale(to: 2, duration: fadeDuration * 40)
                     ])
                 ]))
             }

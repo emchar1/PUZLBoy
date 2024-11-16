@@ -55,7 +55,7 @@ class EndingFakeScene: SKScene {
         titleLabel.addHeavyDropShadow()
         titleLabel.updateShadowColor(.lightGray)
         
-        messageLabel = SKLabelNode(text: "You have successfully completed 500 levels of mind-bending puzzles. But the game isn't over yet...\n\nAs PUZL Boy and the Elders make their way to Earth's core, they must confront Magmoor in a final showdown to rescue their friends, Marlin and Princess Olivia, and prevent the Mad Mystic from unleashing the Age of Ruin.\n\nAre you ready to face the ultimate challenge and save the universe from complete annihilation?")
+        messageLabel = SKLabelNode(text: "You have successfully completed 500 levels of mind-bending puzzles. But it's not over just yet...\n\nAs PUZL Boy and the Elders make their way to Earth's core, they must confront Magmoor in a final showdown to rescue their friends, Marlin and Princess Olivia, and prevent the Mad Mystic from unleashing the Age of Ruin.\n\nAre you ready to face the ultimate challenge and save the universe from total destruction?")
         messageLabel.position = CGPoint(x: size.width / 2, y: titleLabel.position.y - UIFont.gameFontSizeExtraLarge)
         messageLabel.fontName = UIFont.chatFont
         messageLabel.fontSize = UIFont.chatFontSizeLarge
