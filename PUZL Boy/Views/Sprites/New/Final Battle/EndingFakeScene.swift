@@ -11,16 +11,26 @@ class EndingFakeScene: SKScene {
     
     // MARK: - Properties
     
-    private var fadeNode: SKShapeNode!
     private var letterbox: LetterboxSprite!
-    
+    private var tapPointerEngine: TapPointerEngine!
+    private var fadeNode: SKShapeNode!
     private var titleLabel: SKLabelNode!
     private var messageLabel: SKLabelNode!
+    
+    private var timer: Timer
+    private let titleText: String
+    private let messageText: String
+    private let messageSpeed: TimeInterval = 0.04
+    private var messageIndex: Int = 0
     
     
     // MARK: - Initialization
     
-    override init(size: CGSize) {
+    init(size: CGSize, titleText: String, messageText: String) {
+        self.timer = Timer()
+        self.titleText = titleText
+        self.messageText = messageText
+        
         super.init(size: size)
         
         setupNodes()
@@ -34,6 +44,11 @@ class EndingFakeScene: SKScene {
         print("EndingFakeScene deinit")
     }
     
+    private func cleanupScene() {
+        letterbox = nil
+        tapPointerEngine = nil
+    }
+    
     private func setupNodes() {
         backgroundColor = .white
         
@@ -45,8 +60,9 @@ class EndingFakeScene: SKScene {
         fadeNode.zPosition = K.ZPosition.fadeTransitionNode
         
         letterbox = LetterboxSprite(color: .black, height: size.height + 40)
+        tapPointerEngine = TapPointerEngine()
         
-        titleLabel = SKLabelNode(text: "CONGRATULATIONS!!")
+        titleLabel = SKLabelNode(text: titleText.uppercased())
         titleLabel.position = CGPoint(x: size.width / 2, y: size.height * 3/4)
         titleLabel.fontName = UIFont.gameFont
         titleLabel.fontSize = UIFont.gameFontSizeExtraLarge
@@ -55,13 +71,14 @@ class EndingFakeScene: SKScene {
         titleLabel.addHeavyDropShadow()
         titleLabel.updateShadowColor(.lightGray)
         
-        messageLabel = SKLabelNode(text: "You have successfully completed 500 levels of mind-bending puzzles. But it's not over just yet...\n\nAs PUZL Boy and the Elders make their way to Earth's core, they must confront Magmoor in a final showdown to rescue their friends, Marlin and Princess Olivia, and prevent the Mad Mystic from unleashing the Age of Ruin.\n\nAre you ready to face the ultimate challenge and save the universe from total destruction?")
-        messageLabel.position = CGPoint(x: size.width / 2, y: titleLabel.position.y - UIFont.gameFontSizeExtraLarge)
+        messageLabel = SKLabelNode(text: "")
+        messageLabel.position = CGPoint(x: size.width * 0.1, y: titleLabel.position.y - UIFont.gameFontSizeExtraLarge)
         messageLabel.fontName = UIFont.chatFont
         messageLabel.fontSize = UIFont.chatFontSizeLarge
         messageLabel.fontColor = titleLabel.fontColor
         messageLabel.preferredMaxLayoutWidth = size.width * 0.8
         messageLabel.verticalAlignmentMode = .top
+        messageLabel.horizontalAlignmentMode = .left
         messageLabel.numberOfLines = 0
         messageLabel.alpha = 0
         messageLabel.addDropShadow()
@@ -76,6 +93,7 @@ class EndingFakeScene: SKScene {
 //        //Let's begin!
     }
     
+    
     // MARK: - Functions
     
     override func didMove(to view: SKView) {
@@ -86,9 +104,15 @@ class EndingFakeScene: SKScene {
         addChild(messageLabel)
     }
     
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        guard let location = touches.first?.location(in: self) else { return }
+        
+        tapPointerEngine.move(to: self, at: location, particleType: .pointer)
+    }
+    
     func animateScene(music: String, completion: (() -> Void)?) {
         let fadeDuration: TimeInterval = 2
-        let readMessageDuration: TimeInterval = fadeDuration * 10
+        let readMessageDuration: TimeInterval = fadeDuration * 2 + messageSpeed * TimeInterval(messageText.count) + 6.0
         let musicDuration: TimeInterval = readMessageDuration + fadeDuration * 2
         let musicStart: TimeInterval = max((AudioManager.shared.getAudioItem(filename: music)?.player.duration ?? 0) - musicDuration - 1, 0)
 
@@ -109,15 +133,42 @@ class EndingFakeScene: SKScene {
         
         messageLabel.run(SKAction.sequence([
             SKAction.wait(forDuration: fadeDuration * 2),
-            SKAction.fadeIn(withDuration: fadeDuration * 2)
+            SKAction.run { [weak self] in
+                guard let self = self else { return }
+                
+                timer = Timer.scheduledTimer(timeInterval: messageSpeed,
+                                             target: self,
+                                             selector: #selector(animateMessage(_:)),
+                                             userInfo: nil,
+                                             repeats: true)
+            },
+            SKAction.fadeIn(withDuration: fadeDuration)
         ]))
         
         letterbox.show(duration: fadeDuration * 2, delay: readMessageDuration, completion: nil)
                 
         AudioManager.shared.playSound(for: music, currentTime: musicStart, fadeIn: fadeDuration * 4, shouldLoop: false)
 
-        run(SKAction.wait(forDuration: musicDuration + fadeDuration)) {
+        run(SKAction.wait(forDuration: musicDuration + fadeDuration)) { [weak self] in
+            self?.cleanupScene()
             completion?()
+        }
+    }
+    
+    
+    // MARK: - Helper Functions
+    
+    @objc private func animateMessage(_ sender: Timer) {
+        if messageIndex < messageText.count {
+            let messageChar = messageText[messageText.index(messageText.startIndex, offsetBy: messageIndex)]
+            
+            messageLabel.text! += "\(messageChar)"
+            messageLabel.updateShadow()
+            
+            messageIndex += 1
+        }
+        else {
+            timer.invalidate()
         }
     }
     

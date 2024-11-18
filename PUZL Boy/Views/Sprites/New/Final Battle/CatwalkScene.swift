@@ -42,6 +42,7 @@ class CatwalkScene: SKScene {
     private var catwalkNode: SKShapeNode!
     private var catwalkPanels: [SKSpriteNode] = []
     
+    private var tapPointerEngine: TapPointerEngine!
     private var chatEngine: ChatEngine!
     
     
@@ -71,6 +72,7 @@ class CatwalkScene: SKScene {
         removeAllChildren()
         removeFromParent()
         
+        tapPointerEngine = nil
         chatEngine = nil
     }
     
@@ -161,6 +163,7 @@ class CatwalkScene: SKScene {
         }
         
         shimmerPartyTiles()
+        tapPointerEngine = TapPointerEngine()
         chatEngine = ChatEngine()
         chatEngine.delegate = self
     }
@@ -203,6 +206,7 @@ class CatwalkScene: SKScene {
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard let location = touches.first?.location(in: self) else { return }
         
+        tapPointerEngine.move(to: self, at: location, particleType: .pointer)
         chatEngine.touchDown(in: location)
     }
     
@@ -430,7 +434,11 @@ extension CatwalkScene: ChatEngineDelegate {
             SKAction.fadeAlpha(to: alphaPersistence, duration: 0)
         ])
         
-        princess.sprite.position = getHeroPosition(xPanelOffset: 1, yOffset: -scaleSize.height * 0.1)
+        func setPosition(heroPanelOffset: Int) -> CGPoint {
+            return getHeroPosition(xPanelOffset: heroPanelOffset, yOffset: -scaleSize.height * 0.1)
+        }
+        
+        princess.sprite.position = setPosition(heroPanelOffset: 1)
         princess.sprite.setScale(originalScale)
         princess.sprite.xScale *= -1
         princess.sprite.alpha = 0
@@ -455,6 +463,9 @@ extension CatwalkScene: ChatEngineDelegate {
             SKAction.scale(by: 1.25, duration: 0),
             
             SKAction.wait(forDuration: 2),
+            SKAction.run { [weak self] in
+                self?.princess.sprite.position = setPosition(heroPanelOffset: -1)
+            },
             SKAction.moveBy(x: 20, y: -30, duration: 0),
             SKAction.scale(to: originalScale, duration: 0),
             SKAction.scaleY(to: originalScale * 1.5, duration: 0),
@@ -465,6 +476,9 @@ extension CatwalkScene: ChatEngineDelegate {
             SKAction.scale(by: 2, duration: 0),
             
             SKAction.wait(forDuration: 1.2),
+            SKAction.run { [weak self] in
+                self?.princess.sprite.position = setPosition(heroPanelOffset: 1)
+            },
             SKAction.moveBy(x: 60, y: 40, duration: 0),
             SKAction.scale(to: originalScale * 0.75, duration: 0),
             SKAction.scaleX(to: -originalScale, duration: 0),
@@ -476,8 +490,6 @@ extension CatwalkScene: ChatEngineDelegate {
             SKAction.scaleX(to: -originalScale, duration: 0),
             SKAction.rotate(byAngle: -.pi / 2, duration: 0)
         ])))
-        
-        shiftCatwalkNode(panels: 1, moveDuration: fadeDuration)
     }
     
     func despawnPrincessCatwalk() {

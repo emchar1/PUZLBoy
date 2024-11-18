@@ -1090,7 +1090,7 @@ extension ChatEngine {
                 ChatItem(profile: .hero, imgPos: .left, chat: "Lovely. (Way to make me feel better.)"),
                 ChatItem(profile: .magmus, chat: "Melchior, don't be such a bully! Remember, Marlin chose him for the role for a very good reason."),
                 ChatItem(profile: .melchior, chat: "Hmph!"),
-                ChatItem(profile: .hero, imgPos: .left, chat: "Hmm, this floor feels slanted. Does it look slanted to you?")
+                ChatItem(profile: .hero, imgPos: .left, chat: ".....hmmm, this floor feels slanted. Does it look slanted to you?")
             ]) { [weak self] in
                 self?.handleDialogueCompletion(level: level, completion: completion)
             }
@@ -1146,7 +1146,7 @@ extension ChatEngine {
                 self?.sendChatArray(shouldSkipDim: true, items: [
                     ChatItem(profile: .hero, imgPos: .left, chat: "HE'S GETTING AWAY!!!"),
                     ChatItem(profile: .villain, chat: "Enter if you dare... There's nothing you can do to stop me."),
-                    ChatItem(profile: .villain, chat: "I am the one true ruler of Mystaria. And Vaeloria. And this dinky little realm you call home. And all the realms across the universe. Witness my coronation, and wonder!"),
+                    ChatItem(profile: .villain, chat: "Witness my coronation and wonder! I am the one true ruler of Mystaria, Vaeloria, and all the 12 realms across the universe... including this DUMP you call home."),
                     ChatItem(profile: .merton, imgPos: .left, chat: "Quickly, boy! Through the gate! We mustn't waste anymore time!")
                 ]) {
                     self?.delegate?.despawnEldersCatwalk()
