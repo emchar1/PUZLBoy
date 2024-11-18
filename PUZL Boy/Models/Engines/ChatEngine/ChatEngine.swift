@@ -1145,8 +1145,9 @@ extension ChatEngine {
             delegate?.despawnMagmoorCatwalk() { [weak self] in
                 self?.sendChatArray(shouldSkipDim: true, items: [
                     ChatItem(profile: .hero, imgPos: .left, chat: "HE'S GETTING AWAY!!!"),
-                    ChatItem(profile: .villain, chat: "Enter if you dare... There's nothing you can do to stop me."),
-                    ChatItem(profile: .villain, chat: "Witness my coronation and wonder! I am the one true ruler of Mystaria, Vaeloria, and all the 12 realms across the universe... including this DUMP you call home."),
+                    ChatItem(profile: .villain, chat: "Enter if you dare... There is nothing you can do to stop what has been put in motion."),
+                    ChatItem(profile: .villain, chat: "Witness my coronation and wonder! I am the one true ruler of Mystaria, Vaeloria, and all the 12 realms across the universe... including this trash heap you call home."),
+                    ChatItem(profile: .hero, imgPos: .left, chat: "Your face is a trash heap!"),
                     ChatItem(profile: .merton, imgPos: .left, chat: "Quickly, boy! Through the gate! We mustn't waste anymore time!")
                 ]) {
                     self?.delegate?.despawnEldersCatwalk()

@@ -114,7 +114,7 @@ class EndingFakeScene: SKScene {
         let fadeDuration: TimeInterval = 2
         let readMessageDuration: TimeInterval = fadeDuration * 2 + messageSpeed * TimeInterval(messageText.count) + 6.0
         let musicDuration: TimeInterval = readMessageDuration + fadeDuration * 2
-        let musicStart: TimeInterval = max((AudioManager.shared.getAudioItem(filename: music)?.player.duration ?? 0) - musicDuration - 1, 0)
+        let musicStart: TimeInterval = max((AudioManager.shared.getAudioItem(filename: music)?.player.duration ?? 0) - musicDuration - 0.5, 0)
 
         fadeNode.run(SKAction.sequence([
             SKAction.fadeIn(withDuration: fadeDuration),

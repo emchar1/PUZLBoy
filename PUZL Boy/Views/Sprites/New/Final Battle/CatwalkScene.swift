@@ -7,6 +7,10 @@
 
 import SpriteKit
 
+protocol CatwalkSceneDelegate: AnyObject {
+    func catwalkSceneDidFinish()
+}
+
 class CatwalkScene: SKScene {
     
     // MARK: - Properties
@@ -44,6 +48,8 @@ class CatwalkScene: SKScene {
     
     private var tapPointerEngine: TapPointerEngine!
     private var chatEngine: ChatEngine!
+    
+    weak var catwalkDelegate: CatwalkSceneDelegate?
     
     
     // MARK: - Initialization
@@ -352,7 +358,7 @@ class CatwalkScene: SKScene {
         leftmostPanelIndex += panels
         
         if leftmostPanelIndex % 4 == 0 {
-            catwalkNode.run(SKAction.rotate(byAngle: -CGFloat(0.2).toRadians(), duration: moveDuration))
+            catwalkNode.run(SKAction.rotate(byAngle: -CGFloat(0.1).toRadians(), duration: moveDuration))
         }
     }
     
@@ -466,12 +472,12 @@ extension CatwalkScene: ChatEngineDelegate {
             SKAction.run { [weak self] in
                 self?.princess.sprite.position = setPosition(heroPanelOffset: -1)
             },
-            SKAction.moveBy(x: 20, y: -30, duration: 0),
+            SKAction.moveBy(x: 20, y: -20, duration: 0),
             SKAction.scale(to: originalScale, duration: 0),
             SKAction.scaleY(to: originalScale * 1.5, duration: 0),
             
             SKAction.wait(forDuration: 0.5),
-            SKAction.moveBy(x: 0, y: 20, duration: 0),
+            SKAction.moveBy(x: 0, y: 30, duration: 0),
             SKAction.scaleY(to: originalScale, duration: 0),
             SKAction.scale(by: 2, duration: 0),
             
@@ -479,7 +485,7 @@ extension CatwalkScene: ChatEngineDelegate {
             SKAction.run { [weak self] in
                 self?.princess.sprite.position = setPosition(heroPanelOffset: 1)
             },
-            SKAction.moveBy(x: 60, y: 40, duration: 0),
+            SKAction.moveBy(x: 60, y: 20, duration: 0),
             SKAction.scale(to: originalScale * 0.75, duration: 0),
             SKAction.scaleX(to: -originalScale, duration: 0),
             SKAction.rotate(byAngle: .pi / 2, duration: 0),
@@ -704,6 +710,7 @@ extension CatwalkScene: ChatEngineDelegate {
             AudioManager.shared.playSoundThenStop(for: "littlegirllaugh", playForDuration: 1.7)
 
             self?.cleanupScene()
+            self?.catwalkDelegate?.catwalkSceneDidFinish()
             completion()
         }
         

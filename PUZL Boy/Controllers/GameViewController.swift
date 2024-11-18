@@ -65,6 +65,7 @@ class GameViewController: UIViewController {
 //
 //            endingFakeScene.animateScene(music: "bossbattle2") {
 //                let catwalkScene = CatwalkScene(size: K.ScreenDimensions.size)
+//                catwalkScene.catwalkDelegate = self
 //                self?.skView.presentScene(catwalkScene)
 //            }
 //
@@ -240,6 +241,8 @@ extension GameViewController: GameSceneDelegate {
         
         endingFakeScene.animateScene(music: "bossbattle2") { [weak self] in
             let catwalkScene = CatwalkScene(size: K.ScreenDimensions.size)
+            catwalkScene.catwalkDelegate = self
+            
             self?.skView.presentScene(catwalkScene, transition: SKTransition.fade(with: .black, duration: 0))
         }
     }
@@ -254,6 +257,16 @@ extension GameViewController: GameSceneDelegate {
         cutscene.animateScene() { [weak self] in
             self?.skView.presentScene(gameScene, transition: SKTransition.fade(with: .white, duration: 1.0))
         }
+    }
+}
+
+
+// MARK: - CatwalkSceneDelegate
+
+extension GameViewController: CatwalkSceneDelegate {
+    func catwalkSceneDidFinish() {
+        let finalBattleScene = FinalBattleScene(size: K.ScreenDimensions.size)
+        skView.presentScene(finalBattleScene, transition: SKTransition.fade(with: .black, duration: 2.0))
     }
 }
 
