@@ -147,7 +147,7 @@ class EndingFakeScene: SKScene {
         
         letterbox.show(duration: fadeDuration * 2, delay: readMessageDuration, completion: nil)
                 
-        AudioManager.shared.playSound(for: music, currentTime: musicStart, fadeIn: fadeDuration * 4, shouldLoop: false)
+        AudioManager.shared.playSound(for: music, currentTime: musicStart, fadeIn: fadeDuration * 2, shouldLoop: false)
 
         run(SKAction.wait(forDuration: musicDuration + fadeDuration)) { [weak self] in
             self?.cleanupScene()
