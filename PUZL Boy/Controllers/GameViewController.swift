@@ -161,9 +161,9 @@ extension GameViewController: AuthorizationRequestSceneDelegate {
                         }
                                                 
                         self.levelLoaded = true
-                    }
-                }
-            }
+                    } //end DispatchQueue.main.asyncAfter()
+                } //end FIRManager.initializeFirestore()
+            } //end LevelBuilder.getLevels()
         }//end GameCenterManager.shared.getUser()
     }
     
@@ -180,13 +180,19 @@ extension GameViewController: AuthorizationRequestSceneDelegate {
 
 extension GameViewController: TitleSceneDelegate {
     func didTapStart(levelSelectNewLevel: Int?) {
-        let gameScene = GameScene(size: K.ScreenDimensions.size, hasInternet: hasInternet, levelSelectNewLevel: levelSelectNewLevel)
-        gameScene.gameSceneDelegate = self
-        
-        skView.presentScene(gameScene, transition: SKTransition.fade(with: .white, duration: 1.0))
-
-        //Commenting this out 10/3/23. I can keep the monitor active 24/7 right??
-//        monitor.cancel()
+        if levelSelectNewLevel == nil && (FIRManager.saveStateModel != nil && FIRManager.saveStateModel!.newLevel > Level.finalLevel) {
+            let catwalkScene = CatwalkScene(size: K.ScreenDimensions.size)
+            skView.presentScene(catwalkScene, transition: SKTransition.fade(with: .white, duration: 3.0))
+        }
+        else {
+            let gameScene = GameScene(size: K.ScreenDimensions.size, hasInternet: hasInternet, levelSelectNewLevel: levelSelectNewLevel)
+            gameScene.gameSceneDelegate = self
+            
+            skView.presentScene(gameScene, transition: SKTransition.fade(with: .white, duration: 1.0))
+            
+            //Commenting this out 10/3/23. I can keep the monitor active 24/7 right??
+//            monitor.cancel()
+        }
         
         UserDefaults.standard.set(true, forKey: K.UserDefaults.hasPlayedBefore)
     }

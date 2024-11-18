@@ -97,7 +97,7 @@ class LevelSelectPicker: UIPickerView, UIPickerViewDelegate, UIPickerViewDataSou
     // MARK: - Other Functions
     
     func updatePicker(level: Int?, shouldAnimate: Bool) {
-        let newLevel = level ?? 1
+        let newLevel = (level ?? 1).clamp(min: 1, max: Level.finalLevel)
         
         selectRow(newLevel / 100, inComponent: 0, animated: shouldAnimate)
         selectRow((newLevel % 100) / 10, inComponent: 1, animated: shouldAnimate)
