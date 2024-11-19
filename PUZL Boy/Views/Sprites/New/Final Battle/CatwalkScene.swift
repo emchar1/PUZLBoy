@@ -391,6 +391,17 @@ class CatwalkScene: SKScene {
         Haptics.shared.executeCustomPattern(pattern: .thunder)
     }
     
+    func unshakeScreen(fadeDuration: TimeInterval) {
+        AudioManager.shared.stopSound(for: "thunderrumble", fadeDuration: fadeDuration)
+        
+        run(SKAction.wait(forDuration: fadeDuration)) { [weak self] in
+            self?.catwalkNode.removeAllActions()
+
+            Haptics.shared.stopHapticEngine()
+            Haptics.shared.startHapticEngine(shouldInitialize: false)
+        }
+
+    }
     
 }
 
@@ -598,7 +609,6 @@ extension CatwalkScene: ChatEngineDelegate {
         backgroundNode.run(SKAction.fadeOut(withDuration: fadeIn))
         inbetweenNode.run(SKAction.fadeOut(withDuration: fadeIn))
         shiftCatwalkNode(panels: 1, moveDuration: 2)
-        AudioManager.shared.adjustVolume(to: 0.1, for: catwalkOverworld, fadeDuration: fadeIn)
     }
     
     func despawnTikiCatwalk(fadeOut: TimeInterval) {
@@ -614,7 +624,6 @@ extension CatwalkScene: ChatEngineDelegate {
         bloodOverlay.run(SKAction.colorize(with: .red, colorBlendFactor: 1, duration: fadeOut))
         
         updateBackgroundNode(fadeDuration: fadeOut, completion: nil)
-        AudioManager.shared.adjustVolume(to: 1, for: catwalkOverworld, fadeDuration: fadeOut)
     }
     
     func spawnSwordCatwalk() {
@@ -686,13 +695,21 @@ extension CatwalkScene: ChatEngineDelegate {
         despawnMagmoorHelper(completion: completion)
     }
     
-    func playMusicCatwalk(music: String, startingVolume: Float, fadeIn: TimeInterval) {
+    func playMusicCatwalk(music: String, startingVolume: Float, fadeIn: TimeInterval, shouldStopOverworld: Bool) {
         AudioManager.shared.adjustVolume(to: startingVolume, for: music)
         AudioManager.shared.playSound(for: music, fadeIn: fadeIn)
+        
+        if shouldStopOverworld {
+            AudioManager.shared.adjustVolume(to: 0.1, for: catwalkOverworld, fadeDuration: fadeIn)
+        }
     }
     
-    func stopMusicCatwalk(music: String, fadeOut: TimeInterval) {
+    func stopMusicCatwalk(music: String, fadeOut: TimeInterval, shouldPlayOverworld: Bool) {
         AudioManager.shared.stopSound(for: music, fadeDuration: fadeOut)
+        
+        if shouldPlayOverworld {
+            AudioManager.shared.adjustVolume(to: 1, for: catwalkOverworld, fadeDuration: fadeOut)
+        }
     }
     
     func flashRedCatwalk(message: String, secondaryMessages: [String], completion: @escaping () -> Void) {
@@ -732,7 +749,6 @@ extension CatwalkScene: ChatEngineDelegate {
             SKAction.run {
                 audioItem?.player.stop()
                 AudioManager.shared.playSoundThenStop(for: "littlegirllaugh", playForDuration: littleGirlLaughDuration)
-                Haptics.shared.stopHapticEngine()
             },
             SKAction.wait(forDuration: littleGirlLaughDuration + 4.5)
         ])) { [weak self] in
@@ -741,11 +757,12 @@ extension CatwalkScene: ChatEngineDelegate {
             completion()
         }
         
+        unshakeScreen(fadeDuration: fadeDuration * 2)
+
         AudioManager.shared.playSoundThenStop(for: "movetile\(Int.random(in: 1...3))", playForDuration: 0.2, fadeOut: 0.8)
         AudioManager.shared.stopSound(for: catwalkOverworld, fadeDuration: fadeDuration * 2)
         AudioManager.shared.stopSound(for: "magmoorcreepypulse", fadeDuration: fadeDuration * 2)
         AudioManager.shared.stopSound(for: "magmoorcreepystrings", fadeDuration: fadeDuration * 2)
-        AudioManager.shared.stopSound(for: "thunderrumble", fadeDuration: fadeDuration * 2)
     }
     
     

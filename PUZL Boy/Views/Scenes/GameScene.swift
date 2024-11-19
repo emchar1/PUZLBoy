@@ -1533,8 +1533,8 @@ extension GameScene: ChatEngineDelegate {
     func despawnSwordCatwalk() {}
     func spawnMagmoorCatwalk() {}
     func despawnMagmoorCatwalk(completion: @escaping () -> Void) {}
-    func playMusicCatwalk(music: String, startingVolume: Float, fadeIn: TimeInterval) {}
-    func stopMusicCatwalk(music: String, fadeOut: TimeInterval) {}
+    func playMusicCatwalk(music: String, startingVolume: Float, fadeIn: TimeInterval, shouldStopOverworld: Bool) {}
+    func stopMusicCatwalk(music: String, fadeOut: TimeInterval, shouldPlayOverworld: Bool) {}
     func flashRedCatwalk(message: String, secondaryMessages: [String], completion: @escaping () -> Void) {}
     func shiftRedCatwalk(shouldShift: Bool, showMagmoorScary: Bool) {}
     func exitCatwalk(completion: @escaping () -> Void) {}
