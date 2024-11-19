@@ -1040,7 +1040,7 @@ extension ChatEngine {
                 self?.handleDialogueCompletion(level: level, completion: completion)
             }
         case -1010:
-            delegate?.flashRedCatwalk(message: "You're going to regret it...", secondaryMessages: ["Regret...", "Failure!", "Disappointment.", "You'll regret...", "Loser.", "Game Over!", "You lose.", "Disgrace!", "Shame!", "Guilt.", "Dishonor.", "Lose.", "Ignominy.", "Regret...", "Failure!", "Disappointment.", "You'll regret...", "Loser.", "Game Over!", "You lose.", "Disgrace!", "Shame!", "Guilt.", "Dishonor.", "Lose.", "Ignominy."]) { [weak self] in
+            delegate?.flashRedCatwalk(message: "You're going to regret it...", secondaryMessages: ["Regret...", "Failure!", "Disappointment.", "You'll regret it.", "Loser.", "Game Over!", "You lose.", "Disgrace!", "Shame!", "Guilt.", "Dishonor.", "Lose.", "FAIL", "Regret...", "Failure!", "Disappointment.", "You'll regret it.", "Loser.", "Game Over!", "You lose.", "Disgrace!", "Shame!", "Guilt.", "Dishonor.", "Lose.", "FAIL"]) { [weak self] in
                 self?.sendChatArray(shouldSkipDim: true, items: [
                     ChatItem(profile: .magmus, chat: "Ignore him! Do not let him get inside your head.")
                 ]) {
@@ -1086,9 +1086,9 @@ extension ChatEngine {
         case -1030:
             sendChatArray(shouldSkipDim: true, items: [
                 ChatItem(profile: .hero, imgPos: .left, chat: "I let him down. I let everyone down!! I'm so sorry.."),
-                ChatItem(profile: .melchior, chat: "Do not blame yourself, little one. You are facing forces the likes of which you have never seen... Perhaps this responsibility is best suited for another!"),
+                ChatItem(profile: .melchior, chat: "Don't blame yourself, little guy. You are dealing with forces the likes of which you've never seen! Perhaps this responsibility is best suited for another........"),
                 ChatItem(profile: .hero, imgPos: .left, chat: "Lovely. (Way to make me feel better.)"),
-                ChatItem(profile: .magmus, chat: "Melchior, don't be such a bully! Remember, Marlin chose him for the role for a very good reason."),
+                ChatItem(profile: .magmus, chat: "Melchior, don't be such a bully! Remember, Marlin chose him for a very good reason. And I see it too. The child has a gift!"),
                 ChatItem(profile: .melchior, chat: "Hmph!"),
                 ChatItem(profile: .hero, imgPos: .left, chat: ".....hmmm, this floor feels slanted. Does it look slanted to you?")
             ]) { [weak self] in
@@ -1117,7 +1117,7 @@ extension ChatEngine {
                 ChatItem(profile: tikiSelected, chat: "Cheer up, friend! All is not lost. Here's a little something to help you on your way...") { [weak self] in
                     self?.delegate?.spawnSwordCatwalk()
                 },
-                ChatItem(profile: tikiSelected, chat: "This special sword was crafted by the Mystic steelsmith, Mythrile. She forged the blade in the fire of a dying star not far from your realm. It is near indestructible."),
+                ChatItem(profile: tikiSelected, chat: "This sword was crafted by the Mystic steelsmith, Mythrile. Legend has it, she forged the blade in the fire of a dying star... it is near indestructible!"),
                 ChatItem(profile: .hero, imgPos: .left, chat: "Legendary. Thanks!! 🤩")
             ]) { [weak self] in
                 self?.handleDialogueCompletion(level: level, completion: completion)
@@ -1143,11 +1143,15 @@ extension ChatEngine {
             }
         case -1043:
             delegate?.despawnMagmoorCatwalk() { [weak self] in
+                let catwalkScene = self?.superScene as? CatwalkScene
+                
                 self?.sendChatArray(shouldSkipDim: true, items: [
                     ChatItem(profile: .hero, imgPos: .left, chat: "HE'S GETTING AWAY!!!"),
-                    ChatItem(profile: .villain, chat: "Enter if you dare... There is nothing you can do to stop what has been put in motion."),
-                    ChatItem(profile: .villain, chat: "Witness my coronation and wonder! I am the one true ruler of Mystaria, Vaeloria, and all the 12 realms across the universe... including this trash heap you call home."),
-                    ChatItem(profile: .hero, imgPos: .left, chat: "Your face is a trash heap!"),
+                    ChatItem(profile: .villain, chat: "Enter if you dare... There is nothing you can do to stop what has already been put in motion.") {
+                        catwalkScene?.shakeScreen(duration: 60, completion: nil)
+                    },
+                    ChatItem(profile: .villain, chat: "Witness my ascension and tremble! I am the one true ruler of Mystaria, Vaeloria, and all 12 realms across the universe... including this trash heap you call home!"),
+                    ChatItem(profile: .hero, imgPos: .left, chat: "Your face is a trash heap!!"),
                     ChatItem(profile: .merton, imgPos: .left, chat: "Quickly, boy! Through the gate! We mustn't waste anymore time!")
                 ]) {
                     self?.delegate?.despawnEldersCatwalk()

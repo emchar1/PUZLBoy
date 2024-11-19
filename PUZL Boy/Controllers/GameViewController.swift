@@ -266,7 +266,7 @@ extension GameViewController: GameSceneDelegate {
 extension GameViewController: CatwalkSceneDelegate {
     func catwalkSceneDidFinish() {
         let finalBattleScene = FinalBattleScene(size: K.ScreenDimensions.size)
-        skView.presentScene(finalBattleScene, transition: SKTransition.fade(with: .black, duration: 2.0))
+        skView.presentScene(finalBattleScene, transition: SKTransition.fade(with: .black, duration: 4.5))
     }
 }
 

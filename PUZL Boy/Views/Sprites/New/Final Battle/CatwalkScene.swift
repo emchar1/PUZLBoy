@@ -370,6 +370,27 @@ class CatwalkScene: SKScene {
         AudioManager.shared.playSound(for: "dooropen")
     }
     
+    //Shakes the screen. Use effect for certain cataclysmic event
+    func shakeScreen(duration totalDuration: TimeInterval, completion: (() -> Void)?) {
+        let shakeMagnitude: CGFloat = 12
+        let shakeDuration: TimeInterval = 0.06
+        
+        let shakeAction = SKAction.repeat(SKAction.sequence([
+            SKAction.moveBy(x: shakeMagnitude, y: shakeMagnitude, duration: shakeDuration),
+            SKAction.moveBy(x: -shakeMagnitude, y: -shakeMagnitude, duration: shakeDuration)
+        ]), count: Int(totalDuration / (shakeDuration * 2)))
+        
+        catwalkNode.run(shakeAction) {
+            Haptics.shared.stopHapticEngine()
+            Haptics.shared.startHapticEngine(shouldInitialize: false)
+
+            completion?()
+        }
+
+        AudioManager.shared.playSoundThenStop(for: "thunderrumble", currentTime: 5, playForDuration: totalDuration + 1, fadeOut: 4)
+        Haptics.shared.executeCustomPattern(pattern: .thunder)
+    }
+    
     
 }
 
@@ -465,14 +486,14 @@ extension CatwalkScene: ChatEngineDelegate {
         
         princess.sprite.run(SKAction.repeatForever(SKAction.sequence([
             SKAction.wait(forDuration: 2),
-            SKAction.moveBy(x: -20, y: 10, duration: 0),
+            SKAction.moveBy(x: -20, y: 20, duration: 0),
             SKAction.scale(by: 1.25, duration: 0),
             
             SKAction.wait(forDuration: 2),
             SKAction.run { [weak self] in
                 self?.princess.sprite.position = setPosition(heroPanelOffset: -1)
             },
-            SKAction.moveBy(x: 20, y: -20, duration: 0),
+            SKAction.moveBy(x: 20, y: 10, duration: 0),
             SKAction.scale(to: originalScale, duration: 0),
             SKAction.scaleY(to: originalScale * 1.5, duration: 0),
             
@@ -485,16 +506,16 @@ extension CatwalkScene: ChatEngineDelegate {
             SKAction.run { [weak self] in
                 self?.princess.sprite.position = setPosition(heroPanelOffset: 1)
             },
-            SKAction.moveBy(x: 60, y: 20, duration: 0),
+            SKAction.moveBy(x: -40, y: 70, duration: 0),
             SKAction.scale(to: originalScale * 0.75, duration: 0),
-            SKAction.scaleX(to: -originalScale, duration: 0),
-            SKAction.rotate(byAngle: .pi / 2, duration: 0),
+            SKAction.scaleX(to: originalScale, duration: 0),
+            SKAction.rotate(byAngle: .pi, duration: 0),
             
             SKAction.wait(forDuration: 2),
-            SKAction.moveBy(x: -60, y: -40, duration: 0),
+            SKAction.moveBy(x: 40, y: -70, duration: 0),
             SKAction.scale(to: originalScale, duration: 0),
             SKAction.scaleX(to: -originalScale, duration: 0),
-            SKAction.rotate(byAngle: -.pi / 2, duration: 0)
+            SKAction.rotate(byAngle: -.pi, duration: 0)
         ])))
     }
     
@@ -689,6 +710,7 @@ extension CatwalkScene: ChatEngineDelegate {
         
         let exitDuration: TimeInterval = 0.5
         let fadeDuration: TimeInterval = 2
+        let littleGirlLaughDuration: TimeInterval = 1.7
         let exitAction = SKAction.group([
             animatePlayer(player: hero, type: .run),
             SKAction.scaleX(to: hero.sprite.xScale / 4, y: hero.sprite.yScale / 4, duration: exitDuration),
@@ -705,10 +727,15 @@ extension CatwalkScene: ChatEngineDelegate {
             SKAction.fadeIn(withDuration: fadeDuration)
         ]))
         
-        run(SKAction.wait(forDuration: audioItemEnd)) { [weak self] in
-            audioItem?.player.stop()
-            AudioManager.shared.playSoundThenStop(for: "littlegirllaugh", playForDuration: 1.7)
-
+        run(SKAction.sequence([
+            SKAction.wait(forDuration: audioItemEnd),
+            SKAction.run {
+                audioItem?.player.stop()
+                AudioManager.shared.playSoundThenStop(for: "littlegirllaugh", playForDuration: littleGirlLaughDuration)
+                Haptics.shared.stopHapticEngine()
+            },
+            SKAction.wait(forDuration: littleGirlLaughDuration + 4.5)
+        ])) { [weak self] in
             self?.cleanupScene()
             self?.catwalkDelegate?.catwalkSceneDidFinish()
             completion()
@@ -718,6 +745,7 @@ extension CatwalkScene: ChatEngineDelegate {
         AudioManager.shared.stopSound(for: catwalkOverworld, fadeDuration: fadeDuration * 2)
         AudioManager.shared.stopSound(for: "magmoorcreepypulse", fadeDuration: fadeDuration * 2)
         AudioManager.shared.stopSound(for: "magmoorcreepystrings", fadeDuration: fadeDuration * 2)
+        AudioManager.shared.stopSound(for: "thunderrumble", fadeDuration: fadeDuration * 2)
     }
     
     
