@@ -736,21 +736,22 @@ extension CatwalkScene: ChatEngineDelegate {
         
         hero.sprite.run(exitAction)
         
-        fadeNode.run(SKAction.sequence([
+        catwalkNode.run(SKAction.sequence([
             SKAction.wait(forDuration: exitDuration),
             SKAction.run { [weak self] in
                 self?.openCloseGate(shouldOpen: false)
             },
-            SKAction.fadeIn(withDuration: fadeDuration)
+            SKAction.fadeOut(withDuration: fadeDuration)
         ]))
         
         run(SKAction.sequence([
             SKAction.wait(forDuration: audioItemEnd),
-            SKAction.run {
+            SKAction.run { [weak self] in
+                self?.magmoorSprite.removeAllActions()
                 audioItem?.player.stop()
                 AudioManager.shared.playSoundThenStop(for: "littlegirllaugh", playForDuration: littleGirlLaughDuration)
             },
-            SKAction.wait(forDuration: littleGirlLaughDuration + 4.5)
+            SKAction.wait(forDuration: littleGirlLaughDuration + 2)
         ])) { [weak self] in
             self?.cleanupScene()
             self?.catwalkDelegate?.catwalkSceneDidFinish()
