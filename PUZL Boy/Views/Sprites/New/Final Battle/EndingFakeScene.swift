@@ -66,10 +66,10 @@ class EndingFakeScene: SKScene {
         titleLabel.position = CGPoint(x: size.width / 2, y: size.height * 3/4)
         titleLabel.fontName = UIFont.gameFont
         titleLabel.fontSize = UIFont.gameFontSizeExtraLarge
-        titleLabel.fontColor = .orange.lightenColor(factor: 12)
+        titleLabel.fontColor = .yellow.darkenColor(factor: 3)
         titleLabel.alpha = 0
-        titleLabel.addHeavyDropShadow()
-        titleLabel.updateShadowColor(.lightGray)
+        titleLabel.addHeavyDropShadow(alpha: 0.35)
+        titleLabel.updateShadowColor(.purple.lightenColor(factor: 9))
         
         messageLabel = SKLabelNode(text: "")
         messageLabel.position = CGPoint(x: size.width * 0.1, y: titleLabel.position.y - UIFont.gameFontSizeExtraLarge)
@@ -81,8 +81,8 @@ class EndingFakeScene: SKScene {
         messageLabel.horizontalAlignmentMode = .left
         messageLabel.numberOfLines = 0
         messageLabel.alpha = 0
-        messageLabel.addDropShadow()
-        messageLabel.updateShadowColor(.lightGray)
+        messageLabel.addDropShadow(alpha: 0.35)
+        messageLabel.updateShadowColor(.purple.lightenColor(factor: 9))
         
         //Yes. | YES!!!!!
         //Be prepared!

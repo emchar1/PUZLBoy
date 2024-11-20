@@ -60,7 +60,7 @@ class GameViewController: UIViewController {
         
 //        // FIXME: - DEBUG: Final Cutscene TEST
 //        FIRManager.initializeFirestore() { [weak self] saveStateMode, error in
-//            let endingFakeScene = EndingFakeScene(size: K.ScreenDimensions.size, titleText: "CONGRATULATIONS!!", messageText: "You have successfully completed 500 levels of mind-bending puzzles. But it's not over just yet...\n\nAs PUZL Boy and the Elders make their way to Earth's core, they must confront Magmoor in a final showdown to rescue their friends, Marlin and Princess Olivia, and prevent the Mad Mystic from unleashing the Age of Ruin.\n\nAre you ready to face the ultimate challenge and save the universe from total destruction?")
+//            let endingFakeScene = EndingFakeScene(size: K.ScreenDimensions.size, titleText: "CONGRATULATIONS", messageText: "You have successfully completed 500 levels of mind-bending puzzles. But it's not over just yet...\n\nAs PUZL Boy and the Elders make their way to Earth's core, they must confront Magmoor in a final showdown to rescue their friends, Marlin and Princess Olivia, and prevent the Mad Mystic from unleashing the apocalyptic Age of Ruin!\n\nAre you ready to face the ultimate challenge and save the universe from total destruction?")
 //            self?.skView.presentScene(endingFakeScene)
 //
 //            endingFakeScene.animateScene(music: "bossbattle2") {

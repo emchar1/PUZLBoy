@@ -1536,7 +1536,7 @@ extension GameScene: ChatEngineDelegate {
     func playMusicCatwalk(music: String, startingVolume: Float, fadeIn: TimeInterval, shouldStopOverworld: Bool) {}
     func stopMusicCatwalk(music: String, fadeOut: TimeInterval, shouldPlayOverworld: Bool) {}
     func flashRedCatwalk(message: String, secondaryMessages: [String], completion: @escaping () -> Void) {}
-    func shiftRedCatwalk(shouldShift: Bool, showMagmoorScary: Bool) {}
+    func shiftRedCatwalk(shouldShift: Bool, fasterHeartbeat: Bool) {}
     func exitCatwalk(completion: @escaping () -> Void) {}
     
     

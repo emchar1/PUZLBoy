@@ -50,8 +50,7 @@ class FinalBattleScene: SKScene {
         
         tapPointerEngine = TapPointerEngine()
         
-        AudioManager.shared.playSound(for: "bossbattle1")
-        AudioManager.shared.playSound(for: "bossbattle2", delay: AudioManager.shared.getAudioItem(filename: "bossbattle1")?.player.duration)
+        AudioManager.shared.playSound(for: "bossbattle0")
     }
     
     

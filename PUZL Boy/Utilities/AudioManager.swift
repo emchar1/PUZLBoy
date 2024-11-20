@@ -112,7 +112,7 @@ class AudioManager {
         addAudioItem("buttontap7", category: .soundFX)
         addAudioItem("chatclose", category: .soundFX)
         addAudioItem("chatopen", category: .soundFX)
-        addAudioItem("chatopenelder", category: .soundFX) //$2
+        addAudioItem("chatopenelder", category: .soundFX) //$2 NEEDS PURCHASE
         addAudioItem("chatopenprincess", category: .soundFX)
         addAudioItem("chatopenstatue", category: .soundFX)
         addAudioItem("chatopentrainer", category: .soundFX)
@@ -215,6 +215,7 @@ class AudioManager {
         
         //Background music
         addAudioItem("birdsambience", category: .music, maxVolume: 0.2)
+        addAudioItem("bossbattle0", category: .music) //$19 NEEDS PURCHASE
         addAudioItem("bossbattle2", category: .music) //$16 NEEDS PURCHASE
         addAudioItem("bossbattle3", category: .music) //$16 NEEDS PURCHASE
         addAudioItem("continueloop", category: .music)

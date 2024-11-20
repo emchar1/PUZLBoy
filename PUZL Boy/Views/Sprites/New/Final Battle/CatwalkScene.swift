@@ -17,7 +17,7 @@ class CatwalkScene: SKScene {
     
     private let catwalkOverworld = "magicdoomloop"
     private let panelCount: Int = 5
-    private let catwalkLength: Int = 46
+    private let catwalkLength: Int = 52
     private let panelSpacing: CGFloat = 4
     private var panelSize: CGFloat { size.width / CGFloat(panelCount) }
     private var scaleSize: CGSize { CGSize.zero + panelSize - panelSpacing }
@@ -716,8 +716,8 @@ extension CatwalkScene: ChatEngineDelegate {
         flashRedHelper(message: message, secondaryMessages: secondaryMessages, completion: completion)
     }
     
-    func shiftRedCatwalk(shouldShift: Bool, showMagmoorScary: Bool) {
-        shiftRedHelper(shouldShift: shouldShift, showMagmoorScary: showMagmoorScary, fadeDuration: 1)
+    func shiftRedCatwalk(shouldShift: Bool, fasterHeartbeat: Bool) {
+        shiftRedHelper(shouldShift: shouldShift, fasterHeartbeat: fasterHeartbeat, fadeDuration: 1)
     }
     
     func exitCatwalk(completion: @escaping () -> Void) {
@@ -903,6 +903,14 @@ extension CatwalkScene: ChatEngineDelegate {
             }
         }
         
+        magmoorSprite.run(SKAction.sequence([
+            SKAction.wait(forDuration: fadeDuration),
+            SKAction.group([
+                SKAction.fadeIn(withDuration: fadeDuration * 8),
+                SKAction.scale(to: 2, duration: fadeDuration * 15)
+            ])
+        ]))
+        
         shiftCatwalkNode(panels: 1, moveDuration: fadeDuration / 8)
         AudioManager.shared.playSound(for: "boyattack\(Int.random(in: 1...3))")
     }
@@ -978,7 +986,7 @@ extension CatwalkScene: ChatEngineDelegate {
             SKAction.run { [weak self] in
                 guard let self = self else { return }
                 
-                AudioManager.shared.adjustVolume(to: 1, for: catwalkOverworld, fadeDuration: fadeDuration * 2.5)
+                AudioManager.shared.adjustVolume(to: 1, for: catwalkOverworld, fadeDuration: fadeDuration * 2)
             }
         ]))
         
@@ -1018,8 +1026,8 @@ extension CatwalkScene: ChatEngineDelegate {
         Haptics.shared.executeCustomPattern(pattern: .heartbeat)
     }
     
-    private func shiftRedHelper(shouldShift: Bool, showMagmoorScary: Bool, fadeDuration: TimeInterval) {
-        let heartbeatIndex: Int = showMagmoorScary ? 2 : 1
+    private func shiftRedHelper(shouldShift: Bool, fasterHeartbeat: Bool, fadeDuration: TimeInterval) {
+        let heartbeatIndex: Int = fasterHeartbeat ? 2 : 1
         
         if shouldShift {
             let colorizeRed = SKAction.colorize(with: .red, colorBlendFactor: 1, duration: fadeDuration)
@@ -1032,16 +1040,6 @@ extension CatwalkScene: ChatEngineDelegate {
             elder0.sprite.run(colorizeRed)
             elder1.sprite.run(colorizeRed)
             elder2.sprite.run(colorizeRed)
-            
-            if showMagmoorScary {
-                magmoorSprite.run(SKAction.sequence([
-                    SKAction.wait(forDuration: fadeDuration),
-                    SKAction.group([
-                        SKAction.fadeIn(withDuration: fadeDuration * 20),
-                        SKAction.scale(to: 2, duration: fadeDuration * 40)
-                    ])
-                ]))
-            }
             
             for catwalkPanel in catwalkPanels {
                 catwalkPanel.removeAllActions()
@@ -1056,21 +1054,19 @@ extension CatwalkScene: ChatEngineDelegate {
         else {
             let colorizeNone = SKAction.colorize(withColorBlendFactor: 0, duration: fadeDuration)
             
-            hero.sprite.run(colorizeNone)
-            elder0.sprite.run(colorizeNone)
-            elder1.sprite.run(colorizeNone)
-            elder2.sprite.run(colorizeNone)
-            
-            magmoorSprite.removeAllActions()
-            magmoorSprite.run(SKAction.fadeOut(withDuration: fadeDuration)) { [weak self] in
+            hero.sprite.run(colorizeNone) { [weak self] in
                 guard let self = self else { return }
                 
                 updateBackgroundNode(fadeDuration: fadeDuration) {
                     self.isRedShift = false
                 }
-
-                AudioManager.shared.adjustVolume(to: 1, for: catwalkOverworld, fadeDuration: fadeDuration * 2.5)
+                
+                AudioManager.shared.adjustVolume(to: 1, for: catwalkOverworld, fadeDuration: fadeDuration * 2)
             }
+            
+            elder0.sprite.run(colorizeNone)
+            elder1.sprite.run(colorizeNone)
+            elder2.sprite.run(colorizeNone)
             
             for catwalkPanel in catwalkPanels {
                 catwalkPanel.removeAllActions()
