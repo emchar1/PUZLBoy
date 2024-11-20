@@ -37,15 +37,16 @@ class FinalBattleScene: SKScene {
     }
     
     private func setupScene() {
-        backgroundNode = SKSpriteNode(color: .magenta, size: size)
+        backgroundNode = SKSpriteNode(color: .black.lightenColor(factor: 3), size: size)
         backgroundNode.anchorPoint = .zero
         
-        comingSoonLabel = SKLabelNode(text: "FINAL BATTLE COMING SOON...")
+        comingSoonLabel = SKLabelNode(text: "TO BE CONTINUED...")
         comingSoonLabel.fontName = UIFont.gameFont
-        comingSoonLabel.fontColor = .yellow
+        comingSoonLabel.fontColor = .yellow.darkenColor(factor: 3)
         comingSoonLabel.fontSize = UIFont.gameFontSizeLarge
         comingSoonLabel.position = CGPoint(x: size.width / 2, y: size.height / 2)
-        comingSoonLabel.addHeavyDropShadow()
+        comingSoonLabel.addHeavyDropShadow(alpha: 0.35)
+        comingSoonLabel.updateShadowColor(.purple.lightenColor(factor: 9))
         comingSoonLabel.zPosition = 10
         
         tapPointerEngine = TapPointerEngine()
