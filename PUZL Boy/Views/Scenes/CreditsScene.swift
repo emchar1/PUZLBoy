@@ -100,6 +100,7 @@ class CreditsScene: SKScene {
 
 
         var randomPlayer: Player.PlayerType = .allCases.randomElement() ?? .hero
+        let villainOffset: CGFloat = randomPlayer == .villain ? 150 : 0
         
         //Elders cannot walk the Credits at the moment (there's no walk animation for them)
         while randomPlayer != .hero && randomPlayer != .princess && randomPlayer != .villain {
@@ -108,7 +109,7 @@ class CreditsScene: SKScene {
         
         player = Player(type: randomPlayer)
         player.sprite.setScale(Player.cutsceneScale * player.scaleMultiplier)
-        player.sprite.position = CGPoint(x: screenSize.width / 2, y: screenSize.height / 4)
+        player.sprite.position = CGPoint(x: screenSize.width / 2, y: screenSize.height / 4 + villainOffset)
         player.sprite.color = DayTheme.spriteColor
         player.sprite.colorBlendFactor = DayTheme.spriteShade
         player.sprite.anchorPoint = CGPoint(x: 0.5, y: 0)
@@ -116,7 +117,7 @@ class CreditsScene: SKScene {
         
         playerReflection = Player(type: randomPlayer)
         playerReflection.sprite.setScale(Player.cutsceneScale * playerReflection.scaleMultiplier)
-        playerReflection.sprite.position = player.sprite.position + CGPoint(x: 0, y: player.sprite.size.height / 4 - 10) //why -10???
+        playerReflection.sprite.position = player.sprite.position + CGPoint(x: 0, y: player.sprite.size.height / 4 - villainOffset - 10) //why -10???
         playerReflection.sprite.anchorPoint = CGPoint(x: 0.5, y: 0)
         playerReflection.sprite.color = DayTheme.spriteColor
         playerReflection.sprite.colorBlendFactor = DayTheme.spriteShade
@@ -124,10 +125,12 @@ class CreditsScene: SKScene {
         playerReflection.sprite.alpha = 0.25
 
         let frameRate: TimeInterval = 0.06
-        let playerAnimate = SKAction.animate(with: player.textures[Player.Texture.walk.rawValue], timePerFrame: frameRate)
+        let actionIdle = SKAction.repeatForever(SKAction.animate(with: player.textures[Player.Texture.walk.rawValue], timePerFrame: frameRate))
+        let actionIdleLevitate = Player.animateIdleLevitate(player: player, randomizeDuration: false)
+        let actionIdleLevitateReverse = Player.animateIdleLevitate(player: player, shouldReverse: true, randomizeDuration: false)
 
-        player.sprite.run(SKAction.repeatForever(playerAnimate))
-        playerReflection.sprite.run(SKAction.repeatForever(playerAnimate))
+        player.sprite.run(randomPlayer == .villain ? actionIdleLevitate : actionIdle)
+        playerReflection.sprite.run(randomPlayer == .villain ? actionIdleLevitateReverse : actionIdle)
         
         let speechBubbleWidth: CGFloat = 400
         

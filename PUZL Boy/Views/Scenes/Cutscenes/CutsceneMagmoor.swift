@@ -320,8 +320,8 @@ class CutsceneMagmoor: Cutscene {
         let forcefieldSpawnPause: TimeInterval = warpPause + zoomInPause + holdPause + thirdPause + attackPause + elderDialoguePause + elderMagmoorPanPause + magmoorDialoguePause + forcefieldOffsetDuration //6 + 3 + 7 + 2 + 3 + 6.2 + 1.1 + 5.3 + 1.5 = 35.1s
         let forcefieldDuration: TimeInterval = 8
 
-        //IMPORTANT: any animatePlayerWithTextures() should always be called FIRST, before any other SKActions!!
-        animatePlayerWithTextures(player: &playerRight, textureType: .idle, timePerFrame: 0.12)
+        //IMPORTANT: any animatePlayerWithTextures() should always be called FIRST, before any other SKActions!! - DEFUNCT 11/21/24??
+//        animatePlayerWithTextures(player: &playerRight, textureType: .idle, timePerFrame: 0.12)
 
         //Parallax
         parallaxManager.changeSet(set: .sand)
@@ -652,11 +652,7 @@ class CutsceneMagmoor: Cutscene {
                                      fadeDuration: 1,
                                      delay: warpPause + zoomInPause + magmoorFadeInDuration)
         
-        playerRight.sprite.run(SKAction.repeatForever(SKAction.sequence([
-            SKAction.moveBy(x: 0, y: 15, duration: 1 + TimeInterval.random(in: 0...1)),
-            SKAction.moveBy(x: 0, y: -15, duration: 1 + TimeInterval.random(in: 0...1))
-        ])))
-        
+        playerRight.sprite.run(Player.animateIdleLevitate(player: playerRight))
         playerRight.sprite.run(SKAction.sequence([
             SKAction.wait(forDuration: warpPause + zoomInPause + 1),
             SKAction.moveTo(y: screenSize.height / 2, duration: 0),
@@ -1274,11 +1270,7 @@ class CutsceneMagmoor: Cutscene {
         duplicate.sprite.zPosition = playerRight.sprite.zPosition + CGFloat(duplicateMagmoors.count) * (offset.y < 0 ? 1 : -1)
         backgroundNode.addChild(duplicate.sprite)
 
-        //Float animation
-        duplicate.sprite.run(SKAction.repeatForever(SKAction.sequence([
-            SKAction.moveBy(x: 0, y: 15, duration: 1 + TimeInterval.random(in: 0...1)),
-            SKAction.moveBy(x: 0, y: -15, duration: 1 + TimeInterval.random(in: 0...1))
-        ])))
+        duplicate.sprite.run(Player.animateIdleLevitate(player: duplicate), withKey: "duplicateMagmoor")
     }
     
     private func animateDuplicates(delaySpawn: TimeInterval? = nil, delayAttack: TimeInterval? = nil) {
@@ -1291,6 +1283,10 @@ class CutsceneMagmoor: Cutscene {
             //Attack animation
             duplicateTuple.duplicate.sprite.run(SKAction.sequence([
                 SKAction.wait(forDuration: (delaySpawn ?? 0) + (delayAttack ?? 0)),
+                SKAction.run {
+                    duplicateTuple.duplicate.sprite.removeAction(forKey: "duplicateMagmoor")
+                    
+                },
                 SKAction.animate(with: duplicateTuple.duplicate.textures[Player.Texture.attack.rawValue], timePerFrame: animationTimePerFrame),
                 SKAction.wait(forDuration: 7),
                 SKAction.repeatForever(SKAction.animate(with: duplicateTuple.duplicate.textures[Player.Texture.idle.rawValue], timePerFrame: animationTimePerFrame))

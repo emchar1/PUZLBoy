@@ -325,5 +325,25 @@ class Player {
         }
     }
     
+    /**
+     Animates a levitating, idling state.
+     - parameters:
+        - player: the Player object
+        - shouldReverse: determines start direction of levitation movement
+        - randomizeDuration: if true, adds a potential 0...1 second delay
+     - returns the idle, levitating action
+     */
+    static func animateIdleLevitate(player: Player, shouldReverse: Bool = false, randomizeDuration: Bool = true) -> SKAction {
+        let moveOffset: CGFloat = shouldReverse ? -20 : 20
+        
+        return SKAction.group([
+            SKAction.repeatForever(SKAction.animate(with: player.textures[Player.Texture.idle.rawValue], timePerFrame: 0.1)),
+            SKAction.repeatForever(SKAction.sequence([
+                SKAction.moveBy(x: 0, y: moveOffset, duration: 1 + (randomizeDuration ? TimeInterval.random(in: 0...1) : 0)),
+                SKAction.moveBy(x: 0, y: -moveOffset, duration: 1 + (randomizeDuration ? TimeInterval.random(in: 0...1) : 0))
+            ]))
+        ])
+    }
+    
     
 }

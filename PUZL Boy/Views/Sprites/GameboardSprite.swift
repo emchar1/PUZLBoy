@@ -501,8 +501,7 @@ class GameboardSprite {
         let currentThemeFade: TimeInterval = shouldAnimateWarp ? 5 : 0
 
         AudioManager.shared.playSound(for: "magicheartbeatloop1", fadeIn: 3, delay: waitDuration, interruptPlayback: false)
-        AudioManager.shared.playSound(for: "littlegirllaugh", fadeIn: 3, delay: waitDuration, interruptPlayback: false)
-        AudioManager.shared.playSound(for: "scarymusicbox", fadeIn: 3, delay: waitDuration, interruptPlayback: false)
+        AudioManager.shared.playSound(for: "bossbattle0", delay: waitDuration, interruptPlayback: false)
         AudioManager.shared.adjustVolume(to: 0, for: AudioManager.shared.currentTheme.overworld, fadeDuration: currentThemeFade)
 
         if shouldAnimateWarp {
@@ -555,7 +554,7 @@ class GameboardSprite {
         villain.sprite.setScale(0)
         villain.sprite.zPosition = K.ZPosition.itemsAndEffects + 20
         villain.sprite.name = "captureVillain"
-        villain.sprite.run(getMagmoorIdleAction(), withKey: "magmoorIdle")
+        villain.sprite.run(Player.animateIdleLevitate(player: villain), withKey: "magmoorIdle")
                     
         princess.sprite.run(SKAction.sequence([
             SKAction.wait(forDuration: waitDuration),
@@ -583,18 +582,6 @@ class GameboardSprite {
         
         sprite.addChild(princess.sprite)
         sprite.addChild(villain.sprite)
-    }
-    
-    private func getMagmoorIdleAction() -> SKAction {
-        let villain = Player(type: .villain)
-        
-        return SKAction.repeatForever(SKAction.group([
-            SKAction.animate(with: villain.textures[Player.Texture.idle.rawValue], timePerFrame: 0.1),
-            SKAction.sequence([
-                SKAction.moveBy(x: 0, y: 20, duration: 1 + TimeInterval.random(in: 0...1)),
-                SKAction.moveBy(x: 0, y: -20, duration: 1 + TimeInterval.random(in: 0...1))
-            ])
-        ]))
     }
     
     func flashPrincess(at position: K.GameboardPosition, completion: @escaping () -> Void) {
@@ -690,7 +677,7 @@ class GameboardSprite {
                         SKAction.animate(with: villain.textures[Player.Texture.attack.rawValue], timePerFrame: 0.06),
                         SKAction.wait(forDuration: actionDuration * 3.5 - 1)
                     ]),
-                    getMagmoorIdleAction()
+                    Player.animateIdleLevitate(player: villain)
                 ]), withKey: "attackAnimation")
                 
                 node.run(SKAction.sequence([
@@ -748,8 +735,7 @@ class GameboardSprite {
                     ParticleEngine.shared.removeParticles(fromNode: sprite)
                     AudioManager.shared.playSound(for: "dooropen")
                     AudioManager.shared.stopSound(for: "magicheartbeatloop2", fadeDuration: 5)
-                    AudioManager.shared.stopSound(for: "littlegirllaugh", fadeDuration: 5)
-                    AudioManager.shared.stopSound(for: "scarymusicbox", fadeDuration: 5)
+                    AudioManager.shared.stopSound(for: "bossbattle0", fadeDuration: 5)
 
                     completion()
                 }

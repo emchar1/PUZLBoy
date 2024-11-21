@@ -679,16 +679,8 @@ extension CatwalkScene: ChatEngineDelegate {
         villain.sprite.xScale *= -1
         villain.sprite.alpha = 0
         
-        villain.sprite.run(animatePlayer(player: villain, type: .idle))
         villain.sprite.run(SKAction.fadeAlpha(to: 1, duration: fadeDuration))
-        
-        villain.sprite.run(SKAction.repeatForever(SKAction.group([
-            SKAction.animate(with: villain.textures[Player.Texture.idle.rawValue], timePerFrame: 0.1),
-            SKAction.sequence([
-                SKAction.moveBy(x: 0, y: 20, duration: 1 + TimeInterval.random(in: 0...1)),
-                SKAction.moveBy(x: 0, y: -20, duration: 1 + TimeInterval.random(in: 0...1))
-            ])
-        ])))
+        villain.sprite.run(Player.animateIdleLevitate(player: villain))
         
         shiftCatwalkNode(panels: 2, moveDuration: fadeDuration * 1.5)
     }
