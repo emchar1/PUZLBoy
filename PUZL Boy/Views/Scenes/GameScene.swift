@@ -1528,7 +1528,7 @@ extension GameScene: ChatEngineDelegate {
     func spawnMarlinCatwalk() {}
     func despawnMarlinCatwalk() {}
     func spawnSwordCatwalk() {}
-    func spawnTikiCatwalk(statue: ChatItem.ChatProfile, fadeIn: TimeInterval) {}
+    func spawnTikiCatwalk(statueNumber: Int, fadeIn: TimeInterval) {}
     func despawnTikiCatwalk(fadeOut: TimeInterval) {}
     func despawnSwordCatwalk() {}
     func spawnMagmoorCatwalk() {}

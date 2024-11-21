@@ -29,7 +29,7 @@ protocol ChatEngineDelegate: AnyObject {
     func despawnPrincessCatwalk()
     func spawnMarlinCatwalk()
     func despawnMarlinCatwalk()
-    func spawnTikiCatwalk(statue: ChatItem.ChatProfile, fadeIn: TimeInterval)
+    func spawnTikiCatwalk(statueNumber: Int, fadeIn: TimeInterval)
     func despawnTikiCatwalk(fadeOut: TimeInterval)
     func spawnSwordCatwalk()
     func despawnSwordCatwalk()
@@ -409,7 +409,7 @@ class ChatEngine {
     private func animateFateSealed() {
         guard let superScene = superScene, let gameScene = superScene as? GameScene else { return }
         
-        dimOverlaySprite.fillColor = FIRManager.decisionsLeftButton[1] ?? true ? .red : .blue
+        dimOverlaySprite.fillColor = FireIceTheme.overlayColor
         dimOverlaySprite.run(SKAction.fadeAlpha(to: 0.4, duration: 1))
 
         gameScene.shakeScreen(duration: 5, shouldPlaySFX: true) { [weak self] in
@@ -935,7 +935,7 @@ extension ChatEngine {
             ChatItem(profile: .hero, imgPos: .left, chat: "—to the blue warp. Pretty obvious."),
             
             //1: 2
-            ChatItem(profile: .statue4, chat: "There's a reddish haze that lingers in the air. It gets heavier the deeper you go. Makes it hard to breathe sometimes."),
+            ChatItem(profile: .statue4, chat: "There's a \(FireIceTheme.isFire ? "reddish" : "bluish") haze that lingers in the air. It gets heavier the deeper you go. Makes it hard to breathe sometimes."),
             ChatItem(profile: .hero, imgPos: .left, chat: "Yeah! I did notice it's harder to breathe down here. Figured it was just my anxiety."),
             
             //2: 1
@@ -1087,9 +1087,9 @@ extension ChatEngine {
             delegate?.playMusicCatwalk(music: "sadaccent", startingVolume: 1, fadeIn: 0.5, shouldStopOverworld: true)
             
             sendChatArray(shouldSkipDim: true, items: [
-                ChatItem(profile: .hero, imgPos: .left, chat: "I let him down. I let everyone down!! I'm so sorry.."),
-                ChatItem(profile: .melchior, chat: "Don't blame yourself, diminutive one. You are dealing with forces the likes of which you've never seen! Perhaps this responsibility is best suited for another......."),
-                ChatItem(profile: .hero, imgPos: .left, chat: "Lovely. (Way to make me feel better. 😒)"),
+                ChatItem(profile: .hero, imgPos: .left, chat: "I let him down. I let everyone down!! I'm such a loser.."),
+                ChatItem(profile: .melchior, chat: "Don't blame yourself, diminutive one. This is the hardest challenge you will ever face! Perhaps the responsibility is best suited for another......."),
+                ChatItem(profile: .hero, imgPos: .left, chat: "Lovely. (Way to make me feel better 😒)"),
                 ChatItem(profile: .magmus, chat: "Melchior, don't be such a bully! Remember, Marlin chose him for good reason. I see it too. This one is... special!"),
                 ChatItem(profile: .melchior, chat: "Hmph! I disagree."),
                 ChatItem(profile: .hero, imgPos: .left, chat: ".....hmmm, this floor feels slanted. Does it look slanted to you?")
@@ -1100,8 +1100,9 @@ extension ChatEngine {
         case -1035:
             let tikiSelected: ChatItem.ChatProfile
             let fadeIn: TimeInterval = 1
+            let randomTiki = Int.random(in: 0...4)
             
-            switch Int.random(in: 0...4) {
+            switch randomTiki {
             case 0:     tikiSelected = .statue0
             case 1:     tikiSelected = .statue1
             case 2:     tikiSelected = .statue2
@@ -1111,16 +1112,16 @@ extension ChatEngine {
             }
             
             delegate?.playMusicCatwalk(music: "overworldmarimba", startingVolume: 0.25, fadeIn: fadeIn, shouldStopOverworld: true)
-            delegate?.spawnTikiCatwalk(statue: tikiSelected, fadeIn: fadeIn)
+            delegate?.spawnTikiCatwalk(statueNumber: randomTiki, fadeIn: fadeIn)
             
             sendChatArray(shouldSkipDim: true, items: [
                 ChatItem(profile: tikiSelected, chat: "Hey there PUZL Boy! You look down in the mouth. Don't be so discouraged."),
                 ChatItem(profile: .hero, imgPos: .left, chat: "Yeah, well.. I am NOT having the best day of my life right now, to be honest."),
-                ChatItem(profile: tikiSelected, chat: "Cheer up, friend! All is not lost. Here's a little something to help you on your way...") { [weak self] in
+                ChatItem(profile: tikiSelected, chat: "Cheer up, friend! All is not lost. Here's a little something to lift your spirits!") { [weak self] in
                     self?.delegate?.spawnSwordCatwalk()
                 },
                 ChatItem(profile: tikiSelected, chat: "This sword was crafted by the Mystic steelsmith, Mythrile. Legend has it, she forged the blade in the fire of a dying star... it is near indestructible!"),
-                ChatItem(profile: .hero, imgPos: .left, chat: "The inscription reads,\n\n\"NEV-R-BREAK\"\n\nWicked! Thanks!! 🖤")
+                ChatItem(profile: .hero, imgPos: .left, chat: "...spirits lifted! 😊")
             ]) { [weak self] in
                 self?.handleDialogueCompletion(level: level, completion: completion)
             }
@@ -1130,7 +1131,14 @@ extension ChatEngine {
             delegate?.stopMusicCatwalk(music: "overworldmarimba", fadeOut: fadeOut, shouldPlayOverworld: true)
             delegate?.despawnTikiCatwalk(fadeOut: fadeOut)
             delegate?.despawnSwordCatwalk()
-            handleDialogueCompletion(level: level, completion: completion)
+            hideFFButton()
+
+            sendChatArray(shouldSkipDim: true, items: [
+                ChatItem(profile: .blankhero, chat: "\n\nReceived Cosmic Blade of Creation.")
+            ]) { [weak self] in
+                self?.showFFButton()
+                self?.handleDialogueCompletion(level: level, completion: completion)
+            }
         case -1047:
             delegate?.shiftRedCatwalk(shouldShift: true, fasterHeartbeat: true)
             delegate?.spawnMagmoorCatwalk()

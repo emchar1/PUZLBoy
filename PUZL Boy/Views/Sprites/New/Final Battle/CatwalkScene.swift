@@ -80,6 +80,8 @@ class CatwalkScene: SKScene {
         
         tapPointerEngine = nil
         chatEngine = nil
+        
+        AudioManager.shared.adjustVolume(to: 1, for: catwalkOverworld)
     }
     
     private func setupNodes() {
@@ -94,7 +96,7 @@ class CatwalkScene: SKScene {
         inbetweenNode.anchorPoint = .zero
         inbetweenNode.zPosition = 5
         
-        bloodOverlay = SKSpriteNode(color: .red, size: size)
+        bloodOverlay = SKSpriteNode(color: FireIceTheme.overlayColor, size: size)
         bloodOverlay.anchorPoint = .zero
         bloodOverlay.zPosition = K.ZPosition.fadeTransitionNode - 5
         
@@ -569,13 +571,13 @@ extension CatwalkScene: ChatEngineDelegate {
         trainer.sprite.run(SKAction.fadeOut(withDuration: 2))
     }
     
-    func spawnTikiCatwalk(statue: ChatItem.ChatProfile, fadeIn: TimeInterval) {
+    func spawnTikiCatwalk(statueNumber: Int, fadeIn: TimeInterval) {
         let marimbaWait: TimeInterval = 0.517
         let overlayAlpha: CGFloat = 0.25
         
-        let tiki = SKSpriteNode(texture: ChatItem.getChatProfileTexture(profile: statue))
+        let tiki = SKSpriteNode(imageNamed: "statue\(statueNumber)")
         tiki.position = getHeroPosition(xPanelOffset: 2, yOffset: 0)
-        tiki.scale(to: scaleSize * 3/4)
+        tiki.scale(to: scaleSize)
         tiki.alpha = 0
         tiki.zPosition = K.ZPosition.player - 3
         tiki.name = "tikiStatueNode"
@@ -621,7 +623,7 @@ extension CatwalkScene: ChatEngineDelegate {
         ]))
                 
         bloodOverlay.removeAllActions()
-        bloodOverlay.run(SKAction.colorize(with: .red, colorBlendFactor: 1, duration: fadeOut))
+        bloodOverlay.run(SKAction.colorize(with: FireIceTheme.overlayColor, colorBlendFactor: 1, duration: fadeOut))
         
         updateBackgroundNode(fadeDuration: fadeOut, completion: nil)
     }
@@ -630,11 +632,11 @@ extension CatwalkScene: ChatEngineDelegate {
         let duration: TimeInterval = 0.25
         let bounceFactor: CGFloat = scaleSize.width * 0.25
         
-        let swordSprite = SKSpriteNode(imageNamed: "sword")
+        let swordSprite = SKSpriteNode(imageNamed: "cosmicSword")
         swordSprite.scale(to: .zero)
         swordSprite.position = getHeroPosition(xPanelOffset: 1, yOffset: 0)
         swordSprite.zPosition = K.ZPosition.overlay
-        swordSprite.name = "sword"
+        swordSprite.name = "cosmicSword"
         
         swordSprite.run(SKAction.sequence([
             SKAction.scale(to: scaleSize + bounceFactor, duration: duration),
@@ -645,7 +647,7 @@ extension CatwalkScene: ChatEngineDelegate {
     }
     
     func despawnSwordCatwalk() {
-        guard let swordSprite = catwalkNode.childNode(withName: "sword") else { return }
+        guard let swordSprite = catwalkNode.childNode(withName: "cosmicSword") else { return }
         
         swordSprite.run(SKAction.sequence([
             SKAction.group([
@@ -707,6 +709,10 @@ extension CatwalkScene: ChatEngineDelegate {
     func stopMusicCatwalk(music: String, fadeOut: TimeInterval, shouldPlayOverworld: Bool) {
         AudioManager.shared.stopSound(for: music, fadeDuration: fadeOut)
         
+        run(SKAction.wait(forDuration: fadeOut)) {
+            AudioManager.shared.adjustVolume(to: 1, for: music)
+        }
+        
         if shouldPlayOverworld {
             AudioManager.shared.adjustVolume(to: 1, for: catwalkOverworld, fadeDuration: fadeOut)
         }
@@ -727,7 +733,7 @@ extension CatwalkScene: ChatEngineDelegate {
         
         let exitDuration: TimeInterval = 0.5
         let fadeDuration: TimeInterval = 2
-        let littleGirlLaughDuration: TimeInterval = 1.7
+        let scaryLaughDuration: TimeInterval = AudioManager.shared.getAudioItem(filename: "scarylaugh")?.player.duration ?? 0
         let exitAction = SKAction.group([
             animatePlayer(player: hero, type: .run),
             SKAction.scaleX(to: hero.sprite.xScale / 4, y: hero.sprite.yScale / 4, duration: exitDuration),
@@ -746,12 +752,11 @@ extension CatwalkScene: ChatEngineDelegate {
         
         run(SKAction.sequence([
             SKAction.wait(forDuration: audioItemEnd),
-            SKAction.run { [weak self] in
-                self?.magmoorSprite.removeAllActions()
+            SKAction.run {
                 audioItem?.player.stop()
-                AudioManager.shared.playSoundThenStop(for: "littlegirllaugh", playForDuration: littleGirlLaughDuration)
+                AudioManager.shared.playSoundThenStop(for: "scarylaugh", playForDuration: scaryLaughDuration)
             },
-            SKAction.wait(forDuration: littleGirlLaughDuration + 2)
+            SKAction.wait(forDuration: scaryLaughDuration - 2) //There are 2 seconds of silence in scarylaugh
         ])) { [weak self] in
             self?.cleanupScene()
             self?.catwalkDelegate?.catwalkSceneDidFinish()
@@ -853,7 +858,7 @@ extension CatwalkScene: ChatEngineDelegate {
     private func despawnMagmoorHelper(completion: @escaping () -> Void) {
         let scale: CGFloat = 0.9
         let fadeDuration: TimeInterval = 2
-        let attackSprite = SKSpriteNode(texture: SKTexture(imageNamed: "iconSword"))
+        let attackSprite = SKSpriteNode(texture: SKTexture(imageNamed: "iconCosmicSword"))
         attackSprite.position = getHeroPosition(xPanelOffset: 1, yOffset: scaleSize.height * 0.4)
         attackSprite.zPosition = K.ZPosition.itemsAndEffects
         attackSprite.setScale(scale * (panelSize / attackSprite.size.width))
@@ -873,7 +878,8 @@ extension CatwalkScene: ChatEngineDelegate {
         attackSprite.run(animation) { [weak self] in
             guard let self = self else { return }
             
-            AudioManager.shared.playSound(for: "scarylaugh")
+            AudioManager.shared.playSound(for: "magicwarp")
+            AudioManager.shared.playSound(for: "magicwarp2")
 
             ParticleEngine.shared.animateParticles(type: .magmoorBamf,
                                                    toNode: catwalkNode,
@@ -908,7 +914,7 @@ extension CatwalkScene: ChatEngineDelegate {
             SKAction.wait(forDuration: fadeDuration),
             SKAction.group([
                 SKAction.fadeIn(withDuration: fadeDuration * 8),
-                SKAction.scale(to: 2, duration: fadeDuration * 15)
+                SKAction.scale(to: 1.75, duration: fadeDuration * 15)
             ])
         ]))
         
@@ -920,7 +926,7 @@ extension CatwalkScene: ChatEngineDelegate {
         guard !isRedShift else { return }
         
         let fadeDuration: TimeInterval = 1
-        let colorizeRed = SKAction.colorize(with: .red, colorBlendFactor: 1, duration: 0)
+        let colorizeRed = SKAction.colorize(with: FireIceTheme.overlayColor, colorBlendFactor: 1, duration: 0)
         let colorizeNone = SKAction.colorize(withColorBlendFactor: 0, duration: fadeDuration)
         let colorizeSequence = SKAction.sequence([colorizeRed, SKAction.wait(forDuration: fadeDuration), colorizeNone])
         
@@ -1031,7 +1037,7 @@ extension CatwalkScene: ChatEngineDelegate {
         let heartbeatIndex: Int = fasterHeartbeat ? 2 : 1
         
         if shouldShift {
-            let colorizeRed = SKAction.colorize(with: .red, colorBlendFactor: 1, duration: fadeDuration)
+            let colorizeRed = SKAction.colorize(with: FireIceTheme.overlayColor, colorBlendFactor: 1, duration: fadeDuration)
             isRedShift = true
             
             backgroundNode.run(SKAction.fadeOut(withDuration: fadeDuration))

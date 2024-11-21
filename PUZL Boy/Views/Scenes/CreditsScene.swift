@@ -363,18 +363,18 @@ class CreditsScene: SKScene {
         
         
         // TODO: - Speech Bubbles for each Player
-        setSpeechBubblesArray(texts: [
-            "I can't wait to play this game, I heard great things!",
-            "Is it fun? Yes. But is it addictive? Also yes.",
-            "Of course I finished all my chores. Why do you ask?",
-            "I loaded the dishwasher the way you told me to.",
-            "I don't know how the forks ended up on the top shelf.",
-            "No because you yelled at me about it last time.",
-            "Maybe Gina came over and put them there.",
-            "There's the phone, you can give her a call yourself.",
-            "I'm not giving you attitude.",
-            "Well, I'm not calling you a liar but you's a big fat liar!"
-        ], completion: nil)
+//        setSpeechBubblesArray(texts: [
+//            "I can't wait to play this game, I heard great things!",
+//            "Is it fun? Yes. But is it addictive? Also yes.",
+//            "Of course I finished all my chores. Why do you ask?",
+//            "I loaded the dishwasher the way you told me to.",
+//            "I don't know how the forks ended up on the top shelf.",
+//            "No because you yelled at me about it last time.",
+//            "Maybe Gina came over and put them there.",
+//            "There's the phone, you can give her a call yourself.",
+//            "I'm not giving you attitude.",
+//            "Well, I'm not calling you a liar but you's a big fat liar!"
+//        ], completion: nil)
     }
     
     private func animateFadeAction() -> SKAction {

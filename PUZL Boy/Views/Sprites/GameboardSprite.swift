@@ -1473,7 +1473,7 @@ class GameboardSprite {
     
     func colorizeGameboard(fadeOut: Bool, fadeOutDuration: TimeInterval = 0.5, isInbetween: Bool, completion: (() -> Void)?) {
         let colorizeKey = "colorizeGameboard"
-        let inbetweenSpriteColor: UIColor = .red
+        let inbetweenSpriteColor: UIColor = FireIceTheme.overlayColor
         let inbetweenSpriteShade: CGFloat = 0.75
 
         let colorizeSpriteAction = SKAction.colorize(

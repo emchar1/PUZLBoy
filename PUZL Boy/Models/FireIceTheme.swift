@@ -15,7 +15,7 @@ struct FireIceTheme {
     //Main
     static var isFire: Bool { FIRManager.decisionsLeftButton[1] == nil || FIRManager.decisionsLeftButton[1]! }
     
-    //Colors - I don't think these are in use??? 8/12/24
+    //Colors
     static var overlayColor: UIColor { isFire ? .red : .blue }
     static var overlaySystemColor: UIColor { isFire ? .systemRed : .systemBlue }
     

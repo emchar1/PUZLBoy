@@ -144,7 +144,7 @@ extension GameViewController: AuthorizationRequestSceneDelegate {
                                 launchScene = nil
                                 
                                 cutsceneIntro?.animateScene() {
-                                    self.presentTitleScene(shouldInitializeAsHero: false)
+                                    self.presentTitleScene(shouldInitializeAsHero: false, transition: nil)
                                                                         
                                     //BUGFIX# 240616E01 scarymusicbox may sometimes play if you skip intro at the moment it's just about to play.
                                     cutsceneIntro?.stopAllMusic(fadeDuration: 1)
@@ -155,7 +155,7 @@ extension GameViewController: AuthorizationRequestSceneDelegate {
                         }
                         else {
                             launchScene?.animateTransition(animationSequence: .jump) { _ in
-                                self.presentTitleScene(shouldInitializeAsHero: true)
+                                self.presentTitleScene(shouldInitializeAsHero: true, transition: nil)
                                 
                                 launchScene = nil
                             }
@@ -168,11 +168,16 @@ extension GameViewController: AuthorizationRequestSceneDelegate {
         }//end GameCenterManager.shared.getUser()
     }
     
-    private func presentTitleScene(shouldInitializeAsHero: Bool) {
+    private func presentTitleScene(shouldInitializeAsHero: Bool, transition: SKTransition?) {
         let titleScene = TitleScene(size: K.ScreenDimensions.size, shouldInitializeAsHero: shouldInitializeAsHero)
         titleScene.titleSceneDelegate = self
         
-        skView.presentScene(titleScene)
+        if let transition = transition {
+            skView.presentScene(titleScene, transition: transition)
+        }
+        else {
+            skView.presentScene(titleScene)
+        }
     }
 }
 
@@ -217,11 +222,8 @@ extension GameViewController: TitleSceneDelegate {
 
 extension GameViewController: CreditsSceneDelegate {
     func goBackTapped() {
-        let titleScene = TitleScene(size: K.ScreenDimensions.size, shouldInitializeAsHero: false)
-        titleScene.titleSceneDelegate = self
-        
         //NEEDS to have a transition, otherwise the state won't save, trust me.
-        skView.presentScene(titleScene, transition: SKTransition.fade(with: .white, duration: 0))
+        presentTitleScene(shouldInitializeAsHero: false, transition: SKTransition.fade(with: .white, duration: 0))
     }
 }
 
@@ -230,11 +232,8 @@ extension GameViewController: CreditsSceneDelegate {
 
 extension GameViewController: GameSceneDelegate {
     func confirmQuitTapped() {
-        let titleScene = TitleScene(size: K.ScreenDimensions.size, shouldInitializeAsHero: false)
-        titleScene.titleSceneDelegate = self
-        
         //NEEDS to have a transition, otherwise the state won't save, trust me. 2/7/24 Tried it w/o the transition and it still works??? Must have to do with the cleanupScene() function I wrote in GameScene.swift
-        skView.presentScene(titleScene, transition: SKTransition.fade(with: .white, duration: 0))
+        presentTitleScene(shouldInitializeAsHero: false, transition: SKTransition.fade(with: .white, duration: 0))
     }
     
     func presentCatwalkScene() {
@@ -268,7 +267,18 @@ extension GameViewController: GameSceneDelegate {
 extension GameViewController: CatwalkSceneDelegate {
     func catwalkSceneDidFinish() {
         let finalBattleScene = FinalBattleScene(size: K.ScreenDimensions.size)
+        finalBattleScene.finalBattleDelegate = self
         skView.presentScene(finalBattleScene, transition: SKTransition.fade(with: .black, duration: 4.5))
+    }
+}
+
+
+// MARK: - FinalBattleSceneDelegate
+
+extension GameViewController: FinalBattleSceneDelegate {
+    func finalBattleSceneDidFinish() {
+        //NEEDS to have a transition, otherwise the state won't save, trust me.
+        presentTitleScene(shouldInitializeAsHero: false, transition: SKTransition.fade(with: .white, duration: 0))
     }
 }
 

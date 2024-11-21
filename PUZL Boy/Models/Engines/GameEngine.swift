@@ -205,7 +205,7 @@ class GameEngine {
         backgroundSprite.size = K.ScreenDimensions.size
         backgroundSprite.anchorPoint = .zero
         
-        bloodOverlay = SKSpriteNode(color: .red, size: K.ScreenDimensions.size)
+        bloodOverlay = SKSpriteNode(color: FireIceTheme.overlayColor, size: K.ScreenDimensions.size)
         bloodOverlay.anchorPoint = .zero
         bloodOverlay.alpha = bloodOverlayAlpha
         bloodOverlay.zPosition = K.ZPosition.partyForegroundOverlay
