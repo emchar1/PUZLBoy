@@ -185,7 +185,7 @@ class ScoringEngine {
      Adds a floating status loss/gain animation from an originSprite and a location. Use this static method directly from ScoringEngine.
      - parameters:
         - icon: the icon to use: health, moves, sword or hammer
-        - amount: Amount to adjust
+        - amount: Amount to adjust. If amount = 9999, it is set to +∞
         - originSprite: The sprite from which to add the nodes as a child
         - location: Location to place the containerNode
      */
@@ -196,7 +196,9 @@ class ScoringEngine {
         containerSprite.position = location
         containerSprite.zPosition = K.ZPosition.itemsPoints
         
-        let amountSprite = SKLabelNode(text: "\(amount > 0 ? "+" : "")\(amount)")
+        let amountNormal = "\(amount > 0 ? "+" : "")\(amount)"
+        let amountInfinity = "+∞"
+        let amountSprite = SKLabelNode(text: amount == 9999 ? amountInfinity : amountNormal)
         amountSprite.fontName = UIFont.gameFont
         amountSprite.fontSize = UIFont.gameFontSizeLarge
         amountSprite.fontColor = amount < 0 ? .red : .white

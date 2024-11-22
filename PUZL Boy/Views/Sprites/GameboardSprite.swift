@@ -501,7 +501,8 @@ class GameboardSprite {
         let currentThemeFade: TimeInterval = shouldAnimateWarp ? 5 : 0
 
         AudioManager.shared.playSound(for: "magicheartbeatloop1", fadeIn: 3, delay: waitDuration, interruptPlayback: false)
-        AudioManager.shared.playSound(for: "bossbattle0", delay: waitDuration, interruptPlayback: false)
+        AudioManager.shared.playSound(for: "littlegirllaugh", fadeIn: 3, delay: waitDuration, interruptPlayback: false)
+        AudioManager.shared.playSound(for: "scarymusicbox", fadeIn: 3, delay: waitDuration, interruptPlayback: false)
         AudioManager.shared.adjustVolume(to: 0, for: AudioManager.shared.currentTheme.overworld, fadeDuration: currentThemeFade)
 
         if shouldAnimateWarp {
@@ -735,7 +736,8 @@ class GameboardSprite {
                     ParticleEngine.shared.removeParticles(fromNode: sprite)
                     AudioManager.shared.playSound(for: "dooropen")
                     AudioManager.shared.stopSound(for: "magicheartbeatloop2", fadeDuration: 5)
-                    AudioManager.shared.stopSound(for: "bossbattle0", fadeDuration: 5)
+                    AudioManager.shared.stopSound(for: "littlegirllaugh", fadeDuration: 5)
+                    AudioManager.shared.stopSound(for: "scarymusicbox", fadeDuration: 5)
 
                     completion()
                 }

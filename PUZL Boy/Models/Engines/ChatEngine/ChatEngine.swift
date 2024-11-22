@@ -1134,7 +1134,7 @@ extension ChatEngine {
             hideFFButton()
 
             sendChatArray(shouldSkipDim: true, items: [
-                ChatItem(profile: .blankhero, chat: "\n\nReceived Cosmic Blade of Creation.")
+                ChatItem(profile: .blankhero, startNewChat: false, chat: "\n\nReceived Celestial Sword of Judgment.", handler: nil)
             ]) { [weak self] in
                 self?.showFFButton()
                 self?.handleDialogueCompletion(level: level, completion: completion)
@@ -1726,7 +1726,7 @@ extension ChatEngine {
                         self.fadeDimOverlay()
                         delegate.despawnPrincessCapture(at: spawnPoint, completion: {})
                     },
-                    ChatItem(profile: .hero, imgPos: .left, pause: 8, startNewChat: true, chat: "That was intense. Marlin, I did NOT sign up for this.......", handler: nil),
+                    ChatItem(profile: .hero, imgPos: .left, pause: 8, startNewChat: true, chat: "That was creepy. Marlin, I did NOT sign up for this.......", handler: nil),
                     ChatItem(profile: .trainer, chat: "PUZL Boy this is now your reality. Take responsibility for your future. YOU have the power to change it!"),
                     ChatItem(profile: .hero, imgPos: .left, chat: "I know, I know. My mom always says, \"The power is yours!\" Ok... so what does Marzipan want with the princess?"),
                     ChatItem(profile: .trainer, chat: "Magmoor—one of the most powerful Mystics from my realm. I do not know what he intends to do with the princess, although we should assume the worst."),

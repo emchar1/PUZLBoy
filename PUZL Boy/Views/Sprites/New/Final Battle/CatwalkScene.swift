@@ -666,7 +666,7 @@ extension CatwalkScene: ChatEngineDelegate {
                                                duration: 2)
         
         ScoringEngine.updateStatusIconsAnimation(icon: .sword,
-                                                 amount: 1,
+                                                 amount: 9999,
                                                  originSprite: catwalkNode,
                                                  location: getHeroPosition(xPanelOffset: 0, yOffset: 0))
     }
