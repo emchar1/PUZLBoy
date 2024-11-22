@@ -74,6 +74,11 @@ class LetterboxSprite: SKNode {
         ]))
     }
     
+    func close(size: CGSize, duration: TimeInterval = 3, delay: TimeInterval = 0, completion: (() -> Void)? = nil) {
+        setHeight(size.height + 40)
+        show(duration: duration, delay: delay, completion: completion)
+    }
+    
     func hide(duration: TimeInterval = 3, delay: TimeInterval = 0, completion: (() -> Void)? = nil) {
         topNode.run(SKAction.sequence([
             SKAction.wait(forDuration: delay),

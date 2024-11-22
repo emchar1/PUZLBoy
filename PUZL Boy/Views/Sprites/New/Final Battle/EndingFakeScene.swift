@@ -59,7 +59,7 @@ class EndingFakeScene: SKScene {
         fadeNode.alpha = 0
         fadeNode.zPosition = K.ZPosition.fadeTransitionNode
         
-        letterbox = LetterboxSprite(color: .black, height: size.height + 40)
+        letterbox = LetterboxSprite(color: .black, height: size.height / 3)
         tapPointerEngine = TapPointerEngine()
         
         titleLabel = SKLabelNode(text: titleText.uppercased())
@@ -145,7 +145,7 @@ class EndingFakeScene: SKScene {
             SKAction.fadeIn(withDuration: fadeDuration)
         ]))
         
-        letterbox.show(duration: fadeDuration * 2, delay: readMessageDuration, completion: nil)
+        letterbox.close(size: size, duration: fadeDuration * 2, delay: readMessageDuration, completion: nil)
                 
         AudioManager.shared.playSound(for: music, currentTime: musicStart, fadeIn: fadeDuration * 2, shouldLoop: false)
 
