@@ -1101,37 +1101,37 @@ class GameEngine {
             print("Win streak: \(GameEngine.winStreak), Level: \(level.level)")
 
             // TODO: - Check for if beat the game.
-//            if didCompleteGame {
-//                GameEngine.gameCompleted = true
+            if didCompleteGame {
+                GameEngine.gameCompleted = true
 //                GameEngine.ageOfRuin = AgeOfRuin.conditionsMet
 //                
 //                //Here, you cannot set the new theme to AudioManager.mainThemes because FIRManager won't be updated until AFTER this function completes, so you fake it and check against AgeOfRuin.conditionsMet.
 //                AudioManager.shared.changeTheme(newTheme: GameEngine.ageOfRuin ? AudioManager.ageOfRuinThemes : AudioManager.ageOfBalanceThemes, shouldPlayNewTheme: false)
-//
-//                if let hasFeather = FIRManager.hasFeather {
-//                    if hasFeather {
-//                        GameCenterManager.shared.updateProgress(achievement: .hoarder, shouldReportImmediately: true)
-//                    }
-//                        
-//                    //Start the game over with no feather.
-//                    FIRManager.updateFirestoreRecordHasFeather(nil)
-//                }
-//
-//                //Do I want to reset the gotGift so you can get the gift every game playthrough?
-//                if FIRManager.didReceiveGiftFromTiki {
-//                    FIRManager.updateFirestoreRecordGotGift(nil)
-//                }
-//                
-//                //And don't forget to reset decision questions!
-//                for i in 0...3 {
-//                    FIRManager.updateFirestoreRecordDecision(index: i, buttonOrder: nil)
-//                }
-//                
-//                //As well as bravery points!
-//                FIRManager.updateFirestoreRecordBravery(nil)
-//
-//                print("YOU WON THE GAME!!!")
-//            }
+
+                if let hasFeather = FIRManager.hasFeather {
+                    if hasFeather {
+                        GameCenterManager.shared.updateProgress(achievement: .hoarder, shouldReportImmediately: true)
+                    }
+                        
+                    //Start the game over with no feather.
+                    FIRManager.updateFirestoreRecordHasFeather(nil)
+                }
+
+                //Do I want to reset the gotGift so you can get the gift every game playthrough?
+                if FIRManager.didReceiveGiftFromTiki {
+                    FIRManager.updateFirestoreRecordGotGift(nil)
+                }
+                
+                //And don't forget to reset decision questions!
+                for i in 0...3 {
+                    FIRManager.updateFirestoreRecordDecision(index: i, buttonOrder: nil)
+                }
+                
+                //As well as bravery points!
+                FIRManager.updateFirestoreRecordBravery(nil)
+
+                print("YOU WON THE GAME!!!")
+            }
         }
         else if isGameOver {
             AudioManager.shared.stopSound(for: AudioManager.shared.currentTheme.overworld)
