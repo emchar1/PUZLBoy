@@ -89,7 +89,8 @@ class LevelSkipEngine {
         guard let uid = FIRManager.uid,
             uid == FIRManager.userEddie ||
             uid == FIRManager.userMichel ||
-            uid == FIRManager.userMom
+            uid == FIRManager.userMom ||
+            uid == FIRManager.userMom2
         else {
             return
         }

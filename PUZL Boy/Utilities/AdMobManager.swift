@@ -33,9 +33,9 @@ class AdMobManager: NSObject {
         return adMobManager
     }()
     
-    //UID properties
-//    static let puzlBoyAppID = "ca-app-pub-9970112736079022~3898881122" //AdMob account for eddie@5playapps.com - Main Account
-    static let puzlBoyAppID = "ca-app-pub-3047242308312153~8487486800" //AdMob account for emchar1@gmail.com - Alternate Account
+    //App ID's - for reference only; not used throughout codebase
+    static let puzlBoyAppID = "ca-app-pub-9970112736079022~3898881122" //AdMob account for eddie@5playapps.com - Main Account
+//    static let puzlBoyAppID = "ca-app-pub-3047242308312153~8487486800" //AdMob account for emchar1@gmail.com - Alternate Account
 
 
 //    // FIXME: - DEBUG: IMPORTANT!!!!! USE THESE WHEN SHIPPING APP!!!
@@ -43,14 +43,14 @@ class AdMobManager: NSObject {
 //    static let interstitialID = "ca-app-pub-9970112736079022/6969280486"
 //    static let rewardedID = "ca-app-pub-9970112736079022/9450590704"
 
-    //OR emchar1@gmail.com account:
-    static let interstitialID = "ca-app-pub-3047242308312153/9074783932"
-    static let rewardedID = "ca-app-pub-3047242308312153/7555829885"
+//    //OR emchar1@gmail.com account:
+//    static let interstitialID = "ca-app-pub-3047242308312153/9074783932"
+//    static let rewardedID = "ca-app-pub-3047242308312153/7555829885"
 
     
-//    // FIXME: - DEBUG: ...AND DELETE THESE TEST ONES!!!
-//    static let interstitialID = "ca-app-pub-3940256099942544/5135589807"
-//    static let rewardedID = "ca-app-pub-3940256099942544/1712485313"
+    // FIXME: - DEBUG: ...AND DELETE THESE TEST ONES!!!
+    static let interstitialID = "ca-app-pub-3940256099942544/5135589807"
+    static let rewardedID = "ca-app-pub-3940256099942544/1712485313"
 
     
     // AdMob Test Device ID's

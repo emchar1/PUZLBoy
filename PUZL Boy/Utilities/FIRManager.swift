@@ -34,6 +34,7 @@ struct FIRManager {
     static let userEddie = "2bjhz2grYVVOn37qmUipG4CKps62"
     static let userMichel = "NB9OLr2X8kRLJ7S0G8W3800qo8U2"
     static let userMom = "jnsBD8RFVDMN9cSN8yDnFDoVJp32"
+    static let userMom2 = "ehVHCKjuLcQD7T7IvX8wmwsIOIw2"
     
     ///Only call this once, otherwise App will crash. Also must call it before calling FIRManager.initializeLevelRealtimeRecords().
     static var enableDBPersistence: Void {

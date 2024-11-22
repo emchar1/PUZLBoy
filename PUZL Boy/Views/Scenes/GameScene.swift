@@ -53,11 +53,11 @@ class GameScene: SKScene {
         didSet {
             guard !Level.isPartyLevel(currentLevel) else { return }
             
-            if currentLevel > Level.finalLevel + 2 {
+            if currentLevel > Level.finalLevel {
                 currentLevel = 101
             }
             else if currentLevel < 1 {
-                currentLevel = Level.finalLevel + 2
+                currentLevel = Level.finalLevel
             }
         }
     }
