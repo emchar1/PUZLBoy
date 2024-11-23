@@ -112,7 +112,7 @@ class AudioManager {
         addAudioItem("buttontap7", category: .soundFX)
         addAudioItem("chatclose", category: .soundFX)
         addAudioItem("chatopen", category: .soundFX)
-        addAudioItem("chatopenelder", category: .soundFX) //$2 NEEDS PURCHASE
+        addAudioItem("chatopenelder", category: .soundFX)
         addAudioItem("chatopenprincess", category: .soundFX)
         addAudioItem("chatopenstatue", category: .soundFX)
         addAudioItem("chatopentrainer", category: .soundFX)
@@ -199,13 +199,13 @@ class AudioManager {
         addAudioItem("clocktick", category: .soundFXLoop)
         addAudioItem("littlegirllaugh", category: .soundFXLoop)
         addAudioItem("magicdoomloop", category: .soundFXLoop)
-        addAudioItem("magmoorcreepystrings", category: .soundFXLoop) //$3 NEEDS PURCHASE
+        addAudioItem("magmoorcreepystrings", category: .soundFXLoop)
 
         
         //No Loop music
         addAudioItem("ageofruin", category: .musicNoLoop)
         addAudioItem("ageofruin2", category: .musicNoLoop)
-        addAudioItem("bossbattle1", category: .musicNoLoop) //$16 NEEDS PURCHASE
+        addAudioItem("bossbattle1", category: .musicNoLoop)
         addAudioItem("gameover", category: .musicNoLoop)
         addAudioItem("gameoverageofruin", category: .musicNoLoop)
         addAudioItem("titlechapter", category: .musicNoLoop)
@@ -215,13 +215,13 @@ class AudioManager {
         
         //Background music
         addAudioItem("birdsambience", category: .music, maxVolume: 0.2)
-        addAudioItem("bossbattle0", category: .music) //$19 NEEDS PURCHASE
-        addAudioItem("bossbattle2", category: .music) //$16 NEEDS PURCHASE
-        addAudioItem("bossbattle3", category: .music) //$16 NEEDS PURCHASE
+        addAudioItem("bossbattle0", category: .music)
+        addAudioItem("bossbattle2", category: .music)
+        addAudioItem("bossbattle3", category: .music)
         addAudioItem("continueloop", category: .music)
         addAudioItem("magicheartbeatloop1", category: .music)
         addAudioItem("magicheartbeatloop2", category: .music)
-        addAudioItem("magmoorcreepypulse", category: .music) //$3 NEEDS PURCHASE
+        addAudioItem("magmoorcreepypulse", category: .music)
         addAudioItem("overworld", category: .music)
         addAudioItem("overworldageofruin", category: .music)
         addAudioItem("overworldgrassland", category: .music)
