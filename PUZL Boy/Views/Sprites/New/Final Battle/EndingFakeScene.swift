@@ -18,6 +18,7 @@ class EndingFakeScene: SKScene {
     private var messageLabel: SKLabelNode!
     
     private var timer: Timer
+    private let shadow: (color: UIColor, alpha: CGFloat) = (.purple.lightenColor(factor: 9), 0.35)
     private let titleText: String
     private let messageText: String
     private let messageSpeed: TimeInterval = 0.04
@@ -68,8 +69,8 @@ class EndingFakeScene: SKScene {
         titleLabel.fontSize = UIFont.gameFontSizeExtraLarge
         titleLabel.fontColor = .yellow.darkenColor(factor: 3)
         titleLabel.alpha = 0
-        titleLabel.addHeavyDropShadow(alpha: 0.35)
-        titleLabel.updateShadowColor(.purple.lightenColor(factor: 9))
+        titleLabel.addHeavyDropShadow(alpha: shadow.alpha)
+        titleLabel.updateShadowColor(shadow.color)
         
         messageLabel = SKLabelNode(text: "")
         messageLabel.position = CGPoint(x: size.width * 0.1, y: titleLabel.position.y - UIFont.gameFontSizeExtraLarge)
@@ -81,8 +82,8 @@ class EndingFakeScene: SKScene {
         messageLabel.horizontalAlignmentMode = .left
         messageLabel.numberOfLines = 0
         messageLabel.alpha = 0
-        messageLabel.addDropShadow(alpha: 0.35)
-        messageLabel.updateShadowColor(.purple.lightenColor(factor: 9))
+        messageLabel.addDropShadow(alpha: shadow.alpha)
+        messageLabel.updateShadowColor(shadow.color)
         
         //Yes. | YES!!!!!
         //Be prepared!

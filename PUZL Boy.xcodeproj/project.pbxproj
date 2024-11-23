@@ -364,7 +364,7 @@
 		EAFE35942CE44DA000289ADF /* EndingFakeScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAFE35932CE44DA000289ADF /* EndingFakeScene.swift */; };
 		EAFE35962CE48BB600289ADF /* magicheartbeatloop2.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAFE35952CE48BB600289ADF /* magicheartbeatloop2.mp3 */; };
 		EAFE35982CE89A4600289ADF /* MagmoorBamfParticles.sks in Resources */ = {isa = PBXBuildFile; fileRef = EAFE35972CE89A4600289ADF /* MagmoorBamfParticles.sks */; };
-		EAFE359A2CEBA9D700289ADF /* FinalBattleScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAFE35992CEBA9D700289ADF /* FinalBattleScene.swift */; };
+		EAFE359A2CEBA9D700289ADF /* ComingSoonScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAFE35992CEBA9D700289ADF /* ComingSoonScene.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -719,7 +719,7 @@
 		EAFE35932CE44DA000289ADF /* EndingFakeScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EndingFakeScene.swift; sourceTree = "<group>"; };
 		EAFE35952CE48BB600289ADF /* magicheartbeatloop2.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = magicheartbeatloop2.mp3; sourceTree = "<group>"; };
 		EAFE35972CE89A4600289ADF /* MagmoorBamfParticles.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = MagmoorBamfParticles.sks; sourceTree = "<group>"; };
-		EAFE35992CEBA9D700289ADF /* FinalBattleScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinalBattleScene.swift; sourceTree = "<group>"; };
+		EAFE35992CEBA9D700289ADF /* ComingSoonScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComingSoonScene.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1282,7 +1282,7 @@
 			isa = PBXGroup;
 			children = (
 				EAAB41722CB6378E00BBFA75 /* CatwalkScene.swift */,
-				EAFE35992CEBA9D700289ADF /* FinalBattleScene.swift */,
+				EAFE35992CEBA9D700289ADF /* ComingSoonScene.swift */,
 				EAFE35932CE44DA000289ADF /* EndingFakeScene.swift */,
 			);
 			path = "Final Battle";
@@ -1649,7 +1649,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				EA2AF74429B6D06000444E5A /* OfflinePlaySprite.swift in Sources */,
-				EAFE359A2CEBA9D700289ADF /* FinalBattleScene.swift in Sources */,
+				EAFE359A2CEBA9D700289ADF /* ComingSoonScene.swift in Sources */,
 				EAACB4A7296F80E700973EB8 /* AchievementAvidReader.swift in Sources */,
 				EA65189228E973D700E535BF /* Level.swift in Sources */,
 				EA12C5502B271EC2006E9813 /* GoldCoinSprite.swift in Sources */,

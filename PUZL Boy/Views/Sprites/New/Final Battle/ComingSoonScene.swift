@@ -1,20 +1,25 @@
 //
-//  FinalBattleScene.swift
+//  ComingSoonScene.swift
 //  PUZL Boy
 //
 //  Created by Eddie Char on 11/18/24.
 //
 
 import SpriteKit
+import Foundation
 
-protocol FinalBattleSceneDelegate: AnyObject {
-    func finalBattleSceneDidFinish()
+protocol ComingSoonSceneDelegate: AnyObject {
+    func comingSoonSceneDidFinish()
 }
 
-class FinalBattleScene: SKScene {
+class ComingSoonScene: SKScene {
     
     // MARK: - Properties
     
+    private let textColor: UIColor = .yellow.darkenColor(factor: 3)
+    private let textColorAlt: UIColor = .white
+    private let shadow: (color: UIColor, alpha: CGFloat) = (.purple.lightenColor(factor: 9), 0.35)
+
     private var backgroundNode: SKSpriteNode!
     private var comingSoonLabel: SKLabelNode!
     private var credits: [String] = []
@@ -22,7 +27,7 @@ class FinalBattleScene: SKScene {
     private var letterbox: LetterboxSprite!
     private var tapPointerEngine: TapPointerEngine!
     
-    weak var finalBattleDelegate: FinalBattleSceneDelegate?
+    weak var comingSoonDelegate: ComingSoonSceneDelegate?
     
     
     // MARK: - Initialization
@@ -38,7 +43,7 @@ class FinalBattleScene: SKScene {
     }
     
     deinit {
-        print("FinalBattleScene deinit")
+        print("ComingSoonScene deinit")
     }
     
     private func cleanup() {
@@ -52,11 +57,11 @@ class FinalBattleScene: SKScene {
         
         comingSoonLabel = SKLabelNode(text: "TO BE CONTINUED")
         comingSoonLabel.fontName = UIFont.gameFont
-        comingSoonLabel.fontColor = .yellow.darkenColor(factor: 3)
+        comingSoonLabel.fontColor = textColor
         comingSoonLabel.fontSize = UIFont.gameFontSizeLarge
         comingSoonLabel.position = CGPoint(x: size.width / 2, y: size.height / 2)
-        comingSoonLabel.addHeavyDropShadow(alpha: 0.35)
-        comingSoonLabel.updateShadowColor(.purple.lightenColor(factor: 9))
+        comingSoonLabel.addHeavyDropShadow(alpha: shadow.alpha)
+        comingSoonLabel.updateShadowColor(shadow.color)
         comingSoonLabel.zPosition = 10
         
         credits.append("Stay tuned for the epic conclusion...")
@@ -65,7 +70,7 @@ class FinalBattleScene: SKScene {
         credits.append("Special Thanks\nClayton Caldwell\nMichelle Rayfield\nJackson Rayfield\nAissa Char\nVirat Char\nMichel Char")
         credits.append("for\nOlivia🦄\nand Alana ")
         credits.append("Thank you for playing PUZL Boy!")
-        credits.append("Don't forget to Rate and Review❤️")
+        credits.append("Don't forget to Rate and Review ❤️")
         credits.append("© 2024 5Play Apps, LLC. All rights reserved.")
         
         letterbox = LetterboxSprite(color: .black, height: size.height / 3)
@@ -126,10 +131,11 @@ class FinalBattleScene: SKScene {
             
             AudioManager.shared.stopSound(for: "bossbattle0", fadeDuration: fadeDuration)
             
+            backgroundNode.run(SKAction.colorize(with: .white, colorBlendFactor: 0.5, duration: fadeDuration))
             letterbox.close(size: size, duration: fadeDuration) {
                 self.run(SKAction.wait(forDuration: fadeDuration / 2)) {
                     self.cleanup()
-                    self.finalBattleDelegate?.finalBattleSceneDidFinish()
+                    self.comingSoonDelegate?.comingSoonSceneDidFinish()
                 }
             }
         }
@@ -143,33 +149,51 @@ class FinalBattleScene: SKScene {
     }
     
     private func animateCredits(credits: String) {
-        let attrString = NSMutableAttributedString(string: credits)
-
+        let font = UIFont(name: UIFont.chatFont, size: UIFont.chatFontSizeLarge) ?? UIFont.systemFont(ofSize: 30)
+        let range = NSRange(location: 0, length: credits.count)
+        let rangeTitle = NSRange(location: 0, length: credits.distance(from: credits.startIndex,
+                                                                       to: credits.firstIndex(of: "\n") ?? credits.startIndex))
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.alignment = .center
         
-        let range = NSRange(location: 0, length: credits.count)
+        let attrString = NSMutableAttributedString(string: credits)
         attrString.addAttribute(NSAttributedString.Key.paragraphStyle, value: paragraphStyle, range: range)
-        attrString.addAttributes([
-            NSAttributedString.Key.foregroundColor: UIColor.yellow.darkenColor(factor: 3),
-            NSAttributedString.Key.font: UIFont(name: UIFont.chatFont, size: UIFont.chatFontSizeLarge) ?? UIFont.systemFont(ofSize: 30)
-        ], range: range)
+        attrString.addAttribute(NSAttributedString.Key.foregroundColor, value: textColorAlt, range: range)
+        attrString.addAttribute(NSAttributedString.Key.font, value: font, range: range)
+        attrString.addAttribute(NSAttributedString.Key.underlineStyle, value: NSUnderlineStyle.single.rawValue, range: rangeTitle)
+        attrString.addAttribute(NSAttributedString.Key.foregroundColor, value: textColor, range: rangeTitle)
+
+        let attrShadow = NSMutableAttributedString(string: credits)
+        attrShadow.addAttribute(NSAttributedString.Key.paragraphStyle, value: paragraphStyle, range: range)
+        attrShadow.addAttribute(NSAttributedString.Key.foregroundColor, value: shadow.color, range: range)
+        attrShadow.addAttribute(NSAttributedString.Key.font, value: font, range: range)
+        attrShadow.addAttribute(NSAttributedString.Key.underlineStyle, value: NSUnderlineStyle.single.rawValue, range: rangeTitle)
 
         let creditsLabel = SKLabelNode()
         creditsLabel.attributedText = attrString
         creditsLabel.position = CGPoint(x: size.width / 2, y: 0)
         creditsLabel.verticalAlignmentMode = .top
         creditsLabel.numberOfLines = 0
-        creditsLabel.addDropShadow(alpha: 0.35)
-        creditsLabel.updateShadowColor(.purple.lightenColor(factor: 9))
         creditsLabel.zPosition = 10
         
-        addChild(creditsLabel)
+        let shadowLabel = SKLabelNode()
+        shadowLabel.attributedText = attrShadow
+        shadowLabel.position = creditsLabel.position - CGPoint(x: 3, y: 3)
+        shadowLabel.verticalAlignmentMode = creditsLabel.verticalAlignmentMode
+        shadowLabel.numberOfLines = creditsLabel.numberOfLines
+        shadowLabel.zPosition = creditsLabel.zPosition - 1
+        shadowLabel.alpha = shadow.alpha
         
-        creditsLabel.run(SKAction.sequence([
+        addChild(creditsLabel)
+        addChild(shadowLabel)
+        
+        let creditsAction = SKAction.sequence([
             SKAction.moveBy(x: 0, y: size.height, duration: 20),
             SKAction.removeFromParent()
-        ]))
+        ])
+        
+        creditsLabel.run(creditsAction)
+        shadowLabel.run(creditsAction)
     }
     
     

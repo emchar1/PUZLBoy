@@ -71,6 +71,14 @@ class GameViewController: UIViewController {
 //
 //            self?.skView.ignoresSiblingOrder = true
 //            self?.view = self?.skView
+//
+//
+//
+//
+//            let comingSoonScene = ComingSoonScene(size: K.ScreenDimensions.size)
+//            comingSoonScene.comingSoonDelegate = self
+//            self?.skView.presentScene(comingSoonScene)
+//            self?.view = self?.skView
 //        }
         
         
@@ -266,17 +274,17 @@ extension GameViewController: GameSceneDelegate {
 
 extension GameViewController: CatwalkSceneDelegate {
     func catwalkSceneDidFinish() {
-        let finalBattleScene = FinalBattleScene(size: K.ScreenDimensions.size)
-        finalBattleScene.finalBattleDelegate = self
-        skView.presentScene(finalBattleScene, transition: SKTransition.fade(with: .black, duration: 4.5))
+        let comingSoonScene = ComingSoonScene(size: K.ScreenDimensions.size)
+        comingSoonScene.comingSoonDelegate = self
+        skView.presentScene(comingSoonScene, transition: SKTransition.fade(with: .black, duration: 4.5))
     }
 }
 
 
-// MARK: - FinalBattleSceneDelegate
+// MARK: - ComingSoonSceneDelegate
 
-extension GameViewController: FinalBattleSceneDelegate {
-    func finalBattleSceneDidFinish() {
+extension GameViewController: ComingSoonSceneDelegate {
+    func comingSoonSceneDidFinish() {
         //NEEDS to have a transition, otherwise the state won't save, trust me.
         presentTitleScene(shouldInitializeAsHero: false, transition: SKTransition.fade(with: .white, duration: 0))
     }
