@@ -218,7 +218,7 @@ class GameEngine {
         
         gameboardSprite = GameboardSprite(level: self.level, fadeIn: !shouldSpawn)
         
-        // FIXME: - K.ScreenDimensions.topOfGameboard is now a computed property, set in Constants. Let's see how it goes... 10/22/24
+        //K.ScreenDimensions.topOfGameboard is now a computed property, set in Constants. Let's see how it goes... 10/22/24
 //        K.ScreenDimensions.topOfGameboard = GameboardSprite.offsetPosition.y + K.ScreenDimensions.size.width * UIDevice.spriteScale
         
         playerSprite = PlayerSprite(shouldSpawn: true)
@@ -489,7 +489,6 @@ class GameEngine {
                 
                 level.updatePlayer(position: newWarpLocation)
                 
-                // FIXME: - Is this a retain cycle???
                 playerSprite.sprite.position = gameboardSprite.getLocation(at: newWarpLocation)
                 playerSprite.startWarpAnimation(shouldReverse: true, stopAnimating: true) {
                     
@@ -931,7 +930,6 @@ class GameEngine {
                 if FireIceTheme.isFire {
                     Haptics.shared.executeCustomPattern(pattern: .lava)
                     
-                    // FIXME: - Is this a retain cycle???
                     playerSprite.startLavaEffectAnimation()
                 }
                 else {

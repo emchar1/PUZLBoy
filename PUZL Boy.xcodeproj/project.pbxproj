@@ -27,6 +27,7 @@
 		EA1281AF2CF15FF0001CC5E8 /* bossbattle3.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA1281AE2CF15FF0001CC5E8 /* bossbattle3.mp3 */; };
 		EA1281B22CF18E9D001CC5E8 /* bossbattle2.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA1281B12CF18E9D001CC5E8 /* bossbattle2.mp3 */; };
 		EA1281B32CF18E9D001CC5E8 /* bossbattle1.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA1281B02CF18E9D001CC5E8 /* bossbattle1.mp3 */; };
+		EA1281B72CF24D42001CC5E8 /* FinalBattleScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA1281B62CF24D42001CC5E8 /* FinalBattleScene.swift */; };
 		EA12C5502B271EC2006E9813 /* GoldCoinSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA12C54F2B271EC2006E9813 /* GoldCoinSprite.swift */; };
 		EA1D5A6C29F1019800677B06 /* Extension+SKShapeNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA1D5A6B29F1019800677B06 /* Extension+SKShapeNode.swift */; };
 		EA1D5A6E29F217D200677B06 /* Extension+SKLabelNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA1D5A6D29F217D200677B06 /* Extension+SKLabelNode.swift */; };
@@ -388,6 +389,7 @@
 		EA1281AE2CF15FF0001CC5E8 /* bossbattle3.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = bossbattle3.mp3; sourceTree = "<group>"; };
 		EA1281B02CF18E9D001CC5E8 /* bossbattle1.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = bossbattle1.mp3; sourceTree = "<group>"; };
 		EA1281B12CF18E9D001CC5E8 /* bossbattle2.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = bossbattle2.mp3; sourceTree = "<group>"; };
+		EA1281B62CF24D42001CC5E8 /* FinalBattleScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinalBattleScene.swift; sourceTree = "<group>"; };
 		EA12C54F2B271EC2006E9813 /* GoldCoinSprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoldCoinSprite.swift; sourceTree = "<group>"; };
 		EA1D5A6B29F1019800677B06 /* Extension+SKShapeNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+SKShapeNode.swift"; sourceTree = "<group>"; };
 		EA1D5A6D29F217D200677B06 /* Extension+SKLabelNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+SKLabelNode.swift"; sourceTree = "<group>"; };
@@ -1284,6 +1286,7 @@
 				EAAB41722CB6378E00BBFA75 /* CatwalkScene.swift */,
 				EAFE35992CEBA9D700289ADF /* ComingSoonScene.swift */,
 				EAFE35932CE44DA000289ADF /* EndingFakeScene.swift */,
+				EA1281B62CF24D42001CC5E8 /* FinalBattleScene.swift */,
 			);
 			path = "Final Battle";
 			sourceTree = "<group>";
@@ -1737,6 +1740,7 @@
 				EAE2155C2ABE38FC0090735A /* Extension+CGFloat.swift in Sources */,
 				EA65182B28E4199E00E535BF /* AppDelegate.swift in Sources */,
 				EAE2155A2ABE23370090735A /* SpriteMath.swift in Sources */,
+				EA1281B72CF24D42001CC5E8 /* FinalBattleScene.swift in Sources */,
 				EA956C6C29257D9600879AD0 /* Extension+Comparable.swift in Sources */,
 				EABE79552AC787B900689C55 /* LevelSelectPage.swift in Sources */,
 				EA45833F2A43CE3100279056 /* PartyResultsSprite.swift in Sources */,

@@ -6,7 +6,6 @@
 //
 
 import SpriteKit
-import Foundation
 
 protocol ComingSoonSceneDelegate: AnyObject {
     func comingSoonSceneDidFinish()

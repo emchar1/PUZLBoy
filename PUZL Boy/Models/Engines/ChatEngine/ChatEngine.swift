@@ -1007,8 +1007,6 @@ extension ChatEngine {
     private func playDialogueAgeOfBalance(level: Int, statueTapped: Bool, completion: ((Cutscene?) -> Void)?) {
         switch level {
             
-        // TODO: - CATWALK Dialogue TEST for now
-            
         case -999:
             sendChatArray(items: [
                 ChatItem(profile: .melchior, chat: "Where do you think you're going, PUZL Boy? The only way out is through!")
