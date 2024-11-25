@@ -464,7 +464,7 @@ extension CatwalkScene: ChatEngineDelegate {
         despawnElderHelper(elder: elder2)
     }
         
-    func spawnPrincessCatwalk() {
+    func spawnPrincessCatwalk(completion: @escaping () -> Void) {
         let originalScale: CGFloat = Player.getGameboardScale(panelSize: panelSize) * princess.scaleMultiplier
         let fadeDuration: TimeInterval = 2
         let alphaPersistence: CGFloat = 0.5
@@ -484,7 +484,7 @@ extension CatwalkScene: ChatEngineDelegate {
         princess.sprite.alpha = 0
         
         princess.sprite.run(animatePlayer(player: princess, type: .idle))
-        princess.sprite.run(SKAction.fadeAlpha(to: alphaPersistence, duration: fadeDuration))
+        princess.sprite.run(SKAction.fadeAlpha(to: alphaPersistence, duration: fadeDuration), completion: completion)
         
         princess.sprite.run(SKAction.repeatForever(SKAction.sequence([
             SKAction.wait(forDuration: 2),
@@ -538,7 +538,7 @@ extension CatwalkScene: ChatEngineDelegate {
         AudioManager.shared.playSoundThenStop(for: "littlegirllaugh", playForDuration: 1.7)
     }
     
-    func spawnMarlinCatwalk() {
+    func spawnMarlinCatwalk(completion: @escaping (() -> Void)) {
         let fadeDuration: TimeInterval = 2
         
         trainer.sprite.position = getHeroPosition(xPanelOffset: 1, yOffset: scaleSize.height * 0.3)
@@ -547,7 +547,7 @@ extension CatwalkScene: ChatEngineDelegate {
         trainer.sprite.alpha = 0
         
         trainer.sprite.run(animatePlayer(player: trainer, type: .glide))
-        trainer.sprite.run(SKAction.fadeAlpha(to: 0.5, duration: fadeDuration))
+        trainer.sprite.run(SKAction.fadeAlpha(to: 0.5, duration: fadeDuration), completion: completion)
         
         trainer.sprite.run(SKAction.repeatForever(SKAction.sequence([
             SKAction.moveBy(x: 0, y: 20, duration: 1),

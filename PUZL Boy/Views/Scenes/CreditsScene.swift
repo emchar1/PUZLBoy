@@ -326,11 +326,25 @@ class CreditsScene: SKScene {
             LabelEntity(headingText: "",
                         subheadingTexts: ["PUZL", "Boy"],
                         subheadingAction: animateSpinZoomAction(scale: titleScale)),
-            LabelEntity(headingText: "Art Assets",
-                        subheadingTexts: ["Deviant Art", "Flaticon", "Freepik", "Game Art 2D"],
-                        subheadingAction: animateFadeAction()),
             LabelEntity(headingText: "Created by",
                         subheadingTexts: ["Eddie Char"],
+                        subheadingAction: animateFadeAction()) { [weak self] in
+                            guard let self = self else { return }
+                            
+                            speechBubble.run(SKAction.sequence([
+                                SKAction.wait(forDuration: waitDuration),
+                                SKAction.moveBy(x: 0, y: -speechBubbleYOffset, duration: fadeDuration / 4)
+                            ]))
+                        },
+            LabelEntity(headingText: "Art Assets",
+                        subheadingTexts: ["Deviant Art", "Flaticon", "Freepik", "Game Art 2D", "Graphic River", "Icons8", "Adobe Stock", "Shutterstock"],
+                        subheadingAction: animateFadeAction()) { [weak self] in
+                            guard let self = self else { return }
+                            
+                            speechBubble.run(SKAction.moveBy(x: 0, y: speechBubbleYOffset, duration: fadeDuration / 4))
+                        },
+            LabelEntity(headingText: "Music & Sound",
+                        subheadingTexts: ["Audio Jungle", "Envato"],
                         subheadingAction: animateFadeAction()) { [weak self] in
                             guard let self = self else { return }
                             

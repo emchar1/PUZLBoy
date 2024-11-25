@@ -64,8 +64,9 @@ class ComingSoonScene: SKScene {
         comingSoonLabel.zPosition = 10
         
         credits.append("Stay tuned for the epic conclusion...")
-        credits.append("Art Assets\nDeviant Art\nFlaticon\nFreepik\nGame Art 2D")
         credits.append("Created by\nEddie Char")
+        credits.append("Art Assets\nDeviant Art\nFlaticon\nFreepik\nGame Art 2D\nGraphic River\nIcons8\nAdobe Stock\nShutterstock")
+        credits.append("Music & Sound\nAudio Jungle\nEnvato")
         credits.append("Special Thanks\nClayton Caldwell\nMichelle Rayfield\nJackson Rayfield\nAissa Char\nVirat Char\nMichel Char")
         credits.append("for\nOlivia🦄\nand Alana ")
         credits.append("Thank you for playing PUZL Boy!")
@@ -116,12 +117,13 @@ class ComingSoonScene: SKScene {
         run(SKAction.sequence([
             getCreditsAction(index: 0, waitDuration: 4),
             getCreditsAction(index: 1, waitDuration: 10),
-            getCreditsAction(index: 2, waitDuration: 6),
-            getCreditsAction(index: 3, waitDuration: 4),
-            getCreditsAction(index: 4, waitDuration: 7),
+            getCreditsAction(index: 2, waitDuration: 4),
+            getCreditsAction(index: 3, waitDuration: 8),
+            getCreditsAction(index: 4, waitDuration: 5),
             getCreditsAction(index: 5, waitDuration: 7),
-            getCreditsAction(index: 6, waitDuration: 2),
-            getCreditsAction(index: 7, waitDuration: 6),
+            getCreditsAction(index: 6, waitDuration: 7),
+            getCreditsAction(index: 7, waitDuration: 2),
+            getCreditsAction(index: 8, waitDuration: 6),
             SKAction.wait(forDuration: 20)
         ])) { [weak self] in
             guard let self = self else { return }
@@ -187,7 +189,7 @@ class ComingSoonScene: SKScene {
         addChild(shadowLabel)
         
         let creditsAction = SKAction.sequence([
-            SKAction.moveBy(x: 0, y: size.height, duration: 20),
+            SKAction.moveBy(x: 0, y: size.height * 1.25, duration: 28),
             SKAction.removeFromParent()
         ])
         
