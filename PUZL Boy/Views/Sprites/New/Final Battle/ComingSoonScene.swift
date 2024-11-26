@@ -116,7 +116,7 @@ class ComingSoonScene: SKScene {
         
         run(SKAction.sequence([
             getCreditsAction(index: 0, waitDuration: 4),
-            getCreditsAction(index: 1, waitDuration: 10),
+            getCreditsAction(index: 1, waitDuration: 11),
             getCreditsAction(index: 2, waitDuration: 4),
             getCreditsAction(index: 3, waitDuration: 8),
             getCreditsAction(index: 4, waitDuration: 5),

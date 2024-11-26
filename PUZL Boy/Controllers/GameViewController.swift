@@ -194,6 +194,7 @@ extension GameViewController: AuthorizationRequestSceneDelegate {
 
 extension GameViewController: TitleSceneDelegate {
     func didTapStart(levelSelectNewLevel: Int?) {
+        // TODO: - Goes right to catwalk if Start Game and level is > 500.
         if levelSelectNewLevel == nil && (FIRManager.saveStateModel != nil && FIRManager.saveStateModel!.newLevel > Level.finalLevel) {
             let catwalkScene = CatwalkScene(size: K.ScreenDimensions.size)
             catwalkScene.catwalkDelegate = self

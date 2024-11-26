@@ -7,6 +7,28 @@
 
 import SpriteKit
 
+protocol ChatEngineCatwalkDelegate: AnyObject {
+    //Catwalk
+    func spawnEldersCatwalk(faceLeft: Bool)
+    func despawnEldersCatwalk()
+    func spawnPrincessCatwalk(completion: @escaping () -> Void)
+    func despawnPrincessCatwalk()
+    func spawnMarlinCatwalk(completion: @escaping () -> Void)
+    func despawnMarlinCatwalk()
+    func spawnTikiCatwalk(statueNumber: Int, fadeIn: TimeInterval)
+    func despawnTikiCatwalk(fadeOut: TimeInterval)
+    func spawnSwordCatwalk()
+    func despawnSwordCatwalk()
+    func spawnMagmoorCatwalk()
+    func despawnMagmoorCatwalk(completion: @escaping () -> Void)
+    func flashMagmoorCatwalk()
+    func playMusicCatwalk(music: String, startingVolume: Float, fadeIn: TimeInterval, shouldStopOverworld: Bool)
+    func stopMusicCatwalk(music: String, fadeOut: TimeInterval, shouldPlayOverworld: Bool)
+    func flashRedCatwalk(message: String, secondaryMessages: [String], completion: @escaping () -> Void)
+    func shiftRedCatwalk(shouldShift: Bool, fasterHeartbeat: Bool)
+    func exitCatwalk(completion: @escaping () -> Void)
+}
+
 protocol ChatEngineDelegate: AnyObject {
     //Tutorial
     func illuminatePanel(at position: K.GameboardPosition, useOverlay: Bool)
@@ -21,25 +43,6 @@ protocol ChatEngineDelegate: AnyObject {
     func despawnTrainer(to position: K.GameboardPosition?)
     func spawnTrainerWithExit(at position: K.GameboardPosition, to direction: Controls)
     func despawnTrainerWithExit(moves: [K.GameboardPosition])
-    
-    //Catwalk
-    func spawnEldersCatwalk(faceLeft: Bool)
-    func despawnEldersCatwalk()
-    func spawnPrincessCatwalk(completion: @escaping () -> Void)
-    func despawnPrincessCatwalk()
-    func spawnMarlinCatwalk(completion: @escaping () -> Void)
-    func despawnMarlinCatwalk()
-    func spawnTikiCatwalk(statueNumber: Int, fadeIn: TimeInterval)
-    func despawnTikiCatwalk(fadeOut: TimeInterval)
-    func spawnSwordCatwalk()
-    func despawnSwordCatwalk()
-    func spawnMagmoorCatwalk()
-    func despawnMagmoorCatwalk(completion: @escaping () -> Void)
-    func playMusicCatwalk(music: String, startingVolume: Float, fadeIn: TimeInterval, shouldStopOverworld: Bool)
-    func stopMusicCatwalk(music: String, fadeOut: TimeInterval, shouldPlayOverworld: Bool)
-    func flashRedCatwalk(message: String, secondaryMessages: [String], completion: @escaping () -> Void)
-    func shiftRedCatwalk(shouldShift: Bool, fasterHeartbeat: Bool)
-    func exitCatwalk(completion: @escaping () -> Void)
 
     //Princess/Magmoor Capture
     func spawnPrincessCapture(at position: K.GameboardPosition, shouldAnimateWarp: Bool, completion: @escaping () -> Void)
@@ -132,9 +135,11 @@ class ChatEngine {
     private var marlinBlast: MarlinBlastSprite!
     private var magmoorScary: MagmoorScarySprite!
     private var chapterTitleSprite: ChapterTitleSprite!
+    private var originalBrightness: CGFloat = UIScreen.main.brightness
     
     
     weak var delegate: ChatEngineDelegate?
+    weak var delegateCatwalk: ChatEngineCatwalkDelegate?
     
     
     // MARK: - Initialization
@@ -419,6 +424,17 @@ class ChatEngine {
         }
     }
     
+    private func adjustBrightnessForMagmoorScary() {
+        originalBrightness = UIScreen.main.brightness
+        
+        if originalBrightness < 0.25 {
+            UIScreen.main.brightness = 0.25
+        }
+        else if originalBrightness < 0.5 {
+            UIScreen.main.brightness = 0.5
+        }
+    }
+    
     
     // MARK: - Chat Functions
     
@@ -684,6 +700,7 @@ extension ChatEngine {
             dialoguePlayed[-1036] = false
             dialoguePlayed[-1047] = false
             dialoguePlayed[-1049] = false
+            dialoguePlayed[-1051] = false
             dialoguePlayed[-1052] = false
             
             
@@ -1017,7 +1034,7 @@ extension ChatEngine {
         case -1000:
             let leftButton0 = FIRManager.decisionsLeftButton[0] ?? false
             
-            delegate?.spawnEldersCatwalk(faceLeft: true)
+            delegateCatwalk?.spawnEldersCatwalk(faceLeft: true)
             
             sendChatArray(items: [
                 ChatItem(profile: .melchior, chat: "PUZL Boy, the road ahead is difficult and perilous. There is no turning back. Are you ready to brave the darkness?"),
@@ -1031,15 +1048,15 @@ extension ChatEngine {
                 ChatItem(profile: .merton, chat: "As you proceed, you may witness illusions of despair. But despair not! For all they are are illusions, after all."),
                 ChatItem(profile: .melchior, chat: "Let's move forward. And do not believe anything you see or hear.")
             ]) { [weak self] in
-                self?.delegate?.despawnEldersCatwalk()
+                self?.delegateCatwalk?.despawnEldersCatwalk()
                 self?.handleDialogueCompletion(level: level, completion: completion)
             }
         case -1006:
-            delegate?.flashRedCatwalk(message: "Turn back now...", secondaryMessages: ["Turn back!", "Turn back!", "Turn back!", "Go away!", "Leave!", "Get out!", "Be gone!", "Not welcome here.", "Trespasser!", "Turn back!", "Turn back!", "Turn back!", "Go away!", "Leave!", "Get out!", "Be gone!", "Not welcome here.", "Trespasser!"]) { [weak self] in
+            delegateCatwalk?.flashRedCatwalk(message: "Turn back now...", secondaryMessages: ["Turn back!", "Turn back!", "Turn back!", "Go away!", "Leave!", "Get out!", "Be gone!", "Not welcome here.", "Trespasser!", "Turn back!", "Turn back!", "Turn back!", "Go away!", "Leave!", "Get out!", "Be gone!", "Not welcome here.", "Trespasser!"]) { [weak self] in
                 self?.handleDialogueCompletion(level: level, completion: completion)
             }
         case -1010:
-            delegate?.flashRedCatwalk(message: "You're going to regret it...", secondaryMessages: ["Regret...", "Failure!", "Disappointment.", "You'll regret it.", "Loser.", "Game Over!", "You lose.", "Disgrace!", "Shame!", "Guilt.", "Dishonor.", "Lose.", "FAIL", "Regret...", "Failure!", "Disappointment.", "You'll regret it.", "Loser.", "Game Over!", "You lose.", "Disgrace!", "Shame!", "Guilt.", "Dishonor.", "Lose.", "FAIL"]) { [weak self] in
+            delegateCatwalk?.flashRedCatwalk(message: "You're going to regret it...", secondaryMessages: ["Regret...", "Failure!", "Disappointment.", "You'll regret it.", "Loser.", "Game Over!", "You lose.", "Disgrace!", "Shame!", "Guilt.", "Dishonor.", "Lose.", "FAIL", "Regret...", "Failure!", "Disappointment.", "You'll regret it.", "Loser.", "Game Over!", "You lose.", "Disgrace!", "Shame!", "Guilt.", "Dishonor.", "Lose.", "FAIL"]) { [weak self] in
                 self?.sendChatArray(shouldSkipDim: true, items: [
                     ChatItem(profile: .magmus, chat: "Ignore him! Do not let him get inside your head.")
                 ]) {
@@ -1047,43 +1064,43 @@ extension ChatEngine {
                 }
             }
         case -1015:
-            delegate?.shiftRedCatwalk(shouldShift: true, fasterHeartbeat: false)
+            delegateCatwalk?.shiftRedCatwalk(shouldShift: true, fasterHeartbeat: false)
             handleDialogueCompletion(level: level, completion: completion)
         case -1018:
-            delegate?.spawnPrincessCatwalk { [weak self] in
+            delegateCatwalk?.spawnPrincessCatwalk { [weak self] in
                 self?.sendChatArray(shouldSkipDim: true, items: [
                     ChatItem(profile: .princessCursed, chat: "you let me down, puzl boy! gaze upon your failure."),
                     ChatItem(profile: .hero, imgPos: .left, chat: "No! We're coming to rescue you, princess! Just hang tight for a sec!"),
                     ChatItem(profile: .merton, chat: "Dear boy, that is NOT the princess. It is but a phantasmagoria of Magmoor's machinations. We must keep moving!")
                 ]) {
-                    self?.delegate?.despawnPrincessCatwalk()
-                    self?.delegate?.shiftRedCatwalk(shouldShift: false, fasterHeartbeat: false)
+                    self?.delegateCatwalk?.despawnPrincessCatwalk()
+                    self?.delegateCatwalk?.shiftRedCatwalk(shouldShift: false, fasterHeartbeat: false)
                     self?.handleDialogueCompletion(level: level, completion: completion)
                 }
             }
         case -1021:
-            delegate?.playMusicCatwalk(music: "overworld", startingVolume: 0.1, fadeIn: 2, shouldStopOverworld: false)
+            delegateCatwalk?.playMusicCatwalk(music: "overworld", startingVolume: 0.1, fadeIn: 2, shouldStopOverworld: false)
             handleDialogueCompletion(level: level, completion: completion)
         case -1023:
-            delegate?.shiftRedCatwalk(shouldShift: true, fasterHeartbeat: false)
+            delegateCatwalk?.shiftRedCatwalk(shouldShift: true, fasterHeartbeat: false)
             handleDialogueCompletion(level: level, completion: completion)
         case -1025:
-            delegate?.spawnMarlinCatwalk { [weak self] in
+            delegateCatwalk?.spawnMarlinCatwalk { [weak self] in
                 self?.sendChatArray(shouldSkipDim: true, items: [
                     ChatItem(profile: .trainer, chat: "you have doomed us all, puzl boy! the day of reckoning is at hand."),
                     ChatItem(profile: .hero, imgPos: .left, chat: "Marlin, I'm sorry! I tried everything to save you and the princess. Help us! PLEASE!!!"),
                     ChatItem(profile: .magmus, chat: "You must not succumb to this false imagery, child! Clarity is needed in the challenge ahead.")
                 ]) {
-                    self?.delegate?.despawnMarlinCatwalk()
-                    self?.delegate?.shiftRedCatwalk(shouldShift: false, fasterHeartbeat: false)
+                    self?.delegateCatwalk?.despawnMarlinCatwalk()
+                    self?.delegateCatwalk?.shiftRedCatwalk(shouldShift: false, fasterHeartbeat: false)
                     self?.handleDialogueCompletion(level: level, completion: completion)
                 }
             }
         case -1026:
-            delegate?.stopMusicCatwalk(music: "overworld", fadeOut: 3, shouldPlayOverworld: false)
+            delegateCatwalk?.stopMusicCatwalk(music: "overworld", fadeOut: 3, shouldPlayOverworld: false)
             handleDialogueCompletion(level: level, completion: completion)
         case -1030:
-            delegate?.playMusicCatwalk(music: "sadaccent", startingVolume: 1, fadeIn: 0.5, shouldStopOverworld: true)
+            delegateCatwalk?.playMusicCatwalk(music: "sadaccent", startingVolume: 1, fadeIn: 0.5, shouldStopOverworld: true)
             
             sendChatArray(shouldSkipDim: true, items: [
                 ChatItem(profile: .hero, imgPos: .left, chat: "I let him down. I let everyone down!! I'm such a loser.."),
@@ -1093,7 +1110,7 @@ extension ChatEngine {
                 ChatItem(profile: .melchior, chat: "Hmph! I disagree."),
                 ChatItem(profile: .hero, imgPos: .left, chat: ".....hmmm, this floor feels slanted. Does it look slanted to you?")
             ]) { [weak self] in
-                self?.delegate?.stopMusicCatwalk(music: "sadaccent", fadeOut: 2, shouldPlayOverworld: true)
+                self?.delegateCatwalk?.stopMusicCatwalk(music: "sadaccent", fadeOut: 2, shouldPlayOverworld: true)
                 self?.handleDialogueCompletion(level: level, completion: completion)
             }
         case -1035:
@@ -1110,14 +1127,14 @@ extension ChatEngine {
             default:    tikiSelected = .statue0
             }
             
-            delegate?.playMusicCatwalk(music: "overworldmarimba", startingVolume: 0.25, fadeIn: fadeIn, shouldStopOverworld: true)
-            delegate?.spawnTikiCatwalk(statueNumber: randomTiki, fadeIn: fadeIn)
+            delegateCatwalk?.playMusicCatwalk(music: "overworldmarimba", startingVolume: 0.25, fadeIn: fadeIn, shouldStopOverworld: true)
+            delegateCatwalk?.spawnTikiCatwalk(statueNumber: randomTiki, fadeIn: fadeIn)
             
             sendChatArray(shouldSkipDim: true, items: [
                 ChatItem(profile: tikiSelected, chat: "Hey there PUZL Boy! You look down in the mouth. Don't be so discouraged."),
                 ChatItem(profile: .hero, imgPos: .left, chat: "Yeah, well.. I am NOT having the best day of my life right now, to be honest."),
                 ChatItem(profile: tikiSelected, chat: "Cheer up, friend! All is not lost. Here's a little something to lift your spirits!") { [weak self] in
-                    self?.delegate?.spawnSwordCatwalk()
+                    self?.delegateCatwalk?.spawnSwordCatwalk()
                 },
                 ChatItem(profile: tikiSelected, chat: "This sword was crafted by the Mystic steelsmith, Mythrile. Legend has it, she forged the blade in the fire of a dying star... it is near indestructible!"),
                 ChatItem(profile: .hero, imgPos: .left, chat: "...spirits lifted! 😊")
@@ -1127,9 +1144,9 @@ extension ChatEngine {
         case -1036:
             let fadeOut: TimeInterval = 2
             
-            delegate?.stopMusicCatwalk(music: "overworldmarimba", fadeOut: fadeOut, shouldPlayOverworld: true)
-            delegate?.despawnTikiCatwalk(fadeOut: fadeOut)
-            delegate?.despawnSwordCatwalk()
+            delegateCatwalk?.stopMusicCatwalk(music: "overworldmarimba", fadeOut: fadeOut, shouldPlayOverworld: true)
+            delegateCatwalk?.despawnTikiCatwalk(fadeOut: fadeOut)
+            delegateCatwalk?.despawnSwordCatwalk()
             hideFFButton()
 
             sendChatArray(shouldSkipDim: true, items: [
@@ -1139,9 +1156,9 @@ extension ChatEngine {
                 self?.handleDialogueCompletion(level: level, completion: completion)
             }
         case -1047:
-            delegate?.shiftRedCatwalk(shouldShift: true, fasterHeartbeat: true)
-            delegate?.spawnMagmoorCatwalk()
-            delegate?.spawnEldersCatwalk(faceLeft: false)
+            delegateCatwalk?.shiftRedCatwalk(shouldShift: true, fasterHeartbeat: true)
+            delegateCatwalk?.spawnMagmoorCatwalk()
+            delegateCatwalk?.spawnEldersCatwalk(faceLeft: false)
 
             sendChatArray(shouldSkipDim: true, items: [
                 ChatItem(profile: .villain, chat: "Interlopers!! You encroach upon my domain. But you are too late. The end has begun!!"),
@@ -1151,7 +1168,9 @@ extension ChatEngine {
                 self?.handleDialogueCompletion(level: level, completion: completion)
             }
         case -1049:
-            delegate?.despawnMagmoorCatwalk() { [weak self] in
+            adjustBrightnessForMagmoorScary()
+            
+            delegateCatwalk?.despawnMagmoorCatwalk() { [weak self] in
                 let catwalkScene = self?.superScene as? CatwalkScene
                 catwalkScene?.shakeScreen(duration: 60, completion: nil)
 
@@ -1162,13 +1181,19 @@ extension ChatEngine {
                     ChatItem(profile: .hero, imgPos: .left, chat: "Your face is a trash heap!!"),
                     ChatItem(profile: .merton, imgPos: .left, chat: "Quickly, boy! Through the gate! We mustn't waste anymore time!")
                 ]) {
-                    self?.delegate?.despawnEldersCatwalk()
+                    self?.delegateCatwalk?.despawnEldersCatwalk()
                     self?.handleDialogueCompletion(level: level, completion: completion)
                 }
             }
+        case -1051:
+            delegateCatwalk?.flashMagmoorCatwalk()
+            handleDialogueCompletion(level: level, completion: completion)
         case -1052:
-            delegate?.exitCatwalk { [weak self] in
-                self?.handleDialogueCompletion(level: level, completion: completion)
+            delegateCatwalk?.exitCatwalk { [weak self] in
+                guard let self = self else { return }
+
+                UIScreen.main.brightness = originalBrightness
+                handleDialogueCompletion(level: level, completion: completion)
             }
             
             
@@ -1302,14 +1327,7 @@ extension ChatEngine {
             AudioManager.shared.playSound(for: "magicheartbeatloop1", fadeIn: 3)
             delegate?.spawnTrainer(at: (0, 0), to: .unknown)
             
-            let originalBrightness: CGFloat = UIScreen.main.brightness
-            
-            if originalBrightness < 0.25 {
-                UIScreen.main.brightness = 0.25
-            }
-            else if originalBrightness < 0.5 {
-                UIScreen.main.brightness = 0.5
-            }
+            adjustBrightnessForMagmoorScary()
             
             superScene?.addChild(magmoorScary)
 
@@ -1336,16 +1354,18 @@ extension ChatEngine {
                 ChatItem(profile: .villain, chat: "Ah, yes. The self-serving \"Marlin the Magnificent.\" Always thinking he's right. Hmpf! Your loss.. such a shame.. we could've had it all....."),
                 ChatItem(profile: .trainer, imgPos: .left, chat: "It's my loss.....")
             ]) { [weak self] in
-                self?.delegate?.despawnTrainer(to: nil)
+                guard let self = self else { return }
+                
+                delegate?.despawnTrainer(to: nil)
                 AudioManager.shared.stopSound(for: "scarymusicbox", fadeDuration: 5)
                 AudioManager.shared.stopSound(for: "magicheartbeatloop1", fadeDuration: 5)
                 
-                self?.chatBackgroundSprite.run(SKAction.wait(forDuration: 3)) {
-                    self?.handleDialogueCompletion(level: level) { _ in
-                        self?.magmoorScary.resetAlpha()
-                        self?.magmoorScary.removeFromParent()
+                chatBackgroundSprite.run(SKAction.wait(forDuration: 3)) {
+                    self.handleDialogueCompletion(level: level) { _ in
+                        self.magmoorScary.resetAlpha()
+                        self.magmoorScary.removeFromParent()
                         
-                        UIScreen.main.brightness = originalBrightness
+                        UIScreen.main.brightness = self.originalBrightness
                         
                         completion?(nil)
                     }

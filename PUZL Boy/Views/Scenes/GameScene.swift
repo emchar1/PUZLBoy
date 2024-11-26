@@ -370,9 +370,7 @@ class GameScene: SKScene {
     
     /**
      Saves the state of the gameplay, including elapsed time, current gameboard state, lives remaining, and player position.
-     - parameters:
-        - didWin: returns true if the level has been beat
-        - levelStatsItem: the current level stats to save to Firebase
+     - parameter levelStatsItem: the current level stats to save to Firebase
      */
     private func saveState(levelStatsItem: LevelStats) {
         guard LevelBuilder.levelsSize > 0 else { return print("GameScene.saveState(): levelSize less than 0") }
@@ -430,7 +428,15 @@ class GameScene: SKScene {
     
     ///Creates and returns a Level Stat object, used in the saveState method.
     private func getLevelStatsItem(level: Int, didWin: Bool) -> LevelStats {
-        return LevelStats(level: level, elapsedTime: scoringEngine.timerManager.elapsedTime, livesUsed: GameEngine.livesUsed, movesRemaining: gameEngine.movesRemaining, enemiesKilled: gameEngine.enemiesKilled, bouldersBroken: gameEngine.bouldersBroken, score: !didWin ? 0 : scoringEngine.scoringManager.score, didWin: didWin, inventory: gameEngine.level.inventory)
+        return LevelStats(level: level,
+                          elapsedTime: scoringEngine.timerManager.elapsedTime,
+                          livesUsed: GameEngine.livesUsed,
+                          movesRemaining: gameEngine.movesRemaining,
+                          enemiesKilled: gameEngine.enemiesKilled,
+                          bouldersBroken: gameEngine.bouldersBroken,
+                          score: !didWin ? 0 : scoringEngine.scoringManager.score,
+                          didWin: didWin,
+                          inventory: gameEngine.level.inventory)
     }
     
     ///Creates a new Game Engine and sets up the appropriate properties.
@@ -1517,27 +1523,4 @@ extension GameScene: ChatEngineDelegate {
         FIRManager.updateFirestoreRecordLivesRemaining(lives: GameEngine.livesRemaining)
         AudioManager.shared.playSound(for: "revive")
     }
-    
-    
-    // MARK: - Catwalk UNUSED
-    
-    func spawnEldersCatwalk(faceLeft: Bool) {}
-    func despawnEldersCatwalk() {}
-    func spawnPrincessCatwalk(completion: @escaping () -> Void) {}
-    func despawnPrincessCatwalk() {}
-    func spawnMarlinCatwalk(completion: @escaping () -> Void) {}
-    func despawnMarlinCatwalk() {}
-    func spawnSwordCatwalk() {}
-    func spawnTikiCatwalk(statueNumber: Int, fadeIn: TimeInterval) {}
-    func despawnTikiCatwalk(fadeOut: TimeInterval) {}
-    func despawnSwordCatwalk() {}
-    func spawnMagmoorCatwalk() {}
-    func despawnMagmoorCatwalk(completion: @escaping () -> Void) {}
-    func playMusicCatwalk(music: String, startingVolume: Float, fadeIn: TimeInterval, shouldStopOverworld: Bool) {}
-    func stopMusicCatwalk(music: String, fadeOut: TimeInterval, shouldPlayOverworld: Bool) {}
-    func flashRedCatwalk(message: String, secondaryMessages: [String], completion: @escaping () -> Void) {}
-    func shiftRedCatwalk(shouldShift: Bool, fasterHeartbeat: Bool) {}
-    func exitCatwalk(completion: @escaping () -> Void) {}
-    
-    
 }

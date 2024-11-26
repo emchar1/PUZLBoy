@@ -39,6 +39,7 @@ class CatwalkScene: SKScene {
     private var trainer: Player!
     private var villain: Player!
     private var magmoorSprite: SKSpriteNode!
+    private var magmoorFlashSprite: SKSpriteNode!
     private var backgroundNode: SKSpriteNode!
     private var inbetweenNode: SKSpriteNode!
     private var bloodOverlay: SKSpriteNode!
@@ -155,6 +156,12 @@ class CatwalkScene: SKScene {
         magmoorSprite.alpha = 0
         magmoorSprite.zPosition = 2
         
+        magmoorFlashSprite = SKSpriteNode(imageNamed: "villainRedEyesFlash")
+        magmoorFlashSprite.size = magmoorSprite.size
+        magmoorFlashSprite.position = magmoorSprite.position
+        magmoorFlashSprite.alpha = 0
+        magmoorFlashSprite.zPosition = 1
+        
         for i in 0...catwalkLength {
             let image: String = i == 0 ? "start" : (i == catwalkLength ? "endClosed" : "partytile")
             
@@ -173,7 +180,7 @@ class CatwalkScene: SKScene {
         shimmerPartyTiles()
         tapPointerEngine = TapPointerEngine()
         chatEngine = ChatEngine()
-        chatEngine.delegate = self
+        chatEngine.delegateCatwalk = self
     }
     
     
@@ -187,6 +194,7 @@ class CatwalkScene: SKScene {
         addChild(bloodOverlay)
         addChild(fadeNode)
         addChild(magmoorSprite)
+        addChild(magmoorFlashSprite)
         addChild(catwalkNode)
         catwalkNode.addChild(hero.sprite)
         catwalkNode.addChild(elder0.sprite)
@@ -372,15 +380,21 @@ class CatwalkScene: SKScene {
         AudioManager.shared.playSound(for: "dooropen")
     }
     
-    //Shakes the screen. Use effect for certain cataclysmic event
+    /**
+     Shakes the screen. Use effect for certain cataclysmic event
+     - parameters:
+        - totalDuration: duration of shake. If negative, run indefinitely (5 mins max)
+        - completion: completion handler
+     */
     func shakeScreen(duration totalDuration: TimeInterval, completion: (() -> Void)?) {
         let shakeMagnitude: CGFloat = 12
         let shakeDuration: TimeInterval = 0.06
+        let totalDurationAdjusted: TimeInterval = totalDuration < 0 ? 300 : totalDuration
         
         let shakeAction = SKAction.repeat(SKAction.sequence([
             SKAction.moveBy(x: shakeMagnitude, y: shakeMagnitude, duration: shakeDuration),
             SKAction.moveBy(x: -shakeMagnitude, y: -shakeMagnitude, duration: shakeDuration)
-        ]), count: Int(totalDuration / (shakeDuration * 2)))
+        ]), count: Int(totalDurationAdjusted / (shakeDuration * 2)))
         
         catwalkNode.run(shakeAction) {
             Haptics.shared.stopHapticEngine()
@@ -388,8 +402,8 @@ class CatwalkScene: SKScene {
 
             completion?()
         }
-
-        AudioManager.shared.playSoundThenStop(for: "thunderrumble", currentTime: 5, playForDuration: totalDuration + 1, fadeOut: 4)
+        
+        AudioManager.shared.playSoundThenStop(for: "thunderrumble", currentTime: 5, playForDuration: totalDurationAdjusted + 1, fadeOut: 4)
         Haptics.shared.executeCustomPattern(pattern: .thunder)
     }
     
@@ -408,39 +422,9 @@ class CatwalkScene: SKScene {
 }
 
 
-// MARK: - ChatEngineDelegate
+// MARK: - ChatEngineCatwalkDelegate
 
-extension CatwalkScene: ChatEngineDelegate {
-    func illuminatePanel(at position: K.GameboardPosition, useOverlay: Bool) {}
-    func deilluminatePanel(at position: K.GameboardPosition, useOverlay: Bool) {}
-    func illuminateDisplayNode(for displayType: DisplaySprite.DisplayStatusName) {}
-    func deilluminateDisplayNode(for displayType: DisplaySprite.DisplayStatusName) {}
-    func illuminateMinorButton(for button: PauseResetEngine.MinorButton) {}
-    func deilluminateMinorButton(for button: PauseResetEngine.MinorButton) {}
-    func spawnTrainer(at position: K.GameboardPosition, to direction: Controls) {}
-    func despawnTrainer(to position: K.GameboardPosition?) {}
-    func spawnTrainerWithExit(at position: K.GameboardPosition, to direction: Controls) {}
-    func despawnTrainerWithExit(moves: [K.GameboardPosition]) {}
-    func spawnPrincessCapture(at position: K.GameboardPosition, shouldAnimateWarp: Bool, completion: @escaping () -> Void) {}
-    func despawnPrincessCapture(at position: K.GameboardPosition, completion: @escaping () -> Void) {}
-    func flashPrincess(at position: K.GameboardPosition, completion: @escaping () -> Void) {}
-    func inbetweenRealmEnter(levelInt: Int, mergeHalfway: Bool, moves: [K.GameboardPosition]) {}
-    func inbetweenRealmExit(persistPresence: Bool, completion: @escaping () -> Void) {}
-    func inbetweenFlashPlayer(playerType: Player.PlayerType, position: K.GameboardPosition, persistPresence: Bool) {}
-    func empowerPrincess(powerDisplayDuration: TimeInterval) {}
-    func encagePrincess() {}
-    func peekMinion(at position: K.GameboardPosition, duration: TimeInterval, completion: @escaping () -> Void) {}
-    func spawnDaemon(at position: K.GameboardPosition) {}
-    func spawnMagmoorMinion(at position: K.GameboardPosition, chatDelay: TimeInterval) {}
-    func despawnMagmoorMinion(at position: K.GameboardPosition, fadeDuration: TimeInterval) {}
-    func minionAttack(duration: TimeInterval, completion: @escaping () -> Void) {}
-    func spawnElder(minionPosition: K.GameboardPosition, positions: [K.GameboardPosition], completion: @escaping () -> Void) {}
-    func despawnElders(to position: K.GameboardPosition, completion: @escaping () -> Void) {}
-    func getGift(lives: Int) {}
-    
-    
-    // MARK: - Catwalk Protocol Functions
-    
+extension CatwalkScene: ChatEngineCatwalkDelegate {
     func spawnEldersCatwalk(faceLeft: Bool) {
         hero.sprite.xScale = abs(hero.sprite.xScale)
         
@@ -689,6 +673,10 @@ extension CatwalkScene: ChatEngineDelegate {
         despawnMagmoorHelper(completion: completion)
     }
     
+    func flashMagmoorCatwalk() {
+        flashMagmoorHelper()
+    }
+    
     func playMusicCatwalk(music: String, startingVolume: Float, fadeIn: TimeInterval, shouldStopOverworld: Bool) {
         AudioManager.shared.adjustVolume(to: startingVolume, for: music)
         AudioManager.shared.playSound(for: music, fadeIn: fadeIn)
@@ -742,6 +730,9 @@ extension CatwalkScene: ChatEngineDelegate {
             SKAction.fadeOut(withDuration: fadeDuration)
         ]))
         
+        magmoorSprite.run(SKAction.fadeOut(withDuration: audioItemEnd))
+        magmoorFlashSprite.run(SKAction.fadeIn(withDuration: audioItemEnd))
+        
         run(SKAction.sequence([
             SKAction.wait(forDuration: audioItemEnd),
             SKAction.run {
@@ -750,9 +741,12 @@ extension CatwalkScene: ChatEngineDelegate {
             },
             SKAction.wait(forDuration: scaryLaughDuration - 2) //There are 2 seconds of silence in scarylaugh
         ])) { [weak self] in
-            self?.cleanupScene()
-            self?.catwalkDelegate?.catwalkSceneDidFinish()
             completion()
+            
+            self?.catwalkDelegate?.catwalkSceneDidFinish()
+            
+            //Put this last!! This deinitializes EVERYTHING.
+            self?.cleanupScene()
         }
         
         unshakeScreen(fadeDuration: fadeDuration * 2)
@@ -885,6 +879,7 @@ extension CatwalkScene: ChatEngineDelegate {
                     SKAction.moveBy(x: 0, y: scaleSize.height, duration: fadeDuration),
                     SKAction.fadeOut(withDuration: fadeDuration)
                 ]),
+                SKAction.wait(forDuration: 1),
                 SKAction.run {
                     self.openCloseGate(shouldOpen: true)
                 },
@@ -904,14 +899,55 @@ extension CatwalkScene: ChatEngineDelegate {
         
         magmoorSprite.run(SKAction.sequence([
             SKAction.wait(forDuration: fadeDuration),
-            SKAction.group([
-                SKAction.fadeIn(withDuration: fadeDuration * 8),
-                SKAction.scale(to: 1.75, duration: fadeDuration * 15)
-            ])
-        ]))
+            zoomMagmoorHelper(shouldReveal: true, scaleBy: 1.1, fadeDuration: fadeDuration)
+        ]), withKey: "magmoorZoomAction")
+        
+        magmoorFlashSprite.run(SKAction.sequence([
+            SKAction.wait(forDuration: fadeDuration),
+            zoomMagmoorHelper(shouldReveal: false, scaleBy: 1.1, fadeDuration: fadeDuration)
+        ]), withKey: "magmoorFlashZoomAction")
         
         shiftCatwalkNode(panels: 1, moveDuration: fadeDuration / 8)
         AudioManager.shared.playSound(for: "boyattack\(Int.random(in: 1...3))")
+    }
+    
+    private func zoomMagmoorHelper(shouldReveal: Bool, scaleBy: CGFloat, fadeDuration: TimeInterval) -> SKAction {
+        let scaleAction = SKAction.scale(by: scaleBy, duration: fadeDuration * 15)
+
+        let zoomAction = shouldReveal ? SKAction.group([
+            SKAction.fadeIn(withDuration: fadeDuration * 8),
+            scaleAction
+        ]) : scaleAction
+        
+        return zoomAction
+    }
+    
+    private func flashMagmoorHelper() {
+        let baselineAlpha = magmoorSprite.alpha
+        let baselineScale: CGFloat = magmoorSprite.xScale
+        
+        func getFlashSequence(shouldFlash: Bool) -> SKAction {
+            return SKAction.sequence([
+                SKAction.scale(to: baselineScale * 1.25, duration: 0),
+                SKAction.repeat(SKAction.sequence([
+                    SKAction.fadeOut(withDuration: 0),
+                    SKAction.wait(forDuration: 0.01),
+                    SKAction.fadeAlpha(to: shouldFlash ? baselineAlpha : 0, duration: 0),
+                    SKAction.wait(forDuration: 0.01)
+                ]), count: 25),
+                SKAction.fadeAlpha(to: shouldFlash ? 0 : baselineAlpha, duration: 0),
+                zoomMagmoorHelper(shouldReveal: !shouldFlash, scaleBy: 1.2, fadeDuration: 1)
+            ])
+        }
+        
+        magmoorSprite.removeAction(forKey: "magmoorZoomAction")
+        magmoorFlashSprite.removeAction(forKey: "magmoorFlashZoomAction")
+        
+        magmoorSprite.run(getFlashSequence(shouldFlash: false), withKey: "magmoorZoomAction")
+        magmoorFlashSprite.run(getFlashSequence(shouldFlash: true), withKey: "magmoorFlashZoomAction")
+        
+        AudioManager.shared.playSound(for: "magichorrorimpact")
+        Haptics.shared.addHapticFeedback(withStyle: .rigid)
     }
     
     private func flashRedHelper(message: String, secondaryMessages: [String], completion: @escaping () -> Void) {
