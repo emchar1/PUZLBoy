@@ -1150,7 +1150,10 @@ extension ChatEngine {
             hideFFButton()
 
             sendChatArray(shouldSkipDim: true, items: [
-                ChatItem(profile: .blankhero, startNewChat: false, chat: "\n\nReceived Celestial Sword of Justice.", handler: nil)
+                ChatItem(profile: .blankhero, startNewChat: false, chat: "\n\nReceived Celestial Sword of Justice.") { [weak self] in
+                    self?.showFFButton()
+                },
+                ChatItem(profile: .merton, chat: "Ooh, that's a good sword! Had to use it last week on a wraith... nasty little buggers!")
             ]) { [weak self] in
                 self?.showFFButton()
                 self?.handleDialogueCompletion(level: level, completion: completion)
@@ -1172,7 +1175,7 @@ extension ChatEngine {
             
             delegateCatwalk?.despawnMagmoorCatwalk() { [weak self] in
                 let catwalkScene = self?.superScene as? CatwalkScene
-                catwalkScene?.shakeScreen(duration: 60, completion: nil)
+                catwalkScene?.shakeScreen(duration: -1, completion: nil)
 
                 self?.sendChatArray(shouldSkipDim: true, items: [
                     ChatItem(profile: .hero, imgPos: .left, chat: "HE'S GETTING AWAY!!!"),

@@ -407,7 +407,7 @@ class CatwalkScene: SKScene {
         Haptics.shared.executeCustomPattern(pattern: .thunder)
     }
     
-    func unshakeScreen(fadeDuration: TimeInterval) {
+    private func unshakeScreen(fadeDuration: TimeInterval) {
         AudioManager.shared.stopSound(for: "thunderrumble", fadeDuration: fadeDuration)
         
         run(SKAction.wait(forDuration: fadeDuration)) { [weak self] in
@@ -416,8 +416,8 @@ class CatwalkScene: SKScene {
             Haptics.shared.stopHapticEngine()
             Haptics.shared.startHapticEngine(shouldInitialize: false)
         }
-
     }
+    
     
 }
 
@@ -613,18 +613,20 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
     }
     
     func spawnSwordCatwalk() {
-        let duration: TimeInterval = 0.25
-        let bounceFactor: CGFloat = scaleSize.width * 0.25
+        let duration: TimeInterval = 2
         
         let swordSprite = SKSpriteNode(imageNamed: "cosmicSword")
-        swordSprite.scale(to: .zero)
-        swordSprite.position = getHeroPosition(xPanelOffset: 1, yOffset: 0)
+        swordSprite.position = getHeroPosition(xPanelOffset: 1, yOffset: 200)
+        swordSprite.scale(to: scaleSize)
+        swordSprite.alpha = 0
+        swordSprite.zRotation = .pi / 4
         swordSprite.zPosition = K.ZPosition.overlay
         swordSprite.name = "cosmicSword"
         
-        swordSprite.run(SKAction.sequence([
-            SKAction.scale(to: scaleSize + bounceFactor, duration: duration),
-            SKAction.scale(to: scaleSize, duration: duration),
+        swordSprite.run(SKAction.group([
+            SKAction.fadeIn(withDuration: duration),
+            SKAction.rotate(byAngle: -.pi / 4, duration: duration),
+            SKAction.moveBy(x: 0, y: -200, duration: duration)
         ]))
         
         catwalkNode.addChild(swordSprite)
@@ -641,7 +643,31 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
             SKAction.removeFromParent()
         ]))
         
+        let bigSword = SKSpriteNode(imageNamed: "cosmicSword")
+        bigSword.position = CGPoint(x: size.width / 2, y: size.height / 2)
+        bigSword.scale(to: .zero)
+        bigSword.zPosition = K.ZPosition.itemsAndEffects
+        
+        backgroundNode.addChild(bigSword)
+        
+        bigSword.run(SKAction.sequence([
+            SKAction.scale(to: scaleSize * 6, duration: 0.25),
+            SKAction.scale(to: scaleSize * 4, duration: 1)
+        ]))
+        
+        bigSword.run(SKAction.sequence([
+            SKAction.group([
+                SKAction.rotate(byAngle: 2 * .pi, duration: 9),
+                SKAction.sequence([
+                    SKAction.wait(forDuration: 7),
+                    SKAction.fadeOut(withDuration: 2)
+                ])
+            ]),
+            SKAction.removeFromParent()
+        ]))
+        
         AudioManager.shared.playSound(for: "pickupitem")
+        AudioManager.shared.playSound(for: "titlechapter")
         Haptics.shared.addHapticFeedback(withStyle: .rigid)
         
         ParticleEngine.shared.animateParticles(type: .itemPickup,
@@ -730,6 +756,7 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
             SKAction.fadeOut(withDuration: fadeDuration)
         ]))
         
+        magmoorSprite.removeAction(forKey: "magmoorFadeAction")
         magmoorSprite.run(SKAction.fadeOut(withDuration: audioItemEnd))
         magmoorFlashSprite.run(SKAction.fadeIn(withDuration: audioItemEnd))
         
@@ -842,12 +869,12 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
     }
     
     private func despawnMagmoorHelper(completion: @escaping () -> Void) {
-        let scale: CGFloat = 0.9
+        let scaleBy: CGFloat = 1.1
         let fadeDuration: TimeInterval = 2
         let attackSprite = SKSpriteNode(texture: SKTexture(imageNamed: "iconCosmicSword"))
         attackSprite.position = getHeroPosition(xPanelOffset: 1, yOffset: scaleSize.height * 0.4)
         attackSprite.zPosition = K.ZPosition.itemsAndEffects
-        attackSprite.setScale(scale * (panelSize / attackSprite.size.width))
+        attackSprite.setScale(0.9 * (panelSize / attackSprite.size.width))
         
         let animation = SKAction.sequence([
             SKAction.wait(forDuration: 0.25),
@@ -879,7 +906,7 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
                     SKAction.moveBy(x: 0, y: scaleSize.height, duration: fadeDuration),
                     SKAction.fadeOut(withDuration: fadeDuration)
                 ]),
-                SKAction.wait(forDuration: 1),
+                SKAction.wait(forDuration: fadeDuration / 2),
                 SKAction.run {
                     self.openCloseGate(shouldOpen: true)
                 },
@@ -899,52 +926,82 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
         
         magmoorSprite.run(SKAction.sequence([
             SKAction.wait(forDuration: fadeDuration),
-            zoomMagmoorHelper(shouldReveal: true, scaleBy: 1.1, fadeDuration: fadeDuration)
+            SKAction.group([
+                zoomMagmoorHelper(scaleBy: scaleBy, fadeDuration: fadeDuration),
+                fadeInMagmoorHelper(fadeDuration: fadeDuration)
+            ])
         ]), withKey: "magmoorZoomAction")
         
         magmoorFlashSprite.run(SKAction.sequence([
             SKAction.wait(forDuration: fadeDuration),
-            zoomMagmoorHelper(shouldReveal: false, scaleBy: 1.1, fadeDuration: fadeDuration)
+            zoomMagmoorHelper(scaleBy: scaleBy, fadeDuration: fadeDuration)
         ]), withKey: "magmoorFlashZoomAction")
         
         shiftCatwalkNode(panels: 1, moveDuration: fadeDuration / 8)
         AudioManager.shared.playSound(for: "boyattack\(Int.random(in: 1...3))")
     }
     
-    private func zoomMagmoorHelper(shouldReveal: Bool, scaleBy: CGFloat, fadeDuration: TimeInterval) -> SKAction {
-        let scaleAction = SKAction.scale(by: scaleBy, duration: fadeDuration * 15)
-
-        let zoomAction = shouldReveal ? SKAction.group([
-            SKAction.fadeIn(withDuration: fadeDuration * 8),
-            scaleAction
-        ]) : scaleAction
-        
-        return zoomAction
+    private func zoomMagmoorHelper(scaleBy: CGFloat, fadeDuration: TimeInterval) -> SKAction {
+        return SKAction.scale(by: scaleBy, duration: fadeDuration * 15)
+    }
+    
+    private func fadeInMagmoorHelper(fadeDuration: TimeInterval) -> SKAction {
+        return SKAction.fadeIn(withDuration: fadeDuration * 8)
     }
     
     private func flashMagmoorHelper() {
         let baselineAlpha = magmoorSprite.alpha
         let baselineScale: CGFloat = magmoorSprite.xScale
+        let scaleBy: CGFloat = 1.25
+        let zoomFadeDuration: TimeInterval = 1
+        let flashPauseDuration: TimeInterval = getFlashSequence(shouldFlash: false).duration
         
-        func getFlashSequence(shouldFlash: Bool) -> SKAction {
-            return SKAction.sequence([
-                SKAction.scale(to: baselineScale * 1.25, duration: 0),
+        func getFlashSequence(shouldFlash: Bool) -> (action: SKAction, duration: TimeInterval) {
+            let count: Int = 25
+            let waitDuration: TimeInterval = 0.01
+            
+            let flashSequence = SKAction.sequence([
+                SKAction.scale(to: baselineScale * scaleBy, duration: 0),
                 SKAction.repeat(SKAction.sequence([
                     SKAction.fadeOut(withDuration: 0),
-                    SKAction.wait(forDuration: 0.01),
+                    SKAction.wait(forDuration: waitDuration),
                     SKAction.fadeAlpha(to: shouldFlash ? baselineAlpha : 0, duration: 0),
-                    SKAction.wait(forDuration: 0.01)
-                ]), count: 25),
-                SKAction.fadeAlpha(to: shouldFlash ? 0 : baselineAlpha, duration: 0),
-                zoomMagmoorHelper(shouldReveal: !shouldFlash, scaleBy: 1.2, fadeDuration: 1)
+                    SKAction.wait(forDuration: waitDuration)
+                ]), count: count),
+                SKAction.fadeAlpha(to: shouldFlash ? 0 : baselineAlpha, duration: 0)
             ])
+            
+            let duration: TimeInterval = TimeInterval(count) * (2 * waitDuration)
+            
+            return (flashSequence, duration)
         }
         
         magmoorSprite.removeAction(forKey: "magmoorZoomAction")
         magmoorFlashSprite.removeAction(forKey: "magmoorFlashZoomAction")
         
-        magmoorSprite.run(getFlashSequence(shouldFlash: false), withKey: "magmoorZoomAction")
-        magmoorFlashSprite.run(getFlashSequence(shouldFlash: true), withKey: "magmoorFlashZoomAction")
+        
+        //magmoorSprite
+        magmoorSprite.run(getFlashSequence(shouldFlash: false).action)
+        
+        magmoorSprite.run(SKAction.sequence([
+            SKAction.wait(forDuration: flashPauseDuration),
+            zoomMagmoorHelper(scaleBy: scaleBy, fadeDuration: zoomFadeDuration)
+        ]), withKey: "magmoorZoomAction")
+        
+        magmoorSprite.run(SKAction.sequence([
+            SKAction.wait(forDuration: flashPauseDuration),
+            fadeInMagmoorHelper(fadeDuration: zoomFadeDuration)
+        ]), withKey: "magmoorFadeAction")
+        
+        
+        //magmoorFlashSprite
+        magmoorFlashSprite.run(getFlashSequence(shouldFlash: true).action)
+        
+        magmoorFlashSprite.run(SKAction.sequence([
+            SKAction.wait(forDuration: flashPauseDuration),
+            zoomMagmoorHelper(scaleBy: scaleBy, fadeDuration: zoomFadeDuration)
+        ]), withKey: "magmoorFlashZoomAction")        
+        
         
         AudioManager.shared.playSound(for: "magichorrorimpact")
         Haptics.shared.addHapticFeedback(withStyle: .rigid)
