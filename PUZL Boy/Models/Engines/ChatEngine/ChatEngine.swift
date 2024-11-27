@@ -429,7 +429,7 @@ class ChatEngine {
         ParticleEngine.shared.animateParticles(type: .itemPickup, toNode: featherSprite, position: .zero, scale: 1, duration: delayDuration)
         AudioManager.shared.playSound(for: "pickupitem")
         AudioManager.shared.playSound(for: "titlechapter")
-        AudioManager.shared.adjustVolume(to: 0, for: AudioManager.tikiThemes.overworld)
+        AudioManager.shared.adjustVolume(to: 0, for: AudioManager.tikiThemes.overworld, fadeDuration: 0.5)
     }
     
     ///Animates the screen shaking
