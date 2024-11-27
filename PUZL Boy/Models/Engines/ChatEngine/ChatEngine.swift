@@ -16,14 +16,14 @@ protocol ChatEngineCatwalkDelegate: AnyObject {
     func spawnMarlinCatwalk(completion: @escaping () -> Void)
     func despawnMarlinCatwalk()
     func spawnTikiCatwalk(statueNumber: Int, fadeIn: TimeInterval)
-    func despawnTikiCatwalk(fadeOut: TimeInterval)
-    func spawnSwordCatwalk()
-    func despawnSwordCatwalk()
+    func despawnTikiCatwalk(fadeOut: TimeInterval, delay: TimeInterval?)
+    func spawnSwordCatwalk(spawnDuration: TimeInterval)
+    func despawnSwordCatwalk(fadeDuration: TimeInterval, delay: TimeInterval?)
     func spawnMagmoorCatwalk()
     func despawnMagmoorCatwalk(completion: @escaping () -> Void)
     func flashMagmoorCatwalk()
     func playMusicCatwalk(music: String, startingVolume: Float, fadeIn: TimeInterval, shouldStopOverworld: Bool)
-    func stopMusicCatwalk(music: String, fadeOut: TimeInterval, shouldPlayOverworld: Bool)
+    func stopMusicCatwalk(music: String, fadeOut: TimeInterval, delay: TimeInterval?, shouldPlayOverworld: Bool)
     func flashRedCatwalk(message: String, secondaryMessages: [String], completion: @escaping () -> Void)
     func shiftRedCatwalk(shouldShift: Bool, fasterHeartbeat: Bool)
     func exitCatwalk(completion: @escaping () -> Void)
@@ -1097,7 +1097,7 @@ extension ChatEngine {
                 }
             }
         case -1026:
-            delegateCatwalk?.stopMusicCatwalk(music: "overworld", fadeOut: 3, shouldPlayOverworld: false)
+            delegateCatwalk?.stopMusicCatwalk(music: "overworld", fadeOut: 3, delay: nil, shouldPlayOverworld: false)
             handleDialogueCompletion(level: level, completion: completion)
         case -1030:
             delegateCatwalk?.playMusicCatwalk(music: "sadaccent", startingVolume: 1, fadeIn: 0.5, shouldStopOverworld: true)
@@ -1110,12 +1110,13 @@ extension ChatEngine {
                 ChatItem(profile: .melchior, chat: "Hmph! I disagree."),
                 ChatItem(profile: .hero, imgPos: .left, chat: ".....hmmm, this floor feels slanted. Does it look slanted to you?")
             ]) { [weak self] in
-                self?.delegateCatwalk?.stopMusicCatwalk(music: "sadaccent", fadeOut: 2, shouldPlayOverworld: true)
+                self?.delegateCatwalk?.stopMusicCatwalk(music: "sadaccent", fadeOut: 2, delay: nil, shouldPlayOverworld: true)
                 self?.handleDialogueCompletion(level: level, completion: completion)
             }
         case -1035:
             let tikiSelected: ChatItem.ChatProfile
             let fadeIn: TimeInterval = 1
+            let swordSpawnDuration: TimeInterval = 2
             let randomTiki = Int.random(in: 0...4)
             
             switch randomTiki {
@@ -1133,20 +1134,21 @@ extension ChatEngine {
             sendChatArray(shouldSkipDim: true, items: [
                 ChatItem(profile: tikiSelected, chat: "Hey there PUZL Boy! You look down in the mouth. Don't be so discouraged."),
                 ChatItem(profile: .hero, imgPos: .left, chat: "Yeah, well.. I am NOT having the best day of my life right now, to be honest."),
-                ChatItem(profile: tikiSelected, chat: "Cheer up, friend! All is not lost. Here's a little something to lift your spirits!") { [weak self] in
-                    self?.delegateCatwalk?.spawnSwordCatwalk()
+                ChatItem(profile: tikiSelected, endChat: true, chat: "Cheer up, friend! All is not lost. Here's a little something to lift your spirits!") { [weak self] in
+                    self?.delegateCatwalk?.spawnSwordCatwalk(spawnDuration: swordSpawnDuration)
                 },
-                ChatItem(profile: tikiSelected, chat: "This sword was crafted by the Mystic steelsmith, Mythrile. Legend has it, she forged the blade in the fire of a dying star... it is near indestructible!"),
+                ChatItem(profile: tikiSelected, pause: swordSpawnDuration + 1, startNewChat: true, chat: "This sword was crafted by the Mystic steelsmith, Mythrile. Legend has it, she forged the blade in the fire of a dying star... it is near indestructible!", handler: nil),
                 ChatItem(profile: .hero, imgPos: .left, chat: "...spirits lifted! 😊")
             ]) { [weak self] in
                 self?.handleDialogueCompletion(level: level, completion: completion)
             }
         case -1036:
             let fadeOut: TimeInterval = 2
+            let logoDuration: TimeInterval = 9
             
-            delegateCatwalk?.stopMusicCatwalk(music: "overworldmarimba", fadeOut: fadeOut, shouldPlayOverworld: true)
-            delegateCatwalk?.despawnTikiCatwalk(fadeOut: fadeOut)
-            delegateCatwalk?.despawnSwordCatwalk()
+            delegateCatwalk?.stopMusicCatwalk(music: "overworldmarimba", fadeOut: fadeOut, delay: logoDuration, shouldPlayOverworld: true)
+            delegateCatwalk?.despawnTikiCatwalk(fadeOut: fadeOut, delay: logoDuration)
+            delegateCatwalk?.despawnSwordCatwalk(fadeDuration: fadeOut, delay: logoDuration)
             hideFFButton()
 
             sendChatArray(shouldSkipDim: true, items: [
