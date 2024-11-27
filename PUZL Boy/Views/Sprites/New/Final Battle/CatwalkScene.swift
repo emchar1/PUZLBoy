@@ -117,7 +117,7 @@ class CatwalkScene: SKScene {
         fadeNode.lineWidth = 0
         fadeNode.zPosition = K.ZPosition.fadeTransitionNode
         
-        swordFadeNode = SKSpriteNode(color: UIColor(red: 146/255, green: 125/255, blue: 255/255, alpha: 1), size: size)
+        swordFadeNode = SKSpriteNode(color: UIColor.obtainItem.start, size: size)
         swordFadeNode.alpha = 0
         swordFadeNode.anchorPoint = .zero
         swordFadeNode.zPosition = 2
@@ -665,10 +665,11 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
         
         bigSword.run(SKAction.sequence([
             SKAction.group([
-                SKAction.rotate(byAngle: 2 * .pi, duration: delay ?? 0),
+                SKAction.rotate(byAngle: 2 * .pi, duration: (delay ?? 0) - fadeDuration),
                 SKAction.sequence([
                     SKAction.wait(forDuration: (delay ?? 0) - fadeDuration),
-                    SKAction.fadeOut(withDuration: fadeDuration)
+                    SKAction.scale(to: scaleSize * 6, duration: 0.25),
+                    SKAction.scale(to: 0, duration: 0.25)
                 ])
             ]),
             SKAction.removeFromParent()
@@ -676,8 +677,7 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
         
         swordFadeNode.run(SKAction.sequence([
             SKAction.fadeIn(withDuration: 0.25),
-            SKAction.colorize(with: UIColor(red: 187/255, green: 165/255, blue: 61/255, alpha: 1), colorBlendFactor: 1,
-                              duration: (delay ?? 0) - fadeDuration - 0.25),
+            SKAction.colorize(with: UIColor.obtainItem.end, colorBlendFactor: 1, duration: (delay ?? 0) - fadeDuration - 0.25),
             SKAction.fadeOut(withDuration: fadeDuration)
         ]))
         

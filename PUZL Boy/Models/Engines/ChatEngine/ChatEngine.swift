@@ -132,6 +132,7 @@ class ChatEngine {
     //Overlay Sprites
     private var superScene: SKScene?
     private var dimOverlaySprite: SKShapeNode!
+    private var obtainItemSprite: SKSpriteNode!
     private var marlinBlast: MarlinBlastSprite!
     private var magmoorScary: MagmoorScarySprite!
     private var chapterTitleSprite: ChapterTitleSprite!
@@ -220,6 +221,11 @@ class ChatEngine {
         dimOverlaySprite.lineWidth = 0
         dimOverlaySprite.alpha = 0
         dimOverlaySprite.zPosition = K.ZPosition.chatDimOverlay
+        
+        obtainItemSprite = SKSpriteNode(color: UIColor.obtainItem.start, size: K.ScreenDimensions.size)
+        obtainItemSprite.anchorPoint = .zero
+        obtainItemSprite.alpha = 0
+        obtainItemSprite.zPosition = K.ZPosition.partyBackgroundOverlay
 
         marlinBlast = MarlinBlastSprite()
         marlinBlast.zPosition = K.ZPosition.chatDialogue - 1
@@ -248,6 +254,7 @@ class ChatEngine {
         
         superScene.addChild(chatBackgroundSprite)
         superScene.addChild(dimOverlaySprite)
+        superScene.addChild(obtainItemSprite)
         superScene.addChild(chapterTitleSprite)
     }
     
@@ -371,17 +378,18 @@ class ChatEngine {
     
     ///Animates magical feather falling from the sky
     private func animateFeather() {
+        let fadeDuration: TimeInterval = 2
+        let delayDuration: TimeInterval = 9
+        
         func featherDescendAction(moveByX: CGFloat, shouldFade: Bool = false) -> SKAction {
-            let descendDuration: TimeInterval = 0.95
-
             let fadeAction = SKAction.sequence([
-                SKAction.wait(forDuration: descendDuration * 0.5),
-                SKAction.fadeOut(withDuration: descendDuration * 0.5)
+                SKAction.wait(forDuration: fadeDuration * 0.5),
+                SKAction.fadeOut(withDuration: fadeDuration * 0.5)
             ])
 
             let descendAction = SKAction.group([
-                SKAction.moveBy(x: moveByX, y: -200, duration: descendDuration),
-                SKAction.rotate(byAngle: .pi / 4, duration: descendDuration)
+                SKAction.moveBy(x: moveByX, y: -200, duration: fadeDuration),
+                SKAction.rotate(byAngle: .pi / 4, duration: fadeDuration)
             ])
             
             let descendAndFadeAction = SKAction.group([
@@ -391,10 +399,13 @@ class ChatEngine {
             
             return shouldFade ? descendAndFadeAction : descendAction
         }
+
         
+        let featherSize: CGFloat = 512
+        let featherScale: CGFloat = 4
         let featherSprite = SKSpriteNode(imageNamed: "magicFeather")
-        featherSprite.position = CGPoint(x: K.ScreenDimensions.size.width / 2, y: K.ScreenDimensions.size.height - 512 / 2)
-        featherSprite.size = CGSize(width: 512, height: 512)
+        featherSprite.position = CGPoint(x: K.ScreenDimensions.size.width / 2, y: K.ScreenDimensions.size.height - featherSize)
+        featherSprite.setScale(featherScale)
         featherSprite.zPosition = 10
         
         chatBackgroundSprite.addChild(featherSprite)
@@ -407,7 +418,18 @@ class ChatEngine {
             SKAction.removeFromParent()
         ]))
         
+        obtainItemSprite.run(SKAction.sequence([
+            SKAction.fadeIn(withDuration: 0.25),
+            SKAction.colorize(with: UIColor.obtainItem.end, colorBlendFactor: 1, duration: delayDuration - fadeDuration - 0.25),
+            SKAction.fadeOut(withDuration: fadeDuration)
+        ])) {
+            AudioManager.shared.adjustVolume(to: 1, for: AudioManager.tikiThemes.overworld, fadeDuration: 1)
+        }
+        
+        ParticleEngine.shared.animateParticles(type: .itemPickup, toNode: featherSprite, position: .zero, scale: 1, duration: delayDuration)
         AudioManager.shared.playSound(for: "pickupitem")
+        AudioManager.shared.playSound(for: "titlechapter")
+        AudioManager.shared.adjustVolume(to: 0, for: AudioManager.tikiThemes.overworld)
     }
     
     ///Animates the screen shaking
@@ -1134,11 +1156,10 @@ extension ChatEngine {
             sendChatArray(shouldSkipDim: true, items: [
                 ChatItem(profile: tikiSelected, chat: "Hey there PUZL Boy! You look down in the mouth. Don't be so discouraged."),
                 ChatItem(profile: .hero, imgPos: .left, chat: "Yeah, well.. I am NOT having the best day of my life right now, to be honest."),
-                ChatItem(profile: tikiSelected, endChat: true, chat: "Cheer up, friend! All is not lost. Here's a little something to lift your spirits!") { [weak self] in
+                ChatItem(profile: tikiSelected, endChat: true, chat: "Cheer up, friend! All is not lost. Here's a little something to lift your spirits...") { [weak self] in
                     self?.delegateCatwalk?.spawnSwordCatwalk(spawnDuration: swordSpawnDuration)
                 },
-                ChatItem(profile: tikiSelected, pause: swordSpawnDuration + 1, startNewChat: true, chat: "This sword was crafted by the Mystic steelsmith, Mythrile. Legend has it, she forged the blade in the fire of a dying star... it is near indestructible!", handler: nil),
-                ChatItem(profile: .hero, imgPos: .left, chat: "...spirits lifted! 😊")
+                ChatItem(profile: tikiSelected, pause: swordSpawnDuration + 1, startNewChat: true, chat: "Go on, take it! Legend has it, the Mystic steelsmith, Mythrile forged the blade in the fire of a dying star... it is near indestructible!", handler: nil)
             ]) { [weak self] in
                 self?.handleDialogueCompletion(level: level, completion: completion)
             }
@@ -1155,7 +1176,8 @@ extension ChatEngine {
                 ChatItem(profile: .blankhero, startNewChat: false, chat: "\n\nReceived Celestial Sword of Justice.") { [weak self] in
                     self?.showFFButton()
                 },
-                ChatItem(profile: .merton, chat: "Ooh, that's a good sword! Had to use it last week on a wraith... nasty little buggers!")
+                ChatItem(profile: .hero, imgPos: .left, chat: "...spirits lifted! 🤩"),
+                ChatItem(profile: .merton, chat: "Ooh, that's a good sword! Had to use it on a wraith last week... nasty little buggers!")
             ]) { [weak self] in
                 self?.showFFButton()
                 self?.handleDialogueCompletion(level: level, completion: completion)

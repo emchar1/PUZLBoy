@@ -27,6 +27,11 @@ extension UIColor {
         return (withHueOffset(-30 / 360), withHueOffset(30 / 360))
     }
     
+    static var obtainItem: (start: UIColor, end: UIColor) {
+        return (UIColor(red: 146/255, green: 125/255, blue: 255/255, alpha: 1), //a lavender color
+                UIColor(red: 187/255, green: 165/255, blue: 61/255, alpha: 1)) //a golden color
+    }
+    
     private var components: (red: CGFloat, green: CGFloat, blue: CGFloat, alpha: CGFloat) {
         var red: CGFloat = 0
         var green: CGFloat = 0
