@@ -66,6 +66,7 @@ class MagmoorScarySprite: SKNode {
     
     func flashImage(delay: TimeInterval = 0) {
         AudioManager.shared.playSound(for: "magichorrorimpact")
+        Haptics.shared.executeCustomPattern(pattern: .horrorimpact)
 
         sprite.texture = SKTexture(imageNamed: "villainRedEyesFlash")
         sprite.run(SKAction.sequence([

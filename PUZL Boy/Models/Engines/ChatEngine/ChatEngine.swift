@@ -1198,9 +1198,6 @@ extension ChatEngine {
             adjustBrightnessForMagmoorScary()
             
             delegateCatwalk?.despawnMagmoorCatwalk() { [weak self] in
-                let catwalkScene = self?.superScene as? CatwalkScene
-                catwalkScene?.shakeScreen(duration: -1, completion: nil)
-
                 self?.sendChatArray(shouldSkipDim: true, items: [
                     ChatItem(profile: .hero, imgPos: .left, chat: "HE'S GETTING AWAY!!!"),
                     ChatItem(profile: .villain, chat: "Enter if you dare... There is nothing you can do to stop what has already been put in motion."),

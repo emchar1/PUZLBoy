@@ -382,9 +382,10 @@ class CatwalkScene: SKScene {
     private func openCloseGate(shouldOpen: Bool) {
         guard let gatePanel = catwalkPanels.last else { return }
         
-        gatePanel.run(SKAction.setTexture(SKTexture(imageNamed: shouldOpen ? "endOpen" : "endClosed")))
+        gatePanel.run(SKAction.setTexture(SKTexture(imageNamed: shouldOpen ? "endOpenMagic" : "endClosedMagic")))
         
         AudioManager.shared.playSound(for: "dooropen")
+        Haptics.shared.addHapticFeedback(withStyle: .heavy)
     }
     
     /**
@@ -1019,7 +1020,7 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
         
         
         AudioManager.shared.playSound(for: "magichorrorimpact")
-        Haptics.shared.addHapticFeedback(withStyle: .rigid)
+        Haptics.shared.executeCustomPattern(pattern: .horrorimpact)
     }
     
     private func flashRedHelper(message: String, secondaryMessages: [String], completion: @escaping () -> Void) {
