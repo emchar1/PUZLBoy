@@ -722,7 +722,7 @@ extension ChatEngine {
             dialoguePlayed[-1036] = false
             dialoguePlayed[-1047] = false
             dialoguePlayed[-1049] = false
-            dialoguePlayed[-1051] = false
+            dialoguePlayed[-1050] = false
             dialoguePlayed[-1052] = false
             
             
@@ -1209,7 +1209,7 @@ extension ChatEngine {
                     self?.handleDialogueCompletion(level: level, completion: completion)
                 }
             }
-        case -1051:
+        case -1050:
             delegateCatwalk?.flashMagmoorCatwalk()
             handleDialogueCompletion(level: level, completion: completion)
         case -1052:
