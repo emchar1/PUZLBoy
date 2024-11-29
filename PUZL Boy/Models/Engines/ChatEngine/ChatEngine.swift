@@ -1048,7 +1048,7 @@ extension ChatEngine {
         switch level {
             
         case -999:
-            sendChatArray(items: [
+            sendChatArray(shouldSkipDim: true, items: [
                 ChatItem(profile: .melchior, chat: "Where do you think you're going, PUZL Boy? The only way out is through!")
             ]) { [weak self] in
                 self?.handleDialogueCompletion(level: level, completion: completion)

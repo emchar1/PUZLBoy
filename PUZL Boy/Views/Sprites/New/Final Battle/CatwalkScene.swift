@@ -290,7 +290,7 @@ class CatwalkScene: SKScene {
             AudioManager.shared.stopSound(for: runSound, fadeDuration: 0.25)
         }
         
-        if leftmostPanelIndex < currentPanelIndex - 2 && currentPanelIndex < catwalkLength - 2 {
+        if leftmostPanelIndex < currentPanelIndex - 2 && currentPanelIndex < catwalkLength - 1 {
             shiftCatwalkNode(panels: 1, moveDuration: moveDuration)
         }
         
