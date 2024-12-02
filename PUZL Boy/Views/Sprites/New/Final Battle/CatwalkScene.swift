@@ -740,7 +740,7 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
             }
         ]))
 
-        animateStealGems(maxGems: 250) { [weak self] in
+        animateStealGems(maxGems: 180) { [weak self] in
             guard let self = self else { return }
             
             let reviveRemainingTime: TimeInterval = (AudioManager.shared.getAudioItem(filename: "revive")?.player.duration ?? 0) - (AudioManager.shared.getAudioItem(filename: "revive")?.player.currentTime ?? 0)
@@ -750,7 +750,7 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
             openCloseGate(shouldOpen: true)
 
             endClosedMagic.removeFromParent()
-            magmoorSprite.run(fadeInMagmoorHelper(fadeDuration: fadeDuration), withKey: "magmoorZoomAction")
+            magmoorSprite.run(fadeInMagmoorHelper(fadeDuration: fadeDuration), withKey: "magmoorFadeAction")
 
             AudioManager.shared.playSound(for: "pickupitem")
             AudioManager.shared.playSound(for: "magicheartbeatloop2", delay: 3.5)
@@ -831,7 +831,10 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
                 AudioManager.shared.playSoundThenStop(for: "scarylaugh", playForDuration: scaryLaughDuration)
             },
             SKAction.wait(forDuration: scaryLaughDuration - 2),
-            SKAction.scale(by: 1.5, duration: 0.1)
+            SKAction.group([
+                SKAction.scale(by: 1.5, duration: 0.1),
+                SKAction.rotate(byAngle: CGFloat(5).toRadians(), duration: 0.1)
+            ])
         ])) { [weak self] in
             completion()
             
@@ -948,7 +951,7 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
 
         //Position properties
         let startPosition: CGPoint = CGPoint(x: CGFloat.random(in: 0...size.width), y: CGFloat.random(in: 0...size.height))
-        let gatePosition: CGPoint = CGPoint(x: size.width - panelSize / 2, y: size.height / 2)
+        let gatePosition: CGPoint = CGPoint(x: size.width - panelSize / 2, y: size.height / 2 - panelSize / 2)
         let distanceToGate: CGFloat = sqrt(pow(gatePosition.x - startPosition.x, 2) + pow(gatePosition.y - startPosition.y, 2))
         let maxDistance: CGFloat = sqrt(pow(gatePosition.x, 2) + pow(gatePosition.y, 2))
         
@@ -1030,13 +1033,24 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
             
             let flashSequence = SKAction.sequence([
                 SKAction.scale(to: baselineScale * scaleBy, duration: 0),
-                SKAction.repeat(SKAction.sequence([
-                    SKAction.fadeOut(withDuration: 0),
-                    SKAction.wait(forDuration: waitDuration),
-                    SKAction.fadeAlpha(to: shouldFlash ? baselineAlpha : 0, duration: 0),
-                    SKAction.wait(forDuration: waitDuration)
-                ]), count: count),
-                SKAction.fadeAlpha(to: shouldFlash ? 0 : baselineAlpha, duration: fadeOutDuration)
+                SKAction.group([
+                    SKAction.repeat(SKAction.sequence([
+                        SKAction.fadeOut(withDuration: 0),
+                        SKAction.wait(forDuration: waitDuration),
+                        SKAction.fadeAlpha(to: shouldFlash ? baselineAlpha : 0, duration: 0),
+                        SKAction.wait(forDuration: waitDuration)
+                    ]), count: count),
+                    SKAction.sequence([
+                        SKAction.rotate(toAngle: -CGFloat(5).toRadians(), duration: 0),
+                        SKAction.wait(forDuration: waitDuration * TimeInterval(count)),
+                        SKAction.rotate(toAngle: CGFloat(5).toRadians(), duration: 0),
+                        SKAction.wait(forDuration: waitDuration * TimeInterval(count))
+                    ])
+                ]),
+                SKAction.group([
+                    SKAction.fadeAlpha(to: shouldFlash ? 0 : baselineAlpha, duration: fadeOutDuration),
+                    SKAction.rotate(toAngle: 0, duration: fadeOutDuration)
+                ])
             ])
             
             let duration: TimeInterval = TimeInterval(count) * (2 * waitDuration) + fadeOutDuration
