@@ -1044,6 +1044,8 @@ extension ChatEngine {
     
     ///Sets up and plays dialogue for Age of Balance setting.
     private func playDialogueAgeOfBalance(level: Int, statueTapped: Bool, completion: ((Cutscene?) -> Void)?) {
+        let leftButton0 = FIRManager.decisionsLeftButton[0] ?? false
+        
         switch level {
             
         case -999:
@@ -1053,8 +1055,6 @@ extension ChatEngine {
                 self?.handleDialogueCompletion(level: level, completion: completion)
             }
         case -1000:
-            let leftButton0 = FIRManager.decisionsLeftButton[0] ?? false
-            
             delegateCatwalk?.spawnEldersCatwalk(faceLeft: true)
             
             sendChatArray(items: [
@@ -1129,7 +1129,7 @@ extension ChatEngine {
                 ChatItem(profile: .hero, imgPos: .left, chat: "Lovely. (Way to make me feel better 😒)"),
                 ChatItem(profile: .magmus, chat: "Melchior, don't be such a bully! Remember, Marlin chose him for good reason. I see it too. This one is... special!"),
                 ChatItem(profile: .melchior, chat: "Hmph! I disagree."),
-                ChatItem(profile: .hero, imgPos: .left, chat: ".....hmmm, this floor feels slanted. Does it look slanted to you?")
+                ChatItem(profile: .hero, imgPos: .left, chat: "\(leftButton0 ? ".....hmmm, this floor feels slanted. Does it look slanted to you?" : "I'll fix this. Don't you worry. I'll make it right!")")
             ]) { [weak self] in
                 self?.delegateCatwalk?.stopMusicCatwalk(music: "sadaccent", fadeOut: 2, delay: nil, shouldPlayOverworld: true)
                 self?.handleDialogueCompletion(level: level, completion: completion)
@@ -1175,7 +1175,6 @@ extension ChatEngine {
                 ChatItem(profile: .blankhero, startNewChat: false, chat: "\n\nReceived Celestial Sword of Justice.") { [weak self] in
                     self?.showFFButton()
                 },
-                ChatItem(profile: .hero, imgPos: .left, chat: "...spirits lifted! 🤩"),
                 ChatItem(profile: .merton, chat: "Ooh, that's a good sword! Had to use it on a wraith last week... nasty little buggers!")
             ]) { [weak self] in
                 self?.showFFButton()
@@ -1186,19 +1185,18 @@ extension ChatEngine {
             delegateCatwalk?.spawnEldersCatwalk(faceLeft: false)
             
             sendChatArray(shouldSkipDim: true, items: [
-                ChatItem(profile: .hero, imgPos: .left, pause: 1, chat: "Look! There's the gate. But it's closed.......... How do we open it???", handler: nil),
-                ChatItem(profile: .melchior, chat: "What are you, dense?! Feed it your magical purple gems!!"),
-                ChatItem(profile: .hero, imgPos: .left, chat: "Right.. I was just about to do that! Well, here goes nothing...")
+                ChatItem(profile: .magmus, pause: 2, chat: "There's the gate to the Dragon's Lair. Once we enter, there is no going back.", handler: nil),
+                ChatItem(profile: .hero, imgPos: .left, chat: "Ok..... so how do we open it???", handler: nil),
+                ChatItem(profile: .melchior, chat: "Has Marlin taught you nothing? Use the magical purple gems!!"),
+                ChatItem(profile: .hero, imgPos: .left, chat: "The magical purple gems.. right! Well, here goes nothing...")
             ]) { [weak self] in
                 self?.delegateCatwalk?.feedGemsCatwalk {
                     self?.adjustBrightnessForMagmoorScary()
 
                     self?.sendChatArray(shouldSkipDim: true, items: [
-                        ChatItem(profile: .blankvillain, pause: 3, chat: "\n\nIf ye proceed, ye shall be dead.", handler: nil),
-                        ChatItem(profile: .hero, imgPos: .left, chat: "We aren't afraid of you! BEGONE, DEMON!!!"),
-                        ChatItem(profile: .magmus, chat: "Hey, that was pretty good! 👏🏼"),
-                        ChatItem(profile: .melchior, chat: "Hmpf! I could've done better."),
-                        ChatItem(profile: .merton, chat: "Don't be such a hater, Melchior...")
+                        ChatItem(profile: .villain, pause: 3, chat: "Interlopers!! You encroach upon my domain. But you are too late. The end has begun!!", handler: nil),
+                        ChatItem(profile: .melchior, imgPos: .left, chat: "You will regret ever stepping foot in this realm, Magmoor! Your reign of terror ends here!!"),
+                        ChatItem(profile: .hero, imgPos: .left, chat: "\(leftButton0 ? "AAAHHHH! I'M NOT READY FOR THIS!!!" : "YOU'LL PAY FOR WHAT YOU DID TO MY FRIENDS!!!!!")")
                     ]) {
                         self?.handleDialogueCompletion(level: level, completion: completion)
                     }
@@ -1208,8 +1206,8 @@ extension ChatEngine {
             delegateCatwalk?.flashMagmoorCatwalk()
             
             sendChatArray(shouldSkipDim: true, items: [
-                ChatItem(profile: .merton, pause: 2, chat: "Quickly boy! Through the gate! We mustn't waste anymore time!", handler: nil),
-                ChatItem(profile: .hero, imgPos: .left, chat: "Shiiiid, you don't have to tell me twice!")
+                ChatItem(profile: .villain, pause: 2, chat: "Enter if you dare... There is nothing you can do to stop what has already been put in motion.", handler: nil),
+                ChatItem(profile: .merton, imgPos: .left, chat: "Quickly boy! Through the gate! We mustn't waste anymore time!")
             ]) { [weak self] in
                 self?.delegateCatwalk?.despawnEldersCatwalk()
                 self?.handleDialogueCompletion(level: level, completion: completion)
@@ -2179,8 +2177,6 @@ extension ChatEngine {
                 }
             }
             else {
-                let leftButton0 = FIRManager.decisionsLeftButton[0] ?? false
-                
                 //Only show this dialogue the first time, i.e. PUZL Boy has or hasn't received the gift.
                 if FIRManager.gotGift == nil {
                     sendChatArray(items: [

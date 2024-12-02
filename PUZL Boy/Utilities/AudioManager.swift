@@ -143,6 +143,7 @@ class AudioManager {
         addAudioItem("magicelderexplosion", category: .soundFX)
         addAudioItem("magicelderreduce", category: .soundFX)
         addAudioItem("magichorrorimpact", category: .soundFX)
+        addAudioItem("magichorrorimpact2", category: .soundFX) //NEEDS PURCHASE $3
         addAudioItem("magicteleport", category: .soundFX)
         addAudioItem("magicteleport2", category: .soundFX)
         addAudioItem("magicwarp", category: .soundFX) //not purchased $2

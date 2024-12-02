@@ -831,10 +831,15 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
                 AudioManager.shared.playSoundThenStop(for: "scarylaugh", playForDuration: scaryLaughDuration)
             },
             SKAction.wait(forDuration: scaryLaughDuration - 2),
+            SKAction.run {
+                AudioManager.shared.playSound(for: "magichorrorimpact2")
+            },
             SKAction.group([
-                SKAction.scale(by: 1.5, duration: 0.1),
-                SKAction.rotate(byAngle: CGFloat(5).toRadians(), duration: 0.1)
-            ])
+                SKAction.scale(by: 1.5, duration: 0.12),
+                SKAction.rotate(byAngle: CGFloat(5).toRadians(), duration: 0.12)
+            ]),
+            SKAction.fadeOut(withDuration: 0),
+            SKAction.wait(forDuration: 2)
         ])) { [weak self] in
             completion()
             
@@ -1033,24 +1038,13 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
             
             let flashSequence = SKAction.sequence([
                 SKAction.scale(to: baselineScale * scaleBy, duration: 0),
-                SKAction.group([
-                    SKAction.repeat(SKAction.sequence([
-                        SKAction.fadeOut(withDuration: 0),
-                        SKAction.wait(forDuration: waitDuration),
-                        SKAction.fadeAlpha(to: shouldFlash ? baselineAlpha : 0, duration: 0),
-                        SKAction.wait(forDuration: waitDuration)
-                    ]), count: count),
-                    SKAction.sequence([
-                        SKAction.rotate(toAngle: -CGFloat(5).toRadians(), duration: 0),
-                        SKAction.wait(forDuration: waitDuration * TimeInterval(count)),
-                        SKAction.rotate(toAngle: CGFloat(5).toRadians(), duration: 0),
-                        SKAction.wait(forDuration: waitDuration * TimeInterval(count))
-                    ])
-                ]),
-                SKAction.group([
-                    SKAction.fadeAlpha(to: shouldFlash ? 0 : baselineAlpha, duration: fadeOutDuration),
-                    SKAction.rotate(toAngle: 0, duration: fadeOutDuration)
-                ])
+                SKAction.repeat(SKAction.sequence([
+                    SKAction.fadeOut(withDuration: 0),
+                    SKAction.wait(forDuration: waitDuration),
+                    SKAction.fadeAlpha(to: shouldFlash ? baselineAlpha : 0, duration: 0),
+                    SKAction.wait(forDuration: waitDuration)
+                ]), count: count),
+                SKAction.fadeAlpha(to: shouldFlash ? 0 : baselineAlpha, duration: fadeOutDuration)
             ])
             
             let duration: TimeInterval = TimeInterval(count) * (2 * waitDuration) + fadeOutDuration
