@@ -17,7 +17,7 @@ class CatwalkScene: SKScene {
     
     private let catwalkOverworld = "magicdoomloop"
     private let panelCount: Int = 5
-    private let catwalkLength: Int = 52
+    private let catwalkLength: Int = 51
     private let panelSpacing: CGFloat = 4
     private var panelSize: CGFloat { size.width / CGFloat(panelCount) }
     private var scaleSize: CGSize { CGSize.zero + panelSize - panelSpacing }
@@ -456,7 +456,7 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
         despawnElderHelper(elder: elder2)
     }
         
-    func spawnPrincessCatwalk(completion: @escaping () -> Void) {
+    func spawnPrincessCatwalk() {
         let originalScale: CGFloat = Player.getGameboardScale(panelSize: panelSize) * princess.scaleMultiplier
         let fadeDuration: TimeInterval = 2
         let alphaPersistence: CGFloat = 0.5
@@ -476,7 +476,7 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
         princess.sprite.alpha = 0
         
         princess.sprite.run(animatePlayer(player: princess, type: .idle))
-        princess.sprite.run(SKAction.fadeAlpha(to: alphaPersistence, duration: fadeDuration), completion: completion)
+        princess.sprite.run(SKAction.fadeAlpha(to: alphaPersistence, duration: fadeDuration))
         
         princess.sprite.run(SKAction.repeatForever(SKAction.sequence([
             SKAction.wait(forDuration: 2),
@@ -530,7 +530,7 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
         AudioManager.shared.playSoundThenStop(for: "littlegirllaugh", playForDuration: 1.7)
     }
     
-    func spawnMarlinCatwalk(completion: @escaping (() -> Void)) {
+    func spawnMarlinCatwalk() {
         let fadeDuration: TimeInterval = 2
         
         trainer.sprite.position = getHeroPosition(xPanelOffset: 1, yOffset: scaleSize.height * 0.3)
@@ -539,7 +539,7 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
         trainer.sprite.alpha = 0
         
         trainer.sprite.run(animatePlayer(player: trainer, type: .glide))
-        trainer.sprite.run(SKAction.fadeAlpha(to: 0.5, duration: fadeDuration), completion: completion)
+        trainer.sprite.run(SKAction.fadeAlpha(to: 0.5, duration: fadeDuration))
         
         trainer.sprite.run(SKAction.repeatForever(SKAction.sequence([
             SKAction.moveBy(x: 0, y: 20, duration: 1),
@@ -693,22 +693,71 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
                                                duration: fadeDuration)
     }
     
-    func spawnMagmoorCatwalk() {
-        let fadeDuration: TimeInterval = 2
-        
-        villain.sprite.position = getHeroPosition(xPanelOffset: 3, yOffset: scaleSize.height * 0.4)
-        villain.sprite.setScale(Player.getGameboardScale(panelSize: panelSize) * villain.scaleMultiplier)
-        villain.sprite.xScale *= -1
-        villain.sprite.alpha = 0
-        
-        villain.sprite.run(SKAction.fadeAlpha(to: 1, duration: fadeDuration))
-        villain.sprite.run(Player.animateIdleLevitate(player: villain))
-        
-        shiftCatwalkNode(panels: 2, moveDuration: fadeDuration * 1.5)
+    func showGateCatwalk() {
+        shiftCatwalkNode(panels: 2, moveDuration: 0.5)
     }
     
-    func despawnMagmoorCatwalk(completion: @escaping () -> Void) {
-        despawnMagmoorHelper(completion: completion)
+    func feedGemsCatwalk(completion: @escaping () -> Void) {
+        let fadeDuration: TimeInterval = 2
+        let cycleSpeed: TimeInterval = 0.25
+        let delaySpeed: TimeInterval = 0.1
+        
+        let endClosedMagic = SKSpriteNode(imageNamed: "endClosedMagic")
+        endClosedMagic.anchorPoint = .zero
+        endClosedMagic.alpha = 0
+        endClosedMagic.zPosition = 1
+
+        catwalkPanels.last?.addChild(endClosedMagic)
+        
+        AudioManager.shared.playSound(for: "revive", shouldLoop: true)
+
+        run(SKAction.sequence([
+            SKAction.wait(forDuration: fadeDuration),
+            SKAction.run { [weak self] in
+                self?.shakeScreen(duration: -1, completion: nil)
+            },
+            SKAction.wait(forDuration: fadeDuration),
+            SKAction.run { [weak self] in
+                guard let self = self else { return }
+
+                for (i, panel) in catwalkPanels.enumerated() {
+                    panel.removeAllActions()
+                    panel.run(animateRainbowCycle(cycleSpeed: cycleSpeed, delay: TimeInterval(catwalkLength - i) * delaySpeed))
+                }
+                
+                endClosedMagic.run(animateRainbowCycle(cycleSpeed: cycleSpeed, delay: nil))
+                endClosedMagic.run(SKAction.fadeIn(withDuration: fadeDuration))
+                backgroundNode.run(SKAction.fadeOut(withDuration: fadeDuration))
+                inbetweenNode.run(SKAction.fadeOut(withDuration: fadeDuration))
+                bloodOverlay.run(SKAction.fadeOut(withDuration: fadeDuration))
+                
+                elder0.sprite.run(animateRainbowCycle(cycleSpeed: cycleSpeed, delay: 3 * delaySpeed))
+                elder1.sprite.run(animateRainbowCycle(cycleSpeed: cycleSpeed, delay: 4 * delaySpeed))
+                elder2.sprite.run(animateRainbowCycle(cycleSpeed: cycleSpeed, delay: 5 * delaySpeed))
+                hero.sprite.run(animateRainbowCycle(cycleSpeed: cycleSpeed, delay: 6 * delaySpeed))
+
+                AudioManager.shared.adjustVolume(to: 0, for: catwalkOverworld, fadeDuration: fadeDuration)
+            }
+        ]))
+
+        animateStealGems(maxGems: 250) { [weak self] in
+            guard let self = self else { return }
+            
+            let reviveRemainingTime: TimeInterval = (AudioManager.shared.getAudioItem(filename: "revive")?.player.duration ?? 0) - (AudioManager.shared.getAudioItem(filename: "revive")?.player.currentTime ?? 0)
+            
+            isRedShift = true
+            unshakeScreen(fadeDuration: fadeDuration)
+            openCloseGate(shouldOpen: true)
+
+            endClosedMagic.removeFromParent()
+            magmoorSprite.run(fadeInMagmoorHelper(fadeDuration: fadeDuration), withKey: "magmoorZoomAction")
+
+            AudioManager.shared.playSound(for: "pickupitem")
+            AudioManager.shared.playSound(for: "magicheartbeatloop2", delay: 3.5)
+            AudioManager.shared.stopSound(for: "revive", fadeDuration: reviveRemainingTime)
+            
+            completion()
+        }
     }
     
     func flashMagmoorCatwalk() {
@@ -774,15 +823,15 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
         
         magmoorSprite.removeAction(forKey: "magmoorFadeAction")
         magmoorSprite.run(SKAction.fadeOut(withDuration: audioItemEnd))
-        magmoorFlashSprite.run(SKAction.fadeIn(withDuration: audioItemEnd))
         
-        run(SKAction.sequence([
-            SKAction.wait(forDuration: audioItemEnd),
+        magmoorFlashSprite.run(SKAction.sequence([
+            SKAction.fadeIn(withDuration: audioItemEnd),
             SKAction.run {
                 audioItem?.player.stop()
                 AudioManager.shared.playSoundThenStop(for: "scarylaugh", playForDuration: scaryLaughDuration)
             },
-            SKAction.wait(forDuration: scaryLaughDuration - 2) //There are 2 seconds of silence in scarylaugh
+            SKAction.wait(forDuration: scaryLaughDuration - 2),
+            SKAction.scale(by: 1.5, duration: 0.1)
         ])) { [weak self] in
             completion()
             
@@ -959,110 +1008,6 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
         ])
     }
     
-    private func despawnMagmoorHelper(completion: @escaping () -> Void) {
-        let scaleBy: CGFloat = 1.1
-        let fadeDuration: TimeInterval = 2
-        
-        let attackSprite = SKSpriteNode(texture: SKTexture(imageNamed: "iconCosmicSword"))
-        attackSprite.position = getHeroPosition(xPanelOffset: 1, yOffset: scaleSize.height * 0.4)
-        attackSprite.zPosition = K.ZPosition.itemsAndEffects
-        attackSprite.setScale(0.9 * (panelSize / attackSprite.size.width))
-        
-        let animation = SKAction.sequence([
-            SKAction.wait(forDuration: 0.25),
-            SKAction.run {
-                AudioManager.shared.playSound(for: "boyattack\(Int.random(in: 1...3))")
-                AudioManager.shared.playSound(for: "chatclose")
-            },
-            SKAction.rotate(byAngle: -3 * .pi / 2, duration: 0.25),
-            SKAction.fadeAlpha(to: 0, duration: 0.5),
-            SKAction.removeFromParent()
-        ])
-        
-        catwalkNode.addChild(attackSprite)
-        
-        shiftCatwalkNode(panels: 1, moveDuration: fadeDuration / 8)
-        
-        attackSprite.run(animation) { [weak self] in
-            guard let self = self else { return }
-            
-            AudioManager.shared.playSound(for: "magicwarp")
-            AudioManager.shared.playSound(for: "magicwarp2")
-            
-            ParticleEngine.shared.animateParticles(type: .magmoorBamf,
-                                                   toNode: catwalkNode,
-                                                   position: villain.sprite.position,
-                                                   scale: 1,
-                                                   zPosition: villain.sprite.zPosition + 50,
-                                                   duration: 4)
-            
-            villain.sprite.run(SKAction.group([
-                SKAction.moveBy(x: 0, y: scaleSize.height, duration: fadeDuration),
-                SKAction.fadeOut(withDuration: fadeDuration)
-            ])) {
-                // FIXME: - Perhaps all this can go somewhere other than in this completion handler...
-                let cycleSpeed: TimeInterval = 0.25
-                let delaySpeed: TimeInterval = 0.1
-                
-                self.shakeScreen(duration: -1, completion: nil)
-                
-                for (i, panel) in self.catwalkPanels.enumerated() {
-                    panel.run(self.animateRainbowCycle(cycleSpeed: cycleSpeed, delay: TimeInterval(self.catwalkLength - i) * delaySpeed))
-                }
-                
-                let endClosedMagic = SKSpriteNode(imageNamed: "endClosedMagic")
-                endClosedMagic.anchorPoint = .zero
-                endClosedMagic.alpha = 0
-                endClosedMagic.zPosition = 1
-                endClosedMagic.run(self.animateRainbowCycle(cycleSpeed: cycleSpeed, delay: nil))
-                endClosedMagic.run(SKAction.fadeIn(withDuration: 6))
-
-                self.catwalkPanels.last?.addChild(endClosedMagic)
-                
-                self.hero.sprite.run(self.animateRainbowCycle(cycleSpeed: cycleSpeed, delay: 0 * delaySpeed))
-                self.elder0.sprite.run(self.animateRainbowCycle(cycleSpeed: cycleSpeed, delay: 1 * delaySpeed))
-                self.elder1.sprite.run(self.animateRainbowCycle(cycleSpeed: cycleSpeed, delay: 2 * delaySpeed))
-                self.elder2.sprite.run(self.animateRainbowCycle(cycleSpeed: cycleSpeed, delay: 3 * delaySpeed))
-
-                self.animateStealGems(maxGems: 250) {
-                    let villainScale: CGFloat = Player.getGameboardScale(panelSize: self.panelSize) * self.villain.scaleMultiplier
-                    
-                    self.magmoorSprite.run(SKAction.sequence([
-                        SKAction.wait(forDuration: fadeDuration),
-                        SKAction.group([
-                            self.zoomMagmoorHelper(scaleBy: scaleBy, fadeDuration: fadeDuration),
-                            self.fadeInMagmoorHelper(fadeDuration: fadeDuration)
-                        ])
-                    ]), withKey: "magmoorZoomAction")
-                    
-                    self.magmoorFlashSprite.run(SKAction.sequence([
-                        SKAction.wait(forDuration: fadeDuration),
-                        self.zoomMagmoorHelper(scaleBy: scaleBy, fadeDuration: fadeDuration)
-                    ]), withKey: "magmoorFlashZoomAction")
-                    
-                    endClosedMagic.removeFromParent()
-
-                    self.openCloseGate(shouldOpen: true)
-                    self.villain.sprite.run(
-                        Player.moveWithIllusions(playerNode: self.villain.sprite,
-                                                 backgroundNode: self.catwalkNode,
-                                                 color: .red.darkenColor(factor: 12),
-                                                 playSound: true,
-                                                 startPoint: self.getHeroPosition(xPanelOffset: 1, yOffset: self.scaleSize.height * 3),
-                                                 endPoint: self.getHeroPosition(xPanelOffset: 3, yOffset: 0),
-                                                 startScale: villainScale,
-                                                 endScale: villainScale * 0.5)
-                    ) {
-                        AudioManager.shared.playSound(for: "magmoorcreepypulse")
-                        AudioManager.shared.playSound(for: "magmoorcreepystrings")
-                        
-                        completion()
-                    }
-                } //end animateStealGems()
-            } //end villain.sprite.run()
-        } //end attackSprite.run()
-    }
-    
     private func zoomMagmoorHelper(scaleBy: CGFloat, fadeDuration: TimeInterval) -> SKAction {
         return SKAction.scale(by: scaleBy, duration: fadeDuration * 15)
     }
@@ -1127,6 +1072,8 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
         
         
         AudioManager.shared.playSound(for: "magichorrorimpact")
+        AudioManager.shared.playSound(for: "magmoorcreepypulse")
+        AudioManager.shared.playSound(for: "magmoorcreepystrings")
         Haptics.shared.executeCustomPattern(pattern: .horrorimpact)
     }
     
