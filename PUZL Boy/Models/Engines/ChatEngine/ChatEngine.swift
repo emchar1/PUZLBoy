@@ -1185,9 +1185,11 @@ extension ChatEngine {
             delegateCatwalk?.spawnEldersCatwalk(faceLeft: false)
             
             sendChatArray(shouldSkipDim: true, items: [
-                ChatItem(profile: .magmus, pause: 2, chat: "There's the gate to the Dragon's Lair. Once we enter, there is no going back.", handler: nil),
-                ChatItem(profile: .hero, imgPos: .left, chat: "Ok..... so how do we open it???", handler: nil),
-                ChatItem(profile: .melchior, chat: "Has Marlin taught you nothing? Use the magical purple gems!!"),
+                ChatItem(profile: .melchior, pause: 2, chat: "There's the gate to the Dragon's Lair. Once we enter, there is no going back.", handler: nil),
+                ChatItem(profile: .hero, imgPos: .left, chat: "Ok, but it's closed..... So how do we open it???", handler: nil),
+                ChatItem(profile: .melchior, chat: "What.......... has Marlin taught you nothing, insolent boy?"),
+                ChatItem(profile: .magmus, chat: "MELCHIOR! Kindness!"),
+                ChatItem(profile: .magmus, chat: "Forgive him, child. As you'll recall, the gateway is powered by magical purple gems. Surrender your magical purple gems and access shall be yours."),
                 ChatItem(profile: .hero, imgPos: .left, chat: "The magical purple gems.. right! Well, here goes nothing...")
             ]) { [weak self] in
                 self?.delegateCatwalk?.feedGemsCatwalk {
@@ -1425,10 +1427,10 @@ extension ChatEngine {
             
             sendChatArray(items: [
                 ChatItem(profile: .hero, imgPos: .left, chat: "PUZL BOY: ...then one of the dragons swooped down and carried her away! It. Was. Harrowing. So... where are we? And who are you??"),
-                ChatItem(profile: .trainer, chat: "OLD MAN: We must hurry! I suspect she is being taken to the dragon's lair. I have transported you to the PUZZLE REALM, our gateway to the lair."),
+                ChatItem(profile: .trainer, chat: "OLD MAN: We must hurry! I suspect she is being taken to the Dragon's Lair. I have transported you to the PUZZLE REALM, our gateway to the lair."),
                 ChatItem(profile: .hero, imgPos:.left, chat: "Cool. I like puzzles. You can call me...... PUZL Boy!"),
                 ChatItem(profile: .trainer, chat: "MARLIN: Right.. I am your guide. You can call me Marlin. Now listen up!"),
-                ChatItem(profile: .trainer, chat: "The dragon's lair is buried deep inside Earth's core, and the only way to reach it is by solving puzzles."),
+                ChatItem(profile: .trainer, chat: "The Dragon's Lair is buried deep inside Earth's core, and the only way to reach it is by solving puzzles."),
                 ChatItem(profile: .trainer, chat: "There are 500 levels in total you will have to complete, each with increasing difficulty.") { [weak self] in
                     self?.delegate?.despawnTrainer(to: (1, 2))
                 },

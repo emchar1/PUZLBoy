@@ -45,7 +45,7 @@ class CatwalkScene: SKScene {
     private var bloodOverlay: SKSpriteNode!
     private var fadeNode: SKShapeNode!
     private var swordFadeNode: SKSpriteNode!
-    private var catwalkNode: SKShapeNode!
+    private var catwalkNode: SKSpriteNode!
     private var catwalkPanels: [SKSpriteNode] = []
     
     private var tapPointerEngine: TapPointerEngine!
@@ -122,11 +122,9 @@ class CatwalkScene: SKScene {
         swordFadeNode.anchorPoint = .zero
         swordFadeNode.zPosition = 2
         
-        catwalkNode = SKShapeNode(rectOf: CGSize(width: CGFloat(catwalkLength + 1) * panelSize + panelSpacing,
-                                                 height: panelSize + 2 * panelSpacing))
+        catwalkNode = SKSpriteNode(color: GameboardSprite.gameboardColor,
+                                   size: CGSize(width: CGFloat(catwalkLength + 1) * panelSize + panelSpacing, height: panelSize + 2 * panelSpacing))
         catwalkNode.position = CGPoint(x: catwalkNode.frame.size.width / 2, y: size.height / 2)
-        catwalkNode.fillColor = GameboardSprite.gameboardColor
-        catwalkNode.lineWidth = 0
         catwalkNode.zPosition = 5
         
         hero = Player(type: .hero)
@@ -818,7 +816,11 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
             SKAction.run { [weak self] in
                 self?.openCloseGate(shouldOpen: false)
             },
-            SKAction.fadeOut(withDuration: fadeDuration)
+            SKAction.wait(forDuration: fadeDuration / 2),
+            SKAction.group([
+                SKAction.colorize(with: .black, colorBlendFactor: 1, duration: fadeDuration / 2),
+                SKAction.fadeOut(withDuration: fadeDuration / 2)
+            ])
         ]))
         
         magmoorSprite.removeAction(forKey: "magmoorFadeAction")

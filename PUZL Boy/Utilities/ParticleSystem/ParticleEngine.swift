@@ -59,7 +59,7 @@ class ParticleEngine: SKNode {
         case magicPrincessExplode2 = "MagicPrincessExplode2Particles"
         case magicPrincessExplode3 = "MagicPrincessExplode3Particles"
         case magicPrincess = "MagicPrincessParticles"
-        case magmoorBamf = "MagmoorBamfParticles"
+        case magmoorBamf = "MagmoorBamfParticles" // FIXME: - Is this in use??? 12/2/24
         case magmoorSmoke = "MagmoorSmokeParticles"
         case partyGem = "PartyGemParticles"
         case pointer = "PointerParticles"
