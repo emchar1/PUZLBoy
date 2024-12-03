@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "iconCosmicSword.png",
+      "filename" : "sword3Cosmic.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "iconCosmicSword@2x.png",
+      "filename" : "sword3Cosmic@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "iconCosmicSword@3x.png",
+      "filename" : "sword3Cosmic@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

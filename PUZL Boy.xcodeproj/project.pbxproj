@@ -61,6 +61,7 @@
 		EA41F83A2A0D71EE00DF47EC /* ParentPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA41F8392A0D71EE00DF47EC /* ParentPage.swift */; };
 		EA41F83C2A0DD3F800DF47EC /* SettingsTapArea.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA41F83B2A0DD3F800DF47EC /* SettingsTapArea.swift */; };
 		EA41FBED2CFE467B00796368 /* magichorrorimpact2.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA41FBEC2CFE467B00796368 /* magichorrorimpact2.mp3 */; };
+		EA41FBF12CFF938300796368 /* ChosenSword.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA41FBF02CFF938300796368 /* ChosenSword.swift */; };
 		EA4583372A420AAA00279056 /* PartyInventory.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA4583362A420AAA00279056 /* PartyInventory.swift */; };
 		EA45833B2A42622000279056 /* pickuptime.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA45833A2A42622000279056 /* pickuptime.mp3 */; };
 		EA45833F2A43CE3100279056 /* PartyResultsSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA45833E2A43CE3100279056 /* PartyResultsSprite.swift */; };
@@ -424,6 +425,7 @@
 		EA41F8392A0D71EE00DF47EC /* ParentPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParentPage.swift; sourceTree = "<group>"; };
 		EA41F83B2A0DD3F800DF47EC /* SettingsTapArea.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTapArea.swift; sourceTree = "<group>"; };
 		EA41FBEC2CFE467B00796368 /* magichorrorimpact2.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = magichorrorimpact2.mp3; sourceTree = "<group>"; };
+		EA41FBF02CFF938300796368 /* ChosenSword.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChosenSword.swift; sourceTree = "<group>"; };
 		EA4583362A420AAA00279056 /* PartyInventory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PartyInventory.swift; sourceTree = "<group>"; };
 		EA45833A2A42622000279056 /* pickuptime.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = pickuptime.mp3; sourceTree = "<group>"; };
 		EA45833E2A43CE3100279056 /* PartyResultsSprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PartyResultsSprite.swift; sourceTree = "<group>"; };
@@ -869,6 +871,7 @@
 				EA7FB7372C6EE6F20098F1EB /* AgeOfRuin.swift */,
 				EA6DCBF02B6303F900D5F707 /* FireIceTheme.swift */,
 				EA0F84062937D4860031DA76 /* DayTheme.swift */,
+				EA41FBF02CFF938300796368 /* ChosenSword.swift */,
 				EAF4B6652BA8157F00D96699 /* Circle.swift */,
 			);
 			path = Models;
@@ -1792,6 +1795,7 @@
 				EA4D026B29BC6ACE00F0C7B1 /* Extension+UIDevice.swift in Sources */,
 				EA41F83C2A0DD3F800DF47EC /* SettingsTapArea.swift in Sources */,
 				EACCC0612AE63FEE0099DA44 /* LeaderboardsTableView.swift in Sources */,
+				EA41FBF12CFF938300796368 /* ChosenSword.swift in Sources */,
 				EAD59A542A88200800F86EED /* SpeechBubbleSprite.swift in Sources */,
 				EA95D2122963B4580061059C /* LevelSkipEngine.swift in Sources */,
 				EACD61C32B96E7990017F040 /* CutsceneImprisoned.swift in Sources */,

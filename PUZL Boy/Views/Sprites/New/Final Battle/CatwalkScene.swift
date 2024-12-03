@@ -27,6 +27,7 @@ class CatwalkScene: SKScene {
     private var catwalkPanelNamePrefix: String { "catwalkPanel\(catwalkPanelNameDelimiter)" }
     private var currentPanelIndex: Int = 0
     private var leftmostPanelIndex: Int = 0
+    private var catwalkAngle: CGFloat = 0
     private var isMoving: Bool = false
     private var shouldDisableInput: Bool = true
     private var isRedShift: Bool = false
@@ -373,7 +374,11 @@ class CatwalkScene: SKScene {
         leftmostPanelIndex += panels
         
         if leftmostPanelIndex % 4 == 0 {
-            catwalkNode.run(SKAction.rotate(byAngle: -CGFloat(0.1).toRadians(), duration: moveDuration))
+            let angleToAdd = -CGFloat(0.1).toRadians()
+
+            catwalkAngle += angleToAdd
+            
+            catwalkNode.run(SKAction.rotate(byAngle: angleToAdd, duration: moveDuration))
         }
     }
     
@@ -623,13 +628,13 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
         ]))
     }
     
-    func spawnSwordCatwalk(spawnDuration: TimeInterval) {
-        let swordSprite = SKSpriteNode(imageNamed: "cosmicSword")
+    func spawnSwordCatwalk(chosenSword: ChosenSword, spawnDuration: TimeInterval) {
+        let swordSprite = chosenSword.spriteNode
         swordSprite.position = getHeroPosition(xPanelOffset: 1, yOffset: 300)
         swordSprite.scale(to: scaleSize)
         swordSprite.alpha = 0
         swordSprite.zPosition = K.ZPosition.overlay
-        swordSprite.name = "cosmicSword"
+        swordSprite.name = "swordSprite"
         
         swordSprite.run(SKAction.group([
             SKAction.fadeIn(withDuration: spawnDuration),
@@ -639,8 +644,8 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
         catwalkNode.addChild(swordSprite)
     }
     
-    func despawnSwordCatwalk(fadeDuration: TimeInterval, delay: TimeInterval?) {
-        guard let swordSprite = catwalkNode.childNode(withName: "cosmicSword") else { return }
+    func despawnSwordCatwalk(chosenSword: ChosenSword, fadeDuration: TimeInterval, delay: TimeInterval?) {
+        guard let swordSprite = catwalkNode.childNode(withName: "swordSprite") else { return }
         
         swordSprite.run(SKAction.sequence([
             SKAction.group([
@@ -650,7 +655,7 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
             SKAction.removeFromParent()
         ]))
         
-        let bigSword = SKSpriteNode(imageNamed: "cosmicSword")
+        let bigSword = chosenSword.spriteNode
         bigSword.position = CGPoint(x: size.width / 2, y: size.height / 2)
         bigSword.scale(to: .zero)
         bigSword.zPosition = K.ZPosition.itemsAndEffects
@@ -957,8 +962,9 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
         guard currentGem <= maxGems else { return }
 
         //Position properties
+        let catwalkAngleYOffset: CGFloat = sin(catwalkAngle) * CGFloat(catwalkLength) * panelSize / 2
         let startPosition: CGPoint = CGPoint(x: CGFloat.random(in: 0...size.width), y: CGFloat.random(in: 0...size.height))
-        let gatePosition: CGPoint = CGPoint(x: size.width - panelSize / 2, y: size.height / 2 - panelSize / 2)
+        let gatePosition: CGPoint = CGPoint(x: size.width - panelSize / 2, y: size.height / 2 + catwalkAngleYOffset)
         let distanceToGate: CGFloat = sqrt(pow(gatePosition.x - startPosition.x, 2) + pow(gatePosition.y - startPosition.y, 2))
         let maxDistance: CGFloat = sqrt(pow(gatePosition.x, 2) + pow(gatePosition.y, 2))
         
