@@ -790,7 +790,7 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
     func stopMusicCatwalk(music: String, fadeOut: TimeInterval, delay: TimeInterval?, shouldPlayOverworld: Bool) {
         AudioManager.shared.stopSound(for: music, fadeDuration: fadeOut)
         
-        run(SKAction.wait(forDuration: fadeOut + (delay ?? 0))) {
+        run(SKAction.wait(forDuration: fadeOut + 1)) { //add a 1s buffer so there's no overlap!
             AudioManager.shared.adjustVolume(to: 1, for: music)
         }
         

@@ -60,8 +60,10 @@
 		EA41F8352A0C7D8000DF47EC /* HowToPlayPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA41F8342A0C7D8000DF47EC /* HowToPlayPage.swift */; };
 		EA41F83A2A0D71EE00DF47EC /* ParentPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA41F8392A0D71EE00DF47EC /* ParentPage.swift */; };
 		EA41F83C2A0DD3F800DF47EC /* SettingsTapArea.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA41F83B2A0DD3F800DF47EC /* SettingsTapArea.swift */; };
-		EA41FBED2CFE467B00796368 /* magichorrorimpact2.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA41FBEC2CFE467B00796368 /* magichorrorimpact2.mp3 */; };
+		EA41FBED2CFE467B00796368 /* magichorrorimpact2OLD.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA41FBEC2CFE467B00796368 /* magichorrorimpact2OLD.mp3 */; };
 		EA41FBF12CFF938300796368 /* ChosenSword.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA41FBF02CFF938300796368 /* ChosenSword.swift */; };
+		EA41FBF32D005D3F00796368 /* zdooropen.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA41FBF22D005D3F00796368 /* zdooropen.mp3 */; };
+		EA41FBF72D00D71500796368 /* magichorrorimpact2.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA41FBF62D00D71500796368 /* magichorrorimpact2.mp3 */; };
 		EA4583372A420AAA00279056 /* PartyInventory.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA4583362A420AAA00279056 /* PartyInventory.swift */; };
 		EA45833B2A42622000279056 /* pickuptime.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA45833A2A42622000279056 /* pickuptime.mp3 */; };
 		EA45833F2A43CE3100279056 /* PartyResultsSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA45833E2A43CE3100279056 /* PartyResultsSprite.swift */; };
@@ -424,8 +426,10 @@
 		EA41F8342A0C7D8000DF47EC /* HowToPlayPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HowToPlayPage.swift; sourceTree = "<group>"; };
 		EA41F8392A0D71EE00DF47EC /* ParentPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParentPage.swift; sourceTree = "<group>"; };
 		EA41F83B2A0DD3F800DF47EC /* SettingsTapArea.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTapArea.swift; sourceTree = "<group>"; };
-		EA41FBEC2CFE467B00796368 /* magichorrorimpact2.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = magichorrorimpact2.mp3; sourceTree = "<group>"; };
+		EA41FBEC2CFE467B00796368 /* magichorrorimpact2OLD.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = magichorrorimpact2OLD.mp3; sourceTree = "<group>"; };
 		EA41FBF02CFF938300796368 /* ChosenSword.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChosenSword.swift; sourceTree = "<group>"; };
+		EA41FBF22D005D3F00796368 /* zdooropen.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = zdooropen.mp3; sourceTree = "<group>"; };
+		EA41FBF62D00D71500796368 /* magichorrorimpact2.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = magichorrorimpact2.mp3; sourceTree = "<group>"; };
 		EA4583362A420AAA00279056 /* PartyInventory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PartyInventory.swift; sourceTree = "<group>"; };
 		EA45833A2A42622000279056 /* pickuptime.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = pickuptime.mp3; sourceTree = "<group>"; };
 		EA45833E2A43CE3100279056 /* PartyResultsSprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PartyResultsSprite.swift; sourceTree = "<group>"; };
@@ -1092,7 +1096,8 @@
 				EA8C60612C068E0700DED3C7 /* magicheartbeatloop1.mp3 */,
 				EAFE35952CE48BB600289ADF /* magicheartbeatloop2.mp3 */,
 				EA8C60652C068E0800DED3C7 /* magichorrorimpact.mp3 */,
-				EA41FBEC2CFE467B00796368 /* magichorrorimpact2.mp3 */,
+				EA41FBF62D00D71500796368 /* magichorrorimpact2.mp3 */,
+				EA41FBEC2CFE467B00796368 /* magichorrorimpact2OLD.mp3 */,
 				EA9D6A532B48E3B40004187B /* magicteleport.mp3 */,
 				EAE43D962C48A93E00E6DB3C /* magicteleport2.mp3 */,
 				EAAECFDE2B698E6B0011D5C5 /* magicwarp.mp3 */,
@@ -1154,6 +1159,7 @@
 				EAAEA3CB2931F14D00221963 /* winlevel.mp3 */,
 				EA8C605F2C068E0700DED3C7 /* winlevelageofruin.mp3 */,
 				EAE43D902C48A74C00E6DB3C /* winlevel3stars.mp3 */,
+				EA41FBF22D005D3F00796368 /* zdooropen.mp3 */,
 			);
 			path = Sounds;
 			sourceTree = "<group>";
@@ -1486,6 +1492,7 @@
 				EAEF2F062B4F679900AD8459 /* buttontap4.mp3 in Resources */,
 				EAE9194B2A4CB04B00AF67D1 /* gemcollectparty2x.mp3 in Resources */,
 				EAE43D932C48A76F00E6DB3C /* titlechapter.mp3 in Resources */,
+				EA41FBF32D005D3F00796368 /* zdooropen.mp3 in Resources */,
 				EA7605642B5A859C001BC268 /* movesnow2.mp3 in Resources */,
 				EA1281A72CF15E50001CC5E8 /* chatopenelder.mp3 in Resources */,
 				EAE43D9F2C48AA6A00E6DB3C /* magicelderbanish.mp3 in Resources */,
@@ -1585,7 +1592,7 @@
 				EA9D6A632B48ED0F0004187B /* ageofruin2.mp3 in Resources */,
 				EA4583512A44319000279056 /* partyfast.mp3 in Resources */,
 				EADEB3E92931404D00CDB232 /* dooropen.mp3 in Resources */,
-				EA41FBED2CFE467B00796368 /* magichorrorimpact2.mp3 in Resources */,
+				EA41FBED2CFE467B00796368 /* magichorrorimpact2OLD.mp3 in Resources */,
 				EA3467A729A8C68A002DDA02 /* pickupheart.mp3 in Resources */,
 				EAEF2EFA2B4F5B2D00AD8459 /* bouldersmash.mp3 in Resources */,
 				EAD19A042A9698B700A07A63 /* PartyGemParticles.sks in Resources */,
@@ -1616,6 +1623,7 @@
 				EA8C606F2C068E0800DED3C7 /* chatopenprincess.mp3 in Resources */,
 				EA94E87329C0DE2C009F2614 /* movetile3.mp3 in Resources */,
 				EA74F9D02BA17BDE002CE6B2 /* InBetweenParticles.sks in Resources */,
+				EA41FBF72D00D71500796368 /* magichorrorimpact2.mp3 in Resources */,
 				EAFE35962CE48BB600289ADF /* magicheartbeatloop2.mp3 in Resources */,
 				EAD19A1D2A9C14B500A07A63 /* PoisonBubblesParticles.sks in Resources */,
 				EA9D6A642B48ED0F0004187B /* ageofruin.mp3 in Resources */,

@@ -1110,6 +1110,8 @@ extension ChatEngine {
             sendChatArray(shouldSkipDim: true, items: [
                 ChatItem(profile: .trainer, pause: 2, chat: "you have doomed us all, puzl boy! the day of reckoning is at hand.", handler: nil),
                 ChatItem(profile: .hero, imgPos: .left, chat: "Marlin, I'm sorry! I tried everything to save you and the princess. Help us! PLEASE!!!"),
+                ChatItem(profile: .trainer, chat: "FAILURE!! REGRET!! SHAME!! DISHONOR!! WASTE!! DISAPPOINTMENT!! LOSER!!"),
+                ChatItem(profile: .hero, imgPos: .left, chat: "NOOOOO!! I—I didn't..!"),
                 ChatItem(profile: .magmus, chat: "You must not succumb to this false imagery, child! Clarity is needed in the challenge ahead.")
             ]) { [weak self] in
                 self?.delegateCatwalk?.despawnMarlinCatwalk()
@@ -1177,7 +1179,7 @@ extension ChatEngine {
                     self?.showFFButton()
                 },
                 ChatItem(profile: .hero, imgPos: .left, chat: "Wow!!! This is... something. It's... incredible. I promise to be very careful with it! 🤩"),
-                ChatItem(profile: .merton, chat: "\(chosenSword.elderCommentary)\n\nRating: \(Int(chosenSword.attackRating))/100")
+                ChatItem(profile: .merton, chat: "\(chosenSword.elderCommentary)\n\nAttack Rating: \(Int(chosenSword.attackRating))/100")
             ]) { [weak self] in
                 self?.showFFButton()
                 self?.handleDialogueCompletion(level: level, completion: completion)
