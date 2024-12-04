@@ -17,8 +17,9 @@ protocol ChatEngineCatwalkDelegate: AnyObject {
     func despawnMarlinCatwalk()
     func spawnTikiCatwalk(statueNumber: Int, fadeIn: TimeInterval)
     func despawnTikiCatwalk(fadeOut: TimeInterval, delay: TimeInterval?)
-    func spawnSwordCatwalk(chosenSword: ChosenSword, spawnDuration: TimeInterval)
-    func despawnSwordCatwalk(chosenSword: ChosenSword, fadeDuration: TimeInterval, delay: TimeInterval?)
+    func spawnSwordCatwalk(spawnDuration: TimeInterval)
+    func despawnSwordCatwalk(fadeDuration: TimeInterval, delay: TimeInterval?)
+    func throwSwordCatwalk()
     func showGateCatwalk()
     func feedGemsCatwalk(completion: @escaping () -> Void)
     func flashMagmoorCatwalk()
@@ -1044,10 +1045,6 @@ extension ChatEngine {
     
     ///Sets up and plays dialogue for Age of Balance setting.
     private func playDialogueAgeOfBalance(level: Int, statueTapped: Bool, completion: ((Cutscene?) -> Void)?) {
-        let didPursueMagmoor = FIRManager.decisionsLeftButton[0] ?? false
-        let didGiveAwayFeather = FIRManager.decisionsLeftButton[2] ?? false
-        let chosenSword = ChosenSword(didPursueMagmoor: didPursueMagmoor, didGiveAwayFeather: didGiveAwayFeather)
-
         switch level {
             
         case -999:
@@ -1061,12 +1058,12 @@ extension ChatEngine {
             
             sendChatArray(items: [
                 ChatItem(profile: .melchior, chat: "PUZL Boy, the road ahead is difficult and perilous. There is no turning back. Are you ready to brave the darkness?"),
-                ChatItem(profile: .hero, imgPos: .left, chat: "\(didPursueMagmoor ? "I'm ready, let's go!!" : "No time like the present! What have we got to lose, right?")"),
+                ChatItem(profile: .hero, imgPos: .left, chat: "\(FIRManager.didPursueMagmoor ? "I'm ready, let's go!!" : "No time like the present! What have we got to lose, right?")"),
                 ChatItem(profile: .magmus, chat: "Be forewarned: Magmoor is hell-bent on total destruction.. complete annihilation.. and bitter revenge."),
-                ChatItem(profile: .hero, imgPos: .left, chat: "\(didPursueMagmoor ? "So... technically this is your fight. Can I just sit and watch from the sidelines, or..." : "I've made it this far, I'm not backing down now!")"),
+                ChatItem(profile: .hero, imgPos: .left, chat: "\(FIRManager.didPursueMagmoor ? "So... technically this is your fight. Can I just sit and watch from the sidelines, or..." : "I've made it this far, I'm not backing down now!")"),
                 ChatItem(profile: .melchior, chat: "Do not underestimate our adversary. He has the ability to wipe out all life from existence! It will take our combined strength to defeat him."),
                 ChatItem(profile: .magmus, chat: "Though he may seem beyond powerful, he has his weaknesses. After all, we taught him everything he knows."),
-                ChatItem(profile: .hero, imgPos: .left, chat: "\(didPursueMagmoor ? "Like I said, I'mma sit here and wait while you guys do your thang." : "It's my fault Marlin and Princess Olivia were captured. I should've had him back there! I won't go down without a fight!")"),
+                ChatItem(profile: .hero, imgPos: .left, chat: "\(FIRManager.didPursueMagmoor ? "Like I said, I'mma sit here and wait while you guys do your thang." : "It's my fault Marlin and Princess Olivia were captured. I should've had him back there! I won't go down without a fight!")"),
                 ChatItem(profile: .merton, chat: "Remember, he is most malevolent from the merger with our dear Marlin's magic."),
                 ChatItem(profile: .merton, chat: "As you proceed, you may witness illusions of despair. But despair not! For all they are are illusions, after all."),
                 ChatItem(profile: .melchior, chat: "Let's move forward. And do not believe anything you see or hear.")
@@ -1131,7 +1128,7 @@ extension ChatEngine {
                 ChatItem(profile: .hero, imgPos: .left, chat: "Lovely. (Way to make me feel better 😒)"),
                 ChatItem(profile: .magmus, chat: "Melchior, don't be such a bully! Remember, Marlin chose him for good reason. I see it too. This one is... special!"),
                 ChatItem(profile: .melchior, chat: "Hmph! I disagree."),
-                ChatItem(profile: .hero, imgPos: .left, chat: "\(didPursueMagmoor ? ".....hmmm, this floor feels slanted. Does it look slanted to you?" : "I'll fix this. Don't you worry. I'll make it right!")")
+                ChatItem(profile: .hero, imgPos: .left, chat: "\(FIRManager.didPursueMagmoor ? ".....hmmm, this floor feels slanted. Does it look slanted to you?" : "I'll fix this. Don't you worry. I'll make it right!")")
             ]) { [weak self] in
                 self?.delegateCatwalk?.stopMusicCatwalk(music: "sadaccent", fadeOut: 2, delay: nil, shouldPlayOverworld: true)
                 self?.handleDialogueCompletion(level: level, completion: completion)
@@ -1158,25 +1155,28 @@ extension ChatEngine {
                 ChatItem(profile: tikiSelected, chat: "Hey there PUZL Boy! You look down in the mouth. Don't be so discouraged."),
                 ChatItem(profile: .hero, imgPos: .left, chat: "Yeah, well.. I am NOT having the best day of my life right now, to be honest."),
                 ChatItem(profile: tikiSelected, endChat: true, chat: "Cheer up, friend! All is not lost. Here's a little something to lift your spirits...") { [weak self] in
-                    self?.delegateCatwalk?.spawnSwordCatwalk(chosenSword: chosenSword, spawnDuration: swordSpawnDuration)
+                    self?.delegateCatwalk?.spawnSwordCatwalk(spawnDuration: swordSpawnDuration)
                 },
-                ChatItem(profile: tikiSelected, pause: swordSpawnDuration + 1, startNewChat: true, chat: "Go on, take it! Legend has it, the Mystic steelsmith, Mythrile forged the blade in the fire of a dying star... it is near indestructible!", handler: nil)
+                ChatItem(profile: tikiSelected, pause: swordSpawnDuration + 1, startNewChat: true, chat: "Go on, take it! But please be VERY careful with it! It is of divine origin...", handler: nil),
+                ChatItem(profile: tikiSelected, chat: "Legend has it, the Mystic steelsmith, Mythrile forged the blade in the fire of a dying star... it is near indestructible!")
             ]) { [weak self] in
                 self?.handleDialogueCompletion(level: level, completion: completion)
             }
         case -1036:
             let fadeOut: TimeInterval = 2
             let logoDuration: TimeInterval = 9
+            let chosenSword = ChosenSword(didPursueMagmoor: FIRManager.didPursueMagmoor, didGiveAwayFeather: FIRManager.didGiveAwayFeather)
             
             delegateCatwalk?.stopMusicCatwalk(music: "overworldmarimba", fadeOut: fadeOut, delay: logoDuration, shouldPlayOverworld: true)
             delegateCatwalk?.despawnTikiCatwalk(fadeOut: fadeOut, delay: logoDuration)
-            delegateCatwalk?.despawnSwordCatwalk(chosenSword: chosenSword, fadeDuration: fadeOut, delay: logoDuration)
+            delegateCatwalk?.despawnSwordCatwalk(fadeDuration: fadeOut, delay: logoDuration)
             hideFFButton()
 
             sendChatArray(shouldSkipDim: true, items: [
                 ChatItem(profile: .blankhero, startNewChat: false, chat: "\n\nReceived \(chosenSword.description).") { [weak self] in
                     self?.showFFButton()
                 },
+                ChatItem(profile: .hero, imgPos: .left, chat: "Wow!!! This is... something. It's... incredible. I promise to be very careful with it! 🤩"),
                 ChatItem(profile: .merton, chat: "\(chosenSword.elderCommentary)\n\nRating: \(Int(chosenSword.attackRating))/100")
             ]) { [weak self] in
                 self?.showFFButton()
@@ -1188,19 +1188,21 @@ extension ChatEngine {
             
             sendChatArray(shouldSkipDim: true, items: [
                 ChatItem(profile: .melchior, pause: 2, chat: "There's the gate to the Dragon's Lair. Once we enter, there is no going back.", handler: nil),
-                ChatItem(profile: .hero, imgPos: .left, chat: "Ok, but it's closed..... So how do we open it???", handler: nil),
-                ChatItem(profile: .melchior, chat: "What.......... has Marlin taught you nothing, insolent boy?"),
+                ChatItem(profile: .hero, imgPos: .left, endChat: true, chat: "Ok, but it's closed..... So how do we open it??? Maybe if I just.................⚔️") { [weak self] in
+                    self?.delegateCatwalk?.throwSwordCatwalk()
+                },
+                ChatItem(profile: .melchior, pause: 3, startNewChat: true, chat: "What the— has Marlin taught you nothing, you insolent boy?!!", handler: nil),
                 ChatItem(profile: .magmus, chat: "MELCHIOR! Kindness!"),
+                ChatItem(profile: .melchior, chat: "He just threw it!"),
                 ChatItem(profile: .magmus, chat: "Forgive him, child. As you'll recall, the gateway is powered by magical purple gems. Surrender your magical purple gems and access shall be yours."),
-                ChatItem(profile: .hero, imgPos: .left, chat: "The magical purple gems.. right! Well, here goes nothing...")
+                ChatItem(profile: .hero, imgPos: .left, chat: "My magical purple gems.. right! Well, here goes nothing...")
             ]) { [weak self] in
                 self?.delegateCatwalk?.feedGemsCatwalk {
                     self?.adjustBrightnessForMagmoorScary()
 
                     self?.sendChatArray(shouldSkipDim: true, items: [
                         ChatItem(profile: .villain, pause: 3, chat: "Interlopers!! You encroach upon my domain. But you are too late. The end has begun!!", handler: nil),
-                        ChatItem(profile: .melchior, imgPos: .left, chat: "You will regret ever stepping foot in this realm, Magmoor! Your reign of terror ends here!!"),
-                        ChatItem(profile: .hero, imgPos: .left, chat: "\(didPursueMagmoor ? "AAAHHHH! I'M NOT READY FOR THIS!!!" : "YOU'LL PAY FOR WHAT YOU DID TO MY FRIENDS!!!!!")")
+                        ChatItem(profile: .melchior, imgPos: .left, chat: "You will regret ever stepping foot in this realm, Magmoor! Your reign of terror ends here!!")
                     ]) {
                         self?.handleDialogueCompletion(level: level, completion: completion)
                     }
@@ -1211,6 +1213,7 @@ extension ChatEngine {
             
             sendChatArray(shouldSkipDim: true, items: [
                 ChatItem(profile: .villain, pause: 2, chat: "Enter if you dare... There is nothing you can do to stop what has already been put in motion.", handler: nil),
+                ChatItem(profile: .hero, imgPos: .left, chat: "\(FIRManager.didPursueMagmoor ? "AAAHHHH! I'M NOT READY FOR THIS!!!" : "YOU'LL PAY FOR WHAT YOU DID TO MY FRIENDS!!!!!")"),
                 ChatItem(profile: .merton, imgPos: .left, chat: "Quickly boy! Through the gate! We mustn't waste anymore time!")
             ]) { [weak self] in
                 self?.delegateCatwalk?.despawnEldersCatwalk()
@@ -2193,7 +2196,7 @@ extension ChatEngine {
                         ChatItem(profile: .merton, chat: "Right! You've already defeated him once. Don't let his grotesque visage intimidate you."),
                         ChatItem(profile: .melchior, chat: "I meant the boy!"),
                         ChatItem(profile: .merton, chat: "Oh....."),
-                        ChatItem(profile: .hero, imgPos: .left, chat: "\(didPursueMagmoor ? "You're right! Thanks for the pep talk." : "Welp... what have I got to lose?")")
+                        ChatItem(profile: .hero, imgPos: .left, chat: "\(FIRManager.didPursueMagmoor ? "You're right! Thanks for the pep talk." : "Welp... what have I got to lose?")")
                     ]) { [weak self] in
                         self?.handleDialogueCompletion(level: level, completion: completion)
                     }

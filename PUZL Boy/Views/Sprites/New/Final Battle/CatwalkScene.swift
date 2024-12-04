@@ -39,6 +39,7 @@ class CatwalkScene: SKScene {
     private var princess: Player!
     private var trainer: Player!
     private var villain: Player!
+    private var swordSprite: ChosenSword!
     private var magmoorSprite: SKSpriteNode!
     private var magmoorFlashSprite: SKSpriteNode!
     private var backgroundNode: SKSpriteNode!
@@ -154,6 +155,11 @@ class CatwalkScene: SKScene {
         
         villain = Player(type: .villain)
         villain.sprite.alpha = 0
+        
+        swordSprite = ChosenSword(didPursueMagmoor: FIRManager.didPursueMagmoor, didGiveAwayFeather: FIRManager.didGiveAwayFeather)
+        swordSprite.spriteNode.scale(to: scaleSize)
+        swordSprite.spriteNode.alpha = 0
+        swordSprite.spriteNode.zPosition = K.ZPosition.overlay
         
         magmoorSprite = SKSpriteNode(imageNamed: "villainRedEyes")
         magmoorSprite.size = CGSize(width: size.width, height: size.width)
@@ -628,26 +634,31 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
         ]))
     }
     
-    func spawnSwordCatwalk(chosenSword: ChosenSword, spawnDuration: TimeInterval) {
-        let swordSprite = chosenSword.spriteNode
-        swordSprite.position = getHeroPosition(xPanelOffset: 1, yOffset: 300)
-        swordSprite.scale(to: scaleSize)
-        swordSprite.alpha = 0
-        swordSprite.zPosition = K.ZPosition.overlay
-        swordSprite.name = "swordSprite"
+    func spawnSwordCatwalk(spawnDuration: TimeInterval) {
+        swordSprite.spriteNode.position = getHeroPosition(xPanelOffset: 1, yOffset: 300)
         
-        swordSprite.run(SKAction.group([
+        swordSprite.spriteNode.run(SKAction.group([
             SKAction.fadeIn(withDuration: spawnDuration),
             SKAction.moveBy(x: 0, y: -300, duration: spawnDuration)
         ]))
         
-        catwalkNode.addChild(swordSprite)
+        swordSprite.spriteNode.removeFromParent() //just in case...
+        catwalkNode.addChild(swordSprite.spriteNode)
     }
     
-    func despawnSwordCatwalk(chosenSword: ChosenSword, fadeDuration: TimeInterval, delay: TimeInterval?) {
-        guard let swordSprite = catwalkNode.childNode(withName: "swordSprite") else { return }
+    func throwSwordCatwalk() {
+        swordSprite.spriteNode.position = getHeroPosition(xPanelOffset: 0, yOffset: 0)
+        swordSprite.spriteNode.scale(to: scaleSize)
+        swordSprite.spriteNode.alpha = 1
         
-        swordSprite.run(SKAction.sequence([
+        swordSprite.spriteNode.removeFromParent() //just in case...
+        catwalkNode.addChild(swordSprite.spriteNode)
+        
+        swordSprite.throwSword(endOffset: CGPoint(x: size.width, y: 0), direction: .right, rotations: 6 * .pi, throwDuration: 1)
+    }
+    
+    func despawnSwordCatwalk(fadeDuration: TimeInterval, delay: TimeInterval?) {
+        swordSprite.spriteNode.run(SKAction.sequence([
             SKAction.group([
                 SKAction.scale(by: 2, duration: 0.25),
                 SKAction.fadeOut(withDuration: 0.25)
@@ -655,7 +666,7 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
             SKAction.removeFromParent()
         ]))
         
-        let bigSword = chosenSword.spriteNode
+        let bigSword = SKSpriteNode(imageNamed: swordSprite.imageName)
         bigSword.position = CGPoint(x: size.width / 2, y: size.height / 2)
         bigSword.scale(to: .zero)
         bigSword.zPosition = K.ZPosition.itemsAndEffects

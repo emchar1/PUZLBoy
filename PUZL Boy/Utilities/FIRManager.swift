@@ -22,8 +22,12 @@ struct FIRManager {
     static var hasFeather: Bool?
     static var gotGift: Bool?
     
+    static var didPursueMagmoor: Bool {
+        decisionsLeftButton[0] ?? false
+    }
+    
     static var didGiveAwayFeather: Bool {
-        decisionsLeftButton[2] != nil && decisionsLeftButton[2]!
+        decisionsLeftButton[2] ?? false
     }
     
     static var didReceiveGiftFromTiki: Bool {
