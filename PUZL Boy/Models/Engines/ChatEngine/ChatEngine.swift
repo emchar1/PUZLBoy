@@ -1191,11 +1191,11 @@ extension ChatEngine {
                 ChatItem(profile: .hero, imgPos: .left, endChat: true, chat: "Ok, but it's closed..... So how do we open it??? Maybe if I just.................⚔️") { [weak self] in
                     self?.delegateCatwalk?.throwSwordCatwalk()
                 },
-                ChatItem(profile: .melchior, pause: 3, startNewChat: true, chat: "What the— has Marlin taught you nothing, you insolent boy?!!", handler: nil),
+                ChatItem(profile: .melchior, pause: 4, startNewChat: true, chat: "What the— has Marlin taught you nothing, you insolent boy!!", handler: nil),
                 ChatItem(profile: .magmus, chat: "MELCHIOR! Kindness!"),
-                ChatItem(profile: .melchior, chat: "He just threw it!"),
-                ChatItem(profile: .magmus, chat: "Forgive him, child. As you'll recall, the gateway is powered by magical purple gems. Surrender your magical purple gems and access shall be yours."),
-                ChatItem(profile: .hero, imgPos: .left, chat: "My magical purple gems.. right! Well, here goes nothing...")
+                ChatItem(profile: .melchior, chat: "He just threw it!!!"),
+                ChatItem(profile: .magmus, chat: "Forgive him, child. As you'll recall, the gateway is powered by magical purple gems. Surrender your magical purple gems and access shall be granted."),
+                ChatItem(profile: .hero, imgPos: .left, chat: "My magical purple gems.. that's right! Well, here goes nothing...")
             ]) { [weak self] in
                 self?.delegateCatwalk?.feedGemsCatwalk {
                     self?.adjustBrightnessForMagmoorScary()
@@ -1212,7 +1212,7 @@ extension ChatEngine {
             delegateCatwalk?.flashMagmoorCatwalk()
             
             sendChatArray(shouldSkipDim: true, items: [
-                ChatItem(profile: .villain, pause: 2, chat: "Enter if you dare... There is nothing you can do to stop what has already been put in motion.", handler: nil),
+                ChatItem(profile: .villain, pause: 3, startNewChat: false, chat: "Enter if you dare... There is nothing you can do to stop what has already been put in motion.", handler: nil),
                 ChatItem(profile: .hero, imgPos: .left, chat: "\(FIRManager.didPursueMagmoor ? "AAAHHHH! I'M NOT READY FOR THIS!!!" : "YOU'LL PAY FOR WHAT YOU DID TO MY FRIENDS!!!!!")"),
                 ChatItem(profile: .merton, imgPos: .left, chat: "Quickly boy! Through the gate! We mustn't waste anymore time!")
             ]) { [weak self] in

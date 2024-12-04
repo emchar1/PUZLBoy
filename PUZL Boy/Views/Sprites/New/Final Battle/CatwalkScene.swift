@@ -654,7 +654,7 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
         swordSprite.spriteNode.removeFromParent() //just in case...
         catwalkNode.addChild(swordSprite.spriteNode)
         
-        swordSprite.throwSword(endOffset: CGPoint(x: size.width, y: 0), direction: .right, rotations: 6 * .pi, throwDuration: 1)
+        swordSprite.throwSword(endOffset: CGPoint(x: size.width, y: 0), direction: .right, rotations: 6 * .pi, throwDuration: 1, delay: 0.5)
     }
     
     func despawnSwordCatwalk(fadeDuration: TimeInterval, delay: TimeInterval?) {
@@ -736,7 +736,7 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
 
                 for (i, panel) in catwalkPanels.enumerated() {
                     panel.removeAllActions()
-                    panel.run(animateRainbowCycle(cycleSpeed: cycleSpeed, delay: TimeInterval(catwalkLength - i) * delaySpeed))
+                    panel.run(animateRainbowCycle(cycleSpeed: cycleSpeed, delay: TimeInterval(catwalkLength - i) * delaySpeed), withKey: "rainbowCycle")
                 }
                 
                 endClosedMagic.run(animateRainbowCycle(cycleSpeed: cycleSpeed, delay: nil))
@@ -745,10 +745,10 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
                 inbetweenNode.run(SKAction.fadeOut(withDuration: fadeDuration))
                 bloodOverlay.run(SKAction.fadeOut(withDuration: fadeDuration))
                 
-                elder0.sprite.run(animateRainbowCycle(cycleSpeed: cycleSpeed, delay: 3 * delaySpeed))
-                elder1.sprite.run(animateRainbowCycle(cycleSpeed: cycleSpeed, delay: 4 * delaySpeed))
-                elder2.sprite.run(animateRainbowCycle(cycleSpeed: cycleSpeed, delay: 5 * delaySpeed))
-                hero.sprite.run(animateRainbowCycle(cycleSpeed: cycleSpeed, delay: 6 * delaySpeed))
+                elder0.sprite.run(animateRainbowCycle(cycleSpeed: cycleSpeed, delay: 3 * delaySpeed), withKey: "rainbowCycle")
+                elder1.sprite.run(animateRainbowCycle(cycleSpeed: cycleSpeed, delay: 4 * delaySpeed), withKey: "rainbowCycle")
+                elder2.sprite.run(animateRainbowCycle(cycleSpeed: cycleSpeed, delay: 5 * delaySpeed), withKey: "rainbowCycle")
+                hero.sprite.run(animateRainbowCycle(cycleSpeed: cycleSpeed, delay: 6 * delaySpeed), withKey: "rainbowCycle")
 
                 AudioManager.shared.adjustVolume(to: 0, for: catwalkOverworld, fadeDuration: fadeDuration)
             }
@@ -857,7 +857,7 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
                 SKAction.rotate(byAngle: CGFloat(5).toRadians(), duration: 0.12)
             ]),
             SKAction.fadeOut(withDuration: 0),
-            SKAction.wait(forDuration: 2)
+            SKAction.wait(forDuration: 3)
         ])) { [weak self] in
             completion()
             
@@ -1019,6 +1019,7 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
         - lightenColorFactor: lighten the color if needed
         - cycleSpeed: the speed at which the rainbow colors cycle
         - delay: add a delay before starting the rainbow cycle
+     - returns: the SKAction
      */
     private func animateRainbowCycle(lightenColorFactor: CGFloat = 0, cycleSpeed: TimeInterval, delay: TimeInterval?) -> SKAction {
         return SKAction.sequence([
@@ -1033,6 +1034,24 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
                 SKAction.colorize(with: .systemPink.lightenColor(factor: lightenColorFactor), colorBlendFactor: 1, duration: cycleSpeed)
             ]))
         ])
+    }
+    
+    /**
+     Animates a color cycle.
+     - parameters:
+        - color: the color of choice to animate a cycle
+        - delay: add a delay before starting the rainbow cycle
+     - returns: the SKAction
+     */
+    private func animateColorCycle(color: UIColor, delay: TimeInterval?) -> SKAction {
+        return SKAction.repeatForever(SKAction.sequence([
+            SKAction.colorize(with: .black, colorBlendFactor: 0.9, duration: 0),
+            SKAction.wait(forDuration: delay ?? 0),
+            SKAction.colorize(with: color, colorBlendFactor: 1, duration: 2),
+            SKAction.wait(forDuration: 0.85),
+            SKAction.colorize(with: .black, colorBlendFactor: 0.9, duration: 0.5),
+            SKAction.wait(forDuration: 0.65 - (delay ?? 0))
+        ]))
     }
     
     private func zoomMagmoorHelper(scaleBy: CGFloat, fadeDuration: TimeInterval) -> SKAction {
@@ -1095,9 +1114,29 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
         magmoorFlashSprite.run(SKAction.sequence([
             SKAction.wait(forDuration: flashPauseDuration),
             zoomMagmoorHelper(scaleBy: scaleBy, fadeDuration: zoomFadeDuration)
-        ]), withKey: "magmoorFlashZoomAction")        
+        ]), withKey: "magmoorFlashZoomAction")
         
         
+        //tiles and heroes red cycle
+        let delaySpeed: TimeInterval = 0.1
+        
+        for (i, panel) in catwalkPanels.enumerated() {
+            panel.removeAction(forKey: "rainbowCycle")
+            panel.run(animateColorCycle(color: .red, delay: TimeInterval(catwalkLength - i) * delaySpeed))
+        }
+        
+        elder0.sprite.removeAction(forKey: "rainbowCycle")
+        elder1.sprite.removeAction(forKey: "rainbowCycle")
+        elder2.sprite.removeAction(forKey: "rainbowCycle")
+        hero.sprite.removeAction(forKey: "rainbowCycle")
+        
+        elder0.sprite.run(animateColorCycle(color: .red, delay: 4 * delaySpeed))
+        elder1.sprite.run(animateColorCycle(color: .red, delay: 5 * delaySpeed))
+        elder2.sprite.run(animateColorCycle(color: .red, delay: 6 * delaySpeed))
+        hero.sprite.run(animateColorCycle(color: .red, delay: 3 * delaySpeed))
+        
+        
+        //audio et al.
         AudioManager.shared.playSound(for: "magichorrorimpact")
         AudioManager.shared.playSound(for: "magmoorcreepypulse")
         AudioManager.shared.playSound(for: "magmoorcreepystrings")

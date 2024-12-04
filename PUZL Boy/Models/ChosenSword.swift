@@ -69,8 +69,9 @@ class ChosenSword {
     
     // MARK: - Functions
     
-    func throwSword(endOffset: CGPoint, direction: Controls, rotations: CGFloat, throwDuration: TimeInterval) {
+    func throwSword(endOffset: CGPoint, direction: Controls, rotations: CGFloat, throwDuration: TimeInterval, delay: TimeInterval?) {
         spriteNode.run(SKAction.sequence([
+            SKAction.wait(forDuration: delay ?? 0),
             SKAction.group([
                 SKAction.rotate(byAngle: rotations * (direction == .up || direction == .right ? -1 : 1), duration: throwDuration),
                 SKAction.moveBy(x: endOffset.x, y: endOffset.y, duration: throwDuration),
@@ -79,7 +80,7 @@ class ChosenSword {
             SKAction.removeFromParent()
         ]))
         
-        AudioManager.shared.playSound(for: "boyattack\(Int.random(in: 1...3))")
+        AudioManager.shared.playSound(for: "boyattack\(Int.random(in: 1...3))", delay: delay ?? 0)
     }
     
 }

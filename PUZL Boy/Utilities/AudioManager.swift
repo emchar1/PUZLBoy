@@ -143,7 +143,7 @@ class AudioManager {
         addAudioItem("magicelderexplosion", category: .soundFX)
         addAudioItem("magicelderreduce", category: .soundFX)
         addAudioItem("magichorrorimpact", category: .soundFX)
-        addAudioItem("magichorrorimpact2", category: .soundFX) //NEEDS PURCHASE $3
+        addAudioItem("magichorrorimpact2", category: .soundFX) //NEEDS PURCHASE $2
         addAudioItem("magicteleport", category: .soundFX)
         addAudioItem("magicteleport2", category: .soundFX)
         addAudioItem("magicwarp", category: .soundFX) //not purchased $2
@@ -194,6 +194,7 @@ class AudioManager {
         addAudioItem("winlevel", category: .soundFX)
         addAudioItem("winlevelageofruin", category: .soundFX)
         addAudioItem("winlevel3stars", category: .soundFX)
+        addAudioItem("zdooropen", category: .soundFX) //TEST FOR FUN ONLY
 
         
         //Looped SFX
