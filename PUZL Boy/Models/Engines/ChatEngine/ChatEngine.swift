@@ -722,6 +722,7 @@ extension ChatEngine {
             dialoguePlayed[-1035] = false
             dialoguePlayed[-1036] = false
             dialoguePlayed[-1047] = false
+            dialoguePlayed[-1048] = false
             dialoguePlayed[-1049] = false
             dialoguePlayed[-1051] = false
             
@@ -1190,11 +1191,11 @@ extension ChatEngine {
             
             sendChatArray(shouldSkipDim: true, items: [
                 ChatItem(profile: .melchior, pause: 2, chat: "There's the gate to the Dragon's Lair. Once we enter, there is no going back.", handler: nil),
-                ChatItem(profile: .hero, imgPos: .left, chat: "Ok, but it's closed, so........ How do we open it??? Maybe if I just.....................⚔️")
+                ChatItem(profile: .hero, imgPos: .left, chat: "Ok, but it's closed, so...... How do we open it??? Maybe if I just.....................⚔️")
             ]) { [weak self] in
                 self?.handleDialogueCompletion(level: level, completion: completion)
             }
-        case -1004:
+        case -1048:
             delegateCatwalk?.throwSwordCatwalk()
             
             sendChatArray(shouldSkipDim: true, items: [
