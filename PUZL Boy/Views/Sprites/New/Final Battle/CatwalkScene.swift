@@ -654,7 +654,7 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
         swordSprite.spriteNode.removeFromParent() //just in case...
         catwalkNode.addChild(swordSprite.spriteNode)
         
-        swordSprite.throwSword(endOffset: CGPoint(x: size.width, y: 0), direction: .right, rotations: 6 * .pi, throwDuration: 1, delay: 0.5)
+        swordSprite.throwSword(endOffset: CGPoint(x: size.width * 4/5, y: 0), direction: .right, rotations: 6 * .pi, throwDuration: 1, delay: nil)
     }
     
     func despawnSwordCatwalk(fadeDuration: TimeInterval, delay: TimeInterval?) {
@@ -746,9 +746,9 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
                 bloodOverlay.run(SKAction.fadeOut(withDuration: fadeDuration))
                 
                 elder0.sprite.run(animateRainbowCycle(cycleSpeed: cycleSpeed, delay: 3 * delaySpeed), withKey: "rainbowCycle")
-                elder1.sprite.run(animateRainbowCycle(cycleSpeed: cycleSpeed, delay: 4 * delaySpeed), withKey: "rainbowCycle")
-                elder2.sprite.run(animateRainbowCycle(cycleSpeed: cycleSpeed, delay: 5 * delaySpeed), withKey: "rainbowCycle")
-                hero.sprite.run(animateRainbowCycle(cycleSpeed: cycleSpeed, delay: 6 * delaySpeed), withKey: "rainbowCycle")
+                elder1.sprite.run(animateRainbowCycle(cycleSpeed: cycleSpeed, delay: 4.5 * delaySpeed), withKey: "rainbowCycle")
+                elder2.sprite.run(animateRainbowCycle(cycleSpeed: cycleSpeed, delay: 6 * delaySpeed), withKey: "rainbowCycle")
+                hero.sprite.run(animateRainbowCycle(cycleSpeed: cycleSpeed, delay: 4 * delaySpeed), withKey: "rainbowCycle")
 
                 AudioManager.shared.adjustVolume(to: 0, for: catwalkOverworld, fadeDuration: fadeDuration)
             }
@@ -1066,11 +1066,11 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
     }
     
     private func zoomMagmoorHelper(scaleBy: CGFloat, fadeDuration: TimeInterval) -> SKAction {
-        return SKAction.scale(by: scaleBy, duration: fadeDuration * 15)
+        return SKAction.scale(by: scaleBy, duration: fadeDuration * 24)
     }
     
     private func fadeInMagmoorHelper(fadeDuration: TimeInterval) -> SKAction {
-        return SKAction.fadeIn(withDuration: fadeDuration * 8)
+        return SKAction.fadeIn(withDuration: fadeDuration * 4)
     }
     
     private func flashMagmoorHelper() {

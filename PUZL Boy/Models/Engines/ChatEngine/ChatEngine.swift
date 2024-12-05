@@ -1190,9 +1190,14 @@ extension ChatEngine {
             
             sendChatArray(shouldSkipDim: true, items: [
                 ChatItem(profile: .melchior, pause: 2, chat: "There's the gate to the Dragon's Lair. Once we enter, there is no going back.", handler: nil),
-                ChatItem(profile: .hero, imgPos: .left, endChat: true, chat: "Ok, but it's closed..... So how do we open it??? Maybe if I just.................⚔️") { [weak self] in
-                    self?.delegateCatwalk?.throwSwordCatwalk()
-                },
+                ChatItem(profile: .hero, imgPos: .left, chat: "Ok, but it's closed, so........ How do we open it??? Maybe if I just.....................⚔️")
+            ]) { [weak self] in
+                self?.handleDialogueCompletion(level: level, completion: completion)
+            }
+        case -1004:
+            delegateCatwalk?.throwSwordCatwalk()
+            
+            sendChatArray(shouldSkipDim: true, items: [
                 ChatItem(profile: .melchior, pause: 4, startNewChat: true, chat: "What the— has Marlin taught you nothing, you insolent boy!!", handler: nil),
                 ChatItem(profile: .magmus, chat: "MELCHIOR! Kindness!"),
                 ChatItem(profile: .melchior, chat: "He just threw it!!!"),
