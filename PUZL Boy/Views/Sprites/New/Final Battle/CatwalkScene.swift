@@ -970,10 +970,10 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
         //Ensure the gate was tapped, otherwise skip all the below rigamaroll
         guard didTapGate else { return }
         
-        if gemsFed > gemsToFeed * 4 {
+        if gemsFed > gemsToFeed * 5 {
             //do nothing, but need this case here to prevent multiple execution of other cases
         }
-        else if gemsFed > gemsToFeed * 3 {
+        else if gemsFed > gemsToFeed * 4 {
             run(SKAction.sequence([
                 SKAction.wait(forDuration: fadeDuration),
                 SKAction.run { [weak self] in
@@ -1000,9 +1000,6 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
             ]))
         }
         else if gemsFed > gemsToFeed * 2 {
-            //do nothing, but need this case here to prevent multiple execution of other cases
-        }
-        else if gemsFed > gemsToFeed {
             run(SKAction.sequence([
                 SKAction.wait(forDuration: fadeDuration),
                 SKAction.run { [weak self] in
