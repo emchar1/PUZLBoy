@@ -23,6 +23,12 @@ class CatwalkScene: SKScene {
     private var scaleSize: CGSize { CGSize.zero + panelSize - panelSpacing }
     private var fadeAlphaMultiplier: CGFloat { 1 - CGFloat(currentPanelIndex) / CGFloat(catwalkLength) * 3/4 }
     
+    private let gemsThreshold = 180
+    private let gemsToFeed = 30
+    private var gemsFed = 0
+    private var shouldFeedGems: Bool = false
+    private var isFeedingGems: Bool = false
+
     private let catwalkPanelNameDelimiter: Character = "_"
     private var catwalkPanelNamePrefix: String { "catwalkPanel\(catwalkPanelNameDelimiter)" }
     private var currentPanelIndex: Int = 0
@@ -47,6 +53,7 @@ class CatwalkScene: SKScene {
     private var bloodOverlay: SKSpriteNode!
     private var fadeNode: SKShapeNode!
     private var swordFadeNode: SKSpriteNode!
+    private var endClosedMagic: SKSpriteNode!
     private var catwalkNode: SKSpriteNode!
     private var catwalkPanels: [SKSpriteNode] = []
     
@@ -188,6 +195,11 @@ class CatwalkScene: SKScene {
             catwalkPanels.append(catwalkPanel)
         }
         
+        endClosedMagic = SKSpriteNode(imageNamed: "endClosedMagic")
+        endClosedMagic.anchorPoint = .zero
+        endClosedMagic.alpha = 0
+        endClosedMagic.zPosition = 1
+        
         shimmerPartyTiles()
         tapPointerEngine = TapPointerEngine()
         chatEngine = ChatEngine()
@@ -219,6 +231,8 @@ class CatwalkScene: SKScene {
         for catwalkPanel in catwalkPanels {
             catwalkNode.addChild(catwalkPanel)
         }
+
+        catwalkPanels.last?.addChild(endClosedMagic)
         
         chatEngine.moveSprites(to: self)
         
@@ -243,11 +257,24 @@ class CatwalkScene: SKScene {
         
         chatEngine.didTapButton(in: location)
         chatEngine.touchUp()
-
-        nodes(at: location).forEach { node in
-            guard let name = node.name else { return }
-                        
-            moveHero(to: name)
+        
+        if shouldFeedGems {
+            var didTapGate = false
+            
+            nodes(at: location).forEach { node in
+                guard let name = node.name, name == catwalkPanelNamePrefix + "\(catwalkLength)" else { return }
+                
+                didTapGate = true
+            }
+            
+            feedGems(at: location, didTapGate: didTapGate)
+        }
+        else {
+            nodes(at: location).forEach { node in
+                guard let name = node.name else { return }
+                
+                moveHero(to: name)
+            }
         }
     }
     
@@ -654,7 +681,7 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
         swordSprite.spriteNode.removeFromParent() //just in case...
         catwalkNode.addChild(swordSprite.spriteNode)
         
-        swordSprite.throwSword(endOffset: CGPoint(x: size.width * 4/5, y: 0), direction: .right, rotations: 6 * .pi, throwDuration: 1, delay: nil)
+        swordSprite.throwSword(endOffset: CGPoint(x: size.width, y: 0), direction: .right, rotations: 6 * .pi, throwDuration: 1, delay: 0.5)
     }
     
     func despawnSwordCatwalk(fadeDuration: TimeInterval, delay: TimeInterval?) {
@@ -711,67 +738,13 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
         shiftCatwalkNode(panels: 2, moveDuration: 0.5)
     }
     
-    func feedGemsCatwalk(completion: @escaping () -> Void) {
-        let fadeDuration: TimeInterval = 2
-        let cycleSpeed: TimeInterval = 0.25
-        let delaySpeed: TimeInterval = 0.1
-        
-        let endClosedMagic = SKSpriteNode(imageNamed: "endClosedMagic")
-        endClosedMagic.anchorPoint = .zero
-        endClosedMagic.alpha = 0
-        endClosedMagic.zPosition = 1
-
-        catwalkPanels.last?.addChild(endClosedMagic)
-        
-        AudioManager.shared.playSound(for: "revive", shouldLoop: true)
-
-        run(SKAction.sequence([
-            SKAction.wait(forDuration: fadeDuration),
-            SKAction.run { [weak self] in
-                self?.shakeScreen(duration: -1, completion: nil)
-            },
-            SKAction.wait(forDuration: fadeDuration),
-            SKAction.run { [weak self] in
-                guard let self = self else { return }
-
-                for (i, panel) in catwalkPanels.enumerated() {
-                    panel.removeAllActions()
-                    panel.run(animateRainbowCycle(cycleSpeed: cycleSpeed, delay: TimeInterval(catwalkLength - i) * delaySpeed), withKey: "rainbowCycle")
-                }
-                
-                endClosedMagic.run(animateRainbowCycle(cycleSpeed: cycleSpeed, delay: nil))
-                endClosedMagic.run(SKAction.fadeIn(withDuration: fadeDuration))
-                backgroundNode.run(SKAction.fadeOut(withDuration: fadeDuration))
-                inbetweenNode.run(SKAction.fadeOut(withDuration: fadeDuration))
-                bloodOverlay.run(SKAction.fadeOut(withDuration: fadeDuration))
-                
-                elder0.sprite.run(animateRainbowCycle(cycleSpeed: cycleSpeed, delay: 3 * delaySpeed), withKey: "rainbowCycle")
-                elder1.sprite.run(animateRainbowCycle(cycleSpeed: cycleSpeed, delay: 4.5 * delaySpeed), withKey: "rainbowCycle")
-                elder2.sprite.run(animateRainbowCycle(cycleSpeed: cycleSpeed, delay: 6 * delaySpeed), withKey: "rainbowCycle")
-                hero.sprite.run(animateRainbowCycle(cycleSpeed: cycleSpeed, delay: 4 * delaySpeed), withKey: "rainbowCycle")
-
-                AudioManager.shared.adjustVolume(to: 0, for: catwalkOverworld, fadeDuration: fadeDuration)
-            }
-        ]))
-
-        animateStealGems(maxGems: 180) { [weak self] in
-            guard let self = self else { return }
-            
-            let reviveRemainingTime: TimeInterval = (AudioManager.shared.getAudioItem(filename: "revive")?.player.duration ?? 0) - (AudioManager.shared.getAudioItem(filename: "revive")?.player.currentTime ?? 0)
-            
-            isRedShift = true
-            unshakeScreen(fadeDuration: fadeDuration)
-            openCloseGate(shouldOpen: true)
-
-            endClosedMagic.removeFromParent()
-            magmoorSprite.run(fadeInMagmoorHelper(fadeDuration: fadeDuration), withKey: "magmoorFadeAction")
-
-            AudioManager.shared.playSound(for: "pickupitem")
-            AudioManager.shared.playSound(for: "magicheartbeatloop2", delay: 3.5)
-            AudioManager.shared.stopSound(for: "revive", fadeDuration: reviveRemainingTime)
-            
-            completion()
-        }
+    func feedGemsCatwalk() {
+        shouldFeedGems = true
+    }
+    
+    func spawnMagmoorCatwalk() {
+        magmoorSprite.run(fadeInMagmoorHelper(fadeDuration: 2), withKey: "magmoorFadeAction")
+        AudioManager.shared.playSound(for: "magicheartbeatloop2", delay: 0.5)
     }
     
     func flashMagmoorCatwalk() {
@@ -960,34 +933,117 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
     }
     
     /**
+     Feeds gems into the gateway to Magmoor.
+     - parameters:
+        - location: location of where the gems will feed into
+        - didTapGate: true if the panel tapped was the gate
+     */
+    private func feedGems(at location: CGPoint, didTapGate: Bool) {
+        guard !isFeedingGems else { return }
+        
+        isFeedingGems = true
+        AudioManager.shared.playSound(for: "revive")
+        
+        let fadeDuration: TimeInterval = 2
+        let cycleSpeed: TimeInterval = 0.25
+        let delaySpeed: TimeInterval = 0.1
+        
+        animateFeedGems(at: location, didTapGate: didTapGate, maxGems: gemsToFeed) { [weak self] in
+            guard let self = self else { return }
+            
+            if gemsFed >= gemsThreshold {
+                shouldFeedGems = false
+                isRedShift = true
+
+                unshakeScreen(fadeDuration: fadeDuration)
+                openCloseGate(shouldOpen: true)
+                
+                endClosedMagic.removeFromParent()
+                
+                AudioManager.shared.playSound(for: "zdooropen")
+            }
+            
+            isFeedingGems = false
+        }
+        
+        
+        //Ensure the gate was tapped, otherwise skip all the below rigamaroll
+        guard didTapGate else { return }
+        
+        if gemsFed > gemsToFeed * 4 {
+            //do nothing, but need this case here to prevent multiple execution of other cases
+        }
+        else if gemsFed > gemsToFeed * 3 {
+            run(SKAction.sequence([
+                SKAction.wait(forDuration: fadeDuration),
+                SKAction.run { [weak self] in
+                    guard let self = self else { return }
+                    
+                    for (i, panel) in catwalkPanels.enumerated() {
+                        panel.removeAllActions()
+                        panel.run(animateRainbowCycle(cycleSpeed: cycleSpeed, delay: TimeInterval(catwalkLength - i) * delaySpeed), withKey: "rainbowCycle")
+                    }
+                    
+                    endClosedMagic.run(animateRainbowCycle(cycleSpeed: cycleSpeed, delay: nil))
+                    endClosedMagic.run(SKAction.fadeIn(withDuration: fadeDuration))
+                    backgroundNode.run(SKAction.fadeOut(withDuration: fadeDuration))
+                    inbetweenNode.run(SKAction.fadeOut(withDuration: fadeDuration))
+                    bloodOverlay.run(SKAction.fadeOut(withDuration: fadeDuration))
+                    
+                    elder0.sprite.run(animateRainbowCycle(cycleSpeed: cycleSpeed, delay: 3 * delaySpeed), withKey: "rainbowCycle")
+                    elder1.sprite.run(animateRainbowCycle(cycleSpeed: cycleSpeed, delay: 4 * delaySpeed), withKey: "rainbowCycle")
+                    elder2.sprite.run(animateRainbowCycle(cycleSpeed: cycleSpeed, delay: 5 * delaySpeed), withKey: "rainbowCycle")
+                    hero.sprite.run(animateRainbowCycle(cycleSpeed: cycleSpeed, delay: 6 * delaySpeed), withKey: "rainbowCycle")
+                    
+                    AudioManager.shared.adjustVolume(to: 0, for: catwalkOverworld, fadeDuration: fadeDuration)
+                },
+            ]))
+        }
+        else if gemsFed > gemsToFeed * 2 {
+            //do nothing, but need this case here to prevent multiple execution of other cases
+        }
+        else if gemsFed > gemsToFeed {
+            run(SKAction.sequence([
+                SKAction.wait(forDuration: fadeDuration),
+                SKAction.run { [weak self] in
+                    self?.shakeScreen(duration: -1, completion: nil)
+                },
+            ]))
+        }
+        
+        catwalkPanels.last?.run(SKAction.sequence([
+            SKAction.colorize(with: .purple, colorBlendFactor: 1, duration: 0.5),
+            SKAction.wait(forDuration: 0.5),
+            SKAction.colorize(withColorBlendFactor: 0, duration: 1)
+        ]))
+    }
+    
+    /**
      Recursive helper function that animates gems feeding into the magic door to open it.
      - parameters:
+        - location: location of where the tap occured
         - currentGem: initialized to 0, don't set this usually
         - maxGems: maximum # of gems before base case is executed
         - completion: handler to execute after last gem animates
      */
-    private func animateStealGems(currentGem: Int = 0, maxGems: Int, completion: @escaping () -> Void) {
-        let maxGems = min(maxGems, 500) //put a kibosh if they try to add more than this amount because a high amount will cause a crash
-        
+    private func animateFeedGems(at location: CGPoint, didTapGate: Bool, currentGem: Int = 0, maxGems: Int, completion: @escaping () -> Void) {
         //Recursion - Base case
         guard currentGem <= maxGems else { return }
 
         //Position properties
-        let catwalkAngleYOffset: CGFloat = sin(catwalkAngle) * CGFloat(catwalkLength) * panelSize / 2
-        let startPosition: CGPoint = CGPoint(x: CGFloat.random(in: 0...size.width), y: CGFloat.random(in: 0...size.height))
-        let gatePosition: CGPoint = CGPoint(x: size.width - panelSize / 2, y: size.height / 2 + catwalkAngleYOffset)
-        let distanceToGate: CGFloat = sqrt(pow(gatePosition.x - startPosition.x, 2) + pow(gatePosition.y - startPosition.y, 2))
-        let maxDistance: CGFloat = sqrt(pow(gatePosition.x, 2) + pow(gatePosition.y, 2))
+        let spawnPosition: CGPoint = CGPoint(x: CGFloat.random(in: 0...size.width), y: CGFloat.random(in: 0...size.height))
+        let distanceToTouch: CGFloat = sqrt(pow(location.x - spawnPosition.x, 2) + pow(location.y - spawnPosition.y, 2))
+        let maxDistance: CGFloat = sqrt(pow(location.x, 2) + pow(location.y, 2))
         
         //Scaling properties
         let maxScale: CGFloat = 6
         let scaleDivisions: CGFloat = maxDistance / maxScale
-        let startScale: CGFloat = distanceToGate / scaleDivisions + 1
+        let startScale: CGFloat = min(distanceToTouch / scaleDivisions + 1, maxScale)
         let startAlpha: CGFloat = 1 / startScale
         let fadeDuration: TimeInterval = TimeInterval(startScale) / TimeInterval(4/3 * maxScale)
         
         let gemSprite = SKSpriteNode(texture: SKTexture(imageNamed: "gem"))
-        gemSprite.position = startPosition
+        gemSprite.position = spawnPosition
         gemSprite.setScale(startScale)
         gemSprite.alpha = 0
         gemSprite.zPosition = K.ZPosition.itemsAndEffects
@@ -999,7 +1055,7 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
             SKAction.fadeAlpha(to: startAlpha, duration: 0),
             SKAction.group([
                 SKAction.fadeIn(withDuration: fadeDuration),
-                SKAction.move(to: gatePosition, duration: fadeDuration),
+                SKAction.move(to: location, duration: fadeDuration),
                 SKAction.scale(to: .zero, duration: fadeDuration)
             ]),
             SKAction.removeFromParent()
@@ -1009,8 +1065,16 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
             }
         }
         
+        
+        //Important Logic
+        let gemIncrement = 1
+        
+        if didTapGate {
+            gemsFed += gemIncrement
+        }
+        
         //Recursion call
-        animateStealGems(currentGem: currentGem + 1, maxGems: maxGems, completion: completion)
+        animateFeedGems(at: location, didTapGate: didTapGate, currentGem: currentGem + gemIncrement, maxGems: maxGems, completion: completion)
     }
     
     /**

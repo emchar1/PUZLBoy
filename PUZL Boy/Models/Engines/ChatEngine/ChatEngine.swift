@@ -21,7 +21,8 @@ protocol ChatEngineCatwalkDelegate: AnyObject {
     func despawnSwordCatwalk(fadeDuration: TimeInterval, delay: TimeInterval?)
     func throwSwordCatwalk()
     func showGateCatwalk()
-    func feedGemsCatwalk(completion: @escaping () -> Void)
+    func feedGemsCatwalk()
+    func spawnMagmoorCatwalk()
     func flashMagmoorCatwalk()
     func playMusicCatwalk(music: String, startingVolume: Float, fadeIn: TimeInterval, shouldStopOverworld: Bool)
     func stopMusicCatwalk(music: String, fadeOut: TimeInterval, delay: TimeInterval?, shouldPlayOverworld: Bool)
@@ -1193,34 +1194,34 @@ extension ChatEngine {
                 ChatItem(profile: .melchior, pause: 2, chat: "There's the gate to the Dragon's Lair. Once we enter, there is no going back.", handler: nil),
                 ChatItem(profile: .hero, imgPos: .left, chat: "Ok, but it's closed, so...... How do we open it??? Maybe if I just.....................⚔️")
             ]) { [weak self] in
-                self?.handleDialogueCompletion(level: level, completion: completion)
+                self?.delegateCatwalk?.throwSwordCatwalk()
+                
+                self?.sendChatArray(shouldSkipDim: true, items: [
+                    ChatItem(profile: .melchior, pause: 4, startNewChat: true, chat: "What the— has Marlin taught you nothing, you insolent boy!!", handler: nil),
+                    ChatItem(profile: .magmus, chat: "MELCHIOR! Kindness!"),
+                    ChatItem(profile: .melchior, chat: "He just threw it!!!"),
+                    ChatItem(profile: .magmus, chat: "Forgive him, child. As you'll recall, the gateway is powered by sparkly purple gems. Surrender your sparkly purple gems and access shall be granted."),
+                    ChatItem(profile: .hero, imgPos: .left, chat: "My sparkly purple gems.. that's right! Well, here goes nothing...")
+                ]) { [weak self] in
+                    self?.delegateCatwalk?.feedGemsCatwalk()
+                    self?.handleDialogueCompletion(level: level, completion: completion)
+                }
             }
         case -1048:
-            delegateCatwalk?.throwSwordCatwalk()
-            
-            sendChatArray(shouldSkipDim: true, items: [
-                ChatItem(profile: .melchior, pause: 4, startNewChat: true, chat: "What the— has Marlin taught you nothing, you insolent boy!!", handler: nil),
-                ChatItem(profile: .magmus, chat: "MELCHIOR! Kindness!"),
-                ChatItem(profile: .melchior, chat: "He just threw it!!!"),
-                ChatItem(profile: .magmus, chat: "Forgive him, child. As you'll recall, the gateway is powered by sparkly purple gems. Surrender your sparkly purple gems and access shall be granted."),
-                ChatItem(profile: .hero, imgPos: .left, chat: "My sparkly purple gems.. that's right! Well, here goes nothing...")
-            ]) { [weak self] in
-                self?.delegateCatwalk?.feedGemsCatwalk {
-                    self?.adjustBrightnessForMagmoorScary()
+            adjustBrightnessForMagmoorScary()
+            delegateCatwalk?.spawnMagmoorCatwalk()
 
-                    self?.sendChatArray(shouldSkipDim: true, items: [
-                        ChatItem(profile: .villain, pause: 3, chat: "Interlopers!! You encroach upon my domain. But you are too late. The end has begun!!", handler: nil),
-                        ChatItem(profile: .melchior, imgPos: .left, chat: "You will regret ever stepping foot in this realm, Magmoor! Your reign of terror ends here!!")
-                    ]) {
-                        self?.handleDialogueCompletion(level: level, completion: completion)
-                    }
-                }
+            sendChatArray(shouldSkipDim: true, items: [
+                ChatItem(profile: .blankvillain, chat: "\ninterlopers!! you encroach upon my domain. but you are too late. the end has begun!!"),
+                ChatItem(profile: .melchior, imgPos: .left, chat: "You will regret ever stepping foot in this realm, Magmoor! Your reign of terror ends here!!")
+            ]) { [weak self] in
+                self?.handleDialogueCompletion(level: level, completion: completion)
             }
         case -1049:
             delegateCatwalk?.flashMagmoorCatwalk()
             
             sendChatArray(shouldSkipDim: true, items: [
-                ChatItem(profile: .villain, pause: 3, startNewChat: false, chat: "Enter if you dare... There is nothing you can do to stop what has already been put in motion.", handler: nil),
+                ChatItem(profile: .blankvillain, pause: 3, startNewChat: false, chat: "\nenter if you dare... there is nothing you can do to stop what has already been put in motion...", handler: nil),
                 ChatItem(profile: .hero, imgPos: .left, chat: "\(FIRManager.didPursueMagmoor ? "AAAHHHH! I'M NOT READY FOR THIS!!!" : "YOU'LL PAY FOR WHAT YOU DID TO MY FRIENDS!!!!!")"),
                 ChatItem(profile: .merton, imgPos: .left, chat: "Quickly boy! Through the gate! We mustn't waste anymore time!")
             ]) { [weak self] in
