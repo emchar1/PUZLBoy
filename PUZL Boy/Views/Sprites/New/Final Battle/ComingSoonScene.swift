@@ -65,12 +65,12 @@ class ComingSoonScene: SKScene {
         
         credits.append("Stay tuned for the epic conclusion...")
         credits.append("Created by\nEddie Char")
-        credits.append("Art Assets\nAdobe Stock\nDeviant Art\nFlaticon\nFreepik\nGame Art 2D\nGraphic River\nIcons8\nShutterstock")
-        credits.append("Music & Sound\nAudio Jungle\nEnvato")
+        credits.append("Image Libraries\nAdobe Stock\nDeviant Art\nFlaticon\nFreepik\nGame Art 2D\nGraphic River\nIcons8\nShutterstock")
+        credits.append("Sound Libraries\nAudio Jungle\nEnvato")
         credits.append("Special Thanks\nClayton Caldwell\nMichelle Rayfield\nJackson Rayfield\nAissa Char\nVirat Char\nMichel Char")
         credits.append("for\nOlivia🦄\nand Alana ")
         credits.append("Thank you for playing PUZL Boy!")
-        credits.append("Visit 5playapps.com for exciting news!")
+        credits.append("Visit 5playapps.com for exciting updates!")
         credits.append("Don't forget to Rate and Review! ❤️")
         credits.append("© 2024 5Play Apps, LLC. All rights reserved.")
         
@@ -122,10 +122,10 @@ class ComingSoonScene: SKScene {
             getCreditsAction(index: 3, waitDuration: 9),
             getCreditsAction(index: 4, waitDuration: 5),
             getCreditsAction(index: 5, waitDuration: 8),
-            getCreditsAction(index: 6, waitDuration: 7),
+            getCreditsAction(index: 6, waitDuration: 11),
             getCreditsAction(index: 7, waitDuration: 1),
             getCreditsAction(index: 8, waitDuration: 1),
-            getCreditsAction(index: 9, waitDuration: 6),
+            getCreditsAction(index: 9, waitDuration: 10),
             SKAction.wait(forDuration: 20)
         ])) { [weak self] in
             guard let self = self else { return }

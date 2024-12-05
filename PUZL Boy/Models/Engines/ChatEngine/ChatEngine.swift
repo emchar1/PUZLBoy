@@ -1196,8 +1196,8 @@ extension ChatEngine {
                 ChatItem(profile: .melchior, pause: 4, startNewChat: true, chat: "What the— has Marlin taught you nothing, you insolent boy!!", handler: nil),
                 ChatItem(profile: .magmus, chat: "MELCHIOR! Kindness!"),
                 ChatItem(profile: .melchior, chat: "He just threw it!!!"),
-                ChatItem(profile: .magmus, chat: "Forgive him, child. As you'll recall, the gateway is powered by magical purple gems. Surrender your magical purple gems and access shall be granted."),
-                ChatItem(profile: .hero, imgPos: .left, chat: "My magical purple gems.. that's right! Well, here goes nothing...")
+                ChatItem(profile: .magmus, chat: "Forgive him, child. As you'll recall, the gateway is powered by sparkly purple gems. Surrender your sparkly purple gems and access shall be granted."),
+                ChatItem(profile: .hero, imgPos: .left, chat: "My sparkly purple gems.. that's right! Well, here goes nothing...")
             ]) { [weak self] in
                 self?.delegateCatwalk?.feedGemsCatwalk {
                     self?.adjustBrightnessForMagmoorScary()
@@ -1240,7 +1240,7 @@ extension ChatEngine {
                 ChatItem(profile: .hero, imgPos: .left, chat: "Jelly beans, right..."),
                 ChatItem(profile: .trainer, chat: "Don't worry, the feeling lasts only a short amount of time, but while you're under its effects you can move to your heart's content."),
                 ChatItem(profile: .trainer, chat: "Run around collecting all the gems and bonuses that pop up in the level. But you gotta be quick before time runs out."),
-                ChatItem(profile: .hero, imgPos: .left, chat: "You mean the magical purple gems???"),
+                ChatItem(profile: .hero, imgPos: .left, chat: "You mean the sparkly purple gems???"),
                 ChatItem(profile: .trainer, chat: "Nope. These gems are blue and green. Oh, and the one thing you want to look out for are rainbow bombs."),
                 ChatItem(profile: .trainer, chat: "Like, I know they're all pretty and fun looking, but avoid them at all costs, or it's the end of the bonus round."),
                 ChatItem(profile: .trainer, chat: "Why is it always the pretty things in life that are the most deadly..."),
@@ -1459,8 +1459,8 @@ extension ChatEngine {
                     self?.delegate?.illuminatePanel(at: (1, 2), useOverlay: true)
                     self?.delegate?.illuminatePanel(at: (2, 2), useOverlay: false)
                 },
-                ChatItem(profile: .trainer, chat: "See the gate? It's sealed shut. To open it, collect all the magical purple gems in the level. Simple, right?"),
-                ChatItem(profile: .hero, imgPos: .left, chat: "Collect magical purple gems to open gate. Got it. Let's go save the princess!")
+                ChatItem(profile: .trainer, chat: "See the gate? It's sealed shut. To open it, collect all the sparkly purple gems in the level. Simple, right?"),
+                ChatItem(profile: .hero, imgPos: .left, chat: "Collect sparkly purple gems to open gate. Got it. Let's go save the princess!")
             ]) { [weak self] in
                 self?.delegate?.deilluminatePanel(at: (1, 2), useOverlay: true)
                 self?.delegate?.deilluminatePanel(at: (2, 2), useOverlay: false)
@@ -1473,7 +1473,7 @@ extension ChatEngine {
             delegate?.illuminatePanel(at: (1, 2), useOverlay: true)
             
             sendChatArray(items: [
-                ChatItem(profile: .trainer, chat: "Easy right? Levels get progressively harder the farther you go. Looks like that magical purple gem is trapped between those boulders.") { [weak self] in
+                ChatItem(profile: .trainer, chat: "Easy right? Levels get progressively harder the farther you go. Looks like that sparkly purple gem is trapped between those boulders.") { [weak self] in
                     self?.delegate?.illuminatePanel(at: (2, 1), useOverlay: true)
                 },
                 ChatItem(profile: .trainer, chat: "Not to worry! See that hammer over there? Use it to break through."),

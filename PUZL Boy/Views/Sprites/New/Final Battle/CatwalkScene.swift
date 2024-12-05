@@ -1040,17 +1040,28 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
      Animates a color cycle.
      - parameters:
         - color: the color of choice to animate a cycle
+        - shouldFlicker: adds a creepy flicker to the sprite
         - delay: add a delay before starting the rainbow cycle
      - returns: the SKAction
      */
-    private func animateColorCycle(color: UIColor, delay: TimeInterval?) -> SKAction {
+    private func animateColorCycle(color: UIColor, shouldFlicker: Bool, delay: TimeInterval?) -> SKAction {
+        let blackColorBlendFactor: CGFloat = 0.94
+        let flickerFade: TimeInterval = 0.1
+        let flickerDuration: TimeInterval = 1
+        
+        let flickerAction: SKAction = SKAction.repeat(SKAction.sequence([
+            SKAction.colorize(with: color, colorBlendFactor: 1, duration: 0),
+            SKAction.colorize(with: .black, colorBlendFactor: blackColorBlendFactor, duration: flickerFade),
+        ]), count: Int(flickerDuration * 10))
+
         return SKAction.repeatForever(SKAction.sequence([
-            SKAction.colorize(with: .black, colorBlendFactor: 0.9, duration: 0),
+            SKAction.colorize(with: .black, colorBlendFactor: blackColorBlendFactor, duration: 0),
             SKAction.wait(forDuration: delay ?? 0),
-            SKAction.colorize(with: color, colorBlendFactor: 1, duration: 2),
-            SKAction.wait(forDuration: 0.85),
-            SKAction.colorize(with: .black, colorBlendFactor: 0.9, duration: 0.5),
-            SKAction.wait(forDuration: 0.65 - (delay ?? 0))
+            SKAction.colorize(with: color, colorBlendFactor: 1, duration: 1),
+            SKAction.wait(forDuration: 0.65 - (delay ?? 0)),
+            SKAction.colorize(with: .black, colorBlendFactor: blackColorBlendFactor, duration: 0.35),
+            SKAction.wait(forDuration: 2 - flickerDuration),
+            shouldFlicker ? flickerAction : SKAction.wait(forDuration: flickerDuration)
         ]))
     }
     
@@ -1122,7 +1133,7 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
         
         for (i, panel) in catwalkPanels.enumerated() {
             panel.removeAction(forKey: "rainbowCycle")
-            panel.run(animateColorCycle(color: .red, delay: TimeInterval(catwalkLength - i) * delaySpeed))
+            panel.run(animateColorCycle(color: .red, shouldFlicker: false, delay: TimeInterval(catwalkLength - i) * delaySpeed))
         }
         
         elder0.sprite.removeAction(forKey: "rainbowCycle")
@@ -1130,10 +1141,10 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
         elder2.sprite.removeAction(forKey: "rainbowCycle")
         hero.sprite.removeAction(forKey: "rainbowCycle")
         
-        elder0.sprite.run(animateColorCycle(color: .red, delay: 4 * delaySpeed))
-        elder1.sprite.run(animateColorCycle(color: .red, delay: 5 * delaySpeed))
-        elder2.sprite.run(animateColorCycle(color: .red, delay: 6 * delaySpeed))
-        hero.sprite.run(animateColorCycle(color: .red, delay: 3 * delaySpeed))
+        elder0.sprite.run(animateColorCycle(color: .red, shouldFlicker: true, delay: 4 * delaySpeed))
+        elder1.sprite.run(animateColorCycle(color: .red, shouldFlicker: true, delay: 5 * delaySpeed))
+        elder2.sprite.run(animateColorCycle(color: .red, shouldFlicker: true, delay: 5.5 * delaySpeed))
+        hero.sprite.run(animateColorCycle(color: .red, shouldFlicker: true, delay: 3 * delaySpeed))
         
         
         //audio et al.

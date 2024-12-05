@@ -184,6 +184,7 @@ class AudioManager {
         addAudioItem("scarylaugh", category: .soundFX)
         addAudioItem("speechbubble", category: .soundFX) //not purchased $2
         addAudioItem("swordslash", category: .soundFX)
+        addAudioItem("swordthrow", category: .soundFX) //NEEDS PURCHASE $1
         addAudioItem("touchstatue", category: .soundFX)
         addAudioItem("thunderrumble", category: .soundFX)
         addAudioItem("warp", category: .soundFX)

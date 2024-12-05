@@ -336,14 +336,14 @@ class CreditsScene: SKScene {
                                 SKAction.moveBy(x: 0, y: -speechBubbleYOffset, duration: fadeDuration / 4)
                             ]))
                         },
-            LabelEntity(headingText: "Art Assets",
-                        subheadingTexts: ["Deviant Art", "Flaticon", "Freepik", "Game Art 2D", "Graphic River", "Icons8", "Adobe Stock", "Shutterstock"],
+            LabelEntity(headingText: "Image Libraries",
+                        subheadingTexts: ["Adobe Stock", "Deviant Art", "Flaticon", "Freepik", "Game Art 2D", "Graphic River", "Icons8", "Shutterstock"],
                         subheadingAction: animateFadeAction()) { [weak self] in
                             guard let self = self else { return }
                             
                             speechBubble.run(SKAction.moveBy(x: 0, y: speechBubbleYOffset, duration: fadeDuration / 4))
                         },
-            LabelEntity(headingText: "Music & Sound",
+            LabelEntity(headingText: "Sound Libraries",
                         subheadingTexts: ["Audio Jungle", "Envato"],
                         subheadingAction: animateFadeAction()) { [weak self] in
                             guard let self = self else { return }

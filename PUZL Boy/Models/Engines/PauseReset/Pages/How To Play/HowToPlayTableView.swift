@@ -21,7 +21,7 @@ class HowToPlayTableView: UITableView, UITableViewDelegate, UITableViewDataSourc
         HowToPlayModel(image: "start", title: "Start", requiredLevel: 0,
                        description: "Your starting point. Tap any available panel adjacent to you to move to it. Diagonal moves are not allowed."),
         HowToPlayModel(image: "endClosed", title: "End", requiredLevel: 0,
-                       description: "Collect all the magical purple gems to open the gate. Reach the gate in under a certain number of moves to advance."),
+                       description: "Collect all the sparkly purple gems to open the gate. Reach the gate in under a certain number of moves to advance."),
         HowToPlayModel(image: "grass", title: "Grass", requiredLevel: 0,
                        description: "Grass is your basic terrain panel - nothing special about it. Stepping on grass will cost you 1 move. 👢"),
         HowToPlayModel(image: "marsh", title: "Poison Marsh", requiredLevel: 19,
@@ -37,8 +37,8 @@ class HowToPlayTableView: UITableView, UITableViewDelegate, UITableViewDataSourc
     ]
     
     private var overlayItems: [HowToPlayModel] = [
-        HowToPlayModel(image: "gem", title: "Magical Purple Gem", requiredLevel: 1,
-                       description: "Collect all the magical purple gems in each level to open the gate and advance to the next level."),
+        HowToPlayModel(image: "gem", title: "Sparkly Purple Gem", requiredLevel: 1,
+                       description: "Collect all the sparkly purple gems in each level to open the gate and advance to the next level."),
         HowToPlayModel(image: "boulder", title: "Boulder", requiredLevel: 8,
                        description: "Boulders prevent you from passing through. Find a hammer and smash them into a million pieces."),
         HowToPlayModel(image: "hammer", title: "Hammer", requiredLevel: 12,

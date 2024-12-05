@@ -81,6 +81,7 @@ class ChosenSword {
         ]))
         
         AudioManager.shared.playSound(for: "boyattack\(Int.random(in: 1...3))", delay: delay ?? 0)
+        AudioManager.shared.playSound(for: "swordthrow", delay: delay ?? 0)
     }
     
 }
