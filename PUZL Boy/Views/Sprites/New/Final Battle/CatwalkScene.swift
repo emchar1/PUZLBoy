@@ -34,6 +34,14 @@ class CatwalkScene: SKScene {
     private var currentPanelIndex: Int = 0
     private var leftmostPanelIndex: Int = 0
     private var catwalkAngle: CGFloat = 0
+    private var currentRainbowIndex = 0 {
+        didSet {
+            if currentRainbowIndex >= rainbowColors.count {
+                currentRainbowIndex = 0
+            }
+        }
+    }
+    private var rainbowColors: [UIColor] = [.red, .orange, .yellow, .green, .blue, .purple, .systemPink]
     private var isMoving: Bool = false
     private var shouldDisableInput: Bool = true
     private var isRedShift: Bool = false
@@ -793,6 +801,7 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
         
         let exitDuration: TimeInterval = 0.5
         let fadeDuration: TimeInterval = 2
+        let jumpScareDuration: TimeInterval = 0.12
         let scaryLaughDuration: TimeInterval = AudioManager.shared.getAudioItem(filename: "scarylaugh")?.player.duration ?? 0
         let exitAction = SKAction.group([
             animatePlayer(player: hero, type: .run),
@@ -815,7 +824,10 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
         ]))
         
         magmoorSprite.removeAction(forKey: "magmoorFadeAction")
-        magmoorSprite.run(SKAction.fadeOut(withDuration: audioItemEnd))
+        magmoorSprite.run(SKAction.sequence([
+            SKAction.wait(forDuration: audioItemEnd + scaryLaughDuration - 2 - jumpScareDuration),
+            SKAction.fadeOut(withDuration: jumpScareDuration)
+        ]))
         
         magmoorFlashSprite.run(SKAction.sequence([
             SKAction.fadeIn(withDuration: audioItemEnd),
@@ -828,8 +840,8 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
                 AudioManager.shared.playSound(for: "magichorrorimpact2")
             },
             SKAction.group([
-                SKAction.scale(by: 1.5, duration: 0.12),
-                SKAction.rotate(byAngle: CGFloat(5).toRadians(), duration: 0.12)
+                SKAction.scale(by: 1.5, duration: jumpScareDuration),
+                SKAction.rotate(byAngle: CGFloat(5).toRadians(), duration: jumpScareDuration)
             ]),
             SKAction.fadeOut(withDuration: 0),
             SKAction.wait(forDuration: 3)
@@ -973,12 +985,15 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
         guard didTapGate else { return }
         
         AudioManager.shared.playSound(for: "revive")
+        Haptics.shared.addHapticFeedback(withStyle: .heavy)
         
         catwalkPanels.last?.run(SKAction.sequence([
-            SKAction.colorize(with: .purple, colorBlendFactor: 1, duration: fadeDuration * 1/4),
+            SKAction.colorize(with: rainbowColors[currentRainbowIndex], colorBlendFactor: 1, duration: fadeDuration * 1/4),
             SKAction.wait(forDuration: fadeDuration * 1/4),
             SKAction.colorize(withColorBlendFactor: 0, duration: fadeDuration * 1/2)
         ]))
+        
+        currentRainbowIndex += 1
 
         //Incrementally add effects per each tap.
         if gemsFed > gemsToFeed * 6 && gemsFed <= gemsToFeed * 7 {
@@ -1084,17 +1099,17 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
         - delay: add a delay before starting the rainbow cycle
      - returns: the SKAction
      */
-    private func animateRainbowCycle(lightenColorFactor: CGFloat = 0, cycleSpeed: TimeInterval, delay: TimeInterval?) -> SKAction {
+    private func animateRainbowCycle(cycleSpeed: TimeInterval, delay: TimeInterval?) -> SKAction {
         return SKAction.sequence([
             SKAction.wait(forDuration: delay ?? 0),
             SKAction.repeatForever(SKAction.sequence([
-                SKAction.colorize(with: .red.lightenColor(factor: lightenColorFactor), colorBlendFactor: 1, duration: cycleSpeed),
-                SKAction.colorize(with: .orange.lightenColor(factor: lightenColorFactor), colorBlendFactor: 1, duration: cycleSpeed),
-                SKAction.colorize(with: .yellow.lightenColor(factor: lightenColorFactor), colorBlendFactor: 1, duration: cycleSpeed),
-                SKAction.colorize(with: .green.lightenColor(factor: lightenColorFactor), colorBlendFactor: 1, duration: cycleSpeed),
-                SKAction.colorize(with: .blue.lightenColor(factor: lightenColorFactor), colorBlendFactor: 1, duration: cycleSpeed),
-                SKAction.colorize(with: .purple.lightenColor(factor: lightenColorFactor), colorBlendFactor: 1, duration: cycleSpeed),
-                SKAction.colorize(with: .systemPink.lightenColor(factor: lightenColorFactor), colorBlendFactor: 1, duration: cycleSpeed)
+                SKAction.colorize(with: rainbowColors[0], colorBlendFactor: 1, duration: cycleSpeed),
+                SKAction.colorize(with: rainbowColors[1], colorBlendFactor: 1, duration: cycleSpeed),
+                SKAction.colorize(with: rainbowColors[2], colorBlendFactor: 1, duration: cycleSpeed),
+                SKAction.colorize(with: rainbowColors[3], colorBlendFactor: 1, duration: cycleSpeed),
+                SKAction.colorize(with: rainbowColors[4], colorBlendFactor: 1, duration: cycleSpeed),
+                SKAction.colorize(with: rainbowColors[5], colorBlendFactor: 1, duration: cycleSpeed),
+                SKAction.colorize(with: rainbowColors[6], colorBlendFactor: 1, duration: cycleSpeed)
             ]))
         ])
     }
@@ -1139,7 +1154,7 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
     private func flashMagmoorHelper() {
         let baselineAlpha = magmoorSprite.alpha
         let baselineScale: CGFloat = magmoorSprite.xScale
-        let scaleBy: CGFloat = 1.25
+        let scaleBy: CGFloat = 1.5
         let zoomFadeDuration: TimeInterval = 1
         let flashPauseDuration: TimeInterval = getFlashSequence(shouldFlash: false).duration
         
@@ -1149,14 +1164,17 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
             let fadeOutDuration: TimeInterval = 0.5
             
             let flashSequence = SKAction.sequence([
-                SKAction.scale(to: baselineScale * scaleBy, duration: 0),
+                SKAction.scale(to: baselineScale * 1.1, duration: 0),
                 SKAction.repeat(SKAction.sequence([
                     SKAction.fadeOut(withDuration: 0),
                     SKAction.wait(forDuration: waitDuration),
                     SKAction.fadeAlpha(to: shouldFlash ? baselineAlpha : 0, duration: 0),
                     SKAction.wait(forDuration: waitDuration)
                 ]), count: count),
-                SKAction.fadeAlpha(to: shouldFlash ? 0 : baselineAlpha, duration: fadeOutDuration)
+                SKAction.group([
+                    SKAction.scale(to: baselineScale, duration: fadeOutDuration),
+                    SKAction.fadeAlpha(to: shouldFlash ? 0 : baselineAlpha, duration: fadeOutDuration)
+                ])
             ])
             
             let duration: TimeInterval = TimeInterval(count) * (2 * waitDuration) + fadeOutDuration
@@ -1202,7 +1220,7 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
         catwalkNode.run(SKAction.sequence([
             SKAction.fadeOut(withDuration: 0),
             SKAction.wait(forDuration: flashPauseDuration),
-            SKAction.fadeIn(withDuration: 0)
+            SKAction.fadeIn(withDuration: 0.1)
         ]))
         
         elder0.sprite.removeAction(forKey: "rainbowCycle")

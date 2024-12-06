@@ -1202,7 +1202,7 @@ extension ChatEngine {
                     ChatItem(profile: .magmus, chat: "MELCHIOR! Kindness!"),
                     ChatItem(profile: .melchior, chat: "He just threw it!!!"),
                     ChatItem(profile: .magmus, chat: "Forgive him, child. As you'll recall, the gateway is powered by sparkly purple gems. Surrender your sparkly purple gems and access shall be granted."),
-                    ChatItem(profile: .hero, imgPos: .left, chat: "That's right! I'll tap the gate until it is sufficiently fed with these sparkly purple gems...")
+                    ChatItem(profile: .hero, imgPos: .left, chat: "That's it! I'll keep tapping the gate until I've fed it enough of my sparkly purple gems!")
                 ]) { [weak self] in
                     self?.delegateCatwalk?.feedGemsCatwalk()
                     self?.handleDialogueCompletion(level: level, completion: completion)
