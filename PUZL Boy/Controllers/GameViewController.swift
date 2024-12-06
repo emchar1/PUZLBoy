@@ -277,7 +277,7 @@ extension GameViewController: CatwalkSceneDelegate {
     func catwalkSceneDidFinish() {
         let comingSoonScene = ComingSoonScene(size: K.ScreenDimensions.size)
         comingSoonScene.comingSoonDelegate = self
-        skView.presentScene(comingSoonScene, transition: SKTransition.fade(with: .black, duration: 4.5))
+        skView.presentScene(comingSoonScene, transition: SKTransition.fade(with: .black, duration: 0.2))
     }
 }
 
