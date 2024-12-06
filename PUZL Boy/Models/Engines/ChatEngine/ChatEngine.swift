@@ -1200,8 +1200,8 @@ extension ChatEngine {
                 self?.sendChatArray(shouldSkipDim: true, items: [
                     ChatItem(profile: .melchior, pause: 4, startNewChat: true, chat: "What the— has Marlin taught you nothing, you insolent boy!!", handler: nil),
                     ChatItem(profile: .magmus, chat: "MELCHIOR! Kindness!"),
-                    ChatItem(profile: .melchior, chat: "He just threw it!!!"),
                     ChatItem(profile: .magmus, chat: "Forgive him, child. As you'll recall, the gateway is powered by sparkly purple gems. Surrender your sparkly purple gems and access shall be granted."),
+                    ChatItem(profile: .melchior, chat: "He just threw it!!!"),
                     ChatItem(profile: .hero, imgPos: .left, chat: "That's it! I'll keep tapping the gate until I've fed it enough of my sparkly purple gems!")
                 ]) { [weak self] in
                     self?.delegateCatwalk?.feedGemsCatwalk()
