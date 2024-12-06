@@ -195,6 +195,7 @@ class AudioManager {
         addAudioItem("winlevel", category: .soundFX)
         addAudioItem("winlevelageofruin", category: .soundFX)
         addAudioItem("winlevel3stars", category: .soundFX)
+        addAudioItem("ydooropen", category: .soundFX) //$1
         addAudioItem("zdooropen", category: .soundFX) //TEST FOR FUN ONLY
 
         

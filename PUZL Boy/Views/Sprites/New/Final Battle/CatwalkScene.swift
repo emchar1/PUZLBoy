@@ -24,7 +24,7 @@ class CatwalkScene: SKScene {
     private var fadeAlphaMultiplier: CGFloat { 1 - CGFloat(currentPanelIndex) / CGFloat(catwalkLength) * 3/4 }
     
     private let gemsThreshold = 180
-    private let gemsToFeed = 30
+    private let gemsToFeed = 20
     private var gemsFed = 0
     private var shouldFeedGems: Bool = false
     private var isFeedingGems: Bool = false
@@ -945,7 +945,7 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
         
         isFeedingGems = true
         
-        let fadeDuration: TimeInterval = 2
+        let fadeDuration: TimeInterval = 1.5
         let cycleSpeed: TimeInterval = 0.25
         let delaySpeed: TimeInterval = 0.1
         
@@ -961,7 +961,7 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
                 
                 openCloseGate(shouldOpen: true)
                 endClosedMagic.removeFromParent()
-                AudioManager.shared.playSound(for: "zdooropen")
+                AudioManager.shared.playSound(for: "ydooropen")
             }
             else {
                 isFeedingGems = false
@@ -975,16 +975,13 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
         AudioManager.shared.playSound(for: "revive")
         
         catwalkPanels.last?.run(SKAction.sequence([
-            SKAction.colorize(with: .purple, colorBlendFactor: 1, duration: 0.5),
-            SKAction.wait(forDuration: 0.5),
-            SKAction.colorize(withColorBlendFactor: 0, duration: 1)
+            SKAction.colorize(with: .purple, colorBlendFactor: 1, duration: fadeDuration * 1/4),
+            SKAction.wait(forDuration: fadeDuration * 1/4),
+            SKAction.colorize(withColorBlendFactor: 0, duration: fadeDuration * 1/2)
         ]))
 
         //Incrementally add effects per each tap.
-        if gemsFed > gemsToFeed * 5 {
-            //do nothing, but need this case here to prevent multiple execution of other cases
-        }
-        else if gemsFed > gemsToFeed * 4 {
+        if gemsFed > gemsToFeed * 6 && gemsFed <= gemsToFeed * 7 {
             run(SKAction.sequence([
                 SKAction.wait(forDuration: fadeDuration),
                 SKAction.run { [weak self] in
@@ -1010,7 +1007,7 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
                 },
             ]))
         }
-        else if gemsFed > gemsToFeed * 2 {
+        else if gemsFed > gemsToFeed * 3 && gemsFed <= gemsToFeed * 4 {
             run(SKAction.sequence([
                 SKAction.wait(forDuration: fadeDuration),
                 SKAction.run { [weak self] in
@@ -1201,6 +1198,12 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
             panel.removeAction(forKey: "rainbowCycle")
             panel.run(animateColorCycle(color: .red, shouldFlicker: false, delay: TimeInterval(catwalkLength - i) * delaySpeed))
         }
+        
+        catwalkNode.run(SKAction.sequence([
+            SKAction.fadeOut(withDuration: 0),
+            SKAction.wait(forDuration: flashPauseDuration),
+            SKAction.fadeIn(withDuration: 0)
+        ]))
         
         elder0.sprite.removeAction(forKey: "rainbowCycle")
         elder1.sprite.removeAction(forKey: "rainbowCycle")

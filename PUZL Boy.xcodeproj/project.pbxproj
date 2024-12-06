@@ -65,6 +65,7 @@
 		EA41FBF32D005D3F00796368 /* zdooropen.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA41FBF22D005D3F00796368 /* zdooropen.mp3 */; };
 		EA41FBF72D00D71500796368 /* magichorrorimpact2.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA41FBF62D00D71500796368 /* magichorrorimpact2.mp3 */; };
 		EA41FBF92D0146F500796368 /* swordthrow.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA41FBF82D0146F500796368 /* swordthrow.mp3 */; };
+		EA41FBFB2D02C09400796368 /* ydooropen.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA41FBFA2D02C09400796368 /* ydooropen.mp3 */; };
 		EA4583372A420AAA00279056 /* PartyInventory.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA4583362A420AAA00279056 /* PartyInventory.swift */; };
 		EA45833B2A42622000279056 /* pickuptime.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA45833A2A42622000279056 /* pickuptime.mp3 */; };
 		EA45833F2A43CE3100279056 /* PartyResultsSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA45833E2A43CE3100279056 /* PartyResultsSprite.swift */; };
@@ -432,6 +433,7 @@
 		EA41FBF22D005D3F00796368 /* zdooropen.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = zdooropen.mp3; sourceTree = "<group>"; };
 		EA41FBF62D00D71500796368 /* magichorrorimpact2.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = magichorrorimpact2.mp3; sourceTree = "<group>"; };
 		EA41FBF82D0146F500796368 /* swordthrow.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = swordthrow.mp3; sourceTree = "<group>"; };
+		EA41FBFA2D02C09400796368 /* ydooropen.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = ydooropen.mp3; sourceTree = "<group>"; };
 		EA4583362A420AAA00279056 /* PartyInventory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PartyInventory.swift; sourceTree = "<group>"; };
 		EA45833A2A42622000279056 /* pickuptime.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = pickuptime.mp3; sourceTree = "<group>"; };
 		EA45833E2A43CE3100279056 /* PartyResultsSprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PartyResultsSprite.swift; sourceTree = "<group>"; };
@@ -1162,6 +1164,7 @@
 				EAAEA3CB2931F14D00221963 /* winlevel.mp3 */,
 				EA8C605F2C068E0700DED3C7 /* winlevelageofruin.mp3 */,
 				EAE43D902C48A74C00E6DB3C /* winlevel3stars.mp3 */,
+				EA41FBFA2D02C09400796368 /* ydooropen.mp3 */,
 				EA41FBF22D005D3F00796368 /* zdooropen.mp3 */,
 			);
 			path = Sounds;
@@ -1564,6 +1567,7 @@
 				EA705CE02A1C64760051519B /* buttontap5.mp3 in Resources */,
 				EA9D6A5C2B48E4F00004187B /* magicblast.mp3 in Resources */,
 				EA7605622B5A859C001BC268 /* movesnow1.mp3 in Resources */,
+				EA41FBFB2D02C09400796368 /* ydooropen.mp3 in Resources */,
 				EA8C606C2C068E0800DED3C7 /* winlevelageofruin.mp3 in Resources */,
 				EAE919472A4CAFFD00AF67D1 /* gemcollectparty3x.mp3 in Resources */,
 				EAACB4B92971E08A00973EB8 /* chatclose.mp3 in Resources */,
