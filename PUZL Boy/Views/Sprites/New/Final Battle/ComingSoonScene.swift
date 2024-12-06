@@ -23,7 +23,7 @@ class ComingSoonScene: SKScene {
     private var comingSoonLabel: SKLabelNode!
     private var copyrightLabel: SKLabelNode!
     private var logoNode: SKSpriteNode!
-    private var credits: [String] = []
+    private var credits: [(waitDuration: TimeInterval, text: String)] = []
     
     private var letterbox: LetterboxSprite!
     private var tapPointerEngine: TapPointerEngine!
@@ -73,15 +73,15 @@ class ComingSoonScene: SKScene {
         logoNode.setScale(2)
         logoNode.alpha = 0
         
-        credits.append("Stay tuned for the epic conclusion...")
-        credits.append("Created by\nEddie Char")
-        credits.append("Image Libraries\nAdobe Stock\nDeviant Art\nFlaticon\nFreepik\nGame Art 2D\nGraphic River\nIcons8\nShutterstock")
-        credits.append("Sound Libraries\nAudio Jungle\nEnvato")
-        credits.append("Special Thanks\nClayton Caldwell\nMichelle Rayfield\nJackson Rayfield\nAissa Char\nVirat Char\nMichel Char")
-        credits.append("for\nOlivia🦄\nand Alana ")
-        credits.append("Thank you for playing PUZL Boy!")
-        credits.append("Visit 5playapps.com for exciting updates!")
-        credits.append("Don't forget to Rate and Review! ❤️")
+        credits.append((4,  "Stay tuned for the epic conclusion..."))
+        credits.append((11, "Created by\nEddie Char"))
+        credits.append((4,  "Image Libraries\nAdobe Stock\nDeviant Art\nFlaticon\nFreepik\nGame Art 2D\nGraphic River\nIcons8\nShutterstock"))
+        credits.append((9,  "Sound Libraries\nAudio Jungle\nEnvato"))
+        credits.append((5,  "Special Thanks\nClayton Caldwell\nMichelle Rayfield\nJackson Rayfield\nAissa Char\nVirat Char\nMichel Char"))
+        credits.append((8,  "for\nOlivia🦄\nand Alana "))
+        credits.append((11, "Thank you for playing PUZL Boy!"))
+        credits.append((1,  "Visit 5playapps.com for exciting updates!"))
+        credits.append((1,  "Don't forget to Rate and Review! ❤️"))
         
         let copyrightAttrString = getAttrString(text: "© 2024 5Play Apps, LLC. All rights reserved.")
         let copyrightShadowLabel = SKLabelNode()
@@ -116,18 +116,20 @@ class ComingSoonScene: SKScene {
     }
     
     func animateScene() {
-        let combinedCreditsDuration: TimeInterval = 4 + 11 + 4 + 9 + 5 + 8 + 11 + 1 + 1
+        let combinedCreditsDuration: TimeInterval = credits.map { $0.waitDuration }.reduce(0, +)
         let creditsScrollSpeed: TimeInterval = 28
         
-        func getCreditsAction(index: Int, waitDuration: TimeInterval) -> SKAction {
-            return SKAction.sequence([
-                SKAction.wait(forDuration: waitDuration),
+        func getCreditsAction(index: Int) -> SKAction {
+            let action = SKAction.sequence([
+                SKAction.wait(forDuration: credits[index].waitDuration),
                 SKAction.run { [weak self] in
                     guard let self = self else { return }
                     
-                    animateCredits(credits: credits[index], creditsScrollSpeed: creditsScrollSpeed)
+                    animateCredits(credits: credits[index].text, creditsScrollSpeed: creditsScrollSpeed)
                 }
             ])
+            
+            return action
         }
         
         AudioManager.shared.playSound(for: "bossbattle0")
@@ -138,16 +140,17 @@ class ComingSoonScene: SKScene {
             SKAction.fadeOut(withDuration: 1)
         ]))
         
+        //The scrolling credits. The pitfall here is that the number of calls to getCreditsAction() needs to match the size of the array, with the index in order, otherwise you get wonky behavior.
         run(SKAction.sequence([
-            getCreditsAction(index: 0, waitDuration: 4),
-            getCreditsAction(index: 1, waitDuration: 11),
-            getCreditsAction(index: 2, waitDuration: 4),
-            getCreditsAction(index: 3, waitDuration: 9),
-            getCreditsAction(index: 4, waitDuration: 5),
-            getCreditsAction(index: 5, waitDuration: 8),
-            getCreditsAction(index: 6, waitDuration: 11),
-            getCreditsAction(index: 7, waitDuration: 1),
-            getCreditsAction(index: 8, waitDuration: 1)
+            getCreditsAction(index: 0),
+            getCreditsAction(index: 1),
+            getCreditsAction(index: 2),
+            getCreditsAction(index: 3),
+            getCreditsAction(index: 4),
+            getCreditsAction(index: 5),
+            getCreditsAction(index: 6),
+            getCreditsAction(index: 7),
+            getCreditsAction(index: 8)
         ]))
         
         logoNode.run(SKAction.sequence([
