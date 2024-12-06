@@ -451,7 +451,7 @@ class CatwalkScene: SKScene {
         Haptics.shared.executeCustomPattern(pattern: .thunder)
     }
     
-    private func unshakeScreen(fadeDuration: TimeInterval) {
+    private func unshakeScreen(fadeDuration: TimeInterval, completion: (() -> Void)?) {
         AudioManager.shared.stopSound(for: "thunderrumble", fadeDuration: fadeDuration)
         
         run(SKAction.wait(forDuration: fadeDuration)) { [weak self] in
@@ -459,6 +459,8 @@ class CatwalkScene: SKScene {
 
             Haptics.shared.stopHapticEngine()
             Haptics.shared.startHapticEngine(shouldInitialize: false)
+            
+            completion?()
         }
     }
     
@@ -840,7 +842,7 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
             self?.cleanupScene()
         }
         
-        unshakeScreen(fadeDuration: fadeDuration * 2)
+        unshakeScreen(fadeDuration: fadeDuration * 2, completion: nil)
 
         AudioManager.shared.playSoundThenStop(for: "movetile\(Int.random(in: 1...3))", playForDuration: 0.2, fadeOut: 0.8)
         AudioManager.shared.stopSound(for: catwalkOverworld, fadeDuration: fadeDuration * 2)
@@ -942,7 +944,6 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
         guard !isFeedingGems else { return }
         
         isFeedingGems = true
-        AudioManager.shared.playSound(for: "revive")
         
         let fadeDuration: TimeInterval = 2
         let cycleSpeed: TimeInterval = 0.25
@@ -952,24 +953,34 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
             guard let self = self else { return }
             
             if gemsFed >= gemsThreshold {
-                shouldFeedGems = false
-                isRedShift = true
-
-                unshakeScreen(fadeDuration: fadeDuration)
+                unshakeScreen(fadeDuration: fadeDuration) {
+                    self.isFeedingGems = false
+                    self.shouldFeedGems = false
+                    self.isRedShift = true
+                }
+                
                 openCloseGate(shouldOpen: true)
-                
                 endClosedMagic.removeFromParent()
-                
                 AudioManager.shared.playSound(for: "zdooropen")
             }
-            
-            isFeedingGems = false
+            else {
+                isFeedingGems = false
+            }
         }
         
         
         //Ensure the gate was tapped, otherwise skip all the below rigamaroll
         guard didTapGate else { return }
         
+        AudioManager.shared.playSound(for: "revive")
+        
+        catwalkPanels.last?.run(SKAction.sequence([
+            SKAction.colorize(with: .purple, colorBlendFactor: 1, duration: 0.5),
+            SKAction.wait(forDuration: 0.5),
+            SKAction.colorize(withColorBlendFactor: 0, duration: 1)
+        ]))
+
+        //Incrementally add effects per each tap.
         if gemsFed > gemsToFeed * 5 {
             //do nothing, but need this case here to prevent multiple execution of other cases
         }
@@ -1007,12 +1018,6 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
                 },
             ]))
         }
-        
-        catwalkPanels.last?.run(SKAction.sequence([
-            SKAction.colorize(with: .purple, colorBlendFactor: 1, duration: 0.5),
-            SKAction.wait(forDuration: 0.5),
-            SKAction.colorize(withColorBlendFactor: 0, duration: 1)
-        ]))
     }
     
     /**
