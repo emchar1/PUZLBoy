@@ -21,6 +21,8 @@ class ComingSoonScene: SKScene {
 
     private var backgroundNode: SKSpriteNode!
     private var comingSoonLabel: SKLabelNode!
+    private var copyrightLabel: SKLabelNode!
+    private var logoNode: SKSpriteNode!
     private var credits: [String] = []
     
     private var letterbox: LetterboxSprite!
@@ -54,6 +56,9 @@ class ComingSoonScene: SKScene {
         backgroundNode = SKSpriteNode(color: .black, size: size)
         backgroundNode.anchorPoint = .zero
         
+        letterbox = LetterboxSprite(color: .black, height: size.height / 3)
+        tapPointerEngine = TapPointerEngine()
+        
         comingSoonLabel = SKLabelNode(text: "TO BE CONTINUED")
         comingSoonLabel.fontName = UIFont.gameFont
         comingSoonLabel.fontColor = textColor
@@ -62,6 +67,11 @@ class ComingSoonScene: SKScene {
         comingSoonLabel.addHeavyDropShadow(alpha: shadow.alpha)
         comingSoonLabel.updateShadowColor(shadow.color)
         comingSoonLabel.zPosition = 10
+        
+        logoNode = SKSpriteNode(imageNamed: "5PlayAppsSM_dark")
+        logoNode.position = CGPoint(x: size.width / 2, y: 0)
+        logoNode.setScale(2)
+        logoNode.alpha = 0
         
         credits.append("Stay tuned for the epic conclusion...")
         credits.append("Created by\nEddie Char")
@@ -72,10 +82,20 @@ class ComingSoonScene: SKScene {
         credits.append("Thank you for playing PUZL Boy!")
         credits.append("Visit 5playapps.com for exciting updates!")
         credits.append("Don't forget to Rate and Review! ❤️")
-        credits.append("© 2024 5Play Apps, LLC. All rights reserved.")
         
-        letterbox = LetterboxSprite(color: .black, height: size.height / 3)
-        tapPointerEngine = TapPointerEngine()
+        let copyrightAttrString = getAttrString(text: "© 2024 5Play Apps, LLC. All rights reserved.")
+        let copyrightShadowLabel = SKLabelNode()
+        copyrightShadowLabel.attributedText = copyrightAttrString.shadow
+        copyrightShadowLabel.position = CGPoint(x: -3, y: -3)
+        copyrightShadowLabel.alpha = shadow.alpha
+        copyrightShadowLabel.zPosition = -1
+
+        copyrightLabel = SKLabelNode()
+        copyrightLabel.attributedText = copyrightAttrString.main
+        copyrightLabel.position = CGPoint(x: size.width / 2, y: size.height * 1/8)
+        copyrightLabel.alpha = 0
+        copyrightLabel.zPosition = letterbox.zPosition + 10
+        copyrightLabel.addChild(copyrightShadowLabel)
     }
     
     
@@ -84,9 +104,9 @@ class ComingSoonScene: SKScene {
     override func didMove(to view: SKView) {
         addChild(backgroundNode)
         addChild(comingSoonLabel)
+        addChild(logoNode)
         addChild(letterbox)
-        
-        animateScene()
+        addChild(copyrightLabel)
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -95,21 +115,24 @@ class ComingSoonScene: SKScene {
         tapPointerEngine.move(to: self, at: location, particleType: .pointer)
     }
     
-    private func animateScene() {
+    func animateScene() {
+        let combinedCreditsDuration: TimeInterval = 4 + 11 + 4 + 9 + 5 + 8 + 11 + 1 + 1
+        let creditsScrollSpeed: TimeInterval = 28
+        
         func getCreditsAction(index: Int, waitDuration: TimeInterval) -> SKAction {
             return SKAction.sequence([
                 SKAction.wait(forDuration: waitDuration),
                 SKAction.run { [weak self] in
                     guard let self = self else { return }
                     
-                    animateCredits(credits: credits[index])
+                    animateCredits(credits: credits[index], creditsScrollSpeed: creditsScrollSpeed)
                 }
             ])
         }
         
-
         AudioManager.shared.playSound(for: "bossbattle0")
-
+        letterbox.show(duration: 2, delay: 4)
+        
         comingSoonLabel.run(SKAction.sequence([
             SKAction.wait(forDuration: 3),
             SKAction.fadeOut(withDuration: 1)
@@ -124,63 +147,60 @@ class ComingSoonScene: SKScene {
             getCreditsAction(index: 5, waitDuration: 8),
             getCreditsAction(index: 6, waitDuration: 11),
             getCreditsAction(index: 7, waitDuration: 1),
-            getCreditsAction(index: 8, waitDuration: 1),
-            getCreditsAction(index: 9, waitDuration: 10),
-            SKAction.wait(forDuration: 20)
+            getCreditsAction(index: 8, waitDuration: 1)
+        ]))
+        
+        logoNode.run(SKAction.sequence([
+            SKAction.wait(forDuration: combinedCreditsDuration + 10),
+            SKAction.fadeIn(withDuration: 0),
+            SKAction.moveTo(y: size.height / 2, duration: creditsScrollSpeed / 2.5),
+            SKAction.run {
+                AudioManager.shared.stopSound(for: "bossbattle0", fadeDuration: 6)
+            },
+            SKAction.wait(forDuration: 4),
+            SKAction.fadeOut(withDuration: 2),
+            SKAction.wait(forDuration: 2)
         ])) { [weak self] in
-            guard let self = self else { return }
-            
-            let fadeDuration: TimeInterval = 4
-            
-            AudioManager.shared.stopSound(for: "bossbattle0", fadeDuration: fadeDuration)
-            
-            backgroundNode.run(SKAction.colorize(with: .white, colorBlendFactor: 0.5, duration: fadeDuration))
-            letterbox.close(size: size, duration: fadeDuration) {
-                self.run(SKAction.wait(forDuration: fadeDuration / 2)) {
-                    self.cleanup()
-                    self.comingSoonDelegate?.comingSoonSceneDidFinish()
-                }
-            }
+            self?.cleanup()
+            self?.comingSoonDelegate?.comingSoonSceneDidFinish()
         }
         
-        letterbox.show(duration: 2, delay: 4)
+        copyrightLabel.run(SKAction.sequence([
+            SKAction.wait(forDuration: combinedCreditsDuration + 10 + creditsScrollSpeed / 2.5),
+            SKAction.fadeIn(withDuration: 2),
+            SKAction.wait(forDuration: 2),
+            SKAction.fadeOut(withDuration: 2)
+        ]))
         
         backgroundNode.run(SKAction.sequence([
             SKAction.wait(forDuration: 4),
-            SKAction.colorize(with: .black.lightenColor(factor: 3), colorBlendFactor: 1, duration: 2)
+            SKAction.colorize(with: .black.lightenColor(factor: 3), colorBlendFactor: 1, duration: 2),
+            SKAction.wait(forDuration: combinedCreditsDuration + 10 - 4 - 2),
+            SKAction.colorize(with: .black, colorBlendFactor: 1, duration: creditsScrollSpeed / 2.5)
         ]))
     }
     
-    private func animateCredits(credits: String) {
-        let font = UIFont(name: UIFont.chatFont, size: UIFont.chatFontSizeLarge) ?? UIFont.systemFont(ofSize: 30)
-        let range = NSRange(location: 0, length: credits.count)
-        let rangeTitle = NSRange(location: 0, length: credits.distance(from: credits.startIndex,
-                                                                       to: credits.firstIndex(of: "\n") ?? credits.startIndex))
-        let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.alignment = .center
+    
+    // MARK: - Helper Functions
+    
+    /**
+     Animates a line of credits.
+     - parameters:
+        - credits: the credit text string
+        - creditsScrollSpeed: vertical speed of credit as it scrolls by
+     */
+    private func animateCredits(credits: String, creditsScrollSpeed: TimeInterval) {
+        let attrString = getAttrString(text: credits)
         
-        let attrString = NSMutableAttributedString(string: credits)
-        attrString.addAttribute(NSAttributedString.Key.paragraphStyle, value: paragraphStyle, range: range)
-        attrString.addAttribute(NSAttributedString.Key.foregroundColor, value: textColorAlt, range: range)
-        attrString.addAttribute(NSAttributedString.Key.font, value: font, range: range)
-        attrString.addAttribute(NSAttributedString.Key.underlineStyle, value: NSUnderlineStyle.single.rawValue, range: rangeTitle)
-        attrString.addAttribute(NSAttributedString.Key.foregroundColor, value: textColor, range: rangeTitle)
-
-        let attrShadow = NSMutableAttributedString(string: credits)
-        attrShadow.addAttribute(NSAttributedString.Key.paragraphStyle, value: paragraphStyle, range: range)
-        attrShadow.addAttribute(NSAttributedString.Key.foregroundColor, value: shadow.color, range: range)
-        attrShadow.addAttribute(NSAttributedString.Key.font, value: font, range: range)
-        attrShadow.addAttribute(NSAttributedString.Key.underlineStyle, value: NSUnderlineStyle.single.rawValue, range: rangeTitle)
-
         let creditsLabel = SKLabelNode()
-        creditsLabel.attributedText = attrString
+        creditsLabel.attributedText = attrString.main
         creditsLabel.position = CGPoint(x: size.width / 2, y: 0)
         creditsLabel.verticalAlignmentMode = .top
         creditsLabel.numberOfLines = 0
         creditsLabel.zPosition = 10
         
         let shadowLabel = SKLabelNode()
-        shadowLabel.attributedText = attrShadow
+        shadowLabel.attributedText = attrString.shadow
         shadowLabel.position = creditsLabel.position - CGPoint(x: 3, y: 3)
         shadowLabel.verticalAlignmentMode = creditsLabel.verticalAlignmentMode
         shadowLabel.numberOfLines = creditsLabel.numberOfLines
@@ -191,12 +211,41 @@ class ComingSoonScene: SKScene {
         addChild(shadowLabel)
         
         let creditsAction = SKAction.sequence([
-            SKAction.moveBy(x: 0, y: size.height * 1.25, duration: 28),
+            SKAction.moveBy(x: 0, y: size.height * 1.25, duration: creditsScrollSpeed),
             SKAction.removeFromParent()
         ])
         
         creditsLabel.run(creditsAction)
         shadowLabel.run(creditsAction)
+    }
+    
+    /**
+     Helper function that returns an NSAttributedString for both, the main text and its shadow counterpart.
+     - parameter text: the text in question
+     - returns: a tuple of the main text and its shadow counterpart
+     */
+    private func getAttrString(text: String) -> (main: NSAttributedString, shadow: NSAttributedString) {
+        let font = UIFont(name: UIFont.chatFont, size: UIFont.chatFontSizeLarge) ?? UIFont.systemFont(ofSize: 30)
+        let range = NSRange(location: 0, length: text.count)
+        let rangeTitle = NSRange(location: 0, length: text.distance(from: text.startIndex,
+                                                                    to: text.firstIndex(of: "\n") ?? text.startIndex))
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.alignment = .center
+        
+        let attrString = NSMutableAttributedString(string: text)
+        attrString.addAttribute(NSAttributedString.Key.paragraphStyle, value: paragraphStyle, range: range)
+        attrString.addAttribute(NSAttributedString.Key.foregroundColor, value: textColorAlt, range: range)
+        attrString.addAttribute(NSAttributedString.Key.font, value: font, range: range)
+        attrString.addAttribute(NSAttributedString.Key.underlineStyle, value: NSUnderlineStyle.single.rawValue, range: rangeTitle)
+        attrString.addAttribute(NSAttributedString.Key.foregroundColor, value: textColor, range: rangeTitle)
+        
+        let attrShadow = NSMutableAttributedString(string: text)
+        attrShadow.addAttribute(NSAttributedString.Key.paragraphStyle, value: paragraphStyle, range: range)
+        attrShadow.addAttribute(NSAttributedString.Key.foregroundColor, value: shadow.color, range: range)
+        attrShadow.addAttribute(NSAttributedString.Key.font, value: font, range: range)
+        attrShadow.addAttribute(NSAttributedString.Key.underlineStyle, value: NSUnderlineStyle.single.rawValue, range: rangeTitle)
+        
+        return (attrString, attrShadow)
     }
     
     

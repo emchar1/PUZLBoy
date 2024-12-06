@@ -77,6 +77,7 @@ class GameViewController: UIViewController {
 //
 //            let comingSoonScene = ComingSoonScene(size: K.ScreenDimensions.size)
 //            comingSoonScene.comingSoonDelegate = self
+//            comingSoonScene.animateScene()
 //            self?.skView.presentScene(comingSoonScene)
 //            self?.view = self?.skView
 //        }
@@ -277,6 +278,7 @@ extension GameViewController: CatwalkSceneDelegate {
     func catwalkSceneDidFinish() {
         let comingSoonScene = ComingSoonScene(size: K.ScreenDimensions.size)
         comingSoonScene.comingSoonDelegate = self
+        comingSoonScene.animateScene()
         skView.presentScene(comingSoonScene, transition: SKTransition.fade(with: .black, duration: 0.2))
     }
 }
