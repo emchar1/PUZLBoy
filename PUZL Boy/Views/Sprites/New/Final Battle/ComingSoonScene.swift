@@ -59,7 +59,7 @@ class ComingSoonScene: SKScene {
         letterbox = LetterboxSprite(color: .black, height: size.height / 3)
         tapPointerEngine = TapPointerEngine()
         
-        comingSoonLabel = SKLabelNode(text: "TO BE CONTINUED")
+        comingSoonLabel = SKLabelNode(text: "TO BE CONTINUED...")
         comingSoonLabel.fontName = UIFont.gameFont
         comingSoonLabel.fontColor = textColor
         comingSoonLabel.fontSize = UIFont.gameFontSizeLarge

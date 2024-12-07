@@ -53,7 +53,7 @@ class ChosenSword {
             attackRating = 61
             imageName = "sword4Eternal"
             description = "Blade of Eternal Might"
-            elderCommentary = "Not bad. Not bad at all! Though there are other swords that are mightier than this one..."
+            elderCommentary = "Not bad at all! Only a few handful of swords are considered mightier than this one..."
         }
         else {
             type = .heavenlySaber

@@ -599,6 +599,11 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
             SKAction.moveBy(x: 0, y: -5, duration: 1)
         ])))
         
+        magmoorSprite.run(SKAction.sequence([
+            SKAction.fadeIn(withDuration: 0),
+            SKAction.fadeOut(withDuration: 0.25)
+        ]))
+        
         shiftCatwalkNode(panels: 1, moveDuration: fadeDuration)
         
         ParticleEngine.shared.animateParticles(type: .magicMerge,

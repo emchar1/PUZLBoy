@@ -1181,7 +1181,7 @@ extension ChatEngine {
                     self?.showFFButton()
                 },
                 ChatItem(profile: .hero, imgPos: .left, chat: "Wow!!! This is... something. It's... incredible. I promise to be very careful with it! 🤩"),
-                ChatItem(profile: .merton, chat: "\(chosenSword.elderCommentary)\n\nAttack Rating: \(Int(chosenSword.attackRating))/100")
+                ChatItem(profile: .merton, chat: "\(chosenSword.elderCommentary)\n\nRating: \(Int(chosenSword.attackRating))/100")
             ]) { [weak self] in
                 self?.showFFButton()
                 self?.handleDialogueCompletion(level: level, completion: completion)
@@ -1202,7 +1202,7 @@ extension ChatEngine {
                     ChatItem(profile: .magmus, chat: "MELCHIOR! Kindness!"),
                     ChatItem(profile: .magmus, chat: "Forgive him, child. As you'll recall, the gateway is powered by sparkly purple gems. Surrender your sparkly purple gems and access shall be granted."),
                     ChatItem(profile: .melchior, chat: "He just threw it!!!"),
-                    ChatItem(profile: .hero, imgPos: .left, chat: "My sparkly purple gems.. YES!!! I'll hit the gate with my sparkly purple gems till it opens!")
+                    ChatItem(profile: .hero, imgPos: .left, chat: "My sparkly purple gems.. YES!!! I'll hit it with my sparkly purple gems till it opens!")
                 ]) { [weak self] in
                     self?.delegateCatwalk?.feedGemsCatwalk()
                     self?.handleDialogueCompletion(level: level, completion: completion)
