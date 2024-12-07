@@ -200,6 +200,10 @@ class CatwalkScene: SKScene {
             catwalkPanel.zPosition = K.ZPosition.terrain
             catwalkPanel.name = catwalkPanelNamePrefix + "\(i)"
             
+            if i == catwalkLength {
+                catwalkPanel.addGlow(spriteNode: SKSpriteNode(color: .white, size: scaleSize), radiusPercentage: 0.25, startingAlpha: 0)
+            }
+            
             catwalkPanels.append(catwalkPanel)
         }
         
@@ -207,6 +211,7 @@ class CatwalkScene: SKScene {
         endClosedMagic.anchorPoint = .zero
         endClosedMagic.alpha = 0
         endClosedMagic.zPosition = 1
+        endClosedMagic.addGlow(spriteNode: SKSpriteNode(color: .white, size: scaleSize), radiusPercentage: 0.25, startingAlpha: 0)
         
         shimmerPartyTiles()
         tapPointerEngine = TapPointerEngine()
@@ -972,6 +977,7 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
                 }
                 
                 openCloseGate(shouldOpen: true)
+                catwalkPanels.last?.animateAppearGlow(fadeDuration: fadeDuration, waitDuration: 0.5)
                 endClosedMagic.removeFromParent()
                 AudioManager.shared.playSound(for: "ydooropen")
             }
@@ -987,11 +993,15 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
         AudioManager.shared.playSound(for: "revive")
         Haptics.shared.addHapticFeedback(withStyle: .heavy)
         
-        catwalkPanels.last?.run(SKAction.sequence([
-            SKAction.colorize(with: rainbowColors[currentRainbowIndex], colorBlendFactor: 1, duration: fadeDuration * 1/4),
-            SKAction.wait(forDuration: fadeDuration * 1/4),
-            SKAction.colorize(withColorBlendFactor: 0, duration: fadeDuration * 1/2)
-        ]))
+        if let gatePanel = catwalkPanels.last {
+            gatePanel.animateAppearGlow(fadeDuration: fadeDuration * 1/4, waitDuration: fadeDuration * 1/2)
+            
+            gatePanel.run(SKAction.sequence([
+                SKAction.colorize(with: rainbowColors[currentRainbowIndex], colorBlendFactor: 1, duration: fadeDuration * 1/4),
+                SKAction.wait(forDuration: fadeDuration * 1/4),
+                SKAction.colorize(withColorBlendFactor: 0, duration: fadeDuration * 1/2)
+            ]))
+        }
         
         currentRainbowIndex += 1
 
@@ -1007,6 +1017,8 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
                         panel.run(animateRainbowCycle(cycleSpeed: cycleSpeed, delay: TimeInterval(catwalkLength - i) * delaySpeed), withKey: "rainbowCycle")
                     }
                     
+                    endClosedMagic.animateAppearGlow(fadeDuration: fadeDuration, waitDuration: 5)
+
                     endClosedMagic.run(animateRainbowCycle(cycleSpeed: cycleSpeed, delay: nil))
                     endClosedMagic.run(SKAction.fadeIn(withDuration: fadeDuration))
                     backgroundNode.run(SKAction.fadeOut(withDuration: fadeDuration))

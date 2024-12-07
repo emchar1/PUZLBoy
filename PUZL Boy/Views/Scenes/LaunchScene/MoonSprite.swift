@@ -52,7 +52,7 @@ class MoonSprite: SKNode {
         sprite.zPosition = K.ZPosition.backgroundObjectMoon
         
         if DayTheme.currentTheme == .night {
-            sprite.addGlow(textureName: "moon\(moonPhaseAdjusted)")
+            sprite.addGlow(spriteNode: SKSpriteNode(texture: SKTexture(imageNamed: "moon\(moonPhaseAdjusted)")))
         }
         
         addChild(sprite)

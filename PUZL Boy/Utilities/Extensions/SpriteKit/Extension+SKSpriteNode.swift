@@ -8,12 +8,21 @@
 import SpriteKit
 
 extension SKSpriteNode {
-    func addGlow(textureName: String, radiusPercentage: Float = 0.1) {
+    /**
+     Adds a glow surrounding the parent sprite node.
+     - parameters:
+        - textureName: the image of which to create the glow.
+        - radiusPercentage: the size of the glow.
+        - startingAlpha: starting alpha of the glowEffectNode.
+     */
+    func addGlow(spriteNode: SKSpriteNode, radiusPercentage: Float = 0.1, startingAlpha: CGFloat = 1) {
         let effectNode = SKEffectNode()
         effectNode.shouldRasterize = true
         effectNode.filter = CIFilter(name: "CIGaussianBlur", parameters: ["inputRadius" : Float(size.width) * radiusPercentage])
+        effectNode.alpha = startingAlpha
+        effectNode.name = "glowEffectNode"
 
-        let effect = SKSpriteNode(texture: SKTexture(imageNamed: textureName))
+        let effect = spriteNode
         effect.anchorPoint = .zero
         effect.color = .white
         effect.colorBlendFactor = 1
@@ -22,6 +31,26 @@ extension SKSpriteNode {
         addChild(effectNode)
     }
     
+    /**
+     Animates a glow fading in, wating, then fading out
+     - parameters:
+        - fadeDuration: length of fadeIn, and fadeOut
+        - waitDuration: length of wait before fading out
+     */
+    func animateAppearGlow(fadeDuration: TimeInterval, waitDuration: TimeInterval) {
+        guard let glowEffectNode = childNode(withName: "glowEffectNode") as? SKEffectNode else { return print("No glow effect node found.") }
+        
+        glowEffectNode.run(SKAction.sequence([
+            SKAction.fadeIn(withDuration: fadeDuration),
+            SKAction.wait(forDuration: waitDuration),
+            SKAction.fadeOut(withDuration: fadeDuration)
+        ]))
+    }
+    
+    /**
+     Adds a black shadow (alpha = 0.25) to the parent sprite node
+     - parameter offset: the offset point of the shadow.
+     */
     func addShadow(offset: CGPoint = CGPoint(x: -3, y: -3)) {
         let shadow = SKSpriteNode(texture: self.texture)
         shadow.position = self.position + offset
