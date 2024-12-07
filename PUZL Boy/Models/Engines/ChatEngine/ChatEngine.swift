@@ -20,7 +20,7 @@ protocol ChatEngineCatwalkDelegate: AnyObject {
     func spawnSwordCatwalk(spawnDuration: TimeInterval)
     func despawnSwordCatwalk(fadeDuration: TimeInterval, delay: TimeInterval?)
     func throwSwordCatwalk()
-    func showGateCatwalk()
+    func showGateCatwalk(completion: @escaping () -> Void)
     func feedGemsCatwalk()
     func spawnMagmoorCatwalk()
     func flashMagmoorCatwalk()
@@ -1187,11 +1187,12 @@ extension ChatEngine {
                 self?.handleDialogueCompletion(level: level, completion: completion)
             }
         case -1047:
-            delegateCatwalk?.showGateCatwalk()
-            delegateCatwalk?.spawnEldersCatwalk(faceLeft: false)
+            delegateCatwalk?.showGateCatwalk() { [weak self] in
+                self?.delegateCatwalk?.spawnEldersCatwalk(faceLeft: false)
+            }
             
             sendChatArray(shouldSkipDim: true, items: [
-                ChatItem(profile: .melchior, pause: 2, chat: "There's the gate to the Dragon's Lair. Once we enter, there is no going back.", handler: nil),
+                ChatItem(profile: .melchior, pause: 3, chat: "There's the gate to the Dragon's Lair. Once we enter, there is no going back.", handler: nil),
                 ChatItem(profile: .hero, imgPos: .left, chat: "Ok, but it's closed. So...... how do we open it???"),
                 ChatItem(profile: .hero, imgPos: .left, chat: "Maybe if I just....................⚔️")
             ]) { [weak self] in
@@ -1222,7 +1223,7 @@ extension ChatEngine {
             delegateCatwalk?.flashMagmoorCatwalk()
             
             sendChatArray(shouldSkipDim: true, items: [
-                ChatItem(profile: .blankvillain, pause: 3, startNewChat: false, chat: "\nenter if you dare... there is nothing you can do to stop what has already been put in motion...", handler: nil),
+                ChatItem(profile: .blankvillain, pause: 3, startNewChat: false, chat: "\nenter if you dare! there is nothing you can do to stop what has already been put in motion...", handler: nil),
                 ChatItem(profile: .hero, imgPos: .left, chat: "\(FIRManager.didPursueMagmoor ? "AAAHHHH! I'M NOT READY FOR THIS!!!" : "YOU'LL PAY FOR WHAT YOU DID TO MY FRIENDS!!!!!")"),
                 ChatItem(profile: .merton, imgPos: .left, chat: "Quickly boy! Through the gate! We mustn't waste anymore time!")
             ]) { [weak self] in

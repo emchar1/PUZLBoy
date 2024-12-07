@@ -411,11 +411,14 @@ class CatwalkScene: SKScene {
      - parameters:
         - panels: number of panels to shift over
         - moveDuration: the speed at which the shifting animates
+        - completion: optional completion handler to process code after function completes
      */
-    private func shiftCatwalkNode(panels: Int, moveDuration: TimeInterval) {
+    private func shiftCatwalkNode(panels: Int, moveDuration: TimeInterval, completion: (() -> Void)? = nil) {
         let moveDistance: CGFloat = -1 * CGFloat(panels) * (scaleSize.width + panelSpacing)
         
-        catwalkNode.run(SKAction.moveBy(x: moveDistance, y: 0, duration: moveDuration))
+        catwalkNode.run(SKAction.moveBy(x: moveDistance, y: 0, duration: moveDuration)) {
+            completion?()
+        }
 
         leftmostPanelIndex += panels
         
@@ -754,8 +757,8 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
                                                duration: fadeDuration)
     }
     
-    func showGateCatwalk() {
-        shiftCatwalkNode(panels: 2, moveDuration: 0.5)
+    func showGateCatwalk(completion: @escaping () -> Void) {
+        shiftCatwalkNode(panels: 2, moveDuration: 1, completion: completion)
     }
     
     func feedGemsCatwalk() {
@@ -881,7 +884,6 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
     
     private func spawnElderHelper(elder: Player, faceLeft: Bool = true, offset: CGPoint) {
         let appearDuration: TimeInterval = 0.5
-        let particleWait: TimeInterval = elder.type == .elder2 ? 0 : appearDuration
         let elderScale: CGFloat = Player.getGameboardScale(panelSize: panelSize) * elder.scaleMultiplier
         
         //Preliminarty setup, first...
@@ -925,7 +927,7 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
             ]))
             
             elder.sprite.run(SKAction.sequence([
-                SKAction.wait(forDuration: particleWait),
+                SKAction.wait(forDuration: appearDuration),
                 SKAction.run {
                     ParticleEngine.shared.animateParticles(
                         type: particleType,
