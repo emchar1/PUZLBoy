@@ -993,12 +993,12 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
             }
         }
         
+        AudioManager.shared.playSound(for: didTapGate ? "revive" : "buttontap6")
+        Haptics.shared.addHapticFeedback(withStyle: .heavy)
+        
         
         //Ensure the gate was tapped, otherwise skip all the below rigamaroll
         guard didTapGate else { return }
-        
-        AudioManager.shared.playSound(for: "revive")
-        Haptics.shared.addHapticFeedback(withStyle: .heavy)
         
         if let gatePanel = catwalkPanels.last {
             gatePanel.animateAppearGlow(fadeDuration: fadeDuration * 1/4, waitDuration: fadeDuration * 1/2)
