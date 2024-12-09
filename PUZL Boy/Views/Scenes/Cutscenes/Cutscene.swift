@@ -277,9 +277,9 @@ class Cutscene: SKScene {
     /**
      Helper to SpeechBubbleSprite.setText(). Takes in an array of SpeechBubbleItems and process them recursively, with nesting completion handlers.
      - parameters:
-     - items: array of SpeechBubbleItems to process
-     - currentIndex: keeps track of the array index, which is handled recursively
-     - completion: process any handlers between text animations.
+        - items: array of SpeechBubbleItems to process
+        - currentIndex: keeps track of the array index, which is handled recursively
+        - completion: process any handlers between text animations.
      */
     final func setTextArray(items: [SpeechBubbleItem], currentIndex: Int = 0, completion: (() -> Void)?) {
         guard currentIndex < items.count else {
