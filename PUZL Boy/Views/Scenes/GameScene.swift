@@ -792,9 +792,10 @@ extension GameScene: GameEngineDelegate {
         guard let levelStatsItem = levelStatsItem else { fatalError("GameScene.handleWinLevel() levelStatsItem was nil. Time to debug!!") }
         
         scoringEngine.timerManager.resetTime()
-        startTimer()
         
         if didCompleteGame {
+            stopTimer()
+            
             //IMPORTANT: Write to Firestore, MUST come first, if completing the game
             saveState(levelStatsItem: levelStatsItem)
             
@@ -805,6 +806,7 @@ extension GameScene: GameEngineDelegate {
         }
         else {
             newGame(level: currentLevel, didWin: true)
+            startTimer()
             
             //IMPORTANT: In this case, write to Firestore, MUST come last, after calling newGame()
             if !Level.isPartyLevel(currentLevel) {
