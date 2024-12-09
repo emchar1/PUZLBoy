@@ -1224,7 +1224,7 @@ extension ChatEngine {
             
             sendChatArray(shouldSkipDim: true, items: [
                 ChatItem(profile: .blankvillain, pause: 3, startNewChat: false, chat: "\nenter if you dare! there is nothing you can do to stop what has already been put in motion...", handler: nil),
-                ChatItem(profile: .hero, imgPos: .left, chat: "\(FIRManager.didPursueMagmoor ? "AAAHHHH! I'M NOT READY FOR THIS!!!" : "YOU'LL PAY FOR WHAT YOU DID TO MY FRIENDS!!!!!")"),
+                ChatItem(profile: .hero, imgPos: .left, chat: "\(FIRManager.didPursueMagmoor ? "I'M NOT READY FOR THIS!!!" : "YOU'LL PAY FOR WHAT YOU DID TO MY FRIENDS!!!!!")"),
                 ChatItem(profile: .merton, imgPos: .left, chat: "Quickly boy! Through the gate! We mustn't waste anymore time!")
             ]) { [weak self] in
                 self?.delegateCatwalk?.despawnEldersCatwalk()
