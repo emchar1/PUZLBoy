@@ -21,6 +21,7 @@ class GameViewController: UIViewController {
     private var hasInternet = false
     private var monitor: NWPathMonitor!
     private let skView = SKView()
+    private let fakeEnding: (title: String, message: String) = ("CONGRATULATIONS", "You have successfully completed 500 levels of mind-bending puzzles. But it's not over just yet...\n\nAs PUZL Boy and the Elders make their way to Earth's core, they must confront Magmoor in a final showdown to rescue their friends, Marlin and Princess Olivia, and prevent the Mad Mystic from unleashing the apocalyptic Age of Ruin!\n\nAre you ready to face the ultimate challenge and save the universe from an uncertain fate?")
     
     
     // MARK: - Initialization
@@ -39,11 +40,9 @@ class GameViewController: UIViewController {
             else {
                 self.hasInternet = false
             }
-            
-//            print("Monitor update - hasInternet: \(self.hasInternet)")
         }
         monitor.start(queue: DispatchQueue(label: "Monitor"))
-
+        
         
         
         
@@ -51,44 +50,50 @@ class GameViewController: UIViewController {
         skView.showsFPS = true
         skView.showsNodeCount = true
         
-//        // FIXME: - DEBUG: Go straight to Cutscene. DELETE BEFORE SHIPPING!
-//        let cutsceneTest = CutsceneOldFriends()
-//        cutsceneTest.animateScene(completion: nil)
-//        skView.ignoresSiblingOrder = true
-//        skView.presentScene(cutsceneTest)
-//        view = skView
-        
 //        // FIXME: - DEBUG: Final Cutscene TEST
 //        LevelBuilder.getLevels {
 //            FIRManager.initializeFirestore() { [weak self] saveStateMode, error in
-//                let endingFakeScene = EndingFakeScene(size: K.ScreenDimensions.size, titleText: "CONGRATULATIONS", messageText: "You have successfully completed 500 levels of mind-bending puzzles. But it's not over just yet...\n\nAs PUZL Boy and the Elders make their way to Earth's core, they must confront Magmoor in a final showdown to rescue their friends, Marlin and Princess Olivia, and prevent the Mad Mystic from unleashing the apocalyptic Age of Ruin!\n\nAre you ready to face the ultimate challenge and save the universe from total destruction?")
-//                self?.skView.presentScene(endingFakeScene)
+//                guard let self = self else { return }
 //                
+//                
+//                // ver. 1 - ending fake scene to catwalk scene
+//                let endingFakeScene = EndingFakeScene(size: K.ScreenDimensions.size, titleText: fakeEnding.title, messageText: fakeEnding.message)
+//                skView.presentScene(endingFakeScene)
+//                skView.ignoresSiblingOrder = true
+//                view = skView
 //                endingFakeScene.animateScene(music: "bossbattle2") {
 //                    let catwalkScene = CatwalkScene(size: K.ScreenDimensions.size)
 //                    catwalkScene.catwalkDelegate = self
-//                    self?.skView.presentScene(catwalkScene)
+//                    self.skView.presentScene(catwalkScene)
 //                }
-//                
-//                self?.skView.ignoresSiblingOrder = true
-//                self?.view = self?.skView
-//                
-//                
-//                
-//                
+//
+//
+//                // ver. 2 - catwalk scene
+//                let catwalkScene = CatwalkScene(size: K.ScreenDimensions.size)
+//                catwalkScene.catwalkDelegate = self
+//                skView.presentScene(catwalkScene)
+//                skView.ignoresSiblingOrder = true
+//                view = skView
+//
+//
+//                // ver. 3 - coming soon scene
 //                let comingSoonScene = ComingSoonScene(size: K.ScreenDimensions.size)
 //                comingSoonScene.comingSoonDelegate = self
 //                comingSoonScene.animateScene()
-//                self?.skView.presentScene(comingSoonScene)
-//                self?.view = self?.skView
+//                skView.presentScene(comingSoonScene)
+//                skView.ignoresSiblingOrder = true
+//                view = skView
 //                
 //                
-//                
+//                // ver. 4 - final battle scene
 //                let finalBattleScene = FinalBattleScene(size: K.ScreenDimensions.size)
-//                self?.skView.presentScene(finalBattleScene)
-//                self?.view = self?.skView
-//            }
-//        }
+//                skView.presentScene(finalBattleScene)
+//                skView.ignoresSiblingOrder = true
+//                view = skView
+//            } //end initializeFirestore()
+//        } //end getLevels
+        
+        
         
         
         skView.ignoresSiblingOrder = true
@@ -254,7 +259,7 @@ extension GameViewController: GameSceneDelegate {
     }
     
     func presentCatwalkScene() {
-        let endingFakeScene = EndingFakeScene(size: K.ScreenDimensions.size, titleText: "CONGRATULATIONS", messageText: "You have successfully completed 500 levels of mind-bending puzzles. But it's not over just yet...\n\nAs PUZL Boy and the Elders make their way to Earth's core, they must confront Magmoor in a final showdown to rescue their friends, Marlin and Princess Olivia, and prevent the Mad Mystic from unleashing the apocalyptic Age of Ruin!\n\nAre you ready to face the ultimate challenge and save the universe from total destruction?")
+        let endingFakeScene = EndingFakeScene(size: K.ScreenDimensions.size, titleText: fakeEnding.title, messageText: fakeEnding.message)
         skView.presentScene(endingFakeScene, transition: SKTransition.fade(with: .white, duration: 0))
         
         endingFakeScene.animateScene(music: "bossbattle2") { [weak self] in
