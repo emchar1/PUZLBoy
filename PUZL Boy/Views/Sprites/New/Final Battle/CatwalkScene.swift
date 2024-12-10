@@ -68,6 +68,10 @@ class CatwalkScene: SKScene {
     private var tapPointerEngine: TapPointerEngine!
     private var chatEngine: ChatEngine!
     
+    private var dispatchWorkItem: DispatchWorkItem!
+    private var elderChatBubble: SpeechBubbleSprite!
+    private var elderChatAlreadyPlayed = false
+    
     weak var catwalkDelegate: CatwalkSceneDelegate?
     
     
@@ -99,6 +103,7 @@ class CatwalkScene: SKScene {
         
         tapPointerEngine = nil
         chatEngine = nil
+        elderChatBubble.cleanupManually()
         
         AudioManager.shared.adjustVolume(to: 1, for: catwalkOverworld)
     }
@@ -174,7 +179,7 @@ class CatwalkScene: SKScene {
         swordSprite = ChosenSword(didPursueMagmoor: FIRManager.didPursueMagmoor, didGiveAwayFeather: FIRManager.didGiveAwayFeather)
         swordSprite.spriteNode.scale(to: scaleSize)
         swordSprite.spriteNode.alpha = 0
-        swordSprite.spriteNode.zPosition = K.ZPosition.overlay
+        swordSprite.spriteNode.zPosition = K.ZPosition.player - 1
         
         magmoorSprite = SKSpriteNode(imageNamed: "villainRedEyes")
         magmoorSprite.size = CGSize(width: size.width, height: size.width)
@@ -217,6 +222,10 @@ class CatwalkScene: SKScene {
         tapPointerEngine = TapPointerEngine()
         chatEngine = ChatEngine()
         chatEngine.delegateCatwalk = self
+        
+        dispatchWorkItem = DispatchWorkItem(block: {})
+        elderChatBubble = SpeechBubbleSprite(width: 400, position: .zero, tailOrientation: .bottomLeft)
+        elderChatBubble.setScale(1 / (Player.getGameboardScale(panelSize: panelSize) * elder1.scaleMultiplier))
     }
     
     
@@ -763,11 +772,25 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
     
     func feedGemsCatwalk() {
         shouldFeedGems = true
+        
+        elderChatBubble.removeFromParent()
+        elderChatBubble.position = elder1.sprite.position + (UIDevice.isiPad ? CGPoint(x: 200, y: 125) : CGPoint(x: 300, y: 300))
+        dispatchWorkItem = DispatchWorkItem(block: { [weak self] in
+            guard let self = self else { return }
+            elderChatBubble.setText(text: "Tap the gate to feed it your gems, child!",
+                                    speed: 0.04,
+                                    superScene: self,
+                                    parentNode: elder1.sprite,
+                                    completion: nil)
+        })
+        DispatchQueue.main.asyncAfter(deadline: .now() + 5, execute: dispatchWorkItem)
     }
     
     func spawnMagmoorCatwalk() {
         magmoorSprite.run(fadeInMagmoorHelper(fadeDuration: 2), withKey: "magmoorFadeAction")
         AudioManager.shared.playSound(for: "magicheartbeatloop2", delay: 0.5)
+        
+        dispatchWorkItem.cancel()
     }
     
     func flashMagmoorCatwalk() {
@@ -987,6 +1010,19 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
                 catwalkPanels.last?.animateAppearGlow(fadeDuration: fadeDuration, waitDuration: 0.5)
                 endClosedMagic.removeFromParent()
                 AudioManager.shared.playSound(for: "ydooropen")
+                
+                dispatchWorkItem.cancel()
+                dispatchWorkItem = DispatchWorkItem(block: { [weak self] in
+                    guard let self = self else { return }
+                    elderChatBubble.removeFromParent()
+                    elderChatBubble.position = elder2.sprite.position + (UIDevice.isiPad ? CGPoint(x: 225, y: 325) : CGPoint(x: 300, y: 450))
+                    elderChatBubble.setText(text: "Huzzah!!! Now, onward we go! 👉🏼",
+                                            speed: 0.04,
+                                            superScene: self,
+                                            parentNode: elder2.sprite,
+                                            completion: nil)
+                })
+                DispatchQueue.main.asyncAfter(deadline: .now() + 5, execute: dispatchWorkItem)
             }
             else {
                 isFeedingGems = false
@@ -999,6 +1035,21 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
         
         //Ensure the gate was tapped, otherwise skip all the below rigamaroll
         guard didTapGate else { return }
+        
+        dispatchWorkItem.cancel()
+        if !elderChatAlreadyPlayed {
+            dispatchWorkItem = DispatchWorkItem(block: { [weak self] in
+                guard let self = self else { return }
+                elderChatAlreadyPlayed = true
+                elderChatBubble.removeFromParent()
+                elderChatBubble.setText(text: "That's it boy!! Keep tapping the gate until it opens!",
+                                        speed: 0.04,
+                                        superScene: self,
+                                        parentNode: elder1.sprite,
+                                        completion: nil)
+            })
+            DispatchQueue.main.asyncAfter(deadline: .now() + 5, execute: dispatchWorkItem)
+        }
         
         if let gatePanel = catwalkPanels.last {
             gatePanel.animateAppearGlow(fadeDuration: fadeDuration * 1/4, waitDuration: fadeDuration * 1/2)
