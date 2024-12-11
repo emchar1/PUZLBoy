@@ -209,10 +209,7 @@ class Cutscene: SKScene {
         - timePerFrame: the duration of each frame of the animation.
         - repeatCount: number of times to play the animation, or -1 to repeat forever.
      */
-    func animatePlayerWithTextures(player: inout Player,
-                                           textureType: Player.Texture,
-                                           timePerFrame: TimeInterval,
-                                           repeatCount: Int = -1) {
+    func animatePlayerWithTextures(player: inout Player, textureType: Player.Texture, timePerFrame: TimeInterval, repeatCount: Int = -1) {
         let key = "animatePlayerWithTexturesKey"
         let repeatAction = Player.animate(player: player, type: textureType, timePerFrame: timePerFrame, repeatCount: repeatCount)
         
