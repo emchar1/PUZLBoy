@@ -495,8 +495,7 @@ class CutsceneIntro: Cutscene {
         playerRight.sprite.setScale(playerRight.scaleMultiplier * Player.cutsceneScale)
         playerRight.sprite.xScale *= -1
         
-        playerRight.sprite.run(SKAction.repeatForever(SKAction.animate(with: playerRight.textures[Player.Texture.jump.rawValue],
-                                                                       timePerFrame: 0.02)), withKey: "writhe")
+        playerRight.sprite.run(Player.animate(player: playerRight, type: .jump, timePerFrame: 0.02), withKey: "writhe")
         
         playerLeft.sprite.position.x = -200
         playerLeft.sprite.setScale(playerLeft.scaleMultiplier * Player.cutsceneScale)

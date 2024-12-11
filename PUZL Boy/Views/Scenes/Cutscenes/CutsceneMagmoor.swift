@@ -1289,7 +1289,7 @@ class CutsceneMagmoor: Cutscene {
                 },
                 SKAction.animate(with: duplicateTuple.duplicate.textures[Player.Texture.attack.rawValue], timePerFrame: animationTimePerFrame),
                 SKAction.wait(forDuration: 7),
-                SKAction.repeatForever(SKAction.animate(with: duplicateTuple.duplicate.textures[Player.Texture.idle.rawValue], timePerFrame: animationTimePerFrame))
+                Player.animate(player: duplicateTuple.duplicate, type: .idle, timePerFrame: animationTimePerFrame)
             ]))
             
             //Movement animation

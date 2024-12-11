@@ -71,7 +71,7 @@ class PrincessCageSprite: SKNode {
         let attackAction = SKAction.animate(with: villain.textures[Player.Texture.attack.rawValue], timePerFrame: 0.12)
         
         let princess = Player(type: .princess)
-        let writheAction = SKAction.repeatForever(SKAction.animate(with: princess.textures[Player.Texture.jump.rawValue], timePerFrame: 0.02))
+        let writheAction = Player.animate(player: princess, type: .jump, timePerFrame: 0.02)
         
         let flingAction = SKAction.sequence([
             SKAction.group([

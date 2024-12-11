@@ -383,7 +383,7 @@ class CatwalkScene: SKScene {
             timePerFrame *= isRedShift ? 2 : 1
         }
         
-        return SKAction.repeatForever(SKAction.animate(with: player.textures[type.rawValue], timePerFrame: timePerFrame))
+        return Player.animate(player: player, type: type, timePerFrame: timePerFrame)
     }
     
     private func playDialogue(panelIndex: Int) {

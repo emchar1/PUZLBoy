@@ -211,6 +211,18 @@ class Player {
     }
     
     /**
+     Provides a simple looped animation of a given texture on a given player.
+     - parameters:
+        - player: the player in question
+        - type: the type of texture in question
+        - timePerFrame: the speed of the animation
+     - returns:the SKAction
+     */
+    static func animate(player: Player, type: Texture, timePerFrame: TimeInterval) -> SKAction {
+        return SKAction.repeatForever(SKAction.animate(with: player.textures[type.rawValue], timePerFrame: timePerFrame))
+    }
+    
+    /**
      Class function that moves a Player, e.g. Magmoor, from a starting point to an ending point and animating "illusions" along the way.
      - parameters:
         - playerNode: the parent Player node, i.e. Magmoor
@@ -300,7 +312,7 @@ class Player {
             
             backgroundNode.addChild(duplicate.sprite)
             
-            duplicate.sprite.run(SKAction.repeatForever(SKAction.animate(with: duplicate.textures[Player.Texture.idle.rawValue], timePerFrame: 0.1)))
+            duplicate.sprite.run(Player.animate(player: duplicate, type: .idle, timePerFrame: 0.1))
             duplicate.sprite.run(SKAction.sequence([
                 SKAction.fadeOut(withDuration: fadeDuration),
                 SKAction.removeFromParent()
@@ -331,13 +343,13 @@ class Player {
         - player: the Player object
         - shouldReverse: determines start direction of levitation movement
         - randomizeDuration: if true, adds a potential 0...1 second delay
-     - returns the idle, levitating action
+     - returns: the idle, levitating action
      */
     static func animateIdleLevitate(player: Player, shouldReverse: Bool = false, randomizeDuration: Bool = true) -> SKAction {
         let moveOffset: CGFloat = shouldReverse ? -20 : 20
         
         return SKAction.group([
-            SKAction.repeatForever(SKAction.animate(with: player.textures[Player.Texture.idle.rawValue], timePerFrame: 0.1)),
+            animate(player: player, type: .idle, timePerFrame: 0.1),
             SKAction.repeatForever(SKAction.sequence([
                 SKAction.moveBy(x: 0, y: moveOffset, duration: 1 + (randomizeDuration ? TimeInterval.random(in: 0...1) : 0)),
                 SKAction.moveBy(x: 0, y: -moveOffset, duration: 1 + (randomizeDuration ? TimeInterval.random(in: 0...1) : 0))

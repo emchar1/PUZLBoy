@@ -125,7 +125,7 @@ class CreditsScene: SKScene {
         playerReflection.sprite.alpha = 0.25
 
         let frameRate: TimeInterval = 0.06
-        let actionIdle = SKAction.repeatForever(SKAction.animate(with: player.textures[Player.Texture.walk.rawValue], timePerFrame: frameRate))
+        let actionIdle = Player.animate(player: player, type: .walk, timePerFrame: frameRate)
         let actionIdleLevitate = Player.animateIdleLevitate(player: player, randomizeDuration: false)
         let actionIdleLevitateReverse = Player.animateIdleLevitate(player: player, shouldReverse: true, randomizeDuration: false)
 

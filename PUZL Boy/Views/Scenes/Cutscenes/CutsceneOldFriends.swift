@@ -139,7 +139,7 @@ class CutsceneOldFriends: Cutscene {
         player.sprite.removeAllActions()
         
         player.sprite.run(SKAction.group([
-            SKAction.repeatForever(SKAction.animate(with: player.textures[Player.Texture.idle.rawValue], timePerFrame: timePerFrame)),
+            Player.animate(player: player, type: .idle, timePerFrame: timePerFrame),
             SKAction.rotate(toAngle: rotateClockwise * rotationRange + randomRotation, duration: duration),
             SKAction.scaleX(to: flipHorizontally * scale * scaleIncrease, y: scale * scaleIncrease, duration: duration)
         ]))

@@ -87,6 +87,7 @@ class GameViewController: UIViewController {
 //                
 //                // ver. 4 - final battle scene
 //                let finalBattleScene = FinalBattleScene(size: K.ScreenDimensions.size)
+//                finalBattleScene.animateScene()
 //                skView.presentScene(finalBattleScene)
 //                skView.ignoresSiblingOrder = true
 //                view = skView
