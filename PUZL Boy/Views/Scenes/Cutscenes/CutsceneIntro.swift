@@ -118,12 +118,12 @@ class CutsceneIntro: Cutscene {
         
         //Hero Sprite
         playerLeft.sprite.run(SKAction.group([
-            Player.animate(player: playerLeft, type: .walk, timePerFrame: frameRate, repeatCount: 13),
+            Player.animate(player: playerLeft, type: .walk, repeatCount: 13),
             SKAction.sequence([
                 SKAction.wait(forDuration: 6 * walkCycle),
                 SKAction.moveTo(x: heroPositionFinal.x, duration: 4 * walkCycle),
                 SKAction.wait(forDuration: 3 * walkCycle),
-                Player.animate(player: playerLeft, type: .idle, timePerFrame: frameRate)
+                Player.animate(player: playerLeft, type: .idle)
             ])
         ]))
         
@@ -132,7 +132,7 @@ class CutsceneIntro: Cutscene {
             SKAction.wait(forDuration: 11 * walkCycle),
             SKAction.group([
                 SKAction.moveTo(x: princessPositionFinal.x, duration: 2 * walkCycle),
-                Player.animate(player: playerRight, type: .idle, timePerFrame: frameRate * 1.5)
+                Player.animate(player: playerRight, type: .idle)
             ])
         ]))
         
@@ -401,7 +401,7 @@ class CutsceneIntro: Cutscene {
                             Player.animate(player: self.playerLeft, type: .run, timePerFrame: frameRateFast, repeatCount: 2),
                             SKAction.sequence([
                                 SKAction.moveTo(x: self.screenSize.width / 2, duration: 1.5 * runCycle),
-                                Player.animate(player: self.playerLeft, type: .idle, timePerFrame: frameRate)
+                                Player.animate(player: self.playerLeft, type: .idle)
                             ])
                         ]))
                         
@@ -491,7 +491,7 @@ class CutsceneIntro: Cutscene {
         playerRight.sprite.setScale(playerRight.scaleMultiplier * Player.cutsceneScale)
         playerRight.sprite.xScale *= -1
         
-        playerRight.sprite.run(Player.animate(player: playerRight, type: .jump, timePerFrame: 0.02), withKey: "writhe")
+        playerRight.sprite.run(Player.animate(player: playerRight, type: .jump), withKey: "writhe")
         
         playerLeft.sprite.position.x = -200
         playerLeft.sprite.setScale(playerLeft.scaleMultiplier * Player.cutsceneScale)

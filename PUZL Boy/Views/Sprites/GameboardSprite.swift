@@ -361,7 +361,7 @@ class GameboardSprite {
         //I don't like how this is set. If direction is .unknown, place Marlin above MagmoorScary (in Bonus Levels). It looked weird when MagmoorScary was above Marlin. I'll need to remember to only use the .unknown case in Bonus Levels, otherwise Marlin will appear above the blood overlay. 8/31/24
         trainer.sprite.zPosition = direction == .unknown ? K.ZPosition.chatDialogue + 10 : K.ZPosition.player - 1
         
-        trainer.sprite.run(Player.animate(player: trainer, type: .idle, timePerFrame: 0.16))
+        trainer.sprite.run(Player.animate(player: trainer, type: .idle))
         trainer.sprite.run(SKAction.group([
             SKAction.fadeIn(withDuration: moveDuration),
             SKAction.move(to: endPoint, duration: moveDuration)
@@ -446,7 +446,7 @@ class GameboardSprite {
         
         let trainerMoves = trainerMoveActions(positions: remainingMoves)
         
-        trainerSprite.run(Player.animate(player: trainer, type: .walk, timePerFrame: 0.12))
+        trainerSprite.run(Player.animate(player: trainer, type: .walk))
         trainerSprite.run(SKAction.sequence([
             SKAction.sequence(trainerMoves.actions),
             SKAction.group([
@@ -548,7 +548,7 @@ class GameboardSprite {
         princess.sprite.setScale(0)
         princess.sprite.zPosition = K.ZPosition.itemsAndEffects + 30
         princess.sprite.name = "capturePrincess"
-        princess.sprite.run(Player.animate(player: princess, type: .jump, timePerFrame: 0.02), withKey: "writhe")
+        princess.sprite.run(Player.animate(player: princess, type: .jump), withKey: "writhe")
         
         let villain = Player(type: .villain)
         villain.sprite.position = startPoint
@@ -600,7 +600,7 @@ class GameboardSprite {
                 SKAction.colorize(with: UIColor(red: 255 / 255, green: 128 / 255, blue: 255 / 255, alpha: 1), colorBlendFactor: 1, duration: 0),
                 SKAction.wait(forDuration: 1),
                 SKAction.colorize(withColorBlendFactor: 0, duration: 0.5),
-                Player.animate(player: princess, type: .jump, timePerFrame: 0.02)
+                Player.animate(player: princess, type: .jump)
             ]), completion: completion)
             
             sprite.run(SKAction.sequence([
@@ -790,7 +790,7 @@ class GameboardSprite {
         princess.sprite.alpha = 0
         princess.sprite.zPosition = K.ZPosition.itemsAndEffects + 30
         princess.sprite.name = "inbetweenPrincess"
-        princess.sprite.run(Player.animate(player: princess, type: .idle, timePerFrame: princessTimePerFrame))
+        princess.sprite.run(Player.animate(player: princess, type: .idle))
                     
         villain.sprite.position = getLocation(at: (level.start.row, level.start.col + 3)) + playerOffset
         villain.sprite.setScale(Player.getGameboardScale(panelSize: panelSize) * villain.scaleMultiplier)
@@ -798,14 +798,14 @@ class GameboardSprite {
         villain.sprite.alpha = 0
         villain.sprite.zPosition = K.ZPosition.itemsAndEffects + 20
         villain.sprite.name = "inbetweenVillain"
-        villain.sprite.run(Player.animate(player: villain, type: .idle, timePerFrame: 0.1))
+        villain.sprite.run(Player.animate(player: villain, type: .idle))
         
         trainer.sprite.position = getLocation(at: (level.start.row, level.start.col + 1)) + playerOffset
         trainer.sprite.setScale(Player.getGameboardScale(panelSize: panelSize) * trainer.scaleMultiplier)
         trainer.sprite.alpha = 0
         trainer.sprite.zPosition = K.ZPosition.itemsAndEffects + 20
         trainer.sprite.name = "inbetweenTrainer"
-        trainer.sprite.run(Player.animate(player: trainer, type: trainerMergeType, timePerFrame: 0.1))
+        trainer.sprite.run(Player.animate(player: trainer, type: trainerMergeType))
         trainer.sprite.run(SKAction.repeatForever(SKAction.sequence([
             SKAction.moveBy(x: 0, y: 20, duration: 1),
             SKAction.moveBy(x: 0, y: 5, duration: 1),
@@ -1303,7 +1303,6 @@ class GameboardSprite {
         let rotateSpeed: TimeInterval = 1
         let rotateSpeedCircular: TimeInterval = 0.0625
         let divisionsOf2Pi: CGFloat = 32
-        let idleSpeed: TimeInterval
         let particleType: ParticleEngine.ParticleType
         let particleScale: CGFloat
         let nameSuffix: String
@@ -1345,29 +1344,25 @@ class GameboardSprite {
             nameSuffix = "0"
             particleType = .magicElderIce
             particleScale = 2 / CGFloat(panelCount)
-            idleSpeed = 0.1
         case .elder1:
             nameSuffix = "1"
             particleType = .magicElderFire2
             particleScale = 3 / CGFloat(panelCount) / 2
-            idleSpeed = 0.09
         case .elder2:
             nameSuffix = "2"
             particleType = .magicElderEarth2
             particleScale = 3 / CGFloat(panelCount)
-            idleSpeed = 0.05
         default:
             nameSuffix = ""
             particleType = .warp
             particleScale = 3 / CGFloat(panelCount)
-            idleSpeed = 0.1
         }
         
         elder.sprite.position = getLocation(at: positions[0])
         elder.sprite.setScale(0)
         elder.sprite.zPosition = K.ZPosition.itemsAndEffects + 20
         elder.sprite.name = "spawnElder\(nameSuffix)"
-        elder.sprite.run(Player.animate(player: elder, type: .idle, timePerFrame: idleSpeed))
+        elder.sprite.run(Player.animate(player: elder, type: .idle))
                 
         sprite.addChild(elder.sprite)
 

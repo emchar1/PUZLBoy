@@ -215,11 +215,126 @@ class Player {
      - parameters:
         - player: the player in question
         - type: the type of texture in question
-        - timePerFrame: the speed of the animation
+        - timePerFrame: the speed of the animation. Optional. If used, it will overwrite the timePerFrameFallback predefined animation speeds.
+        - timePerFrameMultiplier: a multiplier that affects the animation speed, defaults to 1
+        - repeatCount: number of times to execute the animation
      - returns:the SKAction
      */
-    static func animate(player: Player, type: Texture, timePerFrame: TimeInterval) -> SKAction {
-        return SKAction.repeatForever(SKAction.animate(with: player.textures[type.rawValue], timePerFrame: timePerFrame))
+    static func animate(player: Player,
+                        type: Texture,
+                        timePerFrame: TimeInterval? = nil,
+                        timePerFrameMultiplier: TimeInterval = 1,
+                        repeatCount: Int = -1) -> SKAction {
+        
+        let defaultTime: TimeInterval = 0.1
+        var timePerFrameFallback: TimeInterval
+        
+        switch type {
+        case .idle:
+            switch player.type {
+            case .hero:             timePerFrameFallback = 0.06
+            case .trainer:          timePerFrameFallback = 0.16
+            case .villain:          timePerFrameFallback = 0.12
+            case .princess:         timePerFrameFallback = 0.09
+            case .princess2:        timePerFrameFallback = defaultTime
+            case .elder0:           timePerFrameFallback = 0.1
+            case .elder1:           timePerFrameFallback = 0.09
+            case .elder2:           timePerFrameFallback = 0.05
+            case .youngTrainer:     timePerFrameFallback = 0.05
+            case .youngVillain:     timePerFrameFallback = 0.06
+            case .minion:           timePerFrameFallback = defaultTime
+            }
+        case .run:
+            switch player.type {
+            case .hero:             timePerFrameFallback = 0.04
+            case .trainer:          timePerFrameFallback = 0.04
+            case .villain:          timePerFrameFallback = 0.04
+            case .princess:         timePerFrameFallback = 0.04
+            case .princess2:        timePerFrameFallback = defaultTime
+            case .elder0:           timePerFrameFallback = 0.04
+            case .elder1:           timePerFrameFallback = 0.04
+            case .elder2:           timePerFrameFallback = 0.04
+            case .youngTrainer:     timePerFrameFallback = defaultTime
+            case .youngVillain:     timePerFrameFallback = defaultTime
+            case .minion:           timePerFrameFallback = defaultTime
+            }
+        case .walk:
+            switch player.type {
+            case .hero:             timePerFrameFallback = 0.06
+            case .trainer:          timePerFrameFallback = 0.12
+            case .villain:          timePerFrameFallback = 0.06
+            case .princess:         timePerFrameFallback = 0.06
+            case .princess2:        timePerFrameFallback = defaultTime
+            case .elder0:           timePerFrameFallback = defaultTime
+            case .elder1:           timePerFrameFallback = defaultTime
+            case .elder2:           timePerFrameFallback = defaultTime
+            case .youngTrainer:     timePerFrameFallback = defaultTime
+            case .youngVillain:     timePerFrameFallback = defaultTime
+            case .minion:           timePerFrameFallback = defaultTime
+            }
+        case .dead:
+            switch player.type {
+            case .hero:             timePerFrameFallback = 0.02
+            case .trainer:          timePerFrameFallback = defaultTime
+            case .villain:          timePerFrameFallback = defaultTime
+            case .princess:         timePerFrameFallback = defaultTime
+            case .princess2:        timePerFrameFallback = defaultTime
+            case .elder0:           timePerFrameFallback = defaultTime
+            case .elder1:           timePerFrameFallback = defaultTime
+            case .elder2:           timePerFrameFallback = defaultTime
+            case .youngTrainer:     timePerFrameFallback = defaultTime
+            case .youngVillain:     timePerFrameFallback = defaultTime
+            case .minion:           timePerFrameFallback = defaultTime
+            }
+        case .glide:
+            switch player.type {
+            case .hero:             timePerFrameFallback = 0.04
+            case .trainer:          timePerFrameFallback = 0.1
+            case .villain:          timePerFrameFallback = defaultTime
+            case .princess:         timePerFrameFallback = defaultTime
+            case .princess2:        timePerFrameFallback = defaultTime
+            case .elder0:           timePerFrameFallback = defaultTime
+            case .elder1:           timePerFrameFallback = defaultTime
+            case .elder2:           timePerFrameFallback = defaultTime
+            case .youngTrainer:     timePerFrameFallback = defaultTime
+            case .youngVillain:     timePerFrameFallback = defaultTime
+            case .minion:           timePerFrameFallback = defaultTime
+            }
+        case .jump:
+            switch player.type {
+            case .hero:             timePerFrameFallback = defaultTime
+            case .trainer:          timePerFrameFallback = defaultTime
+            case .villain:          timePerFrameFallback = defaultTime
+            case .princess:         timePerFrameFallback = 0.02
+            case .princess2:        timePerFrameFallback = defaultTime
+            case .elder0:           timePerFrameFallback = defaultTime
+            case .elder1:           timePerFrameFallback = defaultTime
+            case .elder2:           timePerFrameFallback = defaultTime
+            case .youngTrainer:     timePerFrameFallback = defaultTime
+            case .youngVillain:     timePerFrameFallback = defaultTime
+            case .minion:           timePerFrameFallback = defaultTime
+            }
+        case .attack:
+            switch player.type {
+            case .hero:             timePerFrameFallback = defaultTime
+            case .trainer:          timePerFrameFallback = defaultTime
+            case .villain:          timePerFrameFallback = defaultTime
+            case .princess:         timePerFrameFallback = defaultTime
+            case .princess2:        timePerFrameFallback = defaultTime
+            case .elder0:           timePerFrameFallback = 0.06
+            case .elder1:           timePerFrameFallback = 0.06
+            case .elder2:           timePerFrameFallback = 0.06
+            case .youngTrainer:     timePerFrameFallback = defaultTime
+            case .youngVillain:     timePerFrameFallback = defaultTime
+            case .minion:           timePerFrameFallback = defaultTime
+            }
+        case .marsh, .sand, .party: //I don't think I need to build this out since it doesn't have a specific speed for any player 12/11/24.
+            timePerFrameFallback = defaultTime
+        }
+        
+        let animateAction = SKAction.animate(with: player.textures[type.rawValue],
+                                             timePerFrame: (timePerFrame ?? timePerFrameFallback) * timePerFrameMultiplier)
+        return repeatCount == -1 ? SKAction.repeatForever(animateAction) : SKAction.repeat(animateAction, count: repeatCount)
     }
     
     /**
@@ -312,7 +427,7 @@ class Player {
             
             backgroundNode.addChild(duplicate.sprite)
             
-            duplicate.sprite.run(Player.animate(player: duplicate, type: .idle, timePerFrame: 0.1))
+            duplicate.sprite.run(Player.animate(player: duplicate, type: .idle))
             duplicate.sprite.run(SKAction.sequence([
                 SKAction.fadeOut(withDuration: fadeDuration),
                 SKAction.removeFromParent()
@@ -349,7 +464,7 @@ class Player {
         let moveOffset: CGFloat = shouldReverse ? -20 : 20
         
         return SKAction.group([
-            Player.animate(player: player, type: .idle, timePerFrame: 0.1),
+            Player.animate(player: player, type: .idle),
             SKAction.repeatForever(SKAction.sequence([
                 SKAction.moveBy(x: 0, y: moveOffset, duration: 1 + (randomizeDuration ? TimeInterval.random(in: 0...1) : 0)),
                 SKAction.moveBy(x: 0, y: -moveOffset, duration: 1 + (randomizeDuration ? TimeInterval.random(in: 0...1) : 0))

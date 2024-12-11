@@ -321,7 +321,7 @@ class CutsceneMagmoor: Cutscene {
         let forcefieldDuration: TimeInterval = 8
 
         //IMPORTANT: any animatePlayerWithTextures() should always be called FIRST, before any other SKActions!! - DEFUNCT 11/21/24??
-//        animatePlayerWithTextures(player: &playerRight, textureType: .idle, timePerFrame: 0.12)
+//        animatePlayerWithTextures(player: &playerRight, textureType: .idle)
 
         //Parallax
         parallaxManager.changeSet(set: .sand)
@@ -717,7 +717,7 @@ class CutsceneMagmoor: Cutscene {
         playerRight.sprite.alpha = 1
         playerRight.sprite.zRotation = .pi / 4
         
-        animatePlayerWithTextures(player: &playerRight, textureType: .idle, timePerFrame: 0.12)
+        animatePlayerWithTextures(player: &playerRight, textureType: .idle)
 
         playerRight.sprite.run(SKAction.group([
             SKAction.repeatForever(SKAction.rotate(byAngle: .pi / 8, duration: 2)),
@@ -780,7 +780,7 @@ class CutsceneMagmoor: Cutscene {
             SKAction.run { [weak self] in
                 guard let self = self else { return }
                 
-                animatePlayerWithTextures(player: &playerLeft, textureType: .idle, timePerFrame: 0.1)
+                animatePlayerWithTextures(player: &playerLeft, textureType: .idle)
                 AudioManager.shared.playSound(for: "enemyice")
                 ParticleEngine.shared.animateParticles(type: .magicElderIce,
                                                        toNode: playerLeft.sprite,
@@ -817,7 +817,7 @@ class CutsceneMagmoor: Cutscene {
             SKAction.run { [weak self] in
                 guard let self = self else { return }
                 
-                animatePlayerWithTextures(player: &elder1, textureType: .idle, timePerFrame: 0.09)
+                animatePlayerWithTextures(player: &elder1, textureType: .idle)
                 ParticleEngine.shared.animateParticles(type: .magicElderFire,
                                                        toNode: backgroundNode,
                                                        position: elder1.sprite.position + CGPoint(x: -550, y: 350),
@@ -863,7 +863,7 @@ class CutsceneMagmoor: Cutscene {
             SKAction.run { [weak self] in
                 guard let self = self else { return }
                 
-                animatePlayerWithTextures(player: &elder2, textureType: .idle, timePerFrame: 0.05)
+                animatePlayerWithTextures(player: &elder2, textureType: .idle)
                 AudioManager.shared.playSound(for: "boyimpact")
                 ParticleEngine.shared.animateParticles(type: .magicElderEarth,
                                                        toNode: elder2.sprite,
@@ -910,9 +910,9 @@ class CutsceneMagmoor: Cutscene {
         setParallaxPositionAndScale(scale: 2)
         parallaxManager.backgroundSprite.position.y -= 200
 
-        animatePlayerWithTextures(player: &playerLeft, textureType: .idle, timePerFrame: 0.1)
-        animatePlayerWithTextures(player: &elder1, textureType: .idle, timePerFrame: 0.09)
-        animatePlayerWithTextures(player: &elder2, textureType: .idle, timePerFrame: 0.05)
+        animatePlayerWithTextures(player: &playerLeft, textureType: .idle)
+        animatePlayerWithTextures(player: &elder1, textureType: .idle)
+        animatePlayerWithTextures(player: &elder2, textureType: .idle)
 
         playerLeft.sprite.position = CGPoint(x: screenSize.width / 2, y: leftPlayerPositionFinal.y)
         playerLeft.sprite.setScale(2)
@@ -945,9 +945,9 @@ class CutsceneMagmoor: Cutscene {
     
     private func wideShotElderBanish() {
         //Necessary animations. Call these BEFORE any other SKActions!
-        animatePlayerWithTextures(player: &playerLeft, textureType: .idle, timePerFrame: 0.1)
-        animatePlayerWithTextures(player: &elder1, textureType: .run, timePerFrame: 0.05)
-        animatePlayerWithTextures(player: &elder2, textureType: .run, timePerFrame: 0.05)
+        animatePlayerWithTextures(player: &playerLeft, textureType: .idle)
+        animatePlayerWithTextures(player: &elder1, textureType: .run)
+        animatePlayerWithTextures(player: &elder2, textureType: .run)
 
         //Setup positions
         let elderPositionInitial: CGFloat = screenSize.width * 5/6
@@ -1254,7 +1254,7 @@ class CutsceneMagmoor: Cutscene {
                                                zPosition: player.type == .elder1 ? 0 : 10,
                                                duration: 0)
 
-        animatePlayerWithTextures(player: &player, textureType: .attack, timePerFrame: 0.06, repeatCount: 1)
+        animatePlayerWithTextures(player: &player, textureType: .attack, repeatCount: 1)
     }
     
     private func setupDuplicateMagmoor(offset: CGPoint, shouldBlast: Bool = false) {

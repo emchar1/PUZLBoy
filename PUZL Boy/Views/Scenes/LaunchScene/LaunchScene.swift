@@ -140,6 +140,7 @@ class LaunchScene: SKScene {
     // MARK: - Animation Functions
     
     func animateSprites() {
+        //playerSpeed must not come from the default values for hero and needs to be explicitly set here.
         var playerSpeed: TimeInterval
         
         switch DayTheme.currentTheme {

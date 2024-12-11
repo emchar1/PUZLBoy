@@ -206,12 +206,22 @@ class Cutscene: SKScene {
      - parameters:
         - player: the player object to animate.
         - textureType: the type of animation texture to play.
-        - timePerFrame: the duration of each frame of the animation.
+        - timePerFrame: the duration of each frame of the animation. Defaults to nil, which will use the default timePerFrame in Player.animate().
+        - timePerFrameMultiplier: adds a multiplier to the timePerFrame, which defaults to 1.
         - repeatCount: number of times to play the animation, or -1 to repeat forever.
      */
-    func animatePlayerWithTextures(player: inout Player, textureType: Player.Texture, timePerFrame: TimeInterval, repeatCount: Int = -1) {
+    func animatePlayerWithTextures(player: inout Player,
+                                   textureType: Player.Texture,
+                                   timePerFrame: TimeInterval? = nil,
+                                   timePerFrameMultiplier: TimeInterval = 1,
+                                   repeatCount: Int = -1) {
+        
         let key = "animatePlayerWithTexturesKey"
-        let repeatAction = Player.animate(player: player, type: textureType, timePerFrame: timePerFrame, repeatCount: repeatCount)
+        let repeatAction = Player.animate(player: player,
+                                          type: textureType,
+                                          timePerFrame: timePerFrame,
+                                          timePerFrameMultiplier: timePerFrameMultiplier,
+                                          repeatCount: repeatCount)
         
         player.sprite.removeAction(forKey: key)
         player.sprite.run(repeatAction, withKey: key)

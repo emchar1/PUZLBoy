@@ -129,7 +129,6 @@ class CutsceneOldFriends: Cutscene {
         let scaleIncrease: CGFloat = 1.25
         let flipHorizontally: CGFloat = shouldFlipHorizontally ? -1 : 1
         let rotateClockwise: CGFloat = shouldRotateClockwise ? -1 : 1
-        let timePerFrame: TimeInterval = 0.06 * 2
 
         player.sprite.position = position
         player.sprite.setScale(scale)
@@ -139,7 +138,7 @@ class CutsceneOldFriends: Cutscene {
         player.sprite.removeAllActions()
         
         player.sprite.run(SKAction.group([
-            Player.animate(player: player, type: .idle, timePerFrame: timePerFrame),
+            Player.animate(player: player, type: .idle, timePerFrameMultiplier: 2),
             SKAction.rotate(toAngle: rotateClockwise * rotationRange + randomRotation, duration: duration),
             SKAction.scaleX(to: flipHorizontally * scale * scaleIncrease, y: scale * scaleIncrease, duration: duration)
         ]))
@@ -313,10 +312,9 @@ class CutsceneOldFriends: Cutscene {
         let fadeDuration: TimeInterval = 0.1
         let zoomScale: CGFloat = 0.5
         let zoomDuration: TimeInterval = 0.25
-        let timePerFrame: TimeInterval = 0.06 * 2
 
-        animatePlayerWithTextures(player: &playerLeft, textureType: .idle, timePerFrame: timePerFrame)
-        animatePlayerWithTextures(player: &playerMagmoor, textureType: .idle, timePerFrame: timePerFrame)
+        animatePlayerWithTextures(player: &playerLeft, textureType: .idle, timePerFrameMultiplier: 2)
+        animatePlayerWithTextures(player: &playerMagmoor, textureType: .idle, timePerFrameMultiplier: 2)
         
         run(SKAction.sequence([
             SKAction.wait(forDuration: waitBeforeTransformation),

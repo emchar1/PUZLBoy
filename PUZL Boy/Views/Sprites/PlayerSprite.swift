@@ -59,7 +59,7 @@ class PlayerSprite {
     ///Helper function to go with startIdleAnimation()
     func restartIdleAnimation(isPartying: Bool) {
         let partyingTimePerFrame = PartyModeSprite.shared.quarterNote / TimeInterval(player.textures[Player.Texture.idle.rawValue].count)
-        let animation = Player.animate(player: player, type: .idle, timePerFrame: isPartying ? partyingTimePerFrame : animationSpeed * 1.5)
+        let animation = Player.animate(player: player, type: .idle, timePerFrame: isPartying ? partyingTimePerFrame : 0.06)
 
         player.sprite.removeAction(forKey: AnimationKey.playerIdle.rawValue)
         player.sprite.run(animation, withKey: AnimationKey.playerIdle.rawValue)
@@ -98,8 +98,7 @@ class PlayerSprite {
     }
     
     func startMoveAnimation(animationType: Player.Texture, soundFXType: Player.Texture) {
-        let animationRate: TimeInterval = animationType == .marsh ? 1.25 : 1
-        let timePerFrame: TimeInterval = animationSpeed * animationRate * PartyModeSprite.shared.speedMultiplier
+        let timePerFrameMultiplier: TimeInterval = (animationType == .marsh ? 1.25 : 1) * PartyModeSprite.shared.speedMultiplier
         
         player.sprite.removeAction(forKey: AnimationKey.playerIdle.rawValue)
         player.sprite.removeAction(forKey: AnimationKey.playerMove.rawValue)
@@ -110,7 +109,7 @@ class PlayerSprite {
             AudioManager.shared.playSound(for: "moveglide", interruptPlayback: false)
 
             player.sprite.run(SKAction.sequence([
-                Player.animate(player: player, type: animationType, timePerFrame: timePerFrame, repeatCount: 1),
+                Player.animate(player: player, type: animationType, timePerFrameMultiplier: timePerFrameMultiplier, repeatCount: 1),
                 SKAction.wait(forDuration: 2.0 * PartyModeSprite.shared.speedMultiplier)
             ]), withKey: AnimationKey.playerGlide.rawValue)
         }
@@ -130,14 +129,14 @@ class PlayerSprite {
                 print("Unknown soundFXType")
             }
             
-            player.sprite.run(Player.animate(player: player, type: animationType, timePerFrame: timePerFrame), withKey: AnimationKey.playerMove.rawValue)
+            player.sprite.run(Player.animate(player: player, type: animationType, timePerFrameMultiplier: timePerFrameMultiplier), withKey: AnimationKey.playerMove.rawValue)
         }
     }
     
     ///Fades the player as he's exiting through the gate
     func startPlayerExitAnimation() {
         let exitAction = SKAction.group([
-            Player.animate(player: player, type: .run, timePerFrame: animationSpeed * PartyModeSprite.shared.speedMultiplier),
+            Player.animate(player: player, type: .run, timePerFrameMultiplier: PartyModeSprite.shared.speedMultiplier),
             SKAction.scaleX(to: player.sprite.xScale / 4, y: player.sprite.yScale / 4, duration: 0.5),
             SKAction.fadeOut(withDuration: 0.5)
         ])
@@ -561,7 +560,7 @@ class PlayerSprite {
         player.sprite.removeAction(forKey: AnimationKey.playerMove.rawValue)
         
         player.sprite.run(SKAction.sequence([
-            Player.animate(player: player, type: .dead, timePerFrame: animationSpeed / 2, repeatCount: 1),
+            Player.animate(player: player, type: .dead, repeatCount: 1),
             SKAction.wait(forDuration: 1.5)
         ])) { [weak self] in
             self?.isAnimating = false

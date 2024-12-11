@@ -101,7 +101,7 @@ class FinalBattleScene: SKScene {
         AudioManager.shared.playSound(for: "bossbattle1")
         AudioManager.shared.playSound(for: "bossbattle2", delay: bossbattle1Duration)
         
-        hero.sprite.run(Player.animate(player: hero, type: .idle, timePerFrame: 0.1))
+        hero.sprite.run(Player.animate(player: hero, type: .idle))
         elder0.sprite.run(Player.animateIdleLevitate(player: elder0))
         elder1.sprite.run(Player.animateIdleLevitate(player: elder1))
         elder2.sprite.run(Player.animateIdleLevitate(player: elder2))

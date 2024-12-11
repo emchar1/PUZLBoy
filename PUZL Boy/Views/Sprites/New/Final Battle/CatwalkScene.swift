@@ -361,29 +361,7 @@ class CatwalkScene: SKScene {
     }
     
     private func animatePlayer(player: Player, type: Player.Texture) -> SKAction {
-        var timePerFrame: TimeInterval
-        
-        switch type {
-        case .idle:
-            switch player.type {
-            case .elder0:   timePerFrame = 0.1
-            case .elder1:   timePerFrame = 0.09
-            case .elder2:   timePerFrame = 0.05
-            case .princess: timePerFrame = 0.09
-            case .villain:  timePerFrame = 0.12
-            default:        timePerFrame = 0.06
-            }
-        case .run:
-            timePerFrame = 0.04
-        default:
-            timePerFrame = 0.04
-        }
-        
-        if player.type == .hero {
-            timePerFrame *= isRedShift ? 2 : 1
-        }
-        
-        return Player.animate(player: player, type: type, timePerFrame: timePerFrame)
+        return Player.animate(player: player, type: type, timePerFrameMultiplier: (player.type == .hero && isRedShift) ? 2 : 1)
     }
     
     private func playDialogue(panelIndex: Int) {

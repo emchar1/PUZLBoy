@@ -55,8 +55,8 @@ class CutsceneFlashback: Cutscene {
         super.animateScene(completion: completion)
 
         //Players
-        animatePlayerWithTextures(player: &playerLeft, textureType: .idle, timePerFrame: 0.05)
-        animatePlayerWithTextures(player: &playerRight, textureType: .idle, timePerFrame: 0.06)
+        animatePlayerWithTextures(player: &playerLeft, textureType: .idle)
+        animatePlayerWithTextures(player: &playerRight, textureType: .idle)
 
         playerLeft.sprite.run(SKAction.fadeIn(withDuration: 3))
         playerRight.sprite.run(SKAction.fadeIn(withDuration: 3))
