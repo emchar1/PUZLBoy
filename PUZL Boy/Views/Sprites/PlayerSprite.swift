@@ -100,8 +100,7 @@ class PlayerSprite {
     func startMoveAnimation(animationType: Player.Texture, soundFXType: Player.Texture) {
         let animationRate: TimeInterval = animationType == .marsh ? 1.25 : 1
         let timePerFrame: TimeInterval = animationSpeed * animationRate * PartyModeSprite.shared.speedMultiplier
-        let animation = SKAction.animate(with: player.textures[animationType.rawValue], timePerFrame: timePerFrame)
-
+        
         player.sprite.removeAction(forKey: AnimationKey.playerIdle.rawValue)
         player.sprite.removeAction(forKey: AnimationKey.playerMove.rawValue)
         
@@ -111,7 +110,7 @@ class PlayerSprite {
             AudioManager.shared.playSound(for: "moveglide", interruptPlayback: false)
 
             player.sprite.run(SKAction.sequence([
-                SKAction.repeat(animation, count: 1),
+                Player.animate(player: player, type: animationType, timePerFrame: timePerFrame, repeatCount: 1),
                 SKAction.wait(forDuration: 2.0 * PartyModeSprite.shared.speedMultiplier)
             ]), withKey: AnimationKey.playerGlide.rawValue)
         }
@@ -131,7 +130,7 @@ class PlayerSprite {
                 print("Unknown soundFXType")
             }
             
-            player.sprite.run(SKAction.repeatForever(animation), withKey: AnimationKey.playerMove.rawValue)
+            player.sprite.run(Player.animate(player: player, type: animationType, timePerFrame: timePerFrame), withKey: AnimationKey.playerMove.rawValue)
         }
     }
     
@@ -555,15 +554,16 @@ class PlayerSprite {
     }
     
     func startDeadAnimation(completion: @escaping (() -> Void)) {
-        let animation = SKAction.animate(with: player.textures[Player.Texture.dead.rawValue], timePerFrame: animationSpeed / 2)
-
         isAnimating = true
-
         AudioManager.shared.playSound(for: "boydead")
         
         player.sprite.removeAction(forKey: AnimationKey.playerIdle.rawValue)
         player.sprite.removeAction(forKey: AnimationKey.playerMove.rawValue)
-        player.sprite.run(SKAction.sequence([SKAction.repeat(animation, count: 1), SKAction.wait(forDuration: 1.5)])) { [weak self] in
+        
+        player.sprite.run(SKAction.sequence([
+            Player.animate(player: player, type: .dead, timePerFrame: animationSpeed / 2, repeatCount: 1),
+            SKAction.wait(forDuration: 1.5)
+        ])) { [weak self] in
             self?.isAnimating = false
             completion()
         }

@@ -112,14 +112,13 @@ class CutsceneIntro: Cutscene {
         
         let frameRate: TimeInterval = 0.06
         let walkCycle: TimeInterval = frameRate * 15 //1 cycle at 0.06s x 15 frames = 0.9s
-        let heroWalk = SKAction.animate(with: playerLeft.textures[Player.Texture.walk.rawValue], timePerFrame: frameRate)
         
         //Letterbox
         letterbox.show()
         
         //Hero Sprite
         playerLeft.sprite.run(SKAction.group([
-            SKAction.repeat(heroWalk, count: 13),
+            Player.animate(player: playerLeft, type: .walk, timePerFrame: frameRate, repeatCount: 13),
             SKAction.sequence([
                 SKAction.wait(forDuration: 6 * walkCycle),
                 SKAction.moveTo(x: heroPositionFinal.x, duration: 4 * walkCycle),
@@ -395,12 +394,11 @@ class CutsceneIntro: Cutscene {
                                              duration: 10)
                     },
                     SpeechBubbleItem(profile: speechPlayerRight, speed: 0.04, chat: "SAVE ME MAR—|I mean,| PUZL BOYYY!!!!||||/The fate of the world rests in your hands!!") {
-                        let frameRate: TimeInterval = 0.02
-                        let runCycle: TimeInterval = frameRate * 15 //1 cycle at 0.02s x 15 frames = 0.3s
-                        let heroRun = SKAction.animate(with: self.playerLeft.textures[Player.Texture.run.rawValue], timePerFrame: frameRate)
+                        let frameRateFast: TimeInterval = 0.02
+                        let runCycle: TimeInterval = frameRateFast * 15 //1 cycle at 0.02s x 15 frames = 0.3s
                         
                         self.playerLeft.sprite.run(SKAction.group([
-                            SKAction.repeat(heroRun, count: 2),
+                            Player.animate(player: self.playerLeft, type: .run, timePerFrame: frameRateFast, repeatCount: 2),
                             SKAction.sequence([
                                 SKAction.moveTo(x: self.screenSize.width / 2, duration: 1.5 * runCycle),
                                 Player.animate(player: self.playerLeft, type: .idle, timePerFrame: frameRate)

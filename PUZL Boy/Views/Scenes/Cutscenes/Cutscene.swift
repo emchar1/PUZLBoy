@@ -214,8 +214,7 @@ class Cutscene: SKScene {
                                            timePerFrame: TimeInterval,
                                            repeatCount: Int = -1) {
         let key = "animatePlayerWithTexturesKey"
-        let animateAction = SKAction.animate(with: player.textures[textureType.rawValue], timePerFrame: timePerFrame)
-        let repeatAction = repeatCount == -1 ? SKAction.repeatForever(animateAction) : SKAction.repeat(animateAction, count: repeatCount)
+        let repeatAction = Player.animate(player: player, type: textureType, timePerFrame: timePerFrame, repeatCount: repeatCount)
         
         player.sprite.removeAction(forKey: key)
         player.sprite.run(repeatAction, withKey: key)
