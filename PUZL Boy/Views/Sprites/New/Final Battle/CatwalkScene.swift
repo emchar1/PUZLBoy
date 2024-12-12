@@ -193,6 +193,10 @@ class CatwalkScene: SKScene {
         magmoorFlashSprite.alpha = 0
         magmoorFlashSprite.zPosition = 1
         
+        
+        //BUGFIX# 241210E01 - Glow node on gate extends boundaries on iPad, iPhone SE. Add this scale property to normalize across all devices.
+        var glowScale: CGFloat = 1
+        
         for i in 0...catwalkLength {
             let image: String = i == 0 ? "start" : (i == catwalkLength ? "endClosed" : "partytile")
             
@@ -206,7 +210,9 @@ class CatwalkScene: SKScene {
             catwalkPanel.name = catwalkPanelNamePrefix + "\(i)"
             
             if i == catwalkLength {
-                catwalkPanel.addGlow(spriteNode: SKSpriteNode(color: .white, size: scaleSize), radiusPercentage: 0.25, startingAlpha: 0)
+                glowScale = catwalkPanel.xScale
+                
+                catwalkPanel.addGlow(spriteNode: SKSpriteNode(color: .white, size: scaleSize / glowScale), radiusPercentage: 0.25, startingAlpha: 0)
             }
             
             catwalkPanels.append(catwalkPanel)
@@ -216,7 +222,7 @@ class CatwalkScene: SKScene {
         endClosedMagic.anchorPoint = .zero
         endClosedMagic.alpha = 0
         endClosedMagic.zPosition = 1
-        endClosedMagic.addGlow(spriteNode: SKSpriteNode(color: .white, size: scaleSize), radiusPercentage: 0.25, startingAlpha: 0)
+        endClosedMagic.addGlow(spriteNode: SKSpriteNode(color: .white, size: scaleSize / glowScale), radiusPercentage: 0.25, startingAlpha: 0)
         
         shimmerPartyTiles()
         tapPointerEngine = TapPointerEngine()
