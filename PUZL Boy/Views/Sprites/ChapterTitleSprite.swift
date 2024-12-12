@@ -41,16 +41,15 @@ class ChapterTitleSprite: SKNode {
     }
     
     private func setupNodes() {
-        sprite = SKSpriteNode(texture: SKTexture(imageNamed: "chapter\(chapter)Title"))
-        sprite.position = CGPoint(x: K.ScreenDimensions.size.width / 2, y: K.ScreenDimensions.topOfGameboard - moveY)
+        sprite = SKSpriteNode()
         sprite.anchorPoint = CGPoint(x: 0.5, y: 0)
         sprite.size = ChapterTitleSprite.size * ChapterTitleSprite.scale
-        sprite.setScale(0.85)
-        sprite.alpha = 0
         sprite.zPosition = K.ZPosition.messagePrompt
         sprite.name = "ChapterTitleNode"
         
         addChild(sprite)
+        
+        resetSprite()
     }
     
     
@@ -92,9 +91,12 @@ class ChapterTitleSprite: SKNode {
     }
     
     private func resetSprite() {
+        let scale: CGFloat = 0.85
+        
         sprite.texture = SKTexture(imageNamed: "chapter\(self.chapter)Title")
-        sprite.position = CGPoint(x: K.ScreenDimensions.size.width / 2, y: K.ScreenDimensions.topOfGameboard - moveY)
-        sprite.setScale(0.85)
+        sprite.position = CGPoint(x: K.ScreenDimensions.size.width / 2,
+                                  y: K.ScreenDimensions.size.height - ChapterTitleSprite.size.height / scale - moveY)
+        sprite.setScale(scale)
         sprite.alpha = 0
     }
 }
