@@ -349,7 +349,7 @@ class Player {
         let moveOffset: CGFloat = shouldReverse ? -20 : 20
         
         return SKAction.group([
-            animate(player: player, type: .idle, timePerFrame: 0.1),
+            Player.animate(player: player, type: .idle, timePerFrame: 0.1),
             SKAction.repeatForever(SKAction.sequence([
                 SKAction.moveBy(x: 0, y: moveOffset, duration: 1 + (randomizeDuration ? TimeInterval.random(in: 0...1) : 0)),
                 SKAction.moveBy(x: 0, y: -moveOffset, duration: 1 + (randomizeDuration ? TimeInterval.random(in: 0...1) : 0))

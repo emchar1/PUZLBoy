@@ -113,8 +113,6 @@ class CutsceneIntro: Cutscene {
         let frameRate: TimeInterval = 0.06
         let walkCycle: TimeInterval = frameRate * 15 //1 cycle at 0.06s x 15 frames = 0.9s
         let heroWalk = SKAction.animate(with: playerLeft.textures[Player.Texture.walk.rawValue], timePerFrame: frameRate)
-        let heroIdle = SKAction.animate(with: playerLeft.textures[Player.Texture.idle.rawValue], timePerFrame: frameRate)
-        let princessIdle = SKAction.animate(with: playerRight.textures[Player.Texture.idle.rawValue], timePerFrame: frameRate * 1.5)
         
         //Letterbox
         letterbox.show()
@@ -126,7 +124,7 @@ class CutsceneIntro: Cutscene {
                 SKAction.wait(forDuration: 6 * walkCycle),
                 SKAction.moveTo(x: heroPositionFinal.x, duration: 4 * walkCycle),
                 SKAction.wait(forDuration: 3 * walkCycle),
-                SKAction.repeatForever(heroIdle)
+                Player.animate(player: playerLeft, type: .idle, timePerFrame: frameRate)
             ])
         ]))
         
@@ -135,7 +133,7 @@ class CutsceneIntro: Cutscene {
             SKAction.wait(forDuration: 11 * walkCycle),
             SKAction.group([
                 SKAction.moveTo(x: princessPositionFinal.x, duration: 2 * walkCycle),
-                SKAction.repeatForever(princessIdle)
+                Player.animate(player: playerRight, type: .idle, timePerFrame: frameRate * 1.5)
             ])
         ]))
         
@@ -405,7 +403,7 @@ class CutsceneIntro: Cutscene {
                             SKAction.repeat(heroRun, count: 2),
                             SKAction.sequence([
                                 SKAction.moveTo(x: self.screenSize.width / 2, duration: 1.5 * runCycle),
-                                SKAction.repeatForever(heroIdle)
+                                Player.animate(player: self.playerLeft, type: .idle, timePerFrame: frameRate)
                             ])
                         ]))
                         

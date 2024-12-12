@@ -62,8 +62,7 @@ class ActivityIndicatorSprite: SKNode {
     // MARK: - Functions
     
     private func animateSprites() {
-        let animation = SKAction.animate(with: player.textures[Player.Texture.run.rawValue], timePerFrame: 0.02)
-        player.sprite.run(SKAction.repeatForever(animation), withKey: "animatePlayer")
+        player.sprite.run(Player.animate(player: player, type: .run, timePerFrame: 0.02), withKey: "animatePlayer")
         
         let animateLabel: [SKAction] = [
             SKAction.run { [weak self] in self?.label.text = "PLEASE WAIT..." },

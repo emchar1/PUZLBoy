@@ -154,13 +154,11 @@ class LaunchScene: SKScene {
             playerSpeed = 0.05
         }
         
-        let playerAnimation = SKAction.animate(
-            with: (DayTheme.currentTheme == .night || DayTheme.currentTheme == .dawn) && UserDefaults.standard.bool(forKey: K.UserDefaults.shouldSkipIntro) ? player.textures[Player.Texture.walk.rawValue] : player.textures[Player.Texture.run.rawValue],
-            timePerFrame: playerSpeed
-        )
+        let shouldWalk: Bool = (DayTheme.currentTheme == .night || DayTheme.currentTheme == .dawn) && UserDefaults.standard.bool(forKey: K.UserDefaults.shouldSkipIntro)
+        let playerAnimation = Player.animate(player: player, type: shouldWalk ? .walk : .run, timePerFrame: playerSpeed)
         
-        player.sprite.run(SKAction.repeatForever(playerAnimation))
-        playerReflection.sprite.run(SKAction.repeatForever(playerAnimation))
+        player.sprite.run(playerAnimation)
+        playerReflection.sprite.run(playerAnimation)
 
         loadingSprite.animate()
         parallaxManager.animate()

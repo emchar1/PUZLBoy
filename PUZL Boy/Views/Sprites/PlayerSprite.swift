@@ -58,12 +58,11 @@ class PlayerSprite {
     
     ///Helper function to go with startIdleAnimation()
     func restartIdleAnimation(isPartying: Bool) {
-        let idleTexture: Player.Texture = Player.Texture.idle
-        let animation = SKAction.animate(with: player.textures[idleTexture.rawValue],
-                                         timePerFrame: isPartying ? PartyModeSprite.shared.quarterNote / TimeInterval(player.textures[Player.Texture.idle.rawValue].count) : animationSpeed * 1.5)
+        let partyingTimePerFrame = PartyModeSprite.shared.quarterNote / TimeInterval(player.textures[Player.Texture.idle.rawValue].count)
+        let animation = Player.animate(player: player, type: .idle, timePerFrame: isPartying ? partyingTimePerFrame : animationSpeed * 1.5)
 
         player.sprite.removeAction(forKey: AnimationKey.playerIdle.rawValue)
-        player.sprite.run(SKAction.repeatForever(animation), withKey: AnimationKey.playerIdle.rawValue)
+        player.sprite.run(animation, withKey: AnimationKey.playerIdle.rawValue)
     }
     
     func startIdleAnimation() {
@@ -100,8 +99,8 @@ class PlayerSprite {
     
     func startMoveAnimation(animationType: Player.Texture, soundFXType: Player.Texture) {
         let animationRate: TimeInterval = animationType == .marsh ? 1.25 : 1
-        let animation = SKAction.animate(with: player.textures[animationType.rawValue],
-                                         timePerFrame: animationSpeed * animationRate * PartyModeSprite.shared.speedMultiplier)
+        let timePerFrame: TimeInterval = animationSpeed * animationRate * PartyModeSprite.shared.speedMultiplier
+        let animation = SKAction.animate(with: player.textures[animationType.rawValue], timePerFrame: timePerFrame)
 
         player.sprite.removeAction(forKey: AnimationKey.playerIdle.rawValue)
         player.sprite.removeAction(forKey: AnimationKey.playerMove.rawValue)
@@ -138,10 +137,8 @@ class PlayerSprite {
     
     ///Fades the player as he's exiting through the gate
     func startPlayerExitAnimation() {
-        let runAnimation = SKAction.animate(with: player.textures[Player.Texture.run.rawValue],
-                                            timePerFrame: animationSpeed * PartyModeSprite.shared.speedMultiplier)
         let exitAction = SKAction.group([
-            SKAction.repeatForever(runAnimation),
+            Player.animate(player: player, type: .run, timePerFrame: animationSpeed * PartyModeSprite.shared.speedMultiplier),
             SKAction.scaleX(to: player.sprite.xScale / 4, y: player.sprite.yScale / 4, duration: 0.5),
             SKAction.fadeOut(withDuration: 0.5)
         ])
