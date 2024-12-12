@@ -224,7 +224,7 @@ class CatwalkScene: SKScene {
         chatEngine.delegateCatwalk = self
         
         dispatchWorkItem = DispatchWorkItem(block: {})
-        elderChatBubble = SpeechBubbleSprite(width: 400, position: .zero, tailOrientation: .bottomLeft)
+        elderChatBubble = SpeechBubbleSprite(width: 400, position: CGPoint(x: 400, y: 400) * UIDevice.spriteScale, tailOrientation: .bottomLeft)
         elderChatBubble.setScale(1 / (Player.getGameboardScale(panelSize: panelSize) * elder1.scaleMultiplier))
     }
     
@@ -752,7 +752,6 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
         shouldFeedGems = true
         
         elderChatBubble.removeFromParent()
-        elderChatBubble.position = elder1.sprite.position + (UIDevice.isiPad ? CGPoint(x: 200, y: 125) : CGPoint(x: 300, y: 300))
         dispatchWorkItem = DispatchWorkItem(block: { [weak self] in
             guard let self = self else { return }
             elderChatBubble.setText(text: "Tap the gate to feed it your gems, child!",
@@ -993,7 +992,6 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
                 dispatchWorkItem = DispatchWorkItem(block: { [weak self] in
                     guard let self = self else { return }
                     elderChatBubble.removeFromParent()
-                    elderChatBubble.position = elder2.sprite.position + (UIDevice.isiPad ? CGPoint(x: 225, y: 325) : CGPoint(x: 300, y: 450))
                     elderChatBubble.setText(text: "Huzzah!!! Now, onward we go! 👉🏼",
                                             speed: 0.04,
                                             superScene: self,
