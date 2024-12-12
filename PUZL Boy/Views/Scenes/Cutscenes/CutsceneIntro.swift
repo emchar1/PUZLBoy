@@ -68,9 +68,6 @@ class CutsceneIntro: Cutscene {
         
         speechPlayerLeft.position += heroPositionInitial
         speechPlayerRight.position += princessPositionFinal
-        
-        AudioManager.shared.playSound(for: "birdsambience", fadeIn: 5)
-        AudioManager.shared.playSound(for: grasslandOverworld, fadeIn: 5)
     }
     
     override func cleanupScene(buttonTap: ButtonTap.ButtonType?, fadeDuration: TimeInterval?) {
@@ -109,6 +106,9 @@ class CutsceneIntro: Cutscene {
     
     override func animateScene(completion: (() -> Void)?) {
         super.animateScene(completion: completion)
+
+        AudioManager.shared.playSound(for: "birdsambience", fadeIn: 5)
+        AudioManager.shared.playSound(for: grasslandOverworld, fadeIn: 5)
         
         let frameRate: TimeInterval = 0.06
         let walkCycle: TimeInterval = frameRate * 15 //1 cycle at 0.06s x 15 frames = 0.9s

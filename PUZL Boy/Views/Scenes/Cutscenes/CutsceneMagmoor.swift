@@ -79,12 +79,6 @@ class CutsceneMagmoor: Cutscene {
         
         magmoorScarySprite = MagmoorScarySprite(boundingBox: CGRect(x: 0, y: 0, width: screenSize.width, height: letterbox.height / 2))
         magmoorScarySprite.zPosition = playerRight.sprite.zPosition - 3
-        
-        //Add new sprite nodes to background
-        backgroundNode.addChild(elder1.sprite)
-        backgroundNode.addChild(elder2.sprite)
-        backgroundNode.addChild(redWarp)
-        backgroundNode.addChild(magmoorScarySprite)
     }
     
     override func cleanupScene(buttonTap: ButtonTap.ButtonType?, fadeDuration: TimeInterval?) {
@@ -131,6 +125,19 @@ class CutsceneMagmoor: Cutscene {
         setupDuplicateMagmoor(offset: CGPoint(x: 70, y: 310))
         setupDuplicateMagmoor(offset: CGPoint(x: 190, y: 310))
         setupDuplicateMagmoor(offset: CGPoint(x: 130, y: 330))
+    }
+    
+    
+    // MARK: - Move Functions
+    
+    override func didMove(to view: SKView) {
+        super.didMove(to: view)
+        
+        //Add new sprite nodes to background
+        backgroundNode.addChild(elder1.sprite)
+        backgroundNode.addChild(elder2.sprite)
+        backgroundNode.addChild(redWarp)
+        backgroundNode.addChild(magmoorScarySprite)
     }
     
     
