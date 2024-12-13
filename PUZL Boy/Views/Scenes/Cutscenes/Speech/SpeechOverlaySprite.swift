@@ -77,6 +77,16 @@ class SpeechOverlaySprite: SKNode {
         backgroundNode.addChild(speechNode)
     }
     
+    ///Invalidates timers and dispatch work items, remove actions, and nodes from parent. Call this when rage quitting, i.e. from a button tap, to prevent memory leaks.
+    func cleanupManually() {
+        timer.invalidate()
+        dispatchWorkItem.cancel()
+        backgroundNode.removeAllActions()
+        backgroundNode.removeAllChildren()
+        backgroundNode.removeFromParent()
+        removeFromParent()
+    }
+    
     
     // MARK: - Animation Functions
     

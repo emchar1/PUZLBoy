@@ -92,6 +92,7 @@ class SpeechBubbleSprite: SKNode {
         timer.invalidate()
         dispatchWorkItem.cancel()
         backgroundSprite.removeAllActions()
+        backgroundSprite.removeAllChildren()
         backgroundSprite.removeFromParent()
         removeFromParent()
     }

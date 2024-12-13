@@ -339,13 +339,22 @@ class Cutscene: SKScene {
         - buttonTap: the type of button tap to play, if non-nil.
      */
     func cleanupScene(buttonTap: ButtonTap.ButtonType?, fadeDuration: TimeInterval?) {
+        func cleanup() {
+            speechPlayerLeft.cleanupManually()
+            speechPlayerRight.cleanupManually()
+            speechNarrator.cleanupManually()
+            
+            letterbox = nil
+            parallaxManager = nil
+            tapPointerEngine = nil
+        }
+        
         Haptics.shared.stopHapticEngine()
         
         if let buttonTap = buttonTap {
             ButtonTap.shared.tap(type: buttonTap)
         }
-
-        tapPointerEngine = nil
+        
         disableTaps = true
         
         if let fadeDuration = fadeDuration {
@@ -354,10 +363,12 @@ class Cutscene: SKScene {
                 SKAction.wait(forDuration: 1),
                 SKAction.removeFromParent()
             ])) { [weak self] in
+                cleanup()
                 self?.completion?()
             }
         }
         else {
+            cleanup()
             completion?()
         }
     }

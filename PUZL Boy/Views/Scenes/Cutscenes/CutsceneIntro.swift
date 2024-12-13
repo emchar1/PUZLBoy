@@ -166,24 +166,29 @@ class CutsceneIntro: Cutscene {
                 let particleScale: CGFloat = CGFloat(2048) / CGFloat(1550)
                 
                 
+                //OMG!! [weak self] in doesn't appear to propagate down to all nested handlers; I had to explicitly re-state them, otherwise the class doesn't deinitialize properly leaving memory leaks of about 10MB. 12/13/24.
                 setTextArray(items: [
-                    SpeechBubbleItem(profile: speechPlayerLeft, chat: "🎵 \(CutsceneIntro.funnyQuotes.randomElement() ?? "Error0")—/Oh.....|| hello.| Didn't see you there... 😬|||| I'm PUZL Boy.") {
+                    SpeechBubbleItem(profile: speechPlayerLeft, chat: "🎵 \(CutsceneIntro.funnyQuotes.randomElement() ?? "Error0")—/Oh.....|| hello.| Didn't see you there... 😬|||| I'm PUZL Boy.") { [weak self] in
+                        guard let self = self else { return }
+                        
                         self.addChild(self.skipSceneSprite)
                         self.skipSceneSprite.animateSprite()
                     },
-                    SpeechBubbleItem(profile: speechPlayerRight, chat: "Hi! 👋🏽| I'm Princess Olivia and I'm 7 years old.|| I'm late for a V|E|R|Y| important appointment.") {
-                        self.closeUpHero()
+                    SpeechBubbleItem(profile: speechPlayerRight, chat: "Hi! 👋🏽| I'm Princess Olivia and I'm 7 years old.|| I'm late for a V|E|R|Y| important appointment.") { [weak self] in
+                        self?.closeUpHero()
                     },
-                    SpeechBubbleItem(profile: speechPlayerLeft, chat: "Awww...|| wait, like an actual princess, or is that what mommy and daddy call you?||||||||/And what kind of important meeting does a 7 year old need to attend?||||||||/Speaking of which, where are your parents?| Are you here by yourself???") {
-                        self.closeUpPrincess()
+                    SpeechBubbleItem(profile: speechPlayerLeft, chat: "Awww...|| wait, like an actual princess, or is that what mommy and daddy call you?||||||||/And what kind of important meeting does a 7 year old need to attend?||||||||/Speaking of which, where are your parents?| Are you here by yourself???") { [weak self] in
+                        self?.closeUpPrincess()
                         
-                        self.dimOverlayNode.run(SKAction.sequence([
+                        self?.dimOverlayNode.run(SKAction.sequence([
                             SKAction.wait(forDuration: 28),
                             SKAction.fadeAlpha(to: 0.8, duration: 1),
                             SKAction.wait(forDuration: 2),
                             SKAction.group([
                                 SKAction.fadeIn(withDuration: 23), //34 total seconds, to coincide with closeUpPrincess() animation sequence
-                                SKAction.run {
+                                SKAction.run { [weak self] in
+                                    guard let self = self else { return }
+                                    
                                     self.narrateArray(items: [
                                         NarrationItem(text: "PUZL Boy: The princess went on to explain how dragons had disappeared from the realm of some place called Vaeloria, where she claims she's from,|| and that the balance of magic had been disrupted threatening our very existence.||||||||/She spoke about a prophecy where the Earth splits open and the sky turns to ash, signaling the Age of Ruin, and that she was the only one who could stop it—||At first, I thought this little girl just had an overactive imagination...||||||/..........Then the CRAZIEST thing happened!!")
                                     ], completion: nil)
@@ -195,7 +200,8 @@ class CutsceneIntro: Cutscene {
                             ])
                         ]))
                     },
-                    SpeechBubbleItem(profile: speechPlayerRight, chat: "Wow.|| You sure ask a lot of questions!||||||||/But if you must know, the reason I'm here is because, well.. first of all, Oh—I'm a princess!||/And, but I'm not a princess here though I'm a princess in a very very far away place.|/You see, I'm not from this place but I am from, umm, wait... Let me start over.| Okay so.....|/Blah blah blah, blah blah blah DRAGONS blah, blah blah, blah blah blah, blah.||||||||/VAELORIA blah, blah.| Blah, blah blah blah, blah blah. Blah. Blah. Blah.| M|A|G|I|C!!||||||||/Blah blah, blah blah!|| blah blah blah,| blah blah blah.| Blah, blah, blah|| .|.|.|A|G|E| O|F| R|U|I|N|.||||||||||||") {
+                    SpeechBubbleItem(profile: speechPlayerRight, chat: "Wow.|| You sure ask a lot of questions!||||||||/But if you must know, the reason I'm here is because, well.. first of all, Oh—I'm a princess!||/And, but I'm not a princess here though I'm a princess in a very very far away place.|/You see, I'm not from this place but I am from, umm, wait... Let me start over.| Okay so.....|/Blah blah blah, blah blah blah DRAGONS blah, blah blah, blah blah blah, blah.||||||||/VAELORIA blah, blah.| Blah, blah blah blah, blah blah. Blah. Blah. Blah.| M|A|G|I|C!!||||||||/Blah blah, blah blah!|| blah blah blah,| blah blah blah.| Blah, blah, blah|| .|.|.|A|G|E| O|F| R|U|I|N|.||||||||||||") { [weak self] in
+                        guard let self = self else { return }
                         
                         self.wideShot(shouldResetForeground: true)
                         self.dimOverlayNode.run(SKAction.fadeOut(withDuration: 1))
@@ -232,11 +238,14 @@ class CutsceneIntro: Cutscene {
                                     duration: 0)
                             },
                             SKAction.wait(forDuration: 4),
-                            SKAction.run {
+                            SKAction.run { [weak self] in
+                                
                                 AudioManager.shared.playSoundThenStop(for: "lavaappear2", playForDuration: 2, fadeOut: 2)
                                 AudioManager.shared.playSound(for: "ageofruin")
                                 
-                                self.parallaxManager.addSplitGroundSprite(animationDuration: 0.1) {
+                                self?.parallaxManager.addSplitGroundSprite(animationDuration: 0.1) { [weak self] in
+                                    guard let self = self else { return }
+                                    
                                     let parallaxSplitLayer = self.parallaxManager.getSpriteFor(set: ParallaxObject.SetType.grass.rawValue, layer: 13) ?? SKNode()
                                     
                                     for i in 0..<65 {
@@ -283,9 +292,12 @@ class CutsceneIntro: Cutscene {
                             }
                         ]))
                     },
-                    SpeechBubbleItem(profile: speechPlayerLeft, chat: "What a cute story!|| Well don't worry, I'll get you to where you need to...|| WHAT THE—") {
-                        self.run(SKAction.sequence([
-                            SKAction.run {
+                    SpeechBubbleItem(profile: speechPlayerLeft, chat: "What a cute story!|| Well don't worry, I'll get you to where you need to...|| WHAT THE—") { [weak self] in
+                        
+                        self?.run(SKAction.sequence([
+                            SKAction.run { [weak self] in
+                                guard let self = self else { return }
+                                
                                 self.dragonSprite.run(SKAction.group([
                                     SKAction.scale(to: 2, duration: 0.5),
                                     SKAction.move(to: CGPoint(x: self.princessPositionFinal.x,
@@ -293,7 +305,8 @@ class CutsceneIntro: Cutscene {
                                 ]))
                             },
                             SKAction.wait(forDuration: 0.6),
-                            SKAction.run {
+                            SKAction.run { [weak self] in
+                                guard let self = self else { return }
                                 
                                 //Fly, my dragons!
                                 for i in 0..<60 {
@@ -305,7 +318,9 @@ class CutsceneIntro: Cutscene {
                                     
                                     self.run(SKAction.sequence([
                                         SKAction.wait(forDuration: TimeInterval(i) * TimeInterval.random(in: 0.5...2)),
-                                        SKAction.run {
+                                        SKAction.run { [weak self] in
+                                            guard let self = self else { return }
+                                            
                                             flyingDragons.animate(toNode: self,
                                                                   from: CGPoint(x: -FlyingDragon.size.width,
                                                                                 y: self.screenSize.height * randomY / 8),
@@ -331,7 +346,9 @@ class CutsceneIntro: Cutscene {
                             }
                         ]))
                     },
-                    SpeechBubbleItem(profile: speechPlayerRight, speed: 0.01, chat: "AAAAAAAHHHHH! IT'S HAPPENING!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!") {
+                    SpeechBubbleItem(profile: speechPlayerRight, speed: 0.01, chat: "AAAAAAAHHHHH! IT'S HAPPENING!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!") { [weak self] in
+                        guard let self = self else { return }
+                        
                         let flyingDragon = FlyingDragon()
                         
                         self.wideShot()
@@ -353,7 +370,9 @@ class CutsceneIntro: Cutscene {
                                 SKAction.scaleY(to: self.playerRight.scaleMultiplier * Player.cutsceneScale / 8, duration: abductionSpeed)
                             ]),
                             SKAction.removeFromParent()
-                        ])) {
+                        ])) { [weak self] in
+                            guard let self = self else { return }
+                            
                             self.playerRight.sprite.position = CGPoint(x: 180, y: -140) //specific position so princess is in dragon's clutches
                             self.playerRight.sprite.setScale(self.playerRight.scaleMultiplier * Player.cutsceneScale / 4)
                             self.playerRight.sprite.yScale *= -1
@@ -381,8 +400,8 @@ class CutsceneIntro: Cutscene {
                                 SKAction.moveTo(x: self.screenSize.width - self.speechPlayerRight.bubbleDimensions.width / 2, duration: 6),
                                 SKAction.sequence([
                                     SKAction.wait(forDuration: 3),
-                                    SKAction.run {
-                                        self.speechPlayerRight.updateTailOrientation(.topRight)
+                                    SKAction.run { [weak self] in
+                                        self?.speechPlayerRight.updateTailOrientation(.topRight)
                                     }
                                 ])
                             ])
@@ -393,7 +412,9 @@ class CutsceneIntro: Cutscene {
                                              to: CGPoint(x: self.screenSize.width + FlyingDragon.size.width, y: 0),
                                              duration: 10)
                     },
-                    SpeechBubbleItem(profile: speechPlayerRight, speed: 0.04, chat: "SAVE ME MAR—|I mean,| PUZL BOYYY!!!!||||/The fate of the world rests in your hands!!") {
+                    SpeechBubbleItem(profile: speechPlayerRight, speed: 0.04, chat: "SAVE ME MAR—|I mean,| PUZL BOYYY!!!!||||/The fate of the world rests in your hands!!") { [weak self] in
+                        guard let self = self else { return }
+                        
                         let frameRateFast: TimeInterval = 0.02
                         let runCycle: TimeInterval = frameRateFast * 15 //1 cycle at 0.02s x 15 frames = 0.3s
                         
@@ -416,10 +437,10 @@ class CutsceneIntro: Cutscene {
                         AudioManager.shared.stopSound(for: "thunderrumble", fadeDuration: 5)
                     },
                     SpeechBubbleItem(profile: speechPlayerLeft, chat: "Hang on princess! I'm coming to rescue you!!!")
-                ]) {
+                ]) { [weak self] in
                     AudioManager.shared.stopSound(for: "ageofruin", fadeDuration: 4)
                     UserDefaults.standard.set(true, forKey: K.UserDefaults.shouldSkipIntro)
-                    self.cleanupScene(buttonTap: nil, fadeDuration: 2)
+                    self?.cleanupScene(buttonTap: nil, fadeDuration: 2)
                 } //end setTextArray()
             } //end SKAction.run { [weak self]...
         ])) //end run(SKAction.sequence[(...
