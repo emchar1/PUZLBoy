@@ -539,14 +539,14 @@ class MagmoorCreepyMinion: SKNode {
             guard let self = self else { return }
             
             animateAppearNode(node: face1, delay: heroCooloffDuration)
-            animateAppearNode(node: body1, delay: heroCooloffDuration) {
+            animateAppearNode(node: body1, delay: heroCooloffDuration) { [weak self] in
                 //The final completion...
-                self.isAnimating = false
+                self?.isAnimating = false
                 
-                self.rightArm.run(SKAction.moveBy(x: hitArmsOffset, y: 0, duration: 0))
-                self.rightHand.run(SKAction.moveBy(x: hitArmsOffset, y: 0, duration: 0))
-                self.leftArm.run(SKAction.moveBy(x: 0, y: hitArmsOffset, duration: 0))
-                self.leftHand.run(SKAction.moveBy(x: 0, y: hitArmsOffset, duration: 0))
+                self?.rightArm.run(SKAction.moveBy(x: hitArmsOffset, y: 0, duration: 0))
+                self?.rightHand.run(SKAction.moveBy(x: hitArmsOffset, y: 0, duration: 0))
+                self?.leftArm.run(SKAction.moveBy(x: 0, y: hitArmsOffset, duration: 0))
+                self?.leftHand.run(SKAction.moveBy(x: 0, y: hitArmsOffset, duration: 0))
             }
         }
         

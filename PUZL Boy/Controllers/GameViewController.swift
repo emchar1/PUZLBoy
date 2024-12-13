@@ -61,7 +61,8 @@ class GameViewController: UIViewController {
 //                skView.presentScene(endingFakeScene)
 //                skView.ignoresSiblingOrder = true
 //                view = skView
-//                endingFakeScene.animateScene(music: "bossbattle2") {
+//                endingFakeScene.animateScene(music: "bossbattle2") { [weak self] in
+//                    guard let self = self else { return }
 //                    let catwalkScene = CatwalkScene(size: K.ScreenDimensions.size)
 //                    catwalkScene.catwalkDelegate = self
 //                    self.skView.presentScene(catwalkScene)

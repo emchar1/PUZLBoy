@@ -332,8 +332,8 @@ class GameEngine {
                 guard let self = self else { return }
                 
                 playerSprite.startIdleAnimation()
-                checkSpecialPanel {
-                    self.shouldDisableControlInput = false
+                checkSpecialPanel { [weak self] in
+                    self?.shouldDisableControlInput = false
                     completion?()
                 }
             }

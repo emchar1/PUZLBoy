@@ -983,10 +983,10 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
             guard let self = self else { return }
             
             if gemsFed >= gemsThreshold {
-                unshakeScreen(fadeDuration: fadeDuration) {
-                    self.isFeedingGems = false
-                    self.shouldFeedGems = false
-                    self.isRedShift = true
+                unshakeScreen(fadeDuration: fadeDuration) { [weak self] in
+                    self?.isFeedingGems = false
+                    self?.shouldFeedGems = false
+                    self?.isRedShift = true
                 }
                 
                 openCloseGate(shouldOpen: true)
@@ -1435,8 +1435,8 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
             hero.sprite.run(colorizeNone) { [weak self] in
                 guard let self = self else { return }
                 
-                updateBackgroundNode(fadeDuration: fadeDuration) {
-                    self.isRedShift = false
+                updateBackgroundNode(fadeDuration: fadeDuration) { [weak self] in
+                    self?.isRedShift = false
                 }
                 
                 AudioManager.shared.adjustVolume(to: 1, for: catwalkOverworld, fadeDuration: fadeDuration * 2)

@@ -365,14 +365,16 @@ class CreditsScene: SKScene {
         ]) { [weak self] in
             guard let self = self else { return }
             
-            allRightsLabel.run(SKAction.fadeIn(withDuration: fadeDuration)) {
-                self.disableInput = true
+            allRightsLabel.run(SKAction.fadeIn(withDuration: fadeDuration)) { [weak self] in
+                guard let self = self else { return }
                 
-                self.fadeOutNode.run(SKAction.sequence([
-                    SKAction.wait(forDuration: self.waitDuration),
-                    SKAction.fadeIn(withDuration: self.fadeDuration)
-                ])) {
-                    self.cleanupAndGoBack()
+                disableInput = true
+                
+                fadeOutNode.run(SKAction.sequence([
+                    SKAction.wait(forDuration: waitDuration),
+                    SKAction.fadeIn(withDuration: fadeDuration)
+                ])) { [weak self] in
+                    self?.cleanupAndGoBack()
                 }
             }
         }

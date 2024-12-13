@@ -522,8 +522,8 @@ class GameboardSprite {
                 
                 sprite.run(SKAction.sequence([
                     SKAction.wait(forDuration: 3),
-                    SKAction.run {
-                        self.despawnItem(at: position, completion: completion)
+                    SKAction.run { [weak self] in
+                        self?.despawnItem(at: position, completion: completion)
                     }
                 ]))
             }
@@ -1396,8 +1396,8 @@ class GameboardSprite {
             
             sprite.run(SKAction.sequence([
                 SKAction.wait(forDuration: 2),
-                SKAction.run {
-                    self.despawnItem(at: positions[0], completion: {})
+                SKAction.run { [weak self] in
+                    self?.despawnItem(at: positions[0], completion: {})
                 }
             ]))
             

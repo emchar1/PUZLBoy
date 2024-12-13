@@ -342,23 +342,23 @@ class GameScene: SKScene {
         pauseResetEngine.shouldDisable(true)
         
         let fadeGameboardAction = SKAction.run { [weak self] in
-            guard let self = self else { return }
-            
-            gameEngine.fadeGameboard(fadeOut: true) {
-                self.partyResultsSprite = PartyResultsSprite()
-                self.partyResultsSprite!.delegate = self
+            self?.gameEngine.fadeGameboard(fadeOut: true) { [weak self] in
+                guard let self = self else { return }
+                
+                partyResultsSprite = PartyResultsSprite()
+                partyResultsSprite!.delegate = self
 
-                self.addChild(self.partyResultsSprite!)
+                addChild(partyResultsSprite!)
                 
-                self.partyResultsSprite!.updateAmounts(gems: self.gameEngine.partyInventory.gems,
-                                                       gemsDouble: self.gameEngine.partyInventory.gemsDouble,
-                                                       gemsTriple: self.gameEngine.partyInventory.gemsTriple,
-                                                       hints: self.gameEngine.partyInventory.hints,
-                                                       lives: self.gameEngine.partyInventory.lives)
+                partyResultsSprite!.updateAmounts(gems: gameEngine.partyInventory.gems,
+                                                  gemsDouble: gameEngine.partyInventory.gemsDouble,
+                                                  gemsTriple: gameEngine.partyInventory.gemsTriple,
+                                                  hints: gameEngine.partyInventory.hints,
+                                                  lives: gameEngine.partyInventory.lives)
                 
-                self.partyResultsSprite!.animateShow(totalGems: self.gameEngine.partyInventory.getTotalGems(),
-                                                     lives: self.gameEngine.partyInventory.lives,
-                                                     totalLives: self.gameEngine.partyInventory.getTotalLives()) { }
+                partyResultsSprite!.animateShow(totalGems: gameEngine.partyInventory.getTotalGems(),
+                                                lives: gameEngine.partyInventory.lives,
+                                                totalLives: gameEngine.partyInventory.getTotalLives()) { }
             }
         }
         
@@ -595,9 +595,11 @@ class GameScene: SKScene {
                 
                 AudioManager.shared.stopSound(for: AudioManager.shared.currentTheme.overworld, fadeDuration: fadeDuration)
                 
-                fadeNode.run(SKAction.fadeIn(withDuration: fadeDuration)) {
-                    self.cleanupScene(shouldSaveState: false)
-                    self.gameSceneDelegate?.presentChatDialogueCutscene(level: self.currentLevel, cutscene: cutscene)
+                fadeNode.run(SKAction.fadeIn(withDuration: fadeDuration)) { [weak self] in
+                    guard let self = self else { return }
+                    
+                    cleanupScene(shouldSaveState: false)
+                    gameSceneDelegate?.presentChatDialogueCutscene(level: currentLevel, cutscene: cutscene)
                 }
             }
             else {
@@ -774,7 +776,9 @@ extension GameScene: GameEngineDelegate {
 
             //Check if interstitial ad count met
             if AdMobManager.shared.checkInterstitialMet() {
-                prepareAd {
+                prepareAd { [weak self] in
+                    guard let self = self else { return }
+                    
                     AdMobManager.shared.delegate = self
                     AdMobManager.shared.presentInterstitial()
                 }
@@ -782,7 +786,7 @@ extension GameScene: GameEngineDelegate {
                 //handleWinLevel() will be called upon dismissing the interstitial ad!
             }
             else {
-                handleWinLevel(levelStatsItem: self.levelStatsItemGlobal, didCompleteGame: didCompleteGame)
+                handleWinLevel(levelStatsItem: levelStatsItemGlobal, didCompleteGame: didCompleteGame)
             }
         }
     }
@@ -828,7 +832,9 @@ extension GameScene: GameEngineDelegate {
 
                 addChild(continueSprite!)
 
-                continueSprite!.animateShow(shouldDisable5Moves: gameEngine.healthRemaining <= 0) {
+                continueSprite!.animateShow(shouldDisable5Moves: gameEngine.healthRemaining <= 0) { [weak self] in
+                    guard let self = self else { return }
+                    
                     IAPManager.shared.delegate = self
                     AdMobManager.shared.delegate = self
 
@@ -915,7 +921,7 @@ extension GameScene: AdMobManagerDelegate {
                 handlePartyLevelCleanUp()
             }
             else {
-                handleWinLevel(levelStatsItem: self.levelStatsItemGlobal, didCompleteGame: false)
+                handleWinLevel(levelStatsItem: levelStatsItemGlobal, didCompleteGame: false)
             }
         }
     }
@@ -1002,26 +1008,26 @@ extension GameScene: AdMobManagerDelegate {
         AudioManager.shared.stopSound(for: "continueloop")
         
         continueSprite?.animateHide { [weak self] in
-            guard let self = self else { return }
-            
-            continueFromAd(shouldFade: true) {
+            self?.continueFromAd(shouldFade: true) { [weak self] in
+                guard let self = self else { return }
+                
                 AudioManager.shared.playSound(for: "revive")
             
-                self.scoringEngine.scoringManager.resetScore()
-                self.scoringEngine.updateLabels()
+                scoringEngine.scoringManager.resetScore()
+                scoringEngine.updateLabels()
                 
-                self.pauseResetEngine.shouldDisable(false)
+                pauseResetEngine.shouldDisable(false)
                 
                 //Make sure to save current state, and increment currentLevel if skipping ahead
                 if shouldSkipLevel {
-                    self.saveState(levelStatsItem: self.getLevelStatsItem(level: self.currentLevel, didWin: false))
+                    saveState(levelStatsItem: getLevelStatsItem(level: currentLevel, didWin: false))
 
-                    self.currentLevel += 1
+                    currentLevel += 1
                     
-                    self.scoringEngine.scaleScoreLabelDidSkipLevel()
-                    self.scoringEngine.timerManager.resetTime()
+                    scoringEngine.scaleScoreLabelDidSkipLevel()
+                    scoringEngine.timerManager.resetTime()
                     
-                    self.gameEngine.fadeGameboard(fadeOut: true) {
+                    gameEngine.fadeGameboard(fadeOut: true) {
                         restartHelper()
                     }
                 }
@@ -1029,34 +1035,34 @@ extension GameScene: AdMobManagerDelegate {
                     restartHelper()
                 }
 
-                self.continueSprite = nil
+                continueSprite = nil
             }
         }
     }
     
     private func continueLevel(moves: Int) {
         continueSprite?.animateHide { [weak self] in
-            guard let self = self else { return }
-            
-            continueFromAd(shouldFade: true) {
+            self?.continueFromAd(shouldFade: true) { [weak self] in
+                guard let self = self else { return }
+                
                 AudioManager.shared.playSound(for: "revive")
                 AudioManager.shared.stopSound(for: "continueloop")
                 AudioManager.shared.playSound(for: AudioManager.shared.currentTheme.overworld)
                 
-                self.pauseResetEngine.shouldDisable(false)
-                self.gameEngine.continueGame()
-                self.gameEngine.showParticles()
+                pauseResetEngine.shouldDisable(false)
+                gameEngine.continueGame()
+                gameEngine.showParticles()
 
-                self.gameEngine.animateMoves(originalMoves: self.gameEngine.movesRemaining, newMoves: moves)
-                self.gameEngine.incrementMovesRemaining(moves: moves)
-                self.gameEngine.setLivesRemaining(lives: 0)
+                gameEngine.animateMoves(originalMoves: gameEngine.movesRemaining, newMoves: moves)
+                gameEngine.incrementMovesRemaining(moves: moves)
+                gameEngine.setLivesRemaining(lives: 0)
                 
-                self.saveState(levelStatsItem: self.getLevelStatsItem(level: self.currentLevel, didWin: false))
+                saveState(levelStatsItem: getLevelStatsItem(level: currentLevel, didWin: false))
                 
                 LifeSpawnerModel.shared.removeTimer()
                 LifeSpawnerModel.shared.removeAllNotifications()
 
-                self.continueSprite = nil
+                continueSprite = nil
             }
         }
     }
