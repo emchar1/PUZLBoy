@@ -214,13 +214,15 @@ class CutsceneIntro: Cutscene {
                         ]))
                         
                         self.run(SKAction.sequence([
-                            SKAction.run {
+                            SKAction.run { [weak self] in
+                                guard let self = self else { return }
                                 AudioManager.shared.playSound(for: "birdsambience", fadeIn: 2)
                                 AudioManager.shared.playSound(for: self.grasslandOverworld, fadeIn: 2)
                                 AudioManager.shared.stopSound(for: "scarymusicbox", fadeDuration: 3)
                             },
                             SKAction.wait(forDuration: 2),
-                            SKAction.run {
+                            SKAction.run { [weak self] in
+                                guard let self = self else { return }
                                 AudioManager.shared.playSound(for: "thunderrumble")
                                 AudioManager.shared.stopSound(for: "birdsambience", fadeDuration: 6)
                                 AudioManager.shared.stopSound(for: self.grasslandOverworld, fadeDuration: 6)

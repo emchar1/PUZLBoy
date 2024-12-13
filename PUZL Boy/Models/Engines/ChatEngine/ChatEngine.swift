@@ -1402,8 +1402,10 @@ extension ChatEngine {
                 AudioManager.shared.stopSound(for: "scarymusicbox", fadeDuration: 5)
                 AudioManager.shared.stopSound(for: "magicheartbeatloop1", fadeDuration: 5)
                 
-                chatBackgroundSprite.run(SKAction.wait(forDuration: 3)) {
-                    self.handleDialogueCompletion(level: level) { _ in
+                chatBackgroundSprite.run(SKAction.wait(forDuration: 3)) { [weak self] in
+                    self?.handleDialogueCompletion(level: level) { [weak self] _ in
+                        guard let self = self else { return }
+                        
                         self.magmoorScary.resetAlpha()
                         self.magmoorScary.removeFromParent()
                         
@@ -1783,8 +1785,8 @@ extension ChatEngine {
                         AudioManager.shared.playSound(for: "scarylaugh")
                     },
                     ChatItem(profile: .villain, chat: "Heh heh heh. Pity. Then suffer the consequences!"),
-                    ChatItem(profile: .princess, endChat: true, chat: "Noooooo! Don't let him take meeeeeee!!!!") {
-                        self.fadeDimOverlay()
+                    ChatItem(profile: .princess, endChat: true, chat: "Noooooo! Don't let him take meeeeeee!!!!") { [weak self] in
+                        self?.fadeDimOverlay()
                         delegate.despawnPrincessCapture(at: spawnPoint, completion: {})
                     },
                     ChatItem(profile: .hero, imgPos: .left, pause: 8, startNewChat: true, chat: "That was creepy. Marlin, I did NOT sign up for this.......", handler: nil),
@@ -1792,21 +1794,22 @@ extension ChatEngine {
                     ChatItem(profile: .hero, imgPos: .left, chat: "I know, I know. My mom always says, \"The power is yours!\" Ok... so what does Marzipan want with the princess?"),
                     ChatItem(profile: .trainer, chat: "Magmoor—one of the most powerful Mystics from my realm. I do not know what he intends to do with the princess, although we should assume the worst."),
                     ChatItem(profile: .hero, imgPos: .left, chat: "He's not gonna sacrifice her is he?!?! Because that's just not cool."),
-                    ChatItem(profile: .trainer, chat: "I almost did not recognize him in that grotesque form. He used to be so handsome.") {
-                        self.chatDecisionEngine.showDecisions(index: decisionIndex, toNode: self.chatBackgroundSprite, displayOnLeft: true)
+                    ChatItem(profile: .trainer, chat: "I almost did not recognize him in that grotesque form. He used to be so handsome.") { [weak self] in
+                        guard let self = self else { return }
+                        chatDecisionEngine.showDecisions(index: decisionIndex, toNode: chatBackgroundSprite, displayOnLeft: true)
                     },
                     ChatItem(profile: .trainer, endChat: false, chat: "How would you like to proceed?", handler: nil)
-                ]) {
+                ]) { [weak self] in
                     let choseLeft = FIRManager.decisionsLeftButton[decisionIndex] ?? false
                     
-                    self.sendChatArray(items: [
+                    self?.sendChatArray(items: [
                         ChatItem(profile: .hero, imgPos: .left, startNewChat: false, chat: "\(choseLeft ? "BRING ME MAGMOOR!!!" : "Hmm. We should prepare first.")", handler: nil),
                         ChatItem(profile: .trainer, chat: "\(choseLeft ? "Alright, but we need to be EXTRA cautious." : "A wise decision. Let's keep moving...")"),
                     ]) {
                         AudioManager.shared.adjustVolume(to: 1, for: AudioManager.shared.currentTheme.overworld, fadeDuration: 3)
                         
                         delegate.despawnTrainer(to: (0, 0))
-                        self.handleDialogueCompletion(level: level, completion: completion)
+                        self?.handleDialogueCompletion(level: level, completion: completion)
                     }
                 }
             } //end delegate.spawnPrincessCapture() no warp animation
@@ -1862,8 +1865,8 @@ extension ChatEngine {
                     ChatItem(profile: .trainer, imgPos: .left, chat: "Princess Olivia, are you ok?"),
                     ChatItem(profile: .princess, chat: "No. I'm scared..."),
                     ChatItem(profile: .trainer, imgPos: .left, chat: "Remember what I taught you."),
-                    ChatItem(profile: .princess, endChat: true, chat: "Ok I'll try...") {
-                        self.fadeDimOverlay()
+                    ChatItem(profile: .princess, endChat: true, chat: "Ok I'll try...") { [weak self] in
+                        self?.fadeDimOverlay()
                         
                         delegate.flashPrincess(at: spawnPoint, completion: {})
                     },
@@ -1873,13 +1876,13 @@ extension ChatEngine {
                     ChatItem(profile: .trainer, imgPos: .left, chat: "Do not be afraid! You are braver than you think."),
                     ChatItem(profile: .princess, chat: "It's ok. I'm getting used to it."),
                     ChatItem(profile: .princess, chat: "Anyway this part's fun..... Weeeeeee!")
-                ]) {
-                    self.fadeDimOverlay()
+                ]) { [weak self] in
+                    self?.fadeDimOverlay()
 
                     delegate.despawnPrincessCapture(at: spawnPoint) {
                         AudioManager.shared.adjustVolume(to: 1, for: AudioManager.shared.currentTheme.overworld, fadeDuration: 3)
                         delegate.despawnTrainer(to: (0, 0))
-                        self.handleDialogueCompletion(level: level, completion: completion)
+                        self?.handleDialogueCompletion(level: level, completion: completion)
                     }
                 }
             }
