@@ -766,7 +766,6 @@ extension ChatEngine {
             
             //Chapter 3 - You're on Your Own, Kid!
             dialoguePlayed[301] = false
-            dialogueWithCutscene[301] = false
             dialoguePlayed[319] = false
             dialoguePlayed[339] = false
             dialoguePlayed[351] = false
