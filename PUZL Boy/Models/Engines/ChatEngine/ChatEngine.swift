@@ -23,7 +23,7 @@ protocol ChatEngineCatwalkDelegate: AnyObject {
     func showGateCatwalk(completion: @escaping () -> Void)
     func feedGemsCatwalk()
     func spawnMagmoorCatwalk()
-    func flashMagmoorCatwalk()
+    func flashMagmoorCatwalk(quickFlash: Bool)
     func playMusicCatwalk(music: String, startingVolume: Float, fadeIn: TimeInterval, shouldStopOverworld: Bool)
     func stopMusicCatwalk(music: String, fadeOut: TimeInterval, delay: TimeInterval?, shouldPlayOverworld: Bool)
     func flashRedCatwalk(message: String, secondaryMessages: [String], completion: @escaping () -> Void)
@@ -714,9 +714,10 @@ extension ChatEngine {
             dialoguePlayed[-1006] = false
             dialoguePlayed[-1010] = false
             dialoguePlayed[-1015] = false
-            dialoguePlayed[-1018] = false
-            dialoguePlayed[-1021] = false
-            dialoguePlayed[-1023] = false
+            dialoguePlayed[-1017] = false
+            dialoguePlayed[-1020] = false
+            dialoguePlayed[-1022] = false
+            dialoguePlayed[-1024] = false
             dialoguePlayed[-1025] = false
             dialoguePlayed[-1026] = false
             dialoguePlayed[-1030] = false
@@ -1087,7 +1088,7 @@ extension ChatEngine {
         case -1015:
             delegateCatwalk?.shiftRedCatwalk(shouldShift: true, fasterHeartbeat: false)
             handleDialogueCompletion(level: level, completion: completion)
-        case -1018:
+        case -1017:
             delegateCatwalk?.spawnPrincessCatwalk()
             
             sendChatArray(shouldSkipDim: true, items: [
@@ -1099,11 +1100,14 @@ extension ChatEngine {
                 self?.delegateCatwalk?.shiftRedCatwalk(shouldShift: false, fasterHeartbeat: false)
                 self?.handleDialogueCompletion(level: level, completion: completion)
             }
-        case -1021:
+        case -1020:
             delegateCatwalk?.playMusicCatwalk(music: "overworld", startingVolume: 0.1, fadeIn: 2, shouldStopOverworld: false)
             handleDialogueCompletion(level: level, completion: completion)
-        case -1023:
+        case -1022:
             delegateCatwalk?.shiftRedCatwalk(shouldShift: true, fasterHeartbeat: false)
+            handleDialogueCompletion(level: level, completion: completion)
+        case -1024:
+            delegateCatwalk?.flashMagmoorCatwalk(quickFlash: true)
             handleDialogueCompletion(level: level, completion: completion)
         case -1025:
             delegateCatwalk?.spawnMarlinCatwalk()
@@ -1219,7 +1223,7 @@ extension ChatEngine {
                 self?.handleDialogueCompletion(level: level, completion: completion)
             }
         case -1049:
-            delegateCatwalk?.flashMagmoorCatwalk()
+            delegateCatwalk?.flashMagmoorCatwalk(quickFlash: false)
             
             sendChatArray(shouldSkipDim: true, items: [
                 ChatItem(profile: .blankvillain, pause: 3, startNewChat: false, chat: "\nenter if you dare! there is nothing you can do to stop what has already been put in motion...", handler: nil),

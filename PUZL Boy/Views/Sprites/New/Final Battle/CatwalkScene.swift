@@ -595,11 +595,6 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
             SKAction.moveBy(x: 0, y: -5, duration: 1)
         ])))
         
-        magmoorSprite.run(SKAction.sequence([
-            SKAction.fadeIn(withDuration: 0),
-            SKAction.fadeOut(withDuration: 0.25)
-        ]))
-        
         shiftCatwalkNode(panels: 1, moveDuration: fadeDuration)
         
         ParticleEngine.shared.animateParticles(type: .magicMerge,
@@ -776,8 +771,17 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
         dispatchWorkItem.cancel()
     }
     
-    func flashMagmoorCatwalk() {
-        flashMagmoorHelper()
+    func flashMagmoorCatwalk(quickFlash: Bool) {
+        if quickFlash {
+            magmoorSprite.run(SKAction.sequence([
+                SKAction.fadeIn(withDuration: 0),
+                SKAction.wait(forDuration: 0.12),
+                SKAction.fadeOut(withDuration: 0.12)
+            ]))
+        }
+        else {
+            flashMagmoorHelper()
+        }
     }
     
     func playMusicCatwalk(music: String, startingVolume: Float, fadeIn: TimeInterval, shouldStopOverworld: Bool) {
