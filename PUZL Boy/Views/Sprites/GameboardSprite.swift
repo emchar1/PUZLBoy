@@ -147,7 +147,7 @@ class GameboardSprite {
 
     func updatePanels(at position: K.GameboardPosition, with tile: K.GameboardPanel, fadeIn: Bool = false) {
         
-        //Setup Terrain Panel
+        //--TERRAIN SETUP--
         let terrainString: String
 
         if !FireIceTheme.isFire && tile.terrain == .sand {
@@ -169,7 +169,7 @@ class GameboardSprite {
         terrainPanel.zPosition = K.ZPosition.terrain
         terrainPanel.name = GameboardSprite.getNodeName(row: position.row, col: position.col)
         
-        //Add Animations
+        //Add Terrain Animations
         if tile.terrain == .partytile {
             terrainPanel.animatePartyTileShimmer(gameboardColor: GameboardSprite.gameboardColor)
         }
@@ -200,40 +200,41 @@ class GameboardSprite {
         sprite.addChild(panels[position.row][position.col])
         
         
-        //Setup Overlay Panel
-        if tile.overlay != .boundary {
-            let overlayString: String
-            let overlayIsStatue: Bool = tile.overlay == .statue0 || tile.overlay == .statue1 || tile.overlay == .statue2 || tile.overlay == .statue3 || tile.overlay == .statue4
+        //--OVERLAY SETUP--
+        guard tile.overlay != .boundary else { return }
 
-            if !FireIceTheme.isFire && tile.overlay == .enemy {
-                overlayString = "enemyIce" + AgeOfRuin.ruinSuffix
-            }
-            else {
-                overlayString = tile.overlay.description + (AgeOfRuin.isActive && overlayIsStatue ? "Disabled" : "") + AgeOfRuin.ruinSuffix
-            }
-            
-            let overlayPanel = SKSpriteNode(imageNamed: overlayString)
-            overlayPanel.scale(to: scaleSize)
-            overlayPanel.position = getSpritePosition(at: position) + GameboardSprite.padding / 2 + scaleSize.width / 2
-            overlayPanel.color = fadeIn ? .black : GameboardSprite.dayThemeSpriteColor
-            overlayPanel.colorBlendFactor = fadeIn ? 1 : GameboardSprite.dayThemeSpriteShade
-            overlayPanel.zPosition = K.ZPosition.overlay
-            overlayPanel.name = GameboardSprite.getNodeName(row: position.row, col: position.col, includeOverlayTag: true)
-            
-            if !AgeOfRuin.isActive && overlayIsStatue {
-                overlayPanel.danceStatue()
-            }
-            
-            switch tile.overlay {
-            case .warp, .warp2, .warp3, .warp4, .warp5:
-                rotateWarp(node: overlayPanel, slow: true, repeatForever: true)
-            default:
-                break
-            }
-
-            sprite.addChild(overlayPanel)
+        let overlayString: String
+        let overlayIsStatue: Bool = tile.overlay == .statue0 || tile.overlay == .statue1 || tile.overlay == .statue2 || tile.overlay == .statue3 || tile.overlay == .statue4
+        
+        if !FireIceTheme.isFire && tile.overlay == .enemy {
+            overlayString = "enemyIce" + AgeOfRuin.ruinSuffix
+        }
+        else {
+            overlayString = tile.overlay.description + (AgeOfRuin.isActive && overlayIsStatue ? "Disabled" : "") + AgeOfRuin.ruinSuffix
         }
         
+        let overlayPanel = SKSpriteNode(imageNamed: overlayString)
+        overlayPanel.scale(to: scaleSize)
+        overlayPanel.position = getSpritePosition(at: position) + GameboardSprite.padding / 2 + scaleSize.width / 2
+        overlayPanel.color = fadeIn ? .black : GameboardSprite.dayThemeSpriteColor
+        overlayPanel.colorBlendFactor = fadeIn ? 1 : GameboardSprite.dayThemeSpriteShade
+        overlayPanel.zPosition = K.ZPosition.overlay
+        overlayPanel.name = GameboardSprite.getNodeName(row: position.row, col: position.col, includeOverlayTag: true)
+        
+        if !AgeOfRuin.isActive && overlayIsStatue {
+            overlayPanel.danceStatue()
+        }
+        
+        switch tile.overlay {
+        case .warp, .warp2, .warp3, .warp4, .warp5:
+            rotateWarp(node: overlayPanel, slow: true, repeatForever: true)
+        default:
+            break
+        }
+        
+        sprite.addChild(overlayPanel)
+
+        //Additional Overlay Setup/Animations
         if tile.overlay == .warp {
             if warps.first == nil {
                 warps.first = position
