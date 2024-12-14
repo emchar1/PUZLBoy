@@ -148,19 +148,19 @@ class GameboardSprite {
     func updatePanels(at position: K.GameboardPosition, with tile: K.GameboardPanel, fadeIn: Bool = false) {
         
         //Setup Terrain Panel
-        let terrainPanel: SKSpriteNode
+        let terrainString: String
 
-        if !FireIceTheme.isFire {
-            switch tile.terrain {
-            case .sand:         terrainPanel = SKSpriteNode(imageNamed: "snow" + AgeOfRuin.ruinSuffix)
-            case .lava:         terrainPanel = SKSpriteNode(imageNamed: "water" + AgeOfRuin.ruinSuffix)
-            default:            terrainPanel = SKSpriteNode(imageNamed: tile.terrain.description + AgeOfRuin.ruinSuffix)
-            }
+        if !FireIceTheme.isFire && tile.terrain == .sand {
+            terrainString = "snow" + AgeOfRuin.ruinSuffix
+        }
+        else if !FireIceTheme.isFire && tile.terrain == .lava {
+            terrainString = "water" + AgeOfRuin.ruinSuffix
         }
         else {
-            terrainPanel = SKSpriteNode(imageNamed: tile.terrain.description + AgeOfRuin.ruinSuffix)
+            terrainString = tile.terrain.description + AgeOfRuin.ruinSuffix
         }
         
+        let terrainPanel = SKSpriteNode(imageNamed: terrainString)
         terrainPanel.scale(to: scaleSize)
         terrainPanel.position = getSpritePosition(at: position) + GameboardSprite.padding / 2
         terrainPanel.anchorPoint = .zero
@@ -169,6 +169,7 @@ class GameboardSprite {
         terrainPanel.zPosition = K.ZPosition.terrain
         terrainPanel.name = GameboardSprite.getNodeName(row: position.row, col: position.col)
         
+        //Add Animations
         if tile.terrain == .partytile {
             terrainPanel.animatePartyTileShimmer(gameboardColor: GameboardSprite.gameboardColor)
         }
@@ -199,30 +200,29 @@ class GameboardSprite {
         sprite.addChild(panels[position.row][position.col])
         
         
+        //Setup Overlay Panel
         if tile.overlay != .boundary {
-            
-            //Setup Overlay Panel
-            let overlayPanel: SKSpriteNode
+            let overlayString: String
+            let overlayIsStatue: Bool = tile.overlay == .statue0 || tile.overlay == .statue1 || tile.overlay == .statue2 || tile.overlay == .statue3 || tile.overlay == .statue4
 
             if !FireIceTheme.isFire && tile.overlay == .enemy {
-                overlayPanel = SKSpriteNode(imageNamed: "enemyIce" + AgeOfRuin.ruinSuffix)
+                overlayString = "enemyIce" + AgeOfRuin.ruinSuffix
             }
             else {
-                let overlayIsStatue = tile.overlay == .statue0 || tile.overlay == .statue1 || tile.overlay == .statue2 || tile.overlay == .statue3 || tile.overlay == .statue4
-                
-                overlayPanel = SKSpriteNode(imageNamed: tile.overlay.description + (AgeOfRuin.isActive && overlayIsStatue ? "Disabled" : "") + AgeOfRuin.ruinSuffix)
-                
-                if !AgeOfRuin.isActive && overlayIsStatue {
-                    overlayPanel.danceStatue()
-                }
+                overlayString = tile.overlay.description + (AgeOfRuin.isActive && overlayIsStatue ? "Disabled" : "") + AgeOfRuin.ruinSuffix
             }
             
+            let overlayPanel = SKSpriteNode(imageNamed: overlayString)
             overlayPanel.scale(to: scaleSize)
             overlayPanel.position = getSpritePosition(at: position) + GameboardSprite.padding / 2 + scaleSize.width / 2
             overlayPanel.color = fadeIn ? .black : GameboardSprite.dayThemeSpriteColor
             overlayPanel.colorBlendFactor = fadeIn ? 1 : GameboardSprite.dayThemeSpriteShade
             overlayPanel.zPosition = K.ZPosition.overlay
             overlayPanel.name = GameboardSprite.getNodeName(row: position.row, col: position.col, includeOverlayTag: true)
+            
+            if !AgeOfRuin.isActive && overlayIsStatue {
+                overlayPanel.danceStatue()
+            }
             
             switch tile.overlay {
             case .warp, .warp2, .warp3, .warp4, .warp5:
