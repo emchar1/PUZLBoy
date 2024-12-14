@@ -169,7 +169,10 @@ class GameboardSprite {
         terrainPanel.zPosition = K.ZPosition.terrain
         terrainPanel.name = GameboardSprite.getNodeName(row: position.row, col: position.col)
         
-        //Add Terrain Animations
+        panels[position.row][position.col] = terrainPanel
+        sprite.addChild(panels[position.row][position.col])
+        
+        //Terrain Animations
         if tile.terrain == .partytile {
             terrainPanel.animatePartyTileShimmer(gameboardColor: GameboardSprite.gameboardColor)
         }
@@ -195,9 +198,6 @@ class GameboardSprite {
                                                    nameGameboardPosition: position,
                                                    duration: 0)
         }
-
-        panels[position.row][position.col] = terrainPanel
-        sprite.addChild(panels[position.row][position.col])
         
         
         //--OVERLAY SETUP--
@@ -221,6 +221,9 @@ class GameboardSprite {
         overlayPanel.zPosition = K.ZPosition.overlay
         overlayPanel.name = GameboardSprite.getNodeName(row: position.row, col: position.col, includeOverlayTag: true)
         
+        sprite.addChild(overlayPanel)
+
+        //Additional Overlay Setup/Animations
         if !AgeOfRuin.isActive && overlayIsStatue {
             overlayPanel.danceStatue()
         }
@@ -232,9 +235,6 @@ class GameboardSprite {
             break
         }
         
-        sprite.addChild(overlayPanel)
-
-        //Additional Overlay Setup/Animations
         if tile.overlay == .warp {
             if warps.first == nil {
                 warps.first = position
