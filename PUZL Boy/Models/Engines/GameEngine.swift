@@ -1037,7 +1037,7 @@ class GameEngine {
                 }
             }
             else {
-                let tikistatue: K.GameboardPanelSprite = gameboardSprite.getPanel(at: position)
+                let tikistatue: K.GameboardPanelSprite = gameboardSprite.getPanelSprite(at: position)
                 tikistatue.overlay?.animateStatue()
                 
                 AudioManager.shared.playSound(for: "touchstatue")

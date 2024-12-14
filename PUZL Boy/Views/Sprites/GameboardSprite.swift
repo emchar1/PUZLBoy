@@ -134,8 +134,8 @@ class GameboardSprite {
         return (row: row, col: col)
     }
     
-    ///Returns the K.GameboardPanel's SKSpriteNodes (terrain and overlay) at the given K.GameboardPosition.
-    func getPanel(at position: K.GameboardPosition) -> K.GameboardPanelSprite {
+    ///Returns the K.GameboardPanelSprite's SKSpriteNodes (terrain and overlay) at the given K.GameboardPosition.
+    func getPanelSprite(at position: K.GameboardPosition) -> K.GameboardPanelSprite {
         let terrainName = GameboardSprite.getNodeName(row: position.row, col: position.col)
         let overlayName = GameboardSprite.getNodeName(row: position.row, col: position.col, includeOverlayTag: true)
 
@@ -1088,7 +1088,7 @@ class GameboardSprite {
     func peekMagmoorMinion(at position: K.GameboardPosition, duration: TimeInterval, completion: @escaping () -> Void) {
         let fadeDuration: TimeInterval = 1
 
-        let peekPanel = getPanel(at: position)
+        let peekPanel = getPanelSprite(at: position)
         peekPanel.terrain?.run(SKAction.sequence([
             SKAction.colorize(with: .red, colorBlendFactor: 1, duration: fadeDuration),
             SKAction.wait(forDuration: duration),
@@ -1221,15 +1221,15 @@ class GameboardSprite {
      */
     private func getSurroundingPanels(at position: K.GameboardPosition) -> [K.GameboardPanelSprite] {
         var panels: [K.GameboardPanelSprite] = []
-        panels.append(getPanel(at: position))
-        panels.append(getPanel(at: (row: position.row, col: position.col - 1)))
-        panels.append(getPanel(at: (row: position.row - 1, col: position.col - 1)))
-        panels.append(getPanel(at: (row: position.row - 1, col: position.col)))
-        panels.append(getPanel(at: (row: position.row - 1, col: position.col + 1)))
-        panels.append(getPanel(at: (row: position.row, col: position.col + 1)))
-        panels.append(getPanel(at: (row: position.row + 1, col: position.col + 1)))
-        panels.append(getPanel(at: (row: position.row + 1, col: position.col)))
-        panels.append(getPanel(at: (row: position.row + 1, col: position.col - 1)))
+        panels.append(getPanelSprite(at: position))
+        panels.append(getPanelSprite(at: (row: position.row, col: position.col - 1)))
+        panels.append(getPanelSprite(at: (row: position.row - 1, col: position.col - 1)))
+        panels.append(getPanelSprite(at: (row: position.row - 1, col: position.col)))
+        panels.append(getPanelSprite(at: (row: position.row - 1, col: position.col + 1)))
+        panels.append(getPanelSprite(at: (row: position.row, col: position.col + 1)))
+        panels.append(getPanelSprite(at: (row: position.row + 1, col: position.col + 1)))
+        panels.append(getPanelSprite(at: (row: position.row + 1, col: position.col)))
+        panels.append(getPanelSprite(at: (row: position.row + 1, col: position.col - 1)))
         
         return panels
     }
