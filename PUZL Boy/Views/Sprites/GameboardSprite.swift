@@ -1647,78 +1647,66 @@ class GameboardSprite {
     }
     
     func animateDissolveSand(position: K.GameboardPosition) {
-        let sandNode = SKSpriteNode(imageNamed: "sand" + AgeOfRuin.ruinSuffix)
+        let sandNode = SKSpriteNode(imageNamed: (FireIceTheme.isFire ? "sand" : "snow") + AgeOfRuin.ruinSuffix)
         sandNode.color = GameboardSprite.dayThemeSpriteColor
         sandNode.colorBlendFactor = GameboardSprite.dayThemeSpriteShade
         sandNode.anchorPoint = .zero
         sandNode.zPosition = 10
         
-        let lavaNode = SKSpriteNode(imageNamed: "lava" + AgeOfRuin.ruinSuffix)
+        let lavaString = (FireIceTheme.isFire ? "lava" : "water") + AgeOfRuin.ruinSuffix
+        let lavaNode = SKSpriteNode(imageNamed: lavaString)
         lavaNode.color = GameboardSprite.dayThemeSpriteColor
         lavaNode.colorBlendFactor = GameboardSprite.dayThemeSpriteShade
         lavaNode.anchorPoint = .zero
         lavaNode.zPosition = 5
         lavaNode.addChild(sandNode)
-
-        updatePanels(at: position, with: (terrain: LevelType.lava, overlay: LevelType.boundary))
+        setUserDataForLevelType(sprite: lavaNode, data: lavaString)
+        
+        updatePanels(at: position, with: (terrain: FireIceTheme.isFire ? LevelType.lava : LevelType.water, overlay: LevelType.boundary))
         panels[position.row][position.col].addChild(lavaNode)
         
-        AudioManager.shared.playSound(for: "lavaappear\(Int.random(in: 1...3))")
-        Haptics.shared.executeCustomPattern(pattern: .sand)
         
-        //Animation Stuff
-        let shakeDistance: CGFloat = 4
-        let sandShake: TimeInterval = 0.06
-        let sandAnimationDuration: TimeInterval = 1.0
-        let sandSequence = SKAction.sequence([
-            SKAction.moveBy(x: -shakeDistance, y: 0, duration: sandShake),
-            SKAction.moveBy(x: shakeDistance, y: 0, duration: sandShake)
-        ])
+        //Animation stuff
+        let animationDuration: TimeInterval = 1
+        let dissolveRepeat: Int
+        let dissolveSequence: SKAction
         
-        panels[position.row][position.col].run(SKAction.repeat(sandSequence, count: Int(sandAnimationDuration / sandShake / 2)))
-        sandNode.run(SKAction.fadeOut(withDuration: sandAnimationDuration))
-        lavaNode.run(SKAction.fadeIn(withDuration: sandAnimationDuration))
+        if FireIceTheme.isFire {
+            AudioManager.shared.playSound(for: "lavaappear\(Int.random(in: 1...3))")
+            Haptics.shared.executeCustomPattern(pattern: .sand)
+            ParticleEngine.shared.animateParticles(type: .lavaAppear,
+                                                   toNode: sprite,
+                                                   position: getLocation(at: position),
+                                                   scale: 3 / CGFloat(panelCount),
+                                                   duration: 3)
+            
+            let shakeDistance: CGFloat = 4
+            let sandShake: TimeInterval = 0.06
+            
+            dissolveRepeat = Int(animationDuration / (sandShake * 2))
+            dissolveSequence = SKAction.sequence([
+                SKAction.moveBy(x: -shakeDistance, y: 0, duration: sandShake),
+                SKAction.moveBy(x: shakeDistance, y: 0, duration: sandShake)
+            ])
+        }
+        else {
+            AudioManager.shared.playSoundThenStop(for: "waterappear\(Int.random(in: 1...3))", playForDuration: 1, fadeOut: 2)
+            Haptics.shared.executeCustomPattern(pattern: .snow)
+            ParticleEngine.shared.removeParticles(fromNode: sprite, nameGameboardPosition: position)
+            
+            dissolveRepeat = 6
+            dissolveSequence = SKAction.sequence([
+                SKAction.fadeAlpha(to: 0, duration: animationDuration / TimeInterval(dissolveRepeat * 2)),
+                SKAction.fadeAlpha(to: 1, duration: animationDuration / TimeInterval(dissolveRepeat * 2))
+            ])
+        }
         
-        ParticleEngine.shared.animateParticles(type: .lavaAppear,
-                                               toNode: sprite,
-                                               position: getLocation(at: position),
-                                               scale: 3 / CGFloat(panelCount),
-                                               duration: 3)
-    }
-    
-    func animateMeltSnow(position: K.GameboardPosition) {
-        let snowNode = SKSpriteNode(imageNamed: "snow" + AgeOfRuin.ruinSuffix)
-        snowNode.color = GameboardSprite.dayThemeSpriteColor
-        snowNode.colorBlendFactor = GameboardSprite.dayThemeSpriteShade
-        snowNode.anchorPoint = .zero
-        snowNode.zPosition = 10
-        
-        let waterNode = SKSpriteNode(imageNamed: "water" + AgeOfRuin.ruinSuffix)
-        waterNode.color = GameboardSprite.dayThemeSpriteColor
-        waterNode.colorBlendFactor = GameboardSprite.dayThemeSpriteShade
-        waterNode.anchorPoint = .zero
-        waterNode.zPosition = 5
-        waterNode.addChild(snowNode)
-
-        updatePanels(at: position, with: (terrain: LevelType.water, overlay: LevelType.boundary))
-        panels[position.row][position.col].addChild(waterNode)
-
-        AudioManager.shared.playSoundThenStop(for: "waterappear\(Int.random(in: 1...3))", playForDuration: 1, fadeOut: 2)
-        Haptics.shared.executeCustomPattern(pattern: .snow)
-        
-        //Animation Stuff
-        let repeatCount = 6
-        let snowAnimationDuration: TimeInterval = 1.0
-        let snowSequence = SKAction.sequence([
-            SKAction.fadeAlpha(to: 0, duration: snowAnimationDuration / TimeInterval(repeatCount * 2)),
-            SKAction.fadeAlpha(to: 1, duration: snowAnimationDuration / TimeInterval(repeatCount * 2))
-        ])
-        
-        panels[position.row][position.col].run(SKAction.repeat(snowSequence, count: repeatCount))
-        snowNode.run(SKAction.fadeOut(withDuration: snowAnimationDuration))
-        waterNode.run(SKAction.fadeIn(withDuration: snowAnimationDuration))
-        
-        ParticleEngine.shared.removeParticles(fromNode: sprite, nameGameboardPosition: position)
+        panels[position.row][position.col].run(SKAction.repeat(dissolveSequence, count: dissolveRepeat))
+        sandNode.run(SKAction.sequence([
+            SKAction.fadeOut(withDuration: animationDuration),
+            SKAction.removeFromParent()
+        ]))
+        lavaNode.run(SKAction.fadeIn(withDuration: animationDuration))
     }
     
     func animateBreatheFireIdle(position: K.GameboardPosition) {

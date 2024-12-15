@@ -918,12 +918,7 @@ class GameEngine {
             if level.getLevelType(at: lastPanel) == .sand {
                 level.setLevelType(at: lastPanel, with: (terrain: LevelType.lava, overlay: LevelType.boundary))
                 
-                if FireIceTheme.isFire {
-                    gameboardSprite.animateDissolveSand(position: lastPanel)
-                }
-                else {
-                    gameboardSprite.animateMeltSnow(position: lastPanel)
-                }
+                gameboardSprite.animateDissolveSand(position: lastPanel)
             }
             
             if level.getLevelType(at: nextPanel) == .lava {
