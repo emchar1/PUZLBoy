@@ -120,6 +120,16 @@ class GameboardSprite {
     func getLocation(at position: K.GameboardPosition) -> CGPoint {
         return getLocation(rowf: CGFloat(position.row), colf: CGFloat(position.col))
     }
+        
+    ///Returns the LevelType? of a sprite's userData property. If LeveType is nil, returns a default of .boundary.
+    func getUserDataForLevelType(sprite: SKSpriteNode) -> LevelType {
+        return sprite.userData?["levelType"] as? LevelType ?? .boundary
+    }
+    
+    ///Sets the sprite's userData's key "levelType" to the specified data string (or set to .boundary if data is bogus).
+    func setUserDataForLevelType(sprite: SKSpriteNode, data: String) {
+        sprite.userData = ["levelType" : LevelType.getLevelType(from: data)]
+    }
 
     ///Returns the K.GameboardPosition at the location provided, offset by the offsetPosition.
     func getGameboardPosition(at location: CGPoint) -> K.GameboardPosition? {
@@ -168,6 +178,12 @@ class GameboardSprite {
         terrainPanel.colorBlendFactor = fadeIn ? 1 : GameboardSprite.dayThemeSpriteShade
         terrainPanel.zPosition = K.ZPosition.terrain
         terrainPanel.name = GameboardSprite.getNodeName(row: position.row, col: position.col)
+        setUserDataForLevelType(sprite: terrainPanel, data: terrainString)
+        
+        if let terrainPanelName = terrainPanel.name {
+            //Remove any pre-existing TERRAIN panel before adding the updated one, below!
+            sprite.childNode(withName: terrainPanelName)?.removeFromParent()
+        }
         
         panels[position.row][position.col] = terrainPanel
         sprite.addChild(panels[position.row][position.col])
@@ -220,6 +236,12 @@ class GameboardSprite {
         overlayPanel.colorBlendFactor = fadeIn ? 1 : GameboardSprite.dayThemeSpriteShade
         overlayPanel.zPosition = K.ZPosition.overlay
         overlayPanel.name = GameboardSprite.getNodeName(row: position.row, col: position.col, includeOverlayTag: true)
+        setUserDataForLevelType(sprite: overlayPanel, data: overlayString)
+        
+        if let overlayPanelName = overlayPanel.name {
+            //Remove any pre-existing OVERLAY panel before adding the updated one, below!
+            sprite.childNode(withName: overlayPanelName)?.removeFromParent()
+        }
         
         sprite.addChild(overlayPanel)
 
@@ -1667,9 +1689,8 @@ class GameboardSprite {
         
         
         //Animation stuff
-        let animationDuration: TimeInterval = 1
-        let dissolveRepeat: Int
-        let dissolveSequence: SKAction
+        let dissolveDuration: TimeInterval = 1
+        let dissolveAction: SKAction
         
         if FireIceTheme.isFire {
             AudioManager.shared.playSound(for: "lavaappear\(Int.random(in: 1...3))")
@@ -1681,32 +1702,33 @@ class GameboardSprite {
                                                    duration: 3)
             
             let shakeDistance: CGFloat = 4
-            let sandShake: TimeInterval = 0.06
+            let shakeDuration: TimeInterval = 0.06
             
-            dissolveRepeat = Int(animationDuration / (sandShake * 2))
-            dissolveSequence = SKAction.sequence([
-                SKAction.moveBy(x: -shakeDistance, y: 0, duration: sandShake),
-                SKAction.moveBy(x: shakeDistance, y: 0, duration: sandShake)
-            ])
+            dissolveAction = SKAction.repeat(SKAction.sequence([
+                SKAction.moveBy(x: -shakeDistance, y: 0, duration: shakeDuration),
+                SKAction.moveBy(x: shakeDistance, y: 0, duration: shakeDuration)
+            ]), count: Int(dissolveDuration / (shakeDuration * 2)))
         }
         else {
             AudioManager.shared.playSoundThenStop(for: "waterappear\(Int.random(in: 1...3))", playForDuration: 1, fadeOut: 2)
             Haptics.shared.executeCustomPattern(pattern: .snow)
             ParticleEngine.shared.removeParticles(fromNode: sprite, nameGameboardPosition: position)
             
-            dissolveRepeat = 6
-            dissolveSequence = SKAction.sequence([
-                SKAction.fadeAlpha(to: 0, duration: animationDuration / TimeInterval(dissolveRepeat * 2)),
-                SKAction.fadeAlpha(to: 1, duration: animationDuration / TimeInterval(dissolveRepeat * 2))
-            ])
+            let dissolveRepeat: Int = 6
+            
+            dissolveAction = SKAction.repeat(SKAction.sequence([
+                SKAction.fadeAlpha(to: 0, duration: dissolveDuration / TimeInterval(dissolveRepeat * 2)),
+                SKAction.fadeAlpha(to: 1, duration: dissolveDuration / TimeInterval(dissolveRepeat * 2))
+            ]), count: dissolveRepeat)
         }
         
-        panels[position.row][position.col].run(SKAction.repeat(dissolveSequence, count: dissolveRepeat))
+        panels[position.row][position.col].run(dissolveAction)
+        
+        lavaNode.run(SKAction.fadeIn(withDuration: dissolveDuration))
         sandNode.run(SKAction.sequence([
-            SKAction.fadeOut(withDuration: animationDuration),
+            SKAction.fadeOut(withDuration: dissolveDuration),
             SKAction.removeFromParent()
         ]))
-        lavaNode.run(SKAction.fadeIn(withDuration: animationDuration))
     }
     
     func animateBreatheFireIdle(position: K.GameboardPosition) {
