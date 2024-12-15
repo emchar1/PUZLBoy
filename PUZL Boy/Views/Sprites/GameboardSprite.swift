@@ -159,6 +159,7 @@ class GameboardSprite {
         
         //--TERRAIN SETUP--
         let terrainString: String
+        var particleType: ParticleEngine.ParticleType? = nil
 
         if !FireIceTheme.isFire && tile.terrain == .sand {
             terrainString = "snow" + AgeOfRuin.ruinSuffix
@@ -193,21 +194,17 @@ class GameboardSprite {
             terrainPanel.animatePartyTileShimmer(gameboardColor: GameboardSprite.gameboardColor)
         }
         else if tile.terrain == .marsh {
-            ParticleEngine.shared.animateParticles(type: .poisonBubbles,
-                                                   toNode: sprite,
-                                                   position: getLocation(at: position),
-                                                   scale: 3 / CGFloat(panelCount),
-                                                   duration: 0)
+            particleType = .poisonBubbles
         }
         else if tile.terrain == .lava && FireIceTheme.isFire {
-            ParticleEngine.shared.animateParticles(type: .lavaSizzle,
-                                                   toNode: sprite,
-                                                   position: getLocation(at: position),
-                                                   scale: 3 / CGFloat(panelCount),
-                                                   duration: 0)
+            particleType = .lavaSizzle
         }
         else if tile.terrain == .sand && !FireIceTheme.isFire {
-            ParticleEngine.shared.animateParticles(type: .snowfall,
+            particleType = .snowfall
+        }
+        
+        if let particleType = particleType {
+            ParticleEngine.shared.animateParticles(type: particleType,
                                                    toNode: sprite,
                                                    position: getLocation(at: position),
                                                    scale: 3 / CGFloat(panelCount),
@@ -221,6 +218,7 @@ class GameboardSprite {
 
         let overlayString: String
         let overlayIsStatue: Bool = tile.overlay == .statue0 || tile.overlay == .statue1 || tile.overlay == .statue2 || tile.overlay == .statue3 || tile.overlay == .statue4
+        let overlayIsWarp: Bool = tile.overlay == .warp || tile.overlay == .warp2 || tile.overlay == .warp3 || tile.overlay == .warp4 || tile.overlay == .warp5
         
         if !FireIceTheme.isFire && tile.overlay == .enemy {
             overlayString = "enemyIce" + AgeOfRuin.ruinSuffix
@@ -250,45 +248,26 @@ class GameboardSprite {
             overlayPanel.danceStatue()
         }
         
-        switch tile.overlay {
-        case .warp, .warp2, .warp3, .warp4, .warp5:
+        if overlayIsWarp {
             rotateWarp(node: overlayPanel, slow: true, repeatForever: true)
-        default:
-            break
         }
         
         if tile.overlay == .warp {
-            if warps.first == nil {
-                warps.first = position
-            }
-            else {
-                warps.second = position
-            }
+            if warps.first == nil { warps.first = position }
+            else { warps.second = position }
         }
-        
-        if tile.overlay == .warp2 {
-            if warps2.first == nil {
-                warps2.first = position
-            }
-            else {
-                warps2.second = position
-            }
+        else if tile.overlay == .warp2 {
+            if warps2.first == nil { warps2.first = position }
+            else { warps2.second = position }
         }
-        
-        if tile.overlay == .warp3 {
-            if warps3.first == nil {
-                warps3.first = position
-            }
-            else {
-                warps3.second = position
-            }
+        else if tile.overlay == .warp3 {
+            if warps3.first == nil { warps3.first = position }
+            else { warps3.second = position }
         }
-        
-        if tile.overlay == .enemy {
+        else if tile.overlay == .enemy {
             animateBreatheFireIdle(position: position)
         }
-        
-        if tile.overlay == .heart {
+        else if tile.overlay == .heart {
             animateHeartbeat(position: position)
         }
     }
