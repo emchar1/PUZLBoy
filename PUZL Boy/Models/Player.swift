@@ -240,7 +240,7 @@ class Player {
             case .elder0:           timePerFrameFallback = 0.1
             case .elder1:           timePerFrameFallback = 0.09
             case .elder2:           timePerFrameFallback = 0.05
-            case .youngTrainer:     timePerFrameFallback = 0.05
+            case .youngTrainer:     timePerFrameFallback = 0.06
             case .youngVillain:     timePerFrameFallback = 0.06
             case .minion:           timePerFrameFallback = defaultTime
             }
@@ -254,7 +254,7 @@ class Player {
             case .elder0:           timePerFrameFallback = 0.04
             case .elder1:           timePerFrameFallback = 0.04
             case .elder2:           timePerFrameFallback = 0.04
-            case .youngTrainer:     timePerFrameFallback = defaultTime
+            case .youngTrainer:     timePerFrameFallback = 0.04
             case .youngVillain:     timePerFrameFallback = defaultTime
             case .minion:           timePerFrameFallback = defaultTime
             }
@@ -268,7 +268,7 @@ class Player {
             case .elder0:           timePerFrameFallback = defaultTime
             case .elder1:           timePerFrameFallback = defaultTime
             case .elder2:           timePerFrameFallback = defaultTime
-            case .youngTrainer:     timePerFrameFallback = defaultTime
+            case .youngTrainer:     timePerFrameFallback = 0.06
             case .youngVillain:     timePerFrameFallback = defaultTime
             case .minion:           timePerFrameFallback = defaultTime
             }
@@ -282,7 +282,7 @@ class Player {
             case .elder0:           timePerFrameFallback = defaultTime
             case .elder1:           timePerFrameFallback = defaultTime
             case .elder2:           timePerFrameFallback = defaultTime
-            case .youngTrainer:     timePerFrameFallback = defaultTime
+            case .youngTrainer:     timePerFrameFallback = 0.02
             case .youngVillain:     timePerFrameFallback = defaultTime
             case .minion:           timePerFrameFallback = defaultTime
             }
@@ -296,7 +296,7 @@ class Player {
             case .elder0:           timePerFrameFallback = defaultTime
             case .elder1:           timePerFrameFallback = defaultTime
             case .elder2:           timePerFrameFallback = defaultTime
-            case .youngTrainer:     timePerFrameFallback = defaultTime
+            case .youngTrainer:     timePerFrameFallback = 0.04
             case .youngVillain:     timePerFrameFallback = defaultTime
             case .minion:           timePerFrameFallback = defaultTime
             }
