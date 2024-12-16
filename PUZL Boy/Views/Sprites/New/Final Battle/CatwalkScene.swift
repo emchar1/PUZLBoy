@@ -367,7 +367,7 @@ class CatwalkScene: SKScene {
     }
     
     private func animatePlayer(player: Player, type: Player.Texture) -> SKAction {
-        return Player.animate(player: player, type: type, timePerFrameMultiplier: (player.type == .hero && isRedShift) ? 2 : 1)
+        return Player.animate(player: player, type: type, timePerFrameMultiplier: isRedShift ? 2 : 1)
     }
     
     private func playDialogue(panelIndex: Int) {
@@ -776,7 +776,7 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
             magmoorSprite.run(SKAction.sequence([
                 SKAction.fadeIn(withDuration: 0),
                 SKAction.wait(forDuration: 0.12),
-                SKAction.fadeOut(withDuration: 0.12)
+                SKAction.fadeOut(withDuration: 0.25)
             ]))
         }
         else {
