@@ -37,6 +37,7 @@
 		EA26F29129739DE800BF1AC8 /* AdMobManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA26F29029739DE800BF1AC8 /* AdMobManager.swift */; };
 		EA2AF74429B6D06000444E5A /* OfflinePlaySprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA2AF74329B6D06000444E5A /* OfflinePlaySprite.swift */; };
 		EA2AF74829B6EDAC00444E5A /* gemcollectparty.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA2AF74729B6EDAC00444E5A /* gemcollectparty.mp3 */; };
+		EA2BA65A2D0FF336007D9519 /* FinalBattle2Engine.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA2BA6592D0FF330007D9519 /* FinalBattle2Engine.swift */; };
 		EA2F44112C45810E00B62CC3 /* MagicElderStarsParticles.sks in Resources */ = {isa = PBXBuildFile; fileRef = EA2F44102C45810E00B62CC3 /* MagicElderStarsParticles.sks */; };
 		EA2F44132C4645DA00B62CC3 /* ChapterTitleSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA2F44122C4645DA00B62CC3 /* ChapterTitleSprite.swift */; };
 		EA32AE312AAC198300DFF5CD /* DragonFire.sks in Resources */ = {isa = PBXBuildFile; fileRef = EA32AE302AAC198300DFF5CD /* DragonFire.sks */; };
@@ -404,6 +405,7 @@
 		EA26F29029739DE800BF1AC8 /* AdMobManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdMobManager.swift; sourceTree = "<group>"; };
 		EA2AF74329B6D06000444E5A /* OfflinePlaySprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfflinePlaySprite.swift; sourceTree = "<group>"; };
 		EA2AF74729B6EDAC00444E5A /* gemcollectparty.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = gemcollectparty.mp3; sourceTree = "<group>"; };
+		EA2BA6592D0FF330007D9519 /* FinalBattle2Engine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinalBattle2Engine.swift; sourceTree = "<group>"; };
 		EA2F44102C45810E00B62CC3 /* MagicElderStarsParticles.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = MagicElderStarsParticles.sks; sourceTree = "<group>"; };
 		EA2F44122C4645DA00B62CC3 /* ChapterTitleSprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChapterTitleSprite.swift; sourceTree = "<group>"; };
 		EA32AE302AAC198300DFF5CD /* DragonFire.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = DragonFire.sks; sourceTree = "<group>"; };
@@ -1302,6 +1304,7 @@
 				EAFE35992CEBA9D700289ADF /* ComingSoonScene.swift */,
 				EAFE35932CE44DA000289ADF /* EndingFakeScene.swift */,
 				EA1281B62CF24D42001CC5E8 /* FinalBattleScene.swift */,
+				EA2BA6592D0FF330007D9519 /* FinalBattle2Engine.swift */,
 			);
 			path = "Final Battle";
 			sourceTree = "<group>";
@@ -1807,6 +1810,7 @@
 				EA4D026B29BC6ACE00F0C7B1 /* Extension+UIDevice.swift in Sources */,
 				EA41F83C2A0DD3F800DF47EC /* SettingsTapArea.swift in Sources */,
 				EACCC0612AE63FEE0099DA44 /* LeaderboardsTableView.swift in Sources */,
+				EA2BA65A2D0FF336007D9519 /* FinalBattle2Engine.swift in Sources */,
 				EA41FBF12CFF938300796368 /* ChosenSword.swift in Sources */,
 				EAD59A542A88200800F86EED /* SpeechBubbleSprite.swift in Sources */,
 				EA95D2122963B4580061059C /* LevelSkipEngine.swift in Sources */,
