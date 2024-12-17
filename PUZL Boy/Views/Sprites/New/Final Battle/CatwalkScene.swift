@@ -176,7 +176,9 @@ class CatwalkScene: SKScene {
         villain = Player(type: .villain)
         villain.sprite.alpha = 0
         
-        swordSprite = ChosenSword(didPursueMagmoor: FIRManager.didPursueMagmoor, didGiveAwayFeather: FIRManager.didGiveAwayFeather)
+        swordSprite = ChosenSword(didPursueMagmoor: FIRManager.didPursueMagmoor,
+                                  didGiveAwayFeather: FIRManager.didGiveAwayFeather,
+                                  bravery: FIRManager.bravery)
         swordSprite.spriteNode.scale(to: scaleSize)
         swordSprite.spriteNode.alpha = 0
         swordSprite.spriteNode.zPosition = K.ZPosition.player - 1

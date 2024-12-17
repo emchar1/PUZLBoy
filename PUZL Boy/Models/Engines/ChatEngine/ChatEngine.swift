@@ -1171,7 +1171,9 @@ extension ChatEngine {
         case -1036:
             let fadeOut: TimeInterval = 2
             let logoDuration: TimeInterval = 9
-            let chosenSword = ChosenSword(didPursueMagmoor: FIRManager.didPursueMagmoor, didGiveAwayFeather: FIRManager.didGiveAwayFeather)
+            let chosenSword = ChosenSword(didPursueMagmoor: FIRManager.didPursueMagmoor,
+                                          didGiveAwayFeather: FIRManager.didGiveAwayFeather,
+                                          bravery: FIRManager.bravery)
             
             delegateCatwalk?.stopMusicCatwalk(music: "overworldmarimba", fadeOut: fadeOut, delay: logoDuration, shouldPlayOverworld: true)
             delegateCatwalk?.despawnTikiCatwalk(fadeOut: fadeOut, delay: logoDuration)

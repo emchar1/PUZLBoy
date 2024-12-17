@@ -26,15 +26,15 @@ class ChosenSword {
     
     // MARK: - Initialization
     
-    init(didPursueMagmoor: Bool, didGiveAwayFeather: Bool) {
-        if !didPursueMagmoor && didGiveAwayFeather {
+    init(didPursueMagmoor: Bool, didGiveAwayFeather: Bool, bravery: Int?) {
+        if !didPursueMagmoor && didGiveAwayFeather && (bravery ?? 0) >= MagmoorCreepyMinion.maxBravery {
             type = .celestialSword
             attackRating = 97
             imageName = "sword1Celestial"
             description = "Celestial Sword of Justice"
             elderCommentary = "This sword will get you through the toughest of fights. Thrust downward for maximum damage!"
         }
-        else if !didPursueMagmoor && !didGiveAwayFeather {
+        else if !didPursueMagmoor {
             type = .heavenlySaber
             attackRating = 82
             imageName = "sword2Heavenly"

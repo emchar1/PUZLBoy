@@ -1091,7 +1091,6 @@ class GameEngine {
 
             print("Win streak: \(GameEngine.winStreak), Level: \(level.level)")
 
-            // TODO: - Check for if beat the game.
             if didCompleteGame {
                 GameEngine.gameCompleted = true
                 
