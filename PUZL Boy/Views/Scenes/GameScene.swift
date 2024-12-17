@@ -400,7 +400,7 @@ class GameScene: SKScene {
             inventory: gameEngine.level.inventory)
         
         let saveStateModel = SaveStateModel(
-            aorAgeOfRuin: GameEngine.ageOfRuin,
+            aorAgeOfRuin: AgeOfRuin.isActive,
             aorBravery: 0, //Doesn't matter what goes here, it'll also get overwritten by the static property in FIRManager
             aorDecisionLeftButton0: true, //Doesn't matter what goes here, it'll also get overwritten by the static property in FIRManager
             aorDecisionLeftButton1: true, //Doesn't matter what goes here, it'll also get overwritten by the static property in FIRManager
@@ -807,12 +807,14 @@ extension GameScene: GameEngineDelegate {
             
             // TODO: - 12/16/24 Add end game level, cutscene, credits, title+
             cleanupScene(shouldSaveState: false) { [weak self] in
-                if GameEngine.ageOfRuin {
+                if !AgeOfRuin.isActive {
                     //Final battle awaits...
                     self?.gameSceneDelegate?.presentCatwalkScene()
                 }
                 else {
                     //Back to original game
+                    FIRManager.resetAgeOfRuinProperties(ageOfRuinIsActive: false)
+                    
                     self?.gameSceneDelegate?.confirmQuitTapped()
                 }
             }

@@ -21,6 +21,7 @@ struct FIRManager {
     static var decisionsLeftButton: [Bool?] = [nil, nil, nil, nil]
     static var hasFeather: Bool?
     static var gotGift: Bool?
+    static var isAgeOfRuin: Bool?
     
     static var didPursueMagmoor: Bool {
         decisionsLeftButton[0] ?? false
@@ -175,13 +176,12 @@ struct FIRManager {
                 return
             }
             
-            for i in 0...3 {
-                decisionsLeftButton[i] = data["aorDecisionLeftButton\(i)"] as? Bool
-            }
-            
+            //Age of Ruin Properties need to be set here...
+            for i in 0...3 { decisionsLeftButton[i] = data["aorDecisionLeftButton\(i)"] as? Bool }
             bravery = data["aorBravery"] as? Int
             hasFeather = data["aorHasFeather"] as? Bool
             gotGift = data["aorGotGift"] as? Bool
+            isAgeOfRuin = data["aorAgeOfRuin"] as? Bool
             
             completion?(SaveStateModel(aorAgeOfRuin: ageOfRuin,
                                        aorBravery: bravery,
@@ -403,6 +403,9 @@ struct FIRManager {
         print("Writing to Firestore saveState.......")
     }//end writeToFirestoreRecord()
     
+    
+    // MARK: - Update Firestore Record Fields
+    
     ///Updates just certain records in the Firestore db
     static func updateFirestoreRecordFields(fields: [AnyHashable : Any]) {
         guard let uid = uid else {
@@ -433,6 +436,12 @@ struct FIRManager {
 
         updateFirestoreRecordFields(fields: [FIRfield : FIRvalue ?? NSNull()])
     }
+    
+    ///Convenience method to update isAgeOfRuin field in a record and the static property.
+    static func updateFirestoreRecordIsAgeOfRuin(_ isAgeOfRuin: Bool?) {
+        self.isAgeOfRuin = isAgeOfRuin
+        updateFirestoreRecordFields(fields: ["aorAgeOfRuin" : isAgeOfRuin ?? NSNull()])
+    }
 
     ///Convenience method to update the bravery field in a record and the static property.
     static func updateFirestoreRecordBravery(_ bravery: Int?) {
@@ -460,6 +469,31 @@ struct FIRManager {
     ///Convenience method to update livesRemaining field in a record.
     static func updateFirestoreRecordLivesRemaining(lives: Int) {
         updateFirestoreRecordFields(fields: ["livesRemaining" : lives])
+    }
+    
+    ///And finally a batch reset of all Age of Ruin related properties, used for end of game handling.
+    static func resetAgeOfRuinProperties(ageOfRuinIsActive: Bool) {
+        if let hasFeather = FIRManager.hasFeather {
+            if hasFeather {
+                GameCenterManager.shared.updateProgress(achievement: .hoarder, shouldReportImmediately: true)
+            }
+                
+            //Start the game over with no feather.
+            FIRManager.updateFirestoreRecordHasFeather(nil)
+        }
+
+        if FIRManager.didReceiveGiftFromTiki {
+            FIRManager.updateFirestoreRecordGotGift(nil)
+        }
+        
+        for i in 0...3 {
+            FIRManager.updateFirestoreRecordDecision(index: i, buttonOrder: nil)
+        }
+        
+        FIRManager.updateFirestoreRecordBravery(nil)
+        
+        FIRManager.updateFirestoreRecordIsAgeOfRuin(ageOfRuinIsActive)
+        AudioManager.shared.changeTheme(newTheme: AudioManager.mainThemes, shouldPlayNewTheme: false)
     }
     
     

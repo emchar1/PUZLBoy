@@ -695,14 +695,12 @@ extension ChatEngine {
         dialoguePlayed[Level.partyLevel] = false //Level: -1. IMPORTANT: MUST be called in both, Age of Balance and Age of Ruin!!!
         
         if AgeOfRuin.isActive {
-            // TODO: - Chat Dialogue for Age of Ruin
-
             //AGE OF RUIN - DARK REALM Dialogue
             //enter dialogue here...
             
-
+            
             //AGE OF RUIN - PUZZLE REALM Dialogue
-
+            
             dialoguePlayed[101] = false
             dialoguePlayed[201] = false
         }
@@ -730,7 +728,7 @@ extension ChatEngine {
             
             
             //AGE OF BALANCE - DARK REALM Dialogue
-
+            
             dialoguePlayed[-100] = false
             dialoguePlayed[-150] = false
             dialoguePlayed[-200] = false
@@ -1049,6 +1047,7 @@ extension ChatEngine {
     private func playDialogueAgeOfBalance(level: Int, statueTapped: Bool, completion: ((Cutscene?) -> Void)?) {
         switch level {
             
+        //CATWALK
         case -999:
             sendChatArray(shouldSkipDim: true, items: [
                 ChatItem(profile: .melchior, chat: "Where do you think you're going, PUZL Boy? The only way out is through!")
@@ -2231,12 +2230,13 @@ extension ChatEngine {
     ///Sets up and plays dialogue for Age of Ruin setting.
     private func playDialogueAgeOfRuin(level: Int, completion: ((Cutscene?) -> Void)?) {
         switch level {
-            
+        
+        //PUZZLE REALM (AOR)
         case Level.partyLevel: //IMPORTANT: This case, Level.partyLevel must ALWAYS be here!!!
             handleDialogueCompletion(level: level, completion: completion)
         case 101:
             sendChatArray(items: [
-                ChatItem(profile: .blanktrainer, chat: "Here we go....... again??")
+                ChatItem(profile: .blanktrainer, chat: "\n\nHere we go....... again??")
             ]) { [weak self] in
                 self?.handleDialogueCompletion(level: level, completion: completion)
             }

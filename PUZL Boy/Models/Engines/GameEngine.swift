@@ -32,7 +32,6 @@ class GameEngine {
     private(set) static var livesRemaining: Int = LifeSpawnerModel.defaultLives
     private(set) static var usedContinue: Bool = false
     private(set) static var gameCompleted: Bool = false
-    private(set) static var ageOfRuin: Bool = false
     private(set) static var livesUsed: Int = 0
     private(set) static var winStreak: Int = 0 {
         didSet {
@@ -195,7 +194,6 @@ class GameEngine {
         GameEngine.livesUsed = saveStateModel.levelStatsArray.filter({ $0.level == level.level }).first?.livesUsed ?? GameEngine.livesUsed
         GameEngine.winStreak = saveStateModel.winStreak
         GameEngine.gameCompleted = saveStateModel.gameCompleted
-        GameEngine.ageOfRuin = saveStateModel.aorAgeOfRuin
         
         finishInit(shouldSpawn: true)
     }
@@ -1096,33 +1094,7 @@ class GameEngine {
             // TODO: - Check for if beat the game.
             if didCompleteGame {
                 GameEngine.gameCompleted = true
-                GameEngine.ageOfRuin.toggle()
                 
-                //Here, you cannot set the new theme to AudioManager.mainThemes because FIRManager won't be updated until AFTER this function completes, so you fake it and check against AgeOfRuin.conditionsMet.
-                AudioManager.shared.changeTheme(newTheme: GameEngine.ageOfRuin ? AudioManager.ageOfRuinThemes : AudioManager.ageOfBalanceThemes, shouldPlayNewTheme: false)
-
-                if let hasFeather = FIRManager.hasFeather {
-                    if hasFeather {
-                        GameCenterManager.shared.updateProgress(achievement: .hoarder, shouldReportImmediately: true)
-                    }
-                        
-                    //Start the game over with no feather.
-                    FIRManager.updateFirestoreRecordHasFeather(nil)
-                }
-
-                //Do I want to reset the gotGift so you can get the gift every game playthrough?
-                if FIRManager.didReceiveGiftFromTiki {
-                    FIRManager.updateFirestoreRecordGotGift(nil)
-                }
-                
-                //And don't forget to reset decision questions!
-                for i in 0...3 {
-                    FIRManager.updateFirestoreRecordDecision(index: i, buttonOrder: nil)
-                }
-                
-                //As well as bravery points!
-                FIRManager.updateFirestoreRecordBravery(nil)
-
                 print("YOU WON THE GAME!!!")
             }
         }

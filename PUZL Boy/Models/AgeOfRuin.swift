@@ -13,7 +13,7 @@ struct AgeOfRuin {
     
     ///Shows what's in the FIRManager's SaveStateModel's ageOfRuin property.
     static var isActive: Bool {
-        FIRManager.saveStateModel?.aorAgeOfRuin ?? false
+        FIRManager.isAgeOfRuin ?? false
     }
     
     /* DISABLED 12/16/24 as AOR toggles back and forth now.

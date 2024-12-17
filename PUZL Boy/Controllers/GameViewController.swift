@@ -304,6 +304,8 @@ extension GameViewController: CatwalkSceneDelegate {
         
         
         // TODO: - Save n shit
+        FIRManager.resetAgeOfRuinProperties(ageOfRuinIsActive: true)
+        
         confirmQuitTapped()
     }
 }
