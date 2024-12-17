@@ -1096,10 +1096,10 @@ class GameEngine {
             // TODO: - Check for if beat the game.
             if didCompleteGame {
                 GameEngine.gameCompleted = true
-//                GameEngine.ageOfRuin = AgeOfRuin.conditionsMet
-//                
-//                //Here, you cannot set the new theme to AudioManager.mainThemes because FIRManager won't be updated until AFTER this function completes, so you fake it and check against AgeOfRuin.conditionsMet.
-//                AudioManager.shared.changeTheme(newTheme: GameEngine.ageOfRuin ? AudioManager.ageOfRuinThemes : AudioManager.ageOfBalanceThemes, shouldPlayNewTheme: false)
+                GameEngine.ageOfRuin.toggle()
+                
+                //Here, you cannot set the new theme to AudioManager.mainThemes because FIRManager won't be updated until AFTER this function completes, so you fake it and check against AgeOfRuin.conditionsMet.
+                AudioManager.shared.changeTheme(newTheme: GameEngine.ageOfRuin ? AudioManager.ageOfRuinThemes : AudioManager.ageOfBalanceThemes, shouldPlayNewTheme: false)
 
                 if let hasFeather = FIRManager.hasFeather {
                     if hasFeather {

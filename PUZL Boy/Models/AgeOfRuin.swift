@@ -16,6 +16,7 @@ struct AgeOfRuin {
         FIRManager.saveStateModel?.aorAgeOfRuin ?? false
     }
     
+    /* DISABLED 12/16/24 as AOR toggles back and forth now.
     ///Checks to see if conditions are met for Age of Ruin to be activated.
     static var conditionsMet: Bool {
         //Age of Balance if player makes these choices:
@@ -28,6 +29,7 @@ struct AgeOfRuin {
         
         return !ageOfBalance                              //i.e. return Age of Ruin
     }
+     */
     
     static var ruinSuffix: String {
         isActive ? "Ruin" : ""

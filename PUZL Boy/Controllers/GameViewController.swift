@@ -290,10 +290,21 @@ extension GameViewController: GameSceneDelegate {
 
 extension GameViewController: CatwalkSceneDelegate {
     func catwalkSceneDidFinish() {
-        let comingSoonScene = ComingSoonScene(size: K.ScreenDimensions.size)
-        comingSoonScene.comingSoonDelegate = self
-        comingSoonScene.animateScene()
-        skView.presentScene(comingSoonScene, transition: SKTransition.fade(with: .black, duration: 0.2))
+//        let comingSoonScene = ComingSoonScene(size: K.ScreenDimensions.size)
+//        comingSoonScene.comingSoonDelegate = self
+//        comingSoonScene.animateScene()
+//        skView.presentScene(comingSoonScene, transition: SKTransition.fade(with: .black, duration: 0.2))
+        
+        
+        
+//        let finalBattleScene = FinalBattleScene(size: K.ScreenDimensions.size)
+//        finalBattleScene.animateScene()
+//        skView.presentScene(finalBattleScene, transition: SKTransition.fade(with: .black, duration: 3))
+        
+        
+        
+        // TODO: - Save n shit
+        confirmQuitTapped()
     }
 }
 

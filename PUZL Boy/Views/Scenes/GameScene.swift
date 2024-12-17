@@ -803,10 +803,22 @@ extension GameScene: GameEngineDelegate {
             //IMPORTANT: Write to Firestore, MUST come first, if completing the game
             saveState(levelStatsItem: levelStatsItem)
             
-            // TODO: - 10/7/24 Add end game level, cutscene, credits, title+
+            
+            
+            // TODO: - 12/16/24 Add end game level, cutscene, credits, title+
             cleanupScene(shouldSaveState: false) { [weak self] in
-                self?.gameSceneDelegate?.presentCatwalkScene()
+                if GameEngine.ageOfRuin {
+                    //Final battle awaits...
+                    self?.gameSceneDelegate?.presentCatwalkScene()
+                }
+                else {
+                    //Back to original game
+                    self?.gameSceneDelegate?.confirmQuitTapped()
+                }
             }
+            
+            
+            
         }
         else {
             newGame(level: currentLevel, didWin: true)
