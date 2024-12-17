@@ -20,7 +20,7 @@ class ChosenSword {
     private(set) var spriteNode: SKSpriteNode
 
     enum SwordType {
-        case celestialSword, heavenlySaber, cosmicCleaver, eternalBlade
+        case celestialBroadsword, heavenlySaber, cosmicCleaver, eternalBlade, plainSword
     }
     
     
@@ -28,10 +28,10 @@ class ChosenSword {
     
     init(didPursueMagmoor: Bool, didGiveAwayFeather: Bool, bravery: Int?) {
         if !didPursueMagmoor && didGiveAwayFeather && (bravery ?? 0) >= MagmoorCreepyMinion.maxBravery {
-            type = .celestialSword
+            type = .celestialBroadsword
             attackRating = 97
             imageName = "sword1Celestial"
-            description = "Celestial Sword of Justice"
+            description = "Celestial Broadsword of Justice"
             elderCommentary = "This sword will get you through the toughest of fights. Thrust downward for maximum damage!"
         }
         else if !didPursueMagmoor {
@@ -48,7 +48,7 @@ class ChosenSword {
             description = "Cosmic Cleaver of Purification"
             elderCommentary = "This sword packs a mean punch! Careful!! It's heavy and somewhat cumbersome to wield."
         }
-        else if didPursueMagmoor && !didGiveAwayFeather {
+        else if didPursueMagmoor && !didGiveAwayFeather && (bravery ?? 0) > 0 {
             type = .eternalBlade
             attackRating = 61
             imageName = "sword4Eternal"
@@ -56,11 +56,11 @@ class ChosenSword {
             elderCommentary = "Not bad at all! Only a few handful of swords are considered mightier than this one..."
         }
         else {
-            type = .heavenlySaber
-            attackRating = 0
+            type = .plainSword
+            attackRating = 50
             imageName = "sword"
-            description = "Default Sword"
-            elderCommentary = "Default case, should not reach here."
+            description = "Plain Sword"
+            elderCommentary = "A plain sword... Well, you've got an uphill battle to climb with this mediocre weapon."
         }
         
         spriteNode = SKSpriteNode(imageNamed: imageName)
