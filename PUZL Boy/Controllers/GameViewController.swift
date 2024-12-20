@@ -290,10 +290,10 @@ extension GameViewController: GameSceneDelegate {
 
 extension GameViewController: CatwalkSceneDelegate {
     func catwalkSceneDidFinish() {
-//        let comingSoonScene = ComingSoonScene(size: K.ScreenDimensions.size)
-//        comingSoonScene.comingSoonDelegate = self
-//        comingSoonScene.animateScene()
-//        skView.presentScene(comingSoonScene, transition: SKTransition.fade(with: .black, duration: 0.2))
+        let comingSoonScene = ComingSoonScene(size: K.ScreenDimensions.size)
+        comingSoonScene.comingSoonDelegate = self
+        comingSoonScene.animateScene()
+        skView.presentScene(comingSoonScene, transition: SKTransition.fade(with: .black, duration: 0.2))
         
         
         
@@ -303,10 +303,10 @@ extension GameViewController: CatwalkSceneDelegate {
         
         
         
-        // TODO: - Save n shit
-        FIRManager.resetAgeOfRuinProperties(ageOfRuinIsActive: true)
-        
-        confirmQuitTapped()
+//        // TODO: - Save n shit
+//        FIRManager.resetAgeOfRuinProperties(ageOfRuinIsActive: true)
+//        
+//        confirmQuitTapped()
     }
 }
 
@@ -315,8 +315,12 @@ extension GameViewController: CatwalkSceneDelegate {
 
 extension GameViewController: ComingSoonSceneDelegate {
     func comingSoonSceneDidFinish() {
-        //NEEDS to have a transition, otherwise the state won't save, trust me.
-        presentTitleScene(shouldInitializeAsHero: false, transition: SKTransition.fade(with: .white, duration: 0))
+//        //NEEDS to have a transition, otherwise the state won't save, trust me.
+//        presentTitleScene(shouldInitializeAsHero: false, transition: SKTransition.fade(with: .white, duration: 0))
+        // TODO: - Save n shit
+        FIRManager.resetAgeOfRuinProperties(ageOfRuinIsActive: true)
+        
+        confirmQuitTapped()
     }
 }
 
