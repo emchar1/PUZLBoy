@@ -310,7 +310,7 @@ class GameEngine {
             switch panel {
             case .marsh:                                        
                 soundFXTypeAndMovementSpeed = .marsh
-            case .sand:                                         
+            case .sand:
                 soundFXTypeAndMovementSpeed = .sand
             case .partytile, .start, .endClosed, .endOpen:      
                 soundFXTypeAndMovementSpeed = .party

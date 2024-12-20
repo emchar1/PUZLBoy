@@ -98,7 +98,7 @@ class PlayerSprite {
     }
     
     func startMoveAnimation(animationType: Player.Texture, soundFXType: Player.Texture) {
-        let timePerFrameMultiplier: TimeInterval = (animationType == .marsh ? 1.25 : 1) * PartyModeSprite.shared.speedMultiplier
+        let timePerFrameMultiplier: TimeInterval = (soundFXType == .marsh ? 1.5 : 1) * PartyModeSprite.shared.speedMultiplier
         
         player.sprite.removeAction(forKey: AnimationKey.playerIdle.rawValue)
         player.sprite.removeAction(forKey: AnimationKey.playerMove.rawValue)
