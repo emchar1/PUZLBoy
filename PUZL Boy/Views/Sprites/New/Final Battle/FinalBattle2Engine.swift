@@ -53,7 +53,7 @@ class FinalBattle2Engine {
         villain.sprite.setScale(playerScale * villain.scaleMultiplier)
         villain.sprite.xScale *= -1
         villain.sprite.zPosition = K.ZPosition.player - 2
-
+        
         populateSpawnPanels(spawnPanels: &spawnPanels0, startPosition: startPosition, ignorePositions: ignorePositions, maxCount: maxCount)
         populateSpawnPanels(spawnPanels: &spawnPanels1, startPosition: startPosition, ignorePositions: ignorePositions, maxCount: maxCount)
         populateSpawnPanels(spawnPanels: &spawnPanels2, startPosition: startPosition, ignorePositions: ignorePositions, maxCount: maxCount)
@@ -86,7 +86,7 @@ class FinalBattle2Engine {
     func animateSprites() {
         hero.sprite.run(Player.animate(player: hero, type: .idle))
         villain.sprite.run(Player.animateIdleLevitate(player: villain))
-
+        
         animateSpawnPanels(spawnPanels: spawnPanels0, with: .start)
 //        animateSpawnPanels(spawnPanels: spawnPanels1, with: .start)
 //        animateSpawnPanels(spawnPanels: spawnPanels2, with: .start)
@@ -104,7 +104,7 @@ class FinalBattle2Engine {
         spawnPanels.append(nextPosition)
         
         let spawnPanelsToIgnore = spawnPanels.count >= 2 ? Array(spawnPanels.suffix(2)) : []
-                
+        
         //Recursion!
         populateSpawnPanels(spawnPanels: &spawnPanels,
                             startPosition: nextPosition,
@@ -130,10 +130,10 @@ class FinalBattle2Engine {
     private func animateSpawnPanels(spawnPanels: [K.GameboardPosition], with terrain: LevelType) {
         for (i, spawnPanel) in spawnPanels.enumerated() {
             guard let originalTerrain = gameboard.getPanelSprite(at: spawnPanel).terrain else { continue }
-
+            
             let waitDuration: TimeInterval = 1
             let newTerrain = SKSpriteNode(imageNamed: terrain.description)
-
+            
             newTerrain.anchorPoint = .zero
             newTerrain.alpha = 0
             newTerrain.zPosition = 1
