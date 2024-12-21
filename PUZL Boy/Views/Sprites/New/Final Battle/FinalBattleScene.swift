@@ -62,6 +62,8 @@ class FinalBattleScene: SKScene {
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard let location = touches.first?.location(in: self) else { return }
         
+        finalBattle2Engine.handleControls(in: location)
+        
         if finalBattle2Engine.safePanelFound(in: nodes(at: location)) {
             print("SAFE!")
         }
