@@ -235,6 +235,7 @@
 		EA95D2192964FFCF0061059C /* FirebaseFirestoreSwift in Frameworks */ = {isa = PBXBuildFile; productRef = EA95D2182964FFCF0061059C /* FirebaseFirestoreSwift */; };
 		EA9970722C0C494200BBAC96 /* CutsceneMagmoor.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA9970712C0C494200BBAC96 /* CutsceneMagmoor.swift */; };
 		EA999F6E2A59148800B422B2 /* SettingsTapButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA999F6D2A59148800B422B2 /* SettingsTapButton.swift */; };
+		EA9D4BB22D17498E00BB1F36 /* FinalBattle2Controls.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA9D4BB12D17498700BB1F36 /* FinalBattle2Controls.swift */; };
 		EA9D6A542B48E3B40004187B /* magicteleport.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA9D6A532B48E3B40004187B /* magicteleport.mp3 */; };
 		EA9D6A582B48E46F0004187B /* magicdoomloop.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA9D6A572B48E46F0004187B /* magicdoomloop.mp3 */; };
 		EA9D6A5A2B48E4B20004187B /* scarymusicbox.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA9D6A592B48E4B20004187B /* scarymusicbox.mp3 */; };
@@ -598,6 +599,7 @@
 		EA95D2132964FF350061059C /* SaveStateModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveStateModel.swift; sourceTree = "<group>"; };
 		EA9970712C0C494200BBAC96 /* CutsceneMagmoor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CutsceneMagmoor.swift; sourceTree = "<group>"; };
 		EA999F6D2A59148800B422B2 /* SettingsTapButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTapButton.swift; sourceTree = "<group>"; };
+		EA9D4BB12D17498700BB1F36 /* FinalBattle2Controls.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinalBattle2Controls.swift; sourceTree = "<group>"; };
 		EA9D6A532B48E3B40004187B /* magicteleport.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = magicteleport.mp3; sourceTree = "<group>"; };
 		EA9D6A572B48E46F0004187B /* magicdoomloop.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = magicdoomloop.mp3; sourceTree = "<group>"; };
 		EA9D6A592B48E4B20004187B /* scarymusicbox.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = scarymusicbox.mp3; sourceTree = "<group>"; };
@@ -1305,6 +1307,7 @@
 				EAFE35932CE44DA000289ADF /* EndingFakeScene.swift */,
 				EA1281B62CF24D42001CC5E8 /* FinalBattleScene.swift */,
 				EA2BA6592D0FF330007D9519 /* FinalBattle2Engine.swift */,
+				EA9D4BB12D17498700BB1F36 /* FinalBattle2Controls.swift */,
 			);
 			path = "Final Battle";
 			sourceTree = "<group>";
@@ -1686,6 +1689,7 @@
 				EAB2DE142AA1AB8F00172478 /* SpeechOverlaySprite.swift in Sources */,
 				EAA921D82C011362009E99E7 /* AuthorizationRequestScene.swift in Sources */,
 				EA49B06B2A1953C500E6B96D /* HowToPlayTVCell.swift in Sources */,
+				EA9D4BB22D17498E00BB1F36 /* FinalBattle2Controls.swift in Sources */,
 				EA95D1DF295674AE0061059C /* ChatEngine.swift in Sources */,
 				EA65184528E5750C00E535BF /* GameboardSprite.swift in Sources */,
 				EA78C36C29763B1C00292744 /* AchievementAdMobster.swift in Sources */,
