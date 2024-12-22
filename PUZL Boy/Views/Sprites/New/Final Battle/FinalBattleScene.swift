@@ -63,13 +63,6 @@ class FinalBattleScene: SKScene {
         guard let location = touches.first?.location(in: self) else { return }
         
         finalBattle2Engine.handleControls(in: location)
-        
-        if finalBattle2Engine.safePanelFound(in: nodes(at: location)) {
-            print("SAFE!")
-        }
-        else {
-            print("NOT safe!")
-        }
     }
     
     

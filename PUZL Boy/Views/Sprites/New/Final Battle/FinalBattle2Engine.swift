@@ -23,6 +23,7 @@ class FinalBattle2Engine {
     private var spawnPanels1: [K.GameboardPosition] = []
     private var spawnPanels2: [K.GameboardPosition] = []
     
+    private var superScene: SKScene?
     private(set) var gameboard: GameboardSprite!
     private(set) var hero: Player!
     private(set) var villain: Player!
@@ -76,8 +77,9 @@ class FinalBattle2Engine {
      - parameter superScene: The GameScene to add all the children to.
      */
     func moveSprites(to superScene: SKScene) {
-        superScene.addChild(gameboard.sprite)
+        self.superScene = superScene
         
+        superScene.addChild(gameboard.sprite)
         gameboard.sprite.addChild(hero.sprite)
         gameboard.sprite.addChild(villain.sprite)
     }
@@ -85,14 +87,31 @@ class FinalBattle2Engine {
     
     // MARK: - Functions
     
-    func safePanelFound(in nodes: [SKNode]) -> Bool {
-        let startTerrain = GameboardSprite.getNodeName(row: startPosition.row, col: startPosition.col)
-        
-        return nodes.contains(where: { $0.name == "safePanel" || $0.name == startTerrain })
-    }
-    
     func handleControls(in location: CGPoint) {
         controls.handleControls(in: location, playerPosition: &heroPosition)
+        
+        if safePanelFound(in: location) {
+            print("SAFE!")
+        }
+        else {
+            print("NOT safe!")
+        }
+    }
+    
+    /**
+     Checks if the location requested to move to is a valid one, i.e. a "safePanel" or the startPanel.
+     - parameter location: location of the request
+     - returns: true if requested panel is a valid one
+     */
+    private func safePanelFound(in location: CGPoint) -> Bool {
+        guard let superScene = superScene else {
+            print("superScene nil in FinalBattle2Engine.safePanelFound()")
+            return false
+        }
+        
+        let startPanel = GameboardSprite.getNodeName(row: startPosition.row, col: startPosition.col)
+        
+        return superScene.nodes(at: location).contains(where: { $0.name == "safePanel" || $0.name == startPanel })
     }
     
     ///Animates all the components
@@ -141,6 +160,12 @@ class FinalBattle2Engine {
     
     // TODO: - Make disappearing floors and harm hero if he steps in lava or ground beneath him disappears.
     private func animateSpawnPanels(spawnPanels: [K.GameboardPosition], with terrain: LevelType) {
+        func checkPanelCollisionWithHero(spawnPanel: K.GameboardPosition, message: String) {
+            guard spawnPanel == heroPosition else { return }
+            
+            print(message)
+        }
+        
         for (i, spawnPanel) in spawnPanels.enumerated() {
             guard let originalTerrain = gameboard.getPanelSprite(at: spawnPanel).terrain else { continue }
             
@@ -157,10 +182,15 @@ class FinalBattle2Engine {
             newTerrain.run(SKAction.sequence([
                 SKAction.wait(forDuration: waitDuration * TimeInterval(i)),
                 SKAction.fadeIn(withDuration: 0),
+                SKAction.run {
+                    checkPanelCollisionWithHero(spawnPanel: spawnPanel, message: "WHEW! You survived!")
+                },
                 SKAction.wait(forDuration: waitDuration * 3),
                 SKAction.fadeOut(withDuration: waitDuration),
                 SKAction.removeFromParent()
-            ]))
+            ])) {
+                checkPanelCollisionWithHero(spawnPanel: spawnPanel, message: "AAAAAAHHH You died!")
+            }
         }
     }
     

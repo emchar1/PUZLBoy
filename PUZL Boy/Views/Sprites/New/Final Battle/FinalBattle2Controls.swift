@@ -63,8 +63,6 @@ class FinalBattle2Controls {
         
         //Since argument is inout, remember to set the global variable, self.playerPosition to the playerPosition argument! Put this line last!!!
         playerPosition = self.playerPosition
-        
-        print("playerPosition: \(playerPosition), point: \(player.sprite.position)")
     }
     
     
