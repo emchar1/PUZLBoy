@@ -38,24 +38,27 @@ class FinalBattle2Controls {
     
     /**
      Handles player movement based on control input.
-     - parameter location: Location for which comparison is to occur
+     - parameters:
+        - location: Location for which comparison is to occur
+        - playerPosition: the player's position, which will be overridden becuase it's an inout parameter
+        - completion: handler to perform tasks upon completion
      */
-    func handleControls(in location: CGPoint, playerPosition: inout K.GameboardPosition) {
+    func handleControls(in location: CGPoint, playerPosition: inout K.GameboardPosition, completion: (() -> Void)?) {
         guard !isDisabled else { return }
         
         self.location = location
         
         if inBounds(.up) {
-            movePlayerHelper(.up)
+            movePlayerHelper(.up, completion: completion)
         }
         else if inBounds(.down) {
-            movePlayerHelper(.down)
+            movePlayerHelper(.down, completion: completion)
         }
         else if inBounds(.left) {
-            movePlayerHelper(.left)
+            movePlayerHelper(.left, completion: completion)
         }
         else if inBounds(.right) {
-            movePlayerHelper(.right)
+            movePlayerHelper(.right, completion: completion)
         }
         else {
             //handle default cases here...
@@ -121,9 +124,11 @@ class FinalBattle2Controls {
     
     /**
      Physically move the player in the intended direction.
-     - parameter direction: The direction the player would like to move to
+     - parameters:
+        - direction: The direction the player would like to move to
+        - completion: handler to perform functions upon animation completion
      */
-    private func movePlayerHelper(_ direction: Controls) {
+    private func movePlayerHelper(_ direction: Controls, completion: (() -> Void)?) {
         var nextPanel: K.GameboardPosition
         
         switch direction {
@@ -157,6 +162,7 @@ class FinalBattle2Controls {
             self?.isDisabled = false
             
             AudioManager.shared.stopSound(for: runSound, fadeDuration: 0.25)
+            completion?()
         }
     }
 }

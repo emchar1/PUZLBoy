@@ -23,6 +23,10 @@ class FinalBattle2Engine {
     private var spawnPanels1: [K.GameboardPosition] = []
     private var spawnPanels2: [K.GameboardPosition] = []
     
+    private var heroHealthTimer: Timer?
+    private var heroHealthBar: StatusBarSprite!
+    private var heroHealthCounter: Counter!
+    
     private var superScene: SKScene?
     private(set) var gameboard: GameboardSprite!
     private(set) var hero: Player!
@@ -56,13 +60,18 @@ class FinalBattle2Engine {
         hero.sprite.zPosition = K.ZPosition.player
         
         villain = Player(type: .villain)
-        villain.sprite.position = gameboard.getLocation(at: villainPosition) + CGPoint(x: 0, y: 50)
+        villain.sprite.position = gameboard.getLocation(at: villainPosition) + CGPoint(x: 0, y: 25)
         villain.sprite.setScale(playerScale * villain.scaleMultiplier)
         villain.sprite.xScale *= -1
-        villain.sprite.zPosition = K.ZPosition.player - 2
+        villain.sprite.zPosition = K.ZPosition.player + 2
         
         //Initialize after gameboard, hero and heroPosition!
         controls = FinalBattle2Controls(gameboard: gameboard, player: hero, playerPosition: heroPosition)
+        
+        heroHealthTimer = Timer()
+        heroHealthBar = StatusBarSprite(label: "Spirit", shouldHide: false)
+        heroHealthCounter = Counter(maxCount: 1, step: 0.01, shouldLoop: false)
+        heroHealthCounter.setCount(to: 1)
         
         populateSpawnPanels(spawnPanels: &spawnPanels0, startPosition: heroPosition, ignorePositions: ignorePositions, maxCount: maxCount)
         populateSpawnPanels(spawnPanels: &spawnPanels1, startPosition: heroPosition, ignorePositions: ignorePositions, maxCount: maxCount)
@@ -88,13 +97,15 @@ class FinalBattle2Engine {
     // MARK: - Functions
     
     func handleControls(in location: CGPoint) {
-        controls.handleControls(in: location, playerPosition: &heroPosition)
-        
-        if safePanelFound(in: location) {
-            print("SAFE!")
-        }
-        else {
-            print("NOT safe!")
+        controls.handleControls(in: location, playerPosition: &heroPosition) { [weak self] in 
+            guard let self = self else { return }
+            
+            if safePanelFound(in: location) {
+                stopHealthDepletion()
+            }
+            else {
+                depleteHealth()
+            }
         }
     }
     
@@ -122,6 +133,35 @@ class FinalBattle2Engine {
         animateSpawnPanels(spawnPanels: spawnPanels0, with: .start)
 //        animateSpawnPanels(spawnPanels: spawnPanels1, with: .start)
 //        animateSpawnPanels(spawnPanels: spawnPanels2, with: .start)
+    }
+    
+    
+    // MARK: - Health Bar Functions
+    
+    func depleteHealth() {
+        stopHealthDepletion()
+        
+        heroHealthTimer = Timer.scheduledTimer(timeInterval: 0.25,
+                                               target: self,
+                                               selector: #selector(depleteHealthHelper(_:)),
+                                               userInfo: nil,
+                                               repeats: true)
+        
+        hero.sprite.color = .red
+        hero.sprite.colorBlendFactor = 1
+    }
+    
+    @objc private func depleteHealthHelper(_ sender: Any) {
+        heroHealthCounter.decrement()
+        print("heroHealthCounter: \(Int(heroHealthCounter.getCount() * 100))")
+    }
+
+    func stopHealthDepletion() {
+        heroHealthTimer?.invalidate()
+        heroHealthTimer = nil
+        
+        hero.sprite.color = .clear
+        hero.sprite.colorBlendFactor = 0
     }
     
     
@@ -160,12 +200,6 @@ class FinalBattle2Engine {
     
     // TODO: - Make disappearing floors and harm hero if he steps in lava or ground beneath him disappears.
     private func animateSpawnPanels(spawnPanels: [K.GameboardPosition], with terrain: LevelType) {
-        func checkPanelCollisionWithHero(spawnPanel: K.GameboardPosition, message: String) {
-            guard spawnPanel == heroPosition else { return }
-            
-            print(message)
-        }
-        
         for (i, spawnPanel) in spawnPanels.enumerated() {
             guard let originalTerrain = gameboard.getPanelSprite(at: spawnPanel).terrain else { continue }
             
@@ -182,17 +216,39 @@ class FinalBattle2Engine {
             newTerrain.run(SKAction.sequence([
                 SKAction.wait(forDuration: waitDuration * TimeInterval(i)),
                 SKAction.fadeIn(withDuration: 0),
-                SKAction.run {
-                    checkPanelCollisionWithHero(spawnPanel: spawnPanel, message: "WHEW! You survived!")
+                SKAction.run { [weak self] in
+                    guard let self = self else { return }
+                    
+                    for node in gameboard.sprite.children {
+                        guard node.name == ParticleEngine.getFullNodeName(at: spawnPanel) else { continue }
+                        
+                        node.removeAction(forKey: "particleNodeFade")
+                        node.alpha = 0
+
+                        node.run(SKAction.sequence([
+                            SKAction.wait(forDuration: waitDuration * 3),
+                            SKAction.fadeIn(withDuration: waitDuration)
+                        ]), withKey: "particleNodeFade")
+                        
+                        break
+                    }
+                    
+                    if spawnPanel == heroPosition {
+                        stopHealthDepletion()
+                    }
                 },
                 SKAction.wait(forDuration: waitDuration * 3),
                 SKAction.fadeOut(withDuration: waitDuration),
                 SKAction.removeFromParent()
-            ])) {
-                checkPanelCollisionWithHero(spawnPanel: spawnPanel, message: "AAAAAAHHH You died!")
-            }
-        }
-    }
+            ])) { [weak self] in
+                guard let self = self else { return }
+                
+                if spawnPanel == heroPosition {
+                    depleteHealth()
+                }
+            } //end newTerrain.run
+        }//end for
+    }//end animateSpawnPanels()
     
     
 }
