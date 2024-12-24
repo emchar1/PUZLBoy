@@ -12,6 +12,7 @@ class StatusBarSprite: SKNode {
     // MARK: - Properties
     
     static let statusBarName = "StatusBarSprite"
+    static let defaultBarHeight: CGFloat = 44
     private let containerLineWidth: CGFloat = 6
     private let cornerRadius: CGFloat = 16
     private let barSize: CGSize
@@ -29,7 +30,7 @@ class StatusBarSprite: SKNode {
     
     // MARK: - Initialization
     
-    init(label: String, shouldHide: Bool, percentage: CGFloat = 1, position: CGPoint = .zero, size: CGSize = CGSize(width: K.ScreenDimensions.size.width / 2, height: 44)) {
+    init(label: String, shouldHide: Bool, percentage: CGFloat = 1, position: CGPoint = .zero, size: CGSize = CGSize(width: K.ScreenDimensions.size.width / 2, height: StatusBarSprite.defaultBarHeight)) {
         self.statusString = label
         self.backgroundPosition = position
         self.barSize = size

@@ -12,7 +12,6 @@ class FinalBattleScene: SKScene {
     // MARK: - Properties
     
     private var finalBattle2Engine: FinalBattle2Engine!
-    private var backgroundSprite: SKSpriteNode!
     
     
     // MARK: - Initialization
@@ -39,20 +38,12 @@ class FinalBattleScene: SKScene {
         backgroundColor = .black
         
         finalBattle2Engine = FinalBattle2Engine(size: self.size)
-        
-        backgroundSprite = SKSpriteNode(color: .clear, size: finalBattle2Engine.gameboard.sprite.size / finalBattle2Engine.gameboard.sprite.xScale)
-        backgroundSprite.position = finalBattle2Engine.gameboard.sprite.position
-        backgroundSprite.setScale(finalBattle2Engine.gameboard.sprite.xScale)
-        backgroundSprite.anchorPoint = .zero
-        backgroundSprite.alpha = 1
-        backgroundSprite.zPosition = finalBattle2Engine.gameboard.sprite.zPosition + K.ZPosition.overlay + 5
     }
     
     
     // MARK: - Functions
     
     override func didMove(to view: SKView) {
-        addChild(backgroundSprite)
         finalBattle2Engine.moveSprites(to: self)
     }
     

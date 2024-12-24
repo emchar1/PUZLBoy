@@ -22,16 +22,20 @@ class FinalBattle2Engine {
     private var spawnPanels0: [K.GameboardPosition] = []
     private var spawnPanels1: [K.GameboardPosition] = []
     private var spawnPanels2: [K.GameboardPosition] = []
+        
+    private var superScene: SKScene?
+    private var flashBackgroundSprite: SKSpriteNode!
+    private var gameboard: GameboardSprite!
+    private var hero: Player!
+    private var villain: Player!
+    private var controls: FinalBattle2Controls!
     
     private var heroHealthTimer: Timer?
     private var heroHealthBar: StatusBarSprite!
     private var heroHealthCounter: Counter!
-    
-    private var superScene: SKScene?
-    private(set) var gameboard: GameboardSprite!
-    private(set) var hero: Player!
-    private(set) var villain: Player!
-    private(set) var controls: FinalBattle2Controls!
+    enum HeroHealthType {
+        case drain, regen
+    }
     
     
     // MARK: - Initialization
@@ -54,6 +58,12 @@ class FinalBattle2Engine {
         //Make sure to initialize GameboardSprite BEFORE initializing these!!!
         let playerScale: CGFloat = Player.getGameboardScale(panelSize: size.width / CGFloat(gameboard.panelCount))
         
+        flashBackgroundSprite = SKSpriteNode(color: .white, size: gameboard.sprite.size)
+        flashBackgroundSprite.setScale(1 / gameboard.sprite.xScale)
+        flashBackgroundSprite.anchorPoint = .zero
+        flashBackgroundSprite.alpha = 0
+        flashBackgroundSprite.zPosition = K.ZPosition.bloodOverlay
+        
         hero = Player(type: .hero)
         hero.sprite.position = gameboard.getLocation(at: heroPosition)
         hero.sprite.setScale(playerScale * hero.scaleMultiplier)
@@ -69,7 +79,7 @@ class FinalBattle2Engine {
         controls = FinalBattle2Controls(gameboard: gameboard, player: hero, playerPosition: heroPosition)
         
         heroHealthTimer = Timer()
-        heroHealthBar = StatusBarSprite(label: "Spirit", shouldHide: false)
+        heroHealthBar = StatusBarSprite(label: "Courage", shouldHide: true, position: CGPoint(x: size.width / 2, y: K.ScreenDimensions.topOfGameboard + StatusBarSprite.defaultBarHeight + 16))
         heroHealthCounter = Counter(maxCount: 1, step: 0.01, shouldLoop: false)
         heroHealthCounter.setCount(to: 1)
         
@@ -89,8 +99,11 @@ class FinalBattle2Engine {
         self.superScene = superScene
         
         superScene.addChild(gameboard.sprite)
+        gameboard.sprite.addChild(flashBackgroundSprite)
         gameboard.sprite.addChild(hero.sprite)
         gameboard.sprite.addChild(villain.sprite)
+        
+        heroHealthBar.addToParent(superScene)
     }
     
     
@@ -100,12 +113,7 @@ class FinalBattle2Engine {
         controls.handleControls(in: location, playerPosition: &heroPosition) { [weak self] in 
             guard let self = self else { return }
             
-            if safePanelFound(in: location) {
-                stopHealthDepletion()
-            }
-            else {
-                depleteHealth()
-            }
+            updateHealth(type: safePanelFound(in: location) ? .regen : .drain)
         }
     }
     
@@ -130,38 +138,67 @@ class FinalBattle2Engine {
         hero.sprite.run(Player.animate(player: hero, type: .idle))
         villain.sprite.run(Player.animateIdleLevitate(player: villain))
         
+        heroHealthBar.showStatus()
+        
         animateSpawnPanels(spawnPanels: spawnPanels0, with: .start)
 //        animateSpawnPanels(spawnPanels: spawnPanels1, with: .start)
 //        animateSpawnPanels(spawnPanels: spawnPanels2, with: .start)
     }
     
+    func flashHeroAttacked(duration: TimeInterval = 0.5) {
+        flashBackgroundSprite.run(SKAction.sequence([
+            SKAction.fadeIn(withDuration: 0),
+            SKAction.fadeOut(withDuration: duration)
+        ]))
+    }
+    
     
     // MARK: - Health Bar Functions
     
-    func depleteHealth() {
-        stopHealthDepletion()
+    func updateHealth(type: HeroHealthType) {
+        let selector: Selector
         
-        heroHealthTimer = Timer.scheduledTimer(timeInterval: 0.25,
-                                               target: self,
-                                               selector: #selector(depleteHealthHelper(_:)),
-                                               userInfo: nil,
-                                               repeats: true)
-        
-        hero.sprite.color = .red
-        hero.sprite.colorBlendFactor = 1
+        switch type {
+        case .drain:
+            selector = #selector(updateHealthHelperDrain(_:))
+            
+            hero.sprite.color = .red
+            hero.sprite.colorBlendFactor = 1
+
+            AudioManager.shared.playSound(for: "boypain\(Int.random(in: 1...4))")
+        case .regen:
+            selector = #selector(updateHealthHelperRegen(_:))
+
+            hero.sprite.color = .clear
+            hero.sprite.colorBlendFactor = 0
+        }
+
+        heroHealthTimer?.invalidate()
+        heroHealthTimer = Timer.scheduledTimer(timeInterval: 0.25, target: self, selector: selector, userInfo: nil, repeats: true)
     }
     
-    @objc private func depleteHealthHelper(_ sender: Any) {
-        heroHealthCounter.decrement()
-        print("heroHealthCounter: \(Int(heroHealthCounter.getCount() * 100))")
-    }
-
-    func stopHealthDepletion() {
-        heroHealthTimer?.invalidate()
-        heroHealthTimer = nil
+    @objc private func updateHealthHelperDrain(_ sender: Any) {
+        var heroHealthDepletionRate: TimeInterval {
+            switch heroHealthCounter.getCount() {
+            case let num where num > 0.25:  0.02
+            default:                        0.01
+            }
+        }
         
-        hero.sprite.color = .clear
-        hero.sprite.colorBlendFactor = 0
+        heroHealthCounter.decrement(by: heroHealthDepletionRate)
+        heroHealthBar.animateAndUpdate(percentage: heroHealthCounter.getCount())
+    }
+    
+    @objc private func updateHealthHelperRegen(_ sender: Any) {
+        var heroHealthRegenerationRate: TimeInterval {
+            switch heroHealthCounter.getCount() {
+            case let num where num > 0.75:  0.005
+            default:                        0.01
+            }
+        }
+        
+        heroHealthCounter.increment(by: heroHealthRegenerationRate)
+        heroHealthBar.animateAndUpdate(percentage: heroHealthCounter.getCount())
     }
     
     
@@ -234,7 +271,7 @@ class FinalBattle2Engine {
                     }
                     
                     if spawnPanel == heroPosition {
-                        stopHealthDepletion()
+                        updateHealth(type: .regen)
                     }
                 },
                 SKAction.wait(forDuration: waitDuration * 3),
@@ -244,7 +281,7 @@ class FinalBattle2Engine {
                 guard let self = self else { return }
                 
                 if spawnPanel == heroPosition {
-                    depleteHealth()
+                    updateHealth(type: .drain)
                 }
             } //end newTerrain.run
         }//end for
