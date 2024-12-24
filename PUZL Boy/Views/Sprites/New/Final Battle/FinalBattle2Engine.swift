@@ -67,6 +67,8 @@ class FinalBattle2Engine {
         hero = Player(type: .hero)
         hero.sprite.position = gameboard.getLocation(at: heroPosition)
         hero.sprite.setScale(playerScale * hero.scaleMultiplier)
+        hero.sprite.color = FireIceTheme.isFire ? .red : .blue
+        hero.sprite.colorBlendFactor = 0
         hero.sprite.zPosition = K.ZPosition.player
         
         villain = Player(type: .villain)
@@ -79,7 +81,7 @@ class FinalBattle2Engine {
         controls = FinalBattle2Controls(gameboard: gameboard, player: hero, playerPosition: heroPosition)
         
         heroHealthTimer = Timer()
-        heroHealthBar = StatusBarSprite(label: "Courage", shouldHide: true, position: CGPoint(x: size.width / 2, y: K.ScreenDimensions.topOfGameboard + StatusBarSprite.defaultBarHeight + 16))
+        heroHealthBar = StatusBarSprite(label: "Determination", shouldHide: true, position: CGPoint(x: size.width / 2, y: K.ScreenDimensions.topOfGameboard + StatusBarSprite.defaultBarHeight + 16))
         heroHealthCounter = Counter(maxCount: 1, step: 0.01, shouldLoop: false)
         heroHealthCounter.setCount(to: 1)
         
@@ -140,7 +142,7 @@ class FinalBattle2Engine {
         
         heroHealthBar.showStatus()
         
-        animateSpawnPanels(spawnPanels: spawnPanels0, with: .start)
+        animateSpawnPanels(spawnPanels: spawnPanels0, with: FireIceTheme.isFire ? .sand : .snow)
 //        animateSpawnPanels(spawnPanels: spawnPanels1, with: .start)
 //        animateSpawnPanels(spawnPanels: spawnPanels2, with: .start)
     }
@@ -158,19 +160,26 @@ class FinalBattle2Engine {
     func updateHealth(type: HeroHealthType) {
         let selector: Selector
         
+        if hero.sprite.action(forKey: "heroBlink") != nil {
+            hero.sprite.colorBlendFactor = 1
+        }
+        
+        hero.sprite.removeAction(forKey: "heroBlink")
+        hero.sprite.run(SKAction.colorize(withColorBlendFactor: 0, duration: 0.5), withKey: "heroColorFade")
+
         switch type {
         case .drain:
             selector = #selector(updateHealthHelperDrain(_:))
             
-            hero.sprite.color = .red
-            hero.sprite.colorBlendFactor = 1
+            hero.sprite.removeAction(forKey: "heroColorFade")
+            hero.sprite.run(SKAction.repeatForever(SKAction.sequence([
+                SKAction.colorize(withColorBlendFactor: 0, duration: 0.05),
+                SKAction.colorize(withColorBlendFactor: 1, duration: 0.05)
+            ])), withKey: "heroBlink")
 
             AudioManager.shared.playSound(for: "boypain\(Int.random(in: 1...4))")
         case .regen:
             selector = #selector(updateHealthHelperRegen(_:))
-
-            hero.sprite.color = .clear
-            hero.sprite.colorBlendFactor = 0
         }
 
         heroHealthTimer?.invalidate()
@@ -242,6 +251,22 @@ class FinalBattle2Engine {
             
             let waitDuration: TimeInterval = 1
             let newTerrain = SKSpriteNode(imageNamed: terrain.description)
+            let dissolveTerrain = FireIceTheme.isFire ? SKAction.sequence([
+                SKAction.moveBy(x: 5, y: 0, duration: waitDuration / 10),
+                SKAction.group([
+                    SKAction.repeat(SKAction.sequence([
+                        SKAction.moveBy(x: -10, y: 0, duration: waitDuration / 10),
+                        SKAction.moveBy(x: 10, y: 0, duration: waitDuration / 10)
+                    ]), count: 5),
+                    SKAction.fadeOut(withDuration: waitDuration)
+                ])
+            ]) : SKAction.sequence([
+                SKAction.repeat(SKAction.sequence([
+                    SKAction.fadeAlpha(to: 0, duration: waitDuration / 12),
+                    SKAction.fadeAlpha(to: 1, duration: waitDuration / 12)
+                ]), count: 6),
+                SKAction.fadeOut(withDuration: waitDuration / 10)
+            ])
             
             newTerrain.anchorPoint = .zero
             newTerrain.alpha = 0
@@ -252,30 +277,46 @@ class FinalBattle2Engine {
             
             newTerrain.run(SKAction.sequence([
                 SKAction.wait(forDuration: waitDuration * TimeInterval(i)),
-                SKAction.fadeIn(withDuration: 0),
                 SKAction.run { [weak self] in
                     guard let self = self else { return }
                     
-                    for node in gameboard.sprite.children {
-                        guard node.name == ParticleEngine.getFullNodeName(at: spawnPanel) else { continue }
+                    if FireIceTheme.isFire {
+                        for node in gameboard.sprite.children {
+                            guard node.name == ParticleEngine.getFullNodeName(at: spawnPanel) else { continue }
+                            
+                            node.removeAction(forKey: "particleNodeFade")
+                            node.alpha = 0
+                            
+                            node.run(SKAction.sequence([
+                                SKAction.wait(forDuration: waitDuration * 3),
+                                SKAction.fadeIn(withDuration: waitDuration)
+                            ]), withKey: "particleNodeFade")
+                            
+                            break
+                        }
+                    }
+                    else {
+                        ParticleEngine.shared.animateParticles(type: .snowfall,
+                                                               toNode: gameboard.sprite,
+                                                               position: gameboard.getLocation(at: spawnPanel),
+                                                               scale: 3 / CGFloat(gameboard.panelCount),
+                                                               nameGameboardPosition: spawnPanel,
+                                                               duration: 0)
                         
-                        node.removeAction(forKey: "particleNodeFade")
-                        node.alpha = 0
-
-                        node.run(SKAction.sequence([
-                            SKAction.wait(forDuration: waitDuration * 3),
-                            SKAction.fadeIn(withDuration: waitDuration)
-                        ]), withKey: "particleNodeFade")
-                        
-                        break
+                        DispatchQueue.main.asyncAfter(deadline: .now() + waitDuration * 3) {
+                            ParticleEngine.shared.removeParticles(fromNode: self.gameboard.sprite,
+                                                                  nameGameboardPosition: spawnPanel,
+                                                                  fadeDuration: waitDuration)
+                        }
                     }
                     
                     if spawnPanel == heroPosition {
                         updateHealth(type: .regen)
                     }
                 },
-                SKAction.wait(forDuration: waitDuration * 3),
-                SKAction.fadeOut(withDuration: waitDuration),
+                SKAction.fadeIn(withDuration: 0.25),
+                SKAction.wait(forDuration: waitDuration * 2.75),
+                dissolveTerrain,
                 SKAction.removeFromParent()
             ])) { [weak self] in
                 guard let self = self else { return }
