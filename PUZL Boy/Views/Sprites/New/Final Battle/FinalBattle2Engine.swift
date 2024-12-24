@@ -31,10 +31,11 @@ class FinalBattle2Engine {
     private var controls: FinalBattle2Controls!
     
     private var heroHealthTimer: Timer?
+    private var heroHealthDrainTimer: Timer?            //a separate timer is needed for the drain health function
     private var heroHealthBar: StatusBarSprite!
     private var heroHealthCounter: Counter!
     enum HeroHealthType {
-        case drain, regen
+        case drain, regen, lavaHit
     }
     
     
@@ -81,6 +82,7 @@ class FinalBattle2Engine {
         controls = FinalBattle2Controls(gameboard: gameboard, player: hero, playerPosition: heroPosition)
         
         heroHealthTimer = Timer()
+        heroHealthDrainTimer = Timer()
         heroHealthBar = StatusBarSprite(label: "Determination", shouldHide: true, position: CGPoint(x: size.width / 2, y: K.ScreenDimensions.topOfGameboard + StatusBarSprite.defaultBarHeight + 16))
         heroHealthCounter = Counter(maxCount: 1, step: 0.01, shouldLoop: false)
         heroHealthCounter.setCount(to: 1)
@@ -115,7 +117,13 @@ class FinalBattle2Engine {
         controls.handleControls(in: location, playerPosition: &heroPosition) { [weak self] in 
             guard let self = self else { return }
             
-            updateHealth(type: safePanelFound(in: location) ? .regen : .drain)
+            if safePanelFound(in: location) {
+                updateHealth(type: .regen)
+            }
+            else {
+                updateHealth(type: .lavaHit)
+                updateHealth(type: .drain)
+            }
         }
     }
     
@@ -142,9 +150,11 @@ class FinalBattle2Engine {
         
         heroHealthBar.showStatus()
         
-        animateSpawnPanels(spawnPanels: spawnPanels0, with: FireIceTheme.isFire ? .sand : .snow)
-//        animateSpawnPanels(spawnPanels: spawnPanels1, with: .start)
-//        animateSpawnPanels(spawnPanels: spawnPanels2, with: .start)
+        let terrainPanel: LevelType = FireIceTheme.isFire ? .sand : .snow
+        
+        animateSpawnPanels(spawnPanels: spawnPanels0, with: terrainPanel)
+        animateSpawnPanels(spawnPanels: spawnPanels1, with: terrainPanel)
+        animateSpawnPanels(spawnPanels: spawnPanels2, with: terrainPanel)
     }
     
     func flashHeroAttacked(duration: TimeInterval = 0.5) {
@@ -158,8 +168,6 @@ class FinalBattle2Engine {
     // MARK: - Health Bar Functions
     
     func updateHealth(type: HeroHealthType) {
-        let selector: Selector
-        
         if hero.sprite.action(forKey: "heroBlink") != nil {
             hero.sprite.colorBlendFactor = 1
         }
@@ -169,28 +177,41 @@ class FinalBattle2Engine {
 
         switch type {
         case .drain:
-            selector = #selector(updateHealthHelperDrain(_:))
+            heroHealthDrainTimer?.invalidate()
+            heroHealthDrainTimer = Timer.scheduledTimer(timeInterval: 0.25,
+                                                        target: self,
+                                                        selector: #selector(updateHealthHelperDrain(_:)),
+                                                        userInfo: nil,
+                                                        repeats: true)
             
             hero.sprite.removeAction(forKey: "heroColorFade")
             hero.sprite.run(SKAction.repeatForever(SKAction.sequence([
                 SKAction.colorize(withColorBlendFactor: 0, duration: 0.05),
                 SKAction.colorize(withColorBlendFactor: 1, duration: 0.05)
             ])), withKey: "heroBlink")
-
+            
             AudioManager.shared.playSound(for: "boypain\(Int.random(in: 1...4))")
         case .regen:
-            selector = #selector(updateHealthHelperRegen(_:))
+            heroHealthDrainTimer?.invalidate()
+            heroHealthDrainTimer = Timer.scheduledTimer(timeInterval: 0.25,
+                                                        target: self,
+                                                        selector: #selector(updateHealthHelperRegen(_:)),
+                                                        userInfo: nil,
+                                                        repeats: true)
+        case .lavaHit:
+            heroHealthTimer = Timer.scheduledTimer(timeInterval: 0,
+                                                   target: self,
+                                                   selector: #selector(updateHealthHelperLavaHit(_:)),
+                                                   userInfo: nil,
+                                                   repeats: false)
         }
-
-        heroHealthTimer?.invalidate()
-        heroHealthTimer = Timer.scheduledTimer(timeInterval: 0.25, target: self, selector: selector, userInfo: nil, repeats: true)
     }
     
     @objc private func updateHealthHelperDrain(_ sender: Any) {
         var heroHealthDepletionRate: TimeInterval {
             switch heroHealthCounter.getCount() {
-            case let num where num > 0.25:  0.02
-            default:                        0.01
+            case let num where num > 0.5:   0.01
+            default:                        0.005
             }
         }
         
@@ -207,6 +228,18 @@ class FinalBattle2Engine {
         }
         
         heroHealthCounter.increment(by: heroHealthRegenerationRate)
+        heroHealthBar.animateAndUpdate(percentage: heroHealthCounter.getCount())
+    }
+    
+    @objc private func updateHealthHelperLavaHit(_ sender: Any) {
+        var heroHealthLavaHit: TimeInterval {
+            switch heroHealthCounter.getCount() {
+            case let num where num > 0.5:   0.1
+            default:                        0.05
+            }
+        }
+
+        heroHealthCounter.decrement(by: heroHealthLavaHit)
         heroHealthBar.animateAndUpdate(percentage: heroHealthCounter.getCount())
     }
     
@@ -249,23 +282,24 @@ class FinalBattle2Engine {
         for (i, spawnPanel) in spawnPanels.enumerated() {
             guard let originalTerrain = gameboard.getPanelSprite(at: spawnPanel).terrain else { continue }
             
-            let waitDuration: TimeInterval = 1
+            let waitDuration: TimeInterval = 0.8
+            
             let newTerrain = SKSpriteNode(imageNamed: terrain.description)
             let dissolveTerrain = FireIceTheme.isFire ? SKAction.sequence([
-                SKAction.moveBy(x: 5, y: 0, duration: waitDuration / 10),
+                SKAction.moveBy(x: 5, y: 0, duration: 0.1),
                 SKAction.group([
                     SKAction.repeat(SKAction.sequence([
-                        SKAction.moveBy(x: -10, y: 0, duration: waitDuration / 10),
-                        SKAction.moveBy(x: 10, y: 0, duration: waitDuration / 10)
-                    ]), count: 5),
+                        SKAction.moveBy(x: -10, y: 0, duration: 0.1),
+                        SKAction.moveBy(x: 10, y: 0, duration: 0.1)
+                    ]), count: Int(waitDuration / (2 * 0.1))),
                     SKAction.fadeOut(withDuration: waitDuration)
                 ])
             ]) : SKAction.sequence([
                 SKAction.repeat(SKAction.sequence([
-                    SKAction.fadeAlpha(to: 0, duration: waitDuration / 12),
-                    SKAction.fadeAlpha(to: 1, duration: waitDuration / 12)
-                ]), count: 6),
-                SKAction.fadeOut(withDuration: waitDuration / 10)
+                    SKAction.fadeAlpha(to: 0, duration: 0.08),
+                    SKAction.fadeAlpha(to: 1, duration: 0.08)
+                ]), count: Int(waitDuration / (2 * 0.08))),
+                SKAction.fadeOut(withDuration: 0.1)
             ])
             
             newTerrain.anchorPoint = .zero
