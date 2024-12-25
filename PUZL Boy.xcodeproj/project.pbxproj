@@ -24,7 +24,6 @@
 		EA1281A92CF15EB9001CC5E8 /* magmoorcreepystrings.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA1281A82CF15EB9001CC5E8 /* magmoorcreepystrings.mp3 */; };
 		EA1281AB2CF15F16001CC5E8 /* magmoorcreepypulse.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA1281AA2CF15F16001CC5E8 /* magmoorcreepypulse.mp3 */; };
 		EA1281AD2CF15F65001CC5E8 /* bossbattle0.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA1281AC2CF15F65001CC5E8 /* bossbattle0.mp3 */; };
-		EA1281AF2CF15FF0001CC5E8 /* bossbattle3.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA1281AE2CF15FF0001CC5E8 /* bossbattle3.mp3 */; };
 		EA1281B22CF18E9D001CC5E8 /* bossbattle2.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA1281B12CF18E9D001CC5E8 /* bossbattle2.mp3 */; };
 		EA1281B32CF18E9D001CC5E8 /* bossbattle1.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA1281B02CF18E9D001CC5E8 /* bossbattle1.mp3 */; };
 		EA1281B72CF24D42001CC5E8 /* FinalBattleScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA1281B62CF24D42001CC5E8 /* FinalBattleScene.swift */; };
@@ -57,6 +56,7 @@
 		EA36F9FB2C5ACCAB0031DB9A /* ChatItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA36F9FA2C5ACCAB0031DB9A /* ChatItem.swift */; };
 		EA36F9FD2C5ACEFE0031DB9A /* StatueDialogue.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA36F9FC2C5ACEFE0031DB9A /* StatueDialogue.swift */; };
 		EA37CEFF2D1BF8D000275A15 /* FinalBattle2Health.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA37CEFE2D1BF8C700275A15 /* FinalBattle2Health.swift */; };
+		EA37CF052D1CA2FB00275A15 /* bossbattle3.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA37CF042D1CA2FB00275A15 /* bossbattle3.mp3 */; };
 		EA3951ED2938165A00D0B14A /* Extension+UIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA3951EC2938165A00D0B14A /* Extension+UIImage.swift */; };
 		EA3951F12939DE5900D0B14A /* ScoringEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA3951F02939DE5900D0B14A /* ScoringEngine.swift */; };
 		EA41F8352A0C7D8000DF47EC /* HowToPlayPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA41F8342A0C7D8000DF47EC /* HowToPlayPage.swift */; };
@@ -394,7 +394,6 @@
 		EA1281A82CF15EB9001CC5E8 /* magmoorcreepystrings.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = magmoorcreepystrings.mp3; sourceTree = "<group>"; };
 		EA1281AA2CF15F16001CC5E8 /* magmoorcreepypulse.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = magmoorcreepypulse.mp3; sourceTree = "<group>"; };
 		EA1281AC2CF15F65001CC5E8 /* bossbattle0.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = bossbattle0.mp3; sourceTree = "<group>"; };
-		EA1281AE2CF15FF0001CC5E8 /* bossbattle3.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = bossbattle3.mp3; sourceTree = "<group>"; };
 		EA1281B02CF18E9D001CC5E8 /* bossbattle1.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = bossbattle1.mp3; sourceTree = "<group>"; };
 		EA1281B12CF18E9D001CC5E8 /* bossbattle2.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = bossbattle2.mp3; sourceTree = "<group>"; };
 		EA1281B62CF24D42001CC5E8 /* FinalBattleScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinalBattleScene.swift; sourceTree = "<group>"; };
@@ -427,6 +426,7 @@
 		EA36F9FA2C5ACCAB0031DB9A /* ChatItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatItem.swift; sourceTree = "<group>"; };
 		EA36F9FC2C5ACEFE0031DB9A /* StatueDialogue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatueDialogue.swift; sourceTree = "<group>"; };
 		EA37CEFE2D1BF8C700275A15 /* FinalBattle2Health.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinalBattle2Health.swift; sourceTree = "<group>"; };
+		EA37CF042D1CA2FB00275A15 /* bossbattle3.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = bossbattle3.mp3; sourceTree = "<group>"; };
 		EA3951EC2938165A00D0B14A /* Extension+UIImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+UIImage.swift"; sourceTree = "<group>"; };
 		EA3951F02939DE5900D0B14A /* ScoringEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoringEngine.swift; sourceTree = "<group>"; };
 		EA41F8342A0C7D8000DF47EC /* HowToPlayPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HowToPlayPage.swift; sourceTree = "<group>"; };
@@ -1042,7 +1042,7 @@
 				EA1281AC2CF15F65001CC5E8 /* bossbattle0.mp3 */,
 				EA1281B02CF18E9D001CC5E8 /* bossbattle1.mp3 */,
 				EA1281B12CF18E9D001CC5E8 /* bossbattle2.mp3 */,
-				EA1281AE2CF15FF0001CC5E8 /* bossbattle3.mp3 */,
+				EA37CF042D1CA2FB00275A15 /* bossbattle3.mp3 */,
 				EAEF2EF92B4F5B2D00AD8459 /* bouldersmash.mp3 */,
 				EA95D196294690B70061059C /* boyattack1.mp3 */,
 				EA95D198294690B70061059C /* boyattack2.mp3 */,
@@ -1533,6 +1533,7 @@
 				EAF7182129B3097300E2ED82 /* lavasizzle.mp3 in Resources */,
 				EA0F145D292994330013038E /* moverun1.mp3 in Resources */,
 				EA8C60692C068E0800DED3C7 /* marlinblast.mp3 in Resources */,
+				EA37CF052D1CA2FB00275A15 /* bossbattle3.mp3 in Resources */,
 				EA9D6A602B48E73D0004187B /* littlegirllaugh.mp3 in Resources */,
 				EA4583552A4431B000279056 /* partyslow.mp3 in Resources */,
 				EA95B3092A8C9DA300C5F028 /* speechbubble.mp3 in Resources */,
@@ -1608,7 +1609,6 @@
 				EA3467A729A8C68A002DDA02 /* pickupheart.mp3 in Resources */,
 				EAEF2EFA2B4F5B2D00AD8459 /* bouldersmash.mp3 in Resources */,
 				EAD19A042A9698B700A07A63 /* PartyGemParticles.sks in Resources */,
-				EA1281AF2CF15FF0001CC5E8 /* bossbattle3.mp3 in Resources */,
 				EA0F146F2929D9C00013038E /* moverun4.mp3 in Resources */,
 				EA2F44112C45810E00B62CC3 /* MagicElderStarsParticles.sks in Resources */,
 				EA8C607B2C07CB1D00DED3C7 /* lightson.mp3 in Resources */,
