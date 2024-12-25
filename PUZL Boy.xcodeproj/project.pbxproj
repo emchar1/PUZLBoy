@@ -56,6 +56,7 @@
 		EA36F9F82C52B6730031DB9A /* CutsceneFlashback.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA36F9F72C52B6730031DB9A /* CutsceneFlashback.swift */; };
 		EA36F9FB2C5ACCAB0031DB9A /* ChatItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA36F9FA2C5ACCAB0031DB9A /* ChatItem.swift */; };
 		EA36F9FD2C5ACEFE0031DB9A /* StatueDialogue.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA36F9FC2C5ACEFE0031DB9A /* StatueDialogue.swift */; };
+		EA37CEFF2D1BF8D000275A15 /* FinalBattle2Health.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA37CEFE2D1BF8C700275A15 /* FinalBattle2Health.swift */; };
 		EA3951ED2938165A00D0B14A /* Extension+UIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA3951EC2938165A00D0B14A /* Extension+UIImage.swift */; };
 		EA3951F12939DE5900D0B14A /* ScoringEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA3951F02939DE5900D0B14A /* ScoringEngine.swift */; };
 		EA41F8352A0C7D8000DF47EC /* HowToPlayPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA41F8342A0C7D8000DF47EC /* HowToPlayPage.swift */; };
@@ -425,6 +426,7 @@
 		EA36F9F72C52B6730031DB9A /* CutsceneFlashback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CutsceneFlashback.swift; sourceTree = "<group>"; };
 		EA36F9FA2C5ACCAB0031DB9A /* ChatItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatItem.swift; sourceTree = "<group>"; };
 		EA36F9FC2C5ACEFE0031DB9A /* StatueDialogue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatueDialogue.swift; sourceTree = "<group>"; };
+		EA37CEFE2D1BF8C700275A15 /* FinalBattle2Health.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinalBattle2Health.swift; sourceTree = "<group>"; };
 		EA3951EC2938165A00D0B14A /* Extension+UIImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+UIImage.swift"; sourceTree = "<group>"; };
 		EA3951F02939DE5900D0B14A /* ScoringEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoringEngine.swift; sourceTree = "<group>"; };
 		EA41F8342A0C7D8000DF47EC /* HowToPlayPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HowToPlayPage.swift; sourceTree = "<group>"; };
@@ -1308,6 +1310,7 @@
 				EA1281B62CF24D42001CC5E8 /* FinalBattleScene.swift */,
 				EA2BA6592D0FF330007D9519 /* FinalBattle2Engine.swift */,
 				EA9D4BB12D17498700BB1F36 /* FinalBattle2Controls.swift */,
+				EA37CEFE2D1BF8C700275A15 /* FinalBattle2Health.swift */,
 			);
 			path = "Final Battle";
 			sourceTree = "<group>";
@@ -1747,6 +1750,7 @@
 				EA95D1BD2952F14C0061059C /* AchievementBoulderBreaker.swift in Sources */,
 				EA95D204295F86B30061059C /* AchievementScavenger.swift in Sources */,
 				EA36F9FD2C5ACEFE0031DB9A /* StatueDialogue.swift in Sources */,
+				EA37CEFF2D1BF8D000275A15 /* FinalBattle2Health.swift in Sources */,
 				EA95D1B2294FBF2A0061059C /* Extension+Notification.Name.swift in Sources */,
 				EA75F0EF292F55F900F09BD7 /* LaunchScene.swift in Sources */,
 				EA94E86729BE6BCC009F2614 /* PauseResetEngine.swift in Sources */,
