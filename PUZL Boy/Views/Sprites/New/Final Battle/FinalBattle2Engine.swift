@@ -189,29 +189,37 @@ class FinalBattle2Engine {
     
     // TODO: - Make disappearing floors and harm hero if he steps in lava or ground beneath him disappears.
     private func animateSpawnPanels(spawnPanels: [K.GameboardPosition], with terrain: LevelType) {
+        let waitDuration: TimeInterval = 0.8
+        
+        func dissolveTerrainAction(pulseDuration: TimeInterval) -> SKAction {
+            let offsetDuration: TimeInterval = 0.1
+            
+            let sandAction = SKAction.sequence([
+                SKAction.moveBy(x: 5, y: 0, duration: offsetDuration),
+                SKAction.group([
+                    SKAction.repeat(SKAction.sequence([
+                        SKAction.moveBy(x: -10, y: 0, duration: pulseDuration),
+                        SKAction.moveBy(x: 10, y: 0, duration: pulseDuration)
+                    ]), count: Int(waitDuration / (2 * pulseDuration))),
+                    SKAction.fadeOut(withDuration: waitDuration)
+                ])
+            ])
+            
+            let snowAction = SKAction.sequence([
+                SKAction.repeat(SKAction.sequence([
+                    SKAction.fadeAlpha(to: 0.6, duration: pulseDuration),
+                    SKAction.fadeAlpha(to: 0.8, duration: pulseDuration)
+                ]), count: Int(waitDuration / (2 * pulseDuration))),
+                SKAction.fadeOut(withDuration: offsetDuration)
+            ])
+            
+            return FireIceTheme.isFire ? sandAction : snowAction
+        }
+        
         for (i, spawnPanel) in spawnPanels.enumerated() {
             guard let originalTerrain = gameboard.getPanelSprite(at: spawnPanel).terrain else { continue }
             
-            let waitDuration: TimeInterval = 0.8
-            
             let newTerrain = SKSpriteNode(imageNamed: terrain.description)
-            let dissolveTerrain = FireIceTheme.isFire ? SKAction.sequence([
-                SKAction.moveBy(x: 5, y: 0, duration: 0.1),
-                SKAction.group([
-                    SKAction.repeat(SKAction.sequence([
-                        SKAction.moveBy(x: -10, y: 0, duration: 0.1),
-                        SKAction.moveBy(x: 10, y: 0, duration: 0.1)
-                    ]), count: Int(waitDuration / (2 * 0.1))),
-                    SKAction.fadeOut(withDuration: waitDuration)
-                ])
-            ]) : SKAction.sequence([
-                SKAction.repeat(SKAction.sequence([
-                    SKAction.fadeAlpha(to: 0, duration: 0.08),
-                    SKAction.fadeAlpha(to: 1, duration: 0.08)
-                ]), count: Int(waitDuration / (2 * 0.08))),
-                SKAction.fadeOut(withDuration: 0.1)
-            ])
-            
             newTerrain.anchorPoint = .zero
             newTerrain.alpha = 0
             newTerrain.zPosition = 1
@@ -260,7 +268,7 @@ class FinalBattle2Engine {
                 },
                 SKAction.fadeIn(withDuration: 0.25),
                 SKAction.wait(forDuration: waitDuration * 2.75),
-                dissolveTerrain,
+                dissolveTerrainAction(pulseDuration: 0.1),
                 SKAction.removeFromParent()
             ])) { [weak self] in
                 guard let self = self else { return }
