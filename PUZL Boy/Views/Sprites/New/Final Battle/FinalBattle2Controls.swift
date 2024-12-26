@@ -7,6 +7,10 @@
 
 import SpriteKit
 
+protocol FinalBattle2ControlsDelegate: AnyObject {
+    func didHeroAttack()
+}
+
 class FinalBattle2Controls {
     
     // MARK: - Properties
@@ -19,7 +23,11 @@ class FinalBattle2Controls {
     //These get set every time in handleControls()
     private var location: CGPoint!
     private var villainPosition: K.GameboardPosition!
+    
     private var isDisabled: Bool
+    private var canAttack: Bool
+    
+    weak var delegate: FinalBattle2ControlsDelegate?
     
     
     // MARK: - Initialization
@@ -30,6 +38,7 @@ class FinalBattle2Controls {
         self.playerPosition = playerPosition
         
         self.isDisabled = false
+        self.canAttack = true
         
         chosenSword = ChosenSword(didPursueMagmoor: FIRManager.didPursueMagmoor,
                                   didGiveAwayFeather: FIRManager.didGiveAwayFeather,
@@ -50,6 +59,7 @@ class FinalBattle2Controls {
      - parameters:
         - location: Location for which comparison is to occur
         - playerPosition: the player's position, which will be overridden becuase it's an inout parameter
+        - villainPosition: the villain's position for comparison for attacking
         - completion: handler to perform tasks upon completion
      */
     func handleControls(in location: CGPoint, playerPosition: inout K.GameboardPosition, villainPosition: K.GameboardPosition, completion: (() -> Void)?) {
@@ -76,6 +86,14 @@ class FinalBattle2Controls {
         
         //Since argument is inout, remember to set the global variable, self.playerPosition to the playerPosition argument! Put this line last!!!
         playerPosition = self.playerPosition
+    }
+    
+    /**
+     Sets the canAttack property from the outside, i.e. if health is draining, prevent ability to attack.
+     - parameter canAttack: true if can attack
+     */
+    func setCanAttack(_ canAttack: Bool) {
+        self.canAttack = canAttack
     }
     
     
@@ -153,13 +171,17 @@ class FinalBattle2Controls {
         
         guard nextPanel == villainPosition else { return false }
         
-        isDisabled = true
-        
-        gameboard.sprite.addChild(chosenSword.spriteNode)
-        
-        chosenSword.spriteNode.position = gameboard.getLocation(at: villainPosition)
-        chosenSword.attack { [weak self] in
-            self?.isDisabled = false
+        if canAttack {
+            isDisabled = true
+            
+            gameboard.sprite.addChild(chosenSword.spriteNode)
+            
+            chosenSword.spriteNode.position = gameboard.getLocation(at: villainPosition)
+            chosenSword.attack { [weak self] in
+                self?.isDisabled = false
+            }
+            
+            delegate?.didHeroAttack()
         }
                 
         return true

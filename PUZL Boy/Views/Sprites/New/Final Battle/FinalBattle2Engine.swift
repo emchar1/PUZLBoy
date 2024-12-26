@@ -74,7 +74,10 @@ class FinalBattle2Engine {
         
         //Initialize after gameboard, hero and heroPosition!
         controls = FinalBattle2Controls(gameboard: gameboard, player: hero, playerPosition: heroPosition)
+        controls.delegate = self
+        
         health = FinalBattle2Health(position: CGPoint(x: size.width / 2, y: K.ScreenDimensions.topOfGameboard))
+        health.delegate = self
         
         populateSpawnPanels(spawnPanels: &spawnPanels0, startPosition: heroPosition, ignorePositions: ignorePositions, maxCount: maxCount)
         populateSpawnPanels(spawnPanels: &spawnPanels1, startPosition: heroPosition, ignorePositions: ignorePositions, maxCount: maxCount)
@@ -281,4 +284,26 @@ class FinalBattle2Engine {
     }//end animateSpawnPanels()
     
     
+}
+
+
+// MARK: - FinalBattle2ControlsDelegate
+
+extension FinalBattle2Engine: FinalBattle2ControlsDelegate {
+    func didHeroAttack() {
+        health.updateHealth(type: .heroAttack, player: hero)
+    }
+}
+
+
+// MARK: - FinalBattle2HealthDelegate
+
+extension FinalBattle2Engine: FinalBattle2HealthDelegate {
+    func didDrainHealth() {
+        controls.setCanAttack(false)
+    }
+    
+    func didRegenHealth() {
+        controls.setCanAttack(true)
+    }
 }

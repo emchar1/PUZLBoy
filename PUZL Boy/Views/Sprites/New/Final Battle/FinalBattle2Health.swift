@@ -7,6 +7,11 @@
 
 import SpriteKit
 
+protocol FinalBattle2HealthDelegate: AnyObject {
+    func didDrainHealth()
+    func didRegenHealth()
+}
+
 class FinalBattle2Health {
     
     // MARK: - Properties
@@ -18,8 +23,10 @@ class FinalBattle2Health {
     private var bar: StatusBarSprite!
     
     enum HealthType {
-        case drain, regen, lavaHit, enemyAttack, heroAttack
+        case drain, regen, lavaHit, villainAttack, heroAttack
     }
+    
+    weak var delegate: FinalBattle2HealthDelegate?
     
     
     // MARK: - Initialization
@@ -60,7 +67,9 @@ class FinalBattle2Health {
         switch type {
         case .drain:
             drainTimer?.invalidate()
-            drainTimer = Timer.scheduledTimer(timeInterval: 0.25, target: self, selector: #selector(helperDrain(_:)), userInfo: nil, repeats: true)
+            drainTimer = Timer.scheduledTimer(timeInterval: 0.25, target: self, selector: #selector(helperDrain), userInfo: nil, repeats: true)
+            
+            delegate?.didDrainHealth()
             
             // FIXME: - Does the hit animation on the player belong here, or should it go in the Engine?
             player.sprite.removeAction(forKey: "playerColorFade")
@@ -72,61 +81,60 @@ class FinalBattle2Health {
             AudioManager.shared.playSound(for: "boypain\(Int.random(in: 1...4))")
         case .regen:
             drainTimer?.invalidate()
-            drainTimer = Timer.scheduledTimer(timeInterval: 0.25, target: self, selector: #selector(helperRegen(_:)), userInfo: nil, repeats: true)
+            drainTimer = Timer.scheduledTimer(timeInterval: 0.25, target: self, selector: #selector(helperRegen), userInfo: nil, repeats: true)
+            
+            delegate?.didRegenHealth()
         case .lavaHit:
-            timer = Timer.scheduledTimer(timeInterval: 0, target: self, selector: #selector(helperLavaHit(_:)), userInfo: nil, repeats: false)
-        case .enemyAttack:
+            timer = Timer.scheduledTimer(timeInterval: 0, target: self, selector: #selector(helperLavaHit), userInfo: nil, repeats: false)
+        case .villainAttack:
             break
         case .heroAttack:
-            break
+            drainTimer?.invalidate()
+            drainTimer = Timer.scheduledTimer(timeInterval: 0, target: self, selector: #selector(helperHeroAttack), userInfo: nil, repeats: false)
         }
     }
     
     
     // MARK: - Helper @objc Functions
     
-    @objc private func helperDrain(_ sender: Any) {
-        var depletionRate: TimeInterval {
+    private func objcHelper(rateDivision: CGFloat, rates: [TimeInterval], shouldIncrement: Bool) {
+        var rate: TimeInterval {
             switch counter.getCount() {
-            case let num where num > 0.5:   0.01
-            default:                        0.005
+            case let division where division > rateDivision:
+                rates[0]
+            default:
+                rates[1]
             }
         }
         
-        counter.decrement(by: depletionRate)
-        bar.animateAndUpdate(percentage: counter.getCount())
-    }
-    
-    @objc private func helperRegen(_ sender: Any) {
-        var regenerationRate: TimeInterval {
-            switch counter.getCount() {
-            case let num where num > 0.75:  0.005
-            default:                        0.01
-            }
+        if shouldIncrement {
+            counter.increment(by: rate)
+        }
+        else {
+            counter.decrement(by: rate)
         }
         
-        counter.increment(by: regenerationRate)
         bar.animateAndUpdate(percentage: counter.getCount())
     }
     
-    @objc private func helperLavaHit(_ sender: Any) {
-        var lavaHit: TimeInterval {
-            switch counter.getCount() {
-            case let num where num > 0.5:   0.1
-            default:                        0.05
-            }
-        }
-        
-        counter.decrement(by: lavaHit)
-        bar.animateAndUpdate(percentage: counter.getCount())
+    @objc private func helperDrain() {
+        objcHelper(rateDivision: 0.5, rates: [0.01, 0.005], shouldIncrement: false)
     }
     
-    @objc private func helperEnemyAttack(_ sender: Any) {
+    @objc private func helperRegen() {
+        objcHelper(rateDivision: 0.75, rates: [0.005, 0.01], shouldIncrement: true)
+    }
+    
+    @objc private func helperLavaHit() {
+        objcHelper(rateDivision: 0.5, rates: [0.1, 0.05], shouldIncrement: false)
+    }
+    
+    @objc private func helperVillainAttack() {
         
     }
     
-    @objc private func helperHeroAttack(_ sender: Any) {
-        
+    @objc private func helperHeroAttack() {
+        objcHelper(rateDivision: 0.5, rates: [0.1, 0.05], shouldIncrement: true)
     }
     
     
