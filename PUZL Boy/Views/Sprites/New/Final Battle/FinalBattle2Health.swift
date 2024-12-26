@@ -98,8 +98,11 @@ class FinalBattle2Health {
     // MARK: - Helper @objc Functions
     
     private func objcHelper(rateDivisions: [CGFloat], rates: [TimeInterval], increment: Bool) {
+        guard rates.count > 0 && rates.count > rateDivisions.count else { return }
+        
         var rate: TimeInterval {
-            var rateReturn: TimeInterval = rates[rates.count - 1] //default value
+            //default value is last element in rates array; must be non-zero due to guard check
+            var rateReturn: TimeInterval = rates.last!
             
             for (i, rateDivision) in rateDivisions.enumerated() {
                 if counter.getCount() > rateDivision {
