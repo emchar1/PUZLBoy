@@ -84,4 +84,21 @@ class ChosenSword {
         AudioManager.shared.playSound(for: "swordthrow", delay: delay ?? 0)
     }
     
+    func attack(completion: (() -> Void)?) {
+        spriteNode.run(SKAction.sequence([
+            SKAction.fadeIn(withDuration: 0),
+            SKAction.wait(forDuration: 0.25),
+            SKAction.rotate(byAngle: -3 * .pi / 2, duration: 0.25),
+            SKAction.fadeAlpha(to: 0, duration: 0.5),
+            SKAction.rotate(toAngle: 0, duration: 0),
+            SKAction.removeFromParent()
+        ])) {
+            completion?()
+        }
+        
+        AudioManager.shared.playSound(for: "boyattack\(Int.random(in: 1...3))")
+        AudioManager.shared.playSound(for: "swordslash")
+    }
+    
+    
 }

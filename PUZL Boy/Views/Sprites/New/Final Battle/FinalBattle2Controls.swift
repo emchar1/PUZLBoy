@@ -14,10 +14,13 @@ class FinalBattle2Controls {
     private var gameboard: GameboardSprite
     private var player: Player
     private var playerPosition: K.GameboardPosition
+    private var chosenSword: ChosenSword
     
+    //These get set every time in handleControls()
     private var location: CGPoint!
+    private var villainPosition: K.GameboardPosition!
     private var isDisabled: Bool
-
+    
     
     // MARK: - Initialization
     
@@ -27,6 +30,12 @@ class FinalBattle2Controls {
         self.playerPosition = playerPosition
         
         self.isDisabled = false
+        
+        chosenSword = ChosenSword(didPursueMagmoor: FIRManager.didPursueMagmoor,
+                                  didGiveAwayFeather: FIRManager.didGiveAwayFeather,
+                                  bravery: FIRManager.bravery)
+        chosenSword.spriteNode.setScale(gameboard.panelSize / chosenSword.spriteNode.size.width)
+        chosenSword.spriteNode.zPosition = K.ZPosition.itemsAndEffects
     }
     
     deinit {
@@ -43,21 +52,22 @@ class FinalBattle2Controls {
         - playerPosition: the player's position, which will be overridden becuase it's an inout parameter
         - completion: handler to perform tasks upon completion
      */
-    func handleControls(in location: CGPoint, playerPosition: inout K.GameboardPosition, completion: (() -> Void)?) {
+    func handleControls(in location: CGPoint, playerPosition: inout K.GameboardPosition, villainPosition: K.GameboardPosition, completion: (() -> Void)?) {
         guard !isDisabled else { return }
         
         self.location = location
+        self.villainPosition = villainPosition
         
-        if inBounds(.up) {
+        if inBounds(.up) && !canAttackVillain(.up) {
             movePlayerHelper(.up, completion: completion)
         }
-        else if inBounds(.down) {
+        else if inBounds(.down) && !canAttackVillain(.down) {
             movePlayerHelper(.down, completion: completion)
         }
-        else if inBounds(.left) {
+        else if inBounds(.left) && !canAttackVillain(.left) {
             movePlayerHelper(.left, completion: completion)
         }
-        else if inBounds(.right) {
+        else if inBounds(.right) && !canAttackVillain(.right) {
             movePlayerHelper(.right, completion: completion)
         }
         else {
@@ -117,19 +127,8 @@ class FinalBattle2Controls {
         return locationInsideLeftBound && locationInsideRightBound && locationInsideBottomBound && locationInsideTopBound
     }
     
-    private func isValidMove(_ direction: Controls) -> Bool {
-        // TODO: - Check if move intersects with villain or any other unforseen obstacle...
-        return true
-    }
-    
-    /**
-     Physically move the player in the intended direction.
-     - parameters:
-        - direction: The direction the player would like to move to
-        - completion: handler to perform functions upon animation completion
-     */
-    private func movePlayerHelper(_ direction: Controls, completion: (() -> Void)?) {
-        var nextPanel: K.GameboardPosition
+    private func getNextPanel(direction: Controls) -> K.GameboardPosition {
+        let nextPanel: K.GameboardPosition
         
         switch direction {
         case .up:
@@ -146,18 +145,51 @@ class FinalBattle2Controls {
             nextPanel = (row: playerPosition.row, col: playerPosition.col)
         }
         
+        return nextPanel
+    }
+    
+    private func canAttackVillain(_ direction: Controls) -> Bool {
+        let nextPanel: K.GameboardPosition = getNextPanel(direction: direction)
+        
+        guard nextPanel == villainPosition else { return false }
+        
+        isDisabled = true
+        
+        gameboard.sprite.addChild(chosenSword.spriteNode)
+        
+        chosenSword.spriteNode.position = gameboard.getLocation(at: villainPosition)
+        chosenSword.attack { [weak self] in
+            self?.isDisabled = false
+        }
+                
+        return true
+    }
+    
+    /**
+     Physically move the player in the intended direction.
+     - parameters:
+     - direction: The direction the player would like to move to
+     - completion: handler to perform functions upon animation completion
+     */
+    private func movePlayerHelper(_ direction: Controls, completion: (() -> Void)?) {
+        let nextPanel: K.GameboardPosition = getNextPanel(direction: direction)
         let runSound = "movetile\(Int.random(in: 1...3))"
         
-        playerPosition = nextPanel
         isDisabled = true
+        playerPosition = nextPanel
         
         AudioManager.shared.playSound(for: runSound)
         
+        //First, run animation...
         player.sprite.run(Player.animate(player: player, type: .run))
+        
+        //Wait, then idle animation...
         player.sprite.run(SKAction.sequence([
             SKAction.wait(forDuration: Player.Texture.run.movementSpeed),
             Player.animate(player: player, type: .idle)
         ]))
+        
+        //In between, move player and completion...
         player.sprite.run(SKAction.move(to: gameboard.getLocation(at: nextPanel), duration: Player.Texture.run.movementSpeed)) { [weak self] in
             self?.isDisabled = false
             
@@ -165,4 +197,6 @@ class FinalBattle2Controls {
             completion?()
         }
     }
+    
+    
 }

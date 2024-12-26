@@ -22,7 +22,7 @@ class FinalBattle2Engine {
     private var spawnPanels0: [K.GameboardPosition] = []
     private var spawnPanels1: [K.GameboardPosition] = []
     private var spawnPanels2: [K.GameboardPosition] = []
-        
+    
     private var superScene: SKScene?
     private var flashBackgroundSprite: SKSpriteNode!
     private var gameboard: GameboardSprite!
@@ -103,7 +103,7 @@ class FinalBattle2Engine {
     // MARK: - Functions
     
     func handleControls(in location: CGPoint) {
-        controls.handleControls(in: location, playerPosition: &heroPosition) { [weak self] in 
+        controls.handleControls(in: location, playerPosition: &heroPosition, villainPosition: villainPosition) { [weak self] in 
             guard let self = self else { return }
             
             if safePanelFound(in: location) {
