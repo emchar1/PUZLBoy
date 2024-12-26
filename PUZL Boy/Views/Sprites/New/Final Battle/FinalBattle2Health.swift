@@ -97,17 +97,21 @@ class FinalBattle2Health {
     
     // MARK: - Helper @objc Functions
     
-    private func objcHelper(rateDivision: CGFloat, rates: [TimeInterval], shouldIncrement: Bool) {
+    private func objcHelper(rateDivisions: [CGFloat], rates: [TimeInterval], increment: Bool) {
         var rate: TimeInterval {
-            switch counter.getCount() {
-            case let division where division > rateDivision:
-                rates[0]
-            default:
-                rates[1]
+            var rateReturn: TimeInterval = rates[rates.count - 1] //default value
+            
+            for (i, rateDivision) in rateDivisions.enumerated() {
+                if counter.getCount() > rateDivision {
+                    rateReturn = rates[i]
+                    break
+                }
             }
+            
+            return rateReturn
         }
         
-        if shouldIncrement {
+        if increment {
             counter.increment(by: rate)
         }
         else {
@@ -117,25 +121,11 @@ class FinalBattle2Health {
         bar.animateAndUpdate(percentage: counter.getCount())
     }
     
-    @objc private func helperDrain() {
-        objcHelper(rateDivision: 0.5, rates: [0.01, 0.005], shouldIncrement: false)
-    }
-    
-    @objc private func helperRegen() {
-        objcHelper(rateDivision: 0.75, rates: [0.005, 0.01], shouldIncrement: true)
-    }
-    
-    @objc private func helperLavaHit() {
-        objcHelper(rateDivision: 0.5, rates: [0.1, 0.05], shouldIncrement: false)
-    }
-    
-    @objc private func helperVillainAttack() {
-        
-    }
-    
-    @objc private func helperHeroAttack() {
-        objcHelper(rateDivision: 0.5, rates: [0.1, 0.05], shouldIncrement: true)
-    }
+    @objc private func helperDrain() { objcHelper(rateDivisions: [0.5], rates: [0.01, 0.005], increment: false) }
+    @objc private func helperRegen() { objcHelper(rateDivisions: [0.75], rates: [0.005, 0.01], increment: true) }
+    @objc private func helperLavaHit() { objcHelper(rateDivisions: [0.5], rates: [0.1, 0.05], increment: false) }
+    @objc private func helperVillainAttack() { }
+    @objc private func helperHeroAttack() { objcHelper(rateDivisions: [0.5], rates: [0.1, 0.05], increment: true) }
     
     
 }
