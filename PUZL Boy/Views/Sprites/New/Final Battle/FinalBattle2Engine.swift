@@ -119,22 +119,6 @@ class FinalBattle2Engine {
         }
     }
     
-    /**
-     Checks if the location requested to move to is a valid one, i.e. a "safePanel" or the startPanel.
-     - parameter location: location of the request
-     - returns: true if requested panel is a valid one
-     */
-    private func safePanelFound(in location: CGPoint) -> Bool {
-        guard let superScene = superScene else {
-            print("superScene nil in FinalBattle2Engine.safePanelFound()")
-            return false
-        }
-        
-        let startPanel = GameboardSprite.getNodeName(row: startPosition.row, col: startPosition.col)
-        
-        return superScene.nodes(at: location).contains(where: { $0.name == "safePanel" || $0.name == startPanel })
-    }
-    
     ///Animates all the components
     func animateSprites() {
         hero.sprite.run(Player.animate(player: hero, type: .idle))
@@ -177,6 +161,22 @@ class FinalBattle2Engine {
                             maxCount: maxCount)
     }
     
+    /**
+     Checks if the location requested to move to is a valid one, i.e. a "safePanel" or the startPanel.
+     - parameter location: location of the request
+     - returns: true if requested panel is a valid one
+     */
+    private func safePanelFound(in location: CGPoint) -> Bool {
+        guard let superScene = superScene else {
+            print("superScene nil in FinalBattle2Engine.safePanelFound()")
+            return false
+        }
+        
+        let startPanel = GameboardSprite.getNodeName(row: startPosition.row, col: startPosition.col)
+        
+        return superScene.nodes(at: location).contains(where: { $0.name == "safePanel" || $0.name == startPanel })
+    }
+    
     private func spawnNextPosition(startPosition: K.GameboardPosition, ignorePositions: [K.GameboardPosition]) -> K.GameboardPosition {
         var nextPosition: K.GameboardPosition
         
@@ -196,7 +196,7 @@ class FinalBattle2Engine {
         
         ///SKAction that animates dissolving of primary (sand/snow) panel to secondary (lava/water).
         func dissolveTerrainAction(pulseDuration: TimeInterval) -> SKAction {
-            let offsetDuration: TimeInterval = 0.1
+            let offsetDuration: TimeInterval = 0 //DON'T TOUCH THIS LEAVE AT 0!!!
             
             let sandAction = SKAction.sequence([
                 SKAction.moveBy(x: 5, y: 0, duration: offsetDuration),
@@ -269,7 +269,7 @@ class FinalBattle2Engine {
                         health.updateHealth(type: .regen, player: hero)
                     }
                 },
-                SKAction.fadeIn(withDuration: 0.25),
+                SKAction.fadeIn(withDuration: waitDuration * 0.25),
                 SKAction.wait(forDuration: waitDuration * 2.75),
                 dissolveTerrainAction(pulseDuration: 0.1),
                 SKAction.removeFromParent()
