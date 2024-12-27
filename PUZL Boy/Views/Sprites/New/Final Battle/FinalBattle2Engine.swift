@@ -13,9 +13,9 @@ class FinalBattle2Engine {
     
     private let size: CGSize
     private let maxCount: Int = 1000
-    private let ignorePositions: [K.GameboardPosition] = [(3, 3), (6, 3)]
     private let startPosition: K.GameboardPosition = (6, 3)
     private let endPosition: K.GameboardPosition = (3, 3)
+    private var ignorePositions: [K.GameboardPosition] { [startPosition, endPosition] }
     private var heroPosition: K.GameboardPosition!
     private var villainPosition: K.GameboardPosition!
     
@@ -106,10 +106,10 @@ class FinalBattle2Engine {
     // MARK: - Functions
     
     func handleControls(in location: CGPoint) {
-        controls.handleControls(in: location, playerPosition: &heroPosition, villainPosition: villainPosition) { [weak self] in 
+        controls.handleControls(in: location, playerPosition: &heroPosition, villainPosition: villainPosition) { [weak self] in
             guard let self = self else { return }
             
-            if safePanelFound(in: location) {
+            if safePanelFound() {
                 health.updateHealth(type: .regen, player: hero)
             }
             else {
@@ -163,18 +163,18 @@ class FinalBattle2Engine {
     
     /**
      Checks if the location requested to move to is a valid one, i.e. a "safePanel" or the startPanel.
-     - parameter location: location of the request
      - returns: true if requested panel is a valid one
      */
-    private func safePanelFound(in location: CGPoint) -> Bool {
+    private func safePanelFound() -> Bool {
         guard let superScene = superScene else {
             print("superScene nil in FinalBattle2Engine.safePanelFound()")
             return false
         }
         
+        let heroPositionGameboardOffset = gameboard.sprite.position + gameboard.getLocation(at: heroPosition)
         let startPanel = GameboardSprite.getNodeName(row: startPosition.row, col: startPosition.col)
         
-        return superScene.nodes(at: location).contains(where: { $0.name == "safePanel" || $0.name == startPanel })
+        return superScene.nodes(at: heroPositionGameboardOffset).contains(where: { $0.name == "safePanel" || $0.name == startPanel })
     }
     
     private func spawnNextPosition(startPosition: K.GameboardPosition, ignorePositions: [K.GameboardPosition]) -> K.GameboardPosition {
@@ -192,7 +192,7 @@ class FinalBattle2Engine {
     
     // TODO: - Make disappearing floors and harm hero if he steps in lava or ground beneath him disappears.
     private func animateSpawnPanels(spawnPanels: [K.GameboardPosition], with terrain: LevelType) {
-        let waitDuration: TimeInterval = 0.8
+        let waitDuration: TimeInterval = 1
         
         ///SKAction that animates dissolving of primary (sand/snow) panel to secondary (lava/water).
         func dissolveTerrainAction(pulseDuration: TimeInterval) -> SKAction {
@@ -276,7 +276,8 @@ class FinalBattle2Engine {
             ])) { [weak self] in
                 guard let self = self else { return }
                 
-                if spawnPanel == heroPosition {
+                //Added "&& !safePanelFound()" as an extra added layer in case an overlapping safePanel spawns after the first one is removed.
+                if spawnPanel == heroPosition && !safePanelFound() {
                     health.updateHealth(type: .drain, player: hero)
                 }
             } //end newTerrain.run
