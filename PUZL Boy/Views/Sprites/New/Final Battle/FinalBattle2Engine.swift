@@ -194,6 +194,7 @@ class FinalBattle2Engine {
     private func animateSpawnPanels(spawnPanels: [K.GameboardPosition], with terrain: LevelType) {
         let waitDuration: TimeInterval = 0.8
         
+        ///SKAction that animates dissolving of primary (sand/snow) panel to secondary (lava/water).
         func dissolveTerrainAction(pulseDuration: TimeInterval) -> SKAction {
             let offsetDuration: TimeInterval = 0.1
             
@@ -219,6 +220,33 @@ class FinalBattle2Engine {
             return FireIceTheme.isFire ? sandAction : snowAction
         }
         
+        ///Handles particles for sand-lava or snow-water (depending on fire/ice).
+        func handleParticles(spawnPanel: K.GameboardPosition) {
+            if FireIceTheme.isFire {
+                for node in gameboard.sprite.children {
+                    guard node.name == ParticleEngine.getNodeName(at: spawnPanel) else { continue }
+                    
+                    node.removeAction(forKey: "particleNodeFade")
+                    node.alpha = 0
+                    node.run(SKAction.sequence([
+                        SKAction.wait(forDuration: waitDuration * 3),
+                        SKAction.fadeIn(withDuration: waitDuration)
+                    ]), withKey: "particleNodeFade")
+                    
+                    break
+                }
+            }
+            else {
+                ParticleEngine.shared.animateParticles(type: .snowfall,
+                                                       toNode: gameboard.sprite,
+                                                       position: gameboard.getLocation(at: spawnPanel),
+                                                       scale: 3 / CGFloat(gameboard.panelCount),
+                                                       nameGameboardPosition: spawnPanel,
+                                                       duration: waitDuration * 3 + waitDuration)
+            }
+        }
+        
+        
         for (i, spawnPanel) in spawnPanels.enumerated() {
             guard let originalTerrain = gameboard.getPanelSprite(at: spawnPanel).terrain else { continue }
             
@@ -235,35 +263,7 @@ class FinalBattle2Engine {
                 SKAction.run { [weak self] in
                     guard let self = self else { return }
                     
-                    if FireIceTheme.isFire {
-                        for node in gameboard.sprite.children {
-                            guard node.name == ParticleEngine.getFullNodeName(at: spawnPanel) else { continue }
-                            
-                            node.removeAction(forKey: "particleNodeFade")
-                            node.alpha = 0
-                            
-                            node.run(SKAction.sequence([
-                                SKAction.wait(forDuration: waitDuration * 3),
-                                SKAction.fadeIn(withDuration: waitDuration)
-                            ]), withKey: "particleNodeFade")
-                            
-                            break
-                        }
-                    }
-                    else {
-                        ParticleEngine.shared.animateParticles(type: .snowfall,
-                                                               toNode: gameboard.sprite,
-                                                               position: gameboard.getLocation(at: spawnPanel),
-                                                               scale: 3 / CGFloat(gameboard.panelCount),
-                                                               nameGameboardPosition: spawnPanel,
-                                                               duration: 0)
-                        
-                        DispatchQueue.main.asyncAfter(deadline: .now() + waitDuration * 3) {
-                            ParticleEngine.shared.removeParticles(fromNode: self.gameboard.sprite,
-                                                                  nameGameboardPosition: spawnPanel,
-                                                                  fadeDuration: waitDuration)
-                        }
-                    }
+                    handleParticles(spawnPanel: spawnPanel)
                     
                     if spawnPanel == heroPosition {
                         health.updateHealth(type: .regen, player: hero)
