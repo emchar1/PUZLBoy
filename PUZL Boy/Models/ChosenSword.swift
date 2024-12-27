@@ -13,6 +13,7 @@ class ChosenSword {
     
     private(set) var type: SwordType
     private(set) var attackRating: CGFloat
+    var attackRatingPercentage: CGFloat { attackRating / 100 }
 
     private(set) var imageName: String
     private(set) var description: String

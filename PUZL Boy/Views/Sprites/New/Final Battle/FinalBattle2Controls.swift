@@ -8,7 +8,7 @@
 import SpriteKit
 
 protocol FinalBattle2ControlsDelegate: AnyObject {
-    func didHeroAttack()
+    func didHeroAttack(chosenSword: ChosenSword)
 }
 
 class FinalBattle2Controls {
@@ -174,7 +174,7 @@ class FinalBattle2Controls {
                 self?.isDisabled = false
             }
             
-            delegate?.didHeroAttack()
+            delegate?.didHeroAttack(chosenSword: chosenSword)
         }
                 
         return true

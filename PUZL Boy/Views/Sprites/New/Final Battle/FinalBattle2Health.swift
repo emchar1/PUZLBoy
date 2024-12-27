@@ -16,6 +16,7 @@ class FinalBattle2Health {
     
     private var counter: Counter!
     private var bar: StatusBarSprite!
+    private var dmgMultiplier: CGFloat?
     
     enum HealthType {
         case drain, regen, lavaHit, villainAttack, heroAttack
@@ -48,7 +49,9 @@ class FinalBattle2Health {
         bar.showStatus()
     }
     
-    func updateHealth(type: HealthType, player: Player) {
+    func updateHealth(type: HealthType, player: Player, dmgMultiplier: CGFloat? = nil) {
+        self.dmgMultiplier = dmgMultiplier
+        
         // FIXME: - Does the hit animation on the player belong here, or should it go in the Engine?
         if player.sprite.action(forKey: "playerBlink") != nil {
             player.sprite.colorBlendFactor = 1
@@ -117,7 +120,7 @@ class FinalBattle2Health {
     @objc private func helperRegen() { objcHelper(rateDivisions: [0.75], rates: [0, 0.002], increment: true) }
     @objc private func helperLavaHit() { objcHelper(rateDivisions: [0.5], rates: [0.1, 0.05], increment: false) }
     @objc private func helperVillainAttack() { }
-    @objc private func helperHeroAttack() { objcHelper(rateDivisions: [0.5], rates: [0.1, 0.05], increment: true) }
+    @objc private func helperHeroAttack() { objcHelper(rateDivisions: [0.5], rates: [0.1, 0.05].map { $0 * (dmgMultiplier ?? 0) }, increment: true) }
     
     
 }

@@ -312,7 +312,7 @@ class FinalBattle2Engine {
 // MARK: - FinalBattle2ControlsDelegate
 
 extension FinalBattle2Engine: FinalBattle2ControlsDelegate {
-    func didHeroAttack() {
-        health.updateHealth(type: .heroAttack, player: hero)
+    func didHeroAttack(chosenSword: ChosenSword) {
+        health.updateHealth(type: .heroAttack, player: hero, dmgMultiplier: chosenSword.attackRatingPercentage)
     }
 }
