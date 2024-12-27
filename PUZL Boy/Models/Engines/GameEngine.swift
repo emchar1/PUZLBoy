@@ -642,7 +642,7 @@ class GameEngine {
 
         for child in gameboardSprite.sprite.children {
             //Exclude Player, which will have no name, AND any Particle Emitter nodes!!
-            guard let name = child.name, name != ParticleEngine.nodeName, name.contains(GameboardSprite.delimiter) else { continue }
+            guard let name = child.name, name != ParticleEngine.nodeNamePrefix, name.contains(GameboardSprite.delimiter) else { continue }
             
             let row = String(name.prefix(upTo: name.firstIndex(of: Character(GameboardSprite.delimiter))!))
             let col = String(name.suffix(from: name.firstIndex(of: Character(GameboardSprite.delimiter))!).dropFirst()).replacingOccurrences(of: GameboardSprite.overlayTag, with: "")

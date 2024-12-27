@@ -11,7 +11,7 @@ class ParticleEngine: SKNode {
     
     // MARK: - Properties
     
-    static let nodeName = "ParticleEmitter"
+    static let nodeNamePrefix = "ParticleEmitter"
     
     static let shared: ParticleEngine = {
         let engine = ParticleEngine()
@@ -110,7 +110,7 @@ class ParticleEngine: SKNode {
         particles.xScale *= shouldFlipHorizontally ? -1 : 1
         particles.alpha = alpha
         particles.zPosition = zPosition
-        particles.name = ParticleEngine.getFullNodeName(at: nameGameboardPosition)
+        particles.name = ParticleEngine.getNodeName(at: nameGameboardPosition)
         
         if angle != 0 {
             particles.zRotation = angle
@@ -183,7 +183,7 @@ class ParticleEngine: SKNode {
     
     func removeParticles(fromNode node: SKNode, nameGameboardPosition: K.GameboardPosition? = nil, fadeDuration: TimeInterval = 0) {
         for particleNode in node.children {
-            guard particleNode.name == ParticleEngine.getFullNodeName(at: nameGameboardPosition) else { continue }
+            guard particleNode.name == ParticleEngine.getNodeName(at: nameGameboardPosition) else { continue }
             
             particleNode.run(SKAction.sequence([
                 SKAction.fadeOut(withDuration: fadeDuration),
@@ -194,7 +194,7 @@ class ParticleEngine: SKNode {
     
     func hideParticles(fromNode node: SKNode, fadeDuration: TimeInterval = 0.25) {
         for particleNode in node.children {
-            guard let name = particleNode.name, name.contains(ParticleEngine.nodeName) else { continue }
+            guard let name = particleNode.name, name.contains(ParticleEngine.nodeNamePrefix) else { continue }
 
             particleNode.run(SKAction.fadeOut(withDuration: fadeDuration))
         }
@@ -202,7 +202,7 @@ class ParticleEngine: SKNode {
     
     func showParticles(fromNode node: SKNode, fadeDuration: TimeInterval = 0.25) {
         for particleNode in node.children {
-            guard let name = particleNode.name, name.contains(ParticleEngine.nodeName) else { continue }
+            guard let name = particleNode.name, name.contains(ParticleEngine.nodeNamePrefix) else { continue }
                     
             particleNode.run(SKAction.fadeIn(withDuration: fadeDuration))
         }
@@ -210,7 +210,7 @@ class ParticleEngine: SKNode {
     
     func animateExistingParticles(fromNode node: SKNode, action: SKAction, nameGameboardPosition: K.GameboardPosition? = nil) {
         for particleNode in node.children {
-            guard particleNode.name == ParticleEngine.getFullNodeName(at: nameGameboardPosition) else { continue }
+            guard particleNode.name == ParticleEngine.getNodeName(at: nameGameboardPosition) else { continue }
             
             particleNode.run(action)
         }
@@ -249,10 +249,10 @@ class ParticleEngine: SKNode {
                                                duration: 0)
     }
     
-    static func getFullNodeName(at position: K.GameboardPosition?) -> String {
-        guard let position = position else { return ParticleEngine.nodeName }
+    static func getNodeName(at position: K.GameboardPosition?) -> String {
+        guard let position = position else { return ParticleEngine.nodeNamePrefix }
 
-        return "\(ParticleEngine.nodeName)(\(position.row),\(position.col))"
+        return "\(ParticleEngine.nodeNamePrefix)(\(position.row),\(position.col))"
     }
     
     

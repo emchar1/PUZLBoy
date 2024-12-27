@@ -11,7 +11,7 @@ class TapPointerEngine: SKNode {
     
     // MARK: - Properties
     
-    static let nodeName = ParticleEngine.nodeName
+    static let nodeName = ParticleEngine.nodeNamePrefix
     
     private let pointerSize = K.ScreenDimensions.size * 0.05
     private var superScene: SKScene?
