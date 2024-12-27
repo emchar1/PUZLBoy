@@ -22,6 +22,7 @@ class FinalBattle2Engine {
     private var spawnPanels0: [K.GameboardPosition] = []
     private var spawnPanels1: [K.GameboardPosition] = []
     private var spawnPanels2: [K.GameboardPosition] = []
+    private var spawnPanels3: [K.GameboardPosition] = []
     
     private var superScene: SKScene?
     private var flashBackgroundSprite: SKSpriteNode!
@@ -43,6 +44,8 @@ class FinalBattle2Engine {
     
     deinit {
         print("FinalBattle2Engine deinit")
+        
+        AudioManager.shared.stopSound(for: "bossbattle3")
     }
     
     private func setupScene() {
@@ -82,6 +85,7 @@ class FinalBattle2Engine {
         populateSpawnPanels(spawnPanels: &spawnPanels0, startPosition: heroPosition, ignorePositions: ignorePositions, maxCount: maxCount)
         populateSpawnPanels(spawnPanels: &spawnPanels1, startPosition: heroPosition, ignorePositions: ignorePositions, maxCount: maxCount)
         populateSpawnPanels(spawnPanels: &spawnPanels2, startPosition: heroPosition, ignorePositions: ignorePositions, maxCount: maxCount)
+        populateSpawnPanels(spawnPanels: &spawnPanels3, startPosition: heroPosition, ignorePositions: ignorePositions, maxCount: maxCount)
     }
     
     
@@ -121,6 +125,8 @@ class FinalBattle2Engine {
     
     ///Animates all the components
     func animateSprites() {
+        AudioManager.shared.playSound(for: "bossbattle3")
+        
         hero.sprite.run(Player.animate(player: hero, type: .idle))
         villain.sprite.run(Player.animateIdleLevitate(player: villain))
         
@@ -131,6 +137,7 @@ class FinalBattle2Engine {
         animateSpawnPanels(spawnPanels: spawnPanels0, with: terrainPanel)
         animateSpawnPanels(spawnPanels: spawnPanels1, with: terrainPanel)
         animateSpawnPanels(spawnPanels: spawnPanels2, with: terrainPanel)
+        animateSpawnPanels(spawnPanels: spawnPanels3, with: terrainPanel)
     }
     
     func flashHeroAttacked(duration: TimeInterval = 0.5) {

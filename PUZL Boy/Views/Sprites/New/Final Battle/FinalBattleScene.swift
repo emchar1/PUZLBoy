@@ -28,10 +28,6 @@ class FinalBattleScene: SKScene {
     
     deinit {
         print("FinalBattleSceen deinit")
-        
-//        AudioManager.shared.stopSound(for: "bossbattle1", fadeDuration: 2)
-//        AudioManager.shared.stopSound(for: "bossbattle2", fadeDuration: 2)
-        AudioManager.shared.stopSound(for: "bossbattle3", fadeDuration: 2)
     }
     
     private func setupScene() {
@@ -60,11 +56,6 @@ class FinalBattleScene: SKScene {
     // MARK: - Functions
     
     func animateScene() {
-//        let bossbattle1Duration = AudioManager.shared.getAudioItem(filename: "bossbattle1")?.player.duration ?? 0
-//        AudioManager.shared.playSound(for: "bossbattle1")
-//        AudioManager.shared.playSound(for: "bossbattle2", delay: bossbattle1Duration)
-        AudioManager.shared.playSound(for: "bossbattle3")
-        
         finalBattle2Engine.animateSprites()
     }
     

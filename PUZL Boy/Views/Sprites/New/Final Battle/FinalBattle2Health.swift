@@ -125,7 +125,7 @@ class FinalBattle2Health {
     }
     
     @objc private func helperDrain() { objcHelper(rateDivisions: [0.5], rates: [0.01, 0.005], increment: false) }
-    @objc private func helperRegen() { objcHelper(rateDivisions: [0.75], rates: [0.005, 0.01], increment: true) }
+    @objc private func helperRegen() { objcHelper(rateDivisions: [0.75], rates: [0, 0.002], increment: true) }
     @objc private func helperLavaHit() { objcHelper(rateDivisions: [0.5], rates: [0.1, 0.05], increment: false) }
     @objc private func helperVillainAttack() { }
     @objc private func helperHeroAttack() { objcHelper(rateDivisions: [0.5], rates: [0.1, 0.05], increment: true) }
