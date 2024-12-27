@@ -7,11 +7,6 @@
 
 import SpriteKit
 
-protocol FinalBattle2HealthDelegate: AnyObject {
-    func didDrainHealth()
-    func didRegenHealth()
-}
-
 class FinalBattle2Health {
     
     // MARK: - Properties
@@ -25,8 +20,6 @@ class FinalBattle2Health {
     enum HealthType {
         case drain, regen, lavaHit, villainAttack, heroAttack
     }
-    
-    weak var delegate: FinalBattle2HealthDelegate?
     
     
     // MARK: - Initialization
@@ -69,8 +62,6 @@ class FinalBattle2Health {
             drainTimer?.invalidate()
             drainTimer = Timer.scheduledTimer(timeInterval: 0.25, target: self, selector: #selector(helperDrain), userInfo: nil, repeats: true)
             
-            delegate?.didDrainHealth()
-            
             // FIXME: - Does the hit animation on the player belong here, or should it go in the Engine?
             player.sprite.removeAction(forKey: "playerColorFade")
             player.sprite.run(SKAction.repeatForever(SKAction.sequence([
@@ -82,8 +73,6 @@ class FinalBattle2Health {
         case .regen:
             drainTimer?.invalidate()
             drainTimer = Timer.scheduledTimer(timeInterval: 0.25, target: self, selector: #selector(helperRegen), userInfo: nil, repeats: true)
-            
-            delegate?.didRegenHealth()
         case .lavaHit:
             timer = Timer.scheduledTimer(timeInterval: 0, target: self, selector: #selector(helperLavaHit), userInfo: nil, repeats: false)
         case .villainAttack:

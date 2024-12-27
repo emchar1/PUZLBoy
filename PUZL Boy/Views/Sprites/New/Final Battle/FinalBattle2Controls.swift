@@ -23,9 +23,9 @@ class FinalBattle2Controls {
     //These get set every time in handleControls()
     private var location: CGPoint!
     private var villainPosition: K.GameboardPosition!
+    private var safePanelFound: Bool!
     
     private var isDisabled: Bool
-    private var canAttack: Bool
     
     weak var delegate: FinalBattle2ControlsDelegate?
     
@@ -38,7 +38,6 @@ class FinalBattle2Controls {
         self.playerPosition = playerPosition
         
         self.isDisabled = false
-        self.canAttack = true
         
         chosenSword = ChosenSword(didPursueMagmoor: FIRManager.didPursueMagmoor,
                                   didGiveAwayFeather: FIRManager.didGiveAwayFeather,
@@ -60,13 +59,15 @@ class FinalBattle2Controls {
         - location: Location for which comparison is to occur
         - playerPosition: the player's position, which will be overridden becuase it's an inout parameter
         - villainPosition: the villain's position for comparison for attacking
+        - safePanelFound: returns true if a safe panel i.e. sand/snow is found in the player's position
         - completion: handler to perform tasks upon completion
      */
-    func handleControls(in location: CGPoint, playerPosition: inout K.GameboardPosition, villainPosition: K.GameboardPosition, completion: (() -> Void)?) {
+    func handleControls(in location: CGPoint, playerPosition: inout K.GameboardPosition, villainPosition: K.GameboardPosition, safePanelFound: Bool, completion: (() -> Void)?) {
         guard !isDisabled else { return }
         
         self.location = location
         self.villainPosition = villainPosition
+        self.safePanelFound = safePanelFound
         
         if inBounds(.up) && !canAttackVillain(.up) {
             movePlayerHelper(.up, completion: completion)
@@ -86,14 +87,6 @@ class FinalBattle2Controls {
         
         //Since argument is inout, remember to set the global variable, self.playerPosition to the playerPosition argument! Put this line last!!!
         playerPosition = self.playerPosition
-    }
-    
-    /**
-     Sets the canAttack property from the outside, i.e. if health is draining, prevent ability to attack.
-     - parameter canAttack: true if can attack
-     */
-    func setCanAttack(_ canAttack: Bool) {
-        self.canAttack = canAttack
     }
     
     
@@ -171,7 +164,7 @@ class FinalBattle2Controls {
         
         guard nextPanel == villainPosition else { return false }
         
-        if canAttack {
+        if safePanelFound {
             isDisabled = true
             
             gameboard.sprite.addChild(chosenSword.spriteNode)
@@ -195,7 +188,22 @@ class FinalBattle2Controls {
      */
     private func movePlayerHelper(_ direction: Controls, completion: (() -> Void)?) {
         let nextPanel: K.GameboardPosition = getNextPanel(direction: direction)
-        let runSound = "movetile\(Int.random(in: 1...3))"
+        let panelType = gameboard.getUserDataForLevelType(sprite: gameboard.getPanelSprite(at:playerPosition).terrain!)
+        let runSound: String
+        
+        if safePanelFound {
+            runSound = FireIceTheme.isFire ? "movesand\(Int.random(in: 1...3))" : "movesnow\(Int.random(in: 1...3))"
+        }
+        else {
+            switch panelType {
+            case .lava, .water:
+                runSound = "movemarsh\(Int.random(in: 1...3))"
+            default:
+                runSound = "movetile\(Int.random(in: 1...3))"
+            }
+        }
+        
+        print("panelType: \(panelType)")
         
         isDisabled = true
         playerPosition = nextPanel

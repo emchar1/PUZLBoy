@@ -80,7 +80,6 @@ class FinalBattle2Engine {
         controls.delegate = self
         
         health = FinalBattle2Health(position: CGPoint(x: size.width / 2, y: K.ScreenDimensions.topOfGameboard))
-        health.delegate = self
         
         populateSpawnPanels(spawnPanels: &spawnPanels0, startPosition: heroPosition, ignorePositions: ignorePositions, maxCount: maxCount)
         populateSpawnPanels(spawnPanels: &spawnPanels1, startPosition: heroPosition, ignorePositions: ignorePositions, maxCount: maxCount)
@@ -110,10 +109,10 @@ class FinalBattle2Engine {
     // MARK: - Functions
     
     func handleControls(in location: CGPoint) {
-        controls.handleControls(in: location, playerPosition: &heroPosition, villainPosition: villainPosition) { [weak self] in
+        controls.handleControls(in: location, playerPosition: &heroPosition, villainPosition: villainPosition, safePanelFound: safePanelFound()) { [weak self] in
             guard let self = self else { return }
             
-            if safePanelFound() {
+            if safePanelFound() || startPanelFound() {
                 health.updateHealth(type: .regen, player: hero)
             }
             else {
@@ -169,7 +168,7 @@ class FinalBattle2Engine {
     }
     
     /**
-     Checks if the location requested to move to is a valid one, i.e. a "safePanel" or the startPanel.
+     Checks if the location requested to move to is a valid one, i.e. a "safePanel".
      - returns: true if requested panel is a valid one
      */
     private func safePanelFound() -> Bool {
@@ -179,9 +178,24 @@ class FinalBattle2Engine {
         }
         
         let heroPositionGameboardOffset = gameboard.sprite.position + gameboard.getLocation(at: heroPosition)
+        
+        return superScene.nodes(at: heroPositionGameboardOffset).contains(where: { $0.name == "safePanel" })
+    }
+    
+    /**
+     Checks if the location requested to move to is a valid one, i.e. a "startPanel".
+     - returns: true if requested panel is a valid one
+     */
+    private func startPanelFound() -> Bool {
+        guard let superScene = superScene else {
+            print("superScene nil in FinalBattle2Engine.startPanelFound()")
+            return false
+        }
+        
+        let heroPositionGameboardOffset = gameboard.sprite.position + gameboard.getLocation(at: heroPosition)
         let startPanel = GameboardSprite.getNodeName(row: startPosition.row, col: startPosition.col)
         
-        return superScene.nodes(at: heroPositionGameboardOffset).contains(where: { $0.name == "safePanel" || $0.name == startPanel })
+        return superScene.nodes(at: heroPositionGameboardOffset).contains(where: { $0.name == startPanel })
     }
     
     private func spawnNextPosition(startPosition: K.GameboardPosition, ignorePositions: [K.GameboardPosition]) -> K.GameboardPosition {
@@ -284,7 +298,7 @@ class FinalBattle2Engine {
                 guard let self = self else { return }
                 
                 //Added "&& !safePanelFound()" as an extra added layer in case an overlapping safePanel spawns after the first one is removed.
-                if spawnPanel == heroPosition && !safePanelFound() {
+                if spawnPanel == heroPosition && !safePanelFound() && !startPanelFound() {
                     health.updateHealth(type: .drain, player: hero)
                 }
             } //end newTerrain.run
@@ -300,18 +314,5 @@ class FinalBattle2Engine {
 extension FinalBattle2Engine: FinalBattle2ControlsDelegate {
     func didHeroAttack() {
         health.updateHealth(type: .heroAttack, player: hero)
-    }
-}
-
-
-// MARK: - FinalBattle2HealthDelegate
-
-extension FinalBattle2Engine: FinalBattle2HealthDelegate {
-    func didDrainHealth() {
-        controls.setCanAttack(false)
-    }
-    
-    func didRegenHealth() {
-        controls.setCanAttack(true)
     }
 }
