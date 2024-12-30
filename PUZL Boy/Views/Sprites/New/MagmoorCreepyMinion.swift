@@ -124,7 +124,10 @@ class MagmoorCreepyMinion: SKNode {
         braveryCounter = Counter(maxCount: 1, step: 0.01, shouldLoop: false)
         braveryCounter.setCount(to: 0.5)
 
-        braveryBar = StatusBarSprite(label: "Bravery", shouldHide: true, percentage: braveryCounter.getCount(),
+        braveryBar = StatusBarSprite(label: "Bravery",
+                                     shouldHide: true,
+                                     showBackground: true,
+                                     percentage: braveryCounter.getCount(),
                                      position: CGPoint(x: 5/6 * K.ScreenDimensions.size.width - braveryBarSpacing,
                                                        y: K.ScreenDimensions.size.width - 2 * StatusBarSprite.defaultBarHeight - braveryBarSpacing),
                                      size: CGSize(width: 1/3 * K.ScreenDimensions.size.width, height: StatusBarSprite.defaultBarHeight))
