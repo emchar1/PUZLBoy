@@ -30,7 +30,7 @@ class StatusBarSprite: SKNode {
     
     // MARK: - Initialization
     
-    init(label: String, shouldHide: Bool, percentage: CGFloat = 1, position: CGPoint = .zero, size: CGSize = CGSize(width: K.ScreenDimensions.size.width / 2, height: StatusBarSprite.defaultBarHeight)) {
+    init(label: String, shouldHide: Bool, showBackground: Bool, percentage: CGFloat = 1, position: CGPoint = .zero, size: CGSize = CGSize(width: K.ScreenDimensions.size.width / 2, height: StatusBarSprite.defaultBarHeight)) {
         self.statusString = label
         self.backgroundPosition = position
         self.barSize = size
@@ -41,7 +41,7 @@ class StatusBarSprite: SKNode {
         alpha = shouldHide ? 0 : 1
         name = StatusBarSprite.statusBarName + statusString
         
-        setupNodes()
+        setupNodes(showBackground: showBackground)
     }
         
     required init?(coder aDecoder: NSCoder) {
@@ -52,7 +52,7 @@ class StatusBarSprite: SKNode {
         print("deinit StatusBarSprite - \(statusString)")
     }
     
-    private func setupNodes() {
+    private func setupNodes(showBackground: Bool) {
         let padding: CGFloat = 20
         
         backgroundNode = SKShapeNode(rectOf: CGSize(width: barSize.width + 2 * padding, 
@@ -61,7 +61,7 @@ class StatusBarSprite: SKNode {
         backgroundNode.position = backgroundPosition + CGPoint(x: 0, y: UIFont.gameFontSizeMedium / 2)
         backgroundNode.fillColor = .black
         backgroundNode.lineWidth = 0
-        backgroundNode.alpha = 0.75
+        backgroundNode.alpha = showBackground ? 0.75 : 0
 
         containerNode = SKShapeNode(rectOf: barSize, cornerRadius: cornerRadius)
         containerNode.position = backgroundPosition

@@ -57,6 +57,7 @@
 		EA36F9FD2C5ACEFE0031DB9A /* StatueDialogue.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA36F9FC2C5ACEFE0031DB9A /* StatueDialogue.swift */; };
 		EA37CEFF2D1BF8D000275A15 /* FinalBattle2Health.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA37CEFE2D1BF8C700275A15 /* FinalBattle2Health.swift */; };
 		EA37CF052D1CA2FB00275A15 /* bossbattle3.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA37CF042D1CA2FB00275A15 /* bossbattle3.mp3 */; };
+		EA37CF0C2D227D4400275A15 /* FinalBattle2Background.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA37CF0B2D227D4400275A15 /* FinalBattle2Background.swift */; };
 		EA3951ED2938165A00D0B14A /* Extension+UIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA3951EC2938165A00D0B14A /* Extension+UIImage.swift */; };
 		EA3951F12939DE5900D0B14A /* ScoringEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA3951F02939DE5900D0B14A /* ScoringEngine.swift */; };
 		EA41F8352A0C7D8000DF47EC /* HowToPlayPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA41F8342A0C7D8000DF47EC /* HowToPlayPage.swift */; };
@@ -427,6 +428,7 @@
 		EA36F9FC2C5ACEFE0031DB9A /* StatueDialogue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatueDialogue.swift; sourceTree = "<group>"; };
 		EA37CEFE2D1BF8C700275A15 /* FinalBattle2Health.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinalBattle2Health.swift; sourceTree = "<group>"; };
 		EA37CF042D1CA2FB00275A15 /* bossbattle3.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = bossbattle3.mp3; sourceTree = "<group>"; };
+		EA37CF0B2D227D4400275A15 /* FinalBattle2Background.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinalBattle2Background.swift; sourceTree = "<group>"; };
 		EA3951EC2938165A00D0B14A /* Extension+UIImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+UIImage.swift"; sourceTree = "<group>"; };
 		EA3951F02939DE5900D0B14A /* ScoringEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoringEngine.swift; sourceTree = "<group>"; };
 		EA41F8342A0C7D8000DF47EC /* HowToPlayPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HowToPlayPage.swift; sourceTree = "<group>"; };
@@ -795,6 +797,17 @@
 				EA36F9FC2C5ACEFE0031DB9A /* StatueDialogue.swift */,
 			);
 			path = ChatEngine;
+			sourceTree = "<group>";
+		};
+		EA37CF0A2D227CF300275A15 /* FinalBattle2 */ = {
+			isa = PBXGroup;
+			children = (
+				EA2BA6592D0FF330007D9519 /* FinalBattle2Engine.swift */,
+				EA37CF0B2D227D4400275A15 /* FinalBattle2Background.swift */,
+				EA9D4BB12D17498700BB1F36 /* FinalBattle2Controls.swift */,
+				EA37CEFE2D1BF8C700275A15 /* FinalBattle2Health.swift */,
+			);
+			path = FinalBattle2;
 			sourceTree = "<group>";
 		};
 		EA41F8382A0D71B300DF47EC /* Pages */ = {
@@ -1304,13 +1317,11 @@
 		EAAB41712CB616A700BBFA75 /* Final Battle */ = {
 			isa = PBXGroup;
 			children = (
+				EA37CF0A2D227CF300275A15 /* FinalBattle2 */,
 				EAAB41722CB6378E00BBFA75 /* CatwalkScene.swift */,
 				EAFE35992CEBA9D700289ADF /* ComingSoonScene.swift */,
 				EAFE35932CE44DA000289ADF /* EndingFakeScene.swift */,
 				EA1281B62CF24D42001CC5E8 /* FinalBattleScene.swift */,
-				EA2BA6592D0FF330007D9519 /* FinalBattle2Engine.swift */,
-				EA9D4BB12D17498700BB1F36 /* FinalBattle2Controls.swift */,
-				EA37CEFE2D1BF8C700275A15 /* FinalBattle2Health.swift */,
 			);
 			path = "Final Battle";
 			sourceTree = "<group>";
@@ -1811,6 +1822,7 @@
 				EAA3BD5C2C8A0E5400EDE298 /* MagmoorCreepyMinion.swift in Sources */,
 				EA826C93298F60C000F19F81 /* AchievementFatCat.swift in Sources */,
 				EA346791299B535F002DDA02 /* LevelStats.swift in Sources */,
+				EA37CF0C2D227D4400275A15 /* FinalBattle2Background.swift in Sources */,
 				EA999F6E2A59148800B422B2 /* SettingsTapButton.swift in Sources */,
 				EAA921DA2C014C83009E99E7 /* AuthorizationSprite.swift in Sources */,
 				EA9F4DD929CFAB0C006F4B2F /* Extension+Double.swift in Sources */,

@@ -20,6 +20,13 @@ class FinalBattle2Engine {
     private var ignorePositions: [K.GameboardPosition] { [FinalBattle2Engine.startPosition, FinalBattle2Engine.endPosition] }
     private var heroPosition: K.GameboardPosition!
     private var villainPosition: K.GameboardPosition!
+    private var gameboard: GameboardSprite!
+    private var hero: Player!
+    private var villain: Player!
+
+    private var backgroundPattern: FinalBattle2Background!
+    private var controls: FinalBattle2Controls!
+    private var health: FinalBattle2Health!
     
     private var spawnPanels0: [K.GameboardPosition] = []
     private var spawnPanels1: [K.GameboardPosition] = []
@@ -27,13 +34,9 @@ class FinalBattle2Engine {
     private var spawnPanels3: [K.GameboardPosition] = []
     
     private var superScene: SKScene?
-    private var flashBackgroundSprite: SKSpriteNode!
-    private var gameboard: GameboardSprite!
-    private var hero: Player!
-    private var villain: Player!
-    
-    private var controls: FinalBattle2Controls!
-    private var health: FinalBattle2Health!
+    private var backgroundSprite: SKSpriteNode!
+    private var bloodOverlay: SKSpriteNode!
+    private var flashGameboard: SKSpriteNode!
     
     
     // MARK: - Initialization
@@ -46,8 +49,6 @@ class FinalBattle2Engine {
     
     deinit {
         print("FinalBattle2Engine deinit")
-        
-        AudioManager.shared.stopSound(for: "bossbattle3")
     }
     
     private func setupScene() {
@@ -58,11 +59,19 @@ class FinalBattle2Engine {
         //Make sure to initialize GameboardSprite BEFORE initializing these!!!
         let playerScale: CGFloat = Player.getGameboardScale(panelSize: size.width / CGFloat(gameboard.panelCount))
         
-        flashBackgroundSprite = SKSpriteNode(color: .white, size: gameboard.sprite.size)
-        flashBackgroundSprite.setScale(1 / gameboard.sprite.xScale)
-        flashBackgroundSprite.anchorPoint = .zero
-        flashBackgroundSprite.alpha = 0
-        flashBackgroundSprite.zPosition = K.ZPosition.bloodOverlay
+        backgroundSprite = SKSpriteNode(color: .black, size: size)
+        backgroundSprite.anchorPoint = .zero
+        
+        bloodOverlay = SKSpriteNode(color: .systemPink, size: size)
+        bloodOverlay.anchorPoint = .zero
+        bloodOverlay.alpha = FinalBattle2Background.defaultBloodOverlayAlpha
+        bloodOverlay.zPosition = gameboard.sprite.zPosition + K.ZPosition.bloodOverlay
+        
+        flashGameboard = SKSpriteNode(color: .white, size: gameboard.sprite.size)
+        flashGameboard.setScale(1 / gameboard.sprite.xScale)
+        flashGameboard.anchorPoint = .zero
+        flashGameboard.alpha = 0
+        flashGameboard.zPosition = K.ZPosition.terrain + 2
         
         hero = Player(type: .hero)
         hero.sprite.position = gameboard.getLocation(at: heroPosition)
@@ -86,6 +95,7 @@ class FinalBattle2Engine {
         controls.delegate = self
         
         health = FinalBattle2Health(position: CGPoint(x: size.width / 2, y: K.ScreenDimensions.topOfGameboard))
+        backgroundPattern = FinalBattle2Background(backgroundSprite: backgroundSprite, bloodOverlay: bloodOverlay, flashGameboard: flashGameboard)
         
         populateSpawnPanels(spawnPanels: &spawnPanels0, startPosition: heroPosition, ignorePositions: ignorePositions, maxCount: maxCount)
         populateSpawnPanels(spawnPanels: &spawnPanels1, startPosition: heroPosition, ignorePositions: ignorePositions, maxCount: maxCount)
@@ -103,8 +113,11 @@ class FinalBattle2Engine {
     func moveSprites(to superScene: SKScene) {
         self.superScene = superScene
         
+        superScene.addChild(backgroundSprite)
+        superScene.addChild(bloodOverlay)
+
         superScene.addChild(gameboard.sprite)
-        gameboard.sprite.addChild(flashBackgroundSprite)
+        gameboard.sprite.addChild(flashGameboard)
         gameboard.sprite.addChild(hero.sprite)
         gameboard.sprite.addChild(villain.sprite)
         
@@ -130,12 +143,11 @@ class FinalBattle2Engine {
     
     ///Animates all the components
     func animateSprites() {
-        AudioManager.shared.playSound(for: "bossbattle3")
-        
         hero.sprite.run(Player.animate(player: hero, type: .idle))
         villain.sprite.run(Player.animateIdleLevitate(player: villain))
         
         health.showHealth()
+        backgroundPattern.animate(pattern: .normal, fadeDuration: 0)
         
         let terrainPanel: LevelType = FireIceTheme.isFire ? .sand : .snow
         
@@ -146,7 +158,7 @@ class FinalBattle2Engine {
     }
     
     func flashHeroAttacked(duration: TimeInterval = 0.5) {
-        flashBackgroundSprite.run(SKAction.sequence([
+        flashGameboard.run(SKAction.sequence([
             SKAction.fadeIn(withDuration: 0),
             SKAction.fadeOut(withDuration: duration)
         ]))
@@ -278,7 +290,7 @@ class FinalBattle2Engine {
             let newTerrain = SKSpriteNode(imageNamed: terrain.description)
             newTerrain.anchorPoint = .zero
             newTerrain.alpha = 0
-            newTerrain.zPosition = 1
+            newTerrain.zPosition = 4
             newTerrain.name = "safePanel"
             
             originalTerrain.addChild(newTerrain)
@@ -319,4 +331,14 @@ extension FinalBattle2Engine: FinalBattle2ControlsDelegate {
     func didHeroAttack(chosenSword: ChosenSword) {
         health.updateHealth(type: .heroAttack, player: hero, dmgMultiplier: chosenSword.attackRatingPercentage)
     }
+    
+    func didVillainDisappear(fadeDuration: TimeInterval) {
+        backgroundPattern.animate(pattern: .blackout, fadeDuration: fadeDuration)
+    }
+    
+    func didVillainReappear() {
+        backgroundPattern.animate(pattern: .normal, fadeDuration: 2)
+    }
+    
+    
 }
