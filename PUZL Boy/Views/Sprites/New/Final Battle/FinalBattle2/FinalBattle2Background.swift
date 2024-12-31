@@ -21,7 +21,7 @@ class FinalBattle2Background {
     private var previousOverworldMusic: String?
     
     enum BackgroundPattern {
-        case normal, blackout, princess, rainbow
+        case normal, blackout, convulse, princess, rainbow
     }
     
     
@@ -86,11 +86,35 @@ class FinalBattle2Background {
                 SKAction.colorize(with: .black, colorBlendFactor: 1, duration: 0),
                 SKAction.fadeAlpha(to: 0.8, duration: fadeDuration)
             ]))
+        case .convulse:
+            let convulseColors: (first: UIColor, second: UIColor) = (UIColor.red, UIColor.black)
+            let pulseDuration: TimeInterval = 0.1
+            
+            overworldMusic = "bossbattle3"
+            
+            backgroundSprite.run(SKAction.fadeAlpha(by: 1, duration: fadeDuration))
+            backgroundSprite.run(SKAction.colorize(with: .black, colorBlendFactor: 1, duration: fadeDuration))
+            
+            bloodOverlay.run(SKAction.fadeAlpha(to: 0.5, duration: fadeDuration))
+            bloodOverlay.run(SKAction.repeatForever(SKAction.sequence(
+                cycleColors(colors: [convulseColors.first, convulseColors.second],
+                            blendFactor: 1,
+                            duration: pulseDuration,
+                            shouldBlink: true)
+            )))
+            
+            flashGameboard.run(SKAction.fadeAlpha(to: 0.5, duration: fadeDuration))
+            flashGameboard.run(SKAction.repeatForever(SKAction.sequence(
+                cycleColors(colors: [convulseColors.second, convulseColors.first],
+                            blendFactor: 1,
+                            duration: pulseDuration,
+                            shouldBlink: true)
+            )))
         case .princess:
             let princessColors: (first: UIColor, second: UIColor) = (UIColor.magenta, UIColor.white)
             let pulseDuration: TimeInterval = 0.08
             
-            overworldMusic = AudioManager.ageOfBalanceThemes.overworld
+            overworldMusic = "bossbattle2"
             
             backgroundSprite.run(SKAction.fadeAlpha(to: 0.8, duration: fadeDuration))
             backgroundSprite.run(SKAction.sequence([
