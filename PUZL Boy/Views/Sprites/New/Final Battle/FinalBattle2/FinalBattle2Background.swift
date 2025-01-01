@@ -44,7 +44,7 @@ class FinalBattle2Background {
     
     // MARK: - Functions
     
-    func animate(pattern: BackgroundPattern, fadeDuration: TimeInterval) {
+    func animate(pattern: BackgroundPattern, fadeDuration: TimeInterval, shouldFlashGameboard: Bool = false) {
         func cycleColors(colors: [UIColor], blendFactor: CGFloat, duration: TimeInterval, shouldBlink: Bool) -> [SKAction] {
             var actions: [SKAction] = []
             
@@ -73,9 +73,22 @@ class FinalBattle2Background {
             backgroundSprite.run(SKAction.colorize(with: .black, colorBlendFactor: 1, duration: fadeDuration))
             
             bloodOverlay.run(SKAction.fadeAlpha(to: FinalBattle2Background.defaultBloodOverlayAlpha, duration: fadeDuration))
-            bloodOverlay.run(SKAction.colorize(with: FireIceTheme.overlayColor, colorBlendFactor: 1, duration: fadeDuration))
+            bloodOverlay.run(SKAction.sequence([
+                SKAction.colorize(with: .black, colorBlendFactor: 1, duration: 0),
+                SKAction.colorize(with: FireIceTheme.overlayColor, colorBlendFactor: 1, duration: fadeDuration)
+            ]))
             
-            flashGameboard.run(SKAction.fadeOut(withDuration: fadeDuration))
+            if shouldFlashGameboard {
+                flashGameboard.run(SKAction.sequence([
+                    SKAction.colorize(with: .white, colorBlendFactor: 1, duration: 0),
+                    SKAction.fadeIn(withDuration: 0),
+                    SKAction.colorize(with: .black, colorBlendFactor: 1, duration: min(0.25, fadeDuration)),
+                    SKAction.fadeOut(withDuration: fadeDuration - min(0.25, fadeDuration))
+                ]))
+            }
+            else {
+                flashGameboard.run(SKAction.fadeOut(withDuration: fadeDuration))
+            }
         case .blackout:
             backgroundSprite.run(SKAction.fadeAlpha(to: 1, duration: fadeDuration))
             backgroundSprite.run(SKAction.colorize(with: .black, colorBlendFactor: 1, duration: fadeDuration))
@@ -90,12 +103,10 @@ class FinalBattle2Background {
             let convulseColors: (first: UIColor, second: UIColor) = (UIColor.red, UIColor.black)
             let pulseDuration: TimeInterval = 0.1
             
-            overworldMusic = "bossbattle3"
+            backgroundSprite.run(SKAction.fadeAlpha(by: 1, duration: pulseDuration))
+            backgroundSprite.run(SKAction.colorize(with: .black, colorBlendFactor: 1, duration: pulseDuration))
             
-            backgroundSprite.run(SKAction.fadeAlpha(by: 1, duration: fadeDuration))
-            backgroundSprite.run(SKAction.colorize(with: .black, colorBlendFactor: 1, duration: fadeDuration))
-            
-            bloodOverlay.run(SKAction.fadeAlpha(to: 0.5, duration: fadeDuration))
+            bloodOverlay.run(SKAction.fadeAlpha(to: FinalBattle2Background.defaultBloodOverlayAlpha, duration: pulseDuration))
             bloodOverlay.run(SKAction.repeatForever(SKAction.sequence(
                 cycleColors(colors: [convulseColors.first, convulseColors.second],
                             blendFactor: 1,
@@ -103,13 +114,10 @@ class FinalBattle2Background {
                             shouldBlink: true)
             )))
             
-            flashGameboard.run(SKAction.fadeAlpha(to: 0.5, duration: fadeDuration))
-            flashGameboard.run(SKAction.repeatForever(SKAction.sequence(
-                cycleColors(colors: [convulseColors.second, convulseColors.first],
-                            blendFactor: 1,
-                            duration: pulseDuration,
-                            shouldBlink: true)
-            )))
+            flashGameboard.run(SKAction.sequence([
+                SKAction.colorize(with: .black, colorBlendFactor: 1, duration: 0),
+                SKAction.fadeAlpha(to: 0.8, duration: pulseDuration)
+            ]))
         case .princess:
             let princessColors: (first: UIColor, second: UIColor) = (UIColor.magenta, UIColor.white)
             let pulseDuration: TimeInterval = 0.08

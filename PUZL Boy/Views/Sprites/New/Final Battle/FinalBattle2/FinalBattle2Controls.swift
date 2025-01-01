@@ -11,6 +11,7 @@ protocol FinalBattle2ControlsDelegate: AnyObject {
     func didHeroAttack(chosenSword: ChosenSword)
     func didVillainDisappear(fadeDuration: TimeInterval)
     func didVillainReappear()
+    func didBreakShield()
 }
 
 class FinalBattle2Controls {
@@ -29,6 +30,7 @@ class FinalBattle2Controls {
     private var villainPositionNew: K.GameboardPosition!
     private var safePanelFound: Bool!
     
+    private var villainShield: Int
     private var isDisabled: Bool
     private var canAttack: Bool
     
@@ -44,6 +46,7 @@ class FinalBattle2Controls {
         self.playerPosition = playerPosition
         self.villainPosition = villainPosition
         
+        self.villainShield = 0
         self.isDisabled = false
         self.canAttack = true
         
@@ -190,12 +193,17 @@ class FinalBattle2Controls {
                 
                 isDisabled = false
                 
-                moveVillainHelper()
+                if villainShield > 0 {
+                    villainShieldDecrement()
+                }
+                else {
+                    moveVillainFlee()
+                    
+                    delegate?.didHeroAttack(chosenSword: chosenSword)
+                }
             }
-            
-            delegate?.didHeroAttack(chosenSword: chosenSword)
         }
-                
+        
         return true
     }
     
@@ -247,10 +255,13 @@ class FinalBattle2Controls {
         }
     }
     
+    
+    // MARK: - Villain Movement and Attacks
+    
     /**
      Helper function to assist with moving the villain after he's been attacked by the hero.
      */
-    private func moveVillainHelper() {
+    private func moveVillainFlee() {
         let fadeDistance = CGPoint(x: 0, y: gameboard.panelSize) + FinalBattle2Engine.villainFloatOffset
         let fadeDuration: TimeInterval = 2
         let waitDuration = TimeInterval.random(in: 2...6)
@@ -278,11 +289,10 @@ class FinalBattle2Controls {
             SKAction.scaleX(to: villainDirection * abs(villain.sprite.xScale), duration: 0),
             SKAction.fadeIn(withDuration: 0)
         ])) { [weak self] in
-            guard let self = self else { return }
-            
-            canAttack = true
-            
-            delegate?.didVillainReappear()
+            self?.canAttack = true
+            self?.moveVillainCastShield()
+
+            self?.delegate?.didVillainReappear()
         }
         
         ParticleEngine.shared.animateParticles(type: .magmoorBamf,
@@ -291,6 +301,113 @@ class FinalBattle2Controls {
                                                scale: 3,
                                                duration: 2)
     }
+    
+    /**
+     Resets the shield to the max, i.e. 3 and apply a quick animation.
+     */
+    private func villainShieldReset() {
+        let magmoorShield = SKSpriteNode(imageNamed: "magmoorShieldBottom")
+        magmoorShield.setScale(0)
+        magmoorShield.zPosition = -1
+        magmoorShield.name = "magmoorShield"
+        
+        let magmoorShieldTop = SKSpriteNode(imageNamed: "magmoorShieldTop")
+        magmoorShieldTop.zPosition = 2
+        
+        magmoorShield.addChild(magmoorShieldTop)
+        villain.sprite.addChild(magmoorShield)
+        
+        villainShield = 3
+        
+        magmoorShield.run(SKAction.repeatForever(SKAction.rotate(byAngle: .pi / 2, duration: 4)))
+        magmoorShield.run(SKAction.sequence([
+            scaleAndFade(size: 6, alpha: 0.5, duration: 1),
+            scaleAndFade(size: 2.5, alpha: 1, duration: 0.5),
+            scaleAndFade(),
+            SKAction.repeatForever(SKAction.sequence([
+                scaleAndFade(size: 4, alpha: 1, duration: 2),
+                scaleAndFade(size: 5, alpha: 0.5, duration: 2)
+            ]))
+        ]))
+    }
+    
+    /**
+     Decrements the shield and applies a quick animation, depending on if the shield breaks or not.
+     - parameter increment: amount to decrement (should be a positive value)
+     */
+    private func villainShieldDecrement(_ increment: Int = 1) {
+        guard let magmoorShield = villain.sprite.childNode(withName: "magmoorShield") else { return }
+        
+        villainShield -= increment
+        villainShield = max(villainShield, 0)
+        
+        if villainShield > 0 {
+            magmoorShield.run(SKAction.group([
+                SKAction.sequence([
+                    scaleAndFade(size: 6, alpha: 0.5, duration: 0.5),
+                    scaleAndFade(size: 2.5, alpha: 1, duration: 0.5),
+                    scaleAndFade(size: 4, alpha: 0.25, duration: 2)
+                ]),
+                shieldShake(duration: 0.5)
+            ])) { [weak self] in
+                self?.canAttack = true
+            }
+        }
+        else {
+            magmoorShield.run(SKAction.sequence([
+                SKAction.group([
+                    scaleAndFade(size: 2.5, alpha: 1, duration: 3),
+                    shieldShake(duration: 3),
+                ]),
+                scaleAndFade(size: 16, alpha: 1, duration: 0.25),
+                SKAction.removeFromParent()
+            ])) { [weak self] in
+                self?.canAttack = true
+                
+                self?.delegate?.didBreakShield()
+            }
+        }
+    }
+    
+    /**
+     Helper function that scales to a particular size, and fades to a particular alpha over the duration.
+     - parameters:
+        - size: size of scale
+        - alpha: the alpha of the fade
+        - duration: time it takes to perform the action
+     - returns the action group.
+     */
+    private func scaleAndFade(size: CGFloat = 5, alpha: CGFloat = 0.5, duration: TimeInterval = 1) -> SKAction {
+        return SKAction.group([
+            SKAction.scale(to: size, duration: duration),
+            SKAction.fadeAlpha(to: alpha, duration: duration)
+        ])
+    }
+    
+    /**
+     Shakes the shield left and right.
+     - parameter duration: duration of the shake
+     - returns the shaking SKAction
+     */
+    private func shieldShake(duration: TimeInterval) -> SKAction {
+        let moveAction = SKAction.moveBy(x: -80, y: 0, duration: 0.05)
+        
+        return SKAction.repeat(SKAction.sequence([
+            moveAction,
+            moveAction.reversed()
+        ]), count: Int(duration / 0.1))
+    }
+    
+    /**
+     Casts a protective shield around the villain that requires X hits before breaking.
+     */
+    private func moveVillainCastShield() {
+        villainShieldReset()
+        
+        //Animations
+        villain.sprite.run(Player.animate(player: villain, type: .attack, repeatCount: 1))
+    }
+    
     
     
 }

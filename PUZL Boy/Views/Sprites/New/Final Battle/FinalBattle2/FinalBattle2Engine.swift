@@ -195,7 +195,8 @@ class FinalBattle2Engine {
             return false
         }
         
-        let heroPositionGameboardOffset = gameboard.sprite.position + gameboard.getLocation(at: heroPosition)
+        //I had to multiply gameboard.getLocation(at:) by UIDevice.spriteScale to NORMALIZE it, otherwise it gets messed up on iPad!!! 12/31/24
+        let heroPositionGameboardOffset = gameboard.sprite.position + gameboard.getLocation(at: heroPosition) * UIDevice.spriteScale
         
         return superScene.nodes(at: heroPositionGameboardOffset).contains(where: { $0.name == "safePanel" })
     }
@@ -337,7 +338,11 @@ extension FinalBattle2Engine: FinalBattle2ControlsDelegate {
     }
     
     func didVillainReappear() {
-        backgroundPattern.animate(pattern: .normal, fadeDuration: 2)
+        backgroundPattern.animate(pattern: .convulse, fadeDuration: 2)
+    }
+    
+    func didBreakShield() {
+        backgroundPattern.animate(pattern: .normal, fadeDuration: 2, shouldFlashGameboard: true)
     }
     
     
