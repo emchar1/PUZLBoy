@@ -93,8 +93,8 @@ class Player {
             setupPlayer(framesRange: [1...12, 1...8, 1...8, nil, nil, 1...4, 1...8],
                         framesCommand: [nil, nil, "Run", nil, nil, nil, nil])
         case .villain:
-            setupPlayer(framesRange: [1...12, 1...12, 1...12, 1...12, nil, 1...4, 1...7],
-                        framesCommand: [nil, "Idle", "Idle", nil, nil, nil, nil])
+            setupPlayer(framesRange: [1...12, 1...12, 1...12, 1...12, 1...4, 1...4, 1...7],
+                        framesCommand: [nil, "Idle", "Idle", nil, "Sliding", nil, nil])
         case .minion:
             setupPlayer(framesRange: [1...12, 1...12, 1...12, nil, nil, nil, 1...7],
                         framesCommand: [nil, "Idle", "Idle", nil, nil, nil, nil])
@@ -352,7 +352,7 @@ class Player {
      - returns: an SKAction of the illusions animation
      */
     static func moveWithIllusions(playerNode: SKSpriteNode, backgroundNode: SKNode, tag: String = "",
-                                  color: UIColor, playSound: Bool,
+                                  color: UIColor, playSound: Bool, fierce: Bool = false,
                                   startPoint: CGPoint, endPoint: CGPoint,
                                   startScale: CGFloat, endScale: CGFloat? = nil) -> SKAction {
         
@@ -364,7 +364,7 @@ class Player {
                 let scaleDiff: CGFloat = (endScale ?? startScale) - startScale
                 let incrementScale: CGFloat = scaleDiff * CGFloat(illusionStep) / CGFloat(blinkDivision)
                 
-                let illusionSprite = SKSpriteNode(imageNamed: playerNode.texture?.getFilename() ?? "VillainIdle (1)")
+                let illusionSprite = SKSpriteNode(imageNamed: fierce ? "VillainJump (1)" : (playerNode.texture?.getFilename() ?? "VillainJump (1)"))
                 illusionSprite.size = Player.size
                 illusionSprite.xScale = playerNode.xScale + incrementScale * (playerNode.xScale < 0 ? -1 : 1)
                 illusionSprite.yScale = playerNode.yScale + incrementScale
@@ -399,14 +399,14 @@ class Player {
     }
     
     /**
-     NEW Object function that moves a Player with illusions.
+     NEW instance function that moves a player with illusions.
      > Warning: This is an object function, not a class function. This is a new type of animation that is not static, so call it from your Player object. Added 9/24/24.
      - parameters:
         - backgroundNode: the gameboard sprite to add the duplicate child to.
         - trailLength: number of repeats of duplicates to create before resetting the isAnimatingIllusions2 guard property.
         - trailTightness: "closeness" of the duplicates.
      */
-    func moveWithIllusions2(backgroundNode: SKNode, trailColor: UIColor?, trailLength: Int, trailTightness: TimeInterval) {
+    func moveWithIllusionsElder(backgroundNode: SKNode, trailColor: UIColor?, trailLength: Int, trailTightness: TimeInterval) {
         guard !isAnimatingIllusions2 else { return }
         
         var zPositionOffset: CGFloat = 1

@@ -10,7 +10,9 @@ import SpriteKit
 protocol FinalBattle2ControlsDelegate: AnyObject {
     func didHeroAttack(chosenSword: ChosenSword)
     func didVillainDisappear(fadeDuration: TimeInterval)
+    func willVillainReappear()
     func didVillainReappear()
+    func willBreakShield(fadeDuration: TimeInterval)
     func didBreakShield()
 }
 
@@ -262,25 +264,40 @@ class FinalBattle2Controls {
      Helper function to assist with moving the villain after he's been attacked by the hero.
      */
     private func moveVillainFlee() {
+        let moveDirection = villain.sprite.xScale / abs(villain.sprite.xScale)
+        let moveDistance: CGFloat = 20
         let fadeDistance = CGPoint(x: 0, y: gameboard.panelSize) + FinalBattle2Engine.villainFloatOffset
         let fadeDuration: TimeInterval = 2
         let waitDuration = TimeInterval.random(in: 2...6)
         let villainDirection: CGFloat = villainPositionNew.col < gameboard.panelCount / 2 ? 1 : -1
         
+        villainPosition = villainPositionNew
+        
         delegate?.didVillainDisappear(fadeDuration: fadeDuration)
         
-        villainPosition = villainPositionNew
-
+        AudioManager.shared.playSound(for: "magicheartbeatloop1", fadeIn: fadeDuration)
+        AudioManager.shared.playSound(for: "villainpain\(Int.random(in: 1...3))")
+        
         villain.sprite.run(SKAction.sequence([
+            SKAction.moveBy(x: -moveDirection * moveDistance, y: 0, duration: 0),
+            SKAction.colorize(with: .red, colorBlendFactor: 1, duration: 0),
+            SKAction.colorize(withColorBlendFactor: 0, duration: 0.5),
+            SKAction.moveBy(x: moveDirection * moveDistance, y: 0, duration: 0),
             SKAction.group([
                 SKAction.moveBy(x: fadeDistance.x, y: fadeDistance.y, duration: fadeDuration),
                 SKAction.fadeOut(withDuration: fadeDuration)
             ]),
             SKAction.wait(forDuration: waitDuration),
+            SKAction.run { [weak self] in
+                self?.delegate?.willVillainReappear()
+                AudioManager.shared.playSound(for: "scarylaugh")
+                AudioManager.shared.stopSound(for: "magicheartbeatloop1", fadeDuration: 1)
+            },
             Player.moveWithIllusions(playerNode: villain.sprite,
                                      backgroundNode: gameboard.sprite,
                                      color: .red.darkenColor(factor: 12),
                                      playSound: true,
+                                     fierce: true,
                                      startPoint: villain.sprite.position + fadeDistance,
                                      endPoint: gameboard.getLocation(at: villainPositionNew) + FinalBattle2Engine.villainFloatOffset,
                                      startScale: 1,
@@ -295,6 +312,8 @@ class FinalBattle2Controls {
             self?.delegate?.didVillainReappear()
         }
         
+        AudioManager.shared.playSound(for: "magicwarp")
+        AudioManager.shared.playSound(for: "magicwarp2")
         ParticleEngine.shared.animateParticles(type: .magmoorBamf,
                                                toNode: villain.sprite,
                                                position: .zero,
@@ -307,11 +326,15 @@ class FinalBattle2Controls {
      */
     private func villainShieldReset() {
         let magmoorShield = SKSpriteNode(imageNamed: "magmoorShieldBottom")
+        magmoorShield.color = .red
+        magmoorShield.colorBlendFactor = 1
         magmoorShield.setScale(0)
         magmoorShield.zPosition = -1
         magmoorShield.name = "magmoorShield"
         
         let magmoorShieldTop = SKSpriteNode(imageNamed: "magmoorShieldTop")
+        magmoorShieldTop.color = .red
+        magmoorShieldTop.colorBlendFactor = 1
         magmoorShieldTop.zPosition = 2
         
         magmoorShield.addChild(magmoorShieldTop)
@@ -321,14 +344,17 @@ class FinalBattle2Controls {
         
         magmoorShield.run(SKAction.repeatForever(SKAction.rotate(byAngle: .pi / 2, duration: 4)))
         magmoorShield.run(SKAction.sequence([
-            scaleAndFade(size: 6, alpha: 0.5, duration: 1),
+            scaleAndFade(size: 6, alpha: 0.5, duration: 0.25),
             scaleAndFade(size: 2.5, alpha: 1, duration: 0.5),
-            scaleAndFade(),
+            SKAction.run {
+                AudioManager.shared.playSound(for: "shieldpulse")
+            },
+            scaleAndFade(duration: 1.75),
             SKAction.repeatForever(SKAction.sequence([
                 scaleAndFade(size: 4, alpha: 1, duration: 2),
                 scaleAndFade(size: 5, alpha: 0.5, duration: 2)
             ]))
-        ]))
+        ])) //Don't put a completion handler here; it will never execute due to repeatForever action!
     }
     
     /**
@@ -342,29 +368,33 @@ class FinalBattle2Controls {
         villainShield = max(villainShield, 0)
         
         if villainShield > 0 {
-            magmoorShield.run(SKAction.group([
-                SKAction.sequence([
-                    scaleAndFade(size: 6, alpha: 0.5, duration: 0.5),
-                    scaleAndFade(size: 2.5, alpha: 1, duration: 0.5),
-                    scaleAndFade(size: 4, alpha: 0.25, duration: 2)
+            magmoorShield.run(SKAction.sequence([
+                SKAction.group([
+                    scaleAndFade(size: 3.5, alpha: 1, duration: 2.5),
+                    shieldShake(duration: 2.5)
                 ]),
-                shieldShake(duration: 0.5)
+                scaleAndFade(size: 5, alpha: 0.5, duration: 0.5)
             ])) { [weak self] in
                 self?.canAttack = true
             }
         }
         else {
+            let fadeDuration: TimeInterval = 3
+            
+            delegate?.willBreakShield(fadeDuration: fadeDuration)
+            
             magmoorShield.run(SKAction.sequence([
                 SKAction.group([
-                    scaleAndFade(size: 2.5, alpha: 1, duration: 3),
-                    shieldShake(duration: 3),
+                    scaleAndFade(size: 2.5, alpha: 1, duration: 4),
+                    shieldShake(duration: 4)
                 ]),
+                SKAction.run { [weak self] in
+                    self?.delegate?.didBreakShield()
+                },
                 scaleAndFade(size: 16, alpha: 1, duration: 0.25),
                 SKAction.removeFromParent()
             ])) { [weak self] in
                 self?.canAttack = true
-                
-                self?.delegate?.didBreakShield()
             }
         }
     }

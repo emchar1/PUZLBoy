@@ -1333,7 +1333,7 @@ class GameboardSprite {
                     SKAction.run { [weak self] in
                         guard let self = self else { return }
                         
-                        elder.moveWithIllusions2(backgroundNode: sprite, trailColor: trailColor, trailLength: 20, trailTightness: 0.03)
+                        elder.moveWithIllusionsElder(backgroundNode: sprite, trailColor: trailColor, trailLength: 20, trailTightness: 0.03)
                     }
                 ]))
             }

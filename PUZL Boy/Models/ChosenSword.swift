@@ -85,17 +85,22 @@ class ChosenSword {
         AudioManager.shared.playSound(for: "swordthrow", delay: delay ?? 0)
     }
     
+    /**
+     Actually execute the completion earlier, i.e. before the sword fades away. This helps with timing of heath drop/increase, etc.
+     > Warning: spriteNode will not remove itself from parent node until after the sword is done fading out, i.e. 0.5s after completion handler is ready to execute.
+     */
     func attack(completion: (() -> Void)?) {
         spriteNode.run(SKAction.sequence([
             SKAction.fadeIn(withDuration: 0),
             SKAction.wait(forDuration: 0.25),
             SKAction.rotate(byAngle: -3 * .pi / 2, duration: 0.25),
+            SKAction.run {
+                completion?()
+            },
             SKAction.fadeAlpha(to: 0, duration: 0.5),
             SKAction.rotate(toAngle: 0, duration: 0),
             SKAction.removeFromParent()
-        ])) {
-            completion?()
-        }
+        ]))
         
         AudioManager.shared.playSound(for: "boyattack\(Int.random(in: 1...3))")
         AudioManager.shared.playSound(for: "swordslash")

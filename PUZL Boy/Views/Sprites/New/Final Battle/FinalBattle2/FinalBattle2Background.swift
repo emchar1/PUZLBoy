@@ -67,6 +67,8 @@ class FinalBattle2Background {
         
         switch pattern {
         case .normal:
+            let flashDuration: TimeInterval = min(0.25, fadeDuration)
+            
             overworldMusic = "bossbattle3"
             
             backgroundSprite.run(SKAction.fadeAlpha(to: 1, duration: fadeDuration))
@@ -82,9 +84,14 @@ class FinalBattle2Background {
                 flashGameboard.run(SKAction.sequence([
                     SKAction.colorize(with: .white, colorBlendFactor: 1, duration: 0),
                     SKAction.fadeIn(withDuration: 0),
-                    SKAction.colorize(with: .black, colorBlendFactor: 1, duration: min(0.25, fadeDuration)),
-                    SKAction.fadeOut(withDuration: fadeDuration - min(0.25, fadeDuration))
+                    SKAction.group([
+                        SKAction.fadeAlpha(to: 0.9, duration: flashDuration),
+                        SKAction.colorize(with: .black, colorBlendFactor: 1, duration: flashDuration),
+                    ]),
+                    SKAction.fadeOut(withDuration: fadeDuration - flashDuration)
                 ]))
+                
+                adjustOverworldMusic(volume: 1, fadeDuration: fadeDuration)
             }
             else {
                 flashGameboard.run(SKAction.fadeOut(withDuration: fadeDuration))
@@ -99,14 +106,16 @@ class FinalBattle2Background {
                 SKAction.colorize(with: .black, colorBlendFactor: 1, duration: 0),
                 SKAction.fadeAlpha(to: 0.8, duration: fadeDuration)
             ]))
+            
+            adjustOverworldMusic(volume: 0.1, fadeDuration: fadeDuration)
         case .convulse:
             let convulseColors: (first: UIColor, second: UIColor) = (UIColor.red, UIColor.black)
-            let pulseDuration: TimeInterval = 0.1
+            let pulseDuration: TimeInterval = 0.04
             
-            backgroundSprite.run(SKAction.fadeAlpha(by: 1, duration: pulseDuration))
+            backgroundSprite.run(SKAction.fadeAlpha(to: 1, duration: pulseDuration))
             backgroundSprite.run(SKAction.colorize(with: .black, colorBlendFactor: 1, duration: pulseDuration))
             
-            bloodOverlay.run(SKAction.fadeAlpha(to: FinalBattle2Background.defaultBloodOverlayAlpha, duration: pulseDuration))
+            bloodOverlay.run(SKAction.fadeAlpha(to: FinalBattle2Background.defaultBloodOverlayAlpha, duration: fadeDuration))
             bloodOverlay.run(SKAction.repeatForever(SKAction.sequence(
                 cycleColors(colors: [convulseColors.first, convulseColors.second],
                             blendFactor: 1,
@@ -187,6 +196,10 @@ class FinalBattle2Background {
             AudioManager.shared.playSound(for: overworldMusic)
         }
     } //end animate()
+    
+    func adjustOverworldMusic(volume: Float = 1, fadeDuration: TimeInterval = 0) {
+        AudioManager.shared.adjustVolume(to: volume, for: overworldMusic, fadeDuration: fadeDuration)
+    }
     
     
 }

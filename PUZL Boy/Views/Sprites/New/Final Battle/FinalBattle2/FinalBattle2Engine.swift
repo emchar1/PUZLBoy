@@ -86,6 +86,11 @@ class FinalBattle2Engine {
         villain.sprite.xScale *= -1
         villain.sprite.zPosition = K.ZPosition.player + 2
         
+        ParticleEngine.shared.animateParticles(type: .magmoorSmoke,
+                                               toNode: villain.sprite,
+                                               position: .zero,
+                                               duration: 0)
+        
         //Initialize after gameboard, hero and heroPosition!
         controls = FinalBattle2Controls(gameboard: gameboard,
                                         player: hero,
@@ -337,8 +342,17 @@ extension FinalBattle2Engine: FinalBattle2ControlsDelegate {
         backgroundPattern.animate(pattern: .blackout, fadeDuration: fadeDuration)
     }
     
+    func willVillainReappear() {
+        backgroundPattern.adjustOverworldMusic(volume: 0.65, fadeDuration: 1)
+    }
+    
     func didVillainReappear() {
         backgroundPattern.animate(pattern: .convulse, fadeDuration: 2)
+    }
+    
+    func willBreakShield(fadeDuration: TimeInterval) {
+        bloodOverlay.run(SKAction.fadeOut(withDuration: fadeDuration))
+        flashGameboard.run(SKAction.fadeOut(withDuration: fadeDuration))
     }
     
     func didBreakShield() {
