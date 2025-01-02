@@ -59,6 +59,17 @@ class FinalBattle2Background {
             return actions
         }
         
+        func flashGameboardAction(duration: TimeInterval) -> SKAction {
+            return SKAction.sequence([
+                SKAction.colorize(with: .white, colorBlendFactor: 1, duration: 0),
+                SKAction.fadeIn(withDuration: 0),
+                SKAction.group([
+                    SKAction.colorize(with: .black, colorBlendFactor: 1, duration: duration),
+                    SKAction.fadeAlpha(to: 0.8, duration: duration)
+                ])
+            ])
+        }
+        
         previousOverworldMusic = overworldMusic
         
         backgroundSprite.removeAllActions()
@@ -82,12 +93,7 @@ class FinalBattle2Background {
             
             if shouldFlashGameboard {
                 flashGameboard.run(SKAction.sequence([
-                    SKAction.colorize(with: .white, colorBlendFactor: 1, duration: 0),
-                    SKAction.fadeIn(withDuration: 0),
-                    SKAction.group([
-                        SKAction.fadeAlpha(to: 0.9, duration: flashDuration),
-                        SKAction.colorize(with: .black, colorBlendFactor: 1, duration: flashDuration),
-                    ]),
+                    flashGameboardAction(duration: flashDuration),
                     SKAction.fadeOut(withDuration: fadeDuration - flashDuration)
                 ]))
                 
@@ -123,10 +129,7 @@ class FinalBattle2Background {
                             shouldBlink: true)
             )))
             
-            flashGameboard.run(SKAction.sequence([
-                SKAction.colorize(with: .black, colorBlendFactor: 1, duration: 0),
-                SKAction.fadeAlpha(to: 0.8, duration: pulseDuration)
-            ]))
+            flashGameboard.run(flashGameboardAction(duration: 0.25))
         case .princess:
             let princessColors: (first: UIColor, second: UIColor) = (UIColor.magenta, UIColor.white)
             let pulseDuration: TimeInterval = 0.08
