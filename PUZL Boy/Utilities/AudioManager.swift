@@ -182,14 +182,17 @@ class AudioManager {
         addAudioItem("revive", category: .soundFX)
         addAudioItem("sadaccent", category: .soundFX)
         addAudioItem("scarylaugh", category: .soundFX)
+        addAudioItem("shieldcast", category: .soundFX) //NEEDS PURCHASE $1
+        addAudioItem("shieldcast2", category: .soundFX) //NEEDS PURCHASE $0
         addAudioItem("speechbubble", category: .soundFX) //not purchased $2
+        addAudioItem("swordparry", category: .soundFX) //NEEDS PURCHASE $1
         addAudioItem("swordslash", category: .soundFX)
         addAudioItem("swordthrow", category: .soundFX) //NEEDS PURCHASE $1
         addAudioItem("touchstatue", category: .soundFX)
         addAudioItem("thunderrumble", category: .soundFX)
-        addAudioItem("villainpain1", category: .soundFX) //$2
-        addAudioItem("villainpain2", category: .soundFX) //$2
-        addAudioItem("villainpain3", category: .soundFX) //$2
+        addAudioItem("villainpain1", category: .soundFX) //NEEDS PURCHASE $2
+        addAudioItem("villainpain2", category: .soundFX) //NEEDS PURCHASE $2
+        addAudioItem("villainpain3", category: .soundFX) //NEEDS PURCHASE $2
         addAudioItem("warp", category: .soundFX)
         addAudioItem("waterappear1", category: .soundFX) //not purchased $3
         addAudioItem("waterappear2", category: .soundFX)
@@ -207,8 +210,7 @@ class AudioManager {
         addAudioItem("littlegirllaugh", category: .soundFXLoop)
         addAudioItem("magicdoomloop", category: .soundFXLoop)
         addAudioItem("magmoorcreepystrings", category: .soundFXLoop)
-        addAudioItem("shieldpulse", category: .soundFXLoop) //$1
-        addAudioItem("shieldpulse2", category: .soundFXLoop)
+        addAudioItem("shieldpulse", category: .soundFXLoop) //NEEDS PURCHASE $1
 
         
         //No Loop music

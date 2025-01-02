@@ -190,7 +190,7 @@ class FinalBattle2Controls {
             gameboard.sprite.addChild(chosenSword.spriteNode)
             
             chosenSword.spriteNode.position = gameboard.getLocation(at: villainPosition)
-            chosenSword.attack { [weak self] in
+            chosenSword.attack(shouldParry: villainShield > 0) { [weak self] in
                 guard let self = self else { return }
                 
                 isDisabled = false
@@ -342,6 +342,9 @@ class FinalBattle2Controls {
         
         villainShield = 3
         
+        AudioManager.shared.playSound(for: "shieldcast")
+        AudioManager.shared.playSound(for: "shieldcast2")
+
         magmoorShield.run(SKAction.repeatForever(SKAction.rotate(byAngle: .pi / 2, duration: 4)))
         magmoorShield.run(SKAction.sequence([
             scaleAndFade(size: 6, alpha: 0.5, duration: 0.25),
@@ -379,14 +382,29 @@ class FinalBattle2Controls {
             }
         }
         else {
-            let fadeDuration: TimeInterval = 3
+            let fadeDuration: TimeInterval = 3.5
             
-            delegate?.willBreakShield(fadeDuration: fadeDuration)
+            AudioManager.shared.playSound(for: "magicdisappear", delay: fadeDuration)
             
             magmoorShield.run(SKAction.sequence([
                 SKAction.group([
-                    scaleAndFade(size: 2.5, alpha: 1, duration: 4),
-                    shieldShake(duration: 4)
+                    scaleAndFade(size: 2.5, alpha: 1, duration: fadeDuration + 0.5),
+                    shieldShake(duration: fadeDuration + 0.5),
+                    SKAction.sequence([
+                        SKAction.wait(forDuration: fadeDuration + 0.25),
+                        SKAction.run { [weak self] in
+                            guard let self = self else { return }
+                            
+                            delegate?.willBreakShield(fadeDuration: 0.25)
+                            
+                            AudioManager.shared.stopSound(for: "shieldpulse")
+                            ParticleEngine.shared.animateParticles(type: .magicExplosion,
+                                                                   toNode: villain.sprite,
+                                                                   position: .zero,
+                                                                   scale: 1,
+                                                                   duration: 1)
+                        }
+                    ])
                 ]),
                 SKAction.run { [weak self] in
                     self?.delegate?.didBreakShield()

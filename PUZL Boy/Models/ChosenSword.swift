@@ -89,7 +89,7 @@ class ChosenSword {
      Actually execute the completion earlier, i.e. before the sword fades away. This helps with timing of heath drop/increase, etc.
      > Warning: spriteNode will not remove itself from parent node until after the sword is done fading out, i.e. 0.5s after completion handler is ready to execute.
      */
-    func attack(completion: (() -> Void)?) {
+    func attack(shouldParry: Bool, completion: (() -> Void)?) {
         spriteNode.run(SKAction.sequence([
             SKAction.fadeIn(withDuration: 0),
             SKAction.wait(forDuration: 0.25),
@@ -102,8 +102,14 @@ class ChosenSword {
             SKAction.removeFromParent()
         ]))
         
-        AudioManager.shared.playSound(for: "boyattack\(Int.random(in: 1...3))")
-        AudioManager.shared.playSound(for: "swordslash")
+        if shouldParry {
+            AudioManager.shared.playSound(for: "boyattack\(Int.random(in: 1...2))")
+            AudioManager.shared.playSound(for: "swordparry")
+        }
+        else {
+            AudioManager.shared.playSound(for: "boyattack3")
+            AudioManager.shared.playSound(for: "swordslash")
+        }
     }
     
     

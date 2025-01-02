@@ -115,7 +115,7 @@ class FinalBattle2Background {
             backgroundSprite.run(SKAction.fadeAlpha(to: 1, duration: pulseDuration))
             backgroundSprite.run(SKAction.colorize(with: .black, colorBlendFactor: 1, duration: pulseDuration))
             
-            bloodOverlay.run(SKAction.fadeAlpha(to: FinalBattle2Background.defaultBloodOverlayAlpha, duration: fadeDuration))
+            bloodOverlay.run(SKAction.fadeAlpha(to: 0.35, duration: fadeDuration))
             bloodOverlay.run(SKAction.repeatForever(SKAction.sequence(
                 cycleColors(colors: [convulseColors.first, convulseColors.second],
                             blendFactor: 1,
