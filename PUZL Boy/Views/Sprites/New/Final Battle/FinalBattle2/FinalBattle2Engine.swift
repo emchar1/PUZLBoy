@@ -31,7 +31,7 @@ class FinalBattle2Engine {
     private var spawnPanels0: [K.GameboardPosition] = []
     private var spawnPanels1: [K.GameboardPosition] = []
     private var spawnPanels2: [K.GameboardPosition] = []
-    private var spawnPanels3: [K.GameboardPosition] = []
+    //    private var spawnPanels3: [K.GameboardPosition] = []
     
     private var superScene: SKScene?
     private var backgroundSprite: SKSpriteNode!
@@ -105,7 +105,7 @@ class FinalBattle2Engine {
         populateSpawnPanels(spawnPanels: &spawnPanels0, startPosition: heroPosition, ignorePositions: ignorePositions, maxCount: maxCount)
         populateSpawnPanels(spawnPanels: &spawnPanels1, startPosition: heroPosition, ignorePositions: ignorePositions, maxCount: maxCount)
         populateSpawnPanels(spawnPanels: &spawnPanels2, startPosition: heroPosition, ignorePositions: ignorePositions, maxCount: maxCount)
-        populateSpawnPanels(spawnPanels: &spawnPanels3, startPosition: heroPosition, ignorePositions: ignorePositions, maxCount: maxCount)
+        //        populateSpawnPanels(spawnPanels: &spawnPanels3, startPosition: heroPosition, ignorePositions: ignorePositions, maxCount: maxCount)
     }
     
     
@@ -159,7 +159,7 @@ class FinalBattle2Engine {
         animateSpawnPanels(spawnPanels: spawnPanels0, with: terrainPanel)
         animateSpawnPanels(spawnPanels: spawnPanels1, with: terrainPanel)
         animateSpawnPanels(spawnPanels: spawnPanels2, with: terrainPanel)
-        animateSpawnPanels(spawnPanels: spawnPanels3, with: terrainPanel)
+        //        animateSpawnPanels(spawnPanels: spawnPanels3, with: terrainPanel)
     }
     
 //    func flashHeroAttacked(duration: TimeInterval = 0.5) {
@@ -369,12 +369,14 @@ class FinalBattle2Engine {
             damagePanel.anchorPoint = .zero
             damagePanel.color = .red
             damagePanel.colorBlendFactor = 1
+            damagePanel.alpha = 0
             damagePanel.zPosition = 6
             
             originalTerrain.addChild(damagePanel)
             
             damagePanel.run(SKAction.sequence([
-                SKAction.wait(forDuration: 1),
+                SKAction.fadeIn(withDuration: 0.25),
+                SKAction.wait(forDuration: 0.75),
                 SKAction.fadeOut(withDuration: 1),
                 SKAction.removeFromParent()
             ]))
@@ -420,7 +422,7 @@ extension FinalBattle2Engine: FinalBattle2ControlsDelegate {
     func willBreakShield(fadeDuration: TimeInterval) {
         bloodOverlay.run(SKAction.fadeOut(withDuration: fadeDuration))
         flashGameboard.run(SKAction.fadeOut(withDuration: fadeDuration))
-        backgroundPattern.adjustOverworldMusic(volume: 0.1, fadeDuration: fadeDuration)
+        backgroundPattern.adjustOverworldMusic(volume: 0, fadeDuration: 0)
     }
     
     /**

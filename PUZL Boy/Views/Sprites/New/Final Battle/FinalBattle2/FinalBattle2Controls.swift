@@ -268,7 +268,7 @@ class FinalBattle2Controls {
         let moveDistance: CGFloat = 20
         let fadeDistance = CGPoint(x: 0, y: gameboard.panelSize) + FinalBattle2Engine.villainFloatOffset
         let fadeDuration: TimeInterval = 2
-        let waitDuration = TimeInterval.random(in: 2...6)
+        let waitDuration = TimeInterval.random(in: 3...10)
         let villainDirection: CGFloat = villainPositionNew.col < gameboard.panelCount / 2 ? 1 : -1
         
         villainPosition = villainPositionNew
@@ -344,7 +344,8 @@ class FinalBattle2Controls {
         
         AudioManager.shared.playSound(for: "shieldcast")
         AudioManager.shared.playSound(for: "shieldcast2")
-
+        
+        shieldThrob(node: magmoorShield, waitDuration: 2.5)
         magmoorShield.run(SKAction.repeatForever(SKAction.rotate(byAngle: .pi / 2, duration: 4)))
         magmoorShield.run(SKAction.sequence([
             scaleAndFade(size: 6, alpha: 0.5, duration: 0.25),
@@ -352,12 +353,8 @@ class FinalBattle2Controls {
             SKAction.run {
                 AudioManager.shared.playSound(for: "shieldpulse")
             },
-            scaleAndFade(duration: 1.75),
-            SKAction.repeatForever(SKAction.sequence([
-                scaleAndFade(size: 4, alpha: 1, duration: 2),
-                scaleAndFade(size: 5, alpha: 0.5, duration: 2)
-            ]))
-        ])) //Don't put a completion handler here; it will never execute due to repeatForever action!
+            scaleAndFade(duration: 1.75)
+        ]))
     }
     
     /**
@@ -373,15 +370,20 @@ class FinalBattle2Controls {
         delegate?.willDamageShield()
         
         if villainShield > 0 {
+            let fadeDuration: TimeInterval = 2.5
+            
+            magmoorShield.removeAction(forKey: "shieldThrobAction")
+            shieldThrob(node: magmoorShield, waitDuration: fadeDuration + 0.5)
+            
             magmoorShield.run(SKAction.sequence([
                 SKAction.group([
-                    scaleAndFade(size: 3.5, alpha: 1, duration: 2.5),
-                    shieldShake(duration: 2.5)
+                    scaleAndFade(size: 3.5, alpha: 1, duration: fadeDuration),
+                    shieldShake(duration: fadeDuration)
                 ]),
+                scaleAndFade(size: 5, alpha: 0.5, duration: 0.5),
                 SKAction.run { [weak self] in
                     self?.delegate?.didDamageShield()
                 },
-                scaleAndFade(size: 5, alpha: 0.5, duration: 0.5)
             ])) { [weak self] in
                 self?.canAttack = true
             }
@@ -390,7 +392,9 @@ class FinalBattle2Controls {
             let fadeDuration: TimeInterval = 4.5
             
             AudioManager.shared.playSound(for: "magicdisappear", delay: fadeDuration)
+            AudioManager.shared.playSound(for: "enemyflame", delay: fadeDuration)
             
+            magmoorShield.removeAction(forKey: "shieldThrobAction")
             magmoorShield.run(SKAction.sequence([
                 SKAction.group([
                     scaleAndFade(size: 2.5, alpha: 1, duration: fadeDuration + 0.5),
@@ -417,6 +421,7 @@ class FinalBattle2Controls {
                     delegate?.didBreakShield(at: villainPosition)
                 },
                 scaleAndFade(size: 16, alpha: 1, duration: 0.25),
+                SKAction.fadeOut(withDuration: 0.25),
                 SKAction.removeFromParent()
             ])) { [weak self] in
                 self?.canAttack = true
@@ -430,7 +435,7 @@ class FinalBattle2Controls {
         - size: size of scale
         - alpha: the alpha of the fade
         - duration: time it takes to perform the action
-     - returns the action group.
+     - returns: the action group.
      */
     private func scaleAndFade(size: CGFloat = 5, alpha: CGFloat = 0.5, duration: TimeInterval = 1) -> SKAction {
         return SKAction.group([
@@ -442,7 +447,7 @@ class FinalBattle2Controls {
     /**
      Shakes the shield left and right.
      - parameter duration: duration of the shake
-     - returns the shaking SKAction
+     - returns: the shaking SKAction
      */
     private func shieldShake(duration: TimeInterval) -> SKAction {
         let moveAction = SKAction.moveBy(x: -80, y: 0, duration: 0.05)
@@ -451,6 +456,22 @@ class FinalBattle2Controls {
             moveAction,
             moveAction.reversed()
         ]), count: Int(duration / 0.1))
+    }
+    
+    /**
+     Performs a shield throbbing action on the node passed in
+     - parameters:
+        - node: the node to which to perform the action
+        - waitDuration: pause before throbbing action
+     */
+    private func shieldThrob(node: SKNode, waitDuration: TimeInterval) {
+        node.run(SKAction.sequence([
+            SKAction.wait(forDuration: waitDuration),
+            SKAction.repeatForever(SKAction.sequence([
+                scaleAndFade(size: 4, alpha: 1, duration: 2),
+                scaleAndFade(size: 5, alpha: 0.5, duration: 2)
+            ]))
+        ]), withKey: "shieldThrobAction")
     }
     
     /**
