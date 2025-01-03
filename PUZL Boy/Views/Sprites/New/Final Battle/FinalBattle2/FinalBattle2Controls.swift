@@ -12,6 +12,8 @@ protocol FinalBattle2ControlsDelegate: AnyObject {
     func didVillainDisappear(fadeDuration: TimeInterval)
     func willVillainReappear()
     func didVillainReappear()
+    func willDamageShield()
+    func didDamageShield()
     func willBreakShield(fadeDuration: TimeInterval)
     func didBreakShield()
 }
@@ -370,19 +372,24 @@ class FinalBattle2Controls {
         villainShield -= increment
         villainShield = max(villainShield, 0)
         
+        delegate?.willDamageShield()
+        
         if villainShield > 0 {
             magmoorShield.run(SKAction.sequence([
                 SKAction.group([
                     scaleAndFade(size: 3.5, alpha: 1, duration: 2.5),
                     shieldShake(duration: 2.5)
                 ]),
+                SKAction.run { [weak self] in
+                    self?.delegate?.didDamageShield()
+                },
                 scaleAndFade(size: 5, alpha: 0.5, duration: 0.5)
             ])) { [weak self] in
                 self?.canAttack = true
             }
         }
         else {
-            let fadeDuration: TimeInterval = 3.5
+            let fadeDuration: TimeInterval = 4.5
             
             AudioManager.shared.playSound(for: "magicdisappear", delay: fadeDuration)
             

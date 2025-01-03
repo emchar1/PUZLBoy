@@ -343,16 +343,25 @@ extension FinalBattle2Engine: FinalBattle2ControlsDelegate {
     }
     
     func willVillainReappear() {
-        backgroundPattern.adjustOverworldMusic(volume: 0.65, fadeDuration: 1)
+        backgroundPattern.adjustOverworldMusic(volume: 0.5, fadeDuration: 1)
     }
     
     func didVillainReappear() {
-        backgroundPattern.animate(pattern: .convulse, fadeDuration: 2)
+        backgroundPattern.animate(pattern: .wave, fadeDuration: 2, shouldFlashGameboard: true)
+    }
+    
+    func willDamageShield() {
+        backgroundPattern.animate(pattern: .convulse, fadeDuration: 0.04)
+    }
+    
+    func didDamageShield() {
+        backgroundPattern.animate(pattern: .wave, fadeDuration: 2)
     }
     
     func willBreakShield(fadeDuration: TimeInterval) {
         bloodOverlay.run(SKAction.fadeOut(withDuration: fadeDuration))
         flashGameboard.run(SKAction.fadeOut(withDuration: fadeDuration))
+        backgroundPattern.adjustOverworldMusic(volume: 0.1, fadeDuration: fadeDuration)
     }
     
     func didBreakShield() {

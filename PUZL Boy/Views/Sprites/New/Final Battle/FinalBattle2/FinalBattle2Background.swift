@@ -21,7 +21,7 @@ class FinalBattle2Background {
     private var previousOverworldMusic: String?
     
     enum BackgroundPattern {
-        case normal, blackout, convulse, princess, rainbow
+        case normal, blackout, wave, convulse, princess, rainbow
     }
     
     
@@ -44,32 +44,24 @@ class FinalBattle2Background {
     
     // MARK: - Functions
     
+    /**
+     Adjusts the overworld music to the set volume and fadeDuration
+     - parameters:
+        - volume: volume to set the overworld music
+        - fadeDuration: a fading time interval
+     **/
+    func adjustOverworldMusic(volume: Float = 1, fadeDuration: TimeInterval = 0) {
+        AudioManager.shared.adjustVolume(to: volume, for: overworldMusic, fadeDuration: fadeDuration)
+    }
+    
+    /**
+     Animates the background with the requested pattern.
+     - parameters:
+        - pattern: the background pattern of animations
+        - fadeDuration: the duration of the fade into the pattern
+        - shouldFlashGameboard: true if gameboard should flash a white color
+     */
     func animate(pattern: BackgroundPattern, fadeDuration: TimeInterval, shouldFlashGameboard: Bool = false) {
-        func cycleColors(colors: [UIColor], blendFactor: CGFloat, duration: TimeInterval, shouldBlink: Bool) -> [SKAction] {
-            var actions: [SKAction] = []
-            
-            for color in colors {
-                actions.append(SKAction.colorize(with: color, colorBlendFactor: blendFactor, duration: shouldBlink ? 0 : duration))
-
-                if shouldBlink {
-                    actions.append(SKAction.colorize(with: .clear, colorBlendFactor: blendFactor, duration: duration))
-                }
-            }
-            
-            return actions
-        }
-        
-        func flashGameboardAction(color: UIColor, fadeAlpha: CGFloat, duration: TimeInterval) -> SKAction {
-            return SKAction.sequence([
-                SKAction.colorize(with: color, colorBlendFactor: 1, duration: 0),
-                SKAction.fadeIn(withDuration: 0),
-                SKAction.group([
-                    SKAction.colorize(with: .black, colorBlendFactor: 1, duration: duration),
-                    SKAction.fadeAlpha(to: fadeAlpha, duration: duration)
-                ])
-            ])
-        }
-        
         previousOverworldMusic = overworldMusic
         
         backgroundSprite.removeAllActions()
@@ -114,22 +106,56 @@ class FinalBattle2Background {
             ]))
             
             adjustOverworldMusic(volume: 0.1, fadeDuration: fadeDuration)
+        case .wave:
+            let magmoorColors: (first: UIColor, second: UIColor) = (UIColor.red, UIColor.black)
+            let pulseDuration: TimeInterval = 2
+            let flashGameboardAlpha: CGFloat = 0.8
+            
+            backgroundSprite.run(SKAction.fadeAlpha(to: 1, duration: fadeDuration))
+            backgroundSprite.run(SKAction.colorize(with: .black, colorBlendFactor: 1, duration: fadeDuration))
+            
+            bloodOverlay.run(SKAction.fadeAlpha(to: FinalBattle2Background.defaultBloodOverlayAlpha, duration: fadeDuration))
+            bloodOverlay.run(SKAction.repeatForever(SKAction.sequence(
+                cycleColors(colors: [magmoorColors.first, magmoorColors.second],
+                            blendFactor: 1,
+                            duration: pulseDuration,
+                            shouldBlink: false)
+            )))
+            
+            if shouldFlashGameboard {
+                flashGameboard.run(flashGameboardAction(color: .white, fadeAlpha: flashGameboardAlpha, duration: 0.25))
+            }
+            else {
+                flashGameboard.run(SKAction.group([
+                    SKAction.colorize(with: .black, colorBlendFactor: 1, duration: fadeDuration),
+                    SKAction.fadeAlpha(to: flashGameboardAlpha, duration: fadeDuration)
+                ]))
+            }
         case .convulse:
-            let convulseColors: (first: UIColor, second: UIColor) = (UIColor.red, UIColor.black)
+            let magmoorColors: (first: UIColor, second: UIColor) = (UIColor.red, UIColor.black)
             let pulseDuration: TimeInterval = 0.04
+            let flashGameboardAlpha: CGFloat = 0.8
             
             backgroundSprite.run(SKAction.fadeAlpha(to: 1, duration: pulseDuration))
             backgroundSprite.run(SKAction.colorize(with: .black, colorBlendFactor: 1, duration: pulseDuration))
             
-            bloodOverlay.run(SKAction.fadeAlpha(to: 0.35, duration: fadeDuration))
+            bloodOverlay.run(SKAction.fadeAlpha(to: 0.5, duration: fadeDuration))
             bloodOverlay.run(SKAction.repeatForever(SKAction.sequence(
-                cycleColors(colors: [convulseColors.first, convulseColors.second],
+                cycleColors(colors: [magmoorColors.first, magmoorColors.second],
                             blendFactor: 1,
                             duration: pulseDuration,
                             shouldBlink: true)
             )))
             
-            flashGameboard.run(flashGameboardAction(color: .white, fadeAlpha: 0.8, duration: 0.25))
+            if shouldFlashGameboard {
+                flashGameboard.run(flashGameboardAction(color: .white, fadeAlpha:flashGameboardAlpha, duration: 0.25))
+            }
+            else {
+                flashGameboard.run(SKAction.group([
+                    SKAction.colorize(with: .black, colorBlendFactor: 1, duration: fadeDuration),
+                    SKAction.fadeAlpha(to: flashGameboardAlpha, duration: fadeDuration)
+                ]))
+            }
         case .princess:
             let princessColors: (first: UIColor, second: UIColor) = (UIColor.magenta, UIColor.white)
             let pulseDuration: TimeInterval = 0.08
@@ -191,6 +217,7 @@ class FinalBattle2Background {
             ]))
         } //end switch pattern
         
+        //Sets the overworld music, if previous overworld music was something different.
         if previousOverworldMusic != overworldMusic {
             if let previousOverworldMusic = previousOverworldMusic {
                 AudioManager.shared.stopSound(for: previousOverworldMusic)
@@ -199,9 +226,33 @@ class FinalBattle2Background {
             AudioManager.shared.playSound(for: overworldMusic)
         }
     } //end animate()
+        
     
-    func adjustOverworldMusic(volume: Float = 1, fadeDuration: TimeInterval = 0) {
-        AudioManager.shared.adjustVolume(to: volume, for: overworldMusic, fadeDuration: fadeDuration)
+    // MARK: - Helper Animate Functions
+    
+    private func cycleColors(colors: [UIColor], blendFactor: CGFloat, duration: TimeInterval, shouldBlink: Bool) -> [SKAction] {
+        var actions: [SKAction] = []
+        
+        for color in colors {
+            actions.append(SKAction.colorize(with: color, colorBlendFactor: blendFactor, duration: shouldBlink ? 0 : duration))
+
+            if shouldBlink {
+                actions.append(SKAction.colorize(with: .clear, colorBlendFactor: blendFactor, duration: duration))
+            }
+        }
+        
+        return actions
+    }
+    
+    private func flashGameboardAction(color: UIColor, fadeAlpha: CGFloat, duration: TimeInterval) -> SKAction {
+        return SKAction.sequence([
+            SKAction.colorize(with: color, colorBlendFactor: 1, duration: 0),
+            SKAction.fadeIn(withDuration: 0),
+            SKAction.group([
+                SKAction.colorize(with: .black, colorBlendFactor: 1, duration: duration),
+                SKAction.fadeAlpha(to: fadeAlpha, duration: duration)
+            ])
+        ])
     }
     
     
