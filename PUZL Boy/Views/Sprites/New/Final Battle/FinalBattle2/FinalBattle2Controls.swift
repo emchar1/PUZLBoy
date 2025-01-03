@@ -380,10 +380,10 @@ class FinalBattle2Controls {
                     scaleAndFade(size: 3.5, alpha: 1, duration: fadeDuration),
                     shieldShake(duration: fadeDuration)
                 ]),
-                scaleAndFade(size: 5, alpha: 0.5, duration: 0.5),
                 SKAction.run { [weak self] in
                     self?.delegate?.didDamageShield()
                 },
+                scaleAndFade(size: 5, alpha: 0.5, duration: 0.5)
             ])) { [weak self] in
                 self?.canAttack = true
             }
@@ -392,7 +392,6 @@ class FinalBattle2Controls {
             let fadeDuration: TimeInterval = 4.5
             
             AudioManager.shared.playSound(for: "magicdisappear", delay: fadeDuration)
-            AudioManager.shared.playSound(for: "enemyflame", delay: fadeDuration)
             
             magmoorShield.removeAction(forKey: "shieldThrobAction")
             magmoorShield.run(SKAction.sequence([
