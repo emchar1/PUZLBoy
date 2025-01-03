@@ -382,7 +382,7 @@ class FinalBattle2Engine {
         
         //Update health
         if affectedPanels.contains(where: { $0 == heroPosition }) {
-            health.updateHealth(type: .villainAttack, player: hero)
+            health.updateHealth(type: .villainShieldExplode, player: hero)
         }
     }
     
