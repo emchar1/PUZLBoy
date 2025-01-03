@@ -145,7 +145,6 @@
 		EA7E75352C23959B00BE2781 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = EA7E75342C23959B00BE2781 /* GoogleService-Info.plist */; };
 		EA7E75392C3B0DA200BE2781 /* Warp4SlowParticles.sks in Resources */ = {isa = PBXBuildFile; fileRef = EA7E75382C3B0DA200BE2781 /* Warp4SlowParticles.sks */; };
 		EA7ED2132D261B9400AF5314 /* villainpain2.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA7ED2112D261B9400AF5314 /* villainpain2.mp3 */; };
-		EA7ED2172D26287200AF5314 /* shieldpulse.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA7ED2162D26287200AF5314 /* shieldpulse.mp3 */; };
 		EA7FB7382C6EE6F20098F1EB /* AgeOfRuin.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA7FB7372C6EE6F20098F1EB /* AgeOfRuin.swift */; };
 		EA81968A2C41AC590002D551 /* MagicElderParticles.sks in Resources */ = {isa = PBXBuildFile; fileRef = EA8196892C41AC590002D551 /* MagicElderParticles.sks */; };
 		EA8196902C437AD90002D551 /* MagicElderExplosionParticles.sks in Resources */ = {isa = PBXBuildFile; fileRef = EA81968F2C437AD90002D551 /* MagicElderExplosionParticles.sks */; };
@@ -348,6 +347,7 @@
 		EAE751D32D2728E6004B138A /* shieldcast.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAE751D22D2728E6004B138A /* shieldcast.mp3 */; };
 		EAE751D52D272946004B138A /* shieldcast2.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAE751D42D272946004B138A /* shieldcast2.mp3 */; };
 		EAE751D72D272A2A004B138A /* swordparry.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAE751D62D272A2A004B138A /* swordparry.mp3 */; };
+		EAE751DD2D28A5A0004B138A /* shieldpulse.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAE751DC2D28A5A0004B138A /* shieldpulse.mp3 */; };
 		EAE919452A4CA4A800AF67D1 /* clocktick.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAE919442A4CA4A800AF67D1 /* clocktick.mp3 */; };
 		EAE919472A4CAFFD00AF67D1 /* gemcollectparty3x.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAE919462A4CAFFD00AF67D1 /* gemcollectparty3x.mp3 */; };
 		EAE919492A4CB02900AF67D1 /* gemcollectpartylife.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAE919482A4CB02800AF67D1 /* gemcollectpartylife.mp3 */; };
@@ -520,7 +520,6 @@
 		EA7E75342C23959B00BE2781 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		EA7E75382C3B0DA200BE2781 /* Warp4SlowParticles.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Warp4SlowParticles.sks; sourceTree = "<group>"; };
 		EA7ED2112D261B9400AF5314 /* villainpain2.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = villainpain2.mp3; sourceTree = "<group>"; };
-		EA7ED2162D26287200AF5314 /* shieldpulse.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = shieldpulse.mp3; sourceTree = "<group>"; };
 		EA7FB7372C6EE6F20098F1EB /* AgeOfRuin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgeOfRuin.swift; sourceTree = "<group>"; };
 		EA8196892C41AC590002D551 /* MagicElderParticles.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = MagicElderParticles.sks; sourceTree = "<group>"; };
 		EA81968F2C437AD90002D551 /* MagicElderExplosionParticles.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = MagicElderExplosionParticles.sks; sourceTree = "<group>"; };
@@ -720,6 +719,7 @@
 		EAE751D22D2728E6004B138A /* shieldcast.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = shieldcast.mp3; sourceTree = "<group>"; };
 		EAE751D42D272946004B138A /* shieldcast2.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = shieldcast2.mp3; sourceTree = "<group>"; };
 		EAE751D62D272A2A004B138A /* swordparry.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = swordparry.mp3; sourceTree = "<group>"; };
+		EAE751DC2D28A5A0004B138A /* shieldpulse.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = shieldpulse.mp3; sourceTree = "<group>"; };
 		EAE919442A4CA4A800AF67D1 /* clocktick.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = clocktick.mp3; sourceTree = "<group>"; };
 		EAE919462A4CAFFD00AF67D1 /* gemcollectparty3x.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = gemcollectparty3x.mp3; sourceTree = "<group>"; };
 		EAE919482A4CB02800AF67D1 /* gemcollectpartylife.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = gemcollectpartylife.mp3; sourceTree = "<group>"; };
@@ -1180,7 +1180,7 @@
 				EA9D6A592B48E4B20004187B /* scarymusicbox.mp3 */,
 				EAE751D22D2728E6004B138A /* shieldcast.mp3 */,
 				EAE751D42D272946004B138A /* shieldcast2.mp3 */,
-				EA7ED2162D26287200AF5314 /* shieldpulse.mp3 */,
+				EAE751DC2D28A5A0004B138A /* shieldpulse.mp3 */,
 				EA95B3082A8C9DA300C5F028 /* speechbubble.mp3 */,
 				EAE751D62D272A2A004B138A /* swordparry.mp3 */,
 				EAEF2EFD2B4F5B7E00AD8459 /* swordslash.mp3 */,
@@ -1564,7 +1564,6 @@
 				EAE919452A4CA4A800AF67D1 /* clocktick.mp3 in Resources */,
 				EAE751D72D272A2A004B138A /* swordparry.mp3 in Resources */,
 				EA7A791F2C7EFF8100594349 /* chatopenstatue.mp3 in Resources */,
-				EA7ED2172D26287200AF5314 /* shieldpulse.mp3 in Resources */,
 				EA0F145F292994B00013038E /* movewalk.mp3 in Resources */,
 				EAF7182129B3097300E2ED82 /* lavasizzle.mp3 in Resources */,
 				EA0F145D292994330013038E /* moverun1.mp3 in Resources */,
@@ -1674,6 +1673,7 @@
 				EA8C606F2C068E0800DED3C7 /* chatopenprincess.mp3 in Resources */,
 				EA94E87329C0DE2C009F2614 /* movetile3.mp3 in Resources */,
 				EA74F9D02BA17BDE002CE6B2 /* InBetweenParticles.sks in Resources */,
+				EAE751DD2D28A5A0004B138A /* shieldpulse.mp3 in Resources */,
 				EA41FBF72D00D71500796368 /* magichorrorimpact2.mp3 in Resources */,
 				EAFE35962CE48BB600289ADF /* magicheartbeatloop2.mp3 in Resources */,
 				EAD19A1D2A9C14B500A07A63 /* PoisonBubblesParticles.sks in Resources */,

@@ -268,7 +268,7 @@ class FinalBattle2Controls {
         let moveDistance: CGFloat = 20
         let fadeDistance = CGPoint(x: 0, y: gameboard.panelSize) + FinalBattle2Engine.villainFloatOffset
         let fadeDuration: TimeInterval = 2
-        let waitDuration = TimeInterval.random(in: 3...10)
+        let waitDuration = TimeInterval.random(in: 3...8)
         let villainDirection: CGFloat = villainPositionNew.col < gameboard.panelCount / 2 ? 1 : -1
         
         villainPosition = villainPositionNew
@@ -344,6 +344,7 @@ class FinalBattle2Controls {
         
         AudioManager.shared.playSound(for: "shieldcast")
         AudioManager.shared.playSound(for: "shieldcast2")
+        Haptics.shared.addHapticFeedback(withStyle: .soft)
         
         shieldThrob(node: magmoorShield, waitDuration: 2.5)
         magmoorShield.run(SKAction.repeatForever(SKAction.rotate(byAngle: .pi / 2, duration: 4)))
@@ -449,7 +450,7 @@ class FinalBattle2Controls {
      - returns: the shaking SKAction
      */
     private func shieldShake(duration: TimeInterval) -> SKAction {
-        let moveAction = SKAction.moveBy(x: -80, y: 0, duration: 0.05)
+        let moveAction = SKAction.moveBy(x: -40, y: 0, duration: 0.05)
         
         return SKAction.repeat(SKAction.sequence([
             moveAction,

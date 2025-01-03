@@ -105,10 +105,12 @@ class ChosenSword {
         if shouldParry {
             AudioManager.shared.playSound(for: "boyattack\(Int.random(in: 1...2))")
             AudioManager.shared.playSound(for: "swordparry")
+            Haptics.shared.addHapticFeedback(withStyle: .heavy)
         }
         else {
             AudioManager.shared.playSound(for: "boyattack3")
             AudioManager.shared.playSound(for: "swordslash")
+            Haptics.shared.executeCustomPattern(pattern: .killEnemy)
         }
     }
     

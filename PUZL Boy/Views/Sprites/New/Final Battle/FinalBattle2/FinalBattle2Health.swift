@@ -74,6 +74,7 @@ class FinalBattle2Health {
             ])), withKey: "playerBlink")
             
             AudioManager.shared.playSound(for: "boypain\(Int.random(in: 1...4))")
+            Haptics.shared.executeCustomPattern(pattern: FireIceTheme.isFire ? .lava : .water)
         case .regen:
             drainTimer?.invalidate()
             drainTimer = Timer.scheduledTimer(timeInterval: 0.25, target: self, selector: #selector(helperRegen), userInfo: nil, repeats: true)
@@ -95,6 +96,7 @@ class FinalBattle2Health {
             ]), count: 20), withKey: "playerBlink")
             
             AudioManager.shared.playSound(for: "boypain\(Int.random(in: 1...4))")
+            Haptics.shared.executeCustomPattern(pattern: .enemy)
         }
     }
     
