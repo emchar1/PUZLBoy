@@ -19,7 +19,7 @@ class FinalBattle2Health {
     private var dmgMultiplier: CGFloat?
     
     enum HealthType {
-        case drain, regen, lavaHit, villainAttack, heroAttack
+        case drain, regen, lavaHit, heroAttack, villainAttack, villainShieldExplode
     }
     
     
@@ -79,11 +79,22 @@ class FinalBattle2Health {
             drainTimer = Timer.scheduledTimer(timeInterval: 0.25, target: self, selector: #selector(helperRegen), userInfo: nil, repeats: true)
         case .lavaHit:
             timer = Timer.scheduledTimer(timeInterval: 0, target: self, selector: #selector(helperLavaHit), userInfo: nil, repeats: false)
-        case .villainAttack:
-            break
         case .heroAttack:
             drainTimer?.invalidate()
             drainTimer = Timer.scheduledTimer(timeInterval: 0, target: self, selector: #selector(helperHeroAttack), userInfo: nil, repeats: false)
+        case .villainAttack:
+            break
+        case .villainShieldExplode:
+            timer = Timer.scheduledTimer(timeInterval: 0, target: self, selector: #selector(helperVillainShield), userInfo: nil, repeats: false)
+
+            // FIXME: - Does the hit animation on the player belong here, or should it go in the Engine?
+            player.sprite.removeAction(forKey: "playerColorFade")
+            player.sprite.run(SKAction.repeat(SKAction.sequence([
+                SKAction.colorize(withColorBlendFactor: 1, duration: 0.05),
+                SKAction.colorize(withColorBlendFactor: 0, duration: 0.05)
+            ]), count: 20), withKey: "playerBlink")
+            
+            AudioManager.shared.playSound(for: "boypain\(Int.random(in: 1...4))")
         }
     }
     
@@ -120,8 +131,9 @@ class FinalBattle2Health {
     @objc private func helperDrain() { objcHelper(rateDivisions: [0.5], rates: [0.01, 0.005], increment: false) }
     @objc private func helperRegen() { objcHelper(rateDivisions: [0.75], rates: [0, 0.002], increment: true) }
     @objc private func helperLavaHit() { objcHelper(rateDivisions: [0.5], rates: [0.1, 0.05], increment: false) }
-    @objc private func helperVillainAttack() { }
     @objc private func helperHeroAttack() { objcHelper(rateDivisions: [0.5], rates: [0.1, 0.05].map { $0 * (dmgMultiplier ?? 0) }, increment: true) }
+    @objc private func helperVillainAttack() { }
+    @objc private func helperVillainShield() { objcHelper(rateDivisions: [0.5], rates: [0.2, 0.1], increment: false) }
     
     
 }

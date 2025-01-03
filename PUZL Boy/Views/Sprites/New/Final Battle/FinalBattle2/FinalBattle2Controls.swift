@@ -15,7 +15,7 @@ protocol FinalBattle2ControlsDelegate: AnyObject {
     func willDamageShield()
     func didDamageShield()
     func willBreakShield(fadeDuration: TimeInterval)
-    func didBreakShield()
+    func didBreakShield(at villainPosition: K.GameboardPosition)
 }
 
 class FinalBattle2Controls {
@@ -234,8 +234,6 @@ class FinalBattle2Controls {
             }
         }
         
-        print("panelType: \(panelType)")
-        
         isDisabled = true
         playerPosition = nextPanel
         
@@ -414,7 +412,9 @@ class FinalBattle2Controls {
                     ])
                 ]),
                 SKAction.run { [weak self] in
-                    self?.delegate?.didBreakShield()
+                    guard let self = self else { return }
+                    
+                    delegate?.didBreakShield(at: villainPosition)
                 },
                 scaleAndFade(size: 16, alpha: 1, duration: 0.25),
                 SKAction.removeFromParent()

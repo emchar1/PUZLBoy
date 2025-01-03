@@ -23,7 +23,7 @@ class FinalBattle2Engine {
     private var gameboard: GameboardSprite!
     private var hero: Player!
     private var villain: Player!
-
+    
     private var backgroundPattern: FinalBattle2Background!
     private var controls: FinalBattle2Controls!
     private var health: FinalBattle2Health!
@@ -120,7 +120,7 @@ class FinalBattle2Engine {
         
         superScene.addChild(backgroundSprite)
         superScene.addChild(bloodOverlay)
-
+        
         superScene.addChild(gameboard.sprite)
         gameboard.sprite.addChild(flashGameboard)
         gameboard.sprite.addChild(hero.sprite)
@@ -162,12 +162,12 @@ class FinalBattle2Engine {
         animateSpawnPanels(spawnPanels: spawnPanels3, with: terrainPanel)
     }
     
-    func flashHeroAttacked(duration: TimeInterval = 0.5) {
-        flashGameboard.run(SKAction.sequence([
-            SKAction.fadeIn(withDuration: 0),
-            SKAction.fadeOut(withDuration: duration)
-        ]))
-    }
+//    func flashHeroAttacked(duration: TimeInterval = 0.5) {
+//        flashGameboard.run(SKAction.sequence([
+//            SKAction.fadeIn(withDuration: 0),
+//            SKAction.fadeOut(withDuration: duration)
+//        ]))
+//    }
     
     
     // MARK: - Spawn Panels Functions
@@ -328,6 +328,65 @@ class FinalBattle2Engine {
     }//end animateSpawnPanels()
     
     
+    // MARK: - Attack Functions
+    
+    private func shieldExplodeDamagePanels(at homePosition: K.GameboardPosition) {
+        func isValidPosition(row: Int, col: Int) -> Bool {
+            return row >= 0 && row < gameboard.panelCount && col >= 0 && col < gameboard.panelCount
+        }
+        
+        @discardableResult func addEdgePosition(row: Int, col: Int) -> Bool {
+            guard isValidPosition(row: row, col: col) else { return false }
+            
+            affectedPanels.append(K.GameboardPosition(row: row, col: col))
+            
+            return true
+        }
+        
+        var affectedPanels: [K.GameboardPosition] = []
+        affectedPanels.append(homePosition)
+        
+        //First add the immediate square
+        for row in (homePosition.row - 1)...(homePosition.row + 1) {
+            for col in (homePosition.col - 1)...(homePosition.col + 1) {
+                guard isValidPosition(row: row, col: col) else { continue }
+                
+                affectedPanels.append(K.GameboardPosition(row: row, col: col))
+            }
+        }
+        
+        //Then add the edge positions
+        addEdgePosition(row: homePosition.row - 2, col: homePosition.col)
+        addEdgePosition(row: homePosition.row + 2, col: homePosition.col)
+        addEdgePosition(row: homePosition.row, col: homePosition.col - 2)
+        addEdgePosition(row: homePosition.row, col: homePosition.col + 2)
+        
+        //Panel animation
+        for panel in affectedPanels {
+            guard let originalTerrain = gameboard.getPanelSprite(at: panel).terrain else { continue }
+            
+            let damagePanel = SKSpriteNode(imageNamed: FireIceTheme.isFire ? "lava" : "water")
+            damagePanel.anchorPoint = .zero
+            damagePanel.color = .red
+            damagePanel.colorBlendFactor = 1
+            damagePanel.zPosition = 6
+            
+            originalTerrain.addChild(damagePanel)
+            
+            damagePanel.run(SKAction.sequence([
+                SKAction.wait(forDuration: 1),
+                SKAction.fadeOut(withDuration: 1),
+                SKAction.removeFromParent()
+            ]))
+        }
+        
+        //Update health
+        if affectedPanels.contains(where: { $0 == heroPosition }) {
+            health.updateHealth(type: .villainAttack, player: hero)
+        }
+    }
+    
+    
 }
 
 
@@ -364,8 +423,13 @@ extension FinalBattle2Engine: FinalBattle2ControlsDelegate {
         backgroundPattern.adjustOverworldMusic(volume: 0.1, fadeDuration: fadeDuration)
     }
     
-    func didBreakShield() {
+    /**
+     I don't like how this villainPosition doesn't sync up with global villainPosition, so I'm passing the correct one as an argument.
+     - parameter villainPosition: the sync'ed version that is correct
+     */
+    func didBreakShield(at villainPosition: K.GameboardPosition) {
         backgroundPattern.animate(pattern: .normal, fadeDuration: 2, shouldFlashGameboard: true)
+        shieldExplodeDamagePanels(at: villainPosition)
     }
     
     
