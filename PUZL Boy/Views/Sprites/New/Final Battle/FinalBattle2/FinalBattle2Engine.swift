@@ -422,7 +422,7 @@ extension FinalBattle2Engine: FinalBattle2ControlsDelegate {
     func willBreakShield(fadeDuration: TimeInterval) {
         bloodOverlay.run(SKAction.fadeOut(withDuration: fadeDuration))
         flashGameboard.run(SKAction.fadeOut(withDuration: fadeDuration))
-        backgroundPattern.adjustOverworldMusic(volume: 0, fadeDuration: 0)
+        backgroundPattern.adjustOverworldMusic(volume: 0, fadeDuration: fadeDuration)
     }
     
     /**
