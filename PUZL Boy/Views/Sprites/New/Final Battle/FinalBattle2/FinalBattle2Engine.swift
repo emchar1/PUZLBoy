@@ -203,7 +203,8 @@ class FinalBattle2Engine {
         let nextPosition = spawnNextPosition(startPosition: startPosition, ignorePositions: ignorePositions)
         spawnPanels.append(nextPosition)
         
-        let spawnPanelsToIgnore = spawnPanels.count >= 2 ? Array(spawnPanels.suffix(2)) : []
+        let spawnPanelsIgnoreSize: Int = 2
+        let spawnPanelsToIgnore = spawnPanels.count >= spawnPanelsIgnoreSize ? Array(spawnPanels.suffix(spawnPanelsIgnoreSize)) : []
         
         //Recursion!
         populateSpawnPanels(spawnPanels: &spawnPanels,
@@ -358,7 +359,7 @@ class FinalBattle2Engine {
         for panel in affectedPanels {
             guard let originalTerrain = gameboard.getPanelSprite(at: panel).terrain else { continue }
             
-            let damagePanel = SKSpriteNode(imageNamed: FireIceTheme.isFire ? "lava" : "water")
+            let damagePanel = SKSpriteNode(imageNamed: "water")
             damagePanel.anchorPoint = .zero
             damagePanel.color = .red
             damagePanel.colorBlendFactor = 1
