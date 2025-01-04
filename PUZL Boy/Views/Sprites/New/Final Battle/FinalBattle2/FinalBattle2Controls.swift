@@ -220,6 +220,7 @@ class FinalBattle2Controls {
     private func movePlayerHelper(_ direction: Controls, completion: (() -> Void)?) {
         let nextPanel: K.GameboardPosition = getNextPanel(direction: direction)
         let panelType = gameboard.getUserDataForLevelType(sprite: gameboard.getPanelSprite(at:playerPosition).terrain!)
+        let movementMultiplier: TimeInterval = (safePanelFound || playerPosition == FinalBattle2Engine.startPosition || playerPosition == FinalBattle2Engine.endPosition) ? 1 : 2
         let runSound: String
         
         if safePanelFound {
@@ -240,16 +241,16 @@ class FinalBattle2Controls {
         AudioManager.shared.playSound(for: runSound)
         
         //First, run animation...
-        player.sprite.run(Player.animate(player: player, type: .run))
+        player.sprite.run(Player.animate(player: player, type: .run, timePerFrameMultiplier: movementMultiplier))
         
         //Wait, then idle animation...
         player.sprite.run(SKAction.sequence([
-            SKAction.wait(forDuration: Player.Texture.run.movementSpeed),
-            Player.animate(player: player, type: .idle)
+            SKAction.wait(forDuration: Player.Texture.run.movementSpeed * movementMultiplier),
+            Player.animate(player: player, type: .idle, timePerFrame: movementMultiplier)
         ]))
         
         //In between, move player and completion...
-        player.sprite.run(SKAction.move(to: gameboard.getLocation(at: nextPanel), duration: Player.Texture.run.movementSpeed)) { [weak self] in
+        player.sprite.run(SKAction.move(to: gameboard.getLocation(at: nextPanel), duration: Player.Texture.run.movementSpeed * movementMultiplier)) { [weak self] in
             self?.isDisabled = false
             
             AudioManager.shared.stopSound(for: runSound, fadeDuration: 0.25)
