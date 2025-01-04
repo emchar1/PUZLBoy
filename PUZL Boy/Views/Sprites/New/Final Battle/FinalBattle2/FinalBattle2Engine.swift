@@ -28,9 +28,7 @@ class FinalBattle2Engine {
     private var controls: FinalBattle2Controls!
     private var health: FinalBattle2Health!
     
-    private var spawnPanels0: [K.GameboardPosition] = []
-    private var spawnPanels1: [K.GameboardPosition] = []
-    private var spawnPanels2: [K.GameboardPosition] = []
+    private var spawnPanels: [[K.GameboardPosition]] = [[]]
     
     private var superScene: SKScene?
     private var backgroundSprite: SKSpriteNode!
@@ -101,9 +99,12 @@ class FinalBattle2Engine {
         health = FinalBattle2Health(position: CGPoint(x: size.width / 2, y: K.ScreenDimensions.topOfGameboard))
         backgroundPattern = FinalBattle2Background(backgroundSprite: backgroundSprite, bloodOverlay: bloodOverlay, flashGameboard: flashGameboard)
         
-        populateSpawnPanels(spawnPanels: &spawnPanels0, startPosition: heroPosition, ignorePositions: ignorePositions, maxCount: maxCount)
-        populateSpawnPanels(spawnPanels: &spawnPanels1, startPosition: heroPosition, ignorePositions: ignorePositions, maxCount: maxCount)
-        populateSpawnPanels(spawnPanels: &spawnPanels2, startPosition: heroPosition, ignorePositions: ignorePositions, maxCount: maxCount)
+        spawnPanels.append([]) //enables spawnPanels[1]
+        spawnPanels.append([]) //enables spawnPanels[2]
+        
+        populateSpawnPanels(spawnPanels: &spawnPanels[0], startPosition: heroPosition, ignorePositions: ignorePositions, maxCount: maxCount)
+        populateSpawnPanels(spawnPanels: &spawnPanels[1], startPosition: heroPosition, ignorePositions: ignorePositions, maxCount: maxCount)
+        populateSpawnPanels(spawnPanels: &spawnPanels[2], startPosition: heroPosition, ignorePositions: ignorePositions, maxCount: maxCount)
     }
     
     
@@ -154,9 +155,9 @@ class FinalBattle2Engine {
         
         let terrainPanel: LevelType = FireIceTheme.isFire ? .sand : .snow
         
-        animateSpawnPanels(spawnPanels: spawnPanels0, with: terrainPanel)
-        animateSpawnPanels(spawnPanels: spawnPanels1, with: terrainPanel)
-        animateSpawnPanels(spawnPanels: spawnPanels2, with: terrainPanel)
+        animateSpawnPanels(spawnPanels: spawnPanels[0], with: terrainPanel)
+        animateSpawnPanels(spawnPanels: spawnPanels[1], with: terrainPanel)
+        animateSpawnPanels(spawnPanels: spawnPanels[2], with: terrainPanel)
     }
     
     

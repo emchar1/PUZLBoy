@@ -348,6 +348,7 @@
 		EAE751D52D272946004B138A /* shieldcast2.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAE751D42D272946004B138A /* shieldcast2.mp3 */; };
 		EAE751D72D272A2A004B138A /* swordparry.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAE751D62D272A2A004B138A /* swordparry.mp3 */; };
 		EAE751DD2D28A5A0004B138A /* shieldpulse.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAE751DC2D28A5A0004B138A /* shieldpulse.mp3 */; };
+		EAE751DF2D29E69A004B138A /* FinalBattle2Spawner.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAE751DE2D29E689004B138A /* FinalBattle2Spawner.swift */; };
 		EAE919452A4CA4A800AF67D1 /* clocktick.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAE919442A4CA4A800AF67D1 /* clocktick.mp3 */; };
 		EAE919472A4CAFFD00AF67D1 /* gemcollectparty3x.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAE919462A4CAFFD00AF67D1 /* gemcollectparty3x.mp3 */; };
 		EAE919492A4CB02900AF67D1 /* gemcollectpartylife.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAE919482A4CB02800AF67D1 /* gemcollectpartylife.mp3 */; };
@@ -720,6 +721,7 @@
 		EAE751D42D272946004B138A /* shieldcast2.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = shieldcast2.mp3; sourceTree = "<group>"; };
 		EAE751D62D272A2A004B138A /* swordparry.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = swordparry.mp3; sourceTree = "<group>"; };
 		EAE751DC2D28A5A0004B138A /* shieldpulse.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = shieldpulse.mp3; sourceTree = "<group>"; };
+		EAE751DE2D29E689004B138A /* FinalBattle2Spawner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinalBattle2Spawner.swift; sourceTree = "<group>"; };
 		EAE919442A4CA4A800AF67D1 /* clocktick.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = clocktick.mp3; sourceTree = "<group>"; };
 		EAE919462A4CAFFD00AF67D1 /* gemcollectparty3x.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = gemcollectparty3x.mp3; sourceTree = "<group>"; };
 		EAE919482A4CB02800AF67D1 /* gemcollectpartylife.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = gemcollectpartylife.mp3; sourceTree = "<group>"; };
@@ -818,6 +820,7 @@
 			children = (
 				EA2BA6592D0FF330007D9519 /* FinalBattle2Engine.swift */,
 				EA37CF0B2D227D4400275A15 /* FinalBattle2Background.swift */,
+				EAE751DE2D29E689004B138A /* FinalBattle2Spawner.swift */,
 				EA9D4BB12D17498700BB1F36 /* FinalBattle2Controls.swift */,
 				EA37CEFE2D1BF8C700275A15 /* FinalBattle2Health.swift */,
 			);
@@ -1886,6 +1889,7 @@
 				EA95D208295F87120061059C /* AchievementHoarder.swift in Sources */,
 				EA826C87298E23A500F19F81 /* Player.swift in Sources */,
 				EA826C7C29858EBE00F19F81 /* ContinueSprite.swift in Sources */,
+				EAE751DF2D29E69A004B138A /* FinalBattle2Spawner.swift in Sources */,
 				EAB69E0028EFCF5B00C31DB3 /* PlayerSprite.swift in Sources */,
 				EAB2DE122AA0415D00172478 /* SpeechBubbleItem.swift in Sources */,
 				EA95D1BF29538C450061059C /* AchievementGemCollector.swift in Sources */,
