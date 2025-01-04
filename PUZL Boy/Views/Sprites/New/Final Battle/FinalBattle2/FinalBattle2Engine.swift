@@ -31,7 +31,6 @@ class FinalBattle2Engine {
     private var spawnPanels0: [K.GameboardPosition] = []
     private var spawnPanels1: [K.GameboardPosition] = []
     private var spawnPanels2: [K.GameboardPosition] = []
-    //    private var spawnPanels3: [K.GameboardPosition] = []
     
     private var superScene: SKScene?
     private var backgroundSprite: SKSpriteNode!
@@ -105,7 +104,6 @@ class FinalBattle2Engine {
         populateSpawnPanels(spawnPanels: &spawnPanels0, startPosition: heroPosition, ignorePositions: ignorePositions, maxCount: maxCount)
         populateSpawnPanels(spawnPanels: &spawnPanels1, startPosition: heroPosition, ignorePositions: ignorePositions, maxCount: maxCount)
         populateSpawnPanels(spawnPanels: &spawnPanels2, startPosition: heroPosition, ignorePositions: ignorePositions, maxCount: maxCount)
-        //        populateSpawnPanels(spawnPanels: &spawnPanels3, startPosition: heroPosition, ignorePositions: ignorePositions, maxCount: maxCount)
     }
     
     
@@ -159,36 +157,10 @@ class FinalBattle2Engine {
         animateSpawnPanels(spawnPanels: spawnPanels0, with: terrainPanel)
         animateSpawnPanels(spawnPanels: spawnPanels1, with: terrainPanel)
         animateSpawnPanels(spawnPanels: spawnPanels2, with: terrainPanel)
-        //        animateSpawnPanels(spawnPanels: spawnPanels3, with: terrainPanel)
     }
     
-//    func flashHeroAttacked(duration: TimeInterval = 0.5) {
-//        flashGameboard.run(SKAction.sequence([
-//            SKAction.fadeIn(withDuration: 0),
-//            SKAction.fadeOut(withDuration: duration)
-//        ]))
-//    }
     
-    
-    // MARK: - Spawn Panels Functions
-    
-    private func populateSpawnPanels(spawnPanels: inout [K.GameboardPosition], startPosition: K.GameboardPosition, ignorePositions: [K.GameboardPosition] = [], count: Int = 0, maxCount: Int = 100) {
-        
-        //Base case
-        guard count < maxCount else { return }
-        
-        let nextPosition = spawnNextPosition(startPosition: startPosition, ignorePositions: ignorePositions)
-        spawnPanels.append(nextPosition)
-        
-        let spawnPanelsToIgnore = spawnPanels.count >= 2 ? Array(spawnPanels.suffix(2)) : []
-        
-        //Recursion!
-        populateSpawnPanels(spawnPanels: &spawnPanels,
-                            startPosition: nextPosition,
-                            ignorePositions: self.ignorePositions + spawnPanelsToIgnore, //must be class var, ignorePositions
-                            count: count + 1,
-                            maxCount: maxCount)
-    }
+    // MARK: - Helper Functions
     
     /**
      Checks if the location requested to move to is a valid one, i.e. a "safePanel".
@@ -220,6 +192,27 @@ class FinalBattle2Engine {
         return heroPosition == FinalBattle2Engine.endPosition
     }
     
+    
+    // MARK: - Spawn Panels Functions
+    
+    private func populateSpawnPanels(spawnPanels: inout [K.GameboardPosition], startPosition: K.GameboardPosition, ignorePositions: [K.GameboardPosition] = [], count: Int = 0, maxCount: Int = 100) {
+        
+        //Base case
+        guard count < maxCount else { return }
+        
+        let nextPosition = spawnNextPosition(startPosition: startPosition, ignorePositions: ignorePositions)
+        spawnPanels.append(nextPosition)
+        
+        let spawnPanelsToIgnore = spawnPanels.count >= 2 ? Array(spawnPanels.suffix(2)) : []
+        
+        //Recursion!
+        populateSpawnPanels(spawnPanels: &spawnPanels,
+                            startPosition: nextPosition,
+                            ignorePositions: self.ignorePositions + spawnPanelsToIgnore, //must be class var, ignorePositions
+                            count: count + 1,
+                            maxCount: maxCount)
+    }
+    
     private func spawnNextPosition(startPosition: K.GameboardPosition, ignorePositions: [K.GameboardPosition]) -> K.GameboardPosition {
         var nextPosition: K.GameboardPosition
         
@@ -235,7 +228,7 @@ class FinalBattle2Engine {
     
     // TODO: - Make disappearing floors and harm hero if he steps in lava or ground beneath him disappears.
     private func animateSpawnPanels(spawnPanels: [K.GameboardPosition], with terrain: LevelType) {
-        let waitDuration: TimeInterval = 1
+        let waitDuration: TimeInterval = 2
         
         ///SKAction that animates dissolving of primary (sand/snow) panel to secondary (lava/water).
         func dissolveTerrainAction(pulseDuration: TimeInterval) -> SKAction {
