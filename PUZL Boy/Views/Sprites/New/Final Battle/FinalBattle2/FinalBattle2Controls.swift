@@ -86,7 +86,7 @@ class FinalBattle2Controls {
         //Villain's new spawn position cannot be where player position or start position are!
         repeat {
             villainPositionNew = (Int.random(in: 0...gameboard.panelCount - 1), Int.random(in: 0...gameboard.panelCount - 1))
-        } while villainPositionNew == playerPosition || villainPositionNew == FinalBattle2Engine.startPosition
+        } while villainPositionNew == playerPosition || villainPositionNew == FinalBattle2Spawner.startPosition
         
         //Now check for movement/attack!
         if inBounds(.up) && !canAttackVillain(.up) {
@@ -214,13 +214,13 @@ class FinalBattle2Controls {
     /**
      Physically move the player in the intended direction.
      - parameters:
-     - direction: The direction the player would like to move to
-     - completion: handler to perform functions upon animation completion
+        - direction: The direction the player would like to move to
+        - completion: handler to perform functions upon animation completion
      */
     private func movePlayerHelper(_ direction: Controls, completion: (() -> Void)?) {
         let nextPanel: K.GameboardPosition = getNextPanel(direction: direction)
         let panelType = gameboard.getUserDataForLevelType(sprite: gameboard.getPanelSprite(at:playerPosition).terrain!)
-        let movementMultiplier: TimeInterval = (safePanelFound || playerPosition == FinalBattle2Engine.startPosition || playerPosition == FinalBattle2Engine.endPosition) ? 1 : 2
+        let movementMultiplier: TimeInterval = (safePanelFound || playerPosition == FinalBattle2Spawner.startPosition || playerPosition == FinalBattle2Spawner.endPosition) ? 1 : 2
         let runSound: String
         
         if safePanelFound {

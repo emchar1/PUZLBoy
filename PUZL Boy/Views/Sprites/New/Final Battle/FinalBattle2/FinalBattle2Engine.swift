@@ -12,12 +12,8 @@ class FinalBattle2Engine {
     // MARK: - Properties
     
     static let villainFloatOffset = CGPoint(x: 0, y: 25)
-    static let startPosition: K.GameboardPosition = (6, 3)
-    static let endPosition: K.GameboardPosition = (3, 3)
     
     private let size: CGSize
-    private let maxCount: Int = 1000
-    private var ignorePositions: [K.GameboardPosition] { [FinalBattle2Engine.startPosition, FinalBattle2Engine.endPosition] }
     private var heroPosition: K.GameboardPosition!
     private var villainPosition: K.GameboardPosition!
     private var gameboard: GameboardSprite!
@@ -48,8 +44,8 @@ class FinalBattle2Engine {
     }
     
     private func setupScene() {
-        heroPosition = FinalBattle2Engine.startPosition
-        villainPosition = FinalBattle2Engine.endPosition
+        heroPosition = FinalBattle2Spawner.startPosition
+        villainPosition = FinalBattle2Spawner.endPosition
         gameboard = GameboardSprite(level: LevelBuilder.levels[Level.finalLevel + 1], fadeIn: false)
         
         //Make sure to initialize GameboardSprite BEFORE initializing these!!!
@@ -104,7 +100,7 @@ class FinalBattle2Engine {
     }
     
     
-    // MARK: - Move Functions
+    // MARK: - Functions
     
     /**
      Adds all the sprites to the superScene, i.e. should be called in a GameScene's moveTo() function.
@@ -124,8 +120,16 @@ class FinalBattle2Engine {
         health.addToParent(superScene)
     }
     
+    ///Animates all the components
+    func animateSprites() {
+        hero.sprite.run(Player.animate(player: hero, type: .idle))
+        villain.sprite.run(Player.animateIdleLevitate(player: villain))
+        
+        health.showHealth()
+        backgroundPattern.animate(pattern: .normal, fadeDuration: 0)
+        panelSpawner.animateSpawner(speed: 3)
+    }
     
-    // MARK: - Functions
     
     func handleControls(in location: CGPoint) {
         controls.handleControls(in: location, playerPosition: &heroPosition, villainPosition: &villainPosition, safePanelFound: safePanelFound()) { [weak self] in
@@ -139,16 +143,6 @@ class FinalBattle2Engine {
                 health.updateHealth(type: .drain, player: hero)
             }
         }
-    }
-    
-    ///Animates all the components
-    func animateSprites() {
-        hero.sprite.run(Player.animate(player: hero, type: .idle))
-        villain.sprite.run(Player.animateIdleLevitate(player: villain))
-        
-        health.showHealth()
-        backgroundPattern.animate(pattern: .normal, fadeDuration: 0)
-        panelSpawner.animateSpawner(speed: 3)
     }
     
     
@@ -174,14 +168,14 @@ class FinalBattle2Engine {
      Checks if hero is at startPanel.
      */
     private func startPanelFound() -> Bool {
-        return heroPosition == FinalBattle2Engine.startPosition
+        return heroPosition == FinalBattle2Spawner.startPosition
     }
     
     /**
      Checks if hero is at endPanel.
      */
     private func endPanelFound() -> Bool {
-        return heroPosition == FinalBattle2Engine.endPosition
+        return heroPosition == FinalBattle2Spawner.endPosition
     }
     
     
