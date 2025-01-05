@@ -7,6 +7,11 @@
 
 import SpriteKit
 
+protocol FinalBattle2SpawnerDelegate: AnyObject {
+    func didSpawnSafePanel(spawnPanel: K.GameboardPosition)
+    func didDespawnSafePanel(spawnPanel: K.GameboardPosition)
+}
+
 class FinalBattle2Spawner {
     
     // MARK: - Properties
@@ -14,28 +19,71 @@ class FinalBattle2Spawner {
     static let startPosition: K.GameboardPosition = (6, 3)
     static let endPosition: K.GameboardPosition = (3, 3)
     
+    // FIXME: - NO!!!
     private let maxCount: Int = 1000
-    private var ignorePositions: [K.GameboardPosition] { [FinalBattle2Engine.startPosition, FinalBattle2Engine.endPosition] }
-    private var spawnPanels: [[K.GameboardPosition]] = []
+    
     private var gameboard: GameboardSprite
+    private var spawnPanelCount: Int?
+    private var spawnPanels: [[K.GameboardPosition]]?
+    
+    weak var delegate: FinalBattle2SpawnerDelegate?
 
     
     // MARK: - Initialization
     
     init(gameboard: GameboardSprite) {
         self.gameboard = gameboard
-        
-        spawnPanels.append([])
-        spawnPanels.append([])
-        spawnPanels.append([])
-
-        populateSpawnPanels(spawnPanels: &spawnPanels[0], startPosition: FinalBattle2Spawner.startPosition)
     }
     
     
     // MARK: - Functions
     
-    private func populateSpawnPanels(spawnPanels: inout [K.GameboardPosition], startPosition: K.GameboardPosition, ignorePositions: [K.GameboardPosition] = [], count: Int = 0, maxCount: Int = 100) {
+    /**
+     Populates the Spawner.
+     - parameter spawnPanelCount: the number of spawner tiles
+     */
+    func populateSpawner(spawnPanelCount: Int) {
+        self.spawnPanelCount = max(1, spawnPanelCount)
+        spawnPanels = Array(repeating: [], count: spawnPanelCount)
+        
+        let spawnPanelRange: Range<Int> = 0..<spawnPanelCount
+        
+        spawnPanelRange.forEach { i in
+            populateSpawnPanels(spawnPanels: &spawnPanels![i],
+                                startPosition: FinalBattle2Spawner.startPosition,
+                                ignorePositions: [FinalBattle2Spawner.startPosition, FinalBattle2Spawner.endPosition],
+                                maxCount: maxCount)
+        }
+    }
+    
+    /**
+     Animates the Spawner.
+     - parameter speed:
+     */
+    func animateSpawner(speed: TimeInterval) {
+        guard let spawnPanelCount = spawnPanelCount, let spawnPanels = spawnPanels else { return print("Need to call populateSpawner() first!") }
+        
+        let terrainPanel: LevelType = FireIceTheme.isFire ? .sand : .snow
+        let spawnPanelRange: Range<Int> = 0..<spawnPanelCount
+
+        spawnPanelRange.forEach { i in
+            animateSpawnPanels(spawnPanels: spawnPanels[i], with: terrainPanel, waitDuration: speed)
+        }
+    }
+    
+    
+    // MARK: - Helper Functions
+    
+    /**
+     Populates the spawnPanels array with randomized "moving" panels
+     - parameters:
+        - spawnPanels: the array that is to be mutated and sent back to the argument passed
+        - startPosition: origin of the spawer.
+        - ignorePositions: i.e. start, endPanels, etc.
+        - count: LEAVE ALONE! This is to be used by the recursive function only!!
+        - maxCount: number of position elements to add to the array
+     */
+    private func populateSpawnPanels(spawnPanels: inout [K.GameboardPosition], startPosition: K.GameboardPosition, ignorePositions: [K.GameboardPosition] = [], count: Int = 0, maxCount: Int = 1000) {
         
         //Base case
         guard count < maxCount else { return }
@@ -49,7 +97,7 @@ class FinalBattle2Spawner {
         //Recursion!
         populateSpawnPanels(spawnPanels: &spawnPanels,
                             startPosition: nextPosition,
-                            ignorePositions: self.ignorePositions + spawnPanelsToIgnore, //must be class var, ignorePositions
+                            ignorePositions: [FinalBattle2Spawner.startPosition, FinalBattle2Spawner.endPosition] + spawnPanelsToIgnore,
                             count: count + 1,
                             maxCount: maxCount)
     }
@@ -68,9 +116,7 @@ class FinalBattle2Spawner {
     }
     
     // TODO: - Make disappearing floors and harm hero if he steps in lava or ground beneath him disappears.
-    private func animateSpawnPanels(spawnPanels: [K.GameboardPosition], with terrain: LevelType) {
-        let waitDuration: TimeInterval = 2
-        
+    private func animateSpawnPanels(spawnPanels: [K.GameboardPosition], with terrain: LevelType, waitDuration: TimeInterval) {
         ///SKAction that animates dissolving of primary (sand/snow) panel to secondary (lava/water).
         func dissolveTerrainAction(pulseDuration: TimeInterval) -> SKAction {
             let offsetDuration: TimeInterval = 0 //DON'T TOUCH THIS LEAVE AT 0!!!
@@ -138,26 +184,16 @@ class FinalBattle2Spawner {
             newTerrain.run(SKAction.sequence([
                 SKAction.wait(forDuration: waitDuration * TimeInterval(i)),
                 SKAction.run { [weak self] in
-                    guard let self = self else { return }
-                    
+                    self?.delegate?.didSpawnSafePanel(spawnPanel: spawnPanel)
                     handleParticles(spawnPanel: spawnPanel)
-                    
-//                    if spawnPanel == heroPosition {
-//                        health.updateHealth(type: .regen, player: hero)
-//                    }
                 },
                 SKAction.fadeIn(withDuration: waitDuration * 0.25),
                 SKAction.wait(forDuration: waitDuration * 2.75),
                 dissolveTerrainAction(pulseDuration: 0.1),
                 SKAction.removeFromParent()
             ])) { [weak self] in
-                guard let self = self else { return }
-                
-                //Added "&& !safePanelFound() && !endPanelFound()" as an extra added layer in case an overlapping safePanel spawns after the first one is removed.
-//                if spawnPanel == heroPosition && !safePanelFound() && !startPanelFound() && !endPanelFound() {
-//                    health.updateHealth(type: .drain, player: hero)
-//                }
-            } //end newTerrain.run
+                self?.delegate?.didDespawnSafePanel(spawnPanel: spawnPanel)
+            }
         }//end for
     }//end animateSpawnPanels()
     
