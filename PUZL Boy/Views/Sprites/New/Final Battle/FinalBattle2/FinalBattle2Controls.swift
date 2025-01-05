@@ -367,7 +367,7 @@ class FinalBattle2Controls {
         guard let magmoorShield = villain.sprite.childNode(withName: "magmoorShield") as? SKSpriteNode else { return }
         
         let magmoorShieldTop = magmoorShield.children.first as? SKSpriteNode
-        let colorizeDuration: TimeInterval = 1
+        let colorizeDuration: TimeInterval = 2.5
         
         villainShield -= increment
         villainShield = max(villainShield, 0)
@@ -387,7 +387,7 @@ class FinalBattle2Controls {
         delegate?.willDamageShield()
         
         if villainShield > 0 {
-            let fadeDuration: TimeInterval = 2.5
+            let fadeDuration: TimeInterval = colorizeDuration
             
             magmoorShield.removeAction(forKey: "shieldThrobAction")
             shieldThrob(node: magmoorShield, waitDuration: fadeDuration + 0.5)

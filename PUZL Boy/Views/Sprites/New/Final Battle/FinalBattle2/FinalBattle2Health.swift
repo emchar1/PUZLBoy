@@ -130,12 +130,12 @@ class FinalBattle2Health {
         bar.animateAndUpdate(percentage: counter.getCount())
     }
     
-    @objc private func helperDrain() { objcHelper(rateDivisions: [0.5], rates: [0.01, 0.005], increment: false) }
-    @objc private func helperRegen() { objcHelper(rateDivisions: [0.75], rates: [0, 0.002], increment: true) }
+    @objc private func helperDrain() { objcHelper(rateDivisions: [0.5, 0.25], rates: [0.02, 0.01, 0.005], increment: false) }
+    @objc private func helperRegen() { objcHelper(rateDivisions: [], rates: [0.001], increment: true) }
     @objc private func helperLavaHit() { objcHelper(rateDivisions: [0.5], rates: [0.1, 0.05], increment: false) }
-    @objc private func helperHeroAttack() { objcHelper(rateDivisions: [0.5], rates: [0.1, 0.05].map { $0 * (dmgMultiplier ?? 0) }, increment: true) }
+    @objc private func helperHeroAttack() { objcHelper(rateDivisions: [0.5], rates: [0.1, 0.2].map { $0 * (dmgMultiplier ?? 0) }, increment: true) }
     @objc private func helperVillainAttack() { }
-    @objc private func helperVillainShield() { objcHelper(rateDivisions: [0.5], rates: [0.2, 0.1], increment: false) }
+    @objc private func helperVillainShield() { objcHelper(rateDivisions: [0.5], rates: [0.25, 0.125], increment: false) }
     
     
 }

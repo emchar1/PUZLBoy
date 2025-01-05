@@ -139,7 +139,6 @@ class FinalBattle2Engine {
                 health.updateHealth(type: .regen, player: hero)
             }
             else {
-                health.updateHealth(type: .lavaHit, player: hero)
                 health.updateHealth(type: .drain, player: hero)
             }
         }
