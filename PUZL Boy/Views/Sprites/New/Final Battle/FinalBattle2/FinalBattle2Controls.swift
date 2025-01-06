@@ -271,18 +271,10 @@ class FinalBattle2Controls {
     private func moveVillainFlee(shouldDisappear: Bool) {
         let moveDirection = villain.sprite.xScale / abs(villain.sprite.xScale)
         let moveDistance: CGFloat = 20
-        let fadeDistance = CGPoint(x: 0, y: shouldDisappear ? gameboard.panelSize : 0) + FinalBattle2Engine.villainFloatOffset
+        let fadeDistance = CGPoint(x: 0, y: shouldDisappear ? gameboard.panelSize : 0)
         let fadeDuration: TimeInterval = 2
         let waitDuration = TimeInterval.random(in: 3...8)
         let villainDirection: CGFloat = villainPositionNew.col < gameboard.panelCount / 2 ? 1 : -1
-        
-        villainPosition = villainPositionNew
-        
-        if shouldDisappear {
-            delegate?.didVillainDisappear(fadeDuration: fadeDuration)
-            AudioManager.shared.playSound(for: "magicheartbeatloop1", fadeIn: fadeDuration)
-            AudioManager.shared.playSound(for: "villainpain\(Int.random(in: 1...3))")
-        }
         
         let disappearAction = SKAction.sequence([
             SKAction.moveBy(x: -moveDirection * moveDistance, y: 0, duration: 0),
@@ -316,10 +308,10 @@ class FinalBattle2Controls {
                                      playSound: true,
                                      fierce: true,
                                      startPoint: villain.sprite.position + fadeDistance,
-                                     endPoint: gameboard.getLocation(at: villainPositionNew) + FinalBattle2Engine.villainFloatOffset,
+                                     endPoint: gameboard.getLocation(at: villainPositionNew),
                                      startScale: 1,
                                      endScale: 1),
-            SKAction.move(to: gameboard.getLocation(at: villainPositionNew) + FinalBattle2Engine.villainFloatOffset, duration: 0),
+            SKAction.move(to: gameboard.getLocation(at: villainPositionNew), duration: 0),
             SKAction.scaleX(to: villainDirection * abs(villain.sprite.xScale), duration: 0),
             SKAction.fadeIn(withDuration: 0)
         ])) { [weak self] in
@@ -331,7 +323,14 @@ class FinalBattle2Controls {
             }
         }
         
+        
+        //Set important properties!!
+        villainPosition = villainPositionNew
+        
         if shouldDisappear {
+            delegate?.didVillainDisappear(fadeDuration: fadeDuration)
+            AudioManager.shared.playSound(for: "magicheartbeatloop1", fadeIn: fadeDuration)
+            AudioManager.shared.playSound(for: "villainpain\(Int.random(in: 1...3))")
             AudioManager.shared.playSound(for: "magicwarp")
             AudioManager.shared.playSound(for: "magicwarp2")
             ParticleEngine.shared.animateParticles(type: .magmoorBamf,

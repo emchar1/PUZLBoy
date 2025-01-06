@@ -11,8 +11,6 @@ class FinalBattle2Engine {
     
     // MARK: - Properties
     
-    static let villainFloatOffset = CGPoint(x: 0, y: 25)
-    
     private let size: CGSize
     private var heroPosition: K.GameboardPosition!
     private var villainPosition: K.GameboardPosition!
@@ -73,7 +71,7 @@ class FinalBattle2Engine {
         hero.sprite.zPosition = K.ZPosition.player
         
         villain = Player(type: .villain)
-        villain.sprite.position = gameboard.getLocation(at: villainPosition) + FinalBattle2Engine.villainFloatOffset
+        villain.sprite.position = gameboard.getLocation(at: villainPosition)
         villain.sprite.setScale(playerScale * villain.scaleMultiplier)
         villain.sprite.xScale *= -1
         villain.sprite.zPosition = K.ZPosition.player + 2
