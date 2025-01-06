@@ -12,10 +12,7 @@ protocol FinalBattle2ControlsDelegate: AnyObject {
     func didVillainDisappear(fadeDuration: TimeInterval)
     func willVillainReappear()
     func didVillainReappear()
-    func willDamageShield()
-    func didDamageShield()
-    func willBreakShield(fadeDuration: TimeInterval)
-    func didBreakShield(at villainPosition: K.GameboardPosition)
+    func handleShield(willDamage: Bool, didDamage: Bool, willBreak: Bool, didBreak: Bool, fadeDuration: TimeInterval?, villainPosition: K.GameboardPosition?)
 }
 
 class FinalBattle2Controls {
@@ -28,14 +25,13 @@ class FinalBattle2Controls {
     private var playerPosition: K.GameboardPosition
     private var villainPosition: K.GameboardPosition
     private var chosenSword: ChosenSword
+    private var magmoorShield: MagmoorShield
     
     //These get set every time in handleControls()
     private var location: CGPoint!
     private var villainPositionNew: K.GameboardPosition!
     private var safePanelFound: Bool!
     
-    private var villainShield: Int
-    private var shieldColor: UIColor
     private var isDisabled: Bool
     private var canAttack: Bool
     
@@ -51,8 +47,6 @@ class FinalBattle2Controls {
         self.playerPosition = playerPosition
         self.villainPosition = villainPosition
         
-        self.villainShield = 0
-        self.shieldColor = .yellow
         self.isDisabled = false
         self.canAttack = true
         
@@ -61,6 +55,9 @@ class FinalBattle2Controls {
                                   bravery: FIRManager.bravery)
         chosenSword.spriteNode.setScale(gameboard.panelSize / chosenSword.spriteNode.size.width)
         chosenSword.spriteNode.zPosition = K.ZPosition.itemsAndEffects
+        
+        magmoorShield = MagmoorShield(hitPoints: 0)
+        magmoorShield.delegate = self
     }
     
     deinit {
@@ -194,15 +191,17 @@ class FinalBattle2Controls {
             gameboard.sprite.addChild(chosenSword.spriteNode)
             
             chosenSword.spriteNode.position = gameboard.getLocation(at: villainPosition)
-            chosenSword.attack(shouldParry: villainShield > 0) { [weak self] in
+            chosenSword.attack(shouldParry: magmoorShield.hasHitPoints) { [weak self] in
                 guard let self = self else { return }
                 
                 isDisabled = false
                 
-                if villainShield > 0 {
-                    villainShieldDecrement()
+                if magmoorShield.hasHitPoints {
+                    magmoorShield.decrementShield(villain: villain, villainPosition: villainPosition) {
+                        self.canAttack = true
+                    }
                     
-                    if villainShield > 0 {
+                    if magmoorShield.hasHitPoints {
                         moveVillainFlee(shouldDisappear: false)
                     }
                 }
@@ -317,11 +316,14 @@ class FinalBattle2Controls {
             SKAction.scaleX(to: villainDirection * abs(villain.sprite.xScale), duration: 0),
             SKAction.fadeIn(withDuration: 0)
         ])) { [weak self] in
+            guard let self = self else { return }
             guard shouldDisappear else { return }
             
-            self?.canAttack = true
-            self?.moveVillainCastShield()
-            self?.delegate?.didVillainReappear()
+            canAttack = true
+            delegate?.didVillainReappear()
+            
+            magmoorShield.resetShield(villain: villain)
+            villain.sprite.run(Player.animate(player: villain, type: .attack, repeatCount: 1))
         }
         
         
@@ -342,182 +344,28 @@ class FinalBattle2Controls {
         }
     } //end moveVillainFlee()
     
-    /**
-     Resets the shield to the max, i.e. 3 and apply a quick animation.
-     */
-    private func villainShieldReset() {
-        let magmoorShield = SKSpriteNode(imageNamed: "magmoorShieldBottom")
-        magmoorShield.color = shieldColor
-        magmoorShield.colorBlendFactor = 1
-        magmoorShield.setScale(0)
-        magmoorShield.zPosition = -1
-        magmoorShield.name = "magmoorShield"
-        
-        let magmoorShieldTop = SKSpriteNode(imageNamed: "magmoorShieldTop")
-        magmoorShieldTop.color = shieldColor
-        magmoorShieldTop.colorBlendFactor = magmoorShield.colorBlendFactor
-        magmoorShieldTop.zPosition = 2
-        
-        magmoorShield.addChild(magmoorShieldTop)
-        villain.sprite.addChild(magmoorShield)
-        
-        villainShield = 3
-        
-        AudioManager.shared.playSound(for: "shieldcast")
-        AudioManager.shared.playSound(for: "shieldcast2")
-        AudioManager.shared.playSound(for: "shieldpulse")
-        Haptics.shared.addHapticFeedback(withStyle: .soft)
-        
-        shieldThrob(node: magmoorShield, waitDuration: 2.5)
-        magmoorShield.run(SKAction.repeatForever(SKAction.rotate(byAngle: .pi / 2, duration: 4)))
-        magmoorShield.run(SKAction.sequence([
-            scaleAndFade(size: 6, alpha: 0.5, duration: 0.25),
-            scaleAndFade(size: 2.5, alpha: 1, duration: 0.5),
-            scaleAndFade(duration: 1.75)
-        ]))
-    }
     
-    /**
-     Decrements the shield and applies a quick animation, depending on if the shield breaks or not.
-     - parameter increment: amount to decrement (should be a positive value)
-     */
-    private func villainShieldDecrement(_ increment: Int = 1) {
-        guard let magmoorShield = villain.sprite.childNode(withName: "magmoorShield") as? SKSpriteNode else { return }
-        
-        let magmoorShieldTop = magmoorShield.children.first as? SKSpriteNode
-        let colorizeDuration: TimeInterval = 2.5
-        
-        villainShield -= increment
-        villainShield = max(villainShield, 0)
-        
-        switch villainShield {
-        case 0, 1:
-            shieldColor = .red
-        case 2:
-            shieldColor = .orange
-        default:
-            shieldColor = .yellow
-        }
+}
 
-        magmoorShield.run(SKAction.colorize(with: shieldColor, colorBlendFactor: 1, duration: colorizeDuration))
-        magmoorShieldTop?.run(SKAction.colorize(with: shieldColor, colorBlendFactor: 1, duration: colorizeDuration))
 
-        delegate?.willDamageShield()
-        
-        if villainShield > 0 {
-            let fadeDuration: TimeInterval = colorizeDuration
-            
-            magmoorShield.removeAction(forKey: "shieldThrobAction")
-            shieldThrob(node: magmoorShield, waitDuration: fadeDuration + 0.5)
-            
-            magmoorShield.run(SKAction.sequence([
-                SKAction.group([
-                    scaleAndFade(size: 3.5, alpha: 1, duration: fadeDuration),
-                    shieldShake(duration: fadeDuration)
-                ]),
-                SKAction.run { [weak self] in
-                    self?.delegate?.didDamageShield()
-                },
-                scaleAndFade(size: 5, alpha: 0.5, duration: 0.5)
-            ])) { [weak self] in
-                self?.canAttack = true
-            }
-        }
-        else {
-            let fadeDuration: TimeInterval = 4.5
-            
-            AudioManager.shared.playSound(for: "magicdisappear", delay: fadeDuration)
-            
-            magmoorShield.removeAction(forKey: "shieldThrobAction")
-            magmoorShield.run(SKAction.sequence([
-                SKAction.group([
-                    scaleAndFade(size: 2.5, alpha: 1, duration: fadeDuration + 0.5),
-                    shieldShake(duration: fadeDuration + 0.5),
-                    SKAction.sequence([
-                        SKAction.wait(forDuration: fadeDuration + 0.25),
-                        SKAction.run { [weak self] in
-                            guard let self = self else { return }
-                            
-                            delegate?.willBreakShield(fadeDuration: 0.25)
-                            
-                            AudioManager.shared.stopSound(for: "shieldpulse")
-                            ParticleEngine.shared.animateParticles(type: .magicExplosion,
-                                                                   toNode: villain.sprite,
-                                                                   position: .zero,
-                                                                   scale: 1,
-                                                                   duration: 1)
-                        }
-                    ])
-                ]),
-                SKAction.run { [weak self] in
-                    guard let self = self else { return }
-                    
-                    delegate?.didBreakShield(at: villainPosition)
-                },
-                scaleAndFade(size: 16, alpha: 1, duration: 0.25),
-                SKAction.fadeOut(withDuration: 0.25),
-                SKAction.removeFromParent()
-            ])) { [weak self] in
-                self?.canAttack = true
-            }
-        }
+// MARK: - MagmoorShieldDelegate
+
+extension FinalBattle2Controls: MagmoorShieldDelegate {
+    func willDamageShield() {
+        delegate?.handleShield(willDamage: true, didDamage: false, willBreak: false, didBreak: false, fadeDuration: nil, villainPosition: nil)
     }
     
-    /**
-     Helper function that scales to a particular size, and fades to a particular alpha over the duration.
-     - parameters:
-        - size: size of scale
-        - alpha: the alpha of the fade
-        - duration: time it takes to perform the action
-     - returns: the action group.
-     */
-    private func scaleAndFade(size: CGFloat = 5, alpha: CGFloat = 0.5, duration: TimeInterval = 1) -> SKAction {
-        return SKAction.group([
-            SKAction.scale(to: size, duration: duration),
-            SKAction.fadeAlpha(to: alpha, duration: duration)
-        ])
+    func didDamageShield() {
+        delegate?.handleShield(willDamage: false, didDamage: true, willBreak: false, didBreak: false, fadeDuration: nil, villainPosition: nil)
     }
     
-    /**
-     Shakes the shield left and right.
-     - parameter duration: duration of the shake
-     - returns: the shaking SKAction
-     */
-    private func shieldShake(duration: TimeInterval) -> SKAction {
-        let moveAction = SKAction.moveBy(x: -40, y: 0, duration: 0.05)
-        
-        return SKAction.repeat(SKAction.sequence([
-            moveAction,
-            moveAction.reversed()
-        ]), count: Int(duration / 0.1))
+    func willBreakShield(fadeDuration: TimeInterval) {
+        delegate?.handleShield(willDamage: false, didDamage: false, willBreak: true, didBreak: false, fadeDuration: fadeDuration, villainPosition: nil)
     }
     
-    /**
-     Performs a shield throbbing action on the node passed in
-     - parameters:
-        - node: the node to which to perform the action
-        - waitDuration: pause before throbbing action
-     */
-    private func shieldThrob(node: SKNode, waitDuration: TimeInterval) {
-        node.run(SKAction.sequence([
-            SKAction.wait(forDuration: waitDuration),
-            SKAction.repeatForever(SKAction.sequence([
-                scaleAndFade(size: 4, alpha: 1, duration: 2),
-                scaleAndFade(size: 5, alpha: 0.5, duration: 2)
-            ]))
-        ]), withKey: "shieldThrobAction")
+    func didBreakShield(at villainPosition: K.GameboardPosition) {
+        delegate?.handleShield(willDamage: false, didDamage: false, willBreak: false, didBreak: true, fadeDuration: nil, villainPosition: villainPosition)
     }
-    
-    /**
-     Casts a protective shield around the villain that requires X hits before breaking.
-     */
-    private func moveVillainCastShield() {
-        villainShieldReset()
-        
-        //Animations
-        villain.sprite.run(Player.animate(player: villain, type: .attack, repeatCount: 1))
-    }
-    
     
     
 }

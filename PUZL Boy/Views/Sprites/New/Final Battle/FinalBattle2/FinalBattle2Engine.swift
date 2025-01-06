@@ -259,27 +259,26 @@ extension FinalBattle2Engine: FinalBattle2ControlsDelegate {
         backgroundPattern.animate(pattern: .wave, fadeDuration: 2, shouldFlashGameboard: true)
     }
     
-    func willDamageShield() {
-        backgroundPattern.animate(pattern: .convulse, fadeDuration: 0.04)
-    }
-    
-    func didDamageShield() {
-        backgroundPattern.animate(pattern: .wave, fadeDuration: 2)
-    }
-    
-    func willBreakShield(fadeDuration: TimeInterval) {
-        bloodOverlay.run(SKAction.fadeOut(withDuration: fadeDuration))
-        flashGameboard.run(SKAction.fadeOut(withDuration: fadeDuration))
-        backgroundPattern.adjustOverworldMusic(volume: 0, fadeDuration: fadeDuration)
-    }
-    
-    /**
-     I don't like how this villainPosition doesn't sync up with global villainPosition, so I'm passing the correct one as an argument.
-     - parameter villainPosition: the sync'ed version that is correct
-     */
-    func didBreakShield(at villainPosition: K.GameboardPosition) {
-        backgroundPattern.animate(pattern: .normal, fadeDuration: 2, shouldFlashGameboard: true)
-        shieldExplodeDamagePanels(at: villainPosition)
+    func handleShield(willDamage: Bool, didDamage: Bool, willBreak: Bool, didBreak: Bool, fadeDuration: TimeInterval?, villainPosition: K.GameboardPosition?) {
+        if willDamage {
+            backgroundPattern.animate(pattern: .convulse, fadeDuration: 0.04)
+        }
+        else if didDamage {
+            backgroundPattern.animate(pattern: .wave, fadeDuration: 2)
+        }
+        else if willBreak {
+            let fadeDuration = fadeDuration ?? 0
+
+            bloodOverlay.run(SKAction.fadeOut(withDuration: fadeDuration))
+            flashGameboard.run(SKAction.fadeOut(withDuration: fadeDuration))
+            backgroundPattern.adjustOverworldMusic(volume: 0, fadeDuration: fadeDuration)
+        }
+        else if didBreak {
+            let villainPosition = villainPosition ?? (0, 0)
+            
+            backgroundPattern.animate(pattern: .normal, fadeDuration: 2, shouldFlashGameboard: true)
+            shieldExplodeDamagePanels(at: villainPosition)
+        }
     }
     
     
