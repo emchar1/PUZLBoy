@@ -43,8 +43,8 @@ class PrincessCageSprite: SKNode {
     
     private func setupNodes() {
         flingNode = SKSpriteNode(imageNamed: "magmoorShieldTop")
-        flingNode.position = villainNode.position - CGPoint(x: 80, y: -80)
-        flingNode.color = .red
+        flingNode.position = villainNode.position - CGPoint(x: 80, y: -10) / UIDevice.spriteScale
+        flingNode.color = .yellow
         flingNode.colorBlendFactor = 1
         flingNode.setScale(0)
         flingNode.zPosition = villainNode.zPosition + 5
@@ -70,8 +70,8 @@ class PrincessCageSprite: SKNode {
     // MARK: - Functions
     
     func encagePrincess() {
-        let flingDuration: TimeInterval = 1
-        let pulseDuration: TimeInterval = 1.8
+        let attackDuration: TimeInterval = 0.12 * 3
+        let flingDuration: TimeInterval = 0.5
         let fadeDuration: TimeInterval = 1.8
         
         let villain = Player(type: .villain)
@@ -81,32 +81,39 @@ class PrincessCageSprite: SKNode {
         let writheAction = Player.animate(player: princess, type: .jump)
         
         let flingAction = SKAction.sequence([
+            SKAction.wait(forDuration: attackDuration),
             SKAction.group([
                 SKAction.move(to: princessNode.position, duration: flingDuration),
-                SKAction.rotate(byAngle: 2 * .pi, duration: flingDuration),
+                SKAction.rotate(byAngle: .pi, duration: flingDuration),
                 SKAction.scale(to: 1 / UIDevice.spriteScale, duration: flingDuration)
             ]),
-            SKAction.fadeOut(withDuration: fadeDuration / 6),
+            SKAction.group([
+                SKAction.scale(to: 0.5 / UIDevice.spriteScale, duration: fadeDuration / 6),
+                SKAction.fadeOut(withDuration: fadeDuration / 6)
+            ]),
             SKAction.removeFromParent()
         ])
         
-        let pulseAction = SKAction.repeatForever(SKAction.group([
-            SKAction.rotate(byAngle: .pi / 2, duration: pulseDuration * 2),
-            SKAction.sequence([
-                SKAction.scale(to: scaleSize * 0.9, duration: pulseDuration),
-                SKAction.scale(to: scaleSize * 1.1, duration: pulseDuration)
-            ])
+        let rotateAction = SKAction.repeatForever(SKAction.rotate(byAngle: .pi / 4, duration: fadeDuration))
+        
+        let pulseAction = SKAction.repeatForever(SKAction.sequence([
+            SKAction.scale(to: scaleSize * 0.9, duration: fadeDuration),
+            SKAction.scale(to: scaleSize * 1.1, duration: fadeDuration)
         ]))
         
-        let encageAction = SKAction.group([
-            SKAction.fadeIn(withDuration: fadeDuration / 3),
-            SKAction.sequence([
-                SKAction.scale(to: scaleSize * 0.5, duration: fadeDuration / 6),
-                SKAction.scale(to: scaleSize * 2, duration: fadeDuration / 6),
-                SKAction.scale(to: scaleSize * 0.75, duration: fadeDuration / 6),
-                SKAction.scale(to: scaleSize * 1.25, duration: fadeDuration / 6),
-                SKAction.scale(to: scaleSize * 0.9, duration: fadeDuration / 6),
-                SKAction.scale(to: scaleSize * 1.1, duration: fadeDuration / 6)
+        let encageAction = SKAction.sequence([
+            SKAction.wait(forDuration: flingDuration + attackDuration),
+            SKAction.group([
+                SKAction.fadeIn(withDuration: fadeDuration / 3),
+                SKAction.colorize(with: .red, colorBlendFactor: 1, duration: fadeDuration),
+                SKAction.sequence([
+                    SKAction.scale(to: scaleSize * 0.50, duration: fadeDuration / 6),
+                    SKAction.scale(to: scaleSize * 2.00, duration: fadeDuration / 5),
+                    SKAction.scale(to: scaleSize * 0.75, duration: fadeDuration / 4),
+                    SKAction.scale(to: scaleSize * 1.25, duration: fadeDuration / 3),
+                    SKAction.scale(to: scaleSize * 0.90, duration: fadeDuration / 2),
+                    SKAction.scale(to: scaleSize * 1.10, duration: fadeDuration / 1)
+                ])
             ])
         ])
         
@@ -116,11 +123,15 @@ class PrincessCageSprite: SKNode {
         princessNode.run(writheAction)
         
         flingNode.run(flingAction)
-        backNode.run(SKAction.sequence([SKAction.wait(forDuration: flingDuration), encageAction, pulseAction]))
-        frontNode.run(SKAction.sequence([SKAction.wait(forDuration: flingDuration), encageAction, pulseAction]))
         
-        AudioManager.shared.playSound(for: "shieldcast", delay: flingDuration)
-        AudioManager.shared.playSound(for: "shieldcast2", delay: flingDuration)
+        backNode.run(rotateAction)
+        backNode.run(SKAction.sequence([encageAction, pulseAction]))
+        
+        frontNode.run(rotateAction)
+        frontNode.run(SKAction.sequence([encageAction, pulseAction]))
+        
+        AudioManager.shared.playSound(for: "shieldcast", delay: flingDuration + attackDuration)
+        AudioManager.shared.playSound(for: "shieldcast2", delay: flingDuration + attackDuration)
     }
     
     
