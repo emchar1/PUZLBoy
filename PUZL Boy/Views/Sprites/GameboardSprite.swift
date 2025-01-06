@@ -983,7 +983,7 @@ class GameboardSprite {
             return
         }
         
-        let princessCage = PrincessCageSprite(villainNode: villainNode, princessNode: princessNode)
+        let princessCage = PrincessCageSprite(gameboard: self, villainNode: villainNode, princessNode: princessNode)
         princessCage.encagePrincess()
     }
     

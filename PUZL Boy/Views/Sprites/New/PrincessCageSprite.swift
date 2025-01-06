@@ -11,7 +11,8 @@ class PrincessCageSprite: SKNode {
     
     // MARK: - Properties
     
-    private let scaleSize: CGFloat = 15
+    private let scaleSize: CGFloat = 8
+    private var gameboard: GameboardSprite
     private var villainNode: SKSpriteNode
     private var princessNode: SKSpriteNode
 
@@ -22,7 +23,8 @@ class PrincessCageSprite: SKNode {
     
     // MARK: - Initialization
     
-    init(villainNode: SKSpriteNode, princessNode: SKSpriteNode) {
+    init(gameboard: GameboardSprite, villainNode: SKSpriteNode, princessNode: SKSpriteNode) {
+        self.gameboard = gameboard
         self.villainNode = villainNode
         self.princessNode = princessNode
         
@@ -40,19 +42,26 @@ class PrincessCageSprite: SKNode {
     }
     
     private func setupNodes() {
-        flingNode = SKSpriteNode(imageNamed: "princessCageBack")
+        flingNode = SKSpriteNode(imageNamed: "magmoorShieldTop")
+        flingNode.position = villainNode.position - CGPoint(x: 80, y: -80)
+        flingNode.color = .red
+        flingNode.colorBlendFactor = 1
+        flingNode.setScale(0)
+        flingNode.zPosition = villainNode.zPosition + 5
         
-        backNode = SKSpriteNode(imageNamed: "princessCageBack")
-        backNode.setScale(scaleSize * 3)
+        backNode = SKSpriteNode(imageNamed: "magmoorShieldBottom")
+        backNode.color = flingNode.color
+        backNode.colorBlendFactor = flingNode.colorBlendFactor
         backNode.alpha = 0
         backNode.zPosition = -5
         
-        frontNode = SKSpriteNode(imageNamed: "princessCageFront")
-        frontNode.setScale(scaleSize * 3)
+        frontNode = SKSpriteNode(imageNamed: "magmoorShieldTop")
+        frontNode.color = flingNode.color
+        frontNode.colorBlendFactor = flingNode.colorBlendFactor
         frontNode.alpha = 0
-        frontNode.zPosition = +5
+        frontNode.zPosition = 5
         
-//        villainNode.addChild(flingNode)
+        gameboard.sprite.addChild(flingNode)
         princessNode.addChild(backNode)
         princessNode.addChild(frontNode)
     }
@@ -61,9 +70,7 @@ class PrincessCageSprite: SKNode {
     // MARK: - Functions
     
     func encagePrincess() {
-        // FIXME: - Fling cage not working!!
-        
-        let flingDuration: TimeInterval = 2
+        let flingDuration: TimeInterval = 1
         let pulseDuration: TimeInterval = 1.8
         let fadeDuration: TimeInterval = 1.8
         
@@ -75,17 +82,20 @@ class PrincessCageSprite: SKNode {
         
         let flingAction = SKAction.sequence([
             SKAction.group([
-                SKAction.move(to: CGPoint(x: 2, y: -3) * princessNode.position, duration: flingDuration),
-                SKAction.rotate(byAngle: 3 * 2 * .pi, duration: flingDuration),
-                SKAction.scale(to: scaleSize * 0.5, duration: flingDuration)
+                SKAction.move(to: princessNode.position, duration: flingDuration),
+                SKAction.rotate(byAngle: 2 * .pi, duration: flingDuration),
+                SKAction.scale(to: 1 / UIDevice.spriteScale, duration: flingDuration)
             ]),
-            SKAction.fadeOut(withDuration: 0),
+            SKAction.fadeOut(withDuration: fadeDuration / 6),
             SKAction.removeFromParent()
         ])
         
-        let pulseAction = SKAction.repeatForever(SKAction.sequence([
-            SKAction.scale(to: scaleSize * 0.9, duration: pulseDuration),
-            SKAction.scale(to: scaleSize * 1.1, duration: pulseDuration)
+        let pulseAction = SKAction.repeatForever(SKAction.group([
+            SKAction.rotate(byAngle: .pi / 2, duration: pulseDuration * 2),
+            SKAction.sequence([
+                SKAction.scale(to: scaleSize * 0.9, duration: pulseDuration),
+                SKAction.scale(to: scaleSize * 1.1, duration: pulseDuration)
+            ])
         ]))
         
         let encageAction = SKAction.group([
@@ -101,12 +111,16 @@ class PrincessCageSprite: SKNode {
         ])
         
         villainNode.run(attackAction)
-        flingNode.run(flingAction)
         
         princessNode.removeAllActions()
         princessNode.run(writheAction)
-        frontNode.run(SKAction.sequence([encageAction, pulseAction]))
-        backNode.run(SKAction.sequence([encageAction, pulseAction]))
+        
+        flingNode.run(flingAction)
+        backNode.run(SKAction.sequence([SKAction.wait(forDuration: flingDuration), encageAction, pulseAction]))
+        frontNode.run(SKAction.sequence([SKAction.wait(forDuration: flingDuration), encageAction, pulseAction]))
+        
+        AudioManager.shared.playSound(for: "shieldcast", delay: flingDuration)
+        AudioManager.shared.playSound(for: "shieldcast2", delay: flingDuration)
     }
     
     

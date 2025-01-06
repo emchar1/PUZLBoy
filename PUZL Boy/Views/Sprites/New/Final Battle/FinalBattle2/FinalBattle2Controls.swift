@@ -199,9 +199,13 @@ class FinalBattle2Controls {
                 
                 if villainShield > 0 {
                     villainShieldDecrement()
+                    
+                    if villainShield > 0 {
+                        moveVillainFlee(shouldDisappear: false)
+                    }
                 }
                 else {
-                    moveVillainFlee()
+                    moveVillainFlee(shouldDisappear: true)
                     
                     delegate?.didHeroAttack(chosenSword: chosenSword)
                 }
@@ -264,22 +268,23 @@ class FinalBattle2Controls {
     /**
      Helper function to assist with moving the villain after he's been attacked by the hero.
      */
-    private func moveVillainFlee() {
+    private func moveVillainFlee(shouldDisappear: Bool) {
         let moveDirection = villain.sprite.xScale / abs(villain.sprite.xScale)
         let moveDistance: CGFloat = 20
-        let fadeDistance = CGPoint(x: 0, y: gameboard.panelSize) + FinalBattle2Engine.villainFloatOffset
+        let fadeDistance = CGPoint(x: 0, y: shouldDisappear ? gameboard.panelSize : 0) + FinalBattle2Engine.villainFloatOffset
         let fadeDuration: TimeInterval = 2
         let waitDuration = TimeInterval.random(in: 3...8)
         let villainDirection: CGFloat = villainPositionNew.col < gameboard.panelCount / 2 ? 1 : -1
         
         villainPosition = villainPositionNew
         
-        delegate?.didVillainDisappear(fadeDuration: fadeDuration)
+        if shouldDisappear {
+            delegate?.didVillainDisappear(fadeDuration: fadeDuration)
+            AudioManager.shared.playSound(for: "magicheartbeatloop1", fadeIn: fadeDuration)
+            AudioManager.shared.playSound(for: "villainpain\(Int.random(in: 1...3))")
+        }
         
-        AudioManager.shared.playSound(for: "magicheartbeatloop1", fadeIn: fadeDuration)
-        AudioManager.shared.playSound(for: "villainpain\(Int.random(in: 1...3))")
-        
-        villain.sprite.run(SKAction.sequence([
+        let disappearAction = SKAction.sequence([
             SKAction.moveBy(x: -moveDirection * moveDistance, y: 0, duration: 0),
             SKAction.colorize(with: .red, colorBlendFactor: 1, duration: 0),
             SKAction.colorize(withColorBlendFactor: 0, duration: 0.5),
@@ -293,7 +298,18 @@ class FinalBattle2Controls {
                 self?.delegate?.willVillainReappear()
                 AudioManager.shared.playSound(for: "scarylaugh")
                 AudioManager.shared.stopSound(for: "magicheartbeatloop1", fadeDuration: 1)
-            },
+            }
+        ])
+        
+        let waitAction = SKAction.sequence([
+            SKAction.wait(forDuration: 2.5),
+            SKAction.fadeOut(withDuration: 0.25)
+        ])
+        
+        let actionToTake = shouldDisappear ? disappearAction : waitAction
+        
+        villain.sprite.run(SKAction.sequence([
+            actionToTake,
             Player.moveWithIllusions(playerNode: villain.sprite,
                                      backgroundNode: gameboard.sprite,
                                      color: .red.darkenColor(factor: 12),
@@ -307,20 +323,24 @@ class FinalBattle2Controls {
             SKAction.scaleX(to: villainDirection * abs(villain.sprite.xScale), duration: 0),
             SKAction.fadeIn(withDuration: 0)
         ])) { [weak self] in
-            self?.canAttack = true
-            self?.moveVillainCastShield()
-
-            self?.delegate?.didVillainReappear()
+            if shouldDisappear {
+                self?.canAttack = true
+                self?.moveVillainCastShield()
+                
+                self?.delegate?.didVillainReappear()
+            }
         }
         
-        AudioManager.shared.playSound(for: "magicwarp")
-        AudioManager.shared.playSound(for: "magicwarp2")
-        ParticleEngine.shared.animateParticles(type: .magmoorBamf,
-                                               toNode: villain.sprite,
-                                               position: .zero,
-                                               scale: 3,
-                                               duration: 2)
-    }
+        if shouldDisappear {
+            AudioManager.shared.playSound(for: "magicwarp")
+            AudioManager.shared.playSound(for: "magicwarp2")
+            ParticleEngine.shared.animateParticles(type: .magmoorBamf,
+                                                   toNode: villain.sprite,
+                                                   position: .zero,
+                                                   scale: 3,
+                                                   duration: 2)
+        }
+    } //end moveVillainFlee()
     
     /**
      Resets the shield to the max, i.e. 3 and apply a quick animation.
