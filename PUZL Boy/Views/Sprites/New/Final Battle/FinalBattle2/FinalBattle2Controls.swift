@@ -363,6 +363,7 @@ class FinalBattle2Controls {
         
         AudioManager.shared.playSound(for: "shieldcast")
         AudioManager.shared.playSound(for: "shieldcast2")
+        AudioManager.shared.playSound(for: "shieldpulse")
         Haptics.shared.addHapticFeedback(withStyle: .soft)
         
         shieldThrob(node: magmoorShield, waitDuration: 2.5)
@@ -370,9 +371,6 @@ class FinalBattle2Controls {
         magmoorShield.run(SKAction.sequence([
             scaleAndFade(size: 6, alpha: 0.5, duration: 0.25),
             scaleAndFade(size: 2.5, alpha: 1, duration: 0.5),
-            SKAction.run {
-                AudioManager.shared.playSound(for: "shieldpulse")
-            },
             scaleAndFade(duration: 1.75)
         ]))
     }
