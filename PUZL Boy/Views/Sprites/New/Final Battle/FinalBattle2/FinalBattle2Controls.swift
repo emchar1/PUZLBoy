@@ -35,6 +35,7 @@ class FinalBattle2Controls {
     private var safePanelFound: Bool!
     
     private var villainShield: Int
+    private var shieldColor: UIColor
     private var isDisabled: Bool
     private var canAttack: Bool
     
@@ -51,6 +52,7 @@ class FinalBattle2Controls {
         self.villainPosition = villainPosition
         
         self.villainShield = 0
+        self.shieldColor = .yellow
         self.isDisabled = false
         self.canAttack = true
         
@@ -345,14 +347,14 @@ class FinalBattle2Controls {
      */
     private func villainShieldReset() {
         let magmoorShield = SKSpriteNode(imageNamed: "magmoorShieldBottom")
-        magmoorShield.color = .yellow
+        magmoorShield.color = shieldColor
         magmoorShield.colorBlendFactor = 1
         magmoorShield.setScale(0)
         magmoorShield.zPosition = -1
         magmoorShield.name = "magmoorShield"
         
         let magmoorShieldTop = SKSpriteNode(imageNamed: "magmoorShieldTop")
-        magmoorShieldTop.color = magmoorShield.color
+        magmoorShieldTop.color = shieldColor
         magmoorShieldTop.colorBlendFactor = magmoorShield.colorBlendFactor
         magmoorShieldTop.zPosition = 2
         
@@ -390,16 +392,16 @@ class FinalBattle2Controls {
         
         switch villainShield {
         case 0, 1:
-            magmoorShield.run(SKAction.colorize(with: .red, colorBlendFactor: 1, duration: colorizeDuration))
-            magmoorShieldTop?.run(SKAction.colorize(with: .red, colorBlendFactor: 1, duration: colorizeDuration))
+            shieldColor = .red
         case 2:
-            magmoorShield.run(SKAction.colorize(with: .orange, colorBlendFactor: 1, duration: colorizeDuration))
-            magmoorShieldTop?.run(SKAction.colorize(with: .orange, colorBlendFactor: 1, duration: colorizeDuration))
+            shieldColor = .orange
         default:
-            magmoorShield.run(SKAction.colorize(with: .yellow, colorBlendFactor: 1, duration: colorizeDuration))
-            magmoorShieldTop?.run(SKAction.colorize(with: .yellow, colorBlendFactor: 1, duration: colorizeDuration))
+            shieldColor = .yellow
         }
-        
+
+        magmoorShield.run(SKAction.colorize(with: shieldColor, colorBlendFactor: 1, duration: colorizeDuration))
+        magmoorShieldTop?.run(SKAction.colorize(with: shieldColor, colorBlendFactor: 1, duration: colorizeDuration))
+
         delegate?.willDamageShield()
         
         if villainShield > 0 {

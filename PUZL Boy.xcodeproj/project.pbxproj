@@ -349,6 +349,7 @@
 		EAE751D72D272A2A004B138A /* swordparry.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAE751D62D272A2A004B138A /* swordparry.mp3 */; };
 		EAE751DD2D28A5A0004B138A /* shieldpulse.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAE751DC2D28A5A0004B138A /* shieldpulse.mp3 */; };
 		EAE751DF2D29E69A004B138A /* FinalBattle2Spawner.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAE751DE2D29E689004B138A /* FinalBattle2Spawner.swift */; };
+		EAE751E12D2C712A004B138A /* MagmoorShield.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAE751E02D2C712A004B138A /* MagmoorShield.swift */; };
 		EAE919452A4CA4A800AF67D1 /* clocktick.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAE919442A4CA4A800AF67D1 /* clocktick.mp3 */; };
 		EAE919472A4CAFFD00AF67D1 /* gemcollectparty3x.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAE919462A4CAFFD00AF67D1 /* gemcollectparty3x.mp3 */; };
 		EAE919492A4CB02900AF67D1 /* gemcollectpartylife.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAE919482A4CB02800AF67D1 /* gemcollectpartylife.mp3 */; };
@@ -722,6 +723,7 @@
 		EAE751D62D272A2A004B138A /* swordparry.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = swordparry.mp3; sourceTree = "<group>"; };
 		EAE751DC2D28A5A0004B138A /* shieldpulse.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = shieldpulse.mp3; sourceTree = "<group>"; };
 		EAE751DE2D29E689004B138A /* FinalBattle2Spawner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinalBattle2Spawner.swift; sourceTree = "<group>"; };
+		EAE751E02D2C712A004B138A /* MagmoorShield.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MagmoorShield.swift; sourceTree = "<group>"; };
 		EAE919442A4CA4A800AF67D1 /* clocktick.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = clocktick.mp3; sourceTree = "<group>"; };
 		EAE919462A4CAFFD00AF67D1 /* gemcollectparty3x.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = gemcollectparty3x.mp3; sourceTree = "<group>"; };
 		EAE919482A4CB02800AF67D1 /* gemcollectpartylife.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = gemcollectpartylife.mp3; sourceTree = "<group>"; };
@@ -823,6 +825,7 @@
 				EAE751DE2D29E689004B138A /* FinalBattle2Spawner.swift */,
 				EA9D4BB12D17498700BB1F36 /* FinalBattle2Controls.swift */,
 				EA37CEFE2D1BF8C700275A15 /* FinalBattle2Health.swift */,
+				EAE751E02D2C712A004B138A /* MagmoorShield.swift */,
 			);
 			path = FinalBattle2;
 			sourceTree = "<group>";
@@ -1769,6 +1772,7 @@
 				EA75F0EB292DF46200F09BD7 /* FIRManager.swift in Sources */,
 				EA95D1C12953AB4B0061059C /* AchievementBeastMaster.swift in Sources */,
 				EA84645C29D8E5A50075F2A9 /* MenuItemLabel.swift in Sources */,
+				EAE751E12D2C712A004B138A /* MagmoorShield.swift in Sources */,
 				EACDF09F2A55E9A100F28A41 /* CreditsScene.swift in Sources */,
 				EA95D1C729541E8E0061059C /* AchievementMyPreciouses.swift in Sources */,
 				EA49B06D2A19D03000E6B96D /* HowToPlayModel.swift in Sources */,
