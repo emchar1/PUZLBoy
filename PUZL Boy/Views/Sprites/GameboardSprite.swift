@@ -934,6 +934,9 @@ class GameboardSprite {
         
         flipGameboard()
         colorizeGameboard(fadeOut: false, fadeOutDuration: 2, isInbetween: false, completion: nil)
+        
+        //Do this in case there's a shieldpulse sound happening, if not then it wouldn't hurt to have it here for insurance.
+        AudioManager.shared.stopSound(for: "shieldpulse", fadeDuration: fadeDuration * (persistPresence ? 7 : 1))
     }
     
     ///Princess makes a second attempt at displaying her latent powers. Magmoor is impressed, and a little intimidated, so he encases her in a prison cage to prevent her from thwarting his plans.

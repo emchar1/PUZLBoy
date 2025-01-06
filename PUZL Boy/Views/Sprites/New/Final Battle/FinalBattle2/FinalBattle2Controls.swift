@@ -315,12 +315,11 @@ class FinalBattle2Controls {
             SKAction.scaleX(to: villainDirection * abs(villain.sprite.xScale), duration: 0),
             SKAction.fadeIn(withDuration: 0)
         ])) { [weak self] in
-            if shouldDisappear {
-                self?.canAttack = true
-                self?.moveVillainCastShield()
-                
-                self?.delegate?.didVillainReappear()
-            }
+            guard shouldDisappear else { return }
+            
+            self?.canAttack = true
+            self?.moveVillainCastShield()
+            self?.delegate?.didVillainReappear()
         }
         
         

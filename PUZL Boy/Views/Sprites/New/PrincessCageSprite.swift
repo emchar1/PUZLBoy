@@ -132,6 +132,7 @@ class PrincessCageSprite: SKNode {
         
         AudioManager.shared.playSound(for: "shieldcast", delay: flingDuration + attackDuration)
         AudioManager.shared.playSound(for: "shieldcast2", delay: flingDuration + attackDuration)
+        AudioManager.shared.playSound(for: "shieldpulse", delay: flingDuration + attackDuration)
     }
     
     
