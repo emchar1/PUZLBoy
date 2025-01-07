@@ -34,6 +34,7 @@ class FinalBattle2Controls {
     
     private var isDisabled: Bool
     private var canAttack: Bool
+    private var villainMoveTimer: Timer
     
     weak var delegate: FinalBattle2ControlsDelegate?
     
@@ -49,6 +50,7 @@ class FinalBattle2Controls {
         
         self.isDisabled = false
         self.canAttack = true
+        self.villainMoveTimer = Timer()
         
         chosenSword = ChosenSword(didPursueMagmoor: FIRManager.didPursueMagmoor,
                                   didGiveAwayFeather: FIRManager.didGiveAwayFeather,
@@ -80,10 +82,7 @@ class FinalBattle2Controls {
         self.location = location
         self.safePanelFound = safePanelFound
         
-        //Villain's new spawn position cannot be where player position or start position are!
-        repeat {
-            villainPositionNew = (Int.random(in: 0...gameboard.panelCount - 1), Int.random(in: 0...gameboard.panelCount - 1))
-        } while villainPositionNew == playerPosition || villainPositionNew == FinalBattle2Spawner.startPosition
+        generateVillainPositionNew()
         
         //Now check for movement/attack!
         if inBounds(.up) && !canAttackVillain(.up) {
@@ -181,6 +180,7 @@ class FinalBattle2Controls {
         
         isDisabled = true
         canAttack = false
+        villainMoveTimer.invalidate()
         
         gameboard.sprite.addChild(chosenSword.spriteNode)
         
@@ -267,13 +267,43 @@ class FinalBattle2Controls {
     // MARK: - Villain Movement and Attacks
     
     /**
+     Moves the villain to a new, random spot on the board. Use this to periodically move the villain, via a timer, for example.
+     */
+    @objc private func moveVillain(_ sender: Any) {
+        generateVillainPositionNew()
+        moveVillainFlee(shouldDisappear: false, fadeDuration: 0)
+    }
+    
+    /**
+     Resets the timer and begins a new one.
+     - parameter delay: time in between until timer fires again
+     */
+    private func resetTimer(delay: TimeInterval = 10) {
+        villainMoveTimer.invalidate()
+        villainMoveTimer = Timer.scheduledTimer(timeInterval: delay,
+                                                target: self,
+                                                selector: #selector(moveVillain(_:)),
+                                                userInfo: nil,
+                                                repeats: false)
+    }
+    
+    /**
+     Generates a new position for the villain.
+     */
+    private func generateVillainPositionNew() {
+        //Villain's new spawn position cannot be where player position or start position are!
+        repeat {
+            villainPositionNew = (Int.random(in: 0...gameboard.panelCount - 1), Int.random(in: 0...gameboard.panelCount - 1))
+        } while villainPositionNew == playerPosition || villainPositionNew == FinalBattle2Spawner.startPosition
+    }
+    
+    /**
      Helper function to assist with moving the villain after he's been attacked by the hero.
      */
-    private func moveVillainFlee(shouldDisappear: Bool) {
+    private func moveVillainFlee(shouldDisappear: Bool, fadeDuration: TimeInterval = 2) {
         let moveDirection = villain.sprite.xScale / abs(villain.sprite.xScale)
         let moveDistance: CGFloat = 20
         let fadeDistance = CGPoint(x: 0, y: shouldDisappear ? gameboard.panelSize : 0)
-        let fadeDuration: TimeInterval = 2
         let waitDuration = TimeInterval.random(in: 3...8)
         let villainDirection: CGFloat = villainPositionNew.col < gameboard.panelCount / 2 ? 1 : -1
         
@@ -295,8 +325,8 @@ class FinalBattle2Controls {
         ])
         
         let waitAction = SKAction.sequence([
-            SKAction.wait(forDuration: 2.5),
-            SKAction.fadeOut(withDuration: 0.25)
+            SKAction.wait(forDuration: fadeDuration),
+            SKAction.fadeOut(withDuration: 0)
         ])
         
         let actionToTake = shouldDisappear ? disappearAction : waitAction
@@ -317,6 +347,9 @@ class FinalBattle2Controls {
             SKAction.fadeIn(withDuration: 0)
         ])) { [weak self] in
             guard let self = self else { return }
+            
+            resetTimer()
+            
             guard shouldDisappear else { return }
             
             canAttack = true
