@@ -183,11 +183,7 @@ class FinalBattle2Controls {
         let attackPanel: K.GameboardPosition = getNextPanel(direction: direction)
         
         guard attackPanel == villainPosition else { return false }
-        
-        let playerIsOnStart: Bool = playerPosition == FinalBattle2Spawner.startPosition
-        let playerIsOnEnd: Bool = playerPosition == FinalBattle2Spawner.endPosition
-        
-        guard (playerIsOnStart || playerIsOnEnd || safePanelFound) && canAttack else { return true }
+        guard playerOnSafePanel() && canAttack else { return true }
         
         isDisabled = true
         canAttack = false
@@ -220,6 +216,13 @@ class FinalBattle2Controls {
     }
     
     /**
+     Returns true if playerPosition is on a safe panel, start panel, or end panel.
+     */
+    private func playerOnSafePanel() -> Bool {
+        return safePanelFound || playerPosition == FinalBattle2Spawner.startPosition || playerPosition == FinalBattle2Spawner.endPosition
+    }
+    
+    /**
      Physically move the player in the intended direction.
      - parameters:
         - direction: The direction the player would like to move to
@@ -228,7 +231,7 @@ class FinalBattle2Controls {
     private func movePlayerHelper(_ direction: Controls, completion: (() -> Void)?) {
         let nextPanel: K.GameboardPosition = getNextPanel(direction: direction)
         let panelType = gameboard.getUserDataForLevelType(sprite: gameboard.getPanelSprite(at:playerPosition).terrain!)
-        let movementMultiplier: TimeInterval = (safePanelFound || playerPosition == FinalBattle2Spawner.startPosition || playerPosition == FinalBattle2Spawner.endPosition) ? 1 : 2
+        let movementMultiplier: TimeInterval = playerOnSafePanel() ? 1 : 2
         let runSound: String
         
         if safePanelFound {
@@ -254,7 +257,7 @@ class FinalBattle2Controls {
         //Wait, then idle animation...
         player.sprite.run(SKAction.sequence([
             SKAction.wait(forDuration: Player.Texture.run.movementSpeed * movementMultiplier),
-            Player.animate(player: player, type: .idle, timePerFrame: movementMultiplier)
+            Player.animate(player: player, type: .idle, timePerFrameMultiplier: movementMultiplier)
         ]))
         
         //In between, move player and completion...
