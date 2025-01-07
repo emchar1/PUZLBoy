@@ -257,7 +257,7 @@ class FinalBattle2Controls {
         //Wait, then idle animation...
         player.sprite.run(SKAction.sequence([
             SKAction.wait(forDuration: Player.Texture.run.movementSpeed * movementMultiplier),
-            Player.animate(player: player, type: .idle, timePerFrameMultiplier: movementMultiplier)
+            Player.animate(player: player, type: .idle)
         ]))
         
         //In between, move player and completion...
