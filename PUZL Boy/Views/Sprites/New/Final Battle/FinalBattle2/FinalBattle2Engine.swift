@@ -85,9 +85,9 @@ class FinalBattle2Engine {
                                         villainPosition: FinalBattle2Spawner.endPosition)
         controls.delegate = self
         
-        panelSpawner = FinalBattle2Spawner(gameboard: gameboard)
-        panelSpawner.populateSpawner(spawnPanelCount: 3)
+        panelSpawner = FinalBattle2Spawner(gameboard: gameboard, spawnPanelCount: 3)
         panelSpawner.delegate = self
+        panelSpawner.populateSpawner()
         
         health = FinalBattle2Health(position: CGPoint(x: size.width / 2, y: K.ScreenDimensions.topOfGameboard))
         backgroundPattern = FinalBattle2Background(backgroundSprite: backgroundSprite, bloodOverlay: bloodOverlay, flashGameboard: flashGameboard)

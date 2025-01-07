@@ -23,16 +23,22 @@ class FinalBattle2Spawner {
     private let maxCount: Int = 1000
     
     private var gameboard: GameboardSprite
-    private var spawnPanelCount: Int?
-    private var spawnPanels: [[K.GameboardPosition]]?
+    private var spawnPanelCount: Int
+    private var spawnPanels: [[K.GameboardPosition]]
+
+    private var spawnPanelRange: Range<Int> {
+        0..<spawnPanelCount
+    }
     
     weak var delegate: FinalBattle2SpawnerDelegate?
 
     
     // MARK: - Initialization
     
-    init(gameboard: GameboardSprite) {
+    init(gameboard: GameboardSprite, spawnPanelCount: Int) {
         self.gameboard = gameboard
+        self.spawnPanelCount = max(1, spawnPanelCount)
+        self.spawnPanels = Array(repeating: [], count: spawnPanelCount)
     }
     
     
@@ -40,16 +46,10 @@ class FinalBattle2Spawner {
     
     /**
      Populates the Spawner.
-     - parameter spawnPanelCount: the number of spawner tiles
      */
-    func populateSpawner(spawnPanelCount: Int) {
-        self.spawnPanelCount = max(1, spawnPanelCount)
-        spawnPanels = Array(repeating: [], count: spawnPanelCount)
-        
-        let spawnPanelRange: Range<Int> = 0..<spawnPanelCount
-        
+    func populateSpawner() {
         spawnPanelRange.forEach { i in
-            populateSpawnPanels(spawnPanels: &spawnPanels![i],
+            populateSpawnPanels(spawnPanels: &spawnPanels[i],
                                 startPosition: FinalBattle2Spawner.startPosition,
                                 ignorePositions: [FinalBattle2Spawner.startPosition, FinalBattle2Spawner.endPosition],
                                 maxCount: maxCount)
@@ -58,14 +58,11 @@ class FinalBattle2Spawner {
     
     /**
      Animates the Spawner.
-     - parameter speed:
+     - parameter speed: speed at which safe panels drop off; the higher the number, the slower the drop-off
      */
     func animateSpawner(speed: TimeInterval) {
-        guard let spawnPanelCount = spawnPanelCount, let spawnPanels = spawnPanels else { return print("Need to call populateSpawner() first!") }
-        
         let terrainPanel: LevelType = FireIceTheme.isFire ? .sand : .snow
-        let spawnPanelRange: Range<Int> = 0..<spawnPanelCount
-
+        
         spawnPanelRange.forEach { i in
             animateSpawnPanels(spawnPanels: spawnPanels[i], with: terrainPanel, waitDuration: speed)
         }
