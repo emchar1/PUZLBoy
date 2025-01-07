@@ -179,12 +179,20 @@ class FinalBattle2Controls {
         return nextPanel
     }
     
+    private func playerIsOnStart() -> Bool {
+        return playerPosition == FinalBattle2Spawner.startPosition
+    }
+    
+    private func playerIsOnEnd() -> Bool {
+        return playerPosition == FinalBattle2Spawner.endPosition
+    }
+    
     private func canAttackVillain(_ direction: Controls) -> Bool {
         let attackPanel: K.GameboardPosition = getNextPanel(direction: direction)
         
         guard attackPanel == villainPosition else { return false }
         
-        if (safePanelFound || playerPosition == FinalBattle2Engine.startPosition || playerPosition == FinalBattle2Engine.endPosition) && canAttack {
+        if (playerIsOnStart() || playerIsOnEnd() || safePanelFound) && canAttack {
             isDisabled = true
             canAttack = false
             
