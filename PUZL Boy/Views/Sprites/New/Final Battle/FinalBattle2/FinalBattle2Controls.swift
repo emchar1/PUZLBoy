@@ -187,32 +187,32 @@ class FinalBattle2Controls {
         let playerIsOnStart: Bool = playerPosition == FinalBattle2Spawner.startPosition
         let playerIsOnEnd: Bool = playerPosition == FinalBattle2Spawner.endPosition
         
-        if (playerIsOnStart || playerIsOnEnd || safePanelFound) && canAttack {
-            isDisabled = true
-            canAttack = false
+        guard (playerIsOnStart || playerIsOnEnd || safePanelFound) && canAttack else { return true }
+        
+        isDisabled = true
+        canAttack = false
+        
+        gameboard.sprite.addChild(chosenSword.spriteNode)
+        
+        chosenSword.spriteNode.position = gameboard.getLocation(at: villainPosition)
+        chosenSword.attack(shouldParry: magmoorShield.hasHitPoints) { [weak self] in
+            guard let self = self else { return }
             
-            gameboard.sprite.addChild(chosenSword.spriteNode)
+            isDisabled = false
             
-            chosenSword.spriteNode.position = gameboard.getLocation(at: villainPosition)
-            chosenSword.attack(shouldParry: magmoorShield.hasHitPoints) { [weak self] in
-                guard let self = self else { return }
-                
-                isDisabled = false
+            if magmoorShield.hasHitPoints {
+                magmoorShield.decrementShield(villain: villain, villainPosition: villainPosition) {
+                    self.canAttack = true
+                }
                 
                 if magmoorShield.hasHitPoints {
-                    magmoorShield.decrementShield(villain: villain, villainPosition: villainPosition) {
-                        self.canAttack = true
-                    }
-                    
-                    if magmoorShield.hasHitPoints {
-                        moveVillainFlee(shouldDisappear: false)
-                    }
+                    moveVillainFlee(shouldDisappear: false)
                 }
-                else {
-                    moveVillainFlee(shouldDisappear: true)
-                    
-                    delegate?.didHeroAttack(chosenSword: chosenSword)
-                }
+            }
+            else {
+                moveVillainFlee(shouldDisappear: true)
+                
+                delegate?.didHeroAttack(chosenSword: chosenSword)
             }
         }
         
