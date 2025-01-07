@@ -77,7 +77,7 @@ class FinalBattle2Health {
             Haptics.shared.executeCustomPattern(pattern: FireIceTheme.isFire ? .lava : .water)
         case .regen:
             drainTimer?.invalidate()
-            drainTimer = Timer.scheduledTimer(timeInterval: 0.25, target: self, selector: #selector(helperRegen), userInfo: nil, repeats: true)
+            drainTimer = Timer.scheduledTimer(timeInterval: 0.25, target: self, selector: #selector(helperRegen), userInfo: nil, repeats: false)
         case .lavaHit:
             timer = Timer.scheduledTimer(timeInterval: 0, target: self, selector: #selector(helperLavaHit), userInfo: nil, repeats: false)
         case .heroAttack:
@@ -131,7 +131,7 @@ class FinalBattle2Health {
     }
     
     @objc private func helperDrain() { objcHelper(rateDivisions: [0.5, 0.25], rates: [0.02, 0.01, 0.005], increment: false) }
-    @objc private func helperRegen() { objcHelper(rateDivisions: [], rates: [0.001], increment: true) }
+    @objc private func helperRegen() { objcHelper(rateDivisions: [], rates: [0.002], increment: true) }
     @objc private func helperLavaHit() { objcHelper(rateDivisions: [0.5], rates: [0.1, 0.05], increment: false) }
     @objc private func helperHeroAttack() { objcHelper(rateDivisions: [0.5], rates: [0.1, 0.2].map { $0 * (dmgMultiplier ?? 0) }, increment: true) }
     @objc private func helperVillainAttack() { }
