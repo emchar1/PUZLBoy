@@ -22,8 +22,8 @@ class FinalBattle2Controls {
     private var gameboard: GameboardSprite
     private var player: Player
     private var villain: Player
-    private var playerPosition: K.GameboardPosition
-    private var villainPosition: K.GameboardPosition
+    private(set) var playerPosition: K.GameboardPosition
+    private(set) var villainPosition: K.GameboardPosition
     private var chosenSword: ChosenSword
     private var magmoorShield: MagmoorShield
     
@@ -71,12 +71,10 @@ class FinalBattle2Controls {
      Handles player movement based on control input.
      - parameters:
         - location: location for which comparison is to occur
-        - playerPosition: the player's position, which will be overridden becuase it's an inout parameter
-        - villainPosition: the villain's (inout) position
         - safePanelFound: returns true if a safe panel i.e. sand/snow is found in the player's position
         - completion: handler to perform tasks upon completion
      */
-    func handleControls(in location: CGPoint, playerPosition: inout K.GameboardPosition, villainPosition: inout K.GameboardPosition, safePanelFound: Bool, completion: (() -> Void)?) {
+    func handleControls(in location: CGPoint, safePanelFound: Bool, completion: (() -> Void)?) {
         guard !isDisabled else { return }
         
         self.location = location
@@ -103,10 +101,6 @@ class FinalBattle2Controls {
         else {
             //handle default cases here...
         }
-        
-        //Since these arguments are inout, remember to set the global variables! Put these lines last!!!
-        playerPosition = self.playerPosition
-        villainPosition = villainPositionNew
     }
     
     

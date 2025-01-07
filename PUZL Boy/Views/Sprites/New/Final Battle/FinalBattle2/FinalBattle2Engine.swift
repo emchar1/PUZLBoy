@@ -12,8 +12,6 @@ class FinalBattle2Engine {
     // MARK: - Properties
     
     private let size: CGSize
-    private var heroPosition: K.GameboardPosition!
-    private var villainPosition: K.GameboardPosition!
     private var gameboard: GameboardSprite!
     private var hero: Player!
     private var villain: Player!
@@ -42,8 +40,6 @@ class FinalBattle2Engine {
     }
     
     private func setupScene() {
-        heroPosition = FinalBattle2Spawner.startPosition
-        villainPosition = FinalBattle2Spawner.endPosition
         gameboard = GameboardSprite(level: LevelBuilder.levels[Level.finalLevel + 1], fadeIn: false)
         
         //Make sure to initialize GameboardSprite BEFORE initializing these!!!
@@ -64,14 +60,14 @@ class FinalBattle2Engine {
         flashGameboard.zPosition = K.ZPosition.terrain + 2
         
         hero = Player(type: .hero)
-        hero.sprite.position = gameboard.getLocation(at: heroPosition)
+        hero.sprite.position = gameboard.getLocation(at: FinalBattle2Spawner.startPosition)
         hero.sprite.setScale(playerScale * hero.scaleMultiplier)
         hero.sprite.color = FireIceTheme.isFire ? .red : .blue
         hero.sprite.colorBlendFactor = 0
         hero.sprite.zPosition = K.ZPosition.player
         
         villain = Player(type: .villain)
-        villain.sprite.position = gameboard.getLocation(at: villainPosition)
+        villain.sprite.position = gameboard.getLocation(at: FinalBattle2Spawner.endPosition)
         villain.sprite.setScale(playerScale * villain.scaleMultiplier)
         villain.sprite.xScale *= -1
         villain.sprite.zPosition = K.ZPosition.player + 2
@@ -85,8 +81,8 @@ class FinalBattle2Engine {
         controls = FinalBattle2Controls(gameboard: gameboard,
                                         player: hero,
                                         villain: villain,
-                                        playerPosition: heroPosition,
-                                        villainPosition: villainPosition)
+                                        playerPosition: FinalBattle2Spawner.startPosition,
+                                        villainPosition: FinalBattle2Spawner.endPosition)
         controls.delegate = self
         
         panelSpawner = FinalBattle2Spawner(gameboard: gameboard)
@@ -130,7 +126,7 @@ class FinalBattle2Engine {
     
     
     func handleControls(in location: CGPoint) {
-        controls.handleControls(in: location, playerPosition: &heroPosition, villainPosition: &villainPosition, safePanelFound: safePanelFound()) { [weak self] in
+        controls.handleControls(in: location, safePanelFound: safePanelFound()) { [weak self] in
             guard let self = self else { return }
             
             if safePanelFound() || startPanelFound() || endPanelFound() {
@@ -156,7 +152,7 @@ class FinalBattle2Engine {
         }
         
         //I had to multiply gameboard.getLocation(at:) by UIDevice.spriteScale to NORMALIZE it, otherwise it gets messed up on iPad!!! 12/31/24
-        let heroPositionGameboardOffset = gameboard.sprite.position + gameboard.getLocation(at: heroPosition) * UIDevice.spriteScale
+        let heroPositionGameboardOffset = gameboard.sprite.position + gameboard.getLocation(at: controls.playerPosition) * UIDevice.spriteScale
         
         return superScene.nodes(at: heroPositionGameboardOffset).contains(where: { $0.name == "safePanel" })
     }
@@ -165,14 +161,14 @@ class FinalBattle2Engine {
      Checks if hero is at startPanel.
      */
     private func startPanelFound() -> Bool {
-        return heroPosition == FinalBattle2Spawner.startPosition
+        return controls.playerPosition == FinalBattle2Spawner.startPosition
     }
     
     /**
      Checks if hero is at endPanel.
      */
     private func endPanelFound() -> Bool {
-        return heroPosition == FinalBattle2Spawner.endPosition
+        return controls.playerPosition == FinalBattle2Spawner.endPosition
     }
     
     
@@ -231,7 +227,7 @@ class FinalBattle2Engine {
         }
         
         //Update health
-        if affectedPanels.contains(where: { $0 == heroPosition }) {
+        if affectedPanels.contains(where: { $0 == controls.playerPosition }) {
             health.updateHealth(type: .villainShieldExplode, player: hero)
         }
     }
@@ -289,13 +285,13 @@ extension FinalBattle2Engine: FinalBattle2ControlsDelegate {
 
 extension FinalBattle2Engine: FinalBattle2SpawnerDelegate {
     func didSpawnSafePanel(spawnPanel: K.GameboardPosition) {
-        guard spawnPanel == heroPosition else { return }
+        guard spawnPanel == controls.playerPosition else { return }
         
         health.updateHealth(type: .regen, player: hero)
     }
     
     func didDespawnSafePanel(spawnPanel: K.GameboardPosition) {
-        guard spawnPanel == heroPosition && !safePanelFound() && !startPanelFound() && !endPanelFound() else { return }
+        guard spawnPanel == controls.playerPosition && !safePanelFound() && !startPanelFound() && !endPanelFound() else { return }
         
         health.updateHealth(type: .drain, player: hero)
     }
