@@ -74,7 +74,7 @@ class FinalBattle2Spawner {
     /**
      Populates the spawnPanels array with randomized "moving" panels
      - parameters:
-        - spawnPanelIndex: the array index that is to be populated
+        - spawnPanelIndex: the index of the spawnPanels array that is to be populated
         - startPosition: origin of the spawer.
         - ignorePositions: i.e. start, endPanels, etc.
         - count: LEAVE ALONE! This is to be used by the recursive function only!!
@@ -84,6 +84,19 @@ class FinalBattle2Spawner {
         
         //Base case
         guard count < maxCount else { return }
+        
+        func spawnNextPosition(startPosition: K.GameboardPosition, ignorePositions: [K.GameboardPosition]) -> K.GameboardPosition {
+            var nextPosition: K.GameboardPosition
+            
+            repeat {
+                let spawnCol = Bool.random()
+                let spawnOffset = Bool.random() ? -1 : 1
+                
+                nextPosition = (startPosition.row + (spawnCol ? 0 : spawnOffset), startPosition.col + (spawnCol ? spawnOffset : 0))
+            } while nextPosition.row < 0 || nextPosition.row >= gameboard.panelCount || nextPosition.col < 0 || nextPosition.col >= gameboard.panelCount || ignorePositions.contains { $0.row == nextPosition.row && $0.col == nextPosition.col }
+            
+            return nextPosition
+        }
         
         let nextPosition = spawnNextPosition(startPosition: startPosition, ignorePositions: ignorePositions)
         self.spawnPanels[spawnPanelIndex].append(nextPosition)
@@ -99,20 +112,15 @@ class FinalBattle2Spawner {
                             maxCount: maxCount)
     }
     
-    private func spawnNextPosition(startPosition: K.GameboardPosition, ignorePositions: [K.GameboardPosition]) -> K.GameboardPosition {
-        var nextPosition: K.GameboardPosition
-        
-        repeat {
-            let spawnCol = Bool.random()
-            let spawnOffset = Bool.random() ? -1 : 1
-            
-            nextPosition = (startPosition.row + (spawnCol ? 0 : spawnOffset), startPosition.col + (spawnCol ? spawnOffset : 0))
-        } while nextPosition.row < 0 || nextPosition.row >= gameboard.panelCount || nextPosition.col < 0 || nextPosition.col >= gameboard.panelCount || ignorePositions.contains { $0.row == nextPosition.row && $0.col == nextPosition.col }
-        
-        return nextPosition
-    }
     
-    // TODO: - Make disappearing floors and harm hero if he steps in lava or ground beneath him disappears.
+    /**
+     Helper function that animates the spawn panels recursively with the specified terrain panel and waitDuration.
+     - parameters:
+        - spawnPanelIndex: the index of the spawnPanels array that is to be animated
+        - terrain: LevelType that is to be spawned
+        - index: LEAVE ALONE! This is to be used by the recursive function only!!
+        - waitDuration: the "speed" of the spawn/despawn animation
+     */
     private func animateSpawnPanels(spawnPanelIndex: Int, with terrain: LevelType, index: Int = 0, waitDuration: TimeInterval) {
         //Recursive base case
         guard index < self.spawnPanels[spawnPanelIndex].count else {
