@@ -48,8 +48,8 @@ class FinalBattle2Spawner {
      Populates the Spawner.
      */
     func populateSpawner() {
-        spawnPanelRange.forEach { i in
-            populateSpawnPanels(spawnPanels: &spawnPanels[i],
+        spawnPanelRange.forEach { spawnPanelIndex in
+            populateSpawnPanels(spawnPanelIndex: spawnPanelIndex,
                                 startPosition: FinalBattle2Spawner.startPosition,
                                 ignorePositions: [FinalBattle2Spawner.startPosition, FinalBattle2Spawner.endPosition],
                                 maxCount: maxCount)
@@ -63,8 +63,8 @@ class FinalBattle2Spawner {
     func animateSpawner(speed: TimeInterval) {
         let terrainPanel: LevelType = FireIceTheme.isFire ? .sand : .snow
         
-        spawnPanelRange.forEach { i in
-            animateSpawnPanels(spawnPanels: spawnPanels[i], with: terrainPanel, waitDuration: speed)
+        spawnPanelRange.forEach { spawnPanelIndex in
+            animateSpawnPanels(spawnPanelIndex: spawnPanelIndex, with: terrainPanel, waitDuration: speed)
         }
     }
     
@@ -74,25 +74,25 @@ class FinalBattle2Spawner {
     /**
      Populates the spawnPanels array with randomized "moving" panels
      - parameters:
-        - spawnPanels: the array that is to be mutated and sent back to the argument passed
+        - spawnPanelIndex: the array index that is to be populated
         - startPosition: origin of the spawer.
         - ignorePositions: i.e. start, endPanels, etc.
         - count: LEAVE ALONE! This is to be used by the recursive function only!!
         - maxCount: number of position elements to add to the array
      */
-    private func populateSpawnPanels(spawnPanels: inout [K.GameboardPosition], startPosition: K.GameboardPosition, ignorePositions: [K.GameboardPosition] = [], count: Int = 0, maxCount: Int = 1000) {
+    private func populateSpawnPanels(spawnPanelIndex: Int, startPosition: K.GameboardPosition, ignorePositions: [K.GameboardPosition] = [], count: Int = 0, maxCount: Int = 1000) {
         
         //Base case
         guard count < maxCount else { return }
         
         let nextPosition = spawnNextPosition(startPosition: startPosition, ignorePositions: ignorePositions)
-        spawnPanels.append(nextPosition)
+        self.spawnPanels[spawnPanelIndex].append(nextPosition)
         
         let spawnPanelsIgnoreSize: Int = 2
-        let spawnPanelsToIgnore = spawnPanels.count >= spawnPanelsIgnoreSize ? Array(spawnPanels.suffix(spawnPanelsIgnoreSize)) : []
+        let spawnPanelsToIgnore = self.spawnPanels[spawnPanelIndex].count >= spawnPanelsIgnoreSize ? Array(self.spawnPanels[spawnPanelIndex].suffix(spawnPanelsIgnoreSize)) : []
         
         //Recursion!
-        populateSpawnPanels(spawnPanels: &spawnPanels,
+        populateSpawnPanels(spawnPanelIndex: spawnPanelIndex,
                             startPosition: nextPosition,
                             ignorePositions: [FinalBattle2Spawner.startPosition, FinalBattle2Spawner.endPosition] + spawnPanelsToIgnore,
                             count: count + 1,
@@ -113,7 +113,17 @@ class FinalBattle2Spawner {
     }
     
     // TODO: - Make disappearing floors and harm hero if he steps in lava or ground beneath him disappears.
-    private func animateSpawnPanels(spawnPanels: [K.GameboardPosition], with terrain: LevelType, waitDuration: TimeInterval) {
+    private func animateSpawnPanels(spawnPanelIndex: Int, with terrain: LevelType, index: Int = 0, waitDuration: TimeInterval) {
+        //Recursive base case
+        guard index < self.spawnPanels[spawnPanelIndex].count else {
+            self.spawnPanels[spawnPanelIndex].removeAll()
+            return
+        }
+        
+        let spawnPanel = self.spawnPanels[spawnPanelIndex][index]
+        
+        guard let originalTerrain = gameboard.getPanelSprite(at: spawnPanel).terrain else { return }
+        
         ///SKAction that animates dissolving of primary (sand/snow) panel to secondary (lava/water).
         func dissolveTerrainAction(pulseDuration: TimeInterval) -> SKAction {
             let offsetDuration: TimeInterval = 0 //DON'T TOUCH THIS LEAVE AT 0!!!
@@ -167,31 +177,31 @@ class FinalBattle2Spawner {
         }
         
         
-        for (i, spawnPanel) in spawnPanels.enumerated() {
-            guard let originalTerrain = gameboard.getPanelSprite(at: spawnPanel).terrain else { continue }
-            
-            let newTerrain = SKSpriteNode(imageNamed: terrain.description)
-            newTerrain.anchorPoint = .zero
-            newTerrain.alpha = 0
-            newTerrain.zPosition = 4
-            newTerrain.name = "safePanel"
-            
-            originalTerrain.addChild(newTerrain)
-            
-            newTerrain.run(SKAction.sequence([
-                SKAction.wait(forDuration: waitDuration * TimeInterval(i)),
-                SKAction.run { [weak self] in
-                    self?.delegate?.didSpawnSafePanel(spawnPanel: spawnPanel)
-                    handleParticles(spawnPanel: spawnPanel)
-                },
-                SKAction.fadeIn(withDuration: waitDuration * 0.25),
-                SKAction.wait(forDuration: waitDuration * 2.75),
-                dissolveTerrainAction(pulseDuration: 0.1),
-                SKAction.removeFromParent()
-            ])) { [weak self] in
-                self?.delegate?.didDespawnSafePanel(spawnPanel: spawnPanel)
-            }
-        }//end for
+        let newTerrain = SKSpriteNode(imageNamed: terrain.description)
+        newTerrain.anchorPoint = .zero
+        newTerrain.alpha = 0
+        newTerrain.zPosition = 4
+        newTerrain.name = "safePanel"
+        
+        originalTerrain.addChild(newTerrain)
+        
+        newTerrain.run(SKAction.sequence([
+            SKAction.run { [weak self] in
+                self?.delegate?.didSpawnSafePanel(spawnPanel: spawnPanel)
+                handleParticles(spawnPanel: spawnPanel)
+            },
+            SKAction.fadeIn(withDuration: waitDuration * 0.25),
+            SKAction.wait(forDuration: waitDuration * 0.75),
+            SKAction.run { [weak self] in
+                //Recursive call
+                self?.animateSpawnPanels(spawnPanelIndex: spawnPanelIndex, with: terrain, index: index + 1, waitDuration: waitDuration)
+            },
+            SKAction.wait(forDuration: waitDuration * 2),
+            dissolveTerrainAction(pulseDuration: 0.1),
+            SKAction.removeFromParent()
+        ])) { [weak self] in
+            self?.delegate?.didDespawnSafePanel(spawnPanel: spawnPanel)
+        }
     }//end animateSpawnPanels()
     
     
