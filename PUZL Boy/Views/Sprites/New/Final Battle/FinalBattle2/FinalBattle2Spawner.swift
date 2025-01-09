@@ -23,22 +23,18 @@ class FinalBattle2Spawner {
     private let maxCount: Int = 1000
     
     private var gameboard: GameboardSprite
-    private var spawnPanelCount: Int
-    private var spawnPanels: [[K.GameboardPosition]]
-
-    private var spawnPanelRange: Range<Int> {
-        0..<spawnPanelCount
-    }
+    private var spawnPanels: [K.GameboardPosition]
+    private var startPosition: K.GameboardPosition
     
     weak var delegate: FinalBattle2SpawnerDelegate?
 
     
     // MARK: - Initialization
     
-    init(gameboard: GameboardSprite, spawnPanelCount: Int) {
+    init(gameboard: GameboardSprite) {
         self.gameboard = gameboard
-        self.spawnPanelCount = max(1, spawnPanelCount)
-        self.spawnPanels = Array(repeating: [], count: spawnPanelCount)
+        self.spawnPanels = []
+        self.startPosition = FinalBattle2Spawner.startPosition
     }
     
     
@@ -48,12 +44,9 @@ class FinalBattle2Spawner {
      Populates the Spawner.
      */
     func populateSpawner() {
-        spawnPanelRange.forEach { spawnPanelIndex in
-            populateSpawnPanels(spawnPanelIndex: spawnPanelIndex,
-                                startPosition: FinalBattle2Spawner.startPosition,
-                                ignorePositions: [FinalBattle2Spawner.startPosition, FinalBattle2Spawner.endPosition],
-                                maxCount: maxCount)
-        }
+        populateSpawnPanels(startPosition: startPosition,
+                            ignorePositions: [FinalBattle2Spawner.startPosition, FinalBattle2Spawner.endPosition],
+                            maxCount: maxCount)
     }
     
     /**
@@ -63,9 +56,7 @@ class FinalBattle2Spawner {
     func animateSpawner(speed: TimeInterval) {
         let terrainPanel: LevelType = FireIceTheme.isFire ? .sand : .snow
         
-        spawnPanelRange.forEach { spawnPanelIndex in
-            animateSpawnPanels(spawnPanelIndex: spawnPanelIndex, with: terrainPanel, waitDuration: speed)
-        }
+        animateSpawnPanels(with: terrainPanel, waitDuration: speed)
     }
     
     
@@ -74,13 +65,12 @@ class FinalBattle2Spawner {
     /**
      Populates the spawnPanels array with randomized "moving" panels
      - parameters:
-        - spawnPanelIndex: the index of the spawnPanels array that is to be populated
         - startPosition: origin of the spawer.
         - ignorePositions: i.e. start, endPanels, etc.
         - count: LEAVE ALONE! This is to be used by the recursive function only!!
         - maxCount: number of position elements to add to the array
      */
-    private func populateSpawnPanels(spawnPanelIndex: Int, startPosition: K.GameboardPosition, ignorePositions: [K.GameboardPosition] = [], count: Int = 0, maxCount: Int = 1000) {
+    private func populateSpawnPanels(startPosition: K.GameboardPosition, ignorePositions: [K.GameboardPosition] = [], count: Int = 0, maxCount: Int = 1000) {
         
         //Base case
         guard count < maxCount else { return }
@@ -99,14 +89,13 @@ class FinalBattle2Spawner {
         }
         
         let nextPosition = spawnNextPosition(startPosition: startPosition, ignorePositions: ignorePositions)
-        self.spawnPanels[spawnPanelIndex].append(nextPosition)
+        self.spawnPanels.append(nextPosition)
         
         let spawnPanelsIgnoreSize: Int = 2
-        let spawnPanelsToIgnore = self.spawnPanels[spawnPanelIndex].count >= spawnPanelsIgnoreSize ? Array(self.spawnPanels[spawnPanelIndex].suffix(spawnPanelsIgnoreSize)) : []
+        let spawnPanelsToIgnore = self.spawnPanels.count >= spawnPanelsIgnoreSize ? Array(self.spawnPanels.suffix(spawnPanelsIgnoreSize)) : []
         
         //Recursion!
-        populateSpawnPanels(spawnPanelIndex: spawnPanelIndex,
-                            startPosition: nextPosition,
+        populateSpawnPanels(startPosition: nextPosition,
                             ignorePositions: [FinalBattle2Spawner.startPosition, FinalBattle2Spawner.endPosition] + spawnPanelsToIgnore,
                             count: count + 1,
                             maxCount: maxCount)
@@ -116,19 +105,18 @@ class FinalBattle2Spawner {
     /**
      Helper function that animates the spawn panels recursively with the specified terrain panel and waitDuration.
      - parameters:
-        - spawnPanelIndex: the index of the spawnPanels array that is to be animated
         - terrain: LevelType that is to be spawned
         - index: LEAVE ALONE! This is to be used by the recursive function only!!
         - waitDuration: the "speed" of the spawn/despawn animation
      */
-    private func animateSpawnPanels(spawnPanelIndex: Int, with terrain: LevelType, index: Int = 0, waitDuration: TimeInterval) {
+    private func animateSpawnPanels(with terrain: LevelType, index: Int = 0, waitDuration: TimeInterval) {
         //Recursive base case
         guard index < self.spawnPanels[spawnPanelIndex].count else {
             self.spawnPanels[spawnPanelIndex].removeAll()
             return
         }
         
-        let spawnPanel = self.spawnPanels[spawnPanelIndex][index]
+        let spawnPanel = self.spawnPanels[index]
         
         guard let originalTerrain = gameboard.getPanelSprite(at: spawnPanel).terrain else { return }
         
@@ -202,7 +190,7 @@ class FinalBattle2Spawner {
             SKAction.wait(forDuration: waitDuration * 0.75),
             SKAction.run { [weak self] in
                 //Recursive call
-                self?.animateSpawnPanels(spawnPanelIndex: spawnPanelIndex, with: terrain, index: index + 1, waitDuration: waitDuration)
+                self?.animateSpawnPanels(with: terrain, index: index + 1, waitDuration: waitDuration)
             },
             SKAction.wait(forDuration: waitDuration * 2),
             dissolveTerrainAction(pulseDuration: 0.1),

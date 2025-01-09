@@ -12,6 +12,7 @@ class FinalBattle2Engine {
     // MARK: - Properties
     
     private let size: CGSize
+    private let panelSpawnerCount: Int = 3
     private var gameboard: GameboardSprite!
     private var hero: Player!
     private var villain: Player!
@@ -19,7 +20,7 @@ class FinalBattle2Engine {
     private var backgroundPattern: FinalBattle2Background!
     private var controls: FinalBattle2Controls!
     private var health: FinalBattle2Health!
-    private var panelSpawner: FinalBattle2Spawner!
+    private var panelSpawner: [FinalBattle2Spawner] = []
     
     private var superScene: SKScene?
     private var backgroundSprite: SKSpriteNode!
@@ -85,9 +86,11 @@ class FinalBattle2Engine {
                                         villainPosition: FinalBattle2Spawner.endPosition)
         controls.delegate = self
         
-        panelSpawner = FinalBattle2Spawner(gameboard: gameboard, spawnPanelCount: 3)
-        panelSpawner.delegate = self
-        panelSpawner.populateSpawner()
+        for i in 0..<panelSpawnerCount {
+            panelSpawner.append(FinalBattle2Spawner(gameboard: gameboard))
+            panelSpawner[i].delegate = self
+            panelSpawner[i].populateSpawner()
+        }
         
         health = FinalBattle2Health(position: CGPoint(x: size.width / 2, y: K.ScreenDimensions.topOfGameboard))
         backgroundPattern = FinalBattle2Background(backgroundSprite: backgroundSprite, bloodOverlay: bloodOverlay, flashGameboard: flashGameboard)
@@ -121,7 +124,10 @@ class FinalBattle2Engine {
         
         health.showHealth()
         backgroundPattern.animate(pattern: .normal, fadeDuration: 0)
-        panelSpawner.animateSpawner(speed: 3)
+        
+        for i in 0..<panelSpawnerCount {
+            panelSpawner[i].animateSpawner(speed: 3)
+        }
     }
     
     
