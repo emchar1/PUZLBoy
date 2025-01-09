@@ -19,12 +19,13 @@ class FinalBattle2Spawner {
     static let startPosition: K.GameboardPosition = (6, 3)
     static let endPosition: K.GameboardPosition = (3, 3)
     
-    // FIXME: - NO!!!
+    //IMPORTANT!! breakLimit should be a multiple of maxCount!! These are panel spawning speed and max panels properties
     private let maxCount: Int = 1000
+    private let breakLimit: Int = 25
     
     private var gameboard: GameboardSprite
     private var spawnPanels: [K.GameboardPosition]
-    private var startPosition: K.GameboardPosition
+    private var ignorePositions: [K.GameboardPosition]
     
     weak var delegate: FinalBattle2SpawnerDelegate?
 
@@ -34,7 +35,7 @@ class FinalBattle2Spawner {
     init(gameboard: GameboardSprite) {
         self.gameboard = gameboard
         self.spawnPanels = []
-        self.startPosition = FinalBattle2Spawner.startPosition
+        self.ignorePositions = [FinalBattle2Spawner.startPosition, FinalBattle2Spawner.endPosition]
     }
     
     
@@ -44,9 +45,7 @@ class FinalBattle2Spawner {
      Populates the Spawner.
      */
     func populateSpawner() {
-        populateSpawnPanels(startPosition: startPosition,
-                            ignorePositions: [FinalBattle2Spawner.startPosition, FinalBattle2Spawner.endPosition],
-                            maxCount: maxCount)
+        populateSpawnPanels(startPosition: ignorePositions[0], ignorePositions: ignorePositions, maxCount: maxCount)
     }
     
     /**
@@ -65,13 +64,12 @@ class FinalBattle2Spawner {
     /**
      Populates the spawnPanels array with randomized "moving" panels
      - parameters:
-        - startPosition: origin of the spawer.
-        - ignorePositions: i.e. start, endPanels, etc.
+        - startPosition: origin of the spawer
+        - ignorePositions: startPanel, endPanel, and any other panels added to the array
         - count: LEAVE ALONE! This is to be used by the recursive function only!!
         - maxCount: number of position elements to add to the array
      */
-    private func populateSpawnPanels(startPosition: K.GameboardPosition, ignorePositions: [K.GameboardPosition] = [], count: Int = 0, maxCount: Int = 1000) {
-        
+    private func populateSpawnPanels(startPosition: K.GameboardPosition, ignorePositions: [K.GameboardPosition], count: Int = 0, maxCount: Int) {
         //Base case
         guard count < maxCount else { return }
         
@@ -96,11 +94,10 @@ class FinalBattle2Spawner {
         
         //Recursion!
         populateSpawnPanels(startPosition: nextPosition,
-                            ignorePositions: [FinalBattle2Spawner.startPosition, FinalBattle2Spawner.endPosition] + spawnPanelsToIgnore,
+                            ignorePositions: self.ignorePositions + spawnPanelsToIgnore,
                             count: count + 1,
                             maxCount: maxCount)
     }
-    
     
     /**
      Helper function that animates the spawn panels recursively with the specified terrain panel and waitDuration.
@@ -111,10 +108,7 @@ class FinalBattle2Spawner {
      */
     private func animateSpawnPanels(with terrain: LevelType, index: Int = 0, waitDuration: TimeInterval) {
         //Recursive base case
-        guard index < self.spawnPanels[spawnPanelIndex].count else {
-            self.spawnPanels[spawnPanelIndex].removeAll()
-            return
-        }
+        guard index < self.spawnPanels.count else { return }
         
         let spawnPanel = self.spawnPanels[index]
         
@@ -189,8 +183,21 @@ class FinalBattle2Spawner {
             SKAction.fadeIn(withDuration: waitDuration * 0.25),
             SKAction.wait(forDuration: waitDuration * 0.75),
             SKAction.run { [weak self] in
+                guard let self = self else { return }
+                
+                let waitDurationAdjusted: TimeInterval
+                
+                switch Float(index) / Float(breakLimit) {
+                case 0:     waitDurationAdjusted = waitDuration
+                case 1:     waitDurationAdjusted = waitDuration * 2/3
+                case 4:     waitDurationAdjusted = waitDuration * 1/2
+                default:    waitDurationAdjusted = waitDuration
+                }
+                
+                print("index: \(index), index/limit: \(Float(index) / Float(breakLimit)), waitDurationAdjusted: \(waitDurationAdjusted)")
+                
                 //Recursive call
-                self?.animateSpawnPanels(with: terrain, index: index + 1, waitDuration: waitDuration)
+                animateSpawnPanels(with: terrain, index: index + 1, waitDuration: waitDurationAdjusted)
             },
             SKAction.wait(forDuration: waitDuration * 2),
             dissolveTerrainAction(pulseDuration: 0.1),
