@@ -190,9 +190,15 @@ class AudioManager {
         addAudioItem("swordthrow", category: .soundFX) //NEEDS PURCHASE $1
         addAudioItem("touchstatue", category: .soundFX)
         addAudioItem("thunderrumble", category: .soundFX)
-        addAudioItem("villainpain1", category: .soundFX) //NEEDS PURCHASE $2
-        addAudioItem("villainpain2", category: .soundFX) //NEEDS PURCHASE $2
-        addAudioItem("villainpain3", category: .soundFX) //NEEDS PURCHASE $2
+        
+        addAudioItem("villainattack1", category: .soundFX) //NEEDS PURCHASE $2
+        addAudioItem("villainattack2", category: .soundFX) //NEEDS PURCHASE $2
+        addAudioItem("villainattack3", category: .soundFX) //NEEDS PURCHASE $2
+        addAudioItem("villaindead", category: .soundFX) //NEEDS PURCHASE $2
+        addAudioItem("villainpain1", category: .soundFX) //NEEDS PURCHASE $1
+        addAudioItem("villainpain2", category: .soundFX) //NEEDS PURCHASE $1
+        addAudioItem("villainpain3", category: .soundFX) //NEEDS PURCHASE $1
+        
         addAudioItem("warp", category: .soundFX)
         addAudioItem("waterappear1", category: .soundFX) //not purchased $3
         addAudioItem("waterappear2", category: .soundFX)

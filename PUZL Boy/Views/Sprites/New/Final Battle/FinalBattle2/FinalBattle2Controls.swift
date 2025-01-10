@@ -12,6 +12,7 @@ protocol FinalBattle2ControlsDelegate: AnyObject {
     func didVillainDisappear(fadeDuration: TimeInterval)
     func willVillainReappear()
     func didVillainReappear()
+    func didVillainAttack(attackType: FinalBattle2Controls.VillainAttackType, playerPosition: K.GameboardPosition?)
     func handleShield(willDamage: Bool, didDamage: Bool, willBreak: Bool, didBreak: Bool, fadeDuration: TimeInterval?, villainPosition: K.GameboardPosition?)
 }
 
@@ -35,6 +36,10 @@ class FinalBattle2Controls {
     private var isDisabled: Bool
     private var canAttack: Bool
     private var villainMoveTimer: Timer
+    
+    enum VillainAttackType {
+        case normal, special
+    }
     
     weak var delegate: FinalBattle2ControlsDelegate?
     
@@ -196,13 +201,17 @@ class FinalBattle2Controls {
                 }
                 
                 if magmoorShield.hasHitPoints {
-                    moveVillainFlee(shouldDisappear: false)
+                    moveVillainFlee(shouldDisappear: false, completion: nil)
                 }
+                
+                AudioManager.shared.playSound(for: "villainpain\(Int.random(in: 1...2))")
             }
             else {
-                moveVillainFlee(shouldDisappear: true)
+                moveVillainFlee(shouldDisappear: true, completion: nil)
                 
                 delegate?.didHeroAttack(chosenSword: chosenSword)
+                
+                AudioManager.shared.playSound(for: "villainpain3")
             }
         }
         
@@ -264,14 +273,17 @@ class FinalBattle2Controls {
     }
     
     
-    // MARK: - Villain Movement and Attacks
+    // MARK: - Villain Movement
     
     /**
      Moves the villain to a new, random spot on the board. Use this to periodically move the villain, via a timer, for example.
      */
     @objc private func moveVillain(_ sender: Any) {
         generateVillainPositionNew()
-        moveVillainFlee(shouldDisappear: false, fadeDuration: 0)
+        
+        moveVillainFlee(shouldDisappear: false, fadeDuration: 0) { [weak self] in
+            self?.villainAttack(type: .normal)
+        }
     }
     
     /**
@@ -300,7 +312,7 @@ class FinalBattle2Controls {
     /**
      Helper function to assist with moving the villain after he's been attacked by the hero.
      */
-    private func moveVillainFlee(shouldDisappear: Bool, fadeDuration: TimeInterval = 2) {
+    private func moveVillainFlee(shouldDisappear: Bool, fadeDuration: TimeInterval = 2, completion: (() -> Void)?) {
         let moveDirection = villain.sprite.xScale / abs(villain.sprite.xScale)
         let moveDistance: CGFloat = 20
         let fadeDistance = CGPoint(x: 0, y: shouldDisappear ? gameboard.panelSize : 0)
@@ -316,10 +328,12 @@ class FinalBattle2Controls {
                 SKAction.moveBy(x: fadeDistance.x, y: fadeDistance.y, duration: fadeDuration),
                 SKAction.fadeOut(withDuration: fadeDuration)
             ]),
+            SKAction.run {
+                AudioManager.shared.playSound(for: "scarylaugh", delay: waitDuration - 1)
+            },
             SKAction.wait(forDuration: waitDuration),
             SKAction.run { [weak self] in
                 self?.delegate?.willVillainReappear()
-                AudioManager.shared.playSound(for: "scarylaugh")
                 AudioManager.shared.stopSound(for: "magicheartbeatloop1", fadeDuration: 1)
             }
         ])
@@ -349,6 +363,7 @@ class FinalBattle2Controls {
             guard let self = self else { return }
             
             resetTimer()
+            completion?()
             
             guard shouldDisappear else { return }
             
@@ -366,7 +381,6 @@ class FinalBattle2Controls {
         if shouldDisappear {
             delegate?.didVillainDisappear(fadeDuration: fadeDuration)
             AudioManager.shared.playSound(for: "magicheartbeatloop1", fadeIn: fadeDuration)
-            AudioManager.shared.playSound(for: "villainpain\(Int.random(in: 1...3))")
             AudioManager.shared.playSound(for: "magicwarp")
             AudioManager.shared.playSound(for: "magicwarp2")
             ParticleEngine.shared.animateParticles(type: .magmoorBamf,
@@ -376,6 +390,48 @@ class FinalBattle2Controls {
                                                    duration: 2)
         }
     } //end moveVillainFlee()
+    
+    
+    // MARK: - Villain Attacks
+    
+    private func villainAttack(type: VillainAttackType) {
+        villain.sprite.run(SKAction.sequence([
+            Player.animate(player: villain, type: .attack, repeatCount: 1)
+        ]))
+        
+        AudioManager.shared.playSound(for: "villainattack\(Int.random(in: 1...2))")
+        
+        switch type {
+        case .normal:
+            //MUST preserve original position here before player moves out of the way!
+            let originalPosition = playerPosition
+            
+            // FIXME: - Find fireball image!!! Preferrably with no tail so I don't have to deal with transformation
+            let fireball = SKSpriteNode(imageNamed: "magmoorShieldTop")
+            fireball.position = villain.sprite.position
+            fireball.setScale(1 / UIDevice.spriteScale)
+            fireball.color = .red
+            fireball.colorBlendFactor = 1
+            fireball.zPosition = K.ZPosition.itemsAndEffects
+            
+            gameboard.sprite.addChild(fireball)
+            
+            fireball.run(SKAction.sequence([
+                SKAction.move(to: gameboard.getLocation(at: originalPosition), duration: 1),
+                SKAction.run { [weak self] in
+                    guard let self = self else { return }
+                    delegate?.didVillainAttack(attackType: .normal, playerPosition: originalPosition)
+                },
+                SKAction.fadeOut(withDuration: 0.25),
+                SKAction.scale(to: 3 / UIDevice.spriteScale, duration: 0.25),
+                SKAction.removeFromParent()
+            ]))
+            
+            AudioManager.shared.playSound(for: "enemyflame")
+        case .special:
+            print("villain special attack")
+        }
+    }
     
     
 }

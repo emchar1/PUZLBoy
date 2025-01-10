@@ -14,6 +14,7 @@ class FinalBattle2Health {
     private var timer: Timer?
     private var drainTimer: Timer?            //a separate timer is needed for the drain health function
     
+    private var player: Player
     private var counter: Counter!
     private var bar: StatusBarSprite!
     private var dmgMultiplier: CGFloat?
@@ -25,7 +26,9 @@ class FinalBattle2Health {
     
     // MARK: - Initialization
     
-    init(position: CGPoint) {
+    init(player: Player, position: CGPoint) {
+        self.player = player
+        
         timer = Timer()
         drainTimer = Timer()
         
@@ -50,31 +53,16 @@ class FinalBattle2Health {
         bar.showStatus()
     }
     
-    func updateHealth(type: HealthType, player: Player, dmgMultiplier: CGFloat? = nil) {
+    func updateHealth(type: HealthType, dmgMultiplier: CGFloat? = nil) {
         self.dmgMultiplier = dmgMultiplier
         
-        // FIXME: - Does the hit animation on the player belong here, or should it go in the Engine?
-        if player.sprite.action(forKey: "playerBlink") != nil {
-            player.sprite.colorBlendFactor = 1
-        }
-        
-        player.sprite.removeAction(forKey: "playerBlink")
-        player.sprite.run(SKAction.colorize(withColorBlendFactor: 0, duration: 0.5), withKey: "playerColorFade")
+        resetPlayerActions()
         
         switch type {
         case .drain:
             drainTimer?.invalidate()
             drainTimer = Timer.scheduledTimer(timeInterval: 0.25, target: self, selector: #selector(helperDrain), userInfo: nil, repeats: true)
-            
-            // FIXME: - Does the hit animation on the player belong here, or should it go in the Engine?
-            player.sprite.removeAction(forKey: "playerColorFade")
-            player.sprite.run(SKAction.repeatForever(SKAction.sequence([
-                SKAction.colorize(withColorBlendFactor: 0, duration: 0.05),
-                SKAction.colorize(withColorBlendFactor: 1, duration: 0.05)
-            ])), withKey: "playerBlink")
-            
-            AudioManager.shared.playSound(for: "boypain\(Int.random(in: 1...4))")
-            Haptics.shared.executeCustomPattern(pattern: FireIceTheme.isFire ? .lava : .water)
+            makePlayerHurt(shouldPersist: true)
         case .regen:
             drainTimer?.invalidate()
             drainTimer = Timer.scheduledTimer(timeInterval: 0.25, target: self, selector: #selector(helperRegen), userInfo: nil, repeats: false)
@@ -84,19 +72,11 @@ class FinalBattle2Health {
             drainTimer?.invalidate()
             drainTimer = Timer.scheduledTimer(timeInterval: 0, target: self, selector: #selector(helperHeroAttack), userInfo: nil, repeats: false)
         case .villainAttack:
-            break
+            timer = Timer.scheduledTimer(timeInterval: 0, target: self, selector: #selector(helperVillainAttack), userInfo: nil, repeats: false)
+            makePlayerHurt(shouldPersist: false)
         case .villainShieldExplode:
             timer = Timer.scheduledTimer(timeInterval: 0, target: self, selector: #selector(helperVillainShield), userInfo: nil, repeats: false)
-
-            // FIXME: - Does the hit animation on the player belong here, or should it go in the Engine?
-            player.sprite.removeAction(forKey: "playerColorFade")
-            player.sprite.run(SKAction.repeat(SKAction.sequence([
-                SKAction.colorize(withColorBlendFactor: 1, duration: 0.05),
-                SKAction.colorize(withColorBlendFactor: 0, duration: 0.05)
-            ]), count: 20), withKey: "playerBlink")
-            
-            AudioManager.shared.playSound(for: "boypain\(Int.random(in: 1...4))")
-            Haptics.shared.executeCustomPattern(pattern: .enemy)
+            makePlayerHurt(shouldPersist: false)
         }
     }
     
@@ -134,8 +114,38 @@ class FinalBattle2Health {
     @objc private func helperRegen() { objcHelper(rateDivisions: [], rates: [0.002], increment: true) }
     @objc private func helperLavaHit() { objcHelper(rateDivisions: [0.5], rates: [0.1, 0.05], increment: false) }
     @objc private func helperHeroAttack() { objcHelper(rateDivisions: [0.5], rates: [0.1, 0.2].map { $0 * (dmgMultiplier ?? 0) }, increment: true) }
-    @objc private func helperVillainAttack() { }
+    @objc private func helperVillainAttack() { objcHelper(rateDivisions: [0.5], rates: [0.1, 0.05], increment: false) }
     @objc private func helperVillainShield() { objcHelper(rateDivisions: [0.5], rates: [0.25, 0.125], increment: false) }
+    
+    
+    // MARK: - Other Helper Functions
+    
+    private func resetPlayerActions() {
+        if player.sprite.action(forKey: "playerBlink") != nil {
+            player.sprite.colorBlendFactor = 1
+        }
+        
+        player.sprite.removeAction(forKey: "playerBlink")
+        player.sprite.run(SKAction.colorize(withColorBlendFactor: 0, duration: 0.5), withKey: "playerColorFade")
+    }
+    
+    private func makePlayerHurt(shouldPersist: Bool) {
+        let colorBlinkDuration: TimeInterval = 0.05
+        let colorBlinkAction = SKAction.sequence([
+            SKAction.colorize(withColorBlendFactor: 0, duration: colorBlinkDuration),
+            SKAction.colorize(withColorBlendFactor: 1, duration: colorBlinkDuration)
+        ])
+        let colorBlinkRepeat = shouldPersist ? SKAction.repeatForever(colorBlinkAction) : SKAction.repeat(colorBlinkAction, count: 20)
+        
+        player.sprite.removeAction(forKey: "playerColorFade")
+        player.sprite.run(SKAction.sequence([
+            colorBlinkRepeat,
+            SKAction.colorize(withColorBlendFactor: 0, duration: 0.5)
+        ]), withKey: "playerBlink")
+        
+        AudioManager.shared.playSound(for: "boypain\(Int.random(in: 1...4))")
+        Haptics.shared.executeCustomPattern(pattern: FireIceTheme.isFire ? .lava : .water)
+    }
     
     
 }

@@ -150,6 +150,9 @@ class MagmoorShield: SKNode {
                     scaleAndFade(size: 2.5, alpha: 1, duration: fadeDuration + 0.5),
                     shieldShake(duration: fadeDuration + 0.5),
                     SKAction.sequence([
+                        SKAction.run {
+                            AudioManager.shared.playSound(for: "villainattack3", delay: fadeDuration - 1.1) //DON'T CHANGE - 1.1!!
+                        },
                         SKAction.wait(forDuration: fadeDuration + 0.25),
                         SKAction.run { [weak self] in
                             guard let self = self else { return }

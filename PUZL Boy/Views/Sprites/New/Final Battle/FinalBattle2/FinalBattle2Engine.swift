@@ -92,7 +92,7 @@ class FinalBattle2Engine {
             panelSpawner[i].populateSpawner()
         }
         
-        health = FinalBattle2Health(position: CGPoint(x: size.width / 2, y: K.ScreenDimensions.topOfGameboard))
+        health = FinalBattle2Health(player: hero, position: CGPoint(x: size.width / 2, y: K.ScreenDimensions.topOfGameboard))
         backgroundPattern = FinalBattle2Background(backgroundSprite: backgroundSprite, bloodOverlay: bloodOverlay, flashGameboard: flashGameboard)
     }
     
@@ -136,10 +136,10 @@ class FinalBattle2Engine {
             guard let self = self else { return }
             
             if safePanelFound() || startPanelFound() || endPanelFound() {
-                health.updateHealth(type: .regen, player: hero)
+                health.updateHealth(type: .regen)
             }
             else {
-                health.updateHealth(type: .drain, player: hero)
+                health.updateHealth(type: .drain)
             }
         }
     }
@@ -180,6 +180,14 @@ class FinalBattle2Engine {
     
     // MARK: - Attack (Helper) Functions
     
+    private func villainAttackNormal(at position: K.GameboardPosition) {
+        showDamagePanel(at: position)
+        
+        if position == controls.playerPosition {
+            health.updateHealth(type: .villainAttack)
+        }
+    }
+    
     private func shieldExplodeDamagePanels(at homePosition: K.GameboardPosition) {
         func isValidPosition(row: Int, col: Int) -> Bool {
             return row >= 0 && row < gameboard.panelCount && col >= 0 && col < gameboard.panelCount
@@ -212,32 +220,33 @@ class FinalBattle2Engine {
         addEdgePosition(row: homePosition.row, col: homePosition.col + 2)
         
         //Panel animation
-        for panel in affectedPanels {
-            guard let originalTerrain = gameboard.getPanelSprite(at: panel).terrain else { continue }
-            
-            let damagePanel = SKSpriteNode(imageNamed: "water")
-            damagePanel.anchorPoint = .zero
-            damagePanel.color = .red
-            damagePanel.colorBlendFactor = 1
-            damagePanel.alpha = 0
-            damagePanel.zPosition = 6
-            
-            originalTerrain.addChild(damagePanel)
-            
-            damagePanel.run(SKAction.sequence([
-                SKAction.fadeIn(withDuration: 0.25),
-                SKAction.wait(forDuration: 0.75),
-                SKAction.fadeOut(withDuration: 1),
-                SKAction.removeFromParent()
-            ]))
-        }
+        affectedPanels.forEach { showDamagePanel(at: $0) }
         
         //Update health
         if affectedPanels.contains(where: { $0 == controls.playerPosition }) {
-            health.updateHealth(type: .villainShieldExplode, player: hero)
+            health.updateHealth(type: .villainShieldExplode)
         }
     }
     
+    private func showDamagePanel(at position: K.GameboardPosition) {
+        guard let originalTerrain = gameboard.getPanelSprite(at: position).terrain else { return }
+        
+        let damagePanel = SKSpriteNode(imageNamed: "water")
+        damagePanel.anchorPoint = .zero
+        damagePanel.color = .red
+        damagePanel.colorBlendFactor = 1
+        damagePanel.alpha = 0
+        damagePanel.zPosition = 6
+        
+        originalTerrain.addChild(damagePanel)
+        
+        damagePanel.run(SKAction.sequence([
+            SKAction.fadeIn(withDuration: 0.25),
+            SKAction.wait(forDuration: 0.75),
+            SKAction.fadeOut(withDuration: 1),
+            SKAction.removeFromParent()
+        ]))
+    }
     
 }
 
@@ -246,7 +255,7 @@ class FinalBattle2Engine {
 
 extension FinalBattle2Engine: FinalBattle2ControlsDelegate {
     func didHeroAttack(chosenSword: ChosenSword) {
-        health.updateHealth(type: .heroAttack, player: hero, dmgMultiplier: chosenSword.attackRatingPercentage)
+        health.updateHealth(type: .heroAttack, dmgMultiplier: chosenSword.attackRatingPercentage)
     }
     
     func didVillainDisappear(fadeDuration: TimeInterval) {
@@ -259,6 +268,17 @@ extension FinalBattle2Engine: FinalBattle2ControlsDelegate {
     
     func didVillainReappear() {
         backgroundPattern.animate(pattern: .wave, fadeDuration: 2, shouldFlashGameboard: true)
+    }
+    
+    func didVillainAttack(attackType: FinalBattle2Controls.VillainAttackType, playerPosition: K.GameboardPosition?) {
+        switch attackType {
+        case .normal:
+            let playerPosition = playerPosition ?? FinalBattle2Spawner.startPosition
+            
+            villainAttackNormal(at: playerPosition)
+        case .special:
+            print("Spesh!!!")
+        }
     }
     
     func handleShield(willDamage: Bool, didDamage: Bool, willBreak: Bool, didBreak: Bool, fadeDuration: TimeInterval?, villainPosition: K.GameboardPosition?) {
@@ -292,13 +312,11 @@ extension FinalBattle2Engine: FinalBattle2ControlsDelegate {
 extension FinalBattle2Engine: FinalBattle2SpawnerDelegate {
     func didSpawnSafePanel(spawnPanel: K.GameboardPosition) {
         guard spawnPanel == controls.playerPosition else { return }
-        
-        health.updateHealth(type: .regen, player: hero)
+        health.updateHealth(type: .regen)
     }
     
     func didDespawnSafePanel(spawnPanel: K.GameboardPosition) {
         guard spawnPanel == controls.playerPosition && !safePanelFound() && !startPanelFound() && !endPanelFound() else { return }
-        
-        health.updateHealth(type: .drain, player: hero)
+        health.updateHealth(type: .drain)
     }
 }
