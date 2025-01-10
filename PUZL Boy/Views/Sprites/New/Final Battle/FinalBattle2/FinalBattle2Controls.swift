@@ -405,29 +405,60 @@ class FinalBattle2Controls {
         case .normal:
             //MUST preserve original position here before player moves out of the way!
             let originalPosition = playerPosition
+            let fireballAngle = SpriteMath.Trigonometry.getAngles(startPoint: villain.sprite.position,
+                                                                  endPoint: gameboard.getLocation(at: originalPosition))
+
+            //Assuming original image is upwards (pointing downwards)!
+            let fireballAngleOffset: CGFloat
             
-            // FIXME: - Find fireball image!!! Preferrably with no tail so I don't have to deal with transformation
-            let fireball = SKSpriteNode(imageNamed: "magmoorShieldTop")
+            switch (row: villainPosition.row - originalPosition.row, col: villainPosition.col - originalPosition.col)  {
+            case let position where position.row < 0 && position.col < 0:
+                fireballAngleOffset = fireballAngle.alpha + 0
+            case let position where position.row < 0 && position.col > 0:
+                fireballAngleOffset = fireballAngle.beta - .pi / 2
+            case let position where position.row > 0 && position.col < 0:
+                fireballAngleOffset = fireballAngle.beta + .pi / 2
+            case let position where position.row > 0 && position.col > 0:
+                fireballAngleOffset = fireballAngle.alpha + .pi
+            case let position where position.row > 0 && position.col == 0:
+                fireballAngleOffset = fireballAngle.alpha + .pi
+            case let position where position.row == 0 && position.col > 0:
+                fireballAngleOffset = fireballAngle.alpha + .pi
+            default:
+                fireballAngleOffset = fireballAngle.alpha
+            }
+            
+            let fireballMovementDuration = sqrt(pow(TimeInterval(villainPosition.row) - TimeInterval(originalPosition.row), 2) + pow(TimeInterval(villainPosition.col) - TimeInterval(originalPosition.col), 2)) * 0.25
+            
+            let fireball = SKSpriteNode(imageNamed: FireIceTheme.isFire ? "villainProjectile1" : "villainProjectile2")
             fireball.position = villain.sprite.position
-            fireball.setScale(1 / UIDevice.spriteScale)
-            fireball.color = .red
-            fireball.colorBlendFactor = 1
+            fireball.setScale(0.5 / UIDevice.spriteScale)
+            fireball.color = FireIceTheme.overlayColor
+            fireball.zRotation = fireballAngleOffset
             fireball.zPosition = K.ZPosition.itemsAndEffects
             
             gameboard.sprite.addChild(fireball)
             
+            fireball.run(SKAction.repeatForever(SKAction.sequence([
+                SKAction.colorize(withColorBlendFactor: 1, duration: 0.05),
+                SKAction.colorize(withColorBlendFactor: 0, duration: 0.05)
+            ])))
+            
             fireball.run(SKAction.sequence([
-                SKAction.move(to: gameboard.getLocation(at: originalPosition), duration: 1),
+                SKAction.move(to: gameboard.getLocation(at: originalPosition), duration: fireballMovementDuration),
                 SKAction.run { [weak self] in
                     guard let self = self else { return }
                     delegate?.didVillainAttack(attackType: .normal, playerPosition: originalPosition)
                 },
                 SKAction.fadeOut(withDuration: 0.25),
-                SKAction.scale(to: 3 / UIDevice.spriteScale, duration: 0.25),
                 SKAction.removeFromParent()
             ]))
             
-            AudioManager.shared.playSound(for: "enemyflame")
+            if let attackAudio = AudioManager.shared.getAudioItem(filename: FireIceTheme.isFire ? "enemyflame" : "enemyice") {
+                let delayDuration = FireIceTheme.isFire ? fireballMovementDuration : max(0, fireballMovementDuration - 0.25)
+                
+                AudioManager.shared.playSound(for: attackAudio.fileName, delay: delayDuration)
+            }
         case .special:
             print("villain special attack")
         }
