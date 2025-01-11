@@ -38,9 +38,11 @@ class FinalBattle2Controls {
     private var villainMoveTimer: Timer
     
     //Villain movement and attack properties
-    private var villainMovementTimerDelay: TimeInterval = 10
+    private var villainMovementDelay: TimeInterval = 10
     private var villainAttackNormalSpeed: TimeInterval = 0.5
-    private var villainAttackSpecialCount: Int = 3
+    private var villainAttackTimedCount: Int = 3
+    private var villainAttackTimedCanHurtPlayer: Bool = true
+    private var villainAttackTimedCanHurtVillain: Bool = true
     
     enum VillainAttackType {
         case normal, timed
@@ -115,8 +117,8 @@ class FinalBattle2Controls {
     
     // MARK: - Villain Attack Setters
     
-    func setVillainMovementTimerDelay(_ newValue: TimeInterval) {
-        self.villainMovementTimerDelay = newValue
+    func setVillainMovementDelay(_ newValue: TimeInterval) {
+        self.villainMovementDelay = newValue
     }
     
     
@@ -124,8 +126,8 @@ class FinalBattle2Controls {
         self.villainAttackNormalSpeed = newValue
     }
     
-    func setVillainAttackSpecialCount(_ newValue: Int) {
-        self.villainAttackSpecialCount = newValue
+    func setVillainAttackTimedCount(_ newValue: Int) {
+        self.villainAttackTimedCount = newValue
     }
     
     // MARK: - Controls Helper Functions
@@ -302,6 +304,7 @@ class FinalBattle2Controls {
         generateVillainPositionNew()
         
         moveVillainFlee(shouldDisappear: false, fadeDuration: 0) { [weak self] in
+            // FIXME: - Change attack type based on spawner speed? Or battle progression?
             self?.villainAttack(type: Bool.random() ? .normal : .timed)
         }
     }
@@ -312,7 +315,7 @@ class FinalBattle2Controls {
      */
     private func resetTimer() {
         villainMoveTimer.invalidate()
-        villainMoveTimer = Timer.scheduledTimer(timeInterval: villainMovementTimerDelay,
+        villainMoveTimer = Timer.scheduledTimer(timeInterval: villainMovementDelay,
                                                 target: self,
                                                 selector: #selector(moveVillain(_:)),
                                                 userInfo: nil,
@@ -413,6 +416,25 @@ class FinalBattle2Controls {
     
     
     // MARK: - Villain Attacks
+
+    /**
+     Decrement villain shield if he's in the blast radius of the timed bomb. Call this within FinalBattle2Engine.
+     */
+    func villainAttackTimedBombHurtVillain() {
+        guard magmoorShield.hitPoints > 1 && villainAttackTimedCanHurtVillain else { return }
+        
+        villainAttackTimedCanHurtVillain = false
+        magmoorShield.decrementShield(villain: villain, villainPosition: villainPosition, completion: nil)
+        AudioManager.shared.playSound(for: "villainpain\(Int.random(in: 1...2))")
+    }
+    
+    func villainAttackTimedBombCanHurtPlayer() -> Bool {
+        guard villainAttackTimedCanHurtPlayer else { return false}
+        
+        villainAttackTimedCanHurtPlayer = false
+        
+        return true
+    }
     
     private func villainAttack(type: VillainAttackType) {
         let villainDirection: CGFloat = villain.sprite.xScale > 0 ? -1 : 1
@@ -420,6 +442,9 @@ class FinalBattle2Controls {
         villain.sprite.run(SKAction.sequence([
             Player.animate(player: villain, type: .attack, repeatCount: 1)
         ]))
+        
+        villainAttackTimedCanHurtPlayer = true
+        villainAttackTimedCanHurtVillain = true
         
         AudioManager.shared.playSound(for: "villainattack\(Int.random(in: 1...2))")
         
@@ -491,14 +516,16 @@ class FinalBattle2Controls {
                 AudioManager.shared.playSound(for: attackAudio.fileName, delay: delayDuration)
             }
         case .timed:
-            func pulseTimedBomb(speed: TimeInterval) -> SKAction {
+            func pulseTimedBomb(speed: TimeInterval, canPlaySound: Bool) -> SKAction {
                 return SKAction.sequence([
                     SKAction.group([
                         SKAction.colorize(withColorBlendFactor: 1, duration: speed / 2),
                         SKAction.scale(to: 1 / UIDevice.spriteScale, duration: speed / 2)
                     ]),
                     SKAction.run {
-                        AudioManager.shared.playSound(for: "villainattackbombtick")
+                        if canPlaySound {
+                            AudioManager.shared.playSound(for: "villainattackbombtick")
+                        }
                     },
                     SKAction.group([
                         SKAction.colorize(withColorBlendFactor: 0, duration: speed / 2),
@@ -507,7 +534,7 @@ class FinalBattle2Controls {
                 ])
             }
             
-            for _ in 0..<villainAttackSpecialCount {
+            for i in 0..<villainAttackTimedCount {
                 let moveDuration: TimeInterval = 1
                 let fadeOutDuration: TimeInterval = 0.25
                 let explodeDistance: CGFloat = 20
@@ -532,13 +559,15 @@ class FinalBattle2Controls {
                         SKAction.scale(to: 0.75 / UIDevice.spriteScale, duration: moveDuration),
                         SKAction.rotate(byAngle: 4 * .pi * villainDirection, duration: moveDuration)
                     ]),
-                    SKAction.repeat(pulseTimedBomb(speed: 1), count: 3),
-                    SKAction.repeat(pulseTimedBomb(speed: 0.75), count: 3),
-                    SKAction.repeat(pulseTimedBomb(speed: 0.5), count: 3),
+                    SKAction.repeat(pulseTimedBomb(speed: 1, canPlaySound: i == 0), count: 3),
+                    SKAction.repeat(pulseTimedBomb(speed: 0.75, canPlaySound: i == 0), count: 3),
+                    SKAction.repeat(pulseTimedBomb(speed: 0.5, canPlaySound: i == 0), count: 3),
                     SKAction.run {
-                        AudioManager.shared.playSound(for: "villainattackspecialbomb")
+                        if i == 0 {
+                            AudioManager.shared.playSound(for: "villainattackspecialbomb")
+                        }
                     },
-                    SKAction.repeat(pulseTimedBomb(speed: 0.35), count: 3),
+                    SKAction.repeat(pulseTimedBomb(speed: 0.35, canPlaySound: i == 0), count: 3),
                     SKAction.run { [weak self] in
                         guard let self = self else { return }
                         delegate?.didVillainAttack(attackType: .timed, position: randomPosition)

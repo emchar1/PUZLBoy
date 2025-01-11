@@ -20,7 +20,7 @@ class FinalBattle2Health {
     private var dmgMultiplier: CGFloat?
     
     enum HealthType {
-        case drain, regen, lavaHit, heroAttack, villainAttack, villainShieldExplode
+        case drain, regen, heroAttack, villainAttackNormal, villainAttackTimed, villainShieldExplode
     }
     
     
@@ -66,13 +66,14 @@ class FinalBattle2Health {
         case .regen:
             drainTimer?.invalidate()
             drainTimer = Timer.scheduledTimer(timeInterval: 0.25, target: self, selector: #selector(helperRegen), userInfo: nil, repeats: false)
-        case .lavaHit:
-            timer = Timer.scheduledTimer(timeInterval: 0, target: self, selector: #selector(helperLavaHit), userInfo: nil, repeats: false)
         case .heroAttack:
             drainTimer?.invalidate()
             drainTimer = Timer.scheduledTimer(timeInterval: 0, target: self, selector: #selector(helperHeroAttack), userInfo: nil, repeats: false)
-        case .villainAttack:
-            timer = Timer.scheduledTimer(timeInterval: 0, target: self, selector: #selector(helperVillainAttack), userInfo: nil, repeats: false)
+        case .villainAttackNormal:
+            timer = Timer.scheduledTimer(timeInterval: 0, target: self, selector: #selector(helperVillainAttackNormal), userInfo: nil, repeats: false)
+            makePlayerHurt(shouldPersist: false)
+        case .villainAttackTimed:
+            timer = Timer.scheduledTimer(timeInterval: 0, target: self, selector: #selector(helperVillainAttackTimed), userInfo: nil, repeats: false)
             makePlayerHurt(shouldPersist: false)
         case .villainShieldExplode:
             timer = Timer.scheduledTimer(timeInterval: 0, target: self, selector: #selector(helperVillainShield), userInfo: nil, repeats: false)
@@ -110,11 +111,11 @@ class FinalBattle2Health {
         bar.animateAndUpdate(percentage: counter.getCount())
     }
     
-    @objc private func helperDrain() { objcHelper(rateDivisions: [0.5, 0.25], rates: [0.02, 0.01, 0.005], increment: false) }
+    @objc private func helperDrain() { objcHelper(rateDivisions: [0.75, 0.5], rates: [0.02, 0.01, 0.005], increment: false) }
     @objc private func helperRegen() { objcHelper(rateDivisions: [], rates: [0.002], increment: true) }
-    @objc private func helperLavaHit() { objcHelper(rateDivisions: [0.5], rates: [0.1, 0.05], increment: false) }
-    @objc private func helperHeroAttack() { objcHelper(rateDivisions: [0.5], rates: [0.1, 0.2].map { $0 * (dmgMultiplier ?? 0) }, increment: true) }
-    @objc private func helperVillainAttack() { objcHelper(rateDivisions: [0.5], rates: [0.1, 0.05], increment: false) }
+    @objc private func helperHeroAttack() { objcHelper(rateDivisions: [], rates: [0.2].map { $0 * (dmgMultiplier ?? 0) }, increment: true) }
+    @objc private func helperVillainAttackNormal() { objcHelper(rateDivisions: [], rates: [0.1], increment: false) }
+    @objc private func helperVillainAttackTimed() { objcHelper(rateDivisions: [], rates: [0.05], increment: false) }
     @objc private func helperVillainShield() { objcHelper(rateDivisions: [0.5], rates: [0.25, 0.125], increment: false) }
     
     

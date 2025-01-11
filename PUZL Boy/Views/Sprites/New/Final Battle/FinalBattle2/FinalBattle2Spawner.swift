@@ -196,8 +196,6 @@ class FinalBattle2Spawner {
                 
                 calculateSpawnerSpeed(index: index)
                 
-                print("index: \(index), currentSpeed: \(currentSpeed), animationDuration: \(animationDuration)")
-                
                 //Recursive call
                 animateSpawnPanels(with: terrain, index: index + 1)
             },

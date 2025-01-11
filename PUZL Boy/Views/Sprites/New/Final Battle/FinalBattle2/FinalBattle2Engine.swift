@@ -184,7 +184,7 @@ class FinalBattle2Engine {
         showDamagePanel(at: position)
         
         if position == controls.playerPosition {
-            health.updateHealth(type: .villainAttack)
+            health.updateHealth(type: .villainAttackNormal)
         }
     }
     
@@ -215,7 +215,14 @@ class FinalBattle2Engine {
         
         //Update health
         if affectedPanels.contains(where: { $0 == controls.playerPosition }) {
-            health.updateHealth(type: .villainAttack)
+            if controls.villainAttackTimedBombCanHurtPlayer() {
+                health.updateHealth(type: .villainAttackTimed)
+            }
+        }
+        
+        //Harm villain if needed
+        if affectedPanels.contains(where: { $0 == controls.villainPosition }) {
+            controls.villainAttackTimedBombHurtVillain()
         }
     }
     
@@ -354,13 +361,13 @@ extension FinalBattle2Engine: FinalBattle2SpawnerDelegate {
     func didChangeSpeed(speed: FinalBattle2Spawner.SpawnerSpeed) {
         switch speed {
         case .slow:
-            controls.setVillainMovementTimerDelay(12)
+            controls.setVillainMovementDelay(12)
             controls.setVillainAttackNormalSpeed(0.5)
         case .medium:
-            controls.setVillainMovementTimerDelay(10)
+            controls.setVillainMovementDelay(10)
             controls.setVillainAttackNormalSpeed(0.35)
         case .fast:
-            controls.setVillainMovementTimerDelay(8)
+            controls.setVillainMovementDelay(8)
             controls.setVillainAttackNormalSpeed(0.25)
         }
     }

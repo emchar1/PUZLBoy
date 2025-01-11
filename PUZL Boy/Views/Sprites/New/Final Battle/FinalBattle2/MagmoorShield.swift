@@ -19,7 +19,7 @@ class MagmoorShield: SKNode {
     // MARK: - Properties
     
     private let maxHitPoints: Int = 3
-    private var hitPoints: Int {
+    private(set) var hitPoints: Int {
         didSet {
             setShieldColor()
             hitPoints = max(0, hitPoints)
