@@ -12,7 +12,7 @@ protocol FinalBattle2ControlsDelegate: AnyObject {
     func didVillainDisappear(fadeDuration: TimeInterval)
     func willVillainReappear()
     func didVillainReappear()
-    func didVillainAttack(attackType: FinalBattle2Controls.VillainAttackType, playerPosition: K.GameboardPosition?)
+    func didVillainAttack(attackType: FinalBattle2Controls.VillainAttackType, position: K.GameboardPosition?)
     func handleShield(willDamage: Bool, didDamage: Bool, willBreak: Bool, didBreak: Bool, fadeDuration: TimeInterval?, villainPosition: K.GameboardPosition?)
 }
 
@@ -40,6 +40,7 @@ class FinalBattle2Controls {
     //Villain movement and attack properties
     private var villainMovementTimerDelay: TimeInterval = 10
     private var villainAttackNormalSpeed: TimeInterval = 0.5
+    private var villainAttackSpecialCount: Int = 3
     
     enum VillainAttackType {
         case normal, timed
@@ -123,6 +124,9 @@ class FinalBattle2Controls {
         self.villainAttackNormalSpeed = newValue
     }
     
+    func setVillainAttackSpecialCount(_ newValue: Int) {
+        self.villainAttackSpecialCount = newValue
+    }
     
     // MARK: - Controls Helper Functions
     
@@ -298,7 +302,7 @@ class FinalBattle2Controls {
         generateVillainPositionNew()
         
         moveVillainFlee(shouldDisappear: false, fadeDuration: 0) { [weak self] in
-            self?.villainAttack(type: .normal)
+            self?.villainAttack(type: Bool.random() ? .normal : .timed)
         }
     }
     
@@ -467,7 +471,7 @@ class FinalBattle2Controls {
                 SKAction.move(to: gameboard.getLocation(at: originalPosition), duration: fireballMovementDuration),
                 SKAction.run { [weak self] in
                     guard let self = self else { return }
-                    delegate?.didVillainAttack(attackType: .normal, playerPosition: originalPosition)
+                    delegate?.didVillainAttack(attackType: .normal, position: originalPosition)
                 },
                 SKAction.fadeOut(withDuration: 0.25),
                 SKAction.removeFromParent()
@@ -479,9 +483,67 @@ class FinalBattle2Controls {
                 AudioManager.shared.playSound(for: attackAudio.fileName, delay: delayDuration)
             }
         case .timed:
-            print("villain timed attack")
-        }
-    }
+            func pulseTimedBomb(speed: TimeInterval) -> SKAction {
+                return SKAction.sequence([
+                    SKAction.group([
+                        SKAction.colorize(withColorBlendFactor: 1, duration: speed / 2),
+                        SKAction.scale(to: 0.75 / UIDevice.spriteScale, duration: speed / 2)
+                    ]),
+                    SKAction.run {
+                        AudioManager.shared.playSound(for: "villainattackbombtick")
+                    },
+                    SKAction.group([
+                        SKAction.colorize(withColorBlendFactor: 0, duration: speed / 2),
+                        SKAction.scale(to: 0.5 / UIDevice.spriteScale, duration: speed / 2)
+                    ])
+                ])
+            }
+            
+            for _ in 0..<villainAttackSpecialCount {
+                let moveDuration: TimeInterval = 1
+                let fadeOutDuration: TimeInterval = 0.25
+                var randomPosition: K.GameboardPosition
+                
+                repeat {
+                    randomPosition = (Int.random(in: 0..<gameboard.panelCount), Int.random(in: 0..<gameboard.panelCount))
+                } while randomPosition == villainPosition
+                
+                let fireball = SKSpriteNode(imageNamed: "villainProjectile3")
+                fireball.position = villain.sprite.position
+                fireball.setScale(0)
+                fireball.color = .red
+                fireball.colorBlendFactor = 0
+                fireball.zPosition = K.ZPosition.player - 2
+                
+                gameboard.sprite.addChild(fireball)
+                
+                fireball.run(SKAction.sequence([
+                    SKAction.group([
+                        SKAction.move(to: gameboard.getLocation(at: randomPosition), duration: moveDuration),
+                        SKAction.scale(to: 0.5 / UIDevice.spriteScale, duration: moveDuration),
+                        SKAction.rotate(byAngle: 2 * .pi, duration: moveDuration)
+                    ]),
+                    SKAction.repeat(pulseTimedBomb(speed: 1), count: 3),
+                    SKAction.repeat(pulseTimedBomb(speed: 0.75), count: 3),
+                    SKAction.repeat(pulseTimedBomb(speed: 0.5), count: 3),
+                    SKAction.run {
+                        AudioManager.shared.playSound(for: "villainattackspecialbomb")
+                    },
+                    SKAction.repeat(pulseTimedBomb(speed: 0.35), count: 3),
+                    SKAction.run { [weak self] in
+                        guard let self = self else { return }
+                        delegate?.didVillainAttack(attackType: .timed, position: randomPosition)
+                    },
+                    SKAction.group([
+                        SKAction.colorize(withColorBlendFactor: 1, duration: fadeOutDuration),
+                        SKAction.scale(to: 2, duration: fadeOutDuration),
+                        SKAction.fadeOut(withDuration: fadeOutDuration)
+                    ]),
+                    SKAction.removeFromParent()
+                ]))
+            }//end for
+        }//end switch
+    }//end villainAttack()
     
     
 }

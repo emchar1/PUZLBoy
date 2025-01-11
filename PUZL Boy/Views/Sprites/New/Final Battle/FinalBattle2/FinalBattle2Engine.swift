@@ -188,6 +188,37 @@ class FinalBattle2Engine {
         }
     }
     
+    private func villainAttackTimed(at homePosition: K.GameboardPosition) {
+        func isValidPosition(row: Int, col: Int) -> Bool {
+            return row >= 0 && row < gameboard.panelCount && col >= 0 && col < gameboard.panelCount
+        }
+        
+        @discardableResult func addEdgePosition(row: Int, col: Int) -> Bool {
+            guard isValidPosition(row: row, col: col) else { return false }
+            
+            affectedPanels.append(K.GameboardPosition(row: row, col: col))
+            
+            return true
+        }
+        
+        var affectedPanels: [K.GameboardPosition] = []
+        affectedPanels.append(homePosition)
+                
+        //Add the edge positions
+        addEdgePosition(row: homePosition.row - 1, col: homePosition.col)
+        addEdgePosition(row: homePosition.row + 1, col: homePosition.col)
+        addEdgePosition(row: homePosition.row, col: homePosition.col - 1)
+        addEdgePosition(row: homePosition.row, col: homePosition.col + 1)
+        
+        //Panel animation
+        affectedPanels.forEach { showDamagePanel(at: $0) }
+        
+        //Update health
+        if affectedPanels.contains(where: { $0 == controls.playerPosition }) {
+            health.updateHealth(type: .villainAttack)
+        }
+    }
+    
     private func shieldExplodeDamagePanels(at homePosition: K.GameboardPosition) {
         func isValidPosition(row: Int, col: Int) -> Bool {
             return row >= 0 && row < gameboard.panelCount && col >= 0 && col < gameboard.panelCount
@@ -270,14 +301,14 @@ extension FinalBattle2Engine: FinalBattle2ControlsDelegate {
         backgroundPattern.animate(pattern: .wave, fadeDuration: 2, shouldFlashGameboard: true)
     }
     
-    func didVillainAttack(attackType: FinalBattle2Controls.VillainAttackType, playerPosition: K.GameboardPosition?) {
+    func didVillainAttack(attackType: FinalBattle2Controls.VillainAttackType, position: K.GameboardPosition?) {
         switch attackType {
         case .normal:
-            let playerPosition = playerPosition ?? FinalBattle2Spawner.startPosition
-            
+            let playerPosition = position ?? FinalBattle2Spawner.startPosition
             villainAttackNormal(at: playerPosition)
         case .timed:
-            print("Timed Bombs!!!")
+            let randomPosition = position ?? FinalBattle2Spawner.startPosition
+            villainAttackTimed(at: randomPosition)
         }
     }
     
