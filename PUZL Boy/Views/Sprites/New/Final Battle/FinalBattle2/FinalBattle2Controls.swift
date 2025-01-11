@@ -510,7 +510,7 @@ class FinalBattle2Controls {
             for _ in 0..<villainAttackSpecialCount {
                 let moveDuration: TimeInterval = 1
                 let fadeOutDuration: TimeInterval = 0.25
-                let explodeDistance: CGFloat = 40
+                let explodeDistance: CGFloat = 20
                 var randomPosition: K.GameboardPosition
                 
                 repeat {
@@ -549,9 +549,9 @@ class FinalBattle2Controls {
                         SKAction.fadeOut(withDuration: fadeOutDuration),
                         SKAction.sequence([
                             SKAction.moveBy(x: -explodeDistance, y: 0, duration: fadeOutDuration / 5),
-                            SKAction.moveBy(x: explodeDistance, y: 0, duration: fadeOutDuration / 5),
-                            SKAction.moveBy(x: -explodeDistance, y: 0, duration: fadeOutDuration / 5),
-                            SKAction.moveBy(x: explodeDistance, y: 0, duration: fadeOutDuration / 5),
+                            SKAction.moveBy(x: explodeDistance * 2, y: 0, duration: fadeOutDuration / 5),
+                            SKAction.moveBy(x: -explodeDistance * 2, y: 0, duration: fadeOutDuration / 5),
+                            SKAction.moveBy(x: explodeDistance * 2, y: 0, duration: fadeOutDuration / 5),
                             SKAction.moveBy(x: -explodeDistance, y: 0, duration: fadeOutDuration / 5),
                         ])
                     ]),
