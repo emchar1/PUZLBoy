@@ -333,7 +333,7 @@ class FinalBattle2Controls {
         let moveDistance: CGFloat = 20
         let fadeDistance = CGPoint(x: 0, y: shouldDisappear ? gameboard.panelSize : 0)
         let waitDuration = TimeInterval.random(in: 3...8)
-        let villainDirection: CGFloat = villainPositionNew.col < gameboard.panelCount / 2 ? 1 : -1
+        let villainDirection: CGFloat = villainPositionNew.col < playerPosition.col ? 1 : -1
         
         let disappearAction = SKAction.sequence([
             SKAction.moveBy(x: -moveDirection * moveDistance, y: 0, duration: 0),

@@ -195,8 +195,8 @@ class FinalBattle2Spawner {
                 guard let self = self else { return }
                 
                 calculateSpawnerSpeed(index: index)
-                                
-                print("index: \(index), animationDuration: \(animationDuration), currentSpeed: \(currentSpeed)")
+                
+                print("index: \(index), currentSpeed: \(currentSpeed), animationDuration: \(animationDuration)")
                 
                 //Recursive call
                 animateSpawnPanels(with: terrain, index: index + 1)
