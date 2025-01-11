@@ -10,6 +10,7 @@ import SpriteKit
 protocol FinalBattle2SpawnerDelegate: AnyObject {
     func didSpawnSafePanel(spawnPanel: K.GameboardPosition)
     func didDespawnSafePanel(spawnPanel: K.GameboardPosition)
+    func didChangeSpeed(speed: FinalBattle2Spawner.SpawnerSpeed)
 }
 
 class FinalBattle2Spawner {
@@ -21,13 +22,23 @@ class FinalBattle2Spawner {
     
     //IMPORTANT!! breakLimit should be a multiple of maxCount!! These are panel spawning speed and max panels properties
     private let maxCount: Int = 1000
-    private let breakLimit: Int = 25
+    private let breakLimit: Int = 50
+    private var animationDuration: TimeInterval = 3
+    private(set) var currentSpeed: SpawnerSpeed = .slow {
+        didSet {
+            delegate?.didChangeSpeed(speed: currentSpeed)
+        }
+    }
     
     private var gameboard: GameboardSprite
     private var spawnPanels: [K.GameboardPosition]
     private var ignorePositions: [K.GameboardPosition]
     
     weak var delegate: FinalBattle2SpawnerDelegate?
+    
+    enum SpawnerSpeed {
+        case slow, medium, fast
+    }
 
     
     // MARK: - Initialization
@@ -49,13 +60,12 @@ class FinalBattle2Spawner {
     }
     
     /**
-     Animates the Spawner.
-     - parameter speed: speed at which safe panels drop off; the higher the number, the slower the drop-off
+     Animates the Spawner, initialized to speed = 3.
      */
-    func animateSpawner(speed: TimeInterval) {
+    func animateSpawner() {
         let terrainPanel: LevelType = FireIceTheme.isFire ? .sand : .snow
         
-        animateSpawnPanels(with: terrainPanel, waitDuration: speed)
+        animateSpawnPanels(with: terrainPanel)
     }
     
     
@@ -104,9 +114,8 @@ class FinalBattle2Spawner {
      - parameters:
         - terrain: LevelType that is to be spawned
         - index: LEAVE ALONE! This is to be used by the recursive function only!!
-        - waitDuration: the "speed" of the spawn/despawn animation
      */
-    private func animateSpawnPanels(with terrain: LevelType, index: Int = 0, waitDuration: TimeInterval) {
+    private func animateSpawnPanels(with terrain: LevelType, index: Int = 0) {
         //Recursive base case
         guard index < self.spawnPanels.count else { return }
         
@@ -124,8 +133,8 @@ class FinalBattle2Spawner {
                     SKAction.repeat(SKAction.sequence([
                         SKAction.moveBy(x: -10, y: 0, duration: pulseDuration),
                         SKAction.moveBy(x: 10, y: 0, duration: pulseDuration)
-                    ]), count: Int(waitDuration / (2 * pulseDuration))),
-                    SKAction.fadeOut(withDuration: waitDuration)
+                    ]), count: Int(animationDuration / (2 * pulseDuration))),
+                    SKAction.fadeOut(withDuration: animationDuration)
                 ])
             ])
             
@@ -133,7 +142,7 @@ class FinalBattle2Spawner {
                 SKAction.repeat(SKAction.sequence([
                     SKAction.fadeAlpha(to: 0.6, duration: pulseDuration),
                     SKAction.fadeAlpha(to: 0.8, duration: pulseDuration)
-                ]), count: Int(waitDuration / (2 * pulseDuration))),
+                ]), count: Int(animationDuration / (2 * pulseDuration))),
                 SKAction.fadeOut(withDuration: offsetDuration)
             ])
             
@@ -149,8 +158,8 @@ class FinalBattle2Spawner {
                     node.removeAction(forKey: "particleNodeFade")
                     node.alpha = 0
                     node.run(SKAction.sequence([
-                        SKAction.wait(forDuration: waitDuration * 3),
-                        SKAction.fadeIn(withDuration: waitDuration)
+                        SKAction.wait(forDuration: animationDuration * 3),
+                        SKAction.fadeIn(withDuration: animationDuration)
                     ]), withKey: "particleNodeFade")
                     
                     break
@@ -162,7 +171,7 @@ class FinalBattle2Spawner {
                                                        position: gameboard.getLocation(at: spawnPanel),
                                                        scale: 3 / CGFloat(gameboard.panelCount),
                                                        nameGameboardPosition: spawnPanel,
-                                                       duration: waitDuration * 3 + waitDuration)
+                                                       duration: animationDuration * 3 + animationDuration)
             }
         }
         
@@ -180,32 +189,46 @@ class FinalBattle2Spawner {
                 self?.delegate?.didSpawnSafePanel(spawnPanel: spawnPanel)
                 handleParticles(spawnPanel: spawnPanel)
             },
-            SKAction.fadeIn(withDuration: waitDuration * 0.25),
-            SKAction.wait(forDuration: waitDuration * 0.75),
+            SKAction.fadeIn(withDuration: animationDuration * 0.25),
+            SKAction.wait(forDuration: animationDuration * 0.75),
             SKAction.run { [weak self] in
                 guard let self = self else { return }
                 
-                let waitDurationAdjusted: TimeInterval
-                
-                switch Float(index) / Float(breakLimit) {
-                case 0:     waitDurationAdjusted = waitDuration
-                case 1:     waitDurationAdjusted = waitDuration * 2/3
-                case 4:     waitDurationAdjusted = waitDuration * 1/2
-                default:    waitDurationAdjusted = waitDuration
-                }
-                
-                print("index: \(index), index/limit: \(Float(index) / Float(breakLimit)), waitDurationAdjusted: \(waitDurationAdjusted)")
+                calculateSpawnerSpeed(index: index)
+                                
+                print("index: \(index), animationDuration: \(animationDuration), currentSpeed: \(currentSpeed)")
                 
                 //Recursive call
-                animateSpawnPanels(with: terrain, index: index + 1, waitDuration: waitDurationAdjusted)
+                animateSpawnPanels(with: terrain, index: index + 1)
             },
-            SKAction.wait(forDuration: waitDuration * 2),
+            SKAction.wait(forDuration: animationDuration * 2),
             dissolveTerrainAction(pulseDuration: 0.1),
             SKAction.removeFromParent()
         ])) { [weak self] in
             self?.delegate?.didDespawnSafePanel(spawnPanel: spawnPanel)
         }
     }//end animateSpawnPanels()
+    
+    /**
+     Calculates the spawner speed based on current index and breakLimit.
+     - parameter index: current spawned panel index.
+     - note: This function should only be used in private function, FinalBattle2Spawner.animateSpawnPanels() because it is the only function that keeps track of the current spawned panel index.
+     */
+    private func calculateSpawnerSpeed(index: Int) {
+        switch index {
+        case 0 * breakLimit:
+            currentSpeed = .slow
+            animationDuration = 3
+        case 1 * breakLimit:
+            currentSpeed = .medium
+            animationDuration = 2
+        case 3 * breakLimit:
+            currentSpeed = .fast
+            animationDuration = 1
+        default:
+            break
+        }
+    }
     
     
 }

@@ -126,7 +126,7 @@ class FinalBattle2Engine {
         backgroundPattern.animate(pattern: .normal, fadeDuration: 0)
         
         for i in 0..<panelSpawnerCount {
-            panelSpawner[i].animateSpawner(speed: 3)
+            panelSpawner[i].animateSpawner()
         }
     }
     
@@ -276,8 +276,8 @@ extension FinalBattle2Engine: FinalBattle2ControlsDelegate {
             let playerPosition = playerPosition ?? FinalBattle2Spawner.startPosition
             
             villainAttackNormal(at: playerPosition)
-        case .special:
-            print("Spesh!!!")
+        case .timed:
+            print("Timed Bombs!!!")
         }
     }
     
@@ -319,4 +319,20 @@ extension FinalBattle2Engine: FinalBattle2SpawnerDelegate {
         guard spawnPanel == controls.playerPosition && !safePanelFound() && !startPanelFound() && !endPanelFound() else { return }
         health.updateHealth(type: .drain)
     }
+    
+    func didChangeSpeed(speed: FinalBattle2Spawner.SpawnerSpeed) {
+        switch speed {
+        case .slow:
+            controls.setVillainMovementTimerDelay(12)
+            controls.setVillainAttackNormalSpeed(0.5)
+        case .medium:
+            controls.setVillainMovementTimerDelay(10)
+            controls.setVillainAttackNormalSpeed(0.35)
+        case .fast:
+            controls.setVillainMovementTimerDelay(8)
+            controls.setVillainAttackNormalSpeed(0.25)
+        }
+    }
+    
+    
 }

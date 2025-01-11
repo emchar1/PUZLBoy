@@ -37,8 +37,12 @@ class FinalBattle2Controls {
     private var canAttack: Bool
     private var villainMoveTimer: Timer
     
+    //Villain movement and attack properties
+    private var villainMovementTimerDelay: TimeInterval = 10
+    private var villainAttackNormalSpeed: TimeInterval = 0.5
+    
     enum VillainAttackType {
-        case normal, special
+        case normal, timed
     }
     
     weak var delegate: FinalBattle2ControlsDelegate?
@@ -105,6 +109,18 @@ class FinalBattle2Controls {
         else {
             //handle default cases here...
         }
+    }
+    
+    
+    // MARK: - Villain Attack Setters
+    
+    func setVillainMovementTimerDelay(_ newValue: TimeInterval) {
+        self.villainMovementTimerDelay = newValue
+    }
+    
+    
+    func setVillainAttackNormalSpeed(_ newValue: CGFloat) {
+        self.villainAttackNormalSpeed = newValue
     }
     
     
@@ -290,9 +306,9 @@ class FinalBattle2Controls {
      Resets the timer and begins a new one.
      - parameter delay: time in between until timer fires again
      */
-    private func resetTimer(delay: TimeInterval = 10) {
+    private func resetTimer() {
         villainMoveTimer.invalidate()
-        villainMoveTimer = Timer.scheduledTimer(timeInterval: delay,
+        villainMoveTimer = Timer.scheduledTimer(timeInterval: villainMovementTimerDelay,
                                                 target: self,
                                                 selector: #selector(moveVillain(_:)),
                                                 userInfo: nil,
@@ -428,7 +444,10 @@ class FinalBattle2Controls {
                 fireballAngleOffset = fireballAngle.alpha
             }
             
-            let fireballMovementDuration = sqrt(pow(TimeInterval(villainPosition.row) - TimeInterval(originalPosition.row), 2) + pow(TimeInterval(villainPosition.col) - TimeInterval(originalPosition.col), 2)) * 0.25
+            let rowSquared = pow(TimeInterval(villainPosition.row) - TimeInterval(originalPosition.row), 2)
+            let colSquared = pow(TimeInterval(villainPosition.col) - TimeInterval(originalPosition.col), 2)
+            let distanceVillainToPlayer = sqrt(rowSquared + colSquared)
+            let fireballMovementDuration = max(distanceVillainToPlayer * villainAttackNormalSpeed, 0.25)
             
             let fireball = SKSpriteNode(imageNamed: FireIceTheme.isFire ? "villainProjectile1" : "villainProjectile2")
             fireball.position = villain.sprite.position
@@ -440,8 +459,8 @@ class FinalBattle2Controls {
             gameboard.sprite.addChild(fireball)
             
             fireball.run(SKAction.repeatForever(SKAction.sequence([
-                SKAction.colorize(withColorBlendFactor: 1, duration: 0.05),
-                SKAction.colorize(withColorBlendFactor: 0, duration: 0.05)
+                SKAction.colorize(withColorBlendFactor: 1, duration: 0.1),
+                SKAction.colorize(withColorBlendFactor: 0, duration: 0.1)
             ])))
             
             fireball.run(SKAction.sequence([
@@ -459,8 +478,8 @@ class FinalBattle2Controls {
                 
                 AudioManager.shared.playSound(for: attackAudio.fileName, delay: delayDuration)
             }
-        case .special:
-            print("villain special attack")
+        case .timed:
+            print("villain timed attack")
         }
     }
     
