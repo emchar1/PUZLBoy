@@ -415,6 +415,8 @@ class FinalBattle2Controls {
     // MARK: - Villain Attacks
     
     private func villainAttack(type: VillainAttackType) {
+        let villainDirection: CGFloat = villain.sprite.xScale > 0 ? -1 : 1
+        
         villain.sprite.run(SKAction.sequence([
             Player.animate(player: villain, type: .attack, repeatCount: 1)
         ]))
@@ -454,8 +456,8 @@ class FinalBattle2Controls {
             let fireballMovementDuration = max(distanceVillainToPlayer * villainAttackNormalSpeed, 0.25)
             
             let fireball = SKSpriteNode(imageNamed: FireIceTheme.isFire ? "villainProjectile1" : "villainProjectile2")
-            fireball.position = villain.sprite.position
-            fireball.setScale(0.5 / UIDevice.spriteScale)
+            fireball.position = villain.sprite.position + Player.mysticWandOrigin * villainDirection
+            fireball.setScale(0.25 / UIDevice.spriteScale)
             fireball.color = FireIceTheme.overlayColor
             fireball.zRotation = fireballAngleOffset
             fireball.zPosition = K.ZPosition.itemsAndEffects
@@ -468,12 +470,18 @@ class FinalBattle2Controls {
             ])))
             
             fireball.run(SKAction.sequence([
-                SKAction.move(to: gameboard.getLocation(at: originalPosition), duration: fireballMovementDuration),
+                SKAction.group([
+                    SKAction.move(to: gameboard.getLocation(at: originalPosition), duration: fireballMovementDuration),
+                    SKAction.scale(to: 0.5 / UIDevice.spriteScale, duration: fireballMovementDuration)
+                ]),
                 SKAction.run { [weak self] in
                     guard let self = self else { return }
                     delegate?.didVillainAttack(attackType: .normal, position: originalPosition)
                 },
-                SKAction.fadeOut(withDuration: 0.25),
+                SKAction.group([
+                    SKAction.fadeOut(withDuration: 0.25),
+                    SKAction.scale(to: 1 / UIDevice.spriteScale, duration: 0.25)
+                ]),
                 SKAction.removeFromParent()
             ]))
             
@@ -487,14 +495,14 @@ class FinalBattle2Controls {
                 return SKAction.sequence([
                     SKAction.group([
                         SKAction.colorize(withColorBlendFactor: 1, duration: speed / 2),
-                        SKAction.scale(to: 0.75 / UIDevice.spriteScale, duration: speed / 2)
+                        SKAction.scale(to: 1 / UIDevice.spriteScale, duration: speed / 2)
                     ]),
                     SKAction.run {
                         AudioManager.shared.playSound(for: "villainattackbombtick")
                     },
                     SKAction.group([
                         SKAction.colorize(withColorBlendFactor: 0, duration: speed / 2),
-                        SKAction.scale(to: 0.5 / UIDevice.spriteScale, duration: speed / 2)
+                        SKAction.scale(to: 0.75 / UIDevice.spriteScale, duration: speed / 2)
                     ])
                 ])
             }
@@ -502,6 +510,7 @@ class FinalBattle2Controls {
             for _ in 0..<villainAttackSpecialCount {
                 let moveDuration: TimeInterval = 1
                 let fadeOutDuration: TimeInterval = 0.25
+                let explodeDistance: CGFloat = 40
                 var randomPosition: K.GameboardPosition
                 
                 repeat {
@@ -509,8 +518,8 @@ class FinalBattle2Controls {
                 } while randomPosition == villainPosition
                 
                 let fireball = SKSpriteNode(imageNamed: "villainProjectile3")
-                fireball.position = villain.sprite.position
-                fireball.setScale(0)
+                fireball.position = villain.sprite.position + Player.mysticWandOrigin * villainDirection
+                fireball.setScale(0.25 / UIDevice.spriteScale)
                 fireball.color = .red
                 fireball.colorBlendFactor = 0
                 fireball.zPosition = K.ZPosition.player - 2
@@ -520,8 +529,8 @@ class FinalBattle2Controls {
                 fireball.run(SKAction.sequence([
                     SKAction.group([
                         SKAction.move(to: gameboard.getLocation(at: randomPosition), duration: moveDuration),
-                        SKAction.scale(to: 0.5 / UIDevice.spriteScale, duration: moveDuration),
-                        SKAction.rotate(byAngle: 2 * .pi, duration: moveDuration)
+                        SKAction.scale(to: 0.75 / UIDevice.spriteScale, duration: moveDuration),
+                        SKAction.rotate(byAngle: 4 * .pi * villainDirection, duration: moveDuration)
                     ]),
                     SKAction.repeat(pulseTimedBomb(speed: 1), count: 3),
                     SKAction.repeat(pulseTimedBomb(speed: 0.75), count: 3),
@@ -536,8 +545,15 @@ class FinalBattle2Controls {
                     },
                     SKAction.group([
                         SKAction.colorize(withColorBlendFactor: 1, duration: fadeOutDuration),
-                        SKAction.scale(to: 2, duration: fadeOutDuration),
-                        SKAction.fadeOut(withDuration: fadeOutDuration)
+                        SKAction.scale(to: 3, duration: fadeOutDuration),
+                        SKAction.fadeOut(withDuration: fadeOutDuration),
+                        SKAction.sequence([
+                            SKAction.moveBy(x: -explodeDistance, y: 0, duration: fadeOutDuration / 5),
+                            SKAction.moveBy(x: explodeDistance, y: 0, duration: fadeOutDuration / 5),
+                            SKAction.moveBy(x: -explodeDistance, y: 0, duration: fadeOutDuration / 5),
+                            SKAction.moveBy(x: explodeDistance, y: 0, duration: fadeOutDuration / 5),
+                            SKAction.moveBy(x: -explodeDistance, y: 0, duration: fadeOutDuration / 5),
+                        ])
                     ]),
                     SKAction.removeFromParent()
                 ]))

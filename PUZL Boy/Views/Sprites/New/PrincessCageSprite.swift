@@ -43,7 +43,7 @@ class PrincessCageSprite: SKNode {
     
     private func setupNodes() {
         flingNode = SKSpriteNode(imageNamed: "magmoorShieldTop")
-        flingNode.position = villainNode.position - CGPoint(x: 80, y: -10) / UIDevice.spriteScale
+        flingNode.position = villainNode.position + Player.mysticWandOrigin
         flingNode.color = .yellow
         flingNode.colorBlendFactor = 1
         flingNode.setScale(0)

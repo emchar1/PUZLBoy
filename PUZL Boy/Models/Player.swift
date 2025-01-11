@@ -11,8 +11,15 @@ class Player {
     
     // MARK: - Properties: General
     
+    ///Dimensions of player, i.e. Hero a.k.a. PUZL Boy
     static let size = CGSize(width: 946, height: 564)
-    static let cutsceneScale: CGFloat = 0.75 //to be used in cutscenes
+    
+    ///To be used in cutscenes
+    static let cutsceneScale: CGFloat = 0.75
+    
+    ///Origin point of wand when a Mystic casts a spell
+    static let mysticWandOrigin: CGPoint = CGPoint(x: -80, y: 10) / UIDevice.spriteScale
+    
     private(set) var scale = 0.5
     private(set) var scaleMultiplier: CGFloat = 1
     private(set) var type: PlayerType
