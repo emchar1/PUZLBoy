@@ -216,7 +216,10 @@ class FinalBattle2Controls {
         let attackPanel: K.GameboardPosition = getNextPanel(direction: direction)
         
         guard attackPanel == villainPosition else { return false }
-        guard playerOnSafePanel() && canAttack else { return true }
+        guard playerOnSafePanel() && canAttack else {
+            ButtonTap.shared.tap(type: .buttontap6)
+            return true
+        }
         
         isDisabled = true
         canAttack = false
