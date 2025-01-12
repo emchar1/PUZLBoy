@@ -11,6 +11,9 @@ class FinalBattle2Health {
     
     // MARK: - Properties
     
+    private let keyPlayerBlink: String = "playerBlink"
+    private let keyPlayerColorFade: String = "playerColorFade"
+    
     private var timer: Timer?
     private var drainTimer: Timer?            //a separate timer is needed for the drain health function
     private var isDraining: Bool = false
@@ -125,12 +128,12 @@ class FinalBattle2Health {
     // MARK: - Other Helper Functions
     
     private func resetPlayerActions() {
-        if player.sprite.action(forKey: "playerBlink") != nil {
+        if player.sprite.action(forKey: keyPlayerBlink) != nil {
             player.sprite.colorBlendFactor = 1
         }
         
-        player.sprite.removeAction(forKey: "playerBlink")
-        player.sprite.run(SKAction.colorize(withColorBlendFactor: 0, duration: 0.5), withKey: "playerColorFade")
+        player.sprite.removeAction(forKey: keyPlayerBlink)
+        player.sprite.run(SKAction.colorize(withColorBlendFactor: 0, duration: 0.5), withKey: keyPlayerColorFade)
     }
     
     private func makePlayerHurt() {
@@ -141,11 +144,15 @@ class FinalBattle2Health {
         ])
         let colorBlinkRepeat = isDraining ? SKAction.repeatForever(colorBlinkAction) : SKAction.repeat(colorBlinkAction, count: 20)
         
-        player.sprite.removeAction(forKey: "playerColorFade")
+        player.sprite.removeAction(forKey: keyPlayerColorFade)
+        player.sprite.removeAction(forKey: keyPlayerBlink) //I think this prevents stacking?? Especially if colorBlinkAction is repeatForever..
         player.sprite.run(SKAction.sequence([
             colorBlinkRepeat,
             SKAction.colorize(withColorBlendFactor: 0, duration: 0.5)
-        ]), withKey: "playerBlink")
+        ]), withKey: keyPlayerBlink)
+        
+        //Prevents multiple voices overlaying if makePlayerHurt() stacks, e.g. from drain + villainAttack
+        guard !AudioManager.shared.isPlaying(audioKey: "boypain1") && !AudioManager.shared.isPlaying(audioKey: "boypain2") && !AudioManager.shared.isPlaying(audioKey: "boypain3") && !AudioManager.shared.isPlaying(audioKey: "boypain4") else { return }
         
         AudioManager.shared.playSound(for: "boypain\(Int.random(in: 1...4))")
         Haptics.shared.executeCustomPattern(pattern: FireIceTheme.isFire ? .lava : .water)

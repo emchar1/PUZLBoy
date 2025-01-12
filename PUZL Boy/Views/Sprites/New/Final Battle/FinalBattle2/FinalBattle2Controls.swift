@@ -127,10 +127,21 @@ class FinalBattle2Controls {
      - note: Call this within FinalBattle2Engine.
      */
     func villainAttackTimedBombHurtVillain() {
-        guard magmoorShield.hitPoints > 1 && magmoorAttacks.timedBombCanHurtVillain() else { return }
+        guard magmoorShield.hasHitPoints && magmoorAttacks.timedBombCanHurtVillain() && canAttack else { return }
         
-        magmoorShield.decrementShield(villain: villain, villainPosition: positions.villain, completion: nil)
+        canAttack = false
+        villainMoveTimer.invalidate()
         AudioManager.shared.playSound(for: "villainpain\(Int.random(in: 1...2))")
+        
+        magmoorShield.decrementShield(villain: villain, villainPosition: positions.villain) { [weak self] in
+            self?.canAttack = true
+        }
+        
+        //This MUST come after decrementing the shield, above!
+        if magmoorShield.hasHitPoints {
+            generateVillainPositionNew()
+            moveVillainFlee(shouldDisappear: false, completion: nil)
+        }
     }
     
     /**
@@ -344,10 +355,10 @@ class FinalBattle2Controls {
      Generates a new position for the villain.
      */
     private func generateVillainPositionNew() {
-        //Villain's new spawn position cannot be where player position or start position are!
+        //Villain's new spawn position cannot be where player, villain, or start positions are!
         repeat {
             villainPositionNew = (Int.random(in: 0...gameboard.panelCount - 1), Int.random(in: 0...gameboard.panelCount - 1))
-        } while villainPositionNew == positions.player || villainPositionNew == FinalBattle2Spawner.startPosition
+        } while villainPositionNew == positions.player || villainPositionNew == positions.villain || villainPositionNew == FinalBattle2Spawner.startPosition
     }
     
     /**
