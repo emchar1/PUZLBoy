@@ -185,6 +185,7 @@
 		EA8C66492D30F8B7004DD9A0 /* villainpain2.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA8C66482D30F8B7004DD9A0 /* villainpain2.mp3 */; };
 		EA8C664B2D325139004DD9A0 /* villainattackspecialbomb.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA8C664A2D325139004DD9A0 /* villainattackspecialbomb.mp3 */; };
 		EA8C66512D32595F004DD9A0 /* villainattackbombtick.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA8C66502D32595F004DD9A0 /* villainattackbombtick.mp3 */; };
+		EA8C66532D333956004DD9A0 /* MagmoorAttacks.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA8C66522D333956004DD9A0 /* MagmoorAttacks.swift */; };
 		EA8E072F2B4FEC070051DDC3 /* TapPointerEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA8E072E2B4FEC060051DDC3 /* TapPointerEngine.swift */; };
 		EA8E07542B50988B0051DDC3 /* PointerParticles.sks in Resources */ = {isa = PBXBuildFile; fileRef = EA8E07532B50988B0051DDC3 /* PointerParticles.sks */; };
 		EA8E07562B5104170051DDC3 /* PointerRainbowParticles.sks in Resources */ = {isa = PBXBuildFile; fileRef = EA8E07552B5104170051DDC3 /* PointerRainbowParticles.sks */; };
@@ -568,6 +569,7 @@
 		EA8C66482D30F8B7004DD9A0 /* villainpain2.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = villainpain2.mp3; sourceTree = "<group>"; };
 		EA8C664A2D325139004DD9A0 /* villainattackspecialbomb.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = villainattackspecialbomb.mp3; sourceTree = "<group>"; };
 		EA8C66502D32595F004DD9A0 /* villainattackbombtick.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = villainattackbombtick.mp3; sourceTree = "<group>"; };
+		EA8C66522D333956004DD9A0 /* MagmoorAttacks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MagmoorAttacks.swift; sourceTree = "<group>"; };
 		EA8E072E2B4FEC060051DDC3 /* TapPointerEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TapPointerEngine.swift; sourceTree = "<group>"; };
 		EA8E07532B50988B0051DDC3 /* PointerParticles.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = PointerParticles.sks; sourceTree = "<group>"; };
 		EA8E07552B5104170051DDC3 /* PointerRainbowParticles.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = PointerRainbowParticles.sks; sourceTree = "<group>"; };
@@ -837,6 +839,7 @@
 				EAE751DE2D29E689004B138A /* FinalBattle2Spawner.swift */,
 				EA9D4BB12D17498700BB1F36 /* FinalBattle2Controls.swift */,
 				EA37CEFE2D1BF8C700275A15 /* FinalBattle2Health.swift */,
+				EA8C66522D333956004DD9A0 /* MagmoorAttacks.swift */,
 				EAE751E02D2C712A004B138A /* MagmoorShield.swift */,
 			);
 			path = FinalBattle2;
@@ -1822,6 +1825,7 @@
 				EA36F9FD2C5ACEFE0031DB9A /* StatueDialogue.swift in Sources */,
 				EA37CEFF2D1BF8D000275A15 /* FinalBattle2Health.swift in Sources */,
 				EA95D1B2294FBF2A0061059C /* Extension+Notification.Name.swift in Sources */,
+				EA8C66532D333956004DD9A0 /* MagmoorAttacks.swift in Sources */,
 				EA75F0EF292F55F900F09BD7 /* LaunchScene.swift in Sources */,
 				EA94E86729BE6BCC009F2614 /* PauseResetEngine.swift in Sources */,
 				EA26F29129739DE800BF1AC8 /* AdMobManager.swift in Sources */,

@@ -12,7 +12,7 @@ protocol FinalBattle2ControlsDelegate: AnyObject {
     func didVillainDisappear(fadeDuration: TimeInterval)
     func willVillainReappear()
     func didVillainReappear()
-    func didVillainAttack(attackType: FinalBattle2Controls.VillainAttackType, position: K.GameboardPosition?)
+    func didVillainAttack(pattern: MagmoorAttacks.AttackPattern, position: K.GameboardPosition?)
     func handleShield(willDamage: Bool, didDamage: Bool, willBreak: Bool, didBreak: Bool, fadeDuration: TimeInterval?, villainPosition: K.GameboardPosition?)
 }
 
@@ -26,6 +26,7 @@ class FinalBattle2Controls {
     private(set) var playerPosition: K.GameboardPosition
     private(set) var villainPosition: K.GameboardPosition
     private var chosenSword: ChosenSword
+    private var magmoorAttacks: MagmoorAttacks
     private var magmoorShield: MagmoorShield
     
     //These get set every time in handleControls()
@@ -35,18 +36,9 @@ class FinalBattle2Controls {
     
     private var isDisabled: Bool
     private var canAttack: Bool
+    
     private var villainMoveTimer: Timer
-    
-    //Villain movement and attack properties
     private var villainMovementDelay: TimeInterval = 10
-    private var villainAttackNormalSpeed: TimeInterval = 0.5
-    private var villainAttackTimedCount: Int = 3
-    private var villainAttackTimedCanHurtPlayer: Bool = true
-    private var villainAttackTimedCanHurtVillain: Bool = true
-    
-    enum VillainAttackType {
-        case normal, timed
-    }
     
     weak var delegate: FinalBattle2ControlsDelegate?
     
@@ -70,7 +62,11 @@ class FinalBattle2Controls {
         chosenSword.spriteNode.setScale(gameboard.panelSize / chosenSword.spriteNode.size.width)
         chosenSword.spriteNode.zPosition = K.ZPosition.itemsAndEffects
         
+        magmoorAttacks = MagmoorAttacks()
         magmoorShield = MagmoorShield(hitPoints: 0)
+        
+        //These need to come AFTER initializing their respective objects!
+        magmoorAttacks.delegate = self
         magmoorShield.delegate = self
     }
     
@@ -114,21 +110,38 @@ class FinalBattle2Controls {
         }
     }
     
-    
-    // MARK: - Villain Attack Setters
-    
     func setVillainMovementDelay(_ newValue: TimeInterval) {
         self.villainMovementDelay = newValue
     }
     
-    
-    func setVillainAttackNormalSpeed(_ newValue: CGFloat) {
-        self.villainAttackNormalSpeed = newValue
+    func setVillainAttackNormalFireballSpeed(_ newValue: CGFloat) {
+        magmoorAttacks.setNormalFireballSpeed(newValue)
     }
     
-    func setVillainAttackTimedCount(_ newValue: Int) {
-        self.villainAttackTimedCount = newValue
+    func setVillainAttackTimedBombCount(_ newValue: Int) {
+        magmoorAttacks.setTimedBombCount(newValue)
     }
+    
+    /**
+     Decrement villain shield if he's in the blast radius of the timed bomb.
+     - note: Call this within FinalBattle2Engine.
+     */
+    func villainAttackTimedBombHurtVillain() {
+        guard magmoorShield.hitPoints > 1 && magmoorAttacks.timedBombCanHurtVillain() else { return }
+        
+        magmoorShield.decrementShield(villain: villain, villainPosition: villainPosition, completion: nil)
+        AudioManager.shared.playSound(for: "villainpain\(Int.random(in: 1...2))")
+    }
+    
+    /**
+     Returns true if you can harm the player due to a timed bomb attack.
+     - returns: true if can harm player
+     - note: Call from within FinalBattle2Engine.
+     */
+    func villainAttackTimedBombCanHurtPlayer() -> Bool {
+        return magmoorAttacks.timedBombCanHurtPlayer()
+    }
+    
     
     // MARK: - Controls Helper Functions
     
@@ -304,8 +317,14 @@ class FinalBattle2Controls {
         generateVillainPositionNew()
         
         moveVillainFlee(shouldDisappear: false, fadeDuration: 0) { [weak self] in
+            guard let self = self else { return }
+            
             // FIXME: - Change attack type based on spawner speed? Or battle progression?
-            self?.villainAttack(type: Bool.random() ? .normal : .timed)
+            magmoorAttacks.attack(pattern: Bool.random() ? .normal : .timed,
+                                  gameboard: gameboard,
+                                  villain: villain,
+                                  villainPosition: villainPosition,
+                                  playerPosition: playerPosition)
         }
     }
     
@@ -415,182 +434,15 @@ class FinalBattle2Controls {
     } //end moveVillainFlee()
     
     
-    // MARK: - Villain Attacks
+}
 
-    /**
-     Decrement villain shield if he's in the blast radius of the timed bomb. Call this within FinalBattle2Engine.
-     */
-    func villainAttackTimedBombHurtVillain() {
-        guard magmoorShield.hitPoints > 1 && villainAttackTimedCanHurtVillain else { return }
-        
-        villainAttackTimedCanHurtVillain = false
-        magmoorShield.decrementShield(villain: villain, villainPosition: villainPosition, completion: nil)
-        AudioManager.shared.playSound(for: "villainpain\(Int.random(in: 1...2))")
-    }
-    
-    func villainAttackTimedBombCanHurtPlayer() -> Bool {
-        guard villainAttackTimedCanHurtPlayer else { return false}
-        
-        villainAttackTimedCanHurtPlayer = false
-        
-        return true
-    }
-    
-    private func villainAttack(type: VillainAttackType) {
-        let villainDirection: CGFloat = villain.sprite.xScale > 0 ? -1 : 1
-        
-        villain.sprite.run(SKAction.sequence([
-            Player.animate(player: villain, type: .attack, repeatCount: 1)
-        ]))
-        
-        villainAttackTimedCanHurtPlayer = true
-        villainAttackTimedCanHurtVillain = true
-        
-        AudioManager.shared.playSound(for: "villainattack\(Int.random(in: 1...2))")
-        
-        switch type {
-        case .normal:
-            //MUST preserve original position here before player moves out of the way!
-            let originalPosition = playerPosition
-            let fireballAngle = SpriteMath.Trigonometry.getAngles(startPoint: villain.sprite.position,
-                                                                  endPoint: gameboard.getLocation(at: originalPosition))
 
-            //Assuming original image is upwards (pointing downwards)!
-            let fireballAngleOffset: CGFloat
-            
-            switch (row: villainPosition.row - originalPosition.row, col: villainPosition.col - originalPosition.col)  {
-            case let position where position.row < 0 && position.col < 0:
-                fireballAngleOffset = fireballAngle.alpha + 0
-            case let position where position.row < 0 && position.col > 0:
-                fireballAngleOffset = fireballAngle.beta - .pi / 2
-            case let position where position.row > 0 && position.col < 0:
-                fireballAngleOffset = fireballAngle.beta + .pi / 2
-            case let position where position.row > 0 && position.col > 0:
-                fireballAngleOffset = fireballAngle.alpha + .pi
-            case let position where position.row > 0 && position.col == 0:
-                fireballAngleOffset = fireballAngle.alpha + .pi
-            case let position where position.row == 0 && position.col > 0:
-                fireballAngleOffset = fireballAngle.alpha + .pi
-            default:
-                fireballAngleOffset = fireballAngle.alpha
-            }
-            
-            let rowSquared = pow(TimeInterval(villainPosition.row) - TimeInterval(originalPosition.row), 2)
-            let colSquared = pow(TimeInterval(villainPosition.col) - TimeInterval(originalPosition.col), 2)
-            let distanceVillainToPlayer = sqrt(rowSquared + colSquared)
-            let fireballMovementDuration = max(distanceVillainToPlayer * villainAttackNormalSpeed, 0.25)
-            
-            let fireball = SKSpriteNode(imageNamed: FireIceTheme.isFire ? "villainProjectile1" : "villainProjectile2")
-            fireball.position = villain.sprite.position + Player.mysticWandOrigin * villainDirection
-            fireball.setScale(0.25 / UIDevice.spriteScale)
-            fireball.color = FireIceTheme.overlayColor
-            fireball.zRotation = fireballAngleOffset
-            fireball.zPosition = K.ZPosition.itemsAndEffects
-            
-            gameboard.sprite.addChild(fireball)
-            
-            fireball.run(SKAction.repeatForever(SKAction.sequence([
-                SKAction.colorize(withColorBlendFactor: 1, duration: 0.1),
-                SKAction.colorize(withColorBlendFactor: 0, duration: 0.1)
-            ])))
-            
-            fireball.run(SKAction.sequence([
-                SKAction.group([
-                    SKAction.move(to: gameboard.getLocation(at: originalPosition), duration: fireballMovementDuration),
-                    SKAction.scale(to: 0.5 / UIDevice.spriteScale, duration: fireballMovementDuration)
-                ]),
-                SKAction.run { [weak self] in
-                    guard let self = self else { return }
-                    delegate?.didVillainAttack(attackType: .normal, position: originalPosition)
-                },
-                SKAction.group([
-                    SKAction.fadeOut(withDuration: 0.25),
-                    SKAction.scale(to: 1 / UIDevice.spriteScale, duration: 0.25)
-                ]),
-                SKAction.removeFromParent()
-            ]))
-            
-            if let attackAudio = AudioManager.shared.getAudioItem(filename: FireIceTheme.isFire ? "enemyflame" : "enemyice") {
-                let delayDuration = FireIceTheme.isFire ? fireballMovementDuration : max(0, fireballMovementDuration - 0.25)
-                
-                AudioManager.shared.playSound(for: attackAudio.fileName, delay: delayDuration)
-            }
-        case .timed:
-            func pulseTimedBomb(speed: TimeInterval, canPlaySound: Bool) -> SKAction {
-                return SKAction.sequence([
-                    SKAction.group([
-                        SKAction.colorize(withColorBlendFactor: 1, duration: speed / 2),
-                        SKAction.scale(to: 1 / UIDevice.spriteScale, duration: speed / 2)
-                    ]),
-                    SKAction.run {
-                        if canPlaySound {
-                            AudioManager.shared.playSound(for: "villainattackbombtick")
-                        }
-                    },
-                    SKAction.group([
-                        SKAction.colorize(withColorBlendFactor: 0, duration: speed / 2),
-                        SKAction.scale(to: 0.75 / UIDevice.spriteScale, duration: speed / 2)
-                    ])
-                ])
-            }
-            
-            for i in 0..<villainAttackTimedCount {
-                let moveDuration: TimeInterval = 1
-                let fadeOutDuration: TimeInterval = 0.25
-                let explodeDistance: CGFloat = 20
-                var randomPosition: K.GameboardPosition
-                
-                repeat {
-                    randomPosition = (Int.random(in: 0..<gameboard.panelCount), Int.random(in: 0..<gameboard.panelCount))
-                } while randomPosition == villainPosition
-                
-                let fireball = SKSpriteNode(imageNamed: "villainProjectile3")
-                fireball.position = villain.sprite.position + Player.mysticWandOrigin * villainDirection
-                fireball.setScale(0.25 / UIDevice.spriteScale)
-                fireball.color = .red
-                fireball.colorBlendFactor = 0
-                fireball.zPosition = K.ZPosition.player - 2
-                
-                gameboard.sprite.addChild(fireball)
-                
-                fireball.run(SKAction.sequence([
-                    SKAction.group([
-                        SKAction.move(to: gameboard.getLocation(at: randomPosition), duration: moveDuration),
-                        SKAction.scale(to: 0.75 / UIDevice.spriteScale, duration: moveDuration),
-                        SKAction.rotate(byAngle: 4 * .pi * villainDirection, duration: moveDuration)
-                    ]),
-                    SKAction.repeat(pulseTimedBomb(speed: 1, canPlaySound: i == 0), count: 3),
-                    SKAction.repeat(pulseTimedBomb(speed: 0.75, canPlaySound: i == 0), count: 3),
-                    SKAction.repeat(pulseTimedBomb(speed: 0.5, canPlaySound: i == 0), count: 3),
-                    SKAction.run {
-                        if i == 0 {
-                            AudioManager.shared.playSound(for: "villainattackspecialbomb")
-                        }
-                    },
-                    SKAction.repeat(pulseTimedBomb(speed: 0.35, canPlaySound: i == 0), count: 3),
-                    SKAction.run { [weak self] in
-                        guard let self = self else { return }
-                        delegate?.didVillainAttack(attackType: .timed, position: randomPosition)
-                    },
-                    SKAction.group([
-                        SKAction.colorize(withColorBlendFactor: 1, duration: fadeOutDuration),
-                        SKAction.scale(to: 3, duration: fadeOutDuration),
-                        SKAction.fadeOut(withDuration: fadeOutDuration),
-                        SKAction.sequence([
-                            SKAction.moveBy(x: -explodeDistance, y: 0, duration: fadeOutDuration / 5),
-                            SKAction.moveBy(x: explodeDistance * 2, y: 0, duration: fadeOutDuration / 5),
-                            SKAction.moveBy(x: -explodeDistance * 2, y: 0, duration: fadeOutDuration / 5),
-                            SKAction.moveBy(x: explodeDistance * 2, y: 0, duration: fadeOutDuration / 5),
-                            SKAction.moveBy(x: -explodeDistance, y: 0, duration: fadeOutDuration / 5),
-                        ])
-                    ]),
-                    SKAction.removeFromParent()
-                ]))
-            }//end for
-        }//end switch
-    }//end villainAttack()
-    
-    
+// MARK: - MagmoorAttacksDelegate
+
+extension FinalBattle2Controls: MagmoorAttacksDelegate {
+    func didVillainAttack(pattern: MagmoorAttacks.AttackPattern, position: K.GameboardPosition?) {
+        delegate?.didVillainAttack(pattern: pattern, position: position)
+    }
 }
 
 

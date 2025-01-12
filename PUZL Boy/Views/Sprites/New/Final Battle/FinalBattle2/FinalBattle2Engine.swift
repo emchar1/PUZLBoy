@@ -308,8 +308,8 @@ extension FinalBattle2Engine: FinalBattle2ControlsDelegate {
         backgroundPattern.animate(pattern: .wave, fadeDuration: 2, shouldFlashGameboard: true)
     }
     
-    func didVillainAttack(attackType: FinalBattle2Controls.VillainAttackType, position: K.GameboardPosition?) {
-        switch attackType {
+    func didVillainAttack(pattern: MagmoorAttacks.AttackPattern, position: K.GameboardPosition?) {
+        switch pattern {
         case .normal:
             let playerPosition = position ?? FinalBattle2Spawner.startPosition
             villainAttackNormal(at: playerPosition)
@@ -362,13 +362,13 @@ extension FinalBattle2Engine: FinalBattle2SpawnerDelegate {
         switch speed {
         case .slow:
             controls.setVillainMovementDelay(12)
-            controls.setVillainAttackNormalSpeed(0.5)
+            controls.setVillainAttackNormalFireballSpeed(0.5)
         case .medium:
             controls.setVillainMovementDelay(10)
-            controls.setVillainAttackNormalSpeed(0.35)
+            controls.setVillainAttackNormalFireballSpeed(0.35)
         case .fast:
             controls.setVillainMovementDelay(8)
-            controls.setVillainAttackNormalSpeed(0.25)
+            controls.setVillainAttackNormalFireballSpeed(0.25)
         }
     }
     
