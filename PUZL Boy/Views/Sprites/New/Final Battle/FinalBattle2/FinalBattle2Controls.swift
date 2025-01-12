@@ -62,7 +62,7 @@ class FinalBattle2Controls {
         chosenSword.spriteNode.setScale(gameboard.panelSize / chosenSword.spriteNode.size.width)
         chosenSword.spriteNode.zPosition = K.ZPosition.itemsAndEffects
         
-        magmoorAttacks = MagmoorAttacks()
+        magmoorAttacks = MagmoorAttacks(gameboard: gameboard, villain: villain)
         magmoorShield = MagmoorShield(hitPoints: 0)
         
         //These need to come AFTER initializing their respective objects!
@@ -321,8 +321,6 @@ class FinalBattle2Controls {
             
             // FIXME: - Change attack type based on spawner speed? Or battle progression?
             magmoorAttacks.attack(pattern: Bool.random() ? .normal : .timed,
-                                  gameboard: gameboard,
-                                  villain: villain,
                                   villainPosition: villainPosition,
                                   playerPosition: playerPosition)
         }
