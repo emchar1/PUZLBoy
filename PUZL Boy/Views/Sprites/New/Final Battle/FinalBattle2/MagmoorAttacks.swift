@@ -23,6 +23,9 @@ class MagmoorAttacks {
     private var timedCanHurtPlayer: Bool
     private var timedCanHurtVillain: Bool
     
+    private var villainDirection: CGFloat { villain.sprite.xScale > 0 ? -1 : 1 }
+    private var fireballPosition: CGPoint { villain.sprite.position + Player.mysticWandOrigin * villainDirection }
+    
     enum AttackPattern {
         case normal, timed
     }
@@ -61,9 +64,7 @@ class MagmoorAttacks {
         return true
     }
     
-    func attack(pattern: AttackPattern, villainPosition: K.GameboardPosition, playerPosition: K.GameboardPosition) {
-        let villainDirection: CGFloat = villain.sprite.xScale > 0 ? -1 : 1
-        
+    func attack(pattern: AttackPattern, positions: FinalBattle2Controls.PlayerPositions) {
         timedCanHurtPlayer = true
         timedCanHurtVillain = true
         
@@ -75,9 +76,11 @@ class MagmoorAttacks {
         
         switch pattern {
         case .normal:
-            helperNormal(villainDirection: villainDirection, villainPosition: villainPosition, playerPosition: playerPosition)
+            helperNormal(positions: positions)
         case .timed:
-            helperTimed(villainDirection: villainDirection, villainPosition: villainPosition, playerPosition: playerPosition)
+            helperTimed(positions: positions)
+        case .sticky:
+            helperSticky(positions: positions)
         }//end switch
     }//end villainAttack()
     
@@ -95,41 +98,55 @@ class MagmoorAttacks {
     
     // MARK: - Attack Helper Functions
     
-    private func helperNormal(villainDirection: CGFloat, villainPosition: K.GameboardPosition, playerPosition: K.GameboardPosition) {
-        let fireballAngle = SpriteMath.Trigonometry.getAngles(startPoint: villain.sprite.position,
-                                                              endPoint: gameboard.getLocation(at: playerPosition))
-
-        //Assuming original image is upwards (pointing downwards)!
-        let fireballAngleOffset: CGFloat
+    private func createFireball(positions: FinalBattle2Controls.PlayerPositions, imageName: String, color: UIColor, zPosition: CGFloat, shouldRotate: Bool) -> SKSpriteNode {
         
-        switch (row: villainPosition.row - playerPosition.row, col: villainPosition.col - playerPosition.col)  {
-        case let position where position.row < 0 && position.col < 0:
-            fireballAngleOffset = fireballAngle.alpha + 0
-        case let position where position.row < 0 && position.col > 0:
-            fireballAngleOffset = fireballAngle.beta - .pi / 2
-        case let position where position.row > 0 && position.col < 0:
-            fireballAngleOffset = fireballAngle.beta + .pi / 2
-        case let position where position.row > 0 && position.col > 0:
-            fireballAngleOffset = fireballAngle.alpha + .pi
-        case let position where position.row > 0 && position.col == 0:
-            fireballAngleOffset = fireballAngle.alpha + .pi
-        case let position where position.row == 0 && position.col > 0:
-            fireballAngleOffset = fireballAngle.alpha + .pi
-        default:
-            fireballAngleOffset = fireballAngle.alpha
+        let fireball = SKSpriteNode(imageNamed: imageName)
+        fireball.position = fireballPosition
+        fireball.setScale(0.25 / UIDevice.spriteScale)
+        fireball.color = color
+        fireball.colorBlendFactor = 0
+        fireball.zPosition = zPosition
+        
+        //Calculate angle of fireball, assuming original image is pointing downwards, if rotation is requested.
+        if shouldRotate {
+            let fireballAngleOffset: CGFloat
+            let fireballAngle = SpriteMath.Trigonometry.getAngles(startPoint: villain.sprite.position,
+                                                                  endPoint: gameboard.getLocation(at: positions.player))
+            
+            switch (row: positions.villain.row - positions.player.row, col: positions.villain.col - positions.player.col) {
+            case let position where position.row < 0 && position.col < 0:
+                fireballAngleOffset = fireballAngle.alpha + 0
+            case let position where position.row < 0 && position.col > 0:
+                fireballAngleOffset = fireballAngle.beta - .pi / 2
+            case let position where position.row > 0 && position.col < 0:
+                fireballAngleOffset = fireballAngle.beta + .pi / 2
+            case let position where position.row > 0 && position.col > 0:
+                fireballAngleOffset = fireballAngle.alpha + .pi
+            case let position where position.row > 0 && position.col == 0:
+                fireballAngleOffset = fireballAngle.alpha + .pi
+            case let position where position.row == 0 && position.col > 0:
+                fireballAngleOffset = fireballAngle.alpha + .pi
+            default:
+                fireballAngleOffset = fireballAngle.alpha
+            }
+            
+            fireball.zRotation = fireballAngleOffset
         }
         
-        let rowSquared = pow(TimeInterval(villainPosition.row) - TimeInterval(playerPosition.row), 2)
-        let colSquared = pow(TimeInterval(villainPosition.col) - TimeInterval(playerPosition.col), 2)
+        return fireball
+    }
+    
+    private func helperNormal(positions: FinalBattle2Controls.PlayerPositions) {
+        let rowSquared = pow(TimeInterval(positions.villain.row) - TimeInterval(positions.player.row), 2)
+        let colSquared = pow(TimeInterval(positions.villain.col) - TimeInterval(positions.player.col), 2)
         let distanceVillainToPlayer = sqrt(rowSquared + colSquared)
         let fireballMovementDuration = max(distanceVillainToPlayer * normalFireballSpeed, 0.25)
         
-        let fireball = SKSpriteNode(imageNamed: FireIceTheme.isFire ? "villainProjectile1" : "villainProjectile2")
-        fireball.position = villain.sprite.position + Player.mysticWandOrigin * villainDirection
-        fireball.setScale(0.25 / UIDevice.spriteScale)
-        fireball.color = FireIceTheme.overlayColor
-        fireball.zRotation = fireballAngleOffset
-        fireball.zPosition = K.ZPosition.itemsAndEffects
+        let fireball = createFireball(positions: positions,
+                                      imageName: FireIceTheme.isFire ? "villainProjectile1" : "villainProjectile2",
+                                      color: FireIceTheme.overlayColor,
+                                      zPosition: K.ZPosition.itemsAndEffects,
+                                      shouldRotate: true)
         
         gameboard.sprite.addChild(fireball)
         
@@ -140,12 +157,12 @@ class MagmoorAttacks {
         
         fireball.run(SKAction.sequence([
             SKAction.group([
-                SKAction.move(to: gameboard.getLocation(at: playerPosition), duration: fireballMovementDuration),
+                SKAction.move(to: gameboard.getLocation(at: positions.player), duration: fireballMovementDuration),
                 SKAction.scale(to: 0.5 / UIDevice.spriteScale, duration: fireballMovementDuration)
             ]),
             SKAction.run { [weak self] in
                 guard let self = self else { return }
-                delegate?.didVillainAttack(pattern: .normal, position: playerPosition)
+                delegate?.didVillainAttack(pattern: .normal, position: positions.player)
             },
             SKAction.group([
                 SKAction.fadeOut(withDuration: 0.25),
@@ -161,7 +178,7 @@ class MagmoorAttacks {
         }
     }
     
-    private func helperTimed(villainDirection: CGFloat, villainPosition: K.GameboardPosition, playerPosition: K.GameboardPosition) {
+    private func helperTimed(positions: FinalBattle2Controls.PlayerPositions) {
         func pulseTimedBomb(speed: TimeInterval, canPlaySound: Bool) -> SKAction {
             return SKAction.sequence([
                 SKAction.group([
@@ -188,14 +205,13 @@ class MagmoorAttacks {
             
             repeat {
                 randomPosition = (Int.random(in: 0..<gameboard.panelCount), Int.random(in: 0..<gameboard.panelCount))
-            } while randomPosition == villainPosition
+            } while randomPosition == positions.villain
             
-            let fireball = SKSpriteNode(imageNamed: "villainProjectile3")
-            fireball.position = villain.sprite.position + Player.mysticWandOrigin * villainDirection
-            fireball.setScale(0.25 / UIDevice.spriteScale)
-            fireball.color = .red
-            fireball.colorBlendFactor = 0
-            fireball.zPosition = K.ZPosition.player - 2
+            let fireball = createFireball(positions: positions,
+                                          imageName: "villainProjectile3",
+                                          color: .red,
+                                          zPosition: K.ZPosition.player - 2,
+                                          shouldRotate: false)
             
             gameboard.sprite.addChild(fireball)
             

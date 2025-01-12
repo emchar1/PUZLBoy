@@ -20,15 +20,13 @@ class FinalBattle2Controls {
     
     // MARK: - Properties
     
+    typealias PlayerPositions = (player: K.GameboardPosition, villain: K.GameboardPosition)
+    
     private var gameboard: GameboardSprite
     private var player: Player
     private var villain: Player
-    private(set) var playerPosition: K.GameboardPosition
-    private(set) var villainPosition: K.GameboardPosition
-    private var chosenSword: ChosenSword
-    private var magmoorAttacks: MagmoorAttacks
-    private var magmoorShield: MagmoorShield
-    
+    private(set) var positions: PlayerPositions
+        
     //These get set every time in handleControls()
     private var location: CGPoint!
     private var villainPositionNew: K.GameboardPosition!
@@ -36,21 +34,23 @@ class FinalBattle2Controls {
     
     private var isDisabled: Bool
     private var canAttack: Bool
-    
     private var villainMoveTimer: Timer
     private var villainMovementDelay: TimeInterval = 10
+    
+    private var chosenSword: ChosenSword
+    private var magmoorAttacks: MagmoorAttacks
+    private var magmoorShield: MagmoorShield
     
     weak var delegate: FinalBattle2ControlsDelegate?
     
     
     // MARK: - Initialization
     
-    init(gameboard: GameboardSprite, player: Player, villain: Player, playerPosition: K.GameboardPosition, villainPosition: K.GameboardPosition) {
+    init(gameboard: GameboardSprite, player: Player, villain: Player, positions: PlayerPositions) {
         self.gameboard = gameboard
         self.player = player
         self.villain = villain
-        self.playerPosition = playerPosition
-        self.villainPosition = villainPosition
+        self.positions = positions
         
         self.isDisabled = false
         self.canAttack = true
@@ -129,7 +129,7 @@ class FinalBattle2Controls {
     func villainAttackTimedBombHurtVillain() {
         guard magmoorShield.hitPoints > 1 && magmoorAttacks.timedBombCanHurtVillain() else { return }
         
-        magmoorShield.decrementShield(villain: villain, villainPosition: villainPosition, completion: nil)
+        magmoorShield.decrementShield(villain: villain, villainPosition: positions.villain, completion: nil)
         AudioManager.shared.playSound(for: "villainpain\(Int.random(in: 1...2))")
     }
     
@@ -156,12 +156,12 @@ class FinalBattle2Controls {
         let gameboardSize: CGFloat = panelSize * CGFloat(maxDistance)
         let gameboardOffset: CGPoint = GameboardSprite.offsetPosition
         
-        var bottomBound: CGFloat = CGFloat(playerPosition.row) + 1
-        var rightBound: CGFloat = CGFloat(playerPosition.col) + 1
-        var topBound: CGFloat = CGFloat(playerPosition.row) {
+        var bottomBound: CGFloat = CGFloat(positions.player.row) + 1
+        var rightBound: CGFloat = CGFloat(positions.player.col) + 1
+        var topBound: CGFloat = CGFloat(positions.player.row) {
             didSet { topBound = max(0, topBound) }
         }
-        var leftBound: CGFloat = CGFloat(playerPosition.col) {
+        var leftBound: CGFloat = CGFloat(positions.player.col) {
             didSet { leftBound = max(0, leftBound) }
         }
         
@@ -196,17 +196,17 @@ class FinalBattle2Controls {
         
         switch direction {
         case .up:
-            nextPanel = (row: playerPosition.row - 1, col: playerPosition.col)
+            nextPanel = (row: positions.player.row - 1, col: positions.player.col)
         case .down:
-            nextPanel = (row: playerPosition.row + 1, col: playerPosition.col)
+            nextPanel = (row: positions.player.row + 1, col: positions.player.col)
         case .left:
-            nextPanel = (row: playerPosition.row, col: playerPosition.col - 1)
+            nextPanel = (row: positions.player.row, col: positions.player.col - 1)
             player.sprite.xScale = -abs(player.sprite.xScale)
         case .right:
-            nextPanel = (row: playerPosition.row, col: playerPosition.col + 1)
+            nextPanel = (row: positions.player.row, col: positions.player.col + 1)
             player.sprite.xScale = abs(player.sprite.xScale)
         default:
-            nextPanel = (row: playerPosition.row, col: playerPosition.col)
+            nextPanel = (row: positions.player.row, col: positions.player.col)
         }
         
         return nextPanel
@@ -215,7 +215,7 @@ class FinalBattle2Controls {
     private func canAttackVillain(_ direction: Controls) -> Bool {
         let attackPanel: K.GameboardPosition = getNextPanel(direction: direction)
         
-        guard attackPanel == villainPosition else { return false }
+        guard attackPanel == positions.villain else { return false }
         guard playerOnSafePanel() && canAttack else {
             ButtonTap.shared.tap(type: .buttontap6)
             return true
@@ -227,14 +227,14 @@ class FinalBattle2Controls {
         
         gameboard.sprite.addChild(chosenSword.spriteNode)
         
-        chosenSword.spriteNode.position = gameboard.getLocation(at: villainPosition)
+        chosenSword.spriteNode.position = gameboard.getLocation(at: positions.villain)
         chosenSword.attack(shouldParry: magmoorShield.hasHitPoints) { [weak self] in
             guard let self = self else { return }
             
             isDisabled = false
             
             if magmoorShield.hasHitPoints {
-                magmoorShield.decrementShield(villain: villain, villainPosition: villainPosition) {
+                magmoorShield.decrementShield(villain: villain, villainPosition: positions.villain) {
                     self.canAttack = true
                 }
                 
@@ -260,7 +260,7 @@ class FinalBattle2Controls {
      Returns true if playerPosition is on a safe panel, start panel, or end panel.
      */
     private func playerOnSafePanel() -> Bool {
-        return safePanelFound || playerPosition == FinalBattle2Spawner.startPosition || playerPosition == FinalBattle2Spawner.endPosition
+        return safePanelFound || positions.player == FinalBattle2Spawner.startPosition || positions.player == FinalBattle2Spawner.endPosition
     }
     
     /**
@@ -271,7 +271,7 @@ class FinalBattle2Controls {
      */
     private func movePlayerHelper(_ direction: Controls, completion: (() -> Void)?) {
         let nextPanel: K.GameboardPosition = getNextPanel(direction: direction)
-        let panelType = gameboard.getUserDataForLevelType(sprite: gameboard.getPanelSprite(at:playerPosition).terrain!)
+        let panelType = gameboard.getUserDataForLevelType(sprite: gameboard.getPanelSprite(at: positions.player).terrain!)
         let movementMultiplier: TimeInterval = playerOnSafePanel() ? 1 : 2
         let runSound: String
         
@@ -288,7 +288,7 @@ class FinalBattle2Controls {
         }
         
         isDisabled = true
-        playerPosition = nextPanel
+        positions.player = nextPanel
         
         AudioManager.shared.playSound(for: runSound)
         
@@ -323,9 +323,7 @@ class FinalBattle2Controls {
             guard let self = self else { return }
             
             // FIXME: - Change attack type based on spawner speed? Or battle progression?
-            magmoorAttacks.attack(pattern: Bool.random() ? .normal : .timed,
-                                  villainPosition: villainPosition,
-                                  playerPosition: playerPosition)
+            magmoorAttacks.attack(pattern: Bool.random() ? .normal : .timed, positions: positions)
         }
     }
     
@@ -349,7 +347,7 @@ class FinalBattle2Controls {
         //Villain's new spawn position cannot be where player position or start position are!
         repeat {
             villainPositionNew = (Int.random(in: 0...gameboard.panelCount - 1), Int.random(in: 0...gameboard.panelCount - 1))
-        } while villainPositionNew == playerPosition || villainPositionNew == FinalBattle2Spawner.startPosition
+        } while villainPositionNew == positions.player || villainPositionNew == FinalBattle2Spawner.startPosition
     }
     
     /**
@@ -360,7 +358,7 @@ class FinalBattle2Controls {
         let moveDistance: CGFloat = 20
         let fadeDistance = CGPoint(x: 0, y: shouldDisappear ? gameboard.panelSize : 0)
         let waitDuration = TimeInterval.random(in: 3...8)
-        let villainDirection: CGFloat = villainPositionNew.col < playerPosition.col ? 1 : -1
+        let villainDirection: CGFloat = villainPositionNew.col < positions.player.col ? 1 : -1
         
         let disappearAction = SKAction.sequence([
             SKAction.moveBy(x: -moveDirection * moveDistance, y: 0, duration: 0),
@@ -419,7 +417,7 @@ class FinalBattle2Controls {
         
         
         //Set important properties!!
-        villainPosition = villainPositionNew
+        positions.villain = villainPositionNew
         
         if shouldDisappear {
             delegate?.didVillainDisappear(fadeDuration: fadeDuration)

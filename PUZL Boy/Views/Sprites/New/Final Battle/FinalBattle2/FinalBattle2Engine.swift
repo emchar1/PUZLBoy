@@ -82,8 +82,7 @@ class FinalBattle2Engine {
         controls = FinalBattle2Controls(gameboard: gameboard,
                                         player: hero,
                                         villain: villain,
-                                        playerPosition: FinalBattle2Spawner.startPosition,
-                                        villainPosition: FinalBattle2Spawner.endPosition)
+                                        positions: (player: FinalBattle2Spawner.startPosition, villain: FinalBattle2Spawner.endPosition))
         controls.delegate = self
         
         for i in 0..<panelSpawnerCount {
@@ -158,7 +157,7 @@ class FinalBattle2Engine {
         }
         
         //I had to multiply gameboard.getLocation(at:) by UIDevice.spriteScale to NORMALIZE it, otherwise it gets messed up on iPad!!! 12/31/24
-        let heroPositionGameboardOffset = gameboard.sprite.position + gameboard.getLocation(at: controls.playerPosition) * UIDevice.spriteScale
+        let heroPositionGameboardOffset = gameboard.sprite.position + gameboard.getLocation(at: controls.positions.player) * UIDevice.spriteScale
         
         return superScene.nodes(at: heroPositionGameboardOffset).contains(where: { $0.name == "safePanel" })
     }
@@ -167,14 +166,14 @@ class FinalBattle2Engine {
      Checks if hero is at startPanel.
      */
     private func startPanelFound() -> Bool {
-        return controls.playerPosition == FinalBattle2Spawner.startPosition
+        return controls.positions.player == FinalBattle2Spawner.startPosition
     }
     
     /**
      Checks if hero is at endPanel.
      */
     private func endPanelFound() -> Bool {
-        return controls.playerPosition == FinalBattle2Spawner.endPosition
+        return controls.positions.player == FinalBattle2Spawner.endPosition
     }
     
     
@@ -183,7 +182,7 @@ class FinalBattle2Engine {
     private func villainAttackNormal(at position: K.GameboardPosition) {
         showDamagePanel(at: position)
         
-        if position == controls.playerPosition {
+        if position == controls.positions.player {
             health.updateHealth(type: .villainAttackNormal)
         }
     }
@@ -214,14 +213,14 @@ class FinalBattle2Engine {
         affectedPanels.forEach { showDamagePanel(at: $0) }
         
         //Update health
-        if affectedPanels.contains(where: { $0 == controls.playerPosition }) {
+        if affectedPanels.contains(where: { $0 == controls.positions.player }) {
             if controls.villainAttackTimedBombCanHurtPlayer() {
                 health.updateHealth(type: .villainAttackTimed)
             }
         }
         
         //Harm villain if needed
-        if affectedPanels.contains(where: { $0 == controls.villainPosition }) {
+        if affectedPanels.contains(where: { $0 == controls.positions.villain }) {
             controls.villainAttackTimedBombHurtVillain()
         }
     }
@@ -261,7 +260,7 @@ class FinalBattle2Engine {
         affectedPanels.forEach { showDamagePanel(at: $0) }
         
         //Update health
-        if affectedPanels.contains(where: { $0 == controls.playerPosition }) {
+        if affectedPanels.contains(where: { $0 == controls.positions.player }) {
             health.updateHealth(type: .villainShieldExplode)
         }
     }
@@ -349,12 +348,12 @@ extension FinalBattle2Engine: FinalBattle2ControlsDelegate {
 
 extension FinalBattle2Engine: FinalBattle2SpawnerDelegate {
     func didSpawnSafePanel(spawnPanel: K.GameboardPosition) {
-        guard spawnPanel == controls.playerPosition else { return }
+        guard spawnPanel == controls.positions.player else { return }
         health.updateHealth(type: .regen)
     }
     
     func didDespawnSafePanel(spawnPanel: K.GameboardPosition) {
-        guard spawnPanel == controls.playerPosition && !safePanelFound() && !startPanelFound() && !endPanelFound() else { return }
+        guard spawnPanel == controls.positions.player && !safePanelFound() && !startPanelFound() && !endPanelFound() else { return }
         health.updateHealth(type: .drain)
     }
     
