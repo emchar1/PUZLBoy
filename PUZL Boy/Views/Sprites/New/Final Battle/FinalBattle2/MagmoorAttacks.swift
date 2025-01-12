@@ -79,8 +79,6 @@ class MagmoorAttacks {
             helperNormal(positions: positions)
         case .timed:
             helperTimed(positions: positions)
-        case .sticky:
-            helperSticky(positions: positions)
         }//end switch
     }//end villainAttack()
     
