@@ -13,6 +13,7 @@ class FinalBattle2Health {
     
     private var timer: Timer?
     private var drainTimer: Timer?            //a separate timer is needed for the drain health function
+    private var isDraining: Bool = false
     
     private var player: Player
     private var counter: Counter!
@@ -60,10 +61,12 @@ class FinalBattle2Health {
         
         switch type {
         case .drain:
+            isDraining = true
             drainTimer?.invalidate()
             drainTimer = Timer.scheduledTimer(timeInterval: 0.25, target: self, selector: #selector(helperDrain), userInfo: nil, repeats: true)
-            makePlayerHurt(shouldPersist: true)
+            makePlayerHurt()
         case .regen:
+            isDraining = false
             drainTimer?.invalidate()
             drainTimer = Timer.scheduledTimer(timeInterval: 0.25, target: self, selector: #selector(helperRegen), userInfo: nil, repeats: false)
         case .heroAttack:
@@ -71,13 +74,13 @@ class FinalBattle2Health {
             drainTimer = Timer.scheduledTimer(timeInterval: 0, target: self, selector: #selector(helperHeroAttack), userInfo: nil, repeats: false)
         case .villainAttackNormal:
             timer = Timer.scheduledTimer(timeInterval: 0, target: self, selector: #selector(helperVillainAttackNormal), userInfo: nil, repeats: false)
-            makePlayerHurt(shouldPersist: false)
+            makePlayerHurt()
         case .villainAttackTimed:
             timer = Timer.scheduledTimer(timeInterval: 0, target: self, selector: #selector(helperVillainAttackTimed), userInfo: nil, repeats: false)
-            makePlayerHurt(shouldPersist: false)
+            makePlayerHurt()
         case .villainShieldExplode:
             timer = Timer.scheduledTimer(timeInterval: 0, target: self, selector: #selector(helperVillainShield), userInfo: nil, repeats: false)
-            makePlayerHurt(shouldPersist: false)
+            makePlayerHurt()
         }
     }
     
@@ -130,13 +133,13 @@ class FinalBattle2Health {
         player.sprite.run(SKAction.colorize(withColorBlendFactor: 0, duration: 0.5), withKey: "playerColorFade")
     }
     
-    private func makePlayerHurt(shouldPersist: Bool) {
+    private func makePlayerHurt() {
         let colorBlinkDuration: TimeInterval = 0.05
         let colorBlinkAction = SKAction.sequence([
             SKAction.colorize(withColorBlendFactor: 0, duration: colorBlinkDuration),
             SKAction.colorize(withColorBlendFactor: 1, duration: colorBlinkDuration)
         ])
-        let colorBlinkRepeat = shouldPersist ? SKAction.repeatForever(colorBlinkAction) : SKAction.repeat(colorBlinkAction, count: 20)
+        let colorBlinkRepeat = isDraining ? SKAction.repeatForever(colorBlinkAction) : SKAction.repeat(colorBlinkAction, count: 20)
         
         player.sprite.removeAction(forKey: "playerColorFade")
         player.sprite.run(SKAction.sequence([
