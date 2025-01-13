@@ -187,7 +187,7 @@ class FinalBattle2Engine {
         }
     }
     
-    private func villainAttackTimed(at homePosition: K.GameboardPosition) {
+    private func villainAttackTimed(at homePosition: K.GameboardPosition, isLarge: Bool) {
         func isValidPosition(row: Int, col: Int) -> Bool {
             return row >= 0 && row < gameboard.panelCount && col >= 0 && col < gameboard.panelCount
         }
@@ -203,11 +203,23 @@ class FinalBattle2Engine {
         var affectedPanels: [K.GameboardPosition] = []
         affectedPanels.append(homePosition)
                 
-        //Add the edge positions
-        addEdgePosition(row: homePosition.row - 1, col: homePosition.col)
-        addEdgePosition(row: homePosition.row + 1, col: homePosition.col)
-        addEdgePosition(row: homePosition.row, col: homePosition.col - 1)
-        addEdgePosition(row: homePosition.row, col: homePosition.col + 1)
+        //Add the edge positions. Use 'continue' NOT 'return' in the for loops!!!
+        for i in 1..<homePosition.row + 1 {
+            guard isLarge || i == 1 else { continue }
+            addEdgePosition(row: homePosition.row - i, col: homePosition.col)
+        }
+        for i in 1..<gameboard.panelCount - homePosition.row + 1 {
+            guard isLarge || i == 1 else { continue }
+            addEdgePosition(row: homePosition.row + i, col: homePosition.col)
+        }
+        for i in 1..<homePosition.col + 1 {
+            guard isLarge || i == 1 else { continue }
+            addEdgePosition(row: homePosition.row, col: homePosition.col - i)
+        }
+        for i in 1..<gameboard.panelCount - homePosition.col + 1 {
+            guard isLarge || i == 1 else { continue }
+            addEdgePosition(row: homePosition.row, col: homePosition.col + i)
+        }
         
         //Panel animation
         affectedPanels.forEach { showDamagePanel(at: $0) }
@@ -314,7 +326,10 @@ extension FinalBattle2Engine: FinalBattle2ControlsDelegate {
             villainAttackNormal(at: playerPosition)
         case .timed:
             let randomPosition = position ?? FinalBattle2Spawner.startPosition
-            villainAttackTimed(at: randomPosition)
+            villainAttackTimed(at: randomPosition, isLarge: false)
+        case .timedLarge:
+            let randomPosition = position ?? FinalBattle2Spawner.startPosition
+            villainAttackTimed(at: randomPosition, isLarge: true)
         }
     }
     

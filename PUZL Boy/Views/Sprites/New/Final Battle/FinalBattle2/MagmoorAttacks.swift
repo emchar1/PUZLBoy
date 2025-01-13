@@ -19,15 +19,15 @@ class MagmoorAttacks {
     private var villain: Player
     
     private var normalFireballSpeed: TimeInterval
-    private var timedBombCount: Int
+    private var timedBombCount: (normal: Int, large: Int)
     private var timedCanHurtPlayer: Bool
     private var timedCanHurtVillain: Bool
     
     private var villainDirection: CGFloat { villain.sprite.xScale > 0 ? -1 : 1 }
     private var fireballPosition: CGPoint { villain.sprite.position + Player.mysticWandOrigin * villainDirection }
     
-    enum AttackPattern {
-        case normal, timed
+    enum AttackPattern: CaseIterable {
+        case normal, timed, timedLarge
     }
     
     weak var delegate: MagmoorAttacksDelegate?
@@ -40,7 +40,7 @@ class MagmoorAttacks {
         self.villain = villain
         
         normalFireballSpeed = 0.5
-        timedBombCount = 3
+        timedBombCount = (normal: 3, large: 1)
         timedCanHurtPlayer = true
         timedCanHurtVillain = true
     }
@@ -78,7 +78,9 @@ class MagmoorAttacks {
         case .normal:
             helperNormal(positions: positions)
         case .timed:
-            helperTimed(positions: positions)
+            helperTimed(positions: positions, isLarge: false)
+        case .timedLarge:
+            helperTimed(positions: positions, isLarge: true)
         }//end switch
     }//end villainAttack()
     
@@ -89,10 +91,14 @@ class MagmoorAttacks {
         normalFireballSpeed = newValue
     }
     
-    func setTimedBombCount(_ newValue: Int) {
-        timedBombCount = newValue
+    func setTimedBombNormalCount(_ newValue: Int) {
+        timedBombCount.normal = newValue
     }
-    
+
+    func setTimedBombLargeCount(_ newValue: Int) {
+        timedBombCount.large = newValue
+    }
+
     
     // MARK: - Attack Helper Functions
     
@@ -176,29 +182,29 @@ class MagmoorAttacks {
         }
     }
     
-    private func helperTimed(positions: FinalBattle2Controls.PlayerPositions) {
+    private func helperTimed(positions: FinalBattle2Controls.PlayerPositions, isLarge: Bool) {
         func pulseTimedBomb(speed: TimeInterval, canPlaySound: Bool) -> SKAction {
             return SKAction.sequence([
                 SKAction.group([
                     SKAction.colorize(withColorBlendFactor: 1, duration: speed / 2),
-                    SKAction.scale(to: 1 / UIDevice.spriteScale, duration: speed / 2)
+                    SKAction.scale(to: (isLarge ? 2 : 1) / UIDevice.spriteScale, duration: speed / 2)
                 ]),
                 SKAction.run {
                     if canPlaySound {
-                        AudioManager.shared.playSound(for: "villainattackbombtick")
+                        AudioManager.shared.playSound(for: isLarge ? "villainattackbombticklarge" : "villainattackbombtick")
                     }
                 },
                 SKAction.group([
                     SKAction.colorize(withColorBlendFactor: 0, duration: speed / 2),
-                    SKAction.scale(to: 0.75 / UIDevice.spriteScale, duration: speed / 2)
+                    SKAction.scale(to: (isLarge ? 1.5 : 0.75) / UIDevice.spriteScale, duration: speed / 2)
                 ])
             ])
         }
         
-        for i in 0..<timedBombCount {
+        for i in 0..<(isLarge ? timedBombCount.large : timedBombCount.normal) {
             let moveDuration: TimeInterval = 1
-            let fadeOutDuration: TimeInterval = 0.25
-            let explodeDistance: CGFloat = 20
+            let fadeOutDuration: TimeInterval = isLarge ? 0.5 : 0.25
+            let explodeDistance: CGFloat = isLarge ? 30 : 20
             var randomPosition: K.GameboardPosition
             
             repeat {
@@ -206,7 +212,7 @@ class MagmoorAttacks {
             } while randomPosition == positions.villain
             
             let fireball = createFireball(positions: positions,
-                                          imageName: "villainProjectile3",
+                                          imageName: isLarge ? "villainProjectile3L" : "villainProjectile3",
                                           color: .red,
                                           zPosition: K.ZPosition.player - 2,
                                           shouldRotate: false)
@@ -216,12 +222,13 @@ class MagmoorAttacks {
             fireball.run(SKAction.sequence([
                 SKAction.group([
                     SKAction.move(to: gameboard.getLocation(at: randomPosition), duration: moveDuration),
-                    SKAction.scale(to: 0.75 / UIDevice.spriteScale, duration: moveDuration),
-                    SKAction.rotate(byAngle: 4 * .pi * villainDirection, duration: moveDuration)
+                    SKAction.scale(to: (isLarge ? 1.5 : 0.75) / UIDevice.spriteScale, duration: moveDuration),
+                    SKAction.rotate(byAngle: (isLarge ? 2 : 4) * .pi * villainDirection, duration: moveDuration)
                 ]),
-                SKAction.repeat(pulseTimedBomb(speed: 1, canPlaySound: i == 0), count: 3),
-                SKAction.repeat(pulseTimedBomb(speed: 0.75, canPlaySound: i == 0), count: 3),
-                SKAction.repeat(pulseTimedBomb(speed: 0.5, canPlaySound: i == 0), count: 3),
+                SKAction.repeat(pulseTimedBomb(speed: 1, canPlaySound: i == 0), count: isLarge ? 4 : 3),
+                SKAction.repeat(pulseTimedBomb(speed: 0.75, canPlaySound: i == 0), count: isLarge ? 4 : 3),
+                SKAction.repeat(pulseTimedBomb(speed: 0.5, canPlaySound: i == 0), count: isLarge ? 4 : 3),
+                SKAction.repeat(pulseTimedBomb(speed: 0.35, canPlaySound: i == 0), count: isLarge ? 1 : 0),
                 SKAction.run {
                     if i == 0 {
                         AudioManager.shared.playSound(for: "villainattackspecialbomb")
@@ -230,11 +237,11 @@ class MagmoorAttacks {
                 SKAction.repeat(pulseTimedBomb(speed: 0.35, canPlaySound: i == 0), count: 3),
                 SKAction.run { [weak self] in
                     guard let self = self else { return }
-                    delegate?.didVillainAttack(pattern: .timed, position: randomPosition)
+                    delegate?.didVillainAttack(pattern: isLarge ? .timedLarge : .timed, position: randomPosition)
                 },
                 SKAction.group([
                     SKAction.colorize(withColorBlendFactor: 1, duration: fadeOutDuration),
-                    SKAction.scale(to: 3, duration: fadeOutDuration),
+                    SKAction.scale(to: isLarge ? 4 : 3, duration: fadeOutDuration),
                     SKAction.fadeOut(withDuration: fadeOutDuration),
                     SKAction.sequence([
                         SKAction.moveBy(x: -explodeDistance, y: 0, duration: fadeOutDuration / 5),

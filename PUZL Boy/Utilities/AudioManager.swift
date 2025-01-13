@@ -195,6 +195,7 @@ class AudioManager {
         addAudioItem("villainattack2", category: .soundFX) //NEEDS PURCHASE $2
         addAudioItem("villainattack3", category: .soundFX) //NEEDS PURCHASE $2
         addAudioItem("villainattackbombtick", category: .soundFX) //NEEDS PURCHASE $1
+        addAudioItem("villainattackbombticklarge", category: .soundFX) //NEEDS PURCHASE $1
         addAudioItem("villainattackspecialbomb", category: .soundFX) //NEEDS PURCHASE $3
         addAudioItem("villaindead", category: .soundFX) //NEEDS PURCHASE $2
         addAudioItem("villainpain1", category: .soundFX) //NEEDS PURCHASE $1

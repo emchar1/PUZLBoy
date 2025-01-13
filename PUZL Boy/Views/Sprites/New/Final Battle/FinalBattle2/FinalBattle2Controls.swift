@@ -118,8 +118,12 @@ class FinalBattle2Controls {
         magmoorAttacks.setNormalFireballSpeed(newValue)
     }
     
-    func setVillainAttackTimedBombCount(_ newValue: Int) {
-        magmoorAttacks.setTimedBombCount(newValue)
+    func setVillainAttackTimedBombNormalCount(_ newValue: Int) {
+        magmoorAttacks.setTimedBombNormalCount(newValue)
+    }
+    
+    func setVillainAttackTimedBombLargeCount(_ newValue: Int) {
+        magmoorAttacks.setTimedBombLargeCount(newValue)
     }
     
     /**
@@ -334,7 +338,8 @@ class FinalBattle2Controls {
             guard let self = self else { return }
             
             // FIXME: - Change attack type based on spawner speed? Or battle progression?
-            magmoorAttacks.attack(pattern: Bool.random() ? .normal : .timed, positions: positions)
+            guard let attackPattern = MagmoorAttacks.AttackPattern.allCases.randomElement() else { return }
+            magmoorAttacks.attack(pattern: attackPattern, positions: positions)
         }
     }
     
