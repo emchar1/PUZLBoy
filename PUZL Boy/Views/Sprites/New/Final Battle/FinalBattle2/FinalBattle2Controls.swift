@@ -256,7 +256,7 @@ class FinalBattle2Controls {
                 AudioManager.shared.playSound(for: "villainpain\(Int.random(in: 1...2))")
             }
             else {
-                //FIXME: - need to test, should be fine..
+                //FIXME: - need to test, should be fine because canAttack will immediately be set to false in next line, moveVillainFlee().
                 canAttack = true
                 
                 moveVillainFlee(shouldDisappear: true, fadeDuration: 2, completion: nil)
@@ -415,7 +415,7 @@ class FinalBattle2Controls {
         
         let actionToTake = shouldDisappear ? disappearAction : waitAction
         
-        //FIXME: - Need to test
+        //FIXME: - Need to test... should this always start out false?
         canAttack = false
         
         villain.sprite.run(SKAction.sequence([
@@ -435,7 +435,7 @@ class FinalBattle2Controls {
         ])) { [weak self] in
             guard let self = self else { return }
             
-            //FIXME: - Need to test
+            //FIXME: - Need to test. This was originally below second guard shouldDisappear
             canAttack = true
             
             resetTimer()
