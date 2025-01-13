@@ -48,6 +48,32 @@ class MagmoorAttacks {
     
     // MARK: - Functions
     
+    static func getAttackPattern(force: AttackPattern?) -> AttackPattern {
+        guard force == nil else { return force! }
+        
+        let attackPattern: AttackPattern
+        let randomInt = Int.random(in: 0...99)
+        print("randomInt: \(randomInt)", terminator: " | ")
+        
+        if randomInt % 2 == 0 || randomInt % 3 == 0 {
+            attackPattern = .normal
+        }
+        else {
+            let randomInt2 = Int.random(in: 0...99)
+            print("randomInt2: \(randomInt2)", terminator: " | ")
+            
+            if randomInt2 % 2 == 0 || randomInt2 % 3 == 0 {
+                attackPattern = .timed
+            }
+            else {
+                attackPattern = .timedLarge
+            }
+        }
+                
+        print("attackPattern: \(attackPattern)")
+        return attackPattern
+    }
+    
     func timedBombCanHurtVillain() -> Bool {
         guard timedCanHurtVillain else { return false }
         

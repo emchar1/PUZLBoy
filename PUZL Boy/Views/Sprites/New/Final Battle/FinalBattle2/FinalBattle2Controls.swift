@@ -338,8 +338,7 @@ class FinalBattle2Controls {
             guard let self = self else { return }
             
             // FIXME: - Change attack type based on spawner speed? Or battle progression?
-            guard let attackPattern = MagmoorAttacks.AttackPattern.allCases.randomElement() else { return }
-            magmoorAttacks.attack(pattern: attackPattern, positions: positions)
+            magmoorAttacks.attack(pattern: MagmoorAttacks.getAttackPattern(force: nil), positions: positions)
         }
     }
     
