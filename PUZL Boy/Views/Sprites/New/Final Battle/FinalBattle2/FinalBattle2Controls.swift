@@ -35,7 +35,7 @@ class FinalBattle2Controls {
     private var isDisabled: Bool
     private var canAttack: Bool
     private var villainMoveTimer: Timer
-    private var villainMovementDelay: TimeInterval = 10
+    private var villainMovementDelay: (normal: TimeInterval, enraged: TimeInterval)
     
     private var chosenSword: ChosenSword
     private var magmoorAttacks: MagmoorAttacks
@@ -55,6 +55,7 @@ class FinalBattle2Controls {
         self.isDisabled = false
         self.canAttack = true
         self.villainMoveTimer = Timer()
+        self.villainMovementDelay = (normal: 12, enraged: 2)
         
         chosenSword = ChosenSword(didPursueMagmoor: FIRManager.didPursueMagmoor,
                                   didGiveAwayFeather: FIRManager.didGiveAwayFeather,
@@ -90,7 +91,7 @@ class FinalBattle2Controls {
         self.location = location
         self.safePanelFound = safePanelFound
         
-        generateVillainPositionNew()
+        generateVillainPositionNew(enrage: magmoorShield.isEnraged)
         
         //Now check for movement/attack!
         if inBounds(.up) && !canAttackVillain(.up) {
@@ -110,20 +111,18 @@ class FinalBattle2Controls {
         }
     }
     
-    func setVillainMovementDelay(_ newValue: TimeInterval) {
-        self.villainMovementDelay = newValue
-    }
-    
-    func setVillainAttackNormalFireballSpeed(_ newValue: CGFloat) {
-        magmoorAttacks.setNormalFireballSpeed(newValue)
-    }
-    
-    func setVillainAttackTimedBombNormalCount(_ newValue: Int) {
-        magmoorAttacks.setTimedBombNormalCount(newValue)
-    }
-    
-    func setVillainAttackTimedBombLargeCount(_ newValue: Int) {
-        magmoorAttacks.setTimedBombLargeCount(newValue)
+    func updateVillainMovementAndAttacks(speed: FinalBattle2Spawner.SpawnerSpeed) {
+        switch speed {
+        case .slow:
+            villainMovementDelay = (normal: 12, enraged: 2)
+            magmoorAttacks.setNormalFireballSpeed(0.5)
+        case .medium:
+            villainMovementDelay = (normal: 10, enraged: 2)
+            magmoorAttacks.setNormalFireballSpeed(0.35)
+        case .fast:
+            villainMovementDelay = (normal: 8, enraged: 1)
+            magmoorAttacks.setNormalFireballSpeed(0.25)
+        }
     }
     
     /**
@@ -138,13 +137,13 @@ class FinalBattle2Controls {
         AudioManager.shared.playSound(for: "villainpain\(Int.random(in: 1...2))")
         
         magmoorShield.decrementShield(villain: villain, villainPosition: positions.villain) { [weak self] in
-            self?.canAttack = true
-        }
-        
-        //This MUST come after decrementing the shield, above!
-        if magmoorShield.hasHitPoints {
-            generateVillainPositionNew()
-            moveVillainFlee(shouldDisappear: false, completion: nil)
+            guard let self = self else { return }
+            
+            canAttack = true
+            
+            //This MUST come after decrementing the shield, above!
+            generateVillainPositionNew(enrage: magmoorShield.isEnraged)
+            moveVillainFlee(shouldDisappear: false, fadeDuration: 0, completion: nil)
         }
     }
     
@@ -251,19 +250,17 @@ class FinalBattle2Controls {
             if magmoorShield.hasHitPoints {
                 magmoorShield.decrementShield(villain: villain, villainPosition: positions.villain) {
                     self.canAttack = true
-                }
-                
-                if magmoorShield.hasHitPoints {
-                    moveVillainFlee(shouldDisappear: false, completion: nil)
+                    self.moveVillainFlee(shouldDisappear: false, fadeDuration: 0, completion: nil)
                 }
                 
                 AudioManager.shared.playSound(for: "villainpain\(Int.random(in: 1...2))")
             }
             else {
-                moveVillainFlee(shouldDisappear: true, completion: nil)
+                //FIXME: - need to test, should be fine..
+                canAttack = true
                 
+                moveVillainFlee(shouldDisappear: true, fadeDuration: 2, completion: nil)
                 delegate?.didHeroAttack(chosenSword: chosenSword)
-                
                 AudioManager.shared.playSound(for: "villainpain3")
             }
         }
@@ -332,13 +329,12 @@ class FinalBattle2Controls {
      Moves the villain to a new, random spot on the board. Use this to periodically move the villain, via a timer, for example.
      */
     @objc private func moveVillain(_ sender: Any) {
-        generateVillainPositionNew()
+        generateVillainPositionNew(enrage: magmoorShield.isEnraged)
         
         moveVillainFlee(shouldDisappear: false, fadeDuration: 0) { [weak self] in
             guard let self = self else { return }
             
-            // FIXME: - Change attack type based on spawner speed? Or battle progression?
-            magmoorAttacks.attack(pattern: MagmoorAttacks.getAttackPattern(force: nil), positions: positions)
+            magmoorAttacks.attack(pattern: MagmoorAttacks.getAttackPattern(enrage: magmoorShield.isEnraged), positions: positions)
         }
     }
     
@@ -348,7 +344,7 @@ class FinalBattle2Controls {
      */
     private func resetTimer() {
         villainMoveTimer.invalidate()
-        villainMoveTimer = Timer.scheduledTimer(timeInterval: villainMovementDelay,
+        villainMoveTimer = Timer.scheduledTimer(timeInterval: magmoorShield.isEnraged ? villainMovementDelay.enraged : villainMovementDelay.normal,
                                                 target: self,
                                                 selector: #selector(moveVillain(_:)),
                                                 userInfo: nil,
@@ -358,17 +354,35 @@ class FinalBattle2Controls {
     /**
      Generates a new position for the villain.
      */
-    private func generateVillainPositionNew() {
+    private func generateVillainPositionNew(enrage: Bool) {
+        //IMPORTANT: THESE LOCAL VARIABLES MUST BE COMPUTED VARIABLES BECAUSE THEY NEED TO CHANGE WITHIN THE repeat-while LOOP!!!
+        
         //Villain's new spawn position cannot be where player, villain, or start positions are!
+        var mainCheck: Bool {
+            villainPositionNew == positions.player ||
+            villainPositionNew == positions.villain ||
+            villainPositionNew == FinalBattle2Spawner.startPosition
+        }
+        
+        //Create a boundary such that new spawn point can't be more than 1 tile away.
+        let boundary: Int = 1
+        var leftBounds: Bool { villainPositionNew.row < positions.villain.row - boundary }
+        var rightBounds: Bool { villainPositionNew.row > positions.villain.row + boundary }
+        var bottomBounds: Bool { villainPositionNew.col < positions.villain.col - boundary }
+        var topBounds: Bool { villainPositionNew.col > positions.villain.col + boundary }
+        var allBounds: Bool { leftBounds || rightBounds || bottomBounds || topBounds }
+        
+        var boundsCheck: Bool { enrage ? allBounds : false }
+        
         repeat {
             villainPositionNew = (Int.random(in: 0...gameboard.panelCount - 1), Int.random(in: 0...gameboard.panelCount - 1))
-        } while villainPositionNew == positions.player || villainPositionNew == positions.villain || villainPositionNew == FinalBattle2Spawner.startPosition
+        } while mainCheck || boundsCheck
     }
     
     /**
      Helper function to assist with moving the villain after he's been attacked by the hero.
      */
-    private func moveVillainFlee(shouldDisappear: Bool, fadeDuration: TimeInterval = 2, completion: (() -> Void)?) {
+    private func moveVillainFlee(shouldDisappear: Bool, fadeDuration: TimeInterval, completion: (() -> Void)?) {
         let moveDirection = villain.sprite.xScale / abs(villain.sprite.xScale)
         let moveDistance: CGFloat = 20
         let fadeDistance = CGPoint(x: 0, y: shouldDisappear ? gameboard.panelSize : 0)
@@ -401,6 +415,9 @@ class FinalBattle2Controls {
         
         let actionToTake = shouldDisappear ? disappearAction : waitAction
         
+        //FIXME: - Need to test
+        canAttack = false
+        
         villain.sprite.run(SKAction.sequence([
             actionToTake,
             Player.moveWithIllusions(playerNode: villain.sprite,
@@ -418,12 +435,14 @@ class FinalBattle2Controls {
         ])) { [weak self] in
             guard let self = self else { return }
             
+            //FIXME: - Need to test
+            canAttack = true
+            
             resetTimer()
             completion?()
             
-            guard shouldDisappear else { return }
             
-            canAttack = true
+            guard shouldDisappear else { return }
             delegate?.didVillainReappear()
             
             magmoorShield.resetShield(villain: villain)

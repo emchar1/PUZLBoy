@@ -34,6 +34,10 @@ class MagmoorShield: SKNode {
         return hitPoints > 0
     }
     
+    var isEnraged: Bool {
+        return !hasHitPoints
+    }
+    
     weak var delegate: MagmoorShieldDelegate?
     
     

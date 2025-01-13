@@ -373,17 +373,7 @@ extension FinalBattle2Engine: FinalBattle2SpawnerDelegate {
     }
     
     func didChangeSpeed(speed: FinalBattle2Spawner.SpawnerSpeed) {
-        switch speed {
-        case .slow:
-            controls.setVillainMovementDelay(12)
-            controls.setVillainAttackNormalFireballSpeed(0.5)
-        case .medium:
-            controls.setVillainMovementDelay(10)
-            controls.setVillainAttackNormalFireballSpeed(0.35)
-        case .fast:
-            controls.setVillainMovementDelay(8)
-            controls.setVillainAttackNormalFireballSpeed(0.25)
-        }
+        controls.updateVillainMovementAndAttacks(speed: speed)
     }
     
     
