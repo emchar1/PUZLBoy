@@ -116,11 +116,18 @@ class MagmoorShield: SKNode {
      */
     func decrementShield(_ increment: Int = 1, villain: Player, villainPosition: K.GameboardPosition, completion: (() -> Void)?) {
         let colorizeDuration: TimeInterval = 2.5
+        let originalShieldColor = shieldColor
         
         hitPoints -= increment
         
-        bottomNode.run(SKAction.colorize(with: shieldColor, colorBlendFactor: 1, duration: colorizeDuration))
-        topNode.run(SKAction.colorize(with: shieldColor, colorBlendFactor: 1, duration: colorizeDuration))
+        //Initialize AFTER decrementing hitPoints due to side effect of shieldColor changing in didSet!
+        let changeColorAction = SKAction.repeat(SKAction.sequence([
+            SKAction.colorize(with: originalShieldColor, colorBlendFactor: 1, duration: 0.1),
+            SKAction.colorize(with: shieldColor, colorBlendFactor: 1, duration: 0.1)
+        ]), count: Int(colorizeDuration / 0.2))
+        
+        bottomNode.run(changeColorAction)
+        topNode.run(changeColorAction)
         
         delegate?.willDamageShield()
         
@@ -198,8 +205,14 @@ class MagmoorShield: SKNode {
             shieldColor = .red
         case 2:
             shieldColor = .orange
-        default:
+        case 3:
             shieldColor = .yellow
+        case 4:
+            shieldColor = .green
+        case 5:
+            shieldColor = .cyan
+        default:
+            shieldColor = .magenta
         }
     }
     

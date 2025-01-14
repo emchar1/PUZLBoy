@@ -91,8 +91,6 @@ class FinalBattle2Controls {
         self.location = location
         self.safePanelFound = safePanelFound
         
-        generateVillainPositionNew(enrage: magmoorShield.isEnraged)
-        
         //Now check for movement/attack!
         if inBounds(.up) && !canAttackVillain(.up) {
             movePlayerHelper(.up, completion: completion)
@@ -109,6 +107,9 @@ class FinalBattle2Controls {
         else {
             //handle default cases here...
         }
+        
+        //Moved this AFTER checking inBounds(), canAttackVillain() and movePlayerHelper() because syncing was causing villain to appear in hero's old (current) position, on top of him 1/14/24
+        generateVillainPositionNew(enrage: magmoorShield.isEnraged)
     }
     
     func updateVillainMovementAndAttacks(speed: FinalBattle2Spawner.SpawnerSpeed) {
