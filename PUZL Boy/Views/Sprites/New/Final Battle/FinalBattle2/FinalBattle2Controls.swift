@@ -12,7 +12,7 @@ protocol FinalBattle2ControlsDelegate: AnyObject {
     func didVillainDisappear(fadeDuration: TimeInterval)
     func willVillainReappear()
     func didVillainReappear()
-    func didVillainAttack(pattern: MagmoorAttacks.AttackPattern, position: K.GameboardPosition?)
+    func didVillainAttack(pattern: MagmoorAttacks.AttackPattern, position: K.GameboardPosition)
     func handleShield(willDamage: Bool, didDamage: Bool, willBreak: Bool, didBreak: Bool, fadeDuration: TimeInterval?, villainPosition: K.GameboardPosition?)
 }
 
@@ -473,7 +473,7 @@ class FinalBattle2Controls {
 // MARK: - MagmoorAttacksDelegate
 
 extension FinalBattle2Controls: MagmoorAttacksDelegate {
-    func didVillainAttack(pattern: MagmoorAttacks.AttackPattern, position: K.GameboardPosition?) {
+    func didVillainAttack(pattern: MagmoorAttacks.AttackPattern, position: K.GameboardPosition) {
         delegate?.didVillainAttack(pattern: pattern, position: position)
     }
 }

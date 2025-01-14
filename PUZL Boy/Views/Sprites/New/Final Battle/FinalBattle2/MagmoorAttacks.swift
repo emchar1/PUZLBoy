@@ -8,7 +8,7 @@
 import SpriteKit
 
 protocol MagmoorAttacksDelegate: AnyObject {
-    func didVillainAttack(pattern: MagmoorAttacks.AttackPattern, position: K.GameboardPosition?)
+    func didVillainAttack(pattern: MagmoorAttacks.AttackPattern, position: K.GameboardPosition)
 }
 
 class MagmoorAttacks {

@@ -319,17 +319,15 @@ extension FinalBattle2Engine: FinalBattle2ControlsDelegate {
         backgroundPattern.animate(pattern: .wave, fadeDuration: 2, shouldFlashGameboard: true)
     }
     
-    func didVillainAttack(pattern: MagmoorAttacks.AttackPattern, position: K.GameboardPosition?) {
+    func didVillainAttack(pattern: MagmoorAttacks.AttackPattern, position: K.GameboardPosition) {
         switch pattern {
         case .normal:
-            let playerPosition = position ?? FinalBattle2Spawner.startPosition
-            villainAttackNormal(at: playerPosition)
+            villainAttackNormal(at: position)
         case .timed:
             let randomPosition = position ?? FinalBattle2Spawner.startPosition
             villainAttackTimed(at: randomPosition, isLarge: false)
         case .timedLarge:
-            let randomPosition = position ?? FinalBattle2Spawner.startPosition
-            villainAttackTimed(at: randomPosition, isLarge: true)
+            villainAttackTimed(at: position, isLarge: true)
         }
     }
     
