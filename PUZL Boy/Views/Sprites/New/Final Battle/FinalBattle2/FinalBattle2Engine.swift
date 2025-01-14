@@ -324,8 +324,7 @@ extension FinalBattle2Engine: FinalBattle2ControlsDelegate {
         case .normal:
             villainAttackNormal(at: position)
         case .timed:
-            let randomPosition = position ?? FinalBattle2Spawner.startPosition
-            villainAttackTimed(at: randomPosition, isLarge: false)
+            villainAttackTimed(at: position, isLarge: false)
         case .timedLarge:
             villainAttackTimed(at: position, isLarge: true)
         }
