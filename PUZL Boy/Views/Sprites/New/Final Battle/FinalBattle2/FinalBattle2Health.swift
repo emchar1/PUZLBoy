@@ -46,6 +46,10 @@ class FinalBattle2Health {
                               position: position + CGPoint(x: 0, y: StatusBarSprite.defaultBarHeight + 16))
     }
     
+    deinit {
+        print("deinit FinalBattle2Health")
+    }
+    
     
     // MARK: - Functions
     

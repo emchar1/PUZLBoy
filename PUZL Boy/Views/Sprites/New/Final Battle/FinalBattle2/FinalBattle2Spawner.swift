@@ -49,6 +49,10 @@ class FinalBattle2Spawner {
         self.ignorePositions = [FinalBattle2Spawner.startPosition, FinalBattle2Spawner.endPosition]
     }
     
+    deinit {
+        print("deinit FinalBattle2Spawner")
+    }
+    
     
     // MARK: - Functions
     

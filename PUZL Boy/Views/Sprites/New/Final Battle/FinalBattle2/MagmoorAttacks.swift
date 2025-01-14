@@ -45,6 +45,10 @@ class MagmoorAttacks {
         timedCanHurtVillain = true
     }
     
+    deinit {
+        print("deinit MagmoorAttacks")
+    }
+    
     
     // MARK: - Functions
     
