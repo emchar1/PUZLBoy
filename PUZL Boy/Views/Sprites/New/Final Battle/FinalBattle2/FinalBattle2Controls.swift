@@ -141,9 +141,14 @@ class FinalBattle2Controls {
             
             canAttack = true
             
-            //This MUST come after decrementing the shield, above!
-            generateVillainPositionNew(enrage: magmoorShield.isEnraged)
-            moveVillainFlee(shouldDisappear: false, fadeDuration: 0, completion: nil)
+            if magmoorShield.hasHitPoints {
+                //This MUST come after decrementing the shield, above!
+                generateVillainPositionNew(enrage: magmoorShield.isEnraged)
+                moveVillainFlee(shouldDisappear: false, fadeDuration: 0, completion: nil)
+            }
+            else {
+                resetTimer(forceDelay: 3)
+            }
         }
     }
     
@@ -250,7 +255,13 @@ class FinalBattle2Controls {
             if magmoorShield.hasHitPoints {
                 magmoorShield.decrementShield(villain: villain, villainPosition: positions.villain) {
                     self.canAttack = true
-                    self.moveVillainFlee(shouldDisappear: false, fadeDuration: 0, completion: nil)
+                    
+                    if self.magmoorShield.hasHitPoints {
+                        self.moveVillainFlee(shouldDisappear: false, fadeDuration: 0, completion: nil)
+                    }
+                    else {
+                        self.resetTimer(forceDelay: 3)
+                    }
                 }
                 
                 AudioManager.shared.playSound(for: "villainpain\(Int.random(in: 1...2))")
@@ -340,11 +351,13 @@ class FinalBattle2Controls {
     
     /**
      Resets the timer and begins a new one.
-     - parameter delay: time in between until timer fires again
+     - parameter forceDelay: a forced time that overrides villainMovementDelay. Set when villain doesn't have a shield, for example.
      */
-    private func resetTimer() {
+    private func resetTimer(forceDelay: TimeInterval?) {
+        let timeInterval = forceDelay ?? (magmoorShield.isEnraged ? villainMovementDelay.enraged : villainMovementDelay.normal)
+        
         villainMoveTimer.invalidate()
-        villainMoveTimer = Timer.scheduledTimer(timeInterval: magmoorShield.isEnraged ? villainMovementDelay.enraged : villainMovementDelay.normal,
+        villainMoveTimer = Timer.scheduledTimer(timeInterval: timeInterval,
                                                 target: self,
                                                 selector: #selector(moveVillain(_:)),
                                                 userInfo: nil,
@@ -438,15 +451,17 @@ class FinalBattle2Controls {
             //FIXME: - Need to test. This was originally below second guard shouldDisappear
             canAttack = true
             
-            resetTimer()
+            if shouldDisappear {
+                delegate?.didVillainReappear()
+                magmoorShield.resetShield(villain: villain)
+                resetTimer(forceDelay: nil) //call AFTER setting shield!!
+                villain.sprite.run(Player.animate(player: villain, type: .attack, repeatCount: 1))
+            }
+            else {
+                resetTimer(forceDelay: nil)
+            }
+            
             completion?()
-            
-            
-            guard shouldDisappear else { return }
-            delegate?.didVillainReappear()
-            
-            magmoorShield.resetShield(villain: villain)
-            villain.sprite.run(Player.animate(player: villain, type: .attack, repeatCount: 1))
         }
         
         
