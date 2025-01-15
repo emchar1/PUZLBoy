@@ -78,6 +78,7 @@ class MagmoorShield: SKNode {
      Resets the shield to the max, i.e. 3 and apply a quick animation.
      */
     func resetShield(villain: Player) {
+        maxHitPoints = Int.random(in: 2...6)
         hitPoints = maxHitPoints
         
         removeAllActions()
@@ -114,11 +115,11 @@ class MagmoorShield: SKNode {
         - villainPosition: Magmoor's position on the gameboard
         - completion: completion handler, e.g. to set values, cleanup, etc.
      */
-    func decrementShield(_ increment: Int = 1, villain: Player, villainPosition: K.GameboardPosition, completion: (() -> Void)?) {
+    func decrementShield(decrementAmount: Int = 1, villain: Player, villainPosition: K.GameboardPosition, completion: (() -> Void)?) {
         let colorizeDuration: TimeInterval = 2.5
         let originalShieldColor = shieldColor
         
-        hitPoints -= increment
+        hitPoints -= decrementAmount
         
         //Initialize AFTER decrementing hitPoints due to side effect of shieldColor changing in didSet!
         let changeColorAction = SKAction.repeat(SKAction.sequence([

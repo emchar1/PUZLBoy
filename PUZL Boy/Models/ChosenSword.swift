@@ -11,10 +11,13 @@ class ChosenSword {
     
     // MARK: - Properties
     
+    //Stats properties
     private(set) var type: SwordType
     private(set) var attackRating: CGFloat
+    private(set) var shieldDamage: Int = 1
     var attackRatingPercentage: CGFloat { attackRating / 100 }
-
+    
+    //Required properties
     private(set) var imageName: String
     private(set) var description: String
     private(set) var elderCommentary: String
@@ -45,6 +48,7 @@ class ChosenSword {
         else if didPursueMagmoor && didGiveAwayFeather {
             type = .cosmicCleaver
             attackRating = 74
+            shieldDamage = 2
             imageName = "sword3Cosmic"
             description = "Cosmic Cleaver of Purification"
             elderCommentary = "This sword packs a mean punch! Careful!! It's heavy and somewhat cumbersome to wield."
@@ -52,6 +56,7 @@ class ChosenSword {
         else if didPursueMagmoor && !didGiveAwayFeather && (bravery ?? 0) > 0 {
             type = .eternalBlade
             attackRating = 61
+            shieldDamage = 2
             imageName = "sword4Eternal"
             description = "Blade of Eternal Might"
             elderCommentary = "Not bad at all! Only a few handful of swords are considered mightier than this one..."

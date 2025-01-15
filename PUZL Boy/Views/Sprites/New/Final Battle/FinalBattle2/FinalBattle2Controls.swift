@@ -250,7 +250,7 @@ class FinalBattle2Controls {
             isDisabled = false
             
             if magmoorShield.hasHitPoints {
-                magmoorShield.decrementShield(villain: villain, villainPosition: positions.villain) {
+                magmoorShield.decrementShield(decrementAmount: chosenSword.shieldDamage, villain: villain, villainPosition: positions.villain) {
                     self.canAttack = true
                     self.generateVillainPositionNew(enrage: self.magmoorShield.isEnraged)
                     
