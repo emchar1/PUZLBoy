@@ -18,7 +18,7 @@ class Player {
     static let cutsceneScale: CGFloat = 0.75
     
     ///Origin point of wand when a Mystic casts a spell
-    static let mysticWandOrigin: CGPoint = CGPoint(x: -80, y: 10) / UIDevice.spriteScale
+    static let mysticWandOrigin: CGPoint = CGPoint(x: -60, y: -40) / UIDevice.spriteScale
     
     private(set) var scale = 0.5
     private(set) var scaleMultiplier: CGFloat = 1
