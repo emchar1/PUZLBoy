@@ -452,10 +452,10 @@ class FinalBattle2Controls {
                 delegate?.didVillainReappear()
                 
                 magmoorShield.resetShield(villain: villain)
+                magmoorAttacks.executeAttackAnimation(color: magmoorShield.shieldColor)
+                
                 generateVillainPositionNew(enrage: false)
                 resetTimer(forceDelay: nil) //call AFTER setting shield!!
-                
-                villain.sprite.run(Player.animate(player: villain, type: .attack, repeatCount: 1))
             }
             else {
                 generateVillainPositionNew(enrage: magmoorShield.isEnraged)

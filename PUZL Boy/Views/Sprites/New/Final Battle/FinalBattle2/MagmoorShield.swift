@@ -18,7 +18,7 @@ class MagmoorShield: SKNode {
     
     // MARK: - Properties
     
-    private let maxHitPoints: Int = 4
+    private var maxHitPoints: Int = 4
     private(set) var hitPoints: Int {
         didSet {
             setShieldColor()
@@ -26,7 +26,7 @@ class MagmoorShield: SKNode {
         }
     }
     
-    private var shieldColor: UIColor
+    private(set) var shieldColor: UIColor
     private var bottomNode: SKSpriteNode
     private var topNode: SKSpriteNode
     

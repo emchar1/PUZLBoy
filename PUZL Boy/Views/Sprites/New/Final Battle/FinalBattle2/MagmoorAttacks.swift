@@ -24,7 +24,9 @@ class MagmoorAttacks {
     private var timedCanHurtVillain: Bool
     
     private var villainDirection: CGFloat { villain.sprite.xScale > 0 ? -1 : 1 }
-    private var fireballPosition: CGPoint { villain.sprite.position + Player.mysticWandOrigin * villainDirection }
+    private var fireballPosition: CGPoint {
+        villain.sprite.position + CGPoint(x: Player.mysticWandOrigin.x * villainDirection, y: Player.mysticWandOrigin.y)
+    }
     
     enum AttackPattern: CaseIterable {
         case normal, timed, timedLarge
@@ -52,6 +54,11 @@ class MagmoorAttacks {
     
     // MARK: - Functions
     
+    /**
+     Generates an attack pattern based on probability.
+     - parameter enrage: if true, always returns normal attack
+     - returns: the attack pattern generated
+     */
     static func getAttackPattern(enrage: Bool) -> AttackPattern {
         guard !enrage else { return .normal }
         
@@ -94,25 +101,63 @@ class MagmoorAttacks {
         return true
     }
     
+    /**
+     Initiates one of Magmoor's various wand attacks.
+     - parameters:
+        - pattern: attack pattern type
+        - positions: the player and villain gameboard positions.
+     */
     func attack(pattern: AttackPattern, positions: FinalBattle2Controls.PlayerPositions) {
         timedCanHurtPlayer = true
         timedCanHurtVillain = true
         
-        villain.sprite.run(SKAction.sequence([
-            Player.animate(player: villain, type: .attack, repeatCount: 1)
-        ]))
-        
-        AudioManager.shared.playSound(for: "villainattack\(Int.random(in: 1...2))")
+        let wandColor: UIColor
         
         switch pattern {
         case .normal:
+            wandColor = FireIceTheme.isFire ? .systemPink : .cyan
             helperNormal(positions: positions)
         case .timed:
+            wandColor = .magenta
             helperTimed(positions: positions, isLarge: false)
         case .timedLarge:
+            wandColor = .purple
             helperTimed(positions: positions, isLarge: true)
-        }//end switch
-    }//end villainAttack()
+        }
+        
+        executeAttackAnimation(color: wandColor)
+    }
+    
+    /**
+     Executes an attack animation with sound and particles.
+     - parameter color: color of the wand particle.
+     */
+    func executeAttackAnimation(color: UIColor) {
+        let colorSequence = SKKeyframeSequence(keyframeValues: [
+            UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1),
+            color
+        ], times: [0, 1])
+
+        villain.sprite.run(Player.animate(player: villain, type: .attack, repeatCount: 1))
+        
+        AudioManager.shared.playSound(for: "villainattack\(Int.random(in: 1...2))")
+        AudioManager.shared.playSound(for: "villainattackwand")
+        
+        ParticleEngine.shared.animateParticles(type: .magicBlastPoof,
+                                               toNode: gameboard.sprite,
+                                               position: fireballPosition,
+                                               scale: 1,
+                                               colorSequence: colorSequence,
+                                               zPosition: K.ZPosition.player + 4,
+                                               duration: 2)
+        
+        ParticleEngine.shared.animateParticles(type: .warp,
+                                               toNode: gameboard.sprite,
+                                               position: fireballPosition,
+                                               scale: 1,
+                                               zPosition: K.ZPosition.player + 2,
+                                               duration: 2)
+    }
     
     
     // MARK: - Setter Functions
@@ -184,6 +229,10 @@ class MagmoorAttacks {
         
         gameboard.sprite.addChild(fireball)
         
+        if !FireIceTheme.isFire {
+            fireball.run(SKAction.rotate(toAngle: distanceVillainToPlayer * .pi * villainDirection, duration: fireballMovementDuration))
+        }
+        
         fireball.run(SKAction.repeatForever(SKAction.sequence([
             SKAction.colorize(withColorBlendFactor: 1, duration: 0.1),
             SKAction.colorize(withColorBlendFactor: 0, duration: 0.1)
@@ -236,10 +285,15 @@ class MagmoorAttacks {
             let fadeOutDuration: TimeInterval = isLarge ? 0.5 : 0.25
             let explodeDistance: CGFloat = isLarge ? 30 : 20
             var randomPosition: K.GameboardPosition
+            var largeBombRestriction: Bool {
+                guard isLarge else { return false }
+                
+                return randomPosition.col * Int(villainDirection) > positions.villain.col * Int(villainDirection)
+            }
             
             repeat {
                 randomPosition = (Int.random(in: 0..<gameboard.panelCount), Int.random(in: 0..<gameboard.panelCount))
-            } while randomPosition == positions.villain
+            } while randomPosition == positions.villain || largeBombRestriction
             
             let fireball = createFireball(positions: positions,
                                           imageName: isLarge ? "villainProjectile3L" : "villainProjectile3",
