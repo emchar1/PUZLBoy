@@ -12,8 +12,8 @@ protocol FinalBattle2ControlsDelegate: AnyObject {
     func didVillainDisappear(fadeDuration: TimeInterval)
     func willVillainReappear()
     func didVillainReappear()
-    func didVillainAttack(pattern: MagmoorAttacks.AttackPattern, position: K.GameboardPosition)
-    func handleShield(willDamage: Bool, didDamage: Bool, willBreak: Bool, didBreak: Bool, fadeDuration: TimeInterval?, villainPosition: K.GameboardPosition?)
+    func didVillainAttack(pattern: MagmoorAttacks.AttackPattern, chosenSword: ChosenSword, position: K.GameboardPosition)
+    func handleShield(willDamage: Bool, didDamage: Bool, willBreak: Bool, didBreak: Bool, fadeDuration: TimeInterval?, chosenSword: ChosenSword, villainPosition: K.GameboardPosition?)
 }
 
 class FinalBattle2Controls {
@@ -37,7 +37,7 @@ class FinalBattle2Controls {
     private var villainMoveTimer: Timer
     private var villainMovementDelay: (normal: TimeInterval, enraged: TimeInterval)
     
-    private var chosenSword: ChosenSword
+    private(set) var chosenSword: ChosenSword
     private var magmoorAttacks: MagmoorAttacks
     private var magmoorShield: MagmoorShield
     
@@ -452,7 +452,7 @@ class FinalBattle2Controls {
                 delegate?.didVillainReappear()
                 
                 magmoorShield.resetShield(villain: villain)
-                magmoorAttacks.executeAttackAnimation(color: magmoorShield.shieldColor)
+                magmoorAttacks.executeAttackAnimation(color: magmoorShield.shieldColor, playSFX: false)
                 
                 generateVillainPositionNew(enrage: false)
                 resetTimer(forceDelay: nil) //call AFTER setting shield!!
@@ -490,7 +490,7 @@ class FinalBattle2Controls {
 
 extension FinalBattle2Controls: MagmoorAttacksDelegate {
     func didVillainAttack(pattern: MagmoorAttacks.AttackPattern, position: K.GameboardPosition) {
-        delegate?.didVillainAttack(pattern: pattern, position: position)
+        delegate?.didVillainAttack(pattern: pattern, chosenSword: chosenSword, position: position)
     }
 }
 
@@ -499,19 +499,19 @@ extension FinalBattle2Controls: MagmoorAttacksDelegate {
 
 extension FinalBattle2Controls: MagmoorShieldDelegate {
     func willDamageShield() {
-        delegate?.handleShield(willDamage: true, didDamage: false, willBreak: false, didBreak: false, fadeDuration: nil, villainPosition: nil)
+        delegate?.handleShield(willDamage: true, didDamage: false, willBreak: false, didBreak: false, fadeDuration: nil, chosenSword: chosenSword, villainPosition: nil)
     }
     
     func didDamageShield() {
-        delegate?.handleShield(willDamage: false, didDamage: true, willBreak: false, didBreak: false, fadeDuration: nil, villainPosition: nil)
+        delegate?.handleShield(willDamage: false, didDamage: true, willBreak: false, didBreak: false, fadeDuration: nil, chosenSword: chosenSword, villainPosition: nil)
     }
     
     func willBreakShield(fadeDuration: TimeInterval) {
-        delegate?.handleShield(willDamage: false, didDamage: false, willBreak: true, didBreak: false, fadeDuration: fadeDuration, villainPosition: nil)
+        delegate?.handleShield(willDamage: false, didDamage: false, willBreak: true, didBreak: false, fadeDuration: fadeDuration, chosenSword: chosenSword, villainPosition: nil)
     }
     
     func didBreakShield(at villainPosition: K.GameboardPosition) {
-        delegate?.handleShield(willDamage: false, didDamage: false, willBreak: false, didBreak: true, fadeDuration: nil, villainPosition: villainPosition)
+        delegate?.handleShield(willDamage: false, didDamage: false, willBreak: false, didBreak: true, fadeDuration: nil, chosenSword: chosenSword, villainPosition: villainPosition)
     }
     
     

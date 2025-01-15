@@ -125,14 +125,14 @@ class MagmoorAttacks {
             helperTimed(positions: positions, isLarge: true)
         }
         
-        executeAttackAnimation(color: wandColor)
+        executeAttackAnimation(color: wandColor, playSFX: true)
     }
     
     /**
      Executes an attack animation with sound and particles.
      - parameter color: color of the wand particle.
      */
-    func executeAttackAnimation(color: UIColor) {
+    func executeAttackAnimation(color: UIColor, playSFX: Bool) {
         let colorSequence = SKKeyframeSequence(keyframeValues: [
             UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1),
             color
@@ -140,8 +140,10 @@ class MagmoorAttacks {
 
         villain.sprite.run(Player.animate(player: villain, type: .attack, repeatCount: 1))
         
-        AudioManager.shared.playSound(for: "villainattack\(Int.random(in: 1...2))")
-        AudioManager.shared.playSound(for: "villainattackwand")
+        if playSFX {
+            AudioManager.shared.playSound(for: "villainattack\(Int.random(in: 1...2))")
+            AudioManager.shared.playSound(for: "villainattackwand")
+        }
         
         ParticleEngine.shared.animateParticles(type: .magicBlastPoof,
                                                toNode: gameboard.sprite,

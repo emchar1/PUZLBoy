@@ -138,7 +138,7 @@ class FinalBattle2Engine {
                 health.updateHealth(type: .regen)
             }
             else {
-                health.updateHealth(type: .drain)
+                health.updateHealth(type: .drain, dmgMultiplier: controls.chosenSword.damageReceived)
             }
         }
     }
@@ -179,15 +179,15 @@ class FinalBattle2Engine {
     
     // MARK: - Attack (Helper) Functions
     
-    private func villainAttackNormal(at position: K.GameboardPosition) {
+    private func villainAttackNormal(at position: K.GameboardPosition, chosenSword: ChosenSword) {
         showDamagePanel(at: position)
         
         if position == controls.positions.player {
-            health.updateHealth(type: .villainAttackNormal)
+            health.updateHealth(type: .villainAttackNormal, dmgMultiplier: chosenSword.damageReceived)
         }
     }
     
-    private func villainAttackTimed(at homePosition: K.GameboardPosition, isLarge: Bool) {
+    private func villainAttackTimed(at homePosition: K.GameboardPosition, isLarge: Bool, chosenSword: ChosenSword) {
         func isValidPosition(row: Int, col: Int) -> Bool {
             return row >= 0 && row < gameboard.panelCount && col >= 0 && col < gameboard.panelCount
         }
@@ -227,7 +227,7 @@ class FinalBattle2Engine {
         //Update health
         if affectedPanels.contains(where: { $0 == controls.positions.player }) {
             if controls.villainAttackTimedBombCanHurtPlayer() {
-                health.updateHealth(type: .villainAttackTimed)
+                health.updateHealth(type: .villainAttackTimed, dmgMultiplier: chosenSword.damageReceived)
             }
         }
         
@@ -237,7 +237,7 @@ class FinalBattle2Engine {
         }
     }
     
-    private func shieldExplodeDamagePanels(at homePosition: K.GameboardPosition) {
+    private func shieldExplodeDamagePanels(at homePosition: K.GameboardPosition, chosenSword: ChosenSword) {
         func isValidPosition(row: Int, col: Int) -> Bool {
             return row >= 0 && row < gameboard.panelCount && col >= 0 && col < gameboard.panelCount
         }
@@ -273,7 +273,7 @@ class FinalBattle2Engine {
         
         //Update health
         if affectedPanels.contains(where: { $0 == controls.positions.player }) {
-            health.updateHealth(type: .villainShieldExplode)
+            health.updateHealth(type: .villainShieldExplode, dmgMultiplier: chosenSword.damageReceived)
         }
     }
     
@@ -319,18 +319,18 @@ extension FinalBattle2Engine: FinalBattle2ControlsDelegate {
         backgroundPattern.animate(pattern: .wave, fadeDuration: 2, shouldFlashGameboard: true)
     }
     
-    func didVillainAttack(pattern: MagmoorAttacks.AttackPattern, position: K.GameboardPosition) {
+    func didVillainAttack(pattern: MagmoorAttacks.AttackPattern, chosenSword: ChosenSword, position: K.GameboardPosition) {
         switch pattern {
         case .normal:
-            villainAttackNormal(at: position)
+            villainAttackNormal(at: position, chosenSword: chosenSword)
         case .timed:
-            villainAttackTimed(at: position, isLarge: false)
+            villainAttackTimed(at: position, isLarge: false, chosenSword: chosenSword)
         case .timedLarge:
-            villainAttackTimed(at: position, isLarge: true)
+            villainAttackTimed(at: position, isLarge: true, chosenSword: chosenSword)
         }
     }
     
-    func handleShield(willDamage: Bool, didDamage: Bool, willBreak: Bool, didBreak: Bool, fadeDuration: TimeInterval?, villainPosition: K.GameboardPosition?) {
+    func handleShield(willDamage: Bool, didDamage: Bool, willBreak: Bool, didBreak: Bool, fadeDuration: TimeInterval?, chosenSword: ChosenSword, villainPosition: K.GameboardPosition?) {
         if willDamage {
             backgroundPattern.animate(pattern: .convulse, fadeDuration: 0.04)
         }
@@ -348,7 +348,7 @@ extension FinalBattle2Engine: FinalBattle2ControlsDelegate {
             let villainPosition = villainPosition ?? (0, 0)
             
             backgroundPattern.animate(pattern: .normal, fadeDuration: 2, shouldFlashGameboard: true)
-            shieldExplodeDamagePanels(at: villainPosition)
+            shieldExplodeDamagePanels(at: villainPosition, chosenSword: chosenSword)
         }
     }
     
@@ -366,7 +366,7 @@ extension FinalBattle2Engine: FinalBattle2SpawnerDelegate {
     
     func didDespawnSafePanel(spawnPanel: K.GameboardPosition) {
         guard spawnPanel == controls.positions.player && !safePanelFound() && !startPanelFound() && !endPanelFound() else { return }
-        health.updateHealth(type: .drain)
+        health.updateHealth(type: .drain, dmgMultiplier: controls.chosenSword.damageReceived)
     }
     
     func didChangeSpeed(speed: FinalBattle2Spawner.SpawnerSpeed) {

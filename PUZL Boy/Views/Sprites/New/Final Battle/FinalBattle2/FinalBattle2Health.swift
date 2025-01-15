@@ -121,12 +121,29 @@ class FinalBattle2Health {
         bar.animateAndUpdate(percentage: counter.getCount())
     }
     
-    @objc private func helperDrain() { objcHelper(rateDivisions: [0.75, 0.5], rates: [0.02, 0.01, 0.005], increment: false) }
-    @objc private func helperRegen() { objcHelper(rateDivisions: [], rates: [0.002], increment: true) }
-    @objc private func helperHeroAttack() { objcHelper(rateDivisions: [], rates: [0.2].map { $0 * (dmgMultiplier ?? 0) }, increment: true) }
-    @objc private func helperVillainAttackNormal() { objcHelper(rateDivisions: [], rates: [0.1], increment: false) }
-    @objc private func helperVillainAttackTimed() { objcHelper(rateDivisions: [], rates: [0.05], increment: false) }
-    @objc private func helperVillainShield() { objcHelper(rateDivisions: [0.5], rates: [0.25, 0.125], increment: false) }
+    @objc private func helperDrain() {
+        objcHelper(rateDivisions: [0.75, 0.5], rates: [0.02, 0.01, 0.005].map { $0 * (dmgMultiplier ?? 1) }, increment: false)
+    }
+    
+    @objc private func helperRegen() {
+        objcHelper(rateDivisions: [], rates: [0.002].map { $0 * (dmgMultiplier ?? 1) }, increment: true)
+    }
+    
+    @objc private func helperHeroAttack() {
+        objcHelper(rateDivisions: [], rates: [0.2].map { $0 * (dmgMultiplier ?? 0.5) }, increment: true)
+    }
+    
+    @objc private func helperVillainAttackNormal() {
+        objcHelper(rateDivisions: [], rates: [0.1].map { $0 * (dmgMultiplier ?? 1) }, increment: false)
+    }
+    
+    @objc private func helperVillainAttackTimed() {
+        objcHelper(rateDivisions: [], rates: [0.05].map { $0 * (dmgMultiplier ?? 1) }, increment: false)
+    }
+    
+    @objc private func helperVillainShield() {
+        objcHelper(rateDivisions: [0.5], rates: [0.25, 0.125].map { $0 * (dmgMultiplier ?? 1) }, increment: false)
+    }
     
     
     // MARK: - Other Helper Functions

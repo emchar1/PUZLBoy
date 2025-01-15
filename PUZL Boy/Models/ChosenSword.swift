@@ -15,6 +15,7 @@ class ChosenSword {
     private(set) var type: SwordType
     private(set) var attackRating: CGFloat
     private(set) var shieldDamage: Int = 1
+    private(set) var damageReceived: CGFloat = 1
     var attackRatingPercentage: CGFloat { attackRating / 100 }
     
     //Required properties
@@ -34,6 +35,7 @@ class ChosenSword {
         if !didPursueMagmoor && didGiveAwayFeather && (bravery ?? 0) >= MagmoorCreepyMinion.maxBravery {
             type = .celestialBroadsword
             attackRating = 97
+            damageReceived = 0.5
             imageName = "sword1Celestial"
             description = "Celestial Broadsword of Justice"
             elderCommentary = "This sword will get you through the toughest of fights. Thrust downward for maximum damage!"
@@ -41,6 +43,7 @@ class ChosenSword {
         else if !didPursueMagmoor {
             type = .heavenlySaber
             attackRating = 82
+            damageReceived = 0.8
             imageName = "sword2Heavenly"
             description = "Heavenly Saber of Redemption"
             elderCommentary = "Ooh, that is a good sword! Had to use it on a wraith last week... nasty little buggers!"
