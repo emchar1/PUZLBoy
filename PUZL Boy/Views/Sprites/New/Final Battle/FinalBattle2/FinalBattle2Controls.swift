@@ -107,9 +107,6 @@ class FinalBattle2Controls {
         else {
             //handle default cases here...
         }
-        
-        //Moved this AFTER checking inBounds(), canAttackVillain() and movePlayerHelper() because syncing was causing villain to appear in hero's old (current) position, on top of him 1/14/24
-        generateVillainPositionNew(enrage: magmoorShield.isEnraged)
     }
     
     func updateVillainMovementAndAttacks(speed: FinalBattle2Spawner.SpawnerSpeed) {
@@ -141,10 +138,9 @@ class FinalBattle2Controls {
             guard let self = self else { return }
             
             canAttack = true
+            generateVillainPositionNew(enrage: magmoorShield.isEnraged)
             
             if magmoorShield.hasHitPoints {
-                //This MUST come after decrementing the shield, above!
-                generateVillainPositionNew(enrage: magmoorShield.isEnraged)
                 moveVillainFlee(shouldDisappear: false, fadeDuration: 0, completion: nil)
             }
             else {
@@ -256,6 +252,7 @@ class FinalBattle2Controls {
             if magmoorShield.hasHitPoints {
                 magmoorShield.decrementShield(villain: villain, villainPosition: positions.villain) {
                     self.canAttack = true
+                    self.generateVillainPositionNew(enrage: self.magmoorShield.isEnraged)
                     
                     if self.magmoorShield.hasHitPoints {
                         self.moveVillainFlee(shouldDisappear: false, fadeDuration: 0, completion: nil)
@@ -271,6 +268,7 @@ class FinalBattle2Controls {
                 //FIXME: - need to test, should be fine because canAttack will immediately be set to false in next line, moveVillainFlee().
                 canAttack = true
                 
+                generateVillainPositionNew(enrage: false)
                 moveVillainFlee(shouldDisappear: true, fadeDuration: 2, completion: nil)
                 delegate?.didHeroAttack(chosenSword: chosenSword)
                 AudioManager.shared.playSound(for: "villainpain3")
@@ -341,8 +339,6 @@ class FinalBattle2Controls {
      Moves the villain to a new, random spot on the board. Use this to periodically move the villain, via a timer, for example.
      */
     @objc private func moveVillain(_ sender: Any) {
-        generateVillainPositionNew(enrage: magmoorShield.isEnraged)
-        
         moveVillainFlee(shouldDisappear: false, fadeDuration: 0) { [weak self] in
             guard let self = self else { return }
             
@@ -454,11 +450,15 @@ class FinalBattle2Controls {
             
             if shouldDisappear {
                 delegate?.didVillainReappear()
+                
                 magmoorShield.resetShield(villain: villain)
+                generateVillainPositionNew(enrage: false)
                 resetTimer(forceDelay: nil) //call AFTER setting shield!!
+                
                 villain.sprite.run(Player.animate(player: villain, type: .attack, repeatCount: 1))
             }
             else {
+                generateVillainPositionNew(enrage: magmoorShield.isEnraged)
                 resetTimer(forceDelay: nil)
             }
             

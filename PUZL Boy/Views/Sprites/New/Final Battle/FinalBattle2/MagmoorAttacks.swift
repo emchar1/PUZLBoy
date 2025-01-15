@@ -57,14 +57,14 @@ class MagmoorAttacks {
         
         let attackPattern: AttackPattern
         let randomInt = Int.random(in: 0...99)
-        print("randomInt|\(randomInt)", terminator: "||")
+//        print("randomInt|\(randomInt)", terminator: "||")
         
         if randomInt % 2 == 0 || randomInt % 3 == 0 {
             attackPattern = .normal
         }
         else {
             let randomInt2 = Int.random(in: 0...99)
-            print("randomInt2|\(randomInt2)", terminator: "||")
+//            print("randomInt2|\(randomInt2)", terminator: "||")
             
             if randomInt2 % 2 == 0 || randomInt2 % 3 == 0 {
                 attackPattern = .timed
@@ -74,7 +74,7 @@ class MagmoorAttacks {
             }
         }
                 
-        print("attackPattern|\(attackPattern)")
+//        print("attackPattern|\(attackPattern)")
         return attackPattern
     }
     
