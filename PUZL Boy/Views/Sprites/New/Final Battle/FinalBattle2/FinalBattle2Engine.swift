@@ -138,7 +138,7 @@ class FinalBattle2Engine {
                 health.updateHealth(type: .regen)
             }
             else {
-                health.updateHealth(type: .drain, dmgMultiplier: controls.chosenSword.damageReceived)
+                health.updateHealth(type: .drain, dmgMultiplier: controls.chosenSword.defenseRating)
             }
         }
     }
@@ -183,7 +183,7 @@ class FinalBattle2Engine {
         showDamagePanel(at: position)
         
         if position == controls.positions.player {
-            health.updateHealth(type: .villainAttackNormal, dmgMultiplier: chosenSword.damageReceived)
+            health.updateHealth(type: .villainAttackNormal, dmgMultiplier: chosenSword.defenseRating)
         }
     }
     
@@ -227,7 +227,7 @@ class FinalBattle2Engine {
         //Update health
         if affectedPanels.contains(where: { $0 == controls.positions.player }) {
             if controls.villainAttackTimedBombCanHurtPlayer() {
-                health.updateHealth(type: .villainAttackTimed, dmgMultiplier: chosenSword.damageReceived)
+                health.updateHealth(type: .villainAttackTimed, dmgMultiplier: chosenSword.defenseRating)
             }
         }
         
@@ -273,7 +273,7 @@ class FinalBattle2Engine {
         
         //Update health
         if affectedPanels.contains(where: { $0 == controls.positions.player }) {
-            health.updateHealth(type: .villainShieldExplode, dmgMultiplier: chosenSword.damageReceived)
+            health.updateHealth(type: .villainShieldExplode, dmgMultiplier: chosenSword.defenseRating)
         }
     }
     
@@ -366,7 +366,7 @@ extension FinalBattle2Engine: FinalBattle2SpawnerDelegate {
     
     func didDespawnSafePanel(spawnPanel: K.GameboardPosition) {
         guard spawnPanel == controls.positions.player && !safePanelFound() && !startPanelFound() && !endPanelFound() else { return }
-        health.updateHealth(type: .drain, dmgMultiplier: controls.chosenSword.damageReceived)
+        health.updateHealth(type: .drain, dmgMultiplier: controls.chosenSword.defenseRating)
     }
     
     func didChangeSpeed(speed: FinalBattle2Spawner.SpawnerSpeed) {

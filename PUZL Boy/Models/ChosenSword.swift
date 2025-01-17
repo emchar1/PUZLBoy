@@ -13,10 +13,18 @@ class ChosenSword {
     
     //Stats properties
     private(set) var type: SwordType
+    
+    ///Percentage out of 100. Simple.
     private(set) var attackRating: CGFloat
-    private(set) var shieldDamage: Int = 1
-    private(set) var damageReceived: CGFloat = 1
+    
+    ///Magmoor's shield decrement amount. Higher number = more shield damage. Standard = 1.
+    private(set) var piercingBonus: Int = 1
+    
+    ///The lower the number, the greater the defense, i.e. damage received. Standard = 1.
+    private(set) var defenseRating: CGFloat = 1
+    
     var attackRatingPercentage: CGFloat { attackRating / 100 }
+    
     
     //Required properties
     private(set) var imageName: String
@@ -24,48 +32,42 @@ class ChosenSword {
     private(set) var elderCommentary: String
     private(set) var spriteNode: SKSpriteNode
 
-    enum SwordType {
-        case celestialBroadsword, heavenlySaber, cosmicCleaver, eternalBlade, plainSword
+    enum SwordType: Int, CaseIterable {
+        case celestialBroadsword = 0, heavenlySaber, cosmicCleaver, eternalBlade, plainSword
     }
     
     
     // MARK: - Initialization
     
-    init(didPursueMagmoor: Bool, didGiveAwayFeather: Bool, bravery: Int?) {
-        if !didPursueMagmoor && didGiveAwayFeather && (bravery ?? 0) >= MagmoorCreepyMinion.maxBravery {
-            type = .celestialBroadsword
+    init(type: Int?) {
+        self.type = SwordType(rawValue: type ?? 4) ?? .eternalBlade
+        
+        switch self.type {
+        case .celestialBroadsword:
             attackRating = 97
-            damageReceived = 0.5
+            defenseRating = 0.5
             imageName = "sword1Celestial"
             description = "Celestial Broadsword of Justice"
             elderCommentary = "This sword will get you through the toughest of fights. Thrust downward for maximum damage!"
-        }
-        else if !didPursueMagmoor {
-            type = .heavenlySaber
+        case .heavenlySaber:
             attackRating = 82
-            damageReceived = 0.8
+            defenseRating = 0.8
             imageName = "sword2Heavenly"
             description = "Heavenly Saber of Redemption"
             elderCommentary = "Ooh, that is a good sword! Had to use it on a wraith last week... nasty little buggers!"
-        }
-        else if didPursueMagmoor && didGiveAwayFeather {
-            type = .cosmicCleaver
+        case .cosmicCleaver:
             attackRating = 74
-            shieldDamage = 2
+            piercingBonus = 2
             imageName = "sword3Cosmic"
             description = "Cosmic Cleaver of Purification"
             elderCommentary = "This sword packs a mean punch! Careful!! It's heavy and somewhat cumbersome to wield."
-        }
-        else if didPursueMagmoor && !didGiveAwayFeather && (bravery ?? 0) > 0 {
-            type = .eternalBlade
+        case .eternalBlade:
             attackRating = 61
-            shieldDamage = 2
+            piercingBonus = 2
             imageName = "sword4Eternal"
             description = "Blade of Eternal Might"
             elderCommentary = "Not bad at all! Only a few handful of swords are considered mightier than this one..."
-        }
-        else {
-            type = .plainSword
+        case .plainSword:
             attackRating = 50
             imageName = "sword"
             description = "Plain Sword"
@@ -73,6 +75,12 @@ class ChosenSword {
         }
         
         spriteNode = SKSpriteNode(imageNamed: imageName)
+        
+        let attackPercent: String = "\(Int(attackRating))%"
+        let piercingBonus: String = piercingBonus == 1 ? "" : " +\(piercingBonus)"
+        let defensePercent: String = "\(Int(48.0 / defenseRating))%"
+        
+        elderCommentary += "\n\n🗡️\(attackPercent)\(piercingBonus)       🛡️\(defensePercent)"
     }
     
     

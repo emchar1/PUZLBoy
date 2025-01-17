@@ -57,9 +57,7 @@ class FinalBattle2Controls {
         self.villainMoveTimer = Timer()
         self.villainMovementDelay = (normal: 12, enraged: 2)
         
-        chosenSword = ChosenSword(didPursueMagmoor: FIRManager.didPursueMagmoor,
-                                  didGiveAwayFeather: FIRManager.didGiveAwayFeather,
-                                  bravery: FIRManager.bravery)
+        chosenSword = ChosenSword(type: FIRManager.chosenSword)
         chosenSword.spriteNode.setScale(gameboard.panelSize / chosenSword.spriteNode.size.width)
         chosenSword.spriteNode.zPosition = K.ZPosition.itemsAndEffects
         
@@ -250,7 +248,7 @@ class FinalBattle2Controls {
             isDisabled = false
             
             if magmoorShield.hasHitPoints {
-                magmoorShield.decrementShield(decrementAmount: chosenSword.shieldDamage, villain: villain, villainPosition: positions.villain) {
+                magmoorShield.decrementShield(decrementAmount: chosenSword.piercingBonus, villain: villain, villainPosition: positions.villain) {
                     self.canAttack = true
                     self.generateVillainPositionNew(enrage: self.magmoorShield.isEnraged)
                     

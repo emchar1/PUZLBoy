@@ -12,6 +12,7 @@ struct SaveStateModel: Identifiable, Codable {
     @DocumentID public var id: String?
     let aorAgeOfRuin: Bool
     let aorBravery: Int?
+    let aorChosenSword: Int?
     let aorDecisionLeftButton0: Bool?
     let aorDecisionLeftButton1: Bool?
     let aorDecisionLeftButton2: Bool?

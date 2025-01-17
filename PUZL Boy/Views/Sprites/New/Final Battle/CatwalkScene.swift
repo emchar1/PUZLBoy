@@ -15,6 +15,9 @@ class CatwalkScene: SKScene {
     
     // MARK: - Properties
     
+    private let tikiNodeName = "tikiStatueNode"
+    private let chestNodeName = "treasureChestNode"
+    private let chosenSwordName = "chosenSword_"
     private let catwalkOverworld = "magicdoomloop"
     private let panelCount: Int = 5
     private let catwalkLength: Int = 51
@@ -621,7 +624,7 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
         tiki.scale(to: scaleSize)
         tiki.alpha = 0
         tiki.zPosition = K.ZPosition.player - 3
-        tiki.name = "tikiStatueNode"
+        tiki.name = tikiNodeName
         tiki.danceStatue()
         
         catwalkNode.addChild(tiki)
@@ -655,7 +658,7 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
     }
     
     func despawnTikiCatwalk(fadeOut: TimeInterval, delay: TimeInterval?) {
-        guard let tiki = catwalkNode.childNode(withName: "tikiStatueNode") else { return }
+        guard let tiki = catwalkNode.childNode(withName: tikiNodeName) else { return }
         
         tiki.removeAllActions()
         tiki.run(SKAction.sequence([
@@ -1272,7 +1275,7 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
         
         for (i, panel) in catwalkPanels.enumerated() {
             panel.removeAction(forKey: "rainbowCycle")
-            panel.run(animateColorCycle(color: .red, shouldFlicker: false, delay: TimeInterval(catwalkLength - i) * delaySpeed))
+            panel.run(animateColorCycle(color: .red, shouldFlicker: panel == catwalkPanels.last, delay: TimeInterval(catwalkLength - i) * delaySpeed))
         }
         
         catwalkNode.run(SKAction.sequence([

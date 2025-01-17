@@ -402,6 +402,7 @@ class GameScene: SKScene {
         let saveStateModel = SaveStateModel(
             aorAgeOfRuin: AgeOfRuin.isActive,
             aorBravery: 0, //Doesn't matter what goes here, it'll also get overwritten by the static property in FIRManager
+            aorChosenSword: 0, //Doesn't matter what goes here, it'll also get overwritten by the static property in FIRManager
             aorDecisionLeftButton0: true, //Doesn't matter what goes here, it'll also get overwritten by the static property in FIRManager
             aorDecisionLeftButton1: true, //Doesn't matter what goes here, it'll also get overwritten by the static property in FIRManager
             aorDecisionLeftButton2: true, //Doesn't matter what goes here, it'll also get overwritten by the static property in FIRManager

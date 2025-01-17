@@ -18,6 +18,7 @@ struct FIRManager {
 
     //Age of Ruin Properties
     static var bravery: Int?
+    static var chosenSword: Int?
     static var decisionsLeftButton: [Bool?] = [nil, nil, nil, nil]
     static var hasFeather: Bool?
     static var gotGift: Bool?
@@ -179,12 +180,14 @@ struct FIRManager {
             //Age of Ruin Properties need to be set here...
             for i in 0...3 { decisionsLeftButton[i] = data["aorDecisionLeftButton\(i)"] as? Bool }
             bravery = data["aorBravery"] as? Int
+            chosenSword = data["aorChosenSword"] as? Int
             hasFeather = data["aorHasFeather"] as? Bool
             gotGift = data["aorGotGift"] as? Bool
             isAgeOfRuin = data["aorAgeOfRuin"] as? Bool
             
             completion?(SaveStateModel(aorAgeOfRuin: ageOfRuin,
                                        aorBravery: bravery,
+                                       aorChosenSword: chosenSword,
                                        aorDecisionLeftButton0: decisionsLeftButton[0],
                                        aorDecisionLeftButton1: decisionsLeftButton[1],
                                        aorDecisionLeftButton2: decisionsLeftButton[2],
@@ -247,6 +250,7 @@ struct FIRManager {
         docRef.setData([
             "aorAgeOfRuin": saveStateModel.aorAgeOfRuin,
             "aorBravery": bravery as Any, //use static property, instead of saveStateModel
+            "aorChosenSword": chosenSword as Any, //use static property, instead of saveStateModel
             "aorDecisionLeftButton0": decisionsLeftButton[0] as Any, //use static property, instead of saveStateModel
             "aorDecisionLeftButton1": decisionsLeftButton[1] as Any, //use static property, instead of saveStateModel
             "aorDecisionLeftButton2": decisionsLeftButton[2] as Any, //use static property, instead of saveStateModel
@@ -448,7 +452,13 @@ struct FIRManager {
         self.bravery = bravery
         updateFirestoreRecordFields(fields: ["aorBravery" : bravery ?? NSNull()])
     }
-
+    
+    ///Convenience method to update the chosenSword field in a record and the static property.
+    static func updateFirestoreRecordChosenSword(_ chosenSword: Int?) {
+        self.chosenSword = chosenSword
+        updateFirestoreRecordFields(fields: ["aorChosenSword" : chosenSword ?? NSNull()])
+    }
+    
     ///Convenience method to update the hasFeather field in a record and the static property.
     static func updateFirestoreRecordHasFeather(_ hasFeather: Bool?) {
         self.hasFeather = hasFeather
