@@ -1071,35 +1071,42 @@ extension ChatEngine {
             }
             
             let chosenSword = ChosenSword(type: selectedSword)
+            let isAvailable = ChosenSword.isAvailable(type: chosenSword.type)
             
             delegateCatwalk?.isSelectingSwordCatwalk()
             
             sendChatArray(shouldSkipDim: true, items: [
                 ChatItem(profile: .merton, chat: chosenSword.elderCommentary) { [weak self] in
                     guard let self = self else { return }
-                    chatDecisionEngine.showDecisions(index: 4, toNode: chatBackgroundSprite, displayOnLeft: false)
+                    
+                    if isAvailable {
+                        chatDecisionEngine.showDecisions(index: 4, toNode: chatBackgroundSprite, displayOnLeft: false)
+                    }
                 },
-                ChatItem(profile: .hero, imgPos: .left, endChat: false, chat: "Hmmm.. choose the \(chosenSword.description)?", handler: nil),
+                ChatItem(profile: isAvailable ? .hero : .merton,
+                         imgPos: isAvailable ? .left : .right,
+                         endChat: !isAvailable,
+                         chat: isAvailable ? "Hmmm.. choose the \(chosenSword.description)?" : "Alas, this sword is not available for selection. Perhaps if you had made a different decision earlier in your journey...",
+                         handler: nil),
             ]) { [weak self] in
                 guard let self = self else { return }
-                
-                if let decision = chatDecisionEngine.decisionButtons[4].selected {
-                    let canProceed = decision == .left
-                    
-                    sendChatArray(items: [
-                        ChatItem(profile: .hero, imgPos: .left, startNewChat: false, chat: canProceed ? "Wrap it up, I'll take it!" : "Hold on a sec...", handler: nil)
-                    ]) {
-                        if canProceed {
-                            self.delegateCatwalk?.spawnSwordCatwalk(chosenSword: chosenSword, spawnDuration: 2, delay: 0.5)
-                            self.handleDialogueCompletion(level: level, completion: completion)
-                        }
-                        else {
-                            returnLoop()
-                        }
-                    }
-                }
-                else {
+                guard isAvailable, let decision = chatDecisionEngine.decisionButtons[4].selected else {
                     returnLoop()
+                    return
+                }
+                
+                let canProceed = decision == .left
+                
+                sendChatArray(items: [
+                    ChatItem(profile: .hero, imgPos: .left, startNewChat: false, chat: canProceed ? "Wrap it up, I'll take it!" : "Hold on a sec...", handler: nil)
+                ]) {
+                    if canProceed {
+                        self.delegateCatwalk?.spawnSwordCatwalk(chosenSword: chosenSword, spawnDuration: 2, delay: 0.5)
+                        self.handleDialogueCompletion(level: level, completion: completion)
+                    }
+                    else {
+                        returnLoop()
+                    }
                 }
             }
         case -999:

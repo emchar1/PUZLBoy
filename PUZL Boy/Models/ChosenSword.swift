@@ -90,6 +90,29 @@ class ChosenSword {
     
     // MARK: - Functions
     
+    /**
+     Checks availability of the sword based on storyline decisions and bravery.
+     */
+    static func isAvailable(type: ChosenSword.SwordType) -> Bool {
+        let swordAvailable: Bool
+        let bravery = FIRManager.bravery ?? 0
+
+        switch type {
+        case .celestialBroadsword:
+            swordAvailable = !FIRManager.didPursueMagmoor && FIRManager.didGiveAwayFeather && bravery >= MagmoorCreepyMinion.maxBravery
+        case .heavenlySaber:
+            swordAvailable = !FIRManager.didPursueMagmoor
+        case .cosmicCleaver:
+            swordAvailable = FIRManager.didPursueMagmoor && FIRManager.didGiveAwayFeather
+        case .eternalBlade:
+            swordAvailable = FIRManager.didPursueMagmoor && bravery > 0
+        case .plainSword:
+            swordAvailable = true
+        }
+        
+        return swordAvailable
+    }
+    
     func throwSword(endOffset: CGPoint, direction: Controls, rotations: CGFloat, throwDuration: TimeInterval, delay: TimeInterval?) {
         spriteNode.run(SKAction.sequence([
             SKAction.wait(forDuration: delay ?? 0),
