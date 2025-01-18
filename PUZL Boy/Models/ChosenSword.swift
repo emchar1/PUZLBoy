@@ -11,6 +11,8 @@ class ChosenSword {
     
     // MARK: - Properties
     
+    static let namePrefix: String = "chosenSword_"
+    
     //Stats properties
     private(set) var type: SwordType
     
@@ -24,6 +26,7 @@ class ChosenSword {
     private(set) var defenseRating: CGFloat = 1
     
     var attackRatingPercentage: CGFloat { attackRating / 100 }
+    var chosenSwordName: String { "\(ChosenSword.namePrefix)\(type.rawValue)" }
     
     
     //Required properties
@@ -75,12 +78,13 @@ class ChosenSword {
         }
         
         spriteNode = SKSpriteNode(imageNamed: imageName)
+        spriteNode.name = chosenSwordName
         
         let attackPercent: String = "\(Int(attackRating))%"
         let piercingBonus: String = piercingBonus == 1 ? "" : " +\(piercingBonus)"
         let defensePercent: String = "\(Int(48.0 / defenseRating))%"
         
-        elderCommentary += "\n\n🗡️\(attackPercent)\(piercingBonus)       🛡️\(defensePercent)"
+        elderCommentary += "\n\nSTATS: 🗡️\(attackPercent)\(piercingBonus)   🛡️\(defensePercent)"
     }
     
     

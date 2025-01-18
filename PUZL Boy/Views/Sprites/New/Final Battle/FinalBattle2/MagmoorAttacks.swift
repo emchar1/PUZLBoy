@@ -130,7 +130,9 @@ class MagmoorAttacks {
     
     /**
      Executes an attack animation with sound and particles.
-     - parameter color: color of the wand particle.
+     - parameters:
+        - color: color of the wand particle
+        - playSFX: if true, play villainattack and villainattackwand SFX's
      */
     func executeAttackAnimation(color: UIColor, playSFX: Bool) {
         let colorSequence = SKKeyframeSequence(keyframeValues: [

@@ -618,7 +618,7 @@ class GameScene: SKScene {
         gameEngine.shouldDisableInput(true)
         pauseResetEngine.shouldDisable(true)
         
-        chatEngine.playDialogue(level: currentLevel, statueTapped: true) { [weak self] _ in
+        chatEngine.playDialogue(level: currentLevel, anyValue: true) { [weak self] _ in
             self?.gameEngine.shouldDisableInput(false)
             self?.pauseResetEngine.shouldDisable(false)
         }

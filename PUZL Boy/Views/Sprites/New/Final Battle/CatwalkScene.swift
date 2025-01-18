@@ -17,7 +17,6 @@ class CatwalkScene: SKScene {
     
     private let tikiNodeName = "tikiStatueNode"
     private let chestNodeName = "treasureChestNode"
-    private let chosenSwordName = "chosenSword_"
     private let catwalkOverworld = "magicdoomloop"
     private let panelCount: Int = 5
     private let catwalkLength: Int = 51
@@ -31,6 +30,9 @@ class CatwalkScene: SKScene {
     private var gemsFed = 0
     private var shouldFeedGems: Bool = false
     private var isFeedingGems: Bool = false
+    private var canOpenChest: Bool = false
+    private var shouldSelectSword: Bool = false
+    private var isSelectingSword: Bool = false
 
     private let catwalkPanelNameDelimiter: Character = "_"
     private var catwalkPanelNamePrefix: String { "catwalkPanel\(catwalkPanelNameDelimiter)" }
@@ -179,13 +181,6 @@ class CatwalkScene: SKScene {
         villain = Player(type: .villain)
         villain.sprite.alpha = 0
         
-        swordSprite = ChosenSword(didPursueMagmoor: FIRManager.didPursueMagmoor,
-                                  didGiveAwayFeather: FIRManager.didGiveAwayFeather,
-                                  bravery: FIRManager.bravery)
-        swordSprite.spriteNode.scale(to: scaleSize)
-        swordSprite.spriteNode.alpha = 0
-        swordSprite.spriteNode.zPosition = K.ZPosition.player - 1
-        
         magmoorSprite = SKSpriteNode(imageNamed: "villainRedEyes")
         magmoorSprite.size = CGSize(width: size.width, height: size.width)
         magmoorSprite.position = CGPoint(x: size.width / 2, y: size.height * 3/5)
@@ -291,23 +286,29 @@ class CatwalkScene: SKScene {
         chatEngine.didTapButton(in: location)
         chatEngine.touchUp()
         
-        if shouldFeedGems {
-            var didTapGate = false
+        if let tikiNode = nodes(at: location).filter({ $0.name == tikiNodeName }).first as? SKSpriteNode, tikiNode.action(forKey: "animateStatue") == nil {
+            tikiNode.animateStatue()
+            AudioManager.shared.playSound(for: "touchstatue")
+            Haptics.shared.addHapticFeedback(withStyle: .heavy)
+        }
+        
+        if canOpenChest {
+            guard nodes(at: location).filter({ $0.name == chestNodeName }).first != nil else { return }
             
-            nodes(at: location).forEach { node in
-                guard let name = node.name, name == catwalkPanelNamePrefix + "\(catwalkLength)" else { return }
-                
-                didTapGate = true
-            }
-            
+            openChest()
+            Haptics.shared.addHapticFeedback(withStyle: .heavy)
+        }
+        else if shouldSelectSword {
+            selectSword(in: location)
+        }
+        else if shouldFeedGems {
+            let didTapGate = nodes(at: location).filter({ $0.name == catwalkPanelNamePrefix + "\(catwalkLength)" }).first != nil
             feedGems(at: location, didTapGate: didTapGate)
         }
         else {
-            nodes(at: location).forEach { node in
-                guard let name = node.name else { return }
-                
-                moveHero(to: name)
-            }
+            guard let name = nodes(at: location).filter({ ($0.name ?? "").contains(catwalkPanelNamePrefix) }).first?.name else { return }
+            
+            moveHero(to: name)
         }
     }
     
@@ -375,12 +376,12 @@ class CatwalkScene: SKScene {
         return Player.animate(player: player, type: type, timePerFrameMultiplier: isRedShift ? 2 : 1)
     }
     
-    private func playDialogue(panelIndex: Int) {
+    private func playDialogue(panelIndex: Int, selectedSword: Int? = nil) {
         let dialogueNumber = -1000 - panelIndex
         
         shouldDisableInput = true
         
-        chatEngine.playDialogue(level: dialogueNumber) { [weak self] _ in
+        chatEngine.playDialogue(level: dialogueNumber, anyValue: selectedSword) { [weak self] _ in
             guard let self = self else { return }
             
             shouldDisableInput = false
@@ -677,12 +678,61 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
         ]))
     }
     
-    func spawnSwordCatwalk(spawnDuration: TimeInterval) {
-        swordSprite.spriteNode.position = getHeroPosition(xPanelOffset: 1, yOffset: 300)
+    func spawnChestCatwalk(spawnDuration: TimeInterval) {
+        let chestSprite = SKSpriteNode(imageNamed: "chestclosed")
+        chestSprite.position = getHeroPosition(xPanelOffset: 1, yOffset: 300)
+        chestSprite.scale(to: scaleSize)
+        chestSprite.alpha = 0
+        chestSprite.zPosition = K.ZPosition.player - 1
+        chestSprite.name = chestNodeName
         
-        swordSprite.spriteNode.run(SKAction.group([
-            SKAction.fadeIn(withDuration: spawnDuration),
+        chestSprite.run(SKAction.group([
+            SKAction.fadeIn(withDuration: spawnDuration / 2),
             SKAction.moveBy(x: 0, y: -300, duration: spawnDuration)
+        ]))
+        
+        chestSprite.removeFromParent()
+        catwalkNode.addChild(chestSprite)
+    }
+    
+    func canOpenChestCatwalk() {
+        canOpenChest = true
+    }
+    
+    func isSelectingSwordCatwalk() {
+        isSelectingSword = true
+    }
+    
+    func isUnselectingSwordCatwalk() {
+        isSelectingSword = false
+        
+        let scaleDuration: TimeInterval = 0.5
+        
+        for node in catwalkNode.children {
+            guard let name = node.name, name.contains(ChosenSword.namePrefix) else { continue }
+            
+            node.removeAction(forKey: "selectSwordPulseAction")
+            node.removeAction(forKey: "selectSwordScaleAction")
+            node.run(SKAction.scale(to: scaleSize, duration: scaleDuration))
+        }
+    }
+    
+    func spawnSwordCatwalk(chosenSword: ChosenSword, spawnDuration: TimeInterval, delay: TimeInterval?) {
+        //IMPORTANT: Call this BEFORE initializing swordSprite!
+        didSelectSwordHelper(chosenSword: chosenSword, hideDuration: delay ?? 0)
+
+        swordSprite = ChosenSword(type: chosenSword.type.rawValue)
+        swordSprite.spriteNode.position = getHeroPosition(xPanelOffset: 1, yOffset: 300)
+        swordSprite.spriteNode.scale(to: scaleSize)
+        swordSprite.spriteNode.alpha = 0
+        swordSprite.spriteNode.zPosition = K.ZPosition.player - 1
+        
+        swordSprite.spriteNode.run(SKAction.sequence([
+            SKAction.wait(forDuration: delay ?? 0),
+            SKAction.group([
+                SKAction.fadeIn(withDuration: 0),
+                SKAction.moveBy(x: 0, y: -300, duration: spawnDuration)
+            ])
         ]))
         
         swordSprite.spriteNode.removeFromParent() //just in case...
@@ -971,6 +1021,123 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
             ]),
             SKAction.fadeOut(withDuration: 0)
         ]))
+    }
+    
+    /**
+     Opens the treasure chest.
+     */
+    private func openChest() {
+        guard let chestSprite = catwalkNode.childNode(withName: chestNodeName) as? SKSpriteNode else { return }
+        
+        canOpenChest = false
+        shouldSelectSword = true
+        
+        chestSprite.texture = SKTexture(imageNamed: "chestopen")
+        AudioManager.shared.playSound(for: "pickupitem")
+        
+        let moveDuration: TimeInterval = 0.5
+        let swordChoicesCount: Int = ChosenSword.SwordType.allCases.count
+        let swordDivision: Int = Int(ceil(CGFloat(swordChoicesCount) / CGFloat(2)))
+        
+        for i in 0..<swordChoicesCount {
+            let imageName: String
+            
+            switch i {
+            case 0: imageName = "sword1Celestial"
+            case 1: imageName = "sword2Heavenly"
+            case 2: imageName = "sword3Cosmic"
+            case 3: imageName = "sword4Eternal"
+            default: imageName = "sword"
+            }
+            
+            let swordNode = SKSpriteNode(imageNamed: imageName)
+            swordNode.position = chestSprite.position
+            swordNode.setScale(0)
+            swordNode.zPosition = K.ZPosition.player + 1
+            swordNode.name = "\(ChosenSword.namePrefix)\(i)"
+            catwalkNode.addChild(swordNode)
+            
+            
+            let isTopRow: Bool = i < swordDivision
+            let backgroundSize: CGFloat = backgroundNode.size.width / CGFloat(swordDivision)
+            let xOffset: CGFloat = isTopRow ? (1/2 + CGFloat(i)) : (1 + CGFloat(i - swordDivision))
+            let yOffset: CGFloat = (isTopRow ? 600 : 300) / UIDevice.spriteScale
+            let endPosition: CGPoint = CGPoint(x: xOffset * backgroundSize - catwalkNode.position.x, y: yOffset)
+            
+            swordNode.run(SKAction.sequence([
+                SKAction.group([
+                    SKAction.move(to: endPosition, duration: moveDuration),
+                    SKAction.rotate(byAngle: 2 * .pi, duration: moveDuration),
+                    SKAction.scale(to: scaleSize, duration: moveDuration)
+                ]),
+                SKAction.scale(to: scaleSize * 1.2, duration: moveDuration / 2),
+                SKAction.scale(to: scaleSize * 0.8, duration: moveDuration / 2),
+                SKAction.scale(to: scaleSize, duration: moveDuration / 2)
+            ]))
+        } //end for
+    }//end openChest()
+    
+    /**
+     Selects a ChosenSword, based on availability.
+     */
+    private func selectSword(in location: CGPoint) {
+        guard !isSelectingSword else { return }
+        guard let swordNode = nodes(at: location).filter({ ($0.name ?? "").contains(ChosenSword.namePrefix) }).first as? SKSpriteNode,
+              let swordName = swordNode.name,
+              let swordType = Int(String(swordName.suffix(from: swordName.firstIndex(of: "_")!).dropFirst())) else { return }
+
+        let scaleDuration: TimeInterval = 0.25
+        
+        swordNode.run(SKAction.sequence([
+            SKAction.wait(forDuration: scaleDuration * 4),
+            SKAction.repeatForever(SKAction.sequence([
+                SKAction.scale(to: scaleSize * 2, duration: scaleDuration * 8),
+                SKAction.scale(to: scaleSize * 2.5, duration: scaleDuration * 8)
+            ]))
+        ]), withKey: "selectSwordPulseAction")
+        
+        swordNode.run(SKAction.sequence([
+            SKAction.scale(to: scaleSize * 3, duration: scaleDuration),
+            SKAction.scale(to: scaleSize * 2, duration: scaleDuration),
+            SKAction.scale(to: scaleSize * 2.5, duration: scaleDuration * 2)
+        ]), withKey: "selectSwordScaleAction")
+        
+        ButtonTap.shared.tap(type: .buttontap1)
+        
+        playDialogue(panelIndex: -2, selectedSword: swordType)
+    }
+    
+    private func didSelectSwordHelper(chosenSword: ChosenSword, hideDuration: TimeInterval) {
+        shouldSelectSword = false
+        FIRManager.updateFirestoreRecordChosenSword(chosenSword.type.rawValue)
+        
+        guard let chestSprite = catwalkNode.childNode(withName: chestNodeName) as? SKSpriteNode else { return }
+        
+        catwalkNode.children.forEach { node in
+            guard let name = node.name, name.contains(ChosenSword.namePrefix), let nonchosenSword = node as? SKSpriteNode else { return }
+            
+            let isChosenSword = nonchosenSword.name == chosenSword.spriteNode.name
+            
+            nonchosenSword.run(SKAction.sequence([
+                SKAction.group([
+                    SKAction.rotate(byAngle: -2 * .pi, duration: hideDuration),
+                    SKAction.move(to: chestSprite.position + CGPoint(x: 0, y: isChosenSword ? 300 : 0), duration: hideDuration),
+                    SKAction.scale(to: isChosenSword ? scaleSize : .zero, duration: hideDuration),
+                ]),
+                SKAction.removeFromParent()
+            ]))
+        }
+        
+        AudioManager.shared.playSound(for: "chestclose")
+        
+        chestSprite.texture = SKTexture(imageNamed: "chestclosed")
+        chestSprite.run(SKAction.sequence([
+            SKAction.wait(forDuration: hideDuration),
+            SKAction.fadeOut(withDuration: hideDuration * 2),
+            SKAction.removeFromParent()
+        ]))
+        
+        print("Sword selected: \(chosenSword.type)")
     }
     
     /**

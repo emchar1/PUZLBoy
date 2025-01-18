@@ -56,7 +56,8 @@ class ChatDecisionEngine: ChatDecisionSpriteDelegate {
          decision0: (left: String, right: String),
          decision1: (left: String, right: String),
          decision2: (left: String, right: String),
-         decision3: (left: String, right: String)) {
+         decision3: (left: String, right: String),
+         decision4: (left: String, right: String)) {
         
         self.buttonSize = buttonSize
         self.leftButtonPositionLeft = leftButtonPositionLeft
@@ -66,6 +67,7 @@ class ChatDecisionEngine: ChatDecisionSpriteDelegate {
         decisionButtons.append((getButton(text: decision1.left, order: .left, index: 1), getButton(text: decision1.right, order: .right, index: 1), nil))
         decisionButtons.append((getButton(text: decision2.left, order: .left, index: 2), getButton(text: decision2.right, order: .right, index: 2), nil))
         decisionButtons.append((getButton(text: decision3.left, order: .left, index: 3), getButton(text: decision3.right, order: .right, index: 3), nil))
+        decisionButtons.append((getButton(text: decision4.left, order: .left, index: 4), getButton(text: decision4.right, order: .right, index: 4), nil))
     }
     
     /**

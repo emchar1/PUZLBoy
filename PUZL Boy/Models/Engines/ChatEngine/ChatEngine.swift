@@ -17,7 +17,11 @@ protocol ChatEngineCatwalkDelegate: AnyObject {
     func despawnMarlinCatwalk()
     func spawnTikiCatwalk(statueNumber: Int, fadeIn: TimeInterval)
     func despawnTikiCatwalk(fadeOut: TimeInterval, delay: TimeInterval?)
-    func spawnSwordCatwalk(spawnDuration: TimeInterval)
+    func spawnChestCatwalk(spawnDuration: TimeInterval)
+    func canOpenChestCatwalk()
+    func isSelectingSwordCatwalk()
+    func isUnselectingSwordCatwalk()
+    func spawnSwordCatwalk(chosenSword: ChosenSword, spawnDuration: TimeInterval, delay: TimeInterval?)
     func despawnSwordCatwalk(fadeDuration: TimeInterval, delay: TimeInterval?)
     func throwSwordCatwalk()
     func showGateCatwalk(completion: @escaping () -> Void)
@@ -212,7 +216,8 @@ class ChatEngine {
             decision0: ("Pursue Him", "Prepare First"),
             decision1: ("Fire", "Ice"),
             decision2: ("Give It Away", "Keep It"),
-            decision3: ("Defeat Him", "Let Him Go"))
+            decision3: ("Kill Him", "Let Him Go"),
+            decision4: ("Choose Sword!", "Wait."))
         chatDecisionEngine.delegate = self
 
         
@@ -659,6 +664,9 @@ extension ChatEngine: ChatDecisionEngineDelegate {
             }
         case 3:
             break
+        case 4:
+            //Sword Selection Decision... Choose Sword! or Wait. Logic found in CatwalkScene.swift
+            break
         default:
             print("Unknown Decision Question, index: \(index)")
             break
@@ -707,6 +715,7 @@ extension ChatEngine {
         else {
             //AGE OF BALANCE - CATWALK Dialogue
             
+            dialoguePlayed[-998] = false //For sword selection process
             dialoguePlayed[-999] = false //Called if PUZL Boy tries to backtrack.
             dialoguePlayed[-1000] = false
             dialoguePlayed[-1006] = false
@@ -1024,10 +1033,11 @@ extension ChatEngine {
      Main function to play chat dialogue for a given level.
      - parameters:
         - level: the level # for the chat dialogue to play
+        - anyValue: some value, any value, that you want to pass along
         - completion: completion handler to execute at the end of the dialogue
      */
-    func playDialogue(level: Int, statueTapped: Bool = false, completion: ((Cutscene?) -> Void)?) {
-        guard let dialoguePlayedCheck = dialoguePlayed[level], !dialoguePlayedCheck || statueTapped else {
+    func playDialogue(level: Int, anyValue: Any? = nil, completion: ((Cutscene?) -> Void)?) {
+        guard let dialoguePlayedCheck = dialoguePlayed[level], !dialoguePlayedCheck || anyValue != nil else {
             isChatting = false
             completion?(nil)
             return
@@ -1036,18 +1046,62 @@ extension ChatEngine {
         isChatting = true
 
         if AgeOfRuin.isActive {
-            playDialogueAgeOfRuin(level: level, completion: completion)
+            playDialogueAgeOfRuin(level: level, anyValue: anyValue, completion: completion)
         }
         else {
-            playDialogueAgeOfBalance(level: level, statueTapped: statueTapped, completion: completion)
+            playDialogueAgeOfBalance(level: level, anyValue: anyValue, completion: completion)
         }
     }//end playDialogue(level:statueTapped:completion:)
     
     ///Sets up and plays dialogue for Age of Balance setting.
-    private func playDialogueAgeOfBalance(level: Int, statueTapped: Bool, completion: ((Cutscene?) -> Void)?) {
+    private func playDialogueAgeOfBalance(level: Int, anyValue: Any?, completion: ((Cutscene?) -> Void)?) {
         switch level {
             
         //CATWALK
+        case -998:
+            func returnLoop() {
+                isChatting = false
+                delegateCatwalk?.isUnselectingSwordCatwalk()
+                completion?(nil)
+            }
+            
+            guard let selectedSword = anyValue as? Int else {
+                returnLoop()
+                return
+            }
+            
+            let chosenSword = ChosenSword(type: selectedSword)
+            
+            delegateCatwalk?.isSelectingSwordCatwalk()
+            
+            sendChatArray(shouldSkipDim: true, items: [
+                ChatItem(profile: .merton, chat: chosenSword.elderCommentary) { [weak self] in
+                    guard let self = self else { return }
+                    chatDecisionEngine.showDecisions(index: 4, toNode: chatBackgroundSprite, displayOnLeft: false)
+                },
+                ChatItem(profile: .hero, imgPos: .left, endChat: false, chat: "Hmmm.. choose the \(chosenSword.description)?", handler: nil),
+            ]) { [weak self] in
+                guard let self = self else { return }
+                
+                if let decision = chatDecisionEngine.decisionButtons[4].selected {
+                    let canProceed = decision == .left
+                    
+                    sendChatArray(items: [
+                        ChatItem(profile: .hero, imgPos: .left, startNewChat: false, chat: canProceed ? "Wrap it up, I'll take it!" : "Hold on a sec...", handler: nil)
+                    ]) {
+                        if canProceed {
+                            self.delegateCatwalk?.spawnSwordCatwalk(chosenSword: chosenSword, spawnDuration: 2, delay: 0.5)
+                            self.handleDialogueCompletion(level: level, completion: completion)
+                        }
+                        else {
+                            returnLoop()
+                        }
+                    }
+                }
+                else {
+                    returnLoop()
+                }
+            }
         case -999:
             sendChatArray(shouldSkipDim: true, items: [
                 ChatItem(profile: .melchior, chat: "Where do you think you're going, PUZL Boy? The only way out is through!")
@@ -1161,19 +1215,17 @@ extension ChatEngine {
                 ChatItem(profile: tikiSelected, chat: "Hey there PUZL Boy! You look down in the mouth. Don't be so discouraged."),
                 ChatItem(profile: .hero, imgPos: .left, chat: "Yeah, well.. I am NOT having the best day of my life right now, to be honest."),
                 ChatItem(profile: tikiSelected, endChat: true, chat: "Cheer up, friend! All is not lost. Here's a little something to lift your spirits...") { [weak self] in
-                    self?.delegateCatwalk?.spawnSwordCatwalk(spawnDuration: swordSpawnDuration)
+                    self?.delegateCatwalk?.spawnChestCatwalk(spawnDuration: swordSpawnDuration)
                 },
-                ChatItem(profile: tikiSelected, pause: swordSpawnDuration + 1, startNewChat: true, chat: "Go on, take it! But please be VERY careful with it! It is of divine origin...", handler: nil),
-                ChatItem(profile: tikiSelected, chat: "Legend has it, the Mystic steelsmith, Mythrile forged the blade in the fire of a dying star... it is near indestructible!")
+                ChatItem(profile: tikiSelected, pause: swordSpawnDuration + 1, startNewChat: true, chat: "Go on, check it out! Its contents will help you on your way.", handler: nil)
             ]) { [weak self] in
+                self?.delegateCatwalk?.canOpenChestCatwalk()
                 self?.handleDialogueCompletion(level: level, completion: completion)
             }
         case -1036:
             let fadeOut: TimeInterval = 2
             let logoDuration: TimeInterval = 9
-            let chosenSword = ChosenSword(didPursueMagmoor: FIRManager.didPursueMagmoor,
-                                          didGiveAwayFeather: FIRManager.didGiveAwayFeather,
-                                          bravery: FIRManager.bravery)
+            let chosenSword = ChosenSword(type: FIRManager.chosenSword)
             
             delegateCatwalk?.stopMusicCatwalk(music: "overworldmarimba", fadeOut: fadeOut, delay: logoDuration, shouldPlayOverworld: true)
             delegateCatwalk?.despawnTikiCatwalk(fadeOut: fadeOut, delay: logoDuration)
@@ -1184,8 +1236,8 @@ extension ChatEngine {
                 ChatItem(profile: .blankhero, startNewChat: false, chat: "\n\nReceived \(chosenSword.description).") { [weak self] in
                     self?.showFFButton()
                 },
-                ChatItem(profile: .hero, imgPos: .left, chat: "Wow!!! This is... something. It's... incredible. I promise to be very careful with it! 🤩"),
-                ChatItem(profile: .merton, chat: "\(chosenSword.elderCommentary)\n\nRating: \(Int(chosenSword.attackRating))/100")
+                ChatItem(profile: .melchior, chat: "Be VERY careful with it! Legend has it, the Mystic steelsmith, Mythrile forged the blade in the fire of a dying star... it is near indestructible!"),
+                ChatItem(profile: .hero, imgPos: .left, chat: "Wow!!! This is... something. It's... incredible. I promise to take good care of it! 🤩")
             ]) { [weak self] in
                 self?.showFFButton()
                 self?.handleDialogueCompletion(level: level, completion: completion)
@@ -1934,7 +1986,7 @@ extension ChatEngine {
                 }
             }
         case 319:
-            if statueTapped {
+            if let statueTapped = anyValue as? Bool, statueTapped {
                 sendChatArray(shouldSkipDim: true, items: dialogueStatue0.getDialogue()) { [weak self] in
                     self?.handleDialogueCompletion(level: level, completion: completion)
                 }
@@ -1947,7 +1999,7 @@ extension ChatEngine {
                 }
             }
         case 339:
-            if statueTapped {
+            if let statueTapped = anyValue as? Bool, statueTapped {
                 sendChatArray(shouldSkipDim: true, items: dialogueStatue1.getDialogue()) { [weak self] in
                     self?.handleDialogueCompletion(level: level, completion: completion)
                 }
@@ -1956,7 +2008,7 @@ extension ChatEngine {
                 handleDialogueCompletion(level: level, completion: completion)
             }
         case 351:
-            if statueTapped {
+            if let statueTapped = anyValue as? Bool, statueTapped {
                 sendChatArray(shouldSkipDim: true, items: dialogueStatue2.getDialogue()) { [weak self] in
                     self?.handleDialogueCompletion(level: level, completion: completion)
                 }
@@ -1969,7 +2021,7 @@ extension ChatEngine {
                 }
             }
         case 376:
-            if statueTapped {
+            if let statueTapped = anyValue as? Bool, statueTapped {
                 sendChatArray(shouldSkipDim: true, items: dialogueStatue3.getDialogue()) { [weak self] in
                     self?.handleDialogueCompletion(level: level, completion: completion)
                 }
@@ -1978,7 +2030,7 @@ extension ChatEngine {
                 handleDialogueCompletion(level: level, completion: completion)
             }
         case 401:
-            if statueTapped {
+            if let statueTapped = anyValue as? Bool, statueTapped {
                 sendChatArray(shouldSkipDim: true, items: dialogueStatue4.getDialogue()) { [weak self] in
                     self?.handleDialogueCompletion(level: level, completion: completion)
                 }
@@ -2196,7 +2248,7 @@ extension ChatEngine {
                 } //end delegate?.minionAttack()
             } //end outer sendChatArray()
         case 475:
-            if statueTapped {
+            if let statueTapped = anyValue as? Bool, statueTapped {
                 sendChatArray(shouldSkipDim: true, items: dialogueStatue3b.getDialogue()) { [weak self] in
                     self?.handleDialogueCompletion(level: level, completion: completion)
                 }
@@ -2230,7 +2282,7 @@ extension ChatEngine {
     }//end playDialogueAgeOfBalance()
 
     ///Sets up and plays dialogue for Age of Ruin setting.
-    private func playDialogueAgeOfRuin(level: Int, completion: ((Cutscene?) -> Void)?) {
+    private func playDialogueAgeOfRuin(level: Int, anyValue: Any?, completion: ((Cutscene?) -> Void)?) {
         switch level {
         
         //PUZZLE REALM (AOR)

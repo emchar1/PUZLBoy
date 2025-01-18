@@ -425,8 +425,9 @@ struct FIRManager {
     
     ///Convenience method to update the decision field in a record and the static decisions array property.
     static func updateFirestoreRecordDecision(index: Int, buttonOrder: ChatDecisionEngine.ButtonOrder?) {
-        let indexAdjusted = index.clamp(min: 0, max: 3)
-        let FIRfield = "aorDecisionLeftButton\(indexAdjusted)"
+        guard index >= 0 && index <= 3 else { return print("Decision Button (\(index)) was not written to Firestore. 4 = Sword Selection decision.") }
+        
+        let FIRfield = "aorDecisionLeftButton\(index)"
         let FIRvalue: Bool?
         
         if let buttonOrder = buttonOrder {
@@ -436,7 +437,7 @@ struct FIRManager {
             FIRvalue = nil
         }
 
-        decisionsLeftButton[indexAdjusted] = FIRvalue
+        decisionsLeftButton[index] = FIRvalue
 
         updateFirestoreRecordFields(fields: [FIRfield : FIRvalue ?? NSNull()])
     }
