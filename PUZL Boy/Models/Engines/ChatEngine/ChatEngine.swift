@@ -1220,7 +1220,6 @@ extension ChatEngine {
                 self?.handleDialogueCompletion(level: level, completion: completion)
             }
         case -1035:
-            let tikiSelected: ChatItem.ChatProfile
             let fadeIn: TimeInterval = 1
             let swordSpawnDuration: TimeInterval = 2
             
