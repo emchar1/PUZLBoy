@@ -1114,7 +1114,11 @@ extension ChatEngine {
                 let canProceed = decision == .left
                 
                 sendChatArray(items: [
-                    ChatItem(profile: .hero, imgPos: .left, startNewChat: false, chat: canProceed ? "Wrap it up, I'll take it!" : "Hold on a sec...", handler: nil)
+                    ChatItem(profile: .hero,
+                             imgPos: .left,
+                             startNewChat: false,
+                             chat: canProceed ? heroChatApproveOptions.randomElement()! : heroChatWaitOptions.randomElement()!,
+                             handler: nil)
                 ]) {
                     if canProceed {
                         self.delegateCatwalk?.spawnSwordCatwalk(chosenSword: chosenSword, spawnDuration: 2, delay: 0.5)
