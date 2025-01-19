@@ -78,7 +78,7 @@ class MagmoorShield: SKNode {
      Resets the shield to the max, i.e. 3 and apply a quick animation.
      */
     func resetShield(villain: Player) {
-        maxHitPoints = Int.random(in: 2...6)
+        maxHitPoints = FIRManager.chosenSword == ChosenSword.SwordType.plainSword.rawValue ? 6 : Int.random(in: 2...6)
         hitPoints = maxHitPoints
         
         removeAllActions()

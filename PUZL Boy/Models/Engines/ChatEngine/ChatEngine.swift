@@ -1072,6 +1072,22 @@ extension ChatEngine {
             
             let chosenSword = ChosenSword(type: selectedSword)
             let isAvailable = ChosenSword.isAvailable(type: chosenSword.type)
+            let heroChatApproveOptions: [String] = [
+                "Wrap it up, I'll take it!",
+                "OMG, this— This is the one!",
+                "This sword and I... are ONE!",
+                "B-I-N-G-O!!!!",
+                "Yes. Yes yes yes yes yassss!!!",
+                "I have made my decision!"
+            ]
+            let heroChatWaitOptions: [String] = [
+                "Hold on a sec...",
+                "Lemme shop around a bit more...",
+                "It's a 'NO' for me.",
+                "What else ya got?",
+                "I don't hate it. But I don't love it either...",
+                "Sigh, I'll pass on this one..."
+            ]
             
             delegateCatwalk?.isSelectingSwordCatwalk()
             
@@ -1086,7 +1102,7 @@ extension ChatEngine {
                 ChatItem(profile: isAvailable ? .hero : .merton,
                          imgPos: isAvailable ? .left : .right,
                          endChat: !isAvailable,
-                         chat: isAvailable ? "Hmmm.. choose the \(chosenSword.description)?" : "Alas, this sword is not available for selection. Perhaps if you had made a different decision earlier in your journey...",
+                         chat: isAvailable ? "Hmmm.. choose the \(chosenSword.description)?" : "Alas, this sword is not available for selection! Perhaps if you had made a different decision earlier on in your journey...",
                          handler: nil),
             ]) { [weak self] in
                 guard let self = self else { return }
