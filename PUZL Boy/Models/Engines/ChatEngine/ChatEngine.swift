@@ -21,7 +21,7 @@ protocol ChatEngineCatwalkDelegate: AnyObject {
     func canOpenChestCatwalk()
     func isSelectingSwordCatwalk()
     func isUnselectingSwordCatwalk()
-    func spawnSwordCatwalk(chosenSword: ChosenSword, spawnDuration: TimeInterval, delay: TimeInterval?)
+    func spawnSwordCatwalk(chosenSword: ChosenSword, spawnDuration: TimeInterval, delay: TimeInterval?, completion: @escaping () -> Void)
     func despawnSwordCatwalk(fadeDuration: TimeInterval, delay: TimeInterval?)
     func throwSwordCatwalk()
     func showGateCatwalk(completion: @escaping () -> Void)
@@ -1076,7 +1076,7 @@ extension ChatEngine {
                 "Wrap it up, I'll take it!",
                 "OMG, this— This is the one!",
                 "This sword and I... are ONE!",
-                "B-I-N-G-O!!!!",
+                "B-I-N-G-O!!!! We have a winner!",
                 "Yes. Yes yes yes yes yassss!!!",
                 "I have made my decision!"
             ]
@@ -1088,10 +1088,17 @@ extension ChatEngine {
                 "I don't hate it. But I don't love it either...",
                 "Sigh, I'll pass on this one..."
             ]
+            let tikiChatOptions: [String] = [
+                "Ah, yes! The ",
+                "This one's the ",
+                "Here we have the ",
+                "And this is the "
+            ]
             
             delegateCatwalk?.isSelectingSwordCatwalk()
             
             sendChatArray(shouldSkipDim: true, items: [
+                ChatItem(profile: .statue1, chat: "\(tikiChatOptions.randomElement()!)\(chosenSword.description)."),
                 ChatItem(profile: .merton, chat: chosenSword.elderCommentary) { [weak self] in
                     guard let self = self else { return }
                     
@@ -1101,7 +1108,7 @@ extension ChatEngine {
                 },
                 ChatItem(profile: .statue1,
                          endChat: !isAvailable,
-                         chat: isAvailable ? "Will you choose the \(chosenSword.description)?" : "Unfortunately that sword isn't available for selection! Though if you had made a different decision earlier on in your journey, like I warned...",
+                         chat: isAvailable ? "Have you decided then?" : "Unfortunately that sword isn't available for selection! Though if you had made a different decision earlier on in your journey, like I warned...",
                          handler: nil),
             ]) { [weak self] in
                 guard let self = self else { return }
@@ -1120,8 +1127,9 @@ extension ChatEngine {
                              handler: nil)
                 ]) {
                     if canProceed {
-                        self.delegateCatwalk?.spawnSwordCatwalk(chosenSword: chosenSword, spawnDuration: 2, delay: 0.5)
-                        self.handleDialogueCompletion(level: level, completion: completion)
+                        self.delegateCatwalk?.spawnSwordCatwalk(chosenSword: chosenSword, spawnDuration: 2, delay: 0.5) {
+                            self.handleDialogueCompletion(level: level, completion: completion)
+                        }
                     }
                     else {
                         returnLoop()
@@ -1232,7 +1240,7 @@ extension ChatEngine {
                 ChatItem(profile: .statue1, endChat: true, chat: "Cheer up, friend! All is not lost. Here's a little something to lift your spirits...") { [weak self] in
                     self?.delegateCatwalk?.spawnChestCatwalk(spawnDuration: swordSpawnDuration)
                 },
-                ChatItem(profile: .statue1, pause: swordSpawnDuration + 1, startNewChat: true, chat: "We tikis banned together to bring you the best of the best. Go on, check it out! Its contents will help you on your way.", handler: nil)
+                ChatItem(profile: .statue1, pause: swordSpawnDuration, startNewChat: true, chat: "We tikis banded together to get you something special. Go on, open it! Its contents will help you on your way.", handler: nil)
             ]) { [weak self] in
                 self?.delegateCatwalk?.canOpenChestCatwalk()
                 self?.handleDialogueCompletion(level: level, completion: completion)

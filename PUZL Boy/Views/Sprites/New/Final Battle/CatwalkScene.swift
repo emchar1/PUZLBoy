@@ -711,13 +711,14 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
         for node in catwalkNode.children {
             guard let name = node.name, name.contains(ChosenSword.namePrefix) else { continue }
             
+            node.action(forKey: "swordFloatAction")?.speed = 1
             node.removeAction(forKey: "selectSwordPulseAction")
             node.removeAction(forKey: "selectSwordScaleAction")
             node.run(SKAction.scale(to: scaleSize, duration: scaleDuration))
         }
     }
     
-    func spawnSwordCatwalk(chosenSword: ChosenSword, spawnDuration: TimeInterval, delay: TimeInterval?) {
+    func spawnSwordCatwalk(chosenSword: ChosenSword, spawnDuration: TimeInterval, delay: TimeInterval?, completion: @escaping () -> Void) {
         //IMPORTANT: Call this BEFORE initializing swordSprite!
         didSelectSwordHelper(chosenSword: chosenSword, hideDuration: delay ?? 0)
 
@@ -733,7 +734,7 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
                 SKAction.fadeIn(withDuration: 0),
                 SKAction.moveBy(x: 0, y: -300, duration: spawnDuration)
             ])
-        ]))
+        ]), completion: completion)
         
         swordSprite.spriteNode.removeFromParent() //just in case...
         catwalkNode.addChild(swordSprite.spriteNode)
@@ -1036,6 +1037,7 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
         AudioManager.shared.playSound(for: "pickupitem")
         
         let moveDuration: TimeInterval = 0.5
+        let swordFloatDistance: CGFloat = 20
         let swordChoicesCount: Int = ChosenSword.SwordType.allCases.count
         let swordDivision: Int = Int(ceil(CGFloat(swordChoicesCount) / CGFloat(2)))
         
@@ -1074,6 +1076,11 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
                 SKAction.scale(to: scaleSize * 0.8, duration: moveDuration / 2),
                 SKAction.scale(to: scaleSize, duration: moveDuration / 2)
             ]))
+            
+            swordNode.run(SKAction.repeatForever(SKAction.sequence([
+                SKAction.moveBy(x: 0, y: i % 2 == 0 ? -swordFloatDistance : swordFloatDistance, duration: moveDuration * 4),
+                SKAction.moveBy(x: 0, y: i % 2 == 0 ? swordFloatDistance : -swordFloatDistance, duration: moveDuration * 4)
+            ])), withKey: "swordFloatAction")
         } //end for
     }//end openChest()
     
@@ -1088,11 +1095,13 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
 
         let scaleDuration: TimeInterval = 0.25
         
+        swordNode.action(forKey: "swordFloatAction")?.speed = 0
+        
         swordNode.run(SKAction.sequence([
             SKAction.wait(forDuration: scaleDuration * 4),
             SKAction.repeatForever(SKAction.sequence([
-                SKAction.scale(to: scaleSize * 2, duration: scaleDuration * 8),
-                SKAction.scale(to: scaleSize * 2.5, duration: scaleDuration * 8)
+                SKAction.scale(to: scaleSize * 2, duration: 0),
+                SKAction.scale(to: scaleSize * 2.5, duration: scaleDuration * 4)
             ]))
         ]), withKey: "selectSwordPulseAction")
         
