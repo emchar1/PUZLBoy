@@ -1096,13 +1096,12 @@ extension ChatEngine {
                     guard let self = self else { return }
                     
                     if isAvailable {
-                        chatDecisionEngine.showDecisions(index: 4, toNode: chatBackgroundSprite, displayOnLeft: false)
+                        chatDecisionEngine.showDecisions(index: 4, toNode: chatBackgroundSprite, displayOnLeft: true)
                     }
                 },
-                ChatItem(profile: isAvailable ? .hero : .merton,
-                         imgPos: isAvailable ? .left : .right,
+                ChatItem(profile: .statue1,
                          endChat: !isAvailable,
-                         chat: isAvailable ? "Hmmm.. choose the \(chosenSword.description)?" : "Alas, this sword is not available for selection! Perhaps if you had made a different decision earlier on in your journey...",
+                         chat: isAvailable ? "Will you choose the \(chosenSword.description)?" : "Unfortunately that sword isn't available for selection! Though if you had made a different decision earlier on in your journey, like I warned...",
                          handler: nil),
             ]) { [weak self] in
                 guard let self = self else { return }
@@ -1224,27 +1223,17 @@ extension ChatEngine {
             let tikiSelected: ChatItem.ChatProfile
             let fadeIn: TimeInterval = 1
             let swordSpawnDuration: TimeInterval = 2
-            let randomTiki = Int.random(in: 0...4)
-            
-            switch randomTiki {
-            case 0:     tikiSelected = .statue0
-            case 1:     tikiSelected = .statue1
-            case 2:     tikiSelected = .statue2
-            case 3:     tikiSelected = FIRManager.didGiveAwayFeather ? .statue3b : .statue3
-            case 4:     tikiSelected = .statue4
-            default:    tikiSelected = .statue0
-            }
             
             delegateCatwalk?.playMusicCatwalk(music: "overworldmarimba", startingVolume: 0.25, fadeIn: fadeIn, shouldStopOverworld: true)
-            delegateCatwalk?.spawnTikiCatwalk(statueNumber: randomTiki, fadeIn: fadeIn)
+            delegateCatwalk?.spawnTikiCatwalk(statueNumber: 1, fadeIn: fadeIn)
             
             sendChatArray(shouldSkipDim: true, items: [
-                ChatItem(profile: tikiSelected, chat: "Hey there PUZL Boy! You look down in the mouth. Don't be so discouraged."),
+                ChatItem(profile: .statue1, chat: "Hey there PUZL Boy! You look down in the mouth. Don't be so discouraged."),
                 ChatItem(profile: .hero, imgPos: .left, chat: "Yeah, well.. I am NOT having the best day of my life right now, to be honest."),
-                ChatItem(profile: tikiSelected, endChat: true, chat: "Cheer up, friend! All is not lost. Here's a little something to lift your spirits...") { [weak self] in
+                ChatItem(profile: .statue1, endChat: true, chat: "Cheer up, friend! All is not lost. Here's a little something to lift your spirits...") { [weak self] in
                     self?.delegateCatwalk?.spawnChestCatwalk(spawnDuration: swordSpawnDuration)
                 },
-                ChatItem(profile: tikiSelected, pause: swordSpawnDuration + 1, startNewChat: true, chat: "Go on, check it out! Its contents will help you on your way.", handler: nil)
+                ChatItem(profile: .statue1, pause: swordSpawnDuration + 1, startNewChat: true, chat: "We tikis banned together to bring you the best of the best. Go on, check it out! Its contents will help you on your way.", handler: nil)
             ]) { [weak self] in
                 self?.delegateCatwalk?.canOpenChestCatwalk()
                 self?.handleDialogueCompletion(level: level, completion: completion)
