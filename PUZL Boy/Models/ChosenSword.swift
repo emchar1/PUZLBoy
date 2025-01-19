@@ -25,6 +25,9 @@ class ChosenSword {
     ///The lower the number, the greater the defense, i.e. damage received. Standard = 1.
     private(set) var defenseRating: CGFloat = 1
     
+    ///Movement speed in the final battle 2. Higher = faster.
+    private(set) var speedRating: TimeInterval = 1
+    
     var attackRatingPercentage: CGFloat { attackRating / 100 }
     var chosenSwordName: String { "\(ChosenSword.namePrefix)\(type.rawValue)" }
     
@@ -55,6 +58,7 @@ class ChosenSword {
         case .heavenlySaber:
             attackRating = 82
             defenseRating = 0.8
+            speedRating = 1.5
             imageName = "sword2Heavenly"
             description = "Heavenly Saber of Redemption"
             elderCommentary = "Ooh, that is a good sword! Had to use it on a wraith last week... nasty little buggers!"
@@ -80,11 +84,13 @@ class ChosenSword {
         spriteNode = SKSpriteNode(imageNamed: imageName)
         spriteNode.name = chosenSwordName
         
-        let attackPercent: String = "\(Int(attackRating))%"
-        let piercingBonus: String = piercingBonus == 1 ? "" : " +\(piercingBonus)"
-        let defensePercent: String = "\(Int(48.0 / defenseRating))%"
+        let attackPercentString: String = "\(Int(attackRating))%"
+        let defensePercentString: String = "\(Int(48.0 / defenseRating))%"
+        let piercingBonusString: String = "+\(piercingBonus)"
+        let speedRatingString: String = "x\(String(format: "%.1f", speedRating))"
         
-        elderCommentary += "\n\nSTATS: 🗡️\(attackPercent)\(piercingBonus)   🛡️\(defensePercent)"
+        elderCommentary += "\nSTATS: 🗡️\(attackPercentString)    🛡️\(defensePercentString)"
+        elderCommentary += "\n           ⚔️\(piercingBonusString)      👢\(speedRatingString)"
     }
     
     

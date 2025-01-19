@@ -292,7 +292,7 @@ class FinalBattle2Controls {
     private func movePlayerHelper(_ direction: Controls, completion: (() -> Void)?) {
         let nextPanel: K.GameboardPosition = getNextPanel(direction: direction)
         let panelType = gameboard.getUserDataForLevelType(sprite: gameboard.getPanelSprite(at: positions.player).terrain!)
-        let movementMultiplier: TimeInterval = playerOnSafePanel() ? 1 : 2
+        let movementMultiplier: TimeInterval = (playerOnSafePanel() ? 1 : 2) / chosenSword.speedRating
         let runSound: String
         
         if safePanelFound {

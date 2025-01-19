@@ -843,10 +843,14 @@ extension ChatEngine {
         
         //Lv 339 - Penne the Poet
         dialogueStatue1 = StatueDialogue(dialogue: [
-            //0: 7 - Story branching decision question
+            //0: 11 - Story branching decision question
             ChatItem(profile: .statue1, chat: "Some say the world will end in fire,\nSome say in ice.\nFrom what I've tasted of desire\nI hold with those who favor fire."),
             ChatItem(profile: .statue1, chat: "But if it had to perish twice,\nI think I know enough of hate\nTo say that for destruction ice\nIs also great\nAnd would suffice."),
-            ChatItem(profile: .hero, imgPos: .left, chat: "Robert Frost!") { [weak self] in
+            ChatItem(profile: .hero, imgPos: .left, chat: "Robert Frost!"),
+            ChatItem(profile: .statue1, chat: "No, my name is Penne. Penne the Poet."),
+            ChatItem(profile: .hero, imgPos: .left, chat: "Penne... like the pasta??"),
+            ChatItem(profile: .statue1, chat: "Penne... like the Poet!!"),
+            ChatItem(profile: .hero, imgPos: .left, chat: "If you say so, PENNE.") { [weak self] in
                 guard let self = self else { return }
                 
                 chatDecisionEngine.showDecisions(index: 1, toNode: chatBackgroundSprite, displayOnLeft: true)
@@ -874,7 +878,7 @@ extension ChatEngine {
             //3: 2
             ChatItem(profile: .hero, imgPos: .left, chat: "Please! Help me!!"),
             ChatItem(profile: .statue1, chat: "Trust your instincts, kid. You've made it this far. Do not give up!"),
-        ], indices: [7, 4, 2, 2], shouldSkipFirstQuestion: FIRManager.decisionsLeftButton[1] != nil, shouldRepeatLastDialogueOnEnd: false)
+        ], indices: [11, 4, 2, 2], shouldSkipFirstQuestion: FIRManager.decisionsLeftButton[1] != nil, shouldRepeatLastDialogueOnEnd: false)
         
         
         //Lv 351 - Lars the Liar
@@ -1235,7 +1239,11 @@ extension ChatEngine {
             delegateCatwalk?.spawnTikiCatwalk(statueNumber: 1, fadeIn: fadeIn)
             
             sendChatArray(shouldSkipDim: true, items: [
-                ChatItem(profile: .statue1, chat: "Hey there PUZL Boy! You look down in the mouth. Don't be so discouraged."),
+                ChatItem(profile: .statue1, chat: "Hey there PUZL Boy!"),
+                ChatItem(profile: .hero, imgPos: .left, chat: "Penne the PASTA!! What are you doing down here? Wait.. are you even real?"),
+                ChatItem(profile: .statue1, chat: "Of course I'm real, silly! Touch me."),
+                ChatItem(profile: .hero, imgPos: .left, chat: "😒"),
+                ChatItem(profile: .statue1, chat: "Hahaha! You look down in the mouth. Don't be so discouraged."),
                 ChatItem(profile: .hero, imgPos: .left, chat: "Yeah, well.. I am NOT having the best day of my life right now, to be honest."),
                 ChatItem(profile: .statue1, endChat: true, chat: "Cheer up, friend! All is not lost. Here's a little something to lift your spirits...") { [weak self] in
                     self?.delegateCatwalk?.spawnChestCatwalk(spawnDuration: swordSpawnDuration)
