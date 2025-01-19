@@ -1098,7 +1098,7 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
         swordNode.action(forKey: "swordFloatAction")?.speed = 0
         
         swordNode.run(SKAction.sequence([
-            SKAction.wait(forDuration: scaleDuration * 4),
+            SKAction.wait(forDuration: scaleDuration * 6),
             SKAction.repeatForever(SKAction.sequence([
                 SKAction.scale(to: scaleSize * 2, duration: 0),
                 SKAction.scale(to: scaleSize * 2.5, duration: scaleDuration * 4)
@@ -1108,7 +1108,7 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
         swordNode.run(SKAction.sequence([
             SKAction.scale(to: scaleSize * 3, duration: scaleDuration),
             SKAction.scale(to: scaleSize * 2, duration: scaleDuration),
-            SKAction.scale(to: scaleSize * 2.5, duration: scaleDuration * 2)
+            SKAction.scale(to: scaleSize * 2.5, duration: scaleDuration * 4)
         ]), withKey: "selectSwordScaleAction")
         
         ButtonTap.shared.tap(type: .buttontap1)

@@ -36,6 +36,7 @@ class ChosenSword {
     private(set) var imageName: String
     private(set) var description: String
     private(set) var elderCommentary: String
+    private(set) var stats: String
     private(set) var spriteNode: SKSpriteNode
 
     enum SwordType: Int, CaseIterable {
@@ -54,7 +55,7 @@ class ChosenSword {
             defenseRating = 0.5
             imageName = "sword1Celestial"
             description = "Celestial Broadsword of Justice"
-            elderCommentary = "This sword will get you through the toughest of fights. Thrust downward for maximum damage!"
+            elderCommentary = "Spectacular! This sword will get you through the toughest of fights. Thrust downward for maximum damage!"
         case .heavenlySaber:
             attackRating = 82
             defenseRating = 0.8
@@ -81,16 +82,16 @@ class ChosenSword {
             elderCommentary = "A plain sword... Well, you've got an uphill battle to climb with this mediocre weapon."
         }
         
-        spriteNode = SKSpriteNode(imageNamed: imageName)
-        spriteNode.name = chosenSwordName
-        
         let attackPercentString: String = "\(Int(attackRating))%"
         let defensePercentString: String = "\(Int(48.0 / defenseRating))%"
         let piercingBonusString: String = "+\(piercingBonus)"
         let speedRatingString: String = "x\(String(format: "%.1f", speedRating))"
         
-        elderCommentary += "\nSTATS: 🗡️\(attackPercentString)    🛡️\(defensePercentString)"
-        elderCommentary += "\n           ⚔️\(piercingBonusString)      👢\(speedRatingString)"
+        stats = "Attack: \(attackPercentString)       Defense: \(defensePercentString)"
+        stats += "\nPiercing: \(piercingBonusString)      Movement: \(speedRatingString)"
+        
+        spriteNode = SKSpriteNode(imageNamed: imageName)
+        spriteNode.name = chosenSwordName
     }
     
     

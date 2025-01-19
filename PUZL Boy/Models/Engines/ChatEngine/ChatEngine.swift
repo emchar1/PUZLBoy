@@ -1092,17 +1092,11 @@ extension ChatEngine {
                 "I don't hate it. But I don't love it either...",
                 "Sigh, I'll pass on this one..."
             ]
-            let tikiChatOptions: [String] = [
-                "Ah, yes! The ",
-                "This one's the ",
-                "Here we have the ",
-                "And this is the "
-            ]
             
             delegateCatwalk?.isSelectingSwordCatwalk()
             
             sendChatArray(shouldSkipDim: true, items: [
-                ChatItem(profile: .statue1, chat: "\(tikiChatOptions.randomElement()!)\(chosenSword.description)."),
+                ChatItem(profile: .statue1, chat: "\(chosenSword.description)\n\n\(chosenSword.stats)"),
                 ChatItem(profile: .merton, chat: chosenSword.elderCommentary) { [weak self] in
                     guard let self = self else { return }
                     
