@@ -12,31 +12,30 @@ class ChosenSword {
     // MARK: - Properties
     
     static let namePrefix: String = "chosenSword_"
+    var chosenSwordName: String { "\(ChosenSword.namePrefix)\(type.rawValue)" }
     
-    //Stats properties
-    private(set) var type: SwordType
+    
+    //Stats Properties
     
     ///Percentage out of 100. Simple.
     private(set) var attackRating: CGFloat
     
-    ///Magmoor's shield decrement amount. Higher number = more shield damage. Standard = 1.
-    private(set) var piercingBonus: Int = 1
-    
     ///The lower the number, the greater the defense, i.e. damage received. Standard = 1.
-    private(set) var defenseRating: CGFloat = 1
+    private(set) var defenseRating: CGFloat
+    
+    ///Magmoor's shield decrement amount. Higher number = more shield damage. Standard = 1.
+    private(set) var piercingBonus: Int
     
     ///Movement speed in the final battle 2. Higher = faster.
-    private(set) var speedRating: TimeInterval = 1
-    
-    var attackRatingPercentage: CGFloat { attackRating / 100 }
-    var chosenSwordName: String { "\(ChosenSword.namePrefix)\(type.rawValue)" }
+    private(set) var speedRating: TimeInterval
     
     
     //Required properties
+    private(set) var type: SwordType
     private(set) var imageName: String
-    private(set) var description: String
+    private(set) var swordTitle: String
     private(set) var elderCommentary: String
-    private(set) var stats: String
+    private(set) var statsString: String
     private(set) var spriteNode: SKSpriteNode
 
     enum SwordType: Int, CaseIterable {
@@ -51,44 +50,59 @@ class ChosenSword {
         
         switch self.type {
         case .celestialBroadsword:
-            attackRating = 97
+            attackRating = 0.97
             defenseRating = 0.5
+            piercingBonus = 1
+            speedRating = 1.0
+            
             imageName = "sword1Celestial"
-            description = "Celestial Broadsword of Justice"
+            swordTitle = "Celestial Broadsword of Justice"
             elderCommentary = "Spectacular! This sword will get you through the toughest of fights. Thrust downward for maximum damage!"
         case .heavenlySaber:
-            attackRating = 82
+            attackRating = 0.82
             defenseRating = 0.8
+            piercingBonus = 1
             speedRating = 1.5
+            
             imageName = "sword2Heavenly"
-            description = "Heavenly Saber of Redemption"
+            swordTitle = "Heavenly Saber of Redemption"
             elderCommentary = "Ooh, that is a good sword! Had to use it on a wraith last week... nasty little buggers!"
         case .cosmicCleaver:
-            attackRating = 74
+            attackRating = 0.74
+            defenseRating = 1.0
             piercingBonus = 2
+            speedRating = 1.0
+            
             imageName = "sword3Cosmic"
-            description = "Cosmic Cleaver of Purification"
+            swordTitle = "Cosmic Cleaver of Purification"
             elderCommentary = "This sword packs a mean punch! Careful!! It's heavy and somewhat cumbersome to wield."
         case .eternalBlade:
-            attackRating = 61
+            attackRating = 0.61
+            defenseRating = 1.0
             piercingBonus = 2
+            speedRating = 1.0
+            
             imageName = "sword4Eternal"
-            description = "Blade of Eternal Might"
+            swordTitle = "Blade of Eternal Might"
             elderCommentary = "Not bad at all! Only a few handful of swords are considered mightier than this one..."
         case .plainSword:
-            attackRating = 50
+            attackRating = 0.5
+            defenseRating = 1.0
+            piercingBonus = 1
+            speedRating = 1.0
+            
             imageName = "sword"
-            description = "Plain Sword"
+            swordTitle = "Plain Sword"
             elderCommentary = "A plain sword... Well, you've got an uphill battle to climb with this mediocre weapon."
         }
         
-        let attackPercentString: String = "\(Int(attackRating))"
+        let attackPercentString: String = "\(Int(attackRating * 100))"
         let defensePercentString: String = "\(Int(48.0 / defenseRating))"
         let piercingBonusString: String = "+\(piercingBonus)"
-        let speedRatingString: String = "x\(String(format: "%.1f", speedRating))"
+        let speedRatingString: String = "\(String(format: "%.1f", speedRating))x"
         
-        stats = "Attack: \(attackPercentString)          Defense: \(defensePercentString)"
-        stats += "\nPiercing: \(piercingBonusString)      Speed: \(speedRatingString)"
+        statsString = "Attack: \(attackPercentString)          Defense: \(defensePercentString)"
+        statsString += "\nPiercing: \(piercingBonusString)      Speed: \(speedRatingString)"
         
         spriteNode = SKSpriteNode(imageNamed: imageName)
         spriteNode.name = chosenSwordName

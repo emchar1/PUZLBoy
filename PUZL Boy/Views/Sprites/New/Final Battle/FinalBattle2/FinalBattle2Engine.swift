@@ -304,7 +304,7 @@ class FinalBattle2Engine {
 
 extension FinalBattle2Engine: FinalBattle2ControlsDelegate {
     func didHeroAttack(chosenSword: ChosenSword) {
-        health.updateHealth(type: .heroAttack, dmgMultiplier: chosenSword.attackRatingPercentage)
+        health.updateHealth(type: .heroAttack, dmgMultiplier: chosenSword.attackRating)
     }
     
     func didVillainDisappear(fadeDuration: TimeInterval) {

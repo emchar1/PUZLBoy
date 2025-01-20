@@ -1096,7 +1096,7 @@ extension ChatEngine {
             delegateCatwalk?.isSelectingSwordCatwalk()
             
             sendChatArray(shouldSkipDim: true, items: [
-                ChatItem(profile: .statue1, chat: "\(chosenSword.description)\n\n\(chosenSword.stats)"),
+                ChatItem(profile: .statue1, chat: "\(chosenSword.swordTitle)\n\n\(chosenSword.statsString)"),
                 ChatItem(profile: .merton, chat: chosenSword.elderCommentary) { [weak self] in
                     guard let self = self else { return }
                     
@@ -1258,7 +1258,7 @@ extension ChatEngine {
             hideFFButton()
 
             sendChatArray(shouldSkipDim: true, items: [
-                ChatItem(profile: .blankhero, startNewChat: false, chat: "\n\nReceived \(chosenSword.description).") { [weak self] in
+                ChatItem(profile: .blankhero, startNewChat: false, chat: "\n\nReceived \(chosenSword.swordTitle).") { [weak self] in
                     self?.showFFButton()
                 },
                 ChatItem(profile: .melchior, chat: "Be VERY careful with it! Legend has it, the Mystic steelsmith, Mythrile forged the blade in the fire of a dying star... it is near indestructible!"),
