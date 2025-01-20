@@ -61,14 +61,18 @@ class MagmoorAttacks {
      - returns: the attack pattern generated
      */
     static func getAttackPattern(enrage: Bool) -> AttackPattern {
-        guard !enrage else { return .normal }
+        guard !enrage else {
+            return Int.random(in: 0...5) == 0 ? .freeze : .normal
+        }
         
         let attackPattern: AttackPattern
         let randomInt = Int.random(in: 0...99)
 //        print("randomInt|\(randomInt)", terminator: "||")
         
-        if randomInt % 2 == 0 || randomInt % 3 == 0 {
+        if randomInt % 2 == 0 {
             attackPattern = .normal
+        } else if randomInt % 3 == 0 {
+            attackPattern = .freeze
         }
         else {
             let randomInt2 = Int.random(in: 0...99)
