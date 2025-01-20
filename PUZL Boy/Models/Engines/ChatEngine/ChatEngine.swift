@@ -1235,10 +1235,10 @@ extension ChatEngine {
             sendChatArray(shouldSkipDim: true, items: [
                 ChatItem(profile: .statue1, chat: "Hey there PUZL Boy!"),
                 ChatItem(profile: .hero, imgPos: .left, chat: "Penne the PASTA!! What are you doing down here? Wait.. are you even real?"),
-                ChatItem(profile: .statue1, chat: "Of course I'm real, silly! Touch me."),
+                ChatItem(profile: .statue1, chat: "Of course I'm real. Touch me!"),
                 ChatItem(profile: .hero, imgPos: .left, chat: "😒"),
                 ChatItem(profile: .statue1, chat: "Hahaha! You look down in the mouth. Don't be so discouraged."),
-                ChatItem(profile: .hero, imgPos: .left, chat: "Yeah, well.. I am NOT having the best day of my life right now, to be honest."),
+                ChatItem(profile: .hero, imgPos: .left, chat: "Yeah, well.. I am NOT having the best day of my life right now, to be honest. I—I let them all down! 😫"),
                 ChatItem(profile: .statue1, endChat: true, chat: "Cheer up, friend! All is not lost. Here's a little something to lift your spirits...") { [weak self] in
                     self?.delegateCatwalk?.spawnChestCatwalk(spawnDuration: swordSpawnDuration)
                 },
@@ -1262,7 +1262,7 @@ extension ChatEngine {
                     self?.showFFButton()
                 },
                 ChatItem(profile: .hero, imgPos: .left, chat: "Wow!!! This is... something. It's... incredible. I promise to take good care of it! 🤩"),
-                ChatItem(profile: .melchior, chat: "Be VERY careful with it! Legend has it, the Mystic steelsmith, Mythrile forged the blade in the fire of a dying star... it is near indestructible!")
+                ChatItem(profile: .magmus, chat: "Be VERY careful with it! Legend has it, the Mystic steelsmith, Mythrile forged the blade in the fire of a dying star... a rare weapon, indeed!")
             ]) { [weak self] in
                 self?.showFFButton()
                 self?.handleDialogueCompletion(level: level, completion: completion)
