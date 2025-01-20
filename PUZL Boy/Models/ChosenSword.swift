@@ -82,13 +82,13 @@ class ChosenSword {
             elderCommentary = "A plain sword... Well, you've got an uphill battle to climb with this mediocre weapon."
         }
         
-        let attackPercentString: String = "\(Int(attackRating))%"
-        let defensePercentString: String = "\(Int(48.0 / defenseRating))%"
+        let attackPercentString: String = "\(Int(attackRating))"
+        let defensePercentString: String = "\(Int(48.0 / defenseRating))"
         let piercingBonusString: String = "+\(piercingBonus)"
         let speedRatingString: String = "x\(String(format: "%.1f", speedRating))"
         
-        stats = "Attack: \(attackPercentString)       Defense: \(defensePercentString)"
-        stats += "\nPiercing: \(piercingBonusString)      Movement: \(speedRatingString)"
+        stats = "Attack: \(attackPercentString)          Defense: \(defensePercentString)"
+        stats += "\nPiercing: \(piercingBonusString)      Speed: \(speedRatingString)"
         
         spriteNode = SKSpriteNode(imageNamed: imageName)
         spriteNode.name = chosenSwordName
