@@ -18,6 +18,8 @@ class MagmoorShield: SKNode {
     
     // MARK: - Properties
     
+    static let keyShieldThrobAction = "shieldThrobAction"
+    
     private var maxHitPoints: Int = 4
     private(set) var hitPoints: Int {
         didSet {
@@ -135,7 +137,7 @@ class MagmoorShield: SKNode {
         if hasHitPoints {
             let fadeDuration: TimeInterval = colorizeDuration
             
-            removeAction(forKey: "shieldThrobAction")
+            removeAction(forKey: MagmoorShield.keyShieldThrobAction)
             shieldThrob(waitDuration: fadeDuration + 0.5)
             
             run(SKAction.sequence([
@@ -156,7 +158,7 @@ class MagmoorShield: SKNode {
             
             AudioManager.shared.playSound(for: "magicdisappear", delay: fadeDuration)
             
-            removeAction(forKey: "shieldThrobAction")
+            removeAction(forKey: MagmoorShield.keyShieldThrobAction)
             run(SKAction.sequence([
                 SKAction.group([
                     scaleAndFade(size: 2.5, alpha: 1, duration: fadeDuration + 0.5),
@@ -257,7 +259,7 @@ class MagmoorShield: SKNode {
                 scaleAndFade(size: 4, alpha: 1, duration: 2),
                 scaleAndFade(size: 5, alpha: 0.5, duration: 2)
             ]))
-        ]), withKey: "shieldThrobAction")
+        ]), withKey: MagmoorShield.keyShieldThrobAction)
     }
     
     

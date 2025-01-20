@@ -15,6 +15,14 @@ class CatwalkScene: SKScene {
     
     // MARK: - Properties
     
+    static let keySwordFloatAction = "swordFloatAction"
+    static let keySelectSwordPulseAction = "selectSwordPulseAction"
+    static let keySelectSwordScaleAction = "selectSwordScaleAction"
+    static let keyRainbowCycle = "rainbowCycle"
+    static let keyMagmoorFadeAction = "magmoorFadeAction"
+    static let keyMagmoorZoomAction = "magmoorZoomAction"
+    static let keyMagmoorFlashZoomAction = "magmoorFlashZoomAction"
+    
     private let tikiNodeName = "tikiStatueNode"
     private let chestNodeName = "treasureChestNode"
     private let catwalkOverworld = "magicdoomloop"
@@ -286,7 +294,8 @@ class CatwalkScene: SKScene {
         chatEngine.didTapButton(in: location)
         chatEngine.touchUp()
         
-        if let tikiNode = nodes(at: location).filter({ $0.name == tikiNodeName }).first as? SKSpriteNode, tikiNode.action(forKey: "animateStatue") == nil {
+        if let tikiNode = nodes(at: location).filter({ $0.name == tikiNodeName }).first as? SKSpriteNode, tikiNode.action(forKey: SKSpriteNode.keyAnimateStatue) == nil {
+            
             tikiNode.animateStatue()
             AudioManager.shared.playSound(for: "touchstatue")
             Haptics.shared.addHapticFeedback(withStyle: .heavy)
@@ -711,9 +720,9 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
         for node in catwalkNode.children {
             guard let name = node.name, name.contains(ChosenSword.namePrefix) else { continue }
             
-            node.action(forKey: "swordFloatAction")?.speed = 1
-            node.removeAction(forKey: "selectSwordPulseAction")
-            node.removeAction(forKey: "selectSwordScaleAction")
+            node.action(forKey: CatwalkScene.keySwordFloatAction)?.speed = 1
+            node.removeAction(forKey: CatwalkScene.keySelectSwordPulseAction)
+            node.removeAction(forKey: CatwalkScene.keySelectSwordScaleAction)
             node.run(SKAction.scale(to: scaleSize, duration: scaleDuration))
         }
     }
@@ -821,7 +830,7 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
     }
     
     func spawnMagmoorCatwalk() {
-        magmoorSprite.run(fadeInMagmoorHelper(fadeDuration: 2), withKey: "magmoorFadeAction")
+        magmoorSprite.run(fadeInMagmoorHelper(fadeDuration: 2), withKey: CatwalkScene.keyMagmoorFadeAction)
         AudioManager.shared.playSound(for: "magicheartbeatloop2", delay: 0.5)
         
         dispatchWorkItem.cancel()
@@ -902,7 +911,7 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
             ])
         ]))
         
-        magmoorSprite.removeAction(forKey: "magmoorFadeAction")
+        magmoorSprite.removeAction(forKey: CatwalkScene.keyMagmoorFadeAction)
         magmoorSprite.run(SKAction.sequence([
             SKAction.wait(forDuration: audioItemEnd + scaryLaughDuration - 2 - jumpScareDuration),
             SKAction.fadeOut(withDuration: jumpScareDuration)
@@ -1081,7 +1090,7 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
             swordNode.run(SKAction.repeatForever(SKAction.sequence([
                 SKAction.moveBy(x: 0, y: i % 2 == 0 ? -swordFloatDistance : swordFloatDistance, duration: moveDuration * 4),
                 SKAction.moveBy(x: 0, y: i % 2 == 0 ? swordFloatDistance : -swordFloatDistance, duration: moveDuration * 4)
-            ])), withKey: "swordFloatAction")
+            ])), withKey: CatwalkScene.keySwordFloatAction)
         } //end for
     }//end openChest()
     
@@ -1096,7 +1105,7 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
 
         let scaleDuration: TimeInterval = 0.25
         
-        swordNode.action(forKey: "swordFloatAction")?.speed = 0
+        swordNode.action(forKey: CatwalkScene.keySwordFloatAction)?.speed = 0
         
         swordNode.run(SKAction.sequence([
             SKAction.wait(forDuration: scaleDuration * 6),
@@ -1104,13 +1113,13 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
                 SKAction.scale(to: scaleSize * 2, duration: 0),
                 SKAction.scale(to: scaleSize * 2.5, duration: scaleDuration * 4)
             ]))
-        ]), withKey: "selectSwordPulseAction")
+        ]), withKey: CatwalkScene.keySelectSwordPulseAction)
         
         swordNode.run(SKAction.sequence([
             SKAction.scale(to: scaleSize * 3, duration: scaleDuration),
             SKAction.scale(to: scaleSize * 2, duration: scaleDuration),
             SKAction.scale(to: scaleSize * 2.5, duration: scaleDuration * 4)
-        ]), withKey: "selectSwordScaleAction")
+        ]), withKey: CatwalkScene.keySelectSwordScaleAction)
         
         ButtonTap.shared.tap(type: .buttontap1)
         
@@ -1240,7 +1249,7 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
                     
                     for (i, panel) in catwalkPanels.enumerated() {
                         panel.removeAllActions()
-                        panel.run(animateRainbowCycle(cycleSpeed: cycleSpeed, delay: TimeInterval(catwalkLength - i) * delaySpeed), withKey: "rainbowCycle")
+                        panel.run(animateRainbowCycle(cycleSpeed: cycleSpeed, delay: TimeInterval(catwalkLength - i) * delaySpeed), withKey: CatwalkScene.keyRainbowCycle)
                     }
                     
                     endClosedMagic.animateAppearGlow(fadeDuration: fadeDuration, waitDuration: 5)
@@ -1251,10 +1260,10 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
                     inbetweenNode.run(SKAction.fadeOut(withDuration: fadeDuration))
                     bloodOverlay.run(SKAction.fadeOut(withDuration: fadeDuration))
                     
-                    elder0.sprite.run(animateRainbowCycle(cycleSpeed: cycleSpeed, delay: 3 * delaySpeed), withKey: "rainbowCycle")
-                    elder1.sprite.run(animateRainbowCycle(cycleSpeed: cycleSpeed, delay: 4 * delaySpeed), withKey: "rainbowCycle")
-                    elder2.sprite.run(animateRainbowCycle(cycleSpeed: cycleSpeed, delay: 5 * delaySpeed), withKey: "rainbowCycle")
-                    hero.sprite.run(animateRainbowCycle(cycleSpeed: cycleSpeed, delay: 6 * delaySpeed), withKey: "rainbowCycle")
+                    elder0.sprite.run(animateRainbowCycle(cycleSpeed: cycleSpeed, delay: 3 * delaySpeed), withKey: CatwalkScene.keyRainbowCycle)
+                    elder1.sprite.run(animateRainbowCycle(cycleSpeed: cycleSpeed, delay: 4 * delaySpeed), withKey: CatwalkScene.keyRainbowCycle)
+                    elder2.sprite.run(animateRainbowCycle(cycleSpeed: cycleSpeed, delay: 5 * delaySpeed), withKey: CatwalkScene.keyRainbowCycle)
+                    hero.sprite.run(animateRainbowCycle(cycleSpeed: cycleSpeed, delay: 6 * delaySpeed), withKey: CatwalkScene.keyRainbowCycle)
                     
                     AudioManager.shared.adjustVolume(to: 0, for: catwalkOverworld, fadeDuration: fadeDuration)
                 },
@@ -1420,8 +1429,8 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
             return (flashSequence, duration)
         }
         
-        magmoorSprite.removeAction(forKey: "magmoorZoomAction")
-        magmoorFlashSprite.removeAction(forKey: "magmoorFlashZoomAction")
+        magmoorSprite.removeAction(forKey: CatwalkScene.keyMagmoorZoomAction)
+        magmoorFlashSprite.removeAction(forKey: CatwalkScene.keyMagmoorFlashZoomAction)
         
         
         //magmoorSprite
@@ -1430,12 +1439,12 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
         magmoorSprite.run(SKAction.sequence([
             SKAction.wait(forDuration: flashPauseDuration),
             zoomMagmoorHelper(scaleBy: scaleBy, fadeDuration: zoomFadeDuration)
-        ]), withKey: "magmoorZoomAction")
+        ]), withKey: CatwalkScene.keyMagmoorZoomAction)
         
         magmoorSprite.run(SKAction.sequence([
             SKAction.wait(forDuration: flashPauseDuration),
             fadeInMagmoorHelper(fadeDuration: zoomFadeDuration)
-        ]), withKey: "magmoorFadeAction")
+        ]), withKey: CatwalkScene.keyMagmoorFadeAction)
         
         
         //magmoorFlashSprite
@@ -1444,14 +1453,14 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
         magmoorFlashSprite.run(SKAction.sequence([
             SKAction.wait(forDuration: flashPauseDuration),
             zoomMagmoorHelper(scaleBy: scaleBy, fadeDuration: zoomFadeDuration)
-        ]), withKey: "magmoorFlashZoomAction")
+        ]), withKey: CatwalkScene.keyMagmoorFlashZoomAction)
         
         
         //tiles and heroes red cycle
         let delaySpeed: TimeInterval = 0.1
         
         for (i, panel) in catwalkPanels.enumerated() {
-            panel.removeAction(forKey: "rainbowCycle")
+            panel.removeAction(forKey: CatwalkScene.keyRainbowCycle)
             panel.run(animateColorCycle(color: .red, shouldFlicker: panel == catwalkPanels.last, delay: TimeInterval(catwalkLength - i) * delaySpeed))
         }
         
@@ -1461,10 +1470,10 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
             SKAction.fadeIn(withDuration: 0.1)
         ]))
         
-        elder0.sprite.removeAction(forKey: "rainbowCycle")
-        elder1.sprite.removeAction(forKey: "rainbowCycle")
-        elder2.sprite.removeAction(forKey: "rainbowCycle")
-        hero.sprite.removeAction(forKey: "rainbowCycle")
+        elder0.sprite.removeAction(forKey: CatwalkScene.keyRainbowCycle)
+        elder1.sprite.removeAction(forKey: CatwalkScene.keyRainbowCycle)
+        elder2.sprite.removeAction(forKey: CatwalkScene.keyRainbowCycle)
+        hero.sprite.removeAction(forKey: CatwalkScene.keyRainbowCycle)
         
         elder0.sprite.run(animateColorCycle(color: .red, shouldFlicker: true, delay: 4 * delaySpeed))
         elder1.sprite.run(animateColorCycle(color: .red, shouldFlicker: true, delay: 5 * delaySpeed))

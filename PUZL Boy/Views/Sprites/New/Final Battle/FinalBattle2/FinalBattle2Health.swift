@@ -11,8 +11,8 @@ class FinalBattle2Health {
     
     // MARK: - Properties
     
-    private let keyPlayerBlink: String = "playerBlink"
-    private let keyPlayerColorFade: String = "playerColorFade"
+    static let keyPlayerBlink: String = "playerBlink"
+    static let keyPlayerColorFade: String = "playerColorFade"
     
     private var timer: Timer?
     private var drainTimer: Timer?            //a separate timer is needed for the drain health function
@@ -149,12 +149,12 @@ class FinalBattle2Health {
     // MARK: - Other Helper Functions
     
     private func resetPlayerActions() {
-        if player.sprite.action(forKey: keyPlayerBlink) != nil {
+        if player.sprite.action(forKey: FinalBattle2Health.keyPlayerBlink) != nil {
             player.sprite.colorBlendFactor = 1
         }
         
-        player.sprite.removeAction(forKey: keyPlayerBlink)
-        player.sprite.run(SKAction.colorize(withColorBlendFactor: 0, duration: 0.5), withKey: keyPlayerColorFade)
+        player.sprite.removeAction(forKey: FinalBattle2Health.keyPlayerBlink)
+        player.sprite.run(SKAction.colorize(withColorBlendFactor: 0, duration: 0.5), withKey: FinalBattle2Health.keyPlayerColorFade)
     }
     
     private func makePlayerHurt() {
@@ -165,13 +165,17 @@ class FinalBattle2Health {
         ])
         let colorBlinkRepeat = isDraining ? SKAction.repeatForever(colorBlinkAction) : SKAction.repeat(colorBlinkAction, count: 20)
         
-        player.sprite.removeAction(forKey: keyPlayerColorFade)
-        player.sprite.removeAction(forKey: keyPlayerBlink) //I think this prevents stacking?? Especially if colorBlinkAction is repeatForever..
+        player.sprite.removeAction(forKey: FinalBattle2Health.keyPlayerColorFade)
+        player.sprite.removeAction(forKey: FinalBattle2Health.keyPlayerBlink) //I think this prevents stacking?? Especially if colorBlinkAction is repeatForever..
         player.sprite.run(SKAction.sequence([
             colorBlinkRepeat,
             SKAction.colorize(withColorBlendFactor: 0, duration: 0.5)
-        ]), withKey: keyPlayerBlink)
+        ]), withKey: FinalBattle2Health.keyPlayerBlink)
         
+        playBoyHurt()
+    }
+    
+    private func playBoyHurt() {
         //Prevents multiple voices overlaying if makePlayerHurt() stacks, e.g. from drain + villainAttack
         guard !AudioManager.shared.isPlaying(audioKey: "boypain1") && !AudioManager.shared.isPlaying(audioKey: "boypain2") && !AudioManager.shared.isPlaying(audioKey: "boypain3") && !AudioManager.shared.isPlaying(audioKey: "boypain4") else { return }
         

@@ -8,6 +8,9 @@
 import SpriteKit
 
 extension SKSpriteNode {
+    static let keyAnimateStatue = "animateStatue"
+    static let keyDanceStatue = "danceStatue"
+    
     /**
      Adds a glow surrounding the parent sprite node.
      - parameters:
@@ -122,7 +125,7 @@ extension SKSpriteNode {
             SKAction.rotate(byAngle: 2 * .pi, duration: 0.2)
         ])
         
-        self.run(warpAction, withKey: "animateStatue")
+        self.run(warpAction, withKey: SKSpriteNode.keyAnimateStatue)
     }
     
     func animateDaemon(newTexture: SKTexture, delay: TimeInterval? = nil) {
@@ -249,7 +252,7 @@ extension SKSpriteNode {
         default:    selectedSequence = sequence0Action
         }
         
-        self.run(SKAction.repeatForever(selectedSequence), withKey: "danceStatue")
+        self.run(SKAction.repeatForever(selectedSequence), withKey: SKSpriteNode.keyDanceStatue)
     }
     
     

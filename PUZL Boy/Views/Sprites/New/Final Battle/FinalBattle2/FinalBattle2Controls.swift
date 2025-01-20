@@ -22,6 +22,11 @@ class FinalBattle2Controls {
     
     typealias PlayerPositions = (player: K.GameboardPosition, villain: K.GameboardPosition)
     
+    static let keyPlayerIdleAnimation = "playerIdleAnimation"
+    static let keyPlayerRunAnimation = "playerRunAnimation"
+    static let keyPlayerMoveAction = "playerMoveAction"
+    static let keyPlayerFreezeAction = "playerFreezeAction"
+    
     private var gameboard: GameboardSprite
     private var player: Player
     private var villain: Player
@@ -313,21 +318,25 @@ class FinalBattle2Controls {
         AudioManager.shared.playSound(for: runSound)
         
         //First, run animation...
-        player.sprite.run(Player.animate(player: player, type: .run, timePerFrameMultiplier: movementMultiplier))
+        player.sprite.run(Player.animate(player: player, type: .run, timePerFrameMultiplier: movementMultiplier), withKey: FinalBattle2Controls.keyPlayerRunAnimation)
         
         //Wait, then idle animation...
         player.sprite.run(SKAction.sequence([
             SKAction.wait(forDuration: Player.Texture.run.movementSpeed * movementMultiplier),
             Player.animate(player: player, type: .idle)
-        ]))
+        ]), withKey: FinalBattle2Controls.keyPlayerIdleAnimation)
         
         //In between, move player and completion...
-        player.sprite.run(SKAction.move(to: gameboard.getLocation(at: nextPanel), duration: Player.Texture.run.movementSpeed * movementMultiplier)) { [weak self] in
-            self?.isDisabled = false
-            
-            AudioManager.shared.stopSound(for: runSound, fadeDuration: 0.25)
-            completion?()
-        }
+        player.sprite.run(SKAction.sequence([
+            SKAction.move(to: gameboard.getLocation(at: nextPanel), duration: Player.Texture.run.movementSpeed * movementMultiplier),
+            SKAction.run {
+                [weak self] in
+                self?.isDisabled = false
+                
+                AudioManager.shared.stopSound(for: runSound, fadeDuration: 0.25)
+                completion?()
+            }
+        ]), withKey: FinalBattle2Controls.keyPlayerMoveAction)
     }
     
     

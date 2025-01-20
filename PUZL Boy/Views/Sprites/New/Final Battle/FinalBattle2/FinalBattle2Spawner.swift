@@ -17,6 +17,7 @@ class FinalBattle2Spawner {
     
     // MARK: - Properties
     
+    static let keyParticleNodeFade = "particleNodeFade"
     static let startPosition: K.GameboardPosition = (6, 3)
     static let endPosition: K.GameboardPosition = (3, 3)
     
@@ -143,12 +144,12 @@ class FinalBattle2Spawner {
                 for node in gameboard.sprite.children {
                     guard node.name == ParticleEngine.getNodeName(at: spawnPanel) else { continue }
                     
-                    node.removeAction(forKey: "particleNodeFade")
+                    node.removeAction(forKey: FinalBattle2Spawner.keyParticleNodeFade)
                     node.alpha = 0
                     node.run(SKAction.sequence([
                         SKAction.wait(forDuration: animationDuration * 3),
                         SKAction.fadeIn(withDuration: animationDuration)
-                    ]), withKey: "particleNodeFade")
+                    ]), withKey: FinalBattle2Spawner.keyParticleNodeFade)
                     
                     break
                 }
