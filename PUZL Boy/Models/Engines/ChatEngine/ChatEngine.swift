@@ -1261,8 +1261,8 @@ extension ChatEngine {
                 ChatItem(profile: .blankhero, startNewChat: false, chat: "\n\nReceived \(chosenSword.swordTitle).") { [weak self] in
                     self?.showFFButton()
                 },
-                ChatItem(profile: .melchior, chat: "Be VERY careful with it! Legend has it, the Mystic steelsmith, Mythrile forged the blade in the fire of a dying star... it is near indestructible!"),
-                ChatItem(profile: .hero, imgPos: .left, chat: "Wow!!! This is... something. It's... incredible. I promise to take good care of it! 🤩")
+                ChatItem(profile: .hero, imgPos: .left, chat: "Wow!!! This is... something. It's... incredible. I promise to take good care of it! 🤩"),
+                ChatItem(profile: .melchior, chat: "Be VERY careful with it! Legend has it, the Mystic steelsmith, Mythrile forged the blade in the fire of a dying star... it is near indestructible!")
             ]) { [weak self] in
                 self?.showFFButton()
                 self?.handleDialogueCompletion(level: level, completion: completion)

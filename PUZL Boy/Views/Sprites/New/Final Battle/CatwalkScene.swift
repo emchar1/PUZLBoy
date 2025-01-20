@@ -917,6 +917,7 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
             SKAction.wait(forDuration: scaryLaughDuration - 2),
             SKAction.run {
                 AudioManager.shared.playSound(for: "magichorrorimpact2")
+                Haptics.shared.executeCustomPattern(pattern: .enemy)
             },
             SKAction.group([
                 SKAction.scale(by: 1.5, duration: jumpScareDuration),
