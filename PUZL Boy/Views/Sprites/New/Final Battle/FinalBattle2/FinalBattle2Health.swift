@@ -24,7 +24,7 @@ class FinalBattle2Health {
     private var dmgMultiplier: CGFloat?
     
     enum HealthType {
-        case drain, regen, heroAttack, villainAttackNormal, villainAttackTimed, villainShieldExplode
+        case drain, regen, heroAttack, villainAttackNormal, villainAttackFreeze, villainAttackTimed, villainShieldExplode
     }
     
     
@@ -82,6 +82,8 @@ class FinalBattle2Health {
         case .villainAttackNormal:
             timer = Timer.scheduledTimer(timeInterval: 0, target: self, selector: #selector(helperVillainAttackNormal), userInfo: nil, repeats: false)
             makePlayerHurt()
+        case .villainAttackFreeze:
+            playBoyHurt()
         case .villainAttackTimed:
             timer = Timer.scheduledTimer(timeInterval: 0, target: self, selector: #selector(helperVillainAttackTimed), userInfo: nil, repeats: false)
             makePlayerHurt()
@@ -149,6 +151,9 @@ class FinalBattle2Health {
     // MARK: - Other Helper Functions
     
     private func resetPlayerActions() {
+        //Don't run hurt actions if a freeze action is in place!!
+        guard player.sprite.action(forKey: FinalBattle2Controls.keyPlayerFreezeAction) == nil else { return }
+        
         if player.sprite.action(forKey: FinalBattle2Health.keyPlayerBlink) != nil {
             player.sprite.colorBlendFactor = 1
         }
@@ -158,6 +163,11 @@ class FinalBattle2Health {
     }
     
     private func makePlayerHurt() {
+        playBoyHurt()
+        
+        //Don't run hurt actions if a freeze action is in place!!
+        guard player.sprite.action(forKey: FinalBattle2Controls.keyPlayerFreezeAction) == nil else { return }
+        
         let colorBlinkDuration: TimeInterval = 0.05
         let colorBlinkAction = SKAction.sequence([
             SKAction.colorize(withColorBlendFactor: 0, duration: colorBlinkDuration),
@@ -171,8 +181,6 @@ class FinalBattle2Health {
             colorBlinkRepeat,
             SKAction.colorize(withColorBlendFactor: 0, duration: 0.5)
         ]), withKey: FinalBattle2Health.keyPlayerBlink)
-        
-        playBoyHurt()
     }
     
     private func playBoyHurt() {

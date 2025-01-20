@@ -9,6 +9,7 @@ import SpriteKit
 
 protocol MagmoorAttacksDelegate: AnyObject {
     func didVillainAttack(pattern: MagmoorAttacks.AttackPattern, position: K.GameboardPosition)
+    func didVillainFreeze(duration: TimeInterval, position: K.GameboardPosition)
 }
 
 class MagmoorAttacks {
@@ -29,7 +30,7 @@ class MagmoorAttacks {
     }
     
     enum AttackPattern: CaseIterable {
-        case normal, timed, timedLarge
+        case normal, freeze, timed, timedLarge
     }
     
     weak var delegate: MagmoorAttacksDelegate?
@@ -115,8 +116,11 @@ class MagmoorAttacks {
         
         switch pattern {
         case .normal:
-            wandColor = FireIceTheme.isFire ? .systemPink : .cyan
-            helperNormal(positions: positions)
+            wandColor = .systemPink
+            helperNormal(isFire: true, positions: positions)
+        case .freeze:
+            wandColor = .cyan
+            helperNormal(isFire: false, positions: positions)
         case .timed:
             wandColor = .magenta
             helperTimed(positions: positions, isLarge: false)
@@ -219,21 +223,21 @@ class MagmoorAttacks {
         return fireball
     }
     
-    private func helperNormal(positions: FinalBattle2Controls.PlayerPositions) {
+    private func helperNormal(isFire: Bool, positions: FinalBattle2Controls.PlayerPositions) {
         let rowSquared = pow(TimeInterval(positions.villain.row) - TimeInterval(positions.player.row), 2)
         let colSquared = pow(TimeInterval(positions.villain.col) - TimeInterval(positions.player.col), 2)
         let distanceVillainToPlayer = sqrt(rowSquared + colSquared)
         let fireballMovementDuration = max(distanceVillainToPlayer * normalFireballSpeed, 0.25)
         
         let fireball = createFireball(positions: positions,
-                                      imageName: FireIceTheme.isFire ? "villainProjectile1" : "villainProjectile2",
-                                      color: FireIceTheme.overlayColor,
+                                      imageName: isFire ? "villainProjectile1" : "villainProjectile2",
+                                      color: isFire ? .red : .blue,
                                       zPosition: K.ZPosition.itemsAndEffects,
                                       shouldRotate: true)
         
         gameboard.sprite.addChild(fireball)
         
-        if !FireIceTheme.isFire {
+        if !isFire {
             fireball.run(SKAction.rotate(toAngle: distanceVillainToPlayer * .pi * villainDirection, duration: fireballMovementDuration))
         }
         
@@ -249,7 +253,11 @@ class MagmoorAttacks {
             ]),
             SKAction.run { [weak self] in
                 guard let self = self else { return }
-                delegate?.didVillainAttack(pattern: .normal, position: positions.player)
+                delegate?.didVillainAttack(pattern: isFire ? .normal : .freeze, position: positions.player)
+                
+                if !isFire {
+                    delegate?.didVillainFreeze(duration: 3, position: positions.player)
+                }
             },
             SKAction.group([
                 SKAction.fadeOut(withDuration: 0.25),
@@ -258,8 +266,8 @@ class MagmoorAttacks {
             SKAction.removeFromParent()
         ]))
         
-        if let attackAudio = AudioManager.shared.getAudioItem(filename: FireIceTheme.isFire ? "enemyflame" : "enemyice") {
-            let delayDuration = FireIceTheme.isFire ? fireballMovementDuration : max(0, fireballMovementDuration - 0.25)
+        if let attackAudio = AudioManager.shared.getAudioItem(filename: isFire ? "enemyflame" : "enemyice") {
+            let delayDuration = isFire ? fireballMovementDuration : max(0, fireballMovementDuration - 0.25)
             
             AudioManager.shared.playSound(for: attackAudio.fileName, delay: delayDuration)
         }

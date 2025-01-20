@@ -39,6 +39,7 @@ class FinalBattle2Controls {
     
     private var isDisabled: Bool
     private var canAttack: Bool
+    private var isFrozen: Bool
     private var villainMoveTimer: Timer
     private var villainMovementDelay: (normal: TimeInterval, enraged: TimeInterval)
     
@@ -59,6 +60,7 @@ class FinalBattle2Controls {
         
         self.isDisabled = false
         self.canAttack = true
+        self.isFrozen = false
         self.villainMoveTimer = Timer()
         self.villainMovementDelay = (normal: 12, enraged: 2)
         
@@ -90,6 +92,7 @@ class FinalBattle2Controls {
      */
     func handleControls(in location: CGPoint, safePanelFound: Bool, completion: (() -> Void)?) {
         guard !isDisabled else { return }
+        guard !isFrozen else { return }
         
         self.location = location
         self.safePanelFound = safePanelFound
@@ -498,6 +501,33 @@ class FinalBattle2Controls {
 extension FinalBattle2Controls: MagmoorAttacksDelegate {
     func didVillainAttack(pattern: MagmoorAttacks.AttackPattern, position: K.GameboardPosition) {
         delegate?.didVillainAttack(pattern: pattern, chosenSword: chosenSword, position: position)
+    }
+    
+    func didVillainFreeze(duration: TimeInterval, position: K.GameboardPosition) {
+        guard position == positions.player else { return }
+        
+        isFrozen = true
+        
+        player.sprite.action(forKey: FinalBattle2Controls.keyPlayerRunAnimation)?.speed = 0
+        player.sprite.action(forKey: FinalBattle2Controls.keyPlayerIdleAnimation)?.speed = 0
+        player.sprite.action(forKey: FinalBattle2Controls.keyPlayerMoveAction)?.speed = 0
+        
+        player.sprite.removeAction(forKey: FinalBattle2Health.keyPlayerBlink)
+        player.sprite.removeAction(forKey: FinalBattle2Health.keyPlayerColorFade)
+        player.sprite.removeAction(forKey: FinalBattle2Controls.keyPlayerFreezeAction)
+        
+        player.sprite.run(SKAction.sequence([
+            SKAction.colorize(with: .blue, colorBlendFactor: 1, duration: 0),
+            SKAction.wait(forDuration: duration),
+            SKAction.run { [weak self] in
+                self?.isFrozen = false
+                self?.player.sprite.action(forKey: FinalBattle2Controls.keyPlayerRunAnimation)?.speed = 1
+                self?.player.sprite.action(forKey: FinalBattle2Controls.keyPlayerIdleAnimation)?.speed = 1
+                self?.player.sprite.action(forKey: FinalBattle2Controls.keyPlayerMoveAction)?.speed = 1
+            },
+            SKAction.colorize(withColorBlendFactor: 0, duration: 0.5),
+            SKAction.colorize(with: .red, colorBlendFactor: 0, duration: 0)
+        ]), withKey: FinalBattle2Controls.keyPlayerFreezeAction)
     }
 }
 

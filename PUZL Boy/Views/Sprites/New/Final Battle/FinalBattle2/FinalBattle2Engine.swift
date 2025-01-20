@@ -179,11 +179,11 @@ class FinalBattle2Engine {
     
     // MARK: - Attack (Helper) Functions
     
-    private func villainAttackNormal(at position: K.GameboardPosition, chosenSword: ChosenSword) {
-        showDamagePanel(at: position)
+    private func villainAttackNormal(at position: K.GameboardPosition, isFire: Bool, chosenSword: ChosenSword) {
+        showDamagePanel(at: position, color: isFire ? .red : .cyan)
         
         if position == controls.positions.player {
-            health.updateHealth(type: .villainAttackNormal, dmgMultiplier: chosenSword.defenseRating)
+            health.updateHealth(type: isFire ? .villainAttackNormal : .villainAttackFreeze, dmgMultiplier: chosenSword.defenseRating)
         }
     }
     
@@ -277,12 +277,12 @@ class FinalBattle2Engine {
         }
     }
     
-    private func showDamagePanel(at position: K.GameboardPosition) {
+    private func showDamagePanel(at position: K.GameboardPosition, color: UIColor = .red) {
         guard let originalTerrain = gameboard.getPanelSprite(at: position).terrain else { return }
         
         let damagePanel = SKSpriteNode(imageNamed: "water")
         damagePanel.anchorPoint = .zero
-        damagePanel.color = .red
+        damagePanel.color = color
         damagePanel.colorBlendFactor = 1
         damagePanel.alpha = 0
         damagePanel.zPosition = 6
@@ -322,7 +322,9 @@ extension FinalBattle2Engine: FinalBattle2ControlsDelegate {
     func didVillainAttack(pattern: MagmoorAttacks.AttackPattern, chosenSword: ChosenSword, position: K.GameboardPosition) {
         switch pattern {
         case .normal:
-            villainAttackNormal(at: position, chosenSword: chosenSword)
+            villainAttackNormal(at: position, isFire: true, chosenSword: chosenSword)
+        case .freeze:
+            villainAttackNormal(at: position, isFire: false, chosenSword: chosenSword)
         case .timed:
             villainAttackTimed(at: position, isLarge: false, chosenSword: chosenSword)
         case .timedLarge:
