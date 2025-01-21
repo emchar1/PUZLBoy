@@ -188,6 +188,7 @@ class MagmoorShield: SKNode {
                     guard let self = self else { return }
                     
                     delegate?.didBreakShield(at: villainPosition)
+                    villain.sprite.run(SKAction.colorize(with: .red, colorBlendFactor: 1, duration: 0.25))
                 },
                 scaleAndFade(size: 16, alpha: 1, duration: 0.25),
                 SKAction.fadeOut(withDuration: 0.25),

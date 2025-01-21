@@ -467,16 +467,15 @@ class Player {
      */
     func castSpell(color: UIColor, colorDuration: TimeInterval = 1) {
         let originalColor = sprite.color
-        let fadeDuration: TimeInterval = 0.25
+        let originalColorBlendFactor = sprite.colorBlendFactor
+        let fadeDuration: TimeInterval = 0.5
         let colorDuration = max(colorDuration, fadeDuration)
         
         sprite.run(SKAction.sequence([
             SKAction.colorize(with: color, colorBlendFactor: 1, duration: 0),
             SKAction.wait(forDuration: colorDuration - fadeDuration),
-            SKAction.colorize(withColorBlendFactor: 0, duration: fadeDuration)
-        ])) { [weak self] in
-            self?.sprite.color = originalColor
-        }
+            SKAction.colorize(with: originalColor, colorBlendFactor: originalColorBlendFactor, duration: fadeDuration)
+        ]))
     }
     
     /**
