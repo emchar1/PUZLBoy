@@ -147,8 +147,9 @@ class MagmoorAttacks {
             UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1),
             color
         ], times: [0, 1])
-
+        
         villain.sprite.run(Player.animate(player: villain, type: .attack, repeatCount: 1))
+        villain.castSpell(color: color)
         
         if playSFX {
             AudioManager.shared.playSound(for: "villainattack\(Int.random(in: 1...2))")

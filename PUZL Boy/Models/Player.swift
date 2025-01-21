@@ -460,6 +460,26 @@ class Player {
     }
     
     /**
+     Animates the color of the player sprite with a new color for colorDuration, then return to its original color.
+     - parameters:
+        - color: new color of the spell to be cast
+        - colorDuration: length of the color change
+     */
+    func castSpell(color: UIColor, colorDuration: TimeInterval = 1) {
+        let originalColor = sprite.color
+        let fadeDuration: TimeInterval = 0.25
+        let colorDuration = max(colorDuration, fadeDuration)
+        
+        sprite.run(SKAction.sequence([
+            SKAction.colorize(with: color, colorBlendFactor: 1, duration: 0),
+            SKAction.wait(forDuration: colorDuration - fadeDuration),
+            SKAction.colorize(withColorBlendFactor: 0, duration: fadeDuration)
+        ])) { [weak self] in
+            self?.sprite.color = originalColor
+        }
+    }
+    
+    /**
      Animates a levitating, idling state.
      - parameters:
         - player: the Player object

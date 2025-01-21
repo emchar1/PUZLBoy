@@ -517,7 +517,7 @@ extension FinalBattle2Controls: MagmoorAttacksDelegate {
         player.sprite.removeAction(forKey: FinalBattle2Controls.keyPlayerFreezeAction)
         
         player.sprite.run(SKAction.sequence([
-            SKAction.colorize(with: .blue, colorBlendFactor: 1, duration: 0),
+            SKAction.colorize(with: .systemBlue, colorBlendFactor: 1, duration: 0),
             SKAction.wait(forDuration: duration),
             SKAction.run { [weak self] in
                 self?.isFrozen = false

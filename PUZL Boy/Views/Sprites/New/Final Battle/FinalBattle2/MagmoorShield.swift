@@ -91,6 +91,7 @@ class MagmoorShield: SKNode {
         topNode.color = shieldColor
         
         villain.sprite.addChild(self)
+        villain.castSpell(color: shieldColor)
         
         //Actions
         shieldThrob(waitDuration: 2.5)
@@ -131,6 +132,7 @@ class MagmoorShield: SKNode {
         
         bottomNode.run(changeColorAction)
         topNode.run(changeColorAction)
+        villain.castSpell(color: shieldColor, colorDuration: colorizeDuration)
         
         delegate?.willDamageShield()
         
