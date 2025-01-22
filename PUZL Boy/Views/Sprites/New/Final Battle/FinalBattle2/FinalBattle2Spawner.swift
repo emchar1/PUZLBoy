@@ -24,13 +24,12 @@ class FinalBattle2Spawner {
     //IMPORTANT!! breakLimit should be a multiple of maxCount!! These are panel spawning speed and max panels properties
     private let maxCount: Int = 1000
     private let breakLimit: Int = 50
+    private var animationDuration: TimeInterval { currentSpeed.rawValue }
     private(set) var currentSpeed: SpawnerSpeed = .slow {
         didSet {
             delegate?.didChangeSpeed(speed: currentSpeed)
         }
     }
-    
-    var animationDuration: TimeInterval { currentSpeed.rawValue }
     
     private var gameboard: GameboardSprite
     private var spawnPanels: [K.GameboardPosition]
@@ -39,7 +38,9 @@ class FinalBattle2Spawner {
     weak var delegate: FinalBattle2SpawnerDelegate?
     
     enum SpawnerSpeed: TimeInterval {
-        case slow = 3.0, medium = 2.0, fast = 1.0
+        case slow = 3.0
+        case medium = 2.0
+        case fast = 1.0
     }
 
     
