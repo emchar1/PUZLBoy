@@ -113,8 +113,9 @@ class FinalBattle2Spawner {
      */
     private func animateSpawnPanels(with terrain: LevelType) {
         ///SKAction that animates dissolving of primary (sand/snow) panel to secondary (lava/water).
-        func dissolveTerrainAction(pulseDuration: TimeInterval) -> SKAction {
+        func dissolveTerrainAction() -> SKAction {
             let offsetDuration: TimeInterval = 0 //DON'T TOUCH THIS LEAVE AT 0!!!
+            let pulseDuration: TimeInterval = 0.1
             
             let sandAction = SKAction.sequence([
                 SKAction.moveBy(x: 5, y: 0, duration: offsetDuration),
@@ -189,7 +190,7 @@ class FinalBattle2Spawner {
                     self?.calculateSpawnerSpeed(index: i)
                 },
                 SKAction.wait(forDuration: animationDuration * 2),
-                dissolveTerrainAction(pulseDuration: 0.1),
+                dissolveTerrainAction(),
                 SKAction.removeFromParent()
             ])) { [weak self] in
                 self?.delegate?.didDespawnSafePanel(spawnPanel: spawnPanel)
