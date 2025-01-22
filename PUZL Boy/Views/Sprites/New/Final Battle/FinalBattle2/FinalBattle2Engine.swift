@@ -26,6 +26,7 @@ class FinalBattle2Engine {
     private var backgroundSprite: SKSpriteNode!
     private var bloodOverlay: SKSpriteNode!
     private var flashGameboard: SKSpriteNode!
+    private var speedLabelDebug: SKLabelNode!
     
     
     // MARK: - Initialization
@@ -59,6 +60,13 @@ class FinalBattle2Engine {
         flashGameboard.anchorPoint = .zero
         flashGameboard.alpha = 0
         flashGameboard.zPosition = K.ZPosition.terrain + 2
+        
+        speedLabelDebug = SKLabelNode(text: "SPEED")
+        speedLabelDebug.position = CGPoint(x: 40, y: 200)
+        speedLabelDebug.fontName = UIFont.gameFont
+        speedLabelDebug.fontSize = UIFont.gameFontSizeLarge
+        speedLabelDebug.fontColor = UIFont.gameFontColor
+        speedLabelDebug.horizontalAlignmentMode = .left
         
         hero = Player(type: .hero)
         hero.sprite.position = gameboard.getLocation(at: FinalBattle2Spawner.startPosition)
@@ -114,6 +122,9 @@ class FinalBattle2Engine {
         gameboard.sprite.addChild(villain.sprite)
         
         health.addToParent(superScene)
+        
+        //Uncomment for debugging
+//        superScene.addChild(speedLabelDebug)
     }
     
     ///Animates all the components
@@ -361,12 +372,14 @@ extension FinalBattle2Engine: FinalBattle2ControlsDelegate {
 // MARK: - FinalBattle2SpawnerDelegate
 
 extension FinalBattle2Engine: FinalBattle2SpawnerDelegate {
-    func didSpawnSafePanel(spawnPanel: K.GameboardPosition) {
+    func didSpawnSafePanel(spawnPanel: K.GameboardPosition, index: Int) {
+        speedLabelDebug.text = "SPEED: \(panelSpawner[0].currentSpeed) \(index)"
+        
         guard spawnPanel == controls.positions.player else { return }
         health.updateHealth(type: .regen)
     }
     
-    func didDespawnSafePanel(spawnPanel: K.GameboardPosition) {
+    func didDespawnSafePanel(spawnPanel: K.GameboardPosition, index: Int) {
         guard spawnPanel == controls.positions.player && !safePanelFound() && !startPanelFound() && !endPanelFound() else { return }
         health.updateHealth(type: .drain, dmgMultiplier: controls.chosenSword.defenseRating)
     }

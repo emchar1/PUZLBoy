@@ -8,8 +8,8 @@
 import SpriteKit
 
 protocol FinalBattle2SpawnerDelegate: AnyObject {
-    func didSpawnSafePanel(spawnPanel: K.GameboardPosition)
-    func didDespawnSafePanel(spawnPanel: K.GameboardPosition)
+    func didSpawnSafePanel(spawnPanel: K.GameboardPosition, index: Int)
+    func didDespawnSafePanel(spawnPanel: K.GameboardPosition, index: Int)
     func didChangeSpeed(speed: FinalBattle2Spawner.SpawnerSpeed)
 }
 
@@ -24,12 +24,13 @@ class FinalBattle2Spawner {
     //IMPORTANT!! breakLimit should be a multiple of maxCount!! These are panel spawning speed and max panels properties
     private let maxCount: Int = 1000
     private let breakLimit: Int = 50
-    private var animationDuration: TimeInterval = 3
     private(set) var currentSpeed: SpawnerSpeed = .slow {
         didSet {
             delegate?.didChangeSpeed(speed: currentSpeed)
         }
     }
+    
+    var animationDuration: TimeInterval { currentSpeed.rawValue }
     
     private var gameboard: GameboardSprite
     private var spawnPanels: [K.GameboardPosition]
@@ -37,8 +38,8 @@ class FinalBattle2Spawner {
     
     weak var delegate: FinalBattle2SpawnerDelegate?
     
-    enum SpawnerSpeed {
-        case slow, medium, fast
+    enum SpawnerSpeed: TimeInterval {
+        case slow = 3.0, medium = 2.0, fast = 1.0
     }
 
     
@@ -108,10 +109,12 @@ class FinalBattle2Spawner {
     }
     
     /**
-     Helper function that animates the spawn panels (iteratively) with the specified terrain panel.
-     - parameter terrain: LevelType that is to be spawned
+     Helper function that animates the spawn panels (recursively) with the specified terrain panel.
+     - parameters:
+        - terrain: LevelType that is to be spawned
+        - index: current index for spawnPanels. LEAVE ALONE! This is to be used by the recursive function only!!
      */
-    private func animateSpawnPanels(with terrain: LevelType) {
+    private func animateSpawnPanels(with terrain: LevelType, index: Int = 0) {
         ///SKAction that animates dissolving of primary (sand/snow) panel to secondary (lava/water).
         func dissolveTerrainAction() -> SKAction {
             let offsetDuration: TimeInterval = 0 //DON'T TOUCH THIS LEAVE AT 0!!!
@@ -165,37 +168,43 @@ class FinalBattle2Spawner {
             }
         }
         
-        for (i, spawnPanel) in spawnPanels.enumerated() {
-            guard let originalTerrain = gameboard.getPanelSprite(at: spawnPanel).terrain else { continue }
-            
-            let fadeInWaitDuration = animationDuration * 0.25 + animationDuration * 0.75
-            
-            let newTerrain = SKSpriteNode(imageNamed: terrain.description)
-            newTerrain.anchorPoint = .zero
-            newTerrain.alpha = 0
-            newTerrain.zPosition = 4
-            newTerrain.name = "safePanel"
-            
-            originalTerrain.addChild(newTerrain)
-            
-            newTerrain.run(SKAction.sequence([
-                SKAction.wait(forDuration: fadeInWaitDuration * TimeInterval(i)),
-                SKAction.run { [weak self] in
-                    self?.delegate?.didSpawnSafePanel(spawnPanel: spawnPanel)
-                    handleParticles(spawnPanel: spawnPanel)
-                },
-                SKAction.fadeIn(withDuration: animationDuration * 0.25),
-                SKAction.wait(forDuration: animationDuration * 0.75),
-                SKAction.run { [weak self] in
-                    self?.calculateSpawnerSpeed(index: i)
-                },
-                SKAction.wait(forDuration: animationDuration * 2),
-                dissolveTerrainAction(),
-                SKAction.removeFromParent()
-            ])) { [weak self] in
-                self?.delegate?.didDespawnSafePanel(spawnPanel: spawnPanel)
-            }
-        } //end for
+        
+        //Recursive base case
+        guard index < self.spawnPanels.count else { return }
+        
+        let spawnPanel = self.spawnPanels[index]
+        
+        guard let originalTerrain = gameboard.getPanelSprite(at: spawnPanel).terrain else { return }
+        
+        let newTerrain = SKSpriteNode(imageNamed: terrain.description)
+        newTerrain.anchorPoint = .zero
+        newTerrain.alpha = 0
+        newTerrain.zPosition = 4
+        newTerrain.name = "safePanel"
+        
+        originalTerrain.addChild(newTerrain)
+        
+        newTerrain.run(SKAction.sequence([
+            SKAction.run { [weak self] in
+                self?.delegate?.didSpawnSafePanel(spawnPanel: spawnPanel, index: index)
+                handleParticles(spawnPanel: spawnPanel)
+            },
+            SKAction.fadeIn(withDuration: animationDuration * 0.25),
+            SKAction.wait(forDuration: animationDuration * 0.75),
+            SKAction.run { [weak self] in
+                guard let self = self else { return }
+                
+                calculateSpawnerSpeed(index: index)
+                
+                //Recursive call
+                animateSpawnPanels(with: terrain, index: index + 1)
+            },
+            SKAction.wait(forDuration: animationDuration * 2),
+            dissolveTerrainAction(),
+            SKAction.removeFromParent()
+        ])) { [weak self] in
+            self?.delegate?.didDespawnSafePanel(spawnPanel: spawnPanel, index: index)
+        }
     } //end animateSpawnPanels()
     
     /**
@@ -205,17 +214,10 @@ class FinalBattle2Spawner {
      */
     private func calculateSpawnerSpeed(index: Int) {
         switch index {
-        case 0 * breakLimit:
-            currentSpeed = .slow
-            animationDuration = 3
-        case 1 * breakLimit:
-            currentSpeed = .medium
-            animationDuration = 2
-        case 3 * breakLimit:
-            currentSpeed = .fast
-            animationDuration = 1
-        default:
-            break
+        case 0 * breakLimit:    currentSpeed = .slow
+        case 1 * breakLimit:    currentSpeed = .medium
+        case 3 * breakLimit:    currentSpeed = .fast
+        default:                break
         }
     }
     
