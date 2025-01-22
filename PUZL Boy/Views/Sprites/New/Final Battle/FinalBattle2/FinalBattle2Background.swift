@@ -39,7 +39,7 @@ class FinalBattle2Background {
     deinit {
         print("deinit FinalBattle2Background")
         
-        AudioManager.shared.stopSound(for: overworldMusic)
+        AudioManager.shared.stopSound(for: overworldMusic, fadeDuration: 2)
     }
     
     // MARK: - Functions

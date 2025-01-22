@@ -25,6 +25,9 @@ struct Counter {
             }
         }
     }
+    
+    var counterDidReachMax: Bool { count >= maxCount }
+    var counterDidReachMin: Bool { count <= 0 }
 
     
     // MARK: - Initialization

@@ -192,6 +192,8 @@ class AudioManager {
         addAudioItem("touchstatue", category: .soundFX)
         addAudioItem("thunderrumble", category: .soundFX)
         
+        
+        //FINAL BATTLE SCENE 2 SFX
         addAudioItem("villainattack1", category: .soundFX) //NEEDS PURCHASE $2
         addAudioItem("villainattack2", category: .soundFX) //NEEDS PURCHASE $2
         addAudioItem("villainattack3", category: .soundFX) //NEEDS PURCHASE $2
@@ -203,6 +205,9 @@ class AudioManager {
         addAudioItem("villainpain1", category: .soundFX) //NEEDS PURCHASE $1
         addAudioItem("villainpain2", category: .soundFX) //NEEDS PURCHASE $1
         addAudioItem("villainpain3", category: .soundFX) //NEEDS PURCHASE $1
+        addAudioItem("gameendlose", category: .soundFX)
+        addAudioItem("gameendwin", category: .soundFX)
+        
         
         addAudioItem("warp", category: .soundFX)
         addAudioItem("waterappear1", category: .soundFX) //not purchased $3

@@ -43,9 +43,9 @@ class FinalBattle2Controls {
     private var villainMoveTimer: Timer
     private var villainMovementDelay: (normal: TimeInterval, enraged: TimeInterval)
     
-    private(set) var chosenSword: ChosenSword
-    private var magmoorAttacks: MagmoorAttacks
-    private var magmoorShield: MagmoorShield
+    private(set) var chosenSword: ChosenSword!
+    private var magmoorAttacks: MagmoorAttacks!
+    private var magmoorShield: MagmoorShield!
     
     weak var delegate: FinalBattle2ControlsDelegate?
     
@@ -78,6 +78,12 @@ class FinalBattle2Controls {
     
     deinit {
         print("deinit FinalBattle2Controls")
+        
+        chosenSword = nil
+        magmoorAttacks = nil
+        magmoorShield = nil
+        
+        AudioManager.shared.stopSound(for: "magicheartbeatloop1", fadeDuration: 2)
     }
     
     

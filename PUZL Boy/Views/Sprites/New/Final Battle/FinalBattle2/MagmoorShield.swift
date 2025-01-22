@@ -71,6 +71,9 @@ class MagmoorShield: SKNode {
     
     deinit {
         print("deinit MagmoorShield")
+        
+        removeAllActions()
+        AudioManager.shared.stopSound(for: "shieldpulse", fadeDuration: 2)
     }
     
     

@@ -27,7 +27,7 @@ class FinalBattleScene: SKScene {
     }
     
     deinit {
-        print("FinalBattleSceen deinit")
+        print("FinalBattleScene deinit")
     }
     
     private func setupScene() {

@@ -10,6 +10,9 @@
 		EA01BB5F2A10746800EAB70B /* buttontap6.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA01BB5E2A10746800EAB70B /* buttontap6.mp3 */; };
 		EA01BB612A10746800EAB70B /* ButtonTap.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA01BB602A10746800EAB70B /* ButtonTap.swift */; };
 		EA0CF7CC2ADC408D002785DB /* DragonFireIdle.sks in Resources */ = {isa = PBXBuildFile; fileRef = EA0CF7CB2ADC408D002785DB /* DragonFireIdle.sks */; };
+		EA0D6B132D40C20E00DB9C6D /* FinalBattle2WinLoseScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA0D6B122D40C20E00DB9C6D /* FinalBattle2WinLoseScene.swift */; };
+		EA0D6B162D40C67500DB9C6D /* gameendwin.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA0D6B152D40C67500DB9C6D /* gameendwin.mp3 */; };
+		EA0D6B172D40C67500DB9C6D /* gameendlose.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA0D6B142D40C67500DB9C6D /* gameendlose.mp3 */; };
 		EA0F145D292994330013038E /* moverun1.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA0F145C292994330013038E /* moverun1.mp3 */; };
 		EA0F145F292994B00013038E /* movewalk.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA0F145E292994B00013038E /* movewalk.mp3 */; };
 		EA0F146F2929D9C00013038E /* moverun4.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA0F146C2929D9C00013038E /* moverun4.mp3 */; };
@@ -402,6 +405,9 @@
 		EA01BB5E2A10746800EAB70B /* buttontap6.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = buttontap6.mp3; sourceTree = "<group>"; };
 		EA01BB602A10746800EAB70B /* ButtonTap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonTap.swift; sourceTree = "<group>"; };
 		EA0CF7CB2ADC408D002785DB /* DragonFireIdle.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = DragonFireIdle.sks; sourceTree = "<group>"; };
+		EA0D6B122D40C20E00DB9C6D /* FinalBattle2WinLoseScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinalBattle2WinLoseScene.swift; sourceTree = "<group>"; };
+		EA0D6B142D40C67500DB9C6D /* gameendlose.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = gameendlose.mp3; sourceTree = "<group>"; };
+		EA0D6B152D40C67500DB9C6D /* gameendwin.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = gameendwin.mp3; sourceTree = "<group>"; };
 		EA0F145C292994330013038E /* moverun1.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = moverun1.mp3; sourceTree = "<group>"; };
 		EA0F145E292994B00013038E /* movewalk.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = movewalk.mp3; sourceTree = "<group>"; };
 		EA0F146C2929D9C00013038E /* moverun4.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = moverun4.mp3; sourceTree = "<group>"; };
@@ -851,6 +857,7 @@
 				EA37CEFE2D1BF8C700275A15 /* FinalBattle2Health.swift */,
 				EA8C66522D333956004DD9A0 /* MagmoorAttacks.swift */,
 				EAE751E02D2C712A004B138A /* MagmoorShield.swift */,
+				EA0D6B122D40C20E00DB9C6D /* FinalBattle2WinLoseScene.swift */,
 			);
 			path = FinalBattle2;
 			sourceTree = "<group>";
@@ -1139,6 +1146,8 @@
 				EACDF09C2A54B7D400F28A41 /* enemyscratch.mp3 */,
 				EAE43D982C48AA0F00E6DB3C /* forcefield.mp3 */,
 				EAE43D9A2C48AA2100E6DB3C /* forcefield2.mp3 */,
+				EA0D6B142D40C67500DB9C6D /* gameendlose.mp3 */,
+				EA0D6B152D40C67500DB9C6D /* gameendwin.mp3 */,
 				EAAEA3C52931F08300221963 /* gameover.mp3 */,
 				EA8C60682C068E0800DED3C7 /* gameoverageofruin.mp3 */,
 				EA4D026429B90BF700F0C7B1 /* gemcollect.mp3 */,
@@ -1594,6 +1603,8 @@
 				EA8C60712C068E0800DED3C7 /* overworldageofruin.mp3 in Resources */,
 				EA8E07562B5104170051DDC3 /* PointerRainbowParticles.sks in Resources */,
 				EA45835B2A4431D300279056 /* titletheme.mp3 in Resources */,
+				EA0D6B162D40C67500DB9C6D /* gameendwin.mp3 in Resources */,
+				EA0D6B172D40C67500DB9C6D /* gameendlose.mp3 in Resources */,
 				EAEF2F042B4F5EED00AD8459 /* hammerswing.mp3 in Resources */,
 				EAE215582ABD1DEB0090735A /* MagicBlastParticles.sks in Resources */,
 				EA5F60582B9063480089EFC3 /* MagicExplosionParticles.sks in Resources */,
@@ -1902,6 +1913,7 @@
 				EA57DEA92B983C5400CE3E2A /* ChatDecisionSprite.swift in Sources */,
 				EA826C9A29950D0C00F19F81 /* NumMovesSprite.swift in Sources */,
 				EAE565AA29D6E0C700BC43CB /* TitleScene.swift in Sources */,
+				EA0D6B132D40C20E00DB9C6D /* FinalBattle2WinLoseScene.swift in Sources */,
 				EAA3BD5C2C8A0E5400EDE298 /* MagmoorCreepyMinion.swift in Sources */,
 				EA826C93298F60C000F19F81 /* AchievementFatCat.swift in Sources */,
 				EA346791299B535F002DDA02 /* LevelStats.swift in Sources */,
