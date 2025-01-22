@@ -223,6 +223,7 @@ class FinalBattle2Background {
                 AudioManager.shared.stopSound(for: previousOverworldMusic)
             }
             
+            adjustOverworldMusic()
             AudioManager.shared.playSound(for: overworldMusic)
         }
     } //end animate()

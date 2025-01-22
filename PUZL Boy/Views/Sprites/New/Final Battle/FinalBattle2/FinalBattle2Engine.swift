@@ -135,7 +135,7 @@ class FinalBattle2Engine {
         health.showHealth()
         backgroundPattern.animate(pattern: .normal, fadeDuration: 0)
         
-        for i in 0..<panelSpawnerCount {
+        for i in 0..<panelSpawner.count {
             panelSpawner[i].animateSpawner()
         }
     }
@@ -373,7 +373,9 @@ extension FinalBattle2Engine: FinalBattle2ControlsDelegate {
 
 extension FinalBattle2Engine: FinalBattle2SpawnerDelegate {
     func didSpawnSafePanel(spawnPanel: K.GameboardPosition, index: Int) {
-        speedLabelDebug.text = "SPEED: \(String(describing: panelSpawner[0]?.currentSpeed)) \(index)"
+        if !panelSpawner.isEmpty {
+            speedLabelDebug.text = "SPEED: \(String(describing: panelSpawner[0].currentSpeed)) \(index)"
+        }
         
         guard spawnPanel == controls.positions.player else { return }
         health.updateHealth(type: .regen)
