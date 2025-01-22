@@ -45,7 +45,7 @@ class FinalBattle2Controls {
     
     private(set) var chosenSword: ChosenSword!
     private var magmoorAttacks: MagmoorAttacks!
-    private var magmoorShield: MagmoorShield!
+    private(set) var magmoorShield: MagmoorShield!
     
     weak var delegate: FinalBattle2ControlsDelegate?
     

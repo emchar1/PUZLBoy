@@ -71,13 +71,20 @@ class MagmoorShield: SKNode {
     
     deinit {
         print("deinit MagmoorShield")
-        
-        removeAllActions()
-        AudioManager.shared.stopSound(for: "shieldpulse", fadeDuration: 2)
     }
     
     
     // MARK: - Functions
+    
+    /**
+     Call this to deinitialize the object. The actions, or the attachment to parent prevents it from deinitializing properly...
+     */
+    func cleanup() {
+        removeAllActions()
+        removeFromParent()
+        
+        AudioManager.shared.stopSound(for: "shieldpulse", fadeDuration: 2)
+    }
     
     /**
      Resets the shield to the max, i.e. 3 and apply a quick animation.

@@ -100,6 +100,17 @@ class FinalBattle2Health {
         }
     }
     
+    /**
+     Call this to deinitialize the object. The actions, or the attachment to parent prevents it from deinitializing properly...
+     */
+    func cleanup() {
+        timer?.invalidate()
+        timer = nil
+        
+        drainTimer?.invalidate()
+        drainTimer = nil
+    }
+    
     
     // MARK: - Helper @objc Functions
     
