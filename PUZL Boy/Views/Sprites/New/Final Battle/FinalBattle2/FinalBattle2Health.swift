@@ -19,7 +19,14 @@ class FinalBattle2Health {
     private var isDraining: Bool = false
     
     private var player: Player
-    private var counter: Counter!
+    private var counter: Counter! {
+        // TODO: - This determines whether or not you beat Magmoor, essentially winning or losing the game.
+        didSet {
+            if counter.counterDidReachMin {
+                NotificationCenter.default.post(name: .completeGameDidLose, object: nil)
+            }
+        }
+    }
     private var bar: StatusBarSprite!
     private var dmgMultiplier: CGFloat?
     
@@ -134,6 +141,11 @@ class FinalBattle2Health {
     
     @objc private func helperHeroAttack() {
         objcHelper(rateDivisions: [], rates: [0.2].map { $0 * (dmgMultiplier ?? 0.5) }, increment: true)
+        
+        // TODO: - This determines whether or not you beat Magmoor, essentially winning or losing the game.
+        if counter.counterDidReachMax {
+            NotificationCenter.default.post(name: .completeGameDidWin, object: nil)
+        }
     }
     
     @objc private func helperVillainAttackNormal() {
