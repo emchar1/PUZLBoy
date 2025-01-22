@@ -108,6 +108,10 @@ class ChosenSword {
         spriteNode.name = chosenSwordName
     }
     
+    deinit {
+        print("deinit ChosenSword")
+    }
+    
     
     // MARK: - Functions
     

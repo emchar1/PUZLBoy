@@ -59,6 +59,7 @@ class FinalBattle2WinLoseScene: SKScene {
         ]), completion: completion)
         
         AudioManager.shared.playSound(for: gameEndLogo)
+        AudioManager.shared.playSound(for: didWin ? "villaindead" : "boydead")
     }
     
     
