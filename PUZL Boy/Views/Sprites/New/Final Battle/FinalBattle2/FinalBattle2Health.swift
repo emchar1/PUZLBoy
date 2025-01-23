@@ -19,7 +19,7 @@ class FinalBattle2Health {
     private var isDraining: Bool = false
     
     private var player: Player
-    private var counter: Counter! {
+    private(set) var counter: Counter! {
         // TODO: - This determines whether or not you beat Magmoor, essentially winning or losing the game.
         didSet {
             if counter.counterDidReachMin {
@@ -44,7 +44,7 @@ class FinalBattle2Health {
         drainTimer = Timer()
         
         counter = Counter(maxCount: 1, step: 0.01, shouldLoop: false)
-        counter.setCount(to: 0.5)
+        counter.setCount(to: 0.25)
         
         bar = StatusBarSprite(label: "Determination",
                               shouldHide: true,
@@ -143,10 +143,20 @@ class FinalBattle2Health {
     }
     
     @objc private func helperDrain() {
-        objcHelper(rateDivisions: [0.75, 0.5], rates: [0.02, 0.01, 0.005].map { $0 * (dmgMultiplier ?? 1) }, increment: false)
+        guard counter.getCount() > 0.01 else {
+            timer?.invalidate()
+            return
+        }
+        
+        objcHelper(rateDivisions: [0.75, 0.5], rates: [0.05, 0.02, 0.01].map { $0 * (dmgMultiplier ?? 1) }, increment: false)
     }
     
     @objc private func helperRegen() {
+        guard counter.getCount() < 0.99 else {
+            timer?.invalidate()
+            return
+        }
+        
         objcHelper(rateDivisions: [], rates: [0.002].map { $0 * (dmgMultiplier ?? 1) }, increment: true)
     }
     

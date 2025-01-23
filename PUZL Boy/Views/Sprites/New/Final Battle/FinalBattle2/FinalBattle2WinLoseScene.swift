@@ -7,28 +7,61 @@
 
 import SpriteKit
 
+protocol FinalBattle2WinLoseSceneDelegate: AnyObject {
+    func didTapQuit()
+    func didTapTryAgain()
+}
+
 class FinalBattle2WinLoseScene: SKScene {
     
     // MARK: - Properties
     
+    private let fadeDuration: TimeInterval = 2
+    
+    private var backgroundNode: SKSpriteNode
     private var winLoseLabel: SKLabelNode
+    private var tryAgainButton: DecisionButtonSprite
+    private var quitButton: DecisionButtonSprite
+    
+    weak var winLoseDelegate: FinalBattle2WinLoseSceneDelegate?
     
     
     // MARK: - Initialization
     
     override init(size: CGSize) {
+        backgroundNode = SKSpriteNode(color: .black, size: size)
+        backgroundNode.anchorPoint = .zero
+        
         winLoseLabel = SKLabelNode(text: "YOU WIN!")
         winLoseLabel.position = CGPoint(x: size.width / 2, y: size.height / 2)
         winLoseLabel.fontName = UIFont.gameFont
         winLoseLabel.fontSize = UIFont.gameFontSizeLarge
         winLoseLabel.fontColor = .cyan.lightenColor(factor: 6)
         winLoseLabel.alpha = 0
+        winLoseLabel.zPosition = 1
         winLoseLabel.addDropShadow()
+        
+        tryAgainButton = DecisionButtonSprite(text: "Try Again?", color: DecisionButtonSprite.colorBlue, iconImageName: nil)
+        tryAgainButton.position = CGPoint(x: size.width / 2, y: size.height / 2 - 300)
+        tryAgainButton.alpha = 0
+        tryAgainButton.zPosition = 2
+        tryAgainButton.name = "tryAgainButton"
+
+        quitButton = DecisionButtonSprite(text: "Quit", color: DecisionButtonSprite.colorRed, iconImageName: nil)
+        quitButton.position = CGPoint(x: size.width / 2, y: size.height / 2 - 500)
+        quitButton.alpha = 0
+        quitButton.zPosition = 3
+        quitButton.name = "quitButton"
 
         super.init(size: size)
         
-        backgroundColor = .black
+        tryAgainButton.delegate = self
+        quitButton.delegate = self
+        
+        addChild(backgroundNode)
         addChild(winLoseLabel)
+        addChild(tryAgainButton)
+        addChild(quitButton)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -42,30 +75,91 @@ class FinalBattle2WinLoseScene: SKScene {
     
     // MARK: - Functions
     
-    func animateScene(didWin: Bool, completion: @escaping () -> Void) {
+    func animateScene(didWin: Bool) {
         let gameEndLogo: String = didWin ? "gameendwin" : "gameendlose"
-        let maxDuration: TimeInterval = 10
-        let gameEndDuration: TimeInterval = AudioManager.shared.getAudioItem(filename: gameEndLogo)?.player.duration ?? 0
-        let gameEndDurationNormalized: TimeInterval = min(gameEndDuration, maxDuration)
         
         winLoseLabel.text = didWin ? "YOU WIN!" : "YOU LOSE!"
-        winLoseLabel.fontColor = didWin ? .cyan.lightenColor(factor: 6) : .red.darkenColor(factor: 3)
+        winLoseLabel.fontColor = didWin ? .cyan.lightenColor(factor: 6) : .red
         winLoseLabel.updateShadow()
         
         winLoseLabel.run(SKAction.sequence([
-            SKAction.wait(forDuration: gameEndDurationNormalized / 5),
-            SKAction.fadeIn(withDuration: gameEndDurationNormalized / 5),
-            SKAction.wait(forDuration: gameEndDurationNormalized * 2/5),
-            SKAction.fadeOut(withDuration: gameEndDurationNormalized / 5),
-            SKAction.wait(forDuration: gameEndDurationNormalized / 5)
-        ]), completion: completion)
+            SKAction.wait(forDuration: fadeDuration),
+            SKAction.fadeIn(withDuration: fadeDuration)
+        ]))
+        
+        tryAgainButton.run(SKAction.sequence([
+            SKAction.wait(forDuration: fadeDuration * 2),
+            SKAction.fadeIn(withDuration: fadeDuration / 1)
+        ]))
+        
+        quitButton.run(SKAction.sequence([
+            SKAction.wait(forDuration: fadeDuration * 2),
+            SKAction.fadeIn(withDuration: fadeDuration / 1)
+        ]))
         
         AudioManager.shared.playSound(for: didWin ? "villaindead" : "boydead")
-        AudioManager.shared.playSoundThenStop(
-            for: gameEndLogo,
-            playForDuration: gameEndDurationNormalized < gameEndDuration ? gameEndDurationNormalized * 3/5 : gameEndDuration,
-            fadeOut: gameEndDurationNormalized < gameEndDuration ? gameEndDurationNormalized / 5 : 0,
-            delay: gameEndDurationNormalized / 5)
+        AudioManager.shared.playSound(for: gameEndLogo, delay: fadeDuration)
+    }
+    
+    
+    // MARK: - UI Touch
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        guard let location = touches.first?.location(in: self) else { return }
+        
+        for node in nodes(at: location) {
+            if node.name == "tryAgainButton" {
+                tryAgainButton.touchDown(in: location)
+            }
+            else if node.name == "quitButton" {
+                quitButton.touchDown(in: location)
+            }
+        }
+    }
+    
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        guard let location = touches.first?.location(in: self) else { return }
+        
+        for node in nodes(at: location) {
+            if node.name == "tryAgainButton" {
+                tryAgainButton.tapButton(in: location)
+                quitButton.run(SKAction.fadeOut(withDuration: fadeDuration))
+                backgroundNode.run(SKAction.colorize(with: .black, colorBlendFactor: 1, duration: fadeDuration))
+            }
+            else if node.name == "quitButton" {
+                quitButton.tapButton(in: location, type: .buttontap3)
+                tryAgainButton.run(SKAction.fadeOut(withDuration: fadeDuration))
+                backgroundNode.run(SKAction.colorize(with: .white, colorBlendFactor: 1, duration: fadeDuration))
+            }
+            
+            winLoseLabel.run(SKAction.fadeOut(withDuration: fadeDuration))
+        }
+        
+        tryAgainButton.touchUp()
+        quitButton.touchUp()
+    }
+    
+    
+}
+
+
+// MARK: - DecisionButtonSpriteDelegate
+
+extension FinalBattle2WinLoseScene: DecisionButtonSpriteDelegate {
+    func buttonWasTapped(_ node: DecisionButtonSprite) {
+        run(SKAction.wait(forDuration: fadeDuration)) { [weak self] in
+            guard let self = self else { return }
+            
+            if node === tryAgainButton {
+                winLoseDelegate?.didTapTryAgain()
+            }
+            else if node === quitButton {
+                winLoseDelegate?.didTapQuit()
+            }
+        }
+        
+        AudioManager.shared.stopSound(for: "gameendwin", fadeDuration: fadeDuration)
+        AudioManager.shared.stopSound(for: "gameendlose", fadeDuration: fadeDuration)
     }
     
     

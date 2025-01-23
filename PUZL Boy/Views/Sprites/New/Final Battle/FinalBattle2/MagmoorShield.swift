@@ -20,7 +20,8 @@ class MagmoorShield: SKNode {
     
     static let keyShieldThrobAction = "shieldThrobAction"
     
-    private var maxHitPoints: Int = 4
+    private var resetCount: Int = 0
+    private var maxHitPoints: Int = 3
     private(set) var hitPoints: Int {
         didSet {
             setShieldColor()
@@ -90,8 +91,9 @@ class MagmoorShield: SKNode {
      Resets the shield to the max, i.e. 3 and apply a quick animation.
      */
     func resetShield(villain: Player) {
-        maxHitPoints = FIRManager.chosenSword == ChosenSword.SwordType.plainSword.rawValue ? 6 : Int.random(in: 2...6)
+        maxHitPoints = min(3 + resetCount, 6)
         hitPoints = maxHitPoints
+        resetCount += 1
         
         removeAllActions()
         setScale(0)
