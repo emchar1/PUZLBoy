@@ -44,22 +44,28 @@ class FinalBattle2WinLoseScene: SKScene {
     
     func animateScene(didWin: Bool, completion: @escaping () -> Void) {
         let gameEndLogo: String = didWin ? "gameendwin" : "gameendlose"
+        let maxDuration: TimeInterval = 10
         let gameEndDuration: TimeInterval = AudioManager.shared.getAudioItem(filename: gameEndLogo)?.player.duration ?? 0
+        let gameEndDurationNormalized: TimeInterval = min(gameEndDuration, maxDuration)
         
         winLoseLabel.text = didWin ? "YOU WIN!" : "YOU LOSE!"
         winLoseLabel.fontColor = didWin ? .cyan.lightenColor(factor: 6) : .red.darkenColor(factor: 3)
         winLoseLabel.updateShadow()
         
         winLoseLabel.run(SKAction.sequence([
-            SKAction.wait(forDuration: 2),
-            SKAction.fadeIn(withDuration: 3),
-            SKAction.wait(forDuration: 3),
-            SKAction.fadeOut(withDuration: 2),
-            SKAction.wait(forDuration: gameEndDuration - 10)
+            SKAction.wait(forDuration: gameEndDurationNormalized / 5),
+            SKAction.fadeIn(withDuration: gameEndDurationNormalized / 5),
+            SKAction.wait(forDuration: gameEndDurationNormalized * 2/5),
+            SKAction.fadeOut(withDuration: gameEndDurationNormalized / 5),
+            SKAction.wait(forDuration: gameEndDurationNormalized / 5)
         ]), completion: completion)
         
-        AudioManager.shared.playSound(for: gameEndLogo)
         AudioManager.shared.playSound(for: didWin ? "villaindead" : "boydead")
+        AudioManager.shared.playSoundThenStop(
+            for: gameEndLogo,
+            playForDuration: gameEndDurationNormalized < gameEndDuration ? gameEndDurationNormalized * 3/5 : gameEndDuration,
+            fadeOut: gameEndDurationNormalized < gameEndDuration ? gameEndDurationNormalized / 5 : 0,
+            delay: gameEndDurationNormalized / 5)
     }
     
     
