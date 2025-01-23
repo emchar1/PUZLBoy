@@ -186,11 +186,24 @@ class MagmoorShield: SKNode {
                             delegate?.willBreakShield(fadeDuration: 0.25)
                             
                             AudioManager.shared.stopSound(for: "shieldpulse")
-                            ParticleEngine.shared.animateParticles(type: .magicExplosion,
+                            ParticleEngine.shared.animateParticles(type: .magicExplosion0,
                                                                    toNode: villain.sprite,
                                                                    position: .zero,
-                                                                   scale: 1,
-                                                                   duration: 1)
+                                                                   scale: UIDevice.spriteScale,
+                                                                   zPosition: 1,
+                                                                   duration: 1) //keep at 1
+                            ParticleEngine.shared.animateParticles(type: .magicExplosion1,
+                                                                   toNode: villain.sprite,
+                                                                   position: .zero,
+                                                                   scale: UIDevice.spriteScale,
+                                                                   zPosition: 2,
+                                                                   duration: 2)
+                            ParticleEngine.shared.animateParticles(type: .magicExplosion2,
+                                                                   toNode: villain.sprite,
+                                                                   position: .zero,
+                                                                   scale: UIDevice.spriteScale,
+                                                                   zPosition: 3,
+                                                                   duration: 2)
                         }
                     ])
                 ]),

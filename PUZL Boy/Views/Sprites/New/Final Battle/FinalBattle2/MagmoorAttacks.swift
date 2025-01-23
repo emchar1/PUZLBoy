@@ -263,6 +263,12 @@ class MagmoorAttacks {
                 if !isFire {
                     delegate?.didVillainFreeze(duration: 3, position: positions.player)
                 }
+                
+                ParticleEngine.shared.animateParticles(type: isFire ? .magicElderFire3 : .magicElderIce,
+                                                       toNode: gameboard.sprite,
+                                                       position: gameboard.getLocation(at: positions.player),
+                                                       scale: 2 * UIDevice.spriteScale / CGFloat(gameboard.panelCount),
+                                                       duration: 2)
             },
             SKAction.group([
                 SKAction.fadeOut(withDuration: 0.25),
