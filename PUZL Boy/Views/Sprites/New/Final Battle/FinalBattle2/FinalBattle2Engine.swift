@@ -191,7 +191,7 @@ class FinalBattle2Engine {
     // MARK: - Attack (Helper) Functions
     
     private func villainAttackNormal(at position: K.GameboardPosition, isFire: Bool, chosenSword: ChosenSword) {
-        showDamagePanel(at: position, color: isFire ? .red : .cyan)
+        showDamagePanel(at: position, color: isFire ? .red : .cyan, withExplosion: false)
         
         if position == controls.positions.player {
             health.updateHealth(type: isFire ? .villainAttackNormal : .villainAttackFreeze, dmgMultiplier: chosenSword.defenseRating)
@@ -233,7 +233,7 @@ class FinalBattle2Engine {
         }
         
         //Panel animation
-        affectedPanels.forEach { showDamagePanel(at: $0) }
+        affectedPanels.forEach { showDamagePanel(at: $0, withExplosion: true) }
         
         //Update health
         if affectedPanels.contains(where: { $0 == controls.positions.player }) {
@@ -280,7 +280,7 @@ class FinalBattle2Engine {
         addEdgePosition(row: homePosition.row, col: homePosition.col + 2)
         
         //Panel animation
-        affectedPanels.forEach { showDamagePanel(at: $0) }
+        affectedPanels.forEach { showDamagePanel(at: $0, withExplosion: true) }
         
         //Update health
         if affectedPanels.contains(where: { $0 == controls.positions.player }) {
@@ -288,7 +288,7 @@ class FinalBattle2Engine {
         }
     }
     
-    private func showDamagePanel(at position: K.GameboardPosition, color: UIColor = .red) {
+    private func showDamagePanel(at position: K.GameboardPosition, color: UIColor = .red, withExplosion: Bool) {
         guard let originalTerrain = gameboard.getPanelSprite(at: position).terrain else { return }
         
         let damagePanel = SKSpriteNode(imageNamed: "water")
@@ -306,7 +306,16 @@ class FinalBattle2Engine {
             SKAction.fadeOut(withDuration: 1),
             SKAction.removeFromParent()
         ]))
+        
+        if withExplosion {
+            ParticleEngine.shared.animateParticles(type: .magicElderFire3,
+                                                   toNode: gameboard.sprite,
+                                                   position: gameboard.getLocation(at: position),
+                                                   scale: UIDevice.spriteScale / CGFloat(gameboard.panelCount),
+                                                   duration: 1)
+        }
     }
+    
     
 }
 
