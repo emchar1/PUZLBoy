@@ -50,6 +50,20 @@ class FinalBattle2Spawner {
         self.gameboard = gameboard
         self.spawnPanels = []
         self.ignorePositions = [FinalBattle2Spawner.startPosition, FinalBattle2Spawner.endPosition]
+        
+        if let startPanel = gameboard.getPanelSprite(at: FinalBattle2Spawner.startPosition).terrain {
+            let panel = SKSpriteNode(imageNamed: "start")
+            panel.anchorPoint = .zero
+            panel.zPosition = 4
+            startPanel.addChild(panel)
+        }
+        
+        if let endPanel = gameboard.getPanelSprite(at: FinalBattle2Spawner.endPosition).terrain {
+            let panel = SKSpriteNode(imageNamed: "endClosed")
+            panel.anchorPoint = .zero
+            panel.zPosition = 4
+            endPanel.addChild(panel)
+        }
     }
     
     deinit {
