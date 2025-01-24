@@ -358,7 +358,8 @@ class FinalBattle2Controls {
         moveVillainFlee(shouldDisappear: false, fadeDuration: 0) { [weak self] in
             guard let self = self else { return }
             
-            magmoorAttacks.attack(pattern: MagmoorAttacks.getAttackPattern(enrage: magmoorShield.isEnraged), positions: positions)
+            let attackPattern = MagmoorAttacks.getAttackPattern(enrage: magmoorShield.isEnraged, level: magmoorShield.resetCount, isFeatured: false)
+            magmoorAttacks.attack(pattern: attackPattern, positions: positions)
         }
     }
     
@@ -468,7 +469,9 @@ class FinalBattle2Controls {
                 delegate?.didVillainReappear()
                 
                 magmoorShield.resetShield(villain: villain)
-                magmoorAttacks.executeAttackAnimation(color: magmoorShield.shieldColor, playSFX: false)
+                
+                let attackPattern = MagmoorAttacks.getAttackPattern(enrage: false, level: magmoorShield.resetCount, isFeatured: true)
+                magmoorAttacks.attack(pattern: attackPattern, positions: positions)
                 
                 generateVillainPositionNew(enrage: false)
                 resetTimer(forceDelay: nil) //call AFTER setting shield!!

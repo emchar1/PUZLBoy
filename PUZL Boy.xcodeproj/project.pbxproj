@@ -299,6 +299,7 @@
 		EAB8B8A22D42B9C100E5DE5F /* MagicElderFire3Particles.sks in Resources */ = {isa = PBXBuildFile; fileRef = EAB8B8A12D42B9C100E5DE5F /* MagicElderFire3Particles.sks */; };
 		EAB8B8B02D43429100E5DE5F /* gameendwin2.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAB8B8AF2D43429100E5DE5F /* gameendwin2.mp3 */; };
 		EAB8B8B22D4343CF00E5DE5F /* gameendwin1.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAB8B8B12D4343CF00E5DE5F /* gameendwin1.mp3 */; };
+		EAB8B8B62D43749D00E5DE5F /* Randomizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAB8B8B52D43749D00E5DE5F /* Randomizer.swift */; };
 		EABE79552AC787B900689C55 /* LevelSelectPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = EABE79542AC787B900689C55 /* LevelSelectPage.swift */; };
 		EABE79572AC9F55C00689C55 /* CloseButtonSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = EABE79562AC9F55B00689C55 /* CloseButtonSprite.swift */; };
 		EABE795B2ACBB28C00689C55 /* boypain2.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EABE79582ACBB28C00689C55 /* boypain2.mp3 */; };
@@ -692,6 +693,7 @@
 		EAB8B8A12D42B9C100E5DE5F /* MagicElderFire3Particles.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = MagicElderFire3Particles.sks; sourceTree = "<group>"; };
 		EAB8B8AF2D43429100E5DE5F /* gameendwin2.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = gameendwin2.mp3; sourceTree = "<group>"; };
 		EAB8B8B12D4343CF00E5DE5F /* gameendwin1.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = gameendwin1.mp3; sourceTree = "<group>"; };
+		EAB8B8B52D43749D00E5DE5F /* Randomizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Randomizer.swift; sourceTree = "<group>"; };
 		EABE79542AC787B900689C55 /* LevelSelectPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelSelectPage.swift; sourceTree = "<group>"; };
 		EABE79562AC9F55B00689C55 /* CloseButtonSprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloseButtonSprite.swift; sourceTree = "<group>"; };
 		EABE79582ACBB28C00689C55 /* boypain2.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = boypain2.mp3; sourceTree = "<group>"; };
@@ -863,9 +865,9 @@
 				EAE751DE2D29E689004B138A /* FinalBattle2Spawner.swift */,
 				EA9D4BB12D17498700BB1F36 /* FinalBattle2Controls.swift */,
 				EA37CEFE2D1BF8C700275A15 /* FinalBattle2Health.swift */,
+				EA0D6B122D40C20E00DB9C6D /* FinalBattle2WinLoseScene.swift */,
 				EA8C66522D333956004DD9A0 /* MagmoorAttacks.swift */,
 				EAE751E02D2C712A004B138A /* MagmoorShield.swift */,
-				EA0D6B122D40C20E00DB9C6D /* FinalBattle2WinLoseScene.swift */,
 			);
 			path = FinalBattle2;
 			sourceTree = "<group>";
@@ -1381,6 +1383,7 @@
 				EA75F0EA292DF46200F09BD7 /* FIRManager.swift */,
 				EA826C9629938CBB00F19F81 /* StoreReviewManager.swift */,
 				EAAB5A1E2CA63B3B007E463B /* Counter.swift */,
+				EAB8B8B52D43749D00E5DE5F /* Randomizer.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -1836,6 +1839,7 @@
 				EA95D1C529541DA50061059C /* AchievementJewelConnoisseur.swift in Sources */,
 				EA3534892920612300C11FC0 /* DisplayStatusBarSprite.swift in Sources */,
 				EAA3BD682C94CE0A00EDE298 /* PrincessCageSprite.swift in Sources */,
+				EAB8B8B62D43749D00E5DE5F /* Randomizer.swift in Sources */,
 				EAF07C1229EAB5D30034CD1A /* Extension+SKSpriteNode.swift in Sources */,
 				EA826C85298DD6C600F19F81 /* ActivityIndicatorSprite.swift in Sources */,
 				EA95D1B729524F0F0061059C /* BaseAchievement.swift in Sources */,

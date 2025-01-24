@@ -142,7 +142,7 @@ class MagmoorAttacks {
         - color: color of the wand particle
         - playSFX: if true, play villainattack and villainattackwand SFX's
      */
-    func executeAttackAnimation(color: UIColor, playSFX: Bool) {
+    private func executeAttackAnimation(color: UIColor, playSFX: Bool) {
         let colorSequence = SKKeyframeSequence(keyframeValues: [
             UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1),
             color

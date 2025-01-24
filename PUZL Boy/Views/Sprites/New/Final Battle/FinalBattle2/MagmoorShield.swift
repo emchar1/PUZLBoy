@@ -20,7 +20,7 @@ class MagmoorShield: SKNode {
     
     static let keyShieldThrobAction = "shieldThrobAction"
     
-    private var resetCount: Int = 0
+    private(set) var resetCount: Int = 0
     private var maxHitPoints: Int = 3
     private(set) var hitPoints: Int {
         didSet {
@@ -33,13 +33,9 @@ class MagmoorShield: SKNode {
     private var bottomNode: SKSpriteNode
     private var topNode: SKSpriteNode
     
-    var hasHitPoints: Bool {
-        return hitPoints > 0
-    }
-    
-    var isEnraged: Bool {
-        return !hasHitPoints
-    }
+    var hasHitPoints: Bool { return hitPoints > 0 }
+    var isEnraged: Bool { return !hasHitPoints }
+    var isMaxed: Bool { return hitPoints == maxHitPoints }
     
     weak var delegate: MagmoorShieldDelegate?
     
