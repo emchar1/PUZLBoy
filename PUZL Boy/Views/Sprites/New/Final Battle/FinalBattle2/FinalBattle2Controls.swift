@@ -74,6 +74,8 @@ class FinalBattle2Controls {
         //These need to come AFTER initializing their respective objects!
         magmoorAttacks.delegate = self
         magmoorShield.delegate = self
+        
+        setTimerFirstTime()
     }
     
     deinit {
@@ -153,7 +155,7 @@ class FinalBattle2Controls {
             generateVillainPositionNew(enrage: magmoorShield.isEnraged)
             
             if magmoorShield.hasHitPoints {
-                moveVillainFlee(shouldDisappear: false, fadeDuration: 0, completion: nil)
+                moveVillainFlee(shouldDisappear: false, completion: nil)
             }
             else {
                 resetTimer(forceDelay: 3)
@@ -267,7 +269,7 @@ class FinalBattle2Controls {
                     self.generateVillainPositionNew(enrage: self.magmoorShield.isEnraged)
                     
                     if self.magmoorShield.hasHitPoints {
-                        self.moveVillainFlee(shouldDisappear: false, fadeDuration: 0, completion: nil)
+                        self.moveVillainFlee(shouldDisappear: false, completion: nil)
                     }
                     else {
                         self.resetTimer(forceDelay: 3)
@@ -281,7 +283,7 @@ class FinalBattle2Controls {
                 canAttack = true
                 
                 generateVillainPositionNew(enrage: false)
-                moveVillainFlee(shouldDisappear: true, fadeDuration: 2, completion: nil)
+                moveVillainFlee(shouldDisappear: true, completion: nil)
                 delegate?.didHeroAttack(chosenSword: chosenSword)
                 AudioManager.shared.playSound(for: "villainpain3")
             }
@@ -355,12 +357,16 @@ class FinalBattle2Controls {
      Moves the villain to a new, random spot on the board. Use this to periodically move the villain, via a timer, for example.
      */
     @objc private func moveVillain(_ sender: Any) {
-        moveVillainFlee(shouldDisappear: false, fadeDuration: 0) { [weak self] in
+        moveVillainFlee(shouldDisappear: false) { [weak self] in
             guard let self = self else { return }
             
             let attackPattern = MagmoorAttacks.getAttackPattern(enrage: magmoorShield.isEnraged, level: magmoorShield.resetCount, isFeatured: false)
             magmoorAttacks.attack(pattern: attackPattern, positions: positions)
         }
+    }
+    
+    @objc private func moveVillainFirstTime(_ sender: Any) {
+        moveVillainFlee(shouldDisappear: true, showPain: false, completion: nil)
     }
     
     /**
@@ -374,6 +380,20 @@ class FinalBattle2Controls {
         villainMoveTimer = Timer.scheduledTimer(timeInterval: timeInterval,
                                                 target: self,
                                                 selector: #selector(moveVillain(_:)),
+                                                userInfo: nil,
+                                                repeats: false)
+    }
+    
+    /**
+     Sets the timer for the first time. Call once in initialization.
+     */
+    private func setTimerFirstTime() {
+        generateVillainPositionNew(enrage: false)
+        
+        villainMoveTimer.invalidate()
+        villainMoveTimer = Timer.scheduledTimer(timeInterval: 30,
+                                                target: self,
+                                                selector: #selector(moveVillainFirstTime(_:)),
                                                 userInfo: nil,
                                                 repeats: false)
     }
@@ -408,19 +428,28 @@ class FinalBattle2Controls {
     
     /**
      Helper function to assist with moving the villain after he's been attacked by the hero.
+     - parameters:
+        - shouldDisappear: if true, Magmoor disappears and ascends upwards in a black smoke.
+        - showPain: if true, show a quick hit animation before ascending. Defaults to true
+        - completion: optional completion handler
      */
-    private func moveVillainFlee(shouldDisappear: Bool, fadeDuration: TimeInterval, completion: (() -> Void)?) {
+    private func moveVillainFlee(shouldDisappear: Bool, showPain: Bool = true, completion: (() -> Void)?) {
         let moveDirection = villain.sprite.xScale / abs(villain.sprite.xScale)
         let moveDistance: CGFloat = 20
         let fadeDistance = CGPoint(x: 0, y: shouldDisappear ? gameboard.panelSize : 0)
+        let fadeDuration: TimeInterval = shouldDisappear ? 2 : 0
         let waitDuration = TimeInterval.random(in: 3...8)
         let villainDirection: CGFloat = villainPositionNew.col < positions.player.col ? 1 : -1
         
-        let disappearAction = SKAction.sequence([
+        let painAction = SKAction.sequence([
             SKAction.moveBy(x: -moveDirection * moveDistance, y: 0, duration: 0),
             SKAction.colorize(with: .red, colorBlendFactor: 1, duration: 0),
             SKAction.colorize(withColorBlendFactor: 0, duration: 0.5),
-            SKAction.moveBy(x: moveDirection * moveDistance, y: 0, duration: 0),
+            SKAction.moveBy(x: moveDirection * moveDistance, y: 0, duration: 0)
+        ])
+        
+        let disappearAction = SKAction.sequence([
+            showPain ? painAction : SKAction.wait(forDuration: 0),
             SKAction.group([
                 SKAction.moveBy(x: fadeDistance.x, y: fadeDistance.y, duration: fadeDuration),
                 SKAction.fadeOut(withDuration: fadeDuration)
