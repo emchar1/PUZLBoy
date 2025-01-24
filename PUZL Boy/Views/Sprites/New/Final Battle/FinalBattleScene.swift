@@ -59,5 +59,13 @@ class FinalBattleScene: SKScene {
         finalBattle2Engine.animateSprites()
     }
     
+    func cleanupScene(didWin: Bool, completion: @escaping () -> Void) {
+        // FIXME: - For use with build# 1.28(30).
+        finalBattle2Engine.animateCleanup { [weak self] in
+            self?.finalBattle2Engine = nil
+            completion()
+        }
+    }
+    
     
 }

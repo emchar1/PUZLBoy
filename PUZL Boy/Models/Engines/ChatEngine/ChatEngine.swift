@@ -1075,7 +1075,14 @@ extension ChatEngine {
             }
             
             let chosenSword = ChosenSword(type: selectedSword)
-            let isAvailable = ChosenSword.isAvailable(type: chosenSword.type)
+            
+            
+            
+            // FIXME: - For use with build# 1.28(30). Uncomment when done debugging.
+            let isAvailable = true//ChosenSword.isAvailable(type: chosenSword.type)
+            
+            
+            
             let heroChatApproveOptions: [String] = [
                 "Wrap it up, I'll take it!",
                 "OMG, this— This is the one!",

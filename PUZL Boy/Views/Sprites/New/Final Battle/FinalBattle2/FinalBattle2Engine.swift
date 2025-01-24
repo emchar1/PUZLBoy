@@ -29,6 +29,10 @@ class FinalBattle2Engine {
     private var speedLabelDebug: SKLabelNode!
     
     
+    // FIXME: - For use with build# 1.28(30).
+    private var fadeBackgroundSprite: SKShapeNode!
+    
+    
     // MARK: - Initialization
     
     init(size: CGSize) {
@@ -67,6 +71,18 @@ class FinalBattle2Engine {
         speedLabelDebug.fontSize = UIFont.gameFontSizeLarge
         speedLabelDebug.fontColor = UIFont.gameFontColor
         speedLabelDebug.horizontalAlignmentMode = .left
+        
+        
+        
+        // FIXME: - For use with build# 1.28(30).
+        fadeBackgroundSprite = SKShapeNode(rect: CGRect(origin: .zero, size: size))
+        fadeBackgroundSprite.fillColor = .black
+        fadeBackgroundSprite.strokeColor = .clear
+        fadeBackgroundSprite.lineWidth = 0
+        fadeBackgroundSprite.alpha = 0
+        fadeBackgroundSprite.zPosition = K.ZPosition.messagePrompt
+        
+        
         
         hero = Player(type: .hero)
         hero.sprite.position = gameboard.getLocation(at: FinalBattle2Spawner.startPosition)
@@ -116,6 +132,13 @@ class FinalBattle2Engine {
         superScene.addChild(backgroundSprite)
         superScene.addChild(bloodOverlay)
         
+        
+        
+        // FIXME: - For use with build# 1.28(30).
+        superScene.addChild(fadeBackgroundSprite)
+        
+        
+        
         superScene.addChild(gameboard.sprite)
         gameboard.sprite.addChild(flashGameboard)
         gameboard.sprite.addChild(hero.sprite)
@@ -151,6 +174,17 @@ class FinalBattle2Engine {
             else {
                 health.updateHealth(type: .drain, dmgMultiplier: controls.chosenSword.defenseRating)
             }
+        }
+    }
+    
+    func animateCleanup(completion: @escaping () -> Void) {
+        // FIXME: - For use with build# 1.28(30).
+        fadeBackgroundSprite.run(SKAction.fadeIn(withDuration: 2)) { [weak self] in
+            //Need to call these (2) explicitly because the stubborn bastards won't deinitialize on their own!!
+            self?.controls.magmoorShield.cleanup()
+            self?.health.cleanup()
+            
+            completion()
         }
     }
     

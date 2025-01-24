@@ -214,6 +214,7 @@ extension GameViewController: AuthorizationRequestSceneDelegate {
 
 extension GameViewController: TitleSceneDelegate {
     func didTapStart(levelSelectNewLevel: Int?) {
+        /*
         // TODO: - Goes right to catwalk if Start Game and level is > 500.
         if levelSelectNewLevel == nil && (FIRManager.saveStateModel != nil && FIRManager.saveStateModel!.newLevel > Level.finalLevel) {
             let catwalkScene = CatwalkScene(size: K.ScreenDimensions.size)
@@ -232,6 +233,17 @@ extension GameViewController: TitleSceneDelegate {
         }
         
         UserDefaults.standard.set(true, forKey: K.UserDefaults.hasPlayedBefore)
+         */
+        
+        
+        
+        // FIXME: - For use with build# 1.28(30). (Normally, use above, commented out code.)
+        let catwalkScene = CatwalkScene(size: K.ScreenDimensions.size)
+        catwalkScene.catwalkDelegate = self
+        skView.presentScene(catwalkScene, transition: SKTransition.fade(with: .white, duration: 3.0))
+//        let finalBattleScene = FinalBattleScene(size: K.ScreenDimensions.size)
+//        finalBattleScene.animateScene()
+//        skView.presentScene(finalBattleScene, transition: SKTransition.fade(with: .white, duration: 3.0))
     }
     
     func didTapLevelSelect() {
@@ -322,6 +334,50 @@ extension GameViewController: ComingSoonSceneDelegate {
     func comingSoonSceneDidFinish() {
         FIRManager.resetAgeOfRuinProperties(ageOfRuinIsActive: true)
         
+        presentTitleScene(shouldInitializeAsHero: false, transition: SKTransition.fade(with: .white, duration: 0))
+    }
+}
+
+
+// MARK: - Notification Observer Pattern Executer (NOPE)
+
+extension GameViewController {
+    @objc private func didWinGame(_ sender: Any) {
+        didCompleteGameObjcHelper(didWin: true)
+    }
+    
+    @objc private func didLoseGame(_ sender: Any) {
+        didCompleteGameObjcHelper(didWin: false)
+    }
+    
+    // FIXME: - For use with build# 1.28(30).
+    private func didCompleteGameObjcHelper(didWin: Bool) {
+        guard let finalBattleScene = skView.scene as? FinalBattleScene else { return }
+        
+        finalBattleScene.cleanupScene(didWin: didWin) { [weak self] in
+            guard let self = self else { return }
+            
+            let finalBattle2WinScene = FinalBattle2WinLoseScene(size: K.ScreenDimensions.size)
+            finalBattle2WinScene.winLoseDelegate = self
+            finalBattle2WinScene.animateScene(didWin: didWin)
+            
+            skView.presentScene(finalBattle2WinScene, transition: SKTransition.fade(with: .black, duration: 0))
+        }
+    }
+}
+
+
+// MARK: - FinalBattle2WinLoseSceneDelegate {
+
+// FIXME: - For use with build# 1.28(30).
+extension GameViewController: FinalBattle2WinLoseSceneDelegate {
+    func didTapTryAgain() {
+        let finalBattleScene = FinalBattleScene(size: K.ScreenDimensions.size)
+        finalBattleScene.animateScene()
+        skView.presentScene(finalBattleScene, transition: SKTransition.fade(with: .black, duration: 0))
+    }
+    
+    func didTapQuit() {
         presentTitleScene(shouldInitializeAsHero: false, transition: SKTransition.fade(with: .white, duration: 0))
     }
 }

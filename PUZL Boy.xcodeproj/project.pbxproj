@@ -293,11 +293,12 @@
 		EAB2DE182AA5119E00172478 /* FlyingDragon.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAB2DE172AA5119E00172478 /* FlyingDragon.swift */; };
 		EAB69E0028EFCF5B00C31DB3 /* PlayerSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAB69DFF28EFCF5B00C31DB3 /* PlayerSprite.swift */; };
 		EAB69E0428F3333000C31DB3 /* GameEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAB69E0328F3333000C31DB3 /* GameEngine.swift */; };
-		EAB8B89A2D41B9A300E5DE5F /* gameendwin.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAB8B8992D41B9A300E5DE5F /* gameendwin.mp3 */; };
 		EAB8B89C2D41BA7B00E5DE5F /* gameendlose.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAB8B89B2D41BA7B00E5DE5F /* gameendlose.mp3 */; };
 		EAB8B89E2D41E60200E5DE5F /* MagicExplosion1Particles.sks in Resources */ = {isa = PBXBuildFile; fileRef = EAB8B89D2D41E60200E5DE5F /* MagicExplosion1Particles.sks */; };
 		EAB8B8A02D41E97600E5DE5F /* MagicExplosion2Particles.sks in Resources */ = {isa = PBXBuildFile; fileRef = EAB8B89F2D41E97600E5DE5F /* MagicExplosion2Particles.sks */; };
 		EAB8B8A22D42B9C100E5DE5F /* MagicElderFire3Particles.sks in Resources */ = {isa = PBXBuildFile; fileRef = EAB8B8A12D42B9C100E5DE5F /* MagicElderFire3Particles.sks */; };
+		EAB8B8B02D43429100E5DE5F /* gameendwin2.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAB8B8AF2D43429100E5DE5F /* gameendwin2.mp3 */; };
+		EAB8B8B22D4343CF00E5DE5F /* gameendwin1.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAB8B8B12D4343CF00E5DE5F /* gameendwin1.mp3 */; };
 		EABE79552AC787B900689C55 /* LevelSelectPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = EABE79542AC787B900689C55 /* LevelSelectPage.swift */; };
 		EABE79572AC9F55C00689C55 /* CloseButtonSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = EABE79562AC9F55B00689C55 /* CloseButtonSprite.swift */; };
 		EABE795B2ACBB28C00689C55 /* boypain2.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EABE79582ACBB28C00689C55 /* boypain2.mp3 */; };
@@ -685,11 +686,12 @@
 		EAB2DE172AA5119E00172478 /* FlyingDragon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlyingDragon.swift; sourceTree = "<group>"; };
 		EAB69DFF28EFCF5B00C31DB3 /* PlayerSprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerSprite.swift; sourceTree = "<group>"; };
 		EAB69E0328F3333000C31DB3 /* GameEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameEngine.swift; sourceTree = "<group>"; };
-		EAB8B8992D41B9A300E5DE5F /* gameendwin.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = gameendwin.mp3; sourceTree = "<group>"; };
 		EAB8B89B2D41BA7B00E5DE5F /* gameendlose.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = gameendlose.mp3; sourceTree = "<group>"; };
 		EAB8B89D2D41E60200E5DE5F /* MagicExplosion1Particles.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = MagicExplosion1Particles.sks; sourceTree = "<group>"; };
 		EAB8B89F2D41E97600E5DE5F /* MagicExplosion2Particles.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = MagicExplosion2Particles.sks; sourceTree = "<group>"; };
 		EAB8B8A12D42B9C100E5DE5F /* MagicElderFire3Particles.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = MagicElderFire3Particles.sks; sourceTree = "<group>"; };
+		EAB8B8AF2D43429100E5DE5F /* gameendwin2.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = gameendwin2.mp3; sourceTree = "<group>"; };
+		EAB8B8B12D4343CF00E5DE5F /* gameendwin1.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = gameendwin1.mp3; sourceTree = "<group>"; };
 		EABE79542AC787B900689C55 /* LevelSelectPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelSelectPage.swift; sourceTree = "<group>"; };
 		EABE79562AC9F55B00689C55 /* CloseButtonSprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloseButtonSprite.swift; sourceTree = "<group>"; };
 		EABE79582ACBB28C00689C55 /* boypain2.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = boypain2.mp3; sourceTree = "<group>"; };
@@ -1153,7 +1155,8 @@
 				EAE43D982C48AA0F00E6DB3C /* forcefield.mp3 */,
 				EAE43D9A2C48AA2100E6DB3C /* forcefield2.mp3 */,
 				EAB8B89B2D41BA7B00E5DE5F /* gameendlose.mp3 */,
-				EAB8B8992D41B9A300E5DE5F /* gameendwin.mp3 */,
+				EAB8B8B12D4343CF00E5DE5F /* gameendwin1.mp3 */,
+				EAB8B8AF2D43429100E5DE5F /* gameendwin2.mp3 */,
 				EAAEA3C52931F08300221963 /* gameover.mp3 */,
 				EA8C60682C068E0800DED3C7 /* gameoverageofruin.mp3 */,
 				EA4D026429B90BF700F0C7B1 /* gemcollect.mp3 */,
@@ -1649,7 +1652,6 @@
 				EA65183728E419A000E535BF /* LaunchScreen.storyboard in Resources */,
 				EAAECFDF2B698E6B0011D5C5 /* magicwarp.mp3 in Resources */,
 				EAE43DA12C48AA8900E6DB3C /* magicelderreduce.mp3 in Resources */,
-				EAB8B89A2D41B9A300E5DE5F /* gameendwin.mp3 in Resources */,
 				EAB2DE102A9D4BD700172478 /* LavaSizzleParticles.sks in Resources */,
 				EA95D18929459BC80061059C /* moveglide.mp3 in Resources */,
 				EA45833B2A42622000279056 /* pickuptime.mp3 in Resources */,
@@ -1681,6 +1683,7 @@
 				EA41FBFB2D02C09400796368 /* ydooropen.mp3 in Resources */,
 				EA8C606C2C068E0800DED3C7 /* winlevelageofruin.mp3 in Resources */,
 				EAE919472A4CAFFD00AF67D1 /* gemcollectparty3x.mp3 in Resources */,
+				EAB8B8B02D43429100E5DE5F /* gameendwin2.mp3 in Resources */,
 				EAACB4B92971E08A00973EB8 /* chatclose.mp3 in Resources */,
 				EA1281AD2CF15F65001CC5E8 /* bossbattle0.mp3 in Resources */,
 				EAF7181F29B1B2BC00E2ED82 /* movesand1.mp3 in Resources */,
@@ -1702,6 +1705,7 @@
 				EA45834D2A44315900279056 /* buttontap3.mp3 in Resources */,
 				EA81968A2C41AC590002D551 /* MagicElderParticles.sks in Resources */,
 				EA8E07542B50988B0051DDC3 /* PointerParticles.sks in Resources */,
+				EAB8B8B22D4343CF00E5DE5F /* gameendwin1.mp3 in Resources */,
 				EA3467A529A8C659002DDA02 /* revive.mp3 in Resources */,
 				EA7A791B2C7EFE3D00594349 /* sadaccent.mp3 in Resources */,
 				EAE43D952C48A79500E6DB3C /* magicwarp2.mp3 in Resources */,
@@ -2111,7 +2115,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "PUZL Boy/Supporting Files/PUZL Boy.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 29;
+				CURRENT_PROJECT_VERSION = 30;
 				DEVELOPMENT_TEAM = LZ8V996BTJ;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "PUZL Boy/Supporting Files/Info.plist";
@@ -2124,7 +2128,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.27;
+				MARKETING_VERSION = 1.28;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.5play-apps.PUZL-Boy";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -2143,7 +2147,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = "PUZL Boy/Supporting Files/PUZL Boy.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 29;
+				CURRENT_PROJECT_VERSION = 30;
 				DEVELOPMENT_TEAM = LZ8V996BTJ;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "PUZL Boy/Supporting Files/Info.plist";
@@ -2156,7 +2160,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.27;
+				MARKETING_VERSION = 1.28;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.5play-apps.PUZL-Boy";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
