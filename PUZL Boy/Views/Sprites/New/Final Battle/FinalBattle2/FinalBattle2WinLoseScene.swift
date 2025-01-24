@@ -77,8 +77,6 @@ class FinalBattle2WinLoseScene: SKScene {
     // MARK: - Functions
     
     func animateScene(didWin: Bool) {
-        let gameEndLogo: String = didWin ? "gameendwin1" : "gameendlose"
-        
         winLoseLabel.text = didWin ? "YOU WIN!" : "YOU LOSE!"
         winLoseLabel.fontColor = (didWin ? UIColor.cyan : UIColor.red).lightenColor(factor: 6)
         winLoseLabel.updateShadow()
