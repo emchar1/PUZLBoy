@@ -206,8 +206,9 @@ class AudioManager {
         addAudioItem("villainpain2", category: .soundFX) //NEEDS PURCHASE $1
         addAudioItem("villainpain3", category: .soundFX) //NEEDS PURCHASE $1
         addAudioItem("gameendlose", category: .soundFX)
-        addAudioItem("gameendwin", category: .soundFX)
-        
+        addAudioItem("gameendwin1", category: .soundFX)
+        addAudioItem("gameendwin2", category: .soundFXLoop)
+
         
         addAudioItem("warp", category: .soundFX)
         addAudioItem("waterappear1", category: .soundFX) //not purchased $3

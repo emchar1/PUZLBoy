@@ -40,14 +40,15 @@ class FinalBattle2WinLoseScene: SKScene {
         winLoseLabel.alpha = 0
         winLoseLabel.zPosition = 1
         winLoseLabel.addDropShadow()
+        winLoseLabel.updateShadowColor(.black.lightenColor(factor: 6))
         
-        tryAgainButton = DecisionButtonSprite(text: "Try Again?", color: DecisionButtonSprite.colorBlue, iconImageName: nil)
+        tryAgainButton = DecisionButtonSprite(text: "Play Again?", color: DecisionButtonSprite.colorBlue, iconImageName: nil)
         tryAgainButton.position = CGPoint(x: size.width / 2, y: size.height / 2 - 300)
         tryAgainButton.alpha = 0
         tryAgainButton.zPosition = 2
         tryAgainButton.name = "tryAgainButton"
 
-        quitButton = DecisionButtonSprite(text: "Quit", color: DecisionButtonSprite.colorRed, iconImageName: nil)
+        quitButton = DecisionButtonSprite(text: "Quit.", color: DecisionButtonSprite.colorRed, iconImageName: nil)
         quitButton.position = CGPoint(x: size.width / 2, y: size.height / 2 - 500)
         quitButton.alpha = 0
         quitButton.zPosition = 3
@@ -76,10 +77,10 @@ class FinalBattle2WinLoseScene: SKScene {
     // MARK: - Functions
     
     func animateScene(didWin: Bool) {
-        let gameEndLogo: String = didWin ? "gameendwin" : "gameendlose"
+        let gameEndLogo: String = didWin ? "gameendwin1" : "gameendlose"
         
         winLoseLabel.text = didWin ? "YOU WIN!" : "YOU LOSE!"
-        winLoseLabel.fontColor = didWin ? .cyan.lightenColor(factor: 6) : .red
+        winLoseLabel.fontColor = (didWin ? UIColor.cyan : UIColor.red).lightenColor(factor: 6)
         winLoseLabel.updateShadow()
         
         winLoseLabel.run(SKAction.sequence([
@@ -98,7 +99,16 @@ class FinalBattle2WinLoseScene: SKScene {
         ]))
         
         AudioManager.shared.playSound(for: didWin ? "villaindead" : "boydead")
-        AudioManager.shared.playSound(for: gameEndLogo, delay: fadeDuration)
+        
+        if didWin {
+            let delay: TimeInterval = AudioManager.shared.getAudioItem(filename: "gameendwin1")?.player.duration ?? 0
+            
+            AudioManager.shared.playSound(for: "gameendwin1", delay: fadeDuration)
+            AudioManager.shared.playSound(for: "gameendwin2", delay: fadeDuration + delay)
+        }
+        else {
+            AudioManager.shared.playSound(for: "gameendlose", delay: fadeDuration)
+        }
     }
     
     
@@ -150,6 +160,7 @@ extension FinalBattle2WinLoseScene: DecisionButtonSpriteDelegate {
         run(SKAction.wait(forDuration: fadeDuration)) { [weak self] in
             guard let self = self else { return }
             
+            //LESSON: - Identity operator (===) checks that node is the same object as tryAgainButton, i.e. they point to the same address in memory.
             if node === tryAgainButton {
                 winLoseDelegate?.didTapTryAgain()
             }
@@ -158,7 +169,8 @@ extension FinalBattle2WinLoseScene: DecisionButtonSpriteDelegate {
             }
         }
         
-        AudioManager.shared.stopSound(for: "gameendwin", fadeDuration: fadeDuration)
+        AudioManager.shared.stopSound(for: "gameendwin1", fadeDuration: fadeDuration)
+        AudioManager.shared.stopSound(for: "gameendwin2", fadeDuration: fadeDuration)
         AudioManager.shared.stopSound(for: "gameendlose", fadeDuration: fadeDuration)
     }
     
