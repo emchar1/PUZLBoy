@@ -11,14 +11,24 @@ class FinalBattle2Health {
     
     // MARK: - Properties
     
+    //Action Keys
     static let keyPlayerBlink: String = "playerBlink"
     static let keyPlayerColorFade: String = "playerColorFade"
     
+    //Timers
     private var timer: Timer?
-    private var drainTimer: Timer?            //a separate timer is needed for the drain health function
-    private var isDraining: Bool = false
+    private var drainTimer: Timer?
+    private var poisonTimer: Timer?
     
+    //Poisoned/Drained status
+    private var isDraining: Bool = false
+    private var poisonCounter: Int?
+    var isPoisoned: Bool { return poisonCounter != nil }
+    
+    //Misc.
     private var player: Player
+    private var bar: StatusBarSprite!
+    private var dmgMultiplier: CGFloat?
     private(set) var counter: Counter! {
         // TODO: - This determines whether or not you beat Magmoor, essentially winning or losing the game.
         didSet {
@@ -27,11 +37,9 @@ class FinalBattle2Health {
             }
         }
     }
-    private var bar: StatusBarSprite!
-    private var dmgMultiplier: CGFloat?
     
     enum HealthType {
-        case drain, regen, heroAttack, villainAttackNormal, villainAttackFreeze, villainAttackTimed, villainShieldExplode
+        case drain, drainPoison, stopDrain, heroAttack, villainAttackNormal, villainAttackFreeze, villainAttackPoison, villainAttackTimed, villainShieldExplode
     }
     
     
@@ -42,9 +50,10 @@ class FinalBattle2Health {
         
         timer = Timer()
         drainTimer = Timer()
+        poisonTimer = Timer()
         
         counter = Counter(maxCount: 1, step: 0.01, shouldLoop: false)
-        counter.setCount(to: 0.25)
+        counter.setCount(to: 0.5)
         
         bar = StatusBarSprite(label: "Determination",
                               shouldHide: true,
@@ -69,6 +78,13 @@ class FinalBattle2Health {
     }
     
     func updateHealth(type: HealthType, dmgMultiplier: CGFloat? = nil) {
+        func drainPoison() {
+            poisonCounter = 0
+            poisonTimer?.invalidate()
+            poisonTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(helperPoisonDrain), userInfo: nil, repeats: true)
+            makePlayerHurt(color: .green)
+        }
+        
         self.dmgMultiplier = dmgMultiplier
         
         resetPlayerActions()
@@ -79,18 +95,25 @@ class FinalBattle2Health {
             drainTimer?.invalidate()
             drainTimer = Timer.scheduledTimer(timeInterval: 0.25, target: self, selector: #selector(helperDrain), userInfo: nil, repeats: true)
             makePlayerHurt()
-        case .regen:
+        case .drainPoison:
+            guard !isPoisoned else { return } //prevents stacking of poison damage!
+            drainPoison()
+            AudioManager.shared.playSound(for: "movepoisoned2")
+        case .stopDrain:
             isDraining = false
             drainTimer?.invalidate()
-            drainTimer = Timer.scheduledTimer(timeInterval: 0.25, target: self, selector: #selector(helperRegen), userInfo: nil, repeats: false)
+            drainTimer = Timer.scheduledTimer(timeInterval: 0, target: self, selector: #selector(stopDrain), userInfo: nil, repeats: false)
         case .heroAttack:
-            drainTimer?.invalidate()
-            drainTimer = Timer.scheduledTimer(timeInterval: 0, target: self, selector: #selector(helperHeroAttack), userInfo: nil, repeats: false)
+            timer?.invalidate()
+            timer = Timer.scheduledTimer(timeInterval: 0, target: self, selector: #selector(helperHeroAttack), userInfo: nil, repeats: false)
         case .villainAttackNormal:
             timer = Timer.scheduledTimer(timeInterval: 0, target: self, selector: #selector(helperVillainAttackNormal), userInfo: nil, repeats: false)
             makePlayerHurt()
         case .villainAttackFreeze:
-            playBoyHurt()
+            playBoyHurtSFX()
+        case .villainAttackPoison:
+            timer = Timer.scheduledTimer(timeInterval: 0, target: self, selector: #selector(helperVillainAttackPoison), userInfo: nil, repeats: false)
+            drainPoison()
         case .villainAttackTimed:
             timer = Timer.scheduledTimer(timeInterval: 0, target: self, selector: #selector(helperVillainAttackTimed), userInfo: nil, repeats: false)
             makePlayerHurt()
@@ -109,6 +132,9 @@ class FinalBattle2Health {
         
         drainTimer?.invalidate()
         drainTimer = nil
+        
+        poisonTimer?.invalidate()
+        poisonTimer = nil
     }
     
     
@@ -144,20 +170,32 @@ class FinalBattle2Health {
     
     @objc private func helperDrain() {
         guard counter.getCount() > 0.01 else {
-            timer?.invalidate()
+            drainTimer?.invalidate()
             return
         }
         
-        objcHelper(rateDivisions: [0.75, 0.5], rates: [0.05, 0.02, 0.01].map { $0 * (dmgMultiplier ?? 1) }, increment: false)
+        objcHelper(rateDivisions: [], rates: [0.01].map { $0 * (dmgMultiplier ?? 1) }, increment: false)
     }
     
-    @objc private func helperRegen() {
+    @objc private func stopDrain() {
         guard counter.getCount() < 0.99 else {
-            timer?.invalidate()
+            drainTimer?.invalidate()
             return
         }
         
-        objcHelper(rateDivisions: [], rates: [0.002].map { $0 * (dmgMultiplier ?? 1) }, increment: true)
+        objcHelper(rateDivisions: [], rates: [0.00].map { $0 * (dmgMultiplier ?? 1) }, increment: true)
+    }
+    
+    @objc private func helperPoisonDrain() {
+        guard let poisonCounter = poisonCounter, poisonCounter < 5, counter.getCount() > 0.02 else {
+            self.poisonCounter = nil
+            poisonTimer?.invalidate()
+            resetPlayerActions()
+            return
+        }
+        
+        self.poisonCounter! += 1
+        objcHelper(rateDivisions: [], rates: [0.02].map { $0 * (dmgMultiplier ?? 1) }, increment: false)
     }
     
     @objc private func helperHeroAttack() {
@@ -173,12 +211,16 @@ class FinalBattle2Health {
         objcHelper(rateDivisions: [], rates: [0.1].map { $0 * (dmgMultiplier ?? 1) }, increment: false)
     }
     
+    @objc private func helperVillainAttackPoison() {
+        objcHelper(rateDivisions: [], rates: [0.08].map { $0 * (dmgMultiplier ?? 1) }, increment: false)
+    }
+    
     @objc private func helperVillainAttackTimed() {
-        objcHelper(rateDivisions: [], rates: [0.05].map { $0 * (dmgMultiplier ?? 1) }, increment: false)
+        objcHelper(rateDivisions: [], rates: [0.2].map { $0 * (dmgMultiplier ?? 1) }, increment: false)
     }
     
     @objc private func helperVillainShield() {
-        objcHelper(rateDivisions: [0.5], rates: [0.25, 0.125].map { $0 * (dmgMultiplier ?? 1) }, increment: false)
+        objcHelper(rateDivisions: [], rates: [0.25].map { $0 * (dmgMultiplier ?? 1) }, increment: false)
     }
     
     
@@ -187,6 +229,7 @@ class FinalBattle2Health {
     private func resetPlayerActions() {
         //Don't run hurt actions if a freeze action is in place!!
         guard player.sprite.action(forKey: FinalBattle2Controls.keyPlayerFreezeAction) == nil else { return }
+        guard !isPoisoned else { return } //..or if poisoned!!
         
         if player.sprite.action(forKey: FinalBattle2Health.keyPlayerBlink) != nil {
             player.sprite.colorBlendFactor = 1
@@ -196,28 +239,28 @@ class FinalBattle2Health {
         player.sprite.run(SKAction.colorize(withColorBlendFactor: 0, duration: 0.5), withKey: FinalBattle2Health.keyPlayerColorFade)
     }
     
-    private func makePlayerHurt() {
-        playBoyHurt()
+    private func makePlayerHurt(color: UIColor = .red) {
+        playBoyHurtSFX()
         
         //Don't run hurt actions if a freeze action is in place!!
         guard player.sprite.action(forKey: FinalBattle2Controls.keyPlayerFreezeAction) == nil else { return }
         
         let colorBlinkDuration: TimeInterval = 0.05
         let colorBlinkAction = SKAction.sequence([
-            SKAction.colorize(withColorBlendFactor: 0, duration: colorBlinkDuration),
-            SKAction.colorize(withColorBlendFactor: 1, duration: colorBlinkDuration)
+            SKAction.colorize(with: color, colorBlendFactor: 0, duration: colorBlinkDuration),
+            SKAction.colorize(with: color, colorBlendFactor: 1, duration: colorBlinkDuration)
         ])
-        let colorBlinkRepeat = isDraining ? SKAction.repeatForever(colorBlinkAction) : SKAction.repeat(colorBlinkAction, count: 20)
+        let colorBlinkRepeat = isDraining || isPoisoned ? SKAction.repeatForever(colorBlinkAction) : SKAction.repeat(colorBlinkAction, count: 20)
         
         player.sprite.removeAction(forKey: FinalBattle2Health.keyPlayerColorFade)
         player.sprite.removeAction(forKey: FinalBattle2Health.keyPlayerBlink) //I think this prevents stacking?? Especially if colorBlinkAction is repeatForever..
         player.sprite.run(SKAction.sequence([
             colorBlinkRepeat,
-            SKAction.colorize(withColorBlendFactor: 0, duration: 0.5)
+            SKAction.colorize(with: color, colorBlendFactor: 0, duration: 0.5)
         ]), withKey: FinalBattle2Health.keyPlayerBlink)
     }
     
-    private func playBoyHurt() {
+    private func playBoyHurtSFX() {
         //Prevents multiple voices overlaying if makePlayerHurt() stacks, e.g. from drain + villainAttack
         guard !AudioManager.shared.isPlaying(audioKey: "boypain1") && !AudioManager.shared.isPlaying(audioKey: "boypain2") && !AudioManager.shared.isPlaying(audioKey: "boypain3") && !AudioManager.shared.isPlaying(audioKey: "boypain4") else { return }
         
