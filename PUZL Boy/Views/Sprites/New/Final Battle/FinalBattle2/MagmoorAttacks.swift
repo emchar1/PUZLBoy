@@ -63,13 +63,9 @@ class MagmoorAttacks {
      - returns: the attack pattern generated
      */
     static func getAttackPattern(enrage: Bool, level: Int, isFeatured: Bool) -> AttackPattern {
-        return .poison
-        
-        
-        
-        
         let attackPattern: AttackPattern
         let normalPattern: AttackPattern
+        let poisonPattern: AttackPattern
         var randomInts: [Randomizer] = []
         
         for _ in 0..<3 {
@@ -77,9 +73,10 @@ class MagmoorAttacks {
         }
         
         normalPattern = randomInts[0].isMultiple(of: 5) ? .freeze : .normal
+        poisonPattern = randomInts[0].isMultiple(of: 5) ? .freeze : (randomInts[0].isMultiple(of: [2, 3]) ? .normal : .poison)
         
         //Enrage short-circuit case
-        guard !enrage else { return normalPattern }
+        guard !enrage else { return level <= 3 ? normalPattern : poisonPattern }
         
         switch level {
         case 0, 1:
@@ -87,22 +84,20 @@ class MagmoorAttacks {
         case 2:
             guard !isFeatured else { attackPattern = .poison; break }
             
-            if randomInts[0].isMultiple(of: [2, 3]) { attackPattern = .normal }
-            else if randomInts[0].isMultiple(of: 4) { attackPattern = .freeze }
-            else { attackPattern = .poison }
+            attackPattern = poisonPattern
         case 3:
             guard !isFeatured else { attackPattern = .timed; break }
             
-            if randomInts[0].isMultiple(of: [2, 3]) { attackPattern = .normal }
-            else if randomInts[0].isMultiple(of: 4) { attackPattern = .freeze }
-            else if randomInts[0].isMultiple(of: 5) { attackPattern = .poison }
+            if randomInts[0].isMultiple(of: 5) { attackPattern = .freeze }
+            else if randomInts[0].isMultiple(of: 2) { attackPattern = .normal }
+            else if randomInts[0].isMultiple(of: 3) { attackPattern = .poison }
             else { attackPattern = .timed }
         case 4:
             guard !isFeatured else { attackPattern = .timedLarge; break }
             
-            if randomInts[0].isMultiple(of: [2, 3]) { attackPattern = .normal }
-            else if randomInts[0].isMultiple(of: 4) { attackPattern = .freeze }
-            else if randomInts[0].isMultiple(of: 5) { attackPattern = .poison }
+            if randomInts[0].isMultiple(of: 5) { attackPattern = .freeze }
+            else if randomInts[0].isMultiple(of: 2) { attackPattern = .normal }
+            else if randomInts[0].isMultiple(of: 3) { attackPattern = .poison }
             else {
                 if randomInts[1].isMultiple(of: [2, 3]) { attackPattern = .timed }
                 else { attackPattern = .timedLarge }
