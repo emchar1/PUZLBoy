@@ -30,7 +30,7 @@ class MagmoorAttacks {
     }
     
     enum AttackPattern: CaseIterable {
-        case normal, freeze, timed, timedLarge
+        case normal, freeze, poison, timed, timedLarge
     }
     
     weak var delegate: MagmoorAttacksDelegate?
@@ -57,36 +57,61 @@ class MagmoorAttacks {
     
     /**
      Generates an attack pattern based on probability.
-     - parameter enrage: if true, always returns normal attack
+     - parameters:
+        - enrage: if true, always returns normal attack
+        - level: determines attack pattern
+        - isFeatured: if attackRound just started, default to this attack to showcase the new attack
      - returns: the attack pattern generated
      */
-    static func getAttackPattern(enrage: Bool) -> AttackPattern {
-        guard !enrage else {
-            return Int.random(in: 0...5) == 0 ? .freeze : .normal
-        }
+    static func getAttackPattern(enrage: Bool, level: Int, isFeatured: Bool) -> AttackPattern {
+        return .poison
+        
+        
+        
         
         let attackPattern: AttackPattern
-        let randomInt = Int.random(in: 0...99)
-//        print("randomInt|\(randomInt)", terminator: "||")
+        let normalPattern: AttackPattern
+        var randomInts: [Randomizer] = []
         
-        if randomInt % 2 == 0 {
-            attackPattern = .normal
-        } else if randomInt % 3 == 0 {
-            attackPattern = .freeze
+        for _ in 0..<3 {
+            randomInts.append(Randomizer())
         }
-        else {
-            let randomInt2 = Int.random(in: 0...99)
-//            print("randomInt2|\(randomInt2)", terminator: "||")
+        
+        normalPattern = randomInts[0].isMultiple(of: 5) ? .freeze : .normal
+        
+        //Enrage short-circuit case
+        guard !enrage else { return normalPattern }
+        
+        switch level {
+        case 0, 1:
+            attackPattern = normalPattern
+        case 2:
+            guard !isFeatured else { attackPattern = .poison; break }
             
-            if randomInt2 % 2 == 0 || randomInt2 % 3 == 0 {
-                attackPattern = .timed
-            }
+            if randomInts[0].isMultiple(of: [2, 3]) { attackPattern = .normal }
+            else if randomInts[0].isMultiple(of: 4) { attackPattern = .freeze }
+            else { attackPattern = .poison }
+        case 3:
+            guard !isFeatured else { attackPattern = .timed; break }
+            
+            if randomInts[0].isMultiple(of: [2, 3]) { attackPattern = .normal }
+            else if randomInts[0].isMultiple(of: 4) { attackPattern = .freeze }
+            else if randomInts[0].isMultiple(of: 5) { attackPattern = .poison }
+            else { attackPattern = .timed }
+        case 4:
+            guard !isFeatured else { attackPattern = .timedLarge; break }
+            
+            if randomInts[0].isMultiple(of: [2, 3]) { attackPattern = .normal }
+            else if randomInts[0].isMultiple(of: 4) { attackPattern = .freeze }
+            else if randomInts[0].isMultiple(of: 5) { attackPattern = .poison }
             else {
-                attackPattern = .timedLarge
+                if randomInts[1].isMultiple(of: [2, 3]) { attackPattern = .timed }
+                else { attackPattern = .timedLarge }
             }
+        default:
+            attackPattern = .normal
         }
-                
-//        print("attackPattern|\(attackPattern)")
+        
         return attackPattern
     }
     
@@ -121,10 +146,13 @@ class MagmoorAttacks {
         switch pattern {
         case .normal:
             wandColor = .systemPink
-            helperNormal(isFire: true, positions: positions)
+            helperNormal(pattern: .normal, positions: positions)
         case .freeze:
             wandColor = .cyan
-            helperNormal(isFire: false, positions: positions)
+            helperNormal(pattern: .freeze, positions: positions)
+        case .poison:
+            wandColor = .green
+            helperNormal(pattern: .poison, positions: positions)
         case .timed:
             wandColor = .magenta
             helperTimed(positions: positions, isLarge: false)
@@ -228,47 +256,79 @@ class MagmoorAttacks {
         return fireball
     }
     
-    private func helperNormal(isFire: Bool, positions: FinalBattle2Controls.PlayerPositions) {
+    private func helperNormal(pattern: AttackPattern, positions: FinalBattle2Controls.PlayerPositions) {
         let rowSquared = pow(TimeInterval(positions.villain.row) - TimeInterval(positions.player.row), 2)
         let colSquared = pow(TimeInterval(positions.villain.col) - TimeInterval(positions.player.col), 2)
         let distanceVillainToPlayer = sqrt(rowSquared + colSquared)
         let fireballMovementDuration = max(distanceVillainToPlayer * normalFireballSpeed, 0.25)
         
+        let fireballImageName: String
+        let fireballColor: UIColor
+        let fireballParticles: ParticleEngine.ParticleType
+        let fireballSFX: String
+        let fireballSFX2: String?
+        
+        switch pattern {
+        case .freeze:
+            fireballImageName = "villainProjectile2"
+            fireballColor = .blue
+            fireballParticles = .magicElderIce
+            fireballSFX = "enemyice"
+            fireballSFX2 = nil
+        case .poison:
+            fireballImageName = "villainProjectile4"
+            fireballColor = .green
+            fireballParticles = .magicElderEarth2
+            fireballSFX = "movepoisoned1"
+            fireballSFX2 = "movepoisoned2"
+        default:
+            fireballImageName = "villainProjectile1"
+            fireballColor = .red
+            fireballParticles = .magicElderFire3
+            fireballSFX = "enemyflame"
+            fireballSFX2 = nil
+        }
+        
         let fireball = createFireball(positions: positions,
-                                      imageName: isFire ? "villainProjectile1" : "villainProjectile2",
-                                      color: isFire ? .red : .blue,
+                                      imageName: fireballImageName,
+                                      color: fireballColor,
                                       zPosition: K.ZPosition.itemsAndEffects,
                                       shouldRotate: true)
         
         gameboard.sprite.addChild(fireball)
         
-        if !isFire {
+        if pattern != .normal {
             fireball.run(SKAction.rotate(toAngle: distanceVillainToPlayer * .pi * villainDirection, duration: fireballMovementDuration))
         }
-        
+                
         fireball.run(SKAction.repeatForever(SKAction.sequence([
             SKAction.colorize(withColorBlendFactor: 1, duration: 0.1),
             SKAction.colorize(withColorBlendFactor: 0, duration: 0.1)
         ])))
         
+        let scaleAction = pattern == .poison ? SKAction.repeat(SKAction.sequence([
+            SKAction.scale(to: 0.5 / UIDevice.spriteScale, duration: 0.1),
+            SKAction.scale(to: 0.25 / UIDevice.spriteScale, duration: 0.1)
+        ]), count: Int(ceil(fireballMovementDuration / 0.2))) : SKAction.scale(to: 0.5 / UIDevice.spriteScale, duration: fireballMovementDuration)
+        
         fireball.run(SKAction.sequence([
             SKAction.group([
                 SKAction.move(to: gameboard.getLocation(at: positions.player), duration: fireballMovementDuration),
-                SKAction.scale(to: 0.5 / UIDevice.spriteScale, duration: fireballMovementDuration)
+                scaleAction
             ]),
             SKAction.run { [weak self] in
                 guard let self = self else { return }
-                delegate?.didVillainAttack(pattern: isFire ? .normal : .freeze, position: positions.player)
+                delegate?.didVillainAttack(pattern: pattern, position: positions.player)
                 
-                if !isFire {
+                if pattern == .freeze {
                     delegate?.didVillainFreeze(duration: 3, position: positions.player)
                 }
                 
-                ParticleEngine.shared.animateParticles(type: isFire ? .magicElderFire3 : .magicElderIce,
+                ParticleEngine.shared.animateParticles(type: fireballParticles,
                                                        toNode: gameboard.sprite,
                                                        position: gameboard.getLocation(at: positions.player),
                                                        scale: 2 * UIDevice.spriteScale / CGFloat(gameboard.panelCount),
-                                                       duration: 2)
+                                                       duration: pattern == .poison ? 4 : 2)
             },
             SKAction.group([
                 SKAction.fadeOut(withDuration: 0.25),
@@ -277,10 +337,15 @@ class MagmoorAttacks {
             SKAction.removeFromParent()
         ]))
         
-        if let attackAudio = AudioManager.shared.getAudioItem(filename: isFire ? "enemyflame" : "enemyice") {
-            let delayDuration = isFire ? fireballMovementDuration : max(0, fireballMovementDuration - 0.25)
+        if let attackAudio = AudioManager.shared.getAudioItem(filename: fireballSFX) {
+            let delayDuration = pattern == .normal || pattern == .poison ? fireballMovementDuration : max(0, fireballMovementDuration - 0.25)
             
             AudioManager.shared.playSound(for: attackAudio.fileName, delay: delayDuration)
+            
+            //Secondary SFX, if it exists..
+            if let fireballSFX2 = fireballSFX2, let attackAudio2 = AudioManager.shared.getAudioItem(filename: fireballSFX2) {
+                AudioManager.shared.playSound(for: attackAudio2.fileName, delay: delayDuration)
+            }
         }
     }
     
