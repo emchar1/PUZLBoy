@@ -17,6 +17,8 @@ class FinalBattle2Spawner {
     
     // MARK: - Properties
     
+    static let safePanelName: String = "safePanel"
+    static let poisonPanelName: String = "poisonPanel"
     static let keyParticleNodeFade = "particleNodeFade"
     static let startPosition: K.GameboardPosition = (6, 3)
     static let endPosition: K.GameboardPosition = (3, 3)
@@ -195,7 +197,7 @@ class FinalBattle2Spawner {
         newTerrain.anchorPoint = .zero
         newTerrain.alpha = 0
         newTerrain.zPosition = 4
-        newTerrain.name = "safePanel"
+        newTerrain.name = FinalBattle2Spawner.safePanelName
         
         originalTerrain.addChild(newTerrain)
         

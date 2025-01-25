@@ -165,11 +165,18 @@ class FinalBattle2Engine {
     
     
     func handleControls(in location: CGPoint) {
-        controls.handleControls(in: location, safePanelFound: safePanelFound()) { [weak self] in
+        controls.handleControls(in: location,
+                                safePanelFound: namePanelFound(FinalBattle2Spawner.safePanelName),
+                                poisonPanelFound: namePanelFound(FinalBattle2Spawner.poisonPanelName),
+                                isPoisoned: health.isPoisoned) { [weak self] in
+            
             guard let self = self else { return }
             
-            if safePanelFound() || startPanelFound() || endPanelFound() {
-                health.updateHealth(type: .regen)
+            if namePanelFound(FinalBattle2Spawner.poisonPanelName) {
+                health.updateHealth(type: .drainPoison, dmgMultiplier: controls.chosenSword.defenseRating)
+            }
+            else if namePanelFound(FinalBattle2Spawner.safePanelName) || startPanelFound() || endPanelFound() {
+                health.updateHealth(type: .stopDrain)
             }
             else {
                 health.updateHealth(type: .drain, dmgMultiplier: controls.chosenSword.defenseRating)
@@ -192,19 +199,20 @@ class FinalBattle2Engine {
     // MARK: - Helper Functions
     
     /**
-     Checks if the location requested to move to is a valid one, i.e. a "safePanel".
+     Checks if the panel requested to move to matches the name String passed in.
+     - parameter name: the node name to check for
      - returns: true if requested panel is a valid one
      */
-    private func safePanelFound() -> Bool {
+    private func namePanelFound(_ name: String) -> Bool {
         guard let superScene = superScene else {
-            print("superScene nil in FinalBattle2Engine.safePanelFound()")
+            print("superScene nil in FinalBattle2Engine.namePanelFound()")
             return false
         }
         
         //I had to multiply gameboard.getLocation(at:) by UIDevice.spriteScale to NORMALIZE it, otherwise it gets messed up on iPad!!! 12/31/24
         let heroPositionGameboardOffset = gameboard.sprite.position + gameboard.getLocation(at: controls.positions.player) * UIDevice.spriteScale
         
-        return superScene.nodes(at: heroPositionGameboardOffset).contains(where: { $0.name == "safePanel" })
+        return superScene.nodes(at: heroPositionGameboardOffset).contains(where: { $0.name == name })
     }
     
     /**
@@ -224,11 +232,26 @@ class FinalBattle2Engine {
     
     // MARK: - Attack (Helper) Functions
     
-    private func villainAttackNormal(at position: K.GameboardPosition, isFire: Bool, chosenSword: ChosenSword) {
-        showDamagePanel(at: position, color: isFire ? .red : .cyan, withExplosion: false)
+    private func villainAttackNormal(at position: K.GameboardPosition, pattern: MagmoorAttacks.AttackPattern, chosenSword: ChosenSword) {
+        let panelColor: UIColor
+        let healthType: FinalBattle2Health.HealthType
+        
+        switch pattern {
+        case .freeze:
+            panelColor = .cyan
+            healthType = .villainAttackFreeze
+        case .poison:
+            panelColor = .green
+            healthType = .villainAttackPoison
+        default:
+            panelColor = .red
+            healthType = .villainAttackNormal
+        }
+        
+        showDamagePanel(at: position, color: panelColor, isPoison: pattern == .poison, withExplosion: false)
         
         if position == controls.positions.player {
-            health.updateHealth(type: isFire ? .villainAttackNormal : .villainAttackFreeze, dmgMultiplier: chosenSword.defenseRating)
+            health.updateHealth(type: healthType, dmgMultiplier: chosenSword.defenseRating)
         }
     }
     
@@ -322,8 +345,23 @@ class FinalBattle2Engine {
         }
     }
     
-    private func showDamagePanel(at position: K.GameboardPosition, color: UIColor = .red, withExplosion: Bool) {
+    private func showDamagePanel(at position: K.GameboardPosition, color: UIColor = .red, isPoison: Bool = false, withExplosion: Bool) {
         guard let originalTerrain = gameboard.getPanelSprite(at: position).terrain else { return }
+        
+        let waitDuration: TimeInterval = isPoison ? 6.75 : 0.75
+        let particleType: ParticleEngine.ParticleType = isPoison ? .poisonBubbles: .magicElderFire3
+        let particleDuration: TimeInterval = isPoison ? 8 : 1
+        let pulseDuration: TimeInterval = 0.1
+        let shakeAction: SKAction = isPoison ? SKAction.sequence([
+            SKAction.moveBy(x: 5, y: 0, duration: 0),
+            SKAction.group([
+                SKAction.repeat(SKAction.sequence([
+                    SKAction.moveBy(x: -10, y: 0, duration: pulseDuration),
+                    SKAction.moveBy(x: 10, y: 0, duration: pulseDuration)
+                ]), count: Int(1 / (2 * pulseDuration))),
+                SKAction.fadeOut(withDuration: 1)
+            ])
+        ]) : SKAction.fadeOut(withDuration: 1)
         
         let damagePanel = SKSpriteNode(imageNamed: "water")
         damagePanel.anchorPoint = .zero
@@ -332,21 +370,25 @@ class FinalBattle2Engine {
         damagePanel.alpha = 0
         damagePanel.zPosition = 6
         
+        if isPoison {
+            damagePanel.name = FinalBattle2Spawner.poisonPanelName
+        }
+        
         originalTerrain.addChild(damagePanel)
         
         damagePanel.run(SKAction.sequence([
             SKAction.fadeIn(withDuration: 0.25),
-            SKAction.wait(forDuration: 0.75),
-            SKAction.fadeOut(withDuration: 1),
+            SKAction.wait(forDuration: waitDuration),
+            shakeAction,
             SKAction.removeFromParent()
         ]))
         
         if withExplosion {
-            ParticleEngine.shared.animateParticles(type: .magicElderFire3,
+            ParticleEngine.shared.animateParticles(type: particleType,
                                                    toNode: gameboard.sprite,
                                                    position: gameboard.getLocation(at: position),
                                                    scale: UIDevice.spriteScale / CGFloat(gameboard.panelCount),
-                                                   duration: 1)
+                                                   duration: particleDuration)
         }
     }
     
@@ -375,10 +417,8 @@ extension FinalBattle2Engine: FinalBattle2ControlsDelegate {
     
     func didVillainAttack(pattern: MagmoorAttacks.AttackPattern, chosenSword: ChosenSword, position: K.GameboardPosition) {
         switch pattern {
-        case .normal:
-            villainAttackNormal(at: position, isFire: true, chosenSword: chosenSword)
-        case .freeze:
-            villainAttackNormal(at: position, isFire: false, chosenSword: chosenSword)
+        case .normal, .freeze, .poison:
+            villainAttackNormal(at: position, pattern: pattern, chosenSword: chosenSword)
         case .timed:
             villainAttackTimed(at: position, isLarge: false, chosenSword: chosenSword)
         case .timedLarge:
@@ -421,11 +461,11 @@ extension FinalBattle2Engine: FinalBattle2SpawnerDelegate {
         }
         
         guard spawnPanel == controls.positions.player else { return }
-        health.updateHealth(type: .regen)
+        health.updateHealth(type: .stopDrain)
     }
     
     func didDespawnSafePanel(spawnPanel: K.GameboardPosition, index: Int) {
-        guard spawnPanel == controls.positions.player && !safePanelFound() && !startPanelFound() && !endPanelFound() else { return }
+        guard spawnPanel == controls.positions.player && !namePanelFound(FinalBattle2Spawner.safePanelName) && !namePanelFound(FinalBattle2Spawner.poisonPanelName) && !startPanelFound() && !endPanelFound() else { return }
         health.updateHealth(type: .drain, dmgMultiplier: controls.chosenSword.defenseRating)
     }
     

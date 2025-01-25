@@ -36,10 +36,12 @@ class FinalBattle2Controls {
     private var location: CGPoint!
     private var villainPositionNew: K.GameboardPosition!
     private var safePanelFound: Bool!
+    private var poisonPanelFound: Bool!
     
     private var isDisabled: Bool
     private var canAttack: Bool
     private var isFrozen: Bool
+    private var isPoisoned: Bool
     private var villainMoveTimer: Timer
     private var villainMovementDelay: (normal: TimeInterval, enraged: TimeInterval)
     
@@ -61,6 +63,7 @@ class FinalBattle2Controls {
         self.isDisabled = false
         self.canAttack = true
         self.isFrozen = false
+        self.isPoisoned = false
         self.villainMoveTimer = Timer()
         self.villainMovementDelay = (normal: 12, enraged: 2)
         
@@ -96,14 +99,18 @@ class FinalBattle2Controls {
      - parameters:
         - location: location for which comparison is to occur
         - safePanelFound: returns true if a safe panel i.e. sand/snow is found in the player's position
+        - poisonPanelFound: returns true if a poison panel is found in the player's position
+        - isPoisoned: returns true if player is in the poisoned state at time of checking. Different from poisonPanelFound because isPoisoned reports on player's poisoned duration, not the panel itself.
         - completion: handler to perform tasks upon completion
      */
-    func handleControls(in location: CGPoint, safePanelFound: Bool, completion: (() -> Void)?) {
+    func handleControls(in location: CGPoint, safePanelFound: Bool, poisonPanelFound: Bool, isPoisoned: Bool, completion: (() -> Void)?) {
         guard !isDisabled else { return }
         guard !isFrozen else { return }
         
         self.location = location
         self.safePanelFound = safePanelFound
+        self.poisonPanelFound = poisonPanelFound
+        self.isPoisoned = isPoisoned
         
         //Now check for movement/attack!
         if inBounds(.up) && !canAttackVillain(.up) {
@@ -246,7 +253,7 @@ class FinalBattle2Controls {
         let attackPanel: K.GameboardPosition = getNextPanel(direction: direction)
         
         guard attackPanel == positions.villain else { return false }
-        guard playerOnSafePanel() && canAttack else {
+        guard (playerOnSafePanel() || poisonPanelFound) && canAttack else {
             ButtonTap.shared.tap(type: .buttontap6)
             return true
         }
@@ -308,7 +315,7 @@ class FinalBattle2Controls {
     private func movePlayerHelper(_ direction: Controls, completion: (() -> Void)?) {
         let nextPanel: K.GameboardPosition = getNextPanel(direction: direction)
         let panelType = gameboard.getUserDataForLevelType(sprite: gameboard.getPanelSprite(at: positions.player).terrain!)
-        let movementMultiplier: TimeInterval = (playerOnSafePanel() ? 1 : 2) / chosenSword.speedRating
+        let movementMultiplier: TimeInterval = (playerOnSafePanel() && !poisonPanelFound && !isPoisoned ? 1 : 2) / chosenSword.speedRating
         let runSound: String
         
         if safePanelFound {
