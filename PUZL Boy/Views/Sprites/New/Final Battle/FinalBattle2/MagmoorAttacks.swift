@@ -9,7 +9,6 @@ import SpriteKit
 
 protocol MagmoorAttacksDelegate: AnyObject {
     func didVillainAttack(pattern: MagmoorAttacks.AttackPattern, position: K.GameboardPosition)
-    func didVillainFreeze(duration: TimeInterval, position: K.GameboardPosition)
 }
 
 class MagmoorAttacks {
@@ -307,9 +306,9 @@ class MagmoorAttacks {
         ])))
         
         let scaleAction = pattern == .poison ? SKAction.repeat(SKAction.sequence([
-            SKAction.scale(to: 0.5 / UIDevice.spriteScale, duration: 0.1),
-            SKAction.scale(to: 0.25 / UIDevice.spriteScale, duration: 0.1)
-        ]), count: Int(ceil(fireballMovementDuration / 0.2))) : SKAction.scale(to: 0.5 / UIDevice.spriteScale, duration: fireballMovementDuration)
+            SKAction.scale(to: 0.5 / UIDevice.spriteScale, duration: 0.2),
+            SKAction.scale(to: 0.25 / UIDevice.spriteScale, duration: 0.2)
+        ]), count: Int(ceil(fireballMovementDuration / 0.4))) : SKAction.scale(to: 0.5 / UIDevice.spriteScale, duration: fireballMovementDuration)
         
         fireball.run(SKAction.sequence([
             SKAction.group([
@@ -319,10 +318,6 @@ class MagmoorAttacks {
             SKAction.run { [weak self] in
                 guard let self = self else { return }
                 delegate?.didVillainAttack(pattern: pattern, position: positions.player)
-                
-                if pattern == .freeze {
-                    delegate?.didVillainFreeze(duration: 3, position: positions.player)
-                }
                 
                 ParticleEngine.shared.animateParticles(type: fireballParticles,
                                                        toNode: gameboard.sprite,

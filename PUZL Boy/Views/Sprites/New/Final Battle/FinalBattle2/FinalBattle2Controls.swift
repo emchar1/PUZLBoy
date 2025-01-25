@@ -546,10 +546,16 @@ class FinalBattle2Controls {
 extension FinalBattle2Controls: MagmoorAttacksDelegate {
     func didVillainAttack(pattern: MagmoorAttacks.AttackPattern, position: K.GameboardPosition) {
         delegate?.didVillainAttack(pattern: pattern, chosenSword: chosenSword, position: position)
+        
+        if pattern == .freeze {
+            didVillainFreeze(position: position)
+        }
     }
     
-    func didVillainFreeze(duration: TimeInterval, position: K.GameboardPosition) {
+    private func didVillainFreeze(position: K.GameboardPosition) {
         guard position == positions.player else { return }
+        
+        let waitDuration: TimeInterval = 3
         
         isFrozen = true
         
@@ -563,7 +569,7 @@ extension FinalBattle2Controls: MagmoorAttacksDelegate {
         
         player.sprite.run(SKAction.sequence([
             SKAction.colorize(with: .systemBlue, colorBlendFactor: 1, duration: 0),
-            SKAction.wait(forDuration: duration),
+            SKAction.wait(forDuration: waitDuration),
             SKAction.run { [weak self] in
                 self?.isFrozen = false
                 self?.player.sprite.action(forKey: FinalBattle2Controls.keyPlayerRunAnimation)?.speed = 1
