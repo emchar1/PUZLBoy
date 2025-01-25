@@ -72,8 +72,8 @@ class MagmoorAttacks {
             randomInts.append(Randomizer())
         }
         
-        normalPattern = randomInts[0].isMultiple(of: 5) ? .freeze : .normal
-        poisonPattern = randomInts[0].isMultiple(of: 5) ? .freeze : (randomInts[0].isMultiple(of: [2, 3]) ? .normal : .poison)
+        normalPattern = randomInts[0].isMultiple(of: 5) ? .freeze : .normal                 //20% : 80%
+        poisonPattern = randomInts[0].isMultiple(of: 5) ? .freeze : (randomInts[0].isMultiple(of: [2, 3]) ? .normal : .poison)  //20% : 54% : 26%
         
         //Enrage short-circuit case
         guard !enrage else { return level <= 3 ? normalPattern : poisonPattern }
@@ -88,19 +88,19 @@ class MagmoorAttacks {
         case 3:
             guard !isFeatured else { attackPattern = .timed; break }
             
-            if randomInts[0].isMultiple(of: 5) { attackPattern = .freeze }
-            else if randomInts[0].isMultiple(of: 2) { attackPattern = .normal }
-            else if randomInts[0].isMultiple(of: 3) { attackPattern = .poison }
-            else { attackPattern = .timed }
+            if randomInts[0].isMultiple(of: 5) { attackPattern = .freeze }                  //20%
+            else if randomInts[0].isMultiple(of: 2) { attackPattern = .normal }             //40%
+            else if randomInts[0].isMultiple(of: 3) { attackPattern = .timed }              //14%
+            else { attackPattern = .poison }                                                //26%
         case 4:
             guard !isFeatured else { attackPattern = .timedLarge; break }
             
-            if randomInts[0].isMultiple(of: 5) { attackPattern = .freeze }
-            else if randomInts[0].isMultiple(of: 2) { attackPattern = .normal }
-            else if randomInts[0].isMultiple(of: 3) { attackPattern = .poison }
-            else {
-                if randomInts[1].isMultiple(of: [2, 3]) { attackPattern = .timed }
-                else { attackPattern = .timedLarge }
+            if randomInts[0].isMultiple(of: 5) { attackPattern = .freeze }                  //20%
+            else if randomInts[0].isMultiple(of: 2) { attackPattern = .normal }             //40%
+            else if randomInts[0].isMultiple(of: 3) { attackPattern = .poison }             //14%
+            else {                                                                          //26%
+                if randomInts[1].isMultiple(of: [2, 3]) { attackPattern = .timed }              //67%
+                else { attackPattern = .timedLarge }                                            //33%
             }
         default:
             attackPattern = .normal
