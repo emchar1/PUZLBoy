@@ -51,35 +51,35 @@ class ChosenSword {
         switch self.type {
         case .celestialBroadsword:
             attackRating = 0.97
-            defenseRating = 0.5
+            defenseRating = 0.6 //80
             piercingBonus = 1
             speedRating = 1.0
             
             imageName = "sword1Celestial"
             swordTitle = "Celestial Broadsword of Justice"
-            elderCommentary = "Spectacular! This sword will get you through the toughest of fights. Thrust downward for maximum damage!"
+            elderCommentary = "Spectacular! This sword will get you through the toughest of fights. Had to use it on a wraith last week... nasty little buggers!"
         case .heavenlySaber:
-            attackRating = 0.82
-            defenseRating = 0.8
+            attackRating = 0.42
+            defenseRating = 0.85 //56
             piercingBonus = 1
             speedRating = 1.5
             
             imageName = "sword2Heavenly"
             swordTitle = "Heavenly Saber of Redemption"
-            elderCommentary = "Ooh, that is a good sword! Had to use it on a wraith last week... nasty little buggers!"
+            elderCommentary = "Ooh, that is a good blade! Swift and deft. A lightweight weapon to move around in any kind of terrain!"
         case .cosmicCleaver:
-            attackRating = 0.74
-            defenseRating = 1.0
+            attackRating = 0.89
+            defenseRating = 0.56 //86
             piercingBonus = 2
-            speedRating = 1.0
+            speedRating = 0.75
             
             imageName = "sword3Cosmic"
             swordTitle = "Cosmic Cleaver of Purification"
-            elderCommentary = "This sword packs a mean punch! Careful!! It's heavy and somewhat cumbersome to wield."
+            elderCommentary = "This intimidating sword packs a mean punch! Careful!! It's heavy and somewhat cumbersome to wield in battle."
         case .eternalBlade:
-            attackRating = 0.61
-            defenseRating = 1.0
-            piercingBonus = 2
+            attackRating = 0.72
+            defenseRating = 0.66 //72
+            piercingBonus = 1
             speedRating = 1.0
             
             imageName = "sword4Eternal"
@@ -87,7 +87,7 @@ class ChosenSword {
             elderCommentary = "Not bad at all! Only a few handful of swords are considered mightier than this one..."
         case .plainSword:
             attackRating = 0.5
-            defenseRating = 1.0
+            defenseRating = 1.0 //48
             piercingBonus = 1
             speedRating = 1.0
             
