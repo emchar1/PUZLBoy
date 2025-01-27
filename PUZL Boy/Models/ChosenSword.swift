@@ -66,7 +66,7 @@ class ChosenSword {
             
             imageName = "sword2Heavenly"
             swordTitle = "Heavenly Saber of Redemption"
-            elderCommentary = "Ooh, that is a good blade! Swift and deft. A lightweight weapon to move around in any kind of terrain!"
+            elderCommentary = "Ooh, that is a good blade! Swift and deft. A lightweight weapon that you can swing from any terrain!"
         case .cosmicCleaver:
             attackRating = 0.89
             defenseRating = 0.56 //86
@@ -84,7 +84,7 @@ class ChosenSword {
             
             imageName = "sword4Eternal"
             swordTitle = "Blade of Eternal Might"
-            elderCommentary = "Not bad at all! Only a few handful of swords are considered mightier than this one..."
+            elderCommentary = "Not bad. Not bad at all! Only a few handful of swords are considered mightier than this one..."
         case .plainSword:
             attackRating = 0.5
             defenseRating = 1.0 //48

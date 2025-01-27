@@ -126,7 +126,7 @@ class MagmoorShield: SKNode {
         - villainPosition: Magmoor's position on the gameboard
         - completion: completion handler, e.g. to set values, cleanup, etc.
      */
-    func decrementShield(decrementAmount: Int = 1, villain: Player, villainPosition: K.GameboardPosition, completion: (() -> Void)?) {
+    func decrementShield(decrementAmount: Int = 1, villain: Player, villainPosition: K.GameboardPosition, completion: @escaping () -> Void) {
         let colorizeDuration: TimeInterval = 2.5
         let originalShieldColor = shieldColor
         
@@ -145,79 +145,86 @@ class MagmoorShield: SKNode {
         delegate?.willDamageShield()
         
         if hasHitPoints {
-            let fadeDuration: TimeInterval = colorizeDuration
-            
-            removeAction(forKey: MagmoorShield.keyShieldThrobAction)
-            shieldThrob(waitDuration: fadeDuration + 0.5)
-            
-            run(SKAction.sequence([
-                SKAction.group([
-                    scaleAndFade(size: 3.5, alpha: 1, duration: fadeDuration),
-                    shieldShake(duration: fadeDuration)
-                ]),
-                SKAction.run { [weak self] in
-                    self?.delegate?.didDamageShield()
-                },
-                scaleAndFade(size: 5, alpha: 0.5, duration: 0.5)
-            ])) {
-                completion?()
-            }
+            damageShield(colorizeDuration: colorizeDuration, completion: completion)
         }
         else {
-            let fadeDuration: TimeInterval = 4.5
-            
-            AudioManager.shared.playSound(for: "magicdisappear", delay: fadeDuration)
-            
-            removeAction(forKey: MagmoorShield.keyShieldThrobAction)
-            run(SKAction.sequence([
-                SKAction.group([
-                    scaleAndFade(size: 2.5, alpha: 1, duration: fadeDuration + 0.5),
-                    shieldShake(duration: fadeDuration + 0.5),
-                    SKAction.sequence([
-                        SKAction.run {
-                            AudioManager.shared.playSound(for: "villainattack3", delay: fadeDuration - 1.1) //DON'T CHANGE - 1.1!!
-                        },
-                        SKAction.wait(forDuration: fadeDuration + 0.25),
-                        SKAction.run { [weak self] in
-                            guard let self = self else { return }
-                            
-                            delegate?.willBreakShield(fadeDuration: 0.25)
-                            
-                            AudioManager.shared.stopSound(for: "shieldpulse")
-                            ParticleEngine.shared.animateParticles(type: .magicExplosion0,
-                                                                   toNode: villain.sprite,
-                                                                   position: .zero,
-                                                                   scale: UIDevice.spriteScale,
-                                                                   zPosition: 1,
-                                                                   duration: 1) //keep at 1
-                            ParticleEngine.shared.animateParticles(type: .magicExplosion1,
-                                                                   toNode: villain.sprite,
-                                                                   position: .zero,
-                                                                   scale: UIDevice.spriteScale,
-                                                                   zPosition: 2,
-                                                                   duration: 2)
-                            ParticleEngine.shared.animateParticles(type: .magicExplosion2,
-                                                                   toNode: villain.sprite,
-                                                                   position: .zero,
-                                                                   scale: UIDevice.spriteScale,
-                                                                   zPosition: 3,
-                                                                   duration: 2)
-                        }
-                    ])
-                ]),
-                SKAction.run { [weak self] in
-                    guard let self = self else { return }
-                    
-                    delegate?.didBreakShield(at: villainPosition)
-                    villain.sprite.run(SKAction.colorize(with: .red, colorBlendFactor: 1, duration: 0.25))
-                },
-                scaleAndFade(size: 16, alpha: 1, duration: 0.25),
-                SKAction.fadeOut(withDuration: 0.25),
-                SKAction.removeFromParent()
-            ])) {
-                completion?()
-            }
+            breakShield(villain: villain, villainPosition: villainPosition, completion: completion)
         }
+    }
+    
+    
+    // MARK: - Decrement Shield Helper Functions
+    
+    private func damageShield(colorizeDuration: TimeInterval, completion: @escaping () -> Void) {
+        let fadeDuration: TimeInterval = colorizeDuration
+        
+        removeAction(forKey: MagmoorShield.keyShieldThrobAction)
+        shieldThrob(waitDuration: fadeDuration + 0.5)
+        
+        run(SKAction.sequence([
+            SKAction.group([
+                scaleAndFade(size: 3.5, alpha: 1, duration: fadeDuration),
+                shieldShake(duration: fadeDuration)
+            ]),
+            SKAction.run { [weak self] in
+                self?.delegate?.didDamageShield()
+            },
+            scaleAndFade(size: 5, alpha: 0.5, duration: 0.5)
+        ]), completion: completion)
+    }
+    
+    private func breakShield(villain: Player, villainPosition: K.GameboardPosition, completion: @escaping () -> Void) {
+        let fadeDuration: TimeInterval = 4.5
+        
+        AudioManager.shared.playSound(for: "magicdisappear", delay: fadeDuration)
+        
+        removeAction(forKey: MagmoorShield.keyShieldThrobAction)
+        run(SKAction.sequence([
+            SKAction.group([
+                scaleAndFade(size: 2.5, alpha: 1, duration: fadeDuration + 0.5),
+                shieldShake(duration: fadeDuration + 0.5),
+                SKAction.sequence([
+                    SKAction.run {
+                        AudioManager.shared.playSound(for: "villainattack3", delay: fadeDuration - 1.1) //DON'T CHANGE - 1.1!!
+                    },
+                    SKAction.wait(forDuration: fadeDuration + 0.25),
+                    SKAction.run { [weak self] in
+                        guard let self = self else { return }
+                        
+                        delegate?.willBreakShield(fadeDuration: 0.25)
+                        
+                        AudioManager.shared.stopSound(for: "shieldpulse")
+                        ParticleEngine.shared.animateParticles(type: .magicExplosion0,
+                                                               toNode: villain.sprite,
+                                                               position: .zero,
+                                                               scale: UIDevice.spriteScale,
+                                                               zPosition: 1,
+                                                               duration: 1) //keep at 1
+                        ParticleEngine.shared.animateParticles(type: .magicExplosion1,
+                                                               toNode: villain.sprite,
+                                                               position: .zero,
+                                                               scale: UIDevice.spriteScale,
+                                                               zPosition: 2,
+                                                               duration: 2)
+                        ParticleEngine.shared.animateParticles(type: .magicExplosion2,
+                                                               toNode: villain.sprite,
+                                                               position: .zero,
+                                                               scale: UIDevice.spriteScale,
+                                                               zPosition: 3,
+                                                               duration: 2)
+                    }
+                ])
+            ]),
+            SKAction.run { [weak self] in
+                guard let self = self else { return }
+                
+                delegate?.didBreakShield(at: villainPosition)
+                villain.sprite.run(SKAction.colorize(with: .red, colorBlendFactor: 1, duration: 0.25))
+            },
+            scaleAndFade(size: 16, alpha: 1, duration: 0.25),
+            SKAction.fadeOut(withDuration: 0.25),
+            SKAction.removeFromParent()
+        ]), completion: completion)
     }
     
     
