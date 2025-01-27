@@ -1113,7 +1113,7 @@ extension ChatEngine {
                 },
                 ChatItem(profile: .statue1,
                          endChat: !isAvailable,
-                         chat: isAvailable ? "Have you decided then?" : "Unfortunately that sword isn't available for selection! Though if you had made a different decision earlier on in your journey, like I warned...",
+                         chat: isAvailable ? "Have you decided then?" : "Unfortunately that sword isn't available for selection! Though if you had made a different decision earlier on in your journey (like I warned...)",
                          handler: nil),
             ]) { [weak self] in
                 guard let self = self else { return }
