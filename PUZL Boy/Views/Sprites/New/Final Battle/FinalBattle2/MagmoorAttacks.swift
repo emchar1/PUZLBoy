@@ -79,7 +79,7 @@ class MagmoorAttacks {
         guard !enrage else { return level <= 3 ? normalPattern : poisonPattern }
         
         switch level {
-        case 0, 1:
+        case let levelCheck where levelCheck <= 1:
             attackPattern = normalPattern
         case 2:
             guard !isFeatured else { attackPattern = .poison; break }
@@ -92,7 +92,7 @@ class MagmoorAttacks {
             else if randomInts[0].isMultiple(of: 2) { attackPattern = .normal }             //40%
             else if randomInts[0].isMultiple(of: 3) { attackPattern = .timed }              //14%
             else { attackPattern = .poison }                                                //26%
-        case 4:
+        case let levelCheck where levelCheck >= 4:
             guard !isFeatured else { attackPattern = .timedLarge; break }
             
             if randomInts[0].isMultiple(of: 5) { attackPattern = .freeze }                  //20%
@@ -292,7 +292,8 @@ class MagmoorAttacks {
         gameboard.sprite.addChild(fireball)
         
         if pattern != .normal {
-            fireball.run(SKAction.rotate(toAngle: distanceVillainToPlayer * .pi * villainDirection, duration: fireballMovementDuration))
+            let rotationAngle: CGFloat = pattern == .freeze ? .pi : .pi / 4
+            fireball.run(SKAction.rotate(byAngle: distanceVillainToPlayer * rotationAngle * villainDirection, duration: fireballMovementDuration))
         }
                 
         fireball.run(SKAction.repeatForever(SKAction.sequence([

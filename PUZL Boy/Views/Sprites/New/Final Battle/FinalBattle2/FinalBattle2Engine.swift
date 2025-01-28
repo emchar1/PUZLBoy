@@ -337,11 +337,18 @@ class FinalBattle2Engine {
         addEdgePosition(row: homePosition.row, col: homePosition.col + 2)
         
         //Panel animation
-        affectedPanels.forEach { showDamagePanel(at: $0, withExplosion: true) }
+        let shouldPoison: Bool = controls.magmoorShield.resetCount == 4 || controls.magmoorShield.resetCount >= 6
+        affectedPanels.forEach { showDamagePanel(at: $0, color: shouldPoison ? .green : .red, isPoison: shouldPoison, withExplosion: true) }
         
         //Update health
         if affectedPanels.contains(where: { $0 == controls.positions.player }) {
-            health.updateHealth(type: .villainShieldExplode, dmgMultiplier: chosenSword.defenseRating)
+            if shouldPoison {
+                health.updateHealth(type: .villainAttackPoison, dmgMultiplier: chosenSword.defenseRating)
+                health.updateHealth(type: .drainPoison, dmgMultiplier: chosenSword.defenseRating)
+            }
+            else {
+                health.updateHealth(type: .villainShieldExplode, dmgMultiplier: chosenSword.defenseRating)
+            }
         }
     }
     
@@ -349,8 +356,6 @@ class FinalBattle2Engine {
         guard let originalTerrain = gameboard.getPanelSprite(at: position).terrain else { return }
         
         let waitDuration: TimeInterval = isPoison ? 6.75 : 0.75
-        let particleType: ParticleEngine.ParticleType = isPoison ? .poisonBubbles: .magicElderFire3
-        let particleDuration: TimeInterval = isPoison ? 8 : 1
         let pulseDuration: TimeInterval = 0.1
         let shakeAction: SKAction = isPoison ? SKAction.sequence([
             SKAction.moveBy(x: 5, y: 0, duration: 0),
@@ -384,10 +389,14 @@ class FinalBattle2Engine {
         ]))
         
         if withExplosion {
+            let particleType: ParticleEngine.ParticleType = isPoison ? .magicElderEarth2: .magicElderFire3
+            let particleScale: CGFloat = (isPoison ? 2 : 1) * UIDevice.spriteScale / CGFloat(gameboard.panelCount)
+            let particleDuration: TimeInterval = isPoison ? 8 : 1
+            
             ParticleEngine.shared.animateParticles(type: particleType,
                                                    toNode: gameboard.sprite,
                                                    position: gameboard.getLocation(at: position),
-                                                   scale: UIDevice.spriteScale / CGFloat(gameboard.panelCount),
+                                                   scale: particleScale,
                                                    duration: particleDuration)
         }
     }

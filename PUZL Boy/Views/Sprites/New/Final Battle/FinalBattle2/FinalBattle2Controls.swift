@@ -253,7 +253,7 @@ class FinalBattle2Controls {
         let attackPanel: K.GameboardPosition = getNextPanel(direction: direction)
         
         guard attackPanel == positions.villain else { return false }
-        guard (playerOnSafePanel() || poisonPanelFound) && canAttack else {
+        guard canAttack && chosenSword.type == .heavenlySaber || (playerOnSafePanel() && !poisonPanelFound) else {
             ButtonTap.shared.tap(type: .buttontap6)
             return true
         }
