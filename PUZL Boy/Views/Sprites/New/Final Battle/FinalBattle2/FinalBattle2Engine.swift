@@ -166,7 +166,7 @@ class FinalBattle2Engine {
     
     func handleControls(in location: CGPoint) {
         controls.handleControls(in: location,
-                                safePanelFound: namePanelFound(FinalBattle2Spawner.safePanelName),
+                                safePanelFound: safeOrPlatformFound(),
                                 poisonPanelFound: namePanelFound(FinalBattle2Spawner.poisonPanelName),
                                 isPoisoned: health.isPoisoned) { [weak self] in
             
@@ -175,7 +175,7 @@ class FinalBattle2Engine {
             if namePanelFound(FinalBattle2Spawner.poisonPanelName) {
                 health.updateHealth(type: .drainPoison, dmgMultiplier: controls.chosenSword.defenseRating)
             }
-            else if namePanelFound(FinalBattle2Spawner.safePanelName) || startPanelFound() || endPanelFound() {
+            else if safeOrPlatformFound() || startPanelFound() || endPanelFound() {
                 health.updateHealth(type: .stopDrain)
             }
             else {
@@ -227,6 +227,13 @@ class FinalBattle2Engine {
      */
     private func endPanelFound() -> Bool {
         return controls.positions.player == FinalBattle2Spawner.endPosition
+    }
+    
+    /**
+     Checks if hero is on either a safe panel or a platform panel.
+     */
+    private func safeOrPlatformFound() -> Bool {
+        return namePanelFound(FinalBattle2Spawner.safePanelName) || namePanelFound(FinalBattle2Spawner.platformPanelName)
     }
     
     
@@ -432,6 +439,16 @@ extension FinalBattle2Engine: FinalBattle2ControlsDelegate {
             villainAttackTimed(at: position, isLarge: false, chosenSword: chosenSword)
         case .timedLarge:
             villainAttackTimed(at: position, isLarge: true, chosenSword: chosenSword)
+        case .duplicates:
+            for i in 0..<panelSpawnerCount {
+                panelSpawner[i].showPlatform(shouldShow: true)
+            }
+        }
+    }
+    
+    func didVillainAttackBecomeVisible() {
+        for i in 0..<panelSpawnerCount {
+            panelSpawner[i].showPlatform(shouldShow: false)
         }
     }
     
@@ -474,7 +491,7 @@ extension FinalBattle2Engine: FinalBattle2SpawnerDelegate {
     }
     
     func didDespawnSafePanel(spawnPanel: K.GameboardPosition, index: Int) {
-        guard spawnPanel == controls.positions.player && !namePanelFound(FinalBattle2Spawner.safePanelName) && !namePanelFound(FinalBattle2Spawner.poisonPanelName) && !startPanelFound() && !endPanelFound() else { return }
+        guard spawnPanel == controls.positions.player && !safeOrPlatformFound() && !namePanelFound(FinalBattle2Spawner.poisonPanelName) && !startPanelFound() && !endPanelFound() else { return }
         health.updateHealth(type: .drain, dmgMultiplier: controls.chosenSword.defenseRating)
     }
     

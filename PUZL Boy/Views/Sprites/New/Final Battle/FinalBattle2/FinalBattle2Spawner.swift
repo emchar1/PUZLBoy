@@ -18,10 +18,12 @@ class FinalBattle2Spawner {
     // MARK: - Properties
     
     static let safePanelName: String = "safePanel"
+    static let platformPanelName: String = "platformPanel"
     static let poisonPanelName: String = "poisonPanel"
     static let keyParticleNodeFade = "particleNodeFade"
     static let startPosition: K.GameboardPosition = (6, 3)
     static let endPosition: K.GameboardPosition = (3, 3)
+    static var isPlatformOn: Bool = false
     
     //IMPORTANT!! breakLimit should be a multiple of maxCount!! These are panel spawning speed and max panels properties
     private let maxCount: Int = 1000
@@ -91,6 +93,13 @@ class FinalBattle2Spawner {
         animateSpawnPanels(with: terrainPanel)
     }
     
+    /**
+     Installs a platform covering the entire gameboard, which is safe to stand on.
+     */
+    func showPlatform(shouldShow: Bool) {
+        animateShowPlatform(shouldShow: shouldShow)
+    }
+    
     
     // MARK: - Helper Functions
     
@@ -132,60 +141,6 @@ class FinalBattle2Spawner {
         - index: current index for spawnPanels. LEAVE ALONE! This is to be used by the recursive function only!!
      */
     private func animateSpawnPanels(with terrain: LevelType, index: Int = 0) {
-        ///SKAction that animates dissolving of primary (sand/snow) panel to secondary (lava/water).
-        func dissolveTerrainAction() -> SKAction {
-            let offsetDuration: TimeInterval = 0 //DON'T TOUCH THIS LEAVE AT 0!!!
-            let pulseDuration: TimeInterval = 0.1
-            
-            let sandAction = SKAction.sequence([
-                SKAction.moveBy(x: 5, y: 0, duration: offsetDuration),
-                SKAction.group([
-                    SKAction.repeat(SKAction.sequence([
-                        SKAction.moveBy(x: -10, y: 0, duration: pulseDuration),
-                        SKAction.moveBy(x: 10, y: 0, duration: pulseDuration)
-                    ]), count: Int(animationDuration / (2 * pulseDuration))),
-                    SKAction.fadeOut(withDuration: animationDuration)
-                ])
-            ])
-            
-            let snowAction = SKAction.sequence([
-                SKAction.repeat(SKAction.sequence([
-                    SKAction.fadeAlpha(to: 0.6, duration: pulseDuration),
-                    SKAction.fadeAlpha(to: 0.8, duration: pulseDuration)
-                ]), count: Int(animationDuration / (2 * pulseDuration))),
-                SKAction.fadeOut(withDuration: offsetDuration)
-            ])
-            
-            return FireIceTheme.isFire ? sandAction : snowAction
-        }
-        
-        ///Handles particles for sand-lava or snow-water (depending on fire/ice).
-        func handleParticles(spawnPanel: K.GameboardPosition) {
-            if FireIceTheme.isFire {
-                for node in gameboard.sprite.children {
-                    guard node.name == ParticleEngine.getNodeName(at: spawnPanel) else { continue }
-                    
-                    node.removeAction(forKey: FinalBattle2Spawner.keyParticleNodeFade)
-                    node.alpha = 0
-                    node.run(SKAction.sequence([
-                        SKAction.wait(forDuration: animationDuration * 3),
-                        SKAction.fadeIn(withDuration: animationDuration)
-                    ]), withKey: FinalBattle2Spawner.keyParticleNodeFade)
-                    
-                    break
-                }
-            }
-            else {
-                ParticleEngine.shared.animateParticles(type: .snowfall,
-                                                       toNode: gameboard.sprite,
-                                                       position: gameboard.getLocation(at: spawnPanel),
-                                                       scale: 3 / CGFloat(gameboard.panelCount),
-                                                       nameGameboardPosition: spawnPanel,
-                                                       duration: animationDuration * 3 + animationDuration)
-            }
-        }
-        
-        
         //Recursive base case
         guard index < self.spawnPanels.count else { return }
         
@@ -204,7 +159,7 @@ class FinalBattle2Spawner {
         newTerrain.run(SKAction.sequence([
             SKAction.run { [weak self] in
                 self?.delegate?.didSpawnSafePanel(spawnPanel: spawnPanel, index: index)
-                handleParticles(spawnPanel: spawnPanel)
+                self?.handleParticles(spawnPanel: spawnPanel)
             },
             SKAction.fadeIn(withDuration: animationDuration * 0.25),
             SKAction.wait(forDuration: animationDuration * 0.75),
@@ -217,12 +172,131 @@ class FinalBattle2Spawner {
                 animateSpawnPanels(with: terrain, index: index + 1)
             },
             SKAction.wait(forDuration: animationDuration * 2),
-            dissolveTerrainAction(),
+            dissolveTerrainAction(reverse: false),
             SKAction.removeFromParent()
         ])) { [weak self] in
             self?.delegate?.didDespawnSafePanel(spawnPanel: spawnPanel, index: index)
         }
     } //end animateSpawnPanels()
+    
+    /**
+     Animates the showing/hiding of the platform.
+     */
+    private func animateShowPlatform(shouldShow: Bool) {
+        for row in 0..<gameboard.panelCount {
+            for col in 0..<gameboard.panelCount {
+                let fadeDuration: TimeInterval = animationDuration * 0.25
+                let panel: K.GameboardPosition = (row: row, col: col)
+                
+                guard panel != FinalBattle2Spawner.startPosition && panel != FinalBattle2Spawner.endPosition else { continue }
+                guard let terrainPanel = gameboard.getPanelSprite(at: panel).terrain else { continue }
+                
+                if shouldShow {
+                    let platformPanel = SKSpriteNode(imageNamed: LevelType.sand.description)
+                    platformPanel.anchorPoint = .zero
+                    platformPanel.alpha = 0
+                    platformPanel.zPosition = 5
+                    platformPanel.name = FinalBattle2Spawner.platformPanelName
+                    
+                    //IMPORTANT!! Only add platform once, i.e. the first spawner, if there are multiple spawners running!
+                    if !FinalBattle2Spawner.isPlatformOn {
+                        terrainPanel.addChild(platformPanel)
+                    }
+                    
+                    platformPanel.run(SKAction.fadeIn(withDuration: fadeDuration)) { [weak self] in
+                        terrainPanel.speed = 0
+                        self?.delegate?.didSpawnSafePanel(spawnPanel: panel, index: -1)
+                    }
+                }
+                else {
+                    guard let platformPanel = terrainPanel.childNode(withName: FinalBattle2Spawner.platformPanelName) else { continue }
+                    
+                    terrainPanel.speed = 1
+                    
+                    platformPanel.run(SKAction.sequence([
+                        dissolveTerrainAction(reverse: row % 2 == 0),
+                        SKAction.removeFromParent()
+                    ])) { [weak self] in
+                        self?.delegate?.didDespawnSafePanel(spawnPanel: panel, index: -1)
+                    }
+                }
+                
+                //This needs to go at the end of the for-for loop!!
+                terrainPanel.childNode(withName: FinalBattle2Spawner.safePanelName)?.isHidden = shouldShow
+            }
+        }
+        
+        //This needs to go at the end AFTER the for-for loop!!
+        FinalBattle2Spawner.isPlatformOn = shouldShow
+        
+        //Don't forget to hide the lava bubbles when the platform comes on, and vice versa!!!
+        for particleNode in gameboard.sprite.children {
+            guard let name = particleNode.name, name.hasPrefix(ParticleEngine.nodeNamePrefix) else { continue }
+            
+            particleNode.isHidden = shouldShow
+        }
+    } //end animateShowPlatform()
+    
+    /**
+     SKAction that animates dissolving of primary (sand/snow) panel to secondary (lava/water).
+     - parameter reverse: if true, reverses the dissolve animation from right to left instead of left to right. Adds variety to the visual.
+     - returns: an SKAction of the dissolving terrain.
+     */
+    private func dissolveTerrainAction(reverse: Bool) -> SKAction {
+        let offsetDuration: TimeInterval = 0 //DON'T TOUCH THIS LEAVE AT 0!!!
+        let pulseDuration: TimeInterval = 0.1
+        let sandShift: CGFloat = 10 * (reverse ? -1 : 1)
+        
+        let sandAction = SKAction.sequence([
+            SKAction.moveBy(x: sandShift / 2, y: 0, duration: offsetDuration),
+            SKAction.group([
+                SKAction.repeat(SKAction.sequence([
+                    SKAction.moveBy(x: -sandShift, y: 0, duration: pulseDuration),
+                    SKAction.moveBy(x: sandShift, y: 0, duration: pulseDuration)
+                ]), count: Int(animationDuration / (2 * pulseDuration))),
+                SKAction.fadeOut(withDuration: animationDuration)
+            ])
+        ])
+        
+        let snowAction = SKAction.sequence([
+            SKAction.repeat(SKAction.sequence([
+                SKAction.fadeAlpha(to: 0.6, duration: pulseDuration),
+                SKAction.fadeAlpha(to: 0.8, duration: pulseDuration)
+            ]), count: Int(animationDuration / (2 * pulseDuration))),
+            SKAction.fadeOut(withDuration: offsetDuration)
+        ])
+        
+        return FireIceTheme.isFire ? sandAction : snowAction
+    }
+    
+    /**
+     Handles particles for sand-lava or snow-water (depending on fire/ice).
+     - parameter spawnPanel: the panel position in which to handle the particles.
+     */
+    private func handleParticles(spawnPanel: K.GameboardPosition) {
+        if FireIceTheme.isFire {
+            for node in gameboard.sprite.children {
+                guard node.name == ParticleEngine.getNodeName(at: spawnPanel) else { continue }
+                
+                node.removeAction(forKey: FinalBattle2Spawner.keyParticleNodeFade)
+                node.alpha = 0
+                node.run(SKAction.sequence([
+                    SKAction.wait(forDuration: animationDuration * 3),
+                    SKAction.fadeIn(withDuration: animationDuration)
+                ]), withKey: FinalBattle2Spawner.keyParticleNodeFade)
+                
+                break
+            }
+        }
+        else {
+            ParticleEngine.shared.animateParticles(type: .snowfall,
+                                                   toNode: gameboard.sprite,
+                                                   position: gameboard.getLocation(at: spawnPanel),
+                                                   scale: 3 / CGFloat(gameboard.panelCount),
+                                                   nameGameboardPosition: spawnPanel,
+                                                   duration: animationDuration * 3 + animationDuration)
+        }
+    }
     
     /**
      Calculates the spawner speed based on current index and breakLimit.

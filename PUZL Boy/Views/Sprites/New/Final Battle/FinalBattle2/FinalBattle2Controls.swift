@@ -13,6 +13,7 @@ protocol FinalBattle2ControlsDelegate: AnyObject {
     func willVillainReappear()
     func didVillainReappear()
     func didVillainAttack(pattern: MagmoorAttacks.AttackPattern, chosenSword: ChosenSword, position: K.GameboardPosition)
+    func didVillainAttackBecomeVisible()
     func handleShield(willDamage: Bool, didDamage: Bool, willBreak: Bool, didBreak: Bool, fadeDuration: TimeInterval?, chosenSword: ChosenSword, villainPosition: K.GameboardPosition?)
 }
 
@@ -113,16 +114,16 @@ class FinalBattle2Controls {
         self.isPoisoned = isPoisoned
         
         //Now check for movement/attack!
-        if inBounds(.up) && !canAttackVillain(.up) {
+        if inBounds(.up) && !canAttackVillain(.up) && !canAttackDuplicate(.up) {
             movePlayerHelper(.up, completion: completion)
         }
-        else if inBounds(.down) && !canAttackVillain(.down) {
+        else if inBounds(.down) && !canAttackVillain(.down) && !canAttackDuplicate(.down) {
             movePlayerHelper(.down, completion: completion)
         }
-        else if inBounds(.left) && !canAttackVillain(.left) {
+        else if inBounds(.left) && !canAttackVillain(.left) && !canAttackDuplicate(.left) {
             movePlayerHelper(.left, completion: completion)
         }
-        else if inBounds(.right) && !canAttackVillain(.right) {
+        else if inBounds(.right) && !canAttackVillain(.right) && !canAttackDuplicate(.right) {
             movePlayerHelper(.right, completion: completion)
         }
         else {
@@ -252,7 +253,7 @@ class FinalBattle2Controls {
     private func canAttackVillain(_ direction: Controls) -> Bool {
         let attackPanel: K.GameboardPosition = getNextPanel(direction: direction)
         
-        guard attackPanel == positions.villain else { return false }
+        guard attackPanel == positions.villain && magmoorAttacks.villainIsVisible else { return false }
         guard canAttack && (chosenSword.type == .heavenlySaber || (playerOnSafePanel() && !poisonPanelFound)) else {
             ButtonTap.shared.tap(type: .buttontap6)
             return true
@@ -264,14 +265,14 @@ class FinalBattle2Controls {
         
         gameboard.sprite.addChild(chosenSword.spriteNode)
         
-        chosenSword.spriteNode.position = gameboard.getLocation(at: positions.villain)
+        chosenSword.spriteNode.position = gameboard.getLocation(at: attackPanel)
         chosenSword.attack(shouldParry: magmoorShield.hasHitPoints) { [weak self] in
             guard let self = self else { return }
             
             isDisabled = false
             
             if magmoorShield.hasHitPoints {
-                magmoorShield.decrementShield(decrementAmount: chosenSword.piercingBonus, villain: villain, villainPosition: positions.villain) {
+                magmoorShield.decrementShield(decrementAmount: chosenSword.piercingBonus, villain: villain, villainPosition: attackPanel) {
                     self.canAttack = true
                     self.generateVillainPositionNew(enrage: self.magmoorShield.isEnraged)
                     
@@ -293,6 +294,40 @@ class FinalBattle2Controls {
                 moveVillainFlee(shouldDisappear: true, completion: nil)
                 delegate?.didHeroAttack(chosenSword: chosenSword)
                 AudioManager.shared.playSound(for: "villainpain3")
+            }
+        }
+        
+        return true
+    }
+    
+    private func canAttackDuplicate(_ direction: Controls) -> Bool {
+        let attackPanel: K.GameboardPosition = getNextPanel(direction: direction)
+        let possibleDuplicateNode = gameboard.sprite.childNode(withName: magmoorAttacks.getDuplicateNodeName(at: attackPanel))
+        
+        guard possibleDuplicateNode != nil && !magmoorAttacks.villainIsVisible else { return false }
+        guard canAttack && (chosenSword.type == .heavenlySaber || (playerOnSafePanel() && !poisonPanelFound)) else {
+            ButtonTap.shared.tap(type: .buttontap6)
+            return true
+        }
+        
+        isDisabled = true
+        canAttack = false
+        
+        gameboard.sprite.addChild(chosenSword.spriteNode)
+        
+        chosenSword.spriteNode.position = gameboard.getLocation(at: attackPanel)
+        chosenSword.attack(shouldParry: false) { [weak self] in
+            guard let self = self else { return }
+            
+            isDisabled = false
+
+            magmoorAttacks.explodeDuplicate(at: attackPanel) { villainIsVisible in
+                self.canAttack = true
+                
+                if villainIsVisible {
+                    self.delegate?.didVillainAttackBecomeVisible()
+                    self.resetTimer(forceDelay: nil)
+                }
             }
         }
         
@@ -441,6 +476,8 @@ class FinalBattle2Controls {
         - completion: optional completion handler
      */
     private func moveVillainFlee(shouldDisappear: Bool, showPain: Bool = true, completion: (() -> Void)?) {
+        guard magmoorAttacks.villainIsVisible else { return }
+        
         let moveDirection = villain.sprite.xScale / abs(villain.sprite.xScale)
         let moveDistance: CGFloat = 20
         let fadeDistance = CGPoint(x: 0, y: shouldDisappear ? gameboard.panelSize : 0)
