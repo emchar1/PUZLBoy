@@ -90,14 +90,7 @@ class MagmoorAttacks {
             
             attackPattern = poisonPattern
         case 3:
-            guard !isFeatured else { attackPattern = .timed; break }
-            
-            if randomInts[0].isMultiple(of: 5) { attackPattern = .freeze }                  //20%
-            else if randomInts[0].isMultiple(of: 2) { attackPattern = .normal }             //40%
-            else if randomInts[0].isMultiple(of: 3) { attackPattern = .timed }              //14%
-            else { attackPattern = .poison }                                                //26%
-        case let levelCheck where levelCheck >= 4:
-            guard !isFeatured else { attackPattern = .timedLarge; break }
+            guard !isFeatured else { attackPattern = Bool.random() ? .timed : .timedLarge; break }
             
             if randomInts[0].isMultiple(of: 5) { attackPattern = .freeze }                  //20%
             else if randomInts[0].isMultiple(of: 2) { attackPattern = .normal }             //40%
@@ -105,6 +98,16 @@ class MagmoorAttacks {
             else {                                                                          //26%
                 if randomInts[1].isMultiple(of: [2, 3]) { attackPattern = .timed }              //67%
                 else { attackPattern = .timedLarge }                                            //33%
+            }
+        case let levelCheck where levelCheck >= 4:
+            guard !isFeatured else { attackPattern = .duplicates; break }
+            
+            if randomInts[0].isMultiple(of: 5) { attackPattern = .freeze }                  //20%
+            else if randomInts[0].isMultiple(of: 2) { attackPattern = .normal }             //40%
+            else if randomInts[0].isMultiple(of: 3) { attackPattern = .poison }             //14%
+            else {                                                                          //26%
+                if randomInts[1].isMultiple(of: [2, 3]) { attackPattern = .duplicates }         //67%
+                else { attackPattern = Bool.random() ? .timed : .timedLarge }                   //17% : 16%
             }
         default:
             attackPattern = .normal
