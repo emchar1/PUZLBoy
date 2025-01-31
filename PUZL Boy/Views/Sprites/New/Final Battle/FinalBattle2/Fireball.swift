@@ -28,6 +28,14 @@ class Fireball: SKNode {
     
     // MARK: - Initialization
     
+    /**
+     Initialization.
+     - parameters:
+        - type: Attack Pattern type
+        - rotationOrigin: source of the fireball. Should be villain's sprite position for zRotational accuracy
+        - positions: begin (villain) and end (player) positions on the gameboard
+        - gameboard: the GameboardSprite
+     */
     init(type: MagmoorAttacks.AttackPattern, rotationOrigin: CGPoint, positions: FinalBattle2Controls.PlayerPositions, gameboard: GameboardSprite) {
         self.type = type
         self.positions = positions
@@ -128,6 +136,12 @@ class Fireball: SKNode {
     
     // MARK: - Functions
     
+    /**
+     Launches a fireball (non-timed bomb) of either normal, freeze, or poison.
+     - parameters:
+        - facingDirection: the direction (the villain is facing)
+        - completion: completion handler to deal with delegate calls, for example.
+     */
     func launchFireball(facingDirection: CGFloat, completion: @escaping () -> Void) {
         self.removeFromParent()
         gameboard.sprite.addChild(self)
@@ -140,6 +154,13 @@ class Fireball: SKNode {
         }
     }
     
+    /**
+     Launches a timed bomb.
+     - parameters:
+        - facingDirection: the direction (the villain is facing)
+        - canPlaySound: since you can have multiple simultaneouslyk you'll want to play only the first one's sound.
+        - completion: completion handler to deal with delegate calls, for example.
+     */
     func launchTimed(facingDirection: CGFloat, canPlaySound: Bool, completion: @escaping (K.GameboardPosition) -> Void) {
         self.removeFromParent()
         gameboard.sprite.addChild(self)
@@ -154,7 +175,10 @@ class Fireball: SKNode {
         }
     }
     
-    func playAudio() {
+    /**
+     For use with Fireball.
+     */
+    func playFireballAudio() {
         for audioItem in sfx {
             guard let audioItem = audioItem else { continue }
             
@@ -170,6 +194,9 @@ class Fireball: SKNode {
         }
     }
     
+    /**
+     Sets the new fireball speed.
+     */
     func setFireballSpeed(_ newValue: TimeInterval) {
         self.fireballSpeed = newValue
     }
