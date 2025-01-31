@@ -86,7 +86,6 @@ class Fireball: SKNode {
         fireballNode.colorBlendFactor = 0
         fireballNode.zPosition = 5
         
-        
         super.init()
         
         self.setScale(0.25 / UIDevice.spriteScale)

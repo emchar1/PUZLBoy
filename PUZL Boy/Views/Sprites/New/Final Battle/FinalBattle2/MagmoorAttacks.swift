@@ -295,6 +295,9 @@ class MagmoorAttacks {
         }
     }
     
+    /**
+     Employs the duplicate attack pattern.
+     */
     private func helperDuplicates(count: Int, positions: FinalBattle2Controls.PlayerPositions) {
         villainIsVisible = false
         villain.sprite.run(SKAction.fadeOut(withDuration: 1)) { [weak self] in
