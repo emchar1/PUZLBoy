@@ -135,13 +135,13 @@ class FinalBattle2Controls {
         switch speed {
         case .slow:
             villainMovementDelay = (normal: 12, enraged: 2)
-            magmoorAttacks.setNormalFireballSpeed(0.5)
+            magmoorAttacks.setFireballSpeed(0.5)
         case .medium:
             villainMovementDelay = (normal: 10, enraged: 2)
-            magmoorAttacks.setNormalFireballSpeed(0.35)
+            magmoorAttacks.setFireballSpeed(0.35)
         case .fast:
             villainMovementDelay = (normal: 8, enraged: 1)
-            magmoorAttacks.setNormalFireballSpeed(0.25)
+            magmoorAttacks.setFireballSpeed(0.25)
         }
     }
     

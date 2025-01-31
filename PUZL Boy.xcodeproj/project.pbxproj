@@ -300,6 +300,10 @@
 		EAB8B8B02D43429100E5DE5F /* gameendwin2.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAB8B8AF2D43429100E5DE5F /* gameendwin2.mp3 */; };
 		EAB8B8B22D4343CF00E5DE5F /* gameendwin1.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAB8B8B12D4343CF00E5DE5F /* gameendwin1.mp3 */; };
 		EAB8B8B62D43749D00E5DE5F /* Randomizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAB8B8B52D43749D00E5DE5F /* Randomizer.swift */; };
+		EAB8B8B82D4C8A5300E5DE5F /* MagicElderIce2Particles.sks in Resources */ = {isa = PBXBuildFile; fileRef = EAB8B8B72D4C8A5300E5DE5F /* MagicElderIce2Particles.sks */; };
+		EAB8B8BA2D4CA13A00E5DE5F /* MagicElderFire4Particles.sks in Resources */ = {isa = PBXBuildFile; fileRef = EAB8B8B92D4CA13A00E5DE5F /* MagicElderFire4Particles.sks */; };
+		EAB8B8BC2D4CA60D00E5DE5F /* Fireball.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAB8B8BB2D4CA60700E5DE5F /* Fireball.swift */; };
+		EAB8B8BE2D4CDCA000E5DE5F /* MagicElderEarth3Particles.sks in Resources */ = {isa = PBXBuildFile; fileRef = EAB8B8BD2D4CDCA000E5DE5F /* MagicElderEarth3Particles.sks */; };
 		EABE79552AC787B900689C55 /* LevelSelectPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = EABE79542AC787B900689C55 /* LevelSelectPage.swift */; };
 		EABE79572AC9F55C00689C55 /* CloseButtonSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = EABE79562AC9F55B00689C55 /* CloseButtonSprite.swift */; };
 		EABE795B2ACBB28C00689C55 /* boypain2.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EABE79582ACBB28C00689C55 /* boypain2.mp3 */; };
@@ -694,6 +698,10 @@
 		EAB8B8AF2D43429100E5DE5F /* gameendwin2.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = gameendwin2.mp3; sourceTree = "<group>"; };
 		EAB8B8B12D4343CF00E5DE5F /* gameendwin1.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = gameendwin1.mp3; sourceTree = "<group>"; };
 		EAB8B8B52D43749D00E5DE5F /* Randomizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Randomizer.swift; sourceTree = "<group>"; };
+		EAB8B8B72D4C8A5300E5DE5F /* MagicElderIce2Particles.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = MagicElderIce2Particles.sks; sourceTree = "<group>"; };
+		EAB8B8B92D4CA13A00E5DE5F /* MagicElderFire4Particles.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = MagicElderFire4Particles.sks; sourceTree = "<group>"; };
+		EAB8B8BB2D4CA60700E5DE5F /* Fireball.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fireball.swift; sourceTree = "<group>"; };
+		EAB8B8BD2D4CDCA000E5DE5F /* MagicElderEarth3Particles.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = MagicElderEarth3Particles.sks; sourceTree = "<group>"; };
 		EABE79542AC787B900689C55 /* LevelSelectPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelSelectPage.swift; sourceTree = "<group>"; };
 		EABE79562AC9F55B00689C55 /* CloseButtonSprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloseButtonSprite.swift; sourceTree = "<group>"; };
 		EABE79582ACBB28C00689C55 /* boypain2.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = boypain2.mp3; sourceTree = "<group>"; };
@@ -867,6 +875,7 @@
 				EA37CEFE2D1BF8C700275A15 /* FinalBattle2Health.swift */,
 				EA0D6B122D40C20E00DB9C6D /* FinalBattle2WinLoseScene.swift */,
 				EA8C66522D333956004DD9A0 /* MagmoorAttacks.swift */,
+				EAB8B8BB2D4CA60700E5DE5F /* Fireball.swift */,
 				EAE751E02D2C712A004B138A /* MagmoorShield.swift */,
 			);
 			path = FinalBattle2;
@@ -1451,11 +1460,14 @@
 				EA81968F2C437AD90002D551 /* MagicElderExplosionParticles.sks */,
 				EA2F44102C45810E00B62CC3 /* MagicElderStarsParticles.sks */,
 				EAE43DA22C4B1B1B00E6DB3C /* MagicElderIceParticles.sks */,
+				EAB8B8B72D4C8A5300E5DE5F /* MagicElderIce2Particles.sks */,
 				EAE43DA42C4B397100E6DB3C /* MagicElderEarthParticles.sks */,
 				EAA3BD652C92238D00EDE298 /* MagicElderEarth2Particles.sks */,
+				EAB8B8BD2D4CDCA000E5DE5F /* MagicElderEarth3Particles.sks */,
 				EAE43DA62C4F585800E6DB3C /* MagicElderFireParticles.sks */,
 				EAE43DA82C4F69EF00E6DB3C /* MagicElderFire2Particles.sks */,
 				EAB8B8A12D42B9C100E5DE5F /* MagicElderFire3Particles.sks */,
+				EAB8B8B92D4CA13A00E5DE5F /* MagicElderFire4Particles.sks */,
 				EA8196892C41AC590002D551 /* MagicElderParticles.sks */,
 				EA5F60572B9063480089EFC3 /* MagicExplosion0Particles.sks */,
 				EAB8B89D2D41E60200E5DE5F /* MagicExplosion1Particles.sks */,
@@ -1615,6 +1627,7 @@
 				EA45834F2A44316F00279056 /* overworldparty.mp3 in Resources */,
 				EA8C66372D3071C3004DD9A0 /* villainpain1.mp3 in Resources */,
 				EAE43DA72C4F585800E6DB3C /* MagicElderFireParticles.sks in Resources */,
+				EAB8B8BA2D4CA13A00E5DE5F /* MagicElderFire4Particles.sks in Resources */,
 				EA8C60712C068E0800DED3C7 /* overworldageofruin.mp3 in Resources */,
 				EA8E07562B5104170051DDC3 /* PointerRainbowParticles.sks in Resources */,
 				EA45835B2A4431D300279056 /* titletheme.mp3 in Resources */,
@@ -1687,6 +1700,7 @@
 				EA8C606C2C068E0800DED3C7 /* winlevelageofruin.mp3 in Resources */,
 				EAE919472A4CAFFD00AF67D1 /* gemcollectparty3x.mp3 in Resources */,
 				EAB8B8B02D43429100E5DE5F /* gameendwin2.mp3 in Resources */,
+				EAB8B8BE2D4CDCA000E5DE5F /* MagicElderEarth3Particles.sks in Resources */,
 				EAACB4B92971E08A00973EB8 /* chatclose.mp3 in Resources */,
 				EA1281AD2CF15F65001CC5E8 /* bossbattle0.mp3 in Resources */,
 				EAF7181F29B1B2BC00E2ED82 /* movesand1.mp3 in Resources */,
@@ -1694,6 +1708,7 @@
 				EA9D6A582B48E46F0004187B /* magicdoomloop.mp3 in Resources */,
 				EA7605722B5B5322001BC268 /* SnowfallParticles.sks in Resources */,
 				EA95D200295D83E40061059C /* Boogaloo-Regular.ttf in Resources */,
+				EAB8B8B82D4C8A5300E5DE5F /* MagicElderIce2Particles.sks in Resources */,
 				EA7605702B5B1F53001BC268 /* waterappear1.mp3 in Resources */,
 				EA4583582A4431C400279056 /* punchwhack2.mp3 in Resources */,
 				EADF93BA2D3CDD47006A0FFA /* chestclose.mp3 in Resources */,
@@ -1880,6 +1895,7 @@
 				EA75F0EF292F55F900F09BD7 /* LaunchScene.swift in Sources */,
 				EA94E86729BE6BCC009F2614 /* PauseResetEngine.swift in Sources */,
 				EA26F29129739DE800BF1AC8 /* AdMobManager.swift in Sources */,
+				EAB8B8BC2D4CA60D00E5DE5F /* Fireball.swift in Sources */,
 				EAF4B6662BA8157F00D96699 /* Circle.swift in Sources */,
 				EA0F84072937D4860031DA76 /* DayTheme.swift in Sources */,
 				EA65182F28E4199E00E535BF /* GameViewController.swift in Sources */,
