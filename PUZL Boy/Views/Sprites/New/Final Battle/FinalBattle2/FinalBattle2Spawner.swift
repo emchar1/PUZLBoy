@@ -27,7 +27,7 @@ class FinalBattle2Spawner {
     
     //IMPORTANT!! breakLimit should be a multiple of maxCount!! These are panel spawning speed and max panels properties
     private let maxCount: Int = 1000
-    private let breakLimit: Int = 50
+    private let breakLimit: Int = 75
     private var animationDuration: TimeInterval { currentSpeed.rawValue }
     private(set) var currentSpeed: SpawnerSpeed = .slow {
         didSet {

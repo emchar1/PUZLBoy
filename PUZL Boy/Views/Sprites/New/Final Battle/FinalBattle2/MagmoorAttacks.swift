@@ -146,7 +146,7 @@ class MagmoorAttacks {
         
         switch pattern {
         case .normal:
-            wandColor = .systemPink
+            wandColor = .yellow
             helperNormal(pattern: .normal, positions: positions)
         case .freeze:
             wandColor = .cyan
