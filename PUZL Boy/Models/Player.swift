@@ -224,7 +224,7 @@ class Player {
         - type: the type of texture in question
         - timePerFrame: the speed of the animation. Optional. If used, it will overwrite the timePerFrameFallback predefined animation speeds.
         - timePerFrameMultiplier: a multiplier that affects the animation speed, defaults to 1
-        - repeatCount: number of times to execute the animation
+        - repeatCount: number of times to execute the animation. Defaults to -1 for repeat forever. Set it to 1 to execute only once.
      - returns:the SKAction
      */
     static func animate(player: Player,
