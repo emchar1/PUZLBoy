@@ -26,7 +26,14 @@ class FinalBattle2Engine {
     private var backgroundSprite: SKSpriteNode!
     private var bloodOverlay: SKSpriteNode!
     private var flashGameboard: SKSpriteNode!
-    private var speedLabelDebug: SKLabelNode!
+    
+    
+    
+    // FIXME: - Debug Speed
+    private var labelDebug: SKLabelNode!
+    private var timerDebug: Timer = Timer()
+    private var timerDebugCount: TimeInterval = 0
+    
     
     
     // FIXME: - For use with build# 1.28(30).
@@ -65,12 +72,16 @@ class FinalBattle2Engine {
         flashGameboard.alpha = 0
         flashGameboard.zPosition = K.ZPosition.terrain + 2
         
-        speedLabelDebug = SKLabelNode(text: "SPEED")
-        speedLabelDebug.position = CGPoint(x: 40, y: 200)
-        speedLabelDebug.fontName = UIFont.gameFont
-        speedLabelDebug.fontSize = UIFont.gameFontSizeLarge
-        speedLabelDebug.fontColor = UIFont.gameFontColor
-        speedLabelDebug.horizontalAlignmentMode = .left
+        
+        
+        // FIXME: - Debug Speed
+        labelDebug = SKLabelNode(text: "SPEED UPDATING...")
+        labelDebug.position = CGPoint(x: 40, y: 200)
+        labelDebug.fontName = UIFont.gameFont
+        labelDebug.fontSize = UIFont.gameFontSizeLarge
+        labelDebug.fontColor = UIFont.gameFontColor
+        labelDebug.horizontalAlignmentMode = .left
+        labelDebug.numberOfLines = 0
         
         
         
@@ -146,8 +157,8 @@ class FinalBattle2Engine {
         
         health.addToParent(superScene)
         
-        //Uncomment for debugging
-//        superScene.addChild(speedLabelDebug)
+        // FIXME: - Uncomment for debugging
+        superScene.addChild(labelDebug)
     }
     
     ///Animates all the components
@@ -427,7 +438,18 @@ extension FinalBattle2Engine: FinalBattle2ControlsDelegate {
         backgroundPattern.adjustOverworldMusic(volume: 0.5, fadeDuration: 1)
     }
     
-    func didVillainReappear() {
+    func didVillainFlee(didReappear: Bool) {
+        // FIXME: - Debug Speed
+        updateDebugLabelTest()
+        
+        
+        
+        guard didReappear else { return }
+        
+        if !panelSpawner.isEmpty {
+            controls.updateVillainMovementAndAttacks(speed: panelSpawner[0].currentSpeed)
+        }
+        
         backgroundPattern.animate(pattern: .wave, fadeDuration: 2, shouldFlashGameboard: true)
     }
     
@@ -457,6 +479,17 @@ extension FinalBattle2Engine: FinalBattle2ControlsDelegate {
             backgroundPattern.animate(pattern: .convulse, fadeDuration: 0.04)
         }
         else if didDamage {
+            if !panelSpawner.isEmpty {
+                controls.updateVillainMovementAndAttacks(speed: panelSpawner[0].currentSpeed)
+            }
+            
+            
+            
+            // FIXME: - Debug Speed
+            updateDebugLabelTest()
+            
+            
+            
             backgroundPattern.animate(pattern: .wave, fadeDuration: 2)
         }
         else if willBreak {
@@ -482,10 +515,6 @@ extension FinalBattle2Engine: FinalBattle2ControlsDelegate {
 
 extension FinalBattle2Engine: FinalBattle2SpawnerDelegate {
     func didSpawnSafePanel(spawnPanel: K.GameboardPosition, index: Int) {
-        if !panelSpawner.isEmpty {
-            speedLabelDebug.text = "SPEED: \(String(describing: panelSpawner[0].currentSpeed)) \(index)"
-        }
-        
         guard spawnPanel == controls.positions.player else { return }
         health.updateHealth(type: .stopDrain)
     }

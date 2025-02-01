@@ -21,6 +21,7 @@ class MagmoorShield: SKNode {
     static let keyShieldThrobAction = "shieldThrobAction"
     
     private(set) var resetCount: Int = 0
+    private(set) var speedReduction: TimeInterval = 0
     private var maxHitPoints: Int = 3
     private(set) var hitPoints: Int {
         didSet {
@@ -90,6 +91,7 @@ class MagmoorShield: SKNode {
         maxHitPoints = min(3 + resetCount, 6)
         hitPoints = maxHitPoints
         resetCount += 1
+        speedReduction = 0
         
         removeAllActions()
         setScale(0)
@@ -131,6 +133,7 @@ class MagmoorShield: SKNode {
         let originalShieldColor = shieldColor
         
         hitPoints -= decrementAmount
+        speedReduction += TimeInterval(decrementAmount)
         
         //Initialize AFTER decrementing hitPoints due to side effect of shieldColor changing in didSet!
         let changeColorAction = SKAction.repeat(SKAction.sequence([

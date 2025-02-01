@@ -11,7 +11,7 @@ protocol FinalBattle2ControlsDelegate: AnyObject {
     func didHeroAttack(chosenSword: ChosenSword)
     func didVillainDisappear(fadeDuration: TimeInterval)
     func willVillainReappear()
-    func didVillainReappear()
+    func didVillainFlee(didReappear: Bool)
     func didVillainAttack(pattern: MagmoorAttacks.AttackPattern, chosenSword: ChosenSword, position: K.GameboardPosition)
     func didVillainAttackBecomeVisible()
     func handleShield(willDamage: Bool, didDamage: Bool, willBreak: Bool, didBreak: Bool, fadeDuration: TimeInterval?, chosenSword: ChosenSword, villainPosition: K.GameboardPosition?)
@@ -44,7 +44,7 @@ class FinalBattle2Controls {
     private var isFrozen: Bool
     private var isPoisoned: Bool
     private var villainMoveTimer: Timer
-    private var villainMovementDelay: (normal: TimeInterval, enraged: TimeInterval)
+    private(set) var villainMovementDelay: (normal: TimeInterval, enraged: TimeInterval)
     
     private(set) var chosenSword: ChosenSword!
     private var magmoorAttacks: MagmoorAttacks!
@@ -134,13 +134,13 @@ class FinalBattle2Controls {
     func updateVillainMovementAndAttacks(speed: FinalBattle2Spawner.SpawnerSpeed) {
         switch speed {
         case .slow:
-            villainMovementDelay = (normal: 12, enraged: 2)
+            villainMovementDelay = (normal: 12 - magmoorShield.speedReduction, enraged: 2)
             magmoorAttacks.setFireballSpeed(0.5)
         case .medium:
-            villainMovementDelay = (normal: 10, enraged: 2)
+            villainMovementDelay = (normal: 10 - magmoorShield.speedReduction, enraged: 2)
             magmoorAttacks.setFireballSpeed(0.35)
         case .fast:
-            villainMovementDelay = (normal: 8, enraged: 1)
+            villainMovementDelay = (normal: 8 - magmoorShield.speedReduction, enraged: 1)
             magmoorAttacks.setFireballSpeed(0.25)
         }
     }
@@ -539,17 +539,20 @@ class FinalBattle2Controls {
             canAttack = true
             
             if shouldDisappear {
-                delegate?.didVillainReappear()
-                
                 magmoorShield.resetShield(villain: villain)
+                
+                //IMPORTANT!! Must come after resetShield()!! (But before resetTimer())
+                delegate?.didVillainFlee(didReappear: true)
                 
                 let attackPattern = MagmoorAttacks.getAttackPattern(enrage: false, level: magmoorShield.resetCount, isFeatured: true)
                 magmoorAttacks.attack(pattern: attackPattern, positions: positions)
                 
                 generateVillainPositionNew(enrage: false)
-                resetTimer(forceDelay: nil) //call AFTER setting shield!!
+                resetTimer(forceDelay: nil) //call AFTER resetShield()!!
             }
             else {
+                delegate?.didVillainFlee(didReappear: false)
+                
                 generateVillainPositionNew(enrage: magmoorShield.isEnraged)
                 resetTimer(forceDelay: nil)
             }
