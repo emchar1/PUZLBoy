@@ -141,6 +141,12 @@ class MagmoorDuplicate: SKNode {
                                                scale: UIDevice.spriteScale / CGFloat(gameboard.panelCount),
                                                zPosition: duplicate.sprite.zPosition - 2,
                                                duration: 2)
+        ParticleEngine.shared.animateParticles(type: .magicExplosion1_5,
+                                               toNode: gameboard.sprite,
+                                               position: self.position,
+                                               scale: UIDevice.spriteScale / CGFloat(gameboard.panelCount),
+                                               zPosition: duplicate.sprite.zPosition + 2,
+                                               duration: 2)
     }
     
     

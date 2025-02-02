@@ -95,9 +95,12 @@ class FinalBattle2Spawner {
     
     /**
      Installs a platform covering the entire gameboard, which is safe to stand on.
+     - parameters:
+        - shouldShow: determines whether to animate showing of the platform or hiding of the platform.
+        - positions: player and villain positions at time of function call (only the villain position is needed).
      */
-    func showPlatform(shouldShow: Bool) {
-        animateShowPlatform(shouldShow: shouldShow)
+    func showPlatform(shouldShow: Bool, positions: FinalBattle2Controls.PlayerPositions) {
+        animateShowPlatform(shouldShow: shouldShow, positions: positions)
     }
     
     
@@ -181,18 +184,23 @@ class FinalBattle2Spawner {
     
     /**
      Animates the showing/hiding of the platform.
+     - parameters:
+        - shouldShow: determines whether to animate showing of the platform or hiding of the platform.
+        - positions: player and villain positions at time of function call (only the villain position is needed).
      */
-    private func animateShowPlatform(shouldShow: Bool) {
+    private func animateShowPlatform(shouldShow: Bool, positions: FinalBattle2Controls.PlayerPositions) {
         for row in 0..<gameboard.panelCount {
             for col in 0..<gameboard.panelCount {
                 let panel: K.GameboardPosition = (row: row, col: col)
-                let waitDuration: TimeInterval = TimeInterval(row) / TimeInterval(gameboard.panelCount)
-                let fadeDuration: TimeInterval = 0.25
                 
                 guard panel != FinalBattle2Spawner.startPosition && panel != FinalBattle2Spawner.endPosition else { continue }
                 guard let terrainPanel = gameboard.getPanelSprite(at: panel).terrain else { continue }
                 
                 if shouldShow {
+                    let waitFactor: Int = abs(positions.villain.col - col) + abs(positions.villain.row - row)
+                    let waitDuration: TimeInterval = TimeInterval(waitFactor) / TimeInterval(gameboard.panelCount)
+                    let fadeDuration: TimeInterval = 0.25
+                    
                     let platformPanel = SKSpriteNode(imageNamed: LevelType.sand.description)
                     platformPanel.anchorPoint = .zero
                     platformPanel.alpha = 0

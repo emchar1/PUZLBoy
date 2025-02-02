@@ -489,14 +489,14 @@ extension FinalBattle2Engine: FinalBattle2ControlsDelegate {
             villainAttackTimed(at: position, isLarge: true, chosenSword: chosenSword)
         case .duplicates:
             for i in 0..<panelSpawnerCount {
-                panelSpawner[i].showPlatform(shouldShow: true)
+                panelSpawner[i].showPlatform(shouldShow: true, positions: controls.positions)
             }
         }
     }
     
     func didVillainAttackBecomeVisible() {
         for i in 0..<panelSpawnerCount {
-            panelSpawner[i].showPlatform(shouldShow: false)
+            panelSpawner[i].showPlatform(shouldShow: false, positions: controls.positions)
         }
     }
     
