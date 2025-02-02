@@ -43,9 +43,6 @@ class MagmoorDuplicate: SKNode {
         duplicate.sprite.yScale = villain.sprite.yScale
         duplicate.sprite.alpha = 0
         duplicate.sprite.zPosition = K.ZPosition.player + 2
-        
-        self.position = villain.sprite.position
-        self.alpha = 0
     }
     
     private func layoutSprites() {
