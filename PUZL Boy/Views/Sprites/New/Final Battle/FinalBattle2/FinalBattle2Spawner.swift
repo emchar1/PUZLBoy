@@ -185,8 +185,9 @@ class FinalBattle2Spawner {
     private func animateShowPlatform(shouldShow: Bool) {
         for row in 0..<gameboard.panelCount {
             for col in 0..<gameboard.panelCount {
-                let fadeDuration: TimeInterval = 1
                 let panel: K.GameboardPosition = (row: row, col: col)
+                let waitDuration: TimeInterval = TimeInterval(row) / TimeInterval(gameboard.panelCount)
+                let fadeDuration: TimeInterval = 0.25
                 
                 guard panel != FinalBattle2Spawner.startPosition && panel != FinalBattle2Spawner.endPosition else { continue }
                 guard let terrainPanel = gameboard.getPanelSprite(at: panel).terrain else { continue }
@@ -203,7 +204,10 @@ class FinalBattle2Spawner {
                         terrainPanel.addChild(platformPanel)
                     }
                     
-                    platformPanel.run(SKAction.fadeIn(withDuration: fadeDuration)) { [weak self] in
+                    platformPanel.run(SKAction.sequence([
+                        SKAction.wait(forDuration: waitDuration),
+                        SKAction.fadeIn(withDuration: fadeDuration)
+                    ])) { [weak self] in
                         terrainPanel.speed = 0
                         self?.delegate?.didSpawnSafePanel(spawnPanel: panel, index: -1)
                     }

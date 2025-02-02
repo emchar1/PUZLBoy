@@ -141,6 +141,9 @@ class FinalBattle2Engine {
         
         
         
+        // FIXME: - Debug Speed
+//        superScene.addChild(labelDebug)
+        
         // FIXME: - For use with build# 1.28(30).
         superScene.addChild(fadeBackgroundSprite)
         
@@ -419,6 +422,36 @@ class FinalBattle2Engine {
 // MARK: - FinalBattle2ControlsDelegate
 
 extension FinalBattle2Engine: FinalBattle2ControlsDelegate {
+//    // FIXME: - Debug Speed
+//    private func updateDebugLabelTest() {
+//        timerDebugCount = controls.magmoorShield.isEnraged ? controls.villainMovementDelay.enraged : controls.villainMovementDelay.normal
+//        
+//        timerDebug.invalidate()
+//        timerDebug = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(updateTimerDebug(_:)), userInfo: nil, repeats: true)
+//    }
+//    
+//    @objc private func updateTimerDebug(_ sender: Any) {
+//        guard !panelSpawner.isEmpty else { return }
+//        guard timerDebugCount >= 0 else {
+//            updateDebugLabelTest()
+//            return
+//        }
+//        
+//        var speed: TimeInterval
+//        
+//        switch panelSpawner[0].currentSpeed {
+//        case .slow:     speed = 12
+//        case .medium:   speed = 10
+//        case .fast:     speed = 8
+//        }
+//        
+//        labelDebug.text = "\(panelSpawner[0].currentSpeed): \(panelSpawner[0].index)\n[RESET: \(controls.magmoorShield.resetCount), HP: \(controls.magmoorShield.hitPoints)]\nTIME: \(timerDebugCount)\nSPEED: \(speed) - \(speed - controls.villainMovementDelay.normal)"
+//        
+//        timerDebugCount -= 1
+//    }
+    
+    
+    
     func didHeroAttack(chosenSword: ChosenSword) {
         health.updateHealth(type: .heroAttack, dmgMultiplier: chosenSword.attackRating)
     }
@@ -433,7 +466,7 @@ extension FinalBattle2Engine: FinalBattle2ControlsDelegate {
     
     func didVillainFlee(didReappear: Bool) {
         // FIXME: - Debug Speed
-        updateDebugLabelTest()
+//        updateDebugLabelTest()
         
         
         
@@ -479,7 +512,7 @@ extension FinalBattle2Engine: FinalBattle2ControlsDelegate {
             
             
             // FIXME: - Debug Speed
-            updateDebugLabelTest()
+//            updateDebugLabelTest()
             
             
             

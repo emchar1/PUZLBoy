@@ -125,16 +125,12 @@ class MagmoorDuplicate: SKNode {
         - completion: completion handler, executes at end of explosion action.
      */
     func explode(completion: @escaping () -> Void) {
-        let waitDuration: TimeInterval = 0.5
-        let scaleFactor: CGFloat = 2
+        let waitDuration: TimeInterval = 0.25
         let fadeDuration: TimeInterval = 0.25
         
         run(SKAction.sequence([
             SKAction.wait(forDuration: waitDuration),
-            SKAction.group([
-                SKAction.scale(by: scaleFactor, duration: fadeDuration),
-                SKAction.fadeOut(withDuration: fadeDuration)
-            ]),
+            SKAction.fadeOut(withDuration: fadeDuration),
             SKAction.removeFromParent()
         ]), completion: completion)
         
