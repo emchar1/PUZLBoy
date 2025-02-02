@@ -38,8 +38,10 @@ class MagmoorDuplicate: SKNode {
     
     private func setupSprites(modelAfter villain: Player) {
         duplicate = Player(type: .villain)
+        duplicate.sprite.position = villain.sprite.position
         duplicate.sprite.xScale = villain.sprite.xScale
         duplicate.sprite.yScale = villain.sprite.yScale
+        duplicate.sprite.alpha = 0
         duplicate.sprite.zPosition = K.ZPosition.player + 2
         
         self.position = villain.sprite.position
@@ -100,15 +102,14 @@ class MagmoorDuplicate: SKNode {
         self.name = nodeName
                 
         duplicate.sprite.run(Player.animateIdleLevitate(player: duplicate))
-        
-        run(SKAction.sequence([
+        duplicate.sprite.run(SKAction.sequence([
             Player.moveWithIllusions(playerNode: duplicate.sprite,
                                      backgroundNode: gameboard.sprite,
                                      tag: nodeName,
                                      color: .red.darkenColor(factor: 12),
                                      playSound: false,
                                      fierce: true,
-                                     startPoint: self.position,
+                                     startPoint: duplicate.sprite.position,
                                      endPoint: randomPoint,
                                      startScale: 1,
                                      endScale: 1),
@@ -141,13 +142,13 @@ class MagmoorDuplicate: SKNode {
         AudioManager.shared.playSound(for: "enemydeath")
         ParticleEngine.shared.animateParticles(type: .magicElderFire3,
                                                toNode: gameboard.sprite,
-                                               position: self.position,
+                                               position: duplicate.sprite.position,
                                                scale: UIDevice.spriteScale / CGFloat(gameboard.panelCount),
                                                zPosition: duplicate.sprite.zPosition - 2,
                                                duration: 2)
         ParticleEngine.shared.animateParticles(type: .magicExplosion1_5,
                                                toNode: gameboard.sprite,
-                                               position: self.position,
+                                               position: duplicate.sprite.position,
                                                scale: UIDevice.spriteScale / CGFloat(gameboard.panelCount),
                                                zPosition: duplicate.sprite.zPosition + 2,
                                                duration: 2)
