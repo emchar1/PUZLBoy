@@ -32,6 +32,10 @@ class MagmoorDuplicate: SKNode {
         fatalError("init(coder:) has not been implemented")
     }
     
+    deinit {
+        print("deinit \(self.name ?? "MagmoorDuplicate")")
+    }
+    
     private func setupSprites(modelAfter villain: Player) {
         duplicate = Player(type: .villain)
         duplicate.sprite.xScale = villain.sprite.xScale

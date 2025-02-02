@@ -134,9 +134,10 @@ class MagmoorAttacks {
      Initiates one of Magmoor's various wand attacks.
      - parameters:
         - pattern: attack pattern type
+        - playSFX: determines whether to play villain attack and sound FXs or to mute them
         - positions: the player and villain gameboard positions.
      */
-    func attack(pattern: AttackPattern, positions: FinalBattle2Controls.PlayerPositions) {
+    func attack(pattern: AttackPattern, playSFX: Bool = true, positions: FinalBattle2Controls.PlayerPositions) {
         timedCanHurtPlayer = true
         timedCanHurtVillain = true
         
@@ -163,7 +164,7 @@ class MagmoorAttacks {
             helperDuplicates(count: 4, positions: positions)
         }
         
-        executeAttackAnimation(color: wandColor, playSFX: true)
+        executeAttackAnimation(color: wandColor, playSFX: playSFX)
     }
     
     /**
