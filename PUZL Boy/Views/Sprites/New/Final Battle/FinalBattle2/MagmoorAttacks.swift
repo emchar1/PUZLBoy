@@ -15,8 +15,6 @@ class MagmoorAttacks {
     
     // MARK: - Properties
     
-    static let duplicateNamePrefix: String = "duplicateMagmoor"
-    
     private var gameboard: GameboardSprite
     private var villain: Player
     
