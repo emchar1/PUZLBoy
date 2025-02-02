@@ -185,7 +185,7 @@ class FinalBattle2Spawner {
     private func animateShowPlatform(shouldShow: Bool) {
         for row in 0..<gameboard.panelCount {
             for col in 0..<gameboard.panelCount {
-                let fadeDuration: TimeInterval = animationDuration * 0.25
+                let fadeDuration: TimeInterval = 1
                 let panel: K.GameboardPosition = (row: row, col: col)
                 
                 guard panel != FinalBattle2Spawner.startPosition && panel != FinalBattle2Spawner.endPosition else { continue }

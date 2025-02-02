@@ -222,43 +222,21 @@ class MagmoorAttacks {
     
     // MARK: - Magmoor Duplicate Functions
     
-    func getDuplicateNodeName(at position: K.GameboardPosition) -> String {
-        return "\(MagmoorAttacks.duplicateNamePrefix)\(position.row),\(position.col)"
-    }
-    
     func explodeDuplicate(at position: K.GameboardPosition, completion: @escaping (Bool) -> Void) {
-        guard let duplicateSprite = gameboard.sprite.childNode(withName: getDuplicateNodeName(at: position)) as? SKSpriteNode else { return }
+        guard let duplicate = gameboard.sprite.childNode(withName: MagmoorDuplicate.getNodeName(at: position)) as? MagmoorDuplicate else { return }
         
         let fadeDuration: TimeInterval = 1
         
-        duplicateSprite.run(SKAction.sequence([
-            SKAction.fadeOut(withDuration: fadeDuration),
-            SKAction.removeFromParent()
-        ])) { [weak self] in
+        duplicate.explode { [weak self] in
             guard let self = self else { return }
             
-            if !checkDuplicatesExist() {
-                villain.sprite.run(SKAction.fadeIn(withDuration: fadeDuration)) {
-                    self.villainIsVisible = true
-                    completion(self.villainIsVisible)
-                }
+            if !MagmoorDuplicate.checkIfDuplicatesExist(on: gameboard) {
+                villainIsVisible = true
+                villain.sprite.run(SKAction.fadeIn(withDuration: fadeDuration))
             }
-            else {
-                completion(self.villainIsVisible)
-            }
-        }
-    }
-    
-    private func checkDuplicatesExist() -> Bool {
-        for node in gameboard.sprite.children {
-            guard let name = node.name else { continue }
             
-            if name.hasPrefix(MagmoorAttacks.duplicateNamePrefix) {
-                return true
-            }
+            completion(self.villainIsVisible)
         }
-        
-        return false
     }
 
     
@@ -300,53 +278,14 @@ class MagmoorAttacks {
      */
     private func helperDuplicates(count: Int, positions: FinalBattle2Controls.PlayerPositions) {
         villainIsVisible = false
-        villain.sprite.run(SKAction.fadeOut(withDuration: 1)) { [weak self] in
-            self?.delegate?.didVillainAttack(pattern: .duplicates, position: positions.villain)
-        }
-
+        
+        villain.sprite.run(SKAction.fadeOut(withDuration: 1))
+        delegate?.didVillainAttack(pattern: .duplicates, position: positions.villain)
+        
         for _ in 0..<count {
-            let duplicate = Player(type: .villain)
-            duplicate.sprite.position = villain.sprite.position
-            duplicate.sprite.xScale = villain.sprite.xScale
-            duplicate.sprite.yScale = villain.sprite.yScale
-            duplicate.sprite.zPosition = K.ZPosition.player + 2
-            
-            gameboard.sprite.addChild(duplicate.sprite)
-            
-            ParticleEngine.shared.animateParticles(type: .magmoorSmoke,
-                                                   toNode: duplicate.sprite,
-                                                   position: .zero,
-                                                   duration: 0)
-            
-            var duplicatePositionNew: K.GameboardPosition
-            var checkNodeExists: SKNode?
-            
-            repeat {
-                duplicatePositionNew = (row: Int.random(in: 0..<gameboard.panelCount), col: Int.random(in: 0..<gameboard.panelCount))
-                
-                //Set this BEFORE setting duplicate.sprite.name!!
-                checkNodeExists = gameboard.sprite.childNode(withName: getDuplicateNodeName(at: duplicatePositionNew))
-                
-                duplicate.sprite.name = getDuplicateNodeName(at: duplicatePositionNew)
-            } while duplicatePositionNew == FinalBattle2Spawner.startPosition || duplicatePositionNew == positions.player || duplicatePositionNew == positions.villain || checkNodeExists != nil
-            
-            duplicate.sprite.run(Player.animateIdleLevitate(player: duplicate))
-            duplicate.sprite.run(SKAction.sequence([
-                Player.moveWithIllusions(playerNode: duplicate.sprite,
-                                         backgroundNode: gameboard.sprite,
-                                         tag: getDuplicateNodeName(at: duplicatePositionNew),
-                                         color: .red.darkenColor(factor: 12),
-                                         playSound: false,
-                                         fierce: true,
-                                         startPoint: duplicate.sprite.position,
-                                         endPoint: gameboard.getLocation(at: duplicatePositionNew),
-                                         startScale: 1,
-                                         endScale: 1),
-                SKAction.move(to: gameboard.getLocation(at: duplicatePositionNew), duration: 0),
-//                SKAction.scaleX(to: villainDirection * abs(villain.sprite.xScale), duration: 0),
-                SKAction.fadeIn(withDuration: 0)
-            ]))
-        } //end for
+            let duplicate = MagmoorDuplicate(on: gameboard, modelAfter: villain)
+            duplicate.animate(with: positions)
+        }
     }
     
     

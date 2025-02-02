@@ -302,9 +302,9 @@ class FinalBattle2Controls {
     
     private func canAttackDuplicate(_ direction: Controls) -> Bool {
         let attackPanel: K.GameboardPosition = getNextPanel(direction: direction)
-        let possibleDuplicateNode = gameboard.sprite.childNode(withName: magmoorAttacks.getDuplicateNodeName(at: attackPanel))
+        let possibleDuplicate = gameboard.sprite.childNode(withName: MagmoorDuplicate.getNodeName(at: attackPanel)) as? MagmoorDuplicate
         
-        guard possibleDuplicateNode != nil && !magmoorAttacks.villainIsVisible else { return false }
+        guard possibleDuplicate != nil && !magmoorAttacks.villainIsVisible else { return false }
         guard canAttack && (chosenSword.type == .heavenlySaber || (playerOnSafePanel() && !poisonPanelFound)) else {
             ButtonTap.shared.tap(type: .buttontap6)
             return true
@@ -320,14 +320,14 @@ class FinalBattle2Controls {
             guard let self = self else { return }
             
             isDisabled = false
-
+            
             magmoorAttacks.explodeDuplicate(at: attackPanel) { villainIsVisible in
                 self.canAttack = true
                 
-                if villainIsVisible {
-                    self.delegate?.didVillainAttackBecomeVisible()
-                    self.resetTimer(forceDelay: nil)
-                }
+                guard villainIsVisible else { return }
+                
+                self.delegate?.didVillainAttackBecomeVisible()
+                self.resetTimer(forceDelay: nil)
             }
         }
         

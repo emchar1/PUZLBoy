@@ -304,6 +304,7 @@
 		EAB8B8BA2D4CA13A00E5DE5F /* MagicElderFire4Particles.sks in Resources */ = {isa = PBXBuildFile; fileRef = EAB8B8B92D4CA13A00E5DE5F /* MagicElderFire4Particles.sks */; };
 		EAB8B8BC2D4CA60D00E5DE5F /* Fireball.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAB8B8BB2D4CA60700E5DE5F /* Fireball.swift */; };
 		EAB8B8BE2D4CDCA000E5DE5F /* MagicElderEarth3Particles.sks in Resources */ = {isa = PBXBuildFile; fileRef = EAB8B8BD2D4CDCA000E5DE5F /* MagicElderEarth3Particles.sks */; };
+		EAB8B8C02D4EB0EF00E5DE5F /* MagmoorDuplicate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAB8B8BF2D4EB0E700E5DE5F /* MagmoorDuplicate.swift */; };
 		EABE79552AC787B900689C55 /* LevelSelectPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = EABE79542AC787B900689C55 /* LevelSelectPage.swift */; };
 		EABE79572AC9F55C00689C55 /* CloseButtonSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = EABE79562AC9F55B00689C55 /* CloseButtonSprite.swift */; };
 		EABE795B2ACBB28C00689C55 /* boypain2.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EABE79582ACBB28C00689C55 /* boypain2.mp3 */; };
@@ -702,6 +703,7 @@
 		EAB8B8B92D4CA13A00E5DE5F /* MagicElderFire4Particles.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = MagicElderFire4Particles.sks; sourceTree = "<group>"; };
 		EAB8B8BB2D4CA60700E5DE5F /* Fireball.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fireball.swift; sourceTree = "<group>"; };
 		EAB8B8BD2D4CDCA000E5DE5F /* MagicElderEarth3Particles.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = MagicElderEarth3Particles.sks; sourceTree = "<group>"; };
+		EAB8B8BF2D4EB0E700E5DE5F /* MagmoorDuplicate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MagmoorDuplicate.swift; sourceTree = "<group>"; };
 		EABE79542AC787B900689C55 /* LevelSelectPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelSelectPage.swift; sourceTree = "<group>"; };
 		EABE79562AC9F55B00689C55 /* CloseButtonSprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloseButtonSprite.swift; sourceTree = "<group>"; };
 		EABE79582ACBB28C00689C55 /* boypain2.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = boypain2.mp3; sourceTree = "<group>"; };
@@ -875,6 +877,7 @@
 				EA37CEFE2D1BF8C700275A15 /* FinalBattle2Health.swift */,
 				EA0D6B122D40C20E00DB9C6D /* FinalBattle2WinLoseScene.swift */,
 				EA8C66522D333956004DD9A0 /* MagmoorAttacks.swift */,
+				EAB8B8BF2D4EB0E700E5DE5F /* MagmoorDuplicate.swift */,
 				EAB8B8BB2D4CA60700E5DE5F /* Fireball.swift */,
 				EAE751E02D2C712A004B138A /* MagmoorShield.swift */,
 			);
@@ -1939,6 +1942,7 @@
 				EA41F8352A0C7D8000DF47EC /* HowToPlayPage.swift in Sources */,
 				EAB69E0428F3333000C31DB3 /* GameEngine.swift in Sources */,
 				EA826C91298F607E00F19F81 /* AchievementEndlessWallet.swift in Sources */,
+				EAB8B8C02D4EB0EF00E5DE5F /* MagmoorDuplicate.swift in Sources */,
 				EAFC9A5529FCD44C002792F2 /* SettingsManager.swift in Sources */,
 				EA705CE22A1C69BA0051519B /* PurchaseTapButton.swift in Sources */,
 				EA4583372A420AAA00279056 /* PartyInventory.swift in Sources */,

@@ -34,8 +34,6 @@ class FinalBattle2Engine {
     private var timerDebug: Timer = Timer()
     private var timerDebugCount: TimeInterval = 0
     
-    
-    
     // FIXME: - For use with build# 1.28(30).
     private var fadeBackgroundSprite: SKShapeNode!
     
@@ -82,8 +80,6 @@ class FinalBattle2Engine {
         labelDebug.fontColor = UIFont.gameFontColor
         labelDebug.horizontalAlignmentMode = .left
         labelDebug.numberOfLines = 0
-        
-        
         
         // FIXME: - For use with build# 1.28(30).
         fadeBackgroundSprite = SKShapeNode(rect: CGRect(origin: .zero, size: size))
@@ -156,9 +152,6 @@ class FinalBattle2Engine {
         gameboard.sprite.addChild(villain.sprite)
         
         health.addToParent(superScene)
-        
-        // FIXME: - Uncomment for debugging
-        superScene.addChild(labelDebug)
     }
     
     ///Animates all the components
