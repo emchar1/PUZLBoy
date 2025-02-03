@@ -20,7 +20,7 @@ class MagmoorDuplicate: SKNode {
     
     private var gameboard: GameboardSprite
     private var duplicate: Player!
-    private(set) var duplicatePosition: K.GameboardPosition?
+    private var duplicatePosition: K.GameboardPosition?
     private var duplicateAttacks: MagmoorAttacks!
     private var attackTimer: Timer!
     
