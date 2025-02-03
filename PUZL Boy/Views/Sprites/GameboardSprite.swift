@@ -43,8 +43,8 @@ class GameboardSprite {
 
     // MARK: - Properties: Misc
     
-    private let panelSpacing: CGFloat = 4
-    private var scaleSize: CGSize { CGSize.zero + panelSize - panelSpacing }
+    let panelSpacing: CGFloat = 4
+    var scaleSize: CGSize { CGSize.zero + panelSize - panelSpacing }
     private var panels: [[SKSpriteNode]]
     private var endPanel: K.GameboardPosition?
     private var circle: Circle
@@ -103,6 +103,18 @@ class GameboardSprite {
      */
     static func getNodeName(row: Int, col: Int, includeOverlayTag: Bool = false) -> String {
         return "\(row)\(GameboardSprite.delimiter)\(col)" + (includeOverlayTag ? GameboardSprite.overlayTag : "")
+    }
+    
+    /**
+     Gives you the CGPoint position on the gameboard. Use this when adding a panel to the gameboard at a given position.
+     - parameter position: the K.Gameboard position to add the panel to.
+     - returns: a (terrain, overlay) tuple with their suggested CGPoint positions on the Gameboard.
+     */
+    func getSpritePositionAbsolute(at position: K.GameboardPosition) -> (terrain: CGPoint, overlay: CGPoint) {
+        let terrain: CGPoint = getSpritePosition(at: position) + GameboardSprite.padding / 2
+        let overlay: CGPoint = terrain + scaleSize.width / 2
+        
+        return (terrain, overlay)
     }
     
     ///Helper function that takes in the gameboard position and returns where it lies on the screen's CGPoint coordinates.
@@ -173,7 +185,7 @@ class GameboardSprite {
         
         let terrainPanel = SKSpriteNode(imageNamed: terrainString)
         terrainPanel.scale(to: scaleSize)
-        terrainPanel.position = getSpritePosition(at: position) + GameboardSprite.padding / 2
+        terrainPanel.position = getSpritePositionAbsolute(at: position).terrain
         terrainPanel.anchorPoint = .zero
         terrainPanel.color = fadeIn ? .black : GameboardSprite.dayThemeSpriteColor
         terrainPanel.colorBlendFactor = fadeIn ? 1 : GameboardSprite.dayThemeSpriteShade
@@ -229,7 +241,7 @@ class GameboardSprite {
         
         let overlayPanel = SKSpriteNode(imageNamed: overlayString)
         overlayPanel.scale(to: scaleSize)
-        overlayPanel.position = getSpritePosition(at: position) + GameboardSprite.padding / 2 + scaleSize.width / 2
+        overlayPanel.position = getSpritePositionAbsolute(at: position).overlay
         overlayPanel.color = fadeIn ? .black : GameboardSprite.dayThemeSpriteColor
         overlayPanel.colorBlendFactor = fadeIn ? 1 : GameboardSprite.dayThemeSpriteShade
         overlayPanel.zPosition = K.ZPosition.overlay
@@ -287,7 +299,7 @@ class GameboardSprite {
         
         let overlayPanel = SKSpriteNode(imageNamed: itemOverlay.description + AgeOfRuin.ruinSuffix)
         overlayPanel.scale(to: .zero)
-        overlayPanel.position = getSpritePosition(at: position) + GameboardSprite.padding / 2 + scaleSize.width / 2
+        overlayPanel.position = getSpritePositionAbsolute(at: position).overlay
         overlayPanel.zPosition = itemOverlay == .warp4 ? K.ZPosition.itemsAndEffects - 10 : K.ZPosition.overlay
         overlayPanel.name = GameboardSprite.getNodeName(row: position.row, col: position.col, includeOverlayTag: true)
 
@@ -405,7 +417,7 @@ class GameboardSprite {
         
         let overlayPanel = SKSpriteNode(imageNamed: LevelType.endOpen.description + AgeOfRuin.ruinSuffix)
         overlayPanel.scale(to: scaleSize)
-        overlayPanel.position = getSpritePosition(at: endPanel) + GameboardSprite.padding / 2
+        overlayPanel.position = getSpritePositionAbsolute(at: endPanel).terrain
         overlayPanel.anchorPoint = .zero
         overlayPanel.zPosition = K.ZPosition.overlay
         overlayPanel.name = "captureEndOpen"
@@ -490,7 +502,7 @@ class GameboardSprite {
         
         let overlayPanel = SKSpriteNode(imageNamed: LevelType.endOpen.description + AgeOfRuin.ruinSuffix)
         overlayPanel.scale(to: scaleSize)
-        overlayPanel.position = getSpritePosition(at: endPanel) + GameboardSprite.padding / 2
+        overlayPanel.position = getSpritePositionAbsolute(at: endPanel).terrain
         overlayPanel.anchorPoint = .zero
         overlayPanel.color = GameboardSprite.dayThemeSpriteColor
         overlayPanel.colorBlendFactor = GameboardSprite.dayThemeSpriteShade
@@ -1118,7 +1130,7 @@ class GameboardSprite {
         //Daemon the Destroyer
         let statue5 = SKSpriteNode(imageNamed: "statue5")
         statue5.scale(to: scaleSize)
-        statue5.position = getSpritePosition(at: position) + GameboardSprite.padding / 2 + scaleSize.width / 2
+        statue5.position = getSpritePositionAbsolute(at: position).overlay
         statue5.zPosition = K.ZPosition.overlay + 200
         statue5.name = "DaemonTheDestroyer"
         
@@ -1131,7 +1143,7 @@ class GameboardSprite {
      */
     func spawnMagmoorMinion(at position: K.GameboardPosition) {
         let panelCount: Int = 9
-        let positionFinal = getSpritePosition(at: (row: position.row + 1, col: position.col - 1)) + GameboardSprite.padding / 2 + scaleSize.width / 2
+        let positionFinal = getSpritePositionAbsolute(at: (row: position.row + 1, col: position.col - 1)).overlay
         let chatDelay: TimeInterval = 8
         let statue5bAnimateDuration: TimeInterval = 5
         let terrainAppearDuration: TimeInterval = 0.25

@@ -367,8 +367,6 @@ class FinalBattle2Engine {
     }
     
     private func showDamagePanel(at position: K.GameboardPosition, color: UIColor = .red, isPoison: Bool = false, withExplosion: Bool) {
-        guard let originalTerrain = gameboard.getPanelSprite(at: position).terrain else { return }
-        
         let waitDuration: TimeInterval = isPoison ? 6.75 : 0.75
         let pulseDuration: TimeInterval = 0.1
         let shakeAction: SKAction = isPoison ? SKAction.sequence([
@@ -383,17 +381,20 @@ class FinalBattle2Engine {
         ]) : SKAction.fadeOut(withDuration: 1)
         
         let damagePanel = SKSpriteNode(imageNamed: "water")
+        damagePanel.position = gameboard.getSpritePositionAbsolute(at: position).terrain
+        damagePanel.scale(to: gameboard.scaleSize)
         damagePanel.anchorPoint = .zero
         damagePanel.color = color
         damagePanel.colorBlendFactor = 1
         damagePanel.alpha = 0
-        damagePanel.zPosition = 6
+        damagePanel.zPosition = K.ZPosition.terrain + 6
         
         if isPoison {
             damagePanel.name = FinalBattle2Spawner.poisonPanelName
         }
         
-        originalTerrain.addChild(damagePanel)
+        //Need to add to the gameboard instead of the terrain in case the terrain's speed = 0 in the Platform stage.
+        gameboard.sprite.addChild(damagePanel)
         
         damagePanel.run(SKAction.sequence([
             SKAction.fadeIn(withDuration: 0.25),
