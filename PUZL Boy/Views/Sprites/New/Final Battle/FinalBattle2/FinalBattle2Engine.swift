@@ -47,6 +47,9 @@ class FinalBattle2Engine {
     }
     
     deinit {
+        //Don't forget to reset platform!!!
+        FinalBattle2Spawner.isPlatformOn = false
+        
         print("FinalBattle2Engine deinit")
     }
     

@@ -223,7 +223,7 @@ class MagmoorAttacks {
     // MARK: - Magmoor Duplicate Functions
     
     func explodeDuplicate(at position: K.GameboardPosition, completion: @escaping (Bool) -> Void) {
-        guard let duplicate = gameboard.sprite.childNode(withName: MagmoorDuplicate.getNodeName(at: position)) as? MagmoorDuplicate else { return }
+        guard let duplicate = MagmoorDuplicate.checkForDuplicateAt(position: position, on: gameboard) else { return }
         
         let fadeDuration: TimeInterval = 1
         
@@ -240,8 +240,8 @@ class MagmoorAttacks {
     }
     
     // FIXME: - How to tie position with one of the standing duplicates???
-    func duplicateAttack(at position: K.GameboardPosition, playerPosition: K.GameboardPosition) {
-        guard let duplicate = gameboard.sprite.childNode(withName: MagmoorDuplicate.getNodeName(at: position)) as? MagmoorDuplicate else { return }
+    func duplicateAttack(from position: K.GameboardPosition, playerPosition: K.GameboardPosition) {
+        guard let duplicate = MagmoorDuplicate.checkForDuplicateAt(position: position, on: gameboard) else { return }
         
         duplicate.attack(playerPosition: playerPosition)
     }
@@ -289,8 +289,8 @@ class MagmoorAttacks {
         villain.sprite.run(SKAction.fadeOut(withDuration: 1))
         delegateAttacks?.didVillainAttack(pattern: .duplicates, position: positions.villain)
         
-        for _ in 0..<count {
-            let duplicate = MagmoorDuplicate(on: gameboard, modelAfter: villain)
+        for i in 0..<count {
+            let duplicate = MagmoorDuplicate(on: gameboard, index: i, modelAfter: villain)
             duplicate.animate(with: positions)
             duplicate.delegateDuplicate = self
         }

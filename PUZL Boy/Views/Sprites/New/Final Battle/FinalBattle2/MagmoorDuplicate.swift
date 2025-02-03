@@ -19,7 +19,7 @@ class MagmoorDuplicate: SKNode {
     
     private var gameboard: GameboardSprite
     private var duplicate: Player!
-    private var duplicatePosition: K.GameboardPosition!
+    private(set) var duplicatePosition: K.GameboardPosition?
     private var duplicateAttacks: MagmoorAttacks!
     private var attackTimer: Timer!
     
@@ -28,11 +28,12 @@ class MagmoorDuplicate: SKNode {
     
     // MARK: - Initialization
     
-    init(on gameboard: GameboardSprite, modelAfter villain: Player) {
+    init(on gameboard: GameboardSprite, index: Int, modelAfter villain: Player) {
         self.gameboard = gameboard
         
         super.init()
         
+        self.name = MagmoorDuplicate.getNodeName(at: index)
         setupSprites(modelAfter: villain)
         layoutSprites()
     }
@@ -69,12 +70,12 @@ class MagmoorDuplicate: SKNode {
     // MARK: - Static Functions
     
     /**
-     Gets the duplicate node name with the given position.
-     - parameter position: the gameboard position for which to buiild the name.
-     - returns: the String containing the duplicate prefix and position row, col.
+     Gets the duplicate node name at the given index.
+     - parameter index: the index for which to buiild the name.
+     - returns: the String containing the duplicate prefix and index.
      */
-    static func getNodeName(at position: K.GameboardPosition) -> String {
-        return "\(MagmoorDuplicate.duplicateNamePrefix)\(position.row)\(GameboardSprite.delimiter)\(position.col)"
+    static func getNodeName(at index: Int) -> String {
+        return "\(MagmoorDuplicate.duplicateNamePrefix)\(index)"
     }
     
     /**
@@ -93,6 +94,21 @@ class MagmoorDuplicate: SKNode {
         return false
     }
     
+    /**
+     Returns the Magmoor duplicate, if it exists at the given position on the gameboard.
+     - parameters:
+        - position: position to check for existing duplicate
+        - gameboard: the gameboard sprite on which to check
+     - returns: either the duplicate if found, or nil.
+     */
+    static func checkForDuplicateAt(position: K.GameboardPosition, on gameboard: GameboardSprite) -> MagmoorDuplicate? {
+        let possibleDuplicates = gameboard.sprite.children.filter { $0.name != nil && $0.name!.hasPrefix(MagmoorDuplicate.duplicateNamePrefix) }
+        
+        guard let magmoorDuplicates = possibleDuplicates as? [MagmoorDuplicate] else { return nil }
+        
+        return magmoorDuplicates.filter { $0.duplicatePosition != nil && $0.duplicatePosition! == position }.first
+    }
+    
     
     // MARK: - Animation Functions
     
@@ -102,29 +118,24 @@ class MagmoorDuplicate: SKNode {
      */
     func animate(with positions: FinalBattle2Controls.PlayerPositions) {
         duplicatePosition = generateRandomPosition(checkingAgainst: positions)
-        let randomPoint = gameboard.getLocation(at: duplicatePosition)
-        let nodeName = MagmoorDuplicate.getNodeName(at: duplicatePosition)
+        let duplicatePoint = gameboard.getLocation(at: duplicatePosition!)
         
         //Flips the duplicate to face player
-        duplicate.sprite.xScale = (duplicatePosition.col <= positions.player.col ? 1 : -1) * abs(duplicate.sprite.xScale)
+        duplicate.sprite.xScale = (duplicatePosition!.col <= positions.player.col ? 1 : -1) * abs(duplicate.sprite.xScale)
         
-        // FIXME: - Not sure if I want to have name dependent on it's original gameboard position???
-        //Don't forget to set the node name on the base object itself! (not duplicate.sprite)
-        self.name = nodeName
-                
         duplicate.sprite.run(Player.animateIdleLevitate(player: duplicate))
         duplicate.sprite.run(SKAction.sequence([
             Player.moveWithIllusions(playerNode: duplicate.sprite,
                                      backgroundNode: gameboard.sprite,
-                                     tag: nodeName,
+                                     tag: self.name ?? MagmoorDuplicate.getNodeName(at: -1),
                                      color: .red.darkenColor(factor: 12),
                                      playSound: false,
                                      fierce: true,
                                      startPoint: duplicate.sprite.position,
-                                     endPoint: randomPoint,
+                                     endPoint: duplicatePoint,
                                      startScale: 1,
                                      endScale: 1),
-            SKAction.move(to: randomPoint, duration: 0),
+            SKAction.move(to: duplicatePoint, duration: 0),
             SKAction.fadeIn(withDuration: 0)
         ]))
         
@@ -136,6 +147,8 @@ class MagmoorDuplicate: SKNode {
     
     // FIXME: - Build out...
     func attack(playerPosition: K.GameboardPosition) {
+        guard let duplicatePosition = duplicatePosition else { return }
+        
         duplicateAttacks.attack(pattern: .normal, playSFX: false, positions: (player: playerPosition, villain: duplicatePosition))
     }
     
@@ -179,12 +192,10 @@ class MagmoorDuplicate: SKNode {
      */
     private func generateRandomPosition(checkingAgainst positions: FinalBattle2Controls.PlayerPositions) -> K.GameboardPosition {
         var positionNew: K.GameboardPosition
-        var possibleDuplicate: MagmoorDuplicate?
         
         repeat {
             positionNew = (row: Int.random(in: 0..<gameboard.panelCount), col: Int.random(in: 0..<gameboard.panelCount))
-            possibleDuplicate = gameboard.sprite.childNode(withName: MagmoorDuplicate.getNodeName(at: positionNew)) as? MagmoorDuplicate
-        } while positionNew == FinalBattle2Spawner.startPosition || positionNew == FinalBattle2Spawner.endPosition || positionNew == positions.player || positionNew == positions.villain || possibleDuplicate != nil
+        } while positionNew == FinalBattle2Spawner.startPosition || positionNew == FinalBattle2Spawner.endPosition || positionNew == positions.player || positionNew == positions.villain || MagmoorDuplicate.checkForDuplicateAt(position: positionNew, on: gameboard) != nil
         
         return positionNew
     }
