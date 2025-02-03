@@ -504,8 +504,6 @@ extension FinalBattle2Engine: FinalBattle2ControlsDelegate {
         if playerPosition == controls.positions.player {
             health.updateHealth(type: .villainAttackNormal, dmgMultiplier: chosenSword.defenseRating)
         }
-        
-        print("FinalBattle2Engine.didDuplicateAttack() [FinalBattle2ControlsDelegate] called.")
     }
     
     func didVillainAttackBecomeVisible() {

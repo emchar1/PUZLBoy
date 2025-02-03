@@ -10,6 +10,7 @@ import SpriteKit
 protocol MagmoorAttacksDelegate: AnyObject {
     func didVillainAttack(pattern: MagmoorAttacks.AttackPattern, position: K.GameboardPosition)
     func didDuplicateAttack(playerPosition: K.GameboardPosition)
+    func didDuplicateTimerFire(duplicate: MagmoorDuplicate)
 }
 
 class MagmoorAttacks {
@@ -305,7 +306,11 @@ class MagmoorAttacks {
 extension MagmoorAttacks: MagmoorDuplicateDelegate {
     func didDuplicateAttack(playerPosition: K.GameboardPosition) {
         delegateAttacks?.didDuplicateAttack(playerPosition: playerPosition)
-        
-        print("MagmoorAttacks.didDuplicateAttack() [MagmoorDuplicateDelegate] called.")
     }
+    
+    func didAttackTimerFire(duplicate: MagmoorDuplicate) {
+        delegateAttacks?.didDuplicateTimerFire(duplicate: duplicate)
+    }
+    
+    
 }

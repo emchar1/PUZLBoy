@@ -594,8 +594,10 @@ extension FinalBattle2Controls: MagmoorAttacksDelegate {
     
     func didDuplicateAttack(playerPosition: K.GameboardPosition) {
         delegateControls?.didDuplicateAttack(chosenSword: chosenSword, playerPosition: playerPosition)
-
-        print("FinalBattle2Controls.didDuplicateAttack() [MagmoorAttacksDelegate] called.")
+    }
+    
+    func didDuplicateTimerFire(duplicate: MagmoorDuplicate) {
+        duplicate.attack(playerPosition: positions.player)
     }
     
     private func didVillainFreeze(position: K.GameboardPosition) {

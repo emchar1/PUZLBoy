@@ -9,6 +9,7 @@ import SpriteKit
 
 protocol MagmoorDuplicateDelegate: AnyObject {
     func didDuplicateAttack(playerPosition: K.GameboardPosition)
+    func didAttackTimerFire(duplicate: MagmoorDuplicate)
 }
 
 class MagmoorDuplicate: SKNode {
@@ -57,13 +58,21 @@ class MagmoorDuplicate: SKNode {
         duplicateAttacks = MagmoorAttacks(gameboard: gameboard, villain: duplicate)
         duplicateAttacks.delegateAttacks = self
         
-        attackTimer = Timer()
+        attackTimer = Timer.scheduledTimer(timeInterval: TimeInterval.random(in: 2...12),
+                                           target: self,
+                                           selector: #selector(attackTimerFire(_:)),
+                                           userInfo: nil,
+                                           repeats: true)
     }
     
     private func layoutSprites() {
         gameboard.sprite.addChild(self)
         
         self.addChild(duplicate.sprite)
+    }
+    
+    @objc private func attackTimerFire(_ sender: Any) {
+        delegateDuplicate?.didAttackTimerFire(duplicate: self)
     }
     
     
@@ -120,8 +129,7 @@ class MagmoorDuplicate: SKNode {
         duplicatePosition = generateRandomPosition(checkingAgainst: positions)
         let duplicatePoint = gameboard.getLocation(at: duplicatePosition!)
         
-        //Flips the duplicate to face player
-        duplicate.sprite.xScale = (duplicatePosition!.col <= positions.player.col ? 1 : -1) * abs(duplicate.sprite.xScale)
+        facePlayer(playerPosition: positions.player)
         
         duplicate.sprite.run(Player.animateIdleLevitate(player: duplicate))
         duplicate.sprite.run(SKAction.sequence([
@@ -145,11 +153,11 @@ class MagmoorDuplicate: SKNode {
                                                duration: 0)
     }
     
-    // FIXME: - Build out...
     func attack(playerPosition: K.GameboardPosition) {
         guard let duplicatePosition = duplicatePosition else { return }
         
-        duplicateAttacks.attack(pattern: .normal, playSFX: false, positions: (player: playerPosition, villain: duplicatePosition))
+        facePlayer(playerPosition: playerPosition)
+        duplicateAttacks.attack(pattern: .normal, positions: (player: playerPosition, villain: duplicatePosition))
     }
     
     /**
@@ -161,6 +169,8 @@ class MagmoorDuplicate: SKNode {
     func explode(completion: @escaping () -> Void) {
         let waitDuration: TimeInterval = 0.25
         let fadeDuration: TimeInterval = 0.25
+        
+        attackTimer.invalidate()
         
         run(SKAction.sequence([
             SKAction.wait(forDuration: waitDuration),
@@ -200,6 +210,13 @@ class MagmoorDuplicate: SKNode {
         return positionNew
     }
     
+    ///Flips the duplicate to face player
+    private func facePlayer(playerPosition: K.GameboardPosition) {
+        guard let duplicatePosition = duplicatePosition else { return }
+        
+        duplicate.sprite.xScale = (duplicatePosition.col <= playerPosition.col ? 1 : -1) * abs(duplicate.sprite.xScale)
+    }
+    
     
 }
 
@@ -209,12 +226,14 @@ class MagmoorDuplicate: SKNode {
 extension MagmoorDuplicate: MagmoorAttacksDelegate {
     func didVillainAttack(pattern: MagmoorAttacks.AttackPattern, position: K.GameboardPosition) {
         delegateDuplicate?.didDuplicateAttack(playerPosition: position)
-        
-        print("MagmoorDuplicate.didVillainAttack() [MagmoorAttacksDelegate] called.")
     }
     
     func didDuplicateAttack(playerPosition: K.GameboardPosition) {
-        print("MagmoorDuplicate.didDuplicateAttack() [MagmoorAttacksDelegate] called. This func should never be called (theoretically). If you see this message, something has gone wrong.")
+        fatalError("MagmoorDuplicate.didDuplicateAttack() [MagmoorAttacksDelegate] called. This func should never be called (theoretically). If you see this message, something has gone wrong.")
+    }
+    
+    func didDuplicateTimerFire(duplicate: MagmoorDuplicate) {
+        fatalError("MagmoorDuplicate.didDuplicateTimerFire() [MagmoorAttacksDelegate] called. This func should never be called (theoretically). If you see this message, something has gone wrong.")
     }
     
     
