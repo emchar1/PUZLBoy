@@ -9,6 +9,7 @@ import SpriteKit
 
 protocol MagmoorAttacksDelegate: AnyObject {
     func didVillainAttack(pattern: MagmoorAttacks.AttackPattern, position: K.GameboardPosition)
+    func didDuplicateAttack(playerPosition: K.GameboardPosition)
 }
 
 class MagmoorAttacks {
@@ -33,7 +34,7 @@ class MagmoorAttacks {
         case normal, freeze, poison, timed, timedLarge, duplicates
     }
     
-    weak var delegate: MagmoorAttacksDelegate?
+    weak var delegateAttacks: MagmoorAttacksDelegate?
     
     
     // MARK: - Initialization
@@ -237,7 +238,14 @@ class MagmoorAttacks {
             completion(self.villainIsVisible)
         }
     }
-
+    
+    // FIXME: - How to tie position with one of the standing duplicates???
+    func duplicateAttack(at position: K.GameboardPosition, playerPosition: K.GameboardPosition) {
+        guard let duplicate = gameboard.sprite.childNode(withName: MagmoorDuplicate.getNodeName(at: position)) as? MagmoorDuplicate else { return }
+        
+        duplicate.attack(playerPosition: playerPosition)
+    }
+    
     
     // MARK: - Attack Helper Functions
     
@@ -253,7 +261,7 @@ class MagmoorAttacks {
         fireball.playFireballAudio()
         
         fireball.launchFireball(facingDirection: villainDirection) { [weak self] in
-            self?.delegate?.didVillainAttack(pattern: pattern, position: positions.player)
+            self?.delegateAttacks?.didVillainAttack(pattern: pattern, position: positions.player)
         }
     }
     
@@ -267,7 +275,7 @@ class MagmoorAttacks {
             bomb.zPosition = K.ZPosition.player - 10
             
             bomb.launchTimed(facingDirection: villainDirection, canPlaySound: i == 0) { [weak self] randomPosition in
-                self?.delegate?.didVillainAttack(pattern: isLarge ? .timedLarge : .timed, position: randomPosition)
+                self?.delegateAttacks?.didVillainAttack(pattern: isLarge ? .timedLarge : .timed, position: randomPosition)
             }
         }
     }
@@ -279,13 +287,25 @@ class MagmoorAttacks {
         villainIsVisible = false
         
         villain.sprite.run(SKAction.fadeOut(withDuration: 1))
-        delegate?.didVillainAttack(pattern: .duplicates, position: positions.villain)
+        delegateAttacks?.didVillainAttack(pattern: .duplicates, position: positions.villain)
         
         for _ in 0..<count {
             let duplicate = MagmoorDuplicate(on: gameboard, modelAfter: villain)
             duplicate.animate(with: positions)
+            duplicate.delegateDuplicate = self
         }
     }
     
     
+}
+
+
+// MARK: - MagmoorDuplicateDelegate
+
+extension MagmoorAttacks: MagmoorDuplicateDelegate {
+    func didDuplicateAttack(playerPosition: K.GameboardPosition) {
+        delegateAttacks?.didDuplicateAttack(playerPosition: playerPosition)
+        
+        print("MagmoorAttacks.didDuplicateAttack() [MagmoorDuplicateDelegate] called.")
+    }
 }

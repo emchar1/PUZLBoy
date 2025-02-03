@@ -114,7 +114,7 @@ class FinalBattle2Engine {
                                         player: hero,
                                         villain: villain,
                                         positions: (player: FinalBattle2Spawner.startPosition, villain: FinalBattle2Spawner.endPosition))
-        controls.delegate = self
+        controls.delegateControls = self
         
         for i in 0..<panelSpawnerCount {
             panelSpawner.append(FinalBattle2Spawner(gameboard: gameboard))
@@ -492,6 +492,16 @@ extension FinalBattle2Engine: FinalBattle2ControlsDelegate {
                 panelSpawner[i].showPlatform(shouldShow: true, positions: controls.positions)
             }
         }
+    }
+    
+    func didDuplicateAttack(chosenSword: ChosenSword, playerPosition: K.GameboardPosition) {
+        showDamagePanel(at: playerPosition, color: .red, isPoison: false, withExplosion: false)
+        
+        if playerPosition == controls.positions.player {
+            health.updateHealth(type: .villainAttackNormal, dmgMultiplier: chosenSword.defenseRating)
+        }
+        
+        print("FinalBattle2Engine.didDuplicateAttack() [FinalBattle2ControlsDelegate] called.")
     }
     
     func didVillainAttackBecomeVisible() {

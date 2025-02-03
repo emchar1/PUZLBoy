@@ -13,6 +13,7 @@ protocol FinalBattle2ControlsDelegate: AnyObject {
     func willVillainReappear()
     func didVillainFlee(didReappear: Bool)
     func didVillainAttack(pattern: MagmoorAttacks.AttackPattern, chosenSword: ChosenSword, position: K.GameboardPosition)
+    func didDuplicateAttack(chosenSword: ChosenSword, playerPosition: K.GameboardPosition)
     func didVillainAttackBecomeVisible()
     func handleShield(willDamage: Bool, didDamage: Bool, willBreak: Bool, didBreak: Bool, fadeDuration: TimeInterval?, chosenSword: ChosenSword, villainPosition: K.GameboardPosition?)
 }
@@ -50,7 +51,7 @@ class FinalBattle2Controls {
     private var magmoorAttacks: MagmoorAttacks!
     private(set) var magmoorShield: MagmoorShield!
     
-    weak var delegate: FinalBattle2ControlsDelegate?
+    weak var delegateControls: FinalBattle2ControlsDelegate?
     
     
     // MARK: - Initialization
@@ -76,7 +77,7 @@ class FinalBattle2Controls {
         magmoorShield = MagmoorShield(hitPoints: 0)
         
         //These need to come AFTER initializing their respective objects!
-        magmoorAttacks.delegate = self
+        magmoorAttacks.delegateAttacks = self
         magmoorShield.delegate = self
         
         setTimerFirstTime()
@@ -292,7 +293,7 @@ class FinalBattle2Controls {
                 
                 generateVillainPositionNew(enrage: false)
                 moveVillainFlee(shouldDisappear: true, completion: nil)
-                delegate?.didHeroAttack(chosenSword: chosenSword)
+                delegateControls?.didHeroAttack(chosenSword: chosenSword)
                 AudioManager.shared.playSound(for: "villainpain3")
             }
         }
@@ -326,7 +327,7 @@ class FinalBattle2Controls {
                 
                 guard villainIsVisible else { return }
                 
-                self.delegate?.didVillainAttackBecomeVisible()
+                self.delegateControls?.didVillainAttackBecomeVisible()
                 self.resetTimer(forceDelay: nil)
             }
         }
@@ -503,7 +504,7 @@ class FinalBattle2Controls {
             },
             SKAction.wait(forDuration: waitDuration),
             SKAction.run { [weak self] in
-                self?.delegate?.willVillainReappear()
+                self?.delegateControls?.willVillainReappear()
                 AudioManager.shared.stopSound(for: "magicheartbeatloop1", fadeDuration: 1)
             }
         ])
@@ -542,7 +543,7 @@ class FinalBattle2Controls {
                 magmoorShield.resetShield(villain: villain)
                 
                 //IMPORTANT!! Must come after resetShield()!! (But before resetTimer())
-                delegate?.didVillainFlee(didReappear: true)
+                delegateControls?.didVillainFlee(didReappear: true)
                 
                 let attackPattern = MagmoorAttacks.getAttackPattern(enrage: false, level: magmoorShield.resetCount, isFeatured: true)
                 magmoorAttacks.attack(pattern: attackPattern, positions: positions)
@@ -551,7 +552,7 @@ class FinalBattle2Controls {
                 resetTimer(forceDelay: nil) //call AFTER resetShield()!!
             }
             else {
-                delegate?.didVillainFlee(didReappear: false)
+                delegateControls?.didVillainFlee(didReappear: false)
                 
                 generateVillainPositionNew(enrage: magmoorShield.isEnraged)
                 resetTimer(forceDelay: nil)
@@ -565,7 +566,7 @@ class FinalBattle2Controls {
         positions.villain = villainPositionNew
         
         if shouldDisappear {
-            delegate?.didVillainDisappear(fadeDuration: fadeDuration)
+            delegateControls?.didVillainDisappear(fadeDuration: fadeDuration)
             AudioManager.shared.playSound(for: "magicheartbeatloop1", fadeIn: fadeDuration)
             AudioManager.shared.playSound(for: "magicwarp")
             AudioManager.shared.playSound(for: "magicwarp2")
@@ -585,11 +586,17 @@ class FinalBattle2Controls {
 
 extension FinalBattle2Controls: MagmoorAttacksDelegate {
     func didVillainAttack(pattern: MagmoorAttacks.AttackPattern, position: K.GameboardPosition) {
-        delegate?.didVillainAttack(pattern: pattern, chosenSword: chosenSword, position: position)
+        delegateControls?.didVillainAttack(pattern: pattern, chosenSword: chosenSword, position: position)
         
         if pattern == .freeze {
             didVillainFreeze(position: position)
         }
+    }
+    
+    func didDuplicateAttack(playerPosition: K.GameboardPosition) {
+        delegateControls?.didDuplicateAttack(chosenSword: chosenSword, playerPosition: playerPosition)
+
+        print("FinalBattle2Controls.didDuplicateAttack() [MagmoorAttacksDelegate] called.")
     }
     
     private func didVillainFreeze(position: K.GameboardPosition) {
@@ -627,19 +634,19 @@ extension FinalBattle2Controls: MagmoorAttacksDelegate {
 
 extension FinalBattle2Controls: MagmoorShieldDelegate {
     func willDamageShield() {
-        delegate?.handleShield(willDamage: true, didDamage: false, willBreak: false, didBreak: false, fadeDuration: nil, chosenSword: chosenSword, villainPosition: nil)
+        delegateControls?.handleShield(willDamage: true, didDamage: false, willBreak: false, didBreak: false, fadeDuration: nil, chosenSword: chosenSword, villainPosition: nil)
     }
     
     func didDamageShield() {
-        delegate?.handleShield(willDamage: false, didDamage: true, willBreak: false, didBreak: false, fadeDuration: nil, chosenSword: chosenSword, villainPosition: nil)
+        delegateControls?.handleShield(willDamage: false, didDamage: true, willBreak: false, didBreak: false, fadeDuration: nil, chosenSword: chosenSword, villainPosition: nil)
     }
     
     func willBreakShield(fadeDuration: TimeInterval) {
-        delegate?.handleShield(willDamage: false, didDamage: false, willBreak: true, didBreak: false, fadeDuration: fadeDuration, chosenSword: chosenSword, villainPosition: nil)
+        delegateControls?.handleShield(willDamage: false, didDamage: false, willBreak: true, didBreak: false, fadeDuration: fadeDuration, chosenSword: chosenSword, villainPosition: nil)
     }
     
     func didBreakShield(at villainPosition: K.GameboardPosition) {
-        delegate?.handleShield(willDamage: false, didDamage: false, willBreak: false, didBreak: true, fadeDuration: nil, chosenSword: chosenSword, villainPosition: villainPosition)
+        delegateControls?.handleShield(willDamage: false, didDamage: false, willBreak: false, didBreak: true, fadeDuration: nil, chosenSword: chosenSword, villainPosition: villainPosition)
     }
     
     

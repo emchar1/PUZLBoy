@@ -7,14 +7,23 @@
 
 import SpriteKit
 
+protocol MagmoorDuplicateDelegate: AnyObject {
+    func didDuplicateAttack(playerPosition: K.GameboardPosition)
+}
+
 class MagmoorDuplicate: SKNode {
     
     // MARK: - Properties
     
     static let duplicateNamePrefix: String = "duplicateMagmoor"
     
-    private var duplicate: Player!
     private var gameboard: GameboardSprite
+    private var duplicate: Player!
+    private var duplicatePosition: K.GameboardPosition!
+    private var duplicateAttacks: MagmoorAttacks!
+    private var attackTimer: Timer!
+    
+    weak var delegateDuplicate: MagmoorDuplicateDelegate?
     
     
     // MARK: - Initialization
@@ -43,6 +52,11 @@ class MagmoorDuplicate: SKNode {
         duplicate.sprite.yScale = villain.sprite.yScale
         duplicate.sprite.alpha = 0
         duplicate.sprite.zPosition = K.ZPosition.player + 2
+        
+        duplicateAttacks = MagmoorAttacks(gameboard: gameboard, villain: duplicate)
+        duplicateAttacks.delegateAttacks = self
+        
+        attackTimer = Timer()
     }
     
     private func layoutSprites() {
@@ -87,12 +101,12 @@ class MagmoorDuplicate: SKNode {
      - parameter positions: PlayerPositions for which duplicates operates on.
      */
     func animate(with positions: FinalBattle2Controls.PlayerPositions) {
-        let randomPosition = generateRandomPosition(checkingAgainst: positions)
-        let randomPoint = gameboard.getLocation(at: randomPosition)
-        let nodeName = MagmoorDuplicate.getNodeName(at: randomPosition)
+        duplicatePosition = generateRandomPosition(checkingAgainst: positions)
+        let randomPoint = gameboard.getLocation(at: duplicatePosition)
+        let nodeName = MagmoorDuplicate.getNodeName(at: duplicatePosition)
         
         //Flips the duplicate to face player
-        duplicate.sprite.xScale = (randomPosition.col <= positions.player.col ? 1 : -1) * abs(duplicate.sprite.xScale)
+        duplicate.sprite.xScale = (duplicatePosition.col <= positions.player.col ? 1 : -1) * abs(duplicate.sprite.xScale)
         
         // FIXME: - Not sure if I want to have name dependent on it's original gameboard position???
         //Don't forget to set the node name on the base object itself! (not duplicate.sprite)
@@ -118,6 +132,11 @@ class MagmoorDuplicate: SKNode {
                                                toNode: duplicate.sprite,
                                                position: .zero,
                                                duration: 0)
+    }
+    
+    // FIXME: - Build out...
+    func attack(playerPosition: K.GameboardPosition) {
+        duplicateAttacks.attack(pattern: .normal, playSFX: false, positions: (player: playerPosition, villain: duplicatePosition))
     }
     
     /**
@@ -168,6 +187,23 @@ class MagmoorDuplicate: SKNode {
         } while positionNew == FinalBattle2Spawner.startPosition || positionNew == FinalBattle2Spawner.endPosition || positionNew == positions.player || positionNew == positions.villain || possibleDuplicate != nil
         
         return positionNew
+    }
+    
+    
+}
+
+
+// MARK: - MagmoorAttacksDelegate
+
+extension MagmoorDuplicate: MagmoorAttacksDelegate {
+    func didVillainAttack(pattern: MagmoorAttacks.AttackPattern, position: K.GameboardPosition) {
+        delegateDuplicate?.didDuplicateAttack(playerPosition: position)
+        
+        print("MagmoorDuplicate.didVillainAttack() [MagmoorAttacksDelegate] called.")
+    }
+    
+    func didDuplicateAttack(playerPosition: K.GameboardPosition) {
+        print("MagmoorDuplicate.didDuplicateAttack() [MagmoorAttacksDelegate] called. This func should never be called (theoretically). If you see this message, something has gone wrong.")
     }
     
     
