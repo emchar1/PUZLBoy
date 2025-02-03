@@ -23,6 +23,7 @@ class MagmoorDuplicate: SKNode {
     private var duplicatePosition: K.GameboardPosition?
     private var duplicateAttacks: MagmoorAttacks!
     private var attackTimer: Timer!
+    private var attackTimerInterval: TimeInterval = 6
     
     weak var delegateDuplicate: MagmoorDuplicateDelegate?
     
@@ -58,7 +59,7 @@ class MagmoorDuplicate: SKNode {
         duplicateAttacks = MagmoorAttacks(gameboard: gameboard, villain: duplicate)
         duplicateAttacks.delegateAttacks = self
         
-        attackTimer = Timer.scheduledTimer(timeInterval: TimeInterval.random(in: 2...12),
+        attackTimer = Timer.scheduledTimer(timeInterval: attackTimerInterval,
                                            target: self,
                                            selector: #selector(attackTimerFire(_:)),
                                            userInfo: nil,
@@ -90,17 +91,12 @@ class MagmoorDuplicate: SKNode {
     /**
      Checks if gameboard has a duplicate anywhere on its board.
      - parameter gameboard: the gameboard sprite on which to check
-     - returns: true if so
-     - note: yes, you're passing in gameboard here again, even though you initialize it with the object, but because this is a static function, you can't check against the local variable gameboard.
+     - returns: count of duplicates, 0 if none found
      */
-    static func checkIfDuplicatesExist(on gameboard: GameboardSprite) -> Bool {
-        for node in gameboard.sprite.children {
-            guard let name = node.name, name.hasPrefix(MagmoorDuplicate.duplicateNamePrefix) else { continue }
-            
-            return true
-        }
+    static func getDuplicatesCount(on gameboard: GameboardSprite) -> Int {
+        guard let magmoorDuplicates = getMagmoorDuplicates(on: gameboard) else { return 0 }
         
-        return false
+        return magmoorDuplicates.count
     }
     
     /**
@@ -110,12 +106,22 @@ class MagmoorDuplicate: SKNode {
         - gameboard: the gameboard sprite on which to check
      - returns: either the duplicate if found, or nil.
      */
-    static func checkForDuplicateAt(position: K.GameboardPosition, on gameboard: GameboardSprite) -> MagmoorDuplicate? {
-        let possibleDuplicates = gameboard.sprite.children.filter { $0.name != nil && $0.name!.hasPrefix(MagmoorDuplicate.duplicateNamePrefix) }
-        
-        guard let magmoorDuplicates = possibleDuplicates as? [MagmoorDuplicate] else { return nil }
+    static func getDuplicateAt(position: K.GameboardPosition, on gameboard: GameboardSprite) -> MagmoorDuplicate? {
+        guard let magmoorDuplicates = getMagmoorDuplicates(on: gameboard) else { return nil }
         
         return magmoorDuplicates.filter { $0.duplicatePosition != nil && $0.duplicatePosition! == position }.first
+    }
+    
+    /**
+     Helper function that gets all the Magmoor duplicates on the gameboard, if they exist.
+     - parameter gameboard: the gameboard sprite on which to check
+     - returns: the list of duplicates, or nil if there are none.
+     */
+    private static func getMagmoorDuplicates(on gameboard: GameboardSprite) -> [MagmoorDuplicate]? {
+        let possibleDuplicates = gameboard.sprite.children.filter { $0.name != nil && $0.name!.hasPrefix(MagmoorDuplicate.duplicateNamePrefix) }
+        let magmoorDuplicates = possibleDuplicates as? [MagmoorDuplicate]
+        
+        return magmoorDuplicates
     }
     
     
@@ -205,7 +211,7 @@ class MagmoorDuplicate: SKNode {
         
         repeat {
             positionNew = (row: Int.random(in: 0..<gameboard.panelCount), col: Int.random(in: 0..<gameboard.panelCount))
-        } while positionNew == FinalBattle2Spawner.startPosition || positionNew == FinalBattle2Spawner.endPosition || positionNew == positions.player || positionNew == positions.villain || MagmoorDuplicate.checkForDuplicateAt(position: positionNew, on: gameboard) != nil
+        } while positionNew == FinalBattle2Spawner.startPosition || positionNew == FinalBattle2Spawner.endPosition || positionNew == positions.player || positionNew == positions.villain || MagmoorDuplicate.getDuplicateAt(position: positionNew, on: gameboard) != nil
         
         return positionNew
     }

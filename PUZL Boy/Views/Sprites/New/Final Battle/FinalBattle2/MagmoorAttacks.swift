@@ -224,14 +224,14 @@ class MagmoorAttacks {
     // MARK: - Magmoor Duplicate Functions
     
     func explodeDuplicate(at position: K.GameboardPosition, completion: @escaping (Bool) -> Void) {
-        guard let duplicate = MagmoorDuplicate.checkForDuplicateAt(position: position, on: gameboard) else { return }
+        guard let duplicate = MagmoorDuplicate.getDuplicateAt(position: position, on: gameboard) else { return }
         
         let fadeDuration: TimeInterval = 1
         
         duplicate.explode { [weak self] in
             guard let self = self else { return }
             
-            if !MagmoorDuplicate.checkIfDuplicatesExist(on: gameboard) {
+            if MagmoorDuplicate.getDuplicatesCount(on: gameboard) <= 0 {
                 villainIsVisible = true
                 villain.sprite.run(SKAction.fadeIn(withDuration: fadeDuration))
             }
@@ -242,7 +242,7 @@ class MagmoorAttacks {
     
     // FIXME: - How to tie position with one of the standing duplicates???
     func duplicateAttack(from position: K.GameboardPosition, playerPosition: K.GameboardPosition) {
-        guard let duplicate = MagmoorDuplicate.checkForDuplicateAt(position: position, on: gameboard) else { return }
+        guard let duplicate = MagmoorDuplicate.getDuplicateAt(position: position, on: gameboard) else { return }
         
         duplicate.attack(playerPosition: playerPosition)
     }

@@ -848,7 +848,7 @@ extension ChatEngine {
             ChatItem(profile: .statue1, chat: "But if it had to perish twice,\nI think I know enough of hate\nTo say that for destruction ice\nIs also great\nAnd would suffice."),
             ChatItem(profile: .hero, imgPos: .left, chat: "Robert Frost!"),
             ChatItem(profile: .statue1, chat: "No, my name is Penne. Penne the Poet."),
-            ChatItem(profile: .hero, imgPos: .left, chat: "Penne... like the pasta??"),
+            ChatItem(profile: .hero, imgPos: .left, chat: "Penne... like the pasta?? 🍝"),
             ChatItem(profile: .statue1, chat: "Penne... like the Poet!!"),
             ChatItem(profile: .hero, imgPos: .left, chat: "If you say so, PENNE.") { [weak self] in
                 guard let self = self else { return }
@@ -1241,7 +1241,7 @@ extension ChatEngine {
             
             sendChatArray(shouldSkipDim: true, items: [
                 ChatItem(profile: .statue1, chat: "Hey there PUZL Boy!"),
-                ChatItem(profile: .hero, imgPos: .left, chat: "Penne the PASTA!! What are you doing down here? Wait.. are you even real?"),
+                ChatItem(profile: .hero, imgPos: .left, chat: "Penne!! 🍝 What are you doing down here? Wait.. are you even real?"),
                 ChatItem(profile: .statue1, chat: "Of course I'm real. Touch me!"),
                 ChatItem(profile: .hero, imgPos: .left, chat: "😒"),
                 ChatItem(profile: .statue1, chat: "Hahaha! You look down in the mouth. Don't be so discouraged."),
@@ -1311,7 +1311,7 @@ extension ChatEngine {
             delegateCatwalk?.flashMagmoorCatwalk(quickFlash: false)
             
             sendChatArray(shouldSkipDim: true, items: [
-                ChatItem(profile: .blankvillain, pause: 3, startNewChat: false, chat: "\nenter if you dare! there is nothing you can do to stop what has already been put in motion...", handler: nil),
+                ChatItem(profile: .villain, pause: 3, startNewChat: false, chat: "Enter if you dare! There is nothing you can do to stop what has already been put in motion...", handler: nil),
                 ChatItem(profile: .hero, imgPos: .left, chat: "\(FIRManager.didPursueMagmoor ? "I'M NOT READY FOR THIS!!!" : "YOU'LL PAY FOR WHAT YOU DID TO MY FRIENDS!!!!!")"),
                 ChatItem(profile: .merton, imgPos: .left, chat: "Quickly boy! Through the gate! We mustn't waste anymore time!")
             ]) { [weak self] in
