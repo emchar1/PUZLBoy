@@ -9,7 +9,7 @@ import SpriteKit
 
 protocol MagmoorDuplicateDelegate: AnyObject {
     func didDuplicateAttack(pattern: MagmoorAttacks.AttackPattern, playerPosition: K.GameboardPosition)
-    func didAttackTimerFire(duplicate: MagmoorDuplicate)
+    func didDuplicateTimerFire(duplicate: MagmoorDuplicate)
 }
 
 class MagmoorDuplicate: SKNode {
@@ -22,23 +22,43 @@ class MagmoorDuplicate: SKNode {
     private var duplicate: Player!
     private var duplicatePosition: K.GameboardPosition?
     private var duplicateAttacks: MagmoorAttacks!
+    private var attackType: DuplicateAttackPattern
+    private var lastAttackPosition: K.GameboardPosition
     private var attackTimer: Timer
+    
+    enum DuplicateAttackPattern: CaseIterable {
+        case player, random, sweeping
+    }
     
     weak var delegateDuplicate: MagmoorDuplicateDelegate?
     
     
     // MARK: - Initialization
     
-    init(on gameboard: GameboardSprite, index: Int, modelAfter villain: Player) {
+    init(on gameboard: GameboardSprite, index: Int, duplicateAttackType: DuplicateAttackPattern, modelAfter villain: Player) {
         self.gameboard = gameboard
+        self.attackType = duplicateAttackType
+        self.lastAttackPosition = (0, 0)
         self.attackTimer = Timer()
         
         super.init()
         
+        let attackSpeed: TimeInterval
+        
+        switch attackType {
+        case .player:
+            attackSpeed = 5
+        case .random:
+            attackSpeed = 3
+        case .sweeping:
+            attackSpeed = 2
+        }
+        
         self.name = MagmoorDuplicate.getNodeName(at: index)
+        
         setupSprites(modelAfter: villain)
         layoutSprites()
-        setAttackTimer(speed: 2, delay: TimeInterval(index))
+        setAttackTimer(speed: attackSpeed)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -55,7 +75,7 @@ class MagmoorDuplicate: SKNode {
         duplicate.sprite.xScale = villain.sprite.xScale
         duplicate.sprite.yScale = villain.sprite.yScale
         duplicate.sprite.alpha = 0
-        duplicate.sprite.zPosition = K.ZPosition.player + 2
+        duplicate.sprite.zPosition = K.ZPosition.player + 1
         
         duplicateAttacks = MagmoorAttacks(gameboard: gameboard, villain: duplicate)
         duplicateAttacks.delegateAttacks = self
@@ -68,7 +88,7 @@ class MagmoorDuplicate: SKNode {
     }
     
     @objc private func attackTimerFire(_ sender: Any) {
-        delegateDuplicate?.didAttackTimerFire(duplicate: self)
+        delegateDuplicate?.didDuplicateTimerFire(duplicate: self)
     }
     
     
@@ -161,8 +181,28 @@ class MagmoorDuplicate: SKNode {
     func attack(playerPosition: K.GameboardPosition) {
         guard let duplicatePosition = duplicatePosition else { return }
         
-        facePlayer(playerPosition: playerPosition)
-        duplicateAttacks.attack(pattern: .normal, positions: (player: playerPosition, villain: duplicatePosition))
+        let randomAttackPattern: MagmoorAttacks.AttackPattern
+        let positionToAttack: K.GameboardPosition
+        
+        switch attackType {
+        case .player:
+            positionToAttack = playerPosition
+        case .random:
+            positionToAttack = (Int.random(in: 0..<gameboard.panelCount), Int.random(in: 0..<gameboard.panelCount))
+        case .sweeping:
+            positionToAttack = lastAttackPosition
+            advanceNextAttackPosition()
+        }
+        
+        switch Int.random(in: 1...3) {
+        case 1:     randomAttackPattern = .normal
+        case 2:     randomAttackPattern = .freeze
+        case 3:     randomAttackPattern = .poison
+        default:    randomAttackPattern = .normal
+        }
+        
+        facePlayer(playerPosition: positionToAttack)
+        duplicateAttacks.attack(pattern: .normal, playSFX: false, positions: (player: positionToAttack, villain: duplicatePosition))
     }
     
     /**
@@ -223,18 +263,27 @@ class MagmoorDuplicate: SKNode {
     }
     
     /**
-     Sets the speed and delay and fires the timer.
-     - parameters:
-        - speed: the new attackTimer interval
-        - delay: adds a delay to the interval
+     Sets and fires the attackTimer.
+     - parameter speed: the new attackTimer interval
      */
-    private func setAttackTimer(speed: TimeInterval, delay: TimeInterval?) {
+    private func setAttackTimer(speed: TimeInterval) {
         attackTimer.invalidate()
-        attackTimer = Timer.scheduledTimer(timeInterval: speed + (delay ?? 0),
+        attackTimer = Timer.scheduledTimer(timeInterval: speed,
                                            target: self,
                                            selector: #selector(attackTimerFire(_:)),
                                            userInfo: nil,
                                            repeats: true)
+    }
+    
+    private func advanceNextAttackPosition() {
+        guard lastAttackPosition.row < gameboard.panelCount - 1 || lastAttackPosition.col < gameboard.panelCount - 1 else {
+            lastAttackPosition = (0, 0)
+            return
+        }
+        
+        //Set row BEFORE setting col!
+        lastAttackPosition.row = lastAttackPosition.col >= gameboard.panelCount - 1 ? lastAttackPosition.row + 1 : lastAttackPosition.row
+        lastAttackPosition.col = lastAttackPosition.col >= gameboard.panelCount - 1 ? 0 : lastAttackPosition.col + 1
     }
     
     

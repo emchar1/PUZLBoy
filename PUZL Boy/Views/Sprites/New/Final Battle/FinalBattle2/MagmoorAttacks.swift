@@ -26,6 +26,7 @@ class MagmoorAttacks {
     private var timedCanHurtVillain: Bool
     private(set) var villainIsVisible: Bool
     
+    private let wandAnimationDelay: TimeInterval = 0.25
     private var villainDirection: CGFloat { villain.sprite.xScale > 0 ? -1 : 1 }
     private var fireballPosition: CGPoint {
         villain.sprite.position + CGPoint(x: Player.mysticWandOrigin.x * villainDirection, y: Player.mysticWandOrigin.y)
@@ -147,23 +148,41 @@ class MagmoorAttacks {
         
         switch pattern {
         case .normal:
-            wandColor = .yellow
-            helperNormal(pattern: .normal, positions: positions)
+            wandColor = .orange
+            
+            villain.sprite.run(SKAction.wait(forDuration: wandAnimationDelay)) { [weak self] in
+                self?.helperNormal(pattern: .normal, positions: positions)
+            }
         case .freeze:
             wandColor = .cyan
-            helperNormal(pattern: .freeze, positions: positions)
+            
+            villain.sprite.run(SKAction.wait(forDuration: wandAnimationDelay)) { [weak self] in
+                self?.helperNormal(pattern: .freeze, positions: positions)
+            }
         case .poison:
             wandColor = .green
-            helperNormal(pattern: .poison, positions: positions)
+            
+            villain.sprite.run(SKAction.wait(forDuration: wandAnimationDelay)) { [weak self] in
+                self?.helperNormal(pattern: .poison, positions: positions)
+            }
         case .timed:
             wandColor = .magenta
-            helperTimed(positions: positions, isLarge: false)
+            
+            villain.sprite.run(SKAction.wait(forDuration: wandAnimationDelay)) { [weak self] in
+                self?.helperTimed(positions: positions, isLarge: false)
+            }
         case .timedLarge:
             wandColor = .purple
-            helperTimed(positions: positions, isLarge: true)
+            
+            villain.sprite.run(SKAction.wait(forDuration: wandAnimationDelay)) { [weak self] in
+                self?.helperTimed(positions: positions, isLarge: true)
+            }
         case .duplicates:
             wandColor = .black
-            helperDuplicates(count: 4, positions: positions)
+            
+            villain.sprite.run(SKAction.wait(forDuration: wandAnimationDelay)) { [weak self] in
+                self?.helperDuplicates(count: 1, positions: positions)
+            }
         }
         
         executeAttackAnimation(color: wandColor, playSFX: playSFX)
@@ -181,28 +200,34 @@ class MagmoorAttacks {
             color
         ], times: [0, 1])
         
-        villain.sprite.run(Player.animate(player: villain, type: .attack, repeatCount: 1))
         villain.castSpell(color: color)
+        villain.sprite.run(Player.animate(player: villain, type: .attack, repeatCount: 1))
+        villain.sprite.run(SKAction.sequence([
+            SKAction.wait(forDuration: wandAnimationDelay),
+            SKAction.run { [weak self] in
+                guard let self = self else { return }
+                                
+                ParticleEngine.shared.animateParticles(type: .magicBlastPoof,
+                                                       toNode: gameboard.sprite,
+                                                       position: fireballPosition,
+                                                       scale: 1,
+                                                       colorSequence: colorSequence,
+                                                       zPosition: K.ZPosition.player + 4,
+                                                       duration: 2)
+                
+                ParticleEngine.shared.animateParticles(type: .warp,
+                                                       toNode: gameboard.sprite,
+                                                       position: fireballPosition,
+                                                       scale: 1,
+                                                       zPosition: K.ZPosition.player + 2,
+                                                       duration: 2)
+            }
+        ]))
         
         if playSFX {
             AudioManager.shared.playSound(for: "villainattack\(Int.random(in: 1...2))")
             AudioManager.shared.playSound(for: "villainattackwand")
         }
-        
-        ParticleEngine.shared.animateParticles(type: .magicBlastPoof,
-                                               toNode: gameboard.sprite,
-                                               position: fireballPosition,
-                                               scale: 1,
-                                               colorSequence: colorSequence,
-                                               zPosition: K.ZPosition.player + 4,
-                                               duration: 2)
-        
-        ParticleEngine.shared.animateParticles(type: .warp,
-                                               toNode: gameboard.sprite,
-                                               position: fireballPosition,
-                                               scale: 1,
-                                               zPosition: K.ZPosition.player + 2,
-                                               duration: 2)
     }
     
     
@@ -285,7 +310,7 @@ class MagmoorAttacks {
         delegateAttacks?.didVillainAttack(pattern: .duplicates, position: positions.villain)
         
         for i in 0..<count {
-            let duplicate = MagmoorDuplicate(on: gameboard, index: i, modelAfter: villain)
+            let duplicate = MagmoorDuplicate(on: gameboard, index: i, duplicateAttackType: .sweeping, modelAfter: villain)
             duplicate.animate(with: positions)
             duplicate.delegateDuplicate = self
         }
@@ -302,7 +327,7 @@ extension MagmoorAttacks: MagmoorDuplicateDelegate {
         delegateAttacks?.didDuplicateAttack(pattern: pattern, playerPosition: playerPosition)
     }
     
-    func didAttackTimerFire(duplicate: MagmoorDuplicate) {
+    func didDuplicateTimerFire(duplicate: MagmoorDuplicate) {
         delegateAttacks?.didDuplicateTimerFire(duplicate: duplicate)
     }
     
