@@ -8,7 +8,7 @@
 import SpriteKit
 
 protocol MagmoorDuplicateDelegate: AnyObject {
-    func didDuplicateAttack(playerPosition: K.GameboardPosition)
+    func didDuplicateAttack(pattern: MagmoorAttacks.AttackPattern, playerPosition: K.GameboardPosition)
     func didAttackTimerFire(duplicate: MagmoorDuplicate)
 }
 
@@ -245,10 +245,10 @@ class MagmoorDuplicate: SKNode {
 
 extension MagmoorDuplicate: MagmoorAttacksDelegate {
     func didVillainAttack(pattern: MagmoorAttacks.AttackPattern, position: K.GameboardPosition) {
-        delegateDuplicate?.didDuplicateAttack(playerPosition: position)
+        delegateDuplicate?.didDuplicateAttack(pattern: pattern, playerPosition: position)
     }
     
-    func didDuplicateAttack(playerPosition: K.GameboardPosition) {
+    func didDuplicateAttack(pattern: MagmoorAttacks.AttackPattern, playerPosition: K.GameboardPosition) {
         fatalError("MagmoorDuplicate.didDuplicateAttack() [MagmoorAttacksDelegate] called. This func should never be called (theoretically). If you see this message, something has gone wrong.")
     }
     

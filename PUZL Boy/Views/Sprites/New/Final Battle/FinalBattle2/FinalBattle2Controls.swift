@@ -13,7 +13,7 @@ protocol FinalBattle2ControlsDelegate: AnyObject {
     func willVillainReappear()
     func didVillainFlee(didReappear: Bool)
     func didVillainAttack(pattern: MagmoorAttacks.AttackPattern, chosenSword: ChosenSword, position: K.GameboardPosition)
-    func didDuplicateAttack(chosenSword: ChosenSword, playerPosition: K.GameboardPosition)
+    func didDuplicateAttack(pattern: MagmoorAttacks.AttackPattern, chosenSword: ChosenSword, playerPosition: K.GameboardPosition)
     func didVillainAttackBecomeVisible()
     func handleShield(willDamage: Bool, didDamage: Bool, willBreak: Bool, didBreak: Bool, fadeDuration: TimeInterval?, chosenSword: ChosenSword, villainPosition: K.GameboardPosition?)
 }
@@ -151,7 +151,7 @@ class FinalBattle2Controls {
      - note: Call this within FinalBattle2Engine.
      */
     func villainAttackTimedBombHurtVillain() {
-        guard magmoorShield.hasHitPoints && magmoorAttacks.timedBombCanHurtVillain() && canAttack else { return }
+        guard magmoorShield.hasHitPoints && magmoorAttacks.timedBombCanHurtVillain() && magmoorAttacks.villainIsVisible && canAttack else { return }
         
         canAttack = false
         villainMoveTimer.invalidate()
@@ -588,19 +588,23 @@ extension FinalBattle2Controls: MagmoorAttacksDelegate {
         delegateControls?.didVillainAttack(pattern: pattern, chosenSword: chosenSword, position: position)
         
         if pattern == .freeze {
-            didVillainFreeze(position: position)
+            didPlayerFreeze(position: position)
         }
     }
     
-    func didDuplicateAttack(playerPosition: K.GameboardPosition) {
-        delegateControls?.didDuplicateAttack(chosenSword: chosenSword, playerPosition: playerPosition)
+    func didDuplicateAttack(pattern: MagmoorAttacks.AttackPattern, playerPosition: K.GameboardPosition) {
+        delegateControls?.didDuplicateAttack(pattern: pattern, chosenSword: chosenSword, playerPosition: playerPosition)
+        
+        if pattern == .freeze {
+            didPlayerFreeze(position: playerPosition)
+        }
     }
     
     func didDuplicateTimerFire(duplicate: MagmoorDuplicate) {
         duplicate.attack(playerPosition: positions.player)
     }
     
-    private func didVillainFreeze(position: K.GameboardPosition) {
+    private func didPlayerFreeze(position: K.GameboardPosition) {
         guard position == positions.player else { return }
         
         let waitDuration: TimeInterval = 3
@@ -628,6 +632,8 @@ extension FinalBattle2Controls: MagmoorAttacksDelegate {
             SKAction.colorize(with: .red, colorBlendFactor: 0, duration: 0)
         ]), withKey: FinalBattle2Controls.keyPlayerFreezeAction)
     }
+    
+    
 }
 
 

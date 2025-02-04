@@ -498,12 +498,9 @@ extension FinalBattle2Engine: FinalBattle2ControlsDelegate {
         }
     }
     
-    func didDuplicateAttack(chosenSword: ChosenSword, playerPosition: K.GameboardPosition) {
-        showDamagePanel(at: playerPosition, color: .red, isPoison: false, withExplosion: false)
-        
-        if playerPosition == controls.positions.player {
-            health.updateHealth(type: .villainAttackNormal, dmgMultiplier: chosenSword.defenseRating)
-        }
+    func didDuplicateAttack(pattern: MagmoorAttacks.AttackPattern, chosenSword: ChosenSword, playerPosition: K.GameboardPosition) {
+        //Reuse this because... why not??
+        didVillainAttack(pattern: pattern, chosenSword: chosenSword, position: playerPosition)
     }
     
     func didVillainAttackBecomeVisible() {
