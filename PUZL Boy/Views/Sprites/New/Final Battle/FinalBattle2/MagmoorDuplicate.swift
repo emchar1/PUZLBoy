@@ -22,8 +22,7 @@ class MagmoorDuplicate: SKNode {
     private var duplicate: Player!
     private var duplicatePosition: K.GameboardPosition?
     private var duplicateAttacks: MagmoorAttacks!
-    private var attackTimer: Timer!
-    private var attackTimerInterval: TimeInterval = 6
+    private var attackTimer: Timer
     
     weak var delegateDuplicate: MagmoorDuplicateDelegate?
     
@@ -32,12 +31,14 @@ class MagmoorDuplicate: SKNode {
     
     init(on gameboard: GameboardSprite, index: Int, modelAfter villain: Player) {
         self.gameboard = gameboard
+        self.attackTimer = Timer()
         
         super.init()
         
         self.name = MagmoorDuplicate.getNodeName(at: index)
         setupSprites(modelAfter: villain)
         layoutSprites()
+        setAttackTimer(speed: 2, delay: TimeInterval(index))
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -58,12 +59,6 @@ class MagmoorDuplicate: SKNode {
         
         duplicateAttacks = MagmoorAttacks(gameboard: gameboard, villain: duplicate)
         duplicateAttacks.delegateAttacks = self
-        
-        attackTimer = Timer.scheduledTimer(timeInterval: attackTimerInterval,
-                                           target: self,
-                                           selector: #selector(attackTimerFire(_:)),
-                                           userInfo: nil,
-                                           repeats: true)
     }
     
     private func layoutSprites() {
@@ -113,11 +108,11 @@ class MagmoorDuplicate: SKNode {
     }
     
     /**
-     Helper function that gets all the Magmoor duplicates on the gameboard, if they exist.
+     Returns all the Magmoor duplicates on the gameboard, if they exist.
      - parameter gameboard: the gameboard sprite on which to check
      - returns: the list of duplicates, or nil if there are none.
      */
-    private static func getMagmoorDuplicates(on gameboard: GameboardSprite) -> [MagmoorDuplicate]? {
+    static func getMagmoorDuplicates(on gameboard: GameboardSprite) -> [MagmoorDuplicate]? {
         let possibleDuplicates = gameboard.sprite.children.filter { $0.name != nil && $0.name!.hasPrefix(MagmoorDuplicate.duplicateNamePrefix) }
         let magmoorDuplicates = possibleDuplicates as? [MagmoorDuplicate]
         
@@ -159,6 +154,10 @@ class MagmoorDuplicate: SKNode {
                                                duration: 0)
     }
     
+    /**
+     Initiates a wand attack from the duplicate to the playerPosition.
+     - parameter playerPosition: the position where the player is.
+     */
     func attack(playerPosition: K.GameboardPosition) {
         guard let duplicatePosition = duplicatePosition else { return }
         
@@ -221,6 +220,21 @@ class MagmoorDuplicate: SKNode {
         guard let duplicatePosition = duplicatePosition else { return }
         
         duplicate.sprite.xScale = (duplicatePosition.col <= playerPosition.col ? 1 : -1) * abs(duplicate.sprite.xScale)
+    }
+    
+    /**
+     Sets the speed and delay and fires the timer.
+     - parameters:
+        - speed: the new attackTimer interval
+        - delay: adds a delay to the interval
+     */
+    private func setAttackTimer(speed: TimeInterval, delay: TimeInterval?) {
+        attackTimer.invalidate()
+        attackTimer = Timer.scheduledTimer(timeInterval: speed + (delay ?? 0),
+                                           target: self,
+                                           selector: #selector(attackTimerFire(_:)),
+                                           userInfo: nil,
+                                           repeats: true)
     }
     
     

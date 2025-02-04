@@ -231,6 +231,7 @@ class MagmoorAttacks {
         duplicate.explode { [weak self] in
             guard let self = self else { return }
             
+            //Bring back Magmoor once all the duplicates have been exploded
             if MagmoorDuplicate.getDuplicatesCount(on: gameboard) <= 0 {
                 villainIsVisible = true
                 villain.sprite.run(SKAction.fadeIn(withDuration: fadeDuration))
@@ -238,13 +239,6 @@ class MagmoorAttacks {
             
             completion(self.villainIsVisible)
         }
-    }
-    
-    // FIXME: - How to tie position with one of the standing duplicates???
-    func duplicateAttack(from position: K.GameboardPosition, playerPosition: K.GameboardPosition) {
-        guard let duplicate = MagmoorDuplicate.getDuplicateAt(position: position, on: gameboard) else { return }
-        
-        duplicate.attack(playerPosition: playerPosition)
     }
     
     
