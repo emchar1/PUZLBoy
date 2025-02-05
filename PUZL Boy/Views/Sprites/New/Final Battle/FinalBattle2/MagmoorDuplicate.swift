@@ -22,7 +22,7 @@ class MagmoorDuplicate: SKNode {
     private var duplicate: Player!
     private var duplicatePosition: K.GameboardPosition?
     private var duplicateAttacks: MagmoorAttacks!
-    private var attackType: DuplicateAttackPattern
+    private var duplicatePattern: DuplicateAttackPattern
     private var lastAttackPosition: K.GameboardPosition
     private var attackTimer: Timer
     
@@ -37,7 +37,7 @@ class MagmoorDuplicate: SKNode {
     
     init(on gameboard: GameboardSprite, index: Int, duplicateAttackType: DuplicateAttackPattern, modelAfter villain: Player) {
         self.gameboard = gameboard
-        self.attackType = duplicateAttackType
+        self.duplicatePattern = duplicateAttackType
         self.lastAttackPosition = (0, 0)
         self.attackTimer = Timer()
         
@@ -45,7 +45,7 @@ class MagmoorDuplicate: SKNode {
         
         let attackSpeed: TimeInterval
         
-        switch attackType {
+        switch duplicatePattern {
         case .player:
             attackSpeed = 5
         case .random:
@@ -181,10 +181,11 @@ class MagmoorDuplicate: SKNode {
     func attack(playerPosition: K.GameboardPosition) {
         guard let duplicatePosition = duplicatePosition else { return }
         
-        let randomAttackPattern: MagmoorAttacks.AttackPattern
+        let randomInt = Randomizer()
+        let attackPattern: MagmoorAttacks.AttackPattern = randomInt.isMultiple(of: 5) ? .freeze : (randomInt.isMultiple(of: [2, 3]) ? .normal : .poison)
         let positionToAttack: K.GameboardPosition
         
-        switch attackType {
+        switch duplicatePattern {
         case .player:
             positionToAttack = playerPosition
         case .random:
@@ -194,15 +195,8 @@ class MagmoorDuplicate: SKNode {
             advanceNextAttackPosition()
         }
         
-        switch Int.random(in: 1...3) {
-        case 1:     randomAttackPattern = .normal
-        case 2:     randomAttackPattern = .freeze
-        case 3:     randomAttackPattern = .poison
-        default:    randomAttackPattern = .normal
-        }
-        
         facePlayer(playerPosition: positionToAttack)
-        duplicateAttacks.attack(pattern: .normal, playSFX: false, positions: (player: positionToAttack, villain: duplicatePosition))
+        duplicateAttacks.attack(pattern: attackPattern, playSFX: false, positions: (player: positionToAttack, villain: duplicatePosition))
     }
     
     /**
