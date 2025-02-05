@@ -51,7 +51,7 @@ class MagmoorDuplicate: SKNode {
         case .random:
             attackSpeed = 3
         case .sweeping:
-            attackSpeed = 2
+            attackSpeed = 1
         }
         
         self.name = MagmoorDuplicate.getNodeName(at: index)
