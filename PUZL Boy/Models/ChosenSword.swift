@@ -155,13 +155,28 @@ class ChosenSword {
     
     /**
      Actually execute the completion earlier, i.e. before the sword fades away. This helps with timing of heath drop/increase, etc.
-     > Warning: spriteNode will not remove itself from parent node until after the sword is done fading out, i.e. 0.5s after completion handler is ready to execute.
+     - parameters:
+        - facing: the direction the player is facing. Typically just send in xScale and the function will determine which direction it's facing if xScale is negative or positive.
+        - shouldParry: if true, don't rotate the sprite but shake it, and add a parry sound fx
+        - completion: completion handler once (most of) the action is complete (see warning)
+     > Warning: spriteNode will not remove itself from parent node until after the sword is done fading out, i.e. 0.5s after completion handler has executed.
      */
-    func attack(shouldParry: Bool, completion: (() -> Void)?) {
+    func attack(facing: CGFloat, shouldParry: Bool, completion: (() -> Void)?) {
+        let facingCoefficient: CGFloat = facing < 0 ? -1 : 1
+        let parryAction: SKAction = shouldParry ? SKAction.sequence([
+            SKAction.moveBy(x: -10, y: 0, duration: 0.05),
+            SKAction.moveBy(x: 20, y: 0, duration: 0.05),
+            SKAction.moveBy(x: -20, y: 0, duration: 0.05),
+            SKAction.moveBy(x: 20, y: 0, duration: 0.05),
+            SKAction.moveBy(x: -10, y: 0, duration: 0.05)
+        ]) : SKAction.rotate(byAngle: -3 * .pi / 2 * facingCoefficient, duration: 0.25)
+        
+        spriteNode.xScale = facingCoefficient * abs(spriteNode.xScale)
+        
         spriteNode.run(SKAction.sequence([
             SKAction.fadeIn(withDuration: 0),
             SKAction.wait(forDuration: 0.25),
-            SKAction.rotate(byAngle: -3 * .pi / 2, duration: 0.25),
+            parryAction,
             SKAction.run {
                 completion?()
             },

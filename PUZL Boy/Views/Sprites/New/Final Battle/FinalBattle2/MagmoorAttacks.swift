@@ -27,13 +27,10 @@ class MagmoorAttacks {
     private(set) var villainIsVisible: Bool
     
     private let wandAnimationDelay: TimeInterval = 0.25
-    private var villainDirection: CGFloat { villain.sprite.xScale > 0 ? -1 : 1 }
-    private var fireballPosition: CGPoint {
-        villain.sprite.position + CGPoint(x: Player.mysticWandOrigin.x * villainDirection, y: Player.mysticWandOrigin.y)
-    }
+    private var fireballPosition: CGPoint { villain.sprite.position + getWandOffset(villain) }
     
     enum AttackPattern: CaseIterable {
-        case normal, freeze, poison, timed, timedLarge, duplicates
+        case normal, freeze, poison, spread, timed, timedLarge, duplicates, destroySafe, castInvincible
     }
     
     weak var delegateAttacks: MagmoorAttacksDelegate?
@@ -94,7 +91,10 @@ class MagmoorAttacks {
             guard !isFeatured else { attackPattern = Bool.random() ? .timed : .timedLarge; break }
             
             if randomInts[0].isMultiple(of: 5) { attackPattern = .freeze }                  //20%
-            else if randomInts[0].isMultiple(of: 2) { attackPattern = .normal }             //40%
+            else if randomInts[0].isMultiple(of: 2) {                                       //40%
+                if randomInts[1].isMultiple(of: 2) { attackPattern = .normal }                  //50%
+                else { attackPattern = .spread }                                                //50%
+            }
             else if randomInts[0].isMultiple(of: 3) { attackPattern = .poison }             //14%
             else {                                                                          //26%
                 if randomInts[1].isMultiple(of: [2, 3]) { attackPattern = .timed }              //67%
@@ -104,7 +104,10 @@ class MagmoorAttacks {
             guard !isFeatured else { attackPattern = .duplicates; break }
             
             if randomInts[0].isMultiple(of: 5) { attackPattern = .freeze }                  //20%
-            else if randomInts[0].isMultiple(of: 2) { attackPattern = .normal }             //40%
+            else if randomInts[0].isMultiple(of: 2) {                                       //40%
+                if randomInts[1].isMultiple(of: 2) { attackPattern = .normal }                  //50%
+                else { attackPattern = .spread }                                                //50%
+            }
             else if randomInts[0].isMultiple(of: 3) { attackPattern = .poison }             //14%
             else {                                                                          //26%
                 if randomInts[1].isMultiple(of: [2, 3]) { attackPattern = .duplicates }         //67%
@@ -165,6 +168,12 @@ class MagmoorAttacks {
             villain.sprite.run(SKAction.wait(forDuration: wandAnimationDelay)) { [weak self] in
                 self?.helperNormal(pattern: .poison, positions: positions)
             }
+        case .spread:
+            wandColor = .orange
+            
+            villain.sprite.run(SKAction.wait(forDuration: wandAnimationDelay)) { [weak self] in
+                self?.helperSpread(positions: positions)
+            }
         case .timed:
             wandColor = .magenta
             
@@ -181,7 +190,20 @@ class MagmoorAttacks {
             wandColor = .black
             
             villain.sprite.run(SKAction.wait(forDuration: wandAnimationDelay)) { [weak self] in
-                self?.helperDuplicates(count: 1, positions: positions)
+                self?.helperDuplicates(count: 5, positions: positions)
+            }
+        case .destroySafe:
+            wandColor = .systemIndigo
+            
+            // TODO: - Build out destroying of safe panels in inward spiral pattern.
+            villain.sprite.run(SKAction.wait(forDuration: wandAnimationDelay)) { [weak self] in
+                self?.helperNormal(pattern: .normal, positions: positions)
+            }
+        case .castInvincible:
+            wandColor = .black
+            
+            villain.sprite.run(SKAction.wait(forDuration: wandAnimationDelay)) { [weak self] in
+                self?.helperCastInvincibleShields()
             }
         }
         
@@ -270,6 +292,24 @@ class MagmoorAttacks {
     // MARK: - Attack Helper Functions
     
     /**
+     Returns the direction (xScale) that the passed in villain Player is facing.
+     - parameter villain: really any Player object passed in
+     - returns: the direction facing, either left or right, -1 or 1 (or vice versa I can't remember lol)
+     */
+    private func getFacingDirection(_ villain: Player) -> CGFloat {
+        return villain.sprite.xScale > 0 ? -1 : 1
+    }
+    
+    /**
+     Returns the CGPoint offset from the origin of the tip of the wand of the villain.
+     - parameter villain: really any Player object passed in
+     - returns: the offset from the wand tip
+     */
+    private func getWandOffset(_ villain: Player) -> CGPoint {
+        return CGPoint(x: Player.mysticWandOrigin.x * getFacingDirection(villain), y: Player.mysticWandOrigin.y)
+    }
+    
+    /**
      Helper function to setup and launch normal, freeze and poison fireballs.
      */
     private func helperNormal(pattern: AttackPattern, positions: FinalBattle2Controls.PlayerPositions) {
@@ -280,8 +320,65 @@ class MagmoorAttacks {
         fireball.setFireballSpeed(fireballSpeed)
         fireball.playFireballAudio()
         
-        fireball.launchFireball(facingDirection: villainDirection) { [weak self] in
+        fireball.launchFireball(facingDirection: getFacingDirection(villain)) { [weak self] in
             self?.delegateAttacks?.didVillainAttack(pattern: pattern, position: positions.player)
+        }
+    }
+    
+    /**
+     Helper function to set up and launch a spread of normal fireballs.
+     */
+    private func helperSpread(positions: FinalBattle2Controls.PlayerPositions) {
+        let spreadSize: Int = 5
+        var explodePositions: [K.GameboardPosition] = []
+        
+        for i in 0..<spreadSize {
+            let midpoint: Int = Int(floor(Float(spreadSize) / 2))
+            let rowOffset: Int
+            let colOffset: Int
+            let row: Int
+            let col: Int
+            
+            switch positions.villain.row - positions.player.row {
+            case let diff where diff < 0:   colOffset = midpoint - i
+            case let diff where diff > 0:   colOffset = i - midpoint
+            default:                        colOffset = 0
+            }
+            
+            switch positions.villain.col - positions.player.col {
+            case let diff where diff < 0:   rowOffset = i - midpoint
+            case let diff where diff > 0:   rowOffset = midpoint - i
+            default:                        rowOffset = 0
+            }
+
+            row = min(max(positions.player.row + rowOffset, 0), gameboard.panelCount - 1)
+            col = min(max(positions.player.col + colOffset, 0), gameboard.panelCount - 1)
+            
+            let explodePosition: K.GameboardPosition = (row, col)
+            
+            //Don't add if the fireball position is already in the array
+            if !explodePositions.contains(where: { $0.row == explodePosition.row && $0.col == explodePosition.col }) {
+                explodePositions.append(explodePosition)
+            }
+        }
+        
+        for (i, explodePosition) in explodePositions.enumerated() {
+            let fireball = Fireball(type: .spread,
+                                    rotationOrigin: villain.sprite.position,
+                                    positions: (explodePosition, positions.villain),
+                                    gameboard: gameboard)
+            fireball.position = fireballPosition
+            fireball.zPosition = K.ZPosition.itemsAndEffects
+            
+            fireball.setFireballSpeed(fireballSpeed)
+            
+            if i == 0 {
+                fireball.playFireballAudio()
+            }
+            
+            fireball.launchFireball(facingDirection: getFacingDirection(villain)) { [weak self] in
+                self?.delegateAttacks?.didVillainAttack(pattern: .spread, position: explodePosition)
+            }
         }
     }
     
@@ -294,7 +391,7 @@ class MagmoorAttacks {
             bomb.position = fireballPosition
             bomb.zPosition = K.ZPosition.player - 10
             
-            bomb.launchTimed(facingDirection: villainDirection, canPlaySound: i == 0) { [weak self] randomPosition in
+            bomb.launchTimed(facingDirection: getFacingDirection(villain), canPlaySound: i == 0) { [weak self] randomPosition in
                 self?.delegateAttacks?.didVillainAttack(pattern: isLarge ? .timedLarge : .timed, position: randomPosition)
             }
         }
@@ -309,10 +406,57 @@ class MagmoorAttacks {
         villain.sprite.run(SKAction.fadeOut(withDuration: 1))
         delegateAttacks?.didVillainAttack(pattern: .duplicates, position: positions.villain)
         
+        var duplicates: [MagmoorDuplicate] = []
+        
         for i in 0..<count {
-            let duplicate = MagmoorDuplicate(on: gameboard, index: i, duplicateAttackType: .sweeping, modelAfter: villain)
+            let duplicateSetup: (duplicatePattern: MagmoorDuplicate.DuplicateAttackPattern, attackType: AttackPattern, attackSpeed: TimeInterval)
+            
+            switch i {
+            case 0:     duplicateSetup = (.player, .normal, 3)
+            case 1:     duplicateSetup = (.player, .freeze, 4)
+            case 2:     duplicateSetup = (.random, .poison, 2)
+            case 3:     duplicateSetup = (.invincible, .castInvincible, 1)
+//            case 4:     duplicateSetup = (.sweeping, .destroySafe, 1)
+            default:    duplicateSetup = (.player, .spread, 3 + 0.1 * TimeInterval(i))
+            }
+            
+            let duplicate = MagmoorDuplicate(on: gameboard,
+                                             index: i,
+                                             duplicatePattern: duplicateSetup.duplicatePattern,
+                                             attackType: duplicateSetup.attackType,
+                                             attackSpeed: duplicateSetup.attackSpeed,
+                                             modelAfter: villain)
             duplicate.animate(with: positions)
             duplicate.delegateDuplicate = self
+            
+            duplicates.append(duplicate)
+        }
+        
+        //Need to run this AFTER setting up, above due to invincible duplicate initializing not at the 0th index!
+        for i in 0..<count {
+            duplicates[i].addInvincibleShield()
+        }
+    }
+    
+    private func helperCastInvincibleShields() {
+        guard let duplicates = MagmoorDuplicate.getMagmoorDuplicates(on: gameboard),
+              let invincibleDuplicate = duplicates.filter({ $0.duplicatePattern == .invincible}).first,
+              let invincibleDuplicatePosition = invincibleDuplicate.duplicatePosition else {
+            return
+        }
+        
+        let numParticles: Int = 6
+        
+        for i in 0..<numParticles {
+            let startPoint: CGPoint = gameboard.getLocation(at: invincibleDuplicatePosition)
+            
+            ParticleEngine.shared.animateParticles(
+                type: .magicBlastCastInvincible,
+                toNode: gameboard.sprite,
+                position: startPoint + getWandOffset(invincibleDuplicate.duplicate),
+                angle: 2 * .pi * CGFloat(i) / CGFloat(numParticles),
+                shouldFlipHorizontally: getFacingDirection(invincibleDuplicate.duplicate) > 0,
+                duration: 1)
         }
     }
     

@@ -267,7 +267,7 @@ class FinalBattle2Controls {
         gameboard.sprite.addChild(chosenSword.spriteNode)
         
         chosenSword.spriteNode.position = gameboard.getLocation(at: attackPanel)
-        chosenSword.attack(shouldParry: magmoorShield.hasHitPoints) { [weak self] in
+        chosenSword.attack(facing: player.sprite.xScale, shouldParry: magmoorShield.hasHitPoints) { [weak self] in
             guard let self = self else { return }
             
             isDisabled = false
@@ -304,7 +304,10 @@ class FinalBattle2Controls {
     private func canAttackDuplicate(_ direction: Controls) -> Bool {
         let attackPanel: K.GameboardPosition = getNextPanel(direction: direction)
         
-        guard MagmoorDuplicate.getDuplicateAt(position: attackPanel, on: gameboard) != nil && !magmoorAttacks.villainIsVisible else { return false }
+        guard let duplicate = MagmoorDuplicate.getDuplicateAt(position: attackPanel, on: gameboard), !magmoorAttacks.villainIsVisible else {
+            return false
+        }
+        
         guard canAttack && (chosenSword.type == .heavenlySaber || (playerOnSafePanel() && !poisonPanelFound)) else {
             ButtonTap.shared.tap(type: .buttontap6)
             return true
@@ -316,18 +319,25 @@ class FinalBattle2Controls {
         gameboard.sprite.addChild(chosenSword.spriteNode)
         
         chosenSword.spriteNode.position = gameboard.getLocation(at: attackPanel)
-        chosenSword.attack(shouldParry: false) { [weak self] in
+        chosenSword.attack(facing: player.sprite.xScale, shouldParry: duplicate.invincibleShield?.hasHitPoints ?? false) { [weak self] in
             guard let self = self else { return }
             
             isDisabled = false
             
-            magmoorAttacks.explodeDuplicate(at: attackPanel) { villainIsVisible in
-                self.canAttack = true
-                
-                guard villainIsVisible else { return }
-                
-                self.delegateControls?.didVillainAttackBecomeVisible()
-                self.resetTimer(forceDelay: nil)
+            if duplicate.invincibleShield?.hasHitPoints ?? false {
+                duplicate.invincibleShield?.attackInvincibleShield {
+                    self.canAttack = true
+                }
+            }
+            else {
+                magmoorAttacks.explodeDuplicate(at: attackPanel) { villainIsVisible in
+                    self.canAttack = true
+                    
+                    guard villainIsVisible else { return }
+                    
+                    self.delegateControls?.didVillainAttackBecomeVisible()
+                    self.resetTimer(forceDelay: nil)
+                }
             }
         }
         

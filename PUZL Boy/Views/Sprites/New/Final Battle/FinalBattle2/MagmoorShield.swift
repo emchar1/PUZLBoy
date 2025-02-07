@@ -63,6 +63,20 @@ class MagmoorShield: SKNode {
         addChild(topNode)
     }
     
+    /**
+     Convenience init to be used by Duplicates only!
+     - parameters:
+        - makeInvincible: if true, cast the shield, if false, it's probably the invicible caster
+        - duplicate: the Duplicate to add the shield to
+     */
+    convenience init(makeInvincible: Bool, duplicate: Player) {
+        self.init()
+        
+        if makeInvincible {
+            resetShieldInvincible(duplicate: duplicate)
+        }
+    }
+    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -93,31 +107,16 @@ class MagmoorShield: SKNode {
         resetCount += 1
         speedReduction = 0
         
-        removeAllActions()
-        setScale(0)
-        alpha = 1
+        helperResetShield(villain: villain, asInvincible: false)
+    }
+    
+    /**
+     For use specifically with convenience init() when setting up for Duplicate invincibility shield.
+     */
+    private func resetShieldInvincible(duplicate: Player) {
+        hitPoints = 6
         
-        bottomNode.color = shieldColor
-        topNode.color = shieldColor
-        
-        villain.sprite.addChild(self)
-        villain.castSpell(color: shieldColor)
-        
-        //Actions
-        shieldThrob(waitDuration: 2.5)
-        
-        run(SKAction.repeatForever(SKAction.rotate(byAngle: .pi / 2, duration: 4)))
-        run(SKAction.sequence([
-            scaleAndFade(size: 6, alpha: 0.5, duration: 0.25),
-            scaleAndFade(size: 2.5, alpha: 1, duration: 0.5),
-            scaleAndFade(duration: 1.75)
-        ]))
-        
-        //SFX
-        AudioManager.shared.playSound(for: "shieldcast")
-        AudioManager.shared.playSound(for: "shieldcast2")
-        AudioManager.shared.playSound(for: "shieldpulse")
-        Haptics.shared.addHapticFeedback(withStyle: .soft)
+        helperResetShield(villain: duplicate, asInvincible: true)
     }
     
     /**
@@ -231,6 +230,47 @@ class MagmoorShield: SKNode {
     }
     
     
+    // MARK: - Invincible Shield (Duplicate) Functions
+    
+    /**
+     Execute this when attempting to attack an invincible shield on a Duplicate.
+     */
+    func attackInvincibleShield(completion: @escaping () -> Void) {
+        let fadeDuration: TimeInterval = 0.5
+        
+        removeAction(forKey: MagmoorShield.keyShieldThrobAction)
+        run(SKAction.sequence([
+            SKAction.group([
+                scaleAndFade(size: 3.5, alpha: 0.5, duration: fadeDuration),
+                shieldShake(duration: fadeDuration)
+            ]),
+            scaleAndFade(size: 4.5, alpha: 0, duration: 0.5)
+        ]), completion: completion)
+    }
+    
+    /**
+     Execute this on remaining Duplicates when the invincible Duplicate gets destroyed.
+     */
+    func breakInvincibleShield(completion: @escaping () -> Void) {
+        hitPoints = 0
+        
+        let shakeDuration: TimeInterval = 2
+        let fadeDuration: TimeInterval = 0.5
+        let scaleAndFadeDuration: TimeInterval = 0.25
+        
+        removeAction(forKey: MagmoorShield.keyShieldThrobAction)
+        run(SKAction.sequence([
+            SKAction.group([
+                scaleAndFade(size: 3.5, alpha: 0.5, duration: fadeDuration),
+                shieldShake(duration: shakeDuration)
+            ]),
+            scaleAndFade(size: 10, alpha: 1, duration: scaleAndFadeDuration),
+            SKAction.fadeOut(withDuration: scaleAndFadeDuration),
+            SKAction.removeFromParent()
+        ]), completion: completion)
+    }
+    
+    
     // MARK: - Animation Helper Functions
     
     /**
@@ -250,6 +290,44 @@ class MagmoorShield: SKNode {
             shieldColor = .cyan
         default:
             shieldColor = .magenta
+        }
+    }
+    
+    /**
+     Helper function used by resetShield() and resetShieldInvincible().
+     - parameters:
+        - villain: the Player to add the shield to
+        - asInvincible: if true, set the shield up as an invincible shield (to be used by Duplicates only!)
+     */
+    private func helperResetShield(villain: Player, asInvincible: Bool) {
+        removeAllActions()
+        setScale(0)
+        alpha = 1
+        
+        bottomNode.color = shieldColor
+        topNode.color = shieldColor
+        
+        villain.sprite.addChild(self)
+        
+        //Actions
+        if !asInvincible {
+            villain.castSpell(color: shieldColor)
+            shieldThrob(waitDuration: 2.5)
+        }
+        
+        run(SKAction.repeatForever(SKAction.rotate(byAngle: .pi / 2, duration: 4)))
+        run(SKAction.sequence([
+            scaleAndFade(size: 6, alpha: 0.5, duration: 0.25),
+            scaleAndFade(size: 2.5, alpha: 1, duration: 0.5),
+            scaleAndFade(size: !asInvincible ? 5 : 4.5, alpha: !asInvincible ? 0.5 : 0, duration: 1.75)
+        ]))
+        
+        if !asInvincible {
+            //SFX
+            AudioManager.shared.playSound(for: "shieldcast")
+            AudioManager.shared.playSound(for: "shieldcast2")
+            AudioManager.shared.playSound(for: "shieldpulse")
+            Haptics.shared.addHapticFeedback(withStyle: .soft)
         }
     }
     

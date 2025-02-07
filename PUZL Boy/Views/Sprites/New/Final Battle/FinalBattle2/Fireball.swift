@@ -72,7 +72,7 @@ class Fireball: SKNode {
             particleMovement = nil
             particleExplosion = nil
             sfx = []
-        default: //normal
+        default: //normal, spread
             imageName = "villainProjectile1"
             color = .red
             shouldSetZRotation = true
@@ -146,7 +146,7 @@ class Fireball: SKNode {
         gameboard.sprite.addChild(self)
         
         switch type {
-        case .normal, .freeze, .poison:
+        case .normal, .freeze, .poison, .spread:
             launchHelperFireball(facingDirection: facingDirection, completion: completion)
         default:
             break
@@ -231,7 +231,7 @@ class Fireball: SKNode {
                 SKAction.scale(to: 0.25 / UIDevice.spriteScale, duration: 0.2)
             ]), count: Int(ceil(stats.fireballMovementDuration / 0.4)))
             particleExplosionDuration = 4
-        default:
+        default: //normal, spread
             rotationAngle = 0
             scaleAction = SKAction.scale(to: 0.5 / UIDevice.spriteScale, duration: stats.fireballMovementDuration)
             particleExplosionDuration = 2

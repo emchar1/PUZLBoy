@@ -19,15 +19,18 @@ class MagmoorDuplicate: SKNode {
     static let duplicateNamePrefix: String = "duplicateMagmoor"
     
     private var gameboard: GameboardSprite
-    private var duplicate: Player!
-    private var duplicatePosition: K.GameboardPosition?
-    private var duplicateAttacks: MagmoorAttacks!
-    private var duplicatePattern: DuplicateAttackPattern
     private var lastAttackPosition: K.GameboardPosition
+    private(set) var duplicatePattern: DuplicateAttackPattern
+    private var attackType: MagmoorAttacks.AttackPattern
     private var attackTimer: Timer
     
+    private(set) var duplicate: Player!
+    private var duplicateAttacks: MagmoorAttacks!
+    private(set) var invincibleShield: MagmoorShield?
+    private(set) var duplicatePosition: K.GameboardPosition?
+    
     enum DuplicateAttackPattern: CaseIterable {
-        case player, random, sweeping
+        case player, random, sweeping, invincible
     }
     
     weak var delegateDuplicate: MagmoorDuplicateDelegate?
@@ -35,24 +38,14 @@ class MagmoorDuplicate: SKNode {
     
     // MARK: - Initialization
     
-    init(on gameboard: GameboardSprite, index: Int, duplicateAttackType: DuplicateAttackPattern, modelAfter villain: Player) {
+    init(on gameboard: GameboardSprite, index: Int, duplicatePattern: DuplicateAttackPattern, attackType: MagmoorAttacks.AttackPattern, attackSpeed: TimeInterval, modelAfter villain: Player) {
         self.gameboard = gameboard
-        self.duplicatePattern = duplicateAttackType
         self.lastAttackPosition = (0, 0)
+        self.duplicatePattern = duplicatePattern
+        self.attackType = attackType
         self.attackTimer = Timer()
         
         super.init()
-        
-        let attackSpeed: TimeInterval
-        
-        switch duplicatePattern {
-        case .player:
-            attackSpeed = 5
-        case .random:
-            attackSpeed = 3
-        case .sweeping:
-            attackSpeed = 1
-        }
         
         self.name = MagmoorDuplicate.getNodeName(at: index)
         
@@ -139,6 +132,16 @@ class MagmoorDuplicate: SKNode {
         return magmoorDuplicates
     }
     
+    /**
+     Checks if there's at least one invincible duplicate on the gameboard, if not, update hasInvincible property.
+     - parameter gameboard: the gameboard sprite on which to check
+     */
+    static func hasInvincibles(on gameboard: GameboardSprite) -> Bool {
+        guard let magmoorDuplicates = getMagmoorDuplicates(on: gameboard) else { return false }
+        
+        return magmoorDuplicates.filter { $0.duplicatePattern == .invincible }.first != nil
+    }
+    
     
     // MARK: - Animation Functions
     
@@ -175,14 +178,22 @@ class MagmoorDuplicate: SKNode {
     }
     
     /**
+     Adds an invincible shield to the duplicate.
+     */
+    func addInvincibleShield() {
+        let hasInvincibleShield = MagmoorDuplicate.hasInvincibles(on: gameboard)
+        let isNotItselfInvincible = duplicatePattern != .invincible
+        
+        invincibleShield = MagmoorShield(makeInvincible: hasInvincibleShield && isNotItselfInvincible, duplicate: duplicate)
+    }
+    
+    /**
      Initiates a wand attack from the duplicate to the playerPosition.
      - parameter playerPosition: the position where the player is.
      */
     func attack(playerPosition: K.GameboardPosition) {
         guard let duplicatePosition = duplicatePosition else { return }
         
-        let randomInt = Randomizer()
-        let attackPattern: MagmoorAttacks.AttackPattern = randomInt.isMultiple(of: 5) ? .freeze : (randomInt.isMultiple(of: [2, 3]) ? .normal : .poison)
         let positionToAttack: K.GameboardPosition
         
         switch duplicatePattern {
@@ -193,21 +204,22 @@ class MagmoorDuplicate: SKNode {
         case .sweeping:
             positionToAttack = lastAttackPosition
             advanceNextAttackPosition()
+        case .invincible:
+            positionToAttack = playerPosition
         }
         
         facePlayer(playerPosition: positionToAttack)
-        duplicateAttacks.attack(pattern: attackPattern, playSFX: false, positions: (player: positionToAttack, villain: duplicatePosition))
+        duplicateAttacks.attack(pattern: attackType, playSFX: false, positions: (player: positionToAttack, villain: duplicatePosition))
     }
     
     /**
      Destroys the duplicate and removes it from the gameboard.
-     - parameters:
-        - direction: direction of the attack
-        - completion: completion handler, executes at end of explosion action.
+     - parameter completion: completion handler, executes at end of explosion action.
      */
     func explode(completion: @escaping () -> Void) {
         let waitDuration: TimeInterval = 0.25
         let fadeDuration: TimeInterval = 0.25
+        let hasInvinciblesOriginal = MagmoorDuplicate.hasInvincibles(on: gameboard)
         
         attackTimer.invalidate()
         
@@ -215,7 +227,20 @@ class MagmoorDuplicate: SKNode {
             SKAction.wait(forDuration: waitDuration),
             SKAction.fadeOut(withDuration: fadeDuration),
             SKAction.removeFromParent()
-        ]), completion: completion)
+        ])) { [weak self] in
+            guard let self = self else { return }
+            
+            let hasInvinciblesNew = MagmoorDuplicate.hasInvincibles(on: gameboard)
+            
+            //Here you're seeing if the duplicate you're exploding is the one casting the invincible shield spell...
+            guard !hasInvinciblesNew && hasInvinciblesOriginal, let duplicates = MagmoorDuplicate.getMagmoorDuplicates(on: gameboard) else {
+                completion()
+                return
+            }
+            
+            //...and if so, break the invincible shield on all the dupes.
+            duplicates.forEach { $0.invincibleShield?.breakInvincibleShield(completion: completion) }
+        }
         
         AudioManager.shared.playSound(for: "enemydeath")
         ParticleEngine.shared.animateParticles(type: .magicElderFire3,

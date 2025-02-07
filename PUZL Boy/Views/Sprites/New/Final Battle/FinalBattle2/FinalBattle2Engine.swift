@@ -254,14 +254,17 @@ class FinalBattle2Engine {
         let healthType: FinalBattle2Health.HealthType
         
         switch pattern {
+        case .normal, .spread:
+            panelColor = .red
+            healthType = .villainAttackNormal
         case .freeze:
             panelColor = .cyan
             healthType = .villainAttackFreeze
         case .poison:
             panelColor = .green
             healthType = .villainAttackPoison
-        default:
-            panelColor = .red
+        default: // TODO: - .destroySafe, .castInvincible
+            panelColor = .systemIndigo
             healthType = .villainAttackNormal
         }
         
@@ -485,7 +488,7 @@ extension FinalBattle2Engine: FinalBattle2ControlsDelegate {
     
     func didVillainAttack(pattern: MagmoorAttacks.AttackPattern, chosenSword: ChosenSword, position: K.GameboardPosition) {
         switch pattern {
-        case .normal, .freeze, .poison:
+        case .normal, .freeze, .poison, .spread:
             villainAttackNormal(at: position, pattern: pattern, chosenSword: chosenSword)
         case .timed:
             villainAttackTimed(at: position, isLarge: false, chosenSword: chosenSword)
@@ -495,6 +498,11 @@ extension FinalBattle2Engine: FinalBattle2ControlsDelegate {
             for i in 0..<panelSpawnerCount {
                 panelSpawner[i].showPlatform(shouldShow: true, positions: controls.positions)
             }
+        // TODO: - Build out .destroySafe and .castInvincible cases for ControlsDelegate function didVillainAttack().
+        case .destroySafe:
+            villainAttackNormal(at: position, pattern: pattern, chosenSword: chosenSword)
+        case .castInvincible:
+            break
         }
     }
     
