@@ -10,6 +10,7 @@ import SpriteKit
 protocol MagmoorDuplicateDelegate: AnyObject {
     func didDuplicateAttack(pattern: MagmoorAttacks.AttackPattern, playerPosition: K.GameboardPosition)
     func didDuplicateTimerFire(duplicate: MagmoorDuplicate)
+    func didExplodeDuplicate()
 }
 
 class MagmoorDuplicate: SKNode {
@@ -232,6 +233,8 @@ class MagmoorDuplicate: SKNode {
             
             let hasInvinciblesNew = MagmoorDuplicate.hasInvincibles(on: gameboard)
             
+            delegateDuplicate?.didExplodeDuplicate()
+            
             //Here you're seeing if the duplicate you're exploding is the one casting the invincible shield spell...
             guard !hasInvinciblesNew && hasInvinciblesOriginal, let duplicates = MagmoorDuplicate.getMagmoorDuplicates(on: gameboard) else {
                 completion()
@@ -314,14 +317,6 @@ class MagmoorDuplicate: SKNode {
 extension MagmoorDuplicate: MagmoorAttacksDelegate {
     func didVillainAttack(pattern: MagmoorAttacks.AttackPattern, position: K.GameboardPosition) {
         delegateDuplicate?.didDuplicateAttack(pattern: pattern, playerPosition: position)
-    }
-    
-    func didDuplicateAttack(pattern: MagmoorAttacks.AttackPattern, playerPosition: K.GameboardPosition) {
-        fatalError("MagmoorDuplicate.didDuplicateAttack() [MagmoorAttacksDelegate] called. This func should never be called (theoretically). If you see this message, something has gone wrong.")
-    }
-    
-    func didDuplicateTimerFire(duplicate: MagmoorDuplicate) {
-        fatalError("MagmoorDuplicate.didDuplicateTimerFire() [MagmoorAttacksDelegate] called. This func should never be called (theoretically). If you see this message, something has gone wrong.")
     }
     
     

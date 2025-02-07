@@ -511,6 +511,10 @@ extension FinalBattle2Engine: FinalBattle2ControlsDelegate {
         didVillainAttack(pattern: pattern, chosenSword: chosenSword, position: playerPosition)
     }
     
+    func didExplodeDuplicate(chosenSword: ChosenSword) {
+        health.updateHealth(type: .heroAttack, dmgMultiplier: chosenSword.attackRating / 2)
+    }
+    
     func didVillainAttackBecomeVisible() {
         for i in 0..<panelSpawnerCount {
             panelSpawner[i].showPlatform(shouldShow: false, positions: controls.positions)

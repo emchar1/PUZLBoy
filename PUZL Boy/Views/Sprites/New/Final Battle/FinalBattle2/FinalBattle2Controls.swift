@@ -14,6 +14,7 @@ protocol FinalBattle2ControlsDelegate: AnyObject {
     func didVillainFlee(didReappear: Bool)
     func didVillainAttack(pattern: MagmoorAttacks.AttackPattern, chosenSword: ChosenSword, position: K.GameboardPosition)
     func didDuplicateAttack(pattern: MagmoorAttacks.AttackPattern, chosenSword: ChosenSword, playerPosition: K.GameboardPosition)
+    func didExplodeDuplicate(chosenSword: ChosenSword)
     func didVillainAttackBecomeVisible()
     func handleShield(willDamage: Bool, didDamage: Bool, willBreak: Bool, didBreak: Bool, fadeDuration: TimeInterval?, chosenSword: ChosenSword, villainPosition: K.GameboardPosition?)
 }
@@ -78,6 +79,7 @@ class FinalBattle2Controls {
         
         //These need to come AFTER initializing their respective objects!
         magmoorAttacks.delegateAttacks = self
+        magmoorAttacks.delegateAttacksDuplicate = self
         magmoorShield.delegate = self
         
         setTimerFirstTime()
@@ -602,18 +604,6 @@ extension FinalBattle2Controls: MagmoorAttacksDelegate {
         }
     }
     
-    func didDuplicateAttack(pattern: MagmoorAttacks.AttackPattern, playerPosition: K.GameboardPosition) {
-        delegateControls?.didDuplicateAttack(pattern: pattern, chosenSword: chosenSword, playerPosition: playerPosition)
-        
-        if pattern == .freeze {
-            didPlayerFreeze(position: playerPosition)
-        }
-    }
-    
-    func didDuplicateTimerFire(duplicate: MagmoorDuplicate) {
-        duplicate.attack(playerPosition: positions.player)
-    }
-    
     private func didPlayerFreeze(position: K.GameboardPosition) {
         guard position == positions.player else { return }
         
@@ -642,8 +632,27 @@ extension FinalBattle2Controls: MagmoorAttacksDelegate {
             SKAction.colorize(with: .red, colorBlendFactor: 0, duration: 0)
         ]), withKey: FinalBattle2Controls.keyPlayerFreezeAction)
     }
+}
+
+
+// MARK: - MagmoorAttacks(Duplicate)Delegate
+
+extension FinalBattle2Controls: MagmoorAttacksDuplicateDelegate {
+    func didDuplicateAttack(pattern: MagmoorAttacks.AttackPattern, playerPosition: K.GameboardPosition) {
+        delegateControls?.didDuplicateAttack(pattern: pattern, chosenSword: chosenSword, playerPosition: playerPosition)
+        
+        if pattern == .freeze {
+            didPlayerFreeze(position: playerPosition)
+        }
+    }
     
+    func didDuplicateTimerFire(duplicate: MagmoorDuplicate) {
+        duplicate.attack(playerPosition: positions.player)
+    }
     
+    func didExplodeDuplicate() {
+        delegateControls?.didExplodeDuplicate(chosenSword: chosenSword)
+    }
 }
 
 

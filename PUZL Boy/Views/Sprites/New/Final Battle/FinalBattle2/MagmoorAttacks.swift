@@ -9,8 +9,12 @@ import SpriteKit
 
 protocol MagmoorAttacksDelegate: AnyObject {
     func didVillainAttack(pattern: MagmoorAttacks.AttackPattern, position: K.GameboardPosition)
+}
+
+protocol MagmoorAttacksDuplicateDelegate: AnyObject {
     func didDuplicateAttack(pattern: MagmoorAttacks.AttackPattern, playerPosition: K.GameboardPosition)
     func didDuplicateTimerFire(duplicate: MagmoorDuplicate)
+    func didExplodeDuplicate()
 }
 
 class MagmoorAttacks {
@@ -34,6 +38,7 @@ class MagmoorAttacks {
     }
     
     weak var delegateAttacks: MagmoorAttacksDelegate?
+    weak var delegateAttacksDuplicate: MagmoorAttacksDuplicateDelegate?
     
     
     // MARK: - Initialization
@@ -417,7 +422,7 @@ class MagmoorAttacks {
             case 2:     duplicateSetup = (.random, .poison, 2)
             case 3:     duplicateSetup = (.invincible, .castInvincible, 1)
 //            case 4:     duplicateSetup = (.sweeping, .destroySafe, 1)
-            default:    duplicateSetup = (.player, .spread, 3 + 0.1 * TimeInterval(i))
+            default:    duplicateSetup = (.player, .normal, 3 + 0.1 * TimeInterval(i))
             }
             
             let duplicate = MagmoorDuplicate(on: gameboard,
@@ -468,12 +473,14 @@ class MagmoorAttacks {
 
 extension MagmoorAttacks: MagmoorDuplicateDelegate {
     func didDuplicateAttack(pattern: MagmoorAttacks.AttackPattern, playerPosition: K.GameboardPosition) {
-        delegateAttacks?.didDuplicateAttack(pattern: pattern, playerPosition: playerPosition)
+        delegateAttacksDuplicate?.didDuplicateAttack(pattern: pattern, playerPosition: playerPosition)
     }
     
     func didDuplicateTimerFire(duplicate: MagmoorDuplicate) {
-        delegateAttacks?.didDuplicateTimerFire(duplicate: duplicate)
+        delegateAttacksDuplicate?.didDuplicateTimerFire(duplicate: duplicate)
     }
     
-    
+    func didExplodeDuplicate() {
+        delegateAttacksDuplicate?.didExplodeDuplicate()
+    }
 }
