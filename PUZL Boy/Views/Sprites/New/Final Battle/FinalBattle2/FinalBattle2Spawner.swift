@@ -258,6 +258,7 @@ class FinalBattle2Spawner {
         let offsetDuration: TimeInterval = 0 //DON'T TOUCH THIS LEAVE AT 0!!!
         let pulseDuration: TimeInterval = 0.1
         let sandShift: CGFloat = 10 * (reverse ? -1 : 1)
+        let animationDuration = SpawnerSpeed.slow.rawValue
         
         let sandAction = SKAction.sequence([
             SKAction.moveBy(x: sandShift / 2, y: 0, duration: offsetDuration),

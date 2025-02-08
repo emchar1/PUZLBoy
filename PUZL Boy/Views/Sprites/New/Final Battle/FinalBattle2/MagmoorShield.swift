@@ -241,10 +241,10 @@ class MagmoorShield: SKNode {
         removeAction(forKey: MagmoorShield.keyShieldThrobAction)
         run(SKAction.sequence([
             SKAction.group([
-                scaleAndFade(size: 3.5, alpha: 0.5, duration: fadeDuration),
+                scaleAndFade(size: 3, alpha: 1, duration: fadeDuration),
                 shieldShake(duration: fadeDuration)
             ]),
-            scaleAndFade(size: 4.5, alpha: 0, duration: 0.5)
+            scaleAndFade(size: 3.5, alpha: 0.25, duration: 0.5)
         ]), completion: completion)
     }
     
@@ -261,10 +261,10 @@ class MagmoorShield: SKNode {
         removeAction(forKey: MagmoorShield.keyShieldThrobAction)
         run(SKAction.sequence([
             SKAction.group([
-                scaleAndFade(size: 3.5, alpha: 0.5, duration: fadeDuration),
+                scaleAndFade(size: 3, alpha: 1, duration: fadeDuration),
                 shieldShake(duration: shakeDuration)
             ]),
-            scaleAndFade(size: 10, alpha: 1, duration: scaleAndFadeDuration),
+            scaleAndFade(size: 6, alpha: 1, duration: scaleAndFadeDuration),
             SKAction.fadeOut(withDuration: scaleAndFadeDuration),
             SKAction.removeFromParent()
         ]), completion: completion)
@@ -319,7 +319,7 @@ class MagmoorShield: SKNode {
         run(SKAction.sequence([
             scaleAndFade(size: 6, alpha: 0.5, duration: 0.25),
             scaleAndFade(size: 2.5, alpha: 1, duration: 0.5),
-            scaleAndFade(size: !asInvincible ? 5 : 4.5, alpha: !asInvincible ? 0.5 : 0, duration: 1.75)
+            scaleAndFade(size: !asInvincible ? 5 : 3.5, alpha: !asInvincible ? 0.5 : 0.25, duration: 1.75)
         ]))
         
         if !asInvincible {

@@ -93,7 +93,7 @@ class MagmoorAttacks {
             
             attackPattern = poisonPattern
         case 3:
-            guard !isFeatured else { attackPattern = Bool.random() ? .timed : .timedLarge; break }
+            guard !isFeatured else { attackPattern = .timed; break }
             
             if randomInts[0].isMultiple(of: 5) { attackPattern = .freeze }                  //20%
             else if randomInts[0].isMultiple(of: 2) {                                       //40%
@@ -101,18 +101,12 @@ class MagmoorAttacks {
                 else { attackPattern = .spread }                                                //50%
             }
             else if randomInts[0].isMultiple(of: 3) { attackPattern = .poison }             //14%
-            else {                                                                          //26%
-                if randomInts[1].isMultiple(of: [2, 3]) { attackPattern = .timed }              //67%
-                else { attackPattern = .timedLarge }                                            //33%
-            }
+            else { attackPattern = .timed }                                                 //26%
         case let levelCheck where levelCheck >= 4:
             guard !isFeatured else { attackPattern = .duplicates; break }
             
             if randomInts[0].isMultiple(of: 5) { attackPattern = .freeze }                  //20%
-            else if randomInts[0].isMultiple(of: 2) {                                       //40%
-                if randomInts[1].isMultiple(of: 2) { attackPattern = .normal }                  //50%
-                else { attackPattern = .spread }                                                //50%
-            }
+            else if randomInts[0].isMultiple(of: 2) { attackPattern = .spread }             //40%
             else if randomInts[0].isMultiple(of: 3) { attackPattern = .poison }             //14%
             else {                                                                          //26%
                 if randomInts[1].isMultiple(of: [2, 3]) { attackPattern = .duplicates }         //67%
@@ -148,7 +142,7 @@ class MagmoorAttacks {
         - playSFX: determines whether to play villain attack and sound FXs or to mute them
         - positions: the player and villain gameboard positions.
      */
-    func attack(pattern: AttackPattern, playSFX: Bool = true, positions: FinalBattle2Controls.PlayerPositions) {
+    func attack(pattern: AttackPattern, level: Int, playSFX: Bool = true, positions: FinalBattle2Controls.PlayerPositions) {
         timedCanHurtPlayer = true
         timedCanHurtVillain = true
         
@@ -195,7 +189,9 @@ class MagmoorAttacks {
             wandColor = .black
             
             villain.sprite.run(SKAction.wait(forDuration: wandAnimationDelay)) { [weak self] in
-                self?.helperDuplicates(count: 5, positions: positions)
+                let duplicateCount = min((level - 1), 5)
+                
+                self?.helperDuplicates(count: duplicateCount, positions: positions)
             }
         case .destroySafe:
             wandColor = .systemIndigo

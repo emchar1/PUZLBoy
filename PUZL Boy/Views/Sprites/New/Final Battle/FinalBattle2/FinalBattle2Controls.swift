@@ -415,7 +415,7 @@ class FinalBattle2Controls {
             guard let self = self else { return }
             
             let attackPattern = MagmoorAttacks.getAttackPattern(enrage: magmoorShield.isEnraged, level: magmoorShield.resetCount, isFeatured: false)
-            magmoorAttacks.attack(pattern: attackPattern, positions: positions)
+            magmoorAttacks.attack(pattern: attackPattern, level: magmoorShield.resetCount, positions: positions)
         }
     }
     
@@ -557,7 +557,7 @@ class FinalBattle2Controls {
                 delegateControls?.didVillainFlee(didReappear: true)
                 
                 let attackPattern = MagmoorAttacks.getAttackPattern(enrage: false, level: magmoorShield.resetCount, isFeatured: true)
-                magmoorAttacks.attack(pattern: attackPattern, positions: positions)
+                magmoorAttacks.attack(pattern: attackPattern, level: magmoorShield.resetCount, positions: positions)
                 
                 generateVillainPositionNew(enrage: false)
                 resetTimer(forceDelay: nil) //call AFTER resetShield()!!

@@ -210,7 +210,7 @@ class MagmoorDuplicate: SKNode {
         }
         
         facePlayer(playerPosition: positionToAttack)
-        duplicateAttacks.attack(pattern: attackType, playSFX: false, positions: (player: positionToAttack, villain: duplicatePosition))
+        duplicateAttacks.attack(pattern: attackType, level: invincibleShield?.resetCount ?? 0, playSFX: false, positions: (player: positionToAttack, villain: duplicatePosition))
     }
     
     /**
