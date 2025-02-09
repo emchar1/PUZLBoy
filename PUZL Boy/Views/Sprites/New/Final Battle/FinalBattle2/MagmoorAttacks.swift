@@ -204,7 +204,7 @@ class MagmoorAttacks {
             wandColor = .black
             
             villain.sprite.run(SKAction.wait(forDuration: wandAnimationDelay)) { [weak self] in
-                self?.helperCastInvincibleShields()
+                self?.helperCastInvincibleShields(positions: positions)
             }
         }
         
@@ -413,12 +413,12 @@ class MagmoorAttacks {
             let duplicateSetup: (duplicatePattern: MagmoorDuplicate.DuplicateAttackPattern, attackType: AttackPattern, attackSpeed: TimeInterval)
             
             switch i {
-            case 0:     duplicateSetup = (.player, .normal, 3)
+            case 0:     duplicateSetup = (.player, count > 4 ? .spread : .normal, 3)
             case 1:     duplicateSetup = (.player, .freeze, 4)
             case 2:     duplicateSetup = (.random, .poison, 2)
-            case 3:     duplicateSetup = (.invincible, .castInvincible, 1)
+            default:     duplicateSetup = (.invincible, .castInvincible, 1)
 //            case 4:     duplicateSetup = (.sweeping, .destroySafe, 1)
-            default:    duplicateSetup = (.player, .normal, 3 + 0.1 * TimeInterval(i))
+//            default:    duplicateSetup = (.player, .normal, 3 + 0.1 * TimeInterval(i))
             }
             
             let duplicate = MagmoorDuplicate(on: gameboard,
@@ -439,12 +439,10 @@ class MagmoorAttacks {
         }
     }
     
-    private func helperCastInvincibleShields() {
-        guard let duplicates = MagmoorDuplicate.getMagmoorDuplicates(on: gameboard),
-              let invincibleDuplicate = duplicates.filter({ $0.duplicatePattern == .invincible}).first,
-              let invincibleDuplicatePosition = invincibleDuplicate.duplicatePosition else {
-            return
-        }
+    private func helperCastInvincibleShields(positions: FinalBattle2Controls.PlayerPositions) {
+        guard let invincibleDuplicate = MagmoorDuplicate.getDuplicateAt(position: positions.villain, on: gameboard),
+              invincibleDuplicate.duplicatePattern == .invincible,
+              let invincibleDuplicatePosition = invincibleDuplicate.duplicatePosition else { return }
         
         let numParticles: Int = 6
         

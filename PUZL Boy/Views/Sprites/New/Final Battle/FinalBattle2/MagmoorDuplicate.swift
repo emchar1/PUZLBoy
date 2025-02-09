@@ -143,6 +143,29 @@ class MagmoorDuplicate: SKNode {
         return magmoorDuplicates.filter { $0.duplicatePattern == .invincible }.first != nil
     }
     
+    /**
+     Given a position on the gameboard, ensures there is an exit (unobstructed) panel adjacent to it, for PUZL Boy to get to.
+     - parameters:
+        - position: position to check for exit path
+        - gameboard: the gameboard sprite on which to check
+     - returns: true if an exit path exists.
+     */
+    static func hasAnExit(at position: K.GameboardPosition, on gameboard: GameboardSprite) -> Bool {
+        func isPanelFree(_ position: K.GameboardPosition) -> Bool {
+            let outOfBounds = position.row < 0 || position.row >= gameboard.panelCount || position.col < 0 || position.col >= gameboard.panelCount
+            let noDuplicate = getDuplicateAt(position: position, on: gameboard) == nil
+            
+            return !outOfBounds && noDuplicate
+        }
+        
+        let positionAbove: K.GameboardPosition = (position.row, position.col - 1)
+        let positionBelow: K.GameboardPosition = (position.row, position.col + 1)
+        let positionLeft: K.GameboardPosition = (position.row - 1, position.col)
+        let positionRight: K.GameboardPosition = (position.row + 1, position.col)
+        
+        return isPanelFree(positionAbove) || isPanelFree(positionBelow) || isPanelFree(positionLeft) || isPanelFree(positionRight)
+    }
+    
     
     // MARK: - Animation Functions
     
@@ -272,7 +295,13 @@ class MagmoorDuplicate: SKNode {
         
         repeat {
             positionNew = (row: Int.random(in: 0..<gameboard.panelCount), col: Int.random(in: 0..<gameboard.panelCount))
-        } while positionNew == FinalBattle2Spawner.startPosition || positionNew == FinalBattle2Spawner.endPosition || positionNew == positions.player || positionNew == positions.villain || MagmoorDuplicate.getDuplicateAt(position: positionNew, on: gameboard) != nil
+        }
+        while positionNew == FinalBattle2Spawner.startPosition
+                || positionNew == FinalBattle2Spawner.endPosition
+                || positionNew == positions.player
+                || positionNew == positions.villain
+                || MagmoorDuplicate.getDuplicateAt(position: positionNew, on: gameboard) != nil
+                || !MagmoorDuplicate.hasAnExit(at: positionNew, on: gameboard)
         
         return positionNew
     }

@@ -7,6 +7,10 @@
 
 import SpriteKit
 
+protocol FinalBattle2HealthDelegate: AnyObject {
+    func didUpdateHealth(_ healthCounter: Counter)
+}
+
 class FinalBattle2Health {
     
     // MARK: - Properties
@@ -41,6 +45,8 @@ class FinalBattle2Health {
     enum HealthType {
         case drain, drainPoison, stopDrain, heroAttack, villainAttackNormal, villainAttackFreeze, villainAttackPoison, villainAttackTimed, villainShieldExplode
     }
+    
+    weak var delegateHealth: FinalBattle2HealthDelegate?
     
     
     // MARK: - Initialization
@@ -166,6 +172,7 @@ class FinalBattle2Health {
         }
         
         bar.animateAndUpdate(percentage: counter.getCount())
+        delegateHealth?.didUpdateHealth(counter)
     }
     
     @objc private func helperDrain() {

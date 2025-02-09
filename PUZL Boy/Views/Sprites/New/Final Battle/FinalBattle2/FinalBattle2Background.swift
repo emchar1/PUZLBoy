@@ -11,7 +11,7 @@ class FinalBattle2Background {
     
     // MARK: - Properties
     
-    static let defaultBloodOverlayAlpha: CGFloat = 0.25
+    static var defaultBloodOverlayAlpha: CGFloat = 0.25
     
     private var backgroundSprite: SKSpriteNode
     private var bloodOverlay: SKSpriteNode

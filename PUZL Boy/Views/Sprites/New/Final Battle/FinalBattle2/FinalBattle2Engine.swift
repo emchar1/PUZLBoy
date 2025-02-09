@@ -125,8 +125,9 @@ class FinalBattle2Engine {
             panelSpawner[i].populateSpawner()
         }
         
-        health = FinalBattle2Health(player: hero, position: CGPoint(x: size.width / 2, y: K.ScreenDimensions.topOfGameboard))
         backgroundPattern = FinalBattle2Background(backgroundSprite: backgroundSprite, bloodOverlay: bloodOverlay, flashGameboard: flashGameboard)
+        health = FinalBattle2Health(player: hero, position: CGPoint(x: size.width / 2, y: K.ScreenDimensions.topOfGameboard))
+        health.delegateHealth = self
     }
     
     
@@ -575,5 +576,35 @@ extension FinalBattle2Engine: FinalBattle2SpawnerDelegate {
         controls.updateVillainMovementAndAttacks(speed: speed)
     }
     
+    
+}
+
+
+// MARK: - FinalBattle2HealthDelegate
+
+extension FinalBattle2Engine: FinalBattle2HealthDelegate {
+    // TODO: - Continue to work on special visual effects with bloodOverlay..
+    func didUpdateHealth(_ healthCounter: Counter) {
+        switch healthCounter.getCount() {
+        case let health where health < 0.1:     FinalBattle2Background.defaultBloodOverlayAlpha = 0.5
+        case let health where health < 0.15:     FinalBattle2Background.defaultBloodOverlayAlpha = 0.45
+        case let health where health < 0.2:     FinalBattle2Background.defaultBloodOverlayAlpha = 0.4
+        case let health where health < 0.25:     FinalBattle2Background.defaultBloodOverlayAlpha = 0.35
+        default:                                FinalBattle2Background.defaultBloodOverlayAlpha = 0.25
+        }
+        
+        
+        guard !panelSpawner.isEmpty else { return }
+        
+        let intensityMultiplier: CGFloat
+        
+        switch panelSpawner[0].currentSpeed {
+        case .slow:     intensityMultiplier = 0.5
+        case .medium:   intensityMultiplier = 0.75
+        case .fast:     intensityMultiplier = 1
+        }
+        
+        FinalBattle2Background.defaultBloodOverlayAlpha *= intensityMultiplier
+    }
     
 }
