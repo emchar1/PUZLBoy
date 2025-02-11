@@ -42,7 +42,6 @@ class ParticleEngine: SKNode {
         case lavaSizzle = "LavaSizzleParticles"
         case magicBlast = "MagicBlastParticles"
         case magicBlastCastInvincible = "MagicBlastCastInvincibleParticles"
-        case magicBlastCastDetonate = "MagicBlastCastDetonateParticles"
         case magicBlastLite = "MagicBlastLiteParticles"
         case magicBlastPoof = "MagicBlastPoofParticles"
         case magicElderExplosion = "MagicElderExplosionParticles"

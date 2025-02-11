@@ -267,8 +267,8 @@ class FinalBattle2Engine {
         case .poison:
             panelColor = .green
             healthType = .villainAttackPoison
-        default: // TODO: - .destroySafe, .castInvincible
-            panelColor = .systemIndigo
+        default: // TODO: - .castInvincible
+            panelColor = .purple
             healthType = .villainAttackNormal
         }
         
@@ -502,12 +502,7 @@ extension FinalBattle2Engine: FinalBattle2ControlsDelegate {
             for i in 0..<panelSpawnerCount {
                 panelSpawner[i].showPlatform(shouldShow: true, positions: controls.positions)
             }
-        // TODO: - Build out .destroySafe and .castInvincible cases for ControlsDelegate function didVillainAttack().
-        case .destroySafe:
-            villainAttackNormal(at: position, pattern: pattern, chosenSword: chosenSword)
         case .castInvincible:
-            break
-        case .castDetonate:
             break
         }
     }

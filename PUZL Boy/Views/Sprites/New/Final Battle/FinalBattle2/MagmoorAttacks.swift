@@ -33,11 +33,8 @@ class MagmoorAttacks {
     private let wandAnimationDelay: TimeInterval = 0.25
     private var fireballPosition: CGPoint { villain.sprite.position + getWandOffset(villain) }
     
-    private var detonationShield: DetonationShield?
-    private var detonationPumps = 0
-    
     enum AttackPattern: CaseIterable {
-        case normal, freeze, poison, spread, timed, timedLarge, duplicates, destroySafe, castInvincible, castDetonate
+        case normal, freeze, poison, spread, timed, timedLarge, duplicates, castInvincible
     }
     
     weak var delegateAttacks: MagmoorAttacksDelegate?
@@ -196,15 +193,8 @@ class MagmoorAttacks {
                 
                 self?.helperDuplicates(count: duplicateCount, positions: positions)
             }
-        case .destroySafe:
-            wandColor = .systemIndigo
-            
-            // TODO: - Build out destroying of safe panels in inward spiral pattern.
-            villain.sprite.run(SKAction.wait(forDuration: wandAnimationDelay)) { [weak self] in
-                self?.helperNormal(pattern: .normal, positions: positions)
-            }
         case .castInvincible:
-            wandColor = .black
+            wandColor = .purple
             
             villain.sprite.run(SKAction.wait(forDuration: wandAnimationDelay)) { [weak self] in
                 self?.helperCastInvincibleShields(positions: positions)
@@ -419,9 +409,7 @@ class MagmoorAttacks {
             case 0:     duplicateSetup = (.player, count > 4 ? .spread : .normal, 3)
             case 1:     duplicateSetup = (.player, .freeze, 4)
             case 2:     duplicateSetup = (.random, .poison, 2)
-            default:     duplicateSetup = (.invincible, .castInvincible, 1)
-//            case 4:     duplicateSetup = (.sweeping, .destroySafe, 1)
-//            default:    duplicateSetup = (.player, .normal, 3 + 0.1 * TimeInterval(i))
+            default:    duplicateSetup = (.invincible, .castInvincible, 1)
             }
             
             let duplicate = MagmoorDuplicate(on: gameboard,
