@@ -20,7 +20,6 @@ class MagmoorDuplicate: SKNode {
     static let duplicateNamePrefix: String = "duplicateMagmoor"
     
     private var gameboard: GameboardSprite
-    private var lastAttackPosition: K.GameboardPosition
     private(set) var duplicatePattern: DuplicateAttackPattern
     private var attackType: MagmoorAttacks.AttackPattern
     private var attackTimer: Timer
@@ -31,7 +30,7 @@ class MagmoorDuplicate: SKNode {
     private(set) var duplicatePosition: K.GameboardPosition?
     
     enum DuplicateAttackPattern: CaseIterable {
-        case player, random, sweeping, invincible
+        case player, random, invincible
     }
     
     weak var delegateDuplicate: MagmoorDuplicateDelegate?
@@ -41,7 +40,6 @@ class MagmoorDuplicate: SKNode {
     
     init(on gameboard: GameboardSprite, index: Int, duplicatePattern: DuplicateAttackPattern, attackType: MagmoorAttacks.AttackPattern, attackSpeed: TimeInterval, modelAfter villain: Player) {
         self.gameboard = gameboard
-        self.lastAttackPosition = (0, 0)
         self.duplicatePattern = duplicatePattern
         self.attackType = attackType
         self.attackTimer = Timer()
@@ -225,9 +223,6 @@ class MagmoorDuplicate: SKNode {
             positionToAttack = playerPosition
         case .random:
             positionToAttack = (Int.random(in: 0..<gameboard.panelCount), Int.random(in: 0..<gameboard.panelCount))
-        case .sweeping:
-            positionToAttack = lastAttackPosition
-            advanceNextAttackPosition()
         case .invincible:
             positionToAttack = playerPosition
         }
@@ -324,17 +319,6 @@ class MagmoorDuplicate: SKNode {
                                            selector: #selector(attackTimerFire(_:)),
                                            userInfo: nil,
                                            repeats: true)
-    }
-    
-    private func advanceNextAttackPosition() {
-        guard lastAttackPosition.row < gameboard.panelCount - 1 || lastAttackPosition.col < gameboard.panelCount - 1 else {
-            lastAttackPosition = (0, 0)
-            return
-        }
-        
-        //Set row BEFORE setting col!
-        lastAttackPosition.row = lastAttackPosition.col >= gameboard.panelCount - 1 ? lastAttackPosition.row + 1 : lastAttackPosition.row
-        lastAttackPosition.col = lastAttackPosition.col >= gameboard.panelCount - 1 ? 0 : lastAttackPosition.col + 1
     }
     
     
