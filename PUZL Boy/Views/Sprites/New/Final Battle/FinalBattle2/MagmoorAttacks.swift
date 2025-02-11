@@ -33,8 +33,11 @@ class MagmoorAttacks {
     private let wandAnimationDelay: TimeInterval = 0.25
     private var fireballPosition: CGPoint { villain.sprite.position + getWandOffset(villain) }
     
+    private var detonationShield: DetonationShield?
+    private var detonationPumps = 0
+    
     enum AttackPattern: CaseIterable {
-        case normal, freeze, poison, spread, timed, timedLarge, duplicates, destroySafe, castInvincible
+        case normal, freeze, poison, spread, timed, timedLarge, duplicates, destroySafe, castInvincible, castDetonate
     }
     
     weak var delegateAttacks: MagmoorAttacksDelegate?
@@ -440,22 +443,20 @@ class MagmoorAttacks {
     }
     
     private func helperCastInvincibleShields(positions: FinalBattle2Controls.PlayerPositions) {
-        guard let invincibleDuplicate = MagmoorDuplicate.getDuplicateAt(position: positions.villain, on: gameboard),
-              invincibleDuplicate.duplicatePattern == .invincible,
-              let invincibleDuplicatePosition = invincibleDuplicate.duplicatePosition else { return }
+        guard let duplicate = MagmoorDuplicate.getDuplicateAt(position: positions.villain, on: gameboard),
+              duplicate.duplicatePattern == .invincible,
+              let duplicatePosition = duplicate.duplicatePosition else { return }
         
         let numParticles: Int = 6
+        let startPoint: CGPoint = gameboard.getLocation(at: duplicatePosition)
         
         for i in 0..<numParticles {
-            let startPoint: CGPoint = gameboard.getLocation(at: invincibleDuplicatePosition)
-            
-            ParticleEngine.shared.animateParticles(
-                type: .magicBlastCastInvincible,
-                toNode: gameboard.sprite,
-                position: startPoint + getWandOffset(invincibleDuplicate.duplicate),
-                angle: 2 * .pi * CGFloat(i) / CGFloat(numParticles),
-                shouldFlipHorizontally: getFacingDirection(invincibleDuplicate.duplicate) > 0,
-                duration: 1)
+            ParticleEngine.shared.animateParticles(type: .magicBlastCastInvincible,
+                                                   toNode: gameboard.sprite,
+                                                   position: startPoint + getWandOffset(duplicate.duplicate),
+                                                   angle: 2 * .pi * CGFloat(i) / CGFloat(numParticles),
+                                                   shouldFlipHorizontally: getFacingDirection(duplicate.duplicate) > 0,
+                                                   duration: 1)
         }
     }
     

@@ -31,7 +31,7 @@ class MagmoorDuplicate: SKNode {
     private(set) var duplicatePosition: K.GameboardPosition?
     
     enum DuplicateAttackPattern: CaseIterable {
-        case player, random, sweeping, invincible
+        case player, random, sweeping, invincible, detonation
     }
     
     weak var delegateDuplicate: MagmoorDuplicateDelegate?
@@ -229,6 +229,8 @@ class MagmoorDuplicate: SKNode {
             positionToAttack = lastAttackPosition
             advanceNextAttackPosition()
         case .invincible:
+            positionToAttack = playerPosition
+        case .detonation:
             positionToAttack = playerPosition
         }
         

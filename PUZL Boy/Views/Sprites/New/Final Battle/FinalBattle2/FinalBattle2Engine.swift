@@ -11,6 +11,8 @@ class FinalBattle2Engine {
     
     // MARK: - Properties
     
+    static let heroName: String = "heroSpriteName"
+    
     private let size: CGSize
     private let panelSpawnerCount: Int = 3
     private var gameboard: GameboardSprite!
@@ -100,6 +102,7 @@ class FinalBattle2Engine {
         hero.sprite.color = FireIceTheme.isFire ? .red : .blue
         hero.sprite.colorBlendFactor = 0
         hero.sprite.zPosition = K.ZPosition.player
+        hero.sprite.name = FinalBattle2Engine.heroName
         
         villain = Player(type: .villain)
         villain.sprite.position = gameboard.getLocation(at: FinalBattle2Spawner.endPosition)
@@ -503,6 +506,8 @@ extension FinalBattle2Engine: FinalBattle2ControlsDelegate {
         case .destroySafe:
             villainAttackNormal(at: position, pattern: pattern, chosenSword: chosenSword)
         case .castInvincible:
+            break
+        case .castDetonate:
             break
         }
     }

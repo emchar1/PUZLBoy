@@ -61,6 +61,7 @@
 		EA37CF0C2D227D4400275A15 /* FinalBattle2Background.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA37CF0B2D227D4400275A15 /* FinalBattle2Background.swift */; };
 		EA3951ED2938165A00D0B14A /* Extension+UIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA3951EC2938165A00D0B14A /* Extension+UIImage.swift */; };
 		EA3951F12939DE5900D0B14A /* ScoringEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA3951F02939DE5900D0B14A /* ScoringEngine.swift */; };
+		EA3D6FAA2D5A9F3E0070A701 /* DetonationShield.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA3D6FA92D5A9F3E0070A701 /* DetonationShield.swift */; };
 		EA41F8352A0C7D8000DF47EC /* HowToPlayPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA41F8342A0C7D8000DF47EC /* HowToPlayPage.swift */; };
 		EA41F83A2A0D71EE00DF47EC /* ParentPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA41F8392A0D71EE00DF47EC /* ParentPage.swift */; };
 		EA41F83C2A0DD3F800DF47EC /* SettingsTapArea.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA41F83B2A0DD3F800DF47EC /* SettingsTapArea.swift */; };
@@ -116,6 +117,7 @@
 		EA705CDE2A1C5DD40051519B /* PurchasePage.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA705CDD2A1C5DD40051519B /* PurchasePage.swift */; };
 		EA705CE02A1C64760051519B /* buttontap5.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA705CDF2A1C64760051519B /* buttontap5.mp3 */; };
 		EA705CE22A1C69BA0051519B /* PurchaseTapButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA705CE12A1C69BA0051519B /* PurchaseTapButton.swift */; };
+		EA7210422D594DDB0082ADE4 /* MagicBlastCastDetonateParticles.sks in Resources */ = {isa = PBXBuildFile; fileRef = EA7210412D594DDB0082ADE4 /* MagicBlastCastDetonateParticles.sks */; };
 		EA7300112B5E00E1005BF98D /* MagicLightParticles.sks in Resources */ = {isa = PBXBuildFile; fileRef = EA7300102B5E00E1005BF98D /* MagicLightParticles.sks */; };
 		EA7300152B5F74B4005BF98D /* MarlinBlastSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA7300142B5F74B4005BF98D /* MarlinBlastSprite.swift */; };
 		EA73001B2B604A13005BF98D /* MagmoorScarySprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA73001A2B604A13005BF98D /* MagmoorScarySprite.swift */; };
@@ -468,6 +470,7 @@
 		EA37CF0B2D227D4400275A15 /* FinalBattle2Background.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinalBattle2Background.swift; sourceTree = "<group>"; };
 		EA3951EC2938165A00D0B14A /* Extension+UIImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+UIImage.swift"; sourceTree = "<group>"; };
 		EA3951F02939DE5900D0B14A /* ScoringEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoringEngine.swift; sourceTree = "<group>"; };
+		EA3D6FA92D5A9F3E0070A701 /* DetonationShield.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetonationShield.swift; sourceTree = "<group>"; };
 		EA41F8342A0C7D8000DF47EC /* HowToPlayPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HowToPlayPage.swift; sourceTree = "<group>"; };
 		EA41F8392A0D71EE00DF47EC /* ParentPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParentPage.swift; sourceTree = "<group>"; };
 		EA41F83B2A0DD3F800DF47EC /* SettingsTapArea.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTapArea.swift; sourceTree = "<group>"; };
@@ -525,6 +528,7 @@
 		EA705CDD2A1C5DD40051519B /* PurchasePage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchasePage.swift; sourceTree = "<group>"; };
 		EA705CDF2A1C64760051519B /* buttontap5.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = buttontap5.mp3; sourceTree = "<group>"; };
 		EA705CE12A1C69BA0051519B /* PurchaseTapButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseTapButton.swift; sourceTree = "<group>"; };
+		EA7210412D594DDB0082ADE4 /* MagicBlastCastDetonateParticles.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = MagicBlastCastDetonateParticles.sks; sourceTree = "<group>"; };
 		EA7300102B5E00E1005BF98D /* MagicLightParticles.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = MagicLightParticles.sks; sourceTree = "<group>"; };
 		EA7300142B5F74B4005BF98D /* MarlinBlastSprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarlinBlastSprite.swift; sourceTree = "<group>"; };
 		EA73001A2B604A13005BF98D /* MagmoorScarySprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MagmoorScarySprite.swift; sourceTree = "<group>"; };
@@ -884,6 +888,7 @@
 				EAB8B8BF2D4EB0E700E5DE5F /* MagmoorDuplicate.swift */,
 				EAB8B8BB2D4CA60700E5DE5F /* Fireball.swift */,
 				EAE751E02D2C712A004B138A /* MagmoorShield.swift */,
+				EA3D6FA92D5A9F3E0070A701 /* DetonationShield.swift */,
 			);
 			path = FinalBattle2;
 			sourceTree = "<group>";
@@ -1463,6 +1468,7 @@
 				EAB2DE0F2A9D4BD700172478 /* LavaSizzleParticles.sks */,
 				EAE215572ABD1DEB0090735A /* MagicBlastParticles.sks */,
 				EA48F92B2D555BB900B54B58 /* MagicBlastCastInvincibleParticles.sks */,
+				EA7210412D594DDB0082ADE4 /* MagicBlastCastDetonateParticles.sks */,
 				EAF8CA0E2C220DE900C6E92B /* MagicBlastLiteParticles.sks */,
 				EADF93AD2D37BE11006A0FFA /* MagicBlastPoofParticles.sks */,
 				EA81968F2C437AD90002D551 /* MagicElderExplosionParticles.sks */,
@@ -1708,6 +1714,7 @@
 				EA9D6A5C2B48E4F00004187B /* magicblast.mp3 in Resources */,
 				EA7605622B5A859C001BC268 /* movesnow1.mp3 in Resources */,
 				EA41FBFB2D02C09400796368 /* ydooropen.mp3 in Resources */,
+				EA7210422D594DDB0082ADE4 /* MagicBlastCastDetonateParticles.sks in Resources */,
 				EA8C606C2C068E0800DED3C7 /* winlevelageofruin.mp3 in Resources */,
 				EAE919472A4CAFFD00AF67D1 /* gemcollectparty3x.mp3 in Resources */,
 				EAB8B8B02D43429100E5DE5F /* gameendwin2.mp3 in Resources */,
@@ -1955,6 +1962,7 @@
 				EA705CE22A1C69BA0051519B /* PurchaseTapButton.swift in Sources */,
 				EA4583372A420AAA00279056 /* PartyInventory.swift in Sources */,
 				EA95D2142964FF350061059C /* SaveStateModel.swift in Sources */,
+				EA3D6FAA2D5A9F3E0070A701 /* DetonationShield.swift in Sources */,
 				EA3951F12939DE5900D0B14A /* ScoringEngine.swift in Sources */,
 				EA65182D28E4199E00E535BF /* SceneDelegate.swift in Sources */,
 				EAF07C0929E7A13F0034CD1A /* ParallaxObject.swift in Sources */,
