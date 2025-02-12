@@ -241,8 +241,7 @@ class MagmoorAttacks {
         ]))
         
         if playSFX {
-            AudioManager.shared.playSound(for: "villainattack\(Int.random(in: 1...2))")
-            AudioManager.shared.playSound(for: "villainattackwand")
+            AudioManager.shared.playSound(for: "villainattack\(Int.random(in: 1...2))", interruptPlayback: false)
         }
         
         AudioManager.shared.playSound(for: "villainattackwand", interruptPlayback: false)
