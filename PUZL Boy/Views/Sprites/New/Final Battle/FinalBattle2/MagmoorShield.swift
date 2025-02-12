@@ -258,6 +258,8 @@ class MagmoorShield: SKNode {
         let fadeDuration: TimeInterval = 0.5
         let scaleAndFadeDuration: TimeInterval = 0.25
         
+        AudioManager.shared.playSound(for: "shieldcast", delay: shakeDuration, interruptPlayback: false)
+        
         removeAction(forKey: MagmoorShield.keyShieldThrobAction)
         run(SKAction.sequence([
             SKAction.group([
