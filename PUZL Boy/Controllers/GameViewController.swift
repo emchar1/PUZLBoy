@@ -214,7 +214,6 @@ extension GameViewController: AuthorizationRequestSceneDelegate {
 
 extension GameViewController: TitleSceneDelegate {
     func didTapStart(levelSelectNewLevel: Int?) {
-        /*
         // TODO: - Goes right to catwalk if Start Game and level is > 500.
         if levelSelectNewLevel == nil && (FIRManager.saveStateModel != nil && FIRManager.saveStateModel!.newLevel > Level.finalLevel) {
             let catwalkScene = CatwalkScene(size: K.ScreenDimensions.size)
@@ -233,14 +232,14 @@ extension GameViewController: TitleSceneDelegate {
         }
         
         UserDefaults.standard.set(true, forKey: K.UserDefaults.hasPlayedBefore)
-         */
         
         
         
-        // FIXME: - For use with build# 1.28(30). (Normally, use above, commented out code.)
-        let catwalkScene = CatwalkScene(size: K.ScreenDimensions.size)
-        catwalkScene.catwalkDelegate = self
-        skView.presentScene(catwalkScene, transition: SKTransition.fade(with: .white, duration: 3.0))
+        
+//        // FIXME: - For use with build# 1.28(30). (Normally, use above, commented out code.)
+//        let catwalkScene = CatwalkScene(size: K.ScreenDimensions.size)
+//        catwalkScene.catwalkDelegate = self
+//        skView.presentScene(catwalkScene, transition: SKTransition.fade(with: .white, duration: 3.0))
 //        let finalBattleScene = FinalBattleScene(size: K.ScreenDimensions.size)
 //        finalBattleScene.animateScene()
 //        skView.presentScene(finalBattleScene, transition: SKTransition.fade(with: .white, duration: 3.0))
