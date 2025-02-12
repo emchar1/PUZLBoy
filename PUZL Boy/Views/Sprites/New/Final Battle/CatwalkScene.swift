@@ -1147,8 +1147,6 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
             ]))
         }
         
-        AudioManager.shared.playSound(for: "chestclose")
-        
         chestSprite.texture = SKTexture(imageNamed: "chestclosed")
         chestSprite.run(SKAction.sequence([
             SKAction.wait(forDuration: hideDuration),
@@ -1600,8 +1598,6 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
     }
     
     private func shiftRedHelper(shouldShift: Bool, fasterHeartbeat: Bool, fadeDuration: TimeInterval) {
-        let heartbeatIndex: Int = fasterHeartbeat ? 2 : 1
-        
         if shouldShift {
             let colorizeRed = SKAction.colorize(with: FireIceTheme.overlayColor, colorBlendFactor: 1, duration: fadeDuration)
             isRedShift = true
@@ -1619,10 +1615,8 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
                 catwalkPanel.run(colorizeRed)
             }
             
-            if !AudioManager.shared.isPlaying(audioKey: "magicheartbeatloop\(heartbeatIndex)") {
-                AudioManager.shared.playSound(for: "magicheartbeatloop\(heartbeatIndex)")
-                AudioManager.shared.adjustVolume(to: 0.1, for: catwalkOverworld)
-            }
+            AudioManager.shared.playSound(for: "magicheartbeatloop\(fasterHeartbeat ? 2 : 1)", interruptPlayback: false)
+            AudioManager.shared.adjustVolume(to: 0.1, for: catwalkOverworld)
         }
         else {
             let colorizeNone = SKAction.colorize(withColorBlendFactor: 0, duration: fadeDuration)

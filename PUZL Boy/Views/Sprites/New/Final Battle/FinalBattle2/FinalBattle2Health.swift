@@ -269,7 +269,13 @@ class FinalBattle2Health {
     
     private func playBoyHurtSFX() {
         //Prevents multiple voices overlaying if makePlayerHurt() stacks, e.g. from drain + villainAttack
-        guard !AudioManager.shared.isPlaying(audioKey: "boypain1") && !AudioManager.shared.isPlaying(audioKey: "boypain2") && !AudioManager.shared.isPlaying(audioKey: "boypain3") && !AudioManager.shared.isPlaying(audioKey: "boypain4") else { return }
+        guard !AudioManager.shared.isPlaying(audioKey: "boypain1")
+                && !AudioManager.shared.isPlaying(audioKey: "boypain2")
+                && !AudioManager.shared.isPlaying(audioKey: "boypain3")
+                && !AudioManager.shared.isPlaying(audioKey: "boypain4")
+                && !AudioManager.shared.isPlaying(audioKey: "boyattack1")
+                && !AudioManager.shared.isPlaying(audioKey: "boyattack2")
+                && !AudioManager.shared.isPlaying(audioKey: "boyattack3") else { return }
         
         AudioManager.shared.playSound(for: "boypain\(Int.random(in: 1...4))")
         Haptics.shared.executeCustomPattern(pattern: FireIceTheme.isFire ? .lava : .water)

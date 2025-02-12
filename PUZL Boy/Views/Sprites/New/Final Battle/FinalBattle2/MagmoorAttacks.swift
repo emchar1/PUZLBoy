@@ -244,6 +244,8 @@ class MagmoorAttacks {
             AudioManager.shared.playSound(for: "villainattack\(Int.random(in: 1...2))")
             AudioManager.shared.playSound(for: "villainattackwand")
         }
+        
+        AudioManager.shared.playSound(for: "villainattackwand", interruptPlayback: false)
     }
     
     
@@ -409,7 +411,7 @@ class MagmoorAttacks {
             case 0:     duplicateSetup = (.player, count > 4 ? .spread : .normal, 3)
             case 1:     duplicateSetup = (.player, .freeze, 4)
             case 2:     duplicateSetup = (.random, .poison, 2)
-            default:    duplicateSetup = (.invincible, .castInvincible, 1)
+            default:    duplicateSetup = (.invincible, .castInvincible, 1.5)
             }
             
             let duplicate = MagmoorDuplicate(on: gameboard,
@@ -446,6 +448,8 @@ class MagmoorAttacks {
                                                    shouldFlipHorizontally: getFacingDirection(duplicate.duplicate) > 0,
                                                    duration: 1)
         }
+        
+        AudioManager.shared.playSound(for: "shieldcast2", interruptPlayback: false)
     }
     
     

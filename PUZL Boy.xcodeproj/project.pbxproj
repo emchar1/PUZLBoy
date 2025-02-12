@@ -344,7 +344,6 @@
 		EADEB3E92931404D00CDB232 /* dooropen.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EADEB3E82931404D00CDB232 /* dooropen.mp3 */; };
 		EADF93AE2D37BE11006A0FFA /* MagicBlastPoofParticles.sks in Resources */ = {isa = PBXBuildFile; fileRef = EADF93AD2D37BE11006A0FFA /* MagicBlastPoofParticles.sks */; };
 		EADF93B42D399037006A0FFA /* villainattackwand.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EADF93B32D399037006A0FFA /* villainattackwand.mp3 */; };
-		EADF93BA2D3CDD47006A0FFA /* chestclose.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EADF93B92D3CDD47006A0FFA /* chestclose.mp3 */; };
 		EADFD95C29F4CE8500C6F9D1 /* SettingsButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = EADFD95B29F4CE8500C6F9D1 /* SettingsButton.swift */; };
 		EADFD96229F90B6A00C6F9D1 /* ConfirmSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = EADFD96129F90B6A00C6F9D1 /* ConfirmSprite.swift */; };
 		EAE215122AB920160090735A /* Warp4Particles.sks in Resources */ = {isa = PBXBuildFile; fileRef = EAE215112AB920160090735A /* Warp4Particles.sks */; };
@@ -744,7 +743,6 @@
 		EADEB3E82931404D00CDB232 /* dooropen.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = dooropen.mp3; sourceTree = "<group>"; };
 		EADF93AD2D37BE11006A0FFA /* MagicBlastPoofParticles.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = MagicBlastPoofParticles.sks; sourceTree = "<group>"; };
 		EADF93B32D399037006A0FFA /* villainattackwand.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = villainattackwand.mp3; sourceTree = "<group>"; };
-		EADF93B92D3CDD47006A0FFA /* chestclose.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = chestclose.mp3; sourceTree = "<group>"; };
 		EADFD95B29F4CE8500C6F9D1 /* SettingsButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsButton.swift; sourceTree = "<group>"; };
 		EADFD96129F90B6A00C6F9D1 /* ConfirmSprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmSprite.swift; sourceTree = "<group>"; };
 		EAE215112AB920160090735A /* Warp4Particles.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Warp4Particles.sks; sourceTree = "<group>"; };
@@ -1159,7 +1157,6 @@
 				EA7A791E2C7EFF8100594349 /* chatopenstatue.mp3 */,
 				EA8C605D2C068E0700DED3C7 /* chatopentrainer.mp3 */,
 				EA8C60672C068E0800DED3C7 /* chatopenvillain.mp3 */,
-				EADF93B92D3CDD47006A0FFA /* chestclose.mp3 */,
 				EAE919442A4CA4A800AF67D1 /* clocktick.mp3 */,
 				EA3467AC29A8C7C7002DDA02 /* continueloop.mp3 */,
 				EADEB3E82931404D00CDB232 /* dooropen.mp3 */,
@@ -1719,7 +1716,6 @@
 				EAB8B8B82D4C8A5300E5DE5F /* MagicElderIce2Particles.sks in Resources */,
 				EA7605702B5B1F53001BC268 /* waterappear1.mp3 in Resources */,
 				EA4583582A4431C400279056 /* punchwhack2.mp3 in Resources */,
-				EADF93BA2D3CDD47006A0FFA /* chestclose.mp3 in Resources */,
 				EAE751D52D272946004B138A /* shieldcast2.mp3 in Resources */,
 				EAE43D972C48A93E00E6DB3C /* magicteleport2.mp3 in Resources */,
 				EA1F0E692B0F5CAC00EE0EEE /* arrowblink.mp3 in Resources */,

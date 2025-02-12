@@ -117,7 +117,6 @@ class AudioManager {
         addAudioItem("chatopenstatue", category: .soundFX)
         addAudioItem("chatopentrainer", category: .soundFX)
         addAudioItem("chatopenvillain", category: .soundFX)
-        addAudioItem("chestclose", category: .soundFX) //NEEDS PURCHASE $1
         addAudioItem("dooropen", category: .soundFX)
         addAudioItem("enemydeath", category: .soundFX)
         addAudioItem("enemyflame", category: .soundFX)
@@ -325,7 +324,7 @@ class AudioManager {
         - fadeIn: ramp up time in TimeInterval before reaching max volume. Default is 0.
         - delay: adds a delay in TimeInterval before playing the sound. Default is nil.
         - pan: pan value to initialize, defaults to center of player
-        - interruptPlayback: I forgot what this meant, but the default is true 🤷🏻‍♀️
+        - interruptPlayback: if false, if sound is currently playing and call to playSound() is made, let existing playback play and cancel call to playSound().
         - shouldLoop: if non-nil, override the audio item's category property, to determine whether to loop playback or not
      - returns: True if the player can play. False, otherwise.
      */
@@ -335,7 +334,7 @@ class AudioManager {
             return false
         }
         
-        guard interruptPlayback || audioItems[item.fileName] != nil && !audioItems[item.fileName]!.player.isPlaying else {
+        guard interruptPlayback || (audioItems[item.fileName] != nil && !audioItems[item.fileName]!.player.isPlaying) else {
             return false
         }
                 
@@ -412,7 +411,7 @@ class AudioManager {
         - fadeOut: length of time in seconds for music to fade before stopping.
         - delay: adds a delay in TimeInterval before playing the sound. Default is nil.
         - pan: pan value to initialize, defaults to center of player
-        - interruptPlayback: I forgot what this meant, but the default is true 🤷🏻‍♀️
+        - interruptPlayback: if false, if sound is currently playing and call to playSound() is made, let existing playback play and cancel call to playSound().
         - shouldLoop: if non-nil, override the audio item's category property, to determine whether to loop playback or not
      */
     func playSoundThenStop(for audioKey: String, currentTime: TimeInterval? = nil, fadeIn: TimeInterval = 0.0, playForDuration: TimeInterval, fadeOut: TimeInterval = 0.0, delay: TimeInterval? = nil, pan: Float = 0, interruptPlayback: Bool = true, shouldLoop: Bool? = nil) {
