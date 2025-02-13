@@ -29,6 +29,9 @@ class ChosenSword {
     ///Movement speed in the final battle 2. Higher = faster.
     private(set) var speedRating: TimeInterval
     
+    ///Chances of receiving better drops when defeating Magmoor's Duplicates in Final Battle 2. Out of 1.
+    private(set) var luckRating: CGFloat
+    
     
     //Required properties
     private(set) var type: SwordType
@@ -54,6 +57,7 @@ class ChosenSword {
             defenseRating = 0.6 //80
             piercingBonus = 1
             speedRating = 1.0
+            luckRating = 0.61
             
             imageName = "sword1Celestial"
             swordTitle = "Celestial Broadsword of Justice"
@@ -63,6 +67,7 @@ class ChosenSword {
             defenseRating = 0.85 //56
             piercingBonus = 1
             speedRating = 1.5
+            luckRating = 0.48
             
             imageName = "sword2Heavenly"
             swordTitle = "Heavenly Saber of Redemption"
@@ -72,6 +77,7 @@ class ChosenSword {
             defenseRating = 0.56 //86
             piercingBonus = 2
             speedRating = 0.75
+            luckRating = 0.46
             
             imageName = "sword3Cosmic"
             swordTitle = "Cosmic Cleaver of Purification"
@@ -81,6 +87,7 @@ class ChosenSword {
             defenseRating = 0.66 //72
             piercingBonus = 1
             speedRating = 1.0
+            luckRating = 0.82
             
             imageName = "sword4Eternal"
             swordTitle = "Blade of Eternal Might"
@@ -90,6 +97,7 @@ class ChosenSword {
             defenseRating = 1.0 //48
             piercingBonus = 1
             speedRating = 1.0
+            luckRating = 0.25
             
             imageName = "sword"
             swordTitle = "Plain Sword"
@@ -100,9 +108,11 @@ class ChosenSword {
         let defensePercentString: String = "\(Int(48.0 / defenseRating))"
         let piercingBonusString: String = "+\(piercingBonus)"
         let speedRatingString: String = "\(String(format: "%.1f", speedRating))x"
+        let luckRatingString: String = "\(Int(luckRating * 100))"
         
         statsString = "Attack: \(attackPercentString)          Defense: \(defensePercentString)"
         statsString += "\nPiercing: \(piercingBonusString)      Speed: \(speedRatingString)"
+        statsString += "\nLuck: \(luckRatingString)"
         
         spriteNode = SKSpriteNode(imageNamed: imageName)
         spriteNode.name = chosenSwordName

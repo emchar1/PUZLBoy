@@ -263,6 +263,10 @@ class MagmoorDuplicate: SKNode {
             duplicates.forEach { $0.invincibleShield?.breakInvincibleShield(completion: completion) }
         }
         
+        if let duplicatePosition = duplicatePosition {
+            DuplicateItem.shared.spawnItem(at: duplicatePosition, on: gameboard, delay: waitDuration + fadeDuration)
+        }
+        
         AudioManager.shared.playSound(for: "enemydeath")
         ParticleEngine.shared.animateParticles(type: .magicElderFire3,
                                                toNode: gameboard.sprite,

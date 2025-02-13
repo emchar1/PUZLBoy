@@ -74,6 +74,9 @@ class FinalBattle2Controls {
         chosenSword.spriteNode.setScale(gameboard.panelSize / chosenSword.spriteNode.size.width)
         chosenSword.spriteNode.zPosition = K.ZPosition.itemsAndEffects
         
+        //Populate DuplicateItem array here - 2/12/25
+        DuplicateItem.shared.populateSpawnedItems(luck: chosenSword.luckRating)
+        
         magmoorAttacks = MagmoorAttacks(gameboard: gameboard, villain: villain)
         magmoorShield = MagmoorShield(hitPoints: 0)
         
