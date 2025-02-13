@@ -62,6 +62,8 @@
 		EA3951ED2938165A00D0B14A /* Extension+UIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA3951EC2938165A00D0B14A /* Extension+UIImage.swift */; };
 		EA3951F12939DE5900D0B14A /* ScoringEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA3951F02939DE5900D0B14A /* ScoringEngine.swift */; };
 		EA3D6FAC2D5D43460070A701 /* DuplicateItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA3D6FAB2D5D43460070A701 /* DuplicateItem.swift */; };
+		EA3D6FAE2D5E793B0070A701 /* magicdisappear2.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA3D6FAD2D5E793B0070A701 /* magicdisappear2.mp3 */; };
+		EA3D6FB02D5E8C5D0070A701 /* magicdisappear2b.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA3D6FAF2D5E8C5D0070A701 /* magicdisappear2b.mp3 */; };
 		EA41F8352A0C7D8000DF47EC /* HowToPlayPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA41F8342A0C7D8000DF47EC /* HowToPlayPage.swift */; };
 		EA41F83A2A0D71EE00DF47EC /* ParentPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA41F8392A0D71EE00DF47EC /* ParentPage.swift */; };
 		EA41F83C2A0DD3F800DF47EC /* SettingsTapArea.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA41F83B2A0DD3F800DF47EC /* SettingsTapArea.swift */; };
@@ -468,6 +470,8 @@
 		EA3951EC2938165A00D0B14A /* Extension+UIImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+UIImage.swift"; sourceTree = "<group>"; };
 		EA3951F02939DE5900D0B14A /* ScoringEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoringEngine.swift; sourceTree = "<group>"; };
 		EA3D6FAB2D5D43460070A701 /* DuplicateItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DuplicateItem.swift; sourceTree = "<group>"; };
+		EA3D6FAD2D5E793B0070A701 /* magicdisappear2.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = magicdisappear2.mp3; sourceTree = "<group>"; };
+		EA3D6FAF2D5E8C5D0070A701 /* magicdisappear2b.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = magicdisappear2b.mp3; sourceTree = "<group>"; };
 		EA41F8342A0C7D8000DF47EC /* HowToPlayPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HowToPlayPage.swift; sourceTree = "<group>"; };
 		EA41F8392A0D71EE00DF47EC /* ParentPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParentPage.swift; sourceTree = "<group>"; };
 		EA41F83B2A0DD3F800DF47EC /* SettingsTapArea.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTapArea.swift; sourceTree = "<group>"; };
@@ -1190,6 +1194,8 @@
 				EA9D6A5F2B48E73D0004187B /* littlegirllaugh.mp3 */,
 				EA9D6A5B2B48E4F00004187B /* magicblast.mp3 */,
 				EAE43D8E2C48A72100E6DB3C /* magicdisappear.mp3 */,
+				EA3D6FAD2D5E793B0070A701 /* magicdisappear2.mp3 */,
+				EA3D6FAF2D5E8C5D0070A701 /* magicdisappear2b.mp3 */,
 				EA9D6A572B48E46F0004187B /* magicdoomloop.mp3 */,
 				EAE43D9E2C48AA6A00E6DB3C /* magicelderbanish.mp3 */,
 				EAE43D9C2C48AA4700E6DB3C /* magicelderexplosion.mp3 */,
@@ -1619,6 +1625,7 @@
 				EA95D194294690890061059C /* warp.mp3 in Resources */,
 				EA6DCBED2B61CBE900D5F707 /* DragonIceIdle.sks in Resources */,
 				EAE751E42D306F2E004B138A /* villainpain3.mp3 in Resources */,
+				EA3D6FB02D5E8C5D0070A701 /* magicdisappear2b.mp3 in Resources */,
 				EAAB41682CB1CBFE00BBFA75 /* MagicPrincessExplode2Particles.sks in Resources */,
 				EAEF2F062B4F679900AD8459 /* buttontap4.mp3 in Resources */,
 				EAE9194B2A4CB04B00AF67D1 /* gemcollectparty2x.mp3 in Resources */,
@@ -1649,6 +1656,7 @@
 				EA473BDD2C13D608003CEC1E /* waterdrown.mp3 in Resources */,
 				EA7605632B5A859C001BC268 /* movesnow3.mp3 in Resources */,
 				EAD19A092A96AA6D00A07A63 /* Assets.xcassets in Resources */,
+				EA3D6FAE2D5E793B0070A701 /* magicdisappear2.mp3 in Resources */,
 				EA49F2842BB90A3000C7D54E /* GroundExplodeParticles.sks in Resources */,
 				EAE919452A4CA4A800AF67D1 /* clocktick.mp3 in Resources */,
 				EAE751D72D272A2A004B138A /* swordparry.mp3 in Resources */,

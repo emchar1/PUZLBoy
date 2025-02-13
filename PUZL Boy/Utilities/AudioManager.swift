@@ -139,6 +139,8 @@ class AudioManager {
         addAudioItem("lightson", category: .soundFX)
         addAudioItem("magicblast", category: .soundFX)
         addAudioItem("magicdisappear", category: .soundFX)
+        addAudioItem("magicdisappear2", category: .soundFX) //NEEDS PURCHASE $2
+        addAudioItem("magicdisappear2b", category: .soundFX) //NEEDS PURCHASE $1 - either this or the one above!
         addAudioItem("magicelderbanish", category: .soundFX)
         addAudioItem("magicelderexplosion", category: .soundFX)
         addAudioItem("magicelderreduce", category: .soundFX)

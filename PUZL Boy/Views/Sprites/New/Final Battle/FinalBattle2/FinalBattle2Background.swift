@@ -59,9 +59,10 @@ class FinalBattle2Background {
      - parameters:
         - pattern: the background pattern of animations
         - fadeDuration: the duration of the fade into the pattern
+        - delay: add a delay, esp. when adjusting overworld music
         - shouldFlashGameboard: true if gameboard should flash a white color
      */
-    func animate(pattern: BackgroundPattern, fadeDuration: TimeInterval, shouldFlashGameboard: Bool = false) {
+    func animate(pattern: BackgroundPattern, fadeDuration: TimeInterval, delay: TimeInterval?, shouldFlashGameboard: Bool = false) {
         previousOverworldMusic = overworldMusic
         
         backgroundSprite.removeAllActions()
@@ -89,7 +90,9 @@ class FinalBattle2Background {
                     SKAction.fadeOut(withDuration: fadeDuration - flashDuration)
                 ]))
                 
-                adjustOverworldMusic(volume: 1, fadeDuration: fadeDuration)
+                DispatchQueue.main.asyncAfter(deadline: .now() + (delay ?? 0)) {
+                    self.adjustOverworldMusic(volume: 1, fadeDuration: fadeDuration)
+                }
             }
             else {
                 flashGameboard.run(SKAction.fadeOut(withDuration: fadeDuration))
@@ -105,7 +108,9 @@ class FinalBattle2Background {
                 SKAction.fadeAlpha(to: 0.8, duration: fadeDuration)
             ]))
             
-            adjustOverworldMusic(volume: 0.1, fadeDuration: fadeDuration)
+            DispatchQueue.main.asyncAfter(deadline: .now() + (delay ?? 0)) {
+                self.adjustOverworldMusic(volume: 0.1, fadeDuration: fadeDuration)
+            }
         case .wave:
             let magmoorColors: (first: UIColor, second: UIColor) = (UIColor.red, UIColor.black)
             let pulseDuration: TimeInterval = 2

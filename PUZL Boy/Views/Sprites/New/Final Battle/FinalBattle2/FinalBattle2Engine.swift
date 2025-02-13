@@ -170,7 +170,7 @@ class FinalBattle2Engine {
         villain.sprite.run(Player.animateIdleLevitate(player: villain))
         
         health.showHealth()
-        backgroundPattern.animate(pattern: .normal, fadeDuration: 0)
+        backgroundPattern.animate(pattern: .normal, fadeDuration: 0, delay: nil)
         
         for i in 0..<panelSpawner.count {
             panelSpawner[i].animateSpawner()
@@ -329,7 +329,7 @@ class FinalBattle2Engine {
         }
     }
     
-    private func shieldExplodeDamagePanels(at homePosition: K.GameboardPosition, chosenSword: ChosenSword) {
+    private func shieldExplodeDamagePanels(at homePosition: K.GameboardPosition, chosenSword: ChosenSword) -> Bool {
         func isValidPosition(row: Int, col: Int) -> Bool {
             return row >= 0 && row < gameboard.panelCount && col >= 0 && col < gameboard.panelCount
         }
@@ -373,6 +373,13 @@ class FinalBattle2Engine {
             else {
                 health.updateHealth(type: .villainShieldExplode, dmgMultiplier: chosenSword.defenseRating)
             }
+            
+            AudioManager.shared.playSoundThenStop(for: "magicdisappear2b", playForDuration: 3, fadeOut: 2)
+            
+            return true
+        }
+        else {
+            return false
         }
     }
     
@@ -468,7 +475,7 @@ extension FinalBattle2Engine: FinalBattle2ControlsDelegate {
     }
     
     func didVillainDisappear(fadeDuration: TimeInterval) {
-        backgroundPattern.animate(pattern: .blackout, fadeDuration: fadeDuration)
+        backgroundPattern.animate(pattern: .blackout, fadeDuration: fadeDuration, delay: nil)
     }
     
     func willVillainReappear() {
@@ -487,7 +494,7 @@ extension FinalBattle2Engine: FinalBattle2ControlsDelegate {
             controls.updateVillainMovementAndAttacks(speed: panelSpawner[0].currentSpeed)
         }
         
-        backgroundPattern.animate(pattern: .wave, fadeDuration: 2, shouldFlashGameboard: true)
+        backgroundPattern.animate(pattern: .wave, fadeDuration: 2, delay: nil, shouldFlashGameboard: true)
     }
     
     func didVillainAttack(pattern: MagmoorAttacks.AttackPattern, chosenSword: ChosenSword, position: K.GameboardPosition) {
@@ -524,7 +531,7 @@ extension FinalBattle2Engine: FinalBattle2ControlsDelegate {
     
     func handleShield(willDamage: Bool, didDamage: Bool, willBreak: Bool, didBreak: Bool, fadeDuration: TimeInterval?, chosenSword: ChosenSword, villainPosition: K.GameboardPosition?) {
         if willDamage {
-            backgroundPattern.animate(pattern: .convulse, fadeDuration: 0.04)
+            backgroundPattern.animate(pattern: .convulse, fadeDuration: 0.04, delay: nil)
         }
         else if didDamage {
             if !panelSpawner.isEmpty {
@@ -538,7 +545,7 @@ extension FinalBattle2Engine: FinalBattle2ControlsDelegate {
             
             
             
-            backgroundPattern.animate(pattern: .wave, fadeDuration: 2)
+            backgroundPattern.animate(pattern: .wave, fadeDuration: 2, delay: nil)
         }
         else if willBreak {
             let fadeDuration = fadeDuration ?? 0
@@ -550,8 +557,8 @@ extension FinalBattle2Engine: FinalBattle2ControlsDelegate {
         else if didBreak {
             let villainPosition = villainPosition ?? (0, 0)
             
-            backgroundPattern.animate(pattern: .normal, fadeDuration: 2, shouldFlashGameboard: true)
-            shieldExplodeDamagePanels(at: villainPosition, chosenSword: chosenSword)
+            let didAffectPlayer = shieldExplodeDamagePanels(at: villainPosition, chosenSword: chosenSword)
+            backgroundPattern.animate(pattern: .normal, fadeDuration: didAffectPlayer ? 3 : 2, delay: didAffectPlayer ? 2.5 : nil, shouldFlashGameboard: true)
         }
     }
     

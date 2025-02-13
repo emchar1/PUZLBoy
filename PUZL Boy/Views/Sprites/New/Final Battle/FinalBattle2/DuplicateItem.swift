@@ -41,6 +41,9 @@ class DuplicateItem {
         let items: [(item: LevelType, probability: CGFloat)]
         
         switch luck {
+        case let amt where amt <= 0.25:
+            timerDuration = 4
+            items = [(.sword, 0.20), (.hammer, 0.25), (.gem, 0.50), (.partyFast, 0.05), (.partyBomb, 0.00)]
         case let amt where amt <= 0.50:
             timerDuration = 5
             items = [(.sword, 0.25), (.hammer, 0.25), (.gem, 0.25), (.partyFast, 0.25), (.partyBomb, 0.00)]
