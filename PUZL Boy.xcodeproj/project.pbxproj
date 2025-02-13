@@ -61,6 +61,7 @@
 		EA37CF0C2D227D4400275A15 /* FinalBattle2Background.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA37CF0B2D227D4400275A15 /* FinalBattle2Background.swift */; };
 		EA3951ED2938165A00D0B14A /* Extension+UIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA3951EC2938165A00D0B14A /* Extension+UIImage.swift */; };
 		EA3951F12939DE5900D0B14A /* ScoringEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA3951F02939DE5900D0B14A /* ScoringEngine.swift */; };
+		EA3D6FAC2D5D43460070A701 /* DuplicateItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA3D6FAB2D5D43460070A701 /* DuplicateItem.swift */; };
 		EA41F8352A0C7D8000DF47EC /* HowToPlayPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA41F8342A0C7D8000DF47EC /* HowToPlayPage.swift */; };
 		EA41F83A2A0D71EE00DF47EC /* ParentPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA41F8392A0D71EE00DF47EC /* ParentPage.swift */; };
 		EA41F83C2A0DD3F800DF47EC /* SettingsTapArea.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA41F83B2A0DD3F800DF47EC /* SettingsTapArea.swift */; };
@@ -466,6 +467,7 @@
 		EA37CF0B2D227D4400275A15 /* FinalBattle2Background.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinalBattle2Background.swift; sourceTree = "<group>"; };
 		EA3951EC2938165A00D0B14A /* Extension+UIImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+UIImage.swift"; sourceTree = "<group>"; };
 		EA3951F02939DE5900D0B14A /* ScoringEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoringEngine.swift; sourceTree = "<group>"; };
+		EA3D6FAB2D5D43460070A701 /* DuplicateItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DuplicateItem.swift; sourceTree = "<group>"; };
 		EA41F8342A0C7D8000DF47EC /* HowToPlayPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HowToPlayPage.swift; sourceTree = "<group>"; };
 		EA41F8392A0D71EE00DF47EC /* ParentPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParentPage.swift; sourceTree = "<group>"; };
 		EA41F83B2A0DD3F800DF47EC /* SettingsTapArea.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTapArea.swift; sourceTree = "<group>"; };
@@ -880,6 +882,7 @@
 				EAB8B8BF2D4EB0E700E5DE5F /* MagmoorDuplicate.swift */,
 				EAB8B8BB2D4CA60700E5DE5F /* Fireball.swift */,
 				EAE751E02D2C712A004B138A /* MagmoorShield.swift */,
+				EA3D6FAB2D5D43460070A701 /* DuplicateItem.swift */,
 			);
 			path = FinalBattle2;
 			sourceTree = "<group>";
@@ -1995,6 +1998,7 @@
 				EA826C7C29858EBE00F19F81 /* ContinueSprite.swift in Sources */,
 				EAE751DF2D29E69A004B138A /* FinalBattle2Spawner.swift in Sources */,
 				EAB69E0028EFCF5B00C31DB3 /* PlayerSprite.swift in Sources */,
+				EA3D6FAC2D5D43460070A701 /* DuplicateItem.swift in Sources */,
 				EAB2DE122AA0415D00172478 /* SpeechBubbleItem.swift in Sources */,
 				EA95D1BF29538C450061059C /* AchievementGemCollector.swift in Sources */,
 			);

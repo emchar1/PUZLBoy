@@ -18,16 +18,16 @@ class CatwalkScene: SKScene {
     static let keySwordFloatAction = "swordFloatAction"
     static let keySelectSwordPulseAction = "selectSwordPulseAction"
     static let keySelectSwordScaleAction = "selectSwordScaleAction"
-    static let keyRainbowCycle = "rainbowCycle"
+    static let keyRainbowCycleAction = "rainbowCycleAction"
     static let keyMagmoorFadeAction = "magmoorFadeAction"
     static let keyMagmoorZoomAction = "magmoorZoomAction"
     static let keyMagmoorFlashZoomAction = "magmoorFlashZoomAction"
+    static let tikiNodeName = "tikiStatueNode"
+    static let chestNodeName = "treasureChestNode"
+    static let catwalkOverworld = "magicdoomloop"
     
-    private let tikiNodeName = "tikiStatueNode"
-    private let chestNodeName = "treasureChestNode"
-    private let catwalkOverworld = "magicdoomloop"
-    private let panelCount: Int = 5
     private let catwalkLength: Int = 51
+    private let panelCount: Int = 5
     private let panelSpacing: CGFloat = 4
     private var panelSize: CGFloat { size.width / CGFloat(panelCount) }
     private var scaleSize: CGSize { CGSize.zero + panelSize - panelSpacing }
@@ -118,7 +118,7 @@ class CatwalkScene: SKScene {
         chatEngine = nil
         elderChatBubble.cleanupManually()
         
-        AudioManager.shared.adjustVolume(to: 1, for: catwalkOverworld)
+        AudioManager.shared.adjustVolume(to: 1, for: CatwalkScene.catwalkOverworld)
     }
     
     private func setupNodes() {
@@ -278,7 +278,7 @@ class CatwalkScene: SKScene {
             playDialogue(panelIndex: currentPanelIndex)
         }
         
-        AudioManager.shared.playSound(for: catwalkOverworld, fadeIn: 4.5)
+        AudioManager.shared.playSound(for: CatwalkScene.catwalkOverworld, fadeIn: 4.5)
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -294,7 +294,8 @@ class CatwalkScene: SKScene {
         chatEngine.didTapButton(in: location)
         chatEngine.touchUp()
         
-        if let tikiNode = nodes(at: location).filter({ $0.name == tikiNodeName }).first as? SKSpriteNode, tikiNode.action(forKey: SKSpriteNode.keyAnimateStatue) == nil {
+        if let tikiNode = nodes(at: location).filter({ $0.name == CatwalkScene.tikiNodeName }).first as? SKSpriteNode,
+            tikiNode.action(forKey: SKSpriteNode.keyAnimateStatue) == nil {
             
             tikiNode.animateStatue()
             AudioManager.shared.playSound(for: "touchstatue")
@@ -302,7 +303,7 @@ class CatwalkScene: SKScene {
         }
         
         if canOpenChest {
-            guard nodes(at: location).filter({ $0.name == chestNodeName }).first != nil else { return }
+            guard nodes(at: location).filter({ $0.name == CatwalkScene.chestNodeName }).first != nil else { return }
             
             openChest()
             Haptics.shared.addHapticFeedback(withStyle: .heavy)
@@ -634,7 +635,7 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
         tiki.scale(to: scaleSize)
         tiki.alpha = 0
         tiki.zPosition = K.ZPosition.player - 3
-        tiki.name = tikiNodeName
+        tiki.name = CatwalkScene.tikiNodeName
         tiki.danceStatue()
         
         catwalkNode.addChild(tiki)
@@ -668,7 +669,7 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
     }
     
     func despawnTikiCatwalk(fadeOut: TimeInterval, delay: TimeInterval?) {
-        guard let tiki = catwalkNode.childNode(withName: tikiNodeName) else { return }
+        guard let tiki = catwalkNode.childNode(withName: CatwalkScene.tikiNodeName) else { return }
         
         tiki.removeAllActions()
         tiki.run(SKAction.sequence([
@@ -693,7 +694,7 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
         chestSprite.scale(to: scaleSize)
         chestSprite.alpha = 0
         chestSprite.zPosition = K.ZPosition.player - 1
-        chestSprite.name = chestNodeName
+        chestSprite.name = CatwalkScene.chestNodeName
         
         chestSprite.run(SKAction.group([
             SKAction.fadeIn(withDuration: spawnDuration / 2),
@@ -854,7 +855,7 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
         AudioManager.shared.playSound(for: music, fadeIn: fadeIn)
         
         if shouldStopOverworld {
-            AudioManager.shared.adjustVolume(to: 0.1, for: catwalkOverworld, fadeDuration: fadeIn)
+            AudioManager.shared.adjustVolume(to: 0.1, for: CatwalkScene.catwalkOverworld, fadeDuration: fadeIn)
         }
     }
     
@@ -866,10 +867,8 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
         }
         
         if shouldPlayOverworld {
-            run(SKAction.wait(forDuration: delay ?? 0)) { [weak self] in
-                guard let self = self else { return }
-                
-                AudioManager.shared.adjustVolume(to: 1, for: catwalkOverworld, fadeDuration: fadeOut)
+            run(SKAction.wait(forDuration: delay ?? 0)) {
+                AudioManager.shared.adjustVolume(to: 1, for: CatwalkScene.catwalkOverworld, fadeDuration: fadeOut)
             }
         }
     }
@@ -946,7 +945,7 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
         unshakeScreen(fadeDuration: fadeDuration * 2, completion: nil)
 
         AudioManager.shared.playSoundThenStop(for: "movetile\(Int.random(in: 1...3))", playForDuration: 0.2, fadeOut: 0.8)
-        AudioManager.shared.stopSound(for: catwalkOverworld, fadeDuration: fadeDuration * 2)
+        AudioManager.shared.stopSound(for: CatwalkScene.catwalkOverworld, fadeDuration: fadeDuration * 2)
         AudioManager.shared.stopSound(for: "magmoorcreepypulse", fadeDuration: fadeDuration * 2)
         AudioManager.shared.stopSound(for: "magmoorcreepystrings", fadeDuration: fadeDuration * 2)
     }
@@ -1038,7 +1037,7 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
      Opens the treasure chest.
      */
     private func openChest() {
-        guard let chestSprite = catwalkNode.childNode(withName: chestNodeName) as? SKSpriteNode else { return }
+        guard let chestSprite = catwalkNode.childNode(withName: CatwalkScene.chestNodeName) as? SKSpriteNode else { return }
         
         canOpenChest = false
         shouldSelectSword = true
@@ -1130,7 +1129,7 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
         shouldSelectSword = false
         FIRManager.updateFirestoreRecordChosenSword(chosenSword.type.rawValue)
         
-        guard let chestSprite = catwalkNode.childNode(withName: chestNodeName) as? SKSpriteNode else { return }
+        guard let chestSprite = catwalkNode.childNode(withName: CatwalkScene.chestNodeName) as? SKSpriteNode else { return }
         
         catwalkNode.children.forEach { node in
             guard let name = node.name, name.contains(ChosenSword.namePrefix), let nonchosenSword = node as? SKSpriteNode else { return }
@@ -1247,7 +1246,7 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
                     
                     for (i, panel) in catwalkPanels.enumerated() {
                         panel.removeAllActions()
-                        panel.run(animateRainbowCycle(cycleSpeed: cycleSpeed, delay: TimeInterval(catwalkLength - i) * delaySpeed), withKey: CatwalkScene.keyRainbowCycle)
+                        panel.run(animateRainbowCycle(cycleSpeed: cycleSpeed, delay: TimeInterval(catwalkLength - i) * delaySpeed), withKey: CatwalkScene.keyRainbowCycleAction)
                     }
                     
                     endClosedMagic.animateAppearGlow(fadeDuration: fadeDuration, waitDuration: 5)
@@ -1258,12 +1257,12 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
                     inbetweenNode.run(SKAction.fadeOut(withDuration: fadeDuration))
                     bloodOverlay.run(SKAction.fadeOut(withDuration: fadeDuration))
                     
-                    elder0.sprite.run(animateRainbowCycle(cycleSpeed: cycleSpeed, delay: 3 * delaySpeed), withKey: CatwalkScene.keyRainbowCycle)
-                    elder1.sprite.run(animateRainbowCycle(cycleSpeed: cycleSpeed, delay: 4 * delaySpeed), withKey: CatwalkScene.keyRainbowCycle)
-                    elder2.sprite.run(animateRainbowCycle(cycleSpeed: cycleSpeed, delay: 5 * delaySpeed), withKey: CatwalkScene.keyRainbowCycle)
-                    hero.sprite.run(animateRainbowCycle(cycleSpeed: cycleSpeed, delay: 6 * delaySpeed), withKey: CatwalkScene.keyRainbowCycle)
+                    elder0.sprite.run(animateRainbowCycle(cycleSpeed: cycleSpeed, delay: 3 * delaySpeed), withKey: CatwalkScene.keyRainbowCycleAction)
+                    elder1.sprite.run(animateRainbowCycle(cycleSpeed: cycleSpeed, delay: 4 * delaySpeed), withKey: CatwalkScene.keyRainbowCycleAction)
+                    elder2.sprite.run(animateRainbowCycle(cycleSpeed: cycleSpeed, delay: 5 * delaySpeed), withKey: CatwalkScene.keyRainbowCycleAction)
+                    hero.sprite.run(animateRainbowCycle(cycleSpeed: cycleSpeed, delay: 6 * delaySpeed), withKey: CatwalkScene.keyRainbowCycleAction)
                     
-                    AudioManager.shared.adjustVolume(to: 0, for: catwalkOverworld, fadeDuration: fadeDuration)
+                    AudioManager.shared.adjustVolume(to: 0, for: CatwalkScene.catwalkOverworld, fadeDuration: fadeDuration)
                 },
             ]))
         }
@@ -1458,7 +1457,7 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
         let delaySpeed: TimeInterval = 0.1
         
         for (i, panel) in catwalkPanels.enumerated() {
-            panel.removeAction(forKey: CatwalkScene.keyRainbowCycle)
+            panel.removeAction(forKey: CatwalkScene.keyRainbowCycleAction)
             panel.run(animateColorCycle(color: .red, shouldFlicker: panel == catwalkPanels.last, delay: TimeInterval(catwalkLength - i) * delaySpeed))
         }
         
@@ -1468,10 +1467,10 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
             SKAction.fadeIn(withDuration: 0.1)
         ]))
         
-        elder0.sprite.removeAction(forKey: CatwalkScene.keyRainbowCycle)
-        elder1.sprite.removeAction(forKey: CatwalkScene.keyRainbowCycle)
-        elder2.sprite.removeAction(forKey: CatwalkScene.keyRainbowCycle)
-        hero.sprite.removeAction(forKey: CatwalkScene.keyRainbowCycle)
+        elder0.sprite.removeAction(forKey: CatwalkScene.keyRainbowCycleAction)
+        elder1.sprite.removeAction(forKey: CatwalkScene.keyRainbowCycleAction)
+        elder2.sprite.removeAction(forKey: CatwalkScene.keyRainbowCycleAction)
+        hero.sprite.removeAction(forKey: CatwalkScene.keyRainbowCycleAction)
         
         elder0.sprite.run(animateColorCycle(color: .red, shouldFlicker: true, delay: 4 * delaySpeed))
         elder1.sprite.run(animateColorCycle(color: .red, shouldFlicker: true, delay: 5 * delaySpeed))
@@ -1554,10 +1553,8 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
                 SKAction.fadeOut(withDuration: fadeDuration * 3)
             ]),
             SKAction.removeFromParent(),
-            SKAction.run { [weak self] in
-                guard let self = self else { return }
-                
-                AudioManager.shared.adjustVolume(to: 1, for: catwalkOverworld, fadeDuration: fadeDuration * 2)
+            SKAction.run {
+                AudioManager.shared.adjustVolume(to: 1, for: CatwalkScene.catwalkOverworld, fadeDuration: fadeDuration * 2)
             }
         ]))
         
@@ -1592,7 +1589,7 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
             ]))
         }
         
-        AudioManager.shared.adjustVolume(to: 0.1, for: catwalkOverworld)
+        AudioManager.shared.adjustVolume(to: 0.1, for: CatwalkScene.catwalkOverworld)
         AudioManager.shared.playSoundThenStop(for: "magicheartbeatloop1", playForDuration: fadeDuration)
         Haptics.shared.executeCustomPattern(pattern: .heartbeat)
     }
@@ -1616,7 +1613,7 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
             }
             
             AudioManager.shared.playSound(for: "magicheartbeatloop\(fasterHeartbeat ? 2 : 1)", interruptPlayback: false)
-            AudioManager.shared.adjustVolume(to: 0.1, for: catwalkOverworld)
+            AudioManager.shared.adjustVolume(to: 0.1, for: CatwalkScene.catwalkOverworld)
         }
         else {
             let colorizeNone = SKAction.colorize(withColorBlendFactor: 0, duration: fadeDuration)
@@ -1628,7 +1625,7 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
                     self?.isRedShift = false
                 }
                 
-                AudioManager.shared.adjustVolume(to: 1, for: catwalkOverworld, fadeDuration: fadeDuration * 2)
+                AudioManager.shared.adjustVolume(to: 1, for: CatwalkScene.catwalkOverworld, fadeDuration: fadeDuration * 2)
             }
             
             elder0.sprite.run(colorizeNone)
