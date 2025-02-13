@@ -445,7 +445,7 @@ class MagmoorAttacks {
                                                    position: startPoint + getWandOffset(duplicate.duplicate),
                                                    angle: 2 * .pi * CGFloat(i) / CGFloat(numParticles),
                                                    shouldFlipHorizontally: getFacingDirection(duplicate.duplicate) > 0,
-                                                   duration: 2)
+                                                   duration: 1.5)
         }
         
         AudioManager.shared.playSound(for: "shieldcast2", interruptPlayback: false)

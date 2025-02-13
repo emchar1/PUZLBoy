@@ -19,7 +19,8 @@ class MagmoorShield: SKNode {
     // MARK: - Properties
     
     static let keyShieldThrobAction = "shieldThrobAction"
-    
+    static let keyRotateAction = "rotateAction"
+
     private(set) var resetCount: Int = 0
     private(set) var speedReduction: TimeInterval = 0
     private var maxHitPoints: Int = 3
@@ -256,7 +257,7 @@ class MagmoorShield: SKNode {
         
         let shakeDuration: TimeInterval = 2
         let fadeDuration: TimeInterval = 0.5
-        let scaleAndFadeDuration: TimeInterval = 0.25
+        let scaleDuration: TimeInterval = 0.25
         
         AudioManager.shared.playSound(for: "shieldcast", delay: shakeDuration, interruptPlayback: false)
         
@@ -266,8 +267,14 @@ class MagmoorShield: SKNode {
                 scaleAndFade(size: 3, alpha: 1, duration: fadeDuration),
                 shieldShake(duration: shakeDuration)
             ]),
-            scaleAndFade(size: 6, alpha: 1, duration: scaleAndFadeDuration),
-            SKAction.fadeOut(withDuration: scaleAndFadeDuration),
+            SKAction.group([
+                scaleAndFade(size: 7, alpha: 1, duration: scaleDuration),
+                shieldShake(duration: scaleDuration * 2)
+            ]),
+            SKAction.run { [weak self] in
+                self?.removeAction(forKey: MagmoorShield.keyRotateAction)
+            },
+            SKAction.fadeOut(withDuration: fadeDuration),
             SKAction.removeFromParent()
         ]), completion: completion)
     }
@@ -317,7 +324,7 @@ class MagmoorShield: SKNode {
             shieldThrob(waitDuration: 2.5)
         }
         
-        run(SKAction.repeatForever(SKAction.rotate(byAngle: .pi / 2, duration: 4)))
+        run(SKAction.repeatForever(SKAction.rotate(byAngle: .pi / 2, duration: 4)), withKey: MagmoorShield.keyRotateAction)
         run(SKAction.sequence([
             scaleAndFade(size: 6, alpha: 0.5, duration: 0.25),
             scaleAndFade(size: 2.5, alpha: 1, duration: 0.5),
