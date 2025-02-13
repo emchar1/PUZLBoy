@@ -267,13 +267,11 @@ class MagmoorShield: SKNode {
                 scaleAndFade(size: 3, alpha: 1, duration: fadeDuration),
                 shieldShake(duration: shakeDuration)
             ]),
-            SKAction.group([
-                scaleAndFade(size: 7, alpha: 1, duration: scaleDuration),
-                shieldShake(duration: scaleDuration * 2)
-            ]),
+            scaleAndFade(size: 7, alpha: 1, duration: scaleDuration),
             SKAction.run { [weak self] in
                 self?.removeAction(forKey: MagmoorShield.keyRotateAction)
             },
+            shieldShake(duration: scaleDuration),
             SKAction.fadeOut(withDuration: fadeDuration),
             SKAction.removeFromParent()
         ]), completion: completion)
