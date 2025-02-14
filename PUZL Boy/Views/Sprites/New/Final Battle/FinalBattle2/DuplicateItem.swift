@@ -150,9 +150,12 @@ class DuplicateItem {
     
     private func setTimer(at position: K.GameboardPosition, on gameboard: GameboardSprite) {
         guard let item = getItem(at: position, on: gameboard) else { return }
-                
+        
         item.sprite.run(SKAction.sequence([
             SKAction.wait(forDuration: timerDuration),
+            SKAction.run {
+                item.sprite.removeAction(forKey: GameboardSprite.keyOverlayAnimation)
+            },
             SKAction.scale(by: 1.25, duration: 1),
             SKAction.scale(to: 0, duration: 0.25),
             SKAction.removeFromParent()

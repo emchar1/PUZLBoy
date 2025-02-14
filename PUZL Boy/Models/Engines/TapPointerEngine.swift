@@ -16,15 +16,37 @@ class TapPointerEngine: SKNode {
     private let pointerSize = K.ScreenDimensions.size * 0.05
     private var superScene: SKScene?
     private var location: CGPoint?
+    private var colorUsed: UIColor?
     private var randomGold: UIColor { UIColor(red: .random(in: 0.9...1), green: .random(in: 0.8...0.9), blue: .random(in: 0.4...0.8), alpha: 1) }
+    private var randomColor: UIColor {
+        guard let colorUsed = colorUsed else { return randomGold }
+        
+        let randomMin: CGFloat = -0.2
+        let randomMax: CGFloat = 0.2
+        
+        var red: CGFloat = 0
+        var green: CGFloat = 0
+        var blue: CGFloat = 0
+        var alpha: CGFloat = 0
+        
+        colorUsed.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
+        
+        red += max(0, min(1, .random(in: randomMin...randomMax)))
+        green += max(0, min(1, .random(in: randomMin...randomMax)))
+        blue += max(0, min(1, .random(in: randomMin...randomMax)))
+
+        return UIColor(red: red, green: green, blue: blue, alpha: alpha)
+    }
     
-    private var pointerNode: SKShapeNode?
-    private var sparkNode: SKSpriteNode?
+    private var pointerNode: SKShapeNode?           //several triangular nodes
+    private var sparkNode: SKSpriteNode?            //a hazy, round dot
     
     
     // MARK: - Initialization
     
-    override init() {
+    init(using color: UIColor? = nil) {
+        colorUsed = color
+        
         super.init()
         
         setupNodes()
@@ -97,6 +119,13 @@ class TapPointerEngine: SKNode {
         addParticleNode(type: particleType)
     }
     
+    func changeColor(to color: UIColor?) {
+        colorUsed = color
+    }
+    
+    
+    // MARK: - Helper Functions
+    
     private func addPointerNode() {
         guard let superScene = superScene else { return }
         guard let location = location else { return }
@@ -104,7 +133,7 @@ class TapPointerEngine: SKNode {
         for i in -1...1 {
             guard let pointerCopy = pointerNode?.copy() as! SKShapeNode? else { return }
             
-            pointerCopy.strokeColor = randomGold
+            pointerCopy.strokeColor = randomColor
             pointerCopy.zRotation = .random(in: 0...CGFloat.pi)
             pointerCopy.position = CGPoint(x: location.x + (CGFloat(i) * pointerSize.width * .random(in: 0...0.5)),
                                            y: location.y - (CGFloat(abs(i)) * pointerSize.width * .random(in: 0...0.5)))
@@ -119,7 +148,7 @@ class TapPointerEngine: SKNode {
 
         guard let sparkCopy = sparkNode?.copy() as! SKSpriteNode? else { return }
 
-        sparkCopy.color = randomGold
+        sparkCopy.color = randomColor
         sparkCopy.position = location
         
         superScene.addChild(sparkCopy)

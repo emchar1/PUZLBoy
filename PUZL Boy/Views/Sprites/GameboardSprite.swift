@@ -10,7 +10,8 @@ import SpriteKit
 class GameboardSprite {
     
     // MARK: - Properties: Static
-
+    
+    static let keyOverlayAnimation = "gameboardOverlayAnimation"
     static let gameboardColor: UIColor = UIColor(red: 225/255, green: 225/255, blue: 225/255, alpha: 1.0)
     static let delimiter = ","
     static let overlayTag = "-O"
@@ -1765,7 +1766,7 @@ class GameboardSprite {
                                                        duration: 2)
             },
             SKAction.wait(forDuration: wait2),
-        ])))
+        ])), withKey: GameboardSprite.keyOverlayAnimation)
     }
     
     func animateHeartbeat(position: K.GameboardPosition) {
@@ -1793,6 +1794,6 @@ class GameboardSprite {
             scaleDown,
             SKAction.scale(to: originalScale, duration: beatDuration),
             SKAction.wait(forDuration: bpmDuration)
-        ])))
+        ])), withKey: GameboardSprite.keyOverlayAnimation)
     }
 }
