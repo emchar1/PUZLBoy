@@ -347,23 +347,14 @@ class GameEngine {
      Checks for a special panel.
      */
     private func checkSpecialPanel(completion: (() -> ())?) {
-        func animateParticles(type: ParticleEngine.ParticleType, duration: TimeInterval = 2) {
-            ParticleEngine.shared.animateParticles(type: type,
-                                                   toNode: gameboardSprite.sprite,
-                                                   position: gameboardSprite.getLocation(at: level.player),
-                                                   scale: 3 / CGFloat(gameboardSprite.panelCount),
-                                                   duration: duration)
-        }
-        
-        
         switch level.getLevelType(at: level.player) {
         case .gem:
             gemsRemaining -= 1
             gemsCollected += 1
             
             Haptics.shared.addHapticFeedback(withStyle: .light)
-            animateParticles(type: .gemCollect)
-            animateParticles(type: .gemSparkle)
+            gameboardSprite.addParticles(type: .gemCollect, at: level.player)
+            gameboardSprite.addParticles(type: .gemSparkle, at: level.player)
 
             playerSprite.startItemCollectAnimation(on: gameboardSprite, at: level.player, item: .gem) { [weak self] in
                 self?.consumeItem()
@@ -378,7 +369,7 @@ class GameEngine {
             consumeItem()
             
             Haptics.shared.addHapticFeedback(withStyle: .rigid)
-            animateParticles(type: .itemPickup)
+            gameboardSprite.addParticles(type: .itemPickup, at: level.player)
             
             playerSprite.startPowerUpAnimation()
             playerSprite.startIdleAnimation()
@@ -399,7 +390,7 @@ class GameEngine {
             consumeItem()
 
             Haptics.shared.addHapticFeedback(withStyle: .rigid)
-            animateParticles(type: .itemPickup)
+            gameboardSprite.addParticles(type: .itemPickup, at: level.player)
             
             playerSprite.startPowerUpAnimation()
             playerSprite.startIdleAnimation()
@@ -418,7 +409,7 @@ class GameEngine {
             setLabelsForDisplaySprite()
             
             Haptics.shared.addHapticFeedback(withStyle: .soft)
-            animateParticles(type: .hearts)
+            gameboardSprite.addParticles(type: .hearts, at: level.player)
             
             ScoringEngine.updateStatusIconsAnimation(
                 icon: .health,
@@ -438,10 +429,12 @@ class GameEngine {
             level.inventory.hammers -= 1
             
             playerSprite.startHammerAnimation(on: gameboardSprite, at: level.player) { [weak self] in
-                animateParticles(type: .boulderCrush, duration: 5)
+                guard let self = self else { return }
                 
-                self?.setLabelsForDisplaySprite()
-                self?.consumeItem()
+                gameboardSprite.addParticles(type: .boulderCrush, at: level.player, duration: 5)
+                
+                setLabelsForDisplaySprite()
+                consumeItem()
                 
                 completion?()
             }
@@ -480,7 +473,7 @@ class GameEngine {
                 handleMarsh()
             }
             
-            animateParticles(type: .warp)
+            gameboardSprite.addParticles(type: .warp, at: level.player)
             
             playerSprite.startWarpAnimation(shouldReverse: false, stopAnimating: false) { [weak self] in
                 guard let self = self else { return }
@@ -512,8 +505,8 @@ class GameEngine {
             partyInventory.gems += 1
             
             Haptics.shared.addHapticFeedback(withStyle: .medium)
-            animateParticles(type: .partyGem)
-            animateParticles(type: .gemSparkle)
+            gameboardSprite.addParticles(type: .partyGem, at: level.player)
+            gameboardSprite.addParticles(type: .gemSparkle, at: level.player)
 
             playerSprite.startItemCollectAnimation(on: gameboardSprite, at: level.player, item: .partyGem, sound: .partyGem) { [weak self] in
                 self?.consumeItem()
@@ -523,8 +516,8 @@ class GameEngine {
             partyInventory.gemsDouble += 1
 
             Haptics.shared.addHapticFeedback(withStyle: .medium)
-            animateParticles(type: .partyGem)
-            animateParticles(type: .gemSparkle)
+            gameboardSprite.addParticles(type: .partyGem, at: level.player)
+            gameboardSprite.addParticles(type: .gemSparkle, at: level.player)
 
             playerSprite.startItemCollectAnimation(on: gameboardSprite, at: level.player, item: .partyGemDouble, sound: .partyGemDouble) { [weak self] in
                 self?.consumeItem()
@@ -534,8 +527,8 @@ class GameEngine {
             partyInventory.gemsTriple += 1
 
             Haptics.shared.addHapticFeedback(withStyle: .medium)
-            animateParticles(type: .partyGem)
-            animateParticles(type: .gemSparkle)
+            gameboardSprite.addParticles(type: .partyGem, at: level.player)
+            gameboardSprite.addParticles(type: .gemSparkle, at: level.player)
 
             playerSprite.startItemCollectAnimation(on: gameboardSprite, at: level.player, item: .partyGemTriple, sound: .partyGemTriple) { [weak self] in
                 self?.consumeItem()

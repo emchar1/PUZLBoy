@@ -302,19 +302,27 @@ class GameboardSprite {
         overlayPanel.position = getSpritePositionAbsolute(at: position).overlay
         overlayPanel.zPosition = itemOverlay == .warp4 ? K.ZPosition.itemsAndEffects - 10 : K.ZPosition.overlay
         overlayPanel.name = GameboardSprite.getNodeName(row: position.row, col: position.col, includeOverlayTag: true)
-
-        switch itemOverlay {
-        case .warp, .warp2, .warp3, .warp4, .warp5:
-            rotateWarp(node: overlayPanel, slow: true, repeatForever: true)
-        default:
-            break
-        }
         
         overlayPanel.run(SKAction.sequence([
             SKAction.wait(forDuration: delay ?? 0),
             SKAction.scale(to: scaleSize + bounceFactor, duration: duration),
             SKAction.scale(to: scaleSize, duration: duration),
-        ]), completion: completion)
+        ])) { [weak self] in
+            guard let self = self else { return }
+            
+            switch itemOverlay {
+            case .warp, .warp2, .warp3, .warp4, .warp5:
+                rotateWarp(node: overlayPanel, slow: true, repeatForever: true)
+            case .enemy:
+                animateBreatheFireIdle(position: position)
+            case .heart:
+                animateHeartbeat(position: position)
+            default:
+                break
+            }
+            
+            completion()
+        }
 
         sprite.addChild(overlayPanel)
     }
@@ -1588,6 +1596,21 @@ class GameboardSprite {
     
     
     // MARK: - Panel Animation Functions
+    
+    /**
+     Adds a particle effect. Use when collecting the item (overlay).
+     - parameters:
+        - type: the type of particle to explode
+        - position: the K.GameboardPosition on the gameboard
+        - duration: length of the particle animation defaults to 2
+     */
+    func addParticles(type: ParticleEngine.ParticleType, at position: K.GameboardPosition, duration: TimeInterval = 2) {
+        ParticleEngine.shared.animateParticles(type: type,
+                                               toNode: sprite,
+                                               position: getLocation(at: position),
+                                               scale: 3 / CGFloat(panelCount),
+                                               duration: duration)
+    }
     
     /**
      Rotates an overlay object if it exists (returns if not) using 4 directional types.

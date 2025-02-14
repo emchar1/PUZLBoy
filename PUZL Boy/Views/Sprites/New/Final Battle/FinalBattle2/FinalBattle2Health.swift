@@ -43,7 +43,7 @@ class FinalBattle2Health {
     }
     
     enum HealthType {
-        case drain, drainPoison, stopDrain, heroAttack, villainAttackNormal, villainAttackFreeze, villainAttackPoison, villainAttackTimed, villainShieldExplode
+        case drain, drainPoison, stopDrain, heroAttack, villainAttackNormal, villainAttackFreeze, villainAttackPoison, villainAttackTimed, villainShieldExplode, healthUp
     }
     
     weak var delegateHealth: FinalBattle2HealthDelegate?
@@ -126,6 +126,8 @@ class FinalBattle2Health {
         case .villainShieldExplode:
             timer = Timer.scheduledTimer(timeInterval: 0, target: self, selector: #selector(helperVillainShield), userInfo: nil, repeats: false)
             makePlayerHurt()
+        case .healthUp:
+            timer = Timer.scheduledTimer(timeInterval: 0, target: self, selector: #selector(helperHealthUp), userInfo: nil, repeats: false)
         }
     }
     
@@ -228,6 +230,10 @@ class FinalBattle2Health {
     
     @objc private func helperVillainShield() {
         objcHelper(rateDivisions: [], rates: [0.25].map { $0 * (dmgMultiplier ?? 1) }, increment: false)
+    }
+    
+    @objc private func helperHealthUp() {
+        objcHelper(rateDivisions: [], rates: [0.1].map { $0 * (dmgMultiplier ?? 1) }, increment: true)
     }
     
     

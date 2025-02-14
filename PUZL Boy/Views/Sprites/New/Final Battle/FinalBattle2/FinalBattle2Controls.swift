@@ -16,6 +16,7 @@ protocol FinalBattle2ControlsDelegate: AnyObject {
     func didDuplicateAttack(pattern: MagmoorAttacks.AttackPattern, chosenSword: ChosenSword, playerPosition: K.GameboardPosition)
     func didExplodeDuplicate(chosenSword: ChosenSword)
     func didVillainAttackBecomeVisible()
+    func didCollectDuplicateDroppedItem(item: LevelType, chosenSword: ChosenSword)
     func handleShield(willDamage: Bool, didDamage: Bool, willBreak: Bool, didBreak: Bool, fadeDuration: TimeInterval?, chosenSword: ChosenSword, villainPosition: K.GameboardPosition?)
 }
 

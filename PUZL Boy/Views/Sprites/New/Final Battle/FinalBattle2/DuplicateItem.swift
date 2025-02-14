@@ -43,19 +43,19 @@ class DuplicateItem {
         switch luck {
         case let amt where amt <= 0.25:
             timerDuration = 4
-            items = [(.sword, 0.20), (.hammer, 0.25), (.gem, 0.50), (.partyFast, 0.05), (.partyBomb, 0.00)]
+            items = [(.sword, 0.20), (.hammer, 0.25), (.gem, 0.50), (.partyFast, 0.05), (.heart, 0.00)]
         case let amt where amt <= 0.50:
             timerDuration = 5
-            items = [(.sword, 0.25), (.hammer, 0.25), (.gem, 0.25), (.partyFast, 0.25), (.partyBomb, 0.00)]
+            items = [(.sword, 0.25), (.hammer, 0.25), (.gem, 0.20), (.partyFast, 0.25), (.heart, 0.05)]
         case let amt where amt <= 0.75:
             timerDuration = 6
-            items = [(.sword, 0.30), (.hammer, 0.35), (.gem, 0.15), (.partyFast, 0.20), (.partyBomb, 0.00)]
+            items = [(.sword, 0.25), (.hammer, 0.35), (.gem, 0.10), (.partyFast, 0.20), (.heart, 0.10)]
         case let amt where amt <= 0.85:
             timerDuration = 8
-            items = [(.sword, 0.10), (.hammer, 0.15), (.gem, 0.00), (.partyFast, 0.50), (.partyBomb, 0.25)]
+            items = [(.sword, 0.10), (.hammer, 0.15), (.gem, 0.00), (.partyFast, 0.50), (.heart, 0.25)]
         default:
             timerDuration = 4
-            items = [(.sword, 0.20), (.hammer, 0.25), (.gem, 0.50), (.partyFast, 0.05), (.partyBomb, 0.00)]
+            items = [(.sword, 0.00), (.hammer, 0.00), (.gem, 0.00), (.partyFast, 0.00), (.heart, 1.00)]
         }
         
         spawnedItems = []
@@ -91,10 +91,10 @@ class DuplicateItem {
     @discardableResult func collectItem(at position: K.GameboardPosition, on gameboard: GameboardSprite) -> LevelType? {
         guard let item = getItem(at: position, on: gameboard) else { return nil }
         
-        collectedItems.append(item.levelType)
-        
-        item.sprite.zPosition = K.ZPosition.itemsAndEffects
-        item.sprite.run(SKAction.sequence([
+        let itemSprite = item.sprite.copy() as! SKSpriteNode
+        itemSprite.zPosition = K.ZPosition.itemsAndEffects
+        itemSprite.removeAllActions()
+        itemSprite.run(SKAction.sequence([
             SKAction.group([
                 SKAction.scale(by: 2, duration: 0.25),
                 SKAction.fadeOut(withDuration: 0.25)
@@ -102,7 +102,39 @@ class DuplicateItem {
             SKAction.removeFromParent()
         ]))
         
-        AudioManager.shared.playSound(for: "gemcollect")
+        gameboard.sprite.addChild(itemSprite)
+        
+        item.sprite.removeAllActions()
+        item.sprite.removeFromParent()
+                
+        let soundFX: String
+        let feedbackStyle: UIImpactFeedbackGenerator.FeedbackStyle
+        
+        switch item.levelType {
+        case .heart:        
+            soundFX = "pickupheart"
+            feedbackStyle = .soft
+            gameboard.addParticles(type: .hearts, at: position)
+        case .sword:
+            soundFX = "pickupitem"
+            feedbackStyle = .rigid
+            gameboard.addParticles(type: .itemPickup, at: position)
+        case .hammer:
+            soundFX = "pickupitem"
+            feedbackStyle = .rigid
+            gameboard.addParticles(type: .itemPickup, at: position)
+        case .partyFast:
+            soundFX = "gemcollectparty2x"
+            feedbackStyle = .medium
+        default:
+            soundFX = "gemcollect"
+            feedbackStyle = .light
+            gameboard.addParticles(type: .gemCollect, at: position)
+        }
+        
+        Haptics.shared.addHapticFeedback(withStyle: feedbackStyle)
+        AudioManager.shared.playSound(for: soundFX)
+        collectedItems.append(item.levelType)
         
         return item.levelType
     }

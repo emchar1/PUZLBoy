@@ -562,6 +562,17 @@ extension FinalBattle2Engine: FinalBattle2ControlsDelegate {
         }
     }
     
+    func didCollectDuplicateDroppedItem(item: LevelType, chosenSword: ChosenSword) {
+        switch item {
+        case .heart:
+            health.updateHealth(type: .healthUp, dmgMultiplier: chosenSword.attackRating)
+        default:
+            break
+        }
+        
+        print("Received \(item.description)")
+    }
+    
     
 }
 
