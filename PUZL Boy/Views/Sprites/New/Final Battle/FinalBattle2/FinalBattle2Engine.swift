@@ -374,7 +374,7 @@ class FinalBattle2Engine {
                 health.updateHealth(type: .villainShieldExplode, dmgMultiplier: chosenSword.defenseRating)
             }
             
-            AudioManager.shared.playSoundThenStop(for: "magicdisappear2b", playForDuration: 3, fadeOut: 2)
+            AudioManager.shared.playSoundThenStop(for: "magicdisappear2", playForDuration: 3, fadeOut: 2)
             
             return true
         }
@@ -604,10 +604,10 @@ extension FinalBattle2Engine: FinalBattle2HealthDelegate {
     // TODO: - Continue to work on special visual effects with bloodOverlay..
     func didUpdateHealth(_ healthCounter: Counter) {
         switch healthCounter.getCount() {
-        case let health where health < 0.1:     FinalBattle2Background.defaultBloodOverlayAlpha = 0.5
-        case let health where health < 0.15:     FinalBattle2Background.defaultBloodOverlayAlpha = 0.45
-        case let health where health < 0.2:     FinalBattle2Background.defaultBloodOverlayAlpha = 0.4
-        case let health where health < 0.25:     FinalBattle2Background.defaultBloodOverlayAlpha = 0.35
+        case let health where health < 0.10:    FinalBattle2Background.defaultBloodOverlayAlpha = 0.5
+        case let health where health < 0.15:    FinalBattle2Background.defaultBloodOverlayAlpha = 0.45
+        case let health where health < 0.20:    FinalBattle2Background.defaultBloodOverlayAlpha = 0.4
+        case let health where health < 0.25:    FinalBattle2Background.defaultBloodOverlayAlpha = 0.35
         default:                                FinalBattle2Background.defaultBloodOverlayAlpha = 0.25
         }
         

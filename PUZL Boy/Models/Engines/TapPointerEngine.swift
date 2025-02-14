@@ -16,10 +16,10 @@ class TapPointerEngine: SKNode {
     private let pointerSize = K.ScreenDimensions.size * 0.05
     private var superScene: SKScene?
     private var location: CGPoint?
-    private var colorUsed: UIColor?
+    private var pointerColor: UIColor?
     private var randomGold: UIColor { UIColor(red: .random(in: 0.9...1), green: .random(in: 0.8...0.9), blue: .random(in: 0.4...0.8), alpha: 1) }
     private var randomColor: UIColor {
-        guard let colorUsed = colorUsed else { return randomGold }
+        guard let pointerColor = pointerColor else { return randomGold }
         
         let randomMin: CGFloat = -0.2
         let randomMax: CGFloat = 0.2
@@ -29,7 +29,7 @@ class TapPointerEngine: SKNode {
         var blue: CGFloat = 0
         var alpha: CGFloat = 0
         
-        colorUsed.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
+        pointerColor.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
         
         red += max(0, min(1, .random(in: randomMin...randomMax)))
         green += max(0, min(1, .random(in: randomMin...randomMax)))
@@ -45,11 +45,28 @@ class TapPointerEngine: SKNode {
     // MARK: - Initialization
     
     init(using color: UIColor? = nil) {
-        colorUsed = color
+        pointerColor = color
         
         super.init()
         
         setupNodes()
+    }
+    
+    /**
+     Initialize pointerColor based on ChosenSword.
+     */
+    convenience init(using chosenSword: ChosenSword) {
+        let pointerColor: UIColor?
+        
+        switch chosenSword.type {
+        case .celestialBroadsword:  pointerColor = nil
+        case .heavenlySaber:        pointerColor = UIColor(red: 68/255, green: 149/255, blue: 193/255, alpha: 1)
+        case .cosmicCleaver:        pointerColor = UIColor(red: 68/255, green: 193/255, blue: 135/255, alpha: 1)
+        case .eternalBlade:         pointerColor = .systemPink
+        case .plainSword:           pointerColor = .black
+        }
+        
+        self.init(using: pointerColor)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -120,7 +137,7 @@ class TapPointerEngine: SKNode {
     }
     
     func changeColor(to color: UIColor?) {
-        colorUsed = color
+        pointerColor = color
     }
     
     

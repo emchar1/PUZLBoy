@@ -34,18 +34,7 @@ class FinalBattleScene: SKScene {
     private func setupScene() {
         backgroundColor = .black
         
-        let pointerColor: UIColor?
-        let chosenSword = ChosenSword(type: FIRManager.chosenSword)
-        
-        switch chosenSword.type {
-        case .celestialBroadsword:  pointerColor = nil
-        case .heavenlySaber:        pointerColor = UIColor(red: 68/255, green: 124/255, blue: 193/255, alpha: 1)
-        case .cosmicCleaver:        pointerColor = UIColor(red: 68/255, green: 193/255, blue: 124/255, alpha: 1)
-        case .eternalBlade:         pointerColor = .systemPink
-        case .plainSword:           pointerColor = .black
-        }
-        
-        tapPointerEngine = TapPointerEngine(using: pointerColor)
+        tapPointerEngine = TapPointerEngine(using: ChosenSword(type: FIRManager.chosenSword))
         finalBattle2Engine = FinalBattle2Engine(size: self.size)
     }
     
@@ -79,10 +68,9 @@ class FinalBattleScene: SKScene {
     }
     
     func cleanupScene(didWin: Bool, completion: @escaping () -> Void) {
-        tapPointerEngine = nil
-        
         // FIXME: - For use with build# 1.28(30).
         finalBattle2Engine.animateCleanup { [weak self] in
+            self?.tapPointerEngine = nil
             self?.finalBattle2Engine = nil
             completion()
         }

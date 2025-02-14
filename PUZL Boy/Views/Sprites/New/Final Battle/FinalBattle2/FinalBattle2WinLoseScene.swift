@@ -22,6 +22,7 @@ class FinalBattle2WinLoseScene: SKScene {
     private var winLoseLabel: SKLabelNode
     private var tryAgainButton: DecisionButtonSprite
     private var quitButton: DecisionButtonSprite
+    private var tapPointerEngine: TapPointerEngine?
     
     weak var winLoseDelegate: FinalBattle2WinLoseSceneDelegate?
     
@@ -53,6 +54,8 @@ class FinalBattle2WinLoseScene: SKScene {
         quitButton.alpha = 0
         quitButton.zPosition = 3
         quitButton.name = "quitButton"
+        
+        tapPointerEngine = TapPointerEngine(using: ChosenSword(type: FIRManager.chosenSword))
 
         super.init(size: size)
         
@@ -115,6 +118,8 @@ class FinalBattle2WinLoseScene: SKScene {
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard let location = touches.first?.location(in: self) else { return }
         
+        tapPointerEngine?.move(to: self, at: location, particleType: .pointer)
+        
         for node in nodes(at: location) {
             if node.name == "tryAgainButton" {
                 tryAgainButton.touchDown(in: location)
@@ -161,9 +166,13 @@ extension FinalBattle2WinLoseScene: DecisionButtonSpriteDelegate {
             //LESSON: - Identity operator (===) checks that node is the same object as tryAgainButton, i.e. they point to the same address in memory.
             if node === tryAgainButton {
                 winLoseDelegate?.didTapTryAgain()
+                
+                tapPointerEngine = nil
             }
             else if node === quitButton {
                 winLoseDelegate?.didTapQuit()
+                
+                tapPointerEngine = nil
             }
         }
         
