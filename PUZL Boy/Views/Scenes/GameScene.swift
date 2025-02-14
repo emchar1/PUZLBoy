@@ -818,8 +818,8 @@ extension GameScene: GameEngineDelegate {
             }
         }
         else {
-            newGame(level: currentLevel, didWin: true)
             startTimer()
+            newGame(level: currentLevel, didWin: true)
             
             //IMPORTANT: In this case, write to Firestore, MUST come last, after calling newGame()
             if !Level.isPartyLevel(currentLevel) {
