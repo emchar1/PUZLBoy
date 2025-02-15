@@ -178,7 +178,7 @@ class TapPointerEngine: SKNode {
         ParticleEngine.shared.animateParticles(type: type,
                                                toNode: superScene,
                                                position: location,
-                                               scale: 1,
+                                               scale: UIDevice.spriteScale,
                                                zPosition: K.ZPosition.activityIndicator + 20,
                                                duration: 2)
     }
