@@ -1688,13 +1688,13 @@ class GameboardSprite {
     }
     
     func animateDissolveSand(position: K.GameboardPosition) {
-        let sandNode = SKSpriteNode(imageNamed: (FireIceTheme.isFire ? "sand" : "snow") + AgeOfRuin.ruinSuffix)
+        let sandNode = SKSpriteNode(imageNamed: (FireIceTheme.levelTypeSandSnow.description) + AgeOfRuin.ruinSuffix)
         sandNode.color = GameboardSprite.dayThemeSpriteColor
         sandNode.colorBlendFactor = GameboardSprite.dayThemeSpriteShade
         sandNode.anchorPoint = .zero
         sandNode.zPosition = 10
         
-        let lavaString = (FireIceTheme.isFire ? "lava" : "water") + AgeOfRuin.ruinSuffix
+        let lavaString = (FireIceTheme.levelTypeLavaWater.description) + AgeOfRuin.ruinSuffix
         let lavaNode = SKSpriteNode(imageNamed: lavaString)
         lavaNode.color = GameboardSprite.dayThemeSpriteColor
         lavaNode.colorBlendFactor = GameboardSprite.dayThemeSpriteShade
@@ -1703,7 +1703,7 @@ class GameboardSprite {
         lavaNode.addChild(sandNode)
         setUserDataForLevelType(sprite: lavaNode, data: lavaString)
         
-        updatePanels(at: position, with: (terrain: FireIceTheme.isFire ? LevelType.lava : LevelType.water, overlay: LevelType.boundary))
+        updatePanels(at: position, with: (terrain: FireIceTheme.levelTypeLavaWater, overlay: LevelType.boundary))
         panels[position.row][position.col].addChild(lavaNode)
         
         

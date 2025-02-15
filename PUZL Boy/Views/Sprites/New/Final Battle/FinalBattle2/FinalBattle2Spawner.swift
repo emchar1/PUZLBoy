@@ -88,7 +88,7 @@ class FinalBattle2Spawner {
      Animates the Spawner, initialized to speed = 3.
      */
     func animateSpawner() {
-        let terrainPanel: LevelType = FireIceTheme.isFire ? .sand : .snow
+        let terrainPanel: LevelType = FireIceTheme.levelTypeSandSnow
         
         animateSpawnPanels(with: terrainPanel)
     }
@@ -201,7 +201,7 @@ class FinalBattle2Spawner {
                     let waitDuration: TimeInterval = TimeInterval(waitFactor) / TimeInterval(gameboard.panelCount)
                     let fadeDuration: TimeInterval = 0.25
                     
-                    let platformPanel = SKSpriteNode(imageNamed: LevelType.sand.description)
+                    let platformPanel = SKSpriteNode(imageNamed: FireIceTheme.levelTypeSandSnow.description)
                     platformPanel.anchorPoint = .zero
                     platformPanel.alpha = 0
                     platformPanel.zPosition = 5

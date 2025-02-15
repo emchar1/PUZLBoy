@@ -25,6 +25,8 @@ struct FireIceTheme {
     
     //Sprites, Textures & Images
     static var spriteEnemyExplode: String { isFire ? "enemy" : "enemyIce" }
+    static var levelTypeLavaWater: LevelType { isFire ? .lava : .water }
+    static var levelTypeSandSnow: LevelType { isFire ? .sand : .snow }
 
     //Effects
     static var particleTypeDragonFireIdle: ParticleEngine.ParticleType { isFire ? .dragonFireIdle : .dragonIceIdle }

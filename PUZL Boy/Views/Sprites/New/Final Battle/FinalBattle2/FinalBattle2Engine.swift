@@ -99,7 +99,7 @@ class FinalBattle2Engine {
         hero = Player(type: .hero)
         hero.sprite.position = gameboard.getLocation(at: FinalBattle2Spawner.startPosition)
         hero.sprite.setScale(playerScale * hero.scaleMultiplier)
-        hero.sprite.color = FireIceTheme.isFire ? .red : .blue
+        hero.sprite.color = FireIceTheme.overlayColor
         hero.sprite.colorBlendFactor = 0
         hero.sprite.zPosition = K.ZPosition.player
         hero.sprite.name = FinalBattle2Engine.heroName

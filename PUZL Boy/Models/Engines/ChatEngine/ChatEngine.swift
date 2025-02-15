@@ -2047,7 +2047,7 @@ extension ChatEngine {
             }
             else {
                 sendChatArray(items: [
-                    ChatItem(profile: .hero, imgPos: .left, chat: "Is this.. \(FireIceTheme.isFire ? "sand" : "snow")?? What happens when I step in it? Maybe that Tiki knows...")
+                    ChatItem(profile: .hero, imgPos: .left, chat: "Is this.. \(FireIceTheme.levelTypeSandSnow.description)?? What happens when I step in it? Maybe that Tiki knows...")
                 ]) { [weak self] in
                     self?.handleDialogueCompletion(level: level, completion: completion)
                 }
