@@ -1603,13 +1603,14 @@ class GameboardSprite {
      - parameters:
         - type: the type of particle to explode
         - position: the K.GameboardPosition on the gameboard
+        - scale: scale with respect to UIDevice.spriteScale and inversely with panelCount
         - duration: length of the particle animation defaults to 2
      */
-    func addParticles(type: ParticleEngine.ParticleType, at position: K.GameboardPosition, duration: TimeInterval = 2) {
+    func addParticles(type: ParticleEngine.ParticleType, at position: K.GameboardPosition, scale: CGFloat = 3, duration: TimeInterval = 2) {
         ParticleEngine.shared.animateParticles(type: type,
                                                toNode: sprite,
                                                position: getLocation(at: position),
-                                               scale: 3 / CGFloat(panelCount),
+                                               scale: UIDevice.spriteScale * scale / CGFloat(panelCount),
                                                duration: duration)
     }
     
