@@ -44,8 +44,8 @@ class Player {
     }
 
     enum Texture: Int, CaseIterable {
-        //IMPORTANT: DO NOT CHANGE THIS ORDER!! 8/29/24
-        case idle = 0, run, walk, dead, glide, jump, attack,
+        //IMPORTANT: DO NOT CHANGE THIS ORDER!! 8/29/24. Added .drown 2/14/25
+        case idle = 0, run, walk, dead, glide, jump, attack, drown,
              
              //IMPORTANT: marsh, sand, party MUST come last! They're not part of textures[[]] so their Int.rawValue will throw off the indexing
              marsh, sand, party
@@ -83,35 +83,38 @@ class Player {
         textures.append([]) //glide
         textures.append([]) //jump
         textures.append([]) //attack
-
+        textures.append([]) //drown
+        
         //This must come BEFORE setting up the sprite below!!
         switch type {
-            
-        // idle = 0, run, walk, dead, glide, jump, attack,
+        
+        // ordering: idle = 0, run, walk, dead, glide, jump, attack, drown
+        // framesRng: range of animation cells
+        // framesCmd: command, a.k.a. image name (in Assets)
         case .hero:
-            setupPlayer(framesRange: [1...15, 1...15, 1...15, 1...15, 5...5, 1...12, nil],
-                        framesCommand: [nil, nil, nil, nil, "Run", nil, nil])
+            setupPlayer(framesRng: [1...15, 1...15, 1...15, 1...15, 5...5, 1...12, nil, 1...2],
+                        framesCmd: [nil, nil, nil, nil, "Run", nil, nil, nil])
         case .trainer:
-            setupPlayer(framesRange: [1...6, 1...6, 1...6, 1...7, 2...2, nil, 1...6],
-                        framesCommand: [nil, nil, "Run", nil, "RuinDead", nil, nil])
+            setupPlayer(framesRng: [1...6, 1...6, 1...6, 1...7, 2...2, nil, 1...6, nil],
+                        framesCmd: [nil, nil, "Run", nil, "RuinDead", nil, nil, nil])
         case .princess:
-            setupPlayer(framesRange: [1...16, nil, 1...20, nil, nil, 26...33, nil])
+            setupPlayer(framesRng: [1...16, nil, 1...20, nil, nil, 26...33, nil, nil])
         case .princess2:
-            setupPlayer(framesRange: [1...12, 1...8, 1...8, nil, nil, 1...4, 1...8],
-                        framesCommand: [nil, nil, "Run", nil, nil, nil, nil])
+            setupPlayer(framesRng: [1...12, 1...8, 1...8, nil, nil, 1...4, 1...8, nil],
+                        framesCmd: [nil, nil, "Run", nil, nil, nil, nil, nil])
         case .villain:
-            setupPlayer(framesRange: [1...12, 1...12, 1...12, 1...12, 1...4, 1...4, 1...7],
-                        framesCommand: [nil, "Idle", "Idle", nil, "Sliding", nil, nil])
+            setupPlayer(framesRng: [1...12, 1...12, 1...12, 1...12, 1...4, 1...4, 1...7, nil],
+                        framesCmd: [nil, "Idle", "Idle", nil, "Sliding", nil, nil, nil])
         case .minion:
-            setupPlayer(framesRange: [1...12, 1...12, 1...12, nil, nil, nil, 1...7],
-                        framesCommand: [nil, "Idle", "Idle", nil, nil, nil, nil])
+            setupPlayer(framesRng: [1...12, 1...12, 1...12, nil, nil, nil, 1...7, nil],
+                        framesCmd: [nil, "Idle", "Idle", nil, nil, nil, nil, nil])
         case .youngTrainer:
-            setupPlayer(framesRange: [1...15, 1...15, 1...15, 1...15, 5...5, nil, nil],
-                        framesCommand: [nil, nil, nil, nil, "Run", nil, nil])
+            setupPlayer(framesRng: [1...15, 1...15, 1...15, 1...15, 5...5, nil, nil, nil],
+                        framesCmd: [nil, nil, nil, nil, "Run", nil, nil, nil])
         case .youngVillain:
-            setupPlayer(framesRange: [1...15, nil, 1...15, nil, nil, nil, nil])
+            setupPlayer(framesRng: [1...15, nil, 1...15, nil, nil, nil, nil, nil])
         case .elder0, .elder1, .elder2:
-            setupPlayer(framesRange: [1...12, 1...8, nil, nil, nil, nil, 1...8])
+            setupPlayer(framesRng: [1...12, 1...8, nil, nil, nil, nil, 1...8, nil])
         }
         
         sprite = SKSpriteNode(texture: textures[Texture.idle.rawValue][0])
@@ -128,8 +131,8 @@ class Player {
      > Warning: This is how you use the Warning keyword.
      - note: Initially a mutating function when Player was a struct prior to 9/24/24.
      */
-    private func setupPlayer(framesRange: [ClosedRange<Int>?], framesCommand: [String?]? = nil) {
-        guard framesRange.count == Texture.allCases.count - 3 else { return print("Player.setupPlayer() out of range for: \(self.type)") }
+    private func setupPlayer(framesRng: [ClosedRange<Int>?], framesCmd: [String?]? = nil) {
+        guard framesRng.count == Texture.allCases.count - 3 else { return print("Player.setupPlayer() out of range for: \(self.type)") }
         
         let prefix: String
         let multiplier: CGFloat
@@ -180,13 +183,14 @@ class Player {
             }
         }
         
-        populateTextures(textureIndex: 0, frames: framesRange[0], command: framesCommand?[0] ?? "Idle")
-        populateTextures(textureIndex: 1, frames: framesRange[1], command: framesCommand?[1] ?? "Run")
-        populateTextures(textureIndex: 2, frames: framesRange[2], command: framesCommand?[2] ?? "Walk")
-        populateTextures(textureIndex: 3, frames: framesRange[3], command: framesCommand?[3] ?? "Dead")
-        populateTextures(textureIndex: 4, frames: framesRange[4], command: framesCommand?[4] ?? "Glide")
-        populateTextures(textureIndex: 5, frames: framesRange[5], command: framesCommand?[5] ?? "Jump")
-        populateTextures(textureIndex: 6, frames: framesRange[6], command: framesCommand?[6] ?? "Attack")
+        populateTextures(textureIndex: 0, frames: framesRng[0], command: framesCmd?[0] ?? "Idle")
+        populateTextures(textureIndex: 1, frames: framesRng[1], command: framesCmd?[1] ?? "Run")
+        populateTextures(textureIndex: 2, frames: framesRng[2], command: framesCmd?[2] ?? "Walk")
+        populateTextures(textureIndex: 3, frames: framesRng[3], command: framesCmd?[3] ?? "Dead")
+        populateTextures(textureIndex: 4, frames: framesRng[4], command: framesCmd?[4] ?? "Glide")
+        populateTextures(textureIndex: 5, frames: framesRng[5], command: framesCmd?[5] ?? "Jump")
+        populateTextures(textureIndex: 6, frames: framesRng[6], command: framesCmd?[6] ?? "Attack")
+        populateTextures(textureIndex: 7, frames: framesRng[7], command: framesCmd?[7] ?? "Drown")
     }
     
     
@@ -331,6 +335,20 @@ class Player {
             case .elder0:           timePerFrameFallback = 0.06
             case .elder1:           timePerFrameFallback = 0.06
             case .elder2:           timePerFrameFallback = 0.06
+            case .youngTrainer:     timePerFrameFallback = defaultTime
+            case .youngVillain:     timePerFrameFallback = defaultTime
+            case .minion:           timePerFrameFallback = defaultTime
+            }
+        case .drown:
+            switch player.type {
+            case .hero:             timePerFrameFallback = 0.13
+            case .trainer:          timePerFrameFallback = defaultTime
+            case .villain:          timePerFrameFallback = defaultTime
+            case .princess:         timePerFrameFallback = defaultTime
+            case .princess2:        timePerFrameFallback = defaultTime
+            case .elder0:           timePerFrameFallback = defaultTime
+            case .elder1:           timePerFrameFallback = defaultTime
+            case .elder2:           timePerFrameFallback = defaultTime
             case .youngTrainer:     timePerFrameFallback = defaultTime
             case .youngVillain:     timePerFrameFallback = defaultTime
             case .minion:           timePerFrameFallback = defaultTime

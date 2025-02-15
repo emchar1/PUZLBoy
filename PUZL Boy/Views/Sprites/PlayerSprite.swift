@@ -176,14 +176,13 @@ class PlayerSprite {
         animateExplosion(on: gameboard, at: panel, scale: 1, textureName: "waterSplash", textureFrames: 6) { }
         
         player.sprite.run(SKAction.group([
-            SKAction.repeatForever(SKAction.sequence([
-                SKAction.moveBy(x: -4, y: 0, duration: 0.1),
-                SKAction.moveBy(x: 4, y: 0, duration: 0.1)
-            ])),
+            SKAction.repeat(SKAction.sequence([
+                SKAction.rotate(byAngle: .pi / 12, duration: 0.1),
+                SKAction.rotate(byAngle: -.pi / 12, duration: 0.1),
+            ]), count: 8),
             SKAction.sequence([
-                SKAction.moveBy(x: 0, y: -player.scale * player.sprite.size.height / 2, duration: 1.0),
-                SKAction.fadeOut(withDuration: 0.5)
-
+                SKAction.moveBy(x: 0, y: -player.scale * player.sprite.size.height / 2, duration: 1.5),
+                SKAction.fadeOut(withDuration: 0.25)
             ])
         ]))
     }
@@ -552,17 +551,19 @@ class PlayerSprite {
         }
     }
     
-    func startDeadAnimation(completion: @escaping (() -> Void)) {
+    func startDeadAnimation(shouldDrown: Bool, completion: @escaping (() -> Void)) {
         isAnimating = true
         AudioManager.shared.playSound(for: "boydead")
+        
+        let deadAction = shouldDrown ? Player.animate(player: player, type: .drown, repeatCount: 7) : SKAction.sequence([
+            Player.animate(player: player, type: .dead, repeatCount: 1),
+            SKAction.wait(forDuration: 1.5)
+        ])
         
         player.sprite.removeAction(forKey: AnimationKey.playerIdle.rawValue)
         player.sprite.removeAction(forKey: AnimationKey.playerMove.rawValue)
         
-        player.sprite.run(SKAction.sequence([
-            Player.animate(player: player, type: .dead, repeatCount: 1),
-            SKAction.wait(forDuration: 1.5)
-        ])) { [weak self] in
+        player.sprite.run(deadAction) { [weak self] in
             self?.isAnimating = false
             completion()
         }

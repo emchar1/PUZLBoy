@@ -1113,19 +1113,8 @@ class GameEngine {
             //Run this BEFORE startDeadAnimation!!
             PartyModeSprite.shared.stopParty(partyBoy: playerSprite)
             
-            if level.getLevelType(at: level.player) == .lava && !FireIceTheme.isFire {
-                //Water drowning sequence
-                AudioManager.shared.playSound(for: "boydead")
-
-                //1.8 seconds is the time it takes for player dead animation
-                playerSprite.sprite.run(SKAction.wait(forDuration: 1.8)) { [weak self] in
-                    self?.delegate?.gameIsOver(firstTimeCalled: true)
-                }
-            }
-            else {
-                playerSprite.startDeadAnimation { [weak self] in
-                    self?.delegate?.gameIsOver(firstTimeCalled: true)
-                }
+            playerSprite.startDeadAnimation(shouldDrown: level.getLevelType(at: level.player) == .lava && !FireIceTheme.isFire) { [weak self] in
+                self?.delegate?.gameIsOver(firstTimeCalled: true)
             }
         }
     }
