@@ -398,9 +398,17 @@ class FinalBattle2Controls {
         //In between, move player and completion...
         player.sprite.run(SKAction.sequence([
             SKAction.move(to: gameboard.getLocation(at: nextPanel), duration: Player.Texture.run.movementSpeed * movementMultiplier),
-            SKAction.run {
-                [weak self] in
-                self?.isDisabled = false
+            SKAction.run { [weak self] in
+                guard let self = self else { return }
+                
+                isDisabled = false
+                
+                // TODO: - Testing of DuplicateItem collection
+                if let spoils = DuplicateItem.shared.collectItem(at: nextPanel, on: gameboard) {
+                    delegateControls?.didCollectDuplicateDroppedItem(item: spoils, chosenSword: chosenSword)
+
+                    print("   --Items collected: \(DuplicateItem.shared.collectedItems.count). Items remaining: \(DuplicateItem.shared.spawnedItems.count)")
+                }
                 
                 AudioManager.shared.stopSound(for: runSound, fadeDuration: 0.25)
                 completion?()

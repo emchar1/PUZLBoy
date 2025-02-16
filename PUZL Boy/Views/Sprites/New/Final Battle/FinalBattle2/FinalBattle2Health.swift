@@ -110,7 +110,6 @@ class FinalBattle2Health {
             drainTimer?.invalidate()
             drainTimer = Timer.scheduledTimer(timeInterval: 0, target: self, selector: #selector(stopDrain), userInfo: nil, repeats: false)
         case .heroAttack:
-            timer?.invalidate()
             timer = Timer.scheduledTimer(timeInterval: 0, target: self, selector: #selector(helperHeroAttack), userInfo: nil, repeats: false)
         case .villainAttackNormal:
             timer = Timer.scheduledTimer(timeInterval: 0, target: self, selector: #selector(helperVillainAttackNormal), userInfo: nil, repeats: false)
@@ -152,6 +151,7 @@ class FinalBattle2Health {
         guard rates.count > 0 && rates.count > rateDivisions.count else { return }
         guard !(!increment && counter.counterDidReachMin) else { return }
         
+        // TODO: - 2/16/25 Can rate be a percentage based on counter, i.e. lower counter = lower percentage damage, and vice versa.
         var rate: TimeInterval {
             //default value is last element in rates array; must be non-zero due to guard check
             var rateReturn: TimeInterval = rates.last!
