@@ -264,16 +264,10 @@ class MagmoorDuplicate: SKNode {
         }
         
         if let duplicatePosition = duplicatePosition {
-            DuplicateItem.shared.spawnItem(at: duplicatePosition, on: gameboard, delay: waitDuration + fadeDuration)
+            DuplicateItem.shared.spawnItem(at: duplicatePosition, on: gameboard, delay: waitDuration)
         }
         
         AudioManager.shared.playSound(for: "enemydeath")
-        ParticleEngine.shared.animateParticles(type: .magicElderFire3,
-                                               toNode: gameboard.sprite,
-                                               position: duplicate.sprite.position,
-                                               scale: UIDevice.spriteScale / CGFloat(gameboard.panelCount),
-                                               zPosition: duplicate.sprite.zPosition - 2,
-                                               duration: 2)
         ParticleEngine.shared.animateParticles(type: .magicExplosion1_5,
                                                toNode: gameboard.sprite,
                                                position: duplicate.sprite.position,
