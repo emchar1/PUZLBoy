@@ -23,7 +23,8 @@ protocol ChatEngineCatwalkDelegate: AnyObject {
     func isUnselectingSwordCatwalk()
     func spawnSwordCatwalk(chosenSword: ChosenSword, spawnDuration: TimeInterval, delay: TimeInterval?, completion: @escaping () -> Void)
     func despawnSwordCatwalk(fadeDuration: TimeInterval, delay: TimeInterval?)
-    func throwSwordCatwalk()
+    func showLargeItem(imageName: String, fadeDuration: TimeInterval, delay: TimeInterval?)
+    func throwShieldCatwalk()
     func showGateCatwalk(completion: @escaping () -> Void)
     func feedGemsCatwalk()
     func spawnMagmoorCatwalk()
@@ -1207,7 +1208,7 @@ extension ChatEngine {
             sendChatArray(shouldSkipDim: true, items: [
                 ChatItem(profile: .trainer, pause: 2, chat: "you have doomed us all, puzl boy! the day of reckoning is at hand.", handler: nil),
                 ChatItem(profile: .hero, imgPos: .left, chat: "Marlin, I'm sorry! I tried everything to save you and the princess. Help us! PLEASE!!!"),
-                ChatItem(profile: .trainer, chat: "FAILURE!! REGRET!! SHAME!! DISHONOR!! WASTE!! DISAPPOINTMENT!! LOSER!!"),
+                ChatItem(profile: .trainer, chat: "FAILURE!! REGRET!! SHAME!! DISHONOR!! WASTE!! DISAPPOINTMENT!! LOSER!! FAILURE!! LOSER!!! FAILURE!!! LOSER!!!! FAILURE!!!!"),
                 ChatItem(profile: .hero, imgPos: .left, chat: "NOOOOO!! I—I didn't..!"),
                 ChatItem(profile: .magmus, chat: "You must not succumb to this false imagery, child! Clarity is needed in the challenge ahead.")
             ]) { [weak self] in
@@ -1235,8 +1236,9 @@ extension ChatEngine {
         case -1035:
             let fadeIn: TimeInterval = 1
             let swordSpawnDuration: TimeInterval = 2
+            let partyMusic = "overworldmarimba"
             
-            delegateCatwalk?.playMusicCatwalk(music: "overworldmarimba", startingVolume: 0.25, fadeIn: fadeIn, shouldStopOverworld: true)
+            delegateCatwalk?.playMusicCatwalk(music: partyMusic, startingVolume: 0.25, fadeIn: fadeIn, shouldStopOverworld: true)
             delegateCatwalk?.spawnTikiCatwalk(statueNumber: 1, fadeIn: fadeIn)
             
             sendChatArray(shouldSkipDim: true, items: [
@@ -1258,20 +1260,52 @@ extension ChatEngine {
             let fadeOut: TimeInterval = 2
             let logoDuration: TimeInterval = 9
             let chosenSword = ChosenSword(type: FIRManager.chosenSword)
+            let partyMusic = "overworldmarimba"
             
-            delegateCatwalk?.stopMusicCatwalk(music: "overworldmarimba", fadeOut: fadeOut, delay: logoDuration, shouldPlayOverworld: true)
-            delegateCatwalk?.despawnTikiCatwalk(fadeOut: fadeOut, delay: logoDuration)
             delegateCatwalk?.despawnSwordCatwalk(fadeDuration: fadeOut, delay: logoDuration)
+            delegateCatwalk?.stopMusicCatwalk(music: partyMusic, fadeOut: fadeOut, delay: nil, shouldPlayOverworld: false)
+            delegateCatwalk?.showLargeItem(imageName: chosenSword.imageName, fadeDuration: fadeOut, delay: logoDuration)
             hideFFButton()
 
             sendChatArray(shouldSkipDim: true, items: [
                 ChatItem(profile: .blankhero, startNewChat: false, chat: "\n\nReceived \(chosenSword.swordTitle).") { [weak self] in
                     self?.showFFButton()
+                    self?.delegateCatwalk?.playMusicCatwalk(music: partyMusic, startingVolume: 0.25, fadeIn: fadeOut, shouldStopOverworld: false)
                 },
-                ChatItem(profile: .hero, imgPos: .left, chat: "Wow!!! This is... something. It's... incredible. I promise to take good care of it! 🤩"),
-                ChatItem(profile: .magmus, chat: "Be VERY careful with it! Legend has it, the Mystic steelsmith, Mythrile forged the blade in the fire of a dying star... a rare weapon, indeed!")
+                ChatItem(profile: .hero, imgPos: .left, chat: "Wow!!! This is... something. It's... absolutely incredible. 🤩"),
+                ChatItem(profile: .statue1, chat: "Be VERY careful with it! Legend has it, the Mystic steelsmith, Mythrile forged the blade in the fire of a dying star... a truly rare weapon!"),
+                ChatItem(profile: .hero, imgPos: .left, chat: "Oh yes! I will. I promise to take good care of it!"),
+                ChatItem(profile: .statue1, chat: "You'll need more than a sword to defeat the Mad Mystic. Take this as well. May your feet glide effortlessly across any terrain.. like lava!") { [weak self] in
+                    self?.hideFFButton()
+                    self?.delegateCatwalk?.stopMusicCatwalk(music: partyMusic, fadeOut: fadeOut, delay: nil, shouldPlayOverworld: false)
+                    self?.delegateCatwalk?.showLargeItem(imageName: "iconBoot", fadeDuration: fadeOut, delay: logoDuration)
+
+                },
+                ChatItem(profile: .blankhero, chat: "\n\nReceived Winged Boots of Mercury.") { [weak self] in
+                    self?.showFFButton()
+                    self?.delegateCatwalk?.playMusicCatwalk(music: partyMusic, startingVolume: 0.25, fadeIn: fadeOut, shouldStopOverworld: false)
+                },
+                ChatItem(profile: .hero, imgPos: .left, chat: "So hot!! It's like I'm floating on air!"),
+                ChatItem(profile: .statue1, chat: "And lastly... this. May it grant you enduring protection against the forces of evil!"),
+                ChatItem(profile: .hero, imgPos: .left, chat: "Ummm........... this is a girl's shield."),
+                ChatItem(profile: .statue1, chat: "Ahem! This shield belonged to one of the greatest generals in all of Mystaria's wartime history. General Minerva led an army to victory against a most evil force!"),
+                ChatItem(profile: .hero, imgPos: .left, chat: "Yeah, a girl. You know what.. I don't need the shield. The sword and boots will do just fine—"),
+                ChatItem(profile: .merton, chat: "'Tis a fine piece of defense, dear boy. Possesses neither male nor female attributes. It is.. oh, what do your people call it again..... Non-binary."),
+                ChatItem(profile: .hero, imgPos: .left, chat: "Unisex. It's cool though. Just not for me."),
+                ChatItem(profile: .magmus, chat: "It is a strong shield. A masculine shield. A man's shield. Right? Tell him, Merton!"),
+                ChatItem(profile: .merton, chat: "It is very much a manly shield made especially for a good, strong boy.. er, man your age—"),
+                ChatItem(profile: .hero, imgPos: .left, chat: "No.. no. I'm gonna have to pass—"),
+                ChatItem(profile: .melchior, chat: "Oh, for my sake! PUZL Boy, you will need all the help you can get if you want to destroy Magmoor. Now take the girly looking shield and let's go!") { [weak self] in
+                    self?.hideFFButton()
+                    self?.delegateCatwalk?.stopMusicCatwalk(music: partyMusic, fadeOut: fadeOut, delay: logoDuration, shouldPlayOverworld: true)
+                    self?.delegateCatwalk?.showLargeItem(imageName: "iconPrincess", fadeDuration: fadeOut, delay: logoDuration)
+                    self?.delegateCatwalk?.despawnTikiCatwalk(fadeOut: fadeOut, delay: logoDuration)
+                },
+                ChatItem(profile: .blankhero, chat: "\n\nReceived Aegis of Minerva.") { [weak self] in
+                    self?.showFFButton()
+                },
+                ChatItem(profile: .hero, imgPos: .left, chat: "It's so pink..")
             ]) { [weak self] in
-                self?.showFFButton()
                 self?.handleDialogueCompletion(level: level, completion: completion)
             }
         case -1047:
@@ -1282,12 +1316,12 @@ extension ChatEngine {
             sendChatArray(shouldSkipDim: true, items: [
                 ChatItem(profile: .melchior, pause: 3, chat: "There's the gate to the Dragon's Lair. Once we enter, there is no going back.", handler: nil),
                 ChatItem(profile: .hero, imgPos: .left, chat: "Ok, but it's closed. So...... how do we open it???"),
-                ChatItem(profile: .hero, imgPos: .left, chat: "Maybe if I just....................⚔️")
+                ChatItem(profile: .hero, imgPos: .left, chat: "Wait a minute, I saw someone do this in a movie once. Maybe if I just....................🛡️")
             ]) { [weak self] in
-                self?.delegateCatwalk?.throwSwordCatwalk()
+                self?.delegateCatwalk?.throwShieldCatwalk()
                 
                 self?.sendChatArray(shouldSkipDim: true, items: [
-                    ChatItem(profile: .melchior, pause: 4, startNewChat: true, chat: "What the— has Marlin taught you nothing, you insolent boy!!", handler: nil),
+                    ChatItem(profile: .melchior, pause: 5, startNewChat: true, chat: "What the— has Marlin taught you nothing, you insolent boy!!", handler: nil),
                     ChatItem(profile: .magmus, chat: "MELCHIOR! Kindness!"),
                     ChatItem(profile: .magmus, chat: "Forgive him, child. As you'll recall, the gateway is powered by sparkly purple gems. Surrender your sparkly purple gems and access shall be granted."),
                     ChatItem(profile: .melchior, chat: "He just threw it!!!"),

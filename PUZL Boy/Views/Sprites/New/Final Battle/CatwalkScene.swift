@@ -750,15 +750,35 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
         catwalkNode.addChild(swordSprite.spriteNode)
     }
     
-    func throwSwordCatwalk() {
-        swordSprite.spriteNode.position = getHeroPosition(xPanelOffset: 0, yOffset: 0)
-        swordSprite.spriteNode.scale(to: scaleSize)
-        swordSprite.spriteNode.alpha = 1
+    func throwShieldCatwalk() {
+        let delayDuration: TimeInterval = 0.5
+        let throwDuration: TimeInterval = 1
         
-        swordSprite.spriteNode.removeFromParent() //just in case...
-        catwalkNode.addChild(swordSprite.spriteNode)
+        let shieldSprite = SKSpriteNode(imageNamed: "iconPrincess")
+        shieldSprite.position = getHeroPosition(xPanelOffset: 0, yOffset: 0)
+        shieldSprite.scale(to: scaleSize)
+        shieldSprite.zPosition = K.ZPosition.player - 1
         
-        swordSprite.throwSword(endOffset: CGPoint(x: size.width, y: 0), direction: .right, rotations: 6 * .pi, throwDuration: 1, delay: 0.5)
+        catwalkNode.addChild(shieldSprite)
+        
+        shieldSprite.run(SKAction.sequence([
+            SKAction.wait(forDuration: delayDuration),
+            SKAction.group([
+                SKAction.rotate(byAngle: -6 * .pi, duration: throwDuration),
+                SKAction.moveBy(x: size.width, y: 0, duration: throwDuration),
+            ]),
+            SKAction.fadeOut(withDuration: 0.5),
+            SKAction.removeFromParent()
+        ]))
+        
+        AudioManager.shared.playSound(for: "boyattack\(Int.random(in: 1...3))", delay: delayDuration)
+        
+        if let swordThrowSound = AudioManager.shared.getAudioItem(filename: "swordthrow"),
+           let swordThudSound = AudioManager.shared.getAudioItem(filename: "swordthud") {
+            AudioManager.shared.playSound(for: swordThrowSound.fileName, delay: delayDuration)
+            AudioManager.shared.adjustVolume(to: 0.25, for: swordThudSound.fileName)
+            AudioManager.shared.playSound(for: swordThudSound.fileName, delay: delayDuration + swordThudSound.player.duration + 1)
+        }
     }
     
     func despawnSwordCatwalk(fadeDuration: TimeInterval, delay: TimeInterval?) {
@@ -769,20 +789,22 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
             ]),
             SKAction.removeFromParent()
         ]))
+    }
+    
+    func showLargeItem(imageName: String, fadeDuration: TimeInterval, delay: TimeInterval?) {
+        let largeItem = SKSpriteNode(imageNamed: imageName)
+        largeItem.position = CGPoint(x: size.width / 2, y: size.height / 2)
+        largeItem.scale(to: .zero)
+        largeItem.zPosition = K.ZPosition.itemsAndEffects
         
-        let bigSword = SKSpriteNode(imageNamed: swordSprite.imageName)
-        bigSword.position = CGPoint(x: size.width / 2, y: size.height / 2)
-        bigSword.scale(to: .zero)
-        bigSword.zPosition = K.ZPosition.itemsAndEffects
+        addChild(largeItem)
         
-        addChild(bigSword)
-        
-        bigSword.run(SKAction.sequence([
+        largeItem.run(SKAction.sequence([
             SKAction.scale(to: scaleSize * 6, duration: 0.25),
             SKAction.scale(to: scaleSize * 4, duration: fadeDuration / 2)
         ]))
         
-        bigSword.run(SKAction.sequence([
+        largeItem.run(SKAction.sequence([
             SKAction.group([
                 SKAction.rotate(byAngle: 2 * .pi, duration: (delay ?? 0) - fadeDuration),
                 SKAction.sequence([
@@ -794,11 +816,17 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
             SKAction.removeFromParent()
         ]))
         
+        swordFadeNode.color = UIColor.obtainItem.start
         swordFadeNode.run(SKAction.sequence([
             SKAction.fadeIn(withDuration: 0.25),
-            SKAction.colorize(with: UIColor.obtainItem.end, colorBlendFactor: 1, duration: (delay ?? 0) - fadeDuration - 0.25),
+            SKAction.run { [weak self] in
+                self?.bloodOverlay.isHidden = true
+            },
+            SKAction.colorize(with: UIColor.obtainItem.end, colorBlendFactor: 1, duration: max(0, (delay ?? 0) - fadeDuration - 0.25)),
             SKAction.fadeOut(withDuration: fadeDuration)
-        ]))
+        ])) { [weak self] in
+            self?.bloodOverlay.isHidden = false
+        }
         
         AudioManager.shared.playSound(for: "pickupitem")
         AudioManager.shared.playSound(for: "titlechapter")

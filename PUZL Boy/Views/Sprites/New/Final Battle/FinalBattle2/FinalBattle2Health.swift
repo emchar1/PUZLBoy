@@ -8,7 +8,7 @@
 import SpriteKit
 
 protocol FinalBattle2HealthDelegate: AnyObject {
-    func didUpdateHealth(_ healthCounter: Counter)
+    func didUpdateHealth(_ healthCounter: Counter, increment: TimeInterval)
 }
 
 class FinalBattle2Health {
@@ -174,7 +174,7 @@ class FinalBattle2Health {
         }
         
         bar.animateAndUpdate(percentage: counter.getCount())
-        delegateHealth?.didUpdateHealth(counter)
+        delegateHealth?.didUpdateHealth(counter, increment: (increment ? 1 : -1) * rate)
     }
     
     @objc private func helperDrain() {

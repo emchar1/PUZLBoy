@@ -64,6 +64,7 @@
 		EA3D6FAC2D5D43460070A701 /* DuplicateItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA3D6FAB2D5D43460070A701 /* DuplicateItem.swift */; };
 		EA3D6FAE2D5E793B0070A701 /* magicdisappear2.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA3D6FAD2D5E793B0070A701 /* magicdisappear2.mp3 */; };
 		EA3D6FB02D5E8C5D0070A701 /* magicdisappear2b.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA3D6FAF2D5E8C5D0070A701 /* magicdisappear2b.mp3 */; };
+		EA3D6FB22D62FAF20070A701 /* swordthud.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA3D6FB12D62FAF20070A701 /* swordthud.mp3 */; };
 		EA41F8352A0C7D8000DF47EC /* HowToPlayPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA41F8342A0C7D8000DF47EC /* HowToPlayPage.swift */; };
 		EA41F83A2A0D71EE00DF47EC /* ParentPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA41F8392A0D71EE00DF47EC /* ParentPage.swift */; };
 		EA41F83C2A0DD3F800DF47EC /* SettingsTapArea.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA41F83B2A0DD3F800DF47EC /* SettingsTapArea.swift */; };
@@ -472,6 +473,7 @@
 		EA3D6FAB2D5D43460070A701 /* DuplicateItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DuplicateItem.swift; sourceTree = "<group>"; };
 		EA3D6FAD2D5E793B0070A701 /* magicdisappear2.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = magicdisappear2.mp3; sourceTree = "<group>"; };
 		EA3D6FAF2D5E8C5D0070A701 /* magicdisappear2b.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = magicdisappear2b.mp3; sourceTree = "<group>"; };
+		EA3D6FB12D62FAF20070A701 /* swordthud.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = swordthud.mp3; sourceTree = "<group>"; };
 		EA41F8342A0C7D8000DF47EC /* HowToPlayPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HowToPlayPage.swift; sourceTree = "<group>"; };
 		EA41F8392A0D71EE00DF47EC /* ParentPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParentPage.swift; sourceTree = "<group>"; };
 		EA41F83B2A0DD3F800DF47EC /* SettingsTapArea.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTapArea.swift; sourceTree = "<group>"; };
@@ -1257,6 +1259,7 @@
 				EAE751D62D272A2A004B138A /* swordparry.mp3 */,
 				EAEF2EFD2B4F5B7E00AD8459 /* swordslash.mp3 */,
 				EA41FBF82D0146F500796368 /* swordthrow.mp3 */,
+				EA3D6FB12D62FAF20070A701 /* swordthud.mp3 */,
 				EAEF2F012B4F5C3100AD8459 /* thunderrumble.mp3 */,
 				EAE43D922C48A76F00E6DB3C /* titlechapter.mp3 */,
 				EA45835A2A4431D300279056 /* titletheme.mp3 */,
@@ -1793,6 +1796,7 @@
 				EA9D6A5A2B48E4B20004187B /* scarymusicbox.mp3 in Resources */,
 				EA1281A92CF15EB9001CC5E8 /* magmoorcreepystrings.mp3 in Resources */,
 				EA76056D2B5B1CDD001BC268 /* waterappear2.mp3 in Resources */,
+				EA3D6FB22D62FAF20070A701 /* swordthud.mp3 in Resources */,
 				EAD19A0B2A96F52500A07A63 /* LavaAppearParticles.sks in Resources */,
 				EABE79612ACBC7E800689C55 /* enemyflame.mp3 in Resources */,
 				EAEF2EFE2B4F5B7E00AD8459 /* swordslash.mp3 in Resources */,

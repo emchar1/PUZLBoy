@@ -190,6 +190,7 @@ class AudioManager {
         addAudioItem("swordparry", category: .soundFX) //NEEDS PURCHASE $1
         addAudioItem("swordslash", category: .soundFX)
         addAudioItem("swordthrow", category: .soundFX) //NEEDS PURCHASE $1
+        addAudioItem("swordthud", category: .soundFX) //NEEDS PURCHASE $1
         addAudioItem("touchstatue", category: .soundFX)
         addAudioItem("thunderrumble", category: .soundFX)
         

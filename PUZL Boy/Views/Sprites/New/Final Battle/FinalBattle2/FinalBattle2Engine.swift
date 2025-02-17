@@ -602,7 +602,7 @@ extension FinalBattle2Engine: FinalBattle2SpawnerDelegate {
 
 extension FinalBattle2Engine: FinalBattle2HealthDelegate {
     // TODO: - Continue to work on special visual effects with bloodOverlay..
-    func didUpdateHealth(_ healthCounter: Counter) {
+    func didUpdateHealth(_ healthCounter: Counter, increment: TimeInterval) {
         switch healthCounter.getCount() {
         case let health where health < 0.10:    FinalBattle2Background.defaultBloodOverlayAlpha = 0.5
         case let health where health < 0.15:    FinalBattle2Background.defaultBloodOverlayAlpha = 0.45
