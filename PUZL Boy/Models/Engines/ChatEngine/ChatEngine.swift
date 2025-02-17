@@ -1298,7 +1298,7 @@ extension ChatEngine {
                 ChatItem(profile: .melchior, chat: "Oh, for my sake! PUZL Boy, you will need all the help you can get if you want to destroy Magmoor. Now take the girly looking shield and let's go!") { [weak self] in
                     self?.hideFFButton()
                     self?.delegateCatwalk?.stopMusicCatwalk(music: partyMusic, fadeOut: fadeOut, delay: logoDuration, shouldPlayOverworld: true)
-                    self?.delegateCatwalk?.showLargeItem(imageName: "iconPrincess", fadeDuration: fadeOut, delay: logoDuration)
+                    self?.delegateCatwalk?.showLargeItem(imageName: "shield", fadeDuration: fadeOut, delay: logoDuration)
                     self?.delegateCatwalk?.despawnTikiCatwalk(fadeOut: fadeOut, delay: logoDuration)
                 },
                 ChatItem(profile: .blankhero, chat: "\n\nReceived Aegis of Minerva.") { [weak self] in

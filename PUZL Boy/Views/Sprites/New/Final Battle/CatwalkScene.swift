@@ -754,7 +754,7 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
         let delayDuration: TimeInterval = 0.5
         let throwDuration: TimeInterval = 1
         
-        let shieldSprite = SKSpriteNode(imageNamed: "iconPrincess")
+        let shieldSprite = SKSpriteNode(imageNamed: "shield")
         shieldSprite.position = getHeroPosition(xPanelOffset: 0, yOffset: 0)
         shieldSprite.scale(to: scaleSize)
         shieldSprite.zPosition = K.ZPosition.player - 1
@@ -764,7 +764,7 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
         shieldSprite.run(SKAction.sequence([
             SKAction.wait(forDuration: delayDuration),
             SKAction.group([
-                SKAction.rotate(byAngle: -6 * .pi, duration: throwDuration),
+                SKAction.rotate(byAngle: -4 * .pi, duration: throwDuration),
                 SKAction.moveBy(x: size.width, y: 0, duration: throwDuration),
             ]),
             SKAction.fadeOut(withDuration: 0.5),
