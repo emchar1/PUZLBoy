@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "heart2.png",
+      "filename" : "wingedboot.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "heart2@2x.png",
+      "filename" : "wingedboot@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "heart2@3x.png",
+      "filename" : "wingedboot@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

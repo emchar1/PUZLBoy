@@ -1278,7 +1278,7 @@ extension ChatEngine {
                 ChatItem(profile: .statue1, chat: "You'll need more than a sword to defeat the Mad Mystic. Take this as well. May your feet glide effortlessly across any terrain.. like lava!") { [weak self] in
                     self?.hideFFButton()
                     self?.delegateCatwalk?.stopMusicCatwalk(music: partyMusic, fadeOut: fadeOut, delay: nil, shouldPlayOverworld: false)
-                    self?.delegateCatwalk?.showLargeItem(imageName: "iconBoot", fadeDuration: fadeOut, delay: logoDuration)
+                    self?.delegateCatwalk?.showLargeItem(imageName: "wingedboot", fadeDuration: fadeOut, delay: logoDuration)
 
                 },
                 ChatItem(profile: .blankhero, chat: "\n\nReceived Winged Boots of Mercury.") { [weak self] in
