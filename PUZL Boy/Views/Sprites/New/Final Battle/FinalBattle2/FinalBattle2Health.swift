@@ -8,7 +8,7 @@
 import SpriteKit
 
 protocol FinalBattle2HealthDelegate: AnyObject {
-    func didUpdateHealth(_ healthCounter: Counter, increment: TimeInterval)
+    func didUpdateHealth(_ healthCounter: Counter, increment: TimeInterval, damping: TimeInterval)
 }
 
 class FinalBattle2Health {
@@ -147,34 +147,18 @@ class FinalBattle2Health {
     
     // MARK: - Helper @objc Functions
     
-    private func objcHelper(rateDivisions: [CGFloat], rates: [TimeInterval], increment: Bool) {
-        guard rates.count > 0 && rates.count > rateDivisions.count else { return }
+    private func objcHelper(damage: CGFloat, increment: Bool) {
         guard !(!increment && counter.counterDidReachMin) else { return }
         
         // TODO: - 2/16/25 Can rate be a percentage based on counter, i.e. lower counter = lower percentage damage, and vice versa.
-        var rate: TimeInterval {
-            //default value is last element in rates array; must be non-zero due to guard check
-            var rateReturn: TimeInterval = rates.last!
-            
-            for (i, rateDivision) in rateDivisions.enumerated() {
-                if counter.getCount() > rateDivision {
-                    rateReturn = rates[i]
-                    break
-                }
-            }
-            
-            return rateReturn
-        }
-        
-        if increment {
-            counter.increment(by: rate)
-        }
-        else {
-            counter.decrement(by: rate)
-        }
-        
+        let rateDamping: CGFloat = increment ? max(2.0 * (counter.maxCount - counter.getCount()), 1) : min(3.0 * counter.getCount(), 1)
+        let damageAdjusted = damage * (dmgMultiplier ?? 1)
+                
+        counter.increment(by: (increment ? 1 : -1) * damageAdjusted * rateDamping)
         bar.animateAndUpdate(percentage: counter.getCount())
-        delegateHealth?.didUpdateHealth(counter, increment: (increment ? 1 : -1) * rate)
+        
+        // TODO: - I'm only using this protocol function to report back the damage.
+        delegateHealth?.didUpdateHealth(counter, increment: (increment ? 1 : -1) * damageAdjusted, damping: rateDamping)
     }
     
     @objc private func helperDrain() {
@@ -183,7 +167,7 @@ class FinalBattle2Health {
             return
         }
         
-        objcHelper(rateDivisions: [], rates: [0.01].map { $0 * (dmgMultiplier ?? 1) }, increment: false)
+        objcHelper(damage: 0.01, increment: false)
     }
     
     @objc private func stopDrain() {
@@ -192,7 +176,7 @@ class FinalBattle2Health {
             return
         }
         
-        objcHelper(rateDivisions: [], rates: [0.00].map { $0 * (dmgMultiplier ?? 1) }, increment: true)
+        objcHelper(damage: 0.00, increment: true)
     }
     
     @objc private func helperPoisonDrain() {
@@ -204,11 +188,11 @@ class FinalBattle2Health {
         }
         
         self.poisonCounter! += 1
-        objcHelper(rateDivisions: [], rates: [0.02].map { $0 * (dmgMultiplier ?? 1) }, increment: false)
+        objcHelper(damage: 0.02, increment: false)
     }
     
     @objc private func helperHeroAttack() {
-        objcHelper(rateDivisions: [], rates: [0.2].map { $0 * (dmgMultiplier ?? 0.5) }, increment: true)
+        objcHelper(damage: 0.2, increment: true)
         
         // TODO: - This determines whether or not you beat Magmoor, essentially winning or losing the game.
         if counter.counterDidReachMax {
@@ -217,23 +201,23 @@ class FinalBattle2Health {
     }
     
     @objc private func helperVillainAttackNormal() {
-        objcHelper(rateDivisions: [], rates: [0.1].map { $0 * (dmgMultiplier ?? 1) }, increment: false)
+        objcHelper(damage: 0.1, increment: false)
     }
     
     @objc private func helperVillainAttackPoison() {
-        objcHelper(rateDivisions: [], rates: [0.08].map { $0 * (dmgMultiplier ?? 1) }, increment: false)
+        objcHelper(damage: 0.08, increment: false)
     }
     
     @objc private func helperVillainAttackTimed() {
-        objcHelper(rateDivisions: [], rates: [0.2].map { $0 * (dmgMultiplier ?? 1) }, increment: false)
+        objcHelper(damage: 0.2, increment: false)
     }
     
     @objc private func helperVillainShield() {
-        objcHelper(rateDivisions: [], rates: [0.25].map { $0 * (dmgMultiplier ?? 1) }, increment: false)
+        objcHelper(damage: 0.25, increment: false)
     }
     
     @objc private func helperHealthUp() {
-        objcHelper(rateDivisions: [], rates: [0.1].map { $0 * (dmgMultiplier ?? 1) }, increment: true)
+        objcHelper(damage: 0.1, increment: true)
     }
     
     
