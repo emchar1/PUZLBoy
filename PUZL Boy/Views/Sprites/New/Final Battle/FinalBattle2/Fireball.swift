@@ -305,7 +305,10 @@ class Fireball: SKNode {
         
         repeat {
             randomPosition = (Int.random(in: 0..<gameboard.panelCount), Int.random(in: 0..<gameboard.panelCount))
-        } while randomPosition == positions.villain || largeBombRestriction
+        }
+        while randomPosition == positions.villain
+                || gameboard.getPanelSprite(at: randomPosition).terrain?.childNode(withName: FinalBattle2Spawner.safePanelName) == nil
+                || largeBombRestriction
         
         run(SKAction.sequence([
             SKAction.group([

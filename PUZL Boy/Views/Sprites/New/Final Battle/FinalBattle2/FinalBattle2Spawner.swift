@@ -118,7 +118,12 @@ class FinalBattle2Spawner {
                 let spawnOffset = Bool.random() ? -1 : 1
                 
                 nextPosition = (startPosition.row + (spawnCol ? 0 : spawnOffset), startPosition.col + (spawnCol ? spawnOffset : 0))
-            } while nextPosition.row < 0 || nextPosition.row >= gameboard.panelCount || nextPosition.col < 0 || nextPosition.col >= gameboard.panelCount || ignorePositions.contains { $0 == nextPosition }
+            }
+            while nextPosition.row < 0
+                    || nextPosition.row >= gameboard.panelCount
+                    || nextPosition.col < 0
+                    || nextPosition.col >= gameboard.panelCount
+                    || ignorePositions.contains { $0 == nextPosition }
             
             return nextPosition
         }
