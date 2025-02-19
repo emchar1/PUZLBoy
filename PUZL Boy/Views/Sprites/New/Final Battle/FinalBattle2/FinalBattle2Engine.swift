@@ -520,7 +520,7 @@ extension FinalBattle2Engine: FinalBattle2ControlsDelegate {
     }
     
     func didExplodeDuplicate(chosenSword: ChosenSword) {
-        health.updateHealth(type: .heroAttack, dmgMultiplier: chosenSword.attackRating / 2)
+        health.updateHealth(type: .destroyDuplicate, dmgMultiplier: nil)
     }
     
     func didVillainAttackBecomeVisible() {
