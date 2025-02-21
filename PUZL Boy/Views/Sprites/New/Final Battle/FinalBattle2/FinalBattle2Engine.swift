@@ -27,6 +27,7 @@ class FinalBattle2Engine {
     private var superScene: SKScene?
     private var backgroundSprite: SKSpriteNode!
     private var bloodOverlay: SKSpriteNode!
+    private var flashOverlay: SKSpriteNode!
     private var flashGameboard: SKSpriteNode!
     
     
@@ -68,6 +69,11 @@ class FinalBattle2Engine {
         bloodOverlay.anchorPoint = .zero
         bloodOverlay.alpha = FinalBattle2Background.defaultBloodOverlayAlpha
         bloodOverlay.zPosition = gameboard.sprite.zPosition + K.ZPosition.bloodOverlay
+        
+        flashOverlay = SKSpriteNode(color: .white, size: size)
+        flashOverlay.anchorPoint = .zero
+        flashOverlay.alpha = 0
+        flashOverlay.zPosition = gameboard.sprite.zPosition + K.ZPosition.bloodOverlay + 10
         
         flashGameboard = SKSpriteNode(color: .white, size: gameboard.sprite.size)
         flashGameboard.setScale(1 / gameboard.sprite.xScale)
@@ -145,6 +151,7 @@ class FinalBattle2Engine {
         
         superScene.addChild(backgroundSprite)
         superScene.addChild(bloodOverlay)
+        superScene.addChild(flashOverlay)
         
         
         
@@ -374,7 +381,13 @@ class FinalBattle2Engine {
                 health.updateHealth(type: .villainShieldExplode, dmgMultiplier: chosenSword.defenseRating)
             }
             
-            AudioManager.shared.playSoundThenStop(for: "magicdisappear2", playForDuration: 3, fadeOut: 2)
+            AudioManager.shared.playSoundThenStop(for: "magicdisappear2", fadeIn: 1, playForDuration: 3, fadeOut: 2, delay: 0.4)
+            
+            flashOverlay.run(SKAction.sequence([
+                SKAction.wait(forDuration: 0.4),
+                SKAction.fadeIn(withDuration: 0),
+                SKAction.fadeOut(withDuration: 5)
+            ]))
             
             return true
         }
@@ -601,27 +614,38 @@ extension FinalBattle2Engine: FinalBattle2SpawnerDelegate {
 // MARK: - FinalBattle2HealthDelegate
 
 extension FinalBattle2Engine: FinalBattle2HealthDelegate {
-    // TODO: - Continue to work on special visual effects with bloodOverlay..
+    // TODO: - Disabling dynamic defaultBloodOverlayAlpha adjustment, for now... 2/21/25
     func didUpdateHealth(_ healthCounter: Counter, increment: TimeInterval, damping: TimeInterval) {
-        switch healthCounter.getCount() {
-        case let health where health < 0.10:    FinalBattle2Background.defaultBloodOverlayAlpha = 0.5
-        case let health where health < 0.15:    FinalBattle2Background.defaultBloodOverlayAlpha = 0.45
-        case let health where health < 0.20:    FinalBattle2Background.defaultBloodOverlayAlpha = 0.4
-        case let health where health < 0.25:    FinalBattle2Background.defaultBloodOverlayAlpha = 0.35
-        default:                                FinalBattle2Background.defaultBloodOverlayAlpha = 0.25
-        }
+//        switch healthCounter.getCount() {
+//        case let health where health < 0.10:    FinalBattle2Background.defaultBloodOverlayAlpha = 0.5
+//        case let health where health < 0.15:    FinalBattle2Background.defaultBloodOverlayAlpha = 0.45
+//        case let health where health < 0.20:    FinalBattle2Background.defaultBloodOverlayAlpha = 0.4
+//        case let health where health < 0.25:    FinalBattle2Background.defaultBloodOverlayAlpha = 0.35
+//        default:                                FinalBattle2Background.defaultBloodOverlayAlpha = 0.25
+//        }
+//        
+//        guard !panelSpawner.isEmpty else { return }
+//        
+//        let intensityMultiplier: CGFloat
+//        
+//        switch panelSpawner[0].currentSpeed {
+//        case .slow:     intensityMultiplier = 0.5
+//        case .medium:   intensityMultiplier = 0.75
+//        case .fast:     intensityMultiplier = 1
+//        }
+//        
+//        FinalBattle2Background.defaultBloodOverlayAlpha *= intensityMultiplier
         
-        guard !panelSpawner.isEmpty else { return }
         
-        let intensityMultiplier: CGFloat
         
-        switch panelSpawner[0].currentSpeed {
-        case .slow:     intensityMultiplier = 0.5
-        case .medium:   intensityMultiplier = 0.75
-        case .fast:     intensityMultiplier = 1
-        }
+        // FIXME: - labelDebug DEBUG
+        let inc = round(increment * 1000) / 1000
+        let damp = round(damping * 100) / 100
+        let damage = round(increment * damping * 1000) / 1000
+        let health = round(healthCounter.getCount() * 100) / 100
+        let multiplier = controls.chosenSword.attackMultiplier
         
-        FinalBattle2Background.defaultBloodOverlayAlpha *= intensityMultiplier
+        labelDebug.text = "INC: \(inc), DAMPING: \(damp)\nDAMAGE: \(damage)\nHEALTH: \(health)\nX: \(multiplier)"
     }
     
 }

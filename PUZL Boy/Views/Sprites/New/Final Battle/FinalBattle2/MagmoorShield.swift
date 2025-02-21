@@ -225,7 +225,8 @@ class MagmoorShield: SKNode {
                 villain.sprite.run(SKAction.colorize(with: .red, colorBlendFactor: 1, duration: 0.25))
             },
             scaleAndFade(size: 16, alpha: 1, duration: 0.25),
-            SKAction.fadeOut(withDuration: 0.25),
+            SKAction.wait(forDuration: 0.15),
+            scaleAndFade(size: 24, alpha: 0, duration: 0.1),
             SKAction.removeFromParent()
         ]), completion: completion)
     }
@@ -271,8 +272,8 @@ class MagmoorShield: SKNode {
             SKAction.run { [weak self] in
                 self?.removeAction(forKey: MagmoorShield.keyRotateAction)
             },
-            shieldShake(duration: scaleDuration),
-            SKAction.fadeOut(withDuration: fadeDuration),
+            shieldShake(duration: scaleDuration + fadeDuration - 0.1),
+            scaleAndFade(size: 14, alpha: 0, duration: 0.1),
             SKAction.removeFromParent()
         ]), completion: completion)
     }
