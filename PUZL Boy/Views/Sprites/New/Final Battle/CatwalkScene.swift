@@ -1162,7 +1162,7 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
         catwalkNode.children.forEach { node in
             guard let name = node.name, name.contains(ChosenSword.namePrefix), let nonchosenSword = node as? SKSpriteNode else { return }
             
-            let isChosenSword = nonchosenSword.name == chosenSword.spriteNode.name
+            let isChosenSword = nonchosenSword.name == chosenSword.name
             
             nonchosenSword.run(SKAction.sequence([
                 SKAction.group([

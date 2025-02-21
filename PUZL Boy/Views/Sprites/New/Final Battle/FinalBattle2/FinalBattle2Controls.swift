@@ -53,6 +53,9 @@ class FinalBattle2Controls {
     private var magmoorAttacks: MagmoorAttacks!
     private(set) var magmoorShield: MagmoorShield!
     
+    private var isRunningTimerSword2x: Bool = false
+    private var isRunningTimerSword3x: Bool = false
+    
     weak var delegateControls: FinalBattle2ControlsDelegate?
     
     
@@ -72,8 +75,9 @@ class FinalBattle2Controls {
         self.villainMovementDelay = (normal: 12, enraged: 2)
         
         chosenSword = ChosenSword(type: FIRManager.chosenSword)
-        chosenSword.spriteNode.setScale(gameboard.panelSize / chosenSword.spriteNode.size.width)
-        chosenSword.spriteNode.zPosition = K.ZPosition.itemsAndEffects
+        chosenSword.setScale(gameboard.panelSize / chosenSword.spriteNode.size.width)
+        chosenSword.zPosition = K.ZPosition.itemsAndEffects
+        gameboard.sprite.addChild(chosenSword)
         
         //Populate DuplicateItem array here - 2/12/25
         DuplicateItem.shared.populateSpawnedItems(luck: chosenSword.luckRating)
@@ -86,6 +90,12 @@ class FinalBattle2Controls {
         magmoorAttacks.delegateAttacksDuplicate = self
         magmoorShield.delegate = self
         
+        //Observers for Duplicate Item pickups
+        NotificationCenter.default.addObserver(self, selector: #selector(didSword2xTimerInitialize(_:)), name: .didSword2xTimerInitialize, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(didSword2xTimerExpire(_:)), name: .didSword2xTimerExpire, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(didSword3xTimerInitialize(_:)), name: .didSword3xTimerInitialize, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(didSword3xTimerExpire(_:)), name: .didSword3xTimerExpire, object: nil)
+
         setTimerFirstTime()
     }
     
@@ -270,10 +280,7 @@ class FinalBattle2Controls {
         canAttack = false
         villainMoveTimer.invalidate()
         
-        gameboard.sprite.addChild(chosenSword.spriteNode)
-        
-        chosenSword.spriteNode.position = gameboard.getLocation(at: attackPanel)
-        chosenSword.attack(facing: player.sprite.xScale, shouldParry: magmoorShield.hasHitPoints) { [weak self] in
+        chosenSword.attack(at: gameboard.getLocation(at: attackPanel), facing: player.sprite.xScale, shouldParry: magmoorShield.hasHitPoints) { [weak self] in
             guard let self = self else { return }
             
             isDisabled = false
@@ -322,10 +329,7 @@ class FinalBattle2Controls {
         isDisabled = true
         canAttack = false
         
-        gameboard.sprite.addChild(chosenSword.spriteNode)
-        
-        chosenSword.spriteNode.position = gameboard.getLocation(at: attackPanel)
-        chosenSword.attack(facing: player.sprite.xScale, shouldParry: duplicate.invincibleShield?.hasHitPoints ?? false) { [weak self] in
+        chosenSword.attack(at: gameboard.getLocation(at: attackPanel), facing: player.sprite.xScale, shouldParry: duplicate.invincibleShield?.hasHitPoints ?? false) { [weak self] in
             guard let self = self else { return }
             
             isDisabled = false
@@ -600,6 +604,37 @@ class FinalBattle2Controls {
                                                    duration: 2)
         }
     } //end moveVillainFlee()
+    
+    
+    // MARK: - Notification Center Observer
+    
+    @objc private func didSword2xTimerInitialize(_ sender: Any) {
+        isRunningTimerSword2x = true
+        
+        guard !isRunningTimerSword3x else { return }
+        
+        chosenSword.setAttackMultiplier(2)
+    }
+    
+    @objc private func didSword2xTimerExpire(_ sender: Any) {
+        isRunningTimerSword2x = false
+        
+        guard !isRunningTimerSword3x else { return }
+        
+        chosenSword.setAttackMultiplier(1)
+    }
+    
+    @objc private func didSword3xTimerInitialize(_ sender: Any) {
+        isRunningTimerSword3x = true
+        
+        chosenSword.setAttackMultiplier(3)
+    }
+    
+    @objc private func didSword3xTimerExpire(_ sender: Any) {
+        isRunningTimerSword3x = false
+        
+        chosenSword.setAttackMultiplier(isRunningTimerSword2x ? 2 : 1)
+    }
     
     
 }

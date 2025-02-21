@@ -471,7 +471,7 @@ extension FinalBattle2Engine: FinalBattle2ControlsDelegate {
     
     
     func didHeroAttack(chosenSword: ChosenSword) {
-        health.updateHealth(type: .heroAttack, dmgMultiplier: chosenSword.attackRating)
+        health.updateHealth(type: .heroAttack, dmgMultiplier: chosenSword.totalAttackRating)
     }
     
     func didVillainDisappear(fadeDuration: TimeInterval) {
@@ -565,7 +565,7 @@ extension FinalBattle2Engine: FinalBattle2ControlsDelegate {
     func didCollectDuplicateDroppedItem(item: LevelType, chosenSword: ChosenSword) {
         switch item {
         case .heart:
-            health.updateHealth(type: .healthUp, dmgMultiplier: chosenSword.attackRating)
+            health.updateHealth(type: .healthUp, dmgMultiplier: nil)
         default:
             break
         }
@@ -602,7 +602,7 @@ extension FinalBattle2Engine: FinalBattle2SpawnerDelegate {
 
 extension FinalBattle2Engine: FinalBattle2HealthDelegate {
     // TODO: - Continue to work on special visual effects with bloodOverlay..
-    func didUpdateHealth(_ healthCounter: Counter, increment: TimeInterval) {
+    func didUpdateHealth(_ healthCounter: Counter, increment: TimeInterval, damping: TimeInterval) {
         switch healthCounter.getCount() {
         case let health where health < 0.10:    FinalBattle2Background.defaultBloodOverlayAlpha = 0.5
         case let health where health < 0.15:    FinalBattle2Background.defaultBloodOverlayAlpha = 0.45
@@ -610,7 +610,6 @@ extension FinalBattle2Engine: FinalBattle2HealthDelegate {
         case let health where health < 0.25:    FinalBattle2Background.defaultBloodOverlayAlpha = 0.35
         default:                                FinalBattle2Background.defaultBloodOverlayAlpha = 0.25
         }
-        
         
         guard !panelSpawner.isEmpty else { return }
         

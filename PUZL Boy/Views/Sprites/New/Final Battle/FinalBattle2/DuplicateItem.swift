@@ -16,6 +16,9 @@ class DuplicateItem {
     private(set) var spawnedItems: [LevelType]
     private(set) var collectedItems: [LevelType]
     
+    private var timerSword2x: Timer?
+    private var timerSword3x: Timer?
+    
     static let shared: DuplicateItem = {
         let instance = DuplicateItem()
 
@@ -29,6 +32,16 @@ class DuplicateItem {
         timerDuration = 5
         spawnedItems = []
         collectedItems = []
+        
+        timerSword2x = nil
+        timerSword3x = nil
+    }
+    
+    deinit {
+        timerSword2x = nil
+        timerSword3x = nil
+        
+        print("deinit DuplicateItem")
     }
     
     
@@ -43,19 +56,19 @@ class DuplicateItem {
         switch luck {
         case let amt where amt <= 0.25:
             timerDuration = 4
-            items = [(.sword, 0.20), (.hammer, 0.25), (.gem, 0.50), (.partyFast, 0.05), (.heart, 0.00)]
+            items = [(.sword2x, 0.25), (.sword3x, 0.15), (.gem, 0.60), (.heart, 0.00)]
         case let amt where amt <= 0.50:
             timerDuration = 5
-            items = [(.sword, 0.25), (.hammer, 0.25), (.gem, 0.20), (.partyFast, 0.25), (.heart, 0.05)]
+            items = [(.sword2x, 0.30), (.sword3x, 0.20), (.gem, 0.40), (.heart, 0.10)]
         case let amt where amt <= 0.75:
             timerDuration = 6
-            items = [(.sword, 0.25), (.hammer, 0.35), (.gem, 0.10), (.partyFast, 0.20), (.heart, 0.10)]
+            items = [(.sword2x, 0.35), (.sword3x, 0.25), (.gem, 0.25), (.heart, 0.15)]
         case let amt where amt <= 0.85:
             timerDuration = 8
-            items = [(.sword, 0.10), (.hammer, 0.15), (.gem, 0.00), (.partyFast, 0.50), (.heart, 0.25)]
+            items = [(.sword2x, 0.40), (.sword3x, 0.35), (.gem, 0.00), (.heart, 0.25)]
         default:
             timerDuration = 4
-            items = [(.sword, 0.00), (.hammer, 0.00), (.gem, 0.00), (.partyFast, 0.00), (.heart, 1.00)]
+            items = [(.sword2x, 0.00), (.sword3x, 0.00), (.gem, 0.00), (.heart, 1.00)]
         }
         
         spawnedItems = []
@@ -115,17 +128,36 @@ class DuplicateItem {
             soundFX = "pickupheart"
             feedbackStyle = .soft
             gameboard.addParticles(type: .hearts, at: position)
-        case .sword:
-            soundFX = "pickupitem"
-            feedbackStyle = .rigid
-            gameboard.addParticles(type: .itemPickup, at: position)
-        case .hammer:
-            soundFX = "pickupitem"
-            feedbackStyle = .rigid
-            gameboard.addParticles(type: .itemPickup, at: position)
-        case .partyFast:
+        case .sword2x:
             soundFX = "gemcollectparty2x"
-            feedbackStyle = .medium
+            feedbackStyle = .rigid
+            gameboard.addParticles(type: .itemPickup, at: position)
+            
+            let remainingTime: TimeInterval = timerSword2x != nil ? abs(Date().timeIntervalSince(timerSword2x!.fireDate)) : 0
+            
+            timerSword2x?.invalidate()
+            timerSword2x = Timer.scheduledTimer(timeInterval: remainingTime + 30,
+                                                target: self,
+                                                selector: #selector(setSword2xTimer(_:)),
+                                                userInfo: nil,
+                                                repeats: false)
+            
+            NotificationCenter.default.post(name: Notification.Name.didSword2xTimerInitialize, object: nil)
+        case .sword3x:
+            soundFX = "gemcollectparty3x"
+            feedbackStyle = .rigid
+            gameboard.addParticles(type: .itemPickup, at: position)
+            
+            let remainingTime: TimeInterval = timerSword3x != nil ? abs(Date().timeIntervalSince(timerSword3x!.fireDate)) : 0
+            
+            timerSword3x?.invalidate()
+            timerSword3x = Timer.scheduledTimer(timeInterval: remainingTime + 20,
+                                                target: self,
+                                                selector: #selector(setSword3xTimer(_:)),
+                                                userInfo: nil,
+                                                repeats: false)
+            
+            NotificationCenter.default.post(name: Notification.Name.didSword3xTimerInitialize, object: nil)
         default:
             soundFX = "gemcollect"
             feedbackStyle = .light
@@ -160,6 +192,18 @@ class DuplicateItem {
             SKAction.scale(to: 0, duration: 0.25),
             SKAction.removeFromParent()
         ]))
+    }
+    
+    @objc private func setSword2xTimer(_ sender: Any) {
+        NotificationCenter.default.post(name: Notification.Name.didSword2xTimerExpire, object: nil)
+        timerSword2x?.invalidate()
+        timerSword2x = nil
+    }
+    
+    @objc private func setSword3xTimer(_ sender: Any) {
+        NotificationCenter.default.post(name: Notification.Name.didSword3xTimerExpire, object: nil)
+        timerSword3x?.invalidate()
+        timerSword3x = nil
     }
     
     

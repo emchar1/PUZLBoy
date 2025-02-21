@@ -12,6 +12,7 @@ extension Notification.Name {
     //   1. Have the posting class (giver) post a notification with this name
     //   2. Have the observing class (receiver) observe/listen for the notification and perform the #selector function accordingly.
     
+    // Game Initialization
     static let presentGame = Notification.Name(rawValue: "presentGame")
     static let authenticationChanged = Notification.Name(rawValue: "authenticationChanged")
     static let iapHelperPurchaseNotification = Notification.Name("iapHelperPurchaseNotification")
@@ -19,6 +20,14 @@ extension Notification.Name {
     static let didSendEmailFeedback = Notification.Name(rawValue: "didSendEmailFeedback")
     static let shareURL = Notification.Name(rawValue: "shareURL")
     static let shouldCancelLoadingLeaderboards = Notification.Name(rawValue: "shouldCancelLoadingLeaderboards")
+    
+    // Game Completion
     static let completeGameDidWin = Notification.Name(rawValue: "completeGameDidWin")
     static let completeGameDidLose = Notification.Name(rawValue: "completeGameDidLose")
+    
+    // Duplicate Item Timer
+    static let didSword2xTimerInitialize = Notification.Name(rawValue: "sword2xTimerInitialized")
+    static let didSword2xTimerExpire = Notification.Name(rawValue: "sword2xTimerExpired")
+    static let didSword3xTimerInitialize = Notification.Name(rawValue: "sword3xTimerInitialized")
+    static let didSword3xTimerExpire = Notification.Name(rawValue: "sword3xTimerExpired")
 }

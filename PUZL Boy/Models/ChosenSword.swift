@@ -7,7 +7,7 @@
 
 import SpriteKit
 
-class ChosenSword {
+class ChosenSword: SKNode {
     
     // MARK: - Properties
     
@@ -17,8 +17,8 @@ class ChosenSword {
     
     //Stats Properties
     
-    ///Percentage out of 100. Simple.
-    private(set) var attackRating: CGFloat
+    ///Percentage out of 100. Simple. Use totalAttackRating, which takes into account the attackMultiplier.
+    private var attackRating: CGFloat
     
     ///The lower the number, the greater the defense, i.e. damage received. Standard = 1.
     private(set) var defenseRating: CGFloat
@@ -40,7 +40,15 @@ class ChosenSword {
     private(set) var elderCommentary: String
     private(set) var statsString: String
     private(set) var spriteNode: SKSpriteNode
-
+    
+    
+    //Attack Multiplier
+    private var numberFormatter: NumberFormatter
+    private(set) var attackMultiplier: CGFloat = 1
+    private(set) var attackMultiplierNode: SKLabelNode
+    var totalAttackRating: CGFloat { attackRating * attackMultiplier }
+    
+    
     enum SwordType: Int, CaseIterable {
         case celestialBroadsword = 0, heavenlySaber, cosmicCleaver, eternalBlade, plainSword
     }
@@ -115,7 +123,32 @@ class ChosenSword {
         statsString += "\nLuck: \(luckRatingString)"
         
         spriteNode = SKSpriteNode(imageNamed: imageName)
-        spriteNode.name = chosenSwordName
+        spriteNode.alpha = 0
+        
+        attackMultiplierNode = SKLabelNode(text: "1x")
+        attackMultiplierNode.fontName = UIFont.gameFont
+        attackMultiplierNode.fontSize = UIFont.gameFontSizeExtraLarge
+        attackMultiplierNode.fontColor = UIColor.yellow
+        attackMultiplierNode.verticalAlignmentMode = .center
+        attackMultiplierNode.alpha = 0
+        attackMultiplierNode.zPosition = 10
+        attackMultiplierNode.addDropShadow()
+        
+        numberFormatter = NumberFormatter()
+        numberFormatter.numberStyle = .decimal
+        numberFormatter.minimumFractionDigits = 0
+        numberFormatter.maximumFractionDigits = 1
+        
+        super.init()
+        
+        name = chosenSwordName
+        
+        addChild(spriteNode)
+        addChild(attackMultiplierNode)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     deinit {
@@ -150,13 +183,13 @@ class ChosenSword {
     
     func throwSword(endOffset: CGPoint, direction: Controls, rotations: CGFloat, throwDuration: TimeInterval, delay: TimeInterval?) {
         spriteNode.run(SKAction.sequence([
+            SKAction.fadeIn(withDuration: 0),
             SKAction.wait(forDuration: delay ?? 0),
             SKAction.group([
                 SKAction.rotate(byAngle: rotations * (direction == .up || direction == .right ? -1 : 1), duration: throwDuration),
                 SKAction.moveBy(x: endOffset.x, y: endOffset.y, duration: throwDuration),
             ]),
-            SKAction.fadeOut(withDuration: 0.5),
-            SKAction.removeFromParent()
+            SKAction.fadeOut(withDuration: 0.5)
         ]))
         
         AudioManager.shared.playSound(for: "boyattack\(Int.random(in: 1...3))", delay: delay ?? 0)
@@ -166,12 +199,13 @@ class ChosenSword {
     /**
      Actually execute the completion earlier, i.e. before the sword fades away. This helps with timing of heath drop/increase, etc.
      - parameters:
+        - position: point on the gameboard to load the sprite
         - facing: the direction the player is facing. Typically just send in xScale and the function will determine which direction it's facing if xScale is negative or positive.
         - shouldParry: if true, don't rotate the sprite but shake it, and add a parry sound fx
         - completion: completion handler once (most of) the action is complete (see warning)
      > Warning: spriteNode will not remove itself from parent node until after the sword is done fading out, i.e. 0.5s after completion handler has executed.
      */
-    func attack(facing: CGFloat, shouldParry: Bool, completion: (() -> Void)?) {
+    func attack(at position: CGPoint, facing: CGFloat, shouldParry: Bool, completion: (() -> Void)?) {
         let facingCoefficient: CGFloat = facing < 0 ? -1 : 1
         let parryAction: SKAction = shouldParry ? SKAction.sequence([
             SKAction.moveBy(x: -10, y: 0, duration: 0.05),
@@ -181,6 +215,7 @@ class ChosenSword {
             SKAction.moveBy(x: -10, y: 0, duration: 0.05)
         ]) : SKAction.rotate(byAngle: -3 * .pi / 2 * facingCoefficient, duration: 0.25)
         
+        self.position = position
         spriteNode.xScale = facingCoefficient * abs(spriteNode.xScale)
         
         spriteNode.run(SKAction.sequence([
@@ -191,9 +226,20 @@ class ChosenSword {
                 completion?()
             },
             SKAction.fadeAlpha(to: 0, duration: 0.5),
-            SKAction.rotate(toAngle: 0, duration: 0),
-            SKAction.removeFromParent()
+            SKAction.rotate(toAngle: 0, duration: 0)
         ]))
+        
+        if attackMultiplier != 1 {
+            attackMultiplierNode.text = "\(numberFormatter.string(from: NSNumber(value: attackMultiplier)) ?? "0")x"
+            
+            attackMultiplierNode.run(SKAction.sequence([
+                SKAction.wait(forDuration: 0.5),
+                SKAction.fadeIn(withDuration: 0),
+                SKAction.scale(to: 2, duration: 0.5),
+                SKAction.fadeOut(withDuration: 0),
+                SKAction.scale(to: 1, duration: 0)
+            ]))
+        }
         
         if shouldParry {
             AudioManager.shared.playSound(for: "boyattack\(Int.random(in: 1...2))")
@@ -205,6 +251,10 @@ class ChosenSword {
             AudioManager.shared.playSound(for: "swordslash")
             Haptics.shared.executeCustomPattern(pattern: .killEnemy)
         }
+    }
+    
+    func setAttackMultiplier(_ multiplier: CGFloat) {
+        attackMultiplier = multiplier
     }
     
     

@@ -17,6 +17,7 @@ enum LevelType: Int, CaseIterable {
     case boulder, enemy, enemyIce, warp, warp2, warp3, warp4, warp5 //special panels
     case partyPill, partyGem, partyGemDouble, partyGemTriple, partyHint, partyLife, partyTime, partyFast, partySlow, partyBomb, partyBoom //party items
     case statue0, statue1, statue2, statue3, statue4, statue5, statue5b //tiki statues
+    case sword2x, sword3x //Magmoor duplicate drops
     
     var description: String {
         //Should boundary default to ""?
@@ -67,6 +68,8 @@ enum LevelType: Int, CaseIterable {
         case "statue4": return .statue4
         case "statue5": return .statue5
         case "statue5b": return .statue5b
+        case "sword2x": return .sword2x
+        case "sword3x": return .sword3x
         default: return .boundary //.boundary ensures all types are accounted for.
         }
     }
