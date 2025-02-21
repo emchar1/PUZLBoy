@@ -81,6 +81,7 @@ class FinalBattle2Controls {
         
         //Populate DuplicateItem array here - 2/12/25
         DuplicateItem.shared.populateSpawnedItems(luck: chosenSword.luckRating)
+        DuplicateItem.shared.delegateDuplicateItem = self
         
         magmoorAttacks = MagmoorAttacks(gameboard: gameboard, villain: villain)
         magmoorShield = MagmoorShield(hitPoints: 0)
@@ -726,6 +727,23 @@ extension FinalBattle2Controls: MagmoorShieldDelegate {
     
     func didBreakShield(at villainPosition: K.GameboardPosition) {
         delegateControls?.handleShield(willDamage: false, didDamage: false, willBreak: false, didBreak: true, fadeDuration: nil, chosenSword: chosenSword, villainPosition: villainPosition)
+    }
+    
+    
+}
+
+
+// MARK: - DuplicateItemDelegate
+
+extension FinalBattle2Controls: DuplicateItemDelegate {
+    func getRemainingTimes(sword2x: TimeInterval, sword3x: TimeInterval) {
+        if sword2x > 0 {
+            print("sword2x remaining time: \(round(sword2x))")
+        }
+        
+        if sword3x > 0 {
+            print("sword3x remaining time: \(round(sword3x))")
+        }
     }
     
     

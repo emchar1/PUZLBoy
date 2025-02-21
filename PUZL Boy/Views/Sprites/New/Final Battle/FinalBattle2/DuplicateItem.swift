@@ -7,34 +7,47 @@
 
 import SpriteKit
 
+protocol DuplicateItemDelegate: AnyObject {
+    func getRemainingTimes(sword2x: TimeInterval, sword3x: TimeInterval)
+}
+
 class DuplicateItem {
     
     // MARK: - Properties
     
     private let itemsCount: Int = 200
-    private(set) var timerDuration: TimeInterval
+    private let sword2xTimerIncrement: TimeInterval = 60
+    private let sword3xTimerIncrement: TimeInterval = 50
+    private(set) var spawnTimerDuration: TimeInterval
+    
     private(set) var spawnedItems: [LevelType]
     private(set) var collectedItems: [LevelType]
     
+    private var timer: Timer
     private var timerSword2x: Timer?
     private var timerSword3x: Timer?
     
     static let shared: DuplicateItem = {
         let instance = DuplicateItem()
-
+        
         return instance
     }()
+    
+    weak var delegateDuplicateItem: DuplicateItemDelegate?
     
     
     // MARK: - Initialization
     
     private init() {
-        timerDuration = 5
+        spawnTimerDuration = 5
         spawnedItems = []
         collectedItems = []
         
+        timer = Timer()
         timerSword2x = nil
         timerSword3x = nil
+        
+        timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(updateTimer(_:)), userInfo: nil, repeats: true)
     }
     
     deinit {
@@ -55,19 +68,19 @@ class DuplicateItem {
         
         switch luck {
         case let amt where amt <= 0.25:
-            timerDuration = 4
+            spawnTimerDuration = 4
             items = [(.sword2x, 0.25), (.sword3x, 0.15), (.gem, 0.60), (.heart, 0.00)]
         case let amt where amt <= 0.50:
-            timerDuration = 5
+            spawnTimerDuration = 5
             items = [(.sword2x, 0.30), (.sword3x, 0.20), (.gem, 0.40), (.heart, 0.10)]
         case let amt where amt <= 0.75:
-            timerDuration = 6
+            spawnTimerDuration = 6
             items = [(.sword2x, 0.35), (.sword3x, 0.25), (.gem, 0.25), (.heart, 0.15)]
         case let amt where amt <= 0.85:
-            timerDuration = 8
+            spawnTimerDuration = 8
             items = [(.sword2x, 0.40), (.sword3x, 0.35), (.gem, 0.00), (.heart, 0.25)]
         default:
-            timerDuration = 4
+            spawnTimerDuration = 4
             items = [(.sword2x, 0.00), (.sword3x, 0.00), (.gem, 0.00), (.heart, 1.00)]
         }
         
@@ -133,10 +146,10 @@ class DuplicateItem {
             feedbackStyle = .rigid
             gameboard.addParticles(type: .itemPickup, at: position)
             
-            let remainingTime: TimeInterval = timerSword2x != nil ? abs(Date().timeIntervalSince(timerSword2x!.fireDate)) : 0
+            let remainingTime: TimeInterval = getRemainingTime(timer: timerSword2x)
             
             timerSword2x?.invalidate()
-            timerSword2x = Timer.scheduledTimer(timeInterval: remainingTime + 30,
+            timerSword2x = Timer.scheduledTimer(timeInterval: remainingTime + sword2xTimerIncrement,
                                                 target: self,
                                                 selector: #selector(setSword2xTimer(_:)),
                                                 userInfo: nil,
@@ -148,10 +161,10 @@ class DuplicateItem {
             feedbackStyle = .rigid
             gameboard.addParticles(type: .itemPickup, at: position)
             
-            let remainingTime: TimeInterval = timerSword3x != nil ? abs(Date().timeIntervalSince(timerSword3x!.fireDate)) : 0
+            let remainingTime: TimeInterval = getRemainingTime(timer: timerSword3x)
             
             timerSword3x?.invalidate()
-            timerSword3x = Timer.scheduledTimer(timeInterval: remainingTime + 20,
+            timerSword3x = Timer.scheduledTimer(timeInterval: remainingTime + sword3xTimerIncrement,
                                                 target: self,
                                                 selector: #selector(setSword3xTimer(_:)),
                                                 userInfo: nil,
@@ -184,7 +197,7 @@ class DuplicateItem {
         guard let item = getItem(at: position, on: gameboard) else { return }
         
         item.sprite.run(SKAction.sequence([
-            SKAction.wait(forDuration: timerDuration),
+            SKAction.wait(forDuration: spawnTimerDuration),
             SKAction.run {
                 item.sprite.removeAction(forKey: GameboardSprite.keyOverlayAnimation)
             },
@@ -192,6 +205,17 @@ class DuplicateItem {
             SKAction.scale(to: 0, duration: 0.25),
             SKAction.removeFromParent()
         ]))
+    }
+    
+    private func getRemainingTime(timer: Timer?) -> TimeInterval {
+        return timer != nil ? abs(Date().timeIntervalSince(timer!.fireDate)) : 0
+    }
+    
+    @objc private func updateTimer(_ sender: Any) {
+        let remainingTime2x: TimeInterval = getRemainingTime(timer: timerSword2x)
+        let remainingTime3x: TimeInterval = getRemainingTime(timer: timerSword3x)
+
+        delegateDuplicateItem?.getRemainingTimes(sword2x: remainingTime2x, sword3x: remainingTime3x)
     }
     
     @objc private func setSword2xTimer(_ sender: Any) {
