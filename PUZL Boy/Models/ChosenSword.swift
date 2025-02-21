@@ -131,7 +131,7 @@ class ChosenSword: SKNode {
         attackMultiplierNode.fontColor = UIColor.yellow
         attackMultiplierNode.verticalAlignmentMode = .center
         attackMultiplierNode.alpha = 0
-        attackMultiplierNode.zPosition = 10
+        attackMultiplierNode.zPosition = 50
         attackMultiplierNode.addDropShadow()
         
         numberFormatter = NumberFormatter()
@@ -201,11 +201,12 @@ class ChosenSword: SKNode {
      - parameters:
         - position: point on the gameboard to load the sprite
         - facing: the direction the player is facing. Typically just send in xScale and the function will determine which direction it's facing if xScale is negative or positive.
+        - showMultiplier: show the attackMultiplier after the sword animation.
         - shouldParry: if true, don't rotate the sprite but shake it, and add a parry sound fx
         - completion: completion handler once (most of) the action is complete (see warning)
      > Warning: spriteNode will not remove itself from parent node until after the sword is done fading out, i.e. 0.5s after completion handler has executed.
      */
-    func attack(at position: CGPoint, facing: CGFloat, shouldParry: Bool, completion: (() -> Void)?) {
+    func attack(at position: CGPoint, facing: CGFloat, showMultiplier: Bool, shouldParry: Bool, completion: (() -> Void)?) {
         let facingCoefficient: CGFloat = facing < 0 ? -1 : 1
         let parryAction: SKAction = shouldParry ? SKAction.sequence([
             SKAction.moveBy(x: -10, y: 0, duration: 0.05),
@@ -229,14 +230,22 @@ class ChosenSword: SKNode {
             SKAction.rotate(toAngle: 0, duration: 0)
         ]))
         
-        if attackMultiplier != 1 {
+        if showMultiplier {
             attackMultiplierNode.text = "\(numberFormatter.string(from: NSNumber(value: attackMultiplier)) ?? "0")x"
             
             attackMultiplierNode.run(SKAction.sequence([
                 SKAction.wait(forDuration: 0.5),
                 SKAction.fadeIn(withDuration: 0),
-                SKAction.scale(to: 2, duration: 0.5),
-                SKAction.fadeOut(withDuration: 0),
+                SKAction.group([
+                    SKAction.scale(to: 3, duration: 0.5),
+                    SKAction.sequence([
+                        SKAction.wait(forDuration: 0.4),
+                        SKAction.group([
+                            SKAction.scale(to: 8, duration: 0.1),
+                            SKAction.fadeOut(withDuration: 0.1)
+                        ])
+                    ])
+                ]),
                 SKAction.scale(to: 1, duration: 0)
             ]))
         }

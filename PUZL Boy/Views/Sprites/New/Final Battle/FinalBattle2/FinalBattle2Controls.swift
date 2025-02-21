@@ -280,7 +280,10 @@ class FinalBattle2Controls {
         canAttack = false
         villainMoveTimer.invalidate()
         
-        chosenSword.attack(at: gameboard.getLocation(at: attackPanel), facing: player.sprite.xScale, shouldParry: magmoorShield.hasHitPoints) { [weak self] in
+        chosenSword.attack(at: gameboard.getLocation(at: attackPanel),
+                           facing: player.sprite.xScale,
+                           showMultiplier: !magmoorShield.hasHitPoints && chosenSword.attackMultiplier != 1,
+                           shouldParry: magmoorShield.hasHitPoints) { [weak self] in
             guard let self = self else { return }
             
             isDisabled = false
@@ -329,7 +332,10 @@ class FinalBattle2Controls {
         isDisabled = true
         canAttack = false
         
-        chosenSword.attack(at: gameboard.getLocation(at: attackPanel), facing: player.sprite.xScale, shouldParry: duplicate.invincibleShield?.hasHitPoints ?? false) { [weak self] in
+        chosenSword.attack(at: gameboard.getLocation(at: attackPanel),
+                           facing: player.sprite.xScale,
+                           showMultiplier: false,
+                           shouldParry: duplicate.invincibleShield?.hasHitPoints ?? false) { [weak self] in
             guard let self = self else { return }
             
             isDisabled = false
