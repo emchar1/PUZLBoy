@@ -586,6 +586,10 @@ extension FinalBattle2Engine: FinalBattle2ControlsDelegate {
         print("Received \(item.description)")
     }
     
+    func getRemainingTimesForSwordMultiplier(sword2x: TimeInterval, sword3x: TimeInterval) {
+        labelDebug.text = "2x: \(round(sword2x))\n3x: \(round(sword3x))"
+    }
+    
     
 }
 
@@ -638,14 +642,14 @@ extension FinalBattle2Engine: FinalBattle2HealthDelegate {
         
         
         
-        // FIXME: - labelDebug DEBUG
-        let inc = round(increment * 1000) / 1000
-        let damp = round(damping * 100) / 100
-        let damage = round(increment * damping * 1000) / 1000
-        let health = round(healthCounter.getCount() * 100) / 100
-        let multiplier = controls.chosenSword.attackMultiplier
-        
-        labelDebug.text = "INC: \(inc), DAMPING: \(damp)\nDAMAGE: \(damage)\nHEALTH: \(health)\nX: \(multiplier)"
+//        // FIXME: - labelDebug DEBUG
+//        let inc = round(increment * 1000) / 1000
+//        let damp = round(damping * 100) / 100
+//        let damage = round(increment * damping * 1000) / 1000
+//        let health = round(healthCounter.getCount() * 100) / 100
+//        let multiplier = controls.chosenSword.attackMultiplier
+//        
+//        labelDebug.text = "INC: \(inc), DAMPING: \(damp)\nDAMAGE: \(damage)\nHEALTH: \(health)\nX: \(multiplier)"
     }
     
 }

@@ -18,6 +18,7 @@ class DuplicateItem {
     private let itemsCount: Int = 200
     private let sword2xTimerIncrement: TimeInterval = 60
     private let sword3xTimerIncrement: TimeInterval = 50
+    private let maxSwordTimerIncrement: TimeInterval = 150
     private(set) var spawnTimerDuration: TimeInterval
     
     private(set) var spawnedItems: [LevelType]
@@ -149,7 +150,7 @@ class DuplicateItem {
             let remainingTime: TimeInterval = getRemainingTime(timer: timerSword2x)
             
             timerSword2x?.invalidate()
-            timerSword2x = Timer.scheduledTimer(timeInterval: remainingTime + sword2xTimerIncrement,
+            timerSword2x = Timer.scheduledTimer(timeInterval: min(remainingTime + sword2xTimerIncrement, maxSwordTimerIncrement),
                                                 target: self,
                                                 selector: #selector(setSword2xTimer(_:)),
                                                 userInfo: nil,
@@ -164,7 +165,7 @@ class DuplicateItem {
             let remainingTime: TimeInterval = getRemainingTime(timer: timerSword3x)
             
             timerSword3x?.invalidate()
-            timerSword3x = Timer.scheduledTimer(timeInterval: remainingTime + sword3xTimerIncrement,
+            timerSword3x = Timer.scheduledTimer(timeInterval: min(remainingTime + sword3xTimerIncrement, maxSwordTimerIncrement),
                                                 target: self,
                                                 selector: #selector(setSword3xTimer(_:)),
                                                 userInfo: nil,

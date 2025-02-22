@@ -17,6 +17,7 @@ protocol FinalBattle2ControlsDelegate: AnyObject {
     func didExplodeDuplicate(chosenSword: ChosenSword)
     func didVillainAttackBecomeVisible()
     func didCollectDuplicateDroppedItem(item: LevelType, chosenSword: ChosenSword)
+    func getRemainingTimesForSwordMultiplier(sword2x: TimeInterval, sword3x: TimeInterval)
     func handleShield(willDamage: Bool, didDamage: Bool, willBreak: Bool, didBreak: Bool, fadeDuration: TimeInterval?, chosenSword: ChosenSword, villainPosition: K.GameboardPosition?)
 }
 
@@ -737,13 +738,7 @@ extension FinalBattle2Controls: MagmoorShieldDelegate {
 
 extension FinalBattle2Controls: DuplicateItemDelegate {
     func getRemainingTimes(sword2x: TimeInterval, sword3x: TimeInterval) {
-        if sword2x > 0 {
-            print("sword2x remaining time: \(round(sword2x))")
-        }
-        
-        if sword3x > 0 {
-            print("sword3x remaining time: \(round(sword3x))")
-        }
+        delegateControls?.getRemainingTimesForSwordMultiplier(sword2x: sword2x, sword3x: sword3x)
     }
     
     
