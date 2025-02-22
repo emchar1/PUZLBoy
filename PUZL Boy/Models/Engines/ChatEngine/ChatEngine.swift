@@ -1292,10 +1292,9 @@ extension ChatEngine {
                 ChatItem(profile: .hero, imgPos: .left, chat: "Yeah, a girl. You know what.. I don't need the shield. The sword and boots will do just fine—"),
                 ChatItem(profile: .merton, chat: "'Tis a fine piece of defense, dear boy. Possesses neither male nor female attributes. It is.. oh, what do your people call it again..... Non-binary."),
                 ChatItem(profile: .hero, imgPos: .left, chat: "Unisex. It's cool though. Just not for me."),
-                ChatItem(profile: .magmus, chat: "It is a strong shield. A masculine shield. A man's shield. Right? Tell him, Merton!"),
-                ChatItem(profile: .merton, chat: "It is very much a manly shield made especially for a good, strong boy.. er, man your age—"),
+                ChatItem(profile: .magmus, chat: "It is a strong shield. A bold shield. A man's shield."),
                 ChatItem(profile: .hero, imgPos: .left, chat: "No.. no. I'm gonna have to pass—"),
-                ChatItem(profile: .melchior, chat: "Oh, for my sake! PUZL Boy, you will need all the help you can get if you want to destroy Magmoor. Now take the girly looking shield and let's go!") { [weak self] in
+                ChatItem(profile: .melchior, chat: "Oh, for my sake! PUZL Boy, you will need all the help you can get if you want to destroy Magmoor. Now take the girly shield and let's go!") { [weak self] in
                     self?.hideFFButton()
                     self?.delegateCatwalk?.stopMusicCatwalk(music: partyMusic, fadeOut: fadeOut, delay: logoDuration, shouldPlayOverworld: true)
                     self?.delegateCatwalk?.showLargeItem(imageName: "shield", fadeDuration: fadeOut, delay: logoDuration)
