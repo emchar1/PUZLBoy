@@ -1416,7 +1416,38 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
     }
     
     private func zoomMagmoorHelper(scaleBy: CGFloat, fadeDuration: TimeInterval) -> SKAction {
-        return SKAction.scale(by: scaleBy, duration: fadeDuration * 24)
+        let shakeDuration: TimeInterval = 0.05
+        let shakeDistance: CGFloat = 1
+        let shakeRepeat: Int = Int(1 / (2 * shakeDuration))
+        let totalFade: TimeInterval = fadeDuration * 24
+        
+        func shakeLeftRight(multiplier: CGFloat, count: Int) -> SKAction {
+            return SKAction.repeat(SKAction.sequence([
+                SKAction.moveBy(x: -multiplier * shakeDistance, y: 0, duration: 0),
+                SKAction.wait(forDuration: shakeDuration),
+                SKAction.moveBy(x: multiplier * shakeDistance, y: 0, duration: 0),
+                SKAction.wait(forDuration: shakeDuration)
+            ]), count: count)
+        }
+        
+        let shakeAction = SKAction.sequence([
+            shakeLeftRight(multiplier: 1, count: shakeRepeat),
+            shakeLeftRight(multiplier: 2, count: shakeRepeat),
+            shakeLeftRight(multiplier: 3, count: shakeRepeat),
+            shakeLeftRight(multiplier: 4, count: shakeRepeat),
+            shakeLeftRight(multiplier: 5, count: shakeRepeat),
+            shakeLeftRight(multiplier: 6, count: shakeRepeat),
+            shakeLeftRight(multiplier: 7, count: shakeRepeat),
+            shakeLeftRight(multiplier: 8, count: shakeRepeat),
+            shakeLeftRight(multiplier: 9, count: shakeRepeat),
+            shakeLeftRight(multiplier: 10, count: shakeRepeat),
+            shakeLeftRight(multiplier: 10, count: Int(totalFade - 10) * shakeRepeat)
+        ])
+        
+        return SKAction.group([
+            shakeAction, //comment this out to remove shaking magmoor!
+            SKAction.scale(by: scaleBy, duration: totalFade)
+        ])
     }
     
     private func fadeInMagmoorHelper(fadeDuration: TimeInterval) -> SKAction {

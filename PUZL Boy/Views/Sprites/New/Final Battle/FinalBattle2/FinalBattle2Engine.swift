@@ -279,7 +279,7 @@ class FinalBattle2Engine {
             healthType = .villainAttackNormal
         }
         
-        showDamagePanel(at: position, color: panelColor, isPoison: pattern == .poison, withExplosion: false)
+        showDamagePanel(at: position, color: panelColor, isPoison: pattern == .poison, withExplosion: false, extendDamage: false)
         
         if position == controls.positions.player {
             health.updateHealth(type: healthType, dmgMultiplier: chosenSword.defenseRating)
@@ -321,7 +321,7 @@ class FinalBattle2Engine {
         }
         
         //Panel animation
-        affectedPanels.forEach { showDamagePanel(at: $0, withExplosion: true) }
+        affectedPanels.forEach { showDamagePanel(at: $0, withExplosion: true, extendDamage: false) }
         
         //Update health
         if affectedPanels.contains(where: { $0 == controls.positions.player }) {
@@ -369,10 +369,12 @@ class FinalBattle2Engine {
         
         //Panel animation
         let shouldPoison: Bool = controls.magmoorShield.resetCount == 4 || controls.magmoorShield.resetCount >= 6
-        affectedPanels.forEach { showDamagePanel(at: $0, color: shouldPoison ? .green : .red, isPoison: shouldPoison, withExplosion: true) }
+        let heroHit: Bool = affectedPanels.contains(where: { $0 == controls.positions.player })
+        
+        affectedPanels.forEach { showDamagePanel(at: $0, color: shouldPoison ? .green : .red.darkenColor(factor: 12), isPoison: shouldPoison, withExplosion: true, extendDamage: heroHit) }
         
         //Update health
-        if affectedPanels.contains(where: { $0 == controls.positions.player }) {
+        if heroHit {
             if shouldPoison {
                 health.updateHealth(type: .villainAttackPoison, dmgMultiplier: chosenSword.defenseRating)
                 health.updateHealth(type: .drainPoison, dmgMultiplier: chosenSword.defenseRating)
@@ -386,7 +388,8 @@ class FinalBattle2Engine {
             flashOverlay.run(SKAction.sequence([
                 SKAction.wait(forDuration: 0.4),
                 SKAction.fadeIn(withDuration: 0),
-                SKAction.fadeOut(withDuration: 5)
+                SKAction.wait(forDuration: 0.5),
+                SKAction.fadeOut(withDuration: 2.6)
             ]))
             
             return true
@@ -396,8 +399,8 @@ class FinalBattle2Engine {
         }
     }
     
-    private func showDamagePanel(at position: K.GameboardPosition, color: UIColor = .red, isPoison: Bool = false, withExplosion: Bool) {
-        let waitDuration: TimeInterval = isPoison ? 6.75 : 0.75
+    private func showDamagePanel(at position: K.GameboardPosition, color: UIColor = .red, isPoison: Bool = false, withExplosion: Bool, extendDamage: Bool) {
+        let damageDuration: TimeInterval = isPoison ? 6.75 : (extendDamage ? 3.5 : 0.75)
         let pulseDuration: TimeInterval = 0.1
         let shakeAction: SKAction = isPoison ? SKAction.sequence([
             SKAction.moveBy(x: 5, y: 0, duration: 0),
@@ -428,13 +431,13 @@ class FinalBattle2Engine {
         
         damagePanel.run(SKAction.sequence([
             SKAction.fadeIn(withDuration: 0.25),
-            SKAction.wait(forDuration: waitDuration),
+            SKAction.wait(forDuration: damageDuration),
             shakeAction,
             SKAction.removeFromParent()
         ]))
         
         if withExplosion {
-            let particleType: ParticleEngine.ParticleType = isPoison ? .magicElderEarth2: .magicElderFire3
+            let particleType: ParticleEngine.ParticleType = isPoison ? .magicElderEarth2 : .magicElderFire3
             let particleScale: CGFloat = (isPoison ? 2 : 1) * UIDevice.spriteScale / CGFloat(gameboard.panelCount)
             let particleDuration: TimeInterval = isPoison ? 8 : 1
             

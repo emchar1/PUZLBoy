@@ -1275,7 +1275,7 @@ extension ChatEngine {
                 ChatItem(profile: .hero, imgPos: .left, chat: "Wow!!! This is... something. It's... absolutely incredible. 🤩"),
                 ChatItem(profile: .statue1, chat: "Be VERY careful with it! Legend has it, the Mystic steelsmith, Mythrile forged the blade in the fire of a dying star... a truly rare weapon!"),
                 ChatItem(profile: .hero, imgPos: .left, chat: "Oh yes! I will. I promise to take good care of it!"),
-                ChatItem(profile: .statue1, chat: "You'll need more than a sword to defeat the Mad Mystic. Take this as well. May your feet glide effortlessly across any terrain.. like lava!") { [weak self] in
+                ChatItem(profile: .statue1, chat: "Next, you'll need something to evade the Mad Mystic's swift attacks! Take this. May your feet glide effortlessly across any terrain.. including lava!") { [weak self] in
                     self?.hideFFButton()
                     self?.delegateCatwalk?.stopMusicCatwalk(music: partyMusic, fadeOut: fadeOut, delay: nil, shouldPlayOverworld: false)
                     self?.delegateCatwalk?.showLargeItem(imageName: "wingedboot", fadeDuration: fadeOut, delay: logoDuration)
@@ -1286,15 +1286,18 @@ extension ChatEngine {
                     self?.delegateCatwalk?.playMusicCatwalk(music: partyMusic, startingVolume: 0.25, fadeIn: fadeOut, shouldStopOverworld: false)
                 },
                 ChatItem(profile: .hero, imgPos: .left, chat: "So hot!! It's like I'm floating on air!"),
-                ChatItem(profile: .statue1, chat: "And lastly... this. May it grant you enduring protection against the forces of evil!"),
-                ChatItem(profile: .hero, imgPos: .left, chat: "Ummm........... this is a girl's shield."),
-                ChatItem(profile: .statue1, chat: "Ahem! This shield belonged to one of the greatest generals in all of Mystaria's wartime history. General Minerva led an army to victory against a most evil force!"),
-                ChatItem(profile: .hero, imgPos: .left, chat: "Yeah, a girl. You know what.. I don't need the shield. The sword and boots will do just fine—"),
-                ChatItem(profile: .merton, chat: "'Tis a fine piece of defense, dear boy. Possesses neither male nor female attributes. It is.. oh, what do your people call it again..... Non-binary."),
-                ChatItem(profile: .hero, imgPos: .left, chat: "Unisex. It's cool though. Just not for me."),
+                ChatItem(profile: .statue1, chat: "And lastly... this. May it grant you enduring protection against the forces of evil! ......What's the matter?"),
+                ChatItem(profile: .hero, imgPos: .left, chat: "Oh, nothing. It's just— isn't that a girl's shield?"),
+                ChatItem(profile: .statue1, chat: "Ahem! This shield belonged to one of the greatest generals in the history of Mystaria. General Minerva led an army to victory against 10,000 dark Mystics!"),
+                ChatItem(profile: .hero, imgPos: .left, chat: "Minerva.. a girl."),
+                ChatItem(profile: .statue1, chat: "Armed with nothing but her trusty aegis, this shield absorbed all of their evil, scary magic and ✨BURST✨ into a dazzling display of lights and colors!"),
+                ChatItem(profile: .hero, imgPos: .left, chat: "Lovely. You know what.. The sword and boots will do just fine—"),
+                ChatItem(profile: .merton, chat: "'Tis an illustrious piece of equipment, dear boy. Possesses neither male nor female attributes. It is.. oh, what do your people call it again..... Non-binary."),
+                ChatItem(profile: .hero, imgPos: .left, chat: "Unisex. It's cool though. I'm gonna pass."),
                 ChatItem(profile: .magmus, chat: "It is a strong shield. A bold shield. A man's shield."),
-                ChatItem(profile: .hero, imgPos: .left, chat: "No.. no. I'm gonna have to pass—"),
-                ChatItem(profile: .melchior, chat: "Oh, for my sake! PUZL Boy, you will need all the help you can get if you want to destroy Magmoor. Now take the girly shield and let's go!") { [weak self] in
+                ChatItem(profile: .merton, chat: "Ah, yes! Note the beautiful, bold colors. See how it shines and shimmers in the light? A manly shield, indeed!"),
+                ChatItem(profile: .hero, imgPos: .left, chat: "It is a pretty shield. It just doesn't go with the ensemble is all I'm saying!"),
+                ChatItem(profile: .melchior, chat: "Oh, for my sake! PUZL Boy, you will need all the help you can get if you want to destroy Magmoor. Now take the girl shield and let's go!") { [weak self] in
                     self?.hideFFButton()
                     self?.delegateCatwalk?.stopMusicCatwalk(music: partyMusic, fadeOut: fadeOut, delay: logoDuration, shouldPlayOverworld: true)
                     self?.delegateCatwalk?.showLargeItem(imageName: "shield", fadeDuration: fadeOut, delay: logoDuration)
@@ -1324,7 +1327,7 @@ extension ChatEngine {
                     ChatItem(profile: .magmus, chat: "MELCHIOR! Kindness!"),
                     ChatItem(profile: .magmus, chat: "Forgive him, child. As you'll recall, the gateway is powered by sparkly purple gems. Surrender your sparkly purple gems and access shall be granted."),
                     ChatItem(profile: .melchior, chat: "He just threw it!!!"),
-                    ChatItem(profile: .hero, imgPos: .left, chat: "My sparkly purple gems.. YES!!! I'll hit it with my sparkly purple gems till it opens!")
+                    ChatItem(profile: .hero, imgPos: .left, chat: "My sparkly purple gems.. YES!!! I'll tap the gate to feed it my sparkly purple gems till it opens!")
                 ]) { [weak self] in
                     self?.delegateCatwalk?.feedGemsCatwalk()
                     self?.handleDialogueCompletion(level: level, completion: completion)
