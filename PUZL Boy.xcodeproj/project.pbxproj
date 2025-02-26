@@ -65,6 +65,7 @@
 		EA3D6FB02D5E8C5D0070A701 /* magicdisappear2b.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA3D6FAF2D5E8C5D0070A701 /* magicdisappear2b.mp3 */; };
 		EA3D6FB22D62FAF20070A701 /* swordthud.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA3D6FB12D62FAF20070A701 /* swordthud.mp3 */; };
 		EA3D6FB62D6875370070A701 /* magicdisappear2.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA3D6FB52D6875370070A701 /* magicdisappear2.mp3 */; };
+		EA3D6FB82D6FA3630070A701 /* CircularProgressBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA3D6FB72D6FA3630070A701 /* CircularProgressBar.swift */; };
 		EA41F8352A0C7D8000DF47EC /* HowToPlayPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA41F8342A0C7D8000DF47EC /* HowToPlayPage.swift */; };
 		EA41F83A2A0D71EE00DF47EC /* ParentPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA41F8392A0D71EE00DF47EC /* ParentPage.swift */; };
 		EA41F83C2A0DD3F800DF47EC /* SettingsTapArea.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA41F83B2A0DD3F800DF47EC /* SettingsTapArea.swift */; };
@@ -474,6 +475,7 @@
 		EA3D6FAF2D5E8C5D0070A701 /* magicdisappear2b.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = magicdisappear2b.mp3; sourceTree = "<group>"; };
 		EA3D6FB12D62FAF20070A701 /* swordthud.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = swordthud.mp3; sourceTree = "<group>"; };
 		EA3D6FB52D6875370070A701 /* magicdisappear2.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = magicdisappear2.mp3; sourceTree = "<group>"; };
+		EA3D6FB72D6FA3630070A701 /* CircularProgressBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircularProgressBar.swift; sourceTree = "<group>"; };
 		EA41F8342A0C7D8000DF47EC /* HowToPlayPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HowToPlayPage.swift; sourceTree = "<group>"; };
 		EA41F8392A0D71EE00DF47EC /* ParentPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParentPage.swift; sourceTree = "<group>"; };
 		EA41F83B2A0DD3F800DF47EC /* SettingsTapArea.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTapArea.swift; sourceTree = "<group>"; };
@@ -889,6 +891,7 @@
 				EAB8B8BB2D4CA60700E5DE5F /* Fireball.swift */,
 				EAE751E02D2C712A004B138A /* MagmoorShield.swift */,
 				EA3D6FAB2D5D43460070A701 /* DuplicateItem.swift */,
+				EA3D6FB72D6FA3630070A701 /* CircularProgressBar.swift */,
 			);
 			path = FinalBattle2;
 			sourceTree = "<group>";
@@ -1953,6 +1956,7 @@
 				EAE43DAB2C508F4300E6DB3C /* SubtitleLabelNode.swift in Sources */,
 				EA94E87729C2DCE0009F2614 /* Extension+CGPoint.swift in Sources */,
 				EA826C81298CF3FF00F19F81 /* IAPManager.swift in Sources */,
+				EA3D6FB82D6FA3630070A701 /* CircularProgressBar.swift in Sources */,
 				EA956C6A29257B9C00879AD0 /* AudioManager.swift in Sources */,
 				EA41F8352A0C7D8000DF47EC /* HowToPlayPage.swift in Sources */,
 				EAB69E0428F3333000C31DB3 /* GameEngine.swift in Sources */,

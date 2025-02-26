@@ -103,7 +103,7 @@ class ChatEngine {
     private var dialogueWithCutscene: [Int: Bool] = [:]     //Levels with dialogue that have a cutscene
     private var completion: (() -> ())?
 
-    private let chatSpeedOrig: TimeInterval = 0.08
+    private let chatSpeedOrig: TimeInterval = 0.04
     private let chatSpeedImmediate: TimeInterval = 0
     private var chatSpeed: TimeInterval
     private var chatText: String = ""
@@ -595,7 +595,7 @@ class ChatEngine {
                 self?.closeChat()
             })
             
-            DispatchQueue.main.asyncAfter(deadline: .now() + (chatSpeed > chatSpeedImmediate ? 5.0 : max(5.0, Double(chatText.count) / 10)), execute: dispatchWorkItem)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 30, execute: dispatchWorkItem)
         }
     }
     

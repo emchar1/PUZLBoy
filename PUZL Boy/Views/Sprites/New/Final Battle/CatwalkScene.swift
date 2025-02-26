@@ -1416,7 +1416,7 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
     }
     
     private func zoomMagmoorHelper(scaleBy: CGFloat, fadeDuration: TimeInterval) -> SKAction {
-        let shakeDuration: TimeInterval = 0.05
+        let shakeDuration: TimeInterval = 0.0625
         let shakeDistance: CGFloat = 1
         let shakeRepeat: Int = Int(1 / (2 * shakeDuration))
         let totalFade: TimeInterval = fadeDuration * 24
