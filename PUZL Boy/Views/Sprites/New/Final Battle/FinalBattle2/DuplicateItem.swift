@@ -220,7 +220,7 @@ class DuplicateItem {
     @objc private func updateTimer(_ sender: Any) {
         let remainingTime2x: TimeInterval = getRemainingTime(timer: timerSword2x)
         let remainingTime3x: TimeInterval = getRemainingTime(timer: timerSword3x)
-        let remainingTime: TimeInterval = max(remainingTime2x, remainingTime3x)
+        let remainingTime: TimeInterval = remainingTime3x > 0 ? remainingTime3x : remainingTime2x
         
         progressBar.setRemainingTime(remainingTime / maxSwordTimerIncrement)
         
