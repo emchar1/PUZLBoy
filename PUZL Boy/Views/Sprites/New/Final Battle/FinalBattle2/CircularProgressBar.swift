@@ -14,20 +14,11 @@ class CircularProgressBar: SKNode {
     private let radius: CGFloat = 100
     private let lineWidth: CGFloat = 24
     private var multiplier: Int = 1
+    private var remainingTime: TimeInterval = 0
     
     private var circleNode: SKShapeNode
     private var swordImage: SKSpriteNode
     private var multiplierLabel: SKLabelNode
-    
-    private var remainingTime: TimeInterval = 0 {
-        didSet {
-            circleNode.path = UIBezierPath(arcCenter: .zero,
-                                           radius: radius,
-                                           startAngle: .pi / 2,
-                                           endAngle: .pi / 2 - 2 * .pi * remainingTime,
-                                           clockwise: false).cgPath
-        }
-    }
     
     
     // MARK: - Initialization
@@ -87,6 +78,11 @@ class CircularProgressBar: SKNode {
         }
         
         circleNode.strokeColor = getColor(from: percentage)
+        circleNode.path = UIBezierPath(arcCenter: .zero,
+                                       radius: radius,
+                                       startAngle: .pi / 2,
+                                       endAngle: .pi / 2 - 2 * .pi * percentage,
+                                       clockwise: false).cgPath
         
         self.remainingTime = percentage
     }
