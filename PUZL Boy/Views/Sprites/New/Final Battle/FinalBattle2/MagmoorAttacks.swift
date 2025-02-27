@@ -436,17 +436,27 @@ class MagmoorAttacks {
               duplicate.duplicatePattern == .invincible,
               let duplicatePosition = duplicate.duplicatePosition else { return }
         
-        let numParticles: Int = 6
-        let startPoint: CGPoint = gameboard.getLocation(at: duplicatePosition)
+        let shieldDuration: TimeInterval = 0.25
         
-        for i in 0..<numParticles {
-            ParticleEngine.shared.animateParticles(type: .magicBlastCastInvincible,
-                                                   toNode: gameboard.sprite,
-                                                   position: startPoint + getWandOffset(duplicate.duplicate),
-                                                   angle: 2 * .pi * CGFloat(i) / CGFloat(numParticles),
-                                                   shouldFlipHorizontally: getFacingDirection(duplicate.duplicate) > 0,
-                                                   duration: 1.5)
-        }
+        let tinyPurpleShield = SKSpriteNode(imageNamed: "magmoorShieldTop")
+        tinyPurpleShield.position = gameboard.getLocation(at: duplicatePosition) + getWandOffset(duplicate.duplicate)
+        tinyPurpleShield.color = .magenta
+        tinyPurpleShield.colorBlendFactor = 1
+        tinyPurpleShield.setScale(0)
+        tinyPurpleShield.zPosition = K.ZPosition.itemsAndEffects
+        
+        gameboard.sprite.addChild(tinyPurpleShield)
+        
+        tinyPurpleShield.run(SKAction.rotate(byAngle: (getFacingDirection(duplicate.duplicate) > 0 ? -1 : 1) * .pi, duration: 4 * shieldDuration))
+        tinyPurpleShield.run(SKAction.sequence([
+            SKAction.scale(to: 0.75, duration: shieldDuration),
+            SKAction.wait(forDuration: shieldDuration),
+            SKAction.group([
+                SKAction.fadeAlpha(to: 0, duration: 2 * shieldDuration),
+                SKAction.scale(to: 0.5, duration: 2 * shieldDuration)
+            ]),
+            SKAction.removeFromParent()
+        ]))
         
         AudioManager.shared.playSound(for: "shieldcast2", interruptPlayback: false)
     }
