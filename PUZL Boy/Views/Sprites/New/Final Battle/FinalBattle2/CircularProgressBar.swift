@@ -11,12 +11,13 @@ class CircularProgressBar: SKNode {
     
     // MARK: - Properties
     
-    private var radius: CGFloat = 100
-    private var width: CGFloat = 24
+    private let radius: CGFloat = 100
+    private let lineWidth: CGFloat = 24
+    private var multiplier: Int = 1
+    
     private var circleNode: SKShapeNode
     private var swordImage: SKSpriteNode
     private var multiplierLabel: SKLabelNode
-    private var multiplier: Int = 2
     
     private var remainingTime: TimeInterval = 0 {
         didSet {
@@ -31,38 +32,41 @@ class CircularProgressBar: SKNode {
     
     // MARK: - Initialization
     
-    override init() {
+    init(chosenSword: ChosenSword) {
         circleNode = SKShapeNode(circleOfRadius: 0)
-        circleNode.lineWidth = width
+        circleNode.lineWidth = lineWidth
         circleNode.lineCap = .round
         circleNode.strokeColor = .green
+        circleNode.alpha = 0
         circleNode.zPosition = 0
         
-        swordImage = SKSpriteNode(imageNamed: "sword")
+        swordImage = SKSpriteNode(imageNamed: chosenSword.imageName)
+        swordImage.alpha = 0
         swordImage.zPosition = 5
         
-        multiplierLabel = SKLabelNode(text: "\(multiplier)X")
+        multiplierLabel = SKLabelNode(text: "1X")
         multiplierLabel.fontName = UIFont.gameFont
         multiplierLabel.fontSize = UIFont.gameFontSizeExtraLarge
-        multiplierLabel.fontColor = .yellow
-        multiplierLabel.zPosition = 10
+        multiplierLabel.fontColor = UIFont.gameFontColor
         multiplierLabel.verticalAlignmentMode = .center
         multiplierLabel.setScale(0)
+        multiplierLabel.zPosition = 10
         multiplierLabel.addHeavyDropShadow()
         
         super.init()
         
+        zPosition = K.ZPosition.itemsPoints
+        
         let circlePath = SKShapeNode(circleOfRadius: radius)
-        circlePath.lineWidth = width
+        circlePath.lineWidth = lineWidth
         circlePath.alpha = 0.2
+        circlePath.zPosition = -5
         
         circleNode.addChild(circlePath)
         
         addChild(circleNode)
         addChild(swordImage)
         addChild(multiplierLabel)
-        
-        alpha = 0.25
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -72,34 +76,38 @@ class CircularProgressBar: SKNode {
     
     // MARK: - Functions
     
-    func setRemainingTime(_ remainingTime: TimeInterval) {
-        if self.remainingTime <= 0 && remainingTime > 0 {
-            run(SKAction.fadeIn(withDuration: 0.25))
-            
-            didAdjustMultiplier()
+    func setRemainingTime(_ percentage: TimeInterval) {
+        if self.remainingTime <= 0 && percentage > 0 {
+            didAdjustAlpha(1)
+            didAdjustMultiplier(scaleTo: 1)
         }
-        else if self.remainingTime > 0 && remainingTime <= 0 {
-            run(SKAction.fadeAlpha(to: 0.25, duration: 0.25))
-
+        else if self.remainingTime > 0 && percentage <= 0 {
+            didAdjustAlpha(0.25)
             didAdjustMultiplier(scaleTo: 0)
         }
         
-        self.remainingTime = remainingTime
+        circleNode.strokeColor = getColor(from: percentage)
+        
+        self.remainingTime = percentage
     }
     
     func setMultiplier(_ multiplier: Int) {
         guard multiplier >= 2 && multiplier <= 3, self.multiplier != multiplier else { return }
         
+        var fontColor: UIColor? = nil
+        
         if multiplier == 2 {
             multiplierLabel.text = "2X"
-            multiplierLabel.fontColor = .yellow
+            fontColor = .yellow
         }
         else if multiplier == 3 {
             multiplierLabel.text = "3X"
-            multiplierLabel.fontColor = .cyan
+            fontColor = .cyan
         }
         
-        didAdjustMultiplier()
+        multiplierLabel.updateShadow()
+        
+        didAdjustMultiplier(scaleTo: 1, color: fontColor)
         
         self.multiplier = multiplier
     }
@@ -107,11 +115,31 @@ class CircularProgressBar: SKNode {
     
     // MARK: - Helper Functions
     
-    private func didAdjustMultiplier(scaleTo: CGFloat = 1) {
-        multiplierLabel.run(SKAction.sequence([
-            SKAction.scale(to: 1.5, duration: 0.1),
-            SKAction.scale(to: scaleTo, duration: 0.25)
+    private func didAdjustAlpha(_ alpha: CGFloat) {
+        let fadeDuration: TimeInterval = 0.25
+        
+        circleNode.run(SKAction.fadeAlpha(to: alpha, duration: fadeDuration))
+        swordImage.run(SKAction.fadeAlpha(to: alpha, duration: fadeDuration))
+    }
+    
+    private func didAdjustMultiplier(scaleTo: CGFloat, color: UIColor? = nil) {
+        let scaleDuration: TimeInterval = 0.25
+        let colorAction: SKAction = color != nil ? SKAction.colorize(with: color!, colorBlendFactor: 1, duration: 2 * scaleDuration) : SKAction.wait(forDuration: 2 * scaleDuration)
+        
+        multiplierLabel.run(SKAction.group([
+            colorAction,
+            SKAction.sequence([
+                SKAction.scale(to: 2, duration: scaleDuration),
+                SKAction.scale(to: scaleTo, duration: scaleDuration)
+            ])
         ]))
+    }
+    
+    /**
+     Gets the bar color based on the percentage. Copied from StatusBarSprite.
+     */
+    private func getColor(from percentage: CGFloat) -> UIColor {
+        return UIColor(red: percentage > 0.5 ? 2 * (1 - percentage) : 1, green: percentage < 0.5 ? 2 * percentage : 1, blue: 0, alpha: 1)
     }
     
     

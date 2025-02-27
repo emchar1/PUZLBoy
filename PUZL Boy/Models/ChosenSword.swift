@@ -125,7 +125,7 @@ class ChosenSword: SKNode {
         spriteNode = SKSpriteNode(imageNamed: imageName)
         spriteNode.alpha = 0
         
-        attackMultiplierNode = SKLabelNode(text: "1x")
+        attackMultiplierNode = SKLabelNode(text: "1X")
         attackMultiplierNode.fontName = UIFont.gameFont
         attackMultiplierNode.fontSize = UIFont.gameFontSizeExtraLarge
         attackMultiplierNode.fontColor = UIColor.yellow
@@ -231,7 +231,8 @@ class ChosenSword: SKNode {
         ]))
         
         if showMultiplier {
-            attackMultiplierNode.text = "\(numberFormatter.string(from: NSNumber(value: attackMultiplier)) ?? "0")x"
+            attackMultiplierNode.text = "\(numberFormatter.string(from: NSNumber(value: attackMultiplier)) ?? "0")X"
+            attackMultiplierNode.fontColor = attackMultiplier == 3 ? .cyan : .yellow
             
             attackMultiplierNode.run(SKAction.sequence([
                 SKAction.wait(forDuration: 0.5),

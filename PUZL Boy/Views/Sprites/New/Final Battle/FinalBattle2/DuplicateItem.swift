@@ -7,10 +7,6 @@
 
 import SpriteKit
 
-protocol DuplicateItemDelegate: AnyObject {
-    func getRemainingTimes(sword2x: TimeInterval, sword3x: TimeInterval)
-}
-
 class DuplicateItem {
     
     // MARK: - Properties
@@ -23,6 +19,7 @@ class DuplicateItem {
     
     private(set) var spawnedItems: [LevelType]
     private(set) var collectedItems: [LevelType]
+    private var progressBar: CircularProgressBar
     
     private var timer: Timer
     private var timerSword2x: Timer?
@@ -34,8 +31,6 @@ class DuplicateItem {
         return instance
     }()
     
-    weak var delegateDuplicateItem: DuplicateItemDelegate?
-    
     
     // MARK: - Initialization
     
@@ -44,11 +39,13 @@ class DuplicateItem {
         spawnedItems = []
         collectedItems = []
         
+        progressBar = CircularProgressBar(chosenSword: ChosenSword(type: FIRManager.chosenSword))
+        
         timer = Timer()
         timerSword2x = nil
         timerSword3x = nil
         
-        timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(updateTimer(_:)), userInfo: nil, repeats: true)
+        timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(updateTimer(_:)), userInfo: nil, repeats: true)
     }
     
     deinit {
@@ -185,6 +182,14 @@ class DuplicateItem {
         return item.levelType
     }
     
+    func displaySwordMultiplierHUD(on node: SKNode, at position: CGPoint) {
+        guard progressBar.parent == nil else { return }
+        
+        progressBar.position = position
+        
+        node.addChild(progressBar)
+    }
+    
     
     // MARK: - Helper Functions
     
@@ -215,8 +220,16 @@ class DuplicateItem {
     @objc private func updateTimer(_ sender: Any) {
         let remainingTime2x: TimeInterval = getRemainingTime(timer: timerSword2x)
         let remainingTime3x: TimeInterval = getRemainingTime(timer: timerSword3x)
-
-        delegateDuplicateItem?.getRemainingTimes(sword2x: remainingTime2x, sword3x: remainingTime3x)
+        let remainingTime: TimeInterval = max(remainingTime2x, remainingTime3x)
+        
+        progressBar.setRemainingTime(remainingTime / maxSwordTimerIncrement)
+        
+        if remainingTime3x > 0 {
+            progressBar.setMultiplier(3)
+        }
+        else if remainingTime2x > 0 {
+            progressBar.setMultiplier(2)
+        }
     }
     
     @objc private func setSword2xTimer(_ sender: Any) {

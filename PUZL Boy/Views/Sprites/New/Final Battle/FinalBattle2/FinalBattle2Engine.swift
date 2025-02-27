@@ -582,15 +582,15 @@ extension FinalBattle2Engine: FinalBattle2ControlsDelegate {
         switch item {
         case .heart:
             health.updateHealth(type: .healthUp, dmgMultiplier: nil)
+        case .sword2x, .sword3x:
+            guard let superScene = superScene else { return }
+            
+            DuplicateItem.shared.displaySwordMultiplierHUD(on: superScene, at: CGPoint(x: 200, y: 200))
         default:
             break
         }
         
         print("Received \(item.description)")
-    }
-    
-    func getRemainingTimesForSwordMultiplier(sword2x: TimeInterval, sword3x: TimeInterval) {
-        labelDebug.text = "2x: \(round(sword2x))\n3x: \(round(sword3x))"
     }
     
     
