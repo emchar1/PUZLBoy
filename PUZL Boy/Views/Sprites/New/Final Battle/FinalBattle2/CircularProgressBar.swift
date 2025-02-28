@@ -67,6 +67,19 @@ class CircularProgressBar: SKNode {
     
     // MARK: - Functions
     
+    /**
+     Updates the progress bar's position to the new position.
+     - parameter position: new position of the progress bar.
+     - note: In order to align the bottom left edge of the bar, I had to offset by the radius and 1/2 the line width.
+     */
+    func updatePosition(_ position: CGPoint) {
+        self.position = position + radius + lineWidth / 2
+    }
+    
+    /**
+     Sets the remaining time of the progress bar as a percentage. If percentage goes from 0 to less than 0 or 1 to less than 1, also fade alpha and scale the multiplier in the process.
+     - parameter percentage: the new remainingTime to set.
+     */
     func setRemainingTime(_ percentage: TimeInterval) {
         if self.remainingTime <= 0 && percentage > 0 {
             didAdjustAlpha(1)
@@ -87,6 +100,11 @@ class CircularProgressBar: SKNode {
         self.remainingTime = percentage
     }
     
+    /**
+     Sets the multiplier text value, either 2 or 3 only (for now).
+     - parameter multiplier: the new multiplier value, only 2 or 3 (for now).
+     - note: multiplier can only be 2 or 3 (for now).
+     */
     func setMultiplier(_ multiplier: Int) {
         guard multiplier >= 2 && multiplier <= 3, self.multiplier != multiplier else { return }
         
@@ -111,6 +129,10 @@ class CircularProgressBar: SKNode {
     
     // MARK: - Helper Functions
     
+    /**
+     Adjusts the alpha of the HUD (circleNode and image only) to the requested alpha value, with a slight fade animation..
+     - parameter alpha: the alpha value to set.
+     */
     private func didAdjustAlpha(_ alpha: CGFloat) {
         let fadeDuration: TimeInterval = 0.25
         
@@ -118,6 +140,12 @@ class CircularProgressBar: SKNode {
         swordImage.run(SKAction.fadeAlpha(to: alpha, duration: fadeDuration))
     }
     
+    /**
+     Adjusts the multiplier label's text value and "pop's" a little animation in the process.
+     - parameters:
+        - scaleTo: the scale of the resultant multiplier value
+        - color: the ending color
+     */
     private func didAdjustMultiplier(scaleTo: CGFloat, color: UIColor? = nil) {
         let scaleDuration: TimeInterval = 0.25
         let colorAction: SKAction = color != nil ? SKAction.colorize(with: color!, colorBlendFactor: 1, duration: 2 * scaleDuration) : SKAction.wait(forDuration: 2 * scaleDuration)

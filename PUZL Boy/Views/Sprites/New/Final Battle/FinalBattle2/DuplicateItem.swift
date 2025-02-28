@@ -185,7 +185,7 @@ class DuplicateItem {
     func displaySwordMultiplierHUD(on node: SKNode, at position: CGPoint) {
         guard progressBar.parent == nil else { return }
         
-        progressBar.position = position
+        progressBar.updatePosition(position)
         
         node.addChild(progressBar)
     }

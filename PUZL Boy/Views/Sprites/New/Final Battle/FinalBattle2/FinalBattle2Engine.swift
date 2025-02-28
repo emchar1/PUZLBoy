@@ -585,7 +585,9 @@ extension FinalBattle2Engine: FinalBattle2ControlsDelegate {
         case .sword2x, .sword3x:
             guard let superScene = superScene else { return }
             
-            DuplicateItem.shared.displaySwordMultiplierHUD(on: superScene, at: CGPoint(x: 200, y: 200))
+            let hudOrigin = CGPoint(x: gameboard.sprite.position.x, y: K.ScreenDimensions.bottomMargin)
+            
+            DuplicateItem.shared.displaySwordMultiplierHUD(on: superScene, at: hudOrigin)
         default:
             break
         }
