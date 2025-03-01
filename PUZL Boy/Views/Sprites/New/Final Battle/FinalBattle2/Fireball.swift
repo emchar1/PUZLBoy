@@ -296,18 +296,20 @@ class Fireball: SKNode {
         let moveDuration: TimeInterval = 1
         let fadeOutDuration: TimeInterval = isLarge ? 0.5 : 0.25
         let explodeDistance: CGFloat = isLarge ? 30 : 20
+        
+        //BUGFIX #20250301E01 - a counter and limit is needed on safePanel check because once safePanel runs out, the repeat-while loop will run indefinitely!
+        let safePanelCheckLimit: Int = 100
+        var safePanelCheckCounter: Int = 0
         var randomPosition: K.GameboardPosition
-        var largeBombRestriction: Bool {
-            guard isLarge else { return false }
-            
-            return randomPosition.col * Int(facingDirection) > positions.villain.col * Int(facingDirection)
-        }
+        var largeBombRestriction: Bool
         
         repeat {
             randomPosition = (Int.random(in: 0..<gameboard.panelCount), Int.random(in: 0..<gameboard.panelCount))
+            largeBombRestriction = isLarge && randomPosition.col * Int(facingDirection) > positions.villain.col * Int(facingDirection)
+            safePanelCheckCounter += 1
         }
         while randomPosition == positions.villain
-                || gameboard.getPanelSprite(at: randomPosition).terrain?.childNode(withName: FinalBattle2Spawner.safePanelName) == nil
+                || (gameboard.getPanelSprite(at: randomPosition).terrain?.childNode(withName: FinalBattle2Spawner.safePanelName) == nil && safePanelCheckCounter < safePanelCheckLimit)
                 || largeBombRestriction
         
         run(SKAction.sequence([
