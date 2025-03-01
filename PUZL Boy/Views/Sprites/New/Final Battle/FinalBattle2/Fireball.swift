@@ -309,8 +309,9 @@ class Fireball: SKNode {
             safePanelCheckCounter += 1
         }
         while randomPosition == positions.villain
-                || (gameboard.getPanelSprite(at: randomPosition).terrain?.childNode(withName: FinalBattle2Spawner.safePanelName) == nil && safePanelCheckCounter < safePanelCheckLimit)
                 || largeBombRestriction
+                || (safePanelCheckCounter < safePanelCheckLimit
+                    && gameboard.getPanelSprite(at: randomPosition).terrain?.childNode(withName: FinalBattle2Spawner.safePanelName) == nil)
         
         run(SKAction.sequence([
             SKAction.group([
