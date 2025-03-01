@@ -29,6 +29,7 @@ struct AudioItem {
     let maxVolume: Float
     var currentVolume: Float
     var player = AVAudioPlayer()
+    var isPlaying: Bool
     
     init(fileName: String, fileType: AudioType = .mp3, category: AudioCategory, maxVolume: Float = 1.0) {
         self.fileName = fileName
@@ -36,13 +37,14 @@ struct AudioItem {
         self.category = category
         self.maxVolume = maxVolume
         self.currentVolume = maxVolume
+        self.isPlaying = false
     }
 }
 
 
 // MARK: - AudioManager
 
-class AudioManager {
+class AudioManager: NSObject, AVAudioPlayerDelegate {
     
     // MARK: - Important Properties
     
@@ -75,9 +77,11 @@ class AudioManager {
 
     // MARK: - Initialization
     
-    private init() {
+    private override init() {
         currentTheme = AudioManager.mainThemes
-
+        
+        super.init()
+        
         do {
             //ambient: Your app’s audio plays even while Music app music or other background audio is playing, and is silenced by the phone’s Silent switch and screen locking.
             //soloAmbient: (the default) Your app stops Music app music or other background audio from playing, and is silenced by the phone’s Silent switch and screen locking.
@@ -345,6 +349,7 @@ class AudioManager {
         audioItems[item.fileName]!.player.volume = audioItems[item.fileName]!.currentVolume
         audioItems[item.fileName]!.player.pan = pan
         audioItems[item.fileName]!.player.prepareToPlay()
+        audioItems[item.fileName]!.player.delegate = self
 
         if currentTime != nil {
             audioItems[item.fileName]!.player.currentTime = currentTime!
@@ -369,6 +374,8 @@ class AudioManager {
             else {
                 audioItem.player.play()
             }
+            
+            self.setAudioIsPlaying(for: item.fileName, to: true)
         }
                 
         return true
@@ -390,6 +397,8 @@ class AudioManager {
         
         DispatchQueue.main.asyncAfter(deadline: .now() + fadeDuration) {
             item.player.stop()
+            
+            self.setAudioIsPlaying(for: item.fileName, to: false)
         }
     }
     
@@ -527,5 +536,36 @@ class AudioManager {
     func getAudioItem(filename: String) -> AudioItem? {
         return audioItems[filename]
     }
+    
+    /**
+     Gets a list of audioItem filenames that are currently playing.
+     */
+    func getActiveSoundsPlaying() -> [String] {
+        return audioItems.values.filter { $0.isPlaying }.map(\.fileName)
+    }
+    
+    
+}
+
+
+// MARK: - AVAudioPlayerDelegate
+
+extension AudioManager {
+    func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
+        if let item = audioItems.first(where: { $0.value.player == player })?.value {
+            setAudioIsPlaying(for: item.fileName, to: false)
+        }
+    }
+    
+    /**
+     Helper function that sets the isPlaying flag in an audioItem.
+     - parameters;
+        - filename: String filename of the audioItem in question
+        - isPlaying: boolean flag to be set
+     */
+    private func setAudioIsPlaying(for filename: String, to isPlaying: Bool) {
+        audioItems[filename]?.isPlaying = isPlaying
+    }
+    
     
 }

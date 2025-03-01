@@ -283,7 +283,7 @@ class Fireball: SKNode {
                 ]),
                 SKAction.run {
                     if canPlaySound {
-                        AudioManager.shared.playSound(for: isLarge ? "villainattackbombticklarge" : "villainattackbombtick")
+                        AudioManager.shared.playSound(for: isLarge ? "villainattackbombticklarge" : "villainattackbombtick", interruptPlayback: false)
                     }
                 },
                 SKAction.group([
