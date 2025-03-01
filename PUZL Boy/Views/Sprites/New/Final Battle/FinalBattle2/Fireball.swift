@@ -325,10 +325,10 @@ class Fireball: SKNode {
             SKAction.repeat(pulseTimedBomb(speed: 0.35, canPlaySound: canPlaySound), count: isLarge ? 1 : 0),
             SKAction.run {
                 if canPlaySound {
-                    AudioManager.shared.playSound(for: "villainattackspecialbomb")
+                    AudioManager.shared.playSound(for: "villainattackspecialbomb", interruptPlayback: false)
                 }
             },
-            SKAction.repeat(pulseTimedBomb(speed: 0.35, canPlaySound: canPlaySound), count: 3),
+            SKAction.repeat(pulseTimedBomb(speed: 0.35, canPlaySound: false), count: 3),
             SKAction.run {
                 completion(randomPosition)
             },

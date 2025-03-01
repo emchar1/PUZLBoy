@@ -341,7 +341,7 @@ class AudioManager: NSObject, AVAudioPlayerDelegate {
             return false
         }
         
-        guard interruptPlayback || (audioItems[item.fileName] != nil && !audioItems[item.fileName]!.player.isPlaying) else {
+        guard interruptPlayback || !isPlaying(audioKey: item.fileName) else {
             return false
         }
                 
