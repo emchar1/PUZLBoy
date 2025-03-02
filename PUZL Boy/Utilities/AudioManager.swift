@@ -366,6 +366,11 @@ class AudioManager: NSObject, AVAudioPlayerDelegate {
             //No need to make completions inside DispatchQueue.main.asyncAfter weak!
             let audioItem = self.audioItems[item.fileName]!
             
+            //Uncomment this to see if audio is being interrupted by playing it while it's already playing 3/1/25
+            if self.isPlaying(audioKey: item.fileName) {
+                print("WARNING: Attempting to play audio \(audioItem.fileName) while it is already playing!")
+            }
+            
             if fadeIn > 0 {
                 audioItem.player.setVolume(0.0, fadeDuration: 0)
                 audioItem.player.play()

@@ -189,7 +189,7 @@ class Fireball: SKNode {
             default:            delayDuration = stats.fireballMovementDuration
             }
             
-            AudioManager.shared.playSound(for: audioItem.fileName, delay: delayDuration)
+            AudioManager.shared.playSound(for: audioItem.fileName, delay: delayDuration, interruptPlayback: false)
         }
     }
     
