@@ -112,6 +112,41 @@ struct ChatItem {
         return chatColor
     }
     
+    ///Returns the speed at which chat messages scroll.
+    static func getChatSpeed(profile: ChatProfile) -> TimeInterval {
+        let sweetSpotSpeed: TimeInterval = 0.08
+        let chatSpeed: TimeInterval
+        
+        switch profile {
+        case .hero:
+            chatSpeed = 0.04
+        case .trainer:
+            chatSpeed = 0.06
+        case .villain:
+            chatSpeed = 0.04
+        case .princess:
+            chatSpeed = 0.12
+        case .princess2:
+            chatSpeed = 0.06
+        case .blankhero, .blanktrainer, .blankprincess, .princessCursed, .blankvillain, .blankelders, .statue5: //statue5 = "WELCOME TO YOUR DOOM"
+            chatSpeed = sweetSpotSpeed
+        case .allelders, .merton, .magmus, .melchior:
+            chatSpeed = 0.06
+        case .statue0:
+            chatSpeed = 0.04
+        case .statue1:
+            chatSpeed = 0.02
+        case .statue2:
+            chatSpeed = 0.1
+        case .statue3, .statue3b:
+            chatSpeed = 0.02
+        case .statue4:
+            chatSpeed = 0.02
+        }
+        
+        return chatSpeed
+    }
+    
     ///Static function that plays the chat sound notification for the given profile.
     static func playChatNotification(profile: ChatProfile) {
         switch profile {

@@ -103,7 +103,7 @@ class ChatEngine {
     private var dialogueWithCutscene: [Int: Bool] = [:]     //Levels with dialogue that have a cutscene
     private var completion: (() -> ())?
 
-    private let chatSpeedOrig: TimeInterval = 0.04
+    private let chatSpeedDefault: TimeInterval = 0.04       //Default chat speed
     private let chatSpeedImmediate: TimeInterval = 0
     private var chatSpeed: TimeInterval
     private var chatText: String = ""
@@ -156,7 +156,7 @@ class ChatEngine {
         timer = Timer()
         dispatchWorkItem = DispatchWorkItem(block: {})
         
-        chatSpeed = chatSpeedOrig
+        chatSpeed = chatSpeedDefault
 
         populateKeyDialogue()
         setupStatueDialogue()
@@ -348,7 +348,7 @@ class ChatEngine {
         chatBackgroundSprite.addChild(fastForwardSprite)
         
         if chatSpeed <= chatSpeedImmediate {
-            chatSpeed = chatSpeedOrig
+            chatSpeed = chatSpeedDefault
         }
     }
     
@@ -385,7 +385,7 @@ class ChatEngine {
     }
     
     ///Animates magical feather falling from the sky
-    private func animateFeather() {
+    private func animateFeather(playLogo: Bool) {
         let fadeDuration: TimeInterval = 2
         let delayDuration: TimeInterval = 9
         
@@ -426,18 +426,20 @@ class ChatEngine {
             SKAction.removeFromParent()
         ]))
         
-        obtainItemSprite.run(SKAction.sequence([
-            SKAction.fadeIn(withDuration: 0.25),
-            SKAction.colorize(with: UIColor.obtainItem.end, colorBlendFactor: 1, duration: delayDuration - fadeDuration - 0.25),
-            SKAction.fadeOut(withDuration: fadeDuration)
-        ])) {
-            AudioManager.shared.adjustVolume(to: 1, for: AudioManager.tikiThemes.overworld, fadeDuration: 1)
+        if playLogo {
+            AudioManager.shared.playSound(for: "titlechapter")
+            AudioManager.shared.adjustVolume(to: 0, for: AudioManager.tikiThemes.overworld, fadeDuration: 0.5)
+            obtainItemSprite.run(SKAction.sequence([
+                SKAction.fadeIn(withDuration: 0.25),
+                SKAction.colorize(with: UIColor.obtainItem.end, colorBlendFactor: 1, duration: delayDuration - fadeDuration - 0.25),
+                SKAction.fadeOut(withDuration: fadeDuration)
+            ])) {
+                AudioManager.shared.adjustVolume(to: 1, for: AudioManager.tikiThemes.overworld, fadeDuration: 1)
+            }
         }
         
         ParticleEngine.shared.animateParticles(type: .itemPickup, toNode: featherSprite, position: .zero, scale: 1, duration: delayDuration)
         AudioManager.shared.playSound(for: "pickupitem")
-        AudioManager.shared.playSound(for: "titlechapter")
-        AudioManager.shared.adjustVolume(to: 0, for: AudioManager.tikiThemes.overworld, fadeDuration: 0.5)
     }
     
     ///Animates the screen shaking
@@ -535,6 +537,9 @@ class ChatEngine {
             SKAction.scale(to: 1.0, duration: startNewChat ? 0.4 : 0)
         ])
         
+        //Update chatSpeed before calling the animateText(_:) selector!
+        chatSpeed = chatSpeed <= chatSpeedImmediate ? chatSpeedImmediate : ChatItem.getChatSpeed(profile: profile)
+        
         if let pause = pause {
             chatBackgroundSprite.run(SKAction.sequence([
                 SKAction.wait(forDuration: pause),
@@ -573,6 +578,10 @@ class ChatEngine {
     
     ///This contains the magic of animating the characters of the string like a typewriter, until it gets to the end of the chat.
     @objc private func animateText(_ sender: Timer) {
+        let ffButtonIsVisible: Bool = fastForwardSprite.parent != nil
+        let shortDelay: TimeInterval = chatSpeed > chatSpeedImmediate ? 5 : max(5, TimeInterval(chatText.count) / 10)
+        let asyncDelay = ffButtonIsVisible ? 30 : shortDelay
+        
         if chatSpeed > chatSpeedImmediate && chatIndex < chatText.count {
             let chatChar = chatText[chatText.index(chatText.startIndex, offsetBy: chatIndex)]
             
@@ -595,7 +604,7 @@ class ChatEngine {
                 self?.closeChat()
             })
             
-            DispatchQueue.main.asyncAfter(deadline: .now() + 30, execute: dispatchWorkItem)
+            DispatchQueue.main.asyncAfter(deadline: .now() + asyncDelay, execute: dispatchWorkItem)
         }
     }
     
@@ -634,7 +643,7 @@ class ChatEngine {
             
             allowNewChat = true
             closeChatIsRunning = false
-            chatSpeed = chatSpeedOrig
+            chatSpeed = chatSpeedDefault
             
             completion?()
         }
@@ -897,9 +906,9 @@ extension ChatEngine {
             ChatItem(profile: .statue2, chat: "Yeah, bro! The Special Key is buried somewhere in Level 405."),
             ChatItem(profile: .statue2, chat: "...or was it 450? 504???? No, it was 405!"),
             ChatItem(profile: .hero, imgPos: .left, chat: "Are you sure???"),
-            ChatItem(profile: .statue2, chat: "Don't doubt me, bro! It's next to the Golden Dragon. But.. you can only beat him with the Golden Sword."),
+            ChatItem(profile: .statue2, chat: "Fa sho, bro! It's next to the Golden Dragon. But.. you can only beat him with the Golden Sword."),
             ChatItem(profile: .hero, imgPos: .left, chat: "Golden dragon. Golden sword. Special key. Level 405."),
-            ChatItem(profile: .statue2, chat: "💯 bro!!! Wait.. or was it 417? Uhhh.. better check 'em all."),
+            ChatItem(profile: .statue2, chat: "💯 bro!!! Wait.. or was it 417? Uh.. better check 'em all."),
             
             //2: 6
             ChatItem(profile: .statue2, chat: "You hear about the legend of Marlin and Magmoor?"),
@@ -907,13 +916,13 @@ extension ChatEngine {
             ChatItem(profile: .statue2, chat: "Yeah bro, that's one way of putting it."),
             ChatItem(profile: .hero, imgPos: .left, chat: "Care to elaborate?"),
             ChatItem(profile: .statue2, chat: "Nah, bro. Not really my business, know what I'm sayin'?"),
-            ChatItem(profile: .hero, imgPos: .left, chat: "Then why did you bring it up?!"),
+            ChatItem(profile: .hero, imgPos: .left, chat: "Then why'd you bring it up?!"),
 
             //3: 4
             ChatItem(profile: .statue2, chat: "Oh heyy! I found this magical feather. It wards off the 6-eyed, purple-horned monster."),
             ChatItem(profile: .hero, imgPos: .left, chat: "Uhh.. ok, thanks I guess... Does it really work?"),
             ChatItem(profile: .statue2, chat: "Do ya see any 6-eyed, purple-horn monsters around here???") { [weak self] in
-                self?.animateFeather()
+                self?.animateFeather(playLogo: true)
                 self?.hideFFButton()
                 
                 FIRManager.updateFirestoreRecordHasFeather(true)
@@ -946,7 +955,7 @@ extension ChatEngine {
             //0: 10 - Story branching decision question
             ChatItem(profile: .hero, imgPos: .left, chat: "Hey! The last Tiki gave me a bunch of info and I forgot it all now. Do you know anything about a password or a golden dragon?"),
             ChatItem(profile: .statue3, chat: "Oh my heavens! You spoke to Lars the Liar? He lies like no other! No wonder you're a mess!"),
-            ChatItem(profile: .hero, imgPos: .left, chat: "...........What. 🤨"),
+            ChatItem(profile: .hero, imgPos: .left, chat: "...........What. 😒"),
             ChatItem(profile: .statue3, chat: "Yeah! Do you really think 6-eyed, purple-horn monsters and golden dragons exist??"),
             ChatItem(profile: .hero, imgPos: .left, chat: "I dunno!! I assumed you guys are here to help me! So then there's no special key or password? What about this stupid feather?"),
             ChatItem(profile: .statue3, chat: "Utterly useless! Here, I'll take the stupid feather off your hands. No use carrying it around."),
@@ -957,7 +966,7 @@ extension ChatEngine {
                 chatDecisionEngine.showDecisions(index: 2, toNode: chatBackgroundSprite)
             },
             ChatItem(profile: .hero, imgPos: .left, chat: "Hmmm.......") { [weak self] in
-                self?.animateFeather()
+                self?.animateFeather(playLogo: FIRManager.decisionsLeftButton[2] ?? false)
                 self?.hideFFButton()
             },
             ChatItem(profile: .hero, imgPos: .left, chat: "You really want this feather, don't you?!?") { [weak self] in
@@ -996,7 +1005,7 @@ extension ChatEngine {
             ChatItem(profile: .statue4, chat: "It never used to be this way... until he arrived. He's not fit to rule. Oops.. don't tell him I said that!"),
             
             //3: 3
-            ChatItem(profile: .hero, imgPos: .left, chat: "Please just tell me where I can find them."),
+            ChatItem(profile: .hero, imgPos: .left, chat: "Please just tell me where I can find Marlin and the princess."),
             ChatItem(profile: .statue4, chat: "Of course. They're right under your feet!"),
             ChatItem(profile: .hero, imgPos: .left, chat: "GAAAAAHHHHHH!!!!!! I'M DONE WITH YOU PEOPLE!!! USELESS! ALL OF YOU!!!! 🤬"),
             
@@ -1408,7 +1417,7 @@ extension ChatEngine {
                     
                     AudioManager.shared.playSoundThenStop(for: "littlegirllaugh", playForDuration: 5, fadeOut: 2)
                     
-                    chatSpeed = chatSpeedOrig
+                    chatSpeed = chatSpeedDefault
                 },
                 ChatItem(profile: .blankvillain, chat: "\n\n...heh heh heh heh...")
             ]) { [weak self] in
