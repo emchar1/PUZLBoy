@@ -29,8 +29,8 @@ class GameViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-//        let authorizationRequestScene = AuthorizationRequestScene(size: K.ScreenDimensions.size, userInterfaceStyle: traitCollection.userInterfaceStyle)
-//        authorizationRequestScene.sceneDelegate = self
+        let authorizationRequestScene = AuthorizationRequestScene(size: K.ScreenDimensions.size, userInterfaceStyle: traitCollection.userInterfaceStyle)
+        authorizationRequestScene.sceneDelegate = self
         
         monitor = NWPathMonitor()
         monitor.pathUpdateHandler = { path in
@@ -50,13 +50,13 @@ class GameViewController: UIViewController {
         skView.showsFPS = true
         skView.showsNodeCount = true
         
-        // FIXME: - DEBUG: Final Cutscene TEST
-        NotificationCenter.default.addObserver(self, selector: #selector(didWinGame), name: .completeGameDidWin, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(didLoseGame), name: .completeGameDidLose, object: nil)
-        
-        LevelBuilder.getLevels {
-            FIRManager.initializeFirestore() { [weak self] saveStateMode, error in
-                guard let self = self else { return }
+//        // FIXME: - DEBUG: Final Cutscene TEST
+//        NotificationCenter.default.addObserver(self, selector: #selector(didWinGame), name: .completeGameDidWin, object: nil)
+//        NotificationCenter.default.addObserver(self, selector: #selector(didLoseGame), name: .completeGameDidLose, object: nil)
+//        
+//        LevelBuilder.getLevels {
+//            FIRManager.initializeFirestore() { [weak self] saveStateMode, error in
+//                guard let self = self else { return }
 //                
 //                
 //                // ver. 1 - ending fake scene to catwalk scene
@@ -72,12 +72,12 @@ class GameViewController: UIViewController {
 //                }
 //
 //
-                // ver. 2 - catwalk scene
-                let catwalkScene = CatwalkScene(size: K.ScreenDimensions.size)
-                catwalkScene.catwalkDelegate = self
-                skView.presentScene(catwalkScene)
-                skView.ignoresSiblingOrder = true
-                view = skView
+//                // ver. 2 - catwalk scene
+//                let catwalkScene = CatwalkScene(size: K.ScreenDimensions.size)
+//                catwalkScene.catwalkDelegate = self
+//                skView.presentScene(catwalkScene)
+//                skView.ignoresSiblingOrder = true
+//                view = skView
 //
 //
 //                // ver. 3 - coming soon scene
@@ -95,15 +95,15 @@ class GameViewController: UIViewController {
 //                skView.presentScene(finalBattleScene)
 //                skView.ignoresSiblingOrder = true
 //                view = skView
-            } //end initializeFirestore()
-        } //end getLevels
+//            } //end initializeFirestore()
+//        } //end getLevels
         
         
         
         
-//        skView.ignoresSiblingOrder = true
-//        skView.presentScene(authorizationRequestScene)
-//        view = skView
+        skView.ignoresSiblingOrder = true
+        skView.presentScene(authorizationRequestScene)
+        view = skView
 
         print("Testing device info: \(UIDevice.modelInfo), UI aspect ratio: \(K.ScreenDimensions.sizeUI.height / K.ScreenDimensions.sizeUI.width)")
     }
