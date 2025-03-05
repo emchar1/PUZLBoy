@@ -11,10 +11,10 @@ class AuthorizationSprite: ConfirmSprite {
     
     // MARK: - Initialization
     
-    init(title: String, message: String) {
-        super.init(title: title, 
+    init(title: String, message: String, confirm: String = "OK") {
+        super.init(title: title,
                    message: message,
-                   confirm: "OK",
+                   confirm: confirm,
                    cancel: nil,
                    customHeight: UIDevice.isiPad ? K.ScreenDimensions.size.height / 3 + 80 : K.ScreenDimensions.size.height / 4 + 40,
                    customColor: .orange)

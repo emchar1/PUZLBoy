@@ -23,6 +23,7 @@ class AuthorizationRequestScene: SKScene {
     
     private var notificationsMessage: AuthorizationSprite?
     private var idfaMessage: AuthorizationSprite?
+    private var photosensitivityMessage: AuthorizationSprite?
     private var thanksMessage: AuthorizationSprite?
     
     weak var sceneDelegate: AuthorizationRequestSceneDelegate?
@@ -85,12 +86,21 @@ class AuthorizationRequestScene: SKScene {
                 backgroundColor = .black
                 logoSprite?.removeFromParent()
                 
+                photosensitivityMessage = AuthorizationSprite(
+                    title: "Photosensitivity Warning",
+                    message: "Some flashing lights sequences or patterns may affect photosensitive individuals. Please use with caution.",
+                    confirm: "I Understand")
+                
+                photosensitivityMessage!.delegate = self
+            }
+            
+            if photosensitivityMessage != nil {
                 thanksMessage = AuthorizationSprite(
                     title: "Enjoy!",
-                    message: "Thank you for your responses! Enjoy playing PUZL Boy. And please don't forget to rate and review 😊")
+                    message: "Thank you for your responses! Enjoy playing PUZL Boy. And please don't forget to rate and review 😊",
+                    confirm: "Play")
                 
                 thanksMessage!.delegate = self
-
             }
             
             //Need to call this here to guarantee UserNotifications completion is called.
@@ -113,6 +123,10 @@ class AuthorizationRequestScene: SKScene {
             }
         }
         
+        if let photosensitivityMessage = photosensitivityMessage {
+            addChild(photosensitivityMessage)
+        }
+        
         if let thanksMessage = thanksMessage {
             addChild(thanksMessage)
         }
@@ -130,6 +144,7 @@ class AuthorizationRequestScene: SKScene {
 
         notificationsMessage?.touchDown(in: location)
         idfaMessage?.touchDown(in: location)
+        photosensitivityMessage?.touchDown(in: location)
         thanksMessage?.touchDown(in: location)
     }
     
@@ -141,6 +156,9 @@ class AuthorizationRequestScene: SKScene {
         
         idfaMessage?.didTapButton(in: location)
         idfaMessage?.touchUp()
+        
+        photosensitivityMessage?.didTapButton(in: location)
+        photosensitivityMessage?.touchUp()
         
         thanksMessage?.didTapButton(in: location)
         thanksMessage?.touchUp()
@@ -162,7 +180,7 @@ extension AuthorizationRequestScene: ConfirmSpriteDelegate {
                     idfaMessage.animateShow { }
                 }
                 else {
-                    self?.thanksMessage?.animateShow { }
+                    self?.photosensitivityMessage?.animateShow { }
                 }
             }
         case let authorizationSprite where authorizationSprite == idfaMessage:
@@ -173,6 +191,10 @@ extension AuthorizationRequestScene: ConfirmSpriteDelegate {
                     // Fallback on earlier versions
                 }
                 
+                self?.photosensitivityMessage?.animateShow { }
+            }
+        case let authorizationSprite where authorizationSprite == photosensitivityMessage:
+            authorizationSprite.animateHide { [weak self] in
                 self?.thanksMessage?.animateShow { }
             }
         case let authorizationSprite where authorizationSprite == thanksMessage:
