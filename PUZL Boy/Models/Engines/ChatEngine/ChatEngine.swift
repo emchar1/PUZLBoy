@@ -969,7 +969,7 @@ extension ChatEngine {
                 self?.animateFeather(playLogo: FIRManager.decisionsLeftButton[2] ?? false)
                 self?.hideFFButton()
             },
-            ChatItem(profile: .hero, imgPos: .left, chat: "You really want this feather, don't you?!?") { [weak self] in
+            ChatItem(profile: .hero, imgPos: .left, chat: "............You really want this feather that badly, don't you?!?") { [weak self] in
                 self?.showFFButton()
             },
 
