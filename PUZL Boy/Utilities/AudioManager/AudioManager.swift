@@ -9,13 +9,13 @@ import AVFoundation
 
 class AudioManager: NSObject, AVAudioPlayerDelegate {
     
-    // MARK: - Properties
+    // MARK: - Important Properties
     
     typealias AudioTheme = (overworld: String, win: String, gameover: String)
     private(set) var currentTheme: AudioTheme
     private var audioItems: [String: AudioItem] = [:]
-    private var players: [String: AVAudioPlayer] = [:]
-    private var isAudioPlaying: [String: Bool] = [:]
+
+    // MARK: - Static Properties
     
     static let shared: AudioManager = {
         let instance = AudioManager()
@@ -37,7 +37,7 @@ class AudioManager: NSObject, AVAudioPlayerDelegate {
         "titletheme" + (AgeOfRuin.isActive ? "ageofruin" : "")
     }
     
-    
+
     // MARK: - Initialization
     
     private override init() {
@@ -45,11 +45,6 @@ class AudioManager: NSObject, AVAudioPlayerDelegate {
         
         super.init()
         
-        setupAudioSession()
-        setupAudioItems()
-    }
-    
-    private func setupAudioSession() {
         do {
             //ambient: Your app’s audio plays even while Music app music or other background audio is playing, and is silenced by the phone’s Silent switch and screen locking.
             //soloAmbient: (the default) Your app stops Music app music or other background audio from playing, and is silenced by the phone’s Silent switch and screen locking.
@@ -57,11 +52,9 @@ class AudioManager: NSObject, AVAudioPlayerDelegate {
             try AVAudioSession.sharedInstance().setActive(true)
         }
         catch {
-            print("Error setting up audio session: \(error)")
+            print(error)
         }
-    }
-    
-    private func setupAudioItems() {
+        
         //Sound FX
         addAudioItem("arrowblink", category: .soundFX)
         addAudioItem("bouldersmash", category: .soundFX)
@@ -238,6 +231,9 @@ class AudioManager: NSObject, AVAudioPlayerDelegate {
         updateVolumes()
     }
     
+    
+    // MARK: - Setup Functions
+
     /**
      Adds a sound file to the AudioItems dictionary.
      - parameters:
@@ -246,6 +242,10 @@ class AudioManager: NSObject, AVAudioPlayerDelegate {
      */
     private func addAudioItem(_ audioKey: String, category: AudioItem.AudioCategory, maxVolume: Float = 1.0) {
         audioItems[audioKey] = AudioItem(fileName: audioKey, category: category, maxVolume: maxVolume)
+        
+        if let item = audioItems[audioKey], let player = configureAudioPlayer(for: item) {
+            audioItems[audioKey]!.player = player
+        }
     }
     
     /**
@@ -260,16 +260,18 @@ class AudioManager: NSObject, AVAudioPlayerDelegate {
         }
         
         do {
+            var audioPlayer = audioItem.player
+            
             // Memory leak here, according to instruments, but only on Simulator. Device is fine!
-            let audioPlayer = try AVAudioPlayer(contentsOf: URL(fileURLWithPath: audioURL))
+            audioPlayer = try AVAudioPlayer(contentsOf: URL(fileURLWithPath: audioURL))
+            
             audioPlayer.volume = audioItem.currentVolume
             audioPlayer.numberOfLoops = getNumberOfLoops(audioItemCategory: audioItem.category)
-            audioPlayer.delegate = self
             
             return audioPlayer
         }
         catch {
-            print("Failed to initialize player for \(audioItem.fileName).\(audioItem.fileType.rawValue)")
+            print(error)
             return nil
         }
     }
@@ -295,7 +297,7 @@ class AudioManager: NSObject, AVAudioPlayerDelegate {
         - shouldLoop: if non-nil, override the audio item's category property, to determine whether to loop playback or not
      - returns: True if the player can play. False, otherwise.
      */
-    @discardableResult func playSound(for audioKey: String, currentTime: TimeInterval? = nil, fadeIn: TimeInterval = 0.0, delay: TimeInterval? = nil, pan: Float = 0, interruptPlayback: Bool = true, shouldLoop: Bool? = nil) -> Bool {
+    @discardableResult func playSound(for audioKey: String, currentTime: TimeInterval? = nil, fadeIn: TimeInterval = 0.0, delay: TimeInterval? = nil, pan: Float = 0, interruptPlayback: Bool = true, shouldLoop: Bool? = nil) -> Bool? {
         guard let item = audioItems[audioKey], let player = configureAudioPlayer(for: item) else {
             print("Unable to find \(audioKey) in AudioManager.audioItems[]")
             return false
@@ -304,48 +306,46 @@ class AudioManager: NSObject, AVAudioPlayerDelegate {
         guard interruptPlayback || !isPlaying(audioKey: item.fileName) else {
             return false
         }
+                
+        audioItems[item.fileName]!.player = player
+        audioItems[item.fileName]!.player.volume = audioItems[item.fileName]!.currentVolume
+        audioItems[item.fileName]!.player.pan = pan
+        audioItems[item.fileName]!.player.prepareToPlay()
+        audioItems[item.fileName]!.player.delegate = self
+
+        if currentTime != nil {
+            audioItems[item.fileName]!.player.currentTime = currentTime!
+        }
         
-        setupAudioPlayer(player, for: item, currentTime: currentTime, pan: pan, shouldLoop: shouldLoop)
-        players[audioKey] = player
+        if let shouldLoop = shouldLoop {
+            audioItems[item.fileName]!.player.numberOfLoops = shouldLoop ? -1 : 0
+        }
+        else {
+            audioItems[item.fileName]!.player.numberOfLoops = getNumberOfLoops(audioItemCategory: audioItems[item.fileName]!.category)
+        }
         
         DispatchQueue.main.asyncAfter(deadline: .now() + (delay ?? 0)) {
             //No need to make completions inside DispatchQueue.main.asyncAfter weak!
+            let audioItem = self.audioItems[item.fileName]!
             
             //Uncomment this to see if audio is being interrupted by playing it while it's already playing 3/1/25
             if self.isPlaying(audioKey: item.fileName) {
-                print("WARNING: Attempting to play audio \(item.fileName) while it is already playing!")
+                print("WARNING: Attempting to play audio \(audioItem.fileName) while it is already playing!")
             }
             
             if fadeIn > 0 {
-                player.setVolume(0.0, fadeDuration: 0)
-                player.play()
-                player.setVolume(item.currentVolume, fadeDuration: fadeIn)
+                audioItem.player.setVolume(0.0, fadeDuration: 0)
+                audioItem.player.play()
+                audioItem.player.setVolume(audioItem.currentVolume, fadeDuration: fadeIn)
             }
             else {
-                player.play()
+                audioItem.player.play()
             }
             
             self.setAudioIsPlaying(for: item.fileName, to: true)
         }
                 
         return true
-    }
-    
-    private func setupAudioPlayer(_ player: AVAudioPlayer, for audioItem: AudioItem, currentTime: TimeInterval?, pan: Float, shouldLoop: Bool?) {
-        player.volume = audioItem.currentVolume
-        player.pan = pan
-        player.prepareToPlay()
-        
-        if let currentTime = currentTime {
-            player.currentTime = currentTime
-        }
-        
-        if let shouldLoop = shouldLoop {
-            player.numberOfLoops = shouldLoop ? -1 : 0
-        }
-        else {
-            player.numberOfLoops = getNumberOfLoops(audioItemCategory: audioItem.category)
-        }
     }
     
     /**
@@ -355,15 +355,15 @@ class AudioManager: NSObject, AVAudioPlayerDelegate {
         - fadeDuration: length of time in seconds for music to fade before stopping.
      */
     func stopSound(for audioKey: String, fadeDuration: TimeInterval = 0.0) {
-        guard let item = audioItems[audioKey], let player = players[audioKey] else {
+        guard let item = audioItems[audioKey] else {
             print("Unable to find \(audioKey) in AudioManager.audioItems[]")
             return
         }
         
-        player.setVolume(0.0, fadeDuration: fadeDuration)
+        item.player.setVolume(0.0, fadeDuration: fadeDuration)
         
         DispatchQueue.main.asyncAfter(deadline: .now() + fadeDuration) {
-            player.stop()
+            item.player.stop()
             
             self.setAudioIsPlaying(for: item.fileName, to: false)
         }
@@ -375,9 +375,9 @@ class AudioManager: NSObject, AVAudioPlayerDelegate {
      - returns: true if it is playing
      */
     func isPlaying(audioKey: String) -> Bool {
-        guard let item = audioItems[audioKey], let player = players[audioKey] else { return false }
+        guard let item = audioItems[audioKey] else { return false }
         
-        return player.isPlaying
+        return item.player.isPlaying
     }
     
     /**
@@ -428,12 +428,12 @@ class AudioManager: NSObject, AVAudioPlayerDelegate {
         - pan: pan value to set to
      */
     func setPan(for audioKey: String, to pan: Float) {
-        guard let item = audioItems[audioKey], let player = players[audioKey] else {
+        guard let item = audioItems[audioKey] else {
             print("Unable to find \(audioKey) in AudioManager.audioItems[]")
             return
         }
         
-        player.pan = pan.clamp(min: -1.0, max: 1.0)
+        item.player.pan = pan.clamp(min: -1.0, max: 1.0)
     }
     
     /**
@@ -464,7 +464,7 @@ class AudioManager: NSObject, AVAudioPlayerDelegate {
         - fadeDuration: the rate of volume change before reaching the desired volume
      */
     func adjustVolume(to volume: Float, for audioKey: String, fadeDuration: TimeInterval = 0) {
-        guard let item = audioItems[audioKey], let player = players[audioKey] else {
+        guard let item = audioItems[audioKey] else {
             print("Unable to find \(audioKey) in AudioManager.audioItems[]")
             return
         }
@@ -472,7 +472,7 @@ class AudioManager: NSObject, AVAudioPlayerDelegate {
         let volumeToSet: Float = UserDefaults.standard.bool(forKey: (item.category == .music || item.category == .musicNoLoop) ? K.UserDefaults.muteMusic : K.UserDefaults.muteSoundFX) ? 0 : volume
 
         audioItems[audioKey]!.currentVolume = volumeToSet
-        player.setVolume(volumeToSet, fadeDuration: fadeDuration)
+        audioItems[audioKey]!.player.setVolume(volumeToSet, fadeDuration: fadeDuration)
     }
     
     /**
@@ -485,12 +485,12 @@ class AudioManager: NSObject, AVAudioPlayerDelegate {
                 let volumeToSet: Float = UserDefaults.standard.bool(forKey: K.UserDefaults.muteMusic) ? 0 : item.maxVolume
                 
                 audioItems[index]?.currentVolume = volumeToSet
-                players[index]?.setVolume(volumeToSet, fadeDuration: 0.25)
+                item.player.setVolume(volumeToSet, fadeDuration: 0.25)
             case .soundFX, .soundFXLoop:
                 let volumeToSet: Float = UserDefaults.standard.bool(forKey: K.UserDefaults.muteSoundFX) ? 0 : item.maxVolume
                 
                 audioItems[index]?.currentVolume = volumeToSet
-                players[index]?.volume = volumeToSet
+                item.player.volume = volumeToSet
             }
         }
     }
@@ -504,15 +504,11 @@ class AudioManager: NSObject, AVAudioPlayerDelegate {
         return audioItems[filename]
     }
     
-    func getPlayer(filename: String) -> AVAudioPlayer? {
-        return players[filename]
-    }
-    
     /**
      Gets a list of audioItem filenames that are currently playing.
      */
     func getActiveSoundsPlaying() -> [String] {
-        return players.filter { isAudioPlaying[$0.key] == true }.map{ $0.key }
+        return audioItems.values.filter { $0.isPlaying }.map(\.fileName)
     }
     
     
@@ -523,8 +519,8 @@ class AudioManager: NSObject, AVAudioPlayerDelegate {
 
 extension AudioManager {
     func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
-        if let audioKey = players.first(where: { $0.value == player })?.key {
-            setAudioIsPlaying(for: audioKey, to: false)
+        if let item = audioItems.first(where: { $0.value.player == player })?.value {
+            setAudioIsPlaying(for: item.fileName, to: false)
         }
     }
     
@@ -535,7 +531,7 @@ extension AudioManager {
         - isPlaying: boolean flag to be set
      */
     private func setAudioIsPlaying(for filename: String, to isPlaying: Bool) {
-        isAudioPlaying[filename] = isPlaying
+        audioItems[filename]?.isPlaying = isPlaying
     }
     
     
