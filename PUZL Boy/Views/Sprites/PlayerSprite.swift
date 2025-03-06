@@ -98,6 +98,30 @@ class PlayerSprite {
     }
     
     func startMoveAnimation(animationType: Player.Texture, soundFXType: Player.Texture) {
+        func playMoveSoundFX() {
+            var moveSound: String?
+            var count = 0
+            
+            repeat {
+                switch soundFXType {
+                case .run:      moveSound = "moverun\(Int.random(in: 1...4))"
+                case .marsh:    moveSound = "movemarsh\(Int.random(in: 1...3))"
+                case .sand:     moveSound = FireIceTheme.soundMovementSandSnow
+                case .party:    moveSound = "movetile\(Int.random(in: 1...3))"
+                case .walk:     moveSound = "movewalk"
+                default:        moveSound = nil
+                }
+                
+                count += 1
+                
+                if count > 20 { break } //avoids infinite loop
+            } while moveSound != nil && AudioManager.shared.isPlaying(audioKey: moveSound!)
+            
+            if let moveSound = moveSound {
+                AudioManager.shared.playSound(for: moveSound)
+            }
+        }
+        
         let timePerFrameMultiplier: TimeInterval = (soundFXType == .marsh ? 1.5 : 1) * PartyModeSprite.shared.speedMultiplier
         
         player.sprite.removeAction(forKey: AnimationKey.playerIdle.rawValue)
@@ -114,20 +138,7 @@ class PlayerSprite {
             ]), withKey: AnimationKey.playerGlide.rawValue)
         }
         else {
-            switch soundFXType {
-            case .run:
-                AudioManager.shared.playSound(for: "moverun\(Int.random(in: 1...4))")
-            case .marsh:
-                AudioManager.shared.playSound(for: "movemarsh\(Int.random(in: 1...3))")
-            case .sand:
-                AudioManager.shared.playSound(for: FireIceTheme.soundMovementSandSnow)
-            case .party:
-                AudioManager.shared.playSound(for: "movetile\(Int.random(in: 1...3))")
-            case .walk:
-                AudioManager.shared.playSound(for: "movewalk")
-            default:
-                print("Unknown soundFXType")
-            }
+            playMoveSoundFX()
             
             player.sprite.run(Player.animate(player: player, type: animationType, timePerFrameMultiplier: timePerFrameMultiplier), withKey: AnimationKey.playerMove.rawValue)
         }
