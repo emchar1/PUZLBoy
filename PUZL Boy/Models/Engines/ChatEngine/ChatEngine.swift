@@ -1415,7 +1415,7 @@ extension ChatEngine {
                 ChatItem(profile: .trainer, imgPos: .left, chat: "⚡️REVEAL YOURSELF!!!⚡️") { [weak self] in
                     guard let self = self else { return }
                     
-                    AudioManager.shared.playSoundThenStop(for: "littlegirllaugh", playForDuration: 5, fadeOut: 2)
+                    AudioManager.shared.playSoundThenStop(for: "littlegirllaugh", playForDuration: 2, fadeOut: 2)
                     
                     chatSpeed = chatSpeedDefault
                 },

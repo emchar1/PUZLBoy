@@ -7,7 +7,7 @@
 
 import AVFoundation
 
-struct AudioItem {
+class AudioItem {
     
     // MARK: - Properties
     
@@ -20,7 +20,6 @@ struct AudioItem {
     
     // AVPlayer
     var player = AVAudioPlayer()
-    var isPlaying: Bool
     
     enum AudioType: String {
         case mp3 = "mp3", wav, m4a
@@ -39,9 +38,7 @@ struct AudioItem {
         self.category = category
         self.maxVolume = maxVolume
         self.currentVolume = maxVolume
-        self.isPlaying = false
     }
-    
     
     
 }
