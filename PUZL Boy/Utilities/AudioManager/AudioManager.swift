@@ -368,17 +368,6 @@ class AudioManager: NSObject, AVAudioPlayerDelegate {
     }
     
     /**
-     Checks if the current sound or music is playing, returns true if so.
-     - parameter audioKey: the string value of the sound or music
-     - returns: true if it is playing
-     */
-    func isPlaying(audioKey: String) -> Bool {
-        guard let item = audioItems[audioKey] else { return false }
-        
-        return item.player.isPlaying
-    }
-    
-    /**
      Plays an audio, then stops after a certain playForDuration amounts.
      - parameters:
         - audioKey: the key for the audio item to play
@@ -508,6 +497,9 @@ class AudioManager: NSObject, AVAudioPlayerDelegate {
         }
     }
     
+    
+    // MARK: - Getters
+    
     /**
      Gets the AudioItem for the given filename.
      - parameter filename: String name of the file in question.
@@ -522,6 +514,17 @@ class AudioManager: NSObject, AVAudioPlayerDelegate {
      */
     func getActiveSoundsPlaying() -> [String] {
         return audioItems.values.filter { $0.player.isPlaying }.map(\.fileName)
+    }
+    
+    /**
+     Checks if the current sound or music is playing, returns true if so.
+     - parameter audioKey: the string value of the sound or music
+     - returns: true if it is playing
+     */
+    func isPlaying(audioKey: String) -> Bool {
+        guard let item = audioItems[audioKey] else { return false }
+        
+        return item.player.isPlaying
     }
     
     
