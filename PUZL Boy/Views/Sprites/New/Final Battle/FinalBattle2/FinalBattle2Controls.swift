@@ -374,25 +374,37 @@ class FinalBattle2Controls {
         - completion: handler to perform functions upon animation completion
      */
     private func movePlayerHelper(_ direction: Controls, completion: (() -> Void)?) {
+        func getMoveSoundFX() {
+            var counter = 0
+            
+            repeat {
+                if safePanelFound {
+                    runSound = FireIceTheme.soundMovementSandSnow
+                }
+                else {
+                    switch panelType {
+                    case .lava, .water:
+                        runSound = "movemarsh\(Int.random(in: 1...3))"
+                    default:
+                        runSound = "movetile\(Int.random(in: 1...3))"
+                    }
+                }
+                
+                counter += 1
+                
+                if counter > 20 { break }
+            } while AudioManager.shared.isPlaying(audioKey: runSound)
+        }
+        
         let nextPanel: K.GameboardPosition = getNextPanel(direction: direction)
         let panelType = gameboard.getUserDataForLevelType(sprite: gameboard.getPanelSprite(at: positions.player).terrain!)
         let movementMultiplier: TimeInterval = (playerOnSafePanel() && !poisonPanelFound && !isPoisoned ? 1 : 2) / chosenSword.speedRating
-        let runSound: String
-        
-        if safePanelFound {
-            runSound = FireIceTheme.isFire ? "movesand\(Int.random(in: 1...3))" : "movesnow\(Int.random(in: 1...3))"
-        }
-        else {
-            switch panelType {
-            case .lava, .water:
-                runSound = "movemarsh\(Int.random(in: 1...3))"
-            default:
-                runSound = "movetile\(Int.random(in: 1...3))"
-            }
-        }
+        var runSound: String = "movetile1"
         
         isDisabled = true
         positions.player = nextPanel
+        
+        getMoveSoundFX()
         
         AudioManager.shared.playSound(for: runSound)
         
