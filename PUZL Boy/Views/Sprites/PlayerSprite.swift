@@ -297,6 +297,7 @@ class PlayerSprite {
         
         AudioManager.shared.playSound(for: "boyattack\(Int.random(in: 1...3))")
         AudioManager.shared.playSound(for: "swordslash")
+        AudioManager.shared.stopSound(for: "enemydeath") //Due to the length of the sound, need to stop it in case you consecutively kill dragons
         AudioManager.shared.playSound(for: "enemydeath", delay: 0.8 * PartyModeSprite.shared.speedMultiplier)
 
         gameboard.sprite.addChild(attackSprite)
@@ -367,6 +368,7 @@ class PlayerSprite {
         
         AudioManager.shared.playSound(for: "boyattack\(Int.random(in: 1...3))")
         AudioManager.shared.playSound(for: "hammerswing")
+        AudioManager.shared.stopSound(for: "bouldersmash") //Due to the length of the sound, need to stop it in case you consecutively break boulders
         AudioManager.shared.playSound(for: "bouldersmash", delay: 0.8 * PartyModeSprite.shared.speedMultiplier)
 
         gameboard.sprite.addChild(attackSprite)

@@ -11,11 +11,14 @@ struct AudioItem {
     
     // MARK: - Properties
     
+    // Metadata
     let fileName: String
     let fileType: AudioType
     let category: AudioCategory
     let maxVolume: Float
     var currentVolume: Float
+    
+    // AVPlayer
     var player = AVAudioPlayer()
     var isPlaying: Bool
     
@@ -38,4 +41,7 @@ struct AudioItem {
         self.currentVolume = maxVolume
         self.isPlaying = false
     }
+    
+    
+    
 }

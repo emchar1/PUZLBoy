@@ -135,13 +135,13 @@ struct ChatItem {
         case .statue0:
             chatSpeed = 0.04
         case .statue1:
-            chatSpeed = 0.02
+            chatSpeed = 0.04
         case .statue2:
             chatSpeed = 0.1
         case .statue3, .statue3b:
-            chatSpeed = 0.02
+            chatSpeed = 0.04
         case .statue4:
-            chatSpeed = 0.02
+            chatSpeed = 0.04
         }
         
         return chatSpeed
