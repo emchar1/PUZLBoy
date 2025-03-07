@@ -526,7 +526,7 @@ class GameboardSprite {
         AudioManager.shared.playSound(for: "magicheartbeatloop1", fadeIn: 3, delay: waitDuration, interruptPlayback: false)
         AudioManager.shared.playSound(for: "littlegirllaugh", fadeIn: 3, delay: waitDuration, interruptPlayback: false)
         AudioManager.shared.playSound(for: "scarymusicbox", fadeIn: 3, delay: waitDuration, interruptPlayback: false)
-        AudioManager.shared.adjustVolume(to: 0, for: AudioManager.shared.currentTheme.overworld, fadeDuration: currentThemeFade)
+        AudioManager.shared.adjustVolume(to: 0, for: ThemeManager.getCurrentThemeAudio(sound: .overworld), fadeDuration: currentThemeFade)
 
         if shouldAnimateWarp {
             AudioManager.shared.playSound(for: "magicwarp")

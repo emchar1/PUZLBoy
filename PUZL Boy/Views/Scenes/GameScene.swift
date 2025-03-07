@@ -269,7 +269,7 @@ class GameScene: SKScene {
     override func didMove(to view: SKView) {
         //First, set the audio...
         AudioManager.shared.stopSound(for: "continueloop")
-        AudioManager.shared.playSound(for: AudioManager.shared.currentTheme.overworld)
+        AudioManager.shared.playSound(for: ThemeManager.getCurrentThemeAudio(sound: .overworld))
         
         //...then call the remaining functions.
         moveSprites()
@@ -283,7 +283,7 @@ class GameScene: SKScene {
     }
     
     override func willMove(from view: SKView) {
-        AudioManager.shared.stopSound(for: AudioManager.shared.currentTheme.overworld)
+        AudioManager.shared.stopSound(for: ThemeManager.getCurrentThemeAudio(sound: .overworld))
     }
     
     override func update(_ currentTime: TimeInterval) {
@@ -474,7 +474,7 @@ class GameScene: SKScene {
         AudioManager.shared.stopSound(for: "continueloop")
         
         if !didWin {
-            AudioManager.shared.playSound(for: AudioManager.shared.currentTheme.overworld)
+            AudioManager.shared.playSound(for: ThemeManager.getCurrentThemeAudio(sound: .overworld))
         }
         
         
@@ -486,7 +486,7 @@ class GameScene: SKScene {
     private func prepareAd(completion: (() -> Void)?) {
         let fadeDuration: TimeInterval = 1.0
         
-        AudioManager.shared.lowerVolume(for: AudioManager.shared.currentTheme.overworld, fadeDuration: fadeDuration)
+        AudioManager.shared.lowerVolume(for: ThemeManager.getCurrentThemeAudio(sound: .overworld), fadeDuration: fadeDuration)
 
         adSprite = SKSpriteNode(color: .clear, size: screenSize)
         adSprite!.anchorPoint = .zero
@@ -514,7 +514,7 @@ class GameScene: SKScene {
         
         let fadeDuration: TimeInterval = 1.0
         
-        AudioManager.shared.raiseVolume(for: AudioManager.shared.currentTheme.overworld, fadeDuration: 3)
+        AudioManager.shared.raiseVolume(for: ThemeManager.getCurrentThemeAudio(sound: .overworld), fadeDuration: 3)
         gameEngine.fadeBloodOverlay(shouldFadeOut: false, duration: fadeDuration)
 
         if shouldFade {
@@ -594,7 +594,7 @@ class GameScene: SKScene {
                 fadeNode.zPosition = K.ZPosition.messagePrompt
                 addChild(fadeNode)
                 
-                AudioManager.shared.stopSound(for: AudioManager.shared.currentTheme.overworld, fadeDuration: fadeDuration)
+                AudioManager.shared.stopSound(for: ThemeManager.getCurrentThemeAudio(sound: .overworld), fadeDuration: fadeDuration)
                 
                 fadeNode.run(SKAction.fadeIn(withDuration: fadeDuration)) { [weak self] in
                     guard let self = self else { return }
@@ -638,7 +638,7 @@ class GameScene: SKScene {
         gameEngine.displaySprite.sprite.run(shakeAction)
         gameEngine.gameboardSprite.sprite.run(shakeAction) {
             if shouldPlaySFX {
-                AudioManager.shared.raiseVolume(for: AudioManager.shared.currentTheme.overworld, fadeDuration: 5)
+                AudioManager.shared.raiseVolume(for: ThemeManager.getCurrentThemeAudio(sound: .overworld), fadeDuration: 5)
             }
             
             Haptics.shared.stopHapticEngine()
@@ -649,7 +649,7 @@ class GameScene: SKScene {
 
         if shouldPlaySFX {
             AudioManager.shared.playSound(for: "magicelderexplosion")
-            AudioManager.shared.adjustVolume(to: 0.1, for: AudioManager.shared.currentTheme.overworld, fadeDuration: 1)
+            AudioManager.shared.adjustVolume(to: 0.1, for: ThemeManager.getCurrentThemeAudio(sound: .overworld), fadeDuration: 1)
         }
 
         AudioManager.shared.playSoundThenStop(for: "thunderrumble", currentTime: 5, playForDuration: totalDuration + 1, fadeOut: 4)
@@ -699,7 +699,7 @@ class GameScene: SKScene {
         
         if let completion = completion {
             backgroundColor = fadeColor
-            AudioManager.shared.stopSound(for: AudioManager.shared.currentTheme.overworld, fadeDuration: 4)
+            AudioManager.shared.stopSound(for: ThemeManager.getCurrentThemeAudio(sound: .overworld), fadeDuration: 4)
             
             fadeNode.run(SKAction.sequence([
                 SKAction.fadeIn(withDuration: 2),
@@ -1056,7 +1056,7 @@ extension GameScene: AdMobManagerDelegate {
                 
                 AudioManager.shared.playSound(for: "revive")
                 AudioManager.shared.stopSound(for: "continueloop")
-                AudioManager.shared.playSound(for: AudioManager.shared.currentTheme.overworld)
+                AudioManager.shared.playSound(for: ThemeManager.getCurrentThemeAudio(sound: .overworld))
                 
                 pauseResetEngine.shouldDisable(false)
                 gameEngine.continueGame()

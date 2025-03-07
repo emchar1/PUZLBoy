@@ -9,13 +9,9 @@ import AVFoundation
 
 class AudioManager: NSObject, AVAudioPlayerDelegate {
     
-    // MARK: - Important Properties
+    // MARK: - Properties
     
-    typealias AudioTheme = (overworld: String, win: String, gameover: String)
-    private(set) var currentTheme: AudioTheme
     private var audioItems: [String: AudioItem] = [:]
-
-    // MARK: - Static Properties
     
     static let shared: AudioManager = {
         let instance = AudioManager()
@@ -23,26 +19,10 @@ class AudioManager: NSObject, AVAudioPlayerDelegate {
         return instance
     }()
     
-    static let ageOfBalanceThemes: AudioTheme = ("overworld", "winlevel", "gameover")
-    static let ageOfRuinThemes: AudioTheme = ("overworldageofruin", "winlevelageofruin", "gameoverageofruin")
-    static let partyThemes: AudioTheme = ("overworldparty", "winlevel", "gameover")
-    static let tikiThemes: AudioTheme = ("overworldmarimba", "winlevel", "gameover")
-
-    ///The reason why all these properties had to be static is so that currentTheme can set itself to mainThemes in init(). It can't do it as a non-static function!!!
-    static var mainThemes: AudioTheme {
-        AgeOfRuin.isActive ? ageOfRuinThemes : ageOfBalanceThemes
-    }
-    
-    static var titleLogo: String {
-        "titletheme" + (AgeOfRuin.isActive ? "ageofruin" : "")
-    }
-    
 
     // MARK: - Initialization
     
     private override init() {
-        currentTheme = AudioManager.mainThemes
-        
         super.init()
         
         do {
@@ -55,6 +35,12 @@ class AudioManager: NSObject, AVAudioPlayerDelegate {
             print(error)
         }
         
+        setupAudioItems()
+        updateVolumes() //9/13/23 Call this AFTER setting up audioItems!
+    }
+    
+    ///Initializes all the audio items, files, players, etc.
+    private func setupAudioItems() {
         //Sound FX
         addAudioItem("arrowblink", category: .soundFX)
         addAudioItem("bouldersmash", category: .soundFX)
@@ -225,14 +211,10 @@ class AudioManager: NSObject, AVAudioPlayerDelegate {
         addAudioItem("overworldmarimba", category: .music)
         addAudioItem("overworldparty", category: .music)
         addAudioItem("scarymusicbox", category: .music)
-
-        
-        //9/13/23 Call this AFTER adding all the audioItems above!
-        updateVolumes()
     }
     
     
-    // MARK: - Setup Functions
+    // MARK: - Setup Helper Functions
 
     /**
      Adds a sound file to the AudioItems dictionary.
@@ -401,23 +383,6 @@ class AudioManager: NSObject, AVAudioPlayerDelegate {
         DispatchQueue.main.asyncAfter(deadline: .now() + playForDuration + (delay ?? 0)) {
             self.stopSound(for: audioKey, fadeDuration: fadeOut)
         }
-    }
-    
-    /**
-     Stops the current overworld theme and changes the current theme to a new theme.
-     - parameters:
-        - newTheme: the new theme to change to.
-        - shouldPlayNewTheme: plays the new theme's overworld, if true.
-     */
-    func changeTheme(newTheme theme: AudioTheme, shouldPlayNewTheme: Bool) {
-        //Need to forceStop = true here because AudioItem is now a class (reference type). Otherwise, sound doesn't stop properly 3/5/25.
-        stopSound(for: currentTheme.overworld, forceStop: true)
-
-        if shouldPlayNewTheme {
-            playSound(for: theme.overworld)
-        }
-            
-        currentTheme = theme
     }
     
     

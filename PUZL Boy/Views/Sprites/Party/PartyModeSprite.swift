@@ -28,7 +28,7 @@ class PartyModeSprite: SKNode {
         didSet {
             guard !AgeOfRuin.isActive else { return }
             
-            AudioManager.shared.changeTheme(newTheme: isPartying ? AudioManager.partyThemes : AudioManager.mainThemes, shouldPlayNewTheme: true)
+            ThemeManager.changeTheme(to: isPartying ? .party : ThemeManager.mainTheme, shouldPlayNewTheme: true)
         }
     }
     

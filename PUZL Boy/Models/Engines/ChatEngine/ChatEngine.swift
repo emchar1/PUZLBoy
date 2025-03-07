@@ -428,13 +428,13 @@ class ChatEngine {
         
         if playLogo {
             AudioManager.shared.playSound(for: "titlechapter")
-            AudioManager.shared.adjustVolume(to: 0, for: AudioManager.tikiThemes.overworld, fadeDuration: 0.5)
+            AudioManager.shared.adjustVolume(to: 0, for: ThemeManager.getAudio(theme: .tiki, sound: .overworld), fadeDuration: 0.5)
             obtainItemSprite.run(SKAction.sequence([
                 SKAction.fadeIn(withDuration: 0.25),
                 SKAction.colorize(with: UIColor.obtainItem.end, colorBlendFactor: 1, duration: delayDuration - fadeDuration - 0.25),
                 SKAction.fadeOut(withDuration: fadeDuration)
             ])) {
-                AudioManager.shared.adjustVolume(to: 1, for: AudioManager.tikiThemes.overworld, fadeDuration: 1)
+                AudioManager.shared.adjustVolume(to: 1, for: ThemeManager.getAudio(theme: .tiki, sound: .overworld), fadeDuration: 1)
             }
         }
         
@@ -1820,7 +1820,7 @@ extension ChatEngine {
                 self?.handleDialogueCompletion(level: level, completion: completion)
             }
         case 180:
-            AudioManager.shared.adjustVolume(to: 0.2, for: AudioManager.shared.currentTheme.overworld, fadeDuration: 3)
+            AudioManager.shared.adjustVolume(to: 0.2, for: ThemeManager.getCurrentThemeAudio(sound: .overworld), fadeDuration: 3)
             AudioManager.shared.playSound(for: "littlegirllaugh", fadeIn: 3)
             
             sendChatArray(items: [
@@ -1832,7 +1832,7 @@ extension ChatEngine {
                     AudioManager.shared.playSound(for: "scarylaugh")
                 },
                 ChatItem(profile: .blankvillain, chat: "\n\n...heh heh heh heh heh... ") {
-                    AudioManager.shared.adjustVolume(to: 1, for: AudioManager.shared.currentTheme.overworld, fadeDuration: 5)
+                    AudioManager.shared.adjustVolume(to: 1, for: ThemeManager.getCurrentThemeAudio(sound: .overworld), fadeDuration: 5)
                     AudioManager.shared.stopSound(for: "littlegirllaugh", fadeDuration: 5)
                 },
                 ChatItem(profile: .hero, imgPos: .left, chat: "Wh—what the... who's there?!! You heard that too, right??"),
@@ -1846,7 +1846,7 @@ extension ChatEngine {
                 self?.handleDialogueCompletion(level: level, completion: completion)
             }
         case 221:
-            AudioManager.shared.adjustVolume(to: 0.2, for: AudioManager.shared.currentTheme.overworld, fadeDuration: 3)
+            AudioManager.shared.adjustVolume(to: 0.2, for: ThemeManager.getCurrentThemeAudio(sound: .overworld), fadeDuration: 3)
             AudioManager.shared.playSound(for: "littlegirllaugh", fadeIn: 3)
             
             sendChatArray(items: [
@@ -1856,7 +1856,7 @@ extension ChatEngine {
                 ChatItem(profile: .blankprincess, chat: "\nOh! And this mysterious man has me! Uh oh, he's coming back..."),
                 ChatItem(profile: .hero, imgPos: .left, chat: "Where are you!!! Can you hear me! OLIVIA!!! Burnt toast... is she having a stroke?? Marlin we gotta do something!"),
                 ChatItem(profile: .trainer, chat: "She can't hear us. I can't sense her presence. Whatever has a hold of her is keeping her in between realms. We must keep moving if we are to find her.") {
-                    AudioManager.shared.adjustVolume(to: 1, for: AudioManager.shared.currentTheme.overworld, fadeDuration: 5)
+                    AudioManager.shared.adjustVolume(to: 1, for: ThemeManager.getCurrentThemeAudio(sound: .overworld), fadeDuration: 5)
                     AudioManager.shared.stopSound(for: "littlegirllaugh", fadeDuration: 5)
                 },
                 ChatItem(profile: .hero, imgPos: .left, chat: "Who is this mysterious man you guys are talking about?"),
@@ -1940,7 +1940,7 @@ extension ChatEngine {
                         ChatItem(profile: .hero, imgPos: .left, startNewChat: false, chat: "\(choseLeft ? "BRING ME MAGMOOR!!!" : "Hmm. We should prepare first.")", handler: nil),
                         ChatItem(profile: .trainer, chat: "\(choseLeft ? "Alright, but we need to be EXTRA cautious." : "A wise decision. Let's keep moving...")"),
                     ]) {
-                        AudioManager.shared.adjustVolume(to: 1, for: AudioManager.shared.currentTheme.overworld, fadeDuration: 3)
+                        AudioManager.shared.adjustVolume(to: 1, for: ThemeManager.getCurrentThemeAudio(sound: .overworld), fadeDuration: 3)
                         
                         delegate.despawnTrainer(to: (0, 0))
                         self?.handleDialogueCompletion(level: level, completion: completion)
@@ -2014,7 +2014,7 @@ extension ChatEngine {
                     self?.fadeDimOverlay()
 
                     delegate.despawnPrincessCapture(at: spawnPoint) {
-                        AudioManager.shared.adjustVolume(to: 1, for: AudioManager.shared.currentTheme.overworld, fadeDuration: 3)
+                        AudioManager.shared.adjustVolume(to: 1, for: ThemeManager.getCurrentThemeAudio(sound: .overworld), fadeDuration: 3)
                         delegate.despawnTrainer(to: (0, 0))
                         self?.handleDialogueCompletion(level: level, completion: completion)
                     }
@@ -2038,7 +2038,7 @@ extension ChatEngine {
                 ChatItem(profile: .hero, imgPos: .left, chat: "Why should we trust him?!! He's obviously the bad guy!!!"),
                 ChatItem(profile: .trainer, chat: "With the princess free, we stand a better chance at defeating Magmoor once and for all."),
                 ChatItem(profile: .trainer, chat: "Just keep solving puzzles like you're doing and you will be just fine.") {
-                    AudioManager.shared.lowerVolume(for: AudioManager.shared.currentTheme.overworld, fadeDuration: musicFadeDuration)
+                    AudioManager.shared.lowerVolume(for: ThemeManager.getCurrentThemeAudio(sound: .overworld), fadeDuration: musicFadeDuration)
                 },
                 ChatItem(profile: .hero, imgPos: .left, chat: "But, but... I can't do this without you!! 🥺"),
                 ChatItem(profile: .trainer, chat: "Trust your instincts, PUZL Boy. I have equipped you with all the knowledge you need to succeed."),
@@ -2056,7 +2056,7 @@ extension ChatEngine {
                         ChatItem(profile: .blanktrainer, startNewChat: false, chat: "\n\nMarlin has left the party.", handler: nil)
                     ]) {
                         self?.showFFButton()
-                        AudioManager.shared.raiseVolume(for: AudioManager.shared.currentTheme.overworld, fadeDuration: musicFadeDuration)
+                        AudioManager.shared.raiseVolume(for: ThemeManager.getCurrentThemeAudio(sound: .overworld), fadeDuration: musicFadeDuration)
 
                         self?.handleDialogueCompletion(level: level, completion: completion)
                     }
@@ -2169,10 +2169,10 @@ extension ChatEngine {
                 }
             }
         case 417:
-            AudioManager.shared.adjustVolume(to: 0.2, for: AudioManager.shared.currentTheme.overworld, fadeDuration: 0.5)
+            AudioManager.shared.adjustVolume(to: 0.2, for: ThemeManager.getCurrentThemeAudio(sound: .overworld), fadeDuration: 0.5)
             
             delegate?.peekMinion(at: (3, 3), duration: 4) { [weak self] in
-                AudioManager.shared.raiseVolume(for: AudioManager.shared.currentTheme.overworld, fadeDuration: 0.5)
+                AudioManager.shared.raiseVolume(for: ThemeManager.getCurrentThemeAudio(sound: .overworld), fadeDuration: 0.5)
 
                 self?.sendChatArray(items: [
                     ChatItem(profile: .hero, imgPos: .left, chat: "What the.........?")
@@ -2181,10 +2181,10 @@ extension ChatEngine {
                 }
             }
         case 434:
-            AudioManager.shared.adjustVolume(to: 0.2, for: AudioManager.shared.currentTheme.overworld, fadeDuration: 0.5)
+            AudioManager.shared.adjustVolume(to: 0.2, for: ThemeManager.getCurrentThemeAudio(sound: .overworld), fadeDuration: 0.5)
             
             delegate?.peekMinion(at: (3, 3), duration: 4) { [weak self] in
-                AudioManager.shared.raiseVolume(for: AudioManager.shared.currentTheme.overworld, fadeDuration: 0.5)
+                AudioManager.shared.raiseVolume(for: ThemeManager.getCurrentThemeAudio(sound: .overworld), fadeDuration: 0.5)
 
                 self?.sendChatArray(items: [
                     ChatItem(profile: .hero, imgPos: .left, chat: "Uh.. no, thank you!")
@@ -2268,7 +2268,7 @@ extension ChatEngine {
             
             sendChatArray(shouldSkipDim: true, items: [
                 ChatItem(profile: .hero, imgPos: .left, chat: "Oh.. you again. Alright, whaddya got for me?") { [weak self] in
-                    AudioManager.shared.lowerVolume(for: AudioManager.mainThemes.overworld, fadeDuration: 5)
+                    AudioManager.shared.lowerVolume(for: ThemeManager.getAudio(theme: ThemeManager.mainTheme, sound: .overworld), fadeDuration: 5)
                     self?.hideFFButton()
                     self?.delegate?.spawnMagmoorMinion(at: spawnPointMinion, chatDelay: chatDelay)
                 },
@@ -2311,7 +2311,7 @@ extension ChatEngine {
                                     AudioManager.shared.playSound(for: "titlechapter")
                                 },
                                 ChatItem(profile: .blankelders, chat: "\n\nThe Elders have joined the party.") {
-                                    AudioManager.shared.raiseVolume(for: AudioManager.mainThemes.overworld, fadeDuration: 3)
+                                    AudioManager.shared.raiseVolume(for: ThemeManager.getAudio(theme: ThemeManager.mainTheme, sound: .overworld), fadeDuration: 3)
                                     self?.showFFButton()
                                 },
                                 ChatItem(profile: .hero, imgPos: .left, chat: "Ah, yeah!!")

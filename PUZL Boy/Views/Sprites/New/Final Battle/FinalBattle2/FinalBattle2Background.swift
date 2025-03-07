@@ -193,7 +193,7 @@ class FinalBattle2Background {
         case .rainbow:
             let shiftDuration: TimeInterval = PartyModeSprite.shared.quarterNote
             
-            overworldMusic = AudioManager.partyThemes.overworld
+            overworldMusic = ThemeManager.getAudio(theme: .party, sound: .overworld)
             
             backgroundSprite.run(SKAction.fadeAlpha(to: 0.5, duration: fadeDuration))
             backgroundSprite.run(SKAction.sequence([

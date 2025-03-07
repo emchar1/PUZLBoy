@@ -266,12 +266,12 @@ class GameEngine {
 
         //Change to tiki music for tiki statue levels only during Age of Peace
         if ChatEngine.isTikiLevel(level: level.level) && !AgeOfRuin.isActive {
-            AudioManager.shared.changeTheme(newTheme: AudioManager.tikiThemes, shouldPlayNewTheme: true)
+            ThemeManager.changeTheme(to: .tiki, shouldPlayNewTheme: true)
         }
         else {
             //Revert back only if it was recently a tiki theme!
-            if AudioManager.shared.currentTheme == AudioManager.tikiThemes {
-                AudioManager.shared.changeTheme(newTheme: AudioManager.mainThemes, shouldPlayNewTheme: true)
+            if ThemeManager.currentTheme == .tiki {
+                ThemeManager.changeTheme(to: ThemeManager.mainTheme, shouldPlayNewTheme: true)
             }
         }
     }
@@ -1064,7 +1064,7 @@ class GameEngine {
             
             playerSprite.startPlayerExitAnimation()
 
-            AudioManager.shared.playSound(for: AudioManager.shared.currentTheme.win)
+            AudioManager.shared.playSound(for: ThemeManager.getCurrentThemeAudio(sound: .win))
             
             delegate?.gameIsSolved(movesRemaining: movesRemaining,
                                    itemsFound: level.inventory.getItemCount(),
@@ -1091,8 +1091,8 @@ class GameEngine {
             }
         }
         else if isGameOver {
-            AudioManager.shared.stopSound(for: AudioManager.shared.currentTheme.overworld)
-            AudioManager.shared.playSound(for: AudioManager.shared.currentTheme.gameover)
+            AudioManager.shared.stopSound(for: ThemeManager.getCurrentThemeAudio(sound: .overworld))
+            AudioManager.shared.playSound(for: ThemeManager.getCurrentThemeAudio(sound: .lose))
 
             if healthRemaining <= 0 {
                 displaySprite.drainHealth()
@@ -1172,7 +1172,7 @@ class GameEngine {
         //If the hint was bought, it will show in the inbetween realm, so cancel it temporarily and show it again at inbetweenRealmExit().
         hintEngine.removeAnimatingHint(from: gameboardSprite)
         
-        AudioManager.shared.adjustVolume(to: 0.15, for: AudioManager.shared.currentTheme.overworld)
+        AudioManager.shared.adjustVolume(to: 0.15, for: ThemeManager.getCurrentThemeAudio(sound: .overworld))
         AudioManager.shared.playSound(for: "magicdoomloop")
         
         ParticleEngine.shared.animateParticles(type: .inbetween,
@@ -1189,7 +1189,7 @@ class GameEngine {
         let fadeDuration: TimeInterval = 2
         
         AudioManager.shared.stopSound(for: "magicdoomloop", fadeDuration: fadeDuration)
-        AudioManager.shared.adjustVolume(to: 1, for: AudioManager.shared.currentTheme.overworld, fadeDuration: fadeDuration)
+        AudioManager.shared.adjustVolume(to: 1, for: ThemeManager.getCurrentThemeAudio(sound: .overworld), fadeDuration: fadeDuration)
         
         inbetweenNode.run(SKAction.sequence([
             SKAction.fadeOut(withDuration: fadeDuration),
@@ -1309,7 +1309,7 @@ class GameEngine {
     func checkIfGameOverOnStartup() {
         if !canContinue || isGameOver {
             print("Can't continue from GameEngine.shouldPlayAdOnStartup()... running delegate?.gameIsOver()...")
-            AudioManager.shared.stopSound(for: AudioManager.shared.currentTheme.overworld)
+            AudioManager.shared.stopSound(for: ThemeManager.getCurrentThemeAudio(sound: .overworld))
             delegate?.gameIsOver(firstTimeCalled: false)
         }
     }

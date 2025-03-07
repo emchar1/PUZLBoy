@@ -505,7 +505,7 @@ struct FIRManager {
 //        FIRManager.updateFirestoreRecordChosenSword(nil) //SHOULD THIS BE RESET???
         
         FIRManager.updateFirestoreRecordIsAgeOfRuin(ageOfRuinIsActive)
-        AudioManager.shared.changeTheme(newTheme: AudioManager.mainThemes, shouldPlayNewTheme: false)
+        ThemeManager.changeTheme(to: ThemeManager.mainTheme, shouldPlayNewTheme: false)
     }
     
     

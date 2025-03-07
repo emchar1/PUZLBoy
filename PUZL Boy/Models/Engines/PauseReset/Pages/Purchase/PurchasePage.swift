@@ -345,13 +345,13 @@ extension PurchasePage: AdMobManagerDelegate {
     // MARK: - Rewarded Ads
     
     func willPresentRewarded() {
-        AudioManager.shared.lowerVolume(for: AudioManager.shared.currentTheme.overworld, fadeDuration: 1.0)
+        AudioManager.shared.lowerVolume(for: ThemeManager.getCurrentThemeAudio(sound: .overworld), fadeDuration: 1.0)
     }
     
     func didDismissRewarded() {
         completePurchaseOrRewarded()
 
-        AudioManager.shared.raiseVolume(for: AudioManager.shared.currentTheme.overworld, fadeDuration: 1.0)
+        AudioManager.shared.raiseVolume(for: ThemeManager.getCurrentThemeAudio(sound: .overworld), fadeDuration: 1.0)
     }
     
     func rewardedFailed() {
