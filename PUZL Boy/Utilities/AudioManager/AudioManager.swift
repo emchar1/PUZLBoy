@@ -7,7 +7,7 @@
 
 import AVFoundation
 
-class AudioManager: NSObject, AVAudioPlayerDelegate {
+class AudioManager {
     
     // MARK: - Properties
     
@@ -22,9 +22,7 @@ class AudioManager: NSObject, AVAudioPlayerDelegate {
 
     // MARK: - Initialization
     
-    private override init() {
-        super.init()
-        
+    private init() {
         do {
             //ambient: Your app’s audio plays even while Music app music or other background audio is playing, and is silenced by the phone’s Silent switch and screen locking.
             //soloAmbient: (the default) Your app stops Music app music or other background audio from playing, and is silenced by the phone’s Silent switch and screen locking.
@@ -213,50 +211,18 @@ class AudioManager: NSObject, AVAudioPlayerDelegate {
         addAudioItem("scarymusicbox", category: .music)
     }
     
-    
-    // MARK: - Setup Helper Functions
-
     /**
      Adds a sound file to the AudioItems dictionary.
      - parameters:
         - audioKey: The key and filename to add to the dictionary
         - category: The AudioCategory of the sound being added
+        - maxVolume: The maximum volume to set, defaults to 1.0
      */
     private func addAudioItem(_ audioKey: String, category: AudioItem.AudioCategory, maxVolume: Float = 1.0) {
-        audioItems[audioKey] = AudioItem(fileName: audioKey, category: category, maxVolume: maxVolume)
+        let item = AudioItem(fileName: audioKey, category: category, maxVolume: maxVolume)
+        item.initializePlayer()
         
-        if let item = audioItems[audioKey], let player = configureAudioPlayer(for: item) {
-            item.player = player
-        }
-    }
-    
-    /**
-     Helper method for setupSounds() and playSound(); for some reason need to re-create the player if re-playing the sound. Takes in an AudioItem, sets up and returns the new player.
-     - parameter audioItem: AudioItem to configure the player
-     - returns: an AudioPlayer optional object
-     */
-    private func configureAudioPlayer(for audioItem: AudioItem) -> AVAudioPlayer? {
-        guard let audioURL = Bundle.main.path(forResource: audioItem.fileName, ofType: audioItem.fileType.rawValue) else {
-            print("Unable to find sound file: \(audioItem.fileName).\(audioItem.fileType.rawValue)")
-            return nil
-        }
-        
-        do {
-            let audioPlayer = try AVAudioPlayer(contentsOf: URL(fileURLWithPath: audioURL))
-            audioPlayer.volume = audioItem.currentVolume
-            audioPlayer.numberOfLoops = getNumberOfLoops(audioItemCategory: audioItem.category)
-            return audioPlayer
-        }
-        catch {
-            print("Unable to create the audio player for \(audioItem.fileName). Error: \(error)")
-            return nil
-        }
-    }
-    
-    private func getNumberOfLoops(audioItemCategory: AudioItem.AudioCategory) -> Int {
-        let shouldLoop = audioItemCategory == .music || audioItemCategory == .soundFXLoop
-        
-        return shouldLoop ? -1 : 0
+        audioItems[audioKey] = item
     }
     
     
@@ -292,15 +258,13 @@ class AudioManager: NSObject, AVAudioPlayerDelegate {
         item.player.volume = item.currentVolume
         item.player.pan = pan
         item.player.currentTime = currentTime ?? 0
-        item.player.prepareToPlay()
-        item.player.delegate = self
         
         if let shouldLoop = shouldLoop {
             item.player.numberOfLoops = shouldLoop ? -1 : 0
         }
         else {
             //If shouldLoop is nil, rever to item's category definition
-            item.player.numberOfLoops = getNumberOfLoops(audioItemCategory: item.category)
+            item.player.numberOfLoops = AudioItem.getNumberOfLoops(audioItemCategory: item.category)
         }
         
         DispatchQueue.main.asyncAfter(deadline: .now() + (delay ?? 0)) {
@@ -446,19 +410,21 @@ class AudioManager: NSObject, AVAudioPlayerDelegate {
      Updates the volume across all audio players. Sets it to 0 (off) or maxVolume (on) based on if the app is muted or not.
      */
     func updateVolumes() {
-        for (index, item) in audioItems {
+        for (_, item) in audioItems {
+            let volumeToSet: Float
+            let fadeDuration: TimeInterval
+            
             switch item.category {
             case .music, .musicNoLoop:
-                let volumeToSet: Float = UserDefaults.standard.bool(forKey: K.UserDefaults.muteMusic) ? 0 : item.maxVolume
-                
-                audioItems[index]?.currentVolume = volumeToSet
-                item.player.setVolume(volumeToSet, fadeDuration: 0.25)
+                volumeToSet = UserDefaults.standard.bool(forKey: K.UserDefaults.muteMusic) ? 0 : item.maxVolume
+                fadeDuration = 0.25
             case .soundFX, .soundFXLoop:
-                let volumeToSet: Float = UserDefaults.standard.bool(forKey: K.UserDefaults.muteSoundFX) ? 0 : item.maxVolume
-                
-                audioItems[index]?.currentVolume = volumeToSet
-                item.player.volume = volumeToSet
+                volumeToSet = UserDefaults.standard.bool(forKey: K.UserDefaults.muteSoundFX) ? 0 : item.maxVolume
+                fadeDuration = 0
             }
+            
+            item.currentVolume = volumeToSet
+            item.player.setVolume(volumeToSet, fadeDuration: fadeDuration)
         }
     }
     
@@ -490,19 +456,6 @@ class AudioManager: NSObject, AVAudioPlayerDelegate {
         guard let item = audioItems[audioKey] else { return false }
         
         return item.player.isPlaying
-    }
-    
-    
-}
-
-
-// MARK: - AVAudioPlayerDelegate
-
-extension AudioManager {
-    func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
-//        if let item = audioItems.first(where: { $0.value.player == player })?.value {
-//            //do something, if needed.
-//        }
     }
     
     

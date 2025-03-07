@@ -18,6 +18,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         FirebaseApp.configure()
         
+        //Buffers all the AudioItems so there's no (noticeable) lag upon initialization 3/7/25.
+        _ = AudioManager.shared
+        
+        
         
         // FIXME: - GoogleMobileAds is responsible for 20 MEMORY LEAKS in Instruments!!
         GADMobileAds.sharedInstance().requestConfiguration.testDeviceIdentifiers = [
@@ -29,7 +33,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         ]
         
         GADMobileAds.sharedInstance().start(completionHandler: nil)
-
+        
+        
         
         return true
     }
