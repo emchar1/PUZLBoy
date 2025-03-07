@@ -131,16 +131,16 @@ class FinalBattle2Controls {
         self.isPoisoned = isPoisoned
         
         //Now check for movement/attack!
-        if inBounds(.up) && !canAttackVillain(.up) && !canAttackDuplicate(.up) {
+        if inBounds(.up) && !canAttackVillain(.up) && !canAttackDuplicate(.up) && !checkForTimedBomb(.up) {
             movePlayerHelper(.up, completion: completion)
         }
-        else if inBounds(.down) && !canAttackVillain(.down) && !canAttackDuplicate(.down) {
+        else if inBounds(.down) && !canAttackVillain(.down) && !canAttackDuplicate(.down) && !checkForTimedBomb(.down) {
             movePlayerHelper(.down, completion: completion)
         }
-        else if inBounds(.left) && !canAttackVillain(.left) && !canAttackDuplicate(.left) {
+        else if inBounds(.left) && !canAttackVillain(.left) && !canAttackDuplicate(.left) && !checkForTimedBomb(.left) {
             movePlayerHelper(.left, completion: completion)
         }
-        else if inBounds(.right) && !canAttackVillain(.right) && !canAttackDuplicate(.right) {
+        else if inBounds(.right) && !canAttackVillain(.right) && !canAttackDuplicate(.right) && !checkForTimedBomb(.right) {
             movePlayerHelper(.right, completion: completion)
         }
         else {
@@ -361,6 +361,20 @@ class FinalBattle2Controls {
     }
     
     /**
+     Checks for the existence of a timed bomb using Fireball.checkForTimedBomb(), and if so returns true.
+     */
+    private func checkForTimedBomb(_ direction: Controls) -> Bool {
+        let possibleBombPanel: K.GameboardPosition = getNextPanel(direction: direction)
+        let timedBombFound = Fireball.checkForTimedBomb(at: possibleBombPanel, on: gameboard)
+        
+        if timedBombFound {
+            ButtonTap.shared.tap(type: .buttontap6)
+        }
+        
+        return timedBombFound
+    }
+    
+    /**
      Returns true if playerPosition is on a safe panel, start panel, or end panel.
      */
     private func playerOnSafePanel() -> Bool {
@@ -375,7 +389,7 @@ class FinalBattle2Controls {
      */
     private func movePlayerHelper(_ direction: Controls, completion: (() -> Void)?) {
         func getMoveSoundFX() {
-            var counter = 0
+            var count = 0
             
             repeat {
                 if safePanelFound {
@@ -390,9 +404,9 @@ class FinalBattle2Controls {
                     }
                 }
                 
-                counter += 1
+                count += 1
                 
-                if counter > 20 { break }
+                if count > 20 { break }
             } while AudioManager.shared.isPlaying(audioKey: runSound)
         }
         

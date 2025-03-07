@@ -13,6 +13,7 @@ class Fireball: SKNode {
     
     private var type: MagmoorAttacks.AttackPattern
     private var positions: FinalBattle2Controls.PlayerPositions
+    private var timedPosition: K.GameboardPosition?
     private var gameboard: GameboardSprite
     
     private var imageName: String
@@ -112,7 +113,7 @@ class Fireball: SKNode {
         default:
             fireballAngleOffset = fireballAngle.alpha
         }
-            
+        
         if shouldSetZRotation {
             fireballNode.zRotation = fireballAngleOffset
         }
@@ -201,6 +202,20 @@ class Fireball: SKNode {
     }
     
     
+    // MARK: - Static Functions
+    
+    /**
+     Checks to see if a timedBomb exists at the requested position, on the requested gameboard. If so, returns true.
+     */
+    static func checkForTimedBomb(at position: K.GameboardPosition, on gameboard: GameboardSprite) -> Bool {
+        let timedBombs = gameboard.sprite.children
+            .compactMap { $0 as? Fireball }
+            .filter { $0.type == .timed || $0.type == .timedLarge }
+        
+        return timedBombs.contains(where: { $0.timedPosition != nil && $0.timedPosition! == position })
+    }
+    
+    
     // MARK: - Helper Functions
     
     private func getFireballStats() -> (distanceVillainToPlayer: TimeInterval, fireballMovementDuration: TimeInterval) {
@@ -283,7 +298,8 @@ class Fireball: SKNode {
                 ]),
                 SKAction.run {
                     if canPlaySound {
-                        AudioManager.shared.playSound(for: isLarge ? "villainattackbombticklarge" : "villainattackbombtick", interruptPlayback: false)
+                        let bombTickSound: String = isLarge ? "villainattackbombticklarge" : "villainattackbombtick"
+                        AudioManager.shared.playSound(for: bombTickSound, interruptPlayback: false)
                     }
                 },
                 SKAction.group([
@@ -302,16 +318,25 @@ class Fireball: SKNode {
         var safePanelCheckCounter: Int = 0
         var randomPosition: K.GameboardPosition
         var largeBombRestriction: Bool
+        var count = 0
         
         repeat {
             randomPosition = (Int.random(in: 0..<gameboard.panelCount), Int.random(in: 0..<gameboard.panelCount))
             largeBombRestriction = isLarge && randomPosition.col * Int(facingDirection) > positions.villain.col * Int(facingDirection)
             safePanelCheckCounter += 1
+            
+            count += 1
+            
+            if count > 20 { break }
         }
         while randomPosition == positions.villain
+                || randomPosition == positions.player
+                || Fireball.checkForTimedBomb(at: randomPosition, on: gameboard)
                 || largeBombRestriction
                 || (safePanelCheckCounter < safePanelCheckLimit
                     && gameboard.getPanelSprite(at: randomPosition).terrain?.childNode(withName: FinalBattle2Spawner.safePanelName) == nil)
+        
+        timedPosition = randomPosition
         
         run(SKAction.sequence([
             SKAction.group([
