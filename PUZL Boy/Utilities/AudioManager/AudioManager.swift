@@ -24,14 +24,17 @@ class AudioManager {
     // MARK: - Initialization
     
     private init() {
-        do {
-            //ambient: Your app’s audio plays even while Music app music or other background audio is playing, and is silenced by the phone’s Silent switch and screen locking.
-            //soloAmbient: (the default) Your app stops Music app music or other background audio from playing, and is silenced by the phone’s Silent switch and screen locking.
-            try AVAudioSession.sharedInstance().setCategory(.ambient, mode: .default)
-            try AVAudioSession.sharedInstance().setActive(true)
-        }
-        catch {
-            print(error)
+        //Including within DispatchQueue here per ChatGPT 3/8/25
+        DispatchQueue.main.async {
+            do {
+                //ambient: Your app’s audio plays even while Music app music or other background audio is playing, and is silenced by the phone’s Silent switch and screen locking.
+                //soloAmbient: (the default) Your app stops Music app music or other background audio from playing, and is silenced by the phone’s Silent switch and screen locking.
+                try AVAudioSession.sharedInstance().setCategory(.ambient, mode: .default)
+                try AVAudioSession.sharedInstance().setActive(true)
+            }
+            catch {
+                print(error)
+            }
         }
         
         setupAudioItems()

@@ -19,7 +19,9 @@ class Haptics {
         return instance
     }()
     
-    var engine: CHHapticEngine?
+    private var engine: CHHapticEngine?
+    private var supportsHaptics: Bool = false
+    private var isVibrationEnabled: Bool { !UserDefaults.standard.bool(forKey: K.UserDefaults.disableVibration) }
     
     enum Pattern {
         case enemy, killEnemy, boulder, breakBoulder, marsh, sand, snow, lava, water, warp, thunder, enableVibration, statue, heartbeat, horrorimpact
@@ -32,9 +34,11 @@ class Haptics {
      Private init ensures only one instance of Haptics exists in the entire app.
      */
     private init() {
-        guard CHHapticEngine.capabilitiesForHardware().supportsHaptics else { return }
+        supportsHaptics = CHHapticEngine.capabilitiesForHardware().supportsHaptics
         
-        startHapticEngine(shouldInitialize: true)
+        if supportsHaptics {
+            startHapticEngine(shouldInitialize: true)
+        }
     }
     
     
@@ -61,16 +65,15 @@ class Haptics {
      - parameter style: style of feedback to produce
      */
     func addHapticFeedback(withStyle style: UIImpactFeedbackGenerator.FeedbackStyle) {
-        guard !UserDefaults.standard.bool(forKey: K.UserDefaults.disableVibration) else { return }
-            
+        guard isVibrationEnabled else { return }
+        
         let generator = UIImpactFeedbackGenerator(style: style)
         generator.impactOccurred()
     }
     
     func executeCustomPattern(pattern: Pattern) {
-        guard CHHapticEngine.capabilitiesForHardware().supportsHaptics else { return }
-        guard !UserDefaults.standard.bool(forKey: K.UserDefaults.disableVibration) else { return }
-
+        guard supportsHaptics && isVibrationEnabled else { return }
+        
         var events = [CHHapticEvent]()
         
         switch pattern {
@@ -193,16 +196,18 @@ class Haptics {
             }
         }
         
-        do {
-            let pattern = try CHHapticPattern(events: events, parameters: [])
-            let player = try engine?.makePlayer(with: pattern)
-
-            try player?.start(atTime: 0)
-        } catch {
-            print("There was an error executing a custom pattern: \(error.localizedDescription)")
-            
-            //BUGFIX# 230913E01 because stoppedHandler and resetHandler below weren't calling when the engine was stopped and needed to be reset!
-            startHapticEngine(shouldInitialize: false)
+        DispatchQueue.main.async {
+            do {
+                let pattern = try CHHapticPattern(events: events, parameters: [])
+                let player = try self.engine?.makePlayer(with: pattern)
+                
+                try player?.start(atTime: 0)
+            } catch {
+                print("There was an error executing a custom pattern: \(error.localizedDescription)")
+                
+                //BUGFIX# 230913E01 because stoppedHandler and resetHandler below weren't calling when the engine was stopped and needed to be reset!
+                self.startHapticEngine(shouldInitialize: false)
+            }
         }
         
 //        // The engine stopped; print out why
