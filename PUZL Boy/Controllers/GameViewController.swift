@@ -41,7 +41,7 @@ class GameViewController: UIViewController {
                 self.hasInternet = false
             }
         }
-        monitor.start(queue: DispatchQueue(label: "Monitor"))
+        monitor.start(queue: DispatchQueue(label: "com.5play-apps.PUZL-Boy.MonitorQueue"))
         
         
         

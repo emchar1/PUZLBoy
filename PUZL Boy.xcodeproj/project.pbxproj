@@ -63,6 +63,7 @@
 		EA3951ED2938165A00D0B14A /* Extension+UIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA3951EC2938165A00D0B14A /* Extension+UIImage.swift */; };
 		EA3951F12939DE5900D0B14A /* ScoringEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA3951F02939DE5900D0B14A /* ScoringEngine.swift */; };
 		EA3BE3F62D7AB76B008B02E8 /* ThemeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA3BE3F52D7AB767008B02E8 /* ThemeManager.swift */; };
+		EA3BE3FA2D7CBBA8008B02E8 /* AudioLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA3BE3F92D7CBBA2008B02E8 /* AudioLibrary.swift */; };
 		EA3D6FAC2D5D43460070A701 /* DuplicateItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA3D6FAB2D5D43460070A701 /* DuplicateItem.swift */; };
 		EA3D6FB02D5E8C5D0070A701 /* magicdisappear2b.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA3D6FAF2D5E8C5D0070A701 /* magicdisappear2b.mp3 */; };
 		EA3D6FB22D62FAF20070A701 /* swordthud.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA3D6FB12D62FAF20070A701 /* swordthud.mp3 */; };
@@ -474,6 +475,7 @@
 		EA3951EC2938165A00D0B14A /* Extension+UIImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+UIImage.swift"; sourceTree = "<group>"; };
 		EA3951F02939DE5900D0B14A /* ScoringEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoringEngine.swift; sourceTree = "<group>"; };
 		EA3BE3F52D7AB767008B02E8 /* ThemeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeManager.swift; sourceTree = "<group>"; };
+		EA3BE3F92D7CBBA2008B02E8 /* AudioLibrary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioLibrary.swift; sourceTree = "<group>"; };
 		EA3D6FAB2D5D43460070A701 /* DuplicateItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DuplicateItem.swift; sourceTree = "<group>"; };
 		EA3D6FAF2D5E8C5D0070A701 /* magicdisappear2b.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = magicdisappear2b.mp3; sourceTree = "<group>"; };
 		EA3D6FB12D62FAF20070A701 /* swordthud.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = swordthud.mp3; sourceTree = "<group>"; };
@@ -847,6 +849,7 @@
 			isa = PBXGroup;
 			children = (
 				EA102E4F2D79076C00CF45F8 /* AudioItem.swift */,
+				EA3BE3F92D7CBBA2008B02E8 /* AudioLibrary.swift */,
 				EA956C6929257B9C00879AD0 /* AudioManager.swift */,
 				EA3BE3F52D7AB767008B02E8 /* ThemeManager.swift */,
 			);
@@ -1932,6 +1935,7 @@
 				EA65182F28E4199E00E535BF /* GameViewController.swift in Sources */,
 				EA95D1C929541F360061059C /* AchievementStoneCutter.swift in Sources */,
 				EA826C9729938CBB00F19F81 /* StoreReviewManager.swift in Sources */,
+				EA3BE3FA2D7CBBA8008B02E8 /* AudioLibrary.swift in Sources */,
 				EA57DEAD2B9D394C00CE3E2A /* Extension+String.swift in Sources */,
 				EA95D20E2962C8AD0061059C /* AchievementSpeedDemon.swift in Sources */,
 				EA01BB612A10746800EAB70B /* ButtonTap.swift in Sources */,
