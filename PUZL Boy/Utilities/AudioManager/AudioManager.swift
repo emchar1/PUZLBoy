@@ -20,7 +20,7 @@ class AudioManager {
         return instance
     }()
     
-
+    
     // MARK: - Initialization
     
     private init() {
@@ -110,7 +110,7 @@ class AudioManager {
                 item.player.play()
             }
         }
-                
+        
         return true
     }
     
@@ -227,7 +227,7 @@ class AudioManager {
         }
         
         let volumeToSet: Float = UserDefaults.standard.bool(forKey: (item.category == .music || item.category == .musicNoLoop) ? K.UserDefaults.muteMusic : K.UserDefaults.muteSoundFX) ? 0 : volume
-
+        
         item.currentVolume = volumeToSet
         item.player.setVolume(volumeToSet, fadeDuration: fadeDuration)
     }

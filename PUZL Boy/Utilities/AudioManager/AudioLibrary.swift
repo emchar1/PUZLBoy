@@ -9,6 +9,7 @@ struct AudioLibrary {
     
     ///One static, unmutable property containing all sound effects and music.
     private(set) static var audioItems: [(audioKey: String, category: AudioItem.AudioCategory, maxVolume: Float)] = [
+        
         //Sound FX
         ("arrowblink", .soundFX, 1),
         ("bouldersmash", .soundFX, 1),
@@ -18,11 +19,11 @@ struct AudioLibrary {
         ("boydead", .soundFX, 1),
         ("boygrunt1", .soundFX, 1),
         ("boygrunt2", .soundFX, 1),
+        ("boyimpact", .soundFX, 1),
         ("boypain1", .soundFX, 1),
         ("boypain2", .soundFX, 1),
         ("boypain3", .soundFX, 1),
         ("boypain4", .soundFX, 1),
-        ("boyimpact", .soundFX, 1),
         ("boywin", .soundFX, 1),
         ("buttontap1", .soundFX, 1),
         ("buttontap2", .soundFX, 1),
@@ -93,8 +94,8 @@ struct AudioLibrary {
         ("movetile2", .soundFX, 1),
         ("movetile3", .soundFX, 1),
         ("movewalk", .soundFX, 1), //not purchased $3
-        ("partypill", .soundFX, 1),
         ("partyfast", .soundFX, 1),
+        ("partypill", .soundFX, 1),
         ("partyslow", .soundFX, 1),
         ("pickupheart", .soundFX, 1),
         ("pickupitem", .soundFX, 1),
@@ -112,11 +113,8 @@ struct AudioLibrary {
         ("swordslash", .soundFX, 1),
         ("swordthrow", .soundFX, 1), //NEEDS PURCHASE $1
         ("swordthud", .soundFX, 1), //NEEDS PURCHASE $1
-        ("touchstatue", .soundFX, 1),
         ("thunderrumble", .soundFX, 1),
-        
-        
-        //FINAL BATTLE SCENE 2 SFX
+        ("touchstatue", .soundFX, 1),
         ("villainattack1", .soundFX, 1), //NEEDS PURCHASE $2
         ("villainattack2", .soundFX, 1), //NEEDS PURCHASE $2
         ("villainattack3", .soundFX, 1), //NEEDS PURCHASE $2
@@ -128,20 +126,21 @@ struct AudioLibrary {
         ("villainpain1", .soundFX, 1), //NEEDS PURCHASE $1
         ("villainpain2", .soundFX, 1), //NEEDS PURCHASE $1
         ("villainpain3", .soundFX, 1), //NEEDS PURCHASE $1
-        ("gameendlose", .soundFX, 1),
-        ("gameendwin1", .soundFX, 1),
-        ("gameendwin2", .soundFXLoop, 1),
-        
-        
         ("warp", .soundFX, 1),
         ("waterappear1", .soundFX, 1), //not purchased $3
         ("waterappear2", .soundFX, 1),
         ("waterappear3", .soundFX, 1),
         ("waterdrown", .soundFX, 1),
         ("winlevel", .soundFX, 1),
-        ("winlevelageofruin", .soundFX, 1),
         ("winlevel3stars", .soundFX, 1),
+        ("winlevelageofruin", .soundFX, 1),
         ("ydooropen", .soundFX, 1), //NEEDS PURCHASE $1
+        
+        
+        //TEST: For fun only
+        ("gameendlose", .soundFX, 1),
+        ("gameendwin1", .soundFX, 1),
+        ("gameendwin2", .soundFXLoop, 1), //TEST FOR FUN ONLY
         ("zdooropen", .soundFX, 1), //TEST FOR FUN ONLY
         
         

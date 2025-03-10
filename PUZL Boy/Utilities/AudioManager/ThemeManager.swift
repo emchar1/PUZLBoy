@@ -21,30 +21,10 @@ enum ThemeManager {
     }
     
     private static let audioMap: [Theme: [Sound: String]] = [
-        .ageOfBalance: [
-            .overworld:     "overworld",
-            .win:           "winlevel",
-            .lose:          "gameover",
-            .title:         "titletheme"
-        ],
-        .ageOfRuin: [
-            .overworld:     "overworldageofruin",
-            .win:           "winlevelageofruin",
-            .lose:          "gameoverageofruin",
-            .title:         "titlethemeageofruin"
-        ],
-        .party: [
-            .overworld:     "overworldparty",
-            .win:           "winlevel",
-            .lose:          "gameover",
-            .title:         "titletheme"
-        ],
-        .tiki: [
-            .overworld:     "overworldmarimba",
-            .win:           "winlevel",
-            .lose:          "gameover",
-            .title:         "titletheme"
-        ]
+        .ageOfBalance: [.overworld: "overworld", .win: "winlevel", .lose: "gameover", .title: "titletheme"],
+        .ageOfRuin: [.overworld: "overworldageofruin", .win: "winlevelageofruin", .lose: "gameoverageofruin", .title: "titlethemeageofruin"],
+        .party: [.overworld: "overworldparty", .win: "winlevel", .lose: "gameover", .title: "titletheme"],
+        .tiki: [.overworld: "overworldmarimba", .win: "winlevel", .lose: "gameover", .title: "titletheme"]
     ]
     
     

@@ -24,7 +24,7 @@ class AudioItem {
     enum AudioType: String {
         case mp3 = "mp3", wav, m4a
     }
-
+    
     enum AudioCategory {
         case music, musicNoLoop, soundFX, soundFXLoop
     }

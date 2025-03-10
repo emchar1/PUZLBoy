@@ -1300,8 +1300,8 @@
 				EA7605692B5B1CDC001BC268 /* waterappear3.mp3 */,
 				EA473BDC2C13D607003CEC1E /* waterdrown.mp3 */,
 				EAAEA3CB2931F14D00221963 /* winlevel.mp3 */,
-				EA8C605F2C068E0700DED3C7 /* winlevelageofruin.mp3 */,
 				EAE43D902C48A74C00E6DB3C /* winlevel3stars.mp3 */,
+				EA8C605F2C068E0700DED3C7 /* winlevelageofruin.mp3 */,
 				EA41FBFA2D02C09400796368 /* ydooropen.mp3 */,
 				EA41FBF22D005D3F00796368 /* zdooropen.mp3 */,
 			);
