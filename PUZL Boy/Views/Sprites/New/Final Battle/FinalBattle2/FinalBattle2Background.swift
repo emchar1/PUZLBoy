@@ -12,11 +12,12 @@ class FinalBattle2Background {
     // MARK: - Properties
     
     static var defaultBloodOverlayAlpha: CGFloat = 0.25
+    private var shieldColor: UIColor = .red
     
     private var backgroundSprite: SKSpriteNode
     private var bloodOverlay: SKSpriteNode
     private var flashGameboard: SKSpriteNode
-
+    
     private var overworldMusic: String
     private var previousOverworldMusic: String?
     
@@ -52,6 +53,13 @@ class FinalBattle2Background {
      **/
     func adjustOverworldMusic(volume: Float = 1, fadeDuration: TimeInterval = 0) {
         AudioManager.shared.adjustVolume(to: volume, for: overworldMusic, fadeDuration: fadeDuration)
+    }
+    
+    /**
+     Updates the shieldColor, i.e. if Magmoor's shield is damaged.
+     */
+    func updateShieldColor(_ newColor: UIColor) {
+        self.shieldColor = newColor
     }
     
     /**
@@ -112,7 +120,7 @@ class FinalBattle2Background {
                 self.adjustOverworldMusic(volume: 0.1, fadeDuration: fadeDuration)
             }
         case .wave:
-            let magmoorColors: (first: UIColor, second: UIColor) = (UIColor.red, UIColor.black)
+            let magmoorColors: (first: UIColor, second: UIColor) = (shieldColor, UIColor.black)
             let pulseDuration: TimeInterval = 2
             let flashGameboardAlpha: CGFloat = 0.8
             
@@ -137,7 +145,7 @@ class FinalBattle2Background {
                 ]))
             }
         case .convulse:
-            let magmoorColors: (first: UIColor, second: UIColor) = (UIColor.red, UIColor.black)
+            let magmoorColors: (first: UIColor, second: UIColor) = (shieldColor, UIColor.black)
             let pulseDuration: TimeInterval = 0.04
             let flashGameboardAlpha: CGFloat = 0.8
             

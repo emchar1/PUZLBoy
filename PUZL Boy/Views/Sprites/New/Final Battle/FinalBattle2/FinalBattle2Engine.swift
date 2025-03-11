@@ -65,7 +65,7 @@ class FinalBattle2Engine {
         backgroundSprite = SKSpriteNode(color: .black, size: size)
         backgroundSprite.anchorPoint = .zero
         
-        bloodOverlay = SKSpriteNode(color: .systemPink, size: size)
+        bloodOverlay = SKSpriteNode(color: .red, size: size)
         bloodOverlay.anchorPoint = .zero
         bloodOverlay.alpha = FinalBattle2Background.defaultBloodOverlayAlpha
         bloodOverlay.zPosition = gameboard.sprite.zPosition + K.ZPosition.bloodOverlay
@@ -510,6 +510,7 @@ extension FinalBattle2Engine: FinalBattle2ControlsDelegate {
             controls.updateVillainMovementAndAttacks(speed: panelSpawner[0].currentSpeed)
         }
         
+        backgroundPattern.updateShieldColor(controls.magmoorShield.shieldColor)
         backgroundPattern.animate(pattern: .wave, fadeDuration: 2, delay: nil, shouldFlashGameboard: true)
     }
     
@@ -546,6 +547,9 @@ extension FinalBattle2Engine: FinalBattle2ControlsDelegate {
     }
     
     func handleShield(willDamage: Bool, didDamage: Bool, willBreak: Bool, didBreak: Bool, fadeDuration: TimeInterval?, chosenSword: ChosenSword, villainPosition: K.GameboardPosition?) {
+        
+        backgroundPattern.updateShieldColor(controls.magmoorShield.shieldColor)
+        
         if willDamage {
             backgroundPattern.animate(pattern: .convulse, fadeDuration: 0.04, delay: nil)
         }

@@ -89,7 +89,7 @@ class AudioManager {
             item.player.numberOfLoops = shouldLoop ? -1 : 0
         }
         else {
-            //If shouldLoop is nil, rever to item's category definition
+            //If shouldLoop is nil, revert to item's category definition
             item.player.numberOfLoops = AudioItem.getNumberOfLoops(audioItemCategory: item.category)
         }
         
