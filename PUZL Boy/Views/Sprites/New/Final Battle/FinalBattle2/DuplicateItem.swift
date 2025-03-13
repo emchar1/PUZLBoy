@@ -12,18 +12,13 @@ class DuplicateItem {
     // MARK: - Properties
     
     private let itemsCount: Int = 200
-    private let sword2xTimerIncrement: TimeInterval = 60
-    private let sword3xTimerIncrement: TimeInterval = 50
-    private let maxSwordTimerIncrement: TimeInterval = 150
-    private(set) var spawnTimerDuration: TimeInterval
+    private var progressHUD: ProgressHUDManager
+    
+    private var spawnTimerDuration: TimeInterval
+    private var timer: Timer
     
     private(set) var spawnedItems: [LevelType]
     private(set) var collectedItems: [LevelType]
-    private var progressBar: CircularProgressBar
-    
-    private var timer: Timer
-    private var timerSword2x: Timer?
-    private var timerSword3x: Timer?
     
     static let shared: DuplicateItem = {
         let instance = DuplicateItem()
@@ -36,23 +31,21 @@ class DuplicateItem {
     
     private init() {
         spawnTimerDuration = 5
+        progressHUD = ProgressHUDManager()
+        
         spawnedItems = []
         collectedItems = []
         
-        progressBar = CircularProgressBar(chosenSword: ChosenSword(type: FIRManager.chosenSword))
-        
         timer = Timer()
-        timerSword2x = nil
-        timerSword3x = nil
-        
-        timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(updateTimer(_:)), userInfo: nil, repeats: true)
+        timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(updateTimer), userInfo: nil, repeats: true)
     }
     
     deinit {
-        timerSword2x = nil
-        timerSword3x = nil
-        
         print("deinit DuplicateItem")
+    }
+    
+    @objc private func updateTimer() {
+        progressHUD.updateTimers()
     }
     
     
@@ -144,31 +137,19 @@ class DuplicateItem {
             feedbackStyle = .rigid
             gameboard.addParticles(type: .itemPickup, at: position)
             
-            let remainingTime: TimeInterval = getRemainingTime(timer: timerSword2x)
-            
-            timerSword2x?.invalidate()
-            timerSword2x = Timer.scheduledTimer(timeInterval: min(remainingTime + sword2xTimerIncrement, maxSwordTimerIncrement),
-                                                target: self,
-                                                selector: #selector(setSword2xTimer(_:)),
-                                                userInfo: nil,
-                                                repeats: false)
-            
-            NotificationCenter.default.post(name: Notification.Name.didSword2xTimerInitialize, object: nil)
+            progressHUD.setTimer(for: .sword2x)
         case .sword3x:
             soundFX = "gemcollectparty3x"
             feedbackStyle = .rigid
             gameboard.addParticles(type: .itemPickup, at: position)
             
-            let remainingTime: TimeInterval = getRemainingTime(timer: timerSword3x)
+            progressHUD.setTimer(for: .sword3x)
+        case .wingedboot:
+            soundFX = "pickupitem"
+            feedbackStyle = .rigid
+            gameboard.addParticles(type: .itemPickup, at: position)
             
-            timerSword3x?.invalidate()
-            timerSword3x = Timer.scheduledTimer(timeInterval: min(remainingTime + sword3xTimerIncrement, maxSwordTimerIncrement),
-                                                target: self,
-                                                selector: #selector(setSword3xTimer(_:)),
-                                                userInfo: nil,
-                                                repeats: false)
-            
-            NotificationCenter.default.post(name: Notification.Name.didSword3xTimerInitialize, object: nil)
+            progressHUD.setTimer(for: .wingedboot)
         default:
             soundFX = "gemcollect"
             feedbackStyle = .light
@@ -182,12 +163,8 @@ class DuplicateItem {
         return item.levelType
     }
     
-    func displaySwordMultiplierHUD(on node: SKNode, at position: CGPoint) {
-        guard progressBar.parent == nil else { return }
-        
-        progressBar.updatePosition(position)
-        
-        node.addChild(progressBar)
+    func displayProgressBarHUD(on node: SKNode, at position: CGPoint) {
+        progressHUD.displayProgressBars(on: node, at: position)
     }
     
     
@@ -211,37 +188,6 @@ class DuplicateItem {
             SKAction.scale(to: 0, duration: 0.25),
             SKAction.removeFromParent()
         ]))
-    }
-    
-    private func getRemainingTime(timer: Timer?) -> TimeInterval {
-        return timer != nil ? abs(Date().timeIntervalSince(timer!.fireDate)) : 0
-    }
-    
-    @objc private func updateTimer(_ sender: Any) {
-        let remainingTime2x: TimeInterval = getRemainingTime(timer: timerSword2x)
-        let remainingTime3x: TimeInterval = getRemainingTime(timer: timerSword3x)
-        let remainingTime: TimeInterval = remainingTime3x > 0 ? remainingTime3x : remainingTime2x
-        
-        progressBar.setRemainingTime(remainingTime / maxSwordTimerIncrement)
-        
-        if remainingTime3x > 0 {
-            progressBar.setMultiplier(3)
-        }
-        else if remainingTime2x > 0 {
-            progressBar.setMultiplier(2)
-        }
-    }
-    
-    @objc private func setSword2xTimer(_ sender: Any) {
-        NotificationCenter.default.post(name: Notification.Name.didSword2xTimerExpire, object: nil)
-        timerSword2x?.invalidate()
-        timerSword2x = nil
-    }
-    
-    @objc private func setSword3xTimer(_ sender: Any) {
-        NotificationCenter.default.post(name: Notification.Name.didSword3xTimerExpire, object: nil)
-        timerSword3x?.invalidate()
-        timerSword3x = nil
     }
     
     

@@ -591,7 +591,7 @@ extension FinalBattle2Engine: FinalBattle2ControlsDelegate {
             
             let hudOrigin = CGPoint(x: gameboard.sprite.position.x, y: K.ScreenDimensions.bottomMargin)
             
-            DuplicateItem.shared.displaySwordMultiplierHUD(on: superScene, at: hudOrigin)
+            DuplicateItem.shared.displayProgressBarHUD(on: superScene, at: hudOrigin)
         default:
             break
         }

@@ -414,6 +414,7 @@
 		EAFE35962CE48BB600289ADF /* magicheartbeatloop2.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAFE35952CE48BB600289ADF /* magicheartbeatloop2.mp3 */; };
 		EAFE35982CE89A4600289ADF /* MagmoorBamfParticles.sks in Resources */ = {isa = PBXBuildFile; fileRef = EAFE35972CE89A4600289ADF /* MagmoorBamfParticles.sks */; };
 		EAFE359A2CEBA9D700289ADF /* ComingSoonScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAFE35992CEBA9D700289ADF /* ComingSoonScene.swift */; };
+		EAFEA1DC2D826C7A005F1B2F /* ProgressHUDManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAFEA1DB2D826C71005F1B2F /* ProgressHUDManager.swift */; };
 		EAFEEEFD2D73AFD4001852B0 /* villainattackbombtick.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAFEEEFB2D73AFD4001852B0 /* villainattackbombtick.mp3 */; };
 		EAFEEEFE2D73AFD4001852B0 /* villainattackbombticklarge.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAFEEEFC2D73AFD4001852B0 /* villainattackbombticklarge.mp3 */; };
 /* End PBXBuildFile section */
@@ -820,6 +821,7 @@
 		EAFE35952CE48BB600289ADF /* magicheartbeatloop2.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = magicheartbeatloop2.mp3; sourceTree = "<group>"; };
 		EAFE35972CE89A4600289ADF /* MagmoorBamfParticles.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = MagmoorBamfParticles.sks; sourceTree = "<group>"; };
 		EAFE35992CEBA9D700289ADF /* ComingSoonScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComingSoonScene.swift; sourceTree = "<group>"; };
+		EAFEA1DB2D826C71005F1B2F /* ProgressHUDManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressHUDManager.swift; sourceTree = "<group>"; };
 		EAFEEEFB2D73AFD4001852B0 /* villainattackbombtick.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = villainattackbombtick.mp3; sourceTree = "<group>"; };
 		EAFEEEFC2D73AFD4001852B0 /* villainattackbombticklarge.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = villainattackbombticklarge.mp3; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -906,6 +908,7 @@
 				EAB8B8BB2D4CA60700E5DE5F /* Fireball.swift */,
 				EAE751E02D2C712A004B138A /* MagmoorShield.swift */,
 				EA3D6FAB2D5D43460070A701 /* DuplicateItem.swift */,
+				EAFEA1DB2D826C71005F1B2F /* ProgressHUDManager.swift */,
 				EA3D6FB72D6FA3630070A701 /* CircularProgressBar.swift */,
 			);
 			path = FinalBattle2;
@@ -1918,6 +1921,7 @@
 				EACD61C52B96E8140017F040 /* CutsceneTransformation.swift in Sources */,
 				EADAC6062B835C2A005EA008 /* Cutscene.swift in Sources */,
 				EA84645F29D9230B0075F2A9 /* Extension+UIColor.swift in Sources */,
+				EAFEA1DC2D826C7A005F1B2F /* ProgressHUDManager.swift in Sources */,
 				EA826C7A298492BA00F19F81 /* DecisionButtonSprite.swift in Sources */,
 				EA36F9FB2C5ACCAB0031DB9A /* ChatItem.swift in Sources */,
 				EA95D1BD2952F14C0061059C /* AchievementBoulderBreaker.swift in Sources */,

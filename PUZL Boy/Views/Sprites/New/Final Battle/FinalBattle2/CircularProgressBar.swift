@@ -11,52 +11,74 @@ class CircularProgressBar: SKNode {
     
     // MARK: - Properties
     
-    private let radius: CGFloat = 100
-    private let lineWidth: CGFloat = 24
-    private var multiplier: Int = 1
-    private var remainingTime: TimeInterval = 0
+    typealias NotificationNames = (initialize: Notification.Name, expire: Notification.Name)
+    
+    static let radius: CGFloat = 100
+    static let lineWidth: CGFloat = 24
+    
+    private let timerIncrement: TimeInterval
+    private let maxTimerIncrement: TimeInterval
+    private var remainingTime: TimeInterval
+    private var timer: Timer?
+    
+    private(set) var hasBeenHidden: Bool = false
+    var hasTimeRemaining: Bool { remainingTime > 0 }
     
     private var circleNode: SKShapeNode
-    private var swordImage: SKSpriteNode
+    private var iconImage: SKSpriteNode
     private var multiplierLabel: SKLabelNode
+    private var notificationNames: NotificationNames
     
     
     // MARK: - Initialization
     
-    init(chosenSword: ChosenSword) {
+    init(image: String,
+         multiplier: Int,
+         multiplierColor: UIColor,
+         multiplierAlpha: CGFloat,
+         timerIncrement: TimeInterval,
+         maxTimerIncrement: TimeInterval,
+         notificationNames: (initialize: Notification.Name, expire: Notification.Name)) {
+        
+        self.timerIncrement = timerIncrement
+        self.maxTimerIncrement = maxTimerIncrement
+        remainingTime = 0
+        timer = nil
+        
         circleNode = SKShapeNode(circleOfRadius: 0)
-        circleNode.lineWidth = lineWidth
+        circleNode.lineWidth = CircularProgressBar.lineWidth
         circleNode.lineCap = .round
         circleNode.strokeColor = .green
         circleNode.alpha = 0
         circleNode.zPosition = 0
         
-        swordImage = SKSpriteNode(imageNamed: chosenSword.imageName)
-        swordImage.alpha = 0
-        swordImage.zPosition = 5
+        iconImage = SKSpriteNode(imageNamed: image)
+        iconImage.alpha = 0
+        iconImage.zPosition = 5
         
-        multiplierLabel = SKLabelNode(text: "1X")
+        multiplierLabel = SKLabelNode(text: "\(multiplier)X")
+        multiplierLabel.fontColor = multiplierColor
         multiplierLabel.fontName = UIFont.gameFont
         multiplierLabel.fontSize = UIFont.gameFontSizeExtraLarge
-        multiplierLabel.fontColor = UIFont.gameFontColor
         multiplierLabel.verticalAlignmentMode = .center
         multiplierLabel.setScale(0)
+        multiplierLabel.alpha = multiplierAlpha
         multiplierLabel.zPosition = 10
         multiplierLabel.addHeavyDropShadow()
         
+        self.notificationNames = notificationNames
+        
         super.init()
         
-        zPosition = K.ZPosition.itemsPoints
-        
-        let circlePath = SKShapeNode(circleOfRadius: radius)
-        circlePath.lineWidth = lineWidth
+        let circlePath = SKShapeNode(circleOfRadius: CircularProgressBar.radius)
+        circlePath.lineWidth = CircularProgressBar.lineWidth
         circlePath.alpha = 0.2
         circlePath.zPosition = -5
         
         circleNode.addChild(circlePath)
         
         addChild(circleNode)
-        addChild(swordImage)
+        addChild(iconImage)
         addChild(multiplierLabel)
     }
     
@@ -64,66 +86,79 @@ class CircularProgressBar: SKNode {
         fatalError("init(coder:) has not been implemented")
     }
     
+    deinit {
+        timer = nil
+        
+        print("deinit CircularProgressBar")
+    }
+    
     
     // MARK: - Functions
     
-    /**
-     Updates the progress bar's position to the new position.
-     - parameter position: new position of the progress bar.
-     - note: In order to align the bottom left edge of the bar, I had to offset by the radius and 1/2 the line width.
-     */
-    func updatePosition(_ position: CGPoint) {
-        self.position = position + radius + lineWidth / 2
+    ///Hides the progress bar's alpha component
+    func hideProgressBar() {
+        hasBeenHidden = true
+        run(SKAction.fadeOut(withDuration: 0.25))
+    }
+    
+    ///Shows the progress bar with an optional pulsing of the multiplier value.
+    func showProgressBar(shouldPulseMultiplier: Bool) {
+        hasBeenHidden = false
+        
+        if shouldPulseMultiplier {
+            pulseMultiplier(scaleTo: 1)
+        }
+        
+        run(SKAction.fadeIn(withDuration: 0))
     }
     
     /**
-     Sets the remaining time of the progress bar as a percentage. If percentage goes from 0 to less than 0 or 1 to less than 1, also fade alpha and scale the multiplier in the process.
-     - parameter percentage: the new remainingTime to set.
+     Updates the remaining time of the progress bar as a percentage. If percentage goes from 0 to less than 0, or 1 to less than 1, then also fade alpha and scale the multiplier in the process.
      */
-    func setRemainingTime(_ percentage: TimeInterval) {
+    func updateRemainingTime() {
+        let percentage = getRemainingTime() / maxTimerIncrement
+        
         if self.remainingTime <= 0 && percentage > 0 {
             didAdjustAlpha(1)
-            didAdjustMultiplier(scaleTo: 1)
+            pulseMultiplier(scaleTo: 1)
         }
         else if self.remainingTime > 0 && percentage <= 0 {
             didAdjustAlpha(0.25)
-            didAdjustMultiplier(scaleTo: 0)
+            pulseMultiplier(scaleTo: 0)
         }
         
         circleNode.strokeColor = getColor(from: percentage)
         circleNode.path = UIBezierPath(arcCenter: .zero,
-                                       radius: radius,
+                                       radius: CircularProgressBar.radius,
                                        startAngle: .pi / 2,
                                        endAngle: .pi / 2 - 2 * .pi * percentage,
                                        clockwise: false).cgPath
         
+        //Set this last
         self.remainingTime = percentage
     }
     
-    /**
-     Sets the multiplier text value, either 2 or 3 only (for now).
-     - parameter multiplier: the new multiplier value, only 2 or 3 (for now).
-     - note: multiplier can only be 2 or 3 (for now).
-     */
-    func setMultiplier(_ multiplier: Int) {
-        guard multiplier >= 2 && multiplier <= 3, self.multiplier != multiplier else { return }
+    func getRemainingTime() -> TimeInterval {
+        return timer != nil ? abs(Date().timeIntervalSince(timer!.fireDate)) : 0
+    }
+    
+    func setTimer() {
+        let remainingTime = getRemainingTime()
         
-        var fontColor: UIColor? = nil
+        timer?.invalidate()
+        timer = Timer.scheduledTimer(timeInterval: min(remainingTime + timerIncrement, maxTimerIncrement),
+                                     target: self,
+                                     selector: #selector(setTimerHelper),
+                                     userInfo: nil,
+                                     repeats: true)
         
-        if multiplier == 2 {
-            multiplierLabel.text = "2X"
-            fontColor = .yellow
-        }
-        else if multiplier == 3 {
-            multiplierLabel.text = "3X"
-            fontColor = .cyan
-        }
-        
-        multiplierLabel.updateShadow()
-        
-        didAdjustMultiplier(scaleTo: 1, color: fontColor)
-        
-        self.multiplier = multiplier
+        NotificationCenter.default.post(name: notificationNames.initialize, object: nil)
+    }
+    
+    @objc private func setTimerHelper() {
+        NotificationCenter.default.post(name: notificationNames.expire, object: nil)
+        timer?.invalidate()
+        timer = nil
     }
     
     
@@ -137,25 +172,19 @@ class CircularProgressBar: SKNode {
         let fadeDuration: TimeInterval = 0.25
         
         circleNode.run(SKAction.fadeAlpha(to: alpha, duration: fadeDuration))
-        swordImage.run(SKAction.fadeAlpha(to: alpha, duration: fadeDuration))
+        iconImage.run(SKAction.fadeAlpha(to: alpha, duration: fadeDuration))
     }
     
     /**
-     Adjusts the multiplier label's text value and "pop's" a little animation in the process.
-     - parameters:
-        - scaleTo: the scale of the resultant multiplier value
-        - color: the ending color
+     Pulses the multiplier label's text value and "pop's" a little animation in the process.
+     - parameter scaleTo: the scale of the resultant multiplier value
      */
-    private func didAdjustMultiplier(scaleTo: CGFloat, color: UIColor? = nil) {
+    private func pulseMultiplier(scaleTo: CGFloat) {
         let scaleDuration: TimeInterval = 0.25
-        let colorAction: SKAction = color != nil ? SKAction.colorize(with: color!, colorBlendFactor: 1, duration: 2 * scaleDuration) : SKAction.wait(forDuration: 2 * scaleDuration)
         
-        multiplierLabel.run(SKAction.group([
-            colorAction,
-            SKAction.sequence([
-                SKAction.scale(to: 2, duration: scaleDuration),
-                SKAction.scale(to: scaleTo, duration: scaleDuration)
-            ])
+        multiplierLabel.run(SKAction.sequence([
+            SKAction.scale(to: 2, duration: scaleDuration),
+            SKAction.scale(to: scaleTo, duration: scaleDuration)
         ]))
     }
     
