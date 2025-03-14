@@ -33,7 +33,7 @@ extension UIColor {
     }
     
     static var rainbowColors: [UIColor] {
-        return [.red, .orange, .yellow, .green, .cyan, .blue, .purple, .systemPink]
+        return [.red, .orange, .yellow, .green, .cyan, .blue, .purple, .magenta]
     }
     
     private var components: (red: CGFloat, green: CGFloat, blue: CGFloat, alpha: CGFloat) {

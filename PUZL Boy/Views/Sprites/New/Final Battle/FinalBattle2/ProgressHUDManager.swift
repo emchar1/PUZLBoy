@@ -29,6 +29,10 @@ class ProgressHUDManager {
     }
     
     deinit {
+        for progressBar in progressBars {
+            progressBar?.stopTimer()
+        }
+        
         progressBars = [nil, nil, nil, nil, nil]
         progressBars = []
         

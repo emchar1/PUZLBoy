@@ -269,7 +269,9 @@ class ChosenSword: SKNode {
         if multiplier == ChosenSword.infiniteMultiplier {
             attackMultiplierNode.fontName = UIFont.infiniteFont
             attackMultiplierNode.fontSize = UIFont.infiniteSizeExtraLarge
-            attackMultiplierNode.fontColor = .magenta
+            attackMultiplierNode.fontColor = .white
+            
+            attackMultiplierNode.run(SKAction.repeatForever(SKAction.colorizeWithRainbowColorSequence(duration: 0.1)))
         }
         else {
             attackMultiplierNode.fontName = UIFont.gameFont

@@ -91,6 +91,7 @@ class CircularProgressBar: SKNode {
     }
     
     deinit {
+        timer?.invalidate()
         timer = nil
         
         print("deinit CircularProgressBar")
@@ -168,6 +169,10 @@ class CircularProgressBar: SKNode {
         
         timer?.invalidate()
         timer = nil
+    }
+    
+    func stopTimer() {
+        timer?.invalidate()
     }
     
     
