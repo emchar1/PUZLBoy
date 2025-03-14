@@ -50,17 +50,25 @@ class CircularProgressBar: SKNode {
         iconImage.alpha = 0
         iconImage.zPosition = 5
         
-        let isInfMultiplier = multiplier == Int(ChosenSword.infiniteMultiplier)
+        let isInfiniteMultiplier = multiplier == Int(ChosenSword.infiniteMultiplier)
         
-        multiplierLabel = SKLabelNode(text: isInfMultiplier ? "∞" : "\(multiplier)X")
+        multiplierLabel = SKLabelNode(text: isInfiniteMultiplier ? "∞" : "\(multiplier)X")
         multiplierLabel.fontColor = multiplierColor
-        multiplierLabel.fontName = isInfMultiplier ? UIFont.infiniteFont : UIFont.gameFont
-        multiplierLabel.fontSize = isInfMultiplier ? UIFont.infiniteSizeExtraLarge : UIFont.gameFontSizeExtraLarge
+        multiplierLabel.fontName = isInfiniteMultiplier ? UIFont.infiniteFont : UIFont.gameFont
+        multiplierLabel.fontSize = isInfiniteMultiplier ? UIFont.infiniteSizeExtraLarge : UIFont.gameFontSizeExtraLarge
         multiplierLabel.verticalAlignmentMode = .center
         multiplierLabel.setScale(0)
         multiplierLabel.alpha = multiplierAlpha
         multiplierLabel.zPosition = 10
         multiplierLabel.addHeavyDropShadow()
+        
+        if isInfiniteMultiplier {
+            multiplierLabel.run(SKAction.repeatForever(SKAction.colorizeWithRainbowColorSequence(blendFactor: 0.5, duration: 0.5)),
+                                withKey: "colorizeMultiplier")
+        }
+        else {
+            multiplierLabel.removeAction(forKey: "colorizeMultiplier")
+        }
         
         self.notificationNames = notificationNames
         

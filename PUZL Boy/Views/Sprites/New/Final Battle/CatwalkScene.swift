@@ -49,12 +49,11 @@ class CatwalkScene: SKScene {
     private var catwalkAngle: CGFloat = 0
     private var currentRainbowIndex = 0 {
         didSet {
-            if currentRainbowIndex >= rainbowColors.count {
+            if currentRainbowIndex >= UIColor.rainbowColors.count {
                 currentRainbowIndex = 0
             }
         }
     }
-    private var rainbowColors: [UIColor] = [.red, .orange, .yellow, .green, .blue, .purple, .systemPink]
     private var isMoving: Bool = false
     private var shouldDisableInput: Bool = true
     private var isRedShift: Bool = false
@@ -1257,7 +1256,7 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
             gatePanel.animateAppearGlow(fadeDuration: fadeDuration * 1/4, waitDuration: fadeDuration * 1/2)
             
             gatePanel.run(SKAction.sequence([
-                SKAction.colorize(with: rainbowColors[currentRainbowIndex], colorBlendFactor: 1, duration: fadeDuration * 1/4),
+                SKAction.colorize(with: UIColor.rainbowColors[currentRainbowIndex], colorBlendFactor: 1, duration: fadeDuration * 1/4),
                 SKAction.wait(forDuration: fadeDuration * 1/4),
                 SKAction.colorize(withColorBlendFactor: 0, duration: fadeDuration * 1/2)
             ]))
@@ -1374,15 +1373,7 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
     private func animateRainbowCycle(cycleSpeed: TimeInterval, delay: TimeInterval?) -> SKAction {
         return SKAction.sequence([
             SKAction.wait(forDuration: delay ?? 0),
-            SKAction.repeatForever(SKAction.sequence([
-                SKAction.colorize(with: rainbowColors[0], colorBlendFactor: 1, duration: cycleSpeed),
-                SKAction.colorize(with: rainbowColors[1], colorBlendFactor: 1, duration: cycleSpeed),
-                SKAction.colorize(with: rainbowColors[2], colorBlendFactor: 1, duration: cycleSpeed),
-                SKAction.colorize(with: rainbowColors[3], colorBlendFactor: 1, duration: cycleSpeed),
-                SKAction.colorize(with: rainbowColors[4], colorBlendFactor: 1, duration: cycleSpeed),
-                SKAction.colorize(with: rainbowColors[5], colorBlendFactor: 1, duration: cycleSpeed),
-                SKAction.colorize(with: rainbowColors[6], colorBlendFactor: 1, duration: cycleSpeed)
-            ]))
+            SKAction.repeatForever(SKAction.colorizeWithRainbowColorSequence(duration: cycleSpeed))
         ])
     }
     

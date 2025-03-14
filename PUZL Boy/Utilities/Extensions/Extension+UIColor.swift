@@ -32,6 +32,10 @@ extension UIColor {
                 UIColor(red: 187/255, green: 165/255, blue: 61/255, alpha: 1)) //a golden color
     }
     
+    static var rainbowColors: [UIColor] {
+        return [.red, .orange, .yellow, .green, .cyan, .blue, .purple, .systemPink]
+    }
+    
     private var components: (red: CGFloat, green: CGFloat, blue: CGFloat, alpha: CGFloat) {
         var red: CGFloat = 0
         var green: CGFloat = 0

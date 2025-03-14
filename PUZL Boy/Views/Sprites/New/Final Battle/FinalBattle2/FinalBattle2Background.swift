@@ -222,7 +222,7 @@ class FinalBattle2Background {
                 SKAction.colorize(with: .red, colorBlendFactor: 1, duration: 0),
                 SKAction.colorize(with: .clear, colorBlendFactor: 1, duration: shiftDuration / 2),
                 SKAction.repeatForever(SKAction.sequence(
-                    cycleColors(colors: [.orange, .yellow, .green, .cyan, .blue, .purple, .systemPink, .red],
+                    cycleColors(colors: UIColor.rainbowColors,
                                 blendFactor: 1,
                                 duration: shiftDuration / 2,
                                 shouldBlink: false)

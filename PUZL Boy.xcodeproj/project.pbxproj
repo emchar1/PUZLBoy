@@ -415,6 +415,7 @@
 		EAFE35982CE89A4600289ADF /* MagmoorBamfParticles.sks in Resources */ = {isa = PBXBuildFile; fileRef = EAFE35972CE89A4600289ADF /* MagmoorBamfParticles.sks */; };
 		EAFE359A2CEBA9D700289ADF /* ComingSoonScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAFE35992CEBA9D700289ADF /* ComingSoonScene.swift */; };
 		EAFEA1DC2D826C7A005F1B2F /* ProgressHUDManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAFEA1DB2D826C71005F1B2F /* ProgressHUDManager.swift */; };
+		EAFEA1DE2D83DE9D005F1B2F /* Extension+SKAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAFEA1DD2D83DE97005F1B2F /* Extension+SKAction.swift */; };
 		EAFEEEFD2D73AFD4001852B0 /* villainattackbombtick.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAFEEEFB2D73AFD4001852B0 /* villainattackbombtick.mp3 */; };
 		EAFEEEFE2D73AFD4001852B0 /* villainattackbombticklarge.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAFEEEFC2D73AFD4001852B0 /* villainattackbombticklarge.mp3 */; };
 /* End PBXBuildFile section */
@@ -822,6 +823,7 @@
 		EAFE35972CE89A4600289ADF /* MagmoorBamfParticles.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = MagmoorBamfParticles.sks; sourceTree = "<group>"; };
 		EAFE35992CEBA9D700289ADF /* ComingSoonScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComingSoonScene.swift; sourceTree = "<group>"; };
 		EAFEA1DB2D826C71005F1B2F /* ProgressHUDManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressHUDManager.swift; sourceTree = "<group>"; };
+		EAFEA1DD2D83DE97005F1B2F /* Extension+SKAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension+SKAction.swift"; sourceTree = "<group>"; };
 		EAFEEEFB2D73AFD4001852B0 /* villainattackbombtick.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = villainattackbombtick.mp3; sourceTree = "<group>"; };
 		EAFEEEFC2D73AFD4001852B0 /* villainattackbombticklarge.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = villainattackbombticklarge.mp3; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -861,6 +863,7 @@
 		EA1D5A7129F219B300677B06 /* SpriteKit */ = {
 			isa = PBXGroup;
 			children = (
+				EAFEA1DD2D83DE97005F1B2F /* Extension+SKAction.swift */,
 				EAE215132ABB88DF0090735A /* Extension+SKTexture.swift */,
 				EA1D5A6F29F219AA00677B06 /* Extension+SKNode.swift */,
 				EAF07C1129EAB5D30034CD1A /* Extension+SKSpriteNode.swift */,
@@ -1867,6 +1870,7 @@
 				EAA921D82C011362009E99E7 /* AuthorizationRequestScene.swift in Sources */,
 				EA49B06B2A1953C500E6B96D /* HowToPlayTVCell.swift in Sources */,
 				EA9D4BB22D17498E00BB1F36 /* FinalBattle2Controls.swift in Sources */,
+				EAFEA1DE2D83DE9D005F1B2F /* Extension+SKAction.swift in Sources */,
 				EA95D1DF295674AE0061059C /* ChatEngine.swift in Sources */,
 				EA65184528E5750C00E535BF /* GameboardSprite.swift in Sources */,
 				EA78C36C29763B1C00292744 /* AchievementAdMobster.swift in Sources */,

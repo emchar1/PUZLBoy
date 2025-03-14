@@ -68,7 +68,7 @@ class ProgressHUDManager {
             case .swordInf:
                 image = ChosenSword(type: FIRManager.chosenSword).imageName
                 multiplier = Int(ChosenSword.infiniteMultiplier)
-                multiplierColor = .magenta
+                multiplierColor = .white
                 multiplierAlpha = 1
                 timerIncrement = 40
                 maxTimerIncrement = 120
