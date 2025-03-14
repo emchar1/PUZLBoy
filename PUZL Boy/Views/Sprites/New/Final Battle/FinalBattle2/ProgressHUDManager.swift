@@ -14,7 +14,7 @@ class ProgressHUDManager {
     private var progressBars: [CircularProgressBar?]
     
     enum ProgressBarType: Int {
-        case sword2x, sword3x, wingedboot
+        case sword2x, sword3x, swordInf, wingedboot, shield
     }
     
     enum ProgressBarAlignment {
@@ -25,11 +25,11 @@ class ProgressHUDManager {
     // MARK: - Initialization
     
     init() {
-        progressBars = [nil, nil, nil]
+        progressBars = [nil, nil, nil, nil, nil]
     }
     
     deinit {
-        progressBars = [nil, nil, nil]
+        progressBars = [nil, nil, nil, nil, nil]
         progressBars = []
         
         print("deinit ProgressHUDManager")
@@ -46,7 +46,7 @@ class ProgressHUDManager {
             let multiplierAlpha: CGFloat
             let timerIncrement: TimeInterval
             let maxTimerIncrement: TimeInterval
-            let notificationNames: CircularProgressBar.NotificationNames
+            let notificationNames: CircularProgressBar.NotificationNames?
             
             switch progressBarType {
             case .sword2x:
@@ -65,14 +65,30 @@ class ProgressHUDManager {
                 timerIncrement = 50
                 maxTimerIncrement = 150
                 notificationNames = (.didSword3xTimerInitialize, .didSword3xTimerExpire)
+            case .swordInf:
+                image = ChosenSword(type: FIRManager.chosenSword).imageName
+                multiplier = Int(ChosenSword.infiniteMultiplier)
+                multiplierColor = .magenta
+                multiplierAlpha = 1
+                timerIncrement = 40
+                maxTimerIncrement = 120
+                notificationNames = (.didSwordInfTimerInitialize, .didSwordInfTimerExpire)
             case .wingedboot:
                 image = "wingedboot"
                 multiplier = 1
                 multiplierColor = .white
                 multiplierAlpha = 0
-                timerIncrement = 60
-                maxTimerIncrement = 180
+                timerIncrement = 50
+                maxTimerIncrement = 150
                 notificationNames = (.didBootTimerInitialize, .didBootTimerExpire)
+            case .shield:
+                image = "shield"
+                multiplier = 1
+                multiplierColor = .white
+                multiplierAlpha = 0
+                timerIncrement = 50
+                maxTimerIncrement = 150
+                notificationNames = (.didShieldTimerInitialize, .didShieldTimerExpire)
             }
             
             progressBars[progressBarType.rawValue] = CircularProgressBar(image: image,
@@ -96,17 +112,24 @@ class ProgressHUDManager {
             progressBar.updateRemainingTime()
         }
         
-        guard let progressBar3x = progressBars[ProgressBarType.sword3x.rawValue],
-              let progressBar2x = progressBars[ProgressBarType.sword2x.rawValue] else { return }
+        let bar8 = progressBars[ProgressBarType.swordInf.rawValue]
+        let bar3 = progressBars[ProgressBarType.sword3x.rawValue]
+        let bar2 = progressBars[ProgressBarType.sword2x.rawValue]
         
-        // FIXME: - Test this logic!!! It looks confusing...
-        if progressBar3x.hasTimeRemaining && !progressBar2x.hasBeenHidden {
-            progressBar3x.showProgressBar(shouldPulseMultiplier: true)
-            progressBar2x.hideProgressBar()
+        if bar8?.isRunning ?? false {
+            bar8?.showProgressBar(shouldPulseMultiplier: !(bar8?.isShowing ?? true))
+            bar3?.hideProgressBar()
+            bar2?.hideProgressBar()
         }
-        else if (progressBar2x.hasTimeRemaining && progressBar2x.hasBeenHidden) && (!progressBar3x.hasTimeRemaining && !progressBar3x.hasBeenHidden) {
-            progressBar3x.hideProgressBar()
-            progressBar2x.showProgressBar(shouldPulseMultiplier: true)
+        else if bar3?.isRunning ?? false {
+            bar8?.hideProgressBar()
+            bar3?.showProgressBar(shouldPulseMultiplier: !(bar3?.isShowing ?? true))
+            bar2?.hideProgressBar()
+        }
+        else if bar2?.isRunning ?? false {
+            bar8?.hideProgressBar()
+            bar3?.hideProgressBar()
+            bar2?.showProgressBar(shouldPulseMultiplier: !(bar2?.isShowing ?? true))
         }
     }
     
@@ -117,12 +140,14 @@ class ProgressHUDManager {
             let offset: CGFloat = CircularProgressBar.radius + CircularProgressBar.lineWidth / 2
             
             switch index {
-            case ProgressBarType.sword2x.rawValue, ProgressBarType.sword3x.rawValue:
-                progressBar.position = CGPoint(x: position.x + offset, y: position.y + offset)
+            case ProgressBarType.sword2x.rawValue, ProgressBarType.sword3x.rawValue, ProgressBarType.swordInf.rawValue:
+                progressBar.position = position + offset
             case ProgressBarType.wingedboot.rawValue:
                 progressBar.position = CGPoint(x: K.ScreenDimensions.size.width / 2, y: position.y + offset)
-            default:
+            case ProgressBarType.shield.rawValue:
                 progressBar.position = CGPoint(x: K.ScreenDimensions.size.width - position.x - offset, y: position.y + offset)
+            default:
+                progressBar.position = position - offset
             }
             
             node.addChild(progressBar)

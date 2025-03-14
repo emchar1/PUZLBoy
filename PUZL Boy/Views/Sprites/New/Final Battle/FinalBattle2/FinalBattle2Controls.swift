@@ -55,6 +55,7 @@ class FinalBattle2Controls {
     
     private var isRunningTimerSword2x: Bool = false
     private var isRunningTimerSword3x: Bool = false
+    private var isRunningTimerSwordInf: Bool = false
     
     weak var delegateControls: FinalBattle2ControlsDelegate?
     
@@ -95,6 +96,12 @@ class FinalBattle2Controls {
         NotificationCenter.default.addObserver(self, selector: #selector(didSword2xTimerExpire(_:)), name: .didSword2xTimerExpire, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(didSword3xTimerInitialize(_:)), name: .didSword3xTimerInitialize, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(didSword3xTimerExpire(_:)), name: .didSword3xTimerExpire, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(didSwordInfTimerInitialize(_:)), name: .didSwordInfTimerInitialize, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(didSwordInfTimerExpire(_:)), name: .didSwordInfTimerExpire, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(didBootTimerInitialize(_:)), name: .didBootTimerInitialize, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(didBootTimerExpire(_:)), name: .didBootTimerExpire, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(didShieldTimerInitialize(_:)), name: .didShieldTimerInitialize, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(didShieldTimerExpire(_:)), name: .didShieldTimerExpire, object: nil)
 
         setTimerFirstTime()
     }
@@ -643,7 +650,7 @@ class FinalBattle2Controls {
     @objc private func didSword2xTimerInitialize(_ sender: Any) {
         isRunningTimerSword2x = true
         
-        guard !isRunningTimerSword3x else { return }
+        guard !isRunningTimerSword3x && !isRunningTimerSwordInf else { return }
         
         chosenSword.setAttackMultiplier(2)
     }
@@ -651,7 +658,7 @@ class FinalBattle2Controls {
     @objc private func didSword2xTimerExpire(_ sender: Any) {
         isRunningTimerSword2x = false
         
-        guard !isRunningTimerSword3x else { return }
+        guard !isRunningTimerSword3x && !isRunningTimerSwordInf else { return }
         
         chosenSword.setAttackMultiplier(1)
     }
@@ -659,13 +666,49 @@ class FinalBattle2Controls {
     @objc private func didSword3xTimerInitialize(_ sender: Any) {
         isRunningTimerSword3x = true
         
+        guard !isRunningTimerSwordInf else { return }
+        
         chosenSword.setAttackMultiplier(3)
     }
     
     @objc private func didSword3xTimerExpire(_ sender: Any) {
         isRunningTimerSword3x = false
         
+        guard !isRunningTimerSwordInf else { return }
+        
         chosenSword.setAttackMultiplier(isRunningTimerSword2x ? 2 : 1)
+    }
+    
+    @objc private func didSwordInfTimerInitialize(_ sender: Any) {
+        isRunningTimerSwordInf = true
+        
+        chosenSword.setAttackMultiplier(ChosenSword.infiniteMultiplier)
+    }
+    
+    @objc private func didSwordInfTimerExpire(_ sender: Any) {
+        isRunningTimerSwordInf = false
+        
+        chosenSword.setAttackMultiplier(isRunningTimerSword3x ? 3 : (isRunningTimerSword2x ? 2 : 1))
+    }
+    
+    @objc private func didBootTimerInitialize(_ sender: Any) {
+        print("Wingedboot Initialize")
+        //winged boot customization
+    }
+    
+    @objc private func didBootTimerExpire(_ sender: Any) {
+        print("Wingedboot Expire")
+        //winged boot customization
+    }
+    
+    @objc private func didShieldTimerInitialize(_ sender: Any) {
+        print("Shield Initialize")
+        //shield customization
+    }
+    
+    @objc private func didShieldTimerExpire(_ sender: Any) {
+        print("Shield Expire")
+        //shield customization
     }
     
     

@@ -586,7 +586,7 @@ extension FinalBattle2Engine: FinalBattle2ControlsDelegate {
         switch item {
         case .heart:
             health.updateHealth(type: .healthUp, dmgMultiplier: nil)
-        case .sword2x, .sword3x:
+        case .sword2x, .sword3x, .swordInf, .wingedboot, .shield:
             guard let superScene = superScene else { return }
             
             let hudOrigin = CGPoint(x: gameboard.sprite.position.x, y: K.ScreenDimensions.bottomMargin)

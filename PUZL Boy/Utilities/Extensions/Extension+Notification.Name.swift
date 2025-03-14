@@ -30,4 +30,10 @@ extension Notification.Name {
     static let didSword2xTimerExpire = Notification.Name(rawValue: "sword2xTimerExpired")
     static let didSword3xTimerInitialize = Notification.Name(rawValue: "sword3xTimerInitialized")
     static let didSword3xTimerExpire = Notification.Name(rawValue: "sword3xTimerExpired")
+    static let didSwordInfTimerInitialize = Notification.Name(rawValue: "swordInfTimerInitialized")
+    static let didSwordInfTimerExpire = Notification.Name(rawValue: "swordInfTimerExpired")
+    static let didBootTimerInitialize = Notification.Name(rawValue: "bootTimerInitialized")
+    static let didBootTimerExpire = Notification.Name(rawValue: "bootTimerExpired")
+    static let didShieldTimerInitialize = Notification.Name(rawValue: "shieldTimerInitialized")
+    static let didShieldTimerExpire = Notification.Name(rawValue: "shieldTimerExpired")
 }

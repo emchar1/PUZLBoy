@@ -26,6 +26,8 @@ extension UIFont {
     static let chatFontSizeSmall: CGFloat = 40
     
     //Misc
+    static let infiniteFont: String = "HelveticaNeue-CondensedBold"
+    static let infiniteSizeExtraLarge: CGFloat = 125 / UIDevice.spriteScale
     static let titleMenuFontSize: CGFloat = 72
     static let pauseTabsFontSize: CGFloat = 28 / UIDevice.spriteScale
 }

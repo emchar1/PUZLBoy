@@ -144,12 +144,24 @@ class DuplicateItem {
             gameboard.addParticles(type: .itemPickup, at: position)
             
             progressHUD.setTimer(for: .sword3x)
+        case .swordInf:
+            soundFX = "gemcollectpartylife"
+            feedbackStyle = .rigid
+            gameboard.addParticles(type: .itemPickup, at: position)
+            
+            progressHUD.setTimer(for: .swordInf)
         case .wingedboot:
             soundFX = "pickupitem"
             feedbackStyle = .rigid
             gameboard.addParticles(type: .itemPickup, at: position)
             
             progressHUD.setTimer(for: .wingedboot)
+        case .shield:
+            soundFX = "pickupitem"
+            feedbackStyle = .rigid
+            gameboard.addParticles(type: .itemPickup, at: position)
+            
+            progressHUD.setTimer(for: .shield)
         default:
             soundFX = "gemcollect"
             feedbackStyle = .light

@@ -21,24 +21,18 @@ class CircularProgressBar: SKNode {
     private var remainingTime: TimeInterval
     private var timer: Timer?
     
-    private(set) var hasBeenHidden: Bool = false
-    var hasTimeRemaining: Bool { remainingTime > 0 }
+    private(set) var isShowing: Bool = true
+    var isRunning: Bool { remainingTime > 0 }
     
     private var circleNode: SKShapeNode
     private var iconImage: SKSpriteNode
     private var multiplierLabel: SKLabelNode
-    private var notificationNames: NotificationNames
+    private var notificationNames: NotificationNames?
     
     
     // MARK: - Initialization
     
-    init(image: String,
-         multiplier: Int,
-         multiplierColor: UIColor,
-         multiplierAlpha: CGFloat,
-         timerIncrement: TimeInterval,
-         maxTimerIncrement: TimeInterval,
-         notificationNames: (initialize: Notification.Name, expire: Notification.Name)) {
+    init(image: String, multiplier: Int, multiplierColor: UIColor, multiplierAlpha: CGFloat, timerIncrement: TimeInterval, maxTimerIncrement: TimeInterval, notificationNames: NotificationNames?) {
         
         self.timerIncrement = timerIncrement
         self.maxTimerIncrement = maxTimerIncrement
@@ -56,10 +50,12 @@ class CircularProgressBar: SKNode {
         iconImage.alpha = 0
         iconImage.zPosition = 5
         
-        multiplierLabel = SKLabelNode(text: "\(multiplier)X")
+        let isInfMultiplier = multiplier == Int(ChosenSword.infiniteMultiplier)
+        
+        multiplierLabel = SKLabelNode(text: isInfMultiplier ? "∞" : "\(multiplier)X")
         multiplierLabel.fontColor = multiplierColor
-        multiplierLabel.fontName = UIFont.gameFont
-        multiplierLabel.fontSize = UIFont.gameFontSizeExtraLarge
+        multiplierLabel.fontName = isInfMultiplier ? UIFont.infiniteFont : UIFont.gameFont
+        multiplierLabel.fontSize = isInfMultiplier ? UIFont.infiniteSizeExtraLarge : UIFont.gameFontSizeExtraLarge
         multiplierLabel.verticalAlignmentMode = .center
         multiplierLabel.setScale(0)
         multiplierLabel.alpha = multiplierAlpha
@@ -97,13 +93,13 @@ class CircularProgressBar: SKNode {
     
     ///Hides the progress bar's alpha component
     func hideProgressBar() {
-        hasBeenHidden = true
-        run(SKAction.fadeOut(withDuration: 0.25))
+        isShowing = false
+        run(SKAction.fadeOut(withDuration: 0))
     }
     
     ///Shows the progress bar with an optional pulsing of the multiplier value.
     func showProgressBar(shouldPulseMultiplier: Bool) {
-        hasBeenHidden = false
+        isShowing = true
         
         if shouldPulseMultiplier {
             pulseMultiplier(scaleTo: 1)
@@ -152,11 +148,16 @@ class CircularProgressBar: SKNode {
                                      userInfo: nil,
                                      repeats: true)
         
-        NotificationCenter.default.post(name: notificationNames.initialize, object: nil)
+        if let notificationNames = notificationNames {
+            NotificationCenter.default.post(name: notificationNames.initialize, object: nil)
+        }
     }
     
     @objc private func setTimerHelper() {
-        NotificationCenter.default.post(name: notificationNames.expire, object: nil)
+        if let notificationNames = notificationNames {
+            NotificationCenter.default.post(name: notificationNames.expire, object: nil)
+        }
+        
         timer?.invalidate()
         timer = nil
     }

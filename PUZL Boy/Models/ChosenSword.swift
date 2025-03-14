@@ -43,6 +43,7 @@ class ChosenSword: SKNode {
     
     
     //Attack Multiplier
+    static let infiniteMultiplier: CGFloat = 99
     private var numberFormatter: NumberFormatter
     private(set) var attackMultiplier: CGFloat = 1
     private(set) var attackMultiplierNode: SKLabelNode
@@ -231,8 +232,7 @@ class ChosenSword: SKNode {
         ]))
         
         if showMultiplier {
-            attackMultiplierNode.text = "\(numberFormatter.string(from: NSNumber(value: attackMultiplier)) ?? "0")X"
-            attackMultiplierNode.fontColor = attackMultiplier == 3 ? .cyan : .yellow
+            attackMultiplierNode.text = attackMultiplier == ChosenSword.infiniteMultiplier ? "∞" : "\(numberFormatter.string(from: NSNumber(value: attackMultiplier)) ?? "0")X"
             
             attackMultiplierNode.run(SKAction.sequence([
                 SKAction.wait(forDuration: 0.5),
@@ -265,6 +265,18 @@ class ChosenSword: SKNode {
     
     func setAttackMultiplier(_ multiplier: CGFloat) {
         attackMultiplier = multiplier
+        
+        if multiplier == ChosenSword.infiniteMultiplier {
+            attackMultiplierNode.fontName = UIFont.infiniteFont
+            attackMultiplierNode.fontSize = UIFont.infiniteSizeExtraLarge
+            attackMultiplierNode.fontColor = .magenta
+        }
+        else {
+            attackMultiplierNode.fontName = UIFont.gameFont
+            attackMultiplierNode.fontSize = UIFont.gameFontSizeExtraLarge
+            attackMultiplierNode.fontColor = attackMultiplier == 3 ? .cyan : .yellow
+
+        }
     }
     
     
