@@ -52,27 +52,31 @@ class DuplicateItem {
     // MARK: - Functions
     
     /**
-     Call this function once, once the chosenSword has been selected!
+     Re-populates the spawnedItems array by assessing player's health and chosen sword's luck score each time the function is called.
+     - parameters:
+        - playerHealth: player's current health
+        - chosenSwordLuck: chosen sword's luck score
+     - note: Call this function periodically, so you capture the latest player's health value, which affects the probability of dropped items.
      */
-    func populateSpawnedItems(luck: CGFloat) {
+    func populateSpawnedItems(playerHealth: CGFloat, chosenSwordLuck: CGFloat) {
         let items: [(item: LevelType, probability: CGFloat)]
         
-        switch luck {
+        switch chosenSwordLuck {
         case let amt where amt <= 0.25:
             spawnTimerDuration = 4
-            items = [(.sword2x, 0.25), (.sword3x, 0.15), (.gem, 0.60), (.heart, 0.00)]
+            items = [(.sword2x, 0.25), (.sword3x, 0.15), (.swordInf, 0.00), (.wingedboot, 0.00), (.shield, 0.00), (.heart, 0.00), (.gem, 0.60)]
         case let amt where amt <= 0.50:
             spawnTimerDuration = 5
             items = [(.sword2x, 0.30), (.sword3x, 0.20), (.gem, 0.40), (.heart, 0.10)]
         case let amt where amt <= 0.75:
             spawnTimerDuration = 6
-            items = [(.sword2x, 0.35), (.sword3x, 0.25), (.gem, 0.25), (.heart, 0.15)]
+            items = [(.sword2x, 0.35), (.sword3x, 0.25), (.swordInf, 0.00), (.wingedboot, 0.00), (.shield, 0.00), (.heart, 0.15), (.gem, 0.25)]
         case let amt where amt <= 0.85:
             spawnTimerDuration = 8
-            items = [(.sword2x, 0.40), (.sword3x, 0.35), (.gem, 0.00), (.heart, 0.25)]
+            items = [(.sword2x, 0.35), (.sword3x, 0.25), (.swordInf, 0.00), (.wingedboot, 0.00), (.shield, 0.00), (.heart, 0.15), (.gem, 0.25)]
         default:
             spawnTimerDuration = 4
-            items = [(.sword2x, 0.00), (.sword3x, 0.00), (.gem, 0.00), (.heart, 1.00)]
+            items = [(.sword2x, 0.00), (.sword3x, 0.00), (.swordInf, 0.00), (.wingedboot, 0.00), (.shield, 0.00), (.heart, 1.00), (.gem, 0.00)]
         }
         
         spawnedItems = []
@@ -86,8 +90,19 @@ class DuplicateItem {
     
     /**
      Spawn a power up item. Use when Magmoor duplicate is defeated.
+     - parameters:
+        - position: position on gameboard of where to spawn
+        - gameboard: the gameboard where spawning occurs
+        - delay: add a delay before spawning
+        - playerHealth: latest read from the player's health
+        - chosenSwordLuck: technically, this shouldn't change throughout the battle, but it can read the chosen sword's luck value every time
      */
-    func spawnItem(at position: K.GameboardPosition, on gameboard: GameboardSprite, delay: TimeInterval) {
+    func spawnItem(at position: K.GameboardPosition, on gameboard: GameboardSprite, delay: TimeInterval, playerHealth: CGFloat, chosenSwordLuck: CGFloat) {
+        
+        //Re-populates spawn items based on updated health.
+        populateSpawnedItems(playerHealth: playerHealth, chosenSwordLuck: chosenSwordLuck)
+        
+        //Guard to make sure everything was ok..
         guard !spawnedItems.isEmpty else { return print("DuplicateItem.spawnedItems not populated.") }
         
         let randomIndex = Int.random(in: 0..<spawnedItems.count)

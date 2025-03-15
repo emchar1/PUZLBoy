@@ -189,7 +189,8 @@ class FinalBattle2Engine {
         controls.handleControls(in: location,
                                 safePanelFound: safeOrPlatformFound(),
                                 poisonPanelFound: namePanelFound(FinalBattle2Spawner.poisonPanelName),
-                                isPoisoned: health.isPoisoned) { [weak self] in
+                                isPoisoned: health.isPoisoned,
+                                playerHealth: health.counter.getCount()) { [weak self] in
             
             guard let self = self else { return }
             
@@ -659,6 +660,7 @@ extension FinalBattle2Engine: FinalBattle2HealthDelegate {
 //        let multiplier = controls.chosenSword.attackMultiplier
 //        
 //        labelDebug.text = "INC: \(inc), DAMPING: \(damp)\nDAMAGE: \(damage)\nHEALTH: \(health)\nX: \(multiplier)"
+        labelDebug.text = "Health: \(healthCounter.getCount())"
     }
     
 }

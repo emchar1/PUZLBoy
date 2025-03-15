@@ -235,7 +235,7 @@ class MagmoorDuplicate: SKNode {
      Destroys the duplicate and removes it from the gameboard.
      - parameter completion: completion handler, executes at end of explosion action.
      */
-    func explode(completion: @escaping () -> Void) {
+    func explode(playerHealth: CGFloat, chosenSwordLuck: CGFloat, completion: @escaping () -> Void) {
         let waitDuration: TimeInterval = 0.25
         let fadeDuration: TimeInterval = 0.25
         let hasInvinciblesOriginal = MagmoorDuplicate.hasInvincibles(on: gameboard)
@@ -264,7 +264,8 @@ class MagmoorDuplicate: SKNode {
         }
         
         if let duplicatePosition = duplicatePosition {
-            DuplicateItem.shared.spawnItem(at: duplicatePosition, on: gameboard, delay: waitDuration)
+            // FIXME: - 4th pass through of player health!!!
+            DuplicateItem.shared.spawnItem(at: duplicatePosition, on: gameboard, delay: waitDuration, playerHealth: playerHealth, chosenSwordLuck: chosenSwordLuck)
         }
         
         AudioManager.shared.playSound(for: "enemydeath")

@@ -265,12 +265,13 @@ class MagmoorAttacks {
     
     // MARK: - Magmoor Duplicate Functions
     
-    func explodeDuplicate(at position: K.GameboardPosition, completion: @escaping (Bool) -> Void) {
+    func explodeDuplicate(at position: K.GameboardPosition, playerHealth: CGFloat, chosenSwordLuck: CGFloat, completion: @escaping (Bool) -> Void) {
         guard let duplicate = MagmoorDuplicate.getDuplicateAt(position: position, on: gameboard) else { return }
         
         let fadeDuration: TimeInterval = 1
         
-        duplicate.explode { [weak self] in
+        // FIXME: - 3rd pass through of player health
+        duplicate.explode(playerHealth: playerHealth, chosenSwordLuck: chosenSwordLuck) { [weak self] in
             guard let self = self else { return }
             
             //Bring back Magmoor once all the duplicates have been exploded

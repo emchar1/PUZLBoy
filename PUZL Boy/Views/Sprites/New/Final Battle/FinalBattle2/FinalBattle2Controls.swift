@@ -42,6 +42,9 @@ class FinalBattle2Controls {
     private var safePanelFound: Bool!
     private var poisonPanelFound: Bool!
     
+    // FIXME: - I don't like how player's health, aka FinalBattle2Health.counter.getCount() needs to be passed around classes. Should this be static prop? 3/14/25
+    private var playerHealth: CGFloat?
+    
     private var isDisabled: Bool
     private var canAttack: Bool
     private var isFrozen: Bool
@@ -79,9 +82,6 @@ class FinalBattle2Controls {
         chosenSword.setScale(gameboard.panelSize / chosenSword.spriteNode.size.width)
         chosenSword.zPosition = K.ZPosition.itemsAndEffects
         gameboard.sprite.addChild(chosenSword)
-        
-        //Populate DuplicateItem array here - 2/12/25
-        DuplicateItem.shared.populateSpawnedItems(luck: chosenSword.luckRating)
         
         magmoorAttacks = MagmoorAttacks(gameboard: gameboard, villain: villain)
         magmoorShield = MagmoorShield(hitPoints: 0)
@@ -126,9 +126,10 @@ class FinalBattle2Controls {
         - safePanelFound: returns true if a safe panel i.e. sand/snow is found in the player's position
         - poisonPanelFound: returns true if a poison panel is found in the player's position
         - isPoisoned: returns true if player is in the poisoned state at time of checking. Different from poisonPanelFound because isPoisoned reports on player's poisoned duration, not the panel itself.
+        - playerHealth: an updated health of the player, i.e. PUZL Boy
         - completion: handler to perform tasks upon completion
      */
-    func handleControls(in location: CGPoint, safePanelFound: Bool, poisonPanelFound: Bool, isPoisoned: Bool, completion: (() -> Void)?) {
+    func handleControls(in location: CGPoint, safePanelFound: Bool, poisonPanelFound: Bool, isPoisoned: Bool, playerHealth: CGFloat, completion: (() -> Void)?) {
         guard !isDisabled else { return }
         guard !isFrozen else { return }
         
@@ -136,6 +137,9 @@ class FinalBattle2Controls {
         self.safePanelFound = safePanelFound
         self.poisonPanelFound = poisonPanelFound
         self.isPoisoned = isPoisoned
+        
+        //By updating playerHealth every time handleControls() is called, i.e. via touchesEnded(), you pass in the latest playerHealth value always.
+        self.playerHealth = playerHealth
         
         //Now check for movement/attack!
         if inBounds(.up) && !canAttackVillain(.up) && !canAttackDuplicate(.up) && !checkForTimedBomb(.up) {
@@ -353,7 +357,8 @@ class FinalBattle2Controls {
                 }
             }
             else {
-                magmoorAttacks.explodeDuplicate(at: attackPanel) { villainIsVisible in
+                // FIXME: - 2nd time passing playerHealth around...
+                magmoorAttacks.explodeDuplicate(at: attackPanel, playerHealth: playerHealth ?? 0.5, chosenSwordLuck: chosenSword.luckRating) { villainIsVisible in
                     self.canAttack = true
                     
                     guard villainIsVisible else { return }
