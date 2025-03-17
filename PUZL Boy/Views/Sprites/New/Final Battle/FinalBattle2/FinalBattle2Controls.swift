@@ -56,9 +56,11 @@ class FinalBattle2Controls {
     private var magmoorAttacks: MagmoorAttacks!
     private(set) var magmoorShield: MagmoorShield!
     
-    private var isRunningTimerSword2x: Bool = false
-    private var isRunningTimerSword3x: Bool = false
-    private var isRunningTimerSwordInf: Bool = false
+    private(set) var isRunningTimerSword2x: Bool = false
+    private(set) var isRunningTimerSword3x: Bool = false
+    private(set) var isRunningTimerSwordInf: Bool = false
+    private(set) var isRunningTimerBoot: Bool = false
+    private(set) var isRunningTimerShield: Bool = false
     
     weak var delegateControls: FinalBattle2ControlsDelegate?
     
@@ -282,7 +284,8 @@ class FinalBattle2Controls {
         let attackPanel: K.GameboardPosition = getNextPanel(direction: direction)
         
         guard attackPanel == positions.villain && magmoorAttacks.villainIsVisible else { return false }
-        guard canAttack && (chosenSword.type == .heavenlySaber || (playerOnSafePanel() && !poisonPanelFound)) else {
+        
+        guard canAttackCheck() else {
             ButtonTap.shared.tap(type: .buttontap6)
             return true
         }
@@ -328,6 +331,13 @@ class FinalBattle2Controls {
         return true
     }
     
+    private func canAttackCheck() -> Bool {
+        let chosenSwordHeavenly: Bool = chosenSword.type == .heavenlySaber
+        let playerSafe: Bool = (playerOnSafePanel() || isRunningTimerBoot) && !poisonPanelFound
+        
+        return canAttack && (chosenSwordHeavenly || playerSafe)
+    }
+    
     private func canAttackDuplicate(_ direction: Controls) -> Bool {
         let attackPanel: K.GameboardPosition = getNextPanel(direction: direction)
         
@@ -335,7 +345,7 @@ class FinalBattle2Controls {
             return false
         }
         
-        guard canAttack && (chosenSword.type == .heavenlySaber || (playerOnSafePanel() && !poisonPanelFound)) else {
+        guard canAttackCheck() else {
             ButtonTap.shared.tap(type: .buttontap6)
             return true
         }
@@ -424,7 +434,9 @@ class FinalBattle2Controls {
         
         let nextPanel: K.GameboardPosition = getNextPanel(direction: direction)
         let panelType = gameboard.getUserDataForLevelType(sprite: gameboard.getPanelSprite(at: positions.player).terrain!)
-        let movementMultiplier: TimeInterval = (playerOnSafePanel() && !poisonPanelFound && !isPoisoned ? 1 : 2) / chosenSword.speedRating
+        let playerSafe: Bool = (playerOnSafePanel() || isRunningTimerBoot) && !poisonPanelFound && !isPoisoned
+        let movementMultiplier: TimeInterval = (playerSafe ? 1 : 2) / chosenSword.speedRating
+        
         var runSound: String = "movetile1"
         
         isDisabled = true
@@ -697,21 +709,29 @@ class FinalBattle2Controls {
     }
     
     @objc private func didBootTimerInitialize(_ sender: Any) {
+        isRunningTimerBoot = true
+        
         print("Wingedboot Initialize")
         //winged boot customization
     }
     
     @objc private func didBootTimerExpire(_ sender: Any) {
+        isRunningTimerBoot = false
+        
         print("Wingedboot Expire")
         //winged boot customization
     }
     
     @objc private func didShieldTimerInitialize(_ sender: Any) {
+        isRunningTimerShield = true
+        
         print("Shield Initialize")
         //shield customization
     }
     
     @objc private func didShieldTimerExpire(_ sender: Any) {
+        isRunningTimerShield = false
+        
         print("Shield Expire")
         //shield customization
     }

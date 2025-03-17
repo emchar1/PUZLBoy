@@ -85,7 +85,7 @@ class FinalBattle2Engine {
         
         // FIXME: - Debug Speed
         labelDebug = SKLabelNode(text: "SPEED UPDATING...")
-        labelDebug.position = CGPoint(x: 40, y: 200)
+        labelDebug.position = CGPoint(x: 40, y: 400)
         labelDebug.fontName = UIFont.gameFont
         labelDebug.fontSize = UIFont.gameFontSizeLarge
         labelDebug.fontColor = UIFont.gameFontColor
@@ -156,7 +156,7 @@ class FinalBattle2Engine {
         
         
         // FIXME: - Debug Speed
-//        superScene.addChild(labelDebug)
+        superScene.addChild(labelDebug)
         
         // FIXME: - For use with build# 1.28(30).
         superScene.addChild(fadeBackgroundSprite)
@@ -200,7 +200,7 @@ class FinalBattle2Engine {
             else if safeOrPlatformFound() || startPanelFound() || endPanelFound() {
                 health.updateHealth(type: .stopDrain)
             }
-            else {
+            else if !controls.isRunningTimerBoot {
                 health.updateHealth(type: .drain, dmgMultiplier: controls.chosenSword.defenseRating)
             }
         }
@@ -613,7 +613,7 @@ extension FinalBattle2Engine: FinalBattle2SpawnerDelegate {
     }
     
     func didDespawnSafePanel(spawnPanel: K.GameboardPosition, index: Int) {
-        guard spawnPanel == controls.positions.player && !safeOrPlatformFound() && !namePanelFound(FinalBattle2Spawner.poisonPanelName) && !startPanelFound() && !endPanelFound() else { return }
+        guard spawnPanel == controls.positions.player && !safeOrPlatformFound() && !namePanelFound(FinalBattle2Spawner.poisonPanelName) && !startPanelFound() && !endPanelFound() && !controls.isRunningTimerBoot else { return }
         health.updateHealth(type: .drain, dmgMultiplier: controls.chosenSword.defenseRating)
     }
     
@@ -660,7 +660,8 @@ extension FinalBattle2Engine: FinalBattle2HealthDelegate {
 //        let multiplier = controls.chosenSword.attackMultiplier
 //        
 //        labelDebug.text = "INC: \(inc), DAMPING: \(damp)\nDAMAGE: \(damage)\nHEALTH: \(health)\nX: \(multiplier)"
-        labelDebug.text = "Health: \(healthCounter.getCount())"
+        
+        labelDebug.text = "HEALTH: \(healthCounter.getCount() * 100)"
     }
     
 }

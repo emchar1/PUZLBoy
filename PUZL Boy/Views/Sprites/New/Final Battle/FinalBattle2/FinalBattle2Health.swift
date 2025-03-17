@@ -152,12 +152,16 @@ class FinalBattle2Health {
     private func objcHelper(damage: CGFloat, increment: Bool) {
         guard !(!increment && counter.counterDidReachMin) else { return }
         
-        // TODO: - 2/16/25 Can rate be a percentage based on counter, i.e. lower counter = lower percentage damage, and vice versa.
-        let rateDamping: CGFloat = increment ? max(2.0 * (counter.maxCount - counter.getCount()), 1) : min(3.0 * counter.getCount(), 1)
+        var health: CGFloat { counter.getCount() }
+        var healthDiff: CGFloat { counter.maxCount - health }
+        
+        let incrementValue: CGFloat = max(2 * healthDiff, 1) //[1, 2]
+        let decrementValue: CGFloat = max(min(4 * health, 1), 0.1) //[0.1, 1]
+        let rateDamping: CGFloat = increment ? incrementValue : decrementValue
         let damageAdjusted = damage * (dmgMultiplier ?? 1)
                 
         counter.increment(by: (increment ? 1 : -1) * damageAdjusted * rateDamping)
-        bar.animateAndUpdate(percentage: counter.getCount())
+        bar.animateAndUpdate(percentage: health)
         
         // TODO: - I'm only using this protocol function to report back the damage.
         delegateHealth?.didUpdateHealth(counter, increment: (increment ? 1 : -1) * damageAdjusted, damping: rateDamping)

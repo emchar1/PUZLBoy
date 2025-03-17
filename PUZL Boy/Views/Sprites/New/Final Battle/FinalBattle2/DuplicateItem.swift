@@ -67,7 +67,7 @@ class DuplicateItem {
             items = [(.sword2x, 0.25), (.sword3x, 0.15), (.swordInf, 0.00), (.wingedboot, 0.00), (.shield, 0.00), (.heart, 0.00), (.gem, 0.60)]
         case let amt where amt <= 0.50:
             spawnTimerDuration = 5
-            items = [(.sword2x, 0.30), (.sword3x, 0.20), (.gem, 0.40), (.heart, 0.10)]
+            items = [(.sword2x, 0.30), (.sword3x, 0.20), (.swordInf, 0.00), (.wingedboot, 0.00), (.shield, 0.00), (.heart, 0.10), (.gem, 0.40)]
         case let amt where amt <= 0.75:
             spawnTimerDuration = 6
             items = [(.sword2x, 0.35), (.sword3x, 0.25), (.swordInf, 0.00), (.wingedboot, 0.00), (.shield, 0.00), (.heart, 0.15), (.gem, 0.25)]
