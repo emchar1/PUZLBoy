@@ -282,7 +282,7 @@ class FinalBattle2Engine {
         
         showDamagePanel(at: position, color: panelColor, isPoison: pattern == .poison, withExplosion: false, extendDamage: false)
         
-        if position == controls.positions.player {
+        if position == controls.positions.player && !controls.isRunningTimerShield {
             health.updateHealth(type: healthType, dmgMultiplier: chosenSword.defenseRating)
         }
     }

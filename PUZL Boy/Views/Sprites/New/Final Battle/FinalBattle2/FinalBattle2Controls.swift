@@ -367,8 +367,13 @@ class FinalBattle2Controls {
                 }
             }
             else {
+                let forceSwordInf: Bool = (isRunningTimerSword2x || isRunningTimerSword3x || isRunningTimerSwordInf) && isRunningTimerShield && isRunningTimerBoot
+                
                 // FIXME: - 2nd time passing playerHealth around...
-                magmoorAttacks.explodeDuplicate(at: attackPanel, playerHealth: playerHealth ?? 0.5, chosenSwordLuck: chosenSword.luckRating) { villainIsVisible in
+                magmoorAttacks.explodeDuplicate(at: attackPanel,
+                                                playerHealth: playerHealth ?? 0.5,
+                                                chosenSwordLuck: chosenSword.luckRating,
+                                                forceSwordInf: forceSwordInf) { villainIsVisible in
                     self.canAttack = true
                     
                     guard villainIsVisible else { return }

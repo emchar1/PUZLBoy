@@ -59,7 +59,6 @@ class ProgressHUDManager {
                 multiplierColor = .yellow
                 multiplierAlpha = 1
                 timerIncrement = 60
-                maxTimerIncrement = 180
                 notificationNames = (.didSword2xTimerInitialize, .didSword2xTimerExpire)
             case .sword3x:
                 image = ChosenSword(type: FIRManager.chosenSword).imageName
@@ -67,33 +66,31 @@ class ProgressHUDManager {
                 multiplierColor = .cyan
                 multiplierAlpha = 1
                 timerIncrement = 50
-                maxTimerIncrement = 150
                 notificationNames = (.didSword3xTimerInitialize, .didSword3xTimerExpire)
             case .swordInf:
                 image = ChosenSword(type: FIRManager.chosenSword).imageName
                 multiplier = Int(ChosenSword.infiniteMultiplier)
                 multiplierColor = .white
                 multiplierAlpha = 1
-                timerIncrement = 40
-                maxTimerIncrement = 120
+                timerIncrement = 20
                 notificationNames = (.didSwordInfTimerInitialize, .didSwordInfTimerExpire)
             case .wingedboot:
                 image = "wingedboot"
                 multiplier = 1
                 multiplierColor = .white
                 multiplierAlpha = 0
-                timerIncrement = 50
-                maxTimerIncrement = 150
+                timerIncrement = 40
                 notificationNames = (.didBootTimerInitialize, .didBootTimerExpire)
             case .shield:
                 image = "shield"
                 multiplier = 1
                 multiplierColor = .white
                 multiplierAlpha = 0
-                timerIncrement = 50
-                maxTimerIncrement = 150
+                timerIncrement = 30
                 notificationNames = (.didShieldTimerInitialize, .didShieldTimerExpire)
             }
+            
+            maxTimerIncrement = 3 * timerIncrement
             
             progressBars[progressBarType.rawValue] = CircularProgressBar(image: image,
                                                                          multiplier: multiplier,
