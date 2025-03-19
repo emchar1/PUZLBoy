@@ -459,7 +459,7 @@ class MagmoorAttacks {
             SKAction.removeFromParent()
         ]))
         
-        AudioManager.shared.playSound(for: "shieldcast2", interruptPlayback: false)
+        AudioManager.shared.playSound(for: "shieldcast2")
     }
     
     

@@ -61,13 +61,13 @@ struct AudioLibrary {
         ("lightson", .soundFX, 1),
         ("magicblast", .soundFX, 1),
         ("magicdisappear", .soundFX, 1),
-        ("magicdisappear2", .soundFX, 1), //NEEDS PURCHASE $2
-        ("magicdisappear2b", .soundFX, 1), //NEEDS PURCHASE $1 - either this or the one above!
+        ("magicdisappear2", .soundFX, 1),
+        ("magicdisappear2b", .soundFX, 1),
         ("magicelderbanish", .soundFX, 1),
         ("magicelderexplosion", .soundFX, 1),
         ("magicelderreduce", .soundFX, 1),
         ("magichorrorimpact", .soundFX, 1),
-        ("magichorrorimpact2", .soundFX, 1), //NEEDS PURCHASE $2
+        ("magichorrorimpact2", .soundFX, 1),
         ("magicteleport", .soundFX, 1),
         ("magicteleport2", .soundFX, 1),
         ("magicwarp", .soundFX, 1), //not purchased $2
@@ -106,26 +106,26 @@ struct AudioLibrary {
         ("revive", .soundFX, 1),
         ("sadaccent", .soundFX, 1),
         ("scarylaugh", .soundFX, 1),
-        ("shieldcast", .soundFX, 1), //NEEDS PURCHASE $1
-        ("shieldcast2", .soundFX, 1), //NEEDS PURCHASE $0
+        ("shieldcast", .soundFX, 1),
+        ("shieldcast2", .soundFX, 1),
         ("speechbubble", .soundFX, 1), //not purchased $2
-        ("swordparry", .soundFX, 1), //NEEDS PURCHASE $1
+        ("swordparry", .soundFX, 1),
         ("swordslash", .soundFX, 1),
-        ("swordthrow", .soundFX, 1), //NEEDS PURCHASE $1
-        ("swordthud", .soundFX, 1), //NEEDS PURCHASE $1
+        ("swordthrow", .soundFX, 1),
+        ("swordthud", .soundFX, 1),
         ("thunderrumble", .soundFX, 1),
         ("touchstatue", .soundFX, 1),
-        ("villainattack1", .soundFX, 1), //NEEDS PURCHASE $2
-        ("villainattack2", .soundFX, 1), //NEEDS PURCHASE $2
-        ("villainattack3", .soundFX, 1), //NEEDS PURCHASE $2
-        ("villainattackbombtick", .soundFX, 1), //NEEDS PURCHASE $1
-        ("villainattackbombticklarge", .soundFX, 1), //NEEDS PURCHASE $1
-        ("villainattackspecialbomb", .soundFX, 1), //NEEDS PURCHASE $3
-        ("villainattackwand", .soundFX, 1), //NEEDS PURCHASE $1
-        ("villaindead", .soundFX, 1), //NEEDS PURCHASE $2
-        ("villainpain1", .soundFX, 1), //NEEDS PURCHASE $1
-        ("villainpain2", .soundFX, 1), //NEEDS PURCHASE $1
-        ("villainpain3", .soundFX, 1), //NEEDS PURCHASE $1
+        ("villainattack1", .soundFX, 1),
+        ("villainattack2", .soundFX, 1),
+        ("villainattack3", .soundFX, 1),
+        ("villainattackbombtick", .soundFX, 1),
+        ("villainattackbombticklarge", .soundFX, 1),
+        ("villainattackspecialbomb", .soundFX, 1),
+        ("villainattackwand", .soundFX, 1),
+        ("villaindead", .soundFX, 1),
+        ("villainpain1", .soundFX, 1),
+        ("villainpain2", .soundFX, 1),
+        ("villainpain3", .soundFX, 1),
         ("warp", .soundFX, 1),
         ("waterappear1", .soundFX, 1), //not purchased $3
         ("waterappear2", .soundFX, 1),
@@ -134,7 +134,7 @@ struct AudioLibrary {
         ("winlevel", .soundFX, 1),
         ("winlevel3stars", .soundFX, 1),
         ("winlevelageofruin", .soundFX, 1),
-        ("ydooropen", .soundFX, 1), //NEEDS PURCHASE $1
+        ("ydooropen", .soundFX, 1),
         
         
         //TEST: For fun only
@@ -149,7 +149,7 @@ struct AudioLibrary {
         ("littlegirllaugh", .soundFXLoop, 1),
         ("magicdoomloop", .soundFXLoop, 1),
         ("magmoorcreepystrings", .soundFXLoop, 1),
-        ("shieldpulse", .soundFXLoop, 1), //NEEDS PURCHASE $1
+        ("shieldpulse", .soundFXLoop, 1),
         
         
         //No Loop music
