@@ -58,25 +58,49 @@ class DuplicateItem {
      - note: Call this function periodically, so you capture the latest player's health value, which affects the probability of dropped items.
      */
     func populateSpawnedItems(playerHealth: CGFloat, chosenSwordLuck: CGFloat) {
-        let probabilityMultiplier: Int = 2
-        let healthMultiplier: CGFloat
+        let mProbability: CGFloat = 2
+        let mHealth: CGFloat
+        
+        let cHeart: CGFloat
+        let cSword2x: CGFloat
+        let cSword3x: CGFloat
+        let cShield: CGFloat = 20
+        let cBoot: CGFloat = 12
+        let cSword8: CGFloat = 8
         
         switch playerHealth {
-        case let amt where amt <= 0.25: healthMultiplier = 2
-        case let amt where amt <= 0.50: healthMultiplier = 1
-        case let amt where amt <= 0.75: healthMultiplier = 0.75
-        default:                        healthMultiplier = 0.5
+        case let amt where amt <= 0.25:
+            mHealth = 1.5
+            cHeart = 35
+            cSword2x = 10
+            cSword3x = 5
+        case let amt where amt <= 0.50:
+            mHealth = 1
+            cHeart = 0
+            cSword2x = 35
+            cSword3x = 15
+        case let amt where amt <= 0.75:
+            mHealth = 0.75
+            cHeart = 0
+            cSword2x = 35
+            cSword3x = 15
+        default:
+            mHealth = 0.5
+            cHeart = 0
+            cSword2x = 35
+            cSword3x = 15
         }
         
-        let itemHeart: (item: LevelType, count: Int) = (.heart, 5 * probabilityMultiplier)
-        let itemSword2x: (item: LevelType, count: Int) = (.sword2x, 20 * probabilityMultiplier)
-        let itemSword3x: (item: LevelType, count: Int) = (.sword3x, 10 * probabilityMultiplier)
-        let itemShield: (item: LevelType, count: Int) = (.shield, Int(12 * chosenSwordLuck * healthMultiplier) * probabilityMultiplier)
-        let itemBoot: (item: LevelType, count: Int) = (.wingedboot, Int(10 * chosenSwordLuck * healthMultiplier) * probabilityMultiplier)
-        let itemSword8: (item: LevelType, count: Int) = (.swordInf, Int(6 * chosenSwordLuck * healthMultiplier) * probabilityMultiplier)
-        let itemGem: (item: LevelType, count: Int) = (.gem, (100 * probabilityMultiplier) - (itemHeart.count + itemSword2x.count + itemSword3x.count + itemShield.count + itemBoot.count + itemSword8.count))
+        let itemHeart: (item: LevelType, count: Int) = (.heart, Int(cHeart * mProbability))
+        let itemSword2x: (item: LevelType, count: Int) = (.sword2x, Int(cSword2x * mProbability))
+        let itemSword3x: (item: LevelType, count: Int) = (.sword3x, Int(cSword3x * mProbability))
         
-        spawnTimerDuration = max(10 * chosenSwordLuck, 3)
+        let itemShield: (item: LevelType, count: Int) = (.shield, Int(cShield * chosenSwordLuck * mHealth * mProbability))
+        let itemBoot: (item: LevelType, count: Int) = (.wingedboot, Int(cBoot * chosenSwordLuck * mHealth * mProbability))
+        let itemSword8: (item: LevelType, count: Int) = (.swordInf, Int(cSword8 * chosenSwordLuck * mHealth * mProbability))
+        let itemGem: (item: LevelType, count: Int) = (.gem, max(0, Int(100 * mProbability) - (itemHeart.count + itemSword2x.count + itemSword3x.count + itemShield.count + itemBoot.count + itemSword8.count)))
+        
+        spawnTimerDuration = floor(max(10 * chosenSwordLuck, 3))
         
         spawnedItems = []
         spawnedItems += Array(repeating: itemHeart.item, count: itemHeart.count)
