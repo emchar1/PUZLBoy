@@ -29,7 +29,7 @@ struct AudioLibrary {
         ("buttontap2", .soundFX, 1),
         ("buttontap3", .soundFX, 1),
         ("buttontap4", .soundFX, 1),
-        ("buttontap5", .soundFX, 1), //not purchased $5
+        ("buttontap5", .soundFX, 1),
         ("buttontap6", .soundFX, 1),
         ("buttontap7", .soundFX, 1),
         ("chatclose", .soundFX, 1),
@@ -44,7 +44,7 @@ struct AudioLibrary {
         ("enemyflame", .soundFX, 1),
         ("enemyice", .soundFX, 1),
         ("enemyroar", .soundFX, 1),
-        ("enemyscratch", .soundFX, 1), //not purchased $3
+        ("enemyscratch", .soundFX, 1),
         ("forcefield", .soundFX, 1),
         ("forcefield2", .soundFX, 1),
         ("gemcollect", .soundFX, 1),
@@ -53,10 +53,10 @@ struct AudioLibrary {
         ("gemcollectparty3x", .soundFX, 1),
         ("gemcollectpartylife", .soundFX, 1),
         ("hammerswing", .soundFX, 1),
-        ("lavaappear1", .soundFX, 1), //not purchased $2
-        ("lavaappear2", .soundFX, 1), //not purchased $3
-        ("lavaappear3", .soundFX, 1), //not purchased $4
-        ("lavasizzle", .soundFX, 1), //not purchased $10
+        ("lavaappear1", .soundFX, 1),
+        ("lavaappear2", .soundFX, 1),
+        ("lavaappear3", .soundFX, 1),
+        ("lavasizzle", .soundFX, 1),
         ("lightsoff", .soundFX, 1),
         ("lightson", .soundFX, 1),
         ("magicblast", .soundFX, 1),
@@ -70,7 +70,7 @@ struct AudioLibrary {
         ("magichorrorimpact2", .soundFX, 1),
         ("magicteleport", .soundFX, 1),
         ("magicteleport2", .soundFX, 1),
-        ("magicwarp", .soundFX, 1), //not purchased $2
+        ("magicwarp", .soundFX, 1),
         ("magicwarp2", .soundFX, 1),
         ("marlinblast", .soundFX, 1),
         ("moveglide", .soundFX, 1),
@@ -86,14 +86,14 @@ struct AudioLibrary {
         ("moverun4", .soundFX, 1),
         ("movesand1", .soundFX, 1),
         ("movesand2", .soundFX, 1),
-        ("movesand3", .soundFX, 1), //not purchased $5
-        ("movesnow1", .soundFX, 1), //not purchased $1
+        ("movesand3", .soundFX, 1),
+        ("movesnow1", .soundFX, 1),
         ("movesnow2", .soundFX, 1),
         ("movesnow3", .soundFX, 1),
         ("movetile1", .soundFX, 1),
         ("movetile2", .soundFX, 1),
         ("movetile3", .soundFX, 1),
-        ("movewalk", .soundFX, 1), //not purchased $3
+        ("movewalk", .soundFX, 1),
         ("partyfast", .soundFX, 1),
         ("partypill", .soundFX, 1),
         ("partyslow", .soundFX, 1),
@@ -108,7 +108,7 @@ struct AudioLibrary {
         ("scarylaugh", .soundFX, 1),
         ("shieldcast", .soundFX, 1),
         ("shieldcast2", .soundFX, 1),
-        ("speechbubble", .soundFX, 1), //not purchased $2
+        ("speechbubble", .soundFX, 1),
         ("swordparry", .soundFX, 1),
         ("swordslash", .soundFX, 1),
         ("swordthrow", .soundFX, 1),
@@ -127,7 +127,7 @@ struct AudioLibrary {
         ("villainpain2", .soundFX, 1),
         ("villainpain3", .soundFX, 1),
         ("warp", .soundFX, 1),
-        ("waterappear1", .soundFX, 1), //not purchased $3
+        ("waterappear1", .soundFX, 1),
         ("waterappear2", .soundFX, 1),
         ("waterappear3", .soundFX, 1),
         ("waterdrown", .soundFX, 1),

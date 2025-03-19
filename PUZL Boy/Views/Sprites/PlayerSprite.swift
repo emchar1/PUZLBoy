@@ -176,8 +176,8 @@ class PlayerSprite {
             SKAction.colorize(with: .black, colorBlendFactor: 1.0, duration: 0.5)
         ])
         
-        AudioManager.shared.playSound(for: "lavasizzle")
-
+        AudioManager.shared.playSoundThenStop(for: "lavasizzle", playForDuration: 1, fadeOut: 1.5)
+        
         player.sprite.run(lavaEffect)
     }
     
