@@ -83,7 +83,7 @@ class MagmoorShield: SKNode {
     }
     
     deinit {
-        print("deinit MagmoorShield")
+//        print("deinit MagmoorShield")
     }
     
     

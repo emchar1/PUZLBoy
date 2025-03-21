@@ -58,7 +58,7 @@ class MagmoorDuplicate: SKNode {
     }
     
     deinit {
-        print("deinit \(self.name ?? "MagmoorDuplicate")")
+//        print("deinit \(self.name ?? "MagmoorDuplicate")")
     }
     
     private func setupSprites(modelAfter villain: Player) {
@@ -236,10 +236,10 @@ class MagmoorDuplicate: SKNode {
      - parameters:
         - playerHealth: player's current health
         - chosenSwordLuck: the chosenSword's luck value
-        - forceSwordInf: if true, forces spawned item to always be an infinite sword multiplier
+        - itemSpawnLevel: indicates the level of items that will drop
         - completion: completion handler, executes at end of explosion action.
      */
-    func explode(playerHealth: CGFloat, chosenSwordLuck: CGFloat, forceSwordInf: Bool, completion: @escaping () -> Void) {
+    func explode(playerHealth: CGFloat, chosenSwordLuck: CGFloat, itemSpawnLevel: DuplicateItem.ItemSpawnLevel, completion: @escaping () -> Void) {
         let waitDuration: TimeInterval = 0.25
         let fadeDuration: TimeInterval = 0.25
         let hasInvinciblesOriginal = MagmoorDuplicate.hasInvincibles(on: gameboard)
@@ -273,7 +273,7 @@ class MagmoorDuplicate: SKNode {
                                            on: gameboard, delay: waitDuration,
                                            playerHealth: playerHealth,
                                            chosenSwordLuck: chosenSwordLuck,
-                                           forceSwordInf: forceSwordInf)
+                                           itemSpawnLevel: itemSpawnLevel)
         }
         
         AudioManager.shared.playSound(for: "enemydeath")

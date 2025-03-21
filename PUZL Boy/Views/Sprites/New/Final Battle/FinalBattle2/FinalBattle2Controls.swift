@@ -55,12 +55,7 @@ class FinalBattle2Controls {
     private(set) var chosenSword: ChosenSword!
     private var magmoorAttacks: MagmoorAttacks!
     private(set) var magmoorShield: MagmoorShield!
-    
-    private(set) var isRunningTimerSword2x: Bool = false
-    private(set) var isRunningTimerSword3x: Bool = false
-    private(set) var isRunningTimerSwordInf: Bool = false
-    private(set) var isRunningTimerBoot: Bool = false
-    private(set) var isRunningTimerShield: Bool = false
+    private(set) var duplicateItemTimerManager: DuplicateItemTimerManager!
     
     weak var delegateControls: FinalBattle2ControlsDelegate?
     
@@ -87,24 +82,15 @@ class FinalBattle2Controls {
         
         magmoorAttacks = MagmoorAttacks(gameboard: gameboard, villain: villain)
         magmoorShield = MagmoorShield(hitPoints: 0)
+        duplicateItemTimerManager = DuplicateItemTimerManager()
         
         //These need to come AFTER initializing their respective objects!
         magmoorAttacks.delegateAttacks = self
         magmoorAttacks.delegateAttacksDuplicate = self
         magmoorShield.delegate = self
-        
-        //Observers for Duplicate Item pickups
-        NotificationCenter.default.addObserver(self, selector: #selector(didSword2xTimerInitialize(_:)), name: .didSword2xTimerInitialize, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(didSword2xTimerExpire(_:)), name: .didSword2xTimerExpire, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(didSword3xTimerInitialize(_:)), name: .didSword3xTimerInitialize, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(didSword3xTimerExpire(_:)), name: .didSword3xTimerExpire, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(didSwordInfTimerInitialize(_:)), name: .didSwordInfTimerInitialize, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(didSwordInfTimerExpire(_:)), name: .didSwordInfTimerExpire, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(didBootTimerInitialize(_:)), name: .didBootTimerInitialize, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(didBootTimerExpire(_:)), name: .didBootTimerExpire, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(didShieldTimerInitialize(_:)), name: .didShieldTimerInitialize, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(didShieldTimerExpire(_:)), name: .didShieldTimerExpire, object: nil)
-
+        duplicateItemTimerManager.addObserver(self)
+        duplicateItemTimerManager.delegate = self
+                
         setTimerFirstTime()
     }
     
@@ -333,7 +319,7 @@ class FinalBattle2Controls {
     
     private func canAttackCheck() -> Bool {
         let chosenSwordHeavenly: Bool = chosenSword.type == .heavenlySaber
-        let playerSafe: Bool = (playerOnSafePanel() || isRunningTimerBoot) && !poisonPanelFound
+        let playerSafe: Bool = (playerOnSafePanel() || duplicateItemTimerManager.isRunningBoot) && !poisonPanelFound
         
         return canAttack && (chosenSwordHeavenly || playerSafe)
     }
@@ -367,13 +353,19 @@ class FinalBattle2Controls {
                 }
             }
             else {
-                let forceSwordInf: Bool = (isRunningTimerSword2x || isRunningTimerSword3x || isRunningTimerSwordInf) && isRunningTimerShield && isRunningTimerBoot
+                let itemSpawnLevel: DuplicateItem.ItemSpawnLevel
+                
+                switch magmoorShield.resetCount {
+                case let lvl where lvl <= 4:    itemSpawnLevel = .low
+                case 5:                         itemSpawnLevel = .medium
+                default:                        itemSpawnLevel = .high
+                }
                 
                 // FIXME: - 2nd time passing playerHealth around...
                 magmoorAttacks.explodeDuplicate(at: attackPanel,
                                                 playerHealth: playerHealth ?? 0.5,
                                                 chosenSwordLuck: chosenSword.luckRating,
-                                                forceSwordInf: forceSwordInf) { villainIsVisible in
+                                                itemSpawnLevel: itemSpawnLevel) { villainIsVisible in
                     self.canAttack = true
                     
                     guard villainIsVisible else { return }
@@ -439,7 +431,7 @@ class FinalBattle2Controls {
         
         let nextPanel: K.GameboardPosition = getNextPanel(direction: direction)
         let panelType = gameboard.getUserDataForLevelType(sprite: gameboard.getPanelSprite(at: positions.player).terrain!)
-        let playerSafe: Bool = (playerOnSafePanel() || isRunningTimerBoot) && !poisonPanelFound && !isPoisoned
+        let playerSafe: Bool = (playerOnSafePanel() || duplicateItemTimerManager.isRunningBoot) && !poisonPanelFound && !isPoisoned
         let movementMultiplier: TimeInterval = (playerSafe ? 1 : 2) / chosenSword.speedRating
         
         var runSound: String = "movetile1"
@@ -471,8 +463,6 @@ class FinalBattle2Controls {
                 // TODO: - Testing of DuplicateItem collection
                 if let spoils = DuplicateItem.shared.collectItem(at: nextPanel, on: gameboard) {
                     delegateControls?.didCollectDuplicateDroppedItem(item: spoils, chosenSword: chosenSword)
-
-                    print("   --Items collected: \(DuplicateItem.shared.collectedItems.count). Items remaining: \(DuplicateItem.shared.spawnedItems.count)")
                 }
                 
                 AudioManager.shared.stopSound(for: runSound, fadeDuration: 0.25)
@@ -491,7 +481,7 @@ class FinalBattle2Controls {
         moveVillainFlee(shouldDisappear: false) { [weak self] in
             guard let self = self else { return }
             
-            let attackPattern = MagmoorAttacks.getAttackPattern(enrage: magmoorShield.isEnraged, level: magmoorShield.resetCount, isFeatured: false)
+            let attackPattern = MagmoorAttacks.getAttackPattern(enrage: magmoorShield.isEnraged, level: magmoorShield.resetCount, shieldHP: magmoorShield.hitPoints, isFeatured: false)
             magmoorAttacks.attack(pattern: attackPattern, level: magmoorShield.resetCount, positions: positions)
         }
     }
@@ -633,7 +623,7 @@ class FinalBattle2Controls {
                 //IMPORTANT!! Must come after resetShield()!! (But before resetTimer())
                 delegateControls?.didVillainFlee(didReappear: true)
                 
-                let attackPattern = MagmoorAttacks.getAttackPattern(enrage: false, level: magmoorShield.resetCount, isFeatured: true)
+                let attackPattern = MagmoorAttacks.getAttackPattern(enrage: false, level: magmoorShield.resetCount, shieldHP: magmoorShield.hitPoints, isFeatured: true)
                 magmoorAttacks.attack(pattern: attackPattern, level: magmoorShield.resetCount, positions: positions)
                 
                 generateVillainPositionNew(enrage: false)
@@ -665,81 +655,6 @@ class FinalBattle2Controls {
                                                    duration: 2)
         }
     } //end moveVillainFlee()
-    
-    
-    // MARK: - Notification Center Observer
-    
-    @objc private func didSword2xTimerInitialize(_ sender: Any) {
-        isRunningTimerSword2x = true
-        
-        guard !isRunningTimerSword3x && !isRunningTimerSwordInf else { return }
-        
-        chosenSword.setAttackMultiplier(2)
-    }
-    
-    @objc private func didSword2xTimerExpire(_ sender: Any) {
-        isRunningTimerSword2x = false
-        
-        guard !isRunningTimerSword3x && !isRunningTimerSwordInf else { return }
-        
-        chosenSword.setAttackMultiplier(1)
-    }
-    
-    @objc private func didSword3xTimerInitialize(_ sender: Any) {
-        isRunningTimerSword3x = true
-        
-        guard !isRunningTimerSwordInf else { return }
-        
-        chosenSword.setAttackMultiplier(3)
-    }
-    
-    @objc private func didSword3xTimerExpire(_ sender: Any) {
-        isRunningTimerSword3x = false
-        
-        guard !isRunningTimerSwordInf else { return }
-        
-        chosenSword.setAttackMultiplier(isRunningTimerSword2x ? 2 : 1)
-    }
-    
-    @objc private func didSwordInfTimerInitialize(_ sender: Any) {
-        isRunningTimerSwordInf = true
-        
-        chosenSword.setAttackMultiplier(ChosenSword.infiniteMultiplier)
-    }
-    
-    @objc private func didSwordInfTimerExpire(_ sender: Any) {
-        isRunningTimerSwordInf = false
-        
-        chosenSword.setAttackMultiplier(isRunningTimerSword3x ? 3 : (isRunningTimerSword2x ? 2 : 1))
-    }
-    
-    @objc private func didBootTimerInitialize(_ sender: Any) {
-        isRunningTimerBoot = true
-        
-        print("Wingedboot Initialize")
-        //winged boot customization
-    }
-    
-    @objc private func didBootTimerExpire(_ sender: Any) {
-        isRunningTimerBoot = false
-        
-        print("Wingedboot Expire")
-        //winged boot customization
-    }
-    
-    @objc private func didShieldTimerInitialize(_ sender: Any) {
-        isRunningTimerShield = true
-        
-        print("Shield Initialize")
-        //shield customization
-    }
-    
-    @objc private func didShieldTimerExpire(_ sender: Any) {
-        isRunningTimerShield = false
-        
-        print("Shield Expire")
-        //shield customization
-    }
     
     
 }
@@ -826,6 +741,51 @@ extension FinalBattle2Controls: MagmoorShieldDelegate {
     func didBreakShield(at villainPosition: K.GameboardPosition) {
         delegateControls?.handleShield(willDamage: false, didDamage: false, willBreak: false, didBreak: true, fadeDuration: nil, chosenSword: chosenSword, villainPosition: villainPosition)
     }
+    
+    
+}
+
+
+// MARK: - DuplicateItemTimerManagerDelegate
+
+extension FinalBattle2Controls: DuplicateItemTimerManagerDelegate {
+    func didInitializeSword2x(_ manager: DuplicateItemTimerManager) {
+        guard !manager.isRunningSword3x && !manager.isRunningSword8 else { return }
+        
+        chosenSword.setAttackMultiplier(2)
+    }
+    
+    func didExpireSword2x(_ manager: DuplicateItemTimerManager) {
+        guard !manager.isRunningSword3x && !manager.isRunningSword8 else { return }
+        
+        chosenSword.setAttackMultiplier(1)
+    }
+    
+    func didInitializeSword3x(_ manager: DuplicateItemTimerManager) {
+        guard !manager.isRunningSword8 else { return }
+        
+        chosenSword.setAttackMultiplier(3)
+    }
+    
+    func didExpireSword3x(_ manager: DuplicateItemTimerManager) {
+        guard !manager.isRunningSword8 else { return }
+        
+        chosenSword.setAttackMultiplier(manager.isRunningSword2x ? 2 : 1)
+    }
+    
+    func didInitializeSword8(_ manager: DuplicateItemTimerManager) {
+        chosenSword.setAttackMultiplier(ChosenSword.infiniteMultiplier)
+    }
+    
+    func didExpireSword8(_ manager: DuplicateItemTimerManager) {
+        chosenSword.setAttackMultiplier(manager.isRunningSword3x ? 3 : (manager.isRunningSword2x ? 2 : 1))
+    }
+    
+    //Not in use
+    func didInitializeBoot(_ manager: DuplicateItemTimerManager) {}
+    func didExpireBoot(_ manager: DuplicateItemTimerManager) {}
+    func didInitializeShield(_ manager: DuplicateItemTimerManager) {}
+    func didExpireShield(_ manager: DuplicateItemTimerManager) {}
     
     
 }

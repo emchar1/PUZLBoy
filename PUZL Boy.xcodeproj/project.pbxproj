@@ -263,6 +263,7 @@
 		EA9AD29E2D8B4FDF00FC6422 /* buttontap5.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA9AD29D2D8B4FDF00FC6422 /* buttontap5.mp3 */; };
 		EA9AD2A02D8B4FFF00FC6422 /* lavasizzle.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA9AD29F2D8B4FFF00FC6422 /* lavasizzle.mp3 */; };
 		EA9AD2A42D8B51B700FC6422 /* movewalk.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA9AD2A32D8B51B700FC6422 /* movewalk.mp3 */; };
+		EA9AD2A62D8CD56D00FC6422 /* DuplicateItemTimerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA9AD2A52D8CD56500FC6422 /* DuplicateItemTimerManager.swift */; };
 		EA9D4BB22D17498E00BB1F36 /* FinalBattle2Controls.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA9D4BB12D17498700BB1F36 /* FinalBattle2Controls.swift */; };
 		EA9D6A542B48E3B40004187B /* magicteleport.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA9D6A532B48E3B40004187B /* magicteleport.mp3 */; };
 		EA9D6A582B48E46F0004187B /* magicdoomloop.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA9D6A572B48E46F0004187B /* magicdoomloop.mp3 */; };
@@ -672,6 +673,7 @@
 		EA9AD29D2D8B4FDF00FC6422 /* buttontap5.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = buttontap5.mp3; sourceTree = "<group>"; };
 		EA9AD29F2D8B4FFF00FC6422 /* lavasizzle.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = lavasizzle.mp3; sourceTree = "<group>"; };
 		EA9AD2A32D8B51B700FC6422 /* movewalk.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = movewalk.mp3; sourceTree = "<group>"; };
+		EA9AD2A52D8CD56500FC6422 /* DuplicateItemTimerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DuplicateItemTimerManager.swift; sourceTree = "<group>"; };
 		EA9D4BB12D17498700BB1F36 /* FinalBattle2Controls.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinalBattle2Controls.swift; sourceTree = "<group>"; };
 		EA9D6A532B48E3B40004187B /* magicteleport.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = magicteleport.mp3; sourceTree = "<group>"; };
 		EA9D6A572B48E46F0004187B /* magicdoomloop.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = magicdoomloop.mp3; sourceTree = "<group>"; };
@@ -911,6 +913,7 @@
 				EAB8B8BB2D4CA60700E5DE5F /* Fireball.swift */,
 				EAE751E02D2C712A004B138A /* MagmoorShield.swift */,
 				EA3D6FAB2D5D43460070A701 /* DuplicateItem.swift */,
+				EA9AD2A52D8CD56500FC6422 /* DuplicateItemTimerManager.swift */,
 				EAFEA1DB2D826C71005F1B2F /* ProgressHUDManager.swift */,
 				EA3D6FB72D6FA3630070A701 /* CircularProgressBar.swift */,
 			);
@@ -1992,6 +1995,7 @@
 				EA3951F12939DE5900D0B14A /* ScoringEngine.swift in Sources */,
 				EA65182D28E4199E00E535BF /* SceneDelegate.swift in Sources */,
 				EAF07C0929E7A13F0034CD1A /* ParallaxObject.swift in Sources */,
+				EA9AD2A62D8CD56D00FC6422 /* DuplicateItemTimerManager.swift in Sources */,
 				EA57DEA92B983C5400CE3E2A /* ChatDecisionSprite.swift in Sources */,
 				EA826C9A29950D0C00F19F81 /* NumMovesSprite.swift in Sources */,
 				EAE565AA29D6E0C700BC43CB /* TitleScene.swift in Sources */,

@@ -200,7 +200,7 @@ class FinalBattle2Engine {
             else if safeOrPlatformFound() || startPanelFound() || endPanelFound() {
                 health.updateHealth(type: .stopDrain)
             }
-            else if !controls.isRunningTimerBoot {
+            else if !controls.duplicateItemTimerManager.isRunningBoot {
                 health.updateHealth(type: .drain, dmgMultiplier: controls.chosenSword.defenseRating)
             }
         }
@@ -282,7 +282,7 @@ class FinalBattle2Engine {
         
         showDamagePanel(at: position, color: panelColor, isPoison: pattern == .poison, withExplosion: false, extendDamage: false)
         
-        if position == controls.positions.player && !controls.isRunningTimerShield {
+        if position == controls.positions.player && !controls.duplicateItemTimerManager.isRunningShield {
             health.updateHealth(type: healthType, dmgMultiplier: chosenSword.defenseRating)
         }
     }
@@ -596,8 +596,6 @@ extension FinalBattle2Engine: FinalBattle2ControlsDelegate {
         default:
             break
         }
-        
-        print("Received \(item.description)")
     }
     
     
@@ -613,7 +611,7 @@ extension FinalBattle2Engine: FinalBattle2SpawnerDelegate {
     }
     
     func didDespawnSafePanel(spawnPanel: K.GameboardPosition, index: Int) {
-        guard spawnPanel == controls.positions.player && !safeOrPlatformFound() && !namePanelFound(FinalBattle2Spawner.poisonPanelName) && !startPanelFound() && !endPanelFound() && !controls.isRunningTimerBoot else { return }
+        guard spawnPanel == controls.positions.player && !safeOrPlatformFound() && !namePanelFound(FinalBattle2Spawner.poisonPanelName) && !startPanelFound() && !endPanelFound() && !controls.duplicateItemTimerManager.isRunningBoot else { return }
         health.updateHealth(type: .drain, dmgMultiplier: controls.chosenSword.defenseRating)
     }
     

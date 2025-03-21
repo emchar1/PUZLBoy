@@ -82,7 +82,7 @@ class ChosenSword: SKNode {
             swordTitle = "Heavenly Saber of Redemption"
             elderCommentary = "Ooh, that is a good blade! Swift and deft. A lightweight weapon that you can swing from any terrain!"
         case .cosmicCleaver:
-            attackRating = 0.89
+            attackRating = 0.59
             defenseRating = 0.56 //86
             piercingBonus = 2
             speedRating = 0.75
@@ -92,7 +92,7 @@ class ChosenSword: SKNode {
             swordTitle = "Cosmic Cleaver of Purification"
             elderCommentary = "This intimidating sword packs a mean punch! Careful!! It's heavy and somewhat cumbersome to wield in battle."
         case .eternalBlade:
-            attackRating = 0.72
+            attackRating = 0.5
             defenseRating = 0.66 //72
             piercingBonus = 1
             speedRating = 1.0
@@ -102,7 +102,7 @@ class ChosenSword: SKNode {
             swordTitle = "Blade of Eternal Might"
             elderCommentary = "Not bad. Not bad at all! Only a few handful of swords are considered mightier than this one..."
         case .plainSword:
-            attackRating = 0.5
+            attackRating = 0.3
             defenseRating = 1.0 //48
             piercingBonus = 1
             speedRating = 1.0

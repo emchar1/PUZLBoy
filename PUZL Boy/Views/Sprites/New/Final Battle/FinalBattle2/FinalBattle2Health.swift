@@ -155,7 +155,7 @@ class FinalBattle2Health {
         var health: CGFloat { counter.getCount() }
         var healthDiff: CGFloat { counter.maxCount - health }
         
-        let incrementValue: CGFloat = max(2 * healthDiff, 1) //[1, 2]
+        let incrementValue: CGFloat = health < 0.5 ? max(2 * healthDiff, 1) : max(min(2 * healthDiff, 1), 0.1) //[0.1, 1], [1, 2]
         let decrementValue: CGFloat = max(min(4 * health, 1), 0.1) //[0.1, 1]
         let rateDamping: CGFloat = increment ? incrementValue : decrementValue
         let damageAdjusted = damage * (dmgMultiplier ?? 1)

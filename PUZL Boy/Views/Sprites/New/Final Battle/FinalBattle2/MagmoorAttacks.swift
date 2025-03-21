@@ -55,7 +55,7 @@ class MagmoorAttacks {
     }
     
     deinit {
-        print("deinit MagmoorAttacks")
+//        print("deinit MagmoorAttacks")
     }
     
     
@@ -66,10 +66,11 @@ class MagmoorAttacks {
      - parameters:
         - enrage: if true, always returns normal attack
         - level: determines attack pattern
+        - shieldHP: Magmoor shield's current level
         - isFeatured: if attackRound just started, default to this attack to showcase the new attack
      - returns: the attack pattern generated
      */
-    static func getAttackPattern(enrage: Bool, level: Int, isFeatured: Bool) -> AttackPattern {
+    static func getAttackPattern(enrage: Bool, level: Int, shieldHP: Int, isFeatured: Bool) -> AttackPattern {
         let attackPattern: AttackPattern
         let normalPattern: AttackPattern
         let poisonPattern: AttackPattern
@@ -105,12 +106,19 @@ class MagmoorAttacks {
         case let levelCheck where levelCheck >= 4:
             guard !isFeatured else { attackPattern = .duplicates; break }
             
-            if randomInts[0].isMultiple(of: 5) { attackPattern = .freeze }                  //20%
-            else if randomInts[0].isMultiple(of: 2) { attackPattern = .spread }             //40%
-            else if randomInts[0].isMultiple(of: 3) { attackPattern = .poison }             //14%
-            else {                                                                          //26%
-                if randomInts[1].isMultiple(of: [2, 3]) { attackPattern = .duplicates }         //67%
-                else { attackPattern = Bool.random() ? .timed : .timedLarge }                   //17% : 16%
+            if levelCheck <= 5 || (levelCheck > 5 && shieldHP > 3) {
+                if randomInts[0].isMultiple(of: 5) { attackPattern = .freeze }                  //20%
+                else if randomInts[0].isMultiple(of: 2) { attackPattern = .spread }             //40%
+                else if randomInts[0].isMultiple(of: 3) { attackPattern = .poison }             //14%
+                else {                                                                          //26%
+                    if randomInts[1].isMultiple(of: [2, 3]) { attackPattern = .duplicates }         //67%
+                    else { attackPattern = Bool.random() ? .timed : .timedLarge }                   //17% : 16%
+                }
+            }
+            else {
+                if randomInts[0].isMultiple(of: 3) { attackPattern = .duplicates }              //33%
+                else if shieldHP > 1 { attackPattern = Bool.random() ? .normal : .timed }       //33% : 34%
+                else { attackPattern = Bool.random() ? .spread : .timedLarge }                  //34% : 33%
             }
         default:
             attackPattern = .normal
@@ -265,13 +273,13 @@ class MagmoorAttacks {
     
     // MARK: - Magmoor Duplicate Functions
     
-    func explodeDuplicate(at position: K.GameboardPosition, playerHealth: CGFloat, chosenSwordLuck: CGFloat, forceSwordInf: Bool, completion: @escaping (Bool) -> Void) {
+    func explodeDuplicate(at position: K.GameboardPosition, playerHealth: CGFloat, chosenSwordLuck: CGFloat, itemSpawnLevel: DuplicateItem.ItemSpawnLevel, completion: @escaping (Bool) -> Void) {
         guard let duplicate = MagmoorDuplicate.getDuplicateAt(position: position, on: gameboard) else { return }
         
         let fadeDuration: TimeInterval = 1
         
         // FIXME: - 3rd pass through of player health
-        duplicate.explode(playerHealth: playerHealth, chosenSwordLuck: chosenSwordLuck, forceSwordInf: forceSwordInf) { [weak self] in
+        duplicate.explode(playerHealth: playerHealth, chosenSwordLuck: chosenSwordLuck, itemSpawnLevel: itemSpawnLevel) { [weak self] in
             guard let self = self else { return }
             
             //Bring back Magmoor once all the duplicates have been exploded
