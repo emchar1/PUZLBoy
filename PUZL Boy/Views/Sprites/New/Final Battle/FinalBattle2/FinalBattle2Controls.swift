@@ -365,7 +365,8 @@ class FinalBattle2Controls {
                 magmoorAttacks.explodeDuplicate(at: attackPanel,
                                                 playerHealth: playerHealth ?? 0.5,
                                                 chosenSwordLuck: chosenSword.luckRating,
-                                                itemSpawnLevel: itemSpawnLevel) { villainIsVisible in
+                                                itemSpawnLevel: itemSpawnLevel,
+                                                resetCount: magmoorShield.resetCount) { villainIsVisible in
                     self.canAttack = true
                     
                     guard villainIsVisible else { return }

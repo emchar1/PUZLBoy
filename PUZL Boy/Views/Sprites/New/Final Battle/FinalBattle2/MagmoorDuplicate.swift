@@ -237,9 +237,10 @@ class MagmoorDuplicate: SKNode {
         - playerHealth: player's current health
         - chosenSwordLuck: the chosenSword's luck value
         - itemSpawnLevel: indicates the level of items that will drop
+        - resetCount: number of times Magmoor's shield was broken
         - completion: completion handler, executes at end of explosion action.
      */
-    func explode(playerHealth: CGFloat, chosenSwordLuck: CGFloat, itemSpawnLevel: DuplicateItem.ItemSpawnLevel, completion: @escaping () -> Void) {
+    func explode(playerHealth: CGFloat, chosenSwordLuck: CGFloat, itemSpawnLevel: DuplicateItem.ItemSpawnLevel, resetCount: Int, completion: @escaping () -> Void) {
         let waitDuration: TimeInterval = 0.25
         let fadeDuration: TimeInterval = 0.25
         let hasInvinciblesOriginal = MagmoorDuplicate.hasInvincibles(on: gameboard)
@@ -273,7 +274,8 @@ class MagmoorDuplicate: SKNode {
                                            on: gameboard, delay: waitDuration,
                                            playerHealth: playerHealth,
                                            chosenSwordLuck: chosenSwordLuck,
-                                           itemSpawnLevel: itemSpawnLevel)
+                                           itemSpawnLevel: itemSpawnLevel,
+                                           resetCount: resetCount)
         }
         
         AudioManager.shared.playSound(for: "enemydeath")

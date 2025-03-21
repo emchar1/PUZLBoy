@@ -64,9 +64,10 @@ class DuplicateItem {
         - playerHealth: player's current health
         - chosenSwordLuck: chosen sword's luck score
         - itemSpawnLevel: indicates the type of item that will drop
+        - resetCount: number of times Magmoor's shield was broken
      - note: Call this function periodically, so you capture the latest player's health value, which affects the probability of dropped items.
      */
-    func populateSpawnedItems(playerHealth: CGFloat, chosenSwordLuck: CGFloat, itemSpawnLevel: ItemSpawnLevel) {
+    func populateSpawnedItems(playerHealth: CGFloat, chosenSwordLuck: CGFloat, itemSpawnLevel: ItemSpawnLevel, resetCount: Int) {
         //Total items to be added to the spawnArray[]
         let mTotal: CGFloat = 2 * 100
         let mLuck = CGFloat(mTotal * chosenSwordLuck)
@@ -84,59 +85,72 @@ class DuplicateItem {
         let cSword3x: Int
         let cSword8: Int
         
-        switch playerHealth {
-        case let amt where amt <= 0.25: mHeart = chosenSwordLuck
-        case let amt where amt <= 0.50: mHeart = chosenSwordLuck / 2
-        default:                        mHeart = 0
+        if resetCount < 7 {
+            switch playerHealth {
+            case let amt where amt <= 0.25: mHeart = chosenSwordLuck
+            case let amt where amt <= 0.50: mHeart = chosenSwordLuck / 2
+            default:                        mHeart = 0
+            }
+            
+            cHeart = Int(mHeart * mLuckDiff)
+            cGem = Int(mLuckDiff) - cHeart
+            
+            switch itemSpawnLevel {
+            case .low:
+                cBoot = Int(mLuck * 2/3)
+                cShield = 0
+                cSword2x = Int(mLuck * 1/3)
+                cSword3x = 0
+                cSword8 = 0
+            case .medium:
+                cBoot = Int(mLuck * 1/2)
+                cShield = Int(mLuck * 1/3)
+                
+                let swordCount = Int(mLuck * 1/6)
+                
+                if duplicateItemTimerManager.isRunningSword2x {
+                    cSword2x = swordCount * 2/3
+                    cSword3x = swordCount * 1/3
+                    cSword8 = 0
+                }
+                else {
+                    cSword2x = swordCount
+                    cSword3x = 0
+                    cSword8 = 0
+                }
+            case .high:
+                cBoot = Int(mLuck * 1/4)
+                cShield = Int(mLuck * 1/4)
+                
+                let swordCount = Int(mLuck * 1/2)
+                
+                if duplicateItemTimerManager.isRunningSword3x {
+                    cSword2x = 0
+                    cSword3x = swordCount * 2/3
+                    cSword8 = swordCount * 1/3
+                }
+                else if duplicateItemTimerManager.isRunningSword2x {
+                    cSword2x = swordCount * 2/3
+                    cSword3x = swordCount * 1/3
+                    cSword8 = 0
+                }
+                else {
+                    cSword2x = swordCount
+                    cSword3x = 0
+                    cSword8 = 0
+                }
+            }
         }
-        
-        cHeart = Int(mHeart * mLuckDiff)
-        cGem = Int(mLuckDiff) - cHeart
-        
-        switch itemSpawnLevel {
-        case .low:
-            cBoot = Int(mLuck * 2/3)
-            cShield = 0
-            cSword2x = Int(mLuck * 1/3)
+        else {
+            
+            //Desperation mode.. just give it to the player!
+            cGem = 0
+            cHeart = 0
+            cBoot = Int(mTotal * 1/3)
+            cShield = Int(mTotal * 1/3)
+            cSword8 = Int(mTotal * 1/3)
             cSword3x = 0
-            cSword8 = 0
-        case .medium:
-            cBoot = Int(mLuck * 1/2)
-            cShield = Int(mLuck * 1/3)
-            
-            let swordCount = Int(mLuck * 1/6)
-            
-            if duplicateItemTimerManager.isRunningSword2x {
-                cSword2x = swordCount * 2/3
-                cSword3x = swordCount * 1/3
-                cSword8 = 0
-            }
-            else {
-                cSword2x = swordCount
-                cSword3x = 0
-                cSword8 = 0
-            }
-        case .high:
-            cBoot = Int(mLuck * 1/4)
-            cShield = Int(mLuck * 1/4)
-            
-            let swordCount = Int(mLuck * 1/2)
-            
-            if duplicateItemTimerManager.isRunningSword3x {
-                cSword2x = 0
-                cSword3x = swordCount * 2/3
-                cSword8 = swordCount * 1/3
-            }
-            else if duplicateItemTimerManager.isRunningSword2x {
-                cSword2x = swordCount * 2/3
-                cSword3x = swordCount * 1/3
-                cSword8 = 0
-            }
-            else {
-                cSword2x = swordCount
-                cSword3x = 0
-                cSword8 = 0
-            }
+            cSword2x = 0
         }
         
         spawnTimerDuration = floor(max(10 * chosenSwordLuck, 3))
@@ -161,18 +175,18 @@ class DuplicateItem {
         - playerHealth: latest read from the player's health
         - chosenSwordLuck: technically, this shouldn't change throughout the battle, but it can read the chosen sword's luck value every time
         - itemSpawnLevel: levels from 1 to 3 indicating the type of drop you'll get.
+        - resetCount: number of times broke magmoor shield
      */
-    func spawnItem(at position: K.GameboardPosition, on gameboard: GameboardSprite, delay: TimeInterval, playerHealth: CGFloat, chosenSwordLuck: CGFloat, itemSpawnLevel: ItemSpawnLevel) {
+    func spawnItem(at position: K.GameboardPosition, on gameboard: GameboardSprite, delay: TimeInterval, playerHealth: CGFloat, chosenSwordLuck: CGFloat, itemSpawnLevel: ItemSpawnLevel, resetCount: Int) {
         
         //Re-populates spawn items based on updated health.
-        populateSpawnedItems(playerHealth: playerHealth, chosenSwordLuck: chosenSwordLuck, itemSpawnLevel: itemSpawnLevel)
+        populateSpawnedItems(playerHealth: playerHealth, chosenSwordLuck: chosenSwordLuck, itemSpawnLevel: itemSpawnLevel, resetCount: resetCount)
         
         //Guard to make sure everything was ok..
         guard !spawnedItems.isEmpty else { return print("DuplicateItem.spawnedItems not populated.") }
         
         let randomIndex = Int.random(in: 0..<spawnedItems.count)
-        let forceSword8: Bool = (duplicateItemTimerManager.isRunningSword3x || duplicateItemTimerManager.isRunningSword8) && duplicateItemTimerManager.isRunningShield && duplicateItemTimerManager.isRunningBoot
-        let item: LevelType = forceSword8 ? .swordInf : spawnedItems.remove(at: randomIndex)
+        let item: LevelType = spawnedItems.remove(at: randomIndex)
         
         gameboard.spawnItem(at: position, with: item, delay: delay, completion: {})
         
