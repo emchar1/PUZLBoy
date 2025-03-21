@@ -299,7 +299,8 @@ class Fireball: SKNode {
                 SKAction.run {
                     if canPlaySound {
                         let bombTickSound: String = isLarge ? "villainattackbombticklarge" : "villainattackbombtick"
-                        AudioManager.shared.playSound(for: bombTickSound, interruptPlayback: false)
+                        
+                        AudioManager.shared.playSound(for: bombTickSound, interruptPlayback: true)
                     }
                 },
                 SKAction.group([
