@@ -16,8 +16,11 @@ class FinalBattle2Background {
     
     private var backgroundSprite: SKSpriteNode
     private var bloodOverlay: SKSpriteNode
+    private var infinityOverlay: SKSpriteNode
     private var flashGameboard: SKSpriteNode
+    private var gameboard: GameboardSprite
     
+    private var isRunningSword8: Bool = false
     private var overworldMusic: String
     private var previousOverworldMusic: String?
     
@@ -28,13 +31,18 @@ class FinalBattle2Background {
     
     // MARK: - Initialization
     
-    init(backgroundSprite: SKSpriteNode, bloodOverlay: SKSpriteNode, flashGameboard: SKSpriteNode) {
+    init(backgroundSprite: SKSpriteNode, bloodOverlay: SKSpriteNode, infinityOverlay: SKSpriteNode, flashGameboard: SKSpriteNode, gameboard: GameboardSprite) {
         self.backgroundSprite = backgroundSprite
         self.bloodOverlay = bloodOverlay
+        self.infinityOverlay = infinityOverlay
         self.flashGameboard = flashGameboard
+        self.gameboard = gameboard
         
         overworldMusic = "bossbattle1"
         previousOverworldMusic = nil
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(didInitializeSword8), name: .didSwordInfTimerInitialize, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(didExpireSword8), name: .didSwordInfTimerExpire, object: nil)
     }
     
     deinit {
@@ -268,6 +276,34 @@ class FinalBattle2Background {
                 SKAction.fadeAlpha(to: fadeAlpha, duration: duration)
             ])
         ])
+    }
+    
+    @objc private func didInitializeSword8() {
+        guard !isRunningSword8 else { return }
+        
+        isRunningSword8 = true
+        
+        infinityOverlay.removeAction(forKey: "keyInfinityFadeOut")
+        infinityOverlay.run(SKAction.fadeAlpha(to: 0.5, duration: 1))
+        infinityOverlay.run(SKAction.repeatForever(SKAction.colorizeWithRainbowColorSequence(blendFactor: 1, duration: 0.25)), withKey: "keyInfinityRainbow")
+        
+        if let endGateMagic = gameboard.sprite.childNode(withName: "endGateMagic") as? SKSpriteNode {
+            endGateMagic.removeAction(forKey: "keyEndGateMagicFadeOut")
+            endGateMagic.run(SKAction.fadeIn(withDuration: 1))
+            endGateMagic.run(SKAction.repeatForever(SKAction.colorizeWithRainbowColorSequence(duration: 0.25)), withKey: "keyEndGateMagicRainbow")
+        }
+    }
+    
+    @objc private func didExpireSword8() {
+        isRunningSword8 = false
+        
+        infinityOverlay.removeAction(forKey: "keyInfinityRainbow")
+        infinityOverlay.run(SKAction.fadeOut(withDuration: 2), withKey: "keyInfinityFadeOut")
+        
+        if let endGateMagic = gameboard.sprite.childNode(withName: "endGateMagic") as? SKSpriteNode {
+            endGateMagic.removeAction(forKey: "keyEndGateMagicRainbow")
+            endGateMagic.run(SKAction.fadeOut(withDuration: 2), withKey: "keyEndGateMagicFadeOut")
+        }
     }
     
     

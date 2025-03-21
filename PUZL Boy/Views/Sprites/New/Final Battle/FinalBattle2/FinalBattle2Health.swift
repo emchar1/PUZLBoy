@@ -151,6 +151,7 @@ class FinalBattle2Health {
     
     private func objcHelper(damage: CGFloat, increment: Bool) {
         guard !(!increment && counter.counterDidReachMin) else { return }
+        guard !counter.counterDidReachMax else { return }
         
         var health: CGFloat { counter.getCount() }
         var healthDiff: CGFloat { counter.maxCount - health }
@@ -202,6 +203,8 @@ class FinalBattle2Health {
         
         // TODO: - This determines whether or not you beat Magmoor, essentially winning or losing the game.
         if counter.counterDidReachMax {
+            bar.removeStatus(flashMaxBravery: true, completion: {})
+            
             NotificationCenter.default.post(name: .completeGameDidWin, object: nil)
         }
     }
@@ -223,7 +226,7 @@ class FinalBattle2Health {
     }
     
     @objc private func helperDestroyDuplicate() {
-        objcHelper(damage: 0.01, increment: true)
+        objcHelper(damage: 0.005, increment: true)
     }
     
     @objc private func helperHealthUp() {

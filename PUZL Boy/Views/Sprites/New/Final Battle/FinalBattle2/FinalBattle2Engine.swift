@@ -26,6 +26,7 @@ class FinalBattle2Engine {
     
     private var superScene: SKScene?
     private var backgroundSprite: SKSpriteNode!
+    private var infinityOverlay: SKSpriteNode!
     private var bloodOverlay: SKSpriteNode!
     private var flashOverlay: SKSpriteNode!
     private var flashGameboard: SKSpriteNode!
@@ -59,6 +60,16 @@ class FinalBattle2Engine {
     private func setupScene() {
         gameboard = GameboardSprite(level: LevelBuilder.levels[Level.finalLevel + 1], fadeIn: false)
         
+        let endGateMagic = SKSpriteNode(imageNamed: "endClosedMagic")
+        endGateMagic.position = gameboard.getSpritePositionAbsolute(at: (3, 3)).terrain
+        endGateMagic.scale(to: gameboard.scaleSize)
+        endGateMagic.anchorPoint = .zero
+        endGateMagic.alpha = 0
+        endGateMagic.zPosition = K.ZPosition.overlay + 5
+        endGateMagic.name = "endGateMagic"
+        
+        gameboard.sprite.addChild(endGateMagic)
+        
         //Make sure to initialize GameboardSprite BEFORE initializing these!!!
         let playerScale: CGFloat = Player.getGameboardScale(panelSize: size.width / CGFloat(gameboard.panelCount))
         
@@ -69,6 +80,11 @@ class FinalBattle2Engine {
         bloodOverlay.anchorPoint = .zero
         bloodOverlay.alpha = FinalBattle2Background.defaultBloodOverlayAlpha
         bloodOverlay.zPosition = gameboard.sprite.zPosition + K.ZPosition.bloodOverlay
+        
+        infinityOverlay = SKSpriteNode(color: .black, size: size)
+        infinityOverlay.anchorPoint = .zero
+        infinityOverlay.alpha = 0
+        infinityOverlay.zPosition = 10
         
         flashOverlay = SKSpriteNode(color: .white, size: size)
         flashOverlay.anchorPoint = .zero
@@ -134,7 +150,12 @@ class FinalBattle2Engine {
             panelSpawner[i].populateSpawner()
         }
         
-        backgroundPattern = FinalBattle2Background(backgroundSprite: backgroundSprite, bloodOverlay: bloodOverlay, flashGameboard: flashGameboard)
+        backgroundPattern = FinalBattle2Background(backgroundSprite: backgroundSprite,
+                                                   bloodOverlay: bloodOverlay,
+                                                   infinityOverlay: infinityOverlay,
+                                                   flashGameboard: flashGameboard,
+                                                   gameboard: gameboard)
+        
         health = FinalBattle2Health(player: hero, position: CGPoint(x: size.width / 2, y: K.ScreenDimensions.topOfGameboard))
         health.delegateHealth = self
     }
@@ -151,6 +172,7 @@ class FinalBattle2Engine {
         
         superScene.addChild(backgroundSprite)
         superScene.addChild(bloodOverlay)
+        superScene.addChild(infinityOverlay)
         superScene.addChild(flashOverlay)
         
         

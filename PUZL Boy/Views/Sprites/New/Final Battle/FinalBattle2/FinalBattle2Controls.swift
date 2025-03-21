@@ -674,6 +674,7 @@ extension FinalBattle2Controls: MagmoorAttacksDelegate {
     
     private func didPlayerFreeze(position: K.GameboardPosition) {
         guard position == positions.player else { return }
+        guard !duplicateItemTimerManager.isRunningShield else { return }
         
         let waitDuration: TimeInterval = 3
         
