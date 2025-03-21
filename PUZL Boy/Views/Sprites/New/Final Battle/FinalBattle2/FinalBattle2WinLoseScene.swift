@@ -80,6 +80,8 @@ class FinalBattle2WinLoseScene: SKScene {
     // MARK: - Functions
     
     func animateScene(didWin: Bool) {
+        let delay: TimeInterval
+        
         winLoseLabel.text = didWin ? "YOU WIN!" : "YOU LOSE!"
         winLoseLabel.fontColor = (didWin ? UIColor.cyan : UIColor.red).lightenColor(factor: 6)
         winLoseLabel.updateShadow()
@@ -89,27 +91,29 @@ class FinalBattle2WinLoseScene: SKScene {
             SKAction.fadeIn(withDuration: fadeDuration)
         ]))
         
-        tryAgainButton.run(SKAction.sequence([
-            SKAction.wait(forDuration: fadeDuration * 2),
-            SKAction.fadeIn(withDuration: fadeDuration / 1)
-        ]))
-        
-        quitButton.run(SKAction.sequence([
-            SKAction.wait(forDuration: fadeDuration * 2),
-            SKAction.fadeIn(withDuration: fadeDuration / 1)
-        ]))
-        
         AudioManager.shared.playSound(for: didWin ? "villaindead" : "boydead")
         
         if didWin {
-            let delay: TimeInterval = AudioManager.shared.getAudioItem(filename: "gameendwin1")?.player.duration ?? 0
+            delay = AudioManager.shared.getAudioItem(filename: "gameendwin1")?.player.duration ?? 0
             
             AudioManager.shared.playSound(for: "gameendwin1", delay: fadeDuration)
             AudioManager.shared.playSound(for: "gameendwin2", delay: fadeDuration + delay)
         }
         else {
+            delay = fadeDuration
+            
             AudioManager.shared.playSound(for: "gameendlose", delay: fadeDuration)
         }
+        
+        tryAgainButton.run(SKAction.sequence([
+            SKAction.wait(forDuration: fadeDuration + delay),
+            SKAction.fadeIn(withDuration: fadeDuration / 1)
+        ]))
+        
+        quitButton.run(SKAction.sequence([
+            SKAction.wait(forDuration: fadeDuration + delay),
+            SKAction.fadeIn(withDuration: fadeDuration / 1)
+        ]))
     }
     
     
