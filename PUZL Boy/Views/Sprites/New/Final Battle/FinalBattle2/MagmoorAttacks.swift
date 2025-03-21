@@ -106,7 +106,7 @@ class MagmoorAttacks {
         case let levelCheck where levelCheck >= 4:
             guard !isFeatured else { attackPattern = .duplicates; break }
             
-            if levelCheck <= 5 || (levelCheck > 5 && shieldHP > 3) {
+            if levelCheck == 4 || shieldHP > 3 {
                 if randomInts[0].isMultiple(of: 5) { attackPattern = .freeze }                  //20%
                 else if randomInts[0].isMultiple(of: 2) { attackPattern = .spread }             //40%
                 else if randomInts[0].isMultiple(of: 3) { attackPattern = .poison }             //14%

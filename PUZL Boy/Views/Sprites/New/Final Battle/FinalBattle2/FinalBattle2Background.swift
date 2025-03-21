@@ -43,6 +43,7 @@ class FinalBattle2Background {
         AudioManager.shared.stopSound(for: overworldMusic, fadeDuration: 2)
     }
     
+    
     // MARK: - Functions
     
     /**
