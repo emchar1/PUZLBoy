@@ -55,6 +55,10 @@ class DuplicateItem {
         progressHUD.updateTimers()
     }
     
+    func resetTimers() {
+        progressHUD.resetTimers()
+    }
+    
     
     // MARK: - Functions
     

@@ -158,6 +158,9 @@ class FinalBattle2Engine {
         
         health = FinalBattle2Health(player: hero, position: CGPoint(x: size.width / 2, y: K.ScreenDimensions.topOfGameboard))
         health.delegateHealth = self
+        
+        //NEED TO RESET THIS!!! Otherwise progressHUDManager timers stack from the previous battle attempt 3/22/25.
+        DuplicateItem.shared.resetTimers()
     }
     
     

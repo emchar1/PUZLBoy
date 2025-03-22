@@ -25,22 +25,26 @@ class ProgressHUDManager {
     // MARK: - Initialization
     
     init() {
+        //progressBars MUST have exactly 5 array elements!!!
         progressBars = [nil, nil, nil, nil, nil]
     }
     
     deinit {
-        for progressBar in progressBars {
-            progressBar?.stopTimer()
-        }
-        
-        progressBars = [nil, nil, nil, nil, nil]
-        progressBars = []
+        resetTimers()
         
         print("deinit ProgressHUDManager")
     }
     
     
     // MARK: - Functions
+    
+    func resetTimers() {
+        for progressBar in progressBars {
+            progressBar?.stopTimer()
+        }
+        
+        progressBars = [nil, nil, nil, nil, nil]
+    }
     
     func setTimer(for progressBarType: ProgressBarType) {
         if progressBars[progressBarType.rawValue] == nil {
