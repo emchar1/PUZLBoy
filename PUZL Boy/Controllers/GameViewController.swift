@@ -371,9 +371,9 @@ extension GameViewController {
 // FIXME: - For use with build# 1.28(30).
 extension GameViewController: FinalBattle2WinLoseSceneDelegate {
     func didTapTryAgain() {
-        let finalBattleScene = FinalBattleScene(size: K.ScreenDimensions.size)
-        finalBattleScene.animateScene()
-        skView.presentScene(finalBattleScene, transition: SKTransition.fade(with: .black, duration: 0))
+        let catwalkScene = CatwalkScene(startAtTiki: true)
+        catwalkScene.catwalkDelegate = self
+        skView.presentScene(catwalkScene)
     }
     
     func didTapQuit() {

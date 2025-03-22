@@ -41,6 +41,7 @@ class CatwalkScene: SKScene {
     private var canOpenChest: Bool = false
     private var shouldSelectSword: Bool = false
     private var isSelectingSword: Bool = false
+    private var shouldStartAtTiki: Bool = false
 
     private let catwalkPanelNameDelimiter: Character = "_"
     private var catwalkPanelNamePrefix: String { "catwalkPanel\(catwalkPanelNameDelimiter)" }
@@ -91,6 +92,18 @@ class CatwalkScene: SKScene {
     
     override init(size: CGSize) {
         super.init(size: size)
+        
+        setupNodes()
+    }
+    
+    init(startAtTiki: Bool) {
+        super.init(size: K.ScreenDimensions.size)
+        
+        self.shouldStartAtTiki = startAtTiki
+        
+        if shouldStartAtTiki {
+            currentPanelIndex = 33
+        }
         
         setupNodes()
     }
@@ -164,8 +177,12 @@ class CatwalkScene: SKScene {
         hero = Player(type: .hero)
         hero.sprite.position = CGPoint(x: -catwalkNode.frame.size.width / 2 + scaleSize.width / 2, y: 0)
         hero.sprite.setScale(Player.getGameboardScale(panelSize: panelSize))
+        hero.sprite.alpha = 0
         hero.sprite.zPosition = K.ZPosition.player
-        hero.sprite.run(animatePlayer(player: hero, type: .idle))
+        
+        if shouldStartAtTiki {
+            hero.sprite.position += CGPoint(x: CGFloat(currentPanelIndex) * (scaleSize.width + panelSpacing), y: 0)
+        }
         
         elder0 = Player(type: .elder0)
         elder0.sprite.alpha = 0
@@ -275,6 +292,30 @@ class CatwalkScene: SKScene {
             guard let self = self else { return }
             
             playDialogue(panelIndex: currentPanelIndex)
+        }
+        
+        if shouldStartAtTiki {
+            run(SKAction.sequence([
+                SKAction.wait(forDuration: 3.5),
+                SKAction.run { [weak self] in
+                    guard let self = self else { return }
+                                        
+                    shiftCatwalkNode(panels: currentPanelIndex, moveDuration: 2.3) {
+                        self.hero.sprite.run(SKAction.fadeIn(withDuration: 1))
+                        self.hero.sprite.run(self.animatePlayer(player: self.hero, type: .idle))
+                    }
+                    
+                    AudioManager.shared.playSound(for: "realmtransition")
+                }
+            ]))
+        }
+        else {
+            hero.sprite.run(SKAction.sequence([
+                SKAction.wait(forDuration: 3.5),
+                SKAction.fadeIn(withDuration: 1)
+            ]))
+            
+            hero.sprite.run(animatePlayer(player: hero, type: .idle))
         }
         
         AudioManager.shared.playSound(for: CatwalkScene.catwalkOverworld, fadeIn: 4.5)
