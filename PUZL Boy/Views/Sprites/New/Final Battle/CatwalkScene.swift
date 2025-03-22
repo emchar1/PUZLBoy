@@ -1448,37 +1448,32 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
     }
     
     private func zoomMagmoorHelper(scaleBy: CGFloat, fadeDuration: TimeInterval) -> SKAction {
-        let shakeDuration: TimeInterval = 0.0625
-        let shakeDistance: CGFloat = 1
-        let shakeRepeat: Int = Int(1 / (2 * shakeDuration))
         let totalFade: TimeInterval = fadeDuration * 24
+        let spiralFactor: CGFloat = 4
+        var time: CGFloat = 0
         
-        func shakeLeftRight(multiplier: CGFloat, count: Int) -> SKAction {
-            return SKAction.repeat(SKAction.sequence([
-                SKAction.moveBy(x: -multiplier * shakeDistance, y: 0, duration: 0),
-                SKAction.wait(forDuration: shakeDuration),
-                SKAction.moveBy(x: multiplier * shakeDistance, y: 0, duration: 0),
-                SKAction.wait(forDuration: shakeDuration)
-            ]), count: count)
+        func spiralMagmoorAction() -> SKAction {
+            let action = SKAction.customAction(withDuration: totalFade) { [weak self] node, _ in
+                guard let self = self else { return }
+                
+                time += 0.01 * spiralFactor
+                
+                let r = time / spiralFactor
+                let x = size.width / 2 + r * cos(time)
+                let y = size.height * (3/5) + r * sin(time)
+                
+                node.position = CGPoint(x: x, y: y)
+            }
+            
+            return action
         }
         
-        let shakeAction = SKAction.sequence([
-            shakeLeftRight(multiplier: 1, count: shakeRepeat),
-            shakeLeftRight(multiplier: 2, count: shakeRepeat),
-            shakeLeftRight(multiplier: 3, count: shakeRepeat),
-            shakeLeftRight(multiplier: 4, count: shakeRepeat),
-            shakeLeftRight(multiplier: 5, count: shakeRepeat),
-            shakeLeftRight(multiplier: 6, count: shakeRepeat),
-            shakeLeftRight(multiplier: 7, count: shakeRepeat),
-            shakeLeftRight(multiplier: 8, count: shakeRepeat),
-            shakeLeftRight(multiplier: 9, count: shakeRepeat),
-            shakeLeftRight(multiplier: 10, count: shakeRepeat),
-            shakeLeftRight(multiplier: 10, count: Int(totalFade - 10) * shakeRepeat)
-        ])
-        
-        return SKAction.group([
-            shakeAction, //comment this out to remove shaking magmoor!
-            SKAction.scale(by: scaleBy, duration: totalFade)
+        return SKAction.sequence([
+            SKAction.group([
+                spiralMagmoorAction(),
+                SKAction.scale(by: scaleBy, duration: totalFade)
+            ]),
+            SKAction.move(to: CGPoint(x: size.width / 2, y: size.height * 3/5), duration: 3)
         ])
     }
     

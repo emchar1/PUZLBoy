@@ -73,7 +73,7 @@ class GameViewController: UIViewController {
 //
 //
 //                // ver. 2 - catwalk scene
-//                let catwalkScene = CatwalkScene(size: K.ScreenDimensions.size)
+//                let catwalkScene = CatwalkScene(startAtTiki: true)
 //                catwalkScene.catwalkDelegate = self
 //                skView.presentScene(catwalkScene)
 //                skView.ignoresSiblingOrder = true
@@ -95,6 +95,8 @@ class GameViewController: UIViewController {
 //                skView.presentScene(finalBattleScene)
 //                skView.ignoresSiblingOrder = true
 //                view = skView
+//                
+//                
 //            } //end initializeFirestore()
 //        } //end getLevels
         
