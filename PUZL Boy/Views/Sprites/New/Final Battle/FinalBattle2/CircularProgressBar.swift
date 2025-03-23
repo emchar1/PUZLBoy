@@ -13,7 +13,7 @@ class CircularProgressBar: SKNode {
     
     typealias NotificationNames = (initialize: Notification.Name, expire: Notification.Name)
     
-    static let radius: CGFloat = 100
+    static let radius: CGFloat = 90
     static let lineWidth: CGFloat = 24
     
     private let timerIncrement: TimeInterval

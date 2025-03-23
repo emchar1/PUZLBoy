@@ -142,15 +142,16 @@ class ProgressHUDManager {
         for (index, progressBar) in progressBars.enumerated() {
             guard let progressBar = progressBar, progressBar.parent == nil else { continue }
             
-            let offset: CGFloat = CircularProgressBar.radius + CircularProgressBar.lineWidth / 2
+            let doubleLine: CGFloat = CircularProgressBar.lineWidth * 2
+            let offset: CGFloat = CircularProgressBar.radius + doubleLine
             
             switch index {
             case ProgressBarType.sword2x.rawValue, ProgressBarType.sword3x.rawValue, ProgressBarType.swordInf.rawValue:
-                progressBar.position = position + offset
+                progressBar.position = CGPoint(x: position.x + offset + doubleLine, y: position.y + offset)
             case ProgressBarType.wingedboot.rawValue:
                 progressBar.position = CGPoint(x: K.ScreenDimensions.size.width / 2, y: position.y + offset)
             case ProgressBarType.shield.rawValue:
-                progressBar.position = CGPoint(x: K.ScreenDimensions.size.width - position.x - offset, y: position.y + offset)
+                progressBar.position = CGPoint(x: K.ScreenDimensions.size.width - position.x - offset - doubleLine, y: position.y + offset)
             default:
                 progressBar.position = position - offset
             }

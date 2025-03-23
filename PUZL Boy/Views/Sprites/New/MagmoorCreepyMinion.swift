@@ -117,18 +117,14 @@ class MagmoorCreepyMinion: SKNode {
     }
     
     private func setupNodes() {
+        let pos = CGPoint(x: K.ScreenDimensions.size.width / 2, y: K.ScreenDimensions.size.width)
+        
         //Setup Bravery
         punchCounter = Counter(maxCount: 2)
         braveryCounter = Counter(maxCount: 1, step: 0.01, shouldLoop: false)
         braveryCounter.setCount(to: 0.5)
         
-        braveryBar = StatusBarSprite(label: "Bravery",
-                                     shouldHide: true,
-                                     showBackground: false,
-                                     percentage: braveryCounter.getCount(),
-                                     position: CGPoint(x: K.ScreenDimensions.size.width / 2,
-                                                       y: K.ScreenDimensions.size.width + StatusBarSprite.defaultBarHeight + 16))
-        
+        braveryBar = StatusBarSprite(label: "Bravery", shouldHide: true, showBackground: false, percentage: braveryCounter.getCount(), position: pos)
         braveryBar.zPosition = K.ZPosition.overlay + 120
         
         //Setup actual nodes

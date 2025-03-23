@@ -61,11 +61,7 @@ class FinalBattle2Health {
         counter = Counter(maxCount: 1, step: 0.01, shouldLoop: false)
         counter.setCount(to: 0.5)
         
-        bar = StatusBarSprite(label: "Courage",
-                              shouldHide: true,
-                              showBackground: false,
-                              percentage: counter.getCount(),
-                              position: position + CGPoint(x: 0, y: StatusBarSprite.defaultBarHeight + 16))
+        bar = StatusBarSprite(label: "Courage", shouldHide: true, showBackground: false, percentage: counter.getCount(), position: position)
     }
     
     deinit {

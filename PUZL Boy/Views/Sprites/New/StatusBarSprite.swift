@@ -30,9 +30,15 @@ class StatusBarSprite: SKNode {
     
     // MARK: - Initialization
     
-    init(label: String, shouldHide: Bool, showBackground: Bool, percentage: CGFloat = 1, position: CGPoint = .zero, size: CGSize = CGSize(width: K.ScreenDimensions.size.width / 2, height: StatusBarSprite.defaultBarHeight)) {
+    init(label: String,
+         shouldHide: Bool,
+         showBackground: Bool,
+         percentage: CGFloat = 1,
+         position: CGPoint = .zero,
+         size: CGSize = CGSize(width: 7/8 * K.ScreenDimensions.size.width * UIDevice.spriteScale, height: StatusBarSprite.defaultBarHeight)) {
+        
         self.statusString = label
-        self.backgroundPosition = position
+        self.backgroundPosition = position + CGPoint(x: 0, y: StatusBarSprite.defaultBarHeight)
         self.barSize = size
         self.currentPercentage = percentage.clamp(min: 0, max: 1)
         

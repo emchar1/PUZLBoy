@@ -615,7 +615,7 @@ extension FinalBattle2Engine: FinalBattle2ControlsDelegate {
         case .sword2x, .sword3x, .swordInf, .wingedboot, .shield:
             guard let superScene = superScene else { return }
             
-            let hudOrigin = CGPoint(x: gameboard.sprite.position.x, y: K.ScreenDimensions.bottomMargin)
+            let hudOrigin = CGPoint(x: gameboard.sprite.position.x, y: K.ScreenDimensions.topOfGameboard + StatusBarSprite.defaultBarHeight + 4)
             
             DuplicateItem.shared.displayProgressBarHUD(on: superScene, at: hudOrigin)
         default:
