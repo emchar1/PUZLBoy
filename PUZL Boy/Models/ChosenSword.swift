@@ -90,7 +90,7 @@ class ChosenSword: SKNode {
             
             imageName = "sword3Cosmic"
             swordTitle = "Cosmic Cleaver of Purification"
-            elderCommentary = "This intimidating sword packs a mean punch! Careful!! It's heavy and somewhat cumbersome to wield in battle."
+            elderCommentary = "This intimidating sword packs a mean punch! It can slice through armor like butter. Careful!! It's heavy and somewhat cumbersome to wield in battle."
         case .eternalBlade:
             attackRating = 0.5
             defenseRating = 0.66 //72
@@ -100,7 +100,7 @@ class ChosenSword: SKNode {
             
             imageName = "sword4Eternal"
             swordTitle = "Blade of Eternal Might"
-            elderCommentary = "Not bad. Not bad at all! Only a few handful of swords are considered mightier than this one..."
+            elderCommentary = "Not bad at all! Only a few handful of swords are considered mightier than this one... You might even get lucky now and then!"
         case .plainSword:
             attackRating = 0.3
             defenseRating = 1.0 //48
@@ -110,7 +110,7 @@ class ChosenSword: SKNode {
             
             imageName = "sword"
             swordTitle = "Plain Sword"
-            elderCommentary = "A plain sword... Well, you've got an uphill battle to climb with this mediocre weapon."
+            elderCommentary = "A plain sword... Well, you've got an uphill battle to climb with this sad little weapon."
         }
         
         let attackPercentString: String = "\(Int(attackRating * 100))"
