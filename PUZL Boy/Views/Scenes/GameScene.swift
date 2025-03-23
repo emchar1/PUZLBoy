@@ -887,6 +887,16 @@ extension GameScene: GameEngineDelegate {
     func didTouchStatue() {
         playDialogueForStatueTapped()
     }
+    
+    func didSpawnMagmoorMinion() {
+        scoringEngine.hideSprite(fadeDuration: 2)
+    }
+    
+    func didDespawnMagmoorMinion() {
+        scoringEngine.showSprite(fadeDuration: 2)
+    }
+    
+    
 }
 
 

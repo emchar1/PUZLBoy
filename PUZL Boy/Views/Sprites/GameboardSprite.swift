@@ -7,6 +7,11 @@
 
 import SpriteKit
 
+protocol GameboardSpriteDelegate: AnyObject {
+    func didSpawnMagmoorMinion()
+    func didDespawnMagmoorMinion()
+}
+
 class GameboardSprite {
     
     // MARK: - Properties: Static
@@ -52,6 +57,8 @@ class GameboardSprite {
     private(set) var panelCount: Int
     private(set) var panelSize: CGFloat
     private(set) var sprite: SKSpriteNode
+    
+    weak var delegate: GameboardSpriteDelegate?
     
     enum RotateDirectionType {
         case none, flipHorizontal, rotateClockwise, rotateCounterClockwise
@@ -1167,6 +1174,9 @@ class GameboardSprite {
         statue5?.run(SKAction.sequence([
             SKAction.wait(forDuration: chatDelay),
             SKAction.move(to: positionFinal, duration: statue5bAnimateDuration),
+            SKAction.run { [weak self] in
+                self?.delegate?.didSpawnMagmoorMinion()
+            },
             SKAction.wait(forDuration: panelDuration + fadeDuration),
             SKAction.fadeOut(withDuration: fadeDuration),
             SKAction.removeFromParent()
@@ -1223,6 +1233,9 @@ class GameboardSprite {
         //AudioManager
         AudioManager.shared.stopSound(for: "magmoorcreepystrings", fadeDuration: fadeDuration)
         AudioManager.shared.stopSound(for: "magmoorcreepypulse", fadeDuration: fadeDuration)
+        
+        
+        delegate?.didDespawnMagmoorMinion()
     }
     
     /**

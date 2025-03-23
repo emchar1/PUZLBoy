@@ -86,11 +86,12 @@ class StatusBarSprite: SKNode {
         statusNode.zPosition = 2
         
         statusLabel = SKLabelNode(text: statusString.uppercased())
-        statusLabel.position = backgroundPosition + CGPoint(x: -barSize.width / 2, y: barSize.height / 2 + padding)
+        statusLabel.position = backgroundPosition + CGPoint(x: -barSize.width / 2 + padding, y: 0)
         statusLabel.fontName = UIFont.gameFont
         statusLabel.fontSize = UIFont.gameFontSizeMedium
-        statusLabel.fontColor = .yellow
+        statusLabel.fontColor = .darkGray
         statusLabel.horizontalAlignmentMode = .left
+        statusLabel.verticalAlignmentMode = .center
         statusLabel.zPosition = 3
         statusLabel.addDropShadow()
     }

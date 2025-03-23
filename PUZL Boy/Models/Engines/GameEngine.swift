@@ -20,6 +20,10 @@ protocol GameEngineDelegate: AnyObject {
     
     //NEW 7/30/24 - Tiki Statues
     func didTouchStatue()
+    
+    //NEW 3/23/25 - MagmoorCreepyMinion spawning/despawning
+    func didSpawnMagmoorMinion()
+    func didDespawnMagmoorMinion()
 }
 
 /**
@@ -215,6 +219,7 @@ class GameEngine {
         inbetweenNode.zPosition = 5
         
         gameboardSprite = GameboardSprite(level: self.level, fadeIn: !shouldSpawn)
+        gameboardSprite.delegate = self
         
         //K.ScreenDimensions.topOfGameboard is now a computed property, set in Constants. Let's see how it goes... 10/22/24
 //        K.ScreenDimensions.topOfGameboard = GameboardSprite.offsetPosition.y + K.ScreenDimensions.size.width * UIDevice.spriteScale
@@ -1367,6 +1372,25 @@ class GameEngine {
     
     func handleMagmoorCreepyMinionTouches(scene: SKScene, touches: Set<UITouch>) {
         gameboardSprite.magmoorCreepyMinion?.touchHandler(scene: scene, for: touches)
+    }
+    
+    
+}
+
+
+// MARK: - GameboardSprite Delegate
+
+extension GameEngine: GameboardSpriteDelegate {
+    func didSpawnMagmoorMinion() {
+        displaySprite.hideSprite(fadeDuration: 2)
+        
+        delegate?.didSpawnMagmoorMinion()
+    }
+    
+    func didDespawnMagmoorMinion() {
+        displaySprite.showSprite(fadeDuration: 2)
+        
+        delegate?.didDespawnMagmoorMinion()
     }
     
     

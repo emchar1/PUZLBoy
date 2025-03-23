@@ -61,7 +61,7 @@ class FinalBattle2Health {
         counter = Counter(maxCount: 1, step: 0.01, shouldLoop: false)
         counter.setCount(to: 0.5)
         
-        bar = StatusBarSprite(label: "Determination",
+        bar = StatusBarSprite(label: "Courage",
                               shouldHide: true,
                               showBackground: false,
                               percentage: counter.getCount(),
@@ -150,8 +150,7 @@ class FinalBattle2Health {
     // MARK: - Helper @objc Functions
     
     private func objcHelper(damage: CGFloat, increment: Bool) {
-        guard !(!increment && counter.counterDidReachMin) else { return }
-        guard !counter.counterDidReachMax else { return }
+        guard !counter.counterDidReachMin && !counter.counterDidReachMax else { return }
         
         var health: CGFloat { counter.getCount() }
         var healthDiff: CGFloat { counter.maxCount - health }
