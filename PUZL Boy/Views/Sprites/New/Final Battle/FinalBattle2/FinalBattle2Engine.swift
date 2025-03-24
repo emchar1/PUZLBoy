@@ -394,7 +394,8 @@ class FinalBattle2Engine {
         addEdgePosition(row: homePosition.row, col: homePosition.col + 2)
         
         //Panel animation
-        let shouldPoison: Bool = controls.magmoorShield.resetCount == 4 || controls.magmoorShield.resetCount >= 6
+        let resetCount = controls.magmoorShield.resetCount
+        let shouldPoison: Bool = resetCount == 4 || resetCount == 6 || resetCount == 7
         let heroHit: Bool = affectedPanels.contains(where: { $0 == controls.positions.player })
         
         affectedPanels.forEach { showDamagePanel(at: $0, color: shouldPoison ? .green : .red.darkenColor(factor: 12), isPoison: shouldPoison, withExplosion: true, extendDamage: heroHit) }
