@@ -22,8 +22,8 @@ class SpeechBubbleSprite: SKNode {
     static let animationSpeedOrig: TimeInterval = 0.08
     private var animationSpeed: TimeInterval
     private var animationIndex = 0
-    private var timer = Timer()
-    private var dispatchWorkItem = DispatchWorkItem(block: {})
+    private var timer: Timer?
+    private var dispatchWorkItem: DispatchWorkItem?
     private var completion: (() -> Void)?
 
     //Nodes
@@ -44,6 +44,9 @@ class SpeechBubbleSprite: SKNode {
         self.bubbleDimensions = CGSize(width: width, height: (width / bubbleDimensionsOrig.width) * bubbleDimensionsOrig.height)
         self.animationSpeed = SpeechBubbleSprite.animationSpeedOrig
         
+        timer = Timer()
+        dispatchWorkItem = DispatchWorkItem(block: {})
+        
         super.init()
         
         self.position = position
@@ -58,6 +61,12 @@ class SpeechBubbleSprite: SKNode {
     
     deinit {
         print("deinit SpeechBubbleSprite")
+        
+        timer?.invalidate()
+        timer = nil
+        
+        dispatchWorkItem?.cancel()
+        dispatchWorkItem = nil
     }
     
     private func setupSprites() {
@@ -89,8 +98,8 @@ class SpeechBubbleSprite: SKNode {
     
     ///Invalidates timers and dispatch work items, remove actions, and nodes from parent. Call this when rage quitting CreditsScene, i.e. from a button tap, to prevent memory leaks. BUGFIX# 231222E01.
     func cleanupManually() {
-        timer.invalidate()
-        dispatchWorkItem.cancel()
+        timer?.invalidate()
+        dispatchWorkItem?.cancel()
         backgroundSprite.removeAllActions()
         backgroundSprite.removeAllChildren()
         backgroundSprite.removeFromParent()
@@ -159,7 +168,7 @@ class SpeechBubbleSprite: SKNode {
     
     @objc private func animateTextHelper(_ sender: Timer) {
         guard animationIndex < bubbleText.count else {
-            timer.invalidate()
+            timer?.invalidate()
             
             endAnimation()
 
@@ -174,14 +183,16 @@ class SpeechBubbleSprite: SKNode {
         animationIndex += 1
         
         if speechBubbleChar == delimiterPause {
-            timer.invalidate()
+            timer?.invalidate()
             
             dispatchWorkItem = DispatchWorkItem(block: { [weak self] in
                 self?.animateText()
             })
             
-            //Adds a little pause when it comes across the delimiterPause character.
-            DispatchQueue.main.asyncAfter(deadline: .now() + animationPause, execute: dispatchWorkItem)
+            if let dispatchWorkItem = dispatchWorkItem {
+                //Adds a little pause when it comes across the delimiterPause character.
+                DispatchQueue.main.asyncAfter(deadline: .now() + animationPause, execute: dispatchWorkItem)
+            }
         }
         else {
             textSprite.text! += "\(speechBubbleChar)"

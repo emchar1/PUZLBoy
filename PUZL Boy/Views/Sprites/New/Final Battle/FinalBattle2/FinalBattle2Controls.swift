@@ -49,7 +49,7 @@ class FinalBattle2Controls {
     private var canAttack: Bool
     private var isFrozen: Bool
     private var isPoisoned: Bool
-    private var villainMoveTimer: Timer
+    private var villainMoveTimer: Timer?
     private(set) var villainMovementDelay: (normal: TimeInterval, enraged: TimeInterval)
     
     private(set) var chosenSword: ChosenSword!
@@ -101,6 +101,10 @@ class FinalBattle2Controls {
         magmoorAttacks = nil
         magmoorShield = nil
         
+        villainMoveTimer?.invalidate()
+        villainMoveTimer = nil
+        
+        duplicateItemTimerManager.removeObserver(self)
         AudioManager.shared.stopSound(for: "magicheartbeatloop1", fadeDuration: 2)
     }
     
@@ -169,7 +173,7 @@ class FinalBattle2Controls {
         guard magmoorShield.hasHitPoints && magmoorAttacks.timedBombCanHurtVillain() && magmoorAttacks.villainIsVisible && canAttack else { return }
         
         canAttack = false
-        villainMoveTimer.invalidate()
+        villainMoveTimer?.invalidate()
         AudioManager.shared.playSound(for: "villainpain\(Int.random(in: 1...2))")
         
         magmoorShield.decrementShield(villain: villain, villainPosition: positions.villain) { [weak self] in
@@ -278,7 +282,7 @@ class FinalBattle2Controls {
         
         isDisabled = true
         canAttack = false
-        villainMoveTimer.invalidate()
+        villainMoveTimer?.invalidate()
         
         chosenSword.attack(at: gameboard.getLocation(at: attackPanel),
                            facing: player.sprite.xScale,
@@ -498,7 +502,7 @@ class FinalBattle2Controls {
     private func resetTimer(forceDelay: TimeInterval?) {
         let timeInterval = forceDelay ?? (magmoorShield.isEnraged ? villainMovementDelay.enraged : villainMovementDelay.normal)
         
-        villainMoveTimer.invalidate()
+        villainMoveTimer?.invalidate()
         villainMoveTimer = Timer.scheduledTimer(timeInterval: timeInterval,
                                                 target: self,
                                                 selector: #selector(moveVillain(_:)),
@@ -512,7 +516,7 @@ class FinalBattle2Controls {
     private func setTimerFirstTime() {
         generateVillainPositionNew(enrage: false)
         
-        villainMoveTimer.invalidate()
+        villainMoveTimer?.invalidate()
         villainMoveTimer = Timer.scheduledTimer(timeInterval: 30,
                                                 target: self,
                                                 selector: #selector(moveVillainFirstTime(_:)),

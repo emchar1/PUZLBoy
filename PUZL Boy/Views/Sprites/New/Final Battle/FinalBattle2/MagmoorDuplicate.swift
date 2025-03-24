@@ -22,7 +22,7 @@ class MagmoorDuplicate: SKNode {
     private var gameboard: GameboardSprite
     private(set) var duplicatePattern: DuplicateAttackPattern
     private var attackType: MagmoorAttacks.AttackPattern
-    private var attackTimer: Timer
+    private var attackTimer: Timer?
     
     private(set) var duplicate: Player!
     private var duplicateAttacks: MagmoorAttacks!
@@ -58,7 +58,10 @@ class MagmoorDuplicate: SKNode {
     }
     
     deinit {
-//        print("deinit \(self.name ?? "MagmoorDuplicate")")
+        attackTimer?.invalidate()
+        attackTimer = nil
+        
+        print("deinit \(self.name ?? "MagmoorDuplicate")")
     }
     
     private func setupSprites(modelAfter villain: Player) {
@@ -245,7 +248,7 @@ class MagmoorDuplicate: SKNode {
         let fadeDuration: TimeInterval = 0.25
         let hasInvinciblesOriginal = MagmoorDuplicate.hasInvincibles(on: gameboard)
         
-        attackTimer.invalidate()
+        attackTimer?.invalidate()
         
         run(SKAction.sequence([
             SKAction.wait(forDuration: waitDuration),
@@ -322,7 +325,7 @@ class MagmoorDuplicate: SKNode {
      - parameter speed: the new attackTimer interval
      */
     private func setAttackTimer(speed: TimeInterval) {
-        attackTimer.invalidate()
+        attackTimer?.invalidate()
         attackTimer = Timer.scheduledTimer(timeInterval: speed,
                                            target: self,
                                            selector: #selector(attackTimerFire(_:)),

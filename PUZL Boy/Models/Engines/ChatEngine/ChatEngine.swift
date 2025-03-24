@@ -93,8 +93,8 @@ class ChatEngine {
 
     
     //Utilities
-    private var timer: Timer
-    private var dispatchWorkItem: DispatchWorkItem          //Used to closeChat() and cancel any scheduled closeChat() calls. It works!!!
+    private var timer: Timer?
+    private var dispatchWorkItem: DispatchWorkItem?         //Used to closeChat() and cancel any scheduled closeChat() calls. It works!!!
 
 
     //Important Properties
@@ -165,6 +165,12 @@ class ChatEngine {
     }
     
     deinit {
+        timer?.invalidate()
+        timer = nil
+        
+        dispatchWorkItem?.cancel()
+        dispatchWorkItem = nil
+        
         print("ChatEngine deinit")
     }
     
@@ -323,7 +329,7 @@ class ChatEngine {
             chatSpeed = chatSpeedImmediate
         }
         else {
-            dispatchWorkItem.cancel()
+            dispatchWorkItem?.cancel()
             closeChat()
         }
     }
@@ -502,7 +508,7 @@ class ChatEngine {
         textSprite.updateShadow()
         avatarSprite.texture = ChatItem.getChatProfileTexture(profile: profile)
         chatBackgroundSprite.fillColor = ChatItem.getChatColor(profile: profile)
-        timer.invalidate()
+        timer?.invalidate()
         chatText = chat
         chatIndex = 0
         allowNewChat = false //prevents interruption of current chat, which could lead to crashing due to index out of bounds
@@ -597,14 +603,16 @@ class ChatEngine {
             chatIndex = chatText.count
         }
         else if chatIndex >= chatText.count {
-            timer.invalidate()
+            timer?.invalidate()
             
             //Set it here so you can cancel it if needed.
             dispatchWorkItem = DispatchWorkItem(block: { [weak self] in
                 self?.closeChat()
             })
             
-            DispatchQueue.main.asyncAfter(deadline: .now() + asyncDelay, execute: dispatchWorkItem)
+            if let dispatchWorkItem = dispatchWorkItem {
+                DispatchQueue.main.asyncAfter(deadline: .now() + asyncDelay, execute: dispatchWorkItem)
+            }
         }
     }
     

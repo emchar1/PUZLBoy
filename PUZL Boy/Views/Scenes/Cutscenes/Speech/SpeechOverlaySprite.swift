@@ -26,8 +26,8 @@ class SpeechOverlaySprite: SKNode {
     static let animationSpeedOrig: TimeInterval = 0.04
     private var animationSpeed: TimeInterval
     private var animationIndex = 0
-    private var timer = Timer()
-    private var dispatchWorkItem = DispatchWorkItem(block: {})
+    private var timer: Timer?
+    private var dispatchWorkItem: DispatchWorkItem?
     private var completion: (() -> Void)?
     
     
@@ -37,6 +37,9 @@ class SpeechOverlaySprite: SKNode {
         self.text = ""
         self.fontColor = SpeechOverlaySprite.fontColorOrig
         self.animationSpeed = SpeechOverlaySprite.animationSpeedOrig
+        
+        timer = Timer()
+        dispatchWorkItem = DispatchWorkItem(block: {})
 
         super.init()
         
@@ -51,7 +54,11 @@ class SpeechOverlaySprite: SKNode {
     }
     
     deinit {
-        dispatchWorkItem.cancel() //MUST DO THIS!! Otherwise app crashes if you skip intro while this is playing. BUGFIX# 230910E01
+        timer?.invalidate()
+        timer = nil
+        
+        dispatchWorkItem?.cancel() //MUST DO THIS!! Otherwise app crashes if you skip intro while this is playing. BUGFIX# 230910E01
+        dispatchWorkItem = nil
         
         print("deinit SpeechOverlaySprite. Cancelled DispatchWorkItem.")
     }
@@ -79,8 +86,8 @@ class SpeechOverlaySprite: SKNode {
     
     ///Invalidates timers and dispatch work items, remove actions, and nodes from parent. Call this when rage quitting, i.e. from a button tap, to prevent memory leaks.
     func cleanupManually() {
-        timer.invalidate()
-        dispatchWorkItem.cancel()
+        timer?.invalidate()
+        dispatchWorkItem?.cancel()
         backgroundNode.removeAllActions()
         backgroundNode.removeAllChildren()
         backgroundNode.removeFromParent()
@@ -130,7 +137,7 @@ class SpeechOverlaySprite: SKNode {
     
     @objc private func animateTextHelper(_ sender: Timer) {
         guard animationIndex < self.text.count else {
-            timer.invalidate()
+            timer?.invalidate()
             
             endAnimation()
 
@@ -145,14 +152,16 @@ class SpeechOverlaySprite: SKNode {
         animationIndex += 1
         
         if speechBubbleChar == delimiterPause {
-            timer.invalidate()
+            timer?.invalidate()
             
             dispatchWorkItem = DispatchWorkItem(block: { [weak self] in
                 self?.animateText()
             })
             
-            //Adds a little pause when it comes across the delimiterPause character.
-            DispatchQueue.main.asyncAfter(deadline: .now() + animationPause, execute: dispatchWorkItem)
+            if let dispatchWorkItem = dispatchWorkItem {
+                //Adds a little pause when it comes across the delimiterPause character.
+                DispatchQueue.main.asyncAfter(deadline: .now() + animationPause, execute: dispatchWorkItem)
+            }
         }
         else {
             speechNode.text! += "\(speechBubbleChar)"

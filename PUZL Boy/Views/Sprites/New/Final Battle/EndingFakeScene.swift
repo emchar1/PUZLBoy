@@ -17,7 +17,7 @@ class EndingFakeScene: SKScene {
     private var titleLabel: SKLabelNode!
     private var messageLabel: SKLabelNode!
     
-    private var timer: Timer
+    private var timer: Timer?
     private let shadow: (color: UIColor, alpha: CGFloat) = (.purple.lightenColor(factor: 9), 0.35)
     private let titleText: String
     private let messageText: String
@@ -43,6 +43,9 @@ class EndingFakeScene: SKScene {
     
     deinit {
         print("EndingFakeScene deinit")
+        
+        timer?.invalidate()
+        timer = nil
     }
     
     private func cleanupScene() {
@@ -169,7 +172,7 @@ class EndingFakeScene: SKScene {
             messageIndex += 1
         }
         else {
-            timer.invalidate()
+            timer?.invalidate()
         }
     }
     

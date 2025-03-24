@@ -109,6 +109,14 @@ class GameViewController: UIViewController {
 
         print("Testing device info: \(UIDevice.modelInfo), UI aspect ratio: \(K.ScreenDimensions.sizeUI.height / K.ScreenDimensions.sizeUI.width)")
     }
+    
+    deinit {
+        print("GameViewController deinit!!!")
+        
+        NotificationCenter.default.removeObserver(self)
+    }
+    
+    
 }
 
 

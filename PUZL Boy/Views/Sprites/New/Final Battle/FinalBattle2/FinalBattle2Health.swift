@@ -65,6 +65,15 @@ class FinalBattle2Health {
     }
     
     deinit {
+        timer?.invalidate()
+        timer = nil
+        
+        drainTimer?.invalidate()
+        drainTimer = nil
+        
+        poisonTimer?.invalidate()
+        poisonTimer = nil
+        
         print("deinit FinalBattle2Health")
     }
     

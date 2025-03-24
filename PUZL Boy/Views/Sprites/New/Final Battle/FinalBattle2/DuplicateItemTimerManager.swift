@@ -57,6 +57,10 @@ class DuplicateItemTimerManager {
         NotificationCenter.default.addObserver(observer, selector: #selector(expiredShield), name: .didShieldTimerExpire, object: nil)
     }
     
+    func removeObserver(_ observer: Any) {
+        NotificationCenter.default.removeObserver(observer)
+    }
+    
     
     // MARK: - Functions
     

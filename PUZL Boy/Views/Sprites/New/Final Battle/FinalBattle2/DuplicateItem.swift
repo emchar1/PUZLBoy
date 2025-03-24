@@ -15,7 +15,7 @@ class DuplicateItem {
     private var duplicateItemTimerManager: DuplicateItemTimerManager
     
     private var spawnTimerDuration: TimeInterval
-    private var timer: Timer
+    private var timer: Timer?
     
     private(set) var spawnedItems: [LevelType]
     private(set) var collectedItems: [LevelType]
@@ -49,6 +49,11 @@ class DuplicateItem {
     
     deinit {
         print("deinit DuplicateItem")
+        
+        timer?.invalidate()
+        timer = nil
+        
+        duplicateItemTimerManager.removeObserver(self)
     }
     
     @objc private func updateTimer() {

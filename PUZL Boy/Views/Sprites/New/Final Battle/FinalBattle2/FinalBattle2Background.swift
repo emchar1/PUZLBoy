@@ -48,6 +48,7 @@ class FinalBattle2Background {
     deinit {
         print("deinit FinalBattle2Background")
         
+        NotificationCenter.default.removeObserver(self)
         AudioManager.shared.stopSound(for: overworldMusic, fadeDuration: 2)
     }
     

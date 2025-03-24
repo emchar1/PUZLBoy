@@ -81,7 +81,7 @@ class CatwalkScene: SKScene {
     private var tapPointerEngine: TapPointerEngine!
     private var chatEngine: ChatEngine!
     
-    private var dispatchWorkItem: DispatchWorkItem!
+    private var dispatchWorkItem: DispatchWorkItem?
     private var elderChatBubble: SpeechBubbleSprite!
     private var elderChatAlreadyPlayed = false
     
@@ -114,6 +114,9 @@ class CatwalkScene: SKScene {
     
     deinit {
         print("CatwalkScene deinit")
+        
+        dispatchWorkItem?.cancel()
+        dispatchWorkItem = nil
     }
     
     func cleanupScene() {
@@ -895,14 +898,17 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
                                     parentNode: elder1.sprite,
                                     completion: nil)
         })
-        DispatchQueue.main.asyncAfter(deadline: .now() + 5, execute: dispatchWorkItem)
+        
+        if let dispatchWorkItem = dispatchWorkItem {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 5, execute: dispatchWorkItem)
+        }
     }
     
     func spawnMagmoorCatwalk() {
         magmoorSprite.run(fadeInMagmoorHelper(fadeDuration: 2), withKey: CatwalkScene.keyMagmoorFadeAction)
         AudioManager.shared.playSound(for: "magicheartbeatloop2", delay: 0.5)
         
-        dispatchWorkItem.cancel()
+        dispatchWorkItem?.cancel()
     }
     
     func flashMagmoorCatwalk(quickFlash: Bool) {
@@ -1254,7 +1260,7 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
                 endClosedMagic.removeFromParent()
                 AudioManager.shared.playSound(for: "ydooropen")
                 
-                dispatchWorkItem.cancel()
+                dispatchWorkItem?.cancel()
                 dispatchWorkItem = DispatchWorkItem(block: { [weak self] in
                     guard let self = self else { return }
                     elderChatBubble.removeFromParent()
@@ -1264,7 +1270,10 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
                                             parentNode: elder2.sprite,
                                             completion: nil)
                 })
-                DispatchQueue.main.asyncAfter(deadline: .now() + 5, execute: dispatchWorkItem)
+                
+                if let dispatchWorkItem = dispatchWorkItem {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 5, execute: dispatchWorkItem)
+                }
             }
             else {
                 isFeedingGems = false
@@ -1278,7 +1287,7 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
         //Ensure the gate was tapped, otherwise skip all the below rigamaroll
         guard didTapGate else { return }
         
-        dispatchWorkItem.cancel()
+        dispatchWorkItem?.cancel()
         if !elderChatAlreadyPlayed {
             dispatchWorkItem = DispatchWorkItem(block: { [weak self] in
                 guard let self = self else { return }
@@ -1290,7 +1299,10 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
                                         parentNode: elder1.sprite,
                                         completion: nil)
             })
-            DispatchQueue.main.asyncAfter(deadline: .now() + 5, execute: dispatchWorkItem)
+            
+            if let dispatchWorkItem = dispatchWorkItem {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 5, execute: dispatchWorkItem)
+            }
         }
         
         if let gatePanel = catwalkPanels.last {
