@@ -106,11 +106,22 @@ class GameboardSprite {
      - parameters:
         - row: The row number of the panel
         - col: The column number of the panel
-        - overlay: True if using the overlay tag, otherwise it's a terrain panel
+        - includeOverlayTag: True if using the overlay tag, otherwise it's a terrain panel
      - returns: A string in the format: R,C<-O> with the optional overlay tag
      */
     static func getNodeName(row: Int, col: Int, includeOverlayTag: Bool = false) -> String {
         return "\(row)\(GameboardSprite.delimiter)\(col)" + (includeOverlayTag ? GameboardSprite.overlayTag : "")
+    }
+    
+    /**
+     Convenience function for getNodeName(row:col:includeOverlayTag)
+     - parameters:
+        - position: the K.GameboardPosition
+        - includeOverlayTag: True if using the overlay tag, otherwise it's a terrain panel
+     - returns: A string in the format: R,C<-O> with the optional overlay tag
+     */
+    static func getNodeName(position: K.GameboardPosition, includeOverlayTag: Bool = false) -> String {
+        return getNodeName(row: position.row, col: position.col, includeOverlayTag: includeOverlayTag)
     }
     
     /**
@@ -166,8 +177,8 @@ class GameboardSprite {
     
     ///Returns the K.GameboardPanelSprite's SKSpriteNodes (terrain and overlay) at the given K.GameboardPosition.
     func getPanelSprite(at position: K.GameboardPosition) -> K.GameboardPanelSprite {
-        let terrainName = GameboardSprite.getNodeName(row: position.row, col: position.col)
-        let overlayName = GameboardSprite.getNodeName(row: position.row, col: position.col, includeOverlayTag: true)
+        let terrainName = GameboardSprite.getNodeName(position: position)
+        let overlayName = GameboardSprite.getNodeName(position: position, includeOverlayTag: true)
 
         let terrainNode = sprite.childNode(withName: terrainName) as? SKSpriteNode
         let overlayNode = sprite.childNode(withName: overlayName) as? SKSpriteNode
@@ -198,7 +209,7 @@ class GameboardSprite {
         terrainPanel.color = fadeIn ? .black : GameboardSprite.dayThemeSpriteColor
         terrainPanel.colorBlendFactor = fadeIn ? 1 : GameboardSprite.dayThemeSpriteShade
         terrainPanel.zPosition = K.ZPosition.terrain
-        terrainPanel.name = GameboardSprite.getNodeName(row: position.row, col: position.col)
+        terrainPanel.name = GameboardSprite.getNodeName(position: position)
         setUserDataForLevelType(sprite: terrainPanel, data: terrainString)
         
         if let terrainPanelName = terrainPanel.name {
@@ -253,7 +264,7 @@ class GameboardSprite {
         overlayPanel.color = fadeIn ? .black : GameboardSprite.dayThemeSpriteColor
         overlayPanel.colorBlendFactor = fadeIn ? 1 : GameboardSprite.dayThemeSpriteShade
         overlayPanel.zPosition = K.ZPosition.overlay
-        overlayPanel.name = GameboardSprite.getNodeName(row: position.row, col: position.col, includeOverlayTag: true)
+        overlayPanel.name = GameboardSprite.getNodeName(position: position, includeOverlayTag: true)
         setUserDataForLevelType(sprite: overlayPanel, data: overlayString)
         
         if let overlayPanelName = overlayPanel.name {
@@ -309,7 +320,7 @@ class GameboardSprite {
         overlayPanel.scale(to: .zero)
         overlayPanel.position = getSpritePositionAbsolute(at: position).overlay
         overlayPanel.zPosition = itemOverlay == .warp4 ? K.ZPosition.itemsAndEffects - 10 : K.ZPosition.overlay
-        overlayPanel.name = GameboardSprite.getNodeName(row: position.row, col: position.col, includeOverlayTag: true)
+        overlayPanel.name = GameboardSprite.getNodeName(position: position, includeOverlayTag: true)
         
         overlayPanel.run(SKAction.sequence([
             SKAction.wait(forDuration: delay ?? 0),
@@ -344,7 +355,7 @@ class GameboardSprite {
     func despawnItem(at position: K.GameboardPosition, completion: @escaping () -> Void) {
         let duration: TimeInterval = 0.25
         let bounceFactor: CGFloat = scaleSize.width * 0.25
-        let itemOverlays = sprite.children.filter({ $0.name == GameboardSprite.getNodeName(row: position.row, col: position.col, includeOverlayTag: true) })
+        let itemOverlays = sprite.children.filter({ $0.name == GameboardSprite.getNodeName(position: position, includeOverlayTag: true) })
         
         for itemOverlay in itemOverlays {
             itemOverlay.run(SKAction.sequence([
@@ -508,7 +519,7 @@ class GameboardSprite {
 
         for node in sprite.children {
             if let nodeName = node.name,
-               nodeName.contains(GameboardSprite.getNodeName(row: position.row, col: position.col, includeOverlayTag: true)) {
+               nodeName.contains(GameboardSprite.getNodeName(position: position, includeOverlayTag: true)) {
                 //Exit function if there's an overlay item, like a gem or dragon
                 print("Unable to execute GameboardSprite.spawnPrincessCapture(); there's an overlay!")
                 completion()
@@ -669,7 +680,7 @@ class GameboardSprite {
         
         for node in sprite.children {
             if let nodeName = node.name,
-               nodeName.contains(GameboardSprite.getNodeName(row: position.row, col: position.col, includeOverlayTag: true)) {
+               nodeName.contains(GameboardSprite.getNodeName(position: position, includeOverlayTag: true)) {
                 //Exit function if there's an overlay item, like a gem or dragon
                 print("Unable to execute GameboardSprite.despawnPrincessCapture(); there's an overlay!")
 
@@ -1283,7 +1294,7 @@ class GameboardSprite {
 
         for node in sprite.children {
             if let nodeName = node.name,
-               nodeName.contains(GameboardSprite.getNodeName(row: positions[0].row, col: positions[0].col, includeOverlayTag: true)) || nodeName.contains(GameboardSprite.getNodeName(row: positions[1].row, col: positions[1].col, includeOverlayTag: true)) || nodeName.contains(GameboardSprite.getNodeName(row: positions[2].row, col: positions[2].col, includeOverlayTag: true)) {
+               nodeName.contains(GameboardSprite.getNodeName(position: positions[0], includeOverlayTag: true)) || nodeName.contains(GameboardSprite.getNodeName(position: positions[1], includeOverlayTag: true)) || nodeName.contains(GameboardSprite.getNodeName(position: positions[2], includeOverlayTag: true)) {
                 //Exit function if there's an overlay item, like a gem or dragon
                 print("Unable to execute GameboardSprite.spawnElder(); there's an overlay!")
                 completion()
@@ -1590,7 +1601,7 @@ class GameboardSprite {
     }
     
     private func getIlluminatedPanel(at position: K.GameboardPosition, useOverlay: Bool) -> SKNode? {
-        let panelName = GameboardSprite.getNodeName(row: position.row, col: position.col)
+        let panelName = GameboardSprite.getNodeName(position: position)
         
         if useOverlay {
             return sprite.childNode(withName: panelName + GameboardSprite.overlayTag)
@@ -1636,7 +1647,7 @@ class GameboardSprite {
         - completion: the handler to run after all is said and done.
      */
     func rotateEnemy(at position: K.GameboardPosition, directionType: RotateDirectionType, duration: TimeInterval, completion: (() -> Void)? = nil) {
-        guard let overlay = sprite.childNode(withName: GameboardSprite.getNodeName(row: position.row, col: position.col, includeOverlayTag: true)) else { return }
+        guard let overlay = sprite.childNode(withName: GameboardSprite.getNodeName(position: position, includeOverlayTag: true)) else { return }
 
         let action: SKAction
         
@@ -1687,8 +1698,8 @@ class GameboardSprite {
         
         guard let first = chooseWarps.first,
               let second = chooseWarps.second,
-              let warpFirst = sprite.childNode(withName: GameboardSprite.getNodeName(row: first.row, col: first.col, includeOverlayTag: true)),
-              let warpSecond = sprite.childNode(withName: GameboardSprite.getNodeName(row: second.row, col: second.col, includeOverlayTag: true))
+              let warpFirst = sprite.childNode(withName: GameboardSprite.getNodeName(position: first, includeOverlayTag: true)),
+              let warpSecond = sprite.childNode(withName: GameboardSprite.getNodeName(position: second, includeOverlayTag: true))
         else {
             print("Level has no warps!")
             return nil
@@ -1764,7 +1775,7 @@ class GameboardSprite {
     }
     
     func animateBreatheFireIdle(position: K.GameboardPosition) {
-        guard let dragonNode = sprite.childNode(withName: GameboardSprite.getNodeName(row: position.row, col: position.col, includeOverlayTag: true)) else { return }
+        guard let dragonNode = sprite.childNode(withName: GameboardSprite.getNodeName(position: position, includeOverlayTag: true)) else { return }
         
         var wait1: TimeInterval { TimeInterval.random(in: 0...1) }
         var wait2: TimeInterval { TimeInterval.random(in: 3...5) }
@@ -1784,7 +1795,7 @@ class GameboardSprite {
     }
     
     func animateHeartbeat(position: K.GameboardPosition) {
-        guard let heartNode = sprite.childNode(withName: GameboardSprite.getNodeName(row: position.row, col: position.col, includeOverlayTag: true)) else { return }
+        guard let heartNode = sprite.childNode(withName: GameboardSprite.getNodeName(position: position, includeOverlayTag: true)) else { return }
         
         let originalScale: CGFloat = heartNode.xScale
         let scaleOffsetPercentage: CGFloat = originalScale * 0.1

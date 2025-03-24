@@ -198,8 +198,22 @@ class DuplicateItem {
         
         let randomIndex = Int.random(in: 0..<spawnedItems.count)
         let item: LevelType = spawnedItems.remove(at: randomIndex)
+        let itemSpawnName = GameboardSprite.getNodeName(position: position, includeOverlayTag: true)
         
         gameboard.spawnItem(at: position, with: item, delay: delay, completion: {})
+        
+        if let spawnedItem = gameboard.sprite.childNode(withName: itemSpawnName) {
+            let arrow = SKSpriteNode(imageNamed: "hintarrowcyan")
+            arrow.position = CGPoint(x: 0, y: arrow.size.height / 2)
+            arrow.zRotation = .pi / 2
+            arrow.zPosition = K.ZPosition.hintArrow
+            arrow.run(SKAction.repeatForever(SKAction.sequence([
+                SKAction.moveBy(x: 0, y: 80, duration: 0.25),
+                SKAction.moveBy(x: 0, y: -80, duration: 0.5)
+            ])))
+            
+            spawnedItem.addChild(arrow)
+        }
         
         setTimer(at: position, on: gameboard)
     }
