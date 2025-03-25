@@ -126,10 +126,16 @@ class CircularProgressBar: SKNode {
         if self.remainingTime <= 0 && percentage > 0 {
             didAdjustAlpha(1)
             pulseMultiplier(scaleTo: 1)
+            pulseIcon()
         }
         else if self.remainingTime > 0 && percentage <= 0 {
             didAdjustAlpha(0.25)
             pulseMultiplier(scaleTo: 0)
+            pulseIcon()
+            
+            if isShowing {
+                AudioManager.shared.playSound(for: "powerdownitem")
+            }
         }
         
         circleNode.strokeColor = getColor(from: percentage)
@@ -199,6 +205,18 @@ class CircularProgressBar: SKNode {
         multiplierLabel.run(SKAction.sequence([
             SKAction.scale(to: 2, duration: scaleDuration),
             SKAction.scale(to: scaleTo, duration: scaleDuration)
+        ]))
+    }
+    
+    /**
+     Pulses the icon image and "pop's" a little animation in the process.
+     */
+    private func pulseIcon() {
+        let scaleDuration: TimeInterval = 0.25
+        
+        iconImage.run(SKAction.sequence([
+            SKAction.scale(to: 1.5, duration: scaleDuration),
+            SKAction.scale(to: 1, duration: scaleDuration * 2)
         ]))
     }
     

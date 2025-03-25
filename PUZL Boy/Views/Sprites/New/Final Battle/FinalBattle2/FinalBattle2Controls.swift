@@ -30,7 +30,8 @@ class FinalBattle2Controls {
     static let keyPlayerRunAnimation = "playerRunAnimation"
     static let keyPlayerMoveAction = "playerMoveAction"
     static let keyPlayerFreezeAction = "playerFreezeAction"
-    
+    static let keyPlayerCloudAction = "playerCloudAction"
+
     private var gameboard: GameboardSprite
     private var player: Player
     private var villain: Player
@@ -416,8 +417,11 @@ class FinalBattle2Controls {
             var count = 0
             
             repeat {
-                if safePanelFound {
-                    runSound = FireIceTheme.soundMovementSandSnow
+                if duplicateItemTimerManager.isRunningBoot {
+                    runSound = "movesnow\(Int.random(in: 1...3))"
+                }
+                else if safePanelFound {
+                    runSound = "movesand\(Int.random(in: 1...3))"
                 }
                 else {
                     switch panelType {
@@ -457,6 +461,8 @@ class FinalBattle2Controls {
             Player.animate(player: player, type: .idle)
         ]), withKey: FinalBattle2Controls.keyPlayerIdleAnimation)
         
+        player.sprite.removeAction(forKey: FinalBattle2Controls.keyPlayerCloudAction)
+        
         //In between, move player and completion...
         player.sprite.run(SKAction.sequence([
             SKAction.move(to: gameboard.getLocation(at: nextPanel), duration: Player.Texture.run.movementSpeed * movementMultiplier),
@@ -464,6 +470,10 @@ class FinalBattle2Controls {
                 guard let self = self else { return }
                 
                 isDisabled = false
+                
+                if duplicateItemTimerManager.isRunningBoot {
+                    playerFloatCloud()
+                }
                 
                 // TODO: - Testing of DuplicateItem collection
                 if let spoils = DuplicateItem.shared.collectItem(at: nextPanel, on: gameboard) {
@@ -687,6 +697,7 @@ extension FinalBattle2Controls: MagmoorAttacksDelegate {
         player.sprite.action(forKey: FinalBattle2Controls.keyPlayerRunAnimation)?.speed = 0
         player.sprite.action(forKey: FinalBattle2Controls.keyPlayerIdleAnimation)?.speed = 0
         player.sprite.action(forKey: FinalBattle2Controls.keyPlayerMoveAction)?.speed = 0
+        player.sprite.action(forKey: FinalBattle2Controls.keyPlayerCloudAction)?.speed = 0
         
         player.sprite.removeAction(forKey: FinalBattle2Health.keyPlayerBlink)
         player.sprite.removeAction(forKey: FinalBattle2Health.keyPlayerColorFade)
@@ -700,6 +711,7 @@ extension FinalBattle2Controls: MagmoorAttacksDelegate {
                 self?.player.sprite.action(forKey: FinalBattle2Controls.keyPlayerRunAnimation)?.speed = 1
                 self?.player.sprite.action(forKey: FinalBattle2Controls.keyPlayerIdleAnimation)?.speed = 1
                 self?.player.sprite.action(forKey: FinalBattle2Controls.keyPlayerMoveAction)?.speed = 1
+                self?.player.sprite.action(forKey: FinalBattle2Controls.keyPlayerCloudAction)?.speed = 1
             },
             SKAction.colorize(withColorBlendFactor: 0, duration: 0.5),
             SKAction.colorize(with: .red, colorBlendFactor: 0, duration: 0)
@@ -787,9 +799,52 @@ extension FinalBattle2Controls: DuplicateItemTimerManagerDelegate {
         chosenSword.setAttackMultiplier(manager.isRunningSword3x ? 3 : (manager.isRunningSword2x ? 2 : 1))
     }
     
-    //Not in use
-    func didInitializeBoot(_ manager: DuplicateItemTimerManager) {}
-    func didExpireBoot(_ manager: DuplicateItemTimerManager) {}
+    func didInitializeBoot(_ manager: DuplicateItemTimerManager) {
+        guard player.sprite.childNode(withName: "cloudNode") == nil else { return }
+        
+        let cloudNode = SKSpriteNode(imageNamed: "cloud")
+        cloudNode.position = CGPoint(x: 0, y: -1.5 * player.sprite.size.height * UIDevice.spriteScale)
+        cloudNode.setScale(0)
+        cloudNode.zPosition = -1
+        cloudNode.name = "cloudNode"
+        
+        cloudNode.run(SKAction.repeatForever(SKAction.sequence([
+            SKAction.group([
+                SKAction.scale(to: 3.5, duration: 0.5),
+                SKAction.fadeIn(withDuration: 0.5)
+            ]),
+            SKAction.group([
+                SKAction.scale(to: 2.5, duration: 1),
+                SKAction.fadeAlpha(to: 0.75, duration: 1)
+            ])
+        ])))
+        
+        player.sprite.addChild(cloudNode)
+        playerFloatCloud()
+    }
+    
+    /**
+     Creates a repeating, floating cloud animation. Add this when boot is active in boot initialization and movePlayerHelper().
+     */
+    private func playerFloatCloud() {
+        player.sprite.run(SKAction.repeatForever(SKAction.sequence([
+            SKAction.moveBy(x: 0, y: 20, duration: 0.5),
+            SKAction.moveBy(x: 0, y: -20, duration: 1)
+        ])), withKey: FinalBattle2Controls.keyPlayerCloudAction)
+    }
+    
+    func didExpireBoot(_ manager: DuplicateItemTimerManager) {
+        if let cloudNode = player.sprite.childNode(withName: "cloudNode") {
+            cloudNode.run(SKAction.sequence([
+                SKAction.fadeOut(withDuration: 1),
+                SKAction.removeFromParent()
+            ]))
+        }
+        
+        player.sprite.removeAction(forKey: FinalBattle2Controls.keyPlayerCloudAction)
+        player.sprite.run(SKAction.moveTo(y: gameboard.getLocation(at: positions.player).y, duration: 0.1))
+    }
+    
     func didInitializeShield(_ manager: DuplicateItemTimerManager) {}
     func didExpireShield(_ manager: DuplicateItemTimerManager) {}
     

@@ -100,6 +100,7 @@ struct AudioLibrary {
         ("pickupheart", .soundFX, 1),
         ("pickupitem", .soundFX, 1),
         ("pickuptime", .soundFX, 1),
+        ("powerdownitem", .soundFX, 1), //Not Purchased $1
         ("punchwhack1", .soundFX, 1),
         ("punchwhack2", .soundFX, 1),
         ("realmtransition", .soundFX, 1),
@@ -177,6 +178,7 @@ struct AudioLibrary {
         ("overworldgrassland", .music, 1),
         ("overworldmarimba", .music, 1),
         ("overworldparty", .music, 1),
+        ("overworldrainbow", .music, 1), //Not Purchased $25
         ("scarymusicbox", .music, 1)
     ]
     

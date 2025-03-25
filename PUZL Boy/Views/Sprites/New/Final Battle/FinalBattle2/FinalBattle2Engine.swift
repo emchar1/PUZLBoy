@@ -51,8 +51,9 @@ class FinalBattle2Engine {
     }
     
     deinit {
-        //Don't forget to reset platform!!!
+        //Don't forget to reset platform and power up item timers!!!
         FinalBattle2Spawner.isPlatformOn = false
+        DuplicateItem.shared.resetTimers()
         
         print("FinalBattle2Engine deinit")
     }
@@ -202,6 +203,7 @@ class FinalBattle2Engine {
         villain.sprite.run(Player.animateIdleLevitate(player: villain))
         
         health.showHealth()
+        backgroundPattern.playOverworldMusic()
         backgroundPattern.animate(pattern: .normal, fadeDuration: 0, delay: nil)
         
         for i in 0..<panelSpawner.count {
@@ -305,10 +307,39 @@ class FinalBattle2Engine {
             healthType = .villainAttackNormal
         }
         
-        showDamagePanel(at: position, color: panelColor, isPoison: pattern == .poison, withExplosion: false, extendDamage: false)
-        
         if position == controls.positions.player && !controls.duplicateItemTimerManager.isRunningShield {
             health.updateHealth(type: healthType, dmgMultiplier: chosenSword.defenseRating)
+        }
+        
+        if !(position == controls.positions.player && controls.duplicateItemTimerManager.isRunningShield) {
+            showDamagePanel(at: position, color: panelColor, isPoison: pattern == .poison, withExplosion: false, extendDamage: false)
+        }
+        else {
+            guard hero.sprite.childNode(withName: "shieldNode") == nil else { return }
+            
+            let shieldScale: CGFloat = 6
+            let shieldNode = SKSpriteNode(imageNamed: "shield")
+            shieldNode.setScale(shieldScale)
+            shieldNode.alpha = 0.75
+            shieldNode.zPosition = K.ZPosition.itemsAndEffects
+            shieldNode.name = "shieldNode"
+            
+            hero.sprite.addChild(shieldNode)
+            
+            shieldNode.run(SKAction.sequence([
+                SKAction.moveBy(x: -20, y: 0, duration: 0.05),
+                SKAction.moveBy(x: 40, y: 0, duration: 0.05),
+                SKAction.moveBy(x: -40, y: 0, duration: 0.05),
+                SKAction.moveBy(x: 40, y: 0, duration: 0.05),
+                SKAction.moveBy(x: -20, y: 0, duration: 0.05),
+                SKAction.group([
+                    SKAction.scale(to: 2 * shieldScale, duration: 0.25),
+                    SKAction.fadeOut(withDuration: 0.25)
+                ]),
+                SKAction.removeFromParent()
+            ]))
+            
+            AudioManager.shared.playSound(for: "swordparry")
         }
     }
     

@@ -21,8 +21,9 @@ class FinalBattle2Background {
     private var gameboard: GameboardSprite
     
     private var isRunningSword8: Bool = false
+    private var overworldMusicVolume: Float = 1
     private var overworldMusic: String
-    private var previousOverworldMusic: String?
+    private var rainbowMusic: String
     
     enum BackgroundPattern {
         case normal, blackout, wave, convulse, princess, rainbow
@@ -38,8 +39,8 @@ class FinalBattle2Background {
         self.flashGameboard = flashGameboard
         self.gameboard = gameboard
         
-        overworldMusic = "bossbattle1"
-        previousOverworldMusic = nil
+        overworldMusic = "bossbattle3"
+        rainbowMusic = "overworldrainbow"
         
         NotificationCenter.default.addObserver(self, selector: #selector(didInitializeSword8), name: .didSwordInfTimerInitialize, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(didExpireSword8), name: .didSwordInfTimerExpire, object: nil)
@@ -49,7 +50,7 @@ class FinalBattle2Background {
         print("deinit FinalBattle2Background")
         
         NotificationCenter.default.removeObserver(self)
-        AudioManager.shared.stopSound(for: overworldMusic, fadeDuration: 2)
+        stopAllMusic(fadeDuration: 2)
     }
     
     
@@ -61,7 +62,9 @@ class FinalBattle2Background {
         - volume: volume to set the overworld music
         - fadeDuration: a fading time interval
      **/
-    func adjustOverworldMusic(volume: Float = 1, fadeDuration: TimeInterval = 0) {
+    func adjustOverworldMusic(volume: Float, fadeDuration: TimeInterval = 0) {
+        overworldMusicVolume = volume
+        
         AudioManager.shared.adjustVolume(to: volume, for: overworldMusic, fadeDuration: fadeDuration)
     }
     
@@ -73,6 +76,40 @@ class FinalBattle2Background {
     }
     
     /**
+     Plays the overworld music. Call this at the battle start.
+     */
+    func playOverworldMusic() {
+        adjustOverworldMusic(volume: 1)
+        AudioManager.shared.playSound(for: overworldMusic)
+        AudioManager.shared.stopSound(for: rainbowMusic)
+    }
+    
+    /**
+     Stops the overworld and rainbow music.
+     */
+    func stopAllMusic(fadeDuration: TimeInterval) {
+        AudioManager.shared.stopSound(for: overworldMusic, fadeDuration: fadeDuration)
+        AudioManager.shared.stopSound(for: rainbowMusic, fadeDuration: fadeDuration)
+    }
+    
+    /**
+     Switch between overworld and rainbow music.
+     - parameter toOverworld: switches to overworld, if true
+     */
+    func switchMusic(toOverworld: Bool) {
+        let fadeDuration: TimeInterval = 2
+        
+        if toOverworld {
+            AudioManager.shared.adjustVolume(to: overworldMusicVolume, for: overworldMusic, fadeDuration: fadeDuration)
+            AudioManager.shared.stopSound(for: rainbowMusic, fadeDuration: fadeDuration)
+        }
+        else {
+            AudioManager.shared.adjustVolume(to: 0, for: overworldMusic)
+            AudioManager.shared.playSound(for: rainbowMusic)
+        }
+    }
+    
+    /**
      Animates the background with the requested pattern.
      - parameters:
         - pattern: the background pattern of animations
@@ -81,8 +118,6 @@ class FinalBattle2Background {
         - shouldFlashGameboard: true if gameboard should flash a white color
      */
     func animate(pattern: BackgroundPattern, fadeDuration: TimeInterval, delay: TimeInterval?, shouldFlashGameboard: Bool = false) {
-        previousOverworldMusic = overworldMusic
-        
         backgroundSprite.removeAllActions()
         bloodOverlay.removeAllActions()
         flashGameboard.removeAllActions()
@@ -90,8 +125,6 @@ class FinalBattle2Background {
         switch pattern {
         case .normal:
             let flashDuration: TimeInterval = min(0.25, fadeDuration)
-            
-            overworldMusic = "bossbattle3"
             
             backgroundSprite.run(SKAction.fadeAlpha(to: 1, duration: fadeDuration))
             backgroundSprite.run(SKAction.colorize(with: .black, colorBlendFactor: 1, duration: fadeDuration))
@@ -109,6 +142,8 @@ class FinalBattle2Background {
                 ]))
                 
                 DispatchQueue.main.asyncAfter(deadline: .now() + (delay ?? 0)) {
+                    guard !self.isRunningSword8 else { return }
+                    
                     self.adjustOverworldMusic(volume: 1, fadeDuration: fadeDuration)
                 }
             }
@@ -116,6 +151,8 @@ class FinalBattle2Background {
                 flashGameboard.run(SKAction.fadeOut(withDuration: fadeDuration))
             }
         case .blackout:
+            let flashGameboardAlpha: CGFloat = 0.75
+            
             backgroundSprite.run(SKAction.fadeAlpha(to: 1, duration: fadeDuration))
             backgroundSprite.run(SKAction.colorize(with: .black, colorBlendFactor: 1, duration: fadeDuration))
 
@@ -123,16 +160,18 @@ class FinalBattle2Background {
             
             flashGameboard.run(SKAction.sequence([
                 SKAction.colorize(with: .black, colorBlendFactor: 1, duration: 0),
-                SKAction.fadeAlpha(to: 0.8, duration: fadeDuration)
+                SKAction.fadeAlpha(to: flashGameboardAlpha, duration: fadeDuration)
             ]))
             
             DispatchQueue.main.asyncAfter(deadline: .now() + (delay ?? 0)) {
+                guard !self.isRunningSword8 else { return }
+                
                 self.adjustOverworldMusic(volume: 0.1, fadeDuration: fadeDuration)
             }
         case .wave:
             let magmoorColors: (first: UIColor, second: UIColor) = (shieldColor, UIColor.black)
             let pulseDuration: TimeInterval = 2
-            let flashGameboardAlpha: CGFloat = 0.8
+            let flashGameboardAlpha: CGFloat = 0.25
             
             backgroundSprite.run(SKAction.fadeAlpha(to: 1, duration: fadeDuration))
             backgroundSprite.run(SKAction.colorize(with: .black, colorBlendFactor: 1, duration: fadeDuration))
@@ -157,7 +196,7 @@ class FinalBattle2Background {
         case .convulse:
             let magmoorColors: (first: UIColor, second: UIColor) = (shieldColor, UIColor.black)
             let pulseDuration: TimeInterval = 0.04
-            let flashGameboardAlpha: CGFloat = 0.8
+            let flashGameboardAlpha: CGFloat = 0.5
             
             backgroundSprite.run(SKAction.fadeAlpha(to: 1, duration: pulseDuration))
             backgroundSprite.run(SKAction.colorize(with: .black, colorBlendFactor: 1, duration: pulseDuration))
@@ -179,76 +218,68 @@ class FinalBattle2Background {
                     SKAction.fadeAlpha(to: flashGameboardAlpha, duration: fadeDuration)
                 ]))
             }
-        case .princess:
-            let princessColors: (first: UIColor, second: UIColor) = (UIColor.magenta, UIColor.white)
-            let pulseDuration: TimeInterval = 0.08
-            
-            overworldMusic = "bossbattle2"
-            
-            backgroundSprite.run(SKAction.fadeAlpha(to: 0.8, duration: fadeDuration))
-            backgroundSprite.run(SKAction.sequence([
-                SKAction.colorize(with: princessColors.first, colorBlendFactor: 1, duration: fadeDuration),
-                SKAction.repeatForever(SKAction.sequence(
-                    cycleColors(colors: [princessColors.second, princessColors.first],
-                                blendFactor: 1,
-                                duration: pulseDuration,
-                                shouldBlink: false)
-                ))
-            ]))
-            
-            bloodOverlay.run(SKAction.fadeAlpha(to: FinalBattle2Background.defaultBloodOverlayAlpha, duration: fadeDuration))
-            bloodOverlay.run(SKAction.sequence([
-                SKAction.colorize(with: princessColors.second, colorBlendFactor: 1, duration: fadeDuration),
-                SKAction.repeatForever(SKAction.sequence(
-                    cycleColors(colors: [princessColors.first, princessColors.second],
-                                blendFactor: 1,
-                                duration: pulseDuration,
-                                shouldBlink: false)
-                ))
-            ]))
-
-            flashGameboard.run(SKAction.fadeOut(withDuration: fadeDuration))
-        case .rainbow:
-            let shiftDuration: TimeInterval = PartyModeSprite.shared.quarterNote
-            
-            overworldMusic = ThemeManager.getAudio(theme: .party, sound: .overworld)
-            
-            backgroundSprite.run(SKAction.fadeAlpha(to: 0.5, duration: fadeDuration))
-            backgroundSprite.run(SKAction.sequence([
-                SKAction.colorize(with: .red, colorBlendFactor: 1, duration: 0),
-                SKAction.colorize(with: .clear, colorBlendFactor: 1, duration: shiftDuration),
-                SKAction.repeatForever(SKAction.sequence(
-                    cycleColors(colors: [.yellow, .green, .blue, .red],
-                                blendFactor: 1,
-                                duration: shiftDuration,
-                                shouldBlink: true)
-                ))
-            ]))
-            
-            bloodOverlay.run(SKAction.fadeOut(withDuration: fadeDuration))
-
-            flashGameboard.run(SKAction.fadeAlpha(to: 0.35, duration: fadeDuration))
-            flashGameboard.run(SKAction.sequence([
-                SKAction.colorize(with: .red, colorBlendFactor: 1, duration: 0),
-                SKAction.colorize(with: .clear, colorBlendFactor: 1, duration: shiftDuration / 2),
-                SKAction.repeatForever(SKAction.sequence(
-                    cycleColors(colors: UIColor.rainbowColors,
-                                blendFactor: 1,
-                                duration: shiftDuration / 2,
-                                shouldBlink: false)
-                ))
-            ]))
+        default:
+            break
+//        case .princess:
+//            let princessColors: (first: UIColor, second: UIColor) = (UIColor.magenta, UIColor.white)
+//            let pulseDuration: TimeInterval = 0.08
+//            
+//            overworldMusic = "bossbattle2"
+//            
+//            backgroundSprite.run(SKAction.fadeAlpha(to: 0.8, duration: fadeDuration))
+//            backgroundSprite.run(SKAction.sequence([
+//                SKAction.colorize(with: princessColors.first, colorBlendFactor: 1, duration: fadeDuration),
+//                SKAction.repeatForever(SKAction.sequence(
+//                    cycleColors(colors: [princessColors.second, princessColors.first],
+//                                blendFactor: 1,
+//                                duration: pulseDuration,
+//                                shouldBlink: false)
+//                ))
+//            ]))
+//            
+//            bloodOverlay.run(SKAction.fadeAlpha(to: FinalBattle2Background.defaultBloodOverlayAlpha, duration: fadeDuration))
+//            bloodOverlay.run(SKAction.sequence([
+//                SKAction.colorize(with: princessColors.second, colorBlendFactor: 1, duration: fadeDuration),
+//                SKAction.repeatForever(SKAction.sequence(
+//                    cycleColors(colors: [princessColors.first, princessColors.second],
+//                                blendFactor: 1,
+//                                duration: pulseDuration,
+//                                shouldBlink: false)
+//                ))
+//            ]))
+//
+//            flashGameboard.run(SKAction.fadeOut(withDuration: fadeDuration))
+//        case .rainbow:
+//            let shiftDuration: TimeInterval = PartyModeSprite.shared.quarterNote
+//            
+//            overworldMusic = ThemeManager.getAudio(theme: .party, sound: .overworld)
+//            
+//            backgroundSprite.run(SKAction.fadeAlpha(to: 0.5, duration: fadeDuration))
+//            backgroundSprite.run(SKAction.sequence([
+//                SKAction.colorize(with: .red, colorBlendFactor: 1, duration: 0),
+//                SKAction.colorize(with: .clear, colorBlendFactor: 1, duration: shiftDuration),
+//                SKAction.repeatForever(SKAction.sequence(
+//                    cycleColors(colors: [.yellow, .green, .blue, .red],
+//                                blendFactor: 1,
+//                                duration: shiftDuration,
+//                                shouldBlink: true)
+//                ))
+//            ]))
+//            
+//            bloodOverlay.run(SKAction.fadeOut(withDuration: fadeDuration))
+//
+//            flashGameboard.run(SKAction.fadeAlpha(to: 0.35, duration: fadeDuration))
+//            flashGameboard.run(SKAction.sequence([
+//                SKAction.colorize(with: .red, colorBlendFactor: 1, duration: 0),
+//                SKAction.colorize(with: .clear, colorBlendFactor: 1, duration: shiftDuration / 2),
+//                SKAction.repeatForever(SKAction.sequence(
+//                    cycleColors(colors: UIColor.rainbowColors,
+//                                blendFactor: 1,
+//                                duration: shiftDuration / 2,
+//                                shouldBlink: false)
+//                ))
+//            ]))
         } //end switch pattern
-        
-        //Sets the overworld music, if previous overworld music was something different.
-        if previousOverworldMusic != overworldMusic {
-            if let previousOverworldMusic = previousOverworldMusic {
-                AudioManager.shared.stopSound(for: previousOverworldMusic)
-            }
-            
-            adjustOverworldMusic()
-            AudioManager.shared.playSound(for: overworldMusic)
-        }
     } //end animate()
         
     
@@ -283,9 +314,10 @@ class FinalBattle2Background {
         guard !isRunningSword8 else { return }
         
         isRunningSword8 = true
+        switchMusic(toOverworld: false)
         
         infinityOverlay.removeAction(forKey: "keyInfinityFadeOut")
-        infinityOverlay.run(SKAction.fadeAlpha(to: 0.5, duration: 1))
+        infinityOverlay.run(SKAction.fadeAlpha(to: 0.5, duration: 0))
         infinityOverlay.run(SKAction.repeatForever(SKAction.colorizeWithRainbowColorSequence(blendFactor: 1, duration: 0.25)), withKey: "keyInfinityRainbow")
         
         if let endGateMagic = gameboard.sprite.childNode(withName: "endGateMagic") as? SKSpriteNode {
@@ -297,6 +329,7 @@ class FinalBattle2Background {
     
     @objc private func didExpireSword8() {
         isRunningSword8 = false
+        switchMusic(toOverworld: true)
         
         infinityOverlay.removeAction(forKey: "keyInfinityRainbow")
         infinityOverlay.run(SKAction.fadeOut(withDuration: 2), withKey: "keyInfinityFadeOut")
