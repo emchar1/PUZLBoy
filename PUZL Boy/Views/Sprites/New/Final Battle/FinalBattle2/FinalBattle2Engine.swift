@@ -66,7 +66,7 @@ class FinalBattle2Engine {
         endGateMagic.scale(to: gameboard.scaleSize)
         endGateMagic.anchorPoint = .zero
         endGateMagic.alpha = 0
-        endGateMagic.zPosition = K.ZPosition.overlay + 5
+        endGateMagic.zPosition = K.ZPosition.terrain + 5
         endGateMagic.name = "endGateMagic"
         
         gameboard.sprite.addChild(endGateMagic)
@@ -553,7 +553,7 @@ extension FinalBattle2Engine: FinalBattle2ControlsDelegate {
     }
     
     func willVillainReappear() {
-        backgroundPattern.adjustOverworldMusic(volume: 0.5, fadeDuration: 1)
+        backgroundPattern.setOverworldMusicVolume(to: 0.5, fadeDuration: 1)
     }
     
     func didVillainFlee(didReappear: Bool) {
@@ -630,7 +630,7 @@ extension FinalBattle2Engine: FinalBattle2ControlsDelegate {
 
             bloodOverlay.run(SKAction.fadeOut(withDuration: fadeDuration))
             flashGameboard.run(SKAction.fadeOut(withDuration: fadeDuration))
-            backgroundPattern.adjustOverworldMusic(volume: 0, fadeDuration: fadeDuration)
+            backgroundPattern.setOverworldMusicVolume(to: 0, fadeDuration: fadeDuration)
         }
         else if didBreak {
             let villainPosition = villainPosition ?? (0, 0)

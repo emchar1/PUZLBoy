@@ -59,13 +59,16 @@ class FinalBattle2Background {
     /**
      Adjusts the overworld music to the set volume and fadeDuration
      - parameters:
-        - volume: volume to set the overworld music
+        - volume: the new volume to set
+        - shouldAdjust: if true, also adjust the overworldMusic volume, otherwise, don't.
         - fadeDuration: a fading time interval
-     **/
-    func adjustOverworldMusic(volume: Float, fadeDuration: TimeInterval = 0) {
+     */
+    func setOverworldMusicVolume(to volume: Float, shouldAdjust: Bool = true, fadeDuration: TimeInterval = 0) {
         overworldMusicVolume = volume
         
-        AudioManager.shared.adjustVolume(to: volume, for: overworldMusic, fadeDuration: fadeDuration)
+        if shouldAdjust {
+            AudioManager.shared.adjustVolume(to: overworldMusicVolume, for: overworldMusic, fadeDuration: fadeDuration)
+        }
     }
     
     /**
@@ -79,7 +82,7 @@ class FinalBattle2Background {
      Plays the overworld music. Call this at the battle start.
      */
     func playOverworldMusic() {
-        adjustOverworldMusic(volume: 1)
+        setOverworldMusicVolume(to: 1)
         AudioManager.shared.playSound(for: overworldMusic)
         AudioManager.shared.stopSound(for: rainbowMusic)
     }
@@ -142,9 +145,7 @@ class FinalBattle2Background {
                 ]))
                 
                 DispatchQueue.main.asyncAfter(deadline: .now() + (delay ?? 0)) {
-                    guard !self.isRunningSword8 else { return }
-                    
-                    self.adjustOverworldMusic(volume: 1, fadeDuration: fadeDuration)
+                    self.setOverworldMusicVolume(to: 1, shouldAdjust: !self.isRunningSword8, fadeDuration: fadeDuration)
                 }
             }
             else {
@@ -164,9 +165,7 @@ class FinalBattle2Background {
             ]))
             
             DispatchQueue.main.asyncAfter(deadline: .now() + (delay ?? 0)) {
-                guard !self.isRunningSword8 else { return }
-                
-                self.adjustOverworldMusic(volume: 0.1, fadeDuration: fadeDuration)
+                self.setOverworldMusicVolume(to: 0.1, shouldAdjust: !self.isRunningSword8, fadeDuration: fadeDuration)
             }
         case .wave:
             let magmoorColors: (first: UIColor, second: UIColor) = (shieldColor, UIColor.black)
