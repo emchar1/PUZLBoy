@@ -170,7 +170,7 @@ class FinalBattle2Background {
         case .wave:
             let magmoorColors: (first: UIColor, second: UIColor) = (shieldColor, UIColor.black)
             let pulseDuration: TimeInterval = 2
-            let flashGameboardAlpha: CGFloat = 0.25
+            let flashGameboardAlpha: CGFloat = 0.5
             
             backgroundSprite.run(SKAction.fadeAlpha(to: 1, duration: fadeDuration))
             backgroundSprite.run(SKAction.colorize(with: .black, colorBlendFactor: 1, duration: fadeDuration))
