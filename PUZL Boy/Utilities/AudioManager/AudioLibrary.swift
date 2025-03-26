@@ -141,8 +141,8 @@ struct AudioLibrary {
         //TEST: For fun only
         ("gameendlose", .soundFX, 1),
         ("gameendwin1", .soundFX, 1),
-        ("gameendwin2", .soundFXLoop, 1), //TEST FOR FUN ONLY
-        ("zdooropen", .soundFX, 1), //TEST FOR FUN ONLY
+        ("gameendwin2", .soundFXLoop, 1),
+        ("zdooropen", .soundFX, 1),
         
         
         //Looped SFX
