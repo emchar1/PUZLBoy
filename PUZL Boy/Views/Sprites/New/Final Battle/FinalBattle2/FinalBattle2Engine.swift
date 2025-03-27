@@ -136,6 +136,7 @@ class FinalBattle2Engine {
         ParticleEngine.shared.animateParticles(type: .magmoorSmoke,
                                                toNode: villain.sprite,
                                                position: .zero,
+                                               zPosition: 2,
                                                duration: 0)
         
         //Initialize after gameboard, hero and heroPosition!

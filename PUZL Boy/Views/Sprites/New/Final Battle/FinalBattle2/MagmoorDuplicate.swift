@@ -199,6 +199,7 @@ class MagmoorDuplicate: SKNode {
         ParticleEngine.shared.animateParticles(type: .magmoorSmoke,
                                                toNode: duplicate.sprite,
                                                position: .zero,
+                                               zPosition: 2,
                                                duration: 0)
     }
     

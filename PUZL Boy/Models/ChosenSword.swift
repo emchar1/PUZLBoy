@@ -45,8 +45,8 @@ class ChosenSword: SKNode {
     //Attack Multiplier
     static let infiniteMultiplier: CGFloat = 99
     private var numberFormatter: NumberFormatter
+    private var attackMultiplierSprite: SKSpriteNode
     private(set) var attackMultiplier: CGFloat = 1
-    private(set) var attackMultiplierNode: SKLabelNode
     var totalAttackRating: CGFloat { attackRating * attackMultiplier }
     
     
@@ -126,14 +126,9 @@ class ChosenSword: SKNode {
         spriteNode = SKSpriteNode(imageNamed: imageName)
         spriteNode.alpha = 0
         
-        attackMultiplierNode = SKLabelNode(text: "1X")
-        attackMultiplierNode.fontName = UIFont.gameFont
-        attackMultiplierNode.fontSize = UIFont.gameFontSizeExtraLarge
-        attackMultiplierNode.fontColor = UIColor.yellow
-        attackMultiplierNode.verticalAlignmentMode = .center
-        attackMultiplierNode.alpha = 0
-        attackMultiplierNode.zPosition = 50
-        attackMultiplierNode.addDropShadow()
+        attackMultiplierSprite = SKSpriteNode(texture: SKTexture(imageNamed: "multiplier2x"))
+        attackMultiplierSprite.alpha = 0
+        attackMultiplierSprite.zPosition = 50
         
         numberFormatter = NumberFormatter()
         numberFormatter.numberStyle = .decimal
@@ -145,7 +140,7 @@ class ChosenSword: SKNode {
         name = chosenSwordName
         
         addChild(spriteNode)
-        addChild(attackMultiplierNode)
+        addChild(attackMultiplierSprite)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -232,17 +227,15 @@ class ChosenSword: SKNode {
         ]))
         
         if showMultiplier {
-            attackMultiplierNode.text = attackMultiplier == ChosenSword.infiniteMultiplier ? "∞" : "\(numberFormatter.string(from: NSNumber(value: attackMultiplier)) ?? "0")X"
-            
-            attackMultiplierNode.run(SKAction.sequence([
+            attackMultiplierSprite.run(SKAction.sequence([
                 SKAction.wait(forDuration: 0.5),
                 SKAction.fadeIn(withDuration: 0),
                 SKAction.group([
-                    SKAction.scale(to: 3, duration: 0.5),
+                    SKAction.scale(to: 2, duration: 0.5),
                     SKAction.sequence([
-                        SKAction.wait(forDuration: 0.4),
+                        attackMultiplier == ChosenSword.infiniteMultiplier ? SKAction.rotate(byAngle: 2 * .pi, duration: 0.4) : SKAction.wait(forDuration: 0.4),
                         SKAction.group([
-                            SKAction.scale(to: 8, duration: 0.1),
+                            SKAction.scale(to: 6, duration: 0.1),
                             SKAction.fadeOut(withDuration: 0.1)
                         ])
                     ])
@@ -266,18 +259,11 @@ class ChosenSword: SKNode {
     func setAttackMultiplier(_ multiplier: CGFloat) {
         attackMultiplier = multiplier
         
-        if multiplier == ChosenSword.infiniteMultiplier {
-            attackMultiplierNode.fontName = UIFont.infiniteFont
-            attackMultiplierNode.fontSize = UIFont.infiniteSizeExtraLarge
-            attackMultiplierNode.fontColor = .white
-            
-            attackMultiplierNode.run(SKAction.repeatForever(SKAction.colorizeWithRainbowColorSequence(duration: 0.1)))
-        }
-        else {
-            attackMultiplierNode.fontName = UIFont.gameFont
-            attackMultiplierNode.fontSize = UIFont.gameFontSizeExtraLarge
-            attackMultiplierNode.fontColor = attackMultiplier == 3 ? .cyan : .yellow
-
+        switch multiplier {
+        case 2:                                 attackMultiplierSprite.texture = SKTexture(imageNamed: "multiplier2x")
+        case 3:                                 attackMultiplierSprite.texture = SKTexture(imageNamed: "multiplier3x")
+        case ChosenSword.infiniteMultiplier:    attackMultiplierSprite.texture = SKTexture(imageNamed: "multiplier8")
+        default:                                break
         }
     }
     

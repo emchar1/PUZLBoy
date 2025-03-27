@@ -667,6 +667,7 @@ class FinalBattle2Controls {
                                                    toNode: villain.sprite,
                                                    position: .zero,
                                                    scale: 3,
+                                                   zPosition: 2,
                                                    duration: 2)
         }
     } //end moveVillainFlee()
