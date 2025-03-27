@@ -17,6 +17,7 @@ protocol FinalBattle2ControlsDelegate: AnyObject {
     func didExplodeDuplicate(chosenSword: ChosenSword)
     func didVillainAttackBecomeVisible()
     func didCollectDuplicateDroppedItem(item: LevelType, chosenSword: ChosenSword)
+    func notifyUpdateSword8(isRunningSword8: Bool)
     func handleShield(willDamage: Bool, didDamage: Bool, willBreak: Bool, didBreak: Bool, fadeDuration: TimeInterval?, chosenSword: ChosenSword, villainPosition: K.GameboardPosition?)
 }
 
@@ -31,6 +32,7 @@ class FinalBattle2Controls {
     static let keyPlayerMoveAction = "playerMoveAction"
     static let keyPlayerFreezeAction = "playerFreezeAction"
     static let keyPlayerCloudAction = "playerCloudAction"
+    static let keyPlayerRainbowAction = "playerRainbowAction"
 
     private var gameboard: GameboardSprite
     private var player: Player
@@ -793,11 +795,20 @@ extension FinalBattle2Controls: DuplicateItemTimerManagerDelegate {
     }
     
     func didInitializeSword8(_ manager: DuplicateItemTimerManager) {
+        delegateControls?.notifyUpdateSword8(isRunningSword8: true)
+        
         chosenSword.setAttackMultiplier(ChosenSword.infiniteMultiplier)
+        
+        player.sprite.run(SKAction.repeatForever(SKAction.colorizeWithRainbowColorSequence(duration: 0.2)), withKey: FinalBattle2Controls.keyPlayerRainbowAction)
     }
     
     func didExpireSword8(_ manager: DuplicateItemTimerManager) {
+        delegateControls?.notifyUpdateSword8(isRunningSword8: false)
+        
         chosenSword.setAttackMultiplier(manager.isRunningSword3x ? 3 : (manager.isRunningSword2x ? 2 : 1))
+        
+        player.sprite.removeAction(forKey: FinalBattle2Controls.keyPlayerRainbowAction)
+        player.sprite.run(SKAction.colorize(withColorBlendFactor: 0, duration: 1))
     }
     
     func didInitializeBoot(_ manager: DuplicateItemTimerManager) {

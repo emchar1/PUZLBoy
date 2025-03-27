@@ -605,6 +605,11 @@ extension FinalBattle2Engine: FinalBattle2ControlsDelegate {
         }
     }
     
+    func notifyUpdateSword8(isRunningSword8: Bool) {
+        backgroundPattern.isRunningSword8 = isRunningSword8
+        health.isRunningSword8 = isRunningSword8
+    }
+    
     func handleShield(willDamage: Bool, didDamage: Bool, willBreak: Bool, didBreak: Bool, fadeDuration: TimeInterval?, chosenSword: ChosenSword, villainPosition: K.GameboardPosition?) {
         
         backgroundPattern.updateShieldColor(controls.magmoorShield.shieldColor)

@@ -30,6 +30,7 @@ class FinalBattle2Health {
     var isPoisoned: Bool { return poisonCounter != nil }
     
     //Misc.
+    var isRunningSword8: Bool = false
     private var player: Player
     private var bar: StatusBarSprite!
     private var dmgMultiplier: CGFloat?
@@ -256,8 +257,9 @@ class FinalBattle2Health {
     private func makePlayerHurt(color: UIColor = .red) {
         playBoyHurtSFX()
         
-        //Don't run hurt actions if a freeze action is in place!!
+        //Don't run hurt actions if a freeze action is in place, or if holding infinity sword!!
         guard player.sprite.action(forKey: FinalBattle2Controls.keyPlayerFreezeAction) == nil else { return }
+        guard !isRunningSword8 else { return }
         
         let colorBlinkDuration: TimeInterval = 0.05
         let colorBlinkAction = SKAction.sequence([

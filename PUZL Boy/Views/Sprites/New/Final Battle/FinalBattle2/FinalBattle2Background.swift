@@ -11,6 +11,11 @@ class FinalBattle2Background {
     
     // MARK: - Properties
     
+    static let keyInfinityFadeOut = "keyInfinityFadeOut"
+    static let keyInfinityRainbow = "keyInfinityRainbow"
+    static let keyEndGateMagicFadeOut = "keyEndGateMagicFadeOut"
+    static let keyEndGateMagicRainbow = "keyEndGateMagicRainbow"
+    
     static var defaultBloodOverlayAlpha: CGFloat = 0.25
     private var shieldColor: UIColor = .red
     
@@ -20,10 +25,21 @@ class FinalBattle2Background {
     private var flashGameboard: SKSpriteNode
     private var gameboard: GameboardSprite
     
-    private var isRunningSword8: Bool = false
     private var overworldMusicVolume: Float = 1
     private var overworldMusic: String
     private var rainbowMusic: String
+    
+    var isRunningSword8: Bool = false {
+        didSet {
+            if isRunningSword8 {
+                guard oldValue != isRunningSword8 else { return }
+                initializeSword8()
+            }
+            else {
+                expireSword8()
+            }
+        }
+    }
     
     enum BackgroundPattern {
         case normal, blackout, wave, convulse, princess, rainbow
@@ -41,15 +57,11 @@ class FinalBattle2Background {
         
         overworldMusic = "bossbattle3"
         rainbowMusic = "overworldrainbow"
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(didInitializeSword8), name: .didSwordInfTimerInitialize, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(didExpireSword8), name: .didSwordInfTimerExpire, object: nil)
     }
     
     deinit {
         print("deinit FinalBattle2Background")
         
-        NotificationCenter.default.removeObserver(self)
         stopAllMusic(fadeDuration: 2)
     }
     
@@ -309,33 +321,31 @@ class FinalBattle2Background {
         ])
     }
     
-    @objc private func didInitializeSword8() {
-        guard !isRunningSword8 else { return }
-        
-        isRunningSword8 = true
+    ///Helper function for isRunningSword8 didSet
+    private func initializeSword8() {
         switchMusic(toOverworld: false)
         
-        infinityOverlay.removeAction(forKey: "keyInfinityFadeOut")
+        infinityOverlay.removeAction(forKey: FinalBattle2Background.keyInfinityFadeOut)
         infinityOverlay.run(SKAction.fadeAlpha(to: 0.5, duration: 0))
-        infinityOverlay.run(SKAction.repeatForever(SKAction.colorizeWithRainbowColorSequence(blendFactor: 1, duration: 0.25)), withKey: "keyInfinityRainbow")
+        infinityOverlay.run(SKAction.repeatForever(SKAction.colorizeWithRainbowColorSequence(blendFactor: 1, duration: 0.25)), withKey: FinalBattle2Background.keyInfinityRainbow)
         
         if let endGateMagic = gameboard.sprite.childNode(withName: "endGateMagic") as? SKSpriteNode {
-            endGateMagic.removeAction(forKey: "keyEndGateMagicFadeOut")
+            endGateMagic.removeAction(forKey: FinalBattle2Background.keyEndGateMagicFadeOut)
             endGateMagic.run(SKAction.fadeIn(withDuration: 1))
-            endGateMagic.run(SKAction.repeatForever(SKAction.colorizeWithRainbowColorSequence(duration: 0.25)), withKey: "keyEndGateMagicRainbow")
+            endGateMagic.run(SKAction.repeatForever(SKAction.colorizeWithRainbowColorSequence(duration: 0.25)), withKey: FinalBattle2Background.keyEndGateMagicRainbow)
         }
     }
     
-    @objc private func didExpireSword8() {
-        isRunningSword8 = false
+    ///Helper function for isRunningSword8 didSet
+    private func expireSword8() {
         switchMusic(toOverworld: true)
         
-        infinityOverlay.removeAction(forKey: "keyInfinityRainbow")
-        infinityOverlay.run(SKAction.fadeOut(withDuration: 2), withKey: "keyInfinityFadeOut")
+        infinityOverlay.removeAction(forKey: FinalBattle2Background.keyInfinityRainbow)
+        infinityOverlay.run(SKAction.fadeOut(withDuration: 2), withKey: FinalBattle2Background.keyInfinityFadeOut)
         
         if let endGateMagic = gameboard.sprite.childNode(withName: "endGateMagic") as? SKSpriteNode {
-            endGateMagic.removeAction(forKey: "keyEndGateMagicRainbow")
-            endGateMagic.run(SKAction.fadeOut(withDuration: 2), withKey: "keyEndGateMagicFadeOut")
+            endGateMagic.removeAction(forKey: FinalBattle2Background.keyEndGateMagicRainbow)
+            endGateMagic.run(SKAction.fadeOut(withDuration: 2), withKey: FinalBattle2Background.keyEndGateMagicFadeOut)
         }
     }
     

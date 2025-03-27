@@ -132,8 +132,6 @@ class GameScene: SKScene {
     
     deinit {
         print("GameScene deinit")
-        
-        NotificationCenter.default.removeObserver(self)
     }
     
     
