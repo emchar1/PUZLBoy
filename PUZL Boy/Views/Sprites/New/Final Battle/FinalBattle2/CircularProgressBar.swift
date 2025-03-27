@@ -63,7 +63,7 @@ class CircularProgressBar: SKNode {
         multiplierLabel.addHeavyDropShadow()
         
         if isInfiniteMultiplier {
-            multiplierLabel.run(SKAction.repeatForever(SKAction.colorizeWithRainbowColorSequence(duration: 0.2)), withKey: "colorizeMultiplier")
+            multiplierLabel.run(SKAction.repeatForever(SKAction.colorizeWithRainbowColorSequence(blendFactor: 0.75, duration: 0.2)), withKey: "colorizeMultiplier")
         }
         else {
             multiplierLabel.removeAction(forKey: "colorizeMultiplier")
