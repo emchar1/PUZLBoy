@@ -200,6 +200,14 @@ class DuplicateItem {
         let item: LevelType = spawnedItems.remove(at: randomIndex)
         let itemSpawnName = GameboardSprite.getNodeName(position: position, includeOverlayTag: true)
         
+        //You get NOTHING! Good day, sir! 3/29/25
+        guard item != .gem else {
+            ParticleEngine.shared.animateParticles(type: .warp, toNode: gameboard.sprite, position: gameboard.getLocation(at: position), duration: 2)
+            AudioManager.shared.playSoundThenStop(for: "scarylaugh", playForDuration: 2, fadeOut: 1)
+            
+            return
+        }
+        
         gameboard.spawnItem(at: position, with: item, delay: delay, completion: {})
         
         if let spawnedItem = gameboard.sprite.childNode(withName: itemSpawnName) {
@@ -214,6 +222,8 @@ class DuplicateItem {
             
             spawnedItem.addChild(arrow)
         }
+        
+        AudioManager.shared.playSound(for: "arrowblink", delay: 0.25)
         
         setTimer(at: position, on: gameboard)
     }

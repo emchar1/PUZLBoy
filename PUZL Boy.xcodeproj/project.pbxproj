@@ -286,6 +286,7 @@
 		EAA3BD6C2C97E8DC00EDE298 /* MagicPrincessExplodeParticles.sks in Resources */ = {isa = PBXBuildFile; fileRef = EAA3BD6B2C97E8DC00EDE298 /* MagicPrincessExplodeParticles.sks */; };
 		EAA4246D2D922D8700DA64D2 /* powerdownitem.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAA4246C2D922D8700DA64D2 /* powerdownitem.mp3 */; };
 		EAA4246F2D92853400DA64D2 /* overworldrainbow.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAA4246E2D92853400DA64D2 /* overworldrainbow.mp3 */; };
+		EAA424712D97906900DA64D2 /* PauseBattleManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAA424702D97905800DA64D2 /* PauseBattleManager.swift */; };
 		EAA921D82C011362009E99E7 /* AuthorizationRequestScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAA921D72C011361009E99E7 /* AuthorizationRequestScene.swift */; };
 		EAA921DA2C014C83009E99E7 /* AuthorizationSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = EAA921D92C014C83009E99E7 /* AuthorizationSprite.swift */; };
 		EAAB41642CB06A5D00BBFA75 /* MagicPrincessExplode1Particles.sks in Resources */ = {isa = PBXBuildFile; fileRef = EAAB41632CB06A5D00BBFA75 /* MagicPrincessExplode1Particles.sks */; };
@@ -698,6 +699,7 @@
 		EAA3BD6B2C97E8DC00EDE298 /* MagicPrincessExplodeParticles.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = MagicPrincessExplodeParticles.sks; sourceTree = "<group>"; };
 		EAA4246C2D922D8700DA64D2 /* powerdownitem.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = powerdownitem.mp3; sourceTree = "<group>"; };
 		EAA4246E2D92853400DA64D2 /* overworldrainbow.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = overworldrainbow.mp3; sourceTree = "<group>"; };
+		EAA424702D97905800DA64D2 /* PauseBattleManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PauseBattleManager.swift; sourceTree = "<group>"; };
 		EAA921D72C011361009E99E7 /* AuthorizationRequestScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorizationRequestScene.swift; sourceTree = "<group>"; };
 		EAA921D92C014C83009E99E7 /* AuthorizationSprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorizationSprite.swift; sourceTree = "<group>"; };
 		EAAB41632CB06A5D00BBFA75 /* MagicPrincessExplode1Particles.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = MagicPrincessExplode1Particles.sks; sourceTree = "<group>"; };
@@ -916,6 +918,7 @@
 				EAB8B8BF2D4EB0E700E5DE5F /* MagmoorDuplicate.swift */,
 				EAB8B8BB2D4CA60700E5DE5F /* Fireball.swift */,
 				EAE751E02D2C712A004B138A /* MagmoorShield.swift */,
+				EAA424702D97905800DA64D2 /* PauseBattleManager.swift */,
 				EA3D6FAB2D5D43460070A701 /* DuplicateItem.swift */,
 				EA9AD2A52D8CD56500FC6422 /* DuplicateItemTimerManager.swift */,
 				EAFEA1DB2D826C71005F1B2F /* ProgressHUDManager.swift */,
@@ -1968,6 +1971,7 @@
 				EA1281B72CF24D42001CC5E8 /* FinalBattleScene.swift in Sources */,
 				EA956C6C29257D9600879AD0 /* Extension+Comparable.swift in Sources */,
 				EA3BE3F62D7AB76B008B02E8 /* ThemeManager.swift in Sources */,
+				EAA424712D97906900DA64D2 /* PauseBattleManager.swift in Sources */,
 				EABE79552AC787B900689C55 /* LevelSelectPage.swift in Sources */,
 				EA45833F2A43CE3100279056 /* PartyResultsSprite.swift in Sources */,
 				EA95D1FA295BEC160061059C /* DisplayLivesSprite.swift in Sources */,

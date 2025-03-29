@@ -857,8 +857,28 @@ extension FinalBattle2Controls: DuplicateItemTimerManagerDelegate {
         player.sprite.run(SKAction.moveTo(y: gameboard.getLocation(at: positions.player).y, duration: 0.1))
     }
     
-    func didInitializeShield(_ manager: DuplicateItemTimerManager) {}
-    func didExpireShield(_ manager: DuplicateItemTimerManager) {}
+    func didInitializeShield(_ manager: DuplicateItemTimerManager) {
+        guard player.sprite.childNode(withName: "littleShieldNode") == nil else { return }
+        
+        let littleShield = SKSpriteNode(imageNamed: "shield")
+        littleShield.position = CGPoint(x: 60, y: -60) / UIDevice.spriteScale
+        littleShield.setScale(0)
+        littleShield.zPosition = 2
+        littleShield.name = "littleShieldNode"
+        
+        littleShield.run(SKAction.scale(to: 3, duration: 0.5))
+        
+        player.sprite.addChild(littleShield)
+    }
+    
+    func didExpireShield(_ manager: DuplicateItemTimerManager) {
+        guard let littleShield = player.sprite.childNode(withName: "littleShieldNode") else { return }
+
+        littleShield.run(SKAction.sequence([
+            SKAction.scale(to: 0, duration: 0.5),
+            SKAction.removeFromParent()
+        ]))
+    }
     
     
 }
