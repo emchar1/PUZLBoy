@@ -23,7 +23,7 @@ class MagmoorShield: SKNode {
 
     private(set) var resetCount: Int = 0
     private(set) var speedReduction: TimeInterval = 0
-    private var maxHitPoints: Int = 3
+    private var maxHitPoints: Int = 1
     private(set) var hitPoints: Int {
         didSet {
             setShieldColor()
@@ -100,10 +100,10 @@ class MagmoorShield: SKNode {
     }
     
     /**
-     Resets the shield to the max, i.e. 3 and apply a quick animation.
+     Resets the shield to the max, i.e. 1 and apply a quick animation.
      */
     func resetShield(villain: Player) {
-        maxHitPoints = resetCount >= 7 ? 1 : min(3 + resetCount, 6)
+        maxHitPoints = resetCount >= 6 ? 1 : min(1 + resetCount, 6)
         hitPoints = maxHitPoints
         resetCount += 1
         speedReduction = 0

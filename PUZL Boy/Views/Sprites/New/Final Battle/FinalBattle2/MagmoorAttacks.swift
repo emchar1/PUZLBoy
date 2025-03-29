@@ -197,7 +197,7 @@ class MagmoorAttacks {
             wandColor = .black
             
             villain.sprite.run(SKAction.wait(forDuration: wandAnimationDelay)) { [weak self] in
-                let duplicateCount = max(3, min((level - 1), 5))
+                let duplicateCount = max(3, min((level - 1), 6))
                 
                 self?.helperDuplicates(count: duplicateCount, positions: positions)
             }
