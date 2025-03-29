@@ -203,7 +203,7 @@ class DuplicateItem {
         //You get NOTHING! Good day, sir! 3/29/25
         guard item != .gem else {
             ParticleEngine.shared.animateParticles(type: .warp, toNode: gameboard.sprite, position: gameboard.getLocation(at: position), duration: 2)
-            AudioManager.shared.playSoundThenStop(for: "scarylaugh", playForDuration: 2, fadeOut: 1)
+            AudioManager.shared.playSoundThenStop(for: "scarylaugh", playForDuration: 1.5, fadeOut: 1)
             
             return
         }
