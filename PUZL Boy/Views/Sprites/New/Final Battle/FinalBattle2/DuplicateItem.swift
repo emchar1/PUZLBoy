@@ -174,7 +174,7 @@ class DuplicateItem {
         spawnedItems += Array(repeating: .swordInf, count: cSword8)
         spawnedItems.shuffle()
         
-//        print("populateSpawnedItems(): health: \(Int(playerHealth * 100)), luck: \(Int(chosenSwordLuck * 100))\n\t💎: \(cGem)\t❤️: \(cHeart)\n\t👢: \(cBoot)\t🛡️: \(cShield)\n\t🗡️: \(cSword2x)\t⚔️: \(cSword3x)\t♾️: \(cSword8)")
+//        print("populateSpawnedItems(): health: \(Int(playerHealth * 100)), luck: \(Int(chosenSwordLuck * 100)), itemSpawnLevel: \(itemSpawnLevel), resetCount: \(resetCount)\n\t💎: \(cGem)\t❤️: \(cHeart)\n\t👢: \(cBoot)\t🛡️: \(cShield)\n\t🗡️: \(cSword2x)\t⚔️: \(cSword3x)\t♾️: \(cSword8)")
     }
     
     /**

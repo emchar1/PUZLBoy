@@ -33,6 +33,8 @@ class FinalBattle2Controls {
     static let keyPlayerFreezeAction = "playerFreezeAction"
     static let keyPlayerCloudAction = "playerCloudAction"
     static let keyPlayerRainbowAction = "playerRainbowAction"
+    static let keyBootExpiringAction = "bootExpiringAction"
+    static let keyShieldExpiringAction = "shieldExpiringAction"
 
     private var gameboard: GameboardSprite
     private var player: Player
@@ -812,7 +814,19 @@ extension FinalBattle2Controls: DuplicateItemTimerManagerDelegate {
     }
     
     func didInitializeBoot(_ manager: DuplicateItemTimerManager) {
-        guard player.sprite.childNode(withName: "cloudNode") == nil else { return }
+        //If cloudNode is attached...
+        if let cloudNode = player.sprite.childNode(withName: "cloudNode") {
+            if cloudNode.action(forKey: FinalBattle2Controls.keyBootExpiringAction) != nil {
+                //...but is in the process of being removed, then remove it
+                cloudNode.removeAction(forKey: FinalBattle2Controls.keyBootExpiringAction)
+                cloudNode.removeFromParent()
+            }
+            else {
+                //...but is not in the process of being removed, i.e. timer is active, then quit early
+                return
+            }
+        }
+        
         
         let cloudNode = SKSpriteNode(imageNamed: "cloud")
         cloudNode.position = CGPoint(x: 0, y: -1.5 * player.sprite.size.height * UIDevice.spriteScale)
@@ -850,7 +864,7 @@ extension FinalBattle2Controls: DuplicateItemTimerManagerDelegate {
             cloudNode.run(SKAction.sequence([
                 SKAction.fadeOut(withDuration: 1),
                 SKAction.removeFromParent()
-            ]))
+            ]), withKey: FinalBattle2Controls.keyBootExpiringAction)
         }
         
         player.sprite.removeAction(forKey: FinalBattle2Controls.keyPlayerCloudAction)
@@ -858,7 +872,19 @@ extension FinalBattle2Controls: DuplicateItemTimerManagerDelegate {
     }
     
     func didInitializeShield(_ manager: DuplicateItemTimerManager) {
-        guard player.sprite.childNode(withName: "littleShieldNode") == nil else { return }
+        //If littleShield is attached...
+        if let littleShield = player.sprite.childNode(withName: "littleShieldNode") {
+            if littleShield.action(forKey: FinalBattle2Controls.keyShieldExpiringAction) != nil {
+                //...but is in the process of being removed, then remove it
+                littleShield.removeAction(forKey: FinalBattle2Controls.keyShieldExpiringAction)
+                littleShield.removeFromParent()
+            }
+            else {
+                //...but is not in the process of being removed, i.e. timer is active, then quit early
+                return
+            }
+        }
+        
         
         let littleShield = SKSpriteNode(imageNamed: "shield")
         littleShield.position = CGPoint(x: 60, y: -60) / UIDevice.spriteScale
@@ -877,7 +903,7 @@ extension FinalBattle2Controls: DuplicateItemTimerManagerDelegate {
         littleShield.run(SKAction.sequence([
             SKAction.scale(to: 0, duration: 0.5),
             SKAction.removeFromParent()
-        ]))
+        ]), withKey: FinalBattle2Controls.keyShieldExpiringAction)
     }
     
     

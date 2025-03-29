@@ -103,7 +103,7 @@ class MagmoorShield: SKNode {
      Resets the shield to the max, i.e. 1 and apply a quick animation.
      */
     func resetShield(villain: Player) {
-        maxHitPoints = resetCount >= 6 ? 1 : min(1 + resetCount, 6)
+        maxHitPoints = resetCount >= 7 ? 1 : min(1 + resetCount, 6)
         hitPoints = maxHitPoints
         resetCount += 1
         speedReduction = 0
