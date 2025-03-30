@@ -127,7 +127,7 @@ class FinalBattle2Engine {
         hero.sprite.zPosition = K.ZPosition.player
         hero.sprite.name = FinalBattle2Engine.heroName
         
-        villain = Player(type: .villain)
+        villain = Player(type: .villain2)
         villain.sprite.position = gameboard.getLocation(at: FinalBattle2Spawner.endPosition)
         villain.sprite.setScale(playerScale * villain.scaleMultiplier)
         villain.sprite.xScale *= -1

@@ -406,7 +406,7 @@ class CutsceneMagmoor: Cutscene {
                 speechPlayerLeft.position.y = leftPlayerPositionInitial.y + 250
 
                 setTextArray(items: [
-                    SpeechBubbleItem(profile: speechPlayerLeft, speed: 0.01, chat: "⚡️MINIMIZE!!!⚡️")
+                    SpeechBubbleItem(profile: speechPlayerLeft, speed: 0.01, chat: "⚡️REDUCE!!!⚡️")
                 ], completion: nil)
                 
                 closeupElders()

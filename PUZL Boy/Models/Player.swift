@@ -40,7 +40,7 @@ class Player {
     // MARK: - Properties: Enums
     
     enum PlayerType: String, CaseIterable {
-        case hero = "hero", trainer, princess, princess2, villain, minion, youngTrainer, youngVillain, elder0, elder1, elder2
+        case hero = "hero", trainer, princess, princess2, villain, villain2, minion, youngTrainer, youngVillain, elder0, elder1, elder2
     }
 
     enum Texture: Int, CaseIterable {
@@ -105,6 +105,9 @@ class Player {
         case .villain:
             setupPlayer(framesRng: [1...12, 1...12, 1...12, 1...12, 1...4, 1...4, 1...7, nil],
                         framesCmd: [nil, "Idle", "Idle", nil, "Sliding", nil, nil, nil])
+        case .villain2:
+            setupPlayer(framesRng: [1...12, 1...12, 1...12, 1...12, 1...4, 1...4, 1...7, nil],
+                        framesCmd: [nil, "Idle", "Idle", nil, "Sliding", nil, nil, nil])
         case .minion:
             setupPlayer(framesRng: [1...12, 1...12, 1...12, nil, nil, nil, 1...7, nil],
                         framesCmd: [nil, "Idle", "Idle", nil, nil, nil, nil, nil])
@@ -152,6 +155,9 @@ class Player {
             multiplier = 0.75
         case .villain:
             prefix = "Villain"
+            multiplier = 1.5
+        case .villain2:
+            prefix = "Villain2"
             multiplier = 1.5
         case .minion:
             prefix = "Minion"
@@ -246,6 +252,7 @@ class Player {
             case .hero:             timePerFrameFallback = 0.06
             case .trainer:          timePerFrameFallback = 0.16
             case .villain:          timePerFrameFallback = 0.12
+            case .villain2:         timePerFrameFallback = 0.12
             case .princess:         timePerFrameFallback = 0.09
             case .princess2:        timePerFrameFallback = defaultTime
             case .elder0:           timePerFrameFallback = 0.1
@@ -260,6 +267,7 @@ class Player {
             case .hero:             timePerFrameFallback = 0.04
             case .trainer:          timePerFrameFallback = 0.04
             case .villain:          timePerFrameFallback = 0.04
+            case .villain2:         timePerFrameFallback = 0.04
             case .princess:         timePerFrameFallback = 0.04
             case .princess2:        timePerFrameFallback = defaultTime
             case .elder0:           timePerFrameFallback = 0.04
@@ -274,6 +282,7 @@ class Player {
             case .hero:             timePerFrameFallback = 0.06
             case .trainer:          timePerFrameFallback = 0.12
             case .villain:          timePerFrameFallback = 0.06
+            case .villain2:         timePerFrameFallback = 0.06
             case .princess:         timePerFrameFallback = 0.06
             case .princess2:        timePerFrameFallback = defaultTime
             case .elder0:           timePerFrameFallback = defaultTime
@@ -288,6 +297,7 @@ class Player {
             case .hero:             timePerFrameFallback = 0.02
             case .trainer:          timePerFrameFallback = defaultTime
             case .villain:          timePerFrameFallback = defaultTime
+            case .villain2:         timePerFrameFallback = defaultTime
             case .princess:         timePerFrameFallback = defaultTime
             case .princess2:        timePerFrameFallback = defaultTime
             case .elder0:           timePerFrameFallback = defaultTime
@@ -302,6 +312,7 @@ class Player {
             case .hero:             timePerFrameFallback = 0.04
             case .trainer:          timePerFrameFallback = 0.1
             case .villain:          timePerFrameFallback = defaultTime
+            case .villain2:         timePerFrameFallback = defaultTime
             case .princess:         timePerFrameFallback = defaultTime
             case .princess2:        timePerFrameFallback = defaultTime
             case .elder0:           timePerFrameFallback = defaultTime
@@ -316,6 +327,7 @@ class Player {
             case .hero:             timePerFrameFallback = defaultTime
             case .trainer:          timePerFrameFallback = defaultTime
             case .villain:          timePerFrameFallback = defaultTime
+            case .villain2:         timePerFrameFallback = defaultTime
             case .princess:         timePerFrameFallback = 0.02
             case .princess2:        timePerFrameFallback = defaultTime
             case .elder0:           timePerFrameFallback = defaultTime
@@ -330,6 +342,7 @@ class Player {
             case .hero:             timePerFrameFallback = defaultTime
             case .trainer:          timePerFrameFallback = defaultTime
             case .villain:          timePerFrameFallback = defaultTime
+            case .villain2:         timePerFrameFallback = defaultTime
             case .princess:         timePerFrameFallback = defaultTime
             case .princess2:        timePerFrameFallback = defaultTime
             case .elder0:           timePerFrameFallback = 0.06
@@ -344,6 +357,7 @@ class Player {
             case .hero:             timePerFrameFallback = 0.13
             case .trainer:          timePerFrameFallback = defaultTime
             case .villain:          timePerFrameFallback = defaultTime
+            case .villain2:         timePerFrameFallback = defaultTime
             case .princess:         timePerFrameFallback = defaultTime
             case .princess2:        timePerFrameFallback = defaultTime
             case .elder0:           timePerFrameFallback = defaultTime
@@ -389,7 +403,7 @@ class Player {
                 let scaleDiff: CGFloat = (endScale ?? startScale) - startScale
                 let incrementScale: CGFloat = scaleDiff * CGFloat(illusionStep) / CGFloat(blinkDivision)
                 
-                let illusionSprite = SKSpriteNode(imageNamed: fierce ? "VillainJump (1)" : (playerNode.texture?.getFilename() ?? "VillainJump (1)"))
+                let illusionSprite = SKSpriteNode(imageNamed: fierce ? "Villain2Jump (1)" : (playerNode.texture?.getFilename() ?? "Villain2Jump (1)"))
                 illusionSprite.size = Player.size
                 illusionSprite.xScale = playerNode.xScale + incrementScale * (playerNode.xScale < 0 ? -1 : 1)
                 illusionSprite.yScale = playerNode.yScale + incrementScale

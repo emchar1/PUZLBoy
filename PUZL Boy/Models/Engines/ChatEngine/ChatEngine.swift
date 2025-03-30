@@ -1342,7 +1342,7 @@ extension ChatEngine {
                 self?.delegateCatwalk?.throwShieldCatwalk()
                 
                 self?.sendChatArray(shouldSkipDim: true, items: [
-                    ChatItem(profile: .melchior, pause: 5, startNewChat: true, chat: "What the— has Marlin taught you nothing, you insolent boy!!", handler: nil),
+                    ChatItem(profile: .melchior, pause: 5, startNewChat: true, chat: "What the— has Marlin taught you nothing, insolent boy!", handler: nil),
                     ChatItem(profile: .magmus, chat: "MELCHIOR! Kindness!"),
                     ChatItem(profile: .magmus, chat: "Forgive him, child. As you'll recall, the gateway is powered by sparkly purple gems. Surrender your sparkly purple gems and access shall be granted."),
                     ChatItem(profile: .melchior, chat: "He just threw it!!!"),
