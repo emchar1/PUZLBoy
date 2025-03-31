@@ -187,7 +187,7 @@ class MagmoorDuplicate: SKNode {
                                      tag: self.name ?? MagmoorDuplicate.getNodeName(at: -1),
                                      color: .red.darkenColor(factor: 12),
                                      playSound: false,
-                                     fierce: true,
+                                     fierce: false,
                                      startPoint: duplicate.sprite.position,
                                      endPoint: duplicatePoint,
                                      startScale: 1,

@@ -583,6 +583,7 @@ class FinalBattle2Controls {
         let waitDuration = TimeInterval.random(in: 3...8)
         let villainDirection: CGFloat = villainPositionNew.col < positions.player.col ? 1 : -1
         
+        let painAnimation = Player.animate(player: villain, type: .glide, repeatCount: 1)
         let painAction = SKAction.sequence([
             SKAction.moveBy(x: -moveDirection * moveDistance, y: 0, duration: 0),
             SKAction.colorize(with: .red, colorBlendFactor: 1, duration: 0),
@@ -591,7 +592,7 @@ class FinalBattle2Controls {
         ])
         
         let disappearAction = SKAction.sequence([
-            showPain ? painAction : SKAction.wait(forDuration: 0),
+            showPain ? SKAction.group([painAction, painAnimation]) : SKAction.wait(forDuration: 0),
             SKAction.group([
                 SKAction.moveBy(x: fadeDistance.x, y: fadeDistance.y, duration: fadeDuration),
                 SKAction.fadeOut(withDuration: fadeDuration)
