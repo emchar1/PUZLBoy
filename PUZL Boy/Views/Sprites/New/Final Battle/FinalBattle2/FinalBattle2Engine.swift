@@ -379,7 +379,9 @@ class FinalBattle2Engine {
         }
         
         //Panel animation
-        affectedPanels.forEach { showDamagePanel(at: $0, withExplosion: true, extendDamage: false) }
+        affectedPanels.forEach {
+            showDamagePanel(at: $0, withExplosion: true, extendDamage: false)
+        }
         
         //Update health
         if affectedPanels.contains(where: { $0 == controls.positions.player }) {
@@ -430,7 +432,13 @@ class FinalBattle2Engine {
         let shouldPoison: Bool = resetCount == 4 || resetCount == 6 || resetCount == 7
         let heroHit: Bool = affectedPanels.contains(where: { $0 == controls.positions.player })
         
-        affectedPanels.forEach { showDamagePanel(at: $0, color: shouldPoison ? .green : .red.darkenColor(factor: 12), isPoison: shouldPoison, withExplosion: true, extendDamage: heroHit) }
+        affectedPanels.forEach {
+            showDamagePanel(at: $0,
+                            color: shouldPoison ? .green : .red.darkenColor(factor: 12),
+                            isPoison: shouldPoison,
+                            withExplosion: true,
+                            extendDamage: heroHit)
+        }
         
         //Update health
         if heroHit {
@@ -639,13 +647,19 @@ extension FinalBattle2Engine: FinalBattle2ControlsDelegate {
 
             bloodOverlay.run(SKAction.fadeOut(withDuration: fadeDuration))
             flashGameboard.run(SKAction.fadeOut(withDuration: fadeDuration))
-            backgroundPattern.setOverworldMusicVolume(to: 0, fadeDuration: fadeDuration)
+            
+            if !controls.magmoorShield.isFirstRound {
+                backgroundPattern.setOverworldMusicVolume(to: 0, fadeDuration: fadeDuration)
+            }
         }
         else if didBreak {
             let villainPosition = villainPosition ?? (0, 0)
-            
             let didAffectPlayer = shieldExplodeDamagePanels(at: villainPosition, chosenSword: chosenSword)
-            backgroundPattern.animate(pattern: .normal, fadeDuration: didAffectPlayer ? 3 : 2, delay: didAffectPlayer ? 2.5 : nil, shouldFlashGameboard: true)
+            
+            backgroundPattern.animate(pattern: .normal,
+                                      fadeDuration: didAffectPlayer ? 3 : 2,
+                                      delay: didAffectPlayer ? 2.5 : nil,
+                                      shouldFlashGameboard: true)
         }
     }
     
@@ -673,11 +687,19 @@ extension FinalBattle2Engine: FinalBattle2ControlsDelegate {
 extension FinalBattle2Engine: FinalBattle2SpawnerDelegate {
     func didSpawnSafePanel(spawnPanel: K.GameboardPosition, index: Int) {
         guard spawnPanel == controls.positions.player else { return }
+        
         health.updateHealth(type: .stopDrain)
     }
     
     func didDespawnSafePanel(spawnPanel: K.GameboardPosition, index: Int) {
-        guard spawnPanel == controls.positions.player && !safeOrPlatformFound() && !namePanelFound(FinalBattle2Spawner.poisonPanelName) && !startPanelFound() && !endPanelFound() && !controls.duplicateItemTimerManager.isRunningBoot else { return }
+        guard spawnPanel == controls.positions.player
+                && !safeOrPlatformFound()
+                && !namePanelFound(FinalBattle2Spawner.poisonPanelName)
+                && !startPanelFound()
+                && !endPanelFound()
+                && !controls.duplicateItemTimerManager.isRunningBoot
+        else { return }
+        
         health.updateHealth(type: .drain, dmgMultiplier: controls.chosenSword.defenseRating)
     }
     

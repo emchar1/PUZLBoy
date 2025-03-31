@@ -500,7 +500,11 @@ class FinalBattle2Controls {
         moveVillainFlee(shouldDisappear: false) { [weak self] in
             guard let self = self else { return }
             
-            let attackPattern = MagmoorAttacks.getAttackPattern(enrage: magmoorShield.isEnraged, level: magmoorShield.resetCount, shieldHP: magmoorShield.hitPoints, isFeatured: false)
+            let attackPattern = MagmoorAttacks.getAttackPattern(enrage: magmoorShield.isEnraged,
+                                                                level: magmoorShield.resetCount,
+                                                                shieldHP: magmoorShield.hitPoints,
+                                                                isFeatured: false)
+            
             magmoorAttacks.attack(pattern: attackPattern, level: magmoorShield.resetCount, positions: positions)
         }
     }
@@ -643,7 +647,11 @@ class FinalBattle2Controls {
                 //IMPORTANT!! Must come after resetShield()!! (But before resetTimer())
                 delegateControls?.didVillainFlee(didReappear: true)
                 
-                let attackPattern = MagmoorAttacks.getAttackPattern(enrage: false, level: magmoorShield.resetCount, shieldHP: magmoorShield.hitPoints, isFeatured: true)
+                let attackPattern = MagmoorAttacks.getAttackPattern(enrage: false,
+                                                                    level: magmoorShield.resetCount,
+                                                                    shieldHP: magmoorShield.hitPoints,
+                                                                    isFeatured: true)
+                
                 magmoorAttacks.attack(pattern: attackPattern, level: magmoorShield.resetCount, positions: positions)
                 
                 generateVillainPositionNew(enrage: false)
