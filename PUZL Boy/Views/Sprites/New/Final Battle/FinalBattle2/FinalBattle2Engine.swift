@@ -294,13 +294,13 @@ class FinalBattle2Engine {
         let healthType: FinalBattle2Health.HealthType
         
         switch pattern {
-        case .normal, .spread:
+        case .normal, .sNormal:
             panelColor = .red
             healthType = .villainAttackNormal
-        case .freeze:
+        case .freeze, .sFreeze:
             panelColor = .cyan
             healthType = .villainAttackFreeze
-        case .poison:
+        case .poison, .sPoison:
             panelColor = .green
             healthType = .villainAttackPoison
         default: // TODO: - .castInvincible
@@ -313,7 +313,11 @@ class FinalBattle2Engine {
         }
         
         if !(position == controls.positions.player && controls.duplicateItemTimerManager.isRunningShield) {
-            showDamagePanel(at: position, color: panelColor, isPoison: pattern == .poison, withExplosion: false, extendDamage: false)
+            showDamagePanel(at: position,
+                            color: panelColor,
+                            isPoison: pattern == .poison || pattern == .sPoison,
+                            withExplosion: false,
+                            extendDamage: false)
         }
         else {
             guard hero.sprite.childNode(withName: "shieldNode") == nil else { return }
@@ -457,7 +461,7 @@ class FinalBattle2Engine {
                 flashOverlay.run(SKAction.sequence([
                     SKAction.wait(forDuration: 0.4),
                     SKAction.fadeIn(withDuration: 0),
-                    SKAction.wait(forDuration: 0.5),
+                    SKAction.wait(forDuration: 1.5),
                     SKAction.fadeOut(withDuration: 2.6)
                 ]))
             }
@@ -586,7 +590,7 @@ extension FinalBattle2Engine: FinalBattle2ControlsDelegate {
     
     func didVillainAttack(pattern: MagmoorAttacks.AttackPattern, chosenSword: ChosenSword, position: K.GameboardPosition) {
         switch pattern {
-        case .normal, .freeze, .poison, .spread:
+        case .normal, .freeze, .poison, .sNormal, .sFreeze, .sPoison:
             villainAttackNormal(at: position, pattern: pattern, chosenSword: chosenSword)
         case .timed:
             villainAttackTimed(at: position, isLarge: false, chosenSword: chosenSword)

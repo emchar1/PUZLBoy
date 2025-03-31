@@ -34,7 +34,7 @@ class MagmoorAttacks {
     private var fireballPosition: CGPoint { villain.sprite.position + getWandOffset(villain) }
     
     enum AttackPattern: CaseIterable {
-        case normal, freeze, poison, spread, timed, timedLarge, duplicates, castInvincible
+        case normal, freeze, poison, sNormal, sFreeze, sPoison, timed, timedLarge, duplicates, castInvincible
     }
     
     weak var delegateAttacks: MagmoorAttacksDelegate?
@@ -99,7 +99,7 @@ class MagmoorAttacks {
             if randomInts[0].isMultiple(of: 5) { attackPattern = .freeze }                  //20%
             else if randomInts[0].isMultiple(of: 2) {                                       //40%
                 if randomInts[1].isMultiple(of: 2) { attackPattern = .normal }                  //50%
-                else { attackPattern = .spread }                                                //50%
+                else { attackPattern = .sNormal }                                               //50%
             }
             else if randomInts[0].isMultiple(of: 3) { attackPattern = .poison }             //14%
             else { attackPattern = .timed }                                                 //26%
@@ -107,9 +107,9 @@ class MagmoorAttacks {
             guard !isFeatured else { attackPattern = .duplicates; break }
             
             if levelCheck == 4 || shieldHP > 3 {
-                if randomInts[0].isMultiple(of: 5) { attackPattern = .freeze }                  //20%
-                else if randomInts[0].isMultiple(of: 2) { attackPattern = .spread }             //40%
-                else if randomInts[0].isMultiple(of: 3) { attackPattern = .poison }             //14%
+                if randomInts[0].isMultiple(of: 5) { attackPattern = .sFreeze }                 //20%
+                else if randomInts[0].isMultiple(of: 2) { attackPattern = .sNormal }            //40%
+                else if randomInts[0].isMultiple(of: 3) { attackPattern = .sPoison }            //14%
                 else {                                                                          //26%
                     if randomInts[1].isMultiple(of: [2, 3]) { attackPattern = .duplicates }         //67%
                     else { attackPattern = Bool.random() ? .timed : .timedLarge }                   //17% : 16%
@@ -118,7 +118,7 @@ class MagmoorAttacks {
             else {
                 if randomInts[0].isMultiple(of: 3) { attackPattern = .duplicates }              //33%
                 else if shieldHP > 1 { attackPattern = Bool.random() ? .normal : .timed }       //33% : 34%
-                else { attackPattern = Bool.random() ? .spread : .timedLarge }                  //34% : 33%
+                else { attackPattern = Bool.random() ? .sNormal : .timedLarge }                 //34% : 33%
             }
         default:
             attackPattern = .normal
@@ -157,29 +157,38 @@ class MagmoorAttacks {
         let wandColor: UIColor
         
         switch pattern {
-        case .normal:
+        case .normal, .sNormal:
             wandColor = .orange
             
             villain.sprite.run(SKAction.wait(forDuration: wandAnimationDelay)) { [weak self] in
-                self?.helperNormal(pattern: .normal, positions: positions)
+                if pattern == .normal {
+                    self?.helperNormal(pattern: .normal, positions: positions)
+                }
+                else {
+                    self?.helperSpread(pattern: .sNormal, positions: positions)
+                }
             }
-        case .freeze:
+        case .freeze, .sFreeze:
             wandColor = .cyan
             
             villain.sprite.run(SKAction.wait(forDuration: wandAnimationDelay)) { [weak self] in
-                self?.helperNormal(pattern: .freeze, positions: positions)
+                if pattern == .freeze {
+                    self?.helperNormal(pattern: .freeze, positions: positions)
+                }
+                else {
+                    self?.helperSpread(pattern: .sFreeze, positions: positions)
+                }
             }
-        case .poison:
+        case .poison, .sPoison:
             wandColor = .green
             
             villain.sprite.run(SKAction.wait(forDuration: wandAnimationDelay)) { [weak self] in
-                self?.helperNormal(pattern: .poison, positions: positions)
-            }
-        case .spread:
-            wandColor = .orange
-            
-            villain.sprite.run(SKAction.wait(forDuration: wandAnimationDelay)) { [weak self] in
-                self?.helperSpread(positions: positions)
+                if pattern == .poison {
+                    self?.helperNormal(pattern: .poison, positions: positions)
+                }
+                else {
+                    self?.helperSpread(pattern: .sPoison, positions: positions)
+                }
             }
         case .timed:
             wandColor = .magenta
@@ -332,7 +341,7 @@ class MagmoorAttacks {
     /**
      Helper function to set up and launch a spread of normal fireballs.
      */
-    private func helperSpread(positions: FinalBattle2Controls.PlayerPositions) {
+    private func helperSpread(pattern: AttackPattern, positions: FinalBattle2Controls.PlayerPositions) {
         let spreadSize: Int = 5
         var explodePositions: [K.GameboardPosition] = []
         
@@ -367,7 +376,7 @@ class MagmoorAttacks {
         }
         
         for (i, explodePosition) in explodePositions.enumerated() {
-            let fireball = Fireball(type: .spread,
+            let fireball = Fireball(type: pattern,
                                     rotationOrigin: villain.sprite.position,
                                     positions: (explodePosition, positions.villain),
                                     gameboard: gameboard)
@@ -381,7 +390,7 @@ class MagmoorAttacks {
             }
             
             fireball.launchFireball(facingDirection: getFacingDirection(villain)) { [weak self] in
-                self?.delegateAttacks?.didVillainAttack(pattern: .spread, position: explodePosition)
+                self?.delegateAttacks?.didVillainAttack(pattern: pattern, position: explodePosition)
             }
         }
     }
@@ -416,7 +425,7 @@ class MagmoorAttacks {
             let duplicateSetup: (duplicatePattern: MagmoorDuplicate.DuplicateAttackPattern, attackType: AttackPattern, attackSpeed: TimeInterval)
             
             switch i {
-            case 0:     duplicateSetup = (.player, count > 4 ? .spread : .normal, 3)
+            case 0:     duplicateSetup = (.player, count > 4 ? .sNormal : .normal, 3)
             case 1:     duplicateSetup = (.player, .freeze, 4)
             case 2:     duplicateSetup = (.random, .poison, 2)
             default:    duplicateSetup = (.invincible, .castInvincible, 1.5)

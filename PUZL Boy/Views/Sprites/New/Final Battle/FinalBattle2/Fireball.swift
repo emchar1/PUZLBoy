@@ -45,14 +45,14 @@ class Fireball: SKNode {
         fireballSpeed = 0.5
         
         switch type {
-        case .freeze:
+        case .freeze, .sFreeze:
             imageName = "villainProjectile2"
             color = .blue
             shouldSetZRotation = false
             particleMovement = .magicElderIce2
             particleExplosion = .magicElderIce
             sfx = [AudioManager.shared.getAudioItem(filename: "enemyice")]
-        case .poison:
+        case .poison, .sPoison:
             imageName = "villainProjectile4"
             color = .green
             shouldSetZRotation = false
@@ -73,7 +73,7 @@ class Fireball: SKNode {
             particleMovement = nil
             particleExplosion = nil
             sfx = []
-        default: //normal, spread
+        default: //normal, sNormal
             imageName = "villainProjectile1"
             color = .red
             shouldSetZRotation = true
@@ -147,7 +147,7 @@ class Fireball: SKNode {
         gameboard.sprite.addChild(self)
         
         switch type {
-        case .normal, .freeze, .poison, .spread:
+        case .normal, .freeze, .poison, .sNormal, .sFreeze, .sPoison:
             launchHelperFireball(facingDirection: facingDirection, completion: completion)
         default:
             break
@@ -235,18 +235,18 @@ class Fireball: SKNode {
         let particleExplosionDuration: TimeInterval
         
         switch type {
-        case .freeze:
+        case .freeze, .sFreeze:
             rotationAngle = .pi
             scaleAction = SKAction.scale(to: 0.5 / UIDevice.spriteScale, duration: stats.fireballMovementDuration)
             particleExplosionDuration = 2
-        case .poison:
+        case .poison, .sPoison:
             rotationAngle = .pi / 4
             scaleAction = SKAction.repeat(SKAction.sequence([
                 SKAction.scale(to: 0.5 / UIDevice.spriteScale, duration: 0.2),
                 SKAction.scale(to: 0.25 / UIDevice.spriteScale, duration: 0.2)
             ]), count: Int(ceil(stats.fireballMovementDuration / 0.4)))
             particleExplosionDuration = 4
-        default: //normal, spread
+        default: //normal, sNormal
             rotationAngle = 0
             scaleAction = SKAction.scale(to: 0.5 / UIDevice.spriteScale, duration: stats.fireballMovementDuration)
             particleExplosionDuration = 2

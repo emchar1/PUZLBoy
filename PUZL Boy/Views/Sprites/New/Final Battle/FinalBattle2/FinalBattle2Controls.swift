@@ -188,7 +188,13 @@ class FinalBattle2Controls {
             generateVillainPositionNew(enrage: magmoorShield.isEnraged)
             
             if magmoorShield.hasHitPoints {
-                moveVillainFlee(shouldDisappear: false, completion: nil)
+                moveVillainFlee(shouldDisappear: false) { [weak self] in
+                    guard let self = self else { return }
+                    
+                    let attackPattern: MagmoorAttacks.AttackPattern = magmoorShield.hitPoints < 3 ? .normal : .sNormal
+                    
+                    magmoorAttacks.attack(pattern: attackPattern, level: magmoorShield.resetCount, positions: positions)
+                }
             }
             else {
                 resetTimer(forceDelay: 3)
@@ -303,7 +309,13 @@ class FinalBattle2Controls {
                     self.generateVillainPositionNew(enrage: self.magmoorShield.isEnraged)
                     
                     if self.magmoorShield.hasHitPoints {
-                        self.moveVillainFlee(shouldDisappear: false, completion: nil)
+                        self.moveVillainFlee(shouldDisappear: false) { [weak self] in
+                            guard let self = self else { return }
+                            
+                            let attackPattern: MagmoorAttacks.AttackPattern = magmoorShield.hitPoints < 3 ? .normal : .sNormal
+                            
+                            magmoorAttacks.attack(pattern: attackPattern, level: magmoorShield.resetCount, positions: positions)
+                        }
                     }
                     else {
                         self.resetTimer(forceDelay: 3)
@@ -696,7 +708,7 @@ extension FinalBattle2Controls: MagmoorAttacksDelegate {
     func didVillainAttack(pattern: MagmoorAttacks.AttackPattern, position: K.GameboardPosition) {
         delegateControls?.didVillainAttack(pattern: pattern, chosenSword: chosenSword, position: position)
         
-        if pattern == .freeze {
+        if pattern == .freeze || pattern == .sFreeze {
             didPlayerFreeze(position: position)
         }
     }
@@ -741,7 +753,7 @@ extension FinalBattle2Controls: MagmoorAttacksDuplicateDelegate {
     func didDuplicateAttack(pattern: MagmoorAttacks.AttackPattern, playerPosition: K.GameboardPosition) {
         delegateControls?.didDuplicateAttack(pattern: pattern, chosenSword: chosenSword, playerPosition: playerPosition)
         
-        if pattern == .freeze {
+        if pattern == .freeze || pattern == .sFreeze {
             didPlayerFreeze(position: playerPosition)
         }
     }
