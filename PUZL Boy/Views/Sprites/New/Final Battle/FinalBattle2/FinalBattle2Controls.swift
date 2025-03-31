@@ -580,13 +580,14 @@ class FinalBattle2Controls {
     private func moveVillainFlee(shouldDisappear: Bool, showPain: Bool = true, completion: (() -> Void)?) {
         guard magmoorAttacks.villainIsVisible else { return }
         
-        let moveDirection = villain.sprite.xScale / abs(villain.sprite.xScale)
+        let moveDirection: CGFloat = positions.player.col <= positions.villain.col ? -1 : 1
         let moveDistance: CGFloat = 20
         let fadeDistance = CGPoint(x: 0, y: shouldDisappear ? gameboard.panelSize : 0)
         let fadeDuration: TimeInterval = shouldDisappear ? 2 : 0
         let waitDuration = TimeInterval.random(in: 3...8)
         let villainDirection: CGFloat = villainPositionNew.col < positions.player.col ? 1 : -1
         
+        let flipVillainAction = SKAction.scaleX(to: moveDirection * abs(villain.sprite.xScale), duration: 0)
         let painAnimation = Player.animate(player: villain, type: .glide, repeatCount: 1)
         let painAction = SKAction.sequence([
             SKAction.moveBy(x: -moveDirection * moveDistance, y: 0, duration: 0),
@@ -596,7 +597,7 @@ class FinalBattle2Controls {
         ])
         
         let disappearAction = SKAction.sequence([
-            showPain ? SKAction.group([painAction, painAnimation]) : SKAction.wait(forDuration: 0),
+            showPain ? SKAction.group([flipVillainAction, painAction, painAnimation]) : SKAction.wait(forDuration: 0),
             SKAction.group([
                 SKAction.moveBy(x: fadeDistance.x, y: fadeDistance.y, duration: fadeDuration),
                 SKAction.fadeOut(withDuration: fadeDuration)
