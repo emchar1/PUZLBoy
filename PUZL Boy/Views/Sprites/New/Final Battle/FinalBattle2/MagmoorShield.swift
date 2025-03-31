@@ -38,6 +38,7 @@ class MagmoorShield: SKNode {
     var hasHitPoints: Bool { return hitPoints > 0 }
     var isEnraged: Bool { return !hasHitPoints }
     var isMaxed: Bool { return hitPoints == maxHitPoints }
+    var isFirstRound: Bool { return resetCount <= 1 }
     
     weak var delegate: MagmoorShieldDelegate?
     
@@ -197,24 +198,27 @@ class MagmoorShield: SKNode {
                         delegate?.willBreakShield(fadeDuration: 0.25)
                         
                         AudioManager.shared.stopSound(for: "shieldpulse")
-                        ParticleEngine.shared.animateParticles(type: .magicExplosion0,
-                                                               toNode: villain.sprite,
-                                                               position: .zero,
-                                                               scale: UIDevice.spriteScale,
-                                                               zPosition: 1,
-                                                               duration: 1) //keep at 1
-                        ParticleEngine.shared.animateParticles(type: .magicExplosion1,
-                                                               toNode: villain.sprite,
-                                                               position: .zero,
-                                                               scale: UIDevice.spriteScale,
-                                                               zPosition: 2,
-                                                               duration: 2)
-                        ParticleEngine.shared.animateParticles(type: .magicExplosion2,
-                                                               toNode: villain.sprite,
-                                                               position: .zero,
-                                                               scale: UIDevice.spriteScale,
-                                                               zPosition: 3,
-                                                               duration: 2)
+                        
+                        if !isFirstRound {
+                            ParticleEngine.shared.animateParticles(type: .magicExplosion0,
+                                                                   toNode: villain.sprite,
+                                                                   position: .zero,
+                                                                   scale: UIDevice.spriteScale,
+                                                                   zPosition: 1,
+                                                                   duration: 1) //keep at 1
+                            ParticleEngine.shared.animateParticles(type: .magicExplosion1,
+                                                                   toNode: villain.sprite,
+                                                                   position: .zero,
+                                                                   scale: UIDevice.spriteScale,
+                                                                   zPosition: 2,
+                                                                   duration: 2)
+                            ParticleEngine.shared.animateParticles(type: .magicExplosion2,
+                                                                   toNode: villain.sprite,
+                                                                   position: .zero,
+                                                                   scale: UIDevice.spriteScale,
+                                                                   zPosition: 3,
+                                                                   duration: 2)
+                        }
                     }
                 ])
             ]),
@@ -224,9 +228,9 @@ class MagmoorShield: SKNode {
                 delegate?.didBreakShield(at: villainPosition)
                 villain.sprite.run(SKAction.colorize(with: .red, colorBlendFactor: 1, duration: 0.25))
             },
-            scaleAndFade(size: 16, alpha: 1, duration: 0.25),
+            scaleAndFade(size: isFirstRound ? 14 : 16, alpha: 1, duration: 0.25),
             SKAction.wait(forDuration: 0.15),
-            scaleAndFade(size: 24, alpha: 0, duration: 0.1),
+            scaleAndFade(size: isFirstRound ? 12 : 24, alpha: 0, duration: 0.1),
             SKAction.removeFromParent()
         ]), completion: completion)
     }
@@ -273,7 +277,7 @@ class MagmoorShield: SKNode {
                 self?.removeAction(forKey: MagmoorShield.keyRotateAction)
             },
             shieldShake(duration: scaleDuration + fadeDuration - 0.1),
-            scaleAndFade(size: 14, alpha: 0, duration: 0.1),
+            scaleAndFade(size: 5, alpha: 0, duration: 0.1),
             SKAction.removeFromParent()
         ]), completion: completion)
     }

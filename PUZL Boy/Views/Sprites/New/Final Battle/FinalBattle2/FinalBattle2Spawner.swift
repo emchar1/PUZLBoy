@@ -325,7 +325,7 @@ class FinalBattle2Spawner {
         switch index {
         case 0 * breakLimit:    currentSpeed = .slow
         case 1 * breakLimit:    currentSpeed = .medium
-        case 3 * breakLimit:    currentSpeed = .fast
+        case 2 * breakLimit:    currentSpeed = .fast
         default:                break
         }
     }

@@ -439,17 +439,20 @@ class FinalBattle2Engine {
                 health.updateHealth(type: .drainPoison, dmgMultiplier: chosenSword.defenseRating)
             }
             else {
-                health.updateHealth(type: .villainShieldExplode, dmgMultiplier: chosenSword.defenseRating)
+                let defenseMultiplier: CGFloat = controls.magmoorShield.isFirstRound ? 2 : 1
+                health.updateHealth(type: .villainShieldExplode, dmgMultiplier: chosenSword.defenseRating / defenseMultiplier)
             }
             
-            AudioManager.shared.playSoundThenStop(for: "magicdisappear2", fadeIn: 1, playForDuration: 3, fadeOut: 2, delay: 0.4)
-            
-            flashOverlay.run(SKAction.sequence([
-                SKAction.wait(forDuration: 0.4),
-                SKAction.fadeIn(withDuration: 0),
-                SKAction.wait(forDuration: 0.5),
-                SKAction.fadeOut(withDuration: 2.6)
-            ]))
+            if !controls.magmoorShield.isFirstRound {
+                AudioManager.shared.playSoundThenStop(for: "magicdisappear2", fadeIn: 1, playForDuration: 3, fadeOut: 2, delay: 0.4)
+                
+                flashOverlay.run(SKAction.sequence([
+                    SKAction.wait(forDuration: 0.4),
+                    SKAction.fadeIn(withDuration: 0),
+                    SKAction.wait(forDuration: 0.5),
+                    SKAction.fadeOut(withDuration: 2.6)
+                ]))
+            }
             
             return true
         }
