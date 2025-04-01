@@ -111,10 +111,10 @@ class ProgressHUDManager {
     }
     
     func updateTimers() {
-        for progressBar in progressBars {
+        for (i, progressBar) in progressBars.enumerated() {
             guard let progressBar = progressBar else { continue }
             
-            progressBar.updateRemainingTime()
+            progressBar.updateRemainingTime(playPowerupSound: i == ProgressBarType.wingedboot.rawValue || i == ProgressBarType.shield.rawValue)
         }
         
         let bar8 = progressBars[ProgressBarType.swordInf.rawValue]
