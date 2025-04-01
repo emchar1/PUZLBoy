@@ -290,21 +290,21 @@ class FinalBattle2Engine {
     // MARK: - Attack (Helper) Functions
     
     private func villainAttackNormal(at position: K.GameboardPosition, pattern: MagmoorAttacks.AttackPattern, chosenSword: ChosenSword) {
-        let panelColor: UIColor
+        let explosionType: MagmoorAttacks.ExplosionType
         let healthType: FinalBattle2Health.HealthType
         
         switch pattern {
         case .normal, .sNormal:
-            panelColor = .red
+            explosionType = .normal
             healthType = .villainAttackNormal
         case .freeze, .sFreeze:
-            panelColor = .cyan
+            explosionType = .freeze
             healthType = .villainAttackFreeze
         case .poison, .sPoison:
-            panelColor = .green
+            explosionType = .poison
             healthType = .villainAttackPoison
         default: // TODO: - .castInvincible
-            panelColor = .purple
+            explosionType = .normal
             healthType = .villainAttackNormal
         }
         
@@ -313,11 +313,7 @@ class FinalBattle2Engine {
         }
         
         if !(position == controls.positions.player && controls.duplicateItemTimerManager.isRunningShield) {
-            showDamagePanel(at: position,
-                            color: panelColor,
-                            isPoison: pattern == .poison || pattern == .sPoison,
-                            withExplosion: false,
-                            extendDamage: false)
+            showDamagePanel(at: position, explosionType: explosionType, withExplosion: false, extendDamage: false)
         }
         else {
             guard hero.sprite.childNode(withName: "shieldNode") == nil else { return }
@@ -384,7 +380,7 @@ class FinalBattle2Engine {
         
         //Panel animation
         affectedPanels.forEach {
-            showDamagePanel(at: $0, withExplosion: true, extendDamage: false)
+            showDamagePanel(at: $0, explosionType: .normal, withExplosion: true, extendDamage: false)
         }
         
         //Update health
@@ -432,27 +428,40 @@ class FinalBattle2Engine {
         addEdgePosition(row: homePosition.row, col: homePosition.col + 2)
         
         //Panel animation
-        let resetCount = controls.magmoorShield.resetCount
-        let shouldPoison: Bool = resetCount == 4 || resetCount == 6 || resetCount == 7
         let heroHit: Bool = affectedPanels.contains(where: { $0 == controls.positions.player })
+        let explosionType: MagmoorAttacks.ExplosionType
+
+        switch controls.magmoorShield.resetCount {
+        case let resetCount where resetCount > 7:
+            explosionType = .freeze
+            AudioManager.shared.playSound(for: "enemyice")
+        case 4, 6, 7:
+            explosionType = .poison
+            AudioManager.shared.playSound(for: "movepoisoned2")
+        default:
+            explosionType = .normal
+        }
         
         affectedPanels.forEach {
-            showDamagePanel(at: $0,
-                            color: shouldPoison ? .green : .red.darkenColor(factor: 12),
-                            isPoison: shouldPoison,
-                            withExplosion: true,
-                            extendDamage: heroHit)
+            showDamagePanel(at: $0, explosionType: explosionType, withExplosion: true, extendDamage: heroHit)
         }
         
         //Update health
         if heroHit {
-            if shouldPoison {
-                health.updateHealth(type: .villainAttackPoison, dmgMultiplier: chosenSword.defenseRating)
-                health.updateHealth(type: .drainPoison, dmgMultiplier: chosenSword.defenseRating)
-            }
-            else {
+            switch explosionType {
+            case .normal:
                 let defenseMultiplier: CGFloat = controls.magmoorShield.isFirstRound ? 2 : 1
                 health.updateHealth(type: .villainShieldExplode, dmgMultiplier: chosenSword.defenseRating / defenseMultiplier)
+            case .poison:
+                health.updateHealth(type: .villainAttackPoison, dmgMultiplier: chosenSword.defenseRating)
+                health.updateHealth(type: .drainPoison, dmgMultiplier: chosenSword.defenseRating)
+            case .freeze:
+                affectedPanels.forEach {
+                    controls.didPlayerFreeze(position: $0, shouldBypassShield: true, freezeDuration: 6)
+                }
+                
+                health.updateHealth(type: .villainAttackFreeze, dmgMultiplier: chosenSword.defenseRating)
+                health.updateHealth(type: .villainShieldExplode, dmgMultiplier: chosenSword.defenseRating / 2)
             }
             
             if !controls.magmoorShield.isFirstRound {
@@ -473,30 +482,46 @@ class FinalBattle2Engine {
         }
     }
     
-    private func showDamagePanel(at position: K.GameboardPosition, color: UIColor = .red, isPoison: Bool = false, withExplosion: Bool, extendDamage: Bool) {
-        let damageDuration: TimeInterval = isPoison ? 6.75 : (extendDamage ? 3.5 : 0.75)
+    private func showDamagePanel(at position: K.GameboardPosition, explosionType: MagmoorAttacks.ExplosionType, withExplosion: Bool, extendDamage: Bool) {
         let pulseDuration: TimeInterval = 0.1
-        let shakeAction: SKAction = isPoison ? SKAction.sequence([
-            SKAction.moveBy(x: 5, y: 0, duration: 0),
-            SKAction.group([
-                SKAction.repeat(SKAction.sequence([
-                    SKAction.moveBy(x: -10, y: 0, duration: pulseDuration),
-                    SKAction.moveBy(x: 10, y: 0, duration: pulseDuration)
-                ]), count: Int(1 / (2 * pulseDuration))),
-                SKAction.fadeOut(withDuration: 1)
+        let damageDuration: TimeInterval
+        let damagePanelColor: UIColor
+        let shakeAction: SKAction
+        
+        switch explosionType {
+        case .normal:
+            damageDuration = extendDamage ? 3.5 : 0.75
+            damagePanelColor = .red
+            shakeAction = SKAction.fadeOut(withDuration: 1)
+        case .freeze:
+            damageDuration = extendDamage ? 3.5 : 0.75
+            damagePanelColor = .cyan
+            shakeAction = SKAction.fadeOut(withDuration: 1)
+        case .poison:
+            damageDuration = 6.75
+            damagePanelColor = .green
+            shakeAction = SKAction.sequence([
+                SKAction.moveBy(x: 5, y: 0, duration: 0),
+                SKAction.group([
+                    SKAction.repeat(SKAction.sequence([
+                        SKAction.moveBy(x: -10, y: 0, duration: pulseDuration),
+                        SKAction.moveBy(x: 10, y: 0, duration: pulseDuration)
+                    ]), count: Int(1 / (2 * pulseDuration))),
+                    SKAction.fadeOut(withDuration: 1)
+                ])
             ])
-        ]) : SKAction.fadeOut(withDuration: 1)
+        }
         
         let damagePanel = SKSpriteNode(imageNamed: "water")
         damagePanel.position = gameboard.getSpritePositionAbsolute(at: position).terrain
         damagePanel.scale(to: gameboard.scaleSize)
         damagePanel.anchorPoint = .zero
-        damagePanel.color = color
+        damagePanel.color = damagePanelColor
         damagePanel.colorBlendFactor = 1
         damagePanel.alpha = 0
         damagePanel.zPosition = K.ZPosition.terrain + 6
         
-        if isPoison {
+        if explosionType == .poison {
             damagePanel.name = FinalBattle2Spawner.poisonPanelName
         }
         
@@ -511,9 +536,24 @@ class FinalBattle2Engine {
         ]))
         
         if withExplosion {
-            let particleType: ParticleEngine.ParticleType = isPoison ? .magicElderEarth2 : .magicElderFire3
-            let particleScale: CGFloat = (isPoison ? 2 : 1) * UIDevice.spriteScale / CGFloat(gameboard.panelCount)
-            let particleDuration: TimeInterval = isPoison ? 8 : 1
+            let particleType: ParticleEngine.ParticleType
+            let particleScale: CGFloat
+            let particleDuration: TimeInterval
+            
+            switch explosionType {
+            case .normal:
+                particleType = .magicElderFire3
+                particleScale = UIDevice.spriteScale / CGFloat(gameboard.panelCount)
+                particleDuration = 2
+            case .freeze:
+                particleType = .magicElderIce
+                particleScale = 2 * UIDevice.spriteScale / CGFloat(gameboard.panelCount)
+                particleDuration = 2
+            case .poison:
+                particleType = .magicElderEarth2
+                particleScale = 2 * UIDevice.spriteScale / CGFloat(gameboard.panelCount)
+                particleDuration = 4
+            }
             
             ParticleEngine.shared.animateParticles(type: particleType,
                                                    toNode: gameboard.sprite,

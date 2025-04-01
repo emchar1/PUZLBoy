@@ -94,7 +94,7 @@ class DuplicateItem {
         let cSword3x: Int
         let cSword8: Int
         
-        if resetCount < 7 {
+        if resetCount <= 7 {
             switch playerHealth {
             case let amt where amt <= 0.25: mHeart = chosenSwordLuck
             case let amt where amt <= 0.50: mHeart = chosenSwordLuck / 2

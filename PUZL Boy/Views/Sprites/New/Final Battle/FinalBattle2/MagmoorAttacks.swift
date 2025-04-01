@@ -37,6 +37,10 @@ class MagmoorAttacks {
         case normal, freeze, poison, sNormal, sFreeze, sPoison, timed, timedLarge, duplicates, castInvincible
     }
     
+    enum ExplosionType: CaseIterable {
+        case normal, freeze, poison
+    }
+    
     weak var delegateAttacks: MagmoorAttacksDelegate?
     weak var delegateAttacksDuplicate: MagmoorAttacksDuplicateDelegate?
     

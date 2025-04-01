@@ -119,13 +119,17 @@ class CircularProgressBar: SKNode {
     /**
      Updates the remaining time of the progress bar as a percentage. If percentage goes from 0 to less than 0, or 1 to less than 1, then also fade alpha and scale the multiplier in the process.
      */
-    func updateRemainingTime() {
+    func updateRemainingTime(playPowerupSound: Bool) {
         let percentage = getRemainingTime() / maxTimerIncrement
         
         if self.remainingTime <= 0 && percentage > 0 {
             didAdjustAlpha(1)
             pulseMultiplier(scaleTo: 1)
             pulseIcon()
+            
+            if playPowerupSound {
+                AudioManager.shared.playSound(for: "powerupitem")
+            }
         }
         else if self.remainingTime > 0 && percentage <= 0 {
             didAdjustAlpha(0.25)

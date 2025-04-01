@@ -101,6 +101,7 @@ struct AudioLibrary {
         ("pickupitem", .soundFX, 1),
         ("pickuptime", .soundFX, 1),
         ("powerdownitem", .soundFX, 1), //Not Purchased $1
+        ("powerupitem", .soundFX, 1), //Not Purchased $1
         ("punchwhack1", .soundFX, 1),
         ("punchwhack2", .soundFX, 1),
         ("realmtransition", .soundFX, 1),
@@ -143,6 +144,7 @@ struct AudioLibrary {
         ("gameendwin1", .soundFX, 1),
         ("gameendwin2", .soundFXLoop, 1),
         ("zdooropen", .soundFX, 1),
+        ("zpowerupitem", .soundFX, 1),
         
         
         //Looped SFX
