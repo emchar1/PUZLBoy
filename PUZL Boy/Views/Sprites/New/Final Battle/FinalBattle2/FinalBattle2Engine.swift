@@ -791,7 +791,7 @@ extension FinalBattle2Engine: FinalBattle2HealthDelegate {
 //        
 //        labelDebug.text = "INC: \(inc), DAMPING: \(damp)\nDAMAGE: \(damage)\nHEALTH: \(health)\nX: \(multiplier)"
         
-        labelDebug.text = "HEALTH: \(healthCounter.getCount() * 100)"
+        labelDebug.text = "HEALTH: \(healthCounter.getCount() * 100)\nPANELS: \(panelSpawner[0].currentIndex) \(panelSpawner[0].currentSpeed)\nRESET COUNT: \(controls.magmoorShield.resetCount)"
     }
     
 }

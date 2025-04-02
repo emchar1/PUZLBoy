@@ -29,6 +29,7 @@ class FinalBattle2Spawner {
     private let maxCount: Int = 1000
     private let breakLimit: Int = 60
     private var animationDuration: TimeInterval { currentSpeed.rawValue }
+    private(set) var currentIndex: Int = 0
     private(set) var currentSpeed: SpawnerSpeed = .slow {
         didSet {
             delegate?.didChangeSpeed(speed: currentSpeed)
@@ -46,7 +47,7 @@ class FinalBattle2Spawner {
         case medium = 2.0
         case fast = 1.0
     }
-
+    
     
     // MARK: - Initialization
     
@@ -153,6 +154,9 @@ class FinalBattle2Spawner {
         guard index < self.spawnPanels.count else { return }
         
         let spawnPanel = self.spawnPanels[index]
+        
+        //Used for debugging 4/2/25.
+        currentIndex = index
         
         guard let originalTerrain = gameboard.getPanelSprite(at: spawnPanel).terrain else { return }
         
