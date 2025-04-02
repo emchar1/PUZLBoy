@@ -1175,7 +1175,7 @@ extension ChatEngine {
                 ChatItem(profile: .hero, imgPos: .left, chat: "\(FIRManager.didPursueMagmoor ? "So... technically this is your fight. Can I just sit and watch from the sidelines, or..." : "I've made it this far, I'm not backing down now!")"),
                 ChatItem(profile: .melchior, chat: "Do not underestimate our adversary. He has the ability to wipe out all life from existence! It will take our combined strength to defeat him."),
                 ChatItem(profile: .magmus, chat: "Though he may seem beyond powerful, he has his weaknesses. After all, we taught him everything he knows."),
-                ChatItem(profile: .hero, imgPos: .left, chat: "\(FIRManager.didPursueMagmoor ? "Like I said, I'mma sit here and wait while you guys do your thang." : "It's my fault Marlin and Princess Olivia were captured. I should've had him back there! I won't go down without a fight!")"),
+                ChatItem(profile: .hero, imgPos: .left, chat: "\(FIRManager.didPursueMagmoor ? "Like I said, I'mma sit here and wait while you guys do your thing." : "It's my fault Marlin and Princess Olivia were captured. I should've had him back there! I won't go down without a fight!")"),
                 ChatItem(profile: .merton, chat: "Remember, he is most malevolent from the merger with our dear Marlin's magic."),
                 ChatItem(profile: .merton, chat: "As you proceed, you may witness illusions of despair. But despair not! For all they are are illusions, after all."),
                 ChatItem(profile: .melchior, chat: "Let's move forward. And do not believe anything you see or hear.")
@@ -1242,7 +1242,7 @@ extension ChatEngine {
             sendChatArray(shouldSkipDim: true, items: [
                 ChatItem(profile: .hero, imgPos: .left, chat: "I let him down. I let everyone down!! I'm such a loser.."),
                 ChatItem(profile: .melchior, chat: "Don't blame yourself, diminutive one. This is the hardest challenge you will ever face! Perhaps the responsibility is best suited for another......."),
-                ChatItem(profile: .hero, imgPos: .left, chat: "Lovely. (Way to make me feel better 😒)"),
+                ChatItem(profile: .hero, imgPos: .left, chat: "Great. Way to make me feel better 😒"),
                 ChatItem(profile: .magmus, chat: "Melchior, don't be such a bully! Remember, Marlin chose him for good reason. I see it too. This one is... special!"),
                 ChatItem(profile: .melchior, chat: "Hmph! I disagree."),
                 ChatItem(profile: .hero, imgPos: .left, chat: "\(FIRManager.didPursueMagmoor ? ".....hmmm, this floor feels slanted. Does it look slanted to you?" : "I'll fix this. Don't you worry. I'll make it right!")")

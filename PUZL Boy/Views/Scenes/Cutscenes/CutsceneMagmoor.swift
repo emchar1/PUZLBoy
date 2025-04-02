@@ -193,7 +193,7 @@ class CutsceneMagmoor: Cutscene {
         
         speechNarrator.setValues(color: .cyan.lightenColor(factor: 6), animationSpeed: 0.05)
         speechNarrator.setText(
-            text: "MARLIN: The Council consists of the Elders: our oldest and most powerful Mystics. They govern and rule over our home realm, Mystaria.",
+            text: "MARLIN: The Council consists of the Elders—our oldest and most powerful Mystics. They govern and rule over our home realm, Mystaria.",
             superScene: self,
             completion: nil)
         
