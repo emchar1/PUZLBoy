@@ -96,6 +96,14 @@ class GameViewController: UIViewController {
 //                skView.ignoresSiblingOrder = true
 //                view = skView
 //                
+//
+//                // ver. 5 - pre battle scene
+//                let preBattleCutscene = PreBattleCutscene(size: K.ScreenDimensions.size)
+//                preBattleCutscene.animateScene()
+//                skView.presentScene(preBattleCutscene)
+//                skView.ignoresSiblingOrder = true
+//                view = skView
+//
 //                
 //            } //end initializeFirestore()
 //        } //end getLevels

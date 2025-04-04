@@ -222,6 +222,7 @@
 		EA9970722C0C494200BBAC96 /* CutsceneMagmoor.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA9970712C0C494200BBAC96 /* CutsceneMagmoor.swift */; };
 		EA999F6E2A59148800B422B2 /* SettingsTapButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA999F6D2A59148800B422B2 /* SettingsTapButton.swift */; };
 		EA99A5562D9F8CB60015907D /* AllAchievements.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA99A5552D9F8CB00015907D /* AllAchievements.swift */; };
+		EA99A5582D9FAC5C0015907D /* PreBattleCutscene.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA99A5572D9FAC4A0015907D /* PreBattleCutscene.swift */; };
 		EA9AD2732D8B2AC600FC6422 /* shieldcast.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA9AD2712D8B2AC600FC6422 /* shieldcast.mp3 */; };
 		EA9AD2742D8B2AC600FC6422 /* shieldcast2.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA9AD2722D8B2AC600FC6422 /* shieldcast2.mp3 */; };
 		EA9AD2762D8B2B4900FC6422 /* swordthrow.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EA9AD2752D8B2B4900FC6422 /* swordthrow.mp3 */; };
@@ -609,6 +610,7 @@
 		EA9970712C0C494200BBAC96 /* CutsceneMagmoor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CutsceneMagmoor.swift; sourceTree = "<group>"; };
 		EA999F6D2A59148800B422B2 /* SettingsTapButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTapButton.swift; sourceTree = "<group>"; };
 		EA99A5552D9F8CB00015907D /* AllAchievements.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllAchievements.swift; sourceTree = "<group>"; };
+		EA99A5572D9FAC4A0015907D /* PreBattleCutscene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreBattleCutscene.swift; sourceTree = "<group>"; };
 		EA9AD2712D8B2AC600FC6422 /* shieldcast.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = shieldcast.mp3; sourceTree = "<group>"; };
 		EA9AD2722D8B2AC600FC6422 /* shieldcast2.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = shieldcast2.mp3; sourceTree = "<group>"; };
 		EA9AD2752D8B2B4900FC6422 /* swordthrow.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = swordthrow.mp3; sourceTree = "<group>"; };
@@ -1384,6 +1386,7 @@
 				EAAB41722CB6378E00BBFA75 /* CatwalkScene.swift */,
 				EAFE35992CEBA9D700289ADF /* ComingSoonScene.swift */,
 				EAFE35932CE44DA000289ADF /* EndingFakeScene.swift */,
+				EA99A5572D9FAC4A0015907D /* PreBattleCutscene.swift */,
 				EA1281B62CF24D42001CC5E8 /* FinalBattleScene.swift */,
 			);
 			path = "Final Battle";
@@ -1873,6 +1876,7 @@
 				EAE2155C2ABE38FC0090735A /* Extension+CGFloat.swift in Sources */,
 				EA65182B28E4199E00E535BF /* AppDelegate.swift in Sources */,
 				EAE2155A2ABE23370090735A /* SpriteMath.swift in Sources */,
+				EA99A5582D9FAC5C0015907D /* PreBattleCutscene.swift in Sources */,
 				EA1281B72CF24D42001CC5E8 /* FinalBattleScene.swift in Sources */,
 				EA956C6C29257D9600879AD0 /* Extension+Comparable.swift in Sources */,
 				EA3BE3F62D7AB76B008B02E8 /* ThemeManager.swift in Sources */,

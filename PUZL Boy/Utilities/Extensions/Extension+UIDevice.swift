@@ -94,6 +94,7 @@ extension UIDevice {
             case "iPhone17,2":                                    return ("iPhone 16 Pro Max", 19.5/9, safeNew.top, safeNew.btm)
             case "iPhone17,3":                                    return ("iPhone 16", 19.5/9, safeNew.top, safeNew.btm)
             case "iPhone17,4":                                    return ("iPhone 16 Plus", 19.5/9, safeNew.top, safeNew.btm)
+            case "iPhone17,5":                                    return ("iPhone 16e", 19.5/9, safeNew.top, safeNew.btm)
                 
             //--iPADS--
             case "iPad2,1", "iPad2,2", "iPad2,3", "iPad2,4":      return ("iPad 2", 4/3, safe.top, safe.btm)
@@ -105,6 +106,7 @@ extension UIDevice {
             case "iPad11,6", "iPad11,7":                          return ("iPad (8th generation)", 4/3, safe.top, safe.btm)
             case "iPad12,1", "iPad12,2":                          return ("iPad (9th generation)", 4/3, safe.top, safe.btm)
             case "iPad13,18", "iPad13,19":                        return ("iPad (10th generation)", 23/16, safe.top, safe.btm) //**deviation
+            case "iPad15,7", "iPad15,8":                          return ("iPad (A16)", 10/7, safe.top, safe.btm)
             case "iPad4,1", "iPad4,2", "iPad4,3":                 return ("iPad Air", 4/3, safe.top, safe.btm)
             case "iPad5,3", "iPad5,4":                            return ("iPad Air 2", 4/3, safe.top, safe.btm)
             case "iPad11,3", "iPad11,4":                          return ("iPad Air (3rd generation)", 4/3, safe.top, safe.btm)
@@ -112,12 +114,15 @@ extension UIDevice {
             case "iPad13,16", "iPad13,17":                        return ("iPad Air (5th generation)", 59/41, safe.top, safe.btm) //**deviation
             case "iPad14,8", "iPad14,9":                          return ("iPad Air (6th generation)", 59/41, safe.top, safe.btm) //**deviation
             case "iPad14,10", "iPad14,11":                        return ("iPad Air (7th generation)", 4/3, safe.top, safe.btm)
+            case "iPad15,3", "iPad15,4":                          return ("iPad Air (11-inch) M3", 10/7, safe.top, safe.btm)
+            case "iPad15,5", "iPad15,6":                          return ("iPad Air (13-inch) M3", 4/3, safe.top, safe.btm)
             case "iPad2,5", "iPad2,6", "iPad2,7":                 return ("iPad mini", 4/3, safe.top, safe.btm)
             case "iPad4,4", "iPad4,5", "iPad4,6":                 return ("iPad mini 2", 4/3, safe.top, safe.btm)
             case "iPad4,7", "iPad4,8", "iPad4,9":                 return ("iPad mini 3", 4/3, safe.top, safe.btm)
             case "iPad5,1", "iPad5,2":                            return ("iPad mini 4", 4/3, safe.top, safe.btm)
             case "iPad11,1", "iPad11,2":                          return ("iPad mini (5th generation)", 4/3, safe.top, safe.btm)
             case "iPad14,1", "iPad14,2":                          return ("iPad mini (6th generation)", 4.6/3, safe.top, safe.btm) //**deviation
+            case "iPad16,1", "iPad16,2":                          return ("iPad mini (A17 Pro)", 4.6/3, safe.top, safe.btm)
             case "iPad6,3", "iPad6,4":                            return ("iPad Pro (9.7-inch)", 4/3, safe.top, safe.btm)
             case "iPad7,3", "iPad7,4":                            return ("iPad Pro (10.5-inch)", 4/3, safe.top, safe.btm)
             case "iPad8,1", "iPad8,2", "iPad8,3", "iPad8,4":      return ("iPad Pro (11-inch) (1st generation)", 10/7, safe.top, safe.btm)
