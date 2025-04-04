@@ -330,10 +330,14 @@ extension GameViewController: CatwalkSceneDelegate {
 //        skView.presentScene(comingSoonScene, transition: SKTransition.fade(with: .black, duration: 0.2))
         
         
+        let preBattleCutscene = PreBattleCutscene(size: K.ScreenDimensions.size)
+        preBattleCutscene.animateScene()
+        skView.presentScene(preBattleCutscene, transition: SKTransition.fade(with: .black, duration: 3))
         
-        let finalBattleScene = FinalBattleScene(size: K.ScreenDimensions.size)
-        finalBattleScene.animateScene()
-        skView.presentScene(finalBattleScene, transition: SKTransition.fade(with: .black, duration: 3))
+        
+//        let finalBattleScene = FinalBattleScene(size: K.ScreenDimensions.size)
+//        finalBattleScene.animateScene()
+//        skView.presentScene(finalBattleScene, transition: SKTransition.fade(with: .black, duration: 3))
         
         
         
