@@ -122,7 +122,7 @@ extension UIDevice {
             case "iPad5,1", "iPad5,2":                            return ("iPad mini 4", 4/3, safe.top, safe.btm)
             case "iPad11,1", "iPad11,2":                          return ("iPad mini (5th generation)", 4/3, safe.top, safe.btm)
             case "iPad14,1", "iPad14,2":                          return ("iPad mini (6th generation)", 4.6/3, safe.top, safe.btm) //**deviation
-            case "iPad16,1", "iPad16,2":                          return ("iPad mini (A17 Pro)", 4.6/3, safe.top, safe.btm)
+            case "iPad16,1", "iPad16,2":                          return ("iPad mini (A17 Pro)", 4.6/3, safe.top, safe.btm) //**deviation
             case "iPad6,3", "iPad6,4":                            return ("iPad Pro (9.7-inch)", 4/3, safe.top, safe.btm)
             case "iPad7,3", "iPad7,4":                            return ("iPad Pro (10.5-inch)", 4/3, safe.top, safe.btm)
             case "iPad8,1", "iPad8,2", "iPad8,3", "iPad8,4":      return ("iPad Pro (11-inch) (1st generation)", 10/7, safe.top, safe.btm)
