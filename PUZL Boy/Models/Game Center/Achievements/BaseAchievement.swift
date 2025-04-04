@@ -7,7 +7,7 @@
 
 import GameKit
 
-class BaseAchievement: GKAchievement {
+class BaseAchievement: GKAchievement, @unchecked Sendable {
 
     // MARK: - Properties
      
