@@ -26,6 +26,11 @@ class CutsceneIntro: Cutscene {
     //Overlay Nodes
     private var flashOverlayNode: SKShapeNode!
     
+    //These checks prevent calling the functions twice, which only happens when GameCenterManager asks for authentication, if user isn't authenticated on their device, which shouldn't happen (has only happened on Simulator, realistically). Still good to have these in place and prevents BUG #241015E01.
+    private var didMoveCheck: Bool = false
+    private var didAnimateSceneCheck: Bool = false
+    
+    
     //Funny Quotes
     static var funnyQuotes: [String] = [
         "I'm a Barbie girl,| in a Barbie world.|| Life in plastic,| it's fantastic! You can brush my hair",
@@ -80,6 +85,11 @@ class CutsceneIntro: Cutscene {
     // MARK: - Move Functions
     
     override func didMove(to view: SKView) {
+        //BUGFIX #241015E01 - Prevents adding the sprite node if it's already added, which so far only happens when GameCenterManager asks for login if user is not already logged in. This bug appears in CutsceneIntro.
+        guard !didMoveCheck else { return }
+        
+        didMoveCheck = true
+        
         super.didMove(to: view)
         
         backgroundNode.addChild(flashOverlayNode)
@@ -105,6 +115,11 @@ class CutsceneIntro: Cutscene {
     // MARK: - Animation Functions
     
     override func animateScene(completion: (() -> Void)?) {
+        //BUGFIX #241015E01 - Prevents animating the scene if it has already been animated, which so far only happens when GameCenterManager asks for login if user is not already logged in. This bug appears in CutsceneIntro.
+        guard !didAnimateSceneCheck else { return }
+        
+        didAnimateSceneCheck = true
+        
         super.animateScene(completion: completion)
 
         AudioManager.shared.playSound(for: "birdsambience", fadeIn: 5)

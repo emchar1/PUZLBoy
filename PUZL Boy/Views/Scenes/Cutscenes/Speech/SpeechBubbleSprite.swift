@@ -135,7 +135,10 @@ class SpeechBubbleSprite: SKNode {
         animationSpeed = speed
         animationIndex = 0
         self.completion = completion
-
+        
+        //BUGFIX #241015E01 - Prevents adding tyhe sprite node if it's already added, which so far only happens when GameCenterManager asks for login if user is not already logged in. This bug appears in CutsceneIntro.
+        self.removeFromParent()
+        
         if let parentNode = parentNode {
             parentNode.addChild(self)
         }
