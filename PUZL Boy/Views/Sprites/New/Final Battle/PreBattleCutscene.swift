@@ -21,7 +21,7 @@ class PreBattleCutscene: SKScene {
     private var elder0: Player!
     private var elder1: Player!
     private var elder2: Player!
-    private var fakePrincess: Player!
+    private var cursedPrincess: Player!
     private var magmoor: Player!
     private var gate: SKSpriteNode!
     private var gateBackground: SKSpriteNode!
@@ -72,10 +72,10 @@ class PreBattleCutscene: SKScene {
         elder2.sprite.alpha = 0
         elder2.sprite.zPosition = 14
         
-        fakePrincess = Player(type: .princess)
-        fakePrincess.sprite.position = centerPoint
-        fakePrincess.sprite.alpha = 0
-        fakePrincess.sprite.zPosition = 25
+        cursedPrincess = Player(type: .cursedPrincess)
+        cursedPrincess.sprite.position = centerPoint
+        cursedPrincess.sprite.alpha = 0
+        cursedPrincess.sprite.zPosition = 25
         
         magmoor = Player(type: .villain)
         magmoor.sprite.position = centerPoint
@@ -105,7 +105,7 @@ class PreBattleCutscene: SKScene {
         addChild(elder0.sprite)
         addChild(elder1.sprite)
         addChild(elder2.sprite)
-        addChild(fakePrincess.sprite)
+        addChild(cursedPrincess.sprite)
         addChild(magmoor.sprite)
         addChild(gate)
         addChild(gateBackground)
