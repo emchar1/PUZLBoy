@@ -21,6 +21,7 @@ class CutsceneIntro: Cutscene {
                                                          y: screenSize.height / 3 + Player.getNormalizedAdjustedHeight(player: playerRight)) }
     
     //Main Nodes
+    private var princessCursed: Player!
     private var dragonSprite: SKSpriteNode!
     
     //Overlay Nodes
@@ -56,6 +57,16 @@ class CutsceneIntro: Cutscene {
         
         playerRight.sprite.position = princessPositionInitial
         playerRight.sprite.xScale *= -1
+        
+        princessCursed = Player(type: .cursedPrincess)
+        princessCursed.sprite.setScale(princessCursed.scaleMultiplier * Player.cutsceneScale)
+        princessCursed.sprite.position = CGPoint(x: screenSize.width * 3 / 4,
+                                                 y: screenSize.height / 3 + Player.getNormalizedAdjustedHeight(player: princessCursed))
+        princessCursed.sprite.position = princessPositionInitial
+        princessCursed.sprite.xScale *= -1
+        princessCursed.sprite.alpha = 0
+        princessCursed.sprite.zPosition = playerRight.sprite.zPosition + 10
+        princessCursed.sprite.name = "PrincessCursedNode"
         
         skipSceneSprite.setText(text: "SKIP INTRO")
         skipSceneSprite.delegate = self
@@ -94,6 +105,7 @@ class CutsceneIntro: Cutscene {
         
         backgroundNode.addChild(flashOverlayNode)
         backgroundNode.addChild(dragonSprite)
+        backgroundNode.addChild(princessCursed.sprite)
     }
     
     
@@ -151,6 +163,15 @@ class CutsceneIntro: Cutscene {
             ])
         ]))
         
+        //PrincessCursed Sprite
+        princessCursed.sprite.run(SKAction.sequence([
+            SKAction.wait(forDuration: 11 * walkCycle),
+            SKAction.group([
+                SKAction.moveTo(x: princessPositionFinal.x, duration: 2 * walkCycle),
+                Player.animate(player: princessCursed, type: .idle)
+            ])
+        ]))
+        
         //Parallax Manager
         parallaxManager.animate()
         run(SKAction.sequence([
@@ -189,10 +210,10 @@ class CutsceneIntro: Cutscene {
                         self.addChild(self.skipSceneSprite)
                         self.skipSceneSprite.animateSprite()
                     },
-                    SpeechBubbleItem(profile: speechPlayerRight, chat: "Hi! 👋🏽| I'm Princess Olivia and I'm 7 years old.|| I'm late for a V|E|R|Y| important appointment.") { [weak self] in
+                    SpeechBubbleItem(profile: speechPlayerRight, chat: "Hi, 👋🏽| I'm Princess Olivia! ||If you'll excuse me, I'm late for a V|E|R|Y| important appointment.") { [weak self] in
                         self?.closeUpHero()
                     },
-                    SpeechBubbleItem(profile: speechPlayerLeft, chat: "Awww...|| wait, like an actual princess, or is that what mommy and daddy call you?||||||||/And what kind of important meeting does a 7 year old need to attend?||||||||/Speaking of which, where are your parents?| Are you here by yourself???") { [weak self] in
+                    SpeechBubbleItem(profile: speechPlayerLeft, chat: "Awww...|| wait, like an actual princess, or is that what mommy and daddy call you?||||||||/And what kind of important meeting does a little girl need to attend?||||||||/Speaking of which, where are your parents?| Are you here by yourself???") { [weak self] in
                         self?.closeUpPrincess()
                         
                         self?.dimOverlayNode.run(SKAction.sequence([
@@ -215,7 +236,7 @@ class CutsceneIntro: Cutscene {
                             ])
                         ]))
                     },
-                    SpeechBubbleItem(profile: speechPlayerRight, chat: "Wow.|| You sure ask a lot of questions!||||||||/But if you must know, the reason I'm here is because, well.. first of all, Oh—I'm a princess!||/And, but I'm not a princess here though I'm a princess in a very very far away place.|/You see, I'm not from this place but I am from, umm, wait... Let me start over.| Okay so.....|/Blah blah blah, blah blah blah DRAGONS blah, blah blah, blah blah blah, blah.||||||||/VAELORIA blah, blah.| Blah, blah blah blah, blah blah. Blah. Blah. Blah.| M|A|G|I|C!!||||||||/Blah blah, blah blah!|| blah blah blah,| blah blah blah.| Blah, blah, blah|| .|.|.|A|G|E| O|F| R|U|I|N|.||||||||||||") { [weak self] in
+                    SpeechBubbleItem(profile: speechPlayerRight, chat: "Wow.|| You sure ask a lot of questions!||||||||/But if you must know, first of all, I'm 7 years old! And second of all, I'm a princess!||/And third of all, I'm not from here. I'm a princess from a very very far away place.|/You see, I'm not from this place but I am from a place that's, wait... Let me start over.| Okay so..|/Blah blah blah, blah blah blah DRAGONS blah, blah blah, blah blah blah, blah.||||||||/VAELORIA blah, blah.| Blah, blah blah blah, blah blah. Blah. Blah. Blah.| M|A|G|I|C!!||||||||/Blah blah, blah blah!|| blah blah blah,| blah blah blah.| Blah, blah, blah|| .|.|.|A|G|E| O|F| R|U|I|N|.||||||||||||") { [weak self] in
                         guard let self = self else { return }
                         
                         self.wideShot(shouldResetForeground: true)
@@ -471,6 +492,10 @@ class CutsceneIntro: Cutscene {
         playerRight.sprite.setScale(playerRight.scaleMultiplier * Player.cutsceneScale)
         playerRight.sprite.xScale *= -1
         
+        princessCursed.sprite.position = princessPositionInitial
+        princessCursed.sprite.setScale(princessCursed.scaleMultiplier * Player.cutsceneScale)
+        princessCursed.sprite.xScale *= -1
+        
         playerLeft.sprite.position.x = screenSize.width / 2
         playerLeft.sprite.setScale(2)
         
@@ -497,6 +522,20 @@ class CutsceneIntro: Cutscene {
             ])
         ]), withKey: "princessCloseUpAction")
         
+        princessCursed.sprite.position.x = screenSize.width / 2
+        princessCursed.sprite.position.y = princessPositionInitial.y
+        princessCursed.sprite.setScale(2 * princessCursed.scaleMultiplier / playerLeft.scaleMultiplier)
+        princessCursed.sprite.xScale *= -1
+        
+        princessCursed.sprite.run(SKAction.sequence([
+            SKAction.wait(forDuration: 34),
+            SKAction.group([
+                SKAction.fadeIn(withDuration: 7),
+                SKAction.scaleX(to: -4 * 0.75, y: 4 * 0.75, duration: 20),
+                SKAction.moveBy(x: 0, y: 2 * 4 * 0.75 * 20, duration: 20)
+            ])
+        ]), withKey: "princessCloseUpAction")
+        
         playerLeft.sprite.position.x = -200
         playerLeft.sprite.setScale(playerLeft.scaleMultiplier * Player.cutsceneScale)
         
@@ -511,6 +550,7 @@ class CutsceneIntro: Cutscene {
     
     private func closeUpSplitGround(particleStart: CGPoint) {
         playerRight.sprite.position.y = -screenSize.height
+        princessCursed.sprite.position.y = -screenSize.height
         playerLeft.sprite.position.y = -screenSize.height
         
         skyNode.setScale(2)
@@ -530,6 +570,11 @@ class CutsceneIntro: Cutscene {
         playerRight.sprite.xScale *= -1
         
         playerRight.sprite.run(Player.animate(player: playerRight, type: .jump), withKey: "writhe")
+        
+        princessCursed.sprite.position.x = screenSize.width / 2
+        princessCursed.sprite.position.y = princessPositionFinal.y
+        princessCursed.sprite.setScale(princessCursed.scaleMultiplier * Player.cutsceneScale)
+        princessCursed.sprite.xScale *= -1
         
         playerLeft.sprite.position.x = -200
         playerLeft.sprite.setScale(playerLeft.scaleMultiplier * Player.cutsceneScale)
@@ -552,6 +597,11 @@ class CutsceneIntro: Cutscene {
         playerRight.sprite.setScale(playerRight.scaleMultiplier * Player.cutsceneScale)
         playerRight.sprite.xScale *= -1
         
+        princessCursed.sprite.removeAction(forKey: "princessCloseUpAction")
+        princessCursed.sprite.position = princessPositionFinal
+        princessCursed.sprite.setScale(princessCursed.scaleMultiplier * Player.cutsceneScale)
+        princessCursed.sprite.xScale *= -1
+        
         playerLeft.sprite.position = heroPositionFinal
         playerLeft.sprite.setScale(playerLeft.scaleMultiplier * Player.cutsceneScale)
         
@@ -563,6 +613,11 @@ class CutsceneIntro: Cutscene {
         if shouldResetForeground {
             parallaxManager.resetxPositions(index: 0)
             parallaxManager.resetxPositions(index: 1)
+            
+            princessCursed.sprite.run(SKAction.sequence([
+                SKAction.fadeOut(withDuration: 7),
+                SKAction.removeFromParent()
+            ]))
         }
         
         speechPlayerRight.position = princessPositionFinal + CGPoint(x: -200, y: 400)

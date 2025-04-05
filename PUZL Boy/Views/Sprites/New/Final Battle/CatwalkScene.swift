@@ -199,7 +199,7 @@ class CatwalkScene: SKScene {
         elder2.sprite.alpha = 0
         elder2.sprite.zPosition = K.ZPosition.player + 5
         
-        princess = Player(type: .princess)
+        princess = Player(type: .cursedPrincess)
         princess.sprite.alpha = 0
         
         trainer = Player(type: .trainer)

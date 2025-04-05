@@ -40,7 +40,7 @@ class Player {
     // MARK: - Properties: Enums
     
     enum PlayerType: String, CaseIterable {
-        case hero = "hero", trainer, princess, princess2, villain, villain2, minion, youngTrainer, youngVillain, elder0, elder1, elder2
+        case hero = "hero", trainer, princess, princess2, cursedPrincess, villain, villain2, minion, youngTrainer, youngVillain, elder0, elder1, elder2
     }
 
     enum Texture: Int, CaseIterable {
@@ -102,6 +102,8 @@ class Player {
         case .princess2:
             setupPlayer(framesRng: [1...12, 1...8, 1...8, nil, nil, 1...4, 1...8, nil],
                         framesCmd: [nil, nil, "Run", nil, nil, nil, nil, nil])
+        case .cursedPrincess:
+            setupPlayer(framesRng: [1...16, nil, nil, nil, nil, nil, nil, nil])
         case .villain:
             setupPlayer(framesRng: [1...12, 1...12, 1...12, 1...12, 1...4, 1...4, 1...7, nil],
                         framesCmd: [nil, "Idle", "Idle", nil, "Sliding", nil, nil, nil])
@@ -152,6 +154,9 @@ class Player {
             multiplier = 0.75
         case .princess2:
             prefix = "Princess2"
+            multiplier = 0.75
+        case .cursedPrincess:
+            prefix = "CursedPrincess"
             multiplier = 0.75
         case .villain:
             prefix = "Villain"
@@ -255,6 +260,7 @@ class Player {
             case .villain2:         timePerFrameFallback = 0.12
             case .princess:         timePerFrameFallback = 0.09
             case .princess2:        timePerFrameFallback = defaultTime
+            case .cursedPrincess:   timePerFrameFallback = 0.09
             case .elder0:           timePerFrameFallback = 0.1
             case .elder1:           timePerFrameFallback = 0.09
             case .elder2:           timePerFrameFallback = 0.05
@@ -270,6 +276,7 @@ class Player {
             case .villain2:         timePerFrameFallback = 0.04
             case .princess:         timePerFrameFallback = 0.04
             case .princess2:        timePerFrameFallback = defaultTime
+            case .cursedPrincess:   timePerFrameFallback = 0.04
             case .elder0:           timePerFrameFallback = 0.04
             case .elder1:           timePerFrameFallback = 0.04
             case .elder2:           timePerFrameFallback = 0.04
@@ -285,6 +292,7 @@ class Player {
             case .villain2:         timePerFrameFallback = 0.06
             case .princess:         timePerFrameFallback = 0.06
             case .princess2:        timePerFrameFallback = defaultTime
+            case .cursedPrincess:   timePerFrameFallback = 0.06
             case .elder0:           timePerFrameFallback = defaultTime
             case .elder1:           timePerFrameFallback = defaultTime
             case .elder2:           timePerFrameFallback = defaultTime
@@ -300,6 +308,7 @@ class Player {
             case .villain2:         timePerFrameFallback = defaultTime
             case .princess:         timePerFrameFallback = defaultTime
             case .princess2:        timePerFrameFallback = defaultTime
+            case .cursedPrincess:   timePerFrameFallback = defaultTime
             case .elder0:           timePerFrameFallback = defaultTime
             case .elder1:           timePerFrameFallback = defaultTime
             case .elder2:           timePerFrameFallback = defaultTime
@@ -315,6 +324,7 @@ class Player {
             case .villain2:         timePerFrameFallback = defaultTime
             case .princess:         timePerFrameFallback = defaultTime
             case .princess2:        timePerFrameFallback = defaultTime
+            case .cursedPrincess:   timePerFrameFallback = defaultTime
             case .elder0:           timePerFrameFallback = defaultTime
             case .elder1:           timePerFrameFallback = defaultTime
             case .elder2:           timePerFrameFallback = defaultTime
@@ -330,6 +340,7 @@ class Player {
             case .villain2:         timePerFrameFallback = defaultTime
             case .princess:         timePerFrameFallback = 0.02
             case .princess2:        timePerFrameFallback = defaultTime
+            case .cursedPrincess:   timePerFrameFallback = 0.02
             case .elder0:           timePerFrameFallback = defaultTime
             case .elder1:           timePerFrameFallback = defaultTime
             case .elder2:           timePerFrameFallback = defaultTime
@@ -345,6 +356,7 @@ class Player {
             case .villain2:         timePerFrameFallback = defaultTime
             case .princess:         timePerFrameFallback = defaultTime
             case .princess2:        timePerFrameFallback = defaultTime
+            case .cursedPrincess:   timePerFrameFallback = defaultTime
             case .elder0:           timePerFrameFallback = 0.06
             case .elder1:           timePerFrameFallback = 0.06
             case .elder2:           timePerFrameFallback = 0.06
@@ -360,6 +372,7 @@ class Player {
             case .villain2:         timePerFrameFallback = defaultTime
             case .princess:         timePerFrameFallback = defaultTime
             case .princess2:        timePerFrameFallback = defaultTime
+            case .cursedPrincess:   timePerFrameFallback = defaultTime
             case .elder0:           timePerFrameFallback = defaultTime
             case .elder1:           timePerFrameFallback = defaultTime
             case .elder2:           timePerFrameFallback = defaultTime
