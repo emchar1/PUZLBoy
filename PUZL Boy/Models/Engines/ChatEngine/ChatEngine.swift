@@ -12,6 +12,7 @@ protocol ChatEnginePreBattleDelegate: AnyObject {
     func zoomWideShot(zoomDuration: TimeInterval)
     func zoomInPrincess()
     func zoomInElders()
+    func revealMagmoor()
 }
 
 protocol ChatEngineCatwalkDelegate: AnyObject {
@@ -1401,22 +1402,24 @@ extension ChatEngine {
                 ChatItem(profile: .hero, imgPos: .left, pause: 1, chat: "Princess......... Olivia???") { [weak self] in
                     self?.delegatePreBattle?.zoomWideShot(zoomDuration: 0.5)
                 },
-                ChatItem(profile: .magmus, chat: "Oh dear, I do not think that is our princess.....") { [weak self] in
+                ChatItem(profile: .magmus, chat: "Oh dear! I believe that is not our princess.....") { [weak self] in
                     self?.delegatePreBattle?.zoomInPrincess()
                     self?.hideFFButton()
                 },
-                ChatItem(profile: .princessCursed, pause: 1, startNewChat: true, chat: "thank you puzl boy. but your princess is in another castle........") { [weak self] in
+                ChatItem(profile: .princessCursed, pause: 1, startNewChat: true, chat: "thank you puzl boy. but your princess is in another dungeon......") { [weak self] in
                     self?.delegatePreBattle?.zoomInElders()
                     self?.showFFButton()
                 },
-                ChatItem(profile: .melchior, imgPos: .left, chat: "ENOUGH! Magmoor, show yourself!!!") {
-                    AudioManager.shared.playSoundThenStop(for: "littlegirllaugh", currentTime: 1.8, playForDuration: 1.25, fadeOut: 1)
-                    AudioManager.shared.playSound(for: "scarylaugh", currentTime: 2, fadeIn: 1, delay: 0.75)
+                ChatItem(profile: .melchior, imgPos: .left, chat: "ENOUGH!!!! Magmoor, show yourself!!!"),
+                ChatItem(profile: .hero, imgPos: .left, chat: "COWARD!! Where are you hiding?!??!") { [weak self] in
+                    AudioManager.shared.playSoundThenStop(for: "littlegirllaugh", playForDuration: 3, fadeOut: 1)
+                    AudioManager.shared.playSound(for: "scarylaugh", currentTime: 2, fadeIn: 1, delay: 2.5)
+                    
+                    self?.delegatePreBattle?.zoomWideShot(zoomDuration: 0)
+                    self?.delegatePreBattle?.revealMagmoor()
                 },
-                ChatItem(profile: .princessCursed, chat: "heh. heh. heh. heh. heh."),
-                ChatItem(profile: .hero, imgPos: .left, chat: "COWARD!! Where are you hiding?!??!")
+                ChatItem(profile: .princessCursed, chat: "heh. heh. heh. heh. heh.")
             ]) { [weak self] in
-                self?.delegatePreBattle?.zoomWideShot(zoomDuration: 0)
                 self?.handleDialogueCompletion(level: level, completion: completion)
             }
             
