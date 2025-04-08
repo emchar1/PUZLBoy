@@ -11,6 +11,14 @@ class PreBattleCutscene: SKScene {
     
     // MARK: - Properties
     
+    //offset positions of hero and elders with respect to gate position
+    private let offsetPlayers: [CGPoint] = [
+        CGPoint(x: 200, y: -50),    //hero
+        CGPoint(x: 75, y: 50),      //elder0
+        CGPoint(x: -25, y: -150),   //elder1
+        CGPoint(x: -100, y: 40)     //elder2
+    ]
+    
     private var playerScale: CGFloat { Player.getGameboardScale(panelSize: size.width / 7) }
     private var centerPoint: CGPoint { CGPoint(x: size.width / 2, y: size.height / 2) }
     
@@ -150,10 +158,13 @@ class PreBattleCutscene: SKScene {
             }
         }
         
-        enterGate(player: hero, offset: CGPoint(x: 200, y: -50))
-        enterGate(player: elder0, offset: CGPoint(x: 75, y: 50))
-        enterGate(player: elder1, offset: CGPoint(x: -25, y: -150))
-        enterGate(player: elder2, offset: CGPoint(x: -100, y: 40))
+        enterGate(player: hero, offset: offsetPlayers[0])
+        enterGate(player: elder0, offset: offsetPlayers[1])
+        enterGate(player: elder1, offset: offsetPlayers[2])
+        enterGate(player: elder2, offset: offsetPlayers[3])
+        
+        cursedPrincess.sprite.run(Player.animate(player: cursedPrincess, type: .idle))
+        magmoor.sprite.run(Player.animate(player: magmoor, type: .idle))
         
         gate.run(SKAction.sequence([
             SKAction.wait(forDuration: runDuration),
@@ -178,7 +189,7 @@ extension PreBattleCutscene: ChatEnginePreBattleDelegate {
         let lrMargin: CGFloat = 200
         let leftEndPoint = CGPoint(x: lrMargin, y: centerPoint.y)
         
-        func moveLeft(player: Player, offset: CGPoint = .zero) {
+        func moveLeft(player: Player, offset: CGPoint) {
             player.sprite.run(SKAction.group([
                 SKAction.move(to: leftEndPoint + 2 * scaleSize * offset, duration: zoomDuration),
                 SKAction.scale(to: scaleSize * player.scaleMultiplier, duration: zoomDuration)
@@ -190,12 +201,11 @@ extension PreBattleCutscene: ChatEnginePreBattleDelegate {
             SKAction.scale(to: 2 * scaleSize, duration: zoomDuration)
         ]))
         
-        moveLeft(player: hero, offset: CGPoint(x: 200, y: -50))
-        moveLeft(player: elder0, offset: CGPoint(x: 75, y: 50))
-        moveLeft(player: elder1, offset: CGPoint(x: -25, y: -150))
-        moveLeft(player: elder2, offset: CGPoint(x: -100, y: 40))
+        moveLeft(player: hero, offset: offsetPlayers[0])
+        moveLeft(player: elder0, offset: offsetPlayers[1])
+        moveLeft(player: elder1, offset: offsetPlayers[2])
+        moveLeft(player: elder2, offset: offsetPlayers[3])
         
-        cursedPrincess.sprite.run(Player.animate(player: cursedPrincess, type: .idle))
         cursedPrincess.sprite.run(SKAction.sequence([
             SKAction.moveTo(x: size.width + cursedPrincess.sprite.size.width / 2, duration: 0),
             SKAction.fadeIn(withDuration: 0),
@@ -209,11 +219,43 @@ extension PreBattleCutscene: ChatEnginePreBattleDelegate {
     }
     
     func zoomInPrincess() {
-        print("zoomInPrincess()")
+        func moveOffScreen(player: Player) {
+            player.sprite.run(SKAction.moveTo(x: -player.sprite.size.width / 2, duration: 0))
+        }
+        
+        moveOffScreen(player: hero)
+        moveOffScreen(player: elder0)
+        moveOffScreen(player: elder1)
+        moveOffScreen(player: elder2)
+        
+        gateBackground.run(SKAction.moveTo(x: -gateBackground.size.width / 2, duration: 0))
+        
+        cursedPrincess.sprite.run(SKAction.group([
+            SKAction.move(to: centerPoint, duration: 0),
+            SKAction.scaleX(to: -cursedPrincess.scaleMultiplier, duration: 0),
+            SKAction.scaleY(to: cursedPrincess.scaleMultiplier, duration: 0)
+        ]))
     }
     
     func zoomInElders() {
-        print("zoomInElders()")
+        func moveCenter(player: Player, offset: CGPoint) {
+            player.sprite.run(SKAction.group([
+                SKAction.move(to: centerPoint + offset, duration: 0),
+                SKAction.scale(to: player.scale * player.scaleMultiplier, duration: 0)
+            ]))
+        }
+        
+        moveCenter(player: hero, offset: offsetPlayers[0])
+        moveCenter(player: elder0, offset: offsetPlayers[1])
+        moveCenter(player: elder1, offset: offsetPlayers[2])
+        moveCenter(player: elder2, offset: offsetPlayers[3])
+        
+        gateBackground.run(SKAction.group([
+            SKAction.move(to: centerPoint, duration: 0),
+            SKAction.scale(to: 1, duration: 0)
+        ]))
+        
+        cursedPrincess.sprite.run(SKAction.moveTo(x: size.width + cursedPrincess.sprite.size.width / 2, duration: 0))
     }
     
     
