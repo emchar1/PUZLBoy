@@ -7,6 +7,13 @@
 
 import SpriteKit
 
+protocol ChatEnginePreBattleDelegate: AnyObject {
+    //Pre-Battle
+    func zoomWideShot(zoomDuration: TimeInterval)
+    func zoomInPrincess()
+    func zoomInElders()
+}
+
 protocol ChatEngineCatwalkDelegate: AnyObject {
     //Catwalk
     func spawnEldersCatwalk(faceLeft: Bool)
@@ -148,6 +155,7 @@ class ChatEngine {
     
     weak var delegate: ChatEngineDelegate?
     weak var delegateCatwalk: ChatEngineCatwalkDelegate?
+    weak var delegatePreBattle: ChatEnginePreBattleDelegate?
     
     
     // MARK: - Initialization
@@ -752,6 +760,11 @@ extension ChatEngine {
             dialoguePlayed[-1048] = false
             dialoguePlayed[-1049] = false
             dialoguePlayed[-1051] = false
+            
+            
+            //AGE OF BALANCE - PRE-BATTLE Dialogue
+            
+            dialoguePlayed[-2000] = false
             
             
             //AGE OF BALANCE - DARK REALM Dialogue
@@ -1379,6 +1392,29 @@ extension ChatEngine {
 
                 UIScreen.main.brightness = originalBrightness
                 handleDialogueCompletion(level: level, completion: completion)
+            }
+            
+            
+        //PRE-BATTLE
+        case -2000:
+            sendChatArray(shouldSkipDim: true, items: [
+                ChatItem(profile: .hero, imgPos: .left, pause: 1, chat: "Princess......... Olivia???") { [weak self] in
+                    self?.delegatePreBattle?.zoomWideShot(zoomDuration: 0.5)
+                },
+                ChatItem(profile: .magmus, chat: "Oh dear, I do not think that is our princess.....") { [weak self] in
+                    self?.delegatePreBattle?.zoomInPrincess()
+                    self?.hideFFButton()
+                },
+                ChatItem(profile: .princessCursed, pause: 1, startNewChat: true, chat: "thank you puzl boy. but your princess is in another castle........") { [weak self] in
+                    self?.delegatePreBattle?.zoomInElders()
+                    self?.showFFButton()
+                },
+                ChatItem(profile: .melchior, imgPos: .left, chat: "ENOUGH! Magmoor, show yourself!!!"),
+                ChatItem(profile: .princessCursed, chat: "heh. heh. heh."),
+                ChatItem(profile: .hero, imgPos: .left, chat: "COWARD!! Where are you hiding?!??!")
+            ]) { [weak self] in
+                self?.delegatePreBattle?.zoomWideShot(zoomDuration: 0)
+                self?.handleDialogueCompletion(level: level, completion: completion)
             }
             
             
