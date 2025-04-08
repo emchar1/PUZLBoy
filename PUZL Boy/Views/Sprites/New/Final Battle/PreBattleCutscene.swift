@@ -141,7 +141,7 @@ class PreBattleCutscene: SKScene {
                 offset.x < 0 ? SKAction.scaleX(to: -player.sprite.xScale, duration: 0) : SKAction.wait(forDuration: 0),
                 SKAction.group([
                     SKAction.fadeIn(withDuration: runDuration),
-                    SKAction.moveBy(x: offset.x, y: offset.y, duration: runDuration)
+                    SKAction.move(to: centerPoint + offset, duration: runDuration)
                 ]),
                 offset.x < 0 ? SKAction.scaleX(to: player.sprite.xScale, duration: 0) : SKAction.wait(forDuration: 0),
             ])) {
@@ -160,9 +160,60 @@ class PreBattleCutscene: SKScene {
             SKAction.setTexture(SKTexture(imageNamed: "endClosedMagic")),
             SKAction.run {
                 AudioManager.shared.playSound(for: "dooropen")
-            },
-            SKAction.setTexture(SKTexture(imageNamed: "endClosedMagic"))
+            }
+        ])) { [weak self] in
+            self?.chatEngine.playDialogue(level: -2000, completion: nil)
+        }
+        
+        AudioManager.shared.playSoundThenStop(for: "movetile\(Int.random(in: 1...3))", playForDuration: runDuration, fadeOut: runDuration)
+    }
+}
+
+
+// MARK: - ChatEngine PreBattle
+
+extension PreBattleCutscene: ChatEnginePreBattleDelegate {
+    func zoomWideShot(zoomDuration: TimeInterval) {
+        let scaleSize: CGFloat = 0.375
+        let lrMargin: CGFloat = 200
+        let leftEndPoint = CGPoint(x: lrMargin, y: centerPoint.y)
+        
+        func moveLeft(player: Player, offset: CGPoint = .zero) {
+            player.sprite.run(SKAction.group([
+                SKAction.move(to: leftEndPoint + 2 * scaleSize * offset, duration: zoomDuration),
+                SKAction.scale(to: scaleSize * player.scaleMultiplier, duration: zoomDuration)
+            ]))
+        }
+        
+        gateBackground.run(SKAction.group([
+            SKAction.move(to: leftEndPoint, duration: zoomDuration),
+            SKAction.scale(to: 2 * scaleSize, duration: zoomDuration)
         ]))
+        
+        moveLeft(player: hero, offset: CGPoint(x: 200, y: -50))
+        moveLeft(player: elder0, offset: CGPoint(x: 75, y: 50))
+        moveLeft(player: elder1, offset: CGPoint(x: -25, y: -150))
+        moveLeft(player: elder2, offset: CGPoint(x: -100, y: 40))
+        
+        cursedPrincess.sprite.run(Player.animate(player: cursedPrincess, type: .idle))
+        cursedPrincess.sprite.run(SKAction.sequence([
+            SKAction.moveTo(x: size.width + cursedPrincess.sprite.size.width / 2, duration: 0),
+            SKAction.fadeIn(withDuration: 0),
+            SKAction.scaleX(to: -cursedPrincess.sprite.xScale, duration: 0),
+            SKAction.group([
+                SKAction.move(to: size.width + CGPoint(x: -lrMargin, y: 0), duration: zoomDuration),
+                SKAction.scaleX(to: -scaleSize * cursedPrincess.scaleMultiplier, duration: zoomDuration),
+                SKAction.scaleY(to: scaleSize * cursedPrincess.scaleMultiplier, duration: zoomDuration)
+            ])
+        ]))
+    }
+    
+    func zoomInPrincess() {
+        print("zoomInPrincess()")
+    }
+    
+    func zoomInElders() {
+        print("zoomInElders()")
     }
     
     
