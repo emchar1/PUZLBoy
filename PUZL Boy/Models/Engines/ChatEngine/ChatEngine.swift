@@ -1409,8 +1409,11 @@ extension ChatEngine {
                     self?.delegatePreBattle?.zoomInElders()
                     self?.showFFButton()
                 },
-                ChatItem(profile: .melchior, imgPos: .left, chat: "ENOUGH! Magmoor, show yourself!!!"),
-                ChatItem(profile: .princessCursed, chat: "heh. heh. heh."),
+                ChatItem(profile: .melchior, imgPos: .left, chat: "ENOUGH! Magmoor, show yourself!!!") {
+                    AudioManager.shared.playSoundThenStop(for: "littlegirllaugh", currentTime: 1.8, playForDuration: 1.25, fadeOut: 1)
+                    AudioManager.shared.playSound(for: "scarylaugh", currentTime: 2, fadeIn: 1, delay: 0.75)
+                },
+                ChatItem(profile: .princessCursed, chat: "heh. heh. heh. heh. heh."),
                 ChatItem(profile: .hero, imgPos: .left, chat: "COWARD!! Where are you hiding?!??!")
             ]) { [weak self] in
                 self?.delegatePreBattle?.zoomWideShot(zoomDuration: 0)
