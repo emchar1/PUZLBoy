@@ -63,6 +63,7 @@ class AudioManager {
         - delay: adds a delay in TimeInterval before playing the sound. Default is nil.
         - pan: pan value to initialize, defaults to center of player
         - interruptPlayback: if false, if sound is currently playing and call to playSound() is made, let existing playback play and cancel call to playSound().
+        - rate: the speed of playback. If nil, default to rate = 1.
         - shouldLoop: if non-nil, override the audio item's category property, to determine whether to loop playback or not
      - returns: True if the player can play. False, otherwise.
      */
@@ -72,6 +73,7 @@ class AudioManager {
                                       delay: TimeInterval? = nil,
                                       pan: Float = 0,
                                       interruptPlayback: Bool = true,
+                                      rate: Float? = nil,
                                       shouldLoop: Bool? = nil) -> Bool {
         
         guard let item = audioItems[audioKey] else {
@@ -84,6 +86,8 @@ class AudioManager {
         item.player.volume = item.currentVolume
         item.player.pan = pan
         item.player.currentTime = currentTime ?? 0
+        item.player.enableRate = true
+        item.player.rate = rate ?? 1.0
         
         if let shouldLoop = shouldLoop {
             item.player.numberOfLoops = shouldLoop ? -1 : 0
@@ -150,6 +154,7 @@ class AudioManager {
         - delay: adds a delay in TimeInterval before playing the sound. Default is nil.
         - pan: pan value to initialize, defaults to center of player
         - interruptPlayback: if false, if sound is currently playing and call to playSound() is made, let existing playback play and cancel call to playSound().
+        - rate: the speed of playback. If nil, default to rate = 1.
         - shouldLoop: if non-nil, override the audio item's category property, to determine whether to loop playback or not
      */
     func playSoundThenStop(for audioKey: String,
@@ -160,6 +165,7 @@ class AudioManager {
                            delay: TimeInterval? = nil,
                            pan: Float = 0,
                            interruptPlayback: Bool = true,
+                           rate: Float? = nil,
                            shouldLoop: Bool? = nil) {
         
         playSound(for: audioKey,
@@ -168,6 +174,7 @@ class AudioManager {
                   delay: delay,
                   pan: pan,
                   interruptPlayback: interruptPlayback,
+                  rate: rate,
                   shouldLoop: shouldLoop)
         
         audioQueue.asyncAfter(deadline: .now() + playForDuration + (delay ?? 0)) {
@@ -252,6 +259,29 @@ class AudioManager {
             item.currentVolume = volumeToSet
             item.player.setVolume(volumeToSet, fadeDuration: fadeDuration)
         }
+    }
+    
+    /**
+     Sets the rate (speed) of the sound element.
+     - parameters:
+        - audioKey: the key for the audio item to set the volume for
+        - rate: the updated rate to set
+     */
+    func setRate(for audioKey: String, to rate: Float) {
+        guard let item = audioItems[audioKey] else {
+            print("Unable to find \(audioKey) in AudioManager.audioItems[]")
+            return
+        }
+        
+        item.player.rate = rate
+    }
+    
+    /**
+     Resets the rate (speed) of the sound element to 1.
+     - parameter audioKey: the key for the audio item to set the volume for
+     */
+    func resetRate(for audioKey: String) {
+        setRate(for: audioKey, to: 1)
     }
     
     

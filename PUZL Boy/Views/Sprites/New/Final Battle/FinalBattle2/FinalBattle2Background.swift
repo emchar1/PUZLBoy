@@ -84,6 +84,14 @@ class FinalBattle2Background {
     }
     
     /**
+     Sets the music's rate (speed).
+     - parameter rate: the new rate (speed) to set.
+     */
+    func setOverworldMusicSpeed(to rate: Float) {
+        AudioManager.shared.setRate(for: overworldMusic, to: rate)
+    }
+    
+    /**
      Updates the shieldColor, i.e. if Magmoor's shield is damaged.
      */
     func updateShieldColor(_ newColor: UIColor) {
