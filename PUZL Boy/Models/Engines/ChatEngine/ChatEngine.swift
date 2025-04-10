@@ -1412,14 +1412,13 @@ extension ChatEngine {
                 },
                 ChatItem(profile: .melchior, imgPos: .left, chat: "ENOUGH!!!! Magmoor, show yourself!!!"),
                 ChatItem(profile: .hero, imgPos: .left, chat: "COWARD!! Where are you hiding?!??!") { [weak self] in
-                    AudioManager.shared.playSoundThenStop(for: "littlegirllaugh", playForDuration: 3, fadeOut: 1)
-                    AudioManager.shared.playSound(for: "scarylaugh", currentTime: 2, fadeIn: 1, delay: 2.5)
-                    
                     self?.delegatePreBattle?.zoomWideShot(zoomDuration: 0)
                     self?.delegatePreBattle?.revealMagmoor()
+                    self?.hideFFButton()
                 },
-                ChatItem(profile: .princessCursed, chat: "heh. heh. heh. heh. heh.")
+                ChatItem(profile: .princessCursed, chat: "heh. heh. heh. heh.")
             ]) { [weak self] in
+                self?.showFFButton()
                 self?.handleDialogueCompletion(level: level, completion: completion)
             }
             
