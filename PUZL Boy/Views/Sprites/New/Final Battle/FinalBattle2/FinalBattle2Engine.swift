@@ -748,13 +748,13 @@ extension FinalBattle2Engine: FinalBattle2SpawnerDelegate {
     }
     
     func didChangeSpeed(speed: FinalBattle2Spawner.SpawnerSpeed) {
-        let speedFactor: Float = 1/6
+        let speedFactor: Float = 1/5
         var speedMultiple: Float
         
         switch speed {
         case .slow:     speedMultiple = 0
-        case .medium:   speedMultiple = 1
-        case .fast:     speedMultiple = 2
+        case .medium:   speedMultiple = 0
+        case .fast:     speedMultiple = 1
         }
         
         backgroundPattern.setOverworldMusicSpeed(to: 1 + speedMultiple * speedFactor)

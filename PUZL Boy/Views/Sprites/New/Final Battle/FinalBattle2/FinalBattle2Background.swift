@@ -128,7 +128,9 @@ class FinalBattle2Background {
         }
         else {
             AudioManager.shared.adjustVolume(to: 0, for: overworldMusic)
-            AudioManager.shared.playSound(for: rainbowMusic)
+            
+            //Adding a delay prevents overlapping stopping/playing of rainbowMusic in the rare instance that acquiring the infinity sword occurs while music is fading out 4/11/25.
+            AudioManager.shared.playSound(for: rainbowMusic, delay: AudioManager.shared.isPlaying(audioKey: rainbowMusic) ? fadeDuration : 0)
         }
     }
     
