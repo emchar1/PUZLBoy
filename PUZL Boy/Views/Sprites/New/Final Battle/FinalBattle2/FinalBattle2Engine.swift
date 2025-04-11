@@ -700,6 +700,10 @@ extension FinalBattle2Engine: FinalBattle2ControlsDelegate {
             let villainPosition = villainPosition ?? (0, 0)
             let didAffectPlayer = shieldExplodeDamagePanels(at: villainPosition, chosenSword: chosenSword)
             
+            if panelSpawner[0].currentSpeed == .fast {
+                backgroundPattern.setOverworldMusicSpeed(to: 1.2)
+            }
+            
             backgroundPattern.animate(pattern: .normal,
                                       fadeDuration: didAffectPlayer ? 3 : 2,
                                       delay: didAffectPlayer ? 2.5 : nil,
@@ -748,16 +752,6 @@ extension FinalBattle2Engine: FinalBattle2SpawnerDelegate {
     }
     
     func didChangeSpeed(speed: FinalBattle2Spawner.SpawnerSpeed) {
-        let speedFactor: Float = 1/5
-        var speedMultiple: Float
-        
-        switch speed {
-        case .slow:     speedMultiple = 0
-        case .medium:   speedMultiple = 0
-        case .fast:     speedMultiple = 1
-        }
-        
-        backgroundPattern.setOverworldMusicSpeed(to: 1 + speedMultiple * speedFactor)
         controls.updateVillainMovementAndAttacks(speed: speed)
     }
     
