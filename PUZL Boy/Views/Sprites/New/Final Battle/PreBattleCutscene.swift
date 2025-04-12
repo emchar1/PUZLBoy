@@ -205,50 +205,47 @@ class PreBattleCutscene: SKScene {
         magmoorUnleashed.sprite.yScale = magmoorUnleashed.scaleMultiplier
         
         magmoor.sprite.run(Player.animateIdleLevitate(player: magmoor, randomizeDuration: false))
-        magmoor.sprite.run(transformSprite(off: true))
-        
         magmoorUnleashed.sprite.run(Player.animateIdleLevitate(player: magmoorUnleashed, randomizeDuration: false))
-        magmoorUnleashed.sprite.run(transformSprite(off: false))
+        
+        transformPlayer(from: magmoor, to: magmoorUnleashed, duration: 6)
         
         AudioManager.shared.playSound(for: "bossbattle0")
     }
     
     /**
-     Transitions from one player sprite to the next.
-     - parameter off: if `true` then it's the first sprite in the transformation.
+     Transitions from one Player to another.
+     - parameters:
+        - firstPlayer: the original Player to transition from.
+        - secondPlayer: the new Player to transition to.
+        - duration: length of the transition.
+        - delay: adds an optional delay.
      */
-    private func transformSprite(off: Bool) -> SKAction {
-        let flicker: CGFloat = 0.05
-        
-        func fadeHelper(factor: CGFloat) -> SKAction {
-            return SKAction.fadeAlpha(to: off ? 1 - factor * flicker : 0 + factor * flicker, duration: TimeInterval(flicker * 1.5))
+    private func transformPlayer(from firstPlayer: Player, to secondPlayer: Player, duration: TimeInterval, delay: TimeInterval = 0) {
+        func fadeInAction(reverse: Bool) -> SKAction {
+            func fadeInHelper(reverse: Bool, factor: CGFloat) -> SKAction {
+                accumulatedActionDuration += TimeInterval(flickerSpeed)
+                
+                return SKAction.fadeAlpha(to: reverse ? 1 - factor * flickerSpeed : 0 + factor * flickerSpeed, duration: TimeInterval(flickerSpeed))
+            }
+            
+            let flickerSpeed: CGFloat = 0.05
+            let steps: Int = Int(1 / flickerSpeed)
+            var accumulatedActionDuration: TimeInterval = delay
+            var actions: [SKAction] = [SKAction.wait(forDuration: delay)]
+            
+            for step in 1...steps {
+                actions.append(fadeInHelper(reverse: reverse, factor: CGFloat(step)))
+                actions.append(fadeInHelper(reverse: reverse, factor: CGFloat(step - 1)))
+            }
+            
+            actions.append(fadeInHelper(reverse: reverse, factor: CGFloat(steps)))
+            actions.append(SKAction.wait(forDuration: max(0, duration - accumulatedActionDuration)))
+            
+            return SKAction.sequence(actions)
         }
         
-        return SKAction.sequence([
-            SKAction.wait(forDuration: 2.5),
-            fadeHelper(factor: 1), fadeHelper(factor: 0),
-            fadeHelper(factor: 2), fadeHelper(factor: 1),
-            fadeHelper(factor: 3), fadeHelper(factor: 2),
-            fadeHelper(factor: 4), fadeHelper(factor: 3),
-            fadeHelper(factor: 5), fadeHelper(factor: 4),
-            fadeHelper(factor: 6), fadeHelper(factor: 5),
-            fadeHelper(factor: 7), fadeHelper(factor: 6),
-            fadeHelper(factor: 8), fadeHelper(factor: 7),
-            fadeHelper(factor: 9), fadeHelper(factor: 8),
-            fadeHelper(factor: 10), fadeHelper(factor: 9),
-            fadeHelper(factor: 11), fadeHelper(factor: 10),
-            fadeHelper(factor: 12), fadeHelper(factor: 11),
-            fadeHelper(factor: 13), fadeHelper(factor: 12),
-            fadeHelper(factor: 14), fadeHelper(factor: 13),
-            fadeHelper(factor: 15), fadeHelper(factor: 14),
-            fadeHelper(factor: 16), fadeHelper(factor: 15),
-            fadeHelper(factor: 17), fadeHelper(factor: 16),
-            fadeHelper(factor: 18), fadeHelper(factor: 17),
-            fadeHelper(factor: 19), fadeHelper(factor: 18),
-            fadeHelper(factor: 20), fadeHelper(factor: 19),
-            fadeHelper(factor: 20),
-            SKAction.wait(forDuration: 0.425)
-        ])
+        firstPlayer.sprite.run(fadeInAction(reverse: true))
+        secondPlayer.sprite.run(fadeInAction(reverse: false))
     }
     
     
@@ -338,21 +335,18 @@ extension PreBattleCutscene: ChatEnginePreBattleDelegate {
     
     func revealMagmoor() {
         let riseDuration: TimeInterval = 6
+        let transformDelay: TimeInterval = 2.5
         
         magmoor.sprite.run(SKAction.moveTo(y: risePoint.y, duration: riseDuration))
-        magmoor.sprite.run(SKAction.sequence([
-            transformSprite(off: false),
-            SKAction.fadeOut(withDuration: 0)
-        ])) { [weak self] in
+        cursedPrincess.sprite.run(SKAction.moveTo(y: risePoint.y, duration: riseDuration)) { [weak self] in
             self?.revealMagmoorUnleashed()
         }
         
-        cursedPrincess.sprite.run(SKAction.moveTo(y: risePoint.y, duration: riseDuration))
-        cursedPrincess.sprite.run(transformSprite(off: true))
+        transformPlayer(from: cursedPrincess, to: magmoor, duration: riseDuration, delay: transformDelay)
         
         AudioManager.shared.playSoundThenStop(for: "littlegirllaugh", playForDuration: 3, fadeOut: 1)
-        AudioManager.shared.playSound(for: "scarylaugh", currentTime: 0.8, fadeIn: 1, delay: 2.5)
-        AudioManager.shared.playSound(for: "magicwarp2", delay: 2)
+        AudioManager.shared.playSound(for: "scarylaugh", currentTime: 0.8, fadeIn: 1, delay: transformDelay)
+        AudioManager.shared.playSound(for: "magicwarp2", delay: transformDelay)
     }
     
     
