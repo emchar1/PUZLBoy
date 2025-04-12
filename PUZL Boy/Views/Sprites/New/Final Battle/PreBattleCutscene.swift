@@ -187,22 +187,15 @@ class PreBattleCutscene: SKScene {
         AudioManager.shared.playSoundThenStop(for: "movetile\(Int.random(in: 1...3))", playForDuration: runDuration, fadeOut: runDuration)
     }
     
-    private func playScene2() {
+    private func revealMagmoorUnleashed() {
         let offsetToMatchMagmoorsEyes = CGPoint(x: -15, y: -35)
         
-        func transitionAction(off: Bool) -> SKAction {
-            return SKAction.sequence([
-                SKAction.wait(forDuration: 3),
-                SKAction.fadeAlpha(to: off ? 0 : 1, duration: 3)
-            ])
-        }
-
         hero.sprite.run(SKAction.fadeOut(withDuration: 0))
         elder0.sprite.run(SKAction.fadeOut(withDuration: 0))
         elder1.sprite.run(SKAction.fadeOut(withDuration: 0))
         elder2.sprite.run(SKAction.fadeOut(withDuration: 0))
         
-        magmoor.sprite.position.x = risePoint.x
+        magmoor.sprite.position = risePoint
         magmoor.sprite.xScale = -magmoor.scaleMultiplier
         magmoor.sprite.yScale = magmoor.scaleMultiplier
         magmoor.sprite.alpha = 1
@@ -212,12 +205,50 @@ class PreBattleCutscene: SKScene {
         magmoorUnleashed.sprite.yScale = magmoorUnleashed.scaleMultiplier
         
         magmoor.sprite.run(Player.animateIdleLevitate(player: magmoor, randomizeDuration: false))
-        magmoor.sprite.run(transitionAction(off: true))
+        magmoor.sprite.run(transformSprite(off: true))
         
         magmoorUnleashed.sprite.run(Player.animateIdleLevitate(player: magmoorUnleashed, randomizeDuration: false))
-        magmoorUnleashed.sprite.run(transitionAction(off: false))
+        magmoorUnleashed.sprite.run(transformSprite(off: false))
         
         AudioManager.shared.playSound(for: "bossbattle0")
+    }
+    
+    /**
+     Transitions from one player sprite to the next.
+     - parameter off: if `true` then it's the first sprite in the transformation.
+     */
+    private func transformSprite(off: Bool) -> SKAction {
+        let flicker: CGFloat = 0.05
+        
+        func fadeHelper(factor: CGFloat) -> SKAction {
+            return SKAction.fadeAlpha(to: off ? 1 - factor * flicker : 0 + factor * flicker, duration: TimeInterval(flicker * 1.5))
+        }
+        
+        return SKAction.sequence([
+            SKAction.wait(forDuration: 2.5),
+            fadeHelper(factor: 1), fadeHelper(factor: 0),
+            fadeHelper(factor: 2), fadeHelper(factor: 1),
+            fadeHelper(factor: 3), fadeHelper(factor: 2),
+            fadeHelper(factor: 4), fadeHelper(factor: 3),
+            fadeHelper(factor: 5), fadeHelper(factor: 4),
+            fadeHelper(factor: 6), fadeHelper(factor: 5),
+            fadeHelper(factor: 7), fadeHelper(factor: 6),
+            fadeHelper(factor: 8), fadeHelper(factor: 7),
+            fadeHelper(factor: 9), fadeHelper(factor: 8),
+            fadeHelper(factor: 10), fadeHelper(factor: 9),
+            fadeHelper(factor: 11), fadeHelper(factor: 10),
+            fadeHelper(factor: 12), fadeHelper(factor: 11),
+            fadeHelper(factor: 13), fadeHelper(factor: 12),
+            fadeHelper(factor: 14), fadeHelper(factor: 13),
+            fadeHelper(factor: 15), fadeHelper(factor: 14),
+            fadeHelper(factor: 16), fadeHelper(factor: 15),
+            fadeHelper(factor: 17), fadeHelper(factor: 16),
+            fadeHelper(factor: 18), fadeHelper(factor: 17),
+            fadeHelper(factor: 19), fadeHelper(factor: 18),
+            fadeHelper(factor: 20), fadeHelper(factor: 19),
+            fadeHelper(factor: 20),
+            SKAction.wait(forDuration: 0.425)
+        ])
     }
     
     
@@ -280,8 +311,6 @@ extension PreBattleCutscene: ChatEnginePreBattleDelegate {
         moveOffScreen(player: elder1)
         moveOffScreen(player: elder2)
         
-        gateBackground.run(SKAction.moveTo(x: -gateBackground.size.width / 2, duration: 0))
-        
         cursedPrincess.sprite.run(SKAction.group([
             SKAction.move(to: centerPoint, duration: 0),
             SKAction.scaleX(to: -cursedPrincess.scaleMultiplier, duration: 0),
@@ -304,49 +333,22 @@ extension PreBattleCutscene: ChatEnginePreBattleDelegate {
         moveCenter(player: elder1, offset: offsetPlayers[2] * offsetMultiplier)
         moveCenter(player: elder2, offset: offsetPlayers[3] * offsetMultiplier)
         
-        gateBackground.run(SKAction.group([
-            SKAction.move(to: centerPoint, duration: 0),
-            SKAction.scale(to: 1, duration: 0)
-        ]))
-        
         cursedPrincess.sprite.run(SKAction.moveTo(x: size.width + cursedPrincess.sprite.size.width / 2, duration: 0))
     }
     
     func revealMagmoor() {
         let riseDuration: TimeInterval = 6
         
-        func flickerSprite(off: Bool) -> SKAction {
-            let fadeDuration: TimeInterval = 0.1
-            
-            return SKAction.sequence([
-                SKAction.wait(forDuration: 3),
-                SKAction.fadeAlpha(to: off ? 0 : 1, duration: fadeDuration),
-                SKAction.wait(forDuration: 0.25),
-                SKAction.repeat(SKAction.sequence([
-                    SKAction.fadeAlpha(to: off ? 1 : 0, duration: fadeDuration),
-                    SKAction.wait(forDuration: 0.1),
-                    SKAction.fadeAlpha(to: off ? 0 : 1, duration: fadeDuration),
-                    SKAction.wait(forDuration: 0.1),
-                ]), count: 1),
-                SKAction.repeat(SKAction.sequence([
-                    SKAction.fadeAlpha(to: off ? 1 : 0, duration: fadeDuration),
-                    SKAction.wait(forDuration: 0),
-                    SKAction.fadeAlpha(to: off ? 0 : 1, duration: fadeDuration),
-                    SKAction.wait(forDuration: 0)
-                ]), count: 11)
-            ])
-        }
-                
         magmoor.sprite.run(SKAction.moveTo(y: risePoint.y, duration: riseDuration))
         magmoor.sprite.run(SKAction.sequence([
-            flickerSprite(off: false),
+            transformSprite(off: false),
             SKAction.fadeOut(withDuration: 0)
         ])) { [weak self] in
-            self?.playScene2()
+            self?.revealMagmoorUnleashed()
         }
         
         cursedPrincess.sprite.run(SKAction.moveTo(y: risePoint.y, duration: riseDuration))
-        cursedPrincess.sprite.run(flickerSprite(off: true))
+        cursedPrincess.sprite.run(transformSprite(off: true))
         
         AudioManager.shared.playSoundThenStop(for: "littlegirllaugh", playForDuration: 3, fadeOut: 1)
         AudioManager.shared.playSound(for: "scarylaugh", currentTime: 0.8, fadeIn: 1, delay: 2.5)
