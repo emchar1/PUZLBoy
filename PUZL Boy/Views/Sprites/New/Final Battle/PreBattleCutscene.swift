@@ -23,7 +23,7 @@ class PreBattleCutscene: SKScene {
         CGPoint(x: -150, y: 40)     //elder2
     ]
     
-    private var playerScale: CGFloat { Player.getGameboardScale(panelSize: size.width / 7) }
+    private var playerScale: CGFloat { Player.getGameboardScale(panelSize: size.width / 7) * UIDevice.spriteScale }
     private var centerPoint: CGPoint { CGPoint(x: size.width / 2, y: size.height / 2) }
     private var risePoint: CGPoint { CGPoint(x: size.width / 2, y: size.height * 3/4) }
     
@@ -144,7 +144,7 @@ class PreBattleCutscene: SKScene {
     }
     
     
-    // MARK: - Functions
+    // MARK: - Scene Functions
     
     func animateScene() {
         fadeNode.run(SKAction.fadeOut(withDuration: 4.5)) { [weak self] in
@@ -231,6 +231,9 @@ class PreBattleCutscene: SKScene {
         
         AudioManager.shared.playSound(for: "bossbattle0")
     }
+    
+    
+    // MARK: - Helper Functions
     
     /**
      Transitions from one Player to another.
