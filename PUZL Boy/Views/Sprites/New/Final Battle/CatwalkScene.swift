@@ -8,7 +8,7 @@
 import SpriteKit
 
 protocol CatwalkSceneDelegate: AnyObject {
-    func catwalkSceneDidFinish()
+    func catwalkSceneDidFinish(_ cutscene: CatwalkScene, didStartAtTiki: Bool)
 }
 
 class CatwalkScene: SKScene {
@@ -1008,12 +1008,14 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
             SKAction.fadeOut(withDuration: 0),
             SKAction.wait(forDuration: 3)
         ])) { [weak self] in
+            guard let self = self else { return }
+            
             completion()
             
-            self?.catwalkDelegate?.catwalkSceneDidFinish()
+            catwalkDelegate?.catwalkSceneDidFinish(self, didStartAtTiki: shouldStartAtTiki)
             
             //Put this last!! This deinitializes EVERYTHING.
-            self?.cleanupScene()
+            cleanupScene()
         }
         
         unshakeScreen(fadeDuration: fadeDuration * 2, completion: nil)

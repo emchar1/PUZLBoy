@@ -7,6 +7,10 @@
 
 import SpriteKit
 
+protocol PreBattleCutsceneDelegate: AnyObject {
+    func preBattleCutsceneDidFinish(_ cutscene: PreBattleCutscene)
+}
+
 class PreBattleCutscene: SKScene {
     
     // MARK: - Properties
@@ -37,6 +41,8 @@ class PreBattleCutscene: SKScene {
     private var magmoor: Player!
     private var magmoorUnleashed: Player!
     
+    weak var preBattleDelegate: PreBattleCutsceneDelegate?
+    
     
     // MARK: - Initialization
     
@@ -55,8 +61,14 @@ class PreBattleCutscene: SKScene {
     }
     
     func cleanupScene() {
+        removeAllActions()
+        removeAllChildren()
+        removeFromParent()
+        
         tapPointerEngine = nil
         chatEngine = nil
+        
+        AudioManager.shared.stopSound(for: "bossbattle0", fadeDuration: 0)
     }
     
     private func setupScene() {
@@ -207,7 +219,15 @@ class PreBattleCutscene: SKScene {
         magmoor.sprite.run(Player.animateIdleLevitate(player: magmoor, randomizeDuration: false))
         magmoorUnleashed.sprite.run(Player.animateIdleLevitate(player: magmoorUnleashed, randomizeDuration: false))
         
-        transformPlayer(from: magmoor, to: magmoorUnleashed, duration: 4.5, completion: nil)
+        transformPlayer(from: magmoor, to: magmoorUnleashed, duration: 4.5) { [weak self] in
+            guard let self = self else { return }
+            
+            magmoorUnleashed.sprite.alpha = 0
+            preBattleDelegate?.preBattleCutsceneDidFinish(self)
+            
+            //Put this last!! This deinitializes EVERYTHING.
+            cleanupScene()
+        }
         
         AudioManager.shared.playSound(for: "bossbattle0")
     }

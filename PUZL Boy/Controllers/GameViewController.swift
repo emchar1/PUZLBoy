@@ -100,6 +100,7 @@ class GameViewController: UIViewController {
 //                // ver. 5 - pre battle scene
 //                let preBattleCutscene = PreBattleCutscene(size: K.ScreenDimensions.size)
 //                preBattleCutscene.animateScene()
+//                preBattleCutscene.preBattleDelegate = self
 //                skView.presentScene(preBattleCutscene)
 //                skView.ignoresSiblingOrder = true
 //                view = skView
@@ -323,21 +324,29 @@ extension GameViewController: GameSceneDelegate {
 // MARK: - CatwalkSceneDelegate
 
 extension GameViewController: CatwalkSceneDelegate {
-    func catwalkSceneDidFinish() {
+    func catwalkSceneDidFinish(_ cutscene: CatwalkScene, didStartAtTiki: Bool) {
 //        let comingSoonScene = ComingSoonScene(size: K.ScreenDimensions.size)
 //        comingSoonScene.comingSoonDelegate = self
 //        comingSoonScene.animateScene()
 //        skView.presentScene(comingSoonScene, transition: SKTransition.fade(with: .black, duration: 0.2))
         
         
-        let preBattleCutscene = PreBattleCutscene(size: K.ScreenDimensions.size)
-        preBattleCutscene.animateScene()
-        skView.presentScene(preBattleCutscene, transition: SKTransition.fade(with: .black, duration: 3))
         
         
-//        let finalBattleScene = FinalBattleScene(size: K.ScreenDimensions.size)
-//        finalBattleScene.animateScene()
-//        skView.presentScene(finalBattleScene, transition: SKTransition.fade(with: .black, duration: 3))
+        
+        if didStartAtTiki {
+            let finalBattleScene = FinalBattleScene(size: K.ScreenDimensions.size)
+            finalBattleScene.animateScene()
+            skView.presentScene(finalBattleScene, transition: SKTransition.fade(with: .black, duration: 3))
+        }
+        else {
+            let preBattleCutscene = PreBattleCutscene(size: K.ScreenDimensions.size)
+            preBattleCutscene.animateScene()
+            preBattleCutscene.preBattleDelegate = self
+            skView.presentScene(preBattleCutscene, transition: SKTransition.fade(with: .black, duration: 3))
+        }
+        
+        
         
         
         
@@ -345,6 +354,17 @@ extension GameViewController: CatwalkSceneDelegate {
 //        FIRManager.resetAgeOfRuinProperties(ageOfRuinIsActive: true)
 //        
 //        presentTitleScene(shouldInitializeAsHero: false, transition: SKTransition.fade(with: .white, duration: 0))
+    }
+}
+
+
+// MARK: - PreBattleCutsceneDelegate
+
+extension GameViewController: PreBattleCutsceneDelegate {
+    func preBattleCutsceneDidFinish(_ cutscene: PreBattleCutscene) {
+        let finalBattleScene = FinalBattleScene(size: K.ScreenDimensions.size)
+        finalBattleScene.animateScene()
+        skView.presentScene(finalBattleScene, transition: SKTransition.fade(with: .black, duration: 3))
     }
 }
 
