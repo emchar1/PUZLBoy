@@ -295,7 +295,25 @@ class PreBattleCutscene: SKScene {
         
     }
     
-    
+    /**
+     Updates the players to the new position, scaling, and alpha values.
+     - parameters:
+        - players: a list of players to affect
+        - position: updated position to move to
+        - scale: scale value to set. If negative, flip the sprite horizontally
+        - alpha: new alpha value to set to
+        - duration: animation duration of the updates
+     */
+    private func update(players: [Player], position: CGPoint? = nil, scale: CGFloat? = nil, alpha: CGFloat? = nil, duration: TimeInterval) {
+        for player in players {
+            player.sprite.run(SKAction.group([
+                position == nil ? .wait(forDuration: duration) : .move(to: position!, duration: duration),
+                scale == nil ? .wait(forDuration: duration) : .scaleX(to: scale! * player.scaleMultiplier, duration: duration),
+                scale == nil ? .wait(forDuration: duration) : .scaleY(to: abs(scale!) * player.scaleMultiplier, duration: duration),
+                alpha == nil ? .wait(forDuration: duration) : .fadeAlpha(to: alpha!, duration: duration)
+            ]))
+        }
+    }
 }
 
 
