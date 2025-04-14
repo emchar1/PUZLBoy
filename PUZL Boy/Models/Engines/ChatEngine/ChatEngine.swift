@@ -13,6 +13,7 @@ protocol ChatEnginePreBattleDelegate: AnyObject {
     func zoomInPrincess()
     func zoomInElders()
     func revealMagmoor()
+    func zoomInMagmoor()
 }
 
 protocol ChatEngineCatwalkDelegate: AnyObject {
@@ -1418,7 +1419,6 @@ extension ChatEngine {
                 },
                 ChatItem(profile: .princessCursed, chat: "heh. heh. heh. heh.")
             ]) { [weak self] in
-                self?.showFFButton()
                 self?.handleDialogueCompletion(level: level, completion: completion)
             }
             

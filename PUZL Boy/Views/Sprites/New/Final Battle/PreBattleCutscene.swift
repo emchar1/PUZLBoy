@@ -146,6 +146,9 @@ class PreBattleCutscene: SKScene {
     
     // MARK: - Scene Functions
     
+    /**
+     Begins the scene's animation entry point.
+     */
     func animateScene() {
         fadeNode.run(SKAction.fadeOut(withDuration: 4.5)) { [weak self] in
             self?.playScene1()
@@ -154,6 +157,9 @@ class PreBattleCutscene: SKScene {
         gate.run(SKAction.repeatForever(SKAction.colorizeWithRainbowColorSequence(blendFactor: 1, duration: 0.5)))
     }
     
+    /**
+     Initial scene. Setup the players positioning and animate their idle stances.
+     */
     private func playScene1() {
         let runDuration: TimeInterval = 0.5
         
@@ -183,7 +189,11 @@ class PreBattleCutscene: SKScene {
         enterGate(player: elder1, offset: offsetPlayers[2])
         enterGate(player: elder2, offset: offsetPlayers[3])
         
+        cursedPrincess.sprite.position.x = size.width + cursedPrincess.sprite.size.width / 2
+        cursedPrincess.sprite.xScale *= -1
+        cursedPrincess.sprite.alpha = 1
         cursedPrincess.sprite.run(Player.animate(player: cursedPrincess, type: .idle))
+        
         magmoor.sprite.run(Player.animate(player: magmoor, type: .idle))
         
         gate.run(SKAction.sequence([
@@ -298,13 +308,6 @@ extension PreBattleCutscene: ChatEnginePreBattleDelegate {
         let leftEndPoint = CGPoint(x: lrMargin, y: centerPoint.y)
         let rightEndPoint = CGPoint(x: size.width - lrMargin, y: centerPoint.y)
         
-        func moveLeft(player: Player, offset: CGPoint) {
-            player.sprite.run(SKAction.group([
-                SKAction.move(to: leftEndPoint + 2 * scaleSize * offset, duration: zoomDuration),
-                SKAction.scale(to: scaleSize * player.scaleMultiplier, duration: zoomDuration)
-            ]))
-        }
-        
         gateBackground.run(SKAction.sequence([
             SKAction.group([
                 SKAction.move(to: leftEndPoint, duration: zoomDuration),
@@ -314,60 +317,27 @@ extension PreBattleCutscene: ChatEnginePreBattleDelegate {
             SKAction.removeFromParent()
         ]))
         
-        moveLeft(player: hero, offset: offsetPlayers[0])
-        moveLeft(player: elder0, offset: offsetPlayers[1])
-        moveLeft(player: elder1, offset: offsetPlayers[2])
-        moveLeft(player: elder2, offset: offsetPlayers[3])
-        
-        magmoor.sprite.position = rightEndPoint
-        magmoor.sprite.xScale = -scaleSize * magmoor.scaleMultiplier
-        magmoor.sprite.yScale = scaleSize * magmoor.scaleMultiplier
-        
-        cursedPrincess.sprite.run(SKAction.sequence([
-            SKAction.moveTo(x: size.width + cursedPrincess.sprite.size.width / 2, duration: 0),
-            SKAction.fadeIn(withDuration: 0),
-            SKAction.scaleX(to: -cursedPrincess.sprite.xScale, duration: 0),
-            SKAction.group([
-                SKAction.move(to: rightEndPoint, duration: zoomDuration),
-                SKAction.scaleX(to: -scaleSize * cursedPrincess.scaleMultiplier, duration: zoomDuration),
-                SKAction.scaleY(to: scaleSize * cursedPrincess.scaleMultiplier, duration: zoomDuration)
-            ])
-        ]))
+        update(players: [hero], position: leftEndPoint + 2 * scaleSize * offsetPlayers[0], scale: scaleSize, alpha: 1, duration: zoomDuration)
+        update(players: [elder0], position: leftEndPoint + 2 * scaleSize * offsetPlayers[1], scale: scaleSize, alpha: 1, duration: zoomDuration)
+        update(players: [elder1], position: leftEndPoint + 2 * scaleSize * offsetPlayers[2], scale: scaleSize, alpha: 1, duration: zoomDuration)
+        update(players: [elder2], position: leftEndPoint + 2 * scaleSize * offsetPlayers[3], scale: scaleSize, alpha: 1, duration: zoomDuration)
+        update(players: [cursedPrincess], position: rightEndPoint, scale: -scaleSize, alpha: 1, duration: zoomDuration)
+        update(players: [magmoor], position: rightEndPoint, scale: -scaleSize, alpha: 0, duration: 0)
     }
     
     func zoomInPrincess() {
-        func moveOffScreen(player: Player) {
-            player.sprite.run(SKAction.moveTo(x: -player.sprite.size.width / 2, duration: 0))
-        }
-        
-        moveOffScreen(player: hero)
-        moveOffScreen(player: elder0)
-        moveOffScreen(player: elder1)
-        moveOffScreen(player: elder2)
-        
-        cursedPrincess.sprite.run(SKAction.group([
-            SKAction.move(to: centerPoint, duration: 0),
-            SKAction.scaleX(to: -cursedPrincess.scaleMultiplier, duration: 0),
-            SKAction.scaleY(to: cursedPrincess.scaleMultiplier, duration: 0)
-        ]))
+        update(players: [hero, elder0, elder1, elder2], alpha: 0, duration: 0)
+        update(players: [cursedPrincess], position: centerPoint, scale: -1, alpha: 1, duration: 0)
     }
     
     func zoomInElders() {
         let offsetMultiplier: CGFloat = 1.25
         
-        func moveCenter(player: Player, offset: CGPoint) {
-            player.sprite.run(SKAction.group([
-                SKAction.move(to: centerPoint + offset, duration: 0),
-                SKAction.scale(to: player.scale * player.scaleMultiplier, duration: 0)
-            ]))
-        }
-        
-        moveCenter(player: hero, offset: offsetPlayers[0] * offsetMultiplier)
-        moveCenter(player: elder0, offset: offsetPlayers[1] * offsetMultiplier)
-        moveCenter(player: elder1, offset: offsetPlayers[2] * offsetMultiplier)
-        moveCenter(player: elder2, offset: offsetPlayers[3] * offsetMultiplier)
-        
-        cursedPrincess.sprite.run(SKAction.moveTo(x: size.width + cursedPrincess.sprite.size.width / 2, duration: 0))
+        update(players: [hero], position: centerPoint + offsetMultiplier * offsetPlayers[0], scale: hero.scale, alpha: 1, duration: 0)
+        update(players: [elder0], position: centerPoint + offsetMultiplier * offsetPlayers[1], scale: elder0.scale, alpha: 1, duration: 0)
+        update(players: [elder1], position: centerPoint + offsetMultiplier * offsetPlayers[2], scale: elder1.scale, alpha: 1, duration: 0)
+        update(players: [elder2], position: centerPoint + offsetMultiplier * offsetPlayers[3], scale: elder2.scale, alpha: 1, duration: 0)
+        update(players: [cursedPrincess, magmoor], alpha: 0, duration: 0)
     }
     
     func revealMagmoor() {
@@ -384,6 +354,11 @@ extension PreBattleCutscene: ChatEnginePreBattleDelegate {
         AudioManager.shared.playSoundThenStop(for: "littlegirllaugh", playForDuration: 3, fadeOut: 1)
         AudioManager.shared.playSound(for: "scarylaugh", currentTime: 0.8, fadeIn: 1, delay: transformDelay)
         AudioManager.shared.playSound(for: "magicwarp2", delay: transformDelay)
+    }
+    
+    func zoomInMagmoor() {
+        update(players: [hero, elder0, elder1, elder2], alpha: 0, duration: 0)
+        update(players: [magmoor], alpha: 1, duration: 0)
     }
     
     
