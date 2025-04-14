@@ -101,7 +101,7 @@ struct AudioLibrary {
         ("pickupitem", .soundFX, 1),
         ("pickuptime", .soundFX, 1),
         ("powerdownitem", .soundFX, 1), //Not Purchased $1
-        ("powerupitem", .soundFX, 1), //Not Purchased $1
+        ("powerupitem", .soundFX, 1), //Not Purchased $2
         ("punchwhack1", .soundFX, 1),
         ("punchwhack2", .soundFX, 1),
         ("realmtransition", .soundFX, 1),
