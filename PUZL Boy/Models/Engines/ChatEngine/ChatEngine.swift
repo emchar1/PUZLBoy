@@ -9,7 +9,7 @@ import SpriteKit
 
 protocol ChatEnginePreBattleDelegate: AnyObject {
     //Pre-Battle
-    func zoomWideShot(zoomDuration: TimeInterval)
+    func zoomWideShot(duration: TimeInterval)
     func zoomInPrincess()
     func zoomInElders()
     func revealMagmoor()
@@ -1401,7 +1401,7 @@ extension ChatEngine {
         case -2000:
             sendChatArray(shouldSkipDim: true, items: [
                 ChatItem(profile: .hero, imgPos: .left, pause: 1, chat: "Princess......... Olivia???") { [weak self] in
-                    self?.delegatePreBattle?.zoomWideShot(zoomDuration: 0.5)
+                    self?.delegatePreBattle?.zoomWideShot(duration: 0.5)
                 },
                 ChatItem(profile: .magmus, chat: "Oh dear! I believe that is not our princess.....") { [weak self] in
                     self?.delegatePreBattle?.zoomInPrincess()
@@ -1413,7 +1413,7 @@ extension ChatEngine {
                 },
                 ChatItem(profile: .melchior, imgPos: .left, chat: "ENOUGH!!!! Magmoor, show yourself!!!"),
                 ChatItem(profile: .hero, imgPos: .left, chat: "COME OUT, YOU COWARD!!! Where are you hiding?!??!") { [weak self] in
-                    self?.delegatePreBattle?.zoomWideShot(zoomDuration: 0)
+                    self?.delegatePreBattle?.zoomWideShot(duration: 0)
                     self?.delegatePreBattle?.revealMagmoor()
                     self?.hideFFButton()
                 },
