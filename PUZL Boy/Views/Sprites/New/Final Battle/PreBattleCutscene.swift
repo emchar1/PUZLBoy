@@ -39,6 +39,8 @@ class PreBattleCutscene: SKScene {
     private var cursedPrincess: Player!
     private var magmoor: Player!
     private var magmoorUnleashed: Player!
+    private var marlin: Player!
+    private var princess: Player!
     
     weak var preBattleDelegate: PreBattleCutsceneDelegate?
     
@@ -107,6 +109,8 @@ class PreBattleCutscene: SKScene {
         setupPlayer(player: &cursedPrincess, type: .cursedPrincess, zPosition: 25)
         setupPlayer(player: &magmoor, type: .villain, zPosition: 27)
         setupPlayer(player: &magmoorUnleashed, type: .villain2, zPosition: 29)
+        setupPlayer(player: &marlin, type: .trainer, zPosition: 12)
+        setupPlayer(player: &princess, type: .princess, zPosition: 14)
     }
     
     
@@ -117,7 +121,6 @@ class PreBattleCutscene: SKScene {
         
         chatEngine.moveSprites(to: self)
         
-        addChild(fadeNode)
         addChild(hero.sprite)
         addChild(elder0.sprite)
         addChild(elder1.sprite)
@@ -125,6 +128,10 @@ class PreBattleCutscene: SKScene {
         addChild(cursedPrincess.sprite)
         addChild(magmoor.sprite)
         addChild(magmoorUnleashed.sprite)
+        addChild(marlin.sprite)
+        addChild(princess.sprite)
+        
+        addChild(fadeNode)
         addChild(gateBackground)
         gateBackground.addChild(gate)
     }
@@ -150,11 +157,11 @@ class PreBattleCutscene: SKScene {
      Begins the scene's animation entry point.
      */
     func animateScene() {
-        fadeNode.run(SKAction.fadeOut(withDuration: 4.5)) { [weak self] in
+        fadeNode.run(.fadeOut(withDuration: 4.5)) { [weak self] in
             self?.playScene1()
         }
         
-        gate.run(SKAction.repeatForever(SKAction.colorizeWithRainbowColorSequence(blendFactor: 1, duration: 0.5)))
+        gate.run(.repeatForever(.colorizeWithRainbowColorSequence(blendFactor: 1, duration: 0.5)))
     }
     
     /**
@@ -168,16 +175,16 @@ class PreBattleCutscene: SKScene {
             let spriteScale: CGFloat = player.sprite.xScale
             
             player.sprite.run(Player.animate(player: player, type: .run), withKey: keyRunningAction)
-            player.sprite.run(SKAction.sequence([
-                SKAction.scaleX(to: (offset.x < 0 ? -1 : 1) * spriteScale / 4, duration: 0),
-                SKAction.scaleY(to: spriteScale / 4, duration: 0),
-                SKAction.group([
-                    SKAction.fadeIn(withDuration: runDuration / 2),
-                    SKAction.move(to: centerPoint + offset, duration: runDuration),
-                    SKAction.scaleX(to: (offset.x < 0 ? -1 : 1) * spriteScale, duration: runDuration),
-                    SKAction.scaleY(to: player.sprite.yScale, duration: runDuration)
+            player.sprite.run(.sequence([
+                .scaleX(to: (offset.x < 0 ? -1 : 1) * spriteScale / 4, duration: 0),
+                .scaleY(to: spriteScale / 4, duration: 0),
+                .group([
+                    .fadeIn(withDuration: runDuration / 2),
+                    .move(to: centerPoint + offset, duration: runDuration),
+                    .scaleX(to: (offset.x < 0 ? -1 : 1) * spriteScale, duration: runDuration),
+                    .scaleY(to: player.sprite.yScale, duration: runDuration)
                 ]),
-                SKAction.scaleX(to: spriteScale, duration: 0)
+                .scaleX(to: spriteScale, duration: 0)
             ])) {
                 player.sprite.removeAction(forKey: keyRunningAction)
                 player.sprite.run(Player.animate(player: player, type: .idle))
@@ -196,10 +203,10 @@ class PreBattleCutscene: SKScene {
         
         magmoor.sprite.run(Player.animate(player: magmoor, type: .idle))
         
-        gate.run(SKAction.sequence([
-            SKAction.wait(forDuration: runDuration),
-            SKAction.setTexture(SKTexture(imageNamed: "endClosedMagic")),
-            SKAction.run {
+        gate.run(.sequence([
+            .wait(forDuration: runDuration),
+            .setTexture(SKTexture(imageNamed: "endClosedMagic")),
+            .run {
                 AudioManager.shared.playSound(for: "dooropen")
             }
         ])) { [weak self] in
@@ -212,10 +219,10 @@ class PreBattleCutscene: SKScene {
     private func revealMagmoorUnleashed() {
         let offsetToMatchMagmoorsEyes = CGPoint(x: -15, y: -35)
         
-        hero.sprite.run(SKAction.fadeOut(withDuration: 0))
-        elder0.sprite.run(SKAction.fadeOut(withDuration: 0))
-        elder1.sprite.run(SKAction.fadeOut(withDuration: 0))
-        elder2.sprite.run(SKAction.fadeOut(withDuration: 0))
+        hero.sprite.run(.fadeOut(withDuration: 0))
+        elder0.sprite.run(.fadeOut(withDuration: 0))
+        elder1.sprite.run(.fadeOut(withDuration: 0))
+        elder2.sprite.run(.fadeOut(withDuration: 0))
         
         magmoor.sprite.position = risePoint
         magmoor.sprite.xScale = -magmoor.scaleMultiplier
@@ -230,8 +237,6 @@ class PreBattleCutscene: SKScene {
         magmoorUnleashed.sprite.run(Player.animateIdleLevitate(player: magmoorUnleashed, randomizeDuration: false))
         
         cursedPrincess.sprite.removeFromParent()
-        
-        AudioManager.shared.playSound(for: "scarymusicbox")
     }
     
     
@@ -259,7 +264,7 @@ class PreBattleCutscene: SKScene {
                 
                 accumulatedActionDuration += flickerDuration
                 
-                return SKAction.fadeAlpha(to: reverse ? 1 - flickerAdjusted : flickerAdjusted, duration: flickerDuration)
+                return .fadeAlpha(to: reverse ? 1 - flickerAdjusted : flickerAdjusted, duration: flickerDuration)
             }
             
             //Customize these two properties for varying visual effects!
@@ -268,16 +273,16 @@ class PreBattleCutscene: SKScene {
             
             let steps: Int = Int(0.5 * (duration - delay) / flickerSpeed)
             var accumulatedActionDuration: TimeInterval = delay
-            var actions: [SKAction] = [SKAction.wait(forDuration: delay)]
+            var actions: [SKAction] = [.wait(forDuration: delay)]
             
             for step in flickerStagger..<(steps + flickerStagger) {
                 actions.append(fadeInHelper(reverse: reverse, flickerSpeed: flickerSpeed, factor: CGFloat(step)))
                 actions.append(fadeInHelper(reverse: reverse, flickerSpeed: flickerSpeed, factor: CGFloat(step - flickerStagger)))
             }
             
-            actions.append(SKAction.wait(forDuration: max(0, duration - accumulatedActionDuration)))
+            actions.append(.wait(forDuration: max(0, duration - accumulatedActionDuration)))
             
-            return SKAction.sequence(actions)
+            return .sequence(actions)
         }
         
         firstPlayer.sprite.run(fadeInAction(reverse: true))
@@ -297,7 +302,7 @@ class PreBattleCutscene: SKScene {
         - duration: animation duration of the updates using SKAction
      */
     private func updatePlayer(_ player: Player, position: CGPoint? = nil, scale: CGFloat? = nil, alpha: CGFloat? = nil, duration: TimeInterval = 0) {
-        player.sprite.run(SKAction.group([
+        player.sprite.run(.group([
             position == nil ? .wait(forDuration: duration) : .move(to: position!, duration: duration),
             scale == nil ? .wait(forDuration: duration) : .scaleX(to: scale! * player.scaleMultiplier, duration: duration),
             scale == nil ? .wait(forDuration: duration) : .scaleY(to: abs(scale!) * player.scaleMultiplier, duration: duration),
@@ -322,13 +327,13 @@ extension PreBattleCutscene: ChatEnginePreBattleDelegate {
         updatePlayer(cursedPrincess, position: position.right, scale: -scale, alpha: 1, duration: duration)
         updatePlayer(magmoor, position: position.right, scale: -scale, alpha: 0, duration: 0)
         
-        gateBackground.run(SKAction.sequence([
-            SKAction.group([
-                SKAction.move(to: position.left, duration: duration),
-                SKAction.scale(to: 2 * scale, duration: duration)
+        gateBackground.run(.sequence([
+            .group([
+                .move(to: position.left, duration: duration),
+                .scale(to: 2 * scale, duration: duration)
             ]),
-            SKAction.fadeOut(withDuration: 0.5),
-            SKAction.removeFromParent()
+            .fadeOut(withDuration: 0.5),
+            .removeFromParent()
         ]))
     }
     
@@ -350,22 +355,8 @@ extension PreBattleCutscene: ChatEnginePreBattleDelegate {
         updatePlayer(elder2, position: centerPoint + offsetMultiplier * offsetPlayers[3], scale: elder2.scale, alpha: 1)
         updatePlayer(cursedPrincess, alpha: 0)
         updatePlayer(magmoor, alpha: 0)
-    }
-    
-    func revealMagmoor() {
-        let riseDuration: TimeInterval = 6
-        let transformDelay: TimeInterval = 2.5
-        
-        magmoor.sprite.run(SKAction.moveTo(y: risePoint.y, duration: riseDuration))
-        cursedPrincess.sprite.run(SKAction.moveTo(y: risePoint.y, duration: riseDuration))
-        
-        transformPlayer(from: cursedPrincess, to: magmoor, duration: riseDuration, delay: transformDelay) { [weak self] in
-            self?.revealMagmoorUnleashed()
-        }
-        
-        AudioManager.shared.playSoundThenStop(for: "littlegirllaugh", playForDuration: 3, fadeOut: 1)
-        AudioManager.shared.playSound(for: "scarylaugh", currentTime: 0.8, fadeIn: 1, delay: transformDelay)
-        AudioManager.shared.playSound(for: "magicwarp2", delay: transformDelay)
+        updatePlayer(marlin, position: risePoint + CGPoint(x: -300, y: 0), duration: 0)
+        updatePlayer(princess, position: CGPoint(x: princess.sprite.position.x, y: risePoint.y), duration: 0)
     }
     
     func zoomInMagmoor() {
@@ -375,6 +366,8 @@ extension PreBattleCutscene: ChatEnginePreBattleDelegate {
         updatePlayer(elder2, alpha: 0)
         updatePlayer(cursedPrincess, alpha: 0)
         updatePlayer(magmoor, position: risePoint, scale: -1, alpha: 1)
+        updatePlayer(marlin, position: centerPoint + CGPoint(x: -300, y: 0), duration: 0)
+        updatePlayer(princess, position: CGPoint(x: princess.sprite.position.x, y: centerPoint.y), duration: 0)
     }
     
     func zoomWideGameboard() {
@@ -389,6 +382,11 @@ extension PreBattleCutscene: ChatEnginePreBattleDelegate {
         updatePlayer(cursedPrincess, alpha: 0)
         updatePlayer(magmoor, position: position.right, scale: -scale, alpha: 1)
         updatePlayer(magmoorUnleashed, position: position.right, scale: -scale, alpha: 0)
+        updatePlayer(marlin, position: CGPoint(x: centerPoint.x - 300, y: centerPoint.y + (risePoint.y - centerPoint.y) / 2), duration: 0)
+        updatePlayer(princess, position: CGPoint(x: princess.sprite.position.x, y: centerPoint.y + (risePoint.y - centerPoint.y) / 2), duration: 0)
+        
+        marlin.sprite.run(.fadeOut(withDuration: 2))
+        princess.sprite.run(.fadeOut(withDuration: 2))
         
         transformPlayer(from: magmoor, to: magmoorUnleashed, duration: 16) { [weak self] in
             guard let self = self else { return }
@@ -401,6 +399,69 @@ extension PreBattleCutscene: ChatEnginePreBattleDelegate {
         
         AudioManager.shared.stopSound(for: "scarymusicbox", fadeDuration: 2)
         AudioManager.shared.playSound(for: "bossbattle0")
+    }
+    
+    func revealMagmoor() {
+        let riseDuration: TimeInterval = 6
+        let transformDelay: TimeInterval = 2.5
+        
+        magmoor.sprite.run(.moveTo(y: risePoint.y, duration: riseDuration))
+        cursedPrincess.sprite.run(.moveTo(y: risePoint.y, duration: riseDuration))
+        
+        transformPlayer(from: cursedPrincess, to: magmoor, duration: riseDuration, delay: transformDelay) { [weak self] in
+            self?.revealMagmoorUnleashed()
+        }
+        
+        AudioManager.shared.playSoundThenStop(for: "littlegirllaugh", playForDuration: 3, fadeOut: 1)
+        AudioManager.shared.playSound(for: "scarylaugh", currentTime: 0.8, fadeIn: 1, delay: transformDelay)
+        AudioManager.shared.playSound(for: "magicwarp2", delay: transformDelay)
+        AudioManager.shared.playSound(for: "scarymusicbox", delay: riseDuration)
+    }
+    
+    func peekFriends(showMarlin: Bool, showPrincess: Bool) {
+        if showMarlin {
+            updatePlayer(marlin, position: centerPoint + CGPoint(x: -300, y: 0), scale: marlin.scale, duration: 0)
+            
+            marlin.sprite.run(.fadeAlpha(to: 0.5, duration: 2))
+            marlin.sprite.run(Player.animate(player: marlin, type: .dead))
+            
+            ParticleEngine.shared.animateParticles(type: .magicMerge,
+                                                   toNode: marlin.sprite,
+                                                   position: CGPoint(x: 0, y: -marlin.sprite.size.height / 4),
+                                                   scale: 3 * UIDevice.spriteScale,
+                                                   alpha: 0.5,
+                                                   zPosition: -5,
+                                                   duration: 0)
+        }
+        
+        if showPrincess {
+            updatePlayer(princess, position: centerPoint + CGPoint(x: 200, y: 0), scale: -princess.scale, duration: 0)
+            
+            princess.sprite.run(.fadeAlpha(to: 0.5, duration: 2))
+            princess.sprite.run(Player.animate(player: princess, type: .idle))
+            princess.sprite.run(.sequence([
+                .wait(forDuration: 2),
+                .group([
+                    Player.animate(player: princess, type: .walk, timePerFrameMultiplier: 0.25, repeatCount: 1),
+                    .moveBy(x: -100, y: 0, duration: 0.3)
+                ]),
+                .repeatForever(.sequence([
+                    .wait(forDuration: 2),
+                    .group([
+                        Player.animate(player: princess, type: .walk, timePerFrameMultiplier: 0.25, repeatCount: 2),
+                        .moveBy(x: 200, y: 0, duration: 0.6),
+                        .scaleX(to: abs(princess.sprite.xScale), duration: 0)
+                    ]),
+                    .wait(forDuration: 2),
+                    .group([
+                        Player.animate(player: princess, type: .walk, timePerFrameMultiplier: 0.25, repeatCount: 2),
+                        .moveBy(x: -200, y: 0, duration: 0.6),
+                        .scaleX(to: -abs(princess.sprite.xScale), duration: 0)
+                    ])
+                ])),
+                .wait(forDuration: 2)
+            ]))
+        }
     }
     
     

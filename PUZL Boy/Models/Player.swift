@@ -95,8 +95,8 @@ class Player {
             setupPlayer(framesRng: [1...15, 1...15, 1...15, 1...15, 5...5, 1...12, nil, 1...2],
                         framesCmd: [nil, nil, nil, nil, "Run", nil, nil, nil])
         case .trainer:
-            setupPlayer(framesRng: [1...6, 1...6, 1...6, 1...7, 2...2, nil, 1...6, nil],
-                        framesCmd: [nil, nil, "Run", nil, "RuinDead", nil, nil, nil])
+            setupPlayer(framesRng: [1...6, 1...6, 1...6, 7...7, 2...2, nil, 1...6, nil],
+                        framesCmd: [nil, nil, "Run", "RuinDead", "RuinDead", nil, nil, nil])
         case .princess:
             setupPlayer(framesRng: [1...16, nil, 1...20, nil, nil, 26...33, nil, nil])
         case .princess2:

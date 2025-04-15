@@ -12,9 +12,10 @@ protocol ChatEnginePreBattleDelegate: AnyObject {
     func zoomWideShot(duration: TimeInterval)
     func zoomInPrincess()
     func zoomInElders()
-    func revealMagmoor()
     func zoomInMagmoor()
     func zoomWideGameboard()
+    func revealMagmoor()
+    func peekFriends(showMarlin: Bool, showPrincess: Bool)
 }
 
 protocol ChatEngineCatwalkDelegate: AnyObject {
@@ -1412,8 +1413,8 @@ extension ChatEngine {
                     self?.delegatePreBattle?.zoomInElders()
                     self?.showFFButton()
                 },
-                ChatItem(profile: .melchior, imgPos: .left, chat: "ENOUGH!!!! Release the princess immediately! You no longer have dominion here!!"),
-                ChatItem(profile: .hero, imgPos: .left, chat: "Show yourself, Meatwad!!!") { [weak self] in
+                ChatItem(profile: .melchior, imgPos: .left, chat: "ENOUGH!!!! Release the princess immediately! You have no dominion here!!"),
+                ChatItem(profile: .hero, imgPos: .left, chat: "Yeah! Show yourself, Meatwad!!!") { [weak self] in
                     self?.delegatePreBattle?.zoomWideShot(duration: 0)
                     self?.delegatePreBattle?.revealMagmoor()
                     self?.hideFFButton()
@@ -1424,30 +1425,26 @@ extension ChatEngine {
                 ChatItem(profile: .villain, chat: "Is that the proper way to greet your king? Kneel before me!") { [weak self] in
                     self?.delegatePreBattle?.zoomInElders()
                 },
-                ChatItem(profile: .melchior, imgPos: .left, chat: "Pfft. You are no king! You never were and you never will be!"),
-                ChatItem(profile: .merton, imgPos: .left, chat: "What have you done to Marlin and the princess?! I can no longer feel their essence—") { [weak self] in
+                ChatItem(profile: .melchior, imgPos: .left, chat: "A king with no crown. No claim. No throne. You are no king—never were, never will be."),
+                ChatItem(profile: .merton, imgPos: .left, chat: "What have you done to Marlin and the princess?! I... I can no longer feel their essence—") { [weak self] in
                     self?.delegatePreBattle?.zoomInMagmoor()
+                    self?.delegatePreBattle?.peekFriends(showMarlin: true, showPrincess: false)
                 },
-                ChatItem(profile: .villain, chat: "Ah, désolé! Marlin made the wise decision to merge with me. He and I are one. The realms belong to me, now and forever.") { [weak self] in
+                ChatItem(profile: .villain, chat: "Ah, désolé! Marlin made the wise decision to merge with me. He and I are one. The realms belong to me! Now and forever.") { [weak self] in
                     self?.delegatePreBattle?.zoomInElders()
                 },
-                ChatItem(profile: .magmus, imgPos: .left, chat: "The realms belong to the people! One man does not rule over them."),
+                ChatItem(profile: .magmus, imgPos: .left, chat: "The realms belong to the people! One man does not rule over them, you deranged lunatic!"),
                 ChatItem(profile: .merton, imgPos: .left, chat: "And what of the princess?!??") { [weak self] in
                     self?.delegatePreBattle?.zoomInMagmoor()
+                    self?.delegatePreBattle?.peekFriends(showMarlin: false, showPrincess: true)
                 },
-                ChatItem(profile: .villain, chat: "Ugh, why does everyone keep asking??? She's safe.. don't worry! She's somewhere YOU can't harm her....... Melchior.") { [weak self] in
+                ChatItem(profile: .villain, chat: "Why does everyone keep asking me that??? She's safe... Somewhere you can't get to her either. Melchior.......") { [weak self] in
                     self?.delegatePreBattle?.zoomInElders()
                 },
-                ChatItem(profile: .hero, imgPos: .left, chat: "I don't believe you. I can smell a liar from a mile away. You stole her power too, didn't you??!!") { [weak self] in
+                ChatItem(profile: .melchior, imgPos: .left, chat: "You overlook one thing, Magmoor: We outrank and outpower you. And we'll send you back to the Nether Realm, as we did in the Battle at the Sands of Solitude.") { [weak self] in
                     self?.delegatePreBattle?.zoomInMagmoor()
                 },
-                ChatItem(profile: .villain, chat: "Stole, borrowed, it's really a matter of semantics. Anyway, are we done here? I'm about to rule the universe...") { [weak self] in
-                    self?.delegatePreBattle?.zoomInElders()
-                },
-                ChatItem(profile: .melchior, imgPos: .left, chat: "You overlook one thing, Magmoor. We outrank and outpower you. And we'll send you back to the Nether Realm as we in the Battle at the Sands of Solitude.") { [weak self] in
-                    self?.delegatePreBattle?.zoomInMagmoor()
-                },
-                ChatItem(profile: .villain, chat: "I grow tired of this conversation. Now, as I commanded before..... KNEEL!!!!!") { [weak self] in
+                ChatItem(profile: .villain, chat: "I grow bored of this conversation. Now, as I commanded before..... KNEEL!!!!!") { [weak self] in
                     self?.delegatePreBattle?.zoomWideGameboard()
                 },
                 ChatItem(profile: .allelders, imgPos: .left, chat: "Agggghhhhh!")
