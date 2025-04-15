@@ -23,7 +23,6 @@ class PreBattleCutscene: SKScene {
         CGPoint(x: -150, y: 40)     //elder2
     ]
     
-    private var playerScale: CGFloat { Player.getGameboardScale(panelSize: size.width / 7) * UIDevice.spriteScale }
     private var centerPoint: CGPoint { CGPoint(x: size.width / 2, y: size.height / 2) }
     private var risePoint: CGPoint { CGPoint(x: size.width / 2, y: size.height * 3/4) }
     
@@ -68,6 +67,7 @@ class PreBattleCutscene: SKScene {
         tapPointerEngine = nil
         chatEngine = nil
         
+        AudioManager.shared.stopSound(for: "scarymusicbox", fadeDuration: 0)
         AudioManager.shared.stopSound(for: "bossbattle0", fadeDuration: 0)
     }
     
@@ -229,17 +229,9 @@ class PreBattleCutscene: SKScene {
         magmoor.sprite.run(Player.animateIdleLevitate(player: magmoor, randomizeDuration: false))
         magmoorUnleashed.sprite.run(Player.animateIdleLevitate(player: magmoorUnleashed, randomizeDuration: false))
         
-        transformPlayer(from: magmoor, to: magmoorUnleashed, duration: 4.5) { [weak self] in
-            guard let self = self else { return }
-            
-            magmoorUnleashed.sprite.alpha = 0
-            preBattleDelegate?.preBattleCutsceneDidFinish(self)
-            
-            //Put this last!! This deinitializes EVERYTHING.
-            cleanupScene()
-        }
+        cursedPrincess.sprite.removeFromParent()
         
-        AudioManager.shared.playSound(for: "bossbattle0")
+        AudioManager.shared.playSound(for: "scarymusicbox")
     }
     
     
@@ -383,6 +375,32 @@ extension PreBattleCutscene: ChatEnginePreBattleDelegate {
         updatePlayer(elder2, alpha: 0)
         updatePlayer(cursedPrincess, alpha: 0)
         updatePlayer(magmoor, position: risePoint, scale: -1, alpha: 1)
+    }
+    
+    func zoomWideGameboard() {
+        let position: (left: CGPoint, right: CGPoint) = (CGPoint(x: 200, y: centerPoint.y), CGPoint(x: size.width - 200, y: risePoint.y))
+        let offsetMultiplier: CGFloat = 0.5
+        let scale: CGFloat = Player.getGameboardScale(panelSize: size.width / 7) * UIDevice.spriteScale
+        
+        updatePlayer(hero, position: position.left + offsetMultiplier * offsetPlayers[0], scale: scale, alpha: 1)
+        updatePlayer(elder0, position: position.left + offsetMultiplier * offsetPlayers[1], scale: scale, alpha: 1)
+        updatePlayer(elder1, position: position.left + offsetMultiplier * offsetPlayers[2], scale: scale, alpha: 1)
+        updatePlayer(elder2, position: position.left + offsetMultiplier * offsetPlayers[3], scale: scale, alpha: 1)
+        updatePlayer(cursedPrincess, alpha: 0)
+        updatePlayer(magmoor, position: position.right, scale: -scale, alpha: 1)
+        updatePlayer(magmoorUnleashed, position: position.right, scale: -scale, alpha: 0)
+        
+        transformPlayer(from: magmoor, to: magmoorUnleashed, duration: 16) { [weak self] in
+            guard let self = self else { return }
+            
+            preBattleDelegate?.preBattleCutsceneDidFinish(self)
+            
+            //Put this last!! This deinitializes EVERYTHING.
+            cleanupScene()
+        }
+        
+        AudioManager.shared.stopSound(for: "scarymusicbox", fadeDuration: 2)
+        AudioManager.shared.playSound(for: "bossbattle0")
     }
     
     
