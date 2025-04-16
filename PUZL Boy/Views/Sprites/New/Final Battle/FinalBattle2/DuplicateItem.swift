@@ -235,7 +235,8 @@ class DuplicateItem {
         - gameboard: the gameboard in question
      - returns: the overlay object found, or nil if none.
      */
-    @discardableResult func collectItem(at position: K.GameboardPosition, on gameboard: GameboardSprite) -> LevelType? {
+    @discardableResult
+    func collectItem(at position: K.GameboardPosition, on gameboard: GameboardSprite) -> LevelType? {
         guard let item = getItem(at: position, on: gameboard) else { return nil }
         
         let itemSprite = item.sprite.copy() as! SKSpriteNode

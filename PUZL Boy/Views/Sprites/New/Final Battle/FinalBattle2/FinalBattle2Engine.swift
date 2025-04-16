@@ -349,7 +349,8 @@ class FinalBattle2Engine {
             return row >= 0 && row < gameboard.panelCount && col >= 0 && col < gameboard.panelCount
         }
         
-        @discardableResult func addEdgePosition(row: Int, col: Int) -> Bool {
+        @discardableResult
+        func addEdgePosition(row: Int, col: Int) -> Bool {
             guard isValidPosition(row: row, col: col) else { return false }
             
             affectedPanels.append(K.GameboardPosition(row: row, col: col))
@@ -401,7 +402,8 @@ class FinalBattle2Engine {
             return row >= 0 && row < gameboard.panelCount && col >= 0 && col < gameboard.panelCount
         }
         
-        @discardableResult func addEdgePosition(row: Int, col: Int) -> Bool {
+        @discardableResult
+        func addEdgePosition(row: Int, col: Int) -> Bool {
             guard isValidPosition(row: row, col: col) else { return false }
             
             affectedPanels.append(K.GameboardPosition(row: row, col: col))

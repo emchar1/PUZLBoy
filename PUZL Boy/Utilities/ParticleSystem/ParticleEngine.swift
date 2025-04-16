@@ -124,19 +124,20 @@ class ParticleEngine: SKNode {
         - duration: length of the animation
      - returns: the created SKEmitterNode
      */
-    @discardableResult func animateParticles(type: ParticleType,
-                                             toNode node: SKNode,
-                                             position: CGPoint,
-                                             scale: CGFloat = 1,
-                                             angle: CGFloat = 0,
-                                             shouldFlipHorizontally: Bool = false,
-                                             alpha: CGFloat = 1,
-                                             colorSequence: SKKeyframeSequence? = nil,
-                                             alphaSequence: SKKeyframeSequence? = nil,
-                                             emissionAngleRangeDegrees: CGFloat? = nil,
-                                             zPosition: CGFloat = K.ZPosition.itemsAndEffects + 10,
-                                             nameGameboardPosition: K.GameboardPosition? = nil,
-                                             duration: TimeInterval) -> SKEmitterNode? {
+    @discardableResult
+    func animateParticles(type: ParticleType,
+                          toNode node: SKNode,
+                          position: CGPoint,
+                          scale: CGFloat = 1,
+                          angle: CGFloat = 0,
+                          shouldFlipHorizontally: Bool = false,
+                          alpha: CGFloat = 1,
+                          colorSequence: SKKeyframeSequence? = nil,
+                          alphaSequence: SKKeyframeSequence? = nil,
+                          emissionAngleRangeDegrees: CGFloat? = nil,
+                          zPosition: CGFloat = K.ZPosition.itemsAndEffects + 10,
+                          nameGameboardPosition: K.GameboardPosition? = nil,
+                          duration: TimeInterval) -> SKEmitterNode? {
         
         guard let particles = SKEmitterNode(fileNamed: type.rawValue) else {
             print("Particle file not found: \(type.rawValue).sks")

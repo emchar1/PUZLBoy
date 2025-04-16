@@ -71,7 +71,8 @@ extension SKLabelNode {
         }
     }
     
-    @discardableResult func removeShadow() -> Bool {
+    @discardableResult
+    func removeShadow() -> Bool {
         guard let shadow = children.filter({ $0.name == "dropShadow" }).first else { return false }
 
         shadow.removeFromParent()

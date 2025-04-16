@@ -67,14 +67,15 @@ class AudioManager {
         - shouldLoop: if non-nil, override the audio item's category property, to determine whether to loop playback or not
      - returns: True if the player can play. False, otherwise.
      */
-    @discardableResult func playSound(for audioKey: String,
-                                      currentTime: TimeInterval? = nil,
-                                      fadeIn: TimeInterval = 0.0,
-                                      delay: TimeInterval? = nil,
-                                      pan: Float = 0,
-                                      interruptPlayback: Bool = true,
-                                      rate: Float? = nil,
-                                      shouldLoop: Bool? = nil) -> Bool {
+    @discardableResult
+    func playSound(for audioKey: String,
+                   currentTime: TimeInterval? = nil,
+                   fadeIn: TimeInterval = 0.0,
+                   delay: TimeInterval? = nil,
+                   pan: Float = 0,
+                   interruptPlayback: Bool = true,
+                   rate: Float? = nil,
+                   shouldLoop: Bool? = nil) -> Bool {
         
         guard let item = audioItems[audioKey] else {
             print("Unable to find \(audioKey) in AudioManager.audioItems[]")

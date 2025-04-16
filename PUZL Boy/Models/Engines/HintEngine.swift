@@ -147,7 +147,8 @@ class HintEngine {
     
     // MARK: - Functions
     
-    @discardableResult func getHint(gameboardSprite: GameboardSprite, playerPosition: K.GameboardPosition, completion: (() -> Void)?) -> Controls? {
+    @discardableResult
+    func getHint(gameboardSprite: GameboardSprite, playerPosition: K.GameboardPosition, completion: (() -> Void)?) -> Controls? {
         guard hintAvailable else {
             print("HintEngine.getHint(): hintAvailable == false.")
             return nil

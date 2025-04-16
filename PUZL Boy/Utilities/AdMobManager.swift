@@ -109,7 +109,8 @@ class AdMobManager: NSObject {
     }
     
     @available(iOS 14, *)
-    @discardableResult private func checkForIDFAPermission() -> ATTrackingManager.AuthorizationStatus {
+    @discardableResult
+    private func checkForIDFAPermission() -> ATTrackingManager.AuthorizationStatus {
         let status = ATTrackingManager.trackingAuthorizationStatus
         
         switch status {
