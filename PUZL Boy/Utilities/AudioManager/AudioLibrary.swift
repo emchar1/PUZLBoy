@@ -136,6 +136,7 @@ struct AudioLibrary {
         ("winlevel", .soundFX, 1),
         ("winlevel3stars", .soundFX, 1),
         ("winlevelageofruin", .soundFX, 1),
+        ("ylowhealth", .soundFX, 1),
         ("ydooropen", .soundFX, 1),
         
         

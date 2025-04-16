@@ -62,7 +62,7 @@ class AudioManager {
         - fadeIn: ramp up time in TimeInterval before reaching max volume. Default is 0.
         - delay: adds a delay in TimeInterval before playing the sound. Default is nil.
         - pan: pan value to initialize, defaults to center of player
-        - interruptPlayback: if false, if sound is currently playing and call to playSound() is made, let existing playback play and cancel call to playSound().
+        - interruptPlayback: if false, if sound is currently playing and call to playSound() is made, let existing playback play and cancel call to playSound(). Defaults to true.
         - rate: the speed of playback. If nil, default to rate = 1.
         - shouldLoop: if non-nil, override the audio item's category property, to determine whether to loop playback or not
      - returns: True if the player can play. False, otherwise.
