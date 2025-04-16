@@ -1441,7 +1441,7 @@ extension ChatEngine {
                 ChatItem(profile: .villain, chat: "Why does everyone keep asking me that??? She's safe... Somewhere you can't get to her either. Melchior.......") { [weak self] in
                     self?.delegatePreBattle?.zoomInElders()
                 },
-                ChatItem(profile: .melchior, imgPos: .left, chat: "You overlook one thing, Magmoor: We outrank and outpower you. And we'll send you back to the Nether Realm, as we did in the Battle at the Sands of Solitude.") { [weak self] in
+                ChatItem(profile: .melchior, imgPos: .left, chat: "You overlook one thing, Magmoor: We outrank and outpower you. We will send you back to the Nether Realm, as we did in the Battle at the Sands of Solitude.") { [weak self] in
                     self?.delegatePreBattle?.zoomInMagmoor()
                 },
                 ChatItem(profile: .villain, chat: "I grow bored of this conversation. Now, as I commanded before..... KNEEL!!!!!") { [weak self] in

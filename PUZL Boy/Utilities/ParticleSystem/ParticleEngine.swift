@@ -95,23 +95,53 @@ class ParticleEngine: SKNode {
     }
     
     
-    // MARK: - Functions
+    // MARK: - Helper Functions
     
-    func animateParticles(type: ParticleType,
-                          toNode node: SKNode,
-                          position: CGPoint,
-                          scale: CGFloat = 1,
-                          angle: CGFloat = 0,
-                          shouldFlipHorizontally: Bool = false,
-                          alpha: CGFloat = 1,
-                          colorSequence: SKKeyframeSequence? = nil,
-                          alphaSequence: SKKeyframeSequence? = nil,
-                          emissionAngleRangeDegrees: CGFloat? = nil,
-                          zPosition: CGFloat = K.ZPosition.itemsAndEffects + 10,
-                          nameGameboardPosition: K.GameboardPosition? = nil,
-                          duration: TimeInterval)
-    {
-        guard let particles = SKEmitterNode(fileNamed: type.rawValue) else { return print("Particle file not found: \(type.rawValue).sks")}
+    static func getNodeName(at position: K.GameboardPosition?) -> String {
+        guard let position = position else { return ParticleEngine.nodeNamePrefix }
+
+        return "\(ParticleEngine.nodeNamePrefix)(\(position.row),\(position.col))"
+    }
+    
+    
+    // MARK: - Particle Animation Functions
+    
+    /**
+     Animates the SKEmitterNode, with customizations.
+     - parameters:
+        - type: ParticleType enum
+        - node: the node to add the particle to
+        - position: position to place the particle
+        - scale: size of the particle
+        - angle: zRotation of the particle
+        - shouldFlipHorizontally: boolean to flip the particle or not
+        - alpha: alpha value of the particle
+        - colorSequence: color sequence to implement color change; defaults to nil, which resorts to the particle editor values
+        - alphaSequence: the alpha sequence to implement opacity change
+        - emissionAngleRangeDegrees: the range of random angles allowed for the particles initial direction
+        - zPosition: placement on the zPosition hierarchy
+        - nameGameboardPosition: node name, which derives from a gameboard row, column position
+        - duration: length of the animation
+     - returns: the created SKEmitterNode
+     */
+    @discardableResult func animateParticles(type: ParticleType,
+                                             toNode node: SKNode,
+                                             position: CGPoint,
+                                             scale: CGFloat = 1,
+                                             angle: CGFloat = 0,
+                                             shouldFlipHorizontally: Bool = false,
+                                             alpha: CGFloat = 1,
+                                             colorSequence: SKKeyframeSequence? = nil,
+                                             alphaSequence: SKKeyframeSequence? = nil,
+                                             emissionAngleRangeDegrees: CGFloat? = nil,
+                                             zPosition: CGFloat = K.ZPosition.itemsAndEffects + 10,
+                                             nameGameboardPosition: K.GameboardPosition? = nil,
+                                             duration: TimeInterval) -> SKEmitterNode? {
+        
+        guard let particles = SKEmitterNode(fileNamed: type.rawValue) else {
+            print("Particle file not found: \(type.rawValue).sks")
+            return nil
+        }
         
         particles.position = position
         particles.setScale(2 * scale / UIDevice.modelInfo.ratio)
@@ -139,7 +169,7 @@ class ParticleEngine: SKNode {
         node.addChild(particles)
         
         
-        guard duration > 0 else { return }
+        guard duration > 0 else { return particles }
         
         let fadeDuration: TimeInterval = 0.25
         
@@ -149,44 +179,7 @@ class ParticleEngine: SKNode {
             SKAction.removeFromParent()
         ]))
         
-        // FIXME: - Testing for Marlin Magic
-//        if type == .magicLight {
-//            animateCircle(particles: particles, duration: 2)
-//        }
-    }
-        
-    // FIXME: - Testing for Marlin Magic
-    private func animateCircle(particles: SKEmitterNode, duration: TimeInterval) {
-        let origin = particles.position
-        let radius: CGFloat = 100
-        let divisions: CGFloat = 8
-
-        particles.position = CGPoint(x: origin.x + radius * cos(0), y: origin.y + radius * sin(0))
-        
-        func animateArc(angle: CGFloat) -> SKAction {
-            let endPoint = CGPoint(x: origin.x + radius * cos(angle), y: origin.y + radius * sin(angle))
-            
-            return SKAction.move(to: endPoint, duration: duration / (2 * divisions))
-        }
-        
-        particles.run(SKAction.repeatForever(SKAction.sequence([
-            animateArc(angle: 0),
-            animateArc(angle: .pi / divisions),
-            animateArc(angle: 2 * .pi / divisions),
-            animateArc(angle: 3 * .pi / divisions),
-            animateArc(angle: 4 * .pi / divisions),
-            animateArc(angle: 5 * .pi / divisions),
-            animateArc(angle: 6 * .pi / divisions),
-            animateArc(angle: 7 * .pi / divisions),
-            animateArc(angle: 8 * .pi / divisions),
-            animateArc(angle: 9 * .pi / divisions),
-            animateArc(angle: 10 * .pi / divisions),
-            animateArc(angle: 11 * .pi / divisions),
-            animateArc(angle: 12 * .pi / divisions),
-            animateArc(angle: 13 * .pi / divisions),
-            animateArc(angle: 14 * .pi / divisions),
-            animateArc(angle: 15 * .pi / divisions),
-        ])))
+        return particles
     }
     
     func removeParticles(fromNode node: SKNode, nameGameboardPosition: K.GameboardPosition? = nil, fadeDuration: TimeInterval = 0) {
@@ -224,6 +217,66 @@ class ParticleEngine: SKNode {
         }
     }
     
+    
+    // MARK: - Custom Animations
+    
+    /**
+     Animates particles in a defined circular path, with particles trailing behind it.
+     - parameters:
+        - type: ParticleType enum
+        - node: the node to add the particle to
+        - position: position to place the particle
+        - scale: size of the particle
+        - alpha: alpha value of the particle
+        - radius: size of the circular path
+        - circularSpeed: speed of the particle as it rotates along the path
+        - zPosition: placement on the zPosition hierarchy
+        - duration: length of the animation
+     */
+    func animateCircle(type: ParticleType,
+                       toNode node: SKNode,
+                       position: CGPoint,
+                       scale: CGFloat = 1,
+                       alpha: CGFloat = 1,
+                       radius: CGFloat,
+                       circularSpeed: TimeInterval,
+                       zPosition: CGFloat = K.ZPosition.itemsAndEffects + 10,
+                       duration: TimeInterval) {
+        
+        guard let particles = animateParticles(type: type, toNode: node, position: position, scale: scale, alpha: alpha, zPosition: zPosition, duration: duration) else { return }
+        
+        let origin = particles.position
+        let divisions: CGFloat = 8
+
+        particles.position = CGPoint(x: origin.x + radius * cos(0), y: origin.y + radius * sin(0))
+        particles.targetNode = node
+        
+        func animateArc(angle: CGFloat) -> SKAction {
+            let endPoint = CGPoint(x: origin.x + radius * cos(angle), y: origin.y + radius * sin(angle))
+            
+            return SKAction.move(to: endPoint, duration: circularSpeed / (2 * divisions))
+        }
+        
+        particles.run(SKAction.repeatForever(SKAction.sequence([
+            animateArc(angle: 0),
+            animateArc(angle: .pi / divisions),
+            animateArc(angle: 2 * .pi / divisions),
+            animateArc(angle: 3 * .pi / divisions),
+            animateArc(angle: 4 * .pi / divisions),
+            animateArc(angle: 5 * .pi / divisions),
+            animateArc(angle: 6 * .pi / divisions),
+            animateArc(angle: 7 * .pi / divisions),
+            animateArc(angle: 8 * .pi / divisions),
+            animateArc(angle: 9 * .pi / divisions),
+            animateArc(angle: 10 * .pi / divisions),
+            animateArc(angle: 11 * .pi / divisions),
+            animateArc(angle: 12 * .pi / divisions),
+            animateArc(angle: 13 * .pi / divisions),
+            animateArc(angle: 14 * .pi / divisions),
+            animateArc(angle: 15 * .pi / divisions),
+        ])))
+    }
+    
     /**
      Used during Princess Olivia's final transformation power display.
      */
@@ -256,13 +309,6 @@ class ParticleEngine: SKNode {
                                                zPosition: zPosition - 1,
                                                duration: 0)
     }
-    
-    static func getNodeName(at position: K.GameboardPosition?) -> String {
-        guard let position = position else { return ParticleEngine.nodeNamePrefix }
-
-        return "\(ParticleEngine.nodeNamePrefix)(\(position.row),\(position.col))"
-    }
-    
     
     
 }
