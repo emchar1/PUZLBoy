@@ -307,6 +307,7 @@
 		EABE795F2ACBB83A00689C55 /* DragonFireLite.sks in Resources */ = {isa = PBXBuildFile; fileRef = EABE795E2ACBB83A00689C55 /* DragonFireLite.sks */; };
 		EABE79612ACBC7E800689C55 /* enemyflame.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EABE79602ACBC7E800689C55 /* enemyflame.mp3 */; };
 		EAC378362DAD6CE300E4AEF7 /* powerupitem.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAC378352DAD6CE300E4AEF7 /* powerupitem.mp3 */; };
+		EAC378422DB04A4A00E4AEF7 /* ylowhealth.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = EAC378412DB04A4A00E4AEF7 /* ylowhealth.mp3 */; };
 		EACCC05F2AE63FA40099DA44 /* LeaderboardsPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = EACCC05E2AE63FA40099DA44 /* LeaderboardsPage.swift */; };
 		EACCC0612AE63FEE0099DA44 /* LeaderboardsTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EACCC0602AE63FEE0099DA44 /* LeaderboardsTableView.swift */; };
 		EACCC0632AE640EA0099DA44 /* LeaderboardsTVCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EACCC0622AE640EA0099DA44 /* LeaderboardsTVCell.swift */; };
@@ -694,6 +695,7 @@
 		EABE795E2ACBB83A00689C55 /* DragonFireLite.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = DragonFireLite.sks; sourceTree = "<group>"; };
 		EABE79602ACBC7E800689C55 /* enemyflame.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = enemyflame.mp3; sourceTree = "<group>"; };
 		EAC378352DAD6CE300E4AEF7 /* powerupitem.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = powerupitem.mp3; sourceTree = "<group>"; };
+		EAC378412DB04A4A00E4AEF7 /* ylowhealth.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = ylowhealth.mp3; sourceTree = "<group>"; };
 		EACCC05E2AE63FA40099DA44 /* LeaderboardsPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaderboardsPage.swift; sourceTree = "<group>"; };
 		EACCC0602AE63FEE0099DA44 /* LeaderboardsTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaderboardsTableView.swift; sourceTree = "<group>"; };
 		EACCC0622AE640EA0099DA44 /* LeaderboardsTVCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaderboardsTVCell.swift; sourceTree = "<group>"; };
@@ -1272,6 +1274,7 @@
 				EAE43D902C48A74C00E6DB3C /* winlevel3stars.mp3 */,
 				EA8C605F2C068E0700DED3C7 /* winlevelageofruin.mp3 */,
 				EA9AD2912D8B3BA200FC6422 /* ydooropen.mp3 */,
+				EAC378412DB04A4A00E4AEF7 /* ylowhealth.mp3 */,
 				EA41FBF22D005D3F00796368 /* zdooropen.mp3 */,
 				EA5B2B2B2D9BB27100723FC5 /* zpowerupitem.mp3 */,
 			);
@@ -1744,6 +1747,7 @@
 				EA8C60722C068E0800DED3C7 /* magichorrorimpact.mp3 in Resources */,
 				EA8C606E2C068E0800DED3C7 /* magicheartbeatloop1.mp3 in Resources */,
 				EA49F2882BBDEAB800C7D54E /* GroundWarpParticles.sks in Resources */,
+				EAC378422DB04A4A00E4AEF7 /* ylowhealth.mp3 in Resources */,
 				EA8C606F2C068E0800DED3C7 /* chatopenprincess.mp3 in Resources */,
 				EA94E87329C0DE2C009F2614 /* movetile3.mp3 in Resources */,
 				EA74F9D02BA17BDE002CE6B2 /* InBetweenParticles.sks in Resources */,
