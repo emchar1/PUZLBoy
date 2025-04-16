@@ -364,7 +364,7 @@ extension GameViewController: PreBattleCutsceneDelegate {
     func preBattleCutsceneDidFinish(_ cutscene: PreBattleCutscene) {
         let finalBattleScene = FinalBattleScene(size: K.ScreenDimensions.size)
         finalBattleScene.animateScene()
-        skView.presentScene(finalBattleScene, transition: SKTransition.fade(with: .black, duration: 3))
+        skView.presentScene(finalBattleScene, transition: SKTransition.fade(with: .black, duration: 0))
     }
 }
 
