@@ -1417,7 +1417,7 @@ extension ChatEngine {
                     self?.showFFButton()
                 },
                 ChatItem(profile: .melchior, imgPos: .left, chat: "ENOUGH!!!! Release the princess immediately! You have no dominion here!!"),
-                ChatItem(profile: .hero, imgPos: .left, chat: "Yeah! Show yourself, Meatwad!!!") { [weak self] in
+                ChatItem(profile: .hero, imgPos: .left, chat: "Show yourself, Meatwad!!!") { [weak self] in
                     self?.delegatePreBattle?.zoomWideShot(duration: 0)
                     self?.delegatePreBattle?.revealMagmoor()
                     self?.hideFFButton()
