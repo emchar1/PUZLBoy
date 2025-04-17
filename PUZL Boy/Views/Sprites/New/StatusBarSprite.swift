@@ -233,7 +233,7 @@ class StatusBarSprite: SKNode {
         }
         
         containerLowPercentageNode.run(.repeatForever(.sequence([
-            .fadeAlpha(to: 0.6, duration: 0),
+            .fadeAlpha(to: 0.75, duration: 0),
             .run {
                 AudioManager.shared.playSound(for: "ylowhealth", interruptPlayback: true)
                 Haptics.shared.addHapticFeedback(withStyle: .soft)

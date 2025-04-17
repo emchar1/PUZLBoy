@@ -406,7 +406,7 @@ class CatwalkScene: SKScene {
             isMoving = false
 
             playDialogue(panelIndex: currentPanelIndex)
-            AudioManager.shared.stopSound(for: runSound, fadeDuration: 0.25)
+            AudioManager.shared.stopSound(for: runSound)
         }
         
         if leftmostPanelIndex < currentPanelIndex - 2 && currentPanelIndex < catwalkLength - 1 {
@@ -1185,7 +1185,7 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
         swordNode.run(SKAction.sequence([
             SKAction.wait(forDuration: scaleDuration * 6),
             SKAction.repeatForever(SKAction.sequence([
-                SKAction.scale(to: scaleSize * 2, duration: 0),
+                SKAction.scale(to: scaleSize * 2, duration: scaleDuration * 0.5),
                 SKAction.scale(to: scaleSize * 2.5, duration: scaleDuration * 4)
             ]))
         ]), withKey: CatwalkScene.keySelectSwordPulseAction)
