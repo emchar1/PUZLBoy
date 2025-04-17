@@ -686,7 +686,11 @@ class FinalBattle2Controls {
         
         if shouldDisappear {
             delegateControls?.didVillainDisappear(fadeDuration: fadeDuration)
-            AudioManager.shared.playSound(for: "magicheartbeatloop1", fadeIn: fadeDuration)
+            
+            if playerHealth ?? 0 >= StatusBarSprite.lowPercentage {
+                AudioManager.shared.playSound(for: "magicheartbeatloop1", fadeIn: fadeDuration)
+            }
+            
             AudioManager.shared.playSound(for: "magicwarp")
             AudioManager.shared.playSound(for: "magicwarp2")
             ParticleEngine.shared.animateParticles(type: .magmoorBamf,

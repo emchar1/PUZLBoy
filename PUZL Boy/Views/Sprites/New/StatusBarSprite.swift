@@ -12,17 +12,22 @@ class StatusBarSprite: SKNode {
     // MARK: - Properties
     
     static let statusBarName = "StatusBarSprite"
+    static let keyLowPercentageAction = "LowPercentageAction"
     static let defaultBarHeight: CGFloat = 44
+    static let lowPercentage: CGFloat = 0.25
+    
     private let containerLineWidth: CGFloat = 6
     private let cornerRadius: CGFloat = 16
     private let barSize: CGSize
     private let statusString: String
     private let backgroundPosition: CGPoint
     private var currentPercentage: CGFloat
+    private var lowPercentageBlinkDuration: TimeInterval = 0
 
     //SKNode
     private var backgroundNode: SKShapeNode!
     private var containerNode: SKShapeNode!
+    private var containerLowPercentageNode: SKShapeNode!
     private var containerFrameNode: SKShapeNode!
     private var statusNode: SKSpriteNode!
     private var statusLabel: SKLabelNode!
@@ -76,12 +81,19 @@ class StatusBarSprite: SKNode {
         containerNode.lineWidth = 0
         containerNode.zPosition = 1
         
+        containerLowPercentageNode = SKShapeNode(rectOf: barSize, cornerRadius: cornerRadius)
+        containerLowPercentageNode.position = backgroundPosition
+        containerLowPercentageNode.fillColor = .systemPink
+        containerLowPercentageNode.lineWidth = 0
+        containerLowPercentageNode.alpha = 0
+        containerLowPercentageNode.zPosition = 2
+        
         containerFrameNode = SKShapeNode(rectOf: barSize, cornerRadius: cornerRadius)
         containerFrameNode.position = backgroundPosition
         containerFrameNode.fillColor = .clear
         containerFrameNode.lineWidth = containerLineWidth
         containerFrameNode.strokeColor = .white
-        containerFrameNode.zPosition = 3
+        containerFrameNode.zPosition = 4
         
         statusNode = SKSpriteNode(texture: SKTexture(image: UIImage.gradientLoadingBar))
         statusNode.position = CGPoint(x: backgroundPosition.x - barSize.width * (1 - currentPercentage) / 2, y: backgroundPosition.y)
@@ -89,7 +101,7 @@ class StatusBarSprite: SKNode {
         statusNode.xScale = currentPercentage
         statusNode.color = getColor(from: currentPercentage)
         statusNode.colorBlendFactor = 1
-        statusNode.zPosition = 2
+        statusNode.zPosition = 3
         
         statusLabel = SKLabelNode(text: statusString.uppercased())
         statusLabel.position = backgroundPosition + CGPoint(x: -barSize.width / 2 + padding, y: 0)
@@ -98,7 +110,7 @@ class StatusBarSprite: SKNode {
         statusLabel.fontColor = .darkGray
         statusLabel.horizontalAlignmentMode = .left
         statusLabel.verticalAlignmentMode = .center
-        statusLabel.zPosition = 3
+        statusLabel.zPosition = 4
         statusLabel.addDropShadow()
     }
     
@@ -111,6 +123,7 @@ class StatusBarSprite: SKNode {
     func addToParent(_ parentNode: SKNode) {
         addChild(backgroundNode)
         addChild(containerNode)
+        addChild(containerLowPercentageNode)
         addChild(containerFrameNode)
         addChild(statusNode)
         addChild(statusLabel)
@@ -187,6 +200,8 @@ class StatusBarSprite: SKNode {
      */
     func updatePercentage(_ newValue: CGFloat) {
         currentPercentage = newValue.clamp(min: 0, max: 1)
+
+        blinkLowPercentage()
     }
     
     /**
@@ -194,6 +209,37 @@ class StatusBarSprite: SKNode {
      */
     func getPercentage() -> CGFloat {
         return currentPercentage
+    }
+    
+    private func blinkLowPercentage() {
+        switch currentPercentage {
+        case let percent where percent < StatusBarSprite.lowPercentage / 5:
+            guard lowPercentageBlinkDuration != 0.5 else { return }
+            
+            lowPercentageBlinkDuration = 0.5
+        case let percent where percent < StatusBarSprite.lowPercentage / 2.5:
+            guard lowPercentageBlinkDuration != 1 else { return }
+            
+            lowPercentageBlinkDuration = 1
+        case let percent where percent < StatusBarSprite.lowPercentage:
+            guard lowPercentageBlinkDuration != 1.5 else { return }
+            
+            lowPercentageBlinkDuration = 1.5
+        default:
+            containerLowPercentageNode.removeAction(forKey: StatusBarSprite.keyLowPercentageAction)
+            containerLowPercentageNode.run(SKAction.fadeOut(withDuration: lowPercentageBlinkDuration))
+            lowPercentageBlinkDuration = 0 //Reset this!!!
+            return
+        }
+        
+        containerLowPercentageNode.run(.repeatForever(.sequence([
+            .fadeAlpha(to: 0.6, duration: 0),
+            .run {
+                AudioManager.shared.playSound(for: "ylowhealth", interruptPlayback: true)
+                Haptics.shared.addHapticFeedback(withStyle: .soft)
+            },
+            .fadeOut(withDuration: lowPercentageBlinkDuration),
+        ])), withKey: StatusBarSprite.keyLowPercentageAction)
     }
     
     

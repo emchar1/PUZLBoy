@@ -204,6 +204,7 @@ class ChosenSword: SKNode {
      */
     func attack(at position: CGPoint, facing: CGFloat, showMultiplier: Bool, shouldParry: Bool, completion: (() -> Void)?) {
         let facingCoefficient: CGFloat = facing < 0 ? -1 : 1
+        let spriteScale: CGFloat = type == .plainSword ? 1 : 1.5
         let parryAction: SKAction = shouldParry ? SKAction.sequence([
             SKAction.moveBy(x: -10, y: 0, duration: 0.05),
             SKAction.moveBy(x: 20, y: 0, duration: 0.05),
@@ -213,7 +214,8 @@ class ChosenSword: SKNode {
         ]) : SKAction.rotate(byAngle: -3 * .pi / 2 * facingCoefficient, duration: 0.25)
         
         self.position = position
-        spriteNode.xScale = facingCoefficient * abs(spriteNode.xScale)
+        spriteNode.xScale = facingCoefficient * spriteScale
+        spriteNode.yScale = spriteScale
         
         spriteNode.run(SKAction.sequence([
             SKAction.fadeIn(withDuration: 0),

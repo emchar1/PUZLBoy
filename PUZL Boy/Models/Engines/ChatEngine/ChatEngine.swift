@@ -1217,9 +1217,12 @@ extension ChatEngine {
             handleDialogueCompletion(level: level, completion: completion)
         case -1017:
             delegateCatwalk?.spawnPrincessCatwalk()
+            hideFFButton()
             
             sendChatArray(shouldSkipDim: true, items: [
-                ChatItem(profile: .princessCursed, pause: 2, chat: "you let me down, puzl boy! gaze upon your failure.", handler: nil),
+                ChatItem(profile: .princessCursed, pause: 2, chat: "you let me down, puzl boy! gaze upon your failure.") { [weak self] in
+                    self?.showFFButton()
+                },
                 ChatItem(profile: .hero, imgPos: .left, chat: "No! We're coming to rescue you, princess! Just hang tight for a sec!"),
                 ChatItem(profile: .merton, chat: "Dear boy, that is NOT the princess. It is but a phantasmagoria of Magmoor's machinations. We must keep moving!")
             ]) { [weak self] in
@@ -2384,7 +2387,7 @@ extension ChatEngine {
                                 ChatItem(profile: .hero, imgPos: .left, chat: "Ok, I get it!!"),
                                 ChatItem(profile: .merton, chat: "MERTON: 'Tis a thought fraught with fright, earth friend! Marlin, we fear has fallen victim to this twisted manifestation."),
                                 ChatItem(profile: .hero, imgPos: .left, chat: "Looks like my sleep paralysis demon. Is it gonna come back for me??!"),
-                                ChatItem(profile: .melchior, chat: "Most likely, yes. But lucky for you, you have our protection. We shall join you in the fight to destroy Magmoor the Fallen once and for all!"),
+                                ChatItem(profile: .melchior, chat: "Probably. But lucky for you, you have our protection. We shall join you in the fight to destroy Magmoor the Fallen once and for all!"),
                                 ChatItem(profile: .magmus, chat: "Fear never truly goes away, inexperienced one. Over time, you learn to cope with it."),
                                 ChatItem(profile: .merton, chat: "And not a moment too soon. Quickly, let us make haste to the planet's core!!") {
                                     self?.delegate?.despawnElders(to: (0, 0), completion: {})
