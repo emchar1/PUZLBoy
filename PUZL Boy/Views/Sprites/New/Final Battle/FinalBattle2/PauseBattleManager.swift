@@ -12,6 +12,8 @@ protocol PauseBattleManagerDelegate: AnyObject {
     func didTapPauseButtonTest(isPaused: Bool)
 }
 
+// FIXME: - Is this defunct???? 4/18/25
+
 class PauseBattleManager {
     
     // MARK: - Properties

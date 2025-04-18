@@ -13,6 +13,7 @@ class FinalBattleScene: SKScene {
     
     private var tapPointerEngine: TapPointerEngine!
     private var finalBattle2Engine: FinalBattle2Engine!
+    private var chatEngine: ChatEngine!
     
     
     // MARK: - Initialization
@@ -36,6 +37,7 @@ class FinalBattleScene: SKScene {
         
         tapPointerEngine = TapPointerEngine(using: ChosenSword(type: FIRManager.chosenSword))
         finalBattle2Engine = FinalBattle2Engine(size: self.size)
+        chatEngine = ChatEngine()
     }
     
     
@@ -43,6 +45,7 @@ class FinalBattleScene: SKScene {
     
     override func didMove(to view: SKView) {
         finalBattle2Engine.moveSprites(to: self)
+        chatEngine.moveSprites(to: self)
     }
     
     
@@ -52,12 +55,15 @@ class FinalBattleScene: SKScene {
         guard let location = touches.first?.location(in: self) else { return }
         
         tapPointerEngine.move(to: self, at: location, particleType: .pointer)
+        chatEngine.touchDown(in: location)
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard let location = touches.first?.location(in: self) else { return }
         
         finalBattle2Engine.handleControls(in: location)
+        chatEngine.didTapButton(in: location)
+        chatEngine.touchUp()
     }
     
     
@@ -67,11 +73,16 @@ class FinalBattleScene: SKScene {
         finalBattle2Engine.animateSprites()
     }
     
+    func playDialogue(level: Int) {
+        chatEngine.playDialogue(level: level, completion: nil)
+    }
+    
     func cleanupScene(didWin: Bool, completion: @escaping () -> Void) {
         // FIXME: - For use with build# 1.28(30).
         finalBattle2Engine.animateCleanup { [weak self] in
             self?.tapPointerEngine = nil
             self?.finalBattle2Engine = nil
+            self?.chatEngine = nil
             completion()
         }
     }

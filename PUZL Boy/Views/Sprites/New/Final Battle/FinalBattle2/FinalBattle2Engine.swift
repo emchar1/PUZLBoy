@@ -610,6 +610,14 @@ extension FinalBattle2Engine: FinalBattle2ControlsDelegate {
     
     func didVillainDisappear(fadeDuration: TimeInterval) {
         backgroundPattern.animate(pattern: .blackout, fadeDuration: fadeDuration, delay: nil)
+        
+        if let finalBattleScene = superScene as? FinalBattleScene {
+            switch controls.magmoorShield.resetCount {
+            case 4:     finalBattleScene.playDialogue(level: -2500)
+            case 8:     finalBattleScene.playDialogue(level: -2501)
+            default:    break
+            }
+        }
     }
     
     func willVillainReappear() {

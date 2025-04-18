@@ -773,6 +773,12 @@ extension ChatEngine {
             dialoguePlayed[-2000] = false
             
             
+            //AGE OF BALANCE - FINAL BATTLE 2
+            
+            dialoguePlayed[-2500] = false
+            dialoguePlayed[-2501] = false
+            
+            
             //AGE OF BALANCE - DARK REALM Dialogue
             
             dialoguePlayed[-100] = false
@@ -1453,6 +1459,29 @@ extension ChatEngine {
                     self?.delegatePreBattle?.zoomWideGameboard()
                 },
                 ChatItem(profile: .allelders, imgPos: .left, chat: "Agggghhhhh!")
+            ]) { [weak self] in
+                self?.handleDialogueCompletion(level: level, completion: completion)
+            }
+            
+        
+        //FINAL BATTLE 2
+        case -2500:
+            hideFFButton()
+            
+            sendChatArray(shouldSkipDim: true, items: [
+                ChatItem(profile: .princess, chat: "PUZL Boy! Hang on, I'll be there soon!!"),
+                ChatItem(profile: .hero, imgPos: .left, chat: "EARRGGHHH! Hold tight princess.. I'm coming to get you!!")
+            ]) { [weak self] in
+                self?.handleDialogueCompletion(level: level, completion: completion)
+            }
+        case -2501:
+            hideFFButton()
+            
+            sendChatArray(shouldSkipDim: true, items: [
+                ChatItem(profile: .princess, chat: "Just a little longer! You got this, PUZL Boy!!"),
+                ChatItem(profile: .hero, imgPos: .left, chat: "Thanks!! Getting a little crazy here..."),
+                ChatItem(profile: .princess, chat: "Strike with the INFINITY SWORD to defeat Magmoor once and for all!"),
+                ChatItem(profile: .hero, imgPos: .left, chat: "Easier said than done!!!")
             ]) { [weak self] in
                 self?.handleDialogueCompletion(level: level, completion: completion)
             }
