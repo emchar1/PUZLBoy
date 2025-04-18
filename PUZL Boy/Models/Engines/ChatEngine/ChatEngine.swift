@@ -148,7 +148,7 @@ class ChatEngine {
 
 
     //Overlay Sprites
-    private var superScene: SKScene?
+    private weak var superScene: SKScene?
     private var dimOverlaySprite: SKShapeNode!
     private var obtainItemSprite: SKSpriteNode!
     private var marlinBlast: MarlinBlastSprite!
@@ -177,6 +177,8 @@ class ChatEngine {
     }
     
     deinit {
+        superScene = nil
+        
         timer?.invalidate()
         timer = nil
         
@@ -1123,7 +1125,7 @@ extension ChatEngine {
                 "OMG, this— This is the one!",
                 "This sword and I... are ONE!",
                 "B-I-N-G-O!!!! We have a winner!",
-                "Yes. Yes yes yes yes yassss!!!",
+                "Yes!!!!!!!",
                 "I have made my decision!"
             ]
             let heroChatWaitOptions: [String] = [

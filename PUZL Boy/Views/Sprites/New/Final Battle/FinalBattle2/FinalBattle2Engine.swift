@@ -24,7 +24,7 @@ class FinalBattle2Engine {
     private var health: FinalBattle2Health!
     private var panelSpawner: [FinalBattle2Spawner] = []
     
-    private var superScene: SKScene?
+    private weak var superScene: SKScene?
     private var backgroundSprite: SKSpriteNode!
     private var infinityOverlay: SKSpriteNode!
     private var bloodOverlay: SKSpriteNode!
@@ -54,6 +54,8 @@ class FinalBattle2Engine {
         //Don't forget to reset platform and power up item timers!!!
         FinalBattle2Spawner.isPlatformOn = false
         DuplicateItem.shared.resetTimers()
+        
+        superScene = nil
         
         print("FinalBattle2Engine deinit")
     }

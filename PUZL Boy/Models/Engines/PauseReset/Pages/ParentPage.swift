@@ -18,7 +18,7 @@ class ParentPage: SKNode {
     
     var contentNode: SKSpriteNode!
     var titleLabel: ParentTitleLabel!
-    var superScene: SKScene?
+    weak var superScene: SKScene?
 
     
     // MARK: - Initialization
@@ -50,6 +50,8 @@ class ParentPage: SKNode {
     }
     
     deinit {
+        superScene = nil
+        
         print("deinit ParentPage: \(nodeName)")
     }
     

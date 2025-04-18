@@ -63,7 +63,7 @@ class PauseResetEngine {
     private var hintBadgeSprite: SKShapeNode!
     private var hintCountLabel: SKLabelNode!
     private var backgroundSprite: SKShapeNode!
-    private var superScene: SKScene?
+    private weak var superScene: SKScene?
     
     //Custom Objects
     private var settingsManager: SettingsManager!
@@ -107,6 +107,8 @@ class PauseResetEngine {
     }
     
     deinit {
+        superScene = nil
+        
         print("PauseResetEngine deinit")
     }
     

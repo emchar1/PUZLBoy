@@ -14,7 +14,7 @@ class TapPointerEngine: SKNode {
     static let nodeName = ParticleEngine.nodeNamePrefix
     
     private let pointerSize = K.ScreenDimensions.size * 0.05
-    private var superScene: SKScene?
+    private weak var superScene: SKScene?
     private var location: CGPoint?
     private var pointerColor: UIColor?
     private var randomGold: UIColor { UIColor(red: .random(in: 0.9...1), green: .random(in: 0.8...0.9), blue: .random(in: 0.4...0.8), alpha: 1) }
@@ -121,6 +121,8 @@ class TapPointerEngine: SKNode {
     }
     
     deinit {
+        superScene = nil
+        
         print("TapPointerEngine deinit")
     }
     

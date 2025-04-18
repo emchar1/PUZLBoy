@@ -20,7 +20,7 @@ class LevelSkipEngine {
     private let padding: CGFloat = 20
     private var forwardSprite: SKSpriteNode!
     private var reverseSprite: SKSpriteNode!
-    private var superScene: SKScene?
+    private weak var superScene: SKScene?
     
     weak var delegate: LevelSkipEngineDelegate?
     
@@ -30,6 +30,12 @@ class LevelSkipEngine {
     init() {
         setupSprites()
         showButtons()
+    }
+    
+    deinit {
+        superScene = nil
+        
+        print("deinit LevelSkipEngine")
     }
     
     private func setupSprites() {

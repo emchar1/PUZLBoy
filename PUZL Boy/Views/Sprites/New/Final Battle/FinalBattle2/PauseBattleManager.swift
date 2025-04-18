@@ -17,7 +17,7 @@ class PauseBattleManager {
     // MARK: - Properties
     
     private let buttonTexture: (day: SKTexture, nite: SKTexture) = (SKTexture(imageNamed: "settingsButton"), SKTexture(imageNamed: "settingsButtonNITE"))
-    private var superScene: SKScene?
+    private weak var superScene: SKScene?
     private var pauseButton: SKSpriteNode
     private var isPaused: Bool
     
