@@ -215,7 +215,7 @@ class MagmoorAttacks {
                 self?.helperDuplicates(count: duplicateCount, positions: positions)
             }
         case .castInvincible:
-            wandColor = .purple
+            wandColor = .black
             
             villain.sprite.run(SKAction.wait(forDuration: wandAnimationDelay)) { [weak self] in
                 self?.helperCastInvincibleShields(positions: positions)
@@ -460,17 +460,17 @@ class MagmoorAttacks {
         
         let shieldDuration: TimeInterval = 0.25
         
-        let tinyPurpleShield = SKSpriteNode(imageNamed: "magmoorShieldTop")
-        tinyPurpleShield.position = gameboard.getLocation(at: duplicatePosition) + getWandOffset(duplicate.duplicate)
-        tinyPurpleShield.color = .magenta
-        tinyPurpleShield.colorBlendFactor = 1
-        tinyPurpleShield.setScale(0)
-        tinyPurpleShield.zPosition = K.ZPosition.itemsAndEffects
+        let tinyShield = SKSpriteNode(imageNamed: "magmoorShieldTop")
+        tinyShield.position = gameboard.getLocation(at: duplicatePosition) + getWandOffset(duplicate.duplicate)
+        tinyShield.color = .magenta.darkenColor(factor: 24)
+        tinyShield.colorBlendFactor = 1
+        tinyShield.setScale(0)
+        tinyShield.zPosition = K.ZPosition.itemsAndEffects
         
-        gameboard.sprite.addChild(tinyPurpleShield)
+        gameboard.sprite.addChild(tinyShield)
         
-        tinyPurpleShield.run(SKAction.rotate(byAngle: (getFacingDirection(duplicate.duplicate) > 0 ? -1 : 1) * .pi, duration: 4 * shieldDuration))
-        tinyPurpleShield.run(SKAction.sequence([
+        tinyShield.run(SKAction.rotate(byAngle: (getFacingDirection(duplicate.duplicate) > 0 ? -1 : 1) * .pi, duration: 4 * shieldDuration))
+        tinyShield.run(SKAction.sequence([
             SKAction.scale(to: 0.75, duration: shieldDuration),
             SKAction.wait(forDuration: shieldDuration),
             SKAction.group([

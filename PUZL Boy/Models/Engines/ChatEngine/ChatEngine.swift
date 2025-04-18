@@ -1480,7 +1480,7 @@ extension ChatEngine {
             sendChatArray(shouldSkipDim: true, items: [
                 ChatItem(profile: .princess, chat: "Just a little longer! You got this, PUZL Boy!!"),
                 ChatItem(profile: .hero, imgPos: .left, chat: "Thanks!! Getting a little crazy here..."),
-                ChatItem(profile: .princess, chat: "Strike with the INFINITY SWORD to defeat Magmoor once and for all!"),
+                ChatItem(profile: .princess, chat: "You must strike Magmoor with the INFINITY SWORD to defeat him once and for all!"),
                 ChatItem(profile: .hero, imgPos: .left, chat: "Easier said than done!!!")
             ]) { [weak self] in
                 self?.handleDialogueCompletion(level: level, completion: completion)
