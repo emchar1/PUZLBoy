@@ -1146,7 +1146,7 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
             
             let swordNode = SKSpriteNode(imageNamed: imageName)
             swordNode.position = chestSprite.position
-            swordNode.setScale(0)
+            swordNode.scale(to: scaleSize / 2)
             swordNode.zPosition = K.ZPosition.player + 1
             swordNode.name = "\(ChosenSword.namePrefix)\(i)"
             catwalkNode.addChild(swordNode)
@@ -1223,15 +1223,15 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
                 SKAction.group([
                     SKAction.rotate(byAngle: -2 * .pi, duration: hideDuration),
                     SKAction.move(to: chestSprite.position + CGPoint(x: 0, y: isChosenSword ? 300 : 0), duration: hideDuration),
-                    SKAction.scale(to: isChosenSword ? scaleSize : .zero, duration: hideDuration),
+                    SKAction.scale(to: isChosenSword ? scaleSize : scaleSize / 2, duration: hideDuration),
                 ]),
                 SKAction.removeFromParent()
             ]))
         }
         
-        chestSprite.texture = SKTexture(imageNamed: "chestclosed")
         chestSprite.run(SKAction.sequence([
             SKAction.wait(forDuration: hideDuration),
+            SKAction.setTexture(SKTexture(imageNamed: "chestclosed")),
             SKAction.fadeOut(withDuration: hideDuration * 2),
             SKAction.removeFromParent()
         ]))
