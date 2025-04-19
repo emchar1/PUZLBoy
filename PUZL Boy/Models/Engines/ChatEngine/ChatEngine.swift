@@ -1280,7 +1280,7 @@ extension ChatEngine {
             }
         case -1035:
             let fadeIn: TimeInterval = 1
-            let swordSpawnDuration: TimeInterval = 2
+            let chestSpawnDuration: TimeInterval = 1
             let partyMusic = "overworldmarimba"
             
             delegateCatwalk?.playMusicCatwalk(music: partyMusic, startingVolume: 0.25, fadeIn: fadeIn, shouldStopOverworld: true)
@@ -1294,9 +1294,9 @@ extension ChatEngine {
                 ChatItem(profile: .statue1, chat: "Hahaha! You look down in the mouth. Don't be so discouraged."),
                 ChatItem(profile: .hero, imgPos: .left, chat: "Yeah, well.. I am NOT having the best day of my life right now, to be honest. I—I let them all down! 😫"),
                 ChatItem(profile: .statue1, endChat: true, chat: "Cheer up, friend! All is not lost. Here's a little something to lift your spirits...") { [weak self] in
-                    self?.delegateCatwalk?.spawnChestCatwalk(spawnDuration: swordSpawnDuration)
+                    self?.delegateCatwalk?.spawnChestCatwalk(spawnDuration: chestSpawnDuration)
                 },
-                ChatItem(profile: .statue1, pause: swordSpawnDuration, startNewChat: true, chat: "We tikis banded together to get you something special. Go on, open it! Its contents will help you on your way.", handler: nil)
+                ChatItem(profile: .statue1, pause: chestSpawnDuration * 2, startNewChat: true, chat: "We tikis banded together to get you something special. Go on, open it! Its contents will help you on your way.", handler: nil)
             ]) { [weak self] in
                 self?.delegateCatwalk?.canOpenChestCatwalk()
                 self?.handleDialogueCompletion(level: level, completion: completion)

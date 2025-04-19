@@ -740,12 +740,16 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
         chestSprite.name = CatwalkScene.chestNodeName
         
         let descendChestAction = SKAction.moveBy(x: 0, y: -300, duration: spawnDuration)
-        descendChestAction.timingMode = .easeIn
+        descendChestAction.timingFunction = { t in
+            pow(t, 8)
+        }
         
         chestSprite.run(SKAction.group([
             SKAction.fadeIn(withDuration: spawnDuration / 2),
             descendChestAction
-        ]))
+        ])) {
+            AudioManager.shared.playSound(for: "boyimpact")
+        }
         
         chestSprite.removeFromParent()
         catwalkNode.addChild(chestSprite)
