@@ -159,16 +159,15 @@ class ChatDecisionSprite: SKNode {
         removeFromParent()
         
         node.addChild(self)
-
-        run(SKAction.sequence([
-            SKAction.wait(forDuration: 1),
-            SKAction.group([
-                SKAction.scale(to: 1, duration: 1),
-                SKAction.fadeIn(withDuration: 1)
+        
+        run(.sequence([
+            .wait(forDuration: 1),
+            .group([
+                .scale(to: 1.01, duration: 1),
+                .fadeIn(withDuration: 1)
             ]),
-            SKAction.scale(to: 1.05, duration: 0.25),
-            SKAction.scale(to: 0.95, duration: 0.2),
-            SKAction.scale(to: 1, duration: 0.2)
+            .scale(to: 0.99, duration: 0.25),
+            .scale(to: 1.00, duration: 0.25)
         ])) { [weak self] in
             self?.isDisabled = false
         }
@@ -177,34 +176,27 @@ class ChatDecisionSprite: SKNode {
     func animateDisappear(didGetTapped: Bool) {
         let duration: TimeInterval = 2
         
-        let shakeAction = didGetTapped ? SKAction.sequence([
-            SKAction.rotate(toAngle: .pi / 32, duration: 0.1),
-            SKAction.rotate(toAngle: -.pi / 32, duration: 0.1),
-
-            SKAction.rotate(toAngle: .pi / 40, duration: 0.1),
-            SKAction.rotate(toAngle: -.pi / 40, duration: 0.1),
-
-            SKAction.rotate(toAngle: .pi / 48, duration: 0.1),
-            SKAction.rotate(toAngle: -.pi / 48, duration: 0.1),
-
-            SKAction.rotate(toAngle: .pi / 56, duration: 0.1),
-            SKAction.rotate(toAngle: -.pi / 56, duration: 0.1),
-
-            SKAction.rotate(toAngle: .pi / 64, duration: 0.1),
-            SKAction.rotate(toAngle: 0, duration: 0.1),
-        ]) : SKAction.wait(forDuration: duration)
+        let pulseAction: SKAction = didGetTapped ? .sequence([
+            .scale(to: 1.15, duration: duration * 0.1),
+            .scale(to: 0.85, duration: duration * 0.1),
+            .scale(to: 1.10, duration: duration * 0.1),
+            .scale(to: 0.90, duration: duration * 0.1),
+            .scale(to: 1.05, duration: duration * 0.1),
+            .scale(to: 1.00, duration: duration * 0.1),
+            .wait(forDuration: duration * 0.4)
+        ]) : .wait(forDuration: duration)
         
-        let fadeAction = didGetTapped ? SKAction.wait(forDuration: duration) : SKAction.sequence([
-            SKAction.fadeOut(withDuration: duration * 0.25),
-            SKAction.wait(forDuration: duration * 0.75)
-        ])
+        let fadeAction: SKAction = !didGetTapped ? .sequence([
+            .fadeOut(withDuration: duration * 0.25),
+            .wait(forDuration: duration * 0.75)
+        ]) : .wait(forDuration: duration)
         
-        shakeAction.timingMode = .easeOut
+        pulseAction.timingMode = .easeOut
         fadeAction.timingMode = .easeOut
         
-        run(SKAction.sequence([
-            SKAction.group([shakeAction, fadeAction]),
-            SKAction.removeFromParent()
+        run(.sequence([
+            .group([pulseAction, fadeAction]),
+            .removeFromParent()
         ])) { [weak self] in
             guard let self = self else { return }
             

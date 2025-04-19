@@ -739,9 +739,12 @@ extension CatwalkScene: ChatEngineCatwalkDelegate {
         chestSprite.zPosition = K.ZPosition.player - 1
         chestSprite.name = CatwalkScene.chestNodeName
         
+        let descendChestAction = SKAction.moveBy(x: 0, y: -300, duration: spawnDuration)
+        descendChestAction.timingMode = .easeIn
+        
         chestSprite.run(SKAction.group([
             SKAction.fadeIn(withDuration: spawnDuration / 2),
-            SKAction.moveBy(x: 0, y: -300, duration: spawnDuration)
+            descendChestAction
         ]))
         
         chestSprite.removeFromParent()
